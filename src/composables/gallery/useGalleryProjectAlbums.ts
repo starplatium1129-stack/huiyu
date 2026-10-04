@@ -10,7 +10,6 @@ export interface GalleryProjectAlbum {
   title: string
   count: number
   covers: { id: string | number; src: string }[]
-  previewIds?: Array<string | number>
   kind: 'manual' | 'smart' | 'character'
   characterId?: string
   ruleSummary?: string
@@ -81,13 +80,13 @@ export function useGalleryProjectAlbums(options: {
         : options.characterName?.(id) || artworkCharacterName(id, undefined, []),
       kind: 'character', characterId: id, items }))
   })
-  const coverItems = computed(() => {
-    const items = new Map<string | number, ArtworkRecord>()
-    for (const album of [...projectMembers.value, ...characterMembers.value]) {
-      for (const item of album.items.slice(0, 3)) items.set(item.id, item)
-    }
-    return [...items.values()]
-  })
+  // Thumbnail demand depends on membership, never on arrivals in the borrowed cache.
+  function resolvePreviewItems(section: 'characters' | 'albums', visibleIds: readonly string[]) {
+    const visible = new Set(visibleIds)
+    const ids = new Set((section === 'characters' ? characterMembers.value : projectMembers.value)
+      .filter(album => visible.has(album.id)).flatMap(album => album.items.slice(0, 3).map(item => item.id)))
+    return options.history.value.filter(item => ids.has(item.id))
+  }
   function decorate(album: AlbumMembership): GalleryProjectAlbum {
     const { items, ...metadata } = album
     const covers: GalleryProjectAlbum['covers'] = []
@@ -97,9 +96,9 @@ export function useGalleryProjectAlbums(options: {
       if (src) covers.push({ id: item.id, src })
       if (covers.length === 3) break
     }
-    return { ...metadata, count: items.length, covers, previewIds: items.slice(0, 3).map(item => item.id) }
+    return { ...metadata, count: items.length, covers }
   }
   const albums = computed(() => projectMembers.value.map(decorate))
   const characterAlbums = computed(() => characterMembers.value.map(decorate))
-  return { albums, characterAlbums, coverItems }
+  return { albums, characterAlbums, resolvePreviewItems }
 }
