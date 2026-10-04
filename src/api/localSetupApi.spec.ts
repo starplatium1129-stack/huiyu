@@ -11,7 +11,7 @@ function snapshot(): LocalSetupResponse {
     ok: true, checkedAt: 1_791_083_000_000,
     workspace: { path: 'D:\\AI', state: 'present' },
     comfy: { path: 'D:\\AI\\ComfyUI', installation: 'present', layout: 'portable', host: 'http://127.0.0.1:8188', connection: 'offline' },
-    models: ['anima-aesthetic-v1.1', 'qwen-encoder', 'qwen-vae'].map(id => ({ id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'unknown', bytes: null, required: true })),
+    models: ['anima-aesthetic-v1.1', 'qwen-encoder', 'qwen-vae'].map(id => ({ id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'unknown', bytes: null, required: true, preparation: { url: 'https://huggingface.co/circlestone-labs/Anima/resolve/' + 'a'.repeat(40) + '/model.safetensors', modelCardUrl: 'https://huggingface.co/circlestone-labs/Anima', licenseUrl: 'https://huggingface.co/circlestone-labs/Anima/blob/' + 'a'.repeat(40) + '/LICENSE.md', upstreamLicenseUrl: null, revision: 'a'.repeat(40), expectedBytes: 10, sha256: 'b'.repeat(64) } })),
     nodes: { state: 'unknown', required: ['ImageSharpenKJ'], missing: [] },
     hardware: { state: 'unknown', devices: [], ramBytes: null },
   }
@@ -25,7 +25,7 @@ beforeEach(() => { access.local = true })
 describe('local setup read-only HTTP boundary', () => {
   it('preserves unknown evidence and refreshes without caching', async () => {
     const body = snapshot()
-    body.models.push({ id: 'other', label: 'Other', path: 'D:\\AI\\ComfyUI\\models\\other', state: 'present', bytes: 10, required: false })
+    body.models.push({ id: 'other', label: 'Other', path: 'D:\\AI\\ComfyUI\\models\\other', state: 'present', bytes: 10, required: false, preparation: null })
     const { fetch, api } = setup(body)
     expect(await api.getStatus()).toEqual(body)
     await api.getStatus()
@@ -41,6 +41,10 @@ describe('local setup read-only HTTP boundary', () => {
   it('rejects absent recommended-model evidence and malformed device reports', async () => {
     const absent = snapshot(); absent.models.pop()
     await expect(setup(absent).api.getStatus()).rejects.toMatchObject({ kind: 'invalid-response' })
+    const unsafe = snapshot(); unsafe.models[0].preparation!.url = 'javascript:alert(1)'
+    await expect(setup(unsafe).api.getStatus()).rejects.toMatchObject({ kind: 'invalid-response' })
+    const noSource = snapshot(); noSource.models[0].preparation = null
+    await expect(setup(noSource).api.getStatus()).rejects.toMatchObject({ kind: 'invalid-response' })
     const malformed = snapshot(); malformed.hardware.devices.push({ name: 'device', type: 'cuda', vramBytes: -1 })
     await expect(setup(malformed).api.getStatus()).rejects.toMatchObject({ kind: 'invalid-response' })
   })

@@ -13,7 +13,7 @@ function complete(): LocalSetupResponse {
   return { ok: true, checkedAt: 1_791_083_000_000,
     workspace: { path: 'D:\\AI', state: 'present' },
     comfy: { path: 'D:\\AI\\ComfyUI', installation: 'present', layout: 'unrecognized', host: 'http://127.0.0.1:8188', connection: 'online' },
-    models: ['anima-aesthetic-v1.1', 'qwen-encoder', 'qwen-vae'].map(id => ({ id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'present', bytes: 10, required: true })),
+    models: ['anima-aesthetic-v1.1', 'qwen-encoder', 'qwen-vae'].map(id => ({ id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'present', bytes: 10, required: true, preparation: { url: 'https://huggingface.co/circlestone-labs/Anima/resolve/' + 'a'.repeat(40) + '/model.safetensors', modelCardUrl: 'https://huggingface.co/circlestone-labs/Anima', licenseUrl: 'https://huggingface.co/circlestone-labs/Anima/blob/' + 'a'.repeat(40) + '/LICENSE.md', upstreamLicenseUrl: null, revision: 'a'.repeat(40), expectedBytes: 10, sha256: 'b'.repeat(64) } })),
     nodes: { state: 'checked', required: ['ImageSharpenKJ'], missing: [] },
     hardware: { state: 'unknown', devices: [], ramBytes: null } }
 }
@@ -71,7 +71,7 @@ describe('first local setup panel', () => {
   })
   it('shows recommendation gaps without declaring existing alternative models unusable', async () => {
     const value = complete(); value.models[0].state = 'missing'
-    value.models.push({ id: 'other', label: 'Existing model', path: 'D:\\AI\\ComfyUI\\models\\other', state: 'present', bytes: 42, required: false })
+    value.models.push({ id: 'other', label: 'Existing model', path: 'D:\\AI\\ComfyUI\\models\\other', state: 'present', bytes: 42, required: false, preparation: null })
     fixture.getStatus.mockResolvedValue(value)
     const wrapper = render(); await flushPromises()
     expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
@@ -79,6 +79,35 @@ describe('first local setup panel', () => {
     expect(wrapper.text()).toContain('Existing model')
     expect(wrapper.text()).toContain('设备报告未知')
     expect(wrapper.find('details').attributes('open')).toBeUndefined()
+    wrapper.unmount()
+  })
+  it('keeps downloads behind explicit plan review and resets review when the route changes', async () => {
+    const value = complete(); value.models[0].bytes = 3
+    fixture.getStatus.mockResolvedValue(value)
+    const wrapper = render(); await flushPromises()
+    expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
+    expect(wrapper.find('.preparation').text()).toContain('大小不符')
+    expect(wrapper.find('.download-checklist').exists()).toBe(false)
+    const confirm = wrapper.findAll('button').find(button => button.text() === '查看准备清单')!
+    expect(confirm.attributes('disabled')).toBeDefined()
+    await wrapper.find('.preparation-ack input').setValue(true)
+    await confirm.trigger('click')
+    expect(wrapper.find('.download-checklist').findAll('a')).toHaveLength(3)
+    expect(wrapper.find('.download-checklist').text()).toContain("Get-FileHash -LiteralPath 'D:\\AI")
+    expect(fixture.getStatus).toHaveBeenCalledTimes(1)
+    await wrapper.find('#setup-comfy-route').setValue('portable')
+    expect(wrapper.find('.download-checklist').exists()).toBe(false)
+    expect(confirm.attributes('disabled')).toBeDefined()
+    await wrapper.find('.preparation-ack input').setValue(true)
+    await confirm.trigger('click')
+    await wrapper.find('.preparation-ack input').setValue(false)
+    expect(wrapper.find('.download-checklist').exists()).toBe(false)
+    await wrapper.find('.preparation-ack input').setValue(true)
+    await confirm.trigger('click')
+    await wrapper.findAll('button').find(button => button.text() === '放置后重新检查')!.trigger('click')
+    await flushPromises()
+    expect(fixture.getStatus).toHaveBeenCalledTimes(2)
+    expect(wrapper.find('.download-checklist').exists()).toBe(false)
     wrapper.unmount()
   })
   it('saves a workspace only on explicit save and retains the active runtime evidence until restart', async () => {
