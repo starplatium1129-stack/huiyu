@@ -14,7 +14,7 @@
           <h3>准备对应硬件的运行环境</h3>
           <template v-if="route === 'desktop'">
             <p>从官方 Desktop 安装页取得程序，按安装器建立一个 ComfyUI 实例。先在 Desktop 中启动它，确认可打开 ComfyUI；在该实例设置中查看实际安装目录与模型目录。</p>
-            <p>Desktop 常用 .venv，旧版本布局可能不同。请继续由 Desktop 启动和更新；这里不接管它的解释器。</p>
+            <p>Desktop 的 Python 环境由其自身管理，布局因版本与实例类型而异。请继续由 Desktop 启动和更新；这里不接管它的解释器。</p>
             <a href="https://docs.comfy.org/installation/desktop/windows" target="_blank" rel="noopener noreferrer">打开官方 Desktop 安装页</a>
           </template>
           <template v-else-if="route === 'portable'">
@@ -60,8 +60,16 @@
               <code>{{ model.path }}</code>
               <a v-if="model.preparation?.upstreamLicenseUrl" :href="model.preparation.upstreamLicenseUrl" target="_blank" rel="noopener noreferrer">组件上游许可</a>
               <p v-if="model.preparation">应为 {{ formatBytes(model.preparation.expectedBytes) }} · {{ model.preparation.expectedBytes.toLocaleString('zh-CN') }} 字节<span v-if="model.bytes !== null">；本次发现 {{ model.bytes.toLocaleString('zh-CN') }} 字节</span></p>
+              <div class="verification-actions">
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="!!activeId || state(model) !== 'bytes-match'" @click="verify(model)">校验 {{ model.label }} 的 SHA-256</button>
+                <button v-if="activeId === model.id" class="btn btn-ghost btn-sm" type="button" @click="cancel">取消校验</button>
+              </div>
+              <p v-if="activeId === model.id" role="status">正在只读校验 {{ formatBytes(bytesRead) }} / {{ formatBytes(expectedBytes) }}（{{ Math.floor(bytesRead / expectedBytes * 100) }}%）</p>
+              <p v-if="results[model.id]" :data-verification="results[model.id].state" role="status">{{ results[model.id].message }}</p>
+              <p v-if="notices[model.id]" role="status">{{ notices[model.id] }}</p>
             </li>
           </ul>
+          <p>SHA-256 只在点击时逐块读取本机文件，不联网、不改写。一次校验一个文件，可随时取消；重新检查或离开本页会停止校验并清除本次结果。成功只证明本次读取与固定摘要一致，不代表出图或未来文件仍未改变。</p>
           <label class="preparation-ack"><input v-model="reviewed" type="checkbox">我已核对运行方式、真实 models 目录、容量与来源许可说明</label>
           <button class="btn btn-ghost btn-sm" type="button" :disabled="!reviewed" @click="confirmed = true">查看准备清单</button>
           <div v-if="confirmed && reviewed" class="download-checklist" role="region" aria-label="手动下载与校验清单">
@@ -90,19 +98,24 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { LocalSetupModel, LocalSetupResponse } from '../../types/local-setup.ts'
+import type { LocalSetupModel, LocalSetupResponse, LocalSetupVerificationResult } from '../../types/local-setup.ts'
 import { modelPreparationState as state, formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'
+import { useLocalSetupVerification } from '../composables/useLocalSetupVerification.ts'
 import { copyText } from '../utils/clipboard.ts'
 
 const props = defineProps<{ snapshot: LocalSetupResponse; desktop: boolean }>()
-defineEmits<{ workspace: []; refresh: [] }>()
+const emit = defineEmits<{ workspace: []; refresh: []; 'verification-result': [result: LocalSetupVerificationResult] }>()
 const route = ref(props.snapshot.comfy.layout === 'portable' ? 'portable' : props.snapshot.comfy.layout === 'venv' ? 'manual' : 'desktop')
 const reviewed = ref(false), confirmed = ref(false), copyNotice = ref('')
 const models = computed(() => props.snapshot.models.filter(model => model.required))
+const { activeId, bytesRead, expectedBytes, results, notices, verify, cancel } = useLocalSetupVerification(models)
+watch(results, values => { for (const result of Object.values(values)) emit('verification-result', result) })
 const matched = computed(() => models.value.filter(model => state(model) === 'bytes-match').length)
 const totalBytes = computed(() => models.value.reduce((sum, model) => sum + (model.preparation?.expectedBytes ?? 0), 0))
 const pendingBytes = computed(() => models.value.filter(model => state(model) !== 'bytes-match').reduce((sum, model) => sum + (model.preparation?.expectedBytes ?? 0), 0))
 function stateLabel(model: LocalSetupModel): string {
+  if (results.value[model.id]?.state === 'sha256-match') return 'SHA-256 相符（本次读取）'
+  if (results.value[model.id]) return '完整性未通过，请核对'
   return ({ missing: '未发现', unknown: '状态未知', 'size-mismatch': '大小不符，待核对', 'bytes-match': '大小相符，未校验 SHA-256' })[state(model)]
 }
 function hashCommand(path: string): string { return `Get-FileHash -LiteralPath '${path.replaceAll("'", "''")}' -Algorithm SHA256` }
@@ -126,7 +139,7 @@ async function copyPlan() {
 .route-label { display:block; color:var(--text-primary); margin:var(--s-3) 0 var(--s-2); }
 .route-select { width:100%; min-height:40px; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-sm); padding:var(--s-2); }
 .preparation-steps { padding-left:var(--s-5); display:grid; gap:var(--s-4); margin:var(--s-4) 0 0; }
-.preparation-links, .model-heading { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-3); }
+.verification-actions, .preparation-links, .model-heading { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-3); }
 .preparation-models { display:grid; gap:var(--s-3); list-style:none; padding:0; margin:var(--s-3) 0; }
 .model-heading strong { color:var(--text-primary); }
 .model-heading span[data-state="size-mismatch"] { color:var(--warning-text); }
@@ -136,6 +149,8 @@ async function copyPlan() {
 .download-checklist ol { display:grid; gap:var(--s-4); padding-left:var(--s-5); }
 .download-checklist li > a { display:block; margin:var(--s-2) 0; }
 .download-checklist details { margin:var(--s-2) 0; }
+.preparation p[data-verification="sha256-match"] { color:var(--success-text); }
+.preparation p[data-verification="hash-mismatch"], .preparation p[data-verification="changed"] { color:var(--warning-text); }
 .preparation button:disabled { color:var(--text-disabled); opacity:1; cursor:not-allowed; }
 .preparation :is(a, button, summary, select, input):focus-visible { outline:2px solid var(--text-primary); outline-offset:3px; }
 </style>

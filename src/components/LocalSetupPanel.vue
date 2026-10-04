@@ -31,7 +31,7 @@
       </div>
       <p v-if="workspaceNotice" class="setup-note" role="status">{{ workspaceNotice }}</p>
       <p v-if="workspaceError && !workspaceOpen" class="setup-error" role="alert">{{ workspaceError }}</p>
-      <LocalSetupPreparation v-if="snapshot" :snapshot="snapshot" :desktop="!!desktop" @workspace="openWorkspace" @refresh="refresh" />
+      <LocalSetupPreparation v-if="snapshot" :snapshot="snapshot" :desktop="!!desktop" @workspace="openWorkspace" @refresh="refresh" @verification-result="recordVerification" />
       <details class="setup-details">
         <summary>查看路径与详细检查<span v-if="snapshot">{{ checkedAtLabel }}</span></summary>
         <div class="setup-detail-body">
@@ -101,11 +101,12 @@ import CompanionWorkspaceSettings from './CompanionWorkspaceSettings.vue'
 import { localSetupApi } from '../api/localSetupApi.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
-import type { LocalSetupFileState, LocalSetupResponse } from '../../types/local-setup.ts'
+import type { LocalSetupFileState, LocalSetupResponse, LocalSetupVerificationResult } from '../../types/local-setup.ts'
 
 const isLocal = isLocalStudioHost()
 const desktop = isLocal ? getDesktopCapabilities() : undefined
 const snapshot = ref<LocalSetupResponse | null>(null)
+const verificationFailures = ref<Record<string, string>>({})
 const loading = ref(false), error = ref(''), cancelled = ref(false)
 let controller: AbortController | null = null
 let disposed = false
@@ -113,7 +114,14 @@ const recommendedModels = computed(() => snapshot.value?.models.filter(model => 
 const otherModels = computed(() => snapshot.value?.models.filter(model => !model.required) ?? [])
 const presentRecommended = computed(() => recommendedModels.value.filter(model => modelPreparationState(model) === 'bytes-match').length)
 const nodesChecked = computed(() => snapshot.value?.nodes.state === 'checked' && snapshot.value.nodes.required.length > 0)
-const basicComplete = computed(() => !!snapshot.value && snapshot.value.workspace.state === 'present'
+const failedModels = computed(() => recommendedModels.value.filter(model => verificationFailures.value[model.id] === model.path))
+function recordVerification(result: LocalSetupVerificationResult) {
+  const failures = { ...verificationFailures.value }
+  if (result.state === 'sha256-match') delete failures[result.modelId]
+  else failures[result.modelId] = result.path
+  verificationFailures.value = failures
+}
+const basicComplete = computed(() => failedModels.value.length === 0 && !!snapshot.value && snapshot.value.workspace.state === 'present'
   && snapshot.value.comfy.installation === 'present' && snapshot.value.comfy.connection === 'online'
   && recommendedModels.value.length >= 3 && presentRecommended.value === recommendedModels.value.length
   && nodesChecked.value && snapshot.value.nodes.missing.length === 0)
@@ -127,6 +135,7 @@ const nextStep = computed(() => {
   const value = snapshot.value
   if (loading.value) return '等待本次只读检查，或取消后稍后再试。'
   if (!value) return '重新检查以读取当前配置；此操作不会安装文件或启动服务。'
+  if (failedModels.value.length) return `${failedModels.value.map(model => model.label).join('、')} 的完整性校验未通过。重新检查不会清除此问题；请核对文件并重新校验 SHA-256 后再尝试出图。`
   if (value.workspace.state !== 'present' || value.comfy.installation !== 'present') return '确认 AI 工作区父目录，并在其下准备包含 main.py 的 ComfyUI。已有服务可能使用不同目录，请先核对。'
   if (presentRecommended.value < recommendedModels.value.length) return '打开准备向导，按来源、大小与精确路径补齐或核对推荐组合；已有其他底模仍可按原配置使用。'
   if (value.comfy.connection !== 'online') return '用现有环境或便携包的启动入口手动启动 ComfyUI，核对服务地址后重新检查。'

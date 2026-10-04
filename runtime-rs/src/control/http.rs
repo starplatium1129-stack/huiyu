@@ -13,6 +13,7 @@ pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
     Router::new()
         .route("/api/status", get(status))
         .route("/api/local-setup", get(local_setup))
+        .route("/api/local-setup/verify/{model}", post(verify_setup_model))
         .route("/api/share-link", get(share))
         .route("/api/logs", get(logs))
         .route("/api/diagnostics", get(diagnostics))
@@ -30,6 +31,12 @@ pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
 }
 async fn local_setup(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {
     Ok(Json(s.local_setup().await?))
+}
+async fn verify_setup_model(
+    Extension(s): Extension<Arc<ControlService>>,
+    Path(model): Path<String>,
+) -> Result<Response> {
+    s.verify_setup_model(model)
 }
 async fn local(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,

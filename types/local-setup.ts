@@ -40,3 +40,20 @@ export interface LocalSetupResponse {
     ramBytes: number | null
   }
 }
+
+export interface LocalSetupVerificationProgress {
+  type: 'progress'
+  modelId: string
+  bytesRead: number
+  expectedBytes: number
+}
+export interface LocalSetupVerificationResult {
+  type: 'result'
+  modelId: string
+  path: string
+  state: 'sha256-match' | 'hash-mismatch' | 'size-mismatch' | 'missing' | 'changed' | 'unknown'
+  bytes: number | null
+  sha256: string | null
+  checkedAt: number
+  message: string
+}

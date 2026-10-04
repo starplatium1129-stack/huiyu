@@ -1,4 +1,5 @@
-import { apiClient, type ApiClient, type ApiResponseObject } from './client.ts'
+import { apiClient, type ApiClient, type ApiResponseObject, type FetchImplementation } from './client.ts'
+import { verifyLocalSetupModel, type VerificationOptions } from './localSetupVerification.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 import type { LocalSetupResponse } from '../../types/local-setup.ts'
 
@@ -39,8 +40,9 @@ function validSetup(value: ApiResponseObject): boolean {
       && typeof device.name === 'string' && typeof device.type === 'string' && bytes(device.vramBytes))
 }
 
-export function createLocalSetupApi(client: ApiClient = apiClient) {
+export function createLocalSetupApi(client: ApiClient = apiClient, fetch?: FetchImplementation) {
   return {
+    verifyModel: (modelId: string, options: VerificationOptions) => verifyLocalSetupModel(modelId, options, fetch),
     async getStatus(options: { signal?: AbortSignal } = {}): Promise<LocalSetupResponse> {
       if (!isLocalStudioHost()) throw new Error('首次配置检查仅限本机使用')
       return client.request<LocalSetupResponse>('/api/local-setup', {

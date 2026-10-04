@@ -3,6 +3,7 @@ mod http;
 mod probe;
 mod settings;
 mod setup;
+mod setup_verify;
 #[cfg(test)]
 mod tests;
 mod tunnel;
@@ -36,6 +37,7 @@ pub struct ControlService {
     saved: Arc<RwLock<Value>>,
     state: Mutex<ControlState>,
     probe_lock: tokio::sync::Mutex<()>,
+    setup_verify_lock: Arc<tokio::sync::Semaphore>,
     started: Instant,
     tunnel: tokio::sync::Mutex<Option<tunnel::TunnelRun>>,
     tunnel_action: tokio::sync::Mutex<()>,
@@ -98,6 +100,7 @@ impl ControlService {
             config_write: Arc::new(tokio::sync::Mutex::new(())),
             state: Mutex::default(),
             probe_lock: tokio::sync::Mutex::new(()),
+            setup_verify_lock: Arc::new(tokio::sync::Semaphore::new(1)),
             started: Instant::now(),
             tunnel: tokio::sync::Mutex::new(None),
             tunnel_action: tokio::sync::Mutex::new(()),

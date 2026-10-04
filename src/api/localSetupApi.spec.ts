@@ -18,7 +18,7 @@ function snapshot(): LocalSetupResponse {
 }
 function setup(body: object) {
   const fetch = vi.fn<FetchImplementation>(async () => new Response(JSON.stringify(body), { headers: { 'Content-Type': 'application/json' } }))
-  return { fetch, api: createLocalSetupApi(createApiClient(fetch)) }
+  return { fetch, api: createLocalSetupApi(createApiClient(fetch), fetch) }
 }
 beforeEach(() => { access.local = true })
 
@@ -36,6 +36,7 @@ describe('local setup read-only HTTP boundary', () => {
     access.local = false
     const { fetch, api } = setup(snapshot())
     await expect(api.getStatus()).rejects.toThrow('仅限本机')
+    await expect(api.verifyModel('qwen-vae', { signal: new AbortController().signal, onProgress: vi.fn() })).rejects.toThrow('仅限本机')
     expect(fetch).not.toHaveBeenCalled()
   })
   it('rejects absent recommended-model evidence and malformed device reports', async () => {
@@ -48,4 +49,26 @@ describe('local setup read-only HTTP boundary', () => {
     const malformed = snapshot(); malformed.hardware.devices.push({ name: 'device', type: 'cuda', vramBytes: -1 })
     await expect(setup(malformed).api.getStatus()).rejects.toMatchObject({ kind: 'invalid-response' })
   })
+  it('requires a complete, matching hash result and cancels the stream on abort', async () => {
+    const modelId = 'qwen-vae'
+    const terminal = { type: 'result', modelId, path: 'D:\\AI\\ComfyUI\\models\\vae\\qwen_image_vae.safetensors', state: 'sha256-match', bytes: 10, sha256: 'b'.repeat(64), checkedAt: 1, message: 'verified bytes only' }
+    const progress = { type: 'progress', modelId, bytesRead: 5, expectedBytes: 10 }
+    const fetch = vi.fn<FetchImplementation>(async () => new Response(JSON.stringify(progress) + '\n' + JSON.stringify(terminal) + '\n', { headers: { 'content-type': 'application/x-ndjson' } }))
+    const api = createLocalSetupApi(createApiClient(fetch), fetch)
+    const onProgress = vi.fn()
+    expect(await api.verifyModel(modelId, { signal: new AbortController().signal, onProgress })).toEqual(terminal)
+    expect(onProgress).toHaveBeenCalledWith(progress)
+    fetch.mockResolvedValueOnce(new Response(JSON.stringify(progress) + '\n', { headers: { 'content-type': 'application/x-ndjson' } }))
+    await expect(api.verifyModel(modelId, { signal: new AbortController().signal, onProgress })).rejects.toThrow('意外中断')
+    fetch.mockResolvedValueOnce(new Response(JSON.stringify({ ...terminal, modelId: 'other' }), { headers: { 'content-type': 'application/x-ndjson' } }))
+    await expect(api.verifyModel(modelId, { signal: new AbortController().signal, onProgress })).rejects.toThrow('不匹配')
+    const cancel = vi.fn()
+    fetch.mockResolvedValueOnce(new Response(new ReadableStream({ cancel }), { headers: { 'content-type': 'application/x-ndjson' } }))
+    const controller = new AbortController()
+    const pending = api.verifyModel(modelId, { signal: controller.signal, onProgress })
+    await Promise.resolve(); controller.abort()
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+    expect(cancel).toHaveBeenCalled()
+  })
+
 })
