@@ -12341,14 +12341,14 @@
     "type": "popular",
     "icon": "🪭",
     "visual_dna": {
-      "hair": "披散的墨黑色超长发，不设低髻或发簪",
-      "hair_color": "披散的墨黑色超长发，不设低髻或发簪",
-      "eyes": "浅色眼眸（不指定未经核实的精确色值）",
-      "hairstyle": "披散的墨黑色超长发，不设低髻或发簪",
-      "uniform": "白绿主色改良中式长衣、黑色腰带及工业护具；不配折扇",
+      "hair": "披散的墨黑渐青绿色超长发，脸侧有红色挑染",
+      "hair_color": "披散的墨黑渐青绿色超长发，脸侧有红色挑染",
+      "eyes": "绿色眼眸",
+      "hairstyle": "披散的墨黑渐青绿色超长发，脸侧有红色挑染",
+      "uniform": "白绿中式无袖上装、黑白分离袖、黑色手套与腰带、绿色宽松长裤",
       "expression": "认真负责、沉稳",
       "style": "明日方舟：终末地官方形象为基础",
-      "signature": "麒麟分叉角、尖耳与长尾，白绿主色的改良中式衣装"
+      "signature": "墨黑渐青绿长发、脸侧红色挑染、绿眼、分叉红色龙角、尖耳与长龙尾"
     },
     "personality": [
       "认真负责",
@@ -12362,7 +12362,7 @@
       "faction": "武陵科学发展区"
     },
     "tags": [
-      "麒麟分叉角、尖耳与长尾，白绿主色的改良中式衣装"
+      "墨黑渐青绿长发、脸侧红色挑染、绿眼、分叉红色龙角、尖耳与长龙尾"
     ],
     "bg_story": "庄方宜是武陵科学发展区管代、息壤新材项目负责天师，经宏科院推荐与终末地合作开展裂隙研究。种族为麒麟。年龄未公开；日常场景与非默认衣装为创作设定。",
     "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
@@ -12371,11 +12371,17 @@
       "1girl",
       "solo",
       "black_hair",
+      "green_hair",
+      "multicolored_hair",
+      "gradient_hair",
+      "red_streaks",
       "very_long_hair",
-      "horns",
+      "green_eyes",
+      "eastern_dragon_horns",
+      "red_horns",
       "pointy_ears",
-      "tail",
-      "arknights_endfield"
+      "eastern_dragon_tail",
+      "arknights:_endfield"
     ],
     "portrait": {
       "image": "../assets/characters/portrait-pending.svg",
@@ -12548,6 +12554,81 @@
     },
     "speech": "风向变了，小心前方。",
     "accent_color": "#10b981",
+    "bg_color": "#0f172a"
+  },
+  {
+    "id": "shu_arknights",
+    "name": "黍",
+    "alias": [
+      "Shu",
+      "黍",
+      "黍姐",
+      "シュウ",
+      "Shu Arknights"
+    ],
+    "type": "popular",
+    "icon": "黍",
+    "visual_dna": {
+      "hair": "银灰色超长发，金色挑染，发梢渐变为钴蓝色",
+      "hair_color": "银灰 / 金色 / 钴蓝渐变",
+      "eyes": "青碧色虹膜与橙色瞳芯",
+      "hairstyle": "披散超长发，脸侧垂发与枝叶发簪",
+      "uniform": "白色露肩外套、蓝色衬里与金色绳扣，灰白抹胸上装，赭色纹样白长裤，黑靴与几何方块项链",
+      "expression": "温和从容，关照他人的浅笑",
+      "style": "明日方舟原作农业天师形象",
+      "signature": "白金分叉龙角、长尖耳、金色手部、浅色鳞片与金蓝边缘的龙尾"
+    },
+    "personality": [
+      "温和细心",
+      "从容务实",
+      "乐于授业",
+      "珍惜粮食"
+    ],
+    "likes": [
+      "农耕研究",
+      "烹饪",
+      "照料亲友"
+    ],
+    "identity": {
+      "role": "炎国农业天师 / 岁兽代理人",
+      "age": "长生成年角色，官方未公开数字年龄",
+      "occupation": "天师府授业天师 / 重装干员",
+      "faction": "炎国 / 罗德岛访客"
+    },
+    "tags": [
+      "农业天师",
+      "大荒城",
+      "岁兽代理人",
+      "农耕",
+      "烹饪"
+    ],
+    "bg_story": "黍是炎国农业天师、天师府授业天师，曾在大荒城从事多年农业研究。她以访客身份暂驻罗德岛，关照亲友，也乐于传授农耕知识。具体数字年龄未公开；非默认衣装与新增日常场景为创作设定。",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "traits": [
+      "shu_(arknights)",
+      "1girl",
+      "solo",
+      "very_long_hair",
+      "grey_hair",
+      "multicolored_hair",
+      "gradient_hair",
+      "blonde_hair",
+      "blue_hair",
+      "streaked_hair",
+      "aqua_eyes",
+      "orange_pupils",
+      "eastern_dragon_horns",
+      "multicolored_horns",
+      "pointy_ears",
+      "dragon_tail",
+      "colored_extremities"
+    ],
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "黍立绘待补（占位图）"
+    },
+    "speech": "先歇一会儿，饭还热着。（创作台词）",
+    "accent_color": "#A89D45",
     "bg_color": "#0f172a"
   }
 ]

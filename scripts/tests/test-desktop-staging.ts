@@ -415,7 +415,13 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
       events.push('unlock');
       return result;
     },
-    runCommand: (command: any, args: any) => {
+    runCommand: (command: any, args: any, options: any) => {
+      if (args[0] === '-e') {
+        assert.equal(options.env.AICS_DATA_ROOT, 'fixture-root');
+        assert.equal(options.env.AICS_APP_ROOT, 'fixture-root');
+        events.push('refresh-data');
+        return 0;
+      }
       events.push(`${command}:${args.join(' ')}`);
       return 0;
     },
@@ -430,6 +436,7 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
   assert.deepEqual(events, [
     'lock',
     'environment',
+    'refresh-data',
     'capture-source',
     'capture-sdk',
     'npm:run build',

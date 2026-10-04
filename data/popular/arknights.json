@@ -2947,8 +2947,6 @@
           "tokens": [
             "black_shirt",
             "high_collar",
-            "neck_guard",
-            "dark_mantle",
             "boots",
             "bow_(weapon)"
           ]
@@ -2976,9 +2974,9 @@
           "tokens": [
             "oversized_sweater",
             "knit_sweater",
+            "green_sweater",
             "shorts",
-            "slippers",
-            "casual_clothes"
+            "slippers"
           ]
         },
         {
@@ -2988,11 +2986,10 @@
           "name": "极北暖泉湿浴巾",
           "prose": "a damp linen bath towel wrapped around her torso, translucent from hot spring water, droplets glistening on skin",
           "tokens": [
-            "bath_towel",
-            "towel_wrap",
+            "towel",
             "wet_clothes",
             "translucent",
-            "wet_skin",
+            "wet",
             "bare_shoulders"
           ]
         },
@@ -3004,16 +3001,154 @@
           "prose": "completely naked, full nudity, bare skin, natural supple female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
           "tokens": [
             "nude",
-            "completely_naked",
             "uncensored",
             "breasts",
-            "pink_nipples",
+            "nipples",
             "navel",
             "bare_shoulders",
             "collarbone",
             "bare_legs",
-            "bare_feet"
+            "barefoot"
           ]
+        }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ]
+    },
+    {
+      "adultEligibility": "adult",
+      "aliases": [
+        "shu",
+        "shu arknights",
+        "黍",
+        "黍姐",
+        "シュウ"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "泰拉科幻",
+        "world": "泰拉 / 炎国 / 大荒城",
+        "formNotes": "银灰超长发、金色挑染与钴蓝发梢，青碧眼与橙色瞳芯、白金分叉龙角、长尖耳、金色手部、浅色龙尾。默认衣装依据原作立绘，其余衣装与六个日常场景为创作设定。",
+        "research": "2026-10-04 核对游戏档案与原作初始立绘。官方未公开数字年龄；岁兽代理人的长生成年角色设定，不虚构具体年龄。",
+        "sources": [
+          "https://ak.hypergryph.com/news/2024011458.html",
+          "https://prts.wiki/w/%E9%BB%8D",
+          "https://prts.wiki/w/%E6%96%87%E4%BB%B6:%E7%AB%8B%E7%BB%98_%E9%BB%8D_1.png"
+        ]
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "mika_pikazo"
+      ],
+      "displayName": "黍",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "shu (arknights)",
+        "shu_(arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "shu_arknights",
+      "identityProse": "Shu from Arknights, an adult female agricultural Tianshi of Yan. She has very long silver-gray hair with golden streaks and deep cobalt-blue ends, turquoise eyes with amber-orange pupils, branched ivory-and-gold dragon horns, long pointed ears, golden-yellow hands, and a pale scaled dragon tail edged with gold and blue.",
+      "identityTokens": [
+        "shu_(arknights)",
+        "1girl",
+        "solo",
+        "very_long_hair",
+        "grey_hair",
+        "multicolored_hair",
+        "gradient_hair",
+        "blonde_hair",
+        "blue_hair",
+        "streaked_hair",
+        "aqua_eyes",
+        "orange_pupils",
+        "eastern_dragon_horns",
+        "multicolored_horns",
+        "pointy_ears",
+        "dragon_tail",
+        "colored_extremities"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Shu",
+      "outfits": [
+        {
+          "id": "standard",
+          "name": "大荒农业天师装",
+          "default": true,
+          "isDefault": true,
+          "tokens": [
+            "off_shoulder",
+            "open_jacket",
+            "white_jacket",
+            "long_sleeves",
+            "strapless_shirt",
+            "white_pants",
+            "black_boots",
+            "tassel_earrings",
+            "bead_bracelet",
+            "necklace"
+          ],
+          "prose": "her original white jacket with blue lining and gold fastenings, worn off the shoulders over a gray-and-white strapless top, wide white trousers with ocher-patterned hems, black boots, long tassel earrings, a geometric block necklace and bead bracelets"
+        },
+        {
+          "id": "field_work",
+          "name": "田间便装（创作）",
+          "default": false,
+          "isDefault": false,
+          "tokens": [
+            "linen_shirt",
+            "green_shirt",
+            "long_sleeves",
+            "rolled_up_sleeves",
+            "white_pants",
+            "belt",
+            "boots"
+          ],
+          "prose": "an opaque sage-green linen shirt with sleeves rolled to the forearms, cream ankle-length trousers, a woven brown belt and practical dark work boots"
+        },
+        {
+          "id": "rhodes_kitchen_apron",
+          "name": "罗德岛厨房围裙（创作）",
+          "default": false,
+          "isDefault": false,
+          "tokens": [
+            "white_shirt",
+            "long_sleeves",
+            "rolled_up_sleeves",
+            "green_apron",
+            "apron",
+            "black_pants",
+            "shoes"
+          ],
+          "prose": "a white long-sleeved shirt with the cuffs rolled neatly back, a sage-green bib apron tied at the waist over dark trousers, and closed flat shoes"
+        },
+        {
+          "id": "evening_hanfu",
+          "name": "青黛交领常服（创作）",
+          "default": false,
+          "isDefault": false,
+          "tokens": [
+            "hanfu",
+            "wide_sleeves",
+            "long_skirt",
+            "blue_skirt",
+            "sash",
+            "flat_shoes"
+          ],
+          "prose": "an opaque ivory cross-collar hanfu blouse with wide sleeves, a floor-length deep-teal skirt, a narrow gold sash and flat cloth shoes"
         }
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",

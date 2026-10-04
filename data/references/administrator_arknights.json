@@ -12,7 +12,7 @@
       "black_hair",
       "long_hair",
       "gradient_hair",
-      "arknights_endfield"
+      "arknights:_endfield"
     ],
     "outfits": [
       {
@@ -26,7 +26,7 @@
           "yellow_trim",
           "white_shirt",
           "high_collar",
-          "visor",
+          "blindfold_mask",
           "black_pants",
           "boots",
           "techwear"
@@ -40,7 +40,6 @@
         "prose": "a sleek black and charcoal form-fitting tactical compression bodysuit with gold tech lines and fingerless combat gloves",
         "tokens": [
           "bodysuit",
-          "compression_suit",
           "tight_clothes",
           "black_bodysuit",
           "fingerless_gloves",
@@ -57,10 +56,10 @@
         "tokens": [
           "white_tunic",
           "sleeveless_tunic",
-          "loose_collar",
+          "loose_clothes",
           "collarbone",
           "bare_legs",
-          "bare_feet"
+          "barefoot"
         ]
       },
       {
@@ -72,7 +71,6 @@
         "tokens": [
           "nightgown",
           "slip_dress",
-          "spaghetti_straps",
           "low_neckline",
           "bare_shoulders",
           "cleavage",
@@ -87,15 +85,14 @@
         "prose": "completely naked, full nudity, bare skin, athletic toned female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
         "tokens": [
           "nude",
-          "completely_naked",
           "uncensored",
           "breasts",
-          "pink_nipples",
+          "nipples",
           "navel",
           "bare_shoulders",
           "collarbone",
           "bare_legs",
-          "bare_feet"
+          "barefoot"
         ]
       }
     ]

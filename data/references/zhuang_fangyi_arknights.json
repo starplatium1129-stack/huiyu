@@ -4,17 +4,23 @@
     "displayName": "庄方宜",
     "originalName": "Zhuang Fangyi",
     "source": "Arknights: Endfield",
-    "identityProse": "Zhuang Fangyi from Arknights: Endfield, a Qilin researcher and representative of the Wuling Scientific Development Area, with very long loose black hair, branching dark red horns, pointed ears and a long tail.",
+    "identityProse": "Zhuang Fangyi from Arknights: Endfield, a Qilin researcher and representative of the Wuling Scientific Development Area, with very long loose black hair fading into teal-green lengths, red streaks framing her face, green eyes, branching dark red eastern-dragon horns, pointed ears and a long eastern-dragon tail.",
     "identityTokens": [
       "zhuang_fangyi_(arknights)",
       "1girl",
       "solo",
       "black_hair",
+      "green_hair",
+      "multicolored_hair",
+      "gradient_hair",
+      "red_streaks",
       "very_long_hair",
-      "horns",
+      "green_eyes",
+      "eastern_dragon_horns",
+      "red_horns",
       "pointy_ears",
-      "tail",
-      "arknights_endfield"
+      "eastern_dragon_tail",
+      "arknights:_endfield"
     ],
     "outfits": [
       {
@@ -22,14 +28,15 @@
         "name": "武陵白绿中式衣装",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "her white-and-green Chinese-inspired long outfit, black waist belt and industrial protective accessories",
+        "prose": "her white-and-green Chinese-inspired sleeveless top, detached black-and-white sleeves, black gloves, black waist belt and flowing green wide-legged trousers",
         "tokens": [
           "chinese_clothes",
-          "white_clothes",
-          "green_clothes",
-          "long_coat",
+          "detached_sleeves",
+          "white_sleeves",
+          "black_sleeves",
+          "black_gloves",
+          "green_pants",
           "belt",
-          "protective_gear",
           "boots"
         ]
       },
@@ -40,7 +47,6 @@
         "isNsfw": false,
         "prose": "an elegant traditional scholar robe in dark ink and celadon silk with wide flowing sleeves, a subtle embroidered sash and delicate cloud patterns",
         "tokens": [
-          "traditional_clothes",
           "hanfu",
           "robe",
           "wide_sleeves",
@@ -56,7 +62,6 @@
         "isNsfw": false,
         "prose": "a rugged dust-resistant travel mantle with tactical cargo trousers, utility belt and heavy desert combat boots",
         "tokens": [
-          "mantle",
           "cape",
           "hood",
           "cargo_pants",
@@ -72,10 +77,10 @@
         "isNsfw": true,
         "prose": "a sheer translucent oriental silk night robe loosely draped over bare shoulders and delicate undergarments",
         "tokens": [
-          "sheer_robe",
+          "robe",
+          "see-through_clothes",
           "nightgown",
           "translucent",
-          "see_through",
           "silk",
           "bare_shoulders",
           "collarbone"
@@ -88,12 +93,11 @@
         "isNsfw": true,
         "prose": "a wet white bath towel wrapped snugly around her chest and hips, clinging translucent against damp skin",
         "tokens": [
-          "bath_towel",
-          "towel_wrap",
+          "towel",
           "wet_clothes",
           "translucent",
           "bare_shoulders",
-          "wet_skin"
+          "wet"
         ]
       },
       {
@@ -104,15 +108,14 @@
         "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
         "tokens": [
           "nude",
-          "completely_naked",
           "uncensored",
           "breasts",
-          "pink_nipples",
+          "nipples",
           "navel",
           "bare_shoulders",
           "collarbone",
           "bare_legs",
-          "bare_feet"
+          "barefoot"
         ]
       }
     ]
@@ -121,14 +124,14 @@
     "characterId": "zhuang_fangyi_arknights",
     "displayName": "庄方宜",
     "source": "Arknights: Endfield",
-    "identityProse": "Zhuang Fangyi from Arknights: Endfield, a Qilin researcher and representative of the Wuling Scientific Development Area, with very long loose black hair, branching dark red horns, pointed ears and a long tail.",
+    "identityProse": "Zhuang Fangyi from Arknights: Endfield, a Qilin researcher and representative of the Wuling Scientific Development Area, with very long loose black hair fading into teal-green lengths, red streaks framing her face, green eyes, branching dark red eastern-dragon horns, pointed ears and a long eastern-dragon tail.",
     "outfits": [
       {
         "outfitId": "standard",
         "outfitName": "武陵白绿中式衣装",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "her white-and-green Chinese-inspired long outfit, black waist belt and industrial protective accessories",
+        "prose": "her white-and-green Chinese-inspired sleeveless top, detached black-and-white sleeves, black gloves, black waist belt and flowing green wide-legged trousers",
         "references": [
           {
             "id": "ref_01_face_closeup",

@@ -523,6 +523,8 @@ Windows Native Live2D 的 `LIVE2D_CUBISM_SDK_DIR` 优先使用 runner 进程环�
 
 ### 011 发行输入绑定（2026-09-21）
 
+桌面 `build:tauri` / `package:tauri` 在锁内先从工作区分片刷新数据聚合，再捕获源码身份及构建两份 UI，确保新角色和蓝图进入界面读取的总表；该写入准备不改变测试/只读检查的 `onlyIfMissing` 守卫行为。已存在的桌面个人内容目录不会被安装覆盖，内容交付须另外完成备份差分同步与实际服务读取核对。
+
 完整桌面构建在锁内捕获受 Git 管理及未忽略源码（排除 docs、plans 和一般 Markdown；原生许可目录中的 Markdown 仍纳入），复用 delivery-identity 的路径/字节哈希。`runtime/delivery-evidence/desktop-build-binding.json` 绑定 dist、桌面内嵌 web、暂存 Rust gateway/原生 DLL/清单及桌面 EXE，打包构建另绑定 NSIS；`runtime/rust-evidence/build.json` 绑定后端源码和 release EXE。Cubism 的 Core 头文件、Framework 源码与 Core 静态库也以实际字节摘要进入桌面构建环境和回执；构建前后及复用时核对，保留旧时间戳的同路径替换也会使候选失效。直接运行 Cargo 仍使用文件变化监听，常规桌面构建请走既有入口。仅原生构建不把旧 NSIS 纳入新身份。
 
 公开发布的 signed、manual 和 complete-manual 模式均要求暂存发行材料就绪：绑定清单和完整材料索引、Rust EXE 与 DLL 字节一致，`releaseReady=true`、pending 为空，且公开重分发审批与链接许可闭包明确为 true。缺材料、字节漂移或未批准均在发行封装/最终签名/上传前拒绝；独立 `publishRelease` 入口也再次核验。普通本地候选构建仍允许 `releaseReady=false`，不能据此公开发布。

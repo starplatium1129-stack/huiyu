@@ -64,6 +64,14 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
   return lock({ workspaceRoot }, async () => {
     (options.checkEnvironment || assertDesktopBuildEnvironment)(workspaceRoot);
     const buildBinding = options.binding || binding;
+    const run = options.runCommand || runCommand;
+    if (mode === 'build') {
+      // Packaging must refresh stale ignored products before either UI captures DATA_VERSION.
+      const dataStatus = run(process.execPath, ['-e', 'require(process.argv[1]).ensureAll()', path.join(workspaceRoot, 'scripts/lib/ensure-data-build.js')], {
+        cwd: workspaceRoot, env: { ...process.env, AICS_DATA_ROOT: workspaceRoot, AICS_APP_ROOT: workspaceRoot },
+      });
+      if (dataStatus !== 0) return dataStatus;
+    }
     const source = mode === 'build' ? buildBinding.sourceIdentity(workspaceRoot) : null;
     const env = { ...(options.env || tauriEnvironment(workspaceRoot)) };
     const sdk = mode === 'build' ? buildBinding.sdkIdentity(workspaceRoot, env) : null;
@@ -71,7 +79,6 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
     const npm = options.npmCommand
       ? { command: options.npmCommand, args: options.npmArgs || [] }
       : resolveNpmInvocation();
-    const run = options.runCommand || runCommand;
     const status = run(npm.command, [...npm.args, 'run', 'build'], { cwd: workspaceRoot });
     if (status !== 0) return status;
 

@@ -13,7 +13,7 @@
       "long_hair",
       "wolf_ears",
       "wolf_tail",
-      "arknights_endfield"
+      "arknights:_endfield"
     ],
     "outfits": [
       {
@@ -23,12 +23,11 @@
         "isNsfw": false,
         "prose": "her red hooded cloak, white dress with black waist protection, black boots and a sheathed sword",
         "tokens": [
-          "red_cape",
+          "red_cloak",
           "hood",
           "white_dress",
-          "waist_guard",
           "black_boots",
-          "sheathed_sword"
+          "sheath"
         ]
       },
       {
@@ -43,8 +42,7 @@
           "crop_top",
           "shorts",
           "gloves",
-          "boots",
-          "grease_smudge"
+          "boots"
         ]
       },
       {
@@ -55,10 +53,9 @@
         "prose": "an oversized yellow-and-black hooded pioneer sweatshirt with casual denim shorts and chunky sneakers",
         "tokens": [
           "hoodie",
-          "oversized_hoodie",
+          "oversized_clothes",
           "shorts",
-          "sneakers",
-          "casual_clothes"
+          "sneakers"
         ]
       },
       {
@@ -71,7 +68,7 @@
           "camisole",
           "wet_clothes",
           "translucent",
-          "see_through",
+          "see-through_clothes",
           "bare_shoulders",
           "collarbone"
         ]
@@ -84,15 +81,14 @@
         "prose": "completely naked, full nudity, bare skin, cute youthful female body, perky breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
         "tokens": [
           "nude",
-          "completely_naked",
           "uncensored",
           "breasts",
-          "pink_nipples",
+          "nipples",
           "navel",
           "bare_shoulders",
           "collarbone",
           "bare_legs",
-          "bare_feet"
+          "barefoot"
         ]
       }
     ]
