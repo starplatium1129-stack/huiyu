@@ -1,43 +1,43 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_pipeline_welding",
-  "revision": 1,
-  "sortOrder": 762,
+  "revision": 2,
+  "sortOrder": 758,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "rossy_arknights_pipeline_welding",
     "characterId": "rossy_arknights",
-    "title": "洛茜 · 午后桌边拼图",
-    "description": "洛茜穿黄黑卫衣坐在休息室里，拿起一块拼图对照桌上的空位。狼耳微微前倾，浅金长发从肩边垂下，窗光照在尚未拼完的风景图上。",
-    "category": "生活日常",
-    "location": "休息室小桌旁",
-    "action": "拿起一块拼图，低头寻找桌面图案里的对应空位",
-    "mood": "专注轻松",
-    "lighting": "休息室下午窗光",
+    "title": "洛茜 · 拼图拼到一半偷看你",
+    "description": "家里一起拼图，洛茜穿莓红卫衣坐在矮桌旁，捏着最后一块边角片却先抬脸看你。她笑得有点狡黠，像是等你夸她找到关键那块；未完成的拼图和整齐的小零片盒摊在桌上。",
+    "category": "相伴日常",
+    "location": "家中客厅矮桌",
+    "action": "手拿拼图片停在桌面上方，抬头带笑看你",
+    "mood": "俏皮的小得意与默契",
+    "lighting": "客厅窗边柔光",
     "timeOfDay": "下午",
-    "camera": "cowboy shot, from side",
+    "camera": "medium shot, eye level",
     "outfitId": "pioneer_hoodie",
-    "recommendedSize": "1152x1536",
+    "recommendedSize": "1536x1152",
     "sceneTags": [
-      "indoors",
-      "table",
-      "puzzle",
+      "living_room",
+      "jigsaw_puzzle",
+      "puzzle_piece",
       "sitting",
-      "looking_at_object",
-      "cowboy_shot",
-      "from_side"
+      "looking_at_viewer",
+      "smile",
+      "upper_body"
     ],
     "promptTokens": [
-      "indoors",
-      "table",
-      "puzzle",
+      "living_room",
+      "jigsaw_puzzle",
+      "puzzle_piece",
       "sitting",
-      "looking_at_object",
-      "cowboy_shot",
-      "from_side"
+      "looking_at_viewer",
+      "smile",
+      "upper_body"
     ],
-    "promptProse": "An unfinished landscape puzzle covers the lounge table in front of Rossi. She holds one piece between her fingers and compares it with a gap near the center. Her wolf ears tilt forward over long light-blonde hair, and afternoon window light reaches the table beside her yellow-and-black hoodie.",
+    "promptProse": "The missing corner piece is pinched neatly between Rossi's fingertips, but she glances up at the viewer before placing it. A mischievous smile asks for a little praise. The unfinished landscape puzzle and sorted pieces occupy the low table between you, with clear room on the near side for your hands. Her striped shirt shows beneath the red hoodie as soft window light warms the shared afternoon.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -93,6 +93,8 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "daily"
+    ]
   }
 }

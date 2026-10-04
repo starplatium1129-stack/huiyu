@@ -1,47 +1,47 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_aurora_cliff_stand",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 699,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "typhon_arknights_aurora_cliff_stand",
     "characterId": "typhon_arknights",
-    "title": "提丰 · 门廊热饮看极光",
-    "description": "夜里提丰坐在木屋门廊的小凳上，披着白色防寒披风，捧着保温杯看极光。身旁的小提灯照亮台阶，浅紫发丝从领口边滑下来。",
-    "category": "萨米日常",
-    "location": "木屋门廊",
-    "action": "坐在门廊小凳上双手捧杯，抬头看极光",
-    "mood": "宁静满足",
-    "lighting": "门廊提灯暖光与夜空极光",
-    "timeOfDay": "夜晚",
-    "camera": "full body, eye level",
-    "outfitId": "tundra_tracker_mantle",
+    "title": "提丰 · 屋顶上一起等第一颗星",
+    "description": "晚饭后上屋顶透气，提丰穿原作猎装靠着矮栏杆。她抬手指向刚出现的星，随后回头确认你有没有看到；栏边两杯热可可并排放着，城市的暖窗光从下面亮起来。",
+    "category": "相伴日常",
+    "location": "住宅屋顶观景处",
+    "action": "一手指向夜空初星，回头看同行的你",
+    "mood": "难得放松的惊喜与默契",
+    "lighting": "蓝调天光和屋顶暖灯",
+    "timeOfDay": "蓝调时刻",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "outdoors",
-      "porch",
-      "aurora",
-      "sky",
-      "lantern",
+      "rooftop",
+      "railing",
+      "pointing_up",
+      "looking_back",
+      "looking_at_viewer",
+      "light_smile",
       "cup",
-      "holding_cup",
-      "sitting",
-      "full_body"
+      "city_lights",
+      "cowboy_shot"
     ],
     "promptTokens": [
-      "outdoors",
-      "porch",
-      "aurora",
-      "sky",
-      "lantern",
+      "rooftop",
+      "railing",
+      "pointing_up",
+      "looking_back",
+      "looking_at_viewer",
+      "light_smile",
       "cup",
-      "holding_cup",
-      "sitting",
-      "full_body"
+      "city_lights",
+      "cowboy_shot"
     ],
-    "promptProse": "From a low stool on the cabin porch, Typhon watches green aurora bands cross the night sky while holding a travel mug in both hands. Her white cape is wrapped close around her shoulders. A small lantern illuminates the wooden steps and the lavender strands slipping over her collar.",
+    "promptProse": "The first star has appeared above the apartment roofs. Typhon points it out with one raised hand, then turns back toward the viewer to see whether you noticed it too. Two cocoa cups sit side by side on the broad railing. A small roof lamp lights her profile and metal collar clasp, with blue twilight overhead and warm windows opening across the town below.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -97,6 +97,9 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "iconic",
+      "daily"
+    ]
   }
 }

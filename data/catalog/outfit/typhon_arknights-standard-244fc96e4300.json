@@ -1,24 +1,37 @@
 {
   "kind": "outfit",
   "id": "typhon_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 397,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "characterId": "typhon_arknights",
     "outfit": {
       "default": true,
       "id": "standard",
       "isDefault": true,
-      "name": "萨米猎人装",
-      "prose": "her dark hunter top, light standing collar and neck protection, dark shoulder mantle, practical boots and large hunting bow",
+      "name": "萨米猎人原作衣装",
+      "prose": "her original gray outer coat draped below the shoulders with pale lining and broad cuffs, a black hunter leotard with crossing chest straps and a small upper-chest cutout beneath the white-and-silver separate neck collar, layered utility belts and pouches, asymmetrical black legwear with one thigh-high stocking, white thigh straps, and broad strapped dark boots",
       "tokens": [
-        "black_shirt",
-        "high_collar",
-        "boots",
-        "bow_(weapon)"
-      ]
+        "grey_coat",
+        "off_shoulder",
+        "wide_sleeves",
+        "black_leotard",
+        "leotard",
+        "clothing_cutout",
+        "cross-laced_clothes",
+        "silver_collar",
+        "belt",
+        "pouch",
+        "asymmetrical_legwear",
+        "mismatched_legwear",
+        "black_thighhighs",
+        "single_thighhigh",
+        "thigh_strap",
+        "black_boots"
+      ],
+      "category": "官方衣装"
     }
   }
 }

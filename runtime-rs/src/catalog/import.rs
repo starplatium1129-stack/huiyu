@@ -55,6 +55,10 @@ impl Catalog {
             let incoming_unchanged = base
                 .as_ref()
                 .is_some_and(|(b, base_removed)| same(b, incoming) && *base_removed == removed);
+            let created_at = current
+                .as_ref()
+                .filter(|(r, _)| r.created_at.is_none())
+                .and(incoming.created_at.clone());
             if !equal && !incoming_unchanged {
                 if current.is_some() && !untouched {
                     return Err(ApiError::new(
@@ -76,7 +80,21 @@ impl Catalog {
                     data: Some(incoming.data.clone()),
                     patch: None,
                     sort_order: Some(incoming.sort_order),
+                    created_at,
                     remove: removed,
+                });
+            } else if created_at.is_some() && current.as_ref().is_some_and(|(_, removed)| !*removed)
+            {
+                let record = &current.as_ref().unwrap().0;
+                changes.push(Change {
+                    kind: record.kind.clone(),
+                    id: record.id.clone(),
+                    expected_revision: record.revision,
+                    data: Some(record.data.clone()),
+                    patch: None,
+                    sort_order: None,
+                    created_at,
+                    remove: false,
                 });
             }
             seeds.push((incoming.clone(), removed));

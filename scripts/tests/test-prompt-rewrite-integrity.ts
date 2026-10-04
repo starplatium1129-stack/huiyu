@@ -13,7 +13,7 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
  * - 角色归属一致性：角色 ID 与 prompt / caption 锚定 100% 匹配
  *
  * 用法：
- *   node scripts/tests/test-prompt-rewrite-integrity.js --delivery <path> [--baseline <commit>] [--targeted]
+ *   npm run wf -- check:rewrite --delivery <条目JSON/记录快照> [--baseline <commit> | --baseline-file <编写前快照>] [--character <id,...>] [--sfw] [--compiled-out <JSON>] [--targeted]
  *
  * --targeted：精确修复交付模式（2026-08-27 引入）。默认模式面向「批量全量重写」：
  *   单条保留率>85% 且 prose 相似度>80% 判为偷懒嫌疑；targeted 模式面向「审计驱动的
@@ -26,6 +26,8 @@ const path: typeof import('path') = require('path');
 const { execFileSync }: typeof import('child_process') = require('child_process');
 const test: typeof import('node:test') = require('node:test');
 const assert: typeof import('node:assert') = require('node:assert');
+const catalog: typeof import('../lib/catalog-snapshot') = require('../lib/catalog-snapshot');
+const { createHash }: typeof import('node:crypto') = require('node:crypto');
 
 test('prompt rewrite integrity tokenization and similarity heuristics', () => {
   const s1 = tokenize('1girl, solo, ayachi_nene, pink_ribbon, uniform');
@@ -57,6 +59,28 @@ test('cross-entry signature detection flags templated deliveries', () => {
   const clean = crossEntryAudit(diverse);
   assert.strictEqual(clean.errors.length, 0, 'diverse prose must pass');
   assert.strictEqual(clean.pairDupes.length, 0, 'diverse prose must have no pairwise dupes');
+});
+test('Git catalog baselines and exported record inputs preserve prompt IDs and prose', () => {
+  const base = fs.realpathSync.native(require('node:os').tmpdir());
+  const directory = fs.mkdtempSync(path.join(base,'huiyu-rewrite-'));
+  const record = {kind:'blueprint',id:'bp_fixture',revision:1,sortOrder:0,createdAt:null,updatedAt:null,
+    data:{id:'bp_fixture',characterId:'fixture',promptTokens:['reading'],promptProse:'The catalog baseline is authoritative.'}};
+  const name = `blueprint/bp_fixture-${createHash('sha256').update(record.id).digest('hex').slice(0,12)}.json`;
+  const git = (args:string[]) => execFileSync('git',args,{cwd:path.resolve(__dirname,'../..'),encoding:'utf8',stdio:['ignore','pipe','pipe']});
+  try {
+    fs.mkdirSync(path.join(directory,'data/catalog/blueprint'),{recursive:true});
+    fs.writeFileSync(path.join(directory,'data/catalog',name),JSON.stringify(record));
+    fs.writeFileSync(path.join(directory,'data/catalog/manifest.json'),JSON.stringify({version:1,files:[name]}));
+    const manifest=JSON.parse(git(['show','HEAD:data/catalog/manifest.json']));
+    const file=manifest.files.find((f:string)=>f.startsWith('blueprint/'));
+    const headRecord=JSON.parse(git(['show',`HEAD:data/catalog/${file}`]));
+    assert.equal(getBaselineData('HEAD',new Set([headRecord.id])).get(headRecord.id)?.prose,headRecord.data.promptProse);
+    assert.deepEqual(promptItems(readInput(path.join(directory,'data/catalog'))),[record.data]);
+    assert.deepEqual(promptItems([record]),[record.data]);
+  } finally {
+    assert.ok(path.resolve(directory).startsWith(base+path.sep));
+    fs.rmSync(directory,{recursive:true,force:true,maxRetries:2,retryDelay:50});
+  }
 });
 
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -157,8 +181,45 @@ function crossEntryAudit(deliveryMap: any) {
   return { errors, warnings, pairDupes, maxRatio, maxSignature: maxGroup ? maxGroup[0] : null };
 }
 
-function getBaselineData(baselineCommit: any) {
-  const git = (args: any) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+function promptItems(raw: any): any[] {
+  if (Array.isArray(raw)) return raw.every(r=>r?.kind && r?.data)
+    ? raw.filter(r=>['blueprint','scene'].includes(r.kind)).map(r=>r.data) : raw;
+  if (Array.isArray(raw?.records)) return raw.records.filter((r: any) => ['blueprint','scene'].includes(r.kind)).map((r: any) => r.data);
+  if (Array.isArray(raw?.blueprints)) return raw.blueprints;
+  if (raw && typeof raw === 'object') return Object.values(raw);
+  throw new Error('交付需要条目数组或内容快照');
+}
+function readInput(file: string): any {
+  if (fs.statSync(file).isDirectory()) {
+    const records = catalog.readDirectory(file);
+    if (!records) throw new Error(`缺少内容快照清单：${file}`);
+    return { version:1, records };
+  }
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
+}
+function baselineMap(items: any[]) {
+  return new Map(items.map(item => [item.id, {
+    tokens:item.promptTokens || item.nsfwTokens || String(item.prompt || '').split(',').map((t:string)=>t.trim()).filter(Boolean),
+    prose:item.promptProse || item.nsfwProse || item.animaCaption || '',
+    characterId:item.characterId, char:item.char,
+  }]));
+}
+function getBaselineData(baselineCommit: string, ids?: Set<string>, root = ROOT) {
+  const git = (args: string[]) => execFileSync('git', args, { cwd: root, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+  const manifestPath = `${baselineCommit}:data/catalog/manifest.json`;
+  let manifestText: string | undefined;
+  try { manifestText = git(['show', manifestPath]); } catch {
+    // Only pre-migration commits fall back to legacy shards. Invalid catalog data must fail.
+  }
+  if (manifestText !== undefined) {
+    const manifest = JSON.parse(manifestText);
+    if (manifest.version !== 1 || !Array.isArray(manifest.files)) throw new Error('基线内容快照清单无效');
+    const suffixes = ids && new Set([...ids].map(id => `-${createHash('sha256').update(id).digest('hex').slice(0,12)}.json`));
+    const records = manifest.files.filter((file: string) => /^(blueprint|scene)\//.test(file)
+      && (!suffixes || [...suffixes].some(suffix => file.endsWith(suffix))))
+      .map((file: string) => JSON.parse(git(['show',`${baselineCommit}:data/catalog/${file}`])));
+    return baselineMap(promptItems({ records }));
+  }
   const readList = (aggregate: any, directory: any, key?: any) => {
     let data;
     try { data = JSON.parse(git(['show', `${baselineCommit}:${aggregate}`])); }
@@ -181,69 +242,95 @@ function getBaselineData(baselineCommit: any) {
     const bpList = readList('data/scene-blueprints.json', 'data/blueprints', 'blueprints');
     const scList = readList('data/scenes.json', 'data/scenes');
 
-    const map = new Map();
-    bpList.forEach(bp => {
-      map.set(bp.id, {
-        id: bp.id,
-        type: 'popular',
-        tokens: bp.promptTokens || bp.nsfwTokens || [],
-        prose: bp.promptProse || bp.nsfwProse || '',
-        characterId: bp.characterId
-      });
-    });
-    scList.forEach(sc => {
-      map.set(sc.id, {
-        id: sc.id,
-        type: 'scene',
-        tokens: (sc.prompt || '').split(',').map((s: any) => s.trim()).filter(Boolean),
-        prose: sc.animaCaption || '',
-        char: sc.char
-      });
-    });
-    return map;
+    return baselineMap([...bpList,...scList]);
   } catch (err) {
     throw new Error(`基线读取失败，拒绝宣称改写验收通过: ${runtimeErrorMessage(err)}`);
   }
 }
 
-function main() {
-  const deliveryArgIdx = process.argv.indexOf('--delivery');
-  const deliveryPath = deliveryArgIdx >= 0 && process.argv[deliveryArgIdx + 1]
-    ? path.resolve(process.argv[deliveryArgIdx + 1])
-    : null;
+function compileDelivery(input: any, root: string, items: any[], out: string) {
+  const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
+  const persistence: typeof import('../../src/utils/promptBuilderPersistence.ts') = require('../../src/utils/promptBuilderPersistence.ts');
+  const recipes: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
+  const records = input.records?.some((r:any)=>r.kind==='character') ? input.records : catalog.read(root);
+  if (!records) throw new Error('编译需要包含人物和服装的内容快照');
+  const views = catalog.views(records);
+  const characters = popular.parsePopularCharacters(views.popular);
+  const profiles = persistence.parsePresetCatalog(JSON.parse(fs.readFileSync(path.join(root,'data/presets.json'),'utf8'))).modelProfiles;
+  const output = [];
+  for (const item of items) {
+    if (!item.characterId) throw new Error(`${item.id} 是工作室场景；此编译入口只处理热门角色蓝图`);
+    const blueprint = popular.parseSceneBlueprint(item);
+    const character = characters.find(c=>c.id===item.characterId);
+    const outfit = character?.outfits.find(o=>o.id===item.outfitId || (!item.outfitId && o.default));
+    if (!blueprint || !character || !outfit) throw new Error(`${item.id} 的人物或服装绑定无效`);
+    const decisions = popular.inferBlueprintDecisions(blueprint);
+    for (const engine of ['anima','krea2'] as const) {
+      const profile = profiles.find(p=>p.id===(engine==='anima'?'anima_miaomiao_v16':'krea2_turbo_fp8'));
+      if (!profile) throw new Error(`缺少 ${engine} 当前模型 profile`);
+      const result = popular.buildPopularPromptPlan({character,outfit,blueprint,engine,profile,
+        shot:decisions.shot,lighting:decisions.lighting,composition:decisions.composition,
+        adultEnabled:Boolean(blueprint.adult),
+        style:recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES,engine,blueprint,null,character,{adultEnabled:Boolean(blueprint.adult)})});
+      if (!result?.prompt) throw new Error(`${item.id} 未通过 ${engine} 编译资格`);
+      output.push({id:item.id,characterId:character.id,outfitId:outfit.id,engine,model:profile.model_id,
+        positive:result.prompt,negative:result.negative,size:blueprint.recommendedSize,decisions,
+        steps:profile.steps,cfg:profile.cfg,sampler:profile.sampler,scheduler:profile.scheduler,modelCalled:false});
+    }
+  }
+  fs.mkdirSync(path.dirname(out),{recursive:true});
+  fs.writeFileSync(out,JSON.stringify(output,null,2)+'\n');
+  console.log(`[结果] ${items.length} 条蓝图编译为 ${output.length} 份双引擎输入，模型调用 0；${out}`);
+}
 
-  const baselineArgIdx = process.argv.indexOf('--baseline');
-  const baselineCommit = baselineArgIdx >= 0 && process.argv[baselineArgIdx + 1]
-    ? process.argv[baselineArgIdx + 1]
-    : 'b1ccfc0';
+function main() {
+  const value = (flag: string) => {
+    const at = process.argv.indexOf(flag);
+    if (at < 0) return undefined;
+    const result = process.argv[at+1];
+    if (!result || result.startsWith('--')) throw new Error(`${flag} 缺少值`);
+    return result;
+  };
+  const root = path.resolve(value('--root') || ROOT);
+  const characters = new Set((value('--character') || '').split(',').filter(Boolean));
+  const ids = new Set((value('--ids') || '').split(',').filter(Boolean));
+  const baselineFile = value('--baseline-file');
+  if (baselineFile && value('--baseline')) throw new Error('--baseline 与 --baseline-file 不能同时使用');
+  const deliveryFile = value('--delivery');
+  const deliveryPath = deliveryFile ? path.resolve(deliveryFile) : null;
+  const baselineCommit = value('--baseline') || 'HEAD';
 
   const targeted = process.argv.includes('--targeted');
   console.log('==============================================================');
   console.log('[门禁] 批量提示词改写完整性复检（防偷懒）');
-  console.log(`[门禁] 基线: ${baselineCommit} | 交付: ${deliveryPath || '当前工作区数据层'} | 模式: ${targeted ? 'targeted 精确修复' : 'default 全量重写'}`);
+  console.log(`[门禁] 基线: ${baselineFile || baselineCommit} | 交付: ${deliveryPath || '当前项目快照'} | 模式: ${targeted ? 'targeted 精确修复' : 'default 全量重写'}`);
   console.log('==============================================================');
 
   let deliveryMap = new Map();
 
-  if (deliveryPath) {
-    const raw = require(deliveryPath);
-    const list = Array.isArray(raw) ? raw : (typeof raw === 'object' ? Object.values(raw) : []);
-    list.forEach(item => {
-      deliveryMap.set(item.id, item);
-    });
-  } else {
-    // 默认对当前仓库中修改的数据进行全量复查
-    const bpList = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/scene-blueprints.json'), 'utf8')).blueprints;
-    const scList = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/scenes.json'), 'utf8'));
-    bpList.forEach((bp: any) => deliveryMap.set(bp.id, bp));
-    scList.forEach((sc: any) => deliveryMap.set(sc.id, sc));
+  const sourceRows = !deliveryPath ? catalog.read(root) : null;
+  const input = deliveryPath ? readInput(deliveryPath) : sourceRows ? {records:sourceRows} : {
+    records: [
+      ...JSON.parse(fs.readFileSync(path.join(root,'data/scene-blueprints.json'),'utf8')).blueprints.map((data:any)=>({kind:'blueprint',data})),
+      ...JSON.parse(fs.readFileSync(path.join(root,'data/scenes.json'),'utf8')).map((data:any)=>({kind:'scene',data})),
+    ],
+  };
+  for (const item of promptItems(input)) {
+    if (characters.size && !characters.has(item.characterId || item.char)) continue;
+    if (ids.size && !ids.has(item.id)) continue;
+    if (process.argv.includes('--sfw') && (item.adult || item.mature || item.rating === 'R18')) continue;
+    if (typeof item.id !== 'string' || !item.id || deliveryMap.has(item.id)) throw new Error('交付条目缺少 ID 或 ID 重复');
+    deliveryMap.set(item.id,item);
   }
-
-  const baseline = getBaselineData(baselineCommit);
+  if (!deliveryMap.size) throw new Error('所选范围没有提示词条目');
+  for (const id of ids) if (!deliveryMap.has(id)) throw new Error(`交付缺少所选条目：${id}`);
+  for (const id of characters) if (![...deliveryMap.values()].some(item=>(item.characterId||item.char)===id)) throw new Error(`交付缺少所选角色：${id}`);
+  const baseline = baselineFile ? baselineMap(promptItems(readInput(path.resolve(baselineFile)))) : getBaselineData(baselineCommit,new Set(deliveryMap.keys()),root);
 
   let totalChecked = 0;
   let totalRetention = 0;
   let totalProseSim = 0;
+  let compared = 0;
   let errors = [];
 
   deliveryMap.forEach((delItem, id) => {
@@ -257,6 +344,8 @@ function main() {
     const newProseSet = tokenize(newProse);
 
     if (baseItem) {
+      compared++;
+      if (baseItem.characterId !== delItem.characterId || baseItem.char !== delItem.char) errors.push(`[归属改变] ${id}`);
       const oldTokensSet = tokenize(baseItem.tokens.join(' '));
       const oldProseSet = tokenize(baseItem.prose);
 
@@ -275,10 +364,11 @@ function main() {
     }
   });
 
-  const avgRetention = totalChecked ? totalRetention / totalChecked : 0;
-  const avgProseSim = totalChecked ? totalProseSim / totalChecked : 0;
+  const avgRetention = compared ? totalRetention / compared : 0;
+  const avgProseSim = compared ? totalProseSim / compared : 0;
 
   console.log(`\n[结果] 覆盖 ${totalChecked}/${deliveryMap.size}（skip 0，缺漏 0）`);
+  console.log(`[结果] 基线对照 ${compared} 条，新增无旧基线 ${totalChecked-compared} 条`);
   console.log(`[结果] 平均词条保留率 ${(avgRetention * 100).toFixed(1)}%（标准 ≤50%），平均 prose 相似度 ${avgProseSim.toFixed(2)}（标准 ≤0.60）`);
 
   // 跨条目模板检测（红线 7：无模板签名与全局雷同）
@@ -292,11 +382,12 @@ function main() {
     errors.slice(0, 10).forEach(e => console.error(e));
     process.exit(1);
   }
+  if (value('--compiled-out')) compileDelivery(input, root, [...deliveryMap.values()], path.resolve(value('--compiled-out')!));
 
   console.log(`\n✔ [通过] 交付内容全量覆盖、无模板复用、无偷懒追加、满足 AGENTS.md 防偷懒契约！`);
   process.exit(0);
 }
 
-if (require.main === module && process.argv.includes('--delivery')) {
+if (require.main === module && process.argv.some(arg => ['--check','--delivery','--baseline','--baseline-file','--character','--ids','--sfw','--root','--targeted','--compiled-out'].includes(arg))) {
   main();
 }

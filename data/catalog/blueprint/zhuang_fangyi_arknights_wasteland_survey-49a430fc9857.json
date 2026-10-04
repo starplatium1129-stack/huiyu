@@ -1,45 +1,45 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_wasteland_survey",
-  "revision": 1,
-  "sortOrder": 751,
+  "revision": 2,
+  "sortOrder": 747,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_wasteland_survey",
     "characterId": "zhuang_fangyi_arknights",
-    "title": "庄方宜 · 集市挑选水果",
-    "description": "回程经过集市，庄方宜停在水果摊前，拿起一只苹果仔细看看。另一只手提着布袋，旅行披风垂在身后，摊棚下整齐摆着水果篮。",
-    "category": "武陵日常",
-    "location": "街边水果摊",
-    "action": "左手提布袋，右手拿起苹果查看表皮",
-    "mood": "从容好奇",
-    "lighting": "摊棚下的下午漫射日光",
-    "timeOfDay": "下午",
+    "title": "庄方宜 · 买水果也要听你的口味",
+    "description": "周末一起买菜，庄方宜穿青橄榄短风衣和米白长裤，一手托着两只颜色不同的苹果，一手提着购物袋。她把苹果略微举向你，认真又带笑地等你挑喜欢的那一个。",
+    "category": "相伴日常",
+    "location": "街区水果市场",
+    "action": "托着红绿两只苹果给镜头选择，另一手提购物袋",
+    "mood": "认真记住你喜好的温柔",
+    "lighting": "市场遮棚下柔和日光",
+    "timeOfDay": "上午",
     "camera": "cowboy shot, eye level",
     "outfitId": "wasteland_traveler",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "market",
-      "fruit",
       "apple",
+      "green_apple",
       "shopping_bag",
-      "holding_bag",
+      "holding_fruit",
+      "looking_at_viewer",
+      "light_smile",
       "standing",
-      "looking_at_object",
       "cowboy_shot"
     ],
     "promptTokens": [
-      "market",
-      "fruit",
       "apple",
+      "green_apple",
       "shopping_bag",
-      "holding_bag",
+      "holding_fruit",
+      "looking_at_viewer",
+      "light_smile",
       "standing",
-      "looking_at_object",
       "cowboy_shot"
     ],
-    "promptProse": "On her way back through the market, Zhuang Fangyi lifts an apple from a fruit basket to inspect its skin. A cloth shopping bag hangs from her other hand, and her travel cape rests down her back. The awning shades neat rows of fruit while afternoon light reaches the edge of the stall.",
+    "promptProse": "Zhuang Fangyi balances a red apple and a green apple together on one open palm, bringing them closer to the viewer while her other hand holds the shopping bag. Her attentive smile invites you to choose your favorite. The teal scarf lies neatly against the olive jacket, and baskets of fruit recede under the market awning in gentle morning light.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -95,6 +95,8 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "daily"
+    ]
   }
 }

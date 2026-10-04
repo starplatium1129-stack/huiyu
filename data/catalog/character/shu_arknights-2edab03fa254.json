@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shu_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 166,
-  "createdAt": null,
-  "updatedAt": null,
+  "createdAt": "2026-10-04T10:59:50+00:00",
+  "updatedAt": "2026-10-04T15:50:41.261071300+00:00",
   "data": {
     "id": "shu_arknights",
     "profile": {
@@ -152,6 +152,12 @@
         "krea2-turbo-fp8"
       ],
       "recommendedEngine": "anima-miaomiao-v1.6"
+    },
+    "creationEvidence": {
+      "source": "git-first-added",
+      "commit": "7e67690004121fa8adfcdb69db2d1da9230d64ca",
+      "path": "data/popular/arknights.json",
+      "observedAt": "2026-10-04T18:59:50+08:00"
     }
   }
 }

@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "rossy_arknights/red_gingham_apron",
+  "revision": 1,
+  "sortOrder": 1107,
+  "createdAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "data": {
+    "characterId": "rossy_arknights",
+    "outfit": {
+      "id": "red_gingham_apron",
+      "default": false,
+      "isDefault": false,
+      "name": "红格围裙与米白棉衫（创作）",
+      "prose": "a cream cotton blouse with short puff sleeves and a modest round neckline, a red-and-white gingham bib apron with broad ties, an opaque charcoal knee-length skirt with room for her tail and red canvas flats",
+      "tokens": [
+        "blouse",
+        "short_sleeves",
+        "round_collar",
+        "gingham_apron",
+        "red_apron",
+        "apron",
+        "black_skirt",
+        "flats"
+      ],
+      "category": "日常衣装（创作）"
+    }
+  }
+}

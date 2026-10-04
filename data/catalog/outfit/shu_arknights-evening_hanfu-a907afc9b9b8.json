@@ -1,26 +1,30 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/evening_hanfu",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 405,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
       "id": "evening_hanfu",
-      "name": "青黛交领常服（创作）",
+      "name": "青黛交领与麦穗绣裙（创作）",
       "default": false,
       "isDefault": false,
       "tokens": [
         "hanfu",
-        "wide_sleeves",
-        "long_skirt",
+        "blouse",
+        "long_sleeves",
         "blue_skirt",
+        "long_skirt",
+        "embroidery",
+        "gold_trim",
         "sash",
-        "flat_shoes"
+        "flats"
       ],
-      "prose": "an opaque ivory cross-collar hanfu blouse with wide sleeves, a floor-length deep-teal skirt, a narrow gold sash and flat cloth shoes"
+      "prose": "an opaque ivory cross-collar blouse with soft restrained sleeves, a deep-teal ankle-length skirt embroidered with sparse golden grain heads, a thin ocher sash, a small jade waist pendant and flat ivory cloth shoes",
+      "category": "日常衣装（创作）"
     }
   }
 }

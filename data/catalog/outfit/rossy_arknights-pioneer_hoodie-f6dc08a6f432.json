@@ -1,24 +1,30 @@
 {
   "kind": "outfit",
   "id": "rossy_arknights/pioneer_hoodie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 437,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "characterId": "rossy_arknights",
     "outfit": {
       "default": false,
       "id": "pioneer_hoodie",
       "isDefault": false,
-      "name": "拓荒休闲卫衣",
-      "prose": "an oversized yellow-and-black hooded pioneer sweatshirt with casual denim shorts and chunky sneakers",
+      "name": "莓红拉链卫衣与百褶裙（创作）",
+      "prose": "a berry-red zip-front hoodie with cream drawstrings, an ivory-and-charcoal striped crew-neck shirt, a charcoal pleated skirt with a practical tail opening, opaque warm tights and cream high-top canvas sneakers; her hood stays down and her wolf ears are clear",
       "tokens": [
-        "hoodie",
-        "oversized_clothes",
-        "shorts",
-        "sneakers"
-      ]
+        "red_hoodie",
+        "zipper",
+        "hood_down",
+        "drawstring",
+        "striped_shirt",
+        "black_skirt",
+        "pleated_skirt",
+        "black_pantyhose",
+        "high_tops"
+      ],
+      "category": "日常衣装（创作）"
     }
   }
 }

@@ -1,26 +1,30 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/yan_scholar_robe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 425,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
       "default": false,
       "id": "yan_scholar_robe",
       "isDefault": false,
-      "name": "文雅研学深衣",
-      "prose": "an elegant traditional scholar robe in dark ink and celadon silk with wide flowing sleeves, a subtle embroidered sash and delicate cloud patterns",
+      "name": "青瓷交领与墨蓝长裙（创作）",
+      "prose": "an opaque ivory cross-collar blouse with celadon sleeve facings and fine bamboo embroidery, an ink-blue ankle-length skirt, a narrow woven sash with one jade pendant, and closed cream cloth flats",
       "tokens": [
         "hanfu",
-        "robe",
-        "wide_sleeves",
+        "blouse",
+        "green_trim",
+        "embroidery",
+        "long_sleeves",
+        "blue_skirt",
+        "long_skirt",
         "sash",
-        "silk",
-        "embroidery"
-      ]
+        "flats"
+      ],
+      "category": "日常衣装（创作）"
     }
   }
 }

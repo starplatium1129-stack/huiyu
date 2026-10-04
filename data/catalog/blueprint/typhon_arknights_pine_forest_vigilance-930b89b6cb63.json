@@ -1,43 +1,49 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_pine_forest_vigilance",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 697,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "typhon_arknights_pine_forest_vigilance",
     "characterId": "typhon_arknights",
-    "title": "提丰 · 林间拾一枚松果",
-    "description": "木屋附近的松林里，提丰穿白色防寒披风弯下腰，从树根旁拾起一枚松果。她把松果托在手心查看，脚印沿小径留在薄雪上。",
-    "category": "萨米日常",
-    "location": "木屋附近松林小径",
-    "action": "弯腰从树根旁拾起松果，托在手心查看",
-    "mood": "悠闲好奇",
-    "lighting": "松枝间透下的早晨日光",
-    "timeOfDay": "早晨",
-    "camera": "full body, eye level",
-    "outfitId": "tundra_tracker_mantle",
+    "title": "提丰 · 散步时把松果留给你",
+    "description": "公园散步途中，提丰停在松树旁，摊开手心把一枚漂亮的松果给你看。她侧身回望同行的你，长外套的灰白衣摆落在小径旁，脸上带着不太张扬的得意。",
+    "category": "相伴日常",
+    "location": "城市公园松林小径",
+    "action": "摊开手心展示松果，侧身回望镜头",
+    "mood": "安静的分享欲与小小得意",
+    "lighting": "树冠间斑驳的午后阳光",
+    "timeOfDay": "下午",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "forest",
+      "park",
       "pine_tree",
-      "snow",
+      "path",
       "pinecone",
-      "looking_at_object",
-      "footprints",
-      "full_body"
+      "open_hand",
+      "looking_back",
+      "looking_at_viewer",
+      "smile",
+      "dappled_sunlight",
+      "cowboy_shot"
     ],
     "promptTokens": [
-      "forest",
+      "park",
       "pine_tree",
-      "snow",
+      "path",
       "pinecone",
-      "looking_at_object",
-      "footprints",
-      "full_body"
+      "open_hand",
+      "looking_back",
+      "looking_at_viewer",
+      "smile",
+      "dappled_sunlight",
+      "cowboy_shot"
     ],
-    "promptProse": "Along a pine trail near the cabin, Typhon bends to pick up a pinecone beside an exposed tree root. She turns it in her palm to examine the scales, with her white fur-trimmed cape gathered away from the snow. A short line of bootprints leads back along the path through the morning sunlight.",
+    "promptProse": "A neatly opened pinecone sits in Typhon's upturned palm beside the park path. She has stopped a step ahead of the viewer and turns her shoulders back to show her find, her quiet smile carrying a hint of pride. Sunlit gaps between the pine branches pick out the gray coat panels and the tiny scales of the cone; the path continues gently behind her.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -93,6 +99,9 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "iconic",
+      "daily"
+    ]
   }
 }

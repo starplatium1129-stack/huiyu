@@ -1,43 +1,49 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_mining_drill_proud",
-  "revision": 1,
-  "sortOrder": 760,
+  "revision": 2,
+  "sortOrder": 756,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "rossy_arknights_mining_drill_proud",
     "characterId": "rossy_arknights",
-    "title": "洛茜 · 花摊挑一束小花",
-    "description": "街边花摊前，洛茜把一束小花举到鼻尖闻了闻，露出满意的笑容。白裙与红斗篷衬着花色，浅金长发垂到肩后，狼尾轻轻弯起。",
-    "category": "生活日常",
-    "location": "街边花摊",
-    "action": "双手拿起一束小花，靠近鼻尖闻花香",
-    "mood": "轻快愉悦",
-    "lighting": "花摊棚下柔和日光",
+    "title": "洛茜 · 面包店外等你一起回家",
+    "description": "刚买完面包，洛茜穿原作红斗篷站在店门外，抱着暖纸袋侧身等你。她从袋口取出一只小圆面包递过来，带着略微得意的笑，像是已经替你挑好了最软的那一个。",
+    "category": "相伴日常",
+    "location": "社区面包店门口",
+    "action": "抱着面包纸袋，递出一个小圆面包并回望你",
+    "mood": "开心的小得意与分享",
+    "lighting": "店内暖光与门口日光",
     "timeOfDay": "下午",
     "camera": "cowboy shot, eye level",
     "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "outdoors",
-      "flower",
-      "bouquet",
-      "holding_flower",
-      "standing",
+      "bakery",
+      "paper_bag",
+      "bread",
+      "holding_bag",
+      "offering_food",
+      "looking_back",
+      "looking_at_viewer",
       "smile",
+      "standing",
       "cowboy_shot"
     ],
     "promptTokens": [
-      "outdoors",
-      "flower",
-      "bouquet",
-      "holding_flower",
-      "standing",
+      "bakery",
+      "paper_bag",
+      "bread",
+      "holding_bag",
+      "offering_food",
+      "looking_back",
+      "looking_at_viewer",
       "smile",
+      "standing",
       "cowboy_shot"
     ],
-    "promptProse": "At a roadside flower stall, Rossi brings a small bouquet close to her nose and smiles at its scent. The flowers contrast with her white dress and red cape. Her long light-blonde hair falls behind her shoulders, while her wolf tail curls gently beside the shaded buckets of fresh stems.",
+    "promptProse": "Outside the neighborhood bakery, Rossi tucks the warm paper bag into one arm and takes out the softest round roll for the viewer. She turns back with a pleased little grin, already waiting to walk home together. The red cloak falls over her black waist belt while the white skirt clears her tail. Bakery light spills across the bag from the doorway into the afternoon air.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -93,6 +99,9 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "iconic",
+      "daily"
+    ]
   }
 }

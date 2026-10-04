@@ -13,12 +13,31 @@ pub struct Query {
     pub rating: String,
     #[serde(default)]
     pub sort: String,
+    #[serde(default)]
+    pub created_from: String,
+    #[serde(default)]
+    pub created_to: String,
     pub page: Option<i64>,
     pub page_size: Option<i64>,
 }
 impl Catalog {
     pub fn query(&self, query: &Query) -> Result<Value> {
         let transaction = self.connection.unchecked_transaction()?;
+        let date = |text: &str| -> Result<Option<chrono::DateTime<chrono::FixedOffset>>> {
+            if text.is_empty() {
+                Ok(None)
+            } else {
+                chrono::DateTime::parse_from_rfc3339(text)
+                    .map(Some)
+                    .map_err(|_| ApiError::invalid("创建时间筛选需要 RFC3339 日期时间"))
+            }
+        };
+        if date(&query.created_from)?
+            .zip(date(&query.created_to)?)
+            .is_some_and(|(from, to)| from >= to)
+        {
+            return Err(ApiError::invalid("创建时间范围的起点必须早于终点"));
+        }
         if query.kind != "media" && !KINDS.contains(&query.kind.as_str()) {
             return Err(ApiError::invalid("记录类型无效"));
         }
@@ -37,14 +56,16 @@ impl Catalog {
         } else {
             (query.kind.as_str(), query.kind.as_str())
         };
-        let filter = "kind IN (?1,?2) AND deleted=0 AND (?3='' OR instr(search_text,lower(?3))>0) AND (?4='' OR character_id=?4) AND (?5='' OR category=?5) AND (?6='' OR rating=?6)";
+        let filter = "kind IN (?1,?2) AND deleted=0 AND (?3='' OR instr(search_text,lower(?3))>0) AND (?4='' OR character_id=?4) AND (?5='' OR category=?5) AND (?6='' OR rating=?6) AND (?7='' OR julianday(created_at)>=julianday(?7)) AND (?8='' OR julianday(created_at)<julianday(?8))";
         let values = params![
             first_kind,
             second_kind,
             query.search.trim().to_lowercase(),
             query.character,
             query.category,
-            query.rating
+            query.rating,
+            query.created_from,
+            query.created_to
         ];
         let total: i64 = self.connection.query_row(
             &format!("SELECT count(*) FROM content_records WHERE {filter}"),
@@ -52,8 +73,8 @@ impl Catalog {
             |r| r.get(0),
         )?;
         let selected_page = page.min(((total + size - 1) / size).max(1));
-        let mut statement = self.connection.prepare(&format!("SELECT kind,id,revision,sort_order,created_at,updated_at,title,character_id,category,rating FROM content_records WHERE {filter} ORDER BY {order} LIMIT ?7 OFFSET ?8"))?;
-        let items = statement.query_map(params![first_kind,second_kind,query.search.trim().to_lowercase(),query.character,query.category,query.rating,size,(selected_page-1)*size], |r| {
+        let mut statement = self.connection.prepare(&format!("SELECT kind,id,revision,sort_order,created_at,updated_at,title,character_id,category,rating FROM content_records WHERE {filter} ORDER BY {order} LIMIT ?9 OFFSET ?10"))?;
+        let items = statement.query_map(params![first_kind,second_kind,query.search.trim().to_lowercase(),query.character,query.category,query.rating,query.created_from,query.created_to,size,(selected_page-1)*size], |r| {
             Ok(json!({"kind":r.get::<_,String>(0)?,"id":r.get::<_,String>(1)?,"revision":r.get::<_,i64>(2)?,"sortOrder":r.get::<_,i64>(3)?,"createdAt":r.get::<_,Option<String>>(4)?,"updatedAt":r.get::<_,Option<String>>(5)?,
                 "title":r.get::<_,String>(6)?,"characterId":r.get::<_,String>(7)?,"category":r.get::<_,String>(8)?,"rating":r.get::<_,String>(9)?}))
         })?.collect::<rusqlite::Result<Vec<_>>>()?;

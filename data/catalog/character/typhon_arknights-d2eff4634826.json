@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "typhon_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 165,
-  "createdAt": null,
-  "updatedAt": null,
+  "createdAt": "2026-10-03T14:25:25+00:00",
+  "updatedAt": "2026-10-04T15:50:41.261071300+00:00",
   "data": {
     "id": "typhon_arknights",
     "profile": {
@@ -23,8 +23,8 @@
         "hair": "浅紫色长发，额前刘海与少量细编发",
         "hair_color": "浅紫 / 淡粉紫",
         "eyes": "粉紫色眼眸",
-        "hairstyle": "披散长发与少量细编发",
-        "uniform": "黑色猎人上装、浅色立领与颈部护具、暗色披肩，大型弓",
+        "hairstyle": "浅紫超长低双马尾，末端卷曲；不以普通细编发作为主要发型",
+        "uniform": "灰色落肩外套、黑色交叉系带猎人连体衣与白银色独立颈领，腰带与装备袋、单侧黑色长袜及不对称腿装、白色腿带、深色系带靴；大弓作为场景装备",
         "expression": "警觉、沉静",
         "style": "萨米猎人",
         "signature": "大型黑色角及金属角饰、浅紫长发、粉紫眼、大弓"
@@ -51,10 +51,11 @@
         "1girl",
         "solo",
         "purple_hair",
-        "long_hair",
+        "very_long_hair",
+        "low_twintails",
+        "twin_drills",
         "pink_eyes",
-        "horns",
-        "braid"
+        "horns"
       ],
       "portrait": {
         "image": "../assets/characters/portrait-pending.svg",
@@ -96,16 +97,17 @@
       ],
       "franchise": "Arknights",
       "id": "typhon_arknights",
-      "identityProse": "Typhon from Arknights, a female Sarkaz hunter from Sami with long pale lavender hair, pink-magenta eyes and large dark horns fitted with metal ornaments.",
+      "identityProse": "Typhon from Arknights, a female Sarkaz hunter from Sami with very long pale lavender hair gathered into low twintails with curled drill-shaped ends, pink-magenta eyes and large dark horns fitted with metal ornaments.",
       "identityTokens": [
         "typhon_(arknights)",
         "1girl",
         "solo",
         "purple_hair",
-        "long_hair",
+        "very_long_hair",
+        "low_twintails",
+        "twin_drills",
         "pink_eyes",
-        "horns",
-        "braid"
+        "horns"
       ],
       "negativeTokens": [
         "bad anatomy",
@@ -123,6 +125,12 @@
         "krea2-turbo-fp8"
       ],
       "recommendedEngine": "anima-miaomiao-v1.6"
+    },
+    "creationEvidence": {
+      "source": "git-first-added",
+      "commit": "7afb573e666d2c6f6e34b32140261466edef89b5",
+      "path": "data/popular/arknights.json",
+      "observedAt": "2026-10-03T22:25:25+08:00"
     }
   }
 }

@@ -1,47 +1,49 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_camp_rest",
-  "revision": 1,
-  "sortOrder": 752,
+  "revision": 2,
+  "sortOrder": 748,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_camp_rest",
     "characterId": "zhuang_fangyi_arknights",
-    "title": "庄方宜 · 营地晚饭热汤",
-    "description": "夜里帐篷前，庄方宜坐在折叠椅上，用勺子轻轻搅动碗里的热汤。背包和旅行披风靠在椅边，炉火映亮她松散的墨黑渐青绿长发。",
-    "category": "旅途日常",
-    "location": "营地帐篷前",
-    "action": "坐在折叠椅上端着汤碗，用勺子搅动热汤",
-    "mood": "放松温暖",
-    "lighting": "营地炉火的暖光",
-    "timeOfDay": "夜晚",
-    "camera": "cowboy shot, eye level",
-    "outfitId": "wasteland_traveler",
+    "title": "庄方宜 · 晚饭前为你留一碗热汤",
+    "description": "家里的晚饭刚做好，庄方宜穿米白棉衫与豆绿围裙，从料理台前转身，托着一碗热汤放到靠近你的餐垫上。她看向你轻轻一笑，另一份晚饭和并排摆好的筷子已在桌上。",
+    "category": "相伴日常",
+    "location": "家中厨房与餐桌交界",
+    "action": "将热汤放到镜头前的餐垫，抬眼轻笑",
+    "mood": "熟悉而踏实的照顾",
+    "lighting": "餐桌上方暖色吊灯",
+    "timeOfDay": "晚饭时",
+    "camera": "medium shot, eye level",
+    "outfitId": "ivory_home_apron",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "camp",
-      "tent",
-      "campfire",
-      "soup",
+      "kitchen",
+      "placemat",
       "bowl",
-      "holding_spoon",
-      "sitting",
-      "backpack",
-      "cowboy_shot"
+      "steam",
+      "chopsticks",
+      "holding_plate",
+      "looking_at_viewer",
+      "light_smile",
+      "standing",
+      "upper_body"
     ],
     "promptTokens": [
-      "camp",
-      "tent",
-      "campfire",
-      "soup",
+      "kitchen",
+      "placemat",
       "bowl",
-      "holding_spoon",
-      "sitting",
-      "backpack",
-      "cowboy_shot"
+      "steam",
+      "chopsticks",
+      "holding_plate",
+      "looking_at_viewer",
+      "light_smile",
+      "standing",
+      "upper_body"
     ],
-    "promptProse": "Dinner at the campsite is a bowl of hot soup resting in Zhuang Fangyi's left hand. Seated on a folding chair, she stirs it slowly with a spoon and leans toward the warmth of the stove. Her backpack rests beside the chair, her travel cape hangs loosely from her shoulders, and firelight catches her long loose hair.",
+    "promptProse": "The bowl Zhuang Fangyi saved for you is still steaming. Turning from the counter, she lowers it onto the placemat nearest the viewer and meets your eyes with a quiet smile. Her rolled ivory cuffs and green linen apron stay clear of the hot rim. The other dinner setting is already laid out across the small table, while the pendant lamp gathers a pool of warmth around both places.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -97,6 +99,8 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "daily"
+    ]
   }
 }

@@ -1,43 +1,41 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_frontline_breach",
-  "revision": 1,
-  "sortOrder": 756,
+  "revision": 2,
+  "sortOrder": 752,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "administrator_arknights_frontline_breach",
     "characterId": "administrator_arknights",
-    "title": "管理员 · 街市采购归来",
-    "description": "买完晚饭食材，女性管理员提着布袋走过生活区的店铺。袋口露出一根葱和纸包，黑色长裤配实用靴子，步子放慢下来。",
-    "category": "基地日常",
-    "location": "基地生活区街道",
-    "action": "单手提着装有晚饭食材的布袋沿街走过",
-    "mood": "轻快放松",
-    "lighting": "下午街道自然日光",
-    "timeOfDay": "下午",
-    "camera": "full body, eye level",
+    "title": "管理员 · 到家时顺手接过你的袋子",
+    "description": "傍晚回家，管理员穿原作机能服站在打开的家门内，伸出空着的一只手帮你接购物袋。另一只手扶着门沿，她稍稍侧身让你进来；玄关灯照亮白色高领长毛衣和黑色连裤袜。",
+    "category": "相伴日常",
+    "location": "家中玄关门口",
+    "action": "扶住门沿，伸手帮镜头位置的你接购物袋",
+    "mood": "疲惫后仍自然的关心",
+    "lighting": "门内暖灯与走廊暮色",
+    "timeOfDay": "傍晚",
+    "camera": "cowboy shot, eye level",
     "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "outdoors",
-      "shopping",
+      "open_door",
       "shopping_bag",
-      "holding_bag",
-      "walking",
-      "full_body",
-      "sunlight"
+      "outstretched_hand",
+      "standing",
+      "light_smile",
+      "cowboy_shot"
     ],
     "promptTokens": [
-      "outdoors",
-      "shopping",
+      "open_door",
       "shopping_bag",
-      "holding_bag",
-      "walking",
-      "full_body",
-      "sunlight"
+      "outstretched_hand",
+      "standing",
+      "light_smile",
+      "cowboy_shot"
     ],
-    "promptProse": "With dinner ingredients tucked into a cloth bag, the female Endministrator walks past the neighborhood shops. A green onion and a folded paper parcel peek out of the bag. Her practical boots meet the paving stones at an easy pace, and afternoon light illuminates the storefronts behind her.",
+    "promptProse": "At the open apartment door, the female Endministrator steps aside and reaches one empty hand toward the shopping bag nearest the viewer. Her other hand keeps the door steady. The greeting is a small practical kindness after a long day, with a faint smile visible below the mask. Warm entry light reveals the long white sweater hem and black pantyhose before fading into the cooler hallway.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -93,6 +91,9 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "iconic",
+      "daily"
+    ]
   }
 }

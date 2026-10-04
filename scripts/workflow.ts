@@ -32,7 +32,7 @@ const path = (require('path') as typeof import('path'));
 const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
-  'content:catalog': { desc: '记录式内容库：查询、字段补丁、快照导入导出与结构检查；patch/import 默认预览', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'catalog'], opts: '<stats|query|export|patch|import|check|colors> --root <项目绝对路径> --runtime-root <运行目录绝对路径> [--file <JSON>] [--out <导出目录>] [--apply]', docs: 'docs/maintenance.md',
+  'content:catalog': { desc: '记录式内容库：整位角色、记录/历史读取、局部快照合并导出与字段补丁；patch/import 默认预览', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'catalog'], opts: '<stats|query|record|history|character|export|patch|import|check|colors> [--root <项目目录>] --runtime-root <运行目录> [--kind <类型> --id <ID> --revision <修订>] [--character <ID> ...] [--record <kind:id> ...] [--created-from <RFC3339> --created-to <RFC3339>] [--sort <排序> --page <页> --page-size <数量>] [--file <JSON>] [--out <导出目录>] [--apply]', docs: 'docs/maintenance.md',
     run: { nature: ['preview', 'self-heal-missing'], machine: ['node'], switches: { '--apply': ['writes-product'] }, resume: 'na', evidence: 'runtime-rs/src/catalog/cli.rs', notes: ['需要 Rust/Cargo；首次使用会初始化工作内容库；export 会显式写出 --out 指定的快照目录。'], unknown: ['不执行模型调用或安装；快照不恢复跨机器的本机修订历史'] } },
   'live2d:sync-local': {
     desc: '个人桌面同步已核验本机模型，保留目标旧版本；不进入安装包',
@@ -506,10 +506,10 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   },
   'check:rewrite': {
     desc: '批量改写完整性门禁（覆盖率/模板签名/跨条目雷同）',
-    cmd: ['node', 'scripts/tests/test-prompt-rewrite-integrity.js'],
+    cmd: ['node', 'scripts/tests/test-prompt-rewrite-integrity.js', '--check'],
     docs: 'AGENTS.md#质量红线',
-    opts: '[--delivery <交付文件>] 复检指定交付；[--baseline <commit>] 换基线；[--targeted] 精确修复模式',
-    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/test-prompt-rewrite-integrity.js:206-217,246-278,281-292', unknown: [], notes: ['默认基线 b1ccfc0，经 git show 读取基线数据，需本地 Git；无 --delivery 时对当前工作区数据层全量复查'] },
+    opts: '[--delivery <条目文件/快照目录>] [--baseline <commit> | --baseline-file <编写前快照>] [--character <ID,...>] [--ids <ID,...>] [--sfw] [--compiled-out <双引擎输入JSON>] [--root <项目目录>] [--targeted]',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: { '--compiled-out':['writes-product'] }, resume: 'na', evidence: 'scripts/tests/test-prompt-rewrite-integrity.ts', unknown: [], notes: ['默认基线 HEAD，优先读取该提交的 data/catalog；迁移前提交才读旧分片。支持工作库导出的编写前快照；编译仅输出文本，不调用模型。'] },
   },
   'check:popular': {
     desc: '热门角色与提示词契约',

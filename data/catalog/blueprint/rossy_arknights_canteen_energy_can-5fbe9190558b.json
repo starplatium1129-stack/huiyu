@@ -1,49 +1,49 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_canteen_energy_can",
-  "revision": 1,
-  "sortOrder": 763,
+  "revision": 2,
+  "sortOrder": 759,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "rossy_arknights_canteen_energy_can",
     "characterId": "rossy_arknights",
-    "title": "洛茜 · 小厨房煮晚饭",
-    "description": "洛茜站在小厨房灶台前，用汤勺搅动锅里的蔬菜汤。黄黑卫衣的袖口卷起一点，狼尾避开灶台，旁边的碗已经放好。",
-    "category": "生活日常",
-    "location": "住处小厨房",
-    "action": "站在灶台边用汤勺搅动蔬菜汤，碗放在旁边",
-    "mood": "认真期待",
-    "lighting": "厨房明亮的暖色顶灯",
-    "timeOfDay": "傍晚",
-    "camera": "cowboy shot, from side",
-    "outfitId": "pioneer_hoodie",
+    "title": "洛茜 · 第一批饼干要你来评分",
+    "description": "家中烤箱旁，洛茜穿米白泡泡袖棉衫与红格围裙，拿着装有饼干的小碟递给你。她眉眼亮亮地等你评分，另一只手扶着烤箱手套；冷却架上的饼干有些形状不太整齐，更像一起过日子。",
+    "category": "相伴日常",
+    "location": "家中厨房烤箱旁",
+    "action": "把饼干小碟递向镜头，期待地等待评价",
+    "mood": "雀跃又有点紧张的期待",
+    "lighting": "厨房温暖顶灯",
+    "timeOfDay": "下午",
+    "camera": "medium shot, eye level",
+    "outfitId": "red_gingham_apron",
     "recommendedSize": "1152x1536",
     "sceneTags": [
       "kitchen",
-      "cooking",
-      "stove",
-      "cooking_pot",
-      "ladle",
-      "soup",
-      "bowl",
+      "oven",
+      "cookie",
+      "cooling_rack",
+      "plate",
+      "offering_food",
+      "looking_at_viewer",
+      "smile",
       "standing",
-      "cowboy_shot",
-      "from_side"
+      "upper_body"
     ],
     "promptTokens": [
       "kitchen",
-      "cooking",
-      "stove",
-      "cooking_pot",
-      "ladle",
-      "soup",
-      "bowl",
+      "oven",
+      "cookie",
+      "cooling_rack",
+      "plate",
+      "offering_food",
+      "looking_at_viewer",
+      "smile",
       "standing",
-      "cowboy_shot",
-      "from_side"
+      "upper_body"
     ],
-    "promptProse": "While vegetable soup simmers on the kitchen stove, Rossi stirs the pot with a ladle and watches the rising steam. The cuffs of her yellow-and-black hoodie are pushed back from her hands. A clean bowl waits on the counter, and her fluffy wolf tail stays on the side away from the warm stove.",
+    "promptProse": "Fresh cookies of slightly uneven shapes cool on the rack behind Rossi. In her red gingham apron, she offers the viewer a small tasting plate and watches eagerly for your score, one hand resting against the folded oven mitt at her waist. Flour has dusted the counter rather than her face. Warm kitchen light brings out the cream puff sleeves, golden cookie edges and her bright expectant expression.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -99,6 +99,8 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "daily"
+    ]
   }
 }

@@ -1,45 +1,47 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_rover_wind_ride",
-  "revision": 1,
-  "sortOrder": 764,
+  "revision": 2,
+  "sortOrder": 760,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "rossy_arknights_rover_wind_ride",
     "characterId": "rossy_arknights",
-    "title": "洛茜 · 河边坐看晚霞",
-    "description": "散步后，洛茜在河边长凳坐下，双手搭在膝上看着晚霞。卫衣帽子放在背后，浅金长发被微风吹起，狼尾沿着长凳边缘垂下。",
-    "category": "生活日常",
-    "location": "河边步道长凳",
-    "action": "坐在河边长凳上，双手搭在膝上看晚霞",
-    "mood": "平静满足",
-    "lighting": "河面反射的柔和夕阳",
-    "timeOfDay": "黄昏",
-    "camera": "cowboy shot, from side",
-    "outfitId": "pioneer_hoodie",
+    "title": "洛茜 · 河边散步回头等你",
+    "description": "傍晚河边步道，洛茜穿奶油白蝴蝶结衬衫与酒红A字裙，走出两步又回头等你。她笑着伸出空手，肩上的小包和身后的狼尾随着转身轻轻摆动，落日照亮裙摆与棕色玛丽珍鞋。",
+    "category": "相伴日常",
+    "location": "城市河边步道",
+    "action": "走出两步回身，伸出空手邀你同行",
+    "mood": "明亮自然的亲近",
+    "lighting": "河面反射的金色夕光",
+    "timeOfDay": "日落",
+    "camera": "full body, eye level",
+    "outfitId": "cream_ribbon_date",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "outdoors",
-      "river",
-      "bench",
-      "sitting",
+      "promenade",
       "sunset",
-      "sky",
-      "cowboy_shot",
-      "from_side"
+      "golden_hour",
+      "walking",
+      "looking_back",
+      "looking_at_viewer",
+      "outstretched_hand",
+      "smile",
+      "full_body"
     ],
     "promptTokens": [
-      "outdoors",
-      "river",
-      "bench",
-      "sitting",
+      "promenade",
       "sunset",
-      "sky",
-      "cowboy_shot",
-      "from_side"
+      "golden_hour",
+      "walking",
+      "looking_back",
+      "looking_at_viewer",
+      "outstretched_hand",
+      "smile",
+      "full_body"
     ],
-    "promptProse": "After a walk along the river, Rossi settles on a bench with both hands resting on her knees. Her hoodie is down, letting the evening breeze lift her long light-blonde hair around her wolf ears. Sunset colors spread across the water ahead, and her tail drapes over the edge of the quiet seat.",
+    "promptProse": "Only two steps ahead on the riverside promenade, Rossi turns back and holds out an empty hand for the viewer to catch up. Her broad smile and swinging wolf tail give the invitation an easy, lively warmth. The burgundy ribbon echoes her wine-red A-line skirt, with cream socks above brown Mary Janes. Sunset travels along the river behind her and paints a narrow golden rim around the turning figure.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -95,6 +97,8 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "daily"
+    ]
   }
 }

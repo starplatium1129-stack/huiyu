@@ -3,7 +3,9 @@ import path = require('node:path');
 type RecordRow = { kind: string; id: string; revision: number; sortOrder: number; createdAt: string | null; updatedAt: string | null; data: any };
 /** Build/review reads committed snapshots. Runtime editing uses the native record service. */
 function read(root: string): RecordRow[] | null {
-  const directory = path.join(root, 'data/catalog');
+  return readDirectory(path.join(root, 'data/catalog'));
+}
+function readDirectory(directory: string): RecordRow[] | null {
   const manifestFile = path.join(directory, 'manifest.json');
   if (!fs.existsSync(manifestFile)) return null;
   const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
@@ -31,4 +33,4 @@ function views(records: RecordRow[]) {
 function assertLegacyWrite(root: string) {
   if ([path.join(root, 'data/catalog/manifest.json'), path.join(root, 'catalog.identity.json'), path.join(root, 'runtime/content/catalog.identity.json')].some(file => fs.existsSync(file))) throw Error('内容已迁入记录库；请使用场景管理或 content:catalog patch/import，保存后显式 export 项目快照。旧聚合/分片不能回写为主库。');
 }
-export = { read, views, assertLegacyWrite };
+export = { read, readDirectory, views, assertLegacyWrite };

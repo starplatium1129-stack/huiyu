@@ -1,27 +1,30 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/rhodes_kitchen_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 404,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
       "id": "rhodes_kitchen_apron",
-      "name": "罗德岛厨房围裙（创作）",
+      "name": "麦黄围裙与青绿家居裙（创作）",
       "default": false,
       "isDefault": false,
       "tokens": [
-        "white_shirt",
-        "long_sleeves",
-        "rolled_up_sleeves",
-        "green_apron",
+        "green_dress",
+        "dress",
+        "sleeves_rolled_up",
+        "long_dress",
+        "yellow_apron",
         "apron",
-        "black_pants",
-        "shoes"
+        "pocket",
+        "bead_bracelet",
+        "slippers"
       ],
-      "prose": "a white long-sleeved shirt with the cuffs rolled neatly back, a sage-green bib apron tied at the waist over dark trousers, and closed flat shoes"
+      "prose": "an opaque sage-green cotton shirt dress with tidy rolled sleeves and a calf-length hem, a wheat-yellow linen apron with broad crossed back straps and a deep pocket, a small ivory bead bracelet and closed cream house shoes",
+      "category": "日常衣装（创作）"
     }
   }
 }

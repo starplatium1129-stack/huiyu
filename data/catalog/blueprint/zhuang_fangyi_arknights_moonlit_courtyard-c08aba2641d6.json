@@ -1,45 +1,53 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_moonlit_courtyard",
-  "revision": 1,
-  "sortOrder": 750,
+  "revision": 2,
+  "sortOrder": 746,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_moonlit_courtyard",
     "characterId": "zhuang_fangyi_arknights",
-    "title": "庄方宜 · 庭院池边喂鱼",
-    "description": "庄方宜坐在庭院池边的矮凳上，从小碗里捻起少许鱼食。锦鲤聚在伸出的手下，池面泛开细小涟漪，宽袖被她收在膝上。",
-    "category": "武陵日常",
-    "location": "庭院锦鲤池边",
-    "action": "把宽袖收在膝上，从小碗捻起鱼食撒向池面",
-    "mood": "悠闲专注",
-    "lighting": "阴天庭院的柔和漫射天光",
+    "title": "庄方宜 · 雨天把沙发的位置让给你",
+    "description": "外面下雨，庄方宜穿玉绿盘扣开衫坐在家中沙发边，把身旁靠垫挪开给你腾出位置。她回头带笑看你，膝上有一条叠好的薄毯，茶几上放着两杯茶与一盘切好的梨。",
+    "category": "相伴日常",
+    "location": "雨天家中客厅沙发",
+    "action": "挪开身旁靠垫，回头邀请你坐近",
+    "mood": "含蓄而自然的依恋",
+    "lighting": "雨天窗光与客厅暖灯",
     "timeOfDay": "下午",
-    "camera": "cowboy shot, eye level",
-    "outfitId": "yan_scholar_robe",
-    "recommendedSize": "1152x1536",
+    "camera": "medium shot, eye level",
+    "outfitId": "jade_city_cardigan",
+    "recommendedSize": "1536x1152",
     "sceneTags": [
-      "courtyard",
-      "pond",
-      "koi",
-      "fish",
-      "feeding",
-      "bowl",
+      "living_room",
+      "couch",
+      "cushion",
+      "blanket",
+      "rain",
+      "cup",
+      "sliced_fruit",
       "sitting",
-      "cowboy_shot"
+      "looking_at_viewer",
+      "outstretched_hand",
+      "light_smile",
+      "upper_body"
     ],
     "promptTokens": [
-      "courtyard",
-      "pond",
-      "koi",
-      "fish",
-      "feeding",
-      "bowl",
+      "living_room",
+      "couch",
+      "cushion",
+      "blanket",
+      "rain",
+      "cup",
+      "sliced_fruit",
       "sitting",
-      "cowboy_shot"
+      "looking_at_viewer",
+      "outstretched_hand",
+      "light_smile",
+      "upper_body"
     ],
-    "promptProse": "Beside the courtyard pond, Zhuang Fangyi drops a pinch of fish food from her right hand while balancing a small bowl in her left. Koi gather below her fingertips and ripple the water. Her robe sleeves are folded over her lap, clear of the pond, under soft overcast daylight.",
+    "promptProse": "Rain stipples the living-room window as Zhuang Fangyi moves a cushion away from the seat beside her. She looks back toward the viewer with a soft invitation to sit close, a folded light blanket resting on her knees. Two cups and a small plate of pear slices wait on the low table. Cool window light and a warm reading lamp meet across the jade cardigan and ivory skirt.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -95,6 +103,8 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "daily"
+    ]
   }
 }

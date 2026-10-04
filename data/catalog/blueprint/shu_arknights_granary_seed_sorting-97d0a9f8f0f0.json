@@ -1,45 +1,45 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_granary_seed_sorting",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 707,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "shu_arknights_granary_seed_sorting",
     "characterId": "shu_arknights",
-    "title": "黍 · 谷仓分种",
-    "description": "谷仓的侧窗照亮一张旧木桌。黍穿农业天师装，将一小撮谷种从掌心拨进浅陶碟，桌边排着几只种袋；挂起的谷穗与窗光里的细尘交代出收储季节。",
-    "category": "大荒农事",
-    "location": "大荒城谷仓侧窗木桌",
-    "action": "站在木桌前，将掌心谷种逐粒拨入陶碟分类",
-    "mood": "耐心专注",
-    "lighting": "侧窗斜入的午后暖光",
-    "timeOfDay": "午后",
-    "camera": "medium shot, eye level",
+    "title": "黍 · 逛市场时替你挑一只甜桃",
+    "description": "周末市场里，黍穿大荒农业天师原作衣装，托着挑好的桃子轻轻递向你。另一只手提着布袋，神情温和又带一点肯定，像是认真选出了你会喜欢的甜度；衣袖蓝色衬里和金绳扣在摊棚下清晰可见。",
+    "category": "相伴日常",
+    "location": "街区周末水果市场",
+    "action": "一手递出挑好的桃子，一手提着布袋",
+    "mood": "从容细心的体贴",
+    "lighting": "市场遮棚下柔和晨光",
+    "timeOfDay": "上午",
+    "camera": "cowboy shot, eye level",
     "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "granary",
-      "seed",
-      "table",
-      "ceramic_bowl",
-      "window",
-      "working"
+      "peach",
+      "fruit_basket",
+      "holding_bag",
+      "holding_fruit",
+      "looking_at_viewer",
+      "light_smile",
+      "standing",
+      "cowboy_shot"
     ],
     "promptTokens": [
-      "indoors",
-      "wooden_table",
-      "window",
-      "seed",
-      "ceramic_bowl",
+      "peach",
+      "fruit_basket",
+      "holding_bag",
+      "holding_fruit",
+      "looking_at_viewer",
+      "light_smile",
       "standing",
-      "looking_down",
-      "sunbeam",
-      "dust_motes",
-      "medium_shot"
+      "cowboy_shot"
     ],
-    "promptProse": "At a worn wooden table inside the granary, Shu separates a small handful of grain seeds from her open left palm into a shallow ceramic dish with her right fingertips. Three cloth seed bags sit within reach, with tied grain heads hanging against the rear wall. Her original white-and-blue Tianshi jacket frames the geometric ornaments at her chest. An oblique afternoon sunbeam lights her attentive face and both hands; a vertical medium view includes the dish and the table edge beneath them.",
+    "promptProse": "Shu chooses a peach from the weekend market and offers it on her open golden hand toward the viewer, confident she has found one you will enjoy. A cloth bag hangs from her other hand rather than covering the fruit. The blue lining and gold cords of her original white jacket remain visible beneath the awning; baskets and folded stall cloths form a quiet backdrop to the thoughtful gesture.",
     "negativeTokens": [
       "extra people",
       "extra limbs",
@@ -50,7 +50,8 @@
     "adult": false,
     "sampleRating": "All",
     "coverageTags": [
-      "iconic"
+      "iconic",
+      "daily"
     ]
   }
 }

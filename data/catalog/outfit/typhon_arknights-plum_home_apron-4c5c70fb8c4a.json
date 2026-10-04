@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "typhon_arknights/plum_home_apron",
+  "revision": 1,
+  "sortOrder": 1100,
+  "createdAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "data": {
+    "characterId": "typhon_arknights",
+    "outfit": {
+      "id": "plum_home_apron",
+      "default": false,
+      "isDefault": false,
+      "name": "梅紫家居裙与亚麻围裙（创作）",
+      "prose": "an opaque plum-purple cotton shirt dress with rolled cuffs and a calf-length skirt, an oatmeal linen apron with crossed back straps and a large front pocket, and soft dark-brown house shoes",
+      "tokens": [
+        "purple_dress",
+        "dress",
+        "long_sleeves",
+        "sleeves_rolled_up",
+        "long_dress",
+        "apron",
+        "pocket",
+        "slippers"
+      ],
+      "category": "日常衣装（创作）"
+    }
+  }
+}

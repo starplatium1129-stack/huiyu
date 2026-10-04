@@ -1,45 +1,47 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_behemoth_hunt_bow",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 696,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "typhon_arknights_behemoth_hunt_bow",
     "characterId": "typhon_arknights",
-    "title": "提丰 · 木屋清晨热茶",
-    "description": "清晨木屋里，提丰穿深绿毛衣坐在窗边，双手捧着热茶慢慢暖手。浅紫长发搭在肩上，黑角的金属饰片映着晨光，窗外松枝积着雪。",
-    "category": "萨米日常",
-    "location": "木屋窗边餐桌",
-    "action": "坐在木屋窗边，双手捧热茶暖手",
-    "mood": "安静舒适",
-    "lighting": "雪面反射进窗的清晨柔光",
-    "timeOfDay": "早晨",
-    "camera": "cowboy shot, eye level",
-    "outfitId": "rhodes_casual_knit",
+    "title": "提丰 · 回家先把热茶递给你",
+    "description": "傍晚一起回到住处，提丰仍穿原作灰色落肩猎装。她在玄关小桌前把冒着热气的陶杯递向你，另一只手托住杯底；大弓已靠在门边，警觉的神情终于松下来，嘴角露出一点浅笑。",
+    "category": "相伴日常",
+    "location": "住处玄关与茶桌",
+    "action": "双手托稳一杯热茶递向镜头，抬脸看你",
+    "mood": "克制而亲近的浅笑",
+    "lighting": "玄关暖灯与门外暮色",
+    "timeOfDay": "傍晚",
+    "camera": "medium shot, eye level",
+    "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "indoors",
-      "window",
-      "table",
-      "tea",
-      "cup",
+      "wooden_table",
+      "mug",
+      "steam",
       "holding_cup",
-      "sitting",
-      "cowboy_shot"
+      "looking_at_viewer",
+      "light_smile",
+      "standing",
+      "bow_(weapon)",
+      "upper_body"
     ],
     "promptTokens": [
-      "indoors",
-      "window",
-      "table",
-      "tea",
-      "cup",
+      "wooden_table",
+      "mug",
+      "steam",
       "holding_cup",
-      "sitting",
-      "cowboy_shot"
+      "looking_at_viewer",
+      "light_smile",
+      "standing",
+      "bow_(weapon)",
+      "upper_body"
     ],
-    "promptProse": "Snow-covered pine branches fill the cabin window behind Typhon as she warms both hands around a cup of tea. Her forest-green sweater rests loosely over the chair. Pale lavender hair lies across one shoulder, and morning light glints off the metal ornaments fitted to her large dark horns.",
+    "promptProse": "Just home with you, Typhon steadies a steaming ceramic mug on both palms and offers it across the little entry table. The large hunting bow rests against the doorframe behind her, leaving her hands free. She lifts her face toward the viewer with a small relieved smile; amber lamplight meets the last blue daylight at the open doorway.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -96,7 +98,8 @@
       "two people"
     ],
     "coverageTags": [
-      "iconic"
+      "iconic",
+      "daily"
     ]
   }
 }

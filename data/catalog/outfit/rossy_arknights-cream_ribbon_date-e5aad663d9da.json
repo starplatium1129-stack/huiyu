@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "rossy_arknights/cream_ribbon_date",
+  "revision": 1,
+  "sortOrder": 1108,
+  "createdAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "data": {
+    "characterId": "rossy_arknights",
+    "outfit": {
+      "id": "cream_ribbon_date",
+      "default": false,
+      "isDefault": false,
+      "name": "奶油白蝴蝶结衬衫与酒红裙（创作）",
+      "prose": "a cream blouse with a small burgundy ribbon at its rounded collar, a wine-red A-line knee-length skirt with a tail opening, a short cocoa-brown cardigan, ribbed cream socks, brown Mary Jane shoes and a small woven shoulder bag",
+      "tokens": [
+        "blouse",
+        "round_collar",
+        "red_ribbon",
+        "red_skirt",
+        "a-line_skirt",
+        "brown_cardigan",
+        "white_socks",
+        "mary_janes",
+        "shoulder_bag"
+      ],
+      "category": "日常衣装（创作）"
+    }
+  }
+}

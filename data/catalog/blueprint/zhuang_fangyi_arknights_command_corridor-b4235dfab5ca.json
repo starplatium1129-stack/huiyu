@@ -1,45 +1,49 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_command_corridor",
-  "revision": 1,
-  "sortOrder": 748,
+  "revision": 2,
+  "sortOrder": 744,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_command_corridor",
     "characterId": "zhuang_fangyi_arknights",
-    "title": "庄方宜 · 街角借书归来",
-    "description": "从街角书店出来，庄方宜把借来的两本书抱在身前，沿石板路慢慢走着。路边盆栽投下细碎树影，绿色裤脚轻轻拂过台阶。",
-    "category": "武陵日常",
-    "location": "武陵街角书店外",
-    "action": "抱着两本书走出书店，沿石板路缓步回家",
-    "mood": "轻松满足",
-    "lighting": "树荫间透下的下午日光",
+    "title": "庄方宜 · 书店门口把书签送你",
+    "description": "两人逛完书店，庄方宜在门口回身，把刚挑的叶形书签递向你。另一只手抱着两本新书，绿色宽裤垂到靴边；她略微抿嘴，像是担心你发现她早就选好了这份小礼物。",
+    "category": "相伴日常",
+    "location": "街角书店门廊",
+    "action": "一手抱书，一手递出叶形书签并看你",
+    "mood": "含蓄的心意与轻微羞涩",
+    "lighting": "书店门口午后日光",
     "timeOfDay": "下午",
-    "camera": "full body, eye level",
+    "camera": "cowboy shot, eye level",
     "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "outdoors",
+      "bookstore",
+      "doorway",
       "book",
       "holding_book",
-      "walking",
-      "stairs",
-      "potted_plant",
-      "full_body",
-      "sunlight"
+      "bookmark",
+      "outstretched_hand",
+      "looking_at_viewer",
+      "light_smile",
+      "standing",
+      "cowboy_shot"
     ],
     "promptTokens": [
-      "outdoors",
+      "bookstore",
+      "doorway",
       "book",
       "holding_book",
-      "walking",
-      "stairs",
-      "potted_plant",
-      "full_body",
-      "sunlight"
+      "bookmark",
+      "outstretched_hand",
+      "looking_at_viewer",
+      "light_smile",
+      "standing",
+      "cowboy_shot"
     ],
-    "promptProse": "Leaving a neighborhood bookshop, Zhuang Fangyi holds two borrowed books against her chest and takes an unhurried step down the stone stairs. Her loose green trousers brushes the step behind her. Potted greenery beside the doorway casts small patches of shade across the sunlit pavement.",
+    "promptProse": "On the bookshop threshold, Zhuang Fangyi holds two new books close with one arm and offers the viewer a slender leaf-shaped bookmark with the other. Her lips curve into a restrained, slightly bashful smile, as if the small gift had been planned all along. The doorway frames her wide green trousers and black boots; afternoon light glints on the bookmark beside a quiet row of display books.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -95,6 +99,9 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "iconic",
+      "daily"
+    ]
   }
 }

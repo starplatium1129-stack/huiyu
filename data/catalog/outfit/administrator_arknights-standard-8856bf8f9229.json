@@ -1,28 +1,32 @@
 {
   "kind": "outfit",
   "id": "administrator_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 430,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "characterId": "administrator_arknights",
     "outfit": {
       "default": true,
       "id": "standard",
       "isDefault": true,
-      "name": "女性管理员黑白黄机能服",
-      "prose": "her black technical jacket with yellow accents, white high-neck inner layer, dark visor, black trousers and practical boots",
+      "name": "女性管理员黑白黄原作机能服",
+      "prose": "her original black hooded technical jacket with yellow shoulder tabs and long yellow fastening tapes, a long pale white sweater with a high neck and asymmetric hem, opaque black pantyhose and black ankle boots beneath the sweater hem, and the dark angular blindfold mask",
       "tokens": [
         "black_jacket",
+        "hooded_jacket",
         "yellow_trim",
-        "white_shirt",
+        "white_sweater",
+        "sweater",
         "high_collar",
-        "blindfold_mask",
-        "black_pants",
-        "boots",
+        "asymmetrical_clothes",
+        "black_pantyhose",
+        "pantyhose",
+        "black_boots",
         "techwear"
-      ]
+      ],
+      "category": "官方衣装"
     }
   }
 }

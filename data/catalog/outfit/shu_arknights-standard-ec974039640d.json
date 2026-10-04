@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 402,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
       "id": "standard",
-      "name": "大荒农业天师装",
+      "name": "大荒农业天师原作衣装",
       "default": true,
       "isDefault": true,
       "tokens": [
@@ -17,14 +17,17 @@
         "open_jacket",
         "white_jacket",
         "long_sleeves",
-        "strapless_shirt",
+        "gold_trim",
+        "tube_top",
+        "white_belt",
         "white_pants",
         "black_boots",
         "tassel_earrings",
         "bead_bracelet",
         "necklace"
       ],
-      "prose": "her original white jacket with blue lining and gold fastenings, worn off the shoulders over a gray-and-white strapless top, wide white trousers with ocher-patterned hems, black boots, long tassel earrings, a geometric block necklace and bead bracelets"
+      "prose": "her original white long jacket with cobalt-blue lining, gold cord fastenings and an off-shoulder fit over a gray-and-white strapless top, a white belt, wide white trousers with ocher illustrated hem panels, black ankle boots, long tassel earrings, a necklace of geometric bronze blocks and pale bead bracelets",
+      "category": "官方衣装"
     }
   }
 }

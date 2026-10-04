@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "administrator_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 163,
-  "createdAt": null,
-  "updatedAt": null,
+  "createdAt": "2026-10-03T14:25:25+00:00",
+  "updatedAt": "2026-10-04T15:50:41.261071300+00:00",
   "data": {
     "id": "administrator_arknights",
     "profile": {
@@ -19,14 +19,14 @@
       "type": "popular",
       "icon": "⚡",
       "visual_dna": {
-        "hair": "深色长发，发梢渐浅；不是银白短发",
-        "hair_color": "深色长发，发梢渐浅；不是银白短发",
-        "eyes": "官方立绘面部有深色护目面罩，不固定未核实的眼色",
-        "hairstyle": "深色长发，发梢渐浅；不是银白短发",
-        "uniform": "白色高领内搭、黑色机能外套与黄色饰边、黑色下装和靴",
+        "hair": "黑色短发与层次分明的鲍勃头；不把披风及外套垂片写成渐变长发",
+        "hair_color": "黑色",
+        "eyes": "官方套装佩戴深色护目面罩；日常创作穿搭露出面部，不固定未核实的眼色",
+        "hairstyle": "层次分明的黑色短发",
+        "uniform": "黑色兜帽机能外套、黄色肩部饰条与长绑带，白色高领长毛衣、黑色连裤袜与靴；官方套装佩戴深色护目面罩",
         "expression": "冷静、坚定",
         "style": "明日方舟：终末地官方形象为基础",
-        "signature": "深色渐变长发，黑白黄配色机能服与护目面罩"
+        "signature": "黑色短发、黑白黄机能服与护目面罩"
       },
       "personality": [
         "冷静",
@@ -40,7 +40,7 @@
         "faction": "终末地工业"
       },
       "tags": [
-        "深色渐变长发，黑白黄配色机能服与护目面罩"
+        "黑色短发、黑白黄机能服与护目面罩"
       ],
       "bg_story": "管理员与终末地工业的源石和协议网络密切相关，并被视作塔卫二文明的保护者。本档案选用女性形态；种族与精确年龄未公开。日常场景与非默认衣装为创作设定。",
       "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
@@ -49,8 +49,7 @@
         "1girl",
         "solo",
         "black_hair",
-        "long_hair",
-        "gradient_hair",
+        "short_hair",
         "arknights_endfield"
       ],
       "portrait": {
@@ -73,7 +72,7 @@
       "canon": {
         "era": "近未来科幻",
         "world": "塔卫二",
-        "formNotes": "深色渐变长发，黑白黄配色机能服与护目面罩",
+        "formNotes": "黑色短发、黑白黄机能服与深色护目面罩；面罩属于官方衣装，日常创作可露出面部",
         "research": "2026-10-03 官方简介与形象核对；官方年龄未公开，未据此改动用户原分级配置",
         "sources": [
           "https://endfield.hypergryph.com/operator"
@@ -95,14 +94,13 @@
       ],
       "franchise": "Arknights: Endfield",
       "id": "administrator_arknights",
-      "identityProse": "The female Endministrator from Arknights: Endfield, the administrator of Endfield Industries and a protector of civilization on Talos-II, with long dark hair fading to a lighter color at the ends. Her eyes are partly covered by a dark visor.",
+      "identityProse": "The female Endministrator from Arknights: Endfield, the administrator of Endfield Industries and a protector of civilization on Talos-II, with short black hair in a layered bob.",
       "identityTokens": [
         "female_endministrator_(arknights)",
         "1girl",
         "solo",
         "black_hair",
-        "long_hair",
-        "gradient_hair",
+        "short_hair",
         "arknights:_endfield"
       ],
       "negativeTokens": [
@@ -121,6 +119,12 @@
         "krea2-turbo-fp8"
       ],
       "recommendedEngine": "anima-miaomiao-v1.6"
+    },
+    "creationEvidence": {
+      "source": "git-first-added",
+      "commit": "7afb573e666d2c6f6e34b32140261466edef89b5",
+      "path": "data/popular/arknights-endfield.json",
+      "observedAt": "2026-10-03T22:25:25+08:00"
     }
   }
 }

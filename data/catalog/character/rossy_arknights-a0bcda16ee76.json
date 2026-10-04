@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rossy_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 164,
-  "createdAt": null,
-  "updatedAt": null,
+  "createdAt": "2026-10-03T14:25:25+00:00",
+  "updatedAt": "2026-10-04T15:50:41.261071300+00:00",
   "data": {
     "id": "rossy_arknights",
     "profile": {
@@ -22,7 +22,7 @@
         "hair_color": "浅金色长发，搭配鲁珀狼耳；不是棕色双马尾",
         "eyes": "眼色待进一步核实，不固定绿眸",
         "hairstyle": "浅金色长发，搭配鲁珀狼耳；不是棕色双马尾",
-        "uniform": "红色兜帽斗篷、白色裙装、黑色腰身护具与黑靴，佩剑",
+        "uniform": "红色兜帽斗篷与黑色衬里、白色黑边A字裙、黑色束腰与装备带、露指手套、黑色红饰系带及膝护甲靴；狼耳从兜帽开口露出",
         "expression": "果敢、关心同伴",
         "style": "明日方舟：终末地官方形象为基础",
         "signature": "鲁珀狼耳、蓬松狼尾、红色兜帽斗篷与剑"
@@ -117,6 +117,12 @@
         "krea2-turbo-fp8"
       ],
       "recommendedEngine": "anima-miaomiao-v1.6"
+    },
+    "creationEvidence": {
+      "source": "git-first-added",
+      "commit": "7afb573e666d2c6f6e34b32140261466edef89b5",
+      "path": "data/popular/arknights-endfield.json",
+      "observedAt": "2026-10-03T22:25:25+08:00"
     }
   }
 }

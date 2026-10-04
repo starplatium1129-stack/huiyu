@@ -1,5 +1,15 @@
 use super::*;
 use sha2::{Digest, Sha256};
+#[derive(Default)]
+pub(super) struct Scope {
+    pub characters: Vec<String>,
+    pub records: Vec<(String, String)>,
+}
+impl Scope {
+    fn partial(&self) -> bool {
+        !self.characters.is_empty() || !self.records.is_empty()
+    }
+}
 pub(super) fn read(directory: &Path) -> Result<(Vec<Record>, Vec<Record>)> {
     let manifest: Value = serde_json::from_slice(&std::fs::read(directory.join("manifest.json"))?)?;
     if manifest["version"] != 1 {
@@ -39,22 +49,70 @@ pub(super) fn read(directory: &Path) -> Result<(Vec<Record>, Vec<Record>)> {
 }
 impl Catalog {
     pub fn snapshot(&self) -> Result<Value> {
+        self.snapshot_selected(&Scope::default())
+    }
+    pub(super) fn snapshot_selected(&self, scope: &Scope) -> Result<Value> {
         let transaction = self.connection.unchecked_transaction()?;
-        let mut records = Vec::new();
-        for kind in KINDS {
-            records.extend(self.records(kind)?);
+        let mut filters = Vec::new();
+        let mut values = Vec::<String>::new();
+        for id in &scope.characters {
+            validation::key("character", id)?;
+            let exists: bool = self.connection.query_row(
+                "SELECT EXISTS(SELECT 1 FROM content_records WHERE kind='character' AND id=?1)",
+                [id],
+                |r| r.get(0),
+            )?;
+            if !exists {
+                return Err(ApiError::invalid(format!("人物不存在：{id}")));
+            }
+            values.push(id.clone());
+            filters.push(format!("character_id=?{}", values.len()));
         }
-        let mut retired = self.connection.prepare(&format!(
-            "SELECT {COLUMNS} FROM content_records WHERE deleted=1 ORDER BY kind,id"
+        for (kind, id) in &scope.records {
+            validation::key(kind, id)?;
+            let exists: bool = self.connection.query_row(
+                "SELECT EXISTS(SELECT 1 FROM content_records WHERE kind=?1 AND id=?2)",
+                params![kind, id],
+                |r| r.get(0),
+            )?;
+            if !exists {
+                return Err(ApiError::invalid(format!("记录不存在：{kind}:{id}")));
+            }
+            values.extend([kind.clone(), id.clone()]);
+            filters.push(format!(
+                "(kind=?{} AND id=?{})",
+                values.len() - 1,
+                values.len()
+            ));
+        }
+        let filter = if filters.is_empty() {
+            String::new()
+        } else {
+            format!(" WHERE {}", filters.join(" OR "))
+        };
+        let mut statement = self.connection.prepare(&format!(
+            "SELECT {COLUMNS},deleted FROM content_records{filter} ORDER BY kind,sort_order,id"
         ))?;
-        let retired = retired
-            .query_map([], row)?
-            .collect::<rusqlite::Result<Vec<_>>>()?;
+        let mut records = Vec::new();
+        let mut retired = Vec::new();
+        for result in statement.query_map(rusqlite::params_from_iter(values), |r| {
+            Ok((row(r)?, r.get::<_, bool>(7)?))
+        })? {
+            let (record, removed) = result?;
+            if removed {
+                retired.push(record);
+            } else {
+                records.push(record);
+            }
+        }
         let value = json!({"version":1,"records":records,"retired":retired});
         transaction.commit()?;
         Ok(value)
     }
     pub fn export(&self, directory: &Path) -> Result<Value> {
+        self.export_selected(directory, &Scope::default())
+    }
+    pub(super) fn export_selected(&self, directory: &Path, scope: &Scope) -> Result<Value> {
         if directory.exists() && !directory.join("manifest.json").exists() {
             return Err(ApiError::invalid("导出目录已被其他内容占用"));
         }
@@ -63,8 +121,38 @@ impl Catalog {
             .ok_or_else(|| ApiError::invalid("导出路径无效"))?;
         std::fs::create_dir_all(parent)?;
         let staging = parent.join(format!(".catalog-export-{}", uuid::Uuid::new_v4()));
+        let mut snapshot = self.snapshot_selected(scope)?;
+        let count = snapshot["records"].as_array().unwrap().len();
+        if scope.partial() && directory.exists() {
+            // Merge only the selected records into the project's existing export,
+            // never copy unrelated personal database records over that snapshot.
+            let (records, retired) = read(directory)?;
+            let mut merged = std::collections::BTreeMap::new();
+            for (record, removed) in records
+                .into_iter()
+                .map(|r| (r, false))
+                .chain(retired.into_iter().map(|r| (r, true)))
+            {
+                merged.insert((record.kind.clone(), record.id.clone()), (record, removed));
+            }
+            for (field, removed) in [("records", false), ("retired", true)] {
+                for value in snapshot[field].as_array().unwrap() {
+                    let record: Record = serde_json::from_value(value.clone())?;
+                    merged.insert((record.kind.clone(), record.id.clone()), (record, removed));
+                }
+            }
+            let mut records = Vec::new();
+            let mut retired = Vec::new();
+            for (record, removed) in merged.into_values() {
+                if removed {
+                    retired.push(record);
+                } else {
+                    records.push(record);
+                }
+            }
+            snapshot = json!({"version":1,"records":records,"retired":retired});
+        }
         std::fs::create_dir(&staging)?;
-        let snapshot = self.snapshot()?;
         let mut files = Vec::new();
         for value in snapshot["records"].as_array().unwrap() {
             let record: Record = serde_json::from_value(value.clone())?;
@@ -114,6 +202,8 @@ impl Catalog {
         if backup.exists() {
             std::fs::remove_dir_all(&backup)?;
         }
-        Ok(json!({"ok":true,"count":files.len(),"directory":directory,"version":self.version()?}))
+        Ok(
+            json!({"ok":true,"count":count,"total":files.len(),"partial":scope.partial(),"directory":directory,"version":self.version()?}),
+        )
     }
 }

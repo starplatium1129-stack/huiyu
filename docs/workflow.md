@@ -294,7 +294,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 ## 门禁与构建
 
-记录式内容管理使用 npm run wf -- content:catalog --help。stats/query 读取工作库（首次使用会初始化）；patch/import 默认预览，--apply 写入；export --out 显式导出逐条项目快照；check 检查结构与关联，colors 复用原生配色检查。命令需要 --root 和 --runtime-root 的绝对路径以及 Rust/Cargo。权威边界和字段补丁格式见[维护手册](maintenance.md)与[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
+记录式内容管理使用 npm run wf -- content:catalog --help。stats/query 读取工作库（首次使用会初始化）；record/history 读取完整记录与历史，character 返回含修订号的整位角色快照。query 支持排序、分页和带时区的创建时间范围；createdAt 仅允许以有来源的时间补录空值。patch/import 默认预览，--apply 写入；export --out 显式导出逐条项目快照，--character / --record 可重复选择并合并到既有快照，保留范围外内容；check 检查结构与关联，colors 复用原生配色检查。--root 默认当前项目，--runtime-root 必须显式指定，命令需要 Rust/Cargo。check:rewrite 可直接读记录快照及编写前 baseline-file，按角色/ID/SFW 选测并用 compiled-out 输出双引擎文本，不调用模型。权威边界和操作格式见[维护手册](maintenance.md)与[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
 
 ### Rust 运行时迁移
 

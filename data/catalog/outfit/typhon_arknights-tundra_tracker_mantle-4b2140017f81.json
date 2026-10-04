@@ -1,25 +1,30 @@
 {
   "kind": "outfit",
   "id": "typhon_arknights/tundra_tracker_mantle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 398,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "characterId": "typhon_arknights",
     "outfit": {
       "default": false,
       "id": "tundra_tracker_mantle",
       "isDefault": false,
-      "name": "极北雪地潜行装",
-      "prose": "a snow-white fur mantle with leather chest guard, thermal leggings and insulated hunting boots",
+      "name": "霜白羊毛披肩与猎装便服（创作）",
+      "prose": "a short ivory wool cape with a charcoal lining and a silver antler clasp, a fitted charcoal mock-neck pullover, dark olive tapered trousers with reinforced knees, a narrow brown leather belt and lace-up boots with wool-lined cuffs",
       "tokens": [
         "white_cape",
-        "fur_trim",
-        "leather_armor",
-        "leggings",
-        "boots"
-      ]
+        "wool",
+        "clasp",
+        "black_sweater",
+        "turtleneck",
+        "green_pants",
+        "belt",
+        "lace-up_boots",
+        "fur_trim"
+      ],
+      "category": "日常衣装（创作）"
     }
   }
 }

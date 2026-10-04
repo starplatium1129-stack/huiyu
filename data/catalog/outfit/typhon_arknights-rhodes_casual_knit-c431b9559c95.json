@@ -1,25 +1,31 @@
 {
   "kind": "outfit",
   "id": "typhon_arknights/rhodes_casual_knit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 399,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "characterId": "typhon_arknights",
     "outfit": {
       "default": false,
       "id": "rhodes_casual_knit",
       "isDefault": false,
-      "name": "罗德岛舰内休闲毛衣",
-      "prose": "a cozy oversized thick-knit forest green sweater with casual shorts and soft slippers",
+      "name": "松绿绞花针织约会套装（创作）",
+      "prose": "a forest-green cable-knit pullover with an offset zipped collar, cream piping and a small silver clasp, charcoal tailored shorts with a brown belt, opaque black tights, cream ribbed boot cuffs and brown lace-up ankle boots",
       "tokens": [
-        "oversized_sweater",
-        "knit_sweater",
         "green_sweater",
-        "shorts",
-        "slippers"
-      ]
+        "cable_knit",
+        "zipper",
+        "high_collar",
+        "black_shorts",
+        "belt",
+        "black_pantyhose",
+        "leg_warmers",
+        "brown_boots",
+        "lace-up_boots"
+      ],
+      "category": "日常衣装（创作）"
     }
   }
 }

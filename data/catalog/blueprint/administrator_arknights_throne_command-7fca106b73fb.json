@@ -1,47 +1,47 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_throne_command",
-  "revision": 1,
-  "sortOrder": 753,
+  "revision": 2,
+  "sortOrder": 749,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "administrator_arknights_throne_command",
     "characterId": "administrator_arknights",
-    "title": "管理员 · 食堂早餐咖啡",
-    "description": "清晨食堂还很安静，女性管理员坐在窗边，拿起咖啡杯准备喝一口。三明治放在餐盘上，黑白黄外套搭配日常长裤，深色渐变长发垂在肩后。",
-    "category": "基地日常",
-    "location": "基地食堂窗边",
-    "action": "坐在餐桌前拿起咖啡杯，面前摆着三明治",
-    "mood": "轻松清醒",
-    "lighting": "食堂窗边晨光",
+    "title": "管理员 · 早餐前先等你坐下",
+    "description": "出门前在家吃早餐，女性管理员穿原作黑白黄机能服坐在小餐桌旁。她把烤面包盘推向你的座位，头微微转来，嘴角浮起浅笑；自己的咖啡仍没喝，像是特意等你一起开始。",
+    "category": "相伴日常",
+    "location": "家中窗边早餐桌",
+    "action": "把吐司盘推向镜头的座位，转头等你",
+    "mood": "克制的体贴与默契",
+    "lighting": "早餐桌清晨窗光",
     "timeOfDay": "早晨",
-    "camera": "cowboy shot, eye level",
+    "camera": "medium shot, eye level",
     "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "cafeteria",
-      "window",
-      "table",
-      "coffee",
+      "toast",
+      "plate",
       "cup",
-      "holding_cup",
-      "sandwich",
+      "offering_food",
       "sitting",
-      "cowboy_shot"
+      "head_tilt",
+      "light_smile",
+      "window_light",
+      "upper_body"
     ],
     "promptTokens": [
-      "cafeteria",
-      "window",
-      "table",
-      "coffee",
+      "toast",
+      "plate",
       "cup",
-      "holding_cup",
-      "sandwich",
+      "offering_food",
       "sitting",
-      "cowboy_shot"
+      "head_tilt",
+      "light_smile",
+      "window_light",
+      "upper_body"
     ],
-    "promptProse": "Before the cafeteria gets busy, the female Endministrator raises a coffee cup from her breakfast tray. A sandwich waits on the plate in front of her. Morning window light picks out the yellow accents on her black jacket and the pale ends of her long dark hair as she settles into the quiet corner seat.",
+    "promptProse": "Her coffee remains untouched while the female Endministrator slides the toast plate toward your place at the breakfast table. Still dressed to leave, she turns her visor-covered face toward the viewer; the small smile at her mouth says she was waiting to start together. Morning light follows the yellow jacket tapes down to the table edge, where two breakfast settings sit within easy reach.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -98,7 +98,8 @@
       "two people"
     ],
     "coverageTags": [
-      "iconic"
+      "iconic",
+      "daily"
     ]
   }
 }

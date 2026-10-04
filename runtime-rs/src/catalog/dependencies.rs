@@ -50,6 +50,7 @@ fn update(
             data: Some(data),
             patch: None,
             sort_order: None,
+            created_at: None,
             remove: false,
         });
     }

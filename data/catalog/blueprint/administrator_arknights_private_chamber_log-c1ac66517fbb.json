@@ -1,45 +1,49 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_private_chamber_log",
-  "revision": 1,
-  "sortOrder": 758,
+  "revision": 2,
+  "sortOrder": 754,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "administrator_arknights_private_chamber_log",
     "characterId": "administrator_arknights",
-    "title": "管理员 · 窗边夜读小歇",
-    "description": "读完一章书，女性管理员穿白色休整服坐在窗边，捧起热饮休息。合拢的书放在身旁，桌灯照亮杯口水汽，窗外是微弱星光。",
-    "category": "基地日常",
-    "location": "私人休息舱窗边",
-    "action": "读书后合上书，坐在窗边双手捧起热饮",
-    "mood": "安宁舒适",
-    "lighting": "窗边桌灯暖光",
-    "timeOfDay": "夜晚",
-    "camera": "cowboy shot, eye level",
-    "outfitId": "cryo_recovery_garb",
-    "recommendedSize": "1152x1536",
+    "title": "管理员 · 雨夜等你讲完今天的事",
+    "description": "雨夜在家，管理员穿浅灰家居长裤套装，盘坐在沙发一侧，双手松松抱住靠垫。她把脸转向你专心听，眉眼放松，身旁留着位置；茶几上的两杯热饮和雨痕窗形成安稳的陪伴感。",
+    "category": "相伴日常",
+    "location": "雨夜家中客厅",
+    "action": "盘坐抱着靠垫，露出面部专心听镜头位置的你说话",
+    "mood": "安稳的倾听与陪伴",
+    "lighting": "沙发旁暖色落地灯",
+    "timeOfDay": "雨夜",
+    "camera": "medium shot, eye level",
+    "outfitId": "gray_piped_pajamas",
+    "recommendedSize": "1536x1152",
     "sceneTags": [
-      "indoors",
-      "window",
-      "book",
-      "cup",
-      "holding_cup",
+      "couch",
+      "rain",
+      "floor_lamp",
+      "cushion",
+      "mug",
       "sitting",
-      "night",
-      "cowboy_shot"
+      "looking_at_viewer",
+      "listening",
+      "light_smile",
+      "upper_body"
     ],
     "promptTokens": [
-      "indoors",
-      "window",
-      "book",
-      "cup",
-      "holding_cup",
+      "couch",
+      "rain",
+      "floor_lamp",
+      "cushion",
+      "mug",
       "sitting",
-      "night",
-      "cowboy_shot"
+      "looking_at_viewer",
+      "listening",
+      "light_smile",
+      "upper_body"
     ],
-    "promptProse": "Having finished a chapter, the female Endministrator sets her closed book beside the window seat and warms her hands around a mug. Her loose white recovery tunic settles over her lap. The desk lamp lights the steam above the cup, with only a few faint stars visible beyond the cabin glass.",
+    "promptProse": "Nothing interrupts your story tonight. The female Endministrator sits cross-legged at one end of the sofa, arms loosely around a cushion, and listens to the viewer with a relaxed uncovered face. An open seat remains beside her. Two warm mugs rest on the table while rain tracks the dark window; the floor lamp catches the pale cotton pajama folds and her tousled dark bob.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -95,6 +99,8 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "daily"
+    ]
   }
 }

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "typhon_arknights/charcoal_city_date",
+  "revision": 1,
+  "sortOrder": 1101,
+  "createdAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "data": {
+    "characterId": "typhon_arknights",
+    "outfit": {
+      "id": "charcoal_city_date",
+      "default": false,
+      "isDefault": false,
+      "name": "灰呢短外套与莓紫长裙（创作）",
+      "prose": "a tailored charcoal wool jacket with silver toggles over an ivory mock-neck blouse, a berry-purple pleated midi skirt, a slim leather crossbody bag, opaque dark tights and polished lace-up ankle boots",
+      "tokens": [
+        "grey_jacket",
+        "blouse",
+        "high_collar",
+        "purple_skirt",
+        "pleated_skirt",
+        "long_skirt",
+        "crossbody_bag",
+        "black_pantyhose",
+        "ankle_boots"
+      ],
+      "category": "日常衣装（创作）"
+    }
+  }
+}

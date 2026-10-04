@@ -1,45 +1,49 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_vehicle_overhaul",
-  "revision": 1,
-  "sortOrder": 759,
+  "revision": 2,
+  "sortOrder": 755,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "rossy_arknights_vehicle_overhaul",
     "characterId": "rossy_arknights",
-    "title": "洛茜 · 文具店挑选手账",
-    "description": "洛茜站在文具店的小柜台前，翻开一本手账看看内页。红斗篷搭在肩后，浅金长发旁的狼耳轻轻竖起，狼尾从柜台边露出。",
-    "category": "生活日常",
-    "location": "街角文具店",
-    "action": "在文具店翻开一本手账，查看内页",
-    "mood": "好奇开心",
-    "lighting": "文具店窗边下午日光",
+    "title": "洛茜 · 挑好的小花就是送你的",
+    "description": "洛茜穿红兜帽斗篷与原作白裙，在花店门口把一小束雏菊举向你，脸上是藏不住的开心。狼耳从兜帽开口自然露出，蓬松尾巴弯在身后；另一只手轻轻捏着花束包装。",
+    "category": "相伴日常",
+    "location": "街角花店门口",
+    "action": "双手拿着小雏菊花束递向镜头，笑着看你",
+    "mood": "直接又明亮的喜欢",
+    "lighting": "花店门口明亮日光",
     "timeOfDay": "下午",
     "camera": "cowboy shot, eye level",
     "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "shop",
-      "indoors",
-      "book",
-      "open_book",
-      "holding_book",
+      "flower_shop",
+      "doorway",
+      "daisy_(flower)",
+      "bouquet",
+      "holding_flower",
+      "smile",
+      "looking_at_viewer",
       "standing",
-      "looking_at_object",
+      "sunlight",
       "cowboy_shot"
     ],
     "promptTokens": [
-      "shop",
-      "indoors",
-      "book",
-      "open_book",
-      "holding_book",
+      "flower_shop",
+      "doorway",
+      "daisy_(flower)",
+      "bouquet",
+      "holding_flower",
+      "smile",
+      "looking_at_viewer",
       "standing",
-      "looking_at_object",
+      "sunlight",
       "cowboy_shot"
     ],
-    "promptProse": "Rossi opens a notebook at the small counter of a stationery shop and checks the spacing of its pages. Her wolf ears stand beside her long light-blonde hair, with her red cape resting behind her shoulders. Afternoon light falls on neatly arranged pens, and her fluffy tail curves around the side of the counter.",
+    "promptProse": "Chosen for you rather than for herself, a little bunch of daisies rises between Rossi's hands at the flower-shop doorway. She offers it to the viewer with an open, delighted smile, one thumb smoothing the paper wrapping. Her wolf ears rise through openings in the red hood and her fluffy tail curves clear of the white dress. Bright afternoon light reaches the bouquet and the shop's shaded flower buckets.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -96,7 +100,8 @@
       "two people"
     ],
     "coverageTags": [
-      "iconic"
+      "iconic",
+      "daily"
     ]
   }
 }

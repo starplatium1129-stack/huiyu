@@ -5,9 +5,9 @@ export interface CatalogRecord {
   createdAt: string | null; updatedAt: string | null; data: Record<string, unknown> | unknown[]
 }
 export interface CatalogSummary extends Omit<CatalogRecord, 'data'> { title: string; characterId: string; category: string; rating: string }
-export interface CatalogQuery { kind: CatalogKind | 'media'; search?: string; character?: string; category?: string; rating?: string; sort?: string; page?: number; pageSize?: number }
+export interface CatalogQuery { kind: CatalogKind | 'media'; search?: string; character?: string; category?: string; rating?: string; sort?: string; page?: number; pageSize?: number; createdFrom?: string; createdTo?: string }
 export interface CatalogPage { ok: true; version: number; items: CatalogSummary[]; total: number; page: number; pageSize: number; facets: { characters: string[]; categories: string[]; ratings: string[] } }
-export interface CatalogChange { kind: CatalogKind; id: string; expectedRevision: number; data?: CatalogRecord['data']; patch?: Record<string, unknown>; sortOrder?: number; remove?: boolean }
+export interface CatalogChange { kind: CatalogKind; id: string; expectedRevision: number; data?: CatalogRecord['data']; patch?: Record<string, unknown>; sortOrder?: number; createdAt?: string; remove?: boolean }
 export interface CatalogReceipt { ok: true; preview: boolean; version: number; batch: string; items: Array<{ kind: CatalogKind; id: string; revision: number; removed: boolean }>; diffs: Array<{ kind: CatalogKind; id: string; before: CatalogRecord | null; after: CatalogRecord | null }> }
 export interface CatalogSnapshot { version: 1; records: CatalogRecord[]; retired: CatalogRecord[] }
 const kinds: CatalogKind[] = ['character', 'outfit', 'scene', 'blueprint', 'document']

@@ -1,47 +1,51 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_bridge_overlook",
-  "revision": 1,
-  "sortOrder": 754,
+  "revision": 2,
+  "sortOrder": 750,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "administrator_arknights_bridge_overlook",
     "characterId": "administrator_arknights",
-    "title": "管理员 · 窗台照料绿植",
-    "description": "女性管理员站在休息室窗台前，略微倾斜小水壶，给盆栽浇水。白色内搭与黑色外套的袖口保持干净，窗外晴朗，叶片上留着细小水珠。",
-    "category": "基地日常",
-    "location": "休息室窗台",
-    "action": "站在窗台旁倾斜小水壶，给一盆绿植浇水",
-    "mood": "耐心平静",
-    "lighting": "窗前明亮的下午日光",
-    "timeOfDay": "下午",
-    "camera": "cowboy shot, from side",
-    "outfitId": "standard",
+    "title": "管理员 · 周末露台替你留一把椅子",
+    "description": "周末露台咖啡店，管理员换上石墨短夹克与奶油白直筒裤，露出面部。她站在圆桌旁替你拉开椅子，回头笑着招呼；两杯饮料与一份共享蛋糕摆在桌上，栏边绿植轻轻晃动。",
+    "category": "相伴日常",
+    "location": "城市露台咖啡店",
+    "action": "拉开空椅子，露出面部回头迎接镜头",
+    "mood": "轻松自在的约会笑意",
+    "lighting": "露台遮阳伞下明亮柔光",
+    "timeOfDay": "午后",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "graphite_city_layers",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "indoors",
-      "window",
-      "windowsill",
+      "terrace",
+      "cafe",
+      "round_table",
+      "chair",
+      "cup",
+      "cake",
       "potted_plant",
-      "watering_can",
-      "watering",
-      "standing",
-      "cowboy_shot",
-      "from_side"
+      "hand_on_chair",
+      "looking_at_viewer",
+      "smile",
+      "cowboy_shot"
     ],
     "promptTokens": [
-      "indoors",
-      "window",
-      "windowsill",
+      "terrace",
+      "cafe",
+      "round_table",
+      "chair",
+      "cup",
+      "cake",
       "potted_plant",
-      "watering_can",
-      "watering",
-      "standing",
-      "cowboy_shot",
-      "from_side"
+      "hand_on_chair",
+      "looking_at_viewer",
+      "smile",
+      "cowboy_shot"
     ],
-    "promptProse": "The female Endministrator tips a small watering can over a plant on the lounge windowsill. She watches the stream reach the soil, keeping her jacket cuff clear of the leaves. A bright afternoon sky fills the window behind the pot, and a few droplets cling to the fresh green foliage.",
+    "promptProse": "A free weekend replaces the command schedule with a table on a cafe terrace. The female Endministrator pulls out your chair and turns back smiling, her face fully visible above the ivory neckline. A shared slice of cake sits between two drinks. Sun filtered through the parasol softens the graphite short jacket and cream trousers, while leaves along the railing stir behind her.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -97,6 +101,8 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "daily"
+    ]
   }
 }

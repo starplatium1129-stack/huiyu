@@ -1,45 +1,49 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_greenhouse_plant_wonder",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 701,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "typhon_arknights_greenhouse_plant_wonder",
     "characterId": "typhon_arknights",
-    "title": "提丰 · 温室给花浇水",
-    "description": "提丰站在温室过道里，提着小水壶给花盆慢慢浇水。深绿毛衣的袖口挽到手腕上，浅紫长发垂在背后，叶片在天窗光下透着亮色。",
-    "category": "罗德岛日常",
-    "location": "舰内温室过道",
-    "action": "站在花架前倾斜小水壶，让水流落到盆土里",
-    "mood": "耐心专注",
-    "lighting": "温室天窗柔和日光",
-    "timeOfDay": "下午",
-    "camera": "full body, from side",
-    "outfitId": "rhodes_casual_knit",
+    "title": "提丰 · 书店里选下次一起去的地方",
+    "description": "周末书店的旅行书架前，提丰穿灰呢短外套与莓紫长裙，抱着一本打开的图册。她用指尖点着湖边木屋的照片，把书页朝你倾斜，眼神询问你愿不愿意一起去。",
+    "category": "相伴日常",
+    "location": "城市书店旅行书架前",
+    "action": "抱着打开的图册，指向湖边木屋照片并向你展示",
+    "mood": "认真规划共同出游的期待",
+    "lighting": "书店窗边漫射日光",
+    "timeOfDay": "周末下午",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "charcoal_city_date",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "greenhouse",
-      "potted_plant",
-      "flower",
-      "watering_can",
-      "watering",
+      "bookstore",
+      "bookshelf",
+      "book",
+      "open_book",
+      "pointing",
+      "holding_book",
+      "looking_at_viewer",
       "standing",
-      "full_body",
-      "from_side"
+      "window_light",
+      "cowboy_shot"
     ],
     "promptTokens": [
-      "greenhouse",
-      "potted_plant",
-      "flower",
-      "watering_can",
-      "watering",
+      "bookstore",
+      "bookshelf",
+      "book",
+      "open_book",
+      "pointing",
+      "holding_book",
+      "looking_at_viewer",
       "standing",
-      "full_body",
-      "from_side"
+      "window_light",
+      "cowboy_shot"
     ],
-    "promptProse": "In the shipboard greenhouse aisle, Typhon tilts a small watering can toward the soil of a flowering pot. She has pushed her sweater cuffs above her wrists and keeps her long lavender hair behind her shoulders. Light from the skylight passes through broad leaves along the plant shelf, brightening the clear path at her feet.",
+    "promptProse": "Weekend plans begin between the travel shelves: Typhon opens an illustrated guide to a photograph of a lakeside cabin and tilts the spread toward the viewer. One fingertip stays on the picture while her questioning gaze asks if you would go with her. Her berry pleated skirt falls beneath a charcoal short jacket; soft daylight from the bookshop window illuminates the paper and her pale lavender hair.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -95,6 +99,8 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "daily"
+    ]
   }
 }

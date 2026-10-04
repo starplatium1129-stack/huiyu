@@ -1,45 +1,51 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_tundra_stalking_white",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 698,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "typhon_arknights_tundra_stalking_white",
     "characterId": "typhon_arknights",
-    "title": "提丰 · 雪后慢步归家",
-    "description": "雪停以后，提丰沿着熟悉的小径往木屋走。她拢着白色披风，一只手整理围巾，靴子踩出一串清晰脚印，远处屋顶升起炊烟。",
-    "category": "萨米日常",
-    "location": "通往木屋的雪地小径",
-    "action": "沿雪地小径缓步回家，一只手整理围巾",
-    "mood": "放松自在",
-    "lighting": "雪后阴天的柔和漫射光",
+    "title": "提丰 · 咖啡店给你留了靠窗位",
+    "description": "街角咖啡店里，提丰穿松绿绞花针织与黑色连裤袜的完整便装，坐在窗边双人桌的一侧。她把对面椅子轻轻拉开，抬头看向刚到的你；桌上两杯热饮还冒着气，围巾收在椅背上。",
+    "category": "相伴日常",
+    "location": "街角咖啡店窗边双人桌",
+    "action": "坐着拉开对面的空椅子，抬头迎接镜头",
+    "mood": "有点腼腆的期待",
+    "lighting": "咖啡店柔和窗光",
     "timeOfDay": "下午",
-    "camera": "full body, eye level",
-    "outfitId": "tundra_tracker_mantle",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "rhodes_casual_knit",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "outdoors",
-      "snow",
-      "path",
-      "walking",
-      "scarf",
-      "adjusting_clothes",
-      "footprints",
-      "full_body"
+      "cafe",
+      "window",
+      "table",
+      "chair",
+      "cup",
+      "steam",
+      "sitting",
+      "hand_on_chair",
+      "looking_at_viewer",
+      "light_smile",
+      "cowboy_shot"
     ],
     "promptTokens": [
-      "outdoors",
-      "snow",
-      "path",
-      "walking",
-      "scarf",
-      "adjusting_clothes",
-      "footprints",
-      "full_body"
+      "cafe",
+      "window",
+      "table",
+      "chair",
+      "cup",
+      "steam",
+      "sitting",
+      "hand_on_chair",
+      "looking_at_viewer",
+      "light_smile",
+      "cowboy_shot"
     ],
-    "promptProse": "Heading home after the snowfall, Typhon follows the familiar path toward a cabin with smoke rising from its chimney. One hand adjusts her scarf while the other gathers her white cape close. Her boots leave distinct prints in the soft snow under an even overcast sky.",
+    "promptProse": "Across a narrow cafe table, Typhon draws the spare chair out for the viewer and glances up with a shy welcoming smile. Two hot drinks wait between the seats, their steam catching the window light. Her green cable-knit collar and cream boot cuffs make a considered everyday outfit, while a folded scarf hangs over her own chair and a rainy street blurs beyond the glass.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -95,6 +101,8 @@
       "second person",
       "two people"
     ],
-    "coverageTags": []
+    "coverageTags": [
+      "daily"
+    ]
   }
 }

@@ -1,47 +1,49 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_tactical_briefing",
-  "revision": 1,
-  "sortOrder": 747,
+  "revision": 2,
+  "sortOrder": 743,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_tactical_briefing",
     "characterId": "zhuang_fangyi_arknights",
-    "title": "庄方宜 · 茶馆晨间小坐",
-    "description": "庄方宜坐在茶馆窗边，双手捧起一盏刚沏好的茶。晨光落在黑白分离袖上，散开的墨黑渐青绿长发垂在椅背，窗外是安静的街巷。",
-    "category": "武陵日常",
-    "location": "武陵茶馆窗边",
-    "action": "坐在窗边双手捧茶，低头看杯口的热气",
-    "mood": "放松安静",
-    "lighting": "窗边柔和晨光",
-    "timeOfDay": "早晨",
-    "camera": "cowboy shot, eye level",
+    "title": "庄方宜 · 下班后的茶留给你",
+    "description": "下班后在街角茶馆碰面，庄方宜仍穿白绿中式原作衣装。她坐在茶桌一侧，轻轻把一杯温茶推到你面前，抬眼微笑；手边的文件已合上，两份小点心摆在中间。",
+    "category": "相伴日常",
+    "location": "街角茶馆双人茶桌",
+    "action": "将温茶推向镜头，抬眼迎接你",
+    "mood": "下班后卸下紧绷的温柔",
+    "lighting": "茶馆窗边傍晚柔光",
+    "timeOfDay": "傍晚",
+    "camera": "medium shot, eye level",
     "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "cafe",
-      "window",
+      "teahouse",
       "table",
       "teacup",
+      "cup",
+      "pastry",
       "holding_cup",
       "sitting",
-      "looking_at_object",
-      "cowboy_shot",
-      "sunlight"
+      "looking_at_viewer",
+      "light_smile",
+      "upper_body"
     ],
     "promptTokens": [
-      "cafe",
-      "window",
+      "teahouse",
       "table",
       "teacup",
+      "cup",
+      "pastry",
       "holding_cup",
       "sitting",
-      "looking_at_object",
-      "cowboy_shot",
-      "sunlight"
+      "looking_at_viewer",
+      "light_smile",
+      "upper_body"
     ],
-    "promptProse": "At a small teahouse table in Wuling, Zhuang Fangyi cups warm tea in both hands and watches the steam curl above its rim. Morning light falls across her detached black-and-white sleeves. Her loose black-to-teal hair trails over the chair back, and a quiet lane is visible through the open window.",
+    "promptProse": "Work is put away in a closed folder at the corner of the tea table. Zhuang Fangyi nudges a warm cup toward the viewer, keeping her detached sleeve clear of the rim, and looks up with an unhurried smile. A second cup and two small pastries turn the after-work stop into time for the two of you. Low window light outlines the green fabric and the hanging waist ornaments.",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -98,7 +100,8 @@
       "two people"
     ],
     "coverageTags": [
-      "iconic"
+      "iconic",
+      "daily"
     ]
   }
 }

@@ -77,6 +77,7 @@ fn patch(kind: &str, id: &str, revision: i64, value: Value) -> Change {
         data: None,
         patch: Some(value),
         sort_order: None,
+        created_at: None,
         remove: false,
     }
 }
@@ -101,15 +102,45 @@ fn import_preserves_values_unknown_dates_and_summary_queries() {
     let mut blueprint = catalog.get("scene", "sc001").unwrap();
     blueprint.kind = "blueprint".into();
     blueprint.id = "bp_fixture".into();
-    blueprint.data = json!({"id":"bp_fixture","title":"角色蓝图","characterId":"nene","adult":false});
+    blueprint.data =
+        json!({"id":"bp_fixture","title":"角色蓝图","characterId":"nene","adult":false});
     write::put(&catalog.connection, &blueprint, false).unwrap();
-    let media = catalog.query(&Query { kind:"media".into(), ..Default::default() }).unwrap();
+    let media = catalog
+        .query(&Query {
+            kind: "media".into(),
+            ..Default::default()
+        })
+        .unwrap();
     assert_eq!(media["total"], 3);
     let media_items = media["items"].as_array().unwrap();
-    assert!(media_items.iter().any(|item| item["kind"] == "blueprint" && item["characterId"] == "nene"));
+    assert!(
+        media_items
+            .iter()
+            .any(|item| item["kind"] == "blueprint" && item["characterId"] == "nene")
+    );
     assert!(media_items.iter().any(|item| item["kind"] == "scene"));
     assert!(media_items.iter().all(|item| item.get("data").is_none()));
     assert_eq!(catalog.next_scene_id().unwrap(), "sc006");
+    let mut known_date = patch("scene", "sc001", 1, json!({}));
+    known_date.created_at = Some("2026-10-03T22:25:25+08:00".into());
+    let mut catalog = catalog;
+    catalog.apply(&[known_date.clone()], true).unwrap();
+    assert!(catalog.get("scene", "sc001").unwrap().created_at.is_none());
+    catalog.apply(&[known_date], false).unwrap();
+    let dates = catalog
+        .query(&Query {
+            kind: "scene".into(),
+            created_from: "2026-10-03T00:00:00+08:00".into(),
+            created_to: "2026-10-04T00:00:00+08:00".into(),
+            ..Default::default()
+        })
+        .unwrap();
+    assert_eq!(dates["total"], 1);
+    assert_eq!(dates["items"][0]["id"], "sc001");
+    assert!(catalog.get("scene", "sc002").unwrap().created_at.is_none());
+    let mut rewrite_date = patch("scene", "sc001", 2, json!({}));
+    rewrite_date.created_at = Some("2026-10-04T00:00:00+00:00".into());
+    assert!(catalog.apply(&[rewrite_date], false).is_err());
 }
 #[test]
 fn unrelated_edits_merge_but_stale_records_rollback_the_entire_batch() {
@@ -191,6 +222,7 @@ fn tag_renames_and_scene_retirement_keep_all_references_in_one_transaction() {
                 data: Some(tags),
                 patch: None,
                 sort_order: None,
+                created_at: None,
                 remove: false,
             }],
             false,
@@ -209,6 +241,7 @@ fn tag_renames_and_scene_retirement_keep_all_references_in_one_transaction() {
                 data: None,
                 patch: None,
                 sort_order: None,
+                created_at: None,
                 remove: true,
             }],
             false,
@@ -271,6 +304,7 @@ fn snapshot_import_preserves_local_edits_and_exports_restore_current_and_retired
                 data: None,
                 patch: None,
                 sort_order: None,
+                created_at: None,
                 remove: true,
             }],
             false,
@@ -285,6 +319,93 @@ fn snapshot_import_preserves_local_edits_and_exports_restore_current_and_retired
     .unwrap();
     assert_eq!(restored.snapshot().unwrap(), catalog.snapshot().unwrap());
     assert!(restored.get("scene", "sc002").is_err());
+    let mut other = catalog.get("character", "nene").unwrap();
+    other.id = "other".into();
+    other.data = json!({"id":"other","profile":{"id":"other","name":"Project name"}});
+    write::put(&catalog.connection, &other, false).unwrap();
+    catalog.export(&target).unwrap();
+    other.data["profile"]["name"] = "Personal name".into();
+    write::put(&catalog.connection, &other, false).unwrap();
+    catalog
+        .apply(
+            &[patch(
+                "scene",
+                "sc001",
+                1,
+                json!({"title":"Selected update"}),
+            )],
+            false,
+        )
+        .unwrap();
+    let scope = snapshots::Scope {
+        characters: vec!["nene".into()],
+        records: vec![],
+    };
+    let selected = catalog.snapshot_selected(&scope).unwrap();
+    assert_eq!(selected["records"].as_array().unwrap().len(), 2); // character and active scene
+    assert_eq!(selected["retired"][0]["id"], "sc002");
+    catalog.export_selected(&target, &scope).unwrap();
+    let (records, retired) = snapshots::read(&target).unwrap();
+    assert_eq!(
+        records.iter().find(|r| r.id == "other").unwrap().data["profile"]["name"],
+        "Project name"
+    );
+    assert_eq!(
+        records.iter().find(|r| r.id == "sc001").unwrap().data["title"],
+        "Selected update"
+    );
+    assert_eq!(retired[0].id, "sc002");
+    write::put(&catalog.connection, &other, true).unwrap();
+    let retired_character = catalog
+        .snapshot_selected(&snapshots::Scope {
+            characters: vec!["other".into()],
+            records: vec![],
+        })
+        .unwrap();
+    assert_eq!(retired_character["retired"][0]["id"], "other");
+}
+#[test]
+fn cli_character_record_and_history_read_the_same_revision_bearing_records() {
+    let (_temp, options, _catalog) = fixture();
+    let base = vec![
+        "--root".to_owned(),
+        options.source.to_string_lossy().into_owned(),
+        "--runtime-root".into(),
+        options
+            .database
+            .parent()
+            .unwrap()
+            .parent()
+            .unwrap()
+            .to_string_lossy()
+            .into_owned(),
+    ];
+    let call = |action: &str, flags: &[&str]| {
+        let mut args = vec!["catalog".into(), action.into()];
+        args.extend(base.clone());
+        args.extend(flags.iter().map(|v| v.to_string()));
+        cli::run(&args).unwrap().unwrap()
+    };
+    let bundle = call("character", &["--character", "nene"]);
+    assert_eq!(bundle["records"].as_array().unwrap().len(), 3);
+    assert!(
+        bundle["records"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|r| r["revision"] == 1)
+    );
+    assert_eq!(
+        call(
+            "record",
+            &["--kind", "scene", "--id", "sc001", "--revision", "1"]
+        )["record"]["data"]["story"],
+        "A quiet room."
+    );
+    assert_eq!(
+        call("history", &["--kind", "scene", "--id", "sc001"])["items"][0]["revision"],
+        1
+    );
 }
 #[test]
 fn activated_store_never_silently_reseeds_a_missing_database() {
