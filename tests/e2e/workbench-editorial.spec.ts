@@ -23,6 +23,49 @@ async function prepare(page: Page, theme: string, online = false) {
 }
 
 for (const theme of ['light', 'dark']) {
+  test(`floating drawing feedback keeps generation reachable ${theme}`, async ({ page }, info) => {
+    await prepare(page,theme,true)
+    await page.setViewportSize({width:1440,height:960})
+    await page.getByRole('button',{name:'专家模式',exact:true}).click()
+    await page.locator('.engine-switch button').first().click()
+    let fail = false, submissions = 0
+    await page.route('**/api/interrogate', route => fail
+      ? route.fulfill({status:500,json:{error:'隔离反推错误'}})
+      : route.fulfill({json:{ok:true,engine:'pixai',model:'pixai-tagger-v1.0',mode:'tag',threshold:.17,
+        tags:['sitting','park','blue_hair'],scores:{sitting:.9,park:.9,blue_hair:.9},caption:'',characterTags:[],
+        rating:{general:1,sensitive:0,questionable:0,explicit:0}}}))
+    await page.route('**/api/generation/jobs**', route => {
+      if(route.request().method()==='POST')submissions++
+      return route.fulfill({json:{ok:true,job:{id:'feedback-fixture',status:'running',provider:'webui',seed:42,progress:.2,resultAvailable:false,metadata:{seed:42}}}})
+    })
+    const upload=page.locator('input[type=file][accept="image/*"]').first()
+    for(const viewport of [{width:1440,height:960},{width:1024,height:640}]) {
+      await page.setViewportSize(viewport)
+      await upload.setInputFiles('assets/characters/natsume-home-cg.jpg')
+      const notice=page.locator('.toast-item').filter({hasText:'已采用 2 个参考词条'}).last()
+      await expect(notice).toContainText('已排除参考人物特征 1 项')
+      await notice.hover()
+      const generate=page.getByRole('button',{name:'生成图片',exact:true})
+      await expect(generate).toBeInViewport({ratio:1})
+      const [toastBox,buttonBox,stackBox]=await Promise.all([notice.boundingBox(),generate.boundingBox(),page.locator('.toast-stack').boundingBox()])
+      expect(stackBox!.x).toBeLessThanOrEqual(24)
+      expect(stackBox!.y+stackBox!.height).toBeGreaterThan(viewport.height-40)
+      expect(toastBox!.x+toastBox!.width).toBeLessThanOrEqual(buttonBox!.x)
+      expect(await notice.locator('.toast-msg').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      await generate.click({trial:true})
+      await page.screenshot({path:info.outputPath(`floating-feedback-${theme}-${viewport.width}.png`)})
+    }
+    fail=true
+    await upload.setInputFiles('assets/characters/natsume-home-cg.jpg')
+    const error=page.locator('.toast-item').filter({hasText:'隔离反推错误'})
+    await expect(error).toBeVisible()
+    await error.scrollIntoViewIfNeeded()
+    const generate=page.getByRole('button',{name:'生成图片',exact:true})
+    const [toastBox,buttonBox]=await Promise.all([error.boundingBox(),generate.boundingBox()])
+    expect(toastBox!.x+toastBox!.width).toBeLessThanOrEqual(buttonBox!.x)
+    await generate.click()
+    await expect.poll(()=>submissions).toBe(1)
+  })
   test(`atelier panels preserve drafts and focus mode ${theme}`, async ({ page }, testInfo) => {
     await prepare(page, theme)
     await expect(page.locator('.gen-bar-actions .btn-primary')).toBeDisabled()

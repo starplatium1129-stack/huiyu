@@ -5,6 +5,7 @@
     <div
       ref="stackEl"
       class="toast-stack"
+      :class="{ 'toast-stack-on-left': placement === 'bottom-left' }"
       aria-live="polite"
       aria-atomic="false"
       @mouseenter="pauseAll('hover')"
@@ -54,6 +55,7 @@ import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIc
 import { useToast, type ToastItem, type ToastType } from '@/composables/useToast'
 
 const { toasts, dismiss, pauseAll, resumeAll } = useToast()
+withDefaults(defineProps<{ placement?: 'bottom-left' | 'bottom-right' }>(), { placement: 'bottom-right' })
 const stackEl = ref<HTMLElement | null>(null)
 
 function onFocusOut(event: FocusEvent) {
@@ -255,6 +257,8 @@ function onToastLeave(el: Element, done: () => void) {
   @apply tw:whitespace-pre-wrap;
   word-break: break-word;
 }
+.toast-stack-on-left { left:var(--s-4); right:auto; }
+.toast-stack-on-left .toast-item { transform-origin:bottom left; }
 .toast-item:active { @apply tw:cursor-grabbing; }
 
 .toast-icon { @apply tw:grid tw:w-[28px] tw:h-[28px] tw:rounded-md tw:shrink-0; place-items:center; font-size: 1em; background:var(--accent-soft); }

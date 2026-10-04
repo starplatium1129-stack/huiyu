@@ -11,7 +11,7 @@
     </RouterView>
   </div>
   <AppInteractionLayer v-if="!isCompanion" />
-  <AppToast v-if="!isCompanion" />
+  <AppToast v-if="!isCompanion" :placement="route.path === '/prompt-builder' ? 'bottom-left' : 'bottom-right'" />
   <ConfirmDialog />
   <AppearancePreferences hide-triggers />
   <TaskCenter v-if="!isCompanion" />
