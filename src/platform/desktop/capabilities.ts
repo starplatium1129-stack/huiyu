@@ -22,6 +22,7 @@ const capabilities: CompanionDesktopBridge = {
   setAutostart: enabled => invoke('set_autostart', { enabled }), pickFiles: () => invoke('pick_files'),
   saveImage: payload => invoke('save_image', { data: Array.from(payload.data), name: payload.name }),
   openWorkspace: () => invoke('open_workspace'), openRuntime: () => invoke('open_runtime'), openLog: () => invoke('open_log'),
+  pickWorkspace: root => invoke('pick_workspace', { root }),
   getWorkspace: () => invoke('get_workspace'), setWorkspace: root => invoke('set_workspace', { root }),
   notify: (title, body) => { void invoke('notify', { title, body }) },
   setProgress: progress => { void invoke('set_progress', { progress }) },

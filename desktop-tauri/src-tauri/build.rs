@@ -21,6 +21,7 @@ fn main() {
                 "is_packaged",
                 "get_workspace",
                 "set_workspace",
+                "pick_workspace",
                 "notify",
                 "open_atelier",
                 "open_companion_chat",

@@ -1,7 +1,7 @@
 use super::*;
 use axum::{Json, Router, routing::get};
 
-fn fixture(saved: Value) -> (tempfile::TempDir, Arc<ControlService>) {
+pub(super) fn fixture(saved: Value) -> (tempfile::TempDir, Arc<ControlService>) {
     let temp = tempfile::tempdir().unwrap();
     let root = temp.path().to_path_buf();
     std::fs::create_dir_all(root.join("runtime")).unwrap();
@@ -381,16 +381,18 @@ async fn routes_reject_tunnel_local_spoof_and_preserve_sd_status_shape() {
         s.shutdown.clone(),
     );
     let app = router(s.clone()).with_state(state);
-    let request = Request::builder()
-        .uri("/api/share-link")
-        .header("host", "localhost:3210")
-        .header("x-forwarded-for", "203.0.113.1")
-        .extension(ConnectInfo(
-            "127.0.0.1:3333".parse::<std::net::SocketAddr>().unwrap(),
-        ))
-        .body(Body::empty())
-        .unwrap();
-    assert_eq!(app.clone().oneshot(request).await.unwrap().status(), 403);
+    for path in ["/api/share-link", "/api/local-setup"] {
+        let request = Request::builder()
+            .uri(path)
+            .header("host", "localhost:3210")
+            .header("x-forwarded-for", "203.0.113.1")
+            .extension(ConnectInfo(
+                "127.0.0.1:3333".parse::<std::net::SocketAddr>().unwrap(),
+            ))
+            .body(Body::empty())
+            .unwrap();
+        assert_eq!(app.clone().oneshot(request).await.unwrap().status(), 403);
+    }
     let request = Request::builder()
         .uri("/api/sd-status")
         .body(Body::empty())

@@ -82,6 +82,8 @@
         </div>
       </section>
 
+      <LocalSetupPanel />
+
       <!-- 操作进度 -->
       <div v-if="operation" class="panel-card operation-panel" :class="operation.status">
         <div class="operation-head">
@@ -296,6 +298,7 @@ import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'
 import ControlIntro from '@/components/ControlIntro.vue'
+import LocalSetupPanel from '@/components/LocalSetupPanel.vue'
 import ResourceLibraryPanel from '@/components/ResourceLibraryPanel.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
 import { useControlNavigation } from '@/composables/useControlNavigation'
@@ -381,6 +384,7 @@ async function confirmServiceAction(service: string, action: string): Promise<vo
 
 const sections: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
   { id: 'control-overview', label: '运行概览', icon: 'eye' },
+  { id: 'control-setup', label: '首次配置', icon: 'gear' },
   { id: 'control-resources', label: '服务与显存', icon: 'model' },
   { id: 'control-library', label: '离线资源库', icon: 'image' },
   { id: 'control-services', label: '连接与声线', icon: 'gear' },

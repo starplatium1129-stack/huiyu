@@ -206,6 +206,7 @@ fn main() {
             bridge::is_packaged,
             bridge::get_workspace,
             bridge::set_workspace,
+            bridge::pick_workspace,
             bridge::notify,
             bridge::open_atelier,
             bridge::open_companion_chat,
@@ -341,6 +342,10 @@ fn main() {
             .port(configured_port)
             .env({
                 let mut env = main_shared::gateway_env(&state.paths, is_packaged, Some(&state.workspace_root.lock().unwrap()));
+                // Retain the exact workspace passed to this gateway, including the default/env fallback.
+                if let Some((_, root)) = env.iter().find(|(key, _)| key == "AI_WORKSPACE_ROOT") {
+                    *state.workspace_root.lock().unwrap() = root.clone();
+                }
                 if ui_entry::bundled(app.handle()) { env.push(("AICS_DESKTOP_BUNDLED_UI".into(), "1".into())); }
                 env
             })

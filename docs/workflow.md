@@ -487,7 +487,7 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 底层游戏式安装器：`installer:build` 生成模板与素材，`installer:preview --capture --page=welcome` 安全预览；详情见 [安装界面维护](guides/desktop/game-installer.md)。`package:tauri` 已自动接入，无需手工修改生成的 NSIS 脚本。
 仅更改安装界面且已有同版本程序时，`installer:bundle` 重新打包并签名；它不编译应用源码。
 
-参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口。
+参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口，只支持 AI 工作区下 `ComfyUI/main.py` 与 `ComfyUI/venv/Scripts/python.exe` 的 Windows venv 布局。两条启动入口默认不强制 SageAttention；确认已在该环境安装后可显式传 `-UseSageAttention`，或让绘遇/脚本启动进程继承 `AICS_COMFY_USE_SAGE_ATTENTION=1`。其他布局需自行启动并配置服务地址，不自动迁移或安装依赖。
 
 桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认复用匹配当前源码的桌面构建回执和暂存资源，不在安装目录重建数据；`deploy:desktop:full` 先执行完整桌面构建，再校验能否同步静态资源。只有宿主 EXE、Rust EXE 和两个 DLL 均与安装版本一致时才允许增量，否则须完整安装。默认同步会清 WebView2 缓存并重启桌面端。
 

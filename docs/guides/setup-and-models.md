@@ -47,7 +47,7 @@ $env:AICS_TRANSLATION_MODEL = 'D:\HuiyuAI\Voice\models\translation\m2m100_418m'
 $env:TRANSLATION_PYTHON = 'D:\HuiyuAI\GPT-SoVITS-env\python.exe'
 ```
 
-桌面端还要在 Companion 的「AI 工作区」设置选择 `D:\HuiyuAI`；桌面保存的目录会用于启动网关，不能只改变终端的扫描变量。WD14/翻译的独立环境变量需由启动绘遇的进程继承。普通新机可以提前复制下述文件，不需要安装 Node 运行下载脚本。
+桌面端还要在「AI 工作区」设置中用「选择文件夹」选择 `D:\HuiyuAI`（或手动输入路径）；保存后完全退出并重启绘遇生效，不会自动移动文件或中断当前生成。已保存目录与本次运行目录可能不同，不能只改变终端的扫描变量。WD14/翻译的独立环境变量需由启动绘遇的进程继承。普通新机可以提前复制下述文件，不需要安装 Node 运行下载脚本。
 
 ```text
 D:\HuiyuAI\

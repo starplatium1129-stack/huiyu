@@ -549,11 +549,12 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['read-only'], machine: ['node'], switches: { '--prune': ['delete'] }, resume: 'idempotent', evidence: 'scripts/maintenance/clean-runtime-experiments.js:31-43,121-143', unknown: [], notes: ['--prune 仅删已收编实验目录（KNOWN_EXPERIMENTS/tmp-*）且超 --days（默认 30）；白名单与未识别目录永不删'] },
   },
   'comfy:start': {
-    desc: '启动本机 ComfyUI（reference/showcase 链路依赖前置，--disable-smart-memory）',
+    desc: '启动本机 ComfyUI（AI 工作区下的 Windows venv 布局）',
     cmd: ['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/maintenance/start-comfyui.ps1'],
     docs: 'scripts/maintenance/start-comfyui.ps1:1',
-    needs: 'ComfyUI 已安装且权重就位',
-    run: { nature: ['service'], machine: ['windows'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/start-comfyui.ps1:51', unknown: [] },
+    needs: 'AI 工作区下 ComfyUI/main.py、ComfyUI/venv/Scripts/python.exe 已准备；所需权重另验',
+    opts: '[-UseSageAttention] 显式启用已安装的可选 SageAttention；也可由启动进程设置 AICS_COMFY_USE_SAGE_ATTENTION=1',
+    run: { nature: ['service'], machine: ['windows'], switches: { '-UseSageAttention': ['service'] }, resume: 'na', evidence: 'scripts/maintenance/start-comfyui.ps1:1', unknown: [] },
   },
   // ── test: 套件入口 ────────────────────────────────────────────────
   'check:domain-types': {

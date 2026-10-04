@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest'
-import { onDesktopNavigate } from './capabilities'
+import { getDesktopCapabilities, onDesktopNavigate } from './capabilities'
 
 const role = vi.hoisted(() => ({ value: '' }))
 vi.mock('./runtime.ts', () => ({ getDesktopWindowRole: () => role.value }))
@@ -23,4 +23,15 @@ it('routes a host broadcast only to the atelier, including after bootstrap recov
   stop()
   await Promise.resolve()
   expect(remove).toHaveBeenCalledOnce()
+})
+
+it('uses the native workspace picker without saving the selected directory', async () => {
+  const invoke = vi.fn().mockResolvedValueOnce(null).mockResolvedValueOnce('E:\\AI files')
+  vi.stubGlobal('window', { __TAURI__: { core: { invoke } } })
+  const desktop = getDesktopCapabilities()!
+  expect(await desktop.pickWorkspace('D:\\AI')).toBeNull()
+  expect(await desktop.pickWorkspace('D:\\AI')).toBe('E:\\AI files')
+  expect(invoke.mock.calls).toEqual([
+    ['pick_workspace', { root: 'D:\\AI' }], ['pick_workspace', { root: 'D:\\AI' }],
+  ])
 })

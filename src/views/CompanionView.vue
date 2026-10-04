@@ -83,14 +83,14 @@
                 ref="workspaceTriggerEl"
                 type="button"
                 class="companion-pop-item"
-                :data-state="workspaceExists ? 'ok' : 'missing'"
+                :data-state="workspaceExists && !workspaceRestartRequired ? 'ok' : 'missing'"
                 aria-haspopup="dialog"
                 :aria-expanded="workspaceOpen"
                 aria-controls="companion-workspace-settings"
                 @click="toggleWorkspace"
               >
                 <ArchiveIcon :name="workspaceExists ? 'success' : 'error'" />
-                <span>{{ workspaceExists ? 'AI 工作区已就绪' : 'AI 工作区缺失' }}</span>
+                <span>{{ workspaceRestartRequired ? '工作区待重启生效' : workspaceExists ? 'AI 工作区已配置' : 'AI 工作区缺失' }}</span>
               </button>
             </StudioTooltip>
           </div>
@@ -299,6 +299,7 @@
         :open="workspaceOpen"
         :model-value="workspaceInput"
         :saving="workspaceSaving"
+        :error="workspaceError"
         :return-focus-el="workspaceTriggerEl"
         @close="closeWorkspace"
         @save="saveWorkspace"
@@ -379,6 +380,7 @@ ignoreMouseEvents,
 toggleMouseEvents,
 enterImmersive,
 workspaceExists,
+workspaceRestartRequired,
 workspaceTooltip,
 workspaceOpen,
 volume,
@@ -444,6 +446,7 @@ replyAnnouncement,
 workspaceInput,
 saveWorkspace,
 workspaceSaving,
+workspaceError,
 openChatWindow,
 liveDotState,
 liveDotText

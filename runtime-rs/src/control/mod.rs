@@ -2,6 +2,7 @@ mod actions;
 mod http;
 mod probe;
 mod settings;
+mod setup;
 #[cfg(test)]
 mod tests;
 mod tunnel;
