@@ -72,7 +72,9 @@ Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/m
 
 ### 控制室的手动准备向导
 
-控制室「首次配置 → 按缺项准备 ComfyUI 与模型」把当前运行时目录、运行方式、依赖和固定三件套放在同一页。先核对真实 `models` 目录、容量与许可，再点击「查看准备清单」展开逐文件来源、目标路径和 SHA-256；下载链接只在用户点击时交给浏览器处理。可复制清单，放置后重新检查。改变运行方式、取消勾选或重新检查都会撤销本次清单确认；确认清单不会安装、执行脚本或接受许可证。
+控制室「首次配置 → 按缺项准备 ComfyUI 与模型」把当前运行时目录、运行方式、依赖和固定三件套放在同一页。先核对真实 `models` 目录、容量与许可，再点击「查看准备清单」展开逐文件来源、目标路径和 SHA-256；每个模型须单独显式下载，也保留浏览器来源链接与复制清单。改变运行方式、取消勾选或重新检查都会撤销本次清单确认；桌面已保存的新工作区仍待重启时不能开始下载。确认清单不代为接受许可，不安装 ComfyUI、Python、驱动或运行模型。
+
+下载仅接受当前已确认的运行时工作区和固定三个模型 ID；来源、revision、大小和 SHA-256 全由 `setup-models.json` 解析，不接收任意下载地址或目标路径。开始前检查目标盘剩余空间，在同目录临时文件中下载，大小与 SHA-256 相符才以不覆盖方式发布。已有同名文件先校验，相符直接复用，异内容或无法确认时报冲突，由用户自行核对；取消和失败移除本次临时文件，保留原模型。界面显示下载及校验进度，支持取消和显式重试；成功后重新读取 setup 状态。文件通过只证明下载与完整性，真实大文件、新电脑环境、加载和出图仍需另验。
 
 截至 2026-10-04，官方新用户推荐 Desktop，其 Python 环境由 Desktop 自行管理，布局因版本与实例类型而异；Portable 使用 `python_embeded`，官方 Manual 示例也可能使用 Conda。这些都不能直接当成绘遇受控启动要求的 `ComfyUI/main.py + ComfyUI/venv/Scripts/python.exe`。Desktop、Portable 及其他环境由原入口启动后连接；不要重命名环境或复制解释器来通过检查。[Desktop 官方文档](https://docs.comfy.org/installation/desktop/windows)、[Portable 官方文档](https://docs.comfy.org/installation/comfyui_portable_windows)、[硬件要求](https://docs.comfy.org/installation/system_requirements)。
 
@@ -142,6 +144,8 @@ MiaoMiao 发布附件中的 `*_txt.safetensors` 与此 Qwen 0.6B 文件 SHA-256 
 [WAI-illustrious-SDXL v17.0](https://civitai.com/models/827184?modelVersionId=2883731) 的 `waiIllustriousSDXL_v170.safetensors` 约 **6.94 GB**。ComfyUI 放 `models/checkpoints/`；WebUI 放其真正使用的 Stable-diffusion 模型目录。宁宁/夏目的 WAI 路径还需要 `ayachi_nene_v18_wd14.safetensors` / `shiki_natsume_v18_wd14.safetensors`；Anima 角色路径需要 v21 对应文件。**这些自训角色权重没有公共下载入口，缺文件的机器不能宣称这些角色专属生成可用。** 未选择角色 LoRA 的公共 Anima 创作与素材浏览仍可单独验收。
 
 超分、CLIPSeg 自动遮罩、ControlNet/ADetailer/Regional Prompter 属于按需扩展，需要对应权重、代码和预处理组件。对支持的基础生图先验一张；选择这些操作后再核对完整依赖，不把可选功能列为普通素材浏览的前置条件。
+
+Anime6B 超分识别官方文件名 `RealESRGAN_x4plus_anime_6B.pth`，同时保留旧别名 `R-ESRGAN 4x+ Anime6B.pth`；显式模型选择只解析该模型的固定文件，Auto 按已有优先级选择。能力展示和新生成记录区分请求选项、实际超分名称与文件，不改写历史作品。高清局部换装继续二次采样，缩放后的有效蒙版同时约束采样与最终合成；未选区域来自对应高清尺寸的参考底图，锐化在最终合成之前。主力机同图的脸部、背景及蒙版边界效果待验，不承诺与原始尺寸图片像素绝对相同。
 
 ### Wan 2.2 TI2V 5B
 
