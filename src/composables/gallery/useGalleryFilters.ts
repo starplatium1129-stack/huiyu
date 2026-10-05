@@ -2,7 +2,7 @@ import { computed, nextTick, onScopeDispose, ref, watch, type Ref } from 'vue';
 import type { LocationQueryRaw, RouteLocationNormalizedLoaded, Router } from 'vue-router';
 import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork';
 import { dayGroup, searchHaystack } from './galleryHelpers';
-import { buildMasonryGroups } from './useMasonryWall';
+import { buildMasonryGroups, type MasonryGroup } from './useMasonryWall';
 import type { GalleryProject } from './galleryStorage';
 import { artworkTags } from './artworkTags';
 import { artworkGenerationConditions, emptyGenerationConditions, GENERATION_FILTER_FIELDS, generationConditionOptions, generationConditionLabel, matchesGenerationConditions, normalizeGalleryFilterSnapshot, normalizeGenerationConditions, type GalleryFilterSnapshot } from './galleryGenerationConditions';
@@ -128,7 +128,17 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     return order.filter(k => buckets[k]?.length).map(k => ({ key: k, items: buckets[k] }));
   });
 
-  const masonryGroups = computed(() => buildMasonryGroups(groups.value, ratioOf, columnCount.value));
+  let previousOrder: Array<{ key: string; ids: Array<string | number> }> = [], previousColumnCount = 0;
+  const masonryGroups = computed<MasonryGroup[]>((previous) => {
+    const input = groups.value, count = columnCount.value;
+    // Decode corrections and appended pages must not destroy already painted
+    // cards. A different filter/order or column count starts a fresh layout.
+    const keepPlacement = count === previousColumnCount && previousOrder.every((group, index) =>
+      input[index]?.key === group.key && group.ids.every((id, itemIndex) => input[index]?.items[itemIndex]?.id === id));
+    previousOrder = input.map(group => ({ key: group.key, ids: group.items.map(item => item.id) }));
+    previousColumnCount = count;
+    return buildMasonryGroups(input, ratioOf, count, keepPlacement ? previous : []);
+  });
 
   function applyFilterSnapshot(raw: GalleryFilterSnapshot) {
     const snapshot = normalizeGalleryFilterSnapshot(raw);

@@ -11,13 +11,26 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
   let seen = new WeakSet<Element>()
   let active = false
   let root: Element | null = null
+  // Masonry moves and cached returns must not replay an already viewed card.
+  const revealedKeys = new Set<string>()
+  function reveal(el: Element) {
+    el.classList.add('revealed')
+    const key = el.getAttribute('data-reveal-key')
+    if (key) revealedKeys.add(key)
+    observer?.unobserve(el)
+  }
+  function onFocus(event: Event) {
+    if (!(event.target instanceof Element)) return
+    const el = event.target.closest(selector)
+    if (el && root?.contains(el)) reveal(el)
+  }
   function observeAll() {
     if (!active || !root) return
     const elements = [...root.querySelectorAll(selector)]
     if (root.matches(selector)) elements.unshift(root)
     elements.forEach(el => {
-      if (prefersReducedMotion() || !observer) { el.classList.add('revealed'); observer?.unobserve(el); return }
-      if (seen.has(el) || el.classList.contains('revealed')) return
+      if (prefersReducedMotion() || !observer || revealedKeys.has(el.getAttribute('data-reveal-key') || '')) { reveal(el); return }
+      if (el.getAttribute('data-reveal-ready') === 'false' || seen.has(el) || el.classList.contains('revealed')) return
       seen.add(el)
       observer.observe(el)
     })
@@ -31,18 +44,20 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
     seen = new WeakSet()
     media = matchMedia('(prefers-reduced-motion: reduce)')
     if ('IntersectionObserver' in window) observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('revealed'); observer?.unobserve(entry.target) } })
+      entries.forEach(entry => { if (active && root?.contains(entry.target) && entry.isIntersecting) reveal(entry.target) })
     }, { threshold: 0.04, rootMargin: '0px 0px -24px 0px', ...options })
     media.addEventListener('change', observeAll)
     window.addEventListener('atelier:motion-preference', observeAll)
+    root.addEventListener('focusin', onFocus)
     mutations = new MutationObserver(schedule)
-    mutations.observe(root, { childList: true, subtree: true })
+    mutations.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-reveal-ready'] })
     observeAll()
   }
   function stop() {
     active = false
     observer?.disconnect(); mutations?.disconnect(); media?.removeEventListener('change', observeAll); cancelAnimationFrame(frame)
     window.removeEventListener('atelier:motion-preference', observeAll)
+    root?.removeEventListener('focusin', onFocus)
     observer = null; mutations = null; root = null; frame = 0
   }
   onMounted(start)

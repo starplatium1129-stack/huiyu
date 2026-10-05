@@ -3,7 +3,7 @@
    height collapses mixed portrait/landscape rows before their next paint. */
 .artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
 .artwork:hover { @apply tw:border-strong; }
-:root body .gallery-page .artwork { border-radius:var(--r-sm); transition:none; }
+:root body .gallery-page .artwork { border-radius:var(--r-sm); transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-surface) var(--ease-out); }
 :root body .gallery-page .artwork:not(.artwork-selected) { box-shadow:none; }
 :root body .gallery-page .artwork:hover { transform:none; }
 .artwork-button { @apply tw:block tw:w-full; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
@@ -30,26 +30,21 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 /* 收藏激活态：画膜上要够亮才看得见，用 on-art 令牌而非全局强调色（后者在深色膜上偏暗） */
 .artwork-tool-on { border-color:color-mix(in srgb,var(--accent) 42%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 20%,transparent); color:var(--on-art-primary); }
 .artwork-tool :deep(.archive-icon) { @apply tw:w-[14px] tw:h-[14px]; vertical-align:-.12em; }
-/* Defer offscreen image painting inside the reserved, exact-ratio media box. */
-.artwork-media { @apply tw:relative tw:w-full; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:var(--art-stage); content-visibility:auto; }
-.artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-stage); animation:galleryImageIn .28s var(--ease-out); }
-/* HD 层叠在缩略图之上，解码完成后淡入（is-loaded 由 @load 触发），
-   消除缩略图→HD 硬切 src 造成的「闪一下变高清」。 */
-.artwork-image-hd { @apply tw:absolute; inset:0; opacity:0; animation:none; transition:opacity .28s var(--ease-out); }
+/* Keep decoded thumbnails painted across cached returns; only the card enters. */
+.artwork-media { @apply tw:relative tw:w-full; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:var(--bg-elevated); }
+.artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-stage); }
+/* No dark interval when HD is the first available image. Cross-fade only over
+   an already decoded thumbnail, never over an empty stage. */
+.artwork-image-hd { @apply tw:absolute; inset:0; opacity:0; }
+.artwork-image-hd-crossfade { transition:opacity var(--motion-surface) var(--ease-out); }
 .artwork-image-hd.is-loaded { opacity:1; }
 .artwork-recovery { position:absolute; top:0; left:0; width:100%; aspect-ratio:var(--art-ratio,3/4); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); padding:var(--s-3); background:var(--art-stage); color:var(--on-art-primary); font:500 var(--fs-label-sm)/var(--lh-body) var(--font-sans); text-align:center; pointer-events:none; }
 .artwork-recovery > .archive-icon { width:24px; height:24px; }
 .artwork-retry { min-height:var(--control-height-sm); padding:var(--s-1) var(--s-3); border:1px solid var(--on-art-line); border-radius:var(--r-sm); background:var(--art-scrim); color:var(--on-art-primary); font:600 var(--fs-label-sm)/var(--lh-label) var(--font-sans); cursor:pointer; pointer-events:auto; }
 .artwork-retry:hover { background:var(--on-art-fill); border-color:var(--on-art-primary); }
 .artwork-retry:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:3px; }
-/* 审计修复：骨架微光原为逐帧补间 background-position（无限循环 → 每帧重绘整块渐变），
-   改为伪元素承载渐变 + transform:translateX 位移（合成器属性，零重绘）。 */
-.artwork-skeleton { @apply tw:absolute; inset:0; @apply tw:overflow-hidden; }
-.artwork-skeleton::after {
-  content:""; @apply tw:absolute tw:top-0 tw:bottom-0 tw:left-0 tw:w-[220%];
-  background:linear-gradient(105deg,var(--art-mat) 18%,color-mix(in srgb,var(--art-mat) 76%,var(--text-primary)) 42%,var(--art-mat) 68%);
-  animation:gallerySkeleton 1.3s linear infinite;
-}
+/* Reserve the frame quietly; no repeating shimmer competing with scroll motion. */
+.artwork-skeleton { @apply tw:absolute; inset:0; background:var(--bg-elevated); }
 .artwork-caption { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; padding:var(--s-3); color:var(--text-primary); background:var(--bg-surface); text-align:left; border-top:1px solid var(--border-soft); }
 .artwork-name { @apply tw:block tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-body-sm tw:font-semibold; }
 .artwork-date { @apply tw:block tw:mt-s-1 tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-secondary tw:text-label-xs; }
@@ -64,12 +59,6 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
   .artwork-tools { opacity:0; transform:translateY(-4px); @apply tw:pointer-events-none; }
   .artwork-pending .artwork-tools { opacity:1; transform:none; @apply tw:pointer-events-auto; }
 }
-@media (prefers-reduced-motion:reduce) { .artwork-image,.artwork-skeleton::after { animation:none; } .artwork-tools,.artwork-image-hd { transition:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-image,
-:root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-skeleton::after { animation:none; }
+@media (prefers-reduced-motion:reduce) { .artwork-tools,.artwork-image-hd { transition:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-tools,
 :root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-image-hd { transition:none; }
-/* 位移量：层宽 220%，右端对齐容器右缘需左移 1.2 倍容器宽 = 层宽的 54.5% */
-@keyframes gallerySkeleton { to { transform: translateX(-54.5%); } }
-/* 2026-08-22 动效审计 #13：入场去掉 blur 补间（绘制级且随懒加载滚动反复触发），只走 opacity/transform */
-@keyframes galleryImageIn { from { opacity:0; } to { opacity:1; } }

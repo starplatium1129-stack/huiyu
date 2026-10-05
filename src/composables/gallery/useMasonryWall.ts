@@ -13,22 +13,24 @@ export interface MasonryGroup {
 export function buildMasonryGroups(
   groups: Array<{ key: string; items: ArtworkRecord[] }>,
   ratioOf: (item: ArtworkRecord) => number,
-  columnCount: number
+  columnCount: number,
+  previous: MasonryGroup[] = []
 ): MasonryGroup[] {
   const cols = Math.max(1, columnCount)
   return groups.map(group => {
     const columns: ArtworkRecord[][] = Array.from({ length: cols }, () => [])
     const heights: number[] = new Array(cols).fill(0)
+    const placements = new Map<string | number, number>()
+    const prior = previous.find(value => value.key === group.key)
+    if (prior?.columns.length === cols) prior.columns.forEach((column, index) => {
+      column.forEach(item => placements.set(item.id, index))
+    })
 
     for (const item of group.items) {
-      // 寻找当前高度最小的列
-      let minCol = 0
-      let minH = heights[0]
-      for (let i = 1; i < cols; i++) {
-        if (heights[i] < minH) {
-          minH = heights[i]
-          minCol = i
-        }
+      // Keep painted cards in their column; only new cards choose the shortest.
+      let minCol = placements.get(item.id) ?? 0
+      if (!placements.has(item.id)) for (let i = 1; i < cols; i++) {
+        if (heights[i] < heights[minCol]) minCol = i
       }
 
       columns[minCol].push(item)

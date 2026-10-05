@@ -4,7 +4,7 @@
       <div class="heading-copy tw:min-w-0">
         <div class="heading-title"><h1>参考画册</h1><span class="collection-count"><strong>{{ stats.total }}</strong> 幅灵感</span></div>
       </div>
-      <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-primary" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="spark" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost"><ArchiveIcon name="scene" />按场景寻找灵感</RouterLink><button class="btn btn-ghost showcase-refresh" type="button" :disabled="manifestLoading" :aria-label="manifestLoading ? '正在读取画册' : '刷新画册'" @click="loadManifest"><ArchiveIcon name="refresh" /></button></div>
+      <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-primary" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="spark" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost"><ArchiveIcon name="scene" />按场景寻找灵感</RouterLink><button class="btn btn-ghost showcase-refresh" type="button" :disabled="manifestLoading" :aria-label="manifestLoading ? '正在读取画册' : '刷新画册'" @click="loadManifest(true)"><ArchiveIcon name="refresh" /></button></div>
     </header>
 
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
@@ -35,7 +35,7 @@
       </details>
     </div>
 
-    <div v-if="entries.length && (manifestLoading || reloadError)" class="showcase-load-status" role="status"><ArchiveIcon :name="manifestLoading ? 'book' : 'warning'" /><span>{{ manifestLoading ? '正在刷新画册，当前样张仍可继续浏览。' : reloadError }}</span><button v-if="reloadError && !manifestLoading" class="filter-reset" type="button" @click="loadManifest">重试</button></div>
+    <div v-if="entries.length && (manifestLoading || reloadError)" class="showcase-load-status" role="status"><ArchiveIcon :name="manifestLoading ? 'book' : 'warning'" /><span>{{ manifestLoading ? '正在刷新画册，当前样张仍可继续浏览。' : reloadError }}</span><button v-if="reloadError && !manifestLoading" class="filter-reset" type="button" @click="loadManifest(true)">重试</button></div>
     <div v-show="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
       <ShowcaseAlbums v-if="albums.length && !unavailable" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
       <ArchiveStatePanel v-if="(manifestLoading && !entries.length) || unavailable || (!manifestLoading && !albums.length)" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'" message="画册按已发布样张的类型整理。"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
@@ -49,7 +49,7 @@
       title="展示素材暂未连接"
       message="请确认展示素材已连接后重新读取，也可以先逛灵感场景。"
     >
-      <button class="btn btn-primary" type="button" @click="loadManifest">重新读取样张</button>
+      <button class="btn btn-primary" type="button" @click="loadManifest(true)">重新读取样张</button>
       <RouterLink class="btn btn-ghost" to="/scene-explorer">先逛灵感场景</RouterLink>
     </ArchiveStatePanel>
 
@@ -72,7 +72,7 @@
       <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
 
-    <div v-else v-content-motion="`${typeFilter}:${charFilter}:${ratingFilter}`" class="showcase-grid" :aria-busy="manifestLoading">
+    <div v-else class="showcase-grid" :aria-busy="manifestLoading">
       <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)"
         :featured="featured.has(entry.id)"
         :character-label="charLabel(entry.char)" :rating-label="ratingLabel(entry.rating)"
@@ -232,7 +232,8 @@ function onViewerImageLoad() {
 }
 
 const viewerVersion = ref(0)
-const imgVersion = ref(Date.now())
+// Stable URLs reuse browser-decoded thumbnails; explicit refresh alone busts cache.
+const imgVersion = ref(0)
 const reloadError = ref('')
 let manifestRevision = 0
 const manifestController = new AbortController()
@@ -259,10 +260,13 @@ const searchIndex = computed(() => new Map(entries.value.map(entry => [entry.id,
 }])))
 const hasFilters = computed(() => Boolean(searchQuery.value.trim() || scope.value !== 'all' || typeFilter.value !== 'all' || charFilter.value !== 'all' || ratingFilter.value !== 'all'))
 function thumbSrc(entry: ShowcaseEntry) {
-  return entry.thumb ? `/scene-showcase/${entry.thumb}?cv=${imgVersion.value}` : `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion.value}`
+  const path = entry.thumb ? `/scene-showcase/${entry.thumb}` : `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg`
+  return path + (imgVersion.value ? `?cv=${imgVersion.value}` : '')
 }
 function imgSrc(entry: ShowcaseEntry) {
-  return entry.image ? `/scene-showcase/${entry.image}?cv=${imgVersion.value}&v=${viewerVersion.value}` : `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion.value}&v=${viewerVersion.value}`
+  const path = entry.image ? `/scene-showcase/${entry.image}` : `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg`
+  const query = [imgVersion.value ? `cv=${imgVersion.value}` : '', viewerVersion.value ? `v=${viewerVersion.value}` : ''].filter(Boolean).join('&')
+  return path + (query ? `?${query}` : '')
 }
 
 /** 角色筛选选项：收进统一的下拉筛选器，支持全部角色、工作室角色与热门角色。 */
@@ -389,7 +393,7 @@ function onKey(e: KeyboardEvent) {
   // Escape 交给 <dialog> 原生处理（@cancel），这里不再重复
 }
 
-async function loadManifest() {
+async function loadManifest(refreshImages = false) {
   const revision = ++manifestRevision
   reloadError.value = ''
   unavailable.value = false
@@ -402,7 +406,7 @@ async function loadManifest() {
     ])
     if (unmounted || revision !== manifestRevision) return
     manifestLoading.value = false
-    imgVersion.value = Date.now()
+    if (refreshImages) imgVersion.value = Date.now()
     const parsed = parseShowcaseManifest(manifest)
     const curation = sceneStore.curation
     entries.value = parsed.entries

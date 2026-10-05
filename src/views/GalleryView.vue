@@ -75,7 +75,7 @@
 
     <GalleryShowcase v-if="showcaseOpen" :items="visible" :title="collectionTitle" :card-urls="cardUrls" :thumb-urls="thumbUrls" @close="showcaseOpen = false" />
     <CandidateCompare :open="compareOpen" :items="compareItems" @close="compareOpen = false" @changed="loadGalleryStorage" />
-    <section v-content-motion="`${trashMode}:${projectFilter}:${characterFilter}:${favoriteOnly}:${tagFilter}`" aria-live="polite" data-reveal data-reveal-delay="1">
+    <section aria-live="polite">
       <!-- 回收站视图（2026-08-31）：列出软删条目，可逐条恢复；30 天超期自动清理 -->
       <GalleryTrashWall
         v-if="trashMode"

@@ -35,6 +35,14 @@ describe('buildMasonryGroups', () => {
     // 检查第 3 列（包含横图）是否正确接纳了后续较矮需要补充的作品
     expect(result[0].columns[2].some(i => i.id === '3')).toBe(true)
     expect(result[0].columns[2].some(i => i.id === '5')).toBe(true)
+    // Corrected dimensions resize the frame, not the DOM parent of painted cards.
+    const corrected = buildMasonryGroups(groups, item => item.id === '3' ? 0.2 : 0.75, 4, result)
+    expect(corrected[0].columns.map(col => col.map(item => item.id)))
+      .toEqual(result[0].columns.map(col => col.map(item => item.id)))
+    const appended = buildMasonryGroups([{ key: '今天', items: [...items, makeItem('6', 1)] }],
+      item => item.id === '3' ? 0.2 : 0.75, 4, corrected)
+    expect(appended[0].columns[0].at(-1)?.id).toBe('6')
+    expect(appended[0].columns[2].map(item => item.id)).toEqual(['3', '5'])
   })
 
   it('handles invalid or zero ratios without throwing', () => {

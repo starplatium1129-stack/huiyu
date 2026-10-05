@@ -49,6 +49,11 @@ it('explains failed previews and retries without losing keyboard focus or nestin
     expect(wrapper.find('.artwork-skeleton').exists()).toBe(true)
     await wrapper.get('.artwork-image-hd').trigger('load')
     expect(wrapper.find('.artwork-skeleton').exists()).toBe(false)
+    // HD is the first decoded preview: reveal it in the same patch that removes
+    // the placeholder, not two animation frames later over a black stage.
+    expect(wrapper.get('.artwork-image-hd').classes()).toContain('is-loaded')
+    expect(wrapper.get('.artwork-image-hd').classes()).not.toContain('artwork-image-hd-crossfade')
+    expect(wrapper.attributes('data-reveal-ready')).toBe('true')
     expect(wrapper.emitted('load')).toHaveLength(1)
 
     await wrapper.setProps({ imageUrl: '/broken-replacement.jpg', thumbUrl: '' })

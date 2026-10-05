@@ -135,7 +135,7 @@ it('keeps a viewer tag selection when its closing transition ends before the URL
   expect(mocks.replace).toHaveBeenLastCalledWith({ query: { tag: '春日' } })
 })
 
-it('observes cards moved between masonry columns after image measurement without restarting unchanged cards', async () => {
+it('keeps painted cards in their masonry columns after measurement and reobserves changed media', async () => {
   mocks.snapshot.mockResolvedValue({ history: Array.from({ length: 12 }, (_, index) => record(index + 1)), projects: [] })
   const { gallery } = await setup(true)
   const observer = Observer.instances.find(value => value.options.rootMargin === '600px 0px')!
@@ -151,13 +151,13 @@ it('observes cards moved between masonry columns after image measurement without
   await flushPromises()
   const current = new Set(gallery.shellEl.value!.querySelectorAll('.artwork'))
   const moved = [...current].filter(element => !before.has(element))
-  expect(moved.length).toBeGreaterThan(0)
+  expect(moved).toEqual([])
   expect(observer.elements.size).toBe(current.size)
   expect([...current].every(element => observer.elements.has(element))).toBe(true)
-  expect(observe).toHaveBeenCalledTimes(moved.length)
-  observer.callback(moved.map(target => ({ target, isIntersecting: true }) as IntersectionObserverEntry), observer as unknown as IntersectionObserver)
+  expect(observe).not.toHaveBeenCalled()
+  observer.intersect()
   await flushPromises()
-  for (const element of moved) expect(gallery.cardUrls[(element as HTMLElement).dataset.cardId!]).toBeTruthy()
+  expect(gallery.cardUrls[first.id]).toBeTruthy()
   observe.mockClear()
   first.image_id = 'replacement-in-place'
   await flushPromises()

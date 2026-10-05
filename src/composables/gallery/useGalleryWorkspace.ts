@@ -52,16 +52,9 @@ export function useGalleryWorkspace() {
             if (!unmounted && viewActive && epoch === imageEpoch && isMediaCurrent(item)) thumbUrls[item.id] = dataUrl;
         },
     });
-    /**
-     * HD 层解码完成：回填真实比例 + 淡入覆盖缩略图。
-     * 淡入用 requestAnimationFrame 双跳，确保 CSS 的 opacity:0 先落地再切到 1，
-     * 否则 transition 不会触发、又会硬切一下（回到「闪一下」的老问题）。
-     */
+    /** The card owns decoded visibility; measurement must not delay its first paint. */
     function onHdLoad(item: ArtworkRecord, e: Event) {
-        if (!isMediaCurrent(item)) return;
-        measure({ ...item }, e);
-        const img = e.target as HTMLImageElement;
-        requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('is-loaded')));
+        if (isMediaCurrent(item)) measure({ ...item }, e);
     }
     /** 待确认删除的条目 id：删除有回收站兜底，但二次确认仍是防手滑的第一道闸 */
     const pendingDeleteId = ref<string | number | null>(null);

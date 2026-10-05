@@ -40,3 +40,33 @@ it('reveals pending and late-loaded content when app motion changes to reduce', 
   expect(late.classList.contains('revealed')).toBe(true)
   wrapper.unmount()
 })
+
+it('waits for a decoded card and reveals its logical identity only once across remounts', async () => {
+  const observe = vi.fn(), unobserve = vi.fn()
+  let intersection!: IntersectionObserverCallback
+  vi.stubGlobal('IntersectionObserver', class {
+    constructor(callback: IntersectionObserverCallback) { intersection = callback }
+    observe = observe; unobserve = unobserve; disconnect = vi.fn()
+  })
+  vi.stubGlobal('matchMedia', () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }))
+  const ready = ref(false), version = ref(0)
+  const Page = defineComponent({ setup() {
+    useScrollReveal()
+    return () => h('article', [h('button', { key: version.value, 'data-reveal': '',
+      'data-reveal-key': 'artwork:one', 'data-reveal-ready': String(ready.value) }, 'Open artwork')])
+  } })
+  const wrapper = mount(Page, { attachTo: document.body })
+  try {
+    expect(observe).not.toHaveBeenCalled()
+    ready.value = true; await nextTick()
+    await vi.waitFor(() => expect(observe).toHaveBeenCalledOnce())
+    const first = wrapper.get('button').element
+    intersection([{ target: first, isIntersecting: true } as unknown as IntersectionObserverEntry], {} as IntersectionObserver)
+    expect(first.classList.contains('revealed')).toBe(true)
+    expect(unobserve).toHaveBeenCalledWith(first)
+    ready.value = false; version.value++; await nextTick()
+    await vi.waitFor(() => expect(wrapper.get('button').classes()).toContain('revealed'))
+    expect(wrapper.get('button').element).not.toBe(first)
+    expect(observe).toHaveBeenCalledOnce()
+  } finally { wrapper.unmount() }
+})

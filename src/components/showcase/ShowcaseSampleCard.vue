@@ -1,5 +1,6 @@
 <template>
-  <article class="sample" :class="{ 'sample-r18': entry.rating === 'R18' }" :style="cardStyle" :data-rating="entry.rating" :data-sample-id="entry.id">
+  <article class="sample" :class="{ 'sample-r18': entry.rating === 'R18' }" :style="cardStyle" :data-rating="entry.rating" :data-sample-id="entry.id"
+    data-reveal :data-reveal-key="`sample:${entry.id}`" :data-reveal-ready="loaded || broken">
     <button class="sample-visual tw:block tw:w-full tw:p-0 tw:text-left tw:relative tw:overflow-hidden" type="button"
       :style="imageStyle"
       :aria-label="'查看 ' + entry.title + ' 大图'" @click="emit('open', entry.id)">
@@ -54,13 +55,13 @@ const emit = defineEmits<{ open: [id: string] }>()
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .sample { @apply tw:overflow-hidden tw:relative tw:min-w-0; flex:var(--sample-grow) 1 calc(var(--showcase-row-height,320px) * var(--sample-grow)); max-width:100%; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
-:root body .showcase-page .sample { border-radius:var(--r-sm); box-shadow:none; transition:none; }
+:root body .showcase-page .sample { border-radius:var(--r-sm); box-shadow:none; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-surface) var(--ease-out); }
 :root body .showcase-page .sample:hover { transform:none; }
 /* 自然尺寸校正缺失或过时的目录尺寸；按原始比例分配行宽，完整展示原画。 */
 .sample-visual { aspect-ratio:var(--sample-ratio, 3 / 4); border:0; background:var(--art-mat); color:var(--on-art-primary); cursor:zoom-in; }
 .sample-visual:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
-.sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
-.sample-image-ready { opacity:1; }
+/* Card reveal starts after decoding; the image itself never fades back to black. */
+.sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); }
 .sample-image-fallback { @apply tw:h-full tw:min-h-0; place-items:center; color:var(--on-art-secondary); }
 /* The blurred veil cross-fades above an otherwise stable sharp image. */
 .sample-r18 .sample-image { transform:scale(1.08); }

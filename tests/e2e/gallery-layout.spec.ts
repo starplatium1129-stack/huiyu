@@ -31,6 +31,65 @@ async function seedGallery(page: Page, theme: string, empty = false, reducedMoti
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
 }
 
+test('art walls reveal decoded cards once without blank HD frames', async ({ page }, info) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await seedGallery(page, 'dark', false, 'no-preference', true)
+  await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ json: {
+    entries: Array.from({ length: 48 }, (_, index) => ({ id: `flow-${index}`, title: `流动样张 ${index}`,
+      char: 'nene', rating: 'All', type: 'scene', width: 832, height: 1216 })),
+  } }))
+  await page.route(/\/scene-showcase\/(images|thumbs)\/[^?]+/, route => route.fulfill({
+    contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="832" height="1216"><rect width="832" height="1216" fill="#746687"/><circle cx="416" cy="360" r="140" fill="#d5e1e2"/></svg>',
+  }))
+  const results = []
+  for (const [name, selector, wall] of [['gallery', '.artwork', '.gallery-wall'], ['showcase', '.sample', '.showcase-grid']] as const) {
+    if (name === 'showcase') await page.getByRole('link', { name: '参考画册', exact: true }).first().click()
+    const cards = page.locator(selector)
+    await expect(cards.first()).toHaveCSS('opacity', '1')
+    await expect(page.locator(wall)).toHaveCSS('opacity', '1')
+    const pending = page.locator(`${selector}:not(.revealed)`).last()
+    const key = await pending.getAttribute('data-reveal-key')
+    const frames = await pending.evaluate(element => new Promise<Array<{ opacity: number; blank: boolean }>>(resolve => {
+      const frames: Array<{ opacity: number; blank: boolean }> = []
+      element.scrollIntoView({ block: 'center', behavior: 'instant' })
+      const sample = () => {
+        const opacity = Number(getComputedStyle(element).opacity)
+        const hasImage = [...element.querySelectorAll<HTMLImageElement>('img')].some(img =>
+          img.complete && img.naturalWidth > 0 && Number(getComputedStyle(img).opacity) > 0)
+        frames.push({ opacity, blank: opacity > .05 && !hasImage })
+        if (frames.length === 40) resolve(frames)
+        else requestAnimationFrame(sample)
+      }
+      requestAnimationFrame(sample)
+    }))
+    expect(frames.some(frame => frame.opacity > 0 && frame.opacity < 1), name).toBe(true)
+    expect(frames.some(frame => frame.blank), name).toBe(false)
+    const seen = page.locator(`[data-reveal-key="${key}"]`)
+    await expect(seen).toHaveCSS('opacity', '1')
+    const decodedImage = seen.locator('img').first()
+    if (name === 'gallery') await expect(seen.locator('.artwork-image-hd')).toHaveCSS('opacity', '1')
+    const handle = await decodedImage.elementHandle()
+    const src = await decodedImage.getAttribute('src')
+    await page.evaluate(() => { document.documentElement.dataset.theme = 'light'; scrollTo({ top: 0, behavior: 'instant' }) })
+    await seen.scrollIntoViewIfNeeded()
+    await expect(seen).toHaveCSS('transform', 'none')
+    if (name === 'showcase') {
+      await expect.poll(() => cards.count()).toBeGreaterThan(24)
+      await page.getByRole('link', { name: '首页', exact: true }).first().click()
+      await page.getByRole('link', { name: '参考画册', exact: true }).first().click()
+      await expect(decodedImage).toHaveAttribute('src', src!)
+      expect(await handle!.evaluate(image => image.isConnected)).toBe(true)
+    }
+    await page.screenshot({ path: info.outputPath(`${name}-flow-light.png`) })
+    results.push({ page: name, frames, ...await page.evaluate(() => ({ cssViewport: [innerWidth, innerHeight],
+      browserZoom: visualViewport?.scale, systemDpi: 'not sampled; isolated browser, not native WebView acceptance' })) })
+  }
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await expect(page.locator('.sample').last()).toHaveCSS('opacity', '1')
+  await expect(page.locator('.sample').last()).toHaveCSS('transform', 'none')
+  await info.attach('art-wall-frames', { body: JSON.stringify(results), contentType: 'application/json' })
+})
+
 test('gallery orbit reverses continuously and keeps original zoom, pan and return focus', async ({ page }) => {
   await seedGallery(page, 'dark', false, 'no-preference')
   const opener = page.locator('[data-card-id="gallery-review-2"] .artwork-button')

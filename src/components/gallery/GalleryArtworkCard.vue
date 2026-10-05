@@ -3,6 +3,8 @@
   class="artwork"
   :class="{ 'artwork-pending': confirmingDelete, 'artwork-selectable': selectionMode, 'artwork-selected': selectionMode && selected }"
   :data-card-id="String(item.id)"
+  data-reveal :data-reveal-key="`artwork:${item.id}`"
+  :data-reveal-ready="thumbLoaded || imageLoaded || previewFailed || missing"
   :style="{ '--art-ratio': String(ratio) }"
 >
   <!-- 多选勾选标记：只在选择模式出现，纯视觉，状态由按钮的 aria-pressed 承载 -->
@@ -73,6 +75,7 @@
         v-if="imageUrl && !imageFailed"
         :key="`image:${imageUrl}:${retryAttempt}`"
         class="artwork-image artwork-image-hd"
+        :class="{ 'is-loaded': imageLoaded, 'artwork-image-hd-crossfade': thumbLoaded }"
         :src="imageUrl"
         :alt="title"
         decoding="async"

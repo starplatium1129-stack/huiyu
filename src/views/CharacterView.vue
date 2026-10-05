@@ -112,20 +112,34 @@
           <a v-if="officialProfileUrl" class="official-link" :href="officialProfileUrl" target="_blank" rel="noreferrer">查看官方人设依据 ↗</a>
         </div>
         <div class="recommend-grid">
-          <RouterLink v-for="s in recommendations" :key="s.id" class="card-direct"
-            :to="isPopular && current
-              ? `/prompt-builder?popular=${encodeURIComponent(current.id)}&blueprint=${encodeURIComponent(s.id)}`
-              : '/prompt-builder?scene='+encodeURIComponent(s.id)">
-            <div class="cg-title">{{ s.title }}</div>
+          <article v-for="s in recommendations" :key="s.id" class="recommend-card card-info">
+            <h3 class="cg-title">{{ s.title }}</h3>
             <div v-if="recommendationReason(s.id)" class="cg-reason">{{ recommendationReason(s.id) }}</div>
-            <div class="cg-story">{{ s.story }}</div>
-          </RouterLink>
+            <p class="cg-story">{{ s.story }}</p>
+            <footer class="cg-actions">
+              <button v-if="s.story" class="btn btn-ghost btn-sm" type="button" :aria-label="`阅读「${s.title}」完整故事`" @click="openRecommendationStory(s, $event)">阅读故事</button>
+              <RouterLink class="btn btn-primary btn-sm" :to="recommendationDrawUrl(s)">绘制这一幕</RouterLink>
+            </footer>
+          </article>
         </div>
       </section>
         </div>
       </div>
       </Transition>
     </template>
+    <Teleport to="body">
+      <dialog ref="recommendationDialog" class="recommendation-story-dialog" aria-labelledby="recommendation-story-title"
+        @cancel.prevent.stop="recommendationStoryDialog.close()" @keydown.esc.stop @click="closeRecommendationBackdrop">
+        <header class="recommendation-story-head">
+          <div><div class="page-kicker">PERSONA CORE / 场景故事</div><h2 id="recommendation-story-title">{{ activeStory?.title }}</h2></div>
+          <button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭故事" autofocus @click="recommendationStoryDialog.close()"><ArchiveIcon name="close" /></button>
+        </header>
+        <p ref="recommendationStoryBody" class="recommendation-story-body" tabindex="0">{{ activeStory?.story }}</p>
+        <footer class="recommendation-story-actions">
+          <RouterLink v-if="activeStory" class="btn btn-primary" :to="recommendationDrawUrl(activeStory)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink>
+        </footer>
+      </dialog>
+    </Teleport>
   </article>
 </template>
 
@@ -137,7 +151,8 @@ import { characterArtEntry } from '@/platform/characterArtState'
 
 import { useCharacterPortraitTransition } from '@/composables/useCharacterPortraitTransition'
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, nextTick, onMounted, watch } from 'vue'
+import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useSceneStore } from '@/stores/sceneStore'
 import CharacterBookshelf from '@/components/library/CharacterBookshelf.vue'
 import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
@@ -238,6 +253,26 @@ const officialProfileUrl = computed(() => current.value?.id === 'nene'
 function recommendationReason(id: string) {
   return sceneStore.curation.personaCoreReasons?.[id] || ''
 }
+function recommendationDrawUrl(scene: CharacterScene) {
+  return isPopular.value && current.value
+    ? `/prompt-builder?popular=${encodeURIComponent(current.value.id)}&blueprint=${encodeURIComponent(scene.id)}`
+    : `/prompt-builder?scene=${encodeURIComponent(scene.id)}`
+}
+const activeStory = ref<CharacterScene | null>(null)
+const recommendationDialog = ref<HTMLDialogElement | null>(null)
+const recommendationStoryBody = ref<HTMLElement | null>(null)
+const recommendationStoryDialog = useFluidDialog(recommendationDialog)
+async function openRecommendationStory(scene: CharacterScene, event: MouseEvent) {
+  const source = event.currentTarget as HTMLElement
+  activeStory.value = scene
+  await nextTick()
+  recommendationStoryDialog.open(source)
+  // Reset after showModal restores the body's layout box, including same-story revisits.
+  if (recommendationStoryBody.value) recommendationStoryBody.value.scrollTop = 0
+}
+function closeRecommendationBackdrop(event: MouseEvent) {
+  if (isBackdropClick(event, recommendationDialog.value)) recommendationStoryDialog.close()
+}
 
 const loadError = ref('')
 
@@ -257,6 +292,7 @@ async function loadProfiles() {
 
 watch(() => current.value?.id, id => {
   bgExpanded.value = false
+  recommendationStoryDialog.close()
   if (!id) return
   // The bookshelf needs only the character shell; load scene details on entry.
   void Promise.all([sceneStore.loadBrowserScenes('all'), sceneStore.loadBlueprintCatalog()]).then(([catalog]) => {
