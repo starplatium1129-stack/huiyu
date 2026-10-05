@@ -483,6 +483,56 @@
       "sourceSha256": "eb20a418ebe1e8c7c52ecd090cabc0c45bee53033ea65555ebcfae7d77f94372",
       "portraitSha256": "6684ff1025c4e5bcc92d63f8028a165bec8ec90be32219408767e958d61dbb52",
       "thumbnailSha256": "e7bf76fe99c896d3c0ecc8fb3e2ada37af3ead4f103c0d3b3d8b54038b7014cb"
+    },
+    "zhuang_fangyi_arknights": {
+      "entryId": "pc_zhuang_fangyi_arknights_zhuang_fangyi_arknights_command_corridor",
+      "sourceImage": "images/pc_zhuang_fangyi_arknights_zhuang_fangyi_arknights_command_corridor.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "原作绿裤与白色上装、红角和长尾清楚，正面站姿与脸部完整。 从已有全龄样张中选择，保留完整画面。",
+      "sourceSha256": "e4d8da676e6ae7e991c9c59ef6fb33b785296aec4e96244206aff51c13bfd5db",
+      "portraitSha256": "14a8fbc1387be2b9adafe508707f8ed28a2c307dd66e61d10771f11b22427ef9",
+      "thumbnailSha256": "c9dc058eb81fd649692e8fe4cc9f8e8800503e2c05c5272454341530ab360b13"
+    },
+    "administrator_arknights": {
+      "entryId": "pc_administrator_arknights_administrator_arknights_bridge_overlook",
+      "sourceImage": "images/pc_administrator_arknights_administrator_arknights_bridge_overlook.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "露台站姿保留管理员短黑发、制服夹克与白色长裤，脸部清楚。 从已有全龄样张中选择，保留完整画面。",
+      "sourceSha256": "1d549b0e20ebcabad7796be45d2337dcf68fbb5ee41222a84f240a14a41876a8",
+      "portraitSha256": "f8f3262011d5d3fddaa0812efb278b8a7aa3362f211b6c4d5c1e336cbc5be515",
+      "thumbnailSha256": "e9d4054a4bfb6e0f52430dffc81b17add2b24362f9587cee3eaf124d6a456da8"
+    },
+    "rossy_arknights": {
+      "entryId": "pc_rossy_arknights_rossy_arknights_vehicle_overhaul",
+      "sourceImage": "images/pc_rossy_arknights_rossy_arknights_vehicle_overhaul.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "红色兜帽披风、金发兽耳和蓬松尾巴清楚，正面人物适合卡片。 从已有全龄样张中选择，保留完整画面。",
+      "sourceSha256": "524ad2ce1254a577eb1da48cb978e2be2f4dba4e66d5cd08a7dd5bf9b1f8e33c",
+      "portraitSha256": "3fa8bb8677e036274cdb2b7f2afe92df638d436e5a95e1a1fd01fe66acc8c8e6",
+      "thumbnailSha256": "d349d8929d816129798a0e63c5d6202071d5a03672ccc996d15848fbfbd3387f"
+    },
+    "typhon_arknights": {
+      "entryId": "pc_typhon_arknights_typhon_arknights_pine_forest_vigilance",
+      "sourceImage": "images/pc_typhon_arknights_typhon_arknights_pine_forest_vigilance.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "原作灰色落肩猎装、紫发与双角完整，脸部无遮挡。 从已有全龄样张中选择，保留完整画面。",
+      "sourceSha256": "dc628ff2fadafda87382ed216cd064780bb288e3df2a589957d59e477da0d5ba",
+      "portraitSha256": "56a623ba81a3a36f95d7bb2ca1325dd08d1eb218ddc9261291e1ed4eb849349a",
+      "thumbnailSha256": "bc7b858e7dcc770c8fbd24264ab6f8de34fcf3d27204d878fc1b9ea679e8115b"
+    },
+    "shu_arknights": {
+      "entryId": "pc_shu_arknights_shu_arknights_granary_seed_sorting",
+      "sourceImage": "images/pc_shu_arknights_shu_arknights_granary_seed_sorting.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "原作白色长衣与角饰、黄蓝渐变长发清楚，脸部和上半身适合卡片。 从已有全龄样张中选择，保留完整画面。",
+      "sourceSha256": "8c1d4b722d0bba3b4a276e5cd14c092780bdfa990250d1a9135e357247dbc7d8",
+      "portraitSha256": "382df59ec8330909d7ebaf2f2b4c07a92a3bab131dff1b94711fc3cd349fda62",
+      "thumbnailSha256": "2661e90f02bc3c1f781a529b1ad09d240d5562ec9eaf7b1fa7731309fa6cbc92"
     }
   }
 }

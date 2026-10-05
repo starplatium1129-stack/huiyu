@@ -12384,8 +12384,8 @@
       "arknights:_endfield"
     ],
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "庄方宜立绘待补（占位图）"
+      "image": "../assets/characters/popular-zhuang_fangyi_arknights.png?v=14a8fbc1387b",
+      "alt": "庄方宜立绘"
     },
     "speech": "我是庄方宜，武陵科学发展区管代。",
     "accent_color": "#4ecdc4",
@@ -12437,8 +12437,8 @@
       "arknights_endfield"
     ],
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "管理员立绘待补（占位图）"
+      "image": "../assets/characters/popular-administrator_arknights.png?v=f8f3262011d5",
+      "alt": "管理员立绘"
     },
     "speech": "协议网络已连接，继续推进开拓。",
     "accent_color": "#eab308",
@@ -12491,8 +12491,8 @@
       "arknights_endfield"
     ],
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "洛茜立绘待补（占位图）"
+      "image": "../assets/characters/popular-rossy_arknights.png?v=3fa8bb8677e0",
+      "alt": "洛茜立绘"
     },
     "speech": "狼群的伙伴都准备好了，出发吧。",
     "accent_color": "#c84242",
@@ -12549,8 +12549,8 @@
       "horns"
     ],
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "提丰立绘待补（占位图）"
+      "image": "../assets/characters/popular-typhon_arknights.png?v=56a623ba81a3",
+      "alt": "提丰立绘"
     },
     "speech": "风向变了，小心前方。",
     "accent_color": "#10b981",
@@ -12624,8 +12624,8 @@
       "colored_extremities"
     ],
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "黍立绘待补（占位图）"
+      "image": "../assets/characters/popular-shu_arknights.png?v=382df59ec833",
+      "alt": "黍立绘"
     },
     "speech": "先歇一会儿，饭还热着。（创作台词）",
     "accent_color": "#A89D45",

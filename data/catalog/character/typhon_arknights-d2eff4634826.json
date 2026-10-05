@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "typhon_arknights",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 165,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-04T15:50:41.261071300+00:00",
+  "updatedAt": "2026-10-05T16:47:14.846400+00:00",
   "data": {
     "id": "typhon_arknights",
     "profile": {
@@ -58,8 +58,8 @@
         "horns"
       ],
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "提丰立绘待补（占位图）"
+        "image": "../assets/characters/popular-typhon_arknights.png?v=56a623ba81a3",
+        "alt": "提丰立绘"
       },
       "speech": "风向变了，小心前方。",
       "accent_color": "#10b981",

@@ -302,33 +302,33 @@
     {
       "id": "zhuang_fangyi_arknights",
       "batch": 10,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "pending",
-      "samples": "pending",
+      "samples": "published",
       "sceneCount": 10
     },
     {
       "id": "administrator_arknights",
       "batch": 10,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "pending",
-      "samples": "pending",
+      "samples": "published",
       "sceneCount": 10
     },
     {
       "id": "rossy_arknights",
       "batch": 10,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "pending",
-      "samples": "pending",
+      "samples": "published",
       "sceneCount": 10
     },
     {
       "id": "typhon_arknights",
       "batch": 10,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "pending",
-      "samples": "pending",
+      "samples": "published",
       "sceneCount": 10
     }
   ]

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zhuang_fangyi_arknights",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 162,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-04T15:50:41.261071300+00:00",
+  "updatedAt": "2026-10-05T16:47:14.846400+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights",
     "profile": {
@@ -62,8 +62,8 @@
         "arknights:_endfield"
       ],
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "庄方宜立绘待补（占位图）"
+        "image": "../assets/characters/popular-zhuang_fangyi_arknights.png?v=14a8fbc1387b",
+        "alt": "庄方宜立绘"
       },
       "speech": "我是庄方宜，武陵科学发展区管代。",
       "accent_color": "#4ecdc4",

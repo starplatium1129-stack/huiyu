@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rossy_arknights",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 164,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-04T15:50:41.261071300+00:00",
+  "updatedAt": "2026-10-05T16:47:14.846400+00:00",
   "data": {
     "id": "rossy_arknights",
     "profile": {
@@ -54,8 +54,8 @@
         "arknights_endfield"
       ],
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "洛茜立绘待补（占位图）"
+        "image": "../assets/characters/popular-rossy_arknights.png?v=3fa8bb8677e0",
+        "alt": "洛茜立绘"
       },
       "speech": "狼群的伙伴都准备好了，出发吧。",
       "accent_color": "#c84242",
