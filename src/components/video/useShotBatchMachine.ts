@@ -55,6 +55,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   let reconnectTarget = ''
   let reconnectSerial = 0
   let operationSerial = 0
+  let submittedDraft: { batchId: string; shots: ShotDraft[] } | null = null
 
   function stopReads() {
     window.clearTimeout(pollTimer)
@@ -101,8 +102,12 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     return Math.min(100, Math.round(((done + failed) / total) * 100))
   })
 
+  function submittedIndex(index: number) {
+    if (!submittedDraft || !Number.isInteger(index) || !shots.value[index] || submittedDraft.batchId !== batch.value?.id) return -1
+    return submittedDraft.shots.indexOf(shots.value[index])
+  }
   function serverShot(index: number) {
-    return batch.value?.shots[index] ?? null
+    return batch.value?.shots[submittedIndex(index)] ?? null
   }
 
   function parsedSeed(shot: ShotDraft): number | undefined {
@@ -116,6 +121,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     submitting.value = true
     const serial = beginOperation()
     batchError.value = ''
+    const targets = shots.value.slice()
     try {
       const response = await createVideoBatch({
         modelId: 'minimax-h3',
@@ -125,7 +131,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
         linkLastFrame: linkLastFrame.value,
         // 成人内容传输层授权：本机直连默认 true，远程/隧道由服务端 fail-closed。
         adultEnabled: isLocalStudioHost(),
-        shots: shots.value.map((shot) => {
+        shots: targets.map((shot) => {
           const prompt = [identityCard.value.trim(), shot.prompt.trim()].filter(Boolean).join('\n')
           return {
             prompt,
@@ -141,6 +147,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
         }),
       })
       if (serial !== operationSerial) return
+      submittedDraft = { batchId: response.batch.id, shots: targets }
       acceptBatch(response.batch)
     } catch (error) {
       if (!disposed && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '批量提交失败'
@@ -193,12 +200,13 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   }
 
   async function retryShotAt(index: number) {
-    if (!batch.value || retrying.value || cancelling.value || concating.value || !Number.isInteger(index) || !batch.value.shots[index]) return
+    const sourceIndex = submittedIndex(index)
+    if (!batch.value || retrying.value || cancelling.value || concating.value || sourceIndex < 0 || !batch.value.shots[sourceIndex]) return
     const id = batch.value.id
     const serial = beginOperation()
     retrying.value = true
     try {
-      const response = await retryVideoShot(id, index + 1)
+      const response = await retryVideoShot(id, sourceIndex + 1)
       if (disposed || batch.value?.id !== id || serial !== operationSerial) return
       acceptRetry(response.batch, id)
     } catch (error) {
