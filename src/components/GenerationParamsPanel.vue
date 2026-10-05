@@ -13,11 +13,15 @@
     </summary>
     <div class="controls-grid">
       <div class="ctrl ctrl-with-slider"><label :for="idOf('cfg')">相关性 (CFG)</label>
+        <div class="param-stepper" role="group" aria-label="调整相关性 (CFG)">
+        <button class="param-step" type="button" aria-label="减少相关性 (CFG)" :aria-disabled="params.cfg <= 1" @click="stepNumber('cfg', -0.5, 7, 1, 20)"><ArchiveIcon name="minus" /></button>
         <StudioTooltip content="提示词遵循强度：值越高越贴近提示词，过低画面会漂。常用 5–8，也可直接输入任意值。">
-          <input :id="idOf('cfg')" v-model.number="params.cfg" class="input ctrl-num" type="number"
+          <input :id="idOf('cfg')" v-model.number="params.cfg" v-content-motion:[numberDirection.cfg]="params.cfg" class="input ctrl-num" type="number"
             min="1" max="20" step="0.5" :list="idOf('cfg-presets')"
             @change="normalize('cfg', 7, 1, 20)">
         </StudioTooltip>
+        <button class="param-step" type="button" aria-label="增加相关性 (CFG)" :aria-disabled="params.cfg >= 20" @click="stepNumber('cfg', 0.5, 7, 1, 20)"><ArchiveIcon name="plus" /></button>
+        </div>
         <input type="range" min="1" max="20" step="0.5" :value="params.cfg ?? 7"
           class="ctrl-range" aria-label="相关性 (CFG) 滑块"
           @input="onCfgSlider(($event.target as HTMLInputElement).value)">
@@ -26,11 +30,15 @@
         </datalist>
       </div>
       <div class="ctrl ctrl-with-slider"><label :for="idOf('steps')">步数 (Steps)</label>
+        <div class="param-stepper" role="group" aria-label="调整步数 (Steps)">
+        <button class="param-step" type="button" aria-label="减少步数 (Steps)" :aria-disabled="params.steps <= 1" @click="stepNumber('steps', -1, 28, 1, 150)"><ArchiveIcon name="minus" /></button>
         <StudioTooltip content="采样步数：越多细节越足、耗时越长，常用 20-40，也可直接输入任意值。">
-          <input :id="idOf('steps')" v-model.number="params.steps" class="input ctrl-num" type="number"
+          <input :id="idOf('steps')" v-model.number="params.steps" v-content-motion:[numberDirection.steps]="params.steps" class="input ctrl-num" type="number"
             min="1" max="150" step="1" :list="idOf('steps-presets')"
             @change="normalize('steps', 28, 1, 150)">
         </StudioTooltip>
+        <button class="param-step" type="button" aria-label="增加步数 (Steps)" :aria-disabled="params.steps >= 150" @click="stepNumber('steps', 1, 28, 1, 150)"><ArchiveIcon name="plus" /></button>
+        </div>
         <input type="range" min="1" max="150" step="1" :value="params.steps ?? 28"
           class="ctrl-range" aria-label="采样步数滑块"
           @input="onStepsSlider(($event.target as HTMLInputElement).value)">
@@ -92,7 +100,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, reactive, useId, watch } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -109,6 +119,10 @@ const props = defineProps<{
 // params 由 Pinia store 的 reactive 对象承载，子组件按契约直接改字段；
 // 用 defineModel 承载该双向约定（替代裸 prop 深层变更）。
 const params = defineModel<SDParams>('params', { required: true })
+const numberDirection = reactive({ cfg: 'up', steps: 'up' })
+watch(() => [params.value.cfg, params.value.steps], (values, previous) => {
+  for (const [index, key] of (['cfg', 'steps'] as const).entries()) numberDirection[key] = Number(values[index]) < Number(previous[index]) ? 'down' : 'up'
+})
 
 const emit = defineEmits<{
   touch: [key: keyof SDParams]
@@ -163,6 +177,15 @@ function normalize(key: 'cfg' | 'steps', fallback: number, min: number, max: num
   const parsed = typeof raw === 'number' ? raw : Number(raw)
   const next = Number.isFinite(parsed) && parsed !== 0 ? parsed : fallback
   params.value[key] = Math.min(max, Math.max(min, next))
+  touch(key)
+}
+
+function stepNumber(key: 'cfg' | 'steps', delta: number, fallback: number, min: number, max: number) {
+  const raw = Number(params.value[key])
+  const value = Number.isFinite(raw) && raw !== 0 ? raw : fallback
+  const next = Math.min(max, Math.max(min, value + delta))
+  if (Object.is(next, params.value[key])) return
+  params.value[key] = next
   touch(key)
 }
 

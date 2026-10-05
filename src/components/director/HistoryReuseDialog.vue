@@ -7,7 +7,7 @@
           <label><input v-model="mode" type="radio" value="full" name="recipe-reuse-mode" :disabled="busy">完整配方 <small>恢复已记录的角色、服装、场景与参数</small></label>
           <label><input v-model="mode" type="radio" value="parts" name="recipe-reuse-mode" :disabled="busy">选择沿用 <small>保留当前角色、服装、引擎与画册</small></label>
         </fieldset>
-        <fieldset v-if="mode === 'parts'"><legend>选择要替换的创作条件</legend>
+        <fieldset v-show="mode === 'parts'" v-content-motion:down="mode === 'parts'"><legend>选择要替换的创作条件</legend>
           <label><input v-model="parts.style" type="checkbox" :disabled="busy">画风与光色 <small>画师、光照、色调及适用的风格 LoRA</small></label>
           <label><input v-model="parts.camera" type="checkbox" :disabled="busy">镜头与构图</label>
           <label><input v-model="parts.prompts" type="checkbox" :disabled="busy">提示词与场景 <small>仅同角色、同服装沿用；按当前规则重新编译</small></label>
@@ -20,8 +20,10 @@
   </Teleport>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { contentMotion as vContentMotion } from '@/directives/contentMotion'
+import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { HistoryRecipeParts, HistoryReuseSelection } from '@/types/historyReuse'
@@ -30,13 +32,40 @@ const emit = defineEmits<{ apply: [selection: HistoryReuseSelection]; cancel: []
 const dialog = ref<HTMLDialogElement | null>(null), mode = ref<'full' | 'parts'>('full')
 const parts = reactive<HistoryRecipeParts>({ style: true, camera: true, prompts: false, parameters: false })
 const motion = useFluidDialog(dialog)
-function cancel() { if (!props.busy) motion.close(() => emit('cancel')) }
+const shifts = new Set<Animation>()
+let revision = 0
+function settle() {
+  revision++
+  for (const animation of shifts) animation.cancel()
+  shifts.clear()
+}
+watch(mode, async () => {
+  const token = ++revision
+  if (document.hidden || prefersReducedMotion() || !dialog.value?.open) { settle(); return }
+  const elements = Array.from(dialog.value.querySelectorAll<HTMLElement>('#history-reuse-help, footer'))
+  const before = elements.map(element => element.getBoundingClientRect().top)
+  await nextTick()
+  if (token !== revision || !dialog.value?.open) return
+  const offsets = elements.map((element, index) => before[index] - element.getBoundingClientRect().top)
+  settle()
+  elements.forEach((element, index) => {
+    if (Math.abs(offsets[index]) < 1 || typeof element.animate !== 'function') return
+    const offset = Math.max(-8, Math.min(8, offsets[index]))
+    const animation = element.animate([{ transform:`translateY(${offset}px)` }, { transform:'none' }], { duration:200, easing:'cubic-bezier(.23,1,.32,1)' })
+    shifts.add(animation)
+    const release = () => { shifts.delete(animation); animation.cancel() }
+    void animation.finished.then(release, release)
+  })
+})
+const stopListening = listenMotionChanges(() => { if (document.hidden || prefersReducedMotion()) settle() })
+onBeforeUnmount(() => { settle(); stopListening() })
+function cancel() { if (!props.busy) { settle(); motion.close(() => emit('cancel')) } }
 function backdropClose(event: MouseEvent) { if (isBackdropClick(event, dialog.value)) cancel() }
 function apply() { emit('apply', mode.value === 'full' ? 'full' : { ...parts }) }
 onMounted(() => motion.open())
 </script>
 <style scoped>
-.history-reuse-dialog { margin:auto; width:min(620px,calc(100vw - 48px)); max-height:calc(100dvh - 64px); padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); color:var(--text-primary); }
+.history-reuse-dialog { margin:clamp(var(--s-5),12dvh,100px) auto auto; width:min(620px,calc(100vw - 48px)); max-height:calc(100dvh - 128px); padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); color:var(--text-primary); }
 .history-reuse-dialog[open] { display:flex; flex-direction:column; gap:var(--s-4); }
 .history-reuse-dialog::backdrop { background:var(--art-scrim); }
 header { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-3); }

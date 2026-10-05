@@ -1,4 +1,7 @@
 @reference "./tailwind.css";
+
+/* 筛选与归位由展墙接续，重挂卡片不再叠加入场。结束后恢复正常滚动揭示。 */
+:global(.gallery-wall[data-list-motion] .artwork[data-reveal]) { opacity:1; transform:none; transition:none; }
 /* Keep card geometry real when a cached wall is reattached. A shared intrinsic
    height collapses mixed portrait/landscape rows before their next paint. */
 .artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }

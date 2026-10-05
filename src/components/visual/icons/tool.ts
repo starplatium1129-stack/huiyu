@@ -2,6 +2,8 @@ import type { ArchiveIconDef } from './types.ts'
 
 // 手绘轮廓：季节物象与工作台工具分别保持可读的剪影。
 export const toolDefs = {
+  'plus': { paths: ['M5 12 Q12 11.8 19 12', 'M12 5 Q11.8 12 12 19'] },
+  'minus': { paths: ['M5 12 Q12 11.8 19 12'] },
   'star': {
     paths: [
       'M12 3.5 L14.5 8.8 L20.5 9.5 L16 13.8 L17.1 20 L12 17.1 L6.9 20 L8 13.8 L3.5 9.5 L9.5 8.8 Z',

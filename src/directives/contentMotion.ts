@@ -15,8 +15,9 @@ function cancel(el: HTMLElement) {
 }
 function settle() { for (const el of active.keys()) cancel(el) }
 
-function reveal(el: HTMLElement) {
-  if (keyboardInput || document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function') {
+function reveal(el: HTMLElement, direction?: string) {
+  if (keyboardInput || document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function'
+    || direction && el.matches('input, textarea') && document.activeElement === el) {
     cancel(el)
     return
   }
@@ -29,9 +30,16 @@ function reveal(el: HTMLElement) {
     if (surface !== el && el.contains(surface)) cancel(surface)
   }
   // A rapid reversal continues from the visible value rather than flashing back.
-  const previous = active.has(el) ? getComputedStyle(el).opacity : '.82'
+  const previous = active.has(el) ? getComputedStyle(el) : null
+  const start: Keyframe = { opacity: previous?.opacity ?? '.82' }
+  const end: Keyframe = { opacity: 1 }
+  const offsets: Record<string, string> = { left: 'translateX(-8px)', right: 'translateX(8px)', up: 'translateY(4px)', down: 'translateY(-4px)' }
+  if (direction && offsets[direction]) {
+    start.transform = previous?.transform ?? offsets[direction]
+    end.transform = 'none'
+  }
   cancel(el)
-  const animation = el.animate([{ opacity: previous }, { opacity: 1 }], {
+  const animation = el.animate([start, end], {
     duration:160, easing:'cubic-bezier(.23, 1, .32, 1)',
   })
   active.set(el, animation)
@@ -41,14 +49,14 @@ function reveal(el: HTMLElement) {
 }
 
 export const contentMotion: ObjectDirective<HTMLElement, unknown> = {
-  mounted(el, { value }) {
+  mounted(el, { value, arg }) {
     // Initial route entry already has motion. Later v-if panels may enter alone.
-    if (value !== false && el.closest<HTMLElement>('.route-view')?.dataset.routeEntered === 'true') reveal(el)
+    if (value !== false && el.closest<HTMLElement>('.route-view')?.dataset.routeEntered === 'true') reveal(el, arg)
   },
-  updated(el, { value, oldValue }) {
+  updated(el, { value, oldValue, arg }) {
     if (Object.is(value, oldValue)) return
     if (value === false) cancel(el)
-    else reveal(el)
+    else reveal(el, arg)
   },
   beforeUnmount: cancel,
 }

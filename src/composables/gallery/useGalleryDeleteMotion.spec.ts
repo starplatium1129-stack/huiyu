@@ -36,7 +36,7 @@ async function fixture() {
     complete: { value: true }, naturalWidth: { value: 240, configurable: true }, naturalHeight: { value: 100 },
   })
   vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
-    return rect(this.dataset.cardId ? items.value.findIndex(item => String(item.id) === this.dataset.cardId) * 100 : 0)
+    return rect(this.dataset.cardId ? Array.from(this.parentElement!.children).indexOf(this) * 100 : 0)
   })
   await vi.dynamicImportSettled()
   return { items, loading, motion, wrapper }
@@ -126,4 +126,21 @@ it('rejects late success feedback after an intervening interaction or leave/retu
   const freshAction = motion.forAction()
   freshAction([1])
   expect(mocks.dissolve).toHaveBeenCalledOnce()
+})
+it('connects a filter change on retained nodes and leaves pagination and media updates still', async () => {
+  const { items, wrapper } = await fixture()
+  const animate = vi.fn(() => ({ cancel: vi.fn(), finished: new Promise(() => {}) }))
+  Object.defineProperty(HTMLElement.prototype, 'animate', { configurable: true, value: animate })
+  const survivor = wrapper.get('[data-card-id="2"]').element
+  items.value = items.value.slice(1)
+  await nextTick()
+  expect(wrapper.get('[data-card-id="2"]').element).toBe(survivor)
+  expect(animate).toHaveBeenCalledTimes(3)
+  const count = animate.mock.calls.length
+  items.value = [...items.value, { id: 5 } as ArtworkRecord]
+  await nextTick()
+  items.value[0].image_url = '/decoded-preview.png'
+  await nextTick()
+  expect(animate).toHaveBeenCalledTimes(count)
+  expect(items.value.map(item => item.id)).toEqual([2, 3, 4, 5])
 })

@@ -31,7 +31,7 @@ export function useGalleryViewer(options: {
     const center = artworkIndexById(options.visible.value, viewerItemId.value)
     neighborPreviews.value = {}
     if (viewerIndex.value < 0 || center < 0) return
-    for (const source of options.visible.value.slice(Math.max(0, center - 1), center + 2)) {
+    for (const source of options.visible.value.slice(Math.max(0, center - 2), center + 3)) {
       if (options.previewSource?.(source)) continue
       const item = { ...source }
       void (async () => {

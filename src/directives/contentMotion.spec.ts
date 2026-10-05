@@ -14,8 +14,8 @@ function panel() {
   el.getAnimations = () => { throw new Error('synchronous animation style read') }
   return { el, animation }
 }
-function update(el: HTMLElement, value: unknown = 'next') {
-  contentMotion.updated!(el, { value, oldValue: 'previous' } as DirectiveBinding, {} as VNode<HTMLElement, HTMLElement>, {} as VNode<HTMLElement, HTMLElement>)
+function update(el: HTMLElement, value: unknown = 'next', arg?: string) {
+  contentMotion.updated!(el, { value, oldValue: 'previous', arg } as DirectiveBinding, {} as VNode<HTMLElement, HTMLElement>, {} as VNode<HTMLElement, HTMLElement>)
 }
 afterEach(() => {
   for (const el of elements.splice(0)) { contentMotion.beforeUnmount!(el, {} as DirectiveBinding, {} as VNode<HTMLElement, HTMLElement>, null); el.remove() }
@@ -49,4 +49,22 @@ it('hiding or unmounting a changing panel cancels its effect', () => {
   expect(animation.cancel).toHaveBeenCalledOnce()
   update(el); contentMotion.beforeUnmount!(el, {} as DirectiveBinding, {} as VNode<HTMLElement, HTMLElement>, null)
   expect(animation.cancel).toHaveBeenCalledTimes(2)
+})
+it('redirects a directional handoff from its current presentation', () => {
+  const { el } = panel()
+  update(el, 'first', 'right')
+  vi.spyOn(window, 'getComputedStyle').mockReturnValue({ opacity: '.94', transform: 'matrix(1, 0, 0, 1, 3, 0)' } as CSSStyleDeclaration)
+  update(el, 'reverse', 'left')
+  expect(el.animate).toHaveBeenLastCalledWith([
+    { opacity: '.94', transform: 'matrix(1, 0, 0, 1, 3, 0)' }, { opacity: 1, transform: 'none' },
+  ], expect.anything())
+  vi.restoreAllMocks()
+})
+it('keeps an actively edited number input still', () => {
+  const input = document.createElement('input'); input.type = 'number'
+  document.body.append(input); input.focus()
+  input.animate = vi.fn()
+  update(input, 7, 'up')
+  expect(input.animate).not.toHaveBeenCalled()
+  input.remove()
 })

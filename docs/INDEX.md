@@ -92,6 +92,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 
 ## 现行契约与专项计划
 
+- [组件交互动效（014）](../plans/014-component-interaction-motion.md)：M1–M4 与追加全屏 Cover Flow、参数去框已实施；定向浏览器验收完成，原生设备与 009 性能事项仍独立保留。
 - [Workspace 与迁移](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[任务运行时](architecture/TASK-RUNTIME-DESIGN.md)、[桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)。
 - [Rust 迁移与剩余验收（013）](../plans/013-node-to-rust-migration.md)、[交互性能（009）](../plans/009-ui-fluidity-and-performance.md)、[Live2D 适配（010）](../plans/010-companion-experience-and-live2d-adapter.md)。
 - [反推满意图入场景（004）](../plans/004-scene-save-from-interrogate.md)保持暂停；[计划索引](../plans/README.md)只列仍有效范围。

@@ -187,7 +187,7 @@
         <PhotoSwipeStage v-else-if="gestureViewer && current" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="gestureViewer = false" />
         <GalleryOrbitStage v-else-if="!originalViewer && displayedCurrent" :items="visible" :index="displayedIndex" :active="viewerIndex >= 0"
           :current-src="viewerUrl" :preview-src="imageOrigin.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls"
-          :neighbor-urls="neighborPreviews" :title="item => sceneTitle(item.scene, item)" @select="openViewer" />
+          :neighbor-urls="neighborPreviews" :title="item => sceneTitle(item.scene, item)" @select="openViewer" @pointerdown.capture="imageOrigin.cancel" @wheel.capture="imageOrigin.cancel" />
         <ZoomableImageViewer
           v-else-if="viewerUrl || imageOrigin.previewSrc.value"
           :src="resolveRuntimeUrl(viewerUrl || imageOrigin.previewSrc.value)"

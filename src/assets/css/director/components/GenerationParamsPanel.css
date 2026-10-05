@@ -45,6 +45,19 @@
 .pb .generation-settings .ctrl > label { @apply tw:text-secondary tw:leading-body; }
 .pb .generation-settings .ctrl input:not([type="range"]) { @apply tw:min-h-[40px] tw:w-full tw:min-w-0; background: var(--bg-surface); @apply tw:rounded-md; }
 .pb .generation-settings .ctrl-range { @apply tw:w-full tw:mt-s-1; }
+.pb .generation-settings .controls-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr)); }
+.pb .generation-settings .ctrl-with-slider { border:0; background:transparent; padding:var(--s-2) var(--s-1); }
+.pb .param-stepper { display:grid; grid-template-columns:32px minmax(0,1fr) 32px; gap:0; align-items:center; border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); }
+.pb .param-stepper:focus-within { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft); }
+.pb .param-step { display:grid; place-items:center; min-height:40px; padding:0; border:0; border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; transition:transform var(--motion-press) var(--ease-out); }
+.pb .param-step .archive-icon { width:16px; height:16px; }
+.pb .param-step:hover:not([aria-disabled="true"]) { color:var(--accent); background:var(--accent-soft); }
+.pb .param-step:active:not([aria-disabled="true"]) { transform:scale(.94); }
+.pb .param-step:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+.pb .param-step[aria-disabled="true"] { color:var(--text-disabled); cursor:default; }
+.pb .generation-settings .ctrl .param-stepper .ctrl-num { text-align:center; padding-inline:var(--s-1); font-variant-numeric:tabular-nums; appearance:textfield; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.pb .param-stepper .ctrl-num::-webkit-inner-spin-button, .pb .param-stepper .ctrl-num::-webkit-outer-spin-button { appearance:none; margin:0; }
+@media (prefers-reduced-motion:reduce) { .pb .param-step { transition:none; } .pb .param-step:active { transform:none; } }
 /* 原生 select 已迁至 StudioSelect：触发器统一样式，无需保留此处外观规则 */
 .pb .generation-settings .ctrl-seed { grid-column: 1 / -1; }
 .pb .generation-settings .seed-input-wrap { @apply tw:mt-s-2; }

@@ -10,7 +10,7 @@
       </button>
     </div>
     <!-- 首次选中才加载，之后保留输入、搜索与选中状态。 -->
-    <div v-for="item in sections" v-show="active === item.id" v-content-motion="active === item.id" :id="`material-${item.id}`"
+    <div v-for="item in sections" v-show="active === item.id" v-content-motion:[direction]="active === item.id" :id="`material-${item.id}`"
       :key="item.id" class="material-content" :aria-label="item.label">
       <DeferredPanel :active="active === item.id"><slot :name="item.id" /></DeferredPanel>
     </div>
@@ -22,10 +22,15 @@ import { computed, ref, watch, nextTick } from 'vue'
 import DeferredPanel from './DeferredPanel.vue'
 import AnimatedSelection from '../visual/AnimatedSelection.vue'
 import ArchiveIcon, { type ArchiveIconName } from '../visual/ArchiveIcon.vue'
+import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 
 const props = defineProps<{ expert: boolean; sceneContext?: string }>()
 const drawerEl = ref<HTMLElement | null>(null)
 const active = ref(props.sceneContext ? 'scenes' : 'character')
+const direction = ref('right')
+watch(active, (value, previous) => {
+  direction.value = sections.value.findIndex(item => item.id === value) < sections.value.findIndex(item => item.id === previous) ? 'left' : 'right'
+})
 async function selectSection(section: string) {
   if (!sections.value.some(item => item.id === section)) return
   active.value = section

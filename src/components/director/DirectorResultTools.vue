@@ -2,12 +2,12 @@
   <div ref="actions" class="result-image-actions" role="group" aria-label="画布操作">
     <button class="btn btn-quiet canvas-ambient-toggle" type="button" aria-label="作品环境光" :aria-pressed="ambientEnabled" :disabled="!hasResult" @click="$emit('update:ambientEnabled', !ambientEnabled)"><ArchiveIcon name="goldenhour" /><span>环境光</span></button>
     <span v-if="hasResult && generationBusy" class="stage-result-status sr-only" role="status">下一张正在显影 · 当前成片保留</span>
-    <span v-if="hasResult && resultArchived !== null" v-content-motion="archivePhase" class="stage-archive-badge" :data-archived="resultArchived" :data-saving="savingResult || undefined" role="status" aria-live="polite" aria-atomic="true">
+    <span v-if="hasResult && resultArchived !== null" class="stage-archive-badge" :data-archived="resultArchived" :data-saving="savingResult || undefined" role="status" aria-live="polite" aria-atomic="true">
       <ArchiveIcon :name="resultArchived ? 'success' : 'gallery'" />
       <span>{{ savingResult ? '正在入册…' : resultArchived ? '已入册' : resultTemporary ? '未入册 · 已暂存' : '未入册' }}</span>
     </span>
-    <RouterLink v-if="hasResult && resultArchived" class="btn btn-quiet result-archive-action" to="/gallery"><ArchiveIcon name="gallery" />查看作品册</RouterLink>
-    <button v-else-if="hasResult" class="btn btn-primary result-archive-action" type="button" :disabled="savingResult" :aria-busy="savingResult" @click="requestSave"><ArchiveIcon name="gallery" />{{ savingResult ? '正在入册…' : '存入作品册' }}</button>
+    <RouterLink v-if="hasResult && resultArchived" class="btn btn-quiet result-archive-action" to="/gallery"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon name="gallery" /><span>查看作品册</span></span></RouterLink>
+    <button v-else-if="hasResult" class="btn btn-primary result-archive-action" type="button" :disabled="savingResult" :aria-busy="savingResult" @click="requestSave"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon :name="savingResult ? 'refresh' : 'gallery'" /><span>{{ savingResult ? '正在入册…' : '存入作品册' }}</span></span></button>
     <StudioTooltip v-if="hasResult" anchor content="将当前成片保存为场景">
       <button class="btn btn-quiet canvas-secondary-action" type="button" :aria-label="capturingScene ? '正在读取成片…' : '保存为场景'" :disabled="generationBusy || capturingScene" @click="$emit('saveScene')"><ArchiveIcon name="scene" /><span>{{ capturingScene ? '正在读取成片…' : '保存为场景' }}</span></button>
     </StudioTooltip>
@@ -58,3 +58,8 @@ const emit = defineEmits<{
   openCompare: []
 }>()
 </script>
+
+<style scoped>
+.result-archive-action { min-inline-size:calc(5em + var(--s-8) + var(--s-5)); justify-content:center; }
+.archive-action-content { display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2); white-space:nowrap; }
+</style>

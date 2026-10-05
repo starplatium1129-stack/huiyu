@@ -96,7 +96,7 @@ test('gallery orbit reverses continuously and keeps original zoom, pan and retur
   await opener.click()
   const viewer = page.locator('.art-viewer'), orbit = viewer.locator('.gallery-orbit')
   await expect(orbit).toBeVisible()
-  await expect(viewer.locator('.gallery-orbit-neighbor')).toHaveCount(2)
+  await expect(viewer.locator('.gallery-orbit-neighbor')).toHaveCount(4)
   const positions = await viewer.evaluate(async host => {
     const surface = host.querySelector<HTMLElement>('.gallery-orbit')!
     host.querySelector<HTMLButtonElement>('.viewer-next')!.click()
