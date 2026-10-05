@@ -2,7 +2,7 @@ import { onBeforeUnmount, watch, type Ref } from 'vue'
 import type { VideoBatch, VideoQuality } from '@/api/videoApi'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
-import { useVideoStore } from '@/stores/videoStore'
+import { useVideoStore, type ShotSubmissionRecord } from '@/stores/videoStore'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
 interface ShotDraftDeps {
@@ -14,6 +14,8 @@ interface ShotDraftDeps {
   referenceCards: Ref<ReferenceCard[]>
   shots: Ref<ShotDraft[]>
   batchError: Ref<string>
+  getShotSubmission: (shot: ShotDraft) => ShotSubmissionRecord | undefined
+  restoreShotSubmission: (shot: ShotDraft, submission: ShotSubmissionRecord | undefined) => void
   selectCardCharacter: (id: string, index?: number, outfit?: string) => Promise<boolean>
   retryPendingFrames: () => Promise<{ fixed: number; remaining: number }>
 }
@@ -41,6 +43,7 @@ function persistShotsDraft() {
       outfitId: card.outfitId || '',
     })),
     shots: shots.value.map(shot => ({
+      submission: deps.getShotSubmission(shot),
       prompt: shot.prompt,
       dialogue: shot.dialogue,
       shotSize: shot.shotSize,
@@ -104,6 +107,7 @@ async function restoreShotsDraft() {
       firstFramePrompt: shot.firstFramePrompt,
       imageId: shot.imageId || '',
     }))
+    shots.value.forEach((shot, index) => deps.restoreShotSubmission(shot, draft.shots[index]?.submission))
   } finally {
     restoringDraft = false
   }
@@ -126,5 +130,5 @@ async function restoreShotsDraft() {
     window.clearTimeout(shotsDraftTimer)
     persistShotsDraft()
   })
-  return { restoreShotsDraft }
+  return { restoreShotsDraft, persistShotsDraft }
 }

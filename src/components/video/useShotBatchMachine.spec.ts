@@ -2,31 +2,44 @@ import { computed, defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useShotBatchMachine } from './useShotBatchMachine'
+import { useShotDraft } from './useShotDraft'
+import type { ShotsDraftPayload } from '@/stores/videoStore'
 import * as api from '@/api/videoApi'
 import { ApiClientError } from '@/api/client'
 import type { ShotDraft } from './shotListTypes'
+const savedDraft = vi.hoisted(() => ({ value: null as ShotsDraftPayload | null }))
+vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({
+  get shotsDraft() { return savedDraft.value },
+  saveShotsDraft(value: ShotsDraftPayload) { savedDraft.value = JSON.parse(JSON.stringify(value)); return true },
+}) }))
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
 vi.mock('@/api/videoApi', () => ({ cancelVideoBatch: vi.fn(), concatVideoBatch: vi.fn(), createVideoBatch: vi.fn(), fetchVideoBatch: vi.fn(), retryVideoShot: vi.fn() }))
 let wrapper: ReturnType<typeof mount> | undefined
 const batch = (status: api.VideoBatch['status'] = 'paused'): api.VideoBatch => ({ id: 'original', status, shots: [{ status: 'failed' }, { status: 'failed' }], progress: { total: 2, succeeded: 0, failed: 2 } } as api.VideoBatch)
-function setup(cached = false) {
+function setup(cached = false, persisted = false) {
   const error = ref(''), accepted = vi.fn()
   const active = ref(true)
   const shots = ref<ShotDraft[]>([]), inputsBusy = ref(false)
+  const identityCard = ref(''), aspectRatio = ref<api.VideoBatch['aspectRatio']>('landscape'), quality = ref<api.VideoQuality>('standard'), steps = ref<4 | 8>(4), linkLastFrame = ref(false)
   let machine!: ReturnType<typeof useShotBatchMachine>
+  let draft: ReturnType<typeof useShotDraft> | undefined
+  const submitted = vi.fn(() => draft?.persistShotsDraft())
   const page = defineComponent({ setup() {
-    machine = useShotBatchMachine({ shots, inputsBusy: computed(() => inputsBusy.value), identityCard: ref(''), aspectRatio: ref('landscape'), quality: ref('standard'), steps: ref(4), linkLastFrame: ref(false), shotReferences: () => undefined, h3Ready: computed(() => true), online: computed(() => true), batchError: error, onAccepted: accepted })
+    machine = useShotBatchMachine({ shots, inputsBusy: computed(() => inputsBusy.value), identityCard, aspectRatio, quality, steps, linkLastFrame, shotReferences: () => undefined, h3Ready: computed(() => true), online: computed(() => true), batchError: error, onAccepted: accepted, onSubmitted: submitted })
+    if (persisted) draft = useShotDraft({ shots, identityCard, aspectRatio, quality, steps, linkLastFrame, batchError: error,
+      referenceCards: ref([]), selectCardCharacter: async () => false, retryPendingFrames: async () => ({ fixed: 0, remaining: 0 }),
+      getShotSubmission: machine.getShotSubmission, restoreShotSubmission: machine.restoreShotSubmission })
     return () => null
   } })
   wrapper = mount(cached ? defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(page) : null }) }) : page)
   machine.batch.value = batch()
-  return { machine, error, shots, inputsBusy, active, accepted }
+  return { machine, error, shots, inputsBusy, active, accepted, submitted, draft }
 }
-beforeEach(() => { vi.clearAllMocks(); vi.useFakeTimers() })
+beforeEach(() => { vi.clearAllMocks(); savedDraft.value = null; vi.useFakeTimers() })
 afterEach(() => { wrapper?.unmount(); vi.useRealTimers() })
 describe('shot batch operation recovery', () => {
   it('does not submit a batch while reference cards or first frames are being prepared', async () => {
-    const { machine, shots, inputsBusy, accepted } = setup()
+    const { machine, shots, inputsBusy, accepted, submitted } = setup()
     shots.value = [{ prompt: 'A complete shot description', seedText: '' } as ShotDraft]
     expect(machine.canSubmit.value).toBe(true)
     inputsBusy.value = true
@@ -47,18 +60,28 @@ describe('shot batch operation recovery', () => {
     acknowledge({ ok: true, batch: { ...batch('running'), id: 'accepted-after-leave' } })
     await submitting
     expect(accepted).toHaveBeenCalledWith(expect.objectContaining({ id: 'accepted-after-leave' }))
+    expect(submitted).toHaveBeenCalledTimes(1)
     expect(vi.getTimerCount()).toBe(0)
   })
   it('keeps row results and retries on submitted draft identities after reorder or deletion, without guessing historical matches', async () => {
-    const { machine, shots } = setup()
+    let { machine, shots, draft } = setup(false, true)
     shots.value = ['First shot description', 'Second shot description'].map(prompt => ({ prompt, seedText: '', dialogue: '' } as ShotDraft))
     const submitted = { ...batch('done'), shots: [{ status: 'failed', resultUrl: '/first.mp4' }, { status: 'failed', resultUrl: '/second.mp4' }] } as api.VideoBatch
     vi.mocked(api.createVideoBatch).mockResolvedValueOnce({ ok: true, batch: submitted })
     await machine.submitBatch()
     expect(machine.serverShot(0)?.resultUrl).toBe('/first.mp4')
+    expect(savedDraft.value?.shots.map(shot => shot.submission)).toEqual([{ batchId: 'original', shotIndex: 0 }, { batchId: 'original', shotIndex: 1 }])
     shots.value.reverse()
     expect(machine.serverShot(0)?.resultUrl).toBe('/second.mp4')
     shots.value.splice(1, 1)
+    draft!.persistShotsDraft()
+    wrapper!.unmount()
+    ;({ machine, shots, draft } = setup(false, true))
+    await draft!.restoreShotsDraft()
+    machine.batch.value = null
+    vi.mocked(api.fetchVideoBatch).mockResolvedValueOnce({ ok: true, batch: submitted })
+    await machine.reconnectBatch('original')
+    expect(machine.serverShot(0)?.resultUrl).toBe('/second.mp4')
     vi.mocked(api.retryVideoShot).mockResolvedValueOnce({ ok: true, batch: submitted })
     await machine.retryShotAt(0)
     expect(api.retryVideoShot).toHaveBeenCalledWith('original', 2)
@@ -75,6 +98,8 @@ describe('shot batch operation recovery', () => {
     expect(machine.serverShot(0)?.resultUrl).toBe('/second.mp4')
     shots.value = shots.value.map(shot => ({ ...shot }))
     expect(machine.serverShot(0)).toBeNull()
+    draft!.persistShotsDraft()
+    expect(savedDraft.value?.shots[0].submission).toBeUndefined()
     await machine.retryShotAt(0)
     expect(api.retryVideoShot).toHaveBeenCalledTimes(1)
   })

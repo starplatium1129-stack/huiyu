@@ -12,6 +12,7 @@ import {
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { ApiClientError } from '@/api/client'
 import type { ShotDraft } from './shotListTypes'
+import type { ShotSubmissionRecord } from '@/stores/videoStore'
 import type { ShotCastRef } from './useReferenceCards'
 
 export interface ShotBatchMachineDeps {
@@ -30,6 +31,7 @@ export interface ShotBatchMachineDeps {
   /** 宿主持有的用户可见错误通道（提交/轮询/重抽失败回写）。 */
   batchError: Ref<string>
   onAccepted?: (batch: VideoBatch) => void
+  onSubmitted?: () => void
 }
 
 /**
@@ -55,7 +57,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   let reconnectTarget = ''
   let reconnectSerial = 0
   let operationSerial = 0
-  let submittedDraft: { batchId: string; shots: ShotDraft[] } | null = null
+  const shotSubmissions = new WeakMap<ShotDraft, ShotSubmissionRecord>()
 
   function stopReads() {
     window.clearTimeout(pollTimer)
@@ -102,9 +104,19 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     return Math.min(100, Math.round(((done + failed) / total) * 100))
   })
 
+  function getShotSubmission(shot: ShotDraft) {
+    const submission = shotSubmissions.get(shot)
+    return submission ? { ...submission } : undefined
+  }
+  function restoreShotSubmission(shot: ShotDraft, submission: ShotSubmissionRecord | undefined) {
+    if (submission && typeof submission.batchId === 'string' && submission.batchId
+      && Number.isSafeInteger(submission.shotIndex) && submission.shotIndex >= 0) {
+      shotSubmissions.set(shot, { batchId: submission.batchId, shotIndex: submission.shotIndex })
+    }
+  }
   function submittedIndex(index: number) {
-    if (!submittedDraft || !Number.isInteger(index) || !shots.value[index] || submittedDraft.batchId !== batch.value?.id) return -1
-    return submittedDraft.shots.indexOf(shots.value[index])
+    const submission = Number.isInteger(index) && shots.value[index] ? shotSubmissions.get(shots.value[index]) : undefined
+    return submission && submission.batchId === batch.value?.id ? submission.shotIndex : -1
   }
   function serverShot(index: number) {
     return batch.value?.shots[submittedIndex(index)] ?? null
@@ -147,8 +159,9 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
         }),
       })
       if (serial !== operationSerial) return
-      submittedDraft = { batchId: response.batch.id, shots: targets }
+      targets.forEach((shot, shotIndex) => shotSubmissions.set(shot, { batchId: response.batch.id, shotIndex }))
       acceptBatch(response.batch)
+      if (!disposed) deps.onSubmitted?.()
     } catch (error) {
       if (!disposed && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '批量提交失败'
     } finally {
@@ -324,6 +337,8 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     canConcat,
     progressPercent,
     serverShot,
+    getShotSubmission,
+    restoreShotSubmission,
     submitBatch,
     cancelBatch,
     retryShotAt,

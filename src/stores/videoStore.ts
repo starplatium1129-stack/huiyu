@@ -104,7 +104,14 @@ export interface ShotsDraftCard {
   outfitId: string
 }
 
+export interface ShotSubmissionRecord {
+  batchId: string
+  shotIndex: number
+}
+
 export interface ShotsDraftShot {
+  /** Explicit submission provenance; absent on legacy or unsubmitted rows. */
+  submission?: ShotSubmissionRecord
   prompt: string
   dialogue: string
   shotSize: string
