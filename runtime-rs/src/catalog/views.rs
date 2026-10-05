@@ -119,24 +119,36 @@ impl Catalog {
         ]
         .contains(&name)
         {
-            let scenes = self.records("scene")?;
             let core = self.document("curation")?["personaCoreSceneIds"]
                 .as_array()
                 .cloned()
                 .unwrap_or_default();
             if name == "scenes-index.json" {
-                let mut shards = serde_json::Map::new();
-                for (character, key) in [
-                    ("nene", "nene"),
-                    ("natsume", "natsume"),
-                    ("triad", "shared"),
-                ] {
-                    shards.insert(key.into(),json!({"file":format!("scenes-{key}.json"),"count":scenes.iter().filter(|r|r.data["char"]==character).count()}));
+                // Lite directory loads need metadata, never prompt/story bodies.
+                let mut statement = self.connection.prepare(
+                    "SELECT id,character_id,sort_order,created_at,updated_at FROM content_records
+                     WHERE kind='scene' AND deleted=0 ORDER BY sort_order,id",
+                )?;
+                let mut rows = statement.query([])?;
+                let mut ids = Vec::new();
+                let mut metadata = serde_json::Map::new();
+                let mut counts = [0; 3];
+                while let Some(row) = rows.next()? {
+                    let id: String = row.get(0)?;
+                    let character: String = row.get(1)?;
+                    if let Some(index) = ["nene", "natsume", "triad"].iter().position(|c| *c == character) {
+                        counts[index] += 1;
+                    }
+                    metadata.insert(id.clone(), json!({"sortOrder":row.get::<_,i64>(2)?,"createdAt":row.get::<_,Option<String>>(3)?,"updatedAt":row.get::<_,Option<String>>(4)?}));
+                    ids.push(id);
                 }
-                return Ok(Some(
-                    json!({"version":2,"total":scenes.len(),"shards":shards,"tiers":{"core":core},"orderedIds":scenes.iter().map(|r|&r.id).collect::<Vec<_>>(),"metadata":scenes.iter().map(|r|(r.id.clone(),json!({"sortOrder":r.sort_order,"createdAt":r.created_at,"updatedAt":r.updated_at}))).collect::<serde_json::Map<_,_>>()}),
-                ));
+                let mut shards = serde_json::Map::new();
+                for (key, count) in ["nene", "natsume", "shared"].into_iter().zip(counts) {
+                    shards.insert(key.into(), json!({"file":format!("scenes-{key}.json"),"count":count}));
+                }
+                return Ok(Some(json!({"version":2,"total":ids.len(),"shards":shards,"tiers":{"core":core},"orderedIds":ids,"metadata":metadata})));
             }
+            let scenes = self.records("scene")?;
             let character = match name {
                 "scenes-nene.json" => Some("nene"),
                 "scenes-natsume.json" => Some("natsume"),

@@ -86,6 +86,16 @@ fn import_preserves_values_unknown_dates_and_summary_queries() {
     let (_temp, _options, catalog) = fixture();
     assert!(catalog.get("scene", "sc001").unwrap().created_at.is_none());
     assert_eq!(
+        catalog.projection("scenes-index.json").unwrap().unwrap(),
+        json!({"version":2,"total":2,"shards":{
+            "nene":{"file":"scenes-nene.json","count":2},
+            "natsume":{"file":"scenes-natsume.json","count":0},
+            "shared":{"file":"scenes-shared.json","count":0}},
+            "tiers":{"core":["sc002"]},"orderedIds":["sc001","sc002"],
+            "metadata":{"sc001":{"sortOrder":1,"createdAt":null,"updatedAt":null},
+                "sc002":{"sortOrder":2,"createdAt":null,"updatedAt":null}}})
+    );
+    assert_eq!(
         catalog.get("scene", "sc001").unwrap().data["extension"],
         json!({"preserved":[1,2]})
     );
@@ -292,6 +302,11 @@ fn tag_renames_and_scene_retirement_keep_all_references_in_one_transaction() {
         json!([])
     );
     assert!(catalog.get("scene", "sc002").is_err());
+    let index = catalog.projection("scenes-index.json").unwrap().unwrap();
+    assert_eq!(index["orderedIds"], json!(["sc001"]));
+    assert_eq!(index["shards"]["nene"]["count"], 1);
+    assert_eq!(index["total"], 1);
+    assert!(index["metadata"].get("sc002").is_none());
     assert!(
         catalog
             .apply(
