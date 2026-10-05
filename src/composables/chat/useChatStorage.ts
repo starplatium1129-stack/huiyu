@@ -470,8 +470,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   async function exportArchiveMarkdown(): Promise<string> {
     await archiveStorage.refresh(true)
-    const names: Record<string, string> = {}
-    for (const id of characterIds) names[id] = getCompanionCharacter(id)?.name || id
+    const names = Object.fromEntries(characterIds.map(id => [id, getCompanionCharacter(id)?.name || id]))
     return chatArchiveToMarkdown(archive.value, names)
   }
   /** 导入归档 JSON：合并去重后落盘，返回导入条数。 */
