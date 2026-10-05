@@ -133,3 +133,17 @@ it('an unreadable commit outcome keeps its owned image and an operation identifi
   expect(await saveArtworkSnapshot(prepareGeneratedArtwork(f.input, f.resolveDefaults), f.deps)).toMatchObject({ ok: false, operationId: expect.any(String), cleanup: { status: 'commit-unknown', imageId: 'new-image' } })
   expect(f.deps.deleteImage).not.toHaveBeenCalled()
 })
+
+it('returns an actionable pending upload identity without claiming no cleanup is needed or deleting an uncertain image', async () => {
+  const { PendingMediaUploadError } = await import('./mediaUpload')
+  const f = fixture()
+  const pending = { operationId: 'upload-operation', imageId: 'image-pending', workspaceId: 'fixture', principalId: 'owner' }
+  const error = new PendingMediaUploadError(pending, new Error('offline'))
+  f.deps.putImage = vi.fn().mockRejectedValue(error)
+  expect(await saveArtworkSnapshot(prepareGeneratedArtwork(f.input, f.resolveDefaults), f.deps)).toMatchObject({
+    ok: false, error, operationId: pending.operationId,
+    cleanup: { status: 'upload-pending', imageId: pending.imageId, upload: pending },
+  })
+  expect(f.deps.deleteImage).not.toHaveBeenCalled()
+  expect(f.deps.appendArtwork).not.toHaveBeenCalled()
+})

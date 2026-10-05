@@ -2,6 +2,7 @@ import { ARTWORK_DELETE_BATCH_SIZE, type ArtworkRepository, type ArtworkProjectR
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord, type ArtworkSearchRecord } from '../../types/artwork.ts'
 import { buildArtworkSearchIndex, parseArtworkSearchIndex } from '../../application/artwork/searchIndex.ts'
 import { createDesktopArtworkMedia } from './artworkMedia.ts'
+import { putDesktopArtworkImage } from './artworkUpload.ts'
 import { workspaceRequest as request } from '../../api/workspace.ts'
 import { getDesktopRuntime } from './runtime.ts'
 import { trackMaintenanceWrite } from '../maintenanceParticipants.ts'
@@ -213,15 +214,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     organizeArtworks, undoArtworkOrganization, createProject, saveSmartAlbum, deleteSmartAlbum,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
     ...media,
-    async putImage(blob) {
-      const bytes = new Uint8Array(await blob.arrayBuffer())
-      const hash = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(value => value.toString(16).padStart(2, '0')).join('')
-      const alias = `image-${crypto.randomUUID()}`, operationId = crypto.randomUUID()
-      const state = await workspaceRequest<{ media: { writtenBytes: number } }>({ kind: 'prepareMedia', operationId, media: { alias, sha256: hash, bytes: bytes.length, mime: blob.type } })
-      for (let offset = state.media.writtenBytes; offset < bytes.length; offset += 1024 * 1024) await workspaceRequest({ kind: 'uploadMediaChunk', operationId, offset, data: bytes.subarray(offset, offset + 1024 * 1024) })
-      await workspaceRequest({ kind: 'commitMedia', operationId })
-      return alias
-    },
+    putImage: blob => putDesktopArtworkImage(blob, workspaceRequest),
     async deleteImage(alias) {
       await workspaceRequest({ kind: 'releaseMedia', alias, operationId: crypto.randomUUID() })
       forgetThumbnail(alias)

@@ -27,10 +27,12 @@ export async function persistPromptArtwork(snapshot: ArtworkSaveSnapshot, histor
     readArtwork: id => repository.readArtwork(id),
     normalizeArtistStyleIds, appendArtwork: entry => repository.appendArtwork(entry),
   })
-  if (!result.ok && result.cleanup.status === 'commit-unknown') {
+  if (!result.ok && ['commit-unknown', 'upload-pending'].includes(result.cleanup.status)) {
     try {
       const { useToast } = await import('@/composables/useToast')
-      useToast().show('保存结果暂时无法确认，原图已保留。请先到作品册核对，再决定是否重新保存。', 'warning')
+      useToast().show(result.cleanup.status === 'upload-pending'
+        ? '图片上传尚未确认，恢复标记已保留。连接恢复后请重试保存同一张图片。'
+        : '保存结果暂时无法确认，原图已保留。请先到作品册核对，再决定是否重新保存。', 'warning')
     } catch { /* Optional feedback cannot change the persistence outcome. */ }
   }
   return result.ok ? result.entry : null

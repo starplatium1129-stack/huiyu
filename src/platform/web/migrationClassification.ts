@@ -19,7 +19,7 @@ export function classifyMigrationKey(source: MigrationSource, key: string): Migr
   if (artworks.has(key)) return 'artwork'
   if (key === keys.ARTWORK_HISTORY_QUARANTINE_KEY || keys.isDeadLocalKey(key)) return 'quarantine'
   if (histories.has(key)) return 'history'
-  if (transient.has(key) || key.startsWith(keys.WORKSPACE_BACKUP_PENDING_PREFIX)) return 'transient'
+  if (transient.has(key) || key.startsWith(keys.WORKSPACE_BACKUP_PENDING_PREFIX) || key.startsWith(keys.WORKSPACE_MEDIA_PENDING_PREFIX)) return 'transient'
   if (chats.has(key)) return 'chat'
   if (sessions.has(key) || key.startsWith(keys.CHAT_DRAFT_PREFIX) || key.startsWith('aics-model-draft-') || key === 'aics_pb_last_draft') return 'draft'
   if (keys.isLiveLocalKey(key) || key === keys.BACKUP_AT_KEY) return 'settings'

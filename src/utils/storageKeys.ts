@@ -56,6 +56,8 @@ export const GALLERY_FILTER_PRESETS_KEY = 'aics_gallery_filter_presets_v1'
 export const BACKUP_AT_KEY = 'aics_backup_last_at'
 /** Local recovery identities only; excluded from portable settings backup/restore. */
 export const WORKSPACE_BACKUP_PENDING_PREFIX = 'aics_workspace_backup_pending_v1:'
+/** Unresolved upload identities, never image bytes; not portable settings. */
+export const WORKSPACE_MEDIA_PENDING_PREFIX = 'aics_workspace_media_pending_v1:'
 
 // ── IndexedDB / sessionStorage 键登记 ──
 // 这两类不参与 localStorage 备份白名单（见文件头规则），但常量化在这里统一出处，
