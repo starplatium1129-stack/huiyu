@@ -1,6 +1,10 @@
-import { expect, it, vi } from 'vitest'
+import { beforeEach, expect, it, vi } from 'vitest'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { createRoutePrefetcher, prefetchRouteResources } from './prefetch'
+
+const access = vi.hoisted(() => ({ local: true }))
+vi.mock('../utils/runtimeEnvironment', () => ({ isLocalStudioHost: () => access.local }))
+beforeEach(() => { access.local = true })
 
 it('warms only the data owned by the selected browsing route', async () => {
   const calls: string[] = []
@@ -13,6 +17,21 @@ it('warms only the data owned by the selected browsing route', async () => {
     await vi.waitFor(() => expect(calls).toHaveLength(3))
     expect(calls.sort()).toEqual(['curation.json', 'scenes-core.json', 'scenes-shared.json'])
     calls.length = 0
+    prefetchRouteResources('/popular-scenes')
+    await vi.waitFor(() => expect(calls).toHaveLength(2))
+    expect(calls.sort()).toEqual(['curation.json', 'popular-characters.json'])
+  } finally { vi.unstubAllGlobals() }
+})
+
+
+it('retains the remote blueprint aggregate fallback', async () => {
+  access.local = false
+  const calls: string[] = []
+  vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+    calls.push(new URL(url, location.origin).pathname.split('/').pop()!)
+    return { ok: true }
+  }))
+  try {
     prefetchRouteResources('/popular-scenes')
     await vi.waitFor(() => expect(calls).toHaveLength(3))
     expect(calls.sort()).toEqual(['curation.json', 'popular-characters.json', 'scene-blueprints.json'])
