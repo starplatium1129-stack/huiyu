@@ -8,6 +8,15 @@ const ANIMA_DEFAULTS = Object.freeze({
   scheduler: 'simple',
 });
 
+// MiaoMiao 1.6 author recommendation; TeaCache's conservative Euler preset.
+const MIAOMIAO_V16_DEFAULTS = Object.freeze({
+  steps: 30,
+  cfg: 4.5,
+  sampler: 'euler',
+  scheduler: 'normal',
+  teaCacheThresh: 0.05,
+});
+
 const KREA_DEFAULTS = Object.freeze({
   // 2026-08-31 对齐真实出图：e0cbf20 为解决默认偏 3D 质感将主 KSampler steps 8→12，
   // 此前此处与 validation 仍写 8，导致 UI 显示 8 步实际出图 12 步的契约漂移。
@@ -56,4 +65,4 @@ function validateTunableNumber(value: any, name: string|number) {
   return true;
 }
 
-export = { ANIMA_DEFAULTS, KREA_DEFAULTS, MANUAL_REPAIR_PRESET, PARAMETER_LIMITS, CHARACTER_LORA_BINDINGS, requiredCharacterForLora, validateTunableNumber };
+export = { ANIMA_DEFAULTS, MIAOMIAO_V16_DEFAULTS, KREA_DEFAULTS, MANUAL_REPAIR_PRESET, PARAMETER_LIMITS, CHARACTER_LORA_BINDINGS, requiredCharacterForLora, validateTunableNumber };

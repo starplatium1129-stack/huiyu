@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_grand_major_arena_candle_waltz",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 681,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "在金色聚光灯下轻盈旋身挥动细剑，金鹿巨角泛光，影蛾与烛火漫天飞舞",
     "camera": "wide shot, low angle, majestic poise",
@@ -18,44 +18,19 @@
     "lighting": "盛大金色竞技场聚光灯与源石光蝶微光",
     "location": "卡西米尔大骑士领中央竞技场舞台",
     "mood": "高洁神圣",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "outfitId": "candle_knight_armor",
-    "promptProse": "In the center of the colossal Kazimierz Grand Knight arena beneath blinding golden spotlights, Viviana Droste performs her mesmerizing sword waltz. Her magnificent golden deer antlers glow with celestial warmth, framing her serene porcelain face and flowing wavy blonde hair. She pirouettes gracefully in her tailored black and gold knightly tunic armor with layered pleated skirts, raising her slender golden rapier as radiant shadow moths and swirling candle flames dance through the air. A breathtaking wide low-angle shot captures the grand arena spectacle, flying golden embers, and her peerless noble grace in pristine anime film quality.",
+    "promptProse": "Viviana turns with her rapier at the center of the Kazimierz arena, her black-and-gold ceremonial armor beneath branching golden antlers. Candlelike sparks become shadow moths around her turning skirt. The low wide view shows circular floor markings below and spectator tiers rising behind. Golden spotlights strike her breastplate and sword from above, while the moths leave smaller light accents along the pleated fabric.",
     "promptTokens": [
-      "arena",
-      "stadium",
-      "spotlight",
-      "confetti",
-      "antlers",
-      "deer_antlers",
+      "night",
+      "Kazimierz arena",
+      "black gold knight armor",
       "rapier",
-      "sword",
-      "moth",
-      "candlelight",
-      "armor",
-      "knight",
-      "dancing",
-      "wide_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "antlers",
+      "shadow moths",
+      "twirling",
+      "wide shot",
+      "low angle"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -74,6 +49,7 @@
       "dancing"
     ],
     "timeOfDay": "夜晚盛典",
-    "title": "薇薇安娜 · 卡西米尔大骑士领的烛火独舞"
+    "title": "薇薇安娜 · 卡西米尔大骑士领的烛火独舞",
+    "compositionIntent": "group"
   }
 }

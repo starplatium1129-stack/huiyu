@@ -161,12 +161,18 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
                 || generation::truthy(&input["maskPrompt"])))
             || !input["superResModel"].is_string())
     {
-        catalog::contract()["HIRES_SAMPLER"].clone()
+        catalog::model(input["modelId"].as_str().unwrap())?
+            .get("hiresSampler")
+            .unwrap_or(&catalog::contract()["HIRES_SAMPLER"])
+            .clone()
     } else {
         Value::Null
     };
     metadata["hiresScheduler"] = if !metadata["hiresSampler"].is_null() {
-        catalog::contract()["HIRES_SCHEDULER"].clone()
+        catalog::model(input["modelId"].as_str().unwrap())?
+            .get("hiresScheduler")
+            .unwrap_or(&catalog::contract()["HIRES_SCHEDULER"])
+            .clone()
     } else {
         Value::Null
     };
@@ -207,7 +213,7 @@ pub(super) async fn status(
         let input = json!({"modelId":id});
         let available = required(config, &input).await.is_ok();
         let krea = model["family"] == "krea2";
-        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"]},"sizes":model["sizes"],"capabilities":{"negative":!krea,"lora":!krea,"noLora":krea||model["noLora"]==true,"characterIdentity":!krea,"experimental":krea||model["noLora"]==true}}));
+        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCacheThresh":model.get("teaCacheThresh").cloned().unwrap_or(json!(0.08))},"sizes":model["sizes"],"capabilities":{"negative":!krea,"lora":!krea,"noLora":krea||model["noLora"]==true,"characterIdentity":!krea,"experimental":krea||model["noLora"]==true}}));
     }
     let mut loras = Vec::new();
     for (id, lora) in catalog::CATALOG["LORAS"].as_object().unwrap() {

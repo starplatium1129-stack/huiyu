@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_balcony_hairband_dusk",
-  "revision": 1,
-  "sortOrder": 1476,
+  "revision": 2,
+  "sortOrder": 1472,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "mahiru_balcony_hairband_dusk",
     "title": "椎名真昼 · 阳台晚风与发绳整理·「隔壁的阳台……原来距离这么近呢」",
@@ -28,40 +28,18 @@
       "amber_eyes",
       "city_lights"
     ],
-    "promptProse": "Mahiru Shiina stands at the railing of her apartment balcony in the purple twilight air, looking across the short divider toward the adjacent balcony. She raises both graceful arms to retie her golden hair as the evening breeze catches her flowing tresses and sweater. Her amber eyes sparkle with pure, unguarded delight, her profile painted by the radiant afterglow of the setting sun over the distant city skyline. Medium shot, cinematic twilight lighting, cityscape bokeh, detailed balcony background, solo 1girl, no extra people.",
+    "promptProse": "Mahiru Shiina raises both hands to retie her wind-tossed golden hair at the apartment balcony railing, smiling toward Amane with his coffee on the neighboring balcony. Her cream sweater and pale-blue lounge trousers remain relaxed. The medium composition makes the short divider and two railings clear beneath the city horizon. Violet dusk lights her hair edges, while warm doorway light catches her sleeves and softly reflects along the nearer railing.",
     "promptTokens": [
       "shiina_mahiru",
-      "1girl",
-      "solo",
-      "blonde_hair",
-      "very_long_hair",
-      "amber_eyes",
-      "adjusting_hair",
-      "hands_behind_head",
-      "balcony",
-      "railing",
-      "sunset",
-      "twilight",
-      "evening",
-      "wind",
-      "flying_hair",
-      "gentle_smile",
-      "city_lights",
-      "detailed_background",
-      "cinematic_lighting"
+      "Mahiru Shiina",
+      "cream sweater",
+      "blue lounge trousers",
+      "hair tying",
+      "adjacent balconies",
+      "dusk",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -70,6 +48,7 @@
     "coverageTags": [
       "daily",
       "city"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc014",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "A returning wave catches Ayachi Nene just after she splashes water toward the viewer. Wearing a light-blue one-piece swimsuit, she laughs and reaches for the forearm entering the edge of the frame to steady herself. Her other hand remains above the foam. A full-body view keeps both feet in the shallow surf and the bright beach behind her.",
+    "animaCaption": "A returning wave catches Ayachi Nene in the shallows just after her splash. Laughing in a light blue one-piece swimsuit, she grasps the forearm entering from the frame edge while her free hand stays above the foam. Both feet remain planted in visible shallow water. The surf line curves behind her toward the beach; bright seaside light creates a water-patterned reflection on her legs and darker contact shadows beneath the ripples.",
     "auditRevision": "careful-batch11-2026-08-27",
     "camera": "浅浪中全身远景",
     "category": "旅行",
@@ -20,8 +20,8 @@
     "location": "海边",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
-    "prompt": "safe, 1girl, standing, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_blue_one_piece_swimsuit, laughing, off_balance, reaching_for_viewer_arm, holding_arm, splashing_water, bare_feet_in_water, shallow_surf, beach, ocean, sea_foam, summer, bright_daylight, full_body, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "negative": "extra partner bodies, detached grasping hand, feet floating above water",
+    "prompt": "1girl, ayachi_nene, blue one piece swimsuit, laughing, holding viewer forearm, shallow surf, splashing water, beach, full body",
     "rating": "All",
     "recommendedSize": "1216×832",
     "season": "夏",
@@ -44,7 +44,7 @@
       "full_body",
       "standing"
     ],
-    "time": "午后",
+    "time": "清晨",
     "timeOfDay": "afternoon",
     "title": "浪花反击战",
     "usage": [

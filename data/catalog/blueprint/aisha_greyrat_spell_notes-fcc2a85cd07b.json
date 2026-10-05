@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_spell_notes",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 485,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "aisha_greyrat_spell_notes",
     "title": "爱夏·页边的术式修订",
@@ -25,35 +25,25 @@
       "fantasy"
     ],
     "description": "爱夏侧坐在藏书室长桌旁，左手食指按着参考书中的术式图，右手在旁边的笔记页上补画一条连线。她微微前倾，视线落在笔尖；高领衬衫和绿色马甲清晰可辨。斜射午后日光横过两本打开的书，墨水瓶放在远离袖口的桌角，背景仅保留拱窗和书脊。",
-    "promptProse": "Two open volumes lie side side on the library table: a reference tome and a working notebook. Aisha leans slightly forward, placing her left index finger beneath a diagram in the tome while her right hand draws one connecting stroke in the notebook with a feather pen. A three-quarter view keeps her intent eyes and both contact points visible. Afternoon sun crosses the pages diagonally, with an inkpot at the far corner and the arch of a tall window behind her shoulder.",
+    "promptProse": "At the library table, adult Aisha places her left index finger below a reference diagram while her right hand adds a connecting stroke to the neighboring notebook. Cream high-neck blouse, forest-green vest and charcoal skirt retain her scholar outfit. The three-quarter medium view includes both contact points and an inkpot beneath the tall window arch. Diagonal afternoon light crosses the pages and intent eyes, with book-edge shadows separating the two volumes.",
     "promptTokens": [
-      "leaning_forward",
-      "pointing_at_book",
-      "drawing_diagram",
-      "feather_pen",
-      "open_notebook",
-      "two_open_books",
-      "inkpot",
-      "arched_window",
-      "three_quarter_view",
-      "afternoon_sunlight"
+      "1girl",
+      "solo",
+      "adult Aisha",
+      "cream high neck blouse",
+      "green vest",
+      "charcoal skirt",
+      "reference tome",
+      "notebook",
+      "feather pen",
+      "library table",
+      "afternoon",
+      "three quarter view"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra characters",
-      "duplicate subject",
-      "split screen"
+      "readable notes"
     ]
   }
 }

@@ -96,8 +96,8 @@
         "profileId": "anima_miaomiao_v16",
         "steps": 30,
         "cfg": 4.5,
-        "sampler": "res_multistep",
-        "scheduler": "simple",
+        "sampler": "euler",
+        "scheduler": "normal",
         "sizes": [
           "832x1216",
           "960x1536",
@@ -106,7 +106,10 @@
           "1024x1024",
           "1216x832"
         ],
-        "noLora": true
+        "noLora": true,
+        "teaCacheThresh": 0.05,
+        "hiresSampler": "euler",
+        "hiresScheduler": "normal"
       },
       "krea2-turbo-fp8": {
         "file": "krea2_turbo_fp8_scaled.safetensors",
@@ -1194,8 +1197,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "styleLoraId": null,
           "hiresFix": false,
@@ -1203,7 +1206,7 @@
           "hiresDenoise": 0.35,
           "hiresUpscaler": null,
           "teaCache": true,
-          "teaCacheThresh": 0.08,
+          "teaCacheThresh": 0.05,
           "initImage": null,
           "maskImage": null,
           "maskPrompt": null,
@@ -1282,8 +1285,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 1
             }
           },
@@ -1317,7 +1320,7 @@
                 "1",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0.05,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -1365,8 +1368,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "styleLoraId": null,
           "hiresFix": true,
@@ -1453,8 +1456,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 1
             }
           },
@@ -1514,8 +1517,8 @@
               "seed": 271829,
               "steps": 18,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "sgm_uniform",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.35
             }
           },
@@ -1526,7 +1529,7 @@
                 "1",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -1575,8 +1578,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "styleLoraId": null,
           "hiresFix": true,
@@ -1664,8 +1667,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 1
             }
           },
@@ -1699,7 +1702,7 @@
                 "1",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -1784,8 +1787,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "styleLoraId": null,
           "hiresFix": true,
@@ -1872,8 +1875,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.8
             }
           },
@@ -1907,7 +1910,7 @@
                 "1",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -2034,8 +2037,8 @@
               "seed": 271829,
               "steps": 18,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "sgm_uniform",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.35
             }
           },
@@ -2206,8 +2209,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "styleLoraId": null,
           "hiresFix": true,
@@ -2295,8 +2298,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.8
             }
           },
@@ -2330,7 +2333,7 @@
                 "1",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -2458,8 +2461,8 @@
               "seed": 271829,
               "steps": 18,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "sgm_uniform",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.35
             }
           },
@@ -2638,8 +2641,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "styleLoraId": null,
           "hiresFix": true,
@@ -2726,8 +2729,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.8
             }
           },
@@ -2761,7 +2764,7 @@
                 "1",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -2897,8 +2900,8 @@
               "seed": 271829,
               "steps": 18,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "sgm_uniform",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.35
             }
           },
@@ -3039,8 +3042,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "styleLoraId": null,
           "hiresFix": true,
@@ -3128,8 +3131,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.8
             }
           },
@@ -3163,7 +3166,7 @@
                 "1",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -3300,8 +3303,8 @@
               "seed": 271829,
               "steps": 18,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "sgm_uniform",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.35
             }
           },
@@ -3451,8 +3454,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "character": "nene",
           "styleLoraId": null,
@@ -3556,8 +3559,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 1
             }
           },
@@ -3617,8 +3620,8 @@
               "seed": 271829,
               "steps": 18,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "sgm_uniform",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.35
             }
           },
@@ -3629,7 +3632,7 @@
                 "4",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -3682,8 +3685,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "character": "nene",
           "styleLoraId": null,
@@ -3788,8 +3791,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 1
             }
           },
@@ -3823,7 +3826,7 @@
                 "4",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -3912,8 +3915,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "character": "nene",
           "styleLoraId": null,
@@ -4017,8 +4020,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.8
             }
           },
@@ -4052,7 +4055,7 @@
                 "4",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -4179,8 +4182,8 @@
               "seed": 271829,
               "steps": 18,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "sgm_uniform",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.35
             }
           },
@@ -4355,8 +4358,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "character": "nene",
           "styleLoraId": null,
@@ -4461,8 +4464,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.8
             }
           },
@@ -4496,7 +4499,7 @@
                 "4",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -4624,8 +4627,8 @@
               "seed": 271829,
               "steps": 18,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "sgm_uniform",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.35
             }
           },
@@ -4808,8 +4811,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "character": "nene",
           "styleLoraId": null,
@@ -4913,8 +4916,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.8
             }
           },
@@ -4948,7 +4951,7 @@
                 "4",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -5084,8 +5087,8 @@
               "seed": 271829,
               "steps": 18,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "sgm_uniform",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.35
             }
           },
@@ -5230,8 +5233,8 @@
           "height": 1216,
           "steps": 30,
           "cfg": 4.5,
-          "sampler": "res_multistep",
-          "scheduler": "simple",
+          "sampler": "euler",
+          "scheduler": "normal",
           "seed": 271828,
           "character": "nene",
           "styleLoraId": null,
@@ -5336,8 +5339,8 @@
               "seed": 271828,
               "steps": 30,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "simple",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.8
             }
           },
@@ -5371,7 +5374,7 @@
                 "4",
                 0
               ],
-              "rel_l1_thresh": 0.08,
+              "rel_l1_thresh": 0,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"
@@ -5508,8 +5511,8 @@
               "seed": 271829,
               "steps": 18,
               "cfg": 4.5,
-              "sampler_name": "res_multistep",
-              "scheduler": "sgm_uniform",
+              "sampler_name": "euler",
+              "scheduler": "normal",
               "denoise": 0.35
             }
           },

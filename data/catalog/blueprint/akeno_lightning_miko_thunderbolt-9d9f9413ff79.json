@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_lightning_miko_thunderbolt",
-  "revision": 1,
-  "sortOrder": 1289,
+  "revision": 2,
+  "sortOrder": 1285,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "akeno_lightning_miko_thunderbolt",
     "title": "姬岛朱乃 · 降魔雷光神圣制裁",
@@ -28,32 +28,16 @@
       "high_ponytail",
       "confident_smile"
     ],
-    "promptProse": "Suspended amid a raging nighttime thunderstorm above a traditional shrine, Akeno Himejima unleashes celestial judgment. A pair of feathered black fallen-angel wings spread wide from her back while blinding azure lightning crackles around her raised hand. Her flowing miko robes and sleek black ponytail billow dramatically. With a chillingly composed smile in her violet eyes, she commands the storm. Dynamic low-angle anime key visual, solo 1girl, no text.",
+    "promptProse": "Akeno Himejima floats above the shrine beneath night thunderclouds, guiding azure lightning with one raised hand. Black fallen-angel wings spread behind her white wide-sleeved miko top and red hakama; her orange-ribboned ponytail lifts in the storm. The low cowboy view retains the shrine roof below the wing span. Lightning lights her composed violet-eyed face and sleeve edge, revealing cloud layers briefly against the surrounding dark sky.",
     "promptTokens": [
-      "thunderstorm",
-      "lightning",
-      "black_wings",
-      "fallen_angel_wings",
-      "floating",
-      "miko",
-      "white_kimono",
-      "red_hakama",
-      "high_ponytail",
-      "confident_smile",
-      "purple_eyes",
-      "intense_lighting",
-      "cowboy_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "Akeno Himejima",
+      "miko robes",
+      "black feathered wings",
+      "azure lightning",
+      "stormy shrine",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_miko_robe",
     "coverageTags": [

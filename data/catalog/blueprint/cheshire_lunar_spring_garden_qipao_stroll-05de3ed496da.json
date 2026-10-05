@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_lunar_spring_garden_qipao_stroll",
-  "revision": 1,
-  "sortOrder": 1092,
+  "revision": 2,
+  "sortOrder": 1088,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "cheshire_lunar_spring_garden_qipao_stroll",
     "title": "柴郡 · 冰雪仙子新春旗袍漫步",
@@ -32,37 +32,17 @@
       "fake_hair_ornament",
       "smile"
     ],
-    "promptProse": "Spinning playfully along a snow-lined oriental pavilion beneath glowing red lanterns, Cheshire showcases her icy cyan embroidered qipao with a daring thigh slit. Her fluffy hair buns and cat ear headband tremble with excitement against the winter snowscape.",
+    "promptProse": "Cheshire turns lightly on one foot in the snow-covered ceremonial garden, smiling in an icy-cyan silk qipao with gold cloud embroidery, white fur trim and white stockings. The full-body three-quarter view keeps the flowing skirt beside red lanterns and snow-capped eaves behind. Warm lantern light colors the near sleeve and gold stitching, while bright reflected snow light cools the shaded fabric and defines her satin heels against the path.",
     "promptTokens": [
-      "oriental_garden",
-      "snowy_courtyard",
-      "red_lanterns",
-      "cheongsam",
-      "high_slit",
-      "white_tights",
-      "fur_trim",
-      "cat_ear_headband",
-      "fake_hair_ornament",
-      "detailed_background",
-      "cinematic_lighting"
+      "winter day",
+      "Lunar New Year garden",
+      "cyan gold qipao",
+      "white fur trim",
+      "white stockings",
+      "lanterns",
+      "full body"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

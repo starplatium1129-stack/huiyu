@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_garden_plans",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 486,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "aisha_greyrat_garden_plans",
     "title": "爱夏·花宴之前",
@@ -25,35 +25,23 @@
       "fantasy"
     ],
     "description": "爱夏站在庭院石径的一侧，左臂托住布置板，右手用铅笔在图上标出花宴长桌的位置。酒红与象牙白的长袖礼服垂至脚踝。横幅中人物位于左侧，右侧石径通向尚未摆满的长桌和花圃；晨光同时照亮图板边缘与桌面，呈现布置尚在进行的一刻。",
-    "promptProse": "The stone path leads from Aisha at the left of the frame toward a partly arranged banquet table on the right. Standing firmly beside a flower border, she braces a planning board on her left forearm and marks the table position with a pencil in her right hand. Her ankle-length burgundy-and-ivory gown falls clear of the paving. In this wide garden view, morning sunlight picks out the board edge and the pale tablecloth, while the manor facade closes the distant background.",
+    "promptProse": "Adult Aisha stands left of the garden path, planning board braced on her left forearm while the right-hand pencil marks the banquet table's position to the right. Her high-neck burgundy-and-cream long-sleeved gown falls clear of the paving. The wide view follows the flower border toward the partly arranged table and manor facade. Morning daylight catches board and pale tablecloth, casting a narrow pencil shadow while plants shade the path edge.",
     "promptTokens": [
-      "holding_clipboard",
-      "marking_plan",
+      "1girl",
+      "solo",
+      "adult Aisha",
+      "burgundy cream formal gown",
+      "long sleeves",
+      "gold trim",
+      "planning board",
       "pencil",
-      "standing_on_path",
-      "banquet_table",
-      "tablecloth",
-      "flower_border",
-      "manor_facade",
-      "wide_shot",
-      "morning_sunlight"
+      "banquet table",
+      "garden path",
+      "morning",
+      "wide shot"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra characters",
-      "duplicate subject",
-      "split screen"
-    ]
+    "negativeTokens": []
   }
 }

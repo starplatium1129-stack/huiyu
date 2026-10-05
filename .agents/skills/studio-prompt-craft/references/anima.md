@@ -1,12 +1,19 @@
 # Anima：数据标签与模型输入分开
 
+先确认 checkpoint。MiaoMiao 1.6 的版本配方查 [作者版本说明与项目差异](miaomiao-v16.md)；Base、Aesthetic、Yume 和其他版本不能继承其默认词与参数。
+
 项目源数据可以保留下划线标签；最终普通标签由 `formatPromptForEngine` 转成空格。`score_N`、注册 exact tokens / prefixes 和 LoRA 控制词按编译器保护，不能全局替换下划线。
 
 官方支持标签、自然语言及混合输入。项目 Anima 编译也会在标签之后追加画面描述；复杂动作和空间关系可由该描述补全，不要声称 Anima 只认标签。
 
+普通标签优先用小写、空格分词。源数据兼容下划线不代表完整英文句子应写成一个长标签；将这种伪标签拆成元素词，关系保留在有效英文描述通道。专名与 exact tokens 不随普通标签规则改写。
+
 人物与环境叙事优先按 [构图参考](narrative-composition.md) 建立可见关系，再核对关系是否保留在最终标签和描述中，不靠通用“完成度”尾句替代具体构图。
 
-- 质量词以实际 profile 为准；`strip_quality_tokens` 启用时不补回。不要通用追加 `score_9, score_8_up`，Base 建议不等于 Aesthetic 或 MiaoMiao 建议。
+当前项目的 Anima 风格与光效按 [工程契约](../../../../docs/engineering-contracts.md#模块边界)处理：未选风格配方时不强制平涂、线稿或饱和度；画师是可选输入。`animaLightPhrase` 可根据已选光效补充受光、投影、反光与明暗层次，不增加光源实体、天气或道具。写作时仍需给出本场景的具体背景与受光关系，不能依赖自动短语代替画面设计；明确的 `animaCaption` 优先于自动 caption，需在该正文中直接保留这些关系。这是项目编译行为，不是 MiaoMiao 作者新增的全局配方。
+
+- 质量词以目标 checkpoint 的依据及实际 profile 为准。MiaoMiao 1.6 作者推荐包含评分词，不能被通用“不加评分词”误删；其他模型不能反向套用。`strip_quality_tokens` 启用时不能靠反复手填补回，应先核对其是否属于所选模型的契约。不要套用 Pony 的 `_up` 系列。
 - 权重是节点/解析器与 checkpoint 的联合行为，不把 `1.5` 写成模型极限。默认保持已有已验证值；要调整就单变量实测，检查括号与精确词保护。
 - 负向从调用链的最终结果核对：底层 `renderPromptPlan` 的 Anima 返回空负向，上层仍可能用 `assembleNegative` 组装。不能据此断言整个引擎没有负向，也不要手工重复注入长模板。
 - 针对实际失败补负向，先排查正向矛盾。要求全身时避免裁切，要求头像时不要机械加入 `cropped`；负向不保证修好手部。
+- 自由输入 `visualDescription` 当前经 `plainEnglish` 的 ASCII 门控；这属于项目实现限制，不能写成官方模型不理解中文的结论。工作室明确的 `animaCaption` 优先于自动 caption，自动路径只保留部分动作/环境；热门路径读取 `sceneProse`。关系写进真实生效的字段，并在最终请求中确认，尤其核对旧 caption 与新镜头/服装的冲突。

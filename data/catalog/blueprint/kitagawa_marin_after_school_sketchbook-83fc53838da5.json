@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_after_school_sketchbook",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 505,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfitId": "school_uniform",
@@ -16,22 +16,19 @@
     "mood": "元气专注",
     "description": "【喜多川海梦 · 放学后的服装设计本】放学后的教室安静下来，海梦还穿着敞开西装外套、系着宽松领带的校服，坐在窗边摊开服装设计本。她用一根手指压住纸页，另一只手拿着铅笔修改袖口的小花边，笑着把新想法指给你看——「先把这里画清楚，做衣服的时候就不会搞错啦！」",
     "action": "坐在课桌前，一手压住设计本，另一手用铅笔修改服装草图",
-    "promptProse": "After class, Marin sits at a desk in her school uniform, her blazer open and her tie loose, holding a sketchbook flat with one hand while the other pencils a revised cuff onto a costume design. Slanting afternoon sunlight crosses the desk and the empty classroom behind her, lighting the fabric swatches beside the book as she smiles at her new idea.",
+    "promptProse": "After class, Marin presses the sketchbook flat with one hand and pencils a revised costume cuff with the other, smiling at the new idea. Open school blazer and loose tie retain her uniform. The medium seated view includes fabric swatches beside the book and empty classroom desks behind. Slanting afternoon window light illuminates swatch textures and the drawing hand, casting pencil and paper-edge shadows across the desk's clear surface.",
     "promptTokens": [
-      "classroom",
-      "school_uniform",
-      "blazer",
-      "loose_tie",
-      "sitting",
-      "desk",
+      "1girl",
+      "solo",
+      "Marin",
+      "open school blazer",
+      "loose tie",
       "sketchbook",
       "pencil",
-      "fabric_swatches",
+      "fabric swatches",
+      "classroom desk",
       "afternoon",
-      "window_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "medium shot"
     ],
     "camera": "medium shot, seated at a classroom desk with sketchbook and both hands visible",
     "lighting": "斜照在课桌上的午后窗光",
@@ -57,18 +54,7 @@
       "medium_shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "bad hands",
-      "extra fingers",
-      "extra limbs",
-      "text",
-      "watermark",
-      "nsfw",
-      "nude",
-      "explicit"
+      "readable notes"
     ]
   }
 }

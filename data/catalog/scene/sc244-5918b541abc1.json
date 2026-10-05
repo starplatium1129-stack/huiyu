@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc244",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 239,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "Curled on a sunlit sofa on a weekend afternoon, Ayachi Nene in a soft white knit sweater and light grey shorts sleeps peacefully with her head resting on the viewer's lap, silver hair spilling over the cushions and supernatural research documents scattered nearby. Her cheek nuzzles the viewer's lap like a contented cat while her ahoge sways gently in the warm window light.",
+    "animaCaption": "Ayachi Nene sleeps curled on the sofa with her head supported by the viewer's lap, wearing the soft white knit sweater and grey shorts. Silver hair spreads over the cushion near the resting research documents. From above, the near composition concentrates on her peaceful face and the cushion indentation. Afternoon window light traces the knit ridges and page edges, while gentle hair and document shadows separate them from the shaded sofa beyond.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "俯瞰近景特写",
     "category": "日常",
@@ -20,8 +20,8 @@
     "location": "公寓客厅沙发",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, multiple_girls, extra_girl, duplicate_character, cloned_character, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes_closed, ahoge, pink_hair_ribbons, soft_white_knit_sweater, light_grey_shorts, curled_up_on_living_room_sofa_with_head_on_viewer's_lap, sleeping_peacefully, silver_hair_spilling_over_cushions, supernatural_research_documents_scattered_nearby, contented_catlike_smile, ahoge_swaying_gently, warm_afternoon_window_light, overhead_close_up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "floating lap contact, papers covering sleeping face, extra sleepers",
+    "prompt": "1girl, ayachi_nene, white knit sweater, grey shorts, sleeping on sofa, lap pillow, research documents, overhead close up, afternoon window light",
     "rating": "All",
     "season": "不限",
     "story": "【宁宁 · 慵懒午后】周末午后温暖的阳光洒进客厅。宁宁蜷缩在沙发上看着超自然研究会的资料，不知不觉就睡着了，银白色的长发散落在靠垫上，呼吸均匀而轻柔。你轻手轻脚地走过去，小心翼翼地把她的头搬到你的膝盖上。宁宁在睡梦中似乎感觉到了什么，嘴角微微上扬，头顶那根呆毛在阳光下轻轻晃动。她含糊地嘟囔了一句——「柊史的味道……安心……」然后又沉沉睡去，脸颊在你的膝盖上蹭了蹭，像一只餍足的猫咪。",
@@ -33,7 +33,8 @@
       "sofa",
       "close_up",
       "lap_pillow",
-      "sleeping"
+      "sleeping",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

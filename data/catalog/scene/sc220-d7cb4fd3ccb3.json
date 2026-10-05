@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc220",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 215,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc220",
     "title": "琴键余韵间的私密协奏",
@@ -43,11 +43,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "safe, 1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_silk_blouse, open_collar, light_blue_pleated_skirt, sitting_at_piano, piano_bench, sitting_beside_viewer, guiding_viewer_right_hand, one_hand_on_piano_keys, grand_piano, keyboard_in_foreground, turning_head_toward_viewer, gentle_smile, blush, private_music_studio, sunset, golden_hour, side_view, medium_shot, detailed_background, cinematic_lighting, volumetric_lighting, <lora:ayachi_nene_v21_anima:0.85>",
-    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, straddling, sitting_on_lap, child, loli, underage",
+    "prompt": "1girl, ayachi_nene, white blouse, blue skirt, sitting at grand piano, guiding partner hand, piano keys, side view, sunset, medium shot",
+    "negative": "extra guiding hands, fingers merged with piano keys, duplicate keyboards",
     "storyJa": "【成年 AU・寧々・プライベート音楽スタジオの夕暮れ】同居後の休日、大人になった寧々は予約した私設音楽スタジオで、あなたに連弾曲を教えていた。夕日が大きな窓を通り、ピアノの艶を砕けた金色に染める。彼女は準備ができたか笑顔で確かめてから、あなたの隣に腰を下ろし、その手を取って鍵盤へ導いた。絹のブラウスの襟元が動きに合わせて少し緩んでも、彼女は逃げず、赤くなった額をそっと寄せた――「この小節は二人で弾いてこそ完成するんです……わざと音を外すのは禁止。それから、続ける前には寧々に聞いてくださいね？」",
     "rating": "R15",
-    "animaCaption": "Beside the viewer on the grand-piano bench, adult Ayachi Nene guides his right hand toward the next key with her left hand while her free hand rests on her own part of the keyboard. Her white silk blouse and light-blue skirt catch the sunset from the studio windows. She turns her face toward him with a small encouraging smile. A close side view includes her face, the guiding hands and the piano keys in the foreground, preserving the shared lesson.",
+    "animaCaption": "On the grand-piano bench, Ayachi Nene guides the viewer's right hand toward the next key with her left, keeping her free hand on her own keyboard section. Her encouraging smile turns toward the lesson above the white blouse and blue skirt. The keys lead into the darker piano body in the foreground. Sunset from the studio window outlines the hands and hair, while reflections from the instrument keep the overlapping fingers distinct.",
     "auditRevision": "sfw-audit-2026-09-09-piano",
     "recommendedSize": "832×1216"
   }

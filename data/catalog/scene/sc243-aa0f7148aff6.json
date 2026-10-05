@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc243",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 238,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a medium shot on the observatory roof under a crisp autumn night sky, Shiki Natsume stands beside the telescope with one hot cocoa in hand and points toward Orion with the other. A second cup rests on the observatory rail while the telescope remains visible in the foreground under the moonlight.",
+    "animaCaption": "Shiki Natsume points toward Orion with one gloved hand while holding cocoa in the other beside the rooftop telescope. Her dark wool coat and red plaid scarf separate the figure from the autumn sky; the second cup remains on the rail. The telescope occupies the nearer plane, with the roof edge receding behind it. Moonlight highlights the glove and instrument tube, while soft reflected rooftop light keeps her faint smile readable without illuminating the entire night scene.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "天文台侧面中景",
+    "camera": "中景侧面特写",
     "category": "日常",
     "char": "natsume",
     "character": [
@@ -20,8 +20,8 @@
     "location": "学校天文台屋顶",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, daytime",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, dark_wool_coat, red_plaid_muffler, black_gloves, standing_beside_telescope_on_observatory_roof, one_hand_holding_hot_cocoa_paper_cup, other_hand_pointing_toward_orion_constellation, second_hot_cocoa_cup_resting_on_observatory_rail, telescope_in_foreground, crisp_autumn_night_sky, full_of_stars, rare_faint_smile, moonlight, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "third cocoa cup, telescope merged with hand, bright daylight sky",
+    "prompt": "1girl, shiki_natsume, dark wool coat, red plaid scarf, hot cocoa, pointing at orion, telescope, observatory roof, moonlight, medium shot",
     "rating": "All",
     "season": "秋",
     "story": "【夏目 · 深夜观星】深秋晴朗的夜晚，学校的天文台屋顶。夏目难得没有在打瞌睡，而是专注地调试着望远镜的焦距。你拿着两杯热可可走上来时，她头也不回地伸出手，仿佛早就在等你。当猎户座清晰地出现在目镜中时，她难得露出了淡淡的微笑，指着星空用毫无起伏的语调讲解着——「那是参宿四，红超巨星，距离地球约700光年。也就是说，我们现在看到的光，是700年前发出的。」她顿了顿，微垂着眼睑，耳根在月光下悄悄泛红，「……700年前的光都能传到现在，有些话……是不是也该说出口了。大笨蛋。」",
@@ -38,6 +38,7 @@
       "starry_sky",
       "night",
       "red_ears",
+      "depth_of_field",
       "medium_shot",
       "telescope_in_foreground"
     ],

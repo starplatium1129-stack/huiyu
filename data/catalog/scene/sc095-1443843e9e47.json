@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc095",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc095",
     "title": "滑落前被接住的浴巾",
@@ -30,22 +30,23 @@
       "bathrobe",
       "night",
       "flushed",
-      "medium_shot"
+      "medium_shot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "浴室",
     "weather": "晴",
     "camera": "肩后回避视角中景",
     "lighting": "浴室柔光与蒸汽漫射",
-    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, two_red_hairclips, water_droplets, wet_skin, bathrobe, loose_bathrobe, heavy_blush, bathroom, steam, night, bokeh, delicate_waist, slender_shoulders, medium_shot, soft_diffused_light, detailed_background, cinematic_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, shiki_natsume, securely wrapped towel, receiving spare bathrobe, bathroom doorway, steam, warm light, over shoulder medium shot",
+    "negative": "open towel, exposed body, extra offering hands, transparent bathrobe",
     "usage": [
       "展示图",
       "R15"
     ],
     "storyJa": "【夏目・落ちる前にバスタオルを引っ掛けた】夏の夜のバスルームで、夏目が浴槽から出た瞬間、緩んだバスタオルが肩から滑り落ちた。あなたは時間内に引き返して、予備のバスローブを渡しました。彼女はあなたの後ろでしばらく沈黙していましたが、それでも温かい声で話しました。――「……少なくとも、反応は紳士的。浴衣を置いたら出ていって。準備ができたら呼ぶから。」",
     "rating": "R15",
-    "animaCaption": "In the summer night bathroom with steam still rising from the bathtub, the moment Shiki Natsume steps out the loose bath towel slips from her bare shoulder while you turn away and pass the spare bathrobe; after a longish silence she reaches for it, her still-warm voice admitting the reaction was at least gentlemanly. Water droplets drip slowly from her just-bathed skin.",
+    "animaCaption": "From an averted over-shoulder angle, the viewer passes a spare bathrobe toward Shiki Natsume at the bathroom doorway. She holds her towel securely and reaches for the robe, the framing staying on the exchange rather than exposing her body. Warm bathroom light catches the robe edge and damp hair; steam softens the tub farther inside. The doorway's shadow band and the darker corridor separate the hands from the background.",
     "auditRevision": "careful-batch07-2026-08-27"
   }
 }

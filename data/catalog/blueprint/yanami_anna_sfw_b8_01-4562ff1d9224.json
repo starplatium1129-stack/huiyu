@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_01",
-  "revision": 1,
-  "sortOrder": 1668,
+  "revision": 2,
+  "sortOrder": 1664,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_01",
     "title": "八奈见杏菜 · 食堂大份定食的满足感",
@@ -31,42 +31,18 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Anna brings her hands together before a generous lunch set, blue eyes shining with anticipation. Her school bow and lively ahoge frame an entirely sincere smile. Rice, soup and neatly arranged side dishes fill the foreground rather than obscuring her face. Bright cafeteria daylight turns this ordinary pause before the first bite into a clear expression of gratitude and uncomplicated enjoyment.",
+    "promptProse": "Anna Yanami brings both hands together before the towering extra-large set meal in the school canteen, eyes bright with anticipation. Her white blouse, blue bow and navy knee-length skirt stay neat as the first bite brings open delight. The medium portrait includes classmates looking over from neighboring tables. Daylight illuminates the piled food and her pleased face, with distinct tray and bowl shadows across the table surface.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "yanami_anna",
-      "make_heroine_ga_oo_sugiru!",
-      "cafeteria",
-      "lunch_set",
-      "rice",
-      "soup",
-      "side_dishes",
-      "hands_together",
-      "smile",
-      "ahoge",
-      "school_uniform",
+      "Anna Yanami",
+      "school uniform",
+      "blue bow",
+      "large meal",
+      "canteen",
       "daylight",
-      "medium_shot"
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -75,6 +51,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc085",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "Sitting in a cat cafe with a cat sleeping on her lap, Shiki Natsume in a casual grey sweater with navy pleated miniskirt and glossy black tights sits petting the cat, gentle composed blush under warm cat cafe light.",
+    "animaCaption": "The sleeping calico cat settles on Shiki Natsume's lap as she strokes its back, her embarrassed glance shifting toward the viewer above the grey sweater. The table and adjacent cafe chairs overlap behind the seated pair. Warm afternoon window light separates the cat's fur from her sleeve and catches one cheek; its body casts a soft lap shadow, while cooler interior fill keeps her other hand and the nearby furniture readable.",
     "auditRevision": "careful-batch11-2026-08-27",
     "camera": "半身中景",
     "category": "日常",
@@ -20,8 +20,8 @@
     "location": "猫咖啡",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, dog, outdoor",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_sweater, grey_sweater, pleated_skirt, sheer_black_tights, loafers, sitting_at_cafe_table, sleeping_calico_cat_on_lap, gently_petting_cat, natsume_flustered_blush, embarrassed_glance_at_viewer, cafe_interior, warm_afternoon_sunlight, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "extra cat heads, fused petting hand and fur, cat floating above lap",
+    "prompt": "1girl, shiki_natsume, grey sweater, sitting at cat cafe table, cat on lap, petting cat, window light, medium shot",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 猫咪替她说出的喜欢】冬日下午的猫咖里，一只猫蜷在夏目腿上睡得很熟。她表面嫌弃无法起身，手指却一直轻轻梳理猫毛。你说她其实很喜欢可爱的东西，她抬眼瞪你，又把旁边的位置让出来——「是它自己过来的。你如果也想坐，就安静一点……别把它吵醒。」",
@@ -33,7 +33,8 @@
       "cat_cafe",
       "full_body",
       "ankle_boots",
-      "cat"
+      "cat",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

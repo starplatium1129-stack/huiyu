@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_cathedral_bridal_vow",
-  "revision": 1,
-  "sortOrder": 1284,
+  "revision": 2,
+  "sortOrder": 1280,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "rias_cathedral_bridal_vow",
     "title": "莉雅丝 · 逆光圣殿的真红誓约",
@@ -29,35 +29,21 @@
       "gentle_smile",
       "holy"
     ],
-    "promptProse": "Standing before the grand altar of an ancient cathedral illuminated by radiant stained-glass light rays, Rias Gremory appears breathtaking in an off-shoulder white bridal wedding gown and gossamer veil. Her vibrant crimson hair contrasts exquisitely with the pure white lace. Holding a delicate bouquet, her aquamarine eyes glisten with tears of absolute devotion and boundless happiness. Cinematic anime visual novel style, solo 1girl, no text.",
+    "promptProse": "Before the cathedral altar, Rias Gremory holds white roses and red camellias against her crimson-and-black noble combat dress, making her vow with tear-bright blue eyes. Dark wings rise behind the embroidered shoulders rather than a bridal train. A slightly low cowboy view includes stone columns and the aisle receding beneath them. Colored window light strikes the bouquet and red hair, leaving patterned reflections across the darker floor.",
     "promptTokens": [
-      "cathedral",
-      "stained_glass",
-      "sunbeams",
-      "wedding_dress",
-      "bridal_veil",
+      "Rias Gremory",
+      "crimson noble combat dress",
+      "bat wings",
       "bouquet",
-      "holding_bouquet",
-      "bare_shoulders",
-      "cleavage",
-      "teary_eyes",
-      "gentle_smile",
-      "happy_tears",
-      "crimson_hair",
-      "cowboy_shot",
-      "cinematic_lighting",
-      "detailed_background",
-      "volumetric_lighting"
+      "cathedral altar",
+      "stained glass",
+      "cowboy shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "white wedding dress"
     ],
     "recommendedSize": "1152x1536",
-    "outfitId": "sfw_white_bridal_gown",
+    "outfitId": "gremory_crimson_battle",
     "coverageTags": [
       "bridal",
       "romantic",

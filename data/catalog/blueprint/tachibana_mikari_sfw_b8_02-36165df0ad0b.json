@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_02",
-  "revision": 1,
-  "sortOrder": 1680,
+  "revision": 2,
+  "sortOrder": 1676,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_02",
     "title": "橘美花莉 · 放学天台的独占视线",
@@ -33,38 +33,17 @@
       "pouting",
       "medium_shot"
     ],
-    "promptProse": "On the school rooftop beside the chainlink fence at golden hour, Mikari Tachibana playfully presses a chilled canned tea against the viewer's cheek with an affectionate pout. Her wavy chestnut brown hair flows across her shoulders in playful two-side-up bunches tied with pink ribbons, fluttering gently in the evening breeze. Sunset light bathes her lavender cardigan, trendy skirt and flushed cheeks in warm amber hues, capturing a tender, nostalgic moment between long-time childhood sweethearts. Clear medium shot framed against the glowing sky.",
+    "promptProse": "Mikari Tachibana holds the cold red-tea can against Okumura's cheek at the rooftop fence, puffing her cheeks as she complains about his club plans. Her lavender cardigan and fashionable skirt move with the warm breeze, pink ribbon ties beside chestnut hair. The medium view includes both figures and the wire mesh behind. Sunset warms her profile and cardigan edge, glinting on the can while casting fence shadows along the rooftop floor.",
     "promptTokens": [
-      "rooftop",
+      "Mikari Tachibana",
+      "lavender cardigan",
+      "cold tea can",
+      "Okumura",
+      "school rooftop",
       "sunset",
-      "chainlink_fence",
-      "holding_can",
-      "iced_tea",
-      "brown_hair",
-      "two_side_up",
-      "pink_ribbon",
-      "pink_eyes",
-      "lavender_cardigan",
-      "short_skirt",
-      "pouting",
-      "medium_shot",
-      "afternoon_sunlight"
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -72,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

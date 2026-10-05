@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_rhodes_breakfast_porridge",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 709,
   "createdAt": null,
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "shu_arknights_rhodes_breakfast_porridge",
     "characterId": "shu_arknights",
@@ -31,24 +31,17 @@
       "cowboy_shot"
     ],
     "promptTokens": [
+      "morning",
       "kitchen",
+      "sage cotton dress",
+      "wheat apron",
       "porridge",
       "bowl",
       "chopsticks",
-      "cooking_pot",
-      "holding_plate",
-      "looking_at_viewer",
-      "smile",
-      "cowboy_shot"
+      "cowboy shot"
     ],
-    "promptProse": "Breakfast has stayed warm for you. Shu carries the porridge bowl toward the viewer with a reassuring smile and a small nod toward the ready seat. Side dishes and the second bowl are already on the table; a pot lid remains slightly open at the stove. Morning light picks out her golden hands and the deep pocket of the wheat-yellow apron over the green cotton dress.",
-    "negativeTokens": [
-      "extra people",
-      "extra limbs",
-      "bad hands",
-      "watermark",
-      "text"
-    ],
+    "promptProse": "Shu carries a warm bowl of porridge toward the viewer in the home kitchen, smiling to invite them to sit. Her sage cotton dress and wheat-yellow apron face the eye-level cowboy camera. Side dishes and a second set of bowl and chopsticks wait on the table; the stove pot behind has its lid ajar. Morning window light brightens her golden hands and apron pocket, with gentle pot shadows.",
+    "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",
     "coverageTags": [

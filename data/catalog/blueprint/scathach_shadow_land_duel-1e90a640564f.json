@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_shadow_land_duel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 242,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "scathach_shadow_land_duel",
     "title": "斯卡哈 · 影之国雾海的弑神双枪·「想从我这里学艺，先接下这一击」",
@@ -29,28 +29,21 @@
       "full_body",
       "low_angle"
     ],
-    "promptProse": "Scathach lowers her center of gravity on a broad black rock above the misty rift, one crimson spear held in each hand. Both spear tips rise toward the fog as she prepares the opening movement, with the silver pauldrons of her purple battle outfit catching cold reflected light. Her very long purple hair streams behind the balanced stance, and her red eyes remain fixed on the approaching challenger. Crimson magical arcs trace the two weapons without obscuring their separate grips. Use a wide low-angle frame with her boots, arms and complete spears visible. No lettering.",
+    "promptProse": "Scathach lowers her stance on a broad black rock above the misty rift, one crimson Gae Bolg spear in each hand with both tips rising toward the fog. Very long purple hair streams behind focused red eyes and the purple Lancer outfit. The wide low-angle full-body view keeps both complete weapons distinct. Crimson magical arcs illuminate the grips and rock edge, while cold reflected light catches silver pauldrons against the violet-black mist.",
     "promptTokens": [
-      "shadow_realm_rift",
-      "black_rock",
-      "low_combat_stance",
-      "two_crimson_spears",
-      "separate_weapon_grips",
-      "silver_pauldrons",
-      "purple_battle_outfit",
-      "red_magic_arcs",
-      "full_body",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Scathach",
+      "purple Lancer outfit",
+      "silver pauldrons",
+      "twin crimson spears",
+      "black rock",
+      "misty rift",
+      "full body",
+      "low angle"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "cropped spears"
     ],
     "recommendedSize": "1536x1152",
     "adult": false,

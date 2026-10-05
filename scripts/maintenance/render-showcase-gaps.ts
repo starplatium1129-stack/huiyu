@@ -10,7 +10,7 @@
  *   - inferBlueprintDecisions 推断导演三件套（shot / lighting / composition）注入编译产物
  *   - resolveStyleRecipe 按蓝图 hint 解析风格配方（成人配方 fail-closed）
  *   - matureTokens 池（tags.json Mature 分类）与 UI 同源
- *   - TeaCache 加速（thresh 0.08）、按蓝图 recommendedSize 出图（画幅轴向契约）
+ *   - TeaCache 加速（thresh 0.05）、按蓝图 recommendedSize 出图（画幅轴向契约）
  *   - 明确失败自动换 seed 重试一轮；中断保留 job ID，重跑继续查询原任务
  *   - --redo-mine: 只重出带旧版 gap-render 指纹的问题条目（provenance notes 指纹识别）
  *
@@ -117,7 +117,7 @@ function collectTasks(opts: any, input: any) {
         payload: (attempt: any) => ({
           modelId: MODEL_ID, prompt, negative: plan.negative,
           width: w || 832, height: h || 1216, steps: 30,
-          cfg: 4.5, teaCache: true, teaCacheThresh: 0.08,
+          cfg: 4.5, teaCache: true, teaCacheThresh: 0.05,
           seed: baseSeed + (attempt - 1) * 7919,
         }),
       });

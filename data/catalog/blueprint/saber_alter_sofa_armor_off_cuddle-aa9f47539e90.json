@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_sofa_armor_off_cuddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 224,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "saber_alter_sofa_armor_off_cuddle",
     "title": "黑呆 · 卸甲依偎的沉静温存",
@@ -29,32 +29,20 @@
       "warm_wall_lamp",
       "side_view"
     ],
-    "promptProse": "On the dark living-room sofa, Saber Alter rests her head against the shirt-covered upper chest of the companion seated beside her. Both are fully clothed in a quiet, nonsexual moment of comfort. Her opaque black velvet gothic dress stays securely in place, and her loose platinum-blonde hair falls across her shoulder. Her hands rest together over her lap; the companion’s plain grey sleeve lies behind her shoulders. The discarded armor is stacked at the far wall. Warm wall-lamp light and a side view make the actual head-to-companion contact clear. No lettering.",
+    "promptProse": "On the dark sofa, Saber Alter rests her head against the shirt-covered upper chest of her seated companion, hands together over her lap. Her secure opaque black velvet gothic dress and loose platinum-blonde hair remain visible in the three-quarter side view, the companion's grey sleeve behind her shoulders. Armor is stacked by the far wall. Warm wall-lamp light reveals their quiet contact and hair strands, leaving soft shadows along the supporting cushions.",
     "promptTokens": [
-      "living_room",
-      "sofa",
-      "two_clothed_figures",
-      "head_on_companion_chest",
-      "black_gothic_dress",
-      "loose_hair",
-      "closed_eyes",
-      "hands_on_lap",
-      "warm_wall_lamp",
-      "side_view",
-      "detailed_background",
-      "cinematic_lighting"
+      "2people",
+      "Saber Alter",
+      "black velvet gothic dress",
+      "loose blonde hair",
+      "clothed companion",
+      "head on chest",
+      "living room sofa",
+      "stacked armor",
+      "night lamp",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "worn armor",
-      "blue dress",
-      "hair bun",
-      "cleavage"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_gothic_lolita_dress",
     "coverageTags": [

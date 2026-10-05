@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_clubroom_desk_pinned_tsundere",
-  "revision": 1,
-  "sortOrder": 1281,
+  "revision": 2,
+  "sortOrder": 1277,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "rias_clubroom_desk_pinned_tsundere",
     "title": "莉雅丝 · 部长室桌沿的越界反制",
@@ -28,39 +28,25 @@
       "parted_lips",
       "sunset_light"
     ],
-    "promptProse": "Backed gently against the polished mahogany desk in the twilight-lit occult research clubroom, Rias Gremory is caught in an intimate moment. Her hands rest against the viewer's chest with soft hesitation, papers strewn beside her. Her cheeks and delicate ears flushed deep crimson with embarrassment, her aquamarine eyes trembling between fluster and deep desire. Golden hour rim light, cinematic anime illustration, solo 1girl, no text.",
+    "promptProse": "Rias Gremory rests against the clubroom desk edge as her companion gently holds her waist; both of her hands touch his clothed chest. Her Kuoh uniform stays tidy despite papers scattered beside them, and her cheeks and ears redden with surprise. The close eye-level view includes the heavy desk and shelving behind. Low sunset from the side catches her red hair and paper edges, stretching their overlapping shadows across the desktop.",
     "promptTokens": [
-      "office",
-      "study",
-      "leaning_back",
-      "hands_on_chest",
-      "kuoh_academy_uniform",
-      "unbuttoned_collar",
-      "heavy_blush",
-      "blushing_ears",
-      "red_ears",
-      "shy_expression",
-      "parted_lips",
-      "sunset",
-      "golden_hour",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Rias Gremory",
+      "Kuoh uniform",
+      "desk edge",
+      "1girl",
+      "1boy",
+      "scattered papers",
+      "clubroom",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra fingers",
-      "fire, flames, burning ears",
-      "self-harm, choking"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_kuoh_uniform",
     "coverageTags": [
       "gap_moe",
       "intimate",
       "romance"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_shopping_blush_sidewalk",
-  "revision": 1,
-  "sortOrder": 1477,
+  "revision": 2,
+  "sortOrder": 1473,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "mahiru_shopping_blush_sidewalk",
     "title": "椎名真昼 · 商业街并肩同行的微热红晕·「被同学看到的话……会误会的……但我不讨厌」",
@@ -29,39 +29,17 @@
       "shy",
       "looking_down"
     ],
-    "promptProse": "Mahiru Shiina walks beside you on a crisp winter afternoon shopping street, wrapped snugly in an ivory duffle coat and a fluffy plaid scarf. Her hands are tucked inside her oversized sleeves, her fingers hesitantly tugging at the edge of your jacket. As your hands brush, a rich crimson blush spreads over her cheeks above the wool scarf, her golden eyelashes fluttering as she bashfully turns her gaze toward the brick sidewalk. Medium shot, soft winter sunlight, holiday shopping street background, solo 1girl, no text.",
+    "promptProse": "Mahiru Shiina draws her hands into her ivory duffle-coat sleeves and quietly catches her companion's coat edge while they shop for groceries. Their fingertips touch, and she looks down with an immediate blush above the red-and-white plaid scarf. The medium view follows the red-brick sidewalk between bare street trees. Clear winter sunlight catches scarf fibers and coat toggles, with branch shadows crossing the paving beneath their close steps.",
     "promptTokens": [
       "shiina_mahiru",
-      "1girl",
-      "solo",
-      "blonde_hair",
-      "very_long_hair",
-      "amber_eyes",
-      "duffle_coat",
-      "white_coat",
-      "scarf",
-      "plaid_scarf",
-      "street",
-      "winter",
-      "holding_sleeve",
-      "heavy_blush",
-      "shy",
-      "looking_down",
-      "detailed_background",
-      "cinematic_lighting"
+      "Mahiru Shiina",
+      "ivory duffle coat",
+      "red plaid scarf",
+      "holding sleeve",
+      "winter shopping street",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -70,6 +48,7 @@
     "coverageTags": [
       "daily",
       "date"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

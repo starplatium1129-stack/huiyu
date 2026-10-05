@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_glasses_removed_flustered_tsundere",
-  "revision": 1,
-  "sortOrder": 1336,
+  "revision": 2,
+  "sortOrder": 1332,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "摘下的眼镜放在桌上，双手抓住视角衣袖，抬眼露出惊讶而害羞的浅笑。",
     "camera": "medium close-up, eye level, sleeve in foreground",
@@ -21,38 +21,18 @@
     "location": "夕阳斜照的无人社团活动室书桌旁",
     "mood": "反差破防",
     "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "extra_fingers",
-      "extra_limbs",
-      "text",
-      "watermark",
-      "duplicate",
-      "nude",
-      "lingerie",
-      "underwear",
-      "see-through"
+      "glasses worn"
     ],
     "outfitId": "sfw_school_uniform_without_glasses",
-    "promptProse": "Folded glasses rest on the clubroom desk beside Ciel, leaving her sapphire eyes unobstructed when she looks up at the viewer. She wears a neat navy blazer, white shirt, red tie and grey pleated skirt. Both hands gather the cuff of the sleeve entering the foreground, and surprise settles into a small embarrassed smile. Warm sunset light touches her short blue hair and reddened ears. Keep her uncovered face and the two hands in a medium close view; the glasses remain on the desk.",
+    "promptProse": "Ciel faces her nearby companion in the evening clubroom, both hands lightly gripping the sleeve offered toward her. Without glasses, her blue eyes show surprise before a small embarrassed smile appears; her navy blazer, red tie and grey skirt stay orderly. Keep the sleeve in the close foreground and folded glasses on the desk behind. Soft sunset enters from the side, warming her ear and casting a restrained sleeve shadow across her hands.",
     "promptTokens": [
-      "1girl",
+      "Ciel",
+      "navy school blazer",
+      "grey skirt",
+      "glasses removed",
+      "sleeve contact",
       "clubroom",
-      "desk",
-      "folded_glasses_on_desk",
-      "eyes_visible",
-      "holding_viewer_sleeve",
-      "both_hands",
-      "looking_up",
-      "surprised",
-      "small_smile",
-      "blush",
-      "sunset_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "medium close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -70,6 +50,7 @@
       "medium_shot"
     ],
     "timeOfDay": "sunset",
-    "title": "希耶尔 · 摘下眼镜的慌乱娇羞"
+    "title": "希耶尔 · 摘下眼镜的慌乱娇羞",
+    "compositionIntent": "group"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_workbench_bomb_defusal_tools",
-  "revision": 1,
-  "sortOrder": 1194,
+  "revision": 2,
+  "sortOrder": 1190,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sachi_workbench_bomb_defusal_tools",
     "title": "小岭幸 · 地下工坊的硬核防爆拆解",
@@ -31,36 +31,18 @@
       "focused",
       "pink_hair"
     ],
-    "promptProse": "Focusing with surgeon-like precision under a focused desk lamp in an underground workshop, Sachi disassembles a complex technical apparatus with a screwdriver in her maid uniform. Dramatic high-contrast shadows carve out the contrast between her delicate lace apron and heavy industrial tools.",
+    "promptProse": "At a crowded underground workbench, Komine Sachi studies a compact fuse apparatus in her maid uniform and insulated gloves. A precision screwdriver and wire cutters lie within reach among electronic parts; an oscilloscope rises behind the bench. The close cowboy framing centers her attentive face and careful tool contact. A low cold-white desk lamp illuminates the casing and apron folds, leaving shelves in deep workshop shadow.",
     "promptTokens": [
-      "technical_workshop",
+      "maid uniform",
       "workbench",
-      "holding_screwdriver",
-      "electronic_parts",
-      "desk_lamp_glow",
-      "maid_dress",
-      "intense_focus",
-      "pink_hair",
-      "detailed_background",
-      "cinematic_lighting"
+      "insulated gloves",
+      "screwdriver",
+      "wire cutters",
+      "electronic components",
+      "desk lamp",
+      "medium close-up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152"
   }
 }

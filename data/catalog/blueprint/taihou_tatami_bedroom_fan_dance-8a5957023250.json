@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_tatami_bedroom_fan_dance",
-  "revision": 1,
-  "sortOrder": 1084,
+  "revision": 2,
+  "sortOrder": 1080,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "taihou_tatami_bedroom_fan_dance",
     "title": "大凤 · 和风寝殿的红扇雅舞",
@@ -31,36 +31,18 @@
       "twintails",
       "graceful"
     ],
-    "promptProse": "Spinning in a mesmerizing traditional ceremonial dance before a gilded phoenix screen in her imperial tatami bedchamber, Taihou sweeps gold fans through the air. Trailing crimson kimono sleeves and floor-length twintails float with breathtaking elegance across the lantern-lit mats.",
+    "promptProse": "Taihou dances barefoot on the traditional chamber's tatami, opening red-and-gold painted fans in both hands as her red-black kimono sleeves and long twin tails turn around her. The full-body wide view leaves the phoenix-painted screen behind and clear floor under the movement. Palace lamps and candles reflect from gold leaf onto the fans and brocade, with layered sleeve shadows falling across the warm woven mat.",
     "promptTokens": [
-      "japanese_chamber",
-      "gold_screen",
+      "night",
+      "Sakura chamber",
       "tatami",
-      "kimono",
-      "folding_fan",
-      "traditional_dance",
-      "twintails",
-      "barefoot",
-      "detailed_background",
-      "cinematic_lighting"
+      "phoenix screen",
+      "red black kimono",
+      "folding fans",
+      "dancing",
+      "full body"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152"
   }
 }

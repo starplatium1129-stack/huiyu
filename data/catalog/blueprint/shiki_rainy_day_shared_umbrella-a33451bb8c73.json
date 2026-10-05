@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_rainy_day_shared_umbrella",
-  "revision": 1,
-  "sortOrder": 1349,
+  "revision": 2,
+  "sortOrder": 1345,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "并肩共撑黑伞，侧身紧贴视角手臂，抬头看着伞沿滴落的雨水，眼神柔和",
     "camera": "cowboy shot, eye level, atmospheric rainy walk",
@@ -22,30 +22,17 @@
     "location": "被青苔与细雨笼罩的幽静日式老式石板巷",
     "mood": "静谧浪漫",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "knife"
     ],
     "outfitId": "kimono_red_jacket_no_knife",
-    "promptProse": "Walking closely together beneath a single black umbrella through a rain-slicked cobblestone alley, Ryougi Shiki leans gently against the viewer's side to stay sheltered from the falling mist. Raindrops patter musically against the canvas as her red leather jacket brushes against the viewer's arm. Looking up through the soft grey rainfall with deep, quiet tenderness, her black eyes soften completely. Atmospheric anime film visual style with two clothed figures, no text.",
+    "promptProse": "Ryougi Shiki walks shoulder-close to her companion beneath one long-handled black umbrella, her white kimono and red leather jacket clear in the rain. Brown boots disturb the puddled stone lane as she looks up at drops falling from the rim. The eye-level cowboy view follows wet paving joints toward the misty alley bend. Cool-grey daylight reflects on umbrella ribs and jacket edges, with warmer reflected tones sheltered near their faces.",
     "promptTokens": [
-      "rain",
-      "rainy_alley",
-      "cobblestones",
-      "umbrella",
-      "shared_umbrella",
-      "white_kimono",
-      "red_jacket",
-      "walking_together",
-      "close_distance",
-      "gentle_smile",
-      "black_hair",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "two_clothed_figures"
+      "Ryougi Shiki",
+      "white kimono",
+      "red leather jacket",
+      "shared black umbrella",
+      "rainy alley",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

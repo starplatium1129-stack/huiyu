@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_sunset_waterside",
-  "revision": 1,
-  "sortOrder": 1029,
+  "revision": 2,
+  "sortOrder": 1025,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "赤足坐在木栈桥边晃动双腿，侧颜温柔",
     "camera": "medium shot, eye level",
@@ -18,36 +18,18 @@
     "lighting": "夕阳熔金逆光与湖面反光",
     "location": "芦之湖畔夕阳栈桥",
     "mood": "宁静柔美",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "outfitId": "yellow_summer_sundress",
-    "promptProse": "Sitting on the edge of a rustic wooden pier trailing her feet in the lake water at sunset, Asuka unwinds in rare, peaceful tranquility. Rich golden hour rays reflect across sparkling water ripples against distant mountain peaks.",
+    "promptProse": "Asuka sits at the Lake Ashi pier edge in her yellow sundress, sandals set aside and bare feet moving quietly in the clear water. Her orange-red twin tails catch the evening breeze as her expression softens. The eye-level medium view follows wooden planks behind her and gold-red lake ripples beyond. Sunset backlight outlines her hair and dress hem, with reflected water warmth beneath her relaxed hands.",
     "promptTokens": [
-      "lake_pier",
       "sunset",
-      "golden_hour",
-      "sitting_on_pier",
-      "feet_in_water",
-      "relaxed_expression",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Lake Ashi",
+      "pier",
+      "yellow sundress",
+      "barefoot",
+      "sandals",
+      "sitting",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -58,7 +40,8 @@
       "sitting_on_pier",
       "feet_in_water",
       "water_ripples",
-      "relaxed_expression"
+      "relaxed_expression",
+      "mountain_silhouette"
     ],
     "timeOfDay": "黄昏",
     "title": "惣流·明日香 · 湖畔残阳的静谧"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_morning_ledgers",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 484,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "aisha_greyrat_morning_ledgers",
     "title": "爱夏·晨光中的账目核对",
@@ -25,34 +25,25 @@
       "fantasy"
     ],
     "description": "晨光从书桌左侧照入。爱夏坐在桌后，左手压住摊开的账册，右手的羽毛笔停在刚圈出的数字上，眉梢微挑。深褐连衣裙与白色围裙保持整齐；前景的收据束与后方的分类书架交代宅邸事务，焦点落在脸、笔尖和账页之间。",
-    "promptProse": "At an oak desk, Aisha pauses with her quill touching a circled entry in an open household ledger. Her left palm holds the page flat while her raised eyebrow suggests she has found a discrepancy. Seen across the near desk corner in a waist-up view, she sits between a bundle of receipts in the foreground and labeled storage shelves behind her. Sunlight from the window on the left illuminates her face, the writing hand and the paper together; the far shelves remain softly shaded.",
+    "promptProse": "Adult Aisha pauses at the oak desk with her right-hand quill touching a circled ledger entry and her left palm keeping the page flat, eyebrow raised at a discrepancy. Covered dark-brown maid dress, white frilled apron, ascot and plain headdress retain the outfit. The waist-up view places receipts at the near corner and storage shelves behind. Left-window morning light illuminates face, quill and paper, casting the receipt stack's short shadow toward the shaded shelves.",
     "promptTokens": [
-      "seated_at_desk",
-      "holding_quill",
-      "hand_on_page",
-      "raised_eyebrow",
-      "open_ledger",
-      "receipt_bundle",
-      "oak_desk",
-      "window_light",
-      "waist_up"
+      "1girl",
+      "solo",
+      "adult Aisha",
+      "dark brown maid dress",
+      "white frilled apron",
+      "white ascot",
+      "maid headdress",
+      "ledger",
+      "quill",
+      "oak desk",
+      "morning",
+      "medium shot"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra characters",
-      "duplicate subject",
-      "split screen"
+      "readable ledger numbers"
     ],
     "coverageTags": [
       "iconic",

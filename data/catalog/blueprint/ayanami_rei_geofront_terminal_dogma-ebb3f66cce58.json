@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_geofront_terminal_dogma",
-  "revision": 1,
-  "sortOrder": 1019,
+  "revision": 2,
+  "sortOrder": 1015,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "伫立于高空平台边缘俯瞰下方红色海洋",
     "camera": "medium shot, standing on a high platform overlooking the crimson LCL lake",
@@ -18,38 +18,17 @@
     "lighting": "地下红海暗红辉光与高空探照冷光交错",
     "location": "NERV 最终教条区 LCL 巨大湖泊",
     "mood": "庄严宏大",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "outfitId": "plugsuit_white",
-    "promptProse": "Standing at the edge of a high platform in Terminal Dogma, Rei looks down over the vast crimson LCL lake with the distant white cross and colossal subterranean architecture beyond. Red reflected light and cold searchlights frame her still, enigmatic silhouette.",
+    "promptProse": "Rei stands alone at the front of the steel platform above Terminal Dogma's crimson LCL lake, wearing her white plugsuit and red neural-interface clips. She looks toward the immense sleeping figure suspended on its cross. The medium view carries the platform edge toward the distant body. Dark red lake glow rises onto her suit's lower panels, while a cold overhead searchlight outlines her head and the near platform rail.",
     "promptTokens": [
-      "terminal_dogma",
-      "geofront",
-      "giant_cross",
-      "sacred_light",
-      "calm_expression",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "standing",
-      "overlooking",
-      "lcl_lake"
+      "underground",
+      "Terminal Dogma",
+      "red LCL lake",
+      "steel platform",
+      "white plugsuit",
+      "crucifix",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -63,6 +42,7 @@
       "sacred_light"
     ],
     "timeOfDay": "白天",
-    "title": "绫波丽 · 最终教条的神圣肃穆"
+    "title": "绫波丽 · 最终教条的神圣肃穆",
+    "compositionIntent": "group"
   }
 }

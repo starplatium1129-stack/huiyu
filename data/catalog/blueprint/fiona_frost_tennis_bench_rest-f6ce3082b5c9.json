@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_tennis_bench_rest",
-  "revision": 1,
-  "sortOrder": 823,
+  "revision": 2,
+  "sortOrder": 819,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "fiona_frost_tennis_bench_rest",
     "characterId": "fiona_frost",
@@ -28,35 +28,17 @@
       "spotlight",
       "rest_break"
     ],
-    "promptProse": "Resting during an interval beside the tennis court, Fiona Frost sits sideways along a painted wooden bench with a clean white towel draped around her neck. Her white tennis skirt fans across the slatted seat while her long athletic legs stretch outward toward the baseline. Overhead court spotlights highlight the glistening sheen of perspiration on her bare collarbones and arms as she takes a quiet sip from an aluminum water flask. Wide horizontal composition capturing her poised athletic rest.",
+    "promptProse": "During the changeover, Fiona rests on the court-side wooden bench in her white tennis top and pleated skirt, a towel across her shoulders and racket angled beside her knee. She opens her bottle and takes a small drink while catching her breath. The wide view includes the bench and nearby court lines. Soft floodlights from the side-rear catch sweat along her jaw and outline the bottle above the shaded seat.",
     "promptTokens": [
-      "tennis_court",
-      "wooden_bench",
-      "sitting_sideways",
-      "towel_on_shoulders",
-      "water_bottle",
-      "sweat_sheen",
-      "pleated_skirt",
-      "tennis_racket",
-      "spotlight",
-      "wide_shot",
-      "athletic_beauty"
+      "tennis court",
+      "wooden bench",
+      "white tennis outfit",
+      "towel",
+      "racket",
+      "water bottle",
+      "wide shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra characters",
-      "duplicate subject",
-      "split screen"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": false,
     "coverageTags": [

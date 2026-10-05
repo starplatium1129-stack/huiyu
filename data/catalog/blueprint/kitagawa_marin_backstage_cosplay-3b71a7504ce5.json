@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_backstage_cosplay",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 496,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "对着随身镜调整假发与饰品，回眸比出角色招牌姿势，元气满满",
     "camera": "medium shot, adjusting her wig and accessories before a dressing-room mirror",
@@ -19,27 +19,22 @@
     "location": "漫展后台更衣区",
     "mood": "元气闪耀",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "extra fingers",
-      "gloomy",
-      "dark"
+      "extra person in mirror"
     ],
     "outfitId": "cosplay",
-    "promptProse": "Making final costume adjustments before the dressing-room mirror, Marin checks her makeup and adjusts her wig and accessories with pure excitement. Warm backstage vanity lights create a focused pre-event moment.",
+    "promptProse": "Marin checks her wig and character accessories in the backstage mirror, then turns to make the cosplay's signature pose with lively anticipation. The playful character costume remains distinct from her daily clothes. The medium view includes the portable mirror near the dressing surface and curtains behind her. Warm ring lighting illuminates the wig strands and makeup, while daylight through a curtain gap catches the accessory edges and casts a narrow stripe across the table.",
     "promptTokens": [
-      "cosplay_dressing_room",
-      "mirror",
-      "adjusting_wig",
+      "1girl",
+      "solo",
+      "Marin",
+      "character cosplay",
+      "wig",
       "accessories",
-      "cosplay_outfit",
-      "excited_smile",
-      "warm_lighting",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "portable mirror",
+      "backstage",
+      "ring light",
+      "curtain daylight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -51,6 +46,7 @@
       "cheerful"
     ],
     "timeOfDay": "上午",
-    "title": "喜多川海梦 · 漫展后台·开幕前的最后调整"
+    "title": "喜多川海梦 · 漫展后台·开幕前的最后调整",
+    "allowRepeatedSubject": true
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc205",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 200,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc205",
     "title": "破晓露台的半透晨光",
@@ -26,7 +26,8 @@
       "beach_house_veranda",
       "full_body",
       "barefoot",
-      "dawn"
+      "dawn",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "海滨度假木屋露台",
@@ -37,11 +38,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, bare_legs, standing, kissing, on_tiptoes, beach, ocean, waves, barefoot, warm, dawn, veranda, collarbone, slender_waist, full_body, morning_light, backlight, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, pants, underwear, bra, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, ayachi_nene, white sundress, holding veranda rail, beach house, dawn ocean, backlight, close up",
+    "negative": "transparent sundress, extra rail-gripping hands, duplicated shoreline",
     "storyJa": "【寧々・大人のアフターストーリー・・・夏の軽やかなスカートと夜明けの逆光】夜明けに目覚めると、海辺の木造住宅のテラスでは、手すりを伝って湿った海風が吹き抜けていた。寧々は、薄い白いノースリーブのドレスを着て、朝の光の中に立っていた。柔らかい布地が風によって彼女の体に押し付けられ、彼女のぼんやりとした輪郭が朝日に照らされました。彼女は顔を赤らめて振り返り、その目には恥じらいと抑えがたい幸福感が表れていた。彼女の頭のてっぺんは小さなハートの形に素直に曲がっていました――「もう見飽きた？　風が少し冷たいんです……早く後ろから、寧々を抱きしめてください。」",
     "rating": "R15",
-    "animaCaption": "On a beach house veranda at dawn in a breezy white sundress with thin straps, Ayachi Nene stands with sun-kissed bare legs, bare feet on veranda wood, holding the rail with a gentle loving smile in warm dawn light.",
+    "animaCaption": "At the beach-house veranda, Ayachi Nene holds the rail and smiles toward the viewer in her breezy white sundress. The near view follows her hand along the timber railing; beyond it the shoreline and quiet ocean narrow toward the dawn horizon. Early backlight outlines the hair and dress edge, while sea-reflected light gives the turned face a soft fill. Railing shadows across the boards keep the veranda distinct from the pale distance.",
     "auditRevision": "careful-batch08-2026-08-27"
   }
 }

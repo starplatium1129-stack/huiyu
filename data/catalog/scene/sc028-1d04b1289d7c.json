@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc028",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a medium two-person shot on the canopy bed of the candlelit honeymoon suite, adult Ayachi Nene and Shiki Natsume sit on either side of the viewer in elegant white wedding gowns with their heavy veils removed. Nene interlaces her fingers with the viewer while holding their marriage contract, and Natsume fixes Nene's tilted hair ornament, both trying to hide how moved they are.",
+    "animaCaption": "Ayachi Nene sits on the viewer's left in a white wedding gown, holding the contract while interlacing fingers with the visible partner hand. Shiki Natsume sits to the right and reaches across to correct Nene's hair ornament. Their removed veils rest nearby beneath the canopy. Candlelight warms the paper and overlapping hands, leaving soft folds and contact shadows in the gowns; the shaded bed curtains separate the seated figures from the suite beyond.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "Active_Sync_Scenes",
@@ -21,8 +21,8 @@
     "location": "新房",
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 1girl, black_thighhighs, bare_legs, cropped_feet, artist_name, chromatic_aberration, six_fingers, nsfw, nude, explicit, heterochromia, swapped_eye_colors, wrong_eye_color, same_eye_color, same_hair_color, cloned_face, identical_twins, extra_girl, 3girls, girls_kissing_each_other, holding_each_other's_hands, pink_ribbon_on_black_haired_woman, white_bow_on_black_haired_woman, ahoge_on_black_haired_woman, mole_on_white_haired_woman, missing_card, no_card, hidden_card, bridal_veil, long_veil, short_veil, apron, kitchen, cooking, witch_hat, letters, words, numbers, captions, signage, gibberish, scribbles, prints, logos, watermarks, patterns_on_clothing, writing, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body",
-    "prompt": "2girls, pov_partner, adult_women, honeymoon_suite, warm_candlelight, sitting_on_either_side_of_viewer_on_canopy_bed, elegant_white_wedding_gowns, bridal_veils_removed, (ayachi_nene_on_left, white_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nene_holding_marriage_contract, nene_interlacing_fingers_with_viewer), BREAK, (shiki_natsume_on_right, black_hair, very_long_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, natsume_fixing_nene_hair_ornament), shy_moved_smiles, medium_shot, cinematic_lighting, <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
+    "negative": "third female figure, swapped hair colors, fused interlaced hands",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, wedding gowns, seated, canopy bed, marriage contract, joined hands, adjusting hair ornament, candlelight, medium shot",
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",
@@ -38,7 +38,8 @@
       "candlelight",
       "holding_hands",
       "medium_shot",
-      "heels"
+      "heels",
+      "depth_of_field"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

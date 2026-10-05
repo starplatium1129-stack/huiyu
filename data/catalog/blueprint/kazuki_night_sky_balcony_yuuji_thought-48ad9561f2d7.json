@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_night_sky_balcony_yuuji_thought",
-  "revision": 1,
-  "sortOrder": 1173,
+  "revision": 2,
+  "sortOrder": 1169,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "kazuki_night_sky_balcony_yuuji_thought",
     "title": "风见一姬 · 繁星穹顶下的月下凝思",
@@ -31,36 +31,18 @@
       "white_dress",
       "wind"
     ],
-    "promptProse": "Leaning against a glass balcony railing beneath a breathtaking tapestry of the Milky Way, Kazuki gently tucks a strand of silver hair behind her ear. Cool celestial starlight blankets her flowing white sundress in ethereal radiance as her crimson eyes gaze lovingly into the infinite night.",
+    "promptProse": "Kazuki leans beside the mountain-top balcony's clear glass railing, gently tucking windblown silver hair behind her ear while looking toward the night sky with thoughtful red eyes. Her white linen sundress remains clear in the low cowboy view beneath the broad Milky Way. Bright moonlight traces her hair and moving skirt, reflecting along the railing edge while the mountain silhouettes below stay dark under the stars.",
     "promptTokens": [
-      "observation_balcony",
-      "starry_night_sky",
-      "milky_way",
-      "full_moon",
-      "white_dress",
-      "tucking_hair",
-      "very_long_hair",
-      "red_eyes",
-      "detailed_background",
-      "cinematic_lighting"
+      "moonlit night",
+      "mountain balcony",
+      "glass railing",
+      "white sundress",
+      "starry sky",
+      "hair tucked",
+      "cowboy shot",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

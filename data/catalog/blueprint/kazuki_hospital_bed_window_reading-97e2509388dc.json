@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_hospital_bed_window_reading",
-  "revision": 1,
-  "sortOrder": 1169,
+  "revision": 2,
+  "sortOrder": 1165,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "kazuki_hospital_bed_window_reading",
     "title": "风见一姬 · 白昼病房的书卷沉思",
@@ -31,36 +31,17 @@
       "white_hair",
       "red_eyes"
     ],
-    "promptProse": "Sitting cross-legged upon a pristine white medical bed beside sun-drenched sheer curtains, Kazuki immerses herself in a heavy philosophical tome in an oversized white dress shirt. Gentle morning sunbeams illuminate her cascading silvery locks and delicate crimson gaze in tranquil peace.",
+    "promptProse": "Kazuki sits on the white hospital bedding in an oversized cotton shirt, knees comfortably raised, one hand supporting her cheek while the other turns a page in a thick philosophy book. Her silver hair spreads over the sheet in the seated eye-level medium view. Gauze curtains move at the broad window behind. Clear morning light brightens the pages and rolled cuffs, with reflected bedding light easing the shadows around her knees.",
     "promptTokens": [
-      "hospital_room",
-      "hospital_bed",
-      "white_sheets",
-      "reading_book",
-      "oversized_shirt",
-      "bare_legs",
-      "white_hair",
-      "red_eyes",
-      "detailed_background",
-      "cinematic_lighting"
+      "morning",
+      "hospital room",
+      "white cotton shirt",
+      "bed",
+      "philosophy book",
+      "cheek in hand",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

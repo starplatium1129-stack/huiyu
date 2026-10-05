@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_07",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 105,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_07",
     "title": "鸢一折纸 · 长发形态的晨间整理",
@@ -30,36 +30,20 @@
       "curiosity",
       "afternoon_light"
     ],
-    "promptProse": "Origami Tobiichi from Date A Live wears a pale blue long-sleeved blouse and ankle-length skirt, with flowing waist-length white hair. She stands beside the morning mirror, securing her newly grown white hair behind her waist with exacting care. She checks the last strand, then turns toward the viewer as the long hair opens in the sunrise, her composed blue eyes carrying a small curiosity about the unfamiliar silhouette. pale sunrise reflected in the mirror.",
+    "promptProse": "At the morning mirror, Origami Tobiichi secures her newly grown waist-length white hair with exact care, then turns to inspect its unfamiliar silhouette. Her pale-blue long-sleeved blouse and ankle-length skirt remain neatly arranged beneath composed blue eyes. The vertical medium view shows the mirror beside the window rather than another person. Pale sunrise reflected in the glass illuminates the spreading hair and casts soft folds across her sleeve.",
     "promptTokens": [
-      "morning_room",
+      "1girl",
+      "solo",
+      "Origami Tobiichi",
+      "pale blue blouse",
+      "ankle length skirt",
+      "waist length white hair",
       "mirror",
-      "long_hair",
-      "hair_ribbon",
-      "pale_blue_blouse",
-      "ankle_length_skirt",
       "sunrise",
-      "composed",
-      "curiosity",
-      "morning_light"
+      "medium shot"
     ],
     "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
+      "extra person in mirror"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,
@@ -68,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "allowRepeatedSubject": true
   }
 }

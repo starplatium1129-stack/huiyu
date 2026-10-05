@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_bedroom_morning_stretch_yawn",
-  "revision": 1,
-  "sortOrder": 1091,
+  "revision": 2,
+  "sortOrder": 1087,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "cheshire_bedroom_morning_stretch_yawn",
     "title": "柴郡 · 晨光微熹的猫猫伸懒腰",
@@ -32,36 +32,18 @@
       "fake_hair_ornament",
       "morning_light"
     ],
-    "promptProse": "Kneeling on a plush bedroom carpet while arching her back in a cat-like morning stretch, Cheshire lets out an adorable yawn in her cozy oversized sweater. Gentle dawn sunlight streams through sheer white drapes, catching the dust motes around her playful cat ears.",
+    "promptProse": "Cheshire kneels on the bedroom rug and stretches both arms forward with a sleepy yawn, her ivory cable-knit open-back sweater and black skirt settling above dark tights. Her cat-ear headband shifts with the movement. The low three-quarter medium view includes the woven rug under her and wood flooring toward the curtained window. Very soft golden morning light reveals sweater stitches and rug fibers, with gentle contact shadows beneath her reaching palms.",
     "promptTokens": [
-      "cozy_bedroom",
-      "morning_sunlight",
+      "morning",
+      "Commander bedroom",
+      "ivory cable knit sweater",
+      "black skirt",
+      "tights",
+      "rug",
       "stretching",
-      "yawning",
-      "open_back_sweater",
-      "carpet",
-      "cat_ear_headband",
-      "fake_hair_ornament",
-      "detailed_background",
-      "cinematic_lighting"
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152"
   }
 }

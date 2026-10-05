@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc184",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 181,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a private training room while a thunderstorm drums against the windows, Nene in a tight white sports crop top and light grey bike shorts kneels on all fours on a yoga mat, evening slanting light through the blinds falling over her sweat-sheened bare legs, ponytail swaying as she adjusts her posture.",
+    "animaCaption": "Ayachi Nene adjusts a hands-and-knees exercise position on the yoga mat, keeping her shoulders above the wrists and knees firmly supported beneath the sports top and grey bike shorts. Rain marks the training-room window behind her. The near view shows the correcting hand placement and focused expression. Evening light through the blinds lays narrow bands across the mat and sleeves, while soft room reflection and palm contact shadows clarify the neutral training posture.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "近景特写",
     "category": "恋爱/After_Story",
@@ -20,8 +20,8 @@
     "location": "公寓私人训练室",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very, long, hair, purple_eyes, ahoge, pink_hair_ribbons, wearing, tight, white, sweating, sneakers, training, kneeling, all, fours, blush, slanting, evening, light, collarbone, slender_waist, full_body, sunset_light, window_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "unsupported exercise posture, hands below mat, extra knees",
+    "prompt": "1girl, ayachi_nene, sports top, bike shorts, yoga mat, hands and knees, training room, rain at window, slanted evening light, close up",
     "rating": "R15",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 雨夜训练室】成年同居后的周末，窗外暴雨敲打着公寓私人训练室的玻璃。为了记录新训练计划，宁宁主动换上贴身运动背心与骑行短裤，在拉伸垫上双膝跪坐、双手撑地调整姿势。运动后的薄汗让她的银白发丝贴在脸侧，发现你的镜头停留太久，她立刻红着脸抬头抗议——「这只是姿势记录，不准擅自放大看……要拍就快一点。拍完以后，记得陪宁宁做放松拉伸。」",
@@ -35,7 +35,8 @@
       "training_room",
       "full_body",
       "sneakers",
-      "sweat"
+      "sweat",
+      "depth_of_field"
     ],
     "time": "傍晚",
     "timeOfDay": "sunset",

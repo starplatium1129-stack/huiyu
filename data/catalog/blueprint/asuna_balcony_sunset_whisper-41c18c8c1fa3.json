@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_balcony_sunset_whisper",
-  "revision": 1,
-  "sortOrder": 1372,
+  "revision": 2,
+  "sortOrder": 1368,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "asuna_balcony_sunset_whisper",
     "title": "结城明日奈 · 骑士团露台的解剑深吻·「不论在哪个世界，我的心只属于你」",
@@ -27,26 +27,17 @@
       "holding_neck",
       "wind_blown"
     ],
-    "promptProse": "Asuna Yuuki unbuckles her rapier belt and steps into your arms upon the high stone terrace of the Grand Cathedral at dusk. Her hands drape tenderly around your neck as she rises on tiptoes to kiss you, her chestnut braid and white tunic gleaming in spectacular golden sunset backlight. Majestic clouds of Aincrad stretch across the blazing orange horizon below the ancient stone parapet.",
+    "promptProse": "On the Blood Oath headquarters' high stone terrace, Asuna rises onto her toes and places both arms around her companion's neck for a gentle kiss. Her white-and-crimson battle tunic and silver accents remain intact, with Lambent Light lowered aside. The close view includes stone steps and Aincrad's distant structures behind windblown chestnut hair. Gold-red sunset outlines their faces and shoulders, laying a warm reflection along the rapier guard.",
     "promptTokens": [
-      "balcony",
-      "castle",
+      "Asuna",
+      "Blood Oath uniform",
+      "Lambent Light",
+      "tiptoe kiss",
+      "castle terrace",
       "sunset",
-      "golden_hour",
-      "knights_of_the_blood_uniform",
-      "arms_around_neck",
-      "embrace",
-      "wind_blown",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "medium close-up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -58,6 +49,7 @@
       "sunset",
       "romantic",
       "confession"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

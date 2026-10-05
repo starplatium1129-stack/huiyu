@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hina_black_gown_recital_rehearsal",
-  "revision": 1,
-  "sortOrder": 949,
+  "revision": 2,
+  "sortOrder": 945,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfitId": "evening_dress",
@@ -16,22 +16,16 @@
     "mood": "认真平静",
     "description": "【日奈 · 黑礼服的钢琴排练】演出前的音乐厅还没有观众，日奈穿着带褶边的黑色晚礼服和长手套，珍珠项链在琴灯下泛着柔光。她端坐在钢琴前，双手落在琴键上，反复练习同一小段旋律——「这里再来一次。正式演出之前，想把每个音都弹稳。」",
     "action": "端坐钢琴凳上，双手弹奏琴键，视线专注于琴谱",
-    "promptProse": "Before the recital, Hina sits at a grand piano in her black ruffled evening ballgown, long black gloves and pearl necklace, practicing a short passage with both hands on the keys and her attention on the score. The piano lamp and a soft stage spotlight illuminate the keyboard and her composed face, with empty seats fading into the quiet auditorium.",
+    "promptProse": "Hina rehearses the same short phrase at the grand piano before the empty music hall fills, wearing her black ruffled evening gown, long gloves and pearl necklace. The side-on medium view keeps the score and both hands on the keys visible, with empty seating behind. The piano lamp warms her fingers and pearl surfaces, while a soft stage spotlight separates the gown's folded hem from the darker instrument.",
     "promptTokens": [
-      "concert_hall",
-      "grand_piano",
-      "piano_bench",
-      "sheet_music",
-      "playing_piano",
-      "black_dress",
-      "opera_gloves",
-      "pearl_necklace",
-      "piano_lamp",
-      "stage_spotlight",
-      "night",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "before performance",
+      "music hall",
+      "black evening gown",
+      "long gloves",
+      "pearl necklace",
+      "piano",
+      "score",
+      "medium shot"
     ],
     "camera": "medium shot from the piano side, score and both hands on keys visible",
     "lighting": "琴灯与柔和舞台追光",
@@ -56,19 +50,6 @@
       "night",
       "medium_shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "bad hands",
-      "extra fingers",
-      "extra limbs",
-      "text",
-      "watermark",
-      "nsfw",
-      "nude",
-      "explicit"
-    ]
+    "negativeTokens": []
   }
 }

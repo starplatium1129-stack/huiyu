@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_harbor_patrol_rigging_ready",
-  "revision": 1,
-  "sortOrder": 1096,
+  "revision": 2,
+  "sortOrder": 1092,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "cheshire_harbor_patrol_rigging_ready",
     "title": "柴郡 · 碧海港湾的重巡护航",
@@ -32,36 +32,18 @@
       "fake_hair_ornament",
       "protective"
     ],
-    "promptProse": "Standing protectively on an azure harbor seawall with her massive Royal Navy cruiser rigging and twin naval turrets aimed out to sea, Cheshire braces against sea winds. Sunlight sparkles across rolling waves and heavy steel armor panels beside her alert cat ear headband.",
+    "promptProse": "Cheshire stands before the Royal harbor defense line, one gloved hand on her hip and cat ears lowered with new focus. Her navy-white maid dress remains beneath immense cruiser rigging whose paired barrels turn behind her. The low wide view shows the breakwater and broad sea beyond. Daylight catches lace and armor edges, creating cool steel reflections along the guns while white spray lights the darker water under the rigging.",
     "promptTokens": [
-      "naval_port",
-      "cruiser_rigging",
-      "naval_artillery",
-      "ocean_waves",
-      "maid_dress",
-      "protective_stance",
-      "cat_ear_headband",
-      "fake_hair_ornament",
-      "detailed_background",
-      "cinematic_lighting"
+      "daytime",
+      "Royal harbor",
+      "navy white maid dress",
+      "cat ears",
+      "heavy cruiser rigging",
+      "hand on hip",
+      "wide shot",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152"
   }
 }

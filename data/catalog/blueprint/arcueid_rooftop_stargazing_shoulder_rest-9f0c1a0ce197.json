@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_rooftop_stargazing_shoulder_rest",
-  "revision": 1,
-  "sortOrder": 1326,
+  "revision": 2,
+  "sortOrder": 1322,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "并肩坐着头靠在视角肩头，双手抱膝，侧首含情脉脉仰望夜空与视角",
     "camera": "cowboy shot, medium angle, peaceful romantic night",
@@ -21,31 +21,17 @@
     "lighting": "幽蓝夜空微光与远处城市金黄灯海",
     "location": "俯瞰整座安宁城市的公寓楼顶露台",
     "mood": "深情依恋",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "outfitId": "casual_summer_sundress",
-    "promptProse": "Sitting peacefully together on an apartment rooftop beneath a vast star-studded night sky, Arcueid Brunestud rests her blonde head gently upon the viewer's shoulder. Dressed in her breezy white sundress, she hugs her knees while gazing at the twinkling city below. Her crimson eyes radiate tranquil devotion and serene love. Atmospheric, emotional anime CG with two clothed figures, no text.",
+    "promptProse": "Arcueid Brunestud sits beside her companion on the rooftop, hugging her bent legs and resting her blonde head on his shoulder. Her white sundress hem moves lightly in the night breeze, ruby eyes quietly reflecting the view. The medium cowboy angle includes the safe rooftop edge and distant city below. Blue night light outlines the shoulder straps and hair, while far golden windows give the lower skyline a warmer band.",
     "promptTokens": [
+      "Arcueid Brunestud",
+      "white sundress",
+      "shoulder rest",
       "rooftop",
-      "night_sky",
-      "starry_sky",
-      "city_lights",
-      "sitting_on_ground",
-      "head_on_shoulder",
-      "hugging_knees",
-      "white_dress",
-      "gentle_smile",
-      "peaceful",
-      "red_eyes",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "two_clothed_figures"
+      "starry night",
+      "city lights",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

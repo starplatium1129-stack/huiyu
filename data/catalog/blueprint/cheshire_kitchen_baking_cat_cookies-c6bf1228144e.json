@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_kitchen_baking_cat_cookies",
-  "revision": 1,
-  "sortOrder": 1094,
+  "revision": 2,
+  "sortOrder": 1090,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "cheshire_kitchen_baking_cat_cookies",
     "title": "柴郡 · 甜蜜厨房里的猫咪烘焙",
@@ -32,36 +32,17 @@
       "fake_hair_ornament",
       "proud"
     ],
-    "promptProse": "Proudly presenting a baking tray of golden freshly baked cat-shaped sugar cookies in a warm kitchen, Cheshire beams with a speck of white flour on her nose tip. Warm amber incandescent lighting illuminates her lace-trimmed maid apron and twitching pastel cat ears.",
+    "promptProse": "Cheshire presents a fresh tray of golden heart-marked cookies in the residence kitchen, flour on her nose and green eyes wide with pride. Her navy-white maid dress, white gloves and apron frills remain clear in the frontal medium close-up. The oven and counter extend behind the tray. Warm ceiling light illuminates her face and cookie edges, while orange oven glow touches the metal underside beneath her holding hands.",
     "promptTokens": [
-      "kitchen",
-      "baking_cookies",
-      "oven_glow",
-      "apron",
-      "maid_dress",
-      "cat_ear_headband",
-      "fake_hair_ornament",
-      "sweet_smile",
-      "detailed_background",
-      "cinematic_lighting"
+      "daytime",
+      "Commander kitchen",
+      "navy white maid dress",
+      "white gloves",
+      "baking tray",
+      "heart cookies",
+      "medium close up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

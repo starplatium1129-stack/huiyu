@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_new_year_scroll_selection",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 693,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfitId": "dying_dust",
@@ -16,21 +16,16 @@
     "mood": "安静端详",
     "description": "【夕 · 新春画轴挑选】暖灯照着室内长廊，夕穿着黑金旗袍和毛边短披肩，站在几幅新挂好的水墨画前。她一手垂握细长烟管，另一手轻扶卷轴下缘，眯起眼判断留白是否合适——「这幅就放这里。空出来的地方，也是画的一部分。」",
     "action": "站在画轴前，一手垂握烟管，另一手轻扶画轴下缘",
-    "promptProse": "In a quiet indoor gallery, Dusk studies a hanging ink scroll in her black-and-gold qipao and fur-trimmed capelet, holding the slender pipe down in one hand while steadying the scroll's lower edge with the other. Warm paper lamps reveal the brush texture and the empty wall around the painting, framing her thoughtful pause without a crowd or a festival procession.",
+    "promptProse": "Dusk studies a newly hung ink painting, one hand steadying the scroll's lower edge while the other loosely holds a slender pipe. Her black-and-gold qipao and fur-edged capelet frame both hands in medium view. Neighboring scrolls extend along the gallery corridor. Warm paper-lamp light reveals the paper grain and rolled edge, casting a thin shadow between the artwork and the wall.",
     "promptTokens": [
-      "gallery",
-      "hanging_scroll",
-      "ink_painting",
-      "standing",
-      "qipao",
-      "capelet",
-      "holding_pipe",
-      "paper_lamp",
-      "warm_light",
       "night",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "gallery",
+      "black gold qipao",
+      "capelet",
+      "ink scroll",
+      "thin pipe",
+      "paper lamp",
+      "medium shot"
     ],
     "camera": "medium shot, one hanging scroll and both hands within the frame",
     "lighting": "室内纸灯映出画纸纹理的暖光",
@@ -54,19 +49,6 @@
       "night",
       "medium_shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "bad hands",
-      "extra fingers",
-      "extra limbs",
-      "text",
-      "watermark",
-      "nsfw",
-      "nude",
-      "explicit"
-    ]
+    "negativeTokens": []
   }
 }

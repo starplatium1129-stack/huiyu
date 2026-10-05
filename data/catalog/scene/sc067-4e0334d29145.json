@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc067",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a dressing room holding a hanger with three outfits, Shiki Natsume in a casual grey cardigan over white blouse and navy pleated miniskirt with glossy black tights stands with a thoughtful blush under warm dressing room light.",
+    "animaCaption": "Three clothing choices hang from Shiki Natsume's held hangers while she considers the mirror in her grey cardigan, white blouse and navy skirt. Her free hand checks one hairclip, and a thoughtful blush betrays the importance of the decision. The standing mirror and clothes rail establish the room behind her. Warm room light catches hanger hooks and fabric folds; window fill softens her opposite cheek, with the clothing casting distinct overlapping shadows.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "更衣室",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, casual_coat",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, casual_grey_cardigan, white_blouse, navy_pleated_miniskirt, sheer_black_tights, mary_jane_shoes, standing_in_front_of_full_length_mirror_in_dressing_room, holding_hanger_with_three_outfits, adjusting_hairclip, thoughtful_blush, warm_dressing_room_light, spring_afternoon, medium_shot, cinematic_composition, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "three costumes worn simultaneously, hangers fused to hand, independent duplicate mirror figure",
+    "prompt": "1girl, shiki_natsume, grey cardigan, white blouse, navy skirt, holding outfit hangers, adjusting hairclip, dressing room mirror, medium shot",
     "rating": "All",
     "season": "春",
     "story": "【夏目 · 约会前的第三套选择】春日下午，夏目在更衣室前连续换了三套衣服，每次都说只是确认尺寸，却会在出来后先观察你的反应。最终她选了最简洁的一套，又把与衣服相配的发夹别好——「不是为了迎合你的喜好，只是这套行动方便。……如果你觉得好看，可以再说一次，我刚才没听清。」",
@@ -34,7 +34,8 @@
       "medium_shot",
       "mary_jane",
       "three_outfit_hanger",
-      "hairclip"
+      "hairclip",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

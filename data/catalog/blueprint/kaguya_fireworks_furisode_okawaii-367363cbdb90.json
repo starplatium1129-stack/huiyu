@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_fireworks_furisode_okawaii",
-  "revision": 1,
-  "sortOrder": 1398,
+  "revision": 2,
+  "sortOrder": 1394,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "穿深红振袖回眸浅笑，红瞳倒映金色烟花，广袖随风轻扬",
     "adult": false,
@@ -23,38 +23,18 @@
     "lighting": "金色烟花冷艳光与河面反光交织",
     "location": "京都鸭川河畔石阶",
     "mood": "傲娇破防、心动名场面",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "outfitId": "festive_furisode_kimono",
-    "promptProse": "Shinomiya Kaguya glances back over her shoulder on the stone steps of the Kamo riverside at a Kyoto summer night, wearing a deep crimson furisode kimono with golden maple-leaf patterns. Golden fireworks bloom inside her red tareme eyes as her lips curl into that signature, equal-parts imperious and lovesick little smile, the phrase o-kawaii koto forming silently. Wide sleeves and black folded ponytail stir in the river breeze. Medium close-up, cinematic lighting, firework haze, detailed riverside background, depth of field.",
+    "promptProse": "At Kyoto's Kamo River steps, Kaguya Shinomiya looks back over her shoulder toward her companion watching the fireworks. Gold maple leaves decorate her crimson furisode, broad sleeves moving with the night breeze and a red ribbon securing her folded ponytail. The close view includes stone steps and river surface behind. A golden firework illuminates her red eyes and restrained smile, while its broken reflection travels across the darker water below.",
     "promptTokens": [
       "shinomiya_kaguya",
-      "1girl",
-      "solo",
-      "furisode",
-      "kimono",
-      "red_kimono",
-      "wide_sleeves",
-      "looking_back",
-      "looking_at_viewer",
-      "smirk",
-      "red_eyes",
-      "black_hair",
-      "short_hair",
-      "folded_ponytail",
-      "red_ribbon",
+      "Kaguya Shinomiya",
+      "crimson furisode",
+      "gold maple pattern",
+      "red ribbon",
+      "river steps",
       "fireworks",
-      "night",
-      "river",
-      "detailed_background",
-      "cinematic_lighting",
-      "depth_of_field"
+      "medium close-up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -70,6 +50,7 @@
       "iconic"
     ],
     "timeOfDay": "夏夜",
-    "title": "四宫辉夜 · 烟花振袖的回眸宣告·「お可愛いこと……」"
+    "title": "四宫辉夜 · 烟花振袖的回眸宣告·「お可愛いこと……」",
+    "compositionIntent": "group"
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc086",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "At a rain-washed crosswalk under a full rainbow after a summer downpour, Ayachi Nene in a soft grey sweater with navy pleated miniskirt and silky white thighhighs stands holding a transparent umbrella, laughing with joy as she grasps the viewer's hand, cool after-rain light with puddle reflections.",
+    "animaCaption": "Ayachi Nene laughs beneath the clearing sky at the rain-washed crosswalk, holding a transparent umbrella in one hand and the viewer's hand in the other. Her grey sweater and navy skirt remain normal day clothes. The full-length view includes her connected ground shadow and the rainbow above the receding street. Cool post-rain daylight shows the umbrella ribs, wet asphalt returns broken reflections, and the remaining cloud shade gives the street depth.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "全身远景",
     "category": "日常",
@@ -20,8 +20,8 @@
     "location": "路口",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, raincoat, school_uniform",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, bandeau_bikini, strapless_bikini, white_translucent_cardigan, wet_clothes, clinging_fabric, bare_shoulders, bare_midriff, bare_legs, holding_umbrella, standing_in_puddle, reflection, summer_rain, clearing_sky, sunlight, water_droplets, smiling, blush, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "swimsuit replacing day clothes, duplicate umbrellas, disconnected joined hands",
+    "prompt": "1girl, ayachi_nene, grey sweater, navy skirt, transparent umbrella, holding viewer hand, rain washed crosswalk, rainbow, full body",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 雨停以后抬头】夏日阵雨刚停，宁宁撑着透明伞站在路口，忽然发现云层间出现完整彩虹。她兴奋地回头叫你，差点踩进积水，又被你及时拉住。她顺势握紧你的手，仰头笑起来——「还好没有急着回去。坏天气结束以后，真的会有值得等待的东西呢。」",
@@ -37,7 +37,8 @@
       "after_rain",
       "transparent_umbrella",
       "holding_hands",
-      "laughing"
+      "laughing",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

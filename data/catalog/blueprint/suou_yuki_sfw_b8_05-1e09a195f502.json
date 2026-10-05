@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_05",
-  "revision": 1,
-  "sortOrder": 792,
+  "revision": 2,
+  "sortOrder": 788,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "海边祭典摊位举起捞到的星星面具，半扎发在灯笼与海风里轻摇",
     "adult": false,
@@ -23,37 +23,16 @@
     "lighting": "lantern glow mixed with blue evening sea light",
     "location": "seaside summer festival stall",
     "mood": "宅系少女的海滨约会活力",
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "outfitId": "sfw_beach",
-    "promptProse": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian wears a violet-and-white swimsuit with a short yukata jacket, ribbon hair tie and a star festival mask. She sits at the seaside festival stall with a star-shaped mask balanced in both hands. She turns the prize toward the viewer, half-up black hair moving between lantern light and sea breeze as her perfect-lady composure gives way to genuine excitement. lantern glow mixed with blue evening sea light.",
+    "promptProse": "Yuki sits beside a seaside festival souvenir stall in her violet-and-white swimsuit and short yukata jacket, lifting a star mask she has chosen toward the camera. Her half-up hair shifts with the sea breeze. The horizontal medium view includes the stall basin nearby and the sea behind. Lantern glow warms her sleeve and mask, while blue evening water light cools her hair ribbon and distant horizon.",
     "promptTokens": [
-      "swimsuit",
-      "violet_white_swimsuit",
-      "seaside_festival",
-      "mask_scoop",
-      "star_mask",
-      "lanterns",
-      "half_up_hair",
-      "excited_smile",
-      "sea_breeze",
-      "evening"
+      "evening",
+      "seaside festival",
+      "violet white swimsuit",
+      "yukata jacket",
+      "star mask",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -69,7 +48,7 @@
       "sea_breeze",
       "evening"
     ],
-    "timeOfDay": "傍晚",
+    "timeOfDay": "日间",
     "title": "周防有希 · 海滨捞面具的夏日约会"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_academy_classroom_cleaning_duster",
-  "revision": 1,
-  "sortOrder": 1191,
+  "revision": 2,
+  "sortOrder": 1187,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sachi_academy_classroom_cleaning_duster",
     "title": "小岭幸 · 放学后的一尘不染大扫除",
@@ -31,36 +31,17 @@
       "diligence",
       "sunset"
     ],
-    "promptProse": "Dusting the top of the classroom chalkboard with a soft feather duster during quiet golden sunset, Sachi works with meticulous perfection in her maid attire. Amber dusk rays stream through open windows, highlighting her neat pink braids and dedicated focus.",
+    "promptProse": "Komine Sachi rises onto her toes to brush the classroom blackboard's upper frame with a feather duster. Her tied apron bow is visible from the three-quarter cowboy view, and her face stays intent. Precisely aligned desks run behind her toward the windows. Sunset enters from that side, gilding the duster feathers and apron edge while the board and desks cast longer shadows into the room.",
     "promptTokens": [
-      "school_classroom",
-      "cleaning_duster",
+      "maid uniform",
+      "feather duster",
+      "tiptoe",
+      "classroom",
       "blackboard",
-      "maid_dress",
-      "maid_apron",
-      "sunset_light",
-      "pink_hair",
-      "blue_eyes",
-      "detailed_background",
-      "cinematic_lighting"
+      "sunset",
+      "three-quarter view"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_dawn_altar_shroud_bridal_vow",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 215,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "caren_dawn_altar_shroud_bridal_vow",
     "title": "卡莲 · 破晓圣坛的圣骸之誓",
@@ -30,30 +30,20 @@
       "dawn_light",
       "full_body"
     ],
-    "promptProse": "Caren takes a slow step forward before the dawn-lit altar, holding a bouquet of white lilies securely in both hands. Her opaque white formal bridal gown falls to the floor, with the golden shroud arranged as a veil and trailing cloth rather than exposing the body. Short silver hair frames her amber-yellow eyes as she offers a small, relieved smile. Warm light from the dome reveals the lilies, fabric folds and careful step. Show the complete ceremonial outfit and two hands supporting the flowers within the vertical frame. No lettering.",
+    "promptProse": "Caren takes a slow step before the dawn altar, both hands securely holding white lilies above her opaque floor-length bridal gown. The golden shroud forms a veil and trailing train, short silver hair framing a relieved amber-eyed smile. Keep gown, bouquet and careful step complete in the frontal full-body view, marble altar beyond. Dawn light pours through clouds and the dome onto lilies and fabric crests, casting gentle train shadows across stone.",
     "promptTokens": [
-      "dawn_altar",
-      "walking_slowly",
-      "white_bridal_gown",
-      "golden_shroud_veil",
-      "white_lilies",
-      "both_hands_on_bouquet",
-      "short_silver_hair",
-      "amber_eyes",
-      "relieved_smile",
-      "dawn_light",
-      "full_body",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "1girl",
+      "solo",
+      "Caren",
+      "opaque white bridal gown",
+      "golden shroud veil",
+      "white lilies",
+      "altar",
+      "marble dome",
+      "dawn",
+      "full body"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "bridal_dress",
     "coverageTags": [

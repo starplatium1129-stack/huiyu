@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_sword_rain_battlefield_awakening",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 660,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "双手持剑凌空挥斩，周身金色源石剑阵万剑齐发从天而降",
     "camera": "cowboy shot, dynamic low angle, epic action",
@@ -18,41 +18,18 @@
     "lighting": "金色剑雨爆裂强光与夕阳血色天幕",
     "location": "泰拉荒野源石感染重灾战场",
     "mood": "霸气凌厉",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "outfitId": "penguin_logistics",
-    "promptProse": "In the center of a scarred desolate wasteland battlefield at crimson sunset, Texas unleashes her devastating Originium Arts in a magnificent display of lethal power. She lunges forward with dual luminous golden swords, her amber eyes glowing with focused intensity as a cascading storm of radiant energy blades rains down from the storm clouds above. Dust and crackling energy arcs swirl around her slender form and fluffy wolf tail, highlighting her immaculate combat stance. A thrilling dynamic cowboy shot captures the epic scale, brilliant particle effects, and razor-sharp anime key visual aesthetics.",
+    "promptProse": "Texas draws her sword on a scorched Originium battlefield, amber eyes shining as hundreds of golden energy blades descend around the enemy formation. The dynamic low cowboy view brings her commanding sword hand forward, with blackened ground extending into the distance. Sword light catches her logistics jacket and casts crossing shadows beneath the blades; a blood-red sunset remains visible beyond the golden barrage.",
     "promptTokens": [
+      "sunset",
       "battlefield",
-      "sword_rain",
-      "floating_swords",
-      "energy_blades",
-      "magic_circle",
-      "glowing_eyes",
-      "amber_eyes",
-      "action_pose",
-      "wolf_ears",
-      "cowboy_shot",
-      "dynamic_angle",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "drawn sword",
+      "golden sword rain",
+      "amber eyes",
+      "logistics outfit",
+      "cowboy shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -67,6 +44,7 @@
       "wolf_ears"
     ],
     "timeOfDay": "黄昏日落",
-    "title": "德克萨斯 · 剑雨降临万物肃杀"
+    "title": "德克萨斯 · 剑雨降临万物肃杀",
+    "compositionIntent": "group"
   }
 }

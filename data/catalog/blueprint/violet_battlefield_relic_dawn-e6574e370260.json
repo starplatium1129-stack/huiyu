@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "violet_battlefield_relic_dawn",
-  "revision": 1,
-  "sortOrder": 1387,
+  "revision": 2,
+  "sortOrder": 1383,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "action": "在晨曦微光中单膝微屈，银色机械手指轻托祖母绿胸针贴在胸前，金发在风中飞扬，湛蓝眼眸清澈凝视",
+    "action": "在晨曦微光中单膝微屈，银色机械手指轻托祖母绿胸针贴在胸前，金发在风中飞扬，翠眸清澈凝视",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
     "camera": "medium shot, cinematic low angle, dawn mist atmosphere, emotional reflection",
@@ -23,31 +23,17 @@
     "lighting": "破晓初升的清冷淡金曙光穿透薄雾，映亮机械指节与翡翠晶体",
     "location": "战火停歇的古遗迹山岗顶端",
     "mood": "庄严肃穆、圣洁空灵",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "outfitId": "official_auto_memories_doll_attire",
-    "promptProse": "Kneeling on one knee among ancient dawn ruins, Violet Evergarden holds her radiant emerald brooch against her chest with articulated silver mechanical fingers. The first golden rays of sunrise pierce the morning mist, reflecting across her Prussian-blue doll uniform as the wind lifts her golden hair and white pleated skirt.",
+    "promptProse": "Among old marble columns at dawn, Violet Evergarden bends one knee and cups her emerald brooch in articulated silver hands. The Prussian-blue officer jacket, ruffled ascot and white pleated skirt remain clear beneath moving blonde hair and red ribbons. A low medium view follows broken column bases into thin morning mist. Pale-gold sunrise illuminates finger joints and the emerald facets, with colder shadows inside the ruined arches behind her.",
     "promptTokens": [
-      "ruins",
+      "Violet Evergarden",
+      "Prussian-blue jacket",
+      "emerald brooch",
+      "mechanical hands",
+      "marble ruins",
       "dawn",
-      "sunrise",
-      "kneeling",
-      "holding_brooch",
-      "emerald",
-      "mechanical_hands",
-      "blue_jacket",
-      "white_dress",
-      "wind_blown",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting",
-      "one_knee",
-      "brooch_at_chest"
+      "medium low angle"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -62,6 +48,6 @@
       "emotional"
     ],
     "timeOfDay": "黎明破晓",
-    "title": "薇尔莉特 · 破晓废墟的祖母绿胸针·「我也想明白……『我爱你』的含义」"
+    "title": "薇尔莉特 · 破晓废墟的怀表与胸针·「我也想明白……『我爱你』的含义」"
   }
 }

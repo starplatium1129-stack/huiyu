@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_01",
-  "revision": 1,
-  "sortOrder": 1679,
+  "revision": 2,
+  "sortOrder": 1675,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_01",
     "title": "橘美花莉 · 摄影棚收工的三秒",
@@ -34,38 +34,16 @@
       "studio_light",
       "medium_shot"
     ],
-    "promptProse": "As the studio lights settle after a fashion photograph, popular teen fashion model Mikari lowers her practiced smile into a relieved natural expression and lifts a paper cup of water. Her vibrant pink eyes drift toward a phone showing a message from Okumura. Her long light chestnut brown hair is parted off-center with strands falling between her eyes, the upper strands gathered into two-side-up bunches tied with delicate pink ribbons, framing her youthful face as her chic off-the-shoulder blouse and pink skirt catch the soft studio glow. A close view includes the edge of the white backdrop and a light stand, revealing the quiet instant between professional performance and personal longing.",
+    "promptProse": "Mikari Tachibana drops her flawless camera expression into a relieved breath as the studio flash stops. She picks up water in her white off-shoulder top and pink skirt while glancing at the club's messages on her phone. The medium portrait includes the white backdrop and staff reviewing pictures farther behind. Studio stands provide even light on her chestnut hair and cup, with softer shadows separating the background crew from the backdrop.",
     "promptTokens": [
-      "photo_studio",
-      "white_backdrop",
-      "light_stand",
-      "water_cup",
-      "phone",
-      "relieved",
-      "brown_hair",
-      "two_side_up",
-      "pink_ribbon",
-      "pink_eyes",
-      "off_shoulder_top",
-      "pink_skirt",
-      "studio_light",
-      "medium_shot"
+      "Mikari Tachibana",
+      "white off-shoulder top",
+      "pink skirt",
+      "water cup",
+      "photo studio",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -74,6 +52,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

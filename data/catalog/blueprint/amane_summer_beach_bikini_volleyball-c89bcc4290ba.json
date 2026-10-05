@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_summer_beach_bikini_volleyball",
-  "revision": 1,
-  "sortOrder": 1182,
+  "revision": 2,
+  "sortOrder": 1178,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "amane_summer_beach_bikini_volleyball",
     "title": "周防天音 · 耀阳金滩的细带艳红惊艳",
@@ -31,36 +31,18 @@
       "hair_rings",
       "large_breasts"
     ],
-    "promptProse": "Holding a volleyball while posing along turquoise tropical ocean shallows in a daring red string micro-bikini, Amane looks back with confident summer radiance. Tropical sunlight glistens across her tanned athletic curves and flowing crimson hair rings against azure waves.",
+    "promptProse": "Amane stands beside the tropical beach-volleyball court, holding the ball in one hand and turning back with a confident smile. Her red string swimsuit, loosely tied white sarong and sunglasses in her burgundy hair retain the summer outfit. The full-body three-quarter view follows sand toward white foam and blue sea. Clear noon sun lights the ball and moving hair rings, while water reflections shimmer along the nearby wet sand.",
     "promptTokens": [
-      "tropical_beach",
-      "beach_volleyball",
-      "ocean_waves",
-      "red_bikini",
-      "micro_bikini",
-      "wet_skin",
-      "hair_rings",
-      "large_breasts",
-      "detailed_background",
-      "cinematic_lighting"
+      "noon",
+      "tropical beach",
+      "volleyball",
+      "red string swimsuit",
+      "white sarong",
+      "hair rings",
+      "looking back",
+      "full body"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

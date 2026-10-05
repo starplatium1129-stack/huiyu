@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_03",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 285,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_03",
     "title": "克洛伊 · 游戏厅的连胜",
@@ -28,43 +28,24 @@
       "grin",
       "red_cardigan",
       "colored_lighting",
-      "medium_shot",
-      "schoolchildren_spectators",
-      "watching_arcade_game"
+      "medium_shot"
     ],
-    "promptProse": "Chloe sits at an arcade cabinet with both hands poised over the buttons, orange eyes fixed on the bright game screen. Her red cardigan sleeves are pushed back from her wrists. A moment of victory opens into a broad delighted grin, while reflected colored lights trace her pale pink hair. A small group of fully clothed schoolchildren gathers behind the chair to watch her winning streak. Keep Chloe central, her hands and delighted face clear, while the cheering young spectators remain distinct in the softly focused arcade background.",
+    "promptProse": "Chloe sits cross-legged at the fighting-game cabinet with both hands poised over its buttons, sleeves pushed back from the wrists of her red cardigan and white school blouse. Her orange eyes follow the screen before a broad victory grin opens. The medium view retains the knee-length pleated skirt and cabinet controls, arcade machines farther back. Colored screen light traces pale-pink hair and fingertips, with dimmer cabinet sides framing the seated pose.",
     "promptTokens": [
-      "chloe_von_einzbern",
-      "fate/kaleid_liner_prisma_illya",
-      "arcade",
-      "game_cabinet",
-      "buttons",
-      "sitting",
-      "gaming",
-      "victory",
-      "grin",
-      "red_cardigan",
-      "colored_lighting",
-      "medium_shot",
-      "schoolchildren_spectators",
-      "watching_arcade_game"
+      "1girl",
+      "solo",
+      "Chloe",
+      "white school blouse",
+      "red cardigan",
+      "pleated skirt",
+      "arcade cabinet",
+      "hands on buttons",
+      "victory grin",
+      "colored light",
+      "medium shot",
+      "chloe_von_einzbern"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -72,7 +53,6 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ],
-    "compositionIntent": "group"
+    ]
   }
 }

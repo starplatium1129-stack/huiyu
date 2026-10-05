@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_sakura_flame_kimono_devotion",
-  "revision": 1,
-  "sortOrder": 1079,
+  "revision": 2,
+  "sortOrder": 1075,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "taihou_sakura_flame_kimono_devotion",
     "title": "大凤 · 重樱绯焰华服的深情相迎",
@@ -31,37 +31,17 @@
       "cherry_blossoms",
       "obsessive_smile"
     ],
-    "promptProse": "Stepping forward along an imperial vermilion temple veranda showered in cherry blossom petals, Taihou greets her commander in an opulent flowing red and obsidian kimono dress. Sunlight illuminates her magnificent cleavage, floor-sweeping dark twintails, and burning devoted amber-red eyes.",
+    "promptProse": "Taihou greets the Commander beneath the Sakura temple's vermilion corridor, holding a red-and-gold folding fan before a quiet smile. Her ornate red-black kimono and billowing gold-trimmed sleeves move with falling cherry blossoms, long black twin tails trailing behind. The full-body three-quarter view follows the corridor posts into depth. Sunset through the blossom canopy lights the brocade and fan ribs, casting petal-shaped shade across the wooden walkway.",
     "promptTokens": [
-      "shinto_temple",
-      "vermilion_veranda",
-      "cherry_blossoms",
-      "kimono",
-      "cleavage",
-      "deep_cleavage",
-      "twintails",
-      "folding_fan",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "sunset",
+      "Sakura temple",
+      "red black kimono",
+      "gold sleeves",
+      "phoenix brocade",
+      "folding fan",
+      "full body"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

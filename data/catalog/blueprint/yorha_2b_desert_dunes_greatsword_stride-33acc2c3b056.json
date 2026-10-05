@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_desert_dunes_greatsword_stride",
-  "revision": 1,
-  "sortOrder": 1115,
+  "revision": 2,
+  "sortOrder": 1111,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yorha_2b_desert_dunes_greatsword_stride",
     "title": "2B · 苍茫沙丘的风沙斗篷与大剑独行",
@@ -33,39 +33,17 @@
       "boots",
       "mole_under_mouth"
     ],
-    "promptProse": "Walking resolutely across rolling golden desert dunes under brilliant sunlight, 2B wears a tattered dark gray traveler's cloak and hood that billow in the desert wind above her form-fitting tactical suit and heavy greatsword. Pausing atop a sandy crest beside half-buried ancient machine titan ruins, she glances back over her shoulder with quiet concern, reaching out a gloved hand to guide her companion. Grand desert vistas, shimmering heat waves, pristine anime linework, no text.",
+    "promptProse": "2B crosses golden dunes in a tattered gray traveler cloak over her charcoal tactical suit, heavy greatsword secured across her back. She stops and turns, extending one gloved hand toward the viewer before the stronger sandstorm ahead. The cowboy view includes half-buried mechanical remains behind. Harsh desert sun illuminates the cloak's windblown edge and sword fittings, with repeated dune-ripple shadows defining the sandy route beneath her boots.",
     "promptTokens": [
-      "desert",
-      "sand_dunes",
-      "ruins",
-      "cape",
-      "cloak",
-      "hood",
+      "daytime",
+      "desert ruins",
+      "gray cloak",
+      "charcoal tactical suit",
       "greatsword",
-      "tattered_clothes",
-      "boots",
-      "mole_under_mouth",
-      "white_hair",
-      "detailed_background",
-      "cinematic_lighting"
+      "gloved hand offered",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

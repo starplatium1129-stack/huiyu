@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc111",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In the afternoon kitchen with slanted sunlight, Ayachi Nene in a loose home apron over a thin tank top stands cutting strawberries at the counter, flour dusted on her hands. A pair of arms wraps around her waist from behind in POV, making her startle with a red blush and her ahoge curling into a heart nearly at the knife.",
+    "animaCaption": "Ayachi Nene pauses with the knife safely held at the strawberry board as the viewer's arms settle around her from behind. Her apron stays over the tank top, and a startled blush lifts her expression. The counter leads past the fruit toward the kitchen window. Slanting afternoon light catches strawberry surfaces and flour on her fingers; the board's contact shadow and overlapping arm shadows keep the near action clear and distinct from the background.",
     "auditRevision": "careful-batch02-2026-08-27",
     "camera": "主观后侧方特写",
     "category": "恋爱/After_Story",
@@ -20,8 +20,8 @@
     "location": "新婚公寓厨房",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, child, loli, artist_name, chromatic_aberration, clothes, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, underage",
-    "prompt": "1girl, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, apron, maid_apron, bare_legs, standing, kitchen, counter, viewer, arms, wrapping, blush, shy_smile, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "knife touching hands, extra hugging arms, fruit fused to knife",
+    "prompt": "1girl, ayachi_nene, apron over tank top, cutting strawberries, kitchen counter, flour on hands, back hug, afternoon window light, close up",
     "rating": "R15",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 居家围裙心动】午后的公寓厨房，阳光斜照。宁宁破天荒换上了一件有些松垮的居家围裙，里面只有单薄的居家背心。因为正专心切着草莓，她没有注意到你从身后的悄然逼近。当你温柔地环抱住她的纤腰时，她慌乱得差点切到手指，头顶的呆毛瞬间害羞得疯狂卷曲成完美的工口心形——「呜啊！大色狼...什么时候进来的啦...不准从后面抱着人家，面粉都要蹭到你身上了...」",
@@ -39,7 +39,8 @@
       "pov",
       "full_body",
       "barefoot",
-      "afternoon"
+      "afternoon",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

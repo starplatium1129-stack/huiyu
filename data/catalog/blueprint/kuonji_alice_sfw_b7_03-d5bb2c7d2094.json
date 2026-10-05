@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_03",
-  "revision": 1,
-  "sortOrder": 1629,
+  "revision": 2,
+  "sortOrder": 1625,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_03",
     "title": "久远寺有珠 · 冬日毛皮帽的坡道",
@@ -31,42 +31,18 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Alice walks up the winter school road with her scarf neatly tucked into a dark wool coat. A rounded winter hat frames her short hair, and she gives a restrained nod without breaking her measured pace. Pale breath appears briefly in the cold air. The nearby composition includes the quiet slope and bare branches under morning sunlight, emphasizing her formal, old-fashioned composure in an ordinary commute.",
+    "promptProse": "Alice Kuonji walks uphill toward Reien Girls' Academy in a dark wool coat, plain scarf and rounded fur-trimmed winter hat. She answers a passerby's greeting with the smallest nod, breath visible beneath her composed face. The medium view follows the school road and bare roadside trees behind her. Morning light catches the fur edge and scarf weave, with longer blue-grey shadows on the slope and a gentle bright edge along her coat.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "kuonji_alice",
-      "mahou_tsukai_no_yoru",
-      "school_road",
-      "slope",
-      "walking",
-      "wool_coat",
+      "Alice Kuonji",
+      "dark wool coat",
+      "fur-trimmed hat",
       "scarf",
-      "winter_hat",
-      "nodding",
-      "visible_breath",
-      "winter",
-      "morning_light",
-      "medium_shot"
+      "winter school slope",
+      "morning",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -74,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

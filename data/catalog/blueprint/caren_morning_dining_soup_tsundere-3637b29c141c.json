@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_morning_dining_soup_tsundere",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 210,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "caren_morning_dining_soup_tsundere",
     "title": "卡莲 · 晨间餐桌的毒舌与暖汤",
@@ -29,28 +29,22 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "At the church dining table, Caren offers a steaming bowl of vegetable soup with both hands held steadily beneath it. Her white knitted beanie stays in place above short layered silver hair, leaving the gesture free of a simultaneous hat adjustment. The red duffle coat is closed over her ordinary winter clothes. She lifts her chin with a dry, teasing expression while her amber-yellow eyes show a little concern for the recipient. Morning light reaches the bowl and wooden tabletop through the high window. One fully clothed figure, no lettering.",
+    "promptProse": "Caren offers a steaming vegetable-soup bowl with both hands beneath it at the church dining table, lifting her chin in dry teasing concern. Her closed red duffle coat and white knit beanie remain undisturbed above short silver hair. The eye-level cowboy view includes the wooden tabletop beneath the high arched window. Morning light brightens her amber eyes and bowl rim, leaving soft shade beneath her supporting palms and the table edge.",
     "promptTokens": [
-      "church_dining_room",
-      "offering_soup",
-      "both_hands_on_bowl",
-      "red_duffle_coat",
-      "white_beanie",
-      "short_silver_hair",
-      "amber_eyes",
-      "raised_chin",
-      "morning_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "1girl",
+      "solo",
+      "Caren",
+      "closed red duffle coat",
+      "white knit beanie",
+      "black tights",
+      "brown boots",
+      "vegetable soup",
+      "church dining table",
+      "morning",
+      "cowboy shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "hat adjustment"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_winter_duffle_coat",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_studio_oversized_hoodie",
-  "revision": 1,
-  "sortOrder": 1496,
+  "revision": 2,
+  "sortOrder": 1492,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yamada_studio_oversized_hoodie",
     "title": "山田杏奈 · 拍摄休息室大号卫衣的大长腿瘫坐·「拍摄好累哦……市川，给我吃一口软糖嘛」",
@@ -32,37 +32,17 @@
       "vanity_lights",
       "medium_shot"
     ],
-    "promptProse": "The sight of a gummy-candy packet brings Anna Yamada out of her post-shoot tiredness on the dressing-room sofa. Wearing a loose charcoal hoodie and denim shorts, she points toward the packet with a fingertip emerging from the cuff. Her long black hair is down, and the removed hair tie rests beside a cushion. Warm mirror bulbs illuminate her hopeful brown eyes, the sofa arm and a neatly packed clothing case nearby.",
+    "promptProse": "After the photo session, Anna Yamada sits deep in the dressing-room leather sofa, hair tie removed and long black hair loose over her charcoal hoodie. She perks up at her companion's gummy-candy bag, pointing toward it from a broad sleeve. The medium view includes her denim shorts, cushion and discarded hair tie. Warm mirror lamps brighten her refreshed expression and sleeve edge, with softer reflections on the sofa's worn leather.",
     "promptTokens": [
-      "1girl",
-      "dressing_room",
-      "leather_sofa",
-      "sitting",
-      "oversized_hoodie",
-      "denim_shorts",
-      "hair_down",
-      "hair_tie_on_cushion",
-      "pointing",
-      "gummy_candy_packet",
-      "hopeful_smile",
-      "vanity_lights",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Anna Yamada",
+      "charcoal hoodie",
+      "denim shorts",
+      "loose black hair",
+      "candy request",
+      "studio lounge",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "extra_fingers",
-      "extra_limbs",
-      "text",
-      "watermark",
-      "duplicate",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -71,6 +51,7 @@
     "coverageTags": [
       "daily",
       "date"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

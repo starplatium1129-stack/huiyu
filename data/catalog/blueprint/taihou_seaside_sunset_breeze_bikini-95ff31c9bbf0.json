@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_seaside_sunset_breeze_bikini",
-  "revision": 1,
-  "sortOrder": 1081,
+  "revision": 2,
+  "sortOrder": 1077,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "taihou_seaside_sunset_breeze_bikini",
     "title": "大凤 · 暮色海潮的细带红比基尼",
@@ -32,36 +32,18 @@
       "twintails",
       "cleavage"
     ],
-    "promptProse": "Walking through warm foamy ocean tide pools beneath an intense fiery orange sunset sky, Taihou flaunts her hourglass figure in a daring crimson string bikini. Ocean breezes send her sheer black sarong and trailing twin tails swirling into the golden dusk.",
+    "promptProse": "Taihou stands at the evening tide in her crimson string swimsuit, gold waist chain and sheer black sarong, looking toward the glowing horizon as the sea breeze moves the dark wrap. The full-body three-quarter side view keeps the surf at her feet and gold-red sand extending behind. Sunset outlines her long black hair and fabric edges; reflected water highlights the chain and damp sand beneath her stance.",
     "promptTokens": [
-      "sunset_beach",
-      "ocean_tide",
-      "crimson_bikini",
-      "string_bikini",
-      "sarong",
-      "wet_skin",
-      "twintails",
-      "cleavage",
-      "detailed_background",
-      "cinematic_lighting"
+      "sunset",
+      "beach",
+      "crimson swimsuit",
+      "gold chain",
+      "black sarong",
+      "sea breeze",
+      "full body",
+      "side angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

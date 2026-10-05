@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc245",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 240,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "After closing under the single warm lamp at the Café Stella marble counter, Shiki Natsume in her cafe uniform leans with one hand under her chin and takes a sip from the teacup of hot black tea you brewed for her, the mole by her eye quivering softly in the lamplight as she watches your busy back, warm silence in her reddened ears.",
+    "animaCaption": "Shiki Natsume sips the black tea at the marble counter after closing, resting her chin on her free hand as she watches the viewer finish cleaning. Her cafe uniform and purple ribbon stay neatly arranged. White cups and the shaded shelves overlap behind the seated figure. The single pendant lamp warms the porcelain rim and her nearer cheek, while counter reflection opens the shaded sleeve and the cup's contact shadow anchors the quiet pause.",
     "auditRevision": "careful-batch07-2026-08-27",
     "camera": "近景平视特写",
     "category": "日常",
@@ -20,8 +20,8 @@
     "location": "Café Stella 大理石吧台前",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, daylight",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, natsume_cafe_uniform, white_shirt, suspender_skirt, purple_ribbon, black_thighhighs, sitting_on_bar_stool_after_closing, sipping_fresh_hot_black_tea_from_porcelain_cup, gaze_trailing_viewer_cleaning, soft_red_ears, cafe_night, warm_amber_pendant_lamps, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "duplicate tea cups, chin fused to hand, additional foreground staff",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, sitting at counter, chin on hand, sipping black tea, porcelain cup, cafe after closing, pendant light, close up",
     "rating": "All",
     "season": "不限",
     "story": "【夏目 · 疲惫的温柔】深夜打烊后的Café Stella，只剩吧台一盏暖灯。夏目靠在柜台边，单手托着下巴，金瞳毫无干劲地盯着面前的账本。你默默走过去，把一杯刚泡好的红茶放在她面前，然后开始帮她整理散落的订单。夏目愣了一下，看着你忙碌的背影，眼角的泪痣在灯光下微微颤动。她端起红茶抿了一口，温度刚刚好。沉默了很久，她才用几乎听不见的声音说了一句——「……谢谢。还有，明天的班……我帮你顶。大笨蛋，早点回去睡。」",
@@ -37,7 +37,8 @@
       "ledger",
       "night",
       "red_ears",
-      "full_body"
+      "full_body",
+      "depth_of_field"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

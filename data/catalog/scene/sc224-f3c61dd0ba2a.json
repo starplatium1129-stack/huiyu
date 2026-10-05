@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc224",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 219,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "Standing on the locked school rooftop at sunset, Ayachi Nene in a pure white angel dress with large feathered wings and a glowing halo above her head flushes bright red and presses her skirt hem with one hand as the wind lifts her silver hair, sacred halo glow blazing in the golden sunset backlight.",
+    "animaCaption": "Ayachi Nene steadies the hem of her white angel dress against the rooftop wind, large feathered wings extending behind her and the costume halo glowing above. Keep her shoes and the supporting roof visible in the full-length composition. The rooftop rails lead toward the sunset city beyond. Golden backlight picks out the wing edges and silver hair, the halo contributes a small local highlight, and reflected roof light preserves the face against darker feather overlaps.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "全身远景，人物居中",
     "category": "校园",
@@ -20,8 +20,8 @@
     "location": "教学楼反锁的天台中央",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_angel_dress, white_thighhighs, large_white_feathered_wings, glowing_halo, mary_janes, standing_on_locked_school_rooftop, holding_skirt_hem, bright_blush, shy_smile, silver_hair_and_skirt_windblown, sunset, golden_hour, bokeh, full_body, backlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "extra wings, cropped shoes, halo detached from costume alignment",
+    "prompt": "1girl, ayachi_nene, white angel dress, feathered wings, halo, holding hem, school rooftop, sunset, full body",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 天台天使装反差萌】学园祭前夕被晚霞染红的学校天台。为了帮戏剧部试衣，宁宁换上了一套极其精致的纯白圣洁天使连衣裙，背后一对洁白的羽毛翅膀与头顶的发光光环在强烈的夕阳逆光中散发着神圣的光晕。微风吹过，她银白色的低双马尾与裙摆一同飞扬。原本正有些羞耻地在镜子前练习动作，一回头却发现你正靠在门边含笑注视着她。宁宁瞬间满脸通红，头顶的呆毛慌乱地跟着翅膀一起颤动起来，急忙用手捂住裙摆大声自曝——「呜啊！柊、柊史！什么时候进来的啦！不准看！人家、人家只是帮戏剧部试一下衣服而已，绝对没有故意穿成这样在等你哦……呜，笨蛋，快转过头去！」",
@@ -35,7 +35,8 @@
       "rooftop",
       "full_body",
       "mary_jane",
-      "sunset"
+      "sunset",
+      "depth_of_field"
     ],
     "time": "黄昏",
     "timeOfDay": "sunset",

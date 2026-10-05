@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_poolside_black_bikini_splashing",
-  "revision": 1,
-  "sortOrder": 1294,
+  "revision": 2,
+  "sortOrder": 1290,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "akeno_poolside_black_bikini_splashing",
     "title": "姬岛朱乃 · 阳光池畔的水光嬉戏",
@@ -28,32 +28,16 @@
       "splashing_water",
       "seductive_smile"
     ],
-    "promptProse": "Sitting playfully at the edge of an azure infinity pool, Akeno Himejima kicks her feet, sending crystalline water droplets flying into the summer air. She wears a minimalist glossy black string bikini accentuating her hourglass curves. Strands of wet raven hair cling enticingly to her damp chest and shoulders as she splashes water playfully toward the viewer with a dazzling, mischievous smirk. Bright tropical anime CG, solo 1girl, no text.",
+    "promptProse": "Akeno Himejima sits at the infinity pool's edge in her glossy black string bikini, kicking both feet lightly and scooping water toward her companion. A few damp strands have escaped her ponytail as she tilts her head with a playful smile. The diagonal cowboy view lets the pool's distant rim meet the horizon. Golden-blue reflections break across her lowered hand and wet tiles, while direct sunshine catches the flying droplets.",
     "promptTokens": [
-      "swimming_pool",
-      "poolside",
-      "water_splash",
-      "black_bikini",
-      "string_bikini",
-      "wet_skin",
-      "wet_hair",
-      "cleavage",
-      "splashing_water",
-      "seductive_smirk",
-      "purple_eyes",
-      "high_ponytail",
-      "sunny",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Akeno Himejima",
+      "black string bikini",
+      "pool edge",
+      "kicking water",
+      "splashing",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "black_sensual_bikini",
     "coverageTags": [

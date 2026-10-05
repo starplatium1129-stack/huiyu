@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_halo_festival_track_victory",
-  "revision": 1,
-  "sortOrder": 917,
+  "revision": 2,
+  "sortOrder": 913,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "微弯腰单手扶膝微喘，另一手拿白色运动毛巾擦汗，脸颊泛红娇羞微笑",
     "camera": "medium shot, dynamic low angle",
@@ -18,34 +18,19 @@
     "lighting": "明媚阳光直射与跑道漫射光",
     "location": "晄轮大祭中央体育场跑道旁",
     "mood": "活力心动",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "outfitId": "gym_tracksuit",
-    "promptProse": "Crossing the finish line at the Halo Festival stadium, Yuuka wipes sweat with a towel, beaming with breathless victory. Bright stadium spotlights and fluttering victory banners capture the electrifying energy of her track triumph.",
+    "promptProse": "Just past the Halo Festival finish line, Yuuka catches her breath and wipes her flushed cheek with a white towel. Her unzipped navy track jacket and white sports shirt remain in the dynamic low medium view, a silver stopwatch hanging at her chest. Spectators rise beyond the track behind her. Direct sunshine highlights the towel and stopwatch, while the rubber surface reflects softer brightness beneath her halted running stance.",
     "promptTokens": [
-      "stadium",
-      "running_track",
-      "sweat",
-      "happy_smile",
+      "daytime",
+      "stadium track",
+      "navy track jacket",
+      "white sports shirt",
+      "gym shorts",
+      "towel",
       "stopwatch",
-      "detailed_background",
-      "cinematic_lighting"
+      "medium shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -60,6 +45,7 @@
       "stopwatch"
     ],
     "timeOfDay": "午后",
-    "title": "早濑优香 · 晄轮大祭冲线时刻"
+    "title": "早濑优香 · 晄轮大祭冲线时刻",
+    "compositionIntent": "group"
   }
 }

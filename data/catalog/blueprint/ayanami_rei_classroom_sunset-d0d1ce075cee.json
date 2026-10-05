@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_classroom_sunset",
-  "revision": 1,
-  "sortOrder": 1015,
+  "revision": 2,
+  "sortOrder": 1011,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "侧坐在课桌旁单手托腮，凝视窗外夕阳",
     "camera": "cowboy shot, eye level",
@@ -18,39 +18,17 @@
     "lighting": "金色夕阳穿透落地玻璃窗的温暖漫射光",
     "location": "第3新东京市立中学教室窗边",
     "mood": "宁静深邃",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "outfitId": "tokyo3_school_uniform",
-    "promptProse": "Sitting quietly at a classroom desk by the open window at golden hour, Rei rests one hand against her cheek and gazes into the sunset in her Tokyo-3 school uniform. Warm orange sunlight and fluttering white curtains cast long, nostalgic shadows across the wooden floor.",
+    "promptProse": "Rei sits quietly at the classroom window after school, supporting her cheek with one hand above her turquoise pinafore and short-sleeved white shirt. Her red chest ribbon remains clear in the eye-level cowboy view. Empty wooden desks recede behind her and city defense plates layer outside. Warm sunset through the glass touches her blue hair and desktop, leaving long desk shadows across the vacant room.",
     "promptTokens": [
-      "classroom",
-      "window",
-      "sitting_at_desk",
       "sunset",
-      "golden_hour",
-      "wind_blown_curtains",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting",
-      "hand_on_cheek",
-      "school_uniform"
+      "classroom",
+      "Tokyo 3 uniform",
+      "turquoise pinafore",
+      "red ribbon",
+      "cheek in hand",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -61,7 +39,8 @@
       "sunset",
       "golden_hour",
       "tokyo-3",
-      "curtains"
+      "curtains",
+      "floating_dust_particles"
     ],
     "timeOfDay": "黄昏",
     "title": "绫波丽 · 黄昏窗边的沉思"

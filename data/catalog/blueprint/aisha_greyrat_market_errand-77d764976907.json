@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_market_errand",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 487,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "aisha_greyrat_market_errand",
     "title": "爱夏·香料摊前的比较",
@@ -25,35 +25,25 @@
       "town"
     ],
     "description": "爱夏停在市集香料摊前，左手将一只小陶罐托到视线下方，右手把采购单压在木柜台边缘。旅行斗篷的兜帽垂在肩后，马尾和发带完整露出，挎包闭合。棚布投下柔和阴影，罐口与手背接住摊位外的日光；横幅背景以空置摊架、布幌和石墙交代市集。",
-    "promptProse": "Beneath a striped market awning, Aisha lifts a small ceramic spice jar in her left palm and examines its contents. Her right hand pins a shopping slip against the wooden counter, and her closed cross-body satchel rests at her hip. The travel cloak hood lies behind her shoulders, leaving the ponytail and ribbon visible. A medium-wide view includes rows of jars along the counter; daylight catches their rims beneath the awning shade, with empty stall frames and stone walls beyond.",
+    "promptProse": "Beneath the striped awning, adult Aisha examines a ceramic spice jar in her left palm while her right hand presses the shopping slip against the counter. Forest-green cloak layers over cream shirt and trousers, hood down and cross-body satchel closed. The medium-wide view includes jar rows with empty stall frames and stone walls beyond. Daylight catches ceramic rims at the awning edge, softly illuminating her face while the counter's deeper shelves remain shaded.",
     "promptTokens": [
-      "examining_jar",
-      "ceramic_jar",
-      "hand_on_counter",
-      "paper_slip",
-      "hood_down",
-      "closed_satchel",
-      "striped_awning",
-      "wooden_counter",
-      "market_stall",
-      "awning_shade"
+      "1girl",
+      "solo",
+      "adult Aisha",
+      "green travel cloak",
+      "cream shirt",
+      "trousers",
+      "satchel",
+      "spice jar",
+      "shopping slip",
+      "striped market awning",
+      "daylight",
+      "medium wide shot"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra characters",
-      "duplicate subject",
-      "split screen"
+      "readable shopping list"
     ]
   }
 }

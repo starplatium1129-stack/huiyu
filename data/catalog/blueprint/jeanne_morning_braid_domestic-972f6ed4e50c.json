@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_morning_braid_domestic",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 234,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "jeanne_morning_braid_domestic",
     "title": "圣女贞德 · 晨间梳辫的居家温存·「发辫……就交给你来编好不好？」",
@@ -29,28 +29,21 @@
       "morning_light",
       "three_quarter_rear_view"
     ],
-    "promptProse": "Seated beside the village-house window, Jeanne turns slightly and offers a wooden comb over her shoulder with one hand. Her other hand rests on her lap while completely loose golden hair falls past the back of the chair. The white blouse and long blue skirt are comfortable indoor clothes, leaving her head uncovered for the requested braiding. Morning light catches the strands and her small, shy smile as she glances downward. Use a three-quarter rear view that makes the comb and unbraided hair clear without losing the gentle head turn. No lettering.",
+    "promptProse": "Jeanne turns slightly on the chair beside the village-house window and offers a wooden comb over her shoulder, her other hand remaining on her lap. Completely loose golden hair falls past the chair back above her white blouse and long blue skirt. The three-quarter rear medium view retains the shy downward glance and reddened ears. Soft morning light travels along the unbraided strands and comb teeth, leaving shadow on the chair's farther side.",
     "promptTokens": [
-      "village_house_window",
-      "sitting",
-      "loose_golden_hair",
-      "offering_wooden_comb",
-      "hand_on_lap",
-      "shy_smile",
-      "white_blouse",
-      "blue_skirt",
-      "morning_light",
-      "three_quarter_rear_view",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Jeanne",
+      "white blouse",
+      "long blue skirt",
+      "completely loose golden hair",
+      "wooden comb",
+      "village house window",
+      "morning",
+      "three quarter rear view"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "braided hair"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_weekend_bookshop_receipt",
-  "revision": 1,
-  "sortOrder": 951,
+  "revision": 2,
+  "sortOrder": 947,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfitId": "casual_date",
@@ -16,22 +16,16 @@
     "mood": "轻快认真",
     "description": "【优香 · 周末书店的小票】周末的街角书店门外，优香穿着米色风衣、奶油色高领毛衣和藏青格裙，肩上挎着小黑包。她一手抱住刚买的两本书，另一手看着收据核对金额，确认无误后露出轻松的笑容——「书买到了，预算也正好。接下来可以慢慢逛回去。」",
     "action": "站在书店门外，一手抱住两本书，另一手查看收据",
-    "promptProse": "Outside a neighborhood bookshop, Yuuka wears her beige trench coat over a cream turtleneck and navy plaid skirt, cradling two books against one arm while checking a receipt in the other hand. Mild afternoon sunlight warms the shop window and fallen leaves along the pavement, framing her satisfied smile after a carefully budgeted purchase.",
+    "promptProse": "Yuuka stands outside the corner bookstore with two new books against one arm, checking their receipt before smiling at the matched total. Her beige trench coat, cream turtleneck, navy tartan skirt and small black shoulder bag remain in medium view. The shop window reflects bookshelves behind her. Mild afternoon daylight illuminates the paper and book spines, shading the receipt where her fingertips hold its corner.",
     "promptTokens": [
-      "bookshop",
-      "street",
-      "standing",
-      "trench_coat",
-      "turtleneck",
-      "plaid_skirt",
-      "holding_books",
-      "receipt",
-      "shoulder_bag",
       "afternoon",
-      "sunlight",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "bookstore entrance",
+      "beige trench coat",
+      "cream turtleneck",
+      "navy tartan skirt",
+      "books",
+      "receipt",
+      "medium shot"
     ],
     "camera": "medium shot at the bookstore entrance, books and receipt visible",
     "lighting": "书店橱窗前温和的午后日光",
@@ -56,19 +50,6 @@
       "sunlight",
       "medium_shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "bad hands",
-      "extra fingers",
-      "extra limbs",
-      "text",
-      "watermark",
-      "nsfw",
-      "nude",
-      "explicit"
-    ]
+    "negativeTokens": []
   }
 }

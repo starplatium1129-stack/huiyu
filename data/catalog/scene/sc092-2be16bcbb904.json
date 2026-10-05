@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc092",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a medium close-up at the edge of the cohabitation bedroom bed on a spring morning, Ayachi Nene wears the viewer's oversized white shirt and pulls its loosened collar back into place before resting her forehead against the viewer's. Her shy warm blush catches the soft window light.",
+    "animaCaption": "Ayachi Nene adjusts the loosened collar of her oversized white shirt, then leans her forehead gently against the viewer's in a quiet morning greeting. The near bedside view follows her hand toward her shy expression. Pillow and sheet folds recede behind the seated figure toward the bedroom window. Spring daylight shapes the shirt and hair on one side, while reflected bedding light softens the facing cheek and small fabric shadows preserve the contact.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "床边主观半身近景",
     "category": "恋爱/After_Story",
@@ -20,8 +20,8 @@
     "location": "同居公寓卧室",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_viewer's_oversized_white_button_up_shirt, seated_on_bed_edge, pulling_loosened_shirt_collar_back_into_place, touching_forehead_to_viewer, shy_morning_greeting, warm_blush, cohabitation_bedroom, spring_morning, warm_window_light, medium_close_up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "extra foreground heads, transparent shirt, fused forehead contact",
+    "prompt": "1girl, ayachi_nene, oversized white shirt, seated at bed edge, adjusting collar, forehead contact, spring morning, medium close up",
     "rating": "All",
     "season": "春",
     "story": "【成年 After Story · 起床后十分钟】成年同居后的春日清晨，宁宁披着你的衬衫坐在床边醒神，松开的领口不小心滑到肩侧。她发现你醒来后先慌忙拉好衣服，随后又坐回原处，把额头靠上你的额头——「早安。刚才什么都没看见，对吧？回答正确的话，今天可以多抱十分钟。」",
@@ -33,7 +33,8 @@
       "bed_edge",
       "bedroom",
       "medium_close_up",
-      "morning"
+      "morning",
+      "depth_of_field"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

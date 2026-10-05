@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_ruined_city_highway_blade_stance",
-  "revision": 1,
-  "sortOrder": 1112,
+  "revision": 2,
+  "sortOrder": 1108,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yorha_2b_ruined_city_highway_blade_stance",
     "title": "2B · 废墟倾塌高架的白之契约持刃",
@@ -32,37 +32,18 @@
       "blindfold",
       "wind"
     ],
-    "promptProse": "Standing resolute along a crumbling elevated highway overlooking overgrown city ruins, 2B commands her hovering white katana with silent android grace. Gusty coastal winds whip her feather-trimmed black skirt and silvery bob against the post-apocalyptic horizon.",
+    "promptProse": "2B stands on the broken reinforced-concrete highway edge in her black embroidered YoRHa dress and thigh-high boots, blindfold in place as Virtuous Contract floats ready beside her. The low full-body wide view carries fractured beams beneath her toward moss-covered towers and enormous trees. Cold sunlight between buildings catches white embroidery and the katana edge, leaving the ravaged highway's underside shaded beneath the wind-lifted skirt.",
     "promptTokens": [
-      "city_ruins",
-      "crumbling_highway",
-      "overgrown_buildings",
-      "katana",
-      "floating_weapon",
-      "gothic_dress",
+      "daytime",
+      "ruined highway",
+      "YoRHa dress",
       "blindfold",
-      "windy",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "Virtuous Contract",
+      "wind",
+      "full body",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152"
   }
 }

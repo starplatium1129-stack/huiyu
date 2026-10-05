@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_mask_taken_off_flustered_tsundere",
-  "revision": 1,
-  "sortOrder": 1049,
+  "revision": 2,
+  "sortOrder": 1045,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sparkle_mask_taken_off_flustered_tsundere",
     "title": "花火 · 被摘面具的破防羞恼",
@@ -29,39 +29,24 @@
       "flustered",
       "tsundere_pout"
     ],
-    "promptProse": "Trapped in the shadowed wings of the theater stage, Sparkle's theatrical composure shatters as the viewer playfully confiscates her fox mask. Reaching up desperately with both small hands to snatch it back, her porcelain face and ears flush completely crimson. Her ruby eyes well up with bashful frustration as she pouts fiercely with biting lips. Emotional medium close-up, rich stage lighting, expressive anime CG, solo 1girl, no text.",
+    "promptProse": "In the theater's empty backstage, Sparkle raises both hands to reclaim her fox mask from the viewer's visible hand, flushed cheeks and damp eyes breaking her usual composed mischief. Her crimson-black kimono sleeves surround the medium close-up. Heavy curtains overlap behind her face and the displaced mask stays near the foreground. A weak backstage spotlight catches her pink eyes and fingertips, leaving folds of the curtain in deep red shade.",
     "promptTokens": [
-      "backstage",
-      "curtain",
-      "reaching_up",
-      "mini_kimono",
-      "heavy_blush",
-      "blushing_ears",
-      "red_ears",
-      "teary_eyes",
-      "biting_lip",
-      "tsundere_pout",
-      "flustered",
-      "pink_eyes",
-      "twintails",
-      "medium_shot",
-      "cinematic_lighting",
-      "detailed_background"
+      "night",
+      "theater backstage",
+      "kimono dress",
+      "removed fox mask",
+      "blushing",
+      "reaching",
+      "medium close up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "self-harm, choking"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "sfw_kimono_mask_removed",
+    "outfitId": "official_kimono_dress",
     "coverageTags": [
       "gap_moe",
       "flustered",
       "tsundere"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

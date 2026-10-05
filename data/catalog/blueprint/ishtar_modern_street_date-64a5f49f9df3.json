@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_modern_street_date",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 254,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "ishtar_modern_street_date",
     "title": "伊什塔尔 · 现代街头的女神考察·「人类的甜甜圈……是供品吗」",
@@ -29,29 +29,22 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Walking along the afternoon street, Ishtar holds up a half-eaten donut and turns toward the viewer with delighted red eyes. A denim jacket, white crop tee, high-waisted shorts and sneakers keep the modern outfit casual, while a star-shaped hairpin sits above her dark hair. Her free hand makes an enthusiastic little gesture as she presents this latest discovery of human desserts. Bright shopfront reflections catch her hoop earrings and dark hair. Frame the donut, hairpin and clear walking posture together, without readable shop signs or lettering.",
+    "promptProse": "Walking the afternoon street, Ishtar raises a half-eaten donut toward the viewer and gestures enthusiastically with her free hand, red eyes delighted by the dessert. Denim jacket, white crop tee, high-waisted shorts and sneakers retain her modern outfit beneath the star-shaped hairpin. The medium view follows storefronts along her route. Bright afternoon light and shop-window reflections catch the hoop earrings and donut glaze, leaving soft shade beneath the jacket collar.",
     "promptTokens": [
-      "modern_street",
-      "walking",
-      "half_eaten_donut",
-      "delighted_eyes",
-      "denim_jacket",
-      "white_crop_tee",
-      "high_waisted_shorts",
-      "star_hairpin",
-      "afternoon_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Ishtar",
+      "denim jacket",
+      "white crop tee",
+      "high waist shorts",
+      "sneakers",
+      "star hairpin",
+      "donut",
+      "afternoon street",
+      "medium shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "metal_tiara"
+      "readable shop signs"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,

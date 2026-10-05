@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_garage_repair_tanktop_wrench",
-  "revision": 1,
-  "sortOrder": 1183,
+  "revision": 2,
+  "sortOrder": 1179,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "amane_garage_repair_tanktop_wrench",
     "title": "周防天音 · 铁工车库的机油与汗水",
@@ -32,36 +32,18 @@
       "hair_rings",
       "large_breasts"
     ],
-    "promptProse": "Kneeling beside an exposed motorcycle engine with a heavy steel wrench in hand inside a rustic workshop, Amane tunes the mechanics with focused determination. Bright overhead halogen lighting catches beads of sweat along her bare collarbone and cropped black tank top.",
+    "promptProse": "Suou Amane kneels beside the motorcycle, turning a carburetor bolt with a heavy wrench. Her cropped black biker jacket lies over a crimson tank top, with denim shorts, riding gloves and tall boots; a grease mark remains on her nose. From a low cowboy view, toolboxes and spare tires recede behind the engine. Warm-white work spots strike its fins and wrench edge, leaving the underside dark.",
     "promptTokens": [
-      "motorcycle_garage",
-      "engine_repair",
-      "holding_wrench",
-      "tank_top",
-      "crop_top",
-      "cleavage",
-      "sweat",
-      "hair_rings",
-      "detailed_background",
-      "cinematic_lighting"
+      "motorcycle garage",
+      "engine repair",
+      "black biker jacket",
+      "crimson tank top",
+      "denim shorts",
+      "kneeling",
+      "wrench",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

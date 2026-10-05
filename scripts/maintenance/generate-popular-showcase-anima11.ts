@@ -24,7 +24,6 @@ const popularContent: typeof import('../../src/utils/popularContent.ts') = requi
 const { showcaseSubjectGuards, compositionNegative }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
 const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
 const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
-const animaGenerationContract: typeof import('../lib/generation/anima-generation-contract.js') = require('../lib/generation/anima-generation-contract.js');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
@@ -142,12 +141,12 @@ function buildCandidate(character: any, blueprint: any, profile: any, attempt: a
     checkpoint: animaConstants.MODELS[ANIMA_MODEL_ID].file,
     artistTag: '@' + ARTIST_TAG,
     width, height,
-    steps: animaGenerationContract.ANIMA_DEFAULTS.steps,
-    cfg: animaGenerationContract.ANIMA_DEFAULTS.cfg,
+    steps: animaConstants.MODELS[ANIMA_MODEL_ID].steps,
+    cfg: animaConstants.MODELS[ANIMA_MODEL_ID].cfg,
     teaCache: !process.argv.includes('--no-tea-cache'),
-    teaCacheThresh: 0.08,
-    sampler: animaGenerationContract.ANIMA_DEFAULTS.sampler,
-    scheduler: animaGenerationContract.ANIMA_DEFAULTS.scheduler,
+    teaCacheThresh: animaConstants.MODELS[ANIMA_MODEL_ID].teaCacheThresh ?? 0.08,
+    sampler: animaConstants.MODELS[ANIMA_MODEL_ID].sampler,
+    scheduler: animaConstants.MODELS[ANIMA_MODEL_ID].scheduler,
     seed: stableSeed(character.id, blueprint.id, seedAttempt),
     attempt,
     prompt, negative,

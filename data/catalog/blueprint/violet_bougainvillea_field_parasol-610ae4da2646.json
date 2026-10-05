@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_bougainvillea_field_parasol",
-  "revision": 1,
-  "sortOrder": 1389,
+  "revision": 2,
+  "sortOrder": 1385,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "漫步在花瀑下，手握蕾丝阳伞与你的手相牵，草帽随风轻扬，蓝眸羞涩而深情地仰望着你",
     "adult": false,
@@ -23,29 +23,17 @@
     "lighting": "明媚灿烂的地中海夏日阳光穿透花隙，投下绚丽的紫红与金黄光斑",
     "location": "沿海山城蜿蜒的紫红九重葛花径",
     "mood": "清纯唯美、少女情怀",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "outfitId": "casual_white_summer_dress",
-    "promptProse": "Violet Evergarden strolls along a cobblestone path lined with cascading magenta bougainvillea flowers beneath a lace parasol. Her simple white summer cotton sundress sways with the gentle sea breeze as her ribboned straw hat frames her blushing porcelain cheeks. She gently clasps your hand with silver prosthetic fingers while flower petals drift across the sunlit afternoon warmth.",
+    "promptProse": "Violet Evergarden walks beneath bougainvillea cascading over a white garden wall, holding a lace parasol in one mechanical hand and her companion's fingertips in the other. Her white cotton dress and blue-ribbon straw hat move lightly as she turns with a shy blush. The scenic medium view follows the narrow path behind them. Summer sun passing through flowers marks the wall in magenta and gold, with lace-patterned shade across her sleeve and hat brim.",
     "promptTokens": [
-      "garden",
-      "flowers",
-      "bougainvillea",
-      "white_dress",
-      "straw_hat",
-      "parasol",
-      "holding_hands",
-      "walking",
-      "blushing",
-      "summer",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "Violet Evergarden",
+      "white cotton summer dress",
+      "blue-ribbon straw hat",
+      "lace parasol",
+      "handholding",
+      "bougainvillea path",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -60,6 +48,7 @@
       "summer"
     ],
     "timeOfDay": "午后",
-    "title": "薇尔莉特 · 九重葛花海的草帽微风·「和您走在一起，心跳会变得很快」"
+    "title": "薇尔莉特 · 九重葛花海的草帽微风·「和您走在一起，心跳会变得很快」",
+    "compositionIntent": "group"
   }
 }

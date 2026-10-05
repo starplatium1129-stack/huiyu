@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_03",
-  "revision": 1,
-  "sortOrder": 1539,
+  "revision": 2,
+  "sortOrder": 1535,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_03",
     "title": "宝多六花 · 天台午餐的耳机分享",
@@ -36,52 +36,17 @@
       "sunlight",
       "medium_shot"
     ],
-    "promptProse": "On the rooftop bench, Rikka holds a tiny white wired earbud between the thumb and index finger of her outstretched hand. Its thin cable runs down to the phone beside a wrapped bread roll. The matching earbud is in her own ear. She keeps her gaze on the distant roofs, expression quiet above her navy cardigan. Sunlight and the wire fence frame a close seated view in which the offered earbud is clearly visible.",
+    "promptProse": "Rikka Takarada sits on the school rooftop, offering one earpiece to her companion while keeping the other in place. Convenience-store bread rests beside them as she watches the distant view without speaking. Her white shirt and navy cardigan remain recognizable in the medium environmental portrait. The roof railing and far buildings continue behind; soft daylight illuminates the earphone wire and brown hair edges, with subdued contact shadows on the shared sitting surface.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "takarada_rikka",
-      "rooftop",
-      "bench",
-      "sitting",
-      "earbud",
-      "wired_earbuds",
-      "holding_earbud",
-      "pinching",
-      "extended_hand",
-      "earphone_cable",
-      "phone",
+      "Rikka Takarada",
+      "school uniform",
+      "shared earphones",
       "bread",
-      "fence",
-      "looking_away",
-      "sunlight",
-      "medium_shot"
+      "rooftop",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through",
-      "(split_screen:1.3)",
-      "(inset:1.3)",
-      "(duplicate:1.3)",
-      "frame",
-      "border",
-      "letterbox",
-      "distant_view"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -89,6 +54,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

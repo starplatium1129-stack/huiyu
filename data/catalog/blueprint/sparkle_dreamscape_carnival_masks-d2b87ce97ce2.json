@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_dreamscape_carnival_masks",
-  "revision": 1,
-  "sortOrder": 1046,
+  "revision": 2,
+  "sortOrder": 1042,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sparkle_dreamscape_carnival_masks",
     "title": "花火 · 匹诺康尼梦境的千面狂欢",
@@ -19,6 +19,7 @@
     "mood": "戏弄狂气",
     "sceneTags": [
       "penacony",
+      "golden_hour",
       "neon_city",
       "confetti",
       "floating",
@@ -28,36 +29,26 @@
       "smirk",
       "playful"
     ],
-    "promptProse": "Floating dynamically above the bustling neon-lit Clockie Plaza in Penacony, Sparkle orchestrates a surreal dream carnival. Confetti and ethereal red goldfish swim through the midnight air around her as she tips her kitsune mask to reveal glowing scarlet eyes and a wicked, theatrical smirk. Vibrant cinematic anime illustration, solo 1girl focus, no text.",
+    "promptProse": "Sparkle floats above the Penacony clock plaza, lifting her ornate fox mask with a fingertip as mocking illusion doubles and red dream goldfish appear behind her. Her crimson-and-black theatrical kimono dress and wide sleeves spread in the low cowboy view. Falling confetti layers across the plaza towers beyond. Neon from below lights her obi and mask underside, while red floating runes outline the translucent doubles against the night.",
     "promptTokens": [
-      "penacony",
-      "neon_lights",
-      "clock_tower",
+      "night",
+      "Penacony clock plaza",
+      "crimson black kimono dress",
+      "fox mask",
+      "illusion doubles",
+      "goldfish",
       "confetti",
-      "floating",
-      "mini_kimono",
-      "wide_sleeves",
-      "kitsune_mask",
-      "pink_eyes",
-      "twintails",
-      "wicked_smirk",
-      "cowboy_shot",
-      "low_angle",
-      "cinematic_lighting",
-      "detailed_background"
+      "cowboy shot",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_kimono_dress",
     "coverageTags": [
       "iconic",
       "theatrical"
-    ]
+    ],
+    "compositionIntent": "group",
+    "allowRepeatedSubject": true
   }
 }

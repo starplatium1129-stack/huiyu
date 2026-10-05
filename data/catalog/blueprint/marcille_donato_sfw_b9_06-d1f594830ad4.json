@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_06",
-  "revision": 1,
-  "sortOrder": 1725,
+  "revision": 2,
+  "sortOrder": 1721,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_06",
     "title": "玛露希尔 · 蘑菇图鉴的争论",
@@ -30,41 +30,18 @@
       "lantern_light",
       "medium_shot"
     ],
-    "promptProse": "Marcille points emphatically at a mushroom drawing in her field notebook, eyebrows lifted in an earnest argument. A closed sample pouch sits beside the book, with no one tasting its contents. The blue robe and neatly braided hair reflect the care she brings to research. Lantern light makes the illustrated page and expressive green eyes clear, keeping the fictional discussion focused on caution and observation rather than practical foraging advice.",
+    "promptProse": "Marcille Donato argues a mushroom's edibility with her camp companion, pointing firmly at its drawing in her field notebook. Her blue travel robe and neat blonde braids reflect the serious research, green eyes raised toward the listener. A closed sample pouch remains beside the book; nobody tastes it. Lantern light illuminates the illustration and their working area in the medium view, with page shadows under her fingertip and darker camp gear behind.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "marcille_donato",
-      "dungeon_meshi",
-      "camp",
-      "field_notebook",
-      "mushroom_drawing",
-      "pointing",
-      "closed_pouch",
-      "earnest",
-      "blue_robe",
-      "green_eyes",
-      "lantern_light",
-      "medium_shot"
+      "Marcille Donato",
+      "blue robe",
+      "mushroom notebook",
+      "fictional discussion",
+      "camp companion",
+      "lantern",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -72,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

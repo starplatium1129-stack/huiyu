@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_02",
-  "revision": 1,
-  "sortOrder": 789,
+  "revision": 2,
+  "sortOrder": 785,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "名流茶会，她穿着连衣裙执杯的姿势无可挑剔，与长辈应对得体",
     "adult": false,
@@ -21,40 +21,16 @@
     "lighting": "window_light",
     "location": "安静茶会座位",
     "mood": "自然日常",
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "outfitId": "sfw_formal",
-    "promptProse": "At a formal tea table, Yuki holds her porcelain cup with impeccably measured posture. The pale violet layers and cream sash of her dress remain arranged without a crease. She turns her head briefly toward the window, allowing the faintest relieved breath before resuming the polished smile. Soft afternoon light touches her violet eyes, long black hair and the careful placement of her fingers on the cup.",
+    "promptProse": "At a formal tea gathering, Yuki holds her cup with impeccable posture in a modest pale-violet kimono-style dress and cream sash. She briefly turns to breathe in relief before restoring her composed expression. The medium view includes the tea service below and seated elders farther back. Window light softens her face and opaque dress layers, catching the cup rim above her shaded fingers.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "suou_yuki",
-      "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
-      "tea_table",
-      "porcelain_cup",
-      "formal_posture",
-      "violet_dress",
-      "cream_sash",
-      "polite_smile",
-      "black_hair",
-      "window_light",
-      "medium_shot"
+      "daytime",
+      "formal tea gathering",
+      "pale violet dress",
+      "cream sash",
+      "teacup",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -70,6 +46,7 @@
       "medium_shot"
     ],
     "timeOfDay": "日间",
-    "title": "周防有希 · 茶会上的淑女满分"
+    "title": "周防有希 · 茶会上的淑女满分",
+    "compositionIntent": "group"
   }
 }

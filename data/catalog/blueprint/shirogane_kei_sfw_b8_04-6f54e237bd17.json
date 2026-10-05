@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_04",
-  "revision": 1,
-  "sortOrder": 1418,
+  "revision": 2,
+  "sortOrder": 1414,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "矮桌旁核对完花束预算合上家计簿，向镜头露出没有超支的满足笑",
     "adult": false,
@@ -23,36 +23,17 @@
     "lighting": "gentle morning light across the low table",
     "location": "Shirogane family apartment living room",
     "mood": "把精打细算也变成花嫁幸福",
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Kei Shirogane from Kaguya-sama: Love Is War wears a simple silver-white bridal dress with a black ribbon headband, modest veil and a small budget-friendly flower bouquet. She sits at the low table with her household ledger beside a small bouquet chosen for its sensible price. After checking the final figure, she closes the book and gives the viewer a modest, satisfied smile as morning light reaches the silver fabric. gentle morning light across the low table.",
+    "promptProse": "Kei Shirogane sits at the apartment's low table in a simple silver-white bridal dress and modest veil, finishing the last entry in the household budget. A small fresh bouquet rests beside the ledger. She looks up with satisfaction beneath her black ribbon headband. The vertical medium-full view keeps the dress folds and table together; gentle morning light brightens the ledger and flowers, with soft shadows beneath the bouquet stems.",
     "promptTokens": [
-      "wedding_dress",
-      "bridal_veil",
-      "low_table",
-      "ledger",
-      "small_bouquet",
-      "headband",
-      "silver_hair",
-      "satisfied_smile",
-      "morning_light"
+      "Kei Shirogane",
+      "silver-white bridal dress",
+      "black headband",
+      "budget ledger",
+      "small bouquet",
+      "morning",
+      "medium full shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -67,7 +48,7 @@
       "satisfied_smile",
       "morning_light"
     ],
-    "timeOfDay": "清晨",
+    "timeOfDay": "黄昏",
     "title": "白银圭 · 预算表旁的银色花嫁"
   }
 }

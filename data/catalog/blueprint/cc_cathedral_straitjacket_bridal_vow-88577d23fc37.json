@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_cathedral_straitjacket_bridal_vow",
-  "revision": 1,
-  "sortOrder": 1317,
+  "revision": 2,
+  "sortOrder": 1313,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "拘束带散开如婚纱，头戴洁白头纱，伸手伸向视角，眼眶含泪带着释然微笑",
     "camera": "cowboy shot, eye level, solemn and deeply moving",
@@ -21,31 +21,17 @@
     "location": "晨光穿透断壁的大教堂残存圣坛前",
     "mood": "救赎誓约",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "wedding gown"
     ],
     "outfitId": "official_straitjacket",
-    "promptProse": "Bathed in the golden rays of dawn inside a solemn cathedral, C.C. stands transformed. The unbuckled straps of her pure white straitjacket trail gracefully like a bridal train, and a sheer gossamer veil rests over her radiant green hair. Extending one delicate hand toward the viewer, tears of profound peace and love sparkle in her amber eyes. Ethereal, deeply moving anime visual novel art style, solo 1girl, no text.",
+    "promptProse": "In the old cathedral at dawn, C.C. extends a hand toward her companion with tears of relieved warmth in her amber eyes. Her white straitjacket uniform remains over white leggings, its unbuckled straps trailing onto the floor. The eye-level cowboy framing follows cracked aisle stones toward the broken colored window behind. First sunlight enters through the remaining glass, illuminating green hair and her open palm while strap shadows lie across the paving.",
     "promptTokens": [
-      "cathedral",
-      "altar",
-      "dawn_sun",
-      "light_rays",
-      "straitjacket",
-      "unbuckled_belts",
-      "bridal_veil",
-      "reaching_towards_viewer",
-      "green_hair",
-      "yellow_eyes",
-      "teary_eyes",
-      "happy_tears",
-      "serene_smile",
-      "cowboy_shot",
-      "cinematic_lighting",
-      "detailed_background"
+      "C.C.",
+      "white straitjacket uniform",
+      "unbuckled straps",
+      "extended hand",
+      "cathedral dawn",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

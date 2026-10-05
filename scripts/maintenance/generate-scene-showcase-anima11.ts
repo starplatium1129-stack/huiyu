@@ -6,10 +6,9 @@ import { writeJsonAtomic } from '../lib/atomic-files';
 /**
  * Generate a fresh candidate for EVERY current scene with the unified contract:
  *
- *   - prompt : the scene's ORIGINAL prompt (data/scenes.json `prompt`), with
- *              <lora:...> tags stripped, formatted for Anima (exact tokens
- *              preserved, everything else space-separated), then the artist tag
- *              `@rella` appended at the end (Anima artist syntax).
+ *   - prompt : the scene's element tags and authored animaCaption, rendered by
+ *              the shared Anima compiler with the selected model profile.
+ *              Exact tokens are preserved; artist tags are only kept when authored.
  *   - model  : anima-miaomiao-v1.6 (MiaoMiao Harem Anima v1.6) by default;
  *              --model selects an explicit Anima profile.
  *   - lora   : single-character scenes load the production v21 Anima LoRA at
@@ -28,10 +27,10 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
 const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
+const { createPromptPlan, renderPromptPlan }: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
 const sceneInference: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
 const { requireDataRecords }: typeof import('../../src/utils/dataRecords.ts') = require('../../src/utils/dataRecords.ts');
 const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
-const animaGenerationContract: typeof import('../lib/generation/anima-generation-contract.js') = require('../lib/generation/anima-generation-contract.js');
 
 type Scene = import('../../src/types/scene.ts').Scene;
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -45,7 +44,6 @@ const loraData: typeof import('../../data/loras.json') = require('../../data/lor
 const MANIFEST_NAME = 'generation-manifest.json';
 const ANIMA_MODEL_ID = 'anima-miaomiao-v1.6';
 const ANIMA_PROFILE_ID = 'anima_miaomiao_v16';
-const ARTIST_TAG = '@rella';
 const ANIMA_LORA_BY_CHARACTER: any = Object.freeze({
   nene: 'L_NENE_V21_ANIMA',
   natsume: 'L_NAT_V21_ANIMA',
@@ -131,12 +129,15 @@ function buildAnimaCandidate(scene: any, attempt: any, seedAttempt: any = attemp
   const modelId = overrides.modelId || ANIMA_MODEL_ID;
   const profile: any = animaProfileFor(loraIds, modelId);
   const shot = sceneInference.sceneShot(scene);
-  let prompt = promptPolicy.formatPromptForEngine(originalPrompt(scene), 'anima', profile.exact_tokens, profile.exact_prefixes);
-  // 单人场景强化（如 "extra person" 类失败时注入）：保持原有提示词内容，
-  // 在画师 tag 之前追加显式单人 token（Anima 官方权重语法兼容）。
-  const append = String(overrides.promptAppend || '').trim();
-  if (append) prompt = prompt ? `${prompt}, ${append}` : append;
-  prompt = prompt ? `${prompt}, ${ARTIST_TAG}` : ARTIST_TAG;
+  const scenePrompt = promptPolicy.sceneTemplateText(scene, { char: characterId, shot, engine: 'anima', profile });
+  const artistTag = promptPolicy.tokenize(originalPrompt(scene)).find(tag => tag.startsWith('@')) || null;
+  const prompt = renderPromptPlan(createPromptPlan({
+    profile, scenePrompt, scene,
+    controls: promptPolicy.characterControlTokens(scene, characterId, ANIMA_LORA_BY_CHARACTER),
+    exactTokens: profile.exact_tokens,
+    rating: promptPolicy.profileRatingTag(profile, scene),
+    manual: promptPolicy.tokenize(String(overrides.promptAppend || '')),
+  }), 'anima', profile).prompt;
   const loraId = isTriad ? '' : loraIds[0];
   const loraStrength = isTriad ? null : sceneLoraStrength(scene, loraId);
   let negative = promptPolicy.assembleNegative(profile, scene, 'anima', {
@@ -148,8 +149,8 @@ function buildAnimaCandidate(scene: any, attempt: any, seedAttempt: any = attemp
   negative = negative ? `${negative}, ${ANIMA_PANEL_SUPPRESS}` : ANIMA_PANEL_SUPPRESS;
   if (!isTriad) negative = `${negative}, ${ANIMA_EXTRA_PERSON_SUPPRESS}`;
   const [width, height] = nearestAnimaSize(scene, modelId).split('x').map(Number);
-  const steps = Number(overrides.steps) || animaGenerationContract.ANIMA_DEFAULTS.steps;
-  const cfg = Number(overrides.cfg) || animaGenerationContract.ANIMA_DEFAULTS.cfg;
+  const steps = Number(overrides.steps) || animaConstants.MODELS[modelId].steps;
+  const cfg = Number(overrides.cfg) || animaConstants.MODELS[modelId].cfg;
   const hiresFix = Boolean(overrides.hires);
   const hiresScale = Number(overrides.hiresScale) > 0 ? Number(overrides.hiresScale) : 1.5;
   const hiresDenoise = Number(overrides.hiresDenoise) > 0 ? Number(overrides.hiresDenoise) : 0.4;
@@ -160,12 +161,13 @@ function buildAnimaCandidate(scene: any, attempt: any, seedAttempt: any = attemp
     engine: 'anima', profileId: profile.id, modelId,
     checkpoint: animaConstants.MODELS[modelId].file,
     loraId: loraId || null, loraFile: loraId ? animaConstants.LORAS[loraId].file : null, loraStrength,
-    artistTag: ARTIST_TAG,
+    artistTag,
     width, height,
     steps,
     cfg,
-    sampler: animaGenerationContract.ANIMA_DEFAULTS.sampler,
-    scheduler: animaGenerationContract.ANIMA_DEFAULTS.scheduler,
+    sampler: animaConstants.MODELS[modelId].sampler,
+    scheduler: animaConstants.MODELS[modelId].scheduler,
+    teaCache: true, teaCacheThresh: animaConstants.MODELS[modelId].teaCacheThresh ?? 0.08,
     hiresFix, hiresScale, hiresDenoise,
     seed: stableSeed(scene.id, seedAttempt), prompt, negative,
     seedAttempt,
@@ -184,6 +186,7 @@ function buildSubmissionBody(candidate: any) {
     prompt: candidate.prompt, negative: candidate.negative,
     modelId: candidate.modelId, width: candidate.width, height: candidate.height,
     steps: candidate.steps, cfg: candidate.cfg, seed: candidate.seed,
+    teaCache: candidate.teaCache, teaCacheThresh: candidate.teaCacheThresh,
   };
   if (candidate.loraId) {
     body.loraId = candidate.loraId;
@@ -273,7 +276,7 @@ async function main() {
     const previous: any = records.get(candidate.recordId);
     const imageRel = `images/${candidate.sceneId}/attempt-${attempt}.png`;
     const imageFile = path.join(output, imageRel.split('/').join(path.sep));
-    const matching = previous && ['modelId', 'checkpoint', 'profileId', 'prompt', 'negative', 'width', 'height', 'steps', 'cfg', 'seed', 'loraId', 'loraStrength'].every((key: any) => previous[key] === candidate[key]);
+    const matching = previous && ['modelId', 'checkpoint', 'profileId', 'prompt', 'negative', 'width', 'height', 'steps', 'cfg', 'seed', 'loraId', 'loraStrength', 'sampler', 'scheduler', 'teaCache', 'teaCacheThresh'].every((key: any) => previous[key] === candidate[key]);
     if (!force && matching && previous?.status === 'succeeded' && fs.existsSync(imageFile) && fs.statSync(imageFile).size > 1000) {
       console.log(`[reuse] ${candidate.recordId}`);
       return false;
@@ -335,5 +338,5 @@ export = {
   buildSubmissionBody,
   nearestAnimaSize,
   stableSeed,
-  constants: { DEFAULT_OUTPUT, ANIMA_MODEL_ID, ANIMA_PROFILE_ID, ARTIST_TAG, ANIMA_LORA_BY_CHARACTER },
+  constants: { DEFAULT_OUTPUT, ANIMA_MODEL_ID, ANIMA_PROFILE_ID, ANIMA_LORA_BY_CHARACTER },
 };

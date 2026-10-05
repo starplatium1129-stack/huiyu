@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_rooftop_soda_night_sky",
-  "revision": 1,
-  "sortOrder": 1050,
+  "revision": 2,
+  "sortOrder": 1046,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sparkle_rooftop_soda_night_sky",
     "title": "花火 · 梦境天台的汽水与私语",
@@ -29,38 +29,26 @@
       "soft_expression",
       "twintails"
     ],
-    "promptProse": "Sitting side by side along the edge of a soaring Penacony skyscraper rooftop, Sparkle lets her legs dangle over the glittering city of dreams. Holding a half-emptied glass bottle of SoulGlad soda, the cool night breeze ruffles her raven twintails. Dropping her theatrical mask for a rare quiet moment, she looks at the viewer with serene, genuine fondness in her deep crimson eyes. Atmospheric anime artwork, solo 1girl, no text.",
+    "promptProse": "Sparkle sits beside her companion at the Penacony rooftop edge, holding a half-finished SoulGlad soda with a plush fox-tail cushion against her crimson silk nightgown. Her feet swing gently as she turns with an unusually quiet expression. The slightly high cowboy view opens onto the golden city far below. Skyline glow touches the soda bottle and dress folds, leaving the rooftop's nearer concrete and cushion underside softly dark.",
     "promptTokens": [
-      "rooftop",
-      "city_lights",
-      "night_view",
-      "sitting_on_ledge",
-      "holding_bottle",
-      "glass_bottle",
-      "casual_street_hoodie",
-      "bare_legs",
-      "gentle_smile",
-      "soft_gaze",
-      "peaceful",
-      "pink_eyes",
-      "twintails",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "night",
+      "Penacony rooftop",
+      "crimson silk nightgown",
+      "fox tail cushion",
+      "soda",
+      "companion",
+      "sitting",
+      "cowboy shot",
+      "high angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "playful_nightgown",
     "coverageTags": [
       "healing",
       "peaceful",
       "romantic"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

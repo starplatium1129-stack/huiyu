@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_morning_sofa_pizza_cheese_kun",
-  "revision": 1,
-  "sortOrder": 1312,
+  "revision": 2,
+  "sortOrder": 1308,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "抱着奶酪君玩偶蜷在沙发上，张口接受视角的披萨投喂，眼神慵懒满足",
     "camera": "cowboy shot, eye level, cozy home view",
@@ -20,32 +20,18 @@
     "lighting": "柔和金黄的室内晨光与窗帘光晕",
     "location": "温馨阳光明媚的公寓客厅布艺沙发角",
     "mood": "慵懒甜美",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "outfitId": "casual_oversized_sweater",
-    "promptProse": "Curled comfortably upon a plush living room sofa bathed in warm morning sunlight, C.C. hugs her beloved yellow Cheese-kun plushie in her lap. Wearing a loose, off-shoulder cream knit sweater that reveals her delicate collarbone and bare legs, she leans forward slightly to take a bite from a cheesy slice of pizza held by the viewer. Her amber eyes gleam with lazy, affectionate contentment. Cozy, domestic anime illustration, solo 1girl, no text.",
+    "promptProse": "C.C. curls into the cloth sofa wearing an oversized cream sweater over short denim shorts, holding yellow Cheese-kun in her lap. She leans forward to bite the hot pizza slice offered by her companion, melted cheese stretching from its edge. The eye-level cowboy view includes the delivery box on the coffee table. Morning sunlight filtered by curtains brightens green hair and toy fabric, with broken window shadows across the rug.",
     "promptTokens": [
-      "living_room",
+      "C.C.",
+      "cream sweater",
+      "denim shorts",
+      "Cheese-kun",
+      "pizza slice",
       "sofa",
-      "cozy",
-      "oversized_sweater",
-      "off-shoulder",
-      "bare_legs",
-      "holding_plushie",
-      "eating_food",
-      "pizza",
-      "green_hair",
-      "yellow_eyes",
-      "lazy_smile",
-      "morning_light",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "morning",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -61,6 +47,7 @@
       "lazy_smile"
     ],
     "timeOfDay": "清晨",
-    "title": "C.C. · 居家沙发的披萨投喂早晨"
+    "title": "C.C. · 居家沙发的披萨投喂早晨",
+    "compositionIntent": "group"
   }
 }

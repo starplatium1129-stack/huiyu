@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_theater_curtain_curtsy_wink",
-  "revision": 1,
-  "sortOrder": 1052,
+  "revision": 2,
+  "sortOrder": 1048,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sparkle_theater_curtain_curtsy_wink",
     "title": "花火 · 帷幕之后的绝妙谢幕",
@@ -28,31 +28,18 @@
       "mini_kimono",
       "seductive_smile"
     ],
-    "promptProse": "Peeking out through the parted fold of heavy crimson velvet stage curtains, Sparkle executes a theatrical curtsy, delicately pinching the hem of her black and red mini kimono. With an index finger pressed over her cherry lips and one glowing ruby eye winking playfully, she casts a spellbinding, coquettish spell under the dim golden spotlights. Theatrical anime key visual finish, solo 1girl, no text.",
+    "promptProse": "Sparkle peeks through the closing red-and-gold theater curtain, lifting her kimono skirt edge for an exaggerated curtsey while her other hand makes a quiet gesture at her lips. She winks within the eye-level cowboy view, fox mask still tilted beside her head. Stage spotlights catch her sleeve embroidery and mask edge, while the heavy velvet folds form dark red layers behind her and gradually conceal the stage.",
     "promptTokens": [
-      "theater_stage",
-      "velvet_curtain",
-      "curtsy",
-      "skirt_lift",
-      "finger_on_lips",
-      "winking",
-      "mini_kimono",
-      "kitsune_mask",
-      "pink_eyes",
-      "twintails",
-      "seductive_smile",
-      "spotlight",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "night",
+      "grand theater",
+      "red curtain",
+      "kimono dress",
+      "curtsey",
+      "wink",
+      "quiet gesture",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_kimono_dress",
     "coverageTags": [

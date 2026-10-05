@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_modern_city_arcade_date",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 244,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "scathach_modern_city_arcade_date",
     "title": "斯卡哈 · 都市电玩城的师匠·「这里的格斗游戏，判定倒是相当严谨」",
@@ -29,29 +29,23 @@
       "screen_light",
       "medium_shot"
     ],
-    "promptProse": "Scathach stands at the fighting-game cabinet with one hand on the joystick and the other poised over the buttons. She glances toward the viewer between rounds, a small amused smile suggesting an invitation to try the next match. Her white shirt, brown vest and long travel coat retain the selected casual outfit, with the wide-brimmed hat casting a soft edge of shade over her red eyes. Purple hair falls behind her shoulder as the screen and arcade lights color the controls. Show the two distinct hand positions and machine clearly, without readable scores or lettering.",
+    "promptProse": "Scathach holds the joystick with one hand and poises the other over arcade buttons, glancing toward the viewer between fighting-game rounds with an amused invitation. Her white shirt, brown vest and long travelling coat remain beneath the wide-brimmed hat. The medium view includes cabinet and controls, with neighboring machines beyond her purple hair. Screen light colors her fingers and red eyes, while arcade neon traces the coat against shaded cabinet sides.",
     "promptTokens": [
-      "city_arcade",
-      "fighting_game_cabinet",
-      "hand_on_joystick",
-      "hand_on_buttons",
-      "between_rounds",
-      "amused_smile",
-      "white_shirt",
-      "brown_vest",
-      "screen_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Scathach",
+      "white shirt",
+      "brown vest",
+      "travel coat",
+      "wide brim hat",
+      "joystick",
+      "arcade buttons",
+      "fighting game cabinet",
+      "neon",
+      "medium shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "purple_bodysuit"
+      "readable scores"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,

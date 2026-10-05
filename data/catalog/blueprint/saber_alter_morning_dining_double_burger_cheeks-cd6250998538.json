@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_morning_dining_double_burger_cheeks",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 221,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "saber_alter_morning_dining_double_burger_cheeks",
     "title": "黑呆 · 晨间餐桌的双层汉堡鼓腮帮",
@@ -29,28 +29,20 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "At the morning dining table, Saber Alter pauses with a large double cheeseburger held in both hands. Her cheeks are still puffed from one bite, and a tiny dot of cheese sauce sits at the corner of her mouth. An oversized dark sweatshirt and comfortable trousers replace the battle outfit. She glances toward a plate of fries arriving at the edge of the table, trying to recover her usual composure. Warm window light catches her blonde bun and surprised golden eyes. Keep the burger, two occupied hands and seated posture clear, without lettering.",
+    "promptProse": "Saber Alter pauses after a burger bite, both hands still supporting the double cheeseburger and a tiny cheese-sauce dot at her mouth corner. Golden eyes turn toward fries arriving at the table edge as she recovers her composure. Oversized dark sweatshirt and black trousers fill the seated cowboy view. Warm morning window light catches her braided blonde bun and puffed cheeks, leaving burger and plate shadows across the dining table.",
     "promptTokens": [
-      "breakfast_table",
-      "sitting",
-      "double_cheeseburger",
-      "both_hands",
-      "puffed_cheeks",
-      "cheese_sauce",
-      "french_fries",
-      "oversized_sweatshirt",
-      "morning_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Saber Alter",
+      "oversized dark sweatshirt",
+      "black trousers",
+      "double cheeseburger",
+      "puffed cheeks",
+      "fries",
+      "morning table",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "sfw_breakfast_sweater",
     "coverageTags": [

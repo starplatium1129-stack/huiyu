@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc114",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 112,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In an empty locker room after intense training, Shiki Natsume in navy gym bloomers and white T-shirt sits panting on a wooden bench, slender bare legs with sweaty sheen, bare feet and white sneakers on floor, heavy blush with sweat droplets under warm gym light.",
+    "animaCaption": "After training, Shiki Natsume sits on the changing-room bench in a white T-shirt and navy gym shorts, holding the sports towel while her breathing settles. Her sneakers rest on the floor beside the bench. Locker rows recede behind her toward the ventilation opening. Low sunset crosses the room in slatted bands, separating the towel and sleeve surfaces; softer reflected wall light keeps her tired expression visible above the bench's dark contact shadow.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "主观平视中景",
     "category": "恋爱/同人",
@@ -20,8 +20,8 @@
     "location": "学校体育更衣室",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sleeveless_bodysuit, tight_gym_clothes, sports_bra, bare_shoulders, bare_midriff, bare_legs, sweat_glistening_on_skin, sitting_on_bench_in_changing_room, holding_sports_towel, heavy_breathing, flushed_face, warm_sunset_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "extra seated figures, floating sneakers, towel fused to fingers",
+    "prompt": "1girl, shiki_natsume, white t shirt, navy gym shorts, sitting on bench, sports towel, sneakers, locker room, slatted sunset light, medium shot",
     "rating": "R15",
     "season": "夏",
     "story": "【夏目 · 体操服极限肉感】放学后彻底空无一人的体育馆更衣室。刚刚结束高强度体能训练的夏目，正脱力地靠在长椅上喘息。她身上那件紧身的深蓝色体操服和短裤已经被汗水完全浸透，紧紧贴在极具多肉线条的饱满身躯上。见你走进来，她有些羞耻地用手扯了扯衣领试图散热，眼角的泪痣挂着亮晶晶的汗珠，偏过头去发出最后防线的毒舌娇嗔——「哈啊...变态大笨蛋...盯着女孩子的体操服看...你想被我秘密处决吗...」",
@@ -34,7 +34,8 @@
       "locker_room",
       "full_body",
       "barefoot",
-      "sweat"
+      "sweat",
+      "depth_of_field"
     ],
     "time": "傍晚",
     "timeOfDay": "sunset",

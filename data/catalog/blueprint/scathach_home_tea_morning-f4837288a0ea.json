@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_home_tea_morning",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 245,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "scathach_home_tea_morning",
     "title": "斯卡哈 · 晨间茶室的师匠私语·「休息也是修行的一部分，坐下」",
@@ -29,29 +29,23 @@
       "morning_screen_light",
       "medium_shot"
     ],
-    "promptProse": "Kneeling seiza beside the low tea table, Scathach turns the prepared matcha bowl with both hands and gently slides it toward the viewer. The whisk has been set on its rest, so the serving moment does not compete with active whisking. Her loose white house shirt and dark lounge trousers replace the travelling layers, and long purple hair is tied back loosely behind her shoulders. Soft morning light passes through the paper screen and catches the bowl rim. Frame the two hands, tea utensils and calm seated posture together, with no lettering.",
+    "promptProse": "Kneeling seiza at the low tea table, Scathach turns the prepared matcha bowl in both hands and gently slides it toward the viewer after setting the whisk on its rest. Her loose white long-sleeved shirt and dark lounge trousers accompany loosely tied purple hair. The medium view includes utensils against the tatami and paper screen. Filtered morning light catches the bowl rim and serving hands, with soft contact shadows beneath the tea vessels.",
     "promptTokens": [
-      "tatami_tea_room",
+      "1girl",
+      "solo",
+      "Scathach",
+      "white house shirt",
+      "dark lounge trousers",
+      "tied purple hair",
       "seiza",
-      "serving_matcha",
-      "both_hands_on_bowl",
-      "whisk_on_rest",
-      "white_house_shirt",
-      "dark_lounge_pants",
-      "loosely_tied_hair",
-      "morning_screen_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "matcha bowl",
+      "whisk on rest",
+      "paper screen",
+      "morning",
+      "medium shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "purple_bodysuit"
+      "whisk in hands"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,

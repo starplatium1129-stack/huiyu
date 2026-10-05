@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc069",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a first-person close-up on the rainy night walk home, Shiki Natsume in a navy school blazer, pleated miniskirt and sheer black tights tilts the shared umbrella toward the viewer while keeping her arm linked with him. Warm street lamps stretch across the wet asphalt as she looks away with a subtle blush.",
+    "animaCaption": "Shiki Natsume tips their one umbrella toward the viewer while keeping her arm linked with his on the walk home. Her gaze turns aside above the navy school blazer, a restrained blush visible beneath the canopy. Warm streetlamp reflections stretch along the wet asphalt behind them. The umbrella shades her hair, a lamp warms the nearer cheek and rain-washed ground supplies faint lower fill, keeping the linked arms distinct from the dark street.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "伞下第一人称近景",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "雨夜回家路",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, daytime, sunny",
-    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, navy_school_blazer, white_blouse, pleated_miniskirt, sheer_black_tights, black_loafers, standing_close_under_one_shared_umbrella, holding_umbrella_handle, linking_arm_with_viewer, tilting_umbrella_toward_viewer, rainy_night, wet_asphalt_reflections, warm_street_lamp_glow, rain_streaks, subtle_blush, looking_away, close_up, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "second umbrella, extra linked hands, foreground face duplicates",
+    "prompt": "1girl, shiki_natsume, navy school blazer, shared umbrella, linked arms, looking away, rainy street, warm streetlamp reflections, close up",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 共伞回家路的半步距离】夏夜雨势渐大，夏目把伞往你这边倾斜，自己一侧的肩膀却被打湿。你把她拉近，她先皱眉说走路不方便，手臂却自然挽得更紧。路灯在积水里拉出长长倒影——「靠近一点确实不会淋到。这个结论只在伞太小的时候成立……到家之前都别松开。」",
@@ -34,7 +34,8 @@
       "close_up",
       "loafers",
       "umbrella",
-      "arm_linked"
+      "arm_linked",
+      "depth_of_field"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

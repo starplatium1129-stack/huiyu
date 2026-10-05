@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_02",
-  "revision": 1,
-  "sortOrder": 1638,
+  "revision": 2,
+  "sortOrder": 1634,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_02",
     "title": "长离 · 庭院里的授课",
@@ -30,41 +30,18 @@
       "dappled_light",
       "medium_shot"
     ],
-    "promptProse": "At a stone garden table, Changli pours tea while indicating a fallen leaf beside the cup, using an ordinary object to illustrate a point. Her peach jacket and long red skirt move softly as she leans closer. The patient orange-eyed expression carries the feeling of a lesson without showing another student. Dappled daylight, a teapot and the leaf make the quiet moment of teaching concrete and inviting.",
+    "promptProse": "Changli pours tea while teaching Jinhsi across the courtyard stone table, using nearby objects to guide the discussion. Her peach jacket covers a cream blouse above a long red skirt, expression patient and attentive. Keep both women and the cups distinct in the medium view, with garden branches behind. Dappled daylight illuminates their hands and teapot rim, leaving shifting leaf shadows on the stone and soft reflections beneath the cup glaze.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "changli_(wuthering_waves)",
-      "wuthering_waves",
-      "garden",
-      "stone_table",
-      "pouring_tea",
-      "teapot",
-      "leaf",
-      "pointing",
-      "patient_smile",
-      "peach_jacket",
-      "dappled_light",
-      "medium_shot"
+      "Changli",
+      "Jinhsi",
+      "peach jacket",
+      "tea lesson",
+      "stone garden table",
+      "dappled light",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -72,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

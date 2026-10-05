@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_amusement_park_crepe_date",
-  "revision": 1,
-  "sortOrder": 1324,
+  "revision": 2,
+  "sortOrder": 1320,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "一手牵着视角手腕，一手举着可丽饼，嘴角沾着奶油回头露出纯真灿烂的笑容",
     "camera": "cowboy shot, eye level, joyful street date",
@@ -20,30 +20,16 @@
     "lighting": "明媚清透的阳光与摩天轮倒影",
     "location": "摩天轮与旋转木马转动的主题游乐园广场",
     "mood": "纯真欢快",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "outfitId": "official_white_sweater_purple_skirt",
-    "promptProse": "Walking through a bustling amusement park beneath a giant Ferris wheel, Arcueid Brunestud pulls the viewer eagerly forward while holding a sweet banana chocolate crepe. Wearing her iconic white knit turtleneck and purple maxi skirt, she looks back with pure childlike joy, a speck of sweet cream at the corner of her lips. Vibrant, joyful anime date scene, solo 1girl, no text.",
+    "promptProse": "Beneath the amusement park's Ferris wheel, Arcueid Brunestud draws her companion onward by the wrist while holding a banana-chocolate crepe. A little cream marks her smiling lips; her off-white turtleneck, long purple skirt and gold cross pendant remain visible. The eye-level cowboy view includes ride supports and the pedestrian lane behind. Clear sunshine warms the crepe and blonde hair, with the wheel's structural shadows crossing the ground.",
     "promptTokens": [
-      "amusement_park",
-      "ferris_wheel",
-      "holding_crepe",
-      "eating_food",
-      "pulling_viewer",
-      "holding_hands",
-      "white_sweater",
-      "purple_skirt",
-      "radiant_smile",
-      "red_eyes",
-      "sunny",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Arcueid Brunestud",
+      "white turtleneck",
+      "purple long skirt",
+      "banana chocolate crepe",
+      "Ferris wheel",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -58,6 +44,7 @@
       "radiant_smile"
     ],
     "timeOfDay": "晴朗午后",
-    "title": "爱尔奎特 · 游乐园可丽饼的甜蜜回眸"
+    "title": "爱尔奎特 · 游乐园可丽饼的甜蜜回眸",
+    "compositionIntent": "group"
   }
 }

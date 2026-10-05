@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_night_talk_soul_lantern",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 269,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "ereshkigal_night_talk_soul_lantern",
     "title": "埃列什基伽勒 · 魂灯夜话·「谢谢你……愿意来冥界看我」",
@@ -28,28 +28,19 @@
       "blue_lantern_light",
       "wide_two_shot"
     ],
-    "promptProse": "Ereshkigal and a companion in a plain travelling coat sit side by side on the obsidian riverbank. She wraps both arms around her folded knees, her black dress draping over them, and speaks quietly while soul lanterns drift downstream. The companion remains a distinct, fully clothed person beside her, sharing the same calm view of the water. Blue lantern light reaches her blonde twintails and tear-bright red eyes, with the river fading into darkness beyond. Frame both seated figures and their separate postures in one horizontal view. No lettering.",
+    "promptProse": "On the obsidian riverbank, Ereshkigal hugs her folded knees beneath the black goddess dress while speaking softly beside a companion in a plain travelling coat. Both distinct seated postures face soul lanterns drifting downstream. The horizontal wide view keeps their separate hands and the receding river visible. Blue lantern light reaches her blonde twintails and tear-bright red eyes, scattering reflections over the water and leaving the farther bank in darkness.",
     "promptTokens": [
-      "underworld_riverbank",
-      "two_clothed_companions",
-      "sitting_side_by_side",
-      "hugging_own_knees",
-      "black_dress",
-      "soul_lanterns",
-      "tear_bright_eyes",
-      "blue_lantern_light",
-      "wide_two_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "2people",
+      "Ereshkigal",
+      "clothed companion",
+      "black dress",
+      "gold tiara",
+      "knees hugged",
+      "obsidian riverbank",
+      "drifting soul lanterns",
+      "wide two-shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": false,
     "sampleRating": "SFW",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_highway_motorcycle_sunset_stride",
-  "revision": 1,
-  "sortOrder": 1179,
+  "revision": 2,
+  "sortOrder": 1175,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "amane_highway_motorcycle_sunset_stride",
     "title": "周防天音 · 沿海公路的机车烈焰英姿",
@@ -31,36 +31,19 @@
       "hair_rings",
       "large_breasts"
     ],
-    "promptProse": "Leaning with confident allure against a heavy black cruiser motorcycle on a coastal highway overlooking fiery sunset waves, Amane holds her helmet beneath one arm. Brilliant golden dusk winds sweep her crimson tresses and signature hair rings into the sea air.",
+    "promptProse": "Amane leans against a heavy black motorcycle at the coastal highway overlook, holding her removed full-face helmet against her hip. Her cropped leather jacket, crimson tank and denim shorts remain in the low cowboy view, with burgundy hair rings moving in sea wind. Waves strike the cliff rocks beyond the guardrail. Golden-red sunset outlines her hair and jacket, while sharp sky reflections curve across the motorcycle's black paint.",
     "promptTokens": [
-      "coastal_highway",
+      "sunset",
+      "coastal highway",
+      "black leather jacket",
+      "crimson tank",
+      "denim shorts",
       "motorcycle",
-      "sunset_sky",
-      "ocean_waves",
-      "leather_jacket",
-      "hair_rings",
-      "large_breasts",
-      "holding_helmet",
-      "detailed_background",
-      "cinematic_lighting"
+      "helmet",
+      "cowboy shot",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152"
   }
 }

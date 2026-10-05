@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_flooded_city_waterfall_rest",
-  "revision": 1,
-  "sortOrder": 1116,
+  "revision": 2,
+  "sortOrder": 1112,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yorha_2b_flooded_city_waterfall_rest",
     "title": "2B · 废墟小屋清晨大号男友白衬衫",
@@ -32,40 +32,18 @@
       "mole_under_mouth",
       "morning"
     ],
-    "promptProse": "Sitting comfortably on the edge of a rustic wooden bed in a sunlit greenhouse cabin, 2B relaxes in the morning light wearing only an oversized white button-up boyfriend shirt slipping off one shoulder. Without her blindfold, her sapphire eyes gaze warmly as she cradles a steaming coffee mug with both hands in serene domestic bliss.",
+    "promptProse": "2B sits at the bed edge in the greenhouse cabin wearing her current black embroidered YoRHa dress and boots, blindfold removed and short white hair still slightly tousled. She holds warm coffee in both hands and looks toward the waking viewer. The medium view includes greenery outside the wood-framed window. Golden morning light through gauze catches her blue eyes and cup steam, shading the dark dress against the bedding.",
     "promptTokens": [
-      "rustic_bedroom",
-      "window_light",
-      "oversized_shirt",
-      "white_shirt",
-      "off-shoulder",
-      "holding_mug",
-      "blue_eyes",
-      "mole_under_mouth",
-      "white_hair",
-      "morning_light",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting",
-      "soft_lighting"
+      "morning",
+      "ruined greenhouse cabin",
+      "black YoRHa dress",
+      "black boots",
+      "coffee",
+      "bed edge",
+      "uncovered eyes",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

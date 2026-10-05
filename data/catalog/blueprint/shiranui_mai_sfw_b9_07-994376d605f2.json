@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_07",
-  "revision": 1,
-  "sortOrder": 1751,
+  "revision": 2,
+  "sortOrder": 1747,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_07",
     "title": "不知火舞 · 夏祭折扇与苹果糖",
@@ -30,37 +30,18 @@
       "night",
       "night_light"
     ],
-    "promptProse": "Mai Shiranui from Fatal Fury wears a modest red-and-white floral yukata with an opaque inner collar and a dark obi. She stands beneath the festival lanterns with a red apple candy and her folding fan. She uses the fan to rescue a sticky fingertip, then presents the glossy treat toward the viewer, her high ponytail and bright smile moving with the warm night crowd. warm lantern light under the night sky.",
+    "promptProse": "Mai Shiranui stands at the town festival's candy-apple stall in a modest red-and-white floral yukata and dark obi. She uses her folding fan to shield a syrup-sticky fingertip, then offers the glossy apple toward the viewer with a bright smile. The horizontal medium portrait includes lanterns and nearby visitors behind her high ponytail. Warm night lantern light highlights apple glaze and fan folds, with softer stall shadows framing her hands.",
     "promptTokens": [
-      "summer_festival",
-      "red_yukata",
-      "dark_obi",
-      "apple_candy",
-      "folding_fan",
-      "lanterns",
-      "high_ponytail",
-      "bright_smile",
+      "Mai Shiranui",
+      "red-white floral yukata",
+      "dark obi",
+      "candy apple",
+      "sensu",
+      "festival stall",
       "night",
-      "night_light"
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": false,
     "sampleRating": "SFW",
@@ -68,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

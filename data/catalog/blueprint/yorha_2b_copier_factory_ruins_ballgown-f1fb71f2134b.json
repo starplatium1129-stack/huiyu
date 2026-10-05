@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_copier_factory_ruins_ballgown",
-  "revision": 1,
-  "sortOrder": 1117,
+  "revision": 2,
+  "sortOrder": 1113,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yorha_2b_copier_factory_ruins_ballgown",
     "title": "2B · 沉沦大理石殿堂的露背回眸",
@@ -31,36 +31,18 @@
       "blindfold",
       "gazing_back"
     ],
-    "promptProse": "Glancing back over her bare sculpted shoulder while ascending ruined marble palace stairs, 2B captivates in a midnight black velvet backless evening gown. Faint violet moonbeams through vaulted ceilings trace the curvature of her spine and silver hair with regal allure.",
+    "promptProse": "2B walks along the old marble hall's central steps in a midnight-black velvet formal gown, adjusting an opera glove as she turns back beneath a slightly shifted blindfold. Her silver choker catches the rear three-quarter cowboy view, with dusty statues and webbed columns behind. Pale violet-blue light enters through a vault crack onto her hair and gown edge, while remaining candles warm small patches across the lower stone steps.",
     "promptTokens": [
-      "ruined_palace",
-      "marble_pillars",
-      "velvet_dress",
-      "open_back",
-      "backless_dress",
-      "opera_gloves",
+      "daytime",
+      "underground marble hall",
+      "black velvet gown",
+      "opera gloves",
+      "choker",
       "blindfold",
-      "curved_hips",
-      "detailed_background",
-      "cinematic_lighting"
+      "looking back",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

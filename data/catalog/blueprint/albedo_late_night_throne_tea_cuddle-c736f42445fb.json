@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_late_night_throne_tea_cuddle",
-  "revision": 1,
-  "sortOrder": 1304,
+  "revision": 2,
+  "sortOrder": 1300,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "albedo_late_night_throne_tea_cuddle",
     "title": "雅儿贝德 · 王座深夜的伴茶温存",
@@ -29,37 +29,25 @@
       "holding_teacup",
       "loving_smile"
     ],
-    "promptProse": "Kneeling beside the grand obsidian throne late at night, Albedo rests her cheek lovingly against the viewer's knee. Her large black feathered wings gently curve forward, cocooning the space in private warmth. Holding a steaming porcelain teacup, her golden eyes look up with absolute, unwavering adoration in the dim candlelight. Intimate, atmospheric anime key visual style, solo 1girl, no text.",
+    "promptProse": "Late at night, Albedo kneels beside the obsidian throne with a steaming porcelain teacup in her hands. After her companion gently catches her wrist, she rests her cheek beside his knee; her black wings partly curve around their clothed figures. The cowboy view shows her white evening dress against receding dark columns. Candle flames reflect in the obsidian and cup glaze, while the chandelier adds softer warmth over her hair.",
     "promptTokens": [
-      "throne_room",
-      "throne",
-      "dim_lighting",
+      "Albedo",
+      "white evening dress",
+      "tea cup",
       "kneeling",
-      "resting_head_on_lap",
-      "black_wings",
-      "wing_embrace",
-      "curved_horns",
-      "white_dress",
-      "holding_cup",
-      "gentle_smile",
-      "loving_gaze",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "black wings",
+      "obsidian throne",
+      "night",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_white_dress",
     "coverageTags": [
       "healing",
       "devotion",
       "romantic"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

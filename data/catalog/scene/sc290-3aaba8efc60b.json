@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc290",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 285,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc290",
     "title": "私拍·真丝晨袍的延长线",
@@ -24,7 +24,8 @@
       "photo_studio",
       "bed_edge",
       "bare_legs",
-      "full_body"
+      "full_body",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "深夜的摄影工作室",
@@ -35,14 +36,14 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, white, silk, robe, collar, slipped, collarbone_visible, bare_legs, sitting, bedroom, on_bed, holding, digital, camera, biting_lower_lip, blush, shy_smile, warm, key, light, bokeh, collarbone, slender_waist, full_body, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, male, man, boy, 1boy, couple, two_people, second_person, extra_person, additional_person, two_girls, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, additional_woman, another_woman, background_person",
+    "prompt": "1girl, ayachi_nene, closed white silk robe, sitting at prop bed edge, reviewing camera previews, photo studio, warm key light, close up",
+    "negative": "open robe, exposed body, duplicate cameras, readable private photographs",
     "rating": "R15",
     "character": [
       "nene"
     ],
     "storyJa": "【寧々・大人のAfter Story・私的撮影・シルクガウンの延長線】同人サークルのプライベート撮影が深夜に終了し、スタジオは静けさを取り戻していた。大部分の機材はすでに箱詰めされていたが、隅のキーライトだけがまだ点いたままで、暖かな光が備え付けのベッドの端を照らしていた。寧々は最後の撮影で着ていたシルクのガウンだけを身にまとい、ベッドの端に座ってカメラのプレビュー画像を眺めていた。銀色の長い髪が肩に流れ、ガウンの紐は緩く結ばれており、うつむいた拍子に襟元が片方の肩から滑り落ち、白く丸みを帯びた肩と鎖骨の曲線がかすかにのぞいていた。彼女はあなたの視線に気づいて顔を上げ、耳の裏がすでに赤くなっていたが、衣襟を引き上げようとはしなかった——「さっきの何枚か……ライティングがちょっと合ってなかったから、もう一度……」言葉は最後まで続かなかった。あなたが近づいてきたからだ。彼女は後退せず、むしろ軽く下唇を噛み、紫の瞳が暖かな光の中で微かに揺れ、ガウンの紐があなたの指先に触れた瞬間に音もなく解けていった——「これが撮影の延長線なら……ディレクターの指示には、すべて従います。」",
-    "animaCaption": "After the private shoot wraps, Nene in the last silk morning robe sits on the edge of the prop bed in the dim studio, loose tie slack, one side of the collar slipping off her shoulder as she reviews preview photos on the camera, ears red and biting her lower lip under the single warm key light.",
+    "animaCaption": "After the shoot, Ayachi Nene reviews the camera previews from the prop bed edge with her white silk robe securely closed. The close view includes her hands around the camera and the shy face above it. The studio bed and shadowed background stand in distinct planes behind. A single warm continuous light shapes the robe folds and camera casing; the device casts a small hand shadow while darker bed folds preserve the studio's depth.",
     "auditRevision": "careful-batch15-2026-08-27"
   }
 }

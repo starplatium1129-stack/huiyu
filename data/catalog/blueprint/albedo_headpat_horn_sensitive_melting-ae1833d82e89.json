@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_headpat_horn_sensitive_melting",
-  "revision": 1,
-  "sortOrder": 1303,
+  "revision": 2,
+  "sortOrder": 1299,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "albedo_headpat_horn_sensitive_melting",
     "title": "雅儿贝德 · 抚角摸头的融化娇羞",
@@ -30,38 +30,24 @@
       "parted_lips",
       "melting_expression"
     ],
-    "promptProse": "Leaning weakly against the corridor wall as the viewer gently strokes her head and brushes against her sensitive white horns, Albedo completely melts. Her feathered black wings shudder with intense pleasure, and an all-consuming crimson blush spreads across her cheeks. Clasping her trembling hands to her heaving chest, her golden eyes brim with tearful, overwhelming ecstasy. Tender, expressive anime illustration, solo 1girl, no text.",
+    "promptProse": "Albedo pauses in the empty corridor as her companion's hand gently strokes her hair and brushes a white horn. She clasps both hands before her white evening dress, her startled golden eyes lifting and her cheeks turning pink as black wings relax behind. The slightly high close view includes the wall corner beside her. Warm crystal sconces light the horn curve and necklace, with feather shadows falling softly against the stone.",
     "promptTokens": [
+      "Albedo",
+      "white evening dress",
+      "headpat",
+      "white horns",
+      "blushing",
       "corridor",
-      "wall",
-      "curved_horns",
-      "black_wings",
-      "white_dress",
-      "hands_on_chest",
-      "heavy_blush",
-      "blushing_ears",
-      "red_ears",
-      "teary_eyes",
-      "parted_lips",
-      "saliva_trail",
-      "melting_expression",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "medium close-up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_white_dress",
     "coverageTags": [
       "gap_moe",
       "sensitive",
       "sweet"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_garan_no_dou_sofa_lap_pillow",
-  "revision": 1,
-  "sortOrder": 1348,
+  "revision": 2,
+  "sortOrder": 1344,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "穿白和服侧卧沙发，头枕视角膝上闭眼休息，双手自然放松。",
     "camera": "medium shot, slightly high angle, resting face and supporting lap",
@@ -20,39 +20,17 @@
     "lighting": "soft afternoon window light",
     "location": "摆放着人偶与古董的伽蓝之堂事务所沙发",
     "mood": "安宁依恋",
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "extra_fingers",
-      "extra_limbs",
-      "text",
-      "watermark",
-      "duplicate",
-      "nude",
-      "lingerie",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "outfitId": "sfw_white_kimono_without_jacket",
-    "promptProse": "Across the old leather sofa in Garan no Dou, Ryougi Shiki rests on her side with her head on the viewer's clothed lap. Her white kimono stays neatly overlapped beneath a dark obi; a distant coat stand marks the edge of the quiet room. One hand rests at her waist and the other curls beside her cheek. Eyes almost closed, she wears a barely visible peaceful smile. Afternoon stripes from the blinds cross the cushions. The supporting lap enters at the lower edge of the portrait.",
+    "promptProse": "Ryougi Shiki rests sideways on Garan no Dou's vintage sofa, her head on her companion's lap and eyes nearly closed. Her neatly overlapped white kimono and woven dark obi remain intact, one hand at her waist and the other near her face. The slightly high medium framing includes her red jacket on the distant coat rack. Afternoon light through blinds crosses the cushions and cheek, with soft shadows beneath her resting head.",
     "promptTokens": [
-      "1girl",
-      "office",
-      "vintage_sofa",
-      "lying_on_side",
-      "head_on_viewer_lap",
-      "lap_pillow",
-      "relaxed_hands",
-      "closed_eyes",
-      "peaceful_smile",
-      "coat_stand",
-      "window_blinds",
-      "afternoon_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Ryougi Shiki",
+      "white kimono",
+      "lap pillow",
+      "sofa",
+      "Garan no Dou",
+      "afternoon",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -70,6 +48,7 @@
       "medium_shot"
     ],
     "timeOfDay": "afternoon",
-    "title": "两仪式 · 伽蓝之堂的膝枕休憩"
+    "title": "两仪式 · 伽蓝之堂的膝枕休憩",
+    "compositionIntent": "group"
   }
 }

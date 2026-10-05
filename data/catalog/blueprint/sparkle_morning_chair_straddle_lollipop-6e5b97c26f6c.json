@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_morning_chair_straddle_lollipop",
-  "revision": 1,
-  "sortOrder": 1047,
+  "revision": 2,
+  "sortOrder": 1043,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sparkle_morning_chair_straddle_lollipop",
     "title": "花火 · 晨间椅背跨坐的棒棒糖挑衅",
@@ -28,33 +28,18 @@
       "playful_smile",
       "winking"
     ],
-    "promptProse": "Sitting playfully backward on a swivel chair in a sunlit luxury hotel suite, Sparkle rests her chin on the backrest while swinging her bare legs. Wearing an oversized crimson and black hoodie with sleeves draped over her hands, she rolls a red strawberry lollipop in her mouth, gazing at the viewer with a teasing, mischievous glint in her ruby eyes. Bright anime artwork, solo 1girl, no text.",
+    "promptProse": "Sparkle sits backward on the hotel room's swivel armchair, chin resting on its back while her feet move lightly above the floor. A strawberry lollipop rests at her lips above an oversized red-and-black hoodie, denim shorts and mismatched striped stockings. The eye-level cowboy view places the chair before tall windows. Golden morning sunlight brightens the candy and hair clips, with chair-back shadows crossing the hoodie's folded front.",
     "promptTokens": [
-      "hotel_room",
-      "swivel_chair",
-      "sitting_backward",
-      "oversized_hoodie",
-      "denim_shorts",
-      "bare_legs",
-      "holding_lollipop",
+      "morning",
+      "hotel room",
+      "red black hoodie",
+      "denim shorts",
+      "striped stockings",
+      "reverse chair",
       "lollipop",
-      "winking",
-      "mischievous_smile",
-      "twintails",
-      "pink_eyes",
-      "morning_light",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_street_hoodie",
     "coverageTags": [

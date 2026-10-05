@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_summer_festival_apple_candy",
-  "revision": 1,
-  "sortOrder": 1292,
+  "revision": 2,
+  "sortOrder": 1288,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "akeno_summer_festival_apple_candy",
     "title": "姬岛朱乃 · 仲夏夜祭的紫阳花花火",
@@ -29,32 +29,17 @@
       "exposed_nape",
       "gentle_smile"
     ],
-    "promptProse": "Walking up stone shrine stairs lined with glowing crimson lanterns during a summer festival, Akeno Himejima pauses to look back over her shoulder. Wearing a deep purple yukata patterned with delicate hydrangeas, she holds a shiny glazed red candied apple. Fireworks burst in golden sparks across the midnight sky, highlighting her graceful exposed nape and soft smile. Atmospheric anime festival CG, solo 1girl, no text.",
+    "promptProse": "Halfway up the shrine's festival stairs, Akeno Himejima pauses and looks back with a gentle smile, holding a red candy apple beside her violet hydrangea-and-morning-glory yukata. Her lilac obi and wooden sandals remain visible from the low cowboy angle. Lanterns run along both sides of the stone steps. Their orange light warms the apple and sleeve, while a distant golden firework briefly outlines her ponytail against the night.",
     "promptTokens": [
-      "festival",
+      "Akeno Himejima",
+      "violet floral yukata",
+      "candy apple",
+      "shrine stairs",
       "lanterns",
-      "shrine_stairs",
       "fireworks",
-      "night_sky",
-      "yukata",
-      "purple_yukata",
-      "holding_candy_apple",
-      "exposed_nape",
-      "high_ponytail",
-      "gentle_smile",
-      "purple_eyes",
-      "romantic_atmosphere",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_yukata_summer",
     "coverageTags": [

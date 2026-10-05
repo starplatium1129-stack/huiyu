@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_highroller_club_balcony_cocktail",
-  "revision": 1,
-  "sortOrder": 1106,
+  "revision": 2,
+  "sortOrder": 1102,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "手执荧光鸡尾酒杯靠在琉璃吧台旁，高开叉长裙展现修长美腿，眼神敏锐侦查",
     "camera": "medium shot, cowboy perspective, elegant fashion framing",
@@ -18,35 +18,18 @@
     "lighting": "水幕反射的荧光粉紫霓虹与奢华金箔吧台柔和光影",
     "location": "云顶高空奢华俱乐部露天水榭",
     "mood": "冷艳高贵",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "outfitId": "neon_evening_dress",
-    "promptProse": "Leaning against an illuminated frosted glass bar at an exclusive high-altitude Night City club, Lucy sips a luminescent neon cocktail in an iridescent metallic slip dress. Holographic water displays cast shifting magenta patterns across her graceful figure and sharp netrunner gaze.",
+    "promptProse": "At the rooftop club garden bar, Lucy holds a vaporous fluorescent martini in her iridescent silver-gray slip dress, quietly watching Arasaka executives beyond the water curtain. Holographic koi pass beside her in the medium cowboy view. Cyan-magenta neon reflected through the moving water colors the dress and glass, while softer light from the gold-leaf bar catches her fingertips and choker against the darker skyline.",
     "promptTokens": [
-      "luxury_nightclub",
-      "cocktail_glass",
-      "metallic_dress",
-      "high_slit",
-      "holographic_koi",
-      "neon_ambience",
-      "cyberware",
-      "detailed_background",
-      "cinematic_lighting"
+      "night",
+      "Clouds club garden",
+      "iridescent slip dress",
+      "fiber optic choker",
+      "martini",
+      "water curtain",
+      "holographic koi",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -60,6 +43,7 @@
       "water_features"
     ],
     "timeOfDay": "夜晚",
-    "title": "露西 · 云顶俱乐部的幻彩鸡尾酒"
+    "title": "露西 · 云顶俱乐部的幻彩鸡尾酒",
+    "compositionIntent": "group"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_after_school_crepe_date",
-  "revision": 1,
-  "sortOrder": 1369,
+  "revision": 2,
+  "sortOrder": 1365,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "asuna_after_school_crepe_date",
     "title": "结城明日奈 · 涩谷街角的可丽饼喂食·「啊——先说好，草莓最甜的部分是我的哦！」",
@@ -27,29 +27,16 @@
       "blushing",
       "sweet_smile"
     ],
-    "promptProse": "Asuna Yuuki stands outside a colorful dessert shop in modern Shibuya, wearing her neat high school uniform blazer and pleated navy skirt. She playfully feeds you a fresh strawberry whipped cream crepe with both hands, her cheeks glowing in a sweet after-school blush as evening city neon lights begin to sparkle. Crowds and vibrant shopfronts blur into soft cinematic bokeh behind her.",
+    "promptProse": "After school in Shibuya, Asuna holds a strawberry-and-cream crepe with both hands and extends it toward her companion with a playful blink and blush. Her grey school blazer, red ribbon and navy pleated skirt identify the real-world outfit. The close date viewpoint keeps crossing markings and shop windows behind her. Orange sunset warms chestnut hair and crepe edges, while display-window light adds gentle highlights to the nearer blazer sleeve.",
     "promptTokens": [
-      "city_street",
-      "storefront",
-      "school_uniform",
-      "blazer",
-      "pleated_skirt",
-      "crepe",
-      "feeding",
-      "food",
-      "blushing",
-      "sweet_smile",
-      "close-up",
-      "detailed_background",
-      "cinematic_lighting",
-      "depth_of_field"
+      "Asuna",
+      "grey school blazer",
+      "navy skirt",
+      "strawberry crepe",
+      "Shibuya street",
+      "medium close-up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc294",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 289,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc294",
     "title": "拂晓的被窝温度",
@@ -30,7 +30,8 @@
       "messy_hair",
       "dawn",
       "pale_blue_light",
-      "close_up"
+      "close_up",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
@@ -42,10 +43,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, messy_hair, lying_on_side, on_bed, under_blanket, duvet, pillow, black_silk_camisole, bare_shoulders, delicate_collarbone, reaching_out, holding_arm, holding_wrist, sleepy_eyes, one_eye_closed, subtle_blush, gentle_expression, bedroom, messy_sheets, dawn, pale_blue_morning_light, curtain_gap_light, soft_ambient_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, shiki_natsume, black camisole, under duvet, lying on side, holding viewer wrist, pillow, blue dawn light, side close up",
+    "negative": "extra emerging hands, uncovered body, transparent duvet",
     "storyJa": "【夏目・大人のAfter Story・夜明け前の布団の温度】空はまだ完全には明るくなっておらず、カーテンの隙間から淡い青色の光が差し込んでいた。夏目はあなたに背を向けて横向きに寝ていた。黒い長髪が枕に広がり、呼吸は穏やかでまだ起きていないようだった。しかし、あなたがそっと起き上がろうとすると、彼女の手が布団から伸びてあなたの腕を押さえた——力は強くなかったが、その意思は明確で無視できなかった。振り返ると、彼女はまだ目を開けていなかったが、あなたの方へ少し移動した。声には起きたばかりのかすれがあった——「5時47分……週末は仕事ないよ。」そう言っても手を離さず、指先があなたの前腕をゆっくりと伝い、手首にそっと絡まった。布団の中では彼女の体温とあなたの体温が混ざり合っていた。彼女は片目だけ開けてあなたを見て、また閉じた——「眠れないなら……一緒に横になって話してていいよ。でも、朝ごはんを作りに行くなら——あと30分待って。」",
-    "animaCaption": "Before dawn with pale cyan morning light seeping through the curtain gap, Shiki Natsume lies on her side in the cozy bed in a delicate black silk camisole, her silky black hair scattered across the pillow; as you try to get up, her slender hand emerges from under the duvet to firmly grasp your wrist, sleepily nuzzling closer into your warmth with a soft blush under the dim blue dawn ambiance, no text, no extra people.",
+    "animaCaption": "Shiki Natsume lies on her side beneath the duvet and reaches out to hold the viewer's wrist as he starts to get up. Her black camisole stays covered beneath the near pillow view, with loose hair framing sleepy eyes. Cyan dawn light enters through the curtain gap and touches the fingers and duvet ridge. Pillow indentations, overlapping hair shadows and a darker headboard keep the restful contact distinct from the rear bedroom.",
     "auditRevision": "skill-refine-sc294-2026-09-05"
   }
 }

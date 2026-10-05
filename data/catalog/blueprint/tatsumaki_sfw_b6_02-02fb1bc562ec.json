@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_02",
-  "revision": 1,
-  "sortOrder": 1588,
+  "revision": 2,
+  "sortOrder": 1584,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_02",
     "title": "战栗的龙卷 · 甜品店的身高悲剧",
@@ -30,42 +30,17 @@
       "shop_light",
       "medium_shot"
     ],
-    "promptProse": "At a tall dessert counter, Tatsumaki stands on the seat of a sturdy chair to reach the display and points firmly toward its most elaborate cake. Her green eyes narrow in offended irritation at an unseen clerk’s mistaken assumption. A moss-green cardigan and long skirt keep the scene ordinary. Soft bakery light connects her feet on the chair, the high counter and her determined expression as she chooses the expensive treat on her own terms.",
+    "promptProse": "At the elegant dessert counter, Tatsumaki stands on a chair to order, green curls framing an indignant look at the clerk's mistaken greeting. Her moss-green cardigan, cream top and ankle-length black skirt stay tidy beside the expensive cake she chooses. The medium view includes the display case and counter height. Shop lights brighten cake glaze and cardigan knit, leaving compact shadows beneath the chair and soft reflections in the glass.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "tatsumaki",
-      "one-punch_man",
-      "dessert_shop",
-      "cake",
-      "display_case",
-      "chair",
-      "pointing",
-      "annoyed",
-      "green_eyes",
-      "cardigan",
-      "shop_light",
-      "medium_shot",
-      "standing_on_chair"
+      "Tatsumaki",
+      "moss cardigan",
+      "black long skirt",
+      "standing on chair",
+      "cake order",
+      "dessert shop",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -73,6 +48,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_yuuki_kitchen_breakfast_hug",
-  "revision": 1,
-  "sortOrder": 1235,
+  "revision": 2,
+  "sortOrder": 1231,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "飞扑跳跃紧紧搂住对方脖颈拥抱，胸前丰满紧贴，爱心尾巴缠绕，笑容灿烂如阳",
     "camera": "medium close-up, first-person pov, emotional dynamic embrace",
@@ -18,36 +18,17 @@
     "lighting": "厨房大窗洒入的温润晨曦与白瓷餐具的柔和光晕",
     "location": "结城家温馨起居室与餐桌旁",
     "mood": "甜美热烈",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Leaping forward with joyful abandon to wrap her arms tightly around her partner’s neck inside a cozy breakfast kitchen, Lala hugs him with boundless love. Bright morning sunbeams illuminate her cascading pink locks and her sensitive spade-heart tail wagging in pure delight.",
+    "promptProse": "In the Yuuki family's morning kitchen, Lala rushes to greet Rito and wraps her arms around his neck in a joyful hug. Her green eyes narrow with a broad smile while her heart-tipped tail curves around their waists. Use Rito's close viewpoint with the breakfast table behind her shoulder. Window sunlight catches flowing pink hair, toast edges and white dishes, leaving gentle shadows beneath the table.",
     "promptTokens": [
-      "modern_kitchen",
-      "hugging_tightly",
-      "embracing",
-      "sainan_high_school_uniform",
-      "cleavage",
-      "demon_tail",
-      "beaming_smile",
-      "pink_hair",
-      "detailed_background",
-      "cinematic_lighting"
+      "Lala",
+      "Rito Yuuki",
+      "breakfast kitchen",
+      "joyful hug",
+      "pink hair",
+      "devil tail",
+      "first-person view"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -61,6 +42,7 @@
       "ahoge"
     ],
     "timeOfDay": "早晨",
-    "title": "菈菈 · 结城家清晨的飞扑拥抱"
+    "title": "菈菈 · 结城家清晨的飞扑拥抱",
+    "compositionIntent": "group"
   }
 }

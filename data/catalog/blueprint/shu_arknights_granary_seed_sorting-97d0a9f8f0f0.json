@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_granary_seed_sorting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 707,
   "createdAt": null,
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "shu_arknights_granary_seed_sorting",
     "characterId": "shu_arknights",
@@ -30,23 +30,17 @@
       "cowboy_shot"
     ],
     "promptTokens": [
+      "morning",
+      "market",
+      "fruit stall",
+      "white blue jacket",
+      "patterned trousers",
       "peach",
-      "fruit_basket",
-      "holding_bag",
-      "holding_fruit",
-      "looking_at_viewer",
-      "light_smile",
-      "standing",
-      "cowboy_shot"
+      "cloth bag",
+      "cowboy shot"
     ],
-    "promptProse": "Shu chooses a peach from the weekend market and offers it on her open golden hand toward the viewer, confident she has found one you will enjoy. A cloth bag hangs from her other hand rather than covering the fruit. The blue lining and gold cords of her original white jacket remain visible beneath the awning; baskets and folded stall cloths form a quiet backdrop to the thoughtful gesture.",
-    "negativeTokens": [
-      "extra people",
-      "extra limbs",
-      "bad hands",
-      "watermark",
-      "text"
-    ],
+    "promptProse": "Under the market canopy, Shu offers a carefully chosen peach with one hand and holds a cloth shopping bag in the other. Her original white jacket reveals cobalt-blue lining and gold cord fastenings above illustrated white trousers. The eye-level cowboy view places the stall fruit near her and the market aisle behind. Soft morning light under the awning rounds the peach and gently illuminates her golden hands.",
+    "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",
     "coverageTags": [

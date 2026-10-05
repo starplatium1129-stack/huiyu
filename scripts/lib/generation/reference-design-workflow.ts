@@ -2,7 +2,7 @@ import catalog = require('./anima-model-catalog');
 
 type Workflow = Record<string, { class_type: string; inputs: Record<string, unknown> }>;
 
-/** Frozen reference-sheet graph: no LoRA, inpaint, hires or runtime job ownership. */
+/** Reference-sheet graph: no LoRA, inpaint, hires or runtime job ownership. */
 export function buildReferenceDesignWorkflow(input: { prompt: string; negative: string; seed: number; teaCacheThresh: number }): Workflow {
   const model = catalog.MODELS['anima-miaomiao-v1.6'];
   const workflow: Workflow = {
@@ -24,7 +24,7 @@ export function buildReferenceDesignWorkflow(input: { prompt: string; negative: 
     '35': { class_type: 'ImageSharpenKJ', inputs: { image: ['8', 0], method: 'rcas', 'method.strength': 0.75 } },
   };
   if (input.teaCacheThresh > 0) {
-    workflow['13'] = { class_type: 'AnimaTeaCache', inputs: { model: ['1', 0], rel_l1_thresh: input.teaCacheThresh || 0.08, start_percent: 0, end_percent: 1, cache_device: 'cuda' } };
+    workflow['13'] = { class_type: 'AnimaTeaCache', inputs: { model: ['1', 0], rel_l1_thresh: input.teaCacheThresh, start_percent: 0, end_percent: 1, cache_device: 'cuda' } };
     workflow['7'].inputs.model = ['13', 0];
   }
   return workflow;

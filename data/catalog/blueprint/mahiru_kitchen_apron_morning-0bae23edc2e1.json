@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_kitchen_apron_morning",
-  "revision": 1,
-  "sortOrder": 1474,
+  "revision": 2,
+  "sortOrder": 1470,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "mahiru_kitchen_apron_morning",
     "title": "椎名真昼 · 邻家厨房围裙微烫的早餐·「周总是起这么晚……再不吃煎蛋要凉了」",
@@ -29,41 +29,18 @@
       "blonde_hair",
       "gentle_smile"
     ],
-    "promptProse": "Mahiru Shiina turns around in a cozy sunlit apartment kitchen, holding a steaming platter of freshly cooked Japanese breakfast dishes. She wears an oversized soft knit sweater under a pastel-pink ruffled apron, her long golden locks gathered in a loose low side-tail. Early morning sunbeams beam through the kitchen window, bathing her porcelain skin and amber eyes in radiant warmth as she offers a tender, slightly exasperated smile. Medium shot, crisp domestic key visual style, detailed kitchen interior background, solo 1girl, no extra people.",
+    "promptProse": "Mahiru Shiina turns from Amane's kitchen counter with tamagoyaki and miso soup ready, watching him rub sleep from his eyes. A pastel-pink ruffled apron covers her beige sweater and long dark skirt, golden hair loosely gathered to one side. The medium view includes the clean cooking surface and window behind. Morning sun illuminates apron ruffles and egg edges, returning pale reflected light from the counter onto her expectant face.",
     "promptTokens": [
       "shiina_mahiru",
-      "1girl",
-      "solo",
-      "blonde_hair",
-      "very_long_hair",
-      "amber_eyes",
-      "apron",
-      "pink_apron",
-      "oversized_sweater",
-      "holding_plate",
-      "food",
-      "breakfast",
-      "kitchen",
-      "cooking",
+      "Mahiru Shiina",
+      "pink ruffled apron",
+      "beige sweater",
+      "breakfast plate",
+      "apartment kitchen",
       "morning",
-      "sunlight",
-      "gentle_smile",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -72,6 +49,7 @@
     "coverageTags": [
       "daily",
       "girlfriend"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

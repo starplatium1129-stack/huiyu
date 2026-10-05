@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_shopping_hairband_mirror",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 362,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "iroha_shopping_hairband_mirror",
     "title": "一色彩羽 · 商业街试戴发饰的镜前戏谑·「这个发箍好看吗？……前辈要是夸我可爱，我就买下来哦」",
@@ -31,40 +31,22 @@
       "off_shoulder",
       "cute"
     ],
-    "promptProse": "Iroha Isshiki stands before a gleaming vanity mirror in a stylish boutique accessory shop, trying on one soft plush cat-ear headband over her wavy honey-brown hair. Wearing a slouchy pink off-the-shoulder knit sweater and plaid miniskirt, she leans against the counter propping her cheeks with both palms, offering a delightful, irresistible wink toward your reflection in the mirror. Bright jewelry store spotlights illuminate her glossy lips and flushed, radiant expression. Medium shot, glamorous boutique bokeh, detailed shopping background, solo 1girl, no text.",
+    "promptProse": "Iroha Isshiki tries a plush cat-ear headband above wavy honey-brown hair, leaning on the accessory-shop counter with both cheeks in her palms and winking at her reflection. Pastel-pink mohair sweater, brown plaid skirt and small shoulder bag retain the chosen casual outfit. The medium view keeps the mirror and display trays around her. Warm-white ring lights illuminate her playful face and headband texture, with subdued shadows beneath the counter accessories.",
     "promptTokens": [
-      "isshiki_iroha",
       "1girl",
       "solo",
-      "brown_hair",
-      "wavy_hair",
-      "brown_eyes",
-      "hairband",
-      "fake_animal_ears",
-      "cat_ear_headband",
-      "mirror",
-      "reflection",
-      "wink",
-      "oversized_sweater",
-      "pink_sweater",
-      "off_shoulder",
-      "miniskirt",
-      "shopping",
-      "cute",
-      "detailed_background",
-      "cinematic_lighting"
+      "Iroha Isshiki",
+      "pastel pink sweater",
+      "brown plaid skirt",
+      "cat ear headband",
+      "hands on cheeks",
+      "boutique mirror",
+      "ring light",
+      "medium shot",
+      "isshiki_iroha"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears"
+      "extra person in mirror"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,
@@ -74,6 +56,7 @@
     "coverageTags": [
       "daily",
       "date"
-    ]
+    ],
+    "allowRepeatedSubject": true
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc045",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a cohabitation bathroom doorway, Ayachi Nene wrapped in a soft white bath towel stands with slender bare legs and steam, bare feet on tiles, holding the towel and reaching for help with a flustered teary blush.",
+    "animaCaption": "A narrow opening in the bathroom door reveals Ayachi Nene's flustered face and outstretched hand asking for help. Her securely wrapped white towel stays behind the door, keeping the detail view on her expression and fingers. Warm bathroom light meets the cooler corridor across the door edge. Thin steam softens the tiled background, while the door frame casts a clear strip of shadow and her hand remains distinct against the shaded opening.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "门缝与伸手细节特写",
     "category": "恋爱/After_Story",
@@ -20,8 +20,8 @@
     "location": "同居公寓浴室",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bare_legs, smooth, bare, thighs, barefoot, standing, blush, shy_smile, bokeh, collarbone, slender_waist, full_body, sunlight, soft_diffused_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "open towel, exposed body, extra hands, doorway wider than intended",
+    "prompt": "1girl, ayachi_nene, covered bath towel, hand through doorway, bathroom door, steam, warm interior light, detail close up",
     "rating": "R15",
     "season": "冬",
     "story": "【成年 After Story · 浴室门后的求援】冬夜浴室里水汽未散，成年的宁宁发现换洗衣物忘在外面，只好把门推开一道细缝。她刚出浴的身子还带着水汽，双腿光裸地并拢藏在门板之后，伸出的手却因为害羞一直发抖。你把衣服递过去，她又轻轻勾住你的指尖——「谢谢……还有，不准根据这一点缝隙胡乱想象。等我换好，再抱你一下当作谢礼。」",
@@ -34,7 +34,8 @@
       "bathroom",
       "full_body",
       "barefoot",
-      "steam"
+      "steam",
+      "depth_of_field"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

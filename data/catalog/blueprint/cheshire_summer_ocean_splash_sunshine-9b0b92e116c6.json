@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_summer_ocean_splash_sunshine",
-  "revision": 1,
-  "sortOrder": 1093,
+  "revision": 2,
+  "sortOrder": 1089,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "cheshire_summer_ocean_splash_sunshine",
     "title": "柴郡 · 盛夏蔚蓝浪花的猫耳嬉水",
@@ -32,36 +32,17 @@
       "fake_hair_ornament",
       "summer"
     ],
-    "promptProse": "Splashing crystal sea spray towards the viewer while standing ankle-deep in turquoise ocean surf, Cheshire laughs warmly in her frilled pink bikini. Radiant tropical sunlight forms faint miniature rainbows in the flying water droplets around her sunhat and cat ears.",
+    "promptProse": "Cheshire cups seawater in both hands and splashes it toward the viewer, grinning beneath a straw hat with cat-ear openings. Her pink-and-ivory frilled swimsuit and floral pareo remain clear behind the cowboy-shot foreground spray. White beach sand extends toward nearby rocks and blue water beyond. Tropical sunlight catches the lifted droplets in tiny prismatic highlights, while moving water reflections brighten the pareo's shadowed folds.",
     "promptTokens": [
-      "tropical_beach",
-      "splashing_water",
-      "ocean_waves",
-      "bikini",
-      "sun_hat",
-      "cat_ear_headband",
-      "fake_hair_ornament",
-      "sunlight_caustics",
-      "detailed_background",
-      "cinematic_lighting"
+      "summer daytime",
+      "tropical beach",
+      "pink ivory swimsuit",
+      "floral pareo",
+      "straw hat",
+      "water splash",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

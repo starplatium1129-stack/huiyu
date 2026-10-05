@@ -38,7 +38,7 @@ test('explicit SFW composition survives core and showcase guards without relaxin
     assert.ok(neg.includes('nude'), 'SFW content protection remains');
     if (b!.compositionIntent === 'triptych') {
       assert.ok(/three sequential panels/.test(p.prompt));
-      for (const token of ['triptych', 'comic strip', 'comic panel', 'border', 'white border', 'multiple frames', 'duplicated subject', 'same character twice']) assert.ok(!neg.includes(token), token);
+      for (const token of ['triptych', 'comic strip', 'comic panel', 'border', 'white border', 'framed', 'multiple frames', 'duplicated subject', 'same character twice']) assert.ok(!neg.includes(token), token);
     } else {
       assert.ok(neg.includes('duplicate'), 'group still prevents accidental clones');
       assert.ok(neg.includes('triptych'), 'group remains one frame');
@@ -59,6 +59,16 @@ test('explicit SFW composition survives core and showcase guards without relaxin
   assert.ok(a.prompt.includes('(single girl only:1.4), (one person only:1.4)'));
   assert.ok(tokens(a.negative).includes('triptych'));
   assert.ok(policy.showcaseSubjectGuards({adult:true,compositionIntent:'group'}).prompt.includes('(solo:1.5)'));
+  const repeated = {...ordinary!,compositionIntent:'group' as const,allowRepeatedSubject:true};
+  const reflection = generator.buildCandidate(c!, repeated, profile, 1);
+  assert.ok(!reflection.prompt.includes('no cloned characters'));
+  for (const token of ['clone','duplicate','same character twice','duplicated subject']) assert.ok(!tokens(reflection.negative).includes(token));
+  assert.ok(tokens(reflection.negative).includes('triptych'));
+  const child = {...ordinary!,identityTokensOverride:['fixture_child','green_hair'],identityProseOverride:'The nonsexual childhood form of the same character.'};
+  const childOutfit = {...popular.findOutfit(c!,child.outfitId!)!,tokens:['blue_coat'],prose:'a closed blue coat over trousers and boots'};
+  const childPrompt = popular.buildPopularPromptPlan({character:c!,blueprint:child,outfit:childOutfit,engine:'anima',profile,adultEnabled:false})!;
+  assert.ok(childPrompt.prompt.includes('green hair') && childPrompt.prompt.includes(child.identityProseOverride.replace(/[.!?]+$/,'')));
+  assert.strictEqual(popular.buildPopularPromptPlan({character:c!,blueprint:{...child,adult:true},outfit:childOutfit,engine:'anima',profile,adultEnabled:true}),null);
 });
 
 test('onboarding scenes keep their outfit binding and compile safely in both engines', function () {

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_sfw_b5_02",
-  "revision": 1,
-  "sortOrder": 973,
+  "revision": 2,
+  "sortOrder": 969,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "坐在地板标记旁喝水，看着镜中自己重新鼓劲。",
     "adult": false,
@@ -21,39 +21,18 @@
     "lighting": "studio_light",
     "location": "空排练室镜墙前",
     "mood": "自然日常、细腻表情",
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "outfitId": "sfw_practice",
-    "promptProse": "After repeating a turn in the empty rehearsal studio, Kana sits on the floor beside taped position marks and drinks from a water bottle. Her red bob rests against the charcoal T-shirt as she studies her reflection in the wall mirror. Frustration and self-encouragement share her expression; broad studio lighting shows the practice shoes, floor tape and unglamorous work behind the performance.",
+    "promptProse": "Kana repeats a turn in the empty rehearsal room, charcoal T-shirt and burgundy track trousers aligned with tape marks on the floor. During a pause she sits down to drink water, watching her reflected face shift between frustration and resolve. The medium view includes the mirror and marked practice space. Studio lights reveal the tape edges and bottle, with soft floor shadows beneath her bent knees and white sneakers.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "rehearsal_room",
-      "sitting_on_floor",
-      "water_bottle",
-      "drinking",
+      "daytime",
+      "rehearsal studio",
       "mirror",
-      "reflection",
-      "floor_tape",
-      "tired",
-      "determined",
-      "studio_light"
+      "charcoal T shirt",
+      "burgundy tracksuit trousers",
+      "sneakers",
+      "water",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -70,6 +49,7 @@
       "studio_light"
     ],
     "timeOfDay": "日间",
-    "title": "有马加奈 · 排练室镜子前的独白"
+    "title": "有马加奈 · 排练室镜子前的独白",
+    "allowRepeatedSubject": true
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_chapel_morning_prayer",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "jeanne_chapel_morning_prayer",
     "title": "圣女贞德 · 晨光小教堂的祈祷·「今日也请，赐予他们安宁」",
@@ -29,33 +29,21 @@
       "side_view",
       "medium_shot"
     ],
-    "promptProse": "Kneeling before the small chapel altar at sunrise, Jeanne presses her ungloved hands together against her forehead. She wears a plain opaque white prayer dress after setting aside the armor, and her long golden braid rests quietly over her back. Slanting window light illuminates the joined fingers, closed eyes and gentle folds of the dress. The nearby bench and modest altar keep the interior intimate in scale. Use a medium side view centered on the prayer posture and quiet morning light. No lettering.",
+    "promptProse": "Jeanne kneels at the small chapel altar, ungloved hands joined against her forehead and eyes closed above a plain opaque white long-sleeved prayer dress. Her golden braid rests down her back after armor is set aside. The medium side view places a nearby bench behind her and the modest altar ahead. Slanting sunrise beams illuminate joined fingers and dress folds, carrying floating dust above the shaded floor and bench legs.",
     "promptTokens": [
-      "village_chapel",
-      "altar",
-      "kneeling",
-      "hands_together_at_forehead",
-      "plain_white_dress",
-      "closed_eyes",
-      "golden_braid",
-      "morning_window_light",
-      "side_view",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "1girl",
+      "solo",
+      "Jeanne",
+      "opaque white prayer dress",
+      "bare hands",
+      "golden braid",
+      "kneeling prayer",
+      "chapel altar",
+      "sunrise beams",
+      "medium side view"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "armor",
-      "breastplate",
-      "gauntlets",
-      "flag"
+      "armor"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,

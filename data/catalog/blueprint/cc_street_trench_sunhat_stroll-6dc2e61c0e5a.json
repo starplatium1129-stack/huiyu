@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_street_trench_sunhat_stroll",
-  "revision": 1,
-  "sortOrder": 1313,
+  "revision": 2,
+  "sortOrder": 1309,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "一手轻按宽檐草帽防风吹落，侧身漫步在落叶大道上回眸浅笑",
     "camera": "cowboy shot, slightly high angle, romantic street stroll",
@@ -20,30 +20,16 @@
     "lighting": "穿过梧桐树冠的金色斑驳秋日光斑",
     "location": "落满金黄梧桐落叶的欧式林荫道步道",
     "mood": "知性优雅",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "outfitId": "beige_trench_sunhat",
-    "promptProse": "Strolling down a tranquil European promenade blanketed with golden autumn leaves, C.C. touches the brim of her elegant wide sunhat to steady it in the gentle breeze. Dressed in a sophisticated beige trench coat, her iconic green hair cascades past her waist. She glances sideways at the viewer with a subtle, affectionate smile in the dappled afternoon sunlight. Serene, romantic anime artwork, solo 1girl, no text.",
+    "promptProse": "On the leaf-covered promenade, C.C. steadies her wide-brimmed black-ribbon sunhat with one hand and glances back toward her companion. Her beige trench coat follows her stride, with long green hair moving beside its collar. A slightly high cowboy view follows the line of plane trees into the distance. Autumn sunlight filters through thinning foliage onto the hat and coat, leaving warm scattered leaf shadows across the paving.",
     "promptTokens": [
-      "avenue",
-      "autumn_leaves",
-      "falling_leaves",
-      "trench_coat",
-      "sunhat",
-      "holding_hat",
-      "green_hair",
-      "yellow_eyes",
-      "gentle_smile",
-      "windy",
-      "afternoon_sun",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "C.C.",
+      "beige trench coat",
+      "wide-brim sunhat",
+      "autumn promenade",
+      "holding hat",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

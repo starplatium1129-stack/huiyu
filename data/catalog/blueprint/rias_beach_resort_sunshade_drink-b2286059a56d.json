@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_beach_resort_sunshade_drink",
-  "revision": 1,
-  "sortOrder": 1283,
+  "revision": 2,
+  "sortOrder": 1279,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "rias_beach_resort_sunshade_drink",
     "title": "莉雅丝 · 碧海金沙的遮阳伞私语",
@@ -29,32 +29,17 @@
       "hourglass_figure",
       "smirk"
     ],
-    "promptProse": "Reclining luxuriously on a shaded beach lounge chair beside turquoise ocean waves, Rias Gremory lowers her designer sunglasses with a playful, teasing smile. Her deep red high-cut swimsuit emphasizes her breathtaking hourglass curves and gleaming sunlit cleavage. Droplets of sea water glisten on her porcelain skin under the tropical sun. Diagonal cowboy shot, vibrant anime illustration, solo 1girl, no text.",
+    "promptProse": "Rias Gremory reclines on a beach chair under a white parasol, lowering her sunglasses with one hand and offering a tropical cold drink with the other. Her red cutout one-piece and windblown crimson hair remain clear in the diagonal cowboy framing. The blue shoreline runs behind the chair. Direct sunshine catches the glass rim and exposed chair slats, while parasol shade softens her face and wave reflections brighten the sand below.",
     "promptTokens": [
-      "beach",
-      "ocean",
-      "sand",
-      "deck_chair",
-      "parasol",
-      "red_swimsuit",
-      "one-piece_swimsuit",
-      "highleg",
-      "wet_skin",
-      "cleavage",
+      "Rias Gremory",
+      "red one-piece swimsuit",
       "sunglasses",
-      "playful_smile",
-      "sunny",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "cold drink",
+      "beach lounge",
+      "parasol",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "sensual_swimsuit",
     "coverageTags": [

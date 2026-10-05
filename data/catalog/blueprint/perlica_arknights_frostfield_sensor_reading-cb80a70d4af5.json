@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_frostfield_sensor_reading",
-  "revision": 1,
-  "sortOrder": 746,
+  "revision": 2,
+  "sortOrder": 742,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "characterId": "perlica_arknights",
     "outfitId": "sub_zero_frostfield_parka",
@@ -16,21 +16,16 @@
     "mood": "沉着专注",
     "description": "【佩丽卡 · 雪原观测站读数】清晨的雪原观测站外，佩丽卡穿着厚实的白蓝拼色防寒派克服，保暖长裤和手套挡住冷风。她站在固定的传感器旁，一手稳住读数板，另一手按下确认键，回头示意记录完成——「读数已经稳定。我们进站核对下一组数据。」",
     "action": "站在传感器旁，一手托读数板，另一手按下确认键",
-    "promptProse": "Outside a frostfield monitoring station, Perlica wears her insulated white-and-blue parka, thermal trousers and gloves, holding a readout tablet steady while pressing its confirmation key beside a fixed sensor mast. Pale dawn light spreads across the snow and frosted metal housing, while an amber doorway lamp marks the sheltered entrance behind her.",
+    "promptProse": "Outside the snowfield observation station, Perlica steadies a reading tablet beside a fixed sensor and presses its confirmation key, then looks back to signal completion. Her white-and-gray-blue insulated parka, trousers and gloves cover her against the cold. The medium view includes the sensor housing and entrance together. Cold morning light defines the snow and fur hood, while the entry lamp warms the tablet-side glove.",
     "promptTokens": [
-      "snowfield",
-      "monitoring_station",
-      "sensor_mast",
-      "parka",
+      "morning",
+      "snow station",
+      "white blue parka",
+      "trousers",
       "gloves",
-      "standing",
+      "sensor",
       "tablet",
-      "snow",
-      "dawn",
-      "doorway_lamp",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "medium shot"
     ],
     "camera": "medium shot, sensor housing and tablet visible beside the station entrance",
     "lighting": "雪原清晨冷光与入口暖灯",
@@ -54,19 +49,6 @@
       "doorway_lamp",
       "medium_shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "bad hands",
-      "extra fingers",
-      "extra limbs",
-      "text",
-      "watermark",
-      "nsfw",
-      "nude",
-      "explicit"
-    ]
+    "negativeTokens": []
   }
 }

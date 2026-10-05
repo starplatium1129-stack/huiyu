@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_morning_bedroom_dakimakura_cuddle",
-  "revision": 1,
-  "sortOrder": 1301,
+  "revision": 2,
+  "sortOrder": 1297,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "albedo_morning_bedroom_dakimakura_cuddle",
     "title": "雅儿贝德 · 大坟墓晨间的等身抱枕赖床",
@@ -30,34 +30,17 @@
       "drooling",
       "flustered"
     ],
-    "promptProse": "Curled up warmly upon her lavish velvet bed inside her private chambers, Albedo clings passionately to a large handmade body pillow. Dressed in a soft black silk camisole nightgown, her black wings fan across the ruffled silk sheets. Caught in the act of daydreaming, she looks up with cheeks burning bright crimson and golden eyes wide in delightfully flustered panic. Charming, romantic anime art, solo 1girl, no text.",
+    "promptProse": "Albedo curls on her lavish bed in a black silk camisole nightgown, hugging the handmade Ainz body pillow and pressing her cheek into it. Her wings rest over the ruffled sheets; golden eyes lift in sudden bashful surprise. A high cowboy view includes carved bedposts and the chamber window behind. Morning light through Gothic tracery spreads patterned gold across the pillow and feather tips, leaving folds under her arms shaded.",
     "promptTokens": [
+      "Albedo",
+      "black silk nightgown",
+      "Ainz body pillow",
+      "black wings",
       "bedroom",
-      "luxury_bed",
-      "silk_sheets",
-      "lying_on_side",
-      "hugging_pillow",
-      "black_nightgown",
-      "camisole",
-      "bare_legs",
-      "cleavage",
-      "black_wings",
-      "curved_horns",
-      "heavy_blush",
-      "blushing_ears",
-      "flustered",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "morning",
+      "high angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "cozy_nightwear_lingerie",
     "coverageTags": [

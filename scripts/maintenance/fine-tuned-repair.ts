@@ -137,7 +137,7 @@ async function renderImage(char: any, outfit: any, persId: any, targetPath: any)
     steps: 28,
     cfg: 4.5,
     teaCache: true,
-    teaCacheThresh: 0.08,
+    teaCacheThresh: 0.05,
     seed: Math.floor(Math.random() * 1000000000) + 100000000
   };
 

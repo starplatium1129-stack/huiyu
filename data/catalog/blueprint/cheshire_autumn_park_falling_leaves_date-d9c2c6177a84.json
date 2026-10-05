@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_autumn_park_falling_leaves_date",
-  "revision": 1,
-  "sortOrder": 1095,
+  "revision": 2,
+  "sortOrder": 1091,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "cheshire_autumn_park_falling_leaves_date",
     "title": "柴郡 · 枫林小径的红叶暖意",
@@ -32,37 +32,18 @@
       "fake_hair_ornament",
       "clinging"
     ],
-    "promptProse": "Clinging lovingly to her partner’s arm while strolling down a gravel park path showered in crimson autumn maple leaves, Cheshire rests her soft cat ear against his shoulder. Rich golden hour dusk sets the surrounding foliage ablaze in romantic cinematic wonder.",
+    "promptProse": "Cheshire walks beside the Commander on the stone park path, holding their arm closely and resting her cat-ear headband near their shoulder as she watches falling red maple leaves. Her ivory knit sweater, black skirt and plaid scarf remain within the medium couple view. Gold-and-red foliage layers behind them. Slanting sunset through the canopy lights the scarf weave and joined arms, with long leaf shadows across the path.",
     "promptTokens": [
-      "autumn_park",
-      "maple_trees",
-      "falling_leaves",
-      "sweater",
-      "scarf",
-      "walking_together",
-      "cat_ear_headband",
-      "fake_hair_ornament",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "autumn sunset",
+      "park path",
+      "ivory sweater",
+      "black skirt",
+      "plaid scarf",
+      "Commander",
+      "linked arms",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "compositionIntent": "group"
   }

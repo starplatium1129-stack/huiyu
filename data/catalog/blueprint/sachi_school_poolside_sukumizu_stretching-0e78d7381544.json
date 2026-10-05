@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_school_poolside_sukumizu_stretching",
-  "revision": 1,
-  "sortOrder": 1193,
+  "revision": 2,
+  "sortOrder": 1189,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sachi_school_poolside_sukumizu_stretching",
     "title": "小岭幸 · 水光潋滟的死库水压腿",
@@ -31,35 +31,18 @@
       "large_breasts",
       "wet_skin"
     ],
-    "promptProse": "Stretching her slender legs against a stainless steel poolside ladder in a classic navy blue Japanese school competition swimsuit, Sachi warms up with disciplined focus. Bright summer sunbeams dance across the azure pool surface, casting rippling light over her athletic silhouette.",
+    "promptProse": "Komine Sachi warms up beside the academy pool in a navy school swimsuit with a white name patch. One hand steadies her on the stainless-steel ladder while one leg rests on its step for a deliberate stretch. The full-body side view keeps the tiles and pool lane behind her. Afternoon sunshine gleams along the rail, and reflected blue ripples move across the shaded tiles.",
     "promptTokens": [
-      "swimming_pool",
-      "poolside_ladder",
-      "school_swimsuit",
-      "one-piece_swimsuit",
-      "stretching_legs",
-      "large_breasts",
-      "wet_skin",
-      "water_ripples",
-      "detailed_background",
-      "cinematic_lighting"
+      "navy one-piece swimsuit",
+      "poolside",
+      "stretching",
+      "ladder",
+      "name patch",
+      "full body",
+      "afternoon sun"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
+      "bikini"
     ],
     "recommendedSize": "1152x1536"
   }

@@ -2,7 +2,7 @@ import { mergeTokenText } from './promptPolicy.ts'
 
 import type { BlueprintCompositionIntent } from '../types/sceneBlueprint'
 export type { BlueprintCompositionIntent } from '../types/sceneBlueprint'
-type CompositionSource = { adult?: boolean; compositionIntent?: BlueprintCompositionIntent }
+type CompositionSource = { adult?: boolean; compositionIntent?: BlueprintCompositionIntent; allowRepeatedSubject?: boolean }
 
 export function parseCompositionIntent(value: unknown): BlueprintCompositionIntent {
   if (value == null || value === '') return 'single'
@@ -21,10 +21,11 @@ const personSuppression = new Set([
 const panelSuppression = new Set([
   'split image', 'split screen', 'split panel', 'two panels', 'diptych', 'triptych',
   'comic strip', 'multiple frames', 'panel borders', 'frame borders', 'double exposure',
-  'comic panel', 'border', 'white border',
+  'comic panel', 'border', 'white border', 'framed',
   'double image', 'duplicated subject', 'duplicated body', 'duplicate', 'duplicated person',
   'clone', 'copy', 'doppelganger', 'twin', 'two of her', 'second instance of her', 'same character twice',
 ])
+const repeatSuppression = new Set(['double exposure', 'double image', 'duplicated subject', 'duplicated body', 'duplicate', 'duplicated person', 'clone', 'copy', 'doppelganger', 'twin', 'two of her', 'second instance of her', 'same character twice'])
 const key = (token: string) => token.trim().toLowerCase().replaceAll('_', ' ').replace(/^\((.*):[\d.]+\)$/, '$1')
 
 export function compositionTokens(tokens: string[], source?: CompositionSource | null): string[] {
@@ -33,8 +34,9 @@ export function compositionTokens(tokens: string[], source?: CompositionSource |
 
 export function compositionNegative(text: string, source?: CompositionSource | null): string {
   const intent = compositionIntent(source)
-  if (intent === 'single') return text
-  return text.split(',').filter(t => !personSuppression.has(key(t)) && !(intent === 'triptych' && panelSuppression.has(key(t)))).join(',')
+  const repeats = !source?.adult && source?.allowRepeatedSubject === true
+  if (intent === 'single' && !repeats) return text
+  return text.split(',').filter(t => !(intent !== 'single' && personSuppression.has(key(t))) && !(intent === 'triptych' && panelSuppression.has(key(t))) && !(repeats && repeatSuppression.has(key(t)))).join(',')
 }
 
 const defaultSuppression = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, second person, two people, duplicate, duplicated person, extra person, extra limbs, 1boy, 2boys, crowd, bystanders'
@@ -45,6 +47,7 @@ export function blueprintNegative(negative: string, source?: CompositionSource |
 
 export function showcaseSubjectGuards(source?: CompositionSource | null): { prompt: string; negative: string } {
   const intent = compositionIntent(source)
+  if (!source?.adult && source?.allowRepeatedSubject) return { prompt: 'preserve the requested reflection or illusory echo with consistent character identity', negative: 'inconsistent reflected identity, mismatched illusion design' }
   const cloneNegative = 'duplicate, clone, copy, doppelganger, twin, two of her, second instance of her, duplicated subject, multiple girls, extra girl, same character twice'
   if (intent === 'triptych') return { prompt: 'exactly three sequential panels, same character once in each panel, consistent character design', negative: 'extra panels, inconsistent character design' }
   if (intent === 'group') return { prompt: 'distinct companions, one instance of each character, no cloned characters', negative: compositionNegative(cloneNegative, source) }

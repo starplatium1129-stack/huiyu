@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_siracusa_rain_alleyway_confrontation",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 665,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "在雨夜狭巷中持剑半出鞘踏步向前，眼神凌厉威严，风衣下摆飞扬",
     "camera": "cowboy shot, dramatic low angle",
@@ -18,42 +18,20 @@
     "lighting": "复古壁灯暖黄局部照明与冷色雨丝漫射",
     "location": "叙拉古古城雨夜石砌窄巷",
     "mood": "肃杀凌厉",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "outfitId": "omertosa_mafia",
-    "promptProse": "In a rain-glistened cobblestone alleyway of ancient Siracusa at dead of night, Texas steps forward with deliberate, lethal grace. Her tailored black mafia overcoat flares slightly in the damp wind as she partially unsheathes her golden rapier, the blade catching amber streetlight and casting sharp golden glints through the falling rain. Deep shadows flank the weathered stone arches around her as her Lupo ears pin back in acute combat readiness. An intensely dramatic low-angle cowboy shot delivers peerless cinematic tension, wet surface reflections, and pristine anime key visual perfection.",
+    "promptProse": "Texas steps through a puddle in a narrow Siracusan alley, drawing her rapier half an inch while watching the shadowed pursuers farther down the lane. Her black suit and crimson-lined overcoat remain dark against the masonry. A low cowboy angle aligns the receding walls. Warm wall lamps mark broken patches on wet stone; the exposed blade sends a thin gold gleam through cool rain.",
     "promptTokens": [
-      "alley",
-      "stone_wall",
-      "rain",
-      "puddles",
-      "trench_coat",
-      "suit",
+      "rainy day",
+      "Siracusa alley",
+      "stone wall",
+      "puddle",
+      "black suit",
+      "overcoat",
       "rapier",
       "unsheathing",
-      "sharp_eyes",
-      "wolf_ears",
-      "cowboy_shot",
-      "dynamic_angle",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "cowboy shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -69,6 +47,7 @@
       "wolf_ears"
     ],
     "timeOfDay": "夜晚阴雨",
-    "title": "德克萨斯 · 狭巷对峙与冷冽锋芒"
+    "title": "德克萨斯 · 狭巷对峙与冷冽锋芒",
+    "compositionIntent": "group"
   }
 }

@@ -290,8 +290,11 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
     assert_eq!(metadata["requestedHiresUpscaler"], "Auto");
     assert_eq!(metadata["hiresUpscaler"], "R-ESRGAN 4x+ Anime6B");
     assert_eq!(metadata["superResModel"], "RealESRGAN_x4plus_anime_6B.pth");
-    assert!(metadata["hiresSampler"].is_string());
-    assert!(metadata["hiresScheduler"].is_string());
+    assert_eq!(metadata["sampler"], "euler");
+    assert_eq!(metadata["scheduler"], "normal");
+    assert_eq!(metadata["teaCacheThresh"], 0.05);
+    assert_eq!(metadata["hiresSampler"], "euler");
+    assert_eq!(metadata["hiresScheduler"], "normal");
     {
         let graphs = state.workflows.lock().unwrap();
         let graph = &graphs[0]["prompt"];

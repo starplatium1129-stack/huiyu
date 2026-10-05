@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_cliff_survival_genius_command",
-  "revision": 1,
-  "sortOrder": 1168,
+  "revision": 2,
+  "sortOrder": 1164,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "kazuki_cliff_survival_genius_command",
     "title": "风见一姬 · 泷园断崖的天才决断",
@@ -31,36 +31,18 @@
       "very_long_hair",
       "red_eyes"
     ],
-    "promptProse": "Standing fearless along a rugged precipice overlooking misty mountain chasms, Kazuki commands the survival effort with absolute intellectual composure in her pristine white dress. Gale-force mountain winds whip her floor-sweeping silver hair as piercing crimson eyes cut through the cold dusk.",
+    "promptProse": "Kazuki stands at the Takizono mountain cliff after the storm, one hand braced on a gray rock as she calmly studies a survival route down the ravine. Her white linen sundress and long silver hair pull in the wind. The low full-body wide view includes the smoking wrecked school bus behind. Weak cold sunset through cloud breaks catches the damp cliff face and dress folds, leaving the depth below in darker gray layers.",
     "promptTokens": [
-      "rocky_cliff",
-      "mountain_chasm",
-      "ruined_bus",
-      "white_dress",
-      "bare_shoulders",
-      "very_long_hair",
-      "wind_blown_hair",
-      "red_eyes",
-      "detailed_background",
-      "cinematic_lighting"
+      "after rain",
+      "Takizono cliff",
+      "white linen sundress",
+      "bus wreck",
+      "gray rock",
+      "hand braced",
+      "full body",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152"
   }
 }

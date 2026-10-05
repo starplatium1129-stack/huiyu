@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc059",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc059",
     "title": "白衬衫与两颗空扣",
@@ -27,7 +27,8 @@
       "smooth_thighs",
       "kitchen",
       "full_body",
-      "barefoot"
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "同居公寓厨房",
@@ -37,11 +38,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, bunny_suit, black_glossy_latex, bunny_ears, bowtie, cuffs, bare_shoulders, cleavage_spill, fishnet_thighhighs, stiletto_heels, standing_by_bar_counter, one_hand_on_hip, confident_seductive_smirk, cafe_after_hours, dim_amber_lights, dramatic_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, white_shirt, cafe_uniform, nsfw, nude, explicit",
+    "prompt": "1girl, shiki_natsume, oversized white shirt, denim shorts, holding mug, adjusting collar, kitchen, morning window light, medium shot",
+    "negative": "bunny costume, duplicate mugs, extra collar-adjusting hands",
     "storyJa": "【夏目・空のボタンが2つ付いた白いシャツ】秋の朝、夏目はあなたの白いシャツを一時的なパジャマとして扱い、キッチンに立ってコーヒーが淹れるのを待ちます。上の２つのボタンは外されていました。あなたの視線に気づいた彼女は、まず襟を引っ張り、それからわざとカップをかざして顔の半分を覆いました。――「荷物に入れていたパジャマがまだ乾いてないから、借りただけ。これ以上見ていたら、今日のコーヒーはブラックだけにする。」",
     "rating": "All",
     "auditRevision": "careful-batch03-2026-08-27",
-    "animaCaption": "In a cohabitation kitchen, Shiki Natsume in an oversized unbuttoned white shirt with two top buttons undone and dark denim shorts stands barefoot on tiles, slender bare legs with soft skin sheen, holding her collar and a mug with a shy embarrassed blush in warm morning kitchen light."
+    "animaCaption": "Shiki Natsume pauses in the apartment kitchen with a mug in one hand and the other straightening the collar of her oversized white shirt above denim shorts. She faces the viewer with a slightly embarrassed morning smile. The counter runs toward the window behind her, with the floor tiles keeping the room's perspective clear. Autumn sunlight reaches the shirt folds and mug handle; softer reflected light reveals the shaded counter and a small cup shadow."
   }
 }

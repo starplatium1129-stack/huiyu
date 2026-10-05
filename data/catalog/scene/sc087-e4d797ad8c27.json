@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc087",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "Sitting on the edge of a dorm room bed at dawn in a soft grey pajama set with white piping, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet on sheets, holding a pillow with a sleepy gentle blush.",
+    "animaCaption": "Shiki Natsume sits at the dorm bed's edge with a pillow held comfortably against her grey pajama top. Loose hair and a sleepy smile mark the first words of the morning. The sheet folds lead into the headboard, with the window farther beside it. Dawn light picks out the white piping and pillow edge, leaving soft contact shadows under her supporting hands and darker folds across the mattress without flattening the room.",
     "auditRevision": "careful-batch11-2026-08-27",
     "camera": "半身中景",
     "category": "日常",
@@ -20,8 +20,8 @@
     "location": "宿舍",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, pajamas_pants",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_shirt, boyfriend_shirt, white_shirt, bare_shoulders, bare_legs, bottomless, sitting_on_messy_bed, hugging_pillow_to_chest, yawning, messy_hair, morning_sunlight_streaming_in, soft_shadows, drowsy_smile, blush, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "transparent pajamas, duplicate pillows, extra hugging arms",
+    "prompt": "1girl, shiki_natsume, grey pajama set, sitting on bed edge, holding pillow, messy hair, dorm room, dawn light, medium shot",
     "rating": "R15",
     "season": "春",
     "story": "【夏目 · 宿舍清晨的第一句话】春日清晨，夏目穿着宽松睡衣坐在宿舍床边，黑色长发还有些凌乱。你送来借走的资料，她揉着眼睛确认时间，随后把门再打开一点让你进来——「这么早来的人也有责任。咖啡机在那边……等我清醒以后再谈正事。」",
@@ -33,7 +33,8 @@
       "dorm_room",
       "full_body",
       "barefoot",
-      "dawn"
+      "dawn",
+      "depth_of_field"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

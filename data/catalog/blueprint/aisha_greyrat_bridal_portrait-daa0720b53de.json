@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_bridal_portrait",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 488,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "aisha_greyrat_bridal_portrait",
     "title": "爱夏·花廊下的回眸",
@@ -25,35 +25,24 @@
       "adult_portrait"
     ],
     "description": "花廊下，爱夏身体朝向石径，转头望向镜头，一只手轻扶被微风带起的头纱边缘，另一只手自然垂在腰侧。象牙白蕾丝长袖与象牙白腰带呼应白色发带。镜头取至大腿上部，白花只沿画面两侧形成边框，夕阳透过头纱，脸部保留柔和反光。",
-    "promptProse": "Under a flowering arbor, Aisha turns her head back toward the viewer while her shoulders remain angled along the path. One hand lightly catches the edge of her wind-lifted veil; the other rests beside the ivory sash of her ivory lace-sleeved gown. Frame her from the upper thighs upward, with white blossoms confined to the side edges and open space around her face. Low evening sun passes through the veil from behind, while pale paving reflects gentle light into her eyes.",
+    "promptProse": "Under the flowering arbor, adult Aisha turns her head back while her shoulders remain angled along the path, one hand catching the lifted veil and the other beside the ivory sash. Her covered ivory gown has lace sleeves and a modest long skirt. The upper-thigh medium view leaves blossoms at the sides and open space by her face. Low golden sun passes through the veil, while pale paving reflects gentle light into her eyes.",
     "promptTokens": [
-      "looking_back",
-      "holding_veil",
-      "wind_lifted_veil",
-      "lace_sleeves",
-      "white_blossoms",
-      "flower_arch",
-      "backlighting",
-      "three_quarter_portrait",
-      "evening_sunlight",
-      "ivory_sash"
+      "1girl",
+      "solo",
+      "adult Aisha",
+      "ivory bridal gown",
+      "lace sleeves",
+      "ivory sash",
+      "simple veil",
+      "flowering arbor",
+      "looking back",
+      "sunset",
+      "medium shot"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra characters",
-      "duplicate subject",
-      "split screen"
+      "burgundy sash"
     ]
   }
 }

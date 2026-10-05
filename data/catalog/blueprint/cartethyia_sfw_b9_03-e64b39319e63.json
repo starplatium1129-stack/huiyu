@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_03",
-  "revision": 1,
-  "sortOrder": 1651,
+  "revision": 2,
+  "sortOrder": 1647,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_03",
     "title": "卡提希娅 · 雨廊下的躲雨与烤面包",
@@ -31,42 +31,16 @@
       "bakery_light",
       "medium_shot"
     ],
-    "promptProse": "Sheltering at the bakery entrance, Cartethyia holds a warm paper bag close to her cream cardigan and takes a careful bite of fresh bread. The halo remains delicate above the blonde braid, but her blue-eyed smile is entirely ordinary. Rain falls beyond the awning while golden bakery light reaches her hands and the pale blue dress, turning the unexpected gift into a simple moment of belonging.",
+    "promptProse": "Cartethyia shelters under the town bakery's eaves, accepting fresh bread from the owner and nibbling it from the warm paper bag. Her pale-blue ankle-length dress and cream cardigan remain simple beneath the halo and blonde braid. The medium view includes the doorway and rain beyond the shelter. Bakery light warms her pleased face and bag creases, with amber reflections on the wet threshold and cooler street surfaces farther away.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "cartethyia",
-      "wuthering_waves",
-      "bakery",
-      "awning",
-      "rain",
-      "bread",
-      "paper_bag",
-      "eating",
-      "cream_cardigan",
-      "blue_dress",
-      "smile",
-      "bakery_light",
-      "medium_shot"
+      "Cartethyia",
+      "pale-blue long dress",
+      "cream cardigan",
+      "warm bread",
+      "bakery rain shelter",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -74,6 +48,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

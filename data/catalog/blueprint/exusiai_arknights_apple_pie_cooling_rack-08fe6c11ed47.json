@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_apple_pie_cooling_rack",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 694,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfitId": "apple_pie_bakery_patissiere",
@@ -16,21 +16,16 @@
     "mood": "期待满足",
     "description": "【能天使 · 苹果派出炉之后】烘焙间飘着苹果和肉桂的香气，穿着奶油色毛衣、百褶裙与苹果图案围裙的能天使站在操作台前。她戴好隔热手套，用双手把一盘刚出炉的苹果派稳稳放上冷却架，忍不住露出期待的笑容——「先等它凉一点！这次边缘烤得刚刚好！」",
     "action": "戴着隔热手套，双手把烤盘放在台面的冷却架上",
-    "promptProse": "At a bakery worktop, Exusiai wears her cream sweater and apple-print apron, using both oven-mitted hands to lower a fresh apple pie tray onto a wire cooling rack. Morning light through the flour-dusted window meets the warm oven glow, illuminating the browned pastry and her eager smile as the pie begins to cool.",
+    "promptProse": "Exusiai lowers a freshly baked apple pie onto the cooling rack with both oven-mitted hands, smiling in her cream sweater, pleated skirt and apple-print apron. The medium view keeps the waist-high worktop, tray and gloves together, with the oven farther back. Morning window light outlines the golden crust and rack wires; the oven's remaining glow warms the mitts and tray underside.",
     "promptTokens": [
+      "morning",
       "bakery",
-      "apron",
-      "sweater",
-      "oven_mitts",
-      "baking_tray",
-      "apple_pie",
-      "cooling_rack",
-      "standing",
-      "morning_light",
-      "oven_glow",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "cream sweater",
+      "apple apron",
+      "oven mitts",
+      "apple pie",
+      "cooling rack",
+      "medium shot"
     ],
     "camera": "medium shot, worktop at waist height with tray and gloved hands visible",
     "lighting": "清晨窗光与烤箱余光",
@@ -54,19 +49,6 @@
       "oven_glow",
       "medium_shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "bad hands",
-      "extra fingers",
-      "extra limbs",
-      "text",
-      "watermark",
-      "nsfw",
-      "nude",
-      "explicit"
-    ]
+    "negativeTokens": []
   }
 }

@@ -1,6 +1,6 @@
 # 仓库写入与生成验收
 
-仅在实际维护数据、编译/生成验收、批量重写或定稿时读取。字段与脚本路径均相对仓库根目录。先按 [工作流](../../../../docs/workflow.md) 选择现成入口；写回分片源，不直接改聚合文件。
+仅在实际维护数据、编译/生成验收、批量重写或定稿时读取。字段与脚本路径均相对仓库根目录。先按 [工作流](../../../../docs/workflow.md) 选择现成入口；人物、服装、场景和蓝图以运行目录 `content/catalog.sqlite` 为工作权威，经记录 API 或 `content:catalog` 维护，保存后显式 export 项目快照。`data/catalog/` 仅是导出快照，旧分片只作升级导入，不手改或聚合回写。具体边界查 [内容库设计](../../../../docs/architecture/CONTENT-CATALOG-DESIGN.md)。
 
 批量以目标 ID、manifest 或 delivery 确定范围；委派时按不重叠的角色/场景分工，交代引擎、源文件与保护字段，主任务合并并复核证据。
 
@@ -11,8 +11,11 @@
 | 角色 | `identityTokens` / `identityProse`、原作、稳定外貌、exact tokens |
 | 服装 | 当前 `outfitId` 与 `outfits[].tokens/prose` 一致，避免身份字段泄漏旧衣装 |
 | 蓝图 | `description` / `action` 的可见核心分别进入 `promptTokens` / `promptProse`，按实际 schema 写字段 |
+| 背景与光影 | 环境 CG 的可见背景与位置、入光及受光关系进入最终正文；地点名、笼统光效词、维护字段或未消费 hint 不算补齐；特写与留白按原意 |
 | 导演 | 镜头、光照、构图、`recommendedSize` 和模型参数不互相覆盖冲突 |
 | 最终请求 | 完整 positive / negative、模型/LoRA、seed、尺寸、采样参数及参考输入 |
+
+原场景明确要求的镜面形象／幻影可用 `allowRepeatedSubject` 保留，实际同伴使用 `compositionIntent: group`，三格叙事使用 `triptych`；不能把这些字段当成所有场景的默认。SFW 时间线外貌冲突时，`identityTokensOverride` / `identityProseOverride` 只在该条蓝图中声明已有形态，不改变角色 ID；此类外貌变体拒绝成人蓝图或手动成人词请求。衣装字段只保留衣装，手持道具属于具体场景。
 
 代码入口：`src/utils/popularContent.ts`、`src/composables/prompt/usePopularPromptAssembly.ts`、`src/utils/promptCompiler.ts`、`src/utils/promptPolicy.ts`；独立场景检查复用 `scripts/lib/scene-render-contract.js`。
 

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_dorm_room_shark_pajamas_hug",
-  "revision": 1,
-  "sortOrder": 1192,
+  "revision": 2,
+  "sortOrder": 1188,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sachi_dorm_room_shark_pajamas_hug",
     "title": "小岭幸 · 睡前卧房的鲨鱼睡衣私语",
@@ -31,36 +31,17 @@
       "sitting",
       "pink_hair"
     ],
-    "promptProse": "Sitting cozily on a fluffy bedroom rug in a charming pastel-blue shark kigurumi onesie, Sachi hugs an oversized grey shark plushie tightly to her chest. Soft warm bedside lamplight casts peaceful shadows across her rosy cheeks and innocent blue eyes.",
+    "promptProse": "Seated on a wool cushion in her dorm bedroom, Komine Sachi wraps both arms around an oversized grey shark plush. Her loose sky-blue shark onesie gathers around her knees and her pink hair lifts slightly at the ends. Frame her at seated eye level with bed and wooden floor behind. The mushroom-shaped bedside lamp warms her cheeks, plush seams and nearby rug, leaving the corners subdued.",
     "promptTokens": [
-      "cozy_bedroom",
-      "shark_onesie",
-      "kigurumi",
-      "plushie_toy",
-      "hugging_pillow",
-      "sitting_on_floor",
-      "pink_hair",
-      "blue_eyes",
-      "detailed_background",
-      "cinematic_lighting"
+      "shark onesie",
+      "shark plush",
+      "sitting on floor",
+      "pink hair",
+      "bedroom",
+      "table lamp",
+      "medium close-up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

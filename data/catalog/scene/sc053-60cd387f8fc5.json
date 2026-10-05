@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc053",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "Sitting on the laundromat bench leaning on the viewer's shoulder, Shiki Natsume in a loose white T-shirt and denim shorts shows glossy black tights hugging toned thighs, white sneakers on the bench, warm window light with drum reflections.",
+    "animaCaption": "Shiki Natsume rests against the viewer's shoulder on the laundromat bench while the dryer cycle finishes. Her loose white T-shirt, denim shorts and black tights remain ordinary casual clothing, with the seated hands relaxed beside her. Washing-machine drums recede along the opposite wall. Winter afternoon window light stretches across the bench and reflects faintly from the metal doors; the joined shoulder contact and under-bench shadow anchor the quiet wait.",
     "auditRevision": "audit-v25-2026-08-26-batch3",
     "camera": "长椅双人中景",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "自助洗衣房",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, casual_clothes, coat, skirt",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sleeveless_bodysuit, black_bodysuit, skin-tight, highleg, cleavage, bare_shoulders, bare_legs, sitting_on_washing_machine, leaning_back_on_hands, crossing_legs, laundromat, neon_sign_glow, night, urban, sensual, smirk, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "extra seated bodies, fused shoulder contact, night neon lighting",
+    "prompt": "1girl, shiki_natsume, white t shirt, denim shorts, black tights, sitting on bench, leaning on partner shoulder, laundromat, afternoon window light, medium shot",
     "rating": "R15",
     "season": "冬",
     "story": "【夏目 · 烘干结束前的十分钟】冬日下午的自助洗衣房只剩滚筒转动的低响。夏目坐在长椅上看着倒计时，困意上来时不自觉靠到你肩上。醒来发现姿势后，她没有立刻坐直，只把视线移向旋转的衣物——「还有十分钟，移动反而麻烦。你就暂时保持不动……如果肩膀酸了，可以提前说。」",
@@ -35,7 +35,8 @@
       "laundromat",
       "leaning",
       "full_body",
-      "sneakers"
+      "sneakers",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

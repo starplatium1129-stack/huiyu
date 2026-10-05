@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_skateboard_wheel_check",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 695,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfitId": "lungmen_streetwear_skater",
@@ -16,21 +16,17 @@
     "mood": "轻快专注",
     "description": "【能天使 · 滑板出发前的检查】龙门广场边，能天使穿着红白拼色卫衣和黑色工装裤，耳机挂在颈间，坐在长椅上检查滑板。她一手稳住竖在身旁的板面，另一手用小工具拧紧轮轴，抬头朝你笑了一下——「出发前再检查一遍，可不能滑到一半掉链子！」",
     "action": "坐在长椅上，一手稳住滑板，另一手用工具拧紧轮轴",
-    "promptProse": "On a bench beside a Lungmen plaza, Exusiai checks her skateboard in a red-and-white hoodie and black cargo pants, holding the deck upright with one hand while tightening a wheel nut with a skate tool. Clear afternoon light catches the metal axle and the headphones around her neck, with paving stones and low shopfronts receding behind the bench.",
+    "promptProse": "Exusiai sits on a bench at the edge of Lungmen plaza, steadying an upright skateboard with one hand and tightening its wheel axle with a small tool. Headphones hang over her red-and-white hoodie above black cargo pants. The medium view exposes the wheel and working fingers, with plaza paving behind. Clear afternoon sun catches the axle metal and places the board's shadow beside the bench.",
     "promptTokens": [
-      "city_plaza",
-      "bench",
-      "sitting",
-      "skateboard",
-      "skate_tool",
-      "hoodie",
-      "cargo_pants",
-      "headphones",
       "afternoon",
-      "sunlight",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Lungmen plaza",
+      "bench",
+      "red white hoodie",
+      "black cargo pants",
+      "headphones",
+      "skateboard",
+      "tool",
+      "medium shot"
     ],
     "camera": "medium shot, bench and upright skateboard with wheel adjustment visible",
     "lighting": "街头广场清透的午后日光",
@@ -54,19 +50,6 @@
       "sunlight",
       "medium_shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "bad hands",
-      "extra fingers",
-      "extra limbs",
-      "text",
-      "watermark",
-      "nsfw",
-      "nude",
-      "explicit"
-    ]
+    "negativeTokens": []
   }
 }

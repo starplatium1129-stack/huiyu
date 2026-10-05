@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_rainy_garden_flower_care_smile",
-  "revision": 1,
-  "sortOrder": 1195,
+  "revision": 2,
+  "sortOrder": 1191,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sachi_rainy_garden_flower_care_smile",
     "title": "小岭幸 · 润物细雨的花圃静候",
@@ -31,37 +31,17 @@
       "pink_hair",
       "peaceful"
     ],
-    "promptProse": "Tending blooming blue hydrangeas with a green watering can under gentle summer drizzles, Sachi turns with a pure, radiant smile in her maid attire. Translucent rain droplets cling to her lace headdress and pink hair ribbons amidst glistening flower petals.",
+    "promptProse": "Komine Sachi turns among rain-wet hydrangeas, holding a small green watering can in both hands and smiling toward Yuuji approaching with an umbrella. Her lace headdress and white apron collect droplets. The cowboy composition follows the courtyard path between flowering beds toward the academy wall. Overcast morning light spreads evenly across pink braids and flower heads, with soft contact shadows under leaves and clear highlights on water beads.",
     "promptTokens": [
-      "rainy_garden",
-      "hydrangea_flowers",
-      "watering_can",
-      "light_rain",
-      "maid_dress",
-      "rain_droplets",
-      "pure_smile",
-      "pink_hair",
-      "detailed_background",
-      "cinematic_lighting",
-      "depth_of_field"
+      "maid uniform",
+      "hydrangeas",
+      "green watering can",
+      "light rain",
+      "garden path",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
-    "recommendedSize": "1152x1536"
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "compositionIntent": "group"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_rainy_bus_station_shared_umbrella",
-  "revision": 1,
-  "sortOrder": 1184,
+  "revision": 2,
+  "sortOrder": 1180,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "amane_rainy_bus_station_shared_umbrella",
     "title": "周防天音 · 雨夜站台的红伞依偎",
@@ -31,37 +31,17 @@
       "pantyhose",
       "hair_rings"
     ],
-    "promptProse": "Sheltering close together beneath a large red umbrella at a lonely suburban bus stop in the pouring rain, Amane presses her shoulder lovingly against her companion. Amber streetlights cast glowing reflections across the wet asphalt as raindrops bead upon her crimson hair.",
+    "promptProse": "Suou Amane leans against Yuuji beside the suburban bus shelter at night, tipping their broad red umbrella toward him despite her damp uniform shoulder. Rain falls beyond its rim onto the road. The shelter posts frame the pair while puddles extend into the foreground; an amber streetlamp brightens their wet hair edges and breaks into wavering reflections across the asphalt.",
     "promptTokens": [
-      "rainy_night",
-      "bus_stop",
-      "holding_umbrella",
-      "red_umbrella",
-      "falling_rain",
-      "wet_ground",
-      "school_uniform",
-      "hair_rings",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "1girl",
+      "1boy",
+      "red umbrella",
+      "rainy bus stop",
+      "Mihama uniform",
+      "wet pavement",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "compositionIntent": "group"
   }

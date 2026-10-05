@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_03",
-  "revision": 1,
-  "sortOrder": 1681,
+  "revision": 2,
+  "sortOrder": 1677,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_03",
     "title": "橘美花莉 · 社团教室的摄影指导",
@@ -39,43 +39,17 @@
       "sunset",
       "medium_shot"
     ],
-    "promptProse": "Inside the after-school manga clubroom, popular teen fashion model Mikari Tachibana demonstrates camera angles in front of the blackboard with professional grace. Her open black uniform blazer with gold buttons sits over a beige sweater vest and white shirt, a red bow tie and short grey pleated skirt completing the outfit as she strikes a practiced pose. Her long chestnut brown hair, gathered into two-side-up bunches with pink ribbons, catches the warm sunset rays streaming through the classroom windows. Her bright pink eyes sparkle with pride and playful charm as she poses directly toward the viewer. Seated-height medium shot capturing her natural charisma.",
+    "promptProse": "Mikari Tachibana demonstrates a camera-friendly pose to Okumura before the manga clubroom's blackboard, lifting one hand to brush her chestnut hair. Her open black school blazer, beige vest and red bow stay precise above the grey skirt; pink side ribbons swing lightly. The medium view includes the desks where he watches. Sunset from the windows lights her raised wrist and hair edges, with softer shadows across the board behind her expectant pink eyes.",
     "promptTokens": [
-      "clubroom",
-      "school_uniform",
-      "black_jacket",
-      "blazer",
-      "open_jacket",
-      "sweater_vest",
-      "red_bowtie",
-      "grey_skirt",
-      "pleated_skirt",
-      "posing",
-      "brown_hair",
-      "two_side_up",
-      "hair_between_eyes",
-      "sidelocks",
-      "pink_ribbon",
-      "pink_eyes",
-      "blackboard",
+      "Mikari Tachibana",
+      "black school blazer",
+      "beige vest",
+      "modeling demonstration",
+      "manga clubroom",
       "sunset",
-      "medium_shot"
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -83,6 +57,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

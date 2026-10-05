@@ -384,7 +384,7 @@ test('interrupted image writes leave only staging bytes and recover using the sa
   assert.equal(records(f)[0].review.verdict, 'pending');
 });
 
-test('payload snapshots retain the pre-fix prompts, bindings, dimensions and sampling values', t => {
+test('payload snapshots retain prompts, bindings and dimensions with the current cache default', t => {
   // Captured by extracting ONLY the original pure functions at 9ab9cfca3ead6d41b300969be91233424513e7c9.
   // Synthetic SFW fixtures only; no original entry was required or executed.
   const f = F.fixture(t);
@@ -395,7 +395,9 @@ test('payload snapshots retain the pre-fix prompts, bindings, dimensions and sam
     ref_04_back_rear: '24406b68a8572ebb8b21975836c37094a6c12a1ae6846f24a492df97c95f73f2',
   };
   for (const [persId, hash] of Object.entries(expected)) {
-    assert.equal(F.sha(JSON.stringify(modules[0].buildPayload(f.character, f.character.outfits[0], persId, 123))), hash);
+    const value = modules[0].buildPayload(f.character, f.character.outfits[0], persId, 123);
+    assert.equal(value.teaCacheThresh, 0.05);
+    assert.equal(F.sha(JSON.stringify({ ...value, teaCacheThresh: 0.08 })), hash);
   }
   const inputs = modules[1].loadInputs({ root: f.root });
   const profile = inputs.data['data/presets.json'].model_profiles[0];
@@ -405,14 +407,16 @@ test('payload snapshots retain the pre-fix prompts, bindings, dimensions and sam
   const payload = (task: any, characterId: any = task.characterId) => modules[1].buildPayload({ ...task, characterId, seed: 123 });
   const snapshot = (value: any, hash: string) => {
     assert.equal(value.modelId, 'anima-miaomiao-v1.6');
+    assert.equal(value.teaCacheThresh, 0.05);
     // profileId belongs to the compiler input above, not the HTTP payload.
-    assert.equal(F.sha(JSON.stringify({ ...value, modelId: 'anima-miaomiao-v1.2' })), hash);
+    assert.equal(F.sha(JSON.stringify({ ...value, modelId: 'anima-miaomiao-v1.2', teaCacheThresh: 0.08 })), hash);
   };
   // The popular/batch and two gap hashes below come from pre-migration 27bde11f:
   // its original 1.2 generators, fixture and compiler were replayed independently.
   // fe96ae82 removed the automatic "Compose it as a finished anime wallpaper ..."
   // caption after 9ab9; only that prompt sentence changed these three snapshots.
-  // Keep the valid reference/scene hashes and normalize ONLY the authorized modelId.
+  // Preserve historical prompt/binding/dimension hashes; independently assert
+  // the authorized model identity and new Euler cache threshold above.
   snapshot(payload(tasks[0]), '458a062f3aafe4ed14a36ee74afec9e52851336b1298e18b96a1f18cf91020c9');
   for (const [character, hash] of Object.entries({
     nene: '75a003ccdf092e76e84993be6605247683045d6615ac1b2f555da703e0cdc9dc',

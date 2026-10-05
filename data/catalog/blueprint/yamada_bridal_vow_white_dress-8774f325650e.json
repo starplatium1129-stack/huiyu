@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_bridal_vow_white_dress",
-  "revision": 1,
-  "sortOrder": 1501,
+  "revision": 2,
+  "sortOrder": 1497,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yamada_bridal_vow_white_dress",
     "title": "山田杏奈 · 白裙时装秀的谢幕",
@@ -32,37 +32,17 @@
       "stage_spotlight",
       "medium_full_shot"
     ],
-    "promptProse": "At the end of the white-gown fashion-show runway, Anna Yamada pauses with a bouquet of white roses held in both hands. A flowing formal dress and light veil catch the stage spotlight as her black ponytail settles behind her. Hearing a familiar cheer from the audience, she turns her brown eyes toward it with the relieved excitement of finishing the show. Keep her smile, bouquet and the long skirt readable against the softly lit runway.",
+    "promptProse": "At the end of the white-dress fashion show, Anna Yamada reaches the runway tip and stands securely with roses in both hands. Her white mermaid gown, long veil and high black ponytail move lightly as she directs her practiced closing smile toward a familiar voice in the audience. The medium view includes the runway edge and spectators beyond. White spotlights illuminate veil folds and bouquet petals, with her centered shadow falling along the platform.",
     "promptTokens": [
-      "1girl",
-      "fashion_show",
-      "runway",
-      "white_formal_dress",
-      "bridal_veil",
-      "white_roses",
-      "holding_bouquet",
-      "both_hands",
-      "standing",
-      "smile",
-      "brown_eyes",
-      "stage_spotlight",
-      "medium_full_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Anna Yamada",
+      "white mermaid bridal gown",
+      "veil",
+      "rose bouquet",
+      "runway finale",
+      "spotlights",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "extra_fingers",
-      "extra_limbs",
-      "text",
-      "watermark",
-      "duplicate",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -72,6 +52,7 @@
       "bridal",
       "romance",
       "iconic"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

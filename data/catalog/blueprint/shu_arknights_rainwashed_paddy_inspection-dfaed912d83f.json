@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_rainwashed_paddy_inspection",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 706,
   "createdAt": null,
-  "updatedAt": "2026-10-05T04:55:43.583252300+00:00",
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "shu_arknights_rainwashed_paddy_inspection",
     "characterId": "shu_arknights",
@@ -31,30 +31,18 @@
       "cowboy_shot"
     ],
     "promptTokens": [
+      "morning",
       "balcony",
-      "tomato_plant",
-      "cherry_tomato",
-      "open_hand",
-      "holding_fruit",
-      "pointing",
-      "looking_at_viewer",
-      "light_smile",
-      "cowboy_shot",
-      "railing",
-      "wooden_floor",
-      "buildings",
-      "sunlight",
-      "cast_shadow",
-      "reflected_light"
+      "vegetable planter",
+      "sage linen shirt",
+      "cream trousers",
+      "cherry tomato",
+      "golden hands",
+      "dragon tail",
+      "cowboy shot"
     ],
-    "promptProse": "Shu presents one ripe cherry tomato on her golden palm and points out a fruiting branch with her other hand, smiling as she explains how to recognize a ripe fruit. Her shirt cuffs are rolled back, and her dragon tail curves outside the planter without touching its leaves. The home balcony continues behind her: its railing recedes in perspective, with neighboring residential facades visible beyond it and wooden floorboards leading into the space. Morning sunlight enters from the left and catches her hair, hands and the tomato. The railing and leaves cast defined shadows across her shirt, the planter and the floor; gentle reflected daylight keeps her shaded cheek readable, while the distant buildings have softer contrast.",
-    "negativeTokens": [
-      "extra people",
-      "extra limbs",
-      "bad hands",
-      "watermark",
-      "text"
-    ],
+    "promptProse": "Shu offers a freshly picked cherry tomato on her golden palm beside the balcony planter, smiling sideways and pointing to the fruiting branch. Her sage linen shirt and cream trousers remain clear in the eye-level cowboy view; her dragon tail curves outside the planter without touching foliage. Morning light from the left catches the tomato and rolled cuff, laying rail and leaf shadows across the balcony.",
+    "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",
     "coverageTags": [

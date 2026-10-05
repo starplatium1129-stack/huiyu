@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/city_rider",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 363,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
@@ -12,14 +12,13 @@
       "id": "city_rider",
       "isDefault": false,
       "name": "城市骑手（KFC联动）",
-      "prose": "a red and white delivery rider jacket with a baseball cap, white t-shirt, black shorts and red-striped socks, holding a fried chicken box",
+      "prose": "a red and white delivery rider jacket with a baseball cap, white t-shirt, black shorts and red-striped socks",
       "tokens": [
         "delivery_uniform",
         "red_clothes",
         "white_clothes",
         "baseball_cap",
-        "shorts",
-        "food"
+        "shorts"
       ]
     }
   }

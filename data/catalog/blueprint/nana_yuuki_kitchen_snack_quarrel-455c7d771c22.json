@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_yuuki_kitchen_snack_quarrel",
-  "revision": 1,
-  "sortOrder": 1272,
+  "revision": 2,
+  "sortOrder": 1268,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "跪坐地毯怀抱零食袋护食，露出可爱小虎牙瞪眼示威，爱心尾巴竖直紧绷",
     "camera": "medium shot, eye-level seated framing, lively domestic interaction",
@@ -18,42 +18,17 @@
     "lighting": "客厅温暖的漫射吊灯与电视屏幕跳跃的彩光光斑",
     "location": "结城家客厅矮茶几与电视机前地毯",
     "mood": "欢快护食",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "outfitId": "casual_denim_no_pet",
-    "promptProse": "Kneeling on the living-room rug beside the low table, Nana hugs an opened bag of extra-spicy potato chips with both arms while a hand from her partner reaches for one. She bares her snaggletooth in comic defiance as the television plays behind her and her spade-heart tail stands rigid. Medium eye-level seated framing, warm household lamplight, detailed domestic background.",
+    "promptProse": "Nana kneels on the Yuuki living-room rug beside the low table, protecting an open bag of extra-spicy chips with both arms as Rito's hand reaches for one. She bares her fang in comic protest and holds her tail rigid behind. Frame her at seated eye level with the television beyond the table. Warm ceiling light reveals the crinkled bag and pink hair; screen colors reflect faintly across the table edge.",
     "promptTokens": [
-      "living_room",
-      "carpet",
-      "holding_snack",
-      "potato_chips",
-      "fang",
-      "demon_tail",
-      "denim_shorts",
-      "tsundere_look",
-      "twintails",
-      "detailed_background",
-      "cinematic_lighting",
-      "kneeling_on_rug",
-      "both_hands_hugging_snack",
-      "low_table",
+      "Nana",
+      "spicy chips",
+      "kneeling",
+      "living-room rug",
+      "low table",
       "television",
-      "partner_hand_reaching"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -70,6 +45,7 @@
       "both_hands"
     ],
     "timeOfDay": "傍晚",
-    "title": "娜娜 · 客厅抢薯片的傲娇斗法"
+    "title": "娜娜 · 客厅抢薯片的傲娇斗法",
+    "compositionIntent": "group"
   }
 }

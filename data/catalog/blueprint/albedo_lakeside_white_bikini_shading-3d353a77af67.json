@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_lakeside_white_bikini_shading",
-  "revision": 1,
-  "sortOrder": 1305,
+  "revision": 2,
+  "sortOrder": 1301,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "albedo_lakeside_white_bikini_shading",
     "title": "雅儿贝德 · 湖畔水光的黑翼遮阳",
@@ -30,38 +30,23 @@
       "wet_legs",
       "seductive_smile"
     ],
-    "promptProse": "Perched upon smooth white stones by a shimmering emerald lake, Albedo radiates summer allure in a pure white string bikini. Her curvaceous hourglass figure gleams in the bright sunlight as she playfully unfurls one large black feathered wing to cast a cooling shadow over the viewer. Looking back with a fond, teasing smile, her horns catch the sunlit glint. Gorgeous anime illustration, solo 1girl, no text.",
+    "promptProse": "Albedo sits on white lakeside rocks in her white bikini with gold ring connectors, toes touching the clear water. She lifts one broad black wing to shade her companion, looking back with a warm smile. A diagonal cowboy view shows grass beyond the rocks and lake ripples extending outward. Sunshine gleams on her horns and wet stone edges; the lifted feathers create a cool shelter with water reflections below.",
     "promptTokens": [
-      "lake",
-      "lakeside",
-      "clear_water",
-      "white_bikini",
-      "micro_bikini",
-      "curved_horns",
-      "black_wings",
-      "wing_shading",
-      "cleavage",
-      "wet_skin",
-      "playful_smile",
-      "yellow_eyes",
-      "sunny",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Albedo",
+      "white bikini",
+      "black wing shade",
+      "lake shore",
+      "white rocks",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "pure_white_bikini",
     "coverageTags": [
       "swimsuit",
       "summer",
       "vacation"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

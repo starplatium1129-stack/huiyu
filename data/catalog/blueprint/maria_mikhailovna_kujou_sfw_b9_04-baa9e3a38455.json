@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_04",
-  "revision": 1,
-  "sortOrder": 797,
+  "revision": 2,
+  "sortOrder": 793,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "温室钢琴旁弹完旋律向镜头点头，捧花里藏着给妹妹的花",
     "adult": false,
@@ -23,36 +23,17 @@
     "lighting": "warm afternoon light through glass and leaves",
     "location": "greenhouse music room at the academy",
     "mood": "把照顾家人的心意写成花嫁",
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Mariya Mikhailovna Kujou (Masha) from Alya Sometimes Hides Her Feelings in Russian wears a warm white bridal gown with a soft veil, light-brown ribbon, pearl buttons and a bouquet of family flowers. She sits beside the greenhouse piano with a bouquet holding a flower chosen for her sister. After playing a quiet phrase, she turns toward the viewer and inclines her head with a considerate smile, warm glass light settling across her wavy hair. warm afternoon light through glass and leaves.",
+    "promptProse": "Maria sits beside the piano in the school greenhouse music room, finishing a short melody before nodding gently toward the camera. Her warm-white bridal gown and soft veil frame light-brown curls, and the bouquet includes a flower favored by her sister. The vertical medium-full view keeps piano keys and gown together. Afternoon light through glass and leaves touches pearl buttons and bouquet petals, shading the keyboard beneath her fingers.",
     "promptTokens": [
-      "wedding_dress",
-      "bridal_veil",
-      "greenhouse",
+      "afternoon",
+      "greenhouse music room",
+      "warm white bridal gown",
+      "veil",
       "piano",
-      "family_flowers",
-      "wavy_hair",
-      "brown_ribbon",
-      "considerate_smile",
-      "afternoon_light"
+      "bouquet",
+      "medium full shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -67,7 +48,7 @@
       "considerate_smile",
       "afternoon_light"
     ],
-    "timeOfDay": "午后",
+    "timeOfDay": "黄昏",
     "title": "玛夏 · 温室钢琴旁的温柔花嫁"
   }
 }

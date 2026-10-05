@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc093",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a two-person medium shot under one shared umbrella on a rainy night, Shiki Natsume in a grey sweater, navy pleated skirt and sheer black tights links her arm with the viewer while holding the umbrella handle, trying to keep a composed expression as cool street lights reflect in puddles.",
+    "animaCaption": "Shiki Natsume keeps her arm linked with the viewer while holding their shared umbrella, looking ahead with a composed expression above her grey sweater. The medium view includes the linked sleeves beneath the canopy. Cool street lights recede in the rainy background and break into reflections across the puddles. The canopy holds a darker upper plane, reflected pavement light lifts the lower sleeves, and a small facial highlight separates her from the rain.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "伞下双人半身中景",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "街上",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, sunny",
-    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, grey_sweater, navy_pleated_skirt, sheer_black_tights, ankle_boots, walking_under_one_shared_umbrella, linking_arm_with_viewer, holding_umbrella_handle, rainy_night, street_lights_reflecting_in_puddles, heavy_rain_bokeh, red_ears, composed_shy_expression, looking_forward, medium_shot, cool_rainy_street_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "second umbrella, duplicated linked arms, sunny dry pavement",
+    "prompt": "1girl, shiki_natsume, grey sweater, navy skirt, shared umbrella, linked arms, rainy night, puddle reflections, medium shot",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 雨夜共伞的自然靠近】夏夜回家途中，雨势让伞下的空间越来越窄。夏目主动挽住你的手臂，把两个人拉到不会淋湿的距离，脸上却努力维持平静。你提醒她耳朵红了，她立刻看向前方——「只是走得太快。伞这么小，靠近是合理选择……别故意把路走短。」",
@@ -34,7 +34,8 @@
       "medium_shot",
       "ankle_boots",
       "umbrella",
-      "arm_linked"
+      "arm_linked",
+      "depth_of_field"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

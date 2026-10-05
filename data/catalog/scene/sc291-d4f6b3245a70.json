@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc291",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 286,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "On a rainy weekend afternoon, Ayachi Nene in his oversized grey knit sweater that almost hides her short pants curls sideways on the sofa with bare legs resting on the viewer's lap, sharing an old art book on his arm rest, the sweater's wide neck slipped off one shoulder exposing a rounded shoulder, her cheeks slowly blushing as she looks at him, two cups of black tea steaming on the table outside the rain-streaked window.",
+    "animaCaption": "Ayachi Nene curls sideways on the sofa in a grey knit sweater and shorts, sharing the open art book resting along the armrest with the viewer. Two cups of tea remain on the table near the rainy window. The side view follows the book into overlapping sofa cushions. Overcast daylight softly models her face and the knitted sleeve, while cup shadows and darker cushion folds retain the room's subdued rainy-afternoon depth.",
     "auditRevision": "careful-batch04-2026-08-27",
     "camera": "沙发近景侧视",
     "category": "日常",
@@ -20,8 +20,8 @@
     "location": "公寓客厅沙发",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, male, man, boy, 1boy, couple, two_people, second_person, extra_person, additional_person, two_girls, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, additional_woman, another_woman, background_person",
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, sweater, oversized_sweater, bare_legs, sweating, smooth, bare, thighs, sitting, blush, two, cups, black, rain, wet_ground, sunlight, window_light, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "third tea cup, book fused to armrest, transparent sweater",
+    "prompt": "1girl, ayachi_nene, grey knit sweater, shorts, sitting sideways on sofa, shared art book, two tea cups, rain at window, side close up",
     "rating": "R15",
     "season": "秋",
     "story": "【成年 After Story · 宁宁 · 雨天午后的毛衣】周末的雨从早上就没有停过。宁宁穿着一件宽大的灰色毛衣——那是你的，长度几乎盖住短裤——蜷在沙发角落翻着一本旧画集。你泡了两杯红茶出来时，她已经把位置挪到沙发中间，空出了半边。你坐下后她顺势侧过身，把腿搭在你膝上，画集搁在你手臂旁边让你一起看。雨声填满了窗外的世界，屋内只有翻页和偶尔的啜饮声。她翻到某一页时动作顿了顿，偏过头来看你，紫色瞳孔里映着窗外的灰色天光——「这张的构图……很像上次你拍我的角度。」她说完没有移开视线，毛衣的宽领在她侧身时滑落一截，露出圆润的肩头和锁骨的浅凹。她感觉到你的目光，脸颊慢慢泛红，却没有拉回衣领——「雨好像不会停了……那今天的预定，是不是也可以全部取消？」",
@@ -35,7 +35,8 @@
       "full_body",
       "art_book",
       "legs_on_lap",
-      "rain"
+      "rain",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

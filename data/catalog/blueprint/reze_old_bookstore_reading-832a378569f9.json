@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_old_bookstore_reading",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 429,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "reze_old_bookstore_reading",
     "title": "蕾塞 · 旧书店午后",
@@ -29,28 +29,22 @@
       "casual",
       "dusty_sunbeams"
     ],
-    "promptProse": "Flipping through a fashion magazine in the quiet aisles of an old used bookstore, Reze lounges with relaxed, casual charm. Dusty golden sunbeams slant through tall wooden shelves in peaceful afternoon warmth.",
+    "promptProse": "Reze leans beside the old bookstore's shelves and turns through a fashion magazine, relaxed in her sleeveless white collared shirt, loose black tie, black shorts and choker pin. The medium view includes the open pages and closely arranged volumes extending down the quiet aisle. Slanting afternoon window light reveals magazine edges and her attentive face, catching dust in the beam while the wooden shelves' deeper compartments stay shaded.",
     "promptTokens": [
-      "old_bookstore",
-      "bookshelves",
-      "reading_magazine",
-      "sitting",
-      "dusty_sunbeams",
-      "relaxed",
-      "daylight",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Reze",
+      "white sleeveless shirt",
+      "loose black tie",
+      "black shorts",
+      "choker pin",
+      "fashion magazine",
+      "used bookstore",
+      "afternoon",
+      "medium shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "extra fingers",
-      "weapon",
-      "blood",
-      "night"
+      "readable magazine text"
     ],
     "recommendedSize": "1152x1536",
     "coverageTags": [

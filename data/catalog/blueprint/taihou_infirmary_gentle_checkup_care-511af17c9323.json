@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_infirmary_gentle_checkup_care",
-  "revision": 1,
-  "sortOrder": 1082,
+  "revision": 2,
+  "sortOrder": 1078,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "taihou_infirmary_gentle_checkup_care",
     "title": "大凤 · 私密保健室的贴身诊疗",
@@ -31,36 +31,20 @@
       "whispering",
       "twintails"
     ],
-    "promptProse": "Leaning intimately close over a white examination bed with a silver stethoscope in hand, Taihou provides private medical care in her low-cut pink nurse mini-dress. The secluded curtained infirmary glows with soft white lighting that emphasizes her flushed cheeks and teasing smile.",
+    "promptProse": "Taihou leans beside the port infirmary examination bed in her pink nurse dress, cap and white stockings, setting a silver stethoscope against the Commander's chest and speaking close to their ear. The first-person medium close-up keeps the instrument and steady contact visible with the privacy curtain behind. Pale light filtered through its white fabric softens her face and uniform, catching the stethoscope rim above the shaded bed edge.",
     "promptTokens": [
-      "infirmary",
-      "clinic",
-      "nurse_dress",
+      "daytime",
+      "port infirmary",
+      "pink nurse dress",
+      "nurse cap",
       "stethoscope",
-      "cleavage",
-      "twintails",
-      "blush",
-      "close_proximity",
-      "detailed_background",
-      "cinematic_lighting"
+      "Commander",
+      "medical checkup",
+      "medium close up",
+      "POV"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
-    "recommendedSize": "1152x1536"
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "compositionIntent": "group"
   }
 }

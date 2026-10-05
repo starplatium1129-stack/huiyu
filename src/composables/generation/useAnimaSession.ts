@@ -31,9 +31,9 @@ const INITIAL_STATE: AnimaGenerationState = {
   prompt: '', negative: '', modelId: 'anima-miaomiao-v1.6', loraId: 'L_NENE_V21_ANIMA',
   loraStrength: 0.85, width: 832, height: 1216, steps: 30, cfg: 4.5,
   family: 'anima',
-  sampler: 'res_multistep', scheduler: 'simple', seed: null,
+  sampler: 'euler', scheduler: 'normal', seed: null,
   hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35,
-  teaCache: true, teaCacheThresh: 0.08,
+  teaCache: true, teaCacheThresh: 0.05,
   job: null, result: null, resultContext: null, statusText: '', errorMsg: '', errorReport: null,
 }
 
@@ -124,6 +124,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       cfg: Number(defaults?.cfg) || state.value.cfg,
       sampler: String(defaults?.sampler || state.value.sampler),
       scheduler: String(defaults?.scheduler || state.value.scheduler),
+      teaCacheThresh: typeof defaults?.teaCacheThresh === 'number' ? defaults.teaCacheThresh : state.value.teaCacheThresh,
     }
   }
 

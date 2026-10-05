@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_tatami_ear_cleaning_pampering",
-  "revision": 1,
-  "sortOrder": 1293,
+  "revision": 2,
+  "sortOrder": 1289,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "akeno_tatami_ear_cleaning_pampering",
     "title": "姬岛朱乃 · 和室榻榻米的治愈耳语",
@@ -28,33 +28,16 @@
       "pampering",
       "gentle_smile"
     ],
-    "promptProse": "Seated on fragrant woven tatami mats in a tranquil Japanese room, Akeno Himejima invites the viewer for a pampering ear-cleaning session. Dressed in a relaxed violet silk loungewear robe, she pats her soft lap invitingly with one hand while holding a bamboo earpick in the other. Her warm purple eyes brim with affectionate, doting tenderness. Serene, cozy anime illustration, solo 1girl, no text.",
+    "promptProse": "Akeno Himejima kneels on woven tatami, holding a cotton-tipped bamboo earpick while patting her lap to invite her companion to rest. Her deep-violet lace negligee lies over matching nightwear, and her expression is calmly attentive. The close cowboy view shows mat seams leading to the bamboo blind behind. Filtered daylight falls in soft stripes across her sleeve and black ponytail, with subdued contact shadow beneath her folded legs.",
     "promptTokens": [
-      "tatami_room",
-      "shoji_screen",
-      "kneeling",
-      "sitting_on_tatami",
-      "patting_lap",
-      "lap_pillow",
-      "purple_negligee",
-      "holding_earpick",
-      "gentle_smile",
-      "doting_expression",
-      "purple_eyes",
-      "high_ponytail",
-      "cozy",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "Akeno Himejima",
+      "violet lace nightwear",
+      "bamboo earpick",
+      "tatami",
+      "lap pillow invitation",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "purple_lace_negligee",
     "coverageTags": [

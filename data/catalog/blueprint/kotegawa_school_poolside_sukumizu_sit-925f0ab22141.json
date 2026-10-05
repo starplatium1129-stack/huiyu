@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_school_poolside_sukumizu_sit",
-  "revision": 1,
-  "sortOrder": 1259,
+  "revision": 2,
+  "sortOrder": 1255,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "抱膝坐在泳池边双腿浸水，紧身死库水勾勒出丰满身段，侧脸微红眼神纯情",
     "camera": "medium shot, seated side 3/4 perspective, shimmering water depth",
@@ -18,36 +18,16 @@
     "lighting": "澄澈热带骄阳与碧蓝池水反射出的灵动焦散水波光斑",
     "location": "学校露天游泳池深蓝瓷砖台阶边",
     "mood": "纯真清凉",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "outfitId": "school_swimsuit",
-    "promptProse": "Sitting with knees drawn up beside the sparkling turquoise pool in a traditional navy blue Japanese sukumizu, Yui dips her toes into clear water. Summer sunlight casts shimmering water reflections across her wet raven hair and bashful expression.",
+    "promptProse": "After swimming class, Yui Kotegawa sits on the tiled pool steps with her knees drawn close and her lower legs in the water. Her navy school one-piece bears a white name patch, and she turns shyly toward the approaching Rito. The seated three-quarter view includes pool lanes and the step descending beneath the surface. Afternoon sun catches droplets on black hair; blue reflected ripples brighten the shaded tile beside her.",
     "promptTokens": [
-      "swimming_pool",
-      "poolside",
-      "school_swimsuit",
-      "one-piece_swimsuit",
-      "sitting_on_edge",
-      "wet_skin",
-      "water_caustics",
-      "white_hairband",
-      "detailed_background",
-      "cinematic_lighting"
+      "Yui Kotegawa",
+      "navy school swimsuit",
+      "name patch",
+      "knees drawn up",
+      "pool edge",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -61,6 +41,7 @@
       "white_hairband"
     ],
     "timeOfDay": "正午",
-    "title": "古手川唯 · 校园池畔的死库水抱膝静候"
+    "title": "古手川唯 · 校园池畔的死库水抱膝静候",
+    "compositionIntent": "group"
   }
 }

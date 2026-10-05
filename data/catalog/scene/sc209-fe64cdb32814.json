@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc209",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 204,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc209",
     "title": "拂晓床单上的心形呆毛",
@@ -26,7 +26,8 @@
       "sitting_up",
       "dawn",
       "master_bedroom",
-      "full_body"
+      "full_body",
+      "depth_of_field"
     ],
     "rating": "R15",
     "mature": false,
@@ -38,10 +39,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, nene_r18, ayachi_nene, white_hair, very, long, hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wrapped, white, sheet, bare_shoulders, sitting, bedroom, on_bed, pulling, cover, peeking, eyes, shy_blush, dawn, blue, light, bokeh, collarbone, slender_waist, full_body, morning_light, soft_diffused_light, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, lying, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, daylight, harsh_lighting, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, ayachi_nene, wrapped white coverlet, sitting up, peeking over cover, messy twintails, dawn bedroom, close up",
+    "negative": "uncovered body, transparent coverlet, extra gripping hands",
     "storyJa": "【大人のAfter Story・寧々・夜明け前の二度寝】空はまだ完全には明るくならず、寝室にはカーテンの隙間から淡い青い光だけが漏れていた。寧々は白いシーツにくるまりながら起き上がる。寝癖のついたツインテールと跳ねたアホ毛が、いつもより無防備に見えた。あなたが起きていると気づくと、慌ててシーツを引き上げながらも、そっとこちらを見ている。やがて隣の場所を半分だけ空けて、小さく言った。――「あと五分だけ寝よう……寧々の髪を笑ったり、先に逃げたりしたらだめだからね。」",
-    "animaCaption": "Before dawn in the cohabitation master bedroom, Nene sits up wrapped in a white sheet in the pale blue light from the curtain gap, her sleep-messed twintails and upright ahoge betraying her, pulling the sheet up to her mouth and peeking over it with a shy blush.",
+    "animaCaption": "Ayachi Nene sits upright with the white coverlet gathered near her mouth, peeking over its edge with sleep-tousled twintails and a shy blush. Keep the close framing on the face and hands above the securely covering fabric. Blue dawn light enters through the curtain gap and touches the coverlet ridges; softer reflected bedding light keeps her eyes readable, while the pillow and headboard remain separate darker planes behind.",
     "auditRevision": "careful-batch09-2026-08-27"
   }
 }

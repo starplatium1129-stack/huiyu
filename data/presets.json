@@ -231,8 +231,8 @@
       "tag_style": "space",
       "lora_in_prompt": false,
       "exact_tokens": [],
-      "quality_prefix": "masterpiece, best quality, very aesthetic",
-      "negative_prefix": "worst quality, low quality, score_1, score_2, score_3, artist name, shiny skin, blurry, jpeg artifacts, chromatic aberration, border, white_border, framed, letterbox, padding, margin, inset, comic_panel",
+      "quality_prefix": "best quality, score_7, score_9, very aesthetic, ultra detailed",
+      "negative_prefix": "worst quality, low quality, score_1, score_2, score_3, artist name, shiny skin",
       "negative_mode": "replace",
       "negative_replace_scope": "boilerplate",
       "capabilities": {
@@ -250,8 +250,8 @@
       "rating_all": "safe",
       "rating_r15": "sensitive",
       "rating_r18": "nsfw",
-      "sampler": "res_multistep",
-      "scheduler": "simple",
+      "sampler": "euler",
+      "scheduler": "normal",
       "steps": 30,
       "cfg": 4.5,
       "size": "832×1216"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_cafe_menu_choice",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 692,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfitId": "ice_cream_cafe_casual",
@@ -16,20 +16,16 @@
     "mood": "认真挑选",
     "description": "【史尔特尔 · 甜品店的口味选择】街角甜品店里，史尔特尔穿着灰色卫衣与炭灰百褶裙，斜挎小包，站在冰淇淋展示柜前逐一看着口味牌。她一手扶住包带，另一手指向香草口味，语气比平时耐心得多——「就这个。别把旁边的坚果混进去，我要先尝原来的味道。」",
     "action": "站在展示柜前，一手扶包带，另一手指向香草口味牌",
-    "promptProse": "At a small dessert shop, Surtr stands beside the ice-cream display in her oatmeal hoodie and charcoal pleated skirt, one hand on her crossbody strap and the other pointing to the vanilla label. Afternoon window light falls across the glass case and pastel tubs, catching her intent expression while the quiet shop waits for her decision.",
+    "promptProse": "At the ice-cream display, Surtr keeps one hand on her crossbody-bag strap and points to vanilla with the other. Her oatmeal-gray hoodie and charcoal pleated skirt stand beside the glass cabinet in the side-on medium view. Flavor tubs step back under the counter. Afternoon window light illuminates her pointing fingers and the pale ice cream, leaving softened reflections across the display front.",
     "promptTokens": [
-      "dessert_shop",
-      "ice_cream_display",
-      "standing",
-      "hoodie",
-      "pleated_skirt",
-      "crossbody_bag",
-      "pointing",
-      "window_light",
       "afternoon",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "dessert shop",
+      "ice cream display",
+      "gray hoodie",
+      "charcoal skirt",
+      "crossbody bag",
+      "pointing",
+      "medium shot"
     ],
     "camera": "medium shot, side view of the display case and the pointing hand",
     "lighting": "甜品店侧窗柔和日光",
@@ -52,19 +48,6 @@
       "afternoon",
       "medium_shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "bad hands",
-      "extra fingers",
-      "extra limbs",
-      "text",
-      "watermark",
-      "nsfw",
-      "nude",
-      "explicit"
-    ]
+    "negativeTokens": []
   }
 }

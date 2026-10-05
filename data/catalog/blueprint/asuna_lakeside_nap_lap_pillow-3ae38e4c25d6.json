@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_lakeside_nap_lap_pillow",
-  "revision": 1,
-  "sortOrder": 1368,
+  "revision": 2,
+  "sortOrder": 1364,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "asuna_lakeside_nap_lap_pillow",
     "title": "结城明日奈 · 湖畔微风下的草地膝枕·「真是的……像小猫一样睡得这么香呢」",
@@ -33,42 +33,17 @@
       "dappled_sunlight",
       "afternoon"
     ],
-    "promptProse": "Looking upward from the lap pillow, the viewer meets Asuna Yuuki's gentle smile beneath the willow leaves. She sits on a picnic blanket in a cream round-neck sweater and navy skirt, resting her cheek on one hand while the other brushes the viewer's fringe at the lower edge of the picture. Sparkling lake water and filtered afternoon light remain behind her face. The close perspective follows the resting viewer's gaze into the gently moving leaves.",
+    "promptProse": "Looking upward from Asuna's lap, see her gentle smile as she brushes her companion's forehead hair aside with one hand, the other supporting her cheek. She wears a cream knit top and soft navy skirt on the picnic cloth. Willow leaves hang behind her chestnut side braids, with the bright lake beyond. Moving leaves filter daylight across her cheek and cuffs, while reflected water softly brightens the underside of her face.",
     "promptTokens": [
-      "1girl",
-      "lakeside",
-      "willow_tree",
-      "picnic_blanket",
-      "sitting",
-      "lap_pillow",
-      "hand_on_own_cheek",
-      "stroking_viewer_hair",
-      "looking_down",
-      "gentle_smile",
-      "pov",
-      "low_angle",
-      "close_up",
-      "dappled_sunlight",
-      "afternoon",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "Asuna",
+      "cream knit top",
+      "navy skirt",
+      "lap pillow",
+      "willow leaves",
+      "lake",
+      "upward POV close-up"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "extra_fingers",
-      "extra_limbs",
-      "text",
-      "watermark",
-      "duplicate",
-      "nude",
-      "lingerie",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -79,6 +54,7 @@
       "daily",
       "lap_pillow",
       "healing"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

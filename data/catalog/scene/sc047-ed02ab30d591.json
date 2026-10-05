@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc047",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a half-body back-embrace view at the floor-to-ceiling apartment window on a sunny afternoon, adult Ayachi Nene stands barefoot reaching for the curtain as the viewer approaches from behind and holds her. Light falls across the slightly messy bed sheets while she turns back with a shy smile and does not pull away.",
+    "animaCaption": "At the apartment's floor-to-ceiling window, Ayachi Nene reaches for the curtain in a white nightdress as the viewer's arms settle around her from behind. She turns her head back with a shy smile. The half-body composition keeps the embracing arms and curtain edge clear, with the bed and city beyond in separate planes. Afternoon backlight outlines her hair and sleeves; room reflection softens her face while the curtain casts a broad shadow across the floor.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "背后拥抱半身剪影",
     "category": "恋爱/After_Story",
@@ -20,8 +20,8 @@
     "location": "同居高层公寓落地窗前",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, two_girls, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
-    "prompt": "1girl, pov_partner, adult_ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_silk_negligee, standing_barefoot_by_floor_to_ceiling_window, reaching_for_curtain, viewer_approaching_from_behind, embraced_from_behind, shy_smile, afternoon_sunlight, light_bed_sheets, bedroom, half_body, warm_backlight, city_view, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "extra embracing arms, transparent nightdress, merged curtain and hair",
+    "prompt": "1girl, ayachi_nene, white nightdress, reaching for curtain, back embrace, apartment window, city view, afternoon, medium shot",
     "rating": "All",
     "season": "夏",
     "story": "【成年 After Story · 窗帘合拢之前】午后的阳光透过落地窗洒满卧室，成年的宁宁赤足站在窗边，正准备把窗帘拉拢。你从身后靠近时，她红着脸回头，却没有躲开拥抱。光斑落在微乱的床单上——「外面的人看不见吧？那就再抱一会儿……但是要先帮我把窗帘拉好。」",
@@ -36,7 +36,8 @@
       "half_body",
       "barefoot",
       "embrace_from_behind",
-      "window_view"
+      "window_view",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_morning_boyfriend_shirt_coffee",
-  "revision": 1,
-  "sortOrder": 1279,
+  "revision": 2,
+  "sortOrder": 1275,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "rias_morning_boyfriend_shirt_coffee",
     "title": "莉雅丝 · 晨光微熹的大号衬衫",
@@ -27,35 +27,16 @@
       "gentle_smile",
       "blush"
     ],
-    "promptProse": "Basking in soft golden morning light inside a cozy kitchen, Rias Gremory stands barefoot holding a steaming ceramic mug of coffee with both hands. She wears an oversized white boyfriend shirt slipping down one shoulder, exposing her slender collarbone and delicate cleavage. Looking back with a warm, affectionate smile, her crimson locks tumble gently over her shoulders. Clean anime aesthetic, solo 1girl, no text.",
+    "promptProse": "Rias Gremory stands barefoot in the apartment kitchen, turning back with a newly brewed coffee mug held in both hands. Her oversized white shirt slips softly from one shoulder as red hair falls beside the collar. The eye-level cowboy view includes the counter and wooden floor beyond her. Morning sunlight filtered through sheer curtains illuminates steam and sleeves, with broad window shadows softening toward the room's interior.",
     "promptTokens": [
-      "kitchen",
-      "countertop",
-      "holding_cup",
-      "steaming_drink",
-      "oversized_shirt",
-      "white_shirt",
-      "off-shoulder",
-      "bare_legs",
+      "Rias Gremory",
+      "oversized white shirt",
+      "coffee",
       "barefoot",
-      "gentle_smile",
-      "blush",
-      "morning_light",
-      "sunlight",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "morning kitchen",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "lower_body, cropped_head, headless"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "oversized_white_shirt",
     "coverageTags": [

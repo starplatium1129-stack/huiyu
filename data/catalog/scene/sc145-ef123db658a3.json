@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc145",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 143,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "On a clear Nordic snowfield at midnight, Ayachi Nene in a thick winter coat with her red scarf around her neck slips her cold flushed hands into the viewer's palm and gazes up at the aurora with tears of happiness, her ahoge quivering in the night breeze as green aurora curtains ripple across the starry sky.",
+    "animaCaption": "Ayachi Nene slips her cold hands into the viewer's palm and looks upward at the aurora above the Nordic snowfield. Her winter coat, red scarf and fur boots remain fully visible, with tears of happiness held in her eyes. Green curtains of light extend behind the figure across the stars. Aurora reflection softly outlines the coat and scarf, pale snow fills the shaded face, and faint boot shadows connect her to the broad snowy foreground.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "全身远景",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "极光雪原",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, thick_winter_coat, red_scarf, fur_boots, standing_on_a_nordic_snowfield, slipping_cold_hands_into_viewer's_palm, holding_hands, gazing_up_at_the_aurora, happy_tears, ahoge_quivering_in_night_breeze, green_aurora_curtains, starry_sky, late_night, backlight, starlight, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "cropped boots, duplicate joined hands, aurora appearing inside coat",
+    "prompt": "1girl, ayachi_nene, winter coat, red scarf, fur boots, joined hands, nordic snowfield, green aurora, stars, full body",
     "rating": "All",
     "season": "冬",
     "story": "【魔女的夜宴 · 蜜月终章】北欧澄澈的雪原深夜，漫天璀璨的绿色极光如轻纱般在星空中起舞。宁宁穿着厚厚的冬装外套，脖子上围着你送的红线围巾。她将冻得微红的小手塞进你的掌心，仰头望着壮丽的极光，眼里闪烁着幸福的泪光，头顶的呆毛在夜风中轻轻颤动——「柊史，谢谢你带我来看世界的尽头。作为魔女的妻子，我的余生协议早就无法解约了哦。」",
@@ -35,7 +35,8 @@
       "full_body",
       "aurora",
       "holding_hands",
-      "snowfield"
+      "snowfield",
+      "depth_of_field"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

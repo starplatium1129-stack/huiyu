@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc247",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 242,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "Leaning by the marble counter in the closed café with a glass of red wine before her, Shiki Natsume's slightly loosened collar shows her collarbone under the warm lamp; alcohol flushes her cheeks and turns her dead-fish eyes moist and lazy as she looks up at you, her mole catching the light while she murmurs a tipsy remark about where you are looking.",
+    "animaCaption": "Shiki Natsume leans beside the closed cafe's marble counter and raises her gaze toward the viewer, keeping her shirt collar comfortably in place. The wine glass rests in front of her rather than sharing the hand gesture. Counter edges lead toward the dark cup shelves behind. A warm pendant light touches the glass rim and her relaxed face; soft reflected marble light reveals the sleeve shadows while the rear cafe remains subdued.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "近景平视特写",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "Café Stella 大理石吧台前",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
-    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bare_shoulders, cafe, bar, blush, hazy, dead, fish, gaze, lifting, meet, warm_lighting, night, bokeh, focus, cinematic, glow, full_body, soft_lighting, detailed_background, cinematic_lighting",
+    "negative": "open exposed shirt, duplicate wine glasses, extra foreground faces",
+    "prompt": "1girl, shiki_natsume, closed cafe shirt, leaning at counter, wine glass, relaxed glance, cafe after closing, warm pendant light, close up",
     "rating": "R15",
     "season": "不限",
     "story": "【夏目 · 闭店后的微醺时光】深夜打烊后的Café Stella。夏目难得倒了小半杯红酒放松，白皙的脸颊染上了一抹浅浅的绯红，平日清冷平淡的眼眸也多了几分慵懒水汽。她微微倚着大理石吧台，衬衫领口随着倾斜的动作稍稍松开，露出漂亮的锁骨线条。见你走近，她微仰起脸看着你，眼角的泪痣在暖色灯光下分外迷人。她带着一丝醉意小声呢喃——「……柊史，你靠得太近了。还有……视线在看哪里呢？……算了，看在今天忙了一整天的份上，特别允许你多看几秒。」",
@@ -37,7 +37,8 @@
       "tipsy",
       "flushed",
       "night",
-      "full_body"
+      "full_body",
+      "depth_of_field"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

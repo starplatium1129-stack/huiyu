@@ -21,9 +21,16 @@ fn sample(
     hires: bool,
 ) -> Value {
     let contract = catalog::contract();
+    let model_defaults = &catalog::CATALOG["MODELS"][input["modelId"].as_str().unwrap()];
+    let sampler = model_defaults
+        .get("hiresSampler")
+        .unwrap_or(&contract["HIRES_SAMPLER"]);
+    let scheduler = model_defaults
+        .get("hiresScheduler")
+        .unwrap_or(&contract["HIRES_SCHEDULER"]);
     node(
         "KSampler",
-        json!({"model":model,"positive":link(positive,0),"negative":link(negative,0),"latent_image":latent,"seed":if hires{validation::num(input["seed"].as_f64().unwrap()+1.)}else{input["seed"].clone()},"steps":if hires{validation::num((input["steps"].as_f64().unwrap()*0.6).round().max(12.))}else{input["steps"].clone()},"cfg":input["cfg"],"sampler_name":if hires{&contract["HIRES_SAMPLER"]}else{&input["sampler"]},"scheduler":if hires{&contract["HIRES_SCHEDULER"]}else{&input["scheduler"]},"denoise":if hires{number(input,"hiresDenoise",0.35)}else{1.}}),
+        json!({"model":model,"positive":link(positive,0),"negative":link(negative,0),"latent_image":latent,"seed":if hires{validation::num(input["seed"].as_f64().unwrap()+1.)}else{input["seed"].clone()},"steps":if hires{validation::num((input["steps"].as_f64().unwrap()*0.6).round().max(12.))}else{input["steps"].clone()},"cfg":input["cfg"],"sampler_name":if hires{sampler}else{&input["sampler"]},"scheduler":if hires{scheduler}else{&input["scheduler"]},"denoise":if hires{number(input,"hiresDenoise",0.35)}else{1.}}),
     )
 }
 pub fn build(input: &Value) -> Result<Value> {
@@ -81,7 +88,7 @@ pub fn build(input: &Value) -> Result<Value> {
     if truthy(&input["teaCache"]) {
         graph["13"] = node(
             "AnimaTeaCache",
-            json!({"model":model_link,"rel_l1_thresh":number(input,"teaCacheThresh",0.08),"start_percent":0,"end_percent":1,"cache_device":"cuda"}),
+            json!({"model":model_link,"rel_l1_thresh":input["teaCacheThresh"],"start_percent":0,"end_percent":1,"cache_device":"cuda"}),
         );
         model_link = link("13", 0);
         graph[first]["inputs"]["model"] = model_link.clone();

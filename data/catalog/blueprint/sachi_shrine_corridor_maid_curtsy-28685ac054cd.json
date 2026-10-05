@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_shrine_corridor_maid_curtsy",
-  "revision": 1,
-  "sortOrder": 1190,
+  "revision": 2,
+  "sortOrder": 1186,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sachi_shrine_corridor_maid_curtsy",
     "title": "小岭幸 · 晨光回廊的恭敬屈膝礼",
@@ -31,37 +31,16 @@
       "pink_hair",
       "polite_smile"
     ],
-    "promptProse": "Performing a flawless maid curtsy with both hands lifting her black dress along a sun-drenched wooden academy hallway, Sachi bows with demure obedience. Pure morning sunbeams illuminate her crisp white apron ruffles and neat pink side braids.",
+    "promptProse": "Komine Sachi performs a careful curtsy in Mihama Academy's wooden corridor, holding both sides of her black skirt while her right foot withdraws half a step. Her white ruffled apron and pink side braids remain neat. Show the complete bow at eye level, with window frames diminishing along the hall. Clear morning light crosses her apron and reflects green trees softly on the polished floor.",
     "promptTokens": [
-      "school_hallway",
+      "maid uniform",
       "curtsy",
-      "maid_dress",
-      "maid_apron",
-      "white_thighhighs",
-      "pink_hair",
-      "two_side_up",
-      "polite_smile",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "pink hair",
+      "wooden corridor",
+      "morning light",
+      "full body"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

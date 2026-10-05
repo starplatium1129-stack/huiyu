@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_devil_wings_demonic_crest",
-  "revision": 1,
-  "sortOrder": 1278,
+  "revision": 2,
+  "sortOrder": 1274,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "rias_devil_wings_demonic_crest",
     "title": "莉雅丝 · 纯血恶魔破灭之翼",
@@ -27,31 +27,18 @@
       "energy_aura",
       "flowing_crimson_hair"
     ],
-    "promptProse": "Hovering gracefully against a dramatic crimson moonlit night sky, Rias Gremory unleashes her noble devil heritage with enormous dark bat wings outstretched. Her vivid red hair whips dynamically in turbulent magical currents as a glowing crimson Gremory seal revolves in her raised palm. Medium cowboy shot, vibrant anime key visual style, no text, no extra characters.",
+    "promptProse": "Above the old school building, Rias Gremory hovers in her crimson-and-black embroidered noble combat dress, broad bat wings spread and a Gremory seal gathering in her palm. Her red hair streams through the magical current as she looks toward the threat. The low cowboy view includes the roof edge below and fractured-looking red night sky behind. Moonlight rims wing tips; palm magic lights her fingers and cheek.",
     "promptTokens": [
-      "floating",
-      "bat_wings",
-      "devil_wings",
-      "magic_circle",
-      "energy_aura",
-      "glowing_runes",
-      "flowing_hair",
-      "crimson_hair",
-      "cyan_eyes",
-      "intense_gaze",
-      "cowboy_shot",
-      "low_angle",
-      "cinematic_lighting",
-      "detailed_background"
+      "Rias Gremory",
+      "crimson noble dress",
+      "bat wings",
+      "Gremory crest",
+      "red hair",
+      "hovering",
+      "crimson moon",
+      "cowboy low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "blurry",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "gremory_crimson_battle",
     "coverageTags": [

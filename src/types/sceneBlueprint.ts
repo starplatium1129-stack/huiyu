@@ -4,6 +4,11 @@ export type BlueprintCompositionIntent = 'single' | 'group' | 'triptych'
 export interface SceneBlueprint {
   generatedRecipe?: import('./generatedRecipe').GeneratedRecipe
   compositionIntent?: BlueprintCompositionIntent
+  /** SFW scenes with an intentional mirror image or illusory echo. */
+  allowRepeatedSubject?: boolean
+  /** Explicit SFW timeline appearance; does not change the character ID. */
+  identityTokensOverride?: string[]
+  identityProseOverride?: string
   id: string
   title: string
   category: string

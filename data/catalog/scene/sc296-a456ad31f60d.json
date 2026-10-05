@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc296",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 291,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc296",
     "title": "打烊后的同人庆功",
@@ -28,7 +28,9 @@
       "holding_coat_hem",
       "izakaya",
       "night",
-      "medium_shot"
+      "warm_lantern_light",
+      "medium_shot",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
@@ -40,10 +42,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, casual_black_shirt, unbuttoned_collar, dark_denim_miniskirt, black_thighhighs, leaning_forehead_against_viewer_shoulder_on_couch, fingers_hooking_viewer_sleeve, sweet_umeshu_breath, heavy_blush, tipsy, cozy_living_room, dim_warm_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform, child, loli, underage",
+    "prompt": "1girl, shiki_natsume, black t shirt, denim skirt, leaning forehead on partner shoulder, holding coat hem, izakaya corner, warm light, side close up",
+    "negative": "extra gripping hands, detached shoulder contact, transparent shirt",
     "storyJa": "【夏目・大人のAfter Story・閉店後の同人打ち上げ】新刊発売後の打ち上げが終わり、他のメンバーは既に帰路についた。居酒屋の暖簾も半分ほど垂れていた。夏目は座敷の隅に座り、ほろ酔いで頬を薄赤く染めていた。黒い髪が何本か顔の横に落ちている。彼女は襟元の第一ボタンを外し、息をついた。顔を上げてあなたを見た時、金色の瞳はいつもよりずっと柔らかかった——「今日は予想より売れた……あなたの選んだレイアウト方向は正しかったね。」その評価は突然だが誠実だった。あなたが隣に座って彼女の上着を取りに行こうとすると、彼女は立ち上がらず、むしろ寄りかかってきて額をあなたの肩に預けた。声はBGMにかき消されそうなほど小さかった——「あと一分だけ……一日中立ちっぱなしで、足がすごく痛い。」彼女の息からは梅酒の甘い香りがした。指があなたの上着の裾をそっと掴んでいた——あなたが彼女の言葉を聞く前に立ち去ってしまうのが怖いかのように。",
-    "animaCaption": "At the corner seat of the late-night izakaya with the noren half lowered, slightly tipsy Shiki Natsume in a casual black T-shirt and dark denim skirt undoes the first collar button and lets out a sigh; as you sit down beside her she does not get up but leans over, pressing her forehead against your shoulder with sweet plum-wine breath, her fingers quietly hooking the hem of your coat as if afraid you might leave before she finishes speaking.",
+    "animaCaption": "Shiki Natsume leans her forehead against the viewer's shoulder at the corner izakaya seat, lightly catching his coat hem while finishing her thought. Her black T-shirt and denim skirt remain ordinary casual clothes. The half-lowered noren and table edge overlap the dim interior behind. Warm restaurant light softens her tired expression, highlights the held fabric, and leaves gentle shoulder-contact shadows that keep the relaxed near pose separate from the room.",
     "auditRevision": "careful-batch01-2026-08-27"
   }
 }

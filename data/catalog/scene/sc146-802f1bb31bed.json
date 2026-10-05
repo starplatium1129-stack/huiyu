@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc146",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In the sunlit apartment genkan on a bright morning, Shiki Natsume stands on tiptoe in a cowboy shot framing, looking up at the viewer with a cute tsundere pout and flustered blush as her hands pull firmly at the viewer's necktie to adjust it; she wears a crisp white silk blouse and tight black pencil skirt hugging smooth thighs in sheer black pantyhose, morning window light catching the beauty mark under her amber eye.",
+    "animaCaption": "At the apartment entrance, Shiki Natsume stands on tiptoe to straighten the viewer's tie with both hands, looking upward with a composed pout. Her white blouse and black pencil skirt stay distinct in the eye-level three-quarter framing. The shoe area and doorframe lead back through the genkan. Morning side light catches the tie knot and her cheek, with fingertip shadows on the cloth and softer fill revealing the farther sleeve.",
     "auditRevision": "fix-cowboy-framing-sc146-2026-09-05",
     "camera": "七分身亲密平视",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "公寓玄关",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, coat, text, watermark, signature, nsfw, nude, explicit",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, looking_at_viewer, head_tilt, tsundere_pout, heavy_blush, blushing_ears, both_hands_adjusting_necktie_of_viewer, pulling_necktie, white_silk_blouse, tight_black_pencil_skirt, sheer_black_pantyhose, standing_on_tiptoe, genkan, apartment_entrance, morning_sunlight, rim_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "duplicate tie knots, fused adjusting hands, missing floor contact",
+    "prompt": "1girl, shiki_natsume, white blouse, black pencil skirt, standing on tiptoe, adjusting viewer tie, apartment entrance, side window light, cowboy shot",
     "rating": "All",
     "season": "春",
     "story": "【夏目 · 职场同居篇】清晨的阳光透过公寓的落地窗，柔和地洒在白衬衫上。已经步入社会的夏目正踮起脚尖，笨拙而认真地帮你整理上班的领带。因为你调侃她越来越有贤妻良母的样子，她手上的力道故意加重，气呼呼地揪了一下领带，歪着头瞪你，脸颊上的绯红和那颗温润的泪痣在晨光中可爱得无可救药——「哈？你是笨蛋吗？再乱说话，今天就把你绑在家里不准去上班！」",
@@ -36,7 +36,8 @@
       "adjusting_necktie",
       "standing_on_tiptoe",
       "genkan",
-      "morning_light"
+      "morning_light",
+      "depth_of_field"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

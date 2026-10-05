@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_10",
-  "revision": 1,
-  "sortOrder": 1522,
+  "revision": 2,
+  "sortOrder": 1518,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_10",
     "title": "椎名真白 · 毕业展的白色展厅",
@@ -29,38 +29,16 @@
       "soft_lighting",
       "medium_shot"
     ],
-    "promptProse": "A huge painting hangs behind Mashiro in the white graduation-exhibition gallery. She turns slightly toward visitors outside the frame, fingers quietly clasped behind her ivory dress although her expression stays composed. Her pale orange eyes carry restrained anticipation. Soft gallery lighting separates cream-blonde hair from the white wall, leaving generous headroom in the medium portrait.",
+    "promptProse": "Mashiro Shiina stands before her enormous painting at the personal exhibition, both hands held behind her back and fingers quietly tightening despite her impassive face. Her ivory short-sleeved dress and flat shoes keep the silhouette simple. The medium view includes the white gallery wall and visitors facing the work farther behind. Soft gallery light reveals the canvas and clean dress folds, with restrained shadows under the frame and around her clasped hands.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "art_gallery",
-      "painting",
-      "white_wall",
-      "hands_behind_back",
-      "clasped_hands",
-      "looking_to_side",
-      "calm",
-      "soft_lighting",
-      "medium_shot"
+      "Mashiro Shiina",
+      "ivory dress",
+      "hands behind back",
+      "large painting",
+      "gallery audience",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -68,6 +46,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

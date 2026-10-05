@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_festival_yukata_bench_lean",
-  "revision": 1,
-  "sortOrder": 1500,
+  "revision": 2,
+  "sortOrder": 1496,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yamada_festival_yukata_bench_lean",
     "title": "山田杏奈 · 夏日祭典木屐磨脚的长椅依靠·「木屐带子磨得脚好痛……市川，能让我靠一会儿吗」",
@@ -16,7 +16,7 @@
     "action": "脱木屐揉脚踝，歪头依靠在身侧肩膀，烟花夜空下低语",
     "timeOfDay": "夏夜烟花盛开时",
     "lighting": "夜空烟花多重绚烂彩光与古树下纸灯笼",
-    "camera": "medium full shot, seated view, shoulder contact, hands and exposed ankle visible",
+    "camera": "medium shot, sitting on stone bench, yukata, fireworks, leaning on shoulder",
     "mood": "夏夜唯美、心跳依靠",
     "sceneTags": [
       "festival",
@@ -30,43 +30,18 @@
       "romantic",
       "one_sandal_removed"
     ],
-    "promptProse": "Anna Yamada rests on a stone bench beneath an ancient cedar tree during the summer shrine fireworks festival, wearing an indigo yukata with white goldfish motifs. One wooden geta sandal has been slipped off beside the bench. She rubs the exposed ankle with one hand while holding a half-eaten candy apple in the other, leaning her head against the viewer's shoulder with a shy flush. Multicolored fireworks light her cheek and neck beauty mark, while paper lanterns illuminate the stone bench and removed sandal. A seated medium-full view keeps the shoulder contact, her hands and the exposed ankle together.",
+    "promptProse": "Anna Yamada sits on the tree-side stone bench after one geta rubbed her heel, resting her head lightly on Ichikawa's shoulder while holding her candy apple. Her navy goldfish-print yukata and dark-red obi remain neat, the removed sandal beside the bench. The medium view keeps her feet and shoulder contact readable. Paper lanterns warm their faces beneath the tree, while fireworks add brief colored highlights along her high ponytail and sleeve.",
     "promptTokens": [
       "yamada_anna",
-      "1girl",
-      "solo",
-      "black_hair",
-      "long_hair",
-      "brown_eyes",
-      "mole_on_neck",
-      "tall_female",
-      "yukata",
-      "sitting",
-      "bench",
-      "geta",
-      "fireworks",
-      "festival",
-      "night",
-      "leaning_on_shoulder",
-      "blush",
-      "romantic",
-      "detailed_background",
-      "cinematic_lighting",
-      "one_sandal_removed",
-      "rubbing_ankle"
+      "Anna Yamada",
+      "Ichikawa",
+      "navy goldfish yukata",
+      "candy apple",
+      "removed geta",
+      "festival bench",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -75,6 +50,7 @@
     "coverageTags": [
       "daily",
       "date"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

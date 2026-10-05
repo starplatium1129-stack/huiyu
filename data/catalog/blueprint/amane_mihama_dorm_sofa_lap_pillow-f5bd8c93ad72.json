@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_mihama_dorm_sofa_lap_pillow",
-  "revision": 1,
-  "sortOrder": 1181,
+  "revision": 2,
+  "sortOrder": 1177,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "amane_mihama_dorm_sofa_lap_pillow",
     "title": "周防天音 · 宿舍沙发的膝枕温香",
@@ -31,36 +31,18 @@
       "hair_rings",
       "inviting"
     ],
-    "promptProse": "Sitting upon a cozy dormitory leather couch with her black-stockinged thighs offered as a gentle lap pillow, Amane pats her lap with an affectionate teasing grin. Golden afternoon sunbeams illuminate her unbuttoned school shirt and radiant crimson locks.",
+    "promptProse": "Amane sits at the dormitory leather sofa's center in her lavender Mihama shirt, loosely draped plaid tie, white skirt and dark thighhighs, knees together. She pats her lap with both hands and tilts her head in a gentle invitation toward Yuuji. The seated eye-level medium view includes a moving curtain behind. Warm slanting afternoon window light catches her burgundy hair rings and sleeve, with soft highlights along the leather seat.",
     "promptTokens": [
-      "living_room",
-      "leather_couch",
-      "lap_pillow",
-      "thighhighs",
-      "cleavage",
-      "unbuttoned_shirt",
-      "hair_rings",
-      "seductive_smile",
-      "detailed_background",
-      "cinematic_lighting"
+      "afternoon",
+      "Mihama dorm",
+      "leather sofa",
+      "lavender uniform shirt",
+      "white skirt",
+      "black thighhighs",
+      "patting lap",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

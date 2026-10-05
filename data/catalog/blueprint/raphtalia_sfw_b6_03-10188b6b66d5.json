@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_03",
-  "revision": 1,
-  "sortOrder": 1569,
+  "revision": 2,
+  "sortOrder": 1565,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_03",
     "title": "拉芙塔莉雅 · 篝火旁的晚餐分餐",
@@ -14,7 +14,7 @@
     "description": "旅途营地，她跪坐在篝火边把炖菜分进每个人的碗里，尾巴被火光照得暖融融；确认大家都拿到之后才给自己盛，动作自然得像呼吸。",
     "location": "旅途篝火营地",
     "action": "旅途营地，她跪坐在篝火边把炖菜分进每个人的碗里，尾巴被火光照得暖融融",
-    "timeOfDay": "evening",
+    "timeOfDay": "日间",
     "lighting": "firelight",
     "camera": "horizontal medium shot",
     "mood": "自然日常",
@@ -31,42 +31,16 @@
       "bedroll",
       "horizontal_composition"
     ],
-    "promptProse": "Kneeling beside the campfire, Raphtalia ladles stew into a row of wooden bowls before filling the one closest to herself. Her blue apron stays clear of the pot, and orange firelight warms the fluffy tail curled behind her. The horizontal composition gathers her patient face, the ladle and rising steam into a small circle of comfort, with bedrolls and dark trees beyond the cooking area.",
+    "promptProse": "Raphtalia kneels beside the travel campfire, dividing stew among her companions' bowls before serving herself. Her cream blouse and blue apron remain tidy above a long brown skirt, tail warmed by the nearby flames. The horizontal medium view includes the pot and waiting bowls across the camp circle. Firelight illuminates her ladle hand and ear edges, with orange reflections on bowl rims and longer moving shadows beyond the gathered diners.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "raphtalia",
-      "tate_no_yuusha_no_nariagari",
-      "kneeling",
+      "Raphtalia",
+      "blue apron",
+      "brown long skirt",
+      "stew serving",
       "campfire",
-      "stew",
-      "pot",
-      "ladle",
-      "wooden_bowl",
-      "apron",
-      "steam",
-      "firelight",
-      "bedroll",
-      "horizontal_composition"
+      "horizontal medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": false,
     "sampleRating": "SFW",
@@ -74,6 +48,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

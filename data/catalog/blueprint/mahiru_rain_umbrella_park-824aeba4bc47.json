@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "mahiru_rain_umbrella_park",
-  "revision": 1,
-  "sortOrder": 1473,
+  "revision": 2,
+  "sortOrder": 1469,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "mahiru_rain_umbrella_park",
     "title": "椎名真昼 · 细雨公园递出雨伞的初遇·「淋湿的话，可是会感冒的哦」",
-    "category": "日常羁绊",
+    "category": "战斗高光",
     "characterId": "shiina_mahiru",
     "outfitId": "official_school_uniform",
     "description": "放学后的雨落在社区公园里，真昼独自坐在秋千旁，金色长发的发梢已被打湿。周走近，把自己的伞递向她，让伞面先挡住落下的雨。她抬起头，原本沉静的琥珀色眼睛里透出一点意外，一只手迟疑地伸向伞柄；这份借来的遮蔽，成了两人开始交谈的契机。",
@@ -34,40 +34,16 @@
       "overcast_light",
       "medium_shot"
     ],
-    "promptProse": "Mahiru Shiina looks up from her quiet seat by the park swing as Amane offers her his umbrella after school. The canopy moves over her damp blonde hair before she reaches toward the handle with a hesitant hand. Her school blazer and grey pleated skirt remain neatly covered and opaque. Show the offered umbrella and only the lender's hand entering the foreground, keeping Mahiru's surprised amber eyes and the rain-darkened swing chains in a medium portrait.",
+    "promptProse": "Mahiru Shiina sits alone beside the park swings in the rain until Amane Fujimiya steps closer and offers his umbrella over her head. Her damp golden hair lies against the navy school blazer; she raises surprised amber eyes and reaches hesitantly for the handle. The eye-level medium view keeps the offered umbrella forward and swings behind. Overcast rain light reveals wet sleeve edges and paving reflections, with softer shade beneath the canopy.",
     "promptTokens": [
-      "1girl",
-      "rainy_park",
-      "swing",
-      "swing_chains",
-      "sitting",
-      "looking_up",
-      "receiving_umbrella",
-      "offered_umbrella",
-      "reaching_for_handle",
-      "pov_hand",
-      "surprised_expression",
-      "damp_hair",
-      "school_uniform",
-      "overcast_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Mahiru Shiina",
+      "navy school uniform",
+      "Amane Fujimiya",
+      "offered umbrella",
+      "rainy park",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "extra_fingers",
-      "extra_limbs",
-      "text",
-      "watermark",
-      "duplicate",
-      "nude",
-      "see-through",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -76,6 +52,7 @@
     "coverageTags": [
       "iconic",
       "romance"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

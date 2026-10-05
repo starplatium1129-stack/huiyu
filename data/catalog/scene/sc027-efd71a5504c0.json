@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc027",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a bedroom at night, Ayachi Nene in a soft pink pajama set sits on the bed edge with slender bare legs, bare feet on sheets, holding a phone to her ear with a gentle affectionate blush under warm night light.",
+    "animaCaption": "The call continues as Ayachi Nene sits beside her pillow in soft pink pajamas, keeping the phone at her ear. The close composition concentrates on her listening expression and the hand around the phone. A bedside lamp stands farther back on the table, with the bed edge leading into the shaded room. Its warm light touches her cheek and sleeve; the phone casts a small facial shadow while the pillow returns gentle fill.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "枕边面部近景",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "卧室",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, pajamas, sleepwear_shirt",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, sheer_babydoll, open-front_negligee, white_translucent_cloth, see-through, cleavage, bare_shoulders, bare_legs, sitting_on_bed, holding_smartphone_to_ear, arched_back, heavy_blush, shy_smile, bedroom, night, bedside_lamp, warm_dim_lighting, soft_shadows, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "duplicate phones, phone fused with ear, extra foreground faces",
+    "prompt": "1girl, ayachi_nene, pink pajamas, holding phone to ear, bedroom, bedside lamp, night, close up",
     "rating": "R15",
     "season": "秋",
     "story": "【宁宁 · 没有挂断的深夜电话】秋夜里，宁宁在床上反复点开你的号码，终于拨通后却紧张得一句话也说不出。你没有催促，只隔着听筒陪她听窗外的风。很久以后，她把脸埋进枕头，小声承认——「其实没有急事……只是今天一直没见到你。听到声音以后，好像就能安心睡着了。」",
@@ -34,7 +34,8 @@
       "bedroom",
       "full_body",
       "barefoot",
-      "phone"
+      "phone",
+      "depth_of_field"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

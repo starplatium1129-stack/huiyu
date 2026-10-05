@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_snowy_ruins_coffee_can_share",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 225,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "saber_alter_snowy_ruins_coffee_can_share",
     "title": "黑呆 · 寒风断壁的热咖啡分享",
@@ -29,27 +29,22 @@
       "vending_light",
       "medium_shot"
     ],
-    "promptProse": "Sheltering beneath a broken concrete wall beside a vending machine, Saber Alter offers one warm sealed coffee can to the viewer while keeping a second can in her other gloved hand. Her thick black overcoat, scarf and winter boots fit the snowy stop, with a few flakes settling on her blonde bun. Her breath is visible in the cold air; the vending light catches the closed can lids. The vending light catches the metal and her quietly insistent golden eyes. Keep both cans, both hands and the protective wall in view, without readable labels.",
+    "promptProse": "Sheltered beneath a broken concrete wall, Saber Alter offers one sealed warm coffee can while retaining a second in her other gloved hand. Thick black overcoat, dark scarf and winter boots accompany breath mist and snow on her braided blonde bun. The cowboy view includes the vending machine beside the shelter. Its white light glints on both closed lids and her insistent golden eyes, casting the cans' shadows across her gloves against swirling snow.",
     "promptTokens": [
-      "snowy_ruins",
-      "shelter",
-      "vending_machine",
-      "two_coffee_cans",
-      "offering_can",
-      "gloved_hands",
-      "black_winter_coat",
-      "visible_breath",
-      "vending_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Saber Alter",
+      "black winter overcoat",
+      "dark scarf",
+      "gloves",
+      "two sealed coffee cans",
+      "broken wall",
+      "vending machine",
+      "snow",
+      "cowboy shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "readable labels"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "sfw_winter_coffee",

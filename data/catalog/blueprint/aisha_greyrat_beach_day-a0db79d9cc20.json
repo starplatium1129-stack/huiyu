@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_beach_day",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 489,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "aisha_greyrat_beach_day",
     "title": "爱夏·潮线之外",
@@ -25,36 +25,23 @@
       "summer"
     ],
     "description": "爱夏穿着深绿连身泳装、亚麻罩衫与平底凉鞋，站在潮线之外的干沙上。一手扶住草帽帽檐，另一手拢住罩衫侧摆，目光追随右侧刚退去的浪花。横幅给海面留出空间，海风将发带和衣摆带向同一侧；明亮沙地反光照亮面部，浅色礁石压住远景。",
-    "promptProse": "A retreating wave leaves a bright curved line across the right half of the beach. On dry sand to its left, Aisha steadies the brim of her straw sunhat with one hand and gathers the side hem of her linen cover-up with the other, watching the foam. Flat sandals support both feet above the wet shoreline; the dark-green one-piece swimsuit remains beneath the cover-up. The ribbon and loose fabric trail in the same sea breeze, with reflected sand light on her face and pale rocks beyond the open water.",
+    "promptProse": "On dry sand left of the retreating wave, adult Aisha steadies her straw hat brim with one hand and gathers the linen cover-up's side hem with the other. Dark-green one-piece swimsuit and flat sandals remain secure as she watches foam. The wide view follows the wave's bright curve across the beach toward pale rocks. Reflected sand and sea light illuminate her face and fabric edges, with soft hat shade beneath the brim.",
     "promptTokens": [
-      "holding_hat_brim",
-      "gathering_fabric",
-      "standing_on_sand",
-      "flat_sandals",
-      "retreating_wave",
-      "sea_foam",
-      "windblown_ribbon",
-      "pale_rocks",
-      "wide_shot",
-      "reflected_sunlight"
+      "1girl",
+      "solo",
+      "adult Aisha",
+      "dark green one piece swimsuit",
+      "linen cover-up",
+      "wide brim hat",
+      "flat sandals",
+      "wave line",
+      "pale rocks",
+      "daylight",
+      "wide shot"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra characters",
-      "duplicate subject",
-      "split screen"
-    ],
+    "negativeTokens": [],
     "coverageTags": [
       "daily"
     ]

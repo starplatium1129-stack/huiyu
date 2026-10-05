@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_yellow_sundress_train",
-  "revision": 1,
-  "sortOrder": 1025,
+  "revision": 2,
+  "sortOrder": 1021,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "双手背在身后回首傲娇娇嗔，夏裙微扬",
     "camera": "medium shot, eye level",
@@ -18,38 +18,16 @@
     "lighting": "盛夏炽烈阳光与清透蓝天光照",
     "location": "第3新东京市高架列车月台",
     "mood": "傲娇明媚",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "outfitId": "yellow_summer_sundress",
-    "promptProse": "Waiting on the sunny train platform in her bright yellow summer sundress, Asuka glances back with an adorable tsundere pout. Summer cumulus clouds and glistening railway tracks create a nostalgic, radiant vacation frame.",
+    "promptProse": "Asuka waits on the elevated summer train platform in her yellow sundress, both hands behind her back as she turns with a proud, mildly impatient glance toward Shinji. Her twin tails and skirt move in the breeze. The eye-level medium view shows platform markings beneath and overhead rail structures receding behind. Strong summer sunlight brightens the yellow fabric, with blue-sky reflections softening shade under her turned face.",
     "promptTokens": [
-      "train_station",
-      "platform",
-      "yellow_sundress",
-      "cumulus_clouds",
-      "hands_behind_back",
-      "looking_back",
-      "tsundere_pout",
-      "daylight",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "summer daytime",
+      "train platform",
+      "yellow sundress",
+      "hands behind back",
+      "looking back",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -61,7 +39,8 @@
       "hands_behind_back",
       "looking_back",
       "tsundere_pout",
-      "sun_glare"
+      "sun_glare",
+      "lens_flare"
     ],
     "timeOfDay": "白天",
     "title": "惣流·明日香 · 夏日黄色连衣裙"

@@ -106,7 +106,7 @@ function buildPayload(char: any, outfit: any, persId: any, seed: any) {
     steps: 28,
     cfg: 4.5,
     teaCache: true,
-    teaCacheThresh: 0.08,
+    teaCacheThresh: 0.05,
     seed
   };
 }

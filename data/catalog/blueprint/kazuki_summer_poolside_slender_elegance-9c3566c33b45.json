@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_summer_poolside_slender_elegance",
-  "revision": 1,
-  "sortOrder": 1171,
+  "revision": 2,
+  "sortOrder": 1167,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "kazuki_summer_poolside_slender_elegance",
     "title": "风见一姬 · 碧蓝池畔的银月清波",
@@ -31,36 +31,17 @@
       "sitting_on_edge",
       "red_eyes"
     ],
-    "promptProse": "Resting beside the azure shallows of an outdoor swimming pool with her legs dipping into crystal water, Kazuki leans back gracefully in her sleek silver one-piece swimsuit. Brilliant sunlight casts dancing aquatic caustics across her porcelain skin and floating white hair.",
+    "promptProse": "Kazuki sits beside the outdoor Mihama pool in a plain silver-white one-piece swimsuit, one hand braced on the white nonslip tile and her legs resting in the water. Her long white hair spreads with the ripples as she lifts her face slightly. The seated three-quarter medium view includes water behind her. Clear sunshine brightens the coping and hair, while shifting pool reflections add soft moving patterns beneath her resting wrist.",
     "promptTokens": [
-      "swimming_pool",
-      "poolside",
-      "water_ripples",
-      "one-piece_swimsuit",
-      "wet_skin",
-      "sitting_on_edge",
-      "water_caustics",
-      "red_eyes",
-      "detailed_background",
-      "cinematic_lighting"
+      "daytime",
+      "Mihama pool",
+      "silver white swimsuit",
+      "sitting",
+      "hand on coping",
+      "hair in water",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_01",
-  "revision": 1,
-  "sortOrder": 1593,
+  "revision": 2,
+  "sortOrder": 1589,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_01",
     "title": "吹雪 · 吹雪组的晨会",
@@ -30,41 +30,19 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Fubuki sits at the head of the meeting table with a row of reports aligned before her. One fingertip taps a margin while she considers the next assignment, green eyes attentive beneath her black bob. Her white coat lies neatly over the chair back, revealing the forest-green dress and pearls. Morning office light makes the folders and calm commanding expression the center of this portrait of everyday leadership.",
+    "promptProse": "Fubuki sits at the head of the Blizzard Group's long table, tapping one fingertip against the wood while listening to squad reports. Her forest-green midi dress, white collared coat and pearls remain poised as she assigns the next tasks. The medium view includes reporting members along the table and chairs receding behind. Morning window light reveals her composed face and pearl surfaces, with table-edge shadows separating each seated position.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "fubuki_(one-punch_man)",
-      "one-punch_man",
-      "meeting_table",
-      "reports",
-      "folders",
-      "sitting",
-      "tapping_finger",
-      "composed",
-      "green_dress",
-      "pearl_necklace",
-      "morning_light",
-      "medium_shot"
+      "Fubuki",
+      "forest-green dress",
+      "white coat",
+      "pearl necklace",
+      "team reports",
+      "headquarters",
+      "morning",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -73,6 +51,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

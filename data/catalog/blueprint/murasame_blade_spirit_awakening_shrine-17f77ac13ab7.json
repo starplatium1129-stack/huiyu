@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_blade_spirit_awakening_shrine",
-  "revision": 1,
-  "sortOrder": 1123,
+  "revision": 2,
+  "sortOrder": 1119,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "轻盈悬浮于空中半落姿态，双手背在身后微微前倾，鬼火环绕，神刀在腰间发光",
     "camera": "cowboy shot, medium close-up, dynamic low angle looking slightly up",
@@ -18,39 +18,19 @@
     "lighting": "透过千年神木冠层洒落的金灿晨曦与身侧环绕的青蓝鬼火冷辉",
     "location": "朝武神社神木大殿中庭",
     "mood": "神秘元气",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "outfitId": "spirit_kimono",
-    "promptProse": "Floating weightlessly above the sunlit courtyard of an ancient mountain shrine, Murasame tilts forward playfully with both hands clasped behind her back as ethereal azure spirit wisps orbit her delicate form. Radiant morning sunlight filters through sacred cedar boughs, illuminating her floating pale-green twin tails and the sheathed katana at her hip.",
+    "promptProse": "Murasame rotates gently down from the air before the old shrine hall, hands behind her back in her ceremonial navy-black kimono layers and red cords. Her green hair and red ribbons swirl beside small blue spirit flames, while the broken Murasamemaru shines in Masaomi's hands below. The low cowboy view shows the sacred tree canopy behind. Golden morning light touches her frills and ribbons, and blue flames light the sleeve undersides.",
     "promptTokens": [
-      "shinto_shrine",
-      "sacred_tree",
-      "floating",
-      "spirit_wisps",
-      "katana",
-      "sleeveless_kimono",
-      "bare_shoulders",
-      "ahoge",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting",
-      "hands_behind_back",
-      "slight_forward_lean"
+      "morning",
+      "Asatake shrine",
+      "Murasame",
+      "blade spirit outfit",
+      "broken Murasamemaru",
+      "blue spirit fire",
+      "descending",
+      "cowboy shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -64,6 +44,7 @@
       "bare_shoulders"
     ],
     "timeOfDay": "上午",
-    "title": "丛雨 · 神刀复苏的空中轻降"
+    "title": "丛雨 · 神刀复苏的空中轻降",
+    "compositionIntent": "group"
   }
 }

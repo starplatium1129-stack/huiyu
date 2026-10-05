@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
     "title": "黑呆 · 冬木残垣的卑王铁槌",
@@ -29,27 +29,23 @@
       "golden_eyes",
       "full_body"
     ],
-    "promptProse": "Saber Alter stands firmly on the broad top of a broken stone pillar in the Fuyuki ruins, both armored hands raising Excalibur Morgan above her head before the strike. Dark crimson energy gathers along the black blade while red reflections trace her plate armor and secured blonde bun. Her golden eyes remain fixed on the battlefield below. Use a low vertical view that includes her grounded boots, complete figure and raised sword, with black mud and fractured masonry far beneath the ledge. One warrior, no injured bodies or lettering.",
+    "promptProse": "Saber Alter stands firmly atop the broad broken pillar and raises Excalibur Morgan in both armored hands before the strike, golden eyes fixed on the battlefield below. The low full-body view includes boots, blade and black plate armor with red filigree, fractured masonry and black mud far beneath. Crimson energy along the sword illuminates her gauntlets and secured blonde bun, throwing red-edged shadows across the pillar's rough surface.",
     "promptTokens": [
-      "fuyuki_ruins",
-      "broken_pillar",
-      "standing",
-      "both_hands_on_sword",
-      "raised_sword",
-      "excalibur_morgan",
-      "black_armor",
-      "red_energy",
-      "golden_eyes",
-      "full_body",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Saber Alter",
+      "black plate armor",
+      "red filigree",
+      "braided blonde bun",
+      "raised Excalibur Morgan",
+      "broken pillar",
+      "Fuyuki ruins",
+      "full body",
+      "low angle"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "cropped sword",
+      "injured bodies"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "official_black_armor",

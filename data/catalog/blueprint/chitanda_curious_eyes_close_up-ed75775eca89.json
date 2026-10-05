@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_curious_eyes_close_up",
-  "revision": 1,
-  "sortOrder": 1484,
+  "revision": 2,
+  "sortOrder": 1480,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "chitanda_curious_eyes_close_up",
     "title": "千反田爱瑠 · 好奇心大盛的紫瞳迫近·「折木同学，我很好奇！」",
@@ -30,40 +30,17 @@
       "curious_expression",
       "iconic"
     ],
-    "promptProse": "Eru Chitanda leans forward aggressively across a classroom desk in the after-school classics clubroom, her face inches away in an iconic, curious confrontation. Her enormous, luminous purple eyes sparkle with unquenchable curiosity and starlight-like reflections under the warm setting sun. Her long lustrous black hair falls in straight silky sheets over the desk edge, her sailor collar fluttering slightly as her parted lips form her famous question. Close-up intimate perspective, golden hour light highlighting dilated purple pupils, detailed clubroom background, solo 1girl, no text.",
+    "promptProse": "Eru Chitanda leans eagerly across the Classics Club desk, both hands planted on its surface as her wide purple eyes search Oreki's face for an answer. Her long black hair falls beside the navy sailor collar and black scarf. The close viewpoint keeps the desk edge below and classroom windows behind. Orange sunset crosses her near cheek and fingertips, making clear reflected window highlights in her eyes without obscuring the hair's darker layers.",
     "promptTokens": [
       "chitanda_eru",
-      "1girl",
-      "solo",
-      "black_hair",
-      "long_hair",
-      "bangs",
-      "purple_eyes",
-      "school_uniform",
-      "sailor_uniform",
-      "leaning_forward",
-      "close-up",
-      "face-to-face",
-      "curious_expression",
-      "desk",
-      "classroom",
-      "sunset",
-      "golden_hour",
-      "detailed_background",
-      "cinematic_lighting"
+      "Eru Chitanda",
+      "Kamiyama sailor uniform",
+      "hands on desk",
+      "curious purple eyes",
+      "clubroom",
+      "close-up POV"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -72,6 +49,7 @@
     "coverageTags": [
       "iconic",
       "romance"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

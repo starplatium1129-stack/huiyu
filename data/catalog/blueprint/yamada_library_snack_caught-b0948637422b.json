@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "yamada_library_snack_caught",
-  "revision": 1,
-  "sortOrder": 1495,
+  "revision": 2,
+  "sortOrder": 1491,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yamada_library_snack_caught",
     "title": "山田杏奈 · 图书馆书架死角偷吃薯片的受惊回眸·「市川……嘘！不许告诉图书委员！」",
-    "category": "校园日常",
+    "category": "战斗高光",
     "characterId": "yamada_anna",
     "outfitId": "official_school_uniform",
     "description": "午休的图书室里，杏奈躲在书架间吃薯片，腮帮子还鼓着，就看见你走进过道。她穿着整齐的校服和米色开衫，一手把零食袋藏到背后，另一手赶紧把食指抵在唇边，请你替她保守这个小秘密。",
@@ -32,37 +32,17 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Caught with her cheeks full of potato chips, Anna Yamada turns toward the visitor in the narrow library aisle. She crouches in her buttoned school blouse and beige cardigan, quickly hiding the snack bag behind her back with one hand. Her other index finger asks for silence at her lips, while her brown eyes widen in surprise. Soft lunchtime window light falls between the bookshelves and catches the crinkled corner of the bag.",
+    "promptProse": "Anna Yamada pauses between library shelves with her cheeks still full of chips as her companion enters the aisle. She hides the snack bag behind her back and raises one finger to her lips. Her beige cardigan, white blouse and navy skirt remain neat beneath a high black ponytail. The medium eye-level view retains shelves on both sides; soft window light illuminates her surprised face and cardigan cuff, leaving the hidden bag partly shaded.",
     "promptTokens": [
-      "1girl",
-      "library",
-      "bookshelves",
-      "crouching",
-      "holding_snack_bag",
-      "bag_behind_back",
+      "Anna Yamada",
+      "beige cardigan",
+      "school uniform",
+      "hidden chips",
       "shushing",
-      "finger_to_lips",
-      "puffed_cheeks",
-      "surprised",
-      "brown_eyes",
-      "window_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "library aisle",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "extra_fingers",
-      "extra_limbs",
-      "text",
-      "watermark",
-      "duplicate",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -71,6 +51,7 @@
     "coverageTags": [
       "iconic",
       "school"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

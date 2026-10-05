@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_cathedral_throne_bridal_veil",
-  "revision": 1,
-  "sortOrder": 1306,
+  "revision": 2,
+  "sortOrder": 1302,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "albedo_cathedral_throne_bridal_veil",
     "title": "雅儿贝德 · 纯白圣堂的魔后花嫁",
@@ -30,30 +30,18 @@
       "radiant_smile",
       "vow"
     ],
-    "promptProse": "Walking down an aisle lined with thousands of white roses toward the grand altar, Albedo is radiant in a lavish bridal wedding gown and delicate lace veil draped over her curved horns. Her obsidian wings spread gently behind the sweeping train of pure white silk. Tears of overwhelming, sublime joy sparkle in her golden eyes as she clasps her hands to her heart. Breathtaking anime visual novel art, solo 1girl, no text.",
+    "promptProse": "Albedo approaches through the cathedral's white-rose-lined aisle in her signature white backless evening dress, golden necklace and green-gem waist brooch. Her black wings unfold behind its sweeping hem, and her hands clasp before tear-bright golden eyes. The slightly low cowboy view keeps the altar beyond her horns and dark hair. Stained-glass daylight colors the roses and dress folds, casting separate patches onto the stone path beneath her.",
     "promptTokens": [
-      "wedding_chapel",
-      "white_roses",
-      "wedding_dress",
-      "bridal_veil",
-      "black_wings",
-      "curved_horns",
-      "cleavage",
-      "hourglass_body",
-      "teary_eyes",
-      "happy_tears",
-      "radiant_smile",
-      "yellow_eyes",
-      "cowboy_shot",
-      "cinematic_lighting",
-      "detailed_background"
+      "Albedo",
+      "white backless evening dress",
+      "gold necklace",
+      "black wings",
+      "white roses",
+      "cathedral aisle",
+      "cowboy shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "bridal ballgown"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "official_white_dress",

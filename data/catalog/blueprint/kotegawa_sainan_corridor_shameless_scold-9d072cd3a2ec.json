@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_sainan_corridor_shameless_scold",
-  "revision": 1,
-  "sortOrder": 1256,
+  "revision": 2,
+  "sortOrder": 1252,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "双手抱胸端立微倾身躯，红色臂章醒目，面红耳赤含羞娇叱，黑长直发丝飞扬",
     "camera": "medium shot, eye-level, classic tsundere confrontation framing",
@@ -18,37 +18,17 @@
     "lighting": "走廊高大玻璃窗洒入的明澈日光与黑长直发丝上的剔透光泽",
     "location": "彩南高中教学楼采光走廊拐角处",
     "mood": "正经娇羞",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Standing with arms crossed defensively and blushing furiously in a sunlit high school hallway, Yui scolds with righteous indignation in her tidy school sailor uniform. Morning sunbeams illuminate her crisp red disciplinary armband and lustrous waist-length black hair held by a white hairband.",
+    "promptProse": "Yui Kotegawa stands at the school hallway corner with crossed arms, scolding Rito as he gets up after stumbling beside her. Her sailor-uniform buttons are fastened, and the red disciplinary armband stands out beneath black hair and white headband. The medium eye-level view follows the wood floor toward classroom doors. Window daylight catches flushed cheeks and armband fabric, with frame shadows crossing the floor behind the clothed pair.",
     "promptTokens": [
-      "school_hallway",
-      "arms_crossed",
-      "heavy_blush",
-      "tsundere_glare",
-      "red_armband",
-      "sainan_high_school_uniform",
-      "sailor_suit",
-      "white_hairband",
-      "very_long_hair",
-      "detailed_background",
-      "cinematic_lighting"
+      "Yui Kotegawa",
+      "Sainan uniform",
+      "disciplinary armband",
+      "arms crossed",
+      "white headband",
+      "school corridor",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -62,6 +42,7 @@
       "black_hair"
     ],
     "timeOfDay": "上午",
-    "title": "古手川唯 · 学园走廊的“不知羞耻”斥责"
+    "title": "古手川唯 · 学园走廊的“不知羞耻”斥责",
+    "compositionIntent": "group"
   }
 }

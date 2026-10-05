@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_forest_cabin_hearth_warmth",
-  "revision": 1,
-  "sortOrder": 1172,
+  "revision": 2,
+  "sortOrder": 1168,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "kazuki_forest_cabin_hearth_warmth",
     "title": "风见一姬 · 避难木屋的炉火温存",
@@ -31,36 +31,17 @@
       "white_dress",
       "red_eyes"
     ],
-    "promptProse": "Curled up comfortably on a thick wool blanket before a crackling stone hearth inside a rustic mountain cabin, Kazuki gazes pensively into dancing orange flames. Flickering firelight casts a warm amber glow across her bare shoulders and floor-length silver hair against the dark stormy night.",
+    "promptProse": "Kazuki curls on a pile of thick blankets inside the rough log shelter, wearing her white sundress and hugging her knees as she watches the fireplace and lightly touches her hair tips. The eye-level medium close-up includes rough timber and the dark rain-marked opening behind. Orange-red firelight warms her pale dress and silver hair, with deep outside storm darkness contrasting against layered blanket shadows beneath her hands.",
     "promptTokens": [
-      "log_cabin",
+      "stormy night",
+      "forest shelter",
+      "white sundress",
+      "blankets",
       "fireplace",
-      "fire_glow",
-      "wool_blanket",
-      "curled_up",
-      "barefoot",
-      "white_dress",
-      "red_eyes",
-      "detailed_background",
-      "cinematic_lighting"
+      "knees hugged",
+      "medium close up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152"
   }
 }

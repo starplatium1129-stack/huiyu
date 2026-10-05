@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_bridal_vow_church",
-  "revision": 1,
-  "sortOrder": 1435,
+  "revision": 2,
+  "sortOrder": 1431,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "utaha_bridal_vow_church",
     "title": "霞之丘诗羽 · 白纱下的作家誓言·「这次的结局，由我执笔」",
@@ -26,40 +26,25 @@
       "smile",
       "romance"
     ],
-    "promptProse": "Kasumigaoka Utaha stands at the church altar in a pure white wedding gown, her white hairband traded for a veil over her long black hair, holding her handwritten vows. The sardonic glint in her red eyes gives way to sincere light as she declares that heroines in her stories always faltered at the final step, so this ending she will write herself, in person. Environmental portrait, cinematic lighting, stained-glass light, detailed church background.",
+    "promptProse": "Utaha Kasumigaoka stands before the church altar in her off-shoulder black evening dress and silver earrings, her usual ironic red-eyed look becoming serious as she makes her vow. The low chignon leaves her face clearly visible. A wide environmental portrait includes altar steps, aisle benches and tall colored windows. Their daylight illuminates dress ridges in colored reflections, contrasting with the brighter stone and soft shadows below the trailing hem.",
     "promptTokens": [
       "kasumigaoka_utaha",
-      "1girl",
-      "solo",
-      "wedding_dress",
-      "bridal_veil",
-      "bouquet",
-      "white_flower",
-      "red_eyes",
-      "black_hair",
-      "long_hair",
-      "smile",
-      "happy_tears",
-      "church",
-      "stained_glass",
-      "light_rays",
-      "detailed_background",
-      "cinematic_lighting"
+      "Utaha Kasumigaoka",
+      "black evening dress",
+      "low chignon",
+      "ceremonial vow",
+      "church altar",
+      "wide shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "white wedding gown"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
     "kreaStyleHint": "anime_portrait_sharp",
     "animaStyleHint": "anime_portrait_sharp",
-    "outfitId": "sfw_white_bridal_gown",
+    "outfitId": "elegant_black_dress",
     "coverageTags": [
       "bridal",
       "iconic",

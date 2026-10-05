@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_snowy_shrine_shiromuku_vow",
-  "revision": 1,
-  "sortOrder": 1295,
+  "revision": 2,
+  "sortOrder": 1291,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "akeno_snowy_shrine_shiromuku_vow",
     "title": "姬岛朱乃 · 白雪神社的纯白无垢",
@@ -29,33 +29,21 @@
       "shy_smile",
       "blush"
     ],
-    "promptProse": "Surrounded by softly falling snow in a quiet winter shrine garden, Akeno Himejima stands resplendent in traditional Japanese bridal Shiromuku attire. The immaculate white silk kimono with delicate crane embroidery frames her porcelain face, her black hair styled in traditional elegance. Her cheeks blush with tender bashfulness as she gazes at the viewer with eternal devotion. Ethereal, romantic anime visual novel style, solo 1girl, no text.",
+    "promptProse": "In the quiet snow-covered shrine courtyard, Akeno Himejima bows with her hands folded before the broad sleeves of her white miko top and red hakama. Falling flakes settle on her black ponytail and shoulders as she raises a shy violet-eyed smile toward her companion. The eye-level cowboy view leaves the shrine veranda behind. Cold light reflected by snow reveals white cloth folds, with a soft red reflection beneath the hakama.",
     "promptTokens": [
-      "winter_shrine",
-      "snowing",
-      "snow_ground",
-      "shiromuku",
-      "traditional_kimono",
-      "white_kimono",
-      "bridal_attire",
-      "hands_folded",
-      "gentle_bow",
-      "heavy_blush",
-      "blushing_ears",
-      "purple_eyes",
-      "cowboy_shot",
-      "cinematic_lighting",
-      "detailed_background"
+      "Akeno Himejima",
+      "white miko top",
+      "red hakama",
+      "snowy shrine",
+      "bowing",
+      "cowboy shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "shiromuku",
+      "bridal headdress"
     ],
     "recommendedSize": "1152x1536",
-    "outfitId": "sfw_white_shiromuku",
+    "outfitId": "official_miko_robe",
     "coverageTags": [
       "bridal",
       "vow",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_lunar_tear_field_blindfold_touch",
-  "revision": 1,
-  "sortOrder": 1118,
+  "revision": 2,
+  "sortOrder": 1114,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yorha_2b_lunar_tear_field_blindfold_touch",
     "title": "2B · 月之泪花海的微风轻拂",
@@ -31,37 +31,18 @@
       "god_rays",
       "peaceful"
     ],
-    "promptProse": "Kneeling amidst a hidden cavern sanctuary blanketed in glowing white Lunar Tear flowers, 2B gently touches the edge of her black blindfold with gloved fingers. Heavenly sunbeams pierce the ceiling fissure, enveloping her gothic dress in pure ethereal brilliance.",
+    "promptProse": "2B kneels on one knee among white Lunar Tears in the hidden sunlit cave, lifting her right gloved fingertips to the edge of her blindfold. Her black YoRHa dress moves with a faint breeze and her lip-side beauty mark remains clear in the three-quarter medium close-up. White light through the ceiling fissure catches flowers around her; their glow softly reflects onto her glove and embroidered skirt above the darker rock.",
     "promptTokens": [
-      "white_flower_field",
-      "lunar_tear_flowers",
-      "divine_sunbeams",
-      "kneeling",
-      "gothic_dress",
+      "daytime",
+      "underground sanctuary",
+      "Lunar Tears",
+      "YoRHa dress",
       "blindfold",
-      "silver_hair",
-      "mole_under_mouth",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "one knee",
+      "right hand touching",
+      "medium close up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

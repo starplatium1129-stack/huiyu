@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_kitchen_apron_feast_service",
-  "revision": 1,
-  "sortOrder": 1180,
+  "revision": 2,
+  "sortOrder": 1176,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "amane_kitchen_apron_feast_service",
     "title": "周防天音 · 美浜厨房的爱心大餐",
@@ -31,35 +31,19 @@
       "hair_rings",
       "gentle_smile"
     ],
-    "promptProse": "Leaning across the warm wooden kitchen counter in a soft pink apron, Amane gently blows on a steaming spoonful of homemade curry to feed her companion. The cozy incandescent glow highlights her generous cleavage and deeply affectionate sapphire eyes.",
+    "promptProse": "Amane leans across the Mihama kitchen's wooden counter in her cream sweater dress and pink apron, lifting a spoonful of curry and blowing gently to cool it for Yuuji. Her other hand lightly covers her mouth as her dark-blue eyes smile. The eye-level first-person medium close-up includes the spoon near the foreground and a steaming pot behind. Warm orange pendant light catches the curry surface, steam and apron folds.",
     "promptTokens": [
-      "traditional_kitchen",
-      "maid_apron",
-      "holding_spoon",
-      "serving_food",
-      "cleavage",
-      "hair_rings",
-      "gentle_smile",
-      "detailed_background",
-      "cinematic_lighting"
+      "evening",
+      "Mihama kitchen",
+      "cream sweater dress",
+      "pink apron",
+      "curry",
+      "spoon",
+      "blowing",
+      "medium close up",
+      "POV"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

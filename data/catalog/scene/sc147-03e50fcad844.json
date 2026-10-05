@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc147",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 145,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a close-up of the rainy-night bedroom lit only by a warm bedside lamp, Ayachi Nene in loose cute long-sleeve pajamas lies prone on a pillow with her chin propped on both hands. Her bare legs swing gently behind her as she looks up at the viewer with wide sparkling eyes and a contentedly drooping ahoge.",
+    "animaCaption": "Ayachi Nene rests her chin on both hands atop the bedroom pillow, listening with wide, interested eyes in her loose long-sleeved pajamas. The close composition leaves her face unobstructed, with pillow folds leading back toward the rain-streaked window. A single bedside lamp warms her cheek and fingertips; hand shadows fall onto the pillow, while the farther bedding and room corners remain darker and softly separated.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "近景特写",
     "category": "日常",
@@ -20,8 +20,8 @@
     "location": "温馨卧室床榻",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cute_loose_long_sleeve_pajamas, lying_prone_on_bedroom_pillow, propping_chin_on_both_hands, bare_legs_gently_swinging_behind_her, looking_at_viewer_with_wide_sparkling_eyes, contented_drooping_ahoge, rain_on_window, rainy_night_bedroom, warm_bedside_lamp, close_up, soft_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "extra chin-supporting hands, transparent pajamas, daylight window",
+    "prompt": "1girl, ayachi_nene, long sleeved pajamas, lying on pillow, chin on hands, rainy bedroom window, bedside lamp, close up",
     "rating": "All",
     "season": "不限",
     "story": "【宁宁 · 居家乐章】暴雨敲打了整晚，卧室里只点着一盏散发着微弱暖芒的床头灯。宁宁穿着松垮可爱的萌系长袖睡衣，整个人软榻榻地趴在枕头上，双手托着下巴，光洁的双腿在身后轻轻晃动。她睁大亮晶晶的眼睛看着侧卧在旁边的你，头顶的呆毛因为安心而顺从地垂下，声音软绵绵的——「呐，柊史，等我们毕业了，再养一只和宁宁发带一样颜色的猫咪好不好？」",
@@ -35,7 +35,8 @@
       "prone",
       "pillow",
       "looking_up",
-      "night"
+      "night",
+      "depth_of_field"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

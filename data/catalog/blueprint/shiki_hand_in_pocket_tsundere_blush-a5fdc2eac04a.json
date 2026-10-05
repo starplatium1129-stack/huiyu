@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_hand_in_pocket_tsundere_blush",
-  "revision": 1,
-  "sortOrder": 1347,
+  "revision": 2,
+  "sortOrder": 1343,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "手被拉入对方大衣口袋握紧，侧过脸红透耳根，咬唇假装看别处任由牵手",
     "camera": "medium close-up, eye level, deeply embarrassed tsundere view",
@@ -22,33 +22,17 @@
     "location": "飘着细雪的冬日十字路口红绿灯斑马线旁",
     "mood": "反差傲娇",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "self-harm, choking"
+      "knife"
     ],
     "outfitId": "kimono_red_jacket_no_knife",
-    "promptProse": "Standing at a snowy winter street corner, Ryougi Shiki is swept into an intensely flustered moment as the viewer slips her cold hand into their warm coat pocket. Wearing her signature red leather jacket over her white kimono, a bright crimson flush rushes across her pale cheeks and delicate ears. Biting her lower lip, she stubbornly turns her head away, unable to hide the soft warmth in her dark eyes. Emotional anime key visual with two clothed figures, no text.",
+    "promptProse": "Ryougi Shiki blushes at the winter street crossing as her companion draws her hand from the red leather jacket pocket and shelters it in his coat pocket. Her free hand stays near the dark obi over her white kimono, and she looks toward the roadside tree. The close eye-level view retains the signal pole behind. Warm shop-window light touches her cheek and clasped sleeves; falling snow reflects softer light along the jacket.",
     "promptTokens": [
-      "winter_street",
-      "snowing",
-      "crosswalk",
-      "white_kimono",
-      "red_jacket",
-      "hands_in_pocket",
-      "handholding",
-      "heavy_blush",
-      "blushing_ears",
-      "red_ears",
-      "looking_away",
-      "biting_lip",
-      "black_hair",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "two_clothed_figures"
+      "Ryougi Shiki",
+      "white kimono",
+      "red leather jacket",
+      "hand in companion pocket",
+      "winter crossing",
+      "medium close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

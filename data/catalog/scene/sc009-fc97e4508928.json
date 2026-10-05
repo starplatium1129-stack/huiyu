@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc009",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "By a cafe window in an oversized cream knit sweater and light grey pleated miniskirt with silky white thighhighs, Ayachi Nene sits holding a steaming latte mug with both hands, gentle loving smile in warm autumn afternoon cafe light.",
+    "animaCaption": "The latte mug rests between Ayachi Nene's hands as she sits by the cafe window in a cream knit sweater. She glances sideways over its rim, then lowers her eyes with a shy smile. The table edge leads toward the window and the street beyond; empty chairs overlap farther inside the cafe. Afternoon light reveals the knit texture and mug steam, with a clear mug shadow on the wood and gentle fill beneath her chin.",
     "auditRevision": "careful-batch04-2026-08-27",
     "camera": "半身中景",
     "category": "日常",
@@ -20,8 +20,8 @@
     "location": "咖啡厅",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, school_uniform, shirt, blazer, casual_clothes",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, virgin_killer_sweater, white_sweater, backless_sweater, turtleneck_sweater, sleeveless_sweater, sideboob, bare_back, bare_shoulders, bare_legs, sitting_on_chair, leaning_forward_on_table, holding_coffee_mug_with_both_hands, shy, heavy_blush, looking_away, cafe, wooden_table, warm_afternoon_light, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "duplicate mugs, hands inside cup, opaque steam covering face",
+    "prompt": "1girl, ayachi_nene, cream knit sweater, holding mug, sitting, cafe table, window light, medium shot",
     "rating": "R15",
     "season": "秋",
     "story": "【宁宁 · 咖啡杯旁的偷看】秋日午后，宁宁坐在靠窗的位置翻一本轻松漫画，咖啡的热气不时遮住她的表情。她早就察觉你在对面看她，却故意多翻了两页才抬眼，呆毛不满地晃了晃。等你移开视线，她又把甜点推到桌子中央——「一直盯着很没礼貌哦。作为赔礼，这块蛋糕要和我一人一半。」",
@@ -33,7 +33,8 @@
       "smooth_thighs",
       "cafe_window",
       "full_body",
-      "mary_jane"
+      "mary_jane",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

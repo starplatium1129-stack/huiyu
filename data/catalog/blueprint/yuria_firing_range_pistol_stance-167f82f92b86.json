@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yuria_firing_range_pistol_stance",
-  "revision": 1,
-  "sortOrder": 1207,
+  "revision": 2,
+  "sortOrder": 1203,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yuria_firing_range_pistol_stance",
     "title": "春寺由梨亚 · 初冬街角的红羊毛围巾与热可可分享",
     "category": "暖冬日常",
     "characterId": "harudera_yuria",
-    "outfitId": "sfw_beige_coat_red_scarf",
+    "outfitId": "executive_suit",
     "coverageTags": [
       "daily"
     ],
@@ -35,50 +35,21 @@
       "bare_face",
       "gentle_smile"
     ],
-    "promptProse": "A delightful, fashionable winter date anime illustration of Harudera Yuria (JB) from The Fruit of Grisaia strolling down a festive city street with her partner. Completely without her glasses, she radiates elegance and mature girlfriend charm in a tailored beige cashmere overcoat, a cozy bright red knitted scarf, and dark leather boots. Golden autumn leaves drift around her cascading blonde hair. Offering a steaming cup of hot chocolate with both hands, a soft puff of white condensation escapes her smiling pink lips as she looks ahead with deep, affectionate warmth. Soft festive urban lighting, crisp winter atmosphere, clean anime linework, no text.",
+    "promptProse": "Harudera Yuria offers a steaming paper cup of hot cocoa with both hands during an early-winter shopping walk with Yuuji. She wears her charcoal jacket, white collared shirt, matching pencil skirt and black tights, with glasses removed. Shop windows recede behind falling gold leaves. Afternoon sun warms her blonde waves and jacket shoulder; festive window bulbs glint on the cup lid as her breath condenses.",
     "promptTokens": [
-      "city_street",
-      "autumn_leaves",
-      "winter_clothing",
-      "beige_coat",
-      "overcoat",
-      "red_scarf",
-      "boots",
-      "holding_cup",
-      "coffee_cup",
-      "steam_from_mouth",
-      "blonde_hair",
-      "long_hair",
-      "wavy_hair",
-      "blue_eyes",
-      "mole_under_eye",
-      "glasses_removed",
-      "bare_face",
-      "blushing",
-      "gentle_smile",
-      "detailed_background",
-      "cinematic_lighting"
+      "Harudera Yuria",
+      "charcoal business suit",
+      "white shirt",
+      "black tights",
+      "hot cocoa",
+      "winter street",
+      "medium shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "glasses",
-      "eyewear",
-      "red-framed_eyewear",
-      "nsfw",
-      "nude"
+      "glasses worn",
+      "firearm"
     ],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "compositionIntent": "group"
   }
 }

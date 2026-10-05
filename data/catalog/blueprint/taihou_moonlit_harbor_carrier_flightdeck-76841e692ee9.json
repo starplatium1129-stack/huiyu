@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_moonlit_harbor_carrier_flightdeck",
-  "revision": 1,
-  "sortOrder": 1085,
+  "revision": 2,
+  "sortOrder": 1081,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "taihou_moonlit_harbor_carrier_flightdeck",
     "title": "大凤 · 极夜港口的烈焰航母出击",
@@ -31,36 +31,17 @@
       "twintails",
       "ocean"
     ],
-    "promptProse": "Standing imperiously upon the steel armored flight deck of her aircraft carrier amid dark turbulent waters, Taihou directs flaming carrier strike aircraft into the midnight sky. Roaring crimson fires illuminate her billowing robes and long twin tails with awe-inspiring naval might.",
+    "promptProse": "Taihou stands on her immense armored carrier's flight deck in her red-and-black imperial kimono, facing the fortress sea as fiery aircraft launch behind her. The low wide view keeps the deck stretching toward the warship superstructure and dark horizon. Red lotus flames rise along the deck edge, lighting her broad sleeves and the aircraft undersides; cold moonlight outlines the upper rigging against the warmer launch trails.",
     "promptTokens": [
-      "aircraft_carrier",
-      "flight_deck",
-      "naval_aviation",
-      "flames",
-      "fire_glow",
-      "kimono",
-      "twintails",
-      "stormy_sea",
-      "detailed_background",
-      "cinematic_lighting"
+      "night",
+      "carrier flight deck",
+      "red black kimono",
+      "flaming aircraft",
+      "red lotus fire",
+      "wide shot",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_commander_office_tea_waiting",
-  "revision": 1,
-  "sortOrder": 1080,
+  "revision": 2,
+  "sortOrder": 1076,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "taihou_commander_office_tea_waiting",
     "title": "大凤 · 官邸深夜的温情侍奉",
@@ -31,36 +31,19 @@
       "twintails",
       "gentle_smile"
     ],
-    "promptProse": "Leaning over the commander’s mahogany desk in the quiet midnight office, Taihou serves a steaming cup of tea in a form-fitting crimson velvet gown with a backless cutout. The warm lampglow accentuates her generous décolletage and the boundless affection glistening in her eyes.",
+    "promptProse": "Taihou brings carefully brewed red tea to the Commander's locked office desk, leaning forward in her crimson velvet evening gown and dark opera gloves to gently touch their cheek. The low medium close-up holds her attentive face and tea beside the near desk edge, with a quiet moonlit window behind. Warm desk-lamp light illuminates her fingers and cup steam, while silver moonlight outlines her earrings and gown shoulder.",
     "promptTokens": [
-      "commander_office",
-      "desk",
-      "serving_tea",
-      "teacup",
-      "evening_gown",
-      "cleavage",
-      "twintails",
-      "gentle_expression",
-      "detailed_background",
-      "cinematic_lighting"
+      "midnight",
+      "Commander office",
+      "crimson velvet gown",
+      "black gloves",
+      "tea",
+      "cheek touch",
+      "medium close up",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
-    "recommendedSize": "1152x1536"
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "compositionIntent": "group"
   }
 }

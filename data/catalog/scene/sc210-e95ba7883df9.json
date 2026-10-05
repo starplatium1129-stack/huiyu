@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc210",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 205,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc210",
     "title": "月下露天风吕的黑发水痕",
@@ -32,7 +32,8 @@
       "night",
       "moonlight",
       "water_reflections",
-      "medium_shot"
+      "medium_shot",
+      "depth_of_field"
     ],
     "rating": "R15",
     "mature": false,
@@ -44,10 +45,10 @@
       "旅行氛围",
       "R15"
     ],
-    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_hair, outdoor_onsen, hot_springs, steam, bare_shoulders, water_droplets, wet_skin, leaning_back, relaxing, gazing_at_moon, serene_expression, softened_eyes, night, warm_lighting, moonlight, water_reflections, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, shiki_natsume, wet hair, head above bath water, mountain inn onsen, looking at moon, steam, lantern reflections, side close up",
+    "negative": "exposed torso, duplicate reflected faces, additional bathers",
     "storyJa": "【大人のAfter Story・夏目・月下の露天風呂での小休戦】旅の最終夜、露天風呂の外には虫の声と遠い山風だけが残っていた。夏目は濡れた黒髪を背中へ払って湯の縁にもたれ、月を見上げている。普段は鋭い眼差しも、湯気の中では少しずつほどけていった。あなたの足音に気づいても振り返らず、隣の場所だけを空けて言う。――「今回の休暇は、あなたの勝ちでいい。ここに座りなさい。でも、この静けさを騒がしくするのは許さないから。」",
-    "animaCaption": "On the last night of the trip at the mountain inn's private outdoor onsen, Shiki Natsume pushes her soaked black hair back behind her shoulders and leans against the edge of the bath, looking up at the cool moon with her usual sharp eyes slowly relaxing in the steam; moonlight and lantern glow dance on the water surface around her bare shoulders. Water droplets glisten on her bare shoulders above the surface.",
+    "animaCaption": "Shiki Natsume brushes damp hair behind her head and looks toward the moon from the mountain inn's outdoor bath. The close side view stays on her relaxed face and hair above the water, with the bath edge supporting the pose. Moonlight makes a cool line along the hair while existing lanterns cast warmer reflections over the surface. Steam softens the distant garden; the dark water and bath-edge shadow preserve the setting's depth.",
     "auditRevision": "careful-batch10-2026-08-27"
   }
 }

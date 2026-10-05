@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_night_stargazing_talk",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 259,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "ishtar_night_stargazing_talk",
     "title": "伊什塔尔 · 星空下的真心话·「金星……是我最喜欢的一颗」",
@@ -28,28 +28,20 @@
       "golden_tiara",
       "wide_two_shot"
     ],
-    "promptProse": "After sunset, Ishtar and a fully clothed companion recline side by side on a broad, flat temple rooftop, looking toward Venus low in the western sky. She raises one hand to indicate the bright planet while her other arm rests beside her. Her black goddess outfit and golden tiara remain in place; the companion’s simple travelling clothes distinguish the second figure. A few bright stars appear as the twilight fades, and warm temple lamps edge the roof. Use a horizontal two-shot that includes the pointing gesture and low horizon, with no lettering.",
+    "promptProse": "Ishtar reclines beside her clothed travelling companion on the temple's broad flat rooftop, raising one hand toward Venus low in the western sky. Her other arm rests beside her black goddess outfit and golden tiara. The horizontal wide two-shot includes separate reclining figures and the low horizon beyond the roof edge. Fading twilight softly outlines their profiles, while warm temple lamps illuminate the nearer stone and the pointing fingers.",
     "promptTokens": [
-      "temple_rooftop",
-      "two_clothed_figures",
-      "reclining_side_by_side",
-      "pointing_hand",
-      "venus_low_in_west",
-      "twilight",
-      "temple_lamps",
-      "golden_tiara",
-      "wide_two_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "2people",
+      "Ishtar",
+      "clothed companion",
+      "black goddess outfit",
+      "gold tiara",
+      "reclining",
+      "pointing at Venus",
+      "temple roof",
+      "western twilight",
+      "wide two-shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": false,
     "sampleRating": "SFW",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_shinjuku_motorcycle_cool_date",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 222,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "saber_alter_shinjuku_motorcycle_cool_date",
     "title": "黑呆 · 新宿街头的机车酷感倚待",
@@ -29,28 +29,21 @@
       "neon_light",
       "medium_shot"
     ],
-    "promptProse": "Beside a matte-black motorcycle resting on its kickstand in Shinjuku, Saber Alter keeps one hand on the handlebar and holds the helmet at her hip with the other. One boot rests on the footpeg while the grounded leg supports her relaxed waiting stance. Her leather jacket, white cropped top, dark denim shorts and black tights retain the selected street outfit. Neon reflections edge the bike and her braided blonde bun as she looks toward the arriving companion with a restrained smile. Frame the hands, helmet and parked motorcycle together, with no lettering.",
+    "promptProse": "Beside the kickstand-supported matte-black motorcycle, Saber Alter holds its handlebar with one hand and a helmet at her hip with the other. One boot rests on the footpeg while her grounded leg supports the waiting stance. Her biker jacket, white cropped top, black denim shorts and tights remain clear in the cowboy view. Shinjuku neon and station lamps edge the bike and blonde bun, with colored reflections along the tank beneath her restrained smile.",
     "promptTokens": [
-      "shinjuku_street",
-      "parked_motorcycle",
-      "kickstand",
-      "hand_on_handlebar",
-      "holding_helmet",
-      "boot_on_footpeg",
-      "leather_jacket",
-      "waiting",
-      "neon_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Saber Alter",
+      "black biker jacket",
+      "white cropped top",
+      "denim shorts",
+      "black tights",
+      "helmet",
+      "parked motorcycle",
+      "Shinjuku neon",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_shinjuku_jacket_shorts",
     "coverageTags": [

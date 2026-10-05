@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_rainy_shelter_shared_jacket",
-  "revision": 1,
-  "sortOrder": 1371,
+  "revision": 2,
+  "sortOrder": 1367,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "asuna_rainy_shelter_shared_jacket",
     "title": "结城明日奈 · 街角屋檐的西装外套共披·「靠近一点……这样就不会淋湿了」",
@@ -27,28 +27,16 @@
       "school_uniform",
       "summer_rain"
     ],
-    "promptProse": "Asuna Yuuki takes shelter from a sudden summer downpour beneath the cramped canvas awning of a closed shop. She snuggles closely against your side sharing a draped school uniform blazer, her cheeks blushing softly as rain cascades like a crystal curtain in the foreground. Droplets of cool water sparkle on her damp chestnut bangs as twilight lamplight reflects across the wet street.",
+    "promptProse": "Asuna shelters shoulder-close to her companion beneath the convenience store's narrow blue awning, both sharing his dark jacket over their school clothes. She holds its front edges and rests her cheek on his shoulder. The cramped close view keeps falling water beyond the awning rim in the foreground. Overcast daylight reflects on wet hair, while white shop lighting illuminates her grey blazer and leaves a sheltered shadow against the wall.",
     "promptTokens": [
-      "rain",
-      "awning",
-      "shelter",
-      "school_uniform",
-      "jacket",
-      "cuddling",
-      "leaning_on_shoulder",
-      "water_droplets",
-      "wet_hair",
-      "blushing",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Asuna",
+      "grey school blazer",
+      "shared jacket",
+      "rain shelter",
+      "convenience store",
+      "medium close-up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -59,6 +47,7 @@
       "daily",
       "rain",
       "romantic"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

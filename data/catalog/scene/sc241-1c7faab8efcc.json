@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc241",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 236,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "At the 24-hour convenience store counter late at night, Shiki Natsume in a plain black hoodie and dark jeans holds a shopping basket with an instant bento, the last limited pudding and a hot canned coffee. She nods expressionlessly at the clerk's heating offer while warm yellow lights catch her reddening ears.",
+    "animaCaption": "At the late-night convenience-store counter, Shiki Natsume holds the basket containing a bento, the last pudding and hot canned coffee. She gives the off-frame clerk a reserved nod at the offer to warm the meal. Her black hoodie stands before receding store shelves. Yellow overhead light catches the container lids and basket rim, with a softer counter reflection on the sleeve and clear item-to-basket contact shadows beneath her quiet expression.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "近景平视特写",
     "category": "日常",
@@ -20,8 +20,8 @@
     "location": "24小时便利店收银台前",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, black_oversized_hoodie, dark_jeans, convenience_store_counter_at_night, holding_shopping_basket_with_instant_bento_limited_pudding_and_hot_canned_coffee, nodding_to_clerk, deadpan_face_with_blushing_ears, warm_yellow_fluorescent_shelf_lights, late_night, convenience_store_shelves, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "duplicate basket contents, food fused to hand, extra foreground clerks",
+    "prompt": "1girl, shiki_natsume, black hoodie, dark jeans, shopping basket, bento, pudding, hot coffee can, convenience store counter, night, close up",
     "rating": "All",
     "season": "不限",
     "story": "【夏目 · 深夜便利店】凌晨一点，打烊后独自整理完库存的夏目拖着疲惫的身体走进隔壁24小时便利店。她机械地往购物篮里扔着速食便当，直到看见货架上最后一盒你最爱吃的限定布丁。犹豫了三秒，她还是把它放进了篮子里，顺手又拿了一罐热咖啡。结账时店员问要不要加热，她面无表情地点了点头，耳根却在暖黄的灯光下悄悄泛红。推开公寓门时，她把布丁和咖啡轻轻放在熟睡的你床头，用只有自己能听见的声音嘟囔——「……只是顺便买的。不吃的话明天就过期了，属于合理的资源回收。大笨蛋……晚安。」",
@@ -37,11 +37,12 @@
       "canned_coffee",
       "night",
       "red_ears",
+      "depth_of_field",
       "medium_shot"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
-    "title": "便利店深夜的限定布丁暖意",
+    "title": "便利店深夜的关东煮暖意",
     "usage": [
       "新手推荐",
       "壁纸级"

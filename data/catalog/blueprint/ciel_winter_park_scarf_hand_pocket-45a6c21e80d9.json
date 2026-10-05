@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_winter_park_scarf_hand_pocket",
-  "revision": 1,
-  "sortOrder": 1338,
+  "revision": 2,
+  "sortOrder": 1334,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "围着红围巾，将一只手伸进视角大衣口袋取暖，呼着热气侧首微笑",
     "camera": "cowboy shot, eye level, winter romantic walk",
@@ -20,31 +20,16 @@
     "lighting": "初雪折射的清冷天光与公园路灯初上",
     "location": "初雪落满松树与木长椅的静谧冬日公园",
     "mood": "冬日纯爱",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "outfitId": "casual_knit_sweater_jeans",
-    "promptProse": "Walking through a snow-dusted park at twilight, Ciel wears a cozy thick red scarf wrapped snug around her neck. Her cheeks and nose are dusted with a delicate cold pink flush as puffs of white breath escape her lips. She shyly slips her cold hand into the viewer's coat pocket, smiling with serene romantic bliss behind her fogged glasses. Heartwarming winter anime CG, solo 1girl, no text.",
+    "promptProse": "Walking beside the snowy park bench, Ciel slides her cold hand into her companion's coat pocket and gently interlaces their fingers. Her cream turtleneck and dark-blue jeans replace her work clothes, and she smiles with a red nose and visible breath. The cowboy view retains the curving park path behind. Snow-reflected daylight brightens her glasses and shoulders, while newly lit park lamps add small warmer pools along the path.",
     "promptTokens": [
-      "winter_park",
-      "snowing",
-      "snow_ground",
-      "red_scarf",
-      "coat",
-      "turtleneck_sweater",
-      "hands_in_pocket",
-      "steaming_breath",
-      "glasses",
-      "radiant_smile",
-      "blush",
-      "blue_hair",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Ciel",
+      "cream turtleneck",
+      "blue jeans",
+      "hand in companion pocket",
+      "snowy park",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -59,6 +44,7 @@
       "blush"
     ],
     "timeOfDay": "冬日黄昏",
-    "title": "希耶尔 · 冬日公园的暖袋牵手"
+    "title": "希耶尔 · 冬日公园的暖袋牵手",
+    "compositionIntent": "group"
   }
 }

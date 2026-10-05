@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_05",
-  "revision": 1,
-  "sortOrder": 1529,
+  "revision": 2,
+  "sortOrder": 1525,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_05",
     "title": "和泉纱雾 · 第一次自己出门买书",
@@ -31,40 +31,17 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "At the station bookstore entrance, Sagiri grips the handles of her shopping bag and gathers the courage to step outside. A cap and plain mask frame her determined blue eyes, with her zipped pink hoodie and blue jeans neatly arranged. Blurred street colors stay behind her tense shoulders; the medium view catches one deep breath, the doorway and the first forward step.",
+    "promptProse": "At the station bookstore doorway, Sagiri Izumi grips her shopping-bag handles and takes a deep breath before stepping outside. Her zipped pink hoodie, blue jeans, sun cap and plain mask stay ordinary, with determined eyes above tense shoulders. The medium portrait frames the doorway behind and passing pedestrians farther into the street as subdued shapes. Daylight brightens the bag edges and cap brim, with a sheltered threshold shadow marking her first step.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "bookstore",
-      "doorway",
-      "shopping_bag",
-      "holding_bag",
-      "cap",
-      "face_mask",
-      "determined",
-      "walking",
-      "street",
-      "daylight",
-      "medium_shot"
+      "Sagiri Izumi",
+      "pink hoodie",
+      "sun cap",
+      "face mask",
+      "shopping bag",
+      "station bookstore",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -72,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

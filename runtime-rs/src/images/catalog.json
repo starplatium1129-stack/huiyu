@@ -94,8 +94,8 @@
       "profileId": "anima_miaomiao_v16",
       "steps": 30,
       "cfg": 4.5,
-      "sampler": "res_multistep",
-      "scheduler": "simple",
+      "sampler": "euler",
+      "scheduler": "normal",
       "sizes": [
         "832x1216",
         "960x1536",
@@ -104,7 +104,10 @@
         "1024x1024",
         "1216x832"
       ],
-      "noLora": true
+      "noLora": true,
+      "teaCacheThresh": 0.05,
+      "hiresSampler": "euler",
+      "hiresScheduler": "normal"
     },
     "krea2-turbo-fp8": {
       "file": "krea2_turbo_fp8_scaled.safetensors",

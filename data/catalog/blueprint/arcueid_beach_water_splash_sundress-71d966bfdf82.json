@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_beach_water_splash_sundress",
-  "revision": 1,
-  "sortOrder": 1327,
+  "revision": 2,
+  "sortOrder": 1323,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "赤足踩在海水中双手微提裙摆，回眸向视角招手呼唤，笑容灿烂如阳",
     "camera": "cowboy shot, eye level, dynamic summer beach view",
@@ -20,31 +20,17 @@
     "lighting": "热带海滨刺目灿烂的金色阳光与水面反光",
     "location": "阳光灿烂、碧浪翻涌的白色沙滩浅水区",
     "mood": "开朗元气",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "outfitId": "casual_summer_sundress",
-    "promptProse": "Wading barefoot through crystal-clear turquoise waves along a sun-drenched tropical beach, Arcueid Brunestud lifts the hem of her white summer sundress. Salty sea spray glistens on her smooth skin as sea breezes toss her golden hair. Turning back toward the viewer with arms open in pure joyful excitement, her ruby eyes shine with vivacious life. Brilliant summer anime film visual style, solo 1girl, no text.",
+    "promptProse": "Arcueid Brunestud steps barefoot into the clear beach shallows, briefly lifting her white sundress hem before releasing it and opening her hands toward her companion. She looks back laughing as a small wave breaks around her ankles. The eye-level cowboy view follows the white sand into the blue horizon. Brilliant summer sunlight passes through spray and blonde hair, while reflected water light flickers beneath the floating skirt edge.",
     "promptTokens": [
-      "beach",
-      "ocean_waves",
-      "white_sand",
-      "clear_water",
-      "white_dress",
-      "skirt_lift",
+      "Arcueid Brunestud",
+      "white sundress",
       "barefoot",
-      "splashing_water",
-      "radiant_smile",
-      "open_arms",
-      "red_eyes",
-      "sunny",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "sea foam",
+      "laughing",
+      "beach",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

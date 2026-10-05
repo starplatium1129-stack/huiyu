@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc258",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 253,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "On the ancient shrine stone steps amid falling red maple leaves, Ayachi Nene in a red-and-white arrow-feather kimono top with deep purple hakama and black lace-up boots, silver hair tied with a huge red ribbon, trips on the hakama hem while carrying props and is caught steadily in the viewer's arms, blushing with teary eyes and an anxiously curling ahoge under warm maple-filtered sunlight.",
+    "animaCaption": "Ayachi Nene trips on the hakama hem while carrying the props down the shrine steps, and the viewer steadies her before she falls farther. Her red-and-white arrow-patterned kimono top, purple hakama and black boots remain arranged around the catch. Stone steps recede past falling maple leaves behind her. Leaf-filtered sunset highlights the supporting hands and ribbon, with softer stone reflection and stepped shadows retaining the slope's depth around her startled blush.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "中景正面仰视拉近特写",
     "category": "祭典・节日",
@@ -20,8 +20,8 @@
     "location": "神社后山漫天红枫的石阶中央",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, huge_red_hair_ribbon, red_and_white_arrow_feather_kimono_top, deep_purple_hakama, black_lace_up_boots, tripping_on_hakama_hem_while_carrying_props, falling_into_viewer's_arms, viewer_catching_her, ancient_shrine_stone_steps, red_maple_leaves, warm_maple_filtered_sunlight, teary_blush, heart_spiral_ahoge, medium_close_up, golden_hour, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "props fused to hands, extra catching arms, feet detached from steps",
+    "prompt": "1girl, ayachi_nene, arrow feather kimono top, purple hakama, black boots, carrying props, caught after tripping, shrine stone steps, maple leaves, medium close up",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 大正风袴裙古典反差】秋意浓郁、漫天红枫如火般飘落的学院古老神社后山石阶。为了参加民俗部的传统节日拍摄，宁宁换上了一整套极其优雅华丽的大正风格袴裙：上身是红白相间的正统箭羽纹和服，下身搭配深紫色的传统袴裙与一双秀气的黑色系带皮靴，银白色的长发用巨大的红色蝴蝶结发带优雅地束在脑后，显得格外的明艳端庄。然而由于袴裙摆过于繁复，她在抱着道具走下石阶时下摆不慎绊了一下，整个人惊呼着直接失去了平稳。你眼疾手快地跨上一步将她稳稳抱进怀里，宁宁在对视的瞬间瞬间面红耳赤，头顶那根心形呆毛在漫天飘落的红色枫叶中慌乱地打着卷，挂着眼泪当场语无伦次自曝——「呜啊！柊、柊史！为什么每次你都能接住人家啦！人家、人家绝对没有故意借助被裙子绊倒来让你抱住哦……呜，越解释越像在狡辩了，笨蛋快闭上眼睛不准看！」",
@@ -34,7 +34,8 @@
       "autumn_steps",
       "medium_shot",
       "maple",
-      "caught_in_arms"
+      "caught_in_arms",
+      "depth_of_field"
     ],
     "time": "白天",
     "timeOfDay": "all_day",

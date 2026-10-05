@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_royal_tea_party_cat_pounce",
-  "revision": 1,
-  "sortOrder": 1090,
+  "revision": 2,
+  "sortOrder": 1086,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "cheshire_royal_tea_party_cat_pounce",
     "title": "柴郡 · 皇家红茶会的猫扑撒娇",
@@ -33,38 +33,18 @@
       "maid_dress",
       "happy"
     ],
-    "promptProse": "Leaning across a lavish tea table adorned with tiers of strawberry pastries in a Royal Navy rose garden, Cheshire pounces forward with her elegant white lace gloves. Golden sunlight filters through blossoming white trellises, highlighting her twitching cat ear headband and beaming turquoise gaze.",
+    "promptProse": "Cheshire leans eagerly against the round garden tea table, reaching toward the Commander with bright green eyes beneath her black cat-ear headband. Her elaborate navy-white maid dress and white ribboned gloves remain in the close eye-level cowboy view. A tiered porcelain stand of strawberry scones sits beside her among white roses. Dappled light through the climbing rose arbor catches the lace tablecloth and glove edges, shading the lower pastry tiers.",
     "promptTokens": [
-      "rose_garden",
-      "tea_party",
-      "pastries",
-      "teacup",
+      "daytime",
+      "Royal Navy garden",
+      "navy white maid dress",
       "gloves",
-      "white_gloves",
-      "cat_ear_headband",
-      "fake_hair_ornament",
-      "maid_dress",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "cat ear headband",
+      "tea table",
+      "scones",
+      "close cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

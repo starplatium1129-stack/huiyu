@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_winter_streets_novelist",
-  "revision": 1,
-  "sortOrder": 1434,
+  "revision": 2,
+  "sortOrder": 1430,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "utaha_winter_streets_novelist",
     "title": "霞之丘诗羽 · 冬街围巾的毒舌·「手冷的话……借你一次也没关系」",
@@ -27,47 +27,28 @@
       "smile",
       "date"
     ],
-    "promptProse": "Kasumigaoka Utaha walks the winter streets in celebration of a met deadline, black wool coat and wine-red scarf wrapped against the cold. Under a streetlamp she suddenly extends her hand, fingertips chilled pink, offering to lend it to you exactly once — purely, she insists, as writer's research for writing heart-flutter into her next book. Warm lamp glow against blue snow-night in a medium two-shot, cinematic lighting, detailed street background.",
+    "promptProse": "Utaha Kasumigaoka walks beside her companion after the deadline, extending a cold hand with a deliberately casual expression. Her black evening dress and silver earrings remain visible beneath the current low chignon, rather than changing into another outfit. The medium two-shot follows the winter street's shopfronts. Amber streetlamps light her red fingertips and dark dress folds, while blue snow reflection separates their silhouettes from the pavement.",
     "promptTokens": [
       "kasumigaoka_utaha",
-      "1girl",
-      "solo",
-      "coat",
-      "black_coat",
-      "scarf",
-      "red_scarf",
-      "winter_clothes",
-      "standing",
-      "reaching",
-      "hand_out",
-      "smirk",
-      "red_eyes",
-      "black_hair",
-      "long_hair",
-      "street",
-      "night",
-      "winter",
-      "detailed_background",
-      "cinematic_lighting"
+      "Utaha Kasumigaoka",
+      "black evening dress",
+      "low chignon",
+      "hand extended",
+      "winter street",
+      "two-shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
     "kreaStyleHint": "anime_slice_of_life",
     "animaStyleHint": "anime_slice_of_life",
-    "outfitId": "sfw_black_wool_coat",
+    "outfitId": "elegant_black_dress",
     "coverageTags": [
       "daily",
       "date",
       "girlfriend"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

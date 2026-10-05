@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_03",
-  "revision": 1,
-  "sortOrder": 1670,
+  "revision": 2,
+  "sortOrder": 1666,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_03",
     "title": "八奈见杏菜 · 家庭餐厅薯条作战会议",
@@ -30,41 +30,18 @@
       "warm_light",
       "medium_shot"
     ],
-    "promptProse": "At a family-restaurant table, Anna stops with a french fry halfway to her mouth after hearing something surprising beyond the frame. Her blue eyes widen above a tray of fries and a refillable drink. The school blouse and bow retain their everyday neatness despite the animated reaction. Warm booth lighting and a close composition make the interrupted snack and expressive ahoge part of the same lively conversation.",
+    "promptProse": "Anna Yanami eats fries while listening to her friend at the family-restaurant table, stopping mid-bite with wide eyes at the crucial part. Her white school blouse and blue bow remain clear beside the drink-bar cup. When she notices the fries have cooled, her face becomes comically distressed. The medium view keeps both conversation positions and booth behind; warm interior light highlights fry edges and glass, with soft shadows below the shared platter.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "yanami_anna",
-      "make_heroine_ga_oo_sugiru!",
-      "family_restaurant",
-      "french_fries",
-      "holding_food",
-      "drink",
-      "surprised",
-      "wide_eyes",
-      "school_uniform",
-      "booth",
-      "warm_light",
-      "medium_shot"
+      "Anna Yanami",
+      "school uniform",
+      "fries",
+      "drink-bar cup",
+      "conversation",
+      "family restaurant",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -72,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_snowy_street_hot_chocolate_stroll",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 211,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "caren_snowy_street_hot_chocolate_stroll",
     "title": "卡莲 · 冬日雪街的热可可小憩",
@@ -30,29 +30,19 @@
       "streetlamp_light",
       "medium_shot"
     ],
-    "promptProse": "Beside a snowy shopping-street bench, Caren pauses after a small sip of hot chocolate and turns toward the viewer. Both hands remain wrapped around the paper cup beneath her chin. Short silver strands show at the edge of the white beanie rather than falling down the back of her closed red coat. Her amber-yellow eyes soften slightly in the streetlamp glow, with a small breath cloud visible in the cold air. The evening view includes the bench, cup and warmly clothed figure, without readable labels or lettering.",
+    "promptProse": "Beside the snowy shopping-street bench, Caren pauses after sipping hot chocolate and turns toward the viewer, both hands wrapped around the cup beneath her chin. Short silver strands show below her white beanie and closed red duffle coat. The eye-level cowboy view includes the bench and falling first snow. Warm streetlamp light softens her amber eyes and cup, contrasting with cool snow reflections and her small breath cloud.",
     "promptTokens": [
-      "snowy_shopping_street",
-      "bench",
-      "paper_cup",
-      "hot_chocolate",
-      "both_hands",
-      "looking_back",
-      "short_silver_hair",
-      "amber_eyes",
-      "red_coat",
-      "streetlamp_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Caren",
+      "red duffle coat",
+      "white beanie",
+      "hot chocolate cup",
+      "snowy street bench",
+      "evening streetlamp",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_winter_duffle_coat",
     "coverageTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc061",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 59,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc061",
     "title": "浴室门口的失衡",
@@ -33,7 +33,8 @@
       "falling_into_arms",
       "steam",
       "cowboy_shot",
-      "heavy_blush"
+      "heavy_blush",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "公寓浴室门口",
@@ -45,11 +46,11 @@
       "头像",
       "R15"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_hair, clinging_wet_hair, cowboy_shot, pov, bath_towel, white_bath_towel, towel_around_body, bare_shoulders, collarbone, water_droplets, wet_skin, clutching_towel, falling_into_arms, slipping_pose, leaning_forward, close_to_viewer, heavy_blush, shy, parted_lips, breathless, bathroom_doorway, steam, misty, warm_ambient_lighting, bathroom_interior_bokeh, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, shiki_natsume, securely wrapped bath towel, slipping at doorway, being caught, tiled floor, bathroom steam, warm light, cowboy shot",
+    "negative": "open towel, exposed body, unsupported falling figure, extra catching arms",
     "storyJa": "【夏目・浴室の出入り口のバランスが崩れている】ある冬の夜、夏目はバスタオルを巻いてバスルームから出てきました。水蒸気で濡れた足元の床タイルが滑り、彼女はあなたの腕の中に落ちてしまいました。彼女がしっかり立っているのを確認すると、すぐにタオルの端を押さえた。彼女の顔全体は耳まで赤くなりましたが、それでもあなたが最初に彼女を殴ったかどうかを確認しました。――「私は平気。さっきは足元が滑っただけ……先に向こうを向いて。服を着たら、次はあなたの腕を手当てするから。」",
     "rating": "R15",
-    "animaCaption": "On a quiet winter night outside the steaming bathroom doorway, Shiki Natsume wrapped only in a white bath towel slips on the wet floor tiles and pitches forward into your arms in a dynamic cowboy shot; clutching the towel tightly across her chest to keep it secure, her cheeks are deeply flushed with embarrassed tsundere warmth while water droplets glisten on her bare collarbone and shoulders amid the warm diffused bathroom steam, no text, no extra people.",
+    "animaCaption": "Shiki Natsume loses her footing at the bathroom threshold and reaches the viewer's supporting arms. She keeps the white towel securely held across her body as damp hair falls toward her startled face. The doorway separates the warm bathroom from the cooler corridor, with the wet tile line visible beneath the catch. Steam softens the rear wall, while the frame's shadow and reflected tile light keep the grasping hands and support clear.",
     "auditRevision": "skill-refine-sc061-2026-09-05"
   }
 }

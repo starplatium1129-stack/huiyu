@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_office_desk_grinding_ink_duty",
-  "revision": 1,
-  "sortOrder": 1302,
+  "revision": 2,
+  "sortOrder": 1298,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "albedo_office_desk_grinding_ink_duty",
     "title": "雅儿贝德 · 办公桌旁的墨水与公文批改",
@@ -29,38 +29,24 @@
       "gentle_smile",
       "loving_gaze"
     ],
-    "promptProse": "Standing poised beside an antique mahogany desk covered in neatly stacked parchment documents, Albedo assists with administrative duties. Her pure white backless gown drapes gracefully over her figure as her dark wings rest calmly. Holding a quill pen, she gazes affectionately at the viewer with serene devotion in her golden eyes. Elegant, high-fidelity anime key visual, solo 1girl, no text.",
+    "promptProse": "Albedo stands beside the antique office desk in her white backless evening dress and golden necklace, one hand on the edge and the other holding an inked quill. Her wings rest behind as she watches her companion review parchment stacks. At eye-level cowboy height, the arch window and document shelves establish the room. Natural light falls over her face and pen hand, reflecting softly from the white gown onto the desk's shadowed edge.",
     "promptTokens": [
-      "office",
-      "study",
-      "desk",
-      "documents",
-      "holding_pen",
-      "white_dress",
-      "backless_dress",
-      "golden_necklace",
-      "cleavage",
-      "black_wings",
-      "curved_horns",
-      "yellow_eyes",
-      "gentle_smile",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Albedo",
+      "white evening dress",
+      "quill pen",
+      "parchment",
+      "office desk",
+      "natural window light",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_white_dress",
     "coverageTags": [
       "daily",
       "office",
       "devotion"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

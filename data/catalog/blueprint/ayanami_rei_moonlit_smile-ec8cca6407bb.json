@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_moonlit_smile",
-  "revision": 1,
-  "sortOrder": 1014,
+  "revision": 2,
+  "sortOrder": 1010,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "立于月光之下回眸展现罕见的温柔微笑",
     "camera": "medium shot, low angle",
@@ -18,36 +18,18 @@
     "lighting": "皎洁银白月光与冷冽夜色轮廓光",
     "location": "第3新东京市战后废墟断崖",
     "mood": "圣洁温柔",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "outfitId": "plugsuit_white",
-    "promptProse": "Standing atop desolate concrete ruins against a colossal glowing moon, Rei offers a rare, divine smile of transcendent warmth. Soft silver moonlight and drifting dust motes create a sacred, unforgettable anime visual.",
+    "promptProse": "Rei stands among the ruined walls of Tokyo-3 after the battle, her white plugsuit dusty around its orange-and-black panels. Beneath red neural-interface clips, her blue-haired face slowly softens into a gentle smile toward the watching boy. The low medium view places broken masonry beneath her and a large moon beyond. Silver moonlight defines her hair and suit edges, with cool reflected brightness across the shaded rubble.",
     "promptTokens": [
-      "giant_moon",
-      "full_moon",
-      "ruins",
-      "rubble",
-      "gentle_smile",
-      "silver_moonlight",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "night",
+      "Tokyo 3 ruins",
+      "white plugsuit",
+      "interface clips",
+      "moonlight",
+      "smiling",
+      "medium shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -62,6 +44,7 @@
       "rim_lighting"
     ],
     "timeOfDay": "夜晚",
-    "title": "绫波丽 · 月下神性微笑"
+    "title": "绫波丽 · 月下神性微笑",
+    "compositionIntent": "group"
   }
 }

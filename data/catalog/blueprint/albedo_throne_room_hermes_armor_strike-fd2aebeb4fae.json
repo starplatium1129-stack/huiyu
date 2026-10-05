@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_throne_room_hermes_armor_strike",
-  "revision": 1,
-  "sortOrder": 1300,
+  "revision": 2,
+  "sortOrder": 1296,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "albedo_throne_room_hermes_armor_strike",
     "title": "雅儿贝德 · 赫尔墨斯三层黑铠之威",
@@ -28,31 +28,16 @@
       "curved_horns",
       "intense_gaze"
     ],
-    "promptProse": "Standing protectively before the grand marble throne inside the Great Tomb of Nazarick, Albedo is clad in her formidable full-body black plate armor. Holding her colossal Bardiche poleaxe grounded into cracked marble, her black feathered wings flare majestically. Her golden slitted eyes glow with chilling, sovereign authority against the opulent chandeliers. Epic low-angle anime CG, solo 1girl, no text.",
+    "promptProse": "Before Nazarick's raised throne, Albedo plants her enormous Bardiche into the marble, cracks radiating from its impact. Hermes Trismegistus black plate encloses her body; the helmet retracts to show white horns and resolute golden eyes above spread black wings. The low cowboy view makes the steps and tall hall recede behind her. Green chandelier light glints across pauldrons, while purple seams illuminate nearby armor edges and fractured stone.",
     "promptTokens": [
-      "throne_room",
-      "marble_floor",
-      "black_armor",
-      "plate_armor",
-      "holding_weapon",
-      "battle_axe",
-      "black_wings",
-      "curved_horns",
-      "yellow_eyes",
-      "slit_pupils",
-      "intense_gaze",
-      "cowboy_shot",
-      "low_angle",
-      "cinematic_lighting",
-      "detailed_background"
+      "Albedo",
+      "Hermes Trismegistus armor",
+      "Bardiche",
+      "cracked marble",
+      "throne hall",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "hermes_black_armor",
     "coverageTags": [

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc239",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 234,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In the sunny afternoon art studio piled with wood and canvases, Shiki Natsume in deep-blue denim overalls with one metal strap slipped off her shoulder over a tight white sleeveless off-shoulder top freezes stiff as your hand wipes a smear of white woodwork paint from her collarbone, her bare shoulder and a hint of side curves caught in the deformation of the clothes, dead-fish eyes unmoving with flushed cheeks.",
+    "animaCaption": "Shiki Natsume pauses in the woodworking studio as the viewer wipes the stray white paint near her shirt collar. One overall strap has loosened over the white sleeveless top, and her surprised glance stays on the correcting hand. Timber and canvases overlap behind the denim-clad figure. Strong afternoon window light picks out the paint and metal fastener; canvas reflection softens the shaded face while board-edge shadows preserve the room's working depth.",
     "auditRevision": "fix-no-burn-ears-sc239-2026-09-05",
     "camera": "近景水平正面特写",
     "category": "日常",
@@ -20,8 +20,8 @@
     "location": "复古美术手工工作室木质长桌旁",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, denim_overalls, off-shoulder_top, white_sleeveless_shirt, strap_slip, bare_shoulders, delicate_collarbone, white_paint_on_collarbone, tensed_body, dead-fish_eyes, heavy_blush, shy, tsundere_pout, art_studio, wood_and_canvases, bright_afternoon_sunlight, window_light, rim_light, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "paint fused with skin, extra wiping hands, transparent top",
+    "prompt": "1girl, shiki_natsume, denim overalls, white sleeveless top, loose overall strap, paint smear, art studio, canvases, afternoon window light, close up",
     "rating": "R15",
     "season": "春",
     "story": "【夏目 · 工装背带裤的手工时光】午后阳光洒满堆放木材与画板的手工工作室。为了修缮咖啡店的桌椅，夏目换上了利落帅气的深蓝丹宁工装背带裤与无袖白上衣，修长的脖颈与锁骨线条格外干净。搬运木料时背带扣不慎滑下一侧，白皙的锁骨处还沾上了一抹白色木工漆。你自然地上前抬手帮她擦拭，夏目身子猛地一僵，半垂着清冷的金瞳动弹不得。午后明亮的窗光把她红透的耳根照得无所遁形，她小声嘟囔着——「……别误会。我只是觉得让你顺手擦掉最省事而已。要是蹭在衣服上更难洗。……真是的，离得太近了啦。」",
@@ -37,7 +37,8 @@
       "art_studio",
       "frozen_pose",
       "blush",
-      "full_body"
+      "full_body",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_07",
-  "revision": 1,
-  "sortOrder": 1472,
+  "revision": 2,
+  "sortOrder": 1468,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "抱粉色灯笼写下分享美食的愿望，将绘马举向镜头",
     "adult": false,
@@ -21,37 +21,17 @@
     "lighting": "pink lantern light beneath the evening sky",
     "location": "summer festival shrine courtyard",
     "mood": "恋柱把幸福愿望写给所有人",
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "outfitId": "sfw_festival",
-    "promptProse": "Mitsuri Kanroji from Kimetsu no Yaiba wears a light green floral yukata with a pink obi and sandals. She holds a pink paper lantern while writing a generous wish on a wooden plaque. She raises the finished wish toward the viewer, her long gradient braids and bright green eyes glowing beside the festival stalls and evening shrine lights. pink lantern light beneath the evening sky.",
+    "promptProse": "At the festival shrine's ema rack, Mitsuri Kanroji writes a wish for everyone to share delicious food, keeping her pink lantern tucked close. She lifts the finished wooden plaque toward the viewer with bright green eyes. Her light-green floral yukata and pink obi remain clear in the horizontal medium view. The lantern casts pink light across her hand and plaque grain, while evening sky light outlines the hanging rows behind.",
     "promptTokens": [
-      "festival",
-      "green_yukata",
-      "pink_obi",
-      "paper_lantern",
-      "wooden_plaque",
-      "wish",
-      "gradient_braids",
-      "bright_eyes",
-      "evening_light",
-      "twilight_light"
+      "Mitsuri Kanroji",
+      "green floral yukata",
+      "pink obi",
+      "ema",
+      "pink lantern",
+      "shrine festival",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -67,7 +47,7 @@
       "evening_light",
       "afternoon_light"
     ],
-    "timeOfDay": "黄昏",
+    "timeOfDay": "日间",
     "title": "甘露寺蜜璃 · 祭典灯笼的愿望"
   }
 }

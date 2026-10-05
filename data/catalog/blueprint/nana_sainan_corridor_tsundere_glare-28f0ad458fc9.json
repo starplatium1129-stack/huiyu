@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_sainan_corridor_tsundere_glare",
-  "revision": 1,
-  "sortOrder": 1267,
+  "revision": 2,
+  "sortOrder": 1263,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "双手叉腰前倾身躯，露出可爱小虎牙傲娇瞪视，粉发双马尾与爱心尾巴晃荡",
     "camera": "cowboy shot, eye-level, classic tsundere confrontation framing",
@@ -18,37 +18,18 @@
     "lighting": "走廊明净朝阳与粉色发丝边缘的剔透逆光轮廓",
     "location": "彩南高中教学楼采光走廊木地板",
     "mood": "傲娇好胜",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Standing defensively with hands planted on her hips in a sunlit high school hallway, Nana bares her cute little snaggletooth in playful defiance. Crisp morning sunbeams illuminate her bouncing pink twintails and the twitching spade-heart tail coiling behind her sailor skirt.",
+    "promptProse": "Nana blocks Sainan High's hallway with both hands on her hips, glaring at Rito as a small sharp fang shows beneath her pout. Pink twin tails bounce over her sailor uniform and her heart-tipped tail swings behind the skirt. The eye-level cowboy view places classroom doors along one side and windows along the other. Morning backlight passes through hair tips and glints on the floor beyond her feet.",
     "promptTokens": [
-      "school_hallway",
-      "hands_on_hips",
-      "tsundere_glare",
-      "fang",
-      "sainan_high_school_uniform",
-      "sailor_suit",
-      "pleated_skirt",
-      "twintails",
-      "demon_tail",
-      "detailed_background",
-      "cinematic_lighting"
+      "Nana",
+      "Sainan uniform",
+      "hands on hips",
+      "pink twintails",
+      "snaggletooth",
+      "devil tail",
+      "hallway",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -62,6 +43,7 @@
       "pink_hair"
     ],
     "timeOfDay": "早晨",
-    "title": "娜娜 · 走廊拐角的傲娇小虎牙"
+    "title": "娜娜 · 走廊拐角的傲娇小虎牙",
+    "compositionIntent": "group"
   }
 }

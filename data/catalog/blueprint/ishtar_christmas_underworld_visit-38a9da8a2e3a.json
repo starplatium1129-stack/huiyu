@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_christmas_underworld_visit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 257,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "ishtar_christmas_underworld_visit",
     "title": "伊什塔尔 · 冥界圣诞的来访·「姐姐的东西，本女神先看看」",
@@ -29,29 +29,23 @@
       "blue_snow_light",
       "medium_shot"
     ],
-    "promptProse": "On the snowy underworld plain, Ishtar offers a neatly wrapped Christmas box with both gloved hands while looking bashfully to the side. The larger sack of presents stands beside her boots, leaving her hands free for the gift. A warm white coat, red scarf and long trousers replace her summer street clothes; The star-shaped hairpin remains above her dark hair. Blue snowlight catches the wrapping. Frame the complete handover pose and grounded gift sack, with no readable labels or lettering.",
+    "promptProse": "On the snowy underworld plain, Ishtar offers a wrapped Christmas box in both gloved hands while bashfully looking aside. Her white winter coat, red scarf and long trousers replace summer clothes beneath the star hairpin; a larger present sack rests beside her boots. The medium view includes the grounded sack and distant blue snow. Cool snowlight reveals wrapping folds, while a nearby lantern warms the ribbon and fingertips against the shaded coat.",
     "promptTokens": [
-      "underworld_snowfield",
-      "christmas_gift",
-      "offering_box",
-      "both_gloved_hands",
-      "gift_sack_on_ground",
-      "white_winter_coat",
-      "red_scarf",
-      "looking_aside",
-      "blue_snow_light",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "Ishtar",
+      "white winter coat",
+      "red scarf",
+      "gloves",
+      "long trousers",
+      "star hairpin",
+      "Christmas gift",
+      "present sack",
+      "underworld snow",
+      "medium shot"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "metal_tiara"
+      "readable gift labels"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,

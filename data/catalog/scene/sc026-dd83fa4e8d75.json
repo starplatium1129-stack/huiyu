@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc026",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 24,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "Sitting on a gym mat in an equipment room in a white T-shirt with navy gym shorts, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet and white sneakers on floor, knees drawn up with a shy embarrassed blush.",
+    "animaCaption": "Shiki Natsume waits on a gym mat with her knees drawn up, dressed in a white T-shirt and navy gym shorts. Her sneakers rest beside the mat as she gives the viewer an embarrassed, amused glance. Equipment shelves overlap along the tight storeroom aisle. An oblique beam from the high window crosses the shelf fronts and her shoulder; the mat's contact shadow and faint room reflection keep her seated position clear.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "狭窄空间近景",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "大学体育馆器材室",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, gym_uniform, school_uniform, shirt",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, virgin_killer_sweater, black_sweater, backless_sweater, turtleneck_sweater, sleeveless_sweater, sideboob, bare_back, bare_shoulders, bare_legs, leaning_against_storage_shelf, arms_crossed_under_breasts, looking_at_viewer_with_amused_smirk, storeroom, dust_motes, dim_sunlight_slanted_through_slats, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "floating gym mat, fused shelf and body, duplicate sneakers",
+    "prompt": "1girl, shiki_natsume, white t shirt, gym shorts, sitting on gym mat, knees drawn up, equipment room, high window, close up",
     "rating": "R15",
     "season": "夏",
     "story": "【夏目 · 器材室里被困的五分钟】大学体育馆活动结束后，夏目请你帮忙归还器材，门却被风意外带上。狭小仓库里只剩高窗漏进来的光，她检查门锁时还很冷静，转身发现你们距离过近才迅速红了耳根——「先想办法开门，别露出那种表情。还有……退后一点，我不是在紧张，只是这里太闷。」",
@@ -33,7 +33,8 @@
       "bare_legs",
       "gym_mat",
       "full_body",
-      "barefoot"
+      "barefoot",
+      "depth_of_field"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

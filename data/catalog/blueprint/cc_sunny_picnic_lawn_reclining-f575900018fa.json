@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_sunny_picnic_lawn_reclining",
-  "revision": 1,
-  "sortOrder": 1316,
+  "revision": 2,
+  "sortOrder": 1312,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "单手支颐侧卧在草地野餐垫上，发丝铺散，神情慵懒戏弄地看着视角",
     "camera": "cowboy shot, diagonal angle, relaxing lawn view",
@@ -21,31 +21,19 @@
     "location": "开满雏菊与蒲公英的湖畔青草地野餐垫上",
     "mood": "惬意调侃",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "Cheese-kun",
+      "plush toy"
     ],
     "outfitId": "lawn_sweater_no_plush",
-    "promptProse": "Reclining leisurely on her side atop a picnic blanket on a blooming green lawn, C.C. props her head with one hand. Her vast lime-green hair spreads across the fresh spring daisies like liquid silk. Dressed in her relaxed sweater and denim shorts, she looks up at the viewer with an amused, teasing glint in her golden eyes under the dappled sunlight. Beautiful pastoral anime illustration, solo 1girl, no text.",
+    "promptProse": "C.C. reclines sideways on a red-and-white picnic blanket, supporting her chin with one hand and holding a grass stem between her lips as she watches her companion read. Her cream sweater and denim shorts sit above bare feet; green hair spreads among the spring flowers. Sandwiches and juice remain beside the blanket. Tree-filtered sunlight dapples her hair and sleeves, with grass contact shadows beneath the cloth.",
     "promptTokens": [
-      "meadow",
-      "grass",
-      "wildflowers",
-      "picnic_blanket",
-      "lying_on_side",
-      "hand_on_cheek",
-      "oversized_sweater",
-      "bare_legs",
-      "green_hair",
-      "yellow_eyes",
-      "smirk",
-      "sunny",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "C.C.",
+      "cream sweater",
+      "denim shorts",
+      "picnic blanket",
+      "reclining",
+      "spring lawn",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -61,6 +49,7 @@
       "lazy_smirk"
     ],
     "timeOfDay": "春日午后",
-    "title": "C.C. · 阳光草坪的慵懒侧卧"
+    "title": "C.C. · 阳光草坪的慵懒侧卧",
+    "compositionIntent": "group"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_signing_event_author_line",
-  "revision": 1,
-  "sortOrder": 1430,
+  "revision": 2,
+  "sortOrder": 1426,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "utaha_signing_event_author_line",
     "title": "霞之丘诗羽 · 签售会的作家真身·「要签名？先把感想写满一页」",
@@ -26,34 +26,17 @@
       "indoors",
       "daily"
     ],
-    "promptProse": "Kasumigaoka Utaha sits behind the signing table of her book event as the queue spills out the store door, twirling her fountain pen in a graceful arc. Her red eyes sweep over your blush-red ears as she offers her terms: a signature only for readers who fill a full page with their impressions, delivered with the effortless poise of the author behind the pen name Kasumi Utako. Medium shot, cinematic lighting, interior glow, detailed bookstore background.",
+    "promptProse": "Utaha Kasumigaoka sits behind the bookstore signing table and twirls a fountain pen before recognizing her flushed reader with a knowing red-eyed glance. Her black evening dress and low chignon remain formal. The medium view includes open books on the table and the waiting line extending toward the entrance. Bright warm bookstore light picks out the pen barrel and silver earrings, with lower table shadows separating her from the visitors behind.",
     "promptTokens": [
       "kasumigaoka_utaha",
-      "1girl",
-      "solo",
-      "elegant_clothes",
-      "sitting",
-      "holding_pen",
-      "holding_book",
-      "smirk",
-      "red_eyes",
-      "black_hair",
-      "long_hair",
-      "bangs",
-      "white_hairband",
-      "indoors",
-      "day",
-      "detailed_background",
-      "cinematic_lighting"
+      "Utaha Kasumigaoka",
+      "black evening dress",
+      "book signing",
+      "fountain pen",
+      "bookstore queue",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -63,6 +46,7 @@
     "coverageTags": [
       "daily",
       "signature"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

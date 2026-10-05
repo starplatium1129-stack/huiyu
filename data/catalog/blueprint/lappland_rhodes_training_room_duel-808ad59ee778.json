@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_rhodes_training_room_duel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 671,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "穿宽松白T恤蜷缩在沙发上求摸头顺毛，白狼耳舒适微耷，双眼微眯神态满足放松",
     "camera": "medium shot, seated eye-level, intimate domestic charm",
@@ -18,39 +18,19 @@
     "lighting": "百叶窗透射入的暖黄色阳光与室内柔和漫反射",
     "location": "干员休息室阳光沙发转角",
     "mood": "治愈甜宠",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude",
-      "explicit"
-    ],
+    "negativeTokens": [],
     "outfitId": "standard_mercenary",
-    "promptProse": "Curled up comfortably on a sunny living room sofa wearing an oversized casual white t-shirt and denim shorts, Lappland purrs contentedly as warm hands gently pet her fluffy silver wolf ears. Soft afternoon sunbeams illuminate her peaceful smile and relaxed silver hair in gentle domestic tranquility.",
+    "promptProse": "Lappland curls on a soft sofa in the Rhodes Island private lounge, her open slate-gray mercenary coat folded around a white tank top and black shorts. Her wolf ears ease back as the Doctor's visible hand strokes their base. The seated medium view includes blinds behind her. Warm sunlight stripes her silver hair and sleeve, with gentle reflected light across the shaded cushions and harness.",
     "promptTokens": [
-      "living_room",
+      "daytime",
+      "Rhodes Island lounge",
       "sofa",
-      "oversized_t-shirt",
-      "casual_wear",
+      "mercenary coat",
+      "white tank top",
+      "black shorts",
       "headpat",
-      "wolf_ears",
-      "wolf_tail",
-      "white_hair",
-      "content_smile",
-      "detailed_background",
-      "cinematic_lighting",
-      "soft_lighting"
+      "wolf ears",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -65,6 +45,7 @@
       "content_smile"
     ],
     "timeOfDay": "午后",
-    "title": "拉普兰德 · 罗德岛休息室被顺毛的居家日常"
+    "title": "拉普兰德 · 罗德岛休息室被顺毛的居家日常",
+    "compositionIntent": "group"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_sauce_wipe_flustered_reaction",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 223,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "saber_alter_sauce_wipe_flustered_reaction",
     "title": "黑呆 · 擦拭唇角酱汁的瞳孔地震",
@@ -28,28 +28,20 @@
       "window_light",
       "medium_closeup"
     ],
-    "promptProse": "In the fast-food booth, Saber Alter freezes as her clothed companion reaches across the table and gently removes a small spot of ketchup from the corner of her mouth with a fingertip. Her hands bunch the tablecloth while her golden eyes widen in surprised embarrassment. The companion is represented by a separate sleeve and hand entering from the side; her own two hands stay on the cloth. Her biker jacket and blonde bun remain tidy after the meal. Window light keeps the brief, playful reaction readable in a medium close view. No lettering.",
+    "promptProse": "In the fast-food booth, Saber Alter freezes as a separate sleeved companion's hand gently wipes ketchup from her mouth corner. Her own two hands bunch the tablecloth, surprised golden eyes widening above her tidy biker jacket and braided blonde bun. The eye-level medium close-up includes the reaching hand from one side and table surface below. Slanting window sun illuminates her embarrassed cheeks and fingertip contact, casting sleeve shadows across the cloth.",
     "promptTokens": [
-      "fast_food_booth",
-      "ketchup_spot",
-      "companion_hand",
-      "wiping_mouth_corner",
-      "gripping_tablecloth",
-      "surprised_eyes",
-      "embarrassed_expression",
-      "window_light",
-      "medium_closeup",
-      "detailed_background",
-      "cinematic_lighting"
+      "2people",
+      "Saber Alter",
+      "biker jacket",
+      "braided blonde bun",
+      "companion hand",
+      "ketchup spot",
+      "hands on tablecloth",
+      "fast food booth",
+      "window light",
+      "medium close-up"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "self-harm, choking"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_shinjuku_jacket_shorts",
     "coverageTags": [

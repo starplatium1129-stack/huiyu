@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_street_date_shared_crepe",
-  "revision": 1,
-  "sortOrder": 1280,
+  "revision": 2,
+  "sortOrder": 1276,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "rias_street_date_shared_crepe",
     "title": "莉雅丝 · 商业街午后的甜蜜可丽饼",
@@ -28,31 +28,16 @@
       "shy_smile",
       "blush"
     ],
-    "promptProse": "Sitting at a charming outdoor cafe bench beneath blooming cherry trees, Rias Gremory leans forward holding a fresh strawberry crepe toward the viewer. Dressed in her Kuoh Academy school uniform, her porcelain cheeks show a bashful pink blush as her cyan eyes sparkle with sweet romantic affection. Medium shot, vibrant afternoon lighting, solo 1girl, no text.",
+    "promptProse": "Beneath the shopping street's outdoor parasol, Rias Gremory offers the top strawberry of her cream-filled crepe toward her companion. Her Kuoh blouse, black vest and magenta cross tie remain visible as she leans forward, blue eyes expectant. Frame her from a slightly high medium angle, with cafe tables and cherry branches behind. Afternoon daylight brightens strawberry seeds and white cuffs; petals cast small moving shadows along the tabletop.",
     "promptTokens": [
-      "outdoor_cafe",
-      "park_bench",
-      "cherry_blossoms",
-      "holding_crepe",
-      "feeding_viewer",
-      "kuoh_academy_uniform",
-      "leaning_forward",
-      "shy_smile",
-      "blush",
-      "cyan_eyes",
-      "afternoon_sun",
-      "medium_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Rias Gremory",
+      "Kuoh uniform",
+      "strawberry crepe",
+      "outdoor cafe",
+      "cherry blossoms",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad hands",
-      "extra fingers",
-      "bad anatomy",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_kuoh_uniform",
     "coverageTags": [

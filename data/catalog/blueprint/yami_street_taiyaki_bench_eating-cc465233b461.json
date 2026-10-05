@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_street_taiyaki_bench_eating",
-  "revision": 1,
-  "sortOrder": 1223,
+  "revision": 2,
+  "sortOrder": 1219,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "坐在长凳上双手捧鲷鱼烧小口品尝，双腿并拢，金发如瀑垂落，眼神满足而矜持",
     "camera": "medium shot, seated eye-level, intimate charming framing",
@@ -18,37 +18,18 @@
     "lighting": "商业街暖色遮阳篷洒下的明亮日光与鲷鱼烧升腾的微弱热气",
     "location": "彩南町繁华商店街路边木质休闲长凳",
     "mood": "反差萌动",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "outfitId": "gothic_dress",
-    "promptProse": "Sitting quietly on a wooden park bench along a sunny shopping street in her iconic strapless black gothic dress, Yami delicately nibbles a warm red-bean taiyaki pastry with both hands. Golden afternoon sunbeams highlight her floor-length blonde hair and calm ruby eyes.",
+    "promptProse": "Golden Darkness, Yami, sits on the shopping street's red-brown wooden bench and nibbles a warm red-bean taiyaki held in both hands. Her black gothic dress contrasts with ankle-length blonde hair draped behind the seat. At eye-level medium distance, awnings, shopfronts and passing shoppers recede along the street. Filtered afternoon sun picks out pastry ridges and hair strands, with broken tree shadows across the bench.",
     "promptTokens": [
-      "shopping_street",
-      "wooden_bench",
-      "holding_taiyaki",
+      "Golden Darkness",
+      "Yami",
       "taiyaki",
-      "eating_pastry",
-      "gothic_dress",
-      "strapless_dress",
-      "very_long_hair",
-      "red_eyes",
-      "detailed_background",
-      "cinematic_lighting"
+      "wooden bench",
+      "black gothic dress",
+      "very long blonde hair",
+      "shopping street",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -63,6 +44,7 @@
       "very_long_hair"
     ],
     "timeOfDay": "下午",
-    "title": "金色暗影 · 商店街长凳的鲷鱼烧美味"
+    "title": "金色暗影 · 商店街长凳的鲷鱼烧美味",
+    "compositionIntent": "group"
   }
 }

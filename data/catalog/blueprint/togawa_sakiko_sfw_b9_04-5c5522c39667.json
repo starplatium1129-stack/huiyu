@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_04",
-  "revision": 1,
-  "sortOrder": 1755,
+  "revision": 2,
+  "sortOrder": 1751,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_04",
     "title": "丰川祥子 · Ave Mujica 的黑蓝花嫁",
@@ -30,36 +30,18 @@
       "stage_light",
       "night"
     ],
-    "promptProse": "Sakiko Togawa from BanG Dream! wears a black-and-indigo bridal gown with feather trim, a delicate veil, pearl buttons and a small music-note bouquet. She sits beside the backstage piano with her feather mask resting near the bouquet. She plays a restrained phrase before looking toward the viewer, the aristocratic stage posture softening into an honest smile as the empty room holds the final note. blue stage lamps with a warm piano rim light.",
+    "promptProse": "In Ave Mujica's backstage ceremony room, Sakiko Togawa plays a restrained piano phrase, then raises her eyes toward the viewer with an honest small smile. Her black-and-indigo bridal gown, feather trim and pearl buttons remain clear beneath the delicate veil; the removed feather mask rests beside the bouquet. The vertical medium-full view includes the piano and empty room. Blue stage lamps color the gown, while warm piano rim light catches her fingers and face.",
     "promptTokens": [
-      "wedding_dress",
-      "bridal_veil",
-      "backstage",
+      "Sakiko Togawa",
+      "black-indigo bridal gown",
+      "feather mask aside",
       "piano",
-      "feathers",
-      "bouquet",
-      "indigo_hair",
-      "honest_smile",
-      "stage_light",
-      "night"
+      "backstage",
+      "night",
+      "medium full shot"
     ],
     "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
+      "mask worn"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,

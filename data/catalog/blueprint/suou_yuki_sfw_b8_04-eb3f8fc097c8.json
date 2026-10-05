@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_04",
-  "revision": 1,
-  "sortOrder": 791,
+  "revision": 2,
+  "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "action": "礼堂花卡旁以淑女姿态整理缎带，确认无人后向镜头淘气眨眼",
     "adult": false,
@@ -23,36 +23,18 @@
     "lighting": "soft afternoon light over violet decorations",
     "location": "student council hall prepared for a ceremony",
     "mood": "淑女端庄与宅系淘气的花嫁切换",
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian wears a white bridal dress with a violet sash, black ribbon veil and a neat half-up hairstyle. She sits beside the student-council flower cards, keeping every ribbon perfectly aligned. Once the formal arrangement is complete, she leans toward the viewer with a playful wink that lets her lively private self peek through the polished bridal pose. soft afternoon light over violet decorations.",
+    "promptProse": "Yuki sits beside a publicity board in a white bridal dress with violet sash and black ribbon veil, her black half-up hair secured neatly. After arranging flower cards on the table, she gives the camera a playful wink. The vertical medium-full view shows the dress falling beside her chair and violet decorations behind. Soft afternoon light catches the veil edge and cards, leaving delicate folds shaded beneath the sash.",
     "promptTokens": [
-      "wedding_dress",
-      "bridal_veil",
-      "hall",
-      "flower_cards",
-      "violet_sash",
-      "half_up_hair",
-      "ladylike_pose",
-      "playful_wink",
-      "afternoon_light"
+      "afternoon",
+      "student council hall",
+      "white bridal dress",
+      "violet sash",
+      "black ribbon veil",
+      "flower cards",
+      "winking",
+      "medium full shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -67,7 +49,7 @@
       "playful_wink",
       "afternoon_light"
     ],
-    "timeOfDay": "午后",
+    "timeOfDay": "黄昏",
     "title": "周防有希 · 学生会礼堂的双面花嫁"
   }
 }

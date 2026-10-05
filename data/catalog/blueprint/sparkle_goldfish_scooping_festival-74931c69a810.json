@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_goldfish_scooping_festival",
-  "revision": 1,
-  "sortOrder": 1051,
+  "revision": 2,
+  "sortOrder": 1047,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sparkle_goldfish_scooping_festival",
     "title": "花火 · 和风游园的金鱼池笑靥",
@@ -28,31 +28,19 @@
       "radiant_smile",
       "twintails"
     ],
-    "promptProse": "Crouching gracefully beside a shallow wooden goldfish pool at a bustling summer festival, Sparkle holds up a clear water pouch with a tiny red goldfish inside. Wearing an airy coral-red yukata with floral obi, she tilts her head up at the viewer with a beaming, playful grin beneath hanging paper lanterns. Warm festive glow, charming anime key visual, solo 1girl, no text.",
+    "promptProse": "Sparkle crouches at the festival goldfish basin in a coral-red yukata printed with swimming fish, holding a half-torn paper net and raising a small water bag containing her catch. She grins toward the viewer in the high-angle cowboy view. Red paper lanterns hang above the stall and reflect in the basin. Their warm light shines through the bag and wet net, with moving water patterns beneath her hands.",
     "promptTokens": [
-      "festival_stall",
-      "lanterns",
+      "summer night",
+      "festival",
+      "coral goldfish yukata",
+      "obi",
+      "goldfish net",
+      "fish bag",
       "crouching",
-      "holding_plastic_bag",
-      "goldfish",
-      "red_yukata",
-      "summer_festival",
-      "radiant_smile",
-      "winking",
-      "pink_eyes",
-      "twintails",
-      "water_reflections",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "cowboy shot",
+      "high angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "festive_goldfish_yukata",
     "coverageTags": [

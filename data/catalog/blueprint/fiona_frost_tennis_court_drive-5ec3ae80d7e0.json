@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_tennis_court_drive",
-  "revision": 1,
-  "sortOrder": 820,
+  "revision": 2,
+  "sortOrder": 816,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "fiona_frost_tennis_court_drive",
     "characterId": "fiona_frost",
@@ -28,39 +28,22 @@
       "dynamic_motion",
       "intense_gaze"
     ],
-    "promptProse": "Under dazzling stadium floodlights on an underground championship tennis court, Fiona Frost executes an explosive mid-air forehand drive in full athletic motion. Her white sleeveless tennis top and pleated skirt flutter as she rotates her core, swinging her racket with immense force against the speeding ball. Sharp stadium lighting illuminates fine droplets of perspiration and her blunt white bob with its long right-side fringe. Wide dynamic action framing captured at the peak of the strike.",
+    "promptProse": "Fiona drives upward from the underground Campbelldon court in her white sleeveless tennis top and pleated skirt, swinging her tournament racket through a forceful shot. The wide dynamic view keeps the airborne ball traveling toward the opponent's half, with the net separating both sides and spectator rows beyond. Overhead spotlights pick out her wristbands and flying sweat, placing a clear moving shadow beneath her feet.",
     "promptTokens": [
-      "tennis_court",
-      "tennis_racket",
-      "swinging_racket",
-      "tennis_ball",
+      "tennis court",
+      "white sleeveless top",
+      "pleated skirt",
+      "wristbands",
+      "racket",
       "jumping",
-      "sweat_droplets",
-      "stadium_lights",
-      "floodlight",
-      "wide_shot",
-      "motion_blur",
-      "dynamic_angle"
+      "wide dynamic shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra characters",
-      "duplicate subject",
-      "split screen"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": false,
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

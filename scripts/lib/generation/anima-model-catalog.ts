@@ -10,6 +10,7 @@ interface ModelDefinition {
   cfg: number;
   sampler: string;
   scheduler: string;
+  teaCacheThresh?: number;
   sizes: string[];
   noLora?: boolean;
   rebalance?: { preset: string; multiplier: number; normalizeTaps: boolean };
@@ -40,9 +41,9 @@ let MODELS: Readonly<Record<string, ModelDefinition>> = Object.freeze({
   // 权重数据区字节数完全相同 4182137856），属版本迭代而非换底模。
   // 顶层键前缀由 model.diffusion_model.* 改为 net.*，ComfyUI unet_prefix_from_state_dict() 候选表
   // 已含 "net."，自动识别剥离，无需任何权重转换。
-  // 官方推荐 30 步 / CFG 4.0-5.0 / Euler，与 ANIMA_DEFAULTS 一致。
+  // 官方推荐 Euler/normal、30 步、CFG 4.0-5.0；缓存采用保守 Euler 起点。
   // 注意：1.5/1.6 为美学强化模型，会影响 artist tag 表现；负面官方建议含 shiny skin。
-  'anima-miaomiao-v1.6': { file:'miaomiaoHarem_anima16.safetensors', label:'MiaoMiao Harem Anima v1.6', family:'anima', profileId:'anima_miaomiao_v16', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1152x1536','1536x1152','1024x1024','1216x832'], noLora:true },
+  'anima-miaomiao-v1.6': { file:'miaomiaoHarem_anima16.safetensors', label:'MiaoMiao Harem Anima v1.6', family:'anima', profileId:'anima_miaomiao_v16', ...generationContract.MIAOMIAO_V16_DEFAULTS, sizes:['832x1216','960x1536','1152x1536','1536x1152','1024x1024','1216x832'], noLora:true },
   'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:generationContract.KREA_DEFAULTS.steps, cfg:generationContract.KREA_DEFAULTS.cfg, sampler:generationContract.KREA_DEFAULTS.sampler, scheduler:generationContract.KREA_DEFAULTS.scheduler, sizes:['1024x1024','1024x1536','1536x1024'], noLora:true, rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
 });
 

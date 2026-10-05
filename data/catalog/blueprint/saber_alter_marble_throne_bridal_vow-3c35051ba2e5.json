@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_marble_throne_bridal_vow",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 226,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "saber_alter_marble_throne_bridal_vow",
     "title": "黑呆 · 纯白圣座的暴君新娘誓约",
@@ -28,27 +28,20 @@
       "daylight",
       "full_body"
     ],
-    "promptProse": "Before the white marble throne, Saber Alter holds a bouquet of dark crimson roses in both hands. An opaque white gothic bridal gown and long lace veil replace the black evening dress, while her blonde hair remains in a neat braided bun beneath the veil. Her golden eyes glisten as a proud smile softens her reserved expression. High windows cast pale daylight across the gown’s folds and the stone floor. Frame the complete formal silhouette, bouquet and trailing veil together, keeping the moment ceremonial and nonsexual. No lettering.",
+    "promptProse": "Before the white marble throne, Saber Alter supports dark crimson roses in both hands, her proud smile softened by glistening golden eyes. An opaque white gothic bridal gown and floor-length lace veil surround the blonde braided bun and white dress shoes. The full-body view keeps the train and bouquet against the throne's steps. Pure daylight from high windows illuminates lace and gown folds, leaving delicate veil shadows across the stone floor.",
     "promptTokens": [
-      "marble_throne",
-      "white_bridal_gown",
-      "lace_veil",
-      "crimson_rose_bouquet",
-      "both_hands",
-      "proud_smile",
-      "golden_eyes",
+      "1girl",
+      "solo",
+      "Saber Alter",
+      "opaque white gothic bridal gown",
+      "lace veil",
+      "braided blonde bun",
+      "crimson roses",
+      "marble throne",
       "daylight",
-      "full_body",
-      "detailed_background",
-      "cinematic_lighting"
+      "full body"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "sfw_white_bridal",
     "coverageTags": [

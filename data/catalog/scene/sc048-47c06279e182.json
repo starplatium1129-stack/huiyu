@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc048",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In a sunlit spring bedroom, Shiki Natsume lies half-covered by a blanket in a pale blue pajama shirt with white piping and shorts, slender bare legs with morning skin sheen, bare feet on sheets, holding the blanket edge for the viewer with a sleepy, gentle blush.",
+    "animaCaption": "Shiki Natsume lies against the pillows in a pale blue pajama shirt, holding the blanket edge toward the viewer as she wakes. Her sleepy smile is the focus of the near-pillow view. The sheet folds lead toward the window and its sheer curtains farther behind. Filtered spring sunlight makes a broad highlight on her sleeve and pillow, while soft fold shadows and a faint headboard shadow keep the room's morning depth visible.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "枕边主观近景",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "同居公寓卧室",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, blue_shirt, pajamas",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sheer_babydoll, open-front_negligee, black_translucent_cloth, see-through, cleavage, bare_shoulders, bare_legs, reclining_on_pillows, looking_at_viewer, bedroom, soft_morning_light, sheer_curtains, sensual, playful_smile, blush, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "transparent pajamas, duplicate pillows around face, fused blanket and hand",
+    "prompt": "1girl, shiki_natsume, blue pajamas, lying on pillow, holding blanket edge, bedroom, sheer curtains, morning light, close up",
     "rating": "R15",
     "season": "春",
     "story": "【夏目 · 晨光叫醒的真心话】春日晨光穿过窗帘，夏目还缩在被子里熟睡。你替她挡住刺眼的光，她醒来后本想把脸藏起来，却发现你的手一直停在窗边。沉默几秒，她把被角分给你一半——「一直看别人睡觉很没礼貌。不过今天不用道歉……再躺十分钟，闹钟响了再起来。」",
@@ -35,7 +35,8 @@
       "bedroom",
       "full_body",
       "barefoot",
-      "morning_light"
+      "morning_light",
+      "depth_of_field"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

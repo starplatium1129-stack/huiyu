@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_street_run_hand_holding_date",
-  "revision": 1,
-  "sortOrder": 1048,
+  "revision": 2,
+  "sortOrder": 1044,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sparkle_street_run_hand_holding_date",
     "title": "花火 · 霓虹街角的回眸疾走约会",
@@ -29,38 +29,25 @@
       "mini_kimono",
       "dynamic_motion"
     ],
-    "promptProse": "Pulling the viewer by the hand through a glittering Penacony street illuminated by warm neon signs, Sparkle sprints forward before glancing back with a breathless, delighted laugh. Her red and black mini kimono flaps in the wind as her twintails swirl dynamically around her shoulders. Her ruby eyes sparkle with thrill and romantic excitement. Dynamic angle, high-energy anime visual, solo 1girl focus, no text.",
+    "promptProse": "Sparkle pulls her companion through the busy Penacony pedestrian street by one hand, black twin tails and crimson ribbons trailing as she turns toward a quieter cherry-blossom alley with a breathless grin. Her theatrical kimono sleeves lift within the dynamic cowboy view. Tourists and floating balloons remain behind them. Warm neon and streetlights catch their joined hands, with darker tree branches marking the alley entrance beyond the bright shopping fronts.",
     "promptTokens": [
-      "city_street",
-      "neon_lights",
+      "night",
+      "Penacony street",
+      "kimono dress",
+      "holding hands",
       "running",
-      "holding_hands",
-      "pulling_viewer",
-      "looking_back",
-      "laughing",
-      "playful",
-      "mini_kimono",
-      "flowing_hair",
-      "twintails",
-      "pink_eyes",
-      "night_city",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "crowd",
+      "cherry blossom alley",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_kimono_dress",
     "coverageTags": [
       "date",
       "fun",
       "dynamic"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

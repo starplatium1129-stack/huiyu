@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc225",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In the quiet morning mist on the ancient shrine stone steps, Shiki Natsume in a traditional white-and-red miko outfit with her hair tied back by a broad red ribbon accepts the hot canned tea your hand offers from behind while her other hand keeps the bamboo broom; the dead-fish eyes stay flat but her pale ears quietly turn red under the morning sunlight.",
+    "animaCaption": "Shiki Natsume pauses while sweeping the shrine steps, holding the bamboo broom in one hand and accepting the warm tea can offered from behind with the other. Her white-and-red miko outfit and tied hair remain neat. Stone steps lead toward the torii through the morning mist. Leaf-filtered sunlight touches the can and sleeve, casting soft patches on the stone; reflected light opens the white fabric's shaded folds beneath her restrained glance.",
     "auditRevision": "careful-batch07-2026-08-27",
     "camera": "中景侧面特写",
     "category": "祭典・节日",
@@ -20,8 +20,8 @@
     "location": "古老神社石阶前庭",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, western_clothes",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, miko_attire, white_kimono_top, red_hakama, split_toe_tabi_socks, zouri_sandals, sweeping_shrine_steps_with_bamboo_broom, accepting_canned_warm_tea_from_viewer, blushing_ears, deadpan_cute_glance, misty_morning_shrine, torii_gate, morning_sunbeams, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "duplicate tea cans, broom fused to sleeve, extra offering arms",
+    "prompt": "1girl, shiki_natsume, miko attire, broom, receiving canned tea, shrine steps, torii, morning mist, dappled sunlight, side medium shot",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 晨雾神社的巫女服】清晨被淡淡薄雾笼罩的静谧古老神社，四周唯有清脆的鸟鸣。夏目今天作为神社帮工换上了一袭素雅端庄的红白巫女服，柔顺的黑发用朱红缎带束在脑后，正拿着竹扫帚安静地清扫着庭前落叶。朝阳透过古树的枝桠洒落在她清秀的侧颜上，显得格外空灵。当你悄悄走近递上一罐刚加热好的热红茶时，夏目手上的动作微微一滞，半垂着清澈的金色眼眸接过热饮，白皙的耳根却悄然浮起一抹浅浅的红晕——「……别误会。我只是觉得早起扫地手太冷了，需要热量维持动作而已。……还有，早安……真是个爱操心的大笨蛋。」",
@@ -37,7 +37,8 @@
       "morning_mist",
       "white_tabi",
       "red_ears",
-      "full_body"
+      "full_body",
+      "depth_of_field"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

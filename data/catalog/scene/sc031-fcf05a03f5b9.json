@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc031",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
-    "animaCaption": "In the illuminated ritual hall with three heart-rate curves projected on the dome and a slowly rotating halo above, Ayachi Nene laughs with tears of joy holding your right hand while Shiki Natsume grips your left hand tighter and speaks the vow with calm determination.",
+    "animaCaption": "Across the ritual hall, Ayachi Nene in her white gown holds the viewer's right hand on the left side of the scene. Shiki Natsume in black holds the left hand from the opposite side. Three heart-rate curves arc over the dome beneath a slowly rotating halo. The wide view connects their feet to the floor; overhead radiance highlights the clasped fingers and gown edges, with long soft shadows leading toward the darker hall walls.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "全景",
     "category": "Active_Sync_Scenes",
@@ -21,8 +21,8 @@
     "location": "仪式厅",
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 1girl, 3girls, artist_name, chromatic_aberration, nsfw, nude, explicit, girls_holding_each_other's_hands, girls_kissing_each_other, pink_ribbon_on_black_haired_woman, white_ribbon_on_black_haired_woman, flower_hair_ornament_on_black_haired_woman, mole_on_white_haired_woman, identical_twins, third_woman, camera, video_camera, television_camera, filming_equipment, photography_equipment, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body",
-    "prompt": "2girls, pov, holy_ritual_hall, three_heart_rate_curves_projected_on_dome, rotating_halo, golden_light, (ayachi_nene_on_left, white_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_formal_gown, tears_of_joy, holding_viewer_right_hand), BREAK, (shiki_natsume_on_right, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, black_formal_gown, calm_determined_expression, holding_viewer_left_hand), interlocking_fingers_with_viewer, full_body, wide_shot, <lora:shiki_natsume_v18_wd14:0.7>, <lora:ayachi_nene_v18_wd14:0.7>",
+    "negative": "third female figure, swapped left and right identities, fused joined hands",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, formal gowns, holding partner hands, ritual hall, dome, heart rate curves, rotating halo, wide shot",
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",
@@ -40,7 +40,8 @@
       "holding_hands",
       "full_body",
       "wide_shot",
-      "heels"
+      "heels",
+      "volumetric_lighting"
     ],
     "time": "仪式时刻",
     "timeOfDay": "all_day",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_06",
-  "revision": 1,
-  "sortOrder": 1654,
+  "revision": 2,
+  "sortOrder": 1650,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_06",
     "title": "卡提希娅 · 铁匠铺的保养",
@@ -31,42 +31,16 @@
       "leaning_on_counter",
       "distant_forge"
     ],
-    "promptProse": "At the smithy counter, Cartethyia has laid her sheathed sword on a padded cloth for maintenance. She rests her forearms on the counter and watches sparks rise from the distant forge where the smith works beyond the edge of the frame, blue eyes brightening as she talks about the feel of her blade. Her cream high-collared tunic, blue travel jacket and practical trousers retain the unassuming appearance of a wandering knight. Warm forge light reaches her blonde braid and the counter; the sparks stay around the far anvil, beyond her reach.",
+    "promptProse": "Cartethyia gives her swift blade to the blacksmith for maintenance, then leans at the counter watching the sparks with bright interest. Her cream high-collared tunic, blue travel jacket and practical trousers keep the knightly identity clear. The medium portrait includes the workbench and smith behind the counter. Forge light warms her blonde braid and hands, glinting along the resting weapon while the shop's farther tools remain darker against the wall.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "cartethyia",
-      "wuthering_waves",
-      "smithy",
-      "counter",
-      "sheathed_sword",
-      "padded_cloth",
-      "maintenance",
-      "blue_jacket",
-      "confident",
-      "forge_light",
-      "medium_shot",
-      "leaning_on_counter",
-      "distant_forge"
+      "Cartethyia",
+      "blue travel jacket",
+      "sword maintenance",
+      "blacksmith counter",
+      "forge light",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst_quality",
-      "low_quality",
-      "bad_anatomy",
-      "bad_hands",
-      "missing_fingers",
-      "extra_fingers",
-      "extra_limbs",
-      "blurry",
-      "watermark",
-      "text",
-      "signature",
-      "2girls",
-      "1boy",
-      "nude",
-      "underwear",
-      "see-through"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -74,6 +48,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

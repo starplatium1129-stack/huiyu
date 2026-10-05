@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc208",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 203,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "sc208",
     "title": "夜灯下的黑发余温",
@@ -31,7 +31,8 @@
       "night",
       "bedside_lamp",
       "soft_shadows",
-      "medium_shot"
+      "medium_shot",
+      "depth_of_field"
     ],
     "rating": "R15",
     "mature": false,
@@ -43,10 +44,10 @@
       "氛围优先",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, silk_bathrobe, loose_bathrobe, off_shoulder, bare_shoulders, collarbone, bare_legs, sitting_on_messy_bed, holding_blanket_edge, looking_up_at_viewer, gentle_weary_expression, affectionate_blush, bedside_lamp, warm_night_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",
+    "prompt": "1girl, shiki_natsume, closed dark bathrobe, sitting at bed edge, cup on bedside table, tired gentle expression, warm bedside lamp, medium close up",
+    "negative": "open robe, duplicate cups, extra foreground figures",
     "storyJa": "【大人のAfter Story・夏目・夜灯の下の静かな誘い】深夜の寝室にはベッドサイドの暖かな灯りだけがついていた。一日の仕事を終えた夏目は濃い色のガウンを羽織り、ベッドの端に座っている。黒い長髪は肩から背中へ落ち、疲れた表情は珍しくやわらかい。彼女はカップを脇へ置き、近くへ来るように目で合図した。――「勘違いしないで。ただ、少し静かにしていたいだけ。鍵はかけたから、今夜は仕事を言い訳に逃げるのはなしよ。」",
-    "animaCaption": "Late at night in the private apartment bedroom lit only by one warm bedside lamp, Shiki Natsume sits on the edge of the bed wrapped in a dark bathrobe, her long black hair falling across her shoulders; she sets a cup aside on the bedside table and lifts her eyes to invite you closer, tiredness softened by a rare gentleness that still carries a hint of stubborn pride.",
+    "animaCaption": "Shiki Natsume sets the cup on the bedside table and lifts her gaze toward the viewer from the bed edge, the dark bathrobe kept comfortably closed. Her long hair falls beside a tired but gentle expression. The table and headboard overlap farther back in the apartment bedroom. One warm bedside lamp catches the cup rim and nearer cheek, while reflected bedding light opens the robe folds and deeper wall shadows preserve the quiet night setting.",
     "auditRevision": "careful-batch07-2026-08-27"
   }
 }

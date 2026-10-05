@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_morning_shrine_bento_box",
-  "revision": 1,
-  "sortOrder": 1290,
+  "revision": 2,
+  "sortOrder": 1286,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "akeno_morning_shrine_bento_box",
     "title": "姬岛朱乃 · 神社晨间的特制便当",
@@ -28,32 +28,16 @@
       "gentle_smile",
       "blush"
     ],
-    "promptProse": "Standing along the sun-drenched wooden veranda of a quiet Shinto shrine in the early morning, Akeno Himejima gently offers a handmade wrapped bento box with both hands. Her traditional miko shrine maiden attire is impeccably neat, and her sleek black ponytail cascades over her shoulder. She smiles with sweet, teasing domestic warmth, violet eyes gleaming softly. Clean anime visual novel artwork, solo 1girl, no text.",
+    "promptProse": "Akeno Himejima leans forward on the shrine veranda to offer a floral-wrapped double-tier bento in both hands. Her white miko top and red hakama are neat after morning sweeping, and her high black ponytail slides over one shoulder. The eye-level cowboy view follows polished floorboards and supporting posts behind her. Morning sun through pine branches highlights the wrapping knot and orange collar tie, with branch shadows crossing the boards.",
     "promptTokens": [
-      "shrine",
-      "wooden_veranda",
-      "morning_sun",
-      "holding_bento",
-      "offering_food",
-      "miko",
-      "white_kimono",
-      "red_hakama",
-      "leaning_forward",
-      "gentle_smile",
-      "blush",
-      "purple_eyes",
-      "high_ponytail",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Akeno Himejima",
+      "miko robes",
+      "wrapped bento",
+      "shrine veranda",
+      "morning",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_miko_robe",
     "coverageTags": [

@@ -216,6 +216,10 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 压制，但仅对成年角色生效（underage 资格仍 fail-closed，数据层契约不动）。
   const manualR18 = character.adultEligibility === 'adult'
     && isManualR18Tags(manual, options.matureTokens)
+  const hasIdentityOverride = Boolean(blueprint?.identityTokensOverride?.length || blueprint?.identityProseOverride)
+  if (hasIdentityOverride && (adult || manualR18)) return null
+  const identitySource = blueprint?.identityTokensOverride?.length ? blueprint.identityTokensOverride : character.identityTokens
+  const identityProse = blueprint?.identityProseOverride || character.identityProse
   const ratingLevel = (adultGranted || manualR18) ? 'R18' : 'ALL'
   const shotToken = SHOT.find(item => item.id === options.shot)?.prompt || ''
   const lightingToken = LIGHTING.find(item => item.id === options.lighting)?.prompt || ''
@@ -243,10 +247,10 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const subjectProse = !blueprint
     ? standaloneIdentityProse(character)
     : adultGranted
-      ? adultIdentityProse(character.identityProse)
+      ? adultIdentityProse(identityProse)
       : (outfitActive
-          ? (overridden ? proseWithoutOutfit(character.identityProse) : identityWithoutOutfit(character.identityProse))
-          : proseWithoutOutfit(character.identityProse))
+          ? (overridden ? proseWithoutOutfit(identityProse) : identityWithoutOutfit(identityProse))
+          : proseWithoutOutfit(identityProse))
 
   if (engine === 'krea2') {
     // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
@@ -285,9 +289,9 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // qipao / green_clothes / coat 等写进了 identityTokens，而它是无条件注入的，
   // 不过滤则瘦身对它们无效）。双保险：互斥族判定 + 普通衣物名单。
   const referenceIdentity = Boolean(overridden) && !adultGranted
-  const identityTokens = (!blueprint ? standaloneIdentityTokens(character.identityTokens) : outfitActive && !referenceIdentity
-    ? character.identityTokens
-    : character.identityTokens.filter(token =>
+  const identityTokens = (!blueprint ? standaloneIdentityTokens(identitySource) : outfitActive && !referenceIdentity
+    ? identitySource
+    : identitySource.filter(token =>
         mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
     .filter(token => !dnaAvoid.has(normalizeProseKey(token)))
     .filter(token => !adultGranted || (!isGarmentToken(token)

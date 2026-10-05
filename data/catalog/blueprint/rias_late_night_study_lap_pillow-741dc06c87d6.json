@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_late_night_study_lap_pillow",
-  "revision": 1,
-  "sortOrder": 1282,
+  "revision": 2,
+  "sortOrder": 1278,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "rias_late_night_study_lap_pillow",
     "title": "莉雅丝 · 深夜书房的温软膝枕",
@@ -29,31 +29,17 @@
       "loving_gaze",
       "warm_glow"
     ],
-    "promptProse": "Kneeling gracefully upon a plush Persian rug beside a crackling stone fireplace late at night, Rias Gremory gestures gently to her lap, offering a soothing lap pillow. Dressed in elegant crimson silk loungewear, her overflowing crimson tresses catch the amber hearth fire, and her eyes gaze down with profound tenderness and loving devotion. Warm, tranquil anime mood, solo 1girl, no text.",
+    "promptProse": "Beside the private study's stone fireplace, Rias Gremory kneels on a thick rug and lightly pats her lap, inviting her tired companion to rest. Crimson silk and black lace nightwear fall over her stockinged knees, with red hair gathered beside them. The medium cowboy view holds bookshelves and the tea cup behind. Hearth flames warm her profile and cloth folds; the vintage lamp adds a steady highlight on the rug's raised fibers.",
     "promptTokens": [
-      "study",
-      "fireplace",
-      "warm_light",
+      "Rias Gremory",
+      "crimson silk nightwear",
+      "black stockings",
       "kneeling",
-      "sitting_on_carpet",
-      "patting_lap",
-      "lap_pillow",
-      "crimson_lingerie",
-      "gentle_smile",
-      "tender_gaze",
-      "flowing_hair",
-      "cozy",
-      "cowboy_shot",
-      "cinematic_lighting",
-      "detailed_background"
+      "lap pillow invitation",
+      "fireplace",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "crimson_silk_lingerie",
     "coverageTags": [

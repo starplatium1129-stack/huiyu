@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_mihama_classroom_desk_lecture",
-  "revision": 1,
-  "sortOrder": 1170,
+  "revision": 2,
+  "sortOrder": 1166,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
   "data": {
     "id": "kazuki_mihama_classroom_desk_lecture",
     "title": "风见一姬 · 美浜讲台的天才教诲",
@@ -31,37 +31,19 @@
       "white_skirt",
       "red_eyes"
     ],
-    "promptProse": "Leaning with composed poise against the dark wooden podium in a sunlit academy lecture hall, Kazuki explains complex mathematical formulas written across the chalkboard. Golden afternoon sunbeams highlight her Mihama school uniform and brilliant crimson eyes.",
+    "promptProse": "Kazuki stands beside the stepped classroom lectern, one hand braced behind her on its edge and the other holding white chalk as she addresses the students below. Her lavender Mihama shirt, blue plaid tie and white pleated skirt remain in the close cowboy view. Logic formulas cover the blackboard behind. High-window daylight illuminates her silver hair and chalk dust, with the lectern casting a firm shadow across the front platform.",
     "promptTokens": [
-      "school_classroom",
-      "blackboard",
-      "podium",
-      "holding_chalk",
-      "school_uniform",
-      "purple_shirt",
-      "white_skirt",
-      "red_eyes",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "daytime",
+      "Mihama classroom",
+      "lavender school shirt",
+      "blue plaid tie",
+      "white skirt",
+      "chalk",
+      "students",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
-    "recommendedSize": "1152x1536"
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "compositionIntent": "group"
   }
 }
