@@ -350,6 +350,7 @@ async fn download(
             "下载不完整，未发布模型文件；请重试",
         ));
     }
+    output.flush().await.map_err(io_error)?;
     output.sync_all().await.map_err(io_error)?;
     drop(output);
     let temp_spec = ModelFile {
