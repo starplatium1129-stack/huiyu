@@ -11,7 +11,7 @@
  * - 专属女主角：宁宁/夏目 强制绑定官方 v21 LoRA (0.85 强度) 保证 100% 角色神韵
  * - 底模：MiaoMiao Harem Anima v1.6 (anima-miaomiao-v1.6)
  * - 极速画幅：832x1216 (竖版) / 1216x832 (横版)
- * - 加速机制：TeaCache（Euler 保守阈值 0.05，实际收益依输入而定）
+ * - 加速机制：TeaCache（本机对照阈值 0.10，实际收益依输入而定）
  * - 存储：显式 --output 隔离目录，PNG 原图与 generation-manifest.json；不自动发布
  */
 
@@ -145,7 +145,7 @@ function buildPayload(task: any) {
     steps: 30,
     cfg: 4.5,
     teaCache: true,
-    teaCacheThresh: 0.05,
+    teaCacheThresh: 0.10,
     seed: task.seed
   };
 

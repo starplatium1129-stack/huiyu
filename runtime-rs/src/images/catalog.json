@@ -105,7 +105,7 @@
         "1216x832"
       ],
       "noLora": true,
-      "teaCacheThresh": 0.05,
+      "teaCacheThresh": 0.1,
       "hiresSampler": "euler",
       "hiresScheduler": "normal"
     },

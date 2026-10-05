@@ -396,7 +396,7 @@ test('payload snapshots retain prompts, bindings and dimensions with the current
   };
   for (const [persId, hash] of Object.entries(expected)) {
     const value = modules[0].buildPayload(f.character, f.character.outfits[0], persId, 123);
-    assert.equal(value.teaCacheThresh, 0.05);
+    assert.equal(value.teaCacheThresh, 0.10);
     assert.equal(F.sha(JSON.stringify({ ...value, teaCacheThresh: 0.08 })), hash);
   }
   const inputs = modules[1].loadInputs({ root: f.root });
@@ -407,7 +407,7 @@ test('payload snapshots retain prompts, bindings and dimensions with the current
   const payload = (task: any, characterId: any = task.characterId) => modules[1].buildPayload({ ...task, characterId, seed: 123 });
   const snapshot = (value: any, hash: string) => {
     assert.equal(value.modelId, 'anima-miaomiao-v1.6');
-    assert.equal(value.teaCacheThresh, 0.05);
+    assert.equal(value.teaCacheThresh, 0.10);
     // profileId belongs to the compiler input above, not the HTTP payload.
     assert.equal(F.sha(JSON.stringify({ ...value, modelId: 'anima-miaomiao-v1.2', teaCacheThresh: 0.08 })), hash);
   };

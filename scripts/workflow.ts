@@ -561,7 +561,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     cmd: ['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/maintenance/start-comfyui.ps1'],
     docs: 'scripts/maintenance/start-comfyui.ps1:1',
     needs: 'AI 工作区下 ComfyUI/main.py、ComfyUI/venv/Scripts/python.exe 已准备；所需权重另验',
-    opts: '[-UseSageAttention] 显式启用已安装的可选 SageAttention；也可由启动进程设置 AICS_COMFY_USE_SAGE_ATTENTION=1',
+    opts: '已安装 SageAttention 且 CUDA 可用时默认启用；AICS_COMFY_USE_SAGE_ATTENTION=0 可关闭，缺依赖沿用 PyTorch；保留 [-UseSageAttention] 显式开关',
     run: { nature: ['service'], machine: ['windows'], switches: { '-UseSageAttention': ['service'] }, resume: 'na', evidence: 'scripts/maintenance/start-comfyui.ps1:1', unknown: [] },
   },
   'voice:service': {

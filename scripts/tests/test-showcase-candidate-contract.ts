@@ -32,11 +32,11 @@ test('standalone defaults and explicit historical selection reach the matching p
   assert.strictEqual(defaults.checkpoint, 'miaomiaoHarem_anima16.safetensors');
   assert.strictEqual(defaults.sampler, 'euler');
   assert.strictEqual(defaults.scheduler, 'normal');
-  assert.strictEqual(defaults.teaCacheThresh, 0.05);
+  assert.strictEqual(defaults.teaCacheThresh, 0.10);
   assert.ok(defaults.prompt.includes('score_7') && defaults.prompt.includes('score_9'));
   assert.ok(scene?.animaCaption);
   assert.ok(defaults.prompt.includes(scene.animaCaption.replace(/[.!?]+\s*/g, '; ').replace(/(?:;\s*)+$/, '').trim()), 'authored scene relationships must reach the final request');
-  assert.strictEqual(generator.buildSubmissionBody(defaults).teaCacheThresh, 0.05);
+  assert.strictEqual(generator.buildSubmissionBody(defaults).teaCacheThresh, 0.10);
   assert.strictEqual(generator.buildSubmissionBody(defaults).modelId, defaults.modelId);
   assert.strictEqual(defaults.loraId, 'L_NENE_V21_ANIMA');
   const candidate = generator.buildAnimaCandidate(scene, 1, 1, { modelId: 'anima-miaomiao-v1.2' });

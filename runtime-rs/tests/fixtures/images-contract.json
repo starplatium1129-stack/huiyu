@@ -107,7 +107,7 @@
           "1216x832"
         ],
         "noLora": true,
-        "teaCacheThresh": 0.05,
+        "teaCacheThresh": 0.1,
         "hiresSampler": "euler",
         "hiresScheduler": "normal"
       },
@@ -1206,7 +1206,7 @@
           "hiresDenoise": 0.35,
           "hiresUpscaler": null,
           "teaCache": true,
-          "teaCacheThresh": 0.05,
+          "teaCacheThresh": 0.1,
           "initImage": null,
           "maskImage": null,
           "maskPrompt": null,
@@ -1320,7 +1320,7 @@
                 "1",
                 0
               ],
-              "rel_l1_thresh": 0.05,
+              "rel_l1_thresh": 0.1,
               "start_percent": 0,
               "end_percent": 1,
               "cache_device": "cuda"

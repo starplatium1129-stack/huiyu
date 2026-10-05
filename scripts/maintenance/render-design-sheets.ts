@@ -25,7 +25,7 @@ import { buildReferenceDesignWorkflow } from '../lib/generation/reference-design
  *   960×1536，30 steps Euler/normal，CFG 4.5，ImageSharpenKJ RCAS 0.75。
  *   使用离线参考图构建器 reference-design-workflow；Node 后端退役时只保留
  *   此工具实际使用的节点图，节点结构与 RCAS 保持，采样与缓存遵循当前 1.6 配方。
- *   TeaCache 默认 rel_l1_thresh=0.05，
+ *   TeaCache 默认 rel_l1_thresh=0.10，
  *   --no-teacache 可关。
  *
  * 用法：
@@ -97,8 +97,8 @@ if (args.includes('--help') || args.includes('-h')) {
   --dry-run        只列出任务不出图
   --limit=N        只跑前 N 个任务（试跑）
   --seed-shift=N   seed 偏移，同条目换变体用
-  --no-teacache    关闭 TeaCache 加速（默认开：rel_l1_thresh=0.05，照抄生产管线默认）
-  --tea-thresh=N   自定义 TeaCache rel_l1_thresh（0 = 关闭；生产默认 0.05）
+  --no-teacache    关闭 TeaCache 加速（默认开：rel_l1_thresh=0.10，沿用生产管线默认）
+  --tea-thresh=N   自定义 TeaCache rel_l1_thresh（0 = 关闭；生产默认 0.10）
 
 环境变量: COMFY_HOST / COMFY_OUTPUT / AI_WORKSPACE_ROOT
 依赖: ComfyUI http://127.0.0.1:8188（--disable-smart-memory）`);
@@ -116,10 +116,10 @@ const all = args.includes('--all');
 const dryRun = args.includes('--dry-run');
 const limit = Number((args.find((a: any) => a.startsWith('--limit=')) || '').split('=')[1] || 0) || null;
 const seedShift = Number((args.find((a: any) => a.startsWith('--seed-shift=')) || '').split('=')[1] || 0) || 0;
-// MiaoMiao 1.6 的 Euler 保守缓存：0.05、起止比例 0–1、CUDA 缓存。
+// MiaoMiao 1.6 的本机对照缓存：0.10、起止比例 0–1、CUDA 缓存。
 // 需要对照画质可 --no-teacache 关闭，或 --tea-thresh=<值> 调档（0 = 关闭）。
 const teaThreshArg = args.find((a: any) => a.startsWith('--tea-thresh='));
-const teaThresh = teaThreshArg ? Number(teaThreshArg.split('=')[1]) : (args.includes('--no-teacache') ? 0 : 0.05);
+const teaThresh = teaThreshArg ? Number(teaThreshArg.split('=')[1]) : (args.includes('--no-teacache') ? 0 : 0.10);
 
 // ── 工具 ─────────────────────────────────────────────────────────────────────
 function stableSeed(charId: any, outfitId: any, view: any) {

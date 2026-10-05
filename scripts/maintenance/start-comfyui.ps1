@@ -3,7 +3,7 @@
 # Report installed versions at launch; do not claim an old dependency combination is active.
 # This command starts only one local instance and preserves the installed model environment.
 
-param([switch]$UseSageAttention = ($env:AICS_COMFY_USE_SAGE_ATTENTION -eq '1'))
+param([switch]$UseSageAttention = ($env:AICS_COMFY_USE_SAGE_ATTENTION -ne '0'))
 
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
@@ -38,8 +38,12 @@ $arguments = @(
   '--fast-disk',
   '--vram-headroom', '1'
 )
-# Optional optimization; the default also works without the SageAttention package.
-if ($UseSageAttention) { $arguments += '--use-sage-attention' }
+# Prefer installed SageAttention on CUDA; explicit 0 keeps PyTorch attention.
+if ($UseSageAttention) {
+  $sageAvailable = & $python -c "import importlib.util, torch; print(int(torch.cuda.is_available() and importlib.util.find_spec('sageattention') is not None))"
+  if ($sageAvailable -eq '1') { $arguments += '--use-sage-attention' }
+  else { Write-Host 'SageAttention or CUDA is unavailable; using PyTorch attention.' }
+}
 Start-Process -FilePath $python -ArgumentList $arguments -WorkingDirectory $comfyRoot -RedirectStandardOutput $out -RedirectStandardError $err -WindowStyle Hidden
 
 Write-Host 'Waiting for health check...'

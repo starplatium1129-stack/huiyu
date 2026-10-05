@@ -292,7 +292,7 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
     assert_eq!(metadata["superResModel"], "RealESRGAN_x4plus_anime_6B.pth");
     assert_eq!(metadata["sampler"], "euler");
     assert_eq!(metadata["scheduler"], "normal");
-    assert_eq!(metadata["teaCacheThresh"], 0.05);
+    assert_eq!(metadata["teaCacheThresh"], 0.1);
     assert_eq!(metadata["hiresSampler"], "euler");
     assert_eq!(metadata["hiresScheduler"], "normal");
     {

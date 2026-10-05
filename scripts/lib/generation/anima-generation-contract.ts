@@ -8,13 +8,14 @@ const ANIMA_DEFAULTS = Object.freeze({
   scheduler: 'simple',
 });
 
-// MiaoMiao 1.6 author recommendation; TeaCache's conservative Euler preset.
+// Author-recommended sampling; local SageAttention/TeaCache comparison keeps
+// scene detail at 0.10 while allowing same-seed composition changes.
 const MIAOMIAO_V16_DEFAULTS = Object.freeze({
   steps: 30,
   cfg: 4.5,
   sampler: 'euler',
   scheduler: 'normal',
-  teaCacheThresh: 0.05,
+  teaCacheThresh: 0.10,
 });
 
 const KREA_DEFAULTS = Object.freeze({

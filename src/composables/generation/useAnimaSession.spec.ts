@@ -36,12 +36,12 @@ function createSession(client: ApiClient, options: Partial<AnimaSessionOptions> 
 it('keeps the default MiaoMiao 1.6 offline rather than silently substituting an older available model', async () => {
   const client = { request: vi.fn(async () => ({ ok: true, online: true, models: [
     { id: 'anima-miaomiao-v1.2', family: 'anima', available: true, sizes: ['832x1216'], defaults: { steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple', teaCacheThresh: 0.08 } },
-    { id: 'anima-miaomiao-v1.6', family: 'anima', available: false, sizes: ['832x1216'], defaults: { steps: 30, cfg: 4.5, sampler: 'euler', scheduler: 'normal', teaCacheThresh: 0.05 } },
+    { id: 'anima-miaomiao-v1.6', family: 'anima', available: false, sizes: ['832x1216'], defaults: { steps: 30, cfg: 4.5, sampler: 'euler', scheduler: 'normal', teaCacheThresh: 0.10 } },
   ], loras: [] })) } as unknown as ApiClient
   const session = createSession(client)
   await session.refreshBackend()
   expect(session.state.value).toMatchObject({ modelId: 'anima-miaomiao-v1.6', online: false,
-    sampler: 'euler', scheduler: 'normal', teaCacheThresh: 0.05 })
+    sampler: 'euler', scheduler: 'normal', teaCacheThresh: 0.10 })
   session.patchState({ teaCacheThresh: 0.02 })
   await session.refreshBackend()
   expect(session.state.value.teaCacheThresh).toBe(0.02)

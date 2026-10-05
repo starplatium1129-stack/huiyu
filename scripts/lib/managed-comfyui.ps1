@@ -4,7 +4,7 @@ param(
     [Parameter(Mandatory = $true)][string]$AIWorkspaceRoot,
     [Parameter(Mandatory = $true)][string]$RuntimeRoot,
     [Parameter(Mandatory = $true)][string]$ComfyHost,
-    [switch]$UseSageAttention = ($env:AICS_COMFY_USE_SAGE_ATTENTION -eq '1')
+    [switch]$UseSageAttention = ($env:AICS_COMFY_USE_SAGE_ATTENTION -ne '0')
 )
 $ErrorActionPreference = 'Stop'
 $workspace = [IO.Path]::GetFullPath($AIWorkspaceRoot)
@@ -102,10 +102,14 @@ if ($managedProcess) { Write-Result $true 'starting' $true 'ComfyUI is still sta
 if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf) -or -not (Test-Path -LiteralPath $mainPath -PathType Leaf)) {
     Write-Result $false 'unavailable' $false ("Managed startup requires ComfyUI/main.py and ComfyUI/venv/Scripts/python.exe under the AI workspace. Expected: $mainPath ; $pythonPath . Start other layouts manually and connect through the configured ComfyUI address."); exit 1
 }
-# SageAttention is optional and must be installed in this venv before explicitly enabling it.
-# Both launchers accept -UseSageAttention or inherit AICS_COMFY_USE_SAGE_ATTENTION=1.
+# Prefer the installed CUDA optimization; explicit 0 keeps PyTorch attention.
+# Detect availability without installing or changing the model environment.
 $arguments = @('-u', ('"{0}"' -f $mainPath), '--listen', $uri.Host, '--port', $port, '--disable-pinned-memory', '--fast-disk', '--vram-headroom', '1')
-if ($UseSageAttention) { $arguments += '--use-sage-attention' }
+if ($UseSageAttention) {
+    $sageAvailable = & $pythonPath -c "import importlib.util, torch; print(int(torch.cuda.is_available() and importlib.util.find_spec('sageattention') is not None))"
+    if ($sageAvailable -eq '1') { $arguments += '--use-sage-attention' }
+    else { [Console]::Error.WriteLine('SageAttention or CUDA is unavailable; using PyTorch attention.') }
+}
 $process = Start-Process -FilePath $pythonPath -ArgumentList $arguments -WorkingDirectory $comfyRoot -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog -PassThru
 Set-Content -LiteralPath $pidFile -Value $process.Id -Encoding ASCII
 if (Wait-Ready) { Write-Result $true 'ready' $true 'Started ComfyUI and waited for /system_stats.' $process.Id; exit 0 }

@@ -35,7 +35,7 @@ negative: worst quality, low quality, score_1, score_2, score_3, artist name, sh
 
 [`data/presets.json`](../../../../data/presets.json) 的 `anima_miaomiao_v16` 已采用作者推荐的质量与两项评分词，场景不重复粘贴整段前缀。分级由评级字段提供，浅肤色与高对比按人物及画面实际选择，避免模型层覆盖深色肤色或柔和场景。基础负向采用作者版本词表，解剖、分级保护和逐条场景排除项由现有上层装配、去重。
 
-2026-10-05 的采样迁移已将该 profile 和网关主采样统一为 `euler/normal`、30 步、CFG 4.5，默认画幅仍为 832×1216。扩散高清阶段采用同一采样组合，步数沿用现有二次采样策略。TeaCache 默认阈值 0.05、起止比例 0–1，来自 [缓存节点作者的 Euler 保守建议](https://github.com/CocyNoric/ComfyUI-Anima-TeaCache#recommended-settings)，不属于 MiaoMiao 作者配方；效果按实际输入确认。评级由 `rating_all/rating_r15/rating_r18` 分开处理，这个边界应保留。
+2026-10-05 的采样迁移已将该 profile 和网关主采样统一为 `euler/normal`、30 步、CFG 4.5，默认画幅仍为 832×1216。扩散高清阶段采用同一采样组合，步数沿用现有二次采样策略。后续本机 MiaoMiao 1.6/SageAttention 同输入对照将 TeaCache 默认阈值调为 0.10，起止比例仍为 0–1；用户接受同种子重画，同时要求保留人物结构和画面丰富度。[缓存节点作者的 Euler 保守建议](https://github.com/CocyNoric/ComfyUI-Anima-TeaCache#recommended-settings)仍为 0.05；本机档位不属于 MiaoMiao 作者配方，效果按实际输入确认。评级由 `rating_all/rating_r15/rating_r18` 分开处理，这个边界应保留。
 
 完整负向还由 [`assembleNegative`](../../../../src/utils/promptPolicy.ts) 追加解剖、文字、边框与分级保护。数据字段的 negative、底层渲染返回值与最终发送的 negative 是不同层次；报告必须标清检查的是哪一层。
 

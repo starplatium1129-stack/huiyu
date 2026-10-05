@@ -33,7 +33,7 @@ const INITIAL_STATE: AnimaGenerationState = {
   family: 'anima',
   sampler: 'euler', scheduler: 'normal', seed: null,
   hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35,
-  teaCache: true, teaCacheThresh: 0.05,
+  teaCache: true, teaCacheThresh: 0.10,
   job: null, result: null, resultContext: null, statusText: '', errorMsg: '', errorReport: null,
 }
 
