@@ -77,7 +77,6 @@ export function useGalleryWorkspace() {
     const infoEl = ref<HTMLElement | null>(null), infoToggleBtn = ref<HTMLButtonElement | null>(null), infoCloseBtn = ref<HTMLButtonElement | null>(null);
     const shellEl = ref<HTMLElement | null>(null);
     const { columnCount } = useMasonryColumns(shellEl);
-    const objectUrls = new Set<string>();
     let unmounted = false;
     let viewActive = true;
     let imageEpoch = 0;
@@ -155,17 +154,13 @@ export function useGalleryWorkspace() {
 
     function indexOf(item: ArtworkRecord) { return visible.value.indexOf(item); }
 
-    function trackUrl(url: string) { objectUrls.add(url); return url; }
     function markImageMissing(id: string | number) {
         missingImageIds.value = new Set([...missingImageIds.value, id]);
     }
-    function releaseImages() {
+    function releaseImages(retain: ReadonlySet<string> = new Set()) {
         imageEpoch++;
         imageReads.abort(); imageReads = new AbortController();
-        objectUrls.forEach(u => URL.revokeObjectURL(u));
-        objectUrls.clear();
-        for (const id of Object.keys(cardUrls)) delete cardUrls[id];
-        cardLruOrder.clear();
+        for (const id of cardLruOrder.keys()) if (!retain.has(String(id))) releaseCardImage(id);
         // Missing results, including temporary read failures, expire on leaving.
         missingImageIds.value = new Set();
     }
@@ -199,7 +194,7 @@ export function useGalleryWorkspace() {
     }
     function releaseCardImage(id: string | number) {
         const url = cardUrls[id];
-        if (url?.startsWith('blob:')) { URL.revokeObjectURL(url); objectUrls.delete(url); }
+        if (url?.startsWith('blob:')) URL.revokeObjectURL(url);
         delete cardUrls[id];
         cardLruOrder.delete(id);
     }
@@ -250,7 +245,7 @@ export function useGalleryWorkspace() {
             const blob = item.image_id ? await artworkRepository.getImage(item.image_id, signal) : null;
             if (signal.aborted || unmounted || !viewActive || epoch !== imageEpoch || !isMediaCurrent(item)) return;
             if (blob) {
-                cardUrls[item.id] = trackUrl(URL.createObjectURL(blob));
+                cardUrls[item.id] = URL.createObjectURL(blob);
                 resolved = true;
                 // 2026-08-30 治本：旧图缺 KV 缩略图（早期回填逻辑不存在）→ 全靠 HD 大图管线
                 // （并发 4 + LRU 40 淘汰），滚动浏览旧区域反复重读大 blob → 一直 loading。
@@ -448,12 +443,14 @@ export function useGalleryWorkspace() {
     });
     // KeepAlive preserves filters, pagination and the return viewport's previews.
     // A long browse must not keep every thumbnail/decoded image while inactive;
-    // activation refills missing previews without blanking the restored viewport.
+    // Keep an original only where the return viewport has no thumbnail fallback;
+    // it still shares the bounded LRU and is released on eviction or unmount.
     let activatedOnce = false;
     onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void hydrateThumbs(); scheduleWallScan(); void nextTick(() => { if (moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
     onDeactivated(() => {
-        viewActive = false; cleanupFilterSync(); releaseImages();
+        viewActive = false; cleanupFilterSync();
         const keep = collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds;
+        releaseImages(new Set([...keep].filter(id => !thumbUrls[id])));
         for (const id of Object.keys(thumbUrls)) if (!keep.has(id)) delete thumbUrls[id];
         document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear();
         cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear(); returnThumbIds.clear();

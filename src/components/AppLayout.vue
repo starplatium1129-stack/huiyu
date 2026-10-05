@@ -8,8 +8,8 @@
     <main id="main" class="page-main tw:relative tw:z-(--z-raised) tw:flex-1 tw:min-w-0 tw:grid" tabindex="-1" :aria-busy="!!pendingPath || undefined">
       <RouterView v-slot="{ Component, route }">
         <Transition appear :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave" @enter-cancelled="onEnterCancelled" @leave-cancelled="onLeaveCancelled">
-          <!-- 缓存页面的筛选、滚动与编辑状态；作品册停用时释放原图，
-               回来后按可见范围重读，避免后台常驻整页高清资源。 -->
+          <!-- 缓存页面的筛选、滚动与编辑状态；作品册停用时释放有缩略图的原图，
+               仅为返回范围内缺少缩略图的作品保留原图预览。 -->
           <KeepAlive :include="['GalleryView', 'ShowcaseView', 'PromptBuilderView', 'VideoStudioView']">
             <component :is="Component" :key="route.path" class="route-view tw:min-w-0" :data-route-path="route.fullPath" />
           </KeepAlive>

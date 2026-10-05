@@ -58,7 +58,9 @@ it('opens and closes the narrow information drawer immediately from the keyboard
   expect(viewer.hasAttribute('data-info-instant')).toBe(true)
 })
 
-it('releases gallery originals on deactivation while keeping filters and thumbnails for a return', async () => {
+it('retains the return preview when no thumbnail is available and still releases the viewer', async () => {
+  mocks.getThumbnail.mockResolvedValue(null)
+  mocks.thumb.mockResolvedValue(null)
   const env = await setup()
   env.gallery.favoriteOnly.value = true
   await nextTick()
@@ -70,11 +72,11 @@ it('releases gallery originals on deactivation while keeping filters and thumbna
   const viewer = env.gallery.viewerUrl.value
   expect(viewer).toBe('blob:gallery-2')
   await env.hide()
-  expect(URL.revokeObjectURL).toHaveBeenCalledWith(original)
+  expect(URL.revokeObjectURL).not.toHaveBeenCalledWith(original)
   expect(URL.revokeObjectURL).toHaveBeenCalledWith(viewer)
-  expect(env.gallery.cardUrls).toEqual({})
+  expect(env.gallery.cardUrls[1]).toBe(original)
   expect(env.gallery.viewerUrl.value).toBe('')
-  expect(env.gallery.thumbUrls[1]).toBe('data:image/jpeg;base64,thumb')
+  expect(env.gallery.thumbUrls[1]).toBeUndefined()
   expect(env.gallery.favoriteOnly.value).toBe(true)
   let refresh!: (value: ArtworkLibrarySnapshot) => void
   mocks.snapshot.mockImplementationOnce(() => new Promise(resolve => { refresh = resolve }))
@@ -82,14 +84,15 @@ it('releases gallery originals on deactivation while keeping filters and thumbna
   expect(mocks.snapshot).toHaveBeenCalledTimes(2)
   expect(env.gallery.galleryLoading.value).toBe(false)
   expect(env.gallery.history.value[0].story).toBeUndefined()
-  expect(env.wrapper.get('img').attributes('src')).toBe('data:image/jpeg;base64,thumb')
+  expect(env.wrapper.get('img').attributes('src')).toBe(original)
   refresh({ history: [{ ...record(1), story: 'edited while away' }], projects: [] })
   await flushPromises()
   expect(env.gallery.history.value[0].story).toBe('edited while away')
   await env.intersect()
-  expect(env.gallery.cardUrls[1]).toBe('blob:gallery-3')
+  expect(env.gallery.cardUrls[1]).toBe(original)
+  expect(mocks.getImage).toHaveBeenCalledTimes(2)
   expect(env.gallery.favoriteOnly.value).toBe(true)
-  expect(env.wrapper.find('img').attributes('src')).toBe('blob:gallery-3')
+  expect(env.wrapper.find('img').attributes('src')).toBe(original)
 })
 
 it('keeps the image and comparison intact until the closing transition finishes', async () => {
