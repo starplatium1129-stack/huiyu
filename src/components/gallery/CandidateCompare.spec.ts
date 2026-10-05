@@ -65,3 +65,30 @@ it('shows parameter differences and synchronizes keyboard zoom, movement and res
   expect(stages()[1].get('img').attributes('style')).toContain('scale(1)')
   wrapper.unmount()
 })
+
+
+it('refreshes replaced candidate sources but retains images and zoom for metadata-only updates', async () => {
+  mocks.read.mockReset().mockResolvedValue(null)
+  const item = { id: 'a', image_id: 'missing-original', image_data: 'data:image/png;base64,first' }
+  const wrapper = mount(CandidateCompare, {
+    props: { open: true, items: [item] },
+    global: { stubs: { Teleport: true, RouterLink: true } },
+  })
+  try {
+    await flushPromises()
+    expect(wrapper.get('.candidate-viewport img').attributes('src')).toBe(item.image_data)
+    await wrapper.get('.candidate-viewport').trigger('keydown', { key: '+' })
+    await wrapper.setProps({ items: [{ ...item, seed: 42 }] })
+    await flushPromises()
+    expect(mocks.read).toHaveBeenCalledOnce()
+    expect(wrapper.get('.candidate-viewport img').attributes('style')).toContain('scale(1.25)')
+    const replacement = { ...item, image_data: 'data:image/png;base64,replacement' }
+    await wrapper.setProps({ items: [replacement] })
+    await flushPromises()
+    expect(mocks.read).toHaveBeenCalledTimes(2)
+    expect(wrapper.get('.candidate-viewport img').attributes('src')).toBe(replacement.image_data)
+    await wrapper.setProps({ items: [{ id: item.id, image_id: item.image_id, image_url: 'https://example.com/new.png' }] })
+    await flushPromises()
+    expect(wrapper.get('.candidate-viewport img').attributes('src')).toBe('https://example.com/new.png')
+  } finally { wrapper.unmount() }
+})

@@ -22,6 +22,7 @@
 import { computed, nextTick, onDeactivated, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CandidateViewport from './CandidateViewport.vue'
+import { sameArtworkMedia } from '@/composables/gallery/artworkMediaIdentity'
 import { useCandidateMedia } from '@/composables/gallery/useCandidateMedia'
 import { useCandidateViewport } from '@/composables/gallery/useCandidateViewport'
 import { candidateParameterRows } from '@/composables/gallery/candidateParameters'
@@ -42,7 +43,9 @@ const title = (item: ArtworkRecord) => item.sceneTitle || item.scene || '未命�
 function onDialogClick(event: MouseEvent) {
   if (isBackdropClick(event, dialog.value)) emit('close')
 }
-watch([() => props.open, () => candidates.value.map(item => `${item.id}:${item.image_id || item.image_url || ''}`).join('|')], async ([open]) => {
+watch([() => props.open, () => candidates.value.map(({ id, image_id, image_url, image_data }) => ({ id, image_id, image_url, image_data }))], async ([open, items], [previousOpen, previousItems]) => {
+  if (open === previousOpen && previousItems?.length === items.length
+    && items.every((item, index) => sameArtworkMedia(item, previousItems[index]))) return
   const current = ++version
   if (!open) { cancel(); motion.close(release); return }
   release(); reset(); error.value = ''
