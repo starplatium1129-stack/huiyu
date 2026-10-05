@@ -84,9 +84,10 @@ async function triggerReveal() {
   if (!isCurrentImage(img) || !img.complete || !img.naturalWidth) return
   stopAnimation()
   const token = generation
-  if (!await decodeImage(img) || token !== generation || !isCurrentImage(img)) return
+  const decoded = await decodeImage(img)
+  if (token !== generation || !isCurrentImage(img)) return
   revealedImage = img
-  if (!canAnimate.value || lowEffects.value || typeof img.animate !== 'function') {
+  if (!decoded || !canAnimate.value || lowEffects.value || typeof img.animate !== 'function') {
     emit('reveal-complete')
     return
   }
