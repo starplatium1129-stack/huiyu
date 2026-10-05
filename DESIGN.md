@@ -445,6 +445,8 @@ Each region has at most one visually dominant action. Primary means “continue 
 generate,” secondary means “adjust or inspect,” and danger is reserved for
 destructive or interrupting actions. Related buttons share height, radius, icon
 style, and baseline. Never make a critical action icon-only.
+Low-frequency text actions use `btn-quiet`: no resting outline, with the shared
+hit area, focus indication, and readable disabled text retained.
 
 ### Cards
 

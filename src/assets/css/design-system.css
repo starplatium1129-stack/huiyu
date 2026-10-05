@@ -879,6 +879,11 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
 }
 .btn:disabled::before,
 .btn[aria-disabled="true"]::before { @apply tw:hidden; }
+/* Low-frequency actions retain the shared hit area and focus treatment. */
+.btn-quiet { background:transparent; border-color:transparent; @apply tw:text-secondary; font-weight:500; box-shadow:none; }
+.btn-quiet:hover { background:var(--accent-soft); @apply tw:text-accent; }
+.btn-quiet:disabled,
+.btn-quiet[aria-disabled="true"] { background:transparent; border-color:transparent; }
 .btn-sm { min-height: var(--control-height-sm); padding: var(--s-1) var(--s-3); @apply tw:text-label-sm tw:rounded-sm; }
 .btn-lg { @apply tw:min-h-[52px]; padding: var(--s-3) var(--s-6); @apply tw:text-title-xs tw:rounded-lg; }
 /* 图标按钮:DESIGN.md 禁止图标唯一化关键操作,故必须带 aria-label */

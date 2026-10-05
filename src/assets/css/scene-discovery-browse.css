@@ -41,15 +41,15 @@
 .scene-cat .archive-icon { width:14px; height:14px; }
 .scene-cat:hover { color:var(--text-primary); background:var(--bg-base); }
 .scene-cat.active { color:var(--accent); background:var(--accent-soft); border-color:color-mix(in srgb,var(--accent) 22%,var(--border-soft)); }
-.scene-facet-panel { grid-column:1/-1; display:grid; gap:var(--s-3); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
+.page.scene-discovery .scene-facet-panel { grid-column:1/-1; display:grid; gap:var(--s-4); padding:var(--s-4) 0 0; border:0; border-top:1px solid var(--border-soft); border-radius:0; background:transparent; }
 .scene-facet-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr)); gap:var(--s-3); }
-.scene-filter-field { display:grid; gap:var(--s-1); color:var(--text-muted); font-size:var(--fs-label-xs); }
+.scene-filter-field { display:grid; gap:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .scene-filter-field :deep(.studio-select-wrapper) { width:100%; }
 .scene-filter-meta { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:var(--s-3); color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .mature-toggle { display:inline-flex; align-items:center; gap:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .mature-toggle em { font-style:normal; }
 .scene-active-filters { grid-column:1/-1; display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); color:var(--text-muted); font-size:var(--fs-label-xs); }
-.scene-active-filters button { display:inline-flex; align-items:center; gap:var(--s-1); min-height:32px; padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-secondary); font:500 var(--fs-label-xs) var(--font-sans); cursor:pointer; }
+.scene-active-filters button { display:inline-flex; align-items:center; gap:var(--s-1); min-height:32px; padding:var(--s-1) var(--s-2); border:1px solid transparent; border-radius:var(--r-sm); background:var(--bg-base); color:var(--text-secondary); font:500 var(--fs-label-xs) var(--font-sans); cursor:pointer; }
 .scene-active-filters .archive-icon { width:12px; height:12px; }
 .search-intent { grid-column:1/-1; color:var(--text-secondary); font-size:var(--fs-label-xs); }
 :deep(.search-intent strong) { color:var(--accent); }

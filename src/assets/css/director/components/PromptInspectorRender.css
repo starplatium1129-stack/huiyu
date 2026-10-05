@@ -4,7 +4,7 @@
 .pb .engine-switch.studio-segments[role] > .studio-tooltip-anchor { flex:1 1 0; @apply tw:min-w-0; }
 .pb .engine-switch.studio-segments .engine-btn { @apply tw:w-full tw:min-w-0 tw:min-h-[40px]; }
 .pb .base-model-picker { @apply tw:grid tw:min-w-0 tw:gap-s-2; }
-.pb .base-model-picker label,.pb .inspector-visual-description > span { @apply tw:text-secondary tw:text-label-xs tw:font-semibold; }
+.pb .base-model-picker label,.pb .inspector-visual-description > span { @apply tw:text-secondary tw:text-label tw:font-semibold; }
 .pb .base-model-picker .studio-select-wrapper { @apply tw:w-full tw:min-w-0; }
 .pb .base-model-picker .studio-select-trigger { @apply tw:min-h-[40px]; }
 .pb .inspector-visual-description { @apply tw:grid tw:gap-s-2; }

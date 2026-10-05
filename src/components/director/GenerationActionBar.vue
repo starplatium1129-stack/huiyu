@@ -42,7 +42,7 @@
         </button>
       </StudioTooltip>
       <StudioTooltip anchor content="清除当前画布图片，已入册的作品不受影响">
-        <button class="btn btn-ghost" type="button" :disabled="!hasResult" @click="$emit('clearResult')">清除图片</button>
+        <button class="btn btn-quiet" type="button" :disabled="!hasResult" @click="$emit('clearResult')">清除图片</button>
       </StudioTooltip>
     </div>
   </div>
