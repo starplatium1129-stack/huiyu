@@ -8,18 +8,19 @@ use crate::{
     AppState,
     config::Config,
     error::{ApiError, Result},
+    security,
     upstream::LocalUpstream,
 };
 use axum::{
     Extension, Json, Router,
-    extract::{DefaultBodyLimit, Query, State},
-    http::HeaderValue,
+    extract::{ConnectInfo, DefaultBodyLimit, Query, State},
+    http::{HeaderMap, HeaderValue},
     response::{IntoResponse, Response},
     routing::{get, post},
 };
 use config::Settings;
 use serde_json::{Value, json};
-use std::{collections::HashMap, sync::Arc, time::Instant};
+use std::{collections::HashMap, net::SocketAddr, sync::Arc, time::Instant};
 use tokio_util::sync::CancellationToken;
 
 pub struct VoiceService {
@@ -137,11 +138,17 @@ async fn prepare(
 async fn post_audio(
     State(state): State<AppState>,
     Extension(service): Extension<Arc<VoiceService>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    headers: HeaderMap,
     Json(input): Json<Value>,
 ) -> Result<Response> {
     service.running(&state)?;
     let value = payload::validate(&input, &service.speech.settings)?;
-    let mut response = service.speech.stream(value).await?;
+    let mut response = service
+        .speech
+        .stream(value)
+        .await
+        .map_err(|error| tts_error(error, &headers, peer))?;
     response
         .headers_mut()
         .insert("cache-control", HeaderValue::from_static("no-store"));
@@ -150,6 +157,8 @@ async fn post_audio(
 async fn get_audio(
     State(state): State<AppState>,
     Extension(service): Extension<Arc<VoiceService>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    headers: HeaderMap,
     Query(query): Query<HashMap<String, String>>,
 ) -> Result<Response> {
     service.running(&state)?;
@@ -165,7 +174,11 @@ async fn get_audio(
     }
     let input = serde_json::to_value(query).expect("String query serializes");
     let value = payload::validate(&input, &service.speech.settings)?;
-    let (bytes, cached) = service.speech.buffered(value).await?;
+    let (bytes, cached) = service
+        .speech
+        .buffered(value)
+        .await
+        .map_err(|error| tts_error(error, &headers, peer))?;
     Ok((
         [
             ("content-type", "audio/wav"),
@@ -180,12 +193,18 @@ async fn get_audio(
 async fn get_pcm(
     State(state): State<AppState>,
     Extension(service): Extension<Arc<VoiceService>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    headers: HeaderMap,
     Query(query): Query<HashMap<String, String>>,
 ) -> Result<Response> {
     service.running(&state)?;
     let input = serde_json::to_value(query).expect("String query serializes");
     let value = payload::validate(&input, &service.speech.settings)?;
-    let mut response = service.speech.stream_pcm(value).await?;
+    let mut response = service
+        .speech
+        .stream_pcm(value)
+        .await
+        .map_err(|error| tts_error(error, &headers, peer))?;
     response
         .headers_mut()
         .insert("cache-control", HeaderValue::from_static("no-store"));
@@ -194,6 +213,15 @@ async fn get_pcm(
         HeaderValue::from_static("X-Audio-Sample-Rate, X-Audio-Channels, X-Audio-Format"),
     );
     Ok(response)
+}
+
+// Provider diagnostics can contain local filenames. Keep them inside the local
+// studio boundary, including when buffered callers share an in-flight result.
+fn tts_error(mut error: ApiError, headers: &HeaderMap, peer: SocketAddr) -> ApiError {
+    if error.code == "TTS_FAILED" && !security::is_direct_local(headers, peer.ip()) {
+        error.message = "语音生成失败".into();
+    }
+    error
 }
 
 #[cfg(test)]
