@@ -13,7 +13,7 @@
       <div class="titlebar-controls">
         <AppearanceButton class="companion-chat-mini" />
         <StudioTooltip v-if="bridge?.setChatDocked" :content="docked ? '解除贴靠' : '贴靠桌宠'">
-          <button class="companion-chat-mini" type="button" :aria-pressed="docked" :aria-label="docked ? '解除贴靠' : '贴靠桌宠'" @click="toggleDock"><ArchiveIcon name="pin" /></button>
+          <button class="companion-chat-mini" type="button" :disabled="docking" :aria-pressed="docked" :aria-label="docked ? '解除贴靠' : '贴靠桌宠'" @click="toggleDock"><ArchiveIcon name="pin" /></button>
         </StudioTooltip>
         <StudioTooltip content="打开完整房间（Chat）">
           <button
@@ -162,5 +162,5 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
-const { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, toggleDock } = useCompanionChatWindow()
+const { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock } = useCompanionChatWindow()
 </script>

@@ -225,3 +225,47 @@ describe('browser companion speech session', () => {
 
 const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
 vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => desktopFixture.current }))
+
+describe('companion native window controls', () => {
+  it('keeps the acknowledged dock choice over an old bootstrap response and coalesces clicks', async () => {
+    let snapshot!: (value: boolean) => void, acknowledge!: (value: boolean) => void
+    desktopFixture.current!.getChatDocked = vi.fn(() => new Promise(resolve => { snapshot = resolve }))
+    const setDocked = vi.fn(() => new Promise<boolean>(resolve => { acknowledge = resolve }))
+    desktopFixture.current!.setChatDocked = setDocked
+    setup()
+    const pending = chat.toggleDock()
+    await chat.toggleDock()
+    expect(chat.docking.value).toBe(true)
+    expect(setDocked).toHaveBeenCalledExactlyOnceWith(false)
+    acknowledge(false); await pending
+    snapshot(true); await flushPromises()
+    expect(chat.docked.value).toBe(false)
+    expect(chat.docking.value).toBe(false)
+    setDocked.mockRejectedValueOnce(new Error('native rejected'))
+    await chat.toggleDock()
+    expect(chat.docked.value).toBe(false)
+    expect(chat.docking.value).toBe(false)
+    expect(chat.errorText.value).toContain('贴靠未能完成')
+    setDocked.mockResolvedValueOnce(true)
+    await chat.toggleDock()
+    expect(chat.docked.value).toBe(true)
+  })
+
+  it('serializes undocking before dragging and never starts a late drag after unmount', async () => {
+    let acknowledge!: (value: boolean) => void
+    const setDocked = vi.fn(() => new Promise<boolean>(resolve => { acknowledge = resolve }))
+    const drag = vi.fn().mockResolvedValue(undefined)
+    desktopFixture.current!.setChatDocked = setDocked
+    desktopFixture.current!.startDragging = drag
+    setup(); await flushPromises()
+    const pending = chat.startWindowDrag(new MouseEvent('mousedown', { button: 0 }))
+    await chat.toggleDock()
+    await chat.startWindowDrag(new MouseEvent('mousedown', { button: 0 }))
+    expect(setDocked).toHaveBeenCalledExactlyOnceWith(false)
+    expect(drag).not.toHaveBeenCalled()
+    wrapper!.unmount(); wrapper = undefined
+    acknowledge(false); await pending
+    expect(drag).not.toHaveBeenCalled()
+    expect(chat.docked.value).toBe(true)
+  })
+})
