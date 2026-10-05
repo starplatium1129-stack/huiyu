@@ -27,6 +27,7 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
     const task = status.value?.task
     if (!task) return ''
     const action = task.resumeAction || task.action
+    if (task.state === 'completed' && task.result?.action === 'rolled-back') return '已恢复上一版本'
     if (task.state === 'completed' && action === 'download') return '资源下载已完成，请安装该版本后使用'
     if (task.state !== 'running') return messages[task.state]
     if (action === 'download') return '正在下载资源'
@@ -36,6 +37,7 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
   })
   const taskDetail = computed(() => {
     const task = status.value?.task
+    if (task?.state === 'completed') return task.result?.warning?.message || ''
     if (!task || task.state !== 'running') return ''
     // The backend reports bytes for one file, not the entire resource release.
     const stages: Record<string, string> = { checking: '正在检查资源', journal: '正在准备安装',

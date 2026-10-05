@@ -3,6 +3,10 @@ export type ResourceTaskState = 'running' | 'cancelling' | 'completed' | 'failed
 export interface ResourceTaskRequest { action: ResourceAction; releaseId?: string }
 export type ResourceCancelRequest = Record<string, never>
 export interface ResourceIssue { code: string; message: string }
+export interface ResourceOperationResult {
+  action: 'installed' | 'already-installed' | 'recovered' | 'rolled-back' | 'nothing-to-recover' | 'downloaded' | 'already-downloaded'
+  warning: ResourceIssue | null
+}
 export interface ResourceTask {
   id: string
   action: ResourceAction
@@ -15,6 +19,7 @@ export interface ResourceTask {
   startedAt: number
   finishedAt: number
   error: ResourceIssue | null
+  result?: ResourceOperationResult | null
 }
 export interface ResourceRelease {
   id: string

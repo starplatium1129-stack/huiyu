@@ -10,13 +10,18 @@ const actions = ['import', 'download', 'recover', 'rollback']
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)
 const count = (value: unknown) => Number.isSafeInteger(value) && Number(value) >= 0
 const issue = (value: unknown) => value === null || (object(value) && typeof value.code === 'string' && typeof value.message === 'string')
+function result(value: unknown): boolean {
+  return value === undefined || value === null || (object(value)
+    && ['installed', 'already-installed', 'recovered', 'rolled-back', 'nothing-to-recover', 'downloaded', 'already-downloaded'].includes(String(value.action))
+    && issue(value.warning))
+}
 function task(value: unknown): boolean {
   return object(value) && typeof value.id === 'string' && /^[a-f\d-]{36}$/.test(value.id)
     && actions.includes(String(value.action)) && (value.releaseId === null || typeof value.releaseId === 'string')
     && [null, 'download', 'import'].includes(value.resumeAction as null | string)
     && ['running', 'cancelling', 'completed', 'failed', 'cancelled', 'interrupted'].includes(String(value.state))
     && typeof value.phase === 'string' && count(value.bytes) && count(value.total)
-    && count(value.startedAt) && count(value.finishedAt) && issue(value.error)
+    && count(value.startedAt) && count(value.finishedAt) && issue(value.error) && result(value.result)
 }
 function status(value: ApiResponseObject): boolean {
   return value.ok === true && ['configured', 'managementEnabled', 'busy', 'mounted', 'canRollback', 'recoveryRequired']

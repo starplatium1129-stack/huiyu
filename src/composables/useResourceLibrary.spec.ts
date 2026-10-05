@@ -49,6 +49,20 @@ describe('resource library interaction', () => {
     expect(model.taskDetail.value).toBe('正在校验并准备切换版本')
     model.stop()
   })
+  it('shows the restored version and recovery reason while keeping completion successful', async () => {
+    const warning = { code: 'CONTENT_INVALID', message: '新版本资源内容校验失败。' }
+    vi.spyOn(resourceApi, 'status').mockResolvedValue(status({ mounted: true,
+      task: { ...task, action: 'recover', state: 'completed', result: { action: 'rolled-back', warning } } }))
+    const panel = mount(ResourceLibraryPanel, { global: { stubs: { ArchiveIcon: true, StudioSelect: true, StudioTooltip: true } } })
+    try {
+      await flushPromises()
+      expect(panel.text()).toContain('已恢复上一版本')
+      expect(panel.text()).toContain(warning.message)
+      expect(panel.text()).not.toContain('资源操作已完成')
+      expect(panel.find('.resource-task-error').exists()).toBe(false)
+      expect(panel.find('progress').exists()).toBe(false)
+    } finally { panel.unmount() }
+  })
   it('never fetches, downloads or writes on remote hosts', async () => {
     const calls = api(); const model = useResourceLibrary(calls, false)
     model.start(); await model.refresh(); await model.run('download'); await model.cancel(); model.stop()
