@@ -6,6 +6,7 @@ import {
 import { voiceApi } from '../api/voiceApi.ts'
 import { ApiClientError } from '../api/client.ts'
 import { VoicePcmStream } from './voicePcmStream.ts'
+import { VoiceReplayCache } from './voiceReplayCache.ts'
 
 export interface VoiceAvailability {
   online: boolean
@@ -126,6 +127,7 @@ export function useVoice(options: {
   let currentAudio: AudioWithSource | null = null, replayAudio: AudioWithSource | null = null
   let currentPcm: VoicePcmStream | null = null
   const messageAudio = new Map<string, SynthesizedClip[]>()
+  const replayCache = new VoiceReplayCache()
   let audioContext: AudioContext | null = null, analyser: AnalyserNode | null = null
   let gainNode: GainNode | null = null, lipFrame = 0, lipSmooth = 0
   let prepareKey = '', preparing: Promise<boolean> | null = null
@@ -232,7 +234,7 @@ export function useVoice(options: {
       return synthesize(req, meta, signal)
     }).then(item => {
       if (!item) return
-      if (sess !== session) { item.stream?.cancel(); URL.revokeObjectURL(item.url); return }
+      if (sess !== session) { item.stream?.cancel(); return }
       const clips = messageAudio.get(meta.mid) || []
       const stored = { url: item.stream ? '' : item.url, emotion: item.emotion || 'neutral' }
       clips.push(stored); messageAudio.set(meta.mid, clips)
@@ -314,8 +316,8 @@ export function useVoice(options: {
     if (!item.stream || item.observed) return
     item.observed = true
     void item.stream.start().then(blob => {
-      if (!item.recorded || !messageAudio.get(item.mid)?.includes(item.recorded)) return
-      item.recorded.url = URL.createObjectURL(blob)
+      if (item.session !== session || !item.recorded || !messageAudio.get(item.mid)?.includes(item.recorded)) return
+      replayCache.remember(item.mid, item.recorded, blob, item.url)
       onAudioReady(item.mid)
     }).catch(() => {}) // Playback reports a prefetched failure once it owns this clip.
   }
@@ -469,6 +471,7 @@ export function useVoice(options: {
       const audio = new Audio() as AudioWithSource
       audio.crossOrigin = runtimeResourceCors() ?? null
       audio.src = resolveRuntimeUrl(clip.url)
+      const release = replayCache.pin(clip)
       replayAudio = audio; attachAnalyser(audio); onExpression(clip.emotion || 'neutral')
       notifyActivity()
       await new Promise<void>(res => {
@@ -483,7 +486,7 @@ export function useVoice(options: {
           audio.removeAttribute('src')
           audio.load()
           if (replayAudio === audio) { replayAudio = null; cancelReplay = null }
-          removeAudioSource(audio); res()
+          removeAudioSource(audio); release(); res()
         }
         cancelReplay = done
         audio.addEventListener('ended', done); audio.addEventListener('error', done)
@@ -497,7 +500,7 @@ export function useVoice(options: {
   function hasAudio(mid: string) { return Boolean(messageAudio.get(mid)?.some(clip => clip.url)) }
 
   function clearMessages(mids: string[]) {
-    mids.forEach(mid => { const c = messageAudio.get(mid) || []; c.forEach(cl => URL.revokeObjectURL(cl.url)); messageAudio.delete(mid) })
+    mids.forEach(mid => { const c = messageAudio.get(mid) || []; c.forEach(cl => replayCache.remove(cl)); messageAudio.delete(mid) })
   }
 
   function stop(opts: { preserveMessageAudio?: boolean; silent?: boolean } = {}) {
@@ -507,8 +510,7 @@ export function useVoice(options: {
     cancelPlayback?.(); cancelPlayback = null
     cancelReplay?.(); cancelReplay = null
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve(); pending = 0
-    const refs = new Set<string>(); messageAudio.forEach(c => c.forEach(cl => refs.add(cl.url)))
-    queue.forEach(it => { it.stream?.cancel(); if (!refs.has(it.url)) URL.revokeObjectURL(it.url) }); queue = []
+    queue.forEach(it => it.stream?.cancel()); queue = []
     if (currentAudio) { currentAudio.pause(); removeAudioSource(currentAudio); currentAudio.removeAttribute('src') }
     if (replayAudio) { replayAudio.pause(); removeAudioSource(replayAudio); replayAudio.removeAttribute('src') }
     currentPcm = null; currentAudio = null; replayAudio = null; playing = false; stopLipSync()

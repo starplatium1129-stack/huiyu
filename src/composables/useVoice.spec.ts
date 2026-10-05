@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { useVoice } from './useVoice'
+import { VoicePcmStream } from './voicePcmStream'
 
 const api = vi.hoisted(() => ({ getStatus: vi.fn(), prepare: vi.fn(), translate: vi.fn() }))
 vi.mock('@/api/voiceApi', () => ({ voiceApi: api }))
@@ -132,4 +133,66 @@ it('prefetches only the next PCM sentence during playback and cancels both reque
   expect(sources[0]!.stop).toHaveBeenCalled()
   expect(voice.hasAudio('streaming')).toBe(false)
   expect(voice.isActive()).toBe(false)
+})
+
+async function setupReplayCache(blob = new Blob(['wave'])) {
+  let id = 0
+  const create = vi.spyOn(URL, 'createObjectURL').mockImplementation(() => `blob:replay-${++id}`)
+  const revoke = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+  const start = vi.spyOn(VoicePcmStream.prototype, 'start').mockResolvedValue(blob)
+  vi.spyOn(VoicePcmStream.prototype, 'play').mockResolvedValue()
+  vi.stubGlobal('AudioContext', class {
+    state = 'running'; destination = {}
+    close = vi.fn().mockResolvedValue(undefined)
+    createAnalyser = () => ({ connect: vi.fn() })
+    createGain = () => ({ gain: { value: 1 }, connect: vi.fn(), disconnect: vi.fn() })
+    createMediaElementSource = () => ({ connect: vi.fn(), disconnect: vi.fn() })
+  })
+  api.getStatus.mockResolvedValue({ online: true, voices: { nene: true }, streamingPcm: true })
+  await setup()
+  return { create, revoke, start }
+}
+
+it('retains eight recent WAV messages and replays evicted messages through the original TTS URL', async () => {
+  const { revoke } = await setupReplayCache()
+  for (let i = 0; i < 9; i++) await speak(`message-${i}`)
+  expect(revoke.mock.calls).toEqual([['blob:replay-1']])
+  expect(voice.hasAudio('message-0')).toBe(true)
+  const replay = voice.playMessage('message-0')
+  expect(audios[0]!.src).toContain('/api/tts?voice=nene&text=')
+  voice.stop({ preserveMessageAudio: true }); await replay
+  const recent = voice.playMessage('message-8')
+  expect(audios[1]!.src).toBe('blob:replay-9')
+  // Clearing a playing message defers revocation until its player releases it.
+  voice.clearMessages(['message-8'])
+  expect(revoke).not.toHaveBeenCalledWith('blob:replay-9')
+  audios[1]!.dispatchEvent(new Event('ended')); await recent
+  expect(revoke).toHaveBeenCalledWith('blob:replay-9')
+  voice.destroy()
+  expect(revoke).toHaveBeenCalledTimes(9)
+  expect(new Set(revoke.mock.calls.map(([url]) => url)).size).toBe(9)
+})
+
+it('bounds WAV bytes even within one message and skips caching an oversized clip', async () => {
+  const { create, revoke, start } = await setupReplayCache(new Blob([new Uint8Array(9 * 1024 * 1024)]))
+  await speak('large')
+  await speak('large')
+  expect(revoke.mock.calls).toEqual([['blob:replay-1']])
+  start.mockResolvedValueOnce(new Blob([new Uint8Array(17 * 1024 * 1024)]))
+  await speak('oversized')
+  expect(create).toHaveBeenCalledTimes(2)
+  const replay = voice.playMessage('oversized')
+  expect(audios[0]!.src).toContain('/api/tts?')
+  voice.stop({ preserveMessageAudio: true }); await replay
+})
+
+it('does not create a replay URL when a completed stream arrives after interruption', async () => {
+  const { create, start } = await setupReplayCache()
+  let complete!: (blob: Blob) => void
+  start.mockImplementationOnce(() => new Promise(resolve => { complete = resolve }))
+  await speak('late')
+  voice.stop({ preserveMessageAudio: true })
+  complete(new Blob(['late wave'])); await flush()
+  expect(create).not.toHaveBeenCalled()
+  expect(voice.hasAudio('late')).toBe(false)
 })
