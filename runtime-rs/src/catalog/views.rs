@@ -148,19 +148,38 @@ impl Catalog {
                 }
                 return Ok(Some(json!({"version":2,"total":ids.len(),"shards":shards,"tiers":{"core":core},"orderedIds":ids,"metadata":metadata})));
             }
-            let scenes = self.records("scene")?;
             let character = match name {
                 "scenes-nene.json" => Some("nene"),
                 "scenes-natsume.json" => Some("natsume"),
                 "scenes-shared.json" => Some("triad"),
                 _ => None,
             };
+            // Indexed shard predicates run before payload decoding. All supported writes
+            // derive character_id from the scene's char field in write::put.
+            let scenes = if let Some(character) = character {
+                let mut statement = self.connection.prepare(&format!(
+                    "SELECT {COLUMNS} FROM content_records WHERE kind='scene'
+                     AND deleted=0 AND character_id=?1 ORDER BY sort_order,id"
+                ))?;
+                statement
+                    .query_map([character], row)?
+                    .collect::<rusqlite::Result<Vec<_>>>()?
+            } else if name == "scenes-core.json" {
+                let mut statement = self.connection.prepare(&format!(
+                    "SELECT {COLUMNS} FROM content_records WHERE kind='scene' AND deleted=0
+                     AND EXISTS (SELECT 1 FROM json_each(?1) AS core
+                         WHERE core.type='text' AND core.value=content_records.id)
+                     ORDER BY sort_order,id"
+                ))?;
+                // EXISTS preserves set membership for duplicate IDs; only strings match.
+                statement
+                    .query_map([serde_json::to_string(&core)?], row)?
+                    .collect::<rusqlite::Result<Vec<_>>>()?
+            } else {
+                self.records("scene")?
+            };
             let values = scenes
                 .into_iter()
-                .filter(|r| {
-                    character.is_none_or(|c| r.data["char"] == c)
-                        && (name != "scenes-core.json" || core.contains(&json!(r.id)))
-                })
                 .map(|r| {
                     let mut data = r.data;
                     data["sortOrder"] = r.sort_order.into();

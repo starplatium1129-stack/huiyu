@@ -1,3 +1,5 @@
+mod scene_shards;
+
 use super::*;
 fn fixture() -> (tempfile::TempDir, Options, Catalog) {
     let temp = tempfile::tempdir().unwrap();
