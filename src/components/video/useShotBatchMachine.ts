@@ -31,7 +31,9 @@ export interface ShotBatchMachineDeps {
   /** 宿主持有的用户可见错误通道（提交/轮询/重抽失败回写）。 */
   batchError: Ref<string>
   onAccepted?: (batch: VideoBatch) => void
-  onSubmitted?: () => void
+  onSubmitting?: (targets: ShotDraft[]) => void
+  onSubmissionRejected?: (targets: ShotDraft[]) => void
+  onSubmitted?: (targets: ShotDraft[], batchId: string) => void
 }
 
 /**
@@ -135,6 +137,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     batchError.value = ''
     const targets = shots.value.slice()
     try {
+      deps.onSubmitting?.(targets)
       const response = await createVideoBatch({
         modelId: 'minimax-h3',
         aspectRatio: aspectRatio.value,
@@ -158,12 +161,13 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
           }
         }),
       })
-      if (serial !== operationSerial) return
+      if (serial !== operationSerial) { deps.onSubmissionRejected?.(targets); return }
       targets.forEach((shot, shotIndex) => shotSubmissions.set(shot, { batchId: response.batch.id, shotIndex }))
       acceptBatch(response.batch)
       // Accepted task provenance must survive leaving; the draft owner rejects stale saves.
-      deps.onSubmitted?.()
+      deps.onSubmitted?.(targets, response.batch.id)
     } catch (error) {
+      deps.onSubmissionRejected?.(targets)
       if (!disposed && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '批量提交失败'
     } finally {
       submitting.value = false

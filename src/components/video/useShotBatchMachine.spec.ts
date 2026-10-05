@@ -7,7 +7,7 @@ import type { ShotsDraftPayload } from '@/stores/videoStore'
 import * as api from '@/api/videoApi'
 import { ApiClientError } from '@/api/client'
 import type { ShotDraft } from './shotListTypes'
-const savedDraft = vi.hoisted(() => ({ value: null as ShotsDraftPayload | null }))
+const savedDraft = ref<ShotsDraftPayload | null>(null)
 vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({
   get shotsDraft() { return savedDraft.value },
   saveShotsDraft(value: ShotsDraftPayload) { savedDraft.value = JSON.parse(JSON.stringify(value)); return true },
@@ -23,9 +23,10 @@ function setup(cached = false, persisted = false) {
   const identityCard = ref(''), aspectRatio = ref<api.VideoBatch['aspectRatio']>('landscape'), quality = ref<api.VideoQuality>('standard'), steps = ref<4 | 8>(4), linkLastFrame = ref(false)
   let machine!: ReturnType<typeof useShotBatchMachine>
   let draft: ReturnType<typeof useShotDraft> | undefined
-  const submitted = vi.fn(() => draft?.persistShotsDraft())
+  const submitted = vi.fn((targets: ShotDraft[], batchId: string) => draft?.finishShotSubmission(targets, batchId))
   const page = defineComponent({ setup() {
-    machine = useShotBatchMachine({ shots, inputsBusy: computed(() => inputsBusy.value), identityCard, aspectRatio, quality, steps, linkLastFrame, shotReferences: () => undefined, h3Ready: computed(() => true), online: computed(() => true), batchError: error, onAccepted: accepted, onSubmitted: submitted })
+    machine = useShotBatchMachine({ shots, inputsBusy: computed(() => inputsBusy.value), identityCard, aspectRatio, quality, steps, linkLastFrame, shotReferences: () => undefined, h3Ready: computed(() => true), online: computed(() => true), batchError: error, onAccepted: accepted, onSubmitted: submitted,
+      onSubmitting: targets => draft?.beginShotSubmission(targets), onSubmissionRejected: targets => draft?.finishShotSubmission(targets) })
     if (persisted) draft = useShotDraft({ shots, identityCard, aspectRatio, quality, steps, linkLastFrame, batchError: error,
       referenceCards: ref([]), selectCardCharacter: async () => false, retryPendingFrames: async () => ({ fixed: 0, remaining: 0 }),
       getShotSubmission: machine.getShotSubmission, restoreShotSubmission: machine.restoreShotSubmission })
@@ -111,7 +112,7 @@ describe('shot batch operation recovery', () => {
     const pending = machine.submitBatch()
     wrapper!.unmount()
     const saved = savedDraft.value!
-    if (replaced) savedDraft.value = { ...saved, identityCard: 'New workspace draft' }
+    if (replaced) savedDraft.value = { ...saved, identityCard: 'New workspace draft', shots: saved.shots.map(shot => ({ ...shot, submissionToken: undefined })) }
     const current = savedDraft.value
     const accepted = { ...batch('done'), id: 'accepted-after-leave' }
     acknowledge({ ok: true, batch: accepted }); await pending
@@ -131,6 +132,45 @@ describe('shot batch operation recovery', () => {
       await reopened.machine.retryShotAt(0)
       expect(api.retryVideoShot).toHaveBeenCalledWith(accepted.id, 1)
     }
+  })
+  it.each([false, true])('binds late acceptance to surviving reopened rows across autosave (%s)', async autosave => {
+    let acknowledge!: (value: Awaited<ReturnType<typeof api.createVideoBatch>>) => void
+    vi.mocked(api.createVideoBatch).mockReturnValueOnce(new Promise(resolve => { acknowledge = resolve }))
+    const original = setup(false, true)
+    original.shots.value = ['First shot description', 'Second shot description', 'Third shot description']
+      .map(prompt => ({ prompt, seedText: '', dialogue: '' } as ShotDraft))
+    const pending = original.machine.submitBatch()
+    wrapper!.unmount()
+    const reopened = setup(false, true)
+    await reopened.draft!.restoreShotsDraft()
+    reopened.shots.value.reverse()
+    const clone = { ...reopened.shots.value[1] }
+    reopened.shots.value.splice(1, 1)
+    reopened.shots.value.push(clone)
+    reopened.shots.value[0].prompt = 'Edited surviving shot description'
+    if (autosave) reopened.draft!.persistShotsDraft()
+    const accepted = { ...batch('done'), id: 'accepted-after-reopen' }
+    acknowledge({ ok: true, batch: accepted }); await pending
+    reopened.draft!.persistShotsDraft()
+    expect(savedDraft.value?.shots.map(shot => shot.submission)).toEqual([
+      { batchId: accepted.id, shotIndex: 2 }, { batchId: accepted.id, shotIndex: 0 }, undefined,
+    ])
+    expect(savedDraft.value?.shots[0].prompt).toBe('Edited surviving shot description')
+  })
+  it('clears only failed submission tokens after reopening and retains known provenance', async () => {
+    let reject!: (reason: Error) => void
+    vi.mocked(api.createVideoBatch).mockReturnValueOnce(new Promise((_resolve, fail) => { reject = fail }))
+    const original = setup(false, true)
+    original.shots.value = [{ prompt: 'A complete shot description', seedText: '', dialogue: '' } as ShotDraft]
+    original.machine.restoreShotSubmission(original.shots.value[0], { batchId: 'known', shotIndex: 2 })
+    const pending = original.machine.submitBatch()
+    wrapper!.unmount()
+    const reopened = setup(false, true)
+    await reopened.draft!.restoreShotsDraft()
+    reject(new Error('Submission failed')); await pending
+    reopened.draft!.persistShotsDraft()
+    expect(savedDraft.value?.shots[0].submissionToken).toBeUndefined()
+    expect(savedDraft.value?.shots[0].submission).toEqual({ batchId: 'known', shotIndex: 2 })
   })
   it('resumes polling if only part of a retry-all request succeeded', async () => {
     vi.mocked(api.retryVideoShot).mockResolvedValueOnce({ batch: batch('running') } as Awaited<ReturnType<typeof api.retryVideoShot>>).mockRejectedValueOnce(new Error('retry failed'))

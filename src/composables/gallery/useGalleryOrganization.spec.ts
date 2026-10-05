@@ -1,6 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import { effectScope } from 'vue'
 import { useGalleryOrganization } from './useGalleryOrganization'
+import { normalizeArtworkOrganization } from '@/application/artwork/organization'
 const mocks = vi.hoisted(() => ({ organize: vi.fn(), undo: vi.fn(), create: vi.fn() }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { organizeArtworks: mocks.organize, undoArtworkOrganization: mocks.undo, createProject: mocks.create } }))
 afterEach(() => vi.clearAllMocks())
@@ -28,14 +29,19 @@ it('retries an uncertain album creation with the same identity and keeps the ori
 })
 
 it('freezes selection, splits bounded batches, and can undo confirmed work after a later failure', async () => {
-  const ids = Array.from({ length: 450 }, (_, id) => id), changed = vi.fn(), scope = effectScope()
+  const ids = [0], changed = vi.fn(), scope = effectScope()
   const flow = scope.run(() => useGalleryOrganization({ ids: () => ids, changed }))!
-  mocks.organize.mockImplementationOnce(async input => {
+  mocks.organize.mockResolvedValueOnce({ operationId: 'previous', changes: [{ id: 0, before: {}, after: {} }] })
+  await flow.apply({ projectId: 'previous-album' })
+  ids.splice(0, 1, ...Array.from({ length: 450 }, (_, id) => id))
+  mocks.organize.mockImplementationOnce(async () => {
     ids.splice(0)
+    return { operationId: 'noop', changes: [] }
+  }).mockImplementationOnce(async input => {
     return { operationId: 'first', changes: input.ids.map((id: number) => ({ id, before: {}, after: {} })) }
   }).mockRejectedValueOnce(new Error('second batch failed'))
   await flow.apply({ projectId: 'album' })
-  expect(mocks.organize.mock.calls.map(call => call[0].ids.length)).toEqual([200, 200])
+  expect(mocks.organize.mock.calls.map(call => call[0].ids.length)).toEqual([1, 200, 200, 50])
   expect(flow.error.value).toContain('已完成 200 幅')
   expect(flow.canUndo.value).toBe(true)
   mocks.undo.mockResolvedValue({ restored: 199, skipped: 1 })
@@ -43,7 +49,30 @@ it('freezes selection, splits bounded batches, and can undo confirmed work after
   expect(mocks.undo).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ operationId: 'first' }))
   expect(flow.message.value).toContain('1 幅已有新修改')
   expect(flow.canUndo.value).toBe(false)
-  expect(changed).toHaveBeenCalledTimes(2)
+  expect(changed).toHaveBeenCalledTimes(3)
+  scope.stop()
+})
+
+it('retains the last actual undo through unchanged submissions and invalid tag retries', async () => {
+  const scope = effectScope()
+  const flow = scope.run(() => useGalleryOrganization({ ids: () => [1], changed: vi.fn() }))!
+  const receipt = { operationId: 'changed', changes: [{ id: 1, before: {}, after: {} }] }
+  mocks.organize.mockResolvedValueOnce(receipt).mockImplementation(async input => {
+    normalizeArtworkOrganization(input)
+    return { operationId: 'noop', changes: [] }
+  })
+  const input = { collectionTags: { add: ['chosen'] } }
+  await flow.apply(input)
+  for (const retry of [input, { collectionTags: { add: ['x'.repeat(65)] } }, input]) {
+    await flow.apply(retry)
+    expect(flow.canUndo.value).toBe(true)
+    if (retry === input) expect(flow.message.value).toContain('已使用')
+    else expect(flow.error.value).toContain('整理标签')
+  }
+  mocks.undo.mockResolvedValueOnce({ restored: 1, skipped: 0 })
+  await flow.undo()
+  expect(mocks.undo).toHaveBeenCalledExactlyOnceWith(receipt)
+  expect(flow.canUndo.value).toBe(false)
   scope.stop()
 })
 

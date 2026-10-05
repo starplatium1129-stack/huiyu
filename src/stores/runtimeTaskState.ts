@@ -10,6 +10,7 @@ export const unresolvedTaskRequests = new Map<string, { key: string; kind: TaskR
 export const pendingTaskRequests = ref<Array<{ key: string; kind: TaskRecord['kind'] }>>([])
 
 export function mergeTasks(incoming: readonly TaskRecord[], expected: string): void {
+  if (incoming.length === 0) return
   // Validate the whole response before publishing any partial state. Revisions
   // identify immutable runtime snapshots; unchanged polling must not clone and
   // re-sort every task or invalidate all derived UI snapshots every 2.5 seconds.

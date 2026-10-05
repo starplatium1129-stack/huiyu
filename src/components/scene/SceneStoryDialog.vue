@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <FluidTransition>
+    <FluidTransition @after-leave="releaseStory">
       <div v-show="scene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true"
         :aria-hidden="!scene" aria-label="场景故事" @click.self="scene = null">
         <div v-if="displayedScene" class="story-card">
@@ -39,6 +39,10 @@ const drawerEl = ref<HTMLElement | null>(null)
 // Retain the last artwork and story until the leave transition finishes.
 const displayedScene = ref(scene.value)
 watch(scene, value => { if (value) displayedScene.value = value }, { flush: 'sync' })
+function releaseStory() {
+  // A reversed leave still belongs to the newly opened story.
+  if (!scene.value) displayedScene.value = null
+}
 useFocusTrap(drawerEl, () => scene.value !== null, { onEscape: () => { scene.value = null } })
 </script>
 

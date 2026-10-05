@@ -42,7 +42,7 @@ impl Events {
             if self.finished {
                 return Ok(None);
             }
-            let line = tokio::select! {line=self.lines.next()=>line?,_=self.shutdown.cancelled()=>{self.finished=true;return Ok(None);}};
+            let line = tokio::select! {line=self.lines.next()=>line?,_=self.shutdown.cancelled()=>return Err(Error::stream("ABORTED", "聊天已停止"))};
             match self.protocol {
                 Protocol::Ollama => match line {
                     Some(line) if line.trim().is_empty() => {}
@@ -53,6 +53,9 @@ impl Events {
                                 "Ollama returned an invalid stream event",
                             )
                         })?;
+                        if item.get("error").is_some_and(|error| !error.is_null()) {
+                            return Err(Error::stream("INVALID_NDJSON", "Ollama 返回了流错误"));
+                        }
                         if !item.is_object()
                             || item.get("done").is_some_and(|v| !v.is_boolean())
                             || item["message"]

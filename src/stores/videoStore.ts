@@ -112,6 +112,8 @@ export interface ShotSubmissionRecord {
 export interface ShotsDraftShot {
   /** Explicit submission provenance; absent on legacy or unsubmitted rows. */
   submission?: ShotSubmissionRecord
+  /** Opaque per-submission row identity; never copied onto editable row objects. */
+  submissionToken?: string
   prompt: string
   dialogue: string
   shotSize: string

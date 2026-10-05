@@ -49,6 +49,7 @@ export function createLifecycleController(
   let nativeStoppedRetries = 0
   let nativeRetryTimer = 0
   let runtimeGeneration = 0
+  let outfitRequest = 0
   const entrance = createEntranceController(ctx, () => runtimeGeneration)
   let finishPendingLoad: ((value: boolean) => void) | null = null
   let pendingConnection: AbortController | null = null
@@ -443,6 +444,8 @@ export function createLifecycleController(
   }
 
   async function setOutfit(id: string): Promise<boolean> {
+    if (ctx.destroyed.value) return false
+    const request = ++outfitRequest, generation = runtimeGeneration, character = ctx.character.value
     const targetId = normalizeCompanionOutfit(ctx.character.value, id)
     const avatar = resolveCompanionAvatar(ctx.character.value)?.avatar
     const target = avatar?.outfits?.find(outfit => outfit.id === targetId)
@@ -451,13 +454,17 @@ export function createLifecycleController(
     // 无 expression 的外观由模型本身或作者 motion 管理，不伪造换装能力。
     if (!target.expression) return true
     if (!ctx.ready.value || !ctx.model?.visible) return true
-    if (typeof ctx.model.expression !== 'function') {
+    const model = ctx.model, token = ctx.lifecycleToken
+    if (typeof model.expression !== 'function') {
       setState('degraded', 'Live2D 换装暂不可用', '当前运行库未提供 Expression 接口', true)
       return false
     }
+    const isCurrent = () => request === outfitRequest && generation === runtimeGeneration && token === ctx.lifecycleToken
+      && character === ctx.character.value && model === ctx.model && ctx.ready.value && ctx.enabled.value && !ctx.destroyed.value
     try {
       resumeRendering()
-      const started = await Promise.resolve(ctx.model.expression(target.expression))
+      const started = await Promise.resolve(model.expression(target.expression))
+      if (!isCurrent()) return false
       if (started === false) {
         setState('degraded', 'Live2D 换装未完成', `模型拒绝了 ${target.label} Expression`, true)
         return false
@@ -465,6 +472,7 @@ export function createLifecycleController(
       setState('ready', 'Live2D 已连接')
       return true
     } catch (error) {
+      if (!isCurrent()) return false
       setState('degraded', 'Live2D 换装暂不可用', errorMessage(error), true)
       return false
     }

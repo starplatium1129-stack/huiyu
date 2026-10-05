@@ -1,4 +1,5 @@
 use super::*;
+use futures_util::StreamExt;
 
 async fn fixture(
     tokens: Option<usize>,
@@ -112,10 +113,20 @@ async fn stalled_body_times_out_releases_queue_and_preserves_error_after_buffere
 
 #[tokio::test]
 async fn shutdown_releases_unpolled_body_and_reports_error() {
-    let (service, prepared, server, _) = fixture(None).await;
+    let (service, mut prepared, server, _) = fixture(None).await;
     let shutdown = CancellationToken::new();
+    let cancel = shutdown.clone();
+    // Cancel during an upstream poll, after the relay's outer select has
+    // checked cancellation. The blank line makes Events loop before yielding.
+    let source = futures_util::stream::once(async move {
+        cancel.cancel();
+        Ok::<_, std::io::Error>(Bytes::from_static(b"\n"))
+    })
+    .chain(futures_util::stream::pending());
+    prepared.response = reqwest::Response::from(axum::http::Response::new(
+        reqwest::Body::wrap_stream(source),
+    ));
     let response = stream::response(prepared, shutdown.clone());
-    shutdown.cancel();
     released(&service).await;
     let values = events(response).await;
     assert_eq!(values.last().unwrap()["type"], "error");

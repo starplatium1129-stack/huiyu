@@ -79,7 +79,13 @@ export function useSDGenerate() {
     return value.online
   }
   async function generate(params: SDGenerateParams, options: SDGenerateOptions = {}): Promise<string | null> {
-    if (generating.value) return null
+    if (generating.value) {
+      // A direct click can win while the queue awaits its pre-POST checkpoint.
+      // This invocation never submitted; keep its original key safely retryable.
+      // An accepted restored task, however, must retain its runtime identity.
+      if (options.attempt && !options.attempt.task) await options.attempt.rejected()
+      return null
+    }
     generating.value = true
     taskState.value = 'submitting'
     progress.value   = 0

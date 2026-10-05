@@ -135,6 +135,58 @@ describe('Live2D lifecycle races', () => {
     h.lifecycle.destroy()
   })
 
+  it('does not acknowledge an old outfit after switching characters', async () => {
+    const h = setup()
+    h.ctx.catalog!.models.natsume = { available: true, modelUrl: '/natsume.model3.json', source: '', missing: [] }
+    const initial = h.lifecycle.setCharacter('nene')
+    await Promise.resolve(); h.loaded(); await initial
+    const expression = deferred<boolean>()
+    vi.mocked(h.model.expression!).mockReturnValueOnce(expression.promise)
+    const changing = h.lifecycle.setOutfit('casual')
+    const switched = h.lifecycle.setCharacter('natsume')
+    await Promise.resolve(); h.loaded(); await switched
+    h.setState.mockClear()
+    expression.resolve(true)
+    expect(await changing).toBe(false)
+    expect(h.setState).not.toHaveBeenCalled()
+    expect(h.ctx.loadedCharacter.value).toBe('natsume')
+    h.lifecycle.destroy()
+  })
+
+  it.each(['hide', 'destroy'] as const)('ignores an outfit rejection after %s releases its model', async release => {
+    const h = setup()
+    const initial = h.lifecycle.setCharacter('nene')
+    await Promise.resolve(); h.loaded(); await initial
+    let reject!: (reason: Error) => void
+    vi.mocked(h.model.expression!).mockReturnValueOnce(new Promise<boolean>((_, fail) => { reject = fail }))
+    const changing = h.lifecycle.setOutfit('casual')
+    if (release === 'hide') h.lifecycle.setPaused(true)
+    else h.lifecycle.destroy()
+    h.setState.mockClear()
+    reject(new Error('late expression failure'))
+    expect(await changing).toBe(false)
+    expect(h.setState).not.toHaveBeenCalled()
+    expect(h.ctx.ready.value).toBe(false)
+    h.lifecycle.destroy()
+  })
+
+  it('keeps the latest outfit failure when an older request succeeds afterward', async () => {
+    const h = setup()
+    const initial = h.lifecycle.setCharacter('nene')
+    await Promise.resolve(); h.loaded(); await initial
+    const older = deferred<boolean>()
+    vi.mocked(h.model.expression!).mockReturnValueOnce(older.promise).mockReturnValueOnce(false)
+    const changing = h.lifecycle.setOutfit('casual')
+    expect(await h.lifecycle.setOutfit('witch')).toBe(false)
+    expect(h.setState).toHaveBeenLastCalledWith('degraded', 'Live2D 换装未完成', expect.any(String), true)
+    h.setState.mockClear()
+    older.resolve(true)
+    expect(await changing).toBe(false)
+    expect(h.setState).not.toHaveBeenCalled()
+    expect(h.ctx.outfit.value).toBe('witch')
+    h.lifecycle.destroy()
+  })
+
   it('a hidden desktop does not load through character changes, speech or recovery', async () => {
     const h = setup()
     vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)

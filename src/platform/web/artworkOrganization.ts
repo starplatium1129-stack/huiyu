@@ -81,11 +81,14 @@ export function createArtworkOrganization({ kv, commit, enqueue }: Dependencies)
         const after = state(source, projects, request)
         if (!equal(before, after)) receipt.changes.push({ id: source.id as ArtworkOrganizationId, before, after })
       }
-      if (receipt.changes.length) await commitChecked([{ key: ARTWORK_HISTORY_KEY, value: history },
-        ...(request.projectId !== undefined ? [{ key: ARTWORK_PROJECTS_KEY, value: projects }] : [])], '作品整理')
-      receipts.set(receipt.operationId, structuredClone(receipt))
-      // The UI exposes one last operation. Bound abandoned metadata receipts too.
-      while (receipts.size > ARTWORK_ORGANIZATION_RECEIPT_LIMIT) receipts.delete(receipts.keys().next().value!)
+      if (receipt.changes.length) {
+        await commitChecked([{ key: ARTWORK_HISTORY_KEY, value: history },
+          ...(request.projectId !== undefined ? [{ key: ARTWORK_PROJECTS_KEY, value: projects }] : [])], '作品整理')
+        // This web-only cache is undo authority, not the desktop idempotency ledger.
+        // No-op retries must not evict the last actual changes.
+        receipts.set(receipt.operationId, structuredClone(receipt))
+        while (receipts.size > ARTWORK_ORGANIZATION_RECEIPT_LIMIT) receipts.delete(receipts.keys().next().value!)
+      }
       return structuredClone(receipt)
     })
   }

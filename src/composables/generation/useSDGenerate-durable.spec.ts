@@ -187,3 +187,22 @@ for (const duringSubmission of [true, false]) {
     expect(api.submit).toHaveBeenCalledWith('generation', expect.any(Object), 'saved-key', undefined, expect.objectContaining({ signal: expect.any(AbortSignal) }))
   })
 }
+
+
+it.each([false, true])('a busy runner releases only an unaccepted queue submission marker (accepted=%s)', async accepted => {
+  const { useSDGenerate } = await import('./useSDGenerate')
+  const sd = useSDGenerate(), direct = sd.generate({ prompt: 'Direct fixture' })
+  await vi.waitFor(() => expect(api.wait).toHaveBeenCalledOnce())
+  const attempt: RuntimeSdAttempt = {
+    key: 'waiting-key',
+    ...(accepted ? { task: { taskId: 'already-accepted' } as TaskRecord } : {}),
+    rejected: vi.fn().mockResolvedValue(undefined), cancel: vi.fn(),
+  }
+  try {
+    await expect(sd.generate({ prompt: 'Queued fixture' }, { attempt })).resolves.toBeNull()
+    expect(attempt.rejected).toHaveBeenCalledTimes(accepted ? 0 : 1)
+    expect(api.submit).toHaveBeenCalledOnce()
+    expect(sd.generating.value).toBe(true)
+    expect(attempt.cancel).not.toHaveBeenCalled()
+  } finally { sd.dispose(); await direct }
+})

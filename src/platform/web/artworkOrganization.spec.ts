@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createArtworkOrganization } from './artworkOrganization'
 import { ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY } from './artworkStorage'
+import { ARTWORK_ORGANIZATION_RECEIPT_LIMIT } from '../../application/artwork/organization'
 
 function fixture() {
   const data = new Map<string, unknown>([
@@ -103,5 +104,16 @@ describe('artwork organization transaction', () => {
     expect(receipt.changes).toEqual([])
     expect(f.projects()[0].history_ids).toEqual([1, 'two'])
     expect(f.commit).not.toHaveBeenCalled()
+  })
+
+  it('preserves actual undo authority when no-op retries exceed the receipt budget', async () => {
+    const f = fixture(), input = { ids: [1], collectionTags: { add: ['chosen'] } }
+    const receipt = await f.organization.organizeArtworks(input)
+    for (let retry = 0; retry <= ARTWORK_ORGANIZATION_RECEIPT_LIMIT; retry++) {
+      expect((await f.organization.organizeArtworks(input)).changes).toEqual([])
+    }
+    expect(f.commit).toHaveBeenCalledOnce()
+    expect(await f.organization.undoArtworkOrganization(receipt)).toEqual({ restored: 1, skipped: 0 })
+    expect(f.history()[0].collectionTags).toEqual(['draft'])
   })
 })

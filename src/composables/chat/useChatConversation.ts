@@ -1,6 +1,6 @@
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
-import { ref, type ComputedRef, type Ref } from 'vue'
+import { reactive, ref, type ComputedRef, type Ref } from 'vue'
 import { createMessageId, type CharacterConfig } from '../../config/characters.ts'
 import { useChatStorage } from './useChatStorage.ts'
 import { useVoice } from '../useVoice.ts'
@@ -142,13 +142,13 @@ export function useChatConversation(options: ChatConversationOptions) {
     })
     options.storage.trim(characterId)
     const recalledList = options.recallMemories(characterId, text)
-    const assistant = {
+    const assistant = reactive({
       role: 'assistant' as const,
       content: '',
       mid: createMessageId(),
       stopped: false,
       ...(recalledList && recalledList.length > 0 ? { recalledMemories: recalledList } : {}),
-    }
+    })
     messages.push(assistant)
     options.storage.save()
     if (customText === undefined) {
@@ -525,7 +525,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       streamingMid.value = ''
       if (activeRequest === controller) activeRequest = null
       options.setBusy(false)
-      options.scrollBottom()
+      if (options.nearBottom()) options.scrollBottom()
     }
   }
 

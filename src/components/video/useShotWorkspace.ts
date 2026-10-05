@@ -131,7 +131,9 @@ export function useShotWorkspace(props: {
         h3Ready,
         online: computed(() => props.status?.online === true),
         batchError,
-        onSubmitted: () => persistShotsDraft(),
+        onSubmitting: (targets) => beginShotSubmission(targets),
+        onSubmissionRejected: (targets) => finishShotSubmission(targets),
+        onSubmitted: (targets, batchId) => finishShotSubmission(targets, batchId),
         onAccepted: (value) => {
             if (!videoStore.recordShotsBatch({ batchId: value.id, submittedAt: Date.now() }))
                 batchError.value = '分镜批次已提交，但批次记录保存失败；请在任务中心保留并核对任务。';
@@ -414,7 +416,7 @@ export function useShotWorkspace(props: {
     // ── 分镜草稿持久化（2026-09-06 体验报告 F1）────────────────────────────────
     // 切模式（v-if 卸载）/切页/刷新后恢复：镜头文本 + 身份锚点 + 参考卡元信息。
     // 首帧图只存 IndexedDB 图片 id，恢复时重挂载（服务端受控文件名会被清理）。
-    const { restoreShotsDraft, persistShotsDraft } = useShotDraft({
+    const { restoreShotsDraft, beginShotSubmission, finishShotSubmission } = useShotDraft({
         aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
         batchError, selectCardCharacter, retryPendingFrames, getShotSubmission, restoreShotSubmission,
     });
@@ -433,6 +435,10 @@ export function useShotWorkspace(props: {
     }
     watch(() => route.query.batch, () => {
         if (route.path === '/video-studio') void reconnectShotsBatch();
+    });
+    watch(() => videoStore.shotsBatch?.batchId, id => {
+        if (!route.query.batch && !submitting.value && route.path === '/video-studio'
+            && shots.value.some(shot => getShotSubmission(shot)?.batchId === id)) void reconnectShotsBatch();
     });
     onMounted(() => {
         void sceneStore.loadCharacterShell().catch(() => { batchError.value = '角色目录读取失败，请刷新页面重试'; });

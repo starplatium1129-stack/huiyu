@@ -22,7 +22,6 @@ export function useGalleryOrganization(options: {
     if (!ids.length) return
     if (ids.length > ARTWORK_ORGANIZATION_SELECTION_LIMIT) { error.value = `一次最多整理 ${ARTWORK_ORGANIZATION_SELECTION_LIMIT.toLocaleString('zh-CN')} 幅作品，请分批选择以保留完整撤销记录`; return }
     busy.value = true; stopping.value = false; error.value = ''; message.value = ''
-    receipts.value = []; canUndo.value = false
     let handled = 0
     try {
       const organizationInput = structuredClone(input)
@@ -37,9 +36,12 @@ export function useGalleryOrganization(options: {
       }
       for (let start = 0; start < ids.length && !stopping.value; start += ARTWORK_ORGANIZATION_BATCH_SIZE) {
         const receipt = await artworkRepository.organizeArtworks({ ...organizationInput, ids: ids.slice(start, start + ARTWORK_ORGANIZATION_BATCH_SIZE) })
-        receipts.value = [...receipts.value, receipt]
-        handled += receipt.changes.length
-        canUndo.value = receipts.value.some(value => value.changes.length > 0)
+        if (receipt.changes.length) {
+          // Only confirmed changes replace the previous action's undo authority.
+          receipts.value = [...(handled ? receipts.value : []), receipt]
+          handled += receipt.changes.length
+          canUndo.value = true
+        }
         message.value = `已整理 ${handled} 幅作品`
       }
       message.value = stopping.value ? `已停止后续整理；已完成 ${handled} 幅，可撤销` : handled ? `已整理 ${handled} 幅作品，可撤销本次整理` : '所选作品已使用这些画册与标签'

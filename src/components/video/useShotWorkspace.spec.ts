@@ -2,12 +2,14 @@ import { beforeEach, expect, it, vi } from 'vitest'
 import { defineComponent, h, KeepAlive, nextTick, reactive, ref } from 'vue'
 import { flushPromises, mount } from '@vue/test-utils'
 import { useShotWorkspace } from './useShotWorkspace'
+import type { useShotDraft } from './useShotDraft'
+import type { ShotDraft } from './shotListTypes'
 import { fetchVideoBatch, uploadVideoImage, type VideoBatch, type VideoStatusResponse } from '@/api/videoApi'
 import { artworkRepository } from '@/storage/artworkRepository'
 
 const route = reactive({ path: '/video-studio', query: {} as Record<string, string | undefined> })
 const replace = vi.fn(async ({ query }: { query: Record<string, string | undefined> }) => { route.query = query })
-const restoreDraft = vi.fn(async () => {})
+const restoreDraft = vi.fn(async (_deps: Parameters<typeof useShotDraft>[0]) => {})
 const savedBatch = ref<{ batchId: string; submittedAt: number } | null>(null)
 const cards = ref<Array<{ characterId?: string; outfitId?: string }>>([{}])
 const loadReferences = vi.fn(async (_id: string, _index: number, _outfit?: string, _signal?: AbortSignal) => false)
@@ -25,7 +27,7 @@ vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ consumeScenarioA
 vi.mock('./useShotFirstFrames', () => ({ useShotFirstFrames: () => ({ firstFrameBusy: ref(false) }) }))
 vi.mock('./useReferenceCards', () => ({ useReferenceCards: () => ({ referenceCards: cards, loadingRefAssets: ref(false), shotReferences: () => undefined, selectCardCharacter: loadReferences }) }))
 vi.mock('./useShotAiTools', () => ({ useShotAiTools: () => ({}) }))
-vi.mock('./useShotDraft', () => ({ useShotDraft: () => ({ restoreShotsDraft: restoreDraft }) }))
+vi.mock('./useShotDraft', () => ({ useShotDraft: (deps: Parameters<typeof useShotDraft>[0]) => ({ restoreShotsDraft: () => restoreDraft(deps) }) }))
 vi.mock('./useShotImport', () => ({ useShotImport: () => ({ importShotsFromDrawing: async () => null }) }))
 
 it('keeps frame uploads on the captured shot and rejects cleared, replaced, or disposed requests', async () => {
@@ -134,5 +136,29 @@ it('invalidates an in-flight B reconnect when the host route reselects the alrea
     finishB({ ok: true, batch: batch('B') }); await flushPromises()
     expect(tools.batch.value?.id).toBe('A')
     expect(savedBatch.value?.batchId).toBe('A')
+  } finally { wrapper.unmount() }
+})
+
+
+it('reconnects late saved acceptance only for the owning draft and respects explicit routes', async () => {
+  const makeBatch = (id: string): VideoBatch => ({ id, status: 'done', shots: [{ status: 'failed' }], progress: { total: 1, failed: 1, succeeded: 0 } } as VideoBatch)
+  restoreDraft.mockImplementationOnce(async deps => {
+    deps.shots.value = [{ prompt: 'A restored submitted shot' } as ShotDraft]
+    deps.restoreShotSubmission(deps.shots.value[0], { batchId: 'late', shotIndex: 0 })
+  })
+  vi.mocked(fetchVideoBatch).mockImplementation(async id => ({ ok: true, batch: makeBatch(id) }))
+  let tools!: ReturnType<typeof useShotWorkspace>
+  const wrapper = mount(defineComponent({ setup() { tools = useShotWorkspace({ status: null }); return () => null } }))
+  try {
+    await flushPromises()
+    savedBatch.value = { batchId: 'unrelated', submittedAt: 1 }; await flushPromises()
+    expect(fetchVideoBatch).not.toHaveBeenCalled()
+    savedBatch.value = { batchId: 'late', submittedAt: 2 }; await flushPromises()
+    expect(tools.batch.value?.id).toBe('late')
+    expect(tools.serverShot(0)?.status).toBe('failed')
+    route.query = { batch: 'explicit' }; await flushPromises()
+    savedBatch.value = { batchId: 'late', submittedAt: 3 }; await flushPromises()
+    expect(tools.batch.value?.id).toBe('explicit')
+    expect(fetchVideoBatch).toHaveBeenCalledTimes(2)
   } finally { wrapper.unmount() }
 })

@@ -88,6 +88,46 @@ async fn compatible_stream_preserves_reasoning_tokens_and_complete_tool_batches(
 
 #[tokio::test]
 async fn malformed_or_truncated_stream_cannot_emit_success_or_partial_tools() {
+    // An explicit upstream failure must end the stream before a following
+    // terminator can publish buffered tools or turn partial text into success.
+    for (protocol, body, message) in [
+        (
+            stream::Protocol::Sse,
+            concat!(
+                "data: {\"choices\":[{\"delta\":{\"content\":\"partial\",\"tool_calls\":[{\"index\":0,\"id\":\"one\",\"function\":{\"name\":\"read_file\",\"arguments\":\"{}\"}}]}}]}\n",
+                "data: {\"error\":{\"message\":\"private upstream detail\"}}\n",
+                "data: [DONE]\n",
+            ),
+            "自定义 API 返回了流错误",
+        ),
+        (
+            stream::Protocol::Ollama,
+            concat!(
+                "{\"message\":{\"content\":\"partial\"},\"done\":false}\n",
+                "{\"error\":\"private upstream detail\"}\n",
+                "{\"done\":true}\n",
+            ),
+            "Ollama 返回了流错误",
+        ),
+    ] {
+        let prepared = stream::Prepared {
+            response: reqwest::Response::from(axum::http::Response::new(body)),
+            model: "fixture".into(),
+            wait_ms: 0,
+            protocol,
+            permit: None,
+        };
+        let values = events(stream::response(prepared, CancellationToken::new())).await;
+        assert_eq!(
+            values
+                .iter()
+                .map(|value| value["type"].as_str().unwrap())
+                .collect::<Vec<_>>(),
+            ["meta", "token", "error"],
+        );
+        assert_eq!(values[1]["content"], "partial");
+        assert_eq!(values[2]["error"], message);
+    }
     let router=Router::new().fallback(||async{sse("data: {\"choices\":[{\"delta\":{\"tool_calls\":[{\"index\":0,\"id\":\"one\",\"function\":{\"name\":\"read_file\",\"arguments\":\"{}\"}},{\"index\":1,\"id\":\"two\",\"function\":{\"name\":\"write_file\",\"arguments\":\"{\"}}]}}]}\ndata: [DONE]\n")});
     let (host, server) = serve(router).await;
     let directory = tempfile::tempdir().unwrap();

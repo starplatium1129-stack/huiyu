@@ -145,6 +145,9 @@ pub(super) struct Decoder {
 }
 impl Decoder {
     pub fn decode(&mut self, event: &Value) -> Result<Vec<Value>> {
+        if event.get("error").is_some_and(|error| !error.is_null()) {
+            return Err(Error::stream("INVALID_SSE", "自定义 API 返回了流错误"));
+        }
         let Some(choice) = event["choices"].as_array().and_then(|v| v.first()) else {
             return Ok(Vec::new());
         };

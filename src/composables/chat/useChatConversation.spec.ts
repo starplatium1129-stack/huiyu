@@ -1,5 +1,5 @@
 import type { CompanionDesktopBridge } from '@/types/desktop'
-import { computed, ref } from 'vue'
+import { computed, nextTick, reactive, ref, watchEffect } from 'vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CHARACTERS } from '@/config/characters'
 import { useChatConversation } from './useChatConversation'
@@ -14,7 +14,7 @@ function stream(events: object[], close = true) {
   } }))
 }
 function setup() {
-  const messages: Array<{ role: string; content: string; stopped: boolean }> = []
+  const messages = reactive<Array<{ role: string; content: string; stopped: boolean }>>([])
   const busy = ref(false)
   const options = {
     storage: { messages: () => messages, trim: vi.fn(), save: vi.fn(), setDraft: vi.fn(), setApiSettings: vi.fn(), setModel: vi.fn() },
@@ -24,7 +24,7 @@ function setup() {
     apiBaseUrl: ref('http://localhost:1234/v1'), apiModel: ref('gpt-4'), apiKey: ref('test'),
     webSearchEnabled: ref(false), useHostConfig: ref(false), companionTools: ref(true),
     reasoning: ref('off'), userProfile: ref({}), recallMemories: () => [],
-    setBusy: (value: boolean) => { busy.value = value }, onError: vi.fn(), onStreamEmotion: vi.fn(), nearBottom: () => false, scrollBottom: vi.fn(),
+    setBusy: (value: boolean) => { busy.value = value }, onError: vi.fn(), onStreamEmotion: vi.fn(), nearBottom: vi.fn(() => false), scrollBottom: vi.fn(),
   }
   const conversation = useChatConversation(options as unknown as Parameters<typeof useChatConversation>[0])
   return { conversation, options, messages, busy }
@@ -34,8 +34,10 @@ afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); desktopFixture.curr
 describe('chat recovery and tool lifecycle', () => {
   it('keeps each token visible and spoken while mood tags override hints and the next character starts fresh', async () => {
     const deltas = ['那', '个，好', '开心', '，脸', '红[moo', 'd=ha', 'ppy]难过', '[mood=BAD]', '[MOOD:sa', 'd]尾声', '[mood=hap']
+    let channel!: ReadableStreamDefaultController<Uint8Array>
+    const first = new Response(new ReadableStream<Uint8Array>({ start(controller) { channel = controller } }))
     const fetchMock = vi.fn()
-      .mockResolvedValueOnce(stream([...deltas.map(content => ({ type: 'token', content })), { type: 'done' }]))
+      .mockResolvedValueOnce(first)
       .mockResolvedValueOnce(stream([{ type: 'token', content: '我在' }, { type: 'token', content: '这里' }, { type: 'done' }]))
       .mockResolvedValueOnce(stream([{ type: 'token', content: '不好[mood    ' }, { type: 'token', content: '=BAD]意思' }, { type: 'done' }]))
     vi.stubGlobal('fetch', fetchMock)
@@ -45,14 +47,31 @@ describe('chat recovery and tool lifecycle', () => {
       displayed.push(messages.at(-1)!.content)
       options.activeChar.value = 'natsume'
     })
-    await conversation.sendMessage('你好')
+    let rendered = ''
+    const stopRendering = watchEffect(() => { rendered = messages.at(-1)?.content || '' })
+    const pending = conversation.sendMessage('你好')
+    for (const [index, content] of deltas.entries()) {
+      channel.enqueue(new TextEncoder().encode(JSON.stringify({ type: 'token', content }) + '\n'))
+      await vi.waitFor(() => expect(options.voice.append).toHaveBeenCalledTimes(index + 1))
+      await nextTick()
+      expect(rendered).toBe(displayed[index])
+    }
+    expect(options.storage.save).toHaveBeenCalledTimes(1)
+    channel.enqueue(new TextEncoder().encode('{"type":"done"}\n'))
+    channel.close()
+    await pending
+    stopRendering()
+    expect(options.scrollBottom).toHaveBeenCalledTimes(1)
     expect(displayed).toEqual(['那', '那个，好', '那个，好开心', '那个，好开心，脸', '那个，好开心，脸红[moo',
       '那个，好开心，脸红', '那个，好开心，脸红难过', '那个，好开心，脸红难过', '那个，好开心，脸红难过',
       '那个，好开心，脸红难过尾声', '那个，好开心，脸红难过尾声'])
     expect(options.voice.append.mock.calls.map(([delta]) => delta)).toEqual(['那', '个，好', '开心', '，脸', '红[moo', '', '难过', '', '', '尾声', ''])
     expect(options.onStreamEmotion.mock.calls.map(([emotion]) => emotion)).toEqual(['shy', 'happy', 'shy', 'happy', 'sad', 'neutral'])
     options.onStreamEmotion.mockClear()
+    options.nearBottom.mockReturnValue(true)
+    options.scrollBottom.mockClear()
     await conversation.sendMessage('继续')
+    expect(options.scrollBottom).toHaveBeenCalledTimes(4)
     expect(options.onStreamEmotion.mock.calls.map(([emotion]) => emotion)).toEqual(['gentle', 'neutral'])
     options.onStreamEmotion.mockClear()
     await conversation.sendMessage('继续')
@@ -92,6 +111,7 @@ describe('chat recovery and tool lifecycle', () => {
     await conversation.sendMessage('你好')
     expect(messages.at(-1)).toMatchObject({ content: '已经收到的回复', stopped: true })
     expect(options.onError).toHaveBeenLastCalledWith(expect.stringContaining('意外中断'))
+    expect(options.scrollBottom).toHaveBeenCalledTimes(1)
     expect(busy.value).toBe(false)
   })
 
@@ -107,12 +127,13 @@ describe('chat recovery and tool lifecycle', () => {
       { type: 'tool-call', id: 'two', name: 'read_image', arguments: '{}' }, { type: 'done' },
     ]))
     vi.stubGlobal('fetch', fetchMock)
-    const { conversation, busy } = setup()
+    const { conversation, busy, options } = setup()
     const pending = conversation.sendMessage('看一下屏幕')
     await vi.waitFor(() => expect(runTool).toHaveBeenCalledTimes(1))
     conversation.stopEverything()
     await pending
     expect(toolSignal?.aborted).toBe(true)
+    expect(options.scrollBottom).toHaveBeenCalledTimes(1)
     expect(busy.value).toBe(false)
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(runTool).toHaveBeenCalledTimes(1)

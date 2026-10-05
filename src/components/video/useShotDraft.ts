@@ -2,7 +2,7 @@ import { onBeforeUnmount, watch, type Ref } from 'vue'
 import type { VideoBatch, VideoQuality } from '@/api/videoApi'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
-import { useVideoStore, type ShotSubmissionRecord, type ShotsDraftPayload } from '@/stores/videoStore'
+import { useVideoStore, type ShotSubmissionRecord } from '@/stores/videoStore'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
 interface ShotDraftDeps {
@@ -28,22 +28,11 @@ let restoringDraft = false
 let shotsDraftTimer = 0
 let saveFailed = false
 let disposed = false
-let lastSavedDraft: ShotsDraftPayload | null = null
-let lastSavedShots: ShotDraft[] = []
+const submissionTokens = new WeakMap<ShotDraft, string>()
 
 function persistShotsDraft() {
   if (restoringDraft) return
-  if (disposed) {
-    // A late acceptance may only add provenance to our unchanged saved draft,
-    // never replay the old editor over a new workspace's draft.
-    const saved = videoStore.shotsDraft
-    if (!saved || saved !== lastSavedDraft) return
-    const ok = videoStore.saveShotsDraft({ ...saved, updatedAt: Date.now(),
-      shots: saved.shots.map((shot, index) => ({ ...shot, submission: deps.getShotSubmission(lastSavedShots[index]) })),
-    })
-    if (!ok) batchError.value = '分镜来源保存失败，请在任务中心保留并核对批次。'
-    return
-  }
+  if (disposed) return
   window.clearTimeout(shotsDraftTimer); shotsDraftTimer = 0
   const ok = videoStore.saveShotsDraft({
     aspectRatio: aspectRatio.value,
@@ -58,6 +47,7 @@ function persistShotsDraft() {
     })),
     shots: shots.value.map(shot => ({
       submission: deps.getShotSubmission(shot),
+      submissionToken: submissionTokens.get(shot),
       prompt: shot.prompt,
       dialogue: shot.dialogue,
       shotSize: shot.shotSize,
@@ -73,8 +63,39 @@ function persistShotsDraft() {
   })
   if (!ok) batchError.value = '分镜草稿保存失败（存储空间不足）：内容仍在页面中，但刷新后可能丢失'
   saveFailed = !ok
-  if (ok) { lastSavedDraft = videoStore.shotsDraft; lastSavedShots = shots.value.slice() }
 }
+// Tokens belong to submitted row objects, not editable fields; clones never inherit them.
+function beginShotSubmission(targets: ShotDraft[]) {
+  targets.forEach(shot => submissionTokens.set(shot, crypto.randomUUID()))
+  persistShotsDraft()
+}
+function finishShotSubmission(targets: ShotDraft[], batchId?: string) {
+  const tokens = new Map(targets.map((shot, shotIndex) => [submissionTokens.get(shot), shotIndex]))
+  tokens.delete(undefined)
+  if (!batchId) targets.forEach(shot => submissionTokens.delete(shot))
+  const saved = videoStore.shotsDraft
+  if (saved?.shots.some(shot => shot.submissionToken && tokens.has(shot.submissionToken))) {
+    const ok = videoStore.saveShotsDraft({ ...saved, updatedAt: Date.now(), shots: saved.shots.map(shot => {
+      const shotIndex = shot.submissionToken ? tokens.get(shot.submissionToken) : undefined
+      if (shotIndex === undefined) return shot
+      return batchId ? { ...shot, submission: { batchId, shotIndex } } : { ...shot, submissionToken: undefined }
+    }) })
+    if (!ok) batchError.value = '分镜来源保存失败，请在任务中心保留并核对批次。'
+  }
+  if (!disposed) persistShotsDraft()
+}
+// A reopened owner must adopt acceptance before its next autosave, even after edits/reorder.
+watch(() => videoStore.shotsDraft, (saved, previous) => {
+  const retained = new Set(saved?.shots.map(shot => shot.submissionToken))
+  const removed = new Set(previous?.shots.map(shot => shot.submissionToken).filter(token => !retained.has(token)))
+  const accepted = new Map(saved?.shots.filter(shot => shot.submissionToken && shot.submission)
+    .map(shot => [shot.submissionToken, shot.submission]))
+  shots.value.forEach(shot => {
+    const token = submissionTokens.get(shot)
+    if (token && removed.has(token)) submissionTokens.delete(shot)
+    if (token && accepted.has(token)) deps.restoreShotSubmission(shot, accepted.get(token))
+  })
+}, { flush: 'sync' })
 const releaseMaintenance = registerMaintenanceParticipant(() => {
   if (restoringDraft) throw new Error('DRAFT_RESTORING')
   if (shotsDraftTimer || saveFailed) persistShotsDraft()
@@ -122,7 +143,11 @@ async function restoreShotsDraft() {
       firstFramePrompt: shot.firstFramePrompt,
       imageId: shot.imageId || '',
     }))
-    shots.value.forEach((shot, index) => deps.restoreShotSubmission(shot, draft.shots[index]?.submission))
+    shots.value.forEach((shot, index) => {
+      const saved = draft.shots[index]
+      deps.restoreShotSubmission(shot, saved?.submission)
+      if (typeof saved?.submissionToken === 'string' && saved.submissionToken) submissionTokens.set(shot, saved.submissionToken)
+    })
   } finally {
     restoringDraft = false
   }
@@ -146,5 +171,5 @@ async function restoreShotsDraft() {
     persistShotsDraft()
     disposed = true
   })
-  return { restoreShotsDraft, persistShotsDraft }
+  return { restoreShotsDraft, persistShotsDraft, beginShotSubmission, finishShotSubmission }
 }
