@@ -89,7 +89,7 @@ describe('shot batch operation recovery', () => {
     const currentDraft = shots.value[0]
     await machine.reconnectBatch('historical')
     expect(shots.value[0]).toBe(currentDraft)
-    expect(machine.batch.value?.shots[0].resultUrl).toBe('/first.mp4')
+    expect(machine.batch.value).toHaveProperty('shots.0.resultUrl', '/first.mp4')
     expect(machine.serverShot(0)).toBeNull()
     await machine.retryShotAt(0)
     expect(api.retryVideoShot).toHaveBeenCalledTimes(1)
