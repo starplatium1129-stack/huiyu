@@ -2,7 +2,6 @@
   <article class="page scene-discovery">
     <section class="scene-atlas" :data-companion="companionId" aria-labelledby="sceneAtlasTitle">
       <div class="scene-atlas-copy">
-        <span class="scene-chapter" aria-hidden="true">SCENE / 01</span>
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
         <p class="scene-atlas-note">挑一幕心动，让故事从这里开始。</p>
       </div>
@@ -50,9 +49,6 @@
         <button type="button" :class="{ active: sortBy === 'favorite' && !showHidden }"
           :aria-pressed="sortBy === 'favorite' && !showHidden"
           @click="showFavoriteScenes">收藏 {{ favoriteCount }}</button>
-        <button type="button" :class="{ active: showHidden }"
-          :aria-pressed="showHidden"
-          @click="showHiddenScenes">已隐藏 {{ hiddenCount }}</button>
         <button type="button" :class="{ active: fTier === 'all' && sortBy === 'smart' && !showHidden }"
           :aria-pressed="fTier === 'all' && sortBy === 'smart' && !showHidden"
           @click="showAllScenes">完整库 {{ availableCount }}</button>
@@ -72,7 +68,7 @@
           aria-controls="sceneFacetPanel"
           @click="filtersOpen = !filtersOpen"
         >
-          <ArchiveIcon name="filter" />精细筛选<span v-if="activeFacetCount" class="facet-badge">{{ activeFacetCount }}</span>
+          <ArchiveIcon name="filter" />{{ showHidden ? '已隐藏 ' + hiddenCount : '精细筛选' }}<span v-if="activeFacetCount" class="facet-badge">{{ activeFacetCount }}</span>
         </button>
       </div>
 
@@ -218,7 +214,7 @@ const {
   companionId, activeFilters, activeThemeLabel, scenes, manualCompanion, moodRails, applyMoodRail,
   searchQuery, visible, filtered, tierLabel, filtersOpen, activeFacetCount, fTier, showHidden,
   showPersonalScenes, showRecommendedScenes, usedCount, sortBy, showFavoriteScenes, favoriteCount,
-  showHiddenScenes, hiddenCount, showAllScenes, availableCount, THEME_DEFS, activeTheme, themeCount,
+  hiddenCount, showAllScenes, availableCount, THEME_DEFS, activeTheme, themeCount,
   searchIntent, fChar, fSeason, fTime, fSeries, fRating, matureCount, adultEnabled, resetFilters,
   loading, loadError, init, paged, flashId, usageFor, isCore, tier, charName, seasonLabel, timeLabel,
   personalReason, drawerScene, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav, PAGE_SIZE,

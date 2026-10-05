@@ -32,7 +32,7 @@ export function useInspirationDeck(host: Ref<HTMLElement | null>, keys: () => st
     if (turning.value) index.value = wrap(index.value + turning.value)
     turning.value = 0
     releasePointer()
-    // Allow the reused tail card to settle behind the new front without flying backwards.
+    // Reset the new primary card before resuming motion after a page turn.
     if (canAnimate.value) frame = requestAnimationFrame(() => {
       frame = requestAnimationFrame(() => { resetting.value = false; frame = 0 })
     })

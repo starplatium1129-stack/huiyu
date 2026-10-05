@@ -95,8 +95,8 @@ export function useSceneExplorerFilters(defaultTier: string) {
   const activeFacetCount = computed(() => activeFilters.value.length + Number(fTier.value !== defaultTier)
     + Number(sortBy.value !== 'smart') + Number(showHidden.value))
 
-  function selectPersonalView(tier: string, sort = 'smart', hidden = false) {
-    showHidden.value = hidden
+  function selectPersonalView(tier: string, sort = 'smart') {
+    showHidden.value = false
     fTier.value = tier
     sortBy.value = sort
     filtersOpen.value = false
@@ -112,7 +112,6 @@ export function useSceneExplorerFilters(defaultTier: string) {
     showPersonalScenes: () => selectPersonalView('personal', 'used'),
     showRecommendedScenes: () => selectPersonalView('core'),
     showFavoriteScenes: () => selectPersonalView('all', 'favorite'),
-    showHiddenScenes: () => selectPersonalView('all', 'smart', true),
     showAllScenes: () => selectPersonalView('all'),
   }
 }
