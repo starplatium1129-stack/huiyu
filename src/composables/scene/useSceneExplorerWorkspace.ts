@@ -1,6 +1,6 @@
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { useToast } from '@/composables/useToast';
-import { useFocusTrap } from '@/composables/useFocusTrap';
+import { useSceneExplorerFilters } from './useSceneExplorerFilters';
 import { artworkRepository } from '@/storage/artworkRepository';
 import { useSceneStore,type CurationData,type SceneBrowseTarget } from '@/stores/sceneStore';
 import { scrollBehavior } from '@/utils/motionPreference';
@@ -15,16 +15,15 @@ import {
     matchesTheme,
     matchesTime,
     primaryCategory,
-    railIconName,
+    sceneCharacterName as charName,
+    sceneSeasonLabel as seasonLabel,
+    sceneTimeLabel as timeLabel,
     sceneVisualLabels,
-    themeDefinition,
     type ExplorerScene,
 } from './sceneExplorerPresentation';
 import { orderExplorerScenes } from './sceneExplorerOrdering';
-import { watchDebounced } from '@vueuse/core';
 import { computed,nextTick,onMounted,onUnmounted,ref,watch } from 'vue';
-import type { LocationQueryRaw } from 'vue-router';
-import { useRoute,useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useSceneExplorerWorkspace() {
     interface ExplorerCuration extends CurationData, SceneUXConfig {
@@ -40,7 +39,6 @@ export function useSceneExplorerWorkspace() {
     const PAGE_SIZE = 24;
     const FAV_KEY = 'aics_scene_favorites';
     const route = useRoute();
-    const router = useRouter();
     const sceneStore = useSceneStore();
     const toast = useToast();
     const scenes = ref<ExplorerScene[]>([]);
@@ -50,8 +48,6 @@ export function useSceneExplorerWorkspace() {
     const loadError = ref('');
     const flashId = ref('');
     const drawerScene = ref<ExplorerScene | null>(null);
-    const drawerEl = ref<HTMLElement | null>(null);
-    useFocusTrap(drawerEl, () => drawerScene.value !== null, { onEscape: () => { drawerScene.value = null; } });
     function readFavorites() {
         try {
             const value = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
@@ -64,35 +60,14 @@ export function useSceneExplorerWorkspace() {
     const favs = ref(readFavorites());
     const hiddenIds = ref(readHiddenScenes());
     const localUsage = ref(readSceneUsage());
-    const showHidden = ref(false);
     const adultEnabled = isLocalStudioHost();
     const showMature = ref(adultEnabled);
-    const routeQuery = () => typeof route.query.q === 'string' ? route.query.q : '';
-    const routeCharacter = () => ['nene', 'natsume', 'triad'].includes(String(route.query.character)) ? String(route.query.character) : 'all';
     const defaultTier = Object.keys(localUsage.value).length || favs.value.size ? 'personal' : 'core';
-    const routeOption = (key: string, options: string[], fallback: string) =>
-        typeof route.query[key] === 'string' && options.includes(route.query[key] as string) ? route.query[key] as string : fallback;
-    const routeFilters = () => ({ q: routeQuery().trim(), character: routeCharacter(),
-        theme: routeOption('theme', THEME_DEFS.map(theme => theme.id), 'all'),
-        season: routeOption('season', ['春', '夏', '秋', '冬'], 'all'),
-        time: routeOption('time', ['morning', 'afternoon', 'sunset', 'night', 'dawn'], 'all'),
-        series: routeOption('series', ['after', 'fanwork', 'active'], 'all'),
-        rating: routeOption('rating', ['All', 'R15', 'R18'], 'all'),
-        tier: routeOption('tier', ['personal', 'core', 'featured', 'signature', 'curated', 'all'], defaultTier),
-        sort: routeOption('sort', ['smart', 'used', 'curated', 'favorite', 'newest', 'title'], 'smart'), hidden: route.query.hidden === '1' });
-    const openingFilters = routeFilters();
-    const searchQuery = ref(routeQuery());
+    const filters = useSceneExplorerFilters(defaultTier);
+    const { searchQuery, debouncedQuery, activeTheme, fChar, fSeason, fTime, fSeries,
+        fRating, fTier, sortBy, showHidden, resetFilters } = filters;
     /** 首帧数据就绪标记：避免初始化时赋初值触发数据 watch 重复加载 */
     let dataReady = false;
-    /**
-     * 输入框绑 searchQuery（打字要立刻回显），过滤/排序读 debouncedQuery。
-     * 全 src/ 之前没有任何 debounce，297 条的过滤+排序每次击键都全量重跑。
-     * 普通输入防抖；路由导航立即替换结果，旧回调不得覆盖新意图。
-     */
-    const debouncedQuery = ref(searchQuery.value);
-    watchDebounced(searchQuery, (value) => {
-        if (value === searchQuery.value) debouncedQuery.value = value;
-    }, { debounce: 150, immediate: true });
     /**
      * 筛选期间的位置锚点（F3.2）：把列表抽短会让文档变矮，浏览器随即把滚动位置钳掉，
      * 清空筛选后用户就回不到原处（实测 700 → 473）。这里记住塌缩前的位置，等列表长回来再恢复。
@@ -132,9 +107,6 @@ export function useSceneExplorerWorkspace() {
     let loadRevision = 0;
     let flashTimer: ReturnType<typeof setTimeout> | undefined;
     onUnmounted(() => { dataReady = false; loadRevision++; clearTimeout(flashTimer); clearFilterAnchor(); });
-    const activeTheme = ref(openingFilters.theme);
-    const activeThemeDefinition = computed(() => themeDefinition(activeTheme.value));
-    const activeThemeLabel = computed(() => activeThemeDefinition.value.label);
     const manualCompanion = ref<'nene' | 'natsume' | null>(null);
     const companionId = computed<'nene' | 'natsume'>(() => {
         if (manualCompanion.value) return manualCompanion.value;
@@ -149,72 +121,7 @@ export function useSceneExplorerWorkspace() {
             return 'nene';
         return 'nene';
     });
-    const fChar = ref(routeCharacter());
-    const fSeason = ref(openingFilters.season);
-    const fTime = ref(openingFilters.time);
-    const fSeries = ref(openingFilters.series);
-    const fRating = ref(openingFilters.rating);
-    const fTier = ref(openingFilters.tier);
-    const sortBy = ref(openingFilters.sort);
-    showHidden.value = openingFilters.hidden;
-    const currentFilters = () => ({ q: searchQuery.value.trim(), character: fChar.value, theme: activeTheme.value,
-        season: fSeason.value, time: fTime.value, series: fSeries.value, rating: fRating.value,
-        tier: fTier.value, sort: sortBy.value, hidden: showHidden.value });
-    let pendingRouteWrite: ReturnType<typeof currentFilters> | null = null;
-    // The URL owns browsing filters so returning from creation restores the same list.
-    watch(routeFilters, filters => {
-        if (route.path !== '/scene-explorer') return;
-        if (pendingRouteWrite && JSON.stringify(pendingRouteWrite) === JSON.stringify(filters)) {
-            if (searchQuery.value.trim() === filters.q) debouncedQuery.value = filters.q;
-            return;
-        }
-        pendingRouteWrite = null;
-        searchQuery.value = filters.q; debouncedQuery.value = filters.q; fChar.value = filters.character;
-        activeTheme.value = filters.theme; fSeason.value = filters.season; fTime.value = filters.time;
-        fSeries.value = filters.series; fRating.value = filters.rating; fTier.value = filters.tier;
-        sortBy.value = filters.sort; showHidden.value = filters.hidden;
-    }, { flush: 'sync' });
-    watch([debouncedQuery, fChar, activeTheme, fSeason, fTime, fSeries, fRating, fTier, sortBy, showHidden], () => {
-        if (route.path !== '/scene-explorer') return;
-        const next = currentFilters();
-        if (JSON.stringify(next) === JSON.stringify(routeFilters())) return;
-        const query: LocationQueryRaw = { ...route.query };
-        for (const key of ['q', 'character', 'theme', 'season', 'time', 'series', 'rating', 'sort'] as const) {
-            const value = next[key];
-            if (value && value !== 'all' && !(key === 'sort' && value === 'smart')) query[key] = value;
-            else delete query[key];
-        }
-        // Persist the chosen scope even if starting creation changes the next visit's default.
-        query.tier = next.tier;
-        if (next.hidden) query.hidden = '1'; else delete query.hidden;
-        pendingRouteWrite = next;
-        void router.replace({ query }).catch(() => {}).finally(() => {
-            if (pendingRouteWrite === next) pendingRouteWrite = null;
-        });
-    });
     const visible = ref(PAGE_SIZE);
-    const filtersOpen = ref(false);
-    /** 已生效的精细筛选数量，收起时也能看出「有筛选在起作用」 */
-    const activeFacetCount = computed(() => {
-        let n = 0;
-        if (fChar.value !== 'all')
-            n++;
-        if (fSeason.value !== 'all')
-            n++;
-        if (fTime.value !== 'all')
-            n++;
-        if (fSeries.value !== 'all')
-            n++;
-        if (fRating.value !== 'all')
-            n++;
-        if (fTier.value !== defaultTier)
-            n++;
-        if (sortBy.value !== 'smart')
-            n++;
-        if (showHidden.value)
-            n++;
-        return n;
-    });
     // --- derived ---
     const moodRails = computed(() => curation.value.moodRails?.length ? curation.value.moodRails : DEFAULT_RAILS);
     const matureCount = computed(() => scenes.value.filter(s => s.mature).length);
@@ -231,14 +138,6 @@ export function useSceneExplorerWorkspace() {
     });
     function tier(s: ExplorerScene) { return uxTier(s, curation.value); }
     function isCore(s: ExplorerScene) { return isPersonaCore(s, curation.value); }
-    function charName(s: ExplorerScene) {
-        const c = s.char || '';
-        return c === 'nene' || c === 'ayachi_nene' ? '宁宁' : c === 'natsume' || c === 'shiki_natsume' ? '夏目' : c === 'triad' ? '双人' : c;
-    }
-    function seasonLabel(v?: string) { return ({ 春: '春', 夏: '夏', 秋: '秋', 冬: '冬' } as Record<string, string>)[v || ''] || v || ''; }
-    function timeLabel(v?: string) {
-        return ({ morning: '清晨', afternoon: '午后', sunset: '黄昏', night: '夜晚', late_night: '深夜', dawn: '黎明', evening: '夜晚', all_day: '全天' } as Record<string, string>)[v || ''] || v || '';
-    }
     function personalReason(s: ExplorerScene) {
         const usage = usageFor(s);
         const localReason = usage
@@ -306,25 +205,15 @@ export function useSceneExplorerWorkspace() {
             profile: profile.value, usage: localUsage.value, favorites: favs.value, relevance });
     });
     const paged = computed(() => filtered.value.slice(0, visible.value));
-    function escapeHtml(value: unknown): string {
-        return String(value == null ? '' : value)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
-    }
-    const intentHtml = computed(() => {
+    const searchIntent = computed(() => {
         const q = debouncedQuery.value.trim();
-        const a = uxAnalyze(q, curation.value);
-        const exp = q && ['personal', 'core', 'featured'].includes(fTier.value) ? '已自动扩展至完整场景库。' : '';
-        // intents 可能包含用户原始输入（alias 未命中时 push normalized），
-        // 拼进 v-html 前必须转义，否则搜索结果里直接注入 HTML。
-        const understood = a.intents?.length
-            ? `已理解为：<strong>${escapeHtml(a.intents.join(' · '))}</strong>。`
-            : (q ? '正在搜索标题、故事、情绪、地点和视觉标签。' : '可以直接描述想画的完整句子。');
-        const personal = profile.value.entries ? ` 已结合本机${profile.value.entries}条创作记录排序。` : ' 还没有创作记录，先画几张，推荐会更懂你。';
-        return exp + understood + personal;
+        const analysis = uxAnalyze(q, curation.value);
+        return {
+            expansion: q && ['personal', 'core', 'featured'].includes(fTier.value) ? '已自动扩展至完整场景库。' : '',
+            intents: analysis.intents || [],
+            description: q ? '正在搜索标题、故事、情绪、地点和视觉标签。' : '可以直接描述想画的完整句子。',
+            personal: profile.value.entries ? ` 已结合本机${profile.value.entries}条创作记录排序。` : ' 还没有创作记录，先画几张，推荐会更懂你。',
+        };
     });
     watch([debouncedQuery, activeTheme, fChar, fSeason, fTime, fSeries, fRating, fTier, sortBy, showHidden], () => { visible.value = PAGE_SIZE; });
     function toggleFav(id: string) {
@@ -343,36 +232,6 @@ export function useSceneExplorerWorkspace() {
             hiddenIds.value = next;
         } catch { toast.error('隐藏设置未保存，原有状态已保留，请稍后重试'); }
     }
-    function showPersonalScenes() {
-        showHidden.value = false;
-        fTier.value = 'personal';
-        sortBy.value = 'used';
-        filtersOpen.value = false;
-    }
-    function showRecommendedScenes() {
-        showHidden.value = false;
-        fTier.value = 'core';
-        sortBy.value = 'smart';
-        filtersOpen.value = false;
-    }
-    function showFavoriteScenes() {
-        showHidden.value = false;
-        fTier.value = 'all';
-        sortBy.value = 'favorite';
-        filtersOpen.value = false;
-    }
-    function showHiddenScenes() {
-        showHidden.value = true;
-        fTier.value = 'all';
-        sortBy.value = 'smart';
-        filtersOpen.value = false;
-    }
-    function showAllScenes() {
-        showHidden.value = false;
-        fTier.value = 'all';
-        sortBy.value = 'smart';
-        filtersOpen.value = false;
-    }
     function applyMoodRail(rail: {
         character: string;
         query: string;
@@ -384,18 +243,6 @@ export function useSceneExplorerWorkspace() {
         if (rail.character === 'nene' || rail.character === 'natsume')
             manualCompanion.value = rail.character;
         nextTick(() => document.getElementById('sceneSearch')?.focus());
-    }
-    function resetFilters() {
-        searchQuery.value = '';
-        activeTheme.value = 'all';
-        fChar.value = 'all';
-        fSeason.value = 'all';
-        fTime.value = 'all';
-        fSeries.value = 'all';
-        fRating.value = 'all';
-        fTier.value = 'all';
-        sortBy.value = 'smart';
-        showHidden.value = false;
     }
     const browseTarget = computed<SceneBrowseTarget>(() => fChar.value !== 'all'
         ? fChar.value as SceneBrowseTarget
@@ -449,13 +296,10 @@ export function useSceneExplorerWorkspace() {
     watch(browseTarget, target => { if (dataReady) void refreshScenes(target); });
     onMounted(() => { init(); });
     return {
-drawerEl,
-        companionId, activeThemeLabel, scenes, manualCompanion, moodRails, applyMoodRail,
-        railIconName, searchQuery, visible, filtered, tierLabel, filtersOpen,
-        activeFacetCount, fTier, showHidden, showPersonalScenes, showRecommendedScenes, usedCount, sortBy,
-        showFavoriteScenes, favoriteCount, showHiddenScenes, hiddenCount, showAllScenes, availableCount,
-        THEME_DEFS, activeTheme, themeCount, intentHtml, fChar, fSeason,
-        fTime, fSeries, fRating, matureCount, adultEnabled, resetFilters, loading,
+        ...filters,
+        companionId, scenes, manualCompanion, moodRails, applyMoodRail,
+        visible, filtered, tierLabel, usedCount, favoriteCount, hiddenCount, availableCount,
+        THEME_DEFS, themeCount, searchIntent, matureCount, adultEnabled, loading,
         loadError, init, paged, flashId, usageFor, isCore,
         tier, charName, seasonLabel, timeLabel, personalReason, drawerScene,
         dv: sceneVisualLabels, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,

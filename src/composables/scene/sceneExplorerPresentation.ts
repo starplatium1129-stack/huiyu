@@ -89,6 +89,19 @@ export function matchesTime(scene: ExplorerScene, value: string): boolean {
   return scene.timeOfDay === value
 }
 
+export function sceneCharacterName(scene: ExplorerScene) {
+  const character = scene.char || ''
+  return character === 'nene' || character === 'ayachi_nene' ? '宁宁' : character === 'natsume' || character === 'shiki_natsume' ? '夏目' : character === 'triad' ? '双人' : character
+}
+
+export function sceneSeasonLabel(value?: string) {
+  return ({ 春: '春', 夏: '夏', 秋: '秋', 冬: '冬' } as Record<string, string>)[value || ''] || value || ''
+}
+
+export function sceneTimeLabel(value?: string) {
+  return ({ morning: '清晨', afternoon: '午后', sunset: '黄昏', night: '夜晚', late_night: '深夜', dawn: '黎明', evening: '夜晚', all_day: '全天' } as Record<string, string>)[value || ''] || value || ''
+}
+
 export function sceneVisualLabels(scene: ExplorerScene) {
   const shotLabels: Record<string, string> = { 半身中景: '半身', 全身远景: '远景', 全身中景: '全身', 特写: '特写', 特写镜头: '特写', 面部特写: '特写', 远景: '远景', 中景: '半身', 全身: '全身', 半身: '半身' }
   const lightLabels: Record<string, string> = { 窗光: '窗光', 黄金时刻: '黄昏光', 逆光: '逆光', 月光: '月光', 夜灯: '夜灯', 霓虹: '霓虹', 烛光: '烛光', 阴天: '阴天光', 夕阳光: '黄昏光', 晨光: '晨光' }

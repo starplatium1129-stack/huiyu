@@ -8,13 +8,12 @@
       </div>
       <div class="curation-intro">
         <figure class="scene-atlas-portrait" aria-label="陪伴角色">
-          <template v-for="character in ['nene', 'natsume']" :key="character">
-            <img :crossorigin="runtimeResourceCors()" v-if="!companionFailed[character]"
-              :src="resolveRuntimeUrl('/assets/characters/' + character + '-home-cg-1024.webp')"
+          <template v-for="character in companions" :key="character">
+            <img v-if="companionPortraits[character].src && !companionPortraits[character].failed"
+              v-bind="companionPortraits[character].image"
               :class="[character, { current: companionId === character }]"
               :alt="companionId === character ? (character === 'nene' ? '绫地宁宁' : '四季夏目') : ''"
-              :aria-hidden="companionId !== character" width="1024" height="1344" decoding="async"
-              @error="companionFailed[character] = true" />
+              :aria-hidden="companionId !== character" width="1024" height="1344" decoding="async" />
             <div v-else class="companion-fallback" :class="[character, { current: companionId === character }]"
               role="status" :aria-hidden="companionId !== character">
               <ArchiveIcon name="image" />
@@ -24,7 +23,7 @@
           <figcaption class="sr-only" aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</figcaption>
         </figure>
         <div class="companion-choices">
-          <span class="companion-label">陪你翻阅<span v-if="companionFailed[companionId]"> · 角色图片暂未加载</span></span>
+          <span class="companion-label">陪你翻阅<span v-if="companionPortraits[companionId].failed"> · 角色图片暂未加载</span></span>
           <div class="companion-switch studio-segments" role="group" aria-label="看板娘陪伴选择">
             <AnimatedSelection />
             <button type="button" class="companion-pill nene" :class="{ active: companionId === 'nene' }" :aria-pressed="companionId === 'nene'" @click="manualCompanion = 'nene'">
@@ -86,21 +85,23 @@
 
       <div v-if="activeFilters.length" class="scene-active-filters" aria-label="已选筛选">
         <span>已选</span>
-        <button v-for="filter in activeFilters" :key="filter.label" type="button" :aria-label="'移除筛选：' + filter.label" @click="filter.clear()">{{ filter.label }}<ArchiveIcon name="close" /></button>
+        <button v-for="filter in activeFilters" :key="filter.key" type="button" :aria-label="'移除筛选：' + filter.label" @click="filter.clear()">{{ filter.label }}<ArchiveIcon name="close" /></button>
       </div>
 
-      <div v-if="searchQuery && intentHtml" class="search-intent" aria-live="polite" v-html="intentHtml"></div>
+      <div v-if="searchQuery" class="search-intent" aria-live="polite">
+        {{ searchIntent.expansion }}<template v-if="searchIntent.intents.length">已理解为：<strong>{{ searchIntent.intents.join(' · ') }}</strong>。</template><template v-else>{{ searchIntent.description }}</template>{{ searchIntent.personal }}
+      </div>
 
       <!-- 精细筛选默认收起 -->
       <div v-show="filtersOpen" v-content-motion="filtersOpen" id="sceneFacetPanel" class="scene-facet-panel">
         <div class="scene-facet-grid">
-          <label class="scene-filter-field">角色<StudioSelect v-model="fChar" label="角色" :options="[{ value: 'all', label: '全部角色' }, { value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }, { value: 'triad', label: '双人' }]" /></label>
-          <label class="scene-filter-field">季节<StudioSelect v-model="fSeason" label="季节" :options="[{ value: 'all', label: '全部季节' }, { value: '春', label: '春' }, { value: '夏', label: '夏' }, { value: '秋', label: '秋' }, { value: '冬', label: '冬' }]" /></label>
-          <label class="scene-filter-field">时段<StudioSelect v-model="fTime" label="时段" :options="[{ value: 'all', label: '全部时段' }, { value: 'morning', label: '清晨' }, { value: 'afternoon', label: '午后' }, { value: 'sunset', label: '黄昏' }, { value: 'night', label: '夜晚与深夜' }, { value: 'dawn', label: '黎明' }]" /></label>
-          <label class="scene-filter-field">系列<StudioSelect v-model="fSeries" label="系列" :options="[{ value: 'all', label: '全部系列' }, { value: 'after', label: 'After Story' }, { value: 'fanwork', label: '同人' }, { value: 'active', label: 'Active Sync' }]" /></label>
-          <label class="scene-filter-field">分级<StudioSelect v-model="fRating" label="分级" :options="[{ value: 'all', label: '全部分级' }, { value: 'All', label: '全年龄' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" /></label>
-          <label class="scene-filter-field">层级<StudioSelect v-model="fTier" label="层级" :options="[{ value: 'personal', label: '我的常用' }, { value: 'core', label: '人设核心' }, { value: 'featured', label: '招牌与精选' }, { value: 'signature', label: '只看招牌' }, { value: 'curated', label: '只看精选' }, { value: 'all', label: '完整库' }]" /></label>
-          <label class="scene-filter-field">排序<StudioSelect v-model="sortBy" label="排序" :options="[{ value: 'smart', label: '智能推荐' }, { value: 'used', label: '最近常用' }, { value: 'curated', label: '主理人精选' }, { value: 'favorite', label: '我的收藏' }, { value: 'newest', label: '最新加入' }, { value: 'title', label: '名称A-Z' }]" /></label>
+          <label class="scene-filter-field">角色<StudioSelect v-model="fChar" label="角色" :options="SCENE_FILTER_OPTIONS.character" /></label>
+          <label class="scene-filter-field">季节<StudioSelect v-model="fSeason" label="季节" :options="SCENE_FILTER_OPTIONS.season" /></label>
+          <label class="scene-filter-field">时段<StudioSelect v-model="fTime" label="时段" :options="SCENE_FILTER_OPTIONS.time" /></label>
+          <label class="scene-filter-field">系列<StudioSelect v-model="fSeries" label="系列" :options="SCENE_FILTER_OPTIONS.series" /></label>
+          <label class="scene-filter-field">分级<StudioSelect v-model="fRating" label="分级" :options="SCENE_FILTER_OPTIONS.rating" /></label>
+          <label class="scene-filter-field">层级<StudioSelect v-model="fTier" label="层级" :options="SCENE_FILTER_OPTIONS.tier" /></label>
+          <label class="scene-filter-field">排序<StudioSelect v-model="sortBy" label="排序" :options="SCENE_FILTER_OPTIONS.sort" /></label>
         </div>
         <div class="scene-filter-meta">
           <span class="mature-hint"><template v-if="adultEnabled">成人 <em>{{ matureCount }}</em> · 已展示</template><template v-else>成人场景 · 仅限本机</template></span>
@@ -192,131 +193,48 @@
       </button>
     </div>
 
-    <!-- 故事抽屉（Teleport 渲染到 body；放在根元素内保持单根，
-         否则多根组件不会继承 AppLayout 注入的 route-view class） -->
-    <Teleport to="body">
-      <FluidTransition>
-        <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" :aria-hidden="!drawerScene" aria-label="场景故事"
-          @click.self="drawerScene = null">
-          <div class="story-card" v-if="displayedDrawerScene">
-            <div class="story-art" aria-label="场景完整作品">
-              <SceneCard :scene="displayedDrawerScene" mode="grid" :clickable="false" completePreview suppressTags />
-            </div>
-            <div class="story-copy">
-            <div class="story-card-head">
-              <div><span class="scene-chapter">STORY / 场景故事</span><h3>{{ displayedDrawerScene.title }}</h3></div>
-              <button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭故事" @click="drawerScene = null"><ArchiveIcon name="close" /></button>
-            </div>
-            <div class="story-meta">{{ charName(displayedDrawerScene) }} · {{ seasonLabel(displayedDrawerScene.season) }} · {{ timeLabel(displayedDrawerScene.timeOfDay) }} · {{ displayedDrawerScene.emotion }}</div>
-            <div class="story-body">{{ displayedDrawerScene.story || '' }}</div>
-            <div class="story-actions">
-              <RouterLink class="btn btn-primary" :to="'/prompt-builder?scene=' + encodeURIComponent(displayedDrawerScene.id)"><ArchiveIcon name="spark" /> 开始绘制这一幕</RouterLink>
-              <RouterLink class="btn btn-ghost" :to="quickCreateUrl(displayedDrawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</RouterLink>
-            </div>
-            </div>
-          </div>
-        </div>
-      </FluidTransition>
-    </Teleport>
+    <SceneStoryDialog v-model="drawerScene" />
   </article>
 </template>
 
 <script setup lang="ts">
+import { ref, reactive, watch } from 'vue'
+import SceneCard from '@/components/SceneCard.vue'
 import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
+import DeferredPanel from '@/components/director/DeferredPanel.vue'
 import InspirationDeck from '@/components/scene/InspirationDeck.vue'
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
-
-import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import SceneStoryDialog from '@/components/scene/SceneStoryDialog.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import FluidTransition from "@/components/visual/FluidTransition.vue"
-import { computed, ref, reactive, watch } from 'vue'
-import DeferredPanel from '@/components/director/DeferredPanel.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import { useRuntimeImage } from '@/composables/useRuntimeImage'
+import { SCENE_FILTER_OPTIONS } from '@/composables/scene/useSceneExplorerFilters'
+import { useSceneExplorerWorkspace } from '@/composables/scene/useSceneExplorerWorkspace'
+
+const {
+  companionId, activeFilters, activeThemeLabel, scenes, manualCompanion, moodRails, applyMoodRail,
+  searchQuery, visible, filtered, tierLabel, filtersOpen, activeFacetCount, fTier, showHidden,
+  showPersonalScenes, showRecommendedScenes, usedCount, sortBy, showFavoriteScenes, favoriteCount,
+  showHiddenScenes, hiddenCount, showAllScenes, availableCount, THEME_DEFS, activeTheme, themeCount,
+  searchIntent, fChar, fSeason, fTime, fSeries, fRating, matureCount, adultEnabled, resetFilters,
+  loading, loadError, init, paged, flashId, usageFor, isCore, tier, charName, seasonLabel, timeLabel,
+  personalReason, drawerScene, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav, PAGE_SIZE,
+} = useSceneExplorerWorkspace()
+const searchInput = ref<HTMLInputElement | null>(null)
 const openedDetails = reactive(new Set<string>())
 function rememberDetails(id: string, event: Event) {
   if ((event.target as HTMLDetailsElement).open) openedDetails.add(id)
 }
-const searchInput = ref<HTMLInputElement | null>(null)
-import SceneCard from '@/components/SceneCard.vue'
-import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
-import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
-import { useSceneExplorerWorkspace } from "@/composables/scene/useSceneExplorerWorkspace"
-const {
-drawerEl,companionId,
-activeThemeLabel,
-scenes,
-manualCompanion,
-moodRails,
-applyMoodRail,
-searchQuery,
-visible,
-filtered,
-tierLabel,
-filtersOpen,
-activeFacetCount,
-fTier,
-showHidden,
-showPersonalScenes,
-showRecommendedScenes,
-usedCount,
-sortBy,
-showFavoriteScenes,
-favoriteCount,
-showHiddenScenes,
-hiddenCount,
-showAllScenes,
-availableCount,
-THEME_DEFS,
-activeTheme,
-themeCount,
-intentHtml,
-fChar,
-fSeason,
-fTime,
-fSeries,
-fRating,
-matureCount,
-adultEnabled,
-resetFilters,
-loading,
-loadError,
-init,
-paged,
-flashId,
-usageFor,
-isCore,
-tier,
-charName,
-seasonLabel,
-timeLabel,
-personalReason,
-drawerScene,
-dv,
-quickCreateUrl,
-toggleHidden,
-hiddenIds,
-favs,
-toggleFav,
-PAGE_SIZE
-} = useSceneExplorerWorkspace()
-const activeFilters = computed(() => [
-  ...(fChar.value === 'all' ? [] : [{ label: ({ nene: '宁宁', natsume: '夏目', triad: '双人' } as Record<string, string>)[fChar.value] || fChar.value, clear: () => { fChar.value = 'all' } }]),
-  ...(fSeason.value === 'all' ? [] : [{ label: `${fSeason.value}季`, clear: () => { fSeason.value = 'all' } }]),
-  ...(fTime.value === 'all' ? [] : [{ label: timeLabel(fTime.value), clear: () => { fTime.value = 'all' } }]),
-  ...(fSeries.value === 'all' ? [] : [{ label: ({ after: 'After Story', fanwork: '同人', active: 'Active Sync' } as Record<string, string>)[fSeries.value] || fSeries.value, clear: () => { fSeries.value = 'all' } }]),
-  ...(fRating.value === 'all' ? [] : [{ label: fRating.value === 'All' ? '全年龄' : fRating.value, clear: () => { fRating.value = 'all' } }]),
-])
-const displayedDrawerScene = ref(drawerScene.value)
-watch(drawerScene, value => { if (value) displayedDrawerScene.value = value }, { flush: 'sync' })
-
-// ── 陪伴图失败回退：两位角色各记一个失败态，互不牵连 ──
-// 失败即撤下对应 img 换占位；切回该角色时重置失败态让 img 重挂重试一次（用户驱动、有界，非递归）。
-// error 处理按 v-for 槽位闭包写入自己的键，旧请求的迟到事件不会污染另一位角色的状态。
-const companionFailed = reactive<Record<string, boolean>>({})
-watch(companionId, (id) => { companionFailed[id] = false })
+const companions = ['nene', 'natsume'] as const
+const companionPortraits = reactive({
+  nene: useRuntimeImage('/assets/characters/nene-home-cg-1024.webp'),
+  natsume: useRuntimeImage('/assets/characters/natsume-home-cg-1024.webp'),
+})
+// A user-driven switch retries only the selected failed portrait, never a retry loop.
+watch(companionId, id => { if (companionPortraits[id].failed) companionPortraits[id].retry() })
 </script>
-
-
 
 <style scoped src="@/assets/css/scene-discovery-browse.css"></style>
