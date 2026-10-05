@@ -10,7 +10,7 @@ import {
 } from './promptPolicy.ts'
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import { sceneLighting, sceneShot } from './sceneInference.ts'
-import { proseToken, normalizeProseKey, actionPhrase, outfitPhrase, moodPhrase, compactMood, cameraPhrase, lightPhrase, environmentPhrase, isEnvironmentKey, removeIndoorSkyPhrases } from './promptPhraseTables.ts'
+import { proseToken, normalizeProseKey, actionPhrase, outfitPhrase, moodPhrase, compactMood, cameraPhrase, lightPhrase, animaLightPhrase, environmentPhrase, isEnvironmentKey, removeIndoorSkyPhrases } from './promptPhraseTables.ts'
 
 export interface PromptCompilerInput {
   profile?: ModelProfile | null; identity?: string; controls?: string[]; scenePrompt?: string
@@ -383,7 +383,7 @@ function buildStudioAnimaCaption(plan: PromptPlan): string {
   const actions: string[] = []
   const environment: string[] = []
   const camera: string[] = [...plan.camera.map(cameraPhrase).filter(Boolean), ...sceneCameraPhrases(plan.scene)]
-  const lighting: string[] = [...plan.lighting.map(lightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene)]
+  const lighting: string[] = [...plan.lighting.map(animaLightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene)]
   for (const token of [...plan.sceneVisualFragments, ...plan.manual]) {
     const key = normalizeProseKey(token)
     if (!key || KREA_META_KEYS.has(key) || identityKeys.has(key) || exactKeys.has(key)) continue
@@ -428,7 +428,7 @@ function buildAnimaVisualDirection(plan: PromptPlan): string {
   const mood: string[] = [...plan.emotion.map(moodPhrase).filter(Boolean)]
   const environment: string[] = []
   const camera: string[] = [...plan.camera.map(cameraPhrase).filter(Boolean), ...sceneCameraPhrases(plan.scene)]
-  const lighting: string[] = [...plan.lighting.map(lightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene)]
+  const lighting: string[] = [...plan.lighting.map(animaLightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene)]
 
   for (const token of [...plan.sceneVisualFragments, ...plan.manual]) {
     const key = normalizeProseKey(token)

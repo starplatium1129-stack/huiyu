@@ -735,26 +735,28 @@ test('krea style recipes: adult recipes fail closed for unknown/underage and wit
 test('krea style recipes: resolution is engine-default -> blueprint hint -> selection, gated fail-closed', function () {
   let raiden = popular.findCharacter(characters, 'raiden_shogun')!;
   let flower = blueprints.find(function (blueprint) { return blueprint.id === 'raiden_shogun_narukami_shrine'; })!;
-  let adultBp = blueprints.find(function (blueprint) { return blueprint.adult; })!;
+  let adultBp = blueprints.find(blueprint => blueprint.adult && recipes.findStyleRecipe(recipes.KREA_STYLE_RECIPES, blueprint.kreaStyleHint)?.adult)!;
 
   // 无 hint / 无手选：引擎缺省。
   let auto = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', null, null, raiden, { adultEnabled: true });
   assert.strictEqual(auto!.lead, 'A polished visual novel event CG with refined cel shading, flat colors and crisp character work');
   let animaAuto = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'anima', null, null, raiden, { adultEnabled: true });
-  assert.ok(animaAuto!.lead.indexOf('anime key visual') !== -1, 'anima default must be the key visual recipe');
-  // 解析层照常返回自然语言 lead；Anima 组装改取同配方的模型原生短标签。
+  assert.strictEqual(animaAuto, null, 'Anima automatic styling must leave the rendering to authored hints and selected artists');
   let animaBuilt = popular.buildPopularPromptPlan({
     character: raiden, outfit: raiden!.outfits[0], blueprint: null, engine: 'anima', profile: null, adultEnabled: true, style: animaAuto,
   });
-  assert.ok(animaBuilt!.prompt.indexOf('anime key visual') !== -1, 'anima must include the model-native style tags');
-  assert.ok(!/anime key visual\.$/i.test(animaBuilt!.prompt), 'anima must not append the style medium');
+  assert.ok(!/anime key visual|flat cel shading|clean lineart|saturated colors/.test(animaBuilt!.prompt), 'Anima must not invent a default rendering style');
   assert.ok(animaBuilt!.prompt.includes('Raiden Shogun from Genshin Impact'), 'Anima must receive the popular character identity prose');
+  const explicitAnima = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'anima', null, 'anime_key_visual', raiden);
+  const explicitBuilt = popular.buildPopularPromptPlan({ character: raiden, outfit: raiden.outfits[0], blueprint: null,
+    engine: 'anima', style: explicitAnima });
+  assert.ok(explicitBuilt!.prompt.includes('flat cel shading'), 'Explicit cel styling must remain available');
 
   // 角色原型场景无 hint：引擎缺省即兜底（hint 仅成人蓝图与手选携带）。
   let hinted = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', flower, null, raiden, { adultEnabled: true });
   assert.strictEqual(hinted!.lead, auto!.lead, 'character scene without kreaStyleHint must fall back to the engine default');
   let hintedAnima = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'anima', flower, null, raiden, { adultEnabled: true });
-  assert.strictEqual(hintedAnima!.lead, animaAuto!.lead, 'character scene without animaStyleHint must fall back to the engine default');
+  assert.strictEqual(hintedAnima, null, 'Anima scenes without an authored style hint must not add a rendering style');
 
   // 手选覆盖 hint。
   let selected = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', flower, 'dreamy_pastel', raiden, { adultEnabled: true });

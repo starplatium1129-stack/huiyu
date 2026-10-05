@@ -1,6 +1,6 @@
 # 工程与角色接入契约
 
-> 维护日期：2026-10-04。与 [AGENTS.md](../AGENTS.md) 配套阅读；此页保留模块约束，当前规模只维护在 [项目状态](project-status.md)。
+> 维护日期：2026-10-05。与 [AGENTS.md](../AGENTS.md) 配套阅读；此页保留模块约束，当前规模只维护在 [项目状态](project-status.md)。
 
 ## 模块边界
 
@@ -13,7 +13,7 @@
 - **原生与交付边界**：图像和 ONNX DLL 按 `runtime-rs/native-dependencies.windows-x64.json` 的真实字节/哈希暂存，构建回执绑定 Rust 源码、EXE、DLL 与许可证清单。`releaseReady=false` 不等于可发行；真实权重、安装、UAC与设备效果必须另有证据。新运行时的回退不能启动另一后端同时写同一 workspace。
 - **运行时维护**：人物、服装、场景和蓝图以运行目录 content/catalog.sqlite 为唯一工作权威，通过 Rust 记录 API、事务和修订历史维护；data/catalog/ 仅作逐条初始化/发布快照，旧个人分片仅作升级导入来源。已有数据库不被升级包覆盖，启用后的缺库状态拒绝静默重建。静态 JSON 消费者读取数据库生成视图，构建读取显式导出的项目快照。资源事务、pin、参考审核发布及未知状态拒绝保留原契约；内置图片从安装资源根读取，自定义立绘仍在用户 character-art 中原子发布，不覆盖参考库或 Live2D。见[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
 - **生图双引擎**：
-  - **画面输入**：以角色/服装、场景已写好的词条与画面描述及用户明确选择为依据；光照只编译所选光效，不追加道具、天气、星空、剪影或景深。情绪与检索资料不推导机位、光源或色调；台灯、烛光、炉火、晨光不借用其他光照预设。热门场景切换完整替换导演默认值（含 null），手写词条和显式设置按各自流程保留。
+  - **画面输入**：以角色/服装、场景已写好的词条与画面描述及用户明确选择为依据；Anima 未指定风格配方时不强制平涂、线稿或饱和度，画师词仅由用户显式选择。所选光效可补充相应的受光、投影、反光与明暗层次，不追加光源实体、道具、天气、星空、剪影或景深；显式 Anima 场景描述优先保留。情绪与检索资料不推导机位、光源或色调；台灯、烛光、炉火、晨光不借用其他光照预设。热门场景切换完整替换导演默认值（含 null），手写词条和显式设置按各自流程保留。
   - **Anima (ComfyUI / Pencil)**：高质量动漫与局部换装（Inpaint），支持 TeaCache 加速、手绘/CLIPSeg 遮罩与 `ImageCompositeMasked` 像素级原图回贴。
   - **Krea 2（自研 DiT + Qwen3-VL 编码器，非 SD3.5 系）**：当前本地编译使用英文 prose，清理标签堆词、评分词和括号权重，negative 为空；CFG 以实际节点定义为准，不把本地约束泛化为所有版本能力。提示词按 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md) 执行，人物环境融合见 [叙事 CG 规范](guides/prompts/narrative-cg-prompt-standard.md)；历史研究不覆盖当前实现与后续证据。
 - **Live2D 双后端**：浏览器走 `wl-live2d`（按需加载贴图，`blinkScheduler` 双眼同步，静止动态降帧节能）；桌面端走原生 Overlay 桥。运行时维护见 [Live2D 指南](guides/desktop/live2d-native-runtime.md)。

@@ -14,7 +14,7 @@
 //     光学线索比 ultra detailed 有用；质量词（8k/masterpiece）一律不进入配方。
 //
 // 该模块只负责解析配方与资格判定，不关心引擎渲染；Krea 用 lead+medium 织入
-// 散文段，Anima 只取 lead 作风格短语前缀，渲染仍由 createPromptPlan +
+// 散文段，Anima 只取显式配方的 sd 短标签，渲染仍由 createPromptPlan +
 // renderPromptPlan 单一入口完成。
 
 export type RecipeEngine = 'sd' | 'krea2' | 'anima'
@@ -84,16 +84,12 @@ export const KREA_STYLE_RECIPES: readonly KreaStyleRecipe[] = Object.freeze([
   { id: 'r18_elegant_boudoir', name: '成人·典雅闺阁', lead: 'An explicit nude boudoir scene: a fully naked mature woman, bare breasts fully exposed, rendered with clean cel shading, flat colors, tasteful restraint and warm candlelight', medium: 'refined adult illustration', adult: true },
 ])
 
-/** 各引擎缺省配方：场景模式与「自动」时使用，蓝图 hint 优先于它。 */
-const ENGINE_DEFAULT: Readonly<Record<RecipeEngine, string>> = Object.freeze({
+/** Anima leaves rendering style to authored hints and selected artists. */
+const ENGINE_DEFAULT: Readonly<Record<RecipeEngine, string | null>> = Object.freeze({
   sd: 'anime_key_visual',
   krea2: 'vn_event_cg',
-  anima: 'anime_key_visual',
+  anima: null,
 })
-
-export function defaultRecipeId(engine: RecipeEngine): string {
-  return ENGINE_DEFAULT[engine]
-}
 
 export function findStyleRecipe(
   recipes: readonly KreaStyleRecipe[],
@@ -134,9 +130,9 @@ export function styleHintForEngine(
 /**
  * 解析最终风格：手选配方 > 蓝图 hint > 引擎缺省。
  * - 手选 / hint 命中配方且资格不满足 → 返回 null（fail closed，绝不降级成成人词）。
- * - 手选 id 无效 → 回落到引擎缺省。
+ * - 手选 id 无效 → 回落到引擎缺省（Anima 为空）。
  * - hint 是自由风格短语（未命中配方）→ 直接作为前置短语，无媒介词、非成人。
- * - 缺省配方总是合法非成人配方，保证场景模式与「自动」恒有风格开头。
+ * - Anima 无 hint / 手选时不强制平涂、线稿或饱和度；显式配方照常保留。
  */
 export function resolveStyleRecipe(
   recipes: readonly KreaStyleRecipe[],
@@ -154,7 +150,7 @@ export function resolveStyleRecipe(
     return { lead: recipe.lead, medium: recipe.medium, sd: recipe.sd, adult: recipe.adult || undefined }
   }
   if (selection) {
-    // 手选 id 无效：fail closed 回落到引擎缺省，不让未知 id 变成空 prompt 风格。
+    // Unknown selections cannot become arbitrary style prose.
     return resolveStyleRecipe(recipes, engine, null, null, character, opts)
   }
   if (hint) {

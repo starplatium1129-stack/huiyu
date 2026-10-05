@@ -140,6 +140,9 @@ describe('renderPromptPlan krea2', () => {
           expect(prompt).toContain(`For the background, use ${background.map(tag => tag.replace(/_/g, ' ')).join(' and ')} in preference to the earlier setting`)
           expect(prompt).not.toMatch(/no characters|no people|no figures|_/)
           expect(negative).toBe('')
+        } else {
+          expect(prompt).toContain('moonlight with cool highlights and softly readable shadow detail')
+          expect(prompt).not.toMatch(/lantern|stars|volumetric|depth of field|light particles/)
         }
       }
       expect(JSON.stringify(plan)).toBe(original)

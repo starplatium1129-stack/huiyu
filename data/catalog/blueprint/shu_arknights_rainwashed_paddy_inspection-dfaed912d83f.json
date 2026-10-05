@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_rainwashed_paddy_inspection",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 706,
   "createdAt": null,
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-05T04:55:43.583252300+00:00",
   "data": {
     "id": "shu_arknights_rainwashed_paddy_inspection",
     "characterId": "shu_arknights",
@@ -14,7 +14,7 @@
     "location": "家中阳台蔬菜种植箱",
     "action": "展示掌心小番茄，另一手指着枝条与你分享",
     "mood": "耐心温柔的共同生活",
-    "lighting": "阳台清晨柔和日光",
+    "lighting": "清晨左侧日光，栏杆与枝叶投影，柔和环境反光",
     "timeOfDay": "上午",
     "camera": "cowboy shot, eye level",
     "outfitId": "field_work",
@@ -39,9 +39,15 @@
       "pointing",
       "looking_at_viewer",
       "light_smile",
-      "cowboy_shot"
+      "cowboy_shot",
+      "railing",
+      "wooden_floor",
+      "buildings",
+      "sunlight",
+      "cast_shadow",
+      "reflected_light"
     ],
-    "promptProse": "One ripe cherry tomato rests on Shu's golden palm beside the balcony planter. She presents it to the viewer and points out a firm fruiting branch with her other hand, smiling as she explains what to look for. Her shirt cuffs are rolled neatly back, and her dragon tail curves around the outside of the box without disturbing the leaves. Clear morning light connects her hands, the red tomato and the small home garden.",
+    "promptProse": "Shu presents one ripe cherry tomato on her golden palm and points out a fruiting branch with her other hand, smiling as she explains how to recognize a ripe fruit. Her shirt cuffs are rolled back, and her dragon tail curves outside the planter without touching its leaves. The home balcony continues behind her: its railing recedes in perspective, with neighboring residential facades visible beyond it and wooden floorboards leading into the space. Morning sunlight enters from the left and catches her hair, hands and the tomato. The railing and leaves cast defined shadows across her shirt, the planter and the floor; gentle reflected daylight keeps her shaded cheek readable, while the distant buildings have softer contrast.",
     "negativeTokens": [
       "extra people",
       "extra limbs",

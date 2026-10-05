@@ -216,6 +216,20 @@ export function lightPhrase(value: string): string {
   return LIGHT_REWRITES[key] || proseToken(value)
 }
 
+/** Describe a selected source's shading without adding emitters, props or weather. */
+const ANIMA_LIGHT_REWRITES: Readonly<Record<string, string>> = Object.freeze({
+  golden_hour: 'golden-hour light with warm highlights, gentle reflected fill and readable cast shadows',
+  window_light: 'window light shaping lit and shaded surfaces with gentle reflected fill',
+  backlighting: 'backlighting separating the subject edges from the background while keeping shadow detail readable',
+  moonlight: 'moonlight with cool highlights and softly readable shadow detail',
+  warm_lighting: 'warm lighting with gentle reflected fill and readable highlights and shadows',
+  overcast: 'diffused overcast light with soft contact shadows and gentle tonal separation',
+})
+
+export function animaLightPhrase(value: string): string {
+  return ANIMA_LIGHT_REWRITES[normalizeProseKey(value)] || lightPhrase(value)
+}
+
 const ENVIRONMENT_RE = /(?:^|_)(?:background|classroom|clubroom|cafe|coffee|beach|ocean|sea|forest|street|station|bedroom|bathroom|shrine|park|garden|rooftop|city|library|bookstore|kitchen|palace|ruins|bridge|river|theater|backstage|supermarket|aquarium|cinema|safehouse|hotel|balcony|pool|tatami|office|elevator|train|vehicle|apartment|living_room|studio|gallery|store|shop|festival|bookshelf|blackboard|desk|window|wall|rack|indoors|outdoors|interior)(?:_|$)/
 
 export function isEnvironmentKey(key: string): boolean {
