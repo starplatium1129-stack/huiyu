@@ -152,6 +152,7 @@ const statusError = ref('')
 const submitting = ref(false)
 
 const cancelling = ref(false)
+let cancellingTaskId = ''
 
 const job = ref<VideoJob | null>(null)
 
@@ -474,16 +475,19 @@ async function pollJob() {
 async function cancelJob() {
   if (!job.value || disposed || cancelling.value) return
   const id = job.value.id
+  const selection = selectionVersion
+  cancellingTaskId = id
   cancelling.value = true
+  void taskSelection.retry()
   // Cancellation owns the next status; an earlier read cannot turn it back
   // into a running job, and no fresh reads should race the pending command.
   window.clearTimeout(pollTimer)
   pollRequest?.abort(); pollRequest = null
   try {
     const response = await cancelVideoJob(id)
-    if (!disposed && job.value?.id === id) job.value = response.job
+    if (!disposed && selection === selectionVersion && job.value?.id === id) job.value = response.job
   } catch (error) {
-    if (!disposed && job.value?.id === id) statusError.value = error instanceof Error ? error.message : '视频任务取消失败'
+    if (!disposed && selection === selectionVersion && job.value?.id === id) statusError.value = error instanceof Error ? error.message : '视频任务取消失败'
   } finally {
     cancelling.value = false
     schedulePoll()
@@ -505,7 +509,7 @@ watch(selectedMode, (mode) => {
 let activatedOnce = false
 
 const taskSelection = useBackendSelection(
-  () => selectedTaskId.value,
+  () => cancelling.value && selectedTaskId.value === cancellingTaskId ? '' : selectedTaskId.value,
   () => job.value?.id,
   fetchVideoJob,
   response => { job.value = response.job; statusError.value = ''; schedulePoll() },
