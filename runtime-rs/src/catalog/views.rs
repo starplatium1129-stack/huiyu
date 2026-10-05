@@ -24,8 +24,10 @@ impl Catalog {
         let transaction = self.connection.unchecked_transaction()?;
         let character = self.get("character", id)?;
         let mut popular = character.data["popular"].clone();
-        let outfits = self
-            .records("outfit")?
+        let mut statement = self.connection.prepare(&format!("SELECT {COLUMNS} FROM content_records WHERE kind='outfit' AND character_id=?1 AND deleted=0 ORDER BY sort_order,id"))?;
+        let outfits = statement
+            .query_map([id], row)?
+            .collect::<rusqlite::Result<Vec<_>>>()?
             .into_iter()
             .filter(|r| r.data["characterId"] == id)
             .map(|r| r.data["outfit"].clone())

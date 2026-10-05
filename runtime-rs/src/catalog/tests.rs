@@ -120,6 +120,38 @@ fn import_preserves_values_unknown_dates_and_summary_queries() {
     );
     assert!(media_items.iter().any(|item| item["kind"] == "scene"));
     assert!(media_items.iter().all(|item| item.get("data").is_none()));
+    let mut character = catalog.get("character", "nene").unwrap();
+    character.data["popular"] = json!({"id":"nene"});
+    write::put(&catalog.connection, &character, false).unwrap();
+    for (id, owner, order, deleted) in [
+        ("nene/b", "nene", 2, false),
+        ("nene/a", "nene", 2, false),
+        ("nene/first", "nene", 1, false),
+        ("other/a", "other", 0, false),
+        ("nene/retired", "nene", 0, true),
+    ] {
+        let mut outfit = character.clone();
+        outfit.kind = "outfit".into();
+        outfit.id = id.into();
+        outfit.sort_order = order;
+        outfit.data = json!({"characterId":owner,"outfit":{"id":id}});
+        write::put(&catalog.connection, &outfit, deleted).unwrap();
+    }
+    let bundle = catalog.character_bundle("nene").unwrap();
+    assert_eq!(
+        bundle["character"]["outfits"],
+        json!([
+            {"id":"nene/first"}, {"id":"nene/a"}, {"id":"nene/b"}
+        ])
+    );
+    assert_eq!(bundle["blueprints"], json!([blueprint.data]));
+    // Restore the fixture before exercising validated edits below.
+    character.data.as_object_mut().unwrap().remove("popular");
+    write::put(&catalog.connection, &character, false).unwrap();
+    catalog
+        .connection
+        .execute("DELETE FROM content_records WHERE kind='outfit'", [])
+        .unwrap();
     assert_eq!(catalog.next_scene_id().unwrap(), "sc006");
     let mut known_date = patch("scene", "sc001", 1, json!({}));
     known_date.created_at = Some("2026-10-03T22:25:25+08:00".into());
