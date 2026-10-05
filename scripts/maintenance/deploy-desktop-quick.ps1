@@ -98,6 +98,12 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
 }
 
 Start-Transcript -Path (Join-Path $root 'runtime\desktop-deploy-last.log') -Append | Out-Null
+$deployTimer = [Diagnostics.Stopwatch]::StartNew()
+$phaseTimer = [Diagnostics.Stopwatch]::StartNew()
+function Write-DesktopDuration([string]$Phase) {
+  Write-Host ('[desktop:timing] {0}: {1:F2}s' -f $Phase, $phaseTimer.Elapsed.TotalSeconds)
+  $phaseTimer.Restart()
+}
 $stageGateway = Join-Path $root 'desktop-tauri\src-tauri\resources\gateway'
 $hostExecutable = Join-Path $root 'desktop-tauri\src-tauri\target\release\ai-cg-studio-desktop.exe'
 # Validate selected source/build/distribution before drain and before restart.
@@ -113,10 +119,13 @@ if (-not $UseInstaller -and -not $SkipBuild) {
 } else { Write-Host '[1/6] 复用当前已绑定构建' -ForegroundColor DarkGray }
 Assert-CurrentBuildBinding
 if (-not $UseInstaller) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
+Write-DesktopDuration '构建准备与首次校验'
 Stop-DesktopForDeployment -InstallDir $installDir -ConfigRoot $configRoot
+Write-DesktopDuration '应用维护退出'
 Write-Host '[2/6] 宿主与自有 Rust 网关已退出，工作区锁已释放' -ForegroundColor DarkGray
 Assert-CurrentBuildBinding
 if (-not $UseInstaller) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
+Write-DesktopDuration '写入前校验'
 if ($Cleanup) {
   foreach ($relative in $STALE_ASSETS) {
     $target = Resolve-DesktopChildPath -Root $gatewayDir -Relative $relative
@@ -168,8 +177,10 @@ if ($SyncLocalModels) {
   node (Join-Path $root 'scripts\maintenance\sync-local-live2d.js') --source $modelSource --target $modelTarget --apply
   if ($LASTEXITCODE -ne 0) { throw '本机 Live2D 同步核验失败' }
 }
+Write-DesktopDuration '安装与资源同步'
 Assert-CurrentBuildBinding
 Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable
+Write-DesktopDuration '安装后校验'
 Write-Host '[5/6] Rust EXE、宿主和两份 native DLL 与候选哈希一致；不冒充模型验收' -ForegroundColor DarkGray
 $webviewBase = Join-Path $env:LOCALAPPDATA 'com.aics.studio\EBWebView\Default'
 foreach ($name in @('Cache','Code Cache','GPUCache')) {
@@ -182,4 +193,6 @@ if (-not $NoRestart) {
   $startup = Wait-DesktopDeploymentReady -InstallDir $installDir -ConfigRoot $configRoot
   Write-Host "宿主与所属 Rust 网关已就绪（PID $($startup.hostPid)）" -ForegroundColor Green
 } else { Write-Host '[6/6] 按 -NoRestart 保持退出' -ForegroundColor DarkGray }
+Write-DesktopDuration '缓存与启动确认'
+Write-Host ('[desktop:timing] 部署总耗时: {0:F2}s' -f $deployTimer.Elapsed.TotalSeconds)
 Stop-Transcript | Out-Null

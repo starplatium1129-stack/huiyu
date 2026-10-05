@@ -89,7 +89,15 @@ function buildSelection(root: string, includeBundle = true): Selection[] {
     { kind:'tree', path:'desktop-tauri/web' },
     { kind:'file', path:exe },
   ];
-  if (includeBundle) selected.push({ kind:'tree', path:bundle }, { kind:'tree', path:'desktop-tauri/src-tauri/target/release/nsis/x64' });
+  if (includeBundle) {
+    const config = JSON.parse(fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/tauri.conf.json'), 'utf8'));
+    const installer = deliveryPaths.relative(`${bundle}/${config.productName}_${config.version}_x64-setup.exe`);
+    // Historical packages may remain in the output directory, but are not
+    // inputs to this candidate. Keep the exact current package and signature.
+    selected.push({ kind:'file', path:installer });
+    if (fs.existsSync(path.join(root, `${installer}.sig`))) selected.push({ kind:'file', path:`${installer}.sig` });
+    selected.push({ kind:'tree', path:'desktop-tauri/src-tauri/target/release/nsis/x64' });
+  }
   return selected;
 }
 function recordBuild(root: string, before: ReturnType<typeof sourceIdentity>, includeBundle = true, sdkBefore = sdkIdentity(root)) {
@@ -157,17 +165,20 @@ function bindDistribution(root: string, payload: string, output: string) {
   const distribution = addBoundFiles(root, receipt.distribution, [output]);
   writeReceipt(root, { ...receipt, distribution, releaseCommit:identity.repository(root).commit }, '发行封装绑定');
 }
-function verifyDistribution(root: string, output: string) {
-  const receipt = verifyBuild(root);
+function verifyBoundDistribution(root: string, receipt: ReturnType<typeof verifyBuild>, output: string) {
   try { identity.validateSnapshot(receipt.distribution); }
   catch (error) { throw Error('缺少或无效的发行封装绑定回执，请重新封装', { cause:error }); }
   verifyBoundFile(root, receipt.distribution, output, '发行封装产物已变化，拒绝签名或上传');
 }
+function verifyDistribution(root: string, output: string) {
+  verifyBoundDistribution(root, verifyBuild(root), output);
+}
 function verifyDeployment(root:string,payload?:string){
   const receipt=verifyBuild(root);
   if(payload){const relative=path.relative(root,payload).replaceAll('\\','/');
-    if(receipt.build.entries.some((entry:{path:string;status:string})=>entry.status==='file'&&entry.path===relative))verifyBuild(root,payload);
-    else verifyDistribution(root,payload);
+    if(!receipt.build.entries.some((entry:{path:string;status:string})=>entry.status==='file'&&entry.path===relative)) {
+      verifyBoundDistribution(root,receipt,payload);
+    }
   }
   return receipt;
 }

@@ -156,6 +156,12 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/prototypes/benchmark-backup-restore.ts', unknown: ['JS堆采样不代表完整进程峰值或512MiB容量'], notes: ['三轮私有上下文与64张中性PNG；使用真实导出/恢复实现；独占运行，输出JSON，无性能阈值'] } },
   'desktop:package-local': { desc: '跳过压缩生成本机测试安装包', cmd: ['npm', 'run', 'package:tauri', '--', '--config', 'tauri.local.json'], docs: 'docs/desktop-deployment.md',
     run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.package:tauri; scripts/maintenance/run-tauri.js:17', unknown: [] } },
+  'desktop:upgrade-local': { desc: '复用匹配构建，先检查已有安装再仅封装本机轻量升级包',
+    cmd: ['node', 'scripts/maintenance/release-desktop-update.js', '--manual', '--skip-build', '--upgrade-only'],
+    required: ['--install-dir'], opts: '--install-dir <已有安装目录>', docs: 'docs/desktop-deployment.md',
+    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain', 'build-present'], switches: {}, resume: 'idempotent',
+      evidence: 'scripts/maintenance/release-desktop-update.ts; scripts/lib/desktop-upgrade-installer.ts', unknown: [],
+      notes: ['需要匹配当前源码的 NSIS 构建；不重编应用、不封装完整包、不安装或发布；素材不匹配在升级包压缩前拒绝'] } },
   'desktop:content-sync': {
     desc: '把仓库 data 同步进桌面端个人内容目录并可选清 WebView2 缓存（默认只读预览）',
     cmd: ['node', 'scripts/maintenance/sync-desktop-content.js'],

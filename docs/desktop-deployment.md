@@ -43,6 +43,16 @@ Tauri 2.12 在 NSIS 内把宿主唯一的 `__TAURI_BUNDLE_TYPE_VAR_UNK` 标记�
 
 本机反复验证可使用 `npm run wf -- desktop:package-local`：仍经过完整前端构建、资源暂存和原生编译，使用 `desktop-tauri/tauri.local.json` 跳过压缩，生成更大的本地安装包，避免反复等待压缩。普通打包入口使用默认 LZMA 压缩。本地无签名密钥时生成未签名安装包，不用于自动更新发布。
 
+已有匹配当前源码的 NSIS 构建时，本机只需轻量升级包可运行：
+
+```powershell
+npm run wf -- desktop:upgrade-local --install-dir "C:\Program Files\AI-CG-Studio"
+```
+
+它复用当前构建，先用安装器内同一个只读检查器核对安装登记、宿主版本、WebView2 与保留素材，再压缩和封装单个未签名升级包；不重新封装 full、不修改自动更新清单、不安装或发布。前置不匹配直接停止，保持桌面应用运行，使用当前完整包修复即可。此入口仍需要已有 NSIS 构建，不代表已实现跳过首次完整包生成。安装仍使用 `deploy-desktop.bat -UseInstaller -InstallerPath "<本次绑定的升级包>" -QuietInstall`。
+
+构建绑定现在只选择当前产品/版本的 x64 安装包、存在的签名及 NSIS 输入，历史版本包可以保留在输出目录，不参与本次校验。部署的三个检查点均保留，每个检查点只扫描一次完整构建。旧回执不会被自动改写，工具源码变化后须正常重建一次才能复用新规则。构建日志新增 `[desktop:timing]`，分别记录前端/预压、Rust 后端、桌面 UI、资源暂存、隔离网关验证、Tauri 原生/打包及绑定；部署日志记录校验、维护退出、安装/同步和启动耗时，实际收益以同机下一次更新为准。
+
 ```bat
 deploy-desktop.bat                  :: 网关/数据增量部署（脚本默认；bundled UI 前端变化用完整安装）
 deploy-desktop.bat -UseInstaller    :: 完整安装（跑安装包）

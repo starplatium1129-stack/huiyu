@@ -498,6 +498,8 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 
 程序发行使用 `npm run release:desktop`：同一份应用构建生成 `*-full-setup.exe` 与 `*-upgrade-setup.exe`，分别绑定和签名，自动更新清单指向升级包。完整包面向新装/修复并带 WebView2 与基础素材；升级包复用字节一致的已安装素材，缺失或变化时要求完整包。样张继续独立发布。`--skip-build` 仍须匹配完整回执；新增的 NSIS 输入绑定缺失时不能复用旧回执。两种包均保留原生发行材料门禁，不以分包替代审批或设备验收。
 
+本机已有匹配的 NSIS 构建，只封装轻量包使用 `npm run wf -- desktop:upgrade-local --install-dir "C:\Program Files\AI-CG-Studio"`，对应 `release-desktop-update --manual --skip-build --upgrade-only --install-dir <目录>`。复用安装器检查器在升级包压缩前检查已有安装和素材；失败不安装、不停止应用，成功只生成升级包，不重包 full、不改 latest.json 或发布。该入口仍依赖首次 NSIS 构建。桌面构建回执排除无关历史包；部署保留三个检查点并消除检查点内的重复扫描。构建与部署的 `[desktop:timing]` 日志用于观察实际阶段耗时，不代替完整性验证。
+
 底层游戏式安装器：`installer:build` 生成模板与素材，`installer:preview --capture --page=welcome` 安全预览；详情见 [安装界面维护](guides/desktop/game-installer.md)。`package:tauri` 已自动接入，无需手工修改生成的 NSIS 脚本。
 仅更改安装界面且已有同版本程序时，`installer:bundle` 重新打包并签名；它不编译应用源码。
 

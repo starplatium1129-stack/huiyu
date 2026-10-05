@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import binding = require('./desktop-build-binding');
 import safe = require('./delivery-paths');
 import lock = require('../maintenance/desktop-build-lock');
+import { timeDesktopBuild } from './desktop-build-timing';
 
 type Asset = { path: string; bytes: number; sha256: string };
 const RETAIN = /^gateway\/assets\/(?:characters|live2d|chibi|dual-poses|particles)\//;
@@ -88,9 +89,9 @@ function command(executable: string, args: string[], cwd: string) {
   if (result.error || result.status !== 0) throw Error(`Upgrade package build failed: ${result.error?.message || result.stderr || result.stdout || result.status}`);
 }
 
-export async function buildUpgradeInstaller(root: string) {
-  return lock.withDesktopBuildLock({ workspaceRoot: root }, () => {
-    const receipt = binding.verifyBuild(root);
+export async function buildUpgradeInstaller(root: string, options: { installDir?: string } = {}) {
+  return lock.withDesktopBuildLock({ workspaceRoot: root }, async () => {
+    const receipt = await timeDesktopBuild('upgrade source verification', () => binding.verifyBuild(root));
     const renderedPath = 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi';
     if (!receipt.build.entries.some((entry: { path: string; status: string }) => entry.path === renderedPath && entry.status === 'file'))
       throw Error('Rendered NSIS inputs are not bound; perform a fresh desktop build');
@@ -108,13 +109,18 @@ export async function buildUpgradeInstaller(root: string) {
       `/out:${verifier}`, `/reference:${path.join(framework, 'System.Runtime.Serialization.dll')}`,
       `/win32manifest:${path.join(root, 'desktop-tauri/src-tauri/installer/modern/app.manifest')}`,
       `/resource:${manifest},UpgradeRequirements.json`, path.join(root, 'desktop-tauri/src-tauri/installer/modern/UpgradeCheck.cs')], directory);
+    // The same read-only verifier runs again inside the installer before writes.
+    // A local mismatch must stop before NSIS compression or wrapper generation.
+    if (options.installDir) {
+      await timeDesktopBuild('installed upgrade prerequisites', () => command(verifier, [path.resolve(options.installDir!)], directory));
+    }
     const host = path.join(directory, 'nsis-host.exe');
     fs.writeFileSync(host, nsisHost(fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'))));
     const output = path.join(directory, `AI-CG-Studio_${version}_x64-upgrade.exe`);
     const script = path.join(directory, 'upgrade.nsi');
     fs.writeFileSync(script, upgradeScript(fs.readFileSync(path.join(root, renderedPath), 'utf8'), assets, verifier, host, output));
-    command(path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe'), ['/NOCD', '/INPUTCHARSET', 'UTF8', '/V2', script], path.dirname(path.join(root, renderedPath)));
-    binding.bindDerivedPayloads(root, [output, verifier]);
+    await timeDesktopBuild('upgrade NSIS compression', () => command(path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe'), ['/NOCD', '/INPUTCHARSET', 'UTF8', '/V2', script], path.dirname(path.join(root, renderedPath))));
+    await timeDesktopBuild('upgrade payload binding', () => binding.bindDerivedPayloads(root, [output, verifier]));
     return { payload: output, verifier, retainedFiles: assets.length, retainedBytes: assets.reduce((sum, file) => sum + file.bytes, 0),
       requirementsSha256: crypto.createHash('sha256').update(fs.readFileSync(manifest)).digest('hex') };
   });

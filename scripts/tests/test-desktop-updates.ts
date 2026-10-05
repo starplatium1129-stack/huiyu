@@ -48,8 +48,9 @@ function buildBindingFixture() {
   const previousSdk = process.env.LIVE2D_CUBISM_SDK_DIR;
   process.env.LIVE2D_CUBISM_SDK_DIR = path.join(root,sdk);
   put('dist/index.html', 'frontend-A'); put('desktop-tauri/src-tauri/resources/gateway/huiyu-runtime.exe', 'rust-A'); put('desktop-tauri/web/index.html', 'desktop-UI');
+  put('desktop-tauri/src-tauri/tauri.conf.json', JSON.stringify({ productName:'AI-CG-Studio', version:'1.0.0', plugins:{ updater:{} } }));
   const native = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'; put(native, 'native-A');
-  const payload = 'desktop-tauri/src-tauri/target/release/bundle/nsis/fixture.exe'; put(payload, 'payload-A');
+  const payload = 'desktop-tauri/src-tauri/target/release/bundle/nsis/AI-CG-Studio_1.0.0_x64-setup.exe'; put(payload, 'payload-A');
   put('desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi', 'bound installer script');
   return { root, put, git, binding, native, payload, remove() {
     if (previousSdk === undefined) delete process.env.LIVE2D_CUBISM_SDK_DIR; else process.env.LIVE2D_CUBISM_SDK_DIR = previousSdk;
@@ -59,15 +60,35 @@ function buildBindingFixture() {
   } };
 }
 
-test('desktop build binding rejects same-version stale sources, tampering and missing receipts before side effects', async () => {
+test('desktop build binding rejects same-version stale sources, tampering and missing receipts before side effects', async (t) => {
   const fixture = buildBindingFixture();
   const { root, put, git, binding, payload } = fixture;
   let sideEffects = 0;
   try {
+    const historical = 'desktop-tauri/src-tauri/target/release/bundle/nsis/AI-CG-Studio_0.9.0_x64-setup.exe';
+    put(historical, 'unrelated historical installer');
+    put(`${payload}.sig`, 'current signature');
     const source = binding.sourceIdentity(root);
     binding.recordBuild(root, source);
-    binding.verifyBuild(root, path.join(root, payload));
-    binding.verifyDeployment(root,path.join(root,payload));
+    const receipt = binding.verifyBuild(root, path.join(root, payload));
+    assert.equal(receipt.build.entries.some((entry: { path:string }) => entry.path === historical), false);
+    fs.unlinkSync(path.join(root, historical));
+    const identity: typeof import('../lib/delivery-identity') = require('../lib/delivery-identity');
+    const snapshot = t.mock.method(identity, 'snapshot');
+    binding.verifyDeployment(root, path.join(root, payload));
+    const fullScans = () => snapshot.mock.calls.filter(call => call.arguments[1].some((item: { path:string }) => item.path === 'desktop-tauri/src-tauri/resources')).length;
+    assert.equal(fullScans(), 1, 'one deployment checkpoint scans the current build once');
+    put('runtime/deployment-wrapper.exe', 'wrapper');
+    const wrapper = path.join(root, 'runtime/deployment-wrapper.exe');
+    binding.bindDistribution(root, path.join(root, payload), wrapper);
+    snapshot.mock.resetCalls(); binding.verifyDeployment(root, wrapper);
+    assert.equal(fullScans(), 1, 'a wrapper does not trigger another complete build scan');
+    snapshot.mock.restore();
+    put('runtime/deployment-wrapper.exe', 'tampered wrapper');
+    assert.throws(() => binding.verifyDeployment(root, wrapper), /封装产物已变化/);
+    put(`${payload}.sig`, 'tampered signature');
+    assert.throws(() => binding.verifyBuild(root), /改写/);
+    put(`${payload}.sig`, 'current signature');
     put('docs/note.md', 'documentation only');
     binding.verifyBuild(root);
     const sdkFile = path.join(root,'runtime/desktop-build-sdk/CubismSdkForNative-5-r.5/Core/include/Live2DCubismCore.h');
@@ -101,6 +122,65 @@ test('desktop build binding rejects same-version stale sources, tampering and mi
     assert.throws(() => binding.verifyBuild(root), /缺少/);
     put(binding.receiptPath, '{}');
     assert.throws(() => binding.verifyBuild(root), /格式/);
+  } finally { fixture.remove(); }
+});
+
+test('local upgrade checks installed prerequisites before compression and wraps only the upgrade', async () => {
+  const fixture = buildBindingFixture(), { root, put, binding, native } = fixture;
+  const vm: typeof import('node:vm') = require('node:vm');
+  const { createRequire }: typeof import('node:module') = require('node:module');
+  const commands: string[] = [], installed = path.join(root, 'installed');
+  let compatible = false;
+  try {
+    put(native, 'host __TAURI_BUNDLE_TYPE_VAR_UNK');
+    put('desktop-tauri/src-tauri/resources/gateway/assets/characters/portrait.bin', 'portrait');
+    put('desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi', [
+      '!define INSTALLWEBVIEW2MODE "offlineInstaller"', '!define MAINBINARYSRCPATH "fixture-host.exe"',
+      'OutFile "fixture-setup.exe"', 'Function PageLeaveReinstall', 'FunctionEnd', 'Section EarlyChecks',
+      '  File "${MAINBINARYSRCPATH}"', '  File /a "/oname=gateway\\assets\\characters\\portrait.bin" "fixture-portrait.bin"',
+      '  Delete "$INSTDIR\\gateway\\assets\\characters\\portrait.bin"',
+    ].join('\n'));
+    binding.recordBuild(root, binding.sourceIdentity(root));
+    const before = fs.readFileSync(path.join(root, binding.receiptPath));
+    const entry = path.join(ROOT, 'scripts/lib/desktop-upgrade-installer.js'), original = createRequire(entry);
+    const module = { exports:{} as typeof import('../lib/desktop-upgrade-installer') };
+    vm.runInNewContext(fs.readFileSync(entry, 'utf8'), { module, exports:module.exports, __dirname:path.dirname(entry), process, Buffer, console,
+      require:(name:string) => name === 'node:child_process' ? { spawnSync:(file:string, args:string[]) => {
+        if (file.endsWith('csc.exe')) {
+          commands.push('compile-verifier'); fs.writeFileSync(args.find(arg => arg.startsWith('/out:'))!.slice(5), 'verifier');
+        } else if (file.endsWith('HuiyuUpgradeCheck.exe')) {
+          commands.push('check-installed'); assert.deepEqual(Array.from(args), [installed]);
+          if (!compatible) return { status:1603, stdout:'fixture base mismatch', stderr:'' };
+        } else if (file.endsWith('makensis.exe')) {
+          commands.push('compress');
+          const script = fs.readFileSync(args.at(-1)!, 'utf8');
+          fs.writeFileSync(/^OutFile "([^"]+)"/m.exec(script)![1], 'upgrade payload');
+        } else throw Error(`Unexpected fixture process: ${file}`);
+        return { status:0, stdout:'', stderr:'' };
+      } } : original(name),
+    });
+    await assert.rejects(module.exports.buildUpgradeInstaller(root, { installDir:installed }), /fixture base mismatch/);
+    assert.deepEqual(commands, ['compile-verifier', 'check-installed']);
+    assert.deepEqual(fs.readFileSync(path.join(root, binding.receiptPath)), before, 'failed preflight cannot bind a package');
+    compatible = true; commands.length = 0;
+    const upgrade = await module.exports.buildUpgradeInstaller(root, { installDir:installed });
+    assert.deepEqual(commands, ['compile-verifier', 'check-installed', 'compress']);
+    binding.verifyBuild(root, upgrade.payload);
+
+    const release = path.join(ROOT, 'scripts/maintenance/release-desktop-update.js'), releaseRequire = createRequire(release);
+    const wrapped: string[] = [];
+    const code = fs.readFileSync(release, 'utf8').replace(/^const ROOT =.*$/m, 'const ROOT = ' + JSON.stringify(root) + ';');
+    await vm.runInNewContext(code + '\nmain();', { module:{exports:{}}, exports:{}, __dirname:path.dirname(release), console,
+      process:{ ...process, argv:['node','fixture','--manual','--skip-build','--upgrade-only','--install-dir',installed] },
+      require:(name:string) => name === '../lib/desktop-upgrade-installer' ? { buildUpgradeInstaller:async (_root:string, options:{installDir:string}) => {
+        assert.equal(options.installDir, installed); return upgrade;
+      } } : name === './build-modern-installer' ? { buildModernInstaller:({payload,output}:{payload:string;output:string}) => {
+        wrapped.push(payload); fs.writeFileSync(output, 'upgrade wrapper'); binding.bindDistribution(root,payload,output);
+      } } : releaseRequire(name),
+    });
+    assert.deepEqual(wrapped, [upgrade.payload]);
+    assert.equal(fs.existsSync(path.join(root, 'runtime/desktop-updates', installerNames('1.0.0').full)), false);
+    assert.equal(fs.existsSync(path.join(root, 'runtime/desktop-updates/latest.json')), false);
   } finally { fixture.remove(); }
 });
 

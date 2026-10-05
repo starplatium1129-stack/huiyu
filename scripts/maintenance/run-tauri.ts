@@ -1,4 +1,5 @@
 'use strict';
+import { timeDesktopBuild } from '../lib/desktop-build-timing';
 
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const path: typeof import('node:path') = require('node:path');
@@ -67,19 +68,19 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
     const run = options.runCommand || runCommand;
     if (mode === 'build') {
       // Packaging must refresh stale ignored products before either UI captures DATA_VERSION.
-      const dataStatus = run(process.execPath, ['-e', 'require(process.argv[1]).ensureAll()', path.join(workspaceRoot, 'scripts/lib/ensure-data-build.js')], {
+      const dataStatus = await timeDesktopBuild('data preparation', () => run(process.execPath, ['-e', 'require(process.argv[1]).ensureAll()', path.join(workspaceRoot, 'scripts/lib/ensure-data-build.js')], {
         cwd: workspaceRoot, env: { ...process.env, AICS_DATA_ROOT: workspaceRoot, AICS_APP_ROOT: workspaceRoot },
-      });
+      }));
       if (dataStatus !== 0) return dataStatus;
     }
-    const source = mode === 'build' ? buildBinding.sourceIdentity(workspaceRoot) : null;
+    const source = mode === 'build' ? await timeDesktopBuild('source identity', () => buildBinding.sourceIdentity(workspaceRoot)) : null;
     const env = { ...(options.env || tauriEnvironment(workspaceRoot)) };
     const sdk = mode === 'build' ? buildBinding.sdkIdentity(workspaceRoot, env) : null;
     if (sdk) { env.LIVE2D_CUBISM_SDK_DIR = sdk.root; env.LIVE2D_CUBISM_SDK_SHA256 = sdk.inputs.sha256; }
     const npm = options.npmCommand
       ? { command: options.npmCommand, args: options.npmArgs || [] }
       : resolveNpmInvocation();
-    const status = run(npm.command, [...npm.args, 'run', 'build'], { cwd: workspaceRoot });
+    const status = await timeDesktopBuild('web build and precompression', () => run(npm.command, [...npm.args, 'run', 'build'], { cwd: workspaceRoot }));
     if (status !== 0) return status;
 
     const prepare = options.prepareTauri || prepareTauri;
@@ -87,14 +88,14 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
 
     const cli = options.tauriCli || require.resolve('@tauri-apps/cli/tauri.js');
     const spawnTauri = options.spawnTauri || runCommand;
-    const result = spawnTauri(process.execPath, [cli, mode, ...args], {
+    const result = await timeDesktopBuild('Tauri native build and bundle', () => spawnTauri(process.execPath, [cli, mode, ...args], {
       cwd: path.join(workspaceRoot, 'desktop-tauri'),
       stdio: 'inherit',
       env,
       windowsHide: false,
-    });
+    }));
     if (result === 0 && source) {
-      try { buildBinding.recordBuild(workspaceRoot, source, !args.includes('--no-bundle'), sdk!); }
+      try { await timeDesktopBuild('build binding', () => buildBinding.recordBuild(workspaceRoot, source, !args.includes('--no-bundle'), sdk!)); }
       catch (error) {
         throw Error(`Tauri CLI 已成功，但构建产物/回执校验失败；本次构建不可发行: ${error instanceof Error ? error.message : String(error)}`, { cause:error });
       }

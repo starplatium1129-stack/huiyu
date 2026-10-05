@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { errorMessage as runtimeErrorMessage, errorOutput as runtimeErrorOutput } from '../lib/runtime-errors';
+import { timeDesktopBuild } from '../lib/desktop-build-timing';
 'use strict';
 
 /**
@@ -37,6 +38,9 @@ const BUMP_KIND = BUMP_INDEX >= 0 ? String(process.argv[BUMP_INDEX + 1] || 'patc
 const PUBLISH = process.argv.includes('--publish');
 const MANUAL = process.argv.includes('--manual');
 const COMPLETE_MANUAL = process.argv.includes('--complete-manual');
+const UPGRADE_ONLY = process.argv.includes('--upgrade-only');
+const INSTALL_DIR_INDEX = process.argv.indexOf('--install-dir');
+const INSTALL_DIR = INSTALL_DIR_INDEX < 0 ? undefined : process.argv[INSTALL_DIR_INDEX + 1];
 const RELEASE_REPOSITORY = 'starplatium1129-stack/huiyu';
 const binding: typeof import('../lib/desktop-build-binding') = require('../lib/desktop-build-binding');
 const { assertNativeReleaseReady }: typeof import('./desktop-rust-inputs') = require('./desktop-rust-inputs');
@@ -184,11 +188,16 @@ function publishRelease(version: any, head: any, files: any, options: any = {}) 
 
 async function main() {
   if (process.argv.includes('--help')) {
-    console.log('Usage: node scripts/maintenance/release-desktop-update.js [--manual] [--skip-build | --bundle-only] [--bump patch|minor|major] [--publish]');
+    console.log('Usage: node scripts/maintenance/release-desktop-update.js [--manual] [--skip-build | --bundle-only] [--bump patch|minor|major] [--publish]\nLocal upgrade only: --manual --skip-build --upgrade-only --install-dir <existing installation> (checks prerequisites before packaging; no install or publish)');
     return;
   }
   if (MANUAL && COMPLETE_MANUAL) fail('--manual 与 --complete-manual 不能同时使用');
   if (PUBLISH && BUMP_KIND) fail('--publish 不能与 --bump 同时使用，请先构建、提交并推送版本');
+  if (UPGRADE_ONLY && (!MANUAL || !SKIP_BUILD || BUNDLE_ONLY || BUMP_KIND || PUBLISH || COMPLETE_MANUAL)) {
+    fail('--upgrade-only 仅用于 --manual --skip-build 本机升级封装，不可改版本、补签或发布');
+  }
+  if ((UPGRADE_ONLY && !INSTALL_DIR) || (INSTALL_DIR_INDEX >= 0 && (!INSTALL_DIR || INSTALL_DIR.startsWith('--')))) fail('本机升级必须用 --install-dir 明确已有安装位置');
+  if (INSTALL_DIR_INDEX >= 0 && !UPGRADE_ONLY) fail('--install-dir 仅用于 --upgrade-only 本机升级封装');
   if (!MANUAL && !fs.existsSync(KEY_FILE)) {
     fail(`缺少原更新签名私钥 ${KEY_FILE}。请在持有原私钥的主机签名；手动安装版必须显式使用 --manual，不能生成替代私钥。`);
   }
@@ -237,9 +246,9 @@ async function main() {
   if (PUBLISH) assertNativeReleaseReady(path.join(ROOT, 'desktop-tauri/src-tauri/resources/gateway'));
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
-  const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT);
+  const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT, { installDir:INSTALL_DIR });
   const variants = [
-    { kind:'full', payload:path.join(BUNDLE_DIR, artifact.exe), verifier:undefined },
+    ...(!UPGRADE_ONLY ? [{ kind:'full', payload:path.join(BUNDLE_DIR, artifact.exe), verifier:undefined }] : []),
     { kind:'upgrade', payload:upgrade.payload, verifier:upgrade.verifier },
   ];
   const files: string[] = [];
@@ -252,10 +261,10 @@ async function main() {
   for (const variant of variants) {
     const exeName = variant.kind === 'full' ? names.full : names.upgrade;
     const executable = path.join(OUT_DIR, exeName);
-    modern.buildModernInstaller({ payload:variant.payload, output:executable, upgradeVerifier:variant.verifier });
+    await timeDesktopBuild(`${variant.kind} installer wrapper`, () => modern.buildModernInstaller({ payload:variant.payload, output:executable, upgradeVerifier:variant.verifier }));
     const shaPath = `${executable}.sha256`;
     fs.writeFileSync(shaPath, `${crypto.createHash('sha256').update(fs.readFileSync(executable)).digest('hex').toUpperCase()}  ${exeName}\n`);
-    binding.verifyDistribution(ROOT, executable);
+    await timeDesktopBuild(`${variant.kind} distribution verification`, () => binding.verifyDistribution(ROOT, executable));
     files.push(executable, shaPath);
     if (!MANUAL) {
       execFileSync(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), 'signer', 'sign', executable], {
@@ -270,7 +279,7 @@ async function main() {
   console.log(`[release-desktop-update] 升级包复用 ${upgrade.retainedFiles} 个基础素材文件（${(upgrade.retainedBytes / 1024 / 1024).toFixed(1)} MiB），完整包保留素材与 WebView2`);
   if (MANUAL) {
     if (PUBLISH) publishRelease(version, assertPublishReady(version), files);
-    console.log(`[release-desktop-update] ${version} 两种手动安装包已生成，自动更新清单未修改`);
+    console.log(`[release-desktop-update] ${version} ${UPGRADE_ONLY ? '本机轻量升级包' : '两种手动安装包'}已生成，自动更新清单未修改`);
     return;
   }
 
