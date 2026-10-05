@@ -195,6 +195,8 @@ export interface VideoBatchShot {
 }
 
 export interface VideoBatch {
+  /** A one-shot retry remains independent of its source batch and concatenation. */
+  retrySource?: { batchId: string; stepIndex: number }
   id: string
   status: VideoBatchStatus
   modelId: string

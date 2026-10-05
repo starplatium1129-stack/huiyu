@@ -15,8 +15,8 @@ const directory = { name: 'backup' } as FileSystemDirectoryHandle
 beforeEach(() => {
   vi.clearAllMocks()
   mocks.tasks.activeCount.value = 0
-  mocks.state = { connection: 'ready', bootstrap: { windowRole: 'atelier', windowId: 'one', sourceProfileId: 'profile', sourceOrigin: 'https://source', runtime: { origin: 'https://runtime', runtimeEpoch: 'epoch', workspace: { workspaceId: 'candidate', generation: 1, domains: [] } } } }
-  mocks.prepare.mockResolvedValue(undefined); mocks.refresh.mockResolvedValue(undefined)
+  mocks.state = { connection: 'ready', bootstrap: { connection: 'ready', windowRole: 'atelier', windowId: 'one', sourceProfileId: 'profile', sourceOrigin: 'https://source', runtime: { origin: 'https://runtime', runtimeEpoch: 'epoch', workspace: { workspaceId: 'candidate', runtimeEpoch: 'candidate-epoch', generation: 1, domains: [] } } } }
+  mocks.prepare.mockImplementation(async () => mocks.state.bootstrap); mocks.refresh.mockResolvedValue(undefined)
 })
 afterEach(() => { vi.unstubAllGlobals() })
 it.each(['cancel', 'dispose', 'runtime', 'task', 'target'] as const)('rejects a late directory result after %s and excludes reentry', async reason => {
@@ -48,7 +48,7 @@ it('keeps an already-started native activation pending until its acknowledgment'
   vi.stubGlobal('showDirectoryPicker', vi.fn().mockResolvedValue(directory))
   const native = deferred<void>(), begun = deferred<void>()
   mocks.activate.mockImplementation(() => { begun.resolve(); return native.promise })
-  mocks.migrate.mockImplementation(async options => { await options.activate({ migrationId: 'migration', domains: ['artwork'] }); return { backupName: 'backup' } })
+  mocks.migrate.mockImplementation(async options => { await options.prepareCandidate({ mode: 'new' }); await options.activate({ migrationId: 'migration', domains: ['artwork'] }); return { backupName: 'backup' } })
   const scope = effectScope(), message = vi.fn()
   const migration = scope.run(() => useWorkspaceMigration(message))!
   const running = migration.migrate()
@@ -64,5 +64,25 @@ it('keeps an already-started native activation pending until its acknowledgment'
   expect(message).not.toHaveBeenCalled()
   hydration.resolve(); await running
   expect(message).toHaveBeenCalledWith(expect.stringContaining('迁移已完成'))
+  scope.stop()
+})
+
+it('refuses an old candidate handshake after preparation confirms a new target', async () => {
+  vi.stubGlobal('showDirectoryPicker', vi.fn().mockResolvedValue(directory))
+  const prepared = structuredClone(mocks.state.bootstrap) as { runtime: { workspace: { workspaceId: string } } }
+  prepared.runtime.workspace.workspaceId = 'new-candidate'
+  mocks.prepare.mockResolvedValue(prepared)
+  const imported = vi.fn()
+  mocks.migrate.mockImplementation(async options => {
+    await options.prepareCandidate({ mode: 'new' })
+    imported()
+    return { backupName: 'backup' }
+  })
+  const scope = effectScope(), message = vi.fn()
+  const migration = scope.run(() => useWorkspaceMigration(message))!
+  await migration.migrate()
+  expect(mocks.refresh).toHaveBeenCalledWith(true)
+  expect(imported).not.toHaveBeenCalled()
+  expect(message).toHaveBeenCalledWith(expect.stringContaining('迁移目标未确认'))
   scope.stop()
 })

@@ -1,7 +1,7 @@
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
-import { defineComponent, nextTick, ref } from 'vue'
+import { computed, defineComponent, nextTick, ref } from 'vue'
 import { useCompanionChatWindow } from './useCompanionChatWindow'
 import { useCompanionSpeechInput } from '@/composables/useCompanionSpeechInput'
 import { COMPANION_CHAT_LIVE_KEY } from '@/utils/storageKeys'
@@ -9,12 +9,15 @@ import { DEFAULT_SPEECH_INPUT_CONFIG, SPEECH_INPUT_KEY } from '@/utils/speechInp
 import { useChatSpeechInteraction } from './useChatSpeechInteraction'
 import { getCompanionCharacterConfig } from '@/utils/companionRegistry'
 import { profileLocalStorage } from '@/platform/web/profileStorage'
+import { useVoice } from '@/composables/useVoice'
 
 const fixture = vi.hoisted(() => ({
   onText: (_text: string, _source: string) => {},
   visibility: (_visible: boolean) => {},
   relay: vi.fn(async () => {}),
+  voiceApi: { getStatus: vi.fn(), prepare: vi.fn(), translate: vi.fn() },
 }))
+vi.mock('@/api/voiceApi', () => ({ voiceApi: fixture.voiceApi }))
 const state = ref('idle'), autoListening = ref(false)
 const start = vi.fn(async (mode?: string) => { state.value = 'capturing'; autoListening.value = mode === 'auto' })
 const cancel = vi.fn(() => { state.value = 'idle'; autoListening.value = false })
@@ -34,6 +37,7 @@ vi.mock('@/composables/chat/useChatStorage', () => ({ useChatStorage: () => {
 
 let wrapper: ReturnType<typeof mount> | undefined
 let chat: ReturnType<typeof useCompanionChatWindow>
+let voice: ReturnType<typeof useVoice> | undefined
 function mountSession(setup: () => void) {
   wrapper = mount(defineComponent({ setup() { setup(); return () => null } }))
 }
@@ -56,7 +60,8 @@ beforeEach(() => {
     onVisibilityChanged: (cb: typeof fixture.visibility) => { fixture.visibility = cb; return 1 }, offVisibilityChanged: vi.fn(),
   } as unknown as CompanionDesktopBridge
 })
-afterEach(() => { wrapper?.unmount(); wrapper = undefined; desktopFixture.current = undefined; vi.restoreAllMocks() })
+afterEach(() => { wrapper?.unmount(); wrapper = undefined; voice?.destroy(); voice = undefined;
+  desktopFixture.current = undefined; vi.unstubAllGlobals(); vi.restoreAllMocks() })
 
 describe('companion chat speech ownership', () => {
   it.each(['blur', 'hidden', 'native-hidden'])('cancels manual recording on %s without submitting it', async reason => {
@@ -70,19 +75,70 @@ describe('companion chat speech ownership', () => {
     setup(); chat.onSpeechPress(); live({ busy: true }); await nextTick()
     expect(state.value).toBe('idle')
   })
-  it('resumes continuous listening after reply and TTS finish', async () => {
-    setup(true, true); await nextTick()
+  it.each(['desktop', 'chat', 'companion'])('%s waits through translation and playback before listening again', async entry => {
+    const audios: EventTarget[] = []
+    vi.stubGlobal('Audio', class extends EventTarget {
+      src = ''; paused = true; ended = false
+      constructor() { super(); audios.push(this) }
+      play() { this.paused = false; return Promise.resolve() }
+      pause() { this.paused = true }
+      load() {}
+      removeAttribute() { this.src = '' }
+    })
+    const busy = ref(false), voiceActive = ref(false), speaking = ref(false)
+    const publish = () => { if (entry === 'desktop') live({ busy: busy.value, speaking: speaking.value, voiceActive: voiceActive.value }) }
+    let translated!: (value: { translation: string }) => void
+    fixture.voiceApi.getStatus.mockResolvedValue({ online: true, voices: { nene: true } })
+    fixture.voiceApi.prepare.mockResolvedValue({})
+    fixture.voiceApi.translate.mockImplementationOnce(() => new Promise(resolve => { translated = resolve }))
+    voice = useVoice({ enabled: () => true,
+      onActivity: active => { voiceActive.value = active; publish() },
+      onSpeaking: active => { speaking.value = active; publish() } })
+    await voice.refreshAvailability()
+    const handleSend = vi.fn()
+    let speech!: Pick<ReturnType<typeof useCompanionSpeechInput>,
+      'onSpeechPress' | 'onSpeechRelease' | 'onSpeechSettingsSaved' | 'speechButtonDisabled'>
+    if (entry === 'desktop') { setup(true, true); speech = chat }
+    else {
+      desktopFixture.current = undefined
+      localStorage.setItem(SPEECH_INPUT_KEY, JSON.stringify({ ...DEFAULT_SPEECH_INPUT_CONFIG,
+        enabled: true, endpoint: 'http://127.0.0.1:9999', wakeEnabled: true, autoSend: true, wakeWords: ['你好'] }))
+      mountSession(() => {
+        const common = { busy: computed(() => busy.value || voiceActive.value), chatReady: ref(true), inputText: ref(''), handleSend }
+        speech = entry === 'chat'
+          ? useChatSpeechInteraction({ ...common, currentCharacter: ref(getCompanionCharacterConfig('nene')!) })
+          : useCompanionSpeechInput({ ...common, currentCharacter: ref('nene'), currentCharacterName: () => '宁宁',
+          desktopWindowVisible: ref(true), dnd: ref(false), inQuietHours: ref(false), isEditableTarget: () => false })
+      })
+    }
+    await nextTick()
     fixture.onText('你好', 'auto'); fixture.onText('今天怎么样', 'auto'); await flushPromises()
-    live({ busy: true }); await nextTick()
-    expect(autoListening.value).toBe(false)
-    live({ speaking: true }); await nextTick()
-    expect(autoListening.value).toBe(false)
-    expect(chat.speechButtonDisabled.value).toBe(true)
-    live(); await nextTick()
-    expect(autoListening.value).toBe(true)
-    expect(chat.speechButtonDisabled.value).toBe(false)
+    busy.value = true; publish(); await nextTick()
+    voice.startTurn({ mid: 'reply', voice: 'nene', character: 'nene' })
+    voice.append('今天我们一起去公园散步吧。'); voice.finishTurn()
+    busy.value = false; publish(); await flushPromises()
+    expect(voiceActive.value).toBe(true); expect(speaking.value).toBe(false)
+    expect(audios).toHaveLength(0); expect(autoListening.value).toBe(false)
+    translated({ translation: '今日はお天気ですね。' }); await flushPromises()
+    expect(speaking.value).toBe(true); expect(autoListening.value).toBe(false)
+    const starts = start.mock.calls.length
+    speech.onSpeechPress()
+    expect(start).toHaveBeenCalledTimes(starts)
+    expect(speech.speechButtonDisabled.value).toBe(true)
+    audios[0].dispatchEvent(new Event('ended')); await flushPromises()
+    expect(voiceActive.value).toBe(false); expect(autoListening.value).toBe(true)
     fixture.onText('再聊一句', 'auto'); await flushPromises()
-    expect(fixture.relay).toHaveBeenCalledTimes(2)
+    expect(entry === 'desktop' ? fixture.relay : handleSend).toHaveBeenCalledTimes(2)
+    speech.onSpeechSettingsSaved({ ...DEFAULT_SPEECH_INPUT_CONFIG, enabled: true,
+      endpoint: 'http://127.0.0.1:9999', wakeEnabled: false })
+    await nextTick()
+    expect(speech.speechButtonDisabled.value).toBe(false)
+    speech.onSpeechPress(); await nextTick()
+    expect(start).toHaveBeenLastCalledWith('manual')
+    busy.value = true; publish(); await nextTick()
+    if (entry === 'chat') expect(speech.speechButtonDisabled.value).toBe(false)
+    speech.onSpeechRelease(); await nextTick()
+    expect(state.value).toBe('idle')
   })
   it('accepts a second manual transcript when auto-send is disabled', async () => {
     setup(); fixture.onText('第一段草稿', 'manual'); await nextTick()
@@ -139,23 +195,31 @@ describe('browser companion speech session', () => {
     expect(start).toHaveBeenCalled()
   })
 
-  it.each([false, true])('accepts repeated drafts with wake=%s', async wakeEnabled => {
+  it.each(['companion', 'chat'].flatMap(entry => [false, true].map(wakeEnabled => ({ entry, wakeEnabled }))))(
+    '$entry accepts repeated drafts and can restart with wake=$wakeEnabled', async ({ entry, wakeEnabled }) => {
     localStorage.setItem(SPEECH_INPUT_KEY, JSON.stringify({ ...DEFAULT_SPEECH_INPUT_CONFIG,
-      enabled: true, endpoint: 'http://127.0.0.1:9999', wakeEnabled, wakeWords: ['你好'] }))
+      enabled: true, endpoint: 'http://127.0.0.1:9999', autoSend: false, wakeEnabled, wakeWords: ['你好'] }))
     const inputText = ref('')
+    const handleSend = vi.fn()
+    let speech!: Pick<ReturnType<typeof useChatSpeechInteraction>, 'speechSessionActive'>
     mountSession(() => {
-      useCompanionSpeechInput({ busy: ref(false), chatReady: ref(true), inputText,
+      const common = { busy: ref(false), chatReady: ref(true), inputText, handleSend }
+      speech = entry === 'chat'
+        ? useChatSpeechInteraction({ ...common, currentCharacter: ref(getCompanionCharacterConfig('nene')!) })
+        : useCompanionSpeechInput({ ...common,
         currentCharacter: ref('nene'), currentCharacterName: () => '宁宁', desktopWindowVisible: ref(true),
-        dnd: ref(false), inQuietHours: ref(false), handleSend: vi.fn(), isEditableTarget: () => false })
+        dnd: ref(false), inQuietHours: ref(false), isEditableTarget: () => false })
     })
     if (wakeEnabled) fixture.onText('你好', 'auto')
     fixture.onText('第一段', wakeEnabled ? 'auto' : 'manual'); await nextTick()
     fixture.onText('第二段', wakeEnabled ? 'auto' : 'manual'); await nextTick()
-    expect(inputText.value).toBe('第二段')
+    expect.soft(inputText.value).toBe('第二段')
     fixture.onText('结束对话', 'manual'); await nextTick()
+    expect.soft(speech.speechSessionActive.value).toBe(false)
     if (wakeEnabled) fixture.onText('你好', 'auto')
     fixture.onText('重新开始', wakeEnabled ? 'auto' : 'manual'); await nextTick()
     expect(inputText.value).toBe('重新开始')
+    expect(handleSend).not.toHaveBeenCalled()
   })
 })
 

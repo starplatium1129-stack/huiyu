@@ -27,7 +27,6 @@ export function useDesktopUpdater() {
     errorText.value = state.errorText
     canCancel.value = state.canCancel
     starting.value = false
-    cancelPending.value = false
   })
   const ready = observation?.ready ?? Promise.resolve()
   // Mounting is optional background work. Explicit actions report IPC failures.

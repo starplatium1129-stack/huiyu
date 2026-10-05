@@ -38,8 +38,21 @@ export function useCatalogMaintenance() {
   let listController: AbortController | null = null, detailController: AbortController | null = null, listSeq = 0, detailSeq = 0
   const dirtyEditor = computed(() => !!selected.value && JSON.stringify(selected.value) !== baseline.value)
   const dirty = computed(() => !!pending.value.length || dirtyEditor.value)
+  let disposed = false, requestedPage = 1, bulkReadSeq = 0
+  let timer: ReturnType<typeof setTimeout> | undefined
+  function invalidateDetail() {
+    detailController?.abort(); detailController = null; detailLoading.value = false
+    return ++detailSeq
+  }
+  function resetEditor(record: CatalogRecord | null = null) {
+    invalidateDetail()
+    selected.value = record; baseline.value = record ? JSON.stringify(record) : ''
+    currentServer.value = null; history.value = []
+  }
   const totalPages = computed(() => Math.max(1, Math.ceil((result.value?.total ?? 0) / 24)))
   async function load() {
+    if (disposed) return
+    clearTimeout(timer); requestedPage = page.value
     listController?.abort(); const controller = new AbortController(); listController = controller; const seq = ++listSeq
     loading.value = true; error.value = ''
     try {
@@ -58,8 +71,10 @@ export function useCatalogMaintenance() {
     return !dirtyEditor.value || await confirmAction({ title: '放下这次修改？', message: '当前内容还没有暂存，离开后这些修改会丢失。', confirmLabel: '放弃修改', danger: true })
   }
   async function select(item: CatalogSummary | { kind: CatalogKind; id: string }) {
-    if (busy.value || !await canSwitch()) return
-    detailController?.abort(); const controller = new AbortController(); detailController = controller; const seq = ++detailSeq
+    if (busy.value || disposed) return
+    const seq = invalidateDetail()
+    if (!await canSwitch() || seq !== detailSeq || busy.value || disposed) return
+    const controller = new AbortController(); detailController = controller
     detailLoading.value = true; hint.value = ''; currentServer.value = null; history.value = []
     try {
       const draft = pending.value.find(c => key(c.kind, c.id) === key(item.kind, item.id))
@@ -74,7 +89,9 @@ export function useCatalogMaintenance() {
     finally { if (seq === detailSeq) detailLoading.value = false }
   }
   async function add(copy = false) {
-    if (busy.value || !await canSwitch() || kind.value === 'document') return
+    if (busy.value || disposed || kind.value === 'document') return
+    const seq = invalidateDetail()
+    if (!await canSwitch() || seq !== detailSeq || busy.value || disposed) return
     const record = copy && selected.value ? clone(selected.value) : blankRecord(kind.value)
     record.id = ''; record.revision = 0; record.createdAt = null; record.updatedAt = null
     if (record.kind === 'scene' && nextSceneId.value) {
@@ -83,7 +100,7 @@ export function useCatalogMaintenance() {
       while (occupied.has('sc' + String(number).padStart(3, '0'))) number++
       record.id = 'sc' + String(number).padStart(3, '0')
     } else if (record.kind === 'blueprint') record.id = 'bp_' + crypto.randomUUID().replaceAll('-', '')
-    selected.value = record; baseline.value = JSON.stringify(record); history.value = []; currentServer.value = null
+    resetEditor(record)
   }
   function stage() {
     const record = selected.value
@@ -100,14 +117,16 @@ export function useCatalogMaintenance() {
     } else if (record.kind !== 'document') data.id = record.id
     const change: CatalogChange = { kind: record.kind, id: record.id, expectedRevision: record.revision, data, sortOrder: record.sortOrder }
     pending.value = [...pending.value.filter(c => key(c.kind, c.id) !== key(change.kind, change.id)), change]
-    selected.value = { ...record, data }; baseline.value = JSON.stringify(selected.value); preview.value = null; hint.value = '这项修改已暂存，可以继续整理其他内容'
+    selected.value = { ...record, data: clone(data) }; baseline.value = JSON.stringify(selected.value); preview.value = null; hint.value = '这项修改已暂存，可以继续整理其他内容'
   }
   async function remove() {
     const record = selected.value
     if (!record || busy.value || !record.revision || record.kind === 'document') return
     if (!await confirmAction({ title: '归档「' + recordTitle(record) + '」？', message: '保存后会从内容列表移出，历史仍会保留。正在被使用的内容不能直接归档。', confirmLabel: '归档', danger: true })) return
+    if (busy.value || disposed) return
     pending.value = [...pending.value.filter(c => key(c.kind, c.id) !== key(record.kind, record.id)), { kind: record.kind, id: record.id, expectedRevision: record.revision, remove: true }]
-    selected.value = null; baseline.value = ''; preview.value = null
+    if (selected.value === record) resetEditor()
+    preview.value = null
   }
   async function submit(previewOnly = false) {
     if (busy.value || !pending.value.length || dirtyEditor.value) return
@@ -117,7 +136,7 @@ export function useCatalogMaintenance() {
       const receipt = await catalogApi.changes(submission, previewOnly)
       if (previewOnly) preview.value = receipt
       else {
-        pending.value = []; selected.value = null; baseline.value = ''; useSceneStore().invalidate()
+        pending.value = []; resetEditor(); useSceneStore().invalidate()
         hint.value = '已保存 ' + receipt.items.length + ' 项修改'; await load()
       }
     } catch (e) {
@@ -150,22 +169,37 @@ export function useCatalogMaintenance() {
     } catch (e) { hint.value = (e as Error).message }
     finally { busy.value = false }
   }
-  function loadBulk() {
+  function parseBulk(raw: string) {
     bulkError.value = ''
-    importSnapshot.value = null; importPreview.value = false
     try {
-      const value: unknown = JSON.parse(bulkInput.value)
+      const value: unknown = JSON.parse(raw)
       if (value && typeof value === 'object' && Array.isArray((value as CatalogSnapshot).records)) {
         const snapshot = value as CatalogSnapshot
         if (snapshot.version !== 1 || !snapshot.records.every(isCatalogRecord) || !Array.isArray(snapshot.retired)) throw new Error('快照格式无效')
-        importSnapshot.value = clone(snapshot); return
+        importSnapshot.value = clone(snapshot); importPreview.value = false; return true
       }
       if (!value || typeof value !== 'object' || !Array.isArray((value as { changes?: unknown }).changes)) throw new Error('需要包含 changes 数组的变更文件')
       const changes = (value as { changes: CatalogChange[] }).changes
       if (!changes.length || changes.some(c => !c || !['character', 'outfit', 'scene', 'blueprint', 'document'].includes(c.kind) || typeof c.id !== 'string' || !Number.isSafeInteger(c.expectedRevision))) throw new Error('每条修改需要 kind、id、expectedRevision')
       const keys = changes.map(c => key(c.kind, c.id)); if (new Set(keys).size !== keys.length) throw new Error('批量文件包含重复记录')
       pending.value = [...pending.value.filter(c => !keys.includes(key(c.kind, c.id))), ...clone(changes)]; preview.value = null
-    } catch (e) { bulkError.value = (e as Error).message }
+      importSnapshot.value = null; importPreview.value = false
+      return true
+    } catch (e) { bulkError.value = (e as Error).message; return false }
+  }
+  function loadBulk() {
+    if (busy.value || disposed) return
+    ++bulkReadSeq
+    parseBulk(bulkInput.value)
+  }
+  async function readBulkFile(file: Pick<File, 'text'>) {
+    if (busy.value || disposed) return
+    const seq = ++bulkReadSeq
+    try {
+      const raw = await file.text()
+      if (seq !== bulkReadSeq || busy.value || disposed) return
+      if (parseBulk(raw)) bulkInput.value = raw
+    } catch (e) { if (seq === bulkReadSeq && !disposed) bulkError.value = (e as Error).message }
   }
   async function importContent(previewOnly: boolean) {
     if (!importSnapshot.value || busy.value || dirty.value || (!previewOnly && !importPreview.value)) return
@@ -173,7 +207,7 @@ export function useCatalogMaintenance() {
     try {
       const receipt = await catalogApi.importSnapshot(clone(importSnapshot.value), previewOnly)
       preview.value = receipt; importPreview.value = previewOnly
-      if (!previewOnly) { selected.value = null; baseline.value = ''; useSceneStore().invalidate(); hint.value = '快照已导入；本地修改与冲突按记录核对'; await load() }
+      if (!previewOnly) { resetEditor(); useSceneStore().invalidate(); hint.value = '快照已导入；本地修改与冲突按记录核对'; await load() }
     } catch (e) { importPreview.value = false; hint.value = (e as Error).message }
     finally { busy.value = false }
   }
@@ -183,15 +217,16 @@ export function useCatalogMaintenance() {
   }
   const exportDraft = () => download({ changes: pending.value, editor: selected.value }, 'content-draft.json')
   async function exportSnapshot() { try { download(await catalogApi.snapshot(), 'content-snapshot.json') } catch (e) { hint.value = (e as Error).message } }
-  let timer: ReturnType<typeof setTimeout> | undefined
   watch([kind, character, category, rating, sort], () => { page.value = 1; void load() })
   watch(search, () => { clearTimeout(timer); timer = setTimeout(() => { page.value = 1; void load() }, 180) })
-  watch(page, () => { if (page.value !== result.value?.page) void load() })
+  watch(page, () => { if (page.value !== result.value?.page && page.value !== requestedPage) void load() })
+  watch(bulkInput, () => { ++bulkReadSeq }, { flush: 'sync' })
+  watch(busy, value => { if (value) ++bulkReadSeq }, { flush: 'sync' })
   watch(pending, () => { preview.value = null }, { deep: true })
   const release = registerMaintenanceParticipant(() => { if (dirty.value) throw new Error('UNSAVED_CONTENT'); if (busy.value) throw new Error('CONTENT_BUSY') })
   const beforeUnload = (event: BeforeUnloadEvent) => { if (dirty.value || busy.value) event.preventDefault() }
   onMounted(() => { window.addEventListener('beforeunload', beforeUnload); void load() })
-  onBeforeUnmount(() => { ++listSeq; ++detailSeq; listController?.abort(); detailController?.abort(); namesController?.abort(); clearTimeout(timer); release(); window.removeEventListener('beforeunload', beforeUnload) })
+  onBeforeUnmount(() => { disposed = true; ++bulkReadSeq; ++listSeq; invalidateDetail(); listController?.abort(); detailController?.abort(); namesController?.abort(); clearTimeout(timer); release(); window.removeEventListener('beforeunload', beforeUnload) })
   onBeforeRouteLeave(async () => !busy.value && (!dirty.value || await confirmAction({ title: '离开内容维护？', message: '未保存修改将丢失，可先导出草稿。', confirmLabel: '离开', danger: true })))
-  return { kind, search, character, category, rating, sort, page, result, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, exportDraft, exportSnapshot, characterNames }
+  return { kind, search, character, category, rating, sort, page, result, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
 }

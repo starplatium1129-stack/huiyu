@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { decodeDesktopBootstrap, readDesktopBootstrap } from './bootstrap'
+import { decodeDesktopBootstrap, readDesktopBootstrap, prepareDesktopWorkspace } from './bootstrap'
 
 const origin = 'http://127.0.0.1:4312'
 const ready = {
@@ -57,6 +57,18 @@ describe('desktop bootstrap wire contract', () => {
       expect(decodeDesktopBootstrap({ ...ready, runtime: { ...ready.runtime, workspace: { ...session, activeMigrationId } } }).runtime?.workspace?.activeMigrationId).toBe(activeMigrationId)
     }
     expect(() => decodeDesktopBootstrap({ ...ready, runtime: { ...ready.runtime, workspace: { ...session, activeMigrationId: 42 } } })).toThrow('激活身份无效')
+  })
+
+  it('forwards the explicit candidate selection and retains native conflict details', async () => {
+    const invoke = vi.fn().mockResolvedValue(ready)
+    vi.stubGlobal('window', { location: { origin }, __TAURI__: { core: { invoke } } })
+    await prepareDesktopWorkspace({ mode: 'new' })
+    expect(invoke).toHaveBeenLastCalledWith('desktop_workspace_prepare', { candidate: { mode: 'new' } })
+    const saved = { mode: 'resume' as const, workspaceId: 'saved', migrationId: 'migration', expectedFingerprint: 'a'.repeat(64) }
+    await prepareDesktopWorkspace(saved)
+    expect(invoke).toHaveBeenLastCalledWith('desktop_workspace_prepare', { candidate: saved })
+    invoke.mockRejectedValueOnce('MIGRATION_CONFLICT: Saved migration identity does not match')
+    await expect(prepareDesktopWorkspace(saved)).rejects.toThrow('MIGRATION_CONFLICT')
   })
 
 })

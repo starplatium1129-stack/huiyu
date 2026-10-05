@@ -5,6 +5,8 @@ use std::{
     io::Write,
     path::{Component, Path},
 };
+#[cfg(test)]
+mod tests;
 
 pub(super) fn safe(root: &Path, relative: impl AsRef<Path>) -> Result<PathBuf> {
     let relative = relative.as_ref();
@@ -83,11 +85,41 @@ pub(super) struct Owner {
     identity: Value,
     released: bool,
 }
+struct OwnerInitialization<'a> {
+    path: &'a Path,
+    output: fs::File,
+    committed: bool,
+}
+impl Drop for OwnerInitialization<'_> {
+    fn drop(&mut self) {
+        if self.committed {
+            return;
+        }
+        let cleanup = (|| -> Result<()> {
+            // Retain the created handle through the identity check and unlink;
+            // incomplete JSON cannot prove ownership of a replaced path.
+            let path = safe(self.path.parent().unwrap(), ".workspace-owner.json")?;
+            if crate::file_identity::opened(&self.output)?
+                != crate::file_identity::path(&path, false)?
+            {
+                return Err(conflict(
+                    "WORKSPACE_LOCK_CHANGED",
+                    "Initialization lock changed; retained",
+                ));
+            }
+            fs::remove_file(path)?;
+            sync_dir(self.path.parent().unwrap())
+        })();
+        if let Err(error) = cleanup {
+            eprintln!("workspace owner initialization cleanup: {error}");
+        }
+    }
+}
 impl Owner {
     fn acquire(root: &Path, workspace_id: &str) -> Result<Self> {
         let file = safe(root, ".workspace-owner.json")?;
         let identity = json!({"workspaceId":workspace_id,"nonce":uuid::Uuid::new_v4().to_string(),"pid":std::process::id(),"startedAt":now()});
-        let mut output = OpenOptions::new()
+        let output = OpenOptions::new()
             .write(true)
             .create_new(true)
             .open(&file)
@@ -102,9 +134,18 @@ impl Owner {
                     e.into()
                 }
             })?;
-        output.write_all(canonical::stringify(&identity).as_bytes())?;
-        output.sync_all()?;
+        let mut pending = OwnerInitialization {
+            path: &file,
+            output,
+            committed: false,
+        };
+        pending
+            .output
+            .write_all(canonical::stringify(&identity).as_bytes())?;
+        pending.output.sync_all()?;
         sync_dir(root)?;
+        pending.committed = true;
+        drop(pending);
         Ok(Self {
             file,
             identity,

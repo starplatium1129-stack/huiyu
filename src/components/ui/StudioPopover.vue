@@ -49,6 +49,6 @@ function onEscape(event: KeyboardEvent) {
 .studio-popover { transform-origin:var(--reka-popover-content-transform-origin,top right); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); }
 @starting-style { .studio-popover[data-state='open'][data-pointer-open='true'] { opacity:0; transform:scale(.97); } }
 .studio-popover[data-pointer-open='false'] { transition:none; }
-@media(prefers-reduced-motion:reduce) { .studio-popover { transition:none; } }
+@media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .studio-popover { transition:none; } }
 @media(forced-colors:active) { .studio-popover { background:Canvas; border-color:CanvasText; } }
 </style>

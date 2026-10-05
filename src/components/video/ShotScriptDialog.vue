@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onDeactivated, ref } from 'vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -74,6 +74,7 @@ const emit = defineEmits<{
   (event: 'update:total', value: number | null): void
 }>()
 
+onDeactivated(() => { if (props.open) emit('close') })
 const dialogEl = ref<HTMLElement | null>(null)
 const storyInputEl = ref<HTMLElement | null>(null)
 useFocusTrap(dialogEl, () => props.open, {

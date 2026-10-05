@@ -11,6 +11,7 @@ use axum::{
 };
 use futures_util::{SinkExt, StreamExt};
 use http_body_util::BodyExt;
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::{net::SocketAddr, time::Duration};
 use tokio_util::sync::CancellationToken;
 use tower::ServiceExt;
@@ -58,6 +59,13 @@ async fn mock(
             }
             while let Some(Ok(message)) = socket.next().await { if socket.send(message).await.is_err() { break; } }
         });
+    }
+    if request.uri().path() == "/sdapi/v1/progress" {
+        return axum::Json(serde_json::json!({
+            "current_image":"private preview fixture", "state":{"job":"private job fixture"},
+            "query":request.uri().query()
+        }))
+        .into_response();
     }
     if request.uri().path() == "/sdapi/v1/options" {
         return (
@@ -120,13 +128,67 @@ async fn request(router: &Router, method: &str, path: &str, body: Body, remote: 
 
 #[tokio::test]
 async fn proxy_streams_large_body_preserves_responses_and_enforces_exact_allowlist() {
-    let (upstream, server) = serve(Router::new().fallback(mock)).await;
+    let hits = Arc::new(AtomicUsize::new(0));
+    let observed = hits.clone();
+    let (upstream, server) = serve(Router::new().fallback(move |ws, request| {
+        observed.fetch_add(1, Ordering::SeqCst);
+        mock(ws, request)
+    }))
+    .await;
     let router = router_with(Proxy {
         transport: LocalUpstream::new(),
         sd_host: upstream,
         sd_auth: Some("fixture:secret".into()),
     })
     .with_state(state());
+    for method in ["GET", "HEAD"] {
+        for query in ["", "?skip_current_image=false", "?skip_current_image=true"] {
+            assert_eq!(
+                request(
+                    &router,
+                    method,
+                    &format!("/sdapi/v1/progress{query}"),
+                    Body::empty(),
+                    true
+                )
+                .await
+                .status(),
+                StatusCode::FORBIDDEN
+            );
+        }
+    }
+    let mut forwarded = Request::builder()
+        .uri("/sdapi/v1/progress")
+        .header("x-forwarded-for", "192.0.2.1")
+        .body(Body::empty())
+        .unwrap();
+    forwarded.extensions_mut().insert(ConnectInfo(
+        "127.0.0.1:49201".parse::<SocketAddr>().unwrap(),
+    ));
+    assert_eq!(
+        router.clone().oneshot(forwarded).await.unwrap().status(),
+        StatusCode::FORBIDDEN
+    );
+    assert_eq!(
+        hits.load(Ordering::SeqCst),
+        0,
+        "Rejected requests must not contact SD"
+    );
+    let local = request(
+        &router,
+        "GET",
+        "/sdapi/v1/progress?skip_current_image=false",
+        Body::empty(),
+        false,
+    )
+    .await;
+    assert_eq!(local.status(), StatusCode::OK);
+    let local: serde_json::Value =
+        serde_json::from_slice(&local.into_body().collect().await.unwrap().to_bytes()).unwrap();
+    assert_eq!(local["current_image"], "private preview fixture");
+    assert_eq!(local["state"]["job"], "private job fixture");
+    assert_eq!(local["query"], "skip_current_image=false");
+    assert_eq!(hits.load(Ordering::SeqCst), 1);
     let bytes = vec![42_u8; 3 * 1024 * 1024];
     let response = request(
         &router,

@@ -272,6 +272,13 @@ fn read_verified(
         return Ok(false);
     }
     let mut file = open(path, entry.bytes, false)?;
+    if let Some(bytes) = &mut output {
+        let size = usize::try_from(entry.bytes)
+            .map_err(|_| Error::new("RESOURCE_BUSY", "Resource does not fit in memory"))?;
+        bytes
+            .try_reserve_exact(size)
+            .map_err(|_| Error::new("RESOURCE_BUSY", "Resource memory is unavailable"))?;
+    }
     let mut hash = sha2::Sha256::new();
     use sha2::Digest;
     let mut buffer = vec![0; 512 * 1024];

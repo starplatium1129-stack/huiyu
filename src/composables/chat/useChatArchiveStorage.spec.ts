@@ -80,6 +80,20 @@ it('invalidates queued operations on a global reset', async () => {
   a.reset()
   expect(await saving).toBe(false)
   expect(localStorage.getItem(CHAT_ARCHIVE_KEY)).toBeNull()
+  let acknowledge!: () => void, started!: () => void, finishRead!: (value: unknown) => void
+  const writing = new Promise<void>(resolve => { started = resolve })
+  vi.mocked(kvSet).mockImplementationOnce(async () => { started(); await new Promise<void>(resolve => { acknowledge = resolve }) })
+  a.add('nene', [message('before-reset')])
+  const inFlight = a.save()
+  await writing
+  a.reset()
+  vi.mocked(kvGet).mockImplementationOnce(() => new Promise(resolve => { finishRead = resolve }))
+  const refresh = a.refresh()
+  acknowledge()
+  expect(await inFlight).toBe(false)
+  finishRead({ version: 1, archived: { nene: [message('after-reset')] } })
+  await refresh
+  expect(a.archive.value.archived.nene.map(item => item.mid)).toEqual(['after-reset'])
 })
 
 it('migrates legacy data once and never resurrects the retained source after a clear', async () => {
@@ -133,14 +147,21 @@ it.each([{ version: 1 }, { version: 1, archived: [] }, { version: 1, archived: {
   expect(archiveKv.get('chat_archive_v1')).toEqual(original)
 })
 
-it('does not fall back to legacy or empty data when the authoritative read fails', async () => {
-  const a = await open()
-  a.add('nene', [message('keep')]); await a.save()
-  const original = JSON.stringify(archiveKv.get('chat_archive_v1'))
+it('retains authoritative data after a failed initial read and permits saving only after a successful refresh', async () => {
+  const original = { version: 1, archived: { nene: [message('keep')] } }
+  archiveKv.set('chat_archive_v1', original)
+  vi.mocked(kvGet).mockRejectedValueOnce(Error('资料已变化，请重新读取归档'))
+  const a = useChatArchiveStorage(['nene'], () => true, vi.fn())
+  await expect(a.ready).rejects.toThrow('资料已变化')
+  a.add('nene', [message('pending')])
+  expect(await a.save()).toBe(false)
+  expect(archiveKv.get('chat_archive_v1')).toEqual(original)
+  await a.refresh()
+  expect(await a.save()).toBe(true)
+  expect((await open()).archive.value.archived.nene.map(item => item.mid)).toEqual(['keep', 'pending'])
   vi.mocked(kvGet).mockRejectedValueOnce(Error('database unavailable'))
   await expect(a.refresh()).rejects.toThrow('database unavailable')
-  a.add('nene', [message('pending')])
-  vi.mocked(kvGet).mockRejectedValueOnce(Error('database unavailable'))
+  a.add('nene', [message('blocked')])
   expect(await a.save()).toBe(false)
-  expect(JSON.stringify(archiveKv.get('chat_archive_v1'))).toBe(original)
+  expect((archiveKv.get('chat_archive_v1') as typeof original).archived.nene.map(item => item.mid)).toEqual(['keep', 'pending'])
 })

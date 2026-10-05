@@ -242,7 +242,7 @@
               <StudioTooltip anchor :content="speechError || '按住说话，松开识别；也可按住空格或 Enter'">
                 <button class="hold-talk-btn" type="button"
                   :data-state="speechState"
-                  :disabled="speechState === 'recognizing'"
+                  :disabled="speechButtonDisabled"
                   @keydown.space.prevent="onSpeechKeyPress"
                   @keydown.enter.prevent="onSpeechKeyPress"
                   @keyup.space.prevent="onSpeechRelease"
@@ -445,6 +445,7 @@ const {
   speechError,
   speechAutoListening,
   speechReady,
+  speechButtonDisabled,
   speechButtonText,
   speechStateText,
   speechSessionActive,
@@ -458,7 +459,7 @@ const {
 } = useChatSpeechInteraction({
   currentCharacter,
   chatReady,
-  busy,
+  busy: computed(() => busy.value || voiceActive.value),
   inputText,
   handleSend,
 })

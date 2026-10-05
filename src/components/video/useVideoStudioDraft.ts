@@ -97,7 +97,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     return () => { releaseMaintenance(); stop(); window.clearTimeout(draftTimer); persistDraft() }
   }
 
-  /** 单张帧图恢复：IndexedDB 取 blob 重建预览；失效返回 false（草稿其余部分照常）。 */
+  /** 单张帧图恢复：仅确认原图为空时返回 false；暂时读取失败保留引用供重试。 */
   async function restoreFrame(idRef: Ref<string>, urlRef: Ref<string>, signal: AbortSignal): Promise<boolean> {
     const imageId = idRef.value, previousUrl = urlRef.value
     if (!imageId) return true
@@ -111,8 +111,8 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
       return true
     } catch {
       if (!current()) return true
-      idRef.value = ''
-      return false
+      deps.onPersistError('草稿帧图暂时无法读取，图片引用已保留；请稍后刷新页面重试')
+      return true
     }
   }
 

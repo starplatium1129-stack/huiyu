@@ -222,7 +222,17 @@ pub(super) async fn fail(job: &Job, error: ApiError, unknown: bool) {
     if !unknown {
         state.permit.take();
     }
+    drop(state);
     job.notify.notify_waiters();
+    if !unknown {
+        notify_settled(job);
+    }
+}
+pub(super) fn notify_settled(job: &Job) {
+    // Unknown may have stopped the runtime watcher. Call without provider locks.
+    if let Some(hooks) = &job.hooks {
+        hooks.observation_changed();
+    }
 }
 
 /// Upstream completion and durable result collection are distinct facts. Keep
@@ -314,11 +324,7 @@ async fn try_collect(inner: &Inner, job: &Job) -> bool {
             state.collection_pending = false;
             state.code = None;
             state.error = None;
-            state
-                .metadata
-                .as_object_mut()
-                .unwrap()
-                .remove("resultCollectionError");
+            state.metadata["resultCollectionError"] = Value::Null;
         }
         Err(error) => {
             state.code = Some("RESULT_COLLECTION_PENDING".into());

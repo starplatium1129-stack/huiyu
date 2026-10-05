@@ -186,6 +186,9 @@ function detectInside(query: string, term: string): boolean {
   return query.includes(term)
 }
 
+const STOP_PHRASES = ['请帮我找','帮我找','我想画','想画一个','想画','想要一个','想要','给我一个','给我','来一个','来点','比较','有一点','有点','一幅','一张','一些','一个','这种','那种','感觉','风格','画面','场景'].sort((a, b) => b.length - a.length)
+const STOP_SINGLES = new Set(['我','的','地','得','在','把','请','找','画','想','要','个','张','些','点'])
+
 export function analyzeQuery(query: string, config: SceneUXConfig | null | undefined) {
   const normalized = normalizeQuery(query)
   if (!normalized) return { normalized: '', groups: [] as string[][], intents: [] as string[], residualTerms: [] as string[] }
@@ -206,24 +209,22 @@ export function analyzeQuery(query: string, config: SceneUXConfig | null | undef
     })
   }
 
-  const stopPhrases = ['请帮我找','帮我找','我想画','想画一个','想画','想要一个','想要','给我一个','给我','来一个','来点','比较','有一点','有点','一幅','一张','一些','一个','这种','那种','感觉','风格','画面','场景']
-  stopPhrases.sort((a, b) => b.length - a.length).forEach(p => { residual = residual.split(p).join(' ') })
-  const stopSingles = new Set(['我','的','地','得','在','把','请','找','画','想','要','个','张','些','点'])
-  const residualTerms = normalizeQuery(residual).split(' ').filter(t => t && !stopSingles.has(t))
+  STOP_PHRASES.forEach(p => { residual = residual.split(p).join(' ') })
+  const residualTerms = normalizeQuery(residual).split(' ').filter(t => t && !STOP_SINGLES.has(t))
   residualTerms.forEach(t => groups.push([t]))
 
   return { normalized, groups, intents, residualTerms }
 }
 
-export function matchesSearch(scene: Record<string, unknown>, query: string, config: SceneUXConfig | null | undefined, extras?: string[]): boolean {
-  const { groups } = analyzeQuery(query, config)
+export function matchesSearch(scene: Record<string, unknown>, query: string, config: SceneUXConfig | null | undefined, extras?: string[], analysis = analyzeQuery(query, config)): boolean {
+  const { groups } = analysis
   if (!groups.length) return true
   const hay = searchText(scene, extras)
   return groups.every(grp => grp.some(t => hay.includes(t.toLowerCase())))
 }
 
-export function searchScore(scene: Record<string, unknown>, query: string, config: SceneUXConfig | null | undefined, extras?: string[]): number {
-  const { groups, normalized } = analyzeQuery(query, config)
+export function searchScore(scene: Record<string, unknown>, query: string, config: SceneUXConfig | null | undefined, extras?: string[], analysis = analyzeQuery(query, config)): number {
+  const { groups, normalized } = analysis
   if (!groups.length) return 0
   const fields = [
     { value: scene.title, w: 36 }, { value: characterLabel(String(scene.char ?? '')), w: 30 },
@@ -233,12 +234,12 @@ export function searchScore(scene: Record<string, unknown>, query: string, confi
     { value: Array.isArray(scene.tags) ? scene.tags.join(' ') : '', w: 14 },
     { value: [scene.camera, scene.lighting, scene.season, scene.timeOfDay].join(' '), w: 10 },
     { value: (extras ?? []).join(' '), w: 8 },
-  ]
+  ].map(field => ({ ...field, value: normalizeQuery(String(field.value ?? '')) }))
   let score = groups.reduce((sum, grp) => {
     let best = 0
     grp.forEach(term => {
       const t = normalizeQuery(term)
-      fields.forEach(f => { if (normalizeQuery(String(f.value ?? '')).includes(t)) best = Math.max(best, f.w + Math.min(t.length, 8)) })
+      fields.forEach(f => { if (f.value.includes(t)) best = Math.max(best, f.w + Math.min(t.length, 8)) })
     })
     return sum + best
   }, 0)

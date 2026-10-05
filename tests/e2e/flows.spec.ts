@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { expect, test, type APIRequestContext, type Locator, type Page } from '@playwright/test';
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js';
 import { expectStudioSelectValue, pickStudioOptionByValue } from './helpers/studioSelect';
+import type { CatalogChange, CatalogReceipt, CatalogRecord } from '../../src/api/catalogApi';
 
 /**
  * 六条主流程回归 —— 跑在 mock 上游之上（scripts/tests/mock-stack.js）。
@@ -737,82 +738,87 @@ for (const theme of ['dark']) {
   })
 }
 
-test('flow 5 · 场景保存：编辑 → 脏态 → POST 精确场景变更集', async ({ page }) => {
+test('flow 5 · 场景保存：编辑 → 脏态 → POST 精确目录变更', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
 
-  /**
-   * POST /api/maintenance/scenes/changes 会真的写回 data/scenes/*.json 并跑三个校验脚本。
-   * E2E 不该改仓库内容，所以这里拦在网络层，断言送出的载荷 —— 服务端的写盘 /
-   * 回滚逻辑由 scripts/tests/test-maintenance.js 覆盖。
-  */
-  let saved: any = null;
-  await page.route('**/api/maintenance/scenes/changes', async route => {
-    saved = route.request().postDataJSON();
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        ok: true,
-        count: saved.changeSet.scenes.upsert.length,
-        backup: '2026-07-28-content',
-        version: saved.baseVersion + 1,
-        snapshot: { scenes: saved.changeSet.scenes.upsert, tags: [], blueprints: [], curation: {} },
-      }),
-    });
+  // GET 保留真实隔离 Rust 目录；只拦截写请求验证 UI 载荷，不修改共享夹具。
+  // SQLite 写入与修订冲突由 runtime-rs/src/catalog/tests.rs 覆盖。
+  const submissions: Array<{ changes: CatalogChange[]; preview: boolean }> = [];
+  let original!: CatalogRecord;
+  await page.route('**/api/catalog/changes', async route => {
+    expect(route.request().method()).toBe('POST');
+    const saved = route.request().postDataJSON() as typeof submissions[number];
+    submissions.push(saved);
+    const after = { ...original, revision: original.revision + 1, data: saved.changes[0]?.data ?? original.data };
+    const receipt: CatalogReceipt = {
+      ok: true, preview: false, version: 42, batch: 'e2e-catalog-save',
+      items: [{ kind: original.kind, id: original.id, revision: after.revision, removed: false }],
+      diffs: [{ kind: original.kind, id: original.id, before: original, after }],
+    };
+    await route.fulfill({ json: receipt });
   });
 
   await page.goto('/scene-manager');
-  await expect(page.locator('.maintenance-catalog:visible .catalog-record').first()).toBeVisible();
+  const firstRecord = page.getByRole('region', { name: '内容列表', exact: true }).locator('.catalog-record-row').first();
+  await expect(firstRecord).toBeVisible();
 
-  const saveButton = page.getByRole('button', { name: /保存到项目/ });
+  const saveButton = page.getByRole('button', { name: '保存更改', exact: true });
   await expect(saveButton).toBeDisabled();
 
   // 改一个已有场景的标题
-  await page.locator('.maintenance-catalog:visible').getByRole('button', { name: '编辑', exact: true }).click();
-  const modal = page.locator('.modal-card');
-  await expect(modal).toBeVisible();
-  const sceneId = await modal.locator('input').first().inputValue();
-  await modal.locator('.form-group', { hasText: '标题' }).locator('input').fill('E2E 改过的标题');
-  await modal.getByRole('button', { name: '保存' }).click();
-  await expect(modal).toBeHidden();
+  const detailResponse = page.waitForResponse(response =>
+    new URL(response.url()).pathname === '/api/catalog/record' && response.request().method() === 'GET');
+  await firstRecord.click();
+  const response = await detailResponse;
+  expect(response.ok()).toBe(true);
+  original = ((await response.json()) as { record: CatalogRecord }).record;
+  expect(original.kind).toBe('scene');
+  const editor = page.getByRole('region', { name: '编写内容', exact: true });
+  await editor.getByLabel('标题', { exact: true }).fill('E2E 改过的标题');
+  await editor.getByRole('button', { name: '暂存修改', exact: true }).click();
 
-  await expect(page.locator('.maintenance-state')).toHaveClass(/dirty/);
+  await expect(page.locator('.catalog-save-status')).toHaveClass(/has-changes/);
   await expect(saveButton).toBeEnabled();
 
   await saveButton.click();
-  await expect(page.locator('.maintenance-state')).not.toHaveClass(/dirty/);
-  await expect(page.locator('.maintenance-state')).toContainText('备份编号 2026-07-28-content');
+  await expect(page.locator('.catalog-feedback')).toHaveText('已保存 1 项修改');
+  await expect(page.locator('.catalog-save-status')).not.toHaveClass(/has-changes/);
+  await expect(saveButton).toBeDisabled();
 
-  // 载荷：精确变更集中的完整场景记录，避免把整库快照重复写回。
-  expect(Number.isSafeInteger(saved.baseVersion)).toBeTruthy();
-  expect(saved.changeSet.version).toBe(1);
-  expect(saved.changeSet.scenes.remove).toEqual([]);
-  const edited = saved.changeSet.scenes.upsert.find((s: any) => s.id === sceneId);
-  expect(edited?.title).toBe('E2E 改过的标题');
+  // 只提交改动记录及其原修订，标题以外的提示词、分级及扩展数据保持原样。
+  expect(submissions).toHaveLength(1);
+  const saved = submissions[0];
+  expect(Object.keys(saved).sort()).toEqual(['changes', 'preview']);
+  expect(saved.preview).toBe(false);
+  expect(saved.changes).toEqual([{
+    kind: 'scene', id: original.id, expectedRevision: original.revision, sortOrder: original.sortOrder,
+    data: { ...original.data, title: 'E2E 改过的标题' },
+  }]);
 
   expect(errors).toEqual([]);
 });
 
 test('flow 5b · 场景保存失败：错误如实回显，脏态保留', async ({ page }) => {
-  await page.route('**/api/maintenance/scenes/changes', route => route.fulfill({
+  await page.route('**/api/catalog/changes', route => route.fulfill({
     status: 400,
     contentType: 'application/json',
-    body: JSON.stringify({ ok: false, error: 'sc001 标记为招牌场景时必须填写推荐理由', rolledBack: true }),
+    body: JSON.stringify({ ok: false, error: '场景内容校验失败：请检查故事资料' }),
   }));
 
   await page.goto('/scene-manager');
-  await expect(page.locator('.maintenance-catalog:visible .catalog-record').first()).toBeVisible();
-  await page.locator('.maintenance-catalog:visible').getByRole('button', { name: '编辑', exact: true }).click();
-  await page.locator('.modal-card .form-group', { hasText: '标题' }).locator('input').fill('会被拒绝的标题');
-  await page.locator('.modal-card').getByRole('button', { name: '保存' }).click();
+  await page.getByRole('region', { name: '内容列表', exact: true }).locator('.catalog-record-row').first().click();
+  const editor = page.getByRole('region', { name: '编写内容', exact: true });
+  await editor.getByLabel('标题', { exact: true }).fill('会被拒绝的标题');
+  await editor.getByRole('button', { name: '暂存修改', exact: true }).click();
 
-  const saveButton = page.getByRole('button', { name: /保存到项目/ });
+  const saveButton = page.getByRole('button', { name: '保存更改', exact: true });
   await expect(saveButton).toBeEnabled();
   await saveButton.click();
-  await expect(page.locator('.maintenance-state')).toContainText('推荐理由');
+  await expect(page.locator('.catalog-feedback')).toHaveText('场景内容校验失败：请检查故事资料');
   // 保存失败后必须仍是脏态，否则用户会以为已经存上了
-  await expect(page.locator('.maintenance-state')).toHaveClass(/dirty/);
-  await expect(page.getByRole('button', { name: /保存到项目/ })).toBeEnabled();
+  await expect(page.locator('.catalog-save-status')).toHaveClass(/has-changes/);
+  await expect(editor.getByLabel('标题', { exact: true })).toHaveValue('会被拒绝的标题');
+  await expect(saveButton).toBeEnabled();
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

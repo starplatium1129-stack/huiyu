@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { defineComponent, h, nextTick, ref } from 'vue'
+import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
 import ConfirmDialog from './ConfirmDialog.vue'
 import ChatActionsMenu from './ChatActionsMenu.vue'
 import { confirmAction, resolveConfirm, useConfirmState } from '@/composables/useConfirm'
@@ -187,4 +187,28 @@ it('returns focus and safely resolves a pending request when the confirmation ho
   await result
   expect(document.activeElement).toBe(opener)
   expect(document.body.classList.contains('overlay-open')).toBe(false)
+})
+
+
+it('closes a cached room menu without returning focus to its hidden trigger', async () => {
+  const active = ref(true)
+  const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, {
+    default: () => active.value ? h(ChatActionsMenu) : null,
+  }) }), { attachTo: document.body })
+  mounted.push(wrapper)
+  await wrapper.get('.chat-more-trigger').trigger('click'); await flushPromises()
+  expect(document.querySelector('.chat-more-menu')).not.toBeNull()
+  const outside = document.createElement('button'); document.body.append(outside)
+  active.value = false; await nextTick(); outside.focus(); await flushPromises()
+  await new Promise(resolve => window.setTimeout(resolve, 0))
+  expect(document.querySelector('.chat-more-menu')).toBeNull()
+  expect(document.activeElement).toBe(outside)
+  active.value = true; await settle()
+  const trigger = wrapper.get('.chat-more-trigger')
+  await trigger.trigger('click'); await flushPromises()
+  document.querySelector('.chat-more-menu')!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+  await flushPromises(); await settle()
+  // Reka restores the trigger in its documented close-auto-focus zero-delay task.
+  await new Promise(resolve => window.setTimeout(resolve, 0))
+  expect(document.activeElement).toBe(trigger.element)
 })

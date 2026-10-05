@@ -1,3 +1,4 @@
+import type { DesktopWorkspaceSession } from '../../types/desktop-bootstrap'
 import { bindMigrationCandidate } from '../platform/web/migrationAuthority'
 import { markMigrationActivation, migrationRecoveryPending, watchMigrationRecovery, reconcileMigrationAuthority, recoverMigrationAuthority } from '../platform/web/migrationBarrier'
 import { computed, ref, onScopeDispose } from 'vue'
@@ -57,14 +58,24 @@ export function useWorkspaceMigration(onMessage: (message: string) => void) {
       assertCurrent()
       if (targetIdentity() !== initialTarget) throw new Error('迁移目标已变化，请重新选择备份目录。')
       progress.value = '正在准备独立备份与来源盘点…'
-      await prepareDesktopWorkspace()
-      assertCurrent()
-      await refreshDesktopRuntime()
-      assertCurrent()
-      const candidate = getDesktopRuntime().bootstrap?.runtime?.workspace
+      let candidate: DesktopWorkspaceSession | null | undefined
       const bridge = getDesktopCapabilities()
       const result = await migrateProfileToCandidate({ sourceProfileId: bootstrap.sourceProfileId, expectedOrigin: bootstrap.sourceOrigin,
-        backupDirectory: directory, signal: request.signal, candidate: bindMigrationCandidate(getDesktopRuntime, workspaceRequest),
+        backupDirectory: directory, signal: request.signal,
+        prepareCandidate: async selection => {
+          assertCurrent()
+          const prepared = await prepareDesktopWorkspace(selection)
+          assertCurrent()
+          // An older coalesced handshake may still refer to the previous candidate.
+          await refreshDesktopRuntime(true)
+          assertCurrent()
+          candidate = getDesktopRuntime().bootstrap?.runtime?.workspace
+          const expected = prepared.runtime?.workspace
+          if (prepared.connection !== 'ready' || !expected || !candidate
+            || candidate.workspaceId !== expected.workspaceId || candidate.runtimeEpoch !== expected.runtimeEpoch || candidate.generation !== expected.generation
+            || (selection.mode === 'resume' && selection.workspaceId && candidate.workspaceId !== selection.workspaceId)) throw new Error('迁移目标未确认，请保留备份并重试。')
+          return { workspaceId: candidate.workspaceId, ...bindMigrationCandidate(getDesktopRuntime, workspaceRequest) }
+        },
         resume,
         migrateCredential: async (reference, secret) => {
           if (!bridge?.writeChatCredential || !bridge.readChatCredential) return false

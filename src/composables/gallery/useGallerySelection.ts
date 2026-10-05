@@ -13,12 +13,10 @@ export function useGallerySelection(visible: ComputedRef<ArtworkRecord[]>) {
   }
 
   function toggleSelect(id: string | number) {
-    const next = new Set(selectedIds.value);
-    if (next.has(id))
-      next.delete(id);
+    if (selectedIds.value.has(id))
+      selectedIds.value.delete(id);
     else
-      next.add(id);
-    selectedIds.value = next;
+      selectedIds.value.add(id);
   }
 
   const allVisibleSelected = computed(() =>

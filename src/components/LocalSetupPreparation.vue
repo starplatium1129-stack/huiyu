@@ -4,11 +4,11 @@
     <div class="preparation-body">
       <p>先核对运行方式、真实目录与来源，再显式下载固定模型文件。绘遇不会在这里安装程序、执行脚本或代你接受许可。</p>
       <label class="route-label" for="setup-comfy-route">ComfyUI 的运行方式</label>
-      <select id="setup-comfy-route" v-model="route" class="route-select">
-        <option value="desktop">官方 Desktop（新用户推荐，由 Desktop 启动）</option>
-        <option value="portable">Windows Portable（由便携包启动）</option>
-        <option value="manual">已有源码 / Python 环境</option>
-      </select>
+      <StudioSelect id="setup-comfy-route" v-model="route" class="route-select" label="ComfyUI 的运行方式" :options="[
+        { value: 'desktop', label: '官方 Desktop（新用户推荐，由 Desktop 启动）' },
+        { value: 'portable', label: 'Windows Portable（由便携包启动）' },
+        { value: 'manual', label: '已有源码 / Python 环境' },
+      ]" />
       <ol class="preparation-steps">
         <li>
           <h3>准备对应硬件的运行环境</h3>
@@ -106,6 +106,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import StudioSelect from './ui/StudioSelect.vue'
 import type { LocalSetupModel, LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup.ts'
 import { modelPreparationState as state, formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'
 import { useLocalSetupVerification } from '../composables/useLocalSetupVerification.ts'
@@ -134,7 +135,15 @@ function stateLabel(model: LocalSetupModel): string {
   return ({ missing: '未发现', unknown: '状态未知', 'size-mismatch': '大小不符，待核对', 'bytes-match': '大小相符，未校验 SHA-256' })[state(model)]
 }
 function hashCommand(path: string): string { return `Get-FileHash -LiteralPath '${path.replaceAll("'", "''")}' -Algorithm SHA256` }
-watch([route, () => props.snapshot], () => { reviewed.value = false; confirmed.value = false; copyNotice.value = '' })
+const planIdentity = computed(() => JSON.stringify([route.value, props.snapshot.workspace.path,
+  props.snapshot.comfy.path, props.snapshot.comfy.host, props.snapshot.comfy.layout,
+  models.value.map(model => [model.id, model.path, model.preparation?.url, model.preparation?.revision,
+    model.preparation?.expectedBytes, model.preparation?.sha256, model.preparation?.modelCardUrl,
+    model.preparation?.licenseUrl, model.preparation?.upstreamLicenseUrl])]))
+watch([() => props.snapshot, planIdentity], ([, plan], [, previous]) => {
+  if (downloadId.value && plan === previous) return
+  reviewed.value = false; confirmed.value = false; copyNotice.value = ''
+})
 watch(reviewed, () => { confirmed.value = false; copyNotice.value = '' })
 watch(workspaceBlocked, () => { reviewed.value = false; confirmed.value = false })
 async function copyPlan() {
@@ -153,7 +162,7 @@ async function copyPlan() {
 .preparation code { display:block; overflow-wrap:anywhere; color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .preparation a { color:var(--accent); text-underline-offset:3px; }
 .route-label { display:block; color:var(--text-primary); margin:var(--s-3) 0 var(--s-2); }
-.route-select { width:100%; min-height:40px; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-sm); padding:var(--s-2); }
+.route-select { width:100%; }
 .preparation-steps { padding-left:var(--s-5); display:grid; gap:var(--s-4); margin:var(--s-4) 0 0; }
 .verification-actions, .preparation-links, .model-heading { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-3); }
 .preparation-models { display:grid; gap:var(--s-3); list-style:none; padding:0; margin:var(--s-3) 0; }

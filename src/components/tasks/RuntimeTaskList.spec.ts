@@ -94,3 +94,13 @@ it('unknown acceptance cancellation is single-flight and can be retried after a 
     expect(api.cancelKey.mock.calls).toEqual([['original-key'], ['original-key']])
   } finally { pending.resolve(); wrapper.unmount() }
 })
+
+it('routes an independent shot retry back to its source batch while leaving results in its own inbox', () => {
+  taskRecords.value = [{ ...task('independent', true), kind: 'batch', metadata: { context: { retriedTaskId: 'original/batch', stepIndex: 2 } } }]
+  const wrapper = setup()
+  try {
+    expect(wrapper.get('router-link-stub').attributes('to')).toBe('/video-studio?mode=shots&batch=original%2Fbatch')
+    expect(taskRecords.value[0].taskId).toBe('independent')
+    expect(taskRecords.value[0].resultRefs).toHaveLength(1)
+  } finally { wrapper.unmount() }
+})

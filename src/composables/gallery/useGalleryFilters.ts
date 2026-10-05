@@ -5,7 +5,7 @@ import { dayGroup, searchHaystack } from './galleryHelpers';
 import { buildMasonryGroups } from './useMasonryWall';
 import type { GalleryProject } from './galleryStorage';
 import { artworkTags } from './artworkTags';
-import { artworkGenerationConditions, emptyGenerationConditions, GENERATION_FILTER_FIELDS, generationConditionOptions, matchesGenerationConditions, normalizeGalleryFilterSnapshot, normalizeGenerationConditions, type GalleryFilterSnapshot } from './galleryGenerationConditions';
+import { artworkGenerationConditions, emptyGenerationConditions, GENERATION_FILTER_FIELDS, generationConditionOptions, generationConditionLabel, matchesGenerationConditions, normalizeGalleryFilterSnapshot, normalizeGenerationConditions, type GalleryFilterSnapshot } from './galleryGenerationConditions';
 import { artworkCharacterIds, createSmartAlbumMatcher, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules';
 
 const generationQueryKeys = { engine: 'gEngine', model: 'gModel', outfit: 'gOutfit', seed: 'gSeed', size: 'gSize', reviewState: 'gState' } as const;
@@ -43,7 +43,14 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   const tagFilter = ref('');
   const generationConditions = ref(emptyGenerationConditions());
   const generationIndex = computed(() => new Map(history.value.map(item => [item, artworkGenerationConditions(item)])));
-  const generationOptions = computed(() => generationConditionOptions(generationIndex.value.values(), generationConditions.value));
+  const recordedGenerationOptions = computed(() => generationConditionOptions(generationIndex.value.values(), emptyGenerationConditions()));
+  const generationOptions = computed(() => Object.fromEntries(GENERATION_FILTER_FIELDS.map(field => {
+    const options = recordedGenerationOptions.value[field], selected = generationConditions.value[field];
+    // Recorded counts are positive; the only zero entry is "missing", which
+    // sorts before all "v:" values. An unknown selection therefore appends.
+    return [field, !selected || options.some(option => option.value === selected) ? options
+      : [...options, { value: selected, label: `${generationConditionLabel(field, selected)} · 0` }]];
+  })) as ReturnType<typeof generationConditionOptions>);
   const generationFilterCount = computed(() => GENERATION_FILTER_FIELDS.filter(field => generationConditions.value[field]).length);
   const filterSnapshot = computed<GalleryFilterSnapshot>(() => ({
     favoriteOnly: favoriteOnly.value, projectFilter: projectFilter.value, searchQuery: searchQuery.value.trim(),

@@ -128,7 +128,7 @@ export function useGalleryWorkspace() {
         clearSelection,
     } = useGallerySelection(visible);
 
-    const { viewerIndex, viewerUrl, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step } = useGalleryViewer({
+    const { viewerIndex, viewerUrl, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step, getViewerRevision } = useGalleryViewer({
         history, visible, previewSource: item => cardUrls[item.id] || thumbUrls[item.id] || '', resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
     function onViewerClosed() { finishViewerClose(); restoreDeferredFiltersFromQuery(); }
@@ -537,7 +537,10 @@ export function useGalleryWorkspace() {
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
     function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast }, item); }
     const deleteMotion = useGalleryDeleteMotion(shellEl, () => history.value, () => galleryLoading.value);
-    function confirmDelete(item: ArtworkRecord): Promise<void> { return confirmDeleteAction({ showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }, item); }
+    function confirmDelete(item: ArtworkRecord): Promise<void> {
+        const epoch = imageEpoch, viewerRevision = getViewerRevision();
+        return confirmDeleteAction({ isCurrentView: () => !unmounted && viewActive && epoch === imageEpoch && viewerRevision === getViewerRevision(), showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }, item);
+    }
     function bulkDelete(): Promise<void> { const epoch = imageEpoch; return bulkDeleteAction({ isCurrentView: () => !unmounted && viewActive && epoch === imageEpoch, showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }); }
     return {
 closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,

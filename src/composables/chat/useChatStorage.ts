@@ -15,7 +15,7 @@ import {
   normalizeCompanionOutfit,
 } from '@/utils/companionRegistry'
 import {
-  normalizeChatStorage, serializeChatStorage, type PersistedChatState,
+  normalizeChatStorage, normalizeChatConnection, sameChatApiBinding, serializeChatStorage, type PersistedChatState,
 } from '@/utils/chatStorageCore'
 import {
   CHAT_ARCHIVE_KEY,
@@ -44,7 +44,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   try { resetRevision = chatResetRevision() } catch { /* load reports inaccessible storage */ }
   const credentials = createChatCredentials()
   let pendingLegacyKey = ''
-  let credentialRevision = 0
+  let credentialRevision = 0, credentialWrites = 0, connectionReloadPending = false
+  let connectionSnapshot = '', disposed = false
+  if (getCurrentScope()) onScopeDispose(() => { disposed = true })
   const characterIds = listCompanionCharacterIds()
   const state = reactive<ChatState>(createChatStorageState(characterIds))
   const normalizeOptions = createChatNormalizeOptions(characterIds)
@@ -178,7 +180,6 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   function applyPersisted(persisted: PersistedChatState) {
-    state.version = persisted.version
     state.historiesRevision = persisted.historiesRevision
     state.historiesRevisions = { ...persisted.historiesRevisions }
     state.active = persisted.active
@@ -186,21 +187,12 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       state.histories[char] = persisted.histories[char] || []
       state.settings.drafts[char] = persisted.settings.drafts[char] || ''
     }
-    state.settings.model = persisted.settings.model
-    state.settings.provider = persisted.settings.provider
-    state.settings.apiBaseUrl = persisted.settings.apiBaseUrl
-    state.settings.apiModel = persisted.settings.apiModel
-    state.settings.apiKey = persisted.settings.apiKey
-    state.settings.webSearchEnabled = persisted.settings.webSearchEnabled
-    state.settings.live2dEnabled = persisted.settings.live2dEnabled
-    state.settings.live2dOutfit = persisted.settings.live2dOutfit
-    state.settings.live2dOutfits = persisted.settings.live2dOutfits
-    state.settings.autoVoice = persisted.settings.autoVoice
-    state.settings.volume = persisted.settings.volume
+    const { drafts: _drafts, apiConfiguredByUser: _configured, apiSettingsRevision: _revision, ...settings } = persisted.settings
+    Object.assign(state.settings, settings)
   }
 
-  function persistedState(scrubCredential = false): PersistedChatState {
-    let existingKey = ''
+  function persistedState(scrubCredential: boolean | 'model' = false): PersistedChatState {
+    let existingKey = '', existingRevision = ''
     let existingEndpoint = state.settings.apiBaseUrl
     let existingModel = state.settings.apiModel
     let existingConfigured = !neverConfigured.value
@@ -209,6 +201,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       const key = current?.settings?.apiKey || current?.apiKey || current?.api?.apiKey
       const endpoint = current?.settings?.apiBaseUrl || current?.settings?.baseUrl || current?.api?.baseUrl
       const model = current?.settings?.apiModel || current?.api?.model
+      existingRevision = typeof current?.settings?.apiSettingsRevision === 'string' ? current.settings.apiSettingsRevision : ''
       existingKey = typeof key === 'string' ? key.trim().slice(0, 1000) : ''
       if (typeof endpoint === 'string') existingEndpoint = endpoint.trim().slice(0, 500)
       if (typeof model === 'string') existingModel = model.trim().slice(0, 200)
@@ -227,8 +220,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         apiModel: scrubCredential ? state.settings.apiModel : existingModel,
         // Keep only an existing migration source until secure write/read succeeds.
         // New keys are never written to browser storage.
-        apiKey: scrubCredential ? '' : existingKey,
-        apiConfiguredByUser: scrubCredential ? !neverConfigured.value : existingConfigured,
+        apiKey: scrubCredential === true ? '' : existingKey,
+        apiConfiguredByUser: scrubCredential === true ? !neverConfigured.value : existingConfigured,
+        apiSettingsRevision: scrubCredential === true ? crypto.randomUUID() : existingRevision,
         webSearchEnabled: state.settings.webSearchEnabled,
         live2dEnabled: state.settings.live2dEnabled,
         live2dOutfit: state.settings.live2dOutfit,
@@ -242,6 +236,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   async function load() {
     if (!canWrite()) return
+    const revision = ++credentialRevision
     let stored = ''
     let raw: unknown
     try {
@@ -265,11 +260,11 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         localStorage.getItem('aics_chat_model') || '',
         normalizeOptions,
       )
+      connectionSnapshot = JSON.stringify(normalizeChatConnection(raw, localStorage.getItem('aics_chat_model'), normalizeOptions))
       applyPersisted(normalized.state)
       loadFrequentPreferences()
       neverConfigured.value = normalized.neverConfigured
 
-      state.settings.apiKey = String(normalized.state.settings.apiKey || normalized.migratedApiKey).trim().slice(0, 1000)
       const legacy = raw as { settings?: { apiKey?: unknown }; apiKey?: unknown; api?: { apiKey?: unknown } } | null
       const legacyValue = legacy?.settings?.apiKey || legacy?.apiKey || legacy?.api?.apiKey
       pendingLegacyKey = typeof legacyValue === 'string' ? legacyValue.trim().slice(0, 1000) : ''
@@ -296,7 +291,6 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         if (!await saveArchive()) throw new Error('Archive commit failed')
         if (stored && hasOverflow) localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
       } catch { onError('无法读取聊天归档，请检查浏览器存储权限。') }
-      const revision = credentialRevision
       const endpoint = state.settings.apiBaseUrl
       try {
         await credentials.load(endpoint, pendingLegacyKey, {
@@ -362,14 +356,13 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     }
   }
 
-  function save(mergeRemote = true, scrubCredential = false, flushArchive = true) {
+  function save(mergeRemote = true, scrubCredential: boolean | 'model' = false, flushArchive = true) {
     if (!canWrite()) { saveFailed = true; return false }
     for (const [key, value] of pendingPreferences) savePreference(key, value)
     try {
       // 2026-08-16 审计：写盘前先合并其他窗口的更新，避免单键 last-writer-wins
       // 覆盖掉另一窗口的新消息。clear() 传 false 跳过（清除意图优先）。
       if (mergeRemote && !mergeRemoteIntoState()) return
-      state.version = STORAGE_VERSION
       localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState(scrubCredential)))
       rememberMessages()
       localStorage.setItem('aics_chat_model', state.settings.model || '')
@@ -392,22 +385,50 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state.settings.live2dOutfit = state.settings.live2dOutfits[state.active] || getCompanionDefaultOutfit(char)
     save()
   }
-  function setModel(model: string) { state.settings.model = String(model || ''); save() }
+  function setModel(model: string) { if (state.settings.model === String(model || '')) return; state.settings.model = String(model || ''); save() }
   function setProvider(provider: 'local' | 'api') { state.settings.provider = provider === 'api' ? 'api' : 'local'; save() }
-  async function setApiSettings(settings: { baseUrl: string; model: string; apiKey: string }) {
+  const readConnection = () => normalizeChatConnection(JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'), localStorage.getItem('aics_chat_model'), normalizeOptions)
+  async function reloadConnectionSettings(): Promise<boolean> {
+    if (credentialWrites) { connectionReloadPending = true; return false }
+    if (disposed || !canWrite()) return false
+    const incoming = readConnection(), snapshot = JSON.stringify(incoming)
+    if (snapshot === connectionSnapshot) return false
+    const revision = ++credentialRevision
+    const changedCredential = incoming.apiSettingsRevision !== JSON.parse(connectionSnapshot || '{}').apiSettingsRevision || incoming.apiBaseUrl !== state.settings.apiBaseUrl
+    if (!credentials.desktop && changedCredential) await credentials.save(incoming.apiBaseUrl, '')
+    const secret = credentials.desktop ? await credentials.load(incoming.apiBaseUrl, '') : changedCredential ? '' : state.settings.apiKey
+    if (credentialWrites) { connectionReloadPending = true; return false }
+    if (disposed || revision !== credentialRevision || snapshot !== JSON.stringify(readConnection()) || !canWrite()) return false
+    const { neverConfigured: unconfigured, apiSettingsRevision: _revision, ...settings } = incoming
+    Object.assign(state.settings, settings, { apiKey: secret })
+    neverConfigured.value = unconfigured
+    connectionSnapshot = snapshot
+    return true
+  }
+  async function setApiSettings(settings: { baseUrl: string; model: string; apiKey: string }, intent: 'user' | 'model' = 'user') {
     if (!canWrite()) throw new Error('聊天配置受版本保护，无法安全修改。')
     const endpoint = String(settings.baseUrl || '').trim().slice(0, 500)
     const secret = String(settings.apiKey || '').trim().slice(0, 1000)
-    const revision = ++credentialRevision
-    await credentials.save(endpoint, secret, () => {
-      if (revision !== credentialRevision) return
-      pendingLegacyKey = ''
-      state.settings.apiBaseUrl = endpoint
-      state.settings.apiModel = String(settings.model || '').trim().slice(0, 200)
-      state.settings.apiKey = secret
-      neverConfigured.value = false
-      if (!save(true, true)) throw new Error('安全凭据已写入，但浏览器配置保存失败，请重试。')
-    })
+    const revision = intent === 'user' ? ++credentialRevision : credentialRevision
+    credentialWrites++
+    if (intent === 'model') state.settings.apiModel = String(settings.model || '').trim().slice(0, 200)
+    try {
+      const commit = () => {
+        if (revision !== credentialRevision) return
+        if (intent === 'model' && (endpoint !== state.settings.apiBaseUrl || secret !== state.settings.apiKey
+          || !sameChatApiBinding(readConnection(), JSON.parse(connectionSnapshot || '{}')))) return
+        if (intent === 'user') { pendingLegacyKey = ''; state.settings.apiKey = secret; neverConfigured.value = false }
+        state.settings.apiBaseUrl = endpoint
+        state.settings.apiModel = String(settings.model || '').trim().slice(0, 200)
+        if (!save(true, intent === 'model' ? 'model' : true)) throw new Error('聊天配置保存失败，请重试。')
+        connectionSnapshot = JSON.stringify(readConnection())
+      }
+      if (intent === 'model') await credentials.load(endpoint, '', { isCurrent: () => false, commit })
+      else await credentials.save(endpoint, secret, commit)
+      await flushProfileWrites()
+    } finally {
+      if (--credentialWrites === 0 && connectionReloadPending) { connectionReloadPending = false; await reloadConnectionSettings() }
+    }
   }
   function setWebSearchEnabled(value: boolean) { state.settings.webSearchEnabled = Boolean(value); save() }
   function setLive2dEnabled(value: boolean) { state.settings.live2dEnabled = Boolean(value); save() }
@@ -454,13 +475,15 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     return chatArchiveToMarkdown(archive.value, names)
   }
   /** 导入归档 JSON：合并去重后落盘，返回导入条数。 */
-  async function importArchiveJson(textValue: string): Promise<number> {
-    if (!canWrite()) throw new Error('聊天归档受版本保护，无法安全修改。')
+  async function importArchiveJson(textValue: string, isCurrent: () => boolean = () => true): Promise<number> {
+    if (!isCurrent() || !canWrite()) throw new Error('聊天归档受版本保护，无法安全修改。')
+    const revision = resetRevision, current = () => isCurrent() && revision === chatResetRevision()
     const incoming = normalizeChatArchive(JSON.parse(textValue), characterIds)
     await archiveStorage.refresh()
+    if (!current() || !canWrite()) throw new Error('聊天状态已变化，请重新选择归档文件。')
     const before = archiveCounts(archive.value, characterIds)
     for (const [char, messages] of Object.entries(incoming.archived)) archiveStorage.add(char, messages, true)
-    if (!await saveArchive()) throw new Error('归档尚未保存，请重试。')
+    if (!await saveArchive() || !current()) throw new Error('归档尚未保存，请重新选择文件后重试。')
     const after = archiveCounts(archive.value, characterIds)
     return Object.keys(after).reduce((sum, id) => sum + Math.max(0, after[id] - (before[id] || 0)), 0)
   }
@@ -523,7 +546,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   return {
     state, load, save, messages, neverConfigured, canWrite, writeBlocked, flushArchive: saveArchive,
-    setActive, setModel, setProvider, setApiSettings, setWebSearchEnabled,
+    setActive, setModel, setProvider, setApiSettings, reloadConnectionSettings, setWebSearchEnabled,
     setLive2dEnabled, live2dOutfit, setLive2dOutfit, setAutoVoice, setVolume, draft, setDraft, trim, clear,
     archiveCount, exportArchiveJson, exportArchiveMarkdown, importArchiveJson,
     restoreFromArchive, clearArchive,

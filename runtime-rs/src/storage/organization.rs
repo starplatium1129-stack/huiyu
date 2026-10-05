@@ -65,7 +65,12 @@ fn tag_list(value: Option<&Value>) -> Result<Vec<String>> {
     Ok(tags)
 }
 
-fn replace_memberships(c: &Context, key: &str, references: &[Value], revision: i64) -> Result<()> {
+fn replace_memberships(
+    c: &Context,
+    key: &str,
+    references: &[Value],
+    affected: &mut BTreeSet<String>,
+) -> Result<()> {
     let before = memberships(c, key)?;
     let albums = before
         .iter()
@@ -90,7 +95,8 @@ fn replace_memberships(c: &Context, key: &str, references: &[Value], revision: i
             None
         };
         if previous != next {
-            records::update_membership(c, &album, &keys, revision)?;
+            records::set_membership(c, &album, &keys)?;
+            affected.insert(album);
         }
     }
     Ok(())
@@ -135,6 +141,7 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
         return Err(invalid("No organization changes were requested"));
     }
     let mut changes = Vec::new();
+    let mut affected = BTreeSet::new();
     for key in keys {
         c.check_cancel()?;
         let mut art = records::artwork(c, &key)?
@@ -170,7 +177,7 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
                     .remove("project");
                 Vec::new()
             };
-            replace_memberships(c, &key, &refs, revision)?;
+            replace_memberships(c, &key, &refs, &mut affected)?;
         }
         if tags_change {
             let mut tags: Vec<String> = art["body"]["collectionTags"]
@@ -206,6 +213,9 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
             changes.push(json!({"id":art["id"],"before":before,"after":after}));
         }
     }
+    for album in affected {
+        records::refresh_membership(c, &album, revision)?;
+    }
     Ok(changes)
 }
 
@@ -228,6 +238,7 @@ fn undo(c: &Context, principal: &str, command: &Value, revision: i64) -> Result<
     let changes = source["changes"]
         .as_array()
         .ok_or_else(|| conflict("UNDO_UNAVAILABLE", "Organization receipt is invalid"))?;
+    let mut affected = BTreeSet::new();
     let mut restored = 0;
     let mut skipped = 0;
     for change in changes.iter().rev() {
@@ -274,13 +285,16 @@ fn undo(c: &Context, principal: &str, command: &Value, revision: i64) -> Result<
             }
         }
         if let Some(refs) = old_refs {
-            replace_memberships(c, &key, refs, revision)?;
+            replace_memberships(c, &key, refs, &mut affected)?;
         }
         c.db.execute(
             "UPDATE artworks SET body=?,revision=? WHERE id_key=?",
             params![stringify(&art["body"]), revision, key],
         )?;
         restored += 1;
+    }
+    for album in affected {
+        records::refresh_membership(c, &album, revision)?;
     }
     Ok(json!({"restored":restored,"skipped":skipped}))
 }

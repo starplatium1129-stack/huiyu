@@ -1,3 +1,4 @@
+import type { MigrationCandidateSelection } from '../../../types/migration'
 import type { DesktopBootstrap, DesktopWorkspaceSession } from '../../../types/desktop-bootstrap.ts'
 import { isNativeDesktopOrigin } from '../desktopOrigins.ts'
 import { invokeHost as invoke } from './hostApi.ts'
@@ -51,8 +52,9 @@ export function decodeDesktopBootstrap(value: unknown): DesktopBootstrap {
   }
 }
 
-export async function prepareDesktopWorkspace(): Promise<DesktopBootstrap> {
-  return decodeDesktopBootstrap(await invoke('desktop_workspace_prepare'))
+export async function prepareDesktopWorkspace(candidate: MigrationCandidateSelection): Promise<DesktopBootstrap> {
+  try { return decodeDesktopBootstrap(await invoke('desktop_workspace_prepare', { candidate })) }
+  catch (error) { throw error instanceof Error ? error : new Error(typeof error === 'string' ? error : '本机候选准备失败，请保留备份后重试。') }
 }
 export async function activateDesktopWorkspace(migrationId: string, bundledUi = false): Promise<DesktopBootstrap> {
   return decodeDesktopBootstrap(await invoke('desktop_workspace_activate', { migrationId, bundledUi }))

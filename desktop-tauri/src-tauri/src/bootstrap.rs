@@ -39,10 +39,10 @@ pub struct DesktopBootstrap {
 }
 
 pub async fn read(window: WebviewWindow) -> Result<DesktopBootstrap, String> {
-    request(window, "session", None, false).await
+    request(window, "session", None, false, None).await
 }
 
-pub async fn request(window: WebviewWindow, action: &'static str, migration_id: Option<String>, bundled_ui: bool) -> Result<DesktopBootstrap, String> {
+pub async fn request(window: WebviewWindow, action: &'static str, migration_id: Option<String>, bundled_ui: bool, candidate: Option<serde_json::Value>) -> Result<DesktopBootstrap, String> {
     let role = window_role(window.label())?;
     let url = window.url().map_err(|_| "BOOTSTRAP_ORIGIN_DENIED")?;
     let app = window.app_handle().clone();
@@ -62,7 +62,7 @@ pub async fn request(window: WebviewWindow, action: &'static str, migration_id: 
         let runtime = if ready {
             let response = gateway.host_request(serde_json::json!({
                 "action": action, "windowId": window_id, "origin": source_origin,
-                "sourceProfileId": source_profile_id, "migrationId": migration_id, "bundledUi": bundled_ui,
+                "sourceProfileId": source_profile_id, "migrationId": migration_id, "bundledUi": bundled_ui, "candidate": candidate,
             }))?;
             Some(RuntimeDescriptor {
                 origin: gateway.base_url(),

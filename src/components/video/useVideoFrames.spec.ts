@@ -39,6 +39,24 @@ describe('video input identity and retries', () => {
     expect(await frames.resolveSubmitFrames('image')).toEqual({ image: 'fresh.png', lastFrame: undefined })
     expect(imgGet).toHaveBeenLastCalledWith('new')
   })
+  it('keeps the new context image ID through a temporary read failure and retries that image', async () => {
+    let reject!: (error: Error) => void
+    vi.mocked(imgGet).mockReturnValueOnce(new Promise((_resolve, fail) => { reject = fail }))
+    const { deps, frames } = setup()
+    const pending = frames.applyVideoCtx({ ...context, imageId: 'new', prompt: 'A new shot' })
+    expect(deps.videoImageId.value).toBe('new')
+    expect(deps.firstFrameName.value).toBe('')
+    expect(deps.videoImageUrl.value).toBe('')
+    expect(deps.lastFrameImageId.value).toBe('')
+    expect(deps.lastFrameName.value).toBe('')
+    reject(new Error('HTTP 500'))
+    await pending
+    expect(deps.videoImageId.value).toBe('new')
+    expect(deps.statusError.value).toContain('图片引用已保留')
+    expect(deps.statusError.value).not.toContain('失效')
+    expect(await frames.resolveSubmitFrames('image')).toEqual({ image: 'fresh.png', lastFrame: undefined })
+    expect(imgGet).toHaveBeenLastCalledWith('new')
+  })
   it('does not leave an old frame usable when the new original is missing', async () => {
     vi.mocked(imgGet).mockResolvedValue(null)
     const { deps, frames } = setup()

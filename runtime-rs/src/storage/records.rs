@@ -197,9 +197,19 @@ pub(super) fn update_membership(
     keys: &[String],
     revision: i64,
 ) -> Result<()> {
-    let Some(mut record) = project(c, key)? else {
+    set_membership(c, key, keys)?;
+    refresh_membership(c, key, revision)
+}
+// Membership rows are authoritative inside the transaction. Bulk organization
+// updates them in order, then rebuilds each affected album body once.
+pub(super) fn set_membership(c: &Context, key: &str, keys: &[String]) -> Result<()> {
+    if !c.db.query_row(
+        "SELECT EXISTS(SELECT 1 FROM projects WHERE id_key=?)",
+        [key],
+        |r| r.get::<_, bool>(0),
+    )? {
         return Ok(());
-    };
+    }
     // Keep the unchanged prefix in place. Append and reverse-order undo need
     // only a tail insert/delete; other edits rebuild the changed suffix.
     let prefix = {
@@ -228,12 +238,29 @@ pub(super) fn update_membership(
             params![key, prefix as i64],
         )?;
     }
+    let mut insert = c.db.prepare_cached(
+        "INSERT INTO project_artworks SELECT ?,id_key,? FROM artworks WHERE id_key=? AND deleted_at IS NULL",
+    )?;
+    for (position, artwork_key) in keys.iter().enumerate().skip(prefix) {
+        if insert.execute(params![key, position as i64, artwork_key])? != 1 {
+            return Err(ApiError::new(
+                404,
+                "NOT_FOUND",
+                "Project artwork does not exist",
+            ));
+        }
+    }
+    Ok(())
+}
+pub(super) fn refresh_membership(c: &Context, key: &str, revision: i64) -> Result<()> {
+    let Some(mut record) = project(c, key)? else {
+        return Ok(());
+    };
+    let keys = membership(c, key)?;
     let mut ids = Vec::with_capacity(keys.len());
     let mut find =
         c.db.prepare_cached("SELECT id_json,deleted_at FROM artworks WHERE id_key=?")?;
-    let mut insert =
-        c.db.prepare_cached("INSERT INTO project_artworks VALUES(?,?,?)")?;
-    for (position, artwork_key) in keys.iter().enumerate() {
+    for artwork_key in &keys {
         let row = find
             .query_row([artwork_key], |r| {
                 Ok((json_column(r, 0)?, r.get::<_, Option<i64>>(1)?))
@@ -246,9 +273,6 @@ pub(super) fn update_membership(
                 "Project artwork does not exist",
             ));
         };
-        if position >= prefix {
-            insert.execute(params![key, artwork_key, position as i64])?;
-        }
         ids.push(id);
     }
     record["body"]["history_ids"] = json!(ids);

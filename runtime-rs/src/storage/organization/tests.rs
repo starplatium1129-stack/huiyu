@@ -45,7 +45,15 @@ fn organization_is_atomic_idempotent_and_undo_preserves_other_fields() {
         [],
     )
     .unwrap();
+    c.db.execute_batch("CREATE TEMP TABLE album_writes(id TEXT); CREATE TEMP TRIGGER count_album_writes AFTER UPDATE OF body ON projects BEGIN INSERT INTO album_writes VALUES(new.id_key); END;").unwrap();
     let receipt = c.execute(&command("move"), "owner").unwrap();
+    assert_eq!(
+        c.db.query_row("SELECT COUNT(*) FROM album_writes", [], |row| row
+            .get::<_, i64>(0))
+            .unwrap(),
+        2,
+        "Each affected album is rebuilt once, not once per selected artwork"
+    );
     assert_eq!(receipt["changes"].as_array().unwrap().len(), 2);
     assert_eq!(c.execute(&command("move"), "owner").unwrap(), receipt);
     assert_eq!(

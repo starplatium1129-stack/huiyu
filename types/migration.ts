@@ -15,6 +15,7 @@ export interface MigrationEnvelope {
   format: 'huiyu-migration'
   version: 1
   migrationId: string
+  target?: { workspaceId: string }
   source: MigrationIdentity
   createdAt: number
   records: MigrationRecordManifest[]
@@ -36,4 +37,8 @@ export interface MigrationStatus {
   blockers: string[]
   domains: Array<'artwork' | 'settings' | 'chat' | 'draft'>
   revision: number
+}
+
+export type MigrationCandidateSelection = { mode: 'new' } | {
+  mode: 'resume'; workspaceId?: string; migrationId: string; expectedFingerprint: string
 }

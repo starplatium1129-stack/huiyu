@@ -292,6 +292,8 @@ export function useModelStudio(hostId: string) {
     } finally { if (token === generation) busy.value = false; if (request === controller) request = null }
   }
   async function importProfile(file: File) {
+    if (busy.value) return
+    busy.value = true
     const token = generation, expectedFingerprint = fingerprint.value
     try {
       if (!ready.value || !parameters.value.length || !expectedFingerprint) throw new Error('请先加载预览，才能校验配置的真实参数')
@@ -306,6 +308,7 @@ export function useModelStudio(hostId: string) {
       buildCalibratedProfile(identity.id, parameters.value, candidateMouth, candidateEyes, expected)
       stopTest(); restoreBindings(p); message.value = '已载入口型与眨眼校准，保存后生效'
     } catch (error) { if (token === generation) message.value = errorText(error) }
+    finally { if (token === generation) busy.value = false }
   }
   return { inspection, parameters, busy, ready, message, identity, saved, needsReload, mouth, leftEye, rightEye,
     level, blinkLevel, focusX, focusY, expressions, motions, fingerprint, selectFiles, openExisting, preview, test,

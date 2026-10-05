@@ -145,60 +145,79 @@ test('common artist choice enters expert mode, uses native tags and leaves scene
 test('scene manager loads project data and opens the editor without dirtying state', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   const stateResponse = page.waitForResponse(response =>
-    new URL(response.url()).pathname === '/api/maintenance/scenes-state' && response.request().method() === 'GET');
+    new URL(response.url()).pathname === '/api/catalog/stats' && response.request().method() === 'GET');
   await page.goto('/scene-manager');
   expect((await stateResponse).ok()).toBe(true);
+  await expect(page.getByRole('region', { name: '内容列表', exact: true })).toHaveAttribute('aria-busy', 'false');
 
-  await expect(page.locator('#maintenanceTitle')).toHaveText('已同步', { timeout: 15_000 });
-  await expect(page.locator('.catalog-record').first()).toBeVisible();
+  const firstRecord = page.getByRole('region', { name: '内容列表', exact: true }).locator('.catalog-record-row').first();
+  const editor = page.getByRole('region', { name: '编写内容', exact: true });
+  const saveButton = page.getByRole('button', { name: '保存更改', exact: true });
+  await expect(firstRecord).toBeVisible();
   // 未改动时保存按钮必须不可用
-  await expect(page.getByRole('button', { name: /保存到项目/ })).toBeDisabled();
+  await expect(saveButton).toBeDisabled();
+  await firstRecord.click();
+  await expect(editor).toBeVisible();
+  const originalTitle = await editor.getByLabel('标题', { exact: true }).inputValue();
+  await expect(saveButton).toBeDisabled();
 
-  await page.getByRole('button', { name: /新增场景/ }).click();
-  await expect(page.locator('.modal-card')).toBeVisible();
-  await expect(page.locator('.modal-card input').first()).toHaveValue(/sc\d+/);
-  await page.getByRole('button', { name: '取消' }).click();
-  await expect(page.locator('.modal-card')).toBeHidden();
-  await expect(page.getByRole('button', { name: /保存到项目/ })).toBeDisabled();
+  // 新建现在使用行内编辑器；未填写即切回已有记录，不应产生待保存修改。
+  await page.getByRole('button', { name: '新建场景故事', exact: true }).click();
+  await expect(editor.getByLabel('内部编号')).toHaveValue(/^sc\d+$/);
+  await expect(editor.getByLabel('标题', { exact: true })).toHaveValue('');
+  await expect(saveButton).toBeDisabled();
+  await firstRecord.click();
+  await expect(editor.getByLabel('标题', { exact: true })).toHaveValue(originalTitle);
+  await expect(saveButton).toBeDisabled();
+  await expect(page.locator('.catalog-save-status')).toHaveText('内容已保存');
 
   expect(errors).toEqual([]);
 });
 
 test('scene manager protects unsaved changes during internal navigation', async ({ page }) => {
+  const stateResponse = page.waitForResponse(response =>
+    new URL(response.url()).pathname === '/api/catalog/stats' && response.request().method() === 'GET');
   await page.goto('/scene-manager');
-  await page.getByRole('button', { name: /新增场景/ }).click();
-  await page.getByLabel('标题 *').fill('未保存场景');
-  await page.getByLabel('故事 *').fill('用于验证站内离开保护。');
-  await page.getByRole('button', { name: '保存', exact: true }).click();
-  await expect(page.getByRole('button', { name: /保存到项目/ })).toBeEnabled();
+  expect((await stateResponse).ok()).toBe(true);
+  await expect(page.getByRole('region', { name: '内容列表', exact: true })).toHaveAttribute('aria-busy', 'false');
+  await page.getByRole('button', { name: '新建场景故事', exact: true }).click();
+  const editor = page.getByRole('region', { name: '编写内容', exact: true });
+  await editor.getByLabel('标题', { exact: true }).fill('未保存场景');
+  await editor.getByLabel('故事', { exact: true }).fill('用于验证站内离开保护。');
+  await editor.getByRole('button', { name: '暂存修改', exact: true }).click();
+  await expect(page.getByRole('button', { name: '保存更改', exact: true })).toBeEnabled();
 
   await page.locator('.nav-links a[href="/scene-explorer"]').click();
-  await page.getByRole('alertdialog').getByRole('button', { name: '取消', exact: true }).click();
+  await page.getByRole('alertdialog', { name: '离开内容维护？', exact: true })
+    .getByRole('button', { name: '取消', exact: true }).click();
   await expect(page).toHaveURL(/\/scene-manager$/);
+  await expect(editor.getByLabel('标题', { exact: true })).toHaveValue('未保存场景');
+  await expect(page.getByRole('button', { name: '保存更改', exact: true })).toBeEnabled();
 
   await page.locator('.nav-links a[href="/scene-explorer"]').click();
-  await page.getByRole('alertdialog', { name: '离开场景管理？', exact: true })
-    .getByRole('button', { name: '离开页面', exact: true }).click();
+  await page.getByRole('alertdialog', { name: '离开内容维护？', exact: true })
+    .getByRole('button', { name: '离开', exact: true }).click();
   await expect(page).toHaveURL(/\/scene-explorer$/);
 });
 
-test('scene manager exposes tag, showcase and duplicate tooling', async ({ page }) => {
+test('scene manager exposes tag documents and showcase maintenance', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/scene-manager');
 
-  // 标签库：字段来自 tags.json 的 en/cn/cat/weight
-  await page.getByRole('button', { name: '标签库' }).click();
-  await expect(page.locator('table tbody tr').first()).toBeVisible();
-  await expect(page.locator('.tag-chip').first()).not.toHaveText('');
+  // 标签仍保留 en/cn/cat/weight，在目录的 tags 文档中编辑。
+  await page.getByRole('complementary', { name: '内容分类' }).getByRole('button', { name: /^标签与推荐/ }).click();
+  await page.getByRole('region', { name: '内容列表', exact: true }).getByRole('button', { name: /创作用词/ }).click();
+  const tag = page.locator('.catalog-tag-row').first();
+  await expect(tag).toBeVisible();
+  await expect(tag.getByLabel('绘制关键词', { exact: true })).not.toHaveValue('');
 
   // 样张管理
-  await page.getByRole('button', { name: '样张', exact: true }).click();
-  await expect(page.locator('.sm-image-card').first()).toBeVisible();
-
-  // 重复检测
-  await page.getByRole('button', { name: '重复检测' }).click();
-  await page.getByRole('button', { name: '开始检测' }).click();
-  await expect(page.locator('.list-meta')).toContainText('发现');
+  await page.getByRole('complementary', { name: '内容分类' }).getByRole('button', { name: '样张与封面', exact: true }).click();
+  const sample = page.getByRole('region', { name: '样张列表', exact: true }).locator('.catalog-sample-card').first();
+  await expect(sample).toBeVisible();
+  await sample.click();
+  await expect(page.getByRole('region', { name: '当前样张', exact: true }).getByRole('button', { name: /上传第一张样张|替换这张样张/ })).toBeEnabled();
+  // 旧的关键词分组“重复检测”随 0a31da01 的旧工作区删除，不映射为其他检查。
 
   expect(errors).toEqual([]);
 });

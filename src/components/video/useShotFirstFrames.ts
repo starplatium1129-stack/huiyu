@@ -1,6 +1,6 @@
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { withArtworkStaging } from '../../storage/artworkSession.ts'
-import { ref, onScopeDispose } from 'vue'
+import { ref, onScopeDispose, type Ref } from 'vue'
 import { useTrackedTask } from '../../composables/useTaskCenter.ts'
 import { apiClient } from '../../api/client.ts'
 import { uploadVideoImage } from '../../api/videoApi.ts'
@@ -73,11 +73,12 @@ function blobToBase64(blob: Blob): Promise<string> {
   })
 }
 
-export function useShotFirstFrames(options: { onError: (message: string) => void }) {
+export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequests: Map<ShotDraft, AbortController>; onError: (message: string) => void }) {
   const firstFrameBusy = ref(false)
   const firstFrameProgress = ref('')
   const taskStatus = ref<'idle' | 'running' | 'succeeded' | 'failed' | 'cancelled'>('idle')
   let controller: AbortController | null = null
+  let disposed = false
   let activeJob = ''
   let durableAttempt = false, activeRuntimeKey = ''
   const acceptedFrames = new WeakMap<ShotDraft, TaskRecord>()
@@ -97,29 +98,42 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
       catch { options.onError('已停止后续首帧，当前后端任务取消未确认，请查看任务状态') }
     }
   }
-  onScopeDispose(() => { if (durableAttempt) controller?.abort(); else void cancelFirstFrames() })
+  onScopeDispose(() => { disposed = true; if (durableAttempt) controller?.abort(); else void cancelFirstFrames() })
   useTrackedTask(() => ({ kind: 'image', title: '分镜首帧生成', route: '/video-studio?mode=shots', status: taskStatus.value, message: firstFrameProgress.value }), { cancel: cancelFirstFrames })
 
   async function generateFirstFrames(shots: ShotDraft[], aspect: VideoAspect) {
-    return withArtworkStaging(async () => {
-      if (firstFrameBusy.value) return
-      const pending = shots
-        .map((shot, index) => ({ shot, index }))
-        .filter(item => item.shot.firstFramePrompt && !item.shot.imageName)
-      if (!pending.length) {
-        options.onError('没有待生成首帧的镜头：先用「生成剧本」带出首帧提示词，已有首帧的镜头自动跳过')
-        return
-      }
-      firstFrameBusy.value = true
-      taskStatus.value = 'running'
-      controller = new AbortController()
-      durableAttempt = hasRuntimeTasks()
-      const signal = controller.signal
-      let failed = 0
-      try {
+    if (disposed || firstFrameBusy.value) return
+    const pending = shots
+      .map((shot, index) => ({ shot, index }))
+      .filter(({ shot }) => shot.firstFramePrompt && !shot.imageName
+        && options.shots.value.includes(shot) && !options.frameRequests.has(shot))
+      .map(item => {
+        const owner = new AbortController()
+        options.frameRequests.set(item.shot, owner)
+        return { ...item, owner, previous: [item.shot.imageId, item.shot.imageName, item.shot.imageUrl] }
+      })
+    if (!pending.length) {
+      options.onError('没有待生成首帧的镜头：先用「生成剧本」带出首帧提示词，已有首帧或正在准备的镜头自动跳过')
+      return
+    }
+    firstFrameBusy.value = true
+    taskStatus.value = 'running'
+    controller = new AbortController()
+    durableAttempt = hasRuntimeTasks()
+    const signal = controller.signal
+    let failed = 0, completed = 0
+    try {
+      await withArtworkStaging(async () => {
+        // A queued staging lease may be granted only after this page is gone.
+        if (disposed || signal.aborted) return
         for (let i = 0; i < pending.length; i += 1) {
           signal.throwIfAborted()
-          const { shot } = pending[i]
+          const { shot, owner, previous } = pending[i]
+          const current = () => !disposed && !signal.aborted && !owner.signal.aborted
+            && options.frameRequests.get(shot) === owner && options.shots.value.includes(shot)
+            && [shot.imageId, shot.imageName, shot.imageUrl].every((value, index) => value === previous[index])
+          if (!current()) continue
+          const frameSignal = AbortSignal.any([signal, owner.signal])
           firstFrameProgress.value = `${i + 1}/${pending.length}`
           let runtimeSettled = false
           try {
@@ -131,41 +145,48 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
               activeRuntimeKey = previous?.requestKey || runtimeRequestKey('creative', payload)
               const accepted = previous || await submitRuntimeTask('creative', payload, activeRuntimeKey, { role: 'storyboard-first-frame', shotIndex: pending[i].index })
               acceptedFrames.set(shot, accepted)
-              signal.throwIfAborted()
-              const task = await waitForRuntimeTask(accepted.taskId, signal, value => { runtimeSettled = value.upstreamSettled; acceptedFrames.set(shot, value) })
-              blob = await fetchRuntimeResult(runtimeResultPath(task), signal)
+              frameSignal.throwIfAborted()
+              if (!current()) continue
+              const task = await waitForRuntimeTask(accepted.taskId, frameSignal, value => { runtimeSettled = value.upstreamSettled; acceptedFrames.set(shot, value) })
+              if (!current()) continue
+              blob = await fetchRuntimeResult(runtimeResultPath(task), frameSignal)
               resultAlias = task.resultRefs.find(value => value.index === 0)?.alias || ''
               activeRuntimeKey = ''
             } else {
               const submit = await apiClient.request<CreativeJobBody>('/api/creative/jobs', {
-              method: 'POST',
-              body: payload,
-              timeoutMs: 30_000,
-              signal,
-              validate: isCreativeJobBody,
-            })
-            activeJob = submit.job.id
-            const resultUrl = await pollCreativeJob(submit.job.id, 240_000, signal)
-            activeJob = ''
-            const response = await runtimeFetch(resultUrl, { signal })
-            if (!response.ok) throw new Error('首帧图片读取失败')
+                method: 'POST', body: payload, timeoutMs: 30_000, signal: frameSignal, validate: isCreativeJobBody,
+              })
+              activeJob = submit.job.id
+              frameSignal.throwIfAborted()
+              if (!current()) throw new Error('首帧已由更新的编辑接管')
+              const resultUrl = await pollCreativeJob(submit.job.id, 240_000, frameSignal)
+              activeJob = ''
+              if (!current()) continue
+              const response = await runtimeFetch(resultUrl, { signal: frameSignal })
+              if (!response.ok) throw new Error('首帧图片读取失败')
               blob = await response.blob()
             }
-            const upload = await uploadVideoImage(await blobToBase64(blob), undefined, signal)
+            if (!current()) continue
+            const base64 = await blobToBase64(blob)
+            if (!current()) continue
+            const upload = await uploadVideoImage(base64, undefined, frameSignal)
+            if (!current()) continue
             const imageId = resultAlias || await artworkRepository.putImage(blob).catch(() => '')
-            signal.throwIfAborted()
+            if (!current()) continue
             if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
             shot.imageName = upload.name
             shot.imageUrl = URL.createObjectURL(blob)
             // IndexedDB 耐久凭据：草稿恢复与失败重试用（F1/F4）；失败不阻断主链路。
             shot.imageId = imageId
+            completed += 1
           } catch (error) {
-            if (signal.aborted) throw signal.reason
             if (durableAttempt) {
+              if (signal.aborted) throw signal.reason
+              if (!current()) continue
               if (!runtimeSettled) throw error
-              const current = acceptedFrames.get(shot)
-              if (current?.status !== 'succeeded') acceptedFrames.delete(shot)
-              activeRuntimeKey = ''; failed += 1; continue
+              const accepted = acceptedFrames.get(shot)
+              if (accepted?.status !== 'succeeded') acceptedFrames.delete(shot)
+              failed += 1; continue
             }
             if (activeJob) {
               const id = activeJob
@@ -173,24 +194,31 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
               try { await apiClient.request(`/api/creative/jobs/${encodeURIComponent(id)}`, { method: 'DELETE', timeoutMs: 12_000 }) }
               catch { throw new Error('当前首帧任务终止未确认，已停止后续生成，请检查任务状态') }
             }
-            failed += 1
+            if (signal.aborted) throw signal.reason
+            if (current()) failed += 1
+          } finally {
+            if (options.frameRequests.get(shot) === owner) options.frameRequests.delete(shot)
+            activeJob = ''; activeRuntimeKey = ''
           }
         }
-        options.onError(failed ? `${failed} 个镜头首帧生成失败，重按「一键首帧」只补缺` : '')
-        taskStatus.value = failed ? 'failed' : 'succeeded'
-      } catch (error) {
-        if (!signal.aborted) {
-          taskStatus.value = 'failed'
-          options.onError(error instanceof Error ? error.message : '首帧生成失败')
+        if (!disposed && !signal.aborted) {
+          if (failed || completed) options.onError(failed ? `${failed} 个镜头首帧生成失败，重按「一键首帧」只补缺` : '')
+          taskStatus.value = failed ? 'failed' : completed ? 'succeeded' : 'cancelled'
         }
-      } finally {
-        controller = null
-        activeJob = ''
-        activeRuntimeKey = ''
-        firstFrameBusy.value = false
-        firstFrameProgress.value = ''
+      })
+    } catch (error) {
+      if (!disposed && !signal.aborted) {
+        taskStatus.value = 'failed'
+        options.onError(error instanceof Error ? error.message : '首帧生成失败')
       }
-    })
+    } finally {
+      for (const { shot, owner } of pending) if (options.frameRequests.get(shot) === owner) options.frameRequests.delete(shot)
+      controller = null
+      activeJob = ''
+      activeRuntimeKey = ''
+      firstFrameBusy.value = false
+      firstFrameProgress.value = ''
+    }
   }
 
   return { firstFrameBusy, firstFrameProgress, generateFirstFrames, cancelFirstFrames }

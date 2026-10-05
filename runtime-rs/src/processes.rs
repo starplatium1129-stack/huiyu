@@ -71,9 +71,22 @@ impl OwnedProcess {
         Ok(child.try_wait()?)
     }
     pub async fn stop(&self) -> Result<()> {
-        let child = self.pool.children.lock().unwrap().remove(&self.id);
-        if let Some(child) = child {
-            terminate(child).await
+        let cleanup = {
+            let mut children = self.pool.children.lock().unwrap();
+            // Transfer under the same lock used by close. Dropping this caller
+            // must not detach Windows tree termination from tracked cleanup.
+            children
+                .remove(&self.id)
+                .map(|child| self.pool.cleanup.spawn(terminate(child)))
+        };
+        if let Some(cleanup) = cleanup {
+            cleanup.await.map_err(|_| {
+                ApiError::new(
+                    503,
+                    "TERMINATION_UNCONFIRMED",
+                    "进程清理任务未完成，请检查控制面板。",
+                )
+            })?
         } else {
             Ok(())
         }

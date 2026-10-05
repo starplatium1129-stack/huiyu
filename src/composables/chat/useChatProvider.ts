@@ -1,5 +1,4 @@
 import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
-import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { computed, getCurrentScope, onScopeDispose, ref, watch, type Ref } from 'vue'
 import { useChatStorage, type ChatState } from './useChatStorage.ts'
 import { parseChatStatus, type ChatModel } from '../../utils/chatStatus.ts'
@@ -34,35 +33,45 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   const chatStatusText = ref('正在检查本地聊天模型…')
   const statusKind = ref('')
 
-  function restoreSettings(state: ChatState) {
+  function vendorFor(baseUrl: string): ApiVendor {
+    const endpoint = baseUrl.replace(/\/+$/, '')
+    return endpoint === 'https://api.deepseek.com' ? 'deepseek'
+      : endpoint === 'http://127.0.0.1:8317/v1' ? 'cliproxy'
+      : endpoint === 'https://opencode.ai/zen/v1' ? 'opencode'
+      : endpoint === 'https://opencode.ai/zen/go/v1' ? 'opencode-go' : 'custom'
+  }
+  function restoreSettings(state: ChatState, resetEditor = true) {
     currentModel.value = state.settings.model || ''
     chatProvider.value = state.settings.provider
     apiBaseUrl.value = state.settings.apiBaseUrl
     apiModel.value = state.settings.apiModel
     apiKey.value = state.settings.apiKey
-    const savedApiBase = apiBaseUrl.value.replace(/\/+$/, '')
-    apiVendor.value = savedApiBase === 'https://api.deepseek.com'
-      ? 'deepseek'
-      : savedApiBase === 'http://127.0.0.1:8317/v1' ? 'cliproxy'
-      : savedApiBase === 'https://opencode.ai/zen/v1' ? 'opencode'
-        : savedApiBase === 'https://opencode.ai/zen/go/v1' ? 'opencode-go' : 'custom'
-    apiSettingsOpen.value = chatProvider.value === 'api' && !apiModel.value
+    apiVendor.value = vendorFor(apiBaseUrl.value)
+    if (resetEditor) apiSettingsOpen.value = chatProvider.value === 'api' && !apiModel.value
   }
 
   restoreSettings(storage.state)
+  const storedConnection = () => { const value = storage.state.settings; return [value.model, value.provider, value.apiBaseUrl, value.apiModel, value.apiKey] }
+  const liveConnection = () => [currentModel.value, chatProvider.value, apiBaseUrl.value, apiModel.value, apiKey.value, apiVendor.value]
+  let savedConnection = [...storedConnection(), apiVendor.value]
+  const cleanConnection = () => liveConnection().every((value, index) => value === savedConnection[index])
   let settingsRevision = 0
   let settingsRequest = 0
   let settingsWrites = 0
   let disposed = false
   const readController = new AbortController()
   watch(() => [apiVendor.value, apiBaseUrl.value, apiModel.value, apiKey.value, apiSettingsOpen.value], () => { settingsRevision++ }, { flush: 'sync' })
-  watch(() => storage.state.settings.apiKey, (value, previous) => {
-    if (!settingsWrites && apiKey.value === previous && apiBaseUrl.value === storage.state.settings.apiBaseUrl
-      && apiModel.value === storage.state.settings.apiModel) apiKey.value = value
+  watch(storedConnection, next => {
+    if (settingsWrites) return
+    const clean = cleanConnection()
+    const vendor = next[2] === savedConnection[2] ? savedConnection[5] as ApiVendor : vendorFor(next[2])
+    if (clean) { restoreSettings(storage.state, false); apiVendor.value = vendor }
+    savedConnection = [...next, vendor]
   })
   function settingsOwner() {
     const request = ++settingsRequest, revision = settingsRevision
-    return () => !disposed && request === settingsRequest && revision === settingsRevision
+    const latest = () => !disposed && request === settingsRequest
+    return { latest, current: () => latest() && revision === settingsRevision }
   }
 
   let hostRevision = 0
@@ -199,11 +208,13 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
         : '请填写 API 地址和模型名。'
       return
     }
-    const current = settingsOwner()
+    const { latest, current } = settingsOwner()
+    const vendor = apiVendor.value
     const draft = { baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: apiKey.value }
     settingsWrites++
     try {
       await storage.setApiSettings(draft)
+      if (latest()) savedConnection = [...storedConnection(), vendor]
       if (!current()) return
       apiConfigHint.value = getDesktopCapabilities() ? '配置已保存，密钥由 Windows 凭据管理器保护。' : '配置已保存，密钥仅用于当前页面会话。'
       apiSettingsOpen.value = false
@@ -214,11 +225,13 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   }
 
   async function clearApiCredential() {
-    const current = settingsOwner()
+    const { latest, current } = settingsOwner()
+    const vendor = apiVendor.value
     const draft = { baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: '' }
     settingsWrites++
     try {
       await storage.setApiSettings(draft)
+      if (latest()) savedConnection = [...storedConnection(), vendor]
       if (!current()) return
       apiKey.value = ''
       apiConfigHint.value = '个人密钥已清除。'
@@ -239,12 +252,15 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   // 跨窗口配置同步：在 Atelier 聊天页保存配置后，已打开的 Companion 悬浮窗
   // （或另一个标签页）立即生效。storage 事件只由其他窗口的写入触发，本窗口
   // 只读不写，不会循环。
-  function syncApiSettingsFromStorage(event: StorageEvent) {
-    if (event.storageArea !== localStorage) return
+  async function syncApiSettingsFromStorage(event: StorageEvent) {
+    if (event.storageArea !== null && event.storageArea !== globalThis.localStorage) return
     if (event.key !== null && event.key !== STORAGE_KEY && event.key !== 'aics_chat_model') return
-    restoreSettings(storage.state)
-    setChatStatus(apiStatusText(), (apiConfigured.value || hostApiConfigured.value) ? 'online' : '')
-    void refreshHostConfig()
+    try {
+      if (!await storage.reloadConnectionSettings() || disposed) return
+      if (!isBusy.value) setBusyStatus(false)
+      if (!getDesktopCapabilities() && !apiKey.value && cleanConnection()) apiConfigHint.value = '配置已同步；密钥不跨网页共享，请在本页重新提供。'
+      void refreshHostConfig()
+    } catch { if (!disposed && cleanConnection()) apiConfigHint.value = '另一窗口的配置尚未同步，请稍后重试。' }
   }
   window.addEventListener('storage', syncApiSettingsFromStorage)
   if (getCurrentScope()) {

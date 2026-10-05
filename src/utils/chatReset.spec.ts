@@ -1,3 +1,4 @@
+vi.mock('virtual:data-version', () => ({ DATA_VERSION: 0 }))
 const archiveKv = vi.hoisted(() => new Map<string, unknown>())
 vi.mock('@/composables/useKVStore', () => ({
   kvGet: vi.fn(async (key: string) => archiveKv.get(key) ?? null),
@@ -6,6 +7,8 @@ vi.mock('@/composables/useKVStore', () => ({
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { clearStoredChatContent } from './chatReset'
 import { CHAT_DRAFT_PREFIX, CHAT_USER_PROFILE_KEY, RETIRED_COMPANION_CHAT_KEY, CHAT_MEMORY_KEY, collectLiveLocalSettings } from './storageKeys'
+import { ref } from 'vue'
+import { useRoomMemory } from '@/composables/chat/useRoomMemory'
 import { useChatStorage } from '@/composables/chat/useChatStorage'
 
 beforeEach(() => { vi.stubGlobal('navigator', { locks: { request: async (_name: string, work: () => unknown) => work() } }) })
@@ -24,7 +27,11 @@ it('stale history, archive and draft writes cannot resurrect reset data', async 
   await old.load()
   old.messages().push({ role: 'user', content: 'neutral', mid: 'old', stopped: false })
   old.setDraft('nene', 'neutral')
+  const memory = useRoomMemory({ storage: useChatStorage(), activeChar: ref('nene'), setError: vi.fn(),
+    stopEverything: vi.fn(), voice: { stop: vi.fn() }, clearDraftInput: vi.fn() })
   await clearStoredChatContent()
+  memory.rememberMessage({ role: 'user', content: 'neutral stale memory', mid: 'old', stopped: false })
+  expect(localStorage.getItem(CHAT_MEMORY_KEY)).toBeNull()
   expect(old.save()).toBe(false)
   expect(old.messages()).toEqual([])
   old.save()

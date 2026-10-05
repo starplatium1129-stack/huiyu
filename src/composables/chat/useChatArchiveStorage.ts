@@ -32,12 +32,18 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
     }
     return base
   }
-  async function refresh(synchronized = false) {
+  let ready: Promise<void>
+  function refresh(synchronized = false) {
     const started = generation
-    const value = await (synchronized ? withChatArchiveMutation(read) : read())
-    if (started === generation) archive.value = apply(value, pending)
+    const loading = Promise.resolve().then(async () => {
+      const value = await (synchronized ? withChatArchiveMutation(read) : read())
+      if (ready === loading && started === generation) archive.value = apply(value, pending)
+    })
+    ready = loading
+    void loading.catch(() => {})
+    return loading
   }
-  const ready = refresh()
+  refresh()
   function reset() {
     generation++
     pending = []
@@ -69,6 +75,7 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
           const next = apply(await read(), batch)
           if (started !== generation || !canWrite()) return false
           await writeChatArchive(next)
+          if (started !== generation) return false
           generation++
           pending.splice(0, batch.length)
           archive.value = apply(next, pending)
@@ -81,6 +88,5 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
     }).finally(() => { running = undefined })
     return running
   }
-  void ready.catch(() => {})
-  return { archive, ready, refresh, reset, add, clear, save }
+  return { archive, get ready() { return ready }, refresh, reset, add, clear, save }
 }

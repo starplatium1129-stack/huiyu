@@ -10,6 +10,15 @@ pub(super) struct Hooks {
     pub id: String,
 }
 impl ExecutionHooks for Hooks {
+    fn observation_changed(&self) {
+        if let Some(runtime) = self.runtime.upgrade() {
+            runtime.monitor(
+                self.storage.clone(),
+                self.principal.clone(),
+                self.id.clone(),
+            );
+        }
+    }
     fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
             let change = TaskPatch {
@@ -85,7 +94,11 @@ impl ExecutionHooks for Hooks {
         })
     }
     fn collect(&self, outputs: Vec<Output>) -> BoxFuture<'_, Result<()>> {
-        Box::pin(collect(&self.storage, &self.principal, &self.id, outputs))
+        Box::pin(async move {
+            collect(&self.storage, &self.principal, &self.id, outputs).await?;
+            self.observation_changed();
+            Ok(())
+        })
     }
     fn collect_indexed(&self, outputs: Vec<(usize, Output)>) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {

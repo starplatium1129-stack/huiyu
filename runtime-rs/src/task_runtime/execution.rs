@@ -134,7 +134,17 @@ impl TaskRuntime {
             .or_insert_with(|| JobBinding::new(String::new()))
             .operation
             .clone();
-        let mut cancellation = operation.lock_owned().await;
+        let mut cancellation = if observe_after {
+            match operation.try_lock_owned() {
+                Ok(guard) => guard,
+                Err(_) => return Self::get(storage, principal, id).await,
+            }
+        } else {
+            tokio::select! {
+                _ = self.shutdown.cancelled() => return Err(ApiError::new(503, "TASK_RUNTIME_CLOSED", "Task runtime unavailable")),
+                guard = operation.lock_owned() => guard,
+            }
+        };
         let current = Self::get(storage, principal, id).await?;
         // Input protection and initial submit belong to the actual dispatcher.
         // A read cannot relinquish that ownership or start a second dispatcher.
@@ -154,7 +164,8 @@ impl TaskRuntime {
         {
             // Explicit discard is terminal, not an invitation to fetch the output again.
             self.jobs.lock().unwrap().remove(&identity(storage, id));
-            return Ok(current);
+            let known = current.recovery_state == TaskRecoveryState::Normal;
+            return clear_collection_diagnostic(storage, principal, id, current, known).await;
         }
         if current.provider_fingerprint != self.binding() {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
@@ -187,7 +198,7 @@ impl TaskRuntime {
                 .recover_provider(storage, principal, &current, &mut cancellation)
                 .await;
         }
-        let observation = match observed {
+        let mut observation = match observed {
             Ok(observation) => observation,
             Err(_) => {
                 return patch(
@@ -214,6 +225,9 @@ impl TaskRuntime {
         // A provider query can retry a failed collection hook and commit the
         // result. Consult durable state again before rereading its output.
         if has_outputs
+            && observation.settled
+            && !observation.unknown
+            && observation.status == "succeeded"
             && Self::get(storage, principal, id).await?.result_state != ResultState::Available
         {
             // Only this single-task recovery owns these downloads. Live jobs
@@ -248,7 +262,18 @@ impl TaskRuntime {
                 || latest.result_state == ResultState::Available)
         {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
-            return Ok(latest);
+            let known =
+                observation.settled && !observation.unknown && observation.status == "succeeded";
+            return clear_collection_diagnostic(storage, principal, id, latest, known).await;
+        }
+        if observation.settled
+            && !observation.unknown
+            && observation.status == "succeeded"
+            && latest.result_state == ResultState::Available
+            && latest.cancel_requested_at.is_none()
+        {
+            observation.metadata["resultCollectionError"] = Value::Null;
+            observation.error_code = None;
         }
         let observed_status: TaskStatus = serde_json::from_value(json!(observation.status))?;
         let status = if latest.cancel_requested_at.is_some() && observation.settled {
@@ -280,4 +305,39 @@ impl TaskRuntime {
         }
         Ok(task)
     }
+}
+
+async fn clear_collection_diagnostic(
+    storage: &Storage,
+    principal: &str,
+    id: &str,
+    task: TaskRecord,
+    known: bool,
+) -> Result<TaskRecord> {
+    if known
+        && task.status == TaskStatus::Succeeded
+        && task.result_state == ResultState::Available
+        && task.cancel_requested_at.is_none()
+        && (task
+            .metadata
+            .get("resultCollectionError")
+            .is_some_and(|value| !value.is_null())
+            || task.error_code.as_deref() == Some("RESULT_COLLECTION_PENDING"))
+    {
+        return patch(
+            storage,
+            principal,
+            id,
+            TaskPatch {
+                metadata: Some(serde_json::from_value(
+                    json!({"resultCollectionError":null}),
+                )?),
+                error_code: (task.error_code.as_deref() == Some("RESULT_COLLECTION_PENDING"))
+                    .then_some(None),
+                ..Default::default()
+            },
+        )
+        .await;
+    }
+    Ok(task)
 }

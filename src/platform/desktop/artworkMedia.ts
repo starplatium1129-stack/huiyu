@@ -39,16 +39,33 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
     renderingThumbnails.delete(identity)
   }
   async function fetchImage(id: string, signal: AbortSignal): Promise<Blob | null> {
-    const response = await desktopRuntimeFetch('/api/workspace/media-capabilities', { method: 'POST', signal,
-      headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ alias: id }) })
-    if (response.status === 404) return null
-    if (!response.ok) throw new Error('作品原图暂时不可用')
-    const capability = await response.json() as { url: string }
-    signal.throwIfAborted()
-    const media = await desktopRuntimeFetch(capability.url, { signal })
-    if (!media.ok) throw new Error('作品原图读取未完成')
-    return media.blob()
+    const parts: Blob[] = []
+    const length = 1024 * 1024
+    let offset = 0
+    let identity: string | undefined
+    for (;;) {
+      signal.throwIfAborted()
+      const response = await desktopRuntimeFetch(`/api/workspace/media/${encodeURIComponent(id)}/chunks?offset=${offset}&length=${length}`, { signal })
+      if (response.status === 404 && offset === 0) return null
+      if (!response.ok) throw new Error('作品原图读取未完成')
+      const totalHeader = response.headers.get('X-Workspace-Media-Total-Bytes')
+      const total = Number(totalHeader)
+      const mime = response.headers.get('X-Workspace-Media-Mime')
+      const hash = response.headers.get('X-Workspace-Media-Sha256')
+      if (!totalHeader || !Number.isSafeInteger(total) || total < offset || !mime || !hash
+        || response.headers.get('X-Workspace-Media-Offset') !== String(offset)) throw new Error('作品原图信息不完整')
+      const nextIdentity = JSON.stringify([total, mime, hash])
+      if (identity !== undefined && identity !== nextIdentity) throw new Error('作品原图已变化，请重新读取')
+      identity = nextIdentity
+      const part = await response.blob()
+      signal.throwIfAborted()
+      if (part.size !== Math.min(length, total - offset)) throw new Error('作品原图读取未完成')
+      parts.push(part)
+      offset += part.size
+      if (offset === total) return new Blob(parts, { type: mime })
+    }
   }
+
   async function getImage(id: string, signal?: AbortSignal): Promise<Blob | null> {
     signal?.throwIfAborted()
     const identity = key(id)

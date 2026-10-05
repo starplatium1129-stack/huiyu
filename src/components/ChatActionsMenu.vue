@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onActivated, onDeactivated, ref } from 'vue'
 import {
   DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal,
   DropdownMenuRoot, DropdownMenuSeparator, DropdownMenuTrigger,
@@ -13,6 +13,9 @@ const emit = defineEmits<{
   (e: 'toggle-profile'): void
 }>()
 const moreOpen = ref(false)
+let viewActive = true
+onActivated(() => { viewActive = true })
+onDeactivated(() => { viewActive = false; moreOpen.value = false })
 const trigger = ref<{ $el: HTMLElement } | null>(null)
 const actionSelected = ref(false)
 const pointerOpened = ref(false)
@@ -27,7 +30,7 @@ function runRoomAction(action: () => void) {
 
 function closeAutoFocus(event: Event) {
   // Do not let the menu's delayed focus restoration steal focus from the new dialog.
-  if (actionSelected.value) event.preventDefault()
+  if (!viewActive || actionSelected.value) event.preventDefault()
   actionSelected.value = false
 }
 </script>
@@ -88,6 +91,6 @@ function closeAutoFocus(event: Event) {
 .chat-more-separator { height:1px; margin:var(--s-2) var(--s-1); background:var(--border-soft); flex-shrink:0; }
 @starting-style { .chat-more-menu[data-state='open'][data-pointer-open='true'] { opacity:0; transform:scale(.97); } }
 .chat-more-menu[data-pointer-open='false'] { transition:none; }
-@media(prefers-reduced-motion:reduce) { .chat-more-menu { transition:none; } }
+@media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .chat-more-menu { transition:none; } }
 @media(forced-colors:active) { .chat-more-item[data-highlighted] { outline:2px solid Highlight; outline-offset:-2px; } }
 </style>

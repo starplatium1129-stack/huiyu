@@ -131,8 +131,8 @@ test('desktop companion keeps a character-first surface and opens the separate c
         offMaximizedChanged: () => {},
         setProgress: () => {},
         saveImage: async () => ({ saved: false }),
-        getWorkspace: async () => ({ root: '', exists: false }),
-        setWorkspace: async () => ({ root: '' }),
+        getWorkspace: async () => ({ root: '', exists: false, activeRoot: '', restartRequired: false }),
+        setWorkspace: async () => ({ root: '', exists: false, activeRoot: '', restartRequired: false }),
       };
   });
   await page.reload();

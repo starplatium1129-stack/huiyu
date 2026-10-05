@@ -56,6 +56,8 @@ export function useChatSpeechInteraction({
       speechState.value === 'acquiring' ||
       speechState.value === 'recognizing',
   )
+  // 已按住录音时保留松开/取消入口；回复期间不允许开始下一次录音。
+  const speechButtonDisabled = computed(() => speechState.value === 'recognizing' || (busy.value && !speechBusy.value))
 
   const speechButtonText = computed(() => {
     switch (speechState.value) {
@@ -93,6 +95,7 @@ export function useChatSpeechInteraction({
   function commitSpeechText(text: string): void {
     inputText.value = text
     if (speechConfig.value.autoSend && chatReady.value && !busy.value) handleSend()
+    else speechSession.markReplyIdle()
   }
 
   function onSpeechText(text: string, source: VoiceTextSource): void {
@@ -106,6 +109,7 @@ export function useChatSpeechInteraction({
     }
     const action = speechSession.onSessionText(text)
     if (action === 'end') {
+      speechSession.endSession()
       speechNotice.value = '已退出连续对话'
       return
     }
@@ -154,7 +158,7 @@ export function useChatSpeechInteraction({
 
   let manualSpeechHeld = false
   function onSpeechPress(): void {
-    if (!speechReady.value || speechBusy.value) return
+    if (!speechReady.value || busy.value || speechBusy.value) return
     manualSpeechHeld = true
     void speechStart('manual')
   }
@@ -212,6 +216,7 @@ export function useChatSpeechInteraction({
     speechError,
     speechAutoListening,
     speechReady,
+    speechButtonDisabled,
     speechButtonText,
     speechStateText,
     speechSessionActive,

@@ -135,7 +135,7 @@ function recordDownload(result: LocalSetupDownloadResult) {
   const failures = { ...verificationFailures.value }; delete failures[result.modelId]; verificationFailures.value = failures
   void refresh()
 }
-const basicComplete = computed(() => failedModels.value.length === 0 && !!snapshot.value && snapshot.value.workspace.state === 'present'
+const basicComplete = computed(() => !loading.value && !error.value && !cancelled.value && failedModels.value.length === 0 && !!snapshot.value && snapshot.value.workspace.state === 'present'
   && snapshot.value.comfy.installation === 'present' && snapshot.value.comfy.connection === 'online'
   && recommendedModels.value.length >= 3 && presentRecommended.value === recommendedModels.value.length
   && nodesChecked.value && snapshot.value.nodes.missing.length === 0)
@@ -148,6 +148,7 @@ const summary = computed(() => loading.value ? '正在读取本机配置…' : e
 const nextStep = computed(() => {
   const value = snapshot.value
   if (loading.value) return '等待本次只读检查，或取消后稍后再试。'
+  if (error.value || cancelled.value) return '本次检查尚未确认；保留的路径来自上次结果，请重新检查后再判断准备状态。'
   if (!value) return '重新检查以读取当前配置；此操作不会安装文件或启动服务。'
   if (failedModels.value.length) return `${failedModels.value.map(model => model.label).join('、')} 的完整性校验未通过。重新检查不会清除此问题；请核对文件并重新校验 SHA-256 后再尝试出图。`
   if (value.workspace.state !== 'present' || value.comfy.installation !== 'present') return '确认 AI 工作区父目录，并在其下准备包含 main.py 的 ComfyUI。已有服务可能使用不同目录，请先核对。'
@@ -162,7 +163,9 @@ async function refresh() {
   if (!isLocal || loading.value || disposed) return
   const request = new AbortController()
   controller = request
-  loading.value = true; error.value = ''; cancelled.value = false; snapshot.value = null
+  loading.value = true; error.value = ''; cancelled.value = false
+  // Keep the download owner mounted; a new snapshot still resets read-only verification.
+  if (snapshot.value) snapshot.value = { ...snapshot.value }
   if (desktop) void readWorkspaceBinding()
   try {
     const result = await localSetupApi.getStatus({ signal: request.signal })
@@ -174,7 +177,8 @@ async function refresh() {
   }
 }
 function cancelCheck() {
-  controller?.abort(); controller = null; loading.value = false; snapshot.value = null; error.value = ''; cancelled.value = true
+  ++workspaceRead
+  controller?.abort(); controller = null; loading.value = false; error.value = ''; cancelled.value = true
 }
 
 const workspaceButton = ref<HTMLElement | null>(null)
@@ -183,13 +187,12 @@ const workspaceNotice = ref(''), workspaceError = ref('')
 async function readWorkspaceBinding() {
   if (!desktop || disposed) return
   const read = ++workspaceRead
-  workspaceActiveRoot.value = null
   workspaceError.value = ''
   try {
     const result = await desktop.getWorkspace()
     if (!disposed && read === workspaceRead) { workspaceActiveRoot.value = result.activeRoot; workspacePending.value = result.restartRequired }
   } catch (cause) {
-    if (!disposed && read === workspaceRead) workspaceError.value = cause instanceof Error ? cause.message : '当前工作区尚未确认，请重新读取。'
+    if (!disposed && read === workspaceRead) { workspaceActiveRoot.value = null; workspaceError.value = cause instanceof Error ? cause.message : '当前工作区尚未确认，请重新读取。' }
   }
 }
 async function openWorkspace() {

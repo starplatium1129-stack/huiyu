@@ -15,8 +15,9 @@ pub(crate) const READ_PATHS: &[&str] = &[
     "/sdapi/v1/schedulers",
     "/sdapi/v1/upscalers",
     "/sdapi/v1/options",
-    "/sdapi/v1/progress",
 ];
+// This upstream state is global and can include another owner's private image.
+const LOCAL_READ_PATHS: &[&str] = &["/sdapi/v1/progress"];
 const WRITE_PATHS: &[&str] = &[
     "/sdapi/v1/txt2img",
     "/sdapi/v1/options",
@@ -52,7 +53,7 @@ pub fn router(config: &crate::config::Config) -> Router<AppState> {
 fn router_with(proxy: Proxy) -> Router<AppState> {
     let mut router = Router::new();
     let mut paths = std::collections::HashSet::new();
-    for path in READ_PATHS.iter().chain(WRITE_PATHS.iter()) {
+    for path in READ_PATHS.iter().chain(LOCAL_READ_PATHS).chain(WRITE_PATHS) {
         if paths.insert(*path) {
             router = router.route(path, any(proxy::forward));
         }

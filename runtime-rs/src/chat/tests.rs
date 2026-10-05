@@ -254,6 +254,23 @@ async fn host_config_roundtrip_never_publishes_secret() {
             "failed replacement must reclaim its temporary file"
         );
     }
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        assert_eq!(
+            std::fs::metadata(&file).unwrap().permissions().mode() & 0o777,
+            0o600
+        );
+    }
     settings.delete_host().await.unwrap();
     assert!(settings.read_host().await.is_none());
+    std::fs::create_dir(&file).unwrap();
+    assert_eq!(
+        settings.write_host(&api).await.unwrap_err().code,
+        "HOST_CONFIG_UNAVAILABLE"
+    );
+    assert_eq!(
+        std::fs::read_dir(file.parent().unwrap()).unwrap().count(),
+        1
+    );
 }

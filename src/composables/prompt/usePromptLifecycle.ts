@@ -200,7 +200,7 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
         const sceneSize = pb.activeScene ? pb.lastRecommendedSize : '';
         const profile = pb.applyModelProfile(name || sd.checkpoint.value, { applySize: !sceneSize });
         const targetSize = sceneSize || String(profile?.size || '').replace('×', 'x');
-        if (targetSize)
+        if (targetSize && !pb.sdParamsTouched.has('size'))
             applyRecommendedSize(targetSize);
     });
     // Anima 状态轮询跟随激活引擎：SD 引擎下停止，切到 Anima/Krea 恢复。

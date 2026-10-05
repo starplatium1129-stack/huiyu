@@ -10,23 +10,23 @@ vi.mock('@/api/videoApi', () => ({ cancelVideoBatch: vi.fn(), concatVideoBatch: 
 let wrapper: ReturnType<typeof mount> | undefined
 const batch = (status: api.VideoBatch['status'] = 'paused'): api.VideoBatch => ({ id: 'original', status, shots: [{ status: 'failed' }, { status: 'failed' }], progress: { total: 2, succeeded: 0, failed: 2 } } as api.VideoBatch)
 function setup(cached = false) {
-  const error = ref('')
+  const error = ref(''), accepted = vi.fn()
   const active = ref(true)
   const shots = ref<ShotDraft[]>([]), inputsBusy = ref(false)
   let machine!: ReturnType<typeof useShotBatchMachine>
   const page = defineComponent({ setup() {
-    machine = useShotBatchMachine({ shots, inputsBusy: computed(() => inputsBusy.value), identityCard: ref(''), aspectRatio: ref('landscape'), quality: ref('standard'), steps: ref(4), linkLastFrame: ref(false), shotReferences: () => undefined, h3Ready: computed(() => true), online: computed(() => true), batchError: error })
+    machine = useShotBatchMachine({ shots, inputsBusy: computed(() => inputsBusy.value), identityCard: ref(''), aspectRatio: ref('landscape'), quality: ref('standard'), steps: ref(4), linkLastFrame: ref(false), shotReferences: () => undefined, h3Ready: computed(() => true), online: computed(() => true), batchError: error, onAccepted: accepted })
     return () => null
   } })
   wrapper = mount(cached ? defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(page) : null }) }) : page)
   machine.batch.value = batch()
-  return { machine, error, shots, inputsBusy, active }
+  return { machine, error, shots, inputsBusy, active, accepted }
 }
 beforeEach(() => { vi.clearAllMocks(); vi.useFakeTimers() })
 afterEach(() => { wrapper?.unmount(); vi.useRealTimers() })
 describe('shot batch operation recovery', () => {
   it('does not submit a batch while reference cards or first frames are being prepared', async () => {
-    const { machine, shots, inputsBusy } = setup()
+    const { machine, shots, inputsBusy, accepted } = setup()
     shots.value = [{ prompt: 'A complete shot description', seedText: '' } as ShotDraft]
     expect(machine.canSubmit.value).toBe(true)
     inputsBusy.value = true
@@ -40,6 +40,14 @@ describe('shot batch operation recovery', () => {
     await machine.submitBatch()
     await vi.advanceTimersByTimeAsync(3000)
     expect(machine.batch.value?.status).toBe('done')
+    let acknowledge!: (value: Awaited<ReturnType<typeof api.createVideoBatch>>) => void
+    vi.mocked(api.createVideoBatch).mockReturnValueOnce(new Promise(resolve => { acknowledge = resolve }))
+    const submitting = machine.submitBatch()
+    wrapper!.unmount()
+    acknowledge({ ok: true, batch: { ...batch('running'), id: 'accepted-after-leave' } })
+    await submitting
+    expect(accepted).toHaveBeenCalledWith(expect.objectContaining({ id: 'accepted-after-leave' }))
+    expect(vi.getTimerCount()).toBe(0)
   })
   it('resumes polling if only part of a retry-all request succeeded', async () => {
     vi.mocked(api.retryVideoShot).mockResolvedValueOnce({ batch: batch('running') } as Awaited<ReturnType<typeof api.retryVideoShot>>).mockRejectedValueOnce(new Error('retry failed'))
@@ -74,8 +82,9 @@ describe('shot batch operation recovery', () => {
   })
   it('only discards reconnect information when the batch is missing', async () => {
     vi.mocked(api.fetchVideoBatch).mockRejectedValueOnce(new ApiClientError('gone', { kind: 'http', status: 410 }))
-    const { machine } = setup()
+    const { machine, error } = setup()
     expect(await machine.reconnectBatch('saved')).toBe(false)
+    expect(error.value).toContain('已不存在')
   })
   it('ignores a missing response from an older reconnect after a newer selection succeeds', async () => {
     let reject!: (error: Error) => void
@@ -88,6 +97,14 @@ describe('shot batch operation recovery', () => {
     expect(await old).toBe(true)
     expect(machine.batch.value?.id).toBe('new')
     expect(error.value).toBe('')
+    let resolve!: (value: Awaited<ReturnType<typeof api.fetchVideoBatch>>) => void
+    vi.mocked(api.fetchVideoBatch).mockReturnValueOnce(new Promise(done => { resolve = done }))
+    const pending = machine.reconnectBatch('obsolete')
+    await machine.reconnectBatch('new')
+    resolve({ ok: true, batch: { ...batch('done'), id: 'obsolete' } })
+    await pending
+    expect(machine.batch.value?.id).toBe('new')
+
   })
 
   it('pauses cached storyboard polling, ignores abandoned read failures and refreshes once on return', async () => {
@@ -131,6 +148,31 @@ describe('shot batch operation recovery', () => {
     await retry
     expect(error.value).toBe('')
     expect(machine.batch.value?.status).toBe('cancelled')
+  })
+
+  it('keeps independent retries out of original shot slots and resolves old child links only through an accessible source', async () => {
+    const { machine, error } = setup()
+    const original = machine.batch.value
+    const child = { ...batch('running'), id: 'retry-child', shots: [batch().shots[1]], retrySource: { batchId: 'original', stepIndex: 1 } }
+    vi.mocked(api.retryVideoShot).mockResolvedValue({ ok: true, batch: child })
+    await machine.retryAllFailed()
+    expect(machine.batch.value).toBe(original)
+    expect(machine.serverShot(0)?.status).toBe('failed')
+    expect(api.retryVideoShot).toHaveBeenNthCalledWith(1, 'original', 1)
+    expect(api.retryVideoShot).toHaveBeenNthCalledWith(2, 'original', 2)
+    expect(error.value).toContain('不会自动回并')
+    expect(machine.canConcat.value).toBe(false)
+    vi.mocked(api.fetchVideoBatch).mockResolvedValueOnce({ ok: true, batch: child }).mockResolvedValueOnce({ ok: true, batch: batch() })
+    expect(await machine.reconnectBatch('retry-child')).toBe(true)
+    expect(machine.batch.value?.id).toBe('original')
+    expect(error.value).toContain('尚未替换')
+    for (const status of [404, 403]) {
+      vi.mocked(api.fetchVideoBatch).mockResolvedValueOnce({ ok: true, batch: child })
+        .mockRejectedValueOnce(new ApiClientError('unavailable source', { kind: 'http', status }))
+      expect(await machine.reconnectBatch('retry-child')).toBe(false)
+      expect(machine.batch.value?.id).toBe('original')
+      expect(error.value).toContain('不存在或无权访问')
+    }
   })
 
 })

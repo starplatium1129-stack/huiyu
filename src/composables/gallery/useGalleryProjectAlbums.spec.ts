@@ -151,12 +151,18 @@ describe('project album presentation', () => {
   it('reuses prepared search metadata when cover caches arrive or are evicted', () => {
     const state = fixture()
     state.history.value[0].prompt = 'portrait'
+    state.history.value.push({ id: 4, timestamp: 400 })
+    state.projects.value.push({ id: 'unrelated', title: 'Other', history_ids: [4] })
+    const unrelatedReads = vi.fn(() => 'blob:other')
+    Object.defineProperty(state.thumbUrls, '4', { configurable: true, get: unrelatedReads })
     state.projects.value.push({ id: 'smart', title: '肖像', history_ids: [], smartRule: rule({ search: 'portrait' }) })
     const searchSpy = vi.spyOn(galleryHelpers, 'searchHaystack')
     const { albums, resolvePreviewItems } = useGalleryProjectAlbums(state)
     const previewItems = computed(() => resolvePreviewItems('albums', ['smart']))
     expect(albums.value.find(album => album.id === 'smart')?.count).toBe(1)
-    expect(searchSpy).toHaveBeenCalledTimes(3)
+    expect(searchSpy).toHaveBeenCalledTimes(4)
+    const unrelated = albums.value.find(album => album.id === 'unrelated')
+    unrelatedReads.mockClear()
     const preparedPreviews = previewItems.value
     expect(preparedPreviews.map(item => item.id)).toEqual([1])
     state.thumbUrls[1] = 'data:image/png;base64,portrait'
@@ -164,6 +170,8 @@ describe('project album presentation', () => {
     delete state.thumbUrls[1]
     expect(albums.value.find(album => album.id === 'smart')?.covers).toEqual([])
     expect(previewItems.value).toBe(preparedPreviews)
-    expect(searchSpy).toHaveBeenCalledTimes(3)
+    expect(searchSpy).toHaveBeenCalledTimes(4)
+    expect(albums.value.find(album => album.id === 'unrelated')).toBe(unrelated)
+    expect(unrelatedReads).not.toHaveBeenCalled()
   })
 })

@@ -96,6 +96,18 @@ describe('model studio state ownership', () => {
   })
   it('rejects a structurally valid profile with nonexistent runtime parameters without changing current edits', async () => {
     await load()
+    const text = vi.fn(async () => '')
+    studio.busy.value = true
+    await studio.importProfile({ size: 1, text } as unknown as File)
+    expect(text).not.toHaveBeenCalled()
+    studio.busy.value = false
+    let finish!: (value: string) => void
+    const importing = studio.importProfile({ size: 1, text: () => new Promise<string>(resolve => { finish = resolve }) } as File)
+    expect(studio.busy.value).toBe(true)
+    await studio.importProfile({ size: 1, text } as unknown as File)
+    expect(text).not.toHaveBeenCalled()
+    finish(JSON.stringify({ fingerprint: 'fixture-hash', profile: profile() })); await importing
+    expect(studio.busy.value).toBe(false)
     const bad = profile(); bad.parameterBindings.mouth!.id = 'Unknown'
     await studio.importProfile(new File([JSON.stringify({ fingerprint: 'fixture-hash', profile: bad })], 'profile.json'))
     expect(studio.mouth.id).toBe('Mouth'); expect(studio.mouth.open).toBe(1); expect(studio.message.value).toContain('端点无效')

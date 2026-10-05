@@ -152,6 +152,7 @@ async fn fixture() -> (
     let app = Router::new()
         .route("/data/scenes.json", get(local_source))
         .route("/api/workspace/status", get(private_source))
+        .route("/sdapi/v1/progress", get(private_source))
         .route(
             "/api/chat",
             get(private_source).post(|| async { "public chat fixture" }),
@@ -363,6 +364,17 @@ async fn reviewed_projection_binds_exact_bytes_before_head_range_compression_and
 #[tokio::test]
 async fn remote_token_cookies_cannot_reach_private_routes_or_bypass_precompressed_policy() {
     let (directory, state, address, client, stop) = fixture().await;
+    for method in [Method::GET, Method::HEAD] {
+        for query in ["", "?skip_current_image=false", "?skip_current_image=true"] {
+            let mut request = remote(&client, address, &format!("/sdapi/v1/progress{query}"))
+                .build()
+                .unwrap();
+            *request.method_mut() = method.clone();
+            let response = client.execute(request).await.unwrap();
+            assert_eq!(response.status(), 403);
+        }
+    }
+    assert_eq!(state.private_hits.load(Ordering::SeqCst), 0);
     let missing = client
         .get(format!("http://{address}/api/workspace/status"))
         .header("x-forwarded-for", "198.51.100.8")

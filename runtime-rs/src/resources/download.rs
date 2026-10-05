@@ -128,7 +128,13 @@ async fn entry(
     let mut received = start;
     let mut stream = response.bytes_stream();
     let copied=async{loop{let next=tokio::select!{_ = op.cancel.cancelled()=>return Err(Error::new("CANCELLED","Download cancelled")),value=tokio::time::timeout(std::time::Duration::from_secs(30),stream.next())=>value.map_err(|_|Error::new("HTTP_TIMEOUT","Resource source timed out"))?};let Some(chunk)=next else{break;};let chunk=chunk.map_err(|_|Error::new("HTTP_FAILED","Resource response interrupted"))?;op.check()?;if received+chunk.len()as u64>entry.bytes{return Err(Error::new("HTTP_SIZE","Response exceeds approved length"));}fs::safe(&partial,false,false)?;output.write_all(&chunk).await?;received+=chunk.len()as u64;op.event("download-progress",json!({"path":entry.path,"bytes":received,"total":entry.bytes,"resumedFrom":start}))?;}if received!=entry.bytes{return Err(Error::new("HTTP_SIZE","Resource response incomplete"));}Ok(())}.await;
-    let synced = output.sync_all().await;
+    // Tokio file writes can finish in the background. Surface the final write
+    // error before hashing, while retaining a resumable partial on disk errors.
+    let synced = async {
+        output.flush().await?;
+        output.sync_all().await
+    }
+    .await;
     drop(output);
     copied?;
     synced?;

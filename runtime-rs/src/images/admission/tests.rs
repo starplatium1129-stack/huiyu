@@ -8,6 +8,7 @@ enum Fault {
 }
 tokio::task_local! {
     static FAULT: Fault;
+    static SALT_FAULT: Fault;
 }
 
 pub(super) fn pending_file(
@@ -28,6 +29,56 @@ pub(super) fn pending_file(
             file
         }
         Err(_) => file,
+    }
+}
+
+pub(super) fn salt_file(
+    file: tokio::fs::File,
+    path: &Path,
+    cancel: &CancellationToken,
+) -> tokio::fs::File {
+    match SALT_FAULT.try_with(|fault| *fault) {
+        Ok(Fault::Write) => {
+            drop(file);
+            tokio::fs::File::from_std(std::fs::File::open(path).unwrap())
+        }
+        Ok(Fault::Cancel) => {
+            cancel.cancel();
+            file
+        }
+        Err(_) => file,
+    }
+}
+#[tokio::test]
+async fn initial_salt_failure_does_not_poison_retry_or_replace_existing_identity() {
+    for fault in [Fault::Write, Fault::Cancel] {
+        let directory = tempfile::tempdir().unwrap();
+        let cancel = CancellationToken::new();
+        assert!(
+            SALT_FAULT
+                .scope(fault, owner_salt(directory.path(), &cancel))
+                .await
+                .is_err()
+        );
+        assert_eq!(std::fs::read_dir(directory.path()).unwrap().count(), 0);
+        let cancel = CancellationToken::new();
+        let salt = owner_salt(directory.path(), &cancel).await.unwrap();
+        assert_eq!(salt.len(), 32);
+        assert_eq!(owner_salt(directory.path(), &cancel).await.unwrap(), salt);
+        let path = directory.path().join(".aics-image-owner-salt");
+        std::fs::write(&path, b"invalid old identity").unwrap();
+        assert_eq!(
+            owner_salt(directory.path(), &cancel).await.unwrap(),
+            b"invalid old identity"
+        );
+        assert_eq!(
+            owner_matches_for(directory.path(), "any.png", b"bytes", "owner", Kind::Anima)
+                .await
+                .unwrap_err()
+                .code,
+            "IMAGE_STORAGE_INVALID"
+        );
+        assert_eq!(std::fs::read(path).unwrap(), b"invalid old identity");
     }
 }
 

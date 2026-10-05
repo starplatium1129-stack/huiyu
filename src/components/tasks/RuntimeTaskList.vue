@@ -31,6 +31,7 @@ import { computed, defineAsyncComponent, ref } from 'vue'
 const RuntimeTaskResult = defineAsyncComponent(() => import('./RuntimeTaskResult.vue'))
 import { refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, confirmWebuiTaskStopped, markRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
 import { runtimeTasks, runtimeTaskError, pendingTaskRequests } from '@/stores/runtimeTaskState'
+import { videoRetrySource } from '@/api/runtimeVideo'
 import { confirmAction } from '@/composables/useConfirm'
 defineProps<{ active: boolean }>()
 const emit = defineEmits<{ navigate: [] }>()
@@ -39,7 +40,7 @@ const filters = [{ id: 'all', label: '全部任务' }, { id: 'active', label: '�
 const titles = { generation: 'WAI 绘图', anima: 'Anima 绘图', creative: 'Krea 2 绘图', video: '视频创作', batch: '分镜短片' }
 const labels = { queued: '已接收', submitting: '提交中', running: '生成中', cancelling: '取消中', succeeded: '已完成', failed: '未完成', cancelled: '已取消' }
 const visible = computed(() => runtimeTasks.value.filter(task => selected.value === 'all' || (selected.value === 'active' ? !task.upstreamSettled : selected.value === 'inbox' ? task.resultRefs.length && !['saved', 'discarded'].includes(task.deliveryState) : task.recoveryState !== 'normal' || task.status === 'failed')))
-const routeFor = (task: TaskRecord) => task.kind === 'video' ? `/video-studio?job=${task.taskId}` : task.kind === 'batch' ? `/video-studio?mode=shots&batch=${task.taskId}` : '/prompt-builder'
+const routeFor = (task: TaskRecord) => task.kind === 'video' ? `/video-studio?job=${task.taskId}` : task.kind === 'batch' ? `/video-studio?mode=shots&batch=${encodeURIComponent(videoRetrySource(task)?.batchId || task.taskId)}` : '/prompt-builder'
 const hasConcat = (task: TaskRecord) => Array.isArray(task.checkpoint?.shots) && task.resultRefs.some(result => result.index === (task.checkpoint!.shots as unknown[]).length)
 async function refresh() { if (busy.value) return; busy.value = 'refresh'; feedback.value = ''; try { await refreshRuntimeTasks() } catch {} finally { busy.value = '' } }
 async function cancelKey(key: string) {

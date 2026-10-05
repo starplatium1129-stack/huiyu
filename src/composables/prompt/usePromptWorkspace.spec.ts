@@ -15,6 +15,7 @@ import type { AnimaSubmission } from '@/composables/generation/animaSessionContr
 import type { PromptGenerationContext } from './promptGenerationActions'
 import type { SdResultSnapshot } from './sdResultActions'
 
+vi.mock('virtual:data-version', () => ({ DATA_VERSION: 0 }))
 vi.mock('@/utils/tempResult', () => ({ clearTempResult: vi.fn(), readTempResult: vi.fn(() => null), writeTempResult: vi.fn(() => true) }))
 
 const scene: Scene = { id: 'fixture-one', title: '隔离场景', char: 'nene', story: 'A quiet garden.', prompt: 'garden', recommendedSize: '1216x832' }
@@ -89,6 +90,14 @@ describe('workspace ownership and panel boundaries', () => {
     await nextTick(); await nextTick()
     expect(pb.sdParams.size).toBe('1344x896'); expect(pb.sdParamsTouched.has('size')).toBe(true)
     expect(saveDraft).toHaveBeenCalled()
+    pb.modelProfiles = [{ id: 'size-fixture', name: 'Size fixture', checkpoint_match: '.*', size: '1216x832' }]
+    pb.sdModelName = 'new-checkpoint'; await nextTick(); await nextTick()
+    expect(workspace.genBarSize.value).toBe('1344x896')
+    expect(pb.sdParams.size).toBe('1344x896')
+    workspace.renderBindings.resetSdParams(); await nextTick(); await nextTick()
+    expect(workspace.genBarSize.value).toBe('1216x832')
+    expect(pb.sdParams.size).toBe('1216x832')
+    expect(pb.sdParamsTouched.has('size')).toBe(false)
     await router.push('/prompt-builder?scene=fixture-two'); await vi.dynamicImportSettled(); await flushPromises()
     expect(workspace.genBarSize.value).toBe(secondScene.recommendedSize)
     expect(pb.sdParamsTouched.has('size')).toBe(false)

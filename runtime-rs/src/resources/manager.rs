@@ -33,7 +33,8 @@ pub struct Service {
     pub(super) read_cancel: CancellationToken,
     closed: AtomicBool,
     active: AtomicBool,
-    workers: TaskTracker,
+    pub(super) workers: TaskTracker,
+    pub(super) group_reads: Arc<super::group_reads::GroupReads>,
     data: Mutex<Data>,
 }
 impl Service {
@@ -75,6 +76,7 @@ impl Service {
             closed: AtomicBool::new(false),
             active: AtomicBool::new(false),
             workers: TaskTracker::new(),
+            group_reads: Arc::new(super::group_reads::GroupReads::default()),
             data: Mutex::new(Data::default()),
         })
     }

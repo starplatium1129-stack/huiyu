@@ -125,7 +125,7 @@ const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }>
   { value: 'character', label: '角色档案', icon: 'character' }, { value: 'outfit', label: '服装方案', icon: 'image' },
   { value: 'scene', label: '场景故事', icon: 'scene' }, { value: 'blueprint', label: '场景蓝图', icon: 'spark' }, { value: 'document', label: '标签与推荐', icon: 'manager' },
 ]
-const { kind, search, character, category, rating, sort, page, result, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
+const { kind, search, character, category, rating, sort, page, result, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])
 const sectionDescription = computed(() => section.value === 'media' ? '找到场景、替换样张，或者为首页换一张封面。' : section.value !== 'records' ? '把创作资料整理好，留给下一次灵感。' : ({ character: '补充人物的来历与外观，让角色的样子更清晰。', outfit: '整理服装的样子与细节，为角色留住不同的形态。', scene: '写下故事与画面细节，让下一次创作更有依据。', blueprint: '把动作、氛围和镜头整理成一份可用的画面方案。', document: '整理常用词与推荐顺序，让内容更容易被找到。' } as Record<CatalogKind, string>)[kind.value])
 const searchPlaceholder = computed(() => '找一份' + ({ character: '角色资料', outfit: '服装', scene: '故事', blueprint: '画面方案', document: '词库或推荐资料' } as Record<CatalogKind, string>)[kind.value] + '…')
@@ -155,7 +155,7 @@ async function reviewEdits() { if (dirtyEditor.value) stage(); if (!dirtyEditor.
 async function checkContent() { checking.value = true; try { await catalogApi.check(); toolHint.value = '检查完成，资料关联完整' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
 async function listBackups() { checking.value = true; try { backups.value = (await maintenanceApi.listBackups()).entries; toolHint.value = '找到 ' + backups.value.length + ' 份图片备份' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
 function switchKind(value: CatalogKind) { kind.value = value; character.value = ''; category.value = ''; rating.value = ''; section.value = 'records' }
-async function readBulkFile(event: Event) { const file = (event.target as HTMLInputElement).files?.[0]; if (file) { bulkInput.value = await file.text(); loadBulk() } }
+async function readBulkFile(event: Event) { const file = (event.target as HTMLInputElement).files?.[0]; if (file) await readBulkSource(file) }
 onMounted(() => {
   if (route.query.tab === 'portraits') section.value = 'portraits'
   if (typeof route.query.created === 'string') { const id = route.query.created; kind.value = /^sc\d+$/.test(id) ? 'scene' : 'blueprint'; search.value = id; void select({ kind: kind.value, id }) }

@@ -110,9 +110,20 @@ async fn perform(
             )
         })?;
         let _maintenance = state.host.maintenance()?;
-        state.host.wait_for_writes().await;
+        tokio::time::timeout(
+            std::time::Duration::from_secs(30),
+            state.host.wait_for_writes(),
+        )
+        .await
+        .map_err(|_| {
+            ApiError::new(
+                504,
+                "WORKSPACE_TIMEOUT",
+                "Waiting for workspace writes timed out",
+            )
+        })?;
         match action {
-            "prepare-candidate" => activation::prepare(state).await?,
+            "prepare-candidate" => activation::prepare(state, &input["candidate"], origin).await?,
             "activate" => {
                 activation::activate(
                     state,

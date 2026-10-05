@@ -31,6 +31,7 @@ export interface PersistedChatState {
     apiModel: string
     apiKey: string
     apiConfiguredByUser?: boolean
+    apiSettingsRevision?: string
     webSearchEnabled: boolean
     live2dEnabled: boolean
     live2dOutfit: string
@@ -215,4 +216,17 @@ export function serializeChatStorage(state: PersistedChatState): string {
     histories: state.histories,
     settings: state.settings,
   })
+}
+
+/** Connection-only hydration never traverses or replaces live conversation history. */
+export function normalizeChatConnection(value: unknown, legacyModel: unknown, options: ChatStorageOptions) {
+  const raw = isRecord(value) ? value : {}
+  const normalized = normalizeChatStorage({ ...raw, histories: {} }, legacyModel, options)
+  const { model, provider, apiBaseUrl, apiModel } = normalized.state.settings
+  const settings = isRecord(raw.settings) ? raw.settings : {}
+  return { model, provider, apiBaseUrl, apiModel, neverConfigured: normalized.neverConfigured,
+    apiSettingsRevision: text(settings.apiSettingsRevision, 80) }
+}
+export function sameChatApiBinding(a: { apiBaseUrl?: string; apiModel?: string; apiSettingsRevision?: string }, b: typeof a) {
+  return a.apiBaseUrl === b.apiBaseUrl && a.apiModel === b.apiModel && a.apiSettingsRevision === b.apiSettingsRevision
 }

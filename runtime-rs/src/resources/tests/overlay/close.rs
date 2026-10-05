@@ -22,9 +22,16 @@ async fn close_stops_overlay_reads_without_cancelling_gateway() {
         // The real 2 MiB file has reached its first 512 KiB read checkpoint.
         // Closing must stop the remaining read/hash loop, not merely discard
         // its fully collected result at the final mount check.
-        fixture.service.close().await;
+        let closing = fixture.service.close();
+        tokio::pin!(closing);
+        let waiting = futures_util::poll!(closing.as_mut()).is_pending();
+        assert!(
+            waiting,
+            "Close owns the shared verifier until its blocking read exits"
+        );
         assert!(!fixture.shutdown.is_cancelled());
         drop(pause);
+        closing.await;
         let (_, headers, body) = worker.await.unwrap();
         assert!(!headers.contains_key("x-resource-version"));
         if method == "GET" {

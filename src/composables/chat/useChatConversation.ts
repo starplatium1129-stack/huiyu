@@ -294,6 +294,7 @@ export function useChatConversation(options: ChatConversationOptions) {
 
   // A stream may canonicalize its own model, but never a newer connection draft.
   function applyModelWriteback(rawModel: unknown, hostMode: boolean, useVision: boolean, connection: TurnConnection) {
+    if (connection.provider === 'api' && !hostMode && !useVision && String(rawModel) === connection.apiModel) return
     const ownsDraft = connectionMatches(connection)
     if (connection.provider === 'api' && !hostMode && !useVision) {
       connection.apiModel = String(rawModel)
@@ -301,7 +302,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       options.apiModel.value = connection.apiModel
       void Promise.resolve(options.storage.setApiSettings({
         baseUrl: connection.baseUrl, model: connection.apiModel, apiKey: connection.apiKey,
-      })).catch(() => { if (connectionMatches(connection)) options.onError('模型配置未能安全保存，当前回复不受影响，请稍后重试。') })
+      }, 'model')).catch(() => { if (connectionMatches(connection)) options.onError('模型配置未能安全保存，当前回复不受影响，请稍后重试。') })
     } else if (connection.provider !== 'api' || hostMode) {
       connection.currentModel = String(rawModel)
       if (!ownsDraft) return

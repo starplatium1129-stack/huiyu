@@ -261,6 +261,7 @@ export function useSceneExplorerWorkspace() {
     const filtered = computed(() => {
         // 用 debounce 后的值：直接读 searchQuery 会让下面的过滤+排序在每次击键时重跑
         const q = debouncedQuery.value.trim().toLowerCase();
+        const analysis = q ? uxAnalyze(q, curation.value) : undefined;
         let r = scenes.value.filter(s => {
             if (showHidden.value ? !hiddenIds.value.has(s.id) : hiddenIds.value.has(s.id))
                 return false;
@@ -291,14 +292,14 @@ export function useSceneExplorerWorkspace() {
             }
             if (sortBy.value === 'favorite' && !favs.value.has(s.id) && !uxIsFav(s, profile.value))
                 return false;
-            return !q || uxMatchesSearch(s, q, curation.value, [primaryCategory(s), timeLabel(s.timeOfDay)]);
+            return !q || uxMatchesSearch(s, q, curation.value, [primaryCategory(s), timeLabel(s.timeOfDay)], analysis);
         });
         // 相关度先算一遍存 Map:原先在比较器里每次比较都调 uxSearchScore 两次,
         // 297 条 ≈ 每次重算 4900 次评分,每次还带字符串归一化
         const relevance = new Map<string, number>();
         if (q) {
             for (const s of r) {
-                relevance.set(s.id, uxSearchScore(s, q, curation.value, [primaryCategory(s), timeLabel(s.timeOfDay)]));
+                relevance.set(s.id, uxSearchScore(s, q, curation.value, [primaryCategory(s), timeLabel(s.timeOfDay)], analysis));
             }
         }
         return orderExplorerScenes(r, { mode: sortBy.value, curation: curation.value,

@@ -124,5 +124,5 @@ export function useGalleryViewer(options: {
   onDeactivated(dispose)
   onUnmounted(() => { disposed = true; dispose() })
 
-  return { viewerIndex, viewerUrl, neighborPreviews, current, openViewer, closeViewer, onViewerClosed, step }
+  return { viewerIndex, viewerUrl, neighborPreviews, current, openViewer, closeViewer, onViewerClosed, step, getViewerRevision: () => previewRevision }
 }

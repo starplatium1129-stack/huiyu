@@ -98,7 +98,9 @@ export function useGalleryProjectAlbums(options: {
     }
     return { ...metadata, count: items.length, covers }
   }
-  const albums = computed(() => projectMembers.value.map(decorate))
-  const characterAlbums = computed(() => characterMembers.value.map(decorate))
+  const projectCovers = computed(() => projectMembers.value.map(album => computed(() => decorate(album))))
+  const characterCovers = computed(() => characterMembers.value.map(album => computed(() => decorate(album))))
+  const albums = computed(() => projectCovers.value.map(album => album.value))
+  const characterAlbums = computed(() => characterCovers.value.map(album => album.value))
   return { albums, characterAlbums, resolvePreviewItems }
 }

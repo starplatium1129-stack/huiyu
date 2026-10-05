@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import {
-  readHiddenScenes,
+  analyzeQuery, matchesSearch, searchScore, readHiddenScenes,
   readSceneUsage,
   recordSceneUsage,
   sceneUsageScore,
@@ -93,4 +93,17 @@ describe('sceneUX · 排序评分', () => {
     expect(sceneUsageScore({ uses: 2, lastUsed: NOW - 200 * DAY }, NOW)).toBe(8 + 0)  // 更早
     expect(sceneUsageScore({ uses: 50, lastUsed: NOW }, NOW)).toBe(60)
   })
+})
+
+it('reuses one query analysis without changing aliases, stop phrases, Chinese boundaries or ranking weights', () => {
+  const config = { searchAliases: { 夜雨: ['雨夜', 'rain night'], 夏日: ['夏'] } }
+  const analysis = analyzeQuery('雨夜', config)
+  const title = { title: '雨夜', story: '' }, story = { title: '', story: '雨夜' }
+  expect(matchesSearch(title, '雨夜', config, [], analysis)).toBe(true)
+  expect(searchScore(title, '雨夜', config, [], analysis)).toBe(88)
+  expect(searchScore(story, '雨夜', config, [], analysis)).toBe(42)
+  expect(matchesSearch({ title: 'rain night' }, '请帮我找，雨夜。', config)).toBe(true)
+  expect(analyzeQuery('夏目', config).intents).not.toContain('夏日')
+  expect(matchesSearch(title, '晴天', config)).toBe(false)
+  expect(searchScore(title, '晴天', config)).toBe(0)
 })

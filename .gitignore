@@ -10,7 +10,7 @@ Thumbs.db
 *.bak
 *~
 
-node_modules/
+node_modules
 test-results/
 playwright-report/
 # vitest --coverage 报告产物（npx vitest run --coverage 生成，不入库）

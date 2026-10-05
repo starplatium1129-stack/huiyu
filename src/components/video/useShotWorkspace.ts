@@ -107,6 +107,7 @@ export function useShotWorkspace(props: {
     const batchError = ref('');
     // ── 一键首帧（2026-08-23）：逐镜 Krea2 增强链路出图 → 上传受控文件 → 回填 ──
     const { firstFrameBusy, firstFrameProgress, generateFirstFrames } = useShotFirstFrames({
+        shots, frameRequests,
         onError: (message) => { batchError.value = message; },
     });
     // ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
@@ -130,6 +131,10 @@ export function useShotWorkspace(props: {
         h3Ready,
         online: computed(() => props.status?.online === true),
         batchError,
+        onAccepted: (value) => {
+            if (!videoStore.recordShotsBatch({ batchId: value.id, submittedAt: Date.now() }))
+                batchError.value = '分镜批次已提交，但批次记录保存失败；请在任务中心保留并核对任务。';
+        },
     });
     // ── AI 整理链路（逐镜整理/整批编排/脚本/台词/质检）已下沉 useShotAiTools ──
     const { aiBusy, aiNote, aiSnapshot, polishSnapshot, aiFlowStep, flowHint, scriptOpen, scriptStory, scriptCount, scriptTotal, scriptBusy, runAiRewrite, restoreAiSnapshot, runAiPolish, restorePolishSnapshot, runAiScript, dialogueIndex, dialogueOptions, dialogueBusy, runAiDialogue, applyDialogueOption, reviewIssues, reviewBusy, runAiReview, applyReviewSuggestion, shotIssueCount } = useShotAiTools({
@@ -140,7 +145,7 @@ export function useShotWorkspace(props: {
     });
     // ── 绘图页「加入分镜」导入（逐镜确认 + 失败可重试，已下沉 useShotImport）──
     const { importShotsFromDrawing, retryPendingFrames, mountShotFrame } = useShotImport({
-        shots,
+        shots, frameRequests,
         referenceCards,
         selectCardCharacter,
     });
@@ -150,7 +155,7 @@ export function useShotWorkspace(props: {
         if (!shot?.imageId || shot.imageName)
             return;
         const ok = await mountShotFrame(shot, shot.imageId);
-        batchError.value = ok ? '' : `镜头 ${index + 1} 首帧挂载失败：原图已失效，请重新上传`;
+        if (ok !== undefined) batchError.value = ok ? '' : `镜头 ${index + 1} 首帧暂未挂载：请重试，或重新上传图片`;
     }
     const submitTitle = computed(() => {
         if (batchActive.value)
@@ -416,23 +421,17 @@ export function useShotWorkspace(props: {
     async function reconnectShotsBatch() {
         const requestedBatch = typeof route.query.batch === 'string' ? route.query.batch : '';
         const record = requestedBatch ? { batchId: requestedBatch } : videoStore.shotsBatch;
-        if (!record || batch.value?.id === record.batchId)
+        if (!record)
             return;
         const ok = await reconnectBatch(record.batchId);
         if (!ok) {
-            videoStore.clearShotsBatch();
-            batchError.value = '上一批分镜任务已不存在（网关重启或已过期），镜头草稿仍在，可重新提交';
+            if ((typeof route.query.batch === 'string' ? route.query.batch : '') !== requestedBatch) return;
+            if (videoStore.shotsBatch?.batchId === record.batchId) videoStore.clearShotsBatch();
+            batchError.value ||= '上一批分镜任务已不存在（网关重启或已过期），镜头草稿仍在，可重新提交';
         }
     }
     watch(() => route.query.batch, () => {
         if (route.path === '/video-studio') void reconnectShotsBatch();
-    });
-    // 批次提交成功即记录 batchId；重连/新提交都会刷新这份记录。
-    watch(() => batch.value?.id, (id) => {
-        if (!id) return
-        if (!videoStore.recordShotsBatch({ batchId: id, submittedAt: Date.now() })) {
-            batchError.value = '分镜批次已提交，但批次记录保存失败；离开本页将无法自动重连，请保留当前页面并重试。'
-        }
     });
     onMounted(() => {
         void sceneStore.loadCharacterShell().catch(() => { batchError.value = '角色目录读取失败，请刷新页面重试'; });

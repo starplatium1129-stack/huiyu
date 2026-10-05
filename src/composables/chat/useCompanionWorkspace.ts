@@ -58,7 +58,7 @@ export function useCompanionWorkspace() {
     // ── 语音输入（按住说话/Space 保持/唤醒会话/auto-listen gating）已下沉
     //    useCompanionSpeechInput；visibilitychange 监听与卸载释放自持。──
     const { speechReady, speechState, speechLevel, speechError, speechAutoListening, speechSessionActive, speechButtonDisabled, speechButtonText, speechStateText, speechSettingsOpen, pageVisible, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, onSpeechSessionEnd, onSpeechSettingsSaved, handleSpaceKeyDown, handleSpaceKeyUp, cancelSpeechActivity, reconcileAutoListen } = useCompanionSpeechInput({
-        busy,
+        busy: computed(() => busy.value || voiceActive.value),
         chatReady,
         inputText,
         currentCharacter,
@@ -114,7 +114,7 @@ export function useCompanionWorkspace() {
     /* ============================================================
      * 真双窗口（桌面）：实时状态下行 + 聊天窗指令接入
      * 角色窗是会话运行时唯一写者；聊天窗经 COMPANION_CHAT_LIVE_KEY
-     * 下行 busy/thinking/speaking/activeChar/chatReady，经
+     * 下行 busy/thinking/speaking/voiceActive/activeChar/chatReady，经
      * bridge.onChatCommand 接收 send/switch/stop 中继。
      * ============================================================ */
     const liveDotState = computed(() => {
@@ -143,6 +143,7 @@ export function useCompanionWorkspace() {
                 busy: busy.value,
                 thinking: Boolean(thinkingActivity.value || toolActivity.value),
                 speaking: isSpeaking.value,
+                voiceActive: voiceActive.value,
                 activeChar: activeChar.value,
                 chatReady: chatReady.value,
                 ts: Date.now(),
@@ -150,7 +151,7 @@ export function useCompanionWorkspace() {
         }
         catch { /* 隐私模式忽略 */ }
     }
-    watch([busy, thinkingActivity, toolActivity, isSpeaking, activeChar, chatReady], publishLiveState, { flush: 'sync' });
+    watch([busy, thinkingActivity, toolActivity, isSpeaking, voiceActive, activeChar, chatReady], publishLiveState, { flush: 'sync' });
     function openChatWindow() {
         desktopBridge?.openChat?.();
     }

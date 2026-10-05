@@ -155,6 +155,14 @@ const cancelling = ref(false)
 
 const job = ref<VideoJob | null>(null)
 
+// Route selections and local submissions share ownership; clearing a consumed
+// deep link must not count as a newer selection than the submission itself.
+const selectedTaskId = ref('')
+let selectionVersion = 0
+watch(() => route.path === '/video-studio' && typeof route.query.job === 'string' ? route.query.job : '', id => {
+  if (id !== selectedTaskId.value) { selectionVersion++; selectedTaskId.value = id }
+}, { immediate: true, flush: 'sync' })
+
 let pollTimer = 0
 
 let disposed = false
@@ -399,6 +407,9 @@ const stopDraftWatch = videoDraftTools.startDraftWatch()
 async function submitVideo() {
   if (!canGenerate.value) return
   submitting.value = true
+  const selection = ++selectionVersion
+  selectedTaskId.value = ''
+  if (typeof route.query.job === 'string') void router.replace({ query: { ...route.query, job: undefined }, hash: route.hash })
   try {
     // 帧图解析（受控名优先、IndexedDB 凭据重上传兜底）已下沉 useVideoFrames。
     const mode = selectedMode.value
@@ -417,18 +428,18 @@ async function submitVideo() {
       adultEnabled: isLocalStudioHost(),
     }
     const frames = await resolveSubmitFrames(mode)
-    if (disposed) return
+    if (disposed || selection !== selectionVersion) return
     const response = await createVideoJob({ ...request, ...frames })
     // 任务记录（F1）：离页后按 jobId 重连真实状态。
     const recorded = useVideoStore().recordVideoTask({ jobId: response.job.id, mode, submittedAt: Date.now() })
-    if (disposed) return
+    if (disposed || selection !== selectionVersion) return
     job.value = response.job
     if (!recorded) {
       statusError.value = '视频任务已提交，但任务记录保存失败；离开本页将无法自动重连，请保留当前页面并重试。'
     }
     schedulePoll()
   } catch (error) {
-    if (disposed) return
+    if (disposed || selection !== selectionVersion) return
     // 提交失败多半是 Comfy 侧（显存 / 模型 / 参数），走分类器给中文结论；
     // 分类不出具体原因时仍退回原始消息，不丢信息。
     const report = classifySDError(error, 'comfy')
@@ -436,7 +447,7 @@ async function submitVideo() {
       ? (error instanceof Error ? error.message : '视频任务提交失败')
       : `${report.title}：${report.message}`
     await loadStatus()
-    statusError.value = submissionError
+    if (!disposed && selection === selectionVersion) statusError.value = submissionError
   } finally {
     submitting.value = false
   }
@@ -494,7 +505,7 @@ watch(selectedMode, (mode) => {
 let activatedOnce = false
 
 const taskSelection = useBackendSelection(
-  () => route.path === '/video-studio' && typeof route.query.job === 'string' ? route.query.job : '',
+  () => selectedTaskId.value,
   () => job.value?.id,
   fetchVideoJob,
   response => { job.value = response.job; statusError.value = ''; schedulePoll() },
@@ -518,11 +529,12 @@ onMounted(() => {
   }
   void loadStatus()
   void (async () => {
+    const selection = selectionVersion
     // 草稿先回、跨页上下文后覆盖（F1：ctx 是更新的明确意图，优先级更高）。
     // 分镜模式下草稿由 ShotListEditor 自己的分镜草稿承担，这里跳过。
     if (selectedMode.value !== 'shots') {
       const { firstFrameLost, lastFrameLost } = await videoDraftTools.restoreDraft()
-      if (disposed) return
+      if (disposed || selection !== selectionVersion) return
       if (firstFrameLost || lastFrameLost) {
         statusError.value = '草稿已恢复，但部分帧图原文件已失效，请重新选择对应图片'
       }
@@ -531,7 +543,7 @@ onMounted(() => {
     // 任务重连（F1）：离页不丢任务——按 jobId 拉回真实状态并恢复轮询。
     if (typeof route.query.job === 'string') return
     const reconnect = await videoDraftTools.reconnectTask()
-    if (disposed) return
+    if (disposed || selection !== selectionVersion) return
     if (reconnect.kind === 'job') {
       job.value = reconnect.job
       schedulePoll()

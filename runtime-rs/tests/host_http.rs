@@ -271,7 +271,14 @@ async fn session_requires_bound_browser_origin_scope_and_current_epoch() {
         StatusCode::FORBIDDEN
     );
     assert_eq!(
-        signed(&app, "prepare-candidate", "atelier").await.status(),
+        signed_with(
+            &app,
+            "prepare-candidate",
+            "atelier",
+            json!({"candidate":{"mode":"new"}})
+        )
+        .await
+        .status(),
         StatusCode::CONFLICT
     );
     assert_eq!(
@@ -414,7 +421,13 @@ async fn verified_candidate_is_backed_up_activated_and_reopened_with_new_epoch()
     state.host = Arc::new(HostAuthority::new(None, None, None));
     let app = huiyu_runtime::router(state.clone());
     assert!(json_body(signed(&app, "session", "atelier").await).await["workspace"].is_null());
-    let prepared = signed(&app, "prepare-candidate", "atelier").await;
+    let prepared = signed_with(
+        &app,
+        "prepare-candidate",
+        "atelier",
+        json!({"candidate":{"mode":"new"}}),
+    )
+    .await;
     assert_eq!(prepared.status(), StatusCode::OK);
     let prepared = json_body(prepared).await;
     let session = &prepared["workspace"];
@@ -475,6 +488,17 @@ async fn verified_candidate_is_backed_up_activated_and_reopened_with_new_epoch()
     let status = activated.status();
     let activated = json_body(activated).await;
     assert_eq!(status, StatusCode::OK, "{activated}");
+    assert_eq!(
+        signed_with(
+            &app,
+            "prepare-candidate",
+            "atelier",
+            json!({"candidate":{"mode":"new"}})
+        )
+        .await
+        .status(),
+        StatusCode::CONFLICT
+    );
     assert_eq!(activated["workspace"]["generation"], 1);
     assert_eq!(
         activated["workspace"]["activeMigrationId"],
@@ -542,3 +566,6 @@ async fn verified_candidate_is_backed_up_activated_and_reopened_with_new_epoch()
     assert_eq!(resumed["workspace"]["bundledUi"], true);
     storage.close().await.unwrap();
 }
+
+#[path = "host_http/migration_candidates.rs"]
+mod migration_candidates;

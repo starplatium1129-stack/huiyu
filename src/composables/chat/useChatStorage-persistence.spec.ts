@@ -7,6 +7,9 @@ vi.mock('@/platform/web/profileStorage', async importOriginal => ({
   ...await importOriginal<typeof import('@/platform/web/profileStorage')>(),
   flushProfileWrites: vi.fn(async () => {}),
 }))
+import { mount, flushPromises } from '@vue/test-utils'
+import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
+import { clearStoredChatContent } from '@/utils/chatReset'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { STORAGE_KEY, MAX_LOCAL_MESSAGES } from '@/config/characters'
 import { kvGet, kvSet } from '@/composables/useKVStore'
@@ -246,4 +249,59 @@ describe('chat archive writes', () => {
     await storage.clearArchive('nene')
     expect((await open()).archiveCount('nene')).toBe(0)
   })
+})
+
+it('binds delayed archive file selection to its reset, storage owner, latest selection and mounted panel', async () => {
+  const storage = await open(), importing = vi.spyOn(storage, 'importArchiveJson')
+  const wrapper = mount(ChatArchivePanel, { props: { storage, activeChar: 'nene' } })
+  const payload = (mid: string) => JSON.stringify({ version: 1, archived: { nene: [{ mid, role: 'user', content: mid, stopped: false }] } })
+  const select = async () => {
+    let finish!: (value: string) => void
+    const input = wrapper.get('input[type="file"]')
+    Object.defineProperty(input.element, 'files', { configurable: true, value: [{ size: 1, text: () => new Promise<string>(resolve => { finish = resolve }) }] })
+    await input.trigger('change')
+    return (mid: string) => finish(payload(mid))
+  }
+  try {
+    const beforeReset = await select()
+    await clearStoredChatContent()
+    expect(storage.canWrite()).toBe(false)
+    await storage.load() // The reset has already been consumed before File.text finishes.
+    beforeReset('before-reset'); await flushPromises()
+    expect(importing).not.toHaveBeenCalled()
+    expect(storage.archiveCount('nene')).toBe(0)
+    expect(wrapper.emitted('notice')?.at(-1)?.[0]).toContain('重新选择')
+    const older = await select(), latest = await select()
+    latest('after-reset'); await flushPromises()
+    older('older-selection'); await flushPromises()
+    expect(importing).toHaveBeenCalledOnce()
+    expect(JSON.parse(await storage.exportArchiveJson()).archived.nene.map((message: { mid: string }) => message.mid)).toEqual(['after-reset'])
+    const superseded = await select(), preceding = structuredClone(archiveKv.get('chat_archive_v1'))
+    let releaseSuperseded!: (value: unknown) => void
+    vi.mocked(kvGet).mockImplementationOnce(() => new Promise(resolve => { releaseSuperseded = resolve }))
+    superseded('old-refresh'); await flushPromises()
+    const nextSelection = await select(); nextSelection('new-refresh'); await flushPromises()
+    releaseSuperseded(preceding); await flushPromises()
+    expect(JSON.stringify(archiveKv.get('chat_archive_v1'))).not.toContain('old-refresh')
+    expect(JSON.stringify(archiveKv.get('chat_archive_v1'))).toContain('new-refresh')
+    const reading = await select()
+    const oldArchive = structuredClone(archiveKv.get('chat_archive_v1'))
+    let releaseArchive!: (value: unknown) => void
+    vi.mocked(kvGet).mockImplementationOnce(() => new Promise(resolve => { releaseArchive = resolve }))
+    reading('selected-before-second-clear'); await flushPromises()
+    expect(releaseArchive).toBeTypeOf('function')
+    await clearStoredChatContent()
+    expect(storage.canWrite()).toBe(false)
+    await storage.exportArchiveJson() // A new authoritative refresh now owns ready.
+    releaseArchive(oldArchive); await flushPromises()
+    expect(storage.archiveCount('nene')).toBe(0)
+    expect(JSON.stringify(archiveKv.get('chat_archive_v1'))).not.toContain('selected-before-second-clear')
+    const replaced = await select(), other = await open(), otherImport = vi.spyOn(other, 'importArchiveJson')
+    await wrapper.setProps({ storage: other })
+    replaced('wrong-storage'); await flushPromises()
+    expect(otherImport).not.toHaveBeenCalled()
+    const abandoned = await select()
+    wrapper.unmount(); abandoned('after-unmount'); await flushPromises()
+    expect(otherImport).not.toHaveBeenCalled()
+  } finally { if (wrapper.exists()) wrapper.unmount() }
 })

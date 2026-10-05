@@ -77,7 +77,16 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
         const data = await controlApi.getStatus({ signal: controller.signal })
         if (roomPollRequest !== controller) return false
         const operation = data.operation
-        if (!operation || operation.id !== roomPollOperationId) return false
+        if (!operation || operation.id !== roomPollOperationId) {
+          if (!data.ok) { roomSetupText.value = '准备结果尚未确认；状态暂时无法读取。'; return }
+          roomPoll.stop()
+          roomPollOperationId = ''
+          preparingRoom.value = false
+          roomSetupText.value = '准备结果尚未确认；正在重新检查服务，可再次尝试准备。'
+          setError(roomSetupText.value)
+          await Promise.allSettled([refreshChatStatus(), refreshVoiceStatus()])
+          return false
+        }
         roomSetupText.value = operation.message || '正在准备本地服务…'
         if (operation.status === 'running') return // void = 继续，完成本次后由底座排下一次
         preparingRoom.value = false

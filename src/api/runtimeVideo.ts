@@ -1,5 +1,6 @@
 import type { TaskRecord } from '../../types/tasks'
 import type { VideoJob, VideoBatch, VideoBatchShot, CreateVideoBatchInput, VideoDefaults, VideoQuality } from './videoApi'
+import { runtimeRequestKey } from '../stores/runtimeTaskState'
 import { getRuntimeTask, runtimeResultPath, submitRuntimeTask, taskMessage } from './runtimeTasks'
 
 const text = (value: unknown) => typeof value === 'string' ? value : ''
@@ -13,6 +14,12 @@ export function taskVideoJob(task: TaskRecord): VideoJob {
     createdAt: task.createdAt, resultAvailable: task.resultRefs.some(ref => ref.index === 0),
     resultUrl: task.resultRefs.some(ref => ref.index === 0) ? runtimeResultPath(task) : null,
     error: task.recoveryState !== 'normal' || task.status === 'failed' ? taskMessage(task) : null, code: task.errorCode }
+}
+export function videoRetrySource(task: TaskRecord): VideoBatch['retrySource'] {
+  const context = record(task.metadata.context)
+  return typeof context.retriedTaskId === 'string' && context.retriedTaskId
+    && Number.isSafeInteger(context.stepIndex) && Number(context.stepIndex) >= 0
+    ? { batchId: context.retriedTaskId, stepIndex: Number(context.stepIndex) } : undefined
 }
 export function taskVideoBatch(task: TaskRecord): VideoBatch {
   const input = task.input
@@ -28,7 +35,7 @@ export function taskVideoBatch(task: TaskRecord): VideoBatch {
       resultAvailable: result, resultUrl: result ? runtimeResultPath(task, position) : null }
   })
   const concatAvailable = task.resultRefs.some(ref => ref.index === shots.length)
-  return { id: task.taskId, status: task.status === 'succeeded' ? 'done' : task.status === 'cancelled' ? 'cancelled' : task.recoveryState !== 'normal' || task.status === 'failed' ? 'paused' : 'running',
+  return { id: task.taskId, retrySource: videoRetrySource(task), status: task.status === 'succeeded' ? 'done' : task.status === 'cancelled' ? 'cancelled' : task.recoveryState !== 'normal' || task.status === 'failed' ? 'paused' : 'running',
     modelId: text(input.modelId), aspectRatio: text(input.aspectRatio) as VideoBatch['aspectRatio'], quality: text(input.quality) as VideoQuality,
     steps: input.steps === 4 ? 4 : 8, linkLastFrame: input.linkLastFrame === true,
     progress: { total: shots.length, succeeded: shots.filter(shot => shot.status === 'succeeded').length, failed: shots.filter(shot => shot.status === 'failed').length },
@@ -48,5 +55,7 @@ export async function retryRuntimeVideoShot(id: string, index: number) {
     ...(input.image ? { image: text(input.image) } : {}), ...(Array.isArray(input.references) ? { references: input.references as string[] } : {}) }
   const next = { modelId: text(task.input.modelId), aspectRatio: task.input.aspectRatio, quality: task.input.quality,
     steps: task.input.steps, adultEnabled: task.input.adultEnabled, linkLastFrame: false, shots: [shot] } as CreateVideoBatchInput
-  return taskVideoBatch(await submitRuntimeTask('batch', next as unknown as Record<string, unknown>, crypto.randomUUID(), { retriedTaskId: id, stepIndex: index - 1 }))
+  const context = { retriedTaskId: id, stepIndex: index - 1 }
+  const key = runtimeRequestKey('batch', { input: next, ...context })
+  return taskVideoBatch(await submitRuntimeTask('batch', next as unknown as Record<string, unknown>, key, context))
 }

@@ -1,5 +1,6 @@
 mod close;
 mod mount;
+mod single_flight;
 use super::*;
 use axum::{
     Router,
@@ -231,7 +232,7 @@ impl Fixture {
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-async fn live2d_get_head_and_304_verify_every_dependency_once_without_unused_bodies() {
+async fn live2d_get_shares_verified_group_and_head_and_304_remain_bodyless() {
     let fixture = Fixture::new();
     let paths = fixture.paths();
     let watch = Watch::new(&paths);
@@ -295,7 +296,7 @@ async fn live2d_get_head_and_304_verify_every_dependency_once_without_unused_bod
                 Reads {
                     passes: 1,
                     bytes,
-                    collected: if index == 2 && collect { bytes } else { 0 },
+                    collected: if collect { bytes } else { 0 },
                 },
                 "{method} {condition:?}: {}",
                 path.display()

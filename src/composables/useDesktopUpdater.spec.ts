@@ -157,7 +157,8 @@ describe('useDesktopUpdater', () => {
 
   it('双订阅和迟到订阅接续进度，取消结束后才能重试，交接后不能取消', async () => {
     let finishInstall = deferred<boolean>()
-    const bridge = nativeSession({ desktop_update_install: () => {
+    const finishCancel = deferred<boolean>()
+    const bridge = nativeSession({ desktop_update_cancel: () => finishCancel.promise, desktop_update_install: () => {
       bridge.update({ phase: 'downloading', version: '1.9.0', statusText: '已下载 100.0 / 608.6 MiB（16%）', errorText: '', canCancel: true })
       return finishInstall.promise
     } })
@@ -170,6 +171,13 @@ describe('useDesktopUpdater', () => {
     expect(follower.get('button').text()).toBe('取消更新')
     expect(bridge.invoke.mock.calls.filter(([command]) => command === 'desktop_update_install')).toHaveLength(1)
     await follower.get('button').trigger('click'); await flushPromises()
+    bridge.update({ phase: 'downloading', statusText: 'later download progress', canCancel: true })
+    await flushPromises()
+    expect(follower.get('button').attributes('disabled')).toBeDefined()
+    await follower.get('button').trigger('click')
+    expect(bridge.invoke.mock.calls.filter(([command]) => command === 'desktop_update_cancel')).toHaveLength(1)
+    bridge.update({ phase: 'cancelling', statusText: '正在取消更新…', canCancel: false })
+    finishCancel.resolve(true); await flushPromises()
     expect(owner.get('button').attributes('disabled')).toBeDefined()
     expect(follower.get('button').attributes('disabled')).toBeDefined()
     bridge.emit('desktop-update-state', { revision: 0, phase: 'downloading', version: '1.9.0', statusText: 'stale progress', errorText: '', canCancel: true })

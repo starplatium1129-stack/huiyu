@@ -2,6 +2,14 @@ import { effectScope, nextTick, reactive, ref } from 'vue'
 import { expect, it, vi } from 'vitest'
 import { chatApi } from '@/api/chatApi'
 import { useChatProvider } from './useChatProvider'
+import { useChatStorage } from './useChatStorage'
+import { STORAGE_KEY } from '@/config/characters'
+import { flushPromises } from '@vue/test-utils'
+import type { CompanionDesktopBridge } from '@/types/desktop'
+
+const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
+vi.mock('@/platform/desktop/capabilities.ts', () => ({ getDesktopCapabilities: () => desktopFixture.current }))
+vi.mock('@/storage/chatArchiveRepository', () => ({ readChatArchive: async () => ({ version: 1, archived: {}, revisions: {} }), writeChatArchive: vi.fn(), withChatArchiveMutation: async (work: () => unknown) => work() }))
 
 vi.mock('@/api/chatApi', () => ({ chatApi: { getStatus: vi.fn(), getHostConfig: vi.fn(), clearHostConfig: vi.fn(), saveHostConfig: vi.fn() } }))
 it('reports only acknowledged host removal and rejects pre-acknowledgement reads', async () => {
@@ -59,6 +67,19 @@ it('keeps a newer personal editor intact when old save or clear work completes',
     finish(); await current
     expect(provider.apiKey.value).toBe('')
     expect(provider.apiConfigHint.value).toBe('个人密钥已清除。')
+    let finishA!: () => void, finishB!: () => void
+    setApiSettings.mockImplementationOnce(() => new Promise(resolve => { finishA = resolve }))
+      .mockImplementationOnce(() => new Promise(resolve => { finishB = resolve }))
+    provider.apiVendor.value = 'custom'; provider.apiBaseUrl.value = 'https://api.deepseek.com'; provider.apiModel.value = 'A'
+    const a = provider.saveApiSettings()
+    provider.apiVendor.value = 'deepseek'; provider.apiBaseUrl.value = 'https://proxy.example.test'; provider.apiModel.value = 'B'; provider.apiKey.value = 'fixture-B'
+    const b = provider.saveApiSettings()
+    Object.assign(state.settings, { apiBaseUrl: provider.apiBaseUrl.value, apiModel: 'B', apiKey: 'fixture-B' })
+    finishB(); await b; finishA(); await a; await nextTick()
+    state.settings.apiModel = 'remote-after-B'; await nextTick()
+    expect(provider.apiModel.value).toBe('remote-after-B')
+    expect(provider.apiVendor.value).toBe('deepseek')
+
   } finally { scope.stop() }
 })
 
@@ -102,4 +123,66 @@ it.each(['success', 'failure'])('a disposed provider releases reads without publ
     expect(chatApi.getStatus).toHaveBeenCalledOnce()
     expect(chatApi.getHostConfig).toHaveBeenCalledOnce()
   } finally { scope.stop() }
+})
+
+it('rehydrates cross-window connections, defers an event during model writes, and preserves an edited draft during secure reads', async () => {
+  localStorage.clear()
+  let saved = 'neutral-first', blocked: Promise<void> | undefined
+  let readGate: Promise<string> | undefined
+  const secureWrite = vi.fn(async (_endpoint: string, secret: string) => { saved = secret })
+  desktopFixture.current = { readChatCredential: async () => readGate || saved, writeChatCredential: secureWrite } as unknown as CompanionDesktopBridge
+  const lockDescriptor = Object.getOwnPropertyDescriptor(navigator, 'locks')
+  let queue = Promise.resolve()
+  Object.defineProperty(navigator, 'locks', { configurable: true, value: { request: (_name: string, work: () => unknown) => {
+    const waiting = blocked
+    const next = queue.then(async () => { await waiting; return work() }); queue = next.then(() => undefined, () => undefined); return next
+  } } })
+  const scope = effectScope()
+  const storage = scope.run(() => useChatStorage())!
+  let provider!: ReturnType<typeof useChatProvider>
+  const peer = (revision: string, model: string) => {
+    const value = JSON.parse(localStorage.getItem(STORAGE_KEY)!)
+    value.settings.apiSettingsRevision = revision; value.settings.apiModel = model
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
+  }
+  try {
+    await storage.setApiSettings({ baseUrl: 'https://example.test', model: 'first', apiKey: saved })
+    provider = scope.run(() => useChatProvider({ storage, isBusy: ref(false) }))!
+    storage.setDraft('nene', 'local message draft')
+    const history = storage.state.histories.nene
+    saved = 'neutral-peer'; peer('peer-1', 'first')
+    window.dispatchEvent(new StorageEvent('storage', { key: STORAGE_KEY, storageArea: localStorage }))
+    await flushPromises()
+    expect(provider.apiKey.value).toBe('neutral-peer')
+    expect(storage.state.histories.nene).toBe(history)
+    expect(storage.draft('nene')).toBe('local message draft')
+    let release!: () => void
+    blocked = new Promise(resolve => { release = resolve })
+    provider.apiModel.value = 'canonical'
+    const modelWrite = storage.setApiSettings({ baseUrl: provider.apiBaseUrl.value, model: 'canonical', apiKey: provider.apiKey.value }, 'model')
+    await nextTick()
+    saved = 'neutral-next'; peer('peer-2', 'peer-model')
+    window.dispatchEvent(new StorageEvent('storage', { key: STORAGE_KEY }))
+    await flushPromises()
+    blocked = undefined; release(); await modelWrite; await flushPromises()
+    expect(provider.apiModel.value).toBe('peer-model')
+    expect(provider.apiKey.value).toBe('neutral-next')
+    expect(secureWrite).toHaveBeenCalledOnce()
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!).settings.apiSettingsRevision).toBe('peer-2')
+    let finishRead!: (secret: string) => void
+    readGate = new Promise(resolve => { finishRead = resolve })
+    peer('peer-3', 'remote-newer')
+    window.dispatchEvent(new StorageEvent('storage', { key: STORAGE_KEY }))
+    await flushPromises()
+    provider.apiModel.value = 'unsaved-model'; provider.apiKey.value = 'unsaved-key'
+    finishRead('remote-key'); await flushPromises()
+    expect(provider.apiModel.value).toBe('unsaved-model')
+    expect(provider.apiKey.value).toBe('unsaved-key')
+    expect(storage.state.settings.apiModel).toBe('remote-newer')
+    expect(localStorage.getItem(STORAGE_KEY)).not.toContain('remote-key')
+  } finally {
+    scope.stop(); desktopFixture.current = undefined; localStorage.clear()
+    if (lockDescriptor) Object.defineProperty(navigator, 'locks', lockDescriptor)
+    else Reflect.deleteProperty(navigator, 'locks')
+  }
 })

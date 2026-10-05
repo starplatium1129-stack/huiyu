@@ -2,22 +2,26 @@ import { beforeEach, expect, it, vi } from 'vitest'
 import { defineComponent, h, KeepAlive, nextTick, reactive, ref } from 'vue'
 import { flushPromises, mount } from '@vue/test-utils'
 import { useShotWorkspace } from './useShotWorkspace'
-import { uploadVideoImage, type VideoStatusResponse } from '@/api/videoApi'
+import { fetchVideoBatch, uploadVideoImage, type VideoBatch, type VideoStatusResponse } from '@/api/videoApi'
 import { artworkRepository } from '@/storage/artworkRepository'
 
 const route = reactive({ path: '/video-studio', query: {} as Record<string, string | undefined> })
 const replace = vi.fn(async ({ query }: { query: Record<string, string | undefined> }) => { route.query = query })
 const restoreDraft = vi.fn(async () => {})
+const savedBatch = ref<{ batchId: string; submittedAt: number } | null>(null)
 const cards = ref<Array<{ characterId?: string; outfitId?: string }>>([{}])
 const loadReferences = vi.fn(async (_id: string, _index: number, _outfit?: string, _signal?: AbortSignal) => false)
-beforeEach(() => { route.path = '/video-studio'; route.query = {}; cards.value = [{}]; loadReferences.mockReset(); replace.mockClear(); restoreDraft.mockReset() })
+beforeEach(() => { savedBatch.value = null; vi.mocked(fetchVideoBatch).mockReset(); route.path = '/video-studio'; route.query = {}; cards.value = [{}]; loadReferences.mockReset(); replace.mockClear(); restoreDraft.mockReset() })
 vi.mock('vue-router', () => ({ useRoute: () => route, useRouter: () => ({ replace }) }))
 vi.mock('@/storage/artworkSession', () => ({ withArtworkStaging: (run: () => unknown) => run() }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { putImage: vi.fn().mockResolvedValue('saved-image') } }))
-vi.mock('@/api/videoApi', () => ({ uploadVideoImage: vi.fn() }))
+vi.mock('@/api/videoApi', () => ({ uploadVideoImage: vi.fn(), fetchVideoBatch: vi.fn() }))
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ sceneBlueprints: [], popularCharacters: [], loadCharacterShell: async () => {} }) }))
-vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ consumeScenarioActs: () => [] }) }))
+vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ consumeScenarioActs: () => [],
+  get shotsBatch() { return savedBatch.value }, recordShotsBatch(value: { batchId: string; submittedAt: number }) { savedBatch.value = value; return true },
+  clearShotsBatch() { savedBatch.value = null },
+}) }))
 vi.mock('./useShotFirstFrames', () => ({ useShotFirstFrames: () => ({ firstFrameBusy: ref(false) }) }))
 vi.mock('./useReferenceCards', () => ({ useReferenceCards: () => ({ referenceCards: cards, loadingRefAssets: ref(false), shotReferences: () => undefined, selectCardCharacter: loadReferences }) }))
 vi.mock('./useShotAiTools', () => ({ useShotAiTools: () => ({}) }))
@@ -107,5 +111,28 @@ it('applies only the latest explicit character/outfit after draft restore and do
     active.value = true; await nextTick()
     expect(loadReferences).toHaveBeenCalledTimes(2)
     expect(tools.identityCard.value).toBe('User edited identity')
+  } finally { wrapper.unmount() }
+})
+
+it('invalidates an in-flight B reconnect when the host route reselects the already displayed A', async () => {
+  const batch = (id: string): VideoBatch => ({ id, status: 'paused', modelId: 'minimax-h3', aspectRatio: 'landscape', quality: 'standard', steps: 4,
+    linkLastFrame: false, progress: { total: 0, succeeded: 0, failed: 0 }, createdAt: 1, shots: [], concatAvailable: false, concatUrl: null })
+  route.query = { batch: 'A' }
+  let finishB!: (value: Awaited<ReturnType<typeof fetchVideoBatch>>) => void
+  vi.mocked(fetchVideoBatch).mockResolvedValueOnce({ ok: true, batch: batch('A') })
+    .mockReturnValueOnce(new Promise(resolve => { finishB = resolve }))
+  let tools!: ReturnType<typeof useShotWorkspace>
+  const wrapper = mount(defineComponent({ setup() { tools = useShotWorkspace({ status: null }); return () => null } }))
+  try {
+    await flushPromises()
+    expect(tools.batch.value?.id).toBe('A')
+    route.query = { batch: 'B' }; await nextTick(); await flushPromises()
+    const signal = vi.mocked(fetchVideoBatch).mock.calls[1][1]!
+    route.query = { batch: 'A' }; await nextTick(); await flushPromises()
+    expect(signal.aborted).toBe(true)
+    expect(fetchVideoBatch).toHaveBeenCalledTimes(2)
+    finishB({ ok: true, batch: batch('B') }); await flushPromises()
+    expect(tools.batch.value?.id).toBe('A')
+    expect(savedBatch.value?.batchId).toBe('A')
   } finally { wrapper.unmount() }
 })

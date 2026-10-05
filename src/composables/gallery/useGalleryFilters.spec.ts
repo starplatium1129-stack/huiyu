@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, effectScope, h, nextTick, reactive, ref } from 'vue'
 import { mount } from '@vue/test-utils'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
+import * as generation from './galleryGenerationConditions'
 import { useGalleryFilters } from './useGalleryFilters'
 import { artworkTags } from './artworkTags'
 import type { ArtworkRecord } from '@/types/artwork'
@@ -179,12 +180,14 @@ describe('gallery generation conditions and reusable searches', () => {
   })
 
   it('keeps missing facts separate from defaults and never turns measured image dimensions into generation size', () => {
+    const options = vi.spyOn(generation, 'generationConditionOptions')
     const { filters, stop } = setup(ref<ArtworkRecord[]>([
       { id: 'old', timestamp: 3, prompt: 'anima model-a seed 0', outfitId: 'uniform', actual: { width: 832, height: 1216 }, image_width: 832, image_height: 1216 },
       { id: 'recorded', timestamp: 2, engine: 'sd', checkpoint: 'model-a', character: 'role-a', outfitId: 'uniform', seed: '000', width: '832', height: 1216, reviewState: 'candidate' },
       { id: 'missing-model', timestamp: 1, engine: 'sd', seed: -1 },
       { id: 'saved-size', timestamp: 0, engine: 'anima', size: '832x1216', width: 1664, height: 2432 },
     ]))
+    expect(filters.generationOptions.value.engine).toHaveLength(3)
     filters.generationConditions.value.size = UNRECORDED_CONDITION
     expect(filters.visible.value.map(item => item.id)).toEqual(['old', 'recorded', 'missing-model'])
     filters.generationConditions.value.engine = UNRECORDED_CONDITION
@@ -196,6 +199,12 @@ describe('gallery generation conditions and reusable searches', () => {
     filters.clearGenerationConditions()
     filters.generationConditions.value.seed = recordedCondition('0')
     expect(filters.visible.value.map(item => item.id)).toEqual(['recorded'])
+    filters.generationConditions.value.model = recordedCondition('unavailable')
+    expect(filters.generationOptions.value.model.at(-1)).toEqual({ value: recordedCondition('unavailable'), label: 'unavailable · 0' })
+    filters.clearGenerationConditions()
+    expect(filters.generationOptions.value.model.some(option => option.value === recordedCondition('unavailable'))).toBe(false)
+    expect(options).toHaveBeenCalledOnce()
+    options.mockRestore()
     stop()
   })
 

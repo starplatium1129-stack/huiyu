@@ -1,37 +1,51 @@
 import { defineComponent, h, KeepAlive, ref } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
+import { createMemoryHistory, createRouter } from 'vue-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useVideoWorkspace } from './useVideoWorkspace'
 import type { VideoFramesDeps } from '@/components/video/useVideoFrames'
 
-const mocks = vi.hoisted(() => ({ create: vi.fn(), frames: vi.fn(), record: vi.fn(), fetch: vi.fn(), status: vi.fn(), cancel: vi.fn() }))
-vi.mock('vue-router', () => ({ useRoute: () => ({ path: '/video-studio', query: {} }), useRouter: () => ({ replace: vi.fn() }) }))
+const mocks = vi.hoisted(() => ({ create: vi.fn(), frames: vi.fn(), record: vi.fn(), fetch: vi.fn(), status: vi.fn(), cancel: vi.fn(), realFrames: false, consume: vi.fn(), image: vi.fn(), upload: vi.fn() }))
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
-vi.mock('@/composables/tasks/useBackendSelection', () => ({ useBackendSelection: () => ({ retry: vi.fn() }) }))
-vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ recordVideoTask: mocks.record }) }))
+vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ recordVideoTask: mocks.record, consumeImageCtx: mocks.consume }) }))
+vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ sceneBlueprints: [] }) }))
+vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { getImage: mocks.image } }))
 vi.mock('@/api/videoApi', () => ({
   createVideoJob: mocks.create, fetchVideoJob: mocks.fetch, cancelVideoJob: mocks.cancel,
-  fetchVideoStatus: mocks.status,
+  fetchVideoStatus: mocks.status, uploadVideoImage: mocks.upload,
 }))
-vi.mock('@/components/video/useVideoFrames', () => ({ useVideoFrames: (deps: VideoFramesDeps) => {
-  deps.videoImageId.value = 'restored-first'
-  deps.lastFrameImageId.value = 'restored-last'
-  return {
-  resolveSubmitFrames: mocks.frames, consumeVideoCtx: vi.fn(), disposeFrames: vi.fn(),
-} } }))
+vi.mock('@/components/video/useVideoFrames', async importOriginal => {
+  const actual = await importOriginal<typeof import('@/components/video/useVideoFrames')>()
+  return { useVideoFrames: (deps: VideoFramesDeps) => {
+    if (mocks.realFrames) {
+      deps.selectedMode.value = 'image'
+      deps.prompt.value = 'An old valid shot description'
+      deps.aspectRatio.value = 'landscape'
+      return actual.useVideoFrames(deps)
+    }
+    deps.videoImageId.value = 'restored-first'
+    deps.lastFrameImageId.value = 'restored-last'
+    return { resolveSubmitFrames: mocks.frames, consumeVideoCtx: vi.fn(), disposeFrames: vi.fn() }
+  } }
+})
 vi.mock('@/components/video/useVideoStudioDraft', () => ({ useVideoStudioDraft: () => ({
   startDraftWatch: () => vi.fn(), restoreDraft: async () => ({}), reconnectTask: async () => ({ kind: 'none' }),
 }) }))
 
 let wrapper: ReturnType<typeof mount> | undefined
-async function setup() {
+let router: ReturnType<typeof createRouter>
+async function setup(prompt: string | null = 'A calm afternoon by the window') {
   let workspace!: ReturnType<typeof useVideoWorkspace>
-  wrapper = mount(defineComponent({ setup() { workspace = useVideoWorkspace(); return () => null } }))
+  wrapper = mount(defineComponent({ setup() { workspace = useVideoWorkspace(); return () => null } }), { global: { plugins: [router] } })
   await flushPromises()
-  workspace.prompt.value = 'A calm afternoon by the window'
+  if (prompt !== null) workspace.prompt.value = prompt
   return workspace
 }
-beforeEach(() => {
+beforeEach(async () => {
+  mocks.realFrames = false
+  router = createRouter({ history: createMemoryHistory(), routes: [{ path: '/video-studio', component: { render: () => null } }] })
+  await router.push('/video-studio')
+  mocks.record.mockReturnValue(true)
   mocks.status.mockResolvedValue({ online: true, models: [{ id: 'minimax-h3', available: true, executable: true, modes: ['text', 'image', 'first-last-frame'] }], defaults: { modelId: 'minimax-h3' } })
 })
 afterEach(() => { wrapper?.unmount(); vi.clearAllMocks(); vi.useRealTimers() })
@@ -60,6 +74,66 @@ describe('video submission recovery', () => {
     await pending
     expect(mocks.create).toHaveBeenCalledWith(expect.objectContaining({ prompt: 'A calm afternoon by the window', duration: 3 }))
     expect(mocks.record).toHaveBeenCalledWith(expect.objectContaining({ mode: 'text' }))
+  })
+  it('captures the complete new image context when submitted before its preview read finishes', async () => {
+    mocks.realFrames = true
+    mocks.consume.mockReturnValueOnce({ imageId: 'new-image', prompt: 'A new matching shot description', story: '', blueprintId: '', characterId: '', sceneId: '' })
+    let finishPreview!: (value: Blob) => void
+    mocks.image.mockResolvedValue(new Blob(['new image']))
+      .mockReturnValueOnce(new Promise(resolve => { finishPreview = resolve }))
+    mocks.upload.mockResolvedValueOnce({ name: 'new-image.png' })
+    mocks.create.mockResolvedValueOnce({ job: { id: 'new-job', status: 'succeeded' } })
+    const workspace = await setup(null)
+    expect(workspace.canGenerate.value).toBe(true)
+    await workspace.submitVideo()
+    expect(mocks.create).toHaveBeenCalledWith(expect.objectContaining({
+      image: 'new-image.png', prompt: 'A new matching shot description', aspectRatio: 'original', modelId: 'minimax-h3',
+    }))
+    expect(mocks.image.mock.calls.map(([id]) => id)).toEqual(['new-image', 'new-image'])
+    expect(mocks.record).toHaveBeenCalledWith(expect.objectContaining({ mode: 'image' }))
+    finishPreview(new Blob(['new image']))
+    await flushPromises()
+  })
+  it('consumes the old task link so refreshes and late reads cannot replace a newly submitted job', async () => {
+    mocks.fetch.mockResolvedValueOnce({ job: { id: 'A', status: 'succeeded' } })
+    await router.replace('/video-studio?job=A')
+    const workspace = await setup()
+    expect(workspace.job.value?.id).toBe('A')
+    let finishOldRead!: (value: object) => void
+    mocks.fetch.mockReturnValueOnce(new Promise(resolve => { finishOldRead = resolve }))
+    await workspace.loadStatus()
+    const oldSignal = mocks.fetch.mock.calls[1][1] as AbortSignal
+    mocks.frames.mockResolvedValueOnce({})
+    mocks.create.mockResolvedValueOnce({ job: { id: 'B', status: 'running' } })
+    await workspace.submitVideo()
+    await flushPromises()
+    finishOldRead({ job: { id: 'A', status: 'succeeded' } })
+    await flushPromises()
+    expect(workspace.job.value?.id).toBe('B')
+    expect(oldSignal.aborted).toBe(true)
+    expect(router.currentRoute.value.query.job).toBeUndefined()
+    await workspace.loadStatus()
+    expect(mocks.fetch).toHaveBeenCalledTimes(2)
+    expect(workspace.canGenerate.value).toBe(false)
+  })
+  it('records an accepted job without replacing a newer task-center selection', async () => {
+    mocks.fetch.mockResolvedValueOnce({ job: { id: 'A', status: 'succeeded' } })
+    await router.replace('/video-studio?job=A')
+    const workspace = await setup()
+    let accept!: (value: object) => void
+    mocks.frames.mockResolvedValueOnce({})
+    mocks.create.mockReturnValueOnce(new Promise(resolve => { accept = resolve }))
+    const pending = workspace.submitVideo()
+    await flushPromises()
+    mocks.fetch.mockResolvedValueOnce({ job: { id: 'C', status: 'succeeded' } })
+    await router.push('/video-studio?job=C')
+    await flushPromises()
+    expect(workspace.job.value?.id).toBe('C')
+    accept({ job: { id: 'B', status: 'running' } })
+    await pending
+    expect(mocks.record).toHaveBeenCalledWith(expect.objectContaining({ jobId: 'B' }))
+    expect(workspace.job.value?.id).toBe('C')
+    expect(router.currentRoute.value.query.job).toBe('C')
   })
   it('reports when an accepted video job cannot be recorded for reconnect', async () => {
     mocks.frames.mockResolvedValueOnce({})
@@ -144,7 +218,7 @@ describe('video submission recovery', () => {
     const visible = ref(true)
     let workspace!: ReturnType<typeof useVideoWorkspace>
     const page = defineComponent({ setup() { workspace = useVideoWorkspace(); return () => null } })
-    wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => visible.value ? h(page) : null }) }))
+    wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => visible.value ? h(page) : null }) }), { global: { plugins: [router] } })
     await flushPromises()
     workspace.prompt.value = 'A calm afternoon by the window'
     mocks.frames.mockResolvedValueOnce({})

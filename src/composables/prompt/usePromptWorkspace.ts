@@ -263,8 +263,10 @@ export function usePromptWorkspace() {
      * 这里只负责如实反馈结果——套不上档位时也要说，不能点了没反应。
      */
     function resetSdParams() {
-        if (pb.resetParamsToProfile())
+        if (pb.resetParamsToProfile()) {
+            applyRecommendedSize(pb.lastRecommendedSize);
             pb.flash('已恢复这套底模的推荐参数');
+        }
         else
             pb.flash('当前底模没有对应的推荐参数档位，未能恢复');
     }

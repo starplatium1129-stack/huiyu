@@ -287,12 +287,37 @@ async fn protected_sequential_shots_skip_reference_tail_and_concat_retries_only_
     tokio::fs::remove_file(config.ai_workspace_root.join("ComfyUI/input").join(&image))
         .await
         .unwrap();
+    mock.active.store(true, Ordering::Relaxed);
     let result = service
         .clone()
         .submit_batch(prepared, "local".into(), Some(mock.hooks.clone()))
         .await
         .unwrap();
     let id = result["id"].as_str().unwrap();
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while mock.posts.load(Ordering::SeqCst) == 0 {
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
+    let busy = tokio::time::timeout(
+        Duration::from_secs(1),
+        service
+            .clone()
+            .batch_action(id, "local", "continue", CancellationToken::new()),
+    )
+    .await;
+    mock.active.store(false, Ordering::Relaxed);
+    if busy.is_err() {
+        service.close().await;
+    }
+    assert_eq!(
+        busy.expect("Continue must reject a running batch, not queue behind it")
+            .unwrap_err()
+            .code,
+        "BATCH_RESUME_UNSAFE"
+    );
     wait(&service, id, "done").await;
     assert_eq!(mock.posts.load(Ordering::SeqCst), 3);
     assert!(

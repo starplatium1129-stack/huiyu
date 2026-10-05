@@ -29,6 +29,7 @@ export interface ShotBatchMachineDeps {
   inputsBusy?: ComputedRef<boolean>
   /** 宿主持有的用户可见错误通道（提交/轮询/重抽失败回写）。 */
   batchError: Ref<string>
+  onAccepted?: (batch: VideoBatch) => void
 }
 
 /**
@@ -64,6 +65,16 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     stopReads()
     reconnectTarget = ''
     return ++operationSerial
+  }
+
+  function acceptBatch(value: VideoBatch) {
+    if (batch.value?.id !== value.id) deps.onAccepted?.(value)
+    if (!disposed) batch.value = value
+  }
+  function acceptRetry(value: VideoBatch, sourceId: string) {
+    if (value.retrySource || value.id !== sourceId) {
+      batchError.value = '已提交独立重抽任务，请在任务中心查看结果；原失败镜头尚未替换，结果不会自动回并或续拼接。'
+    } else batch.value = value
   }
 
   const batchActive = computed(() => batch.value?.status === 'running')
@@ -129,8 +140,8 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
           }
         }),
       })
-      if (disposed || serial !== operationSerial) return
-      batch.value = response.batch
+      if (serial !== operationSerial) return
+      acceptBatch(response.batch)
     } catch (error) {
       if (!disposed && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '批量提交失败'
     } finally {
@@ -189,7 +200,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     try {
       const response = await retryVideoShot(id, index + 1)
       if (disposed || batch.value?.id !== id || serial !== operationSerial) return
-      batch.value = response.batch
+      acceptRetry(response.batch, id)
     } catch (error) {
       if (!disposed && batch.value?.id === id && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '重抽失败'
     } finally {
@@ -211,7 +222,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
         try {
           const response = await retryVideoShot(id, index + 1)
           if (disposed || batch.value?.id !== id || serial !== operationSerial) return
-          batch.value = response.batch
+          acceptRetry(response.batch, id)
         } catch (error) {
           if (disposed || batch.value?.id !== id || serial !== operationSerial) return
           batchError.value = error instanceof Error ? error.message : '重抽失败'
@@ -246,23 +257,40 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
    * false，由宿主清记录并向用户解释。
    */
   async function reconnectBatch(id: string): Promise<boolean> {
-    if (batch.value?.id === id) return true
     reconnectTarget = id
     if (disposed || !pageActive) return true
     stopReads()
+    const serial = ++reconnectSerial, operation = ++operationSerial
+    if (batch.value?.id === id) { reconnectTarget = ''; schedulePoll(); return true }
+    const previousId = batch.value?.id
     const controller = new AbortController(); reconnectRequest = controller
-    const serial = ++reconnectSerial
-    const operation = ++operationSerial
+    const current = () => !disposed && !controller.signal.aborted && serial === reconnectSerial
+      && operation === operationSerial && batch.value?.id === previousId
+    let returningToSource = false
     try {
-      const response = await fetchVideoBatch(id, controller.signal)
-      if (disposed || controller.signal.aborted || serial !== reconnectSerial || operation !== operationSerial) return true
+      let response = await fetchVideoBatch(id, controller.signal)
+      if (!current()) return true
+      if (response.batch.retrySource) {
+        returningToSource = true
+        const sourceId = response.batch.retrySource.batchId
+        if (sourceId === id) throw new Error('重抽来源无法确认，请在任务中心查看独立结果。')
+        response = await fetchVideoBatch(sourceId, controller.signal)
+        if (!current()) return true
+        if (response.batch.retrySource) throw new Error('重抽来源无法确认，请在任务中心查看独立结果。')
+      }
       reconnectTarget = ''
-      batch.value = response.batch
+      acceptBatch(response.batch)
+      if (returningToSource) batchError.value = '当前显示原分镜批次；重抽结果独立保留在任务中心，尚未替换原镜头或自动续拼接。'
       schedulePoll()
       return true
     } catch (error) {
-      if (disposed || controller.signal.aborted || serial !== reconnectSerial || operation !== operationSerial) return true
-      if (error instanceof ApiClientError && (error.status === 404 || error.status === 410)) { reconnectTarget = ''; return false }
+      if (!current()) return true
+      if (error instanceof ApiClientError && (error.status === 404 || error.status === 410 || returningToSource && error.status === 403)) {
+        reconnectTarget = ''
+        batchError.value = returningToSource ? '原分镜批次不存在或无权访问；独立重抽结果仍请到任务中心查看，未绑定到当前草稿。'
+          : '上一批分镜任务已不存在，镜头草稿仍在，可重新提交。'
+        return false
+      }
       batchError.value = error instanceof Error ? error.message : '批次暂时无法读取，请稍后重试'
       return true
     } finally { if (reconnectRequest === controller) reconnectRequest = null }

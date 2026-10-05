@@ -20,6 +20,7 @@ import { uploadVideoImage } from '@/api/videoApi'
 
 export interface ShotImportDeps {
   shots: Ref<ShotDraft[]>
+  frameRequests: Map<ShotDraft, AbortController>
   referenceCards: Ref<ReferenceCard[]>
   /** 选择指定卡槽的角色与服装（返回文字资料是否就绪）。 */
   selectCardCharacter: (charId: string, cardIndex?: number, outfitId?: string) => Promise<boolean>
@@ -68,29 +69,43 @@ function readBlobAsDataURL(blob: Blob): Promise<string> {
 }
 
 export function useShotImport(deps: ShotImportDeps) {
-  const { shots, referenceCards } = deps
+  const { shots, referenceCards, frameRequests } = deps
   const videoStore = useVideoStore()
   let disposed = false
   if (getCurrentScope()) onScopeDispose(() => { disposed = true })
 
-  /** 单镜首帧挂载：IndexedDB 取 blob → 上传换受控文件名 → 本地预览。 */
-  async function mountShotFrame(shot: ShotDraft, imageId: string): Promise<boolean> {
+  /** Only this module's unpublished import drafts may bypass live membership. */
+  async function mountFrame(shot: ShotDraft, imageId: string, unpublished = false): Promise<boolean | undefined> {
+    if (disposed || (!unpublished && !shots.value.includes(shot)) || frameRequests.has(shot)) return
+    const controller = new AbortController()
+    frameRequests.set(shot, controller)
+    const previous = [shot.imageId, shot.imageName, shot.imageUrl]
+    const current = () => !disposed && !controller.signal.aborted && frameRequests.get(shot) === controller
+      && (unpublished || shots.value.includes(shot))
+      && [shot.imageId, shot.imageName, shot.imageUrl].every((value, index) => value === previous[index])
     try {
-      const blob = await artworkRepository.getImage(imageId)
+      const blob = await artworkRepository.getImage(imageId, controller.signal)
+      if (!current()) return
       if (!blob || !blob.size) return false
       const dataUrl = await readBlobAsDataURL(blob)
+      if (!current()) return
       const comma = dataUrl.indexOf(',')
       if (comma < 0) return false
-      const upload = await uploadVideoImage(dataUrl.slice(comma + 1))
-      if (disposed) return false
+      const upload = await uploadVideoImage(dataUrl.slice(comma + 1), undefined, controller.signal)
+      if (!current()) return
       if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
       shot.imageName = upload.name
       shot.imageUrl = URL.createObjectURL(blob)
       return true
     } catch {
-      return false
+      return current() ? false : undefined
+    } finally {
+      if (frameRequests.get(shot) === controller) frameRequests.delete(shot)
     }
   }
+
+  // Undefined means skipped/superseded, not a failed or missing frame.
+  const mountShotFrame = (shot: ShotDraft, imageId: string) => mountFrame(shot, imageId)
 
   /**
    * 只重试首帧缺失的镜头（有 imageId 无 imageName）：导入失败/草稿恢复图失效
@@ -101,8 +116,9 @@ export function useShotImport(deps: ShotImportDeps) {
     let remaining = 0
     for (const shot of shots.value) {
       if (!shot.imageId || shot.imageName) continue
-      if (await mountShotFrame(shot, shot.imageId)) fixed += 1
-      else remaining += 1
+      const result = await mountShotFrame(shot, shot.imageId)
+      if (result === true) fixed += 1
+      else if (result === false) remaining += 1
     }
     return { fixed, remaining }
   }
@@ -175,8 +191,10 @@ export function useShotImport(deps: ShotImportDeps) {
         cast: (cardIndex !== undefined ? String(cardIndex + 1) : '') as ShotDraft['cast'],
         imageId: ctx.imageId,
       }
-      if (await mountShotFrame(draft, ctx.imageId)) framesReady += 1
-      else framesPending += 1
+      const result = await mountFrame(draft, ctx.imageId, true)
+      if (result === undefined) return null
+      if (result === true) framesReady += 1
+      else if (result === false) framesPending += 1
       if (disposed) return null
       shots.value.push(draft)
     }

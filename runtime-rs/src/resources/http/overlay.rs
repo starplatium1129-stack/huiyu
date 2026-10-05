@@ -1,6 +1,11 @@
 use super::*;
 use crate::resources::fs;
-use axum::{body::Body, extract::Request, http::Method, middleware::Next};
+use axum::{
+    body::{Body, Bytes},
+    extract::Request,
+    http::Method,
+    middleware::Next,
+};
 fn resource_path(raw: &str) -> Option<String> {
     let lower = raw.to_ascii_lowercase();
     if !(lower == "/assets" || lower.starts_with("/assets/"))
@@ -84,85 +89,107 @@ pub async fn overlay(
         .is_some_and(|value| value.split(',').any(|part| part.trim() == "no-cache"));
     let condition = request.headers().get("if-none-match").cloned();
     let owner = service.clone();
-    let loaded = crate::resources::blocking(move || {
-        let Some((configuration, snapshot)) = owner.mount(&relative) else {
-            return Ok(None);
-        };
-        let Some(entry) = snapshot.entries.get(&relative) else {
-            return Ok(None);
-        };
-        let etag = format!("\"{}\"", entry.sha256);
-        let fresh = !no_cache
-            && condition
-                .as_ref()
-                .and_then(|value| value.to_str().ok())
-                .is_some_and(|value| {
-                    value.split(',').any(|part| {
-                        let part = part.trim().strip_prefix("W/").unwrap_or(part.trim());
-                        part == "*" || part == etag
-                    })
-                });
-        let result = (|| {
+    let name = relative.clone();
+    let mounted = crate::resources::blocking(move || Ok(owner.mount(&name))).await;
+    let Ok(Some((configuration, snapshot))) = mounted else {
+        return next.run(request).await;
+    };
+    let entry = snapshot.entries[&relative].clone();
+    let etag = format!("\"{}\"", entry.sha256);
+    let fresh = !no_cache
+        && condition
+            .as_ref()
+            .and_then(|v| v.to_str().ok())
+            .is_some_and(|value| {
+                value.split(',').any(|part| {
+                    let part = part.trim().strip_prefix("W/").unwrap_or(part.trim());
+                    part == "*" || part == etag
+                })
+            });
+    let group = relative
+        .starts_with("assets/live2d/")
+        .then(|| {
+            snapshot
+                .groups
+                .iter()
+                .enumerate()
+                .find_map(|(group, value)| {
+                    value
+                        .paths
+                        .iter()
+                        .position(|name| name == &relative)
+                        .map(|file| (group, file))
+                })
+        })
+        .flatten();
+    if relative.starts_with("assets/live2d/") && group.is_none() {
+        return next.run(request).await;
+    }
+    let collect = !head && !fresh;
+    let result = if group
+        .is_some_and(|(group, _)| crate::resources::group_reads::size(&snapshot, group).is_some())
+    {
+        let (group, file) = group.unwrap();
+        service
+            .group_reads
+            .get(&service, snapshot.clone(), group, file, collect)
+            .await
+            .map(|bytes| collect.then_some(bytes))
+    } else {
+        let (owner, snapshot, relative) = (service.clone(), snapshot.clone(), relative.clone());
+        let entry = entry.clone();
+        crate::resources::blocking(move || {
             if relative.starts_with("assets/live2d/") {
-                let Some(group) = snapshot
-                    .groups
-                    .iter()
-                    .find(|group| group.paths.contains(&relative))
-                else {
-                    return Ok(None);
-                };
-                for name in &group.paths {
-                    // The requested file is verified once below, using the same
-                    // bytes as the GET body or a bounded hash-only read.
-                    if name == &relative {
-                        continue;
-                    }
-                    let entry = &snapshot.entries[name];
-                    if !fs::file_matches(
-                        &fs::child(&snapshot.root, name)?,
-                        entry,
-                        &owner.read_cancel,
-                    )? {
+                let (group, _) = group.unwrap();
+                for name in &snapshot.groups[group].paths {
+                    if name != &relative
+                        && !fs::file_matches(
+                            &fs::child(&snapshot.root, name)?,
+                            &snapshot.entries[name],
+                            &owner.read_cancel,
+                        )?
+                    {
                         return Err(Error::new("CONTENT_INVALID", "Live2D dependency changed"));
                     }
                 }
             }
             let file = fs::child(&snapshot.root, &entry.path)?;
-            let bytes = if !head && !fresh {
-                Some(fs::verified_bytes(&file, entry, &owner.read_cancel)?)
+            if collect {
+                fs::verified_bytes(&file, &entry, &owner.read_cancel)
+                    .map(|bytes| Some(Bytes::from(bytes)))
+            } else if fs::file_matches(&file, &entry, &owner.read_cancel)? {
+                Ok(None)
             } else {
-                if !fs::file_matches(&file, entry, &owner.read_cancel)? {
-                    return Err(Error::new("CONTENT_INVALID", "Installed bytes changed"));
-                }
-                None
-            };
-            let Some((latest_configuration, latest)) = owner.mount(&relative) else {
-                return Ok(None);
-            };
-            if !Arc::ptr_eq(&configuration, &latest_configuration)
-                || !Arc::ptr_eq(&snapshot, &latest)
-            {
-                return Ok(None);
+                Err(Error::new("CONTENT_INVALID", "Installed bytes changed"))
             }
-            Ok(Some((
-                bytes,
-                etag,
-                snapshot.identity.clone(),
-                mime(&relative),
-                entry.bytes,
-                fresh,
-            )))
-        })();
-        if let Err(error) = result {
-            owner.invalidate(&configuration, &snapshot, error);
-            return Ok(None);
+        })
+        .await
+    };
+    let bytes = match result {
+        Ok(bytes) => bytes,
+        Err(error) if error.code == "RESOURCE_BUSY" => return super::failure(error, 503),
+        Err(error) => {
+            if error.code != "CANCELLED" {
+                service.invalidate(&configuration, &snapshot, error);
+            }
+            return next.run(request).await;
         }
-        result
+    };
+    let version = snapshot.identity.clone();
+    let (owner, name) = (service.clone(), relative.clone());
+    let current = crate::resources::blocking(move || {
+        Ok(owner
+            .mount(&name)
+            .is_some_and(|(latest_configuration, latest)| {
+                Arc::ptr_eq(&configuration, &latest_configuration)
+                    && Arc::ptr_eq(&snapshot, &latest)
+            }))
     })
     .await;
-    let Ok(Some((bytes, etag, version, mime, length, fresh))) = loaded else {
+    if !matches!(current, Ok(true)) {
         return next.run(request).await;
-    };
+    }
+    let (mime, length) = (mime(&relative), entry.bytes);
     let mut response = if fresh {
         StatusCode::NOT_MODIFIED.into_response()
     } else {

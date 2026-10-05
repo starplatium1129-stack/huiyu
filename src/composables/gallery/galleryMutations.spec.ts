@@ -1,3 +1,4 @@
+import { useGallerySelection } from './useGallerySelection'
 import { computed, ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { bulkDeleteAction, confirmDeleteAction, toggleFavoriteAction } from './galleryMutations'
@@ -120,6 +121,22 @@ describe('confirmDeleteAction', () => {
     expect(ctx.deleting.value).toBe(false)
   })
 
+  it('removes confirmed data without navigating a newer viewer or clearing its pending deletion', async () => {
+    const write = deferred<{ deleted: boolean }>()
+    repo.softDeleteArtwork.mockReturnValueOnce(write.promise)
+    let current = true
+    const ctx = { ...deleteContext(), isCurrentView: () => current }
+    ctx.viewerIndex.value = 0
+    const deletion = confirmDeleteAction(ctx, ctx.history.value[0]!)
+    current = false; ctx.pendingDeleteId.value = 2
+    write.resolve({ deleted: true }); await deletion
+    expect(ctx.history.value.map(item => item.id)).toEqual([2])
+    expect(ctx.openViewer).not.toHaveBeenCalled()
+    expect(ctx.closeViewer).not.toHaveBeenCalled()
+    expect(ctx.pendingDeleteId.value).toBe(2)
+    expect(ctx.releaseCardResources).toHaveBeenCalledExactlyOnceWith(1)
+  })
+
   it('keeps a confirmed deletion successful if presentation throws', async () => {
     vi.spyOn(console, 'warn').mockImplementation(() => {})
     repo.softDeleteArtwork.mockResolvedValue({ deleted: true })
@@ -140,10 +157,15 @@ describe('bulkDeleteAction', () => {
     confirmActionMock.mockReturnValueOnce(approval.promise)
     repo.softDeleteArtworks.mockResolvedValue([{ id: 10, deleted: true }, { id: 20, deleted: false }])
     const ctx = deleteContext([10, 20, 30])
-    ctx.selectedIds.value = new Set([10, 20])
+    const selection = useGallerySelection(computed(() => ctx.history.value))
+    ctx.selectedIds = selection.selectedIds
+    selection.toggleSelect(10); selection.toggleSelect(20)
+    const stableSet = selection.selectedIds.value
     const pending = bulkDeleteAction(ctx)
     expect(ctx.bulkDeleting.value).toBe(true)
-    ctx.selectedIds.value = new Set([20, 30])
+    selection.toggleSelect(10); selection.toggleSelect(30)
+    expect(selection.selectedIds.value).toBe(stableSet)
+    expect(selection.allVisibleSelected.value).toBe(false)
     await bulkDeleteAction(ctx)
     expect(confirmActionMock).toHaveBeenCalledOnce()
     approval.resolve(true)

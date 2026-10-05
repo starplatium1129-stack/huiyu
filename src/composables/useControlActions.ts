@@ -114,6 +114,7 @@ export function useControlActions(
       showToast('不支持的服务操作', true)
       return
     }
+    status.operationSubmitting.value = true
     showToast((action === 'start' ? '正在启动' : action === 'stop' ? '正在停止' : '正在处理') + '…')
     try {
       const data = await control.serviceAction(service, action)
@@ -121,10 +122,12 @@ export function useControlActions(
       showToast(data.message || '已提交')
       status.pollStatus(true); status.pollLogs()
     } catch (e) { showToast(errorMessage(e, '操作失败'), true); status.pollStatus(true) }
+    finally { status.operationSubmitting.value = false }
   }
 
   async function switchMode(mode: 'draw' | 'chat') {
     if (status.opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
+    status.operationSubmitting.value = true
     showToast(mode === 'draw' ? '切换到绘图优先…' : '切换到聊天优先…')
     try {
       const data = await control.switchMode(mode)
@@ -133,12 +136,15 @@ export function useControlActions(
       showToast(data.message || '模式切换已开始')
       status.pollStatus(true); status.pollLogs()
     } catch (e) { showToast(errorMessage(e, '模式切换失败'), true); status.pollStatus(true) }
+    finally { status.operationSubmitting.value = false }
   }
 
   async function doStart() {
+    if (status.opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
     if (!status.lastStatus()) { showToast('控制面板仍在读取配置，请稍候再试', true); status.pollStatus(); return }
     if (status.lastStatus()?.restartRequired) { showToast('配置已保存，请重新启动应用后再启用公网分享'); return }
     status.actionBusy.value = true
+    status.operationSubmitting.value = true
     status.mainBtnLabel.value = '正在启用公网分享…'
     status.feedbackText.value = '正在保存并重新检测…'
     try {
@@ -149,10 +155,12 @@ export function useControlActions(
       showToast('公网分享已启用')
       status.startPolling()
     } catch (e) { showToast('启动失败：' + errorMessage(e, '未知原因'), true) }
-    finally { status.actionBusy.value = false; status.pollStatus() }
+    finally { status.actionBusy.value = false; status.operationSubmitting.value = false; status.pollStatus() }
   }
 
   async function doStop() {
+    if (status.opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
+    status.operationSubmitting.value = true
     status.actionBusy.value = true
     status.mainBtnLabel.value = '正在停止公网分享…'
     try {
@@ -162,7 +170,7 @@ export function useControlActions(
       status.tunnelStatus.value = 'disabled'
       status.tunnelActive.value = false
     } catch (e) { showToast('停止失败：' + errorMessage(e, '未知原因'), true) }
-    finally { status.actionBusy.value = false; status.pollStatus() }
+    finally { status.actionBusy.value = false; status.operationSubmitting.value = false; status.pollStatus() }
   }
 
   const exportingDiag = ref(false)
@@ -188,15 +196,16 @@ export function useControlActions(
   /** 重新构建前端（公网分享伺服 dist/，源码改动后需重建才生效） */
   async function buildWeb() {
     if (buildingWeb.value) return
+    buildingWeb.value = true
     if (getDesktopCapabilities()) {
       try {
         if (await getDesktopCapabilities()!.isPackaged()) {
           showToast('桌面应用模式不支持重建前端（源码不在安装包内）', true)
+          buildingWeb.value = false
           return
         }
       } catch { /* 查询失败继续走服务端，501 兜底 */ }
     }
-    buildingWeb.value = true
     showToast('正在构建前端，约需 10-30 秒…')
     try {
       const data = await maintenance.buildWeb()

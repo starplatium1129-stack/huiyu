@@ -5,6 +5,11 @@ pub(super) struct ShotHooks {
     pub index: usize,
 }
 impl ExecutionHooks for ShotHooks {
+    fn observation_changed(&self) {
+        if let Some(hooks) = &self.batch.hooks {
+            hooks.observation_changed();
+        }
+    }
     fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
             if let Some(id) = value["gatewayJobId"].as_str() {

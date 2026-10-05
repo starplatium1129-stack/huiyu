@@ -145,3 +145,17 @@ it('restores combined filters from the URL after creating a scene changes the st
     expect(route.query).toEqual({ tier: 'all' })
   } finally { wrapper.unmount() }
 })
+
+it('analyzes aliases once for one filter-and-score pass over 64 scenes', async () => {
+  route.query = { q: '雨夜', tier: 'all' }
+  const aliases = vi.fn(() => ({ 夜雨: ['雨夜', 'rain night'] }))
+  catalog.mockResolvedValue({ scenes: Array.from({ length: 64 }, (_, index) => ({ id: `sample-${index}`, title: '雨夜', char: 'nene', rating: 'All' })),
+    curation: { get searchAliases() { return aliases() } } })
+  let workspace!: ReturnType<typeof useSceneExplorerWorkspace>
+  const wrapper = mount(defineComponent({ setup() { workspace = useSceneExplorerWorkspace(); return () => null } }))
+  try {
+    await flushPromises(); aliases.mockClear()
+    expect(workspace.filtered.value).toHaveLength(64)
+    expect(aliases).toHaveBeenCalledOnce()
+  } finally { wrapper.unmount() }
+})

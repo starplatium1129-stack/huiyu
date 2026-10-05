@@ -1,14 +1,14 @@
 import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onActivated, onDeactivated, onMounted, onUnmounted, ref } from 'vue'
 import { ROOM_PRESENTATION_KEY as key } from '../../utils/storageKeys.ts'
 
 /** Focused full room owns the animated presentation; the pet resumes when it leaves. */
 export function useRoomPresentation(surface: 'room' | 'companion') {
   const suspended = ref(false)
   const id = Math.random().toString(36).slice(2)
-  let timer = 0
+  let timer = 0, listening = false
   function update() {
-    if (!getDesktopCapabilities()) return
+    if (!getDesktopCapabilities()) { suspended.value = false; return }
     try {
       const record = JSON.parse(localStorage.getItem(key) || 'null')
       if (surface === 'room') {
@@ -19,21 +19,30 @@ export function useRoomPresentation(surface: 'room' | 'companion') {
       } else suspended.value = Boolean(record && Date.now() - record.ts < 12000)
     } catch { suspended.value = false }
   }
-  onMounted(() => {
+  function start() {
+    if (listening) return
+    listening = true
     update()
     timer = window.setInterval(update, 4000)
     window.addEventListener('focus', update)
     window.addEventListener('blur', update)
     window.addEventListener('storage', update)
     document.addEventListener('visibilitychange', update)
-  })
-  onUnmounted(() => {
+  }
+  function stop() {
+    if (!listening) return
+    listening = false
+    suspended.value = true
     clearInterval(timer)
     window.removeEventListener('focus', update)
     window.removeEventListener('blur', update)
     window.removeEventListener('storage', update)
     document.removeEventListener('visibilitychange', update)
     try { if (JSON.parse(localStorage.getItem(key) || 'null')?.id === id) localStorage.removeItem(key) } catch { /* unavailable */ }
-  })
+  }
+  onMounted(start)
+  onActivated(start)
+  onDeactivated(stop)
+  onUnmounted(stop)
   return suspended
 }

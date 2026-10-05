@@ -200,6 +200,14 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
 }
 fn begin(c: &mut Context, principal: &str, envelope: &Value) -> Result<Value> {
     validate(envelope)?;
+    if envelope.get("target").is_some()
+        && envelope["target"]["workspaceId"].as_str() != Some(c.workspace_id.as_str())
+    {
+        return Err(conflict(
+            "MIGRATION_CONFLICT",
+            "Migration backup belongs to another candidate workspace",
+        ));
+    }
     let id = string(envelope, "migrationId")?;
     c.transaction(|c| {
         let previous=c.db.query_row("SELECT fingerprint,principal_id FROM migration_sessions WHERE migration_id=?",[id],|r|Ok((r.get::<_,String>(0)?,r.get::<_,String>(1)?))).optional()?;

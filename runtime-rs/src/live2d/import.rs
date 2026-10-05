@@ -95,6 +95,7 @@ pub(super) async fn receive(
             if length == 0 {
                 return Err(invalid("Empty model file"));
             }
+            output.flush().await?;
             output.sync_all().await?;
             count += 1;
         } else if name == "metadata" || name == "paths" {

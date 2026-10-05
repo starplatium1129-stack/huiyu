@@ -62,6 +62,8 @@ async fn provider_query_retries_collection_without_reopening_committed_source() 
     let png = STANDARD.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=").unwrap();
     let posts = Arc::new(AtomicUsize::new(0));
     let view_bytes = png.clone();
+    let invalid = Arc::new(AtomicBool::new(false));
+    let reject = invalid.clone();
     let app = Router::new()
         .route("/system_stats", get(|| async { Json(json!({})) }))
         .route("/free", post(|| async { Json(json!({})) }))
@@ -73,7 +75,7 @@ async fn provider_query_retries_collection_without_reopening_committed_source() 
             Json(json!({"fixture-prompt":{"status":{"status_str":"success"},"outputs":{"10":{"images":[{"filename":"wai_app_fixture.png","type":"output","subfolder":""}]}}}}))
         }))
         .route("/view", get(move || {
-            let bytes = view_bytes.clone();
+            let bytes = if reject.load(Ordering::Acquire) { b"not an image".to_vec() } else { view_bytes.clone() };
             async move { ([("content-type", "image/png")], bytes) }
         }))
         .with_state(posts.clone());
@@ -162,11 +164,29 @@ async fn provider_query_retries_collection_without_reopening_committed_source() 
         panic!("expected source file");
     };
     assert_eq!(tokio::fs::read(&path).await.unwrap(), png);
+    // A restart can leave a confirmed success whose result still needs collection.
+    patch(
+        &storage,
+        "owner",
+        id,
+        TaskPatch {
+            status: Some(TaskStatus::Succeeded),
+            upstream_settled: Some(true),
+            metadata: Some(
+                serde_json::from_value(json!({"resultCollectionError":"OLD_FAILURE"})).unwrap(),
+            ),
+            error_code: Some(Some("RESULT_COLLECTION_PENDING".into())),
+            ..Default::default()
+        },
+    )
+    .await
+    .unwrap();
     let task = COLLECTION_QUERY
         .scope((), runtime.reconcile(&storage, "owner", id))
         .await
         .unwrap();
     assert_eq!(task["status"], "succeeded");
+    assert!(task["metadata"]["resultCollectionError"].is_null());
     assert_eq!(task["upstreamSettled"], true);
     assert_eq!(task["resultState"], "available");
     assert_eq!(task["resultRefs"].as_array().unwrap().len(), 1);
@@ -197,6 +217,82 @@ async fn provider_query_retries_collection_without_reopening_committed_source() 
         1,
         "collection retry must not replay generation"
     );
+    // Exercise automatic recovery after Unknown has actually stopped watching.
+    // Observe SQLite only: an explicit reconcile would hide a missing wakeup.
+    for reject_output in [false, true] {
+        let output = directory.path().join("runtime/outputs/wai");
+        let backup = output.with_extension("saved");
+        std::fs::rename(&output, &backup).unwrap();
+        std::fs::write(&output, b"blocked").unwrap();
+        let accepted = runtime.submit(storage.clone(), "owner".into(), json!({
+            "requestKey":format!("background-{reject_output}"),"kind":"generation",
+            "input":{"prompt":"neutral fixture","negative":"","width":1024,"height":1024,"seed":42}
+        })).await.unwrap();
+        let task_id = accepted["taskId"].as_str().unwrap();
+        tokio::time::timeout(std::time::Duration::from_secs(5), async {
+            loop {
+                let task = TaskRuntime::get(&storage, "owner", task_id).await.unwrap();
+                if task.recovery_state == TaskRecoveryState::Unknown
+                    && !runtime.owns(&storage, task_id)
+                {
+                    break;
+                }
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .unwrap();
+        patch(
+            &storage,
+            "owner",
+            task_id,
+            TaskPatch {
+                metadata: Some(
+                    serde_json::from_value(json!({"resultCollectionError":"OLD_FAILURE"})).unwrap(),
+                ),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+        invalid.store(reject_output, Ordering::Release);
+        std::fs::remove_file(&output).unwrap();
+        let task = tokio::time::timeout(std::time::Duration::from_secs(5), async {
+            loop {
+                let task = TaskRuntime::get(&storage, "owner", task_id).await.unwrap();
+                if task.upstream_settled {
+                    break task;
+                }
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .unwrap();
+        assert_eq!(task.recovery_state, TaskRecoveryState::Normal);
+        if reject_output {
+            assert_eq!(task.status, TaskStatus::Failed);
+            assert_eq!(task.error_code.as_deref(), Some("INVALID_RESULT"));
+            assert!(task.result_refs.is_empty());
+            let mut next = accepted.clone();
+            next["taskId"] = json!("after-known-failure");
+            next["requestKey"] = json!("after-known-failure");
+            storage
+                .request(json!({"kind":"task.accept","record":next}), "owner")
+                .await
+                .unwrap();
+        } else {
+            assert_eq!(task.status, TaskStatus::Succeeded);
+            assert_eq!(task.result_state, ResultState::Available);
+            assert!(task.error_code.is_none());
+            assert!(task.metadata["resultCollectionError"].is_null());
+        }
+        // Reuse the original source directory for the next isolated attempt.
+        if output.exists() {
+            std::fs::remove_dir_all(&output).unwrap();
+        }
+        std::fs::rename(backup, output).unwrap();
+    }
+    assert_eq!(posts.load(Ordering::Relaxed), 3);
     runtime.close().await;
     storage.close().await.unwrap();
     server.abort();

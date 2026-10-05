@@ -69,6 +69,7 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
   }
 
   function changeMemory(change: (state: ChatMemoryState) => boolean, message: string) {
+    if (!storage.canWrite()) return
     try {
       const next = changeStoredChatMemory(change)
       if (!next) return

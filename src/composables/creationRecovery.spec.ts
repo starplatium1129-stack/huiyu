@@ -13,6 +13,8 @@ import type { ShotDraft } from '@/components/video/shotListTypes'
 import type { ReferenceCard } from '@/components/video/useReferenceCards'
 import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY } from '@/utils/storageKeys'
 
+// State handoffs do not depend on the generated catalog's cache-busting hash.
+vi.mock('virtual:data-version', () => ({ DATA_VERSION: 1 }))
 const io = vi.hoisted(() => ({ put: vi.fn(), get: vi.fn(), remove: vi.fn(), upload: vi.fn(), fetchJob: vi.fn(), kvGet: vi.fn(), kvSet: vi.fn(), kvSetMany: vi.fn(), kv: new Map<string, unknown>() }))
 vi.mock('@/composables/useImageStore', () => ({
   imgPut: io.put,
@@ -89,7 +91,7 @@ describe('创作状态交接回归', () => {
     const shots = ref<ShotDraft[]>([])
     const cards = ref<ReferenceCard[]>([{ label: '', images: [] }])
     const assemble = vi.fn(async (id: string, index = 0) => { cards.value[index].label = id; return true })
-    const importer = useShotImport({ shots, referenceCards: cards, selectCardCharacter: assemble })
+    const importer = useShotImport({ shots, frameRequests: new Map(), referenceCards: cards, selectCardCharacter: assemble })
     const result = await importer.importShotsFromDrawing()
     expect(assemble.mock.calls).toEqual([['same', 0, 'a'], ['same', 1, 'b']])
     expect(shots.value.map(shot => shot.cast)).toEqual(['1', '2'])
@@ -103,12 +105,65 @@ describe('创作状态交接回归', () => {
     expect(shots.value[2].cast).toBe('1')
   })
 
+  it('旧首帧恢复不覆盖手选图片，也不释放新请求的归属', async () => {
+    const shots = ref([{ imageId: 'old', imageName: '', imageUrl: '' } as ShotDraft])
+    const target = shots.value[0], frameRequests = new Map<ShotDraft, AbortController>()
+    const importer = useShotImport({ shots, frameRequests, referenceCards: ref([]), selectCardCharacter: async () => true })
+    let finish!: (value: unknown) => void
+    io.get.mockReturnValueOnce(new Promise(resolve => { finish = resolve }))
+    const pending = importer.mountShotFrame(target, 'old')
+    frameRequests.get(target)!.abort()
+    const newer = new AbortController()
+    frameRequests.set(target, newer)
+    Object.assign(target, { imageId: 'new', imageName: 'manual.png', imageUrl: 'blob:manual' })
+    finish(new Blob(['old']))
+    expect(await pending).toBeUndefined()
+    expect(target.imageName).toBe('manual.png')
+    expect(frameRequests.get(target)).toBe(newer)
+    expect(io.upload).not.toHaveBeenCalled()
+  })
+
+  it('清空镜头后恢复旧数组中的当前与后续项都跳过，不产生无主首帧', async () => {
+    const shots = ref(['one', 'two'].map(imageId => ({ imageId, imageName: '', imageUrl: '' } as ShotDraft)))
+    const importer = useShotImport({ shots, frameRequests: new Map(), referenceCards: ref([]), selectCardCharacter: async () => true })
+    let finish!: (value: unknown) => void
+    io.get.mockReturnValueOnce(new Promise(resolve => { finish = resolve }))
+    const pending = importer.retryPendingFrames()
+    shots.value = []
+    finish(new Blob(['old']))
+    expect(await pending).toEqual({ fixed: 0, remaining: 0 })
+    expect(io.get).toHaveBeenCalledTimes(1)
+    expect(io.upload).not.toHaveBeenCalled()
+  })
+
+  it('恢复失败保留重试引用，已有请求跳过，新导入私有草稿仍可挂载', async () => {
+    const shots = ref([{ imageId: 'recoverable', imageName: '', imageUrl: '' } as ShotDraft])
+    const target = shots.value[0], frameRequests = new Map<ShotDraft, AbortController>()
+    const importer = useShotImport({ shots, frameRequests, referenceCards: ref([]), selectCardCharacter: async () => true })
+    io.get.mockRejectedValueOnce(new Error('HTTP 500'))
+    expect(await importer.retryPendingFrames()).toEqual({ fixed: 0, remaining: 1 })
+    expect(target.imageId).toBe('recoverable')
+    const active = new AbortController()
+    frameRequests.set(target, active)
+    expect(await importer.retryPendingFrames()).toEqual({ fixed: 0, remaining: 0 })
+    expect(active.signal.aborted).toBe(false)
+    const create = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:imported')
+    io.get.mockResolvedValueOnce(new Blob(['imported']))
+    io.upload.mockResolvedValueOnce({ name: 'imported.png' })
+    useVideoStore().appendShotCtx({ imageId: 'imported', characterId: '', prompt: 'A quiet landscape', story: '', blueprintId: null, sceneId: null })
+    try {
+      expect(await importer.importShotsFromDrawing()).toMatchObject({ imported: 1, framesReady: 1, framesPending: 0 })
+      expect(shots.value[1].imageName).toBe('imported.png')
+      expect(create).toHaveBeenCalledOnce()
+    } finally { create.mockRestore() }
+  })
+
   it('导入过程中离页，不消费还未落位的镜头', async () => {
     const store = useVideoStore()
     store.appendShotCtx({ imageId: 'a', characterId: 'a', prompt: 'A quiet landscape', story: '', blueprintId: null, sceneId: null })
     let finish!: (value: boolean) => void
     const scope = effectScope()
-    const importer = scope.run(() => useShotImport({ shots: ref([]), referenceCards: ref([{ label: '', images: [] }]), selectCardCharacter: () => new Promise(resolve => { finish = resolve }) }))!
+    const importer = scope.run(() => useShotImport({ shots: ref([]), frameRequests: new Map(), referenceCards: ref([{ label: '', images: [] }]), selectCardCharacter: () => new Promise(resolve => { finish = resolve }) }))!
     const running = importer.importShotsFromDrawing()
     scope.stop()
     finish(true)

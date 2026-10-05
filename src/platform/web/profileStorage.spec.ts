@@ -1,12 +1,13 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import type { ProfilePort } from './profileStorage'
 import type { ProfileSnapshot } from '../../../types/profile'
-import { BATCH_DRAW_PLAN_KEY, CHAT_DRAFT_PREFIX, SD_PENDING_QUEUE_KEY, SD_QUEUE_SNAPSHOT_KEY, TEMP_RESULT_KEY, VIDEO_CONTEXT_KEY, VIDEO_DRAFT_KEY, VIDEO_SCENARIO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY, VIDEO_SHOTS_DRAFT_KEY } from '../../utils/storageKeys'
+import { WORKSPACE_BACKUP_PENDING_PREFIX, BATCH_DRAW_PLAN_KEY, CHAT_DRAFT_PREFIX, SD_PENDING_QUEUE_KEY, SD_QUEUE_SNAPSHOT_KEY, TEMP_RESULT_KEY, VIDEO_CONTEXT_KEY, VIDEO_DRAFT_KEY, VIDEO_SCENARIO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY, VIDEO_SHOTS_DRAFT_KEY } from '../../utils/storageKeys'
 import { classifyMigrationKey } from './migrationClassification'
 
 afterEach(() => { vi.resetModules(); localStorage.clear(); sessionStorage.clear() })
 
 it('keeps Web local/session domains and switches actual setting and draft consumers without replaying old values', async () => {
+  expect(classifyMigrationKey('local', WORKSPACE_BACKUP_PENDING_PREFIX + '["workspace","owner"]')).toBe('transient')
   const module = await import('./profileStorage')
   module.profileLocalStorage.setItem('aics_theme', 'light')
   expect(localStorage.getItem('aics_theme')).toBe('light')
@@ -294,4 +295,30 @@ it('carries merged scene IDs through queued toggles and freezes payload after an
   await module.flushProfileWrites()
   expect(calls[3][0]).toEqual(calls[2][0])
   expect(module.profileLocalStorage.getItem(key)).toBe('["a","b","remote"]')
+})
+
+it('archive reads cannot roll back connection settings or accept snapshots overtaken by a write', async () => {
+  const module = await import('./profileStorage'), port = fakePort(), key = 'aics_chat_v1'
+  const snapshot = (archiveRevision: number): ProfileSnapshot => ({ records: [
+    { key, value: '{"settings":{"apiModel":"old"}}', revision: 7 },
+    { key: 'aics_chat_archive_v1', value: { version: 1, archived: {} }, revision: archiveRevision },
+  ], revision: archiveRevision, resetRevision: 'reset-1' })
+  vi.mocked(port.readChat).mockResolvedValue(snapshot(7))
+  await module.activateProfileStorage(port, 'main')
+  const stale = deferred<ProfileSnapshot>(), started = deferred<void>()
+  vi.mocked(port.readChat).mockImplementationOnce(() => { started.resolve(); return stale.promise })
+  const reading = module.readProfileChatArchive()
+  const rejected = expect(reading).rejects.toThrow('资料已变化')
+  await started.promise
+  module.profileLocalStorage.setItem(key, '{"settings":{"apiModel":"new"}}')
+  await module.flushProfileWrites()
+  stale.resolve(snapshot(7))
+  await rejected
+  expect(module.profileLocalStorage.getItem(key)).toContain('new')
+  vi.mocked(port.readChat).mockResolvedValue(snapshot(9))
+  await module.readProfileChatArchive()
+  expect(module.profileLocalStorage.getItem(key)).toContain('new')
+  module.profileLocalStorage.setItem(key, module.profileLocalStorage.getItem(key)!)
+  await module.flushProfileWrites()
+  expect(port.saveChatRecord).toHaveBeenLastCalledWith(expect.objectContaining({ expectedRevision: 8, value: expect.stringContaining('new') }))
 })

@@ -77,9 +77,9 @@ export async function confirmDeleteAction(ctx: Context, item: ArtworkRecord): Pr
         presentDeleted(ctx, [item.id]);
         history.value = history.value.filter(h => h.id !== item.id);
         releaseCardResources(item.id);
-        pendingDeleteId.value = null;
+        if (pendingDeleteId.value === item.id) pendingDeleteId.value = null;
         // 查看器开着就顺移到下一幅，删到空则关闭
-        if (wasOpen) {
+        if (wasOpen && ctx.isCurrentView?.() !== false) {
             if (!visible.value.length)
                 closeViewer();
             else

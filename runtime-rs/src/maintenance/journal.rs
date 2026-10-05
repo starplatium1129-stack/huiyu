@@ -27,10 +27,7 @@ pub(super) fn read(ctx: &Context) -> Result<Option<Journal>> {
     if fs::safe(&ctx.lease, true, true)?.is_none() {
         return Ok(None);
     }
-    let bytes = fs::read(&ctx.lease.join("journal.json"), false)?.unwrap();
-    if bytes.len() > 32 * 1024 * 1024 {
-        return Err(Error::journal("元数据过大"));
-    }
+    let bytes = fs::metadata_bytes(&ctx.lease.join("journal.json"))?;
     let journal = codec::unseal(
         serde_json::from_slice(&bytes).map_err(|_| Error::journal("元数据不是有效 JSON"))?,
         &ctx.key(false)?,

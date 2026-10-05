@@ -35,9 +35,11 @@ impl Output {
     }
 }
 
-/// Each hook is awaited before the corresponding network side effect. Recovery
+/// Durable hooks are awaited before the corresponding network side effect. Recovery
 /// must observe the saved identity; it must never invoke submit automatically.
 pub trait ExecutionHooks: Send + Sync {
+    /// Hint only: authoritative observation, not this notification, settles the ledger.
+    fn observation_changed(&self) {}
     fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>>;
     fn submitting(&self, provider: String, fingerprint: String) -> BoxFuture<'_, Result<()>>;
     fn observed(&self, id: String, metadata: Value) -> BoxFuture<'_, Result<()>>;

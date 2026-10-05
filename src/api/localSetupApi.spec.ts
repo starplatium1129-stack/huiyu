@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createApiClient, configureApiTransport, type FetchImplementation } from './client'
 import { createLocalSetupApi } from './localSetupApi'
-import { initializeDesktopRuntime, refreshDesktopRuntime } from '../platform/desktop/runtime.ts'
+import { initializeDesktopRuntime, refreshDesktopRuntime, getDesktopRuntime, desktopRuntimeFetch } from '../platform/desktop/runtime.ts'
+import { prepareDesktopWorkspace } from '../platform/desktop/bootstrap'
 import { setRuntimeOrigin } from '../platform/runtimeUrl.ts'
 import type { LocalSetupResponse } from '../../types/local-setup'
 
@@ -126,6 +127,25 @@ describe('local setup read-only HTTP boundary', () => {
       await rejection
       expect(transportSignal?.aborted).toBe(true)
       expect(caller.signal.aborted).toBe(false)
+      const session = (workspaceId: string) => ({ workspaceId, runtimeEpoch: workspaceId + '-epoch', principalId: 'owner', token: 'a'.repeat(43), expiresAt: Date.now() + 60000, generation: 0, domains: [], bundledUi: false })
+      const a = { ...descriptor, runtime: { ...descriptor.runtime, workspace: session('candidate-a') } }
+      const b = { ...a, runtime: { ...a.runtime, workspace: session('candidate-b') } }
+      invoke.mockResolvedValueOnce(a)
+      await refreshDesktopRuntime()
+      await desktopRuntimeFetch('/api/workspace/status')
+      const previousSignal = fetch.mock.calls.at(-1)![1]!.signal as AbortSignal
+      let resolveOld!: (value: typeof a) => void
+      invoke.mockReturnValueOnce(new Promise(resolve => { resolveOld = resolve }))
+      const old = refreshDesktopRuntime()
+      invoke.mockResolvedValueOnce(b)
+      const prepared = await prepareDesktopWorkspace({ mode: 'new' })
+      expect(prepared.runtime?.workspace?.workspaceId).toBe('candidate-b')
+      invoke.mockResolvedValueOnce(b)
+      await refreshDesktopRuntime(true)
+      expect(previousSignal.aborted).toBe(true)
+      resolveOld(a)
+      await old
+      expect(getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId).toBe('candidate-b')
     } finally { stop?.(); setRuntimeOrigin(null, false); configureApiTransport(); vi.unstubAllGlobals() }
   })
 

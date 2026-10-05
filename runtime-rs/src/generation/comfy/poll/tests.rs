@@ -345,3 +345,124 @@ async fn failed_result_save_video_reports_directory_and_publish_errors() {
     assert_eq!(std::fs::read(&path).unwrap(), bytes);
     server.abort();
 }
+
+#[tokio::test]
+async fn result_failures_release_capacity_and_survive_history_eviction() {
+    let directory = tempfile::tempdir().unwrap();
+    let reads = Arc::new(AtomicUsize::new(0));
+    let downloads = Arc::new(AtomicUsize::new(0));
+    let router = Router::new()
+        .route("/history/{id}", get({
+            let reads = reads.clone();
+            move || {
+                let first = reads.fetch_add(1, Ordering::Relaxed) == 0;
+                async move { Json(if first {
+                    json!({"owned":{"status":{"status_str":"success"},"outputs":{"10":{"images":[{"filename":"fixture_result.png","type":"output"}]}}}})
+                } else { json!({}) }) }
+            }
+        }))
+        .route("/view", get({
+            let downloads = downloads.clone();
+            move || {
+                downloads.fetch_add(1, Ordering::Relaxed);
+                async { axum::http::StatusCode::SERVICE_UNAVAILABLE }
+            }
+        }));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let host = format!("http://{}", listener.local_addr().unwrap());
+    let server = tokio::spawn(async move {
+        axum::serve(listener, router).await.unwrap();
+    });
+    let (service, job) = fixture(directory.path(), &host).await;
+    let worker = tokio::spawn(run(service.inner.clone(), job.clone()));
+    tokio::time::timeout(Duration::from_secs(5), async {
+        loop {
+            let state = job.state.lock().await;
+            if state.code.as_deref() == Some("COMFY_RESULT_ERROR") {
+                assert!(state.unknown && !state.settled);
+                assert!(state.permit.is_none());
+                break;
+            }
+            drop(state);
+            // Skip wall-clock backoff; retry_delay is checked separately below.
+            job.notify.notify_one();
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
+    assert!(downloads.load(Ordering::Relaxed) >= 60);
+    assert_eq!(reads.load(Ordering::Relaxed), 1);
+    assert_eq!(retry_delay(1), Duration::from_millis(500));
+    assert_eq!(retry_delay(60), Duration::from_secs(3));
+    service.inner.cancel.cancel();
+    worker.await.unwrap();
+    service.close().await;
+    server.abort();
+}
+
+#[tokio::test]
+async fn cancelling_inflight_result_drops_transfer_and_temporary_bytes() {
+    use futures_util::StreamExt;
+    let directory = tempfile::tempdir().unwrap();
+    let reads = Arc::new(AtomicUsize::new(0));
+    let router = Router::new().route(
+        "/view",
+        get({
+            let reads = reads.clone();
+            move || {
+                reads.fetch_add(1, Ordering::Relaxed);
+                async {
+                    let body = futures_util::stream::iter([Ok::<_, std::io::Error>(
+                        axum::body::Bytes::from_static(b"\x89PNG\r\n\x1a\nfixture body"),
+                    )])
+                    .chain(futures_util::stream::pending());
+                    (
+                        [("content-type", "image/png")],
+                        axum::body::Body::from_stream(body),
+                    )
+                }
+            }
+        }),
+    );
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let host = format!("http://{}", listener.local_addr().unwrap());
+    let server = tokio::spawn(async move {
+        axum::serve(listener, router).await.unwrap();
+    });
+    let (service, job) = fixture(directory.path(), &host).await;
+    let (inner, transfer_job) = (service.inner.clone(), job.clone());
+    let worker = tokio::spawn(async move {
+        materialize(
+            &inner,
+            &transfer_job,
+            &json!({"filename":"fixture_result.png","type":"output"}),
+        )
+        .await
+    });
+    let output = directory.path().join("runtime/outputs/fixture");
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while std::fs::read_dir(&output).map_or(true, |mut files| files.next().is_none()) {
+            job.notify.notify_waiters();
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
+    job.state.lock().await.status = "cancelling".into();
+    job.notify.notify_waiters();
+    let error = tokio::time::timeout(Duration::from_secs(1), worker)
+        .await
+        .unwrap()
+        .unwrap()
+        .unwrap_err();
+    assert_eq!(error.code, "ABORT_ERR");
+    assert_eq!(
+        reads.load(Ordering::Relaxed),
+        1,
+        "progress must not restart download"
+    );
+    assert_eq!(std::fs::read_dir(output).unwrap().count(), 0);
+    service.close().await;
+    server.abort();
+}

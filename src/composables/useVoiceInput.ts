@@ -227,11 +227,8 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
     }
 
     try {
-      context = new AudioContext({ sampleRate: TARGET_RATE })
-    } catch {
-      context = new AudioContext()
-    }
-    try {
+      try { context = new AudioContext({ sampleRate: TARGET_RATE }) }
+      catch { context = new AudioContext() }
       source = context.createMediaStreamSource(stream)
       processor = context.createScriptProcessor(4096, 1, 1)
       muted = context.createGain()

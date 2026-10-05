@@ -31,7 +31,8 @@
 
 <script setup lang="ts">
 import { downloadBlob } from "@/utils/downloadBlob"
-import { computed, ref } from 'vue'
+import { computed, onScopeDispose, ref, watch } from 'vue'
+import { chatResetRevision } from '@/utils/chatReset'
 import { getCompanionCharacter } from '@/utils/companionRegistry'
 import type { useChatStorage } from '@/composables/chat/useChatStorage'
 import { confirmAction } from '@/composables/useConfirm'
@@ -49,6 +50,9 @@ const emit = defineEmits<{
 }>()
 
 const fileEl = ref<HTMLInputElement>()
+let fileRequest = 0, disposed = false
+watch(() => props.storage, () => { ++fileRequest }, { flush: 'sync' })
+onScopeDispose(() => { disposed = true; ++fileRequest })
 const characterIds = computed(() => Object.keys(counts.value))
 
 function characterName(id: string) {
@@ -75,25 +79,29 @@ async function exportArchive(format: 'json' | 'markdown') {
 const exportJson = () => exportArchive('json')
 const exportMarkdown = () => exportArchive('markdown')
 
-function onFile(event: Event) {
+async function onFile(event: Event) {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
   input.value = ''
+  const request = ++fileRequest, storage = props.storage
+  const current = () => !disposed && request === fileRequest && storage === props.storage
   if (!file) return
   if (file.size > 8 * 1024 * 1024) {
     emit('notice', '归档文件超过 8 MB，请确认来源后重试。', 'error')
     return
   }
-  void file.text().then(async text => {
-    try {
-      const added = await props.storage.importArchiveJson(text)
-      emit('notice', added ? `导入完成，新增 ${added} 条归档消息。` : '导入完成，没有新增消息（可能已存在）。', 'info')
-    } catch (error) {
-      emit('notice', `无法读取归档：${error instanceof Error ? error.message : '文件已损坏'}`, 'error')
-    }
-  }).catch(error => {
-    emit('notice', `无法读取归档：${error instanceof Error ? error.message : '文件读取失败'}`, 'error')
-  })
+  try {
+    const revision = chatResetRevision()
+    const text = await file.text()
+    if (!current()) return
+    if (revision !== chatResetRevision()) { emit('notice', '聊天内容已清空，请重新选择归档文件后导入。', 'warning'); return }
+    const added = await storage.importArchiveJson(text, current)
+    if (!current()) return
+    if (revision !== chatResetRevision()) { emit('notice', '聊天内容已清空，请重新选择归档文件后导入。', 'warning'); return }
+    emit('notice', added ? `导入完成，新增 ${added} 条归档消息。` : '导入完成，没有新增消息（可能已存在）。', 'info')
+  } catch (error) {
+    if (current()) emit('notice', `无法读取归档：${error instanceof Error ? error.message : '文件读取失败'}`, 'error')
+  }
 }
 
 async function restoreCurrent() {

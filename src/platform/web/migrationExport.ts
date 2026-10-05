@@ -25,6 +25,7 @@ export interface MigrationSink {
  * Base64 allocation: each original is read independently and emitted in 1 MiB chunks. */
 export async function exportMigrationSource(options: {
   sourceProfileId: string; expectedOrigin: string; sink: MigrationSink; signal?: AbortSignal
+  target?: MigrationEnvelope['target']
   migrateCredential?: (reference: string, secret: string) => Promise<boolean>
   consume?: (envelope: MigrationEnvelope) => Promise<void>
 }): Promise<MigrationEnvelope> {
@@ -117,7 +118,7 @@ export async function exportMigrationSource(options: {
     // The reader can distinguish unavailable credentials from a verified empty vault.
     const credentials = { references, verified: !blockers.some(item => item.startsWith('credential:')) }
     const unsigned = { format: 'huiyu-migration' as const, version: 1 as const, migrationId: crypto.randomUUID(), source,
-      createdAt: Date.now(), records, media, blockers, credentials }
+      ...(options.target ? { target: options.target } : {}), createdAt: Date.now(), records, media, blockers, credentials }
     const envelope: MigrationEnvelope = { ...unsigned, fingerprint: await migrationFingerprint(unsigned) }
     await options.sink.manifest(envelope)
     await options.sink.verify(envelope)

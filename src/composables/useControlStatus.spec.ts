@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+import { computed, nextTick, ref } from 'vue'
+import { useRoomSetup } from './chat/useRoomSetup'
+import { controlApi } from '@/api/controlApi'
+import { flushPromises } from '@vue/test-utils'
 import { useControlStatus } from './useControlStatus'
-import type { ControlStatus } from '@/types/api'
+import type { ControlStatus, ControlOperationView } from '@/types/api'
 
 function snapshot(overrides: Partial<ControlStatus> = {}): ControlStatus {
   return {
@@ -14,6 +17,8 @@ function snapshot(overrides: Partial<ControlStatus> = {}): ControlStatus {
     ...overrides,
   }
 }
+const running: ControlOperationView = { id: 'one', kind: 'chat', label: 'prepare', status: 'running', stageIndex: 0, stages: [], message: '', startedAt: 1, finishedAt: 0, error: '' }
+
 describe('control room state', () => {
   it('lets a slow first status finish instead of aborting it on every polling interval', async () => {
     vi.useFakeTimers()
@@ -96,15 +101,72 @@ describe('control room state', () => {
     expect(status.sdHost.value).toBe('http://127.0.0.1:7862')
     status.stopPolling()
   })
-  it('shows a failed connection while retaining the last known service state', async () => {
-    const status = useControlStatus({ showToast: vi.fn(), api: { getStatus: vi.fn().mockRejectedValue(new Error('offline')) } as never })
-    status.renderStatus(snapshot())
+  it('retains uncertain operations but accepts authoritative null without late-log resurrection', async () => {
+    let finish!: (value: { operation: ControlOperationView; logs: string[]; total: number }) => void
+    const status = useControlStatus({ showToast: vi.fn(), api: {
+      getStatus: vi.fn().mockRejectedValue(new Error('offline')),
+      getLogs: vi.fn(() => new Promise(resolve => { finish = resolve })),
+    } as never })
+    status.renderStatus(snapshot({ operation: running }))
     await status.pollStatus(true)
     expect(status.statusError.value).toContain('无法连接')
     expect(status.comfyOnline.value).toBe(true)
     expect(status.serviceChecking.value).toBe(false)
+    expect(status.opBusy.value).toBe(true)
+    const degradedLogs = status.pollLogs()
+    status.renderStatus(snapshot({ ok: false }))
+    finish({ operation: { ...running, status: 'completed' }, logs: [], total: 0 })
+    await degradedLogs
+    expect(status.opBusy.value).toBe(false)
+    status.renderStatus(snapshot({ operation: running }))
+    const oldLogs = status.pollLogs()
     status.renderStatus(snapshot())
     expect(status.statusError.value).toBe('')
+    expect(status.opBusy.value).toBe(false)
+    finish({ operation: running, logs: ['retained log'], total: 1 })
+    await oldLogs
+    expect(status.operation.value).toBeNull()
+    expect(status.logs.value).toEqual(['retained log'])
+    const beforeCommand = status.pollLogs()
+    status.operationSubmitting.value = true
+    status.renderStatus(snapshot())
+    expect(status.opBusy.value).toBe(true)
+    status.operationSubmitting.value = false
+    finish({ operation: running, logs: [], total: 1 })
+    await beforeCommand
+    expect(status.operation.value).toBeNull()
     status.stopPolling()
+  })
+
+  it('releases room preparation when its operation disappears or is replaced, without claiming success', async () => {
+    vi.useFakeTimers()
+    const switchMode = vi.spyOn(controlApi, 'switchMode').mockResolvedValue({ ok: true, operation: running })
+    const getStatus = vi.spyOn(controlApi, 'getStatus')
+    const refreshChatStatus = vi.fn().mockResolvedValue(undefined), refreshAvailability = vi.fn().mockResolvedValue(undefined)
+    const setError = vi.fn()
+    const room = useRoomSetup({
+      chatProvider: ref('local'), apiConfigured: ref(false), ollamaOnline: ref(false), autoVoice: ref(false),
+      currentCharacter: computed(() => ({ voice: 'fixture' })),
+      voice: { refreshAvailability, readyFor: () => false }, refreshChatStatus, setError,
+      updateVoiceCapability: vi.fn(), isDisposed: () => false,
+    } as unknown as Parameters<typeof useRoomSetup>[0])
+    try {
+      for (const operation of [null, { ...running, id: 'replacement' }]) {
+        getStatus.mockResolvedValue(snapshot({ operation }))
+        await room.prepareRoom()
+        await flushPromises()
+        expect(room.preparingRoom.value).toBe(false)
+        expect(room.roomSetupText.value).toContain('尚未确认')
+        expect(vi.getTimerCount()).toBe(0)
+      }
+      expect(switchMode).toHaveBeenCalledTimes(2)
+      expect(refreshChatStatus).toHaveBeenCalledTimes(2)
+      expect(refreshAvailability).toHaveBeenCalledTimes(2)
+      expect(setError).toHaveBeenCalledWith(expect.stringContaining('尚未确认'))
+      getStatus.mockResolvedValue(snapshot({ ok: false }))
+      await room.prepareRoom(); await flushPromises()
+      expect(room.preparingRoom.value).toBe(true)
+      expect(vi.getTimerCount()).toBe(1)
+    } finally { room.destroy(); switchMode.mockRestore(); getStatus.mockRestore(); vi.useRealTimers() }
   })
 })

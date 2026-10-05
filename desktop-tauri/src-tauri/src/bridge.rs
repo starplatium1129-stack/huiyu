@@ -13,18 +13,18 @@ pub async fn desktop_bootstrap(window: tauri::WebviewWindow) -> Result<crate::bo
 }
 
 #[tauri::command]
-pub async fn desktop_workspace_prepare(window: tauri::WebviewWindow) -> Result<crate::bootstrap::DesktopBootstrap, String> {
-    crate::bootstrap::request(window, "prepare-candidate", None, false).await
+pub async fn desktop_workspace_prepare(window: tauri::WebviewWindow, candidate: serde_json::Value) -> Result<crate::bootstrap::DesktopBootstrap, String> {
+    crate::bootstrap::request(window, "prepare-candidate", None, false, Some(candidate)).await
 }
 
 #[tauri::command]
 pub async fn desktop_workspace_activate(window: tauri::WebviewWindow, migration_id: String, bundled_ui: bool) -> Result<crate::bootstrap::DesktopBootstrap, String> {
-    crate::bootstrap::request(window, "activate", Some(migration_id), bundled_ui).await
+    crate::bootstrap::request(window, "activate", Some(migration_id), bundled_ui, None).await
 }
 
 #[tauri::command]
 pub async fn desktop_workspace_enable_bundled(window: tauri::WebviewWindow) -> Result<crate::bootstrap::DesktopBootstrap, String> {
-    crate::bootstrap::request(window, "enable-bundled", None, true).await
+    crate::bootstrap::request(window, "enable-bundled", None, true, None).await
 }
 
 /// IPC 命令层：与 Electron 版 preload 桥一一对应（前端零改动由 shim 保证）。

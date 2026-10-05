@@ -116,7 +116,7 @@ async function restoreShotsDraft() {
   // 首帧重挂载：失效图保留镜头文本并明示，可逐镜重试（F1 验收第 3 条）。
   const { remaining } = await retryPendingFrames()
   if (remaining) {
-    batchError.value = `${remaining} 张首帧原图已失效：镜头文本已保留，可在镜头上重试或重新上传`
+    batchError.value = `${remaining} 张首帧暂未挂载：镜头文本与图片引用已保留，可在镜头上重试或重新上传`
   }
 }
 

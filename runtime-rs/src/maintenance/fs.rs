@@ -87,6 +87,9 @@ pub(crate) fn directory_identity(path: &Path) -> Result<Value> {
     Ok(json!({"path":key(path)?,"dev":identity.dev.to_string(),"ino":identity.ino.to_string()}))
 }
 pub(crate) fn read(path: &Path, missing: bool) -> Result<Option<Vec<u8>>> {
+    read_limited(path, missing, None)
+}
+fn read_limited(path: &Path, missing: bool, limit: Option<u64>) -> Result<Option<Vec<u8>>> {
     if safe(path, false, missing)?.is_none() {
         return Ok(None);
     }
@@ -98,7 +101,18 @@ pub(crate) fn read(path: &Path, missing: bool) -> Result<Option<Vec<u8>>> {
         return Err(Error::conflict("读取期间文件被替换"));
     }
     let mut bytes = Vec::new();
-    file.read_to_end(&mut bytes)?;
+    if let Some(limit) = limit {
+        if before.len() > limit {
+            return Err(Error::journal("元数据过大"));
+        }
+        // Borrow the handle so its inode remains held through identity checks.
+        (&mut file).take(limit + 1).read_to_end(&mut bytes)?;
+        if bytes.len() as u64 > limit {
+            return Err(Error::journal("元数据过大"));
+        }
+    } else {
+        file.read_to_end(&mut bytes)?;
+    }
     let after = safe(path, false, false)?.unwrap();
     if identity::path(path, false)? != before_id
         || after.len() != before.len()
@@ -108,11 +122,11 @@ pub(crate) fn read(path: &Path, missing: bool) -> Result<Option<Vec<u8>>> {
     }
     Ok(Some(bytes))
 }
+pub(crate) fn metadata_bytes(path: &Path) -> Result<Vec<u8>> {
+    Ok(read_limited(path, false, Some(32 * 1024 * 1024))?.unwrap())
+}
 pub(crate) fn json(path: &Path) -> Result<Value> {
-    let bytes = read(path, false)?.unwrap();
-    if bytes.len() > 32 * 1024 * 1024 {
-        return Err(Error::journal("元数据过大"));
-    }
+    let bytes = metadata_bytes(path)?;
     serde_json::from_slice(&bytes).map_err(|_| Error::journal("元数据不是有效 JSON"))
 }
 pub(crate) fn state(path: &Path) -> Result<Value> {
@@ -191,4 +205,18 @@ pub(crate) fn remove(path: &Path) -> Result<()> {
         sync(path.parent().unwrap())?;
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod read_tests {
+    #[test]
+    fn oversized_metadata_is_rejected_before_reading_its_payload() {
+        let directory = tempfile::tempdir().unwrap();
+        let path = directory.path().join("metadata.json");
+        let file = std::fs::File::create(&path).unwrap();
+        file.set_len(32 * 1024 * 1024 + 1).unwrap();
+        assert!(super::json(&path).is_err());
+        std::fs::write(&path, b"{}").unwrap();
+        assert_eq!(super::json(&path).unwrap(), serde_json::json!({}));
+    }
 }

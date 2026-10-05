@@ -89,3 +89,33 @@ describe('StudioMediaPlayer', () => {
   })
 
 })
+
+
+it('requests fullscreen on the player container so controls remain reachable', async () => {
+  wrapper = mount(StudioMediaPlayer, { props: { src: '/media/clip.mp4', label: '结果' } })
+  const container = wrapper.get('figure').element
+  let fullscreenElement: Element | null = null
+  const request = vi.fn(async () => { fullscreenElement = container })
+  const keys = ['fullscreenEnabled', 'fullscreenElement', 'exitFullscreen'] as const
+  const original = keys.map(key => Object.getOwnPropertyDescriptor(document, key))
+  const exit = vi.fn(async () => { fullscreenElement = null })
+  Object.defineProperties(document, {
+    fullscreenEnabled: { configurable: true, value: true },
+    fullscreenElement: { configurable: true, get: () => fullscreenElement },
+    exitFullscreen: { configurable: true, value: exit },
+  })
+  Object.defineProperty(container, 'requestFullscreen', { configurable: true, value: request })
+  try {
+    await wrapper.get('[aria-label="全屏播放结果"]').trigger('click'); await flushPromises()
+    document.dispatchEvent(new Event('fullscreenchange')); await nextTick()
+    expect(request).toHaveBeenCalledOnce()
+    expect(container.contains(wrapper.get('.studio-media-bar').element)).toBe(true)
+    await wrapper.get('[aria-label="退出全屏结果"]').trigger('click'); await flushPromises()
+    expect(exit).toHaveBeenCalledOnce()
+  } finally {
+    keys.forEach((key, index) => {
+      if (original[index]) Object.defineProperty(document, key, original[index]!)
+      else Reflect.deleteProperty(document, key)
+    })
+  }
+})

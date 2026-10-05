@@ -233,6 +233,22 @@ describe('backup safety regressions', () => {
       expect(create).toHaveBeenCalledOnce()
     } finally { scope.stop(); create.mockRestore(); desktop.mockRestore() }
   })
+  it('dates a resumed backup by its original operation and describes delivery without implying a new snapshot', async () => {
+    const desktop = vi.spyOn(backupActions, 'workspaceBackupActive').mockReturnValue(true)
+    const receipt: backupActions.WorkspaceBackupReceipt = { format: 'huiyu-workspace-backup-receipt', version: 1,
+      workspaceId: 'workspace', backupId: 'existing', createdAt: '2026-01-01T00:00:00.000Z', revision: 1, mediaCount: 2 }
+    const create = vi.spyOn(backupActions, 'createWorkspaceBackup').mockImplementation(async (_signal, deliver) => { deliver!(receipt, true); return receipt })
+    const scope = effectScope(), flash = vi.fn(), tool = scope.run(() => useBackup(flash))!
+    try {
+      await tool.exportBackup()
+      expect(tool.lastBackupAt.value).toBe(Date.parse(receipt.createdAt))
+      expect(localStorage.getItem(BACKUP_AT_KEY)).toBe(String(Date.parse(receipt.createdAt)))
+      expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('续取或续做'))
+      expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('原操作发起时间'))
+      expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('已开始下载'))
+      expect(downloadBlob).toHaveBeenCalledOnce()
+    } finally { scope.stop(); create.mockRestore(); desktop.mockRestore() }
+  })
   it('supports cancelling export without touching existing records or timestamps', async () => {
     vi.mocked(imgList).mockResolvedValue([])
     const flash = vi.fn(), tool = useBackup(flash)

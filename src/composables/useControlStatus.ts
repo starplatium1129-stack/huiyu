@@ -5,7 +5,7 @@
  * 上游在线状态、操作进度、日志缓冲与展示文案。
  */
 
-import { ref, computed, nextTick, watch, type Ref } from 'vue'
+import { ref, computed, nextTick, watch, getCurrentScope, onScopeDispose, type Ref } from 'vue'
 import { usePolling } from './usePolling.ts'
 import { ApiClientError } from '../api/client.ts'
 import { controlApi, type ControlApi } from '../api/controlApi.ts'
@@ -30,6 +30,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const ollamaVram = ref(0)
   const modeBusy = ref(false)
   const operation = ref<ControlOperationView | null>(null)
+  const operationSubmitting = ref(false)
   const selfHealing = ref<ControlStatus['selfHealing'] | null>(null)
   const serviceChecking = ref(false)
   const statusLoaded = ref(false)
@@ -92,14 +93,19 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     if (tickerEnabled && (typeof document === 'undefined' || !document.hidden) && operation.value?.status === 'running') ensureNowTicker()
     else clearNowTicker()
   }
+  let disposed = false
+  if (getCurrentScope()) onScopeDispose(() => { disposed = true; stopPolling() })
+  let statusRevision = 0
   let lastStatus: ControlStatus | null = null
   let statusRequest: AbortController | null = null
   let logsRequest: AbortController | null = null
   let shareRequest: AbortController | null = null
 
+  watch(operationSubmitting, submitting => { if (submitting) statusRevision++ }, { flush: 'sync' })
+
   // 操作变化时自动启停时钟
   watch(operation, () => syncNowTicker(), { immediate: true })
-  const opBusy = computed(() => !!(operation.value && operation.value.status === 'running') || modeBusy.value)
+  const opBusy = computed(() => operationSubmitting.value || !!(operation.value && operation.value.status === 'running') || modeBusy.value)
   const opStatusLabel = computed(() => {
     const s = operation.value?.status
     return s === 'running' ? '进行中' : s === 'completed' ? '完成' : s === 'failed' ? '失败' : ''
@@ -174,6 +180,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   }
 
   function renderStatus(data: ControlStatus) {
+    if (disposed) return
     lastStatus = data
     statusLoaded.value = true
     statusError.value = data.ok === false ? (data.error || '服务状态暂时不可用') : ''
@@ -188,7 +195,10 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     ollamaModels.value = Array.isArray(data.ollamaModels) ? data.ollamaModels : []
     ollamaVram.value = Number(data.ollamaVram) || 0
     modeBusy.value = !!data.modeBusy
-    operation.value = data.operation || (operation.value?.status === 'running' ? operation.value : null)
+    if (data.ok || data.operation) {
+      operation.value = data.operation ?? null
+      statusRevision++
+    }
     syncNowTicker()
     selfHealing.value = data.selfHealing && typeof data.selfHealing === 'object' ? data.selfHealing : null
     tunnelStatus.value = data.tunnelStatus || ''
@@ -259,6 +269,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   }
 
   async function loadShareLink() {
+    if (disposed) return
     shareRequest?.abort()
     const controller = new AbortController()
     shareRequest = controller
@@ -274,6 +285,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   }
 
   async function pollStatus(force = false) {
+    if (disposed) return
     if (force) serviceChecking.value = true
     statusRequest?.abort()
     const controller = new AbortController()
@@ -297,13 +309,15 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   }
 
   async function pollLogs() {
+    if (disposed) return
     logsRequest?.abort()
     const controller = new AbortController()
     logsRequest = controller
+    const revision = statusRevision
     try {
       const data: ControlLogs = await api.getLogs(logIndex.value, { signal: controller.signal })
       if (logsRequest !== controller || controller.signal.aborted) return
-      if (data.operation) {
+      if (data.operation && revision === statusRevision && !operationSubmitting.value) {
         operation.value = data.operation
         syncNowTicker()
       }
@@ -351,7 +365,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     visibilityBound = false
   }
   function startPolling() {
-    if (polling.isActive()) return
+    if (disposed || polling.isActive()) return
     tickerEnabled = true
     now.value = Date.now()
     bindPollingVisibility()
@@ -375,7 +389,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
 
   return {
     tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram, selfHealing,
-    modeBusy, operation, serviceChecking, statusLoaded, statusError, scripts,
+    modeBusy, operation, operationSubmitting, serviceChecking, statusLoaded, statusError, scripts,
     sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
     feedbackClass, feedbackText, actionNote, logs, logBoxEl, logIndex,

@@ -1,6 +1,7 @@
 import { useControlStatus } from './useControlStatus'
 import type { ControlStatus } from '@/types/api'
-import { ref } from 'vue'
+import { effectScope, ref } from 'vue'
+import { flushPromises } from '@vue/test-utils'
 import { expect, it, vi } from 'vitest'
 import { useControlActions } from './useControlActions'
 
@@ -36,7 +37,7 @@ it('configuration saves ignore repeated clicks and allow retry after failure', a
 it('reports saved configuration awaiting restart and does not start sharing with stale settings', async () => {
   let pending = false
   const status = {
-    lastStatus: () => ({ restartRequired: pending }), pollStatus: vi.fn(), feedbackText: ref(''),
+    lastStatus: () => ({ restartRequired: pending }), pollStatus: vi.fn(), feedbackText: ref(''), opBusy: ref(false),
     sdHost: ref('http://localhost:7860'), comfyHost: ref('http://localhost:8188'), ttsHost: ref('http://localhost:9880'),
     ttsEngine: ref('gpt-sovits'), voiceNeneLora: ref(''), voiceNatsumeLora: ref(''),
     voiceNeneRef: ref(''), voiceNenePrompt: ref(''), voiceNatsumeRef: ref(''), voiceNatsumePrompt: ref(''),
@@ -91,4 +92,82 @@ it('owns a preference write across stale polls and reconciles an uncertain respo
   expect(status.savingAutoStartVoice.value).toBe(false)
   expect(showToast).toHaveBeenCalledWith(expect.stringContaining('保存结果尚未确认'), true)
   status.stopPolling()
+})
+
+it('serializes service and mode submissions even when an in-flight status has no operation', async () => {
+  let finish!: (value: { ok: true }) => void
+  const serviceAction = vi.fn(() => new Promise<{ ok: true }>(resolve => { finish = resolve }))
+  const switchMode = vi.fn().mockResolvedValue({ ok: true })
+  const control = { serviceAction, switchMode, getStatus: vi.fn().mockResolvedValue({ ok: true }), getLogs: vi.fn().mockResolvedValue({ logs: [], total: 0 }) } as unknown as NonNullable<Parameters<typeof useControlActions>[1]['control']>
+  const status = useControlStatus({ api: control, showToast: vi.fn() })
+  const actions = useControlActions(status, { control, showToast: vi.fn() })
+  const pending = actions.serviceAction('comfy', 'start')
+  status.renderStatus({ ok: true, operation: null } as ControlStatus)
+  expect(status.opBusy.value).toBe(true)
+  await actions.serviceAction('comfy', 'start')
+  await actions.switchMode('chat')
+  expect(serviceAction).toHaveBeenCalledOnce()
+  expect(switchMode).not.toHaveBeenCalled()
+  finish({ ok: true }); await pending
+  await actions.switchMode('chat')
+  expect(switchMode).toHaveBeenCalledOnce()
+  status.stopPolling()
+})
+
+it('locks sharing with all service commands and cannot revive polling after its owner is disposed', async () => {
+  vi.useFakeTimers()
+  let finish!: (value: { ok: true }) => void
+  const control = { saveConfig: vi.fn().mockResolvedValue({ ok: true }),
+    start: vi.fn(() => new Promise<{ ok: true }>(resolve => { finish = resolve })), stop: vi.fn(),
+    serviceAction: vi.fn(), switchMode: vi.fn(), getStatus: vi.fn(), getLogs: vi.fn(),
+  } as unknown as NonNullable<Parameters<typeof useControlActions>[1]['control']>
+  const scope = effectScope()
+  const { status, actions } = scope.run(() => {
+    const status = useControlStatus({ api: control, showToast: vi.fn() })
+    return { status, actions: useControlActions(status, { control, showToast: vi.fn() }) }
+  })!
+  try {
+    status.renderStatus({ ok: true, operation: null } as ControlStatus)
+    const sharing = actions.doStart(); await flushPromises()
+    status.renderStatus({ ok: true, operation: null } as ControlStatus)
+    expect(status.opBusy.value).toBe(true)
+    await actions.doStart(); await actions.doStop(); await actions.serviceAction('comfy', 'start'); await actions.switchMode('chat')
+    expect(control.start).toHaveBeenCalledOnce()
+    expect(control.stop).not.toHaveBeenCalled()
+    expect(control.serviceAction).not.toHaveBeenCalled()
+    expect(control.switchMode).not.toHaveBeenCalled()
+    scope.stop(); finish({ ok: true }); await sharing
+    expect(vi.getTimerCount()).toBe(0)
+    expect(control.getStatus).not.toHaveBeenCalled()
+    status.startPolling()
+    expect(vi.getTimerCount()).toBe(0)
+  } finally { scope.stop(); vi.useRealTimers() }
+})
+
+it('holds the rebuild lock during native package detection and releases it for a later allowed retry', async () => {
+  let detect!: (value: boolean) => void
+  const isPackaged = vi.fn(() => new Promise<boolean>(resolve => { detect = resolve }))
+  const previousHost = Object.getOwnPropertyDescriptor(window, '__TAURI__')
+  Object.defineProperty(window, '__TAURI__', { configurable: true, value: { core: { invoke: isPackaged } } })
+  const buildWeb = vi.fn().mockResolvedValue({ durationMs: 1000 }), showToast = vi.fn()
+  const actions = useControlActions({ pollStatus: vi.fn() } as unknown as Parameters<typeof useControlActions>[0], {
+    showToast, maintenance: { buildWeb } as unknown as NonNullable<Parameters<typeof useControlActions>[1]['maintenance']>,
+  })
+  try {
+    const blocked = actions.buildWeb()
+    expect(actions.buildingWeb.value).toBe(true)
+    await actions.buildWeb()
+    expect(isPackaged).toHaveBeenCalledExactlyOnceWith('is_packaged')
+    detect(true); await blocked
+    expect(buildWeb).not.toHaveBeenCalled()
+    expect(actions.buildingWeb.value).toBe(false)
+    const allowed = actions.buildWeb()
+    await actions.buildWeb()
+    detect(false); await allowed
+    expect(buildWeb).toHaveBeenCalledOnce()
+    expect(actions.buildingWeb.value).toBe(false)
+  } finally {
+    if (previousHost) Object.defineProperty(window, '__TAURI__', previousHost)
+    else Reflect.deleteProperty(window, '__TAURI__')
+  }
 })

@@ -106,6 +106,7 @@ pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
         state.code = Some(code(&job, "CANCELLED"));
         drop(state);
         jobs::discard_output(&job).await;
+        jobs::notify_settled(&job);
         return Ok(());
     }
     if (terminal(&state.status) && state.settled) || state.status == "cancelling" {
@@ -125,6 +126,8 @@ pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
         state.code = Some(code(&job, "CANCELLED"));
         state.error = Some("任务已取消".into());
         state.permit.take();
+        drop(state);
+        jobs::notify_settled(&job);
         return Ok(());
     }
     state.status = "cancelling".into();
@@ -232,5 +235,6 @@ pub(super) async fn confirm(inner: &Inner, job: &Job, id: &str) -> bool {
     state.permit.take();
     drop(state);
     jobs::discard_output(job).await;
+    jobs::notify_settled(job);
     true
 }

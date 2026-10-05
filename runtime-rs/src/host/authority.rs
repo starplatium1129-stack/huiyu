@@ -56,6 +56,7 @@ struct AuthorityState {
 pub struct HostAuthority {
     state: Mutex<AuthorityState>,
     drained: Notify,
+    closing: tokio_util::task::TaskTracker,
     pub(crate) operation: tokio::sync::Mutex<()>,
 }
 
@@ -107,6 +108,13 @@ impl HostAuthority {
 
     pub(crate) fn install(&self, storage: Storage, pointer: Value, candidate: bool) {
         let mut state = self.state.lock().unwrap();
+        if state.storage.as_ref().is_none_or(|previous| {
+            previous.workspace_id() != storage.workspace_id()
+                || previous.runtime_epoch() != storage.runtime_epoch()
+        }) {
+            state.sessions.clear();
+            state.media.clear();
+        }
         state.storage = Some(storage);
         if candidate {
             state.candidate = Some(pointer);
@@ -115,6 +123,9 @@ impl HostAuthority {
         }
     }
 
+    pub(crate) fn retire(&self, storage: Storage) -> tokio::task::JoinHandle<Result<()>> {
+        self.closing.spawn(async move { storage.close().await })
+    }
     pub(crate) fn maintenance(&self) -> Result<MaintenanceGuard<'_>> {
         let mut state = self.state.lock().unwrap();
         if state.draining {
@@ -408,6 +419,8 @@ impl HostAuthority {
             state.media.clear();
         }
         self.wait_for_writes().await;
+        self.closing.close();
+        self.closing.wait().await;
     }
 
     pub(crate) async fn wait_for_writes(&self) {

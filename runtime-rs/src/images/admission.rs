@@ -105,6 +105,43 @@ pub(crate) async fn owner_matches_for(
     Ok(decode::sniff(bytes)
         .is_some_and(|(_, extension)| filename == name(&salt, owner, bytes, extension, kind)))
 }
+async fn owner_salt(root: &Path, cancel: &CancellationToken) -> Result<Vec<u8>> {
+    let target = root.join(".aics-image-owner-salt");
+    match tokio::fs::read(&target).await {
+        Ok(salt) => return Ok(salt), // Existing corrupt identities remain fail-closed.
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+        Err(error) => return Err(error.into()),
+    }
+    let mut salt = Vec::with_capacity(32);
+    salt.extend_from_slice(uuid::Uuid::new_v4().as_bytes());
+    salt.extend_from_slice(uuid::Uuid::new_v4().as_bytes());
+    let (file, pending) = tempfile::Builder::new()
+        .prefix(".aics-image-owner-salt.")
+        .suffix(".pending")
+        .tempfile_in(root)?
+        .into_parts();
+    let file = tokio::fs::File::from_std(file);
+    #[cfg(test)]
+    let file = tests::salt_file(file, &pending, cancel);
+    let mut file = file;
+    file.write_all(&salt).await?;
+    file.flush().await?;
+    file.sync_all().await?;
+    drop(file);
+    if cancel.is_cancelled() {
+        return Err(inputs::cancelled());
+    }
+    // The existing admission lock serializes writers; no-clobber publication
+    // additionally preserves any identity installed by a racing external owner.
+    match pending.persist_noclobber(&target) {
+        Ok(()) => Ok(salt),
+        Err(error) if error.error.kind() == std::io::ErrorKind::AlreadyExists => {
+            Ok(tokio::fs::read(target).await?)
+        }
+        Err(error) => Err(error.error.into()),
+    }
+}
+
 pub(super) async fn store(
     root: PathBuf,
     image: String,
@@ -183,7 +220,7 @@ pub(crate) async fn store_for(
     }
     let pending = lock.join(format!("{}_{}.tmp", kind.prefix(), uuid::Uuid::new_v4()));
     let result=async{
-        let salt_file=root.join(".aics-image-owner-salt");let salt=match tokio::fs::read(&salt_file).await{Ok(salt)=>salt,Err(error)if error.kind()==std::io::ErrorKind::NotFound=>{let mut salt=Vec::with_capacity(32);salt.extend_from_slice(uuid::Uuid::new_v4().as_bytes());salt.extend_from_slice(uuid::Uuid::new_v4().as_bytes());let mut file=tokio::fs::OpenOptions::new().write(true).create_new(true).open(salt_file).await?;file.write_all(&salt).await?;file.sync_all().await?;salt},Err(error)=>return Err(error.into())};
+        let salt = owner_salt(&root, &cancel).await?;
         if salt.len()!=32{return Err(ApiError::new(409,"IMAGE_STORAGE_INVALID","素材身份文件损坏，请检查后重试。"))}let filename=name(&salt,&owner,&bytes,extension,kind);let target=root.join(&filename);
         match tokio::fs::read(&target).await{Ok(existing)if existing.as_slice()==bytes.as_slice()=>return Ok(filename),Ok(_)=>{},Err(error)if error.kind()==std::io::ErrorKind::NotFound=>{},Err(error)=>return Err(error.into())}
         let(mut used_bytes,mut files)=(0u64,0u64);let mut entries=tokio::fs::read_dir(&root).await?;

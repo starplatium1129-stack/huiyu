@@ -24,6 +24,7 @@ const props = withDefaults(defineProps<{
   transcript?: string
 }>(), { kind: 'video', poster: '', captionsSrc: '', transcript: '' })
 
+const container = ref<HTMLElement | null>(null)
 const media = ref<HTMLMediaElement | null>(null)
 const taskMedia = useTaskMediaSource(() => props.src)
 const mediaSource = taskMedia.url
@@ -86,7 +87,7 @@ function toggleMute() {
 }
 
 async function toggleFullscreen() {
-  const element = media.value as HTMLVideoElement | null
+  const element = container.value
   if (!element?.requestFullscreen || !document.fullscreenEnabled) return
   try {
     if (document.fullscreenElement) await document.exitFullscreen()
@@ -94,7 +95,7 @@ async function toggleFullscreen() {
   } catch { /* 浏览器拒绝全屏（权限或用户手势）时保持内嵌播放 */ }
 }
 
-function syncFullscreen() { fullscreen.value = document.fullscreenElement === media.value }
+function syncFullscreen() { fullscreen.value = document.fullscreenElement === container.value }
 
 function onLoadedMetadata() {
   const element = media.value
@@ -139,7 +140,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
 </script>
 
 <template>
-  <figure class="studio-media" :data-kind="kind">
+  <figure ref="container" class="studio-media" :data-kind="kind">
     <video
       v-if="kind === 'video'"
       ref="media"

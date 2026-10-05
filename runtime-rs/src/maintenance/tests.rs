@@ -272,3 +272,21 @@ async fn read_barrier_never_releases_bytes_after_transaction_epoch_changed() {
     assert_eq!(body["code"], "MAINTENANCE_CONFLICT");
     assert!(body.get("old").is_none());
 }
+
+#[test]
+fn oversized_journal_is_bounded_before_signature_decoding() {
+    let (_directory, options, _service, _state) = fixture();
+    let transaction = transaction::Transaction::acquire(&options).unwrap();
+    let ctx = context::Context::new(&options).unwrap();
+    let path = ctx.lease.join("journal.json");
+    std::fs::OpenOptions::new()
+        .write(true)
+        .open(path)
+        .unwrap()
+        .set_len(32 * 1024 * 1024 + 1)
+        .unwrap();
+    let error = journal::read(&ctx).err().unwrap();
+    assert_eq!(error.code, "MAINTENANCE_INVALID_JOURNAL");
+    assert_eq!(error.message, "元数据过大");
+    drop(transaction);
+}

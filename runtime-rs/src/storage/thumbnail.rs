@@ -9,7 +9,7 @@ use image::{
     imageops::FilterType,
 };
 use serde_json::Value;
-use std::{fs, path::Path, sync::OnceLock};
+use std::{fs, io::Write, path::Path, sync::OnceLock};
 
 static DECODERS: OnceLock<queue::Queue> = OnceLock::new();
 
@@ -86,16 +86,14 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         let parent = cache.parent().expect("cache has a parent");
         fs::create_dir_all(parent)?;
         schema::safe(&root, Path::new(&relative))?;
-        let temporary = parent.join(format!("{}.tmp", uuid::Uuid::new_v4()));
-        fs::write(&temporary, &bytes)?;
-        // A competing decoder may have already published identical derived work.
-        if let Err(error) = fs::rename(&temporary, &cache)
+        let mut temporary = tempfile::NamedTempFile::new_in(parent)?;
+        temporary.write_all(&bytes)?;
+        // Temp ownership also reclaims a partially written thumbnail on error.
+        if let Err(error) = temporary.persist(&cache)
             && !cache.is_file()
         {
-            let _ = fs::remove_file(&temporary);
-            return Err(error.into());
+            return Err(error.error.into());
         }
-        let _ = fs::remove_file(&temporary);
         Ok(format!("data:image/jpeg;base64,{}", STANDARD.encode(bytes)).into())
     })
     .await

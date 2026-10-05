@@ -8,6 +8,7 @@ export type DesktopConnectionState = { connection: 'starting' | 'ready' | 'unava
 let state: DesktopConnectionState = { connection: 'starting', bootstrap: null }
 const listeners = new Set<(state: DesktopConnectionState) => void>()
 let refreshPending: Promise<void> | null = null
+let refreshSequence = 0
 let epochController = new AbortController()
 let started = false
 let stop = () => {}
@@ -43,27 +44,32 @@ export const desktopRuntimeFetch: FetchImplementation = async (input, init = {})
   return response
 }
 
-export function refreshDesktopRuntime(): Promise<void> {
-  if (refreshPending) return refreshPending
+export function refreshDesktopRuntime(force = false): Promise<void> {
+  if (refreshPending && !force) return refreshPending
+  const sequence = ++refreshSequence
   refreshPending = (async () => {
     let timer: ReturnType<typeof setTimeout> | undefined
     try {
       const bootstrap = await Promise.race([readDesktopBootstrap(), new Promise<never>((_, reject) => {
         timer = setTimeout(() => reject(new Error('桌面握手超时')), 4000)
       })])
+      if (sequence !== refreshSequence) return
       const previous = state.bootstrap?.runtime
       const next = bootstrap.runtime
       const changed = previous?.runtimeEpoch !== next?.runtimeEpoch || previous?.origin !== next?.origin
         || previous?.workspace?.generation !== next?.workspace?.generation
+        || previous?.workspace?.workspaceId !== next?.workspace?.workspaceId
+        || previous?.workspace?.runtimeEpoch !== next?.workspace?.runtimeEpoch
       setRuntimeOrigin(next?.origin ?? null, true, next?.runtimeEpoch)
       if (changed) { epochController.abort(); epochController = new AbortController(); configureApiTransport(desktopRuntimeFetch) }
       publish({ connection: bootstrap.connection, bootstrap })
     } catch {
+      if (sequence !== refreshSequence) return
       setRuntimeOrigin(null, true)
       epochController.abort(); epochController = new AbortController()
       configureApiTransport(desktopRuntimeFetch)
       publish({ connection: 'unavailable', bootstrap: state.bootstrap })
-    } finally { if (timer) clearTimeout(timer); refreshPending = null }
+    } finally { if (timer) clearTimeout(timer); if (sequence === refreshSequence) refreshPending = null }
   })()
   return refreshPending
 }

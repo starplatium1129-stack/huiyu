@@ -80,21 +80,24 @@ impl Settings {
         tokio::fs::create_dir_all(parent)
             .await
             .map_err(|_| io_error())?;
-        let temp = parent.join(format!("chat_api_config.{}.tmp", uuid::Uuid::new_v4()));
-        let result=async {
-            let mut options=tokio::fs::OpenOptions::new();options.write(true).create_new(true);
-            #[cfg(unix)] {options.mode(0o600);}
-            let mut output=options.open(&temp).await.map_err(|_|io_error())?;
-            let bytes=serde_json::to_vec_pretty(&json!({"baseUrl":api.base_url,"pathname":api.pathname,"model":api.model,"apiKey":api.key})).unwrap();
-            output.write_all(&bytes).await.map_err(|_|io_error())?;
-            output.flush().await.map_err(|_|io_error())?;
-            output.sync_all().await.map_err(|_|io_error())?;
-            drop(output);
-            tokio::fs::rename(&temp,&file).await.map_err(|_|io_error())
-        }.await;
-        let _ = tokio::fs::remove_file(temp).await;
-        result
+        // Own the temporary path before the first cancellable write. Named
+        // temporary files retain the existing private (0600 on Unix) contract.
+        let (output, pending) = tempfile::Builder::new()
+            .prefix("chat_api_config.")
+            .suffix(".tmp")
+            .tempfile_in(parent)
+            .map_err(|_| io_error())?
+            .into_parts();
+        let mut output = tokio::fs::File::from_std(output);
+        let bytes = serde_json::to_vec_pretty(&json!({"baseUrl":api.base_url,"pathname":api.pathname,"model":api.model,"apiKey":api.key})).unwrap();
+        output.write_all(&bytes).await.map_err(|_| io_error())?;
+        output.flush().await.map_err(|_| io_error())?;
+        output.sync_all().await.map_err(|_| io_error())?;
+        drop(output);
+        pending.persist(&file).map_err(|_| io_error())?;
+        Ok(())
     }
+
     pub async fn delete_host(&self) -> Result<()> {
         match tokio::fs::remove_file(self.file()).await {
             Ok(()) => Ok(()),

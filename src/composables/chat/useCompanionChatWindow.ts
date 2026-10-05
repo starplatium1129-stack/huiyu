@@ -27,6 +27,7 @@ interface ChatLiveState {
   busy: boolean
   thinking: boolean
   speaking: boolean
+  voiceActive: boolean
   activeChar: string
   chatReady: boolean
   ts: number
@@ -43,6 +44,7 @@ const liveState = reactive<ChatLiveState>({
   busy: false,
   thinking: false,
   speaking: false,
+  voiceActive: false,
   activeChar: storage.state.active,
   chatReady: false,
   ts: 0,
@@ -98,7 +100,7 @@ const {
 
 const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
 const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
-const replyActive = computed(() => sending.value || liveState.busy || liveState.thinking || liveState.speaking)
+const replyActive = computed(() => sending.value || liveState.busy || liveState.thinking || liveState.speaking || liveState.voiceActive)
 const canCapture = computed(() => speechReady.value && liveState.chatReady && !replyActive.value
   && windowVisible.value && !pageHidden.value && windowFocused.value)
 const speechButtonDisabled = computed(() => !liveState.chatReady || replyActive.value || speechState.value === 'recognizing')
@@ -147,6 +149,7 @@ function readLive() {
     liveState.busy = Boolean(raw.busy)
     liveState.thinking = Boolean(raw.thinking)
     liveState.speaking = Boolean(raw.speaking)
+    liveState.voiceActive = Boolean(raw.voiceActive)
     if (getCompanionCharacterConfig(raw.activeChar)) {
       liveState.activeChar = raw.activeChar
     }

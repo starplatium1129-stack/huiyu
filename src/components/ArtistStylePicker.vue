@@ -11,7 +11,7 @@
       </div>
     </button>
     <Teleport to="body">
-    <dialog ref="panel" class="artist-style-panel" :aria-labelledby="titleId" @close="dialogOpen = false" @click.self="closePicker" @keydown="onPickerKeydown">
+    <dialog ref="panel" class="artist-style-panel" :aria-labelledby="titleId" @close="dialogOpen = false" @click="onBackdrop" @keydown="onPickerKeydown">
     <header class="artist-dialog-heading"><h2 :id="titleId">画师风格</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="关闭画师选择" @click="closePicker"><ArchiveIcon name="close" /></button></header>
     <div class="artist-style-body">
       <!--
@@ -137,6 +137,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onDeactivated, ref, useId } from 'vue'
+import { isBackdropClick } from '@/composables/useFluidDialog'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -176,6 +177,7 @@ const dialogOpen = ref(false)
 const titleId = useId()
 function openPicker() { panel.value?.showModal(); dialogOpen.value = true }
 function closePicker() { panel.value?.close(); dialogOpen.value = false }
+function onBackdrop(event: MouseEvent) { if (isBackdropClick(event, panel.value)) closePicker() }
 function onPickerKeydown(event: KeyboardEvent) {
   if (event.key !== 'Escape' || event.isComposing || event.keyCode === 229) return
   event.preventDefault(); event.stopPropagation(); closePicker()

@@ -197,7 +197,7 @@ it.each([false, true])('keeps tool rounds on their submitted connection while me
     deliver = events => { controller.enqueue(new TextEncoder().encode(events.map(event => JSON.stringify(event)).join('\n') + '\n')); controller.close() }
   } }))
   const fetchMock = vi.fn().mockResolvedValueOnce(first).mockResolvedValueOnce(stream([
-    { type: 'meta', model: 'canonical-final' }, { type: 'token', content: 'Finished' }, { type: 'done' },
+    { type: 'meta', model: 'canonical-final' }, { type: 'meta', model: 'canonical-final' }, { type: 'token', content: 'Finished' }, { type: 'done' },
   ]))
   desktopFixture.current = { runTool: vi.fn(async () => ({ ok: true, output: 'fixture result' })) } as unknown as CompanionDesktopBridge
   vi.stubGlobal('fetch', fetchMock)
@@ -210,7 +210,7 @@ it.each([false, true])('keeps tool rounds on their submitted connection while me
     options.apiKey.value = 'synthetic-next-key'
     options.webSearchEnabled.value = true
   }
-  deliver([{ type: 'meta', model: 'canonical-first' }, { type: 'tool-call', id: 'fixture', name: 'get_status', arguments: '{}' }, { type: 'done' }])
+  deliver([{ type: 'meta', model: 'gpt-4' }, { type: 'meta', model: 'canonical-first' }, { type: 'tool-call', id: 'fixture', name: 'get_status', arguments: '{}' }, { type: 'done' }])
   await pending
   const second = JSON.parse(fetchMock.mock.calls[1][1].body)
   expect(second).toMatchObject({ provider: 'api', webSearch: false, api: {
@@ -218,7 +218,10 @@ it.each([false, true])('keeps tool rounds on their submitted connection while me
   } })
   expect(options.apiModel.value).toBe(edited ? 'next-turn-model' : 'canonical-final')
   if (edited) expect(options.storage.setApiSettings).not.toHaveBeenCalled()
-  else expect(options.storage.setApiSettings).toHaveBeenLastCalledWith({ baseUrl: 'http://localhost:1234/v1', model: 'canonical-final', apiKey: 'test' })
+  else {
+    expect(options.storage.setApiSettings).toHaveBeenCalledTimes(2)
+    expect(options.storage.setApiSettings).toHaveBeenLastCalledWith({ baseUrl: 'http://localhost:1234/v1', model: 'canonical-final', apiKey: 'test' }, 'model')
+  }
   expect(messages).toHaveLength(2)
   expect(messages[1].content).toBe('Finished')
   conversation.destroy()

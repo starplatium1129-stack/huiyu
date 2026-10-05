@@ -92,19 +92,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
   async function applyVideoCtx(ctx: VideoCtxPayload) {
     clearFirstFrame()
     clearLastFrame()
-    const version = firstVersion
-    try {
-      const blob = await artworkRepository.getImage(ctx.imageId)
-      if (version !== firstVersion) return
-      if (blob) {
-        if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
-        videoImageUrl.value = URL.createObjectURL(blob)
-        videoImageId.value = ctx.imageId
-      } else {
-        statusError.value = '带入的首帧原图已失效，请重新选择图片'
-      }
-    } catch { if (version === firstVersion) statusError.value = '首帧图片读取失败，请重新选择图片' }
-    if (version !== firstVersion) return
+    // Publish the complete new intent before preview reads can yield to submission or draft saving.
     selectedMode.value = 'image'
     // 首帧比例跟随原图，避免固定画幅拉伸（如 832x1216 出图 → 480x832 画布会变形）。
     aspectRatio.value = 'original'
@@ -113,8 +101,20 @@ export function useVideoFrames(deps: VideoFramesDeps) {
     if (status.value?.models.some(model => model.id === 'minimax-h3')) {
       selectedModelId.value = 'minimax-h3'
     }
-    const composed = composeVideoPrompt(ctx)
-    if (composed && composed.trim().length >= 4) prompt.value = composed
+    prompt.value = composeVideoPrompt(ctx)
+    videoImageId.value = ctx.imageId
+    const version = firstVersion
+    try {
+      const blob = await artworkRepository.getImage(ctx.imageId)
+      if (version !== firstVersion) return
+      if (blob) {
+        if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
+        videoImageUrl.value = URL.createObjectURL(blob)
+      } else {
+        videoImageId.value = ''
+        statusError.value = '带入的首帧原图已失效，请重新选择图片'
+      }
+    } catch { if (version === firstVersion) statusError.value = '首帧图片暂时无法读取，图片引用已保留；请稍后刷新页面重试' }
   }
 
   /** 绘图页「出视频」跨页上下文（一次性消费，videoStore 承载）。 */

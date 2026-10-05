@@ -1,5 +1,5 @@
 use super::{
-    Proxy, READ_PATHS, WRITE_PATHS,
+    LOCAL_READ_PATHS, Proxy, READ_PATHS, WRITE_PATHS,
     client::{CONNECT_TIMEOUT, local_url},
 };
 use crate::{AppState, security};
@@ -77,7 +77,9 @@ pub(super) async fn forward(
     request: Request,
 ) -> Response {
     let path = request.uri().path();
-    let read = [Method::GET, Method::HEAD].contains(request.method()) && READ_PATHS.contains(&path);
+    let local_read = LOCAL_READ_PATHS.contains(&path);
+    let read = [Method::GET, Method::HEAD].contains(request.method())
+        && (READ_PATHS.contains(&path) || local_read);
     let write = request.method() == Method::POST && WRITE_PATHS.contains(&path);
     let upgrading = request
         .headers()
@@ -90,11 +92,13 @@ pub(super) async fn forward(
             "该原生 SD 接口不支持此请求方法",
         );
     }
-    if (write || upgrading) && !security::is_direct_local(request.headers(), peer.ip()) {
+    if (write || upgrading || local_read)
+        && !security::is_direct_local(request.headers(), peer.ip())
+    {
         return fail(
             StatusCode::FORBIDDEN,
             "SD_NATIVE_LOCAL_ONLY",
-            "原生 SD 写操作仅限本机；请使用应用生成与取消接口",
+            "原生 SD 全局进度和写操作仅限本机；请使用应用任务接口",
         );
     }
     let mut target = match local_url(&proxy.sd_host) {

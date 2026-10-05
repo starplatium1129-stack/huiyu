@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { nextTick, onMounted, onUpdated, onBeforeUnmount, ref, watch } from "vue"
-import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRoot, TooltipTrigger } from "reka-ui"
+import { defineComponent, onActivated, onDeactivated, onMounted, onUpdated, onBeforeUnmount, ref, watch } from "vue"
+import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRoot, TooltipTrigger, injectTooltipRootContext } from "reka-ui"
 
 /**
  * 原生 title 属性的替身。
@@ -33,6 +33,14 @@ const props = withDefaults(defineProps<{
   anchor?: boolean
 }>(), { content: null, side: "top", delay: 400, anchor: false })
 
+// Close Reka itself so pending hover timers are cancelled without replacing the slot DOM.
+const TooltipLifecycle = defineComponent({
+  setup() {
+    const context = injectTooltipRootContext()
+    onDeactivated(context.onClose)
+    return () => null
+  },
+})
 const anchorEl = ref<HTMLElement | null>(null)
 const hasDisabledChild = ref(false)
 
@@ -127,6 +135,8 @@ function setupObserver() {
   }
 }
 
+onActivated(() => { syncDisabled(); setupObserver() })
+onDeactivated(() => { observer?.disconnect(); observer = null })
 onMounted(() => {
   syncDisabled()
   const dialog = anchorEl.value?.closest("dialog")
@@ -161,6 +171,7 @@ watch(() => props.anchor, () => {
   >
     <TooltipProvider v-if="content" :delay-duration="delay">
       <TooltipRoot>
+        <TooltipLifecycle />
         <TooltipTrigger as-child><slot /></TooltipTrigger>
         <TooltipPortal :to="portalTarget">
           <TooltipContent

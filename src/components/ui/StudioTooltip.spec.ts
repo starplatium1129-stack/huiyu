@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
 import { flushPromises, mount } from '@vue/test-utils'
 import StudioTooltip from './StudioTooltip.vue'
 
@@ -163,3 +164,34 @@ describe('StudioTooltip', () => {
     wrapper.unmount()
   })
 });
+
+
+it('closes cached hints and pending hover without replacing the trigger textarea', async () => {
+  vi.useFakeTimers()
+  const active = ref(true)
+  const page = defineComponent({ setup: () => () => h(StudioTooltip, { content: '提示', delay: 100 }, {
+    default: () => h('textarea', { value: 'keep this draft' }),
+  }) })
+  const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, {
+    default: () => active.value ? h(page) : null,
+  }) }), { attachTo: document.body })
+  try {
+    const field = wrapper.get('textarea')
+    const node = field.element as HTMLTextAreaElement
+    node.setSelectionRange(1, 4)
+    await field.trigger('pointermove', { pointerType: 'mouse' })
+    active.value = false; await nextTick()
+    await vi.advanceTimersByTimeAsync(200)
+    expect(document.querySelector('.studio-tooltip')).toBeNull()
+    active.value = true; await nextTick()
+    expect(wrapper.get('textarea').element).toBe(node)
+    expect([node.selectionStart, node.selectionEnd]).toEqual([1, 4])
+    await wrapper.get('textarea').trigger('focus'); await flushPromises()
+    expect(document.querySelector('.studio-tooltip')).not.toBeNull()
+    active.value = false; await nextTick(); await flushPromises()
+    expect(document.querySelector('.studio-tooltip')).toBeNull()
+    active.value = true; await nextTick()
+    expect(wrapper.get('textarea').element).toBe(node)
+    expect(node.value).toBe('keep this draft')
+  } finally { wrapper.unmount(); vi.useRealTimers() }
+})

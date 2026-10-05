@@ -112,13 +112,17 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       const controller = new AbortController()
       exportController = controller
       if (desktopActive.value) {
-        const receipt = await createWorkspaceBackup(controller.signal)
-        // A native request can finish after its owner or cancel action stopped waiting.
+        let resumed = false
+        const receipt = await createWorkspaceBackup(controller.signal, (value, retrying) => {
+          controller.signal.throwIfAborted()
+          downloadBlob(new Blob([JSON.stringify(value, null, 2)], { type: 'application/json' }), `huiyu-backup-${value.backupId}.json`)
+          resumed = retrying
+        })
         controller.signal.throwIfAborted()
-        downloadBlob(new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' }), `huiyu-backup-${receipt.backupId}.json`)
-        lastBackupAt.value = Date.now()
+        lastBackupAt.value = Date.parse(receipt.createdAt)
         localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value))
-        onFlash(`工作区备份已保存，包含 ${receipt.mediaCount} 个原始媒体；恢复凭证已下载。`)
+        onFlash(`${resumed ? '已续取或续做上次备份' : '工作区备份完成'}，包含 ${receipt.mediaCount} 个原始媒体；恢复凭证已开始下载。`
+          + (resumed ? '提醒沿用原操作发起时间，不能据此确认快照时刻；如需包含最新修改，请再次新建备份。' : ''))
         return
       }
       exportProgress.value = { completed: 0, total: 0 }

@@ -2,6 +2,7 @@ mod config;
 mod delta;
 mod download;
 mod fs;
+mod group_reads;
 mod http;
 mod lease;
 mod lifecycle;
@@ -24,7 +25,7 @@ use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
 pub type Result<T> = std::result::Result<T, Error>;
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Error {
     pub code: String,
     pub message: String,
@@ -117,6 +118,7 @@ fn public(error: &Error) -> Value {
         "APPROVAL_REQUIRED" => "该资源版本尚未获得独立审批。",
         "SOURCE_REQUIRED" => "资源来源未配置或未经批准。",
         "UNSAFE_SOURCE" => "资源来源不符合安全要求。",
+        "RESOURCE_BUSY" => "资源读取繁忙，请稍后重试。",
         "BUSY" => "另一个资源操作正在执行，或中断操作需要恢复。",
         "PENDING_TRANSACTION" => "上次资源操作尚未完成，请恢复后再安装其他版本。",
         "CANCELLED" => "操作已取消，已验证资源与可续传内容已保留。",

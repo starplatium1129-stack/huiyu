@@ -220,9 +220,16 @@ export const profileDraftStorage = createStorage(true)
 export async function readProfileChatArchive(): Promise<unknown> {
   if (!port) throw new Error('Profile runtime is not active')
   await flushProfileWrites()
-  take(await port.readChat())
-  const record = values.get(cacheKey('aics_chat_archive_v1', false))
-  if (record) revisions.set(cacheKey(record.key, false), record.revision)
+  const current = generation, writes = writeVersion, refresh = refreshVersion
+  const snapshot = await port.readChat()
+  const identity = cacheKey('aics_chat_archive_v1', false)
+  const record = snapshot.records.find(record => record.key === 'aics_chat_archive_v1')
+  if (current !== generation || writes !== writeVersion || refresh !== refreshVersion || outbox.length
+    || snapshot.resetRevision !== resetRevision || (record?.revision ?? 0) < (revisions.get(identity) ?? 0)) {
+    throw new Error('聊天资料已变化，请重新读取归档。')
+  }
+  if (record) { values.set(identity, structuredClone(record)); revisions.set(identity, record.revision) }
+  else { values.delete(identity); revisions.delete(identity) }
   return typeof record?.value === 'string' ? JSON.parse(record.value) as unknown : record?.value ?? null
 }
 export async function writeProfileChatArchive(value: unknown): Promise<void> {

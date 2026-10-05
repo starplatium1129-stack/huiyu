@@ -101,7 +101,13 @@ impl Service {
                 self.concat_batch(batch.clone(), cancel).await?;
             }
             "continue" => {
-                let _gate = batch.serial.lock().await;
+                let _gate = batch.serial.try_lock().map_err(|_| {
+                    error(
+                        409,
+                        "BATCH_RESUME_UNSAFE",
+                        "当前分镜操作尚未结束，请稍后再继续",
+                    )
+                })?;
                 if batch.state.lock().await.status != "paused" {
                     return Err(error(409, "BATCH_RESUME_UNSAFE", "分镜尚未完成核对"));
                 }

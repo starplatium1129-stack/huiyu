@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import LocalSetupPanel from './LocalSetupPanel.vue'
+import StudioSelect from './ui/StudioSelect.vue'
 import type { LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup'
 
 const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), verifyModel: vi.fn(), downloadModel: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn() }))
@@ -54,8 +55,9 @@ describe('first local setup panel', () => {
     fixture.getStatus.mockRejectedValueOnce(new Error('读取失败'))
     await wrapper.find('.setup-heading button').trigger('click'); await flushPromises()
     expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
-    expect(wrapper.find('.setup-overview').exists()).toBe(false)
+    expect(wrapper.find('.setup-overview').exists()).toBe(true)
     expect(wrapper.find('[role="alert"]').text()).toBe('读取失败')
+    expect(wrapper.find('.setup-next').text()).toContain('上次结果')
     const last = deferred(); fixture.getStatus.mockReturnValueOnce(last.promise)
     await wrapper.find('.setup-heading button').trigger('click')
     const lastSignal = fixture.getStatus.mock.calls.at(-1)![0].signal as AbortSignal
@@ -97,7 +99,7 @@ describe('first local setup panel', () => {
     expect(wrapper.find('.download-checklist').findAll('a')).toHaveLength(3)
     expect(wrapper.find('.download-checklist').text()).toContain("Get-FileHash -LiteralPath 'D:\\AI")
     expect(fixture.getStatus).toHaveBeenCalledTimes(1)
-    await wrapper.find('#setup-comfy-route').setValue('portable')
+    await wrapper.getComponent(StudioSelect).setValue('portable')
     expect(wrapper.find('.download-checklist').exists()).toBe(false)
     expect(confirm.attributes('disabled')).toBeDefined()
     await wrapper.find('.preparation-ack input').setValue(true)
@@ -142,9 +144,18 @@ describe('first local setup panel', () => {
     await wrapper.findAll('button').find(button => button.text() === '校验 anima-aesthetic-v1.1 的 SHA-256')!.trigger('click'); await flushPromises()
     expect(wrapper.find('[data-verification="sha256-match"]').exists()).toBe(true)
     expect(wrapper.find('.setup-result').attributes('data-state')).toBe('checked')
+    fixture.verifyModel.mockImplementationOnce(() => new Promise<LocalSetupVerificationResult>(resolve => { finish = resolve }))
+    await wrapper.findAll('button').find(button => button.text() === '校验 anima-aesthetic-v1.1 的 SHA-256')!.trigger('click')
+    const recheck = deferred(); fixture.getStatus.mockReturnValueOnce(recheck.promise)
+    await wrapper.find('.setup-heading button').trigger('click'); await flushPromises()
+    expect(fixture.verifyModel.mock.lastCall![1].signal.aborted).toBe(true)
+    finish(result); recheck.resolve(complete()); await flushPromises()
+    expect(wrapper.find('[data-verification]').exists()).toBe(false)
     wrapper.unmount()
   })
   it('downloads explicitly, cancels without accepting late success, retries failures and rechecks after verified publication', async () => {
+    fixture.desktop = true
+    fixture.getWorkspace.mockResolvedValue({ root: 'D:\\AI', exists: true, activeRoot: 'D:\\AI', restartRequired: false })
     const value = complete(); value.models[0].state = 'missing'; value.models[0].bytes = null
     fixture.getStatus.mockResolvedValueOnce(value)
     const wrapper = render(); await flushPromises()
@@ -161,18 +172,46 @@ describe('first local setup panel', () => {
     expect(fixture.downloadModel).toHaveBeenCalledTimes(1)
     expect(fixture.downloadModel.mock.calls[0][1].workspacePath).toBe('D:\\AI')
     expect(wrapper.text()).toContain('正在下载'); expect(wrapper.text()).toContain('50%')
+    const preparation = wrapper.find('.preparation').element
+    await wrapper.find('.setup-heading button').trigger('click'); await flushPromises()
+    expect(fixture.downloadModel.mock.calls[0][1].signal.aborted).toBe(false)
+    expect(wrapper.find('.preparation').element).toBe(preparation)
+    expect(wrapper.text()).toContain('50%')
+    fixture.getStatus.mockRejectedValueOnce(new Error('inspection unavailable'))
+    await wrapper.find('.setup-heading button').trigger('click'); await flushPromises()
+    expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
+    expect(wrapper.text()).toContain('检查未完成')
+    expect(fixture.downloadModel.mock.calls[0][1].signal.aborted).toBe(false)
+
+    let failBinding!: (error: Error) => void
+    fixture.getWorkspace.mockImplementationOnce(() => new Promise((_resolve, reject) => { failBinding = reject }))
+    const abandonedCheck = deferred(); fixture.getStatus.mockReturnValueOnce(abandonedCheck.promise)
+    await wrapper.find('.setup-heading button').trigger('click'); await flushPromises()
+    await wrapper.findAll('button').find(button => button.text() === '取消检查')!.trigger('click')
+    failBinding(new Error('late binding failure')); abandonedCheck.resolve(complete()); await flushPromises()
+    expect(fixture.downloadModel.mock.calls[0][1].signal.aborted).toBe(false)
+    expect(wrapper.text()).not.toContain('late binding failure')
     await wrapper.findAll('button').find(button => button.text() === '取消下载')!.trigger('click')
     expect(fixture.downloadModel.mock.calls[0][1].signal.aborted).toBe(true)
     const success: LocalSetupDownloadResult = { type: 'result', modelId: 'anima-aesthetic-v1.1', path: value.models[0].path, state: 'downloaded', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '下载校验通过，尚未真实出图' }
     finish(success); await flushPromises()
-    expect(fixture.getStatus).toHaveBeenCalledTimes(1); expect(wrapper.text()).toContain('已有模型保留')
+    expect(fixture.getStatus).toHaveBeenCalledTimes(4); expect(wrapper.text()).toContain('已有模型保留')
     fixture.downloadModel.mockResolvedValueOnce({ ...success, state: 'failed', bytes: null, sha256: null, code: 'MODEL_CONFLICT', message: '同名文件冲突' })
     await button().trigger('click'); await flushPromises()
     expect(wrapper.text()).toContain('同名文件冲突'); expect(button().text()).toContain('重试下载')
     fixture.downloadModel.mockResolvedValueOnce(success)
     await button().trigger('click'); await flushPromises()
-    expect(fixture.getStatus).toHaveBeenCalledTimes(2)
+    expect(fixture.getStatus).toHaveBeenCalledTimes(5)
     expect(wrapper.text()).toContain(success.message); expect(wrapper.find('.download-checklist').exists()).toBe(false)
+    await review()
+    fixture.downloadModel.mockImplementationOnce(() => new Promise<LocalSetupDownloadResult>(resolve => { finish = resolve }))
+    await button().trigger('click')
+    const changed = complete(); changed.models[0].preparation!.sha256 = 'd'.repeat(64)
+    fixture.getStatus.mockResolvedValueOnce(changed)
+    await wrapper.find('.setup-heading button').trigger('click'); await flushPromises()
+    expect(fixture.downloadModel.mock.lastCall![1].signal.aborted).toBe(true)
+    finish(success); await flushPromises()
+    expect(fixture.getStatus).toHaveBeenCalledTimes(6)
     wrapper.unmount()
   })
   it('saves a workspace only on explicit save and retains the active runtime evidence until restart', async () => {
