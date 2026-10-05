@@ -2,21 +2,40 @@ import { afterEach, expect, it, vi } from 'vitest'
 import { initializePlatform } from './initializePlatform'
 import type { MigrationAuthorityTarget } from './web/migrationAuthority'
 import type { DesktopConnectionState } from './desktop/runtime'
-const mocks = vi.hoisted(() => ({ state: {} as DesktopConnectionState, order: [] as string[], listener: undefined as (() => void) | undefined,
-  reconcile: undefined as ((target: MigrationAuthorityTarget) => Promise<void>) | undefined, frozen: false, hydrate: vi.fn() }))
+const mocks = vi.hoisted(() => ({ state: {} as DesktopConnectionState, order: [] as string[], listener: undefined as ((state: DesktopConnectionState) => void) | undefined,
+  reconcile: undefined as ((target: MigrationAuthorityTarget) => Promise<void>) | undefined, frozen: false, active: false, hydrate: vi.fn(), refresh: vi.fn() }))
 vi.mock('@/storage/artworkRepository', () => ({ configureArtworkRepository: vi.fn() }))
 vi.mock('./web/artworkRepository', () => ({ createWebArtworkRepository: vi.fn() }))
 vi.mock('./desktop/artworkRepository', () => ({ createDesktopArtworkRepository: vi.fn() }))
 vi.mock('./web/profilePort', () => ({ createProfilePort: vi.fn() }))
 vi.mock('@/api/workspace', () => ({ workspaceRequest: vi.fn() }))
-vi.mock('./web/profileStorage', () => ({ activateProfileStorage: mocks.hydrate, flushProfileWrites: vi.fn(), hasPendingProfileWrites: () => false, hasProfileRecoveryData: () => false, profileRuntimeActive: () => false, refreshProfileStorage: vi.fn(), setProfileConnectionBlocked: vi.fn() }))
+vi.mock('./web/profileStorage', () => ({ activateProfileStorage: mocks.hydrate, flushProfileWrites: vi.fn(), hasPendingProfileWrites: () => false, hasProfileRecoveryData: () => false, profileRuntimeActive: () => mocks.active, refreshProfileStorage: mocks.refresh, setProfileConnectionBlocked: vi.fn() }))
 vi.mock('./web/migrationBarrier', () => ({ initializeMigrationParticipant: (options: { reconcileAuthority?: (target: MigrationAuthorityTarget) => Promise<void> }) => { mocks.order.push('lease'); if (options.reconcileAuthority) mocks.reconcile = options.reconcileAuthority }, retireWebArtworkWrites: vi.fn() }))
-vi.mock('./desktop/runtime', () => ({ getDesktopRuntime: () => mocks.state, initializeDesktopRuntime: async () => { mocks.order.push('initial'); return () => {} }, refreshDesktopRuntime: async () => { mocks.order.push('read'); mocks.listener?.() }, onDesktopRuntime: (listener: () => void) => { mocks.listener = listener; listener(); return () => {} } }))
+vi.mock('./desktop/runtime', () => ({ getDesktopRuntime: () => mocks.state, initializeDesktopRuntime: async () => { mocks.order.push('initial'); return () => {} }, refreshDesktopRuntime: async () => { mocks.order.push('read'); mocks.state = { ...mocks.state }; mocks.listener?.(mocks.state) }, onDesktopRuntime: (listener: (state: DesktopConnectionState) => void) => { mocks.listener = listener; listener(mocks.state); return () => {} } }))
 vi.mock('./desktop/hostApi', () => ({ hostApi: () => ({}) }))
 vi.mock('./maintenanceParticipants', () => ({ artworkCleanupFrozen: () => false, maintenanceFrozen: () => mocks.frozen }))
 vi.mock('./desktop/maintenance', () => ({ installDesktopMaintenance: () => () => {} }))
 vi.mock('./desktop/artworkCleanup', () => ({ installDesktopArtworkCleanup: async () => () => {} }))
-afterEach(() => { mocks.listener = undefined; mocks.reconcile = undefined; mocks.frozen = false; vi.clearAllMocks() })
+afterEach(() => { mocks.listener = undefined; mocks.reconcile = undefined; mocks.frozen = false; mocks.active = false; vi.resetAllMocks() })
+it.each([false, true])('skips only the hydrated initial replay, with publication during hydration: %s', async publishDuringHydration => {
+  mocks.state = { connection: 'ready', bootstrap: { windowId: 'atelier', runtime: { workspace: { workspaceId: 'workspace', generation: 1, domains: ['settings', 'chat', 'draft'] } } } } as unknown as DesktopConnectionState
+  let finish!: () => void
+  mocks.hydrate.mockImplementation(async () => {
+    await new Promise<void>(resolve => { finish = resolve })
+    mocks.active = true
+  })
+  const starting = initializePlatform(() => false)
+  await vi.waitFor(() => expect(finish).toBeTypeOf('function'))
+  if (publishDuringHydration) mocks.state = { ...mocks.state }
+  finish()
+  const stop = await starting
+  expect(mocks.hydrate).toHaveBeenCalledTimes(1)
+  expect(mocks.refresh).toHaveBeenCalledTimes(publishDuringHydration ? 1 : 0)
+  // Every later publication must still pick up another window's profile edits.
+  mocks.listener!(mocks.state)
+  await vi.waitFor(() => expect(mocks.refresh).toHaveBeenCalledTimes(publishDuringHydration ? 2 : 1))
+  stop()
+})
 it('reads authority after lease registration and acknowledges only completed adapter hydration', async () => {
   mocks.order = []
   mocks.state = { connection: 'ready', bootstrap: { windowId: 'atelier', sourceProfileId: 'profile', sourceOrigin: 'source', runtime: { workspace: { workspaceId: 'workspace', generation: 1, domains: [] } } } } as unknown as DesktopConnectionState
