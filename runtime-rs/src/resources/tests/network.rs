@@ -344,3 +344,74 @@ async fn http_cancel_recover_resumes_verified_download_and_installed_overlay_rev
     assert_eq!(service.status(false)["issue"]["code"], "CONTENT_INVALID");
     service.close().await;
 }
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn recovery_outcome_survives_task_settlement_and_restart_without_raw_details() {
+    let (_directory, gateway, file, ctx, _) = fixture();
+    let original = lifecycle::run(&operation(&ctx), "import", "A").unwrap();
+    let cancel = CancellationToken::new();
+    let trigger = cancel.clone();
+    let interrupted = Operation {
+        ctx: ctx.clone(),
+        cancel,
+        progress: Arc::new(move |event| {
+            if event["phase"] == "prepared" {
+                trigger.cancel();
+            }
+        }),
+    };
+    assert_eq!(
+        lifecycle::run(&interrupted, "import", "C")
+            .unwrap_err()
+            .code,
+        "CANCELLED"
+    );
+    let journal = state::journal(&ctx).unwrap().unwrap();
+    // Reproduce a process interruption after switching the pointer, followed
+    // by damaged candidate bytes, using only disposable neutral fixture files.
+    fs::write_json(&ctx.store.join("current.json"), &state::next(&journal)).unwrap();
+    let target = state::version_root(&ctx, &journal["target"]).unwrap();
+    write(&target.join("assets/a.png"), b"X");
+    let shutdown = CancellationToken::new();
+    let service =
+        Arc::new(Service::configured(&gateway, Some(file.clone()), true, shutdown).unwrap());
+    let host = Arc::new(HostAuthority::new(None, None, None));
+    service
+        .start("recover", None, host.admit_owned().unwrap())
+        .unwrap();
+    let status = settled(&service).await;
+    assert_eq!(status["task"]["state"], "completed");
+    assert!(status["task"]["error"].is_null());
+    assert_eq!(
+        status["task"]["result"],
+        json!({"action":"rolled-back",
+        "warning":{"code":"CONTENT_INVALID","message":"新版本资源内容校验失败。"}})
+    );
+    assert_eq!(status["mounted"], true);
+    assert_eq!(status["recoveryRequired"], false);
+    assert_eq!(status["current"]["releaseId"], "A");
+    assert_eq!(state::read(&ctx).unwrap(), original["state"]);
+    assert!(!ctx.store.join("pending.json").exists());
+    assert!(!target.exists());
+    service.close().await;
+
+    let task_file = ctx.store.join("gateway/task.json");
+    let mut saved = fs::json(&task_file, false, false).unwrap().unwrap();
+    assert_eq!(saved["result"], status["task"]["result"]);
+    saved["result"]["warning"]["message"] = "private /home/operator/secret token=fixture".into();
+    saved["result"]["state"] = json!({"localPath":"/private/fixture"});
+    fs::write_json(&task_file, &saved).unwrap();
+    let restarted =
+        Service::configured(&gateway, Some(file), true, CancellationToken::new()).unwrap();
+    assert_eq!(
+        restarted.status(false)["task"]["result"],
+        status["task"]["result"]
+    );
+    saved.as_object_mut().unwrap().remove("result");
+    fs::write_json(&task_file, &saved).unwrap();
+    let legacy = restarted.status(true);
+    assert_eq!(legacy["task"]["state"], "completed");
+    assert!(legacy["task"]["result"].is_null());
+    assert_eq!(legacy["mounted"], true);
+    restarted.close().await;
+}

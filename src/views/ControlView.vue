@@ -161,10 +161,8 @@
         <p id="comfy-host-help" class="field-help">Anima、Krea 与视频生成共用此地址。</p>
 
         <label class="field-label" for="tts-engine">角色语音引擎</label>
-        <select id="tts-engine" v-model="ttsEngine" class="input" aria-describedby="tts-engine-help">
-          <option value="voxcpm2">VoxCPM2</option>
-          <option value="gpt-sovits">GPT-SoVITS</option>
-        </select>
+        <StudioSelect id="tts-engine" v-model="ttsEngine" label="角色语音引擎" aria-describedby="tts-engine-help"
+          :options="[{ value: 'voxcpm2', label: 'VoxCPM2' }, { value: 'gpt-sovits', label: 'GPT-SoVITS' }]" />
         <p id="tts-engine-help" class="field-help">保存后重启应用生效；切换前先停止原语音服务。</p>
         <label class="field-label" for="tts-host">语音 API 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
@@ -308,6 +306,7 @@ import { useRoute } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'

@@ -119,7 +119,7 @@ export function useShotWorkspace(props: {
         onCardRemoved: index => { shots.value.forEach(shot => { shot.cast = removeCastSlot(shot.cast, index); }); },
     });
     // ── 批量提交状态机（提交/3s 轮询/取消/重抽/拼接）已下沉 useShotBatchMachine ──
-    const { batch, submitting, cancelling, concating, retrying, batchActive, canSubmit, canConcat, progressPercent, serverShot, submitBatch, cancelBatch, retryShotAt, retryAllFailed, concatBatch, reconnectBatch } = useShotBatchMachine({
+    const { batch, submitting, cancelling, concating, retrying, batchActive, canSubmit, canConcat, progressPercent, serverShot, getShotSubmission, restoreShotSubmission, submitBatch, cancelBatch, retryShotAt, retryAllFailed, concatBatch, reconnectBatch } = useShotBatchMachine({
         shots,
         identityCard,
         aspectRatio,
@@ -131,6 +131,7 @@ export function useShotWorkspace(props: {
         h3Ready,
         online: computed(() => props.status?.online === true),
         batchError,
+        onSubmitted: () => persistShotsDraft(),
         onAccepted: (value) => {
             if (!videoStore.recordShotsBatch({ batchId: value.id, submittedAt: Date.now() }))
                 batchError.value = '分镜批次已提交，但批次记录保存失败；请在任务中心保留并核对任务。';
@@ -413,9 +414,9 @@ export function useShotWorkspace(props: {
     // ── 分镜草稿持久化（2026-09-06 体验报告 F1）────────────────────────────────
     // 切模式（v-if 卸载）/切页/刷新后恢复：镜头文本 + 身份锚点 + 参考卡元信息。
     // 首帧图只存 IndexedDB 图片 id，恢复时重挂载（服务端受控文件名会被清理）。
-    const { restoreShotsDraft } = useShotDraft({
+    const { restoreShotsDraft, persistShotsDraft } = useShotDraft({
         aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
-        batchError, selectCardCharacter, retryPendingFrames,
+        batchError, selectCardCharacter, retryPendingFrames, getShotSubmission, restoreShotSubmission,
     });
     /** 整批任务重连（F1）：离页不中断服务端批次，回来按 batchId 接回真实进度。 */
     async function reconnectShotsBatch() {

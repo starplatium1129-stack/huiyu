@@ -110,12 +110,14 @@ it('preserves the page after a catalog reload, resets on changed rails and suppo
 })
 it('uses matching All-rated catalog scenes and keeps absent or failed previews browsable', async () => {
   const base = { char: 'nene', tags: ['library'], mature: false, location: '学院图书馆' }
-  const sample = { ...base, id: 'sc215', title: '月光书页', rating: 'All' }
+  const sample = { ...base, id: 'sc215', title: '月光书页', story: 'library', rating: 'All' }
   const second = { ...base, char: 'natsume', id: 'sc220', title: '咖啡馆的灯', tags: ['cafe'], rating: 'All' }
   const { wrapper, title } = fixture([
     { ...base, id: 'sc105', title: '受限样张', rating: 'R18' },
     { ...base, id: 'sc264', title: '未确认分级' },
-    { ...sample, id: 'sc106', mature: true }, sample,
+    { ...sample, id: 'sc106', mature: true },
+    { ...sample, id: 'sc214', story: '' }, sample, // A weaker match precedes the winner.
+    { ...sample, id: 'sc216' }, // A tied match must not replace the first winner.
     { ...sample, id: 'sc002', tags: ['park'] }, second,
   ])
   expect(title()).toBe(sample.title)

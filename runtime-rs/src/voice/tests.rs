@@ -40,7 +40,7 @@ async fn mock_speech(
     if mock.fail_tts.load(Ordering::Relaxed) {
         return (
             StatusCode::INTERNAL_SERVER_ERROR,
-            Json(json!({"error":"RuntimeError: reference audio missing"})),
+            Json(json!({"error":"RuntimeError: reference audio missing: /fixture/voice-reference.wav"})),
         )
             .into_response();
     }
@@ -202,7 +202,12 @@ async fn fixture_for(
 #[tokio::test]
 async fn tts_protocol_shares_audio_fixes_wav_and_keeps_post_queue_until_body_drop() {
     let (_directory, service, state, mock, stop) = fixture().await;
-    let app = router(service.clone()).with_state(state);
+    let failure_app = router(service.clone()).with_state(state.clone());
+    let app = router(service.clone())
+        .layer(Extension(ConnectInfo(
+            "127.0.0.1:3210".parse::<SocketAddr>().unwrap(),
+        )))
+        .with_state(state);
     let query = url::form_urlencoded::Serializer::new(String::new())
         .append_pair("voice", "nene")
         .append_pair("text", "绫地宁宁・你好\n世界")
@@ -261,6 +266,45 @@ async fn tts_protocol_shares_audio_fixes_wav_and_keeps_post_queue_until_body_dro
     assert!(error.message.contains("语音生成失败"));
     assert!(error.message.contains("reference audio missing"));
     assert_eq!(service.queue_status()["running"], false);
+    for method in ["GET", "POST"] {
+        for (peer, forwarded, local) in [
+            ("127.0.0.1:3210", false, true),
+            ("192.0.2.1:3210", false, false),
+            ("127.0.0.1:3210", true, false),
+        ] {
+            let mut request = Request::builder()
+                .method(method)
+                .uri("/api/tts?voice=nene&text=failure")
+                .header("content-type", "application/json")
+                .body(Body::from(input.to_string()))
+                .unwrap();
+            request
+                .extensions_mut()
+                .insert(ConnectInfo(peer.parse::<SocketAddr>().unwrap()));
+            if forwarded {
+                request
+                    .headers_mut()
+                    .insert("x-forwarded-for", "192.0.2.1".parse().unwrap());
+            }
+            // Use request-specific connection info rather than the success fixture layer.
+            let response = failure_app.clone().oneshot(request).await.unwrap();
+            assert_eq!(response.status(), StatusCode::BAD_GATEWAY);
+            let error: Value =
+                serde_json::from_slice(&response.into_body().collect().await.unwrap().to_bytes())
+                    .unwrap();
+            assert_eq!(error["code"], "TTS_FAILED");
+            assert_eq!(
+                error["error"]
+                    .as_str()
+                    .unwrap()
+                    .contains("/fixture/voice-reference.wav"),
+                local
+            );
+            if !local {
+                assert_eq!(error["error"], "语音生成失败");
+            }
+        }
+    }
     service.close().await;
     stop.cancel();
 }
@@ -268,7 +312,11 @@ async fn tts_protocol_shares_audio_fixes_wav_and_keeps_post_queue_until_body_dro
 #[tokio::test]
 async fn vox_stream_starts_before_eof_caches_complete_wave_and_discards_cancelled_audio() {
     let (_directory, service, state, mock, stop) = fixture_for(config::Engine::VoxCpm2).await;
-    let app = router(service.clone()).with_state(state);
+    let app = router(service.clone())
+        .layer(Extension(ConnectInfo(
+            "127.0.0.1:3210".parse::<SocketAddr>().unwrap(),
+        )))
+        .with_state(state);
     assert_eq!(service.speech.status().await["streamingPcm"], true);
     assert_eq!(service.speech.status().await["online"], true);
     let request = |route: &str, voice: &str, text: &str| {
@@ -339,6 +387,7 @@ async fn vox_stream_starts_before_eof_caches_complete_wave_and_discards_cancelle
     .await
     .unwrap();
     let retry = app
+        .clone()
         .oneshot(request("/api/tts-stream", "natsume", "cancel"))
         .await
         .unwrap();
@@ -353,6 +402,31 @@ async fn vox_stream_starts_before_eof_caches_complete_wave_and_discards_cancelle
         ["nene.lora", "natsume.lora"]
     );
     drop(retry);
+    mock.fail_tts.store(true, Ordering::Relaxed);
+    for local in [true, false] {
+        let mut failure = request("/api/tts-stream", "nene", "failure");
+        if !local {
+            failure
+                .headers_mut()
+                .insert("x-forwarded-for", "192.0.2.1".parse().unwrap());
+        }
+        let response = app.clone().oneshot(failure).await.unwrap();
+        assert_eq!(response.status(), StatusCode::BAD_GATEWAY);
+        let error: Value =
+            serde_json::from_slice(&response.into_body().collect().await.unwrap().to_bytes())
+                .unwrap();
+        assert_eq!(error["code"], "TTS_FAILED");
+        assert_eq!(
+            error["error"]
+                .as_str()
+                .unwrap()
+                .contains("/fixture/voice-reference.wav"),
+            local
+        );
+        if !local {
+            assert_eq!(error["error"], "语音生成失败");
+        }
+    }
     service.close().await;
     stop.cancel();
 }

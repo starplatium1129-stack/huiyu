@@ -364,18 +364,30 @@ function resizeComposer() {
 watch(inputText, () => { void nextTick(resizeComposer) })
 
 const { hasNew, latest } = useConversationReading(listRef, () => visibleMessages.value, activeChar)
-const docked = ref(true)
+const docked = ref(true), docking = ref(false)
+let dockRevision = 0
 async function startWindowDrag(event: MouseEvent) {
-  if (event.button !== 0 || !bridge?.startDragging || event.target instanceof Element && event.target.closest('button, input, select, textarea, a')) return
+  if (!alive || docking.value || event.button !== 0 || !bridge?.startDragging || event.target instanceof Element && event.target.closest('button, input, select, textarea, a')) return
   event.preventDefault(); event.stopPropagation()
+  dockRevision++; docking.value = true
   try {
-    if (docked.value) docked.value = await bridge.setChatDocked?.(false) ?? false
-    await bridge.startDragging()
-  } catch { listenerError('无法移动聊天窗，请重试。') }
+    if (docked.value) {
+      const value = await bridge.setChatDocked?.(false) ?? false
+      if (!alive) return
+      docked.value = value
+    }
+    if (alive && windowVisible.value) await bridge.startDragging()
+  } catch { if (alive) listenerError('无法移动聊天窗，请重试。') }
+  finally { docking.value = false }
 }
 async function toggleDock() {
-  try { docked.value = await bridge?.setChatDocked?.(!docked.value) ?? false }
-  catch { listenerError('贴靠未能完成，请重试。') }
+  if (!alive || docking.value || !bridge?.setChatDocked) return
+  dockRevision++; docking.value = true
+  try {
+    const value = await bridge.setChatDocked(!docked.value)
+    if (alive) docked.value = value
+  } catch { if (alive) listenerError('贴靠未能完成，请重试。') }
+  finally { docking.value = false }
 }
 async function copyMessage(content: string) {
   try { await navigator.clipboard.writeText(content); listenerNotice('已复制') }
@@ -401,7 +413,10 @@ onMounted(() => {
   window.addEventListener('resize', resizeComposer)
   window.addEventListener('focus', onVisibilityChange)
   window.addEventListener('blur', onVisibilityChange)
-  void Promise.resolve(bridge?.getChatDocked?.()).then(value => { if (typeof value === 'boolean') docked.value = value }).catch(() => {})
+  const initialDockRevision = dockRevision
+  void Promise.resolve(bridge?.getChatDocked?.()).then(value => {
+    if (alive && dockRevision === initialDockRevision && typeof value === 'boolean') docked.value = value
+  }).catch(() => {})
   speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
   reconcileAutoListen()
   window.addEventListener('storage', onStorageChange)
@@ -470,5 +485,5 @@ watch(activeChar, () => {
   reconcileAutoListen()
 })
 
-return { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, toggleDock }
+return { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock }
 }

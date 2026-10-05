@@ -44,10 +44,11 @@ export function hasChatUserProfile(profile: ChatUserProfile): boolean {
   return Boolean(profile.callName || profile.note || profile.relationship !== 'atelier_owner')
 }
 
-export function loadChatUserProfile(): ChatUserProfile {
+export function loadChatUserProfile(strict = false): ChatUserProfile {
   try {
     return normalizeChatUserProfile(JSON.parse(localStorage.getItem(CHAT_USER_PROFILE_KEY) || 'null'))
-  } catch {
+  } catch (error) {
+    if (strict) throw error
     return { ...EMPTY_CHAT_USER_PROFILE }
   }
 }

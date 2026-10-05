@@ -63,6 +63,26 @@ describe('desktop interaction', () => {
     await router.push('/b')
     expect(document.activeElement).toBe(link)
   })
+  it('drops queued keyboard focus after pointer intent, newer navigation or teardown', async () => {
+    const router = await setup()
+    let frame!: FrameRequestCallback
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frame = callback; return 42 })
+    const cancel = vi.spyOn(window, 'cancelAnimationFrame')
+    const link = document.querySelector<HTMLAnchorElement>('nav a')!
+    const input = document.querySelector<HTMLInputElement>('input')!
+    for (const interruptedBy of ['pointer', 'navigation', 'dispose']) {
+      link.focus(); key('Enter')
+      await router.push(router.currentRoute.value.path === '/a' ? '/b' : '/a')
+      const oldFrame = frame
+      if (interruptedBy === 'pointer') input.dispatchEvent(new Event('pointerdown', { bubbles: true }))
+      else if (interruptedBy === 'navigation') await router.push(router.currentRoute.value.path === '/a' ? '/b' : '/a')
+      else dispose?.()
+      input.focus()
+      oldFrame(0) // A callback already delivered by the browser must also be harmless.
+      expect(document.activeElement).toBe(input)
+    }
+    expect(cancel).toHaveBeenCalledWith(42)
+  })
   it('supports independent control and companion chat regions', async () => {
     await setup()
     for (const [navigation, content] of [['control-rail', 'control-shell'], ['companion-chat-titlebar', 'companion-chat-body']]) {

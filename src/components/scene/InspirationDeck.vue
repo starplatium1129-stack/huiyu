@@ -63,7 +63,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import InspirationArtwork from './InspirationArtwork.vue'
 import { railIconName, type ExplorerScene } from '@/composables/scene/sceneExplorerPresentation'
 import { useInspirationDeck } from '@/composables/scene/useInspirationDeck'
-import { matchesSearch, searchScore } from '@/utils/sceneUX'
+import { analyzeQuery, matchesSearch, searchScore } from '@/utils/sceneUX'
 
 interface MoodRail { character: string; icon?: string; title: string; subtitle: string; query: string }
 const props = withDefaults(defineProps<{ rails: MoodRail[]; scenes?: ExplorerScene[] }>(), { scenes: () => [] })
@@ -73,10 +73,17 @@ const host = ref<HTMLElement | null>(null)
 // Reuse the catalog already in view and the same thumb URLs as SceneCard.
 // A rail without a matching All-rated scene keeps its text fallback; no catalog fetch.
 const entries = computed(() => props.rails.map((rail, i) => {
-  const scene = props.scenes.filter(scene => scene.rating === 'All' && scene.mature !== true
-    && (rail.character === 'shared' || scene.char === rail.character)
-    && matchesSearch(scene, rail.query, null))
-    .sort((a, b) => searchScore(b, rail.query, null) - searchScore(a, rail.query, null))[0]
+  const analysis = analyzeQuery(rail.query, null)
+  let scene: ExplorerScene | undefined, bestScore = -Infinity
+  // Only the best match is displayed. Score each candidate once and retain
+  // the first tie, matching the previous stable sort without sorting the catalog.
+  for (const candidate of props.scenes) {
+    if (candidate.rating !== 'All' || candidate.mature === true
+      || (rail.character !== 'shared' && candidate.char !== rail.character)
+      || !matchesSearch(candidate, rail.query, null, undefined, analysis)) continue
+    const score = searchScore(candidate, rail.query, null, undefined, analysis)
+    if (score > bestScore) { scene = candidate; bestScore = score }
+  }
   return { rail, scene, key: `${i}:${rail.title}:${rail.query}` }
 }))
 const keys = computed(() => entries.value.map(item => item.key))

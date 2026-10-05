@@ -1,10 +1,11 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import { isLocalStudioHost } from '../utils/runtimeEnvironment'
 import type { Router } from 'vue-router'
 import { DATA_VERSION } from 'virtual:data-version'
 
 const CORE_RESOURCE_ROUTES = new Set(['/scene-explorer', '/popular-scenes'])
 const CORE_RESOURCE_FILES = ['curation.json', 'scenes-core.json', 'scenes-shared.json']
-const BLUEPRINT_RESOURCE_FILES = ['curation.json', 'popular-characters.json', 'scene-blueprints.json']
+const BLUEPRINT_RESOURCE_FILES = ['curation.json', 'popular-characters.json']
 const SHOWCASE_THUMB_LIMIT = 4
 let activeResourcePrefetch: { path: string; controller: AbortController } | null = null
 
@@ -19,7 +20,9 @@ function safeShowcaseUrl(value: unknown): string | null {
 }
 
 async function prefetchCoreResources(signal: AbortSignal, path: string): Promise<void> {
-  const files = path === '/popular-scenes' ? BLUEPRINT_RESOURCE_FILES : CORE_RESOURCE_FILES
+  const files = path === '/popular-scenes'
+    ? [...BLUEPRINT_RESOURCE_FILES, ...(isLocalStudioHost() ? [] : ['scene-blueprints.json'])]
+    : CORE_RESOURCE_FILES
   await Promise.all(files.map(file =>
     runtimeFetch(`/data/${file}?v=${DATA_VERSION}`, { cache: 'force-cache', credentials: 'same-origin', signal })
       .then(response => { if (!response.ok) throw new Error(`${file} HTTP ${response.status}`) }),

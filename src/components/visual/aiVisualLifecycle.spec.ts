@@ -427,12 +427,14 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(wrapper.emitted('reveal-complete')).toBeUndefined()
   })
 
-  it('waits for decoding and never lets an older decode replace the current result', async () => {
+  it.each(['resolved', 'rejected'])('ignores an older decode that is %s after the source changes', async outcome => {
     const wrapper = own(mount(CgImageReveal, { props: { src: '/old.png', autoReveal: true } }))
     const old = wrapper.get('img')
     readyImage(old.element)
     let decoded!: () => void
-    old.element.decode = vi.fn(() => new Promise<void>(resolve => { decoded = resolve }))
+    old.element.decode = vi.fn(() => new Promise<void>((resolve, reject) => {
+      decoded = outcome === 'resolved' ? resolve : () => reject(new Error('stale decode failed'))
+    }))
     await old.trigger('load')
     expect(startImageDevelopmentReveal).not.toHaveBeenCalled()
     expect(wrapper.classes()).not.toContain('is-loaded')
@@ -452,9 +454,10 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(startImageDevelopmentReveal).toHaveBeenCalledOnce()
     expect(wrapper.classes()).toContain('is-revealing')
     expect(wrapper.get('img').attributes('src')).toBe('/new.png')
+    expect(wrapper.emitted('reveal-complete')).toBeUndefined()
   })
 
-  it.each(['rejected', 'load error', 'unmount'])('cleans a pending decode after %s without announcing completion', async failure => {
+  it.each(['rejected', 'load error', 'unmount'])('settles a pending decode after %s only for the current reveal', async failure => {
     const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
     const img = wrapper.get('img')
     readyImage(img.element)
@@ -471,7 +474,14 @@ describe('CgImageReveal ownership and fallback', () => {
     await nextTick()
     expect(startImageDevelopmentReveal).not.toHaveBeenCalled()
     expect(wrapper.emitted('reveal-start')).toBeUndefined()
-    expect(wrapper.emitted('reveal-complete')).toBeUndefined()
+    if (failure === 'rejected') {
+      expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+      expect(wrapper.classes()).toContain('is-loaded')
+      await img.trigger('load')
+      await wrapper.setProps({ autoReveal: false })
+      await wrapper.setProps({ autoReveal: true })
+      expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+    } else expect(wrapper.emitted('reveal-complete')).toBeUndefined()
   })
 
   it('releases the reveal on unmount without emitting a late completion', async () => {

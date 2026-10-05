@@ -3,6 +3,9 @@ import { createPinia, setActivePinia } from 'pinia'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { usePromptTagTools } from './usePromptTagTools'
+import { applyInterrogateResult } from './applyInterrogateResult'
+
+vi.mock('virtual:data-version', () => ({ DATA_VERSION: 'test-fixture' }))
 
 /**
  * 词条输入契约（2026-08-30 UX 审计 P0-3 回归门禁）：
@@ -115,7 +118,7 @@ describe('promptBuilderStore · addManualTag', () => {
 })
 
 describe('usePromptTagTools · outfit bundles', () => {
-  it('keeps compatible details inside a bundle and removes a conflicting old outfit family', () => {
+  it('keeps bundle details and adopted reference tags while replacing old outfit and reference layers', async () => {
     const pb = usePromptBuilderStore()
     pb.manualTags = new Set(['school_uniform', 'pleated_skirt', 'smile'])
     const { toggleOutfitBundle } = usePromptTagTools(pb)
@@ -123,6 +126,14 @@ describe('usePromptTagTools · outfit bundles', () => {
     expect([...pb.manualTags].sort()).toEqual(['barefoot', 'bikini', 'smile', 'triangle_bikini'])
     toggleOutfitBundle(['bikini', 'triangle_bikini', 'barefoot'])
     expect([...pb.manualTags]).toEqual(['smile'])
+
+    await applyInterrogateResult(pb, { engine: 'wd14', tags: ['school_uniform', 'library'] })
+    expect(pb.referenceInput?.tags).toContain('school_uniform')
+    toggleOutfitBundle(['school_uniform', 'pleated_skirt', 'cardigan'])
+    expect(pb.referenceInput).toEqual({ tags: ['library'] })
+    await applyInterrogateResult(pb, { engine: 'wd14', tags: ['park'] })
+    expect(pb.manualTags).toEqual(new Set(['smile', 'school_uniform', 'pleated_skirt', 'cardigan', 'park']))
+    expect(pb.referenceInput).toEqual({ tags: ['park'] })
   })
 })
 

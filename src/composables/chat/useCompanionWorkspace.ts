@@ -186,7 +186,8 @@ export function useCompanionWorkspace() {
     let viewAlive = true;
     let visibilityRevision = 0;
     let powerRevision = 0;
-    let boundsRevision = 0;
+    let boundsRevision = 0, pinRevision = 0, interactionRevision = 0;
+    let pinPending = false;
     /** 沉浸模式：鼠标在舞台活动时 UI 浮现，静止数秒后自动隐去（桌面窗口）。 */
     function setUiHidden(hidden: boolean) {
         if (uiHidden.value === hidden)
@@ -270,7 +271,7 @@ export function useCompanionWorkspace() {
             const self = element instanceof HTMLElement ? element.closest('button') : null;
             const onToggleButton = Boolean(self && /穿透|恢复交互/.test(self.textContent || ''));
             if (interactive && !onToggleButton) {
-                ignoreMouseEvents.value = false;
+                interactionRevision++; ignoreMouseEvents.value = false;
                 desktopBridge.setIgnoreMouseEvents(false);
             }
         }
@@ -320,14 +321,16 @@ export function useCompanionWorkspace() {
         desktopBridge.notify(currentCharacter.value.name, announcement);
     });
     async function togglePin() {
-        if (!desktopBridge)
+        if (!desktopBridge || !viewAlive || pinPending)
             return;
+        pinRevision++; pinPending = true;
         try {
-            alwaysOnTop.value = await desktopBridge.toggleAlwaysOnTop();
+            const pinned = await desktopBridge.toggleAlwaysOnTop();
+            if (viewAlive) alwaysOnTop.value = pinned;
         }
         catch (e) {
             console.warn('companion pin toggle failed', e);
-        }
+        } finally { pinPending = false; }
     }
     function toggleMouseEvents() {
         if (!desktopBridge)
@@ -335,7 +338,7 @@ export function useCompanionWorkspace() {
         // 本地立即翻转（主进程回发 desktop:interaction-mode 作兜底同步），
         // 避免回发丢失时按钮状态与真实穿透不一致
         const next = !ignoreMouseEvents.value;
-        ignoreMouseEvents.value = next;
+        interactionRevision++; ignoreMouseEvents.value = next;
         desktopBridge.setIgnoreMouseEvents(next);
         // 刚切换穿透的瞬间抑制自动恢复：防止点击"穿透"按钮时
         // 悬停触发的恢复把状态又翻回去
@@ -401,7 +404,7 @@ export function useCompanionWorkspace() {
                 });
             }
             powerModeSubscription = desktopBridge.onPowerModeChanged(onBattery => { powerRevision++; setDesktopPowerMode(onBattery); });
-            interactionModeSubscription = desktopBridge.onInteractionModeChanged(value => { ignoreMouseEvents.value = value; });
+            interactionModeSubscription = desktopBridge.onInteractionModeChanged(value => { interactionRevision++; ignoreMouseEvents.value = value; });
             // 全局目光跟随：鼠标在悬浮窗之外时，角色目光仍随屏幕鼠标转动。
             // 窗口内由舞台 DOM 事件驱动（更平滑），这里跳过 inWindow 更新。
             globalMouseSubscription = desktopBridge.onGlobalMouse(state => {
@@ -416,7 +419,7 @@ export function useCompanionWorkspace() {
                 void refreshRoomState();
             });
             let desktopState: Awaited<ReturnType<typeof desktopBridge.getState>> | null = null;
-            const initialRevision = { visibility: visibilityRevision, power: powerRevision, bounds: boundsRevision };
+            const initialRevision = { visibility: visibilityRevision, power: powerRevision, bounds: boundsRevision, pin: pinRevision, interaction: interactionRevision };
             try {
                 desktopState = await desktopBridge.getState();
             }
@@ -426,8 +429,8 @@ export function useCompanionWorkspace() {
             if (!viewAlive)
                 return;
             if (desktopState) {
-                alwaysOnTop.value = desktopState.alwaysOnTop;
-                ignoreMouseEvents.value = desktopState.ignoreMouseEvents;
+                if (pinRevision === initialRevision.pin) alwaysOnTop.value = desktopState.alwaysOnTop;
+                if (interactionRevision === initialRevision.interaction) ignoreMouseEvents.value = desktopState.ignoreMouseEvents;
                 const legacyLive2dOverride = desktopLive2dOverride.value;
                 desktopLive2dOverride.value = desktopState.live2dEnabled ?? legacyLive2dOverride;
                 if (desktopState.live2dEnabled == null && legacyLive2dOverride != null) {

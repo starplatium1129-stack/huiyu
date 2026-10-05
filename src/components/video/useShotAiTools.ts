@@ -1,4 +1,4 @@
-import { computed, ref, type ComputedRef, type Ref } from 'vue'
+import { computed, onScopeDispose, ref, type ComputedRef, type Ref } from 'vue'
 import {
   fetchVideoAiStatus,
   generateVideoScript,
@@ -37,6 +37,12 @@ export interface ShotAiToolsDeps {
 export function useShotAiTools(deps: ShotAiToolsDeps) {
   const { shots, identityCard, batchActive, referenceCards } = deps
 
+  const controller = new AbortController()
+  const { signal } = controller
+  onScopeDispose(() => {
+    controller.abort()
+    aiBusy.value = scriptBusy.value = dialogueBusy.value = reviewBusy.value = false
+  })
   const aiBusy = ref(false)
   const aiProgress = ref(0)
   const aiTotal = ref(0)
@@ -53,7 +59,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
       if (shots.value.includes(target) && snapshot[index]) Object.assign(target, Object.fromEntries(textFields.map(key => [key, snapshot[index][key]])))
     })
   }
-  const anyAiBusy = () => aiBusy.value || scriptBusy.value || dialogueBusy.value || reviewBusy.value || batchActive.value
+  const anyAiBusy = () => signal.aborted || aiBusy.value || scriptBusy.value || dialogueBusy.value || reviewBusy.value || batchActive.value
   /** 整批编排的独立快照：撤销编排只回编排前，不影响「AI 整理」的撤销。 */
   const polishSnapshot = ref<ShotDraft[] | null>(null)
 
@@ -77,8 +83,10 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
     aiNote.value = ''
     let status: VideoAiStatusResponse
     try {
-      status = await fetchVideoAiStatus()
+      status = await fetchVideoAiStatus(signal)
+      if (signal.aborted) return
     } catch (error) {
+      if (signal.aborted) return
       aiBusy.value = false
       aiNote.value = 'AI 状态读取失败：' + (error instanceof Error ? error.message : String(error))
       return
@@ -99,7 +107,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
     let failed = 0
     let cursor = 0
     const worker = async () => {
-      while (cursor < total) {
+      while (!signal.aborted && cursor < total) {
         const index = cursor
         cursor += 1
         try {
@@ -110,7 +118,8 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
             camera: originals[index].camera,
             motion: originals[index].motion,
             dialogue: originals[index].dialogue || undefined,
-          })
+          }, signal)
+          if (signal.aborted) return
           const shot = rewriteTargets[index]
           if (!shots.value.includes(shot) || !unchanged(shot, originals[index])) throw new Error('镜头已编辑，保留用户改动')
           if (response.shot.prompt) shot.prompt = response.shot.prompt
@@ -119,14 +128,18 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
           shot.motion = response.shot.motion
           shot.dialogue = response.shot.dialogue
         } catch {
+          if (signal.aborted) return
           failed += 1
         } finally {
-          aiProgress.value += 1
-          aiNote.value = `AI 整理中 ${aiProgress.value}/${total}（${status.label}）…`
+          if (!signal.aborted) {
+            aiProgress.value += 1
+            aiNote.value = `AI 整理中 ${aiProgress.value}/${total}（${status.label}）…`
+          }
         }
       }
     }
     await Promise.all(Array.from({ length: Math.min(2, total) }, worker))
+    if (signal.aborted) return
     aiBusy.value = false
     if (failed < total) aiFlowStep.value = Math.max(aiFlowStep.value, 1)
     aiNote.value = failed
@@ -151,8 +164,10 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
     aiNote.value = ''
     let status: VideoAiStatusResponse
     try {
-      status = await fetchVideoAiStatus()
+      status = await fetchVideoAiStatus(signal)
+      if (signal.aborted) return
     } catch (error) {
+      if (signal.aborted) return
       aiBusy.value = false
       aiNote.value = 'AI 状态读取失败：' + (error instanceof Error ? error.message : String(error))
       return
@@ -177,7 +192,8 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
           motion: shot.motion,
           dialogue: shot.dialogue || undefined,
         })),
-      })
+      }, signal)
+      if (signal.aborted) return
       let changed = 0
       response.shots.forEach((suggestion, index) => {
         const shot = polishTargets[index]
@@ -204,6 +220,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
         : 'AI 整批编排完成：当前镜头语言已比较均衡，未做调整。'
       aiFlowStep.value = 2
     } catch (error) {
+      if (signal.aborted) return
       polishSnapshot.value = null
       aiNote.value = 'AI 整批编排失败：' + (error instanceof Error ? error.message : String(error))
     } finally {
@@ -242,7 +259,8 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
         shotCount: scriptCount.value ?? undefined,
         totalSeconds: scriptTotal.value ?? undefined,
         characterLabels: cardLabels.length ? cardLabels : undefined,
-      })
+      }, signal)
+      if (signal.aborted) return
       if (!response.shots.length) {
         aiNote.value = 'AI 脚本生成为空，请调整故事梗概后重试'
         return
@@ -275,6 +293,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
       scriptStory.value = ''
       aiNote.value = `AI 脚本已生成：${shots.value.length} 镜（无首帧，纯文字 T2VA 可直接生成；也可逐镜上传首帧锁构图）`
     } catch (error) {
+      if (signal.aborted) return
       aiNote.value = 'AI 脚本生成失败：' + (error instanceof Error ? error.message : String(error))
     } finally {
       scriptBusy.value = false
@@ -299,7 +318,8 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
         identity: identityCard.value.trim() || undefined,
         prompt: shot.prompt,
         currentDialogue: shot.dialogue.trim() || undefined,
-      })
+      }, signal)
+      if (signal.aborted) return
       if (shots.value[index] !== shot) { dialogueIndex.value = -1; return }
       dialogueOptions.value = response.options
       if (!response.options.length) {
@@ -307,6 +327,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
         aiNote.value = 'AI 台词未返回可用选项，请重试'
       }
     } catch (error) {
+      if (signal.aborted) return
       dialogueIndex.value = -1
       aiNote.value = 'AI 台词失败：' + (error instanceof Error ? error.message : String(error))
     } finally {
@@ -340,12 +361,14 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
         camera: shot.camera,
         motion: shot.motion,
         dialogue: shot.dialogue || undefined,
-      })))
+      })), signal)
+      if (signal.aborted) return
       reviewIssues.value = response.issues
       aiNote.value = response.issues.length
         ? `质量检查：发现 ${response.issues.length} 个问题（${response.issues.filter(i => i.severity === 'error').length} 个必须修），可点击建议应用`
         : '质量检查：未发现问题，可以生成。'
     } catch (error) {
+      if (signal.aborted) return
       aiNote.value = 'AI 质量检查失败：' + (error instanceof Error ? error.message : String(error))
     } finally {
       reviewBusy.value = false

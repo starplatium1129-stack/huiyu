@@ -1,19 +1,21 @@
 import { reactive, ref } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { safeImageUrl } from './galleryHelpers'
+import { sameArtworkMedia } from './artworkMediaIdentity'
 import type { ArtworkRecord } from '@/types/artwork'
 
 /** At most two original reads and four owned URLs, including obsolete read generations. */
 export function useCandidateMedia() {
   const urls = reactive<Record<string, string>>({}), loading = ref(false)
   const owned = new Set<string>()
+  const loaded = new Map<string, ArtworkRecord>()
   let request: AbortController | null = null, version = 0, active = 0, remaining = 0
   let queue: Array<{ item: ArtworkRecord; version: number; signal: AbortSignal }> = []
   function cancel() { request?.abort(); request = null; version++; queue = []; loading.value = false }
   function release() {
     cancel()
     for (const url of owned) URL.revokeObjectURL(url)
-    owned.clear()
+    owned.clear(); loaded.clear()
     for (const id of Object.keys(urls)) delete urls[id]
   }
   function pump() {
@@ -33,6 +35,7 @@ export function useCandidateMedia() {
             const fallback = /^(data:image\/|blob:)/.test(source) ? source : safeImageUrl(source)
             if (fallback) urls[String(job.item.id)] = fallback
           }
+          if (urls[String(job.item.id)]) loaded.set(String(job.item.id), job.item)
         } catch { /* Keep an individual unavailable-image placeholder. */ }
         finally {
           active--
@@ -43,10 +46,18 @@ export function useCandidateMedia() {
     }
   }
   function load(items: readonly ArtworkRecord[]) {
-    release()
+    cancel()
+    const candidates = items.slice(0, 4).map(item => ({ ...item }))
+    // A showcase step shares neighbors with the previous step. Keep their
+    // resolved media until they leave the requested set or their source changes.
+    for (const id of Object.keys(urls)) {
+      if (candidates.some(item => sameArtworkMedia(loaded.get(id), item))) continue
+      if (owned.delete(urls[id])) URL.revokeObjectURL(urls[id])
+      delete urls[id]; loaded.delete(id)
+    }
     request = new AbortController()
     const signal = request.signal
-    queue = items.slice(0, 4).map(item => ({ item, version, signal }))
+    queue = candidates.filter(item => !urls[String(item.id)]).map(item => ({ item, version, signal }))
     remaining = queue.length; loading.value = remaining > 0
     pump()
   }

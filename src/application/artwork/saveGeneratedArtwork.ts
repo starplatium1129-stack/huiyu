@@ -1,3 +1,4 @@
+import { PendingMediaUploadError } from './mediaUpload.ts'
 import type { HistoryEntry } from '@/types/promptHistory'
 import type { ArtworkSaveSnapshot, GeneratedArtworkInput, LegacyArtworkDefaults, SaveGeneratedArtworkDependencies, SaveGeneratedArtworkResult } from './artworkSaveInput'
 
@@ -75,6 +76,10 @@ export function saveArtworkSnapshot({ entry, defaults }: ArtworkSaveSnapshot, de
       }
       // Preserve existing owned-image compensation, but return its outcome with
       // an operation ID so cleanup failure is diagnosable and can be retried.
+      if (!imageId && error instanceof PendingMediaUploadError) {
+        return { ok: false, error, operationId: error.pending.operationId,
+          cleanup: { status: 'upload-pending' as const, imageId: error.pending.imageId, upload: error.pending } }
+      }
       if (!imageId) return { ok: false, error, operationId, cleanup: { status: 'not-needed' as const } }
       try {
         await deps.deleteImage(imageId)

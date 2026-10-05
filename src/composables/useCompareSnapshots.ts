@@ -1,5 +1,5 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
-import { ref, onBeforeUnmount, type Ref } from 'vue'
+import { ref, onBeforeUnmount, onDeactivated, type Ref } from 'vue'
 // 带 .ts 扩展（allowImportingTsExtensions）：让本模块可被 scripts/tests 以 node --test 直跑
 import { useFocusTrap } from './useFocusTrap.ts'
 
@@ -109,6 +109,8 @@ export function useCompareSnapshots<T extends { url: string }>(options: {
     compareOpen.value = false
     flushPendingRelease()
   }
+
+  onDeactivated(close)
 
   useFocusTrap(compareEl, () => compareOpen.value, {
     onEscape: close,

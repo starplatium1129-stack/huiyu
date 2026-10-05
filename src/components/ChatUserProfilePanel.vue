@@ -5,7 +5,7 @@
         <span>USER PROFILE</span>
         <strong id="chatUserProfileTitle">她该怎样认识你</strong>
       </div>
-      <button type="button" class="profile-close" aria-label="关闭用户档案" @click="$emit('close')">×</button>
+      <button type="button" class="profile-close" aria-label="关闭用户档案" @click="close">×</button>
     </header>
     <p>这些资料只用于称呼和关系连续性，保存在本机，不会覆盖角色设定。</p>
     <div class="profile-grid">
@@ -27,15 +27,16 @@
         <small>{{ draft.note.length }} / 200</small>
       </label>
     </div>
+    <p v-if="saveMessage" role="status">{{ saveMessage }}</p>
     <div class="profile-actions">
       <button type="button" class="btn btn-ghost" @click="reset">恢复默认</button>
-      <button type="button" class="btn btn-primary" @click="save">保存档案</button>
+      <button type="button" class="btn btn-primary" :disabled="saving" @click="save">{{ saving ? '保存中…' : '保存档案' }}</button>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
+import { onBeforeUnmount, reactive, ref, watch } from 'vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import {
   CHAT_RELATIONSHIPS,
@@ -44,22 +45,53 @@ import {
   type ChatUserProfile,
 } from '@/utils/chatUserProfile'
 
-const props = defineProps<{ profile: ChatUserProfile }>()
+const props = defineProps<{ profile: ChatUserProfile; saveProfile: (profile: ChatUserProfile) => Promise<boolean> }>()
 const emit = defineEmits<{
-  save: [profile: ChatUserProfile]
   close: []
 }>()
 
 const draft = reactive<ChatUserProfile>(normalizeChatUserProfile(props.profile))
 
-watch(() => props.profile, profile => Object.assign(draft, normalizeChatUserProfile(profile)), { deep: true })
+let baseline = { ...draft }
+let submittedDraft: ChatUserProfile | null = null
+const saving = ref(false)
+const saveMessage = ref('')
+let disposed = false
+onBeforeUnmount(() => { disposed = true })
 
-function reset() {
-  Object.assign(draft, EMPTY_CHAT_USER_PROFILE)
-}
+watch(() => props.profile, profile => {
+  // Merge untouched fields so saving a local edit cannot replay stale remote data.
+  const incoming = normalizeChatUserProfile(profile)
+  for (const key of ['callName', 'relationship', 'note'] as const) {
+    // A revert to the old baseline is still a newer edit while its save is pending.
+    if (draft[key] === baseline[key] && (!submittedDraft || draft[key] === submittedDraft[key])) {
+      Object.assign(draft, { [key]: incoming[key] })
+    }
+  }
+  baseline = incoming
+}, { deep: true })
 
-function save() {
-  emit('save', normalizeChatUserProfile(draft))
+function close() { disposed = true; emit('close') }
+function reset() { Object.assign(draft, EMPTY_CHAT_USER_PROFILE) }
+
+async function save() {
+  if (saving.value || disposed) return
+  saving.value = true
+  saveMessage.value = ''
+  submittedDraft = { ...draft }
+  const submitted = JSON.stringify(submittedDraft)
+  try {
+    const saved = await props.saveProfile(normalizeChatUserProfile(submittedDraft))
+    if (disposed) return
+    if (!saved) { saveMessage.value = '用户档案保存尚未确认，当前修改已保留，请重试。'; return }
+    if (JSON.stringify(draft) !== submitted) {
+      saveMessage.value = '提交时的档案已保存；当前修改尚未保存，请再次保存。'
+      return
+    }
+    emit('close')
+  } catch {
+    if (!disposed) saveMessage.value = '用户档案保存尚未确认，当前修改已保留，请重试。'
+  } finally { saving.value = false; submittedDraft = null }
 }
 </script>
 

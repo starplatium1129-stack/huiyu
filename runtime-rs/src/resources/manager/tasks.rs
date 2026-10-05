@@ -10,6 +10,39 @@ fn now() -> u64 {
         .unwrap_or_default()
         .as_millis() as u64
 }
+// Keep lifecycle details (state, paths, raw causes) inside the installer.
+// Apply the same projection to persisted tasks before publishing status.
+fn public_result(action: &Value, cause: &Value) -> Value {
+    if !matches!(
+        action.as_str(),
+        Some(
+            "installed"
+                | "already-installed"
+                | "recovered"
+                | "rolled-back"
+                | "nothing-to-recover"
+                | "downloaded"
+                | "already-downloaded"
+        )
+    ) {
+        return Value::Null;
+    }
+    let warning = if action == "rolled-back" && !cause.is_null() {
+        let mut issue = crate::resources::public(&Error::new(
+            cause["code"].as_str().unwrap_or("RESOURCE_FAILED"),
+            "",
+        ));
+        // The prior version has been verified and restored; the ordinary
+        // CONTENT_INVALID message incorrectly claims bundled fallback here.
+        if issue["code"] == "CONTENT_INVALID" {
+            issue["message"] = "新版本资源内容校验失败。".into();
+        }
+        issue
+    } else {
+        Value::Null
+    };
+    json!({"action":action,"warning":warning})
+}
 pub(super) fn saved(ctx: &config::Context) -> Result<Option<Value>> {
     let Some(mut value) = fs::json(&ctx.store.join("gateway/task.json"), true, false)? else {
         return Ok(None);
@@ -46,8 +79,13 @@ pub(super) fn saved(ctx: &config::Context) -> Result<Option<Value>> {
     } else {
         Value::Null
     };
+    let result = if value["state"] == "completed" {
+        public_result(&value["result"]["action"], &value["result"]["warning"])
+    } else {
+        Value::Null
+    };
     Ok(Some(
-        json!({"id":value["id"],"action":value["action"],"releaseId":value["releaseId"],"resumeAction":resume,"state":value["state"],"phase":if interrupted{"interrupted"}else{"settled"},"bytes":0,"total":0,"startedAt":value["startedAt"].as_u64().unwrap_or(0),"finishedAt":value["finishedAt"].as_u64().unwrap_or(0),"error":value["error"]}),
+        json!({"id":value["id"],"action":value["action"],"releaseId":value["releaseId"],"resumeAction":resume,"state":value["state"],"phase":if interrupted{"interrupted"}else{"settled"},"bytes":0,"total":0,"startedAt":value["startedAt"].as_u64().unwrap_or(0),"finishedAt":value["finishedAt"].as_u64().unwrap_or(0),"error":value["error"],"result":result}),
     ))
 }
 pub(super) fn start(
@@ -112,7 +150,7 @@ pub(super) fn start(
     ctx.initialize()?;
     let gate = lease::acquire(&ctx, "gateway", 0)?;
     fs::ensure(&ctx.store.join("gateway"))?;
-    let task = json!({"id":uuid::Uuid::new_v4().to_string(),"action":action,"releaseId":release,"resumeAction":resume,"state":"running","phase":"checking","bytes":0,"total":0,"startedAt":now(),"finishedAt":0,"error":null});
+    let task = json!({"id":uuid::Uuid::new_v4().to_string(),"action":action,"releaseId":release,"resumeAction":resume,"state":"running","phase":"checking","bytes":0,"total":0,"startedAt":now(),"finishedAt":0,"error":null,"result":null});
     fs::write_json(&ctx.store.join("gateway/task.json"), &task)?;
     let cancel = service.shutdown.child_token();
     let id = task["id"].as_str().unwrap().to_owned();
@@ -180,6 +218,10 @@ pub(super) fn start(
                             crate::resources::public(error)
                         }
                     }
+                };
+                task["result"] = match &outcome {
+                    Ok(result) => public_result(&result["action"], &result["cause"]),
+                    Err(_) => Value::Null,
                 };
                 task["finishedAt"] = now().into();
                 task["phase"] = "settled".into();

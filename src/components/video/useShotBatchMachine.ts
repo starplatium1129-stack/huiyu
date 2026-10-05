@@ -12,6 +12,7 @@ import {
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { ApiClientError } from '@/api/client'
 import type { ShotDraft } from './shotListTypes'
+import type { ShotSubmissionRecord } from '@/stores/videoStore'
 import type { ShotCastRef } from './useReferenceCards'
 
 export interface ShotBatchMachineDeps {
@@ -30,6 +31,7 @@ export interface ShotBatchMachineDeps {
   /** 宿主持有的用户可见错误通道（提交/轮询/重抽失败回写）。 */
   batchError: Ref<string>
   onAccepted?: (batch: VideoBatch) => void
+  onSubmitted?: () => void
 }
 
 /**
@@ -55,6 +57,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   let reconnectTarget = ''
   let reconnectSerial = 0
   let operationSerial = 0
+  const shotSubmissions = new WeakMap<ShotDraft, ShotSubmissionRecord>()
 
   function stopReads() {
     window.clearTimeout(pollTimer)
@@ -101,8 +104,22 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     return Math.min(100, Math.round(((done + failed) / total) * 100))
   })
 
+  function getShotSubmission(shot: ShotDraft) {
+    const submission = shotSubmissions.get(shot)
+    return submission ? { ...submission } : undefined
+  }
+  function restoreShotSubmission(shot: ShotDraft, submission: ShotSubmissionRecord | undefined) {
+    if (submission && typeof submission.batchId === 'string' && submission.batchId
+      && Number.isSafeInteger(submission.shotIndex) && submission.shotIndex >= 0) {
+      shotSubmissions.set(shot, { batchId: submission.batchId, shotIndex: submission.shotIndex })
+    }
+  }
+  function submittedIndex(index: number) {
+    const submission = Number.isInteger(index) && shots.value[index] ? shotSubmissions.get(shots.value[index]) : undefined
+    return submission && submission.batchId === batch.value?.id ? submission.shotIndex : -1
+  }
   function serverShot(index: number) {
-    return batch.value?.shots[index] ?? null
+    return batch.value?.shots[submittedIndex(index)] ?? null
   }
 
   function parsedSeed(shot: ShotDraft): number | undefined {
@@ -116,6 +133,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     submitting.value = true
     const serial = beginOperation()
     batchError.value = ''
+    const targets = shots.value.slice()
     try {
       const response = await createVideoBatch({
         modelId: 'minimax-h3',
@@ -125,7 +143,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
         linkLastFrame: linkLastFrame.value,
         // 成人内容传输层授权：本机直连默认 true，远程/隧道由服务端 fail-closed。
         adultEnabled: isLocalStudioHost(),
-        shots: shots.value.map((shot) => {
+        shots: targets.map((shot) => {
           const prompt = [identityCard.value.trim(), shot.prompt.trim()].filter(Boolean).join('\n')
           return {
             prompt,
@@ -141,7 +159,10 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
         }),
       })
       if (serial !== operationSerial) return
+      targets.forEach((shot, shotIndex) => shotSubmissions.set(shot, { batchId: response.batch.id, shotIndex }))
       acceptBatch(response.batch)
+      // Accepted task provenance must survive leaving; the draft owner rejects stale saves.
+      deps.onSubmitted?.()
     } catch (error) {
       if (!disposed && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '批量提交失败'
     } finally {
@@ -193,12 +214,13 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   }
 
   async function retryShotAt(index: number) {
-    if (!batch.value || retrying.value || cancelling.value || concating.value || !Number.isInteger(index) || !batch.value.shots[index]) return
+    const sourceIndex = submittedIndex(index)
+    if (!batch.value || retrying.value || cancelling.value || concating.value || sourceIndex < 0 || !batch.value.shots[sourceIndex]) return
     const id = batch.value.id
     const serial = beginOperation()
     retrying.value = true
     try {
-      const response = await retryVideoShot(id, index + 1)
+      const response = await retryVideoShot(id, sourceIndex + 1)
       if (disposed || batch.value?.id !== id || serial !== operationSerial) return
       acceptRetry(response.batch, id)
     } catch (error) {
@@ -316,6 +338,8 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     canConcat,
     progressPercent,
     serverShot,
+    getShotSubmission,
+    restoreShotSubmission,
     submitBatch,
     cancelBatch,
     retryShotAt,

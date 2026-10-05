@@ -251,7 +251,7 @@ export function useGalleryWorkspace() {
     }
     async function hydrateCard(item: ArtworkRecord, signal: AbortSignal) {
         const epoch = imageEpoch;
-        const fallback = safeImageUrl(item.image_url);
+        const fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '');
         let resolved = false;
         try {
             const blob = item.image_id ? await artworkRepository.getImage(item.image_id, signal) : null;
@@ -275,10 +275,6 @@ export function useGalleryWorkspace() {
             }
             else if (fallback) {
                 cardUrls[item.id] = fallback;
-                resolved = true;
-            }
-            else if (item.image_data && String(item.image_data).startsWith('data:image/')) {
-                cardUrls[item.id] = item.image_data;
                 resolved = true;
             }
             else

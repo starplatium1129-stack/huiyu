@@ -51,11 +51,20 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
         else { setProfileConnectionBlocked(false); await flushProfileWrites(); await refreshProfileStorage() }
       } else if (!profileRuntimeActive() && !isNativeDesktopOrigin(location.origin)) setProfileConnectionBlocked(false)
       syncedAuthority = authority
+      return state
     }
     const failure = () => { setProfileConnectionBlocked(true); window.dispatchEvent(new CustomEvent('huiyu:profile-write-error', { detail: '本机资料尚未连接，请重试连接并保持窗口打开。' })) }
-    await sync().catch(failure)
+    const initialState = await sync().catch(failure)
     let syncFailure: unknown
-    stopConnection = onDesktopRuntime(() => { syncing = syncing.then(async () => { syncFailure = undefined; await sync() }).catch(error => { syncFailure = error; failure() }) })
+    let initialReplay = true
+    stopConnection = onDesktopRuntime(state => {
+      // Skip only the already-hydrated replay. A publication during hydration
+      // replaces the state object, and later same-authority reads still refresh.
+      const alreadySynced = initialReplay && state === initialState
+      initialReplay = false
+      if (alreadySynced) return
+      syncing = syncing.then(async () => { syncFailure = undefined; await sync() }).catch(error => { syncFailure = error; failure() })
+    })
     initializeMigrationParticipant({ reconcileAuthority: async target => {
       if (!alive || maintenanceFrozen()) throw new Error('资料窗口正在维护或已关闭，请在活动窗口重新核对。')
       await refreshDesktopRuntime()

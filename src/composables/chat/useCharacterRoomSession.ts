@@ -44,6 +44,7 @@ export function useCharacterRoomSession() {
   const activeChar = ref(DEFAULT_COMPANION_CHARACTER_ID)
   const busy = ref(false)
   const voiceActive = ref(false)
+  const replayRevision = ref(0)
   const chatError = ref('')
   const chatErrorKind = ref('')
   const voiceStatusText = ref('')
@@ -133,6 +134,8 @@ export function useCharacterRoomSession() {
 
   const voice = useVoice({
     enabled: () => autoVoice.value,
+    onAudioReady: () => { replayRevision.value++ },
+    onAudioCleared: () => { replayRevision.value++ },
     onStatus: (text) => { voiceStatusText.value = text },
     onError: (message) => setError(message, 'warning'),
     onSpeaking: (speaking, mid) => {
@@ -201,9 +204,10 @@ export function useCharacterRoomSession() {
     isDisposed: () => disposed,
   })
 
-  const hasReplayable = computed(() =>
-    currentMessages.value.some(message => message.role === 'assistant' && message.mid && voice.hasAudio(message.mid)),
-  )
+  const hasReplayable = computed(() => {
+    replayRevision.value
+    return currentMessages.value.some(message => message.role === 'assistant' && message.mid && voice.hasAudio(message.mid))
+  })
 
   function nearBottom() {
     const element = chatListRef.value

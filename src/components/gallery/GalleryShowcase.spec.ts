@@ -48,3 +48,27 @@ it('handles a single unavailable image and cancels outstanding reads on exit', a
   expect(create).not.toHaveBeenCalled()
   wrapper.unmount()
 })
+
+
+it('retains overlapping neighbor originals while stepping and releases only departed images', async () => {
+  mocks.read.mockReset().mockResolvedValue(new Blob(['fixture']))
+  let serial = 0
+  vi.spyOn(URL, 'createObjectURL').mockImplementation(() => `blob:showcase-${serial++}`)
+  const revoke = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+  const wrapper = mount(GalleryShowcase, { props: { items, title: '中性画册', cardUrls: {}, thumbUrls: {} }, global: { stubs: { Teleport: true } } })
+  try {
+    await flushPromises()
+    expect(mocks.read.mock.calls.map(([id]) => id)).toEqual(['image-0', 'image-1'])
+    const first = wrapper.get('[aria-current="true"] img').attributes('src')
+    await wrapper.get('[aria-label="下一幅"]').trigger('click')
+    await flushPromises()
+    expect(mocks.read.mock.calls.map(([id]) => id)).toEqual(['image-0', 'image-1', 'image-2'])
+    expect(wrapper.get('[data-side="-1"] img').attributes('src')).toBe(first)
+    expect(revoke).not.toHaveBeenCalled()
+    await wrapper.get('[aria-label="下一幅"]').trigger('click')
+    await flushPromises()
+    expect(mocks.read.mock.calls.map(([id]) => id)).toEqual(['image-0', 'image-1', 'image-2', 'image-3'])
+    expect(revoke).toHaveBeenCalledExactlyOnceWith(first)
+  } finally { wrapper.unmount() }
+  expect(revoke).toHaveBeenCalledTimes(4)
+})

@@ -115,6 +115,9 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
       else next.add(tag)
     })
     pb.manualTags = next
+    // Claim reference overlaps only after the atomic bundle update: these adds
+    // are duplicates, so they release ownership without per-tag conflicts.
+    if (!selected) tags.forEach(tag => pb.addManualTag(tag))
   }
 
   return { addTag, tagMeaning, tagLabel, outfitOverrideLabel, tagWeightTier, toggleOutfitBundle }

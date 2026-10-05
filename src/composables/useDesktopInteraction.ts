@@ -88,7 +88,13 @@ export function desktopShortcutAllowed(event: KeyboardEvent) {
 /** Installs local document shortcuts; never registers operating-system hotkeys. */
 export function installDesktopInteraction(router: Router) {
   const remembered = new Map<string, { element: HTMLElement; id: string }>()
-  let keyboardNavigation = false
+  let keyboardNavigation = false, disposed = false, focusRevision = 0
+  let focusFrame: number | undefined
+  function cancelPendingFocus() {
+    focusRevision++
+    if (focusFrame !== undefined) cancelAnimationFrame(focusFrame)
+    focusFrame = undefined
+  }
   const main = () => document.querySelector<HTMLElement>('.companion-chat-body, .companion-conversation') || document.querySelector<HTMLElement>('main#main, main')
   const nav = () => document.querySelector<HTMLElement>('.companion-orbit') || [...document.querySelectorAll<HTMLElement>('nav[aria-label="主导航"], .control-rail, .control-mobile-nav, .companion-toolbar, .companion-chat-titlebar, .companion-desktop-float')].find(usableFocus)
   const modalOpen = () => [...document.querySelectorAll<HTMLElement>('dialog[open], [aria-modal="true"]')].some(usableFocus)
@@ -126,17 +132,27 @@ export function installDesktopInteraction(router: Router) {
     }
     if (event.key === 'Enter' && !event.ctrlKey && !event.shiftKey && event.target instanceof Element && event.target.closest('nav a[href], .nav-more-menu a[href]')) keyboardNavigation = true
   }
-  function pointerdown() { keyboardNavigation = false }
+  function pointerdown() { keyboardNavigation = false; cancelPendingFocus() }
   const removeAfter = router.afterEach(async (_to, _from, failure) => {
     const restore = keyboardNavigation; keyboardNavigation = false
-    if (failure || !restore) return
+    cancelPendingFocus()
+    const revision = focusRevision
+    if (disposed || failure || !restore) return
     await nextTick()
-    requestAnimationFrame(() => { if (!modalOpen()) contentFocus() })
+    if (disposed || revision !== focusRevision) return
+    focusFrame = requestAnimationFrame(() => {
+      if (disposed || revision !== focusRevision) return
+      focusFrame = undefined
+      if (!modalOpen()) contentFocus()
+    })
   })
   document.addEventListener('focusin', remember)
   document.addEventListener('keydown', keydown)
   document.addEventListener('pointerdown', pointerdown)
   return () => {
+    disposed = true
+    cancelPendingFocus()
+    remembered.clear()
     removeAfter()
     document.removeEventListener('focusin', remember)
     document.removeEventListener('keydown', keydown)

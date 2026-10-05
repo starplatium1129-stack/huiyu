@@ -470,8 +470,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   async function exportArchiveMarkdown(): Promise<string> {
     await archiveStorage.refresh(true)
-    const names: Record<string, string> = {}
-    for (const id of characterIds) names[id] = getCompanionCharacter(id)?.name || id
+    const names = Object.fromEntries(characterIds.map(id => [id, getCompanionCharacter(id)?.name || id]))
     return chatArchiveToMarkdown(archive.value, names)
   }
   /** 导入归档 JSON：合并去重后落盘，返回导入条数。 */
@@ -488,10 +487,11 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     return Object.keys(after).reduce((sum, id) => sum + Math.max(0, after[id] - (before[id] || 0)), 0)
   }
   /** 把该角色归档并回当前对话；返回并入条数。 */
-  async function restoreFromArchive(char = state.active): Promise<number> {
+  async function restoreFromArchive(char = state.active, isCurrent: () => boolean = () => true): Promise<number> {
     if (!canWrite()) throw new Error('聊天归档受版本保护，无法安全恢复。')
     if (!characterIds.includes(char)) return 0
     await archiveStorage.refresh(true)
+    if (!isCurrent() || !canWrite()) return 0
     const archived = archive.value.archived[char] || []
     if (!archived.length) return 0
     const history = messages(char)
@@ -507,13 +507,12 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         throw new Error('并入的对话尚未保存，原归档已保留，请重试。')
       }
     }
-    // Desktop writes remain queued in memory until the runtime confirms them.
-    // A failed confirmation must keep that retryable state and the source archive.
+    // Failed desktop confirmation keeps retryable state and the source archive.
     await flushProfileWrites()
     return added
   }
-  async function clearArchive(char?: string) {
-    if (!canWrite() || !await saveArchive()) return false
+  async function clearArchive(char?: string, isCurrent: () => boolean = () => true) {
+    if (!isCurrent() || !canWrite() || !await saveArchive() || !isCurrent() || !canWrite()) return false
     archiveStorage.clear(char)
     return saveArchive()
   }

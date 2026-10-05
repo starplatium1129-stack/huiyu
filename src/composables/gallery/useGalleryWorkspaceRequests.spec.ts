@@ -167,3 +167,17 @@ it('observes cards moved between masonry columns after image measurement without
   await flushPromises()
   expect(mocks.getImage).toHaveBeenCalledWith('replacement-in-place', expect.any(AbortSignal))
 })
+
+
+it('keeps a legacy embedded original available when the wall storage read fails', async () => {
+  const source = 'data:image/png;base64,embedded-original'
+  mocks.snapshot.mockResolvedValue({ history: [{ ...record(1), image_data: source }], projects: [] })
+  mocks.getImage.mockRejectedValue(new Error('storage unavailable'))
+  mocks.getThumbnail.mockResolvedValue(null)
+  const env = await setup()
+  await env.intersect()
+  expect(env.gallery.cardUrls[1]).toBe(source)
+  expect(env.wrapper.get('img').attributes('src')).toBe(source)
+  expect(env.gallery.missingImageIds.value.size).toBe(0)
+  expect(URL.createObjectURL).not.toHaveBeenCalled()
+})

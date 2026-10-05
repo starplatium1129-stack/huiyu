@@ -213,6 +213,40 @@ describe('video submission recovery', () => {
     expect(workspace.job.value?.status).toBe('cancelled')
     expect(mocks.fetch).toHaveBeenCalledOnce()
   })
+  it('invalidates a selected-job refresh during cancellation while preserving a newer route selection', async () => {
+    mocks.fetch.mockResolvedValueOnce({ job: { id: 'A', status: 'running' } })
+    await router.replace('/video-studio?job=A')
+    const workspace = await setup()
+    let finishRead!: (value: object) => void, finishCancel!: (value: object) => void
+    mocks.fetch.mockReturnValueOnce(new Promise(resolve => { finishRead = resolve }))
+    await workspace.loadStatus()
+    const signal = mocks.fetch.mock.calls[1][1] as AbortSignal
+    mocks.cancel.mockReturnValueOnce(new Promise(resolve => { finishCancel = resolve }))
+    const pending = workspace.cancelJob()
+    expect(signal.aborted).toBe(true)
+    await workspace.loadStatus()
+    expect(mocks.fetch).toHaveBeenCalledTimes(2)
+    finishCancel({ job: { id: 'A', status: 'cancelled' } })
+    await pending
+    finishRead({ job: { id: 'A', status: 'running' } })
+    await flushPromises()
+    expect(workspace.job.value?.status).toBe('cancelled')
+
+    // A different route owns the workspace even while its read is pending.
+    mocks.cancel.mockReturnValueOnce(new Promise(resolve => { finishCancel = resolve }))
+    const secondCancel = workspace.cancelJob()
+    mocks.fetch.mockReturnValueOnce(new Promise(resolve => { finishRead = resolve }))
+    await router.push('/video-studio?job=B')
+    await flushPromises()
+    const newerSignal = mocks.fetch.mock.calls[2][1] as AbortSignal
+    finishCancel({ job: { id: 'A', status: 'running' } })
+    await secondCancel
+    expect(newerSignal.aborted).toBe(false)
+    expect(workspace.job.value?.status).toBe('cancelled')
+    finishRead({ job: { id: 'B', status: 'succeeded' } })
+    await flushPromises()
+    expect(workspace.job.value?.id).toBe('B')
+  })
   it('stops reading a cached page task and resumes without cancelling its backend job', async () => {
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
     const visible = ref(true)

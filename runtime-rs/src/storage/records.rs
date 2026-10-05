@@ -256,26 +256,29 @@ pub(super) fn refresh_membership(c: &Context, key: &str, revision: i64) -> Resul
     let Some(mut record) = project(c, key)? else {
         return Ok(());
     };
-    let keys = membership(c, key)?;
-    let mut ids = Vec::with_capacity(keys.len());
-    let mut find =
-        c.db.prepare_cached("SELECT id_json,deleted_at FROM artworks WHERE id_key=?")?;
-    for artwork_key in &keys {
-        let row = find
-            .query_row([artwork_key], |r| {
-                Ok((json_column(r, 0)?, r.get::<_, Option<i64>>(1)?))
-            })
-            .optional()?;
-        let Some((id, None)) = row else {
+    // Read ordered IDs in one query, retaining rejection of broken/deleted
+    // memberships instead of silently omitting them through an inner join.
+    let mut statement = c.db.prepare_cached(
+        "SELECT a.id_json,a.deleted_at FROM project_artworks p
+         LEFT JOIN artworks a ON a.id_key=p.artwork_key
+         WHERE p.project_key=? ORDER BY p.position",
+    )?;
+    let mut rows = statement.query([key])?;
+    let mut ids = Vec::new();
+    while let Some(row) = rows.next()? {
+        c.check_cancel()?;
+        if matches!(row.get_ref(0)?, rusqlite::types::ValueRef::Null)
+            || row.get::<_, Option<i64>>(1)?.is_some()
+        {
             return Err(ApiError::new(
                 404,
                 "NOT_FOUND",
                 "Project artwork does not exist",
             ));
-        };
-        ids.push(id);
+        }
+        ids.push(json_column(row, 0)?);
     }
-    record["body"]["history_ids"] = json!(ids);
+    record["body"]["history_ids"] = Value::Array(ids);
     c.db.execute(
         "UPDATE projects SET body=?,revision=? WHERE id_key=?",
         params![stringify(&record["body"]), revision, key],

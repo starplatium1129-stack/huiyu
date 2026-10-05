@@ -2,7 +2,7 @@ import { onBeforeUnmount, watch, type Ref } from 'vue'
 import type { VideoBatch, VideoQuality } from '@/api/videoApi'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
-import { useVideoStore } from '@/stores/videoStore'
+import { useVideoStore, type ShotSubmissionRecord, type ShotsDraftPayload } from '@/stores/videoStore'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
 interface ShotDraftDeps {
@@ -14,6 +14,8 @@ interface ShotDraftDeps {
   referenceCards: Ref<ReferenceCard[]>
   shots: Ref<ShotDraft[]>
   batchError: Ref<string>
+  getShotSubmission: (shot: ShotDraft) => ShotSubmissionRecord | undefined
+  restoreShotSubmission: (shot: ShotDraft, submission: ShotSubmissionRecord | undefined) => void
   selectCardCharacter: (id: string, index?: number, outfit?: string) => Promise<boolean>
   retryPendingFrames: () => Promise<{ fixed: number; remaining: number }>
 }
@@ -25,9 +27,23 @@ export function useShotDraft(deps: ShotDraftDeps) {
 let restoringDraft = false
 let shotsDraftTimer = 0
 let saveFailed = false
+let disposed = false
+let lastSavedDraft: ShotsDraftPayload | null = null
+let lastSavedShots: ShotDraft[] = []
 
 function persistShotsDraft() {
   if (restoringDraft) return
+  if (disposed) {
+    // A late acceptance may only add provenance to our unchanged saved draft,
+    // never replay the old editor over a new workspace's draft.
+    const saved = videoStore.shotsDraft
+    if (!saved || saved !== lastSavedDraft) return
+    const ok = videoStore.saveShotsDraft({ ...saved, updatedAt: Date.now(),
+      shots: saved.shots.map((shot, index) => ({ ...shot, submission: deps.getShotSubmission(lastSavedShots[index]) })),
+    })
+    if (!ok) batchError.value = '分镜来源保存失败，请在任务中心保留并核对批次。'
+    return
+  }
   window.clearTimeout(shotsDraftTimer); shotsDraftTimer = 0
   const ok = videoStore.saveShotsDraft({
     aspectRatio: aspectRatio.value,
@@ -41,6 +57,7 @@ function persistShotsDraft() {
       outfitId: card.outfitId || '',
     })),
     shots: shots.value.map(shot => ({
+      submission: deps.getShotSubmission(shot),
       prompt: shot.prompt,
       dialogue: shot.dialogue,
       shotSize: shot.shotSize,
@@ -56,6 +73,7 @@ function persistShotsDraft() {
   })
   if (!ok) batchError.value = '分镜草稿保存失败（存储空间不足）：内容仍在页面中，但刷新后可能丢失'
   saveFailed = !ok
+  if (ok) { lastSavedDraft = videoStore.shotsDraft; lastSavedShots = shots.value.slice() }
 }
 const releaseMaintenance = registerMaintenanceParticipant(() => {
   if (restoringDraft) throw new Error('DRAFT_RESTORING')
@@ -104,6 +122,7 @@ async function restoreShotsDraft() {
       firstFramePrompt: shot.firstFramePrompt,
       imageId: shot.imageId || '',
     }))
+    shots.value.forEach((shot, index) => deps.restoreShotSubmission(shot, draft.shots[index]?.submission))
   } finally {
     restoringDraft = false
   }
@@ -125,6 +144,7 @@ async function restoreShotsDraft() {
     releaseMaintenance()
     window.clearTimeout(shotsDraftTimer)
     persistShotsDraft()
+    disposed = true
   })
-  return { restoreShotsDraft }
+  return { restoreShotsDraft, persistShotsDraft }
 }

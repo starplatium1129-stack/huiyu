@@ -1,3 +1,4 @@
+import type { PendingMediaUpload } from './mediaUpload.ts'
 import type { HistoryEntry } from '@/types/promptHistory'
 import type { AnimaResultContext } from '@/types/anima'
 import type { ArtworkRecord } from '@/types/artwork'
@@ -41,7 +42,7 @@ export interface SaveGeneratedArtworkDependencies {
 
 export type SaveGeneratedArtworkResult =
   | { ok: true; entry: HistoryEntry }
-  | { ok: false; error: unknown; operationId: string; cleanup: { status: 'not-needed' | 'completed' | 'failed' | 'commit-unknown'; imageId?: string; error?: unknown } }
+  | { ok: false; error: unknown; operationId: string; cleanup: { status: 'not-needed' | 'completed' | 'failed' | 'commit-unknown' | 'upload-pending'; imageId?: string; error?: unknown; upload?: PendingMediaUpload } }
 
 
 export interface ArtworkSaveSnapshot { entry: GeneratedArtworkInput; defaults: LegacyArtworkDefaults }

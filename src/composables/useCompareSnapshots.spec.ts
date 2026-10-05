@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
-import { defineComponent } from 'vue'
+import { defineComponent, h, KeepAlive, nextTick, ref, Teleport } from 'vue'
 import { useCompareSnapshots } from './useCompareSnapshots'
 
 type Snapshot = { url: string }
@@ -151,4 +151,27 @@ it('rotates non-blob URLs unchanged without fetching, cloning or revoking them',
   expect(fetch).not.toHaveBeenCalled()
   expect(URL.createObjectURL).not.toHaveBeenCalled()
   expect(URL.revokeObjectURL).not.toHaveBeenCalled()
+})
+
+it('closes the teleported comparison on cached navigation and preserves the current image pair', async () => {
+  let snapshots!: ReturnType<typeof useCompareSnapshots<Snapshot>>
+  const active = ref(true)
+  const Page = defineComponent({ setup() {
+    snapshots = useCompareSnapshots({ build: url => ({ url }) })
+    return () => h(Teleport, { to: 'body' }, snapshots.compareOpen.value ? h('div', { class: 'comparison-fixture' }) : [])
+  } })
+  const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(Page) : null }) }))
+  cleanup.push(() => wrapper.unmount())
+  for (const source of ['blob:first', 'blob:second']) { snapshots.rotate(source); await flushPromises() }
+  snapshots.compareOpen.value = true
+  snapshots.rotate('blob:third'); await flushPromises()
+  expect(document.querySelector('.comparison-fixture')).not.toBeNull()
+  active.value = false; await nextTick(); await nextTick()
+  expect(document.querySelector('.comparison-fixture')).toBeNull()
+  expect(snapshots.compareOpen.value).toBe(false)
+  expect(URL.revokeObjectURL).toHaveBeenCalledExactlyOnceWith('blob:clone-1')
+  active.value = true; await nextTick()
+  expect(snapshots.prevResult.value?.url).toBe('blob:clone-2')
+  expect(snapshots.lastResult.value?.url).toBe('blob:clone-3')
+  expect(snapshots.compareOpen.value).toBe(false)
 })
