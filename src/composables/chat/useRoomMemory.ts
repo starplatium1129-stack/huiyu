@@ -1,4 +1,5 @@
 import { computed, ref, type Ref } from 'vue'
+import { flushProfileWrites } from '@/platform/web/profileStorage'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
   getCompanionCharacterConfig,
@@ -58,13 +59,18 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
     if (event.key === CHAT_USER_PROFILE_KEY) userProfile.value = loadChatUserProfile()
   }
 
-  function updateUserProfile(profile: ChatUserProfile) {
-    if (!storage.canWrite()) { userProfile.value = loadChatUserProfile(); return }
+  async function updateUserProfile(profile: ChatUserProfile): Promise<boolean> {
+    if (!storage.canWrite()) { userProfile.value = loadChatUserProfile(); return false }
     try {
-      userProfile.value = saveChatUserProfile(profile)
+      saveChatUserProfile(profile)
+      await flushProfileWrites()
+      userProfile.value = loadChatUserProfile(true)
+      if (!storage.canWrite()) return false
       setError('用户档案已保存', 'info', 3000)
+      return true
     } catch {
-      setError('用户档案保存失败，请检查浏览器存储空间。', 'warning')
+      setError('用户档案保存尚未确认，请保留当前修改并重试。', 'warning')
+      return false
     }
   }
 

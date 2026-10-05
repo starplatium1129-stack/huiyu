@@ -23,8 +23,8 @@
         <ChatArchivePanel v-if="roomPanel === 'archive'" :storage="storage" :active-char="activeChar"
           @vue:mounted="focusRoomPanel" @close="closeRoomPanel"
           @notice="(message, kind) => setError(message, kind || 'info', 4500)" />
-        <ChatUserProfilePanel v-else-if="roomPanel === 'profile'" :profile="userProfile"
-          @vue:mounted="focusRoomPanel" @save="onUserProfileSave" @close="closeRoomPanel" />
+        <ChatUserProfilePanel v-else-if="roomPanel === 'profile'" :key="roomPanelGeneration" :profile="userProfile" :save-profile="onUserProfileSave"
+          @vue:mounted="focusRoomPanel" @close="closeRoomPanel" />
         <ChatMemoryPanel v-else-if="roomPanel === 'memory'" :items="currentMemories" :character-name="currentCharacter.name"
           @vue:mounted="focusRoomPanel" @update="updateMemory" @delete="deleteMemory" @close="closeRoomPanel" />
       </dialog>
@@ -394,10 +394,14 @@ const {
 
 type RoomPanel = 'archive' | 'memory' | 'profile'
 const roomPanel = ref<RoomPanel | null>(null)
+const roomPanelGeneration = ref(0)
+let roomPanelClosing = false
 const roomPanelLabels = { archive: '对话归档', memory: '长期记忆', profile: '我的档案' }
 const roomPanelDialog = ref<HTMLDialogElement | null>(null)
 const roomPanelMotion = useFluidDialog(roomPanelDialog)
 async function openRoomPanel(panel: RoomPanel) {
+  roomPanelClosing = false
+  roomPanelGeneration.value++
   roomPanel.value = panel
   await nextTick()
   roomPanelMotion.open(document.querySelector<HTMLElement>('.chat-more-trigger'))
@@ -406,7 +410,7 @@ async function openRoomPanel(panel: RoomPanel) {
 function focusRoomPanel() {
   if (roomPanelDialog.value?.open) roomPanelDialog.value.querySelector<HTMLElement>('button')?.focus({ preventScroll: true })
 }
-function closeRoomPanel() { roomPanelMotion.close(() => { roomPanel.value = null }) }
+function closeRoomPanel() { roomPanelClosing = true; roomPanelMotion.close(() => { roomPanel.value = null }) }
 function onRoomPanelClosed() { if (!roomPanelDialog.value?.open) roomPanel.value = null }
 function closeRoomPanelFromBackdrop(event: MouseEvent) {
   if (isBackdropClick(event, roomPanelDialog.value)) closeRoomPanel()
@@ -432,9 +436,9 @@ const personalizedGreeting = computed(() => {
   return `${name}，欢迎回来～ ${base}`
 })
 
-function onUserProfileSave(profile: ChatUserProfile) {
-  updateUserProfile(profile)
-  closeRoomPanel()
+async function onUserProfileSave(profile: ChatUserProfile): Promise<boolean> {
+  const generation = roomPanelGeneration.value
+  return await updateUserProfile(profile) && generation === roomPanelGeneration.value && !roomPanelClosing && roomPanel.value === 'profile'
 }
 
 const {
