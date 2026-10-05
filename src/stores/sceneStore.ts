@@ -370,8 +370,8 @@ export const useSceneStore = defineStore('scenes', () => {
       inflightByKey.delete(`char:${shard}`)
     }
     return beginTargetLoad(`char:${shard}`, async (_isCurrent, epoch, requestVersion) => {
-      await loadMeta(false)
-      const [shared, target] = await Promise.all([
+      const [, shared, target] = await Promise.all([
+        loadMeta(false),
         loadShard('shared', epoch, requestVersion),
         loadShard(shard, epoch, requestVersion),
       ])
@@ -386,8 +386,8 @@ export const useSceneStore = defineStore('scenes', () => {
       inflightByKey.delete('core')
     }
     return beginTargetLoad('core', async (_isCurrent, epoch, requestVersion) => {
-      await loadMeta(false)
-      const [shared, core] = await Promise.all([
+      const [, shared, core] = await Promise.all([
+        loadMeta(false),
         loadShard('shared', epoch, requestVersion),
         loadShard('core', epoch, requestVersion),
       ])
@@ -402,8 +402,10 @@ export const useSceneStore = defineStore('scenes', () => {
     const shared = shardCache.shared
     if (loadedShards.value.has(shard)
       && cached?.epoch === loadEpoch
-      && shared?.epoch === loadEpoch) {
-      // 目标分片已在手：直接用 shared + 目标分片重建视图，不发请求。
+      && shared?.epoch === loadEpoch
+      // Concurrent shards can finish before required metadata; only a complete
+      // studio catalog may take the cached-view shortcut.
+      && META_SPECS.every(spec => !spec.required || metaOk.get(spec.file)?.epoch === loadEpoch)) {
       viewTarget = `char:${shard}`
       scenes.value = mergeScenes(shared.list, cached.list)
       return Promise.resolve()
@@ -445,8 +447,8 @@ export const useSceneStore = defineStore('scenes', () => {
     }
     if (loaded.value && !force) return Promise.resolve()
     return beginTargetLoad('full', async (_isCurrent, epoch, requestVersion) => {
-      await loadMeta(false)
-      const [shared, nene, natsume] = await Promise.all([
+      const [, shared, nene, natsume] = await Promise.all([
+        loadMeta(false),
         loadShard('shared', epoch, requestVersion),
         loadShard('nene', epoch, requestVersion),
         loadShard('natsume', epoch, requestVersion),
@@ -510,8 +512,8 @@ export const useSceneStore = defineStore('scenes', () => {
    */
   function loadHome(): Promise<void> {
     return beginTargetLoad('home', async (_isCurrent, epoch, requestVersion) => {
-      await loadMeta(false, true)
-      const [shared, nene, natsume] = await Promise.all([
+      const [, shared, nene, natsume] = await Promise.all([
+        loadMeta(false, true),
         loadShard('shared', epoch, requestVersion),
         loadShard('nene', epoch, requestVersion),
         loadShard('natsume', epoch, requestVersion),

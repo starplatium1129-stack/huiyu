@@ -271,6 +271,40 @@ describe('sceneStore · 按需加载与并发去重', () => {
     }
   })
 
+  it.each(['character', 'core', 'full', 'home'] as const)('%s starts known shards before required metadata completes', async target => {
+    routes['scenes-core.json'] = [scene('sc004')]
+    const metadata = deferred<void>()
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL) => {
+      const url = String(input)
+      calls.push(url)
+      const file = url.replace(/^\/data\//, '').replace(/\?.*$/, '')
+      if (file === 'popular-characters.json') await metadata.promise
+      return response(routes[file])
+    }))
+    const store = useSceneStore()
+    const load = target === 'character' ? store.loadCharacter('nene') : target === 'core' ? store.loadCore()
+      : target === 'full' ? store.load() : store.loadHome()
+    let ensured: Promise<void> | undefined
+    try {
+      await vi.waitFor(() => expect(store.loadedShards.has('shared')).toBe(true))
+      const expected = target === 'core' ? ['shared', 'core'] : target === 'character' ? ['shared', 'nene'] : ['shared', 'nene', 'natsume']
+      expect(calls.filter(url => /scenes-(?:shared|core|nene|natsume)\.json/.test(url)).map(url => url.split('?')[0]))
+        .toEqual(expected.map(shard => `/data/scenes-${shard}.json`))
+      // A cached shard is not proof that its required catalog has completed.
+      if (target === 'character') ensured = store.ensureCharacter('nene')
+      expect(store.scenes).toEqual([])
+      expect(store.loading).toBe(true)
+      expect(store.loaded).toBe(false)
+    } finally {
+      metadata.resolve()
+      await Promise.all([load, ensured])
+    }
+    expect(store.error).toBeNull()
+    expect(store.loading).toBe(false)
+    expect(store.scenes.length).toBeGreaterThan(0)
+    expect(store.loaded).toBe(target === 'full')
+  })
+
   it('loadCharacter 只拉 shared + 目标分片', async () => {
     stubFetch()
     const store = useSceneStore()
