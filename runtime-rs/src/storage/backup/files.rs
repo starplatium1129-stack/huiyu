@@ -1,4 +1,5 @@
 use super::*;
+use sha2::{Digest, Sha256};
 use std::{
     fs::{File, OpenOptions},
     io::{Read, Write},
@@ -78,6 +79,8 @@ pub(super) fn copy(
     let mut input = File::open(from)?;
     let mut output = OpenOptions::new().create_new(true).write(true).open(&to)?;
     let mut buffer = vec![0; media::CHUNK];
+    let mut hash = Sha256::new();
+    let mut bytes = 0u64;
     loop {
         c.check_cancel()?;
         let count = input.read(&mut buffer)?;
@@ -85,10 +88,15 @@ pub(super) fn copy(
             break;
         }
         output.write_all(&buffer[..count])?;
+        hash.update(&buffer[..count]);
+        bytes += count as u64;
     }
     output.sync_all()?;
     drop(output);
-    if digest_file(c, &to)? != *expected {
+    c.check_cancel()?;
+    // Check the bytes actually copied, including changes to the source during
+    // the copy. Every caller verifies the destination snapshot before publishing.
+    if json!({"bytes":bytes,"sha256":hex::encode(hash.finalize())}) != *expected {
         return Err(invalid_backup("Backup file hash or size mismatch"));
     }
     schema::sync_dir(to.parent().unwrap())
