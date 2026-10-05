@@ -5,7 +5,7 @@
         <strong>对话归档</strong>
         <small>对话超过 20 条时，早期消息自动转入本地归档；可随时导出备份或并回当前对话。</small>
       </div>
-      <button class="btn btn-ghost btn-sm" type="button" @click="$emit('close')">收起</button>
+      <button class="btn btn-ghost btn-sm" type="button" @click="close">收起</button>
     </div>
 
     <div class="archive-counts" role="list" aria-label="各角色归档条数">
@@ -15,13 +15,13 @@
     </div>
 
     <div class="archive-actions">
-      <button class="btn btn-ghost btn-sm" type="button" @click="exportJson">导出 JSON</button>
-      <button class="btn btn-ghost btn-sm" type="button" @click="exportMarkdown">导出 Markdown</button>
+      <button class="btn btn-ghost btn-sm" type="button" :disabled="exporting" @click="exportJson">导出 JSON</button>
+      <button class="btn btn-ghost btn-sm" type="button" :disabled="exporting" @click="exportMarkdown">导出 Markdown</button>
       <button class="btn btn-ghost btn-sm" type="button" @click="fileEl?.click()">导入归档</button>
-      <button class="btn btn-ghost btn-sm" type="button" :disabled="!counts[activeChar]" @click="restoreCurrent">
+      <button class="btn btn-ghost btn-sm" type="button" :disabled="restoring || !counts[activeChar]" @click="restoreCurrent">
         归档并入当前对话
       </button>
-      <button class="btn btn-ghost btn-sm danger" type="button" :disabled="!totalCount" @click="clearArchive">
+      <button class="btn btn-ghost btn-sm danger" type="button" :disabled="clearing || !totalCount" @click="clearArchive">
         清空归档
       </button>
       <input ref="fileEl" class="archive-file-input" type="file" accept=".json,application/json" @change="onFile">
@@ -51,8 +51,17 @@ const emit = defineEmits<{
 
 const fileEl = ref<HTMLInputElement>()
 let fileRequest = 0, disposed = false
-watch(() => props.storage, () => { ++fileRequest }, { flush: 'sync' })
-onScopeDispose(() => { disposed = true; ++fileRequest })
+let context = new AbortController()
+const exporting = ref(false), restoring = ref(false), clearing = ref(false)
+function invalidate() {
+  ++fileRequest
+  context.abort()
+  context = new AbortController()
+  exporting.value = false; restoring.value = false; clearing.value = false
+}
+function close() { invalidate(); emit('close') }
+watch(() => [props.storage, props.activeChar], invalidate, { flush: 'sync' })
+onScopeDispose(() => { disposed = true; invalidate() })
 const characterIds = computed(() => Object.keys(counts.value))
 
 function characterName(id: string) {
@@ -67,14 +76,20 @@ function download(name: string, content: string, mime: string) {
 }
 
 async function exportArchive(format: 'json' | 'markdown') {
+  if (disposed || exporting.value) return
+  const owner = context, storage = props.storage, revision = chatResetRevision()
+  const current = () => !disposed && !owner.signal.aborted && revision === chatResetRevision()
+  exporting.value = true
   try {
-    const content = await (format === 'json' ? props.storage.exportArchiveJson() : props.storage.exportArchiveMarkdown())
+    const content = await (format === 'json' ? storage.exportArchiveJson() : storage.exportArchiveMarkdown())
+    if (!current()) return
     if (!totalCount.value) { emit('notice', '归档里还没有消息。', 'info'); return }
     const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
     download(`aics-chat-archive-${stamp}.${format === 'json' ? 'json' : 'md'}`, content,
       format === 'json' ? 'application/json;charset=utf-8' : 'text/markdown;charset=utf-8')
     emit('notice', `已导出 ${totalCount.value} 条归档消息。`, 'info')
-  } catch (error) { emit('notice', `无法读取归档：${error instanceof Error ? error.message : '存储暂不可用'}`, 'error') }
+  } catch (error) { if (current()) emit('notice', `无法读取归档：${error instanceof Error ? error.message : '存储暂不可用'}`, 'error') }
+  finally { if (context === owner) exporting.value = false }
 }
 const exportJson = () => exportArchive('json')
 const exportMarkdown = () => exportArchive('markdown')
@@ -105,27 +120,42 @@ async function onFile(event: Event) {
 }
 
 async function restoreCurrent() {
+  if (disposed || restoring.value) return
+  const owner = context, storage = props.storage, character = props.activeChar
+  const current = () => !disposed && !owner.signal.aborted
+  restoring.value = true
   try {
-    const added = await props.storage.restoreFromArchive(props.activeChar)
+    const added = await storage.restoreFromArchive(character, current)
+    if (!current()) return
     emit('notice', added
-      ? `已把 ${added} 条归档消息并回 ${characterName(props.activeChar)} 的对话。`
+      ? `已把 ${added} 条归档消息并回 ${characterName(character)} 的对话。`
       : '当前角色没有可并入的归档消息。', 'info')
   } catch (error) {
-    emit('notice', `无法恢复归档：${error instanceof Error ? error.message : '存储暂不可用'}`, 'error')
-  }
+    if (current()) emit('notice', `无法恢复归档：${error instanceof Error ? error.message : '存储暂不可用'}`, 'error')
+  } finally { if (context === owner) restoring.value = false }
 }
 
 async function clearArchive() {
-  if (!totalCount.value) return
-  const confirmed = await confirmAction({
-    title: '清空全部对话归档？',
-    message: '本地保存的历史归档消息将被彻底清空。建议在操作前先导出 JSON 或 Markdown 备份。',
-    confirmLabel: '清空归档',
-    danger: true,
-  })
-  if (!confirmed) return
-  if (await props.storage.clearArchive()) emit('notice', '对话归档已清空。', 'info')
-  else emit('notice', '归档清空尚未保存，请重试。', 'error')
+  if (disposed || clearing.value || !totalCount.value) return
+  const owner = context, storage = props.storage, revision = chatResetRevision()
+  const current = () => !disposed && !owner.signal.aborted && revision === chatResetRevision()
+  clearing.value = true
+  try {
+    const confirmed = await confirmAction({
+      title: '清空全部对话归档？',
+      message: '本地保存的历史归档消息将被彻底清空。建议在操作前先导出 JSON 或 Markdown 备份。',
+      confirmLabel: '清空归档',
+      danger: true,
+      signal: owner.signal,
+    })
+    if (!confirmed || !current()) return
+    const cleared = await storage.clearArchive(undefined, current)
+    if (!current()) return
+    if (cleared) emit('notice', '对话归档已清空。', 'info')
+    else emit('notice', '归档清空尚未保存，请重试。', 'error')
+  } catch (error) {
+    if (current()) emit('notice', `无法清空归档：${error instanceof Error ? error.message : '存储暂不可用'}`, 'error')
+  } finally { if (context === owner) clearing.value = false }
 }
 </script>
 

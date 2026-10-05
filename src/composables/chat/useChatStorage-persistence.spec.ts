@@ -7,6 +7,9 @@ vi.mock('@/platform/web/profileStorage', async importOriginal => ({
   ...await importOriginal<typeof import('@/platform/web/profileStorage')>(),
   flushProfileWrites: vi.fn(async () => {}),
 }))
+vi.mock('@/utils/downloadBlob', () => ({ downloadBlob: vi.fn() }))
+import { downloadBlob } from '@/utils/downloadBlob'
+import { resolveConfirm, useConfirmState } from '@/composables/useConfirm'
 import { mount, flushPromises } from '@vue/test-utils'
 import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
 import { clearStoredChatContent } from '@/utils/chatReset'
@@ -304,4 +307,56 @@ it('binds delayed archive file selection to its reset, storage owner, latest sel
     wrapper.unmount(); abandoned('after-unmount'); await flushPromises()
     expect(otherImport).not.toHaveBeenCalled()
   } finally { if (wrapper.exists()) wrapper.unmount() }
+})
+
+it('owns archive confirmations and delayed exports across close and unmount', async () => {
+  const storage = await open()
+  await storage.importArchiveJson(JSON.stringify({ version: 1, archived: { nene: [{ mid: 'keep', role: 'user', content: 'keep' }] } }))
+  const clear = vi.spyOn(storage, 'clearArchive')
+  const wrapper = mount(ChatArchivePanel, { props: { storage, activeChar: 'nene' } })
+  const button = (label: string) => wrapper.findAll('button').find(item => item.text() === label)!
+  try {
+    await button('清空归档').trigger('click')
+    expect(useConfirmState().value.visible).toBe(true)
+    await button('收起').trigger('click')
+    expect(useConfirmState().value.visible).toBe(false)
+    resolveConfirm(true); await flushPromises()
+    expect(clear).not.toHaveBeenCalled()
+    let finish!: (text: string) => void
+    const exporting = vi.spyOn(storage, 'exportArchiveJson').mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+    await button('导出 JSON').trigger('click')
+    await button('导出 JSON').trigger('click')
+    expect(exporting).toHaveBeenCalledOnce()
+    const other = await open()
+    wrapper.unmount()
+    finish('old archive'); await flushPromises()
+    expect(downloadBlob).not.toHaveBeenCalled()
+    const replacement = mount(ChatArchivePanel, { props: { storage: other, activeChar: 'nene' } })
+    await replacement.get('button.danger').trigger('click')
+    expect(useConfirmState().value.visible).toBe(true)
+    replacement.unmount()
+    expect(useConfirmState().value.visible).toBe(false)
+    resolveConfirm(true); await flushPromises()
+    expect(clear).not.toHaveBeenCalled()
+    expect(storage.archiveCount('nene')).toBe(1)
+  } finally { if (wrapper.exists()) wrapper.unmount() }
+})
+
+it('does not restore or clear archives after their panel action becomes stale during storage reads', async () => {
+  const storage = await open()
+  await storage.importArchiveJson(JSON.stringify({ version: 1, archived: { nene: [{ mid: 'keep', role: 'user', content: 'keep' }] } }))
+  let current = true, release!: (value: unknown) => void
+  const archived = structuredClone(archiveKv.get('chat_archive_v1'))
+  vi.mocked(kvGet).mockImplementationOnce(() => new Promise(resolve => { release = resolve }))
+  const restore = storage.restoreFromArchive('nene', () => current)
+  await flushPromises(); current = false; release(archived)
+  expect(await restore).toBe(0)
+  expect(storage.messages('nene')).toEqual([])
+  current = true
+  // clearArchive first yields to flush the archive; cancellation before the
+  // clear is committed must preserve the already-persisted source.
+  const clearing = storage.clearArchive(undefined, () => current)
+  current = false
+  expect(await clearing).toBe(false)
+  expect(storage.archiveCount('nene')).toBe(1)
 })

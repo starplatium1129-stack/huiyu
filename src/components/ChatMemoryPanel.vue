@@ -5,7 +5,7 @@
         <span>LONG-TERM MEMORY</span>
         <strong id="chatMemoryTitle">{{ characterName }}的长期记忆</strong>
       </div>
-      <button type="button" class="memory-close" aria-label="关闭长期记忆" @click="$emit('close')">×</button>
+      <button type="button" class="memory-close" aria-label="关闭长期记忆" @click="close">×</button>
     </header>
     <p>只保存你主动固定的事实。发送消息时最多召回 4 条相关内容，不自动记录角色说过的话。</p>
     <div v-if="!items.length" class="memory-empty">在自己的聊天气泡下点击“记住”，事实会出现在这里。</div>
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
+import { onScopeDispose, reactive, watch } from 'vue'
 import { confirmAction } from '@/composables/useConfirm'
 import type { ChatMemoryItem } from '@/utils/chatMemory'
 
@@ -38,6 +38,11 @@ const emit = defineEmits<{
 }>()
 
 const drafts = reactive<Record<string, string>>({})
+let confirmation: AbortController | null = null
+function cancelDelete() { confirmation?.abort(); confirmation = null }
+function close() { cancelDelete(); emit('close') }
+onScopeDispose(cancelDelete)
+watch(() => [props.items, props.characterName], cancelDelete, { deep: true, flush: 'sync' })
 
 watch(() => props.items, items => {
   const ids = new Set(items.map(item => item.id))
@@ -52,14 +57,18 @@ function save(id: string) {
 
 async function requestDelete(id: string) {
   const fact = props.items.find(item => item.id === id)
-  if (!fact) return
+  if (!fact || confirmation) return
+  const controller = new AbortController()
+  confirmation = controller
   const confirmed = await confirmAction({
     title: '删除这条长期记忆？',
     message: fact.text,
     confirmLabel: '删除记忆',
     danger: true,
+    signal: controller.signal,
   })
-  if (confirmed) emit('delete', id)
+  if (confirmation === controller) confirmation = null
+  if (confirmed && !controller.signal.aborted) emit('delete', id)
 }
 </script>
 
