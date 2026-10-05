@@ -7,11 +7,11 @@ export function useDesktopUpdater() {
   const statusText = ref('')
   const phase = ref<DesktopUpdateState['phase']>('idle')
   const canCancel = ref(false)
-  const starting = ref(false), cancelPending = ref(false)
+  const starting = ref(false), cancelPending = ref(false), checking = ref(false)
   const errorText = ref('')
   const installing = computed(() => ['checking', 'downloading', 'verifying', 'cancelling', 'installing'].includes(phase.value))
   const cancelling = computed(() => cancelPending.value || phase.value === 'cancelling')
-  let disposed = false, checkRevision = 0, installCallPending = false
+  let disposed = false, checkRevision = 0, checkRequest = 0, installCallPending = false
 
   const api = getDesktopUpdater()
   // Browsers lack this optional capability; automatic checks remain silent.
@@ -40,6 +40,8 @@ export function useDesktopUpdater() {
       if (disposed || installing.value || starting.value
         || (silent && phase.value !== 'idle' && !(preserveTerminal && !availableVersion.value))) return
       const revision = ++checkRevision
+      const request = ++checkRequest
+      checking.value = true
       const current = () => !disposed && !installing.value && !starting.value && revision === checkRevision
       try {
         const version = await api.check()
@@ -48,6 +50,8 @@ export function useDesktopUpdater() {
         if (!preserveTerminal) { statusText.value = ''; errorText.value = '' }
       } catch (error) {
         if (current() && !preserveTerminal) errorText.value = silent ? '' : message(error)
+      } finally {
+        if (!disposed && request === checkRequest) checking.value = false
       }
     } catch (error) {
       if (!disposed && !silent) errorText.value = message(error)
@@ -99,5 +103,5 @@ export function useDesktopUpdater() {
     if (foundSubscription !== undefined) api?.off(foundSubscription)
   })
 
-  return { availableVersion, statusText, installing, cancelling, canCancel, starting, errorText, supported, check, install, cancel }
+  return { availableVersion, statusText, installing, cancelling, canCancel, starting, checking, errorText, supported, check, install, cancel }
 }

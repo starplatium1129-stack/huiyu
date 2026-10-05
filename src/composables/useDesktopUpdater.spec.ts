@@ -155,6 +155,36 @@ describe('useDesktopUpdater', () => {
     }
   })
 
+  it('离线重挂载后可显式重查未知版本，检查中禁用重复点击且不自动安装', async () => {
+    const retry = deferred<string | null>()
+    let online = false
+    const bridge = nativeSession({ desktop_update_check: () => {
+      if (!online) throw new Error('offline')
+      return retry.promise
+    } })
+    bridge.update({ phase: 'failed', version: '', errorText: 'check unavailable' }, false)
+    const banner = mount(DesktopUpdateBanner)
+    await flushPromises()
+    expect(banner.text()).toContain('更新失败：check unavailable')
+    expect(banner.get('button').text()).toBe('重新检查更新')
+    await banner.get('button').trigger('click'); await flushPromises()
+    expect(banner.text()).toContain('更新失败：offline')
+    expect(banner.get('button').attributes('disabled')).toBeUndefined()
+    online = true
+    await banner.get('button').trigger('click'); await flushPromises()
+    expect(banner.get('button').text()).toBe('正在检查…')
+    expect(banner.get('button').attributes('disabled')).toBeDefined()
+    await banner.get('button').trigger('click')
+    expect(bridge.invoke.mock.calls.filter(([command]) => command === 'desktop_update_check')).toHaveLength(3)
+    retry.resolve('next'); await flushPromises()
+    expect(banner.text()).not.toContain('更新失败')
+    expect(banner.get('button').text()).toBe('下载并安装')
+    expect(bridge.invoke).not.toHaveBeenCalledWith('desktop_update_install')
+    await banner.get('button').trigger('click'); await flushPromises()
+    expect(bridge.invoke.mock.calls.filter(([command]) => command === 'desktop_update_install')).toHaveLength(1)
+    banner.unmount()
+  })
+
   it('双订阅和迟到订阅接续进度，取消结束后才能重试，交接后不能取消', async () => {
     let finishInstall = deferred<boolean>()
     const finishCancel = deferred<boolean>()

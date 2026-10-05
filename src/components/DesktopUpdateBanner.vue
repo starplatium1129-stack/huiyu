@@ -16,6 +16,7 @@ const {
   cancelling,
   canCancel,
   starting,
+  checking,
   errorText,
   supported,
   check: checkForUpdate,
@@ -34,13 +35,13 @@ onMounted(() => { if (supported) checkForUpdate(true) })
       <p v-if="errorText" class="desktop-update-error" role="alert">更新失败：{{ errorText }}</p>
     </div>
     <button
-      v-if="availableVersion || installing"
+      v-if="availableVersion || installing || errorText"
       class="btn btn-primary"
       type="button"
-      :disabled="starting || cancelling || (installing && !canCancel) || undefined"
-      @click="installing ? cancelUpdate() : installUpdate()"
+      :disabled="starting || cancelling || (checking && !installing) || (installing && !canCancel) || undefined"
+      @click="installing ? cancelUpdate() : availableVersion ? installUpdate() : checkForUpdate()"
     >
-      {{ starting || cancelling ? '请稍候…' : installing ? canCancel ? '取消更新' : '正在安装…' : errorText ? '重试下载并安装' : '下载并安装' }}
+      {{ starting || cancelling ? '请稍候…' : installing ? canCancel ? '取消更新' : '正在安装…' : checking ? '正在检查…' : !availableVersion ? '重新检查更新' : errorText ? '重试下载并安装' : '下载并安装' }}
     </button>
   </div>
 </template>
