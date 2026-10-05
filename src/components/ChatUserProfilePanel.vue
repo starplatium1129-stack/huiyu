@@ -52,17 +52,19 @@ const emit = defineEmits<{
 
 const draft = reactive<ChatUserProfile>(normalizeChatUserProfile(props.profile))
 
-let baseline = JSON.stringify(draft)
+let baseline = { ...draft }
 const saving = ref(false)
 const saveMessage = ref('')
 let disposed = false
 onBeforeUnmount(() => { disposed = true })
 
 watch(() => props.profile, profile => {
-  // Remote acknowledgments must not overwrite edits made in this editor.
-  if (saving.value || JSON.stringify(draft) !== baseline) return
-  Object.assign(draft, normalizeChatUserProfile(profile))
-  baseline = JSON.stringify(draft)
+  // Merge untouched fields so saving a local edit cannot replay stale remote data.
+  const incoming = normalizeChatUserProfile(profile)
+  for (const key of ['callName', 'relationship', 'note'] as const) {
+    if (draft[key] === baseline[key]) Object.assign(draft, { [key]: incoming[key] })
+  }
+  baseline = incoming
 }, { deep: true })
 
 function close() { disposed = true; emit('close') }
