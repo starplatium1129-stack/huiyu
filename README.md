@@ -4,7 +4,7 @@
 
 [中文说明](README_zh.md)
 
-[Download HUIYU 1.8.1 for Windows](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1) · [1.8.1 release notes](docs/releases/v1.8.1.md)
+[Download HUIYU 1.9.0 for Windows](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0) · [1.9.0 release notes](docs/releases/v1.9.0.md)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 

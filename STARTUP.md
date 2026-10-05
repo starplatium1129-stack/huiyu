@@ -1,12 +1,12 @@
 # 绘遇 HUIYU 启动与排错
 
-本页是换机搭建和故障恢复入口。普通新机器先按 [离线资源发布与换机](docs/guides/offline-resources.md) 安装桌面程序、导入完整素材包，再按需要准备生图、视频、语音和聊天服务。完整素材浏览与本地 AI 推理分开验收；硬件、指定模型下载和运行环境见 [本地模型配置指南](docs/guides/setup-and-models.md)。当前公开桌面版为 [1.8.1](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1)，使用 Rust 产品后端；公开安装包、本机已安装版本与后续源码改动分别见[项目状态](docs/project-status.md)。[1.8.1 发行说明](docs/releases/v1.8.1.md)记录已交付范围，后续源码修复不因版本号相同而自动到达安装版。
+本页是换机搭建和故障恢复入口。普通新机器先按 [离线资源发布与换机](docs/guides/offline-resources.md) 安装桌面程序、导入完整素材包，再按需要准备生图、视频、语音和聊天服务。完整素材浏览与本地 AI 推理分开验收；硬件、指定模型下载和运行环境见 [本地模型配置指南](docs/guides/setup-and-models.md)。当前公开桌面版为 [1.9.0](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0)，使用 Rust 产品后端；公开安装包、本机已安装版本与后续源码改动分别见[项目状态](docs/project-status.md)。[1.9.0 发行说明](docs/releases/v1.9.0.md)记录已交付范围，后续源码修复不因版本号相同而自动到达安装版。
 
 ## 新机器的桌面离线安装
 
-准备 [1.8.1 完整桌面安装包](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1)和[完整素材 `huiyu-resources-20261002-r1.zip`](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261002-r1)（471 项基础资源、2,042 条样张），保留发布页的校验文件与离线安装 README。程序安装不自动下载该 ZIP，程序升级也不代表已更新用户素材。图形助手自动检查内置审批指纹；维护者使用单独的 `Install-OfflineResources.ps1` 时，`-ExpectedReleaseSha256` 必须取自独立受信发布说明里的 `release.json` 审批 SHA-256，不能用 ZIP SHA-256 代替。
+准备 [1.9.0 完整桌面安装包](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0)和[完整素材 `huiyu-resources-20261006-r1.zip`](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1)（481 项基础资源、2,092 条样张），保留发布页的校验文件与配套安装助手。程序安装不自动下载该 ZIP，程序升级也不代表已更新用户素材。图形助手自动检查内置审批指纹；维护者使用单独的 `Install-OfflineResources.ps1` 时，`-ExpectedReleaseSha256` 必须取自独立受信发布说明里的 `release.json` 审批 SHA-256，不能用 ZIP SHA-256 代替。
 
-本次公开附件不转载微软 VC++ 安装器。完全断网的新机须先在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器并带到新机，核对后手动安装，处理许可/UAC与可能的重启，再安装绘遇。1.8.1 完整安装包内嵌 WebView2 离线安装器。安装后完全退出绘遇及其运行时，以自己的普通用户身份双击安装目录 `gateway\tools\Install-OfflineResources.cmd`，选择上述 ZIP 校验并确认安装，成功后重启；此公开包不含后续源码新增的开始菜单资源助手入口。素材导入使用已安装的 Rust 原生入口，不要求新机具备 E 盘、开发机目录、Node、npm、Python 或克隆 Git。自定义安装/运行目录可按指南传 `-InstallDir` / `-RuntimeRoot`。
+本次公开附件不转载微软 VC++ 安装器。完全断网的新机须先在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器并带到新机，核对后手动安装，处理许可/UAC与可能的重启，再安装绘遇。1.9.0 完整安装包内嵌 WebView2 离线安装器。安装后完全退出绘遇及其运行时，以自己的普通用户身份双击安装目录 `gateway\tools\Install-OfflineResources.cmd`，选择上述 ZIP 校验并确认安装，成功后重启；也可从开始菜单打开资源安装助手。素材导入使用已安装的 Rust 原生入口，不要求新机具备 E 盘、开发机目录、Node、npm、Python 或克隆 Git。自定义安装/运行目录可按指南传 `-InstallDir` / `-RuntimeRoot`。
 
 微软材料可在联网准备机用 `scripts/maintenance/prepare-offline-prerequisites.ps1 -Out <新目录>` 查看只读计划，加 `-Apply` 才下载、验微软签名并记录实际版本/字节/SHA-256；脚本不会执行安装器。下载与新机安装步骤见 [原生前置说明](docs/guides/setup-and-models.md#windows-原生前置vc-x64-离线安装材料)。图片浏览、VC++ 安装与 WD14 真实推理分别验收。
 
