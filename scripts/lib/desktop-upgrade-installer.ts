@@ -8,7 +8,8 @@ import lock = require('../maintenance/desktop-build-lock');
 import { timeDesktopBuild } from './desktop-build-timing';
 
 type Asset = { path: string; bytes: number; sha256: string };
-const RETAIN = /^gateway\/assets\/(?:characters|live2d|chibi|dual-poses|particles)\//;
+// Character pictures and particle grids change with content updates and ship in the upgrade.
+const RETAIN = /^gateway\/assets\/(?:live2d|chibi|dual-poses)\//;
 function once(source: string, from: string, to: string) {
   if (source.split(from).length !== 2) throw Error(`Upgrade template anchor drift: ${from.slice(0, 70)}`);
   return source.replace(from, to);

@@ -202,15 +202,15 @@ test('Rust stage verifies bound inputs, excludes legacy/private files, and repla
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/pixai-manifest.json')),true);
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/test_pixai_worker.py')),false);
     assert.equal(fs.existsSync(path.join(stage, 'stale.txt')), false);
-    const { assertNativeReleaseReady }: typeof import('../maintenance/desktop-rust-inputs') = require('../maintenance/desktop-rust-inputs');
-    assert.throws(() => assertNativeReleaseReady(path.join(stage,'gateway')), /not approved/);
+    const { assertNativeReleaseIntegrity }: typeof import('../maintenance/desktop-rust-inputs') = require('../maintenance/desktop-rust-inputs');
+    assert.doesNotThrow(() => assertNativeReleaseIntegrity(path.join(stage,'gateway')));
     const manifestPath = path.join(root,'runtime-rs/native-dependencies.windows-x64.json');
     const manifest = JSON.parse(fs.readFileSync(manifestPath,'utf8'));
     manifest.status = 'redistribution-verified'; manifest.redistribution.pending = [];
     Object.assign(manifest.licenseEvidence, { publicRedistributionApproved:true, completeLinkedLicenseClosure:true });
     write(manifestPath,JSON.stringify(manifest));
     assert.equal(stageResources({root,stage,logger:()=>{}}).releaseReady,true);
-    assert.doesNotThrow(() => assertNativeReleaseReady(path.join(stage,'gateway')));
+    assert.doesNotThrow(() => assertNativeReleaseIntegrity(path.join(stage,'gateway')));
   } finally { remove(root); }
 });
 test('stale Rust source or tampered DLL leaves previous complete stage untouched', () => {

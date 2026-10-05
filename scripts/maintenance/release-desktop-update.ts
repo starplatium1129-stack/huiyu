@@ -43,7 +43,7 @@ const INSTALL_DIR_INDEX = process.argv.indexOf('--install-dir');
 const INSTALL_DIR = INSTALL_DIR_INDEX < 0 ? undefined : process.argv[INSTALL_DIR_INDEX + 1];
 const RELEASE_REPOSITORY = 'starplatium1129-stack/huiyu';
 const binding: typeof import('../lib/desktop-build-binding') = require('../lib/desktop-build-binding');
-const { assertNativeReleaseReady }: typeof import('./desktop-rust-inputs') = require('./desktop-rust-inputs');
+const { assertNativeReleaseIntegrity }: typeof import('./desktop-rust-inputs') = require('./desktop-rust-inputs');
 const MANUAL_MARKER = '<!-- huiyu-release-mode: manual -->';
 
 function ghCommand() {
@@ -147,7 +147,7 @@ function publishRelease(version: any, head: any, files: any, options: any = {}) 
   const installers = files.filter((file: string) => file.endsWith('.exe'));
   if (installers.length !== 2 || new Set(installers.map((file: string) => path.basename(file))).size !== 2) throw Error('公开发布必须同时提供完整包与升级包');
   for (const installer of installers) binding.verifyDistribution(workspaceRoot, installer);
-  assertNativeReleaseReady(path.join(workspaceRoot, 'desktop-tauri/src-tauri/resources/gateway'));
+  assertNativeReleaseIntegrity(path.join(workspaceRoot, 'desktop-tauri/src-tauri/resources/gateway'));
   const expectedNames = Object.values(installerNames(version));
   if (installers.some((file: string) => !expectedNames.includes(path.basename(file)))) throw Error('安装包名称或版本不匹配');
   for (const installer of installers) {
@@ -243,7 +243,7 @@ async function main() {
   if (!artifacts.length) fail(`${BUNDLE_DIR} 下没有 updater 安装包（*-setup.exe + .sig）`);
   const artifact = artifacts[artifacts.length - 1];
   binding.verifyBuild(ROOT, path.join(BUNDLE_DIR, artifact.exe));
-  if (PUBLISH) assertNativeReleaseReady(path.join(ROOT, 'desktop-tauri/src-tauri/resources/gateway'));
+  if (PUBLISH) assertNativeReleaseIntegrity(path.join(ROOT, 'desktop-tauri/src-tauri/resources/gateway'));
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT, { installDir:INSTALL_DIR });

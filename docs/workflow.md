@@ -496,7 +496,7 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 
 现代安装器：`installer:modern --preview --capture --theme=dark --state=ready --dpi=144` 编译安全预览（不安装），支持 dark/light 与 ready/installing/done/error。正式发行脚本将现代展示层与 NSIS 核心一起打包并对最终 exe 签名。
 
-程序发行使用 `npm run release:desktop`：同一份应用构建生成 `*-full-setup.exe` 与 `*-upgrade-setup.exe`，分别绑定和签名，自动更新清单指向升级包。完整包面向新装/修复并带 WebView2 与基础素材；升级包复用字节一致的已安装素材，缺失或变化时要求完整包。样张继续独立发布。`--skip-build` 仍须匹配完整回执；新增的 NSIS 输入绑定缺失时不能复用旧回执。两种包均保留原生发行材料门禁，不以分包替代审批或设备验收。
+程序发行使用 `npm run release:desktop`：同一份应用构建生成 `*-full-setup.exe` 与 `*-upgrade-setup.exe`，分别绑定和签名，自动更新清单指向升级包。完整包面向新装/修复并带 WebView2 与基础素材；升级包携带角色图片、缩略图和粒子素材，复用字节一致的 Live2D、chibi 和双人姿势素材，缺失或变化时要求完整包。样张继续独立发布。`--skip-build` 仍须匹配完整回执；新增的 NSIS 输入绑定缺失时不能复用旧回执。两种包均核对原生发行材料完整性；审批状态仅作记录，不替代用户明确发布授权，也不代表设备验收。
 
 本机已有匹配的 NSIS 构建，只封装轻量包使用 `npm run wf -- desktop:upgrade-local --install-dir "C:\Program Files\AI-CG-Studio"`，对应 `release-desktop-update --manual --skip-build --upgrade-only --install-dir <目录>`。复用安装器检查器在升级包压缩前检查已有安装和素材；失败不安装、不停止应用，成功只生成升级包，不重包 full、不改 latest.json 或发布。该入口仍依赖首次 NSIS 构建。桌面构建回执排除无关历史包；部署保留三个检查点并消除检查点内的重复扫描。构建与部署的 `[desktop:timing]` 日志用于观察实际阶段耗时，不代替完整性验证。
 
@@ -543,6 +543,6 @@ Windows Native Live2D 的 `LIVE2D_CUBISM_SDK_DIR` 优先使用 runner 进程环�
 
 完整桌面构建在锁内捕获受 Git 管理及未忽略源码（排除 docs、plans 和一般 Markdown；原生许可目录中的 Markdown 仍纳入），复用 delivery-identity 的路径/字节哈希。`runtime/delivery-evidence/desktop-build-binding.json` 绑定 dist、桌面内嵌 web、暂存 Rust gateway/原生 DLL/清单及桌面 EXE，打包构建另绑定 NSIS；`runtime/rust-evidence/build.json` 绑定后端源码和 release EXE。Cubism 的 Core 头文件、Framework 源码与 Core 静态库也以实际字节摘要进入桌面构建环境和回执；构建前后及复用时核对，保留旧时间戳的同路径替换也会使候选失效。直接运行 Cargo 仍使用文件变化监听，常规桌面构建请走既有入口。仅原生构建不把旧 NSIS 纳入新身份。
 
-公开发布的 signed、manual 和 complete-manual 模式均要求暂存发行材料就绪：绑定清单和完整材料索引、Rust EXE 与 DLL 字节一致，`releaseReady=true`、pending 为空，且公开重分发审批与链接许可闭包明确为 true。缺材料、字节漂移或未批准均在发行封装/最终签名/上传前拒绝；独立 `publishRelease` 入口也再次核验。普通本地候选构建仍允许 `releaseReady=false`，不能据此公开发布。
+公开发布的 signed、manual 和 complete-manual 模式均核对绑定清单、完整材料索引、Rust EXE 与 DLL 字节；缺失材料或字节漂移仍在发行封装／上传前拒绝，独立 `publishRelease` 入口也再次核验。按用户 2026-10-06 的明确要求，`releaseReady`、pending 及许可审批标记不再阻断发布，原值保留在构建报告和更新说明中；发布仍须用户明确授权，不将公开发行写成材料审批或设备验收已完成。
 
 skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同版本源码不同、锁文件变化、混包、缺回执和篡改在封装/签名/上传前拒绝。封装后追加分发文件身份并在签名/上传前核对。正常版本修改先构建再提交相同字节可用，不要求循环提交 SHA；仅文档变化不失效。旧包缺回执不能补写身份冒认已构建，应在原源码完整重建并重新审核；不得将同版本重建包冒充原公开资产。

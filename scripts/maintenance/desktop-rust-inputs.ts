@@ -71,9 +71,9 @@ function copyRustPayload(root: string, gateway: string) {
   fs.writeFileSync(path.join(gateway, 'rust-runtime-build.json'), JSON.stringify(report, null, 2) + '\n');
   return report;
 }
-/** The caller first verifies the desktop build/distribution binding. Only the
- * staged bytes bound to that candidate may authorize a public release. */
-function assertNativeReleaseReady(gateway: string): void {
+/** Verify the native bytes bound to the candidate. Approval metadata remains
+ * informational; an explicitly requested release does not depend on its status. */
+function assertNativeReleaseIntegrity(gateway: string): void {
   const read = readNativeMaterialFromWorktree(gateway);
   const manifestBytes = read('native-dependencies.windows-x64.json'), reportBytes = read('rust-runtime-build.json');
   if (!manifestBytes || !reportBytes) throw Error('Native release manifest/build report is missing');
@@ -83,8 +83,5 @@ function assertNativeReleaseReady(gateway: string): void {
   if (materials.size !== report.nativeMaterialCount) throw Error('Native release material inventory differs from build binding');
   checkedBytes(gateway, 'huiyu-runtime.exe', report.runtime);
   for (const file of manifest.files) checkedBytes(gateway, `native/${file.name}`, file);
-  if (!nativeReleaseState(manifest).releaseReady || report.releaseReady !== true || !Array.isArray(report.pending) || report.pending.length) {
-    throw Error('Native public release is not approved: releaseReady=false; complete bound redistribution materials and explicit approvals first');
-  }
 }
-export = { SOURCES, EXECUTABLE, NATIVE_MANIFEST, checkedBytes, runtimeBuild, copyRustPayload, developmentNativeEnvironment, assertNativeReleaseReady };
+export = { SOURCES, EXECUTABLE, NATIVE_MANIFEST, checkedBytes, runtimeBuild, copyRustPayload, developmentNativeEnvironment, assertNativeReleaseIntegrity };

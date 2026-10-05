@@ -1,5 +1,7 @@
 # 项目文档索引
 
+[1.9.0 更新说明](releases/v1.9.0.md)按新增、优化、修复汇总 1.8.1 之后的五名角色与立绘、50 张样张、画室、作品册、模型准备、语音及升级变化，说明程序与离线素材包的安装方式。
+
 [记录式内容库](architecture/CONTENT-CATALOG-DESIGN.md)说明 SQLite 工作权威、逐条 JSON 快照、修订冲突、三方导入与旧数据迁移；操作见[维护手册](maintenance.md)。
 
 [创作、灵感返回与长期运行统筹](audits/2026-10-03/creation-inspiration-longrun-integration.md)记录草稿重复操作、筛选/浏览器返回、完整图片预览、后台健康请求和有限资源计数，以及四路交付、预算修错、真实 SFW 验收和原生设备边界。

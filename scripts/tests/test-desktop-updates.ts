@@ -134,11 +134,14 @@ test('local upgrade checks installed prerequisites before compression and wraps 
   try {
     put(native, 'host __TAURI_BUNDLE_TYPE_VAR_UNK');
     put('desktop-tauri/src-tauri/resources/gateway/assets/characters/portrait.bin', 'portrait');
+    put('desktop-tauri/src-tauri/resources/gateway/assets/live2d/model.bin', 'model');
     put('desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi', [
       '!define INSTALLWEBVIEW2MODE "offlineInstaller"', '!define MAINBINARYSRCPATH "fixture-host.exe"',
       'OutFile "fixture-setup.exe"', 'Function PageLeaveReinstall', 'FunctionEnd', 'Section EarlyChecks',
       '  File "${MAINBINARYSRCPATH}"', '  File /a "/oname=gateway\\assets\\characters\\portrait.bin" "fixture-portrait.bin"',
       '  Delete "$INSTDIR\\gateway\\assets\\characters\\portrait.bin"',
+      '  File /a "/oname=gateway\\assets\\live2d\\model.bin" "fixture-model.bin"',
+      '  Delete "$INSTDIR\\gateway\\assets\\live2d\\model.bin"',
     ].join('\n'));
     binding.recordBuild(root, binding.sourceIdentity(root));
     const before = fs.readFileSync(path.join(root, binding.receiptPath));
@@ -154,6 +157,8 @@ test('local upgrade checks installed prerequisites before compression and wraps 
         } else if (file.endsWith('makensis.exe')) {
           commands.push('compress');
           const script = fs.readFileSync(args.at(-1)!, 'utf8');
+          assert(script.includes('File /a "/oname=gateway\\assets\\characters\\portrait.bin"'), 'new portraits must ship');
+          assert(!script.includes('File /a "/oname=gateway\\assets\\live2d\\model.bin"'), 'stable models remain retained');
           fs.writeFileSync(/^OutFile "([^"]+)"/m.exec(script)![1], 'upgrade payload');
         } else throw Error(`Unexpected fixture process: ${file}`);
         return { status:0, stdout:'', stderr:'' };
@@ -422,30 +427,25 @@ test('补签必须显式声明且匹配原标签，然后才晋升 latest', () =
   assert(!fs.readFileSync(path.join(directory, 'release-notes-v1.6.0.md'), 'utf8').includes(MANUAL_MARKER));
 }));
 
-test('all public release modes reject unapproved or corrupt bound native materials before packaging or external calls', () => releaseFixture(async (fixture: any) => {
-  const { root, put, binding, payload, gateway, manifest, updateNative, bind, files, notes, directory } = fixture;
-  const vm: typeof import('node:vm') = require('node:vm');
-  const { createRequire }: typeof import('node:module') = require('node:module');
-  const entry = path.join(ROOT, 'scripts/maintenance/release-desktop-update.js'), originalRequire = createRequire(entry);
+test('public release modes accept pending approvals while rejecting corrupt native materials before external calls', () => releaseFixture((fixture: any) => {
+  const { root, put, binding, gateway, manifest, updateNative, bind, files, notes, directory } = fixture;
+  const signedFiles = [...files, ...['latest.json', ...Object.values(installerNames('1.6.0')).map(name => name + '.sig')].map(name => {
+    const file = path.join(directory, name); fs.writeFileSync(file, 'fixture'); return file;
+  })];
   let sideEffects = 0;
-  const guardedRequire = (name: string) => name === './build-modern-installer'
-    ? { buildModernInstaller:() => { sideEffects++; throw Error('unexpected wrapper'); } } : originalRequire(name);
-  const sourceCode = fs.readFileSync(entry, 'utf8').replace(/^const ROOT =.*$/m, 'const ROOT = ' + JSON.stringify(root) + ';');
-  const nsis = payload.replace('fixture.exe', 'AI-CG-Studio_1.0.0_x64-setup.exe');
-  put(nsis, 'payload-A'); put(`${nsis}.sig`, 'fixture signature'); put('runtime/keys/aics-updater.key', 'fixture key');
-  const modes = [{ manual:false, completeManual:false, args:[] }, { manual:true, completeManual:false, args:['--manual'] },
-    { manual:false, completeManual:true, args:['--complete-manual'] }];
+  const modes = [{ manual:false, completeManual:false }, { manual:true, completeManual:false }, { manual:false, completeManual:true }];
+  manifest.status = 'candidate'; manifest.redistribution.pending = ['fixture review pending'];
   for (const flag of ['publicRedistributionApproved', 'completeLinkedLicenseClosure']) {
     manifest.licenseEvidence[flag] = false; updateNative(); bind();
+    const reportPath = `${gateway}/rust-runtime-build.json`;
+    const report = JSON.parse(fs.readFileSync(path.join(root, reportPath), 'utf8'));
+    put(reportPath, JSON.stringify({ ...report, releaseReady:false, pending:manifest.redistribution.pending })); bind();
     for (const mode of modes) {
-      assert.throws(() => publishRelease('1.0.0', 'head', files, { root, ...mode, notesFile:notes, outputDir:directory,
-        run:() => { sideEffects++; throw Error('unexpected external call'); } }), /not approved/);
-      await assert.rejects(() => vm.runInNewContext(sourceCode + '\nmain();', { require:guardedRequire, module:{exports:{}}, exports:{},
-        __dirname:path.dirname(entry), process:{...process, env:{...process.env, TAURI_SIGNING_PRIVATE_KEY_PATH:path.join(root,'runtime/keys/aics-updater.key')},
-          argv:['node','fixture','--skip-build','--publish',...mode.args], exit:() => { throw Error('unexpected exit'); }}, console }), /not approved/);
+      assert.throws(() => publishRelease('1.6.0', 'head', mode.manual ? files : signedFiles, { root, ...mode, notesFile:notes, outputDir:directory,
+        run:() => { sideEffects++; throw Error('fixture external call reached'); } }), /fixture external call reached/);
     }
-    manifest.licenseEvidence[flag] = true;
   }
+  assert.equal(sideEffects, 6); sideEffects = 0;
   updateNative(); put(`${gateway}/native-licenses/LICENSE`, 'tampered'); bind();
   assert.throws(() => publishRelease('1.0.0', 'head', files, { root, manual:true }), /SHA-256 changed/);
   put(`${gateway}/native-licenses/LICENSE`, 'license'); fs.unlinkSync(path.join(root,gateway,'native-dependencies.windows-x64.json')); bind();
