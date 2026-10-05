@@ -3,6 +3,9 @@ import { mount } from '@vue/test-utils'
 import { ref } from 'vue'
 import DirectorStagePanel from './DirectorStagePanel.vue'
 
+// This panel fixture does not fetch catalog data or validate its build hash.
+vi.mock('virtual:data-version', () => ({ DATA_VERSION: 0 }))
+
 const mocks = vi.hoisted(() => ({ interrogate: vi.fn(), cancel: vi.fn() }))
 const busy = ref(false)
 vi.mock('@/composables/useInterrogate', () => ({
