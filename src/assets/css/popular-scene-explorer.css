@@ -66,11 +66,10 @@
 .pop-preview-missing { @apply tw:absolute; inset: var(--s-3); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-3; @apply tw:rounded-sm tw:text-secondary tw:text-center tw:text-label-xs tw:leading-body; }
 .pop-preview-missing > .archive-icon { @apply tw:text-title tw:mb-s-1; }
 .pop-preview-missing strong { @apply tw:text-body-sm tw:font-medium; }
-/* Keep the existing local-only R18 reveal; blur changes instantly, never animates. */
-.pop-thumb img.pop-thumb-r18 { filter: blur(16px) saturate(.85); transform: scale(1.08); }
-.pop-card:hover .pop-thumb img.pop-thumb-r18,
-.pop-card:focus-within .pop-thumb img.pop-thumb-r18 { filter: none; }
+/* The local-only reveal fades the static blurred veil rather than its filter. */
+.pop-thumb img.pop-thumb-r18 { transform: scale(1.08); }
 .pop-thumb-hint {
+  z-index:var(--z-raised);
   @apply tw:absolute tw:left-[50%] tw:top-[50%];
   transform: translate(-50%, -50%);
   padding: var(--s-2) var(--s-3);
@@ -80,11 +79,10 @@
   color: var(--on-art-primary);
   font: 600 var(--fs-label-xs) var(--font-sans);
   @apply tw:whitespace-nowrap tw:pointer-events-none;
-  transition: opacity var(--motion-hover);
+  transition: opacity 340ms var(--ease-out);
 }
 .pop-card:hover .pop-thumb-hint,
 .pop-card:focus-within .pop-thumb-hint { opacity: 0; }
-.pop-card:focus-within .pop-thumb-hint { transition:none; }
 .pop-card-body { @apply tw:flex tw:flex-col tw:gap-s-2; padding:var(--s-4); }
 .pop-card-category { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:min-h-[20px] tw:text-secondary tw:text-label-xs; }
 .pop-card-head h3 { @apply tw:m-0 tw:text-primary; font: 600 var(--fs-title-xs)/var(--lh-tight) var(--font-display); overflow-wrap: anywhere; }

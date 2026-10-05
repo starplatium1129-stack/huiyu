@@ -30,6 +30,17 @@
   .pb .stage-slot { @apply tw:relative; }
   /* The canvas and its result actions share one frame; the empty canvas has no action row. */
   .pb.atelier-workspace .stage-slot { overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); }
+  .pb .stage-slot > .canvas-generation-beam.border-beam-wrap { z-index:calc(var(--z-raised) + 1); }
+  .pb .canvas-generation-beam .border-beam-track { opacity:.64; }
+  .pb .canvas-generation-beam .border-beam-bloom { opacity:.14; }
+  .pb .stage-beam-enter-active,.pb .stage-beam-leave-active { transition:opacity var(--motion-surface) var(--ease-out); }
+  .pb .stage-beam-enter-from,.pb .stage-beam-leave-to { opacity:0; }
+  .pb .stage-content { transition:opacity var(--motion-route) var(--ease-out); }
+  .pb .stage-content.is-covered { opacity:0; pointer-events:none; }
+  @media (prefers-reduced-motion:reduce) {
+    :root:not([data-motion='full']) .pb .stage-content { transition-duration:var(--motion-press); }
+  }
+  :root:is([data-motion='reduce'],[data-motion='reduced']) .pb .stage-content { transition-duration:var(--motion-press); }
   .pb .stage-swap-enter-active { transition:opacity var(--motion-control) var(--ease-out); }
   .pb .stage-swap-leave-active {
     @apply tw:absolute; inset:0; z-index:var(--z-raised);

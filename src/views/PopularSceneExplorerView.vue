@@ -71,6 +71,8 @@
                 'pop-thumb-ready': loaded,
               }"
               />
+            <SensitivePreviewVeil v-if="sampleRatingOf(blueprint) === 'R18' && image.src && !failed"
+              :src="image.src" :crossorigin="image.crossorigin" />
             <span v-if="failed" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong><span>场景设定已就绪，可以直接绘制</span></span>
             <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
           </RouterLink>
@@ -111,6 +113,7 @@
 <script setup lang="ts">
 import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
+import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'

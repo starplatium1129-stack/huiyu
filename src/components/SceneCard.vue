@@ -20,6 +20,8 @@
         decoding="async"
         fetchpriority="auto"
       />
+      <SensitivePreviewVeil v-if="contentRating === 'R18' && thumbSrc && !thumbFailed"
+        :src="thumbSrc" :crossorigin="thumbImage.crossorigin" />
       <span v-if="thumbFailed || !thumbId || !thumbSrc" class="sc-preview-unavailable">{{ !thumbSrc && thumbId ? '图片服务暂未连接 · 场景可用' : '样张暂缺 · 场景可用' }}</span>
       <span v-if="thumbId" class="sc-id">{{ thumbId.toUpperCase() }}</span>
       <span v-if="contentRating === 'R18'" class="sc-badge sc-rating r18">R18</span>
@@ -44,6 +46,7 @@
 
 <script setup lang="ts">
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
+import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 
 import { computed } from 'vue'
 

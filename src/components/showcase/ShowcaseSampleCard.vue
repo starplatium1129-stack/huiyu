@@ -6,6 +6,7 @@
       <img v-if="image.src && !broken" v-bind="{ ...image, onLoad: measureImage }" class="sample-image tw:w-full tw:h-auto tw:block" :class="{ 'sample-image-ready': loaded }"
         :alt="entry.title" :width="entry.width" :height="entry.height" loading="lazy" decoding="async" />
       <span v-else class="sample-image-fallback tw:grid tw:min-h-[260px] tw:text-glyph" aria-hidden="true"><ArchiveIcon name="image" /></span>
+      <SensitivePreviewVeil v-if="entry.rating === 'R18' && image.src && !broken" :src="image.src" :crossorigin="image.crossorigin" />
       <span v-if="entry.rating === 'R18'" class="sample-sensitive tw:absolute tw:grid tw:gap-[2px] tw:min-w-[112px] tw:rounded-pill tw:pointer-events-none"><strong>R18</strong><span>悬停或聚焦预览</span></span>
     </button>
     <div class="sample-caption">
@@ -17,6 +18,7 @@
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import type { ShowcaseEntry } from '@/utils/showcaseManifest'
 import { computed, ref, watch } from 'vue'
@@ -60,9 +62,9 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
 .sample-image-ready { opacity:1; }
 .sample-image-fallback { @apply tw:h-full tw:min-h-0; place-items:center; color:var(--on-art-secondary); }
-/* 模糊仅在原有预览触发时切换，不给 filter 添加逐帧过渡。 */
-.sample-r18 .sample-image { filter:blur(18px) saturate(.78); transform:scale(1.08); }
-.sample-sensitive { z-index:var(--z-raised); inset:50% auto auto 50%; justify-items:center; padding:var(--s-3) var(--s-4); transform:translate(-50%,-50%); border:1px solid var(--on-art-line); background:var(--art-scrim); color:var(--on-art-primary); transition:opacity var(--motion-hover) var(--ease-out); }
+/* The blurred veil cross-fades above an otherwise stable sharp image. */
+.sample-r18 .sample-image { transform:scale(1.08); }
+.sample-sensitive { z-index:var(--z-raised); inset:50% auto auto 50%; justify-items:center; padding:var(--s-3) var(--s-4); transform:translate(-50%,-50%); border:1px solid var(--on-art-line); background:var(--art-scrim); color:var(--on-art-primary); transition:opacity 340ms var(--ease-out); }
 .sample-sensitive strong { @apply tw:text-label-sm; letter-spacing:.12em; }
 .sample-sensitive span { color:var(--on-art-secondary); @apply tw:text-mono-xs; }
 .sample-caption { position:relative; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s-1) var(--s-2); padding:var(--s-3); border-top:1px solid var(--border-soft); }
@@ -77,11 +79,9 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-badge-type { @apply tw:text-secondary; background:var(--bg-base); }
 @media (hover: hover) and (pointer: fine) {
   .sample:hover { @apply tw:border-accent; }
-  .sample-r18:hover .sample-image { filter:blur(0) saturate(1); }
   .sample-r18:hover .sample-sensitive { opacity:0; }
 }
-.sample-r18:focus-within .sample-image { filter:blur(0) saturate(1); transform:scale(1.08); }
-.sample-r18:focus-within .sample-sensitive { opacity:0; transition:none; }
+.sample-r18:focus-within .sample-sensitive { opacity:0; }
 @media (max-width: 480px) { .sample-caption { @apply tw:p-s-3; } .sample-open-hint { @apply tw:hidden; } .sample-title { @apply tw:text-body-sm; } }
 @media (prefers-reduced-motion:reduce) { .sample-image,.sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .sample-image,

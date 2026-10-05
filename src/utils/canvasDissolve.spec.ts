@@ -176,7 +176,8 @@ describe('bounded canvas dust dissolve', () => {
     }
     const first = overlay.fillRect.mock.calls[0]
     overlay.fillRect.mockClear()
-    tick(1600)
+    overlay.drawImage.mockClear()
+    tick(2100)
     expect(overlay.fillRect.mock.calls[0]).not.toEqual(first)
     expect(overlay.drawImage.mock.calls.length).toBeLessThan(2400)
     expect(overlay.globalAlpha).toBe(1)
@@ -215,31 +216,35 @@ describe('bounded canvas dust dissolve', () => {
     expect(frames.size).toBe(0)
   })
 
-  it('completes at 740 ms and releases all canvas storage', () => {
+  it.each([['canvas', 1480], ['thumbnail', 740]] as const)('completes %s at %s ms and releases all canvas storage', (profile, duration) => {
     const { image, host } = fixture()
-    stop = startCanvasDissolve(image, host)
-    tick(1739)
+    const onHandoff = vi.fn(), onComplete = vi.fn()
+    stop = startCanvasDissolve(image, host, profile, { onHandoff, onComplete })
+    tick(1000 + duration - 100)
     expect(host.querySelector('canvas')).not.toBeNull()
-    tick(1740)
+    expect(onHandoff).toHaveBeenCalledOnce()
+    expect(onComplete).not.toHaveBeenCalled()
+    tick(1000 + duration)
     expect(host.querySelector('canvas')).toBeNull()
     expect(frames.size).toBe(0)
     expect(contexts.every(({ canvas }) => canvas.width === 0 && canvas.height === 0)).toBe(true)
     expect(() => { stop?.(); stop?.() }).not.toThrow()
+    expect(onComplete).toHaveBeenCalledOnce()
   })
 
-  it.each([144, 240])('caps paints on a %s Hz display while ending at 740 ms', hz => {
+  it.each([144, 240])('caps paints on a %s Hz display while ending at 1480 ms', hz => {
     const { image, host } = fixture()
     stop = startCanvasDissolve(image, host)
     const overlay = contexts[0]
-    for (let index = 1; index * 1000 / hz < 740; index++) tick(1000 + index * 1000 / hz)
+    for (let index = 1; index * 1000 / hz < 1480; index++) tick(1000 + index * 1000 / hz)
     expect(overlay.clearRect.mock.calls.length).toBeGreaterThan(40)
-    expect(overlay.clearRect.mock.calls.length).toBeLessThanOrEqual(Math.floor(740 * 60 / 1000))
+    expect(overlay.clearRect.mock.calls.length).toBeLessThanOrEqual(Math.floor(1480 * 60 / 1000))
     // Extra callbacks in the current paint slot cannot add work or lose ownership.
     const painted = overlay.clearRect.mock.calls.length
-    tick(1738); tick(1739)
+    tick(2478); tick(2479)
     expect(overlay.clearRect).toHaveBeenCalledTimes(painted)
     expect(frames.size).toBe(1)
-    tick(1740)
+    tick(2480)
     expect(host.querySelector('canvas')).toBeNull()
     expect(frames.size).toBe(0)
   })

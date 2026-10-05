@@ -22,7 +22,7 @@ async function fixture(overrides: Partial<typeof props> & { resultRevealUrl?: st
   const wrapper = mount(DirectorStagePanel, {
     props: { ...props, ...overrides },
     global: { stubs: {
-      CgImageReveal: Reveal, ImageSplitCompare: true, GenerationParticles: true,
+      CgImageReveal: Reveal, ImageSplitCompare: true, GenerationParticles: true, BorderBeam: true,
       DirectorResultTools: true, DirectorSceneReference: true, ArchiveIcon: true, StudioTooltip: true,
     } },
   })

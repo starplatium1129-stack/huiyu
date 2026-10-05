@@ -75,10 +75,7 @@
 .sc-thumb-skeleton.visible { opacity:1; }
 .sc-thumb-missing { @apply tw:hidden; }
 /* R18 预览默认模糊，悬停/聚焦即可揭示，与样张页保持一致。 */
-.sc-thumb-r18 { filter: blur(16px) saturate(.85); transform: scale(1.08); }
-.sc-thumb-r18.sc-thumb-ready { filter: blur(16px) saturate(.85); transform: scale(1.08); }
-.sc:hover .sc-thumb-r18, .sc:focus-within .sc-thumb-r18,
-.sc:hover .sc-thumb-r18.sc-thumb-ready, .sc:focus-within .sc-thumb-r18.sc-thumb-ready { filter: blur(0) saturate(1); transform: scale(1.08); }
+.sc-thumb-r18 { transform: scale(1.08); }
 .sc[data-rating="R18"] .sc-band::before {
   content:"R18 · 悬停预览"; @apply tw:absolute; z-index:var(--z-raised);
   @apply tw:left-[50%] tw:top-[50%]; transform:translate(-50%,-50%);
@@ -86,11 +83,10 @@
   background:var(--art-scrim); color:var(--on-art-primary);
   font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em;
   box-shadow:var(--shadow-sm);
-  @apply tw:pointer-events-none; opacity:1; transition:opacity var(--motion-hover);
+  @apply tw:pointer-events-none; opacity:1; transition:opacity 340ms var(--ease-out);
 }
 .sc[data-rating="R18"]:hover .sc-band::before,
 .sc[data-rating="R18"]:focus-within .sc-band::before { opacity:0; }
-.sc[data-rating="R18"]:focus-within .sc-band::before { transition:none; }
 .sc-cat {
   @apply tw:relative; z-index: var(--z-raised);
   @apply tw:ml-auto tw:text-mono-sm tw:font-bold; letter-spacing: 0.05em;

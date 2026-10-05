@@ -34,7 +34,8 @@ async function fixture() {
 it('captures synchronously while the old decoded image exists, without changing business state', async () => {
   const { source, motion, image, wrapper } = await fixture()
   motion.playClear()
-  expect(mock.dissolve).toHaveBeenCalledExactlyOnceWith(image, wrapper.element)
+  expect(mock.dissolve).toHaveBeenCalledExactlyOnceWith(image, wrapper.element, 'canvas',
+    expect.objectContaining({ onHandoff: expect.any(Function), onComplete: expect.any(Function) }))
   expect(source.value).toBe('/neutral.png')
   source.value = ''
   expect(mock.release).not.toHaveBeenCalled()
@@ -76,7 +77,8 @@ it('captures a stashed result before rendering the pending generation', async ()
   source.value = ''; busy.value = true
   expect(mock.dissolve).not.toHaveBeenCalled()
   await nextTick()
-  expect(mock.dissolve).toHaveBeenCalledExactlyOnceWith(image, wrapper.element)
+  expect(mock.dissolve).toHaveBeenCalledExactlyOnceWith(image, wrapper.element, 'canvas',
+    expect.objectContaining({ onHandoff: expect.any(Function), onComplete: expect.any(Function) }))
   expect(wrapper.find('img').exists()).toBe(false)
   busy.value = true
   await nextTick()
@@ -94,6 +96,26 @@ it.each(['cancel', 'result', 'unmount'] as const)('releases the outgoing generat
   expect(mock.release).toHaveBeenCalledOnce()
   await nextTick()
   expect(source.value).toBe(change === 'result' ? '/next.png' : '')
+})
+it('keeps a manual clear through generation start and hands waiting back before the final dust releases', async () => {
+  const { source, busy, motion } = await fixture()
+  motion.playClear()
+  expect(motion.coveringResult.value).toBe(true)
+  source.value = ''
+  await nextTick()
+  busy.value = true
+  await nextTick()
+  expect(mock.dissolve).toHaveBeenCalledOnce()
+  expect(mock.release).not.toHaveBeenCalled()
+  const lifecycle = mock.dissolve.mock.calls[0][3]
+  lifecycle.onHandoff()
+  expect(motion.coveringResult.value).toBe(false)
+  expect(mock.release).not.toHaveBeenCalled()
+  lifecycle.onComplete()
+  motion.stop()
+  expect(mock.release).not.toHaveBeenCalled()
+  expect(busy.value).toBe(true)
+  expect(source.value).toBe('')
 })
 it.each(['cancel', 'result', 'reduced', 'comparison', 'retained'] as const)('skips outgoing capture for %s in the same render', async change => {
   const { source, busy, comparing } = await fixture()

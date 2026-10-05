@@ -1,6 +1,10 @@
 <template>
   <!-- stage-slot：col-center 的画布槽位锚点（layout.css 以它固定中栏排序首位） -->
   <div ref="stageRoot" class="stage-slot">
+    <Transition name="stage-beam">
+      <BorderBeam v-if="generationBusy || waitingForResult" class="canvas-generation-beam"
+        :duration="8.8" :border-width="1.1" color-variant="dual" :glow="true" border-radius="var(--r-xl)" />
+    </Transition>
     <!-- 图片显现只由新生成结果驱动，画布与工具保持静止。 -->
     <Transition name="stage-swap">
       <section
@@ -15,10 +19,10 @@
       aria-label="成片监看区"
     >
       <div class="stage-message">
-        <div class="stage-content">
+        <div class="stage-content" :class="{ 'is-covered': coveringResult }">
         <DirectorSceneReference :size="canvasSize" />
           <div v-if="generationBusy || waitingForResult" class="stage-generating-copy">
-            <GenerationParticles :progress="generationProgress" />
+            <GenerationParticles v-if="!coveringResult" :progress="generationProgress" />
             <div class="stage-generation-feedback">
               <div class="stage-generating-title" role="status">正在绘制这一幕</div>
               <div class="stage-generating-sub">
@@ -117,6 +121,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
 import GenerationParticles from '@/components/visual/GenerationParticles.vue'
+import BorderBeam from '@/components/visual/BorderBeam.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
@@ -150,7 +155,7 @@ const props = defineProps<{
 }>()
 
 const stageRoot = ref<HTMLElement | null>(null)
-const { playClear } = useCanvasClearMotion(stageRoot, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
+const { playClear, coveringResult } = useCanvasClearMotion(stageRoot, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 const resultAspect = ref(1)
 const loadedResultUrl = ref('')

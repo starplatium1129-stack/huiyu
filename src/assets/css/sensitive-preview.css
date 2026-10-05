@@ -1,0 +1,42 @@
+/* Keep the blur on a cached image layer. Revealing/re-covering animates only
+   opacity, including pointer reversal, rather than repainting a blur each frame. */
+.sensitive-preview-veil {
+  position:absolute;
+  inset:0;
+  z-index:1;
+  overflow:hidden;
+  pointer-events:none;
+  border-radius:inherit;
+  background:var(--art-mat);
+  opacity:1;
+  transition:opacity 340ms var(--ease-out);
+}
+.sensitive-preview-veil > img.sensitive-preview-image {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:var(--sensitive-preview-fit,cover);
+  object-position:var(--sensitive-preview-position,center 22%);
+  opacity:1;
+  transition:none;
+  filter:blur(16px) saturate(.85);
+  transform:scale(1.08);
+}
+:where(.sc,.pop-card,.sample-r18):hover .sensitive-preview-veil,
+:where(.sc,.pop-card,.sample-r18):focus-within .sensitive-preview-veil { opacity:0; }
+.sc-complete-preview .sensitive-preview-veil {
+  inset:0;
+  padding:var(--s-2);
+  box-sizing:border-box;
+  --sensitive-preview-fit:contain;
+  --sensitive-preview-position:center;
+}
+.pop-thumb .sensitive-preview-veil { --sensitive-preview-fit:contain; }
+.sample-visual .sensitive-preview-veil {
+  --sensitive-preview-fit:contain;
+  --sensitive-preview-position:center;
+}
+@media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .sensitive-preview-veil { transition-duration:120ms; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced']) .sensitive-preview-veil { transition-duration:120ms; }

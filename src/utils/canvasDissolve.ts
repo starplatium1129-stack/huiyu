@@ -1,4 +1,5 @@
-const DURATION = 740
+const CANVAS_DURATION = 1480
+const THUMBNAIL_DURATION = 740
 const PAINT_INTERVAL = 1000 / 60
 const MAX_PARTICLES = 2400
 const MAX_PIXELS = 1_000_000
@@ -35,7 +36,10 @@ function sizeBacking(canvas: HTMLCanvasElement, width: number, height: number, m
  * its URL is revoked. The host must establish an absolute-positioning context.
  * Returns null when capture is unavailable (including cross-origin taint).
  */
-export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, profile: 'canvas' | 'thumbnail' = 'canvas'): (() => void) | null {
+export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, profile: 'canvas' | 'thumbnail' = 'canvas',
+  lifecycle?: { onHandoff?: () => void; onComplete?: () => void }): (() => void) | null {
+  const duration = profile === 'canvas' ? CANVAS_DURATION : THUMBNAIL_DURATION
+  const pace = duration / THUMBNAIL_DURATION
   const maxParticles = profile === 'thumbnail' ? 1200 : MAX_PARTICLES
   const maxPixels = profile === 'thumbnail' ? 300_000 : MAX_PIXELS
   const maxEdge = profile === 'thumbnail' ? 640 : MAX_EDGE
@@ -52,6 +56,7 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
   const grains: Grain[] = []
   let frame: number | null = null
   let disposed = false
+  let handedOff = false
 
   function cleanup(): void {
     if (disposed) return
@@ -61,6 +66,7 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
     overlay.remove()
     for (const canvas of [overlay, snapshot, sample]) { canvas.width = 0; canvas.height = 0 }
     grains.length = 0
+    lifecycle?.onComplete?.()
   }
 
   try {
@@ -88,7 +94,7 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
       for (let x = 0; x < columns; x++) {
         const p = (y * columns + x) * 4
         const noise = Math.random()
-        const delay = 35 + x / columns * 205 + y / rows * 45 + noise * 35
+        const delay = (35 + x / columns * 205 + y / rows * 45 + noise * 35) * pace
         // Align adjacent source patches to complete backing pixels. Fractional
         // destinations leave antialiased seams before the breakup has started.
         const x0 = Math.round((left + x * cellWidth) * backingScaleX)
@@ -100,7 +106,7 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
           patchWidth: (x1 - x0) / backingScaleX, patchHeight: (y1 - y0) / backingScaleY,
           sx: x * sourceWidth, sy: y * sourceHeight,
           x: left + x * cellWidth, y: top + y * cellHeight,
-          delay, life: DURATION - delay,
+          delay, life: duration - delay,
           vx: 28 + noise * 76, vy: -18 - Math.random() * 48,
           flutter: (Math.random() - 0.5) * 20,
           size: 1.2 + Math.random() * 1.6,
@@ -134,7 +140,12 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
       if (disposed) return
       frame = null
       const elapsed = Math.max(0, now - startedAt)
-      if (elapsed >= DURATION) { cleanup(); return }
+      if (elapsed >= duration) { cleanup(); return }
+      // Let waiting/empty content enter while the last dust is still receding.
+      if (!handedOff && elapsed >= duration - 560) {
+        handedOff = true
+        lifecycle?.onHandoff?.()
+      }
       // High-refresh rAF still owns cancellation and wall-clock completion, but
       // only one redraw is allowed in each 60Hz slot (no catch-up paint loops).
       const paintStep = Math.floor(elapsed / PAINT_INTERVAL)
@@ -142,11 +153,11 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
       lastPaintStep = paintStep
       try {
         /* compositor-exempt: image breakup needs independent source patches and
-         * dust grains; one finite 740ms loop, <=2400 grains and <=1MP backings. */
+         * dust grains; one finite <=1480ms loop, <=2400 grains and <=1MP backings. */
         context!.clearRect(0, 0, viewWidth, viewHeight)
         for (const grain of grains) {
           const age = Math.max(0, (elapsed - grain.delay) / grain.life)
-          const patchAlpha = Math.max(0, 1 - age / 0.24)
+          const patchAlpha = Math.max(0, 1 - age / (profile === 'canvas' ? 0.38 : 0.24))
           if (patchAlpha > 0) {
             context!.globalAlpha = patchAlpha
             context!.drawImage(snapshot, grain.sx, grain.sy, sourceWidth, sourceHeight,

@@ -1,4 +1,4 @@
-import { onBeforeUnmount, watch, type Ref } from 'vue'
+import { onBeforeUnmount, ref, watch, type Ref } from 'vue'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from './useVisualActivity'
 
@@ -13,7 +13,15 @@ export function useCanvasClearMotion(
   let loading = false
   let cleanup: (() => void) | null = null
   let hostWidth = 0
-  function stop() { cleanup?.(); cleanup = null }
+  let captureVersion = 0
+  const coveringResult = ref(false)
+  function stop() {
+    captureVersion++
+    const release = cleanup
+    cleanup = null
+    coveringResult.value = false
+    release?.()
+  }
   // Keep the pixel algorithm outside the workbench's static bundle, ready before the usual clear click.
   watch(source, url => {
     if (!url || dissolve || loading) return
@@ -33,17 +41,32 @@ export function useCanvasClearMotion(
     const image = root.querySelector<HTMLImageElement>('img.cg-image-target')
     if (!image?.complete || !image.naturalWidth) return
     hostWidth = root.getBoundingClientRect().width
-    try { cleanup = dissolve?.(image, root) ?? fadeSnapshot(image, root) }
-    catch { /* A decorative effect must never prevent the synchronous clear action. */ }
+    const version = captureVersion
+    const lifecycle = {
+      onHandoff: () => { if (version === captureVersion) coveringResult.value = false },
+      onComplete: () => {
+        if (version !== captureVersion) return
+        cleanup = null
+        coveringResult.value = false
+      },
+    }
+    coveringResult.value = true
+    try {
+      cleanup = dissolve?.(image, root, 'canvas', lifecycle) ?? fadeSnapshot(image, root, lifecycle)
+      coveringResult.value = Boolean(cleanup)
+    } catch {
+      stop() // A decorative effect must never prevent the synchronous clear action.
+    }
   }
   watch([source, busy, comparing], ([url, generating, comparison], [oldUrl, wasGenerating]) => {
-    if ((url && url !== oldUrl) || generating !== wasGenerating || comparison) stop()
+    if ((url && url !== oldUrl) || comparison || (!generating && wasGenerating)
+      || (generating && url && generating !== wasGenerating)) stop()
   }, { flush: 'sync' })
   // Anima/Krea stash the old result before submitting. Props settle before this
   // pre-render watcher, while the decoded old image is still in the DOM. Capture
   // only its pixels; submission and result ownership never wait on the effect.
   watch([source, busy, comparing], ([url, generating, comparison], [oldUrl, , wasComparing]) => {
-    if (oldUrl && !url && generating && !comparison && !wasComparing) playSnapshot()
+    if (oldUrl && !url && generating && !comparison && !wasComparing && !cleanup) playSnapshot()
   }, { flush: 'pre' })
   watch([canAnimate, lowEffects], () => {
     if (!canAnimate.value || lowEffects.value) stop()
@@ -53,11 +76,12 @@ export function useCanvasClearMotion(
     if (cleanup && host.value && Math.abs(host.value.getBoundingClientRect().width - hostWidth) > 1) stop()
   })
   onBeforeUnmount(stop)
-  return { playClear, stop }
+  return { playClear, stop, coveringResult }
 }
 
 /** A tainted canvas can still be displayed; never read pixels or alter CORS for the fallback. */
-function fadeSnapshot(image: HTMLImageElement, host: HTMLElement): (() => void) | null {
+function fadeSnapshot(image: HTMLImageElement, host: HTMLElement,
+  lifecycle: { onHandoff: () => void; onComplete: () => void }): (() => void) | null {
   const rect = image.getBoundingClientRect(), parent = host.getBoundingClientRect()
   if (rect.width < 1 || rect.height < 1) return null
   const canvas = document.createElement('canvas')
@@ -65,7 +89,15 @@ function fadeSnapshot(image: HTMLImageElement, host: HTMLElement): (() => void) 
   canvas.width = Math.max(1, Math.floor(rect.width * ratio))
   canvas.height = Math.max(1, Math.floor(rect.height * ratio))
   let animation: Animation | null = null
-  const release = () => { animation?.cancel(); animation = null; canvas.remove(); canvas.width = canvas.height = 0 }
+  let handoff: ReturnType<typeof setTimeout> | undefined
+  let disposed = false
+  const release = () => {
+    if (disposed) return
+    disposed = true
+    clearTimeout(handoff); animation?.cancel(); animation = null
+    canvas.remove(); canvas.width = canvas.height = 0
+    lifecycle.onComplete()
+  }
   try {
     const context = canvas.getContext('2d')
     if (!context || typeof canvas.animate !== 'function') { release(); return null }
@@ -82,7 +114,8 @@ function fadeSnapshot(image: HTMLImageElement, host: HTMLElement): (() => void) 
     })
     host.append(canvas)
     const opacity = Number.parseFloat(getComputedStyle(image).opacity)
-    animation = canvas.animate([{ opacity: Number.isFinite(opacity) ? Math.max(0, Math.min(1, opacity)) : 1 }, { opacity: 0 }], { duration: 220, easing: 'ease-out', fill: 'forwards' })
+    animation = canvas.animate([{ opacity: Number.isFinite(opacity) ? Math.max(0, Math.min(1, opacity)) : 1 }, { opacity: 0 }], { duration: 460, easing: 'ease-out', fill: 'forwards' })
+    handoff = setTimeout(lifecycle.onHandoff, 280)
     void animation.finished.then(release, release)
     return release
   } catch { release(); return null }
