@@ -238,7 +238,6 @@ useScrollReveal()
 
 const DRAFT_KEY = 'aics_pb_last_draft'
 
-const sceneLibraryCopy = ref('定格心动瞬间，备好镜头与专属光影。')
 const continueIconName = ref<ArchiveIconName>('spark')
 const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创作' })
 const continueHint = ref('先选喜欢的画面；确认参数后再生成。')
@@ -246,8 +245,18 @@ type HomeScene = Scene & { title?: string; mature?: boolean }
 
 const { recentWorks, coverUrl, load: loadRecentWorks } = useHomeRecentWorks()
 const recentScenes = ref<HomeScene[]>([])
-const featuredScenes = ref<HomeScene[]>([])
+const homeScenes = ref<HomeScene[] | null>(null)
 const sceneStore = useSceneStore()
+const featuredIds = computed(() => {
+  const { signatureSceneIds, curatedSceneIds } = sceneStore.curation
+  const signatures = Array.isArray(signatureSceneIds) ? signatureSceneIds : []
+  const curated = Array.isArray(curatedSceneIds) ? curatedSceneIds : []
+  return [...signatures, ...curated.filter(id => !signatures.includes(id))]
+})
+const sceneLibraryCopy = computed(() => homeScenes.value
+  ? `${featuredIds.value.length} 个招牌与精选，完整库共 ${homeScenes.value.length} 个。`
+  : '定格心动瞬间，备好镜头与专属光影。')
+const featuredScenes = computed(() => pickFeatured(featuredIds.value, homeScenes.value || [], 6))
 const homeMuse = ref<'nene' | 'natsume'>('nene')
 const heroImmediate = ref(false)
 const heroName = computed(() => homeMuse.value === 'nene' ? '绫地宁宁' : '四季夏目')
@@ -350,13 +359,7 @@ async function loadSceneHighlights() {
     // 审计 2026-09-05 P2-02：首页只需要精选/最近场景与计数，轻载不再拉 3.4MB 蓝图
     await sceneStore.loadHome()
     const scenes = sceneStore.scenes.filter(isHomeScene)
-    const curation = sceneStore.curation
-    const signatures: string[] = Array.isArray(curation.signatureSceneIds) ? curation.signatureSceneIds : []
-    const curated: string[] = Array.isArray(curation.curatedSceneIds) ? curation.curatedSceneIds : []
-    const ids = [...signatures, ...curated.filter((id: string) => !signatures.includes(id))]
-    sceneLibraryCopy.value = `${ids.length} 个招牌与精选，完整库共 ${scenes.length} 个。`
-
-    featuredScenes.value = pickFeatured(ids, scenes, 6)
+    homeScenes.value = scenes
 
     // 最近用过的场景
     const recent = readRecent(localStorage)
