@@ -229,7 +229,7 @@ vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () =
 describe('companion native window controls', () => {
   it('keeps the acknowledged dock choice over an old bootstrap response and coalesces clicks', async () => {
     let snapshot!: (value: boolean) => void, acknowledge!: (value: boolean) => void
-    desktopFixture.current!.getChatDocked = vi.fn(() => new Promise(resolve => { snapshot = resolve }))
+    desktopFixture.current!.getChatDocked = vi.fn(() => new Promise<boolean>(resolve => { snapshot = resolve }))
     const setDocked = vi.fn(() => new Promise<boolean>(resolve => { acknowledge = resolve }))
     desktopFixture.current!.setChatDocked = setDocked
     setup()

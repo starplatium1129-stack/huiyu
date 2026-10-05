@@ -3,6 +3,7 @@ import { afterEach, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import type { UseRoomMemoryOptions } from './useRoomMemory'
 import type { ProfilePort } from '@/platform/web/profileStorage'
+import type { ProfileRecord } from '../../../types/profile'
 import { CHAT_USER_PROFILE_KEY } from '@/utils/storageKeys'
 
 const submitted = { callName: 'Fixture', relationship: 'friend' as const, note: '' }
@@ -30,11 +31,11 @@ it('returns failure for a blocked or failed browser write without reporting succ
 it('waits for the native receipt and uses its authoritative merged profile', async () => {
   const profileStorage = await import('@/platform/web/profileStorage')
   const snapshot = { records: [], revision: 0, resetRevision: '' }
-  let acknowledge!: (record: { key: string; value: string; revision: number }) => void
+  let acknowledge!: (record: ProfileRecord) => void
   const port: ProfilePort = {
     readSettings: async () => snapshot, readChat: async () => snapshot, readDrafts: async () => snapshot,
     saveSetting: vi.fn(), saveDraft: vi.fn(), resetChat: vi.fn(),
-    saveChatRecord: vi.fn(() => new Promise(resolve => { acknowledge = resolve })),
+    saveChatRecord: vi.fn(() => new Promise<ProfileRecord>(resolve => { acknowledge = resolve })),
   }
   await profileStorage.activateProfileStorage(port, 'fixture')
   const room = await memory()
