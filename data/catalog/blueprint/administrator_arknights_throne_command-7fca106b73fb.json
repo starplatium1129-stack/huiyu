@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_throne_command",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 749,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "administrator_arknights_throne_command",
     "characterId": "administrator_arknights",
@@ -41,7 +41,7 @@
       "coffee",
       "medium shot"
     ],
-    "promptProse": "The female Administrator sits at a small breakfast table in her original black technical jacket and pale high-neck sweater, angular blindfold mask in place. She slides the toast plate toward the viewer's seat and turns with a faint smile, her coffee still untouched. The eye-level medium view includes both place settings. Morning window light catches yellow jacket tapes and the plate rim, shading the table under her reaching wrist.",
+    "promptProse": "The female Administrator sits at a small breakfast table in her original black technical jacket and pale high-neck sweater, angular blindfold mask in place. She slides the toast plate toward the viewer’s seat and turns with a faint smile, her coffee still untouched. In the eye-level medium view, the near place setting overlaps the table edge, while the opposite chair back sits behind the coffee cup. The window ledge continues past her shoulder toward the dining-room wall. Morning daylight catches the yellow fastening tapes and the plate rim; the reaching wrist casts a short shadow on the tabletop, and the chair leaves a softer dark shape against the wall.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",

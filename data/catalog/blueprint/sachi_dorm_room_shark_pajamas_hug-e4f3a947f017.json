@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_dorm_room_shark_pajamas_hug",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1188,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "sachi_dorm_room_shark_pajamas_hug",
     "title": "小岭幸 · 睡前卧房的鲨鱼睡衣私语",
@@ -31,7 +31,7 @@
       "sitting",
       "pink_hair"
     ],
-    "promptProse": "Seated on a wool cushion in her dorm bedroom, Komine Sachi wraps both arms around an oversized grey shark plush. Her loose sky-blue shark onesie gathers around her knees and her pink hair lifts slightly at the ends. Frame her at seated eye level with bed and wooden floor behind. The mushroom-shaped bedside lamp warms her cheeks, plush seams and nearby rug, leaving the corners subdued.",
+    "promptProse": "Komine Sachi sits on a wool cushion in her dorm room, wrapping both arms around the oversized gray shark plush and resting her chin on it. Preserve the loose sky-blue shark onesie, softly gathered knees and short pink hair in the seated eye-level medium close-up. The plush overlaps the cushion’s near edge; floorboards continue behind her toward the bed frame and low bedside table. The existing mushroom-shaped lamp warms her cheeks and the raised plush seams. Her arms leave soft depressions and shadows in the toy, while a darker contact band beneath the cushion anchors the seated pose without brightening the room corners.",
     "promptTokens": [
       "shark onesie",
       "shark plush",

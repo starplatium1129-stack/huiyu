@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_tactical_briefing",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 743,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_tactical_briefing",
     "characterId": "zhuang_fangyi_arknights",
@@ -42,7 +42,7 @@
       "pastries",
       "medium shot"
     ],
-    "promptProse": "Zhuang Fangyi sits at one side of the tea-shop table after work, sliding a warm cup toward the viewer and smiling. Her original white-and-celadon top, separate arm sleeves and green trousers remain clear in the eye-level medium view. Closed documents lie beside her; two pastries occupy the table center. Soft evening window light catches the cup rim and pale sleeve panels, darkening gently under the stacked papers.",
+    "promptProse": "Zhuang Fangyi sits at one side of the tea-shop table after work, sliding a warm cup toward the viewer with a smile. Preserve her original white-and-celadon top, separate arm sleeves and green trousers in the eye-level medium view. Closed documents lie beside her and two pastries remain at the table center. The far table edge meets a wooden chair back; behind it, a latticed window and a partial screen show the teashop continuing into a quieter seating bay. Soft evening window light catches the cup rim and pale sleeve panels, while the stacked papers and screen recesses retain darker, gently separated shadows.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",

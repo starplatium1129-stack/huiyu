@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_dorm_tea",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 549,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "托腮看着蛋糕两眼放光",
     "camera": "medium close-up",
@@ -20,7 +20,7 @@
     "mood": "天真烂漫",
     "negativeTokens": [],
     "outfitId": "cozy_sheep_fleece_loungewear",
-    "promptProse": "At the dorm's small round table, Eyjafjalla cups both cheeks and stares delightedly at strawberry cream cake, fleece hood and sheep pajamas retaining her cream-and-tan lounge outfit. Two tea cups steam beside the plate beneath her cheerful expression. The medium close-up includes the tabletop and tidy room behind. Bright afternoon light illuminates frosting and her eyes, casting soft cup shadows and gently catching steam above the cake without hiding the food.",
+    "promptProse": "At the dormitory’s small round table, Eyjafjalla cups both cheeks and gazes delightedly at the strawberry cream cake. Preserve the cream-and-tan sheep pajamas and fleece hood. Two cups of tea steam beside the plate in the medium close-up. The table’s curved near edge frames the cake, while the chair back separates her from a narrow bookshelf beside the room’s window. Bright afternoon daylight reveals the frosting ridges and her happy eyes. The cups cast soft separate shadows onto the tabletop, and steam catches a pale highlight without hiding the cake; the bookshelf’s recessed compartments remain subdued.",
     "promptTokens": [
       "1girl",
       "solo",

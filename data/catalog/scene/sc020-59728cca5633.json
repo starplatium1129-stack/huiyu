@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc020",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
-    "animaCaption": "Behind the university festival curtain, Shiki Natsume presses the closed script to her chest and turns for a final reassuring glance. Her black turtleneck and brown plaid skirt remain a simple rehearsal costume. Stage props overlap in the narrow passage behind her. A band of warm stage light slips beneath the curtain, touches the script edge and throws a low shadow across the floor; subdued backstage fill reveals her nervous smile.",
+    "animaCaption": "Behind the university-festival curtain, Shiki Natsume presses the closed script to her chest and turns for a final reassuring glance. Keep her black turtleneck and brown plaid skirt as the simple rehearsal costume. Stage props overlap along the narrow passage behind her, their upper edges disappearing into the quieter backstage area. Warm stage light slipping beneath the curtain forms a low band across the floor and throws the props’ lower shadows along the boards. The already present backstage fill reaches her nervous smile and the chest-held script edge from above, so the book is not lit directly by a beam confined to floor level.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "手持台本半身中景",
     "category": "校园",

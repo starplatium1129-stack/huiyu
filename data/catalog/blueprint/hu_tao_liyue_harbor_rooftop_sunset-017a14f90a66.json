@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_liyue_harbor_rooftop_sunset",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 23,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "hu_tao_liyue_harbor_rooftop_sunset",
     "title": "胡桃 · 飞檐屋顶夕阳赋诗",
@@ -30,7 +30,7 @@
       "high_angle",
       "full_body"
     ],
-    "promptProse": "Above Liyue Harbor, Hu Tao sits cross-legged on a broad tiled ridge, elbows on knees and both cheeks cupped as her parted lips suggest an improvised verse. The high full-body view follows roof tiles down toward the harbor's first lanterns. Crimson sunset lights her twintail tips and curved tile edges; the coat folds beneath her elbows stay dark while warm city lights punctuate the distance.",
+    "promptProse": "Hu Tao sits cross-legged on the broad tiled ridge above Liyue Harbor, elbows on her knees and both palms cupping her cheeks as she improvises a verse. Preserve her official director outfit and the high-angle full-body framing. Large curved roof tiles occupy the near slope and become smaller toward the eaves; successive rooftops overlap beyond them before the harbor opens in the distance. Crimson sunset catches her twintail tips and the west-facing tile edges. The folds under her elbows remain dark, while the first warm harbor lanterns punctuate the lower streets rather than competing with her silhouette.",
     "promptTokens": [
       "1girl",
       "solo",

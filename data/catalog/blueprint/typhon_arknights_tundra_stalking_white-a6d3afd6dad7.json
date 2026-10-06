@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_tundra_stalking_white",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 698,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "typhon_arknights_tundra_stalking_white",
     "characterId": "typhon_arknights",
@@ -42,7 +42,7 @@
       "pulling chair",
       "cowboy shot"
     ],
-    "promptProse": "Typhon sits at one side of a cafe table in her forest-green cable-knit casual outfit and black tights. She draws out the opposite chair for the arriving viewer, two steaming drinks between them and her scarf on the chair back. The eye-level cowboy view includes the window beside her. Soft daylight defines knit stitches and cup rims, with gentle tabletop shadows beneath her forearm.",
+    "promptProse": "Typhon sits beside the cafe window in her forest-green cable-knit casual outfit and black tights. She pulls the opposite chair outward for the arriving viewer and raises her eyes in greeting. The eye-level cowboy view includes her seated posture, the partly drawn-out chair and two steaming drinks on the table. Her scarf hangs from the chair back. The tabletop narrows toward the window, and the sill continues behind her to the next seating bay. Soft daylight catches raised knit stitches and the two cup rims. The moving chair casts a diagonal shadow over the floor, while a gentler shadow under her forearm keeps the table contact clear.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

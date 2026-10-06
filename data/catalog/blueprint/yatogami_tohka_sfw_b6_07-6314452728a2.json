@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_07",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_07",
     "title": "夜刀神十香 · 暖桌蜜柑的分享",
@@ -15,7 +15,7 @@
     "location": "Shido’s warm living room in winter",
     "action": "暖桌前剥蜜柑把最甜一瓣递向镜头，眼神全是分享食物的期待",
     "timeOfDay": "傍晚或夜间",
-    "lighting": "amber kotatsu light and quiet snowfall beyond the window",
+    "lighting": "warm room light above the table and cool snowy window light",
     "camera": "medium shot, vertical framing",
     "mood": "把普通晚餐变成精灵的分享仪式",
     "sceneTags": [
@@ -31,7 +31,7 @@
       "lamplight",
       "night_light"
     ],
-    "promptProse": "Cross-legged beneath the kotatsu, Tohka Yatogami carefully removes each strand from a winter mandarin and offers its sweetest segment toward the viewer with both hands. Her cream knitted sweater, purple trousers and warm socks accompany eager eyes and swaying dark-purple hair. The vertical medium view includes the tabletop and window beyond. Amber kotatsu light warms her palms and fruit, while quiet snowfall cools the window's distant background.",
+    "promptProse": "Cross-legged beneath the kotatsu, Tohka Yatogami carefully removes the strands from a winter mandarin and offers its sweetest segment toward the viewer with both hands. Keep the cream knitted sweater, purple trousers and warm socks, with her dark-purple hair moving beside eager eyes. The vertical medium view includes the tabletop in front and the snowy window beyond. Warm room light arriving from above the table illuminates her palms, the fruit and the blanket’s upper folds; the covered heater remains hidden below. Cooler window light outlines the farther table edge, and a small hand shadow falls onto the tabletop beneath the offered segment.",
     "promptTokens": [
       "1girl",
       "solo",

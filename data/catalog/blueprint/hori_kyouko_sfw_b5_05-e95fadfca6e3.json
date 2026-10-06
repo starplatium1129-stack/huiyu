@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1556,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_05",
     "title": "堀京子 · 把晴天夹上晾衣绳",
@@ -29,7 +29,7 @@
       "morning",
       "medium_shot"
     ],
-    "promptProse": "Kyouko Hori carries the laundry basket against her indigo dungarees while clipping the last towel on the morning balcony. A gust flips the towel, and she tilts her head with a smile before pressing its corner flat. Her mint-and-white striped sleeves stay clear in the medium portrait. Soft morning daylight passes through the towel's raised edge, revealing its weave and leaving curved fabric shadows across the basket and railing.",
+    "promptProse": "Kyouko Hori holds the laundry basket against her indigo dungarees while clipping the last towel on the morning balcony. A gust flips its corner; she tilts her head with a smile and presses the fabric flat, her mint-and-white striped sleeves clear in medium view. The basket occupies the near side, the balcony wall meets the railing behind her, and a neighboring building facade is visible across the gap beyond the rail. Soft morning daylight passes through the lifted towel edge to reveal its weave. Curved fabric shadows fall over the basket, while the inner wall and the underside of the railing stay gently shaded.",
     "promptTokens": [
       "Kyouko Hori",
       "mint striped shirt",

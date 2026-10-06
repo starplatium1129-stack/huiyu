@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_fireworks_festival_glance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 349,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "yui_fireworks_festival_glance",
     "characterId": "yuigahama_yui",
@@ -20,7 +20,7 @@
       "looking_back",
       "night_sky"
     ],
-    "promptProse": "Yui turns back with a bashful smile beneath festival fireworks, holding a paper fan outward beside her light-pink floral yukata. A red obi secures the robe and the traditional hairpin sits near her coral hair bun. The medium view keeps fan and turning shoulders together with the festive walkway below the sky. Multicolored firework glow touches her cheeks and sleeve edges, leaving softer darkness in the robe's gathered folds.",
+    "promptProse": "Yui pauses on the riverside festival steps and turns back with a bashful smile, holding the paper fan outward beside her light-pink floral yukata. Keep the red obi and the traditional hairpin near her coral hair bun. In the medium view, the nearest stone step crosses the lower edge and the descending steps lead behind her toward the riverbank walkway; fireworks rise above the water beyond. Their changing colors catch her cheeks, fan ribs and sleeve edges. Broken reflections stretch across the river, while the gathered robe folds and the risers beneath the steps remain more softly dark.",
     "promptTokens": [
       "1girl",
       "solo",

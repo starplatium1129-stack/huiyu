@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_nerv_corridor_strut",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1026,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "身穿居家T恤系粉色围裙双手递出便当盒，脸颊泛红偏头傲娇娇嗔",
     "camera": "medium shot, eye level, domestic warmth",
@@ -20,7 +20,7 @@
     "mood": "傲娇心动",
     "negativeTokens": [],
     "outfitId": "home_pink_apron",
-    "promptProse": "Asuka stands at the apartment kitchen counter in a home T-shirt and pink ruffled apron, turning her flushed face aside while offering a carefully arranged double-layer bento with both hands. Her red hair clips remain beside lightly moving twin tails. The eye-level medium view includes steaming rolled egg behind the box. Bright morning window light catches the food compartments and apron frills, leaving warm wooden counter reflections below her wrists.",
+    "promptProse": "Asuka stands at the apartment kitchen counter in a home T-shirt and pink ruffled apron, turning her flushed face aside while offering the carefully arranged double-layer bento with both hands. Her red clips remain beside lightly moving twin tails. In the eye-level medium view, the bento overlaps the near worktop, steaming rolled egg rests farther back, and the counter turns beneath the kitchen window toward closed cupboards. Bright morning light catches the food compartments and apron frills. The window frame casts a soft stripe across the farther counter; warm wood reflection reaches her shaded wrists while the cupboard recesses remain subdued.",
     "promptTokens": [
       "morning",
       "apartment kitchen",

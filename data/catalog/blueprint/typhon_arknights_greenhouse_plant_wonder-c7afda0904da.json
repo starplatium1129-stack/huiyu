@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_greenhouse_plant_wonder",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 701,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "typhon_arknights_greenhouse_plant_wonder",
     "characterId": "typhon_arknights",
@@ -40,7 +40,7 @@
       "pointing",
       "cowboy shot"
     ],
-    "promptProse": "Typhon holds an open travel book before the bookstore's travel shelves, pointing to a lakeside cabin photograph and tilting the spread toward her companion. Her charcoal wool jacket, ivory blouse and berry-purple midi skirt remain in the eye-level cowboy view. Book spines form rows behind her. Diffuse window light brightens the photograph and silver jacket toggles, shading the paper where her fingertip rests.",
+    "promptProse": "In front of the travel-book shelves, Typhon holds an atlas open and points to a photograph of a lakeside cabin, tilting the spread so her companion can see it. Keep her charcoal wool jacket, ivory blouse and berry-purple midi skirt in the eye-level cowboy composition. The near corner of the atlas overlaps her jacket; rows of book spines continue behind her to a shelf end that reveals a narrow aisle. Diffuse window light makes the open pages the brightest local surface and gives the silver jacket toggles small, soft reflections. Her fingertip casts a short shadow beside the photograph, and the shelf recesses become darker toward the aisle.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

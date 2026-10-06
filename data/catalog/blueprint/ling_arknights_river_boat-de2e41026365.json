@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_river_boat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 654,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "倚舫栏对月举盏吟诗",
     "camera": "wide medium shot",
@@ -19,7 +19,7 @@
       "daylight"
     ],
     "outfitId": "zhuoying",
-    "promptProse": "Ling leans on the gilt pleasure boat's bow railing, raising a wine cup toward the moon in her white feathered robe. The wide medium view includes the cabin behind her and a river stretching along the boat's direction of travel. Golden cabin lanterns warm the carved rail and sleeve folds; broken silver moonlight ripples below and touches the robe hem as she quietly recites verse.",
+    "promptProse": "At the gilt pleasure boat’s bow, Ling leans on the carved railing and raises a wine cup toward the moon while quietly reciting verse. Preserve the white feathered robe and the wide medium framing. The bow rail curves across the near edge, deck planks lead back toward the cabin, and the river opens beyond the hull in the direction of travel. Golden light from the cabin lanterns runs along the carved rail and catches the lifted sleeve folds. Broken moon reflections stretch across the moving water below; a cool reflected edge touches the robe hem while the rail leaves a soft shadow on the deck.",
     "promptTokens": [
       "moonlit night",
       "river",

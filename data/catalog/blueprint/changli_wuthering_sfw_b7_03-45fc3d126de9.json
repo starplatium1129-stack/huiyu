@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1635,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_03",
     "title": "长离 · 茶馆里听到的妙着",
@@ -29,7 +29,7 @@
       "lantern_light",
       "medium_shot"
     ],
-    "promptProse": "At the night-market tea house, Changli lightly touches a chess piece with her closed fan, then raises an eyebrow at an unexpected solution in the story. She hides a small laugh behind the opened fan, teal gold-edged robe and navy sash tidy over an ivory collar. The medium portrait includes her tea cup and wooden table. Warm lantern light highlights the fan ribs and embroidery, with softer tabletop shadows beneath the waiting cup.",
+    "promptProse": "At the night-market tea house, Changli touches a chess piece with her closed fan, then opens it to hide a small laugh at the story’s unexpected solution. Her teal gold-edged robe and navy sash remain tidy over an ivory collar. The medium portrait places the chess piece and tea cup on the near wooden table. Behind her, a carved screen partly overlaps the doorway, where the night market’s existing lanterns appear farther away. Warm lantern light picks out the fan ribs and embroidery; the cup has a compact shadow against the wood, and the screen recesses remain darker so the doorway does not flatten into the portrait.",
     "promptTokens": [
       "Changli",
       "teal embroidered robe",

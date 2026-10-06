@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_stage",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 328,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "yuzuriha_inori_stage",
     "title": "楪祈 · 歌姬舞台",
@@ -28,7 +28,7 @@
       "gradient_hair",
       "medium_shot"
     ],
-    "promptProse": "Inori sings at the concert-stage center with closed eyes and relaxed hands before her, lips slightly parted beneath pink-to-orange hair and red ornaments. Her red long-sleeved gown has a layered skirt in the medium view. Converging gold spotlights reveal the facing fabric folds, while red stage light outlines the opposite sleeve against the dark venue. Small luminous particles rise around her as a visual echo of the song, leaving her face unobscured.",
+    "promptProse": "Inori sings at the concert-stage center with closed eyes and relaxed hands before her, lips slightly parted beneath pink-to-orange hair and red ornaments. Preserve the red long-sleeved gown and layered skirt in the medium view. Behind the temporary stage, broken masonry arches overlap the darker ruin walls; a narrow strip of stage decking separates her from the cracked stone below. Converging gold spotlights reveal the facing fabric folds, while red stage light traces the opposite sleeve and the nearest arch edge. Small luminous particles rise as an echo of the song, remaining sparse around her unobscured face.",
     "promptTokens": [
       "1girl",
       "solo",

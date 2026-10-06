@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_ferris_wheel_fireworks",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 428,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "reze_ferris_wheel_fireworks",
     "title": "蕾塞 · 摩天轮烟花",
@@ -29,7 +29,7 @@
       "colorful_lights",
       "summer"
     ],
-    "promptProse": "Reze looks upward in genuine wonder as summer fireworks burst above the turning Ferris wheel, oversized bomber jacket resting around her shoulders over a crop tank top and shorts. The medium view includes her open expression beside the wheel's curved structure and distant gondolas. Multicolored fireworks illuminate her cheeks and jacket folds in changing patches, while the wheel's darker spokes remain distinct against the bright night sky.",
+    "promptProse": "Inside the Ferris wheel cabin at its highest point, Reze looks up with genuine wonder at fireworks opening beyond the broad glass window. Her oversized bomber jacket still rests around her shoulders over the crop tank top and shorts. The medium view places the cabin’s curved window frame near one shoulder and the seat back behind her, with spokes and smaller gondolas glimpsed outside rather than beside an unprotected figure. Multicolored firework light moves across her cheeks and jacket folds. Fainter reflected bursts touch the window glass, while the inner frame and seat remain dark enough to preserve the enclosed cabin’s depth.",
     "promptTokens": [
       "1girl",
       "solo",

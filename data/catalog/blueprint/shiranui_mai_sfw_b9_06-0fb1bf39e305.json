@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1742,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_06",
     "title": "不知火舞 · 练习扇上的新流苏",
@@ -30,7 +30,7 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Mai Shiranui kneels on the dojo cushion in securely tied indigo samue and white tabi, fastening a new red tassel to her sensu's bamboo handle. She tightens the knot, opens the paper fan to check rib clearance, then tests a smooth wrist arc. The medium seated portrait includes the pleats across her knees. Soft morning light reveals paper texture and thread, with small rib shadows and a gentle cushion shadow beneath her folded legs.",
+    "promptProse": "Mai Shiranui kneels on the dojo cushion in securely tied indigo samue and white tabi, fastening the new red tassel to her sensu’s bamboo handle. She tightens the knot, opens the paper fan to check the ribs and tests a smooth wrist arc. The medium seated portrait includes the pleats across her knees. Floorboards run past the cushion toward the dojo’s plain practice wall and the lower edge of a side window. Morning light grazes the paper texture and red thread; small fan-rib shadows stay local to the fan, and the cushion presses a broader, softer shadow onto the boards beneath her folded legs.",
     "promptTokens": [
       "Mai Shiranui",
       "indigo samue",

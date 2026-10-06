@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_scholar_study",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 745,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_scholar_study",
     "characterId": "zhuang_fangyi_arknights",
@@ -39,7 +39,7 @@
       "pen",
       "medium shot"
     ],
-    "promptProse": "Zhuang Fangyi leans over the home desk to draw a simple route sketch on a blank note, then turns it toward the viewer while holding its corner flat. Her ivory cross-collar blouse with celadon facings and ink-blue skirt remain in the eye-level medium view. Afternoon light from the side window reveals pencil paths and paper edges, with her wrist casting a narrow shadow across the desk.",
+    "promptProse": "Zhuang Fangyi leans over the home desk to draw the simple route sketch, then turns the note toward the viewer while holding its corner flat. Her ivory cross-collar blouse with celadon facings and ink-blue skirt remain in the eye-level medium view. The near paper edge overlaps the desktop. Behind her shoulder, a short row of books sits against the back of a narrow shelf, and the side-window frame marks where the desk meets the wall. Afternoon light from that window reveals the pencil paths and paper grain. Her wrist casts a narrow shadow, with softer shade beneath the shelf keeping the room from becoming a flat backdrop.",
     "negativeTokens": [
       "readable writing"
     ],
