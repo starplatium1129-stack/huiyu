@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc021",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 20,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T07:44:52.584659500+00:00",
   "data": {
     "animaCaption": "Ayachi Nene tries to conceal the game controller behind a cushion beside the kotatsu, one hand holding the cushion steady. Her guilty pout gives away the trick above her buttoned blue pajamas. The rug, table edge and television form successive planes across the living room. Cool screen light lifts the folds nearest the television, while the floor lamp gives her cheek a warm edge and casts a cushion shadow across the rug.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -25,7 +25,7 @@
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",
-    "story": "【宁宁 · 新年被窝里的败局】成年同居后的新年夜，宁宁缩在被炉旁和你打合作游戏，嘴上说只玩一局，却在连败后悄悄把难度调低。被你当场发现，她慌张地把手柄藏到靠垫后，呆毛也心虚地竖起——「这不叫作弊，是合理调整新年运势！再来一次，输的人负责明早做年糕汤。」",
+    "story": "【宁宁 · 新年被炉旁的败局】成年同居后的新年夜，宁宁缩在被炉旁和你打合作游戏，嘴上说只玩一局，却在连败后悄悄把难度调低。被你当场发现，她慌张地把手柄藏到靠垫后，呆毛也心虚地竖起——「这不叫作弊，是合理调整新年运势！再来一次，输的人负责明早做年糕汤。」",
     "storyJa": "【寧々・お正月、こたつでの敗北】大人になって一緒に暮らし始めてから迎えた大晦日。寧々はこたつであなたと協力ゲームを遊んでいた。一回だけと言っていたのに、連敗するとこっそり難易度を下げてしまう。あなたに見つかると、慌ててコントローラーをクッションの後ろへ隠し、アホ毛まで気まずそうにぴんと立った――「これはずるじゃありません。お正月の運勢を合理的に調整しただけです！　もう一回。負けたほうが、明日の朝のお雑煮を作るんですからね。」",
     "tags": [
       "blue_pajamas",
@@ -50,7 +50,7 @@
     ],
     "time": "夜晚",
     "timeOfDay": "night",
-    "title": "新年被窝里的败局",
+    "title": "新年被炉旁的败局",
     "usage": [
       "展示图"
     ],

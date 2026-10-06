@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kaltsit_arknights/afterwork_cardigan",
+  "revision": 1,
+  "sortOrder": 1110,
+  "createdAt": "2026-10-06T07:44:52.584659500+00:00",
+  "updatedAt": "2026-10-06T07:44:52.584659500+00:00",
+  "data": {
+    "characterId": "kaltsit_arknights",
+    "outfit": {
+      "id": "afterwork_cardigan",
+      "name": "下班后的针织开衫",
+      "prose": "an open oatmeal cable-knit cardigan with long relaxed sleeves over an opaque cream-white cotton camisole, paired with deep-emerald wide-leg lounge trousers",
+      "tokens": [
+        "cardigan",
+        "open cardigan",
+        "oatmeal cable knit",
+        "long sleeves",
+        "cream white camisole",
+        "wide leg pants",
+        "emerald trousers",
+        "lounge clothes"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

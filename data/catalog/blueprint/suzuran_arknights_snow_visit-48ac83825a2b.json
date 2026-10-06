@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_snow_visit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 638,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T07:44:52.584659500+00:00",
   "data": {
     "action": "拎着食盒，站在门前",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "description": "【铃兰 · 雪中探望】白雪皑皑的寒冬走廊前，穿着厚厚毛绒斗篷的丽萨双手小心翼翼地拎着双层保温食盒，静静等候在博士办公室门前。呵出的白气在冷风中飘散，看到开门的你她甜甜一笑——「博士辛苦了！我和妈妈一起做了热腾腾的丸子汤，请趁热喝下暖暖身体吧！」",
     "id": "suzuran_arknights_snow_visit",
     "lighting": "warm window light against snow",
-    "location": "泰拉雪原小屋",
+    "location": "罗德岛博士办公室门前走廊",
     "mood": "温暖治愈",
     "negativeTokens": [
       "summer"
@@ -33,7 +33,8 @@
     "recommendedSize": "1152x1536",
     "sceneTags": [
       "snow",
-      "cottage",
+      "corridor",
+      "office_door",
       "winter",
       "food_box",
       "visit"

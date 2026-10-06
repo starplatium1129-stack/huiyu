@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc241",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 236,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T07:44:52.584659500+00:00",
   "data": {
     "animaCaption": "At the late-night convenience-store counter, Shiki Natsume holds the basket containing a bento, the last pudding and hot canned coffee. She gives the off-frame clerk a reserved nod at the offer to warm the meal. Her black hoodie stands before receding store shelves. Yellow overhead light catches the container lids and basket rim, with a softer counter reflection on the sleeve and clear item-to-basket contact shadows beneath her quiet expression.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -42,7 +42,7 @@
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
-    "title": "便利店深夜的关东煮暖意",
+    "title": "便利店深夜的限定布丁暖意",
     "usage": [
       "新手推荐",
       "壁纸级"
