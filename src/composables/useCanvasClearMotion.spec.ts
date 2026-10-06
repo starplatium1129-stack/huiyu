@@ -66,37 +66,6 @@ it('does not allocate effects when reduced/hidden or busy, and ignores an empty 
   busy.value = false; source.value = ''; motion.playClear()
   expect(mock.dissolve).not.toHaveBeenCalled()
 })
-it('captures a stashed result before rendering the pending generation', async () => {
-  const { source, busy, image, wrapper } = await fixture()
-  mock.dissolve.mockImplementation(() => {
-    expect(source.value).toBe('')
-    expect(busy.value).toBe(true)
-    expect(wrapper.get('img').element).toBe(image)
-    return mock.release
-  })
-  source.value = ''; busy.value = true
-  expect(mock.dissolve).not.toHaveBeenCalled()
-  await nextTick()
-  expect(mock.dissolve).toHaveBeenCalledExactlyOnceWith(image, wrapper.element, 'canvas',
-    expect.objectContaining({ onHandoff: expect.any(Function), onComplete: expect.any(Function) }))
-  expect(wrapper.find('img').exists()).toBe(false)
-  busy.value = true
-  await nextTick()
-  expect(mock.dissolve).toHaveBeenCalledOnce()
-  expect(mock.release).not.toHaveBeenCalled()
-})
-it.each(['cancel', 'result', 'unmount'] as const)('releases the outgoing generation snapshot on %s without touching the result', async change => {
-  const { source, busy, wrapper } = await fixture()
-  source.value = ''; busy.value = true
-  await nextTick()
-  expect(mock.dissolve).toHaveBeenCalledOnce()
-  if (change === 'cancel') busy.value = false
-  if (change === 'result') source.value = '/next.png'
-  if (change === 'unmount') wrapper.unmount()
-  expect(mock.release).toHaveBeenCalledOnce()
-  await nextTick()
-  expect(source.value).toBe(change === 'result' ? '/next.png' : '')
-})
 it('keeps a manual clear through generation start and hands waiting back before the final dust releases', async () => {
   const { source, busy, motion } = await fixture()
   motion.playClear()

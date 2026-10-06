@@ -46,7 +46,8 @@
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
-import { computed, ref } from 'vue'
+import { computed, onDeactivated, onUnmounted, ref } from 'vue'
+import { createFluidMotion } from '@/utils/fluidSpring'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useRandomInspiration } from '@/composables/useRandomInspiration'
@@ -60,9 +61,19 @@ function previewCandidates() { prepareCandidates(3, seedText.value.trim() ? Numb
 const disabled = computed(() => !pb.dataReady)
 const canUndo = computed(() => Boolean(hasUndo.value))
 
-function onRoll() {
+let diceMotion: ReturnType<typeof createFluidMotion> | undefined
+let diceTurn = 0
+function stopDice() { diceMotion?.settle(); diceMotion?.dispose(); diceMotion = undefined; diceTurn = 0 }
+onDeactivated(stopDice)
+onUnmounted(stopDice)
+function onRoll(event: MouseEvent) {
   menuOpen.value = false
-  roll(seedText.value.trim() ? Number(seedText.value) : undefined)
+  // Commit the result immediately. The dice is feedback, never an action timer.
+  if (!roll(seedText.value.trim() ? Number(seedText.value) : undefined)) return
+  const icon = (event.currentTarget as HTMLElement).querySelector<HTMLElement>('.random-dice-icon')
+  if (!icon) return
+  diceMotion ??= createFluidMotion([0], ([angle]) => { icon.style.transform = `rotate(${angle}deg)` }, 4.5)
+  diceMotion.to([diceTurn += 180])
 }
 
 function onUndo() {
@@ -78,14 +89,28 @@ function onUndo() {
   padding: 0 var(--s-3);
   border: 1px solid var(--border-soft);
   @apply tw:rounded-md;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background: transparent;
   @apply tw:text-secondary tw:cursor-pointer;
   font: 650 var(--fs-label-sm) var(--font-sans);
   transition: background var(--motion-hover), border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-hover);
 }
-.random-dice:hover {
+.random-dice::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--accent-soft);
+  opacity: 0;
+  transform: translateY(100%);
+  transition: transform var(--motion-control) var(--ease-out), opacity var(--motion-hover) var(--ease-out);
+}
+.random-dice:is(:hover, :focus-visible):not(:disabled)::before { opacity: 1; transform: translateY(0); }
+.random-dice:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft));
-  background: var(--bg-elevated);
   @apply tw:text-accent;
 }
 .random-dice:focus-visible,
@@ -125,7 +150,9 @@ function onUndo() {
   background: var(--bg-elevated);
   @apply tw:text-accent;
 }
+.random-inspiration.open .random-menu-icon { transform: rotate(35deg); }
 .random-menu-icon {
+  transition: transform var(--motion-control) var(--ease-out);
   @apply tw:grid;
   place-items: center;
   @apply tw:text-body tw:leading-flush;
@@ -176,4 +203,10 @@ function onUndo() {
   @apply tw:cursor-not-allowed;
   transform: none;
 }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .random-dice::before,
+  :root:not([data-motion='full']) .random-menu-icon { transition: none; }
+}
+:root:is([data-motion='reduce'], [data-motion='reduced']) .random-dice::before,
+:root:is([data-motion='reduce'], [data-motion='reduced']) .random-menu-icon { transition: none; }
 </style>

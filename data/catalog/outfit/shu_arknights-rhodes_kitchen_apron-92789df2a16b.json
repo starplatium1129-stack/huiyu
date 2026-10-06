@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/rhodes_kitchen_apron",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 404,
   "createdAt": null,
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
       "id": "rhodes_kitchen_apron",
-      "name": "麦黄围裙与青绿家居裙（创作）",
+      "name": "麦黄围裙与青绿家居裙",
       "default": false,
       "isDefault": false,
       "tokens": [

@@ -48,7 +48,8 @@ beforeEach(() => {
     return id
   })
   vi.stubGlobal('cancelAnimationFrame', vi.fn((id: number) => frames.delete(id)))
-  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(function (this: HTMLCanvasElement) {
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(function (this: HTMLCanvasElement, kind: string) {
+    if (kind === 'webgl2') return null
     const context = makeContext(this)
     contexts.push(context)
     return context as unknown as CanvasRenderingContext2D
@@ -185,7 +186,8 @@ describe('bounded canvas dust dissolve', () => {
 
   it('returns null on a tainted readback and releases every allocated backing without mounting', () => {
     const { image, host } = fixture()
-    vi.mocked(HTMLCanvasElement.prototype.getContext).mockImplementation(function (this: HTMLCanvasElement) {
+    vi.mocked(HTMLCanvasElement.prototype.getContext).mockImplementation(function (this: HTMLCanvasElement, kind: string) {
+      if (kind === 'webgl2') return null
       const context = makeContext(this)
       context.getImageData.mockImplementation(() => { throw new DOMException('Tainted canvas', 'SecurityError') })
       contexts.push(context)

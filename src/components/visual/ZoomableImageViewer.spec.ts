@@ -88,3 +88,26 @@ it('keeps one pointer in control and releases it when the picture changes', asyn
   expect(view.get('.zoom-level').text()).toBe('100%')
   expect(view.classes()).not.toContain('is-panning')
 })
+
+it('preserves a visible preview and zoom when its original URL hydrates', async () => {
+  wrapper = mount(ZoomableImageViewer, { props: { src: '/thumb.jpg', previewSrc: '/thumb.jpg' } })
+  const view = wrapper, visible = view.get('.zoomable-img').element
+  await view.get('.zoomable-img').trigger('load')
+  await view.get('[aria-label="放大图片"]').trigger('click')
+  await view.setProps({ src: 'blob:original' })
+  expect(view.get('.zoomable-img').element).toBe(visible)
+  expect(view.get('.zoomable-img').attributes('src')).toBe('/thumb.jpg')
+  expect(view.get('.zoomable-img').classes()).toContain('is-ready')
+  expect(view.get('.zoom-level').text()).toBe('125%')
+  const original = view.get('.zoomable-preload').element as HTMLImageElement
+  let decoded!: () => void
+  original.decode = vi.fn(() => new Promise<void>(resolve => { decoded = resolve }))
+  await view.get('.zoomable-preload').trigger('load')
+  await view.setProps({ previewSrc: '/refreshed-thumb.jpg' })
+  expect(view.get('.zoomable-img').attributes('src')).toBe('/thumb.jpg')
+  decoded(); await flushPromises()
+  await view.get('.zoomable-img').trigger('load')
+  await view.setProps({ previewSrc: '/another-thumb.jpg' })
+  expect(view.get('.zoomable-img').attributes('src')).toBe('blob:original')
+  expect(view.get('.zoom-level').text()).toBe('125%')
+})

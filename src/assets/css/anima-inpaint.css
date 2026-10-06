@@ -6,7 +6,7 @@
   z-index: var(--z-overlay);
   @apply tw:flex tw:items-center tw:justify-center;
   background: color-mix(in srgb, black 75%, transparent);
-  backdrop-filter: blur(8px);
+  /* The opaque scrim separates the workspace without filtering its full image canvas. */
   @apply tw:p-s-4;
   /* 2026-08-22 动效审计 #7：遮罩淡入淡出改由外层 <Transition name="layer-pop">
      统一驱动（原 fadeIn 动画名无效，从未生效过）。 */

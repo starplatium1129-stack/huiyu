@@ -122,7 +122,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     page.animations[1].onfinish!(); assert.equal(returned.count, 1)
   })
 
-  it('presents ordinary workspaces and cached returns immediately', () => {
+  it('presents workspaces with no eligible heading groups immediately', () => {
     let destination = '/gallery'
     const hooks = useRouteTransition(() => destination), gallery = surface('/gallery'), style = surface('/style')
     const first = counter(), second = counter(), returned = counter()
@@ -142,6 +142,43 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     destination = '/scene-explorer'; hooks.onLeave(style.el, left.done); hooks.onEnter(scene.el, entered.done)
     assert.equal(left.count, 1); assert.equal(entered.count, 1)
     assert.deepEqual(style.calls, []); assert.deepEqual(scene.calls, [])
+  })
+
+  it('stages small workspace groups without animating artwork, replaying query changes or retaining a departed page', () => {
+    let destination = '/gallery'
+    const hooks = useRouteTransition(() => destination), page = surface('/gallery')
+    const heading = document.createElement('header')
+    const title = document.createElement('div'), actions = document.createElement('button'), art = document.createElement('div')
+    art.append(document.createElement('canvas'))
+    heading.append(title, actions, art)
+    const titleMotion = surface(), actionMotion = surface(), artMotion = surface()
+    title.animate = titleMotion.el.animate; actions.animate = actionMotion.el.animate; art.animate = artMotion.el.animate
+    page.el.querySelector = (() => heading) as typeof page.el.querySelector
+    const entered = counter()
+    hooks.onEnter(page.el, entered.done)
+    assert.equal(page.el.inert, false)
+    assert.equal(page.calls.length + artMotion.calls.length, 0)
+    assert.equal(titleMotion.calls.length + actionMotion.calls.length, 2)
+    assert.equal((actionMotion.calls[0][1] as KeyframeAnimationOptions).delay, undefined)
+    titleMotion.animations[0].onfinish!(); assert.equal(entered.count, 0)
+    actionMotion.animations[0].onfinish!(); assert.equal(entered.count, 1)
+    assert.equal(titleMotion.animations[0].cancelCalls, 1)
+
+    destination = '/style'; hooks.onLeave(page.el, () => {})
+    hooks.onLeave(surface('/style').el, () => {})
+    destination = '/gallery'
+    const returned = counter(); hooks.onEnter(page.el, returned.done)
+    assert.deepEqual(titleMotion.calls[1][0], [{ opacity: .86 }, { opacity: 1 }])
+    assert.equal((titleMotion.calls[1][1] as KeyframeAnimationOptions).duration, 120)
+    page.el.dataset.routePath = '/gallery?filter=recent'
+    const queryRefresh = counter(); hooks.onEnter(page.el, queryRefresh.done)
+    assert.equal(queryRefresh.count, 1); assert.equal(titleMotion.calls.length, 2)
+    destination = '/scene-explorer'
+    const left = counter(); hooks.onLeave(page.el, left.done)
+    assert.equal(left.count, 1); assert.equal(returned.count, 1)
+    assert.equal(titleMotion.animations[1].cancelCalls, 1)
+    assert.equal(actionMotion.animations[1].cancelCalls, 1)
+    assert.equal(page.el.dataset.routeEntering, undefined)
   })
 
   it('fades standalone layouts without translating native overlay anchors', () => {

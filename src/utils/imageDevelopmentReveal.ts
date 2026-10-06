@@ -1,7 +1,7 @@
 const MAX_BACKING_PIXELS = 320_000
 const MAX_EDGE = 768
 
-/** One paper study sampled from the decoded work, followed by color and a brief
+/** One tonal study sampled from the decoded work, followed by color and a brief
  * frame glint. The image stays at its original fit; every animated property is
  * opacity or transform. No pixel readback, per-frame paint, or idle effect. */
 export function startImageDevelopmentReveal(image: HTMLImageElement, host: HTMLElement, duration: number): { finished: Promise<void>; stop: () => void } | null {
@@ -54,12 +54,12 @@ export function startImageDevelopmentReveal(image: HTMLImageElement, host: HTMLE
   try {
     const context = draft.getContext('2d')
     if (!context) { stop(); return null }
-    // Paper is a material inside the artwork, identical in both UI themes.
-    // The gray wash is painted once into the bounded bitmap, never animated.
-    context.fillStyle = '#f7f2ec'
+    // Develop from the canvas's own tone, avoiding a white-paper flash in dark
+    // mode. The bounded tonal study is painted once, never blurred per frame.
+    context.fillStyle = getComputedStyle(host).getPropertyValue('--bg-deep').trim() || '#161d24'
     context.fillRect(0, 0, draft.width, draft.height)
-    context.filter = 'grayscale(1) contrast(.8) brightness(1.2)'
-    context.globalAlpha = .38
+    context.filter = 'grayscale(.55) contrast(.95) brightness(.9)'
+    context.globalAlpha = .82
     context.drawImage(image, 0, 0, draft.width, draft.height)
     context.filter = 'none'
     host.append(layer)

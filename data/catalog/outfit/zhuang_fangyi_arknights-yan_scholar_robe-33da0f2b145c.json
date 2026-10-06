@@ -1,17 +1,17 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/yan_scholar_robe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 425,
   "createdAt": null,
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
       "default": false,
       "id": "yan_scholar_robe",
       "isDefault": false,
-      "name": "青瓷交领与墨蓝长裙（创作）",
+      "name": "青瓷交领与墨蓝长裙",
       "prose": "an opaque ivory cross-collar blouse with celadon sleeve facings and fine bamboo embroidery, an ink-blue ankle-length skirt, a narrow woven sash with one jade pendant, and closed cream cloth flats",
       "tokens": [
         "hanfu",

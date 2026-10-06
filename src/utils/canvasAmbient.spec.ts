@@ -21,17 +21,17 @@ function context(pixels: number[]) {
 afterEach(() => vi.restoreAllMocks())
 
 describe('canvas ambient palette', () => {
-  it('extracts image colors while excluding transparent, near-white and near-black pixels', () => {
-    context([
-      190, 80, 70, 255, 20, 180, 240, 0,
-      70, 160, 90, 255, 245, 245, 245, 255,
-      80, 100, 190, 255, 8, 8, 8, 255,
-    ])
-    expect(sampleCanvasAmbient(image())).toEqual(['190 80 70', '70 160 90', '80 100 190'])
+  it('samples only the perimeter and keeps eight spatially ordered colors', () => {
+    const pixels = Array.from({ length: 36 }, (_, index) => {
+      const x = index % 6, y = Math.floor(index / 6)
+      return x === 0 || y === 0 || x === 5 || y === 5 ? [90, 140, 180, 255] : [255, 0, 0, 255]
+    }).flat()
+    context(pixels)
+    expect(sampleCanvasAmbient(image(6, 6))).toEqual(Array(8).fill('90 140 180'))
   })
 
-  it('has no palette when the image has no visible color', () => {
-    context([200, 90, 80, 0, 255, 255, 255, 255, 0, 0, 0, 255])
+  it('has no palette when the perimeter is fully transparent', () => {
+    context(Array(12).fill(0))
     expect(sampleCanvasAmbient(image(3))).toEqual([])
   })
 

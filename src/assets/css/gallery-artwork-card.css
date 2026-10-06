@@ -5,10 +5,13 @@
 /* Keep card geometry real when a cached wall is reattached. A shared intrinsic
    height collapses mixed portrait/landscape rows before their next paint. */
 .artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
-.artwork:hover { @apply tw:border-strong; }
 :root body .gallery-page .artwork { border-radius:var(--r-sm); transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-surface) var(--ease-out); }
 :root body .gallery-page .artwork:not(.artwork-selected) { box-shadow:none; }
-:root body .gallery-page .artwork:hover { transform:none; }
+:root body .gallery-page .artwork { --card-focus-lift:-6px; --card-focus-scale:1.06; }
+:root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
+.artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) .artwork-image { transform:scale(var(--card-focus-scale)); }
+.artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) .artwork-media::after { opacity:1; }
+.artwork:has(:focus-visible) .artwork-name { color:var(--accent); }
 .artwork-button { @apply tw:block tw:w-full; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
 .artwork-selectable .artwork-button { cursor:pointer; }
 .artwork-selectable { scroll-margin-bottom:calc(50vh + var(--s-4)); }
@@ -35,11 +38,13 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-tool :deep(.archive-icon) { @apply tw:w-[14px] tw:h-[14px]; vertical-align:-.12em; }
 /* Keep decoded thumbnails painted across cached returns; only the card enters. */
 .artwork-media { @apply tw:relative tw:w-full; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:var(--bg-elevated); }
-.artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-stage); }
+.artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-stage); transition:transform var(--motion-route) var(--ease-out); }
+/* A fixed, image-only focus glow; no pointer loop, grid blur or extra texture copy. */
+.artwork-media::after { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 /* No dark interval when HD is the first available image. Cross-fade only over
    an already decoded thumbnail, never over an empty stage. */
 .artwork-image-hd { @apply tw:absolute; inset:0; opacity:0; }
-.artwork-image-hd-crossfade { transition:opacity var(--motion-surface) var(--ease-out); }
+.artwork-image-hd-crossfade { transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-route) var(--ease-out); }
 .artwork-image-hd.is-loaded { opacity:1; }
 .artwork-recovery { position:absolute; top:0; left:0; width:100%; aspect-ratio:var(--art-ratio,3/4); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); padding:var(--s-3); background:var(--art-stage); color:var(--on-art-primary); font:500 var(--fs-label-sm)/var(--lh-body) var(--font-sans); text-align:center; pointer-events:none; }
 .artwork-recovery > .archive-icon { width:24px; height:24px; }
@@ -54,6 +59,10 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-mark { flex:0 0 auto; @apply tw:text-accent tw:text-label-sm; }
 
 @media (hover: hover) and (pointer: fine) {
+  :root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):hover { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
+  .artwork:not(.artwork-selectable):not(.artwork-pending):hover .artwork-image { transform:scale(var(--card-focus-scale)); }
+  .artwork:not(.artwork-selectable):not(.artwork-pending):hover .artwork-media::after { opacity:1; }
+  .artwork:hover .artwork-name { color:var(--accent); }
   .artwork:hover .artwork-tools { opacity:1; transform:none; @apply tw:pointer-events-auto; }
 }
 @media (max-width:600px) {
@@ -65,3 +74,11 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 @media (prefers-reduced-motion:reduce) { .artwork-tools,.artwork-image-hd { transition:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-tools,
 :root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-image-hd { transition:none; }
+
+@media (prefers-reduced-motion:reduce) {
+  :root body .gallery-page .artwork { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
+  .artwork-image,.artwork-media::after { transition:none; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced']) body .gallery-page .artwork { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-image,
+:root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-media::after { transition:none; }

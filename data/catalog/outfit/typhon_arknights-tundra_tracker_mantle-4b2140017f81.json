@@ -1,17 +1,17 @@
 {
   "kind": "outfit",
   "id": "typhon_arknights/tundra_tracker_mantle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 398,
   "createdAt": null,
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
   "data": {
     "characterId": "typhon_arknights",
     "outfit": {
       "default": false,
       "id": "tundra_tracker_mantle",
       "isDefault": false,
-      "name": "霜白羊毛披肩与猎装便服（创作）",
+      "name": "霜白羊毛披肩与猎装便服",
       "prose": "a short ivory wool cape with a charcoal lining and a silver antler clasp, a fitted charcoal mock-neck pullover, dark olive tapered trousers with reinforced knees, a narrow brown leather belt and lace-up boots with wool-lined cuffs",
       "tokens": [
         "white_cape",

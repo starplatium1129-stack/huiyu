@@ -1,5 +1,4 @@
 
-import { confirmAction } from '@/composables/useConfirm';
 import { scrollBehavior } from '@/utils/motionPreference';
 import { classifySDError,LIGHT_LOAD,SAFE_SAMPLING,type SDRecoveryId } from '@/utils/sdError';
 import type { PromptSdQueueDeps, usePromptSdQueue } from './usePromptSdQueue';
@@ -11,7 +10,7 @@ export interface PromptGenerationContext extends
     Pick<PromptSdQueueDeps, 'pb' | 'drawEngine' | 'sd' | 'livePrompt' | 'sdSize'>,
     Pick<ReturnType<typeof usePromptSdQueue>, 'sdErrorReport' | 'captureJob' | 'runJob'>,
     Pick<ReturnType<typeof useDirectorEngine>, 'currentCapabilities' | 'generationBusy'>,
-    Pick<ReturnType<typeof useDirectorPopular>, 'applyManagedRoute' | 'resetBlueprintRotation'> {
+    Pick<ReturnType<typeof useDirectorPopular>, 'applyManagedRoute'> {
     generateAnima: ReturnType<typeof useAnimaSession>['generate'];
     tempResultTools: Pick<ReturnType<typeof useTempResult>, 'handleSdResult'>;
 }
@@ -137,23 +136,4 @@ export async function upscaleCurrentResultAction(ctx: Context, source: HiresSour
         if (!url && ctx.sd.errorMsg.value) ctx.sdErrorReport.value = classifySDError({ message: ctx.sd.errorMsg.value });
         if (url) void ctx.tempResultTools.handleSdResult(job, url);
     }
-}
-export async function resetAllAction(ctx: Context): Promise<void> {
-    const { pb, resetBlueprintRotation } = ctx;
-    const confirmed = await confirmAction({
-        title: '重置当前画面配置？',
-        message: '将清空当前的故事、场景与全部自定义词条，重新开始创作。此操作不可撤销。',
-        confirmLabel: '清空重置',
-        danger: true,
-    });
-    if (!confirmed)
-        return;
-    if (pb.isPopular) {
-        pb.setStudioSubject();
-        pb.manualTags = new Set();
-    }
-    pb.setArtistStyleIds([]);
-    pb.clearScene();
-    resetBlueprintRotation();
-    pb.flash('已清空，可以开始新的一幅');
 }

@@ -4,6 +4,7 @@ use axum::{
     Json, Router,
     extract::{ConnectInfo, DefaultBodyLimit, Query as QueryParam, State},
     http::HeaderMap,
+    response::{IntoResponse, Response},
     routing::{get, post},
 };
 pub fn router() -> Router<AppState> {
@@ -37,39 +38,43 @@ fn authorize(app: &AppState, headers: &HeaderMap, peer: std::net::SocketAddr) ->
     app.host.check_available()?;
     Ok(())
 }
-async fn work<T: Send + 'static>(
+async fn work(
     app: &AppState,
-    action: impl FnOnce(&mut Catalog) -> Result<T> + Send + 'static,
-) -> Result<T> {
+    action: impl FnOnce(&mut Catalog) -> Result<Value> + Send + 'static,
+) -> Result<Response> {
     let options = Options::from_config(&app.config);
-    tokio::task::spawn_blocking(move || action(&mut Catalog::open(options)?))
-        .await
-        .map_err(|_| ApiError::new(503, "CATALOG_UNAVAILABLE", "内容库暂不可用"))?
+    // JSON encoding and dropping the large Value tree are CPU work too. Keep
+    // them off Tokio request workers together with the catalog query.
+    tokio::task::spawn_blocking(move || {
+        Ok(Json(action(&mut Catalog::open(options)?)?).into_response())
+    })
+    .await
+    .map_err(|_| ApiError::new(503, "CATALOG_UNAVAILABLE", "内容库暂不可用"))?
 }
 async fn list(
     State(app): State<AppState>,
     ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
     headers: HeaderMap,
     QueryParam(query): QueryParam<Query>,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     authorize(&app, &headers, peer)?;
-    Ok(Json(work(&app, move |c| c.query(&query)).await?))
+    work(&app, move |c| c.query(&query)).await
 }
 async fn stats(
     State(app): State<AppState>,
     ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
     headers: HeaderMap,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     authorize(&app, &headers, peer)?;
-    Ok(Json(work(&app, |c| c.stats()).await?))
+    work(&app, |c| c.stats()).await
 }
 async fn check(
     State(app): State<AppState>,
     ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
     headers: HeaderMap,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     authorize(&app, &headers, peer)?;
-    Ok(Json(work(&app, |c| c.check()).await?))
+    work(&app, |c| c.check()).await
 }
 #[derive(Deserialize)]
 struct Key {
@@ -82,20 +87,18 @@ async fn detail(
     ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
     headers: HeaderMap,
     QueryParam(key): QueryParam<Key>,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     authorize(&app, &headers, peer)?;
-    Ok(Json(work(&app,move|c|Ok(json!({"ok":true,"record":if let Some(revision)=key.revision{c.historical(&key.kind,&key.id,revision)?}else{c.get(&key.kind,&key.id)?}}))).await?))
+    work(&app,move|c|Ok(json!({"ok":true,"record":if let Some(revision)=key.revision{c.historical(&key.kind,&key.id,revision)?}else{c.get(&key.kind,&key.id)?}}))).await
 }
 async fn history(
     State(app): State<AppState>,
     ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
     headers: HeaderMap,
     QueryParam(key): QueryParam<Key>,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     authorize(&app, &headers, peer)?;
-    Ok(Json(
-        work(&app, move |c| c.history(&key.kind, &key.id)).await?,
-    ))
+    work(&app, move |c| c.history(&key.kind, &key.id)).await
 }
 #[derive(Deserialize)]
 struct Character {
@@ -106,19 +109,17 @@ async fn character(
     ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
     headers: HeaderMap,
     QueryParam(key): QueryParam<Character>,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     authorize(&app, &headers, peer)?;
-    Ok(Json(
-        work(&app, move |c| c.character_bundle(&key.id)).await?,
-    ))
+    work(&app, move |c| c.character_bundle(&key.id)).await
 }
 async fn export(
     State(app): State<AppState>,
     ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
     headers: HeaderMap,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     authorize(&app, &headers, peer)?;
-    Ok(Json(work(&app, |c| c.snapshot()).await?))
+    work(&app, |c| c.snapshot()).await
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -132,20 +133,18 @@ async fn change(
     ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
     headers: HeaderMap,
     Json(body): Json<Submission>,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     authorize(&app, &headers, peer)?;
     let admission = app.host.admit_owned()?;
     let cancel = app.shutdown.clone();
-    Ok(Json(
-        work(&app, move |c| {
-            let _admission = admission;
-            if cancel.is_cancelled() {
-                return Err(ApiError::new(499, "ABORT_ERR", "内容保存已取消"));
-            }
-            c.apply(&body.changes, body.preview)
-        })
-        .await?,
-    ))
+    work(&app, move |c| {
+        let _admission = admission;
+        if cancel.is_cancelled() {
+            return Err(ApiError::new(499, "ABORT_ERR", "内容保存已取消"));
+        }
+        c.apply(&body.changes, body.preview)
+    })
+    .await
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -159,14 +158,12 @@ async fn import(
     ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
     headers: HeaderMap,
     Json(body): Json<Import>,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     authorize(&app, &headers, peer)?;
     let admission = app.host.admit_owned()?;
-    Ok(Json(
-        work(&app, move |c| {
-            let _admission = admission;
-            c.import(&body.snapshot, body.preview)
-        })
-        .await?,
-    ))
+    work(&app, move |c| {
+        let _admission = admission;
+        c.import(&body.snapshot, body.preview)
+    })
+    .await
 }

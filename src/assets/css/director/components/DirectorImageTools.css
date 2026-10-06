@@ -14,3 +14,27 @@
 .pb .reference-paste small { @apply tw:ml-auto tw:text-secondary tw:text-label-xs; }
 .pb .reference-outfit-actions:empty { display:none; }
 .pb .btn-compare-inpaint[aria-pressed='true'] { color:var(--accent); border-color:var(--accent); }
+
+/* Native disclosure keeps focus, search drafts and button actions synchronous.
+   Older engines retain the native instant toggle rather than a JS height shim. */
+@supports (interpolate-size: allow-keywords) and selector(details::details-content) {
+  .pb .image-tools .inspector-route { interpolate-size: allow-keywords; }
+  .pb .image-tools .inspector-route::details-content {
+    /* compositor-exempt: one short intrinsic-size disclosure reflows only this inspector;
+       scaling the text would distort it and a fixed max-height would mis-time short content. */
+    height: 0;
+    overflow: clip;
+    opacity: 0;
+    transition: height var(--motion-control) var(--ease-out), opacity var(--motion-hover) var(--ease-out), content-visibility var(--motion-control) allow-discrete;
+  }
+  .pb .image-tools .inspector-route[open]::details-content { height: auto; opacity: 1; }
+}
+.pb .image-tools .inspector-route > summary > .archive-icon { transition: transform var(--motion-control) var(--ease-out); }
+/* Only the chevron turns; the search pictogram remains upright. */
+.pb .image-tools .inspector-route[open] > summary > span .archive-icon { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .pb .image-tools .inspector-route::details-content,
+  :root:not([data-motion='full']) .pb .image-tools .inspector-route > summary > .archive-icon { transition: none; }
+}
+:root:is([data-motion='reduce'], [data-motion='reduced']) .pb .image-tools .inspector-route::details-content,
+:root:is([data-motion='reduce'], [data-motion='reduced']) .pb .image-tools .inspector-route > summary > .archive-icon { transition: none; }

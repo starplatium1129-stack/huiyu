@@ -13,7 +13,7 @@ vi.mock('../platform/desktop/runtime.ts', () => ({
 }))
 import { refreshRuntimeTasks, getRuntimeTask, waitForRuntimeTask } from './runtimeTasks'
 import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
-import { taskRecords, runtimeTasks, runtimeTaskError, unresolvedTaskRequests, pendingTaskRequests } from '../stores/runtimeTaskState'
+import { taskRecords, runtimeTasks, runtimeTaskActiveCount, runtimeTaskError, unresolvedTaskRequests, pendingTaskRequests } from '../stores/runtimeTaskState'
 
 const task = (id: number, revision = 1): TaskRecord => ({
   taskId: String(id), runtimeEpoch: mocks.epoch, revision, createdAt: id,
@@ -62,15 +62,19 @@ describe('runtime task snapshot merging', () => {
     respond([task(1, 2), task(2, 2)])
     await refreshRuntimeTasks()
     const unchanged = taskRecords.value.find(item => item.taskId === '1')
+    expect(runtimeTaskActiveCount.value).toBe(2)
+    expect(runtimeTasks.value[0].metadata.nested).toEqual({ value: 2 })
     const notify = vi.fn(), stop = watch(taskRecords, notify, { flush: 'sync' })
     const clone = vi.spyOn(globalThis, 'structuredClone')
-    respond([task(1, 1), task(2, 3), task(3, 1)])
+    respond([task(1, 1), { ...task(2, 3), status: 'succeeded', upstreamSettled: true, metadata: { nested: { value: 200 } } }, { ...task(3, 1), status: 'succeeded', upstreamSettled: true }])
     await refreshRuntimeTasks()
     expect(notify).toHaveBeenCalledTimes(1)
     expect(clone).toHaveBeenCalledTimes(2)
     expect(taskRecords.value.map(item => item.taskId)).toEqual(['3', '2', '1'])
     expect(taskRecords.value.find(item => item.taskId === '1')).toBe(unchanged)
     expect(taskRecords.value[1].revision).toBe(3)
+    expect(runtimeTaskActiveCount.value).toBe(1)
+    expect(runtimeTasks.value.find(item => item.taskId === '2')?.metadata.nested).toEqual({ value: 200 })
     stop()
   })
 

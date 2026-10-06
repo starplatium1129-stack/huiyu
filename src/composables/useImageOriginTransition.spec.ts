@@ -39,9 +39,9 @@ afterEach(() => {
   vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals()
 })
 
-function setup() {
+function setup(options: { proxyPixelBudget?: number } = {}) {
   let motion!: ReturnType<typeof useImageOriginTransition>
-  wrappers.push(mount(defineComponent({ setup() { motion = useImageOriginTransition(); return () => h('div') } })))
+  wrappers.push(mount(defineComponent({ setup() { motion = useImageOriginTransition(options); return () => h('div') } })))
   const source = document.createElement('img'), target = document.createElement('img'), host = document.createElement('div')
   source.src = '/source.png'; target.src = '/target.png'
   for (const image of [source, target]) {
@@ -327,6 +327,74 @@ it('settles pending promises and removes floating images when unmounted or reduc
   document.documentElement.dataset.motion = 'full'
   const leaving = env.motion.leave(env.target, env.host, env.source)
   wrappers[0].unmount(); await leaving
+  expect(env.proxy()).toBeNull()
+  expect(env.target.style.opacity).toBe('')
+})
+
+it('hands a warm gallery image to its canvas synchronously, without awaiting decode', async () => {
+  const drawImage = vi.fn()
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({ drawImage } as unknown as CanvasRenderingContext2D)
+  const env = setup({ proxyPixelBudget: 1920 * 1080 })
+  const entered = env.motion.enter(env.target, env.host)
+  // Assert before any microtask or rendering opportunity, not after flushPromises.
+  expect(env.target.decode).not.toHaveBeenCalled()
+  expect(drawImage).toHaveBeenCalledOnce()
+  expect(env.proxy()).toBeInstanceOf(HTMLCanvasElement)
+  expect(env.target.style.opacity).toBe('0')
+  expect(animations).toHaveLength(1)
+  animations[0].finish(); await entered
+  expect(env.target.style.opacity).toBe('')
+  expect(env.proxy()).toBeNull()
+})
+
+it('does not start a late gallery flight when a cold image becomes ready', async () => {
+  const env = setup({ proxyPixelBudget: 1920 * 1080 })
+  Object.defineProperty(env.target, 'complete', { value: false, configurable: true })
+  const entered = env.motion.enter(env.target, env.host)
+  Object.defineProperty(env.target, 'complete', { value: true, configurable: true })
+  env.target.dispatchEvent(new Event('load'))
+  await entered
+  expect(env.target.decode).not.toHaveBeenCalled()
+  expect(env.proxy()).toBeNull()
+  expect(env.target.style.opacity).toBe('')
+  expect(animations).toHaveLength(0)
+})
+
+it('preserves hover crop UVs through contain sizing, ancestor clipping and reverse flight', async () => {
+  const drawImage = vi.fn()
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({ drawImage } as unknown as CanvasRenderingContext2D)
+  const env = setup({ proxyPixelBudget: 1920 * 1080 })
+  const frame = document.createElement('div'), viewport = document.createElement('div')
+  frame.style.overflow = viewport.style.overflow = 'hidden'
+  document.body.append(viewport); viewport.append(frame); frame.append(env.source)
+  env.source.style.objectFit = 'contain'
+  // A centered 100:200 image in this square paints at (27,38), size 106x212.
+  vi.mocked(env.source.getBoundingClientRect).mockReturnValue(box(-26, 38, 212, 212))
+  vi.spyOn(frame, 'getBoundingClientRect').mockReturnValue(box(30, 44, 100, 200))
+  vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue(box(32, 46, 96, 196))
+  env.motion.capture(env.source)
+  const entered = env.motion.enter(env.target, env.host)
+  const first = animations[0].frames[0]
+  expect(first.transform).toBe('translate(27px, 38px) scale(0.265, 0.265)')
+  expect(first.clipPath).toBe('inset(3.773585% 4.716981% 3.773585% 4.716981%)')
+  // Visible pixels remain UV [5/106,101/106] × [8/212,204/212], not [0,1].
+  const [top, right, bottom, left] = String(first.clipPath).match(/[\d.]+/g)!.map(Number)
+  expect(left / 100).toBeCloseTo(5 / 106, 6)
+  expect(1 - right / 100).toBeCloseTo(101 / 106, 6)
+  expect(top / 100).toBeCloseTo(8 / 212, 6)
+  expect(1 - bottom / 100).toBeCloseTo(204 / 212, 6)
+  expect(27 + 106 * left / 100).toBeCloseTo(32, 5)
+  expect(38 + 212 * top / 100).toBeCloseTo(46, 5)
+  expect(animations[0].frames[1].clipPath).toBe('inset(0% 0% 0% 0%)')
+  const proxy = env.proxy()!
+  vi.spyOn(proxy, 'getBoundingClientRect').mockReturnValue(box(150, 80, 200, 400))
+  proxy.style.clipPath = 'inset(1% 2% 3% 4%)'
+  const leaving = env.motion.leave(env.target, env.host, env.source)
+  await entered
+  expect(animations[1].frames[0]).toEqual({ transform: 'translate(150px, 80px) scale(0.5, 0.5)', clipPath: 'inset(1% 2% 3% 4%)' })
+  expect(animations[1].frames[1]).toEqual(first)
+  animations[1].finish(); await leaving
+  env.motion.cancel()
   expect(env.proxy()).toBeNull()
   expect(env.target.style.opacity).toBe('')
 })

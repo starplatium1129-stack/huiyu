@@ -28,7 +28,7 @@
      （两层 min-height 同源 clamp，正常无跳变，此处为 error/paused 变体兜底）；
      只补间 opacity/transform。结果容器保持静止，图片由 CgImageReveal 接管。 */
   .pb .stage-slot { @apply tw:relative; }
-  /* The canvas and its result actions share one frame; the empty canvas has no action row. */
+  /* Canvas and toolbar retain the same two rows in empty, working and result states. */
   .pb.atelier-workspace .stage-slot { overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); }
   .pb .stage-slot > .canvas-generation-beam.border-beam-wrap { z-index:calc(var(--z-raised) + 1); }
   .pb .canvas-generation-beam .border-beam-track { opacity:.64; }
@@ -48,7 +48,7 @@
   }
   .pb .stage-swap-enter-from, .pb .stage-swap-leave-to { opacity:0; }
   .pb .stage-swap-leave-active .generation-particles { transition:transform var(--motion-control) var(--ease-out),opacity var(--motion-control) var(--ease-out); }
-  .pb .stage-swap-leave-to .generation-particles { transform:scale(.62); opacity:0; }
+  .pb .stage-swap-leave-to .generation-particles { transform:scale(1.85); opacity:0; }
   .pb .stage-placeholder.is-awaiting-result { position:absolute; inset:0; z-index:var(--z-raised); min-height:0; max-height:none; animation:none; pointer-events:none; }
   /* ── 生成等待：中央聚合粒子与局部呼吸光，保留边缘状态提示。 ── */
   .pb .stage-placeholder.is-generating { border-color:color-mix(in srgb,var(--archive-cyan) 36%,var(--border-soft)); }
@@ -64,7 +64,7 @@
     @apply tw:grid tw:gap-s-3 tw:items-center tw:justify-items-center;
     width:min(100%,480px); margin:0 auto; text-align:center;
   }
-  .pb .stage-generation-feedback { display:grid; gap:var(--s-2); min-width:0; width:min(100%,300px); }
+  .pb .stage-generation-feedback { display:grid; gap:var(--s-2); min-width:0; width:min(100%,300px); position:absolute; left:50%; top:66%; transform:translateX(-50%); z-index:calc(var(--z-raised) + 2); padding:var(--s-3); border-radius:var(--r-md); background:var(--bg-surface); text-align:center; }
   .pb .stage-generating-title {
     @apply tw:text-primary tw:text-title-xs; font-weight:720;
     letter-spacing:-.01em;
@@ -123,8 +123,6 @@
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal,
 .pb.atelier-workspace .result-image-reveal .result-image,
 .pb.atelier-workspace .result-image-wrap .image-split-compare { background:transparent; border-radius:0; }
-.pb .canvas-ambient { --canvas-ambient-1:0 0 0; --canvas-ambient-2:0 0 0; --canvas-ambient-3:0 0 0; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity var(--motion-surface) var(--ease-out); background:radial-gradient(ellipse 60% 80% at 24% 44%,rgb(var(--canvas-ambient-1) / .26),transparent 88%),radial-gradient(ellipse 60% 80% at 76% 40%,rgb(var(--canvas-ambient-2) / .24),transparent 88%),radial-gradient(ellipse 70% 60% at 50% 88%,rgb(var(--canvas-ambient-3) / .22),transparent 90%); }
-.pb .canvas-ambient.is-enabled { opacity:1; }
 .pb.atelier-workspace .result-image-actions { height:52px; min-width:0; flex-wrap:nowrap; padding:var(--s-1) var(--s-2); gap:var(--s-2); }
 .pb .canvas-ambient-toggle[aria-pressed='true'] { color:var(--accent); background:var(--accent-soft); }
 .pb.atelier-workspace .result-image-actions .stage-archive-badge { margin:0; padding:0; background:transparent; }
@@ -134,3 +132,33 @@
   .pb .canvas-secondary-action span,.pb .canvas-ambient-toggle span { display:none; }
   .pb .result-image-actions :is(.canvas-secondary-action,.canvas-ambient-toggle) { width:40px; padding-inline:0; }
 }
+
+/* A single fixed canvas viewport owns all visual states; status and references
+   are overlays/contained content, never stacked documents with an inner scroll. */
+.pb.atelier-workspace .stage-viewport { position:relative; min-width:0; min-height:0; overflow:hidden; height:clamp(360px,60vh,720px); container-type:size; }
+.pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport > :is(.stage-placeholder,.result-image-wrap) { position:absolute; inset:0; width:100%; height:100%; min-height:0; max-height:none; margin:0; }
+.pb.journal-workspace.atelier-workspace[data-director-mode] .stage-message { width:100%; height:100%; min-height:0; overflow:hidden; align-items:center; }
+.pb.atelier-workspace .stage-content { position:relative; height:100%; min-height:0; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
+.pb.atelier-workspace .stage-generating-copy { position:absolute; inset:0; width:100%; height:100%; display:block; }
+.pb.atelier-workspace .stage-generating-copy > .generation-particles { position:absolute; inset:0; width:100%; height:86%; aspect-ratio:auto; }
+.pb.atelier-workspace .stage-generation-feedback { position:absolute; top:min(72%,calc(43% + 120px)); left:50%; transform:translateX(-50%); max-width:calc(100% - 32px); }
+.pb.atelier-workspace .stage-placeholder.is-generating { z-index:calc(var(--z-raised) - 1); }
+.pb.atelier-workspace .stage-progress-details { margin-top:0; position:relative; }
+.pb.atelier-workspace .stage-progress-details[open] { background:var(--bg-surface); z-index:calc(var(--z-raised) - 2); }
+.pb.atelier-workspace .result-image-reveal.cg-image-reveal { width:100%; height:100%; max-height:none; }
+.pb.atelier-workspace .result-image-reveal .result-image { position:absolute; inset:0; width:100%; height:100%; max-height:none; }
+.pb.atelier-workspace .stage-swap-leave-active { transition-duration:720ms; pointer-events:none; }
+.pb.atelier-workspace .stage-swap-leave-active .generation-particles { transition-duration:720ms; }
+.pb.atelier-workspace .stage-content .scene-reference { min-height:0; flex:0 1 auto; --reference-max-height:min(52cqh,400px); }
+.pb.atelier-workspace .stage-content .stage-idle { flex:0 0 auto; }
+@media (min-width:1024px) { .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport { height:auto; } }
+@container (max-height:400px) {
+  .pb.atelier-workspace .stage-generation-feedback { top:66%; gap:var(--s-1); }
+  .pb.atelier-workspace .stage-generating-elapsed { display:none; }
+  .pb.atelier-workspace .stage-content .scene-reference { --reference-max-height:42cqh; }
+  .pb.atelier-workspace .scene-reference figcaption p { display:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .pb.atelier-workspace .stage-swap-leave-active { transition-duration:var(--motion-press); }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced']) .pb.atelier-workspace .stage-swap-leave-active { transition-duration:var(--motion-press); }

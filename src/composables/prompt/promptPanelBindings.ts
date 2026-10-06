@@ -54,7 +54,6 @@ export interface PromptRenderBindings extends
   reuseLastSeed: () => void
   resetSdParams: () => void
   retryAnima: () => void
-  resetAll: () => Promise<void>
 }
 
 export interface PromptStyleBindings {

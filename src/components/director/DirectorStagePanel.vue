@@ -1,42 +1,31 @@
 <template>
   <!-- stage-slot：col-center 的画布槽位锚点（layout.css 以它固定中栏排序首位） -->
-  <div ref="stageRoot" class="stage-slot">
+  <div class="stage-slot">
     <Transition name="stage-beam">
       <BorderBeam v-if="generationBusy || waitingForResult" class="canvas-generation-beam"
         :duration="8.8" :border-width="1.1" color-variant="dual" :glow="true" border-radius="var(--r-xl)" />
     </Transition>
+    <div ref="canvasViewport" class="stage-viewport">
     <!-- 图片显现只由新生成结果驱动，画布与工具保持静止。 -->
     <Transition name="stage-swap">
       <section
-        v-if="!displayResultUrl || waitingForResult"
+        v-if="!displayResultUrl || generationBusy || waitingForResult || failedResultUrl === displayResultUrl"
         class="stage-placeholder"
       :class="{
         'is-generating': generationBusy || waitingForResult,
         'is-awaiting-result': waitingForResult,
-        'is-error': !!generationError,
+        'is-error': !!generationError || Boolean(displayResultUrl && failedResultUrl === displayResultUrl),
         'is-paused': generationStopped,
       }"
       aria-label="成片监看区"
     >
       <div class="stage-message">
         <div class="stage-content" :class="{ 'is-covered': coveringResult }">
-        <DirectorSceneReference :size="canvasSize" />
+        <DirectorSceneReference v-if="!generationBusy && !waitingForResult" :size="canvasSize" />
           <div v-if="generationBusy || waitingForResult" class="stage-generating-copy">
-            <GenerationParticles v-if="!coveringResult" :progress="generationProgress" />
-            <div class="stage-generation-feedback">
-              <div class="stage-generating-title" role="status">正在绘制这一幕</div>
-              <div class="stage-generating-sub">
-                <span>{{ waitingForResult ? '正在显现画面…' : generationStatusText || '正在准备画面…' }}</span>
-                <strong v-if="generationProgress !== null">{{ Math.round(generationProgress * 100) }}%</strong>
-              </div>
-              <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }" role="progressbar" aria-label="生图进度" :aria-valuenow="generationProgress === null ? undefined : Math.round(generationProgress * 100)" :aria-valuemin="0" :aria-valuemax="100">
-                <i :style="{ '--progress': (generationProgress ?? 0) * 100 + '%' }"></i>
-              </div>
-              <span v-if="drawEngine !== 'sd'" class="stage-generating-elapsed">已等待 {{ animaElapsed }} 秒</span>
-              <details v-if="drawEngine !== 'sd' && animaCurrentNode" class="stage-progress-details"><summary>生成详情</summary>当前步骤：{{ animaCurrentNode }}</details>
-            </div>
+            <GenerationParticles v-if="!coveringResult && !textureMotionActive" :progress="generationProgress" />
           </div>
-        <div v-else-if="generationError" class="stage-idle" role="alert">
+        <div v-else-if="generationError || (displayResultUrl && failedResultUrl === displayResultUrl)" class="stage-idle" role="alert">
           <div class="stage-placeholder-title">这次画面未能生成</div>
           <button class="btn btn-ghost" type="button" @click="$emit('openRecovery')">查看恢复选项</button>
           <div class="stage-placeholder-copy">
@@ -78,9 +67,23 @@
     </section>
     </Transition>
 
+    <!-- Keep readable task feedback above the texture canvas's own stacking layer. -->
+    <div v-if="generationBusy || waitingForResult" class="stage-generation-feedback">
+      <div class="stage-generating-title" role="status">正在绘制这一幕</div>
+      <div class="stage-generating-sub">
+        <span>{{ waitingForResult ? '正在显现画面…' : generationStatusText || '正在准备画面…' }}</span>
+        <strong v-if="generationProgress !== null">{{ Math.round(generationProgress * 100) }}%</strong>
+      </div>
+      <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }" role="progressbar" aria-label="生图进度" :aria-valuenow="generationProgress === null ? undefined : Math.round(generationProgress * 100)" :aria-valuemin="0" :aria-valuemax="100">
+        <i :style="{ '--progress': (generationProgress ?? 0) * 100 + '%' }"></i>
+      </div>
+      <span v-if="drawEngine !== 'sd'" class="stage-generating-elapsed">已等待 {{ animaElapsed }} 秒</span>
+      <details v-if="drawEngine !== 'sd' && animaCurrentNode" class="stage-progress-details"><summary>生成详情</summary>当前步骤：{{ animaCurrentNode }}</details>
+    </div>
+
     <!-- Result image -->
-    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :style="{ '--canvas-ambient-1': ambientColors[0] || '0 0 0', '--canvas-ambient-2': ambientColors[1] || '0 0 0', '--canvas-ambient-3': ambientColors[2] || '0 0 0' }">
-      <div class="canvas-ambient" :class="{ 'is-enabled': ambientEnabled && ambientColors.length > 0 }" aria-hidden="true" />
+    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
+      <CanvasAmbient :colors="ambientColors" :aspect="ambientAspect" :enabled="ambientEnabled && !inpaintCompareActive" />
       <ImageSplitCompare
         v-if="inpaintCompareActive && inpaintOriginalUrl"
         :before-src="inpaintOriginalUrl"
@@ -96,13 +99,13 @@
         :auto-reveal="loadedResultUrl === displayResultUrl && displayResultUrl === resultRevealUrl && !revealedResults.has(displayResultUrl)"
         alt="当前生成的画面成片"
         @load="fitResult"
-        @reveal-start="rememberResultReveal"
-        @reveal-complete="rememberResultReveal"
+        @reveal-start="onResultReveal"
+        @reveal-complete="onResultReveal"
         @error="onResultImageError"
       />
     </div>
+    </div>
     <DirectorResultTools
-      v-if="displayResultUrl"
       v-bind="{ generationBusy, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
       :has-result="Boolean(displayResultUrl)" :ambient-enabled="ambientEnabled"
       @update:ambientEnabled="ambientEnabled = $event"
@@ -120,10 +123,12 @@ import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
+import CanvasAmbient from '@/components/visual/CanvasAmbient.vue'
 import GenerationParticles from '@/components/visual/GenerationParticles.vue'
 import BorderBeam from '@/components/visual/BorderBeam.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
+import { useCanvasGenerationMotion } from '@/composables/useCanvasGenerationMotion'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
 import { sampleCanvasAmbient } from '@/utils/canvasAmbient'
 import { useInterrogate } from '@/composables/useInterrogate'
@@ -154,25 +159,30 @@ const props = defineProps<{
   hasStashedResult?: boolean
 }>()
 
-const stageRoot = ref<HTMLElement | null>(null)
-const { playClear, coveringResult } = useCanvasClearMotion(stageRoot, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
+const canvasViewport = ref<HTMLElement | null>(null)
+const { active: textureMotionActive, release: releaseTextureMotion, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.generationProgress, () => props.inpaintCompareActive)
+const { playClear, coveringResult, stop: stopClearMotion } = useCanvasClearMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
+
+// A deliberate clear followed by Generate must not leave two GPU effects alive.
+watch(() => props.generationBusy, busy => { if (busy) stopClearMotion() }, { flush: 'sync' })
 
 const resultAspect = ref(1)
 const loadedResultUrl = ref('')
 const failedResultUrl = ref('')
 const ambientEnabled = ref(true)
 const ambientColors = ref<string[]>([])
+const ambientAspect = ref(1)
 watch(() => props.displayResultUrl, () => {
   const [width, height] = (props.canvasSize || '').split('x').map(Number)
   resultAspect.value = width > 0 && height > 0 ? width / height : 1
   loadedResultUrl.value = ''
   failedResultUrl.value = ''
-  ambientColors.value = []
 }, { immediate: true })
 async function fitResult(event: Event) {
   const image = event.target as HTMLImageElement
   const source = props.displayResultUrl
   resultAspect.value = image.naturalWidth / image.naturalHeight
+  ambientAspect.value = resultAspect.value
   ambientColors.value = sampleCanvasAmbient(image)
   // Settle the canvas ratio before the decoded work receives its reveal.
   await nextTick()
@@ -183,7 +193,8 @@ async function fitResult(event: Event) {
 const revealedResults = ref(new Set<string>())
 const waitingForResult = computed(() => Boolean(props.displayResultUrl && props.displayResultUrl === props.resultRevealUrl
   && !props.inpaintCompareActive && !revealedResults.value.has(props.displayResultUrl) && failedResultUrl.value !== props.displayResultUrl))
-function onResultImageError() { failedResultUrl.value = props.displayResultUrl }
+function onResultImageError() { failedResultUrl.value = props.displayResultUrl; stopTextureMotion() }
+function onResultReveal() { releaseTextureMotion(); rememberResultReveal() }
 function rememberResultReveal() {
   const source = props.displayResultUrl
   if (!source || revealedResults.value.has(source)) return

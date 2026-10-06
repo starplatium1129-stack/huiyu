@@ -2,13 +2,15 @@ import { getCurrentInstance, onDeactivated, onUnmounted } from 'vue'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 
 type ImageRect = { left: number; top: number; width: number; height: number }
-type Origin = { rect: ImageRect; src: string }
+type Origin = { rect: ImageRect; src: string; clipPath?: string }
+const UNCLIPPED = 'inset(0% 0% 0% 0%)'
 type Flight = {
   proxy: HTMLImageElement | HTMLCanvasElement
   target: HTMLImageElement
   host: HTMLElement
   restore: () => void
   animation: Animation | null
+  clipped: boolean
   settle: (() => void) | null
 }
 
@@ -31,9 +33,26 @@ function safeOrigin(image: HTMLImageElement | null): Origin | null {
     const style = getComputedStyle(node)
     if (style.filter && style.filter !== 'none' || style.visibility === 'hidden' || style.display === 'none' || Number(style.opacity || 1) === 0) return null
   }
-  const rect = imageRect(image)
+  const fullRect = imageRect(image), rect = { ...fullRect }
+  // Keep both the painted image mapping and its aperture. Shrinking the image
+  // into the visible rectangle would reveal cropped edge pixels at handoff.
+  for (let node = image.parentElement; node; node = node.parentElement) {
+    const style = getComputedStyle(node), box = node.getBoundingClientRect()
+    if (/(hidden|clip|auto|scroll)/.test(style.overflowX || style.overflow)) {
+      const right = Math.min(rect.left + rect.width, box.right)
+      rect.left = Math.max(rect.left, box.left); rect.width = Math.max(0, right - rect.left)
+    }
+    if (/(hidden|clip|auto|scroll)/.test(style.overflowY || style.overflow)) {
+      const bottom = Math.min(rect.top + rect.height, box.bottom)
+      rect.top = Math.max(rect.top, box.top); rect.height = Math.max(0, bottom - rect.top)
+    }
+  }
   if (!rect.width || !rect.height || rect.left >= innerWidth || rect.top >= innerHeight || rect.left + rect.width <= 0 || rect.top + rect.height <= 0) return null
-  return { rect, src: image.currentSrc || image.src }
+  const insets = [rect.top - fullRect.top, fullRect.left + fullRect.width - rect.left - rect.width,
+    fullRect.top + fullRect.height - rect.top - rect.height, rect.left - fullRect.left]
+  const clipPath = insets.some(value => value > 0)
+    ? `inset(${insets.map((value, index) => `${Number((100 * value / (index % 2 ? fullRect.width : fullRect.height)).toFixed(6))}%`).join(' ')})` : undefined
+  return { rect: fullRect, src: image.currentSrc || image.src, clipPath }
 }
 
 function visibleTarget(rect: ImageRect, image: HTMLImageElement, host: HTMLElement) {
@@ -116,7 +135,13 @@ export function useImageOriginTransition(options: { proxyPixelBudget?: number } 
     if (!source || prefersReducedMotion() || document.hidden || !target.isConnected || typeof target.animate !== 'function') { clearFlight(); return }
     if (direction === 'enter' && flight?.target !== target) {
       const remaining = enterDeadline - performance.now()
-      if (remaining <= 0 || !await ready(target, remaining)) { if (token === revision) clearFlight(); return }
+      // The bounded canvas path copies a warm image synchronously, before
+      // the owning dialog's enter hook yields. Never wait for decode here:
+      // that can hide a viewer image which has already become visible.
+      const warm = target.complete && target.naturalWidth > 0
+      if (remaining <= 0 || (options.proxyPixelBudget ? !warm : !await ready(target, remaining))) {
+        if (token === revision) clearFlight(); return
+      }
     }
     if (token !== revision) return
     if (!target.isConnected || !host.isConnected) { clearFlight(); return }
@@ -126,8 +151,15 @@ export function useImageOriginTransition(options: { proxyPixelBudget?: number } 
     // and unrelated thumbnail crops must not stretch into a different aspect ratio.
     if (!visibleTarget(destination, target, host) || Math.abs((source.rect.width / source.rect.height) / (destination.width / destination.height) - 1) > .02) { clearFlight(); return }
     let from = direction === 'enter' ? source.rect : destination
+    let clipped = Boolean(source.clipPath)
+    let fromClip = direction === 'enter' ? source.clipPath || UNCLIPPED : UNCLIPPED
     if (flight?.target === target && flight.host === host) {
       from = flight.proxy.getBoundingClientRect()
+      clipped ||= flight.clipped
+      if (clipped) {
+        const currentClip = getComputedStyle(flight.proxy).clipPath
+        fromClip = currentClip && currentClip !== 'none' ? currentClip : UNCLIPPED
+      }
       flight.animation?.cancel(); flight.animation = null
       flight.settle?.(); flight.settle = null
     } else {
@@ -188,7 +220,7 @@ export function useImageOriginTransition(options: { proxyPixelBudget?: number } 
       const opacity = target.style.opacity, transition = target.style.transition
       target.style.transition = 'none'; target.style.opacity = '0'
       host.append(proxy)
-      flight = { proxy, target, host, animation: null, settle: null, restore: () => {
+      flight = { proxy, target, host, animation: null, clipped: false, settle: null, restore: () => {
         target.style.opacity = opacity
         // Commit restoration before reenabling an image's loading fade.
         void getComputedStyle(target).opacity
@@ -200,10 +232,17 @@ export function useImageOriginTransition(options: { proxyPixelBudget?: number } 
     const width = Number.parseFloat(active.proxy.style.width), height = Number.parseFloat(active.proxy.style.height)
     const transform = (rect: ImageRect) => `translate(${rect.left}px, ${rect.top}px) scale(${rect.width / width}, ${rect.height / height})`
     active.proxy.dataset.imageOriginDirection = direction
+    active.clipped = clipped
     await new Promise<void>(resolve => {
       active.settle = resolve
       try {
-        const animation = active.proxy.animate([{ transform: transform(from) }, { transform: transform(to) }], {
+        const frames: Keyframe[] = [{ transform: transform(from) }, { transform: transform(to) }]
+        if (clipped) {
+          /* compositor-exempt: bounded 280ms rectangular image-flight aperture preserves hover crop; no persistent layer or loop. */
+          frames[0].clipPath = fromClip
+          frames[1].clipPath = direction === 'enter' ? UNCLIPPED : source.clipPath || UNCLIPPED
+        }
+        const animation = active.proxy.animate(frames, {
           duration: direction === 'leave' ? Math.max(0, 280 - (performance.now() - startedAt)) : 280,
           easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both',
         })

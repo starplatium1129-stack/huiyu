@@ -1,17 +1,17 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/jade_city_cardigan",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1102,
   "createdAt": "2026-10-04T15:24:42.960074100+00:00",
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
       "id": "jade_city_cardigan",
       "default": false,
       "isDefault": false,
-      "name": "玉绿盘扣开衫与米白长裙（创作）",
+      "name": "玉绿盘扣开衫与米白长裙",
       "prose": "a jade-green fine-knit cardigan with short Chinese knot fastenings over a cream blouse, an ivory pleated midi skirt, a slim gold chain with a jade drop and dark green Mary Jane flats",
       "tokens": [
         "green_cardigan",

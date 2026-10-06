@@ -444,7 +444,7 @@ export function usePromptWorkspace() {
                 void refreshManagedRoute();
         }
     });
-    const generationContext = { pb, applyManagedRoute, drawEngine, sd, livePrompt, currentCapabilities, generationBusy, generateAnima, sdErrorReport, captureJob, runJob, tempResultTools, sdSize, resetBlueprintRotation }
+    const generationContext = { pb, applyManagedRoute, drawEngine, sd, livePrompt, currentCapabilities, generationBusy, generateAnima, sdErrorReport, captureJob, runJob, tempResultTools, sdSize }
     function callGenerate(opts: {
         disableLora?: boolean;
     } = {}): Promise<void> { return import('./promptGenerationActions').then(({ callGenerateAction }) => callGenerateAction(generationContext, opts)); }
@@ -462,7 +462,6 @@ export function usePromptWorkspace() {
             await upscaleCurrentResultAction(generationContext, source);
         } finally { if (version === hiresVersion) hiresPreparing.value = false; }
     }
-    function resetAll(): Promise<void> { return import('./promptGenerationActions').then(({ resetAllAction }) => resetAllAction(generationContext)); }
     // Each lazy panel receives a stable, explicit capability surface. Store fields are
     // projected with toRef, so writes still reach the single existing state owner.
     const materialBindings: PromptMaterialBindings = {
@@ -484,7 +483,7 @@ export function usePromptWorkspace() {
         engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
         displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState,
         retryAnima, vramHint, vramLevel, baseResolutionRisk, baseResolutionHint,
-        canUseFaceDetailer, enqueueCurrent, enqueue3Variants, resetAll,
+        canUseFaceDetailer, enqueueCurrent, enqueue3Variants,
     };
     const styleBindings: PromptStyleBindings = {
         pb: reactive({ directorMode: toRef(pb, 'directorMode'), artistStyleIds: toRef(pb, 'artistStyleIds'),

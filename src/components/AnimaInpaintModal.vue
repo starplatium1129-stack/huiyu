@@ -6,7 +6,7 @@ import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
@@ -50,6 +50,10 @@ const emit = defineEmits<{
   (e: 'submit', payload: InpaintSubmitPayload): void
 }>()
 
+// Mount the form once on demand. v-show can reverse an exit on the same surface
+// and retains scroll, textarea selection and the existing draft on reopen.
+const hasOpened = ref(props.open)
+watch(() => props.open, open => { if (open) hasOpened.value = true })
 const modalEl = ref<HTMLElement | null>(null)
 useFocusTrap(modalEl, () => props.open, { onEscape: () => emit('close') })
 
@@ -173,8 +177,8 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
 </script>
 
 <template>
-  <FluidTransition>
-  <div v-if="open" class="modal-backdrop" @click.self="emit('close')">
+  <FluidTransition v-if="hasOpened" appear>
+  <div v-show="open" class="modal-backdrop" @click.self="emit('close')">
     <div ref="modalEl" class="modal-card inpaint-modal" role="dialog" aria-modal="true" aria-label="智能局部换装">
       <CornerFrame variant="ghost" />
 
@@ -226,7 +230,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 class="preview-surface"
                 :style="previewSurfaceStyle"
               >
-                <img :key="sourceRevision" :data-source-revision="sourceRevision" :crossorigin="runtimeResourceCors()" ref="previewImageEl" class="preview-thumb" :src="resolveRuntimeUrl(activeImageUrl)" alt="换装基准图" @load="onPreviewLoad" />
+                <img decoding="async" :key="sourceRevision" :data-source-revision="sourceRevision" :crossorigin="runtimeResourceCors()" ref="previewImageEl" class="preview-thumb" :src="resolveRuntimeUrl(activeImageUrl)" alt="换装基准图" @load="onPreviewLoad" />
                 <canvas
                   ref="maskCanvasEl"
                   class="mask-canvas"

@@ -1,17 +1,17 @@
 {
   "kind": "outfit",
   "id": "rossy_arknights/pioneer_hoodie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 437,
   "createdAt": null,
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
   "data": {
     "characterId": "rossy_arknights",
     "outfit": {
       "default": false,
       "id": "pioneer_hoodie",
       "isDefault": false,
-      "name": "莓红拉链卫衣与百褶裙（创作）",
+      "name": "莓红拉链卫衣与百褶裙",
       "prose": "a berry-red zip-front hoodie with cream drawstrings, an ivory-and-charcoal striped crew-neck shirt, a charcoal pleated skirt with a practical tail opening, opaque warm tights and cream high-top canvas sneakers; her hood stays down and her wolf ears are clear",
       "tokens": [
         "red_hoodie",

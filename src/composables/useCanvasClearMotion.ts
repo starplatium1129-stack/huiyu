@@ -62,12 +62,6 @@ export function useCanvasClearMotion(
     if ((url && url !== oldUrl) || comparison || (!generating && wasGenerating)
       || (generating && url && generating !== wasGenerating)) stop()
   }, { flush: 'sync' })
-  // Anima/Krea stash the old result before submitting. Props settle before this
-  // pre-render watcher, while the decoded old image is still in the DOM. Capture
-  // only its pixels; submission and result ownership never wait on the effect.
-  watch([source, busy, comparing], ([url, generating, comparison], [oldUrl, , wasComparing]) => {
-    if (oldUrl && !url && generating && !comparison && !wasComparing && !cleanup) playSnapshot()
-  }, { flush: 'pre' })
   watch([canAnimate, lowEffects], () => {
     if (!canAnimate.value || lowEffects.value) stop()
   }, { flush: 'sync' })

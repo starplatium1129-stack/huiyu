@@ -211,9 +211,13 @@ watch(() => props.anchor, () => {
 .studio-tooltip {
   transform-origin: var(--reka-tooltip-content-transform-origin, center);
 }
-/* Toolbar hints repeat frequently and appear on keyboard focus: respond directly. */
+/* Pointer hints gently settle; keyboard focus (instant-open) stays immediate.
+   Reka owns dismissal, so a decorative exit never delays focus or a click. */
+.studio-tooltip[data-state='delayed-open'] { transition: opacity var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out); }
+@starting-style { .studio-tooltip[data-state='delayed-open'] { opacity: 0; transform: translateY(3px); } }
+:root:is([data-motion='reduce'], [data-motion='reduced']) .studio-tooltip[data-state] { transition: none; }
 /* 渲染进 dialog 时要盖过弹窗内部最高层（--z-overlay 是弹窗层） */
 .studio-tooltip[data-in-dialog] { z-index: calc(var(--z-overlay) + 1); }
-@media (prefers-reduced-motion: reduce) { .studio-tooltip[data-state] { animation: none; } }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .studio-tooltip[data-state] { animation: none; transition: none; } }
 @media (forced-colors: active) { .studio-tooltip { background: Canvas; border-color: CanvasText; } .studio-tooltip-arrow { fill: Canvas; } }
 </style>

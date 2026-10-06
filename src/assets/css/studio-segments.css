@@ -20,7 +20,7 @@ html body .char-source.studio-segments[role] button { white-space: normal; }
 html body .studio-segments[role] .animated-selection {
   border-color: var(--glass-edge);
   border-radius: var(--selection-radius);
-  background: linear-gradient(160deg, var(--glass-highlight), transparent 55%), linear-gradient(180deg, var(--bg-surface), var(--bg-elevated));
+  background: linear-gradient(160deg, var(--glass-highlight), transparent 55%), linear-gradient(180deg, color-mix(in srgb, var(--accent-soft) 25%, var(--bg-surface)), var(--bg-elevated));
   box-shadow: var(--selection-shadow);
 }
 html body .studio-segments[role] button {

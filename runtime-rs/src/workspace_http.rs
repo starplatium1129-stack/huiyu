@@ -170,5 +170,16 @@ async fn perform(
     };
     let mut envelope = json!({"ok": true, "result": null, "protocolVersion": 1, "workspaceId": storage.workspace_id(), "runtimeEpoch": storage.runtime_epoch()});
     envelope["result"] = result;
-    Ok(Json(envelope).into_response())
+    // Profile archives and bulk workspace reads can contain megabytes of JSON.
+    // Storage runs on its own worker; keep response encoding off the async
+    // request worker as well, without occupying the serialized storage queue.
+    tokio::task::spawn_blocking(move || Json(envelope).into_response())
+        .await
+        .map_err(|_| {
+            ApiError::new(
+                503,
+                "WORKSPACE_UNAVAILABLE",
+                "Workspace response unavailable",
+            )
+        })
 }

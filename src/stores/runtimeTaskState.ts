@@ -1,6 +1,7 @@
-import { computed, ref, toRaw } from 'vue'
+import { computed, ref, shallowRef, toRaw } from 'vue'
 import type { TaskRecord } from '../../types/tasks'
-export const taskRecords = ref<TaskRecord[]>([])
+// Revision snapshots are immutable here; merges replace the root array.
+export const taskRecords = shallowRef<TaskRecord[]>([])
 export const copyTask = (task: TaskRecord) => structuredClone(toRaw(task))
 export const runtimeTasks = computed(() => taskRecords.value.map(copyTask))
 export const runtimeTasksEnabled = ref(false)

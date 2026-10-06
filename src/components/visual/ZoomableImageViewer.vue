@@ -144,10 +144,14 @@ async function upgradeImage(event: Event) {
 }
 function onFullImageError() { fullImageFailed.value = true; emit('error') }
 
-watch(() => [props.src, props.previewSrc], () => {
-  sourceRevision++
-  displayedSrc.value = props.previewSrc || props.src
+watch(() => [props.src, props.previewSrc], ([src, preview], [previousSrc, previousPreview]) => {
+  if (src !== previousSrc) sourceRevision++
   fullImageFailed.value = false
+  // A newly hydrated original for the same preview is a quality upgrade, not
+  // navigation. Keep its painted frame and the user's zoom while it decodes.
+  if (!imageFailed.value && ((preview && preview === previousPreview)
+    || (src === previousSrc && imageReady.value))) return
+  displayedSrc.value = props.previewSrc || props.src
   imageReady.value = false
   imageFailed.value = false
   resetZoom()

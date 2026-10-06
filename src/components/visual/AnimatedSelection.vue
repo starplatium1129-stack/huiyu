@@ -1,4 +1,4 @@
-<template><span ref="indicator" class="animated-selection tw:absolute tw:[inset:0_auto_auto_0] tw:pointer-events-none tw:[border-radius:var(--selection-radius,_var(--r-md))] tw:[border:1px_solid_var(--glass-edge)] tw:[box-shadow:var(--selection-shadow,_var(--shadow-glass-sm))]" aria-hidden="true"></span></template>
+<template><span ref="indicator" class="animated-selection tw:absolute tw:[inset:0_auto_auto_0] tw:pointer-events-none tw:[border-radius:var(--selection-radius,_var(--r-md))] tw:[border:1px_solid_var(--glass-edge)] tw:[box-shadow:var(--selection-shadow,_var(--shadow-glass-sm))]" aria-hidden="true"><span ref="highlight" class="animated-selection-highlight"></span></span></template>
 <script setup lang="ts">
 import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watch } from 'vue'
 import { frame, cancelFrame } from 'motion'
@@ -6,10 +6,12 @@ import { createFluidMotion } from '@/utils/fluidSpring'
 import '@/assets/css/studio-segments.css'
 const props = withDefaults(defineProps<{ target?: string }>(), { target: '[aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]' })
 const indicator = ref<HTMLElement | null>(null)
+const highlight = ref<HTMLElement | null>(null)
 let resize: ResizeObserver | undefined
 let mutations: MutationObserver | undefined
 let fluid: ReturnType<typeof createFluidMotion> | undefined
 let baseWidth = 1, baseHeight = 1
+let targetX = 0, targetY = 0
 let suspended = false
 let measurement: { x: number; y: number; width: number; height: number; box: string } | null = null
 let media: MediaQueryList | undefined
@@ -98,11 +100,20 @@ function render() {
   const { x, y, width, height, box } = measurement
   destinationBox = box
   baseWidth = width; baseHeight = height
+  targetX = x; targetY = y
   el.style.width = baseWidth + 'px'
   el.style.height = baseHeight + 'px'
   el.style.opacity = '1'
   fluid ??= createFluidMotion([x, y, width, height], ([left, top, width, height]) => {
     el.style.transform = `translate(${left}px,${top}px) scale(${width / baseWidth},${height / baseHeight})`
+    // Light travels with the existing geometry spring and disappears when settled.
+    // No timer, layout read, restarting keyframe or extra animation loop on rapid input.
+    const light = highlight.value
+    if (light) {
+      const energy = Math.min(1, Math.hypot(targetX - left, targetY - top, (baseWidth - width) * .5, (baseHeight - height) * .5) / Math.max(40, baseWidth))
+      light.style.opacity = String(energy * .42)
+      light.style.transform = `translateX(${Math.sign(targetX - left) * energy * 14}%)`
+    }
   }, 5.5)
   fluid.to([x, y, width, height], !initialized || keyboardInput)
   initialized = true
@@ -164,8 +175,17 @@ onUnmounted(() => {
 <style scoped>
 .animated-selection {
   opacity: 0;
+  overflow: hidden;
   transform-origin: 0 0;
   background: linear-gradient(135deg, var(--glass-highlight), transparent), var(--bg-elevated);
   transition: opacity var(--motion-hover) var(--ease-out);
 }
+.animated-selection-highlight {
+  position: absolute;
+  inset: 0 -20%;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(105deg, transparent 15%, var(--glass-highlight) 45%, var(--accent-soft) 65%, transparent 85%);
+}
+@media (forced-colors: active) { .animated-selection-highlight { display: none; } }
 </style>

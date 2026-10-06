@@ -312,7 +312,18 @@ async fn perform(
     }
     let mut envelope = json!({"ok":true,"result":null,"runtimeEpoch":storage.runtime_epoch(),"executionAvailable":state.tasks.is_some()});
     envelope["result"] = result;
-    Ok(Json(envelope).into_response())
+    // Idle delta polls are tiny and do not need an extra thread-pool hop.
+    if envelope["result"]["items"]
+        .as_array()
+        .is_some_and(Vec::is_empty)
+    {
+        return Ok(Json(envelope).into_response());
+    }
+    // A task page includes immutable input/context records. Even with bounded
+    // paging, encoding those records must not occupy an async request worker.
+    tokio::task::spawn_blocking(move || Json(envelope).into_response())
+        .await
+        .map_err(|_| ApiError::new(503, "TASK_UNAVAILABLE", "Task response unavailable"))
 }
 
 fn invalid_record() -> ApiError {

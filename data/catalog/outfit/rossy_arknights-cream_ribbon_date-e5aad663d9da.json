@@ -1,17 +1,17 @@
 {
   "kind": "outfit",
   "id": "rossy_arknights/cream_ribbon_date",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1108,
   "createdAt": "2026-10-04T15:24:42.960074100+00:00",
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
   "data": {
     "characterId": "rossy_arknights",
     "outfit": {
       "id": "cream_ribbon_date",
       "default": false,
       "isDefault": false,
-      "name": "奶油白蝴蝶结衬衫与酒红裙（创作）",
+      "name": "奶油白蝴蝶结衬衫与酒红裙",
       "prose": "a cream blouse with a small burgundy ribbon at its rounded collar, a wine-red A-line knee-length skirt with a tail opening, a short cocoa-brown cardigan, ribbed cream socks, brown Mary Jane shoes and a small woven shoulder bag",
       "tokens": [
         "blouse",

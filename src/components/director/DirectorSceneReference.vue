@@ -96,6 +96,10 @@ figcaption p { margin:var(--s-2) 0 var(--s-3); @apply tw:text-secondary tw:text-
 .scene-reference-settings { gap:var(--s-2) var(--s-4); }
 .scene-reference-settings dt { @apply tw:text-secondary; }
 .scene-reference-settings dd { margin:var(--s-1) 0 0; @apply tw:text-primary; }
-@container canvas-column (max-width:440px) { .scene-reference { --reference-max-height:190px; grid-template-columns:1fr; } }
+@container canvas-column (max-width:440px) {
+  .scene-reference { --reference-max-height:160px; grid-template-columns:minmax(0,34%) minmax(0,1fr); gap:var(--s-3); }
+  figcaption p { display:none; }
+  .scene-reference-settings { gap:var(--s-2); }
+}
 @media (min-width:901px) and (max-height:760px) { .scene-reference { --reference-max-height:180px; } }
 </style>

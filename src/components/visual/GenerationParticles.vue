@@ -22,7 +22,7 @@ let sprites: HTMLCanvasElement[] = []
 let context: CanvasRenderingContext2D | null = null
 let width = 0, height = 0, ratio = 1
 let clock = 1500, previousTime: number | null = null
-let concentration = props.progress ?? 0.35
+let concentration = props.progress ?? 0
 let stopFrames: (() => void) | null = null
 
 function stop() {
@@ -81,7 +81,7 @@ function draw() {
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
   ctx.clearRect(0, 0, width, height)
   const centerX = width / 2, centerY = height / 2
-  const radius = Math.min(width * 0.25, height * 0.4, 100) * (1.17 - concentration * 0.24)
+  const radius = Math.min(width * 0.25, height * 0.4, 100) * (1 - concentration * 0.64)
   const pitch = 0.28 + Math.sin(time * 0.17) * 0.12
   const cosine = Math.cos(pitch), sine = Math.sin(pitch)
   for (const point of points) {

@@ -11,7 +11,7 @@
       </div>
     </button>
     <Teleport to="body">
-    <dialog ref="panel" class="artist-style-panel" :aria-labelledby="titleId" @close="dialogOpen = false" @click="onBackdrop" @keydown="onPickerKeydown">
+    <dialog ref="panel" class="artist-style-panel" :aria-labelledby="titleId" @close="dialogOpen = Boolean(panel?.open)" @cancel.prevent="closePicker" @click="onBackdrop" @keydown="onPickerKeydown">
     <header class="artist-dialog-heading"><h2 :id="titleId">画师风格</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="关闭画师选择" @click="closePicker"><ArchiveIcon name="close" /></button></header>
     <div class="artist-style-body">
       <!--
@@ -136,8 +136,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onDeactivated, ref, useId } from 'vue'
-import { isBackdropClick } from '@/composables/useFluidDialog'
+import { computed, ref, useId } from 'vue'
+import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -174,16 +174,15 @@ const currentScope = ref('all')
 const scopes = [{ id: 'all', label: '全部' }, { id: 'frequent', label: '常用' }, { id: 'recent', label: '最近' }]
 const panel = ref<HTMLDialogElement | null>(null)
 const dialogOpen = ref(false)
+const dialogMotion = useFluidDialog(panel)
 const titleId = useId()
-function openPicker() { panel.value?.showModal(); dialogOpen.value = true }
-function closePicker() { panel.value?.close(); dialogOpen.value = false }
+function openPicker() { dialogMotion.open(); dialogOpen.value = Boolean(panel.value?.open) }
+function closePicker() { dialogMotion.close(() => { dialogOpen.value = false }) }
 function onBackdrop(event: MouseEvent) { if (isBackdropClick(event, panel.value)) closePicker() }
 function onPickerKeydown(event: KeyboardEvent) {
-  if (event.key !== 'Escape' || event.isComposing || event.keyCode === 229) return
+  if (event.defaultPrevented || event.key !== 'Escape' || event.isComposing || event.keyCode === 229) return
   event.preventDefault(); event.stopPropagation(); closePicker()
 }
-onDeactivated(closePicker)
-onBeforeUnmount(closePicker)
 /** 达上限时的就地提示；选满第三位时给出，取消或换选后清除。 */
 const limitHint = ref('')
 

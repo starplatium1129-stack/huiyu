@@ -11,6 +11,6 @@ it('keeps dialog padding clicks inside the picker and closes only outside its bo
     dialog.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 30, clientY: 30 }))
     expect(dialog.open).toBe(true)
     dialog.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 300, clientY: 300 }))
-    expect(dialog.open).toBe(false)
+    await vi.waitFor(() => expect(dialog.open).toBe(false))
   } finally { wrapper.unmount(); vi.restoreAllMocks() }
 })

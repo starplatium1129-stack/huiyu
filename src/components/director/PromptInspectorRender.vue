@@ -54,7 +54,7 @@
           :preset-summary="generationPresetSummary" v-model:params="pb.sdParams" :vram-hint="vramHint"
           :vram-level="vramLevel" :base-resolution-risk="baseResolutionRisk" :base-resolution-hint="baseResolutionHint"
           :can-use-face-detailer="canUseFaceDetailer" :queue-available="pb.isPopular ? false : sdQueue.canEnqueue.value"
-          @touch="pb.markParamTouched" @enqueue="enqueueCurrent" @enqueue-variants="enqueue3Variants" @reset="resetAll" />
+          @touch="pb.markParamTouched" @enqueue="enqueueCurrent" @enqueue-variants="enqueue3Variants" />
       </div>
     </details>
     <details v-if="managedRoute" class="inspector-route">
@@ -82,7 +82,7 @@ const props = defineProps<{ bindings: PromptRenderBindings }>()
 const { pb, sd, generationBusy, animaState, drawEngine, generationPresetSummary, sdQueue, managedRoute, applyManagedRoute,
   reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel, displayResultSeed,
   reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, retryAnima, vramHint, vramLevel, baseResolutionRisk,
-  baseResolutionHint, canUseFaceDetailer, enqueueCurrent, enqueue3Variants, resetAll } = props.bindings
+  baseResolutionHint, canUseFaceDetailer, enqueueCurrent, enqueue3Variants } = props.bindings
 const sdModelOptions = computed<StudioSelectOption[]>(() => [
   { value: '', label: '使用 WebUI 当前模型' },
   ...sd.models.value.map(model => ({ value: model, label: model })),

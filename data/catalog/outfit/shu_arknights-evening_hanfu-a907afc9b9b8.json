@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/evening_hanfu",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 405,
   "createdAt": null,
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
       "id": "evening_hanfu",
-      "name": "青黛交领与麦穗绣裙（创作）",
+      "name": "青黛交领与麦穗绣裙",
       "default": false,
       "isDefault": false,
       "tokens": [

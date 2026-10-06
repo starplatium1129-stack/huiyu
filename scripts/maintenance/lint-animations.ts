@@ -31,7 +31,8 @@ const root = sources.ROOT;
 // 4. design-system.css .anim-collapse-grid grid-template-rows —— 折叠容器高度未知，
 //    grid 0fr→1fr 是唯一免 JS 测高的纯 CSS 方案（scaleY 压扁文字、max-height 要魔法值）；
 //    一次性展开非高频。2026-08-28 补检发现：此前该属性不在检测名单内，属漏检。
-const ALLOWED_EXEMPT = 3;
+// Inspector image tools: native details intrinsic-height toggle (short, user-triggered; no text scaling).
+const ALLOWED_EXEMPT = 4;
 
 const MARKER = 'compositor-exempt';
 

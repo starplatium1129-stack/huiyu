@@ -85,7 +85,9 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   values.set(identity, optimistic)
   let expectedRevision: number | null | undefined
   let expectedReset = resetRevision
-  let baseValue: unknown = structuredClone(previous?.value ?? null), sendValue: unknown = JSON.parse(JSON.stringify(value))
+  let baseValue: unknown = structuredClone(previous?.value ?? null)
+  // Strings/null already have JSON value semantics and cannot share mutable state.
+  let sendValue: unknown = typeof value === 'string' || value === null ? value : JSON.parse(JSON.stringify(value))
   outbox.push(async () => {
     if (epoch !== generation) throw new Error('Profile authority changed')
     if (expectedRevision === undefined) {
@@ -178,7 +180,7 @@ export async function refreshProfileStorage(): Promise<void> {
   // A save may have started AND drained while these snapshots were in flight.
   // A later refresh captures the new write version and can publish normally.
   if (current !== generation || refresh !== refreshVersion || writes !== writeVersion || outbox.length) return
-  const before = new Map([...values].map(([identity, record]) => [identity, JSON.stringify(record.value)]))
+  const before = new Map([...values].map(([identity, record]) => [identity, record.value]))
   values.clear(); revisions.clear(); take(settings); take(chat)
   for (const record of drafts.records) {
     const session = !record.key.startsWith('aics_chat_draft_v1:') && !record.key.startsWith('aics-model-draft-') && record.key !== 'aics_pb_last_draft'
@@ -186,7 +188,12 @@ export async function refreshProfileStorage(): Promise<void> {
   }
   for (const [identity, record] of values) {
     revisions.set(identity, record.revision)
-    if (before.get(identity) !== JSON.stringify(record.value)) window.dispatchEvent(new StorageEvent('storage', { key: record.key }))
+    const previous = before.get(identity)
+    // Most profiles already contain JSON text. Re-encoding both strings makes
+    // two escaped copies of large chat archives just to detect a change.
+    const changed = typeof previous === 'string' && typeof record.value === 'string'
+      ? previous !== record.value : JSON.stringify(previous) !== JSON.stringify(record.value)
+    if (changed) window.dispatchEvent(new StorageEvent('storage', { key: record.key }))
   }
 }
 function createStorage(session: boolean): Storage {

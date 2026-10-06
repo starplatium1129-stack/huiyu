@@ -37,10 +37,6 @@
         <button class="btn btn-ghost" type="button" :disabled="!queueAvailable" @click="$emit('enqueue-variants')">3 组候选</button>
       </StudioTooltip>
     </div>
-    <details class="inspector-route output-reset">
-      <summary><span>重新开始</span><ArchiveIcon name="chevron-down" /></summary>
-      <button class="btn btn-ghost" type="button" @click="$emit('reset')">清空并重来</button>
-    </details>
   </div>
 </template>
 
@@ -74,7 +70,6 @@ const emit = defineEmits<{
   touch: [key: keyof SDParams]
   enqueue: []
   'enqueue-variants': []
-  reset: []
 }>()
 
 function touch(key: keyof SDParams) { emit('touch', key) }
@@ -102,6 +97,4 @@ const upscalerOptions: StudioSelectOption[] = [
   vertical-align: -2px;
   @apply tw:text-accent;
 }
-.output-reset { margin-top:var(--s-3); }
-.output-reset > .btn { margin-top:var(--s-2); }
 </style>

@@ -212,6 +212,40 @@ it('rejects a stale draft snapshot after its newer save has already drained, the
   expect(module.profileLocalStorage.getItem(key)).toBe('next draft')
 })
 
+it('compares stored JSON text without re-encoding it and retains structured profile change events', async () => {
+  const module = await import('./profileStorage'), port = fakePort()
+  const key = 'aics_chat_v1', archiveKey = 'aics_chat_archive_v1'
+  const text = JSON.stringify({ histories: { neutral: ['line\\break\n"quoted"'] } })
+  let snapshot: ProfileSnapshot = { records: [
+    { key, value: text, revision: 7 },
+    { key: archiveKey, value: { archived: ['one'] }, revision: 7 },
+  ], revision: 7, resetRevision: 'reset-1' }
+  vi.mocked(port.readChat).mockImplementation(async () => structuredClone(snapshot))
+  await module.activateProfileStorage(port, 'main')
+  const events: Array<string | null> = []
+  const onStorage = (event: StorageEvent) => events.push(event.key)
+  window.addEventListener('storage', onStorage)
+  const stringify = vi.spyOn(JSON, 'stringify')
+  try {
+    await module.refreshProfileStorage()
+    expect(events).toEqual([])
+    expect(stringify.mock.calls.some(([value]) => value === text)).toBe(false)
+    snapshot = { ...snapshot, records: [
+      { key, value: text + ' ', revision: 8 },
+      { key: archiveKey, value: { archived: ['two'] }, revision: 8 },
+    ], revision: 8 }
+    await module.refreshProfileStorage()
+    expect(events).toEqual([key, archiveKey])
+    module.profileLocalStorage.setItem(key, text)
+    await module.flushProfileWrites()
+    expect(port.saveChatRecord).toHaveBeenLastCalledWith(expect.objectContaining({ value: text }))
+    expect(stringify.mock.calls.some(([value]) => value === text)).toBe(false)
+  } finally {
+    stringify.mockRestore()
+    window.removeEventListener('storage', onStorage)
+  }
+})
+
 it('does not let an older refresh overwrite a newer completed snapshot', async () => {
   const module = await import('./profileStorage'), port = fakePort()
   await module.activateProfileStorage(port, 'main')
