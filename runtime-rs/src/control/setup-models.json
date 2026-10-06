@@ -88,17 +88,17 @@
       "licenseUrl": "https://huggingface.co/circlestone-labs/Anima/blob/f973fc41ec7545364ac9776c2440285f43ff2a30/LICENSE.md"
     },
     {
-      "id": "anima-2.9b-preview-v1",
+      "id": "anima-miaomiao-2.9b-beta1.1",
       "kind": "image",
-      "path": "diffusion_models/Anima-2.9B-preview-v1.safetensors",
-      "bytes": 5843204206,
-      "sha256": "0b3020d1b906155f7eb30667622723e87160632c8c7a5f1c93bdce685f2a346d",
-      "sourceUrl": "https://huggingface.co/Gazingstars123/Anima-2.9B/resolve/9f9cb502dbae7a616c3cc5a530633427fe735665/Anima-2.9B-preview-v1.safetensors",
-      "revision": "9f9cb502dbae7a616c3cc5a530633427fe735665",
-      "label": "Anima 2.9B Preview v1",
-      "purpose": "进阶 · 扩展模型容量与角色知识，需更多运行余量",
-      "modelCardUrl": "https://huggingface.co/Gazingstars123/Anima-2.9B",
-      "licenseUrl": "https://huggingface.co/circlestone-labs/Anima/blob/f973fc41ec7545364ac9776c2440285f43ff2a30/LICENSE.md"
+      "path": "diffusion_models/miaomiaoHarem_29BBETA11.safetensors",
+      "bytes": 5843203272,
+      "sha256": "0fb5286099cb6059c5be09c1eb50d222ac6eae9626d761166b7514f8e38ded12",
+      "sourceUrl": "https://civitai.com/api/download/models/3360028?fileId=3247723",
+      "revision": "3360028",
+      "label": "MiaoMiao Harem Anima 2.9B Beta 1.1",
+      "purpose": "进阶 · 2.9B 美学微调，无角色 LoRA；需更多运行余量",
+      "modelCardUrl": "https://civitai.com/models/934764?modelVersionId=3360028",
+      "licenseUrl": "https://civitai.com/models/934764?modelVersionId=3360028"
     },
     {
       "id": "L_NENE_V21_ANIMA",

@@ -127,7 +127,7 @@ fn endfield_collection_is_restricted_to_its_cast_and_native_anima_models() {
         );
     }
     let mut expanded = body;
-    expanded["modelId"] = json!("anima-2.9b-preview-v1");
+    expanded["modelId"] = json!("anima-miaomiao-2.9b-beta1.1");
     assert_eq!(
         images::validate(&expanded, "anima", true).unwrap_err().code,
         "INCOMPATIBLE_MODEL_LORA"

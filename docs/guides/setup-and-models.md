@@ -136,10 +136,14 @@ npm run wf -- models:download-wd14 --target-dir 'D:\HuiyuAI\Interrogate'
 | MiaoMiao v1.2 | `miaomiaoHarem_anima12.safetensors` | [MIAOKA：Anima_1.2](https://civitai.com/models/934764?modelVersionId=3020110) |
 | MiaoMiao v1.6（当前默认） | `miaomiaoHarem_anima16.safetensors` | [MIAOKA：Anima_1.6](https://civitai.com/models/934764?modelVersionId=3248362) |
 | Anima Yume v1.0 | `AnimaYume_v10_final_base.safetensors` | [v1.0 base final](https://civitai.com/models/2385278?modelVersionId=3065644)；上游名 `animayume_v10BaseFinal.safetensors`，仅这一指定文件按体检哈希核对后改成本机目录名 |
-| Anima 2.9B Preview v1 | `Anima-2.9B-preview-v1.safetensors` | [Gazingstars123 发布页](https://huggingface.co/Gazingstars123/Anima-2.9B)，5.84 GB；旧 ComfyUI 可能需作者扩展，须检查实际支持 |
+| MiaoMiao Harem Anima 2.9B Beta 1.1 | `miaomiaoHarem_29BBETA11.safetensors` | [MIAOKA：2.9B_BETA1.1](https://civitai.com/models/934764?modelVersionId=3360028)，5.84 GB；替换原 Anima 2.9B Preview v1 选项 |
 | Anima Base v1.0 | `anima-base-v1.0.safetensors` | [固定版下载](https://huggingface.co/circlestone-labs/Anima/resolve/f973fc41ec7545364ac9776c2440285f43ff2a30/split_files/diffusion_models/anima-base-v1.0.safetensors)，4.18 GB；源码已补齐无 LoRA 路径 |
 
 MiaoMiao 发布附件中的 `*_txt.safetensors` 与此 Qwen 0.6B 文件 SHA-256 相同，本次核对可复用上述编码器。Civitai 下载可能需要登录；联机准备时记录版本、文件名和哈希。Anima 使用发布者的非商业模型许可，素材包中的生成图片与模型权重分开发行；是否可以分发权重以该模型当前许可及你的授权为准。
+
+2.9B 使用独立的 `anima-miaomiao-2.9b-beta1.1` / `anima_miaomiao_29b_beta11` 身份，旧作品与旧底模文件保留原身份。作者的该版本设置为 Euler / sgm_uniform、28–50 步、CFG 3.5–5；项目起点为 30 步 / 4.5，质量评分词通过最终编译保留。1.6 继续作为公共首选；现有宁宁、夏目及终末地角色 LoRA 尚未在新扩层微调上验收，不声明兼容。下载固定 Civitai 版本 `3360028`、文件 `3247723`，5,843,203,272 字节，SHA-256 `0fb5286099cb6059c5be09c1eb50d222ac6eae9626d761166b7514f8e38ded12`；受限时可使用同大小、同哈希的公开镜像，文件校验与实际出图分别记录。
+
+2026-10-07 本机下载与摘要核对通过，确认 925 个 tensor / 40 层 DiT；在 RTX 4070 Ti SUPER / ComfyUI 0.39.0 上，经 Rust 网关以新模型 ID 生成并目检一张 832×1216 全年龄咖啡馆读书样图（30 步、CFG 4.5、Euler / sgm_uniform、TeaCache 0.08）。最终请求保留评分词，回执确认新 profile、无 LoRA 和所选参数；证据在 `runtime/miaomiao29-integration/`。5 项既有图像契约通过。桌面安装包构建仍被独立工作区的 `PromptBuilderView JavaScript 145125 > 143360` 门禁阻塞，尚未更新已安装桌面程序；不以本机样图宣称全库画质或角色 LoRA 已验收。
 
 ### 终末地角色专用 Anima LoRA
 

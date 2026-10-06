@@ -27,9 +27,9 @@ interface LoraDefinition {
 let MODELS: Readonly<Record<string, ModelDefinition>> = Object.freeze({
   'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1024x1024','1216x832'] },
   'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','1024x1024','1216x832'], noLora:true },
-  // 2026-08-22 接入：Anima 2.9B Preview v1（Gazingstars123 层扩展动漫大模型，40 层 DiT）。
-  // 官方重点推荐高分辨率：832x1216 (标准竖版)、1152x1536 (高清大竖版)、1536x1152 (高清大横版)、1024x1024 (正方形)、1216x832 (横版)
-  'anima-2.9b-preview-v1': { file:'Anima-2.9B-preview-v1.safetensors', label:'Anima 2.9B Preview v1', family:'anima', profileId:'anima_29b_preview_v1', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1152x1536','1536x1152','1024x1024','1216x832'], noLora:true },
+  // MIAOKA 2.9B Beta 1.1；按该版本作者设置使用 Euler/sgm_uniform，不继承 1.6 配方。
+  // 现有角色 LoRA 未在这个扩层微调上验收，暂不声明兼容。
+  'anima-miaomiao-2.9b-beta1.1': { file:'miaomiaoHarem_29BBETA11.safetensors', label:'MiaoMiao Harem Anima 2.9B Beta 1.1', family:'anima', profileId:'anima_miaomiao_29b_beta11', steps:30, cfg:4.5, sampler:'euler', scheduler:'sgm_uniform', sizes:['832x1216','960x1536','1152x1536','1536x1152','1024x1024','1216x832'], noLora:true },
   // 2026-08-15 用户决策接入：AnimaYume v1.0（circlestone 社区基座微调，Civitai 2385278）。
   // noLora:true = 无 LoRA 创作模式可用；若显式传 loraId，仍走 LORAS 兼容表校验
   // （宁宁/夏目 v21 已声明兼容，用户实测自担效果）。
@@ -52,7 +52,7 @@ let LORAS: Readonly<Record<string, LoraDefinition>> = Object.freeze({
     file:'ayachi_nene_v21_anima.safetensors',
     name:'ayachi_nene_v21_anima',
     character:'nene',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-2.9b-preview-v1', 'anima-miaomiao-v1.2', 'anima-miaomiao-v1.6'],
+    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-miaomiao-v1.2', 'anima-miaomiao-v1.6'],
     minStrength:0.65,
     maxStrength:1
   },
@@ -60,7 +60,7 @@ let LORAS: Readonly<Record<string, LoraDefinition>> = Object.freeze({
     file:'shiki_natsume_v21_anima.safetensors',
     name:'shiki_natsume_v21_anima',
     character:'natsume',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-2.9b-preview-v1', 'anima-miaomiao-v1.2', 'anima-miaomiao-v1.6'],
+    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-miaomiao-v1.2', 'anima-miaomiao-v1.6'],
     minStrength:0.65,
     maxStrength:1
   }

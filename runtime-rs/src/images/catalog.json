@@ -33,15 +33,15 @@
       ],
       "noLora": true
     },
-    "anima-2.9b-preview-v1": {
-      "file": "Anima-2.9B-preview-v1.safetensors",
-      "label": "Anima 2.9B Preview v1",
+    "anima-miaomiao-2.9b-beta1.1": {
+      "file": "miaomiaoHarem_29BBETA11.safetensors",
+      "label": "MiaoMiao Harem Anima 2.9B Beta 1.1",
       "family": "anima",
-      "profileId": "anima_29b_preview_v1",
+      "profileId": "anima_miaomiao_29b_beta11",
       "steps": 30,
       "cfg": 4.5,
-      "sampler": "res_multistep",
-      "scheduler": "simple",
+      "sampler": "euler",
+      "scheduler": "sgm_uniform",
       "sizes": [
         "832x1216",
         "960x1536",
@@ -136,7 +136,7 @@
     "anima-base-v1.0": "anima_base_v10",
     "anima-aesthetic-v1.1": "anima_aesthetic_v11",
     "anima-yume-v1.0": "anima_yume_v10",
-    "anima-2.9b-preview-v1": "anima_29b_preview_v1",
+    "anima-miaomiao-2.9b-beta1.1": "anima_miaomiao_29b_beta11",
     "anima-miaomiao-v1.2": "anima_miaomiao_v12",
     "anima-miaomiao-v1.6": "anima_miaomiao_v16",
     "krea2-turbo-fp8": "krea2_turbo_fp8"
@@ -150,7 +150,6 @@
         "anima-base-v1.0",
         "anima-aesthetic-v1.1",
         "anima-yume-v1.0",
-        "anima-2.9b-preview-v1",
         "anima-miaomiao-v1.2",
         "anima-miaomiao-v1.6"
       ],
@@ -165,7 +164,6 @@
         "anima-base-v1.0",
         "anima-aesthetic-v1.1",
         "anima-yume-v1.0",
-        "anima-2.9b-preview-v1",
         "anima-miaomiao-v1.2",
         "anima-miaomiao-v1.6"
       ],

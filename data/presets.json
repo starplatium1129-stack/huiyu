@@ -112,24 +112,24 @@
       "size": "832×1216"
     },
     {
-      "id": "anima_29b_preview_v1",
+      "id": "anima_miaomiao_29b_beta11",
       "engine": "anima",
-      "model_id": "anima-2.9b-preview-v1",
-      "name": "Anima 2.9B Preview v1",
+      "model_id": "anima-miaomiao-2.9b-beta1.1",
+      "name": "MiaoMiao Harem Anima 2.9B Beta 1.1",
       "match": [
-        "anima-2.9b-preview-v1"
+        "anima-miaomiao-2.9b-beta1.1"
       ],
       "tag_style": "space",
       "lora_in_prompt": false,
       "exact_tokens": [],
-      "quality_prefix": "masterpiece, best quality, very aesthetic",
-      "strip_quality_tokens": true,
-      "negative_prefix": "worst quality, low quality, artist name, blurry, jpeg artifacts, chromatic aberration, border, white_border, framed, letterbox, padding, margin, inset, comic_panel",
+      "quality_prefix": "masterpiece, best quality, score_7, score_9, very aesthetic, ultra detailed",
+      "strip_quality_tokens": false,
+      "negative_prefix": "worst quality, low quality, score_1, score_2, score_3, artist name, shiny skin, shiny hair, blurry, jpeg artifacts, chromatic aberration, border, white_border, framed, letterbox, padding, margin, inset, comic_panel",
       "negative_mode": "replace",
       "negative_replace_scope": "boilerplate",
       "capabilities": {
         "negative": true,
-        "lora": true,
+        "lora": false,
         "noLora": true,
         "characterIdentity": true,
         "dualCharacter": false,
@@ -142,8 +142,8 @@
       "rating_all": "safe",
       "rating_r15": "sensitive",
       "rating_r18": "nsfw",
-      "sampler": "res_multistep",
-      "scheduler": "simple",
+      "sampler": "euler",
+      "scheduler": "sgm_uniform",
       "steps": 30,
       "cfg": 4.5,
       "size": "832×1216"
