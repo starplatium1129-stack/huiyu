@@ -1,8 +1,7 @@
 'use strict';
 
-/** 热门角色场景蓝图分片完整性独立守卫：data/blueprints/*.json（按 franchise 系列分片）
- *  并集必须与聚合 data/scene-blueprints.json 逐条一致，id 全局唯一，
- *  manifest 覆盖所有系列且文件存在。与 test-popular-shard-integrity.js 同构。 */
+/** 旧分片仍校验升级导入完整性；构建聚合以 data/catalog 快照为权威。
+ *  独立组装预期内容，不复用 store 或 catalog.views，保留数量、顺序及 ID 校验。 */
 const assert: typeof import('assert') = require('assert');
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
@@ -20,6 +19,7 @@ test('blueprint shards: manifest declares existing, well-formed franchise files'
   assert.ok(Array.isArray(manifest.files) && manifest.files.length > 0,
     'manifest must declare at least one franchise file');
   const seenFiles = new Set();
+  const seenIds = new Set();
   for (const entry of manifest.files) {
     assert.ok(entry.franchise && typeof entry.franchise === 'string', 'entry must have franchise');
     assert.ok(!seenFiles.has(entry.file), 'duplicate file entry ' + entry.file);
@@ -32,28 +32,26 @@ test('blueprint shards: manifest declares existing, well-formed franchise files'
     assert.strictEqual(data.blueprints.length, entry.count,
       entry.file + ' count mismatch with manifest');
     for (const blueprint of data.blueprints) {
+      assert.ok(blueprint.id && !seenIds.has(blueprint.id), 'missing or duplicate legacy id ' + blueprint.id);
+      seenIds.add(blueprint.id);
       assert.ok(blueprint.id, 'blueprint must have id');
       assert.ok(blueprint.characterId, blueprint.id + ' must have characterId');
     }
   }
 });
 
-test('blueprint shards: union equals the aggregate, ids unique, order preserved', () => {
+test('blueprint catalog: aggregate matches snapshot content and order, ids unique', () => {
   const aggregate = readJson('scene-blueprints.json');
   assert.ok(Array.isArray(aggregate.blueprints) && aggregate.blueprints.length > 0,
     'aggregate must contain blueprints');
-  const manifest = readJson('blueprints/manifest.json');
-
-  const union = [];
-  for (const entry of manifest.files) {
-    const data = JSON.parse(fs.readFileSync(path.join(shardsDir, entry.file), 'utf8'));
-    union.push(...data.blueprints);
-  }
-
-  assert.strictEqual(union.length, aggregate.blueprints.length,
-    'shard union length must equal aggregate length');
-  assert.deepStrictEqual(union.map((b) => b.id), aggregate.blueprints.map((b: any) => b.id),
-    'shard union ids must equal aggregate ids in order');
+  const catalog: typeof import('../lib/catalog-snapshot') = require('../lib/catalog-snapshot');
+  const records = catalog.read(path.dirname(dataDir));
+  assert.ok(records, 'committed catalog snapshot must exist');
+  const expected = records.filter(record => record.kind === 'blueprint').map(record => record.data);
+  assert.strictEqual(aggregate.blueprints.length, expected.length,
+    'catalog count must equal aggregate count');
+  assert.deepStrictEqual(aggregate.blueprints, expected,
+    'aggregate must preserve catalog content and sortOrder/id ordering');
 
   const ids = new Set();
   for (const blueprint of aggregate.blueprints) {
