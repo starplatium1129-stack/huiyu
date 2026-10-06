@@ -61,6 +61,8 @@ export async function checkModels(appRoot: string, env: NodeJS.ProcessEnv = proc
   }
   // These embedded catalogs are the product Rust runtime's exact model requirements.
   const images = JSON.parse(fs.readFileSync(path.join(appRoot, 'runtime-rs/src/images/catalog.json'), 'utf8'))
+  const endfield = JSON.parse(fs.readFileSync(path.join(appRoot, 'runtime-rs/src/images/endfield-lora.json'), 'utf8'))
+  images.LORAS[endfield.id] = { file: endfield.file }
   const video = JSON.parse(fs.readFileSync(path.join(appRoot, 'runtime-rs/src/video/catalog.json'), 'utf8')).constants
   const imageModels = []
   for (const [id, model] of Object.entries(images.MODELS) as [string, { file: string; family: string; noLora?: boolean }][]) {

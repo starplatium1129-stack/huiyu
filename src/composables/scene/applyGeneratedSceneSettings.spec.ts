@@ -21,6 +21,15 @@ function setup(engine: DrawEngine = 'anima') {
 }
 
 describe('generated scene settings', () => {
+  it('restores the Endfield collection for a saved popular recipe and preserves its recorded weight', () => {
+    const { input, pb } = setup()
+    pb.isPopular = true
+    Object.assign(pb, { subject: { kind: 'popular', characterId: 'zhuang_fangyi_arknights', outfitId: 'standard', blueprintId: null } })
+    applyGeneratedSceneSettings({ version: 1, engine: 'anima', prompt: 'a courtyard', negative: '', parameters: {
+      model: 'anima-miaomiao-v1.6', loraId: 'L_NENE_V21_ANIMA', loraStrength: 0.65,
+    } }, input)
+    expect(input.patchAnimaState).toHaveBeenCalledWith(expect.objectContaining({ loraId: 'L_ENDFIELD_ALL_V1_ANIMA', loraStrength: 0.65 }))
+  })
   it('does not inject invalid dimensions from malformed saved metadata into generation state', () => {
     const { input, animaState } = setup('krea2')
     const notes = applyGeneratedSceneSettings({ version: 1, engine: 'krea2', prompt: 'rain', negative: '', parameters: { size: 'unavailable' } }, input)

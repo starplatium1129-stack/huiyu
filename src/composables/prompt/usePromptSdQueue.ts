@@ -144,6 +144,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
         lora: meta.loraId,
         loraId: meta.loraId,
         loraStrength: meta.loraStrength,
+        noLora: !meta.loraId,
         loras: meta.loras,
         styleLoraId: meta.styleLoraId ?? null,
         preview: meta.preview === true,

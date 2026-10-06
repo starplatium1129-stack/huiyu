@@ -39,7 +39,7 @@ export interface AnimaRequest {
   steps: number
   cfg: number
   seed?: number
-  character: 'nene' | 'natsume' | 'triad' | null
+  character: string | null
   styleLoraId?: string
   hiresFix?: boolean
   hiresScale?: number
@@ -58,6 +58,7 @@ export interface AnimaRequest {
 export interface AnimaSessionOptions {
   getCharacter: () => CharKey
   isPopular: () => boolean
+  getPopularCharacterId?: () => string | null
   getFamily: () => 'anima' | 'krea2'
   getRequest: () => AnimaRequest | null
   getSubmitContext?: () => AnimaResultContext | null
@@ -87,7 +88,7 @@ export const ANIMA_CHARACTER_BY_CHARACTER = {
 export type InpaintCharacterMode = 'nene' | 'natsume' | 'none' | null
 
 export interface InpaintRequestBinding {
-  character: 'nene' | 'natsume' | null
+  character: string | null
   loraId: string | null
   modelId: string
   width: number

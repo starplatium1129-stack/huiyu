@@ -2,6 +2,7 @@ import { resolveInpaintRequestBinding } from './useAnimaSession'
 import type { AnimaSubmission } from './animaSessionContract'
 import { apiClient } from '@/api/client'
 import { escapeKnownLiteralTags } from '@/utils/promptLiteralTags.ts'
+import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import { readImageDataUrl } from '@/utils/backupExport'
 import type { AnimaInpaintDeps } from './useAnimaInpaint'
 import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
@@ -80,6 +81,10 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
     inpaintMode,
     desiredSize,
   )
+  const endfield = snapshot.isPopular
+    ? endfieldAnimaBinding(context.submission.request.character, 'anima', binding?.modelId)
+    : null
+  if (binding && endfield) Object.assign(binding, endfield)
 
   let promptText = snapshot.payload.newOutfitPrompt
   if (charLocked === 'nene' && !promptText.includes('ayachi_nene')) {
@@ -116,7 +121,7 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
     seed: snapshot.payload.seed ?? undefined,
     character: binding.character,
     loraId: binding.loraId,
-    loraStrength: isCharacterLora ? snapshot.model.loraStrength : null,
+    loraStrength: isCharacterLora || endfield ? snapshot.model.loraStrength : null,
     width: binding.width,
     height: binding.height,
     teaCache: true,

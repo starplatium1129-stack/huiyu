@@ -1,8 +1,18 @@
 use super::*;
 use std::sync::LazyLock;
 pub(super) static CATALOG: LazyLock<Value> = LazyLock::new(|| {
-    serde_json::from_str(include_str!("catalog.json"))
-        .expect("catalog exported from pure Node sources")
+    let mut catalog: Value = serde_json::from_str(include_str!("catalog.json"))
+        .expect("catalog exported from pure Node sources");
+    let endfield: Value =
+        serde_json::from_str(include_str!("endfield-lora.json")).expect("Endfield LoRA manifest");
+    let id = endfield["id"].as_str().unwrap();
+    catalog["LORAS"][id] = json!({"file":endfield["file"],"name":endfield["name"],"character":"endfield","characters":endfield["characters"].as_object().unwrap().keys().collect::<Vec<_>>(),"compatibleModels":endfield["compatibleModels"],"minStrength":0,"maxStrength":1});
+    for (character, info) in endfield["characters"].as_object().unwrap() {
+        catalog["CHARACTERS"][character] =
+            json!({"id":character,"label":info["label"],"loraId":id});
+        catalog["contract"]["CHARACTER_LORA_BINDINGS"][character] = json!(id);
+    }
+    catalog
 });
 pub fn catalog() -> Value {
     CATALOG.clone()

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "perlica_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 31,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T15:58:42.515126900+00:00",
   "data": {
     "id": "perlica_arknights",
     "profile": {
@@ -80,7 +80,16 @@
       },
       "speech": "佩丽卡向你致以问候。",
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "lora": {
+        "name": "终末地角色合集 · Anima v1.0",
+        "trigger_words": [
+          "perlica (arknights)"
+        ],
+        "recommended_scene": [
+          "终末地角色 Anima 出图"
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",
@@ -104,7 +113,7 @@
       "displayName": "佩丽卡",
       "exactPrefixes": [],
       "exactTokens": [
-        "perlica_(arknights)"
+        "perlica (arknights)"
       ],
       "franchise": "Arknights: Endfield",
       "id": "perlica_arknights",

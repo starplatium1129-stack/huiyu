@@ -50,6 +50,17 @@ beforeEach(() => {
 })
 
 describe('换装提交按操作加载', () => {
+  it('keeps the frozen Endfield binding through image upload and outfit changes', async () => {
+    const { deps, tools, generate } = harness(true)
+    deps.animaState.value.modelId = 'anima-miaomiao-v1.6'
+    deps.animaState.value.models = [{ id: 'anima-miaomiao-v1.6', sizes: ['832x1216'], capabilities: { negative: true, lora: true, noLora: true, characterIdentity: true, experimental: false } }]
+    vi.mocked(deps.captureAnimaSubmission).mockReturnValue({ family: 'anima', request: {
+      prompt: 'rossi \\(arknights\\), white dress', negative: '', profileId: 'fixture', modelId: 'anima-miaomiao-v1.6',
+      loraId: 'L_ENDFIELD_ALL_V1_ANIMA', loraStrength: 0.75, width: 832, height: 1216, steps: 30, cfg: 4.5, character: 'rossy_arknights',
+    }, context: { characterId: 'rossy_arknights' } })
+    await tools.handleInpaintSubmit(payload)
+    expect(generate.mock.calls[0][0]).toMatchObject({ character: 'rossy_arknights', loraId: 'L_ENDFIELD_ALL_V1_ANIMA', loraStrength: 0.75 })
+  })
   it('初始化不上传图片，确认后保留工作室角色、遮罩与完整生成参数', async () => {
     const { tools, generate, scope } = harness()
     const owned = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:owned-original')

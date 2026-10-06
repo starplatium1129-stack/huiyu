@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "laevatain_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 28,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T15:58:42.515126900+00:00",
   "data": {
     "id": "laevatain_arknights",
     "profile": {
@@ -80,7 +80,16 @@
       },
       "speech": "莱万汀向你致以问候。",
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "lora": {
+        "name": "终末地角色合集 · Anima v1.0",
+        "trigger_words": [
+          "laevatain (arknights)"
+        ],
+        "recommended_scene": [
+          "终末地角色 Anima 出图"
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",
@@ -104,13 +113,13 @@
       "displayName": "莱万汀",
       "exactPrefixes": [],
       "exactTokens": [
-        "laevatain_(arknights)"
+        "laevatain (arknights)"
       ],
       "franchise": "Arknights: Endfield",
       "id": "laevatain_arknights",
       "identityProse": "Laevatain from Arknights: Endfield, a fierce Sarkaz combatant with fiery red short hair, black curved horns, sharp purple eyes with slit pupils, lipstick, and a voluptuous figure.",
       "identityTokens": [
-        "laevatain_(arknights)",
+        "laevatain (arknights)",
         "arknights_endfield",
         "1girl",
         "solo",

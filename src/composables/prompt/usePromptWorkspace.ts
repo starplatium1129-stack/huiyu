@@ -60,8 +60,8 @@ export function usePromptWorkspace() {
         return snapshotResultContext(pb);
     }
     const animaSession = useAnimaSession({
-        getCharacter: () => pb.char,
-        isPopular: () => pb.isPopular,
+        getCharacter: () => pb.char, isPopular: () => pb.isPopular,
+        getPopularCharacterId: () => pb.subject.kind === 'popular' ? pb.subject.characterId : null,
         getFamily: () => drawEngine.value === 'krea2' ? 'krea2' : 'anima',
         getRequest: () => buildAnimaRequest(),
         getSubmitContext: captureResultContext,

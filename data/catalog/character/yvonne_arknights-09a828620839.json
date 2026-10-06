@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yvonne_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T15:58:42.515126900+00:00",
   "data": {
     "id": "yvonne_arknights",
     "profile": {
@@ -77,7 +77,7 @@
       "speech": "伊冯晃了晃手里的扳手——「找本天才修东西？排队哦。」",
       "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
       "traits": [
-        "yvonne_arknights",
+        "yvonne (arknights)",
         "1girl",
         "solo",
         "pink_hair",
@@ -91,7 +91,16 @@
         "arknights_endfield"
       ],
       "accent_color": "#FF8FB1",
-      "bg_color": "#150f1a"
+      "bg_color": "#150f1a",
+      "lora": {
+        "name": "终末地角色合集 · Anima v1.0",
+        "trigger_words": [
+          "yvonne (arknights)"
+        ],
+        "recommended_scene": [
+          "终末地角色 Anima 出图"
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",
@@ -117,13 +126,13 @@
       "displayName": "伊冯",
       "exactPrefixes": [],
       "exactTokens": [
-        "yvonne_arknights"
+        "yvonne (arknights)"
       ],
       "franchise": "Arknights: Endfield",
       "id": "yvonne_arknights",
       "identityProse": "Yvonne from Arknights: Endfield, a Vaivai dragon-kin girl with pink hair in twin tails with color-streaked tips, blue eyes, small horns, a tail and pointed ears, a gyaru-punk genius engineer who dual-wields handguns",
       "identityTokens": [
-        "yvonne_arknights",
+        "yvonne (arknights)",
         "1girl",
         "solo",
         "pink_hair",

@@ -1,4 +1,5 @@
 import { parseHistoryRecipe } from '@/utils/historyRecipe'
+import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
@@ -153,10 +154,13 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
         clearAnimaResult()
         setDrawEngine(entry.engine === 'krea2' ? 'krea2' : 'anima')
+        const restoredModelId = animaModelPatch(animaState.value.modelId)
+        const endfield = endfieldAnimaBinding(character.id, entryEngine, restoredModelId)
         patchAnimaState({
           phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, statusText: '', errorMsg: '',
-          modelId: animaModelPatch(animaState.value.modelId),
-           loraId: '', loraStrength: animaState.value.loraStrength,
+          modelId: restoredModelId,
+           loraId: endfield?.loraId ?? '',
+           loraStrength: entry.loraStrength ?? endfield?.loraStrength ?? animaState.value.loraStrength,
            ...animaHistoryPatch(),
            width: Number.isInteger(width) && width > 0 ? width : animaState.value.width,
           height: Number.isInteger(height) && height > 0 ? height : animaState.value.height,

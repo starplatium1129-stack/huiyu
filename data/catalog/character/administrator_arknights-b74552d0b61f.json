@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "administrator_arknights",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 163,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-05T16:47:14.846400+00:00",
+  "updatedAt": "2026-10-06T15:58:42.515126900+00:00",
   "data": {
     "id": "administrator_arknights",
     "profile": {
@@ -45,7 +45,7 @@
       "bg_story": "管理员与终末地工业的源石和协议网络密切相关，并被视作塔卫二文明的保护者。本档案选用女性形态；种族与精确年龄未公开。日常场景与非默认衣装为创作设定。",
       "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
       "traits": [
-        "female_endministrator_(arknights)",
+        "female endministrator (arknights)",
         "1girl",
         "solo",
         "black_hair",
@@ -58,7 +58,16 @@
       },
       "speech": "协议网络已连接，继续推进开拓。",
       "accent_color": "#eab308",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "lora": {
+        "name": "终末地角色合集 · Anima v1.0",
+        "trigger_words": [
+          "female endministrator (arknights)"
+        ],
+        "recommended_scene": [
+          "终末地角色 Anima 出图"
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",
@@ -86,17 +95,13 @@
       "displayName": "管理员",
       "exactPrefixes": [],
       "exactTokens": [
-        "female_endministrator_(arknights)",
-        "endministrator_(arknights)",
-        "administrator_(arknights)",
-        "administrator (arknights)",
-        "endministrator"
+        "female endministrator (arknights)"
       ],
       "franchise": "Arknights: Endfield",
       "id": "administrator_arknights",
       "identityProse": "The female Endministrator from Arknights: Endfield, the administrator of Endfield Industries and a protector of civilization on Talos-II, with short black hair in a layered bob.",
       "identityTokens": [
-        "female_endministrator_(arknights)",
+        "female endministrator (arknights)",
         "1girl",
         "solo",
         "black_hair",

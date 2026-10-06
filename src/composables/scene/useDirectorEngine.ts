@@ -12,6 +12,7 @@ import type { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAss
 import type { AnimaResult } from '@/types/anima'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
+import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import {
   DRAW_ENGINE_SETTING,
   settingsRepository,
@@ -90,7 +91,8 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     if (!pb.isPopular) return false
     if (!currentCapabilities.value.lora) return false
     const selected = animaState.value.models.find(model => model.id === animaState.value.modelId)
-    return selected?.capabilities?.noLora === true
+    return selected?.capabilities?.noLora === true && !(pb.subject.kind === 'popular'
+      && endfieldAnimaBinding(pb.subject.characterId, animaState.value.family, animaState.value.modelId))
   })
 
   /** 引擎按钮禁用态由能力表驱动（双人支持等）。 */
@@ -121,7 +123,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     syncAnimaCharacter(pb.char)
     void refreshAnimaBackend()
     if (!options.silent) flash(v === 'anima'
-      ? (pb.isPopular ? '已切换到 Anima（无 LoRA 热门角色模式）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
+      ? (pb.isPopular ? '已切换到 Anima（按角色配置加载 LoRA）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
       : '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）')
   }
 
@@ -250,7 +252,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     }
   }
 
-  /** 热门角色无 LoRA 出图：Anima 只允许服务端声明的 noLora capability 底模；Krea 家族天然无 LoRA。 */
+  /** 热门角色沿用其独立提示词；终末地在 Anima 上使用角色限定的合集。 */
   function buildPopularRequest(preview = false): AnimaRequest | null {
     const profile = popularProfile.value
     if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
@@ -261,20 +263,30 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
       if (!preview) flash('当前底模不支持无 LoRA 热门角色创作')
       return null
     }
+    const binding = endfieldAnimaBinding(pb.subject.kind === 'popular' ? pb.subject.characterId : null,
+      animaState.value.family, animaState.value.modelId)
+    if (!binding && endfieldAnimaBinding(pb.subject.kind === 'popular' ? pb.subject.characterId : null, animaState.value.family)) {
+      if (!preview) flash('当前底模不兼容终末地角色 LoRA，请选择标准 Anima 底模')
+      return null
+    }
+    if (binding && !animaState.value.loras.some(lora => lora.id === binding.loraId && lora.available !== false)) {
+      if (!preview) flash('终末地角色 LoRA 尚未安装，请先准备模型文件')
+      return null
+    }
     if (!preview) updateAnimaPromptState()
     return {
       prompt: livePrompt.value,
       negative: effectiveNegative.value,
       profileId: profile.id || '',
       modelId: animaState.value.modelId,
-      loraId: null,
-      loraStrength: null,
+      loraId: binding?.loraId ?? null,
+      loraStrength: binding ? animaState.value.loraStrength : null,
       width: animaState.value.width,
       height: animaState.value.height,
       steps: animaState.value.steps,
       cfg: animaState.value.cfg,
       ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
-      character: null,
+      character: binding?.character ?? null,
       hiresFix: Boolean(animaState.value.hiresFix),
       hiresScale: animaState.value.hiresScale,
       hiresDenoise: animaState.value.hiresDenoise,

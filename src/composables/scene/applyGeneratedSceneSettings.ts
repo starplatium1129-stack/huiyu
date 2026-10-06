@@ -1,6 +1,7 @@
 import type { UseDirectorPopularInput } from './useDirectorPopular'
 import { parseGeneratedRecipe } from '@/utils/generatedSceneDraft'
 import type { AnimaGenerationState } from '@/types/anima'
+import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 
 /** Apply the recorded engine before its settings; unsupported resources are reported explicitly. */
 export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPopularInput): string[] {
@@ -69,9 +70,12 @@ export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPo
     for (const key of ['sampler', 'scheduler'] as const) if (typeof parameters[key] === 'string') patch[key] = parameters[key]
     if (typeof parameters.hiresFix === 'boolean') patch.hiresFix = parameters.hiresFix
     const seed = number(parameters.seed); if (seed !== undefined) patch.seed = seed >= 0 ? seed : null
-    if (recipe.engine === 'anima' && !pb.isPopular && parameters.loraId) {
-      patch.loraId = parameters.loraId
-      if (!animaState.value.loras.some(lora => lora.id === parameters.loraId && lora.available !== false)) notes.push('原角色 LoRA 尚未确认可用，请核对后生成')
+    const binding = endfieldAnimaBinding(pb.isPopular && pb.subject.kind === 'popular' ? pb.subject.characterId : null, recipe.engine, patch.modelId ?? animaState.value.modelId)
+    const loraId = pb.isPopular ? binding?.loraId : parameters.loraId
+    if (recipe.engine === 'anima' && loraId) {
+      patch.loraId = loraId
+      if (binding && parameters.loraStrength === undefined) patch.loraStrength = binding.loraStrength
+      if (!animaState.value.loras.some(lora => lora.id === loraId && lora.available !== false)) notes.push('原角色 LoRA 尚未确认可用，请核对后生成')
     } else patch.loraId = ''
     if (recipe.engine === 'krea2' && parameters.styleLoraId) {
       patch.styleLoraId = parameters.styleLoraId

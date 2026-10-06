@@ -5,6 +5,7 @@ import { readPreparedBatch, recoverBatchTask, batchFailure, type PreparedBatchIm
 import { useTrackedTask } from '../useTaskCenter.ts'
 import { ref, shallowRef, type Ref } from 'vue'
 import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
+import { endfieldAnimaBinding } from '../../utils/loraCatalog.ts'
 import { identityDomainOf } from '../../utils/interrogateMerge.ts'
 import { sceneStyleBaseline } from '../../utils/randomVariationContext.ts'
 import { artistStyleProse, artistTagsForEngine } from '../../config/artistStyles.ts'
@@ -316,6 +317,11 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
 
     const selectedModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
     const profileId = modelProfile.value?.id || selectedModel?.profileId || ''
+    const endfield = endfieldAnimaBinding(isTargetPopular ? charInfo.char.id : null,
+      animaState.value.family, animaState.value.modelId)
+    if (!endfield && endfieldAnimaBinding(isTargetPopular ? charInfo.char.id : null, animaState.value.family)) {
+      throw new Error('当前底模不兼容终末地角色 LoRA')
+    }
 
     // Anima 角色绑定：如果是 studio 角色（nene/natsume）走映射，若是热门角色走 no-lora 或 null
     const animaCharKey = charInfo?.kind === 'studio'
@@ -329,9 +335,9 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       profileId,
       modelId: animaState.value.modelId,
       loraId: (isTargetPopular || (charInfo?.kind === 'studio' && charInfo.charKey !== pb.char))
-        ? null
+        ? endfield?.loraId ?? null
         : animaState.value.loraId,
-      loraStrength: animaState.value.loraStrength,
+      loraStrength: endfield?.loraStrength ?? animaState.value.loraStrength,
       width: dimensions ? Number(dimensions[1]) : animaState.value.width,
       height: dimensions ? Number(dimensions[2]) : animaState.value.height,
       steps: animaState.value.steps,
@@ -341,7 +347,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       ...(input.seed >= 0 ? { seed: input.seed } : {}),
       adultEnabled: isLocalStudioHost() && pb.showMatureScenes,
       character: (animaState.value.family === 'krea2' || !animaCharKey || animaCharKey === 'triad')
-        ? null
+        ? endfield?.character ?? null
         : ANIMA_CHARACTER_BY_CHARACTER[animaCharKey as 'nene' | 'natsume'] || null,
       hiresFix: Boolean(animaState.value.hiresFix),
       hiresScale: animaState.value.hiresScale,
@@ -352,6 +358,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         seed: request.seed, negative: request.negative, prompt,
         size: `${request.width}x${request.height}`, engine: animaState.value.family === 'krea2' ? 'krea2' as const : 'anima' as const,
         model: request.modelId, profile: request.profileId, loraId: request.loraId, loraStrength: request.loraStrength,
+        noLora: !request.loraId,
         cfg: request.cfg, steps: request.steps, sampler: animaState.value.sampler, scheduler: animaState.value.scheduler,
         visualDescription: pb.visualDescription, manual_tags: [...pb.manualTags], artistStyleIds: [...pb.artistStyleIds],
         // 精准覆盖角色元数据

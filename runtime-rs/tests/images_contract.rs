@@ -109,6 +109,32 @@ fn inpaint_hires_keeps_mask_and_reference_aligned_through_final_composite() {
 // Moved from test-prompt-compiler.ts when the retired Node graph builder was
 // removed. These exercise the product compiler after the actual JSON boundary.
 #[test]
+fn endfield_collection_is_restricted_to_its_cast_and_native_anima_models() {
+    let body = json!({"prompt":"rossi \\(arknights\\), 1girl, solo","modelId":"anima-miaomiao-v1.6","width":832,"height":1216,"seed":42,"character":"rossy_arknights","loraId":"L_ENDFIELD_ALL_V1_ANIMA","loraStrength":1});
+    let input = images::validate(&body, "anima", true).unwrap();
+    let graph = images::build_workflow(&input).unwrap();
+    assert_eq!(
+        graph["4"]["inputs"]["lora_name"],
+        "endfield_all_v3-000012.safetensors"
+    );
+    assert_eq!(graph["5"]["inputs"]["text"], body["prompt"]);
+    for character in ["nene", "frieren", "typhon_arknights"] {
+        let mut invalid = body.clone();
+        invalid["character"] = json!(character);
+        assert_eq!(
+            images::validate(&invalid, "anima", true).unwrap_err().code,
+            "INCOMPATIBLE_CHARACTER"
+        );
+    }
+    let mut expanded = body;
+    expanded["modelId"] = json!("anima-2.9b-preview-v1");
+    assert_eq!(
+        images::validate(&expanded, "anima", true).unwrap_err().code,
+        "INCOMPATIBLE_MODEL_LORA"
+    );
+}
+
+#[test]
 fn artist_escape_transport_preserves_positive_text_in_both_anima_branches() {
     for artist in [
         r"@ask \(askzy\)",

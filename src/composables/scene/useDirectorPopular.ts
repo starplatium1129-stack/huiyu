@@ -15,6 +15,7 @@ import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { DrawingRouteRecommendation } from '@/utils/drawingRoute'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import { applyGeneratedSceneSettings } from './applyGeneratedSceneSettings'
+import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type SDGenerate = ReturnType<typeof useSDGenerate>
@@ -135,14 +136,16 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
         pb.setPopularSubject(first.id, first.outfits.find(o => o.default)?.id ?? first.outfits[0].id, null)
         // 2026-08-29 修复：热门角色为无 LoRA 创作，必须清掉 anima 侧残留的
         // studio loraId（默认 L_NENE_V21_ANIMA），否则后端会拿宁宁 lora 生成热门角色。
-        patchAnimaState({ modelId: first.recommendedEngine, loraId: '' })
+        const binding = endfieldAnimaBinding(first.id, 'anima', first.recommendedEngine)
+        patchAnimaState({ modelId: first.recommendedEngine, loraId: binding?.loraId ?? '',
+          ...(binding ? { loraStrength: binding.loraStrength } : {}) })
         applyRecommendedEngine(first)
       } else {
         pb.setPopularSubject('', '')
       }
       void refreshAnimaBackend()
       syncManagedRoute()
-      flash('已切换到热门角色：默认 MiaoMiao v1.6 无 LoRA，可改 Krea 2')
+      flash('已切换到热门角色：默认 MiaoMiao v1.6，终末地使用专属角色 LoRA')
     }
   }
 
@@ -165,7 +168,9 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     resetBlueprintRotation()
     // recommendedEngine 为 Krea 时直接切 krea2 引擎（当前数据全 aesthetic，仍保留分支防死字段）。
     applyRecommendedEngine(character)
-    patchAnimaState({ modelId: character.recommendedEngine, loraId: '' })
+    const binding = endfieldAnimaBinding(character.id, 'anima', character.recommendedEngine)
+    patchAnimaState({ modelId: character.recommendedEngine, loraId: binding?.loraId ?? '',
+      ...(binding ? { loraStrength: binding.loraStrength } : {}) })
     syncManagedRoute()
     if (pb.directorMode === 'pro') void refreshAnimaBackend()
   }
@@ -173,7 +178,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
   function selectPopularOutfit(outfitId: string) {
     if (pb.subject.kind !== 'popular') return
     pb.setPopularSubject(pb.subject.characterId, outfitId, pb.subject.blueprintId, { preserveReference: true })
-    patchAnimaState({ styleLoraId: '', loraId: '' })
+    patchAnimaState({ styleLoraId: '' })
     resetBlueprintRotation()
   }
 

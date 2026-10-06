@@ -6,7 +6,14 @@ const path: typeof import('path') = require('path');
 const { test }: typeof import('node:test') = require('node:test');
 
 test("LoRA catalog preserves display fields and normalizes malformed records", () => {
-const { parseLoraCatalog, formatLoraWeight }: typeof import('../../src/utils/loraCatalog.ts') = require('../../src/utils/loraCatalog.ts');
+const { parseLoraCatalog, formatLoraWeight, endfieldAnimaBinding }: typeof import('../../src/utils/loraCatalog.ts') = require('../../src/utils/loraCatalog.ts');
+for (const id of ['perlica_arknights', 'yvonne_arknights']) {
+  assert.strictEqual(endfieldAnimaBinding(id, 'anima', 'anima-miaomiao-v1.6'), null);
+  assert.strictEqual(endfieldAnimaBinding(id, 'anima', 'anima-base-v1.0')?.loraId, 'L_ENDFIELD_ALL_V1_ANIMA');
+}
+for (const id of ['administrator_arknights', 'laevatain_arknights', 'zhuang_fangyi_arknights', 'rossy_arknights']) {
+  assert.strictEqual(endfieldAnimaBinding(id, 'anima', 'anima-miaomiao-v1.6')?.loraId, 'L_ENDFIELD_ALL_V1_ANIMA');
+}
 
 const root = path.resolve(__dirname, '..', '..');
 const catalog = parseLoraCatalog(JSON.parse(

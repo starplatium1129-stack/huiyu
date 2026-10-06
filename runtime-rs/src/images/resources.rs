@@ -217,7 +217,7 @@ pub(super) async fn status(
     }
     let mut loras = Vec::new();
     for (id, lora) in catalog::CATALOG["LORAS"].as_object().unwrap() {
-        loras.push(json!({"id":id,"name":lora["name"],"character":lora["character"],"preview":lora["preview"]==true,"validation":lora["validation"].as_str().unwrap_or("production"),"available":file(config,"loras",lora["file"].as_str().unwrap()).await.is_some()}));
+        loras.push(json!({"id":id,"name":lora["name"],"character":lora["character"],"characters":lora["characters"],"compatibleModels":lora["compatibleModels"],"preview":lora["preview"]==true,"validation":lora["validation"].as_str().unwrap_or("production"),"available":file(config,"loras",lora["file"].as_str().unwrap()).await.is_some()}));
     }
     let mut styles = Vec::new();
     for (id, style) in catalog::styles().as_object().unwrap() {

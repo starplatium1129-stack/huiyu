@@ -194,6 +194,29 @@ it.each([false, true])('filters backend discovery and character LoRA with popula
   session.syncCharacter('natsume'); expect(session.state.value.loraId).toBe('')
 })
 
+it('discovers the Endfield collection, keeps its weight, and clears it when leaving the cast', async () => {
+  let characterId = 'rossy_arknights'
+  const client = { request: vi.fn(async () => ({ ok: true, online: true,
+    models: [{ id: 'anima-miaomiao-v1.6', family: 'anima', available: true, capabilities: { noLora: true } },
+      { id: 'anima-2.9b-preview-v1', family: 'anima', available: true, capabilities: { noLora: true } }],
+    loras: [{ id: 'L_ENDFIELD_ALL_V1_ANIMA', character: 'endfield', characters: ['rossy_arknights', 'zhuang_fangyi_arknights', 'yvonne_arknights'], available: true },
+      { id: 'L_NENE_V21_ANIMA', character: 'nene', available: true }],
+  })) } as unknown as ApiClient
+  const session = createSession(client, { isPopular: () => true, getPopularCharacterId: () => characterId })
+  await session.refreshBackend()
+  expect(session.state.value).toMatchObject({ loraId: 'L_ENDFIELD_ALL_V1_ANIMA', loraStrength: 1 })
+  expect(session.state.value.models.map(model => model.id)).toEqual(['anima-miaomiao-v1.6'])
+  session.patchState({ loraStrength: 0.8 }); await session.refreshBackend()
+  expect(session.state.value.loraStrength).toBe(0.8)
+  characterId = 'yvonne_arknights'; await session.refreshBackend()
+  expect(session.state.value.loraId).toBe('')
+  expect(session.state.value.loras).toEqual([])
+  expect(session.state.value.models.map(model => model.id)).toContain('anima-miaomiao-v1.6')
+  characterId = 'frieren'; await session.refreshBackend()
+  expect(session.state.value.loraId).toBe('')
+  expect(session.state.value.loras).toEqual([])
+})
+
 it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and remains restorable after repeated failures', async family => {
   vi.useFakeTimers()
   const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)

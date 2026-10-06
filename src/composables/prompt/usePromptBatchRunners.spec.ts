@@ -124,6 +124,18 @@ it('queue-full waits without failing the remaining batch; stop cancels admission
 })
 
 
+it('binds batch requests to the target Endfield character rather than the studio selection', async () => {
+  const { runner, state, pb, blueprint } = setup()
+  pb.popularCharacters[0].id = 'rossy_arknights'
+  pb.popularCharacters[0].identityTokens[0] = 'rossi (arknights)'
+  pb.popularCharacters[0].exactTokens = ['rossi (arknights)']
+  blueprint.characterId = 'rossy_arknights'
+  state.value.modelId = 'anima-miaomiao-v1.6'
+  const request = vi.spyOn(apiClient, 'request').mockRejectedValue(new ApiClientError('isolated fixture', { kind: 'http', status: 400 }))
+  await runner.onBatchStart({ sceneIds: ['one'], count: 1 })
+  expect(request.mock.calls[0][1]?.body).toMatchObject({ character: 'rossy_arknights', loraId: 'L_ENDFIELD_ALL_V1_ANIMA', loraStrength: 1 })
+})
+
 it('Krea batches use the creative route and natural-language compiler with no negative', async () => {
   const { runner, state } = setup()
   state.value.family = 'krea2'; state.value.modelId = 'krea2-turbo-fp8'

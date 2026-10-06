@@ -127,6 +127,19 @@
       "licenseUrl": "https://github.com/starplatium1129-stack/huiyu/releases/download/v1.9.0/HUIYU-Anima-LoRA-LICENSE.txt"
     },
     {
+      "id": "L_ENDFIELD_ALL_V1_ANIMA",
+      "kind": "lora",
+      "path": "loras/endfield_all_v3-000012.safetensors",
+      "bytes": 183953712,
+      "sha256": "15fb96bb936df34147e629da91f3beb0af02332eb248b0d634b831497e625088",
+      "sourceUrl": "https://civitai.com/api/download/models/3322345?fileId=3208029",
+      "revision": "3322345",
+      "label": "终末地角色合集 · Anima v1.0",
+      "purpose": "终末地角色专用 · 下载源需要 Civitai 登录",
+      "modelCardUrl": "https://civitai.com/models/2935110?modelVersionId=3322345",
+      "licenseUrl": "https://civitai.com/models/2935110?modelVersionId=3322345"
+    },
+    {
       "id": "chat-qwen-4b",
       "kind": "chat",
       "path": "Qwen3.5-4B-Q4_K_M.gguf",

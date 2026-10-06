@@ -3,6 +3,7 @@
   "catalog": {
     "MODELS": {
       "anima-base-v1.0": {
+        "noLora": true,
         "file": "anima-base-v1.0.safetensors",
         "label": "Anima Base v1.0",
         "family": "anima",
@@ -172,6 +173,28 @@
         ],
         "minStrength": 0.65,
         "maxStrength": 1
+      },
+      "L_ENDFIELD_ALL_V1_ANIMA": {
+        "file": "endfield_all_v3-000012.safetensors",
+        "name": "终末地角色合集 · Anima v1.0",
+        "character": "endfield",
+        "characters": [
+          "administrator_arknights",
+          "laevatain_arknights",
+          "perlica_arknights",
+          "rossy_arknights",
+          "yvonne_arknights",
+          "zhuang_fangyi_arknights"
+        ],
+        "compatibleModels": [
+          "anima-base-v1.0",
+          "anima-aesthetic-v1.1",
+          "anima-yume-v1.0",
+          "anima-miaomiao-v1.2",
+          "anima-miaomiao-v1.6"
+        ],
+        "minStrength": 0,
+        "maxStrength": 1
       }
     },
     "KREA_STYLE_LORAS": {
@@ -222,6 +245,36 @@
         "id": "natsume",
         "label": "四季夏目",
         "loraId": "L_NAT_V21_ANIMA"
+      },
+      "administrator_arknights": {
+        "id": "administrator_arknights",
+        "label": "管理员",
+        "loraId": "L_ENDFIELD_ALL_V1_ANIMA"
+      },
+      "laevatain_arknights": {
+        "id": "laevatain_arknights",
+        "label": "莱万汀",
+        "loraId": "L_ENDFIELD_ALL_V1_ANIMA"
+      },
+      "perlica_arknights": {
+        "id": "perlica_arknights",
+        "label": "佩丽卡",
+        "loraId": "L_ENDFIELD_ALL_V1_ANIMA"
+      },
+      "rossy_arknights": {
+        "id": "rossy_arknights",
+        "label": "洛茜",
+        "loraId": "L_ENDFIELD_ALL_V1_ANIMA"
+      },
+      "yvonne_arknights": {
+        "id": "yvonne_arknights",
+        "label": "伊冯",
+        "loraId": "L_ENDFIELD_ALL_V1_ANIMA"
+      },
+      "zhuang_fangyi_arknights": {
+        "id": "zhuang_fangyi_arknights",
+        "label": "庄方宜",
+        "loraId": "L_ENDFIELD_ALL_V1_ANIMA"
       }
     },
     "contract": {
@@ -312,7 +365,13 @@
       ],
       "CHARACTER_LORA_BINDINGS": {
         "nene": "L_NENE_V21_ANIMA",
-        "natsume": "L_NAT_V21_ANIMA"
+        "natsume": "L_NAT_V21_ANIMA",
+        "administrator_arknights": "L_ENDFIELD_ALL_V1_ANIMA",
+        "laevatain_arknights": "L_ENDFIELD_ALL_V1_ANIMA",
+        "perlica_arknights": "L_ENDFIELD_ALL_V1_ANIMA",
+        "rossy_arknights": "L_ENDFIELD_ALL_V1_ANIMA",
+        "yvonne_arknights": "L_ENDFIELD_ALL_V1_ANIMA",
+        "zhuang_fangyi_arknights": "L_ENDFIELD_ALL_V1_ANIMA"
       }
     }
   },

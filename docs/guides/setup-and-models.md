@@ -141,6 +141,14 @@ npm run wf -- models:download-wd14 --target-dir 'D:\HuiyuAI\Interrogate'
 
 MiaoMiao 发布附件中的 `*_txt.safetensors` 与此 Qwen 0.6B 文件 SHA-256 相同，本次核对可复用上述编码器。Civitai 下载可能需要登录；联机准备时记录版本、文件名和哈希。Anima 使用发布者的非商业模型许可，素材包中的生成图片与模型权重分开发行；是否可以分发权重以该模型当前许可及你的授权为准。
 
+### 终末地角色专用 Anima LoRA
+
+项目使用 [wwyhahaha 的终末地角色合集 v1.0](https://civitai.com/models/2935110?modelVersionId=3322345)，文件为 `ComfyUI/models/loras/endfield_all_v3-000012.safetensors`（183,953,712 字节；SHA-256 `15fb96bb936df34147e629da91f3beb0af02332eb248b0d634b831497e625088`）。Civitai 下载需要登录，可手动放入当前 AI 工作区的这一目录；模型文件不进入 Git。
+
+登记与训练触发词由 `runtime-rs/src/images/endfield-lora.json` 维护。MiaoMiao 1.6 下，管理员、莱万汀、洛茜和庄方宜在普通生成、批量生成、局部换装及配方恢复时默认使用合集；佩丽卡和伊冯先直接使用底模。其他标准 Anima 底模仍沿用六位角色的合集绑定，扩层 Anima 2.9B 不在该文件的兼容名单中。洛茜触发词为 `rossi (arknights)`，庄方宜为 `zhuang fangyi (arknights)`；编译器保留完整名称并转义标签括号。需要 LoRA 的角色缺文件时明确阻止生成。
+
+2026-10-07 已核对权重摘要、训练词表和六位角色的最终编译文本，并在 MiaoMiao 1.6 + 合集上生成、目检六位角色各一张全年龄样图。随后管理员、莱万汀、佩丽卡、伊冯各增加一张同提示词、同种子及同采样参数的无 LoRA 对照；用户指出管理员面具和莱万汀角形不符，这两张判为不通过并恢复 LoRA 默认。佩丽卡、伊冯的无 LoRA 细节仍待用户最终确认，仅为单张样图判断。证据见 `runtime/endfield-lora-integration/no-lora-review.json`，本次没有追加重画。源码尚未同步到现有桌面安装版。
+
 ### Krea 2：当前使用特定第三方编码器
 
 | 放置路径 | 来源 / 约容量 |

@@ -1,3 +1,13 @@
+import endfieldLora from '../../runtime-rs/src/images/endfield-lora.json' with { type: 'json' }
+
+/** Only the installed Endfield cast uses this collection; expanded 2.9B is excluded. */
+export function endfieldAnimaBinding(characterId: string | null | undefined, family = 'anima', modelId = 'anima-miaomiao-v1.6') {
+  const nativeCharacters = endfieldLora.nativeCharactersByModel as Record<string, string[]>
+  if (family !== 'anima' || !characterId || !Object.hasOwn(endfieldLora.characters, characterId)
+    || !endfieldLora.compatibleModels.includes(modelId) || nativeCharacters[modelId]?.includes(characterId)) return null
+  return { character: characterId, loraId: endfieldLora.id, loraStrength: endfieldLora.strength }
+}
+
 export interface LoraWeightMap {
   portrait?: number
   fullbody?: number

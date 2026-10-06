@@ -18,7 +18,7 @@ export interface AnimaJobMetadata {
   sampler: string
   scheduler: string
   seed: number
-  character: 'nene' | 'natsume' | 'triad' | null
+  character: string | null
   preview?: boolean
   hiresFix?: boolean
   hiresScale?: number

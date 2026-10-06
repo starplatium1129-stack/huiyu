@@ -9,6 +9,8 @@ export interface AnimaOption {
   label?: string
   name?: string
   character?: string
+  characters?: string[]
+  compatibleModels?: string[]
   preview?: boolean
   validation?: string
   available?: boolean

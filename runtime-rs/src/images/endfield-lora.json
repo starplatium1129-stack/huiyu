@@ -1,0 +1,22 @@
+{
+  "id": "L_ENDFIELD_ALL_V1_ANIMA",
+  "file": "endfield_all_v3-000012.safetensors",
+  "name": "终末地角色合集 · Anima v1.0",
+  "strength": 1,
+  "nativeCharactersByModel": {
+    "anima-miaomiao-v1.6": ["perlica_arknights", "yvonne_arknights"]
+  },
+  "compatibleModels": ["anima-base-v1.0", "anima-aesthetic-v1.1", "anima-yume-v1.0", "anima-miaomiao-v1.2", "anima-miaomiao-v1.6"],
+  "sourceUrl": "https://civitai.com/models/2935110?modelVersionId=3322345",
+  "downloadUrl": "https://civitai.com/api/download/models/3322345?fileId=3208029",
+  "bytes": 183953712,
+  "sha256": "15fb96bb936df34147e629da91f3beb0af02332eb248b0d634b831497e625088",
+  "characters": {
+    "administrator_arknights": { "label": "管理员", "trigger": "female endministrator (arknights)" },
+    "laevatain_arknights": { "label": "莱万汀", "trigger": "laevatain (arknights)" },
+    "perlica_arknights": { "label": "佩丽卡", "trigger": "perlica (arknights)" },
+    "rossy_arknights": { "label": "洛茜", "trigger": "rossi (arknights)" },
+    "yvonne_arknights": { "label": "伊冯", "trigger": "yvonne (arknights)" },
+    "zhuang_fangyi_arknights": { "label": "庄方宜", "trigger": "zhuang fangyi (arknights)" }
+  }
+}

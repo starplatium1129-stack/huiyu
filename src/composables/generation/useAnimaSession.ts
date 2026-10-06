@@ -6,6 +6,7 @@ import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import { usePolling } from '@/composables/usePolling'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import {
   ANIMA_LORA_BY_CHARACTER,
   animaRequestPayload,
@@ -92,8 +93,10 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   function syncCharacter(character: CharKey = options.getCharacter()) {
     if (options.isPopular()) {
-      // 热门角色：无 LoRA 模式，不依赖角色 LoRA 白名单。
-      patchState({ loraId: '' })
+      const binding = endfieldAnimaBinding(options.getPopularCharacterId?.(), options.getFamily(), state.value.modelId)
+      const available = binding && state.value.loras.some(lora => lora.id === binding.loraId && lora.available !== false)
+      patchState({ loraId: available ? binding.loraId : '',
+        ...(available && state.value.loraId !== binding.loraId ? { loraStrength: binding.loraStrength } : {}) })
       return
     }
     if (character === 'triad') {
@@ -170,18 +173,23 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       if (statusRequest !== controller || controller.signal.aborted) return latest()
       const models = Array.isArray(data.models) ? data.models : []
       const loras = (Array.isArray(data.loras) ? data.loras : [])
-        .filter(lora => lora.character === options.getCharacter())
+        .filter(lora => options.isPopular()
+          ? lora.characters?.includes(options.getPopularCharacterId?.() || '')
+          : lora.character === options.getCharacter())
       const family = options.getFamily()
       const styleLoras = family === 'krea2' ? (data.styleLoras || []) : []
       const familyModels = models.filter(model => model.family === family)
       const visibleModels = options.isPopular()
-        // 热门角色只暴露 no-LoRA 底模（Krea 家族天然无 LoRA，后端已声明 noLora:true）。
-        ? familyModels.filter(model => model.capabilities?.noLora === true)
+        ? familyModels.filter(model => model.capabilities?.noLora === true
+          && (!endfieldAnimaBinding(options.getPopularCharacterId?.(), family)
+            || endfieldAnimaBinding(options.getPopularCharacterId?.(), family, model.id)))
         : familyModels
-      const familyLoras = family === 'krea2' ? [] : (options.isPopular() ? [] : loras)
       const modelIdCurrent = visibleModels.some(model => model.id === state.value.modelId)
         ? state.value.modelId
         : (visibleModels.find(model => model.available)?.id || visibleModels[0]?.id || '')
+      const endfield = endfieldAnimaBinding(options.getPopularCharacterId?.(), family, modelIdCurrent)
+      const familyLoras = family === 'krea2' ? [] : options.isPopular()
+        ? loras.filter(lora => lora.id === endfield?.loraId) : loras
       const loraId = familyLoras.some(lora => lora.id === state.value.loraId)
         ? state.value.loraId
         : (familyLoras[0]?.id || '')
@@ -219,6 +227,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
             ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
             : `${familyLabel} 不可用（请检查 ComfyUI 与当前模型文件）`,
           models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
+          ...(endfield && loraId === endfield.loraId && state.value.loraId !== loraId ? { loraStrength: endfield.loraStrength } : {}),
           family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
           ...(shouldApplyDefaults ? modelDefaults(selectedModel) : {}),
         })
