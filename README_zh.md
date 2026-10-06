@@ -8,6 +8,41 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+## 软件实机预览
+
+以下为绘遇实际运行界面，点击任意图片查看大图。
+
+**绘图画室** · 选择角色与造型，在同一工作台调整画面与生成参数。
+
+[![绘图画室：左侧角色与造型素材、中央画布和右侧生成设置](docs/images/software-preview/drawing-studio.jpg)](docs/images/software-preview/drawing-studio.jpg)
+
+<table>
+  <tr>
+    <td width="50%">
+      <strong>角色书架</strong><br>
+      按作品浏览角色，挑选这一幕的主角。
+      <a href="docs/images/software-preview/character-library.jpg"><img src="docs/images/software-preview/character-library.jpg" alt="角色书架：按作品分组的角色卡片" width="100%"></a>
+    </td>
+    <td width="50%">
+      <strong>参考画册</strong><br>
+      浏览样张，按角色、场景与内容分级寻找灵感。
+      <a href="docs/images/software-preview/reference-album.jpg"><img src="docs/images/software-preview/reference-album.jpg" alt="参考画册：样张网格与搜索筛选" width="100%"></a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <strong>作品查看器</strong><br>
+      翻阅成图、查看创作参数，沿用配方继续创作。
+      <a href="docs/images/software-preview/artwork-viewer.jpg"><img src="docs/images/software-preview/artwork-viewer.jpg" alt="作品查看器：大图浏览与作品信息侧栏" width="100%"></a>
+    </td>
+    <td width="50%">
+      <strong>角色房间</strong><br>
+      Live2D 立绘陪伴，结合文字对话与语音交互。
+      <a href="docs/images/software-preview/character-room.jpg"><img src="docs/images/software-preview/character-room.jpg" alt="角色房间：绫地宁宁 Live2D 立绘与聊天面板" width="100%"></a>
+    </td>
+  </tr>
+</table>
+
 当前规模与能力边界见 [项目状态](docs/project-status.md)，硬件要求与模型下载见 [全功能开箱指南](docs/guides/setup-and-models.md)，后续事项见 [未来规划](docs/roadmap.md)。
 
 产品后端使用 Rust，旧 Node 后端源码已退役；Node 继续用于前端构建、维护工具和隔离测试。旧格式兼容由固定夹具与独立 SQLite 读取核验承接。安装身份、真实模型/设备验收和原生许可缺口分别在[项目状态](docs/project-status.md)与[Rust 迁移计划](plans/013-node-to-rust-migration.md)维护。

@@ -8,6 +8,41 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+## Software preview
+
+Screenshots of HUIYU running with local assets and services. Click any image to view it full size.
+
+**Drawing studio** · Choose a character and outfit, then adjust the scene and generation settings in one workspace.
+
+[![Drawing studio with character and outfit controls, a central canvas, and generation settings](docs/images/software-preview/drawing-studio.jpg)](docs/images/software-preview/drawing-studio.jpg)
+
+<table>
+  <tr>
+    <td width="50%">
+      <strong>Character library</strong><br>
+      Browse characters by series and choose the lead for your scene.
+      <a href="docs/images/software-preview/character-library.jpg"><img src="docs/images/software-preview/character-library.jpg" alt="Character library with series grouped as stacks of character cards" width="100%"></a>
+    </td>
+    <td width="50%">
+      <strong>Reference album</strong><br>
+      Explore samples by character, scene, and content rating.
+      <a href="docs/images/software-preview/reference-album.jpg"><img src="docs/images/software-preview/reference-album.jpg" alt="Reference album with a sample grid and search filters" width="100%"></a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <strong>Artwork viewer</strong><br>
+      Browse finished artwork, inspect its settings, and reuse the recipe.
+      <a href="docs/images/software-preview/artwork-viewer.jpg"><img src="docs/images/software-preview/artwork-viewer.jpg" alt="Artwork viewer with a large image and an artwork details sidebar" width="100%"></a>
+    </td>
+    <td width="50%">
+      <strong>Character room</strong><br>
+      Spend time with a Live2D character through text and voice chat.
+      <a href="docs/images/software-preview/character-room.jpg"><img src="docs/images/software-preview/character-room.jpg" alt="Character room with Ayachi Nene's Live2D model and a chat panel" width="100%"></a>
+    </td>
+  </tr>
+</table>
+
 Current counts and capability boundaries: [Project status](docs/project-status.md). Next steps: [Roadmap](docs/roadmap.md).
 
 The product backend uses Rust. The old Node backend has been removed; Node remains for frontend builds, maintenance tools and isolated test fixtures. Historical compatibility is checked against fixed fixtures and independent SQLite reads. Installation identity, real-model/device acceptance and native licensing gaps are tracked separately in [project status](docs/project-status.md) and the [Rust migration plan](plans/013-node-to-rust-migration.md).
