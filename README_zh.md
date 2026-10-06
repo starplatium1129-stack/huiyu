@@ -1,289 +1,120 @@
-# 绘遇 · HUIYU
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/logo.svg"><img src="assets/logo-light.svg" width="198" alt="绘遇 HUIYU"></picture></p>
 
-[下载 Windows 桌面版 1.9.0](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0) · [1.9.0 更新说明](docs/releases/v1.9.0.md)
+<h1 align="center">把喜欢的角色，画进你的故事。</h1>
 
-> 从故事出发，把想画的瞬间整理成可以直接生成的 Galgame 风格 CG、4 视角角色参考档案与 AI 叙事短片。
+<p align="center">本地运行的 AI 角色创作工作室 · 绘图、灵感画册、作品收藏与桌面陪伴</p>
 
-[English](README.md)
+<p align="center"><a href="https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.1">下载 Windows 桌面版 1.9.1</a> · <a href="docs/releases/v1.9.1.md">更新说明</a> · <a href="README.md">English</a></p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+绘遇从角色和场景出发：选一位主角，挑选衣装、镜头与光线，把想象整理成一张 CG，再把成片和生成配方一起留在自己的作品册里。可以直接创作，也可以先翻翻参考画册，寻找下一幕的灵感。
 
-## 软件实机预览
+[![绘遇首页：角色创作入口与最近作品](docs/images/software-preview/home.jpg)](docs/images/software-preview/home.jpg)
 
-以下为绘遇实际运行界面，点击任意图片查看大图。
+## <img src="docs/images/icons/image.svg" width="24" height="24" alt=""> 一张画，从这一幕开始
 
-**绘图画室** · 选择角色与造型，在同一工作台调整画面与生成参数。
+左侧挑选角色和创作素材，中间看画面，右侧调整生成设置。场景模式帮助整理想法，专家模式提供模型、画师风格、提示词与采样参数；需要时可以导入参考图、反推描述或局部换装。
 
-[![绘图画室：左侧角色与造型素材、中央画布和右侧生成设置](docs/images/software-preview/drawing-studio.jpg)](docs/images/software-preview/drawing-studio.jpg)
+[![绘图画室：角色素材、中央画布与模型和生成设置](docs/images/software-preview/drawing-studio.jpg)](docs/images/software-preview/drawing-studio.jpg)
+
+## <img src="docs/images/icons/character.svg" width="24" height="24" alt=""> 角色、灵感与自己的作品册
 
 <table>
   <tr>
-    <td width="50%">
-      <strong>角色书架</strong><br>
-      按作品浏览角色，挑选这一幕的主角。
-      <a href="docs/images/software-preview/character-library.jpg"><img src="docs/images/software-preview/character-library.jpg" alt="角色书架：按作品分组的角色卡片" width="100%"></a>
-    </td>
-    <td width="50%">
-      <strong>参考画册</strong><br>
-      浏览样张，按角色、场景与内容分级寻找灵感。
-      <a href="docs/images/software-preview/reference-album.jpg"><img src="docs/images/software-preview/reference-album.jpg" alt="参考画册：样张网格与搜索筛选" width="100%"></a>
-    </td>
+    <td width="50%"><strong>角色书架</strong><br>按作品浏览角色，挑选造型与场景。<a href="docs/images/software-preview/character-library.jpg"><img src="docs/images/software-preview/character-library.jpg" alt="角色书架：按原作分组的叠卡与角色目录" width="100%"></a></td>
+    <td width="50%"><strong>参考画册</strong><br>按角色、场景与分级寻找灵感；受保护图片保持模糊预览。<a href="docs/images/software-preview/reference-album.jpg"><img src="docs/images/software-preview/reference-album.jpg" alt="参考画册：样张筛选与内容分级预览" width="100%"></a></td>
   </tr>
   <tr>
-    <td width="50%">
-      <strong>作品查看器</strong><br>
-      翻阅成图、查看创作参数，沿用配方继续创作。
-      <a href="docs/images/software-preview/artwork-viewer.jpg"><img src="docs/images/software-preview/artwork-viewer.jpg" alt="作品查看器：大图浏览与作品信息侧栏" width="100%"></a>
-    </td>
-    <td width="50%">
-      <strong>角色房间</strong><br>
-      Live2D 立绘陪伴，结合文字对话与语音交互。
-      <a href="docs/images/software-preview/character-room.jpg"><img src="docs/images/software-preview/character-room.jpg" alt="角色房间：绫地宁宁 Live2D 立绘与聊天面板" width="100%"></a>
-    </td>
+    <td width="50%"><strong>我的作品</strong><br>按角色和画册整理成片，收藏喜欢的一张。<a href="docs/images/software-preview/my-works.jpg"><img src="docs/images/software-preview/my-works.jpg" alt="我的作品：角色 CG 瀑布流与作品分类" width="100%"></a></td>
+    <td width="50%"><strong>立体观画</strong><br>翻阅大图、查看生成信息，沿用配方继续创作。<a href="docs/images/software-preview/artwork-viewer.jpg"><img src="docs/images/software-preview/artwork-viewer.jpg" alt="作品查看器：立体轮播、原图缩放和作品信息" width="100%"></a></td>
   </tr>
 </table>
 
-当前规模与能力边界见 [项目状态](docs/project-status.md)，硬件要求与模型下载见 [全功能开箱指南](docs/guides/setup-and-models.md)，后续事项见 [未来规划](docs/roadmap.md)。
+以上六张截图由作者提供，保留 3840×2158 原始尺寸，点击查看大图。
 
-产品后端使用 Rust，旧 Node 后端源码已退役；Node 继续用于前端构建、维护工具和隔离测试。旧格式兼容由固定夹具与独立 SQLite 读取核验承接。安装身份、真实模型/设备验收和原生许可缺口分别在[项目状态](docs/project-status.md)与[Rust 迁移计划](plans/013-node-to-rust-migration.md)维护。
+## <img src="docs/images/icons/model.svg" width="24" height="24" alt=""> 创作工具
 
-## 项目定位
+| 功能 | 当前支持 |
+| --- | --- |
+| 本地绘图 | Anima 与 Krea 2；提示词按所选引擎编译 |
+| Anima 底模 | 默认 MiaoMiao Harem 1.6，另有 Base、Aesthetic、Yume、MiaoMiao 1.2 与新接入的 MiaoMiao 2.9B Beta 1.1 |
+| 角色 LoRA | 宁宁、夏目 Anima v21 由绘遇作者亲自训练；另接入终末地角色合集，按底模与角色匹配 |
+| 短片工作台 | 分镜、参考图与本地 Wan 2.2 TI2V 5B／MiniMax H3 路径 |
+| 模型准备 | 在控制室选择 AI 工作目录、模型与运行环境，显式准备后下载并核对文件 |
+| 作品与配方 | 成片入册、搜索收藏、历史配方沿用、场景与蓝图编辑 |
 
-绘遇 HUIYU (Lingji Atelier) 是我为个人创作整理的一套本地工具，平时自己使用，也会临时分享给身边的朋友。它不是公开运营的平台，也不提供账号、社区、商店或云端同步。
+MiaoMiao 2.9B Beta 1.1 已完成一张本机全年龄样图和 TeaCache 0.08 的实际工作流验证，暂按无角色 LoRA 路径使用。SD／WAI 新生成已退役，旧作品、任务查询和原配方事实保留。完整的权重、硬件与能力边界见[模型与环境指南](docs/guides/setup-and-models.md)。
 
-系统支持专属主角 **绫地宁宁** 与 **四季夏目**，以及持续扩展的动漫、游戏角色与服装。项目会把故事、角色、情绪、镜头、构图、光照和出图参数放在同一个 Scene 中，减少从空白 Prompt 开始反复试错的时间。规模和待补资产只在[项目状态](docs/project-status.md)维护。
+## <img src="docs/images/icons/chat.svg" width="24" height="24" alt=""> 角色房间与桌面陪伴
 
-这是非官方、非商业的个人爱好项目，与原作及相关权利方没有隶属或授权关系。
+独立角色房间支持文字聊天、Live2D 展示与语音播放；桌面陪伴窗可以留在手边。聊天可连接兼容 API、已有 Ollama，或准备本地 llama.cpp 与 GGUF。语音、翻译和口型需要相应服务与角色资源；控制室管理连接和模型资源释放。
 
-## 现在能做什么
+## <img src="docs/images/icons/gallery.svg" width="24" height="24" alt=""> 安装与开始创作
 
-- **丰富的场景库与热门角色体系**：
-  - 浏览场景、蓝图与审核样张，按角色、分类、季节和内容分级筛选。
-  - 多部动漫、游戏作品的角色档案，支持专属服装与场景选择。
-  - 在“效果样张”中查看逐场景审核的实际成图，支持带着场景直接进入导演台。
-- **角色 4 视角参考档案库（Character Reference Bible）**：
-  - 四种电影参考视角与正、侧、背三视图设计基线；登记、待生成、已有图片与视觉审核完成分开统计，详见[项目状态](docs/project-status.md)。
-  - 新角色形态先经 `workflow reference:register` 登记占位，再由 `reference:render` 生成隔离候选，不直接回填活跃库。
-  - 自动检查辅助人工审核；缺人工决定保持 pending，明确通过后才显式发布不可变版本。具体步骤见[候选审核与版本发布](docs/workflow.md#参考库候选审核与版本发布)。
-  - 标准化参考资产契约为下游 MiniMax H3 Ref2VA 视频生成提供稳定的角色锁脸保障。
-- **多生成引擎协同与 精选动漫画风**：
-  - 跨引擎提示词自动编译：支持 Stable Diffusion / WAI (Danbooru tags)、Anima (`@artist` + 原生标签流，当前默认 MiaoMiao Harem v1.6) 与 Krea 2 Turbo (纯英文自然语言)。
-  - 内置精选动漫画风与作监级风格（如猫富ちゃお/动画工房、浅野恭司/WIT Studio、Rella 星夜月光、深崎暮人、So-bin 等）。
-  - 在 reForge 环境中自动增强双人构图：Regional Prompter 分离提示词区域，逐场景 OpenPose 稳定站位。
-- **AI 叙事视频工作台（Video Studio）**：
-  - 本地 AI 视频生成支持 Wan 2.2 TI2V 与 MiniMax H3（Ref2VA 多模态参考图绑定）。
-  - 剧本智能分镜拆解、画风锚注入、中日英对白语言显式控制（`dialogueLang: auto/zh/ja/en`）与 Range 流式播放。
-- **角色房间与语音交互**：
-  - 本地角色房间连接 Ollama 或兼容 API 进行流式文字聊天；句子级语音流水线边生成、边翻译、边合成（GPT-SoVITS）。
-  - Live2D 立绘随真实语音振幅对口型、随情感切换表情零件。
-  - 控制面板提供显存资源调度：绘图优先 / 聊天优先一键切换，模型按需卸载。
-- **桌面端伴侣（Tauri 2）**：
-  - 轻量 Tauri 2 桌面端（Companion + Atelier 窗口、托盘、Native Live2D overlay），通过 `deploy-desktop.bat` 同步桌面端。
+1. 在 [1.9.1 发布页](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.1)下载安装包。新用户或资源修复选 **full 完整包**；已有完整安装选 **upgrade 升级包**。
+2. 按[离线素材指南](docs/guides/offline-resources.md)导入需要的素材。完整资源包与程序分开发行，已有素材不必因程序升级重复下载。
+3. 打开控制室，选择数据目录和 AI 工作目录，准备所需模型，或连接已有服务。
+4. 进入绘制工作台，选角色与场景，生成后保存到“我的作品”。
 
-## 安装
+**安装成品无需 Node.js 或 Rust。** 浏览素材和作品可离线使用；AI 生成需要对应模型与运行环境，在线下载和远程 API 需要联网。模型权重不捆绑在程序安装包中。
 
-普通 Windows 用户使用上方桌面安装包，按[离线安装指南](docs/guides/offline-resources.md)操作；完整素材 ZIP 单独下载。安装程序与导入素材均不要求 Node.js 或 Rust 构建工具。以下步骤适用于源码构建。
+## <img src="docs/images/icons/manager.svg" width="24" height="24" alt=""> 从源码运行
 
-### 环境要求
-
-| 组件 | 必需 | 说明 |
-| :--- | :---: | :--- |
-| Node.js | 源码构建需要 | `>= 22.18`（npm 11.x），用于前端构建、维护工具和隔离测试 |
-| Rust/MSVC 工具链 | 源码构建需要 | 构建 `runtime-rs` 和 Windows 桌面壳；安装成品不需要编译器 |
-| Windows | **是** | 主要使用环境；启动器与桌面壳均为 Windows 优先 |
-| A1111 / Forge / ReForge WebUI | 可选* | 由 Stability Matrix 启动，启动参数带 `--api --port 7860` — SD/WAI 出图需要 |
-| ComfyUI | 可选* | 位于 `http://127.0.0.1:8188` — Anima / Krea 2 / Wan / H3 引擎路径需要 |
-| cloudflared | 可选 | 仅用于生成临时公网分享链接 |
-| GPT-SoVITS | 可选 | 仅用于 AI 声线（角色专属权重） |
-| Ollama | 可选 | 仅用于角色空间的角色对话 |
-
-\* 至少有一个出图引擎在线才能生成；浏览场景、Prompt 与参考档案库不需要任何引擎。
-
-### 第 1 步 — 获取代码
-
-```bash
-git clone https://github.com/starplatium1129-stack/huiyu.git
-cd huiyu
-```
-
-### 第 2 步 — 安装依赖
-
-```bash
-npm install
-```
-
-`control.bat` 在缺少依赖时会自动执行 `npm ci`。
-
-### 第 3 步 — 编译开发工具与 Rust 后端
-
-生成的工具 `.js` 不入库。`build:runtime` 只编译 `node`、`tests`、`browser` 三个 TypeScript 项目，与实际后端分开构建：
-
-```bash
-npm run build:runtime
-npm run wf -- rust:build
-```
-
-`npm start` 准备 JavaScript 工具后，通过 Cargo 启动 Rust 服务；单独 `build:runtime` 不会构建 Rust EXE。桌面继续使用[既有部署入口](docs/desktop-deployment.md)，EXE/DLL变化需要完整安装。
-
-### 第 4 步 — 启动
-
-**A. 控制面板（推荐）。** 先在 Stability Matrix 中启动 WebUI（记下日志中的地址，通常是 `http://127.0.0.1:7860`），然后双击 `control.bat`，在控制室（`/control`）确认地址。自己使用点击 **本机地址 → 打开**；需要分享时开启公网分享通道，再点 **启动并生成分享链接**。**停止公网分享** 只关闭隧道，AI 服务在“服务与显存”区逐项停止。
-
-**B. 手动启动（排错 / 看完整日志）。**
+Windows 为主要开发与桌面运行环境。源码构建需要 Node.js ≥22.18、npm 与 Rust MSVC 工具链；本地绘图另需 ComfyUI。
 
 ```powershell
-npm install
+git clone https://github.com/starplatium1129-stack/huiyu.git
+cd huiyu
+npm ci
 npm run build
-$env:SD_HOST = 'http://127.0.0.1:7860'   # WebUI 地址
 npm run start:run
 ```
 
-只想测试本地网关时先设置 `$env:DISABLE_TUNNEL = '1'` 跳过公网隧道。`Ctrl+C` 停止。
+运行细节见 [STARTUP](STARTUP.md)，桌面构建与安装见[部署指南](docs/desktop-deployment.md)，维护入口见[工作流](docs/workflow.md)。
 
-**C. 开发模式（HMR）。** 开两个终端：
+## 技术架构
 
-```powershell
-npm run dev:server   # Rust 网关 :3000，监听 runtime-rs 源码变化
-npm run dev          # Vite 开发服务器 :5173（热更新）
-```
+绘遇由三个主要部分组成：**Vue 工作台、Tauri 桌面壳和 Rust 本地网关**。前端通过统一 API 使用工作区、内容与生成任务；网关负责持久化、任务生命周期和外部 AI 服务连接。
 
-完整说明、可选组件（语音、聊天、双人构图）与排错方法见 [STARTUP.md](STARTUP.md)。
+| 层 | 技术与职责 |
+| --- | --- |
+| 工作台 | Vue 3、TypeScript、Vite、Pinia；组件展示、创作状态、提示词编译与界面交互 |
+| 桌面壳 | Tauri 2、Rust；窗口与托盘、桌面陪伴、原生 Live2D 与自有网关管理 |
+| 本地网关 | Rust、Axum、Tokio；HTTP／流式接口、任务准入、查询取消、媒体与资源管理 |
+| 数据与内容 | 桌面 SQLite 管理工作区元数据与内容目录，Web 使用 IndexedDB；图片等媒体单独存放 |
+| AI 服务 | ComfyUI 绘图与视频；llama.cpp／Ollama／兼容 API 聊天；独立反推、翻译和语音服务 |
+| 构建与维护 | Node.js、npm 与项目脚本；前端构建、资源准备、发行封装与隔离测试 |
 
-## 使用示例
+角色、服装、场景和蓝图以运行目录的 `content/catalog.sqlite` 为工作权威，`data/catalog/` 是显式导出的项目快照。模型与用户作品保存在本机选择的目录。工程边界见[工程契约](docs/engineering-contracts.md)，工作区与内容设计见[文档索引](docs/INDEX.md)。
 
-### A. 从场景到一张成图
-
-1. 打开**场景库**，按角色 / 内容分级筛选，点开一个 Scene——故事、情绪、镜头、光照与 Prompt 已全部就位。
-2. 进入**导演台**，挑选一个精选画风，点击生成。
-3. 提示词编译器会自动适配当前引擎：SD/WAI（Danbooru 标签）、Anima（`@artist` + 原生标签流）或 Krea 2 Turbo（纯英文散文）。
-
-### B. AI 叙事短片（纯点击流）
-
-1. 打开场景蓝图 → **一键剧本**（自动四镜分镜：起承转合，台词取场景原文）→ **一键首帧**（逐镜 Krea 2 增强链路出首帧）→ 批量生成 + 尾帧衔接拼接。
-2. 支持 Wan 2.2 TI2V 与 MiniMax H3 Ref2VA 锁脸；对白语言显式控制（`dialogueLang: auto/zh/ja/en`）。
-
-### C. 角色房间、语音与桌面伴侣
-
-- **更多 → 角色对话** 连接本机 Ollama；开启**回复后自动配音**后，中文回复会先经本地翻译链路，再由 GPT-SoVITS 生成日语声线，Live2D 立绘随音频振幅对口型。
-- Tauri 2 桌面伴侣（`npm run dev:tauri` 开发、`npm run package:tauri` 打包 NSIS 安装版）提供无边框置顶的角色悬浮窗、托盘菜单与全局快捷键。
-
-### D. 常用命令行操作
-
-```powershell
-npm run workflow -- --help          # 维护操作的统一入口
-npm run workflow -- data:validate   # 编辑场景数据后校验分片与 DATA_VERSION
-npm run workflow -- gate:quick ui   # 按改动面积分层跑门禁（ui/style/rust/data/all）
-npm run scenes:build                # 从源分片重建场景产物
-npm run popular:build               # 重建 data/popular-characters.json
-npm run build                       # 生产构建 + 140KB 路由预算 + 预压缩
-```
-
-完整脚本索引见 [docs/workflow.md](docs/workflow.md)。
-
-## 贡献指南
-
-这个项目首先是个人项目，但欢迎范围明确的贡献。动手前先读 **AGENTS.md** 的协作规则，再按本次任务查 [docs/INDEX.md](docs/INDEX.md) 和 [docs/workflow.md](docs/workflow.md)。当前用户要求优先于仓库一般指导。
-
-### 开发环境
-
-见「安装」第 4 步 C（Rust 网关 + Vite HMR）。后端改动用 `rust:check`；`npm run typecheck` 与 `npm run lint:js` 检查 TypeScript/前端工具。
-
-### 质量门禁——按影响范围选择
-
-```
-[确认影响范围] ─► [必要检查] ─► [产物在范围内时构建] ─► [精准提交]
-```
-
-```powershell
-npm run typecheck:app           # Vue SFC 类型检查，零 Error 退出
-npm run workflow -- check:full  # 质量检查 + 前端/单测/契约套件
-npm run build                   # 生产构建，路由与依赖预算以当次报告为准
-```
-
-必要检查按[工作流分层表](docs/workflow.md#门禁与构建)选择：局部改动可用 `gate:quick ui|server|data|all`，跨域或构建链改动用 `gate:full`；准备提交本身不扩大验证范围。`npm run validate` 不包含生产构建，构建产物在范围内时另跑 `npm run build`。缺私有参考素材的机器可显式使用 `AICS_REFERENCE_AUDIT_MODE=structure`，它不代表图片交付通过。
-
-### 提交纪律（硬性红线）
-
-- **严禁盲目 `git add .`**——只暂存你核对过的受控文件（先看 `git status` 与 `git diff`），不要卷入他人正在进行的脚本或分支。
-- **严禁 `git reset --hard`** 等破坏性命令；临时测试脚本随用随清。
-- 一个提交只做一件事；先过门禁再提交，而不是提交后再补。
-
-### 不可妥协的工程红线
-
-- **动效只用 GPU 合成属性**。过渡动画必须用 `transform`/`opacity`；用 `left/top/width/height` 补间会触发逐帧重排，门禁（`npm run lint:animations`）直接失败，除非带 `/* compositor-exempt: <理由> */` 注释。
-- **图标一律手绘线条 SVG**。新增图标必须使用 Hand-drawn Linear 机制（`ArchiveIcon.vue`），严禁 Emoji 或实心填充图标。
-- **内容分级 Fail-Closed**。R18 内容默认模糊遮罩；`adultEligibility` + `adultEnabled` 双重把关，未知或未授权状态必须严格拒绝，不得回退"安全"断言。
-- **定稿场景是字节级基线**。`data/prompt-pinned-scenes.json` 中 100 条定稿场景的渲染字段严禁被批量工具触碰（`npm run scenes:pin` 强制校验）；确需修改时先真实出图自测。
-- **严禁偷懒式批量交付**。批量重写必须逐条全量真实改写，通过 `test-prompt-rewrite-integrity.js`（覆盖率=声明数、无模板签名、保留率≤50%、prose 相似度≤60%）。
-- **深浅双主题**。新增或修改 UI 均需两主题视觉检查与 WCAG AA 对比度核对；禁用态用 `--text-disabled` 令牌，不得用 `opacity` 压字。
-- **样式契约以 DESIGN.md 为准**。运行时 CSS 是派生实现，冲突时以契约为准。
-
-### 测试
-
-```powershell
-npm run test:frontend   # vitest 单元测试
-npm run test:unit       # quality-suite 单测分组
-npm run test:contract   # 内容与接口契约测试
-npm run test:e2e        # Playwright 端到端（会先构建）
-```
-
-### 文档
-
-新文档与重大更新必须在 [docs/INDEX.md](docs/INDEX.md) 登记。文档必须与代码实际行为保持一致——过期注释与契约视为缺陷。
-
-## 项目结构
+## 项目目录
 
 ```text
-huiyu/
-├── DESIGN.md               # 网站与控制面板的唯一总设计规范
-├── AGENTS.md               # 项目约束、质量门槛与协作者开发指南
-├── index.html              # Vite SPA 入口（无全局脚本注入）
-├── vite.config.ts          # Vite 构建配置 + dev 代理
-├── control.bat             # Windows 控制面板入口
-├── runtime-rs/             # Rust HTTP 网关、持久任务、SQLite 与媒体服务
-├── src/                    # Vue 3 SPA 源码（Vite 构建目标）
-│   ├── config/             #   角色常量、画师库、导演台静态定义
-│   ├── utils/              #   流式解析、角色参考库数据、Prompt 编译器
-│   ├── stores/             #   Pinia：场景数据、导演台状态
-│   ├── application/        #   用例编排与持久化端口
-│   ├── platform/           #   Web 与桌面适配
-│   ├── api/                #   传输与响应解码
-│   ├── composables/        #   Voice / Live2D / Chat / SD / IndexedDB
-│   ├── components/         #   布局、导航、主题切换、视频工作台组件
-│   ├── views/              #   每路由一个 Vue 视图组件（全部懒加载）
-│   └── assets/css/         #   设计系统 Token、组件样式
-├── desktop-tauri/          # Tauri 2 壳、Native Live2D overlay、sidecar 与打包
-├── types/                  # 共享 TypeScript 类型定义
-├── data/                   # 运行时 JSON 数据（scenes / characters / blueprints / standards）
-├── assets/                 # 静态资源（角色立绘、Live2D、vendor SDK）
-├── docs/                   # 创作规范、质量标准、全景索引（docs/INDEX.md）
-├── scripts/                # 维护、测试、参考图生成与运行辅助脚本
-└── runtime/                # 本机配置、日志、进程状态与运行产物（Git 忽略）
+AI-CG-Studio/
+├── src/                    Vue 工作台
+│   ├── views/              页面与路由视图
+│   ├── components/         界面组件、手绘图标与绘制面板
+│   ├── composables/        创作、生成与交互状态编排
+│   ├── stores/             Pinia 状态
+│   ├── application/        用例与端口
+│   ├── platform/           Web／desktop 适配
+│   ├── api/                API 客户端与响应边界
+│   └── utils/              提示词、配方与其他共享逻辑
+├── runtime-rs/             Rust 网关、任务、存储与服务适配
+├── desktop-tauri/          Tauri 桌面宿主与原生 Live2D
+├── types/                  跨端契约类型
+├── data/                   内容快照、模型配方与资源索引
+├── assets/                 品牌、人物与界面静态资源
+├── scripts/                构建、维护、发行与定向检查入口
+├── tests/                  浏览器与端到端用例
+├── tools/                  独立模型服务与安装助手
+├── docs/                   指南、架构、版本说明与证据
+└── plans/                  专题实施计划
 ```
 
-## 维护与校验
+本机 `runtime/` 保存构建缓存和原始验收材料，不作为产品源码提交。常用开发维护命令统一从 `npm run workflow -- --help` 查找。
 
-```powershell
-npm run typecheck:app     # Vue SFC 与前端 TypeScript 类型检查
-npm run build             # 构建生产前端产物
-npm run validate          # 质量检查 + 前端/单测/契约套件，不含生产构建
-```
+## 项目与许可
 
-日常增删场景、修改故事、维护标签或替换样张，直接使用网站中的 **更多 → 场景管理**。
+绘遇是个人使用、偶尔与朋友分享的非商业爱好项目。代码采用 [MIT 许可](LICENSE)；模型、人物、Live2D、图片与其他资源遵循各自许可。项目与动漫、游戏原作及其权利方没有隶属关系。
 
-当前实现、验证基线、阻断项和完整文档索引见 [docs/project-status.md](docs/project-status.md) 与 [docs/INDEX.md](docs/INDEX.md)。
-
-## 维护原则
-
-1. 自己和朋友实际会用的功能优先。
-2. 本地数据和简单启动优先。
-3. 场景质量与参考图保真度优先于单纯数量。
-4. 分享功能默认保持临时、可停止、需要 Token。
-5. 不为了版本号扩张成公开平台。
-6. 桌面端是主要使用环境；移动端保持基本可用。
-
-> Prompt 描述图片，Scene 描述瞬间。这个工具要做的，是让那个瞬间更容易被画出来。
-
-## License
-
-MIT 协议，见 [LICENSE](LICENSE)。角色内容及其原作版权归原权利方所有，本项目为同人性质的非官方作品，不主张对其的所有权。
+[项目状态](docs/project-status.md) · [未来规划](docs/roadmap.md) · [文档索引](docs/INDEX.md) · [问题反馈](https://github.com/starplatium1129-stack/huiyu/issues)

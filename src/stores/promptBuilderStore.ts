@@ -331,7 +331,10 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     await sceneStore.loadPresetCatalog()
     const catalog = parsePresetCatalog(sceneStore.presets)
     presets.value = catalog.presets
-    modelProfiles.value = catalog.modelProfiles
+    // Upgrades preserve personal content. Fill only missing software model
+    // profiles in memory; never replace a user's existing model or preset.
+    const { fillMissingModelProfiles } = await import('@/utils/modelProfileDefaults')
+    modelProfiles.value = fillMissingModelProfiles(catalog.modelProfiles)
     applyModelProfile()
     dataReady.value = true
   }

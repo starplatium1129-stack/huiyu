@@ -12,6 +12,7 @@ import type { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAss
 import type { AnimaResult } from '@/types/anima'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
+import type { ModelProfile } from '@/utils/promptPolicy'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import {
   DRAW_ENGINE_SETTING,
@@ -89,7 +90,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   /** 热门角色 Anima 无 LoRA：仅 popular subject + 选中底模的 noLora capability 时成立。 */
   const animaNoLoraMode = computed(() => {
     if (!pb.isPopular) return false
-    if (!currentCapabilities.value.lora) return false
+    if (!currentCapabilities.value.noLora) return false
     const selected = animaState.value.models.find(model => model.id === animaState.value.modelId)
     return selected?.capabilities?.noLora === true && !(pb.subject.kind === 'popular'
       && endfieldAnimaBinding(pb.subject.characterId, animaState.value.family, animaState.value.modelId))
@@ -210,20 +211,32 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     })
   }
 
-  function buildAnimaRequest(preview = false): AnimaRequest | null {
-    if (pb.isPopular) {
-      return buildPopularRequest(preview)
+  // Both studio and popular requests sample the same current settings; their
+  // character/LoRA identities remain separate below.
+  function requestSettings(profileId: string): Omit<AnimaRequest, 'loraId' | 'loraStrength' | 'character'> {
+    const state = animaState.value
+    return {
+      prompt: livePrompt.value, negative: effectiveNegative.value, profileId, modelId: state.modelId,
+      width: state.width, height: state.height, steps: state.steps, cfg: state.cfg,
+      ...(state.seed == null ? {} : { seed: state.seed }),
+      hiresFix: Boolean(state.hiresFix), hiresScale: state.hiresScale, hiresDenoise: state.hiresDenoise,
+      teaCache: state.teaCache !== false, teaCacheThresh: state.teaCacheThresh, adultEnabled: pb.showMatureScenes,
     }
-    const profile = modelProfile.value
-    if (pb.char === 'triad' && !currentCapabilities.value.dualCharacter) {
+  }
+
+  function buildAnimaRequest(preview = false): AnimaRequest | null {
+    const isPopular = pb.isPopular
+    const profile = isPopular ? popularProfile.value : modelProfile.value
+    if (!isPopular && pb.char === 'triad' && !currentCapabilities.value.dualCharacter) {
       if (!preview) flash('当前绘图路径暂不支持旧双角色配置，请重新选择单个角色')
       return null
     }
-    const charKey = pb.char === 'triad' ? null : pb.char
     if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
       if (!preview) flash('当前底模没有匹配的模型 profile，已拒绝生成')
       return null
     }
+    if (isPopular) return buildPopularRequest(profile, preview)
+    const charKey = pb.char === 'triad' ? null : pb.char
     const expectedLoraId = charKey ? ANIMA_LORA_BY_CHARACTER[charKey] : ''
     if (currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && charKey && (animaState.value.loraId !== expectedLoraId || !animaState.value.loras.some(lora => lora.id === expectedLoraId && lora.available !== false))) {
       if (!preview) flash('Anima 底模尚未从服务端白名单发现')
@@ -231,34 +244,15 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     }
     if (!preview) updateAnimaPromptState()
     return {
-      prompt: livePrompt.value,
-      negative: effectiveNegative.value,
-      profileId: profile.id || '',
-      modelId: animaState.value.modelId,
+      ...requestSettings(profile.id || ''),
       loraId: currentCapabilities.value.lora ? animaState.value.loraId : null,
       loraStrength: currentCapabilities.value.lora ? animaState.value.loraStrength : null,
-      width: animaState.value.width,
-      height: animaState.value.height,
-      steps: animaState.value.steps,
-      cfg: animaState.value.cfg,
-      ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
       character: currentCapabilities.value.characterIdentity && charKey ? ANIMA_CHARACTER_BY_CHARACTER[charKey] : null,
-      hiresFix: Boolean(animaState.value.hiresFix),
-      hiresScale: animaState.value.hiresScale,
-      hiresDenoise: animaState.value.hiresDenoise,
-      teaCache: animaState.value.teaCache !== false,
-      teaCacheThresh: animaState.value.teaCacheThresh,
-      adultEnabled: pb.showMatureScenes,
     }
   }
 
   /** 热门角色沿用其独立提示词；终末地在 Anima 上使用角色限定的合集。 */
-  function buildPopularRequest(preview = false): AnimaRequest | null {
-    const profile = popularProfile.value
-    if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
-      if (!preview) flash('当前底模没有匹配的模型 profile，已拒绝生成')
-      return null
-    }
+  function buildPopularRequest(profile: ModelProfile, preview = false): AnimaRequest | null {
     if (!currentCapabilities.value.noLora) {
       if (!preview) flash('当前底模不支持无 LoRA 热门角色创作')
       return null
@@ -275,24 +269,10 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     }
     if (!preview) updateAnimaPromptState()
     return {
-      prompt: livePrompt.value,
-      negative: effectiveNegative.value,
-      profileId: profile.id || '',
-      modelId: animaState.value.modelId,
+      ...requestSettings(profile.id || ''),
       loraId: binding?.loraId ?? null,
       loraStrength: binding ? animaState.value.loraStrength : null,
-      width: animaState.value.width,
-      height: animaState.value.height,
-      steps: animaState.value.steps,
-      cfg: animaState.value.cfg,
-      ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
       character: binding?.character ?? null,
-      hiresFix: Boolean(animaState.value.hiresFix),
-      hiresScale: animaState.value.hiresScale,
-      hiresDenoise: animaState.value.hiresDenoise,
-      teaCache: animaState.value.teaCache !== false,
-      teaCacheThresh: animaState.value.teaCacheThresh,
-      adultEnabled: pb.showMatureScenes,
     }
   }
 

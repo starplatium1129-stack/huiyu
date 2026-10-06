@@ -1,278 +1,120 @@
-# 绘遇 · HUIYU
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/logo.svg"><img src="assets/logo-light.svg" width="198" alt="HUIYU"></picture></p>
 
-> A local creative studio for turning story moments into Galgame-style AI CGs, 4-perspective character reference bibles, and AI narrative short films.
+<h1 align="center">Bring your favorite characters into your story.</h1>
 
-[中文说明](README_zh.md)
+<p align="center">A local AI character studio for drawing, inspiration, artwork collections and desktop companionship.</p>
 
-[Download HUIYU 1.9.0 for Windows](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0) · [1.9.0 release notes](docs/releases/v1.9.0.md)
+<p align="center"><a href="https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.1">Download HUIYU 1.9.1 for Windows</a> · <a href="docs/releases/v1.9.1.md">Release notes</a> · <a href="README_zh.md">中文说明</a></p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+Start with a character and a scene. Choose an outfit, camera and lighting, turn the moment into a CG, then keep the finished image and its recipe in your own artwork collection. Draw directly or browse the reference album for your next idea.
 
-## Software preview
+[![HUIYU home with creation shortcuts and recent artwork](docs/images/software-preview/home.jpg)](docs/images/software-preview/home.jpg)
 
-Screenshots of HUIYU running with local assets and services. Click any image to view it full size.
+## <img src="docs/images/icons/image.svg" width="24" height="24" alt=""> From a moment to an image
 
-**Drawing studio** · Choose a character and outfit, then adjust the scene and generation settings in one workspace.
+Choose your character and materials on the left, view the canvas in the center, and adjust generation settings on the right. Scene mode helps shape an idea; expert mode exposes models, artist styles, prompts and sampling settings. Import references, interrogate images or edit an outfit when needed.
 
-[![Drawing studio with character and outfit controls, a central canvas, and generation settings](docs/images/software-preview/drawing-studio.jpg)](docs/images/software-preview/drawing-studio.jpg)
+[![Drawing studio with character materials, a central canvas and model settings](docs/images/software-preview/drawing-studio.jpg)](docs/images/software-preview/drawing-studio.jpg)
+
+## <img src="docs/images/icons/character.svg" width="24" height="24" alt=""> Characters, inspiration and your artwork
 
 <table>
   <tr>
-    <td width="50%">
-      <strong>Character library</strong><br>
-      Browse characters by series and choose the lead for your scene.
-      <a href="docs/images/software-preview/character-library.jpg"><img src="docs/images/software-preview/character-library.jpg" alt="Character library with series grouped as stacks of character cards" width="100%"></a>
-    </td>
-    <td width="50%">
-      <strong>Reference album</strong><br>
-      Explore samples by character, scene, and content rating.
-      <a href="docs/images/software-preview/reference-album.jpg"><img src="docs/images/software-preview/reference-album.jpg" alt="Reference album with a sample grid and search filters" width="100%"></a>
-    </td>
+    <td width="50%"><strong>Character library</strong><br>Browse by series, then choose an outfit and scene.<a href="docs/images/software-preview/character-library.jpg"><img src="docs/images/software-preview/character-library.jpg" alt="Character library with series grouped as stacks of cards" width="100%"></a></td>
+    <td width="50%"><strong>Reference album</strong><br>Find inspiration by character, scene and rating. Protected images retain blurred previews.<a href="docs/images/software-preview/reference-album.jpg"><img src="docs/images/software-preview/reference-album.jpg" alt="Reference album with sample filters and content ratings" width="100%"></a></td>
   </tr>
   <tr>
-    <td width="50%">
-      <strong>Artwork viewer</strong><br>
-      Browse finished artwork, inspect its settings, and reuse the recipe.
-      <a href="docs/images/software-preview/artwork-viewer.jpg"><img src="docs/images/software-preview/artwork-viewer.jpg" alt="Artwork viewer with a large image and an artwork details sidebar" width="100%"></a>
-    </td>
-    <td width="50%">
-      <strong>Character room</strong><br>
-      Spend time with a Live2D character through text and voice chat.
-      <a href="docs/images/software-preview/character-room.jpg"><img src="docs/images/software-preview/character-room.jpg" alt="Character room with Ayachi Nene's Live2D model and a chat panel" width="100%"></a>
-    </td>
+    <td width="50%"><strong>My artwork</strong><br>Organize images by character or album and save your favorites.<a href="docs/images/software-preview/my-works.jpg"><img src="docs/images/software-preview/my-works.jpg" alt="Artwork collection with a masonry image grid" width="100%"></a></td>
+    <td width="50%"><strong>Artwork viewer</strong><br>Browse large images, inspect generation details and reuse a recipe.<a href="docs/images/software-preview/artwork-viewer.jpg"><img src="docs/images/software-preview/artwork-viewer.jpg" alt="Artwork viewer with a three-dimensional carousel, zoom and details" width="100%"></a></td>
   </tr>
 </table>
 
-Current counts and capability boundaries: [Project status](docs/project-status.md). Next steps: [Roadmap](docs/roadmap.md).
+All six screenshots were supplied by the author and retain their original 3840×2158 dimensions. Click an image to view it full size.
 
-The product backend uses Rust. The old Node backend has been removed; Node remains for frontend builds, maintenance tools and isolated test fixtures. Historical compatibility is checked against fixed fixtures and independent SQLite reads. Installation identity, real-model/device acceptance and native licensing gaps are tracked separately in [project status](docs/project-status.md) and the [Rust migration plan](plans/013-node-to-rust-migration.md).
+## <img src="docs/images/icons/model.svg" width="24" height="24" alt=""> Creative tools
 
-## About
+| Feature | Current support |
+| --- | --- |
+| Local drawing | Anima and Krea 2, with prompts compiled for the selected engine |
+| Anima checkpoints | MiaoMiao Harem 1.6 by default; Base, Aesthetic, Yume, MiaoMiao 1.2 and the newly integrated MiaoMiao 2.9B Beta 1.1 |
+| Character LoRAs | HUIYU author's Ayachi Nene and Shiki Natsume Anima v21; an Endfield collection with model-specific character bindings |
+| Video studio | Shot lists, reference images and local Wan 2.2 TI2V 5B / MiniMax H3 paths |
+| Model preparation | Choose the AI directory, models and runtimes in the control room; download and verification begin on explicit preparation |
+| Artwork and recipes | Collections, search, favorites, recipe reuse, scene and blueprint editing |
 
-绘遇 (HUIYU) is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
+MiaoMiao 2.9B Beta 1.1 has been checked with one local SFW render using TeaCache 0.08. It currently uses the path without character LoRAs. New SD / WAI generation is retired; old artwork, task queries and original recipe facts remain available. See the [model and environment guide](docs/guides/setup-and-models.md) for weights, hardware and capability boundaries.
 
-The system supports Ayachi Nene, Shiki Natsume, and a growing catalog of anime/game characters and outfits. A Scene keeps story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together. Current counts and incomplete assets are tracked only in [Project status](docs/project-status.md).
+## <img src="docs/images/icons/chat.svg" width="24" height="24" alt=""> Character room and desktop companion
 
-This is an unofficial, non-commercial fan project and is not affiliated with or endorsed by the original rights holders.
+A separate character room provides text chat, Live2D display and voice playback; a desktop companion can stay nearby. Connect a compatible API or existing Ollama, or prepare local llama.cpp and GGUF models. Voice, translation and lip sync require their own services and character resources. The control room manages connections and model resource release.
 
-## Features
+## <img src="docs/images/icons/gallery.svg" width="24" height="24" alt=""> Install and start creating
 
-- **Scene & Character Libraries**:
-  - Searchable Scenes and Scene Blueprints, classified as All, R15, or R18 by depicted content.
-  - Characters from multiple anime and game series, with character-specific outfits and scene presets.
-  - Reviewed showcase samples in `AI/SceneShowcase/`, with direct links into the studio; availability depends on local assets.
-- **4-Perspective Character Reference Bible**:
-  - Four cinematic reference perspectives plus front, side, and back design sheets. Registered, pending, available, and visually reviewed assets are distinguished in [Project status](docs/project-status.md).
-  - Generate isolated candidates and run automated checks, then record human review before explicitly publishing an immutable version. Missing review stays pending; see the [reference workflow](docs/workflow.md#参考库候选审核与版本发布).
-  - Standardized reference asset contract for downstream MiniMax H3 Ref2VA identity locking.
-- **Multi-Engine Generation & Curated Artist Styles**:
-  - Automatic prompt compilation across Stable Diffusion / WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.6), and Krea 2 Turbo (natural language prose).
-  - Curated anime artist & chief animation director styles (e.g. Nekotomi Chao / 猫富ちゃお, Kyoji Asano / WIT Studio, Rella moonlight, Misaki Kurehito, Muririn, Kobuichi, So-bin, etc.).
-  - Regional Prompter dual-character composition stabilization on reForge.
-- **AI Narrative Video Studio**:
-  - Local AI video creation supporting Wan 2.2 TI2V and MiniMax H3 (Ref2VA reference image binding).
-  - Intelligent shot list script decomposition, style anchor injection, and explicit dialogue language control (`dialogueLang: auto/zh/ja/en`).
-- **Character Space & Voice Pipeline**:
-  - Local character room backed by Ollama / OpenAI-compatible APIs with streaming sentence-level Japanese / Chinese voice synthesis (GPT-SoVITS).
-  - Live2D lip sync driven by audio amplitude and emotion-matched expressions.
-  - VRAM resource scheduler: one-click draw-first / chat-first modes with automatic model unloading.
-- **Desktop Companion (Tauri 2)**:
-  - Lightweight desktop shell with Companion + Atelier windows, system tray, Native Live2D overlay, and desktop synchronization through `deploy-desktop.bat`.
+1. Download an installer from the [1.9.1 release](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.1). Choose **full** for a new installation or resource repair, and **upgrade** for an existing complete installation.
+2. Import the resources you need using the [offline resource guide](docs/guides/offline-resources.md). Resource packs are distributed separately; a program upgrade does not require downloading existing resources again.
+3. Open the control room, choose the data and AI directories, and prepare models or connect existing services.
+4. Pick a character and scene in the drawing studio. Save the finished image to My artwork.
 
-## Installation
+**Packaged installations require neither Node.js nor Rust.** Local resources and artwork can be browsed offline. AI generation needs the matching models and runtimes; downloads and remote APIs require a connection. Model weights are not bundled with the program installer.
 
-For the packaged Windows app, use the release above and the [offline installation guide](docs/guides/offline-resources.md). The full resource ZIP is a separate download; neither the app nor resource import requires Node.js or Rust build tools. The steps below are for building from source.
+## <img src="docs/images/icons/manager.svg" width="24" height="24" alt=""> Run from source
 
-### Prerequisites
-
-| Component | Required | Notes |
-| :--- | :---: | :--- |
-| Node.js | Source builds | `>= 22.18` (npm 11.x), for frontend builds, maintenance tools and isolated tests |
-| Rust/MSVC toolchain | Source builds | Builds `runtime-rs` and the Windows desktop shell; a packaged installation does not need a compiler |
-| Windows | **Yes** | Primary environment; launcher & desktop shell are Windows-first |
-| A1111 / Forge / ReForge WebUI | Optional* | Started via Stability Matrix with `--api --port 7860` launch args — needed for SD/WAI generation |
-| ComfyUI | Optional* | On `http://127.0.0.1:8188` — needed for the Anima / Krea 2 / Wan / H3 engine paths |
-| cloudflared | Optional | Only for temporary public share links |
-| GPT-SoVITS | Optional | Only for AI voice lines (role-specific weights) |
-| Ollama | Optional | Only for character chat in the Character Space |
-
-\* At least one image engine must be reachable for generation; browsing Scenes, prompts, and the reference bible works without any of them.
-
-### Step 1 — Get the code
-
-```bash
-git clone https://github.com/starplatium1129-stack/huiyu.git
-cd huiyu
-```
-
-### Step 2 — Install dependencies
-
-```bash
-npm install
-```
-
-`control.bat` runs `npm ci` when dependencies are missing.
-
-### Step 3 — Build the tools and Rust backend
-
-Generated tooling `.js` files are gitignored. `build:runtime` compiles the `node`, `tests` and `browser` TypeScript projects; build the actual backend separately:
-
-```bash
-npm run build:runtime
-npm run wf -- rust:build
-```
-
-`npm start` prepares the JavaScript tools and starts the Rust service through Cargo. `build:runtime` alone does not build the Rust executable. For the desktop, use the existing [deployment entry](docs/desktop-deployment.md); EXE/DLL changes require a full installation.
-
-### Step 4 — Start
-
-**A. Control panel (recommended).** Start your WebUI first (note the address from its log, usually `http://127.0.0.1:7860`), then double-click `control.bat` and confirm its address in the control room (`/control`). Use **本机地址 → 打开** for local use. Enable public sharing and click **启动并生成分享链接** when you need a friend link. **停止公网分享** closes the tunnel; stop optional AI services individually in **服务与显存**.
-
-**B. Manual (troubleshooting / full logs).**
+Windows is the primary development and desktop environment. Source builds require Node.js ≥22.18, npm and the Rust MSVC toolchain. Local drawing also needs ComfyUI.
 
 ```powershell
-npm install
+git clone https://github.com/starplatium1129-stack/huiyu.git
+cd huiyu
+npm ci
 npm run build
-$env:SD_HOST = 'http://127.0.0.1:7860'   # WebUI address
 npm run start:run
 ```
 
-Skip the tunnel with `$env:DISABLE_TUNNEL = '1'` if you only need the local gateway. Press `Ctrl+C` to stop.
+See [STARTUP](STARTUP.md) for runtime setup, the [desktop deployment guide](docs/desktop-deployment.md) for packaging and installation, and the [workflow guide](docs/workflow.md) for maintenance commands.
 
-**C. Development (HMR).** Run two terminals:
+## Architecture
 
-```powershell
-npm run dev:server   # Rust gateway on :3000; watches runtime-rs source
-npm run dev          # Vite dev server with HMR on :5173
-```
+HUIYU has three main parts: the **Vue studio, Tauri desktop shell and local Rust gateway**. The frontend uses a common API for workspace data, content and generation tasks. The gateway owns persistence, task lifecycles and connections to external AI services.
 
-Full setup details, optional components (voice, chat, dual-character composition), and troubleshooting live in [STARTUP.md](STARTUP.md).
+| Layer | Technology and responsibility |
+| --- | --- |
+| Studio | Vue 3, TypeScript, Vite and Pinia; presentation, creative state, prompt compilation and interactions |
+| Desktop shell | Tauri 2 and Rust; windows, tray, desktop companion, native Live2D and owned gateway management |
+| Local gateway | Rust, Axum and Tokio; HTTP / streaming APIs, task admission, queries, cancellation, media and resources |
+| Data and content | Desktop SQLite for workspace metadata and the content catalog, IndexedDB on the web; media stored separately |
+| AI services | ComfyUI for images and video; llama.cpp / Ollama / compatible APIs for chat; separate interrogation, translation and voice services |
+| Build and maintenance | Node.js, npm and project scripts for frontend builds, resource preparation, release packaging and isolated tests |
 
-## Usage examples
+The runtime's `content/catalog.sqlite` is the working authority for characters, outfits, scenes and blueprints. `data/catalog/` contains explicitly exported project snapshots. Models and personal artwork live in the selected local directories. See the [engineering contracts](docs/engineering-contracts.md) and [documentation index](docs/INDEX.md) for detailed boundaries and storage designs.
 
-### A. From a Scene to a finished image
-
-1. Open the **Scene Library** (`场景库`), filter by character / content rating, and pick a Scene — story, mood, camera, lighting and prompt are already assembled.
-2. Enter the **Director's Studio** (`导演台`), pick a curated artist style, and hit generate.
-3. The prompt compiler automatically targets the active engine: SD/WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.6), or Krea 2 Turbo (English natural-language prose).
-
-### B. AI narrative short film (click-only flow)
-
-1. Open a Scene Blueprint → **一键剧本** (auto 4-shot storyboard: setup → conflict → twist → resolution, dialogue taken from the Scene) → **一键首帧** (first frame per shot via the Krea 2 enhanced chain) → batch generation + tail-frame stitching.
-2. Supports Wan 2.2 TI2V and MiniMax H3 Ref2VA identity locking; dialogue language is explicit via `dialogueLang: auto/zh/ja/en`.
-
-### C. Character room, voice & desktop companion
-
-- **更多 → 角色对话** connects to local Ollama; enable **回复后自动配音** to route replies through the local translation pipeline into GPT-SoVITS Japanese voice, with Live2D lip-sync following the audio amplitude.
-- The Tauri 2 desktop Companion (`npm run dev:tauri` to develop, `npm run package:tauri` to build an NSIS installer) adds a frameless always-on-top character overlay with tray menu and global hotkeys.
-
-### D. Everyday command-line operations
-
-```powershell
-npm run workflow -- --help          # unified maintenance entry
-npm run workflow -- data:validate   # verify data shards & DATA_VERSION after editing scene data
-npm run workflow -- gate:quick ui   # layered quality gate by change area (ui/style/rust/data/all)
-npm run scenes:build                # rebuild scene products from source shards
-npm run popular:build               # rebuild data/popular-characters.json
-npm run build                       # production bundle + 140KB route budget + precompression
-```
-
-The complete script index is in [docs/workflow.md](docs/workflow.md).
-
-## Contributing
-
-This is a personal project first, but well-scoped contributions are welcome. Read **AGENTS.md** for collaboration rules, then consult [docs/INDEX.md](docs/INDEX.md) and the relevant [workflow](docs/workflow.md). Current user instructions take precedence over general repository guidance.
-
-### Development setup
-
-See Installation Step 4-C (Rust gateway + Vite HMR). Use `rust:check` for backend changes; `npm run typecheck` and `npm run lint:js` cover the TypeScript/frontend tooling.
-
-### Quality gates — choose by change scope
-
-```
-[Change scope] ─► [Required checks] ─► [Build when in scope] ─► [Precise commit]
-```
-
-Choose the smallest applicable check; these are alternatives, not a sequence:
-
-- Current uncommitted changes: `npm test` selects the affected areas and related frontend tests
-- A known component behavior: run its existing test directly, for example `npm run test:frontend -- src/components/library/CharacterDirectory.spec.ts`
-- Cross-domain or build-chain changes: `npm run workflow -- gate:full`
-- Build only when the bundle or desktop synchronization is in scope: `npm run build`
-
-The [workflow scope table](docs/workflow.md#门禁与构建) defines the verification boundary. Batch related edits before checking; reuse passing evidence for unchanged code, and rerun only affected checks after a fix. Preparing a commit does not expand scope. `npm run validate` already includes app typechecking through `check`, then changed frontend tests and Node unit/contract/optional lanes; it is not the full frontend or Rust gate and does not build. Do not prepend a duplicate `typecheck:app` to it. A clean Git worktree may select no changed frontend tests. When the private reference root is unavailable, use the structure contract explicitly (PowerShell): `$env:AICS_REFERENCE_AUDIT_MODE='structure'; npm run validate`; do not treat that as physical-asset approval.
-
-### Commit discipline (hard rules)
-
-- **Never run `git add .`** — stage only the verified files you changed (review `git status` and `git diff` first). Do not sweep up someone else's in-flight work.
-- **Never use `git reset --hard`** or other destructive commands.
-- One concern per commit; pass the gates before committing, not after.
-
-### Non-negotiable engineering rules
-
-- **GPU-composited animations only.** Transitions must animate `transform`/`opacity`; tweening `left/top/width/height` fails the lint gate (`npm run lint:animations`) unless annotated `/* compositor-exempt: <reason> */`.
-- **Hand-drawn line icons.** New icons must use the Hand-drawn Linear SVG mechanism (`ArchiveIcon.vue`); emoji and solid-filled icons are forbidden.
-- **Content rating is fail-closed.** R18 content renders blurred by default; `adultEligibility` + `adultEnabled` double-gate, and unknown/unauthorized states must be rejected — never fall back to "safe".
-- **Pinned scenes are byte-level baselines.** The 100 pinned scenes in `data/prompt-pinned-scenes.json` must never be touched by bulk tools (`npm run scenes:pin` enforces this). Changing one requires a real image test first.
-- **No template-based bulk delivery.** Batch rewrites must be genuinely rewritten per item and pass `test-prompt-rewrite-integrity.js` (coverage = claimed count, no template fingerprints, ≤50% retained entries, ≤60% prose similarity).
-- **Dual theme.** Light and dark themes are both supported; new UI must be reviewed in both themes. Use the `--text-disabled` token for disabled states, never `opacity`.
-- **Style contracts come from DESIGN.md** — the runtime CSS is a derived implementation; resolve conflicts in favor of the contract.
-
-### Tests
-
-```powershell
-npm run test:frontend   # vitest unit tests
-npm run test:unit       # quality-suite unit group
-npm run test:contract   # content & API contract tests
-npm run test:e2e        # Playwright end-to-end (builds first)
-```
-
-### Documentation
-
-New documents and major updates must be registered in [docs/INDEX.md](docs/INDEX.md). The docs stay in sync with what the code actually does — stale comments and contracts are treated as defects.
-
-## Project layout
+## Repository layout
 
 ```text
-huiyu/
-├── DESIGN.md               # Website and control-panel design contract
-├── AGENTS.md               # Collaboration rules, quality gates & operational constraints
-├── index.html              # Vite SPA entry point (no global scripts)
-├── vite.config.ts          # Vite build config + dev proxy to the Rust gateway
-├── control.bat             # Windows control panel launcher
-├── runtime-rs/             # Rust HTTP gateway, persistent tasks, SQLite and media services
-├── src/                    # Vue 3 SPA source (Vite build target)
-│   ├── config/             #   Character constants, artist styles, prompt definitions
-│   ├── utils/              #   Stream parsing, character reference data, prompt compiler
-│   ├── stores/             #   Pinia: scene data, prompt-builder state
-│   ├── application/        #   Use cases and persistence ports
-│   ├── platform/           #   Web and desktop adapters
-│   ├── api/                #   Transport and response decoding
-│   ├── composables/        #   Chat storage, Live2D, voice, SD generate, IndexedDB
-│   ├── components/         #   AppLayout, AppNav, SceneCard, Video Studio components
-│   ├── views/              #   One .vue per route (all lazy-loaded)
-│   └── assets/css/         #   Design system tokens, component styles
-├── desktop-tauri/          # Tauri 2 shell, Native Live2D overlay, sidecar and packaging
-├── types/                  # Shared TypeScript type definitions
-├── data/                   # Runtime JSON: scenes, characters, tags, blueprints, reference standards
-├── assets/                 # Static assets: character images, Live2D models, vendor SDKs
-├── docs/                   # Creative standards, quality checks, master index (docs/INDEX.md)
-├── scripts/                # Maintenance, tests and reference generation; shared tools in scripts/lib
-└── runtime/                # Local config, logs, process state, generated outputs (gitignored)
+AI-CG-Studio/
+├── src/                    Vue studio
+│   ├── views/              Pages and route views
+│   ├── components/         UI, hand-drawn icons and studio panels
+│   ├── composables/        Creative, generation and interaction state
+│   ├── stores/             Pinia stores
+│   ├── application/        Use cases and ports
+│   ├── platform/           Web / desktop adapters
+│   ├── api/                API clients and response boundaries
+│   └── utils/              Prompts, recipes and shared logic
+├── runtime-rs/             Rust gateway, tasks, storage and service adapters
+├── desktop-tauri/          Tauri host and native Live2D
+├── types/                  Cross-platform contract types
+├── data/                   Content snapshots, model profiles and indexes
+├── assets/                 Brand, character and interface assets
+├── scripts/                Build, maintenance, release and targeted checks
+├── tests/                  Browser and end-to-end tests
+├── tools/                  Model services and installation helpers
+├── docs/                   Guides, architecture, releases and evidence
+└── plans/                  Implementation plans
 ```
 
-## Validation
+Local `runtime/` holds build caches and raw acceptance artifacts; it is not committed as product source. Find maintenance commands with `npm run workflow -- --help`.
 
-Use the [scope-based checks above](#quality-gates--choose-by-change-scope). A fresh worktree reusing existing dependencies may need one `npm run build:runtime` to prepare generated JavaScript tool entries. Rebuild those entries after changing their TypeScript sources, rather than repeating all setup for each UI edit.
+## Project and licensing
 
-For current implementation details, verification baselines, and the complete documentation index, see [docs/project-status.md](docs/project-status.md) and [docs/INDEX.md](docs/INDEX.md).
+HUIYU is a personal, non-commercial hobby project, occasionally shared with friends. Code is covered by the [MIT license](LICENSE). Models, characters, Live2D assets, images and other resources retain their own licenses. This project is not affiliated with the original anime or game rights holders.
 
-## Scope
-
-The project stays intentionally small: reliable local creation, high-quality Scene and reference assets, straightforward maintenance, and safe temporary sharing come first. Accounts, subscriptions, a public Scene store, and community uploads are not planned.
-
-## License
-
-MIT — see [LICENSE](LICENSE). The character content and original works belong to their respective rights holders; this project is an unofficial fan work and does not claim ownership of them.
-
-> Prompts describe images. Scenes describe moments.
+[Project status](docs/project-status.md) · [Roadmap](docs/roadmap.md) · [Documentation](docs/INDEX.md) · [Report an issue](https://github.com/starplatium1129-stack/huiyu/issues)

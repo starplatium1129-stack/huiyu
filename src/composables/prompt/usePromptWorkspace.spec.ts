@@ -14,6 +14,8 @@ import { usePromptWorkspace } from './usePromptWorkspace'
 import type { AnimaSubmission } from '@/composables/generation/animaSessionContract'
 import type { PromptGenerationContext } from './promptGenerationActions'
 import type { SdResultSnapshot } from './sdResultActions'
+import presetCatalog from '../../../data/presets.json'
+import { parsePresetCatalog } from '@/utils/promptBuilderPersistence'
 
 vi.mock('virtual:data-version', () => ({ DATA_VERSION: 0 }))
 vi.mock('@/utils/tempResult', () => ({ clearTempResult: vi.fn(), readTempResult: vi.fn(() => null), writeTempResult: vi.fn(() => true) }))
@@ -63,6 +65,26 @@ async function setup(query = '', loadData: () => Promise<void> = async () => {},
 }
 
 describe('workspace ownership and panel boundaries', () => {
+  it('shows no-LoRA mode for a popular character on the configured MiaoMiao 2.9B checkpoint', async () => {
+    const { workspace, pb } = await setup()
+    const modelId = 'anima-miaomiao-2.9b-beta1.1'
+    pb.modelProfiles = parsePresetCatalog(presetCatalog).modelProfiles
+    pb.subject = { kind: 'popular', characterId: 'fixture-character', outfitId: 'default', blueprintId: null }
+    workspace.animaSession.patchState({ family: 'anima', modelId, width: 832, height: 1216, steps: 31, cfg: 4, seed: 0, teaCache: true, teaCacheThresh: 0.08,
+      models: [{ id: modelId, available: true, capabilities: { noLora: true, lora: false, negative: true, characterIdentity: true, experimental: false } }] })
+    await nextTick()
+    expect(workspace.renderBindings.animaNoLoraMode.value).toBe(true)
+    expect(workspace.recipePreviewContext.animaRequest()).toMatchObject({ modelId, loraId: null, character: null,
+      width: 832, height: 1216, steps: 31, cfg: 4, seed: 0, teaCache: true, teaCacheThresh: 0.08 })
+    pb.setStudioSubject()
+    workspace.animaSession.patchState({ modelId: 'anima-miaomiao-v1.6', loraId: 'L_NENE_V21_ANIMA', loraStrength: 0.75,
+      width: 1216, height: 832, steps: 29, cfg: 4.5, seed: 42, teaCache: false,
+      loras: [{ id: 'L_NENE_V21_ANIMA', available: true }] })
+    await nextTick()
+    expect(workspace.recipePreviewContext.animaRequest()).toMatchObject({ modelId: 'anima-miaomiao-v1.6',
+      loraId: 'L_NENE_V21_ANIMA', character: 'nene', width: 1216, height: 832, steps: 29, cfg: 4.5, seed: 42, teaCache: false })
+  })
+
   it('waits for initialization, then autosaves parameter-only and album edits', async () => {
     let release!: () => void
     const waiting = new Promise<void>(resolve => { release = resolve })

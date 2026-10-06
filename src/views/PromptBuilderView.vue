@@ -202,8 +202,8 @@
 import '@/assets/css/director.css'
 import { defineAsyncComponent, ref } from 'vue'
 import { useDirectorLayout } from '@/composables/prompt/useDirectorLayout'
-import DirectorResizeHandle from '@/components/director/DirectorResizeHandle.vue'
-import DirectorLayoutControls from '@/components/director/DirectorLayoutControls.vue'
+const DirectorResizeHandle = defineAsyncComponent(() => import('@/components/director/DirectorResizeHandle.vue'))
+const DirectorLayoutControls = defineAsyncComponent(() => import('@/components/director/DirectorLayoutControls.vue'))
 const GeneratedSceneDialog = defineAsyncComponent(() => import('@/components/maintenance/GeneratedSceneDialog.vue'))
 const DirectorModeSwitch = defineAsyncComponent(() => import('@/components/director/DirectorModeSwitch.vue'))
 const OutfitOverrideNotice = defineAsyncComponent(() => import('@/components/director/OutfitOverrideNotice.vue'))

@@ -523,7 +523,7 @@ export function usePromptWorkspace() {
     });
     return {
         capturedScene, capturingScene, captureScene, closeSceneCapture, historyReuse,
-        pb, displayResultUrl, resultRevealUrl, characterShifting, currentCharacterThemeStyle, popularCharacter, sd,
+        pb, displayResultUrl, resultRevealUrl, characterShifting, currentCharacterThemeStyle, sd,
         animaSession, setDirectorMode, engineOnline, engineStatusText,
         recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,
         selectPopularSource, selectPopularCharacter, selectPopularOutfit, resumeHistory, duplicateHistory, deleteHistory,

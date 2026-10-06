@@ -1,6 +1,8 @@
 # 项目文档索引
 
-[新用户模型与环境配置](guides/setup-and-models.md#首次配置与一键准备源码能力待安装版交付)记录 2026-10-06 已实施的受管 llama.cpp、按显存候选／API、MiaoMiao／Base 与角色 LoRA 下载、ComfyUI Portable 自动准备及 SD 新生成退役；源码能力与当前公开 1.9.0 安装包分别标明。
+[1.9.1 更新说明](releases/v1.9.1.md)汇总 1.9.0 之后的全站界面与画册体验、本地模型准备、MiaoMiao 2.9B、终末地 LoRA、H3 采样路径及新版安装方式。
+
+[新用户模型与环境配置](guides/setup-and-models.md#首次配置与一键准备)记录 1.9.1 的受管 llama.cpp、按显存候选／API、MiaoMiao／Base 与角色 LoRA 下载、ComfyUI Portable 自动准备及 SD 新生成退役。
 
 [1.9.0 更新说明](releases/v1.9.0.md)按新增、优化、修复汇总 1.8.1 之后的五名角色与立绘、50 张样张、画室、作品册、模型准备、语音及升级变化，说明程序与离线素材包的安装方式。
 
@@ -24,7 +26,7 @@
 
 [第九轮图库滚动与预览取消](audits/2026-10-02/gallery-scroll-preview-cancellation.md)记录 3,000 条合成记录的旧请求占位复现、解码释放修复、缓存边界及当次定向验证。
 
-最新版本的新增、优化和修复见 [1.9.0 更新说明](releases/v1.9.0.md)，实际发行及验证结果见[项目状态](project-status.md)。
+最新版本的新增、优化和修复见 [1.9.1 更新说明](releases/v1.9.1.md)，实际发行及验证结果见[项目状态](project-status.md)。
 
 [生成光纹与水纹归静](audits/2026-10-02/magic-reveal-handoff.md)记录隔离视觉版、短时 GPU 预算、深浅主题前后对照与桌面高 DPI 性能未验边界。
 
