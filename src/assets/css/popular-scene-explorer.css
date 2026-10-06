@@ -106,9 +106,20 @@
 .pop-draw-action:hover,
 .pop-draw-action:focus-visible { @apply tw:border-accent; background: var(--accent-soft); @apply tw:text-accent; box-shadow: none; }
 
-/* The cover stays in place while readers compare scenes and open details. */
-.popular-scene-library .pop-grid .pop-card { transition:none; }
-.popular-scene-library .pop-grid .pop-card:hover { transform:none; }
+/* The same bounded image focus used by the artwork and reference libraries. */
+.popular-scene-library .pop-grid .pop-card { --card-focus-lift:-6px; --card-focus-scale:1.06; transition:transform var(--motion-surface) var(--ease-out); }
+.pop-thumb img { transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-route) var(--ease-out); }
+.pop-thumb:not(.is-r18)::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
+.popular-scene-library .pop-card:has(:focus-visible) { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
+.pop-card:has(:focus-visible) .pop-thumb img:not(.pop-thumb-r18) { transform:scale(var(--card-focus-scale)); }
+.pop-card:has(:focus-visible) .pop-thumb::after { opacity:1; }
+.pop-card:has(:focus-visible) .pop-card-head h3 { color:var(--accent); }
+@media (hover:hover) and (pointer:fine) {
+  .popular-scene-library .pop-card:hover { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
+  .pop-card:hover .pop-thumb img:not(.pop-thumb-r18) { transform:scale(var(--card-focus-scale)); }
+  .pop-card:hover .pop-thumb::after { opacity:1; }
+  .pop-card:hover .pop-card-head h3 { color:var(--accent); }
+}
 @media (prefers-reduced-motion: reduce) {
   .pop-card,
   .pop-thumb img,
@@ -119,3 +130,9 @@
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .pop-thumb img,
 :root:is([data-motion='reduce'],[data-motion='reduced']) .pop-thumb-hint { transition:opacity var(--motion-press) var(--ease-out); }
+@media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .popular-scene-library .pop-card { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
+  :root:not([data-motion='full']) .pop-thumb::after { transition:none; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced']) .popular-scene-library .pop-card { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .pop-thumb::after { transition:none; }

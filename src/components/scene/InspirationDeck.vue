@@ -98,10 +98,18 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .next-icon { transform:rotate(-90deg); }
 .inspiration-deck-stage { --inspiration-height:clamp(280px,28dvh,320px); display:grid; grid-template-columns:minmax(0,1.8fr) repeat(var(--inspiration-side-count),minmax(0,1fr)); align-items:stretch; gap:var(--s-4); position:relative; min-width:0; touch-action:pan-y; border-radius:var(--r-lg); }
 .inspiration-deck-stage.dragging { cursor:grabbing; user-select:none; }
-.inspiration-deck-card { display:grid; grid-template-rows:minmax(0,1fr) auto; height:var(--inspiration-height); min-width:0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+.inspiration-deck-card { --card-focus-lift:0px; --card-focus-scale:1; display:grid; grid-template-rows:minmax(0,1fr) auto; height:var(--inspiration-height); min-width:0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); transform:translateY(var(--card-focus-lift)); transition:transform var(--motion-surface) var(--ease-out); }
 .inspiration-deck-card.only-card { grid-column:1/-1; }
-.inspiration-deck-card.front { transform:translate3d(var(--deck-x),0,0); opacity:var(--deck-opacity); transition:transform 240ms var(--ease-out),opacity 240ms var(--ease-out); }
+.inspiration-deck-card.front { transform:translate3d(var(--deck-x),var(--card-focus-lift),0); opacity:var(--deck-opacity); transition:transform 240ms var(--ease-out),opacity 240ms var(--ease-out); }
+.inspiration-deck-stage:not(.dragging):not(.still) .inspiration-deck-card:has(:focus-visible) { --card-focus-lift:-6px; --card-focus-scale:1.06; border-color:var(--accent); box-shadow:var(--shadow-md); }
+.inspiration-deck-card:has(:focus-visible) :deep(.inspiration-artwork.ready::after) { opacity:1; }
+.inspiration-deck-card :deep(.inspiration-artwork.ready img) { transform:scale(var(--card-focus-scale)); }
+@media (hover:hover) and (pointer:fine) {
+  .inspiration-deck-stage:not(.dragging):not(.still) .inspiration-deck-card:hover { --card-focus-lift:-6px; --card-focus-scale:1.06; border-color:var(--accent); box-shadow:var(--shadow-md); }
+  .inspiration-deck-card:hover :deep(.inspiration-artwork.ready::after) { opacity:1; }
+}
 .inspiration-deck-stage.dragging .front, .inspiration-deck-stage.still .front { transition:none; }
+.inspiration-deck-stage.still .inspiration-deck-card { transition:none; --card-focus-lift:0px; --card-focus-scale:1; }
 .inspiration-deck-image { --inspiration-art-height:100%; display:flex; align-items:center; justify-content:center; width:100%; min-width:0; min-height:0; padding:0; border:0; background:transparent; cursor:zoom-in; }
 .inspiration-deck-image :deep(.inspiration-artwork) { width:100%; height:100%; border:0; background:transparent; }
 .inspiration-deck-copy { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; justify-items:start; gap:var(--s-1) var(--s-2); padding-top:var(--s-2); min-width:0; }

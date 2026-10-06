@@ -70,6 +70,25 @@
 .scene-grid :deep(.sc-title) { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:var(--fs-body); line-height:1.35; }
 .scene-grid :deep(.sc-story),.scene-grid :deep(.sc-meta) { display:none; }
 .scene-grid :deep(.sc:is(.scene-selected,.scene-flash,:focus-within)) { border-color:var(--accent); }
+.scene-grid :deep(.sc) { --card-focus-lift:-6px; --card-focus-scale:1.06; transition:transform var(--motion-surface) var(--ease-out); }
+.scene-grid :deep(.sc-thumb) { transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-route) var(--ease-out); }
+.scene-grid :deep(.sc:not([data-rating='R18']) .sc-band::after) { display:block; inset:0; border-radius:0; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
+.scene-grid :deep(.sc:is(:focus-visible,:has(:focus-visible))) { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
+.scene-grid :deep(.sc:is(:focus-visible,:has(:focus-visible)) .sc-thumb:not(.sc-thumb-r18)) { transform:scale(var(--card-focus-scale)); }
+.scene-grid :deep(.sc:is(:focus-visible,:has(:focus-visible)) .sc-band::after) { opacity:1; }
+.scene-grid :deep(.sc:is(:focus-visible,:has(:focus-visible)) .sc-title) { color:var(--accent); }
+@media (hover:hover) and (pointer:fine) {
+  .scene-grid :deep(.sc:hover) { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
+  .scene-grid :deep(.sc:hover .sc-thumb:not(.sc-thumb-r18)) { transform:scale(var(--card-focus-scale)); }
+  .scene-grid :deep(.sc:hover .sc-band::after) { opacity:1; }
+  .scene-grid :deep(.sc:hover .sc-title) { color:var(--accent); }
+}
+@media (prefers-reduced-motion:reduce) {
+  :global(:root:not([data-motion='full']) .scene-discovery .scene-grid .sc) { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
+  :global(:root:not([data-motion='full']) .scene-discovery .scene-grid :is(.sc-thumb,.sc-band::after)) { transition:none; }
+}
+:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .scene-discovery .scene-grid .sc) { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
+:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .scene-discovery .scene-grid :is(.sc-thumb,.sc-band::after)) { transition:none; }
 .scene-flash { outline:2px solid var(--accent); outline-offset:var(--s-1); }
 .ex-scene-line { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-1); color:var(--text-muted); font-size:var(--fs-label-xs); }
 .ex-scene-line strong { color:var(--text-secondary); font-weight:500; }

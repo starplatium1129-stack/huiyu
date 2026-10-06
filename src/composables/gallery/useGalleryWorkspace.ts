@@ -450,7 +450,12 @@ export function useGalleryWorkspace() {
     onDeactivated(() => {
         viewActive = false; cleanupFilterSync();
         const keep = collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds;
-        releaseImages(new Set([...keep].filter(id => !thumbUrls[id])));
+        // A stored URL is not a decoded fallback (failed/pending thumbnails
+        // otherwise leave a black frame when the painted original is revoked).
+        releaseImages(new Set([...keep].filter(id => {
+            const thumb = shellEl.value?.querySelector<HTMLImageElement>(`[data-card-id="${CSS.escape(id)}"] img.artwork-image:not(.artwork-image-hd)`);
+            return !thumb?.complete || !thumb.naturalWidth;
+        })));
         for (const id of Object.keys(thumbUrls)) if (!keep.has(id)) delete thumbUrls[id];
         document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear();
         cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear(); returnThumbIds.clear();

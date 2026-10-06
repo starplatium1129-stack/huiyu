@@ -221,6 +221,24 @@ it('keeps only 40 gallery originals while active and retains only return preview
   expect(mocks.getThumbnail).toHaveBeenCalledTimes(85)
 })
 
+it('retains painted originals when stored thumbnails have not decoded, then releases them once the fallback is ready', async () => {
+  const env = await setup()
+  await env.intersect()
+  const original = env.gallery.cardUrls[1]
+  const thumbnail = env.wrapper.get('img').element as HTMLImageElement
+  Object.defineProperty(thumbnail, 'naturalWidth', { value: 0, configurable: true })
+  await env.hide()
+  expect(env.gallery.thumbUrls[1]).toBeTruthy()
+  expect(env.gallery.cardUrls[1]).toBe(original)
+  expect(URL.revokeObjectURL).not.toHaveBeenCalledWith(original)
+  await env.show()
+  await env.intersect()
+  Object.defineProperty(env.wrapper.get('img').element, 'naturalWidth', { value: 100, configurable: true })
+  await env.hide()
+  expect(env.gallery.cardUrls[1]).toBeUndefined()
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith(original)
+})
+
 it('keeps gallery previews usable when optional thumbnail persistence fails', async () => {
   mocks.snapshot.mockResolvedValue({ history: [record(1), record(2)], projects: [] })
   mocks.getThumbnail.mockResolvedValue(null)

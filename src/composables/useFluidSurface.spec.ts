@@ -63,6 +63,35 @@ describe('useFluidSurface interrupted motion and cleanup', () => {
     surface.dispose(el)
   })
 
+  it('drives the native scrim without inherited frame writes and releases temporary compositor hints', () => {
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { frames.push(callback); return frames.length })
+    vi.stubGlobal('cancelAnimationFrame', vi.fn())
+    const dialog = document.createElement('dialog')
+    dialog.style.willChange = 'scroll-position'
+    dialog.getBoundingClientRect = () => ({ width: 960, height: 720 } as DOMRect)
+    const animations: Array<{ cancel: ReturnType<typeof vi.fn>; currentTime: number; finished: Promise<Animation> }> = []
+    const animate = vi.fn(() => {
+      const animation = { cancel: vi.fn(), currentTime: 0, finished: new Promise<Animation>(() => {}) }
+      animations.push(animation); return animation
+    })
+    Object.assign(dialog, { animate })
+    document.body.append(dialog)
+    const surface = useFluidSurface()
+    surface.enter(dialog, () => {})
+    expect(animate).toHaveBeenCalledTimes(2)
+    expect(animate.mock.calls[1]).toEqual([expect.any(Array), expect.objectContaining({ pseudoElement: '::backdrop' })])
+    expect(frames).toHaveLength(0)
+    expect(dialog.style.getPropertyValue('--fluid-backdrop-opacity')).toBe('')
+    expect(dialog.style.transform).toBe('translateY(0px) scale(1)')
+    expect(dialog.style.willChange).toBe('opacity')
+    surface.leave(dialog, () => {})
+    expect(animate).toHaveBeenCalledTimes(4)
+    surface.dispose(dialog)
+    expect(animations.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
+    expect(dialog.style.willChange).toBe('scroll-position')
+  })
+
   it('uses a visible source control as the artwork origin and falls back for offscreen sources', () => {
     vi.stubGlobal('innerWidth', 1200)
     vi.stubGlobal('innerHeight', 900)

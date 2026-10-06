@@ -69,7 +69,12 @@ export async function setup(masonry = false) {
     gallery = useGalleryWorkspace()
     const card = (item: ArtworkRecord) => h('article', {
       class: 'artwork', 'data-card-id': String(item.id), key: item.id,
-    }, [h('img', { src: gallery.cardUrls[item.id] || gallery.thumbUrls[item.id] || undefined })])
+    }, [h('img', { class: gallery.thumbUrls[item.id] ? 'artwork-image' : 'artwork-image artwork-image-hd',
+      src: gallery.cardUrls[item.id] || gallery.thumbUrls[item.id] || undefined,
+      ref: (element: unknown) => { if (element instanceof HTMLImageElement) Object.defineProperties(element, {
+        complete: { value: true, configurable: true }, naturalWidth: { value: gallery.thumbUrls[item.id] ? 100 : 0, configurable: true },
+      }) },
+    })])
     return () => h('div', { ref: gallery.shellEl }, masonry
       ? gallery.masonryGroups.value.map(group => h('section', { key: group.key }, group.columns.map((column, index) => h('div', { key: index }, column.map(card)))))
       : gallery.pagedVisible.value.map(card))

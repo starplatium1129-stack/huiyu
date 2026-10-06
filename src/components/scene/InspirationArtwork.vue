@@ -20,11 +20,13 @@ const { image, src, loaded, failed } = useRuntimeImage(() => props.scene?.rating
 <style scoped>
 .inspiration-artwork { position:relative; display:flex; align-items:center; justify-content:center; height:var(--inspiration-art-height,96px); min-width:0; min-height:0; margin:0; padding:0; border:1px solid var(--art-frame-line); border-radius:var(--r-sm); background:var(--art-stage); overflow:hidden; }
 .inspiration-artwork-full { width:100%; height:100%; border:0; background:transparent; }
-.inspiration-artwork img { display:block; width:auto; max-width:100%; height:auto; max-height:100%; min-height:0; object-fit:contain; opacity:0; transition:opacity 160ms var(--ease-out); }
+.inspiration-artwork img { display:block; width:auto; max-width:100%; height:auto; max-height:100%; min-height:0; object-fit:contain; opacity:0; transition:opacity 160ms var(--ease-out),transform var(--motion-route) var(--ease-out); }
+.inspiration-artwork::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .inspiration-artwork-full img { box-shadow:var(--art-frame-shadow); }
 .inspiration-artwork.ready img { opacity:1; }
 .inspiration-artwork-fallback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-1); padding:var(--s-1); color:var(--on-art-primary); font-size:var(--fs-label-xs); text-align:center; }
 .inspiration-artwork-fallback .archive-icon { width:24px; height:24px; color:var(--on-art-primary); }
-@media (prefers-reduced-motion:reduce) { .inspiration-artwork img { transition:none; } }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .inspiration-artwork img { transition:none; }
+@media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full']) .inspiration-artwork img),:global(:root:not([data-motion='full']) .inspiration-artwork::after) { transition:none; } }
+:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .inspiration-artwork img),
+:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .inspiration-artwork::after) { transition:none; }
 </style>
