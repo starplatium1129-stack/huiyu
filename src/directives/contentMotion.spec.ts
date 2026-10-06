@@ -31,17 +31,18 @@ it('does not start nested effects while the route is entering or a panel is hidd
   delete el.dataset.routeEntering; el.style.display = 'none'; update(el)
   expect(el.animate).not.toHaveBeenCalled()
 })
-it('settles changing content on keyboard input and resumes feedback on pointer input', () => {
+it('settles moving content on keyboard input and keeps keyboard selection feedback still', () => {
   const stop = installContentMotion()
   try {
     const { el, animation } = panel(); update(el)
     document.dispatchEvent(new KeyboardEvent('keydown', { key:'ArrowRight' }))
     expect(animation.cancel).toHaveBeenCalledOnce()
-    update(el, 'keyboard selection')
-    expect(el.animate).toHaveBeenCalledOnce()
+    update(el, 'keyboard selection', 'right')
+    expect(el.animate).toHaveBeenCalledTimes(2)
+    expect(el.animate).toHaveBeenLastCalledWith([{ opacity: '.35' }, { opacity: 1 }], expect.anything())
     document.dispatchEvent(new Event('pointerdown'))
     update(el, 'pointer selection')
-    expect(el.animate).toHaveBeenCalledTimes(2)
+    expect(el.animate).toHaveBeenCalledTimes(3)
   } finally { stop() }
 })
 it('hiding or unmounting a changing panel cancels its effect', () => {

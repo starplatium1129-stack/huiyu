@@ -36,11 +36,11 @@
     </div>
 
     <div v-if="entries.length && (manifestLoading || reloadError)" class="showcase-load-status" role="status"><ArchiveIcon :name="manifestLoading ? 'book' : 'warning'" /><span>{{ manifestLoading ? '正在刷新画册，当前样张仍可继续浏览。' : reloadError }}</span><button v-if="reloadError && !manifestLoading" class="filter-reset" type="button" @click="loadManifest(true)">重试</button></div>
-    <div v-show="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
+    <div v-show="albumsOpen" v-content-motion="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
       <ShowcaseAlbums v-if="albums.length && !unavailable" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
       <ArchiveStatePanel v-if="(manifestLoading && !entries.length) || unavailable || (!manifestLoading && !albums.length)" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'" message="画册按已发布样张的类型整理。"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
     </div>
-    <div v-show="!albumsOpen" class="showcase-image-browse">
+    <div v-show="!albumsOpen" v-content-motion="!albumsOpen" class="showcase-image-browse">
     <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ typeFilter === 'all' ? '全部样张' : (albums.find(album => album.type === typeFilter)?.title || typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status"><strong>{{ paged.length }}</strong> / {{ filtered.length }} 幅 · R18 默认模糊</span></div>
     <ArchiveStatePanel
       v-if="unavailable"

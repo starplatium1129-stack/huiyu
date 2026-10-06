@@ -70,10 +70,10 @@ function markCoverError(id: string | number, event: Event) {
 @reference "../../assets/css/tailwind.css";
 .gallery-albums-heading h2 { @apply tw:flex tw:items-baseline tw:gap-s-2 tw:text-primary; margin:0; font:600 var(--fs-body-sm) var(--font-sans); }
 .gallery-albums-heading h2 span { @apply tw:text-secondary; font:400 var(--fs-label-sm) var(--font-sans); }
-.gallery-albums-track { grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr)); gap:var(--s-5); }
+.gallery-albums-track { grid-template-columns:repeat(auto-fill,minmax(min(100%,21rem),1fr)); gap:var(--s-5); }
 .gallery-album-entry { min-width:0; }
 .gallery-album { border:0; background:transparent; align-self:start; width:100%; }
-.gallery-album-cover { grid-template-columns:1fr; aspect-ratio:1.25; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
+.gallery-album-cover { grid-template-columns:1fr; aspect-ratio:1.12; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
 .gallery-album-cover.is-empty { aspect-ratio:auto; min-height:96px; }
 .gallery-album-cover[data-covers="2"] { grid-template-columns: 1fr 1fr; }
 .gallery-album-cover[data-covers="3"] { grid-template-columns: 1.6fr 1fr; grid-template-rows: 1fr 1fr; }

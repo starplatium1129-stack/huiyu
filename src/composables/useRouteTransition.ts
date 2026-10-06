@@ -7,7 +7,6 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   const active = new Map<HTMLElement, () => void>()
   let interrupted = new WeakMap<HTMLElement, Keyframe>()
   const departed = new WeakSet<HTMLElement>()
-  const staged = new WeakSet<HTMLElement>()
   const workspaceDeparted = new WeakSet<HTMLElement>()
   let leaving: HTMLElement | undefined
   let departingPath = ''
@@ -20,7 +19,6 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     interrupted = new WeakMap()
   }
   function presentation(el: HTMLElement): Keyframe | undefined {
-    if (staged.has(el)) return undefined
     if (interrupted.has(el)) return interrupted.get(el)
     if (!active.has(el)) return undefined
     try {
@@ -38,8 +36,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     if (frame) interrupted.set(el, frame)
   }
 
-  /** Stage only the existing small heading/action groups, never an image wall or canvas.
-   * Querying structure needs no layout read. Existing scroll reveals keep their ownership. */
+  /** Fade the workspace as one surface; fixed controls keep their viewport geometry. */
   function enterWorkspace(el: HTMLElement, done: () => void) {
     settle(el)
     el.inert = false
@@ -50,50 +47,32 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     el.dataset.routeEntered = 'true'
     departed.delete(el)
     if (path) markUiFluidityForPath(path, 'shell-ready')
-    const heading = el.querySelector?.<HTMLElement>(
-      ':scope > header, :scope > .pb-topline, :scope > .scene-atlas > .scene-atlas-copy, :scope > .home-opening .hero-copy',
-    )
-    const targets = !samePage && !prefersReducedMotion() && !document.hidden && heading
-      ? [...heading.children].filter((child): child is HTMLElement => child instanceof HTMLElement
-        && !child.closest('[data-reveal]') && !child.matches('img, canvas, video, iframe')
-        && !child.querySelector('img, canvas, video, iframe')
-        && !child.contains(document.activeElement) && typeof child.animate === 'function').slice(0, 2)
-      : []
-    const animations: Animation[] = []
-    let finished = false, remaining = targets.length
+    let animation: Animation | undefined, finished = false
     const finish = () => {
       if (finished) return
       finished = true
-      active.delete(el); staged.delete(el); delete el.dataset.routeEntering
-      for (const animation of animations) {
+      active.delete(el); delete el.dataset.routeEntering
+      if (animation) {
         animation.onfinish = animation.oncancel = null
         try { animation.cancel() } catch { try { animation.effect = null } catch { /* Best-effort release. */ } }
       }
       if (path) markUiFluidityForPath(path, 'settled')
       done()
     }
-    if (!targets.length) { finish(); return }
-    staged.add(el); active.set(el, finish)
+    if (samePage || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') { finish(); return }
+    active.set(el, finish)
     try {
-      targets.forEach((target, index) => {
-        // A cached return only settles opacity: its saved scroll/focus and canvas stay still.
-        // Both groups start immediately; the second settles slightly later, without a delay.
-        const frames: Keyframe[] = cached
-          ? [{ opacity: .86 }, { opacity: 1 }]
-          : [{ opacity: .72, transform: `translateY(${index ? 6 : 4}px)` }, { opacity: 1, transform: 'translateY(0)' }]
-        const animation = target.animate(frames, { duration: cached ? 120 : 180 + index * 35, easing: 'cubic-bezier(.22, 1, .36, 1)' })
-        animations.push(animation)
-        animation.onfinish = () => { if (--remaining === 0) finish() }
-        animation.oncancel = finish
+      animation = el.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: cached ? 200 : 260, easing: 'cubic-bezier(.22, 1, .36, 1)',
       })
+      animation.onfinish = animation.oncancel = finish
     } catch { finish() }
   }
 
   function onEnter(element: Element, done: () => void) {
     const el = element as HTMLElement
     const path = el.dataset.routePath || ''
-    // Peer pages become interactive immediately. Only their small header groups
-    // settle into place; large artwork surfaces and fixed anchors never transform.
+    // Peer pages become interactive immediately while their content fades in.
     if (destinationPath && !archivePair(departingPath, pathname(path)) && !interrupted.has(el)) {
       enterWorkspace(el, done)
       return
@@ -145,10 +124,10 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     if (crossRoute) {
       // Peer workspaces have no forward/back hierarchy. Keep their geometry
       // still; only the real directory/detail pair below gets a spatial cue.
-      frames = [{ opacity: .96 }, { opacity: 1 }]
+      frames = [{ opacity: 0 }, { opacity: 1 }]
       duration = 180
     } else if (options.initialFade) {
-      frames = [{ opacity: .96 }, { opacity: 1 }]
+      frames = [{ opacity: 0 }, { opacity: 1 }]
     }
     if (archive) {
       frames = [{ opacity: 0, transform: `translateX(${offset}px)` }, { opacity: 1, transform: 'translateX(0)' }]

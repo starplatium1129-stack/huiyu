@@ -129,13 +129,19 @@ export function useCharacterPortraitTransition(root: Ref<HTMLElement | null>, sh
     // can indicate another crop, so keep the normal transition for that pair.
     const sameRatio = source && target && Math.abs(source.painted.width / source.painted.height / (target.painted.width / target.painted.height) - 1) <= .02
     if (source && target && sameRatio && !prefersReducedMotion() && !keyboard) join(source, target)
-    else {
-      const section = root.value.querySelector<HTMLElement>(shelf ? '.character-bookshelf' : '.library-layout')
-      if (source && section && !keyboard) fallback.enter(section, () => {})
-    }
+    const section = source && root.value.querySelector<HTMLElement>(shelf ? '.character-bookshelf' : '.library-layout')
+    if (section) fallback.enter(section, () => fallback.dispose(section))
   })
   watch(characterId, id => { if (floating && floating.dataset.character !== id) cancel() })
-  function enter(element: Element, done: () => void) { if (pending || keyboard) done(); else fallback.enter(element, done) }
+  watch(() => showShelf.value ? '' : characterId(), async (id, previous) => {
+    if (!id || !previous || id === previous) return
+    const version = revision
+    await nextTick()
+    if (version !== revision || showShelf.value || id !== characterId()) return
+    const detail = root.value?.querySelector<HTMLElement>('.library-detail')
+    if (detail) fallback.enter(detail, () => fallback.dispose(detail))
+  })
+  function enter(element: Element, done: () => void) { if (pending) done(); else fallback.enter(element, done) }
   const preference = () => { if (prefersReducedMotion() || document.hidden) cancel() }
   const pointer = () => { keyboard = false }
   const key = () => { keyboard = true; cancel() }

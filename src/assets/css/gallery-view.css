@@ -38,7 +38,19 @@
 .gallery-manage-controls .gallery-filter { min-height:var(--control-height-sm); }
 .gallery-select-toggle.active { color:var(--accent); background:var(--accent-soft); border-color:var(--accent); }
 .gallery-summary { @apply tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3; min-height:var(--control-height-sm); margin:var(--s-2) 0; }
-.gallery-album-overview { margin-top:var(--s-5); }
+.gallery-album-overview { --gallery-entry-offset:-12px; margin-top:var(--s-5); }
+.gallery-image-browse { --gallery-entry-offset:12px; }
+/* Fade the incoming view without delaying navigation or moving the fixed selection dock. */
+.gallery-browse-enter-active { transition:opacity 300ms var(--ease-out); }
+.gallery-browse-enter-from { opacity:0; }
+.gallery-browse-enter-active :is(.gallery-wall,.gallery-albums) { animation:gallery-album-arrive 300ms var(--ease-out); }
+@keyframes gallery-album-arrive { from { transform:translateY(var(--gallery-entry-offset)); } to { transform:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .gallery-browse-enter-active { transition-duration:120ms; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .gallery-browse-enter-active :is(.gallery-wall,.gallery-albums) { animation:none; }
+@media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .gallery-browse-enter-active { transition-duration:120ms; }
+  :root:not([data-motion='full']) .gallery-browse-enter-active :is(.gallery-wall,.gallery-albums) { animation:none; }
+}
 .gallery-album-overview,.gallery-summary { scroll-margin-top:calc(var(--app-navigation-height,80px) + 100px); }
 .gallery-album-overview:focus,.gallery-summary:focus { outline:none; }
 .gallery-filter :deep(.archive-icon) { @apply tw:w-[16px] tw:h-[16px]; vertical-align:-.2em; @apply tw:mr-[3px]; }

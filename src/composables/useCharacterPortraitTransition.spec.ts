@@ -41,7 +41,7 @@ async function setup(targetReady = true) {
       motion = useCharacterPortraitTransition(root, shelf, () => character.value)
       return () => h('article', { ref: root }, shelf.value
         ? h('section', { class: 'character-bookshelf' }, h('button', { class: 'bookshelf-character', 'data-character': 'nene' }, image(false)))
-        : h('div', { class: 'library-layout' }, image(true)))
+        : h('div', { class: 'library-layout' }, h('div', { class: 'library-detail' }, image(true))))
     },
   }), { attachTo: document.body })
   await flushPromises()
@@ -153,7 +153,7 @@ it.each(['reduced motion', 'hidden document'])('%s skips the connection and canc
   expect(wrapper!.get('.portrait-image').attributes('style') || '').not.toContain('opacity: 0')
 })
 
-it('keyboard entry stays immediate while opening the same original image', async () => {
+it('keyboard entry fades the profile while opening the same original image without a flight', async () => {
   const { shelf, motion } = await setup()
   window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
   shelf.value = false; await flushPromises()
@@ -162,7 +162,7 @@ it('keyboard entry stays immediate while opening the same original image', async
   expect(done).toHaveBeenCalledOnce()
   expect(motion.preferOriginal.value).toBe(true)
   expect(animations).toHaveLength(0)
-  expect(state.fades).not.toHaveBeenCalled()
+  expect(state.fades).toHaveBeenCalledWith(wrapper!.get('.library-layout').element)
 })
 
 it('a different character releases the active connection instead of showing the old portrait', async () => {
@@ -172,6 +172,7 @@ it('a different character releases the active connection instead of showing the 
   expect(document.querySelector('[data-archive-portrait-flight]')).toBeNull()
   expect(animations.every(call => call.animation.cancel.mock.calls.length === 1)).toBe(true)
   expect(wrapper!.get('.portrait-image').attributes('style') || '').not.toContain('opacity: 0')
+  expect(state.fades).toHaveBeenLastCalledWith(wrapper!.get('.library-detail').element)
 })
 
 it('a partial animation failure releases started timelines and restores the real image', async () => {

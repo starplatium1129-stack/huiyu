@@ -35,9 +35,9 @@
         </div>
       </header>
       <p v-if="hint" class="catalog-feedback" role="status" aria-live="polite">{{ hint }}</p>
-      <div v-if="section === 'portraits'" class="catalog-support-surface"><CharacterArtManager :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" /></div>
-      <div v-else-if="section === 'media'" class="catalog-support-surface"><CatalogMediaManager :record="selected" :character-names="characterNames" /></div>
-      <section v-else-if="section === 'tools'" class="catalog-support-surface">
+      <div v-if="section === 'portraits'" v-content-motion="section" class="catalog-support-surface"><CharacterArtManager :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" /></div>
+      <div v-else-if="section === 'media'" v-content-motion="section" class="catalog-support-surface"><CatalogMediaManager :record="selected" :character-names="characterNames" /></div>
+      <section v-else-if="section === 'tools'" v-content-motion="section" class="catalog-support-surface">
         <h2>给内容留一份备份</h2><p class="catalog-note">导出完整资料，或者看看之前的图片备份。每份内容的旧版本也可以在编辑区找回。</p>
         <div class="catalog-tool-options">
           <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" /><strong>导出全部内容</strong><span>留存当前的角色、服装与故事资料</span></button>
@@ -47,7 +47,7 @@
         <p class="catalog-feedback" role="status" aria-live="polite">{{ toolHint }}</p>
         <div v-for="entry in backups" :key="entry.id" class="catalog-history-row"><span>{{ entry.label }} · {{ catalogDate(entry.createdAt) }}</span><small>{{ entry.fileCount }} 个文件</small></div>
       </section>
-      <section v-else-if="section === 'bulk'" class="catalog-support-surface">
+      <section v-else-if="section === 'bulk'" v-content-motion="section" class="catalog-support-surface">
         <h2>把准备好的修改带进来</h2><p class="catalog-note">选择修改文件或完整备份，先看看哪些内容会变化，再决定保存。</p>
         <label class="catalog-file-picker"><ArchiveIcon name="upload" /><strong>选择整理文件</strong><span>支持修改文件和完整内容备份</span><input type="file" accept="application/json,.json" aria-label="选择整理文件" @change="readBulkFile" /></label>
         <details class="catalog-advanced"><summary>直接填写修改数据</summary><textarea v-model="bulkInput" class="input catalog-bulk-input" rows="10" aria-label="修改数据"></textarea><button class="btn btn-ghost" type="button" :disabled="busy" @click="loadBulk">读取这些修改</button></details>
@@ -55,7 +55,7 @@
         <div v-if="importSnapshot" class="catalog-actions"><span>已读取 {{ importSnapshot.records.length }} 份内容</span><button class="btn btn-ghost" type="button" :disabled="busy || dirty" @click="importContent(true)">看看导入的变化</button><button class="btn btn-primary" type="button" :disabled="busy || dirty || !importPreview" @click="importContent(false)">确认导入</button></div>
       </section>
       <template v-else>
-        <div class="catalog-workspace">
+        <div v-content-motion="`${section}:${kind}`" class="catalog-workspace">
           <section class="catalog-library" aria-label="内容列表" :aria-busy="loading">
             <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : (result?.total ?? 0) + ' 份' }}</span></div><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><span aria-hidden="true">＋</span>新建</button></header>
             <StudioSearch v-model="search" label="搜索内容" :placeholder="searchPlaceholder" />

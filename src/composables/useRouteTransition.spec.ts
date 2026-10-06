@@ -122,62 +122,58 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     page.animations[1].onfinish!(); assert.equal(returned.count, 1)
   })
 
-  it('presents workspaces with no eligible heading groups immediately', () => {
+  it('fades all workspaces, including cached returns, without waiting for a heading', () => {
     let destination = '/gallery'
     const hooks = useRouteTransition(() => destination), gallery = surface('/gallery'), style = surface('/style')
     const first = counter(), second = counter(), returned = counter()
     hooks.onEnter(gallery.el, first.done)
+    assert.equal(first.count, 0); gallery.animations[0].onfinish!()
     destination = '/style'; hooks.onLeave(gallery.el, () => {}); hooks.onEnter(style.el, second.done)
+    assert.equal(second.count, 0); style.animations[0].onfinish!()
     destination = '/gallery'; hooks.onLeave(style.el, () => {}); hooks.onEnter(gallery.el, returned.done)
+    assert.equal(returned.count, 0); gallery.animations[1].onfinish!()
     assert.equal(first.count, 1); assert.equal(second.count, 1); assert.equal(returned.count, 1)
     assert.equal(gallery.el.inert, false)
-    assert.equal(gallery.animations.length + style.animations.length, 0)
+    assert.equal(gallery.animations.length + style.animations.length, 3)
+    assert.deepEqual(gallery.calls[1][0], [{ opacity: 0 }, { opacity: 1 }])
   })
 
-  it('keeps peer workspaces still and completes both hooks without a compositing layer', () => {
+  it('fades peer workspaces without translating their fixed controls or delaying departure', () => {
     let destination = '/style'
     const hooks = useRouteTransition(() => destination), style = surface('/style'), scene = surface('/scene-explorer')
     hooks.onEnter(style.el, () => {})
     const left = counter(), entered = counter()
     destination = '/scene-explorer'; hooks.onLeave(style.el, left.done); hooks.onEnter(scene.el, entered.done)
+    assert.equal(entered.count, 0); scene.animations[0].onfinish!()
     assert.equal(left.count, 1); assert.equal(entered.count, 1)
-    assert.deepEqual(style.calls, []); assert.deepEqual(scene.calls, [])
+    assert.deepEqual(style.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
+    assert.deepEqual(scene.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
   })
 
-  it('stages small workspace groups without animating artwork, replaying query changes or retaining a departed page', () => {
+  it('uses one page effect without replaying queries or retaining departed pages', () => {
     let destination = '/gallery'
     const hooks = useRouteTransition(() => destination), page = surface('/gallery')
-    const heading = document.createElement('header')
-    const title = document.createElement('div'), actions = document.createElement('button'), art = document.createElement('div')
-    art.append(document.createElement('canvas'))
-    heading.append(title, actions, art)
-    const titleMotion = surface(), actionMotion = surface(), artMotion = surface()
-    title.animate = titleMotion.el.animate; actions.animate = actionMotion.el.animate; art.animate = artMotion.el.animate
-    page.el.querySelector = (() => heading) as typeof page.el.querySelector
     const entered = counter()
     hooks.onEnter(page.el, entered.done)
     assert.equal(page.el.inert, false)
-    assert.equal(page.calls.length + artMotion.calls.length, 0)
-    assert.equal(titleMotion.calls.length + actionMotion.calls.length, 2)
-    assert.equal((actionMotion.calls[0][1] as KeyframeAnimationOptions).delay, undefined)
-    titleMotion.animations[0].onfinish!(); assert.equal(entered.count, 0)
-    actionMotion.animations[0].onfinish!(); assert.equal(entered.count, 1)
-    assert.equal(titleMotion.animations[0].cancelCalls, 1)
+    assert.equal(page.calls.length, 1)
+    assert.equal((page.calls[0][1] as KeyframeAnimationOptions).delay, undefined)
+    page.animations[0].onfinish!(); assert.equal(entered.count, 1)
+    assert.equal(page.animations[0].cancelCalls, 1)
 
     destination = '/style'; hooks.onLeave(page.el, () => {})
     hooks.onLeave(surface('/style').el, () => {})
     destination = '/gallery'
     const returned = counter(); hooks.onEnter(page.el, returned.done)
-    assert.deepEqual(titleMotion.calls[1][0], [{ opacity: .86 }, { opacity: 1 }])
-    assert.equal((titleMotion.calls[1][1] as KeyframeAnimationOptions).duration, 120)
+    assert.deepEqual(page.calls[1][0], [{ opacity: 0 }, { opacity: 1 }])
+    assert.equal((page.calls[1][1] as KeyframeAnimationOptions).duration, 200)
     page.el.dataset.routePath = '/gallery?filter=recent'
     const queryRefresh = counter(); hooks.onEnter(page.el, queryRefresh.done)
-    assert.equal(queryRefresh.count, 1); assert.equal(titleMotion.calls.length, 2)
+    assert.equal(queryRefresh.count, 1); assert.equal(page.calls.length, 2)
     destination = '/scene-explorer'
     const left = counter(); hooks.onLeave(page.el, left.done)
     assert.equal(left.count, 1); assert.equal(returned.count, 1)
-    assert.equal(titleMotion.animations[1].cancelCalls, 1)
-    assert.equal(actionMotion.animations[1].cancelCalls, 1)
+    assert.equal(page.animations[1].cancelCalls, 1)
     assert.equal(page.el.dataset.routeEntering, undefined)
   })
 
@@ -185,7 +181,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     const hooks = useRouteTransition(undefined, { initialFade: true }), { el, calls } = surface()
     el.dataset.routePath = '/control'
     hooks.onEnter(el, () => {})
-    assert.deepEqual(calls[0][0], [{ opacity: .96 }, { opacity: 1 }])
+    assert.deepEqual(calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
     hooks.onEnterCancelled(el)
   })
 
@@ -507,25 +503,29 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     const left = counter(), entered = counter()
     hooks.onLeave(oldPage.el, left.done); hooks.onEnter(newPage.el, entered.done)
     assert.equal(oldPage.el.inert, true); assert.equal(newPage.el.inert, false)
-    assert.equal(left.count, 1); assert.equal(entered.count, 1)
-    assert.equal(oldPage.animations.length + newPage.animations.length, 0)
+    assert.equal(left.count, 1); assert.equal(entered.count, 0)
+    assert.equal(oldPage.animations.length, 0); assert.equal(newPage.animations.length, 1)
     hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
     assert.equal(left.count, 1); assert.equal(entered.count, 1)
   })
 
-  it('also presents an unranked workspace without a page-wide animation', () => {
+  it('also fades an unranked workspace without a separate navigation registration', () => {
     const hooks = useRouteTransition(() => '/new-workspace'), oldPage = surface('/gallery'), newPage = surface('/new-workspace')
     hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, () => {})
-    assert.deepEqual(newPage.calls, []); assert.deepEqual(oldPage.calls, [])
+    assert.deepEqual(newPage.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
+    assert.deepEqual(oldPage.calls, [])
   })
 
-  it('does not hide AppLayout content on initial paint or subsequent navigation', () => {
+  it('fades AppLayout content on initial paint and later navigation without blocking input', () => {
     const hooks = useRouteTransition(() => '/style', { initialFade: true })
     const oldPage = surface('/gallery'), newPage = surface('/style'), first = counter(), second = counter()
     hooks.onEnter(oldPage.el, first.done)
     hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, second.done)
-    assert.equal(first.count, 1); assert.equal(second.count, 1)
-    assert.deepEqual(oldPage.calls, []); assert.deepEqual(newPage.calls, [])
+    assert.equal(first.count, 1); assert.equal(second.count, 0)
+    assert.equal(oldPage.el.inert, true); assert.equal(newPage.el.inert, false)
+    assert.deepEqual(oldPage.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
+    assert.deepEqual(newPage.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
+    newPage.animations[0].onfinish!(); assert.equal(second.count, 1)
   })
 
   it('settles both halves of the depth transition immediately when reduced motion changes', () => {

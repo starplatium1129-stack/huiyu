@@ -101,7 +101,6 @@ const { query, series, page, term, groups, activeGroup, showingShelf, results, p
 function revealContent() {
   const element = contentRoot.value
   if (!element) return
-  if (keyboardInput.value) { contentMotion.dispose(element); return }
   contentMotion.enter(element, () => contentMotion.dispose(element))
 }
 function focusResults() {

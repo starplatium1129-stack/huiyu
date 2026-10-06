@@ -16,7 +16,7 @@ function cancel(el: HTMLElement) {
 function settle() { for (const el of active.keys()) cancel(el) }
 
 function reveal(el: HTMLElement, direction?: string) {
-  if (keyboardInput || document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function'
+  if (document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function'
     || direction && el.matches('input, textarea') && document.activeElement === el) {
     cancel(el)
     return
@@ -31,16 +31,16 @@ function reveal(el: HTMLElement, direction?: string) {
   }
   // A rapid reversal continues from the visible value rather than flashing back.
   const previous = active.has(el) ? getComputedStyle(el) : null
-  const start: Keyframe = { opacity: previous?.opacity ?? '.82' }
+  const start: Keyframe = { opacity: previous?.opacity ?? '.35' }
   const end: Keyframe = { opacity: 1 }
   const offsets: Record<string, string> = { left: 'translateX(-8px)', right: 'translateX(8px)', up: 'translateY(4px)', down: 'translateY(-4px)' }
-  if (direction && offsets[direction]) {
+  if (!keyboardInput && direction && offsets[direction]) {
     start.transform = previous?.transform ?? offsets[direction]
     end.transform = 'none'
   }
   cancel(el)
   const animation = el.animate([start, end], {
-    duration:160, easing:'cubic-bezier(.23, 1, .32, 1)',
+    duration:240, easing:'cubic-bezier(.23, 1, .32, 1)',
   })
   active.set(el, animation)
   animation.onfinish = animation.oncancel = () => {
