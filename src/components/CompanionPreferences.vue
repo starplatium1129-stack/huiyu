@@ -5,7 +5,7 @@
       <header class="preferences-heading tw:flex tw:items-center tw:justify-between"><div><h2>桌宠设置</h2><small>{{ characterName }}</small></div>
         <button type="button" aria-label="关闭桌宠设置" autofocus @click="close"><ArchiveIcon name="close" /></button>
       </header>
-      <nav class="preferences-tabs studio-segments tw:grid tw:gap-[4px] tw:p-[4px] tw:rounded-lg" role="tablist" aria-label="设置分类" @keydown="tabKey">
+      <nav class="preferences-tabs studio-segments tw:grid tw:gap-[4px] tw:p-[4px] tw:rounded-lg" data-fluid-glass role="tablist" aria-label="设置分类" @keydown="tabKey">
         <AnimatedSelection />
         <button v-for="tab in tabs" :id="`${id}-${tab.value}`" :key="tab.value" type="button" role="tab"
           :aria-selected="pane === tab.value" :aria-controls="`${id}-panel`" :tabindex="pane === tab.value ? 0 : -1"
@@ -14,13 +14,14 @@
       <div :id="`${id}-panel`" v-content-motion:up="pane" class="companion-preferences-body tw:grid tw:gap-s-3 tw:min-h-0 tw:overflow-auto" :data-pane="pane" role="tabpanel" :aria-labelledby="`${id}-${pane}`"><slot /></div>
     </dialog>
   </Teleport>
-  <div v-else-if="open" class="companion-settings-popover" role="dialog" aria-label="桌宠设置" @pointerdown.stop><slot /></div>
+  <template v-else><FluidTransition panel=".companion-settings-popover"><div v-if="open" class="companion-settings-popover" data-fluid-glass role="dialog" aria-label="桌宠设置" @pointerdown.stop><slot /></div></FluidTransition></template>
 </template>
 
 <script setup lang="ts">
 import { ref, useId, watch } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
+import FluidTransition from './visual/FluidTransition.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 const props = defineProps<{ open: boolean; desktop: boolean; characterId: string; characterName: string }>()
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()

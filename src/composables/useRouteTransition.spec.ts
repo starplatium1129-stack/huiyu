@@ -132,20 +132,21 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     destination = '/style'; hooks.onLeave(gallery.el, () => {}); hooks.onEnter(style.el, second.done)
     assert.equal(second.count, 0); style.animations[0].onfinish!()
     destination = '/gallery'; hooks.onLeave(style.el, () => {}); hooks.onEnter(gallery.el, returned.done)
-    assert.equal(returned.count, 0); gallery.animations[1].onfinish!()
+    assert.equal(returned.count, 0); gallery.animations[2].onfinish!()
     assert.equal(first.count, 1); assert.equal(second.count, 1); assert.equal(returned.count, 1)
     assert.equal(gallery.el.inert, false)
-    assert.equal(gallery.animations.length + style.animations.length, 3)
-    assert.deepEqual(gallery.calls[1][0], [{ opacity: 0 }, { opacity: 1 }])
+    assert.equal(gallery.animations.length + style.animations.length, 5)
+    assert.deepEqual(gallery.calls[2][0], [{ opacity: 0 }, { opacity: 1 }])
   })
 
-  it('fades peer workspaces without translating their fixed controls or delaying departure', () => {
+  it('crossfades peer workspaces without translating fixed controls or delaying destination input', () => {
     let destination = '/style'
     const hooks = useRouteTransition(() => destination), style = surface('/style'), scene = surface('/scene-explorer')
     hooks.onEnter(style.el, () => {})
     const left = counter(), entered = counter()
     destination = '/scene-explorer'; hooks.onLeave(style.el, left.done); hooks.onEnter(scene.el, entered.done)
-    assert.equal(entered.count, 0); scene.animations[0].onfinish!()
+    assert.equal(left.count, 0); assert.equal(entered.count, 0); assert.equal(scene.el.inert, false)
+    scene.animations[0].onfinish!(); style.animations[1].onfinish!()
     assert.equal(left.count, 1); assert.equal(entered.count, 1)
     assert.deepEqual(style.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
     assert.deepEqual(scene.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
@@ -166,20 +167,20 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     hooks.onLeave(surface('/style').el, () => {})
     destination = '/gallery'
     const returned = counter(); hooks.onEnter(page.el, returned.done)
-    assert.deepEqual(page.calls[1][0], [{ opacity: 0 }, { opacity: 1 }])
-    assert.equal((page.calls[1][1] as KeyframeAnimationOptions).duration, 280)
+    assert.deepEqual(page.calls[2][0], [{ opacity: 0 }, { opacity: 1 }])
+    assert.equal((page.calls[2][1] as KeyframeAnimationOptions).duration, 280)
     page.el.dataset.routePath = '/gallery?filter=recent'
     const queryRefresh = counter(); hooks.onEnter(page.el, queryRefresh.done)
-    assert.equal(queryRefresh.count, 1); assert.equal(page.calls.length, 2)
-    destination = '/scene-explorer'
-    const left = counter(); hooks.onLeave(page.el, left.done)
+    assert.equal(queryRefresh.count, 1); assert.equal(page.calls.length, 3)
+    destination = '/scene-explorer'; const left = counter(); hooks.onLeave(page.el, left.done)
+    assert.equal(left.count, 0); page.animations[3].onfinish!()
     assert.equal(left.count, 1); assert.equal(returned.count, 1)
-    assert.equal(page.animations[1].cancelCalls, 1)
+    assert.equal(page.animations[2].cancelCalls, 1)
     assert.equal(page.el.dataset.routeEntering, undefined)
   })
 
   it('fades standalone layouts without translating native overlay anchors', () => {
-    const hooks = useRouteTransition(undefined, { initialFade: true }), { el, calls } = surface()
+    const hooks = useRouteTransition(() => '/control', { initialFade: true }), { el, calls } = surface()
     el.dataset.routePath = '/control'
     hooks.onEnter(el, () => {})
     assert.deepEqual(calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
@@ -192,9 +193,9 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     const leftFirst = counter(), leftSecond = counter()
     hooks.onLeave(first.el, leftFirst.done)
     destination = '/lora'; hooks.onLeave(second.el, leftSecond.done)
-    assert.equal(leftFirst.count, 1); assert.equal(leftSecond.count, 1)
-    assert.equal(first.animations.length + second.animations.length, 0)
-    hooks.onLeaveCancelled(second.el); assert.equal(second.el.inert, false)
+    assert.equal(leftFirst.count, 1); assert.equal(leftSecond.count, 0)
+    assert.equal(first.animations.length + second.animations.length, 2); assert.equal(first.animations[0].cancelCalls, 1)
+    hooks.onLeaveCancelled(second.el); assert.equal(second.el.inert, false); assert.equal(leftSecond.count, 1)
   })
   it('crossfades the archive pair without blocking input and supports cancellation', () => {
     const hooks = useRouteTransition(() => '/character')
@@ -279,20 +280,18 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.equal(fresh.count, 1)
   })
 
-  it('makes the leaving route inert and resets it when the cached element returns', () => {
-    const hooks = mountHooks(), { el, animations } = surface(), entered = counter(), left = counter()
+  it('cleans a cached layout exit when its inner route owns the returning animation', () => {
+    const hooks = useRouteTransition(() => '/control'), { el, calls } = surface(), entered = counter(), left = counter()
     hooks.onEnter(el, entered.done)
     hooks.onLeave(el, left.done)
-    assert.equal(el.inert, true)
-    assert.equal(entered.count, 1)
-    assert.equal(left.count, 1)
-    assert.equal(animations[0].onfinish, null)
-    hooks.onBeforeEnter(el)
-    assert.equal(el.inert, false)
-    const returned = counter()
-    hooks.onEnter(el, returned.done)
-    assert.equal(returned.count, 1)
-    assert.equal(animations.length, 1)
+    assert.equal(el.inert, true); assert.equal(entered.count, 1); assert.equal(left.count, 0)
+    vi.stubGlobal('getComputedStyle', () => ({ opacity: '.27', transform: 'none' }))
+    hooks.onLeaveCancelled(el); hooks.onBeforeEnter(el)
+    const returned = counter(); hooks.completeEnter(el, returned.done)
+    assert.equal(el.inert, false); assert.equal(el.dataset.routeEntering, undefined)
+    assert.equal(returned.count, 1); assert.equal(left.count, 1)
+    hooks.onLeave(el, () => {})
+    assert.deepEqual(calls[2][0], [{ opacity: 1 }, { opacity: 0 }])
   })
 
   it('removes a route immediately even when no animation is active', () => {
@@ -499,13 +498,14 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.deepEqual(state.marks, [])
   })
 
-  it('releases peer workspaces immediately while keeping destination input enabled', () => {
+  it('crossfades peer workspaces while keeping destination input enabled', () => {
     const hooks = useRouteTransition(() => '/style'), oldPage = surface('/gallery'), newPage = surface('/style')
     const left = counter(), entered = counter()
     hooks.onLeave(oldPage.el, left.done); hooks.onEnter(newPage.el, entered.done)
     assert.equal(oldPage.el.inert, true); assert.equal(newPage.el.inert, false)
-    assert.equal(left.count, 1); assert.equal(entered.count, 0)
-    assert.equal(oldPage.animations.length, 0); assert.equal(newPage.animations.length, 1)
+    assert.equal(left.count, 0); assert.equal(entered.count, 0)
+    assert.equal(oldPage.animations.length, 1); assert.equal(newPage.animations.length, 1)
+    assert.deepEqual(oldPage.calls[0], [[{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
     hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
     assert.equal(left.count, 1); assert.equal(entered.count, 1)
   })
@@ -514,7 +514,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     const hooks = useRouteTransition(() => '/new-workspace'), oldPage = surface('/gallery'), newPage = surface('/new-workspace')
     hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, () => {})
     assert.deepEqual(newPage.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
-    assert.deepEqual(oldPage.calls, [])
+    assert.deepEqual(oldPage.calls[0][0], [{ opacity: 1 }, { opacity: 0 }])
   })
 
   it('fades AppLayout content on initial paint and later navigation without blocking input', () => {

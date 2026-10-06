@@ -4,8 +4,7 @@
 .scenario-library-heading { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-4; margin:var(--s-5) 0 var(--s-4); }
 .scenario-library-heading h2 { margin:0 0 var(--s-1); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .scenario-library-heading p { @apply tw:text-secondary tw:text-body-sm; }
-.char-btn { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[44px]; padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); @apply tw:rounded-pill tw:text-secondary; background:var(--bg-surface); @apply tw:cursor-pointer; font:600 var(--fs-body-sm) var(--font-sans); }
-.char-btn.active { @apply tw:border-accent tw:text-accent; background:var(--accent-soft); }
+.char-btn { @apply tw:flex tw:items-center tw:gap-s-2; font:inherit; }
 .scenario-page .scenario-list { @apply tw:grid; grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-s-4 tw:p-0; border:0; background:transparent; box-shadow:none; }
 .scenario-card { @apply tw:min-w-0 tw:w-full tw:overflow-hidden tw:p-0; border:1px solid var(--border-soft); @apply tw:rounded-xl tw:text-left; background:var(--bg-surface); @apply tw:text-primary; font:inherit; @apply tw:cursor-pointer; }
 .scenario-card.active { @apply tw:border-accent; box-shadow:inset 0 -3px var(--accent); }

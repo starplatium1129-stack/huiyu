@@ -27,22 +27,23 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
     vi.restoreAllMocks()
   })
 
-  it('moves its painted indicator with pressed buttons and nested active links', async () => {
+  it('moves its painted indicator with pressed buttons and active or current-page links', async () => {
     const priorMotion = document.documentElement.dataset.motion
     document.documentElement.dataset.motion = 'reduce'
     try {
-      for (const nested of [false, true]) {
+      for (const targetMode of ['pressed', 'active', 'current']) {
+        const nested = targetMode !== 'pressed'
         const selected = ref('a')
         const Container = defineComponent({ setup: () => () => h('div', [
           ...['a', 'b'].map(id => {
             const target = h(nested ? 'a' : 'button', {
               id,
-              class: selected.value === id ? 'active' : '',
-              'aria-pressed': selected.value === id ? 'true' : 'false',
+              ...(targetMode === 'current' ? { 'aria-current': selected.value === id ? 'page' : undefined }
+                : { class: selected.value === id ? 'active' : '', 'aria-pressed': selected.value === id ? 'true' : 'false' }),
             }, id)
             return nested ? h('span', [target]) : target
           }),
-          h(AnimatedSelection, nested ? { target: ':scope > a.active' } : {}),
+          h(AnimatedSelection, targetMode === 'current' ? { target: '[aria-current="page"]' } : nested ? { target: ':scope > a.active' } : {}),
         ]) })
         const wrapper = mount(Container, { attachTo: document.body })
         try {
@@ -66,12 +67,12 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
     }
   })
 
-  it('places keyboard selections immediately even when full motion is enabled', async () => {
+  it('places keyboard navigation selections immediately even when full motion is enabled', async () => {
     const previous = document.documentElement.dataset.motion
     document.documentElement.dataset.motion = 'full'
     const selected = ref('a')
-    const Container = defineComponent({ setup:() => () => h('div', [
-      ...['a','b'].map(id => h('button',{id,'aria-pressed':selected.value === id ? 'true':'false'},id)), h(AnimatedSelection),
+    const Container = defineComponent({ setup:() => () => h('nav', { class:'studio-segments', role:'navigation' }, [
+      ...['a','b'].map(id => h('a',{id,href:`#${id}`,'aria-current':selected.value === id ? 'page':undefined},id)), h(AnimatedSelection, { target:'[aria-current="page"]' }),
     ]) })
     const wrapper = mount(Container,{attachTo:document.body})
     try {
@@ -79,7 +80,7 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
       vi.spyOn(wrapper.get('#a').element,'getBoundingClientRect').mockReturnValue(new DOMRect(10,5,80,30))
       vi.spyOn(wrapper.get('#b').element,'getBoundingClientRect').mockReturnValue(new DOMRect(110,5,100,30))
       await flushIndicator()
-      await wrapper.get('#b').trigger('keydown',{key:'ArrowRight'}); selected.value = 'b'
+      await wrapper.get('#b').trigger('keydown',{key:'Enter'}); selected.value = 'b'
       await flushIndicator()
       expect((wrapper.get('.animated-selection').element as HTMLElement).style.transform).toContain('translate(110px,5px)')
     } finally {

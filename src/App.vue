@@ -3,9 +3,9 @@
   <RuntimeConnectionNotice />
   <RouteRecoveryBanner />
   <DesktopUpdateBanner v-if="!isCompanion" />
-  <div class="route-stage tw:grid tw:[align-items:start] tw:min-w-0">
+  <div class="route-stage tw:relative tw:grid tw:[align-items:start] tw:min-w-0">
     <RouterView v-slot="{ Component }">
-      <Transition appear :css="false" @enter="enterLayout" @leave="leaveLayout" @enter-cancelled="layoutMotion.onEnterCancelled">
+      <Transition appear :css="false" @before-enter="beforeEnterLayout" @enter="enterLayout" @leave="layoutMotion.onLeave" @enter-cancelled="layoutMotion.onEnterCancelled" @leave-cancelled="layoutMotion.onLeaveCancelled">
         <KeepAlive include="AppLayout"><component :is="Component" :data-route-path="route.fullPath" /></KeepAlive>
       </Transition>
     </RouterView>
@@ -41,14 +41,17 @@ import { useCharacterArtRefresh } from '@/composables/useCharacterArtRefresh'
 const route = useRoute()
 useCharacterArtRefresh()
 const router = useRouter()
-const layoutMotion = useRouteTransition(undefined, { initialFade: true })
+const layoutMotion = useRouteTransition(() => route.path, { initialFade: true })
+function beforeEnterLayout(element: Element) {
+  ;(element as HTMLElement).inert = false
+  if (!element.classList.contains('page-root')) layoutMotion.onBeforeEnter(element)
+}
 function enterLayout(element: Element, done: () => void) {
   // AppLayout already animates its inner route. Standalone windows fade only;
   // translating their root would move native-overlay anchors and fixed controls.
-  if (element.classList.contains('page-root')) done()
+  if (element.classList.contains('page-root')) layoutMotion.completeEnter(element, done)
   else layoutMotion.onEnter(element, done)
 }
-function leaveLayout(element: Element, done: () => void) { layoutMotion.onEnterCancelled(element); done() }
 let detachDesktopWorkspace: (() => void) | undefined
 let detachDesktopNavigation: (() => void) | undefined
 onMounted(() => {
@@ -92,4 +95,5 @@ onUnmounted(() => stopThumbnailWarmup?.())
   grid-area: 1 / 1;
   min-width: 0;
 }
+.route-stage > [inert] { position: absolute; inset: 0 0 auto; }
 </style>

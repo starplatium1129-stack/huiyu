@@ -1,8 +1,8 @@
 <template>
   <details class="room-model-settings">
     <summary>对话设置</summary>
-    <div class="model-controls">
-      <div class="provider-switch studio-segments studio-segments--compact" role="group" aria-label="对话模型来源">
+    <div data-disclosure-content class="model-controls">
+      <div class="provider-switch studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="对话模型来源">
         <AnimatedSelection />
         <button
           type="button"
@@ -23,7 +23,7 @@
           llama.cpp / API
         </button>
       </div>
-      <template v-if="chatProvider === 'local'">
+      <div v-if="chatProvider === 'local'" v-content-motion:right="chatProvider" class="provider-model-controls">
         <StudioSelect
           class="model-select"
           :model-value="currentModel"
@@ -33,8 +33,8 @@
           :options="models.map(m => ({ value: m.name, label: m.name + (m.parameters ? ' · ' + m.parameters : '') }))"
           @update:model-value="emit('update:currentModel', String($event))"
         />
-      </template>
-      <template v-else>
+      </div>
+      <div v-else v-content-motion:right="chatProvider" class="provider-model-controls">
         <StudioTooltip content="模型推理强度（像 OpenCode 一样多档；关表示不思考）">
           <div class="thinking-group">
             <span class="thinking-title">推理</span>
@@ -62,7 +62,7 @@
           {{ useHostConfig ? (hostApiModel || '站主 API') : (apiConfigured ? (apiModel==='huiyu-local'?'绘遇本地聊天':apiModel) : '配置 API') }}
           <ArchiveIcon name="gear" />
         </button>
-      </template>
+      </div>
       <slot />
     </div>
   </details>
@@ -102,3 +102,7 @@ const emit = defineEmits<{
   (e: 'toggle-api-settings'): void
 }>()
 </script>
+
+<style scoped>
+.provider-model-controls { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); min-width:0; }
+</style>

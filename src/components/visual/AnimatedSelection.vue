@@ -23,12 +23,12 @@ let destinationBox = ''
 let keyboardInput = false
 let measureFrame = 0
 function keyboard(event: KeyboardEvent) {
-  if (parent?.classList.contains('studio-segments')) {
+  if (parent?.classList.contains('studio-segments') && event.target instanceof HTMLButtonElement) {
     keyboardInput = false
     // Reka owns tab/radio roving focus. Plain pressed-button groups use the same keys.
     if (parent.getAttribute('role') === 'tablist' || parent.dataset.segmentKeyboard === 'managed' || event.altKey || event.ctrlKey || event.metaKey) return
     const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End']
-    if (!keys.includes(event.key) || !(event.target instanceof HTMLButtonElement)) return
+    if (!keys.includes(event.key)) return
     const buttons = Array.from(parent.querySelectorAll<HTMLButtonElement>('button')).filter(button =>
       !button.disabled && button.getAttribute('aria-disabled') !== 'true' && button.getBoundingClientRect().width > 0)
     const index = buttons.indexOf(event.target)
@@ -138,7 +138,7 @@ onMounted(() => {
   resize = new ResizeObserver(schedule)
   resize.observe(parent)
   mutations = new MutationObserver(schedule)
-  mutations.observe(parent, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'aria-pressed', 'aria-selected', 'aria-checked', 'data-state', 'hidden'] })
+  mutations.observe(parent, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'aria-current', 'aria-pressed', 'aria-selected', 'aria-checked', 'data-state', 'hidden'] })
   parent.addEventListener('scroll', schedule, { passive: true })
   parent.addEventListener('keydown', keyboard, true)
   parent.addEventListener('pointerdown', pointer, true)

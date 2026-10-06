@@ -1,5 +1,5 @@
 <template>
-  <article class="page scene-discovery">
+  <article class="page scene-discovery" @click.capture="storyDialog?.capture($event)">
     <section class="scene-atlas" :data-companion="companionId" aria-labelledby="sceneAtlasTitle">
       <div class="scene-atlas-copy">
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
@@ -23,7 +23,7 @@
         </figure>
         <div class="companion-choices">
           <span class="companion-label">陪你翻阅<span v-if="companionPortraits[companionId].failed"> · 角色图片暂未加载</span></span>
-          <div class="companion-switch studio-segments" role="group" aria-label="看板娘陪伴选择">
+          <div class="companion-switch studio-segments" data-fluid-glass role="group" aria-label="看板娘陪伴选择">
             <AnimatedSelection />
             <button type="button" class="companion-pill nene" :class="{ active: companionId === 'nene' }" :aria-pressed="companionId === 'nene'" @click="manualCompanion = 'nene'">
               <span class="dot"></span>绫地宁宁
@@ -38,7 +38,7 @@
 
     <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
     <div class="scene-toolbar" :class="{ 'filters-expanded': filtersOpen }">
-      <div id="scenePersonalViews" class="scene-personal-nav studio-segments studio-segments--compact" role="group" aria-label="我的场景视图">
+      <div id="scenePersonalViews" class="scene-personal-nav studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="我的场景视图">
         <AnimatedSelection />
         <button type="button" :class="{ active: fTier === 'core' && !showHidden }"
           :aria-pressed="fTier === 'core' && !showHidden"
@@ -55,14 +55,9 @@
       </div>
 
       <div class="toolbar-primary">
-        <label class="sr-only" for="sceneSearch">搜索场景</label>
-        <div class="scene-search-wrap">
-          <input ref="searchInput" v-model="searchQuery" type="search" class="scene-search" id="sceneSearch"
-            placeholder="寻找雨夜、夏日，或一个心动的镜头…" />
-          <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空搜索" @click="searchQuery = ''; searchInput?.focus()"><ArchiveIcon name="close" /></button>
-        </div>
+        <StudioSearch v-model="searchQuery" class="scene-search-wrap" id="sceneSearch" label="搜索场景" placeholder="寻找雨夜、夏日，或一个心动的镜头…" />
         <button
-          class="filter-toggle" type="button"
+          class="btn btn-ghost filter-toggle" type="button"
           :class="{ active: filtersOpen || activeFacetCount > 0 }"
           :aria-expanded="filtersOpen ? 'true' : 'false'"
           aria-controls="sceneFacetPanel"
@@ -72,7 +67,8 @@
         </button>
       </div>
 
-      <div class="scene-cats" role="group" aria-label="场景主题">
+      <div class="scene-cats studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="场景主题">
+        <AnimatedSelection />
         <button v-for="d in THEME_DEFS" :key="d.id" type="button" class="scene-cat"
           :class="{ active: activeTheme === d.id }"
           :aria-pressed="activeTheme === d.id ? 'true' : 'false'"
@@ -144,7 +140,7 @@
     >
       <button class="btn btn-primary" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
-    <div v-else data-route-arrive v-content-motion:up="`${activeTheme}:${fTier}:${sortBy}:${showHidden}`" class="scene-grid">
+    <div v-else data-route-arrive v-content-motion:up="`${activeTheme}:${fTier}:${sortBy}:${showHidden}:${fChar}:${fSeason}:${fTime}:${fSeries}:${fRating}`" class="scene-grid">
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
           :class="{ 'scene-flash': flashId === s.id, 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id"
           :aria-label="'查看场景故事：' + s.title" :aria-expanded="drawerScene?.id === s.id" @pick="drawerScene = s">
@@ -165,6 +161,7 @@
               </StudioTooltip>
             </div>
             <details class="ex-more" @click.stop @toggle="rememberDetails(s2.id, $event)"><summary>镜头与更多</summary>
+              <div data-disclosure-content>
               <DeferredPanel :active="openedDetails.has(s2.id)">
               <div v-if="personalReason(s2)" class="ex-curation">{{ personalReason(s2) }}</div>
               <div class="ex-decision">
@@ -179,6 +176,7 @@
               </button>
               </div>
               </DeferredPanel>
+              </div>
             </details>
           </template>
       </SceneCard>
@@ -189,7 +187,7 @@
       </button>
     </div>
 
-    <SceneStoryDialog v-model="drawerScene" />
+    <SceneStoryDialog ref="storyDialog" v-model="drawerScene" :scenes="filtered" />
   </article>
 </template>
 
@@ -201,6 +199,7 @@ import DeferredPanel from '@/components/director/DeferredPanel.vue'
 import InspirationDeck from '@/components/scene/InspirationDeck.vue'
 import SceneStoryDialog from '@/components/scene/SceneStoryDialog.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
@@ -219,7 +218,7 @@ const {
   loading, loadError, init, paged, flashId, usageFor, isCore, tier, charName, seasonLabel, timeLabel,
   personalReason, drawerScene, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav, PAGE_SIZE,
 } = useSceneExplorerWorkspace()
-const searchInput = ref<HTMLInputElement | null>(null)
+const storyDialog = ref<InstanceType<typeof SceneStoryDialog> | null>(null)
 const openedDetails = reactive(new Set<string>())
 function rememberDetails(id: string, event: Event) {
   if ((event.target as HTMLDetailsElement).open) openedDetails.add(id)

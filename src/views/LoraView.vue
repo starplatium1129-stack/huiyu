@@ -24,18 +24,14 @@
     </ArchiveStatePanel>
     <template v-else>
     <div class="model-search-row">
-      <div class="model-search-field">
-        <ArchiveIcon name="search" />
-        <input ref="searchInput" v-model="modelQuery" type="search" aria-label="搜索模型" placeholder="按模型、角色或触发词查找…" />
-        <button v-if="modelQuery" class="model-search-clear" type="button" aria-label="清除模型搜索" @click="clearSearch"><ArchiveIcon name="close" /></button>
-      </div>
+      <StudioSearch ref="searchInput" v-model="modelQuery" class="model-search-field" label="搜索模型" placeholder="按模型、角色或触发词查找…" />
       <span class="model-result-count" role="status">{{ visibleLoras.length }} / {{ loras.length }} 份资料</span>
     </div>
     <p class="model-catalog-note">资料收录与历史评测通过，均不代表本机已安装。可用性请在工作台检测。</p>
     <ArchiveStatePanel v-if="!visibleLoras.length" compact kind="filtered" title="没有匹配的模型。" message="试试角色名、模型名或触发词，或清除搜索重新查看全部资料。">
       <button class="btn btn-ghost btn-sm" type="button" @click="clearSearch">清除搜索</button>
     </ArchiveStatePanel>
-    <div class="lora-grid" data-route-arrive v-content-motion:up="modelQuery">
+    <div class="lora-grid" data-route-arrive>
       <article v-for="l in visibleLoras" :key="l.id" class="lora-card">
         <header class="model-identity">
           <div><ArchiveIcon :name="modelGuide(l).icon" /><h2 class="lora-name">{{ modelGuide(l).name }}</h2></div>
@@ -50,7 +46,7 @@
         <p class="model-availability">本机可用性尚未检测。<template v-if="modelCharacter(l.id)">入口只选择角色，不强制加载此历史版本；引擎与模型由工作台现有规则决定。</template><template v-else>仅供资料参考，未配置直接使用入口。</template></p>
         <details class="model-details">
           <summary><span>触发词与模型资料</span><ArchiveIcon name="chevron-down" /></summary>
-          <div class="model-details-body">
+          <div class="model-details-body" data-disclosure-content>
             <p v-if="l.description" class="lora-desc">{{ l.description }}</p>
             <dl class="model-facts">
               <div v-if="l.baseModel"><dt>适用底模</dt><dd>{{ l.baseModel }}</dd></div>
@@ -67,6 +63,7 @@
           <p class="evaluation-summary">历史评测 · {{ l.evaluation.status === 'passed' ? '已通过' : l.evaluation.status || '已记录' }}<span v-if="l.evaluation.evaluatedAt"> · {{ l.evaluation.evaluatedAt }}</span></p>
           <details>
             <summary><span>查看指标、方法与证据</span><ArchiveIcon name="chevron-down" /></summary>
+            <div data-disclosure-content>
             <div class="evaluation-metrics">
               <div v-for="metric in l.evaluation.metrics" :key="metric[0]">
                 <span>{{ metric[0] }}</span>
@@ -80,6 +77,7 @@
               <div v-if="l.evaluation.selectionReason"><dt>晋升理由</dt><dd>{{ l.evaluation.selectionReason }}</dd></div>
               <div v-if="l.evaluation.evidence"><dt>报告路径</dt><dd><code>{{ l.evaluation.evidence }}</code></dd></div>
             </dl>
+            </div>
           </details>
         </section>
       </article>
@@ -90,6 +88,7 @@
 
 <script setup lang="ts">
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
 import { ref, computed, onMounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
@@ -104,7 +103,7 @@ import {
 const sceneStore = useSceneStore()
 const loras = ref<LoraCatalogEntry[]>([])
 const modelQuery = ref('')
-const searchInput = ref<HTMLInputElement | null>(null)
+const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
 function clearSearch() {
   modelQuery.value = ''
   searchInput.value?.focus()
@@ -159,14 +158,7 @@ onMounted(() => { void loadCatalog() })
 .model-facts dt { @apply tw:mb-s-1 tw:text-muted tw:text-label-xs; }
 .model-facts dd { @apply tw:m-0 tw:text-secondary; overflow-wrap:anywhere; }
 .model-search-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); }
-.model-search-field { display:flex; align-items:center; gap:var(--s-2); flex:1 1 320px; max-width:560px; min-width:0; padding-inline:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
-.model-search-field:focus-within { border-color:var(--accent); outline:2px solid var(--accent); outline-offset:2px; }
-.model-search-field > .archive-icon { width:18px; height:18px; color:var(--text-muted); flex-shrink:0; }
-.model-search-row input { min-width:0; width:100%; min-height:44px; padding:var(--s-2) 0; border:0; border-radius:0; color:var(--text-primary); background:transparent; font:inherit; outline:none; box-shadow:none; }
-.model-search-row input:focus-visible { outline:none; }
-.model-search-row input::-webkit-search-cancel-button { -webkit-appearance:none; appearance:none; }
-.model-search-clear { display:grid; place-items:center; flex-shrink:0; width:32px; height:32px; border:0; border-radius:var(--r-sm); color:var(--text-secondary); background:transparent; cursor:pointer; }
-.model-search-clear:hover { color:var(--accent); background:var(--accent-soft); }
+.model-search-field { flex:1 1 320px; max-width:560px; min-width:0; }
 .model-result-count { color:var(--text-secondary); font-size:var(--fs-label); font-variant-numeric:tabular-nums; }
 .model-catalog-note { margin:var(--s-3) 0 var(--s-5); @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
 .model-identity { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2; }

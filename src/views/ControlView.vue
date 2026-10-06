@@ -12,7 +12,7 @@
         <div class="nav-local-actions">
           <AppearanceButton />
           <TaskCenterButton />
-          <RouterLink class="nav-local-home" to="/">← 回绘遇</RouterLink>
+          <RouterLink class="nav-local-home tw:inline-flex tw:items-center tw:gap-s-2" to="/"><ArchiveIcon name="chevron-down" class="tw:rotate-90" />回绘遇</RouterLink>
           <AppThemeToggle /><AppSoundToggle />
         </div>
       </div>
@@ -38,7 +38,7 @@
         </nav>
         <div class="control-rail-note"><ArchiveIcon name="coffee" /><p>让工具准备好，<br />把时间留给创作。</p></div>
         <div class="control-rail-foot">
-          <RouterLink class="nav-local-home" to="/">← 回绘遇</RouterLink>
+          <RouterLink class="nav-local-home tw:inline-flex tw:items-center tw:gap-s-2" to="/"><ArchiveIcon name="chevron-down" class="tw:rotate-90" />回绘遇</RouterLink>
           <AppThemeToggle /><AppSoundToggle />
         </div>
       </aside>
@@ -170,7 +170,7 @@
 
         <details class="voice-config">
           <summary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></summary>
-          <div class="voice-grid">
+          <div data-disclosure-content class="voice-grid">
             <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
               <div class="voice-card-title">宁宁</div>
               <template v-if="ttsEngine === 'voxcpm2'">
@@ -201,7 +201,7 @@
       <!-- 公网分享 -->
       <details id="control-share" class="panel-card share-panel">
         <summary class="panel-summary"><span><span class="panel-kicker">低频管理</span><span class="panel-heading" role="heading" aria-level="2">分享与访问</span></span><span class="summary-state">{{ !statusLoaded || statusError ? '状态待确认' : tunnelActive ? '分享中' : '仅本机' }}<ArchiveIcon name="chevron-down" /></span></summary>
-        <div class="share-content">
+        <div data-disclosure-content class="share-content">
         <p class="panel-desc">本机访问不需要 Token；公网分享会使用临时 Token。</p>
 
         <div class="tunnel-toggle-row">
@@ -276,7 +276,7 @@
             <span class="chevron">›</span>
           </span>
         </summary>
-        <div class="log-wrap">
+        <div data-disclosure-content class="log-wrap">
           <div class="log-box" ref="logBoxEl">
             <div v-if="!logs.length" class="log-empty">暂无日志。</div>
             <div v-for="(line, i) in logs" :key="i" :class="lineClass(line)">

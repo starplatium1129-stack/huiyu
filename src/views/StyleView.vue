@@ -18,7 +18,7 @@
           <div class="style-card-heading tw:flex tw:items-center tw:justify-between tw:gap-s-2"><h3><ArchiveIcon :name="m.iconName" />{{ m.name }}</h3><span>{{ m.en }}</span></div>
           <p class="style-sample-caption">{{ m.caption }}</p>
           <div class="mood-strip" aria-hidden="true"><span v-for="(color, index) in m.colors" :key="color + index" class="mood-swatch" :style="{ '--swatch': color }"></span></div>
-          <div class="style-card-foot tw:mt-s-3 tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2"><span>{{ m.desc }}</span><RouterLink :to="'/prompt-builder?mood=' + encodeURIComponent(m.id)" class="mood-go">用这个调子绘制<ArchiveIcon name="spark" /></RouterLink></div>
+          <div class="style-card-foot tw:mt-s-3 tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2"><span>{{ m.desc }}</span><RouterLink :to="'/prompt-builder?mood=' + encodeURIComponent(m.id)" class="btn btn-ghost mood-go">用这个调子绘制<ArchiveIcon name="spark" /></RouterLink></div>
         </div>
       </article>
     </div>
@@ -75,14 +75,13 @@ useScrollReveal()
 .style-sample-caption { margin:var(--s-2) 0 var(--s-4); @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
 .style-card-body .mood-strip { @apply tw:h-[12px] tw:rounded-xs tw:overflow-hidden; }
 .style-card-foot > span { @apply tw:text-muted tw:text-body-sm; }
-.mood-go { @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:min-h-[44px] tw:text-accent tw:text-body-sm tw:font-semibold; }
 .style-sample:focus-visible, .mood-go:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; @apply tw:rounded-sm; }
 .style-notes { @apply tw:flex tw:items-center tw:gap-s-4 tw:mt-s-7 tw:pt-s-5; border-top:1px solid var(--border-soft); }
 .style-notes > .archive-icon { @apply tw:w-[28px] tw:h-[28px] tw:text-accent tw:shrink-0; }
 .style-notes h2 { margin:0 0 var(--s-2); @apply tw:text-body; }
 .style-notes p { @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
 .style-notes .btn { @apply tw:shrink-0; }
-@media (hover:hover) { .style-sample:hover img { transform:scale(1.035); } .mood-go:hover { text-decoration:underline; text-underline-offset:4px; } }
+@media (hover:hover) { .style-sample:hover img { transform:scale(1.035); } }
 @media (max-width:900px) { .style-mood-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .style-chapter { align-items:start; @apply tw:flex-col tw:gap-s-3; } .style-chapter p { max-width:none; } .style-notes { @apply tw:flex-wrap; } }
 @media (max-width:540px) { .style-mood-grid { grid-template-columns:minmax(0,1fr); } .style-chapter h2 { @apply tw:text-title-sm; } }
 @media (prefers-reduced-motion:reduce) { .style-sample img { transition:none; } }

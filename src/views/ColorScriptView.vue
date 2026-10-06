@@ -59,7 +59,7 @@
 
     <details class="color-reading">
       <summary><ArchiveIcon name="book" /><span><strong>光色手帖</strong><small>光源对照、氛围观察与提示词用法</small></span><ArchiveIcon name="chevron-down" /></summary>
-      <div class="color-reading-body">
+      <div class="color-reading-body" data-disclosure-content>
     <ColorLightNotebook @choose="chooseMood" />
     <h2 class="section-title">美术指导 · 色彩语言</h2>
     <p class="note tw:mb-s-3 tw:text-body-sm tw:text-muted">写下提示词前，先问自己：“这段文字是否准确勾勒出了心中的氛围与情绪？”</p>

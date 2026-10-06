@@ -1,10 +1,13 @@
 <template>
   <section class="catalog-media" aria-label="样张与封面">
-    <div class="catalog-media-tabs" aria-label="图片用途">
+    <div class="catalog-media-tabs tw:p-s-1 tw:rounded-pill" data-fluid-glass>
+      <div class="studio-segments studio-segments--compact" role="group" aria-label="图片用途"><AnimatedSelection />
       <button type="button" :aria-pressed="mode === 'samples'" @click="mode = 'samples'"><ArchiveIcon name="gallery" />场景样张</button>
       <button type="button" :aria-pressed="mode === 'covers'" @click="mode = 'covers'"><ArchiveIcon name="image" />首页封面</button>
-      <button v-if="mode === 'samples'" class="catalog-media-refresh" type="button" :disabled="loading || manifestLoading" @click="refresh"><ArchiveIcon name="refresh" />刷新图片</button>
+      </div>
+      <button v-if="mode === 'samples'" class="btn btn-ghost btn-sm catalog-media-refresh" type="button" :disabled="loading || manifestLoading" @click="refresh"><ArchiveIcon name="refresh" />刷新图片</button>
     </div>
+    <div v-content-motion:up="mode">
     <template v-if="mode === 'samples'">
       <div class="catalog-media-filters">
         <StudioSearch v-model="search" label="搜索样张" placeholder="搜索场景、蓝图或角色…" />
@@ -14,7 +17,7 @@
       </div>
       <label v-if="adultEnabled" class="catalog-media-sensitive-switch"><input v-model="showAdultImages" type="checkbox" />查看成人样张</label>
       <div class="catalog-media-workspace">
-        <section class="catalog-media-library" aria-label="样张列表" :aria-busy="loading || manifestLoading">
+        <section v-content-motion:up="loading ? false : page" class="catalog-media-library" aria-label="样张列表" :aria-busy="loading || manifestLoading">
           <p class="catalog-media-count" role="status">{{ loading ? '正在读取内容…' : (result?.total ?? 0) + ' 个场景与蓝图' }}</p>
           <ArchiveStatePanel v-if="error || manifestError" compact kind="error" title="图片资料暂时没能读出来" :message="error || manifestError"><button class="btn btn-ghost btn-sm" type="button" @click="refresh">再试一次</button></ArchiveStatePanel>
           <div v-else-if="!loading" class="catalog-media-grid">
@@ -27,9 +30,9 @@
             </button>
           </div>
           <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="没有找到匹配的内容" message="换一个关键词或清除筛选试试。" />
-          <footer class="catalog-pagination"><button type="button" :disabled="loading || page <= 1" @click="page--">上一页</button><span>{{ result?.page ?? page }} / {{ totalPages }}</span><button type="button" :disabled="loading || page >= totalPages" @click="page++">下一页</button></footer>
+          <nav class="catalog-pagination" aria-label="样张分页"><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page <= 1" @click="page--">上一页</button><span role="status">{{ result?.page ?? page }} / {{ totalPages }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page >= totalPages" @click="page++">下一页</button></nav>
         </section>
-        <section ref="previewPane" class="catalog-media-detail" aria-label="当前样张">
+        <section ref="previewPane" v-content-motion:fade="selectedImageId" class="catalog-media-detail" aria-label="当前样张">
           <template v-if="selectedImageId">
             <p class="catalog-media-eyebrow">{{ selectedSample?.type === 'popular' ? '角色蓝图' : '场景故事' }} · {{ characterNames[selectedSample?.char ?? ''] || '未命名角色' }}</p>
             <h3>{{ selectedImageTitle }}</h3>
@@ -45,9 +48,10 @@
     <template v-else>
       <header class="catalog-media-intro"><div><h2>首页的第一眼</h2><p>宁宁和夏目的首页封面可以分别更换，随时恢复内置图。</p></div></header>
       <div class="catalog-hero-grid"><button v-for="hero in homeHeroes" :key="hero.id" class="catalog-hero-card" type="button" :aria-pressed="selectedHeroId === hero.id" @click="previewHero(hero)"><RuntimeImage :src="hero.image" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="hero.title + '的首页封面'" /><ArchiveIcon v-else name="image" /></RuntimeImage><span><strong>{{ hero.title }}</strong><small>{{ hero.updatedAt ? '自定义封面 · ' + hero.updatedAt : '使用内置封面' }}</small></span></button></div>
-      <section v-if="selectedHeroId" class="catalog-hero-editor"><div class="catalog-media-canvas"><RuntimeImage :src="heroUrl" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="selectedHeroTitle + '的首页封面预览'" /></RuntimeImage></div><div><h3>{{ selectedHeroTitle }}的首页封面</h3><p class="catalog-note">更换后首页即可使用这张图，角色立绘和场景样张分别维护。</p><div class="catalog-actions"><button class="btn btn-primary" type="button" :disabled="uploadBusy" @click="pickHero">{{ uploadBusy ? '正在保存图片…' : '替换封面' }}</button><button class="btn btn-ghost" type="button" :disabled="uploadBusy" @click="resetHero">恢复内置图</button></div></div></section>
+      <section v-if="selectedHeroId" v-content-motion:fade="selectedHeroId" class="catalog-hero-editor"><div class="catalog-media-canvas"><RuntimeImage :src="heroUrl" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="selectedHeroTitle + '的首页封面预览'" /></RuntimeImage></div><div><h3>{{ selectedHeroTitle }}的首页封面</h3><p class="catalog-note">更换后首页即可使用这张图，角色立绘和场景样张分别维护。</p><div class="catalog-actions"><button class="btn btn-primary" type="button" :disabled="uploadBusy" @click="pickHero">{{ uploadBusy ? '正在保存图片…' : '替换封面' }}</button><button class="btn btn-ghost" type="button" :disabled="uploadBusy" @click="resetHero">恢复内置图</button></div></div></section>
       <input ref="heroFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onHeroPicked" />
     </template>
+    </div>
     <p class="catalog-media-feedback" role="status" aria-live="polite" :class="{ 'catalog-error': showcaseError }">{{ showcaseFeedback }}</p>
   </section>
 </template>
@@ -58,6 +62,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { useSceneShowcaseUpload, type ShowcaseSceneItem } from '@/composables/scene/useSceneShowcaseUpload'
 import { useCatalogMedia, showcaseItem } from '@/composables/scene/useCatalogMedia'
 import type { CatalogRecord, CatalogSummary } from '@/api/catalogApi'

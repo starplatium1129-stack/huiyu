@@ -23,7 +23,7 @@
     </div>
     <div class="gallery-orbit-caption">
       <p class="gallery-orbit-title">{{ currentTitle }}</p>
-      <div class="gallery-orbit-navigation"><span>{{ index + 1 }} / {{ items.length }}</span><input type="range" aria-label="选择作品" min="0" :max="Math.max(0, items.length - 1)" step="1" :value="index" :disabled="items.length < 2" :aria-valuetext="`第 ${index + 1} 幅，共 ${items.length} 幅：${currentTitle}`" @input="select(Number(($event.target as HTMLInputElement).value))" /></div>
+      <div class="gallery-orbit-navigation" data-fluid-glass><span>{{ index + 1 }} / {{ items.length }}</span><input type="range" aria-label="选择作品" min="0" :max="Math.max(0, items.length - 1)" step="1" :value="index" :disabled="items.length < 2" :aria-valuetext="`第 ${index + 1} 幅，共 ${items.length} 幅：${currentTitle}`" @input="select(Number(($event.target as HTMLInputElement).value))" /></div>
       <small>{{ dragging ? '松开选定作品' : '拖拽或滚轮切换 · 方向键逐幅浏览' }}</small>
     </div>
   </div>

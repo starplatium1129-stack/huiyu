@@ -11,7 +11,7 @@
             <RouterLink to="/prompt-builder" class="btn btn-lg btn-ghost"><ArchiveIcon name="image" />直接去绘制台</RouterLink>
           </div>
           <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
-          <div class="hero-muses studio-segments" role="group" aria-label="首页角色视觉">
+          <div class="hero-muses studio-segments" data-fluid-glass role="group" aria-label="首页角色视觉">
             <AnimatedSelection />
             <button type="button" :aria-pressed="homeMuse === 'nene'" @click="selectMuse('nene', $event)"><span class="muse-marker muse-marker-nene" aria-hidden="true"></span> 绫地宁宁</button>
             <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="selectMuse('natsume', $event)"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span> 四季夏目</button>

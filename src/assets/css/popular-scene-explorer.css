@@ -45,6 +45,7 @@
 /* Reserve the planned frame while loading; contain keeps the whole thumbnail visible. */
 .pop-thumb {
   @apply tw:relative tw:block;
+  width:100%; padding:0; border:0; cursor:zoom-in;
   aspect-ratio: var(--scene-preview-ratio, 4 / 3);
   @apply tw:overflow-hidden;
   border-radius:0;

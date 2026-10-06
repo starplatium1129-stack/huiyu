@@ -89,9 +89,9 @@ void main() {
       track = orbit(a,band,radius);
       vec2 direction = next.xy-track.xy;
       vec2 normal = normalize(vec2(-direction.y,direction.x));
-      point = center+mix(track.xy,next.xy,corner.x)+normal*(corner.y-.5)*3.0;
+      point = center+mix(track.xy,next.xy,corner.x)+normal*(corner.y-.5)*1.8;
       dimensions = vec2(0.0);
-      alpha = .17+finishing*.07;
+      alpha = .32+finishing*.08;
     } else {
       float dotId = index-384.0;
       float tail = dotId >= 78.0 && dotId < 114.0 ? mod(dotId-78.0,6.0)+1.0 : 0.0;
@@ -151,8 +151,10 @@ void main() {
   vec3 tint = tone < .5 ? accent : tone < 1.5 ? cyan : violet;
   float roundness = smoothstep(.1,.7,time);
   float mask = mix(1.0,1.0-smoothstep(.62,1.0,length(local)),roundness);
-  mask = mix(mask,exp(-dot(local,local)*3.2)*(1.0-smoothstep(.75,1.0,length(local))),orbPhase);
-  if (ribbon > .5) mask = exp(-local.y*local.y*5.0);
+  float core = 1.0-smoothstep(.26,.46,length(local));
+  float halo = exp(-dot(local,local)*3.2)*(1.0-smoothstep(.75,1.0,length(local)))*.18;
+  mask = mix(mask,max(core,halo),orbPhase);
+  if (ribbon > .5) mask = 1.0-smoothstep(.55,1.0,abs(local.y));
   vec3 pigment = mix(texel.rgb,tint,1.0-hasImage*(1.0-orbPhase));
   color = vec4(pigment,mix(1.0,texel.a,hasImage*(1.0-orbPhase))*alpha*mask);
 }`

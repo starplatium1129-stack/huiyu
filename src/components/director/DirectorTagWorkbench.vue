@@ -29,6 +29,7 @@
           <ArchiveIcon name="chevron-down" class="wardrobe-chevron" />
         </span>
       </summary>
+      <div data-disclosure-content>
       <p class="wardrobe-description">一键跨角色换装（露背毛衣 / 兔女郎 / 系带水着 / 圣诞装等），带自动防冲突</p>
       <div class="outfit-preset-list universal-preset-list">
         <StudioTooltip v-for="preset in universalWardrobePresets" :key="preset.id" :content="preset.description">
@@ -41,6 +42,7 @@
             <small>{{ preset.description }}</small>
           </button>
         </StudioTooltip>
+      </div>
       </div>
     </details>
 
@@ -78,14 +80,15 @@
     </div>
     <p v-else class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；下方词条可直接用于专家模式微调，成人蓝图仅对成年角色可见。</p>
     <div class="tag-browser">
-      <input v-model="tagSearch" class="tag-input" type="search" aria-label="搜索词条" placeholder="搜索中文含义或 Danbooru 英文标签…" />
-      <div class="tag-categories" role="group" aria-label="词条分类">
+      <StudioSearch v-model="tagSearch" class="tag-search tw:mb-s-2" label="搜索词条" placeholder="搜索中文含义或 Danbooru 英文标签…" />
+      <div class="tag-categories studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="词条分类">
+        <AnimatedSelection />
         <button v-for="cat in tagCategories" :key="cat.id" type="button"
           :class="{ active: tagCategory === cat.id }"
           :aria-pressed="tagCategory === cat.id"
           @click="tagCategory = cat.id">{{ cat.label }}</button>
       </div>
-      <div class="tag-results">
+      <div v-content-motion:right="tagCategory" class="tag-results">
         <StudioTooltip v-for="tag in visibleTags" :key="tag.en" :content="tagMeaning(tag.en, tag.cn)">
           <button
             type="button"
@@ -120,6 +123,8 @@ import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { confirmAction } from '@/composables/useConfirm'
 import {
   OUTFIT_BUNDLES,

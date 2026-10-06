@@ -1,7 +1,7 @@
 <template>
   <div class="panel step-panel" id="stepChar">
     <div class="panel-title">角色 · Character</div>
-    <div class="char-source studio-segments studio-segments--compact" role="group" aria-label="角色来源">
+    <div class="char-source studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="角色来源">
       <AnimatedSelection />
       <button type="button" class="char-source-btn" :class="{ active: !pb.isPopular }"
         :aria-pressed="!pb.isPopular" @click="$emit('selectSource', 'studio')">
@@ -15,7 +15,7 @@
       </button>
     </div>
 
-    <template v-if="!pb.isPopular">
+    <div v-if="!pb.isPopular" v-content-motion:right="!pb.isPopular" class="character-source-content">
       <div class="char-row studio-character-gallery" role="group" aria-label="工作室角色">
         <button v-for="c in charOptions" :key="c.id"
           class="char-btn studio-character-choice" type="button"
@@ -40,9 +40,9 @@
           type="button"
           @click="pb.toggleManualTag(t.tag)">{{ t.label }}</button>
       </div>
-    </template>
+    </div>
 
-    <template v-else>
+    <div v-else v-content-motion:right="pb.isPopular" class="character-source-content">
       <PopularCharacterPicker
         v-model:search="popularSearch"
         :characters="pb.popularCharacters"
@@ -51,7 +51,7 @@
         @select="$emit('selectCharacter', $event)"
         @select-outfit="$emit('selectOutfit', $event)"
       />
-    </template>
+    </div>
   </div>
 </template>
 

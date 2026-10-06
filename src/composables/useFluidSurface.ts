@@ -48,7 +48,7 @@ export const FLUID_POPOVER_SELECTOR = FLUID_POPOVER_SELECTORS.join(', ')
 /** Sample the existing spring once; native timelines keep fading while a newly
  * opened form lays out. Retarget from presentation and retain spring velocity. */
 function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: number, frequency: number,
-  transform: (progress: number) => string, write: (progress: number, backdrop?: boolean) => void,
+  transform: ((progress: number) => string) | undefined, write: (progress: number, backdrop?: boolean) => void,
 ): ReturnType<typeof createFluidMotion> {
   const spring = new FluidSpring(initial, frequency)
   let effects: Animation[] = [], origin = { value: initial, velocity: 0 }
@@ -82,12 +82,12 @@ function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: number, 
       const progress = [sample.value]
       for (let frame = 0; frame < 120 && !sample.settled; frame++) progress.push(sample.step(1 / 60))
       const opacity = progress.map(value => ({ opacity: value }))
-      const transforms = progress.map(value => ({ transform: transform(value) }))
+      const transforms = transform ? progress.map(value => ({ transform: transform(value) })) : null
       const timing = { duration: Math.max(1, (progress.length - 1) * 1000 / 60), fill: 'both' as const, easing: 'linear' }
       try {
-        const root = el.animate(panel === el ? opacity.map((value, index) => ({ ...value, ...transforms[index] })) : opacity, timing)
+        const root = el.animate(panel === el && transforms ? opacity.map((value, index) => ({ ...value, ...transforms[index] })) : opacity, timing)
         effects.push(root)
-        if (panel !== el) effects.push(panel.animate(transforms, timing))
+        if (panel !== el && transforms) effects.push(panel.animate(transforms, timing))
         if (el instanceof HTMLDialogElement) effects.push(el.animate(opacity, { ...timing, pseudoElement: '::backdrop' }))
         for (const effect of effects) void effect.finished.catch(() => {})
         void root.finished.then(() => { if (token === version) finish() }, () => { if (token === version) finish() })
@@ -155,7 +155,8 @@ export function useFluidSurface(panelSelector?: string) {
     const spring = isFullscreenViewer ? 5.2 : 4.8
     if (isFullscreenViewer && !hasVisibleSource) panel.style.transformOrigin = 'center center'
 
-    const transform = (progress: number) => `translateY(${(1 - progress) * -travel}px) scale(${scale + (1 - scale) * progress})`
+    // Even an identity transform changes the containing block for fixed children.
+    const transform = stationary ? undefined : (progress: number) => `translateY(${(1 - progress) * -travel}px) scale(${scale + (1 - scale) * progress})`
     const promote = () => {
       // Promote only while moving. rAF style writes otherwise keep large,
       // newly opened forms on the main-thread paint path.
@@ -168,9 +169,9 @@ export function useFluidSurface(panelSelector?: string) {
       // Native ::backdrop is a separate top-layer surface, not a child: fading
       // the dialog alone leaves a solid scrim that vanishes abruptly on close.
       if (backdrop && el instanceof HTMLDialogElement) el.style.setProperty('--fluid-backdrop-opacity', String(progress))
-      panel.style.transform = transform(progress)
+      if (transform) panel.style.transform = transform(progress)
     }
-    const motion = typeof el.animate === 'function' && typeof panel.animate === 'function'
+    const motion = typeof el.animate === 'function' && (!transform || typeof panel.animate === 'function')
       ? compositedMotion(el, panel, initial, spring, transform, write)
       : createFluidMotion([initial], ([progress]) => write(progress), spring)
     const current = { motion, restore }

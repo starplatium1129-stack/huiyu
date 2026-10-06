@@ -29,7 +29,7 @@
       <Transition :css="false" @enter="archiveMotion.enter" @enter-cancelled="archiveMotion.dispose" @after-leave="archiveMotion.dispose">
       <div v-if="!showShelf" class="library-layout">
         <BrowsingCharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
-        <div class="library-detail" data-route-arrive v-content-motion:up="current?.id">
+        <div class="library-detail" data-route-arrive>
       <section v-if="current" ref="profileAnchor" class="character-hero card-direct card-level-3">
         <CharacterParticleStage :character-id="current.id" :name="current.name" :initial-original="preferOriginal">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">
@@ -92,7 +92,7 @@
 
       <details v-if="current?.lora" :key="current.id" class="character-production">
         <summary><span><ArchiveIcon name="image" />模型信息</span><span class="production-hint">LoRA 与触发词</span></summary>
-        <div class="production-content">
+        <div class="production-content" data-disclosure-content>
           <section v-if="current.lora" class="detail-section">
             <h3 class="lab">绑定 LoRA</h3>
             <div v-if="current.lora.name" class="char-lora">档案登记：<code>{{ current.lora.name }}</code></div>

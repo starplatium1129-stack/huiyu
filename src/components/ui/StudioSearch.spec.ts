@@ -2,6 +2,16 @@ import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import StudioSearch from './StudioSearch.vue'
 describe('collection search keyboard', () => {
+  it('lets a containing character dialog own Escape without clearing its search', async () => {
+    const wrapper=mount(StudioSearch,{props:{modelValue:'樱花',label:'搜索角色',clearOnEscape:false}})
+    try {
+      await wrapper.get('input').trigger('keydown',{key:'Escape'})
+      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      const event=wrapper.emitted('keydown')?.[0]?.[0] as KeyboardEvent
+      expect(event.key).toBe('Escape')
+      expect(event.defaultPrevented).toBe(false)
+    } finally { wrapper.unmount() }
+  })
   it('preserves IME composition, clears on Escape, and refocuses the field after button clearing', async () => {
     const wrapper=mount(StudioSearch,{attachTo:document.body,props:{modelValue:'樱花',label:'搜索作品'}})
     await wrapper.get('input').trigger('keydown',{key:'Escape',isComposing:true})

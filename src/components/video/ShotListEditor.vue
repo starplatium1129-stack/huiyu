@@ -192,7 +192,7 @@
             <p class="video-install-note">建议 1–2 分钟片拆 8–15 镜</p>
           </div>
         </div>
-        <div class="shot-toolbar">
+        <div class="shot-toolbar tw:p-s-2 tw:rounded-lg" data-fluid-glass>
           <StudioSelect size="sm" label="从场景蓝图快速填充镜头描述" v-model="sceneFillId" :options="sceneFillOptions" :disabled="batchActive || submitting" />
           <button class="btn btn-ghost" type="button" :disabled="batchActive || submitting" @click="addShot"><ArchiveIcon name="gallery" />添加镜头</button>
           <StudioSelect size="sm" label="选择场景蓝图生成四镜剧本" v-model="storyboardBlueprintId" :options="storyboardOptions" :disabled="storyboardBusy || batchActive || submitting" />

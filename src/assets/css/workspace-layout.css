@@ -14,7 +14,6 @@
 .library-page .library-detail .pop-hero-stat strong { @apply tw:text-body tw:text-primary; }
 .library-page .library-detail .pop-hero-copy h2 { font: 500 var(--fs-title)/var(--lh-tight) var(--font-serif); @apply tw:mb-s-3; }
 .library-page .library-detail .pop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.library-page .library-detail .pop-toolbar { @apply tw:top-[80px]; }
 .library-page .library-detail .character-hero { grid-template-columns: minmax(0, min(44%, calc(max(340px, 100dvh - 370px) * var(--portrait-ratio, .7)))) minmax(0, 1fr); @apply tw:gap-s-6 tw:p-0; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
 .library-page .library-detail .character-hero::before, .library-page .library-detail .character-hero::after { @apply tw:hidden; }
 .library-page .library-detail .portrait { @apply tw:min-h-0; max-height: none; border: 0; border-radius: 0; background: transparent; box-shadow: none; }

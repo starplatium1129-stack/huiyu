@@ -1,14 +1,16 @@
 <template>
   <section class="runtime-result tw:grid tw:gap-s-3 tw:mt-s-3" aria-label="任务结果">
-    <div class="result-toolbar tw:flex tw:flex-wrap tw:items-center tw:gap-s-2">
+    <div class="result-toolbar tw:flex tw:flex-wrap tw:items-center tw:gap-s-2" data-fluid-glass>
       <StudioSelect v-if="task.resultRefs.length > 1" label="选择任务结果" size="sm" inline :model-value="index" :options="resultOptions" @update:model-value="index = Number($event)" />
       <button v-if="selected?.mime.startsWith('image/')" class="btn btn-primary" :disabled="busy || task.deliveryState === 'saved'" @click="save">{{ task.deliveryState === 'saved' ? '已入册' : busy ? '保存中…' : '保存到作品册' }}</button>
       <button class="btn btn-ghost" :disabled="!url && !selected?.mime.startsWith('video/')" @click="download">下载结果</button>
     </div>
     <p v-if="message" role="status">{{ message }}</p>
+    <div v-content-motion:fade="loading ? false : index">
     <p v-if="loading" role="status">正在读取已保存的结果…</p>
     <img v-else-if="url && selected?.mime.startsWith('image/')" :src="url" alt="生成结果" />
     <StudioMediaPlayer v-else-if="selected?.mime.startsWith('video/') && local" :src="runtimeResultPath(task, index)" label="生成的视频结果" kind="video" />
+    </div>
   </section>
 </template>
 <script setup lang="ts">

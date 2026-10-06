@@ -50,13 +50,14 @@
           <div class="sd-queue-title">{{ job.title }}</div>
           <div class="sd-queue-meta">{{ job.size }} · seed {{ seedLabel(job.seed) }}</div>
         </div>
-        <button class="sd-queue-remove" type="button" aria-label="移出队列" @click="emit('remove', job.id)">×</button>
+        <button class="sd-queue-remove" type="button" aria-label="移出队列" @click="emit('remove', job.id)"><ArchiveIcon name="close" /></button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import BorderBeam from '@/components/visual/BorderBeam.vue'
 import type { SDQueueJob } from '@/composables/generation/useSDQueue'

@@ -37,7 +37,7 @@
       <LocalSetupPreparation v-if="snapshot" :snapshot="snapshot" :desktop="!!desktop" :workspace-pending="workspacePending" :workspace-unconfirmed="workspaceUnconfirmed" @workspace="openWorkspace" @refresh="refresh" @verification-result="recordVerification" @download-result="recordDownload" />
       <details class="setup-details">
         <summary>查看路径与详细检查<span v-if="snapshot">{{ checkedAtLabel }}</span></summary>
-        <div class="setup-detail-body">
+        <div data-disclosure-content class="setup-detail-body">
           <div class="setup-detail">
             <h3>1. AI 工作区与 ComfyUI</h3>
             <template v-if="snapshot">

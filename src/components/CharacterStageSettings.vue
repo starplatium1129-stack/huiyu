@@ -2,7 +2,7 @@
   <Teleport v-if="companion" to="body">
     <dialog ref="dialog" class="character-settings-dialog open-character-stage" :data-character="characterId" aria-label="角色取景与外观"
       @cancel.prevent.stop="close" @click="onBackdrop" @keydown.esc.stop>
-      <header class="character-settings-heading">
+      <header class="character-settings-heading" data-fluid-glass>
         <h2>角色取景与外观</h2>
         <button type="button" class="character-settings-close" aria-label="关闭角色设置" autofocus @click="close"><ArchiveIcon name="close" /></button>
       </header>
@@ -11,7 +11,7 @@
   </Teleport>
   <details v-else ref="details" class="character-controls" @keydown.esc.stop="close">
     <summary><ArchiveIcon name="gear" /><span>角色设置</span></summary>
-    <div class="character-controls-panel"><slot /></div>
+    <div data-disclosure-content class="character-controls-panel"><slot /></div>
   </details>
 </template>
 

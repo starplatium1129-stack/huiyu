@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { reactive } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import PopularSceneExplorerView from './PopularSceneExplorerView.vue'
 
 const access = vi.hoisted(() => ({ local: true, eligibility: 'adult' }))
@@ -35,8 +35,12 @@ beforeEach(() => {
   navigation.extra = 0
 })
 afterEach(() => { wrapper?.unmount() })
+const previewStub = defineComponent({
+  name: 'SceneArtworkViewer', props: ['modelValue', 'items'], emits: ['update:modelValue', 'after-close'],
+  setup(_props, { expose }) { expose({ capture: vi.fn() }); return () => null },
+})
 async function mountLibrary() {
-  wrapper = shallowMount(PopularSceneExplorerView, { global: { stubs: { RuntimeImage: false, RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' }, StudioTooltip: { template: '<slot />', inheritAttrs: false } } } })
+  wrapper = shallowMount(PopularSceneExplorerView, { global: { directives: { 'content-motion': {} }, stubs: { RuntimeImage: false, SceneArtworkViewer: previewStub, RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' }, StudioTooltip: { template: '<slot />', inheritAttrs: false } } } })
   await flushPromises()
   return wrapper
 }
@@ -81,7 +85,10 @@ describe('角色场景的本机访问边界', () => {
     expect(card.get('.pop-decision').text()).toContain('832×1216')
     expect(card.get('.pop-draw-action').text()).toBe('绘制这一幕')
     expect(card.get('.pop-draw-action').attributes('href')).toBe('/prompt-builder?popular=fixture&blueprint=safe')
-    expect(card.get('.pop-thumb').attributes('href')).toBe(card.get('.pop-draw-action').attributes('href'))
+    expect(card.get('.pop-thumb').element.tagName).toBe('BUTTON')
+    await card.get('.pop-thumb').trigger('click')
+    expect(page.findComponent({ name: 'SceneArtworkViewer' }).props('modelValue')).toBe('safe')
+    expect(page.findComponent({ name: 'SceneArtworkViewer' }).props('items').find((item: { id: string }) => item.id === 'safe').src).toContain('/scene-showcase/images/pc_fixture_safe.jpg')
     expect(card.find('details .pop-draw-action').exists()).toBe(false)
   })
 
@@ -107,6 +114,17 @@ describe('角色场景的本机访问边界', () => {
     expect(card.get('img').classes()).toContain('pop-thumb-missing')
     expect(card.get('.pop-draw-action').attributes('href')).toBe('/prompt-builder?popular=fixture&blueprint=safe')
     expect(page.get('[data-blueprint-id="legacy-safe"]').find('.pop-preview-missing').exists()).toBe(false)
+  })
+
+  it('新预览只收到当前可浏览池，R18 样张继续声明受保护', async () => {
+    const page = await mountLibrary()
+    const viewer = page.findComponent({ name: 'SceneArtworkViewer' })
+    expect(viewer.props('items').filter((item: { restricted: boolean }) => item.restricted).map((item: { id: string }) => item.id)).toEqual(['adult', 'rated-image'])
+    await page.get('[data-blueprint-id="rated-image"] .pop-thumb').trigger('click')
+    expect(viewer.props('modelValue')).toBe('rated-image')
+    viewer.vm.$emit('update:modelValue', 'safe')
+    await flushPromises()
+    expect(viewer.props('modelValue')).toBe('safe')
   })
 
   it('同页角色导航更新列表和绘制目标，清除旧搜索且不重新读取目录', async () => {

@@ -176,13 +176,6 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     if (leaving && leaving !== el) settle(leaving)
     departingPath = pathname(el.dataset.routePath || '')
     const destination = pathname(destinationPath?.() || '')
-    if (destinationPath && !archivePair(departingPath, destination)) {
-      interrupted.delete(el)
-      el.inert = true
-      settle(el)
-      done()
-      return
-    }
     const current = presentation(el)
     interrupted.delete(el)
     el.inert = true
@@ -221,6 +214,15 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     el.inert = false
     el.dataset.routeEntering = 'true'
   }
+  /** A cached AppLayout delegates entry to its inner route, but still releases its own leave state. */
+  function completeEnter(element: Element, done: () => void) {
+    const el = element as HTMLElement
+    settle(el)
+    interrupted.delete(el); departed.delete(el); workspaceDeparted.delete(el)
+    el.inert = false
+    delete el.dataset.routeEntering
+    done()
+  }
   function motionChanged() { if (prefersReducedMotion()) settleAll() }
   function visibilityChanged() { if (document.hidden) settleAll() }
   let stopListening: (() => void) | undefined
@@ -233,5 +235,5 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     settleAll()
     stopListening?.()
   })
-  return { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled }
+  return { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled, completeEnter }
 }

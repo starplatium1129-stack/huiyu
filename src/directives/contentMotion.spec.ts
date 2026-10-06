@@ -31,6 +31,23 @@ it('does not start nested effects while the route is entering or a panel is hidd
   delete el.dataset.routeEntering; el.style.display = 'none'; update(el)
   expect(el.animate).not.toHaveBeenCalled()
 })
+it('reveals the native disclosure body on open and keeps its summary still on close', () => {
+  const stop = installContentMotion(), details = document.createElement('details'), summary = document.createElement('summary')
+  const { el, animation } = panel()
+  summary.textContent = '详细信息'; summary.animate = vi.fn(); details.animate = vi.fn()
+  el.setAttribute('data-disclosure-content', '')
+  details.append(summary, el); document.body.append(details)
+  try {
+    details.open = true
+    expect(el.animate).toHaveBeenCalledOnce()
+    expect(summary.animate).not.toHaveBeenCalled(); expect(details.animate).not.toHaveBeenCalled()
+    details.open = false
+    expect(animation.cancel).toHaveBeenCalledOnce(); expect(el.animate).toHaveBeenCalledOnce()
+    el.removeAttribute('data-disclosure-content')
+    details.open = true
+    expect(el.animate).toHaveBeenCalledTimes(2)
+  } finally { stop(); details.remove() }
+})
 it('settles moving content on keyboard input and keeps keyboard selection feedback still', () => {
   const stop = installContentMotion()
   try {

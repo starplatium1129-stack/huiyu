@@ -11,7 +11,7 @@
       <div class="search-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
         <div class="collection-scope showcase-browse-modes studio-segments" role="group" aria-label="画册浏览方式"><AnimatedSelection /><button class="filter-pill" type="button" :class="{ active: !albumsOpen }" :aria-pressed="!albumsOpen" @click="showImages">{{ typeFilter === 'all' ? '全部样张' : '画册样张' }}</button><button class="filter-pill" type="button" :class="{ active: albumsOpen }" :aria-pressed="albumsOpen" @click="showAlbums"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button></div>
         <StudioSearch v-show="!albumsOpen" v-model="searchQuery" class="search-field" id="showcaseSearch" label="搜索画册" placeholder="搜索场景、情绪、角色或关键词…" />
-        <div v-show="!albumsOpen" class="filter-group collection-scope studio-segments tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center" role="group" aria-label="样张来源">
+        <div v-show="!albumsOpen" class="filter-group collection-scope studio-segments tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center" data-fluid-glass role="group" aria-label="样张来源">
           <AnimatedSelection />
           <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
         </div>
@@ -19,7 +19,7 @@
       </div>
       <details v-show="!albumsOpen" class="showcase-filters">
         <summary><span>细选画册</span><span class="filter-summary">{{ filterSummary }}</span><ArchiveIcon name="chevron-down" /></summary>
-        <div class="filter-details">
+        <div class="filter-details" data-disclosure-content>
           <div class="filter-group filter-dropdowns tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center">
             <label for="showcaseTypeSelect">作品类型
               <StudioSelect :key="`type-${typeFilter}`" id="showcaseTypeSelect" v-model="typeFilter" label="筛选作品类型"
@@ -28,7 +28,8 @@
               <StudioSelect id="showcaseCharSelect" v-model="charFilter" label="筛选角色"
                 :options="allCharOptions.map(opt => ({ value: opt.v, label: opt.l }))" /></label>
           </div>
-          <div class="rating-options"><span>内容分级</span><div class="filter-group tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center">
+          <div class="rating-options"><span>内容分级</span><div class="filter-group studio-segments studio-segments--compact tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center" data-fluid-glass role="group" aria-label="内容分级">
+            <AnimatedSelection />
             <button v-for="opt in RATING_OPTS" :key="opt.v" class="filter-pill" :class="{active:ratingFilter===opt.v}" type="button" :aria-pressed="ratingFilter===opt.v" @click="ratingFilter=opt.v">{{ opt.l }}</button>
           </div></div>
         </div>
@@ -72,7 +73,7 @@
       <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
 
-    <div v-else data-route-arrive v-content-motion:up="`${scope}:${typeFilter}:${charFilter}:${ratingFilter}:${searchQuery}`" class="showcase-grid" :aria-busy="manifestLoading">
+    <div v-else data-route-arrive v-content-motion:up="`${scope}:${typeFilter}:${charFilter}:${ratingFilter}`" class="showcase-grid" :aria-busy="manifestLoading">
       <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)"
         :featured="featured.has(entry.id)"
         :character-label="charLabel(entry.char)" :rating-label="ratingLabel(entry.rating)"
@@ -94,7 +95,7 @@
             :src="imgSrc(currentEntry)" :preview-src="viewerPreviewSrc" :thumb-urls="viewerThumbs" :title="entry => entry.title"
             @select="openViewer(filtered[$event].id)" @close="closeViewer" @toggle-original="toggleOriginalViewer" @dismiss-info="closeViewerInfo"
             @interact="viewerHero.cancel" @load="onViewerImageLoad" @error="viewerImageFailed = true">
-            <template #tools><button class="viewer-info-toggle" type="button" aria-label="作品信息" aria-controls="showcase-viewer-info" :aria-expanded="viewerInfoOpen" @click="openViewerInfo"><ArchiveIcon name="info" /></button></template>
+            <template #tools><button class="viewer-info-toggle" data-fluid-glass type="button" aria-label="作品信息" aria-controls="showcase-viewer-info" :aria-expanded="viewerInfoOpen" @click="openViewerInfo"><ArchiveIcon name="info" /></button></template>
           </ArtworkViewerStage>
           <aside id="showcase-viewer-info" class="viewer-info" :inert="narrowViewer && !viewerInfoOpen" :aria-hidden="narrowViewer && !viewerInfoOpen ? true : undefined" aria-labelledby="showcase-viewer-title">
             <header class="viewer-info-header"><span class="viewer-kicker">参考画册</span><button class="viewer-info-close" type="button" @click="closeViewerInfo"><ArchiveIcon name="close" />关闭信息</button></header>
@@ -105,7 +106,7 @@
               <span>{{ ratingLabel(currentEntry.rating) }}</span>
               <span>{{ currentEntry.category }}</span>
             </div>
-            <details v-if="currentEntry.meta" class="viewer-details"><summary>创作参数 <ArchiveIcon name="chevron-down" /></summary><div class="viewer-meta viewer-meta-gen">
+            <details v-if="currentEntry.meta" class="viewer-details"><summary>创作参数 <ArchiveIcon name="chevron-down" /></summary><div class="viewer-meta viewer-meta-gen" data-disclosure-content>
               <span v-if="currentEntry.meta.engine">引擎 {{ currentEntry.meta.engine }}</span>
               <span v-if="currentEntry.meta.checkpoint">Checkpoint {{ currentEntry.meta.checkpoint }}</span>
               <span v-if="currentEntry.meta.model">模型 {{ currentEntry.meta.model }}</span>

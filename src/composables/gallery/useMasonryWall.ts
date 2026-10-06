@@ -1,24 +1,24 @@
 import { ref, onActivated, onDeactivated, onMounted, onUnmounted, computed, type Ref } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
 
-export interface MasonryGroup {
+export interface MasonryGroup<T extends Pick<ArtworkRecord, 'id'> = ArtworkRecord> {
   key: string
-  columns: ArtworkRecord[][]
+  columns: T[][]
 }
 
 /**
  * 将时间分组内的作品按照最短列贪心分发到各列。
  * 当出现较矮的横图时，后续作品会自动填充到该列下方，保持各列高度平衡，图与图紧密咬合零空位。
  */
-export function buildMasonryGroups(
-  groups: Array<{ key: string; items: ArtworkRecord[] }>,
-  ratioOf: (item: ArtworkRecord) => number,
+export function buildMasonryGroups<T extends Pick<ArtworkRecord, 'id'> = ArtworkRecord>(
+  groups: Array<{ key: string; items: T[] }>,
+  ratioOf: (item: T) => number,
   columnCount: number,
-  previous: MasonryGroup[] = []
-): MasonryGroup[] {
+  previous: MasonryGroup<T>[] = []
+): MasonryGroup<T>[] {
   const cols = Math.max(1, columnCount)
   return groups.map(group => {
-    const columns: ArtworkRecord[][] = Array.from({ length: cols }, () => [])
+    const columns: T[][] = Array.from({ length: cols }, () => [])
     const heights: number[] = new Array(cols).fill(0)
     const placements = new Map<string | number, number>()
     const prior = previous.find(value => value.key === group.key)

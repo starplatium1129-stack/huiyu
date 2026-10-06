@@ -42,6 +42,7 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
   <section class="gallery-generation-filters" aria-label="生成条件与常用组合">
     <details :open="expanded" @toggle="toggled">
       <summary><ArchiveIcon name="pin" /><span>生成条件与常用组合</span><span v-if="filterCount">{{ filterCount }} 项条件</span><ArchiveIcon name="chevron-down" /></summary>
+      <div data-disclosure-content>
       <div class="generation-fields">
         <label v-for="field in fields" :key="field.key" class="generation-field"><span>{{ field.label }}</span>
           <StudioSelect :model-value="conditions[field.key]" :label="`按${field.label}筛选`" :options="[{ value: '', label: field.all }, ...options[field.key]]" @update:model-value="updateCondition(field.key, $event)" />
@@ -68,6 +69,7 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
       </form>
       <p v-if="message" class="generation-note" role="status">{{ message }}</p>
       <p v-if="error" class="generation-error" role="alert">{{ error }}</p>
+      </div>
     </details>
   </section>
 </template>

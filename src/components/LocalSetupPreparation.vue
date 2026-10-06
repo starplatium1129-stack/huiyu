@@ -1,7 +1,7 @@
 <template>
   <details class="preparation">
     <summary>手动管理已有环境与逐项下载<span>{{ models.length - matched }} 项文件待核对</span></summary>
-    <div class="preparation-body">
+    <div data-disclosure-content class="preparation-body">
       <p>先核对运行方式、真实目录与来源，再显式下载固定模型文件。绘遇不会在这里安装程序、执行脚本或代你接受许可。</p>
       <label class="route-label" for="setup-comfy-route">ComfyUI 的运行方式</label>
       <StudioSelect id="setup-comfy-route" v-model="route" class="route-select" label="ComfyUI 的运行方式" :options="[
@@ -9,7 +9,7 @@
         { value: 'portable', label: 'Windows Portable（由便携包启动）' },
         { value: 'manual', label: '已有源码 / Python 环境' },
       ]" />
-      <ol class="preparation-steps">
+      <ol v-content-motion:fade="route" class="preparation-steps">
         <li>
           <h3>准备对应硬件的运行环境</h3>
           <template v-if="route === 'desktop'">

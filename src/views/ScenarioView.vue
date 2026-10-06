@@ -3,12 +3,13 @@
     <CreativeLibraryHeader title="剧本模式" description="选一本故事手帖，从一幕心动，翻到故事的结尾。" />
     <header class="scenario-library-heading">
       <div><h2>选一本故事手帖</h2><p>{{ SCENARIOS.length }} 本故事 · 封面为氛围参考</p></div>
-      <div class="char-toggle tw:flex tw:gap-s-2" role="group" aria-label="剧本角色">
+      <div class="char-toggle studio-segments" data-fluid-glass role="group" aria-label="剧本角色">
+        <AnimatedSelection />
         <button v-for="c in CHARACTER_OPTIONS" :key="c" class="char-btn" :class="{ active: currentChar === c }" :aria-pressed="currentChar === c" type="button" @click="currentChar = c"><ArchiveIcon :name="c" />{{ c === 'nene' ? '宁宁' : '夏目' }}</button>
       </div>
     </header>
     <div class="scenario-workspace" data-route-arrive>
-      <div class="scenario-list" role="group" aria-label="故事手帖">
+      <div class="scenario-list" v-content-motion:fade="currentChar" role="group" aria-label="故事手帖">
         <button v-for="s in SCENARIOS" :key="s.id" type="button" class="scenario-card" :class="{ active: activeScenario?.id === s.id }" :aria-pressed="activeScenario?.id === s.id" @click="openScenario(s)">
           <span class="scenario-cover" :class="{ 'is-unconnected': !loadingReferences && !available.has(coverId(s.id)) }" :data-character="currentChar">
             <RuntimeImage :src="available.has(coverId(s.id)) ? '/scene-showcase/thumbs/' + coverId(s.id) + '.jpg' : undefined" v-slot="{ image, failed }">
@@ -19,16 +20,16 @@
           <span class="scenario-book-copy tw:grid tw:gap-s-2 tw:p-s-4"><span class="scenario-book-title tw:flex tw:items-center tw:justify-between tw:gap-s-2"><strong class="scenario-name">{{ s.name }}</strong><ArchiveIcon v-if="activeScenario?.id === s.id" name="success" /></span><span class="scenario-desc">{{ s.desc }}</span><span class="scenario-count">{{ s.acts.length }} 幕故事<span>{{ s.en }}</span></span></span>
         </button>
       </div>
-      <section v-if="activeScenario" v-content-motion:up="activeScenario.id" class="viewer show" aria-label="分幕手帖">
+      <section v-if="activeScenario" class="viewer show" aria-label="分幕手帖">
         <header class="viewer-header-row"><div><span class="scenario-kicker">分幕手帖 / {{ activeScenario.acts.length }} 幕</span><h2 class="viewer-h2"><ArchiveIcon :name="activeScenario.iconName" />{{ activeScenario.name }}</h2><p class="viewer-desc">{{ activeScenario.desc }}</p></div><button class="btn btn-primary scenario-to-video" type="button" @click="sendToVideoStudio"><ArchiveIcon name="clap" />送入分镜短片（{{ activeScenario.acts.length }} 幕 → {{ activeScenario.acts.length }} 镜）</button></header>
-        <div class="acts" :style="{ '--act-count': activeScenario.acts.length }">
+        <div class="acts" data-route-arrive v-content-motion:up="`${activeScenario.id}:${currentChar}`" :style="{ '--act-count': activeScenario.acts.length }">
           <article v-for="a in activeScenario.acts" :key="activeScenario.id + a.n" class="act" :data-act="a.n">
             <div class="act-heading tw:flex tw:items-center tw:gap-s-3"><span class="act-num">{{ a.n }}</span><div><h3 class="act-title">{{ a.title }}</h3><span class="act-en">{{ a.en }}</span></div></div>
             <div class="act-intent"><span class="act-framing" :style="{ '--act-ratio': resInfo(a.res).dim.replace('×', ' / ') }" aria-hidden="true"><ArchiveIcon :name="frameIcon(a.res)" /></span><div><span class="act-emotion">{{ a.emotion }}</span><p class="act-desc">{{ a.desc }}</p></div></div>
             <div class="act-format"><span>{{ currentChar === 'nene' ? '宁宁' : '夏目' }} · {{ a.res }}</span><span>{{ resInfo(a.res).dim }}</span></div>
             <details class="act-details">
               <summary><span>提示词与参数</span><ArchiveIcon name="chevron-down" /></summary>
-              <div class="act-details-body">
+              <div class="act-details-body" data-disclosure-content>
                 <p class="act-settings">LoRA {{ a.lora }} · {{ LOCK_PARAMS }}</p>
                 <p class="res-rec">{{ resInfo(a.res).reason }} · {{ resInfo(a.res).vram }}</p>
                 <div v-if="violations(a).length" class="art-warn show"><ArchiveIcon name="warning" />本幕有 {{ violations(a).length }} 个违反美术规范的标签: {{ violations(a).join(', ') }}</div>
@@ -55,6 +56,7 @@ import { useRouter } from 'vue-router'
 import { useVideoStore, type StagedScenarioAct } from '@/stores/videoStore'
 import { useToast } from '@/composables/useToast'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useMoodReferences } from '@/composables/useMoodReferences'
 import { BANNED_TAGS } from '@/utils/promptPolicy'

@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links" aria-label="绘制区快捷导航">
+    <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links tw:w-fit tw:rounded-pill tw:p-s-1" data-fluid-glass aria-label="绘制区快捷导航">
       <a href="#drawing-materials">创作素材</a><a href="#drawing-canvas">画布预览</a><a href="#stepResult">输出设置</a>
     </nav>
     <div ref="layoutRoot" class="director-workspace">
@@ -119,7 +119,7 @@
 
       </div>
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
-      <div class="director-col col-left" id="drawing-materials">
+      <div v-content-motion:fade="pb.directorMode" class="director-col col-left" id="drawing-materials">
         <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :scene-context="String(route.query.scene || route.query.blueprint || '')">
         <template #story>
 
@@ -146,7 +146,7 @@
         </DirectorMaterialDrawer>
       </div>
 
-      <DirectorInspector ref="inspector" :queue-count="sdQueue.total.value" :busy="generationBusy">
+      <DirectorInspector ref="inspector" v-content-motion:fade="pb.directorMode" :queue-count="sdQueue.total.value" :busy="generationBusy">
         <template #render>
           <PromptInspectorRender :bindings="renderBindings">
             <template #style><PromptInspectorStyle :bindings="styleBindings" /></template>

@@ -28,7 +28,6 @@
     background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 70%, transparent), color-mix(in srgb, var(--accent) 62%, transparent));
     background-clip: padding-box;
   }
-  .pb .scene-search:focus ~ .scene-list,
   .pb .scene-list:hover { max-height: var(--scene-list-max-height, min(54vh, 640px)); }
   .pb .scene-scope {
     @apply tw:grid; grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-[2px] tw:mb-s-2 tw:p-[3px];

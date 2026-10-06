@@ -5,7 +5,7 @@
         <div class="room-title-group"><span class="room-eyebrow">HUIYU / COMPANION ROOM</span><h1 class="room-title">此刻，与你</h1></div>
         <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
       </div>
-      <div class="chat-actions">
+      <div class="chat-actions tw:p-s-1 tw:rounded-pill" data-fluid-glass>
         <button class="btn btn-ghost" type="button" :aria-pressed="immersive" @click="toggleImmersive"><ArchiveIcon :name="immersive ? 'chat' : 'moon'" />{{ immersive ? '展开对话' : '专注陪伴' }}</button>
         <button class="btn btn-ghost" type="button" @click="clearCharacterConversation">新对话</button>
         <ChatActionsMenu

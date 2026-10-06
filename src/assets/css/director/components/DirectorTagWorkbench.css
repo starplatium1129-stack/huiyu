@@ -128,10 +128,10 @@
   .pb .tag-categories button {
     flex:0 0 auto; @apply tw:min-h-[28px]; padding:0 var(--s-2);
     border:1px solid var(--border-soft); @apply tw:rounded-pill;
-    background:var(--bg-deep); @apply tw:text-muted tw:cursor-pointer;
+    background:transparent; @apply tw:text-secondary tw:cursor-pointer;
     font:600 var(--fs-mono-xs) var(--font-sans);
   }
-  .pb .tag-categories button.active { @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent; }
+  .pb .tag-categories button.active { border-color:transparent; background:transparent; @apply tw:text-accent; }
   .pb .tag-results { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-[4px] tw:max-h-[280px] tw:overflow-auto tw:pr-[2px]; }
   /* 截断告知：还有多少条没显示（2026-08-30 UX 审计——原先静默截断，用户以为库里只有这些） */
   .pb .tag-more-hint { margin:6px 0 0; @apply tw:text-muted tw:text-label-sm tw:leading-label; }

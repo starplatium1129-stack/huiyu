@@ -1,15 +1,15 @@
 <template>
   <div>
     <template v-if="record.id === 'tags' && Array.isArray(record.data)">
-      <input v-model="query" class="input" type="search" aria-label="搜索标签" placeholder="搜索标签…" />
+      <StudioSearch v-model="query" label="搜索标签" placeholder="搜索标签…" />
       <p class="hint-sm">修改名称或删除用词时，相关故事也会一起更新。保存前可以核对这些变化。</p>
-      <div v-for="tag in pagedTags" :key="String(tag.id)" class="form-grid catalog-tag-row">
+      <div v-content-motion:right="page" class="catalog-tag-page"><div v-for="tag in pagedTags" :key="String(tag.id)" class="form-grid catalog-tag-row">
         <label v-for="field in tagFields" :key="field[0]" class="form-group"><span class="field-label">{{ field[1] }}</span><input v-model="tag[field[0]]" class="input" :disabled="disabled" /></label>
         <label class="form-group"><span class="field-label">权重</span><input v-model.number="tag.weight" class="input" type="number" min="0.01" max="2" step="0.1" :disabled="disabled" /></label>
         <button class="btn btn-danger btn-sm" type="button" :disabled="disabled" @click="tagRows.splice(tagRows.indexOf(tag), 1)">删除标签</button>
-      </div>
+      </div></div>
       <button class="btn btn-ghost" type="button" :disabled="disabled" @click="addTag">新增标签</button>
-      <div class="catalog-actions"><button class="btn btn-ghost btn-sm" type="button" :disabled="page <= 1" @click="page--">上一页</button><span>{{ page }} / {{ pages }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="page >= pages" @click="page++">下一页</button></div>
+      <nav class="catalog-pagination" aria-label="标签分页"><button class="btn btn-ghost btn-sm" type="button" :disabled="page <= 1" @click="page--">上一页</button><span role="status">{{ page }} / {{ pages }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="page >= pages" @click="page++">下一页</button></nav>
     </template>
     <template v-else-if="record.id === 'curation'">
       <label v-for="field in curationFields" :key="field[0]" class="form-group catalog-curation-field"><span class="field-label">{{ field[1] }}</span><textarea class="input" rows="5" :value="list(field[0])" :disabled="disabled" @change="setList(field[0], ($event.target as HTMLTextAreaElement).value)"></textarea><span class="hint-sm">每行填写一份故事的编号，顺序就是展示次序</span></label>
@@ -20,6 +20,7 @@
 </template>
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
 import type { CatalogRecord } from '@/api/catalogApi'
 defineProps<{ disabled: boolean }>()
 const record = defineModel<CatalogRecord>('record', { required: true })

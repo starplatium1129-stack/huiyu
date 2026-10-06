@@ -99,7 +99,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
         v-if="open"
         :id="listboxId"
         role="listbox"
-        class="companion-picker-content"
+        class="companion-picker-content" data-fluid-glass
         :aria-label="label"
         @pointerdown.stop
       >

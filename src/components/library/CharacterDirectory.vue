@@ -1,9 +1,9 @@
 <template>
-  <aside class="character-directory" :class="{ 'directory-catalog': catalog }" aria-label="角色目录">
+  <aside class="character-directory" :class="{ 'directory-catalog': catalog }" :data-fluid-glass="catalog ? undefined : 'sidebar'" aria-label="角色目录">
     <!-- Catalog searches stay fixed while the series and result lists scroll independently. -->
     <div v-if="catalog" class="directory-rail tw:flex tw:flex-col tw:gap-s-2 tw:min-w-0 tw:min-h-0 tw:pr-s-3">
       <label :for="seriesInputId" class="directory-rail-title tw:m-0 tw:text-muted tw:text-label-xs tw:font-semibold">按作品筛选</label>
-      <input :id="seriesInputId" v-model="seriesQuery" class="directory-series-search" type="search" aria-label="搜索作品目录" placeholder="搜索作品…" @keydown="onSeriesSearchKeydown" />
+      <StudioSearch :id="seriesInputId" v-model="seriesQuery" class="directory-series-search" label="搜索作品目录" placeholder="搜索作品…" :clear-on-escape="false" @keydown="onSeriesSearchKeydown" />
       <div ref="rail" class="directory-series tw:flex tw:flex-col tw:gap-s-1 tw:min-h-0 tw:overflow-y-auto" role="group" aria-label="按作品浏览" @keydown="onRailKeys">
         <button type="button" :aria-pressed="!series" @click="series = ''">全部作品</button>
         <button v-for="group in filteredGroups" :key="group.key" type="button"
@@ -13,11 +13,11 @@
     <div class="directory-main tw:flex tw:min-h-0">
       <div class="directory-tools">
         <label class="directory-heading" :for="inputId">选择角色 <span v-if="!catalog">{{ items.length }}</span></label>
-        <input :id="inputId" v-model="query" type="search" aria-label="搜索角色或作品" placeholder="角色名、作品或别名…" :autofocus="catalog" @keydown="onSearchKeydown" />
+        <StudioSearch :id="inputId" v-model="query" class="directory-search" label="搜索角色或作品" placeholder="角色名、作品或别名…" :autofocus="catalog" :clear-on-escape="false" @keydown="onSearchKeydown" />
         <StudioSelect v-if="!catalog" v-model="series" label="筛选角色系列" :options="[{ value: '', label: '全部系列' }, ...groups.map(group => ({ value: group.key, label: `${group.label} · ${group.count}` }))]" />
         <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="query = ''; series = ''">清除筛选</button></div>
       </div>
-      <div ref="list" class="directory-list tw:min-h-[120px] tw:overflow-y-auto" role="group" aria-label="角色列表" @keydown="onListKeys">
+      <div ref="list" v-content-motion:up="`${series}:${page}`" class="directory-list tw:min-h-[120px] tw:overflow-y-auto" role="group" aria-label="角色列表" @keydown="onListKeys">
         <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :tabindex="tabStopId === item.id ? 0 : -1" @focus="focusedId = item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
           <CharacterPortrait :src="resolveRuntimeUrl(item.image)" :name="item.name" />
           <span class="directory-label">
@@ -47,6 +47,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterPortrait from './CharacterPortrait.vue'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 export interface DirectoryCharacter { id: string; name: string; source: string; image?: string; aliases?: string[] }
 const props = withDefaults(defineProps<{ items: DirectoryCharacter[]; selectedId: string; catalog?: boolean; pageSize?: number }>(), { catalog: false, pageSize: 0 })
@@ -179,7 +180,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-tools { @apply tw:p-s-4 tw:grid tw:gap-s-3 tw:shrink-0; }
 .directory-heading { @apply tw:flex tw:justify-between tw:text-body-sm tw:font-semibold; }
 .directory-heading span, .directory-count { @apply tw:text-muted tw:text-label-xs; }
-.directory-tools input { @apply tw:min-w-0 tw:w-full tw:min-h-[40px]; padding: var(--s-2) var(--s-3); @apply tw:text-primary; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:rounded-md; font: inherit; @apply tw:text-label; }
+.directory-search { width:100%; min-width:0; }
 /* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；布局（宽度）落在 wrapper。 */
 .directory-tools .studio-select-wrapper { @apply tw:w-full tw:min-w-0 tw:min-h-[40px]; }
 .directory-count, .directory-current { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-2; }
@@ -202,7 +203,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 /* catalog：作品筛选侧栏 + 角色结果区，滚动职责分别归属筛选栏与结果列表。 */
 .directory-catalog { @apply tw:static; max-height: none; @apply tw:min-h-0; flex: 1 1 auto; @apply tw:grid; grid-template-columns: minmax(0, 208px) minmax(0, 1fr); @apply tw:gap-s-4; border: 0; background: transparent; }
 .directory-rail { border-right: 1px solid var(--border-soft); }
-.directory-series-search { flex-shrink:0; width:100%; min-width:0; min-height:36px; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-primary); font:inherit; font-size:var(--fs-label-sm); }
+.directory-series-search { flex-shrink:0; width:100%; min-width:0; }
 .directory-series { overscroll-behavior: contain; padding: var(--s-1) var(--s-1) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-1); }
 .directory-series button { border: 1px solid transparent; @apply tw:rounded-md; padding: var(--s-2) var(--s-3); @apply tw:min-h-[36px] tw:text-secondary; background: var(--bg-deep); font: inherit; @apply tw:text-label tw:cursor-pointer; }
 .directory-pagination .studio-select-wrapper { @apply tw:min-h-[36px]; }

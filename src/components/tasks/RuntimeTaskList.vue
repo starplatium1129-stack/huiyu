@@ -1,6 +1,6 @@
 <template>
   <section class="runtime-task-list tw:flex tw:flex-col tw:gap-s-3 tw:min-h-0" aria-label="工作区任务和结果收件箱">
-    <nav aria-label="工作区任务筛选"><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button><button class="btn btn-ghost" :disabled="!!busy" @click="refresh">更新状态</button></nav>
+    <div class="runtime-task-controls tw:flex tw:flex-wrap tw:items-center tw:gap-s-2"><div class="studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="工作区任务筛选"><AnimatedSelection /><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button></div><button class="btn btn-ghost" :disabled="!!busy" @click="refresh">更新状态</button></div>
     <p class="inbox-explanation">切换页面后，已接收任务由本地运行时继续处理。结果先保存在收件箱，入册设置保持不变。</p>
     <p v-if="runtimeTaskError || feedback" role="status">{{ feedback || runtimeTaskError }}</p>
     <div v-content-motion="selected" class="runtime-task-items tw:grid tw:gap-s-3 tw:min-h-0">
@@ -28,6 +28,7 @@
 </template>
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 const RuntimeTaskResult = defineAsyncComponent(() => import('./RuntimeTaskResult.vue'))
 import { refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, confirmWebuiTaskStopped, markRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
 import { runtimeTasks, runtimeTaskError, pendingTaskRequests } from '@/stores/runtimeTaskState'
@@ -70,10 +71,9 @@ async function act(task: TaskRecord, action: 'cancel' | 'reconcile' | 'resume' |
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.runtime-task-list nav, .runtime-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
-.runtime-task-list nav [aria-pressed="true"] { @apply tw:text-accent tw:border-accent; background: var(--accent-soft); }
+.runtime-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
 .runtime-task-list { flex:1; overflow:hidden; }
-.runtime-task-list nav,.runtime-task-list > p { flex-shrink:0; }
+.runtime-task-list .runtime-task-controls,.runtime-task-list > p { flex-shrink:0; }
 .runtime-task-items { flex:1; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; padding-right:var(--s-1); }
 .runtime-task { border:0; background:var(--bg-base); }
 .runtime-task header { @apply tw:flex tw:justify-between tw:gap-s-3; }
@@ -85,6 +85,5 @@ async function act(task: TaskRecord, action: 'cancel' | 'reconcile' | 'resume' |
 .runtime-task[data-state='succeeded']:not([data-attention]) header span { color:var(--success-text); }
 .runtime-task time { display:block; margin-top:var(--s-3); font-size:var(--fs-label-xs); }
 .runtime-task .runtime-actions { gap:var(--s-2); padding-top:var(--s-3); border-top:1px solid var(--border-soft); }
-.runtime-task-list nav .btn { border-color:transparent; }
 .runtime-task-list :disabled { @apply tw:text-disabled; }
 </style>

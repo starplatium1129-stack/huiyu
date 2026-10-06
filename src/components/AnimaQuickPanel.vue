@@ -69,7 +69,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
        <span>{{ state.family === 'krea2' ? 'Krea 2 · Comfy 创作引擎' : 'Anima · 生成参数' }}</span>
       <span class="anima-status" :class="state.online ? 'is-on' : 'is-off'">{{ state.online ? '● 在线' : '○ 离线' }}</span>
     </summary>
-    <div class="anima-body tw:flex tw:flex-col tw:gap-[8px]">
+    <div data-disclosure-content class="anima-body tw:flex tw:flex-col tw:gap-[8px]">
        <p class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">{{ state.checkMsg }}</p>
        <p v-if="capabilities.promptFormat === 'natural-language'" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>Krea 2 实验</strong> · 纯自然语言、无角色 LoRA，身份还原需以实际出图为准。</p>
         <p v-else-if="noLoraMode" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>无需 LoRA</strong> · 通用底模直出，不加载角色 LoRA，身份由词条锚定</p>
@@ -135,7 +135,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </template>
       </div>
 
-      <details class="anima-prompt-details"><summary>查看引擎接收的提示词</summary>
+      <details class="anima-prompt-details"><summary>查看引擎接收的提示词</summary><div data-disclosure-content>
       <label :for="idOf('prompt')" class="anima-label tw:mt-[4px]">正向提示词</label>
       <textarea :id="idOf('prompt')" :value="state.prompt" rows="4" class="anima-textarea tw:w-full tw:rounded-sm tw:resize-y" readonly></textarea>
 
@@ -144,7 +144,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
          <textarea :id="idOf('negative')" :value="state.negative" rows="2" class="anima-textarea tw:w-full tw:rounded-sm tw:resize-y" readonly></textarea>
        </template>
 
-      </details>
+      </div></details>
       <div v-if="busy" class="anima-progress tw:grid tw:gap-[5px] tw:mt-[4px]" aria-live="polite">
         <div class="anima-progress-copy tw:flex tw:justify-between tw:gap-[8px] tw:text-secondary tw:text-label-xs">
           <span>{{ state.progressText || state.statusText || 'ComfyUI 正在推理…' }}<template v-if="state.currentNode"> · 节点 {{ state.currentNode }}</template></span>

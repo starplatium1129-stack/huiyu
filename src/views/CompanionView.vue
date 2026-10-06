@@ -135,7 +135,7 @@
         <span>{{ presence.label }}</span>
       </div>
 
-      <section class="companion-conversation" aria-label="简洁对话">
+      <section v-content-motion:fade="activeChar" class="companion-conversation" aria-label="简洁对话">
         <TransitionGroup
           v-if="behaviorEnabled && pendingReminders.length"
           name="reminder-pop"

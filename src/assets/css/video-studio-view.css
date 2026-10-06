@@ -1,6 +1,6 @@
 @reference "./tailwind.css";
-.video-jump-nav { display:flex; flex-wrap:wrap; gap:var(--s-3); }
-.video-jump-nav a { @apply tw:text-label-sm tw:text-secondary; text-decoration:underline; text-underline-offset:3px; }
+.video-jump-nav { display:flex; flex-wrap:wrap; gap:var(--s-1); }
+.video-jump-nav a { display:inline-flex; align-items:center; min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border-radius:var(--r-pill); @apply tw:text-label-sm tw:text-secondary; text-decoration:none; }
 .video-jump-nav a:hover { @apply tw:text-accent; }
 #video-frames, #video-brief, #video-queue { scroll-margin-top:calc(var(--app-navigation-height,80px) + 9rem); }
 #video-settings { scroll-margin-top:calc(var(--app-navigation-height,80px) + var(--s-2)); }
@@ -55,7 +55,7 @@
 }
 .video-mode-card:active:not(:disabled) { transform:scale(.98); }
 .video-mode-card:focus-visible:active { transform:none; transition:none; }
-.video-mode-card.active { background:var(--accent-soft); @apply tw:text-accent; }
+.video-mode-card.active { background:transparent; @apply tw:text-accent; }
 /* 审计修复: 不用 opacity 压字 */
 .video-mode-card:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed; }
 .video-mode-card strong { font-size:var(--fs-body-sm); font-weight:600; }

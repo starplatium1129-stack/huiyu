@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-defineProps<{ label: string; placeholder?: string; id?: string }>()
+const props = withDefaults(defineProps<{ label: string; placeholder?: string; id?: string; clearOnEscape?: boolean; autofocus?: boolean }>(), { clearOnEscape: true, autofocus: false })
 const value = defineModel<string>({ required: true })
 const emit = defineEmits<{ keydown: [event: KeyboardEvent] }>()
 const input = ref<HTMLInputElement | null>(null)
 async function clear() { value.value = ''; await nextTick(); input.value?.focus() }
 function keydown(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229) return
-  if (event.key === 'Escape' && value.value) { event.preventDefault(); event.stopPropagation(); void clear() }
+  if (event.key === 'Escape' && value.value && props.clearOnEscape) { event.preventDefault(); event.stopPropagation(); void clear() }
   emit('keydown', event)
 }
 defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
@@ -16,7 +16,7 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 <template>
   <div data-fluid-glass class="studio-search tw:flex tw:items-center tw:gap-s-2 tw:min-w-0 tw:py-0 tw:px-s-3 tw:border-0 tw:rounded-pill tw:bg-surface tw:text-secondary">
     <ArchiveIcon name="search" />
-    <input :id="id" ref="input" v-model="value" class="studio-search-input tw:w-full tw:min-w-0 tw:min-h-[38px] tw:py-s-2 tw:px-0 tw:border-0 tw:[outline:0] tw:bg-transparent tw:text-primary tw:[font:400_var(--fs-body-sm)_var(--font-sans)] tw:appearance-none" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
+    <input :id="id" ref="input" v-model="value" :autofocus="autofocus" class="studio-search-input tw:w-full tw:min-w-0 tw:min-h-[38px] tw:py-s-2 tw:px-0 tw:border-0 tw:[outline:0] tw:bg-transparent tw:text-primary tw:[font:400_var(--fs-body-sm)_var(--font-sans)] tw:appearance-none" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
     <button v-if="value" type="button" class="tw:grid tw:place-items-center tw:[flex:0_0_32px] tw:w-[32px] tw:h-[32px] tw:border-0 tw:rounded-pill tw:bg-transparent tw:text-secondary tw:cursor-pointer" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
   </div>
 </template>

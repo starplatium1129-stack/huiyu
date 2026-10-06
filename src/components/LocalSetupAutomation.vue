@@ -20,14 +20,14 @@
         <RouterLink v-if="!automation.chatId.value" to="/chat" class="btn btn-ghost btn-sm">在角色房间填写 API Key</RouterLink>
       </div>
     </div>
-    <details v-if="!automation.busy.value"><summary>运行方式与下载清单</summary>
+    <details v-if="!automation.busy.value"><summary>运行方式与下载清单</summary><div data-disclosure-content class="setup-runtime-details">
       <label for="setup-comfy-runtime">绘图环境</label>
       <StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图环境" :options="[{value:'comfy-nvidia',label:'NVIDIA RTX · CUDA 13.0 Portable'},{value:'comfy-cu126',label:'较旧 NVIDIA · CUDA 12.6 Portable'}]" />
       <label for="setup-llama-runtime">聊天运行环境</label>
       <StudioSelect id="setup-llama-runtime" v-model="automation.llamaEnvironment.value" label="聊天运行环境" :options="[{value:'llama-cuda',label:'NVIDIA · CUDA'},{value:'llama-vulkan',label:'Vulkan · 进阶候选'}]" />
       <ul><li v-for="model in automation.plan.value" :key="model.id"><strong>{{ model.label }}</strong> · {{ formatBytes(model.preparation!.expectedBytes) }}<br><a :href="model.preparation!.modelCardUrl" target="_blank" rel="noopener noreferrer">来源说明</a> · <a :href="model.preparation!.licenseUrl" target="_blank" rel="noopener noreferrer">使用条件</a></li></ul>
       <p>驱动、系统授权／重启和网站登录仍可能需要你操作。外部管理的已有环境保留，不能运行时会提示具体缺项。</p>
-    </details>
+    </div></details>
     <p class="setup-download-size">待下载约 {{ formatBytes(automation.downloadBytes.value) }}，解压与作品还需要额外磁盘空间。</p>
     <label class="setup-review"><input v-model="automation.reviewed.value" type="checkbox" :disabled="automation.busy.value">我已确认当前磁盘、推荐组合与使用条件，同意绘遇下载并准备所选能力</label>
     <p v-if="workspaceBlocked" role="status">工作区尚未生效或未确认，请先选择磁盘并按提示重启绘遇。</p>
@@ -67,6 +67,7 @@ const chatOptions=computed(()=>[{value:'',label:'API 聊天 · 不下载本地�
 .setup-fields>div{display:grid;gap:var(--s-2);align-content:start;min-width:0}
 .setup-fields label,.setup-review{display:flex;gap:var(--s-2);align-items:center}
 .setup-automation details{display:grid;gap:var(--s-2)}
+.setup-runtime-details{display:grid;gap:var(--s-2)}
 .setup-buttons{display:flex;flex-wrap:wrap;gap:var(--s-2)}
 .setup-error{color:var(--danger-text)}
 @media(max-width:900px){.setup-fields{grid-template-columns:1fr}}

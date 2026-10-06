@@ -5,7 +5,7 @@
         <span>LONG-TERM MEMORY</span>
         <strong id="chatMemoryTitle">{{ characterName }}的长期记忆</strong>
       </div>
-      <button type="button" class="memory-close" aria-label="关闭长期记忆" @click="close">×</button>
+      <button type="button" class="btn btn-ghost btn-sm btn-icon memory-close" aria-label="关闭长期记忆" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <p>只保存你主动固定的事实。发送消息时最多召回 4 条相关内容，不自动记录角色说过的话。</p>
     <div v-if="!items.length" class="memory-empty">在自己的聊天气泡下点击“记住”，事实会出现在这里。</div>
@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import { onScopeDispose, reactive, watch } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { confirmAction } from '@/composables/useConfirm'
 import type { ChatMemoryItem } from '@/utils/chatMemory'
 

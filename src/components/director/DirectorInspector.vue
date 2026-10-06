@@ -2,7 +2,7 @@
   <TabsRoot v-model="active" as="aside" :unmount-on-hide="false" id="drawing-inspector"
     class="director-inspector inspector-workbench" aria-label="创作参数">
     <div class="inspector-heading"><strong>编辑台</strong><span>{{ busy ? '正在绘制' : '调整这一幕' }}</span></div>
-    <TabsList class="inspector-tabs studio-segments studio-segments--compact" aria-label="参数分类">
+    <TabsList class="inspector-tabs studio-segments studio-segments--compact" data-fluid-glass aria-label="参数分类">
       <AnimatedSelection />
       <TabsTrigger v-for="tab in tabs" :key="tab.id" :value="tab.id" as-child>
         <button :id="`inspector-tab-${tab.id}`" type="button" :aria-controls="`inspector-${tab.id}`">

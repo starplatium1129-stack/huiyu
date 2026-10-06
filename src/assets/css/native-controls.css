@@ -1,5 +1,23 @@
 @reference "./tailwind.css";
 
+/* Native editing fields share Studio geometry; existing component rules own
+   compact editors, transparent search inputs and artwork controls. */
+:where(input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not([type='color']):not([type='hidden']):not([type='button']):not([type='submit']), textarea) {
+  box-sizing:border-box; min-width:0; max-width:100%; min-height:var(--control-height);
+  padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md);
+  background:var(--bg-base); color:var(--text-primary); font:400 var(--fs-body)/var(--lh-body) var(--font-sans);
+}
+:where(textarea) { min-height:96px; resize:vertical; }
+:where(input, textarea)::placeholder { color:var(--text-muted); }
+:where(input, textarea):disabled { color:var(--text-disabled); -webkit-text-fill-color:var(--text-disabled); cursor:not-allowed; }
+/* Unstyled actions use the same baseline as the existing .btn family. */
+:where(button:not([class])) {
+  min-height:var(--control-height); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md);
+  background:var(--bg-surface); color:var(--text-primary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer;
+}
+:where(button):disabled { color:var(--text-disabled); cursor:not-allowed; }
+:where(button, input, textarea):focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
 /* Unified browser-control chrome. Component-specific controls keep precedence.
    2026-09-22 去原生化收尾：全站原生 <select> 已由 src/components/ui/StudioSelect.vue
    接管，本文件不再为原生 select 兜底。故意不补：漏改的地方保留浏览器原生外观，

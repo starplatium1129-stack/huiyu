@@ -1,5 +1,6 @@
 <template>
   <Teleport to="body">
+    <FluidTransition appear>
     <div class="overlay" @click.self="close">
       <section ref="dialog" class="modal-card modal-card-wide generated-scene-dialog" role="dialog" aria-modal="true" aria-labelledby="generated-scene-title" :aria-busy="saving || loading">
         <header class="modal-head">
@@ -8,7 +9,7 @@
         </header>
         <div class="generated-scene-layout">
           <img class="generated-scene-preview" :src="source.previewUrl" alt="将要保存为场景的成片" />
-          <div class="generated-scene-fields">
+          <div v-content-motion:fade="savedId || false" class="generated-scene-fields">
             <p class="generated-scene-note">保留这张成片的生成记录。以后选择场景时仍会按当前规则编译，画面可能有所不同。</p>
             <p class="generated-scene-note">角色：{{ characterName }}<span v-if="source.recipe.outfitId"> · 服装：{{ outfitName }}</span> · {{ engineName }}</p>
             <template v-if="!savedId">
@@ -22,11 +23,11 @@
           </div>
         </div>
         <details class="generated-scene-details">
-          <summary>高级：查看这张图的生成记录</summary>
+          <summary>高级：查看这张图的生成记录</summary><div data-disclosure-content>
           <p class="generated-scene-note">来源提示词只读保留，不需要手动填写。</p>
           <label class="form-group"><span class="field-label">实际正向提示词</span><textarea class="input" :value="source.recipe.prompt" rows="4" readonly /></label>
           <label class="form-group"><span class="field-label">实际负向提示词</span><textarea class="input" :value="source.recipe.negative" rows="2" readonly /></label>
-          <p class="generated-scene-note">尺寸 {{ source.recipe.size || '未记录' }} · Seed {{ source.recipe.seed ?? '未记录' }} · Steps {{ source.recipe.steps ?? '未记录' }} · CFG {{ source.recipe.cfg ?? '未记录' }}</p>
+          <p class="generated-scene-note">尺寸 {{ source.recipe.size || '未记录' }} · Seed {{ source.recipe.seed ?? '未记录' }} · Steps {{ source.recipe.steps ?? '未记录' }} · CFG {{ source.recipe.cfg ?? '未记录' }}</p></div>
         </details>
         <p v-if="loading" class="generated-scene-note" role="status">正在读取场景库…</p>
         <p v-if="error" class="generated-scene-error" role="alert">{{ error }}</p>
@@ -42,6 +43,7 @@
         </footer>
       </section>
     </div>
+    </FluidTransition>
   </Teleport>
 </template>
 
@@ -49,6 +51,7 @@
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { onBeforeRouteLeave, useRouter } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { confirmAction } from '@/composables/useConfirm'

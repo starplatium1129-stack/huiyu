@@ -50,7 +50,7 @@
       <section v-else-if="section === 'bulk'" v-content-motion="section" class="catalog-support-surface">
         <h2>把准备好的修改带进来</h2><p class="catalog-note">选择修改文件或完整备份，先看看哪些内容会变化，再决定保存。</p>
         <label class="catalog-file-picker"><ArchiveIcon name="upload" /><strong>选择整理文件</strong><span>支持修改文件和完整内容备份</span><input type="file" accept="application/json,.json" aria-label="选择整理文件" @change="readBulkFile" /></label>
-        <details class="catalog-advanced"><summary>直接填写修改数据</summary><textarea v-model="bulkInput" class="input catalog-bulk-input" rows="10" aria-label="修改数据"></textarea><button class="btn btn-ghost" type="button" :disabled="busy" @click="loadBulk">读取这些修改</button></details>
+        <details class="catalog-advanced"><summary>直接填写修改数据</summary><div data-disclosure-content><textarea v-model="bulkInput" class="input catalog-bulk-input" rows="10" aria-label="修改数据"></textarea><button class="btn btn-ghost" type="button" :disabled="busy" @click="loadBulk">读取这些修改</button></div></details>
         <p v-if="bulkError" role="alert" class="catalog-error">{{ bulkError }}</p>
         <div v-if="importSnapshot" class="catalog-actions"><span>已读取 {{ importSnapshot.records.length }} 份内容</span><button class="btn btn-ghost" type="button" :disabled="busy || dirty" @click="importContent(true)">看看导入的变化</button><button class="btn btn-primary" type="button" :disabled="busy || dirty || !importPreview" @click="importContent(false)">确认导入</button></div>
       </section>
@@ -59,7 +59,7 @@
           <section class="catalog-library" aria-label="内容列表" :aria-busy="loading">
             <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : (result?.total ?? 0) + ' 份' }}</span></div><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><span aria-hidden="true">＋</span>新建</button></header>
             <StudioSearch v-model="search" label="搜索内容" :placeholder="searchPlaceholder" />
-            <div class="catalog-list-controls">
+            <div class="catalog-list-controls tw:p-s-1 tw:rounded-pill" data-fluid-glass>
               <StudioSelect v-model="sort" label="排列方式" :options="sortOptions" />
               <StudioPopover label="筛选内容" align="start">
                 <template #trigger><button class="catalog-filter-button" type="button" :class="{ active: hasFilters }"><ArchiveIcon name="manager" />筛选<span v-if="hasFilters" class="catalog-filter-dot"></span></button></template>
@@ -72,16 +72,16 @@
               </StudioPopover>
             </div>
             <ArchiveStatePanel v-if="error" compact kind="error" title="内容暂时没能读出来" :message="error"><button class="btn btn-ghost btn-sm" type="button" @click="load">再试一次</button></ArchiveStatePanel>
-            <div class="catalog-record-list">
+            <div v-content-motion:right="loading ? false : page" class="catalog-record-list">
               <button v-for="item in result?.items ?? []" :key="item.id" class="catalog-record-row" type="button" :aria-pressed="selected?.id === item.id && selected.kind === item.kind" :disabled="busy" @click="openContent(item)">
                 <span class="catalog-row-art"><RuntimeImage v-if="rowImage(item)" :src="rowImage(item)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': item.rating === 'R18' }" /><ArchiveIcon v-else :name="kindIcon(item.kind)" /></RuntimeImage><ArchiveIcon v-else :name="kindIcon(item.kind)" /></span>
                 <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small></span><span v-if="isPending(item)" class="catalog-pending-dot" aria-label="有暂存修改"></span>
               </button>
               <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="这里还没有匹配的内容" message="换个关键词，或者从一份新内容开始。" />
             </div>
-            <footer class="catalog-pagination"><button type="button" :disabled="loading || page <= 1" @click="page--" aria-label="上一页">上一页</button><span>{{ page }} / {{ totalPages }}</span><button type="button" :disabled="loading || page >= totalPages" @click="page++" aria-label="下一页">下一页</button></footer>
+            <nav class="catalog-pagination" aria-label="内容分页"><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page <= 1" @click="page--" aria-label="上一页">上一页</button><span role="status">{{ page }} / {{ totalPages }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page >= totalPages" @click="page++" aria-label="下一页">下一页</button></nav>
           </section>
-          <section ref="editorPane" class="catalog-editor-pane" aria-label="内容编辑" :aria-busy="detailLoading">
+          <section ref="editorPane" v-content-motion:fade="detailLoading ? false : `${selected?.kind}:${selected?.id}`" class="catalog-editor-pane" aria-label="内容编辑" :aria-busy="detailLoading">
             <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
             <template v-else-if="selected">
               <CatalogRecordEditor v-model:record="selected" :disabled="busy" :character-names="characterNames" @stage="stage" @duplicate="add(true)" @remove="remove" />

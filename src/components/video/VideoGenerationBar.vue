@@ -19,7 +19,7 @@ defineEmits<{ generate: [] }>()
 </script>
 
 <template>
-  <section class="video-generation-bar" aria-label="视频生成设置" :data-ready="canGenerate || undefined">
+  <section class="video-generation-bar" data-fluid-glass aria-label="视频生成设置" :data-ready="canGenerate || undefined">
     <div class="video-generation-fields">
       <label class="video-generation-field video-generation-aspect"><span>画幅</span>
         <StudioSelect :model-value="aspectRatio" :options="aspectOptions" label="选择视频画幅" :disabled="submitting"

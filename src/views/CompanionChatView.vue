@@ -1,7 +1,7 @@
 <template>
   <article class="companion-chat-window companion-chat-redesign" :data-character="activeChar">
     <a class="skip-link" href="#companion-chat-main">跳到主要内容</a>
-    <header class="desktop-titlebar companion-chat-titlebar" @mousedown="startWindowDrag">
+    <header class="desktop-titlebar companion-chat-titlebar" data-fluid-glass @mousedown="startWindowDrag">
       <div class="companion-chat-identity">
         <ArchiveIcon name="chat" class="companion-chat-brand-icon" />
         <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
@@ -95,10 +95,10 @@
           @input="onInput"
           @keydown.enter.exact="submitChatOnEnter($event, onSend)"
         ></textarea>
-        <div class="companion-chat-actions">
+        <div class="companion-chat-actions tw:p-s-1 tw:rounded-pill" data-fluid-glass>
           <StudioTooltip v-if="speechReady" anchor :content="speechError || '按住说话，松开识别；也可按住 Space'">
             <button
-              class="companion-chat-speech"
+              class="btn btn-ghost btn-sm companion-chat-speech"
               type="button"
               :data-state="speechState"
               :disabled="speechButtonDisabled"
@@ -115,19 +115,19 @@
           </StudioTooltip>
           <StudioTooltip v-else content="配置语音输入">
             <button
-              class="companion-chat-speech companion-chat-speech-config"
+              class="btn btn-ghost btn-sm companion-chat-speech companion-chat-speech-config"
               type="button"
               @click="speechSettingsOpen = true"
             ><ArchiveIcon name="sound" /><span>语音设置</span></button>
           </StudioTooltip>
           <button
             v-if="liveState.busy || liveState.speaking"
-            class="companion-chat-stop"
+            class="btn btn-danger btn-sm companion-chat-stop"
             type="button"
             @click="onStop"
           >停止</button>
           <button
-            class="companion-chat-send"
+            class="btn btn-primary btn-sm companion-chat-send"
             type="button"
             :disabled="!canSend"
             @click="onSend"
@@ -138,7 +138,7 @@
           <span v-if="errorText" class="companion-chat-error">{{ errorText }}</span>
           <span v-if="speechSessionActive" class="companion-chat-continuous">
             连续对话中
-            <button type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd">×</button>
+            <button type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button>
           </span>
         </div>
       </div>
@@ -164,3 +164,9 @@ import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
 const { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock } = useCompanionChatWindow()
 </script>
+
+<style scoped>
+.companion-chat-actions .btn { border-radius:var(--r-pill); font-weight:500; }
+.companion-chat-actions .btn-primary:not(:disabled) { background:var(--accent); color:var(--text-inverse); border-color:transparent; }
+.companion-chat-actions .btn-primary:hover:not(:disabled) { background:var(--accent-hover); }
+</style>

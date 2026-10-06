@@ -1,5 +1,5 @@
 <template>
-  <section class="catalog-change-preview" aria-label="修改预览">
+  <section v-content-motion:up="preview" class="catalog-change-preview" aria-label="修改预览">
     <header><h2>这次改了什么</h2><p>核对好这些变化，再保存或导入。</p></header>
     <details v-for="diff in preview.diffs" :key="diff.kind + ':' + diff.id" open>
       <summary>{{ diff.after ? recordTitle(diff.after) : diff.before ? recordTitle(diff.before) : '待整理的内容' }} <small>{{ !diff.before ? '新加入' : !diff.after ? '将归档' : '已编辑' }}</small></summary>
@@ -7,7 +7,7 @@
         <strong>{{ field.label }}</strong><div><span>原来</span><p>{{ field.before || '尚未填写' }}</p></div><div><span>现在</span><p>{{ field.after || '尚未填写' }}</p></div>
       </div>
       <p v-if="diff.before && diff.after && diff.before.sortOrder !== diff.after.sortOrder" class="catalog-note">展示位置已调整。</p>
-      <details class="catalog-advanced"><summary>查看完整变化</summary><div class="catalog-diff"><pre>{{ JSON.stringify(diff.before?.data ?? null, null, 2) }}</pre><pre>{{ JSON.stringify(diff.after?.data ?? null, null, 2) }}</pre></div></details>
+      <details class="catalog-advanced"><summary>查看完整变化</summary><div data-disclosure-content class="catalog-diff"><pre>{{ JSON.stringify(diff.before?.data ?? null, null, 2) }}</pre><pre>{{ JSON.stringify(diff.after?.data ?? null, null, 2) }}</pre></div></details>
     </details>
   </section>
 </template>

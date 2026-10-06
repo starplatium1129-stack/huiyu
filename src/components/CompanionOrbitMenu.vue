@@ -16,7 +16,7 @@
             <ArchiveIcon :name="action.icon" /><span>{{ action.short }}</span>
           </button>
         </div>
-        <template v-if="category && !compact">
+        <div v-if="category && !compact" v-content-motion:fade="`${category}:${page}`" class="orbit-options-surface">
           <StudioTooltip v-for="(option, index) in visibleOptions" :key="`${category}-${option.id}`" anchor :content="option.label"
             class="orbit-option-tooltip" :style="{ '--orbit-x': position(-67.5 + index * 360 / 8, 193).left, '--orbit-y': position(-67.5 + index * 360 / 8, 193).top }">
           <button type="button" class="orbit-option" :data-value="option.id" :aria-label="option.label"
@@ -27,14 +27,14 @@
             <span>{{ option.shortLabel || option.label }}</span>
           </button>
           </StudioTooltip>
-        </template>
+        </div>
       </div>
       <section v-if="category" class="orbit-selection" :class="{ 'orbit-selection-compact': compact }" :aria-label="categoryLabel">
         <header>
           <button type="button" aria-label="返回常用操作" @click="category = null"><ArchiveIcon name="chevron-down" /></button>
           <strong>{{ categoryLabel }}</strong><span>{{ options.length }} 项</span>
         </header>
-        <div v-if="compact" class="orbit-option-list">
+        <div v-if="compact" v-content-motion:fade="`${category}:${page}`" class="orbit-option-list">
           <button v-for="option in visibleOptions" :key="option.id" type="button" :data-value="option.id" :aria-label="option.label"
             :aria-pressed="category === 'characters' ? option.id === characterId : undefined"
             :disabled="category !== 'characters' && (!controls?.ready || expressionBusy)" @click="choose(option)">
@@ -46,9 +46,9 @@
         <p v-if="category !== 'characters' && !controls?.ready">先在设置中加载动态立绘，再试试{{ categoryLabel }}。</p>
         <p v-else-if="!options.length">这个角色还没有配置{{ categoryLabel }}。</p>
         <footer v-if="pages > 1" class="orbit-pagination">
-          <button type="button" aria-label="上一页" :disabled="page === 0" @click="page--">上一页</button>
+          <button class="btn btn-ghost btn-sm" type="button" aria-label="上一页" :disabled="page === 0" @click="page--">上一页</button>
           <span>{{ page + 1 }} / {{ pages }}</span>
-          <button type="button" aria-label="下一页" :disabled="page + 1 === pages" @click="page++">下一页</button>
+          <button class="btn btn-ghost btn-sm" type="button" aria-label="下一页" :disabled="page + 1 === pages" @click="page++">下一页</button>
         </footer>
         <button v-if="category === 'characters'" class="orbit-manage" type="button" @click="emit('appearance')"><ArchiveIcon name="model" />导入与角色外观</button>
       </section>
@@ -137,6 +137,7 @@ async function choose(option: Option) {
 </script>
 
 <style scoped>
+.orbit-options-surface { position:absolute; inset:0; pointer-events:none; }
 .orbit-option-tooltip { position:absolute; left:var(--orbit-x); top:var(--orbit-y); transform:translate(-50%, -50%); pointer-events:auto; }
 .orbit-option-tooltip :deep(.orbit-option) { position:relative; left:auto; top:auto; transform:none; }
 </style>

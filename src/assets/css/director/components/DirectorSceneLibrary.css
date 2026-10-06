@@ -1,11 +1,6 @@
 @reference "../../tailwind.css";
   /* Scene library (compact list) */
   .pb .scene-search-wrap { @apply tw:relative tw:mb-s-2; }
-  .pb .scene-search { @apply tw:w-full; padding: var(--s-2) 34px var(--s-2) var(--s-3); background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:rounded-md tw:text-primary tw:text-body-sm; outline: none; }
-  .pb .scene-search:focus { @apply tw:border-accent; }
-  .pb .scene-search::placeholder { @apply tw:text-muted; }
-  .pb .scene-search-clear { @apply tw:absolute tw:top-[50%] tw:right-[7px]; transform:translateY(-50%); @apply tw:w-[25px] tw:h-[25px]; border:0; border-radius:50%; background:transparent; @apply tw:text-muted tw:cursor-pointer tw:text-body; }
-  .pb .scene-search-clear:hover { @apply tw:text-accent; background:var(--accent-soft); }
   .pb .scene-filter-actions { @apply tw:inline-flex tw:items-center tw:gap-[8px]; }
   .pb .scene-filter-label { @apply tw:text-muted tw:text-mono-sm tw:font-bold; letter-spacing:.08em; @apply tw:uppercase tw:mb-s-2; }
   .pb .scene-cats { @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:mb-s-2; }

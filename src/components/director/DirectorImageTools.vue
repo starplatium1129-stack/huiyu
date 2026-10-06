@@ -4,7 +4,7 @@
       <h4><ArchiveIcon name="image" />参考图</h4>
       <details class="reference-interrogate inspector-route">
         <summary><span><ArchiveIcon name="search" />图片反推</span><small>{{ interrogateMode === 'caption' ? '画面描述' : '图片词条' }}</small><ArchiveIcon name="chevron-down" /></summary>
-        <div class="reference-interrogate-body">
+        <div data-disclosure-content class="reference-interrogate-body">
           <div class="image-tool-buttons">
             <StudioTooltip anchor content="上传图片，用 PixAI 本地反推；首次需要加载模型">
               <button class="btn btn-ghost" type="button" :disabled="interrogateBusy" @click="$emit('interrogateUpload')">

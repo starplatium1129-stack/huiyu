@@ -3,8 +3,8 @@
     <header class="library-header"><div><div class="page-kicker">SCENE / 02</div><h1>角色场景</h1></div><CharacterContextNav :character-id="selectedId" active="scenes" /></header>
     <div class="library-layout">
       <BrowsingCharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
-      <div class="library-detail" data-route-arrive v-content-motion:up="selectedId">
-    <section class="pop-hero" aria-label="当前角色场景">
+      <div ref="detailEl" class="library-detail">
+    <section class="pop-hero" data-route-arrive v-content-motion:fade="selectedId" aria-label="当前角色场景">
       <figure v-if="selectedCharacter" class="pop-character-art">
         <RuntimeImage :src="popularPortraitSrc(selectedId)" :alt="selectedCharacter.displayName" decoding="async">
           <template #fallback><ArchiveIcon name="image" /></template>
@@ -26,14 +26,16 @@
       <div class="pop-toolbar tw:grid tw:gap-s-3 tw:mb-s-3">
         <div class="pop-toolbar-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
           <StudioSearch v-model="query" class="pop-search-field" id="popularSceneSearch" label="搜索场景" placeholder="搜索场景、地点或氛围…" />
-          <div class="pop-rating-filters tw:inline-flex tw:items-center tw:gap-s-1" role="group" aria-label="分级筛选">
+          <div class="pop-rating-filters studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="分级筛选">
+            <AnimatedSelection />
             <button v-for="r in RATING_OPTS" :key="r.v" type="button" class="pop-rating-pill"
               :class="{ active: ratingFilter === r.v, ['rating-' + r.v]: r.v !== 'all' }"
               :aria-pressed="ratingFilter === r.v"
               @click="ratingFilter = r.v">{{ r.l }}</button>
           </div>
         </div>
-        <div class="pop-cats" role="group" aria-label="场景分类">
+        <div class="pop-cats studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="场景分类">
+          <AnimatedSelection />
           <button v-for="cat in categories" :key="cat.id" type="button" class="pop-cat"
             :class="{ active: category === cat.id, adult: cat.id === '成人' }"
             :aria-pressed="category === cat.id"
@@ -55,14 +57,15 @@
       </ArchiveStatePanel>
 
       <!-- 场景卡片网格 -->
-      <div v-content-motion:up="`${category}:${ratingFilter}`" class="pop-grid">
-        <article v-for="blueprint in paged" :key="blueprint.id" class="pop-card"
+      <div data-route-arrive v-content-motion:up="`${selectedId}:${category}:${ratingFilter}`" class="pop-grid" :style="{ '--scene-columns': columnCount }">
+        <div v-for="(column, columnIndex) in masonryGroups[0]?.columns" :key="columnIndex" class="pop-column">
+        <article v-for="blueprint in column" :key="blueprint.id" class="pop-card"
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id"
           :style="{ '--scene-preview-ratio': blueprint.recommendedSize.replace('x', ' / ') }">
           <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->
           <RuntimeImage v-if="thumbSrc(blueprint)" :src="thumbSrc(blueprint)" v-slot="{ image, loaded, failed }">
-          <RouterLink class="pop-thumb" :class="{ 'is-missing': failed }" :to="drawUrl(blueprint)"
-            :aria-label="`以「${blueprint.title}」开始绘制`">
+          <button class="pop-thumb" :class="{ 'is-missing': failed }" type="button"
+            :aria-label="`欣赏场景：${blueprint.title}`" @click="openPreview(blueprint, $event)">
             <span class="pop-thumb-skeleton" :class="{ visible: !loaded && !failed }" aria-hidden="true"></span>
             <img v-if="image.src" v-bind="image" alt="" loading="lazy" decoding="async"
               :class="{
@@ -70,12 +73,12 @@
                 'pop-thumb-missing': failed,
                 'pop-thumb-ready': loaded,
               }"
-              />
+              @load="measurePreview(blueprint, $event)" />
             <SensitivePreviewVeil v-if="sampleRatingOf(blueprint) === 'R18' && image.src && !failed"
               :src="image.src" :crossorigin="image.crossorigin" />
             <span v-if="failed" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong><span>场景设定已就绪，可以直接绘制</span></span>
             <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
-          </RouterLink>
+          </button>
           </RuntimeImage>
           <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张待补充</strong><span>场景设定已就绪，可以直接绘制</span></span></div>
           <div class="pop-card-body">
@@ -87,7 +90,7 @@
             </footer>
             <details class="pop-scene-details" :open="openDetails.has(blueprint.id)" @toggle="setDetailsOpen(blueprint.id, $event)">
               <summary><span>场景细节</span><ArchiveIcon name="chevron-down" /></summary>
-              <template v-if="openDetails.has(blueprint.id)">
+              <div v-if="openDetails.has(blueprint.id)" data-disclosure-content>
               <p v-if="blueprint.description" class="pop-full-description">{{ displayDescription(blueprint) }}</p>
               <dl class="pop-decision">
                 <div><dt>镜头</dt><dd>{{ shotLabel(blueprint) }}</dd></div>
@@ -96,10 +99,11 @@
                 <div><dt>画幅</dt><dd>{{ blueprint.recommendedSize.replace('x', '×') }}</dd></div>
                 <div v-if="blueprint.adult && artistLabel(blueprint)" class="pop-artist"><dt>画师</dt><dd>{{ artistLabel(blueprint) }}</dd></div>
               </dl>
-              </template>
+              </div>
             </details>
           </div>
         </article>
+        </div>
       </div>
       <div v-if="paged.length < filtered.length" ref="loadSentinel" class="tw:mt-s-5 tw:text-center">
         <button class="btn btn-ghost" type="button" @click="loadMore">加载更多（剩余 {{ filtered.length - paged.length }} 幕）</button>
@@ -107,6 +111,21 @@
     </template>
       </div>
     </div>
+    <SceneArtworkViewer ref="previewViewer" v-model="previewId" :items="previewItems" @after-close="previewBlueprint = null">
+      <template v-if="previewBlueprint" #info>
+        <div class="viewer-meta">{{ selectedCharacter?.displayName }} · {{ previewBlueprint.category }} · {{ timeLabel(previewBlueprint.timeOfDay) }}</div>
+        <section class="viewer-section"><h3>场景设定</h3><p class="viewer-story">{{ displayDescription(previewBlueprint) }}</p></section>
+        <dl class="viewer-record">
+          <div><dt>地点</dt><dd>{{ previewBlueprint.location || '未指定' }}</dd></div>
+          <div><dt>镜头</dt><dd>{{ shotLabel(previewBlueprint) }}</dd></div>
+          <div><dt>光线</dt><dd>{{ lightLabel(previewBlueprint) }}</dd></div>
+          <div><dt>色调</dt><dd>{{ moodLabel(previewBlueprint) }}</dd></div>
+          <div><dt>画幅</dt><dd>{{ previewBlueprint.recommendedSize.replace('x', '×') }}</dd></div>
+          <div v-if="previewBlueprint.adult && artistLabel(previewBlueprint)"><dt>画师</dt><dd>{{ artistLabel(previewBlueprint) }}</dd></div>
+        </dl>
+        <div class="viewer-actions"><RouterLink class="btn btn-primary" :to="drawUrl(previewBlueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink></div>
+      </template>
+    </SceneArtworkViewer>
   </article>
 </template>
 
@@ -115,6 +134,9 @@ import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import SceneArtworkViewer from '@/components/scene/SceneArtworkViewer.vue'
+import { buildMasonryGroups, useMasonryColumns, type MasonryGroup } from '@/composables/gallery/useMasonryWall'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { ref, computed, onMounted, onUnmounted, onActivated, watch } from 'vue'
@@ -225,6 +247,37 @@ const filtered = computed(() => {
 
 const visibleCount = ref(24)
 const paged = computed(() => filtered.value.slice(0, visibleCount.value))
+const detailEl = ref<HTMLElement | null>(null)
+const { columnCount } = useMasonryColumns(detailEl)
+const imageRatios = ref<Record<string, number>>({})
+let previousIds: string[] = [], previousColumns = 0
+const masonryGroups = computed<MasonryGroup<SceneBlueprint>[]>((previous) => {
+  const items = paged.value, count = columnCount.value
+  const stable = count === previousColumns && previousIds.every((id, index) => items[index]?.id === id)
+  previousIds = items.map(item => item.id); previousColumns = count
+  return buildMasonryGroups([{ key: selectedId.value, items }], blueprint => {
+    const [width, height] = blueprint.recommendedSize.split('x').map(Number)
+    return imageRatios.value[blueprint.id] || width / height
+  }, count, stable ? previous : [])
+})
+function measurePreview(blueprint: SceneBlueprint, event: Event) {
+  const image = event.target as HTMLImageElement
+  if (image.naturalWidth && image.naturalHeight) imageRatios.value[blueprint.id] = image.naturalWidth / image.naturalHeight
+}
+const previewViewer = ref<InstanceType<typeof SceneArtworkViewer> | null>(null)
+const previewId = ref<string | null>(null)
+const previewBlueprint = ref<SceneBlueprint | null>(null)
+watch(previewId, id => { if (id) previewBlueprint.value = filtered.value.find(item => item.id === id) ?? null }, { flush: 'sync' })
+const previewItems = computed(() => filtered.value.map(blueprint => {
+  const [width, height] = blueprint.recommendedSize.split('x').map(Number)
+  return { id: blueprint.id, title: blueprint.title, width, height,
+    src: thumbSrc(blueprint).replace('/thumbs/', '/images/'), previewSrc: thumbSrc(blueprint), restricted: sampleRatingOf(blueprint) === 'R18' }
+}))
+function openPreview(blueprint: SceneBlueprint, event: MouseEvent) {
+  const image = (event.currentTarget as HTMLElement).querySelector<HTMLImageElement>('img')
+  previewViewer.value?.capture(sampleRatingOf(blueprint) === 'R18' ? null : image)
+  previewId.value = blueprint.id
+}
 const loadSentinel = ref<HTMLElement | null>(null)
 const openDetails = ref(new Set<string>())
 let moreObserver: IntersectionObserver | undefined
@@ -233,7 +286,7 @@ function setDetailsOpen(id: string, event: Event) {
   if ((event.target as HTMLDetailsElement).open) openDetails.value.add(id)
   else openDetails.value.delete(id)
 }
-watch([selectedId, query, category, ratingFilter], () => { visibleCount.value = 24 })
+watch([selectedId, query, category, ratingFilter], () => { visibleCount.value = 24; previewId.value = null })
 watch(loadSentinel, element => {
   moreObserver?.disconnect()
   if (!element) return

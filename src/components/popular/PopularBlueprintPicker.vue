@@ -52,17 +52,17 @@ const categoryChips = computed(() => {
         {{ chip.label }}<em v-if="chip.count">{{ chip.count }}</em>
       </button>
     </div>
-    <div class="blueprint-reco-head tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap tw:mb-s-2">
+    <div class="blueprint-reco-head tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap tw:mb-s-2 tw:p-s-1 tw:rounded-pill" data-fluid-glass>
       <span v-if="!props.showAll" class="blueprint-reco-note tw:text-mono-sm tw:text-muted" role="status">推荐 {{ props.recommended.length }} 个场景</span>
       <span v-else class="blueprint-reco-note tw:text-mono-sm tw:text-muted" role="status">{{ props.filtered.length }} 个可选场景</span>
-      <button type="button" class="blueprint-reco-btn tw:min-h-[28px] tw:rounded-md tw:text-secondary tw:text-mono-sm tw:cursor-pointer" @click="emit('toggle')">
+      <button type="button" class="btn btn-ghost btn-sm blueprint-reco-btn" @click="emit('toggle')">
         {{ props.showAll ? '收起 · 只看推荐' : '查看全部' }}
       </button>
-      <button v-if="!props.showAll" type="button" class="blueprint-reco-btn tw:min-h-[28px] tw:rounded-md tw:text-secondary tw:text-mono-sm tw:cursor-pointer" @click="emit('rotate')">换一批</button>
+      <button v-if="!props.showAll" type="button" class="btn btn-ghost btn-sm blueprint-reco-btn" @click="emit('rotate')">换一批</button>
     </div>
     <div v-if="!props.dataReady" class="scene-loading">正在加载热门角色场景…</div>
     <div v-else-if="!props.filtered.length" class="scene-empty">没有符合条件的场景建议</div>
-    <div v-else class="blueprint-list tw:flex tw:flex-col tw:gap-s-2 tw:p-s-1">
+    <div v-else v-content-motion:right="`${props.category}:${props.showAll}:${props.recommended[0]?.id}`" class="blueprint-list tw:flex tw:flex-col tw:gap-s-2 tw:p-s-1">
       <button v-for="blueprint in (props.showAll ? props.filtered : props.recommended)"
         :key="blueprint.id" type="button" class="blueprint-card tw:flex tw:flex-col tw:gap-s-2 tw:text-left tw:p-s-3 tw:rounded-lg tw:cursor-pointer"
         :class="{ active: props.selectedBlueprintId === blueprint.id }"
@@ -111,9 +111,8 @@ const categoryChips = computed(() => {
   @apply tw:text-danger-text;
 }
 .blueprint-reco-btn {
-  padding: 3px var(--s-3);
-  border: 1px solid var(--border-soft);
-  background: var(--glass-fill);
+  min-height:var(--control-height-sm);
+  background:transparent;
   transition: border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
 .blueprint-reco-btn:hover { @apply tw:border-accent tw:text-accent; }

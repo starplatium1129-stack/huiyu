@@ -4,7 +4,7 @@
     <div v-show="open" class="global-search" :inert="!open" :aria-hidden="!open" @pointerdown.self="close()">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
         <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>快速查找</strong><span>页面、场景与作品</span></div>
-        <div class="gs-input-row tw:flex tw:items-center tw:gap-s-3">
+        <div class="gs-input-row tw:flex tw:items-center tw:gap-s-3" data-fluid-glass>
           <ArchiveIcon name="search" class="gs-search-icon" />
           <input
             ref="inputEl"

@@ -17,7 +17,7 @@
       </label>
       <details v-if="params.hiresFix" class="sd-advanced-options advanced-decision">
         <summary>高级设置</summary>
-        <div class="sd-advanced-grid">
+        <div data-disclosure-content class="sd-advanced-grid">
           <label>放大<StudioSelect v-model.number="params.hiresScale" size="sm" label="放大倍率" :options="[{ value: 1.5, label: '1.5×' }, { value: 2, label: '2×' }]" @update:model-value="touch('hiresScale')" /></label>
           <label>二阶段步数<input type="number" v-model.number="params.hiresSteps" min="0" max="60" step="1" @change="touch('hiresSteps')"></label>
           <label>重绘幅度<input type="number" v-model.number="params.hiresDenoise" min="0.1" max="0.9" step="0.05" @change="touch('hiresDenoise')"></label>

@@ -11,7 +11,7 @@
     </ol>
     <details class="guide-help tw:mt-s-4 tw:text-secondary tw:text-label">
       <summary>开始前：生成条件、作品保存与参考样张</summary>
-      <div class="guide-help-body tw:pb-s-4 tw:leading-loose">
+      <div class="guide-help-body tw:pb-s-4 tw:leading-loose" data-disclosure-content>
         <p><strong>生成条件：</strong>浏览场景后，可在绘制台确认所选引擎的连接状态。生成需要对应的绘图服务可用；未连接时先完成服务配置。</p>
         <p><strong>作品保存：</strong>本地作品档案与当前浏览器或桌面应用的数据有关。重要作品请及时下载备份，清理浏览器数据前先确认已保存。</p>
         <p><strong>参考样张：</strong>用于了解构图与风格；模型、参数和随机种子会影响结果，每次生成不保证与样张一致。</p>

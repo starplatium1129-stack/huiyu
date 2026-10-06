@@ -20,6 +20,7 @@
   .nav-links :is(> a, .studio-tooltip-anchor > a, a) { @apply tw:rounded-md; }
 }
 .btn-primary { box-shadow: var(--shadow-glass-sm); }
+html :is(.appearance-heading, .task-center > header, .gs-input-row)[data-fluid-glass] { padding:var(--s-3); border-radius:var(--r-lg); }
 .nav-more-menu {
   @apply tw:p-s-3 tw:rounded-xl;
   box-shadow: var(--shadow-glass-elevated);
@@ -30,25 +31,25 @@
 }
 
 /* Shared business surfaces retain opaque content while their chrome carries depth. */
-html :is(.modal-card, .batch-panel, .story-card, .pb-backup-card, .pb-compare,
-  .shot-script-panel, .appearance-dialog, .char-ref-modal, .candidate-compare,
+html :is(.modal-card, .batch-panel, .pb-backup-card, .pb-compare,
+  .shot-script-panel, .appearance-dialog, .candidate-compare,
   .character-browser-dialog, .companion-settings-popover, .companion-workspace-settings,
   .guest-guide-card, .random-popover, .chat-more-menu, .confirm-panel) {
   border-color: var(--glass-edge);
   @apply tw:rounded-xl;
   box-shadow: var(--shadow-glass-elevated);
 }
-html :is(.modal-card, .batch-panel, .story-card, .pb-backup-card, .pb-compare,
+html :is(.modal-card, .batch-panel, .pb-backup-card, .pb-compare,
   .shot-script-panel, .appearance-dialog, .candidate-compare, .character-browser-dialog,
   .companion-settings-popover, .companion-workspace-settings, .guest-guide-card, .random-popover,
   .confirm-panel) {
   background: var(--bg-surface);
 }
-html :is(.modal-card, .batch-panel, .story-card, .pb-backup-card, .shot-script-panel) > :is(h2, h3, header) {
+html :is(.modal-card, .batch-panel, .pb-backup-card, .shot-script-panel) > :is(h2, h3, header) {
   @apply tw:leading-tight;
   letter-spacing: -.01em;
 }
-html :is(.viewer-toolbar, .ref-modal-info, .candidate-compare > header, .character-browser-heading, .pb-compare-head, .story-card-head) {
+html :is(.candidate-compare > header, .character-browser-heading, .pb-compare-head) {
   @apply tw:border-soft;
 }
 html [data-fluid-leaving] { @apply tw:pointer-events-none; }
@@ -60,7 +61,7 @@ html[data-reduced-motion="true"] *::after {
   scroll-behavior: auto !important;
 }
 html[data-reduced-motion="true"] .route-loader i { @apply tw:w-full; transform: none; }
-html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .story-drawer, .overlay, .nav, .gallery-toolbar, .gen-bar, .pb .gen-bar) {
+html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .overlay, .nav, .gallery-toolbar, .gen-bar, .pb .gen-bar) {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   background: var(--bg-surface) !important;
@@ -72,6 +73,6 @@ html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-bac
     .companion-workspace-settings, .guest-guide-card, .random-popover, .chat-more-menu) {
     background: Canvas; color: CanvasText; border: 1px solid CanvasText; box-shadow: none;
   }
-  html :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .story-drawer, .overlay) { backdrop-filter: none; }
+  html :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .overlay) { backdrop-filter: none; }
   html .gs-input:focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
 }

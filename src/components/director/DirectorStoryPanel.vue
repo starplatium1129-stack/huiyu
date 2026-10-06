@@ -11,7 +11,7 @@
     <p class="visual-description-hint">故事记录这一刻的情绪；画面描述写清希望在图中看到的细节。</p>
     <div v-if="pb.activeScene" class="scene-context">
       <span class="scene-context-title">{{ pb.activeScene.title }}</span>
-      <button class="scene-context-detach" type="button" @click="detachScene()">× 解除场景绑定</button>
+      <button class="btn btn-ghost btn-sm scene-context-detach" type="button" @click="detachScene()"><ArchiveIcon name="close" />解除场景绑定</button>
     </div>
     <div class="story-chips">
       <button v-for="s in storyChips" :key="s" type="button" class="story-chip"
@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { storyChips } from '@/composables/scene/directorOptions'
 import '@/assets/css/director/components/DirectorStoryPanel.css'
 

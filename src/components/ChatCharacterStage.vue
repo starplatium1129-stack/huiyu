@@ -105,7 +105,7 @@
         <div
           v-if="outfitOptions.length > 1 && wardrobeOpen"
           :id="`${activeId}-wardrobe-menu`"
-          class="wardrobe-menu"
+          class="wardrobe-menu" data-fluid-glass v-content-motion:down="wardrobeOpen"
           role="group"
           :aria-label="`${character.name}服装`"
         >

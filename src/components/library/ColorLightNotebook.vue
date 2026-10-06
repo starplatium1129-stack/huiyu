@@ -4,13 +4,14 @@
       <div><p class="notebook-kicker tw:text-accent tw:text-body-sm tw:mb-s-2">光色观察 / 01—03</p><h2 id="light-notebook-title">先看光，再决定这一幕的心情</h2></div>
       <p>并排翻看画册，观察光源、冷暖与明暗怎样改变叙事。</p>
     </header>
-    <div class="comparison-choices tw:flex tw:flex-wrap tw:gap-s-2" aria-label="选择光色对照">
+    <div class="comparison-choices studio-segments tw:flex tw:flex-wrap tw:gap-s-2" data-fluid-glass role="group" aria-label="选择光色对照">
+      <AnimatedSelection />
       <button v-for="(pair, index) in PAIRS" :key="pair.name" type="button" :aria-pressed="active === index" @click="active = index">
         <span>0{{ index + 1 }}</span>{{ pair.name }}
       </button>
     </div>
-    <p class="comparison-question tw:text-body tw:leading-body tw:text-secondary">{{ current.question }}</p>
-    <div class="comparison-spread tw:grid tw:gap-s-5">
+    <p class="comparison-question tw:text-body tw:leading-body tw:text-secondary" v-content-motion:fade="active">{{ current.question }}</p>
+    <div class="comparison-spread tw:grid tw:gap-s-5" v-content-motion:up="active">
       <figure v-for="sample in current.samples" :key="sample.id" class="light-study tw:min-w-0 tw:m-0 tw:overflow-hidden tw:rounded-lg">
         <RouterLink v-if="available.has(sample.id) && !failed.has(sample.id)" class="study-image" :to="'/showcase?scene=' + sample.id" :aria-label="'查看参考原图：' + sample.title">
           <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl('/scene-showcase/thumbs/' + sample.id + '.jpg')" :alt="sample.title + '，' + sample.light" width="560" height="818" loading="lazy" decoding="async" @error="failed.add(sample.id)" />
@@ -29,7 +30,7 @@
             <div><dt>看色调</dt><dd>{{ sample.color }}</dd></div>
             <div><dt>读氛围</dt><dd>{{ sample.feeling }}</dd></div>
           </dl>
-          <button type="button" class="study-mood tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-accent tw:text-body-sm tw:font-semibold tw:cursor-pointer" @click="emit('choose', sample.mood)">试试「{{ sample.moodName }}」色板<ArchiveIcon name="palette" /></button>
+          <button type="button" class="btn btn-ghost study-mood" @click="emit('choose', sample.mood)">试试「{{ sample.moodName }}」色板<ArchiveIcon name="palette" /></button>
         </figcaption>
       </figure>
     </div>
@@ -39,6 +40,7 @@
 
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -90,7 +92,7 @@ dl { margin:var(--s-4) 0 var(--s-2); @apply tw:grid tw:gap-s-3; }
 dl > div { @apply tw:grid; grid-template-columns:4em minmax(0,1fr); @apply tw:gap-s-2 tw:text-body-sm tw:leading-body; }
 dt { @apply tw:text-primary tw:font-semibold; }
 dd { @apply tw:m-0 tw:text-secondary; }
-.study-mood { border:0; background:transparent; padding:var(--s-2) 0; }
+.study-mood { margin-top:var(--s-2); }
 .reference-note { align-items:start; background:var(--bg-base); }
 .reference-note .archive-icon { @apply tw:shrink-0 tw:mt-[3px]; }
 button:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }

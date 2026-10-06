@@ -4,7 +4,7 @@
     <template v-if="record.kind !== 'document'">
       <details v-for="section in sections" :key="section" class="catalog-writing-section" :open="defaultOpen(section)">
         <summary><span>{{ sectionLabel(section) }}</span><ArchiveIcon name="chevron-down" /></summary>
-        <div class="form-grid">
+        <div data-disclosure-content class="form-grid">
           <label v-for="field in fields.filter(f => f.section === section && !technicalPaths.has(f.path))" :key="field.path" class="form-group" :class="{ 'form-group-full': field.type === 'long' || field.type === 'list' }">
             <span class="field-label">{{ field.label }}</span>
             <ToggleSwitch v-if="field.type === 'boolean'" :model-value="Boolean(fieldValue(record.data, field.path))" :label="field.label" :disabled="disabled || locked(field.path)" @update:model-value="update(field, $event)" />
@@ -19,17 +19,17 @@
     <CatalogDocumentEditor v-else v-model:record="record" :disabled="disabled" />
     <details class="catalog-advanced catalog-management-info" :open="!record.revision">
       <summary>管理信息</summary>
-      <div class="form-grid">
+      <div data-disclosure-content class="form-grid">
         <label class="form-group"><span class="field-label">内部编号</span><input v-model="record.id" class="input" :disabled="!!record.revision || disabled || record.kind === 'outfit'" /><span class="catalog-field-note">用于关联资料，已有编号保持不变</span></label>
         <label class="form-group"><span class="field-label">展示位置</span><input v-model.number="record.sortOrder" class="input" type="number" step="1" :disabled="disabled" /><span class="catalog-field-note">数字越小，在列表中越靠前</span></label>
         <label v-for="field in fields.filter(f => technicalPaths.has(f.path))" :key="field.path" class="form-group"><span class="field-label">{{ field.label }}</span><textarea v-if="field.type === 'list'" class="input" rows="2" :value="text(field)" :disabled="disabled || locked(field.path)" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea><input v-else class="input" :value="text(field)" :disabled="disabled || locked(field.path)" @input="update(field, ($event.target as HTMLInputElement).value)" /></label>
       </div>
     </details>
     <details v-if="!systemDocument" class="catalog-advanced">
-      <summary>完整数据与扩展设置</summary>
+      <summary>完整数据与扩展设置</summary><div data-disclosure-content>
       <p class="catalog-note">只在需要调整表单之外的信息时使用。</p>
       <textarea v-model="advanced" class="input" rows="12" aria-label="完整内容数据" :disabled="disabled"></textarea>
-      <button class="btn btn-ghost btn-sm" type="button" :disabled="disabled" @click="applyAdvanced">应用这些设置</button>
+      <button class="btn btn-ghost btn-sm" type="button" :disabled="disabled" @click="applyAdvanced">应用这些设置</button></div>
     </details>
     <p v-if="error" role="alert" class="catalog-error">{{ error }}</p>
     <p v-if="generated" class="catalog-note">这份内容来自已有画面。名称和说明可以修改，原来的生成描述会保留。</p>

@@ -67,7 +67,13 @@ export function installContentMotion() {
   function keyboard() { keyboardInput = true; settle() }
   function pointer() { keyboardInput = false }
   function toggle(event: Event) {
-    if (event.target instanceof HTMLDetailsElement) reveal(event.target)
+    if (!(event.target instanceof HTMLDetailsElement)) return
+    const details = event.target
+    const body = details.querySelector<HTMLElement>(':scope > [data-disclosure-content]')
+      ?? [...details.children].find((child): child is HTMLElement => child instanceof HTMLElement && child.tagName !== 'SUMMARY')
+    if (!body) return
+    if (details.open) reveal(body)
+    else cancel(body)
   }
   document.addEventListener('toggle', toggle, true)
   document.addEventListener('keydown', keyboard, true)

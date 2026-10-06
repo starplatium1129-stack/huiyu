@@ -5,7 +5,7 @@
         <span>USER PROFILE</span>
         <strong id="chatUserProfileTitle">她该怎样认识你</strong>
       </div>
-      <button type="button" class="profile-close" aria-label="关闭用户档案" @click="close">×</button>
+      <button type="button" class="btn btn-ghost btn-sm btn-icon profile-close" aria-label="关闭用户档案" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <p>这些资料只用于称呼和关系连续性，保存在本机，不会覆盖角色设定。</p>
     <div class="profile-grid">
@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, reactive, ref, watch } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import {
   CHAT_RELATIONSHIPS,

@@ -74,16 +74,16 @@
   .pb .stage-progress-ring {
     position:relative; display:grid; place-items:center; width:56px; height:56px; flex:none; color:var(--text-primary);
   }
-  .pb .stage-progress-ring > svg { position:absolute; inset:0; width:100%; height:100%; fill:none; stroke-width:2; transform:rotate(-90deg); }
+  .pb .stage-progress-ring > svg:not(.archive-icon) { position:absolute; inset:0; width:100%; height:100%; fill:none; stroke-width:2; transform:rotate(-90deg); animation:stage-progress-orbit 2.4s linear infinite; }
   .pb .stage-progress-track { stroke:var(--border-soft); }
   .pb .stage-progress-value { stroke:var(--accent); stroke-linecap:round; }
   .pb .stage-progress-ring strong { font:500 var(--fs-label-xs) var(--font-mono); font-variant-numeric:tabular-nums; }
   .pb .stage-progress-ring > .archive-icon { position:static; width:18px; height:18px; color:var(--text-secondary); transform:none; }
-  .pb .stage-progress-ring.is-indeterminate > svg:not(.archive-icon) { animation:stage-progress-orbit 1.6s linear infinite; }
+  .pb .stage-progress-ring.is-indeterminate > svg:not(.archive-icon) { animation-duration:1.6s; }
   @keyframes stage-progress-orbit { from { transform:rotate(-90deg); } to { transform:rotate(270deg); } }
   :root:is([data-motion='reduce'],[data-motion='reduced']) .pb .stage-progress-ring > svg { animation:none; }
   @media (prefers-reduced-motion: reduce) {
-    .pb .stage-muse, .pb .stage-magic-ring, .pb .stage-placeholder.is-generating::before, .pb .stage-progress-ring.is-indeterminate > svg { animation:none !important; }
+    .pb .stage-muse, .pb .stage-magic-ring, .pb .stage-placeholder.is-generating::before, .pb .stage-progress-ring > svg { animation:none !important; }
     .pb .monitor-rec .dot, .pb .review-star { animation:none; }
     /* plans/002：换角扫光/缪斯浮起停掉（位移类），侧栏与令牌层的颜色过渡保留；
        stage-swap 退出去掉 scale 只留淡出 */

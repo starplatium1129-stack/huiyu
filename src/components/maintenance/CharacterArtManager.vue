@@ -9,7 +9,7 @@
     <p v-if="feedback" class="character-art-success" role="status">{{ feedback }}</p>
     <template v-if="profiles.length">
       <StudioSelect :model-value="selectedId" label="选择要维护的角色" :options="profiles.map(item => ({ value: item.id, label: item.name }))" :disabled="saving || reading" @update:model-value="value => selectCharacter(String(value))" />
-      <div class="character-art-grid">
+      <div v-content-motion:fade="selectedId" class="character-art-grid">
         <section class="character-art-card">
           <h3>当前形象 <span>{{ custom ? '自定义' : '内置' }}</span></h3>
           <RuntimeImage v-if="originalUrl" class="character-art-image" :src="originalUrl" :alt="`${current?.name || ''}当前立绘`" />
@@ -29,7 +29,7 @@
           </div>
         </section>
       </div>
-      <div v-if="showParticles" class="character-art-particles">
+      <div v-if="showParticles" v-content-motion:fade="showParticles" class="character-art-particles">
         <SemanticParticleField :shape="particleTheme.shape" :portrait-id="selectedId" :label="`${current?.name || ''}已保存的粒子形象`" density="ambient" />
         <p class="character-art-note">这里展示当前已保存的粒子。替换预览中的图片在应用后会重新生成点阵。</p>
       </div>

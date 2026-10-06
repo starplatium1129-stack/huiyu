@@ -37,7 +37,7 @@
       -->
       <details v-if="!trashMode" v-show="!albumsOpen" class="gallery-refine-disclosure" :open="!!projectFilter || !!characterFilter || !!tagFilter || !!generationFilterCount" @toggle="refineOpen = ($event.target as HTMLDetailsElement).open">
         <summary><ArchiveIcon name="pin" /><span>细选作品</span><span v-if="hasActiveFilters">已筛选</span><ArchiveIcon name="chevron-down" /></summary>
-      <div v-if="refineOpen || projectFilter || characterFilter || tagFilter || generationFilterCount" class="gallery-refine-controls">
+      <div v-if="refineOpen || projectFilter || characterFilter || tagFilter || generationFilterCount" class="gallery-refine-controls" data-disclosure-content>
         <StudioSelect v-model="projectFilter" class="gallery-project" label="按画册筛选" :options="projectOptions" />
         <div v-if="history.length" ref="tagControls" class="gallery-collection-controls"><GalleryCollectionFilters v-model:character="characterFilter" v-model:tag="tagFilter" :characters="characterOptions" :tags="tagOptions" :smart-rule="currentSmartRule" :character-name="characterName" :disabled="galleryLoading || !!galleryError || saving" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" /></div>
         <GalleryGenerationFilters v-model:conditions="generationConditions" :options="generationOptions" :filter-count="generationFilterCount" :snapshot="filterSnapshot" :has-active="hasActiveFilters" :project-unavailable="projectUnavailable" @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @clear="clearGenerationConditions" />
@@ -190,7 +190,7 @@
             <ArchiveIcon name="spark" /> 对比
           </button>
         </StudioTooltip>
-        <button ref="infoToggleBtn" class="viewer-info-toggle" type="button" aria-label="作品信息" aria-controls="viewer-info" :aria-expanded="infoOpen" @click="toggleInfoDrawer"><ArchiveIcon name="info" /></button>
+        <button ref="infoToggleBtn" class="viewer-info-toggle" data-fluid-glass type="button" aria-label="作品信息" aria-controls="viewer-info" :aria-expanded="infoOpen" @click="toggleInfoDrawer"><ArchiveIcon name="info" /></button>
         </template>
       </ArtworkViewerStage>
 
@@ -236,6 +236,7 @@
         </section>
         <details class="viewer-details" :key="displayedCurrent.id">
           <summary>创作参数与 Prompt <ArchiveIcon name="chevron-down" /><span>查看配方</span></summary>
+          <div data-disclosure-content>
           <div class="viewer-facts">
           <div class="viewer-fact" v-for="f in facts" :key="f.label">
             <small>{{ f.label }}</small>
@@ -245,10 +246,11 @@
           </div>
           </div>
           <div class="viewer-prompt">{{ displayedCurrent.prompt || '未保存 Prompt' }}</div>
+          </div>
         </details>
         <details class="viewer-details viewer-more" :key="`tools-${displayedCurrent.id}`">
           <summary>更多操作 <ArchiveIcon name="chevron-down" /><span>重跑、复制与管理</span></summary>
-          <div class="viewer-actions">
+          <div class="viewer-actions" data-disclosure-content>
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(displayedCurrent.id || '')}`">原参重跑</RouterLink>
           <button class="btn btn-ghost" type="button" :aria-pressed="gestureViewer" @click="gestureViewer = !gestureViewer">{{ gestureViewer ? '返回原查看器' : '尝试手势观画' }}</button>
           <button

@@ -8,7 +8,7 @@
       <p v-if="message" role="status">{{ message }}</p>
     </div>
     <p v-if="error" class="organization-error" role="alert">{{ error }}</p>
-    <form v-if="active && opened" class="organization-form" :class="{ 'is-creating': albumChoice === 'new' }" @submit.prevent="submit">
+    <form v-if="active && opened" v-content-motion:up="opened" class="organization-form" :class="{ 'is-creating': albumChoice === 'new' }" @submit.prevent="submit">
       <div class="organization-field"><span>画册归属</span><StudioSelect v-model="albumChoice" label="整理到画册" :disabled="busy || !!pendingProject" :options="albumOptions" /></div>
       <label v-if="albumChoice === 'new'" class="organization-field"><span>画册名称</span><input v-model="albumTitle" placeholder="例如：秋日手记" :maxlength="ARTWORK_PROJECT_TITLE_LIMIT" :disabled="busy || !!pendingProject" autocomplete="off" required /></label>
       <label class="organization-field"><span>添加整理标签</span><input v-model="addText" placeholder="例如：壁纸、春日系列" :disabled="busy" autocomplete="off" /></label>

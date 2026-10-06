@@ -1,7 +1,7 @@
 <template>
   <section ref="drawerEl" class="material-drawer" aria-label="创作素材">
     <div class="material-heading"><span>创作素材</span><small>YOUR MATERIALS</small></div>
-    <div class="material-switch studio-segments" role="group" aria-label="素材分类">
+    <div class="material-switch studio-segments" data-fluid-glass role="group" aria-label="素材分类">
       <AnimatedSelection />
       <button v-for="item in sections" :key="item.id" type="button"
         :aria-pressed="active === item.id" :aria-controls="`material-${item.id}`"

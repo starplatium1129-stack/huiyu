@@ -1,5 +1,5 @@
 <template>
-  <div class="panel step-panel" id="stepScene">
+  <div v-content-motion:fade="pb.isPopular" class="panel step-panel" id="stepScene">
     <template v-if="pb.isPopular">
       <!-- Blueprint 是内部数据结构的名字，不该出现在用户看得见的标题上 -->
       <div class="panel-title">场景建议<span class="scene-count-badge">{{ popularBlueprintPool.length }}</span></div>
@@ -21,7 +21,7 @@
     </template>
     <template v-else>
       <div class="panel-title">Scene · <span class="scene-count-badge">{{ availableScenes.length }}</span></div>
-      <div class="scene-scope studio-segments studio-segments--compact" role="group" aria-label="场景库范围">
+      <div class="scene-scope studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="场景库范围">
       <AnimatedSelection />
         <button type="button" :class="{ active: sceneCollection === 'core' }"
           :aria-pressed="sceneCollection === 'core'"
@@ -33,13 +33,7 @@
           :aria-pressed="sceneCollection === 'all'"
           @click="$emit('update:sceneCollection', 'all')">完整库</button>
       </div>
-      <div class="scene-search-wrap">
-        <input type="search" class="scene-search" v-model="pb.sceneSearch"
-          aria-label="搜索场景"
-          placeholder="试试：安静的夏目雨夜">
-        <button class="scene-search-clear" type="button" aria-label="清空"
-          @click="pb.sceneSearch = ''">×</button>
-      </div>
+      <StudioSearch v-model="pb.sceneSearch" class="scene-search-wrap" label="搜索场景" placeholder="试试：安静的夏目雨夜" />
       <div class="scene-filter-summary">
         <span class="scene-result-count" role="status" aria-live="polite">
           {{ availableScenes.length }} 个场景
@@ -54,7 +48,7 @@
           :class="{ active: pb.sceneTheme === t.id }"
           @click="pb.sceneTheme = t.id"><ArchiveIcon :name="t.iconName" /> {{ t.label }}</button>
       </div>
-      <div class="scene-list">
+      <div v-content-motion:right="pb.dataReady ? `${sceneCollection}:${pb.sceneTheme}` : false" class="scene-list">
         <div v-if="!pb.dataReady" class="scene-loading">正在加载场景库…</div>
         <div v-else-if="!availableScenes.length" class="scene-empty">未找到匹配场景</div>
         <button v-for="scene in visibleScenes" :key="scene.id"
@@ -85,6 +79,7 @@
 
 <script setup lang="ts">
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { SCENE_THEMES } from '@/config/promptConstants'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

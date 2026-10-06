@@ -14,7 +14,7 @@
       </span>
     </div>
 
-    <div class="archive-actions">
+    <div class="archive-actions tw:p-s-2 tw:rounded-lg" data-fluid-glass>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="exporting" @click="exportJson">导出 JSON</button>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="exporting" @click="exportMarkdown">导出 Markdown</button>
       <button class="btn btn-ghost btn-sm" type="button" @click="fileEl?.click()">导入归档</button>

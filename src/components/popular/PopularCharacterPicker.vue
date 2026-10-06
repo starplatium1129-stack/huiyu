@@ -54,7 +54,7 @@ const sourceLabel = computed(() => {
     <button type="button" class="character-browse-button tw:grid tw:gap-0 tw:w-full tw:min-w-0 tw:p-0 tw:rounded-lg tw:overflow-hidden tw:text-left tw:cursor-pointer" aria-haspopup="dialog" @click="browserMotion.open()">
       <span class="character-browse-trigger tw:flex tw:items-center tw:gap-s-3 tw:min-w-0 tw:p-s-3">
         <CharacterPortrait :src="resolveRuntimeUrl(selectedCharacter ? popularPortraitSrc(selectedCharacter.id) : undefined)" :name="selectedCharacter?.displayName || '角色'" />
-        <span class="character-current-text tw:min-w-0 tw:grid tw:gap-s-2">
+        <span v-content-motion:fade="selectedCharacterId" class="character-current-text tw:min-w-0 tw:grid tw:gap-s-2">
           <small class="character-current-kicker">这一幕的主角</small>
           <strong>{{ selectedCharacter?.displayName || '选择创作角色' }}</strong>
           <StudioTooltip :content="sourceLabel">
@@ -70,7 +70,7 @@ const sourceLabel = computed(() => {
         <CharacterDirectory :items="directoryItems" :selected-id="selectedCharacterId" v-model:search="searchProxy" catalog :page-size="18" @select="selectFromDirectory" @dismiss="browserMotion.close()" />
       </dialog>
     </Teleport>
-    <div v-if="selectedCharacter" class="popular-outfits tw:grid tw:gap-s-2">
+    <div v-if="selectedCharacter" v-content-motion:fade="selectedCharacterId" class="popular-outfits tw:grid tw:gap-s-2">
       <div class="popular-outfits-head tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap tw:text-label-sm">
         <ArchiveIcon name="wardrobe" class="outfits-head-icon" />
         <strong>造型手帖</strong>

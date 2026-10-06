@@ -14,7 +14,7 @@ html body .studio-segments[role] {
   background: color-mix(in srgb, var(--bg-base) 70%, var(--bg-surface));
   box-shadow: inset 0 1px 1px color-mix(in srgb, var(--ink-base) 4%, transparent);
 }
-html body .studio-segments[role] > :is(button, .studio-tooltip-anchor) { flex: 1 1 auto; }
+html body .studio-segments[role] > :is(button, a, .studio-tooltip-anchor) { flex: 1 1 auto; }
 html body :is(.appearance-segments, .preferences-tabs).studio-segments[role] > button { flex: 1 1 0; }
 html body .char-source.studio-segments[role] button { white-space: normal; }
 html body .studio-segments[role] .animated-selection {
@@ -23,7 +23,7 @@ html body .studio-segments[role] .animated-selection {
   background: linear-gradient(160deg, var(--glass-highlight), transparent 55%), linear-gradient(180deg, color-mix(in srgb, var(--accent-soft) 25%, var(--bg-surface)), var(--bg-elevated));
   box-shadow: var(--selection-shadow);
 }
-html body .studio-segments[role] button {
+html body .studio-segments[role] :is(button, a) {
   position: relative;
   z-index: var(--z-raised);
   min-height: var(--control-height);
@@ -34,17 +34,18 @@ html body .studio-segments[role] button {
   box-shadow: none;
   color: var(--text-secondary);
   font-weight: 500;
+  text-decoration: none;
   white-space: nowrap;
   transition: color var(--motion-control) var(--ease-out);
 }
-html body .studio-segments--compact[role] button { min-height: var(--control-height-sm); padding: var(--s-1) var(--s-2); }
-html body .studio-segments[role] button:is([aria-pressed='true'], [aria-selected='true'], [aria-checked='true']) { color: var(--accent); background: transparent; border-color: transparent; box-shadow: none; }
-html body .studio-segments[role] button:hover { color: var(--text-primary); background: transparent; }
-html body .studio-segments[role] button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-html body .studio-segments[role] button:active { transform: none; }
+html body .studio-segments--compact[role] :is(button, a) { min-height: var(--control-height-sm); padding: var(--s-1) var(--s-2); }
+html body .studio-segments[role] :is(button, a):is([aria-pressed='true'], [aria-selected='true'], [aria-checked='true'], [aria-current='page']) { color: var(--accent); background: transparent; border-color: transparent; box-shadow: none; }
+html body .studio-segments[role] :is(button, a):hover { color: var(--text-primary); background: transparent; }
+html body .studio-segments[role] :is(button, a):focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+html body .studio-segments[role] :is(button, a):active { transform: none; }
 html body .studio-segments[role] button:disabled { color: var(--text-disabled); }
 @media (forced-colors: active) {
   html body .studio-segments[role] { background: Canvas; border-color: ButtonText; }
   html body .studio-segments[role] .animated-selection { background: Canvas; border-color: Highlight; box-shadow: none; }
-  html body .studio-segments[role] button:is([aria-pressed='true'], [aria-selected='true'], [aria-checked='true']) { color: Highlight; }
+  html body .studio-segments[role] :is(button, a):is([aria-pressed='true'], [aria-selected='true'], [aria-checked='true'], [aria-current='page']) { color: Highlight; }
 }

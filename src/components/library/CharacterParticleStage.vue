@@ -9,11 +9,11 @@
       </div>
     </header>
     <div class="portrait-stage-canvas">
-    <div v-show="!showOriginal" class="particle-theatre tw:relative" :aria-busy="loading">
+    <div v-show="!showOriginal" v-content-motion:fade="!showOriginal" class="particle-theatre tw:relative" :aria-busy="loading">
       <SemanticParticleField v-show="available" :shape="theme.shape" :portrait-id="characterId" :label="`${name}的人物粒子形象`" :caption="name" density="ambient" :portrait-reference-size="referenceSize" />
       <div v-if="loading" class="particle-loading tw:absolute tw:flex tw:items-center tw:justify-center tw:gap-s-3 tw:text-secondary tw:text-body-sm" role="status"><ArchiveIcon name="spark" /><span>正在聚拢{{ name }}的光点…</span></div>
     </div>
-    <div v-show="showOriginal" class="stage-original"><slot /></div>
+    <div v-show="showOriginal" v-content-motion:fade="showOriginal" class="stage-original"><slot /></div>
     </div>
     <footer class="portrait-stage-footer tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3">
       <p v-if="!loading && !available" role="status">这位角色的粒子形象暂不可用，先欣赏人物原画。</p>

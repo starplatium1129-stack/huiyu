@@ -1,6 +1,6 @@
 <template>
   <div class="result-frame step-panel" id="stepResult">
-    <div class="engine-switch studio-segments studio-segments--compact" role="group" aria-label="出图引擎">
+    <div class="engine-switch studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="出图引擎">
       <AnimatedSelection />
       <StudioTooltip anchor :content="engineTitle('anima')">
         <button type="button" class="engine-btn" :aria-pressed="drawEngine === 'anima'"
@@ -18,7 +18,7 @@
       <textarea id="inspectorVisualDescription" v-model="pb.visualDescription" rows="3"
         placeholder="角色的动作、服装与周围的画面…" />
     </label>
-    <div class="base-model-picker">
+    <div v-content-motion:fade="drawEngine" class="base-model-picker">
       <label for="baseModel">基础模型</label>
       <StudioSelect id="baseModel" size="sm" label="基础模型" :model-value="animaState.modelId"
         :disabled="generationBusy" :hint="generationBusy ? BUSY_HINT : undefined"
@@ -37,7 +37,7 @@
     />
     <details class="inspector-route inspector-advanced">
       <summary><span><ArchiveIcon name="gear" />高级设置</span><small>采样、Seed 与输出</small><ArchiveIcon name="chevron-down" /></summary>
-      <div class="inspector-advanced-body">
+      <div data-disclosure-content class="inspector-advanced-body">
         <AnimaQuickPanel :open="true" v-if="pb.directorMode === 'pro'"
           :state="animaState" :no-lora="animaNoLoraMode" @update:state="patchAnimaState" @retry="retryAnima" />
         <GenerationOutputControls :engine="drawEngine" :expert="pb.directorMode === 'pro'"

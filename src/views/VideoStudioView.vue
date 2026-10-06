@@ -15,7 +15,7 @@
       </div>
     </header>
 
-    <section class="video-mode-strip" aria-label="视频创作方式">
+    <section class="video-mode-strip studio-segments" data-fluid-glass role="group" aria-label="视频创作方式"><AnimatedSelection />
       <StudioTooltip v-for="mode in modes" :key="mode.id" :anchor="!modeReady(mode.id)" :content="!modeReady(mode.id) ? modeBadge(mode.id) : undefined">
       <button
         class="video-mode-card"
@@ -33,7 +33,7 @@
     </section>
     <div class="video-mode-context">
       <p id="video-mode-description"><span>{{ modes.find(mode => mode.id === selectedMode)?.description }}</span><strong>{{ modeBadge(selectedMode) }}</strong></p>
-      <nav v-if="selectedMode !== 'shots'" class="video-jump-nav" aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">镜头描述</a><a href="#video-settings">画幅与时长</a><a href="#video-queue">查看成片</a></nav>
+      <nav v-if="selectedMode !== 'shots'" class="video-jump-nav tw:p-s-1 tw:rounded-pill" data-fluid-glass aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">镜头描述</a><a href="#video-settings">画幅与时长</a><a href="#video-queue">查看成片</a></nav>
     </div>
     <VideoGenerationBar v-if="selectedMode !== 'shots'" id="video-settings"
       v-model:aspect-ratio="aspectRatio" v-model:duration="duration" v-model:quality="quality"
@@ -342,6 +342,7 @@
 </template>
 
 <script setup lang="ts">
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ShotListEditor from '@/components/video/ShotListEditor.vue'
 import VideoGenerationBar from '@/components/video/VideoGenerationBar.vue'

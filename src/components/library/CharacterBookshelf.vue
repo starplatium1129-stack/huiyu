@@ -2,7 +2,7 @@
   <section class="character-bookshelf tw:min-w-0 tw:rounded-xl tw:text-primary" :class="{ 'is-keyboard-input': keyboardInput }" aria-label="角色作品书架" @keydown.capture="keyboardInput = true" @pointerdown.capture="keyboardInput = false">
     <header class="bookshelf-header tw:flex tw:items-center tw:justify-between tw:gap-s-5">
       <p class="bookshelf-total tw:m-0 tw:text-secondary tw:text-body-sm"><strong>{{ items.length }}</strong> 位角色<span aria-hidden="true"> · </span><strong>{{ groups.length }}</strong> 部作品</p>
-      <div class="bookshelf-modes studio-segments tw:relative tw:isolate tw:flex tw:gap-s-1 tw:shrink-0 tw:p-s-1 tw:rounded-pill" role="group" aria-label="角色浏览方式">
+      <div class="bookshelf-modes studio-segments tw:relative tw:isolate tw:flex tw:gap-s-1 tw:shrink-0 tw:p-s-1 tw:rounded-pill" data-fluid-glass role="group" aria-label="角色浏览方式">
         <AnimatedSelection />
         <button type="button" :aria-pressed="showingShelf" @click="switchMode('shelf')"><ArchiveIcon name="gallery" />作品书架</button>
         <button type="button" :aria-pressed="!showingShelf" @click="switchMode('characters')"><ArchiveIcon name="character" />全部角色</button>
@@ -14,7 +14,7 @@
       <p class="bookshelf-hint tw:m-0 tw:text-muted tw:text-label tw:leading-body">{{ showingShelf ? '挑一本作品，翻开角色的故事' : '选择角色，查看完整档案' }}</p>
     </div>
 
-    <div ref="contentRoot">
+    <div v-content-motion:up="`${showingShelf}:${series}:${page}`">
     <template v-if="showingShelf">
       <div v-if="groups.length" ref="shelfGrid" class="bookshelf-grid tw:grid" role="group" aria-label="作品书架">
         <article v-for="group in groups" :key="group.key" class="bookshelf-work tw:min-w-0 tw:flex tw:flex-col tw:items-center tw:rounded-lg tw:cursor-pointer">
@@ -66,7 +66,6 @@
 
 <script setup lang="ts">
 import { nextTick, onScopeDispose, ref, useId } from 'vue'
-import { useFluidSurface } from '@/composables/useFluidSurface'
 import { captureScrollAnchor, restoreScrollAnchor, type ScrollAnchor } from '@/utils/scrollAnchor'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterPortrait from './CharacterPortrait.vue'
@@ -83,8 +82,6 @@ const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
 const shelfGrid = ref<HTMLElement | null>(null)
 const characterGrid = ref<HTMLElement | null>(null)
 const resultsHeading = ref<HTMLElement | null>(null)
-const contentRoot = ref<HTMLElement | null>(null)
-const contentMotion = useFluidSurface()
 const keyboardInput = ref(false)
 let shelfAnchor: ScrollAnchor | null = null
 let cancelRestore = () => {}
@@ -98,11 +95,6 @@ function rotatedCovers(key: string, covers: readonly DirectoryCharacter[]) {
 }
 const { query, series, page, term, groups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch } = useCharacterBookshelf(() => props.items)
 
-function revealContent() {
-  const element = contentRoot.value
-  if (!element) return
-  contentMotion.enter(element, () => contentMotion.dispose(element))
-}
 function focusResults() {
   const heading = resultsHeading.value
   if (!heading) return
@@ -113,7 +105,7 @@ async function enterGroup(key: string) {
   const version = interruptNavigation(); shelfAnchor = captureScrollAnchor()
   openGroup(key); await nextTick()
   if (version !== revision) return
-  focusResults(); revealContent()
+  focusResults()
 }
 async function switchMode(value: 'shelf' | 'characters') {
   if (value === 'shelf' && showingShelf.value || value === 'characters' && !showingShelf.value && series.value === null && !term.value) return
@@ -122,7 +114,7 @@ async function switchMode(value: 'shelf' | 'characters') {
   changeMode(value); await nextTick()
   if (version !== revision) return
   if (value === 'shelf' && shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, { immediate: true, shouldContinue: () => version === revision && showingShelf.value })
-  searchInput.value?.focus({ preventScroll: true }); revealContent()
+  searchInput.value?.focus({ preventScroll: true })
 }
 async function backToShelf() {
   const key = series.value
@@ -133,10 +125,9 @@ async function backToShelf() {
   if (shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, { immediate: true, shouldContinue: () => version === revision && showingShelf.value })
   const origin = [...(shelfGrid.value?.querySelectorAll<HTMLButtonElement>('[data-franchise]') || [])].find(button => button.dataset.franchise === key)
   ;(origin || searchInput.value)?.focus({ preventScroll: true })
-  revealContent()
 }
 async function clearQuery() { const version = interruptNavigation(); clearSearch(); await nextTick(); if (version === revision) searchInput.value?.focus() }
-async function changePage(value: number) { const version = interruptNavigation(); page.value = value; await nextTick(); if (version === revision) { focusResults(); revealContent() } }
+async function changePage(value: number) { const version = interruptNavigation(); page.value = value; await nextTick(); if (version === revision) focusResults() }
 function onSearchKeydown(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229) return
   if (event.key === 'ArrowDown') {

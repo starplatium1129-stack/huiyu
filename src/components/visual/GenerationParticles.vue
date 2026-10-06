@@ -100,7 +100,7 @@ function draw() {
     return { x:centerX+x*Math.cos(tilt)-y*Math.sin(tilt), y:centerY+x*Math.sin(tilt)+y*Math.cos(tilt) }
   }
   if (!lowEffects.value) for (let band=0; band<3; band++) {
-    ctx.strokeStyle=colors[band]; ctx.globalAlpha=.12+finishing*.07; ctx.lineWidth=.65
+    ctx.strokeStyle=colors[band]; ctx.globalAlpha=.32+finishing*.08; ctx.lineWidth=1
     ctx.beginPath()
     for (let segment=0; segment<=128; segment++) {
       const p=orbit(segment/128*Math.PI*2,band)
@@ -129,8 +129,8 @@ function draw() {
     const shimmer = 0.92 + Math.sin(time * 0.8 + point.phase) * 0.08
     ctx.fillStyle = colors[point.tone]
     if (!lowEffects.value) {
-      const spread = size * 5+3
-      ctx.globalAlpha = point.bright ? .24 : depth*.12
+      const spread = size * 2.4+1.5
+      ctx.globalAlpha = point.bright ? .08 : depth*.025
       ctx.drawImage(sprites[point.tone], point.x - spread, point.y - spread, spread * 2, spread * 2)
     }
     ctx.globalAlpha = (point.bright ? .95 : .24+depth*.58) * shimmer

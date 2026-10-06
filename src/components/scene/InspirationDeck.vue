@@ -3,7 +3,7 @@
     <div class="inspiration-deck-intro">
       <span class="inspiration-deck-kicker"><ArchiveIcon name="spark" /> 灵感手帖</span>
       <p :id="hintId" class="sr-only">左右方向键切换主推，也可拖动画面旁的文字区域。按 Tab 预览或探索任一场景。</p>
-      <div class="inspiration-deck-controls">
+      <div class="inspiration-deck-controls" data-fluid-glass>
         <button type="button" aria-label="上一张灵感" :disabled="rails.length < 2" @click="step(-1)"><ArchiveIcon name="chevron-down" class="previous-icon" /></button>
         <span class="inspiration-deck-count" role="status" aria-live="polite" aria-atomic="true">
           <span aria-hidden="true">{{ String(index + 1).padStart(2, '0') }} / {{ String(rails.length).padStart(2, '0') }}</span>

@@ -1,6 +1,6 @@
 <template>
   <div class="browsing-directory tw:sticky tw:top-[82px] tw:min-w-0">
-    <button v-if="narrow" ref="trigger" type="button" class="directory-pocket" aria-haspopup="dialog"
+    <button v-if="narrow" ref="trigger" type="button" class="directory-pocket" data-fluid-glass aria-haspopup="dialog"
       :aria-label="'选择角色，当前' + (selected?.name || '未选择')" @click="openDirectory">
       <CharacterPortrait :src="resolveRuntimeUrl(selected?.image)" :name="selected?.name || '角色'" />
       <span class="pocket-copy tw:grid tw:gap-s-1 tw:min-w-0"><small>这一页的主角</small><strong>{{ selected?.name || '选择角色' }}</strong></span>
@@ -14,7 +14,7 @@
     <Teleport to="body">
       <dialog ref="dialog" class="directory-sheet tw:m-auto tw:p-s-5 tw:rounded-xl tw:text-primary tw:overflow-hidden" :aria-labelledby="headingId" @cancel.prevent="motion.close()"
         @click="isBackdropClick($event, dialog) && motion.close()">
-        <header class="directory-sheet-heading tw:flex tw:justify-between tw:gap-s-3 tw:shrink-0"><div><h2 :id="headingId">翻开角色画集</h2><p>按作品寻找，或输入她的名字。</p></div><button type="button" aria-label="关闭角色画集" @click="motion.close()"><ArchiveIcon name="close" /></button></header>
+        <header class="directory-sheet-heading tw:flex tw:justify-between tw:gap-s-3 tw:shrink-0"><div><h2 :id="headingId">翻开角色画集</h2><p>按作品寻找，或输入她的名字。</p></div><button data-fluid-glass type="button" aria-label="关闭角色画集" @click="motion.close()"><ArchiveIcon name="close" /></button></header>
         <div ref="dialogHost" class="directory-sheet-content tw:flex tw:min-h-0 tw:overflow-hidden"></div>
       </dialog>
     </Teleport>
