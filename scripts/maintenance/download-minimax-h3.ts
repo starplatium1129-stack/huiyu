@@ -12,7 +12,7 @@ export function h3Url(entry: ModelFile, source: 'official' | 'mirror' | 'modelsc
 async function main(): Promise<void> {
   const args = process.argv.slice(2)
   if (args.includes('--help')) {
-    console.log('models:download-h3 --models-root <ComfyUI/models> [--modelscope|--mirror] [--plan]\nSix exact workflow files, ~46.38 GB / 43.20 GiB. Default: pinned Comfy-Org Hugging Face source.\nRequires compatible ComfyUI, PyTorch cu130 and verified nodes/hardware. --plan performs no network/write.\nCtrl+C cancels; only verified bytes become final weights. Interrupted file restarts from zero.')
+    console.log('models:download-h3 --models-root <ComfyUI/models> [--modelscope|--mirror] [--plan]\nSix exact workflow files, ~43.99 GB / 40.97 GiB. Default: pinned Comfy-Org Hugging Face source.\nRequires compatible ComfyUI, PyTorch cu130 and verified nodes/hardware. --plan performs no network/write.\nCtrl+C cancels; only verified bytes become final weights. Interrupted file restarts from zero.')
     return
   }
   for (let index = 0; index < args.length; index++) {

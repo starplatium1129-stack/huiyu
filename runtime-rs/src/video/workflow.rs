@@ -10,11 +10,16 @@ pub fn build(input: &Value, t8: bool) -> Value {
     }
 }
 fn h3(input: &Value, t8: bool) -> Value {
-    let mut graph = json!({"1":node("UNETLoader",json!({"unet_name":"minimax_h3_fl2va_pruned_int8_convrot.safetensors","weight_dtype":"default"})),"2":node("CLIPLoader",json!({"clip_name":"qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors","type":"minimax","device":"default"})),"3":node("VAELoader",json!({"vae_name":"minimax_h3_video_vae_fp16.safetensors"})),"4":node("VAELoader",json!({"vae_name":"minimax_h3_audio_vae_fp32.safetensors"}))});
+    let mut graph = json!({"1":node("UNETLoader",json!({"unet_name":"minimax_h3_fl2va_pruned_int8_convrot.safetensors","weight_dtype":"default"})),"2":node("CLIPLoader",json!({"clip_name":"qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors","type":"minimax","device":"default"})),"3":node("VAELoader",json!({"vae_name":"minimax_h3_video_vae_int8_convrot.safetensors"})),"4":node("VAELoader",json!({"vae_name":"minimax_h3_audio_vae_fp32.safetensors"}))});
     let image = generation::truthy(&input["image"]);
     let last = generation::truthy(&input["lastFrame"]);
     let references = input["references"].as_array().filter(|a| !a.is_empty());
     if t8 {
+        let turbo_lora = if input["steps"] == 4 {
+            "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors"
+        } else {
+            "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors"
+        };
         let task = if references.is_some() {
             if image || last { "Hybrid" } else { "Ref2VA" }
         } else if image && last {
@@ -32,7 +37,7 @@ fn h3(input: &Value, t8: bool) -> Value {
         );
         graph["15"] = node(
             "LoraLoaderBypassModelOnly",
-            json!({"model":["1",0],"lora_name":"minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors","strength_model":1}),
+            json!({"model":["1",0],"lora_name":turbo_lora,"strength_model":1}),
         );
         graph["16"] = node(
             "MiniMaxH3DualClockSamplerT8",

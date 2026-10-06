@@ -484,7 +484,7 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 
 - `models:check`：扫描当前硬件显存与 ComfyUI/反推模型就绪状态；
 - `models:download-wd14 [--target-dir <可写目录>]`：默认从固定 HuggingFace 发布者版本下载 WD14 MOAT v2（ONNX 约 311 MiB 与配套 CSV）；`--modelscope` / `--mirror` 可显式选择镜像，但同样核对固定字节与 SHA-256；`--plan` 不下载；
-- `models:download-h3 --models-root <实际ComfyUI/models目录>`：下载当前工作流完整六文件（约 46.38 GB / 43.20 GiB，含 4/8-step LoRA），固定官方 revision 和 SHA-256；`--plan` 不下载。运行依赖与硬件见[模型开箱指南](guides/setup-and-models.md)，不属于质量检查或普通安装的自动步骤。
+- `models:download-h3 --models-root <实际ComfyUI/models目录>`：下载当前工作流完整六文件（约 43.99 GB / 40.97 GiB，含 4/8-step LoRA），固定官方 revision 和 SHA-256；`--plan` 不下载。运行依赖与硬件见[模型开箱指南](guides/setup-and-models.md)，不属于质量检查或普通安装的自动步骤。
 
 ### PixAI 本机反推准备
 

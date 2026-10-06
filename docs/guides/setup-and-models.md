@@ -173,12 +173,12 @@ vae/wan2.2_vae.safetensors
 
 ### MiniMax H3：六文件与运行环境一起准备
 
-[Comfy-Org 发布页](https://huggingface.co/Comfy-Org/MiniMax-H3)提供本机工作流的全部六文件，约 **46.38 GB / 43.20 GiB**。保留额外空间给 Python 环境、临时下载和输出；机器有 16 GB 显存并不保证该组合能够运行。
+[Comfy-Org 发布页](https://huggingface.co/Comfy-Org/MiniMax-H3)提供本机工作流的全部六文件，约 **43.99 GB / 40.97 GiB**。保留额外空间给 Python 环境、临时下载和输出；机器有 16 GB 显存并不保证该组合能够运行。
 
 ```text
 diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors
 text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors
-vae/minimax_h3_video_vae_fp16.safetensors
+vae/minimax_h3_video_vae_int8_convrot.safetensors
 vae/minimax_h3_audio_vae_fp32.safetensors
 loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors
 loras/minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors
@@ -189,7 +189,7 @@ node scripts/maintenance/download-minimax-h3.js --models-root 'D:\HuiyuAI\ComfyU
 npm run wf -- models:download-h3 --models-root 'D:\HuiyuAI\ComfyUI\models'
 ```
 
-两种 Turbo LoRA 都是当前目录必需文件；T8 双时钟路径使用 4-step，其他路径使用 8-step。参考图、原生音频还需 `MiniMaxH3DualClockSamplerT8`、`MiniMaxH3AudioConditioningT8`、`MiniMaxH3AVDecodeT8` 的已验证本机实现，单有权重不能启用。发布者明确说明 `int8_convrot` 需要 PyTorch cu130；不能用安装了其他 CUDA build 的环境直接承诺运行。NVFP4 编码器不要求必须是 Blackwell GPU，但实际峰值内存/显存、视频长宽和时长仍逐设备测试。
+两种 Turbo LoRA 都是当前目录必需文件；T8 双时钟路径按选择的 4／8 步匹配对应 LoRA，其他路径使用 8-step。视频 VAE 使用官方 INT8 ConvRot 版（2,811,065,184 字节），原 FP16 文件可保留给历史工作流，不通过改名替换。该加速组合以 ComfyUI 0.39.0、T8 1.93.0 和匹配的 comfy-kitchen／comfy-aimdo 为升级目标；节点版本和权重齐备不替代真实短片验收。参考图、原生音频还需 `MiniMaxH3DualClockSamplerT8`、`MiniMaxH3AudioConditioningT8`、`MiniMaxH3AVDecodeT8` 的已验证本机实现，单有权重不能启用。发布者明确说明 `int8_convrot` 需要 PyTorch cu130；不能用安装了其他 CUDA build 的环境直接承诺运行。NVFP4 编码器不要求必须是 Blackwell GPU，但实际峰值内存/显存、视频长宽和时长仍逐设备测试。
 
 两个下载脚本都用临时文件，完成字节/SHA-256 核对后才替换最终权重；中断不会让半文件被标记为成功。已验证文件复用，中断的那个文件从头重下；Ctrl+C 可取消。同目录的下载锁防止重复启动，强制终止留下锁时，先确认原进程已结束再清理该锁。镜像源不改变哈希要求。精确清单存于 `scripts/lib/model-download-manifest.ts`。
 

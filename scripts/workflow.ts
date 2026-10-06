@@ -122,7 +122,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['preview'], machine: ['node'], switches: { '--apply': ['writes-release'], '--force': ['delete', 'writes-release'] }, resume: 'idempotent', evidence: 'scripts/maintenance/publish-rating-refresh.js:193-213', unknown: [] } },
   'reference:repair-urls': { desc: '参考 URL 迁移修复并备份；先传 --dry-run 核对清单', cmd: ['node', 'scripts/maintenance/repair-character-reference-urls.js'], docs: 'docs/workflow.md',
     run: { nature: ['writes-source'], machine: ['node'], switches: { '--dry-run': ['preview'] }, resume: 'idempotent', evidence: 'scripts/maintenance/repair-character-reference-urls.js:80,139-142,191-192', unknown: [] } },
-  'models:download-h3': { desc: '下载 H3 当前工作流的六项可选模型（约 46.38 GB / 43.20 GiB），逐项字节和 SHA-256 校验', cmd: ['node', 'scripts/maintenance/download-minimax-h3.js'], required: ['--models-root'], docs: 'docs/guides/setup-and-models.md',
+  'models:download-h3': { desc: '下载 H3 当前工作流的六项可选模型（约 43.99 GB / 40.97 GiB），逐项字节和 SHA-256 校验', cmd: ['node', 'scripts/maintenance/download-minimax-h3.js'], required: ['--models-root'], docs: 'docs/guides/setup-and-models.md',
     opts: '--models-root <实际ComfyUI/models目录>；--plan仅打印固定文件、来源与校验值',
     run: { nature: ['network-download', 'writes-product'], machine: ['node', 'network'], switches: { '--plan': ['preview', 'read-only'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/download-minimax-h3.ts', unknown: ['文件校验不证明节点、cu130和设备能推理'], notes: ['固定官方来源revision与SHA-256；中断文件从零重下，已完成文件重新校验后复用；Ctrl+C取消'] } },
   'models:check': { desc: '体检当前硬件（显存/内存）与模型就绪状态', cmd: ['node', 'scripts/maintenance/check-models-environment.js'], docs: 'docs/guides/setup-and-models.md',
