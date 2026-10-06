@@ -189,6 +189,11 @@ async function measureWall(page: Page, directory: string) {
 async function fitFrame(page: Page, index: number, directory: string) {
   const dialog = page.locator('.showcase-viewer'), image = dialog.locator('.zoomable-img')
   await expect(dialog).toBeVisible()
+  const original = dialog.getByRole('button', { name: '原图 / 缩放', exact: true })
+  if (await original.count()) {
+    await expect(dialog.locator('.gallery-orbit')).toBeVisible()
+    await original.click()
+  }
   await expect(dialog.locator('.viewer-copy h2')).toHaveText(IMAGES[index].title)
   await expect(image).toHaveAttribute('src', new RegExp(`/images/${IMAGES[index].id}\\.jpg`))
   await expect(image).toHaveJSProperty('naturalWidth', IMAGES[index].width)

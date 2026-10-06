@@ -5,7 +5,7 @@
       :class="{ 'is-current': entry.index === index }" :style="{ '--orbit-transform': entry.transform, '--orbit-shade': entry.shade, '--orbit-visibility': entry.visibility }" :aria-hidden="entry.index !== index">
       <ZoomableImageViewer v-if="entry.index === index && (currentSrc || previewSrc || preview(entry.item))"
         :src="resolveRuntimeUrl(currentSrc || previewSrc || preview(entry.item))"
-        :preview-src="resolveRuntimeUrl(previewSrc || preview(entry.item))" :alt="title(entry.item)">
+        :preview-src="resolveRuntimeUrl(previewSrc || preview(entry.item))" :alt="title(entry.item)" @load="emit('load')" @error="emit('error')">
         <template #fallback><div class="viewer-fallback"><ArchiveIcon name="image" /></div></template>
       </ZoomableImageViewer>
       <button v-else-if="entry.index !== index" class="gallery-orbit-neighbor" type="button" tabindex="-1"
@@ -29,20 +29,21 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends Pick<ArtworkRecord, 'id' | 'width' | 'height' | 'image_width' | 'image_height' | 'actual'>">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { useGalleryCoverFlow } from '@/composables/gallery/useGalleryCoverFlow'
 import type { ArtworkRecord } from '@/types/artwork'
+import '@/assets/css/gallery-orbit.css'
 
 const props = defineProps<{
-  items: ArtworkRecord[]; index: number; active: boolean; currentSrc: string; previewSrc: string
+  items: T[]; index: number; active: boolean; currentSrc: string; previewSrc: string
   cardUrls: Record<string, string>; thumbUrls: Record<string, string>; neighborUrls: Record<string, string>
-  title: (item: ArtworkRecord) => string
+  title: (item: T) => string
 }>()
-const emit = defineEmits<{ select: [index: number] }>()
+const emit = defineEmits<{ select: [index: number]; load: []; error: [] }>()
 const host = ref<HTMLElement | null>(null), failed = ref(new Set<string>())
 const imageRatios = ref<Record<string, number>>({})
 const { position, width, reduced, dragging, travel, select, reset } = useGalleryCoverFlow(host, {
@@ -62,12 +63,12 @@ const cards = computed(() => {
     return [{ index,item:props.items[index],...style,visibility:motion ? 'visible' : style.visibility }]
   })
 })
-function preview(item: ArtworkRecord) { return props.cardUrls[item.id] || props.neighborUrls[item.id] || props.thumbUrls[item.id] || '' }
-function imageRatio(item: ArtworkRecord) {
+function preview(item: T) { return props.cardUrls[item.id] || props.neighborUrls[item.id] || props.thumbUrls[item.id] || '' }
+function imageRatio(item: T) {
   const width = Number(item.width || item.image_width || item.actual?.width), height = Number(item.height || item.image_height || item.actual?.height)
   return imageRatios.value[item.id] || (width > 0 && height > 0 && Number.isFinite(width / height) ? width / height : .75)
 }
-function measurePreview(item: ArtworkRecord, event: Event) {
+function measurePreview(item: T, event: Event) {
   const image = event.target as HTMLImageElement
   if (image.complete && image.naturalWidth && image.naturalHeight) imageRatios.value[item.id] = image.naturalWidth / image.naturalHeight
 }

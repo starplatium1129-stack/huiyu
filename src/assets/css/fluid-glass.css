@@ -2,6 +2,19 @@
 /* Actual backdrop refraction is restricted to structural chrome, never reading panels. */
 :root { --fluid-glass-filter: none; }
 .fluid-glass-definitions { @apply tw:absolute tw:w-0 tw:h-0 tw:overflow-hidden tw:pointer-events-none; }
+.fluid-glass-positioned { position:relative; }
+[data-fluid-refracted] { isolation:isolate; --text-secondary:var(--text-primary); --text-muted:var(--text-primary); --text-tertiary:var(--text-primary); --accent-soft:color-mix(in srgb,var(--accent) 10%,var(--bg-surface)); }
+.fluid-glass-optics { position:absolute; inset:0; z-index:-1; overflow:hidden; border-radius:inherit; pointer-events:none; }
+/* A static bevel highlights the material's edge, never the letters. */
+.fluid-glass-optics::before { content:""; position:absolute; inset:0; padding:2px; border-radius:inherit;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--on-art-primary) 58%,transparent),var(--glass-highlight) 30%,transparent 52%,var(--glass-edge) 75%,color-mix(in srgb,var(--ink-base) 24%,transparent));
+  mask:linear-gradient(var(--text-primary) 0 0) content-box,linear-gradient(var(--text-primary) 0 0); mask-composite:exclude; }
+/* Light stays beneath the original foreground; only transform/opacity animate. */
+.fluid-glass-sheen { position:absolute; left:50%; top:50%; width:min(360px,120%); height:min(160px,200%); border-radius:50%; opacity:0; pointer-events:none;
+  background:radial-gradient(ellipse,color-mix(in srgb,var(--glass-highlight) 75%,var(--on-art-primary)) 0%,transparent 68%);
+  transform:translate3d(-50%,-50%,0); transition:opacity var(--motion-hover) var(--ease-out); }
+@media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .fluid-glass-sheen { transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .fluid-glass-sheen { transition:none; }
 :root:is([data-fluid-effects="low"], [data-reduced-glass="true"]) {
   --glass-fill: var(--bg-surface);
   --glass-fill-strong: var(--bg-elevated);

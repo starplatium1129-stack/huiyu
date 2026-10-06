@@ -1,10 +1,18 @@
 /** Rounded glass optics adapted from DeepSeek Harness Desktop's MIT liquid-glass module. */
+import { listenMotionChanges, prefersReducedMotion } from './motionPreference'
 export const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, [data-fluid-glass]'
 const SVG_NS = 'http://www.w3.org/2000/svg'
 const MAX_SURFACES = 12
 const MAX_MAPS = 32
-const MAX_MAP_EDGE = 360
+const MAX_MAP_PIXELS = 160_000
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value))
+
+/** Independent axes preserve the bevel of wide, short toolbars within one pixel budget. */
+export function fluidMapSize(w: number, h: number): [number, number] {
+  const width = Math.min(2048, Math.max(2, Math.ceil(w))), height = Math.min(512, Math.max(2, Math.ceil(h)))
+  const scale = Math.min(1, Math.sqrt(MAX_MAP_PIXELS / (width * height)))
+  return [Math.max(2, Math.floor(width * scale)), Math.max(2, Math.floor(height * scale))]
+}
 
 /** The reading area stays undistorted; only the rounded bevel refracts the backdrop. */
 export function fluidLens(width: number, height: number, radius: number, x: number, y: number): [number, number] {
@@ -36,6 +44,14 @@ interface GlassRecord {
   filter: SVGFilterElement
   image: SVGFEImageElement
   signature: string
+  element: HTMLElement
+  layer: HTMLDivElement
+  sheen: HTMLDivElement
+  displacement: SVGFEDisplacementMapElement
+  release: () => void
+  channels: SVGElement[]
+  theme: string
+  hovered: boolean
 }
 let serial = 0
 
@@ -52,6 +68,7 @@ export function mountFluidGlass(): () => void {
   const records = new Map<HTMLElement, GlassRecord>()
   const cache = new Map<string, Promise<string | undefined>>()
   const pending = new Map<HTMLElement, string>()
+  let frame = 0, pointer: { record: GlassRecord; x: number; y: number } | undefined, pressed: GlassRecord | undefined
   let mapQueue = Promise.resolve()
   const svg = svgNode('svg', { 'aria-hidden': 'true', width: '0', height: '0', focusable: 'false' })
   svg.classList.add('fluid-glass-definitions')
@@ -61,12 +78,78 @@ export function mountFluidGlass(): () => void {
   let timer = 0, disposed = false
   const enabled = () => root.dataset.glassMaterial === 'liquid' && root.dataset.fluidEffects !== 'low' && !document.hidden && !queries.some(query => query.matches)
 
+  // Clamp only extremes needed for reading; keep midtones and foreground ungraded.
+  function balanceBackdrop(record: GlassRecord) {
+    const theme = root.dataset.theme === 'light' ? 'light' : 'dark'
+    const tint = Number(root.style.getPropertyValue('--glass-tint') || .35)
+    const appearance = `${theme}:${tint}`
+    if (record.theme === appearance) return
+    record.theme = appearance
+    const fill = .3 + clamp(tint, 0, 1) * .42
+    // Current surface-channel bounds: light #fffcf6, dark #1e2935.
+    const limit = clamp(theme === 'light' ? (.57 - fill * .965) / (1 - fill) : (.42 - fill * .208) / (1 - fill), 0, 1)
+    const values = Array.from({ length: 9 }, (_, i) => (theme === 'light' ? Math.max(limit, i / 8) : Math.min(limit, i / 8)).toFixed(4)).join(' ')
+    for (const channel of record.channels) {
+      channel.setAttribute('tableValues', values)
+    }
+  }
+
+  function queuePresentation() {
+    if (disposed || frame) return
+    frame = requestAnimationFrame(() => {
+      frame = 0
+      if (pointer && records.get(pointer.record.element) === pointer.record && !prefersReducedMotion()) {
+        const { record, x, y } = pointer, box = record.element.getBoundingClientRect()
+        record.sheen.style.transform = `translate3d(calc(-50% + ${x - box.left - box.width / 2}px),calc(-50% + ${y - box.top - box.height / 2}px),0) scale(${pressed === record ? 1.08 : 1})`
+      }
+      pointer = undefined
+    })
+  }
+  function resetPress() {
+    if (!pressed) return
+    pressed.displacement.setAttribute('scale', '32')
+    pressed.sheen.style.opacity = pressed.hovered && !prefersReducedMotion() ? '.22' : '0'
+    pressed = undefined
+  }
+  function interactive(record: GlassRecord) {
+    const move = (event: PointerEvent) => {
+      if (prefersReducedMotion() || event.pointerType === 'touch') return
+      record.hovered = true; record.sheen.style.opacity = pressed === record ? '.36' : '.22'
+      pointer = { record, x: event.clientX, y: event.clientY }; queuePresentation()
+    }
+    const leave = () => { record.hovered = false; if (pressed !== record) record.sheen.style.opacity = '0' }
+    const press = () => {
+      if (prefersReducedMotion()) return
+      resetPress(); pressed = record
+      // Two discrete optical updates per press reuse the map; only the light animates per frame.
+      record.displacement.setAttribute('scale', '35.2'); record.sheen.style.opacity = '.36'
+    }
+    const key = (event: KeyboardEvent) => {
+      if (!['Enter', ' '].includes(event.key) || event.repeat || !(event.target instanceof Element)
+        || !event.target.closest('button,a,[role="button"],[role="tab"],[role="radio"],[role="option"]')) return
+      const box = record.element.getBoundingClientRect()
+      press(); pointer = { record, x: box.left + box.width / 2, y: box.top + box.height / 2 }; queuePresentation()
+    }
+    record.element.addEventListener('pointermove', move); record.element.addEventListener('pointerleave', leave)
+    record.element.addEventListener('pointerdown', press); record.element.addEventListener('keydown', key)
+    return () => {
+      if (pressed === record) resetPress()
+      if (pointer?.record === record) pointer = undefined
+      record.element.removeEventListener('pointermove', move); record.element.removeEventListener('pointerleave', leave)
+      record.element.removeEventListener('pointerdown', press); record.element.removeEventListener('keydown', key)
+    }
+  }
+  const stopMotion = listenMotionChanges(() => {
+    if (!prefersReducedMotion()) return
+    resetPress(); pointer = undefined
+    for (const record of records.values()) { record.hovered = false; record.sheen.style.opacity = '0' }
+  })
+  window.addEventListener('pointerup', resetPress); window.addEventListener('pointercancel', resetPress); window.addEventListener('keyup', resetPress)
+
   async function buildMap(w: number, h: number, r: number) {
     if (disposed) return undefined
-    const factor = Math.min(1, MAX_MAP_EDGE / Math.max(w, h))
     const canvas = document.createElement('canvas')
-    canvas.width = Math.max(2, Math.round(w * factor))
-    canvas.height = Math.max(2, Math.round(h * factor))
+    ;[canvas.width, canvas.height] = fluidMapSize(w, h)
     // Pixels originate on the CPU; do not upload them only to synchronously read
     // them back from the GPU for PNG encoding.
     const context = canvas.getContext('2d', { willReadFrequently: true })
@@ -82,7 +165,9 @@ export function mountFluidGlass(): () => void {
         const i = (y * canvas.width + x) * 4
         pixels.data[i] = Math.round(127.5 + dx / 32 * 255)
         pixels.data[i + 1] = Math.round(127.5 + dy / 32 * 255)
-        pixels.data[i + 2] = 128; pixels.data[i + 3] = 255
+        // B is unused by displacement: reuse it for a smooth reading/clear-bevel mask.
+        pixels.data[i + 2] = Math.round(255 * (1 - Math.min(1, Math.hypot(dx, dy) / 8)))
+        pixels.data[i + 3] = 255
       }
     }
     context.putImageData(pixels, 0, 0)
@@ -114,8 +199,12 @@ export function mountFluidGlass(): () => void {
 
   function remove(element: HTMLElement) {
     pending.delete(element)
-    records.get(element)?.filter.remove()
+    const record = records.get(element)
+    if (record) {
+      record.release(); record.filter.remove(); record.layer.remove()
+    }
     records.delete(element)
+    element.classList.remove('fluid-glass-positioned')
     element.removeAttribute('data-fluid-refracted')
     element.style.removeProperty('--fluid-glass-filter')
   }
@@ -128,6 +217,7 @@ export function mountFluidGlass(): () => void {
     const r = Math.round(radiusText.endsWith('%') ? parseFloat(radiusText) * Math.min(w, h) / 100 : parseFloat(radiusText) || 0)
     const signature = `${w}:${h}:${r}`
     let record = records.get(element)
+    if (record) balanceBackdrop(record)
     if (record?.signature === signature || pending.get(element) === signature) return
     pending.set(element, signature)
     const url = await mapFor(w, h, r)
@@ -143,12 +233,29 @@ export function mountFluidGlass(): () => void {
       const id = `huiyu-fluid-lens-${++serial}`
       const filter = svgNode('filter', { id, filterUnits: 'userSpaceOnUse', primitiveUnits: 'userSpaceOnUse', 'color-interpolation-filters': 'sRGB' })
       const image = svgNode('feImage', { result: 'lens-map', preserveAspectRatio: 'none', x: '0', y: '0' })
+      const displacement = svgNode('feDisplacementMap', { in: 'soft-backdrop', in2: 'lens-map', scale: '32', xChannelSelector: 'R', yChannelSelector: 'G', result: 'refracted' })
       filter.append(image,
-        svgNode('feGaussianBlur', { in: 'SourceGraphic', stdDeviation: '2.4', result: 'soft-backdrop' }),
-        svgNode('feDisplacementMap', { in: 'soft-backdrop', in2: 'lens-map', scale: '32', xChannelSelector: 'R', yChannelSelector: 'G', result: 'refracted' }),
-        svgNode('feColorMatrix', { in: 'refracted', type: 'saturate', values: '1.18' }))
-      record = { filter, image, signature: '' }
+        svgNode('feGaussianBlur', { in: 'SourceGraphic', stdDeviation: '1.2', result: 'soft-backdrop' }),
+        displacement,
+        svgNode('feColorMatrix', { in: 'refracted', type: 'saturate', values: '1.18', result: 'pigment' }))
+      const transfer = svgNode('feComponentTransfer', { in: 'pigment', result: 'reading-backdrop' })
+      const channels = [svgNode('feFuncR', { type: 'table' }), svgNode('feFuncG', { type: 'table' }), svgNode('feFuncB', { type: 'table' })]
+      transfer.append(...channels); filter.append(transfer)
+      // The same map keeps ungraded color on the refracting lip, away from labels.
+      filter.append(
+        svgNode('feColorMatrix', { in: 'lens-map', type: 'matrix', values: '0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 1 0 0', result: 'reading-mask' }),
+        svgNode('feComposite', { in: 'reading-backdrop', in2: 'reading-mask', operator: 'in', result: 'reading-body' }),
+        svgNode('feComposite', { in: 'pigment', in2: 'reading-mask', operator: 'out', result: 'clear-bevel' }),
+        svgNode('feComposite', { in: 'reading-body', in2: 'clear-bevel', operator: 'arithmetic', k1: '0', k2: '1', k3: '1', k4: '0' }))
+      const layer = document.createElement('div'), sheen = document.createElement('div')
+      layer.className = 'fluid-glass-optics'; layer.setAttribute('aria-hidden', 'true')
+      sheen.className = 'fluid-glass-sheen'
+      layer.append(sheen)
+      record = { filter, image, signature: '', element, layer, sheen, displacement, channels, theme: '', release: () => {}, hovered: false }
       records.set(element, record)
+      balanceBackdrop(record)
+      if (getComputedStyle(element).position === 'static') element.classList.add('fluid-glass-positioned')
+      element.prepend(layer); record.release = interactive(record)
     }
     record.signature = signature
     for (const node of [record.filter, record.image]) {
@@ -203,7 +310,8 @@ export function mountFluidGlass(): () => void {
   const mutations = new MutationObserver(events => {
     let changed = false
     for (const event of events) {
-      if (svg.contains(event.target)) continue
+      if (svg.contains(event.target) || event.target.parentElement?.closest('.fluid-glass-optics')) continue
+      if (event.type === 'childList' && [...event.addedNodes, ...event.removedNodes].every(node => node instanceof Element && node.classList.contains('fluid-glass-optics'))) continue
       if (event.type === 'childList') {
         event.addedNodes.forEach(discover)
         changed ||= event.removedNodes.length > 0 || event.addedNodes.length > 0
@@ -216,8 +324,8 @@ export function mountFluidGlass(): () => void {
     if (changed) schedule()
   })
   mutations.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['hidden', 'open', 'class', 'data-fluid-glass'] })
-  const preferences = new MutationObserver(schedule)
-  preferences.observe(root, { attributes: true, attributeFilter: ['data-fluid-effects', 'data-theme'] })
+  const preferences = new MutationObserver(() => { for (const record of records.values()) balanceBackdrop(record); schedule() })
+  preferences.observe(root, { attributes: true, attributeFilter: ['data-fluid-effects', 'data-theme', 'style'] })
   queries.forEach(query => query.addEventListener('change', schedule))
   document.addEventListener('visibilitychange', schedule)
   discover(document.body)
@@ -225,6 +333,8 @@ export function mountFluidGlass(): () => void {
     if (disposed) return
     disposed = true
     window.clearTimeout(timer)
+    cancelAnimationFrame(frame); stopMotion()
+    window.removeEventListener('pointerup', resetPress); window.removeEventListener('pointercancel', resetPress); window.removeEventListener('keyup', resetPress)
     mutations.disconnect(); preferences.disconnect(); resize.disconnect(); intersections.disconnect()
     queries.forEach(query => query.removeEventListener('change', schedule))
     document.removeEventListener('visibilitychange', schedule)

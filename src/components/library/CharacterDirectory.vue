@@ -30,10 +30,10 @@
         </button>
         <div v-if="!results.length" class="directory-empty tw:text-muted tw:text-label">没有匹配的角色。<br />试试其他名字，或清除筛选。</div>
       </div>
-      <nav v-if="pageCount > 1" class="directory-pagination tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:mt-s-2 tw:text-secondary tw:text-label tw:shrink-0" aria-label="角色分页">
-        <button type="button" :disabled="page === 1" @click="page--">上一页</button>
-        <label>第 <StudioSelect v-model.number="page" label="跳转角色页" inline size="sm" :options="pageItems.map(n => ({ value: n, label: String(n) }))" /> / {{ pageCount }} 页</label>
-        <button type="button" :disabled="page === pageCount" @click="page++">下一页</button>
+      <nav v-if="pageCount > 1" class="directory-pagination tw:text-secondary tw:text-label tw:shrink-0" aria-label="角色分页">
+        <button class="directory-page-turn directory-page-prev" type="button" aria-label="上一页" :disabled="page === 1" @click="page--"><ArchiveIcon name="chevron-down" /></button>
+        <label class="directory-page-jump"><StudioSelect v-model.number="page" label="跳转角色页" inline size="sm" :options="pageItems.map(n => ({ value: n, label: String(n) }))" /><span>/ {{ pageCount }}</span></label>
+        <button class="directory-page-turn directory-page-next" type="button" aria-label="下一页" :disabled="page === pageCount" @click="page++"><ArchiveIcon name="chevron-down" /></button>
       </nav>
       <div class="directory-current tw:text-label-xs tw:text-secondary tw:shrink-0"><span>当前：{{ selected?.name || '未选择' }}</span><button v-if="selected" type="button" @click="locateSelected">定位</button></div>
     </div>
@@ -204,13 +204,21 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-rail { border-right: 1px solid var(--border-soft); }
 .directory-series-search { flex-shrink:0; width:100%; min-width:0; min-height:36px; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-primary); font:inherit; font-size:var(--fs-label-sm); }
 .directory-series { overscroll-behavior: contain; padding: var(--s-1) var(--s-1) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-1); }
-.directory-series button, .directory-pagination button { border: 1px solid transparent; @apply tw:rounded-md; padding: var(--s-2) var(--s-3); @apply tw:min-h-[36px] tw:text-secondary; background: var(--bg-deep); font: inherit; @apply tw:text-label tw:cursor-pointer; }
+.directory-series button { border: 1px solid transparent; @apply tw:rounded-md; padding: var(--s-2) var(--s-3); @apply tw:min-h-[36px] tw:text-secondary; background: var(--bg-deep); font: inherit; @apply tw:text-label tw:cursor-pointer; }
 .directory-pagination .studio-select-wrapper { @apply tw:min-h-[36px]; }
 .directory-series button { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:w-full tw:min-w-0 tw:text-left tw:leading-body; overflow-wrap: anywhere; }
 .directory-series button[aria-pressed="true"] { background: var(--accent-soft); @apply tw:text-accent tw:border-accent; }
 .directory-series button span { @apply tw:text-muted tw:shrink-0; }
 /* 分页行给结果滚动区一个明确的下边界，让「未滚到底」与「被裁切」可区分。 */
-.directory-pagination { padding: var(--s-3) 0; border-top: 1px solid var(--border-soft); }
+.directory-pagination { display:grid; grid-template-columns:32px minmax(0,1fr) 32px; align-items:center; gap:var(--s-2); padding:var(--s-2) var(--s-3); border-top:1px solid var(--border-soft); }
+.directory-page-jump { display:flex; align-items:center; justify-content:center; gap:var(--s-2); min-width:0; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.directory-page-jump .studio-select-wrapper { flex:0 1 56px; width:56px; min-width:0; }
+.directory-page-jump > span { flex:none; }
+.directory-page-turn { display:grid; place-items:center; width:32px; height:32px; padding:0; border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-secondary); font:inherit; cursor:pointer; }
+.directory-page-turn:not(:disabled):hover { background:var(--bg-hover); color:var(--text-primary); }
+.directory-page-prev .archive-icon { transform:rotate(90deg); }
+.directory-page-next .archive-icon { transform:rotate(-90deg); }
+.directory-page-turn:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .directory-pagination button:disabled { @apply tw:text-disabled tw:cursor-default; }
 .directory-catalog button:focus-visible,
 .directory-pagination :deep(.studio-select-trigger):focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }

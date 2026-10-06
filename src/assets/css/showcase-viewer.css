@@ -36,10 +36,15 @@
   box-shadow: var(--shadow-lg);
 }
 .showcase-viewer .viewer-art {
+  position:relative;
+  overflow:hidden;
   @apply tw:min-w-0 tw:min-h-0 tw:flex tw:items-center tw:justify-center;
   container-type:inline-size;
   background:var(--art-backdrop);
 }
+.showcase-viewer .viewer-layout.is-orbit { width:var(--viewer-width-limit); height:var(--viewer-height-limit); }
+.showcase-viewer .viewer-art:has(> .gallery-orbit) { padding:64px var(--s-4) var(--s-3); }
+.showcase-viewer .viewer-mode-switch { position:absolute; top:var(--s-3); left:var(--s-3); z-index:var(--z-raised); gap:var(--s-2); min-height:36px; padding:var(--s-2) var(--s-3); font-size:var(--fs-label-sm); }
 /* The clipped art region and the toolbar occupy separate grid rows, even when zoomed. */
 .showcase-viewer .viewer-art .zoomable-image-viewer { @apply tw:min-h-0 tw:grid; grid-template-rows:minmax(0,1fr) var(--viewer-tools-height); }
 .showcase-viewer .zoom-viewport { padding:var(--viewer-art-padding); }
@@ -65,6 +70,14 @@
   color: var(--on-art-primary);
   overscroll-behavior:contain;
 }
+/* The same stage and gestures as My Works, within the reference viewer's dark art surface. */
+.showcase-viewer .gallery-orbit .zoomable-image-viewer { display:grid; min-height:0; grid-template-rows:minmax(0,1fr) 56px; }
+.showcase-viewer .gallery-orbit .zoom-transform-layer { width:100%; height:100%; }
+.showcase-viewer .gallery-orbit .zoomable-img { width:auto; height:auto; max-height:100%; border-radius:var(--r-md); }
+.showcase-viewer .gallery-orbit .zoom-viewport { padding:0; }
+.showcase-viewer .gallery-orbit .zoom-toolbar { padding:0; border:0; background:transparent; }
+.showcase-viewer .gallery-orbit-caption { color:var(--on-art-secondary); }
+.showcase-viewer .gallery-orbit-title { color:var(--on-art-primary); }
 .showcase-viewer .viewer-copy .viewer-close { float: right; margin: -6px -6px var(--s-3) var(--s-3); border-color: color-mix(in srgb, var(--on-art-line) 55%, transparent); background: color-mix(in srgb, var(--art-scrim) 65%, transparent); color: var(--on-art-primary); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
 .showcase-viewer .viewer-copy .viewer-close:hover { border-color: var(--on-art-line); color: var(--on-art-primary); background: color-mix(in srgb, var(--on-art-line) 14%, transparent); }
 .showcase-viewer .viewer-copy .viewer-kicker { color: var(--on-art-secondary); }

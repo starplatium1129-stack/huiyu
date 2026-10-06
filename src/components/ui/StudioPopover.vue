@@ -34,7 +34,7 @@ function onEscape(event: KeyboardEvent) {
     <PopoverPortal :to="portalTarget">
       <PopoverContent :align="align" :side-offset="10" :collision-padding="16" :collision-boundary="collisionBoundary"
         hide-when-detached as-child @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="onCloseAutoFocus">
-        <div :aria-label="label" :aria-labelledby="undefined" :data-pointer-open="pointerOpened" class="studio-popover" :class="contentClass" @keydown.esc="onEscape"><slot /></div>
+        <div data-fluid-glass :aria-label="label" :aria-labelledby="undefined" :data-pointer-open="pointerOpened" class="studio-popover" :class="contentClass" @keydown.esc="onEscape"><slot /></div>
       </PopoverContent>
     </PopoverPortal>
   </PopoverRoot>

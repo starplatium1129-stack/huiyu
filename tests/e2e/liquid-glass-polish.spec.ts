@@ -27,7 +27,7 @@ async function materialFixture(page: Page, theme: string) {
 }
 
 for (const theme of ['light', 'dark']) {
-  test(`liquid rim keeps the reading plane protected without filtering text: ${theme}`, async ({ page }, testInfo) => {
+  test(`unsupported optics keep a readable frosted fallback without filtering text: ${theme}`, async ({ page }, testInfo) => {
     await materialFixture(page, theme)
     const glass = page.locator('.material-probe')
     await expect(glass).toHaveCSS('backdrop-filter', /blur\(16px\)/)
@@ -37,8 +37,8 @@ for (const theme of ['light', 'dark']) {
       await expect(child).toHaveCSS('opacity', '1')
       await expect(child).toHaveCSS('filter', 'none')
     }
-    // Resolve the actual tokens through CSS, then composite the center's two fills
-    // over the worst neutral backdrops. This does not certify edge-overlapping labels.
+    // This CSS-only fixture exercises the unsupported-optics fallback.
+    // The installed renderer's foreground contrast is verified against actual pixels separately.
     const ratios = await glass.evaluate(element => {
       const context = document.createElement('canvas').getContext('2d')!
       context.canvas.width = context.canvas.height = 1
@@ -46,11 +46,6 @@ for (const theme of ['light', 'dark']) {
         context.clearRect(0, 0, 1, 1); context.fillStyle = value; context.fillRect(0, 0, 1, 1)
         return [...context.getImageData(0, 0, 1, 1).data]
       }
-      const resolveColor = (value: string) => {
-        const probe = document.createElement('i'); probe.style.backgroundColor = value; element.append(probe)
-        const resolved = getComputedStyle(probe).backgroundColor; probe.remove(); return color(resolved)
-      }
-      const reading = resolveColor('var(--material-reading-fill)')
       const fill = color(getComputedStyle(element).backgroundColor)
       const composite = (foreground: number[], background: number[]) => foreground.slice(0, 3)
         .map((value, i) => value * foreground[3] / 255 + background[i] * (1 - foreground[3] / 255))
@@ -59,7 +54,7 @@ for (const theme of ['light', 'dark']) {
         return sum + (c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4) * [.2126, .7152, .0722][i]
       }, 0)
       return [0, 255].flatMap(backdrop => {
-        const background = luminance(composite(reading, composite(fill, [backdrop, backdrop, backdrop])))
+        const background = luminance(composite(fill, [backdrop, backdrop, backdrop]))
         return [...element.children].map(child => {
           const text = luminance(color(getComputedStyle(child).color))
           return (Math.max(text, background) + .05) / (Math.min(text, background) + .05)

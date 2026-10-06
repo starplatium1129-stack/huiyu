@@ -90,9 +90,15 @@
            没有 top layer、没有 ::backdrop，背景不 inert，Tab 能直接跑到下面的网格里 -->
       <dialog ref="dialogEl" class="showcase-viewer" data-image-transition aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
         <button class="viewer-close viewer-close-on-art" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer"><ArchiveIcon name="close" /></button>
-        <div v-if="viewerMounted && currentEntry" class="viewer-layout" :style="{ '--viewer-image-ratio': viewerAspectRatio }">
+        <div v-if="viewerMounted && currentEntry" class="viewer-layout" :class="{ 'is-orbit': !originalViewer }" :style="{ '--viewer-image-ratio': viewerAspectRatio }">
           <div class="viewer-art">
+            <button class="viewer-mode-switch btn btn-ghost" type="button" :aria-pressed="originalViewer" @click="toggleOriginalViewer"><ArchiveIcon name="image" />{{ originalViewer ? '立体观画' : '原图 / 缩放' }}</button>
+            <GalleryOrbitStage v-if="!originalViewer" :items="filtered" :index="currentIdx" :active="viewerMounted && !viewerClosing"
+              :current-src="imgSrc(currentEntry)" :preview-src="viewerPreviewSrc" :card-urls="viewerThumbs" :thumb-urls="viewerThumbs" :neighbor-urls="viewerThumbs"
+              :title="entry => entry.title" @select="openViewer(filtered[$event].id)" @load="onViewerImageLoad" @error="viewerImageFailed = true"
+              @pointerdown.capture="viewerHero.cancel" @wheel.capture="viewerHero.cancel" />
             <ZoomableImageViewer
+              v-else
               :src="resolveRuntimeUrl(imgSrc(currentEntry))"
               :preview-src="viewerPreviewSrc"
               :alt="currentEntry.title"
@@ -154,6 +160,7 @@ import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
+import GalleryOrbitStage from '@/components/gallery/GalleryOrbitStage.vue'
 import ShowcaseAlbums from '@/components/showcase/ShowcaseAlbums.vue'
 import ShowcaseSampleCard from '@/components/showcase/ShowcaseSampleCard.vue'
 import { useShowcaseAlbums } from '@/composables/showcase/useShowcaseAlbums'
@@ -200,6 +207,7 @@ function loadMore() { visibleCount.value += PAGE_SIZE }
 const currentId   = ref('')
 const viewerMounted = ref(false)
 const viewerClosing = ref(false)
+const originalViewer = ref(false)
 const viewerPreviewSrc = ref('')
 const dialogEl    = ref<HTMLDialogElement | null>(null)
 const viewerHero = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
@@ -316,9 +324,12 @@ const filtered = computed(() => {
 const paged = computed(() => filtered.value.slice(0, visibleCount.value))
 const currentIdx = computed(() => filtered.value.findIndex(e => e.id === currentId.value))
 const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
+// Neighbor previews must not bypass the restricted cards' deliberate veil.
+const viewerThumbs = computed(() => Object.fromEntries(filtered.value.filter(entry => entry.rating !== 'R18').map(entry => [entry.id, thumbSrc(entry)])))
 const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
 
 function openViewer(id: string) {
+  if (!dialogEl.value?.open) originalViewer.value = false
   const source = sourceImage(id), entry = filtered.value.find(item => item.id === id)
   viewerAspectRatio.value = source?.naturalWidth && source.naturalHeight ? source.naturalWidth / source.naturalHeight
     : entry?.width && entry.height ? entry.width / entry.height : 2 / 3
@@ -338,6 +349,11 @@ function openViewer(id: string) {
       viewerMotion.open()
     }
   })
+}
+function toggleOriginalViewer() {
+  viewerHero.cancel()
+  originalViewer.value = !originalViewer.value
+  void nextTick(() => dialogEl.value?.querySelector<HTMLElement>('.zoomable-image-viewer')?.focus({ preventScroll: true }))
 }
 function openLinkedScene() {
   if (!viewActive || route.path !== '/showcase') return

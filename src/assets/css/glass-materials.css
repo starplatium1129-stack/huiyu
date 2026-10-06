@@ -2,10 +2,8 @@
 /* Two device-local material choices. Both keep text and content unfiltered. */
 :root { --material-fill: color-mix(in srgb, var(--bg-surface) 96%, transparent); }
 :root[data-glass-material="liquid"] {
-  --material-fill: color-mix(in srgb, var(--bg-surface) 68%, transparent);
-  /* A clearer bevel surrounds a protected reading plane (93.6% combined fill).
-     Keep glints on the rim: a diagonal wash across labels would reduce contrast. */
-  --material-reading-fill: color-mix(in srgb, var(--bg-surface) 80%, transparent);
+  --material-fill: color-mix(in srgb, var(--bg-surface) calc(30% + var(--glass-tint, .35) * 42%), transparent);
+  /* Only extreme backdrop tones are bounded; midtones keep their original color. */
   --material-rim: var(--glass-specular, var(--glass-highlight));
 }
 :root[data-glass-material="liquid"][data-theme="light"] {
@@ -19,23 +17,24 @@
 }
 
 :root[data-glass-material="liquid"] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
-  background:
-    linear-gradient(180deg, transparent, var(--material-reading-fill) 12px, var(--material-reading-fill) calc(100% - 12px), transparent),
-    var(--material-fill);
+  background:var(--material-fill);
   box-shadow:
     inset 0 1px 0 var(--material-rim),
     inset 1px 0 0 var(--glass-highlight),
     inset -1px 0 0 var(--glass-edge),
-    inset 0 -1px 0 var(--glass-edge),
+    inset 0 -1px 0 color-mix(in srgb,var(--ink-base) 22%,transparent),
     var(--shadow-md);
   -webkit-backdrop-filter:var(--fluid-glass-filter, blur(16px) saturate(125%));
   backdrop-filter:var(--fluid-glass-filter, blur(16px) saturate(125%));
 }
 /* An unsupported SVG lens still gets a bounded, static frosted fallback. */
 :root[data-glass-material="liquid"] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]):not([data-fluid-refracted]) {
+  background:color-mix(in srgb,var(--bg-surface) 94%,transparent);
   -webkit-backdrop-filter:blur(16px) saturate(125%);
   backdrop-filter:blur(16px) saturate(125%);
 }
+:root[data-glass-material="liquid"] body [data-fluid-refracted] .studio-search { background:transparent; }
+:root[data-glass-material="liquid"] body [data-fluid-refracted] :is(button:disabled,.badge) { background:var(--bg-surface); }
 
 /* Do not leave translucent chrome on browsers without any backdrop support. */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {

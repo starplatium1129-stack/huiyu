@@ -175,6 +175,7 @@ watch(() => props.anchor, () => {
         <TooltipTrigger as-child><slot /></TooltipTrigger>
         <TooltipPortal :to="portalTarget">
           <TooltipContent
+            :data-fluid-glass="inDialog ? undefined : ''"
             :side="side"
             :side-offset="6"
             :collision-padding="12"

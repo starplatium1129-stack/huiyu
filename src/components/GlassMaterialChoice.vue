@@ -11,16 +11,23 @@
         <span class="glass-choice-indicator tw:absolute tw:top-s-3 tw:right-s-3 tw:grid tw:w-[20px] tw:h-[20px]" aria-hidden="true"><ArchiveIcon name="success" /></span>
       </RadioGroupItem>
     </RadioGroupRoot>
+    <div v-if="glassMode === 'liquid'" class="glass-tint-control">
+      <label :for="tintId">玻璃色调 <output>{{ glassTint }}%</output></label>
+      <input :id="tintId" type="range" min="0" max="100" step="1" :value="glassTint" :disabled="effectiveGlassMode !== 'liquid'"
+        :aria-valuetext="`玻璃色调 ${glassTint}%，越低越通透`" @input="setGlassTint(Number(($event.target as HTMLInputElement).value))" />
+      <div class="glass-tint-labels"><span>清透</span><span>加色</span></div>
+    </div>
     <p class="glass-choice-note tw:m-0 tw:text-muted tw:text-label tw:leading-loose" role="status">{{ glassMode === 'liquid' && effectiveGlassMode !== 'liquid' ? '辅助显示设置优先，当前使用清晰底色；关闭后恢复所选材质。' : glassMode === 'liquid' ? '导航和工具条呈现折射与透光，适合性能充裕的设备。环境不支持时自动回退为柔和玻璃。' : '细腻高光与稳定底色，不计算背景折射。适合日常使用和办公笔记本。' }}</p>
   </fieldset>
 </template>
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import { computed } from 'vue'
+import { computed, useId } from 'vue'
 import { RadioGroupRoot, RadioGroupItem } from 'reka-ui'
 import { useDesktopPreferences, type GlassMode } from '@/composables/useDesktopInteraction'
-const { glassMode, effectiveGlassMode, setGlassMode } = useDesktopPreferences()
+const { glassMode, effectiveGlassMode, glassTint, setGlassMode, setGlassTint } = useDesktopPreferences()
+const tintId = useId()
 const selectedGlass = computed({ get: () => glassMode.value, set: setGlassMode })
 const choices: Array<{ value: GlassMode; title: string; description: string }> = [
   { value: 'light', title: '轻盈玻璃', description: '默认 · 轻负担，清晰耐看' },
@@ -32,6 +39,13 @@ const choices: Array<{ value: GlassMode; title: string; description: string }> =
 @reference "../assets/css/tailwind.css";
 .glass-choice { border:0; }
 .glass-choice legend { @apply tw:mb-s-2 tw:text-secondary tw:text-body; }
+.glass-tint-control { display:grid; gap:var(--s-2); margin:0 0 var(--s-3); }
+.glass-tint-control label,.glass-tint-labels { display:flex; justify-content:space-between; gap:var(--s-3); color:var(--text-secondary); font-size:var(--fs-label-sm); }
+.glass-tint-control output { color:var(--text-primary); font-variant-numeric:tabular-nums; }
+.glass-tint-control input { width:100%; min-width:0; height:28px; margin:0; accent-color:var(--accent); cursor:pointer; }
+.glass-tint-control input:disabled { cursor:default; }
+.glass-tint-control:has(input:disabled) :is(label,output,.glass-tint-labels) { color:var(--text-disabled); }
+.glass-tint-control input:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 .glass-choice-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .glass-choice-option { border:0; background:transparent; color:inherit; font:inherit; }
 .glass-choice-body { border:1px solid var(--border-soft); background:var(--bg-surface); }
