@@ -12,6 +12,7 @@
     @pointermove="onPointerMove"
     @pointerleave="onPointerLeave"
   >
+    <canvas ref="gpuCanvas" :key="gpuRevision" v-show="gpuAvailable" aria-hidden="true"></canvas>
     <canvas ref="canvas" aria-hidden="true"></canvas>
     <div class="particle-fallback" aria-hidden="true">
       <span v-for="index in 18" :key="index" :style="{ '--fallback-index': String(index) }"></span>
@@ -79,6 +80,10 @@ interface Palette {
 
 const host = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
+const gpuCanvas = ref<HTMLCanvasElement | null>(null)
+const gpuAvailable = ref(false)
+const gpuRevision = ref(0)
+let bodyDirty = true, particlesMoving = false
 const canvasAvailable = ref(true)
 /** 深色主题下图片点阵用 screen 混合：暗部自然隐入页面底色、亮部发光，
     消除"贴上去的彩色马赛克"突兀感（2026-08-16 用户反馈）。 */
@@ -140,7 +145,7 @@ const performance = useParticlePerformanceLifecycle({
   rebuild: () => setShape(false), start: startLoop, stop: stopLoop, resize,
   cancelDeferred: () => {
     if (paletteFrame) { cancelAnimationFrame(paletteFrame); paletteFrame = 0 }
-    gpuRenderer?.release(); gpuRenderer = undefined
+    gpuRenderer?.release(); gpuRenderer = undefined; gpuAvailable.value = false; gpuRevision.value++; bodyDirty = true
   },
   paletteChanged: schedulePaletteRead,
   visible: () => visible,
@@ -155,6 +160,7 @@ function preferredCount(): number {
 }
 
 function readPalette() {
+  bodyDirty = true
   snapshot.invalidate()
   if (!host.value) return
   darkTheme = (document.documentElement.dataset.theme || 'dark') !== 'light'
@@ -194,6 +200,8 @@ function targetPosition(point: ParticlePoint): { x: number; y: number } {
 }
 
 function setShape(animate = true) {
+  bodyDirty = true
+  particlesMoving = animate && !reduceMotion.value
   snapshot.invalidate()
   if (!width || !height) return
   const count = Math.max(props.density === 'backdrop' ? 80 : 120, preferredCount())
@@ -349,7 +357,7 @@ function simulateParticles(now: number): boolean {
 }
 
 function draw() {
-  if (!context || !canvas.value) return
+  if (!context || !canvas.value || !performance.active.value) return
   const ctx = context
   ctx.clearRect(0, 0, width, height)
   // 剪影模式按人物调色板分批填充 + 统一点径；抽象形状沿用三档 tone
@@ -363,11 +371,13 @@ function draw() {
   const energyScale = props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1
   const style: ParticleBodyStyle = { paints, radii: portraitRadii, darkTheme, energyScale,
     surface: particleSurface, outline: particleOutline, palette }
-  if (paints && gpuRenderer === undefined) gpuRenderer = createParticleGpuRenderer()
-  const accelerated = !!paints && !!gpuRenderer?.draw(ctx, width, height, dpr, particles, style)
+  if (paints && gpuRenderer === undefined && gpuCanvas.value) gpuRenderer = createParticleGpuRenderer(gpuCanvas.value)
+  const accelerated = !!paints && !!gpuRenderer?.draw(width, height, dpr, particles, style, bodyDirty)
+  gpuAvailable.value = accelerated
   const drawnCount = accelerated ? particles.length : paints
     ? snapshot.draw(ctx, width, height, dpr, particles, style)
     : (drawParticleBody(ctx, particles, style), particles.length)
+  bodyDirty = false
   const reportTime = globalThis.performance.now()
   if (host.value && reportTime - lastDrawReport >= 1000) {
     host.value.dataset.particleDrawCount = String(drawnCount)
@@ -407,7 +417,11 @@ function renderFrame(now: number) {
     }
   }
   lastFrame = now
-  const moving = simulateParticles(now)
+  const simulate = particlesMoving || pointerActive
+  const moving = simulate ? simulateParticles(now) : false
+  if (!simulate) lastPhysicsFrame = now
+  particlesMoving = moving
+  if (simulate) bodyDirty = true
   const ambientElapsed = lastAmbientFrame ? Math.min(48, Math.max(1, now - lastAmbientFrame)) : 16.67
   lastAmbientFrame = now
   updateAmbient(ambientElapsed / 16.67)
@@ -486,7 +500,7 @@ watch(() => props.density, () => {
   resize()
   startLoop()
 })
-watch(() => props.signal, () => { snapshot.invalidate(); startLoop() })
+watch(() => props.signal, () => { bodyDirty = true; snapshot.invalidate(); draw(); startLoop() })
 
 /** 角色剪影点云异步接管：加载完成前维持现有形状，完成后平滑形变成人物轮廓。 */
 async function applyPortrait(id: string) {

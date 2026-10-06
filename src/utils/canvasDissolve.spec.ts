@@ -234,17 +234,16 @@ describe('bounded canvas dust dissolve', () => {
     expect(onComplete).toHaveBeenCalledOnce()
   })
 
-  it.each([144, 240])('caps paints on a %s Hz display while ending at 1480 ms', hz => {
+  it.each([144, 240])('follows every refresh on a %s Hz display while ending at 1480 ms', hz => {
     const { image, host } = fixture()
     stop = startCanvasDissolve(image, host)
     const overlay = contexts[0]
     for (let index = 1; index * 1000 / hz < 1480; index++) tick(1000 + index * 1000 / hz)
     expect(overlay.clearRect.mock.calls.length).toBeGreaterThan(40)
-    expect(overlay.clearRect.mock.calls.length).toBeLessThanOrEqual(Math.floor(1480 * 60 / 1000))
-    // Extra callbacks in the current paint slot cannot add work or lose ownership.
+    expect(overlay.clearRect).toHaveBeenCalledTimes(Math.ceil(1480 * hz / 1000)-1)
     const painted = overlay.clearRect.mock.calls.length
     tick(2478); tick(2479)
-    expect(overlay.clearRect).toHaveBeenCalledTimes(painted)
+    expect(overlay.clearRect).toHaveBeenCalledTimes(painted+2)
     expect(frames.size).toBe(1)
     tick(2480)
     expect(host.querySelector('canvas')).toBeNull()

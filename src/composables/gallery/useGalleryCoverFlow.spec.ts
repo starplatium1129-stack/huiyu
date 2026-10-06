@@ -64,3 +64,28 @@ it('keeps zoom gestures with the image and settles bounded selection under reduc
   wrapper.unmount(); vi.advanceTimersByTime(500)
   expect(select.mock.calls).toEqual([[3], [7]])
 })
+
+it('hands the release to composited keyframes and grabs its current position and velocity', async () => {
+  vi.useFakeTimers()
+  const {element,flow,active,index}=await fixture()
+  element.animate=vi.fn()
+  element.getAnimations=()=>[{id:'gallery-cover-flow',currentTime:80} as Animation]
+  flow.select(4)
+  const motion=flow.travel.value!
+  expect(motion.from).toBe(2)
+  expect(motion.to).toBe(4)
+  expect(motion.samples.at(-1)).toBe(4)
+  pointer(element,'pointerdown',400,100)
+  const grabbed=flow.position.value
+  expect(grabbed).toBeGreaterThan(2)
+  expect(grabbed).toBeLessThan(4)
+  expect(flow.travel.value).toBeNull()
+  pointer(element,'pointermove',328,120)
+  expect(flow.position.value).toBeCloseTo(grabbed+.5)
+  pointer(element,'pointerup',328,140)
+  expect(flow.travel.value!.velocity).toBeGreaterThan(0)
+  active.value=false;await nextTick()
+  vi.advanceTimersByTime(2000)
+  expect(flow.travel.value).toBeNull()
+  expect(flow.position.value).toBe(index.value)
+})

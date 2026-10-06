@@ -90,8 +90,7 @@ const rgb = (color: string) => [1, 3, 5].map(offset => parseInt(color.slice(offs
 
 /** Instanced circle/capsule masks keep each palette pass a union, as in Path2D.
  * No per-particle Canvas paths, readbacks, frame caps or point-count reduction. */
-export function createParticleGpuRenderer() {
-  const canvas = document.createElement('canvas')
+export function createParticleGpuRenderer(canvas = document.createElement('canvas')) {
   let lost = false, disposed = false
   canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); lost = true })
   // The owner can keep its Canvas fallback for the rest of this component's life.
@@ -124,10 +123,12 @@ export function createParticleGpuRenderer() {
   let textureWidth = 0, textureHeight = 0
 
   return {
-    draw(context: CanvasRenderingContext2D, width: number, height: number, dpr: number,
-      points: readonly ParticleBodyPoint[], style: ParticleBodyStyle): boolean {
+    canvas,
+    draw(width: number, height: number, dpr: number,
+      points: readonly ParticleBodyPoint[], style: ParticleBodyStyle, redraw = true): boolean {
       if (lost || disposed || gl.isContextLost() || !style.paints?.length) return false
       if (!style.paints.every(color => /^#[\da-f]{6}$/i.test(color)) || !/^#[\da-f]{6}$/i.test(style.outline)) return false
+      if (!redraw && textureWidth === Math.round(width*dpr) && textureHeight === Math.round(height*dpr)) return true
       const paints = style.paints
       const key = `${paints.join(',')}|${style.surface}|${style.darkTheme}`
       if (key !== colorKey) {
@@ -203,8 +204,6 @@ export function createParticleGpuRenderer() {
       groups.forEach((_, i) => drawGroup(i, 3, colors[i], .32))
       groups.forEach((_, i) => drawGroup(i, 0, colors[i], style.darkTheme ? .88 : 1))
       gl.disable(gl.SCISSOR_TEST)
-      context.save(); context.setTransform(1, 0, 0, 1, 0, 0)
-      context.globalCompositeOperation = 'source-over'; context.globalAlpha = 1; context.drawImage(canvas, 0, 0); context.restore()
       return true
     },
     release() {

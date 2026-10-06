@@ -1,8 +1,8 @@
 import { startCanvasTextureParticles } from './canvasTextureParticles'
+import { registerParticleFrame } from './particleScheduler'
 
 const CANVAS_DURATION = 1480
 const THUMBNAIL_DURATION = 740
-const PAINT_INTERVAL = 1000 / 60
 const MAX_PARTICLES = 2400
 const MAX_PIXELS = 1_000_000
 const MAX_EDGE = 1280
@@ -60,15 +60,14 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
   const snapshot = document.createElement('canvas')
   const sample = document.createElement('canvas')
   const grains: Grain[] = []
-  let frame: number | null = null
+  let stopFrame: (() => void) | null = null
   let disposed = false
   let handedOff = false
 
   function cleanup(): void {
     if (disposed) return
     disposed = true
-    if (frame !== null) cancelAnimationFrame(frame)
-    frame = null
+    stopFrame?.(); stopFrame = null
     overlay.remove()
     for (const canvas of [overlay, snapshot, sample]) { canvas.width = 0; canvas.height = 0 }
     grains.length = 0
@@ -140,11 +139,9 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
     context.drawImage(snapshot, left, top, width, height)
     host.appendChild(overlay)
     const startedAt = performance.now()
-    let lastPaintStep = 0
 
     function render(now: number): void {
       if (disposed) return
-      frame = null
       const elapsed = Math.max(0, now - startedAt)
       if (elapsed >= duration) { cleanup(); return }
       // Let waiting/empty content enter while the last dust is still receding.
@@ -152,11 +149,6 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
         handedOff = true
         lifecycle?.onHandoff?.()
       }
-      // High-refresh rAF still owns cancellation and wall-clock completion, but
-      // only one redraw is allowed in each 60Hz slot (no catch-up paint loops).
-      const paintStep = Math.floor(elapsed / PAINT_INTERVAL)
-      if (paintStep <= lastPaintStep) { frame = requestAnimationFrame(render); return }
-      lastPaintStep = paintStep
       try {
         /* compositor-exempt: image breakup needs independent source patches and
          * dust grains; one finite <=1480ms loop, <=2400 grains and <=1MP backings. */
@@ -179,10 +171,9 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
             grain.y + cellHeight / 2 + grain.vy * drift + flutter * 0.3, size, size)
         }
         context!.globalAlpha = 1
-        frame = requestAnimationFrame(render)
       } catch { cleanup() }
     }
-    frame = requestAnimationFrame(render)
+    stopFrame = registerParticleFrame(render)
     return cleanup
   } catch {
     cleanup()

@@ -38,9 +38,9 @@ for (const theme of ['dark', 'light']) {
       expect(frame!.height).toBeGreaterThanOrEqual(430)
       expect(frame!.width).toBeGreaterThan(1000)
       await expect(field.locator('.particle-caption')).toHaveText('绫地宁宁')
-      const pixels = await field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())
+      const pixels = await field.screenshot().then(bytes => bytes.toString('base64'))
       await hoverAndWaitForParticleFrame(page, field)
-      await expect.poll(() => field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())).not.toBe(pixels)
+      await expect.poll(() => field.screenshot().then(bytes => bytes.toString('base64'))).not.toBe(pixels)
       await page.mouse.move(0, 0)
       for (const label of await page.locator('.portrait-stage-heading h2, .portrait-stage-kicker, .portrait-stage-footer p').all()) {
         // GPU drawing can finish before the page's entrance opacity transition.
@@ -57,8 +57,8 @@ for (const theme of ['dark', 'light']) {
       await expect.poll(async () => Number(await field.getAttribute('data-particle-count') || 0)).toBeGreaterThan(0)
       await expect(field).toBeVisible()
       await waitForAnimationFrames(page)
-      const before = await field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())
-      await expect.poll(() => field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())).not.toBe(before)
+      const before = await field.screenshot().then(bytes => bytes.toString('base64'))
+      await expect.poll(() => field.screenshot().then(bytes => bytes.toString('base64'))).not.toBe(before)
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
     })
   }
@@ -68,15 +68,15 @@ test('switching characters keeps the original canvas and system motion behavior'
   await page.goto('/character?character=nene')
   const field = page.locator('.particle-theatre .has-portrait')
   await expect(field).toBeVisible()
-  await field.locator('canvas').evaluate(e => e.setAttribute('data-test-instance', 'retained'))
+  await field.locator('canvas').first().evaluate(e => e.setAttribute('data-test-instance', 'retained'))
   await page.locator('.directory-item').filter({ hasText: '四季夏目' }).click()
   await expect(field).toHaveAttribute('aria-label', '四季夏目的人物粒子形象')
-  await expect(field.locator('canvas')).toHaveAttribute('data-test-instance', 'retained')
+  await expect(field.locator('canvas').first()).toHaveAttribute('data-test-instance', 'retained')
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await expect(field).toHaveClass(/is-static/)
-  const pixels = await field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())
+  const pixels = await field.screenshot().then(bytes => bytes.toString('base64'))
   await page.waitForTimeout(250)
-  expect(await field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())).toBe(pixels)
+  expect(await field.screenshot().then(bytes => bytes.toString('base64'))).toBe(pixels)
 })
 
 test('missing point cloud leaves original art and archive available', async ({ page }) => {
@@ -106,7 +106,7 @@ test('portrait uses uncapped GPU drawing and survives context loss', async ({ pa
   await expect(field).toHaveAttribute('data-particle-renderer', 'canvas2d')
   const count = Number(await field.getAttribute('data-particle-count'))
   expect(count).toBeGreaterThan(1000)
-  expect(await field.locator('canvas').evaluate(canvas => {
+  expect(await field.locator('canvas').last().evaluate(canvas => {
     const ctx = (canvas as HTMLCanvasElement).getContext('2d')!
     return ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height).data.some((value, index) => index % 4 === 3 && value > 0)
   })).toBe(true)

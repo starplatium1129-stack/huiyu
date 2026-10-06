@@ -1,7 +1,9 @@
-import { computed, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
+import { computed, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, shallowRef, watch, type Ref } from 'vue'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { FluidSpring } from '@/utils/fluidSpring'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
+
+export interface CoverFlowTravel { readonly from:number; readonly to:number; readonly velocity:number; readonly startedAt:number; readonly duration:number; readonly samples:readonly number[] }
 
 /** One bounded axis for this viewer; image reads remain owned by useGalleryViewer. */
 export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
@@ -9,6 +11,8 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
 }) {
   const position = ref(options.index()), width = ref(800), reduced = ref(prefersReducedMotion()), dragging = ref(false)
   const spring = new FluidSpring(position.value, 4.4)
+  const travel = shallowRef<CoverFlowTravel | null>(null)
+  let arrival: ReturnType<typeof setTimeout> | undefined
   const stepWidth = computed(() => Math.max(96, Math.min(220, width.value * .18)))
   let frame = 0, lastFrame = 0
   let wheelPosition: number | null = null, wheelTimer: ReturnType<typeof setTimeout> | undefined
@@ -18,6 +22,15 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   let drag: { id: number; x: number; position: number; last: number; time: number; velocity: number } | null = null
   const clamp = (value: number) => Math.max(0, Math.min(Math.max(0, options.count() - 1), value))
   function stopFrame() { cancelAnimationFrame(frame); frame = 0; lastFrame = 0 }
+  function captureTravel() {
+    const current=travel.value
+    if (!current) return
+    const animation=host.value?.getAnimations?.({subtree:true}).find(item=>item.id==='gallery-cover-flow')
+    const elapsed=typeof animation?.currentTime==='number' ? animation.currentTime/1000 : Math.max(0,(performance.now()-current.startedAt)/1000)
+    const live=new FluidSpring(current.from,4.4);live.velocity=current.velocity;live.to(current.to);live.step(elapsed)
+    spring.value=live.value;spring.velocity=live.velocity;position.value=live.value
+    travel.value=null;clearTimeout(arrival)
+  }
   function tick(time: number) {
     frame = 0
     const elapsed = lastFrame ? (time - lastFrame) / 1000 : 1 / 60
@@ -26,9 +39,23 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     if (!spring.settled && options.active()) frame = requestAnimationFrame(tick)
     else lastFrame = 0
   }
-  function moveTo(value: number) {
+  function moveTo(value: number, compose = true) {
+    if (travel.value?.to===clamp(value)) return
+    captureTravel()
     spring.to(clamp(value))
     if (reduced.value || document.hidden) { stopFrame(); spring.snap(); position.value = spring.value }
+    else if (compose && typeof host.value?.animate==='function' && Math.abs(spring.target-spring.value)<=3) {
+      stopFrame()
+      const curve=new FluidSpring(spring.value,4.4);curve.velocity=spring.velocity;curve.to(spring.target)
+      const samples=[curve.value]
+      for(let index=0;index<90&&!curve.settled;index++) samples.push(curve.step(1/60))
+      if(samples.length===1){spring.snap();position.value=spring.value;return}
+      samples[samples.length-1]=spring.target
+      const motion:CoverFlowTravel={from:spring.value,to:spring.target,velocity:spring.velocity,startedAt:performance.now(),duration:(samples.length-1)/60*1000,samples}
+      travel.value=motion;position.value=motion.to
+      arrival=setTimeout(()=>{if(travel.value===motion){spring.snap(motion.to);travel.value=null;position.value=motion.to}},motion.duration)
+    }
+    // Long jumps cross the virtualized cover window and keep its live path.
     else if (!frame) frame = requestAnimationFrame(tick)
   }
   function clearWheel() { clearTimeout(wheelTimer); wheelPosition = null }
@@ -38,6 +65,7 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     if (id !== undefined && host.value?.hasPointerCapture(id)) host.value.releasePointerCapture(id)
   }
   function stop() {
+    captureTravel();clearTimeout(arrival)
     stopFrame(); clearWheel(); releasePointer()
     clearTimeout(clickTimer); suppressClick = false
   }
@@ -59,6 +87,7 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   function pointerDown(event: PointerEvent) {
     if (!options.active() || options.count() < 2 || event.button !== 0 || blocked(event.target)) return
     clearWheel()
+    captureTravel()
     drag = { id: event.pointerId, x: event.clientX, position: position.value, last: position.value, time: event.timeStamp, velocity: 0 }
   }
   function pointerMove(event: PointerEvent) {
@@ -98,7 +127,7 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     event.preventDefault(); event.stopPropagation()
     const pixels = delta * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? width.value : 1)
     wheelPosition = clamp((wheelPosition ?? spring.target) + Math.max(-1, Math.min(1, pixels / stepWidth.value)))
-    moveTo(wheelPosition); commit(wheelPosition)
+    moveTo(wheelPosition,false); commit(wheelPosition)
     clearTimeout(wheelTimer)
     wheelTimer = setTimeout(() => { wheelPosition = null; moveTo(options.index()) }, 120)
   }
@@ -110,7 +139,10 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   useEventListener(host, 'click', event => { if (suppressClick) { event.preventDefault(); event.stopPropagation(); suppressClick = false } }, { capture: true })
   useEventListener(host, 'wheel', wheel, { passive: false, capture: true })
   useEventListener(window, 'blur', () => { if (drag) { releasePointer(); moveTo(options.index()) } })
-  useResizeObserver(host, entries => { width.value = entries[0]?.contentRect.width || width.value })
+  useResizeObserver(host, entries => {
+    width.value = entries[0]?.contentRect.width || width.value
+    if(travel.value){const target=travel.value.to;captureTravel();moveTo(target)}
+  })
   watch(options.index, index => {
     if (!options.active()) return
     if (index !== requestedIndex) { clearWheel(); releasePointer(); moveTo(index); requestedIndex = index }
@@ -121,5 +153,5 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   function activate() { reduced.value = prefersReducedMotion(); stopPreference ??= listenMotionChanges(preference); reset() }
   function deactivate() { stop(); stopPreference?.(); stopPreference = undefined }
   onMounted(activate); onActivated(activate); onDeactivated(deactivate); onBeforeUnmount(deactivate)
-  return { position, width, reduced, dragging, select, reset }
+  return { position, width, reduced, dragging, travel, select, reset }
 }

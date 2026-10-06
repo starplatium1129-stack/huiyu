@@ -1,7 +1,7 @@
 <template>
   <div ref="host" class="gallery-orbit" :class="{ 'is-reduced': reduced, 'is-dragging': dragging }" :data-position="position" role="group" aria-label="立体观画" tabindex="0">
     <div class="gallery-orbit-surface">
-    <div v-for="entry in cards" :key="entry.item.id" class="gallery-orbit-card"
+    <div v-for="entry in cards" :key="entry.item.id" class="gallery-orbit-card" :data-orbit-index="entry.index"
       :class="{ 'is-current': entry.index === index }" :style="{ '--orbit-transform': entry.transform, '--orbit-shade': entry.shade, '--orbit-visibility': entry.visibility }" :aria-hidden="entry.index !== index">
       <ZoomableImageViewer v-if="entry.index === index && (currentSrc || previewSrc || preview(entry.item))"
         :src="resolveRuntimeUrl(currentSrc || previewSrc || preview(entry.item))"
@@ -14,6 +14,7 @@
         <img :src="resolveRuntimeUrl(preview(entry.item))"
           :crossorigin="runtimeResourceCors()" class="gallery-orbit-preview" alt="" decoding="async" draggable="false"
           referrerpolicy="no-referrer" @load="measurePreview(entry.item, $event)" @error="failed.add(preview(entry.item))" />
+        <span class="gallery-orbit-shade" aria-hidden="true"></span>
         </span>
         <ArchiveIcon v-else name="image" class="viewer-fallback" />
       </button>
@@ -29,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
@@ -44,16 +45,22 @@ const props = defineProps<{
 const emit = defineEmits<{ select: [index: number] }>()
 const host = ref<HTMLElement | null>(null), failed = ref(new Set<string>())
 const imageRatios = ref<Record<string, number>>({})
-const { position, width, reduced, dragging, select, reset } = useGalleryCoverFlow(host, {
+const { position, width, reduced, dragging, travel, select, reset } = useGalleryCoverFlow(host, {
   index: () => props.index, count: () => props.items.length, active: () => props.active, select: index => emit('select', index),
 })
 const currentTitle = computed(() => props.items[props.index] ? props.title(props.items[props.index]) : '')
 const cards = computed(() => {
+  const motion=travel.value
+  const movingIndices=motion ? Array.from({length:Math.ceil(Math.max(...motion.samples))-Math.floor(Math.min(...motion.samples))+5},(_,i)=>Math.floor(Math.min(...motion.samples))-2+i) : []
   const indices = reduced.value ? [props.index] : [...new Set([
     Math.floor(position.value) - 2, Math.floor(position.value) - 1, Math.floor(position.value),
-    Math.ceil(position.value), Math.ceil(position.value) + 1, Math.ceil(position.value) + 2, props.index,
+    Math.ceil(position.value), Math.ceil(position.value) + 1, Math.ceil(position.value) + 2, props.index, ...movingIndices,
   ])].sort((a, b) => a - b)
-  return indices.flatMap(index => props.items[index] ? [{ index, item: props.items[index], ...cardStyle(index) }] : [])
+  return indices.flatMap(index => {
+    if(!props.items[index])return []
+    const style=cardStyle(index)
+    return [{ index,item:props.items[index],...style,visibility:motion ? 'visible' : style.visibility }]
+  })
 })
 function preview(item: ArtworkRecord) { return props.cardUrls[item.id] || props.neighborUrls[item.id] || props.thumbUrls[item.id] || '' }
 function imageRatio(item: ArtworkRecord) {
@@ -64,13 +71,30 @@ function measurePreview(item: ArtworkRecord, event: Event) {
   const image = event.target as HTMLImageElement
   if (image.complete && image.naturalWidth && image.naturalHeight) imageRatios.value[item.id] = image.naturalWidth / image.naturalHeight
 }
-function cardStyle(index: number) {
+function cardStyle(index: number, at = position.value) {
   if (reduced.value) return { transform: 'none', shade: 0, visibility: 'visible' }
-  const distance = index - position.value, depth = Math.abs(distance)
+  const distance = index - at, depth = Math.abs(distance)
   return {
     transform: `translateX(${Math.sign(distance) * (Math.min(depth, 1) * width.value * .34 + Math.max(0, depth - 1) * width.value * .12)}px) translateZ(${-Math.min(depth, 3) * 150}px) rotateY(${-Math.max(-1, Math.min(1, distance)) * 58}deg) scale(${Math.max(.78, 1 - depth * .045)})`,
     shade: Math.min(.45, depth * .18), visibility: depth > 3 ? 'hidden' : 'visible',
   }
 }
+let animations:Animation[]=[]
+function cancelTravel(){animations.forEach(animation=>animation.cancel());animations=[]}
+watch(travel,async motion=>{
+  cancelTravel()
+  if(!motion)return
+  await nextTick()
+  if(travel.value!==motion || !host.value)return
+  for(const card of host.value.querySelectorAll<HTMLElement>('.gallery-orbit-card')) {
+    const index=Number(card.dataset.orbitIndex)
+    const styles=motion.samples.map(at=>cardStyle(index,at))
+    const animation=card.animate(styles.map(style=>({transform:style.transform,opacity:style.visibility==='hidden'?0:1})),{duration:motion.duration,fill:'both',easing:'linear'})
+    animation.id='gallery-cover-flow';animations.push(animation)
+    const shade=card.querySelector<HTMLElement>('.gallery-orbit-shade')
+    if(shade) animations.push(shade.animate(styles.map(style=>({opacity:style.shade})),{duration:motion.duration,fill:'both',easing:'linear'}))
+  }
+},{flush:'post'})
+onBeforeUnmount(cancelTravel)
 watch(() => props.items.map(item => item.id).join('\u0000'), () => { failed.value.clear(); imageRatios.value = {}; reset() })
 </script>

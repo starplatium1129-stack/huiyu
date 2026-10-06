@@ -11,6 +11,7 @@
     aria-hidden="true"
   >
     <canvas ref="canvasRef" class="voice-glow-canvas tw:block tw:w-full tw:pointer-events-none" />
+    <canvas ref="strokeRef" class="voice-glow-canvas tw:block tw:w-full tw:pointer-events-none" />
   </div>
 </template>
 
@@ -18,6 +19,7 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from '@/composables/useVisualActivity'
+import { registerParticleFrame } from '@/utils/particleScheduler'
 
 const props = withDefaults(defineProps<{
   active?: boolean
@@ -35,10 +37,11 @@ const props = withDefaults(defineProps<{
 
 const containerRef = ref<HTMLElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+const strokeRef = ref<HTMLCanvasElement | null>(null)
 const { canPresent, canAnimate, reducedMotion, lowEffects, appearanceRevision } = useVisualActivity(containerRef)
-let rafId: number | null = null
+let stopFrames: (() => void) | null = null
+let logicalWidth = 1
 let smoothedLevel = 0
-let lastTime: number | null = null
 let animationTime = 0
 let colors = { primary: '#F2A8BE', secondary: '#B784F6' }
 const clampUnit = (value: number) => Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0
@@ -57,32 +60,55 @@ function readColors(): void {
 }
 
 function updateCanvasSize(): void {
-  const canvas = canvasRef.value
   const container = containerRef.value
-  if (!canvas || !container) return
+  if (!canvasRef.value || !strokeRef.value || !container) return
   const width = Math.max(1, Math.round(container.getBoundingClientRect().width))
-  const dpr = Math.min(window.devicePixelRatio || 1, 2, 2048 / width)
-  const pixelWidth = Math.max(1, Math.round(width * dpr))
+  logicalWidth = width
+  const dpr = Math.min(window.devicePixelRatio || 1, 2, 2048 / (width*2))
+  const pixelWidth = Math.max(1, Math.round(width*2*dpr))
   const pixelHeight = Math.max(1, Math.round(height.value * dpr))
-  if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
-    canvas.width = pixelWidth
-    canvas.height = pixelHeight
+  container.style.height = `${height.value}px`
+  for (const canvas of [canvasRef.value,strokeRef.value]) {
+    if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+      canvas.width = pixelWidth
+      canvas.height = pixelHeight
+    }
+    canvas.style.width = `${width*2}px`
+    canvas.style.height = `${height.value}px`
   }
-  canvas.style.width = `${width}px`
-  canvas.style.height = `${height.value}px`
+  prepareCurve()
 }
 
 function stopAnimation(): void {
-  if (rafId !== null) cancelAnimationFrame(rafId)
-  rafId = null
-  lastTime = null
+  stopFrames?.(); stopFrames = null
+}
+
+/** Cache the normalized bell once. Its changing height, spread and center are
+ * affine transforms; audio frames only update compositor properties. */
+function prepareCurve(): void {
+  if (!canvasRef.value || !strokeRef.value) return
+  const points: [number,number][] = [],w=logicalWidth*2,h=height.value
+  for(let i=0;i<=120;i++) {
+    const x=i/120*w,bell=Math.exp(-Math.pow(Math.abs(x-logicalWidth)/(logicalWidth*.3),1.8))
+    points.push([x,h-bell*h])
+  }
+  for (const [index,canvas] of [canvasRef.value,strokeRef.value].entries()) {
+    const ctx=canvas.getContext('2d'); if (!ctx) continue
+    ctx.setTransform(canvas.width/w,0,0,canvas.height/h,0,0);ctx.clearRect(0,0,w,h)
+    ctx.beginPath();points.forEach(([x,y],i)=>{if(!i)ctx.moveTo(x,y);else ctx.lineTo(x,y)})
+    if (index===0) {
+      const gradient=ctx.createLinearGradient(logicalWidth,h,logicalWidth,0)
+      gradient.addColorStop(0,colors.primary);gradient.addColorStop(.5,colors.secondary);gradient.addColorStop(1,'transparent')
+      ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fillStyle=gradient;ctx.fill()
+    } else { ctx.strokeStyle='#ffffff';ctx.lineWidth=1.5;ctx.stroke() }
+  }
 }
 
 /** Returns whether a further animated frame is useful. Static states never self-schedule. */
 function drawFrame(dt: number): boolean {
   const canvas = canvasRef.value
-  const ctx = canvas?.getContext('2d')
-  if (!canvas || !ctx) return false
+  const stroke = strokeRef.value
+  if (!canvas || !stroke) return false
   const target = Math.max(level.value, props.processing ? 0.5 : 0)
   if (reducedMotion.value) smoothedLevel = target
   else {
@@ -91,51 +117,20 @@ function drawFrame(dt: number): boolean {
   }
   const breathe = reducedMotion.value ? 0.5 : 0.5 + 0.5 * Math.sin(2 * Math.PI * animationTime / period.value)
   const effectiveLevel = Math.max(smoothedLevel, (1 - smoothedLevel) * idleStrength.value * breathe)
-  const w = canvas.width
-  const h = canvas.height
-  ctx.clearRect(0, 0, w, h)
   const moving = props.processing || idleStrength.value > 0 || target > 0 || smoothedLevel > 0.01
-  if (effectiveLevel <= 0.01) return moving
-
-  const centerX = w * (0.5 + (props.processing && !reducedMotion.value ? Math.sin(animationTime * 2.8) * 0.32 : 0))
-  const riseHeight = h * (0.35 + 0.65 * effectiveLevel)
-  const gradient = ctx.createLinearGradient(centerX, h, centerX, h - riseHeight)
-  gradient.addColorStop(0, colors.primary)
-  gradient.addColorStop(0.5, colors.secondary)
-  gradient.addColorStop(1, 'transparent')
-  const bellSpread = w * (0.35 + 0.25 * effectiveLevel)
-  const points: [number, number][] = []
-  for (let i = 0; i <= 60; i++) {
-    const x = i / 60 * w
-    const bell = Math.exp(-Math.pow(Math.abs(x - centerX) / (bellSpread * 0.5), 1.8))
-    points.push([x, h - bell * riseHeight])
-  }
-  ctx.save()
-  ctx.fillStyle = gradient
-  ctx.globalAlpha = Math.min(1, 0.35 + 0.65 * effectiveLevel)
-  ctx.beginPath()
-  ctx.moveTo(0, h)
-  for (const [x, y] of points) ctx.lineTo(x, y)
-  ctx.lineTo(w, h)
-  ctx.closePath()
-  ctx.fill()
-  ctx.beginPath()
-  points.forEach(([x, y], index) => { if (index === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y) })
-  ctx.strokeStyle = '#ffffff'
-  ctx.lineWidth = Math.max(1, 1.5 * effectiveLevel)
-  ctx.globalAlpha = Math.min(1, 0.2 + 0.7 * effectiveLevel)
-  ctx.stroke()
-  ctx.restore()
+  const shift=props.processing && !reducedMotion.value ? Math.sin(animationTime*2.8)*.32*logicalWidth : 0
+  const transform=`translateX(${shift}px) scale(${(.35+.25*effectiveLevel)/.6},${.35+.65*effectiveLevel})`
+  canvas.style.transform=stroke.style.transform=transform
+  canvas.style.opacity=effectiveLevel>.01 ? String(.35+.65*effectiveLevel) : '0'
+  stroke.style.opacity=effectiveLevel>.01 ? String(.2+.7*effectiveLevel) : '0'
   return moving
 }
 
-function frame(now: number): void {
-  rafId = null
-  if (!props.active || !canAnimate.value) return
-  const dt = lastTime === null ? 1 / 60 : Math.max(0, Math.min((now - lastTime) / 1000, 0.1))
-  lastTime = now
+function frame(_now: number, elapsed: number): void {
+  if (!props.active || !canAnimate.value) { stopAnimation(); return }
+  const dt = Math.min(elapsed/1000,0.1)
   animationTime += dt
-  if (drawFrame(dt)) rafId = requestAnimationFrame(frame)
+  if (!drawFrame(dt)) stopAnimation()
 }
 
 function refresh(): void {
@@ -147,19 +142,21 @@ function refresh(): void {
   if (reducedMotion.value) {
     stopAnimation()
     drawFrame(0)
-  } else if (rafId === null) {
-    rafId = requestAnimationFrame(frame)
+  } else if (stopFrames === null) {
+    stopFrames = registerParticleFrame(frame, lowEffects.value ? 30 : 0)
   }
 }
 
 watch([() => props.active, canPresent, canAnimate, () => props.processing, level, idleStrength, period], refresh, { flush: 'post' })
 watch([() => props.colorVariant, appearanceRevision], () => {
   readColors()
+  prepareCurve()
   refresh()
 }, { flush: 'post' })
 watch(height, () => { updateCanvasSize(); refresh() }, { flush: 'post' })
 useResizeObserver(containerRef, () => { updateCanvasSize(); refresh() })
-onMounted(() => { updateCanvasSize(); readColors(); refresh() })
+watch(lowEffects, () => { stopAnimation(); refresh() }, { flush:'post' })
+onMounted(() => { readColors(); updateCanvasSize(); refresh() })
 onBeforeUnmount(stopAnimation)
 </script>
 
@@ -170,6 +167,7 @@ onBeforeUnmount(stopAnimation)
 }
 .voice-glow-container.is-active { opacity: 1; }
 .voice-glow-canvas {
+  position:absolute; bottom:0; left:-50%; transform-origin:50% 100%;
   filter: drop-shadow(0 -2px 8px var(--accent-glow, rgba(242, 168, 190, 0.35)));
 }
 .is-low-effects { transition: none; }

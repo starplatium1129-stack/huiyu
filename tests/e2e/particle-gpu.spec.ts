@@ -35,7 +35,10 @@ for (const dpr of [1, 1.5, 2]) {
       const compare = () => {
         for (const target of [reference, accelerated]) target.ctx.clearRect(0, 0, width, height)
         api.drawParticleBody(reference.ctx, points, style)
-        if (!renderer.draw(accelerated.ctx, width, height, dpr, points, style)) throw new Error('GPU unexpectedly fell back')
+        if (!renderer.draw(width, height, dpr, points, style)) throw new Error('GPU unexpectedly fell back')
+        // A readback copy belongs only to this raster comparison fixture. The
+        // product presents renderer.canvas directly beside the ambient layer.
+        accelerated.ctx.drawImage(renderer.canvas, 0, 0, width, height)
         // Compare the visible result on the real theme surface, not invisible RGB
         // in near-transparent edge pixels. Analytic GPU AA differs from Skia AA.
         for (const target of [reference, accelerated]) {
@@ -63,7 +66,7 @@ for (const dpr of [1, 1.5, 2]) {
       for (const target of [reference, accelerated]) { target.canvas.width = Math.round(width * dpr); target.canvas.height = Math.round(height * dpr); target.ctx.scale(dpr, dpr) }
       comparisons.push(compare())
       renderer.release()
-      const released = renderer.draw(accelerated.ctx, width, height, dpr, points, style)
+      const released = renderer.draw(width, height, dpr, points, style)
       return { comparisons, released }
     }, { darkTheme, dpr })
     await info.attach('gpu-raster-differences', { body: JSON.stringify(result), contentType: 'application/json' })
@@ -91,9 +94,8 @@ test('GPU context loss and unsupported devices return control to Canvas', async 
     const lost = new Promise<void>(resolve => gl.canvas.addEventListener('webglcontextlost', () => resolve(), { once: true }))
     gl.getExtension('WEBGL_lose_context')!.loseContext()
     await lost
-    const ctx = document.createElement('canvas').getContext('2d')!
     const style: ParticleBodyStyle = { paints: ['#ffffff'], radii: [1], darkTheme: false, energyScale: 1, surface: '#e7e0ed', outline: '#3c3548', palette: { primary: '#ffffff', secondary: '#999999', accent: '#ee9abc' } }
-    const drawsAfterLoss = renderer.draw(ctx, 100, 100, 1, [], style)
+    const drawsAfterLoss = renderer.draw(100, 100, 1, [], style)
     renderer.release()
     HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, kind: string, options?: unknown) {
       return kind === 'webgl2' ? null : getContext.call(this, kind, options as object)

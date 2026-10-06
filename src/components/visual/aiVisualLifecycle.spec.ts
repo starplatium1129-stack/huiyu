@@ -142,13 +142,14 @@ describe('VoiceGlow rendering lifecycle', () => {
     activity.canAnimate.value = false
     const wrapper = own(mount(VoiceGlow, { props: { idleStrength: 0, level: 0 } }))
     await nextTick()
+    const curve=wrapper.get('.voice-glow-canvas').element as HTMLCanvasElement
     context.fill.mockClear()
     await wrapper.setProps({ processing: true })
-    expect(context.fill).toHaveBeenCalled()
-    expect(frames.size).toBe(0)
-    context.fill.mockClear()
+    expect(Number(curve.style.opacity)).toBeGreaterThan(0)
+    const processing=curve.style.transform
     await wrapper.setProps({ processing: false, level: 0.8 })
-    expect(context.fill).toHaveBeenCalled()
+    expect(curve.style.transform).not.toBe(processing)
+    expect(context.fill).not.toHaveBeenCalled()
     expect(frames.size).toBe(0)
   })
   it('does not keep an idle zero-strength frame loop alive', async () => {

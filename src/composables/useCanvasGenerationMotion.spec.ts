@@ -2,7 +2,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, nextTick, ref } from 'vue'
 import { useCanvasGenerationMotion } from './useCanvasGenerationMotion'
-const activity={canAnimate:ref(true),lowEffects:ref(false)}
+const activity={canAnimate:ref(true),lowEffects:ref(false),appearanceRevision:ref(0)}
 vi.mock('./useVisualActivity',() => ({useVisualActivity:() => activity}))
 const mock=vi.hoisted(() => ({start:vi.fn(),stop:vi.fn(),release:vi.fn(),progress:vi.fn()}))
 vi.mock('@/utils/canvasTextureParticles',() => ({startCanvasTextureParticles:mock.start}))

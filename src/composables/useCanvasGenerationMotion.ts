@@ -8,7 +8,7 @@ import { startCanvasTextureParticles, type CanvasParticleMotion } from '@/utils/
 export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   source: () => string, busy: () => boolean, progress: () => number | null, comparing: () => boolean,
 ) {
-  const { canAnimate, lowEffects } = useVisualActivity(host)
+  const { canAnimate, lowEffects, appearanceRevision } = useVisualActivity(host)
   const active = ref(false)
   let effect: CanvasParticleMotion | null = null
   let generationSource = ''
@@ -38,6 +38,7 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
     else if (!generating && !wasGenerating && url!==oldUrl && effect) stop()
   },{flush:'pre'})
   watch(progress,value => effect?.progress(value),{flush:'sync'})
+  watch(appearanceRevision,() => effect?.refreshPalette(),{flush:'post'})
   watch([canAnimate,lowEffects],() => {
     if (!canAnimate.value || lowEffects.value) stop()
   },{flush:'sync'})

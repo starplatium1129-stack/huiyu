@@ -3,7 +3,7 @@ import { registerParticleFrame } from './particleScheduler'
 let frames: Map<number, FrameRequestCallback>, nextId: number
 let disposers: Array<() => void>
 function tick(now: number) { const pending = [...frames.values()]; frames.clear(); pending.forEach(cb => cb(now)) }
-function register(cb = vi.fn(), fps = 30) { const dispose = registerParticleFrame(cb, fps); disposers.push(dispose); return { cb, dispose } }
+function register(cb = vi.fn(), fps?: number) { const dispose = registerParticleFrame(cb, fps); disposers.push(dispose); return { cb, dispose } }
 beforeEach(() => {
   frames = new Map(); nextId = 0; disposers = []
   vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => { const id = nextId++; frames.set(id, cb); return id })
@@ -18,6 +18,7 @@ describe('009 shared particle scheduler', () => {
     expect(frames.size).toBe(1)
     tick(0); tick(16.7); tick(33.4)
     expect(a.cb).toHaveBeenCalledTimes(2); expect(b.cb).toHaveBeenCalledTimes(3)
+    expect(b.cb.mock.calls.map(call => call[1])).toEqual([0,16.7,16.7])
     a.dispose(); expect(frames.size).toBe(1); b.dispose(); expect(frames.size).toBe(0)
   })
   it('cancels immediately while hidden and resumes once without a backlog', () => {
@@ -28,6 +29,7 @@ describe('009 shared particle scheduler', () => {
     document.dispatchEvent(new Event('visibilitychange')); document.dispatchEvent(new Event('visibilitychange'))
     expect(frames.size).toBe(1); tick(60000)
     expect(cb).toHaveBeenCalledTimes(2)
+    expect(cb).toHaveBeenLastCalledWith(60000, 0)
   })
   it('does not start work for a hidden document', () => {
     vi.spyOn(document, 'hidden', 'get').mockReturnValue(true)

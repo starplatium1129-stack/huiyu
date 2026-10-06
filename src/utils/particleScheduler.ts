@@ -1,5 +1,5 @@
-type ParticleFrame = (now: number) => void
-interface ScheduledParticle { frame: ParticleFrame; interval: number; nextAt: number }
+type ParticleFrame = (now: number, elapsed: number) => void
+interface ScheduledParticle { frame: ParticleFrame; interval: number; nextAt: number; lastAt: number | null }
 
 const particles = new Map<number, ScheduledParticle>()
 let nextId = 0
@@ -16,7 +16,7 @@ function visibility(): void {
     rafId = null
   } else {
     // Resume from now; do not replay deadlines accumulated while hidden.
-    for (const item of particles.values()) item.nextAt = 0
+    for (const item of particles.values()) { item.nextAt = 0; item.lastAt = null }
     schedule()
   }
 }
@@ -31,19 +31,21 @@ function tick(now: number): void {
       item.nextAt = item.nextAt ? item.nextAt + item.interval : now + item.interval
       if (item.nextAt < now - item.interval) item.nextAt = now + item.interval
     }
-    item.frame(now)
+    const elapsed = item.lastAt === null ? 0 : Math.max(0, now - item.lastAt)
+    item.lastAt = now
+    item.frame(now, elapsed)
   }
   schedule()
 }
 /** One RAF drives every particle canvas; throttled layers skip frames. */
-export function registerParticleFrame(frame: ParticleFrame, fps = 30): () => void {
+export function registerParticleFrame(frame: ParticleFrame, fps = 0): () => void {
   if (!visibilityBound && typeof document !== 'undefined') {
     visibilityBound = true
     document.addEventListener('visibilitychange', visibility)
   }
   const id = ++nextId
   const interval = fps <= 0 ? 0 : 1000 / Math.max(12, fps)
-  particles.set(id, { frame, interval, nextAt: 0 })
+  particles.set(id, { frame, interval, nextAt: 0, lastAt: null })
   schedule()
   return () => {
     particles.delete(id)
