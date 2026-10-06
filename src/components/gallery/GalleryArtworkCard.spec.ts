@@ -1,8 +1,10 @@
 import { defineComponent, h, nextTick, reactive } from 'vue'
-import { mount } from '@vue/test-utils'
-import { expect, it, vi } from 'vitest'
+import { flushPromises, mount } from '@vue/test-utils'
+import { beforeEach, expect, it, vi } from 'vitest'
 import GalleryArtworkCard from './GalleryArtworkCard.vue'
 import type { ArtworkRecord } from '@/types/artwork'
+
+beforeEach(() => { vi.spyOn(HTMLImageElement.prototype, 'decode').mockResolvedValue() })
 
 function mountCard(imageUrl: string, thumbUrl = '') {
   return mount(GalleryArtworkCard, {
@@ -27,6 +29,36 @@ it('keeps a decoded thumbnail when the original fails and accepts a replacement 
     expect(wrapper.emitted('measure')).toHaveLength(1)
     expect(wrapper.emitted('load')).toHaveLength(1)
     expect(wrapper.get('.artwork-image-hd').attributes('src')).toBe('/restored.jpg')
+  } finally { wrapper.unmount() }
+})
+
+it('keeps the thumbnail through HD decoding and ignores an evicted image completing late', async () => {
+  const wrapper = mountCard('/original.jpg', '/thumb.jpg')
+  try {
+    await wrapper.get('.artwork-image:not(.artwork-image-hd)').trigger('load')
+    let finishDecode!: () => void
+    vi.mocked(HTMLImageElement.prototype.decode)
+      .mockImplementationOnce(() => new Promise(resolve => { finishDecode = resolve }))
+    await wrapper.get('.artwork-image-hd').trigger('load')
+    expect(wrapper.get('.artwork-image-hd').classes()).not.toContain('is-loaded')
+    expect(wrapper.find('.artwork-skeleton').exists()).toBe(false)
+    expect(wrapper.emitted('load')).toBeUndefined()
+    await wrapper.setProps({ imageUrl: '/return.jpg' })
+    finishDecode(); await flushPromises()
+    expect(wrapper.get('.artwork-image-hd').classes()).not.toContain('is-loaded')
+    expect(wrapper.emitted('load')).toBeUndefined()
+    vi.mocked(HTMLImageElement.prototype.decode)
+      .mockRejectedValueOnce(new Error('Image decoding failed'))
+    await wrapper.get('.artwork-image-hd').trigger('load')
+    await flushPromises()
+    expect(wrapper.find('.artwork-image-hd').exists()).toBe(false)
+    expect(wrapper.get('.artwork-image').attributes('src')).toBe('/thumb.jpg')
+    expect(wrapper.find('.artwork-recovery').exists()).toBe(false)
+    await wrapper.setProps({ imageUrl: '/decoded.jpg' })
+    await wrapper.get('.artwork-image-hd').trigger('load')
+    await flushPromises()
+    expect(wrapper.get('.artwork-image-hd').classes()).toContain('is-loaded')
+    expect(wrapper.emitted('load')).toHaveLength(1)
   } finally { wrapper.unmount() }
 })
 

@@ -72,6 +72,7 @@
       />
       <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
       <img :crossorigin="cors"
+        ref="hdImage"
         v-if="imageUrl && !imageFailed"
         :key="`image:${imageUrl}:${retryAttempt}`"
         class="artwork-image artwork-image-hd"
@@ -80,7 +81,7 @@
         :alt="title"
         decoding="async"
         referrerpolicy="no-referrer"
-        @load="imageLoaded = true; emit('load', $event)"
+        @load="onHdLoad"
         @error="imageFailed = true"
       />
       <div v-if="previewPending" class="artwork-skeleton" aria-hidden="true"></div>
@@ -112,6 +113,7 @@ const props = defineProps<{
   selectionMode: boolean; selected: boolean; confirmingDelete: boolean; deleting: boolean;
 }>()
 const artworkButton = ref<HTMLButtonElement | null>(null)
+const hdImage = ref<HTMLImageElement | null>(null)
 const thumbFailed = ref(false), imageFailed = ref(false)
 const thumbLoaded = ref(false), imageLoaded = ref(false), retryAttempt = ref(0)
 watch(() => props.thumbUrl, () => { thumbFailed.value = false; thumbLoaded.value = false }, { flush: 'sync' })
@@ -120,6 +122,18 @@ const previewFailed = computed(() => Boolean((props.imageUrl || props.thumbUrl)
   && (!props.imageUrl || imageFailed.value) && (!props.thumbUrl || thumbFailed.value)))
 const previewPending = computed(() => !previewFailed.value && !thumbLoaded.value && !imageLoaded.value
   && Boolean(props.imageUrl || props.thumbUrl || !props.missing))
+async function onHdLoad(event: Event) {
+  const image = event.target as HTMLImageElement
+  const source = props.imageUrl, attempt = retryAttempt.value
+  const isCurrent = () => hdImage.value === image && props.imageUrl === source && retryAttempt.value === attempt
+  // With async decoding, load can precede painted pixels. Keep the thumbnail
+  // visible until decode resolves so the HD background cannot flash over it.
+  try { await image.decode() }
+  catch { if (isCurrent()) imageFailed.value = true; return }
+  if (!isCurrent()) return
+  imageLoaded.value = true
+  emit('load', event)
+}
 function retryPreview() {
   thumbFailed.value = false; imageFailed.value = false
   thumbLoaded.value = false; imageLoaded.value = false; retryAttempt.value++
