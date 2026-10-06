@@ -220,7 +220,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     clearRandomVariation()
     if (subject.value.kind !== 'popular') return
     clearInheritedStory(blueprintId)
-    subject.value = { kind: 'popular', characterId: subject.value.characterId, outfitId: subject.value.outfitId, blueprintId }
+    subject.value = { ...subject.value, blueprintId }
   }
   function setStory(t: string) { story.value = t }
   function toggleEmotion(id: string) {
