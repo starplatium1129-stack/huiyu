@@ -15,8 +15,8 @@
 .gallery-count { @apply tw:flex tw:items-baseline tw:gap-s-3 tw:text-secondary; font:500 var(--fs-label-xs) var(--font-sans); @apply tw:whitespace-nowrap; }
 .gallery-count strong { @apply tw:text-primary; font:600 var(--fs-body) var(--font-display); }
 
-/* This artbook owns a solid reading rail; shared glass washes would obscure its labels. */
-:root body .gallery-page .gallery-toolbar.gallery-toolbar { margin:0 auto; display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; padding:var(--s-2) 0 var(--s-3); border:0; border-block:1px solid var(--border-soft); border-radius:0; background:var(--bg-base); box-shadow:none; backdrop-filter:none; }
+/* Layout belongs to the artbook; the shared material owns its floating toolbar. */
+:root body .gallery-page .gallery-toolbar.gallery-toolbar { margin:0 auto; display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; padding:var(--s-3); border-radius:var(--r-lg); }
 .gallery-toolbar::before { @apply tw:hidden; }
 /* 展开的生成条件留在文档流中，短窗口仍能滚到作品与批量操作。 */
 .gallery-toolbar:has(.gallery-refine-disclosure[open]) { position:relative; top:auto; }

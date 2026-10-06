@@ -69,16 +69,19 @@
 
     <!-- Keep readable task feedback above the texture canvas's own stacking layer. -->
     <div v-if="generationBusy || waitingForResult" class="stage-generation-feedback">
-      <div class="stage-generating-title" role="status">正在绘制这一幕</div>
       <div class="stage-generating-sub">
-        <span>{{ waitingForResult ? '正在显现画面…' : generationStatusText || '正在准备画面…' }}</span>
+        <span class="stage-generating-title" role="status">{{ waitingForResult ? '显现中' : '绘制中' }}</span>
         <strong v-if="generationProgress !== null">{{ Math.round(generationProgress * 100) }}%</strong>
       </div>
       <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }" role="progressbar" aria-label="生图进度" :aria-valuenow="generationProgress === null ? undefined : Math.round(generationProgress * 100)" :aria-valuemin="0" :aria-valuemax="100">
         <i :style="{ '--progress': (generationProgress ?? 0) * 100 + '%' }"></i>
       </div>
-      <span v-if="drawEngine !== 'sd'" class="stage-generating-elapsed">已等待 {{ animaElapsed }} 秒</span>
-      <details v-if="drawEngine !== 'sd' && animaCurrentNode" class="stage-progress-details"><summary>生成详情</summary>当前步骤：{{ animaCurrentNode }}</details>
+      <details v-if="generationStatusText || drawEngine !== 'sd'" class="stage-progress-details">
+        <summary>详情</summary>
+        <p v-if="generationStatusText">{{ generationStatusText }}</p>
+        <p v-if="drawEngine !== 'sd'" class="stage-generating-elapsed">已等待 {{ animaElapsed }} 秒</p>
+        <p v-if="drawEngine !== 'sd' && animaCurrentNode">当前步骤：{{ animaCurrentNode }}</p>
+      </details>
     </div>
 
     <!-- Result image -->

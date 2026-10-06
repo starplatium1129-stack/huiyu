@@ -53,14 +53,9 @@ async function expectSolid(locator: Locator) {
   expect((await surfaceMetrics(locator)).alpha).toBe(255)
 }
 
-async function expectInstalledLens(locator: Locator) {
-  await expect(locator).toHaveAttribute('data-fluid-refracted', '')
-  // Registration alone is insufficient: the computed filter must use the lens.
-  await expect.poll(() => locator.evaluate(el => {
-    const actual = getComputedStyle(el).backdropFilter
-    const installed = (el as HTMLElement).style.getPropertyValue('--fluid-glass-filter')
-    return actual.startsWith('url(') && actual === installed
-  })).toBe(true)
+async function expectNativeMaterial(locator: Locator) {
+  await expect(locator).toHaveCSS('backdrop-filter', /blur\(/)
+  await expect(locator).toHaveCSS('border-top-width', '0px')
 }
 
 for (const theme of ['dark', 'light'] as const) {
@@ -82,10 +77,10 @@ for (const theme of ['dark', 'light'] as const) {
       for (const selector of ['.nav', '.gen-bar']) {
         const surface = page.locator(selector)
         await expect(surface).toBeVisible()
-        await expectInstalledLens(surface)
+        await expectNativeMaterial(surface)
         expect((await surfaceMetrics(surface)).alpha).toBeLessThan(255)
       }
-      await expect(page.locator('#drawing-materials')).not.toHaveAttribute('data-fluid-refracted')
+      await expect(page.locator('#drawing-materials')).toHaveCSS('backdrop-filter', 'none')
       // Scene mode is a scrolling document; protect the action's reachability
       // without prescribing sticky positioning to the current layout.
       await page.getByRole('group', { name: '出图尺寸与生成', exact: true }).scrollIntoViewIfNeeded()
@@ -100,7 +95,7 @@ for (const theme of ['dark', 'light'] as const) {
       await page.reload()
       await expectSolid(page.locator('.gen-bar'))
       await setGlassPreference(page, false)
-      await expectInstalledLens(page.locator('.gen-bar'))
+      await expectNativeMaterial(page.locator('.gen-bar'))
     })
 
     test('system material overrides keep both toolbar surfaces opaque and readable', async ({ page, context }) => {

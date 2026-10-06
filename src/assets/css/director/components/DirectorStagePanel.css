@@ -65,21 +65,20 @@
     @apply tw:grid tw:gap-s-3 tw:items-center tw:justify-items-center;
     width:min(100%,480px); margin:0 auto; text-align:center;
   }
-  .pb .stage-generation-feedback { display:grid; gap:var(--s-2); min-width:0; width:min(100%,300px); position:absolute; left:50%; top:66%; transform:translateX(-50%); z-index:calc(var(--z-raised) + 2); padding:var(--s-3); border-radius:var(--r-md); background:var(--bg-surface); text-align:center; }
+  .pb .stage-generation-feedback { display:grid; gap:var(--s-2); min-width:0; width:min(100%,260px); position:absolute; left:50%; top:66%; transform:translateX(-50%); z-index:calc(var(--z-raised) + 2); padding:0; background:transparent; text-align:center; }
   .pb .stage-generating-title {
-    @apply tw:text-primary tw:text-title-xs; font-weight:720;
-    letter-spacing:-.01em;
+    @apply tw:text-secondary tw:text-label; font-family:var(--font-sans); font-weight:500;
   }
   .pb .stage-generating-sub { @apply tw:text-secondary; display:flex; justify-content:space-between; gap:var(--s-3); font:500 var(--fs-mono-sm) var(--font-mono); }
   .pb .stage-generating-sub strong { color:var(--text-primary); font-variant-numeric:tabular-nums; }
   .pb .stage-generating-elapsed { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); }
   .pb .stage-progress-ring {
-    @apply tw:w-full tw:max-w-[260px] tw:h-[4px] tw:mt-s-2 tw:rounded-pill tw:overflow-hidden;
-    background:color-mix(in srgb,var(--text-muted) 22%,transparent); margin-inline:auto;
+    @apply tw:w-full tw:h-[2px] tw:rounded-pill tw:overflow-hidden;
+    background:color-mix(in srgb,var(--text-muted) 16%,transparent); margin-inline:auto;
   }
   .pb .stage-progress-ring > i {
     @apply tw:block tw:h-full; border-radius:inherit;
-    background:linear-gradient(90deg,var(--accent),var(--accent-hover));
+    background:color-mix(in srgb,var(--accent) 78%,var(--bg-deep));
     /* 进度由模板的 --progress 载体提供(内联 style 只放数据)；scale 百分比补间不触发布局 */
     @apply tw:w-full; transform-origin:left center; transform:scaleX(var(--progress, 0%));
     transition:transform var(--motion-surface) var(--ease-out);
@@ -103,6 +102,7 @@
 }
 .pb .stage-progress-details { @apply tw:mt-s-3 tw:text-secondary tw:text-label; }
 .pb .stage-progress-details summary { @apply tw:cursor-pointer; }
+.pb .stage-progress-details p { margin:var(--s-1) 0 0; overflow-wrap:anywhere; }
 
 /* Reference and status share a paper surface; reference imagery is never a result. */
 .pb.atelier-workspace .stage-content { @apply tw:w-full tw:min-w-0; padding:var(--s-4); }
@@ -145,7 +145,6 @@
 .pb.atelier-workspace .stage-generation-feedback { position:absolute; top:min(72%,calc(43% + 120px)); left:50%; transform:translateX(-50%); max-width:calc(100% - 32px); }
 .pb.journal-workspace.atelier-workspace .stage-placeholder.is-generating { z-index:calc(var(--z-raised) - 1); background:var(--bg-deep); border:0; border-radius:0; box-shadow:none; }
 .pb.atelier-workspace .stage-progress-details { margin-top:0; position:relative; }
-.pb.atelier-workspace .stage-progress-details[open] { background:var(--bg-surface); z-index:calc(var(--z-raised) - 2); }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal { width:100%; height:100%; max-height:none; }
 .pb.atelier-workspace .result-image-reveal .result-image { position:absolute; inset:0; width:100%; height:100%; max-height:none; }
 .pb.atelier-workspace .stage-swap-leave-active { transition-duration:720ms; pointer-events:none; }
@@ -154,8 +153,7 @@
 .pb.atelier-workspace .stage-content .stage-idle { flex:0 0 auto; }
 @media (min-width:1024px) { .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport { height:auto; } }
 @container (max-height:400px) {
-  .pb.atelier-workspace .stage-generation-feedback { top:66%; gap:var(--s-1); }
-  .pb.atelier-workspace .stage-generating-elapsed { display:none; }
+  .pb.atelier-workspace .stage-generation-feedback { top:62%; gap:var(--s-1); }
   .pb.atelier-workspace .stage-content .scene-reference { --reference-max-height:42cqh; }
   .pb.atelier-workspace .scene-reference figcaption p { display:none; }
 }

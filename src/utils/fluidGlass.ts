@@ -1,6 +1,6 @@
 let installed: (() => void) | undefined
 
-/** Light mode has no canvas maps, SVG filters, surface observers or continuous frame loop. */
+/** Painted mode has no pointer-light subscriptions or continuous frame loop. */
 export function installFluidGlass(): () => void {
   if (installed) return installed
   if (typeof window === 'undefined' || typeof MutationObserver === 'undefined') return () => {}

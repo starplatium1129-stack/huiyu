@@ -138,6 +138,7 @@ onMounted(() => {
     <SelectRoot v-model:open="open" :model-value="currentKey" :disabled="disabled" @update:model-value="applyKey">
       <StudioTooltip :content="effectiveHint" :anchor="disabled">
         <SelectTrigger
+          data-fluid-glass
           v-bind="triggerAttrs"
           :id="id"
           class="studio-select-trigger"

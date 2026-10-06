@@ -22,7 +22,6 @@ for (const theme of ['light', 'dark']) {
     }, { key, theme })
     await page.goto('/scene-explorer')
     await expect(page.locator('html')).toHaveAttribute('data-glass-material', 'light')
-    await expect(page.locator('.fluid-glass-definitions')).toHaveCount(0)
     await expect(page.locator('.scene-toolbar')).toHaveCSS('backdrop-filter', 'none')
     await page.screenshot({ path:testInfo.outputPath(`lightweight-${theme}.png`) })
     let dialog = await openAppearance(page)
@@ -35,8 +34,7 @@ for (const theme of ['light', 'dark']) {
     await page.screenshot({ path:testInfo.outputPath(`choice-${theme}.png`) })
     await page.keyboard.press('Escape')
     await expect(dialog).toBeHidden()
-    await expect(page.locator('.scene-toolbar')).toHaveAttribute('data-fluid-refracted', '')
-    await expect(page.locator('.scene-toolbar')).toHaveCSS('backdrop-filter', /url\(/)
+    await expect(page.locator('.scene-toolbar')).toHaveCSS('backdrop-filter', /blur\(/)
     await page.screenshot({ path:testInfo.outputPath(`liquid-${theme}.png`) })
     await page.reload()
     await expect(page.locator('html')).toHaveAttribute('data-glass-material', 'liquid')
@@ -45,10 +43,10 @@ for (const theme of ['light', 'dark']) {
     await expect(second.locator('html')).toHaveAttribute('data-glass-material', 'liquid')
     dialog = await openAppearance(page)
     await dialog.getByRole('radio', { name: /轻盈玻璃/ }).click()
-    await expect(page.locator('.fluid-glass-definitions')).toHaveCount(0)
-    await expect(page.locator('[data-fluid-refracted]')).toHaveCount(0)
+    await expect(page.locator('.scene-toolbar')).toHaveCSS('backdrop-filter', 'none')
+    await expect(page.locator('.fluid-glass-optics')).toHaveCount(0)
     await expect(second.locator('html')).toHaveAttribute('data-glass-material', 'light')
-    await expect(second.locator('.fluid-glass-definitions')).toHaveCount(0)
+    await expect(second.locator('.gallery-toolbar')).toHaveCSS('backdrop-filter', 'none')
     await second.close()
     await page.reload()
     await expect(page.locator('html')).toHaveAttribute('data-glass-material', 'light')
@@ -65,7 +63,7 @@ for (const theme of ['light', 'dark']) {
     await expect(page.locator('html')).toHaveAttribute('data-reduced-motion', 'true')
     await page.emulateMedia({ forcedColors:'active' })
     await expect(page.locator('html')).toHaveAttribute('data-glass-material', 'light')
-    await expect(page.locator('.fluid-glass-definitions')).toHaveCount(0)
+    await expect(page.locator('.nav')).toHaveCSS('backdrop-filter', 'none')
     await expect(dialog.getByRole('radio', { name:/液态玻璃/ })).toBeChecked()
     expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!).glass, key)).toBe('liquid')
     await page.emulateMedia({ forcedColors:'none' })
@@ -75,15 +73,15 @@ for (const theme of ['light', 'dark']) {
   })
 }
 
-test('unsupported optics keep the choice operable and use the frosted fallback', async ({ page }) => {
+test('native material stays operable without SVG backdrop support', async ({ page }) => {
   await page.addInitScript(key => {
     localStorage.setItem(key, JSON.stringify({ glass:'liquid' }))
     const supports = CSS.supports.bind(CSS)
     CSS.supports = ((property: string, value?: string) => value?.includes('url(') ? false : value === undefined ? supports(property) : supports(property, value)) as typeof CSS.supports
   }, key)
   await page.goto('/')
-  await expect(page.locator('.fluid-glass-definitions')).toHaveCount(0)
   await expect(page.locator('.nav')).toHaveCSS('backdrop-filter', /blur/)
+  await expect(page.locator('.nav')).toHaveCSS('filter', 'none')
   const dialog = await openAppearance(page)
   await dialog.getByRole('radio', { name:/轻盈玻璃/ }).click()
   await expect(page.locator('.nav')).toHaveCSS('backdrop-filter', 'none')

@@ -27,18 +27,17 @@ async function materialFixture(page: Page, theme: string) {
 }
 
 for (const theme of ['light', 'dark']) {
-  test(`unsupported optics keep a readable frosted fallback without filtering text: ${theme}`, async ({ page }, testInfo) => {
+  test(`native material keeps text readable without filtering foreground: ${theme}`, async ({ page }, testInfo) => {
     await materialFixture(page, theme)
     const glass = page.locator('.material-probe')
-    await expect(glass).toHaveCSS('backdrop-filter', /blur\(16px\)/)
+    await expect(glass).toHaveCSS('backdrop-filter', /blur\(14px\)/)
     await expect(glass).toHaveCSS('filter', 'none')
     await expect(page.locator('.reading-probe')).toHaveCSS('backdrop-filter', 'none')
     for (const child of await glass.locator(':scope > *').all()) {
       await expect(child).toHaveCSS('opacity', '1')
       await expect(child).toHaveCSS('filter', 'none')
     }
-    // This CSS-only fixture exercises the unsupported-optics fallback.
-    // The installed renderer's foreground contrast is verified against actual pixels separately.
+    // Resolve the native material and each control's own surface against worst-case backdrops.
     const ratios = await glass.evaluate(element => {
       const context = document.createElement('canvas').getContext('2d')!
       context.canvas.width = context.canvas.height = 1
@@ -54,8 +53,9 @@ for (const theme of ['light', 'dark']) {
         return sum + (c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4) * [.2126, .7152, .0722][i]
       }, 0)
       return [0, 255].flatMap(backdrop => {
-        const background = luminance(composite(fill, [backdrop, backdrop, backdrop]))
+        const material = composite(fill, [backdrop, backdrop, backdrop])
         return [...element.children].map(child => {
+          const background = luminance(composite(color(getComputedStyle(child).backgroundColor), material))
           const text = luminance(color(getComputedStyle(child).color))
           return (Math.max(text, background) + .05) / (Math.min(text, background) + .05)
         })
@@ -87,8 +87,7 @@ for (const theme of ['light', 'dark']) {
     await expect(glass).toHaveCSS('backdrop-filter', 'none')
     await expect(glass).toHaveCSS('background-image', 'none')
     await expect(glass).toHaveCSS('box-shadow', 'none')
-    expect(await glass.evaluate(el => getComputedStyle(el).borderTopColor))
-      .toBe(await page.locator('.muted').evaluate(el => getComputedStyle(el).color))
+    await expect(glass).toHaveCSS('border-top-width', '1px')
     await page.emulateMedia({ contrast: 'no-preference', forcedColors: 'active' })
     await expect(glass).toHaveCSS('backdrop-filter', 'none')
     await expect(glass).toHaveCSS('background-image', 'none')

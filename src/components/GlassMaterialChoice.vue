@@ -17,7 +17,7 @@
         :aria-valuetext="`玻璃色调 ${glassTint}%，越低越通透`" @input="setGlassTint(Number(($event.target as HTMLInputElement).value))" />
       <div class="glass-tint-labels"><span>清透</span><span>加色</span></div>
     </div>
-    <p class="glass-choice-note tw:m-0 tw:text-muted tw:text-label tw:leading-loose" role="status">{{ glassMode === 'liquid' && effectiveGlassMode !== 'liquid' ? '辅助显示设置优先，当前使用清晰底色；关闭后恢复所选材质。' : glassMode === 'liquid' ? '导航和工具条呈现折射与透光，适合性能充裕的设备。环境不支持时自动回退为柔和玻璃。' : '细腻高光与稳定底色，不计算背景折射。适合日常使用和办公笔记本。' }}</p>
+    <p class="glass-choice-note tw:m-0 tw:text-muted tw:text-label tw:leading-loose" role="status">{{ glassMode === 'liquid' && effectiveGlassMode !== 'liquid' ? '辅助显示设置优先，当前使用清晰底色；关闭后恢复所选材质。' : glassMode === 'liquid' ? '导航、工具条与搜索共享通透材质，动态高光随交互变化。' : '细腻高光与稳定底色，适合日常使用和办公笔记本。' }}</p>
   </fieldset>
 </template>
 
@@ -31,7 +31,7 @@ const tintId = useId()
 const selectedGlass = computed({ get: () => glassMode.value, set: setGlassMode })
 const choices: Array<{ value: GlassMode; title: string; description: string }> = [
   { value: 'light', title: '轻盈玻璃', description: '默认 · 轻负担，清晰耐看' },
-  { value: 'liquid', title: '液态玻璃', description: '高效果 · 折射，通透层次' },
+  { value: 'liquid', title: '液态玻璃', description: '通透 · 柔和景深与动态高光' },
 ]
 </script>
 

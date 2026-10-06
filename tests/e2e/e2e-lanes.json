@@ -36,7 +36,6 @@
     { "file": "expert-workspace.spec.ts", "lane": "nightly", "risk": "专家工作台", "reason": "专家模式状态较多，使用夜间矩阵避免漏检。" },
     { "file": "flows.spec.ts", "lane": "critical", "risk": "端到端链路", "reason": "隔离上游下的生成/保存流程是主回归入口。" },
     { "file": "fluid-complete.spec.ts", "lane": "manual", "risk": "流畅度视觉", "reason": "历史视觉专项，涉及对应页面、材质或动效变更时定向执行；日常全站主题巡检统一由 theme-audit 承担。" },
-    { "file": "fluid-glass-async.spec.ts", "lane": "nightly", "risk": "材质异步", "reason": "液态材质异步生命周期属于夜间视觉与资源检查。" },
     { "file": "fluid-ui.spec.ts", "lane": "manual", "risk": "界面流畅度", "reason": "历史视觉专项，涉及对应页面、材质或动效变更时定向执行；日常全站主题巡检统一由 theme-audit 承担。" },
     { "file": "ui-fluidity.spec.ts", "lane": "manual", "risk": "009 办公机流畅度", "reason": "该历史专项夹具依赖独立办公机页面标记，按需在 009 性能环境手动运行。" },
     { "file": "franchise-labels.spec.ts", "lane": "nightly", "risk": "作品标签", "reason": "标签展示是内容视觉一致性检查，纳入夜间。" },

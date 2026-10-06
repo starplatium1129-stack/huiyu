@@ -33,7 +33,7 @@ function evidencePath(value: any) {
   return name;
 }
 function rootPath(value: any) {
-  const root = fs.realpathSync(value);
+  const root = fs.realpathSync.native(value);
   if (!fs.statSync(root).isDirectory()) throw Error('root 不是目录');
   return root;
 }
@@ -41,7 +41,7 @@ function rootPath(value: any) {
 // introduce cycles, or make a saved evidence file part of its own source identity.
 function resolveSafe(root: any, value: any, allowMissing: any = false) {
   const name = relative(value, true);
-  let current = root;
+  let current = root, existing = root;
   for (const part of name === '.' ? [] : name.split('/')) {
     current = path.join(current, part);
     let stat;
@@ -50,9 +50,12 @@ function resolveSafe(root: any, value: any, allowMissing: any = false) {
       throw error;
     }
     if (stat.isSymbolicLink()) throw Error(`不允许 symlink/junction: ${name}`);
-    const rel = path.relative(root, fs.realpathSync(current));
-    if (rel === '..' || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) throw Error(`真实路径越过 root: ${name}`);
+    existing = current;
   }
+  // Every existing segment was checked for links. Resolve the complete path once,
+  // instead of asking the OS to traverse every prefix again for every input file.
+  const rel = path.relative(root, fs.realpathSync.native(existing));
+  if (rel === '..' || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) throw Error(`真实路径越过 root: ${name}`);
   return current;
 }
 function fileEntry(root: any, name: any) {

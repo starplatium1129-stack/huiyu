@@ -12,7 +12,7 @@
 .hero-actions .showcase-refresh { min-width:var(--control-height); padding-inline:var(--s-3); }
 .empty-block { padding:var(--s-8) 0; @apply tw:text-center; }
 
-:root body .showcase-page .toolbar-shell.toolbar-shell { position:sticky; top:calc(var(--app-navigation-height,80px) + var(--s-2)); z-index:var(--z-sticky); margin-bottom:var(--s-4); padding:var(--s-2) 0; border:0; border-block:1px solid var(--border-soft); border-radius:0; background:var(--bg-base); box-shadow:none; backdrop-filter:none; }
+:root body .showcase-page .toolbar-shell.toolbar-shell { position:sticky; top:calc(var(--app-navigation-height,80px) + var(--s-2)); z-index:var(--z-sticky); margin-bottom:var(--s-4); padding:var(--s-3); border-radius:var(--r-lg); }
 .search-field { flex:1 1 300px; @apply tw:min-w-0; }
 .filter-pill { @apply tw:min-h-[36px]; padding:var(--s-2) var(--s-4); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary tw:cursor-pointer; font:500 var(--fs-label) var(--font-sans); }
 .filter-pill.active { @apply tw:text-accent; background:var(--accent-soft); }

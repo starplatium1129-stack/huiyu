@@ -42,7 +42,7 @@ for (const theme of ['dark']) {
     await dialog.getByRole('radio', { name: '减少动态', exact: true }).click()
     await expect(page.locator('html')).toHaveAttribute('data-reduced-motion', 'true')
     await dialog.getByRole('switch', { name: '降低玻璃效果' }).click()
-    await expect(page.locator('[data-fluid-refracted]')).toHaveCount(0)
+    await expect(page.locator('.nav')).toHaveCSS('backdrop-filter', 'none')
     await page.screenshot({ path: `scripts/archive/fluid-complete/verified/${theme}-appearance.png` })
     await page.keyboard.press('Escape'); await expect(dialog).toBeHidden()
     await page.locator('.nav-search').click()

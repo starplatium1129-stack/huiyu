@@ -1,63 +1,42 @@
 @reference "./tailwind.css";
-/* Two device-local material choices. Both keep text and content unfiltered. */
-:root { --material-fill: color-mix(in srgb, var(--bg-surface) 96%, transparent); }
-:root[data-glass-material="liquid"] {
-  --material-fill: color-mix(in srgb, var(--bg-surface) calc(30% + var(--glass-tint, .35) * 42%), transparent);
-  /* Only extreme backdrop tones are bounded; midtones keep their original color. */
-  --material-rim: var(--glass-specular, var(--glass-highlight));
+:root { --material-fill:color-mix(in srgb,var(--bg-surface) 96%,transparent); --material-blur:14px; }
+:root[data-glass-material='liquid'] { --material-fill:color-mix(in srgb,var(--bg-surface) calc(70% + var(--glass-tint,.35) * 16%),transparent); }
+:root[data-glass-material='liquid'][data-theme='light'] { --material-fill:color-mix(in srgb,var(--bg-surface) calc(58% + var(--glass-tint,.35) * 20%),transparent); }
+/* One material per floating group; text is original and never filtered or copied. */
+:root[data-glass-material] body :is(.nav,.nav-more-menu,.sticky-toolbar,.companion-toolbar,.toolbar-shell,.gallery-toolbar,.scene-toolbar,.pop-toolbar,.gen-bar,.pb .gen-bar,[data-fluid-glass]) {
+  border:0; background:var(--material-fill); box-shadow:var(--shadow-sm);
+  --text-secondary:var(--text-primary); --text-muted:var(--text-primary); --text-tertiary:var(--text-primary);
+  --accent-soft:color-mix(in srgb,var(--accent) 10%,var(--bg-surface));
 }
-:root[data-glass-material="liquid"][data-theme="light"] {
-  --material-rim: var(--glass-highlight);
+:root[data-glass-material='liquid'] body :is(.nav,.nav-more-menu,.sticky-toolbar,.companion-toolbar,.toolbar-shell,.gallery-toolbar,.scene-toolbar,.pop-toolbar,.gen-bar,.pb .gen-bar,[data-fluid-glass]) {
+  -webkit-backdrop-filter:blur(var(--material-blur)) saturate(145%);
+  backdrop-filter:blur(var(--material-blur)) saturate(145%);
 }
-
-:root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
-  background:linear-gradient(125deg, color-mix(in srgb,var(--glass-highlight) 45%,transparent),transparent 42%),var(--material-fill);
-  border-color:var(--glass-edge);
-  box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 var(--border-soft),var(--shadow-sm);
+:root[data-glass-material] body :is(.studio-search,.studio-select-trigger) { border:0; border-radius:var(--r-pill); }
+:root[data-glass-material] body .studio-segments[role] { border:0; border-radius:var(--r-pill); box-shadow:none; background:color-mix(in srgb,var(--bg-surface) 18%,transparent); }
+:root[data-glass-material] body .studio-segments[role] .animated-selection { border:0; border-radius:var(--r-pill); background:var(--accent-soft); box-shadow:var(--shadow-sm); }
+:root[data-glass-material] body .nav .nav-links .animated-selection { border:0; }
+/* Embedded fields share the parent backdrop rather than sampling it a second time. */
+:root[data-glass-material='liquid'] body :is(.nav,.sticky-toolbar,.companion-toolbar,.toolbar-shell,.gallery-toolbar,.scene-toolbar,.pop-toolbar,.gen-bar,[data-fluid-glass]) :is(.studio-search,.studio-select-trigger,[data-fluid-glass]) {
+  background:color-mix(in srgb,var(--bg-surface) 18%,transparent); box-shadow:none;
+  -webkit-backdrop-filter:none; backdrop-filter:none;
 }
-
-:root[data-glass-material="liquid"] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
-  background:var(--material-fill);
-  box-shadow:
-    inset 0 1px 0 var(--material-rim),
-    inset 1px 0 0 var(--glass-highlight),
-    inset -1px 0 0 var(--glass-edge),
-    inset 0 -1px 0 color-mix(in srgb,var(--ink-base) 22%,transparent),
-    var(--shadow-md);
-  -webkit-backdrop-filter:var(--fluid-glass-filter, blur(16px) saturate(125%));
-  backdrop-filter:var(--fluid-glass-filter, blur(16px) saturate(125%));
-}
-/* An unsupported SVG lens still gets a bounded, static frosted fallback. */
-:root[data-glass-material="liquid"] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]):not([data-fluid-refracted]) {
-  background:color-mix(in srgb,var(--bg-surface) 94%,transparent);
-  -webkit-backdrop-filter:blur(16px) saturate(125%);
-  backdrop-filter:blur(16px) saturate(125%);
-}
-:root[data-glass-material="liquid"] body [data-fluid-refracted] .studio-search { background:transparent; }
-:root[data-glass-material="liquid"] body [data-fluid-refracted] :is(button:disabled,.badge) { background:var(--bg-surface); }
-
-/* Do not leave translucent chrome on browsers without any backdrop support. */
+:root[data-glass-material] body :is(.nav,.sticky-toolbar,.toolbar-shell,.gallery-toolbar,.gen-bar,[data-fluid-glass]) :is(.btn,.nav-links a,.nav-more-trigger) { border-color:transparent; }
+:root[data-glass-material='liquid'] body :is(.nav,.sticky-toolbar,.toolbar-shell,.gallery-toolbar,.gen-bar,[data-fluid-glass]) :is(button:disabled,.badge) { background:var(--bg-surface); }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-  :root[data-glass-material="liquid"] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
-    background:var(--bg-surface);
+  :root[data-glass-material] { --material-fill:var(--bg-surface); }
+}
+:root:is([data-reduced-glass='true'],[data-fluid-effects='low']) body :is(.nav,.nav-more-menu,.sticky-toolbar,.companion-toolbar,.toolbar-shell,.gallery-toolbar,.scene-toolbar,.pop-toolbar,.gen-bar,.pb .gen-bar,[data-fluid-glass]) {
+  background:var(--bg-surface) !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
+}
+@media(prefers-reduced-transparency:reduce),(prefers-contrast:more),(forced-colors:active) {
+  :root[data-glass-material] body :is(.nav,.nav-more-menu,.sticky-toolbar,.companion-toolbar,.toolbar-shell,.gallery-toolbar,.scene-toolbar,.pop-toolbar,.gen-bar,.pb .gen-bar,[data-fluid-glass]) {
+    background:var(--bg-surface) !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
   }
 }
-
-/* Accessibility and the low-effects tier always win, without changing the preference. */
-:root:is([data-reduced-glass="true"], [data-fluid-effects="low"]) body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
-  background:var(--bg-surface) !important;
-  background-image:none !important;
-  box-shadow:none !important;
-  -webkit-backdrop-filter:none !important;
-  backdrop-filter:none !important;
+@media(forced-colors:active) {
+  :root[data-glass-material] body :is(.nav,.nav-more-menu,.sticky-toolbar,.toolbar-shell,.gallery-toolbar,.gen-bar,[data-fluid-glass]) { background:Canvas !important; color:CanvasText; border:1px solid CanvasText; }
 }
-@media (prefers-reduced-transparency:reduce), (prefers-contrast:more), (forced-colors:active) {
-  :root[data-glass-material] body *, :root[data-glass-material] dialog::backdrop { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
-  :root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) { background:var(--bg-surface) !important; background-image:none !important; box-shadow:none !important; }
-}
-@media (prefers-contrast:more) {
-  :root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) { @apply tw:border-muted; }
-}
-@media (forced-colors:active) {
-  :root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) { background:Canvas !important; background-image:none !important; border-color:CanvasText; box-shadow:none !important; }
+@media(prefers-contrast:more) {
+  :root[data-glass-material] body :is(.nav,.nav-more-menu,.sticky-toolbar,.companion-toolbar,.toolbar-shell,.gallery-toolbar,.scene-toolbar,.pop-toolbar,.gen-bar,.pb .gen-bar,[data-fluid-glass]) { border:1px solid var(--text-primary); }
 }

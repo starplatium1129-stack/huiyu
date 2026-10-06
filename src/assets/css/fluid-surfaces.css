@@ -1,9 +1,9 @@
 @reference "./tailwind.css";
 /* Fluid desktop study: a quiet structural layer above stable reading surfaces. */
 :root {
-  --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 var(--border-soft), var(--shadow-sm);
-  --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 var(--border-soft), var(--shadow-md);
-  --shadow-glass-elevated: inset 0 1px 0 var(--glass-highlight), 0 0 0 1px color-mix(in srgb, var(--glass-edge) 35%, transparent), var(--shadow-lg);
+  --shadow-glass-sm: var(--shadow-sm);
+  --shadow-glass-md: var(--shadow-md);
+  --shadow-glass-elevated: var(--shadow-lg);
 }
 .nav {
   background: linear-gradient(115deg, var(--glass-highlight), transparent 45%), var(--nav-bg);
