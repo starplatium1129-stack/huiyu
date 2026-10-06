@@ -79,7 +79,6 @@
           :generation-status-text="generationStatusText"
           :generation-progress="generationProgress"
           :anima-elapsed="animaState.elapsedSeconds"
-          :anima-current-node="animaState.currentNode || ''"
           :draw-engine="drawEngine"
           :inpaint-original-url="inpaintOriginalUrl"
           :inpaint-compare-active="inpaintCompareActive"

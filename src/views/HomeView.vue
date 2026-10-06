@@ -2,7 +2,7 @@
   <article class="home-page">
     <section class="container home-opening tw:pt-s-6" aria-label="画室序章">
       <div class="home-hero" :data-muse="homeMuse" :data-immediate="heroImmediate" @keydown.capture="heroImmediate = true" @pointerdown.capture="heroImmediate = false">
-        <div class="hero-copy">
+        <div class="hero-copy" data-route-arrive>
           <span class="hero-register">绘遇 HUIYU · AI 角色创作画室</span>
           <h1 class="hero-title">把喜欢的角色，<br /><span class="hero-title-accent">画进你的故事。</span></h1>
           <p class="hero-sub">选一位心动主角，开启专属日常。<br />无论是随心点缀的灵感，还是亲手编排的光影。</p>

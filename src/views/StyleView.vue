@@ -6,7 +6,7 @@
       <h2>六种心情，六种色调</h2>
       <p>选择配色，带到绘制工作台继续创作。</p>
     </header>
-    <div class="mood-grid style-mood-grid" data-reveal data-reveal-delay="1">
+    <div class="mood-grid style-mood-grid" data-route-arrive data-reveal data-reveal-delay="1">
       <article v-for="m in MOODS" :key="m.id" class="style-mood-card">
         <RouterLink class="style-sample" :class="{ 'is-unavailable': !loading && !available.has(m.sceneId) }" :to="'/showcase?scene=' + m.sceneId" :aria-label="'查看' + m.name + '氛围参考'">
           <RuntimeImage :src="available.has(m.sceneId) ? '/scene-showcase/thumbs/' + m.sceneId + '.jpg' : undefined" v-slot="{ image, failed }">

@@ -144,7 +144,7 @@
     >
       <button class="btn btn-primary" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
-    <div v-else v-content-motion="`${activeTheme}:${fTier}:${sortBy}:${showHidden}`" class="scene-grid">
+    <div v-else data-route-arrive v-content-motion:up="`${activeTheme}:${fTier}:${sortBy}:${showHidden}`" class="scene-grid">
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
           :class="{ 'scene-flash': flashId === s.id, 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id"
           :aria-label="'查看场景故事：' + s.title" :aria-expanded="drawerScene?.id === s.id" @pick="drawerScene = s">

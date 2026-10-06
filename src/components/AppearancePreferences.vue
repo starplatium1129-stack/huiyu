@@ -7,7 +7,7 @@
         <div><p class="appearance-eyebrow">让画室适合你</p><h2 id="appearance-title">{{ section === 'keyboard' ? '键盘快捷键' : '外观与动态效果' }}</h2><p v-if="section === 'appearance'" class="appearance-save-note">选择后自动保存在此设备。</p></div>
         <button class="appearance-close" type="button" aria-label="关闭" @click="fluidDialog.close()"><ArchiveIcon name="close" /></button>
       </div>
-      <div v-if="section === 'appearance'" class="appearance-fields">
+      <div v-if="section === 'appearance'" v-content-motion:up="section" class="appearance-fields">
         <fieldset class="appearance-choice-field">
           <legend>画室主题</legend>
           <RadioGroupRoot v-model="selectedTheme" class="appearance-segments studio-segments" data-segment-keyboard="managed" aria-label="画室主题">
@@ -32,7 +32,7 @@
         </ToggleSwitch>
         <p class="appearance-note">系统开启减少透明度或高对比度时，会自动降低玻璃效果。</p>
       </div>
-      <dl v-else class="appearance-shortcuts">
+      <dl v-else v-content-motion:up="section" class="appearance-shortcuts">
         <div><dt><kbd>F6</kbd> / <kbd>Shift F6</kbd></dt><dd>在导航与内容之间切换</dd></div>
         <div><dt><kbd>←</kbd> <kbd>→</kbd> / <kbd>Home</kbd> <kbd>End</kbd></dt><dd>主导航内移动焦点</dd></div>
         <div><dt><kbd>Enter</kbd></dt><dd>打开聚焦的导航页面</dd></div>

@@ -12,7 +12,7 @@
     </TabsList>
     <!-- Each panel owns its scroll position. Once visited, retain drafts and running tools. -->
     <TabsContent v-for="tab in tabs" :key="tab.id" :value="tab.id" force-mount as-child>
-      <section v-show="active === tab.id" :id="`inspector-${tab.id}`" :data-panel="tab.id"
+      <section v-show="active === tab.id" v-content-motion:up="active === tab.id" :id="`inspector-${tab.id}`" :data-panel="tab.id"
         class="inspector-scroll inspector-section" :aria-labelledby="`inspector-tab-${tab.id}`" tabindex="0">
         <DeferredPanel :active="active === tab.id"><slot :name="tab.id" /></DeferredPanel>
       </section>

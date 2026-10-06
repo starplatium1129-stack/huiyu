@@ -20,7 +20,7 @@ import { useGalleryFilters } from './useGalleryFilters';
 import { useGalleryComparison } from './useGalleryComparison';
 import { useGallerySelection } from './useGallerySelection';
 import { useGalleryViewer } from './useGalleryViewer';
-import { useGalleryDeleteMotion } from './useGalleryDeleteMotion';
+import { useGalleryListMotion } from './useGalleryListMotion';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useGalleryWorkspace() {
     const sceneStore = useSceneStore();
@@ -527,14 +527,14 @@ export function useGalleryWorkspace() {
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
     function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast }, item); }
-    const deleteMotion = useGalleryDeleteMotion(shellEl, () => pagedVisible.value, () => galleryLoading.value);
+    const deleteMotion = useGalleryListMotion(shellEl, () => pagedVisible.value, () => galleryLoading.value);
     function confirmDelete(item: ArtworkRecord): Promise<void> {
         const epoch = imageEpoch, viewerRevision = getViewerRevision();
         return confirmDeleteAction({ isCurrentView: () => !unmounted && viewActive && epoch === imageEpoch && viewerRevision === getViewerRevision(), showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }, item);
     }
     function bulkDelete(): Promise<void> { const epoch = imageEpoch; return bulkDeleteAction({ isCurrentView: () => !unmounted && viewActive && epoch === imageEpoch, showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }); }
     return {
-closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
+closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl, revealBrowse: deleteMotion.revealBrowse,
         countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects, tagFilter, tagOptions, characterFilter, collectionPreviewItems,
         generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,

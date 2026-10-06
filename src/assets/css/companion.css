@@ -2456,17 +2456,6 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
   @apply tw:pr-[20px];
 }
 
-.companion-float-reminder .companion-reminder-action {
-  border-color: color-mix(in srgb, var(--character-accent) 58%, var(--companion-edge));
-  background: color-mix(in srgb, var(--character-accent) 16%, var(--art-scrim));
-  color: var(--companion-ink);
-}
-
-.companion-float-reminder .companion-reminder-action:hover,
-.companion-float-reminder .companion-reminder-action:focus-visible {
-  border-color: var(--character-accent);
-  background: color-mix(in srgb, var(--character-accent) 28%, var(--art-scrim));
-}
 .companion-float-reminder > .companion-reminder-dismiss:hover,
 .companion-float-reminder > .companion-reminder-dismiss:focus-visible {
   color: var(--companion-ink);

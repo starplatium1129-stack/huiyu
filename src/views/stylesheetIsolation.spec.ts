@@ -6,8 +6,8 @@ afterEach(() => { document.body.innerHTML = '' })
 
 it.each([
   {
-    name: 'gallery viewer', css: 'src/assets/css/gallery-viewer.css', selector: /./,
-    foreign: '<dialog class="showcase-viewer"><div class="viewer-copy"><h2 class="viewer-title"></h2><div class="viewer-meta"></div><p class="viewer-story"></p><div class="viewer-actions"><span class="viewer-position"></span></div></div></dialog>',
+    name: 'shared image viewer', css: 'src/assets/css/gallery-viewer.css', selector: /./,
+    foreign: '<section class="story-card"><h2 class="viewer-title"></h2><div class="viewer-meta"></div><p class="viewer-story"></p><div class="viewer-actions"><span class="viewer-position"></span></div></section>',
     owned: '<div class="art-viewer"><span class="viewer-position"></span><div class="viewer-meta"></div></div>',
     controls: ['viewer-position', 'viewer-meta'],
   },

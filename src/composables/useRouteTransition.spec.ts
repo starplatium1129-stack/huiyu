@@ -39,6 +39,7 @@ function surface(path = '/gallery') {
   const calls: unknown[][] = []
   const el = {
     dataset: { routePath: path },
+    querySelectorAll: () => [],
     inert: true,
     animate: (...args: unknown[]) => {
       calls.push(args)
@@ -166,7 +167,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     destination = '/gallery'
     const returned = counter(); hooks.onEnter(page.el, returned.done)
     assert.deepEqual(page.calls[1][0], [{ opacity: 0 }, { opacity: 1 }])
-    assert.equal((page.calls[1][1] as KeyframeAnimationOptions).duration, 200)
+    assert.equal((page.calls[1][1] as KeyframeAnimationOptions).duration, 280)
     page.el.dataset.routePath = '/gallery?filter=recent'
     const queryRefresh = counter(); hooks.onEnter(page.el, queryRefresh.done)
     assert.equal(queryRefresh.count, 1); assert.equal(page.calls.length, 2)

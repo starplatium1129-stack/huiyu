@@ -35,7 +35,7 @@
     <ArchiveStatePanel v-if="!visibleLoras.length" compact kind="filtered" title="没有匹配的模型。" message="试试角色名、模型名或触发词，或清除搜索重新查看全部资料。">
       <button class="btn btn-ghost btn-sm" type="button" @click="clearSearch">清除搜索</button>
     </ArchiveStatePanel>
-    <div class="lora-grid">
+    <div class="lora-grid" data-route-arrive v-content-motion:up="modelQuery">
       <article v-for="l in visibleLoras" :key="l.id" class="lora-card">
         <header class="model-identity">
           <div><ArchiveIcon :name="modelGuide(l).icon" /><h2 class="lora-name">{{ modelGuide(l).name }}</h2></div>

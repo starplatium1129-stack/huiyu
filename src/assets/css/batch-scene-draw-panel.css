@@ -204,20 +204,6 @@
 .batch-foot-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
 .batch-hint { @apply tw:text-muted tw:text-label-xs; }
 
-/* 大图预览 */
-.batch-lightbox {
-  @apply tw:sticky tw:bottom-0 tw:grid; justify-items: center; @apply tw:gap-s-2 tw:p-s-4;
-  border: 1px solid var(--border-soft); @apply tw:rounded-lg;
-  background: color-mix(in srgb, var(--bg-deep) 85%, transparent);
-  backdrop-filter: blur(6px);
-}
-.batch-lightbox img {
-  @apply tw:max-w-full tw:max-h-[58vh] tw:rounded-md; border: 1px solid var(--border-soft);
-  @apply tw:object-contain; background: var(--bg-deep);
-}
-.batch-lightbox-caption { @apply tw:m-0 tw:text-secondary tw:text-label-sm; }
-.batch-lightbox-caption em { @apply tw:text-muted tw:not-italic; }
-.batch-lightbox-close { @apply tw:absolute tw:top-s-3 tw:right-s-3; }
 
 @media (max-width: 768px) {
   .batch-scene-grid { grid-template-columns: 1fr; }

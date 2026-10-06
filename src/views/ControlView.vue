@@ -22,7 +22,7 @@
     </nav>
 
     <div class="control-layout">
-      <aside class="control-rail" aria-label="控制室导航">
+      <aside class="control-rail" data-fluid-glass="sidebar" aria-label="控制室导航">
         <RouterLink to="/" class="control-rail-brand">
           <BrandLogo class="nav-logo" />
           <span><strong>本机控制室</strong><small>Local control room</small></span>

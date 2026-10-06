@@ -29,7 +29,7 @@
       <Transition :css="false" @enter="archiveMotion.enter" @enter-cancelled="archiveMotion.dispose" @after-leave="archiveMotion.dispose">
       <div v-if="!showShelf" class="library-layout">
         <BrowsingCharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
-        <div class="library-detail">
+        <div class="library-detail" data-route-arrive v-content-motion:up="current?.id">
       <section v-if="current" ref="profileAnchor" class="character-hero card-direct card-level-3">
         <CharacterParticleStage :character-id="current.id" :name="current.name" :initial-original="preferOriginal">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">

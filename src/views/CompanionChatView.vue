@@ -46,7 +46,7 @@
         </StudioTooltip>
       </div>
 
-      <div ref="listRef" class="companion-chat-bubbles" role="log" aria-label="最近对话">
+      <div ref="listRef" v-content-motion:up="activeChar" class="companion-chat-bubbles" role="log" aria-label="最近对话">
         <div v-if="!visibleMessages.length" class="companion-chat-empty">
           <span>{{ currentCharacter.name }}</span>
           <p>{{ currentCharacter.greeting }}</p>

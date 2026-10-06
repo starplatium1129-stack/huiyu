@@ -235,8 +235,8 @@ test('showcase viewer restores focus and changing content type clears an incompa
   await page.locator('.sample .sample-visual').first().click();
   await expect(page.locator('.showcase-viewer')).toHaveAttribute('open', '');
   const boxes = await page.evaluate(() => {
-    const art = document.querySelector('.showcase-viewer .viewer-art');
-    const copy = document.querySelector('.showcase-viewer .viewer-copy');
+    const art = document.querySelector('.showcase-viewer .viewer-stage');
+    const copy = document.querySelector('.showcase-viewer .viewer-info');
     if (!art || !copy) return null;
     const a = art.getBoundingClientRect();
     const c = copy.getBoundingClientRect();
@@ -245,7 +245,7 @@ test('showcase viewer restores focus and changing content type clears an incompa
   expect(boxes).not.toBeNull();
   expect(boxes!.artRight).toBeLessThanOrEqual(boxes!.copyLeft + 2);
 
-  await page.getByRole('button', { name: '关闭大图' }).click();
+  await page.getByRole('button', { name: '关闭' }).click();
   await expect(page.locator('.showcase-viewer')).not.toHaveAttribute('open', '');
   await expect(page.locator('.sample .sample-visual').first()).toBeFocused();
   await page.locator('.showcase-filters > summary').press('Enter');

@@ -35,10 +35,13 @@ html.companion-desktop:has(.companion-redesign) body::before, html.companion-des
 .companion-redesign .companion-live-dot { background: var(--bg-surface); @apply tw:text-secondary; text-shadow: none; }
 .companion-redesign .companion-live-dot[data-state="idle"] { @apply tw:hidden; }
 .companion-redesign .companion-chat-chip { @apply tw:text-primary; background: var(--bg-surface); @apply tw:border-soft; backdrop-filter: none; box-shadow: var(--shadow-glass-sm); }
-.companion-redesign .companion-float-reminder { background: var(--bg-surface); @apply tw:text-primary; border: 1px solid var(--border-soft); text-shadow: none; backdrop-filter: none; }
-.companion-redesign .companion-float-reminder > span { @apply tw:text-secondary; }
+.companion-redesign .companion-float-reminder { background: var(--bg-surface); @apply tw:text-primary; border: 1px solid var(--border-soft); text-shadow: none; backdrop-filter: none; font-family:var(--font-sans); }
+.companion-redesign .companion-float-reminder > span { @apply tw:text-secondary; font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
 .companion-redesign .companion-float-reminder p { @apply tw:text-primary; }
-.companion-redesign .companion-float-reminder button { @apply tw:text-secondary; }
+.companion-redesign .companion-float-reminder .companion-reminder-dismiss { @apply tw:text-secondary; }
+.companion-redesign .companion-float-reminder .companion-reminder-action { min-height:32px; padding:var(--s-1) var(--s-3); background:var(--accent); border-color:var(--accent); color:var(--text-inverse); }
+.companion-redesign .companion-float-reminder .companion-reminder-action:hover { background:var(--accent-hover); border-color:var(--accent-hover); }
+.companion-redesign .companion-float-reminder .companion-reminder-action:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 .companion-reply-preview p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; @apply tw:overflow-hidden; }
 .companion-reply-preview svg { @apply tw:w-[15px] tw:h-[15px]; }
 .companion-redesign .companion-reply-preview { @apply tw:w-full tw:max-w-full tw:p-s-3 tw:rounded-md; box-shadow:none; @apply tw:pointer-events-auto; }

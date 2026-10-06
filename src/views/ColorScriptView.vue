@@ -2,7 +2,7 @@
   <article class="page color-script-page creative-library-page">
     <CreativeLibraryHeader title="色彩情绪" description="选一种心情，把这一幕的色彩与光照带入工作台。" />
 
-    <section class="color-selection" aria-labelledby="mood-palette-title">
+    <section class="color-selection" data-route-arrive aria-labelledby="mood-palette-title">
     <header class="color-section-heading"><h2 id="mood-palette-title">今日心境色板</h2><p>六种情绪，从你想讲述的片刻开始。</p></header>
     <div ref="moodGrid" class="mood-grid color-mood-grid">
       <button
@@ -25,8 +25,7 @@
     </div>
     </section>
 
-    <Transition name="fade-up">
-      <section v-if="selected" ref="resultPanel" class="result-panel" tabindex="-1" aria-labelledby="current-palette-title">
+      <section v-if="selected" v-content-motion:up="selected.id" ref="resultPanel" class="result-panel" tabindex="-1" aria-labelledby="current-palette-title">
         <header class="palette-result-heading">
           <div><p>当前色板</p><h2 id="current-palette-title"><ArchiveIcon :name="selected.iconName" />{{ selected.name }}的色彩与光照</h2></div>
           <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-primary"><ArchiveIcon name="spark" />带入工作台使用</RouterLink>
@@ -56,7 +55,6 @@
           <button class="btn btn-ghost" type="button" @click="resetMood"><ArchiveIcon name="refresh" /> 换一个情绪</button>
         </div>
       </section>
-    </Transition>
     <p v-if="!selected" class="color-selection-hint"><ArchiveIcon name="palette" />选中一种情绪后，在这里查看色板与光照，再带入工作台。</p>
 
     <details class="color-reading">
@@ -249,8 +247,6 @@ function exportTxt() {
 .lighting-name { @apply tw:text-body-sm tw:font-semibold; }
 .lighting-reason { @apply tw:text-body-sm tw:text-secondary tw:mt-s-2 tw:leading-body; }
 
-.fade-up-enter-active { transition:opacity var(--motion-route),transform var(--motion-route); }
-.fade-up-enter-from { opacity:0; transform:translateY(12px); }
 
 @media(max-width:768px) { .art-ref { grid-template-columns:1fr; } }
 </style>

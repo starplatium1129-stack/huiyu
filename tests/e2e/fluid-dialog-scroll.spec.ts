@@ -40,7 +40,7 @@ for (const theme of ['dark']) {
           if (!el.open && ++closedFrames >= 5) { resolve({ frames, delayedEvents }); return }
           requestAnimationFrame(sample)
         }
-        ;(el.querySelector('#viewerClose') as HTMLButtonElement).click()
+        ;(el.querySelector('.viewer-close') as HTMLButtonElement).click()
         requestAnimationFrame(sample)
       }))
       await info.attach('native-close-frame-positions', { body: JSON.stringify({ originalY, ...result }), contentType: 'application/json' })

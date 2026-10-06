@@ -24,14 +24,15 @@
 .showcase-filters { margin:0; min-width:160px; }
 .showcase-filters[open] { flex-basis:100%; }
 .showcase-filters > summary { @apply tw:flex tw:items-center tw:gap-s-3 tw:min-h-[36px]; list-style:none; @apply tw:cursor-pointer tw:text-secondary tw:text-label; }
-:root body .showcase-page .toolbar-shell:has(.showcase-filters[open]) { position:relative; top:auto; }
+/* Expanded filters keep their sticky anchor even when opened deep in the wall. */
+:root body .showcase-page .toolbar-shell:has(.showcase-filters[open]) { max-height:calc(100svh - var(--app-navigation-height,80px) - var(--s-4)); overflow-y:auto; overscroll-behavior:contain; }
 .showcase-filters > summary::-webkit-details-marker { @apply tw:hidden; }
 .showcase-filters > summary > span:first-child { @apply tw:shrink-0 tw:font-semibold; }
 .filter-summary { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-muted; }
 .showcase-filters > summary > .archive-icon { @apply tw:ml-auto; }
 .showcase-filters[open] > summary > .archive-icon { transform:rotate(180deg); }
 .showcase-filters > summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; @apply tw:rounded-sm; }
-.filter-details { @apply tw:flex tw:flex-wrap; align-items:end; gap:var(--s-4); padding:var(--s-3); border-top:1px solid var(--border-soft); background:var(--bg-surface); }
+.filter-details { @apply tw:flex tw:flex-wrap; align-items:end; gap:var(--s-4); padding:var(--s-3) 0 0; border-top:1px solid var(--border-soft); }
 .filter-dropdowns { @apply tw:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); flex:1 1 320px; @apply tw:min-w-0 tw:gap-s-3 tw:items-center; }
 .filter-dropdowns label,.rating-options { @apply tw:grid tw:gap-s-2 tw:text-secondary tw:text-label-xs; }
 .rating-options { @apply tw:min-w-0; }

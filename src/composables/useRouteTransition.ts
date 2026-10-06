@@ -13,6 +13,16 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   const pathname = (path: string) => path.split(/[?#]/, 1)[0]
   const archivePair = (from: string, to: string) => (from === '/popular-scenes' && to === '/character')
     || (from === '/character' && to === '/popular-scenes')
+  function arriveContent(el: HTMLElement, duration: number) {
+    // Only marked reading surfaces move; fixed navigation and native overlays stay anchored.
+    return [...el.querySelectorAll<HTMLElement>('[data-route-arrive]')].slice(0, 6).flatMap(surface => {
+      const rect = surface.getBoundingClientRect()
+      if (!rect.width || !rect.height || rect.bottom <= 0 || rect.top >= innerHeight) return []
+      return [surface.animate([{ transform: 'translateY(16px)' }, { transform: 'none' }], {
+        duration, easing: 'cubic-bezier(.22,1,.36,1)',
+      })]
+    })
+  }
   function settle(el: HTMLElement) { active.get(el)?.() }
   function settleAll() {
     for (const finish of [...active.values()]) finish()
@@ -48,10 +58,13 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     departed.delete(el)
     if (path) markUiFluidityForPath(path, 'shell-ready')
     let animation: Animation | undefined, finished = false
+    let content: Animation[] = []
     const finish = () => {
       if (finished) return
       finished = true
       active.delete(el); delete el.dataset.routeEntering
+      for (const effect of content) effect.cancel()
+      content = []
       if (animation) {
         animation.onfinish = animation.oncancel = null
         try { animation.cancel() } catch { try { animation.effect = null } catch { /* Best-effort release. */ } }
@@ -62,8 +75,10 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     if (samePage || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') { finish(); return }
     active.set(el, finish)
     try {
+      const duration = cached ? 280 : 360
+      content = arriveContent(el, duration)
       animation = el.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration: cached ? 200 : 260, easing: 'cubic-bezier(.22, 1, .36, 1)',
+        duration, easing: 'cubic-bezier(.22, 1, .36, 1)',
       })
       animation.onfinish = animation.oncancel = finish
     } catch { finish() }

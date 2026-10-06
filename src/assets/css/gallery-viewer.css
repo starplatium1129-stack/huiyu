@@ -34,7 +34,9 @@
 .art-viewer .viewer-next .archive-icon { transform:rotate(-90deg); }
 .art-viewer .viewer-info .viewer-more { @apply tw:mt-s-5; }
 .art-viewer .viewer-more .viewer-actions { margin:0 0 var(--s-3); }
-.art-viewer { @apply tw:fixed; inset:0; z-index:var(--z-overlay); @apply tw:grid; grid-template-columns:minmax(0,1fr) minmax(300px,340px); background:var(--bg-deep); @apply tw:text-primary; }
+.art-viewer { @apply tw:fixed; inset:0; z-index:var(--z-overlay); @apply tw:grid; grid-template-columns:minmax(0,1fr) minmax(300px,340px); width:100vw; height:100dvh; max-width:none; max-height:none; margin:0; padding:0; border:0; background:var(--bg-deep); @apply tw:text-primary; }
+dialog.art-viewer:not([open]) { display:none; }
+dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-backdrop-opacity,1); }
 .art-viewer .viewer-compare-host { @apply tw:w-full; height:calc(100vh - 120px); max-width:min(90vw, 1200px); @apply tw:flex tw:items-center tw:justify-center; }
 .art-viewer .viewer-compare-toggle {
   @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-[18px] tw:right-[64px] tw:inline-flex tw:items-center tw:gap-[4px];

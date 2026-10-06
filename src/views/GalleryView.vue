@@ -44,24 +44,20 @@
       </div>
       </details>
     </div>
-    <Transition name="gallery-browse">
     <div v-show="albumsOpen" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
       <GalleryAlbumOverview :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
     </div>
-    </Transition>
-    <Transition name="gallery-browse">
     <div v-show="!albumsOpen" class="gallery-image-browse">
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
       <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
       <div class="gallery-manage-controls" role="group" aria-label="管理作品">
-        <button v-if="!trashMode && !selectMode && visible.length && !galleryLoading" class="btn btn-ghost btn-sm" type="button" @click="showcaseOpen = true"><ArchiveIcon name="image" />作品展台</button>
         <button v-if="!trashMode" ref="selectionToggle" class="gallery-filter gallery-select-toggle" type="button" :class="{ active: selectMode }" :aria-pressed="selectMode" @click="toggleSelectMode"><ArchiveIcon name="pin" />{{ selectMode ? '退出选择' : '选择' }}</button>
         <button class="gallery-filter gallery-trash-toggle" type="button" :class="{ active: trashMode }" :aria-pressed="trashMode" @click="selectMode && toggleSelectMode(); toggleTrashMode()"><ArchiveIcon name="trash" />回收站{{ trashItems.length ? `（${trashItems.length}）` : '' }}</button>
       </div>
       <span v-if="trashMode" class="gallery-toolbar-note">删除的作品保留 30 天，可随时恢复</span>
     </div>
 
-    <div class="gallery-selection-dock">
+    <div class="gallery-selection-dock" :data-fluid-glass="selectMode ? '' : undefined">
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
       <span class="gallery-bulk-count" aria-live="polite"><ArchiveIcon name="success" />已选 <strong>{{ selectedIds.size }}</strong><span>/ {{ visible.length }}</span></span>
       <span class="gallery-bulk-actions">
@@ -76,7 +72,6 @@
     <GalleryOrganization :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
     </div>
 
-    <GalleryShowcase v-if="showcaseOpen" :items="visible" :title="collectionTitle" :card-urls="cardUrls" :thumb-urls="thumbUrls" @close="showcaseOpen = false" />
     <CandidateCompare :open="compareOpen" :items="compareItems" @close="compareOpen = false" @changed="loadGalleryStorage" />
     <section aria-live="polite">
       <!-- 回收站视图（2026-08-31）：列出软删条目，可逐条恢复；30 天超期自动清理 -->
@@ -123,7 +118,7 @@
       >
         <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>
-      <div v-else-if="!galleryLoading && visible.length" class="gallery-wall stagger-container">
+      <div v-else-if="!galleryLoading && visible.length" class="gallery-wall stagger-container" data-route-arrive>
         <template v-for="group in masonryGroups" :key="group.key">
           <div class="gallery-section">{{ group.key }}</div>
           <div class="gallery-columns" :style="{ '--wall-cols': columnCount }">
@@ -156,7 +151,6 @@
     </section>
 
     </div>
-    </Transition>
     <GallerySmartAlbumEditor v-model:open="editorOpen" v-model:title="editorTitle" v-model:rule="editorRule" :editing="!!editing" :busy="saving" :error="albumError" :count="previewItems.length" :characters="characterOptions" :tags="tagOptions" :projects="manualProjects" :covers="previewCovers" @save="saveSmartAlbum" />
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
@@ -175,11 +169,12 @@
           @load.capture="imageOrigin.loaded"
           @error.capture="imageOrigin.failed"
         >
-      <section class="viewer-stage" @click.self="closeInfoDrawer">
-        <button class="viewer-close" type="button" aria-label="关闭" @click="closeViewer" ref="closeBtn"><ArchiveIcon name="close" /></button>
-        <button class="viewer-nav viewer-prev" type="button" aria-label="上一幅" :disabled="viewerIndex <= 0" @click="step(-1)"><ArchiveIcon name="chevron-down" /></button>
-        <template v-if="compareMode && hasComparableImage && viewerUrl">
-          <div class="viewer-compare-host">
+      <ArtworkViewerStage :items="visible" :index="displayedIndex" :active="viewerIndex >= 0" :original="originalViewer"
+        :src="viewerUrl" :preview-src="imageOrigin.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborPreviews"
+        :title="item => sceneTitle(item.scene, item)" @select="openViewer" @close="closeViewer" @close-button="closeBtn = $event"
+        @toggle-original="toggleOriginalViewer" @dismiss-info="closeInfoDrawer" @interact="imageOrigin.cancel">
+        <template v-if="(compareMode && hasComparableImage && viewerUrl) || (gestureViewer && current)" #image>
+          <div v-if="compareMode && hasComparableImage && viewerUrl" class="viewer-compare-host">
             <ImageCompareSlider
               :before-src="parentImageUrl || thumbUrls[current!.id]"
               :after-src="viewerUrl"
@@ -187,32 +182,17 @@
               after-label="当前成片"
             />
           </div>
+          <PhotoSwipeStage v-else-if="gestureViewer && current" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="gestureViewer = false" />
         </template>
-        <PhotoSwipeStage v-else-if="gestureViewer && current" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="gestureViewer = false" />
-        <GalleryOrbitStage v-else-if="!originalViewer && displayedCurrent" :items="visible" :index="displayedIndex" :active="viewerIndex >= 0"
-          :current-src="viewerUrl" :preview-src="imageOrigin.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls"
-          :neighbor-urls="neighborPreviews" :title="item => sceneTitle(item.scene, item)" @select="openViewer" @pointerdown.capture="imageOrigin.cancel" @wheel.capture="imageOrigin.cancel" />
-        <ZoomableImageViewer
-          v-else-if="viewerUrl || imageOrigin.previewSrc.value"
-          :src="resolveRuntimeUrl(viewerUrl || imageOrigin.previewSrc.value)"
-          :preview-src="imageOrigin.previewSrc.value"
-          :alt="current ? sceneTitle(current.scene, current) : ''"
-        >
-          <template #fallback>
-            <div class="viewer-fallback"><ArchiveIcon name="image" /></div>
-          </template>
-        </ZoomableImageViewer>
-        <div v-else class="viewer-fallback"><ArchiveIcon name="image" /></div>
-        <button class="viewer-nav viewer-next" type="button" aria-label="下一幅" :disabled="viewerIndex >= visible.length - 1" @click="step(1)"><ArchiveIcon name="chevron-down" /></button>
-        <button class="viewer-mode-switch" type="button" :aria-pressed="originalViewer" @click="toggleOriginalViewer"><ArchiveIcon name="image" />{{ originalViewer ? '立体观画' : '原图 / 缩放' }}</button>
+        <template #tools>
         <StudioTooltip v-if="hasComparableImage && viewerUrl" :content="compareMode ? '退出对比' : '开启对比滑块'">
           <button class="viewer-compare-toggle" :class="{ active: compareMode }" type="button" :aria-pressed="compareMode" @click="compareMode = !compareMode">
             <ArchiveIcon name="spark" /> 对比
           </button>
         </StudioTooltip>
         <button ref="infoToggleBtn" class="viewer-info-toggle" type="button" aria-label="作品信息" aria-controls="viewer-info" :aria-expanded="infoOpen" @click="toggleInfoDrawer"><ArchiveIcon name="info" /></button>
-        <div class="viewer-position">{{ displayedIndex + 1 }} / {{ visible.length }}</div>
-      </section>
+        </template>
+      </ArtworkViewerStage>
 
       <aside
         id="viewer-info"
@@ -308,13 +288,10 @@ import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
-import GalleryOrbitStage from '@/components/gallery/GalleryOrbitStage.vue'
-import { defineAsyncComponent, nextTick, onDeactivated, ref, watch } from 'vue'
+import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
+import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
 import { artworkTags } from '@/composables/gallery/artworkTags'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
-const GalleryShowcase = defineAsyncComponent(() => import('@/components/gallery/GalleryShowcase.vue'))
-const showcaseOpen = ref(false)
-onDeactivated(() => { showcaseOpen.value = false })
 const gestureViewer = ref(false)
 const originalViewer = ref(false)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
@@ -327,7 +304,6 @@ import GallerySmartAlbumEditor from '@/components/gallery/GallerySmartAlbumEdito
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
-import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
 import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrigin'
@@ -419,6 +395,8 @@ const { albums, characterAlbums, albumSection, visibleAlbumIds, selection, chara
   albumsOpen, albumRoot, imageHeading, showImages, showOverview, showAllWorks, openCollection, editorOpen, editorTitle, editorRule,
   editing, saving, error: albumError, previewItems, previewCovers, syncPreviews, newSmartAlbum, editSmartAlbum, removeSmartAlbum, save: saveSmartAlbum } = useGalleryCollections(workspace)
 watch(syncPreviews, items => { collectionPreviewItems.value = items }, { immediate: true })
+watch(() => JSON.stringify(albumsOpen.value ? ['albums', albumSection.value] : ['images', filterSnapshot.value, trashMode.value]),
+  () => { void nextTick(workspace.revealBrowse) }, { flush: 'post' })
 function showAlbumOverview(section: 'characters' | 'albums') {
   if (selectMode.value) toggleSelectMode()
   if (trashMode.value) toggleTrashMode()

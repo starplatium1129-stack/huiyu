@@ -2,7 +2,7 @@
   <Teleport to="body">
     <FluidTransition>
     <div v-if="open" class="batch-overlay" @click.self="emit('close')">
-      <section ref="panel" v-content-motion="batchMode" class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
+      <section ref="panel" v-content-motion="`${batchMode}:${phase}`" class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
         <header class="batch-head">
           <div>
             <span class="batch-step">BATCH · {{ batchMode === 'scene' ? 'SCENES' : 'CHARACTERS' }}</span>
@@ -178,8 +178,9 @@
                 <button
                   type="button"
                   class="batch-thumb-btn"
+                  :data-preview-id="job.id"
                   :aria-label="`查看大图：${job.sceneTitle}`"
-                  @click="previewJob = job"
+                  @click="previewSource = ($event.currentTarget as HTMLElement).querySelector('img'); previewJob = job"
                 >
                   <img :crossorigin="runtimeResourceCors()" class="batch-thumb" :src="resolveRuntimeUrl(job.resultUrl)" :alt="job.sceneTitle" loading="lazy" decoding="async" />
                 </button>
@@ -224,18 +225,7 @@
         </template>
 
         <!-- 大图预览 -->
-        <Transition name="layer-fade">
-        <div v-if="previewJob?.resultUrl" class="batch-lightbox" @click.self="previewJob = null">
-          <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(previewJob.resultUrl)" :alt="previewJob.sceneTitle" />
-          <p class="batch-lightbox-caption">
-            {{ previewJob.sceneTitle }}<em v-if="previewJob.variant > 0"> · 候选 {{ previewJob.variant + 1 }}</em>
-            · {{ previewJob.seed >= 0 ? 'seed ' + previewJob.seed : '随机 seed' }}
-          </p>
-          <button class="btn btn-ghost btn-sm batch-lightbox-close" type="button" aria-label="关闭大图" @click="previewJob = null">
-            <ArchiveIcon name="close" />
-          </button>
-        </div>
-        </Transition>
+        <BatchArtworkPreview v-if="previewJob?.resultUrl" :jobs="jobs" :selected-id="previewJob.id" :source="previewSource" @close="previewJob = null" />
       </section>
     </div>
     </FluidTransition>
@@ -246,6 +236,7 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import FluidTransition from "@/components/visual/FluidTransition.vue"
+import BatchArtworkPreview from '@/components/gallery/BatchArtworkPreview.vue'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -275,11 +266,12 @@ const emit = defineEmits<{
 }>()
 
 const panel = ref<HTMLElement | null>(null)
-useFocusTrap(panel, () => props.open, { onEscape: () => previewJob.value ? previewJob.value = null : emit('close') })
+useFocusTrap(panel, () => props.open && !previewJob.value, { onEscape: () => emit('close') })
 const batchMode = ref<'scene' | 'character'>('scene')
 const count = ref<1 | 3>(1)
 const phase = ref<'config' | 'results'>('config')
 const previewJob = ref<BatchDrawJob | null>(null)
+const previewSource = ref<HTMLImageElement | null>(null)
 
 // ── 场景选择态 ──
 const sceneLimit = ref(30), charLimit = ref(30)

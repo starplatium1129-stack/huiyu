@@ -36,11 +36,11 @@
     </div>
 
     <div v-if="entries.length && (manifestLoading || reloadError)" class="showcase-load-status" role="status"><ArchiveIcon :name="manifestLoading ? 'book' : 'warning'" /><span>{{ manifestLoading ? '正在刷新画册，当前样张仍可继续浏览。' : reloadError }}</span><button v-if="reloadError && !manifestLoading" class="filter-reset" type="button" @click="loadManifest(true)">重试</button></div>
-    <div v-show="albumsOpen" v-content-motion="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
+    <div v-show="albumsOpen" v-content-motion:up="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
       <ShowcaseAlbums v-if="albums.length && !unavailable" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
       <ArchiveStatePanel v-if="(manifestLoading && !entries.length) || unavailable || (!manifestLoading && !albums.length)" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'" message="画册按已发布样张的类型整理。"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
     </div>
-    <div v-show="!albumsOpen" v-content-motion="!albumsOpen" class="showcase-image-browse">
+    <div v-show="!albumsOpen" v-content-motion:up="!albumsOpen" class="showcase-image-browse">
     <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ typeFilter === 'all' ? '全部样张' : (albums.find(album => album.type === typeFilter)?.title || typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status"><strong>{{ paged.length }}</strong> / {{ filtered.length }} 幅 · R18 默认模糊</span></div>
     <ArchiveStatePanel
       v-if="unavailable"
@@ -72,7 +72,7 @@
       <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
 
-    <div v-else class="showcase-grid" :aria-busy="manifestLoading">
+    <div v-else data-route-arrive v-content-motion:up="`${scope}:${typeFilter}:${charFilter}:${ratingFilter}:${searchQuery}`" class="showcase-grid" :aria-busy="manifestLoading">
       <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)"
         :featured="featured.has(entry.id)"
         :character-label="charLabel(entry.char)" :rating-label="ratingLabel(entry.rating)"
@@ -88,38 +88,24 @@
     <Teleport to="body">
       <!-- 必须用 showModal() 打开（见 openViewer）：设 open 属性只是非模态 dialog，
            没有 top layer、没有 ::backdrop，背景不 inert，Tab 能直接跑到下面的网格里 -->
-      <dialog ref="dialogEl" class="showcase-viewer" data-image-transition aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
-        <button class="viewer-close viewer-close-on-art" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer"><ArchiveIcon name="close" /></button>
-        <div v-if="viewerMounted && currentEntry" class="viewer-layout" :class="{ 'is-orbit': !originalViewer }" :style="{ '--viewer-image-ratio': viewerAspectRatio }">
-          <div class="viewer-art">
-            <button class="viewer-mode-switch btn btn-ghost" type="button" :aria-pressed="originalViewer" @click="toggleOriginalViewer"><ArchiveIcon name="image" />{{ originalViewer ? '立体观画' : '原图 / 缩放' }}</button>
-            <GalleryOrbitStage v-if="!originalViewer" :items="filtered" :index="currentIdx" :active="viewerMounted && !viewerClosing"
-              :current-src="imgSrc(currentEntry)" :preview-src="viewerPreviewSrc" :card-urls="viewerThumbs" :thumb-urls="viewerThumbs" :neighbor-urls="viewerThumbs"
-              :title="entry => entry.title" @select="openViewer(filtered[$event].id)" @load="onViewerImageLoad" @error="viewerImageFailed = true"
-              @pointerdown.capture="viewerHero.cancel" @wheel.capture="viewerHero.cancel" />
-            <ZoomableImageViewer
-              v-else
-              :src="resolveRuntimeUrl(imgSrc(currentEntry))"
-              :preview-src="viewerPreviewSrc"
-              :alt="currentEntry.title"
-              @load="onViewerImageLoad"
-              @error="viewerImageFailed = true"
-            >
-              <template #fallback>
-                <div class="viewer-image-fallback">图片暂时无法读取</div>
-              </template>
-            </ZoomableImageViewer>
-          </div>
-          <div class="viewer-copy">
-            <div class="viewer-kicker">画中一刻 / CG JOURNAL</div>
-            <h2>{{ currentEntry.title }}</h2>
+      <dialog ref="dialogEl" class="art-viewer showcase-viewer" :class="{ 'info-open': viewerInfoOpen }" data-image-transition aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="viewerInfoOpen ? closeViewerInfo() : closeViewer()">
+        <template v-if="viewerMounted && currentEntry">
+          <ArtworkViewerStage :items="filtered" :index="currentIdx" :active="viewerMounted && !viewerClosing" :original="originalViewer"
+            :src="imgSrc(currentEntry)" :preview-src="viewerPreviewSrc" :thumb-urls="viewerThumbs" :title="entry => entry.title"
+            @select="openViewer(filtered[$event].id)" @close="closeViewer" @toggle-original="toggleOriginalViewer" @dismiss-info="closeViewerInfo"
+            @interact="viewerHero.cancel" @load="onViewerImageLoad" @error="viewerImageFailed = true">
+            <template #tools><button class="viewer-info-toggle" type="button" aria-label="作品信息" aria-controls="showcase-viewer-info" :aria-expanded="viewerInfoOpen" @click="openViewerInfo"><ArchiveIcon name="info" /></button></template>
+          </ArtworkViewerStage>
+          <aside id="showcase-viewer-info" class="viewer-info" :inert="narrowViewer && !viewerInfoOpen" :aria-hidden="narrowViewer && !viewerInfoOpen ? true : undefined" aria-labelledby="showcase-viewer-title">
+            <header class="viewer-info-header"><span class="viewer-kicker">参考画册</span><button class="viewer-info-close" type="button" @click="closeViewerInfo"><ArchiveIcon name="close" />关闭信息</button></header>
+            <h2 id="showcase-viewer-title" class="viewer-title">{{ currentEntry.title }}</h2>
             <div class="viewer-meta">
               <span>{{ currentEntry.id }}</span>
               <span>{{ charLabel(currentEntry.char) }}</span>
               <span>{{ ratingLabel(currentEntry.rating) }}</span>
               <span>{{ currentEntry.category }}</span>
             </div>
-            <details v-if="currentEntry.meta" class="viewer-production"><summary>创作参数</summary><div class="viewer-meta viewer-meta-gen">
+            <details v-if="currentEntry.meta" class="viewer-details"><summary>创作参数 <ArchiveIcon name="chevron-down" /></summary><div class="viewer-meta viewer-meta-gen">
               <span v-if="currentEntry.meta.engine">引擎 {{ currentEntry.meta.engine }}</span>
               <span v-if="currentEntry.meta.checkpoint">Checkpoint {{ currentEntry.meta.checkpoint }}</span>
               <span v-if="currentEntry.meta.model">模型 {{ currentEntry.meta.model }}</span>
@@ -132,11 +118,9 @@
               <StudioTooltip v-if="workspaceTarget" :content="viewerClosing ? null : workspaceTarget.hint">
                 <RouterLink class="btn btn-primary" :to="workspaceTarget.to"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
               </StudioTooltip>
-              <span class="viewer-position" aria-live="polite">{{ currentIdx + 1 }} / {{ filtered.length }} · 方向键切换，Esc 关闭</span>
-              <div class="viewer-paging"><button class="btn btn-ghost" type="button" aria-label="上一张" @click="move(-1)">← 上一张</button><button class="btn btn-ghost" type="button" aria-label="下一张" @click="move(1)">下一张 →</button></div>
             </div>
-          </div>
-        </div>
+          </aside>
+        </template>
       </dialog>
     </Teleport>
   </article>
@@ -144,7 +128,8 @@
 
 <script setup lang="ts">
 import '@/assets/css/viewer.css'
-import { resolveRuntimeUrl, runtimeFetch } from '@/platform/runtimeUrl'
+import { runtimeFetch } from '@/platform/runtimeUrl'
+import { useMediaQuery } from '@vueuse/core'
 
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useFluidSurface } from '@/composables/useFluidSurface'
@@ -159,8 +144,7 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
-import GalleryOrbitStage from '@/components/gallery/GalleryOrbitStage.vue'
+import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import ShowcaseAlbums from '@/components/showcase/ShowcaseAlbums.vue'
 import ShowcaseSampleCard from '@/components/showcase/ShowcaseSampleCard.vue'
 import { useShowcaseAlbums } from '@/composables/showcase/useShowcaseAlbums'
@@ -208,10 +192,22 @@ const currentId   = ref('')
 const viewerMounted = ref(false)
 const viewerClosing = ref(false)
 const originalViewer = ref(false)
+const viewerInfoOpen = ref(false)
+const narrowViewer = useMediaQuery('(max-width: 900px)')
+async function openViewerInfo() {
+  viewerInfoOpen.value = true
+  await nextTick()
+  dialogEl.value?.querySelector<HTMLButtonElement>('.viewer-info-close')?.focus({ preventScroll: true })
+}
+function closeViewerInfo() {
+  if (!viewerInfoOpen.value) return
+  viewerInfoOpen.value = false
+  dialogEl.value?.querySelector<HTMLButtonElement>('.viewer-info-toggle')?.focus({ preventScroll: true })
+}
 const viewerPreviewSrc = ref('')
 const dialogEl    = ref<HTMLDialogElement | null>(null)
 const viewerHero = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
-const viewerSurface = useFluidSurface(':scope > .viewer-layout')
+const viewerSurface = useFluidSurface('.art-viewer')
 function sourceImage(id = currentId.value) {
   return document.querySelector<HTMLImageElement>(`.sample[data-sample-id="${CSS.escape(id)}"] .sample-image`)
 }
@@ -232,11 +228,8 @@ const viewerMotion = useFluidDialog(dialogEl, {
 })
 const viewerImageFailed = ref(false)
 const viewerImageReady = ref(false)
-const viewerAspectRatio = ref(2 / 3)
 function onViewerImageLoad() {
   viewerImageReady.value = true
-  const image = dialogEl.value?.querySelector<HTMLImageElement>('.zoomable-img')
-  if (image?.naturalWidth && image.naturalHeight) viewerAspectRatio.value = image.naturalWidth / image.naturalHeight
 }
 
 const viewerVersion = ref(0)
@@ -329,10 +322,8 @@ const viewerThumbs = computed(() => Object.fromEntries(filtered.value.filter(ent
 const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
 
 function openViewer(id: string) {
-  if (!dialogEl.value?.open) originalViewer.value = false
-  const source = sourceImage(id), entry = filtered.value.find(item => item.id === id)
-  viewerAspectRatio.value = source?.naturalWidth && source.naturalHeight ? source.naturalWidth / source.naturalHeight
-    : entry?.width && entry.height ? entry.width / entry.height : 2 / 3
+  if (!dialogEl.value?.open) { originalViewer.value = false; viewerInfoOpen.value = false }
+  const source = sourceImage(id)
   viewerPreviewSrc.value = viewerHero.capture(source)
   if (dialogEl.value?.open) viewerHero.capture(null)
   // Normal reopen uses the same decoded resource. Only a failed image needs a retry key.
@@ -390,7 +381,7 @@ function closeViewer() {
 function move(step: number) {
   const arr = filtered.value
   if (!arr.length) return
-  const next = (currentIdx.value + step + arr.length) % arr.length
+  const next = Math.max(0, Math.min(arr.length - 1, currentIdx.value + step))
   openViewer(arr[next].id)
 }
 function openRandom() {

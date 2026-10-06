@@ -48,7 +48,7 @@
         @outfit-changed="storage.setLive2dOutfit(activeChar, $event)"
       />
 
-      <section class="conversation-card" :aria-label="immersive ? '当前对话' : '完整对话'">
+      <section class="conversation-card" data-route-arrive v-content-motion:up="activeChar" :aria-label="immersive ? '当前对话' : '完整对话'">
         <div class="conversation-head">
           <div class="room-conversation-title"><strong>{{ immersive ? '此刻的话' : '我们的对话' }}</strong><span>{{ isSpeaking ? '正在说话' : busy ? '正在回复' : currentCharacter.voice ? '慢慢说，我在听' : '文字聊天' }}</span></div>
           <ChatModelControls

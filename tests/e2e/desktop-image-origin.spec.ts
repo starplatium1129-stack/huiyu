@@ -102,7 +102,7 @@ for (const theme of ['dark']) {
         if (!(element as HTMLDialogElement).open && ++closed === 5) { resolve(positions); return }
         requestAnimationFrame(sample)
       }
-      ;(element.querySelector('#viewerClose') as HTMLButtonElement).click()
+      ;(element.querySelector('.viewer-close') as HTMLButtonElement).click()
       requestAnimationFrame(sample)
     }))
     expect(Math.max(...closing.map(y => Math.abs(y - before)))).toBeLessThanOrEqual(1)

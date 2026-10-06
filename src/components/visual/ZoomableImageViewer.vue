@@ -52,7 +52,7 @@
 
     <!-- 缩放控制始终可见，键盘和触摸用户不必先猜测手势。 -->
     <div class="zoom-toolbar" @pointerdown.stop @dblclick.stop @wheel.stop>
-    <div class="zoom-controls tw:absolute tw:bottom-[12px] tw:left-1/2 tw:flex tw:items-center tw:gap-[6px] tw:p-[4px] tw:rounded-pill tw:[background:color-mix(in_srgb,_var(--bg-deep)_84%,_transparent)] tw:border tw:border-solid tw:border-soft tw:[z-index:var(--z-raised)] tw:text-label-sm tw:text-primary" role="group" aria-label="图片缩放控制" @pointerdown.stop @dblclick.stop>
+    <div data-fluid-glass class="zoom-controls tw:absolute tw:bottom-[12px] tw:left-1/2 tw:flex tw:items-center tw:gap-[6px] tw:p-[4px] tw:rounded-pill tw:[background:color-mix(in_srgb,_var(--bg-deep)_84%,_transparent)] tw:border tw:border-solid tw:border-soft tw:[z-index:var(--z-raised)] tw:text-label-sm tw:text-primary" role="group" aria-label="图片缩放控制" @pointerdown.stop @dblclick.stop>
       <span class="zoom-level tw:[margin:0_4px] tw:[font-family:var(--font-mono,_monospace)] tw:font-semibold tw:[color:var(--archive-blue)]" aria-live="polite">{{ Math.round(scale * 100) }}%</span>
       <button type="button" class="zoom-control tw:grid tw:place-items-center tw:w-[36px] tw:h-[36px] tw:p-0 tw:border tw:border-solid tw:border-transparent tw:rounded-full tw:[background:color-mix(in_srgb,_var(--bg-elevated)_78%,_transparent)] tw:text-primary tw:cursor-pointer" aria-label="放大图片" @pointerdown.stop @click.stop="zoomIn">
         <ArchiveIcon name="expand" />

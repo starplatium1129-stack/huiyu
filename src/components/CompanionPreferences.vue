@@ -11,7 +11,7 @@
           :aria-selected="pane === tab.value" :aria-controls="`${id}-panel`" :tabindex="pane === tab.value ? 0 : -1"
           @click="pane = tab.value"><ArchiveIcon :name="tab.icon" />{{ tab.label }}</button>
       </nav>
-      <div :id="`${id}-panel`" class="companion-preferences-body tw:grid tw:gap-s-3 tw:min-h-0 tw:overflow-auto" :data-pane="pane" role="tabpanel" :aria-labelledby="`${id}-${pane}`"><slot /></div>
+      <div :id="`${id}-panel`" v-content-motion:up="pane" class="companion-preferences-body tw:grid tw:gap-s-3 tw:min-h-0 tw:overflow-auto" :data-pane="pane" role="tabpanel" :aria-labelledby="`${id}-${pane}`"><slot /></div>
     </dialog>
   </Teleport>
   <div v-else-if="open" class="companion-settings-popover" role="dialog" aria-label="桌宠设置" @pointerdown.stop><slot /></div>

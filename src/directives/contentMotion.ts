@@ -15,7 +15,7 @@ function cancel(el: HTMLElement) {
 }
 function settle() { for (const el of active.keys()) cancel(el) }
 
-function reveal(el: HTMLElement, direction?: string) {
+function reveal(el: HTMLElement, direction = 'up') {
   if (document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function'
     || direction && el.matches('input, textarea') && document.activeElement === el) {
     cancel(el)
@@ -33,14 +33,14 @@ function reveal(el: HTMLElement, direction?: string) {
   const previous = active.has(el) ? getComputedStyle(el) : null
   const start: Keyframe = { opacity: previous?.opacity ?? '.35' }
   const end: Keyframe = { opacity: 1 }
-  const offsets: Record<string, string> = { left: 'translateX(-8px)', right: 'translateX(8px)', up: 'translateY(4px)', down: 'translateY(-4px)' }
+  const offsets: Record<string, string> = { left: 'translateX(-12px)', right: 'translateX(12px)', up: 'translateY(12px)', down: 'translateY(-12px)' }
   if (!keyboardInput && direction && offsets[direction]) {
     start.transform = previous?.transform ?? offsets[direction]
     end.transform = 'none'
   }
   cancel(el)
   const animation = el.animate([start, end], {
-    duration:240, easing:'cubic-bezier(.23, 1, .32, 1)',
+    duration:keyboardInput ? 160 : 320, easing:'cubic-bezier(.22, 1, .36, 1)',
   })
   active.set(el, animation)
   animation.onfinish = animation.oncancel = () => {
@@ -51,7 +51,7 @@ function reveal(el: HTMLElement, direction?: string) {
 export const contentMotion: ObjectDirective<HTMLElement, unknown> = {
   mounted(el, { value, arg }) {
     // Initial route entry already has motion. Later v-if panels may enter alone.
-    if (value !== false && el.closest<HTMLElement>('.route-view')?.dataset.routeEntered === 'true') reveal(el, arg)
+    if (value !== false && (!el.closest('.route-view') || el.closest<HTMLElement>('.route-view')?.dataset.routeEntered === 'true')) reveal(el, arg)
   },
   updated(el, { value, oldValue, arg }) {
     if (Object.is(value, oldValue)) return

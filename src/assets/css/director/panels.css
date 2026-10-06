@@ -403,7 +403,6 @@
     45%  { opacity:.22; }
     100% { opacity:0;   transform:translateX(34%) rotate(-4deg); }
   }
-   @keyframes stage-progress-indeterminate { to { transform:translateX(290%); } }
    @media (prefers-reduced-motion: reduce) {
      .pb .director-workspace > .col-left,
      .pb .director-workspace > .col-center,

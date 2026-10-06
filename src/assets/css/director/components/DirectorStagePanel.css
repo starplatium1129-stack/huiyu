@@ -65,30 +65,25 @@
     @apply tw:grid tw:gap-s-3 tw:items-center tw:justify-items-center;
     width:min(100%,480px); margin:0 auto; text-align:center;
   }
-  .pb .stage-generation-feedback { display:grid; gap:var(--s-2); min-width:0; width:min(100%,260px); position:absolute; left:50%; top:66%; transform:translateX(-50%); z-index:calc(var(--z-raised) + 2); padding:0; background:transparent; text-align:center; }
+  .pb .stage-generation-feedback { display:flex; align-items:center; justify-content:center; gap:var(--s-3); min-width:0; width:max-content; position:absolute; left:50%; top:66%; transform:translateX(-50%); z-index:calc(var(--z-raised) + 2); padding:0; background:transparent; text-align:left; }
   .pb .stage-generating-title {
     @apply tw:text-secondary tw:text-label; font-family:var(--font-sans); font-weight:500;
   }
-  .pb .stage-generating-sub { @apply tw:text-secondary; display:flex; justify-content:space-between; gap:var(--s-3); font:500 var(--fs-mono-sm) var(--font-mono); }
-  .pb .stage-generating-sub strong { color:var(--text-primary); font-variant-numeric:tabular-nums; }
+  .pb .stage-generating-sub { display:grid; gap:var(--s-1); }
   .pb .stage-generating-elapsed { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); }
   .pb .stage-progress-ring {
-    @apply tw:w-full tw:h-[2px] tw:rounded-pill tw:overflow-hidden;
-    background:color-mix(in srgb,var(--text-muted) 16%,transparent); margin-inline:auto;
+    position:relative; display:grid; place-items:center; width:56px; height:56px; flex:none; color:var(--text-primary);
   }
-  .pb .stage-progress-ring > i {
-    @apply tw:block tw:h-full; border-radius:inherit;
-    background:color-mix(in srgb,var(--accent) 78%,var(--bg-deep));
-    /* 进度由模板的 --progress 载体提供(内联 style 只放数据)；scale 百分比补间不触发布局 */
-    @apply tw:w-full; transform-origin:left center; transform:scaleX(var(--progress, 0%));
-    transition:transform var(--motion-surface) var(--ease-out);
-  }
-   .pb .stage-progress-ring.is-indeterminate > i {
-     @apply tw:w-[38%]; transform:translateX(-120%); animation:stage-progress-indeterminate 1.15s linear infinite;
-   }
+  .pb .stage-progress-ring > svg { position:absolute; inset:0; width:100%; height:100%; fill:none; stroke-width:2; transform:rotate(-90deg); }
+  .pb .stage-progress-track { stroke:var(--border-soft); }
+  .pb .stage-progress-value { stroke:var(--accent); stroke-linecap:round; }
+  .pb .stage-progress-ring strong { font:500 var(--fs-label-xs) var(--font-mono); font-variant-numeric:tabular-nums; }
+  .pb .stage-progress-ring > .archive-icon { position:static; width:18px; height:18px; color:var(--text-secondary); transform:none; }
+  .pb .stage-progress-ring.is-indeterminate > svg:not(.archive-icon) { animation:stage-progress-orbit 1.6s linear infinite; }
+  @keyframes stage-progress-orbit { from { transform:rotate(-90deg); } to { transform:rotate(270deg); } }
+  :root:is([data-motion='reduce'],[data-motion='reduced']) .pb .stage-progress-ring > svg { animation:none; }
   @media (prefers-reduced-motion: reduce) {
-    .pb .stage-muse, .pb .stage-magic-ring, .pb .stage-placeholder.is-generating::before, .pb .stage-progress-ring.is-indeterminate > i { animation:none !important; }
-     .pb .stage-progress-ring.is-indeterminate > i { transform:translateX(0); }
+    .pb .stage-muse, .pb .stage-magic-ring, .pb .stage-placeholder.is-generating::before, .pb .stage-progress-ring.is-indeterminate > svg { animation:none !important; }
     .pb .monitor-rec .dot, .pb .review-star { animation:none; }
     /* plans/002：换角扫光/缪斯浮起停掉（位移类），侧栏与令牌层的颜色过渡保留；
        stage-swap 退出去掉 scale 只留淡出 */
@@ -100,9 +95,6 @@
 @media (max-width:600px) {
   .pb .result-image-actions > .btn { @apply tw:min-h-[44px]; }
 }
-.pb .stage-progress-details { @apply tw:mt-s-3 tw:text-secondary tw:text-label; }
-.pb .stage-progress-details summary { @apply tw:cursor-pointer; }
-.pb .stage-progress-details p { margin:var(--s-1) 0 0; overflow-wrap:anywhere; }
 
 /* Reference and status share a paper surface; reference imagery is never a result. */
 .pb.atelier-workspace .stage-content { @apply tw:w-full tw:min-w-0; padding:var(--s-4); }
@@ -144,7 +136,6 @@
 .pb.atelier-workspace .stage-generating-copy > .generation-particles { position:absolute; inset:0; width:100%; height:86%; aspect-ratio:auto; }
 .pb.atelier-workspace .stage-generation-feedback { position:absolute; top:min(72%,calc(43% + 120px)); left:50%; transform:translateX(-50%); max-width:calc(100% - 32px); }
 .pb.journal-workspace.atelier-workspace .stage-placeholder.is-generating { z-index:calc(var(--z-raised) - 1); background:var(--bg-deep); border:0; border-radius:0; box-shadow:none; }
-.pb.atelier-workspace .stage-progress-details { margin-top:0; position:relative; }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal { width:100%; height:100%; max-height:none; }
 .pb.atelier-workspace .result-image-reveal .result-image { position:absolute; inset:0; width:100%; height:100%; max-height:none; }
 .pb.atelier-workspace .stage-swap-leave-active { transition-duration:720ms; pointer-events:none; }

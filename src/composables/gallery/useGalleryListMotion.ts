@@ -8,8 +8,8 @@ const MAX_DUST_CARDS = 2
 const MAX_MOVING_CARDS = 24
 const MAX_MEASURED_CARDS = 80
 
-/** Deletion stays repository-owned; this callback only runs after confirmed success. */
-export function useGalleryDeleteMotion(
+/** One owner for browse arrivals and confirmed deletion; records remain repository-owned. */
+export function useGalleryListMotion(
   root: Ref<HTMLElement | null>, items: () => ArtworkRecord[], loading: () => boolean,
 ) {
   const { canAnimate, lowEffects } = useVisualActivity(root)
@@ -23,6 +23,7 @@ export function useGalleryDeleteMotion(
   let previousIds = new Set<string>()
   let listChanged = false
   let keyboardInput = false
+  let browsing = false
   let positionTimer: ReturnType<typeof setTimeout> | undefined
   function stopDust(id: string) {
     const active = dust.get(id)
@@ -40,6 +41,7 @@ export function useGalleryDeleteMotion(
   }
   function stop() {
     revision++
+    browsing = false
     for (const id of dust.keys()) stopDust(id)
     for (const animation of moves.values()) animation.cancel()
     surface?.cancel(); surface = null
@@ -54,6 +56,39 @@ export function useGalleryDeleteMotion(
     return rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < window.innerHeight
       && rect.right > 0 && rect.left < window.innerWidth ? rect : null
   }
+  function revealBrowse() {
+    const host = root.value
+    if (!host || loading() || !canAnimate.value || lowEffects.value) { stop(); return }
+    const overview = host.querySelector<HTMLElement>('.gallery-album-overview')
+    // Animate columns, not the fixed selection dock or every image in a large library.
+    // Child image decoding and scroll reveal retain their existing ownership.
+    const selector = overview && overview.style.display !== 'none'
+      ? '.gallery-album-entry' : '.gallery-image-browse .gallery-col'
+    const targets = Array.from(host.querySelectorAll<HTMLElement>(selector)).slice(0, MAX_MEASURED_CARDS)
+      .filter(element => visibleRect(element)).slice(0, 12)
+      .map(element => {
+        const current = moves.has(element) ? getComputedStyle(element) : null
+        return { element, opacity: current?.opacity ?? '0', transform: current?.transform ?? 'translateY(24px)' }
+      })
+    stop()
+    browsing = true
+    targets.forEach(({ element, opacity, transform }, index) => {
+      if (typeof element.animate !== 'function') return
+      const animation = element.animate([
+        { opacity, transform: keyboardInput ? 'none' : transform },
+        { opacity: 1, transform: 'none' },
+      ], { duration: keyboardInput ? 160 : 460, delay: keyboardInput ? 0 : Math.min(index, 5) * 36,
+        easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' })
+      moves.set(element, animation)
+      const release = () => {
+        if (moves.get(element) === animation) moves.delete(element)
+        animation.cancel()
+        if (!moves.size) browsing = false
+      }
+      void animation.finished.then(release, release)
+    })
+    if (!moves.size) browsing = false
+  }
   function cards() {
     return Array.from(root.value?.querySelectorAll<HTMLElement>('.artwork[data-card-id]') ?? []).slice(0, MAX_MEASURED_CARDS)
   }
@@ -65,6 +100,7 @@ export function useGalleryDeleteMotion(
     }
   }
   function onDeleted(ids: Array<string | number>) {
+    if (browsing) stop()
     revision++
     for (const id of dust.keys()) stopDust(id)
     positions.clear(); clearTimeout(positionTimer)
@@ -97,7 +133,7 @@ export function useGalleryDeleteMotion(
     void nextTick(() => { if (token === revision) settle() })
   }
   function settle() {
-    if (loading() || !root.value || !canAnimate.value || lowEffects.value || keyboardInput || !positions.size && !listChanged) return
+    if (browsing || loading() || !root.value || !canAnimate.value || lowEffects.value || keyboardInput || !positions.size && !listChanged) return
     const previous = positions; positions = new Map(); clearTimeout(positionTimer)
     beginHandoff()
     // Read every visible destination and live transform before cancelling or writing.
@@ -147,7 +183,7 @@ export function useGalleryDeleteMotion(
   watch(ids, (next, previous) => {
     // Appending a page retains placement; decoding thumbnails never changes IDs.
     if (next.length >= previous.length && previous.every((id, index) => next[index] === id)) return
-    if (loading() || !canAnimate.value || lowEffects.value || keyboardInput) return
+    if (browsing || loading() || !canAnimate.value || lowEffects.value || keyboardInput) return
     previousIds = new Set(previous); listChanged = true
     if (!positions.size) capture()
     beginHandoff()
@@ -164,7 +200,9 @@ export function useGalleryDeleteMotion(
     positions.clear(); clearTimeout(positionTimer)
   }, { passive: true })
   useEventListener(root, 'keydown', () => { keyboardInput = true; stop() })
-  useEventListener(window, 'scroll', stop, { passive: true, capture: true })
+  // Album navigation restores scroll/focus in the same frame as its arrival.
+  useEventListener(window, 'scroll', () => { if (!browsing) stop() }, { passive: true, capture: true })
+  useEventListener(root, 'wheel', stop, { passive: true })
   useEventListener(window, 'resize', stop, { passive: true })
   onBeforeUnmount(stop)
   // Bind success feedback to the interaction that requested deletion. Leaving,
@@ -173,5 +211,5 @@ export function useGalleryDeleteMotion(
     const token = revision
     return (ids: Array<string | number>) => { if (token === revision) onDeleted(ids) }
   }
-  return { onDeleted, forAction, stop }
+  return { onDeleted, forAction, stop, revealBrowse }
 }

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, nextTick, ref } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
-import { useGalleryDeleteMotion } from './useGalleryDeleteMotion'
+import { useGalleryListMotion } from './useGalleryListMotion'
 
 const activity = { canAnimate: ref(true), lowEffects: ref(false) }
 vi.mock('@/composables/useVisualActivity', () => ({ useVisualActivity: () => activity }))
@@ -23,10 +23,10 @@ afterEach(() => {
 })
 async function fixture() {
   const items = ref([1, 2, 3, 4].map(id => ({ id }) as ArtworkRecord)), loading = ref(false)
-  let motion!: ReturnType<typeof useGalleryDeleteMotion>
+  let motion!: ReturnType<typeof useGalleryListMotion>
   const wrapper = mount(defineComponent({ setup() {
     const root = ref<HTMLElement | null>(null)
-    motion = useGalleryDeleteMotion(root, () => items.value, () => loading.value)
+    motion = useGalleryListMotion(root, () => items.value, () => loading.value)
     return () => h('div', { ref: root }, items.value.map(item => h('article', {
       key: item.id, class: 'artwork', 'data-card-id': String(item.id),
     }, h('img', { class: 'artwork-image', src: `/neutral-${item.id}.png` }))))

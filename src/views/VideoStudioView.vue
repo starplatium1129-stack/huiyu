@@ -42,7 +42,7 @@
       :quality-options="(status?.qualities || []).map(item => ({ value: item.id, label: `${item.label} · ${item.summary}` }))"
       :can-generate="canGenerate" :submitting="submitting" :submit-title="submitTitle" :submit-description="submitDescription"
       @generate="submitVideo" />
-    <div class="video-workspace" :class="{ 'video-workspace--shots': selectedMode === 'shots' }" v-content-motion="selectedMode">
+    <div class="video-workspace" data-route-arrive :class="{ 'video-workspace--shots': selectedMode === 'shots' }" v-content-motion:up="selectedMode">
       <div class="video-creation-column">
         <ShotListEditor v-if="selectedMode === 'shots'" :status="status" />
         <template v-else>

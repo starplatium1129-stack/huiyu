@@ -1,6 +1,6 @@
 <template>
   <article class="page catalog-studio" style="--page-max:1660px">
-    <aside class="catalog-sidebar" aria-label="内容分类">
+    <aside class="catalog-sidebar" data-fluid-glass="sidebar" aria-label="内容分类">
       <div class="catalog-brand"><ArchiveIcon name="manager" /><div><strong>内容工作室</strong><span>让设定与故事慢慢成形</span></div></div>
       <div class="catalog-nav-group">
         <span class="catalog-nav-caption">创作资料</span>
@@ -17,7 +17,7 @@
       </div>
       <p class="catalog-sidebar-note">先选一份内容，补充它的细节。<br />写好以后，记得保存更改。</p>
     </aside>
-    <div class="catalog-main">
+    <div class="catalog-main" data-route-arrive>
       <header class="catalog-page-head">
         <div><p class="catalog-breadcrumb">内容工作室 <span>/</span> {{ sectionTitle }}</p><h1>{{ sectionTitle }}</h1><p class="catalog-intro">{{ sectionDescription }}</p></div>
         <div v-if="section === 'records' || dirty" class="catalog-head-actions">

@@ -3,7 +3,7 @@
     <header class="library-header"><div><div class="page-kicker">SCENE / 02</div><h1>角色场景</h1></div><CharacterContextNav :character-id="selectedId" active="scenes" /></header>
     <div class="library-layout">
       <BrowsingCharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
-      <div class="library-detail" v-content-motion="selectedId">
+      <div class="library-detail" data-route-arrive v-content-motion:up="selectedId">
     <section class="pop-hero" aria-label="当前角色场景">
       <figure v-if="selectedCharacter" class="pop-character-art">
         <RuntimeImage :src="popularPortraitSrc(selectedId)" :alt="selectedCharacter.displayName" decoding="async">
@@ -55,7 +55,7 @@
       </ArchiveStatePanel>
 
       <!-- 场景卡片网格 -->
-      <div v-content-motion="`${category}:${ratingFilter}`" class="pop-grid">
+      <div v-content-motion:up="`${category}:${ratingFilter}`" class="pop-grid">
         <article v-for="blueprint in paged" :key="blueprint.id" class="pop-card"
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id"
           :style="{ '--scene-preview-ratio': blueprint.recommendedSize.replace('x', ' / ') }">

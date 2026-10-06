@@ -83,11 +83,11 @@ for (const theme of ['light', 'dark'] as const) {
     await page.locator('.sample-visual').first().click()
     const viewer = page.locator('.showcase-viewer')
     await expect(viewer).toBeVisible()
-    const copy = (await viewer.locator('.viewer-copy').boundingBox())!
+    const stage = (await viewer.locator('.viewer-stage').boundingBox())!
     const position = (await viewer.locator('.viewer-position').boundingBox())!
-    expect(position.x).toBeGreaterThanOrEqual(copy.x)
-    expect(position.x + position.width).toBeLessThanOrEqual(copy.x + copy.width)
-    expect(position.y).toBeGreaterThan(copy.y)
+    expect(position.x).toBeGreaterThanOrEqual(stage.x)
+    expect(position.x + position.width).toBeLessThanOrEqual(stage.x + stage.width)
+    expect(position.y).toBeGreaterThan(stage.y)
     await viewer.screenshot({ path: info.outputPath('reference-after-gallery.png') })
   })
 

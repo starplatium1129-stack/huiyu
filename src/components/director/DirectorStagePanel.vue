@@ -5,7 +5,7 @@
       <BorderBeam v-if="generationBusy || waitingForResult" class="canvas-generation-beam"
         :duration="8.8" :border-width="1.1" color-variant="dual" :glow="true" border-radius="var(--r-xl)" />
     </Transition>
-    <div ref="canvasViewport" class="stage-viewport">
+    <div ref="canvasViewport" class="stage-viewport" data-route-arrive>
     <!-- 图片显现只由新生成结果驱动，画布与工具保持静止。 -->
     <Transition name="stage-swap">
       <section
@@ -69,19 +69,18 @@
 
     <!-- Keep readable task feedback above the texture canvas's own stacking layer. -->
     <div v-if="generationBusy || waitingForResult" class="stage-generation-feedback">
+      <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }" role="progressbar" aria-label="生图进度" :aria-valuenow="generationProgress === null ? undefined : Math.round(generationProgress * 100)" :aria-valuetext="generationStatusText || undefined" :aria-valuemin="0" :aria-valuemax="100">
+        <svg viewBox="0 0 56 56" aria-hidden="true">
+          <circle class="stage-progress-track" cx="28" cy="28" r="24" />
+          <circle class="stage-progress-value" cx="28" cy="28" r="24" pathLength="100" :stroke-dasharray="`${generationProgress === null ? 24 : generationProgress * 100} 100`" />
+        </svg>
+        <strong v-if="generationProgress !== null">{{ Math.round(generationProgress * 100) }}%</strong>
+        <ArchiveIcon v-else name="spark" />
+      </div>
       <div class="stage-generating-sub">
         <span class="stage-generating-title" role="status">{{ waitingForResult ? '显现中' : '绘制中' }}</span>
-        <strong v-if="generationProgress !== null">{{ Math.round(generationProgress * 100) }}%</strong>
+        <span v-if="drawEngine !== 'sd' && animaElapsed > 0" class="stage-generating-elapsed">已用时 {{ animaElapsed }} 秒</span>
       </div>
-      <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }" role="progressbar" aria-label="生图进度" :aria-valuenow="generationProgress === null ? undefined : Math.round(generationProgress * 100)" :aria-valuemin="0" :aria-valuemax="100">
-        <i :style="{ '--progress': (generationProgress ?? 0) * 100 + '%' }"></i>
-      </div>
-      <details v-if="generationStatusText || drawEngine !== 'sd'" class="stage-progress-details">
-        <summary>详情</summary>
-        <p v-if="generationStatusText">{{ generationStatusText }}</p>
-        <p v-if="drawEngine !== 'sd'" class="stage-generating-elapsed">已等待 {{ animaElapsed }} 秒</p>
-        <p v-if="drawEngine !== 'sd' && animaCurrentNode">当前步骤：{{ animaCurrentNode }}</p>
-      </details>
     </div>
 
     <!-- Result image -->
@@ -147,7 +146,6 @@ const props = defineProps<{
   generationStatusText: string | null
   generationProgress: number | null
   animaElapsed: number
-  animaCurrentNode: string
   drawEngine: string
   inpaintOriginalUrl: string | null
   inpaintCompareActive: boolean

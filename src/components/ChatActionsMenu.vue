@@ -43,7 +43,7 @@ function closeAutoFocus(event: Event) {
       </button>
     </DropdownMenuTrigger>
     <DropdownMenuPortal>
-      <DropdownMenuContent class="chat-more-menu" align="end" :side-offset="8" :collision-padding="12"
+      <DropdownMenuContent class="chat-more-menu" data-fluid-glass align="end" :side-offset="8" :collision-padding="12"
         :data-pointer-open="pointerOpened" hide-when-detached loop aria-label="更多房间操作" :aria-labelledby="undefined"
         @close-auto-focus="closeAutoFocus" @keydown.capture="pointerOpened = false">
         <DropdownMenuLabel class="chat-more-label">房间与记忆</DropdownMenuLabel>

@@ -2,6 +2,8 @@
 :root { --material-fill:color-mix(in srgb,var(--bg-surface) 96%,transparent); --material-blur:14px; }
 :root[data-glass-material='liquid'] { --material-fill:color-mix(in srgb,var(--bg-surface) calc(70% + var(--glass-tint,.35) * 16%),transparent); }
 :root[data-glass-material='liquid'][data-theme='light'] { --material-fill:color-mix(in srgb,var(--bg-surface) calc(58% + var(--glass-tint,.35) * 20%),transparent); }
+/* Navigation sidebars sit behind dense labels, so use a heavier material. */
+:root[data-glass-material='liquid'] [data-fluid-glass='sidebar'] { --material-fill:color-mix(in srgb,var(--bg-surface) 88%,transparent); --material-blur:18px; }
 /* One material per floating group; text is original and never filtered or copied. */
 :root[data-glass-material] body :is(.nav,.nav-more-menu,.sticky-toolbar,.companion-toolbar,.toolbar-shell,.gallery-toolbar,.scene-toolbar,.pop-toolbar,.gen-bar,.pb .gen-bar,[data-fluid-glass]) {
   border:0; background:var(--material-fill); box-shadow:var(--shadow-sm);
@@ -11,6 +13,13 @@
 :root[data-glass-material='liquid'] body :is(.nav,.nav-more-menu,.sticky-toolbar,.companion-toolbar,.toolbar-shell,.gallery-toolbar,.scene-toolbar,.pop-toolbar,.gen-bar,.pb .gen-bar,[data-fluid-glass]) {
   -webkit-backdrop-filter:blur(var(--material-blur)) saturate(145%);
   backdrop-filter:blur(var(--material-blur)) saturate(145%);
+}
+/* Menus share the selected glass tint; edge light and elevation define the floating layer. */
+:root[data-glass-material='liquid'] body [data-fluid-glass]:is(.studio-select-content,.studio-popover,.chat-more-menu) {
+  box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 0 0 1px var(--glass-edge),var(--shadow-md);
+}
+:root[data-glass-material='liquid'] body .studio-select-content[data-fluid-glass] .studio-select-item[data-state='checked']:not([data-disabled]) {
+  color:var(--text-primary);
 }
 :root[data-glass-material] body :is(.studio-search,.studio-select-trigger) { border:0; border-radius:var(--r-pill); }
 :root[data-glass-material] body .studio-segments[role] { border:0; border-radius:var(--r-pill); box-shadow:none; background:color-mix(in srgb,var(--bg-surface) 18%,transparent); }

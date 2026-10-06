@@ -28,7 +28,7 @@ for (const { theme, close, nativeReset } of cases) {
       const frame=()=>{if(!state.trackClose)return;state.closeFrames.push(scrollY);requestAnimationFrame(frame)}
       requestAnimationFrame(frame)
     },nativeReset)
-    if(close==='button') await page.getByRole('button',{name:'关闭大图',exact:true}).click()
+    if(close==='button') await page.getByRole('button',{name:'关闭',exact:true}).click()
     else await page.keyboard.press('Escape')
     await expect(dialog).not.toHaveAttribute('open','')
     const positions=await page.evaluate(()=>new Promise<number[]>(resolve=>{
@@ -90,12 +90,12 @@ for (const theme of ['dark']) {
           frames++
           opacities.push(Number(getComputedStyle(el).opacity))
           backdrops.push(Number(getComputedStyle(el, '::backdrop').opacity))
-          const panel = el.querySelector('.viewer-layout')
+          const panel = el.querySelector('.viewer-stage')
           if (panel) scales.push(new DOMMatrixReadOnly(getComputedStyle(panel).transform).a)
-          if (Number(getComputedStyle(el).opacity) > .05 && (!image?.isConnected || !el.querySelector('.viewer-layout'))) blank++
+          if (Number(getComputedStyle(el).opacity) > .05 && (!image?.isConnected || !el.querySelector('.viewer-stage'))) blank++
           requestAnimationFrame(sample)
         }
-        ;(el.querySelector('#viewerClose') as HTMLButtonElement).click()
+        ;(el.querySelector('.viewer-close') as HTMLButtonElement).click()
         requestAnimationFrame(sample)
       }))
       expect(result.frames).toBeGreaterThan(0)
@@ -104,7 +104,7 @@ for (const theme of ['dark']) {
       expect(result.backdrops.some(value => value > .15 && value < .85)).toBe(true)
       expect(result.scales.every(value => value === 1)).toBe(true)
       await expect(opener).toBeFocused()
-      await expect(dialog.locator('.viewer-layout')).toHaveCount(0)
+      await expect(dialog.locator('.viewer-stage')).toHaveCount(0)
     }
     expect(errors).toEqual([])
   })
@@ -150,7 +150,7 @@ for (const theme of ['dark']) {
           if (!(el as HTMLDialogElement).open && ++closedFrames === 3) { resolve(samples); return }
           requestAnimationFrame(sample)
         }
-        ;(el.querySelector('#viewerClose') as HTMLButtonElement).click()
+        ;(el.querySelector('.viewer-close') as HTMLButtonElement).click()
         requestAnimationFrame(sample)
       }))
       await info.attach('sticky-frames', { body: JSON.stringify({ y, openingY, top, frames }), contentType: 'application/json' })
@@ -202,7 +202,7 @@ for (const theme of ['dark']) {
         if (!(el as HTMLDialogElement).open) { resolve(samples); return }
         requestAnimationFrame(sample)
       }
-      ;(el.querySelector('#viewerClose') as HTMLButtonElement).click()
+      ;(el.querySelector('.viewer-close') as HTMLButtonElement).click()
       requestAnimationFrame(sample)
     }))
     expect(returning.length).toBeGreaterThan(3)
@@ -217,7 +217,7 @@ for (const theme of ['dark']) {
     await expect(dialog.locator('.zoomable-img')).toHaveClass(/is-ready/)
     await page.getByRole('button', { name: '放大图片', exact: true }).click()
     await expect(dialog.locator('.zoomable-image-viewer')).toHaveClass(/is-zoomed/)
-    await page.getByRole('button', { name: '关闭大图', exact: true }).click()
+    await page.getByRole('button', { name: '关闭', exact: true }).click()
     await expect(dialog).toBeHidden()
     await expect(page.locator('[data-image-origin-proxy]')).toHaveCount(0)
   })
@@ -263,7 +263,7 @@ for (const theme of ['dark']) {
     releaseOriginal()
     await expect(picture).toHaveAttribute('src', /\/images\//)
     expect((await frames).every(frame => frame.width > 0 && frame.opacity === 1 && !frame.skeleton)).toBe(true)
-    await page.getByRole('button', { name: '关闭大图', exact: true }).click()
+    await page.getByRole('button', { name: '关闭', exact: true }).click()
     await expect(dialog).toBeHidden()
     await opener.click()
     await expect(dialog.locator('.zoomable-preload')).toHaveCount(0)
