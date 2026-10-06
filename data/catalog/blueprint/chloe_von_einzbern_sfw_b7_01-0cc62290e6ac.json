@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 283,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_01",
     "title": "克洛伊 · 爱因兹贝伦家的早餐战争",
@@ -30,7 +30,7 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Chloe reaches across breakfast with chopsticks to take fried egg from Illya's plate, then quietly leaves bacon on the spare dish. A mischievous orange-eyed grin appears above her blue apron, peach long-sleeved shirt and loose brown trousers. The medium view keeps pale-pink hair and the plates together, Illya outside the frame. Morning light preserves her warm brown skin and brightens the food, with chopstick shadows crossing the tabletop.",
+    "promptProse": "Chloe reaches across breakfast with chopsticks to take fried egg from Illya’s plate, then quietly leaves bacon on the spare dish, a mischievous grin in her orange eyes. Keep Illya outside the frame and retain Chloe’s pale-pink hair, blue apron, peach long-sleeved shirt and loose brown trousers. The medium view includes the near plate rims and table edge. A low kitchen cabinet runs behind her chair, with its upper counter visible above the chair back. Morning light preserves her warm brown skin and brightens the food; chopstick shadows cross the tabletop, while the cabinet’s recessed panels remain quieter and darker.",
     "promptTokens": [
       "1girl",
       "solo",

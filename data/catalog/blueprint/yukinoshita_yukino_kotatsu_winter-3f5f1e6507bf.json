@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_kotatsu_winter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 344,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "yukinoshita_yukino_kotatsu_winter",
     "title": "雪之下雪乃 · 暖桌冬夜",
@@ -29,7 +29,7 @@
       "table_lamp_light",
       "medium_shot"
     ],
-    "promptProse": "Yukino holds a plush cat in both arms above the kotatsu blanket, looking down with a rare relaxed smile. Long-sleeved knit top, lounge trousers and warm socks retain the indoor outfit. The medium view includes quilt folds beside the warm tabletop and snowfall beyond the window. Kotatsu glow warms the blanket's lower edge, while the table lamp illuminates black hair and blue eyes, leaving gentle contact shade around the toy's soft body.",
+    "promptProse": "Yukino holds the plush cat in both arms above the kotatsu blanket, looking down with a rare relaxed smile. Preserve her long-sleeved knit top, lounge trousers and warm socks. The medium view includes the quilt folds beside the tabletop and snowfall beyond the apartment window. The existing table lamp illuminates her black hair, blue eyes and the blanket surface facing it; the covered heater supplies warmth without a visible glow through the fabric. A gentle contact shadow surrounds the toy’s soft body. Cool window light separates the farther quilt edge from the darker room, keeping the winter interior calm rather than uniformly bright.",
     "promptTokens": [
       "1girl",
       "solo",

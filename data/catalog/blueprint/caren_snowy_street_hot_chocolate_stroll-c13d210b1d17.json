@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_snowy_street_hot_chocolate_stroll",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 211,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "caren_snowy_street_hot_chocolate_stroll",
     "title": "卡莲 · 冬日雪街的热可可小憩",
@@ -30,7 +30,7 @@
       "streetlamp_light",
       "medium_shot"
     ],
-    "promptProse": "Beside the snowy shopping-street bench, Caren pauses after sipping hot chocolate and turns toward the viewer, both hands wrapped around the cup beneath her chin. Short silver strands show below her white beanie and closed red duffle coat. The eye-level cowboy view includes the bench and falling first snow. Warm streetlamp light softens her amber eyes and cup, contrasting with cool snow reflections and her small breath cloud.",
+    "promptProse": "Caren pauses beside the snowy shopping-street bench after sipping hot chocolate, both hands wrapped around the cup beneath her chin as she turns toward the viewer. Retain her short silver hair, white knit beanie and closed red duffle coat in the eye-level cowboy composition. The bench arm overlaps the near coat edge; shop windows continue behind her along the snowy pavement and diminish toward the corner. Falling flakes remain sparse enough to keep her face clear. Warm streetlamp light softens her amber eyes and the cup rim, while snow reflects cool light onto the coat’s lower folds and a small breath cloud fades beside her cheek.",
     "promptTokens": [
       "1girl",
       "solo",

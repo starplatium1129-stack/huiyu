@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1412,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "家中矮桌，她盘腿坐着核对家计簿，计算器、超市传单和笔袋一字排开",
     "adult": false,
@@ -23,7 +23,7 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_home",
-    "promptProse": "Kei Shirogane sits cross-legged at the low table, checking the household ledger with a calculator, supermarket flyers and pencil case arranged beside it. Her cream pullover and navy lounge trousers remain comfortable as an unexpected surplus draws a brief smile. The horizontal medium view includes the table edge and small home interior behind. Afternoon light falls across figures and her sleeves, with soft shadows beneath the calculator and her resting hand.",
+    "promptProse": "Kei Shirogane sits cross-legged at the low table, checking the household ledger with a calculator, supermarket flyers and pencil case arranged beside it. Her cream pullover and navy lounge trousers remain relaxed as the unexpected surplus draws a brief smile. The horizontal medium view follows the table edge toward a compact cabinet behind her, with the adjoining doorway partly visible beyond its side. Afternoon light falls across the figures in the ledger and her sleeves. The calculator and resting hand cast soft separate shadows, while the cabinet’s open lower compartment and the doorway stay darker, preserving the small home’s depth.",
     "promptTokens": [
       "shirogane_kei",
       "Kei Shirogane",

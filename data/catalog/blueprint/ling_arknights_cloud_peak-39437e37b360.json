@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_cloud_peak",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 653,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "立于山巅仰望银河伸臂虚握流星",
     "camera": "wide shot, standing on a mountain peak with one arm outstretched",
@@ -19,7 +19,7 @@
       "city skyline"
     ],
     "outfitId": "standard",
-    "promptProse": "Above a rolling cloud sea, Ling stands on a blue-stone mountain crest and extends one arm toward a meteor's fading trail. Her extremely long blue hair and ink-teal robe stream in the night wind. The wide composition leaves the Milky Way above and clouds below the ledge. Pale blue moonlight edges her horns and sleeves, with darker stone beneath her feet.",
+    "promptProse": "On a blue-stone mountain crest, Ling extends one arm toward the fading trail of a meteor, her extremely long blue hair and ink-teal robe streaming in the wind. Retain the wide view with the Milky Way overhead and the cloud sea far below. The nearest cracked stone ledge runs diagonally beneath her feet; beyond it, overlapping bands of cloud recede toward a lower distant ridge. Pale blue moonlight catches the upper plane of the rock, the edge of her horns and the wind-lifted sleeve. The lee side of the crest stays dark, separating her grounded stance from the luminous clouds without adding a new light source.",
     "promptTokens": [
       "night",
       "mountain peak",

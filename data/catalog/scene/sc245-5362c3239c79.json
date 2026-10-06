@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc245",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 240,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
-    "animaCaption": "Shiki Natsume sips the black tea at the marble counter after closing, resting her chin on her free hand as she watches the viewer finish cleaning. Her cafe uniform and purple ribbon stay neatly arranged. White cups and the shaded shelves overlap behind the seated figure. The single pendant lamp warms the porcelain rim and her nearer cheek, while counter reflection opens the shaded sleeve and the cup's contact shadow anchors the quiet pause.",
+    "animaCaption": "At the marble counter after closing, Shiki Natsume lifts the black tea to sip while resting her chin on her free hand and watching the viewer finish cleaning. Her cafe uniform and purple ribbon remain neatly arranged in the eye-level close view. Several resting white cups overlap the shaded shelves behind her. The single pendant lamp warms the raised drinking cup’s rim and her nearer cheek; counter reflection softly fills the shaded sleeve. Small contact shadows belong to the cups sitting on the marble, while the raised cup casts only a faint displaced shadow across the counter below her holding hand.",
     "auditRevision": "careful-batch07-2026-08-27",
     "camera": "近景平视特写",
     "category": "日常",

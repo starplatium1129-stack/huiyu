@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "reze_chainsaw/oversized_jacket_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 241,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "characterId": "reze_chainsaw",
     "outfit": {
@@ -17,8 +17,8 @@
         "shorts",
         "choker"
       ],
-      "prose": "wearing a baggy oversized bomber jacket over a crop tank top and shorts during a rainy festival",
-      "styleHint": "rainy neon asphalt reflections",
+      "prose": "wearing a baggy oversized bomber jacket over a crop tank top and shorts",
+      "styleHint": "",
       "isDefault": false,
       "default": false
     }

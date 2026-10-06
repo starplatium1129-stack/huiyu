@@ -1,8 +1,7 @@
 'use strict';
 
-/** 热门角色分片完整性独立守卫：data/popular/*.json（按 franchise 一个系列一个文件）
- *  并集必须与聚合 data/popular-characters.json 逐字节一致，id 全局唯一，
- *  manifest 覆盖所有系列且文件存在。与场景库 test-scene-shard-integrity.js 同构。 */
+/** 旧分片仍校验升级导入完整性；构建聚合以 data/catalog 快照为权威。
+ *  独立组装预期内容，不复用 store 或 catalog.views，保留数量、顺序及 ID 校验。 */
 const assert: typeof import('assert') = require('assert');
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
@@ -20,6 +19,7 @@ test('popular shards: manifest declares existing, well-formed franchise files', 
   assert.ok(Array.isArray(manifest.files) && manifest.files.length > 0,
     'manifest must declare at least one franchise file');
   const seenFiles = new Set();
+  const seenIds = new Set();
   for (const entry of manifest.files) {
     assert.ok(entry.franchise && typeof entry.franchise === 'string', 'entry must have franchise');
     assert.ok(!seenFiles.has(entry.file), 'duplicate file entry ' + entry.file);
@@ -32,28 +32,32 @@ test('popular shards: manifest declares existing, well-formed franchise files', 
     assert.strictEqual(data.characters.length, entry.count,
       entry.file + ' count mismatch with manifest');
     for (const character of data.characters) {
+      assert.ok(character.id && !seenIds.has(character.id), 'missing or duplicate legacy id ' + character.id);
+      seenIds.add(character.id);
       assert.strictEqual(character.franchise, entry.franchise,
         character.id + ' franchise must match its file');
     }
   }
 });
 
-test('popular shards: union equals the aggregate, ids unique, order preserved', () => {
+test('popular catalog: aggregate matches snapshot content and order, ids unique', () => {
   const aggregate = readJson('popular-characters.json');
   assert.ok(Array.isArray(aggregate.characters) && aggregate.characters.length > 0,
     'aggregate must contain characters');
-  const manifest = readJson('popular/manifest.json');
-
-  const union = [];
-  for (const entry of manifest.files) {
-    const data = JSON.parse(fs.readFileSync(path.join(shardsDir, entry.file), 'utf8'));
-    union.push(...data.characters);
-  }
-
-  assert.strictEqual(union.length, aggregate.characters.length,
-    'shard union length must equal aggregate length');
-  assert.deepStrictEqual(union.map((c) => c.id), aggregate.characters.map((c: any) => c.id),
-    'shard union ids must equal aggregate ids in order');
+  const catalog: typeof import('../lib/catalog-snapshot') = require('../lib/catalog-snapshot');
+  const records = catalog.read(path.dirname(dataDir));
+  assert.ok(records, 'committed catalog snapshot must exist');
+  const outfits = records.filter(record => record.kind === 'outfit');
+  const expected = records.filter(record => record.kind === 'character' && record.data.popular)
+    .map(record => ({
+      ...record.data.popular,
+      outfits: outfits.filter(outfit => outfit.data.characterId === record.data.id)
+        .map(outfit => outfit.data.outfit),
+    }));
+  assert.strictEqual(aggregate.characters.length, expected.length,
+    'catalog count must equal aggregate count');
+  assert.deepStrictEqual(aggregate.characters, expected,
+    'aggregate must preserve catalog content and sortOrder/id ordering');
 
   const ids = new Set();
   for (const character of aggregate.characters) {

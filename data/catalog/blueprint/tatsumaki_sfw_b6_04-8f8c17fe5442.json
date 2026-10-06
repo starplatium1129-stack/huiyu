@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1586,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_04",
     "title": "战栗的龙卷 · 浮空花廊的傲娇花嫁",
@@ -15,7 +15,7 @@
     "location": "high-rise rose promenade above City A",
     "action": "玫瑰花廊上用念动力托起头纱悬浮，听见钟声后别脸耳尖发红",
     "timeOfDay": "黄昏",
-    "lighting": "emerald sunset with rim light around the veil",
+    "lighting": "sunset rim light with emerald telekinetic fill",
     "camera": "medium full shot, vertical framing",
     "mood": "最强超能力者不肯承认的柔软",
     "sceneTags": [
@@ -31,7 +31,7 @@
       "sunset",
       "rose_bouquet"
     ],
-    "promptProse": "Tatsumaki floats in the high-rise rose arcade, telekinesis holding her black-and-emerald wedding skirt above the floor. She hugs her bouquet with one hand and rests the other at her hip, turning away with reddened ears as the bell sounds. The vertical medium-full view shows the layered veil and receding flower arch. Emerald sunset rims the veil and green curls, with reflected colored light defining the gown's raised folds.",
+    "promptProse": "Tatsumaki floats in the high-rise rose arcade, her existing telekinesis holding the black-and-emerald wedding skirt above the floor. She hugs the bouquet with one hand and rests the other at her hip, turning away with reddened ears as the bell sounds. The vertical medium-full view includes the layered veil and successive flower arches receding behind her. Low evening sunlight traces the outer veil edge and the curls facing the open side of the arcade. A softer emerald glow from the same levitation field fills the raised skirt folds from below, giving the green light a local source while the farther arches remain in dusk shade.",
     "promptTokens": [
       "Tatsumaki",
       "black-emerald bridal gown",

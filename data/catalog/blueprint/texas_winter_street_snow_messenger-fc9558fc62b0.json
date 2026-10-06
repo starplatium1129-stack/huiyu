@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_winter_street_snow_messenger",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 663,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "漫步在积雪街道旁驻足，单手端热咖啡，微吐白雾，目光温柔看向镜头",
     "camera": "medium shot, slightly low angle",
@@ -20,7 +20,7 @@
     "mood": "冬日宁静",
     "negativeTokens": [],
     "outfitId": "willpower_winter",
-    "promptProse": "Texas pauses beside a red-brick corner in snow-covered Lungmen, carrying her leather messenger bag and steaming coffee. An olive fur-lined parka and cream scarf shelter her against the cold. The slightly low medium view follows the old street past her shoulder. Warm streetlamp light catches flakes and her breath; reflected snow light cools the lower coat and the uneven bricks beneath the lamp.",
+    "promptProse": "At a red-brick corner in snowy Lungmen, Texas pauses with a leather messenger bag in one hand and a steaming coffee in the other. Keep the olive fur-lined parka and cream scarf in the slightly low medium view. The near wall turns behind her shoulder into the old street, where uneven tracks run through the snow toward the next block. Warm light from the existing streetlamp catches the falling flakes, her breath and the raised brick edges. Snow-reflected light softly fills the lower coat, and the bag leaves a subdued shadow against the wall-side snow without changing the cold evening mood.",
     "promptTokens": [
       "snowy evening",
       "street corner",

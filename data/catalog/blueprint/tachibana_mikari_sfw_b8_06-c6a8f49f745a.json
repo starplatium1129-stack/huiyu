@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1680,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_06",
     "title": "橘美花莉 · 巧克力盒上的蝴蝶结",
@@ -33,7 +33,7 @@
       "afternoon",
       "medium_shot"
     ],
-    "promptProse": "Mikari Tachibana sits at the dining table tying a fine satin ribbon around a chocolate box, then purses her lips and starts again when the ends are uneven. Her dusty-rose knit sleeves and ivory waist apron stay orderly, small side bows securing chestnut hair forward. The medium view includes spare boxes scattered beside her hands. Soft afternoon window light reveals ribbon sheen and knit texture, with small box shadows marking each rejected option.",
+    "promptProse": "Mikari Tachibana sits at the dining table tying fine satin ribbon around the chocolate box, then purses her lips and starts again when the ends are uneven. Her dusty-rose knit sleeves and ivory waist apron remain tidy, with small side bows holding her chestnut hair forward. Spare boxes lie beside her working hands in the medium portrait. The far table edge meets a chair back, and a low dining cabinet continues toward the window behind her. Soft afternoon light reveals ribbon sheen and knit texture; each box casts a small distinct shadow, while the cabinet face becomes dimmer away from the window.",
     "promptTokens": [
       "Mikari Tachibana",
       "dusty-rose knit top",

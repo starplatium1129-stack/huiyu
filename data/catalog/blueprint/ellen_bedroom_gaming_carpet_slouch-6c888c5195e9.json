@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_bedroom_gaming_carpet_slouch",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1059,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "趴在地毯上翘起小腿打掌机，鲨鱼尾巴垫在身后，专注微咬唇",
     "camera": "overhead high angle shot, intimate framing",
@@ -20,7 +20,7 @@
     "mood": "松弛治愈",
     "negativeTokens": [],
     "outfitId": "streetwear_hoodie",
-    "promptProse": "Ellen lies on the thick bedroom carpet with a handheld game in both hands, bending her knees loosely while her shark tail rests flat beside her like a cushion. Her charcoal hoodie, denim shorts and striped socks retain the casual outfit in the overhead view. The room's scattered possessions edge the carpet. Cool television light colors the nearby wall, while a warm bedside salt lamp brightens her fingers and carpet fibers.",
+    "promptProse": "Seen from overhead, Ellen lies on the thick bedroom carpet with a handheld game in both hands and her knees loosely bent. Her shark tail rests flat beside her like a cushion; keep the charcoal hoodie, denim shorts and striped socks unchanged. The carpet’s edge turns around the nearby beanbag chair, and the bed frame meets the far strip of visible floor. The existing television casts cool color onto the adjacent wall, while the warm bedside salt lamp picks out her fingers and the raised carpet fibers. Her elbows leave small contact shadows in the pile, and the beanbag’s underside stays darker than its curved top.",
     "promptTokens": [
       "night",
       "bedroom",

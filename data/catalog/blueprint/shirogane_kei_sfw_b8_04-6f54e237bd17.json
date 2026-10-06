@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1414,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "矮桌旁核对完花束预算合上家计簿，向镜头露出没有超支的满足笑",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "把精打细算也变成花嫁幸福",
     "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Kei Shirogane sits at the apartment's low table in a simple silver-white bridal dress and modest veil, finishing the last entry in the household budget. A small fresh bouquet rests beside the ledger. She looks up with satisfaction beneath her black ribbon headband. The vertical medium-full view keeps the dress folds and table together; gentle morning light brightens the ledger and flowers, with soft shadows beneath the bouquet stems.",
+    "promptProse": "Kei Shirogane sits at the apartment’s low table in her simple silver-white bridal dress and modest veil, finishing the last entry in the household budget. The small fresh bouquet remains beside the ledger. She looks up with satisfaction beneath her black ribbon headband. In the vertical medium-full view, the dress folds spread beside the table, the sofa back sits farther behind and the morning window is visible at the room’s side. Gentle morning light brightens the ledger and flowers; bouquet stems cast fine shadows on the paper, while the table edge leaves a softer band across the nearer dress folds.",
     "promptTokens": [
       "Kei Shirogane",
       "silver-white bridal dress",
@@ -48,7 +48,7 @@
       "satisfied_smile",
       "morning_light"
     ],
-    "timeOfDay": "黄昏",
+    "timeOfDay": "清晨",
     "title": "白银圭 · 预算表旁的银色花嫁"
   }
 }

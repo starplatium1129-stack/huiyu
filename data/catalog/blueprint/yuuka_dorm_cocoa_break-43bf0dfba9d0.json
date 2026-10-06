@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_dorm_cocoa_break",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 946,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfitId": "pajamas_loungewear",
@@ -16,7 +16,7 @@
     "mood": "轻松安心",
     "description": "【优香 · 核账之后的可可】最后一张收据终于归好类，优香穿着淡蓝色宽松毛衣和居家短裤坐在宿舍小桌旁，红框眼镜下的眉头放松下来。她用双手捧起温热的可可杯，闭上的账本留在桌角——「今天就到这里。喝完这一杯，我也该好好休息了。」",
     "action": "坐在小桌旁，双手捧着可可杯，闭合的账本放在桌角",
-    "promptProse": "Yuuka sits at the dormitory's small table after filing the last receipt, raising warm cocoa in both hands as her brow relaxes beneath red-framed glasses. Her loose blue sweater and house shorts remain in medium view. The closed ledger occupies one table corner. A small bedside lamp warms the rising steam and cup rim, leaving gentle shadows along the sweater cuffs and the neatly closed pages.",
+    "promptProse": "Yuuka sits at the dormitory’s small table after filing the last receipt, raising warm cocoa in both hands as her brow relaxes beneath red-framed glasses. Her loose blue sweater and house shorts remain unchanged in medium view. The closed ledger rests at the near table corner. Behind her, the bedside cabinet meets the bed frame, and a narrow shelf partly disappears past the chair back. The existing small bedside lamp warms the rising steam and cup rim. Its light falls off across the farther bedding, while the sweater cuffs and neatly closed pages retain soft shadows that distinguish the desk from the sleeping area.",
     "promptTokens": [
       "night",
       "dorm table",

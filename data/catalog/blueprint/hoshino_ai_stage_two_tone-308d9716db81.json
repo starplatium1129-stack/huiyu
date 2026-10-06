@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_stage_two_tone",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 951,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "镜头前比偶像手势",
     "camera": "medium shot, wink and peace sign",
@@ -18,7 +18,7 @@
     "mood": "元气满格",
     "negativeTokens": [],
     "outfitId": "stage_two_tone",
-    "promptProse": "Ai faces the music-program camera with a wink and peace sign, wearing her white-and-pink two-tone stage dress and brown belt. A crystal hair ornament glints among her purple strands. The medium view keeps the studio floor and camera position readable with the set extending behind. Soft studio lamps spread even brightness across her gesture and collar, leaving gentle dress-fold shadows and small highlights in her star-shaped eyes.",
+    "promptProse": "Ai faces the music-program camera with a wink and peace sign in her white-and-pink two-tone stage dress and brown belt. Keep the crystal hair ornament among her purple strands. The medium view includes a narrow edge of the camera housing in the foreground, the studio floor beneath her and overlapping scenic panels behind, with a small gap revealing the darker side of the set. Soft studio lamps spread even light across her face, collar and raised fingers. The dress folds retain gentle shadows, and a short soft shadow beneath her feet separates her from the floor without overpowering the highlights in her star-shaped eyes.",
     "promptTokens": [
       "daytime",
       "television studio",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_home_ramen_cooling",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 834,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "characterId": "mimori_byakuya",
     "outfitId": "tattered_oversized_jersey",
@@ -16,7 +16,7 @@
     "mood": "放松满足",
     "description": "【白夜 · 小屋里的热拉面】忙完一天的白夜换上宽松的旧运动外套和运动短裤，坐在小公寓的餐桌旁吃晚饭。她一手扶着拉面碗，另一手用筷子夹起面条，小心吹散热气，眼前这顿便宜却热乎的晚餐让她安心下来——「趁热吃吧，今天的汤还挺好喝的。」",
     "action": "坐在餐桌前，一手扶碗，另一手用筷子夹起面条并轻轻吹凉",
-    "promptProse": "Byakuya sits at her small apartment dining table in a loose old track jacket and gym shorts, steadying the ramen bowl with one hand while lifting noodles with chopsticks in the other. She blows gently over the steam. The medium view across the table keeps her face, bowl and hands together. The kitchen pendant warms the noodles and her relieved expression, with bowl shadows spreading softly along the tabletop.",
+    "promptProse": "At her small apartment dining table, Byakuya steadies the ramen bowl with one hand and lifts a mouthful of noodles with chopsticks in the other, blowing gently over the steam. Her loose old track jacket and gym shorts remain unchanged. The medium view across the table keeps her face, bowl and hands together. Behind her shoulder, the narrow kitchen counter meets a short wall shelf, giving the modest room a visible end rather than an empty backdrop. The existing pendant light warms the noodles and her relieved expression; the bowl throws a soft oval shadow across the table, while the counter recesses stay darker.",
     "promptTokens": [
       "evening",
       "small apartment",

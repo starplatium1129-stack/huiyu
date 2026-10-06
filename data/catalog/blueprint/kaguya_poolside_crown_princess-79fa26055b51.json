@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_poolside_crown_princess",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1398,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "躺椅上递防晒霜别脸傲娇，肩头微红发梢滴水",
     "adult": false,
@@ -27,7 +27,7 @@
       "bikini"
     ],
     "outfitId": "casual_summer_dress",
-    "promptProse": "Kaguya Shinomiya sits on the shaded pool lounge chair in her white cotton summer dress with navy ribbon, extending a sunscreen bottle toward her companion while looking shyly aside. Drops remain at the ends of her folded black ponytail. The medium view includes the parasol support and bright pool behind. Strong afternoon sunlight lights the chair's uncovered edge, while blue water reflections shift beneath the parasol's soft shadow on her sleeves.",
+    "promptProse": "Kaguya Shinomiya sits on the shaded pool lounge chair in her white cotton summer dress with navy ribbon, extending a sunscreen bottle toward her companion while looking shyly aside. Drops remain at the ends of her folded black ponytail. The medium view includes the parasol support beside her and the bright pool behind the chair. Strong afternoon sunlight catches the chair’s uncovered edge, while shifting blue water reflections reach its shaded fabric. The parasol’s soft shadow crosses the lower folds of the sleeveless dress and the seat, preserving the actual garment cut rather than introducing sleeves.",
     "promptTokens": [
       "shinomiya_kaguya",
       "Kaguya Shinomiya",

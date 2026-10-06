@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1514,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_02",
     "title": "椎名真白 · 年轮蛋糕的仪式感",
@@ -30,7 +30,7 @@
       "afternoon",
       "medium_shot"
     ],
-    "promptProse": "Mashiro Shiina sets a baumkuchen precisely at the plate's center and watches it from the low table, both hands resting on her knees before she takes up the fork. Her cream sweater and loose brown trousers keep the seated pose relaxed. The medium view holds the plate between her and the viewer. Soft daylight reveals the cake's concentric layers and slight change in her eyes, with gentle fork and plate shadows across the tabletop.",
+    "promptProse": "Mashiro Shiina sets the baumkuchen precisely at the plate’s center and watches it from the low table, both hands resting on her knees before she takes up the fork. Retain her cream sweater and loose brown trousers. In the medium portrait, the plate sits between her and the viewer; beyond her seated figure, the room’s sliding-door frame meets a low storage shelf, giving the Sakurasou interior a visible farther plane. Soft afternoon daylight reveals the cake’s concentric layers and the tiny change in her eyes. The fork and plate have separate small shadows on the tabletop, while the shelf compartments are more softly lit.",
     "promptTokens": [
       "Mashiro Shiina",
       "cream sweater",

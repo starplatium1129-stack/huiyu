@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_leithanien_library_poetry_reading",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 683,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "端坐在复古花窗飘窗软垫上，膝上摊开羊皮纸诗集，轻抚书页，转头温柔微笑",
     "camera": "medium shot, eye level, poetic solitude",
@@ -20,7 +20,7 @@
     "mood": "诗意静谧",
     "negativeTokens": [],
     "outfitId": "lethe_poet_gown",
-    "promptProse": "On a cushioned window bench in the Leithanian royal library, Viviana reads a handwritten poetry collection open across her sapphire velvet gown. Tall walnut shelves rise behind her in the eye-level medium view. Moonlight entering the stained glass cools her antlers and hairpins; a brass lamp warms the pages and black lace sleeves, while the bench's carved edge recedes toward the darker aisle.",
+    "promptProse": "On the cushioned window bench of the Leithanian royal library, Viviana keeps the handwritten poetry book open across her sapphire velvet gown and lightly touches the page, turning her head with a gentle smile. Retain the eye-level medium shot, black lace sleeves, antlers and hairpins. The carved bench edge recedes behind her toward a narrow aisle; tall walnut shelves alternate with darker gaps beyond it. Moonlight through the stained glass cools the outer curves of her antlers and hair. The existing brass lamp warms the parchment and fingers, with her hand casting a small soft shadow across the page and the shelf recesses remaining subdued.",
     "promptTokens": [
       "night",
       "library",

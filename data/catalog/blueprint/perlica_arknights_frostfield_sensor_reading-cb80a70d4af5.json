@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_frostfield_sensor_reading",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 742,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "characterId": "perlica_arknights",
     "outfitId": "sub_zero_frostfield_parka",
@@ -16,7 +16,7 @@
     "mood": "沉着专注",
     "description": "【佩丽卡 · 雪原观测站读数】清晨的雪原观测站外，佩丽卡穿着厚实的白蓝拼色防寒派克服，保暖长裤和手套挡住冷风。她站在固定的传感器旁，一手稳住读数板，另一手按下确认键，回头示意记录完成——「读数已经稳定。我们进站核对下一组数据。」",
     "action": "站在传感器旁，一手托读数板，另一手按下确认键",
-    "promptProse": "Outside the snowfield observation station, Perlica steadies a reading tablet beside a fixed sensor and presses its confirmation key, then looks back to signal completion. Her white-and-gray-blue insulated parka, trousers and gloves cover her against the cold. The medium view includes the sensor housing and entrance together. Cold morning light defines the snow and fur hood, while the entry lamp warms the tablet-side glove.",
+    "promptProse": "Perlica stands between the fixed sensor housing and the observation-station entrance, steadying a reading tablet with one gloved hand and pressing its confirmation key with the other. She looks back to signal that the reading is complete. Keep the white-and-gray-blue insulated parka, trousers and gloves in the medium shot. The sensor occupies the nearer edge; the doorway opens behind her onto a short, darker entry passage, while the snowfield remains visible beyond the station wall. Cold morning light grazes the hood and snow ridges. The entrance lamp casts a warmer patch across the tablet-side glove and the door jamb, with the sensor base anchored by a soft blue-gray shadow.",
     "promptTokens": [
       "morning",
       "snow station",

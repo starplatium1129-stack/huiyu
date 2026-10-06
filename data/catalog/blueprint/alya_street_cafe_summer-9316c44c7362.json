@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_street_cafe_summer",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 777,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "action": "双手捧着加满冰块的柠檬茶，微微偏头看向你，露出罕见的温柔浅笑",
     "camera": "medium shot, al fresco cafe framing, soft sunlit bokeh",
@@ -16,7 +16,7 @@
     "description": "【艾莉 · 街角咖啡厅·夏日露天约会】夏日午后的林荫道露天咖啡座旁，艾莉双手捧着加满碎冰的柠檬红茶，白皙如雪的肌肤在树影碎光下透着晶莹的光泽。她微微偏过头看向你，唇角泛起温柔的笑意，随后用小得几乎听不见的俄语轻喃——「【Ты мне нравишься】（我喜欢你）……哼，刚才只是在练习俄语发音而已，政近同学可别自作多情！」",
     "id": "alya_street_cafe_summer",
     "lighting": "夏日午后明媚日光透过行道树洒下斑驳碎光，通透清新",
-    "location": "征岭学园阳光运动场",
+    "location": "林荫道街角露天咖啡座",
     "mood": "惬意温柔与夏日明朗",
     "negativeTokens": [],
     "outfitId": "summer_sundress",

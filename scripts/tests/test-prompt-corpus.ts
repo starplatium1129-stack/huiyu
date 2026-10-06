@@ -152,13 +152,12 @@ test('golden scenes: sc001 medium/window, sc153 close, sc050 holding-hands prese
   assert.strictEqual(infer.sceneShot(byId.sc050), 'side', 'sc050 explicit Chinese side camera must resolve to side')
   // 单人净化保留 POV / 望向 viewer / 牵手 / 中心互动。
   const anima050 = policy.sceneTemplateText(byId.sc050, { char: 'natsume', engine: 'anima' })
-  assert(anima050.includes('holding hands'), 'sc050 must preserve holding hands for solo engines')
-  assert(anima050.includes('movie screen'), 'sc050 must preserve its cinema screen-light anchor (1326be66 肃清后月光改为银幕光)')
+  assert(anima050.includes('joined hands on armrest'), 'sc050 must preserve joined hands and their armrest anchor for solo engines')
+  assert(anima050.includes('sitting in cinema') && anima050.includes('screen light'), 'sc050 must preserve its cinema and screen-light anchors')
   assert(!/1girl|shiki_natsume|black_hair/.test(anima050), 'sc050 must drop redundant identity anchors')
-  assert(anima050.includes('hand on armrest'), 'sc050 must specify the off-frame viewer hand (1326be66 改写后以扶手受力锚点表述)')
 
   const anima010 = policy.sceneTemplateText(byId.sc010, { char: 'nene', engine: 'anima' })
-  assert(anima010.includes('holding sandals'), 'sc010 must preserve the sandals carried in its shoreline story')
+  assert(anima010.includes('sandals in hand'), 'sc010 must preserve the sandals carried in its shoreline story')
   assert(!anima010.includes('holding sun hat'), 'sc010 must not substitute a sun hat for its carried sandals')
 
   const anima166 = policy.sceneTemplateText(byId.sc166, { char: 'nene', engine: 'anima' })

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_pipeline_welding",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 758,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
   "data": {
     "id": "rossy_arknights_pipeline_welding",
     "characterId": "rossy_arknights",
@@ -38,7 +38,7 @@
       "wolf ears",
       "medium shot"
     ],
-    "promptProse": "Rossy sits beside a low living-room table, holding the final corner piece of the jigsaw puzzle but lifting her face toward the viewer before placing it. Her berry-red hoodie surrounds clear wolf ears in the eye-level medium view. The unfinished puzzle spreads across the tabletop with sorted pieces in a small box. Soft window light marks the missing corner and her fingertips, shading the box's interior.",
+    "promptProse": "Beside the low living-room table, Rossy pauses with the final corner piece held above the unfinished jigsaw and lifts her face toward the viewer with a sly smile. Preserve the berry-red hoodie and visible wolf ears in the eye-level medium view. The puzzle fills the near tabletop, a small sorting box sits just beyond her hand, and the far table edge separates it from the sofa behind her. Soft window light skims the printed puzzle surface and her fingertips. The raised corner piece casts a small distinct shadow over its empty place, while the sorting box interior and the space under the table remain gently shaded.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
