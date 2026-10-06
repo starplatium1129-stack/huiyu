@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "tohsaka_rin/sfw_city_red_cardigan",
+  "revision": 1,
+  "sortOrder": 1118,
+  "createdAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "data": {
+    "characterId": "tohsaka_rin",
+    "outfit": {
+      "id": "sfw_city_red_cardigan",
+      "name": "商业街酒红开衫裙装",
+      "prose": "a wine-red cropped button cardigan over a cream blouse, a black-and-grey checked pleated midi skirt and brown ankle boots, with her black hair ribbons retained",
+      "tokens": [
+        "wine_red_cardigan",
+        "button_cardigan",
+        "cream_blouse",
+        "long_sleeves",
+        "black_grey_plaid_skirt",
+        "pleated_midi_skirt",
+        "brown_ankle_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

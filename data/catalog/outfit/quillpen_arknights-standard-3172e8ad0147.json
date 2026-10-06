@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "quillpen_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 357,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
   "data": {
     "characterId": "quillpen_arknights",
     "outfit": {
@@ -12,15 +12,14 @@
       "id": "standard",
       "isDefault": true,
       "name": "调酒师装",
-      "prose": "a black crop top with an asymmetrical grey hooded jacket, black hotpants, a tactical belt with a cocktail shaker pouch and a black choker, holding her giant scythe",
+      "prose": "a black crop top with an asymmetrical grey hooded jacket, black hotpants, a tactical belt with a cocktail shaker pouch and a black choker",
       "tokens": [
         "crop_top",
         "black_clothes",
         "grey_clothes",
         "jacket",
         "hotpants",
-        "choker",
-        "scythe"
+        "choker"
       ]
     }
   }

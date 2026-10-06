@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1000,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_beach",
       "name": "桃乐丝·海滨泳装",
-      "prose": "a white-and-pink resort swimsuit with a sheer garden wrap, rose hair ribbon and a glass of rose iced tea",
+      "prose": "a white-and-pink resort swimsuit with a sheer garden wrap and rose hair ribbon",
       "tokens": [
         "white_pink_swimsuit",
         "garden_wrap",
-        "rose_hair_ribbon",
-        "rose_iced_tea",
-        "garden_shears"
+        "rose_hair_ribbon"
       ],
       "default": false,
       "isDefault": false

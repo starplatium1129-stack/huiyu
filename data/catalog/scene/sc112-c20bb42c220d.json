@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc112",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:30:17.204187300+00:00",
   "data": {
-    "animaCaption": "In the secluded old library reading room on a stormy afternoon, Shiki Natsume in a school uniform with the white shirt unbuttoned at the top pins the seated viewer against the window-side armchair, both hands gripping the chair back while her black hair brushes the viewer's face, the tear mole gleaming dangerously in the dim rainy backlight.",
+    "animaCaption": "From the window-side armchair, the seated viewer looks up as Shiki Natsume places both hands on the upper chair rail at either side of the viewer's shoulders. She leans forward to speak, then glances aside with a restrained blush, her white school shirt loosely buttoned at the collar and blazer left aside. Keep the near composition on her face and the two supported hands, without changing the chair into a bookshelf. A small reading table overlaps the chair arm; shelves recede behind her toward the room's narrow doorway. Rain-filtered afternoon light crosses the window-facing sleeve and the polished chair rail. Reflected tabletop light softens the opposite cheek, with small finger shadows on the rail and darker shelf recesses behind.",
     "auditRevision": "careful-batch05-2026-08-27",
-    "camera": "主观仰视近景",
+    "camera": "座椅上主观仰看的面部与扶椅双手近景",
     "category": "恋爱/同人",
     "char": "natsume",
     "character": [
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, crowded",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, school_uniform, blazer_unbuttoned, pleated_skirt, black_thighhighs, zettai_ryouiki, mary_janes, pinned_against_bookshelf, kabedon, looking_up_at_viewer, heavy_blush, parted_lips, quiet_after_school_library, golden_sunset_slanted_light, dust_motes, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, white school shirt, top buttons undone, pleated skirt, standing at armchair, both hands on chair back, leaning toward seated viewer, restrained blush, library reading room, window side chair, shelves, rain filtered afternoon light, close up",
     "rating": "R15",
     "season": "不限",
     "story": "【夏目 · 阅览室强势壁咚】骤雨初歇的午后，学校最偏僻的旧书库阅览室。夏目脱下了平时掩饰身份的制服外套，解开了衬衫最上方的三颗纽扣。她直接将你推到靠窗的单人沙发上，双手撑在椅背两侧将你完全“壁咚”。黑色发丝拂过你的脸颊，眼角的泪痣在昏暗的斜阳逆光中散发着危险而性感的魅惑——「哼，一下午都在盯着别的文献看，把我当空气吗？长官...现在是我的专属审讯时间了。」",
@@ -35,8 +35,8 @@
       "library_study_room",
       "raining",
       "afternoon",
-      "full_body",
-      "mary_jane"
+      "mary_jane",
+      "close_up"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -45,6 +45,7 @@
       "壁纸级",
       "R15"
     ],
-    "weather": "窗外暴雨如注"
+    "weather": "窗外暴雨如注",
+    "recommendedSize": "832x1216"
   }
 }

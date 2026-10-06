@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/festive_summer_yukata",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 844,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
       "id": "festive_summer_yukata",
       "name": "夏祭牵牛花浅蓝浴衣",
-      "prose": "a festive summer festival yukata in sky blue patterned with blooming morning glories, cinched with a yellow obi sash, with a goldfish pouch as a festival accessory and her blackish-purple braids pinned with floral clips",
+      "prose": "a sky-blue summer festival yukata patterned with blooming morning glories, cinched with a yellow obi sash, her blackish-purple braids pinned with floral clips",
       "tokens": [
         "yukata",
         "blue_yukata",

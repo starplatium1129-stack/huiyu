@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mimori_byakuya/part_time_maid_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 472,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "mimori_byakuya",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "part_time_maid_apron",
       "isDefault": false,
       "name": "打工女仆咖啡围裙",
-      "prose": "wearing a simple black dress with a white frilly maid apron while working diligently at a cafe",
+      "prose": "wearing a simple black dress with a white frilly maid apron",
       "styleHint": "bright cheerful cafe ambiance",
       "tokens": [
         "maid_apron",

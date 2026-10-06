@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "asuna_yuuki/official_knights_of_blood_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 744,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "characterId": "asuna_yuuki",
     "outfit": {
@@ -17,9 +17,7 @@
         "red_cross",
         "pleated_skirt",
         "thighhighs",
-        "white_thighhighs",
-        "rapier",
-        "lambent_light"
+        "white_thighhighs"
       ],
       "default": true,
       "isDefault": true

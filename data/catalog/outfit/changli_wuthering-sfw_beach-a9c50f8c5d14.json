@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "changli_wuthering/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 936,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "changli_wuthering",
     "outfit": {
       "id": "sfw_beach",
       "name": "长离·海滨泳装",
-      "prose": "a peach-red swimsuit with a cream long overshirt, embroidered sash and a glass of chilled tea",
+      "prose": "a peach-red swimsuit with a cream long overshirt and embroidered sash",
       "tokens": [
         "peach_swimsuit",
         "cream_overshirt",
-        "embroidered_sash",
-        "chilled_tea",
-        "wooden_deck"
+        "embroidered_sash"
       ],
       "default": false,
       "isDefault": false

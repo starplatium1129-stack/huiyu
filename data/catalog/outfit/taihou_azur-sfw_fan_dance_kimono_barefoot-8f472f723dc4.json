@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "taihou_azur/sfw_fan_dance_kimono_barefoot",
+  "revision": 1,
+  "sortOrder": 1141,
+  "createdAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "data": {
+    "characterId": "taihou_azur",
+    "outfit": {
+      "id": "sfw_fan_dance_kimono_barefoot",
+      "name": "红扇舞赤足凤凰和服",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "场景衣装状态",
+      "prose": "a vermilion-and-black kimono dress with gold-trimmed wide sleeves, phoenix brocade and black-and-gold obi, barefoot",
+      "tokens": [
+        "kimono",
+        "red_kimono",
+        "black_clothes",
+        "wide_sleeves",
+        "gold_trim",
+        "phoenix_brocade",
+        "obi",
+        "barefoot"
+      ]
+    }
+  }
+}

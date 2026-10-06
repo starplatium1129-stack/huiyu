@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/elite2",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 328,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "elite2",
       "isDefault": false,
       "name": "卸甲破壳态（连体服）",
-      "prose": "her black high-neck bodysuit with heavy armor plates removed and set aside beside her, only a few shoulder pauldrons and forearm gauntlets still worn, long silver-white hair loose and her black Sarkaz horns visible",
+      "prose": "her black high-neck bodysuit with only a few shoulder pauldrons and forearm gauntlets still worn, long silver-white hair loose and her black Sarkaz horns visible",
       "tokens": [
         "bodysuit",
         "black_clothes",

@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc216",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 211,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T09:50:34.027913700+00:00",
   "data": {
-    "animaCaption": "In the closed staff lounge with the air conditioner broken, wearing only a thin black camisole and tight shorts with nothing underneath over her heat-flushed skin, Shiki Natsume falls weakly back into the narrow single sofa and hooks both hands around your neck, pulling you down toward her while her cold golden eyes lower and her ears redden to the roots.",
+    "animaCaption": "With the cafe closed for the night and the air conditioner broken, Shiki Natsume settles back into the narrow staff-lounge sofa in an opaque black cotton camisole and comfortable shorts. She reaches both forearms toward the viewer's shoulders, her face and pink ears retaining a tired but determined expression; the viewer's body remains outside the frame. The compressed seat cushion supports her back, and a folded paper fan and empty mug rest on the nearby table. Storage cubbies continue behind the sofa arm. Use a medium close-up at sofa level with her face and forearms visible. A warm reading lamp on the left lights her cheek, black hair and the cushion ridge. Contact shade beneath her arm and back keeps the pose grounded, while the far cubbies stay subdued.",
     "auditRevision": "careful-batch13-2026-08-27",
-    "camera": "近景主观俯瞰特写",
+    "camera": "medium close-up, sofa-level POV, face and forearms visible",
     "category": "日常",
     "char": "natsume",
     "character": [
@@ -16,28 +16,31 @@
     ],
     "emotion": "恋爱",
     "id": "sc216",
-    "lighting": "局部昏暗暖色强侧光",
-    "location": "Café Stella 员工休息室沙发",
+    "lighting": "warm wall reading lamp from the left, cushion contact shadow and dim room behind",
+    "location": "Café Stella 员工休息室单人沙发，侧桌与储物格在后方",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, coat, sweater",
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, black_lace_camisole, thin_straps, falling_strap, cleavage, bare_shoulders, bare_legs, sweat_glistening_on_collarbone_and_chest, lying_on_sofa, looking_at_viewer_with_golden_eyes, flushed_cheeks, panting, broken_air_conditioner, summer_afternoon, warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_black_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, no_hair_ribbon, opaque_black_cotton_camisole, comfortable_lounge_shorts, reclining_on_narrow_sofa, forearms_toward_viewer_shoulders, looking_at_viewer, warm_cheeks, broken_air_conditioner, side_table, folded_paper_fan, empty_mug, storage_cubbies, wall_reading_lamp, warm_left_side_light, late_night, medium_close_up, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R15",
     "season": "夏",
-    "story": "【夏目 · 员工休息室微热沦陷】闭店后的Café Stella员工休息室。夏目因为连班有些脱力地躺在狭窄的单人沙发上，身上的看板娘制服已经换下，仅仅穿着一件极薄的黑色吊带背心和贴身短裤，真空未着内衣。因为房间内冷气坏掉，她全身泛着动情的微热潮红。你推门进来时她正想起身，却因为低血糖一阵眩晕而无力地跌回沙发，双手顺势勾住你的脖子把你完全拉向她。她微垂着清冷的金瞳，尽管耳根红得要滴血，却依然用短促锋利的口吻掩饰羞耻——「……别误会。我只是觉得这样起身的动作最有效率。既然你进来了，就老老实实当我的靠垫。大变态，不准乱看……不然真的把你秘密处决哦。」",
-    "storyJa": "【夏目】【ナツメ・休憩室のエアコン故障と効率の喪失】閉店後のカフェ・ステラの従業員休憩室。連勤のせいで少し脱力した様子で狭いシングルソファに横たわっているナツメは、看板娘の制服をすでに脱ぎ捨て、中には下着を一切身に着けていない真空状態の極薄な黒いキャミソールとタイトなショートパンツ一枚だけを纏っていた。部屋のエアコンが壊れているため、彼女の全身は情動的な微熱の赤みに包まれている。あなたがドアを開けて入ってきた時、彼女は起き上がろうとしたものの、低血糖による目眩のせいで力なくソファに倒れ込み、その勢いであなたの首に両手を回して完全に自分の方へと引き寄せた。彼女は冷淡な金の瞳を少し伏せ、耳の裏まで真っ赤に染まっているにもかかわらず、相変わらず短く鋭い口調で羞恥を隠していた――「……勘違いしないで。私はただ、この方が起き上がる動作として最も効率的だと思っただけ。入ってきたからには、大人しく私のクッションになりなさい。大変態、変なところ見ないで……じゃないと本当に秘密処刑にするわよ」",
+    "story": "【夏目 · 员工休息室的微热深夜】闭店后的 Café Stella 员工休息室里，冷气暂时坏了。夏目换上不透的黑色棉吊带与舒适短裤，连班后的疲倦让她重新靠进窄沙发，伸出双臂向你借一个支撑。左侧阅读灯照亮泛红的耳尖和靠垫，侧桌上放着折纸扇与空杯，身后的储物格留在柔暗里。她仍用短促的口吻掩饰不好意思——「……别误会。我只是觉得这样起身的动作最有效率。既然你进来了，就老老实实当我的靠垫。大变态，不准乱看……不然真的把你秘密处决哦。」",
+    "storyJa": "【夏目・スタッフルームの蒸し暑い夜】閉店後の Café Stella では、休憩室の冷房が一時的に止まっていた。夏目は透けない黒いコットンのキャミソールと楽なショートパンツに着替え、連勤の疲れから細いソファへ背を預ける。あなたに支えてもらおうと両腕を伸ばした。左の読書灯が赤くなった耳先とクッションを照らし、横のテーブルには折りたたんだ紙の扇と空のカップがある。奥の棚は柔らかな暗がりに沈んでいる。――「……勘違いしないで。この方が起き上がる動作として効率的なだけ。入ってきたからには、私のクッションになりなさい。大変態、変なところを見たら……本当に秘密処刑にするわよ。」",
     "tags": [
       "mole_under_eye",
-      "black_camisole",
-      "tight_shorts",
-      "no_underwear",
-      "bare_legs",
+      "black_cotton_camisole",
+      "lounge_shorts",
       "staff_lounge_sofa",
-      "lying_down",
-      "arms_around_neck",
-      "blush",
-      "red_ears",
-      "full_body"
+      "arms_toward_viewer_shoulders",
+      "warm_cheeks",
+      "broken_air_conditioner",
+      "side_table",
+      "paper_fan",
+      "empty_mug",
+      "storage_cubbies",
+      "wall_reading_lamp",
+      "late_night",
+      "medium_close_up"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -47,6 +50,7 @@
       "壁纸级",
       "R15"
     ],
-    "weather": "微热密闭"
+    "weather": "微热密闭",
+    "recommendedSize": "1152×1536"
   }
 }

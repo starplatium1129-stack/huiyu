@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_sfw_b5_10",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 973,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "action": "举起装着金鱼的小袋开怀大笑，另一手仍拿着纸网。",
     "adult": false,
@@ -23,13 +23,15 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_festival",
-    "promptProse": "Kana concentrates on scooping a goldfish at the summer festival stall, yukata sleeves rolled back but slipping as she works. After succeeding, she raises her prize with a grin showing a small canine tooth. Her properly wrapped red-and-white floral yukata and dark obi stay clear in medium view. Lantern light warms her face and the water basin, with rippling reflections moving beneath her hands against the darker stall interior.",
+    "promptProse": "Kana raises the small clear bag containing her prize goldfish with one hand, her other still holding the paper scoop beside the festival basin. Her broad grin shows a small canine tooth. The properly wrapped red-and-white floral yukata and dark obi stay clear in medium view. Lantern light warms her face and the water basin, with rippling reflections moving beneath her hands against the darker stall interior.",
     "promptTokens": [
       "summer night",
       "festival",
       "red white yukata",
       "dark obi",
-      "goldfish scooping",
+      "clear goldfish bag",
+      "paper scoop",
+      "holding prize bag",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

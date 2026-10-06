@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc081",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 79,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T12:41:51.452517200+00:00",
   "data": {
     "animaCaption": "Shiki Natsume wakes on her side in the tatami room and lightly closes her fingers around the blanket corner placed over her. Her beige T-shirt and grey shorts remain ordinary travel clothes. The full-length view follows tatami seams from her cushion toward the low table and resting travel notes. A narrow shoji-filtered band crosses the floor and sleeve; cushion compression and blanket-fold shadows clearly ground the reclining posture within the quiet room.",
     "auditRevision": "careful-batch01-2026-08-27",
-    "camera": "和室午睡全身中景",
+    "camera": "和室午睡全身远景",
     "category": "日常",
     "char": "natsume",
     "character": [

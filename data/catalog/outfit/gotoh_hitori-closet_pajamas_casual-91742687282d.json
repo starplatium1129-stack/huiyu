@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/closet_pajamas_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 554,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
@@ -18,7 +18,7 @@
         "headphones",
         "casual_clothes"
       ],
-      "prose": "wearing an oversized baggy pastel t-shirt and loose lounge shorts while wearing large over-ear monitor headphones sitting curled up inside her dimly lit cozy closet recording nook",
+      "prose": "wearing an oversized baggy pastel T-shirt and loose lounge shorts, with large over-ear monitor headphones",
       "styleHint": "moody dim ambient lighting with warm fairy lights and screen glow",
       "isDefault": false,
       "default": false

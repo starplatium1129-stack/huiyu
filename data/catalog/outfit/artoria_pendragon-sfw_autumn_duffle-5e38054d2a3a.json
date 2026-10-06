@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "artoria_pendragon/sfw_autumn_duffle",
+  "revision": 1,
+  "sortOrder": 1114,
+  "createdAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "data": {
+    "characterId": "artoria_pendragon",
+    "outfit": {
+      "id": "sfw_autumn_duffle",
+      "name": "银杏公园牛角扣秋装",
+      "prose": "a navy wool duffle coat with wooden toggles, an ivory knitted scarf, a green-and-navy tartan midi skirt and brown ankle boots",
+      "tokens": [
+        "navy_duffle_coat",
+        "wool_coat",
+        "wooden_toggle_buttons",
+        "long_sleeves",
+        "ivory_knit_scarf",
+        "tartan_midi_skirt",
+        "green_plaid",
+        "brown_ankle_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

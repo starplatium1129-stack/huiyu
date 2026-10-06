@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "sparkle_hsr/sfw_mask_removed_kimono",
+  "revision": 1,
+  "sortOrder": 1140,
+  "createdAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "data": {
+    "characterId": "sparkle_hsr",
+    "outfit": {
+      "id": "sfw_mask_removed_kimono",
+      "name": "摘下面具的红黑和服",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "场景衣装状态",
+      "prose": "a crimson-and-black mini kimono dress with gold floral trim, wide sleeves, dark obi and goldfish-tasselled sash, black thigh-high stockings and an uncovered face",
+      "tokens": [
+        "kimono_dress",
+        "crimson_clothes",
+        "black_clothes",
+        "gold_trim",
+        "wide_sleeves",
+        "obi",
+        "black_thighhighs"
+      ]
+    }
+  }
+}

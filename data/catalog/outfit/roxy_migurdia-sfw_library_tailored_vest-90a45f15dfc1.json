@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "roxy_migurdia/sfw_library_tailored_vest",
+  "revision": 1,
+  "sortOrder": 1126,
+  "createdAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "data": {
+    "characterId": "roxy_migurdia",
+    "outfit": {
+      "id": "sfw_library_tailored_vest",
+      "name": "图书馆藏蓝马甲裤装",
+      "prose": "a tailored navy vest over an ivory long-sleeved cotton blouse, slate-blue straight trousers and brown leather flats",
+      "tokens": [
+        "tailored_navy_vest",
+        "ivory_cotton_blouse",
+        "long_sleeves",
+        "slate_blue_straight_trousers",
+        "brown_leather_flats"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc225",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T12:41:51.452517200+00:00",
   "data": {
     "animaCaption": "Shiki Natsume pauses while sweeping the shrine steps, holding the bamboo broom in one hand and accepting the warm tea can offered from behind with the other. Her white-and-red miko outfit and tied hair remain neat. Stone steps lead toward the torii through the morning mist. Leaf-filtered sunlight touches the can and sleeve, casting soft patches on the stone; reflected light opens the white fabric's shaded folds beneath her restrained glance.",
     "auditRevision": "careful-batch07-2026-08-27",
-    "camera": "中景侧面特写",
+    "camera": "神社石阶侧面中景",
     "category": "祭典・节日",
     "char": "natsume",
     "character": [

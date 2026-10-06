@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "cc_code_geass/beige_trench_sunhat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 715,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "characterId": "cc_code_geass",
     "outfit": {
@@ -17,7 +17,6 @@
         "trench_coat",
         "beige_coat",
         "sunhat",
-        "holding_hat",
         "casual_outfit"
       ]
     }

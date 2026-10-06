@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_sfw_b6_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1604,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "id": "mouri_ran_sfw_b6_02",
     "title": "毛利兰 · 侦探事务所的晚餐",
     "category": "日常生活",
     "characterId": "mouri_ran",
-    "outfitId": "sfw_casual",
+    "outfitId": "sfw_home_blue_apron",
     "description": "毛利侦探事务所的厨房，她系着围裙把味噌汤端上桌，动作熟练；楼下传来父亲的声音，她习以为常地叹了口气——这个家没有她真不行。",
     "location": "毛利侦探事务所厨房",
     "action": "毛利侦探事务所的厨房，她系着围裙把味噌汤端上桌，动作熟练",
@@ -30,7 +30,7 @@
       "evening_light",
       "medium_shot"
     ],
-    "promptProse": "Ran Mouri carries miso soup from the detective office's kitchen to the table, pausing with a familiar small sigh at her father's voice downstairs. Her cream cardigan and pale-blue blouse remain neat above the navy knee-length skirt. The medium portrait includes the pot behind and the apartment doorway beside her. Evening light brightens the bowl's rim and sleeve folds, with mild steam above the soup and soft table shadows awaiting the dish.",
+    "promptProse": "Ran Mouri carries miso soup from the detective office's kitchen to the table, pausing with a familiar small sigh at her father's voice downstairs. A plain blue cooking apron covers her cream cardigan and pale-blue blouse above the navy knee-length skirt. The medium portrait includes the pot behind and the apartment doorway beside her. Evening light brightens the bowl's rim and sleeve folds, with mild steam above the soup and soft table shadows awaiting the dish.",
     "promptTokens": [
       "mouri_ran",
       "Ran Mouri",
@@ -39,7 +39,8 @@
       "miso soup",
       "detective-office kitchen",
       "evening",
-      "medium shot"
+      "medium shot",
+      "blue cooking apron"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_rain_patrol",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 849,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "action": "与你共撑黑伞在雨夜巡逻，微微仰头让伞面覆盖你们两人，制服下摆沾着雨水",
     "adult": false,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium two-shot, back view to three-quarter",
+    "camera": "medium two-shot, three-quarter rear view",
     "category": "风纪日常",
     "characterId": "sorasaki_hina",
     "compositionIntent": "group",
@@ -27,7 +27,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "gehenna_uniform",
-    "promptProse": "Hina and the teacher share one umbrella while patrolling the rain-soaked Gehenna street. Her damp uniform coat sits beside the teacher's wet shoulder as she looks up, the black umbrella held nearer them both. The medium two-shot shifts from rear to three-quarter view, with the street receding beyond. Streetlamps shine along the canopy and reflected paving, separating their coat edges from the darker rainfall behind.",
+    "promptProse": "Hina and the teacher share one umbrella while patrolling the rain-soaked Gehenna street. Her damp uniform coat sits beside the teacher's wet shoulder as she looks up, the black umbrella held nearer them both. Use a static three-quarter rear medium two-shot, with the street receding beyond. Streetlamps shine along the canopy and reflected paving, separating their coat edges from the darker rainfall behind.",
     "promptTokens": [
       "rainy night",
       "Gehenna street",

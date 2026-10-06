@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_shadow_land_duel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 242,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T10:46:28.602196100+00:00",
   "data": {
     "id": "scathach_shadow_land_duel",
     "title": "斯卡哈 · 影之国雾海的弑神双枪·「想从我这里学艺，先接下这一击」",
@@ -50,7 +50,7 @@
     "sampleRating": "SFW",
     "kreaStyleHint": "anime_portrait_sharp",
     "animaStyleHint": "anime_portrait_sharp",
-    "outfitId": "official_lancer_bodysuit",
+    "outfitId": "sfw_purple_duel_suit",
     "coverageTags": [
       "official_default",
       "iconic",

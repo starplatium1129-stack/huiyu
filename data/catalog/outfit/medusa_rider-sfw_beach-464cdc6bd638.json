@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "medusa_rider/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T11:03:26.342226900+00:00",
   "data": {
     "characterId": "medusa_rider",
     "outfit": {
       "id": "sfw_beach",
       "name": "美杜莎 Rider·海滨泳装",
-      "prose": "a black-and-violet swimsuit with a long sheer cover-up, reading glasses and a lemon soda",
+      "prose": "a black-and-violet swimsuit with a long light cover-up and reading glasses",
       "tokens": [
         "black_violet_swimsuit",
         "long_cover_up",
-        "reading_glasses",
-        "lemon_soda",
-        "beach_bench"
+        "reading_glasses"
       ],
       "default": false,
       "isDefault": false

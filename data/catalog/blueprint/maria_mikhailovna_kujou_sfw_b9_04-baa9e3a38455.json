@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 793,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "action": "温室钢琴旁弹完旋律向镜头点头，捧花里藏着给妹妹的花",
     "adult": false,
@@ -25,14 +25,14 @@
     "mood": "把照顾家人的心意写成花嫁",
     "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Maria sits beside the piano in the school greenhouse music room, finishing a short melody before nodding gently toward the camera. Her warm-white bridal gown and soft veil frame light-brown curls, and the bouquet includes a flower favored by her sister. The vertical medium-full view keeps piano keys and gown together. Afternoon light through glass and leaves touches pearl buttons and bouquet petals, shading the keyboard beneath her fingers.",
+    "promptProse": "Maria sits beside the piano in the school greenhouse music room, finishing a short melody before nodding gently toward the camera. Her warm-white bridal gown and soft veil frame light-brown curls. The bouquet rests on the closed upper piano lid beside her, with a flower favored by her sister visible among the stems. The vertical medium-full view keeps piano keys and gown together. Afternoon light through glass and leaves touches pearl buttons and bouquet petals, shading the keyboard beneath her fingers.",
     "promptTokens": [
       "afternoon",
       "greenhouse music room",
       "warm white bridal gown",
       "veil",
       "piano",
-      "bouquet",
+      "bouquet resting on piano lid",
       "medium full shot"
     ],
     "recommendedSize": "1152x1536",

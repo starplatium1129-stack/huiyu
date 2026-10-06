@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kasumigaoka_utaha/sfw_winter_coat_burgundy_scarf",
+  "revision": 1,
+  "sortOrder": 1153,
+  "createdAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "data": {
+    "characterId": "kasumigaoka_utaha",
+    "outfit": {
+      "id": "sfw_winter_coat_burgundy_scarf",
+      "name": "黑羊毛大衣与酒红围巾",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "a black wool coat with a burgundy wool scarf, dark tights and leather ankle boots, long black hair loose",
+      "tokens": [
+        "black_coat",
+        "wool_coat",
+        "burgundy_scarf",
+        "black_tights",
+        "ankle_boots",
+        "hair_down"
+      ]
+    }
+  }
+}

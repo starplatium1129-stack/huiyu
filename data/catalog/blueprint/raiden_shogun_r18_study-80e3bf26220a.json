@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_study",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T10:46:28.602196100+00:00",
   "data": {
     "id": "raiden_shogun_r18_study",
     "title": "雷电将军 · 书斋墨夜",
@@ -118,7 +118,7 @@
       "parted_lips",
       "loving_gaze"
     ],
-    "nsfwProse": "Reclining on her side across silk floor cushions with her sheer violet ceremonial robe loosened to her waist, Raiden Ei rests upon one elbow while caressing her intimate center beneath the fabric, faint electric sparks flickering over her bare breasts and flushed cheeks.",
+    "nsfwProse": "Along the near cushion edge, a decree scroll and closed inkstone sit on a low wooden desk. Paper lanterns above the left side illuminate the scroll ribs and desk lip, casting diagonal brush-holder shadows across the floorboards. Shelves of bound documents recede into the study's midnight shade. Raiden Ei is an adult woman, age twenty or older.",
     "adultArtistHint": "@anmi",
     "outfitId": "shogun_robes",
     "sampleRating": "R18"

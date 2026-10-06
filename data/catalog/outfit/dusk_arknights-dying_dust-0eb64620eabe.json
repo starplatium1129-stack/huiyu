@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "dusk_arknights/dying_dust",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 322,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfit": {
@@ -12,15 +12,14 @@
       "id": "dying_dust",
       "isDefault": false,
       "name": "染尘烟（新春旗袍）",
-      "prose": "a black and gold high-slit short qipao with a black fur-trimmed capelet, black pantyhose, black heels and a long thin smoking pipe",
+      "prose": "a black and gold high-slit short qipao with a black fur-trimmed capelet, black pantyhose and black heels",
       "tokens": [
         "qipao",
         "black_clothes",
         "gold_trim",
         "fur_trim",
         "black_pantyhose",
-        "high_heels",
-        "smoking_pipe"
+        "high_heels"
       ]
     }
   }

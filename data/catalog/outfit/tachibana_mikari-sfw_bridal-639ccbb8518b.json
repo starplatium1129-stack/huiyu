@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "tachibana_mikari/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 964,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "tachibana_mikari",
     "outfit": {
       "id": "sfw_bridal",
       "name": "橘美花莉·圣洁花嫁",
-      "prose": "a white-and-gold bridal cosplay gown with a layered veil, satin corset, gold ribbons and a fantasy bouquet",
+      "prose": "a white-and-gold bridal cosplay gown with a layered veil, satin corset and gold ribbons",
       "tokens": [
         "wedding_dress",
         "white_gold_gown",
         "layered_veil",
-        "gold_ribbons",
-        "fantasy_bouquet"
+        "gold_ribbons"
       ],
       "default": false,
       "isDefault": false

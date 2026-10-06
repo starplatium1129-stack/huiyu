@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "frieren/sfw_sage_city_knit",
+  "revision": 1,
+  "sortOrder": 1113,
+  "createdAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "data": {
+    "characterId": "frieren",
+    "outfit": {
+      "id": "sfw_sage_city_knit",
+      "name": "鼠尾草绿都市针织装",
+      "prose": "a sage-green button cardigan over an oatmeal high-neck knit top, charcoal straight-leg trousers and soft brown leather flats",
+      "tokens": [
+        "sage_green_cardigan",
+        "button_cardigan",
+        "oatmeal_knit_top",
+        "high_neck",
+        "long_sleeves",
+        "charcoal_trousers",
+        "straight_leg_pants",
+        "brown_flats"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

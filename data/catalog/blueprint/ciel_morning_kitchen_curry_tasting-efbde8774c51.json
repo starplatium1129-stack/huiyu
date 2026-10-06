@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_morning_kitchen_curry_tasting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1330,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "action": "系着围裙吹着勺中热咖喱递向前方，稍微被烫到吐舌头轻笑，眼眸含情",
     "camera": "cowboy shot, eye level, warm domestic view",
@@ -21,8 +21,8 @@
     "location": "香气四溢、阳光明媚的公寓现代厨房灶台前",
     "mood": "温馨贤惠",
     "negativeTokens": [],
-    "outfitId": "casual_knit_sweater_jeans",
-    "promptProse": "Ciel blows on a spoonful of freshly made curry in her apartment kitchen, then offers it toward her companion with an eager smile behind her glasses. Her cream turtleneck and dark-blue jeans remain clear beside the stove. The eye-level cowboy framing includes the pot, clean counter and window behind. Morning sun lights her short blue hair and spoon edge, with warm curry reflections beneath the bowl and soft pot shadows on the worktop.",
+    "outfitId": "sfw_curry_lace_apron",
+    "promptProse": "Ciel blows on a spoonful of freshly made curry in her apartment kitchen, then offers it toward her companion with an eager smile behind her glasses. A white lace-trimmed apron covers her cream turtleneck above dark-blue jeans beside the stove. The eye-level cowboy framing includes the pot, clean counter and window behind. Morning sun lights her short blue hair and spoon edge, with warm curry reflections beneath the bowl and soft pot shadows on the worktop.",
     "promptTokens": [
       "Ciel",
       "cream turtleneck",
@@ -30,7 +30,8 @@
       "curry spoon",
       "kitchen",
       "morning",
-      "cowboy shot"
+      "cowboy shot",
+      "white lace apron"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

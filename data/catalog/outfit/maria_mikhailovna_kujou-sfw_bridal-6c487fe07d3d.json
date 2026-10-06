@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "maria_mikhailovna_kujou/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 456,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "maria_mikhailovna_kujou",
     "outfit": {
       "id": "sfw_bridal",
       "name": "玛夏·圣洁花嫁",
-      "prose": "a warm white bridal gown with a soft veil, light-brown ribbon, pearl buttons and a bouquet of family flowers",
+      "prose": "a warm white bridal gown with a soft veil, light-brown ribbon and pearl buttons",
       "tokens": [
         "wedding_dress",
         "warm_white_gown",

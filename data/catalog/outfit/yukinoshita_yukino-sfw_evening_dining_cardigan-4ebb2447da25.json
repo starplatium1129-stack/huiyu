@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_yukino/sfw_evening_dining_cardigan",
+  "revision": 1,
+  "sortOrder": 1124,
+  "createdAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "data": {
+    "characterId": "yukinoshita_yukino",
+    "outfit": {
+      "id": "sfw_evening_dining_cardigan",
+      "name": "晚餐青灰开衫裙装",
+      "prose": "a blue-grey button cardigan over a white cotton blouse, a charcoal pleated midi skirt, opaque navy tights and simple black loafers",
+      "tokens": [
+        "blue_grey_cardigan",
+        "white_cotton_blouse",
+        "long_sleeves",
+        "charcoal_pleated_midi_skirt",
+        "opaque_navy_tights",
+        "black_loafers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

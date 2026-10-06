@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_riverbank_evening_walk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 843,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "action": "提着草帽散步，晚风拂过裙摆",
     "adult": false,
@@ -21,7 +21,7 @@
     "location": "小镇河畔",
     "mood": "gentle",
     "negativeTokens": [],
-    "outfitId": "town_summer_sundress",
+    "outfitId": "sfw_riverbank_sundress_barefoot",
     "promptProse": "Cecilia walks barefoot through short grass on the riverbank in her light floral sundress, carrying her straw hat before turning to take Lawrence's hand. The medium view includes their touching hands and the grassy slope continuing to the river behind. Warm sunset lights her skirt edge and gentle face, while the water reflects the evening sky and soft grass shadows lie across her feet.",
     "promptTokens": [
       "sunset",

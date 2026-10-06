@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "tatsumaki/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 901,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "tatsumaki",
     "outfit": {
       "id": "sfw_beach",
       "name": "战栗的龙卷·海滨泳装",
-      "prose": "a black-and-emerald swimsuit with a short wrap skirt, lime parasol and chilled citrus soda",
+      "prose": "a black-and-emerald swimsuit with a short wrap skirt",
       "tokens": [
         "emerald_swimsuit",
         "black_swimsuit",
-        "wrap_skirt",
-        "lime_parasol",
-        "citrus_soda"
+        "wrap_skirt"
       ],
       "default": false,
       "isDefault": false

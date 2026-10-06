@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/reef_rest_barefoot",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 356,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
@@ -12,13 +12,12 @@
       "id": "reef_rest_barefoot",
       "isDefault": false,
       "name": "礁石小憩·赤足战装",
-      "prose": "her black high-cut sleeveless bodysuit with red accents, the cropped jacket set aside beside the reef, barefoot",
+      "prose": "her black high-cut sleeveless bodysuit with red accents, barefoot",
       "tokens": [
         "bodysuit",
         "black_clothes",
         "red_clothes",
-        "barefoot",
-        "greatsword"
+        "barefoot"
       ]
     }
   }

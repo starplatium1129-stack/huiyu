@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/swimsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 489,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
@@ -12,13 +12,12 @@
       "id": "swimsuit",
       "isDefault": false,
       "name": "夏日泳装 / 死库水",
-      "prose": "summer swimsuit, dark navy blue two-piece swimsuit with white ruffled trim, swim ring with cute Gehenna devil motif, sandals, relaxed beach posture",
+      "prose": "a dark navy-blue two-piece swimsuit with white ruffled trim and sandals",
       "tokens": [
         "swimsuit",
         "two-piece_swimsuit",
         "navy_swimsuit",
         "frills",
-        "swim_ring",
         "sandals"
       ]
     }

@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "caren_hortensia/bridal_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 117,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T10:32:51.185026700+00:00",
   "data": {
     "characterId": "caren_hortensia",
     "outfit": {
       "id": "bridal_dress",
       "name": "破晓圣坛圣骸布花嫁婚纱",
-      "prose": "an opaque floor-length white off-shoulder formal bridal gown, with the golden shroud arranged as a veil and trailing train, holding white lilies",
+      "prose": "an opaque floor-length white off-shoulder formal bridal gown, with a golden veil and trailing train",
       "tokens": [
         "wedding_dress",
         "bridal_veil",
         "off_shoulder",
-        "bouquet",
-        "lily",
         "jewelry"
       ],
       "isDefault": false,

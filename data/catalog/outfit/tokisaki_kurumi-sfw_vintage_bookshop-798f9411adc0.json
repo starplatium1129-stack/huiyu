@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "tokisaki_kurumi/sfw_vintage_bookshop",
+  "revision": 1,
+  "sortOrder": 1112,
+  "createdAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "data": {
+    "characterId": "tokisaki_kurumi",
+    "outfit": {
+      "id": "sfw_vintage_bookshop",
+      "name": "旧书店酒红百褶复古装",
+      "prose": "a black high-neck blouse with ivory cuffs, a burgundy pleated midi skirt, opaque black tights and lace-up ankle boots",
+      "tokens": [
+        "black_blouse",
+        "high_collar",
+        "ivory_cuffs",
+        "long_sleeves",
+        "burgundy_skirt",
+        "pleated_midi_skirt",
+        "opaque_black_tights",
+        "lace_up_ankle_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "fiona_frost/tennis_sportswear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 467,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "fiona_frost",
     "outfit": {
@@ -15,10 +15,9 @@
         "tennis_uniform",
         "pleated_skirt",
         "wristbands",
-        "tennis_racket",
         "athletic"
       ],
-      "prose": "wearing a white sleeveless tennis top with a pleated skirt and wristbands, holding her tournament racket during the underground Campbelldon match",
+      "prose": "wearing a white sleeveless tennis top with a pleated skirt and wristbands",
       "styleHint": "dynamic high-speed tennis court drama",
       "isDefault": false,
       "default": false

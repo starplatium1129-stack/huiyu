@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yuria_rainy_car_interior_cigarette_talk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1202,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "id": "yuria_rainy_car_interior_cigarette_talk",
     "title": "春寺由梨亚 · 雨夜车厢的密语与摘镜揉眸",
     "category": "私密交心",
     "characterId": "harudera_yuria",
-    "outfitId": "executive_suit",
+    "outfitId": "sfw_executive_glasses_removed",
     "coverageTags": [
       "rain"
     ],

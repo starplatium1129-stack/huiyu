@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "tsukatsuki_rio/sfw_private_pool_onepiece",
+  "revision": 1,
+  "sortOrder": 1137,
+  "createdAt": "2026-10-06T13:54:56.677548700+00:00",
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
+  "data": {
+    "characterId": "tsukatsuki_rio",
+    "outfit": {
+      "id": "sfw_private_pool_onepiece",
+      "name": "私人泳池黑色连体泳装",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "a sleek black one-piece swimsuit with narrow red piping and a light sheer black cover-up",
+      "tokens": [
+        "one_piece_swimsuit",
+        "black_swimsuit",
+        "red_trim",
+        "light_cover_up",
+        "sheer_black_cover_up"
+      ]
+    }
+  }
+}

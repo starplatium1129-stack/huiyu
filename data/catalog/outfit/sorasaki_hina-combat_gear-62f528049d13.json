@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/combat_gear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 488,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "combat_gear",
       "isDefault": false,
       "name": "战术风纪装",
-      "prose": "tactical disciplinary combat gear with a fitted black tactical jacket, combat webbing harness, ammo pouches, holster belt, fingerless combat gloves, tactical combat boots, MG42 machine gun aesthetic",
+      "prose": "tactical disciplinary combat gear with a fitted black tactical jacket, combat webbing harness, ammo pouches, holster belt, fingerless combat gloves and tactical combat boots",
       "tokens": [
         "tactical_gear",
         "black_jacket",

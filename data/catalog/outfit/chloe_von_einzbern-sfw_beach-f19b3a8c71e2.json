@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "chloe_von_einzbern/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 167,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T11:03:26.342226900+00:00",
   "data": {
     "characterId": "chloe_von_einzbern",
     "outfit": {
       "id": "sfw_beach",
       "name": "克洛伊·海滨泳装",
-      "prose": "a white-and-pink ruffled swimsuit with a short beach cape, ribbon sandals and a double-scoop ice cream",
+      "prose": "a white-and-pink ruffled swimsuit with a short beach cape and ribbon sandals",
       "tokens": [
         "ruffled_swimsuit",
         "pink_white_swimsuit",
         "beach_cape",
-        "ribbon_sandals",
-        "ice_cream"
+        "ribbon_sandals"
       ],
       "default": false,
       "isDefault": false

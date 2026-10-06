@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "ereshkigal_fate/sfw_underworld_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T11:03:26.342226900+00:00",
   "data": {
     "characterId": "ereshkigal_fate",
     "outfit": {
       "id": "sfw_underworld_bridal",
       "name": "冥界烛光纯白花嫁",
-      "prose": "an opaque floor-length white wedding gown with a long veil and golden tiara, holding a small white-flower bouquet",
+      "prose": "an opaque floor-length white wedding gown with a long veil and golden tiara",
       "tokens": [
         "white_wedding_gown",
         "long_veil",
-        "golden_tiara",
-        "white_flower_bouquet"
+        "golden_tiara"
       ],
       "isDefault": false,
       "default": false,

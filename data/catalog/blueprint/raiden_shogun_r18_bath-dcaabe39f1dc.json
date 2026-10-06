@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_bath",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T10:46:28.602196100+00:00",
   "data": {
     "id": "raiden_shogun_r18_bath",
     "title": "雷电将军 · 天守阁汤殿",
@@ -117,7 +117,7 @@
       "parted_lips",
       "dreamy_eyes"
     ],
-    "nsfwProse": "Soaking completely nude inside the steaming Tenshukaku stone bath with mist rising around her, Raiden Ei rests against the smooth rock edge while cupping her wet buoyant breasts, warm lantern reflections glinting across her flushed, damp skin and parted lips.",
+    "nsfwProse": "Near the stone bath rim, a cedar wash bucket sits beside a folded towel on the dry ledge. A violet lantern hangs to the right of the receding cedar screens, casting small reflections across the bucket bands and water ripples. Steam softens the far screen while the near carved stone edge stays clear. Raiden Shogun is an adult woman.",
     "adultArtistHint": "@tiv",
     "outfitId": "shogun_robes",
     "sampleRating": "R18"

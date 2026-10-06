@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kurokawa_akane/sayahime_stage",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 529,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "characterId": "kurokawa_akane",
     "outfit": {
@@ -12,11 +12,9 @@
       "id": "sayahime_stage",
       "isDefault": false,
       "name": "舞台剧·纱姬造型",
-      "prose": "her Sayahime stage look from the Tokyo Blade stage play, wielding a sword with intense star-lit eyes",
+      "prose": "her long-sleeved Sayahime stage costume from the Tokyo Blade stage play",
       "tokens": [
         "sayahime_(tokyo_blade)",
-        "star_eyes",
-        "sword",
         "long_sleeves",
         "stage_costume"
       ]

@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc070",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 68,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:41:51.452517200+00:00",
   "data": {
-    "animaCaption": "Before a floor-to-ceiling window at dusk, Ayachi Nene in a thin sheer silk nightgown holds a watering can beside potted flowers, her bare legs and figure silhouetted by the golden sunset backlight through the light curtain. Realizing the fabric is too translucent in the evening glow, she reaches to draw the curtain shut with a shy, flustered blush, her ahoge trembling.",
+    "animaCaption": "Beside the apartment's tall window at dusk, Ayachi Nene holds the watering can low in her right hand while her left draws the curtain across the glass. Frame her from the waist up, keeping the can handle, curtain folds and shy backward glance readable. Potted flowers line the sill beneath the distant city skyline; the curtain overlaps that view as it closes. Sunset through the uncovered glass outlines her hair and silk nightdress, while the drawn fabric softens the light across her face. Leaf shadows fall onto the sill and overlapping curtain folds darken toward the room, preserving the window's depth around her clothed silhouette.",
     "auditRevision": "careful-batch11-2026-08-27",
-    "camera": "纱帘后的半身剪影",
+    "camera": "窗边浇花与拉帘的半身剪影",
     "category": "恋爱/After_Story",
     "char": "nene",
     "character": [
@@ -20,8 +20,8 @@
     "location": "同居公寓落地窗边",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, sunset, golden_hour, bare_legs, standing, barefoot, bedroom, on_bed, blush, shy_smile, bokeh, collarbone, slender_waist, full_body, backlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, 3d_render, photorealistic, 2girls, stockings, thighhighs, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, ayachi_nene, silk nightdress, standing beside window, holding watering can, drawing curtain, potted flowers, apartment window, city skyline, dusk, silhouette, backlight, medium shot",
     "rating": "All",
     "season": "夏",
     "story": "【成年 After Story · 傍晚窗边的剪影】成年后的夏日黄昏，宁宁刚冲完凉，赤足站在公寓窗边给花浇水，逆光将身影映在纱帘上。听见你回家，她才意识到布料在夕阳下过于通透，慌忙拉拢窗帘。你从身后帮忙，她红着脸靠进怀里——「不准故意站在光后面看……先把窗帘关好，然后再让我抱一下。」",
@@ -33,8 +33,8 @@
       "floor_window",
       "watering_can",
       "sunset_backlight",
-      "full_body",
-      "barefoot"
+      "barefoot",
+      "medium_shot"
     ],
     "time": "黄昏",
     "timeOfDay": "sunset",
@@ -43,6 +43,7 @@
       "展示图",
       "头像"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "recommendedSize": "832x1216"
   }
 }

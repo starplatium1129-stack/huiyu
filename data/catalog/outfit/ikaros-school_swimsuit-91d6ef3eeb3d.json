@@ -1,24 +1,22 @@
 {
   "kind": "outfit",
   "id": "ikaros/school_swimsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 662,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "ikaros",
     "outfit": {
       "id": "school_swimsuit",
       "name": "空美中学生死库水泳装",
-      "prose": "Japanese junior high school competition swimsuit: a form-fitting dark navy-blue one-piece sukumizu with white fabric name tag stitched over her ample chest, water droplets glistening over smooth skin, large feathered wings folded gently behind her, holding a green striped round watermelon with both hands",
+      "prose": "a navy-blue one-piece competition swimsuit with a white name patch, broad white feathered wings folded behind",
       "tokens": [
         "swimsuit",
         "school_swimsuit",
         "one-piece_swimsuit",
         "navy_blue_swimsuit",
         "wet_skin",
-        "holding_watermelon",
-        "watermelon",
         "angel_wings",
         "white_wings"
       ],

@@ -1,24 +1,22 @@
 {
   "kind": "outfit",
   "id": "cc_code_geass/casual_oversized_sweater",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 712,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "characterId": "cc_code_geass",
     "outfit": {
       "id": "casual_oversized_sweater",
       "name": "居家米白大号粗线毛衣",
-      "prose": "a cozy oversized off-white knit sweater slipping down one delicate shoulder, short denim shorts barely visible beneath the hem, clutching a plush Cheese-kun plush toy in her lap",
+      "prose": "a cozy oversized off-white knit sweater slipping down one shoulder, short denim shorts beneath the hem, barefoot",
       "tokens": [
         "oversized_sweater",
         "knit_sweater",
         "off-shoulder",
         "bare_shoulders",
         "bare_legs",
-        "holding_plushie",
-        "cheese-kun",
         "barefoot"
       ]
     }

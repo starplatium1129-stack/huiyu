@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "golden_darkness/casual_overalls",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 667,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "golden_darkness",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "casual_overalls",
       "isDefault": false,
       "name": "假日休闲牛仔背带短裤",
-      "prose": "casual weekend streetwear: cute faded blue denim overall shorts worn over a short-sleeved striped yellow and white t-shirt, canvas sneakers, holding a fresh book under one arm with an aloof yet charming expression",
+      "prose": "faded-blue denim overall shorts over a yellow-and-white striped short-sleeve T-shirt, with white canvas sneakers",
       "tokens": [
         "casual",
         "overalls",

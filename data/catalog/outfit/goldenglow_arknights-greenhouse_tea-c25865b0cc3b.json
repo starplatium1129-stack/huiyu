@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "goldenglow_arknights/greenhouse_tea",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 342,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
   "data": {
     "characterId": "goldenglow_arknights",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "greenhouse_tea",
       "isDefault": false,
       "name": "花房茶话会（三丽鸥联动）",
-      "prose": "a cream pink and mint lolita tea dress with frills, pink ribbon hairbows and Mary Jane shoes, in a greenhouse tea party setting",
+      "prose": "a cream pink and mint lolita tea dress with frills, pink ribbon hairbows and Mary Jane shoes",
       "tokens": [
         "lolita",
         "dress",

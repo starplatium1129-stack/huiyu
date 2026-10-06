@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/moon_spacesuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 603,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "moon_spacesuit",
       "isDefault": false,
       "name": "月面愿景轻量宇航服",
-      "prose": "a futuristic lunar explorer flight suit: form-fitting white and silver thermo-regulated spacesuit with illuminated cyan telemetry strips, clear bubble helmet rested under one arm, umbilical connector on her hip, and moon dust boots standing on lunar regolith",
+      "prose": "a white-and-silver lunar explorer suit with illuminated cyan telemetry strips, an umbilical connector at the hip and moon-dust boots",
       "tokens": [
         "spacesuit",
         "astronaut",

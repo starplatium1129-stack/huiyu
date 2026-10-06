@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "sakurajima_mai/sfw_bookshop_corduroy",
+  "revision": 1,
+  "sortOrder": 1121,
+  "createdAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "data": {
+    "characterId": "sakurajima_mai",
+    "outfit": {
+      "id": "sfw_bookshop_corduroy",
+      "name": "书店茶棕灯芯绒裤装",
+      "prose": "a tea-brown corduroy jacket over an ivory fine-knit turtleneck, navy straight-leg trousers and brown loafers",
+      "tokens": [
+        "brown_corduroy_jacket",
+        "ivory_turtleneck",
+        "long_sleeves",
+        "navy_straight_leg_trousers",
+        "brown_loafers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

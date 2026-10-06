@@ -1,23 +1,21 @@
 {
   "kind": "outfit",
   "id": "komine_sachi/shark_pajamas",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 650,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "komine_sachi",
     "outfit": {
       "id": "shark_pajamas",
       "name": "可爱玩趣鲨鱼连体睡衣",
-      "prose": "adorable and cozy loungewear: an oversized pastel-blue plush shark kigurumi pajama onesie with white belly panel, shark hood with soft felt teeth worn down, hugging a giant grey shark plushie with both arms",
+      "prose": "an oversized pastel-blue plush shark onesie with a white belly panel and a soft felt-toothed hood worn down",
       "tokens": [
         "pajamas",
         "onesie",
         "kigurumi",
         "shark_hoodie",
-        "holding_plushie",
-        "stuffed_toy",
         "cute",
         "cozy"
       ],

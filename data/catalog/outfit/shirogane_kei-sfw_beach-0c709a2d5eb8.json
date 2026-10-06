@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 784,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
@@ -12,13 +12,11 @@
       "id": "sfw_beach",
       "isDefault": false,
       "name": "白银圭·海滨泳装",
-      "prose": "a slate-blue swimsuit with a light windbreaker, black headband and a chilled canned drink",
+      "prose": "a slate-blue swimsuit with a light windbreaker and black headband",
       "tokens": [
         "slate_blue_swimsuit",
         "light_windbreaker",
-        "black_headband",
-        "canned_drink",
-        "seaside_vending_machine"
+        "black_headband"
       ]
     }
   }

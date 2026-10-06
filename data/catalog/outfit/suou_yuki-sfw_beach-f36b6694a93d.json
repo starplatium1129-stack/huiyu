@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 450,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "sfw_beach",
       "name": "周防有希·海滨泳装",
-      "prose": "a violet-and-white swimsuit with a short yukata jacket, ribbon hair tie and a star festival mask",
+      "prose": "a violet-and-white swimsuit with a short yukata jacket and ribbon hair tie",
       "tokens": [
         "violet_white_swimsuit",
         "short_yukata_jacket",
         "ribbon_hair_tie",
-        "star_mask",
         "festival_bag"
       ],
       "default": false,

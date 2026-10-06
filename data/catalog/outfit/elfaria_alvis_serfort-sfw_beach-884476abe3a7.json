@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "elfaria_alvis_serfort/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 972,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "elfaria_alvis_serfort",
     "outfit": {
       "id": "sfw_beach",
       "name": "艾尔菲利亚·海滨泳装",
-      "prose": "an ice-blue swimsuit with a white shoulder wrap, crystal hair clasp and a chilled fruit drink",
+      "prose": "an ice-blue swimsuit with a white shoulder wrap and crystal hair clasp",
       "tokens": [
         "ice_blue_swimsuit",
         "white_shoulder_wrap",
-        "crystal_hair_clasp",
-        "fruit_drink",
-        "ice_bird"
+        "crystal_hair_clasp"
       ],
       "default": false,
       "isDefault": false

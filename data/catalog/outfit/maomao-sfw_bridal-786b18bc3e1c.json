@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "maomao/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 985,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "maomao",
     "outfit": {
       "id": "sfw_bridal",
       "name": "猫猫·圣洁花嫁",
-      "prose": "a pale green bridal robe with botanical embroidery, a cream veil, practical hair bun and a bouquet of safe medicinal flowers",
+      "prose": "a pale-green bridal robe with botanical embroidery, a cream veil and a practical hair bun",
       "tokens": [
         "wedding_robe",
         "pale_green_gown",
         "botanical_embroidery",
-        "cream_veil",
-        "medicinal_bouquet"
+        "cream_veil"
       ],
       "default": false,
       "isDefault": false

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/playful_nightgown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 577,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
       "id": "playful_nightgown",
       "name": "深红露肩真丝小睡衣",
-      "prose": "a short glossy crimson silk nightgown with off-shoulder spaghetti straps, a flirty hemline brushing her bare thighs, and a plush fox-tail cushion hugged in her arms",
+      "prose": "a short glossy crimson silk nightgown with off-shoulder thin straps and a relaxed hem",
       "tokens": [
         "nightgown",
         "red_nightgown",

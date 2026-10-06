@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "shokuhou_misaki/sfw_honey_tea_cardigan",
+  "revision": 1,
+  "sortOrder": 1125,
+  "createdAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "data": {
+    "characterId": "shokuhou_misaki",
+    "outfit": {
+      "id": "sfw_honey_tea_cardigan",
+      "name": "奶茶蜂蜜黄开衫便装",
+      "prose": "a honey-yellow button cardigan over an ivory high-neck cotton top, a taupe pleated midi skirt and white loafers, with her white spider-web-print gloves retained",
+      "tokens": [
+        "honey_yellow_cardigan",
+        "ivory_high_neck_top",
+        "long_sleeves",
+        "taupe_pleated_midi_skirt",
+        "white_loafers",
+        "white_spider_web_gloves"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

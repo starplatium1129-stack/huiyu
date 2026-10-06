@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc094",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T12:41:51.452517200+00:00",
   "data": {
     "animaCaption": "Ayachi Nene completes a small turn before the bridal fitting mirror, lifting the floor-length skirt with one hand and offering the other toward the viewer. Her lined lace bodice remains opaque above white shoes, and relieved happiness brightens her eyes. The mirror and fitting-room edge overlap behind her. Soft window light catches the moving hem and lace ridges, with gentle skirt-fold shadows and clear foot contact anchoring the full-length view.",
     "auditRevision": "careful-batch14-2026-08-27",
-    "camera": "婚纱裙摆完整可见的全身中景",
+    "camera": "婚纱裙摆完整可见的全身远景",
     "category": "恋爱/After_Story",
     "char": "nene",
     "character": [

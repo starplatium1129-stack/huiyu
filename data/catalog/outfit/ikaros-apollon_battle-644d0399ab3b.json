@@ -1,24 +1,21 @@
 {
   "kind": "outfit",
   "id": "ikaros/apollon_battle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 660,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "ikaros",
     "outfit": {
       "id": "apollon_battle",
       "name": "空之女王·终极决战武装",
-      "prose": "the fearsome Uranus Queen battle mode: sleek metallic mechanical breastplate armor, glowing crimson energy thruster wings replacing her feathers, variable combat visor over her left eye, wielding the massive golden energy composite bow Apollon nocked with an arrow of pure light",
+      "prose": "Uranus Queen battle armor: a metallic mechanical breastplate, crimson energy-thruster wings and a variable combat visor over the left eye",
       "tokens": [
         "armor",
         "breastplate",
         "mechanical_wings",
         "energy_wings",
-        "energy_bow",
-        "holding_bow",
-        "glowing_weapons",
         "combat_visor",
         "metal_collar",
         "sci-fi"

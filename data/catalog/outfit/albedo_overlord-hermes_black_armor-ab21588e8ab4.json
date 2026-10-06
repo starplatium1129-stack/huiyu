@@ -1,23 +1,21 @@
 {
   "kind": "outfit",
   "id": "albedo_overlord/hermes_black_armor",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 706,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "characterId": "albedo_overlord",
     "outfit": {
       "id": "hermes_black_armor",
       "name": "全覆式三层纯黑重铠赫尔墨斯",
-      "prose": "her imposing full-body black plate armor Hermes Trismegistus with spiked pauldrons, glowing purple crevices, horned helmet retracted to reveal her face, holding a massive dark Bardiche battleaxe",
+      "prose": "her imposing full-body black plate armor Hermes Trismegistus with spiked pauldrons, glowing purple crevices and a horned helmet retracted to reveal her face",
       "tokens": [
         "black_armor",
         "full_armor",
         "plate_armor",
         "pauldrons",
-        "holding_axe",
-        "battle_axe",
         "curved_horns",
         "black_wings"
       ]

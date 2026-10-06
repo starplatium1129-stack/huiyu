@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "togawa_sakiko/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1015,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "togawa_sakiko",
     "outfit": {
       "id": "sfw_beach",
       "name": "丰川祥子·海滨泳装",
-      "prose": "a deep indigo swimsuit with a black sheer overshirt, ribbon hair ties and a strand of blue stage lights",
+      "prose": "a deep-indigo swimsuit with a black sheer overshirt and ribbon hair ties",
       "tokens": [
         "indigo_swimsuit",
         "black_overshirt",
-        "ribbon_hair_ties",
-        "blue_string_lights",
-        "seaside_stage"
+        "ribbon_hair_ties"
       ],
       "default": false,
       "isDefault": false

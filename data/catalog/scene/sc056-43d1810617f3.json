@@ -1,13 +1,13 @@
 {
   "kind": "scene",
   "id": "sc056",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T12:41:51.452517200+00:00",
   "data": {
     "animaCaption": "Ayachi Nene steps from the shallows toward the sand in her swimsuit and light cover-up, looking back over one shoulder. The full-length composition keeps both feet visible among the small breaking waves. The shoreline curves behind her and divides the white beach from the blue sea. Afternoon sunlight catches the damp hair and fabric edges, while moving water reflections soften the shaded side and a short connected shadow anchors her step.",
-    "camera": "全身回眸中景",
+    "camera": "全身回眸远景",
     "category": "旅行",
     "char": "nene",
     "character": [

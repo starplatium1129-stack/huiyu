@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "tomotake_yoshino/summer_yukata",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 628,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "tomotake_yoshino",
     "outfit": {
@@ -12,13 +12,12 @@
       "id": "summer_yukata",
       "isDefault": false,
       "name": "重樱风雅夏夜浴衣",
-      "prose": "a dignified midnight navy silk summer yukata adorned with delicate wisteria and cherry blossom patterns, contrasting pastel lilac obi sash, wooden geta sandals, and a lace folding fan held gently in one hand",
+      "prose": "a midnight-navy summer yukata with wisteria and cherry-blossom patterns, lilac obi and wooden geta sandals",
       "tokens": [
         "yukata",
         "japanese_clothes",
         "navy_yukata",
         "obi",
-        "folding_fan",
         "geta",
         "hair_flower",
         "traditional_japanese"

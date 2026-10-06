@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kurokawa_akane/daily_glasses",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 530,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "characterId": "kurokawa_akane",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "daily_glasses",
       "isDefault": false,
       "name": "日常常服（眼镜）",
-      "prose": "a relaxed everyday outfit with glasses and a soft casual styling",
+      "prose": "a relaxed white cotton shirt and blue skirt, fine-framed glasses and comfortable flat shoes",
       "tokens": [
         "glasses",
         "casual",

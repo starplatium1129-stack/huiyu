@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "asuka_langley/sfw_yellow_beach_onepiece",
+  "revision": 1,
+  "sortOrder": 1138,
+  "createdAt": "2026-10-06T13:54:56.677548700+00:00",
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
+  "data": {
+    "characterId": "asuka_langley",
+    "outfit": {
+      "id": "sfw_yellow_beach_onepiece",
+      "name": "晴滩黄色连体泳装",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "an opaque bright-yellow one-piece swimsuit with narrow shoulder straps, red neural-interface hair clips, barefoot",
+      "tokens": [
+        "one_piece_swimsuit",
+        "yellow_swimsuit",
+        "opaque_swimsuit",
+        "shoulder_straps",
+        "red_hair_clips",
+        "barefoot"
+      ]
+    }
+  }
+}

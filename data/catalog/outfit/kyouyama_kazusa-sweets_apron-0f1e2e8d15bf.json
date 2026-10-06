@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kyouyama_kazusa/sweets_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 494,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "characterId": "kyouyama_kazusa",
     "outfit": {
@@ -12,16 +12,14 @@
       "id": "sweets_apron",
       "isDefault": false,
       "name": "甜点部围裙",
-      "prose": "a white sweets club apron worn over the Trinity uniform, with flour dust, a small whisk, and the cat-ear hood pulled down behind her shoulders",
+      "prose": "a white sweets-club apron worn over the Trinity uniform, with light flour smudges and the cat-ear-shaped hood resting behind her shoulders",
       "tokens": [
         "apron",
         "white_apron",
         "sweets",
         "flour",
-        "whisk",
         "hood",
-        "cat_ears",
-        "cooking"
+        "cat_ears"
       ]
     }
   }

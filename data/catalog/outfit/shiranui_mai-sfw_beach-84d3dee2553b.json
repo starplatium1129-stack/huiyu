@@ -1,22 +1,19 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1008,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
       "id": "sfw_beach",
       "name": "不知火舞·海滨泳装",
-      "prose": "a crimson athletic swimsuit with a white wrap shirt, folding fan and red ribbon sandals",
+      "prose": "a crimson athletic swimsuit with a white wrap shirt, barefoot",
       "tokens": [
         "crimson_swimsuit",
-        "white_wrap_shirt",
-        "folding_fan",
-        "red_ribbon_sandals",
-        "wooden_sea_deck"
+        "white_wrap_shirt"
       ],
       "default": false,
       "isDefault": false

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_bunker_corridor_pod_inspection",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1109,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "id": "yorha_2b_bunker_corridor_pod_inspection",
     "title": "2B · 残破大教堂的纯白誓约花嫁",
     "category": "纯白誓约",
     "characterId": "yorha_2b",
-    "outfitId": "evening_gown",
+    "outfitId": "sfw_lunar_tear_bridal_white",
     "coverageTags": [
       "iconic"
     ],
@@ -34,18 +34,29 @@
       "blue_eyes",
       "gentle_smile"
     ],
-    "promptProse": "2B stands near the ruined cathedral altar in her current black velvet formal gown and opera gloves, blindfold removed, a sheer veil moving above a bouquet of white Lunar Tears in both hands. Her blue eyes soften with a rare smile. The medium-full view keeps ivy and broken stained glass behind. Golden light through the damaged windows shines on the white flowers and veil, with colored reflections across the darker velvet.",
+    "promptProse": "2B stands near the ruined cathedral altar in a white off-shoulder lace bridal gown and light veil, her blindfold removed. Both white-gloved hands support the bouquet of white Lunar Tears beneath a rare gentle smile. The medium-full view includes the flowing train, ivy and broken stained glass behind her. Golden window light catches the flower petals and lace ridges; colored glass reflections fall across the pale skirt while the altar recess remains darker.",
     "promptTokens": [
       "daytime",
       "ruined cathedral",
-      "black velvet gown",
+      "white lace bridal gown",
       "sheer veil",
-      "gloves",
+      "white gloves",
       "Lunar Tears bouquet",
       "uncovered eyes",
       "medium full shot"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "identityTokensOverride": [
+      "2b (nier:automata)",
+      "1girl",
+      "solo",
+      "short_hair",
+      "white_hair",
+      "blue_eyes",
+      "mole_under_mouth",
+      "nier:automata"
+    ],
+    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult battle android with a silver-white bob, uncovered sapphire-blue eyes and the small beauty mark beneath the left corner of her lips"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_winter_park_scarf_hand_pocket",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1334,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "action": "围着红围巾，将一只手伸进视角大衣口袋取暖，呼着热气侧首微笑",
     "camera": "cowboy shot, eye level, winter romantic walk",
@@ -21,15 +21,17 @@
     "location": "初雪落满松树与木长椅的静谧冬日公园",
     "mood": "冬日纯爱",
     "negativeTokens": [],
-    "outfitId": "casual_knit_sweater_jeans",
-    "promptProse": "Walking beside the snowy park bench, Ciel slides her cold hand into her companion's coat pocket and gently interlaces their fingers. Her cream turtleneck and dark-blue jeans replace her work clothes, and she smiles with a red nose and visible breath. The cowboy view retains the curving park path behind. Snow-reflected daylight brightens her glasses and shoulders, while newly lit park lamps add small warmer pools along the path.",
+    "outfitId": "sfw_winter_trench_red_scarf",
+    "promptProse": "Walking beside the snowy park bench, Ciel slides her cold hand into her companion's coat pocket and gently interlaces their fingers. Her beige trench coat and red wool scarf lie over a cream turtleneck and dark-blue jeans; she smiles with a red nose and visible breath. The cowboy view retains the curving park path behind. Snow-reflected daylight brightens her glasses and coat shoulders, while newly lit park lamps add small warmer pools along the path.",
     "promptTokens": [
       "Ciel",
       "cream turtleneck",
       "blue jeans",
       "hand in companion pocket",
       "snowy park",
-      "cowboy shot"
+      "cowboy shot",
+      "beige trench coat",
+      "red wool scarf"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

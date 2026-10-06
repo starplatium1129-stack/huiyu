@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 20,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T10:16:06.567639+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_beach",
       "name": "八重神子·海滨泳装",
-      "prose": "a pink-and-white resort swimsuit with a light festival robe, gold hair ornaments and a chilled tofu-flavored drink",
+      "prose": "a pink-and-white resort swimsuit with a light festival robe and gold hair ornaments",
       "tokens": [
         "resort_swimsuit",
         "pink_white_swimsuit",
         "festival_robe",
-        "gold_ornaments",
-        "chilled_drink"
+        "gold_ornaments"
       ],
       "default": false,
       "isDefault": false

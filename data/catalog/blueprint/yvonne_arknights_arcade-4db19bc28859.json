@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_arcade",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 737,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "action": "街机前对战连胜",
     "camera": "medium shot",
@@ -17,13 +17,16 @@
     "location": "补给站街机厅",
     "mood": "好胜雀跃",
     "negativeTokens": [],
-    "outfitId": "fashion_casual",
-    "promptProse": "Yvonne stands at the supply-station arcade cabinet, working the joystick with one hand and the buttons with the other, her tail lifted proudly after another win. Keep her fashion-casual outfit, painted nails and pink twin tails in the medium view. The control panel projects toward the lower edge; cabinet sides overlap behind her in a receding row, ending in the darker arcade aisle. Multicolored neon catches the outside of her hair, while the game screen lights her face and moving fingertips. Her hand interrupts the screen reflection on the panel, and the joystick base casts a short shadow that makes its contact with the controls clear.",
+    "outfitId": "sfw_coral_game_cardigan",
+    "promptProse": "Yvonne stands at the supply-station arcade cabinet, working the joystick with one hand and the buttons with the other, her tail lifted proudly after another win. Keep her cream-and-coral cardigan, navy T-shirt, charcoal midi skirt, opaque tights, painted nails and pink twin tails in the medium view. The control panel projects toward the lower edge; cabinet sides overlap behind her in a receding row, ending in the darker arcade aisle. Multicolored neon catches the outside of her hair, while the game screen lights her face and moving fingertips. Her hand interrupts the screen reflection on the panel, and the joystick base casts a short shadow that makes its contact with the controls clear.",
     "promptTokens": [
       "night",
       "arcade",
       "joystick",
-      "casual outfit",
+      "cream coral cardigan",
+      "navy t shirt",
+      "charcoal midi skirt",
+      "opaque tights",
       "nail polish",
       "pink twin tails",
       "medium shot"

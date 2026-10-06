@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "harudera_yuria/sfw_executive_glasses_removed",
+  "revision": 1,
+  "sortOrder": 1146,
+  "createdAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "data": {
+    "characterId": "harudera_yuria",
+    "outfit": {
+      "id": "sfw_executive_glasses_removed",
+      "name": "摘镜休息的深灰职业装",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "场景衣装状态",
+      "prose": "a charcoal business suit jacket over a white collared shirt, matching pencil skirt, black tights and heeled shoes, her face uncovered",
+      "tokens": [
+        "business_suit",
+        "charcoal_jacket",
+        "white_shirt",
+        "collared_shirt",
+        "pencil_skirt",
+        "black_tights",
+        "high_heels"
+      ]
+    }
+  }
+}

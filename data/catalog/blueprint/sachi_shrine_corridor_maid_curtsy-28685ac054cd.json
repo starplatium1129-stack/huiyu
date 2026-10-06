@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_shrine_corridor_maid_curtsy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1186,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "id": "sachi_shrine_corridor_maid_curtsy",
     "title": "小岭幸 · 晨光回廊的恭敬屈膝礼",
@@ -19,7 +19,7 @@
     "action": "双手轻提女仆裙摆微微屈膝行礼，垂首微笑，粉色小辫与女仆发箍整齐端庄",
     "timeOfDay": "早晨",
     "lighting": "晨光穿透高大木窗洒落的清朗冷白晨曦与木地板镜面微光",
-    "camera": "medium shot, full body curtsy perspective, eye-level polite framing",
+    "camera": "full body, eye-level, complete curtsy and withdrawn foot visible",
     "mood": "端庄恭顺",
     "sceneTags": [
       "corridor",

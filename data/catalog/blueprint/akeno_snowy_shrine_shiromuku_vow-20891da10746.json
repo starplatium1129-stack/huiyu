@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_snowy_shrine_shiromuku_vow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1291,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "id": "akeno_snowy_shrine_shiromuku_vow",
     "title": "姬岛朱乃 · 白雪神社的纯白无垢",
@@ -29,21 +29,19 @@
       "shy_smile",
       "blush"
     ],
-    "promptProse": "In the quiet snow-covered shrine courtyard, Akeno Himejima bows with her hands folded before the broad sleeves of her white miko top and red hakama. Falling flakes settle on her black ponytail and shoulders as she raises a shy violet-eyed smile toward her companion. The eye-level cowboy view leaves the shrine veranda behind. Cold light reflected by snow reveals white cloth folds, with a soft red reflection beneath the hakama.",
+    "promptProse": "In the quiet snow-covered shrine courtyard, Akeno Himejima bows with her hands folded before the broad layered sleeves of her opaque white shiromuku. A white tsunokakushi covers her black ponytail as she raises a shy violet-eyed smile toward her companion. The eye-level cowboy view leaves the shrine veranda behind. Cold light reflected by snow reveals woven white silk motifs, with soft overlapping sleeve shadows preserving the folds.",
     "promptTokens": [
       "Akeno Himejima",
-      "white miko top",
-      "red hakama",
+      "white shiromuku",
+      "white obi",
+      "tsunokakushi",
       "snowy shrine",
       "bowing",
       "cowboy shot"
     ],
-    "negativeTokens": [
-      "shiromuku",
-      "bridal headdress"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "official_miko_robe",
+    "outfitId": "sfw_white_shiromuku",
     "coverageTags": [
       "bridal",
       "vow",

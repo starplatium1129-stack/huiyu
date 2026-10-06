@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "mouri_ran/sfw_home_blue_apron",
+  "revision": 1,
+  "sortOrder": 1155,
+  "createdAt": "2026-10-06T14:40:32.911402100+00:00",
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
+  "data": {
+    "characterId": "mouri_ran",
+    "outfit": {
+      "id": "sfw_home_blue_apron",
+      "name": "家中开衫与料理围裙",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "a plain blue cotton cooking apron over a cream cardigan, pale-blue blouse and navy knee-length skirt, house slippers",
+      "tokens": [
+        "blue_apron",
+        "cream_cardigan",
+        "blue_blouse",
+        "navy_skirt",
+        "slippers"
+      ]
+    }
+  }
+}

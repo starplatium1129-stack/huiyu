@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kisara_engage_kiss/sfw_laundry_peach_polo",
+  "revision": 1,
+  "sortOrder": 1129,
+  "createdAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "data": {
+    "characterId": "kisara_engage_kiss",
+    "outfit": {
+      "id": "sfw_laundry_peach_polo",
+      "name": "天台晾衣浅桃棉质便装",
+      "prose": "an opaque peach short-sleeved cotton polo, off-white loose utility trousers and pale canvas slip-on shoes",
+      "tokens": [
+        "opaque_peach_polo",
+        "short_sleeves",
+        "cotton_fabric",
+        "off_white_utility_trousers",
+        "loose_pants",
+        "canvas_slip_ons"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

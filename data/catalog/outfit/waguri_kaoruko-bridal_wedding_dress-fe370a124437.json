@@ -1,23 +1,21 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/bridal_wedding_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 847,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
       "id": "bridal_wedding_dress",
       "name": "糖霜白花蕾丝蓬蓬婚纱",
-      "prose": "a dreamy pure white lace princess wedding gown with a puffy layered skirt like whipped cream, a white flower bridal veil, and a bouquet decorated with fresh strawberries and sugar-frosted lilies",
+      "prose": "a pure white lace princess wedding gown with a puffy layered skirt, a white flower bridal veil and jewelry",
       "tokens": [
         "wedding_dress",
         "bridal_veil",
         "lace",
         "puffy_sleeves",
-        "bouquet",
-        "white_flowers",
         "jewelry"
       ]
     }

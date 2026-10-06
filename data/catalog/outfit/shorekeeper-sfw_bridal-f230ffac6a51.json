@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 942,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_bridal",
       "name": "守岸人·圣洁花嫁",
-      "prose": "an opaque white bridal gown with blue embroidery, a light coastal veil and a small bouquet of sea flowers",
+      "prose": "an opaque white bridal gown with blue embroidery and a light coastal veil",
       "tokens": [
         "wedding_dress",
         "white_gown",
         "blue_embroidery",
-        "coastal_veil",
-        "sea_flower_bouquet"
+        "coastal_veil"
       ],
       "default": false,
       "isDefault": false

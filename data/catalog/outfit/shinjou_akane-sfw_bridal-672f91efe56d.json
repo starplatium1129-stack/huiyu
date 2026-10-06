@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 873,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "sfw_bridal",
       "name": "新条茜·圣洁花嫁",
-      "prose": "a lavender bridal dress with pink ribbons, a short veil and a bouquet mixing roses with tiny monster figurines",
+      "prose": "a lavender bridal dress with pink ribbons and a short veil",
       "tokens": [
         "wedding_dress",
         "lavender_dress",
         "pink_ribbons",
-        "short_veil",
-        "monster_bouquet"
+        "short_veil"
       ],
       "default": false,
       "isDefault": false

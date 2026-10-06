@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_flooded_city_waterfall_rest",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1112,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "id": "yorha_2b_flooded_city_waterfall_rest",
     "title": "2B · 废墟小屋清晨大号男友白衬衫",
     "category": "居家女友",
     "characterId": "yorha_2b",
-    "outfitId": "gothic_dress",
+    "outfitId": "sfw_morning_white_cotton_shirt",
     "coverageTags": [
       "water"
     ],
@@ -32,18 +32,29 @@
       "mole_under_mouth",
       "morning"
     ],
-    "promptProse": "2B sits at the bed edge in the greenhouse cabin wearing her current black embroidered YoRHa dress and boots, blindfold removed and short white hair still slightly tousled. She holds warm coffee in both hands and looks toward the waking viewer. The medium view includes greenery outside the wood-framed window. Golden morning light through gauze catches her blue eyes and cup steam, shading the dark dress against the bedding.",
+    "promptProse": "2B sits at the bed edge in the greenhouse cabin wearing an opaque oversized white cotton shirt, her bare feet resting on the floor and blindfold removed. Short white hair is still slightly tousled as she holds warm coffee in both hands and looks toward the waking viewer. The medium view includes greenery outside the wood-framed window. Golden morning light through the gauze catches her blue eyes and cup steam; shirt folds and a small cup shadow keep the hands distinct from the darker bedding.",
     "promptTokens": [
       "morning",
       "ruined greenhouse cabin",
-      "black YoRHa dress",
-      "black boots",
+      "oversized white cotton shirt",
+      "barefoot",
       "coffee",
       "bed edge",
       "uncovered eyes",
       "medium shot"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "identityTokensOverride": [
+      "2b (nier:automata)",
+      "1girl",
+      "solo",
+      "short_hair",
+      "white_hair",
+      "blue_eyes",
+      "mole_under_mouth",
+      "nier:automata"
+    ],
+    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult battle android with a silver-white bob, uncovered sapphire-blue eyes and the small beauty mark beneath the left corner of her lips"
   }
 }

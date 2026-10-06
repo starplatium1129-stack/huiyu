@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_rooftop_selfie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 735,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "action": "举手机自拍",
     "camera": "medium shot",
@@ -19,13 +19,15 @@
     "location": "基地天台",
     "mood": "元气俏皮",
     "negativeTokens": [],
-    "outfitId": "selfie_casual",
-    "promptProse": "Yvonne holds her smartphone high on the base rooftop, shifting it through selfie angles before turning its camera toward the clear blue sky. Her relaxed casual outfit and lively smile remain in medium view. The parapet runs behind her, with rooftop structures lower against the open sky. Daylight illuminates her pink hair and raised wrist, leaving a small phone shadow across the hand gripping its edge.",
+    "outfitId": "sfw_mint_rooftop_windbreaker",
+    "promptProse": "Yvonne holds her smartphone high on the base rooftop, shifting it through selfie angles before turning its camera toward the clear blue sky. Her mint-green windbreaker, white crew-neck T-shirt and charcoal cargo trousers remain in medium view beside her lively smile. The parapet runs behind her, with rooftop structures lower against the open sky. Daylight illuminates her pink hair and raised wrist, leaving a small phone shadow across the hand gripping its edge.",
     "promptTokens": [
       "daytime",
       "base rooftop",
       "smartphone",
-      "casual outfit",
+      "mint green windbreaker",
+      "white t shirt",
+      "charcoal cargo trousers",
       "selfie",
       "pink twin tails",
       "medium shot"

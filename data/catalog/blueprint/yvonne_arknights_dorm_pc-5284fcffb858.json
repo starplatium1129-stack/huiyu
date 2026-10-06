@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_dorm_pc",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 734,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "action": "电竞椅里打游戏",
     "camera": "medium shot",
@@ -19,14 +19,17 @@
     "location": "基地宿舍",
     "mood": "慵懒沉迷",
     "negativeTokens": [],
-    "outfitId": "fashion_casual",
-    "promptProse": "At midnight in the base dormitory, Yvonne curls into her gaming chair and works the controls with her polished fingertips, absorbed in an online match. Preserve her coordinated fashion-casual outfit in a medium view from beside the desk. The angled monitor overlaps the near edge of her shoulder, and the desk surface runs past the keyboard toward the rear wall; the chair back separates her from the darker room. Blue-and-pink screen light falls on her cheek, twin tails and operating hand. The existing night lamp picks out the chair rim and a narrow strip of desktop, while the monitor stand casts a low shadow across the desk.",
+    "outfitId": "sfw_coral_game_cardigan",
+    "promptProse": "At midnight in the base dormitory, Yvonne curls into her gaming chair and works the controls with her polished fingertips, absorbed in an online match. Preserve her cream cardigan with coral edging, navy T-shirt, charcoal midi skirt and opaque tights in a medium view from beside the desk. The angled monitor overlaps the near edge of her shoulder, and the desk surface runs past the keyboard toward the rear wall; the chair back separates her from the darker room. Blue-and-pink screen light falls on her cheek, twin tails and operating hand. The existing night lamp picks out the chair rim and a narrow strip of desktop, while the monitor stand casts a low shadow across the desk.",
     "promptTokens": [
       "midnight",
       "dormitory",
       "gaming chair",
       "computer",
-      "casual outfit",
+      "cream coral cardigan",
+      "navy t shirt",
+      "charcoal midi skirt",
+      "opaque tights",
       "nail polish",
       "medium shot"
     ],

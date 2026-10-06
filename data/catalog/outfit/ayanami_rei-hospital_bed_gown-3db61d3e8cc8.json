@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ayanami_rei/hospital_bed_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 562,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "characterId": "ayanami_rei",
     "outfit": {
@@ -18,10 +18,10 @@
         "white_gown",
         "bandages",
         "bandage_on_arm",
-        "bandage_on_leg",
         "eyepatch",
         "medical_eyepatch",
-        "barefoot"
+        "barefoot",
+        "bandage_on_chest"
       ]
     }
   }

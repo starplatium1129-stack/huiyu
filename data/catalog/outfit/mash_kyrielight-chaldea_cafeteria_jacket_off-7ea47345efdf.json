@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/chaldea_cafeteria_jacket_off",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 111,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T10:32:51.185026700+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "chaldea_cafeteria_jacket_off",
       "name": "迦勒底午餐便服（外套脱下）",
-      "prose": "a black collared dress with a red necktie, black tights and glasses; the grey jacket is removed and rests on the chair back",
+      "prose": "a black collared dress with a red necktie, opaque black tights and plain glasses",
       "tokens": [
         "black_collared_dress",
         "red_necktie",
         "black_tights",
-        "glasses",
-        "jacket_on_chair"
+        "glasses"
       ],
       "isDefault": false,
       "default": false,

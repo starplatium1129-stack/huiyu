@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nana_asta_deviluke/summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 688,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "nana_asta_deviluke",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "summer_bikini",
       "isDefault": false,
       "name": "运动系带珊瑚粉分体比基尼",
-      "prose": "a sporty coral-pink two-piece halterneck bikini highlighting her slender athletic waist and petite frame, side-tie bottoms, and spade tail splashing clear ocean water",
+      "prose": "a coral-pink two-piece athletic swimsuit with halterneck straps and side-tie bottoms",
       "tokens": [
         "swimsuit",
         "bikini",

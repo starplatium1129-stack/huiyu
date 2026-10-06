@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "harudera_yuria/sfw_winter_coat_red_scarf",
+  "revision": 1,
+  "sortOrder": 1145,
+  "createdAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "data": {
+    "characterId": "harudera_yuria",
+    "outfit": {
+      "id": "sfw_winter_coat_red_scarf",
+      "name": "米色羊绒大衣与红羊毛围巾",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "a beige double-breasted cashmere coat, soft red wool scarf and heeled leather boots, honey-blonde waves loose and her face uncovered",
+      "tokens": [
+        "beige_coat",
+        "double_breasted",
+        "cashmere_coat",
+        "red_scarf",
+        "wool_scarf",
+        "leather_boots",
+        "heeled_boots"
+      ]
+    }
+  }
+}

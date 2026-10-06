@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 922,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "sfw_beach",
       "name": "春日野穹·海滨泳装",
-      "prose": "a black-and-white swimsuit with a light cardigan, white headphones and a half-finished soda",
+      "prose": "a black-and-white swimsuit with a light cardigan and white headphones",
       "tokens": [
         "black_white_swimsuit",
         "light_cardigan",
-        "white_headphones",
-        "soda",
-        "beach_chair"
+        "white_headphones"
       ],
       "default": false,
       "isDefault": false

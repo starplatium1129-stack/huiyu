@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "illyasviel_von_einzbern/sfw_lavender_toyshop_pinafore",
+  "revision": 1,
+  "sortOrder": 1127,
+  "createdAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "data": {
+    "characterId": "illyasviel_von_einzbern",
+    "outfit": {
+      "id": "sfw_lavender_toyshop_pinafore",
+      "name": "玩具店淡紫针织背带裙装",
+      "prose": "a lavender long-sleeved knit pullover under an ivory knee-length pinafore dress, opaque grey leggings and red Mary Jane shoes",
+      "tokens": [
+        "lavender_knit_pullover",
+        "long_sleeves",
+        "ivory_knee_length_pinafore",
+        "opaque_grey_leggings",
+        "red_mary_janes"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

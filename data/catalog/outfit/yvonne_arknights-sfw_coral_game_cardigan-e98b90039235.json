@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "yvonne_arknights/sfw_coral_game_cardigan",
+  "revision": 1,
+  "sortOrder": 1134,
+  "createdAt": "2026-10-06T12:58:20.813784400+00:00",
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
+  "data": {
+    "characterId": "yvonne_arknights",
+    "outfit": {
+      "id": "sfw_coral_game_cardigan",
+      "name": "珊瑚边针织游戏便服",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "an open cream knit cardigan with coral edging and small matte buttons over an opaque navy crew-neck cotton T-shirt, a charcoal pleated midi skirt, opaque charcoal tights and white low-top sneakers, with her painted nails unobstructed",
+      "tokens": [
+        "cream_cardigan",
+        "coral_trim",
+        "buttons",
+        "navy_t-shirt",
+        "crew_neck",
+        "charcoal_skirt",
+        "pleated_skirt",
+        "midi_skirt",
+        "opaque_tights",
+        "white_sneakers",
+        "nail_polish"
+      ]
+    }
+  }
+}

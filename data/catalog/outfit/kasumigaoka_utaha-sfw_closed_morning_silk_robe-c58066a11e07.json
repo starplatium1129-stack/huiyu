@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kasumigaoka_utaha/sfw_closed_morning_silk_robe",
+  "revision": 1,
+  "sortOrder": 1154,
+  "createdAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "data": {
+    "characterId": "kasumigaoka_utaha",
+    "outfit": {
+      "id": "sfw_closed_morning_silk_robe",
+      "name": "晨间系带丝绸家居袍",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "an opaque softly draped silk lounge robe closed with a tied waist sash, long sleeves and a knee-length hem, house slippers and loose black hair without a headband",
+      "tokens": [
+        "silk_robe",
+        "closed_robe",
+        "tied_sash",
+        "long_sleeves",
+        "knee_length",
+        "slippers",
+        "hair_down"
+      ]
+    }
+  }
+}

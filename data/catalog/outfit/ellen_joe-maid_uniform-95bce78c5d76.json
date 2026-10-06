@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ellen_joe/maid_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 581,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "ellen_joe",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "maid_uniform",
       "isDefault": true,
       "name": "维多利亚执事女仆装",
-      "prose": "Victoria Housekeeping combat maid uniform: frilled white maid headdress, gothic black tailored dress with white apron and delicate lace trim, detached sleeves, black thigh-high stockings with garter straps, red ribbon bowtie, heavy combat platform mary janes, and her oversized shear blades",
+      "prose": "Victoria Housekeeping combat maid uniform: frilled white maid headdress, gothic black tailored dress with white apron and delicate lace trim, detached sleeves, black thigh-high stockings with garter straps, red ribbon bowtie and heavy combat platform Mary Janes",
       "tokens": [
         "maid",
         "maid_headdress",

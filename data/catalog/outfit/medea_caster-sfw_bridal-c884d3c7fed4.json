@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "medea_caster/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 173,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T11:03:26.342226900+00:00",
   "data": {
     "characterId": "medea_caster",
     "outfit": {
       "id": "sfw_bridal",
       "name": "美狄亚·圣洁花嫁",
-      "prose": "a deep navy long-sleeved bridal gown with silver thread, a modest veil and a hand-woven blue flower wreath",
+      "prose": "a deep navy long-sleeved bridal gown with silver thread and a modest veil",
       "tokens": [
         "wedding_dress",
         "navy_gown",
         "silver_thread",
-        "modest_veil",
-        "blue_wreath"
+        "modest_veil"
       ],
       "default": false,
       "isDefault": false

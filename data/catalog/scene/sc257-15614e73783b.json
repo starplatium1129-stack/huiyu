@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc257",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 252,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T12:41:51.452517200+00:00",
   "data": {
     "animaCaption": "Across the dessert-shop table, Shiki Natsume offers a spoonful of ice cream, then glances aside as she realizes they have shared the spoon. Her white chiffon blouse and denim shorts remain ordinary summer clothing. The cup rests beneath the hand, with window frames and chairs receding behind. Bright afternoon light touches the spoon and blouse folds; pale tabletop reflection fills the shaded face and a clear cup shadow anchors the dessert in the foreground.",
     "auditRevision": "skill-refine-sc257-2026-09-05",
-    "camera": "七分身圆桌平视特写",
+    "camera": "圆桌旁七分身平视中景",
     "category": "日常",
     "char": "natsume",
     "character": [

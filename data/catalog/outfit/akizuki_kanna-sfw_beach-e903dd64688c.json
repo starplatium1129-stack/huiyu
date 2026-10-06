@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 636,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
@@ -12,13 +12,11 @@
       "id": "sfw_beach",
       "isDefault": false,
       "name": "明月栞那·海滨泳装",
-      "prose": "a cream-colored swimsuit with a pale overshirt, café apron tied loosely and a glass of iced latte",
+      "prose": "a cream swimsuit with a pale overshirt and loosely tied café apron",
       "tokens": [
         "cream_swimsuit",
         "pale_overshirt",
-        "loose_apron",
-        "iced_latte",
-        "cafe_cart"
+        "loose_apron"
       ]
     }
   }

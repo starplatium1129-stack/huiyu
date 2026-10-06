@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/official_kimono_leather_jacket",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 729,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
@@ -12,16 +12,14 @@
       "id": "official_kimono_leather_jacket",
       "isDefault": true,
       "name": "纯白和服赤红皮夹克",
-      "prose": "her iconic signature battle attire: a pure white traditional Japanese kimono with a dark patterned obi, worn under a stylish red leather biker jacket, brown lace-up combat boots, and holding an unsheathed Japanese combat knife",
+      "prose": "her iconic signature battle attire: a pure white traditional Japanese kimono with a dark patterned obi, worn under a red leather biker jacket and brown lace-up combat boots",
       "tokens": [
         "kimono",
         "white_kimono",
         "obi",
         "leather_jacket",
         "red_jacket",
-        "boots",
-        "holding_knife",
-        "knife"
+        "boots"
       ]
     }
   }

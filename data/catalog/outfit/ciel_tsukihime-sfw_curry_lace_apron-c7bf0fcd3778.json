@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "ciel_tsukihime/sfw_curry_lace_apron",
+  "revision": 1,
+  "sortOrder": 1151,
+  "createdAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "data": {
+    "characterId": "ciel_tsukihime",
+    "outfit": {
+      "id": "sfw_curry_lace_apron",
+      "name": "米白毛衣与白蕾丝围裙",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "a white lace-trimmed cooking apron over a cream turtleneck, dark-blue jeans and house slippers",
+      "tokens": [
+        "white_apron",
+        "lace_trim",
+        "cream_sweater",
+        "turtleneck",
+        "blue_jeans",
+        "slippers"
+      ]
+    }
+  }
+}

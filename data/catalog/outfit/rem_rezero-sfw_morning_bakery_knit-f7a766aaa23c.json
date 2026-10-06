@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "rem_rezero/sfw_morning_bakery_knit",
+  "revision": 1,
+  "sortOrder": 1119,
+  "createdAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "data": {
+    "characterId": "rem_rezero",
+    "outfit": {
+      "id": "sfw_morning_bakery_knit",
+      "name": "晨间采购浅蓝针织裙装",
+      "prose": "a powder-blue cable-knit cardigan over an ivory Peter Pan-collar blouse, a navy pleated midi skirt and caramel-brown loafers, with her white lace maid headdress retained",
+      "tokens": [
+        "powder_blue_cardigan",
+        "cable_knit",
+        "ivory_blouse",
+        "peter_pan_collar",
+        "long_sleeves",
+        "navy_pleated_midi_skirt",
+        "brown_loafers",
+        "white_lace_headdress"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

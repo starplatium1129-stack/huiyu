@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yor_forger/beige_trench_boots",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 464,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "yor_forger",
     "outfit": {
@@ -16,7 +16,6 @@
         "beige_coat",
         "long_coat",
         "belted_coat",
-        "over_knee_boots",
         "knee_boots",
         "leather_boots",
         "boots"

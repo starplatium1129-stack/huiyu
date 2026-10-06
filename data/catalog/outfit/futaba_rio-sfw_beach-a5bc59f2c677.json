@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 41,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T10:16:06.567639+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_beach",
       "name": "双叶理央·海滨泳装",
-      "prose": "a navy athletic swimsuit with a white sun jacket, waterproof tablet pouch and clear safety glasses",
+      "prose": "a navy athletic swimsuit with a white sun jacket and clear safety glasses",
       "tokens": [
         "navy_athletic_swimsuit",
         "white_sun_jacket",
-        "tablet_pouch",
-        "safety_glasses",
-        "tide_pool"
+        "safety_glasses"
       ],
       "default": false,
       "isDefault": false

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yuria_tactical_stealth_monocular_mission",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1199,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "id": "yuria_tactical_stealth_monocular_mission",
     "title": "春寺由梨亚 · 私寓清晨的围裙煎蛋与早安轻唤",
     "category": "居家私享",
     "characterId": "harudera_yuria",
-    "outfitId": "home_casual_shirt",
+    "outfitId": "sfw_morning_pink_apron",
     "coverageTags": [
       "daily"
     ],
@@ -34,11 +34,12 @@
       "bare_face",
       "gentle_smile"
     ],
-    "promptProse": "Without her glasses, Harudera Yuria turns from the apartment stove with a wooden spatula and a gentle morning smile. Her oversized white shirt falls over black lace and sheer black tights, and her blonde waves are loosely clipped up. Bacon and eggs fill the pan; coffee stands nearby. Sunlight through sheer curtains brightens her right-eye beauty mark, sleeves and counter, with diffused pan shadows beneath.",
+    "promptProse": "Without her glasses, Harudera Yuria turns from the apartment stove with a wooden spatula and a gentle morning smile. Her opaque oversized white shirt and pale-pink apron stay clear in the medium view, blonde waves loosely clipped up. Bacon and eggs fill the pan, with coffee standing beside the stove. Sunlight through sheer curtains brightens her right-eye beauty mark, rolled cuffs and apron pocket, while diffused pan shadows keep the cooking surface grounded.",
     "promptTokens": [
       "Harudera Yuria",
       "white shirt",
-      "black tights",
+      "pink apron",
+      "house slippers",
       "wooden spatula",
       "breakfast",
       "kitchen",

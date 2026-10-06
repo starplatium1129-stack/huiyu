@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mimori_byakuya/magical_girl_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 470,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "mimori_byakuya",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "magical_girl_dress",
       "isDefault": true,
       "name": "魔法少女战斗服",
-      "prose": "wearing her signature magical girl transformation dress: a frilly layered pink and white dress with detached sleeves, pink ribbons, black thighhighs stockings, delicate fairy wings, and holding her star-tipped magic wand",
+      "prose": "wearing her signature magical girl transformation dress: a frilly layered pink and white dress with detached sleeves, pink ribbons, black thighhigh stockings and delicate fairy wings",
       "styleHint": "sparkling magical starlight aesthetic",
       "tokens": [
         "magical_girl",
@@ -21,8 +21,6 @@
         "detached_sleeves",
         "pink_ribbon",
         "black_thighhighs",
-        "magic_wand",
-        "holding_wand",
         "small_wings"
       ]
     }

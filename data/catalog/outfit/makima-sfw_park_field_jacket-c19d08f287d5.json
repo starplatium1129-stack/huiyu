@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "makima/sfw_park_field_jacket",
+  "revision": 1,
+  "sortOrder": 1117,
+  "createdAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "data": {
+    "characterId": "makima",
+    "outfit": {
+      "id": "sfw_park_field_jacket",
+      "name": "公园浅鼠尾草绿休闲装",
+      "prose": "a light sage-green field jacket over an ivory turtleneck, charcoal wide-leg trousers and clean white leather trainers",
+      "tokens": [
+        "sage_green_field_jacket",
+        "ivory_turtleneck",
+        "long_sleeves",
+        "charcoal_pants",
+        "wide_leg_trousers",
+        "white_leather_trainers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

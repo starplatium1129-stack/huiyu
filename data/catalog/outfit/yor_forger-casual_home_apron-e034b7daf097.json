@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yor_forger/casual_home_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 462,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "yor_forger",
     "outfit": {
@@ -17,7 +17,7 @@
         "sleeveless",
         "bare_arms"
       ],
-      "prose": "wearing a cute home apron over casual dress while trying her best in the kitchen",
+      "prose": "wearing a cute bear-print home apron over a casual dress",
       "styleHint": "soft cheerful morning daylight",
       "isDefault": false,
       "default": false

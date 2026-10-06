@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "saint_cecilia/sfw_riverbank_sundress_barefoot",
+  "revision": 1,
+  "sortOrder": 1135,
+  "createdAt": "2026-10-06T12:58:20.813784400+00:00",
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
+  "data": {
+    "characterId": "saint_cecilia",
+    "outfit": {
+      "id": "sfw_riverbank_sundress_barefoot",
+      "name": "河畔赤足碎花裙",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "a light floral cotton sundress with a softly gathered waist and a wide-brimmed straw hat, barefoot",
+      "tokens": [
+        "floral_dress",
+        "sundress",
+        "cotton_dress",
+        "gathered_waist",
+        "straw_hat",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc058",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 56,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:30:17.204187300+00:00",
   "data": {
-    "animaCaption": "Standing before the bedroom mirror on a spring morning in a new white lace lingerie set with a soft silk robe draped loosely over her shoulders, Ayachi Nene hides her phone behind her back and pulls the robe over her shoulder with the other hand, a shy flustered blush mirrored under soft morning light.",
+    "animaCaption": "Ayachi Nene checks the fit of her new white lace lingerie beneath a soft silk robe at the bedroom mirror. One hand keeps the phone out of sight behind her back; the other straightens the robe at her shoulder as she looks toward her reflection with a small, embarrassed smile. Frame the mirror portrait closely, showing a single reflected face and the garment adjustment rather than a second frontal figure. The mirror's wooden edge overlaps the reflected bedside table and the bed farther behind. In the reflected room, spring daylight enters from image left and brightens the white fabric and silver hair. Softer room reflection opens the shaded cheek, while the robe folds and mirror-frame shadow preserve depth.",
     "auditRevision": "careful-batch13-2026-08-27",
-    "camera": "镜中肩上近景",
+    "camera": "镜面中单一面部与肩部衣装的近景",
     "category": "恋爱/After_Story",
     "char": "nene",
     "character": [
@@ -20,8 +20,8 @@
     "location": "同居公寓卧室镜前",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, new, white, standing, bedroom, on_bed, barefoot, blush, shy_smile, bokeh, collarbone, slender_waist, full_body, morning_light, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, 3d_render, photorealistic, 2girls, stockings, thighhighs, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "adult, 1girl, ayachi_nene, white lace lingerie, silk robe over shoulders, checking clothing fit, phone hidden behind back, hand adjusting robe, bedroom mirror, reflected portrait, spring morning, close up",
     "rating": "R15",
     "season": "春",
     "story": "【成年 After Story · 镜前没有发出的照片】同居后的春日清晨，成年的宁宁在卧室镜前试穿新买的内衣，本想悄悄拍下搭配效果，却从镜子里看见刚醒来的你。她慌忙把手机藏到身后，红着脸侧过身想遮掩，最后又慢慢转了回来——「本来想等准备好再给你看的……既然已经醒了，只能由你负责告诉我合不合适。」",
@@ -32,10 +32,10 @@
       "robe",
       "mirror",
       "bedroom",
-      "full_body",
       "barefoot",
       "hiding_phone",
-      "spring_morning"
+      "spring_morning",
+      "close_up"
     ],
     "time": "清晨",
     "timeOfDay": "morning",
@@ -45,6 +45,7 @@
       "头像",
       "R15"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "recommendedSize": "832x1216"
   }
 }

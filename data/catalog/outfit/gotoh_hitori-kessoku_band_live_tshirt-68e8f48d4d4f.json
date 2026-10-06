@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/kessoku_band_live_tshirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 551,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
@@ -16,13 +16,9 @@
         "print_t-shirt",
         "black_skirt",
         "pleated_skirt",
-        "wristband",
-        "electric_guitar",
-        "gibson_les_paul",
-        "guitar_strap",
-        "guitar_pick"
+        "wristband"
       ],
-      "prose": "wearing a black Kessoku Band graphic print t-shirt tucked into a dark pleated skirt, a red wristband, and slinging her black Gibson Les Paul Custom electric guitar across her shoulder",
+      "prose": "wearing a black Kessoku Band graphic-print T-shirt tucked into a dark pleated skirt, with a red wristband",
       "styleHint": "dynamic anime concert stage lighting with vibrant volumetric rays",
       "isDefault": false,
       "default": false

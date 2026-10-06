@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mimori_byakuya/tattered_oversized_jersey",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 473,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "mimori_byakuya",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "tattered_oversized_jersey",
       "isDefault": false,
       "name": "居家宽大旧运动外套",
-      "prose": "wearing a loose vintage track jersey jacket over gym shorts while eating budget ramen at home",
+      "prose": "wearing a loose vintage track jersey jacket over gym shorts",
       "styleHint": "warm cozy apartment interior",
       "tokens": [
         "track_jacket",

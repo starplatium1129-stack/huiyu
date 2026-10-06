@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_cathedral_straitjacket_bridal_vow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1313,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "action": "拘束带散开如婚纱，头戴洁白头纱，伸手伸向视角，眼眶含泪带着释然微笑",
     "camera": "cowboy shot, eye level, solemn and deeply moving",
@@ -24,14 +24,15 @@
       "wedding gown"
     ],
     "outfitId": "official_straitjacket",
-    "promptProse": "In the old cathedral at dawn, C.C. extends a hand toward her companion with tears of relieved warmth in her amber eyes. Her white straitjacket uniform remains over white leggings, its unbuckled straps trailing onto the floor. The eye-level cowboy framing follows cracked aisle stones toward the broken colored window behind. First sunlight enters through the remaining glass, illuminating green hair and her open palm while strap shadows lie across the paving.",
+    "promptProse": "In the old cathedral at dawn, C.C. extends a hand toward her companion with tears of relieved warmth in her amber eyes. Her white straitjacket uniform remains over white leggings, its unbuckled straps trailing onto the floor beneath a long white veil. The eye-level cowboy framing follows cracked aisle stones toward the broken colored window behind. First sunlight enters through the remaining glass, illuminating green hair and her open palm while strap shadows lie across the paving.",
     "promptTokens": [
       "C.C.",
       "white straitjacket uniform",
       "unbuckled straps",
       "extended hand",
       "cathedral dawn",
-      "cowboy shot"
+      "cowboy shot",
+      "long white veil"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

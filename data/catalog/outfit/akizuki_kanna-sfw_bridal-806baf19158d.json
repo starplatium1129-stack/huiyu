@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 635,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
@@ -12,13 +12,12 @@
       "id": "sfw_bridal",
       "isDefault": false,
       "name": "明月栞那·圣洁花嫁",
-      "prose": "a white bridal dress with a café-apron waist detail, rose-gold buttons and a small coffee-flower bouquet",
+      "prose": "a white bridal dress with café-apron waist detail and rose-gold buttons",
       "tokens": [
         "wedding_dress",
         "white_gown",
         "cafe_apron_detail",
-        "rose_gold_buttons",
-        "coffee_flower_bouquet"
+        "rose_gold_buttons"
       ]
     }
   }

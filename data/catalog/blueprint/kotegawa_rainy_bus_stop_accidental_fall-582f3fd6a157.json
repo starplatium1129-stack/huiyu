@@ -1,23 +1,23 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_rainy_bus_stop_accidental_fall",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1262,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T09:50:34.027913700+00:00",
   "data": {
-    "action": "半跌坐在地上双手撑地，百褶裙翻卷撩起，满脸涨红含泪娇叱，雨水溅湿发梢",
-    "camera": "medium shot, low angle, dynamic accidental fall perspective",
+    "action": "滑坐在长椅旁，双掌撑湿地面，制服保持整齐，看向画面外的同行者。",
+    "camera": "medium shot, eye-level side three-quarter view, bracing hands and bench legs visible",
     "category": "名场面跌倒",
     "characterId": "kotegawa_yui",
     "coverageTags": [
       "accident"
     ],
-    "description": "【古手川唯 · 雨夜站台的命中注定神摔】大雨倾盆的学园车站避雨亭下，湿漉漉的地面反光如同镜面。因为意外滑倒，梨斗正巧跌倒在一身水手服的唯身前。唯半跌坐在长椅边，水手百褶裙在跌倒间翻卷撩起，露出黑色及膝袜上雪白柔嫩的绝对领域。她双手慌乱按在地上，满脸通红眼眶泛泪，又羞又急地大喊出招牌台词——「结城梨斗！为、为什么每次滑倒你都会准确跌到这里来啊……不知羞耻！」",
+    "description": "暴雨中的公交站避雨亭下，唯刚踩到一片积水，便滑坐在长椅旁，双手撑住湿水泥地面。水手制服领口与裙摆保持整齐，红色风纪袖章有几滴雨水。她看向画面外赶来帮忙的梨斗，又恼又窘——「结城梨斗！先别笑……这里的地面真的很滑！」长椅脚、排水槽和亭外雨帘交代落地点；檐下暖灯照脸与扶地的手，冷雨光和水洼反光延伸到街边。",
     "id": "kotegawa_rainy_bus_stop_accidental_fall",
-    "lighting": "车站昏黄吊灯与外围暴雨倾盆的冷暗对比，水洼折射强烈光泽",
-    "location": "雨夜公交车站避雨长椅水泥地面",
-    "mood": "香艳娇怒",
+    "lighting": "warm shelter lamp from above left on face and hands; cool rain light beyond the roof",
+    "location": "雨夜公交避雨亭长椅旁，排水槽接向亭外街边",
+    "mood": "雨夜意外后的恼羞与松口气",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -36,31 +36,49 @@
       "nude"
     ],
     "outfitId": "sainan_uniform",
-    "promptProse": "Tumbling awkwardly onto the wet pavement of a sheltered rain-swept bus stop with her sailor skirt hiked up, Yui glares in mortified disbelief. Ambient amber streetlights catch puddles and raindrops clinging to her soaked black hair as she cries out in flustered indignation.",
+    "promptProse": "Rainwater crosses the drainage channel beside the bus shelter as Yui steadies herself after a small slip. She sits on the wet pavement near the bench, both palms flat on the ground and her sailor uniform lying neatly in place. Her red armband and white hairband remain visible as she looks toward a helper outside the frame with embarrassed annoyance. Bench legs and a shelter post anchor the near view; beyond the canopy, a dense rain curtain leads toward the street's reflected lights. Use an eye-level side three-quarter medium view that keeps face, hands and landing surface clear. The overhead lamp from the left warms her face and fingers, while cooler rain light outlines the far sleeve. Small palm shadows and reflections connect her hands to the wet concrete.",
     "promptTokens": [
-      "rainy_bus_stop",
-      "falling_down",
-      "sainan_high_school_uniform",
-      "skirt_lift",
-      "thighs",
-      "heavy_blush",
-      "teary_eyes",
-      "very_long_hair",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "sitting after a slip",
+      "palms bracing wet pavement",
+      "tidy school uniform",
+      "bench legs",
+      "shelter post",
+      "drainage channel",
+      "rain beyond canopy",
+      "puddle reflections",
+      "warm overhead shelter lamp",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "bus_stop",
-      "rain",
-      "falling_down",
-      "sainan_high_school_uniform",
-      "skirt_lift",
-      "thighs",
-      "heavy_blush",
-      "teary_eyes"
+      "rainy_bus_stop",
+      "slipped_on_wet_ground",
+      "palms_on_pavement",
+      "tidy_sailor_uniform",
+      "bench_legs",
+      "drainage_channel",
+      "shelter_roof",
+      "rain_curtain",
+      "warm_shelter_light",
+      "puddle_reflections",
+      "medium_shot"
     ],
     "timeOfDay": "夜晚",
-    "title": "古手川唯 · 雨夜站台的命中注定神摔"
+    "title": "古手川唯 · 雨夜站台的滑步惊魂",
+    "identityTokensOverride": [
+      "kotegawa_yui",
+      "1girl",
+      "solo",
+      "black_hair",
+      "long_hair",
+      "very_long_hair",
+      "straight_hair",
+      "white_hairband",
+      "golden_brown_eyes",
+      "to_love-ru"
+    ],
+    "identityProseOverride": "Kotegawa Yui from To LOVE-Ru, the serious disciplinary committee member with long straight black hair, a thin white hairband, golden-brown eyes and an easily flustered expression"
   }
 }

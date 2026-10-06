@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "elaina/sfw_travel_witch_cape",
+  "revision": 1,
+  "sortOrder": 1133,
+  "createdAt": "2026-10-06T11:03:26.342226900+00:00",
+  "updatedAt": "2026-10-06T11:03:26.342226900+00:00",
+  "data": {
+    "characterId": "elaina",
+    "outfit": {
+      "id": "sfw_travel_witch_cape",
+      "name": "魔女短斗篷旅行装",
+      "prose": "a black frilled witch dress with a star brooch, a short grey travel cape and a black witch hat with a gold buckle",
+      "tokens": [
+        "black_witch_dress",
+        "frills",
+        "star_brooch",
+        "short_grey_travel_cape",
+        "black_witch_hat",
+        "gold_buckle"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

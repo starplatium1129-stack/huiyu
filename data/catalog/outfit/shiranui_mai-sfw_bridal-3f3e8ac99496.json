@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1007,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
       "id": "sfw_bridal",
       "name": "不知火舞·圣洁花嫁",
-      "prose": "a red-and-white bridal kimono with a long red sash, white veil, folding fan and floral hairpins",
+      "prose": "a red-and-white bridal kimono with a long red sash, white veil and floral hairpins",
       "tokens": [
         "bridal_kimono",
         "red_white_gown",
         "red_sash",
         "white_veil",
-        "folding_fan",
         "floral_hairpins"
       ],
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/omertosa_mafia",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 383,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "omertosa_mafia",
       "isDefault": false,
       "name": "叙拉古缄默黑帮风衣",
-      "prose": "Siracusa Texas the Omertosa formal attire: an exquisite double-breasted charcoal-black mafia overcoat with crimson silk lining, tailored black pinstripe vest, crisp white dress shirt, red silk ascot, slim tailored trousers, polished leather dress shoes, and twin glowing golden rapier swords",
+      "prose": "Siracusa Texas the Omertosa formal attire: an exquisite double-breasted charcoal-black mafia overcoat with crimson silk lining, tailored black pinstripe vest, crisp white dress shirt, red silk ascot, slim tailored trousers and polished leather dress shoes",
       "tokens": [
         "overcoat",
         "long_coat",
@@ -24,8 +24,6 @@
         "red_ascot",
         "trousers",
         "dress_shoes",
-        "rapier",
-        "dual_wielding",
         "siracusa"
       ]
     }

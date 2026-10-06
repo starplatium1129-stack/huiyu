@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_night_magic",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 381,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T11:03:26.342226900+00:00",
   "data": {
     "id": "elaina_night_magic",
     "title": "伊雷娜 · 夜间魔法星夜",
@@ -43,6 +43,6 @@
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "witch_dress"
+    "outfitId": "sfw_travel_witch_cape"
   }
 }

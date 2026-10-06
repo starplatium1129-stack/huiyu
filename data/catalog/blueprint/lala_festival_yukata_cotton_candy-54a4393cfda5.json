@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "lala_festival_yukata_cotton_candy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1236,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
-    "action": "双手捧巨型棉花糖开怀大笑舔食，另一手拉着同伴，爱心尾巴欢快摇摆",
+    "action": "一手拿巨型棉花糖、另一手牵同伴沿祭典街前行，爱心尾巴欢快摇摆",
     "camera": "medium shot, eye-level, joyful festive atmosphere",
     "category": "夏夜漫游",
     "characterId": "lala_satalin_deviluke",
@@ -20,7 +20,7 @@
     "mood": "纯真欢愉",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Along Sainan Shrine's summer-festival street, Lala tastes an enormous cloud of white cotton candy, then reaches for Rito's hand to lead him onward. Her pink hair and heart-tipped tail swing beside her teal-and-white sailor uniform. Keep the couple at eye level with stall fronts, moving visitors and banners receding behind. Red lanterns warm their faces and candy folds; colored stall lights reflect on the wooden counters.",
+    "promptProse": "Along Sainan Shrine's summer-festival street, Lala holds the enormous cloud of white cotton candy in one hand while her other hand joins Rito's as they walk onward. Her pink hair and heart-tipped tail swing beside the teal-and-white sailor uniform. Keep the couple at eye level with stall fronts, visitors and banners receding behind. Red lanterns warm their faces and the candy folds; colored stall lights reflect on the wooden counters.",
     "promptTokens": [
       "Lala",
       "Rito Yuuki",

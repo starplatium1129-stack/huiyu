@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yvonne_arknights/combat_outfit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 420,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "yvonne_arknights",
     "outfit": {
@@ -12,15 +12,13 @@
       "id": "combat_outfit",
       "isDefault": true,
       "name": "初始作战装",
-      "prose": "her initial combat outfit, a crop top with detached sleeves, gloves, leggings and short boots, dual-wielding handguns",
+      "prose": "her initial combat outfit, a crop top with detached sleeves, gloves, leggings and short boots",
       "tokens": [
         "crop_top",
         "detached_sleeves",
         "gloves",
         "leggings",
-        "short_boots",
-        "dual_wielding",
-        "gun"
+        "short_boots"
       ]
     }
   }

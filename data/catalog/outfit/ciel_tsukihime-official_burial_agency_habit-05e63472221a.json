@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "ciel_tsukihime/official_burial_agency_habit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 722,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "characterId": "ciel_tsukihime",
     "outfit": {
       "id": "official_burial_agency_habit",
       "name": "埋葬机关修女法衣战袍",
-      "prose": "her Burial Agency combat habit: a deep navy-blue sleeveless high-collar clergy tunic with white accents, gold crucifixes, dark blue short skirt, sheer black pantyhose, and throwing black keys between her gloved fingers",
+      "prose": "her Burial Agency combat habit: a deep navy-blue sleeveless high-collar clergy tunic with white accents, gold crucifixes, dark-blue short skirt, sheer black pantyhose and gloves",
       "tokens": [
         "nun",
         "habit",
@@ -18,8 +18,7 @@
         "blue_dress",
         "cross",
         "gloves",
-        "black_pantyhose",
-        "black_keys_(type-moon)"
+        "black_pantyhose"
       ],
       "default": true,
       "isDefault": true

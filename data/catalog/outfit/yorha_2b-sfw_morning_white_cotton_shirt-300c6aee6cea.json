@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "yorha_2b/sfw_morning_white_cotton_shirt",
+  "revision": 1,
+  "sortOrder": 1143,
+  "createdAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "data": {
+    "characterId": "yorha_2b",
+    "outfit": {
+      "id": "sfw_morning_white_cotton_shirt",
+      "name": "晨间宽大白棉衬衫",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "an opaque oversized white cotton button-up shirt with long loose sleeves and a relaxed collar, its hem covering the upper thighs, barefoot",
+      "tokens": [
+        "oversized_shirt",
+        "white_shirt",
+        "cotton_shirt",
+        "long_sleeves",
+        "relaxed_collar",
+        "barefoot"
+      ]
+    }
+  }
+}

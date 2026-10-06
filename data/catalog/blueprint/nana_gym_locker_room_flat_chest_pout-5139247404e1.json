@@ -1,23 +1,23 @@
 {
   "kind": "blueprint",
   "id": "nana_gym_locker_room_flat_chest_pout",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1271,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T09:50:34.027913700+00:00",
   "data": {
-    "action": "制服解开拿着软皮尺低头量胸围，两腮鼓起气鼓鼓，小虎牙咬唇，尾巴不安拍地",
-    "camera": "medium close-up, eye-level, extreme pout and comedic frustration",
+    "action": "左手压住长凳上备用制服的袖口，右手把软尺拉到肩缝，低头鼓腮检查袖长。",
+    "camera": "medium shot, eye level, closed sports outfit and measuring hands on the bench visible",
     "category": "反差萌动",
     "characterId": "nana_asta_deviluke",
     "coverageTags": [
       "pout"
     ],
-    "description": "【娜娜 · 更衣室尺子量胸的气鼓鼓】体育课后空无一人的女生更衣室长凳前，更衣柜半开着。娜娜的水手服纽扣全解开，露出里面的运动裹胸。她手里捏着一根软皮尺，低头看着自己娇小平坦的胸部，鼓起两腮气成河豚。身后的黑色爱心恶魔尾巴不甘心地抽打着长凳，泪汪汪又自卑自怨地嘟囔——「呜……！为什么姐姐和妹妹都那么大，偏偏只有我……笨蛋梨斗肯定也在背地里嘲笑我吧！哼！」",
+    "description": "体育课后，娜娜穿扣好的藏蓝运动外套和长运动裤，坐在更衣室木长凳旁检查备用水手服的袖长。白衬衫平摊在长凳上，她左手压住袖口，右手把软尺拉到肩缝，看到偏大的尺寸便鼓起两腮。粉色双马尾在肩后摆动，黑色心形尾巴轻拍凳脚——「哼！明明选了正确尺码，袖子怎么还是这么长！我可不想上课时一直卷袖子！」半开的铁柜、挂好的毛巾与地面运动包形成背景，顶灯照尺面与白布，凳下留柔影。",
     "id": "nana_gym_locker_room_flat_chest_pout",
-    "lighting": "更衣室暖黄色天花板灯光与镜面反射的柔和光晕",
-    "location": "女生体育更衣室铁柜与长木凳旁",
-    "mood": "娇憨气鼓鼓",
+    "lighting": "warm ceiling light on the laid-out white sleeve and tape; soft shade beneath the bench",
+    "location": "女生体育更衣室木长凳旁，半开铁柜与挂毛巾在后方",
+    "mood": "尺码偏大后的气鼓鼓喜剧",
     "negativeTokens": [
       "worst quality",
       "low quality",
@@ -35,32 +35,51 @@
       "nsfw",
       "nude"
     ],
-    "outfitId": "sainan_uniform",
-    "promptProse": "Pouting with flushed, puffed cheeks while looking down at a soft tape measure in a quiet school locker room with her sailor shirt open, Nana vents her comedic frustration over her petite bust. Warm room lighting outlines her slender torso and agitated devil tail.",
+    "outfitId": "sfw_gym_track_set",
+    "promptProse": "A spare white sailor blouse lies flat on the locker-room wooden bench while Nana checks its unexpectedly long sleeve. Wearing a fully closed navy sports jacket and matching track trousers, she presses the cuff with her left hand and draws a soft tape toward the shoulder seam with her right. Her cheeks puff in frustration beneath pink twintails, and the black heart-tipped tail flicks near the bench leg. A half-open locker behind her holds a hanging towel; a small sports bag rests beside the near floor tiles. Keep the laid-out shirt and measuring contacts visible at eye level in a medium view. Warm ceiling light reveals the tape markings and white fabric folds, casting narrow finger shadows on the sleeve. The locker interior and the area beneath the bench remain softly shaded.",
     "promptTokens": [
-      "school_locker_room",
-      "pouting_face",
-      "measuring_chest",
-      "open_shirt",
-      "flat_chest",
-      "small_breasts",
-      "demon_tail",
-      "twintails",
-      "detailed_background",
-      "cinematic_lighting"
+      "1girl",
+      "solo",
+      "puffed cheeks",
+      "measuring spare uniform sleeve",
+      "shirt laid flat on bench",
+      "left hand on cuff",
+      "tape to shoulder seam",
+      "half open locker",
+      "hanging towel",
+      "sports bag on floor",
+      "warm ceiling light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "locker_room",
+      "school_locker_room",
+      "closed_sports_jacket",
+      "track_trousers",
       "pouting",
+      "measuring_uniform_sleeve",
       "tape_measure",
-      "measuring_bust",
-      "sainan_high_school_uniform",
-      "open_shirt",
-      "flat_chest",
-      "demon_tail"
+      "shirt_on_bench",
+      "half_open_locker",
+      "hanging_towel",
+      "sports_bag",
+      "warm_ceiling_light",
+      "medium_shot"
     ],
     "timeOfDay": "下午",
-    "title": "娜娜 · 更衣室尺子量胸的气鼓鼓"
+    "title": "娜娜 · 更衣室里偏长的制服袖口",
+    "identityTokensOverride": [
+      "nana_asta_deviluke",
+      "1girl",
+      "solo",
+      "pink_hair",
+      "long_hair",
+      "twintails",
+      "hair_between_eyes",
+      "purple_eyes",
+      "black_spade_heart_tail",
+      "to_love-ru"
+    ],
+    "identityProseOverride": "Nana Asta Deviluke from To LOVE-Ru, Deviluke's feisty second princess with long pink twintails, purple-pink eyes and a black spade-heart tail"
   }
 }

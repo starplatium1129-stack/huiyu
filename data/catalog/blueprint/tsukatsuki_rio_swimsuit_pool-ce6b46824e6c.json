@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_swimsuit_pool",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 903,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "action": "披薄纱外套站在池边",
     "adult": false,
@@ -25,12 +25,12 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "swimsuit",
-    "promptProse": "Rio stands beside the private pool in her black swimsuit with red trim and sheer black cover-up, studying the clear water with narrowed red eyes. The slightly low medium view keeps the pool coping beside her and the water surface extending behind. Summer sunlight catches her dark hair and the cover-up's moving edge, with reflected pool light breaking gently across the shaded fabric near her hand.",
+    "outfitId": "sfw_private_pool_onepiece",
+    "promptProse": "Rio stands beside the private pool in her black one-piece swimsuit with red trim and sheer black cover-up, studying the clear water with narrowed red eyes. The slightly low medium view keeps the pool coping beside her and the water surface extending behind. Summer sunlight catches her dark hair and the cover-up's moving edge, with reflected pool light breaking gently across the shaded fabric near her hand.",
     "promptTokens": [
       "summer daytime",
       "private pool",
-      "black red swimsuit",
+      "black red one piece swimsuit",
       "sheer cover up",
       "looking down",
       "medium shot",

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "elaina/sfw_rainy_bookshop_cape",
+  "revision": 1,
+  "sortOrder": 1115,
+  "createdAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "data": {
+    "characterId": "elaina",
+    "outfit": {
+      "id": "sfw_rainy_bookshop_cape",
+      "name": "雨旅深蓝斗篷便装",
+      "prose": "a short navy waterproof cape over an ivory knitted sweater, a charcoal pleated skirt, opaque black tights and buckle ankle boots, with her black witch hat and gold buckle retained",
+      "tokens": [
+        "navy_cape",
+        "short_cape",
+        "waterproof_fabric",
+        "ivory_sweater",
+        "long_sleeves",
+        "charcoal_pleated_skirt",
+        "opaque_black_tights",
+        "buckle_ankle_boots",
+        "black_witch_hat",
+        "gold_buckle"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "murasame/modern_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 615,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "characterId": "murasame",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "modern_dress",
       "isDefault": false,
       "name": "穗织夏日清凉洋装",
-      "prose": "a lovely breezy white and mint-green summer sundress with delicate floral lace trim along the sweetheart neckline, thin spaghetti shoulder straps, straw sunhat tied with a red silk ribbon, brown leather sandals, and sun-dappled greenery ambience",
+      "prose": "a white-and-mint summer sundress with floral lace trim at the neckline, thin shoulder straps, a red-ribboned straw hat and brown sandals",
       "tokens": [
         "sundress",
         "white_dress",

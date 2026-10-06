@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "marcille_donato/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 993,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "marcille_donato",
     "outfit": {
       "id": "sfw_beach",
       "name": "玛露希尔·海滨泳装",
-      "prose": "a practical blue swimsuit with a cream travel robe, sun hat and a basket of carefully prepared mushroom dishes",
+      "prose": "a practical blue swimsuit with a cream travel robe and sunhat",
       "tokens": [
         "blue_swimsuit",
         "cream_travel_robe",
-        "sun_hat",
-        "mushroom_basket",
-        "picnic_rock"
+        "sun_hat"
       ],
       "default": false,
       "isDefault": false

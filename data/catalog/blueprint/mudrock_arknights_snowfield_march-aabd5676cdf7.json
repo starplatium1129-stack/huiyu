@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_snowfield_march",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 577,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
   "data": {
     "action": "扛着战锤稳步前行",
-    "camera": "cowboy shot, resting warhammer on ground",
+    "camera": "cowboy shot, marching with warhammer over one shoulder",
     "category": "泰拉自然",
     "characterId": "mudrock_arknights",
     "description": "【泥岩 · 雪原行军】风雪呼啸的莱塔尼亚荒原之上，穿着全套厚重萨卡兹战甲的泥岩单手扛着比人还高的巨型破城战锤，在及膝的深雪中迈着如山岳般坚实沉稳的步伐。她回头确认同伴的距离——「大家跟紧我。只要我的护盾还在，就没有任何风雪与敌人能伤到你们。」",

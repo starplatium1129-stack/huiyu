@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_dorm_cozy_budget_glasses",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 916,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "action": "戴着红框眼镜蜷坐在布艺沙发上，抱着抱枕与手账本，神情放松慵懒",
     "camera": "medium shot, slightly low angle",
@@ -20,7 +20,7 @@
     "mood": "温馨治愈",
     "negativeTokens": [],
     "outfitId": "budget_cozy_no_mug",
-    "promptProse": "Yuuka curls on the dormitory sofa cushions in an oversized pastel-blue sweater and dark shorts, red-framed glasses low over a finished budget ledger on her knees. Hot cocoa stands beside her. The slightly low medium view includes the cushion edges and bedside lamp behind. Its warm yellow light illuminates her relaxed smile and page corners, while faint fireplace glow warms the shaded sweater folds farther from the lamp.",
+    "promptProse": "Yuuka curls on the dormitory sofa cushions in an oversized pastel-blue sweater and dark shorts, red-framed glasses low over a finished budget ledger on her knees. Hot cocoa stands on the small side table beside the sofa. The slightly low medium view includes the cushion edges and bedside lamp behind. Its warm yellow light illuminates her relaxed smile and page corners, while the existing faint fireplace glow warms the shaded sweater folds farther from the lamp.",
     "promptTokens": [
       "night",
       "dorm sofa",

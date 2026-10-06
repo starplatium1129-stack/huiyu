@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ling_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 377,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
   "data": {
     "characterId": "ling_arknights",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "standard",
       "isDefault": true,
       "name": "岁序华章（黑金旗袍）",
-      "prose": "her ink-teal high-slit qipao-style long dress with gold and pale aqua-blue cloud and dragon motifs, off-shoulder bare shoulders, a long gold necklace and dangling gold earrings, gold hair ornaments, the deep teal fabric harmonizing with her aqua-tipped white hair, barefoot",
+      "prose": "her ink-teal high-slit qipao-style long dress with gold and pale aqua-blue cloud and dragon motifs, off-shoulder bare shoulders, a long gold necklace and dangling gold earrings, gold hair ornaments, barefoot",
       "tokens": [
         "qipao",
         "high_slit",

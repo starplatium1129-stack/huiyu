@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "raiden_shogun/sfw_wisteria_cafe_knit",
+  "revision": 1,
+  "sortOrder": 1111,
+  "createdAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "data": {
+    "characterId": "raiden_shogun",
+    "outfit": {
+      "id": "sfw_wisteria_cafe_knit",
+      "name": "藤紫针织咖啡馆便装",
+      "prose": "a wisteria-purple fine-knit cardigan over an ivory round-neck blouse, a charcoal pleated midi skirt and simple black loafers",
+      "tokens": [
+        "purple_cardigan",
+        "knit_cardigan",
+        "ivory_blouse",
+        "round_neck",
+        "long_sleeves",
+        "charcoal_skirt",
+        "pleated_midi_skirt",
+        "black_loafers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 62,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T10:16:06.567639+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_05",
     "title": "双叶理央 · 海滨观测站的防水实验",
@@ -30,7 +30,7 @@
       "brightened_gaze",
       "noon"
     ],
-    "promptProse": "Crouching at the tide-pool observation station, Rio Futaba records the water temperature on a waterproof tablet, then angles it toward the viewer as a tiny crab emerges between rocks. Her navy athletic swimsuit, white sun jacket and clear safety glasses retain the field outfit. The horizontal medium view follows the rock basin behind her. Noon sun brightens the tablet's cover and wet stone, while pool reflections flicker on her sleeves.",
+    "promptProse": "Crouching at the tide-pool observation station, Rio Futaba records the water temperature on a tablet enclosed in a transparent waterproof pouch, then angles it toward the viewer as a tiny crab emerges between rocks. Her navy athletic swimsuit, white sun jacket and clear safety glasses retain the field outfit. The horizontal medium view follows the rock basin behind her. Noon sun brightens the tablet's cover and wet stone, while pool reflections flicker on her sleeves.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -42,7 +42,8 @@
       "tide pool",
       "crab",
       "noon",
-      "medium shot"
+      "medium shot",
+      "transparent waterproof tablet pouch"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

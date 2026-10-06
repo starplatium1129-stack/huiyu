@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "scathach_fate/sfw_purple_duel_suit",
+  "revision": 1,
+  "sortOrder": 1132,
+  "createdAt": "2026-10-06T10:46:28.602196100+00:00",
+  "updatedAt": "2026-10-06T10:46:28.602196100+00:00",
+  "data": {
+    "characterId": "scathach_fate",
+    "outfit": {
+      "id": "sfw_purple_duel_suit",
+      "name": "影之国紫色练武装",
+      "prose": "a closed purple training bodysuit, silver shoulder guards, dark gloves and fitted boots",
+      "tokens": [
+        "closed_purple_training_suit",
+        "silver_shoulder_guards",
+        "dark_gloves",
+        "fitted_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

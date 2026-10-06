@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "chloe_von_einzbern/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 166,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T11:03:26.342226900+00:00",
   "data": {
     "characterId": "chloe_von_einzbern",
     "outfit": {
       "id": "sfw_bridal",
       "name": "克洛伊·圣洁花嫁",
-      "prose": "a white-and-pink bridal dress with a short veil, rose ribbons and a candy-filled bouquet",
+      "prose": "a white-and-pink bridal dress with a short veil and rose ribbons",
       "tokens": [
         "wedding_dress",
         "pink_white_dress",
         "short_veil",
-        "rose_ribbons",
-        "candy_bouquet"
+        "rose_ribbons"
       ],
       "default": false,
       "isDefault": false

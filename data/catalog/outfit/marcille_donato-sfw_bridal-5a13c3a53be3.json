@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "marcille_donato/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 992,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
   "data": {
     "characterId": "marcille_donato",
     "outfit": {
       "id": "sfw_bridal",
       "name": "玛露希尔·圣洁花嫁",
-      "prose": "a blue-and-white elven bridal robe with a translucent veil, braided gold hair and a bouquet of glowing dungeon flowers",
+      "prose": "a blue-and-white elven bridal robe with a translucent veil and braided gold hair",
       "tokens": [
         "wedding_robe",
         "blue_white_gown",
         "elven_veil",
-        "braided_hair",
-        "glowing_flower_bouquet"
+        "braided_hair"
       ],
       "default": false,
       "isDefault": false

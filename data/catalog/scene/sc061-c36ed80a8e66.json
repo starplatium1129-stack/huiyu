@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc061",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 59,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T13:30:17.204187300+00:00",
   "data": {
     "id": "sc061",
     "title": "浴室门口的失衡",
@@ -39,7 +39,7 @@
     "mature": false,
     "location": "公寓浴室门口",
     "weather": "晴",
-    "camera": "七分身接住动作特写",
+    "camera": "七分身接住动作平视中景",
     "lighting": "浴室暖光与蒸汽漫射",
     "usage": [
       "展示图",

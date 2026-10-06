@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kyouyama_kazusa/live_stage",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 495,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "characterId": "kyouyama_kazusa",
     "outfit": {
@@ -12,13 +12,12 @@
       "id": "live_stage",
       "isDefault": false,
       "name": "乐队舞台装",
-      "prose": "a black stage outfit with silver accessories, fingerless gloves, a bass guitar, and the cat-ear hood pushed back, cool band girl look",
+      "prose": "a black stage outfit with silver accessories and fingerless gloves, the cat-ear-shaped hood pushed back",
       "tokens": [
         "stage_outfit",
         "black_clothes",
         "silver_accessories",
         "fingerless_gloves",
-        "bass_guitar",
         "hood",
         "cat_ears",
         "band"

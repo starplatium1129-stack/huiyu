@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/ignition",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 415,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
@@ -12,16 +12,8 @@
       "id": "ignition",
       "isDefault": false,
       "name": "熔火战装·完全解放",
-      "prose": "her signature official combat attire fully ignited: the short layered torn dress with petticoat and pink interior wreathed in swirling flame aura, single free shoulder loose jacket, black long gloves, knee boots, the flaming greatsword core venting heat as embers and obsidian shards orbit her back",
+      "prose": "her signature short layered black combat dress with petticoat and pink interior, a loose jacket leaving one shoulder free, black long gloves, knee boots, thigh straps, a white collar and metal pendant",
       "tokens": [
-        "flame_aura",
-        "flaming_sword",
-        "embers",
-        "fire",
-        "lava",
-        "overheated",
-        "shards",
-        "obsidian",
         "black_dress",
         "short_dress",
         "layered_dress",

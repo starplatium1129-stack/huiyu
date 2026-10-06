@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yuria_firing_range_pistol_stance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1203,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
   "data": {
     "id": "yuria_firing_range_pistol_stance",
     "title": "春寺由梨亚 · 初冬街角的红羊毛围巾与热可可分享",
     "category": "暖冬日常",
     "characterId": "harudera_yuria",
-    "outfitId": "executive_suit",
+    "outfitId": "sfw_winter_coat_red_scarf",
     "coverageTags": [
       "daily"
     ],
@@ -35,12 +35,12 @@
       "bare_face",
       "gentle_smile"
     ],
-    "promptProse": "Harudera Yuria offers a steaming paper cup of hot cocoa with both hands during an early-winter shopping walk with Yuuji. She wears her charcoal jacket, white collared shirt, matching pencil skirt and black tights, with glasses removed. Shop windows recede behind falling gold leaves. Afternoon sun warms her blonde waves and jacket shoulder; festive window bulbs glint on the cup lid as her breath condenses.",
+    "promptProse": "Harudera Yuria offers a steaming paper cup of cocoa with both hands during an early-winter shopping walk with Yuuji. Her beige double-breasted cashmere coat and red wool scarf replace the office suit for this outing; her face stays uncovered above loose honey-blonde waves. Shop windows recede behind falling gold leaves. Afternoon sun warms the scarf weave and coat shoulder, while festive bulbs catch the cup lid and her small breath cloud.",
     "promptTokens": [
       "Harudera Yuria",
-      "charcoal business suit",
-      "white shirt",
-      "black tights",
+      "beige cashmere coat",
+      "red wool scarf",
+      "leather boots",
       "hot cocoa",
       "winter street",
       "medium shot"

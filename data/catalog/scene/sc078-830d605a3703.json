@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc078",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T12:41:51.452517200+00:00",
   "data": {
     "animaCaption": "Ayachi Nene turns from the shrine guest-room mirror and offers the hand warmer in both hands, her new white tabi visible below the pale blue kimono. The mirror faces the room obliquely rather than presenting another frontal figure. Floorboards lead behind her toward the softly lit window. Winter morning light touches the kimono folds and warmer wrapping, while short foot contact shadows define the split-toe socks against the cooler wood.",
     "auditRevision": "careful-batch04-2026-08-27",
-    "camera": "镜前足袋可见的全身中景",
+    "camera": "镜前足袋可见的全身远景",
     "category": "祭典・节日",
     "char": "nene",
     "character": [

@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc150",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T12:41:51.452517200+00:00",
   "data": {
-    "animaCaption": "In the locked occult research club room with molten golden sunset pouring through the window, Shiki Natsume in a school uniform walks around the desk to trap the seated viewer in the office chair, both hands gripping the chair back as she looms in a kabedon pose, black hair brushing the viewer's ear and the tear mole glowing dangerously in the backlight.",
+    "animaCaption": "After walking around the club-room desk, Shiki Natsume pauses beside the viewer's chair with both hands resting on its back. She leans a little nearer, then looks aside with an embarrassed blush; her school blazer remains in place. The close view keeps her face and the hands on the chair clear, with the desk corner and stacked research books receding toward the closed door. Low sunset enters from the side window, edging her black hair and the upper chair rail. The books cast staggered shadows across the desk, while reflected tabletop light opens the shaded cheek and sleeves without erasing the darker passage behind her.",
     "auditRevision": "careful-batch10-2026-08-27",
-    "camera": "近景特写",
+    "camera": "椅背扶手与面部的近景特写",
     "category": "恋爱",
     "char": "natsume",
     "character": [
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, crowded",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, school_uniform, blazer_off_shoulder, pleated_skirt, black_thighhighs, mary_janes, sitting_on_classroom_desk, leaning_forward_toward_viewer, sunset_golden_hour_through_windows, locked_room, flustered_blush, looking_away, tsundere, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, school uniform, navy blazer, pleated skirt, standing beside office chair, hands on chair back, leaning toward viewer, flustered blush, looking away, club room, desk, stacked research books, sunset window light, close up",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 强势壁咚反差萌】放学后空无一人的超自然社办，窗外落日熔金。夏目悄悄转动钥匙反锁了门，绕到你的办公椅前，双手撑在椅背两侧将你完全“壁咚”。她微微俯身，黑色发丝伴随着她标志性的傲娇呼吸拂过你的耳畔，眼角的泪痣在夕阳逆光中散发着危险而性感的魅惑——「哼，一下午都在盯着别的女孩子看，把我当空气吗？现在...是我的专属补偿时间了哦。」",
@@ -34,8 +34,8 @@
       "pinning_against_chair",
       "club_room",
       "sunset_backlight",
-      "full_body",
-      "mary_jane"
+      "mary_jane",
+      "close_up"
     ],
     "time": "黄昏",
     "timeOfDay": "sunset",
@@ -44,6 +44,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "weather": "夕阳暖风"
+    "weather": "夕阳暖风",
+    "recommendedSize": "832x1216"
   }
 }

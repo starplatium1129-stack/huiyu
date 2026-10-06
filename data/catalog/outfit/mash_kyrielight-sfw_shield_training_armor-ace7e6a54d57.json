@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "mash_kyrielight/sfw_shield_training_armor",
+  "revision": 1,
+  "sortOrder": 1131,
+  "createdAt": "2026-10-06T10:46:28.602196100+00:00",
+  "updatedAt": "2026-10-06T10:46:28.602196100+00:00",
+  "data": {
+    "characterId": "mash_kyrielight",
+    "outfit": {
+      "id": "sfw_shield_training_armor",
+      "name": "模拟训练双色铠装",
+      "prose": "a secure two-tone armored training dress, elbow gloves, dark legwear and armored boots",
+      "tokens": [
+        "two_tone_training_armor",
+        "armored_dress",
+        "elbow_gloves",
+        "dark_legwear",
+        "armored_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

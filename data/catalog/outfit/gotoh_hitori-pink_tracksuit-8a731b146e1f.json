@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/pink_tracksuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 550,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
@@ -19,10 +19,9 @@
         "pleated_skirt",
         "black_skirt",
         "black_socks",
-        "sneakers",
-        "guitar_case"
+        "sneakers"
       ],
-      "prose": "wearing her iconic oversized bright pink zip-up tracksuit jacket over a dark pleated school skirt, black knee-high socks, casual sneakers, and carrying a black electric guitar gig bag",
+      "prose": "wearing her iconic oversized bright-pink zip-up tracksuit jacket over a dark pleated school skirt, black knee-high socks and casual sneakers",
       "styleHint": "soft daily anime illustration with gentle warm lighting",
       "isDefault": true,
       "default": true

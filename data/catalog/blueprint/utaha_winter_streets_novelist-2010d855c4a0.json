@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_winter_streets_novelist",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1430,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
   "data": {
     "id": "utaha_winter_streets_novelist",
     "title": "霞之丘诗羽 · 冬街围巾的毒舌·「手冷的话……借你一次也没关系」",
@@ -27,12 +27,13 @@
       "smile",
       "date"
     ],
-    "promptProse": "Utaha Kasumigaoka walks beside her companion after the deadline, extending a cold hand with a deliberately casual expression. Her black evening dress and silver earrings remain visible beneath the current low chignon, rather than changing into another outfit. The medium two-shot follows the winter street's shopfronts. Amber streetlamps light her red fingertips and dark dress folds, while blue snow reflection separates their silhouettes from the pavement.",
+    "promptProse": "Utaha Kasumigaoka walks beside her companion after the deadline, extending a cold hand with a deliberately casual expression. Her black wool coat and burgundy scarf shelter her neck, long black hair loose above dark tights and ankle boots. The medium two-shot follows the winter street's shopfronts. Amber streetlamps light her red fingertips and coat folds, while blue snow reflection separates their silhouettes from the pavement.",
     "promptTokens": [
       "kasumigaoka_utaha",
       "Utaha Kasumigaoka",
-      "black evening dress",
-      "low chignon",
+      "black wool coat",
+      "burgundy scarf",
+      "loose black hair",
       "hand extended",
       "winter street",
       "two-shot"
@@ -43,7 +44,7 @@
     "sampleRating": "SFW",
     "kreaStyleHint": "anime_slice_of_life",
     "animaStyleHint": "anime_slice_of_life",
-    "outfitId": "elegant_black_dress",
+    "outfitId": "sfw_winter_coat_burgundy_scarf",
     "coverageTags": [
       "daily",
       "date",
