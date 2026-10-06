@@ -1,4 +1,3 @@
-export type ShowcaseCharacter = 'nene' | 'natsume' | 'triad'
 export type ShowcaseRating = 'All' | 'R15' | 'R18'
 export type ShowcaseEntryType = 'scene' | 'artist' | 'popular' | 'lora'
 

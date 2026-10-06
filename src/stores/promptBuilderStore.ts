@@ -29,13 +29,12 @@ import {
 import type { DrawSubject } from '@/utils/popularContent'
 import type { RecipeRestoreReport } from '@/utils/recipeComparison'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
-import { SHOT, LIGHTING, COMPOSITION, EMOTION } from '@/config/promptConstants'
+import { SHOT, COMPOSITION, EMOTION } from '@/config/promptConstants'
 
 import type { CharKey, Selections } from '@/types/promptHistory'
 export type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/promptHistory'
 
 export const SHOT_PROMPT: Record<string, string> = Object.fromEntries(SHOT.map(item => [item.id, item.prompt || '']))
-export const LIGHTING_PROMPT: Record<string, string> = Object.fromEntries(LIGHTING.map(item => [item.id, item.prompt || '']))
 export const COMPOSITION_PROMPT: Record<string, string> = Object.fromEntries(COMPOSITION.map(item => [item.id, item.prompt || '']))
 export const PROMPT_MAP_EMOTION: Record<string, string> = Object.fromEntries(EMOTION.map(item => [item.id, item.prompt || '']))
 
@@ -47,12 +46,6 @@ export const CHAR_PROMPT: Record<string, string> = {
 }
 
 export const NEGATIVE_DEFAULT = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate'
-
-export const RECOMMENDED_TAGS = [
-  'golden_hour', 'window_light', 'soft_shadows', 'cinematic_composition',
-  'depth_of_field', 'hair_blowing', 'beautiful_detailed_eyes',
-  'warm_atmosphere', 'soft_colors', 'pastel_tones', 'muted_tones',
-]
 
 export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // ── Core director state ─────────────────────────────────────────────────

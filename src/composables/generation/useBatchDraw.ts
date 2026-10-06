@@ -10,7 +10,6 @@ export interface BatchTargetItem {
   kind?: 'scene' | 'character'
   characterId?: string
 }
-export type BatchSceneItem = BatchTargetItem
 export type BatchEngine = 'sd' | 'anima'
 export interface BatchDrawJob {
   id: string

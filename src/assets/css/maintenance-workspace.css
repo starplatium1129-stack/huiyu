@@ -76,7 +76,6 @@
 .scene-maintenance-page { @apply tw:pt-s-3 tw:pb-s-3; }
 .scene-maintenance-page.is-catalog { @apply tw:flex tw:flex-col; height: calc(100dvh - 80px); @apply tw:min-h-[660px]; }
 html.aics-desktop-shell .scene-maintenance-page.is-catalog { height: calc(100dvh - 118px); }
-.scene-maintenance-page.is-catalog > .workspace-archive-bar { flex: none; @apply tw:min-h-[36px]; padding-block: var(--s-2); @apply tw:mb-s-2; }
 .scene-maintenance-page.is-catalog .sm-head { flex: none; @apply tw:items-center tw:mb-s-2; padding: var(--s-3) var(--s-4); }
 .scene-maintenance-page .sm-head > div:first-child { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-3; }
 .scene-maintenance-page .sm-head .page-kicker { @apply tw:hidden; }
@@ -100,7 +99,6 @@ html.aics-desktop-shell .scene-maintenance-page.is-catalog { height: calc(100dvh
   .scene-maintenance-page.is-catalog:has(.manager-summary[open]) .maintenance-catalog { @apply tw:h-[620px]; }
 }
 @media (max-width: 1200px) {
-  .scene-maintenance-page.is-catalog > .workspace-archive-bar { @apply tw:hidden; }
   .manager-workspace .catalog-workspace { @apply tw:min-h-[280px]; }
   .manager-workspace .inspector-header { @apply tw:pt-s-3; }
 }

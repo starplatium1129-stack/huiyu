@@ -3,12 +3,6 @@
 body:has(.pb.journal-workspace) .route-atmosphere-field,
 body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
 .pb.journal-workspace > .nav-back { @apply tw:hidden; }
-.pb.journal-workspace .workspace-archive-bar { @apply tw:min-h-0; padding: 0 0 var(--s-2); @apply tw:mb-s-3; background: transparent; border: 0; box-shadow: none; }
-/* 2026-09-07: .workspace-radar / .workspace-line 的 DOM 已随归档栏精简移除，
-   只保留仍在渲染的 .workspace-code（工作台不展示归档编号）。 */
-.pb.journal-workspace .workspace-code { @apply tw:hidden; }
-.pb.journal-workspace .workspace-copy { flex: 1; @apply tw:flex tw:flex-row tw:gap-s-3 tw:items-center tw:min-w-0; }
-.pb.journal-workspace .workspace-copy strong { @apply tw:hidden; }
 .pb.journal-workspace .pb-topline { @apply tw:items-center tw:gap-s-4 tw:mb-s-4; }
 .pb.journal-workspace .pb-header { @apply tw:min-w-0; flex: 1; }
 .pb.journal-workspace .pb-heading-row { @apply tw:flex tw:items-center tw:flex-wrap; gap: var(--s-2) var(--s-4); }
@@ -73,7 +67,6 @@ body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
   .pb.journal-workspace .drawing-jump-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 }
 @media (max-width: 600px) {
-  .pb.journal-workspace .workspace-copy strong, .pb.journal-workspace .workspace-state { @apply tw:hidden; }
   .pb.journal-workspace .pb-heading-row { @apply tw:justify-between tw:gap-s-2; }
   .pb.journal-workspace .pb-top-actions { gap: var(--s-1) var(--s-3); }
   .pb.journal-workspace .pb-mode-actions,
@@ -89,4 +82,4 @@ body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
   .pb.journal-workspace .stage-quick-actions { @apply tw:flex-col; }
   .pb.journal-workspace .gen-bar { @apply tw:p-s-3; }
 }
-.pb.journal-workspace.focus-mode .workspace-archive-bar, .pb.journal-workspace.focus-mode .pb-managed-route-banner, .pb.journal-workspace.focus-mode .drawing-jump-links { @apply tw:hidden; }
+.pb.journal-workspace.focus-mode .pb-managed-route-banner, .pb.journal-workspace.focus-mode .drawing-jump-links { @apply tw:hidden; }

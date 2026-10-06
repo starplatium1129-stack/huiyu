@@ -132,7 +132,7 @@ function nativeTitles(raw: string, file: string): Violation[] {
 test('native title tooltips only go down', () => {
   const fixture = `<template>
     <ArchiveStatePanel title="Component heading"><button title="Native hint" /></ArchiveStatePanel>
-    <workspace-archive-bar :title="heading" />
+    <archive-state-panel :title="heading" />
     <!-- <button title="Commented hint" /> -->
     <div><button :title="hint" /><span v-bind:title="hint" /></div>
   </template>

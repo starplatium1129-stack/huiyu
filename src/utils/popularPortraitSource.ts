@@ -8,7 +8,6 @@ const onboardingCharacters = onboarding.characters as Array<{
 }>
 const pendingIds = new Set(onboardingCharacters.filter(c => c.portraitPending).map(c => c.id))
 const placeholderIds = new Set(onboardingCharacters.filter(c => c.portraitPending && c.portraitPlaceholder).map(c => c.id))
-const themeIds = new Set(onboardingCharacters.map(c => c.id))
 
 function pendingPortraitSrc(id: string, full: boolean): string {
   if (!placeholderIds.has(id)) return '/assets/characters/portrait-pending.svg'
@@ -16,8 +15,6 @@ function pendingPortraitSrc(id: string, full: boolean): string {
     ? `/assets/characters/popular-${encodeURIComponent(id)}.png?placeholder=1`
     : `/assets/characters/thumbs/popular-${encodeURIComponent(id)}.webp?placeholder=1`
 }
-
-export function hasOnboardingTheme(id = ''): boolean { return themeIds.has(id) }
 
 export function isPopularPortraitPending(id: string): boolean {
   return pendingIds.has(id) && !characterArtEntry(id)

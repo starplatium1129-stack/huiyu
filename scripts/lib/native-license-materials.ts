@@ -150,12 +150,3 @@ export function readNativeMaterialFromWorktree(repositoryRoot: string): ReadNati
     return bytes;
   };
 }
-
-export function validateNativeLicenseMaterials(readFile: ReadNativeMaterial): { files: number; preserved: number } {
-  const materials = loadNativeLicenseMaterials(readFile);
-  let preserved = 0;
-  for (const [file] of materials) {
-    if (verifyNativeLicenseMaterial(materials, file, readFile(file))) preserved++;
-  }
-  return { files: materials.size, preserved };
-}

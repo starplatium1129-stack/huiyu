@@ -50,15 +50,6 @@ export interface CompanionAvatarDefinition {
   }
 }
 
-export interface CompanionUserState {
-  characterId: string
-  selectedAvatarId: string
-  affection: number
-  lastSessionAt?: number
-  draftMessage?: string
-  bubblePosition?: { x: number; y: number }
-}
-
 const characters = new Map<string, CompanionCharacterDefinition>()
 const avatars = new Map<string, CompanionAvatarDefinition>()
 const profiles = new Map<string, Live2DAdapterProfile>()

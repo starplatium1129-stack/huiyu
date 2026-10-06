@@ -62,24 +62,6 @@ export function extractSpokenDialogue(value: unknown): RoleplaySpeech {
   return { text, directions }
 }
 
-export function fixWavHeader(buffer: ArrayBuffer): ArrayBuffer {
-  try {
-    const view = new DataView(buffer)
-    if (buffer.byteLength < 44) return buffer
-    if (view.getUint32(0, false) !== 0x52494646 || view.getUint32(8, false) !== 0x57415645) return buffer
-    view.setUint32(4, buffer.byteLength - 8, true)
-    let position = 12
-    while (position + 8 <= buffer.byteLength) {
-      const tag = view.getUint32(position, false)
-      const size = view.getUint32(position + 4, true)
-      if (tag === 0x64617461) { view.setUint32(position + 4, buffer.byteLength - position - 8, true); break }
-      if (size > buffer.byteLength || position + 8 + size > buffer.byteLength + 1) break
-      position += 8 + size + (size % 2)
-    }
-  } catch {}
-  return buffer
-}
-
 export class SentenceBuffer {
   minimumLength: number
   maximumLength: number

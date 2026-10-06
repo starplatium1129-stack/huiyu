@@ -15,4 +15,3 @@ export interface TaskRecord {
   parentBatchId: string | null; stepIndex: number | null;
 }
 export interface TaskSubmission { requestKey: string; kind: TaskRecord['kind']; input: Record<string, unknown>; context?: Record<string, unknown> }
-export interface TaskList { items: TaskRecord[]; runtimeEpoch: string }

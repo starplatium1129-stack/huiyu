@@ -94,7 +94,6 @@
 /* Count labels remain readable instead of inheriting translucent dark-theme treatments. */
 :root[data-theme="light"] :is(.pop-franchise-count, .pop-char-btn small, .pop-cat em, .franchise-count, .popular-group-count, .cb-count) { opacity: 1; @apply tw:text-muted; }
 :root[data-theme="light"] .control-page .status-tile { opacity: 1; }
-:root[data-theme="light"] .workspace-code { @apply tw:text-accent; }
 :root[data-theme="light"] .chat-page .api-settings-toggle { color: var(--character-ink, var(--accent)); }
 :root[data-theme="light"] .semantic-particle-field { --particle-accent: color-mix(in srgb, var(--archive-blue) 48%, var(--ink-base)); }
 

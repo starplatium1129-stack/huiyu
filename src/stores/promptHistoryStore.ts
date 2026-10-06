@@ -94,5 +94,3 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
     restoreHistoryEntry,
   }
 })
-
-export type PromptHistoryStore = ReturnType<typeof usePromptHistoryStore>

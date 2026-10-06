@@ -96,7 +96,3 @@ export function markUiFluidityForPath(path: string, phase: UiFluidityPhase): voi
   const id = navigationByPath.get(path)
   if (id !== undefined) markNavigation(id, phase, path)
 }
-
-export function isUiFluidityMeasurementEnabled(): boolean {
-  return runtime() !== null
-}

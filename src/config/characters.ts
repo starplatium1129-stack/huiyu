@@ -89,10 +89,6 @@ export const LIVE2D_OUTFITS = [
 export type Live2DOutfitId = typeof LIVE2D_OUTFITS[number]['id']
 export const DEFAULT_LIVE2D_OUTFIT: Live2DOutfitId = 'school'
 
-export function findLive2DOutfit(id: string) {
-  return LIVE2D_OUTFITS.find(outfit => outfit.id === id) ?? LIVE2D_OUTFITS[0]
-}
-
 /** 夏目只有源模型自带的咖啡店制服；互动 motion 的临时叠层不属于可选换装。 */
 export const NATSUME_OUTFITS = [
   {
@@ -102,10 +98,6 @@ export const NATSUME_OUTFITS = [
 
 export type NatsumeOutfitId = typeof NATSUME_OUTFITS[number]['id']
 export const DEFAULT_NATSUME_OUTFIT: NatsumeOutfitId = 'natsume-cafe'
-
-export function findNatsumeOutfit(id: string) {
-  return NATSUME_OUTFITS.find(outfit => outfit.id === id) ?? NATSUME_OUTFITS[0]
-}
 
 export const STORAGE_KEY = 'aics_chat_v1'
 export const STORAGE_VERSION = 3

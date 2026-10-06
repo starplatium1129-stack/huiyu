@@ -1,7 +1,6 @@
 //! Safe wrapper around the native Live2D model (motions, expressions,
 //! physics, pose, eye blink, parameters, drawables, hit tests).
 
-use std::ffi::c_float;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::OnceLock;
 
@@ -605,9 +604,4 @@ pub fn blend_mode_name(color_blend: i32) -> &'static str {
         ffi::L2D_COLOR_BLEND_COLOR => "Color",
         _ => "Unknown",
     }
-}
-
-/// Convenience: cast to f32 used by FFI surface.
-pub fn as_f32(v: c_float) -> f32 {
-    v
 }

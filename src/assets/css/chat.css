@@ -54,16 +54,6 @@
   @apply tw:text-primary;
 }
 
-.chat-page > .workspace-archive-bar {
-  @apply tw:min-h-[48px] tw:mb-s-2;
-  border-color: color-mix(in srgb, var(--editorial-gold) 24%, var(--border-soft));
-  border-radius: var(--r-terminal) var(--r-lg) var(--r-terminal) var(--r-lg);
-}
-
-.chat-page > .workspace-archive-bar .workspace-radar {
-  @apply tw:hidden;
-}
-
 .chat-page .chat-layout {
   @apply tw:grid;
   /* Portrait models need a tall stage; width follows the column, never stretches the model. */
@@ -1576,14 +1566,6 @@ body:has(.chat-page) .sakura-fall {
 
 @media (max-width: 600px) {
   .chat-page .chat-head { @apply tw:mb-s-5; }
-
-  .chat-page .workspace-copy span {
-    display: -webkit-box;
-    max-width: none;
-    @apply tw:overflow-hidden tw:leading-label tw:text-clip tw:whitespace-normal;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
 
   .chat-page .room-setup { @apply tw:items-stretch tw:flex-col; }
   .chat-page .conversation-head,

@@ -251,11 +251,3 @@ export function compileSpring(config: SpringConfig | SpringPresetName = 'bouncy'
     },
   }
 }
-
-/** 预烘焙常用档位；调用方直接复用结果，避免每次渲染重新解算。 */
-export const BAKED_SPRINGS: Record<SpringPresetName, CompiledSpring> = {
-  bouncy: compileSpring('bouncy'),
-  gentle: compileSpring('gentle'),
-  snappy: compileSpring('snappy'),
-  wobbly: compileSpring('wobbly'),
-}

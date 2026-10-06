@@ -20,8 +20,6 @@ export interface ApiFailure {
   retryAfterSeconds?: number
 }
 
-export type ApiResult<T> = ({ ok: true } & T) | ApiFailure
-
 export interface ChatStatus { online: boolean; model: string; models: Array<{ name: string; parameters?: string }> }
 export type HostConfig =
   | { ok?: true; configured: false; model?: string; baseUrl?: string }
@@ -33,10 +31,6 @@ export interface VoicePrepareResult { ok: true; voice: string; translation: bool
 export interface TranslateResult { sourceLanguage?: string; targetLanguage?: string; translation: string; segments?: unknown[] }
 export interface Live2DStatusResponse { models: Record<string, unknown> }
 export interface SDStatusResponse { online: boolean; checkpoint: string; models: string[]; samplers: string[]; schedulers: string[]; upscalers: string[] }
-
-export function isFailure(value: unknown): value is ApiFailure {
-  return Boolean(value && typeof value === 'object' && (value as ApiFailure).ok === false)
-}
 
 // ── 控制面板 ───────────────────────────────────────────────────────────────
 export type TunnelStatus = 'active' | 'waiting' | 'disabled'
@@ -190,7 +184,6 @@ export interface ControlDiagnostics {
 // ── 场景管理领域模型 ────────────────────────────────────────────────────────
 export type SceneRating = 'All' | 'R15' | 'R18'
 export type SceneCharacter = 'nene' | 'natsume' | 'triad' | 'both' | string
-export type CurationTier = 'normal' | 'review' | 'curated' | 'signature'
 
 /**
  * 场景编辑器的字段集。
@@ -225,15 +218,6 @@ export interface SceneDraft {
   [key: string]: unknown
 }
 
-export interface TagRecord {
-  id: string
-  en: string
-  cn: string
-  cat: string
-  weight: number
-  [key: string]: unknown
-}
-
 export interface CurationData {
   curatedSceneIds?: string[]
   signatureSceneIds?: string[]
@@ -248,15 +232,6 @@ export interface MaintenanceFailure extends ApiFailure {
   rolledBack?: boolean
   dataIntegrity?: 'restored' | 'INCONSISTENT'
   recovery?: string
-}
-
-/** POST /api/maintenance/run */
-export interface MaintenanceRunResult {
-  ok: true
-  task: string
-  label: string
-  output: string
-  exitCode: number
 }
 
 export type HomeHeroCharacter = 'nene' | 'natsume'
