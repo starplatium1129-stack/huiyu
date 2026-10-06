@@ -546,3 +546,11 @@ Windows Native Live2D 的 `LIVE2D_CUBISM_SDK_DIR` 优先使用 runner 进程环�
 公开发布的 signed、manual 和 complete-manual 模式均核对绑定清单、完整材料索引、Rust EXE 与 DLL 字节；缺失材料或字节漂移仍在发行封装／上传前拒绝，独立 `publishRelease` 入口也再次核验。按用户 2026-10-06 的明确要求，`releaseReady`、pending 及许可审批标记不再阻断发布，原值保留在构建报告和更新说明中；发布仍须用户明确授权，不将公开发行写成材料审批或设备验收已完成。
 
 skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同版本源码不同、锁文件变化、混包、缺回执和篡改在封装/签名/上传前拒绝。封装后追加分发文件身份并在签名/上传前核对。正常版本修改先构建再提交相同字节可用，不要求循环提交 SHA；仅文档变化不失效。旧包缺回执不能补写身份冒认已构建，应在原源码完整重建并重新审核；不得将同版本重建包冒充原公开资产。
+
+### 新用户自动准备（2026-10-06 源码）
+
+控制室首次配置由 `runtime-rs/src/control/setup-models.json` 统一驱动模型、角色 LoRA、聊天权重与受管运行包。桌面选择数据目录后重启；一次确认组合即可顺序下载、校验、准备环境与启动。ComfyUI 的受管 Portable 发布在 AI 工作区 `.runtimes/comfy/`，模型继续放 `ComfyUI/models/`；llama.cpp 在 `Chat/runtime/`、GGUF 在 `Chat/models/`。部分下载在同目录保留并续传；原模型不被异内容替换。
+
+`prepare-ai-environment.ps1` 是本机产品准备器，由 Rust 限定环境 ID、验证运行包后调用；没有新增通用命令权限或维护 CLI。当前选包支持 Windows x64 NVIDIA，Vulkan 为聊天进阶候选；驱动／系统许可与重启由用户完成。应用内文件准备完成不证明模型或设备验收。
+
+源码已退出 SD 新生成与 WebUI 受管启动；旧任务查询、结果收集、取消、作品与原配方继续保留。没有原引擎的旧作品不推断为新模型的可复现配方。当前公开程序包仍为原 1.9.0；本次源码要经过对应构建与安装才到达桌面，公开 LoRA 附件独立有效。

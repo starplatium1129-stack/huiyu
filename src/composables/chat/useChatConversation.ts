@@ -325,7 +325,7 @@ export function useChatConversation(options: ChatConversationOptions) {
   }): string {
     const { characterId, text, imageUrl, hostMode, useVision, toolsEnabled, roundMessages, messages, connection } = args
     // 若用户配置的模型名包含 gemini/gpt-4/qwen-vl 等视觉模型，或用户有独立配置 API，则优先走用户当前的 API
-    const userHasVision = /gemini|gpt-4|qwen-vl|claude/i.test(connection.apiModel)
+    const userHasVision = /gemini|gpt-4|qwen-vl|claude|^huiyu-local$/i.test(connection.apiModel)
     const userApi = {
       baseUrl: connection.baseUrl,
       model: connection.apiModel,
@@ -378,6 +378,15 @@ export function useChatConversation(options: ChatConversationOptions) {
     const tracker = createTurnEmotionTracker(turn.characterId)
 
     try {
+      if(connection.provider==='api'&&connection.apiModel==='huiyu-local'&&!connection.hostConfig&&isLocalStudioHost()){
+        if(imageUrl)throw new Error('这套起步本地模型尚未准备视觉投影，请先用文字聊天，或选择支持图片的 API')
+        const {localSetupApi}=await import('@/api/localSetupApi')
+        const result=await localSetupApi.ensureLlama(connection.baseUrl,controller.signal)
+        if(!result.ready){
+          const {waitLocalSetupOperation}=await import('@/api/localSetupOperation')
+          await waitLocalSetupOperation(result,{signal:controller.signal,onMessage:message=>{watchdog.touch();options.onToolActivity?.(message)}})
+        }
+      }
       const toolsEnabled = connection.tools && connection.provider === 'api'
       // 工具循环的临时消息（assistant tool_calls / role:tool）只存内存，
       // 不进持久化历史：它们是同一轮对话的中间过程，不应污染聊天记录。

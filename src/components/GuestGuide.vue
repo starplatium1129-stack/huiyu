@@ -18,9 +18,10 @@
         <!-- 本机主人：讲的是「怎么上手」，不是「这是谁的电脑」 -->
         <template v-if="isLocalHost">
           <p id="guest-guide-description">
-            从一个场景开始，留下你的第一张作品。
+            先让绘遇准备好模型与环境，再留下你的第一张作品。
           </p>
           <ul>
+            <li><strong>首次配置</strong>：选择 AI 数据磁盘，按电脑配置一键准备 Anima 绘图与本地聊天；显存较少可使用 API。</li>
             <li><strong>灵感</strong>：挑一个场景，或去「热门角色场景」找你推的那位。</li>
             <li><strong>绘制</strong>：场景带过去，调词条与参数，点「生成图片」。</li>
             <li><strong>我的作品</strong>：出图会自动收进来，可收藏、批量清理，误删有 30 天回收站。</li>
@@ -46,8 +47,9 @@
       <div class="guest-guide-actions tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:flex-wrap">
         <!-- docs/ 由网关静态托管（server.js /docs），42 份文档此前在应用内零入口 -->
         <a class="guest-guide-doc tw:text-secondary tw:text-label-sm" href="/docs/getting-started.html" target="_blank" rel="noopener">翻开使用指南</a>
+        <button v-if="isLocalHost" ref="setupButton" class="btn btn-primary" type="button" @click="beginSetup">开始首次配置</button>
         <button ref="dismissButton" class="btn btn-primary" type="button" @click="dismiss">
-          {{ isLocalHost ? '开始创作' : '知道了，开始浏览' }}
+          {{ isLocalHost ? '先浏览，稍后配置' : '知道了，开始浏览' }}
         </button>
       </div>
     </div>
@@ -57,13 +59,15 @@
 
 <script setup lang="ts">
 import FluidTransition from '@/components/visual/FluidTransition.vue'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { settingsRepository, GUEST_GUIDE_DISMISSED_SETTING } from '@/storage/settingsRepository.ts'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { useRouter } from 'vue-router'
 
 const isLocalHost = isLocalStudioHost()
 const forcedGuest = new URLSearchParams(window.location.search).get('guest') === '1'
+const router = useRouter()
 
 /**
  * 首次访问一律展示，文案按本机 / 访客分流（2026-08-30 UX 审计 P1）。
@@ -71,17 +75,19 @@ const forcedGuest = new URLSearchParams(window.location.search).get('guest') ===
  * 原先这里要求 isNonLocal，而本项目是单人本机部署，条件恒为假——主人自己
  * 反而永远看不到引导。`?guest=1` 保留作「强制再看一次」的开关。
  */
-const shouldShow = forcedGuest
+const shouldShow = forcedGuest || (isLocalHost && !settingsRepository.get(GUEST_GUIDE_DISMISSED_SETTING))
 const visible = ref(false)
 const guideEl = ref<HTMLElement | null>(null)
 const dismissButton = ref<HTMLElement | null>(null)
+const setupButton = ref<HTMLElement | null>(null)
 
 useFocusTrap(guideEl, () => visible.value, {
   onEscape: dismiss,
-  initialFocus: dismissButton,
+  initialFocus: computed(()=>setupButton.value||dismissButton.value),
 })
 
 function openGuide() { visible.value = true }
+function beginSetup() { dismiss(); void router.push('/control#control-setup') }
 onMounted(() => {
   if (shouldShow) visible.value = true
   window.addEventListener('atelier:welcome', openGuide)

@@ -9,7 +9,7 @@ export function useLocalSetupDownload(workspace: Ref<string>, ready: Ref<boolean
   function cancel() {
     const id = activeId.value
     controller?.abort(); controller = null; activeId.value = ''
-    if (id) { notices.value = { ...notices.value, [id]: '已取消下载，已有模型保留；可重新下载' }; failed.value = { ...failed.value, [id]: true } }
+    if (id) { notices.value = { ...notices.value, [id]: '已取消下载，已有模型保留；已接收的部分可在重试时续传' }; failed.value = { ...failed.value, [id]: true } }
   }
   async function download(model: LocalSetupModel) {
     if (disposed || activeId.value || !ready.value || !model.preparation) return

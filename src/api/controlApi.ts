@@ -15,7 +15,7 @@ export const CONTROL_API_TIMEOUTS = {
   action: 30_000,
 } as const
 
-export type ControlService = 'voice' | 'webui' | 'comfy' | 'ollama'
+export type ControlService = 'voice' | 'webui' | 'comfy' | 'ollama' | 'llama'
 export type ControlServiceAction = 'start' | 'stop' | 'unload'
 
 export interface ControlCallOptions {
@@ -73,6 +73,7 @@ function isControlStatus(value: ApiResponseObject): boolean {
     && typeof value.comfyOnline === 'boolean'
     && typeof value.ttsOnline === 'boolean'
     && typeof value.ollamaOnline === 'boolean'
+    && (value.llama===undefined || (isObject(value.llama)&&typeof value.llama.online==='boolean'&&typeof value.llama.managed==='boolean'&&typeof value.llama.host==='string'))
     && Array.isArray(value.ollamaModels)
     && value.ollamaModels.every(model => typeof model === 'string')
     && typeof value.ollamaVram === 'number'

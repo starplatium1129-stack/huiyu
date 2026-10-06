@@ -32,6 +32,7 @@
     "allow-is-packaged",
     "allow-get-workspace",
     "allow-set-workspace",
+    "allow-restart-for-setup",
     "allow-pick-workspace",
     "allow-notify",
     "allow-open-atelier",

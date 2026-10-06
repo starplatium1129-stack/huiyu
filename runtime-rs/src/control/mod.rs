@@ -1,9 +1,14 @@
 mod actions;
+mod comfy;
+mod hardware;
 mod http;
+mod llama;
 mod probe;
 mod settings;
 mod setup;
 mod setup_download;
+mod setup_environment;
+mod setup_http;
 mod setup_verify;
 #[cfg(test)]
 mod tests;
@@ -39,6 +44,12 @@ pub struct ControlService {
     state: Mutex<ControlState>,
     probe_lock: tokio::sync::Mutex<()>,
     setup_verify_lock: Arc<tokio::sync::Semaphore>,
+    environment_cancel: Mutex<Option<CancellationToken>>,
+    llama_cancel: Mutex<Option<CancellationToken>>,
+    llama_process: tokio::sync::Mutex<Option<crate::processes::OwnedProcess>>,
+    llama_secret: String,
+    comfy_cancel: Mutex<Option<CancellationToken>>,
+    comfy_process: tokio::sync::Mutex<Option<crate::processes::OwnedProcess>>,
     started: Instant,
     tunnel: tokio::sync::Mutex<Option<tunnel::TunnelRun>>,
     tunnel_action: tokio::sync::Mutex<()>,
@@ -87,7 +98,7 @@ impl ControlService {
                 .filter(|s| crate::upstream::local_url(s).is_ok())
                 .unwrap_or(default.into())
         };
-        let settings = json!({"sdHost":config.sd_host,"comfyHost":config.comfy_host,"ttsHost":host("TTS_HOST","ttsHost","http://127.0.0.1:9880"),"ttsEngine":if saved["ttsEngine"]=="voxcpm2"{"voxcpm2"}else{"gpt-sovits"},"ollamaHost":host("OLLAMA_HOST","ollamaHost","http://127.0.0.1:11434"),"voices":saved.get("voices").filter(|v|v.is_object()).cloned().unwrap_or(json!({})),"autoStartVoice":saved["autoStartVoice"]==true});
+        let settings = json!({"sdHost":config.sd_host,"comfyHost":config.comfy_host,"ttsHost":host("TTS_HOST","ttsHost","http://127.0.0.1:9880"),"ttsEngine":if saved["ttsEngine"]=="voxcpm2"{"voxcpm2"}else{"gpt-sovits"},"ollamaHost":host("OLLAMA_HOST","ollamaHost","http://127.0.0.1:11434"),"llamaHost":host("LLAMA_HOST","llamaHost","http://127.0.0.1:8000"),"llamaModel":saved["llamaModel"],"voices":saved.get("voices").filter(|v|v.is_object()).cloned().unwrap_or(json!({})),"autoStartVoice":saved["autoStartVoice"]==true});
         let service = Arc::new(Self {
             voice,
             config,
@@ -102,6 +113,12 @@ impl ControlService {
             state: Mutex::default(),
             probe_lock: tokio::sync::Mutex::new(()),
             setup_verify_lock: Arc::new(tokio::sync::Semaphore::new(1)),
+            environment_cancel: Mutex::new(None),
+            llama_cancel: Mutex::new(None),
+            llama_process: tokio::sync::Mutex::new(None),
+            llama_secret: uuid::Uuid::new_v4().to_string(),
+            comfy_cancel: Mutex::new(None),
+            comfy_process: tokio::sync::Mutex::new(None),
             started: Instant::now(),
             tunnel: tokio::sync::Mutex::new(None),
             tunnel_action: tokio::sync::Mutex::new(()),
@@ -118,6 +135,8 @@ impl ControlService {
     }
     pub async fn close(&self) {
         self.shutdown.cancel();
+        let _ = self.stop_llama().await;
+        let _ = self.run_comfy(false).await;
         self.stop_tunnel().await;
         self.processes.close().await;
         self.tasks.close();
@@ -144,6 +163,7 @@ impl ControlService {
         let mut value = message.to_owned();
         for secret in [
             &self.config.token,
+            &self.llama_secret,
             self.config.desktop_secret.as_deref().unwrap_or(""),
         ] {
             if !secret.is_empty() {

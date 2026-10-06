@@ -5,6 +5,7 @@ import type { CharKey } from '@/stores/promptBuilderStore'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import { usePolling } from '@/composables/usePolling'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import {
   ANIMA_LORA_BY_CHARACTER,
   animaRequestPayload,
@@ -349,12 +350,19 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     stashCurrentResult()
     patchState({ phase: 'submitting', job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '', errorReport: null })
     let accepted = false
+    const releaseLocalChat = async () => {
+      if(isLocalStudioHost()) {
+        await client.request('/api/local-setup/llama',{method:'DELETE',signal:controller.signal,timeoutMs:10_000,validate:value=>value.ok===true})
+        controller.signal.throwIfAborted()
+      }
+    }
     try {
       if (durableAttempt) {
         const kind = family === 'krea2' ? 'creative' : 'anima'
         const input = animaRequestPayload(request)
         durableKey = runtimeRequestKey(kind, input)
         const { runRuntimeAnima } = await import('./runtimeImageSession')
+        await releaseLocalChat()
         await runRuntimeAnima({ input, key: durableKey, signal: controller.signal, family, context: pendingContext, state,
           isCurrent: () => !controller.signal.aborted && serial === requestSerial,
           onAccepted: () => { accepted = true }, discardStashed: discardStashedResult, onResult })
@@ -364,6 +372,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       const transport = await loadDirectTransport()
       const current = () => !controller.signal.aborted && serial === requestSerial
       if (!current()) return
+      await releaseLocalChat()
       await transport.runDirectAnima({ client, request, family, signal: controller.signal, current,
         state, context: pendingContext, patch: patchState, discardStashed: discardStashedResult, onResult })
     } catch (error) {

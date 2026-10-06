@@ -5,9 +5,103 @@ use std::path::Path;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 const DATA: &[u8] = b"isolated synthetic model, never real weights";
+
+#[tokio::test]
+async fn resumes_cancelled_bytes_with_a_validated_range_and_final_hash() {
+    use axum::{
+        http::{HeaderMap, StatusCode},
+        response::IntoResponse,
+    };
+    let temp = tempfile::tempdir().unwrap();
+    let count = Arc::new(AtomicUsize::new(0));
+    let requests = count.clone();
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let url = format!("http://{}/resume", listener.local_addr().unwrap());
+    let server = tokio::spawn(async move {
+        axum::serve(
+            listener,
+            Router::new().route(
+                "/resume",
+                get(move |headers: HeaderMap| {
+                    let requests = requests.clone();
+                    async move {
+                        requests.fetch_add(1, Ordering::SeqCst);
+                        if let Some(range) = headers.get("range") {
+                            assert_eq!(range, "bytes=8-");
+                            (
+                                StatusCode::PARTIAL_CONTENT,
+                                [(
+                                    "content-range",
+                                    format!("bytes 8-{}/{}", DATA.len() - 1, DATA.len()),
+                                )],
+                                Body::from(&DATA[8..]),
+                            )
+                                .into_response()
+                        } else {
+                            Body::from_stream(
+                                futures_util::stream::once(async {
+                                    Ok::<_, Infallible>(Bytes::copy_from_slice(&DATA[..8]))
+                                })
+                                .chain(futures_util::stream::pending()),
+                            )
+                            .into_response()
+                        }
+                    }
+                }),
+            ),
+        )
+        .await
+        .unwrap();
+    });
+    let spec = plan(temp.path(), url.clone());
+    let partial = temp.path().join(format!(
+        "ComfyUI/models/vae/.huiyu-{}.part",
+        spec.spec.sha256
+    ));
+    let cancel = CancellationToken::new();
+    let token = cancel.clone();
+    let (send, _events) = tokio::sync::mpsc::unbounded_channel();
+    let worker_sender = send.clone();
+    let worker = tokio::spawn(async move {
+        download(&spec, &reqwest::Client::new(), &worker_sender, &token).await
+    });
+    tokio::time::timeout(Duration::from_secs(3), async {
+        loop {
+            if tokio::fs::metadata(&partial)
+                .await
+                .is_ok_and(|meta| meta.len() == 8)
+            {
+                break;
+            }
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
+    cancel.cancel();
+    assert_eq!(worker.await.unwrap().unwrap_err().code, "CANCELLED");
+    assert_eq!(std::fs::read(&partial).unwrap(), &DATA[..8]);
+    let result = download(
+        &plan(temp.path(), url),
+        &reqwest::Client::new(),
+        &send,
+        &CancellationToken::new(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(result["state"], "downloaded");
+    assert_eq!(
+        std::fs::read(temp.path().join("ComfyUI/models/vae/fixture.safetensors")).unwrap(),
+        DATA
+    );
+    assert_eq!(count.load(Ordering::SeqCst), 2);
+    assert!(!partial.exists());
+    server.abort();
+}
 fn plan(workspace: &Path, url: String) -> DownloadPlan {
     DownloadPlan {
         workspace: workspace.into(),
+        root: workspace.join("ComfyUI/models"),
         id: "fixture".into(),
         url,
         spec: ModelFile {

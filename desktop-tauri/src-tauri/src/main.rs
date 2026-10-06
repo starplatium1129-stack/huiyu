@@ -206,6 +206,7 @@ fn main() {
             bridge::is_packaged,
             bridge::get_workspace,
             bridge::set_workspace,
+            bridge::restart_for_setup,
             bridge::pick_workspace,
             bridge::notify,
             bridge::open_atelier,

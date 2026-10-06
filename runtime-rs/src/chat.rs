@@ -136,9 +136,10 @@ async fn chat(
         let persona = if direct { local_persona::read(settings,&app.config.app_root,body["character"].as_str().unwrap_or("nene")).await } else { None };
         let mut input = validation::chat(&body,persona.as_deref())?;
         input.tools &= direct;
+        let managed_auth=app.control.as_ref().map(|control|control.llama_auth());
         let prepared = tokio::select! {
             result = async {
-                if input.api.is_some() { compatible::prepare(&chat.transport,settings,&input,!direct).await }
+                if input.api.is_some() { compatible::prepare(&chat.transport,settings,&input,!direct,managed_auth.as_ref()).await }
                 else { chat.ollama.prepare(&chat.transport,settings,&input).await }
             } => result?,
             _ = app.shutdown.cancelled() => return Err(Error::new(503,"DESKTOP_DRAINING","桌面正在维护")),
@@ -188,10 +189,19 @@ async fn inspect(
     let result = async {
         local(&headers, peer)?;
         let body = body.map_err(body_error)?;
-        let api = validation::api(
+        let mut api = validation::api(
             &serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?,
         )?;
         running(&app)?;
+        if let Some(control) = &app.control {
+            let (origin, key) = control.llama_auth();
+            if api.model == "huiyu-local"
+                && api.base_url == origin
+                && api.pathname == "/v1/chat/completions"
+            {
+                api.key = key;
+            }
+        }
         let models = compatible::inspect(&chat.transport, &api)
             .await
             .map_err(|mut error| {

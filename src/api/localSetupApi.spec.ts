@@ -81,7 +81,7 @@ describe('local setup read-only HTTP boundary', () => {
     const fetch = vi.fn<FetchImplementation>(async () => new Response(JSON.stringify(progress) + '\n' + JSON.stringify(terminal) + '\n', { headers: { 'content-type': 'application/x-ndjson' } }))
     const api = createLocalSetupApi(createApiClient(fetch), fetch), onProgress = vi.fn()
     const options = { workspacePath: 'D:\\AI', signal: new AbortController().signal, onProgress }
-    await expect(api.downloadModel('../../other', options)).rejects.toThrow('起步下载清单')
+    await expect(api.downloadModel('../../other', options)).rejects.toThrow('已登记的下载清单')
     expect(fetch).not.toHaveBeenCalled()
     await expect(api.downloadModel('qwen-vae', options)).resolves.toEqual(terminal)
     expect(JSON.parse(fetch.mock.calls[0][1]!.body as string)).toEqual({ workspacePath: 'D:\\AI', reviewed: true })

@@ -11,7 +11,7 @@
           :disabled="busy"
           @click="emit('set-provider', 'local')"
         >
-          本地模型
+          已有 Ollama
         </button>
         <button
           type="button"
@@ -20,7 +20,7 @@
           :disabled="busy"
           @click="emit('set-provider', 'api')"
         >
-          自定义 API
+          llama.cpp / API
         </button>
       </div>
       <template v-if="chatProvider === 'local'">
@@ -59,7 +59,7 @@
           :aria-expanded="apiSettingsOpen"
           @click="emit('toggle-api-settings')"
         >
-          {{ useHostConfig ? (hostApiModel || '站主 API') : (apiConfigured ? apiModel : '配置 API') }}
+          {{ useHostConfig ? (hostApiModel || '站主 API') : (apiConfigured ? (apiModel==='huiyu-local'?'绘遇本地聊天':apiModel) : '配置 API') }}
           <ArchiveIcon name="gear" />
         </button>
       </template>

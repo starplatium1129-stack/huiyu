@@ -170,6 +170,12 @@ pub async fn set_workspace(
 }
 
 #[tauri::command]
+pub fn restart_for_setup(app: AppHandle, state: State<AppState>) {
+    state.quitting.store(true, std::sync::atomic::Ordering::Relaxed);
+    app.restart();
+}
+
+#[tauri::command]
 pub async fn pick_workspace(window: tauri::WebviewWindow, root: Option<String>) -> Result<Option<String>, String> {
     use tauri_plugin_dialog::DialogExt;
     let mut dialog = window.dialog().file().set_parent(&window).set_title("选择 AI 工作区目录");

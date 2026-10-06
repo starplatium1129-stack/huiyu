@@ -54,8 +54,9 @@ beforeEach(() => {
 })
 
 describe('director blueprint round-trip', () => {
-  it('restores the complete studio decision stack and clamps unsafe numeric input', async () => {
+  it('reuses retired SD blueprint inputs without transferring generation parameters into Anima', async () => {
     const { pb, engine, size, context } = fixture()
+    const originalParameters={...pb.sdParams}
     const result = await loadBlueprint({
       schema: 'aics-director-blueprint-v1', subject: 'studio', char: 'nene', sceneId: 'scene-one',
       story: '用户改写故事', visualDescription: 'A red umbrella beside the window.', directorMode: 'pro',
@@ -71,10 +72,10 @@ describe('director blueprint round-trip', () => {
     expect(pb.colorMood).toBe('sad')
     expect([...pb.manualTags]).toEqual(['red_umbrella'])
     expect(pb.artistStyleIds).toEqual(['kantoku'])
-    expect(pb.sdParams.cfg).toBe(20)
-    expect(pb.sdParams.steps).toBe(1)
-    expect(engine.value).toBe('sd')
-    expect(size.value).toBe('1216x832')
+    expect(pb.sdParams).toEqual(originalParameters)
+    expect(engine.value).toBe('anima')
+    expect(size.value).not.toBe('1216x832')
+    expect(result.warnings.join(';')).toContain('SD 生成参数未跨引擎迁移')
   })
 
   it('restores popular identity, outfit override and Krea parameters without falling back to studio', async () => {

@@ -1,5 +1,7 @@
 # 项目文档索引
 
+[新用户模型与环境配置](guides/setup-and-models.md#首次配置与一键准备源码能力待安装版交付)记录 2026-10-06 已实施的受管 llama.cpp、按显存候选／API、MiaoMiao／Base 与角色 LoRA 下载、ComfyUI Portable 自动准备及 SD 新生成退役；源码能力与当前公开 1.9.0 安装包分别标明。
+
 [1.9.0 更新说明](releases/v1.9.0.md)按新增、优化、修复汇总 1.8.1 之后的五名角色与立绘、50 张样张、画室、作品册、模型准备、语音及升级变化，说明程序与离线素材包的安装方式。
 
 [记录式内容库](architecture/CONTENT-CATALOG-DESIGN.md)说明 SQLite 工作权威、逐条 JSON 快照、修订冲突、三方导入与旧数据迁移；操作见[维护手册](maintenance.md)。

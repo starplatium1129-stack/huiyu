@@ -81,7 +81,7 @@ function stageResources(options: StageOptions = {}) {
       logger(`[stage] ${source} -> gateway/${source}`);
     }
     const scripts = path.join(gateway, 'scripts/lib'); fs.mkdirSync(scripts, { recursive: true });
-    for (const name of ['managed-webui.ps1', 'managed-comfyui.ps1', 'managed-voice.ps1']) fs.copyFileSync(safe.resolveSafe(root, `scripts/lib/${name}`), path.join(scripts, name));
+    for (const name of ['managed-comfyui.ps1', 'managed-voice.ps1', 'prepare-ai-environment.ps1']) fs.copyFileSync(safe.resolveSafe(root, `scripts/lib/${name}`), path.join(scripts, name));
     execFileSync(process.execPath, [path.join(__dirname, 'desktop-resource-profile.js'), root, gateway, profile], { windowsHide: true, stdio: 'pipe' });
     const after = runtimeBuild(root);
     if (after.receipt.source.sha256 !== report.source || after.receipt.binary.sha256 !== report.runtime.sha256) throw Error('Rust build changed during staging');

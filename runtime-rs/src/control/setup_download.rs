@@ -1,5 +1,7 @@
-use super::setup_verify::{ModelFile, inspect, model_file};
+use super::setup_verify::{ModelFile, inspect, model_file, model_root, model_source};
 use super::*;
+#[path = "setup_transfer.rs"]
+mod transfer;
 use axum::{
     body::{Body, Bytes},
     response::{IntoResponse, Response},
@@ -22,6 +24,7 @@ pub(super) struct DownloadRequest {
 
 struct DownloadPlan {
     workspace: PathBuf,
+    root: PathBuf,
     spec: ModelFile,
     url: String,
     id: String,
@@ -42,19 +45,18 @@ impl ControlService {
                 "请先核对当前运行时工作区和来源许可，再显式下载",
             ));
         }
-        let manifest: Value = serde_json::from_str(include_str!("setup-models.json"))?;
-        let source = manifest["files"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .find(|entry| entry["path"] == spec.path)
-            .unwrap();
-        let url = format!(
-            "https://huggingface.co/{}/resolve/{}/{}",
-            source["repo"].as_str().unwrap(),
-            source["revision"].as_str().unwrap(),
-            source["remotePath"].as_str().unwrap()
-        );
+        let source = model_source(&id)?;
+        let url = source["sourceUrl"]
+            .as_str()
+            .map(str::to_owned)
+            .unwrap_or_else(|| {
+                format!(
+                    "https://huggingface.co/{}/resolve/{}/{}",
+                    source["repo"].as_str().unwrap(),
+                    source["revision"].as_str().unwrap(),
+                    source["remotePath"].as_str().unwrap()
+                )
+            });
         let permit = self
             .setup_verify_lock
             .clone()
@@ -71,6 +73,7 @@ impl ControlService {
         let (send, receive) = tokio::sync::mpsc::unbounded_channel();
         let plan = DownloadPlan {
             workspace: self.config.ai_workspace_root.clone(),
+            root: model_root(&self.config.ai_workspace_root, &id)?,
             spec,
             url,
             id,
@@ -177,7 +180,7 @@ fn result(
     code: Option<&str>,
     message: &str,
 ) -> Value {
-    json!({"type":"result","modelId":plan.id,"path":plan.workspace.join("ComfyUI/models").join(&plan.spec.path),"state":state,
+    json!({"type":"result","modelId":plan.id,"path":plan.root.join(&plan.spec.path),"state":state,
         "bytes":bytes,"sha256":hash,"code":code,"checkedAt":now(),"message":message})
 }
 
@@ -212,13 +215,14 @@ async fn download(
     cancel: &CancellationToken,
 ) -> Result<Value> {
     stopped(cancel, send)?;
-    let root = plan.workspace.join("ComfyUI/models");
+    let root = plan.root.clone();
     let path = root.join(&plan.spec.path);
     let workspace = plan.workspace.clone();
     let parent = path.parent().unwrap().to_path_buf();
     let root_check = root.clone();
     let (real_workspace, real_root, real_parent) =
         tokio::task::spawn_blocking(move || -> Result<_> {
+            std::fs::create_dir_all(&workspace).map_err(io_error)?;
             let real_workspace = workspace.canonicalize().map_err(io_error)?;
             if !real_workspace.is_dir() {
                 return Err(changed());
@@ -259,8 +263,19 @@ async fn download(
             "同名模型已存在，内容未匹配固定清单；请先核对并自行移走冲突文件，下载不会替换它",
         ));
     }
+    let partial_path = real_parent.join(format!(".huiyu-{}.part", plan.spec.sha256));
+    let retained = tokio::fs::metadata(&partial_path)
+        .await
+        .ok()
+        .filter(|m| m.is_file() && m.len() <= plan.spec.bytes)
+        .map(|m| m.len())
+        .unwrap_or(0);
     let space_path = real_parent.clone();
-    let needed = plan.spec.bytes.saturating_add(65536);
+    let needed = plan
+        .spec
+        .bytes
+        .saturating_sub(retained)
+        .saturating_add(65536);
     tokio::task::spawn_blocking(move || {
         crate::resources::check_available_space(&space_path, needed)
     })
@@ -278,146 +293,136 @@ async fn download(
         )
     })?;
     stopped(cancel, send)?;
-    let directory = real_parent.clone();
-    let temporary = tokio::task::spawn_blocking(move || {
-        tempfile::Builder::new()
-            .prefix(".huiyu-model-")
-            .suffix(".part")
-            .tempfile_in(directory)
-    })
-    .await
-    .map_err(|_| changed())?
-    .map_err(io_error)?;
-    let mut output = tokio::fs::File::from_std(temporary.as_file().try_clone().map_err(io_error)?);
-    progress(plan, send, "downloading", 0);
-    let response = tokio::select! {
-        _ = cancel.cancelled() => return Err(ApiError::new(409,"CANCELLED","下载已取消")),
-        response = tokio::time::timeout(Duration::from_secs(60), client.get(&plan.url).header("accept-encoding", "identity").send()) =>
-            response.map_err(|_| ApiError::new(504,"DOWNLOAD_TIMEOUT","来源响应超时，请重试"))?.map_err(|_| ApiError::new(502,"DOWNLOAD_FAILED","无法连接固定模型来源，请检查网络后重试"))?,
-    };
-    if response.status() != reqwest::StatusCode::OK {
-        return Err(ApiError::new(
-            502,
-            "DOWNLOAD_HTTP",
-            format!(
-                "固定来源返回 HTTP {}，请检查来源访问权限后重试",
-                response.status().as_u16()
-            ),
-        ));
-    }
-    if response
-        .content_length()
-        .is_some_and(|size| size != plan.spec.bytes)
-    {
-        return Err(ApiError::new(
-            502,
-            "SIZE_MISMATCH",
-            "来源文件大小与固定清单不符，已停止下载",
-        ));
-    }
-    let mut stream = response.bytes_stream();
-    let mut count = 0_u64;
-    let mut last = Instant::now();
-    loop {
-        let next = tokio::select! {
-            _ = cancel.cancelled() => return Err(ApiError::new(409,"CANCELLED","下载已取消")),
-            next = tokio::time::timeout(Duration::from_secs(60), stream.next()) => next.map_err(|_| ApiError::new(504,"DOWNLOAD_TIMEOUT","下载响应中断超过 60 秒，请重试"))?,
-        };
-        let Some(chunk) = next else {
-            break;
-        };
-        let chunk = chunk
-            .map_err(|_| ApiError::new(502, "DOWNLOAD_FAILED", "模型下载中断，请检查网络后重试"))?;
-        stopped(cancel, send)?;
-        count += chunk.len() as u64;
-        if count > plan.spec.bytes {
+    let partial = partial_path.clone();
+    let mut temporary = Some(
+        tokio::task::spawn_blocking(move || -> std::io::Result<_> {
+            if let Ok(meta) = std::fs::symlink_metadata(&partial) {
+                if !meta.is_file() {
+                    return Err(std::io::Error::new(
+                        std::io::ErrorKind::InvalidInput,
+                        "Partial download is not a regular file",
+                    ));
+                }
+            }
+            let mut options = std::fs::OpenOptions::new();
+            options.read(true).write(true).create(true);
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::OpenOptionsExt;
+                options.custom_flags(libc::O_NOFOLLOW);
+            }
+            let file = options.open(&partial)?;
+            Ok(tempfile::NamedTempFile::from_parts(
+                file,
+                tempfile::TempPath::try_from_path(partial)?,
+            ))
+        })
+        .await
+        .map_err(|_| changed())?
+        .map_err(io_error)?,
+    );
+    let outcome = async {
+        let pending = temporary.as_ref().unwrap();
+        let mut output =
+            tokio::fs::File::from_std(pending.as_file().try_clone().map_err(io_error)?);
+        let count = transfer::write(plan, client, send, cancel, &mut output).await?;
+        if count != plan.spec.bytes {
             return Err(ApiError::new(
                 502,
                 "SIZE_MISMATCH",
-                "下载字节超过固定大小，已停止",
+                "下载不完整，未发布模型文件；请重试",
             ));
         }
-        output.write_all(&chunk).await.map_err(io_error)?;
-        if last.elapsed() >= Duration::from_millis(250) || count == plan.spec.bytes {
-            progress(plan, send, "downloading", count);
-            last = Instant::now();
+        output.flush().await.map_err(io_error)?;
+        output.sync_all().await.map_err(io_error)?;
+        drop(output);
+        let temp_spec = ModelFile {
+            path: temporary
+                .as_ref()
+                .unwrap()
+                .path()
+                .file_name()
+                .unwrap()
+                .to_string_lossy()
+                .into_owned(),
+            ..plan.spec.clone()
+        };
+        let verified = inspect_file(
+            plan,
+            real_parent.clone(),
+            temp_spec,
+            "verifying",
+            send,
+            cancel,
+        )
+        .await?;
+        if verified["state"] != "sha256-match" {
+            return Err(ApiError::new(
+                502,
+                "HASH_MISMATCH",
+                "下载临时文件与固定大小或 SHA-256 不符，未发布；请核对来源后重试",
+            ));
         }
-    }
-    if count != plan.spec.bytes {
-        return Err(ApiError::new(
-            502,
-            "SIZE_MISMATCH",
-            "下载不完整，未发布模型文件；请重试",
-        ));
-    }
-    output.flush().await.map_err(io_error)?;
-    output.sync_all().await.map_err(io_error)?;
-    drop(output);
-    let temp_spec = ModelFile {
-        path: temporary
-            .path()
-            .file_name()
-            .unwrap()
-            .to_string_lossy()
-            .into_owned(),
-        ..plan.spec.clone()
-    };
-    let verified = inspect_file(
-        plan,
-        real_parent.clone(),
-        temp_spec,
-        "verifying",
-        send,
-        cancel,
-    )
-    .await?;
-    if verified["state"] != "sha256-match" {
-        return Err(ApiError::new(
-            502,
-            "HASH_MISMATCH",
-            "下载临时文件与固定大小或 SHA-256 不符，未发布；请核对来源后重试",
-        ));
-    }
-    stopped(cancel, send)?;
-    let current_workspace = plan.workspace.clone();
-    let current_parent = path.parent().unwrap().to_path_buf();
-    let token = cancel.clone();
-    tokio::task::spawn_blocking(move || -> Result<()> {
-        if token.is_cancelled() {
-            return Err(ApiError::new(409, "CANCELLED", "下载已取消"));
-        }
-        if current_workspace.canonicalize().ok().as_ref() != Some(&real_workspace)
-            || root.canonicalize().ok().as_ref() != Some(&real_root)
-            || current_parent.canonicalize().ok().as_ref() != Some(&real_parent)
-        {
-            return Err(changed());
-        }
-        // Same-directory, atomic no-clobber publication: a file appearing during
-        // the download is a conflict, never an invitation to replace weights.
-        if token.is_cancelled() {
-            return Err(ApiError::new(409, "CANCELLED", "下载已取消"));
-        }
-        temporary.persist_noclobber(&path).map_err(|error| {
-            if error.error.kind() == std::io::ErrorKind::AlreadyExists {
-                ApiError::new(
-                    409,
-                    "MODEL_CONFLICT",
-                    "下载期间出现同名文件，原文件保留；请核对冲突后重试",
-                )
-            } else {
-                io_error(error.error)
+        stopped(cancel, send)?;
+        let current_workspace = plan.workspace.clone();
+        let current_parent = path.parent().unwrap().to_path_buf();
+        let token = cancel.clone();
+        let temporary = temporary.take().unwrap();
+        tokio::task::spawn_blocking(move || -> Result<()> {
+            if token.is_cancelled() {
+                return Err(ApiError::new(409, "CANCELLED", "下载已取消"));
             }
-        })?;
-        Ok(())
-    })
-    .await
-    .map_err(|_| changed())??;
-    Ok(result(
-        plan,
-        "downloaded",
-        Some(count),
-        Some(&plan.spec.sha256),
-        None,
-        "下载文件大小与 SHA-256 校验通过，已发布；请重新检查，尚未验证加载或出图",
-    ))
+            if current_workspace.canonicalize().ok().as_ref() != Some(&real_workspace)
+                || root.canonicalize().ok().as_ref() != Some(&real_root)
+                || current_parent.canonicalize().ok().as_ref() != Some(&real_parent)
+            {
+                return Err(changed());
+            }
+            // Same-directory, atomic no-clobber publication: a file appearing during
+            // the download is a conflict, never an invitation to replace weights.
+            if token.is_cancelled() {
+                return Err(ApiError::new(409, "CANCELLED", "下载已取消"));
+            }
+            temporary.persist_noclobber(&path).map_err(|error| {
+                if error.error.kind() == std::io::ErrorKind::AlreadyExists {
+                    ApiError::new(
+                        409,
+                        "MODEL_CONFLICT",
+                        "下载期间出现同名文件，原文件保留；请核对冲突后重试",
+                    )
+                } else {
+                    io_error(error.error)
+                }
+            })?;
+            Ok(())
+        })
+        .await
+        .map_err(|_| changed())??;
+        Ok(result(
+            plan,
+            "downloaded",
+            Some(count),
+            Some(&plan.spec.sha256),
+            None,
+            "下载文件大小与 SHA-256 校验通过，已发布；请重新检查，尚未验证加载或出图",
+        ))
+    }
+    .await;
+    if outcome.as_ref().is_err_and(|error| {
+        matches!(
+            error.code.as_str(),
+            "CANCELLED" | "DOWNLOAD_TIMEOUT" | "DOWNLOAD_FAILED"
+        )
+    }) {
+        if let Some(pending) = temporary.take() {
+            if pending
+                .as_file()
+                .metadata()
+                .is_ok_and(|meta| meta.len() > 0)
+            {
+                let _ = pending.keep();
+            }
+        }
+    }
+    outcome
 }

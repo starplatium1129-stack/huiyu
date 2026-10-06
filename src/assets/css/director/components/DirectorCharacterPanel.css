@@ -78,12 +78,6 @@
 .pb .studio-character-copy strong { @apply tw:text-primary tw:text-body tw:leading-label; }
 .pb .studio-character-copy small { @apply tw:text-secondary tw:text-body-sm tw:leading-label tw:font-normal; }
 .pb .studio-character-check { @apply tw:absolute tw:top-s-2 tw:right-s-2 tw:w-[24px] tw:h-[24px] tw:p-[4px] tw:text-accent; background:var(--bg-surface); border:1px solid var(--accent); @apply tw:rounded-pill; }
-.pb .char-btn.studio-character-duet { grid-column:1 / -1; @apply tw:flex-row tw:items-center tw:p-s-2; }
-.pb .char-btn.studio-character-duet { @apply tw:justify-start; }
-.pb .studio-duet-art { @apply tw:gap-s-1 tw:shrink-0; }
-.pb .studio-duet-art .character-portrait { @apply tw:w-[36px] tw:h-[44px] tw:rounded-xs; }
-.pb .studio-character-duet .studio-character-copy { padding:0 var(--s-2); }
-.pb .studio-character-duet .studio-character-check { @apply tw:static tw:ml-auto tw:shrink-0; }
 .pb .studio-character-choice:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .pb .char-btn.studio-character-choice { @apply tw:rounded-lg tw:border-soft; background:var(--bg-surface); transition:transform var(--motion-hover) var(--ease-out); }
 .pb .char-btn.studio-character-choice.active { @apply tw:border-accent; box-shadow:inset 0 0 0 1px var(--accent); }

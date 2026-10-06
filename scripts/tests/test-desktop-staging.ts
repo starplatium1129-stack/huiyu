@@ -122,6 +122,7 @@ function createFixture() {
   write(path.join(root, 'scripts/lib/managed-webui.ps1'), '# fixture');
   write(path.join(root, 'scripts/lib/managed-comfyui.ps1'), '# fixture');
   write(path.join(root, 'scripts/lib/managed-voice.ps1'), '# voice manager');
+  write(path.join(root, 'scripts/lib/prepare-ai-environment.ps1'), '# environment preparer');
   write(path.join(root, 'scripts/lib/runtime.js'), 'excluded');
   write(path.join(root, 'data/characters.json'), '{}'); write(path.join(root, 'dist/index.html'), '<!doctype html>');
   write(path.join(root, 'assets/asset.txt'), 'asset'); write(path.join(root, 'tools/nav.js'), 'browser');
@@ -178,6 +179,8 @@ test('Rust stage verifies bound inputs, excludes legacy/private files, and repla
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/huiyu-runtime.exe'), 'utf8'), 'binary');
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/tools/voxcpm-server.py'), 'utf8'), '# VoxCPM2 server');
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/scripts/lib/managed-voice.ps1'), 'utf8'), '# voice manager');
+    assert.equal(fs.readFileSync(path.join(stage, 'gateway/scripts/lib/prepare-ai-environment.ps1'), 'utf8'), '# environment preparer');
+    assert.equal(fs.existsSync(path.join(stage,'gateway/scripts/lib/managed-webui.ps1')),false);
     assert.equal(fs.existsSync(path.join(stage, 'gateway/native/onnxruntime.dll')), true);
     assert.equal(fs.existsSync(path.join(stage, 'gateway/native-licenses/LICENSE')), true);
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/native-licenses/components/fixture/COPYING'), 'utf8'), 'upstream bytes\r\n ');

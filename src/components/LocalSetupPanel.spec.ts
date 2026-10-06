@@ -1,22 +1,31 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import LocalSetupPanel from './LocalSetupPanel.vue'
+import LocalSetupAutomation from './LocalSetupAutomation.vue'
 import StudioSelect from './ui/StudioSelect.vue'
 import type { LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup'
 
-const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), verifyModel: vi.fn(), downloadModel: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn() }))
+const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), verifyModel: vi.fn(), downloadModel: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn(),getOperation:vi.fn(),serviceAction:vi.fn() }))
 vi.mock('../utils/runtimeEnvironment.ts', () => ({ isLocalStudioHost: () => fixture.local }))
-vi.mock('../api/localSetupApi.ts', () => ({ localSetupApi: { getStatus: fixture.getStatus, verifyModel: fixture.verifyModel, downloadModel: fixture.downloadModel } }))
+vi.mock('../api/localSetupApi.ts', () => ({ localSetupApi: { getStatus: fixture.getStatus, verifyModel: fixture.verifyModel, downloadModel: fixture.downloadModel,getOperation:fixture.getOperation } }))
+vi.mock('../api/controlApi.ts',()=>({controlApi:{serviceAction:fixture.serviceAction}}))
 vi.mock('../platform/desktop/capabilities.ts', () => ({ getDesktopCapabilities: () => fixture.desktop ? { getWorkspace: fixture.getWorkspace, setWorkspace: fixture.setWorkspace, pickWorkspace: fixture.pickWorkspace } : undefined }))
 vi.mock('../composables/useFluidDialog', () => ({ useFluidDialog: () => ({ open: vi.fn(), close: vi.fn() }) }))
 
 function complete(): LocalSetupResponse {
-  return { ok: true, checkedAt: 1_791_083_000_000,
+  const snapshot: LocalSetupResponse = { ok: true, checkedAt: 1_791_083_000_000,
     workspace: { path: 'D:\\AI', state: 'present' },
     comfy: { path: 'D:\\AI\\ComfyUI', installation: 'present', layout: 'unrecognized', host: 'http://127.0.0.1:8188', connection: 'online' },
-    models: ['anima-aesthetic-v1.1', 'qwen-encoder', 'qwen-vae'].map(id => ({ id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'present', bytes: 10, required: true, preparation: { url: 'https://huggingface.co/circlestone-labs/Anima/resolve/' + 'a'.repeat(40) + '/model.safetensors', modelCardUrl: 'https://huggingface.co/circlestone-labs/Anima', licenseUrl: 'https://huggingface.co/circlestone-labs/Anima/blob/' + 'a'.repeat(40) + '/LICENSE.md', upstreamLicenseUrl: null, revision: 'a'.repeat(40), expectedBytes: 10, sha256: 'b'.repeat(64) } })),
+    models: ['anima-miaomiao-v1.6', 'qwen-encoder', 'qwen-vae'].map(id => ({ id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'present', bytes: 10, required: true, preparation: { url: 'https://huggingface.co/circlestone-labs/Anima/resolve/' + 'a'.repeat(40) + '/model.safetensors', modelCardUrl: 'https://huggingface.co/circlestone-labs/Anima', licenseUrl: 'https://huggingface.co/circlestone-labs/Anima/blob/' + 'a'.repeat(40) + '/LICENSE.md', upstreamLicenseUrl: null, revision: 'a'.repeat(40), expectedBytes: 10, sha256: 'b'.repeat(64) } })),
     nodes: { state: 'checked', required: ['ImageSharpenKJ'], missing: [] },
     hardware: { state: 'unknown', devices: [], ramBytes: null } }
+  for(const id of ['L_NENE_V21_ANIMA','L_NAT_V21_ANIMA']) snapshot.models.push({
+    ...snapshot.models[0],id,kind:'lora',required:false,path:snapshot.models[0].path.replace('anima-miaomiao-v1.6',id),
+  })
+  for(const id of ['runtime-comfy-nvidia','runtime-kjnodes','runtime-anima-teacache','runtime-llama-cuda','runtime-llama-cudart']) snapshot.models.push({
+    ...snapshot.models[0],id,kind:'runtime',required:false,path:snapshot.models[0].path.replace('anima-miaomiao-v1.6',id),
+  })
+  return snapshot
 }
 function deferred() {
   let resolve!: (value: LocalSetupResponse) => void
@@ -39,6 +48,31 @@ beforeEach(() => {
 afterEach(() => vi.restoreAllMocks())
 
 describe('first local setup panel', () => {
+  it('prepares only the selected Base combination after consent and verifies the real operation before offering generation',async()=>{
+    const value=complete()
+    value.models.push({...value.models[0],id:'anima-base-v1.0',label:'Base',required:false,path:value.models[0].path.replace('anima-miaomiao-v1.6','anima-base-v1.0')})
+    fixture.downloadModel.mockImplementation(async(id:string)=>{
+      const model=value.models.find(model=>model.id===id)!
+      return {type:'result',modelId:id,path:model.path,state:'already-present',bytes:10,sha256:'b'.repeat(64),code:null,checkedAt:1,message:'已复用'}
+    })
+    const operation={id:'owned-setup',status:'completed',message:'已启动',error:''}
+    fixture.serviceAction.mockResolvedValue({ok:true,operation})
+    fixture.getOperation.mockResolvedValue({ok:true,operation})
+    const wrapper=mount(LocalSetupAutomation,{props:{snapshot:value,workspaceBlocked:false},global:{stubs:{ArchiveIcon:true,RouterLink:{template:'<a><slot /></a>'}}}})
+    await wrapper.getComponent(StudioSelect).setValue('anima-base-v1.0')
+    await wrapper.findAll('input[type="checkbox"]')[1].setValue(false)
+    const prepare=wrapper.findAll('button').find(button=>button.text().includes('一键准备'))!
+    expect(prepare.attributes('disabled')).toBeDefined()
+    expect(fixture.downloadModel).not.toHaveBeenCalled()
+    await wrapper.find('.setup-review input').setValue(true)
+    await prepare.trigger('click');await flushPromises()
+    expect(fixture.downloadModel.mock.calls.map(call=>call[0])).toEqual(['anima-base-v1.0','qwen-encoder','qwen-vae'])
+    expect(fixture.serviceAction).toHaveBeenCalledWith('comfy','start')
+    expect(fixture.getOperation).toHaveBeenCalledOnce()
+    expect(fixture.getStatus).toHaveBeenCalledWith({modelId:'anima-base-v1.0'})
+    expect(wrapper.text()).toContain('生成第一张图片')
+    wrapper.unmount()
+  })
   it('performs one mount read; suppresses repeat clicks, cancels late results and clears stale success on failure', async () => {
     const first = deferred()
     fixture.getStatus.mockReturnValueOnce(first.promise)
@@ -99,7 +133,7 @@ describe('first local setup panel', () => {
     expect(wrapper.find('.download-checklist').findAll('a')).toHaveLength(3)
     expect(wrapper.find('.download-checklist').text()).toContain("Get-FileHash -LiteralPath 'D:\\AI")
     expect(fixture.getStatus).toHaveBeenCalledTimes(1)
-    await wrapper.getComponent(StudioSelect).setValue('portable')
+    await wrapper.find('.preparation').getComponent(StudioSelect).setValue('portable')
     expect(wrapper.find('.download-checklist').exists()).toBe(false)
     expect(confirm.attributes('disabled')).toBeDefined()
     await wrapper.find('.preparation-ack input').setValue(true)
@@ -117,19 +151,19 @@ describe('first local setup panel', () => {
   it('hashes only on request, cancels late results and keeps a failed digest out of readiness', async () => {
     let finish!: (result: LocalSetupVerificationResult) => void
     fixture.verifyModel.mockImplementationOnce((_id, options) => {
-      options.onProgress({ type: 'progress', modelId: 'anima-aesthetic-v1.1', bytesRead: 5, expectedBytes: 10 })
+      options.onProgress({ type: 'progress', modelId: 'anima-miaomiao-v1.6', bytesRead: 5, expectedBytes: 10 })
       return new Promise<LocalSetupVerificationResult>(resolve => { finish = resolve })
     })
     const wrapper = render(); await flushPromises()
     expect(fixture.verifyModel).not.toHaveBeenCalled()
-    const button = wrapper.findAll('button').find(button => button.text() === '校验 anima-aesthetic-v1.1 的 SHA-256')!
+    const button = wrapper.findAll('button').find(button => button.text() === '校验 anima-miaomiao-v1.6 的 SHA-256')!
     await button.trigger('click'); await button.trigger('click')
     expect(fixture.verifyModel).toHaveBeenCalledTimes(1)
     expect(wrapper.text()).toContain('50%')
     const signal = fixture.verifyModel.mock.calls[0][1].signal as AbortSignal
     await wrapper.findAll('button').find(button => button.text() === '取消校验')!.trigger('click')
     expect(signal.aborted).toBe(true)
-    const result: LocalSetupVerificationResult = { type: 'result', modelId: 'anima-aesthetic-v1.1', path: complete().models[0].path, state: 'hash-mismatch', bytes: 10, sha256: 'c'.repeat(64), checkedAt: 1, message: '摘要不符' }
+    const result: LocalSetupVerificationResult = { type: 'result', modelId: 'anima-miaomiao-v1.6', path: complete().models[0].path, state: 'hash-mismatch', bytes: 10, sha256: 'c'.repeat(64), checkedAt: 1, message: '摘要不符' }
     finish(result); await flushPromises()
     expect(wrapper.text()).toContain('已取消校验')
     expect(wrapper.text()).not.toContain('摘要不符')
@@ -141,11 +175,11 @@ describe('first local setup panel', () => {
     expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
     expect(wrapper.find('.setup-next').text()).toContain('重新检查不会清除')
     fixture.verifyModel.mockResolvedValueOnce({ ...result, state: 'sha256-match', sha256: 'b'.repeat(64), message: '本次读取的字节一致' })
-    await wrapper.findAll('button').find(button => button.text() === '校验 anima-aesthetic-v1.1 的 SHA-256')!.trigger('click'); await flushPromises()
+    await wrapper.findAll('button').find(button => button.text() === '校验 anima-miaomiao-v1.6 的 SHA-256')!.trigger('click'); await flushPromises()
     expect(wrapper.find('[data-verification="sha256-match"]').exists()).toBe(true)
     expect(wrapper.find('.setup-result').attributes('data-state')).toBe('checked')
     fixture.verifyModel.mockImplementationOnce(() => new Promise<LocalSetupVerificationResult>(resolve => { finish = resolve }))
-    await wrapper.findAll('button').find(button => button.text() === '校验 anima-aesthetic-v1.1 的 SHA-256')!.trigger('click')
+    await wrapper.findAll('button').find(button => button.text() === '校验 anima-miaomiao-v1.6 的 SHA-256')!.trigger('click')
     const recheck = deferred(); fixture.getStatus.mockReturnValueOnce(recheck.promise)
     await wrapper.find('.setup-heading button').trigger('click'); await flushPromises()
     expect(fixture.verifyModel.mock.lastCall![1].signal.aborted).toBe(true)
@@ -162,10 +196,10 @@ describe('first local setup panel', () => {
     const review = async () => { await wrapper.find('.preparation-ack input').setValue(true); await wrapper.findAll('button').find(button => button.text() === '查看准备清单')!.trigger('click') }
     expect(fixture.downloadModel).not.toHaveBeenCalled()
     await review()
-    const button = () => wrapper.findAll('button').find(button => button.text().includes('anima-aesthetic-v1.1（'))!
+    const button = () => wrapper.findAll('button').find(button => button.text().includes('anima-miaomiao-v1.6（'))!
     let finish!: (value: LocalSetupDownloadResult) => void
     fixture.downloadModel.mockImplementationOnce((_id, options) => {
-      options.onProgress({ type: 'progress', modelId: 'anima-aesthetic-v1.1', phase: 'downloading', bytesRead: 5, expectedBytes: 10 })
+      options.onProgress({ type: 'progress', modelId: 'anima-miaomiao-v1.6', phase: 'downloading', bytesRead: 5, expectedBytes: 10 })
       return new Promise<LocalSetupDownloadResult>(resolve => { finish = resolve })
     })
     await button().trigger('click'); await button().trigger('click')
@@ -193,7 +227,7 @@ describe('first local setup panel', () => {
     expect(wrapper.text()).not.toContain('late binding failure')
     await wrapper.findAll('button').find(button => button.text() === '取消下载')!.trigger('click')
     expect(fixture.downloadModel.mock.calls[0][1].signal.aborted).toBe(true)
-    const success: LocalSetupDownloadResult = { type: 'result', modelId: 'anima-aesthetic-v1.1', path: value.models[0].path, state: 'downloaded', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '下载校验通过，尚未真实出图' }
+    const success: LocalSetupDownloadResult = { type: 'result', modelId: 'anima-miaomiao-v1.6', path: value.models[0].path, state: 'downloaded', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '下载校验通过，尚未真实出图' }
     finish(success); await flushPromises()
     expect(fixture.getStatus).toHaveBeenCalledTimes(4); expect(wrapper.text()).toContain('已有模型保留')
     fixture.downloadModel.mockResolvedValueOnce({ ...success, state: 'failed', bytes: null, sha256: null, code: 'MODEL_CONFLICT', message: '同名文件冲突' })

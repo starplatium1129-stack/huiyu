@@ -1,4 +1,5 @@
 import { assertChatVersion } from './chatVersion.ts'
+import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '../config/chatApi.ts'
 
 export interface ChatStorageOptions {
   characterIds: string[]
@@ -137,7 +138,7 @@ export function normalizeChatStorage(
   }
 
   // API 配置：逐层取用户已保存的值；只有"从未配置过"（三个字段全空）时
-  // 才用本地代理（CLIProxyAPI）默认，保证开箱即用。
+  // 才用服务商预设，等待用户填写密钥；不依赖开发者电脑上的代理。
   // 之前是逐字段兜底：用户只要有一个字段为空（custom 模式 key 留空、
   // 旧存储缺字段等），加载时就会被覆盖成本地 Gemini，丢失 Go/DeepSeek 配置。
   const apiBaseUrl = text(settings.apiBaseUrl, 500)
@@ -163,8 +164,8 @@ export function normalizeChatStorage(
   const neverConfigured = legacyFallbackKey || (typeof settings.apiConfiguredByUser === 'boolean'
     ? !settings.apiConfiguredByUser
     : (!apiBaseUrl && !apiModel && !apiKey))
-  const finalApiBaseUrl = apiBaseUrl || (neverConfigured ? FALLBACK_BASE_URL : '')
-  const finalApiModel = apiModel || (neverConfigured ? FALLBACK_MODEL : '')
+  const finalApiBaseUrl = apiBaseUrl || (neverConfigured ? DEEPSEEK_BASE_URL : '')
+  const finalApiModel = apiModel || (neverConfigured ? DEEPSEEK_DEFAULT_MODEL : '')
   const finalApiKey = legacyFallbackKey ? '' : apiKey
 
   const rawHistoriesRevision = Number(raw.historiesRevision)

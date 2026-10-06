@@ -10,6 +10,9 @@ import {
 } from '../utils/storageKeys.ts'
 
 export type DrawEngine = 'sd' | 'anima' | 'krea2'
+export const STARTER_MODEL_SETTING: SettingDefinition<string> = {
+  key:'aics_setup_image_model',parse:value=>value?.startsWith('anima-')?value:null,serialize:value=>value,
+}
 export type Theme = 'dark' | 'light'
 export type ReasoningLevel = 'off' | 'low' | 'medium' | 'high'
 

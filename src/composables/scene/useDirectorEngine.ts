@@ -99,12 +99,12 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   }
 
   function setDrawEngine(v: DrawEngine, options: { silent?: boolean } = {}) {
-    if (v === 'sd' && pb.isPopular) {
-      flash('热门角色仅支持 Anima 无 LoRA 或 Krea 2，请保留 Comfy 引擎')
+    if (v === 'sd') {
+      flash('SD 新生成已退役，旧作品与配方仍可查看；请选择 Anima 或 Krea 2')
       return
     }
     if (!supportsDualCharacter(v) && pb.char === 'triad' && !pb.isPopular) {
-      flash(v === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
+      flash('当前绘图路径暂不支持旧双角色配置，请重新选择单个角色')
       return
     }
     if (drawEngine.value === v) {
@@ -118,13 +118,11 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     }
     drawEngine.value = v
     patchAnimaState({ styleLoraId: '' })
-    if (v !== 'sd') {
-      syncAnimaCharacter(pb.char)
-      void refreshAnimaBackend()
-    }
+    syncAnimaCharacter(pb.char)
+    void refreshAnimaBackend()
     if (!options.silent) flash(v === 'anima'
       ? (pb.isPopular ? '已切换到 Anima（无 LoRA 热门角色模式）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
-      : v === 'krea2' ? '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）' : '已切换到 SD 引擎（WebUI）')
+      : '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）')
   }
 
   /** 推荐尺寸必须收敛到当前底模白名单（服务端 400 INVALID_PARAMETER 兜底）。 */
@@ -216,7 +214,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     }
     const profile = modelProfile.value
     if (pb.char === 'triad' && !currentCapabilities.value.dualCharacter) {
-      if (!preview) flash(animaState.value.family === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
+      if (!preview) flash('当前绘图路径暂不支持旧双角色配置，请重新选择单个角色')
       return null
     }
     const charKey = pb.char === 'triad' ? null : pb.char

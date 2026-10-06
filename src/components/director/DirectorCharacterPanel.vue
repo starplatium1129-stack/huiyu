@@ -19,11 +19,11 @@
       <div class="char-row studio-character-gallery" role="group" aria-label="工作室角色">
         <button v-for="c in charOptions" :key="c.id"
           class="char-btn studio-character-choice" type="button"
-          :class="{ active: pb.char === c.id, 'studio-character-duet': c.id === 'triad', 'studio-character-natsume': c.id === 'natsume' }"
+          :class="{ active: pb.char === c.id, 'studio-character-natsume': c.id === 'natsume' }"
           :aria-label="c.label"
           :aria-pressed="pb.char === c.id"
           @click="pb.setChar(c.id)">
-          <span class="studio-character-art" :class="{ 'studio-duet-art': c.id === 'triad' }" aria-hidden="true">
+          <span class="studio-character-art" aria-hidden="true">
             <CharacterPortrait v-if="c.id !== 'natsume'" :src="characterArtEntry('nene')?.thumbnailUrl || '/assets/characters/nene-home-cg-512.webp'" name="宁宁" />
             <CharacterPortrait v-if="c.id !== 'nene'" :src="characterArtEntry('natsume')?.thumbnailUrl || '/assets/characters/natsume-home-cg-512.webp'" name="夏目" />
           </span>
@@ -60,7 +60,7 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { characterArtEntry } from '@/platform/characterArtState'
 import { ref, defineAsyncComponent } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import { charOptions } from '@/composables/scene/directorOptions'
+import { charOptions as historicalCharacterOptions } from '@/composables/scene/directorOptions'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const CharacterPortrait = defineAsyncComponent(() => import('@/components/library/CharacterPortrait.vue'))
 const PopularCharacterPicker = defineAsyncComponent(() => import('@/components/popular/PopularCharacterPicker.vue'))
@@ -78,5 +78,6 @@ defineEmits<{
 }>()
 
 const pb = usePromptBuilderStore()
+const charOptions=historicalCharacterOptions.filter(character=>character.id!=='triad')
 const popularSearch = ref('')
 </script>

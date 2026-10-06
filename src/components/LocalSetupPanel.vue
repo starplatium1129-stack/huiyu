@@ -11,7 +11,7 @@
     </div>
     <p v-if="!isLocal" class="setup-note">请在运行绘遇的本机打开控制室；远程访问不会读取工作区或设备信息。</p>
     <template v-else>
-      <p class="setup-scope">基础验证推荐组合：Anima Aesthetic v1.1 + Qwen 编码器 + VAE。仅检查无 LoRA、无 TeaCache、无高清修复、无局部重绘的起步路径，不改变现有默认或草稿。</p>
+      <p class="setup-scope">绘图首选 MiaoMiao 1.6，Base 为更自由的风格候选。绘遇可以准备环境、模型与作者亲训的角色 LoRA；聊天按硬件推荐 llama.cpp 或 API。</p>
       <div class="setup-result" :data-state="basicComplete ? 'checked' : 'pending'" role="status" aria-live="polite">
         <ArchiveIcon :name="basicComplete ? 'success' : 'info'" /><strong>{{ summary }}</strong>
       </div>
@@ -30,8 +30,10 @@
         <RouterLink v-if="basicComplete" class="btn btn-ghost btn-sm" to="/prompt-builder"><ArchiveIcon name="spark" />前往工作台验证</RouterLink>
       </div>
       <p v-if="workspaceNotice" class="setup-note" role="status">{{ workspaceNotice }}</p>
+      <button v-if="workspacePending && desktop?.restartForSetup" class="btn btn-primary btn-sm" type="button" @click="restartForSetup">重启绘遇并继续配置</button>
       <p v-if="downloadNotice" class="setup-note" role="status">{{ downloadNotice }}</p>
       <p v-if="workspaceError && !workspaceOpen" class="setup-error" role="alert">{{ workspaceError }}</p>
+      <LocalSetupAutomation v-if="snapshot" :snapshot="snapshot" :workspace-blocked="workspacePending || workspaceUnconfirmed" @refresh="refresh" @download-result="recordDownload" @model-selected="selectSetupModel" />
       <LocalSetupPreparation v-if="snapshot" :snapshot="snapshot" :desktop="!!desktop" :workspace-pending="workspacePending" :workspace-unconfirmed="workspaceUnconfirmed" @workspace="openWorkspace" @refresh="refresh" @verification-result="recordVerification" @download-result="recordDownload" />
       <details class="setup-details">
         <summary>查看路径与详细检查<span v-if="snapshot">{{ checkedAtLabel }}</span></summary>
@@ -41,8 +43,8 @@
             <template v-if="snapshot">
               <p>当前运行时工作区：{{ fileLabel(snapshot.workspace.state) }}</p><code>{{ snapshot.workspace.path }}</code>
               <p>ComfyUI 目录：{{ fileLabel(snapshot.comfy.installation) }}</p><code>{{ snapshot.comfy.path }}</code>
-              <p>选择包含 ComfyUI/main.py 的 AI 工作区父目录，模型按下方精确路径放置。</p>
-              <p v-if="snapshot.comfy.layout === 'portable'">已识别便携版布局。请使用原便携包的启动入口手动启动；绘遇的受控启动尚不支持便携版。</p>
+              <p>AI 工作区用于保存模型与受管环境。手动管理已有 ComfyUI 时选择其父目录；受管 Portable 不需要改环境目录。</p>
+              <p v-if="snapshot.comfy.layout === 'portable'">已识别 Portable 的独立 Python 布局，可使用绘遇受管启动。</p>
               <p v-else-if="snapshot.comfy.layout === 'external-venv'">已识别 .venv 布局，可能由 Desktop 或其他环境管理器维护。请由原入口启动后连接，不交给绘遇受控启动。</p>
               <p v-else-if="snapshot.comfy.layout === 'venv'">已识别 venv 布局；检测到目录不代表 Python、PyTorch 或驱动已可运行。</p>
               <p v-else>未识别 venv / 便携版布局；Conda 等环境请沿用自己的启动入口，不据此判定服务不可用。</p>
@@ -97,16 +99,25 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import LocalSetupPreparation from './LocalSetupPreparation.vue'
+import LocalSetupAutomation from './LocalSetupAutomation.vue'
 import { modelPreparationState, formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'
 import CompanionWorkspaceSettings from './CompanionWorkspaceSettings.vue'
 import { localSetupApi } from '../api/localSetupApi.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
+import { STARTER_MODEL_SETTING, settingsRepository } from '../storage/settingsRepository'
+import { flushProfileWrites } from '../platform/web/profileStorage'
 import type { LocalSetupFileState, LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup.ts'
 
 const isLocal = isLocalStudioHost()
 const desktop = isLocal ? getDesktopCapabilities() : undefined
 const snapshot = ref<LocalSetupResponse | null>(null)
+const selectedModel = ref(settingsRepository.get(STARTER_MODEL_SETTING) || 'anima-miaomiao-v1.6')
+function selectSetupModel(modelId:string) { if(selectedModel.value!==modelId){selectedModel.value=modelId;void refresh()} }
+async function restartForSetup(){
+  try{await flushProfileWrites();await desktop?.restartForSetup?.()}
+  catch(cause){workspaceError.value=cause instanceof Error?cause.message:'重启未完成，请完全退出后重新打开绘遇'}
+}
 const verificationFailures = ref<Record<string, string>>({})
 const downloadNotice = ref(''), workspacePending = ref(false)
 const workspaceActiveRoot = ref<string | null>(null)
@@ -116,7 +127,7 @@ const loading = ref(false), error = ref(''), cancelled = ref(false)
 let controller: AbortController | null = null
 let disposed = false
 const recommendedModels = computed(() => snapshot.value?.models.filter(model => model.required) ?? [])
-const otherModels = computed(() => snapshot.value?.models.filter(model => !model.required) ?? [])
+const otherModels = computed(() => snapshot.value?.models.filter(model => !model.required && (!model.kind || model.kind === 'image')) ?? [])
 const presentRecommended = computed(() => recommendedModels.value.filter(model => modelPreparationState(model) === 'bytes-match').length)
 const nodesChecked = computed(() => snapshot.value?.nodes.state === 'checked' && snapshot.value.nodes.required.length > 0)
 const failedModels = computed(() => recommendedModels.value.filter(model => verificationFailures.value[model.id] === model.path))
@@ -151,12 +162,12 @@ const nextStep = computed(() => {
   if (error.value || cancelled.value) return '本次检查尚未确认；保留的路径来自上次结果，请重新检查后再判断准备状态。'
   if (!value) return '重新检查以读取当前配置；此操作不会安装文件或启动服务。'
   if (failedModels.value.length) return `${failedModels.value.map(model => model.label).join('、')} 的完整性校验未通过。重新检查不会清除此问题；请核对文件并重新校验 SHA-256 后再尝试出图。`
-  if (value.workspace.state !== 'present' || value.comfy.installation !== 'present') return '确认 AI 工作区父目录，并在其下准备包含 main.py 的 ComfyUI。已有服务可能使用不同目录，请先核对。'
+  if (value.workspace.state !== 'present' || value.comfy.installation !== 'present') return '先选择 AI 数据磁盘，再用下方一键准备环境与模型。已有服务可在手动管理中核对。'
   if (presentRecommended.value < recommendedModels.value.length) return '打开准备向导，按来源、大小与精确路径补齐或核对推荐组合；已有其他底模仍可按原配置使用。'
-  if (value.comfy.connection !== 'online') return '用现有环境或便携包的启动入口手动启动 ComfyUI，核对服务地址后重新检查。'
+  if (value.comfy.connection !== 'online') return '用下方一键准备或控制室启动 ComfyUI；外部管理的环境沿用原入口。'
   if (!nodesChecked.value) return '节点注册信息尚未确认，请核对连接的 ComfyUI 服务后重新检查。'
   if (value.nodes.missing.length) return '按下方缺少的节点注册名检查 ComfyUI 扩展，手动重启该服务后重新检查。'
-  return '去工作台手动选择 Anima Aesthetic v1.1，关闭 LoRA、TeaCache、高清修复和局部重绘，验证一张图片。'
+  return '去工作台生成一张全龄图片，或进入角色房间发送短消息，确认本机实际效果。'
 })
 const fileLabel = (state: LocalSetupFileState) => ({ present: '已发现', missing: '未发现', unknown: '未知' })[state]
 async function refresh() {
@@ -168,7 +179,7 @@ async function refresh() {
   if (snapshot.value) snapshot.value = { ...snapshot.value }
   if (desktop) void readWorkspaceBinding()
   try {
-    const result = await localSetupApi.getStatus({ signal: request.signal })
+    const result = await localSetupApi.getStatus({ signal: request.signal, modelId: selectedModel.value })
     if (!disposed && controller === request && !request.signal.aborted) snapshot.value = result
   } catch (cause) {
     if (!disposed && controller === request && !request.signal.aborted) error.value = cause instanceof Error ? cause.message : '读取配置失败，请重新检查。'

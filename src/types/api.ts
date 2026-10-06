@@ -70,6 +70,7 @@ export interface ControlStatus {
   comfyOnline: boolean
   ttsOnline: boolean
   ollamaOnline: boolean
+  llama?: { online:boolean; managed:boolean; host:string; model?:string|null; label?:string }
   ollamaModels: string[]
   ollamaVram: number
   webuiManaged: boolean

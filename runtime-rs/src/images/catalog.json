@@ -5,6 +5,7 @@
       "label": "Anima Base v1.0",
       "family": "anima",
       "profileId": "anima_base_v10",
+      "noLora": true,
       "steps": 30,
       "cfg": 4.5,
       "sampler": "res_multistep",

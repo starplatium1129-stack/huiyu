@@ -173,6 +173,13 @@ impl TaskRuntime {
             }
             return Ok(serde_json::to_value(existing)?);
         }
+        if request["kind"] == "generation" {
+            return Err(ApiError::new(
+                410,
+                "SD_RETIRED",
+                "SD 新生成已退役；原任务可继续查询、收集或取消",
+            ));
+        }
         let prepared = self.prepare(kind, request["input"].clone()).await?;
         self.check_running()?;
         let task_id = uuid::Uuid::new_v4().to_string();

@@ -143,31 +143,13 @@ async fn status(State(state): State<AppState>, Extension(http): Extension<Arc<Ht
         Err(error) => Err(error),
     })
 }
-async fn create(
-    State(state): State<AppState>,
-    Extension(http): Extension<Arc<Http>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>,
-    Query(query): Query<HashMap<String, String>>,
-    headers: HeaderMap,
-    Json(body): Json<Value>,
-) -> Response {
-    if let Err(error) = state.host.check_running() {
-        return error.into_response();
-    }
-    let local = security::is_direct_local(&headers, peer.ip());
-    let owner = owner(&headers, peer, &query);
-    let admitted = async {
-        let prepared = http
-            .service
-            .prepare(body, local, http.service.inner.cancel.child_token())
-            .await?;
-        http.service.clone().submit(prepared, owner, None).await
-    }
-    .await;
-    match admitted {
-        Ok(job) => (StatusCode::ACCEPTED, Json(json!({"ok":true,"job":job}))).into_response(),
-        Err(error) => error.into_response(),
-    }
+async fn create() -> Response {
+    ApiError::new(
+        410,
+        "SD_RETIRED",
+        "SD 新生成已退役，旧任务仍可查询与取消；请使用 Anima 或 Krea 2",
+    )
+    .into_response()
 }
 async fn get_job(
     State(state): State<AppState>,

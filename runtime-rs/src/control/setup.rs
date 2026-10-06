@@ -1,14 +1,14 @@
 use super::*;
 use std::{collections::BTreeSet, path::Path};
 
-const RECOMMENDED_MODEL: &str = "anima-aesthetic-v1.1";
+const RECOMMENDED_MODEL: &str = "anima-miaomiao-v1.6";
 
 // Compile the real, no-LoRA baseline. This is inspection only: never submit a
 // prompt or silently change the user's selected model, draft, or defaults.
-fn baseline_workflow() -> Result<Value> {
+fn baseline_workflow(model_id: &str) -> Result<Value> {
     let input = crate::images::validate(
-        &json!({"modelId":RECOMMENDED_MODEL,"prompt":"landscape","width":1024,
-            "height":1024,"seed":0,"teaCache":false,"hiresFix":false}),
+        &json!({"modelId":model_id,"prompt":"landscape","width":1024,
+            "height":1024,"seed":0,"teaCache":true,"hiresFix":false}),
         "anima",
         true,
     )?;
@@ -51,7 +51,14 @@ fn bytes(value: &Value) -> Option<u64> {
 
 impl ControlService {
     pub(super) async fn local_setup(&self) -> Result<Value> {
-        let graph = baseline_workflow()?;
+        self.local_setup_for(RECOMMENDED_MODEL).await
+    }
+    pub(super) async fn local_setup_for(&self, recommended: &str) -> Result<Value> {
+        let source = setup_verify::model_source(recommended)?;
+        if source["kind"] != "image" || !recommended.starts_with("anima-") {
+            return Err(ApiError::invalid("请选择已登记的 Anima 起步底模"));
+        }
+        let graph = baseline_workflow(recommended)?;
         let required: BTreeSet<_> = graph
             .as_object()
             .unwrap()
@@ -95,7 +102,7 @@ impl ControlService {
             .unwrap_or_default();
 
         let workspace = &self.config.ai_workspace_root;
-        let comfy = workspace.join("ComfyUI");
+        let comfy = self.comfy_root();
         let (workspace_state, _) = presence(workspace, true).await;
         let (installation, _) = presence(&comfy.join("main.py"), false).await;
         let venv = presence(&comfy.join("venv/Scripts/python.exe"), false)
@@ -107,19 +114,24 @@ impl ControlService {
             .await
             .0
             == "present";
-        let portable = presence(&workspace.join("python_embeded/python.exe"), false)
-            .await
-            .0
-            == "present";
+        let portable = presence(
+            &comfy
+                .parent()
+                .unwrap_or(workspace)
+                .join("python_embeded/python.exe"),
+            false,
+        )
+        .await
+        .0 == "present";
 
         let catalog = crate::images::catalog();
-        let model = &catalog["MODELS"][RECOMMENDED_MODEL];
+        let model = &catalog["MODELS"][recommended];
         let model_file = graph["1"]["inputs"]["unet_name"].as_str().unwrap();
         let encoder = graph["2"]["inputs"]["clip_name"].as_str().unwrap();
         let vae = graph["3"]["inputs"]["vae_name"].as_str().unwrap();
         let mut files = vec![
             (
-                RECOMMENDED_MODEL,
+                recommended,
                 model["label"].as_str().unwrap(),
                 "diffusion_models",
                 model_file,
@@ -135,7 +147,7 @@ impl ControlService {
             ("qwen-vae", "Qwen Image VAE", "vae", vae, true),
         ];
         for (id, model) in catalog["MODELS"].as_object().unwrap() {
-            if model["family"] == "anima" && id != RECOMMENDED_MODEL {
+            if model["family"] == "anima" && id != recommended {
                 files.push((
                     id,
                     model["label"].as_str().unwrap(),
@@ -150,21 +162,36 @@ impl ControlService {
         let manifest: Value = serde_json::from_str(include_str!("setup-models.json"))?;
         let mut models = Vec::new();
         for (id, label, kind, name, required) in files {
-            let path = comfy.join("models").join(kind).join(name);
+            let path = workspace.join("ComfyUI/models").join(kind).join(name);
             let (state, size) = presence(&path, false).await;
             let relative = format!("{kind}/{name}");
-            let preparation = manifest["files"].as_array().unwrap().iter()
+            let source = manifest["files"].as_array().unwrap().iter()
                 .find(|entry| entry["path"] == relative).map(|entry| {
-                    json!({"url":format!("https://huggingface.co/{}/resolve/{}/{}",
+                    json!({"url":entry["sourceUrl"].as_str().map(str::to_owned).unwrap_or_else(||format!("https://huggingface.co/{}/resolve/{}/{}",
                         entry["repo"].as_str().unwrap(), entry["revision"].as_str().unwrap(), entry["remotePath"].as_str().unwrap()),
-                        "modelCardUrl":manifest["modelCardUrl"],"licenseUrl":manifest["licenseUrl"],
+                        ),"modelCardUrl":entry.get("modelCardUrl").unwrap_or(&manifest["modelCardUrl"]),"licenseUrl":entry.get("licenseUrl").unwrap_or(&manifest["licenseUrl"]),
                         "upstreamLicenseUrl":entry["upstreamLicenseUrl"],"revision":entry["revision"],"expectedBytes":entry["bytes"],"sha256":entry["sha256"]})
                 });
-            models.push(json!({"id":id,"label":label,"path":path,"state":state,"bytes":size,"required":required,"preparation":preparation}));
+            let entry = setup_verify::model_source(id).ok();
+            models.push(json!({"id":id,"label":label,"path":path,"state":state,"bytes":size,"required":required,"preparation":source,"kind":"image","purpose":entry.as_ref().and_then(|e| e["purpose"].as_str()).unwrap_or("候选 · 默认画风较统一，便于稳定创作")}));
         }
 
-        let ram = stats_value.and_then(|s| bytes(&s["system"]["ram_total"]));
-        let devices: Vec<_> = stats_value.and_then(|s| s["devices"].as_array()).into_iter().flatten()
+        for entry in manifest["files"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|e| e["kind"] != "image")
+        {
+            let id = entry["id"].as_str().unwrap();
+            let path =
+                setup_verify::model_root(workspace, id)?.join(entry["path"].as_str().unwrap());
+            let (state, size) = presence(&path, false).await;
+            models.push(json!({"id":id,"label":entry["label"],"path":path,"state":state,"bytes":size,"required":false,
+                "kind":entry["kind"],"purpose":entry["purpose"],"preparation":{"url":entry["sourceUrl"],"modelCardUrl":entry["modelCardUrl"],"licenseUrl":entry["licenseUrl"],"upstreamLicenseUrl":entry["upstreamLicenseUrl"],"revision":entry["revision"],"expectedBytes":entry["bytes"],"sha256":entry["sha256"]}}));
+        }
+
+        let mut ram = stats_value.and_then(|s| bytes(&s["system"]["ram_total"]));
+        let mut devices: Vec<_> = stats_value.and_then(|s| s["devices"].as_array()).into_iter().flatten()
             .filter_map(|device| {
                 let name = device["name"].as_str()?.trim();
                 let kind = device["type"].as_str()?.trim();
@@ -172,11 +199,22 @@ impl ControlService {
                 Some(json!({"name":self.redact(&name.chars().take(160).collect::<String>()),
                     "type":kind.chars().take(32).collect::<String>(),"vramBytes":bytes(&device["vram_total"])}))
             }).collect();
-        Ok(json!({"ok":true,"checkedAt":now(),
+        if ram.is_none() || devices.is_empty() {
+            let local = hardware::local_hardware().await;
+            if ram.is_none() {
+                ram = local["ramBytes"].as_u64();
+            }
+            if devices.is_empty() {
+                devices = local["devices"].as_array().cloned().unwrap_or_default();
+            }
+        }
+        Ok(
+            json!({"ok":true,"checkedAt":now(),"recommendedModel":recommended,
             "workspace":{"path":workspace,"state":workspace_state},
             "comfy":{"path":comfy,"installation":installation,"layout":if venv{"venv"}else if external_venv{"external-venv"}else if portable{"portable"}else{"unrecognized"},"host":host,"connection":connection},
-            "models":models,"nodes":{"state":if node_info.is_some(){"checked"}else{"unknown"},"required":required,"missing":missing},
-            "hardware":{"state":if ram.is_some()||!devices.is_empty(){"reported"}else{"unknown"},"devices":devices,"ramBytes":ram}}))
+            "models":models,"chat":{"host":self.settings()["llamaHost"],"runtimePresent":workspace.join("Chat/runtime/llama-server.exe").is_file()},"nodes":{"state":if node_info.is_some(){"checked"}else{"unknown"},"required":required,"missing":missing},
+            "hardware":{"state":if ram.is_some()||!devices.is_empty(){"reported"}else{"unknown"},"devices":devices,"ramBytes":ram}}),
+        )
     }
 }
 
@@ -193,11 +231,11 @@ mod tests {
         assert_eq!(report["comfy"]["connection"], "offline");
         assert_eq!(
             report["models"][0]["preparation"]["expectedBytes"],
-            4182230656_u64
+            4182218328_u64
         );
         assert_eq!(
             report["models"][0]["preparation"]["sha256"],
-            "3c1868387a3a1ff504bbb87c33678321965ead381fcf87afbd0264daa600c082"
+            "6bbb6b6785b4eb0df467658ce47f5f52f1d11fe992b1375b3c67ff02becf193b"
         );
         for model in report["models"]
             .as_array()
@@ -213,13 +251,17 @@ mod tests {
                     .contains(source["revision"].as_str().unwrap())
             );
             assert!(
-                source["url"].as_str().unwrap().ends_with(
-                    Path::new(model["path"].as_str().unwrap())
-                        .file_name()
-                        .unwrap()
-                        .to_str()
-                        .unwrap()
-                )
+                source["url"]
+                    .as_str()
+                    .unwrap()
+                    .starts_with("https://civitai.com/api/download/")
+                    || source["url"].as_str().unwrap().ends_with(
+                        Path::new(model["path"].as_str().unwrap())
+                            .file_name()
+                            .unwrap()
+                            .to_str()
+                            .unwrap()
+                    )
             );
         }
         assert_eq!(report["nodes"]["state"], "unknown");
@@ -232,7 +274,7 @@ mod tests {
                 .contains(&json!("ImageSharpenKJ"))
         );
         assert!(
-            !report["nodes"]["required"]
+            report["nodes"]["required"]
                 .as_array()
                 .unwrap()
                 .contains(&json!("AnimaTeaCache"))
@@ -253,7 +295,7 @@ mod tests {
         for name in [
             "ComfyUI/main.py",
             "python_embeded/python.exe",
-            "ComfyUI/models/diffusion_models/anima-aesthetic-v1.1.safetensors",
+            "ComfyUI/models/diffusion_models/miaomiaoHarem_anima16.safetensors",
         ] {
             let file = root.join(name);
             std::fs::create_dir_all(file.parent().unwrap()).unwrap();

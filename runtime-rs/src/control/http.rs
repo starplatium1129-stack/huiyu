@@ -12,12 +12,7 @@ use std::{collections::HashMap, net::SocketAddr};
 pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
     Router::new()
         .route("/api/status", get(status))
-        .route("/api/local-setup", get(local_setup))
-        .route("/api/local-setup/verify/{model}", post(verify_setup_model))
-        .route(
-            "/api/local-setup/download/{model}",
-            post(download_setup_model),
-        )
+        .merge(setup_http::routes())
         .route("/api/share-link", get(share))
         .route("/api/logs", get(logs))
         .route("/api/diagnostics", get(diagnostics))
@@ -32,22 +27,6 @@ pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
         .layer(middleware::from_fn(local))
         .route("/api/sd-status", get(sd_status))
         .layer(Extension(service))
-}
-async fn local_setup(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {
-    Ok(Json(s.local_setup().await?))
-}
-async fn verify_setup_model(
-    Extension(s): Extension<Arc<ControlService>>,
-    Path(model): Path<String>,
-) -> Result<Response> {
-    s.verify_setup_model(model)
-}
-async fn download_setup_model(
-    Extension(s): Extension<Arc<ControlService>>,
-    Path(model): Path<String>,
-    Json(body): Json<setup_download::DownloadRequest>,
-) -> Result<Response> {
-    s.download_setup_model(model, body)
 }
 async fn local(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
@@ -276,13 +255,16 @@ async fn action(
     Json(body): Json<Value>,
 ) -> Result<Json<Value>> {
     let action = body["action"].as_str().unwrap_or("");
-    if !matches!(service.as_str(), "webui" | "comfy" | "voice" | "ollama")
-        || if service == "ollama" {
-            action != "unload"
-        } else {
-            !matches!(action, "start" | "stop")
-        }
-    {
+    if !matches!(
+        service.as_str(),
+        "webui" | "comfy" | "voice" | "ollama" | "llama"
+    ) || if service == "ollama" {
+        action != "unload"
+    } else if service == "llama" {
+        action != "stop"
+    } else {
+        !matches!(action, "start" | "stop")
+    } {
         return Err(ApiError::invalid("不支持的服务操作"));
     }
     Ok(Json(s.launch(format!("{service}-{action}"))?))

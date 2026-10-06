@@ -2,7 +2,7 @@
 
 新机器先安装桌面程序和完整素材包，随后按需要准备本地 AI 服务。**素材包提供角色、场景样张和浏览所需图片；生图、视频、对话、反推和 AI 配音需要各自的模型及运行环境。** 文件存在或下载校验通过，不能代替真实功能验收。
 
-> 2026-09-30 核对：以下文件名以产品 Rust 工作流为准；公共来源读取了发布者页面和文件元数据，未下载大权重、安装环境或调用模型。当前私有角色 LoRA、声线、参考库不随公共素材包发行。素材安装步骤见 [离线资源发布与换机](offline-resources.md)，启动入口见 [STARTUP](../../STARTUP.md)。
+> 2026-10-06：以下自动准备能力已在源码实施，尚未重新封装、安装或公开发行；已公开的 1.9.0 程序包仍使用原准备流程。宁宁、夏目 Anima v21 绘图 LoRA 已作为 [1.9.0 独立附件](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0)公开，注明由绘遇作者亲自训练；语音声线与参考库不属于这两份附件。素材安装见 [离线资源指南](offline-resources.md)，启动见 [STARTUP](../../STARTUP.md)。
 
 ## 1. 一台新机器需要哪些交付物
 
@@ -12,9 +12,9 @@
 | PixAI 图片反推 | 固定 PixAI v1.0 权重与配置、CUDA 可用的 Python/PyTorch 环境及独立 timm；按 [准备入口](../workflow.md#pixai-本机反推准备) 生成 runtime-config.json | `/api/interrogate/status` 的 pixai 就绪后对本机图片反推；加载后模型按用户设置常驻显存 |
 | Anima 生图 | ComfyUI、匹配的 Python/PyTorch 环境、底模＋文本编码器＋VAE；工作流需要的节点/采样器 | 控制室检查服务，`/api/anima/status`，再生成一张所选模型的图 |
 | Krea 2 生图 | ComfyUI、下述 Krea 2 三件套；选择风格时另需相应 LoRA | `/api/creative/status`，再生成一张图 |
-| WAI 生图 | WebUI/ReForge 的可用环境与 `--api`，或受支持的 ComfyUI 路径；WAI v17 checkpoint，所选角色 LoRA | 控制室连接和一张真实图；双人增强另需扩展与姿势模型 |
+| 旧 SD/WAI 作品 | 新生成已在源码退役，保留旧作品、配方原值、原任务查询／取消 | 不跨引擎冒充恢复原生成参数；可选择沿用文本、画风与构图 |
 | 本地视频 | ComfyUI、Wan 或 H3 的完整权重与节点、可用 FFmpeg | `/api/video/status`，生成并播放短片，H3 另验音频 |
-| 本地对话 | Ollama 程序及已经下载的**本地**模型缓存 | `ollama list`，在房间切换本地模型并完成一次断网对话 |
+| 本地对话 | 绘遇受管 llama.cpp 与所选 GGUF；显存较少优先 API；已有 Ollama 可保留连接 | 一次短对话、取消与绘图后的按需恢复；实际速度按设备记录 |
 | 中日翻译＋角色 AI 配音 | 下述 M2M100 模型与 Python 依赖；GPT-SoVITS 环境、基础预训练组件、已授权的角色 GPT/SoVITS 权重、参考音频及对应原文 | `/api/tts/status`，分别验翻译、日文/中文配音和口型 |
 
 远程 API、Ollama 云端模型、公网分享、在线下载和更新需要联网；选择这些能力不属于离线验收。默认图片和台词预览不证明 AI 生成可用。浏览器/系统语音也需本机已安装的对应语言声音。
@@ -70,17 +70,29 @@ Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/m
 
 上游只支持本机 loopback：`SD_HOST` 默认 `http://127.0.0.1:7860`，`COMFY_HOST` 默认 `http://127.0.0.1:8188`，`TTS_HOST` 默认 `http://127.0.0.1:9880`。地址/角色声线可在控制室保存；更换机器后重配参考音频和权重的绝对路径，不复制旧 PID 当作新服务已启动。
 
-### 控制室的手动准备向导
+### 首次配置与一键准备（源码能力，待安装版交付）
 
-控制室「首次配置 → 按缺项准备 ComfyUI 与模型」把当前运行时目录、运行方式、依赖和固定三件套放在同一页。先核对真实 `models` 目录、容量与许可，再点击「查看准备清单」展开逐文件来源、目标路径和 SHA-256；每个模型须单独显式下载，也保留浏览器来源链接与复制清单。改变运行方式、取消勾选或重新检查都会撤销本次清单确认；桌面已保存的新工作区仍待重启时不能开始下载。确认清单不代为接受许可，不安装 ComfyUI、Python、驱动或运行模型。
+初次打开本机会显示欢迎入口，进入控制室首次配置。先选择 AI 数据目录；保存的新目录在重启后生效，桌面可点击“重启绘遇并继续配置”，先确认个人配置写入再重启。浏览器连接已准备的本机服务，目录选择仍由桌面宿主完成。
 
-下载仅接受当前已确认的运行时工作区和固定三个模型 ID；来源、revision、大小和 SHA-256 全由 `setup-models.json` 解析，不接收任意下载地址或目标路径。开始前检查目标盘剩余空间，在同目录临时文件中下载，大小与 SHA-256 相符才以不覆盖方式发布。已有同名文件先校验，相符直接复用，异内容或无法确认时报冲突，由用户自行核对；取消和失败移除本次临时文件，保留原模型。界面显示下载及校验进度，支持取消和显式重试；成功后重新读取 setup 状态。文件通过只证明下载与完整性，真实大文件、新电脑环境、加载和出图仍需另验。
+绘图首选 **MiaoMiao Harem Anima 1.6**，其次 **Base v1.0**；选择不同底模后，检查与下载清单跟随该底模，不要求全部候选同时存在。共享 Qwen 编码器和 VAE 复用，宁宁／夏目角色 LoRA 可随组合下载。模型卡展示用途、来源与使用条件；只有用户确认当前目录与组合并点击准备后才下载或运行环境代码。
 
-截至 2026-10-04，官方新用户推荐 Desktop，其 Python 环境由 Desktop 自行管理，布局因版本与实例类型而异；Portable 使用 `python_embeded`，官方 Manual 示例也可能使用 Conda。这些都不能直接当成绘遇受控启动要求的 `ComfyUI/main.py + ComfyUI/venv/Scripts/python.exe`。Desktop、Portable 及其他环境由原入口启动后连接；不要重命名环境或复制解释器来通过检查。[Desktop 官方文档](https://docs.comfy.org/installation/desktop/windows)、[Portable 官方文档](https://docs.comfy.org/installation/comfyui_portable_windows)、[硬件要求](https://docs.comfy.org/installation/system_requirements)。
+自动环境起步面向 Windows x64＋NVIDIA。受管 ComfyUI Portable、独立 Python、KJNodes 和 Anima TeaCache 先在工作区暂存完成，再整套发布到 `.runtimes/comfy/`；模型保持在 `ComfyUI/models/`，由自动生成的模型目录配置关联。已有 ComfyUI 环境和文件保留；已有外部管理环境沿原入口启动，缺项与冲突明确报告，不强行覆盖。
 
-新向导会识别 `.venv` 为外部管理，但不承诺任意旧 Desktop 目录自动匹配。用户必须查看实际实例的模型目录，让它与页面显示的三个精确路径对应；仅服务在线或更改 `COMFY_HOST` 不能证明目录一致。工作区改变仍须完全退出并重启绘遇。
+llama.cpp 固定 b10516，提供 CUDA 和进阶 Vulkan 运行包。默认纯文字、短上下文、关闭深度思考；聊天前释放空闲受管绘图模型，绘图前释放受管聊天模型。加载有取消和期限，子进程由 Rust 持有并在退出时回收；空闲五分钟可睡眠。服务使用仅在后端内存中的访问密钥，新人不必额外填写本地模型 Key。已有 Ollama 作为连接选项保留。
 
-三件套固定元数据由 `runtime-rs/src/control/setup-models.json` 统一提供给 Rust 首次检查和 Node 维护清单，避免不同入口维护两份字节/摘要。快照只做文件存在与长度检查，不自动读取数 GB 做哈希；大小不符不会算作基础检查完成，大小相符仍标明未校验 SHA-256。每个大小相符的文件可显式点击 SHA-256 校验：Rust 独立工作线程以 1 MiB 块读取，同一运行时只允许一个任务，进度按 64 MiB 更新，取消/离页断流后停止后续读取；重新检查会清除本次展示结果；同一页面会保留已知失败对就绪状态的阻止，直到该文件重新校验相符。只校验固定三个文件，不接收任意路径，不自动联网或改写；单独文件链接越出实际 models 根会拒绝，整个 models 共享目录可核对真实根后使用。相符只证明本次读取，文件后续变化与真正出图另验。Windows 命令保留为可选方法。Anima 固定版本许可、Qwen 编码器与 VAE 的上游许可分别提供审阅入口，不能以该页面代替授权。
+| 标称显存 | 推荐候选 |
+| --- | --- |
+| 无独显／4 GB 及以下或尚未确认 | API 聊天；CPU 小模型留作进阶选择 |
+| 6–8 GB | Qwen3.5 4B Q4_K_M，约 2.74 GB 权重 |
+| 10–12 GB | Qwen3.5 9B Q4_K_M，约 5.68 GB 权重 |
+| 16 GB | Qwen3.8 27B IQ3_S，约 12.04 GB；余量紧张选 9B |
+| 24 GB 及以上 | Qwen3.8 27B Q4_K_M，约 16.46 GB |
+
+这是待设备验证的产品分档，不是测出的最低运行要求。显示设备总量，启动按实际余量处理；上下文、投影、并发与系统内存都会影响峰值。模型来源、revision、字节与摘要统一在 `runtime-rs/src/control/setup-models.json`，不跟随上游“最新”自动替换。
+
+每个下载只接受已登记 ID 与当前工作区，先检查磁盘；同名文件经过大小和 SHA-256 相符后复用，异内容保留并报冲突。取消／网络中断保留已接收部分；支持 Range 的来源按精确 Content-Range 续传，不支持时重新下载，最终完整摘要相符才原子发布。前端下载与校验使用同一清单，不接受任意 URL 或输出路径。
+
+准备流程核对节点注册并启动服务后，仍明确要求真实生成一张全龄图和发送一条短消息；文件／服务就绪不等于出图、语音或设备性能验收。驱动、UAC／系统重启、服务商密钥和网站登录由用户完成。高级视频、语音、反推与 Krea 不加入首次必下载组合。
 
 ## 3. 公共模型下载清单
 
@@ -109,7 +121,7 @@ npm run wf -- models:download-wd14 --target-dir 'D:\HuiyuAI\Interrogate'
 
 ### Anima：新机先选能无角色 LoRA 使用的底模
 
-[CircleStone Labs 发布页](https://huggingface.co/circlestone-labs/Anima)列出以下三类目录。公共起步组合可选择 **Anima Aesthetic v1.1**，三件套共约 **5.63 GB**；在绘遇中明确选此模型并使用无角色 LoRA 的创作路径。程序默认的 MiaoMiao v1.6 仍需单独取得对应文件。
+[CircleStone Labs 发布页](https://huggingface.co/circlestone-labs/Anima)列出以下三类目录。公共起步首选 **MiaoMiao Harem Anima 1.6**，其次 **Anima Base v1.0**；两者底模均约 4.18 GB，共用编码器与 VAE。选一个底模加两份角色 LoRA 时，权重共约 **5.81 GB**，运行环境与聊天模型另计。Aesthetic v1.1 作为统一默认画风候选保留。
 
 | 放置路径（相对 `ComfyUI/models/`） | 来源 |
 | --- | --- |
@@ -125,7 +137,7 @@ npm run wf -- models:download-wd14 --target-dir 'D:\HuiyuAI\Interrogate'
 | MiaoMiao v1.6（当前默认） | `miaomiaoHarem_anima16.safetensors` | [MIAOKA：Anima_1.6](https://civitai.com/models/934764?modelVersionId=3248362) |
 | Anima Yume v1.0 | `AnimaYume_v10_final_base.safetensors` | [v1.0 base final](https://civitai.com/models/2385278?modelVersionId=3065644)；上游名 `animayume_v10BaseFinal.safetensors`，仅这一指定文件按体检哈希核对后改成本机目录名 |
 | Anima 2.9B Preview v1 | `Anima-2.9B-preview-v1.safetensors` | [Gazingstars123 发布页](https://huggingface.co/Gazingstars123/Anima-2.9B)，5.84 GB；旧 ComfyUI 可能需作者扩展，须检查实际支持 |
-| Anima Base v1.0 | `anima-base-v1.0.safetensors` | [固定版下载](https://huggingface.co/circlestone-labs/Anima/resolve/f973fc41ec7545364ac9776c2440285f43ff2a30/split_files/diffusion_models/anima-base-v1.0.safetensors)，4.18 GB；当前绘遇未声明无 LoRA 路径 |
+| Anima Base v1.0 | `anima-base-v1.0.safetensors` | [固定版下载](https://huggingface.co/circlestone-labs/Anima/resolve/f973fc41ec7545364ac9776c2440285f43ff2a30/split_files/diffusion_models/anima-base-v1.0.safetensors)，4.18 GB；源码已补齐无 LoRA 路径 |
 
 MiaoMiao 发布附件中的 `*_txt.safetensors` 与此 Qwen 0.6B 文件 SHA-256 相同，本次核对可复用上述编码器。Civitai 下载可能需要登录；联机准备时记录版本、文件名和哈希。Anima 使用发布者的非商业模型许可，素材包中的生成图片与模型权重分开发行；是否可以分发权重以该模型当前许可及你的授权为准。
 
@@ -141,7 +153,7 @@ MiaoMiao 发布附件中的 `*_txt.safetensors` 与此 Qwen 0.6B 文件 SHA-256 
 
 ### WAI、角色 LoRA 和超分
 
-[WAI-illustrious-SDXL v17.0](https://civitai.com/models/827184?modelVersionId=2883731) 的 `waiIllustriousSDXL_v170.safetensors` 约 **6.94 GB**。ComfyUI 放 `models/checkpoints/`；WebUI 放其真正使用的 Stable-diffusion 模型目录。宁宁/夏目的 WAI 路径还需要 `ayachi_nene_v18_wd14.safetensors` / `shiki_natsume_v18_wd14.safetensors`；Anima 角色路径需要 v21 对应文件。**这些自训角色权重没有公共下载入口，缺文件的机器不能宣称这些角色专属生成可用。** 未选择角色 LoRA 的公共 Anima 创作与素材浏览仍可单独验收。
+[WAI-illustrious-SDXL v17.0](https://civitai.com/models/827184?modelVersionId=2883731) 的 `waiIllustriousSDXL_v170.safetensors` 约 **6.94 GB**。ComfyUI 放 `models/checkpoints/`；WebUI 放其真正使用的 Stable-diffusion 模型目录。宁宁/夏目的 WAI 路径还需要 `ayachi_nene_v18_wd14.safetensors` / `shiki_natsume_v18_wd14.safetensors`；Anima 角色路径需要 v21 对应文件。**Anima v21 两份绘图 LoRA 已公开，均由绘遇作者亲自训练：** [宁宁](https://github.com/starplatium1129-stack/huiyu/releases/download/v1.9.0/ayachi_nene_v21_anima.safetensors)、[夏目](https://github.com/starplatium1129-stack/huiyu/releases/download/v1.9.0/shiki_natsume_v21_anima.safetensors)，各约 92 MB；[清单](https://github.com/starplatium1129-stack/huiyu/releases/download/v1.9.0/huiyu-anima-v21-loras.json)提供精确大小和摘要。下载时保留随附许可与来源通知。旧 WAI 角色权重不作为新用户准备项，AI 配音是独立资源。 未选择角色 LoRA 的公共 Anima 创作与素材浏览仍可单独验收。
 
 超分、CLIPSeg 自动遮罩、ControlNet/ADetailer/Regional Prompter 属于按需扩展，需要对应权重、代码和预处理组件。对支持的基础生图先验一张；选择这些操作后再核对完整依赖，不把可选功能列为普通素材浏览的前置条件。
 

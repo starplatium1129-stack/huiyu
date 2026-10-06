@@ -65,7 +65,11 @@
             <strong>{{ !statusUsable ? (statusError ? '待检测' : '检测中…') : service.online ? '已连接' : '未连接' }}</strong>
             <p class="status-tile-detail">{{ !statusUsable ? (statusError ? '重新检测后确认连接状态' : '正在确认本机连接') : serviceChecking ? '正在刷新连接状态' : service.detail }}</p>
             <div class="service-row-actions">
-              <template v-if="service.key !== 'ollama'">
+              <template v-if="service.key === 'llama'">
+                <a href="#control-setup" class="btn btn-ghost btn-sm">选择与准备模型</a>
+                <button class="btn btn-danger btn-sm" type="button" :disabled="!llamaManaged || opBusy" @click="serviceAction('llama','stop')">释放聊天显存</button>
+              </template>
+              <template v-else-if="service.key !== 'ollama'">
                 <StudioTooltip anchor :content="service.online ? '已在运行' : '启动受控服务'">
                   <button class="btn btn-sm" :class="requestedService === service.key ? 'btn-primary' : 'btn-ghost'" type="button"
                     :disabled="!statusUsable || opBusy || service.online" @click="serviceAction(service.key, 'start')">启动</button>
@@ -111,11 +115,11 @@
         <p class="panel-desc">绘图、语音、聊天同时加载容易占满显存。按需切换：先释放，再加载。</p>
         <div class="mode-grid">
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('draw')">
-            <span class="mode-title"><ArchiveIcon name="spark" /> SD 绘图优先<span class="mode-arrow">→</span></span>
-            <span class="mode-desc">停止语音、卸载 Ollama，把显存让给 WebUI 出图。</span>
+            <span class="mode-title"><ArchiveIcon name="spark" /> Anima 绘图优先<span class="mode-arrow">→</span></span>
+            <span class="mode-desc">释放本地聊天与语音显存，启动 ComfyUI。</span>
           </button>
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('chat')">
-            <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天与语音优先<span class="mode-arrow">→</span></span>            <span class="mode-desc">停止受管 WebUI，启动语音，专注角色房间。</span>
+            <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天与语音优先<span class="mode-arrow">→</span></span>            <span class="mode-desc">释放空闲绘图模型，启动语音；发送消息时加载本地聊天。</span>
           </button>
         </div>
 
@@ -123,9 +127,8 @@
           <span>打开控制室时自动启动语音<span class="autostart-hint">显存紧张时建议关闭</span></span>
         </ToggleSwitch>
         <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖角色语音服务。</p>
-        <p v-if="!scripts.webui || !scripts.comfy || !scripts.voiceStart" class="script-hint">
+        <p v-if="!scripts.comfy || !scripts.voiceStart" class="script-hint">
           未检测到部分快捷启停脚本（仅影响一键启动，若服务已手动运行仍可正常连接）：
-          <span v-if="!scripts.webui">WebUI 脚本 </span>
           <span v-if="!scripts.comfy">ComfyUI 脚本 </span>
           <span v-if="!scripts.voiceStart">语音启动脚本 </span>
           <span v-if="!scripts.voiceStop">语音停止脚本 </span>
@@ -144,13 +147,6 @@
         <h2 class="panel-heading">服务地址与声线</h2>
         <p class="panel-desc">修改本机地址与角色声线后，统一保存并检测。</p>
 
-        <label class="field-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
-        <div class="field-row tw:flex tw:gap-s-2">
-          <StudioTooltip :content="sdHost">
-            <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:7860" aria-describedby="sd-host-help" spellcheck="false" @keydown.enter="saveConfig" />
-          </StudioTooltip>
-        </div>
-        <p id="sd-host-help" class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
 
         <label class="field-label" for="comfy-host">ComfyUI 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
@@ -249,7 +245,7 @@
           </div>
         </div>
         <div class="uptime">{{ uptime }}</div>
-        <p class="security-note">分享链接可以调用你电脑上的 SD WebUI，请只发给信任的人。</p>
+        <p class="security-note">分享链接可以使用你电脑上的创作服务，请只发给信任的人。</p>
 
         <!-- 前端构建：分享伺服 dist/，源码改动后需重建 -->
         <div class="build-card" :data-stale="webBuildStale ? 'true' : 'false'">
@@ -342,7 +338,7 @@ const actions = useControlActions(status, { showToast })
 const {
   tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram,
   modeBusy, operation, selfHealing, serviceChecking, statusLoaded, statusError, scripts,
-  sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
+  sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, llamaOnline,llamaManaged,llamaLabel,voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
   feedbackText, actionNote, logs, logBoxEl,
   opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,
@@ -411,7 +407,7 @@ const requestedService = computed(() => route.query.engine === 'sd' ? 'webui'
   : ['anima', 'krea2', 'video'].includes(String(route.query.engine)) ? 'comfy' : '')
 const requestedEngineLabel = computed(() => ({ sd: 'SD 绘图', anima: 'Anima 绘图', krea2: 'Krea 2 绘图', video: '故事短片' } as Record<string, string>)[String(route.query.engine)] || '当前创作')
 const serviceCards = computed<Array<{ key: string; name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
-  { key: 'webui', name: 'SD WebUI', icon: 'image', online: sdOnline.value, detail: sdOnline.value ? (webuiManaged.value ? '受控绘图服务' : '手动启动的绘图服务') : 'SD 引擎 · Stable Diffusion 绘图' },
+  { key: 'llama', name: 'llama.cpp 本地聊天', icon: 'chat', online: llamaOnline.value, detail: llamaLabel.value || '按需加载；显存较少可使用 API' },
   { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `Anima · Krea 2 · 视频${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
   { key: 'voice', name: `${activeVoiceEngine.value} 语音`, icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `${voiceConfiguredCount.value} / 2 角色声线已配置` },
   { key: 'ollama', name: 'Ollama 本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : '按需加载聊天模型' },

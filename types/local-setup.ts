@@ -18,12 +18,16 @@ export interface LocalSetupModel {
   bytes: number | null
   required: boolean
   preparation: LocalSetupModelSource | null
+  kind?: 'image' | 'lora' | 'chat' | 'runtime'
+  purpose?: string
 }
 
 /** 只读快照；文件存在、节点注册和硬件上报均不代表真实出图能力。 */
 export interface LocalSetupResponse {
   ok: true
   checkedAt: number
+  recommendedModel?: string
+  chat?: { host: string; runtimePresent: boolean }
   workspace: { path: string; state: LocalSetupFileState }
   comfy: {
     path: string
@@ -36,7 +40,7 @@ export interface LocalSetupResponse {
   nodes: { state: 'checked' | 'unknown'; required: string[]; missing: string[] }
   hardware: {
     state: 'reported' | 'unknown'
-    devices: Array<{ name: string; type: string; vramBytes: number | null }>
+    devices: Array<{ name: string; type: string; vramBytes: number | null; freeVramBytes?: number | null; driverVersion?: string }>
     ramBytes: number | null
   }
 }

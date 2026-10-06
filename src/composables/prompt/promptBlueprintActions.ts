@@ -97,6 +97,8 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
   }
   const draft = parsePromptBuilderDraft({ ...raw, updatedAt: raw.updatedAt ?? raw.exportedAt ?? Date.now() })
   if (!draft) return { applied: false, message: '蓝图缺少可恢复的角色、场景或描述', warnings: [] }
+  if(draft.char==='triad')return {applied:false,message:'旧双角色配置依赖已退役的 SD 路径，原蓝图保留；请重新选择角色',warnings:[]}
+  const retiredSD=raw.drawEngine==='sd'
 
   const warnings: string[] = []
   const subject = draft.subject === 'popular' ? 'popular' : 'studio'
@@ -148,28 +150,19 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
     pb.clearOutfitOverride()
   }
 
-  const sdParams = safeSDParams(draft.sdParams)
-  Object.assign(pb.sdParams, sdParams)
-  const touched = draft.sdParamsTouched?.length ? draft.sdParamsTouched : Object.keys(sdParams)
-  touched.filter(isSDParamKey).forEach(pb.markParamTouched)
+  if(!retiredSD){
+    const sdParams = safeSDParams(draft.sdParams)
+    Object.assign(pb.sdParams, sdParams)
+    const touched = draft.sdParamsTouched?.length ? draft.sdParamsTouched : Object.keys(sdParams)
+    touched.filter(isSDParamKey).forEach(pb.markParamTouched)
+  }
 
-  let engine: DrawEngine = raw.drawEngine === 'anima' || raw.drawEngine === 'krea2' || raw.drawEngine === 'sd'
-    ? raw.drawEngine
-    : 'sd'
-  if (subject === 'popular' && engine === 'sd') {
-    engine = 'anima'
-    warnings.push('热门角色不支持 SD，已恢复到 Anima')
-  }
-  if (draft.char === 'triad' && engine !== 'sd') {
-    engine = 'sd'
-    warnings.push('双角色配置不支持当前 Comfy 引擎，已恢复到 SD')
-  }
+  const engine: DrawEngine = raw.drawEngine === 'krea2' ? 'krea2' : 'anima'
+  if(retiredSD)warnings.push('已沿用文本与构图，SD 生成参数未跨引擎迁移；请核对当前 Anima 条件')
   ctx.setDrawEngine(engine)
 
   const size = validSize(raw.size)
-  if (engine === 'sd') {
-    if (size) ctx.sdSize.value = size
-  } else {
+  if(!retiredSD) {
     const anima = isRecord(raw.anima) ? raw.anima : {}
     const requestedModel = text(anima.modelId)
     if (requestedModel) ctx.patchAnimaState({ modelId: requestedModel })

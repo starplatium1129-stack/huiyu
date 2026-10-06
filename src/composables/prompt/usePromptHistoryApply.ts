@@ -75,6 +75,12 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     }
     if (selection !== 'full') return applyHistoryParts(deps, record, selection, isCurrent)
     const { recipe: entry, notes: restoreNotes } = parsed
+    if (entry.engine === 'sd' || !entry.engine && entry.subject !== 'popular') {
+      const note = entry.engine==='sd'?'SD 新生成已退役，原作品与配方保留；可选择沿用画风、镜头或提示词，生成参数不跨引擎迁移':'旧作未记录引擎，原配方仅供查看；可选择沿用非数值内容，不能确认原引擎或精确复现'
+      pb.historyRestoreReport = { title:entry.engine==='sd'?'原引擎已退役':'旧作引擎未确认',notes:[note,...restoreNotes],original:snapshotHistoricalRecipe(record) }
+      pb.flash(note,9000,'warning')
+      return false
+    }
     const popularEntry = entry.subject === 'popular' || (entry.noLora && entry.characterId)
     if (popularEntry) {
       const character = findPopularCharacter(pb.popularCharacters, entry.characterId || '')
@@ -101,7 +107,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       const num = Number(value)
       return Number.isFinite(num) ? num : fallback
     }
-    const entryEngine = entry.engine === 'krea2' ? 'krea2' : entry.engine === 'anima' || popularEntry && !entry.engine ? 'anima' : 'sd'
+    const entryEngine = entry.engine === 'krea2' ? 'krea2' : 'anima'
     /** Anima 面板字段：风格 LoRA 与高清修复实参（旧历史缺字段时保持面板现值）。 */
     const animaHistoryPatch = () => {
       // 风格 LoRA 只有 Krea 2 有；候选列表在 refresh 后才就位，这里乐观恢复，
@@ -163,7 +169,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       } else {
         if (entry.characterId) restoreNotes.push('原角色或服装已不在当前角色库，已回落工作室模式')
         pb.setStudioSubject()
-        setDrawEngine('sd')
+        setDrawEngine('anima')
       }
     } else {
       pb.setStudioSubject()
@@ -189,8 +195,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
           seed: entry.seed !== undefined && entry.seed >= 0 ? entry.seed : null,
         })
       } else {
-        // 旧历史没有 engine 字段，必须按既有 SD 契约恢复。
-        setDrawEngine('sd')
+        setDrawEngine('anima')
       }
     }
     if (!popularEntry) {
@@ -223,37 +228,11 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     pb.setColorMood(entry.colorMood ?? null)
     pb.projectId = entry.project || ''
     pb.setArtistStyleIds(entry.artistStyleIds || [])
-    if (entryEngine === 'sd') {
-      pb.sdParams.seed = entry.seed !== undefined && entry.seed >= 0 ? entry.seed : -1
-      pb.sdParams.seedLock = entry.seed !== undefined && entry.seed >= 0
-      pb.sdParams.cfg = finiteOr(entry.cfg, pb.sdParams.cfg)
-      pb.sdParams.steps = finiteOr(entry.steps, pb.sdParams.steps)
-      if (entry.sampler) pb.sdParams.sampler = entry.sampler
-      pb.sdParams.scheduler = entry.scheduler || ''
-      pb.sdParams.negative = Boolean(entry.negative)
-    }
-    if (entryEngine === 'sd' && !popularEntry) {
-      const savedModel = entry.model || entry.checkpoint
-      if (savedModel && pb.sdModelName && savedModel !== pb.sdModelName) restoreNotes.push(`原底模 ${savedModel} 与当前底模 ${pb.sdModelName} 不同；需先切换后端底模`)
-    }
     pb.sdParams.negativeCustom = ''
-    // SD 家族条目回放到 SD 面板（Anima 家族的 hires 字段属于 Anima 面板，不串写）。
-    if (entryEngine === 'sd') {
-      if (typeof entry.hiresFix === 'boolean') pb.sdParams.hiresFix = entry.hiresFix
-      if (typeof entry.hiresScale === 'number') pb.sdParams.hiresScale = entry.hiresScale
-      if (typeof entry.hiresUpscaler === 'string' && entry.hiresUpscaler) pb.sdParams.hiresUpscaler = entry.hiresUpscaler
-      if (typeof entry.hiresSteps === 'number') pb.sdParams.hiresSteps = entry.hiresSteps
-      if (typeof entry.hiresDenoise === 'number') pb.sdParams.hiresDenoise = entry.hiresDenoise
-      if (typeof entry.faceDetailer === 'boolean') pb.sdParams.faceDetailer = entry.faceDetailer
-    }
     // 历史成片负面是"当时场景+当时 profile"的快照，不得写回 negativeCustom ——
     // 否则会作为自定义负面跨场景/跨 profile 泄漏。恢复时由当前场景+profile
     // 重新生成模型原生负面。
-    if (entryEngine === 'sd') {
-      if (entry.size) sdSize.value = entry.size.replace('×', 'x')
-      Object.keys(pb.sdParams).forEach(key => pb.markParamTouched(key))
-    }
-    if (entryEngine !== 'sd' && (!popularEntry || pb.isPopular)) {
+    if (!popularEntry || pb.isPopular) {
       const before = { ...animaState.value }
       const checked = await refreshAnimaBackend()
       if (!isCurrent() || !checked) return false

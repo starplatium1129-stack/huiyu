@@ -1,5 +1,5 @@
 import { STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId } from '@/config/characters'
-import { CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL } from '@/config/chatApi'
+import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '@/config/chatApi'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
   getCompanionDefaultOutfit,
@@ -19,9 +19,9 @@ export function createChatStorageState(characterIds: string[]): ChatState {
     settings: {
       model: '',
       provider: 'api',
-      apiBaseUrl: CLIPROXY_BASE_URL,
-      apiModel: CLIPROXY_DEFAULT_MODEL,
-      apiKey: CLIPROXY_API_KEY,
+      apiBaseUrl: DEEPSEEK_BASE_URL,
+      apiModel: DEEPSEEK_DEFAULT_MODEL,
+      apiKey: '',
       webSearchEnabled: false,
       live2dEnabled: false,
       live2dOutfit: defaultOutfits[defaultCharacterId] || '',

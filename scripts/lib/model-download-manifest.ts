@@ -49,7 +49,8 @@ const ANIMA_REVISION = 'f973fc41ec7545364ac9776c2440285f43ff2a30'
 export const ANIMA_FILES: readonly ModelFile[] = [
   file(ANIMA_REPO, ANIMA_REVISION, 'diffusion_models/anima-base-v1.0.safetensors', 4182218328,
     'bd43b7cffe1ed1153d9c41e7beb2f18cb1273eafbaa3af3edd6a173dc90a006e', 'split_files/diffusion_models/anima-base-v1.0.safetensors'),
-  ...setupModels.files,
+  ...setupModels.files.filter(entry => entry.id === 'anima-aesthetic-v1.1' || entry.id === 'qwen-encoder' || entry.id === 'qwen-vae')
+    .map(entry => ({ ...entry, repo: ANIMA_REPO, revision: ANIMA_REVISION, remotePath: 'split_files/' + entry.path })),
 ]
 
 export const KREA_FILES: readonly ModelFile[] = [

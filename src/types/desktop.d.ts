@@ -49,6 +49,7 @@ export interface CompanionDesktopBridge {
   openLog(): Promise<boolean>
   getWorkspace(): Promise<DesktopAiWorkspace>
   setWorkspace(root: string): Promise<DesktopAiWorkspace>
+  restartForSetup?(): Promise<void>
   pickWorkspace(root?: string): Promise<string | null>
   notify(title: string, body: string): void
   setProgress(progress: number | null): void

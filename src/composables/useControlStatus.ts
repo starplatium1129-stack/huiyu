@@ -24,6 +24,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const comfyOnline = ref(false)
   const ttsOnline = ref(false)
   const ollamaOnline = ref(false)
+  const llamaOnline=ref(false),llamaManaged=ref(false),llamaLabel=ref('')
   const webuiManaged = ref(false)
   const comfyManaged = ref(false)
   const ollamaModels = ref<string[]>([])
@@ -156,7 +157,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const readyLabel = computed(() => {
     if (statusError.value) return '服务状态待确认'
     if (!statusLoaded.value) return '正在检测服务…'
-    const n = [sdOnline.value, comfyOnline.value, ttsOnline.value, ollamaOnline.value].filter(Boolean).length
+    const n = [llamaOnline.value, comfyOnline.value, ttsOnline.value, ollamaOnline.value].filter(Boolean).length
     return n + ' / 4 服务在线'
   })
 
@@ -190,6 +191,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     ttsOnline.value = !!data.ttsOnline
     activeVoiceEngine.value = data.ttsEngine === 'voxcpm2' ? 'VoxCPM2' : 'GPT-SoVITS'
     ollamaOnline.value = !!data.ollamaOnline
+    llamaOnline.value=!!data.llama?.online;llamaManaged.value=!!data.llama?.managed;llamaLabel.value=data.llama?.label||''
     webuiManaged.value = !!data.webuiManaged
     comfyManaged.value = !!data.comfyManaged
     ollamaModels.value = Array.isArray(data.ollamaModels) ? data.ollamaModels : []
@@ -246,7 +248,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     } else if (imageOnline && data.ttsOnline) {
       feedbackClass.value = 'config-feedback ok'
       feedbackText.value = '画面与语音就绪'
-      actionNote.value = '出图与 AI 声线可用；需要聊天时启动 Ollama。'
+      actionNote.value = '出图与 AI 声线可用；本地聊天可在首次配置中准备 llama.cpp，也可使用 API。'
     } else if (imageOnline) {
       feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '画面创作就绪'
@@ -254,7 +256,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     } else if (data.ttsOnline) {
       feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '语音已连接 · 等待绘图引擎'
-      actionNote.value = '按需启动 SD WebUI 或 ComfyUI，即可开始绘图。'
+      actionNote.value = '按需启动 ComfyUI，即可开始绘图。'
     } else {
       feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '浏览可用 · 等待生成服务'
@@ -388,7 +390,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   }
 
   return {
-    tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram, selfHealing,
+    tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, llamaOnline,llamaManaged,llamaLabel,webuiManaged, comfyManaged, ollamaModels, ollamaVram, selfHealing,
     modeBusy, operation, operationSubmitting, serviceChecking, statusLoaded, statusError, scripts,
     sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,

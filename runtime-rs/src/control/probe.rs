@@ -20,6 +20,9 @@ impl ControlService {
             .map(|(status, body)| (status, body.ok()))
     }
     pub(super) async fn online(&self, index: usize, settings: &Value) -> bool {
+        if index == 0 {
+            return false;
+        }
         if index == 3 {
             return self.voice.translation_status().await["ready"] == true;
         }
@@ -107,21 +110,26 @@ impl ControlService {
             }
         }
         let settings = self.settings();
-        let (sd, comfy, tts, mut result) = tokio::join!(
+        let (sd, comfy, tts, mut result, llama) = tokio::join!(
             self.online(0, &settings),
             self.online(1, &settings),
             self.online(2, &settings),
-            self.ollama(&settings)
+            self.ollama(&settings),
+            self.llama_status()
         );
         result["sdOnline"] = json!(sd);
         result["comfyOnline"] = json!(comfy);
         result["ttsOnline"] = json!(tts);
+        result["llama"] = llama;
         let mut state = self.state.lock().unwrap();
         result["webuiManaged"] = json!(state.managed[0].owned);
         result["comfyManaged"] = json!(state.managed[1].owned);
         state.health = result.clone();
         state.health_at = Some(Instant::now());
         result
+    }
+    pub(super) async fn online_ollama(&self) -> bool {
+        self.ollama(&self.settings()).await["ollamaOnline"] == true
     }
     pub(super) async fn watchdog(self: &Arc<Self>) {
         {

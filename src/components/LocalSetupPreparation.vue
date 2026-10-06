@@ -1,11 +1,11 @@
 <template>
   <details class="preparation">
-    <summary>按缺项准备 ComfyUI 与模型<span>{{ models.length - matched }} 项文件待核对</span></summary>
+    <summary>手动管理已有环境与逐项下载<span>{{ models.length - matched }} 项文件待核对</span></summary>
     <div class="preparation-body">
       <p>先核对运行方式、真实目录与来源，再显式下载固定模型文件。绘遇不会在这里安装程序、执行脚本或代你接受许可。</p>
       <label class="route-label" for="setup-comfy-route">ComfyUI 的运行方式</label>
       <StudioSelect id="setup-comfy-route" v-model="route" class="route-select" label="ComfyUI 的运行方式" :options="[
-        { value: 'desktop', label: '官方 Desktop（新用户推荐，由 Desktop 启动）' },
+        { value: 'desktop', label: '已有官方 Desktop（由原入口启动）' },
         { value: 'portable', label: 'Windows Portable（由便携包启动）' },
         { value: 'manual', label: '已有源码 / Python 环境' },
       ]" />
@@ -19,7 +19,7 @@
           </template>
           <template v-else-if="route === 'portable'">
             <p>从官方页面选择适合自己显卡的 Windows 便携包并解压。打开同时包含 ComfyUI、python_embeded 和启动批处理的目录，使用包内适合硬件的启动入口；CPU 入口通常较慢。</p>
-            <p>保留 python_embeded 原名与原启动脚本，绘遇受控启动不支持便携版。</p>
+            <p>保留 python_embeded 原名。绘遇受管启动可以使用这份独立 Python。</p>
             <a href="https://docs.comfy.org/installation/comfyui_portable_windows" target="_blank" rel="noopener noreferrer">打开官方 Portable 准备页</a>
           </template>
           <template v-else>
@@ -33,7 +33,7 @@
         <li>
           <h3>让绘遇和 ComfyUI 读取同一批文件</h3>
           <p>当前绘遇检查的目录：</p><code>{{ snapshot.comfy.path }}</code>
-          <p>AI 工作区应选择这个 ComfyUI 目录的父目录。便携版选择同时包含 ComfyUI 与 python_embeded 的那层；Desktop 要对照实际实例，不能只选择安装器所在目录。</p>
+          <p>手动管理已有 ComfyUI 时，工作区选择其父目录；绘遇一键准备的环境无需修改目录。Desktop 要对照实际实例，不能只选择安装器所在目录。</p>
           <p>下方精确路径只有在该 ComfyUI 实例实际读取同一 models 目录时才成立。若使用共享模型目录、extra_model_paths.yaml 或其他实例，请先统一对应关系；只修改服务地址不会改变绘遇的文件检查目录。</p>
           <button v-if="desktop" class="btn btn-ghost btn-sm" type="button" @click="$emit('workspace')">选择 AI 工作区</button>
           <p>更换工作区后完全退出并重启绘遇，再查看新目录清单。手动启动 ComfyUI 后，在控制室核对实际本机地址（当前 {{ snapshot.comfy.host }}），不要同时启动第二个实例。</p>
@@ -95,7 +95,7 @@
             </ol>
             <button class="btn btn-ghost btn-sm" type="button" @click="copyPlan">复制这份准备清单</button>
             <span v-if="copyNotice" role="status">{{ copyNotice }}</span>
-            <p>下载成功后自动重新检查；手动放置时用下方按钮重新检查。确认文件后仍需手动重启 ComfyUI，选择 Anima Aesthetic v1.1，按无 LoRA 的基础参数真实生成一张图片。下载成功不等于已能出图。</p>
+            <p>下载成功后自动重新检查；手动放置时用下方按钮重新检查。确认文件后启动正确的 ComfyUI 实例，再真实生成一张图片。下载成功不等于已能出图。</p>
             <button class="btn btn-ghost btn-sm" type="button" @click="$emit('refresh')">放置后重新检查</button>
           </div>
         </li>

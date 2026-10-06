@@ -52,6 +52,50 @@ fn sse(body: &str) -> Response {
 }
 
 #[tokio::test]
+async fn managed_local_chat_uses_backend_session_auth_without_a_client_key() {
+    use axum::http::HeaderMap;
+    let (host, server) = serve(Router::new().route(
+        "/v1/chat/completions",
+        any(|headers: HeaderMap| async move {
+            assert_eq!(
+                headers.get("authorization").unwrap(),
+                "Bearer backend-only-session-key"
+            );
+            sse("data: {\"choices\":[{\"delta\":{\"content\":\"hello\"}}]}\ndata: [DONE]\n")
+        }),
+    ))
+    .await;
+    let mut request = input(&host, false);
+    if let Some(validation::ApiSource::Personal(api)) = &mut request.api {
+        api.model = "huiyu-local".into();
+        api.key.clear();
+    }
+    let directory = tempfile::tempdir().unwrap();
+    let auth = (host.clone(), "backend-only-session-key".to_owned());
+    let prepared = compatible::prepare(
+        &transport::Transport::new(),
+        &settings(directory.path(), &host),
+        &request,
+        false,
+        Some(&auth),
+    )
+    .await
+    .unwrap();
+    let output = events(stream::response(prepared, CancellationToken::new())).await;
+    assert!(
+        output
+            .iter()
+            .any(|event| event["type"] == "token" && event["content"] == "hello")
+    );
+    assert!(
+        !serde_json::to_string(&output)
+            .unwrap()
+            .contains("backend-only-session-key")
+    );
+    server.abort();
+}
+
+#[tokio::test]
 async fn compatible_stream_preserves_reasoning_tokens_and_complete_tool_batches() {
     let router=Router::new().route("/v1/chat/completions",any(|Json(body):Json<Value>|async move{
         assert_eq!(body["tools"].as_array().unwrap().len(),8);
@@ -68,6 +112,7 @@ async fn compatible_stream_preserves_reasoning_tokens_and_complete_tool_batches(
         &settings(directory.path(), &host),
         &input(&host, true),
         false,
+        None,
     )
     .await
     .unwrap();
@@ -137,6 +182,7 @@ async fn malformed_or_truncated_stream_cannot_emit_success_or_partial_tools() {
         &settings(directory.path(), &host),
         &input(&host, true),
         false,
+        None,
     )
     .await
     .unwrap();
@@ -153,6 +199,7 @@ async fn malformed_or_truncated_stream_cannot_emit_success_or_partial_tools() {
         &settings(directory.path(), &host),
         &input(&host, false),
         false,
+        None,
     )
     .await
     .unwrap();

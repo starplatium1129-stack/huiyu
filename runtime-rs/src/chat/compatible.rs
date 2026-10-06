@@ -12,9 +12,10 @@ pub(super) async fn prepare(
     settings: &Settings,
     input: &Input,
     remote: bool,
+    managed_auth: Option<&(String, String)>,
 ) -> Result<Prepared> {
     let source = input.api.as_ref().unwrap();
-    let api = match source {
+    let mut api = match source {
         ApiSource::Host => settings.read_host().await.ok_or_else(|| {
             Error::new(
                 400,
@@ -24,6 +25,14 @@ pub(super) async fn prepare(
         })?,
         ApiSource::Personal(api) => api.clone(),
     };
+    if let Some((origin, key)) = managed_auth {
+        if api.model == "huiyu-local"
+            && api.base_url == *origin
+            && api.pathname == "/v1/chat/completions"
+        {
+            api.key = key.clone();
+        }
+    }
     let body = payload(input, &api);
     let response = client
         .send(

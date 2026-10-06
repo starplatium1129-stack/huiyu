@@ -26,7 +26,7 @@ import { captureResultContext as snapshotResultContext } from '@/utils/resultCon
 import { type SDRecoveryId } from '@/utils/sdError';
 import { computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
-import { DRAW_ENGINE_SETTING,settingsRepository,type DrawEngine,} from '@/storage/settingsRepository';
+import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,type DrawEngine,} from '@/storage/settingsRepository';
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function usePromptWorkspace() {
@@ -49,7 +49,7 @@ export function usePromptWorkspace() {
     onScopeDispose(() => { disposed = true; hiresVersion++; hiresPreparing.value = false; }, true);
     const DIRECTOR_MODE_KEY = 'aics_pb_director_mode';
     const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING);
-    const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd');
+    const drawEngine = ref<DrawEngine>(storedDrawEngine === 'krea2' ? 'krea2' : 'anima');
     /**
      * 当前显示结果的冻结上下文（2026-09-06 体验报告 F3）。
      * Anima/Krea 由会话在提交时采样（state.resultContext）；SD 由 usePromptSdQueue
@@ -70,6 +70,8 @@ export function usePromptWorkspace() {
         preferredSize: () => pb.lastRecommendedSize,
     });
     const { state: animaState, patchState: patchAnimaState, modelId: animaModelId, refreshBackend: refreshAnimaBackend, syncCharacter: syncAnimaCharacter, applyModel, generate: generateAnima, cancel: cancelAnimaJob, clearResult: clearAnimaResult } = animaSession;
+    const starterModel = settingsRepository.get(STARTER_MODEL_SETTING);
+    if (starterModel && drawEngine.value === 'anima') patchAnimaState({ modelId: starterModel });
     // Anima 会话先于引擎协调层创建：请求装配与结果协调经桥接函数转发到
     // useDirectorEngine（生成/结果事件均在 setup 完成后才触发，沿用提升函数模式）。
     function buildAnimaRequest() {

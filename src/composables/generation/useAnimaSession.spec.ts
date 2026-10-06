@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { animaRequestPayload, closestSupportedSize, resolveInpaintRequestBinding, useAnimaSession, type AnimaRequest, type AnimaSessionOptions } from './useAnimaSession'
-import type { ApiClient, ApiRequestOptions } from '@/api/client'
+import type { ApiClient, ApiRequestOptions,ApiResponseObject } from '@/api/client'
 import type { AnimaJobMetadata } from '@/types/anima'
 import * as environment from '@/utils/runtimeEnvironment'
 
@@ -205,6 +205,7 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
   const onResult = vi.fn(), flash = vi.fn()
   const base = family === 'anima' ? '/api/anima/jobs' : '/api/creative/jobs'
   const call = vi.fn(async (url: string, _options?: ApiRequestOptions) => {
+    if(url==='/api/local-setup/llama')return {ok:true}
     if (url === base || ++reads === 1) return { ok: true, job: { id: 'success', status: 'queued', seed: 0 } }
     return { ok: true, job: { id: 'success', status: 'succeeded', seed: 0, resultAvailable: true, resultUrl: `${base}/success/result` } }
   })
@@ -218,17 +219,17 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
   session.startStatusPolling()
   const generating = session.generate()
   await vi.dynamicImportSettled()
-  expect(call.mock.calls[0]?.[0]).toBe(base)
-  expect(call.mock.calls[0]?.[1]?.method).toBe('POST')
-  expect(call.mock.calls[0]?.[1]?.body).toMatchObject({ modelId: family === 'krea2' ? 'krea2-turbo-fp8' : 'anima-fixture', prompt: 'submitted prompt' })
-  expect(call.mock.calls[0]?.[1]?.body).not.toHaveProperty('loraId')
+  expect(call.mock.calls[0]).toEqual(['/api/local-setup/llama',expect.objectContaining({method:'DELETE'})])
+  const submissionCall=call.mock.calls.find(([url,options])=>url===base&&options?.method==='POST')!
+  expect(submissionCall[1]?.body).toMatchObject({ modelId: family === 'krea2' ? 'krea2-turbo-fp8' : 'anima-fixture', prompt: 'submitted prompt' })
+  expect(submissionCall[1]?.body).not.toHaveProperty('loraId')
   hidden.mockReturnValue(true)
   document.dispatchEvent(new Event('visibilitychange'))
   prompt = 'later prompt'; context.characterId = 'task-b'; context.outfitId = 'outfit-b'
   await vi.dynamicImportSettled()
   await vi.advanceTimersByTimeAsync(2000)
   await generating
-  expect(call.mock.calls.every(([url]) => url.startsWith(base))).toBe(true)
+  expect(call.mock.calls.every(([url]) => url.startsWith(base)||url==='/api/local-setup/llama')).toBe(true)
   expect(session.state.value.phase).toBe('succeeded')
   expect(onResult).toHaveBeenCalledOnce()
   expect(session.state.value.result).toMatchObject({ url: 'blob:completed', metadata: { id: 'success', seed: 0, prompt: 'submitted prompt' } })
@@ -237,7 +238,7 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
   expect(recipe).toMatchObject({ family, request: { prompt: 'submitted prompt', seed: 0 }, context: { characterId: 'task-a' } })
   recipe.request.prompt = 'external edit'; recipe.context!.characterId = 'external edit'
   expect(session.resultSubmission()).toMatchObject({ request: { prompt: 'submitted prompt' }, context: { characterId: 'task-a' } })
-  call.mockRejectedValue(new Error('network down'))
+  call.mockImplementation(async url=>{if(url==='/api/local-setup/llama')return {ok:true};throw new Error('network down')})
   await session.generate({ hiresFix: true, hiresScale: 2, hiresDenoise: 0.35 }, session.resultSubmission()!)
   expect(call.mock.calls.at(-1)?.[1]?.body).toMatchObject({ prompt: 'submitted prompt', seed: 0, hiresFix: true })
   await session.generate()
@@ -253,7 +254,7 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
 
   vi.doMock('./animaJobPolling', () => { throw new Error('observer chunk unavailable') })
   const cancelled = { ok: true, job: { id: 'unobserved', status: family === 'anima' ? 'cancelled' : 'cancelling' } }
-  const recoveryCall = vi.fn(async (_url: string, options?: ApiRequestOptions) => options?.method === 'POST'
+  const recoveryCall = vi.fn(async (_url: string, options?: ApiRequestOptions):Promise<ApiResponseObject> => options?.method === 'POST'
     ? { ok: true, job: { id: 'unobserved', status: 'queued', seed: 0 } } : cancelled)
   const recovery = createSession({ request: recoveryCall } as unknown as ApiClient, { getFamily: () => family })
   recovery.patchState({ online: true, family })
@@ -262,10 +263,10 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
   expect(recovery.state.value.phase).toBe('failed')
   expect(recovery.state.value.job).toBeNull()
   vi.doUnmock('./animaJobPolling')
-  recoveryCall.mockRejectedValue(new Error('retry reaches transport'))
+  recoveryCall.mockImplementation(async url=>{if(url==='/api/local-setup/llama')return {ok:true};throw new Error('retry reaches transport')})
   await recovery.generate()
-  expect(recoveryCall).toHaveBeenCalledOnce()
-  expect(recoveryCall.mock.calls[0]).toEqual([base, expect.objectContaining({ method: 'POST' })])
+  expect(recoveryCall).toHaveBeenCalledTimes(2)
+  expect(recoveryCall.mock.calls[1]).toEqual([base, expect.objectContaining({ method: 'POST' })])
 
 })
 

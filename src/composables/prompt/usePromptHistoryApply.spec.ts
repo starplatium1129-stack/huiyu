@@ -25,16 +25,18 @@ function setup() {
 }
 const entry = (overrides: Partial<ArtworkRecord> = {}) => ({ id: 12, engine: 'sd', character: 'nene', manual_tags: ['dof'], emotion: ['calm'], shot: 'wide', lighting: 'moon', composition: 'rule3', colorMood: 'warmth', story: 'Saved story', seed: -1, cfg: 0, steps: 25, sampler: 'Euler', scheduler: '', size: '832x1216', project: 'saved-project', ...overrides })
 
-it('clears stale draft fields and restores tags, decisions, project and legal zeroes', async () => {
+it('keeps retired SD recipes read-only with their original legal zeroes and preserves the current draft', async () => {
   const { pb, applyHistory } = setup()
   useSceneStore().tags = [{ en: 'depth_of_field', cn: '景深', cat: 'Camera', aliases: ['dof'] }]
   pb.visualDescription = 'Unrelated image'; pb.sdParams.negativeCustom = 'old negative'; pb.sdParams.seedLock = true
-  await applyHistory(entry())
-  expect(pb.visualDescription).toBe('')
-  expect(pb.sdParams).toMatchObject({ negativeCustom: '', seedLock: false, seed: -1, cfg: 0, scheduler: '' })
-  expect([...pb.manualTags]).toEqual(['depth_of_field'])
-  expect(pb.projectId).toBe('saved-project')
-  expect(pb.sdParamsTouched.has('cfg')).toBe(true)
+  const record=entry()
+  await applyHistory(record)
+  expect(pb.visualDescription).toBe('Unrelated image')
+  expect(pb.sdParams).toMatchObject({negativeCustom:'old negative',seedLock:true})
+  expect(pb.historyRestoreReport).toMatchObject({title:'原引擎已退役',original:{cfg:0,seed:-1,engine:'sd'}})
+  expect(record).toEqual(entry())
+  expect(pb.projectId).not.toBe('saved-project')
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('生成参数不跨引擎迁移')
 })
 it('restores saved popular decisions instead of leaving current or blueprint values', async () => {
   const { pb, applyHistory } = setup()
@@ -51,13 +53,13 @@ it('unknown engines leave the current draft intact', async () => {
   expect(pb.story).toBe('Keep me')
 })
 
-it('loads incomplete old records without claiming exact reproduction', async () => {
+it('preserves incomplete records without guessing a missing engine or changing the active parameters', async () => {
   const { pb, applyHistory } = setup()
+  const originalParameters={...pb.sdParams}
   await applyHistory({ id: '0001', cfg: 0, seed: '0', emotion: {}, manual_tags: [42] })
-  expect(pb.sdParams.cfg).toBe(0)
-  expect(pb.sdParams.seed).toBe(0)
-  expect(pb.historyRestoreReport?.notes.join(';')).toContain('无法精确复现')
-  expect(pb.historyRestoreReport?.title).toContain('0001')
+  expect(pb.sdParams).toEqual(originalParameters)
+  expect(pb.historyRestoreReport).toMatchObject({title:'旧作引擎未确认',original:{cfg:0,seed:'0'}})
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('不能确认原引擎')
 })
 
 it('reuses style and camera without changing the current subject, prompt, parameters or album', async () => {

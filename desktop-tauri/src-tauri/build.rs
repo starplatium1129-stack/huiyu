@@ -21,6 +21,7 @@ fn main() {
                 "is_packaged",
                 "get_workspace",
                 "set_workspace",
+                "restart_for_setup",
                 "pick_workspace",
                 "notify",
                 "open_atelier",

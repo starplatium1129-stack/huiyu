@@ -24,6 +24,7 @@ const capabilities: CompanionDesktopBridge = {
   openWorkspace: () => invoke('open_workspace'), openRuntime: () => invoke('open_runtime'), openLog: () => invoke('open_log'),
   pickWorkspace: root => invoke('pick_workspace', { root }),
   getWorkspace: () => invoke('get_workspace'), setWorkspace: root => invoke('set_workspace', { root }),
+  restartForSetup: () => invoke('restart_for_setup'),
   notify: (title, body) => { void invoke('notify', { title, body }) },
   setProgress: progress => { void invoke('set_progress', { progress }) },
   runTool: (name, args, options = {}) => apiClient.request('/api/desktop-tools', {

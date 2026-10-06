@@ -19,11 +19,6 @@ pub(super) struct ModelFile {
     pub bytes: u64,
     pub sha256: String,
 }
-#[derive(Deserialize)]
-struct Manifest {
-    files: Vec<ModelFile>,
-}
-
 // Metadata is checked before open, and Unix open stays nonblocking if a
 // concurrent replacement turns this fixed model path into a FIFO or symlink.
 fn open_regular(path: &Path) -> std::io::Result<File> {
@@ -72,7 +67,7 @@ impl ControlService {
                     "已有模型校验在进行，请先完成或取消",
                 )
             })?;
-        let root = self.config.ai_workspace_root.join("ComfyUI/models");
+        let root = model_root(&self.config.ai_workspace_root, &id)?;
         let cancel = self.shutdown.child_token();
         let guard = cancel.clone().drop_guard();
         let (send, receive) = tokio::sync::mpsc::unbounded_channel();
@@ -108,19 +103,27 @@ impl ControlService {
 }
 
 pub(super) fn model_file(id: &str) -> Result<ModelFile> {
-    let index = match id {
-        "anima-aesthetic-v1.1" => 0,
-        "qwen-encoder" => 1,
-        "qwen-vae" => 2,
-        _ => return Err(ApiError::invalid("只可操作起步清单中的三个模型文件")),
-    };
-    Ok(
-        serde_json::from_str::<Manifest>(include_str!("setup-models.json"))?
-            .files
-            .into_iter()
-            .nth(index)
-            .unwrap(),
-    )
+    Ok(serde_json::from_value(model_source(id)?)?)
+}
+
+pub(super) fn model_source(id: &str) -> Result<Value> {
+    let manifest: Value = serde_json::from_str(include_str!("setup-models.json"))?;
+    manifest["files"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|entry| entry["id"] == id)
+        .cloned()
+        .ok_or_else(|| ApiError::invalid("只可操作绘遇已登记的模型和运行包"))
+}
+
+pub(super) fn model_root(workspace: &Path, id: &str) -> Result<PathBuf> {
+    let source = model_source(id)?;
+    Ok(workspace.join(match source["kind"].as_str() {
+        Some("chat") => "Chat/models",
+        Some("runtime") => ".setup/packages",
+        _ => "ComfyUI/models",
+    }))
 }
 
 fn terminal(

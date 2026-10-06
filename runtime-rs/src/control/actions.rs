@@ -5,7 +5,10 @@ use tokio::{
     process::Command,
 };
 
-async fn output<R: AsyncRead + Unpin>(stream: Option<R>, cancel: CancellationToken) -> Vec<u8> {
+pub(super) async fn output<R: AsyncRead + Unpin>(
+    stream: Option<R>,
+    cancel: CancellationToken,
+) -> Vec<u8> {
     let Some(mut stream) = stream else {
         return vec![];
     };
@@ -155,6 +158,13 @@ impl ControlService {
         Ok(parsed)
     }
     pub(super) async fn service_action(&self, index: usize, start: bool, op: &Value) -> Result<()> {
+        if index == 0 {
+            return Err(ApiError::new(
+                410,
+                "SD_RETIRED",
+                "SD 新生成与受管启动已退役，请使用 ComfyUI",
+            ));
+        }
         if index == 3 {
             tokio::select! {result=self.voice.prepare_translation()=>result?,_=self.shutdown.cancelled()=>return Err(ApiError::new(499,"ABORTED","翻译恢复已取消"))};
             if !self.online(3, &Value::Null).await {
@@ -191,13 +201,16 @@ impl ControlService {
             (2, false) => 30,
             _ => 120,
         };
-        let result = self
-            .run_script(
+        let result = if index == 1 {
+            self.run_comfy(start).await
+        } else {
+            self.run_script(
                 self.script(index, start),
                 self.args(index, start, &settings),
                 seconds,
             )
-            .await;
+            .await
+        };
         if self.shutdown.is_cancelled() {
             return Err(ApiError::new(499, "ABORTED", "服务操作已取消"));
         }
@@ -303,21 +316,24 @@ impl ControlService {
         self.tasks.spawn(async move {
             let work = async {
                 match kind.as_str() {
+                    "llama-stop" => service.stop_llama().await,
                     "ollama-unload" => service.unload().await,
                     "mode-draw" => {
                         service.service_action(2, false, &op).await?;
                         service.stage(&op, 1);
-                        service.unload().await?;
+                        service.stop_llama().await?;
+                        if service.settings()["ollamaHost"].is_string()
+                            && service.online_ollama().await
+                        {
+                            service.unload().await?;
+                        }
                         service.stage(&op, 2);
-                        service.service_action(0, true, &op).await?;
+                        service.service_action(1, true, &op).await?;
                         service.stage(&op, 3);
                         Ok(())
                     }
                     "mode-chat" => {
-                        let owned = service.state.lock().unwrap().managed[0].owned;
-                        if owned {
-                            service.service_action(0, false, &op).await?;
-                        }
+                        service.release_comfy_models().await?;
                         service.stage(&op, 1);
                         service.service_action(2, true, &op).await?;
                         service.stage(&op, 2);

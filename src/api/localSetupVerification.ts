@@ -3,6 +3,7 @@ import type { FetchImplementation } from './client.ts'
 import type { LocalSetupVerificationProgress, LocalSetupVerificationResult } from '../../types/local-setup.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 import { readLocalSetupStream } from './localSetupStream.ts'
+import { localSetupModelIds } from './localSetupCatalog'
 
 export interface VerificationOptions {
   signal: AbortSignal
@@ -15,7 +16,7 @@ const object = (value: unknown): value is Record<string, unknown> => typeof valu
 /** This explicit request has no cache and must receive a terminal result. */
 export async function verifyLocalSetupModel(modelId: string, options: VerificationOptions, fetch: FetchImplementation = runtimeFetch): Promise<LocalSetupVerificationResult> {
   if (!isLocalStudioHost()) throw new Error('模型校验仅限本机使用')
-  if (!['anima-aesthetic-v1.1', 'qwen-encoder', 'qwen-vae'].includes(modelId)) throw new Error('模型不在起步校验清单中')
+  if (!localSetupModelIds.has(modelId)) throw new Error('模型不在已登记的校验清单中')
   options.signal.throwIfAborted()
   const response = await fetch(`/api/local-setup/verify/${encodeURIComponent(modelId)}`, { method: 'POST', cache: 'no-store', signal: options.signal })
   return readLocalSetupStream<LocalSetupVerificationResult>(response, options.signal, event => {
