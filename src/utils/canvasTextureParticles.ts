@@ -2,6 +2,7 @@
  * separate, join flowing rings, and release. This is not a port of Telegram's
  * GPL Metal implementation. No CPU particle loop or per-frame texture upload. */
 import { registerParticleFrame } from './particleScheduler'
+import { visibleGenerationPigment } from './generationPalette'
 
 export interface CanvasParticleMotion {
   progress: (value: number | null) => void
@@ -12,6 +13,7 @@ export interface CanvasParticleMotion {
 interface Options {
   mode: 'generation' | 'clear'
   progress?: number | null
+  palette?: readonly string[]
   onComplete?: () => void
   onHandoff?: () => void
 }
@@ -22,6 +24,7 @@ uniform vec4 imageRect;
 uniform vec2 grid;
 uniform float time;
 uniform float progress;
+uniform float rotation;
 uniform float releaseTime;
 uniform float hasImage;
 uniform float clearing;
@@ -35,9 +38,10 @@ out float tone;
 out float ribbon;
 float hash(float n) { return fract(sin(n * 127.13 + 19.7) * 43758.5453); }
 vec3 orbit(float a, float band, float radius) {
-  float tilt = -.64 + band*.61 + sin(time*.17+band)*.075;
-  vec2 p = vec2(cos(a),sin(a)*(.31+band*.035)) * radius * (.86+band*.08);
-  p.y += sin(a*2.0+time*.12)*2.5;
+  float formed = smoothstep(.08,.66,progress), finishing = smoothstep(.65,.98,progress);
+  float tilt = (-.64 + band*.61)*(1.0-finishing*.75) + sin(time*.17+band)*.075*(1.0-finishing);
+  vec2 p = vec2(cos(a),sin(a)*(.31+band*.035+formed*.1-finishing*.2)) * radius * (.86+band*.08);
+  p.y += sin(a*2.0+time*.12)*2.5*(1.0-finishing);
   return vec3(mat2(cos(tilt),sin(tilt),-sin(tilt),cos(tilt))*p,sin(a)*.5+.5);
 }
 void main() {
@@ -54,10 +58,11 @@ void main() {
   float age = max(0.0,time-delay);
   float grain = smoothstep(.02,.48,age);
   float gather = hasImage > .5 ? smoothstep(.16,1.38,age) : 1.0;
-  float radius = min(96.0,min(viewport.x*.29,viewport.y*.25)) * (1.0 - progress*.08);
+  float formed = smoothstep(.08,.66,progress), finishing = smoothstep(.65,.98,progress);
+  float radius = min(116.0,min(viewport.x*.29,viewport.y*.25)) * (1.0 - formed*.1 - finishing*.28);
   vec2 center = viewport * vec2(.5,.43);
   float band = mod(id,3.0);
-  vec3 track = orbit(id*2.39996323+time*.18,band,radius);
+  vec3 track = orbit(id*2.39996323+rotation,band,radius);
   vec2 breeze = vec2(cos(seed*6.283),sin(seed*6.283)) * (12.0+seed*28.0);
   vec2 point = mix(source,center+track.xy,gather) + breeze*sin(gather*3.14159);
   float depth = track.z;
@@ -86,16 +91,31 @@ void main() {
       vec2 normal = normalize(vec2(-direction.y,direction.x));
       point = center+mix(track.xy,next.xy,corner.x)+normal*(corner.y-.5)*3.0;
       dimensions = vec2(0.0);
-      alpha = .17;
+      alpha = .17+finishing*.07;
     } else {
       float dotId = index-384.0;
+      float tail = dotId >= 78.0 && dotId < 114.0 ? mod(dotId-78.0,6.0)+1.0 : 0.0;
+      if (tail > 0.0) dotId = 72.0+floor((dotId-78.0)/6.0);
       band = mod(dotId,3.0);
-      a = floor(dotId/3.0)/24.0*6.2831853+time*.18+band*1.5;
-      if (dotId >= 72.0) a = time*(band==1.0 ? -.4 : .33)+band*1.64+floor((dotId-72.0)/3.0)*3.1415927;
+      a = floor(dotId/3.0)/24.0*6.2831853+rotation+band*1.5;
+      if (dotId >= 72.0) a = rotation*(band==1.0 ? -1.6 : 1.85)+band*1.64+floor((dotId-72.0)/3.0)*3.1415927;
+      a -= (band==1.0 ? -1.0 : 1.0)*tail*(.035+formed*.02);
       track = orbit(a,band,radius);
       point = center+track.xy;
       dimensions = vec2(dotId < 72.0 ? 3.0+track.z*2.0 : 8.0);
-      alpha = dotId < 72.0 ? .18+track.z*.58 : .95;
+      alpha = dotId < 72.0 ? .24+track.z*.58 : .95;
+      if (tail > 0.0) {
+        dimensions = vec2(3.0*(1.0-tail/9.0));
+        alpha = (.16+formed*.26)*(1.0-tail/7.0);
+      }
+      if (index >= 498.0) {
+        float core = index-498.0;
+        a = core*2.39996323+rotation*.6;
+        float distance = radius*(.38-finishing*.22)*(1.0+sin(core*1.7)*.35);
+        point = center+vec2(cos(a),sin(a)*.65)*distance;
+        band = mod(core,3.0); dimensions = vec2(2.0);
+        alpha = finishing*(.3+sin(core*2.1+time)*.1);
+      }
     }
     tone = band; orbPhase = 1.0;
     alpha *= hasImage > .5 ? smoothstep(1.1,2.45,time) : 1.0;
@@ -155,7 +175,7 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
   let program: WebGLProgram | null = null, texture: WebGLTexture | null = null, vao: WebGLVertexArrayObject | null = null
   let stopFrames: (() => void) | null = null
   let disposed = false, started = false, handedOff = false
-  let elapsed = 0, releasedAt: number | null = null
+  let elapsed = 0, rotation = 0, releasedAt: number | null = null
   let concentration = Math.max(0, Math.min(1, options.progress ?? 0))
   let targetProgress = concentration
   const finish = () => {
@@ -210,7 +230,7 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
     const count = image ? Math.min(18000,Math.max(1800,Math.round(width*height/20))) : 1100
     const columns=Math.max(1,Math.round(Math.sqrt(count*width/height))), rows=Math.max(1,Math.floor(count/columns))
     const uniform = (name: string) => gl.getUniformLocation(program!,name)
-    const timeUniform=uniform('time'), progressUniform=uniform('progress'), releaseUniform=uniform('releaseTime'), fragmentsUniform=uniform('fragments')
+    const timeUniform=uniform('time'), progressUniform=uniform('progress'), rotationUniform=uniform('rotation'), releaseUniform=uniform('releaseTime'), fragmentsUniform=uniform('fragments')
     gl.uniform2f(uniform('viewport'),bounds.width,bounds.height)
     gl.uniform4f(uniform('imageRect'),left,top,width,height); gl.uniform2f(uniform('grid'),columns,rows)
     gl.uniform1f(uniform('hasImage'),image ? 1 : 0); gl.uniform1f(uniform('clearing'),options.mode==='clear' ? 1 : 0)
@@ -222,7 +242,11 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
       const palette=[['accent','--accent','#efabc8'],['cyan','--archive-cyan','#9ddddd'],['violet','--accent-violet','#bdb0e8']]
       try {
         if (!paint) return
-        palette.forEach(([,name,fallback],index) => { paint.fillStyle=style.getPropertyValue(name).trim() || fallback; paint.fillRect(index,0,1,1) })
+        const light = host.closest('[data-theme]')?.getAttribute('data-theme') === 'light'
+        palette.forEach(([,name,fallback],index) => {
+          paint.fillStyle=options.palette?.length===3 ? `rgb(${visibleGenerationPigment(options.palette[index],light)})` : style.getPropertyValue(name).trim() || fallback
+          paint.fillRect(index,0,1,1)
+        })
         const pixels=paint.getImageData(0,0,3,1).data
         gl.useProgram(program)
         palette.forEach(([name],index) => gl.uniform3f(uniform(name),pixels[index*4]/255,pixels[index*4+1]/255,pixels[index*4+2]/255))
@@ -239,18 +263,20 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
       if (options.mode==='generation' && opacity<1) canvas.style.opacity=String(opacity+(1-opacity)*Math.min(1,elapsed/2.45))
       gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT)
       gl.uniform1f(timeUniform,elapsed); gl.uniform1f(progressUniform,concentration)
+      gl.uniform1f(rotationUniform,rotation)
       gl.uniform1f(releaseUniform,releasedAt===null ? -1 : elapsed-releasedAt)
       const fragments=options.mode==='clear' || Boolean(image && elapsed<2.5)
       gl.uniform1f(fragmentsUniform,fragments ? 1 : 0)
-      gl.drawArraysInstanced(gl.TRIANGLES,0,6,options.mode==='clear' ? columns*rows : (fragments ? columns*rows : 0)+462)
+      gl.drawArraysInstanced(gl.TRIANGLES,0,6,options.mode==='clear' ? columns*rows : (fragments ? columns*rows : 0)+510)
     }
     draw(); host.append(canvas); started=true
     /* compositor-exempt: bounded instanced texture particles follow shared rAF;
-     * after image breakup only the 462 ring segments/light points are submitted. */
+     * after image breakup only 510 ring segments, light points and trails are submitted. */
     stopFrames=registerParticleFrame((_now,deltaMs) => {
       const delta=deltaMs/1000
       elapsed+=delta
       concentration+=(targetProgress-concentration)*(1-Math.exp(-delta/0.32))
+      rotation+=delta*(.18+concentration*.34)
       if (options.mode==='clear' && elapsed>=1.85 || releasedAt!==null && elapsed-releasedAt>=.98) { finish(); return }
       if (!handedOff && options.mode==='clear' && elapsed>=1.1) { handedOff=true; options.onHandoff?.() }
       draw()

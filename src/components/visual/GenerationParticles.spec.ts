@@ -3,8 +3,8 @@ import { ref, nextTick } from 'vue'
 import { afterEach, expect, it, vi } from 'vitest'
 import GenerationParticles from './GenerationParticles.vue'
 
-const frames = vi.hoisted(() => new Set<(now: number) => void>())
-vi.mock('@/utils/particleScheduler', () => ({ registerParticleFrame: (frame: (now: number) => void) => {
+const frames = vi.hoisted(() => new Set<(now: number, delta?: number) => void>())
+vi.mock('@/utils/particleScheduler', () => ({ registerParticleFrame: (frame: (now: number, delta?: number) => void) => {
   frames.add(frame)
   return () => frames.delete(frame)
 } }))
@@ -14,7 +14,7 @@ afterEach(() => { frames.clear(); vi.restoreAllMocks() })
 
 it('owns one animation subscription, pauses hidden visuals and releases glow caches on unmount', async () => {
   const paint = {
-    setTransform: vi.fn(), clearRect: vi.fn(), fillRect: vi.fn(), drawImage: vi.fn<(image: HTMLCanvasElement, ...args: number[]) => void>(), beginPath: vi.fn(), arc: vi.fn(), fill: vi.fn(), moveTo: vi.fn(), lineTo: vi.fn(), stroke: vi.fn(),
+    setTransform: vi.fn(), clearRect: vi.fn(), fillRect: vi.fn(), drawImage: vi.fn<(image: HTMLCanvasElement, ...args: number[]) => void>(), beginPath: vi.fn(), arc: vi.fn(), fill: vi.fn(), moveTo: vi.fn<(x: number, y: number) => void>(), lineTo: vi.fn(), stroke: vi.fn(),
     createRadialGradient: () => ({ addColorStop: vi.fn() }),
   }
   vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(paint as unknown as CanvasRenderingContext2D)
@@ -26,8 +26,12 @@ it('owns one animation subscription, pauses hidden visuals and releases glow cac
     glowCanvas = paint.drawImage.mock.calls[0][0]
     expect(frames.size).toBe(1)
     const frame = [...frames][0]
-    await wrapper.setProps({ progress: 0.76 })
+    const first = paint.moveTo.mock.calls.at(-3)!
+    const distance = (point: number[]) => Math.hypot(point[0] - 160, point[1] - 116)
+    await wrapper.setProps({ progress: 0.96 })
     expect([...frames][0]).toBe(frame)
+    frame(1000, 2000)
+    expect(distance(paint.moveTo.mock.calls.at(-3)!)).toBeLessThan(distance(first) * .8)
     activity.canPresent.value = false; activity.canAnimate.value = false
     await nextTick()
     expect(frames.size).toBe(0)

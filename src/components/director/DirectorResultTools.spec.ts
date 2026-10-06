@@ -34,8 +34,6 @@ describe('result tools', () => {
     expect(wrapper.emitted('saveResult')).toHaveLength(2)
     expect(wrapper.emitted('openCompare')).toHaveLength(1)
     expect(wrapper.text()).toContain('未入册 · 已暂存')
-    await wrapper.get('button[aria-label="作品环境光"]').trigger('click')
-    expect(wrapper.emitted('update:ambientEnabled')).toEqual([[false]])
     await wrapper.setProps({ generationBusy:true })
     expect(wrapper.get('.stage-result-status').text()).toContain('当前成片保留')
     const tools = mount(DirectorImageTools, { props })

@@ -7,6 +7,7 @@ import { startCanvasTextureParticles, type CanvasParticleMotion } from '@/utils/
  * Capture before Vue removes the old decoded image; release only on reveal-ready. */
 export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   source: () => string, busy: () => boolean, progress: () => number | null, comparing: () => boolean,
+  palette: () => readonly string[],
 ) {
   const { canAnimate, lowEffects, appearanceRevision } = useVisualActivity(host)
   const active = ref(false)
@@ -27,7 +28,7 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
     const image=root.querySelector<HTMLImageElement>('img.cg-image-target')
     const bounds=root.getBoundingClientRect(); size={width:bounds.width,height:bounds.height}
     effect=startCanvasTextureParticles(image?.complete && image.naturalWidth ? image : null,root,{
-      mode:'generation', progress:progress(), onComplete:() => { effect=null; active.value=false },
+      mode:'generation', progress:progress(), palette:[...palette()], onComplete:() => { effect=null; active.value=false },
     })
     active.value=Boolean(effect)
   }

@@ -10,8 +10,9 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 import { registerParticleFrame } from '@/utils/particleScheduler'
+import { visibleGenerationPigment } from '@/utils/generationPalette'
 
-const props = defineProps<{ progress: number | null }>()
+const props = defineProps<{ progress: number | null; palette?: readonly string[] }>()
 const host = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const { canPresent, canAnimate, lowEffects, appearanceRevision } = useVisualActivity(host)
@@ -22,6 +23,7 @@ let sprites: HTMLCanvasElement[] = []
 let context: CanvasRenderingContext2D | null = null
 let width = 0, height = 0, ratio = 1
 let clock = 1500
+let rotation = .27
 let concentration = props.progress ?? 0
 let stopFrames: (() => void) | null = null
 
@@ -33,6 +35,10 @@ function stop() {
 function preparePalette() {
   if (!host.value) return
   colors = [...host.value.querySelectorAll<HTMLElement>('.generation-particle-palette i')].map(item => getComputedStyle(item).color)
+  if (props.palette?.length === 3) {
+    const light = host.value.closest('[data-theme]')?.getAttribute('data-theme') === 'light'
+    colors.splice(0, 3, ...props.palette.map(color => `rgb(${visibleGenerationPigment(color, light)})`))
+  }
   for (const sprite of sprites) sprite.width = sprite.height = 0
   sprites = colors.slice(0, 3).map(color => {
     const sprite = document.createElement('canvas')
@@ -81,15 +87,20 @@ function draw() {
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
   ctx.clearRect(0, 0, width, height)
   const centerX = width / 2, centerY = height / 2
-  const radius = Math.min(width * 0.29, height * 0.3, 96) * (1 - concentration * 0.08)
+  const smooth = (start: number, end: number) => {
+    const t = Math.max(0, Math.min(1, (concentration - start) / (end - start)))
+    return t * t * (3 - 2 * t)
+  }
+  const formed = smooth(.08, .66), finishing = smooth(.65, .98)
+  const radius = Math.min(width * .29, height * .3, 116) * (1 - formed * .1 - finishing * .28)
   const orbit = (angle: number, band: number) => {
-    const tilt = -.64 + band*.61 + Math.sin(time*.17+band)*.075
+    const tilt = (-.64 + band*.61) * (1 - finishing * .75) + Math.sin(time*.17+band)*.075 * (1 - finishing)
     const x = Math.cos(angle)*radius*(.86+band*.08)
-    const y = Math.sin(angle)*radius*(.86+band*.08)*(.31+band*.035)+Math.sin(angle*2+time*.12)*2.5
+    const y = Math.sin(angle)*radius*(.86+band*.08)*(.31+band*.035+formed*.1-finishing*.2)+Math.sin(angle*2+time*.12)*2.5*(1-finishing)
     return { x:centerX+x*Math.cos(tilt)-y*Math.sin(tilt), y:centerY+x*Math.sin(tilt)+y*Math.cos(tilt) }
   }
   if (!lowEffects.value) for (let band=0; band<3; band++) {
-    ctx.strokeStyle=colors[band]; ctx.globalAlpha=.12; ctx.lineWidth=.65
+    ctx.strokeStyle=colors[band]; ctx.globalAlpha=.12+finishing*.07; ctx.lineWidth=.65
     ctx.beginPath()
     for (let segment=0; segment<=128; segment++) {
       const p=orbit(segment/128*Math.PI*2,band)
@@ -98,11 +109,21 @@ function draw() {
     ctx.stroke()
   }
   for (const point of points) {
-    const angle = point.phase + (point.bright ? time*(point.tone === 1 ? -.4 : .33)+point.tone*1.64 : time*.18+point.tone*1.5)
+    const angle = point.phase + (point.bright ? rotation*(point.tone === 1 ? -1.6 : 1.85)+point.tone*1.64 : rotation+point.tone*1.5)
     const p=orbit(angle,point.tone)
     point.x=p.x; point.y=p.y; point.depth=Math.sin(angle)*.5+.5
   }
   points.sort((a, b) => a.depth - b.depth)
+  // Short, depth-aware trails gain definition as the drawing resolves.
+  if (!lowEffects.value) for (const point of points.filter(point => point.bright)) {
+    const direction = point.tone === 1 ? -1 : 1
+    const angle = point.phase + rotation*(direction < 0 ? -1.6 : 1.85)+point.tone*1.64
+    for (let tail=6; tail>0; tail--) {
+      const p = orbit(angle-direction*tail*(.035+formed*.02), point.tone)
+      ctx.fillStyle=colors[point.tone]; ctx.globalAlpha=(.12+formed*.2)*(1-tail/7)
+      ctx.beginPath(); ctx.arc(p.x,p.y,1.15*(1-tail/9),0,Math.PI*2); ctx.fill()
+    }
+  }
   for (const point of points) {
     const depth = point.depth, size = point.bright ? 1.4 : .5+depth*.45
     const shimmer = 0.92 + Math.sin(time * 0.8 + point.phase) * 0.08
@@ -112,13 +133,19 @@ function draw() {
       ctx.globalAlpha = point.bright ? .24 : depth*.12
       ctx.drawImage(sprites[point.tone], point.x - spread, point.y - spread, spread * 2, spread * 2)
     }
-    ctx.globalAlpha = (point.bright ? .95 : .18+depth*.58) * shimmer
+    ctx.globalAlpha = (point.bright ? .95 : .24+depth*.58) * shimmer
     ctx.beginPath(); ctx.arc(point.x, point.y, size, 0, Math.PI * 2); ctx.fill()
     if (point.bright) {
       ctx.globalAlpha = 0.7
       ctx.fillStyle = colors[3]
       ctx.beginPath(); ctx.arc(point.x, point.y, 0.6, 0, Math.PI * 2); ctx.fill()
     }
+  }
+  if (finishing > 0) for (let index=0; index<12; index++) {
+    const angle = index*2.39996323+rotation*.6
+    const distance = radius*(.38-finishing*.22)*(1+Math.sin(index*1.7)*.35)
+    ctx.fillStyle=colors[index%3]; ctx.globalAlpha=finishing*(.22+Math.sin(index*2.1+time)*.08)
+    ctx.beginPath(); ctx.arc(centerX+Math.cos(angle)*distance,centerY+Math.sin(angle)*distance*.65,.65,0,Math.PI*2); ctx.fill()
   }
   ctx.globalAlpha = 1
 }
@@ -131,12 +158,13 @@ function reconcile() {
   if (canAnimate.value) stopFrames = registerParticleFrame((_now, delta = 0) => {
     clock += delta
     if (props.progress !== null) concentration += (props.progress - concentration) * (1 - Math.exp(-delta / 420))
+    rotation += delta / 1000 * (.18 + concentration * .34)
     draw()
   }, lowEffects.value ? 30 : 0)
 }
 
 useResizeObserver(host, resize)
-watch([canPresent, canAnimate, lowEffects, appearanceRevision], () => { preparePalette(); reconcile() }, { flush: 'post' })
+watch([canPresent, canAnimate, lowEffects, appearanceRevision, () => props.palette], () => { preparePalette(); reconcile() }, { flush: 'post' })
 watch(() => props.progress, progress => {
   if (!canAnimate.value && canPresent.value) {
     if (progress !== null) concentration = progress

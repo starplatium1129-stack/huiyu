@@ -14,7 +14,7 @@ async function fixture() {
   let motion!:ReturnType<typeof useCanvasGenerationMotion>
   const wrapper=mount(defineComponent({setup() {
     const host=ref<HTMLElement | null>(null)
-    motion=useCanvasGenerationMotion(host,() => source.value,() => busy.value,() => progress.value,() => comparing.value)
+    motion=useCanvasGenerationMotion(host,() => source.value,() => busy.value,() => progress.value,() => comparing.value,() => ['180 80 45','35 120 160','115 60 165'])
     return () => h('div',{ref:host},source.value ? h('img',{class:'cg-image-target',src:source.value}) : [])
   }}))
   const image=wrapper.get('img').element
@@ -25,7 +25,7 @@ async function fixture() {
 it.each(['same tick','separate ticks'] as const)('holds fresh results until decoded reveal when URL and busy settle in %s',async publication => {
   const {source,busy,progress,motion,wrapper,image}=await fixture()
   source.value=''; busy.value=true; await nextTick()
-  expect(mock.start).toHaveBeenCalledExactlyOnceWith(image,wrapper.element,expect.objectContaining({mode:'generation',progress:.23}))
+  expect(mock.start).toHaveBeenCalledExactlyOnceWith(image,wrapper.element,expect.objectContaining({mode:'generation',progress:.23,palette:['180 80 45','35 120 160','115 60 165']}))
   expect(wrapper.find('img').exists()).toBe(false)
   progress.value=.72
   expect(mock.progress).toHaveBeenCalledWith(.72)

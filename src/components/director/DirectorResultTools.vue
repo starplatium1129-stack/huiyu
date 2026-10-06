@@ -1,6 +1,5 @@
 <template>
   <div ref="actions" class="result-image-actions" role="group" aria-label="画布操作">
-    <button class="btn btn-quiet canvas-ambient-toggle" type="button" aria-label="作品环境光" :aria-pressed="ambientEnabled" :disabled="!hasResult" @click="$emit('update:ambientEnabled', !ambientEnabled)"><ArchiveIcon name="goldenhour" /><span>环境光</span></button>
     <span v-if="hasResult && generationBusy" class="stage-result-status sr-only" role="status">下一张正在显影 · 当前成片保留</span>
     <span v-if="hasResult && resultArchived !== null" class="stage-archive-badge" :data-archived="resultArchived" :data-saving="savingResult || undefined" role="status" aria-live="polite" aria-atomic="true">
       <ArchiveIcon :name="resultArchived ? 'success' : 'gallery'" />
@@ -32,8 +31,7 @@ const props = withDefaults(defineProps<{
   savingResult?: boolean
   resultTemporary?: boolean
   hasResult?: boolean
-  ambientEnabled?: boolean
-}>(), { hasResult: true, ambientEnabled: true })
+}>(), { hasResult: true })
 const actions = ref<HTMLElement | null>(null)
 let saveHadFocus = false
 const archivePhase = computed(() => props.savingResult ? 'saving' : props.resultArchived ? 'saved' : 'pending')
@@ -52,7 +50,6 @@ watch(() => props.resultArchived, async (archived, previous) => {
   if (continuation?.isConnected) continuation.focus({ preventScroll:true })
 })
 const emit = defineEmits<{
-  'update:ambientEnabled': [enabled: boolean]
   saveScene: []
   saveResult: []
   openCompare: []

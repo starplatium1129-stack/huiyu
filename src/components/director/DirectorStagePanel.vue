@@ -23,7 +23,7 @@
         <div class="stage-content" :class="{ 'is-covered': coveringResult }">
         <DirectorSceneReference v-if="!generationBusy && !waitingForResult" :size="canvasSize" />
           <div v-if="generationBusy || waitingForResult" class="stage-generating-copy">
-            <GenerationParticles v-if="!coveringResult && !textureMotionActive" :progress="generationProgress" />
+            <GenerationParticles v-if="!coveringResult && !textureMotionActive" :progress="generationProgress" :palette="generationPalette" />
           </div>
         <div v-else-if="generationError || (displayResultUrl && failedResultUrl === displayResultUrl)" class="stage-idle" role="alert">
           <div class="stage-placeholder-title">这次画面未能生成</div>
@@ -83,32 +83,32 @@
 
     <!-- Result image -->
     <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
-      <CanvasAmbient :colors="ambientColors" :aspect="ambientAspect" :enabled="ambientEnabled && !inpaintCompareActive" />
-      <ImageSplitCompare
-        v-if="inpaintCompareActive && inpaintOriginalUrl"
-        :before-src="inpaintOriginalUrl"
-        :after-src="displayResultUrl"
-        before-label="换装前原图"
-        after-label="换装后成片"
-      />
-      <CgImageReveal
-        v-else
-        class="result-image-reveal"
-        img-class="result-image"
-        :src="resolveRuntimeUrl(displayResultUrl)"
-        :auto-reveal="loadedResultUrl === displayResultUrl && displayResultUrl === resultRevealUrl && !revealedResults.has(displayResultUrl)"
-        alt="当前生成的画面成片"
-        @load="fitResult"
-        @reveal-start="onResultReveal"
-        @reveal-complete="onResultReveal"
-        @error="onResultImageError"
-      />
+      <div class="result-artwork" :style="{ '--result-aspect': resultAspect }">
+        <ImageSplitCompare
+          v-if="inpaintCompareActive && inpaintOriginalUrl"
+          :before-src="inpaintOriginalUrl"
+          :after-src="displayResultUrl"
+          before-label="换装前原图"
+          after-label="换装后成片"
+        />
+        <CgImageReveal
+          v-else
+          class="result-image-reveal"
+          img-class="result-image"
+          :src="resolveRuntimeUrl(displayResultUrl)"
+          :auto-reveal="loadedResultUrl === displayResultUrl && displayResultUrl === resultRevealUrl && !revealedResults.has(displayResultUrl)"
+          alt="当前生成的画面成片"
+          @load="fitResult"
+          @reveal-start="onResultReveal"
+          @reveal-complete="onResultReveal"
+          @error="onResultImageError"
+        />
+      </div>
     </div>
     </div>
     <DirectorResultTools
       v-bind="{ generationBusy, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
-      :has-result="Boolean(displayResultUrl)" :ambient-enabled="ambientEnabled"
-      @update:ambientEnabled="ambientEnabled = $event"
+      :has-result="Boolean(displayResultUrl)"
       @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')"
     />
     <!-- 供两态共用的上传入口 -->
@@ -123,14 +123,13 @@ import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
-import CanvasAmbient from '@/components/visual/CanvasAmbient.vue'
 import GenerationParticles from '@/components/visual/GenerationParticles.vue'
 import BorderBeam from '@/components/visual/BorderBeam.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
 import { useCanvasGenerationMotion } from '@/composables/useCanvasGenerationMotion'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
-import { sampleCanvasAmbient } from '@/utils/canvasAmbient'
+import { sampleGenerationPalette } from '@/utils/generationPalette'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
 import '@/assets/css/director/components/DirectorStagePanel.css'
@@ -160,7 +159,11 @@ const props = defineProps<{
 }>()
 
 const canvasViewport = ref<HTMLElement | null>(null)
-const { active: textureMotionActive, release: releaseTextureMotion, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.generationProgress, () => props.inpaintCompareActive)
+const resultPalette = ref<string[]>([])
+const generationPalette = ref<string[]>([])
+// Capture before publication/clearing; the new image's load must not recolor an ongoing wait.
+watch(() => props.generationBusy, busy => { if (busy) generationPalette.value = [...resultPalette.value] }, { flush: 'sync' })
+const { active: textureMotionActive, release: releaseTextureMotion, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.generationProgress, () => props.inpaintCompareActive, () => generationPalette.value)
 const { playClear, coveringResult, stop: stopClearMotion } = useCanvasClearMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 // A deliberate clear followed by Generate must not leave two GPU effects alive.
@@ -169,9 +172,6 @@ watch(() => props.generationBusy, busy => { if (busy) stopClearMotion() }, { flu
 const resultAspect = ref(1)
 const loadedResultUrl = ref('')
 const failedResultUrl = ref('')
-const ambientEnabled = ref(true)
-const ambientColors = ref<string[]>([])
-const ambientAspect = ref(1)
 watch(() => props.displayResultUrl, () => {
   const [width, height] = (props.canvasSize || '').split('x').map(Number)
   resultAspect.value = width > 0 && height > 0 ? width / height : 1
@@ -182,8 +182,7 @@ async function fitResult(event: Event) {
   const image = event.target as HTMLImageElement
   const source = props.displayResultUrl
   resultAspect.value = image.naturalWidth / image.naturalHeight
-  ambientAspect.value = resultAspect.value
-  ambientColors.value = sampleCanvasAmbient(image)
+  resultPalette.value = sampleGenerationPalette(image)
   // Settle the canvas ratio before the decoded work receives its reveal.
   await nextTick()
   if (source === props.displayResultUrl) loadedResultUrl.value = source

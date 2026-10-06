@@ -50,10 +50,11 @@
   .pb .stage-swap-leave-active .generation-particles { transition:transform var(--motion-control) var(--ease-out),opacity var(--motion-control) var(--ease-out); }
   .pb .stage-swap-leave-to .generation-particles { transform:scale(1.85); opacity:0; }
   .pb .stage-placeholder.is-awaiting-result { position:absolute; inset:0; z-index:var(--z-raised); min-height:0; max-height:none; animation:none; pointer-events:none; }
-  /* ── 生成等待：中央聚合粒子与局部呼吸光，保留边缘状态提示。 ── */
+  /* Generation lives on a neutral canvas; only the particles carry the artwork's pigments. */
   .pb .stage-placeholder.is-generating { border-color:color-mix(in srgb,var(--archive-cyan) 36%,var(--border-soft)); }
   .pb .stage-placeholder.is-generating::before {
-    animation:stageBreath 3.2s ease-in-out infinite;
+    opacity:0;
+    animation:none;
   }
   .pb .stage-placeholder.is-generating::after {
     opacity:0;
@@ -118,19 +119,19 @@
   .pb.journal-workspace[data-director-mode] .result-image-reveal .result-image { position:absolute; inset:0; height:100%; }
 }
 
-/* Only the unused image margins receive colour. The decoded original stays untouched. */
-.pb.atelier-workspace .result-image-wrap.archive-canvas { border:0; border-radius:0; padding:var(--s-2); background:var(--bg-deep); box-shadow:none; }
+/* Fit the frame to the actual image ratio so its shadow follows the work, not letterboxing. */
+.pb.atelier-workspace .result-image-wrap.archive-canvas { --canvas-artwork-inset:clamp(20px,3cqw,40px); display:flex; align-items:center; justify-content:center; border:0; border-radius:0; padding:var(--canvas-artwork-inset); background:var(--bg-deep); box-shadow:none; }
+.pb.atelier-workspace .result-artwork { position:relative; flex:none; width:min(100%,calc((100cqh - 2 * var(--canvas-artwork-inset)) * var(--result-aspect))); max-height:100%; aspect-ratio:var(--result-aspect); border-radius:var(--r-sm); transform:translateY(-4px); box-shadow:var(--shadow-lg),var(--shadow-sm); }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal,
 .pb.atelier-workspace .result-image-reveal .result-image,
-.pb.atelier-workspace .result-image-wrap .image-split-compare { background:transparent; border-radius:0; }
+.pb.atelier-workspace .result-image-wrap .image-split-compare { background:transparent; border-radius:inherit; }
 .pb.atelier-workspace .result-image-actions { height:52px; min-width:0; flex-wrap:nowrap; padding:var(--s-1) var(--s-2); gap:var(--s-2); }
-.pb .canvas-ambient-toggle[aria-pressed='true'] { color:var(--accent); background:var(--accent-soft); }
 .pb.atelier-workspace .result-image-actions .stage-archive-badge { margin:0; padding:0; background:transparent; }
 .pb.atelier-workspace .result-image-actions .btn { white-space:nowrap; flex-shrink:0; }
 @container canvas-column (max-width:740px) {
   .pb .result-image-actions .stage-archive-badge { display:none; }
-  .pb .canvas-secondary-action span,.pb .canvas-ambient-toggle span { display:none; }
-  .pb .result-image-actions :is(.canvas-secondary-action,.canvas-ambient-toggle) { width:40px; padding-inline:0; }
+  .pb .canvas-secondary-action span { display:none; }
+  .pb .result-image-actions .canvas-secondary-action { width:40px; padding-inline:0; }
 }
 
 /* A single fixed canvas viewport owns all visual states; status and references
@@ -142,7 +143,7 @@
 .pb.atelier-workspace .stage-generating-copy { position:absolute; inset:0; width:100%; height:100%; display:block; }
 .pb.atelier-workspace .stage-generating-copy > .generation-particles { position:absolute; inset:0; width:100%; height:86%; aspect-ratio:auto; }
 .pb.atelier-workspace .stage-generation-feedback { position:absolute; top:min(72%,calc(43% + 120px)); left:50%; transform:translateX(-50%); max-width:calc(100% - 32px); }
-.pb.atelier-workspace .stage-placeholder.is-generating { z-index:calc(var(--z-raised) - 1); }
+.pb.journal-workspace.atelier-workspace .stage-placeholder.is-generating { z-index:calc(var(--z-raised) - 1); background:var(--bg-deep); border:0; border-radius:0; box-shadow:none; }
 .pb.atelier-workspace .stage-progress-details { margin-top:0; position:relative; }
 .pb.atelier-workspace .stage-progress-details[open] { background:var(--bg-surface); z-index:calc(var(--z-raised) - 2); }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal { width:100%; height:100%; max-height:none; }

@@ -5,6 +5,8 @@ import DirectorStagePanel from './DirectorStagePanel.vue'
 
 // This panel fixture does not fetch catalog data or validate its build hash.
 vi.mock('virtual:data-version', () => ({ DATA_VERSION: 0 }))
+const palette = vi.hoisted(() => ({ sample: vi.fn<() => string[]>(() => []) }))
+vi.mock('@/utils/generationPalette', () => ({ sampleGenerationPalette: palette.sample }))
 
 vi.mock('@/composables/useInterrogate', () => ({
   useInterrogate: () => ({ busy: ref(false), error: ref(null), interrogate: vi.fn(), cancel: vi.fn() }),
@@ -20,7 +22,7 @@ const props = {
   inpaintCompareActive: false, hasPrevResult: false,
 }
 const cleanup: Array<() => void> = []
-afterEach(() => cleanup.splice(0).forEach(fn => fn()))
+afterEach(() => { cleanup.splice(0).forEach(fn => fn()); palette.sample.mockReset(); palette.sample.mockReturnValue([]) })
 async function fixture(overrides: Partial<typeof props> & { resultRevealUrl?: string } = {}, loaded = true) {
   const wrapper = mount(DirectorStagePanel, {
     props: { ...props, ...overrides },
@@ -38,6 +40,23 @@ async function fixture(overrides: Partial<typeof props> & { resultRevealUrl?: st
 }
 
 describe('result reveal identity', () => {
+  it('keeps the previous artwork pigments through clearing and replacement decoding', async () => {
+    const previous = ['180 80 45', '35 120 160', '115 60 165']
+    const replacement = ['40 90 170', '180 100 170', '160 180 60']
+    palette.sample.mockReturnValue(previous)
+    const wrapper = await fixture()
+    await wrapper.setProps({ displayResultUrl: '' })
+    await wrapper.setProps({ generationBusy: true, generationProgress: .3 })
+    expect(wrapper.getComponent({ name: 'GenerationParticles' }).props('palette')).toEqual(previous)
+    palette.sample.mockReturnValue(replacement)
+    await wrapper.setProps({ generationBusy: false, displayResultUrl: '/result-b.png', resultRevealUrl: '/result-b.png' })
+    wrapper.getComponent(Reveal).vm.$emit('load', { target: { naturalWidth: 900, naturalHeight: 1600 } })
+    await nextTick()
+    expect(wrapper.getComponent({ name: 'GenerationParticles' }).props('palette')).toEqual(previous)
+    wrapper.getComponent(Reveal).vm.$emit('reveal-start')
+    await wrapper.setProps({ displayResultUrl: '', generationBusy: true })
+    expect(wrapper.getComponent({ name: 'GenerationParticles' }).props('palette')).toEqual(replacement)
+  })
   it('retains real-progress particles until image reveal starts and releases them on load failure', async () => {
     const wrapper = await fixture({ displayResultUrl: '', generationBusy: true, generationProgress: 0.37 }, false)
     expect(wrapper.getComponent({ name: 'GenerationParticles' }).props('progress')).toBe(0.37)
