@@ -8,7 +8,7 @@ import { defineStore } from 'pinia'
 import type { GeneratedArtworkInput, LegacyArtworkDefaults } from '@/application/artwork/artworkSaveInput'
 import { ref, reactive, computed, watch } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { normalizeKey, type ModelProfile } from '@/utils/promptPolicy'
+import { normalizeKey, sceneSupportsCharacter, type ModelProfile } from '@/utils/promptPolicy'
 import { useSceneStore } from '@/stores/sceneStore'
 import { applyModelProfileToParams } from '@/utils/promptModelProfile'
 import { usePromptTags } from '@/composables/prompt/usePromptTags'
@@ -178,15 +178,36 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (outfit.size) manualTags.value = new Set([...manualTags.value].filter(token => !outfit.has(normalizeKey(token))))
     randomVariation.value = null
   }
-  function setChar(c: CharKey) { char.value = c }
+  function clearInheritedStory() {
+    const current = subject.value
+    const inherited = current.kind === 'popular'
+      ? sceneBlueprints.value.find(scene => scene.id === current.blueprintId)?.description
+      : sceneBaseStory.value
+    if (story.value === inherited) story.value = ''
+  }
+  function setChar(c: CharKey) {
+    const scene = activeScene.value
+    if (!isPopular.value && scene && !sceneSupportsCharacter(scene, c)) {
+      clearInheritedStory()
+      sceneId.value = null; sceneBaseStory.value = ''
+      if (selections.shot === sceneShot(scene)) selections.shot = null
+      if (selections.lighting === sceneLighting(scene)) selections.lighting = null
+      if (selections.composition === sceneComposition(scene)) selections.composition = null
+      if (colorMood.value === sceneColorMood(scene)) colorMood.value = null
+    }
+    char.value = c
+  }
   function setStudioSubject() {
     if (subject.value.kind === 'studio') return
+    clearInheritedStory()
     subject.value = { kind: 'studio' }
     clearReferenceInput()
     outfitOverride.value = null
   }
   function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null,
     options: { preserveReference?: boolean; preserveOutfitOverride?: boolean } = {}) {
+    const previous = subject.value
+    if (previous.kind === 'studio' || previous.characterId !== characterId || previous.blueprintId !== blueprintId) clearInheritedStory()
     clearRandomVariation()
     subject.value = { kind: 'popular', characterId, outfitId, blueprintId }
     if (characterId) void sceneStore.loadBlueprintCharacter(characterId).catch(error => flash(error instanceof Error ? error.message : '角色蓝图读取失败'))
@@ -196,6 +217,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function setPopularBlueprint(blueprintId: string | null) {
     clearRandomVariation()
     if (subject.value.kind !== 'popular') return
+    if (subject.value.blueprintId !== blueprintId) clearInheritedStory()
     subject.value = { kind: 'popular', characterId: subject.value.characterId, outfitId: subject.value.outfitId, blueprintId }
   }
   function setStory(t: string) { story.value = t }

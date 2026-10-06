@@ -79,10 +79,10 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   }
   // A reference replaces inherited rendering input in both subject modes.
   // Detach the studio scene only after accepting transferable tags; retain
-  // handwritten prose, story and explicit edits rather than clearing the draft.
+  // handwritten prose, edited story and explicit edits, retiring inherited story.
   if (studioScene) {
     const style = pb.snapshotStyleLayers(), description = pb.visualDescription
-    pb.clearScene({ keepStory: true })
+    pb.clearScene({ keepStory: pb.story !== pb.sceneBaseStory })
     pb.restoreStyleLayers({ ...style, randomVariation: null, referenceInput: null })
     pb.visualDescription = description
   }

@@ -3,6 +3,8 @@ import { createPinia, setActivePinia } from 'pinia'
 import { usePromptBuilderStore } from './promptBuilderStore'
 import { usePromptHistoryStore } from './promptHistoryStore'
 import { captureResultContext } from '@/utils/resultContext'
+import { useSceneStore } from './sceneStore'
+import { applyInterrogateResult } from '@/composables/prompt/applyInterrogateResult'
 
 const io = vi.hoisted(() => ({ put: vi.fn(), remove: vi.fn(), append: vi.fn(), read: vi.fn(), thumbnail: vi.fn(), stageExit: vi.fn(), events: [] as string[] }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: {
@@ -25,11 +27,31 @@ beforeEach(() => {
   io.thumbnail.mockImplementation(async () => { io.events.push('thumbnail'); return null })
   io.append.mockImplementation(async () => { io.events.push('append') })
   io.read.mockResolvedValue([])
+  vi.spyOn(useSceneStore(), 'loadBlueprintCharacter').mockResolvedValue(undefined)
   vi.stubGlobal('createImageBitmap', vi.fn(async () => { io.events.push('measure'); return { width: 832, height: 1216, close: vi.fn() } }))
   vi.spyOn(console, 'warn').mockImplementation(() => {})
 })
 
 describe('入册抽取前后的兼容特征', () => {
+  it('切换角色后用反推词出图，入册不携带旧场景标题和故事，旧作品保持完整', async () => {
+    const scene = { id: 'nene-beach', char: 'nene', title: '宁宁海边', story: '宁宁站在海边。',
+      prompt: 'beach, standing', camera: 'medium', lighting: 'golden', tags: [] }
+    useSceneStore().scenes = [scene]
+    const pb = usePromptBuilderStore()
+    pb.loadScene(scene)
+    const first = await pb.commitHistoryEntry({ blob: blob(), prompt: 'beach, standing', context: captureResultContext(pb) })
+    pb.setChar('natsume')
+    expect(pb.sceneId).toBeNull()
+    await applyInterrogateResult(pb, { engine: 'wd14', tags: ['sitting', 'library'] })
+    const context = captureResultContext(pb)
+    // Saving a completed result must keep its own context even after another selection.
+    pb.loadScene(scene)
+    const second = await pb.commitHistoryEntry({ blob: blob(), prompt: 'sitting, library', context })
+    expect(second).toMatchObject({ character: 'natsume', scene: null, sceneTitle: null, story: '', manual_tags: ['sitting', 'library'] })
+    expect(first).toMatchObject({ character: 'nene', scene: scene.id, sceneTitle: scene.title, story: scene.story })
+    expect(io.append).toHaveBeenLastCalledWith(second)
+  })
+
   it('在暂存保护内依次写图、启动缩略图、测量并提交，成功前不发布历史', async () => {
     const pb = usePromptBuilderStore()
     io.thumbnail.mockImplementation(async () => { io.events.push('thumbnail'); throw new Error('thumbnail failed') })

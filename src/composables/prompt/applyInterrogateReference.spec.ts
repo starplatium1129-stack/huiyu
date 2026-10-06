@@ -17,7 +17,10 @@ const character = (id: string, hair: string): PopularCharacter => ({
   outfits: [{ id: 'default', name: 'Default', tokens: ['school_uniform'], prose: 'a school uniform', default: true }],
 })
 const cleanups: Array<() => void> = []
-beforeEach(() => { setActivePinia(createPinia()); localStorage.clear(); vi.useFakeTimers() })
+beforeEach(() => {
+  setActivePinia(createPinia()); localStorage.clear(); vi.useFakeTimers()
+  vi.spyOn(useSceneStore(), 'loadBlueprintCharacter').mockResolvedValue(undefined)
+})
 afterEach(() => { cleanups.splice(0).forEach(fn => fn()); vi.clearAllTimers(); vi.useRealTimers() })
 function fixture() {
   useSceneStore().popularCharacters = [character('fixture_a', 'black_hair'), character('fixture_b', 'silver_hair')]
@@ -173,10 +176,12 @@ it('replaces inherited blueprint prose with the reference scene without losing e
     recommendedSize: '832x1216', adult: false,
   }]
   pb.setPopularSubject('fixture_a', 'default', 'old-scene')
+  pb.setStory('Standing on a beach')
   pb.addManualTag('paper_lantern')
   pb.setShot('wide')
   await applyInterrogateResult(pb, extract(['white_coat', 'sitting', 'library']))
   expect(pb.subject).toMatchObject({ blueprintId: null })
+  expect(pb.story).toBe('')
   expect(pb.selections.shot).toBe('wide')
   expect(pb.manualTags.has('paper_lantern')).toBe(true)
   const assembly = usePopularPromptAssembly(pb, ref('krea2'), ref('fixture-model'))
@@ -228,7 +233,7 @@ it.each(['anima', 'krea2'] as const)('replaces an inherited studio scene with th
   expect(pb.sceneId).toBeNull()
   expect(pb.selections).toEqual({ emotion: [], shot: null, lighting: null, composition: null })
   expect(pb.colorMood).toBeNull()
-  expect(pb.story).toBe('Original scene story')
+  expect(pb.story).toBe('')
 })
 
 it('retains explicit studio edits when the reference replaces the inherited scene', async () => {

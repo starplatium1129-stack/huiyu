@@ -5,6 +5,7 @@ import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import type { PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
 import { usePopularPromptAssembly } from '@/composables/prompt/usePopularPromptAssembly'
+import { captureResultContext, historyFromResultContext } from '@/utils/resultContext'
 import { useDirectorPopular, type UseDirectorPopularInput } from './useDirectorPopular'
 
 const characters: PopularCharacter[] = ['black', 'brown', 'silver'].map((color, index) => ({
@@ -44,7 +45,10 @@ function setup() {
   return { pb, input, flow: useDirectorPopular(input) }
 }
 
-beforeEach(() => { setActivePinia(createPinia()); localStorage.clear() })
+beforeEach(() => {
+  setActivePinia(createPinia()); localStorage.clear()
+  vi.spyOn(useSceneStore(), 'loadBlueprintCharacter').mockResolvedValue(undefined)
+})
 
 it.each(['anima', 'krea2'] as const)('replaces only identity across consecutive character switches in %s', engine => {
   const { pb, flow } = setup()
@@ -123,15 +127,20 @@ it('clears unsupported new scene controls and releases inherited settings when s
   expect(pb.subject).toMatchObject({ blueprintId: null })
   expect(pb.colorMood).toBeNull()
   expect(pb.selections).toMatchObject({ shot: null, lighting: null, composition: null })
+  expect(historyFromResultContext(captureResultContext(pb))).toMatchObject({
+    character: characters[1].id, scene: null, sceneTitle: 'Fixture 1 创作', story: '',
+  })
   pb.$dispose()
 })
 
 it('keeps director settings edited away from the old blueprint during a character switch', () => {
   const { pb, flow } = setup()
   flow.selectBlueprint(blueprint)
+  pb.setStory('My handwritten story')
   pb.setShot('close'); pb.setLighting('moon'); pb.setComposition('center'); pb.setColorMood('warmth')
   flow.selectPopularCharacter(characters[1])
   expect(pb.colorMood).toBe('warmth')
   expect(pb.selections).toMatchObject({ shot: 'close', lighting: 'moon', composition: 'center' })
+  expect(captureResultContext(pb).story).toBe('My handwritten story')
   pb.$dispose()
 })
