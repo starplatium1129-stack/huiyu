@@ -54,9 +54,7 @@ pub(super) fn run(
                 }
                 context.cancel = cancel;
                 if !reply.is_closed() {
-                    if matches!(chunk.target, TaskMediaTarget::Result(_))
-                        && context.result_commit.is_some()
-                    {
+                    if context.result_commit.is_some() {
                         let _ = reply.send(Err(result_busy()));
                         continue;
                     }
@@ -99,7 +97,10 @@ pub(super) fn run(
                     let _ = reply.send(Err(result_busy()));
                     continue;
                 }
-                if command["kind"] == "task.result.commit" {
+                if matches!(
+                    command["kind"].as_str(),
+                    Some("task.result.commit" | "task.input.commit")
+                ) {
                     result_commit::start(
                         &mut context,
                         &command,
