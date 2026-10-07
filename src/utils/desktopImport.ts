@@ -34,7 +34,7 @@ export async function importLocalImages(files: readonly ImportSourceFile[]): Pro
   return repository.withStaging(async () => {
     const candidates = filterImageFiles(files)
     let imported = 0
-    let skipped = 0
+    let skipped = files.length - candidates.length
     for (const file of candidates) {
       let imageId: string | null = null
       let pendingRecord: ReturnType<typeof buildImportedRecord> | null = null

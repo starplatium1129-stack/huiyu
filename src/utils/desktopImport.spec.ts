@@ -40,8 +40,11 @@ it.each(['missing', 'unreadable', 'wrong-image'])('retains the original for an u
   }))
 })
 it('imports a batch without reading any complete or single-record history on success', async () => {
-  expect(await importLocalImages([file, file])).toEqual({ imported: 2, skipped: 0 })
-  expect(artworkRepository.appendArtwork).toHaveBeenCalledTimes(2)
+  const files = [...Array.from({ length: 10 }, () => file),
+    { ...file, name: 'notes.txt', type: 'text/plain' }, { ...file, size: 25 * 1024 * 1024 }]
+  expect(await importLocalImages(files)).toEqual({ imported: 8, skipped: 4 })
+  expect(artworkRepository.appendArtwork).toHaveBeenCalledTimes(8)
+  expect(artworkRepository.putImage).toHaveBeenCalledTimes(8)
   expect(artworkRepository.readArtwork).not.toHaveBeenCalled()
 })
 it('reports failed compensation without aborting the remaining batch', async () => {
