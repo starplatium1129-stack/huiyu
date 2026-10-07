@@ -135,62 +135,10 @@ test.beforeEach(async ({ request }) => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 1. 出图
+// 1. 当前出图与场景切换
+// 旧 SD 新建、降负载重试和新队列出图已随 SD_RETIRED 退出。
+// 历史任务的恢复、取消与不重放仍由 generation_service/task_recovery 覆盖。
 // ─────────────────────────────────────────────────────────────────────────────
-test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送到 SD', async ({ page, request }) => {
-  const errors = collectRuntimeErrors(page);
-  // 留出观察任务等待态的时间；WebUI 未返回进度时保持不确定状态。
-  await fault(request, MOCK.sd, { renderMs: 2500 });
-  await page.goto('/prompt-builder?scene=sc001');
-
-  // 受控路线：basic 模式系统自动选 Anima 高质量路线，SD 流程需进专家模式切引擎。
-  // 先从可见入口展开推荐路线，再切 SD 引擎走 SD 出图断言。
-  await page.locator('details.inspector-route > summary').filter({ hasText: '推荐配方与复用' }).click();
-  await expect(page.locator('.managed-route-card')).toBeVisible();
-  await expect(page.locator('details.generation-settings')).toBeHidden();
-  await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
-  await switchToSdEngine(page);
-  await openGenerationSettings(page);
-  await openPromptPreview(page);
-  await expect(page.locator('.prompt-health-body')).toContainText('lora');
-  await page.getByRole('tab', { name: '生成', exact: true }).click();
-
-  // 固定尺寸与 seed，好让断言不依赖推荐值
-  await pickStudioOptionByValue(page.locator('.gen-bar-size').getByRole('combobox'), '896x1344');
-  await toggle(page, '.ctrl-seed [role="switch"]', true);
-  await page.locator('.ctrl-seed input[type="number"]').fill('4242');
-
-  await page.getByRole('button', { name: '生成图片' }).click();
-
-  // 后台生成与成片显现分开；取消可达，未返回进度时不编造百分比。
-  await expect(page.locator('.stage-ready')).toHaveText('正在生成');
-  await expect(page.getByRole('button', { name: '停止绘制', exact: true })).toBeEnabled();
-  const progress = page.getByRole('progressbar', { name: '生图进度', exact: true });
-  await expect(progress).toBeVisible();
-  await expect(progress).not.toHaveAttribute('aria-valuenow', /.+/);
-  await expect(page.locator('.stage-generating-sub')).toContainText(/SD WebUI 生成中.*已等待/);
-
-  // 成片出现 → blob URL 来自 mock 返回的 base64 PNG
-  await expect(page.locator('.result-image')).toBeVisible({ timeout: 15_000 });
-  await expect(page.locator('.pb')).toHaveClass(/has-result/);
-
-  const generated = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
-  expect(generated).toHaveLength(1);
-  expect(generated[0].body).toMatchObject({ width:896, height:1344, seed:4242 });
-  expect(String(generated[0].body?.prompt)).toContain('school_uniform');
-  expect(String(generated[0].body?.prompt)).toContain('<lora:');
-
-  // 保存快照 → IndexedDB 落盘 + 历史面板出现记录
-  await page.getByRole('button', { name: '存入作品册' }).click();
-  await expect(page.locator('.toast-msg')).toContainText('画面已存入本地作品册');
-  // 历史按首次访问加载；打开面板再核对真实保存记录。
-  await page.locator('[aria-controls="material-history"]').click();
-  await expect(page.locator('.history-item')).toHaveCount(1);
-  await expect(page.locator('.history-item').first().locator('.history-meta')).toContainText('seed 4242');
-
-  expect(errors).toEqual([]);
-});
-
 test('flow 1a · 切换场景：中文字幕跟随第二个场景更新', async ({ page }) => {
   await page.goto('/prompt-builder?scene=sc001');
   await openVoiceSettings(page);
@@ -201,52 +149,6 @@ test('flow 1a · 切换场景：中文字幕跟随第二个场景更新', async 
   await expect(page.locator('button.scene-card.active')).toContainText('樱花树下的约定');
   await expect(caption).toHaveValue(/樱花树下的约定/);
   await expect(caption).not.toHaveValue(/放学后的等待/);
-});
-
-test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', async ({ page, request }) => {
-  await fault(request, MOCK.sd, { oom: true });
-  await page.goto('/prompt-builder?scene=sc001');
-  await switchToSdEngine(page);
-
-  await openGenerationSettings(page);
-  await pickStudioOptionByValue(page.locator('.gen-bar-size').getByRole('combobox'), '1216x832');
-  await toggle(page, page.getByRole('switch', { name: 'hires.fix', exact: true }), true);
-  await page.getByRole('button', { name: '生成图片' }).click();
-
-  // 未访问任务组也必须能看到失败和恢复入口；点击后保留原分类/重试断言。
-  await expect(page.locator('.stage-placeholder.is-error')).toBeVisible();
-  await expect(page.locator('.stage-error-detail')).toContainText(/CUDA|out of memory/i);
-  await page.getByRole('button', { name: '查看恢复选项', exact: true }).click();
-  await expect(page.getByRole('tab', { name: '任务', exact: true })).toHaveAttribute('aria-selected', 'true');
-  await expect(page.locator('.sd-recovery-title')).toHaveText('显存不足');
-  const recovery = page.getByRole('button', { name: '降低负载后重试' });
-  await expect(recovery).toBeVisible();
-
-  // 让重试这次成功，断言恢复动作真的改了参数
-  await fault(request, MOCK.sd, {});
-  await recovery.click();
-  await expect(page.locator('.result-image')).toBeVisible();
-
-  const attempts = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
-  expect(attempts).toHaveLength(2);
-  expect(attempts[0].body?.enable_hr).toBe(true);
-  expect(attempts[1].body?.enable_hr).toBeUndefined();
-});
-
-test('flow 1c · 出图队列：串行执行、自动入册', async ({ page, request }) => {
-  await page.goto('/prompt-builder?scene=sc001');
-  await switchToSdEngine(page);
-
-  await page.getByRole('button', { name: '加入队列', exact: true }).click();
-  await page.getByRole('button', { name: '加入队列', exact: true }).click();
-
-  // 队列跑完：两张图都出，且都自动写进历史
-  await expect(page.locator('.sd-queue')).toBeHidden({ timeout: 20_000 });
-  await page.locator('[aria-controls="material-history"]').click();
-  await expect(page.locator('.history-item')).toHaveCount(2, { timeout: 20_000 });
-
-  const webuiCalls = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
-  expect(webuiCalls).toHaveLength(2);
 });
 
 test('flow Anima · 应用 job 经过真网关和假 ComfyUI 出图', async ({ page, request }) => {
