@@ -495,3 +495,36 @@ it('does not publish an old-session project response over the new offline snapsh
   expect(await repository.readProjects()).toEqual([{ id: 'new-album', history_ids: [] }])
   expect(mocks.request).toHaveBeenCalledTimes(2)
 })
+
+it.each(['history', 'projects', 'preferences', 'recent'])('keeps a pre-write %s response consumable without republishing it as an offline cache', async kind => {
+  const item = { id: 'saved', body: { id: 'saved', favorite: false }, revision: 1, deletedAt: null }
+  const old = kind === 'projects' ? { items: [{ body: { id: 'new-album', history_ids: ['saved'] } }] }
+    : kind === 'recent' ? [item] : { items: [item], nextCursor: null, revision: 1 }
+  let finish!: (value: unknown) => void
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'getArtwork') return item
+    if (command.kind === 'patchArtwork') return { changed: true }
+    if (command.kind === 'readArtworkRecentIndex') return { items: [{ id: 'saved', revision: 1, timestamp: 1 }], revision: 1 }
+    return new Promise(resolve => { finish = resolve })
+  })
+  const repository = createDesktopArtworkRepository()
+  const read = () => kind === 'history' ? repository.readHistory() : kind === 'projects' ? repository.readProjects()
+    : kind === 'preferences' ? repository.readPreferenceHistory() : repository.readRecentHistory()
+  const pending = read()
+  await flushPromises()
+  await repository.patchArtwork('saved', { favorite: true })
+  finish(old)
+  expect(await pending).toHaveLength(1) // The gallery can still consume and overlay unrelated incoming records.
+  mocks.state.connection = 'unavailable'
+  mocks.request.mockRejectedValue(new Error('offline'))
+  await expect(read()).rejects.toThrow('offline') // No confirmed post-write snapshot exists yet.
+  mocks.state.connection = 'ready'
+  const updated = { ...item, body: { ...item.body, favorite: true } }
+  mocks.request.mockImplementation(async command => command.kind === 'listProjects' ? old
+    : command.kind === 'readArtworkRecentIndex' ? { items: [{ id: 'saved', revision: 1, timestamp: 1 }], revision: 1 }
+      : command.kind === 'getArtworks' ? [updated] : { items: [updated], nextCursor: null, revision: 2 })
+  const fresh = await read(), calls = mocks.request.mock.calls.length
+  mocks.state.connection = 'unavailable'
+  expect(await read()).toEqual(fresh)
+  expect(mocks.request).toHaveBeenCalledTimes(calls)
+})
