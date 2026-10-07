@@ -112,5 +112,5 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   if (merged.filtered.length) parts.push(`过滤噪点或元数据 ${merged.filtered.length} 项`)
   if (note) parts.push(note)
   pb.flash(parts.join('；'))
-  if (payload.warning) setTimeout(() => pb.flash(payload.warning!), 2600)
+  if (payload.warning) setTimeout(() => { if (current()) pb.flash(payload.warning!) }, 2600)
 }

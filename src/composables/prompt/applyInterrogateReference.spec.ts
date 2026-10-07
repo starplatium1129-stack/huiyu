@@ -41,6 +41,12 @@ it('drops an obsolete reference owner after lazy helper loading without changing
   expect([...pb.manualTags]).toEqual(['smile'])
   expect(pb.outfitOverride).toBeNull()
   expect(pb.referenceInput).toBeNull()
+  current = true
+  const flash = vi.spyOn(pb, 'flash')
+  await applyInterrogateResult(pb, extract(['forest'], { warning: 'obsolete warning' }), () => current)
+  current = false; flash.mockClear()
+  await vi.advanceTimersByTimeAsync(2600)
+  expect(flash).not.toHaveBeenCalled()
 })
 
 
