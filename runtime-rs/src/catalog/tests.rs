@@ -157,6 +157,25 @@ fn import_preserves_values_unknown_dates_and_summary_queries() {
         ])
     );
     assert_eq!(bundle["blueprints"], json!([blueprint.data]));
+    assert_eq!(bundle["profile"], character.data["profile"]);
+    assert_eq!(
+        catalog.projection("characters.json").unwrap().unwrap(),
+        json!([bundle["profile"]])
+    );
+    assert_eq!(
+        catalog
+            .projection("popular-characters.json")
+            .unwrap()
+            .unwrap(),
+        json!({"version":1,"characters":[bundle["character"]]})
+    );
+    assert_eq!(
+        catalog
+            .projection("scene-blueprints.json")
+            .unwrap()
+            .unwrap(),
+        json!({"version":2,"blueprints":bundle["blueprints"]})
+    );
     // Restore the fixture before exercising validated edits below.
     character.data.as_object_mut().unwrap().remove("popular");
     write::put(&catalog.connection, &character, false).unwrap();
