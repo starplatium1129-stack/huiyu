@@ -165,7 +165,10 @@ impl Catalog {
                 while let Some(row) = rows.next()? {
                     let id: String = row.get(0)?;
                     let character: String = row.get(1)?;
-                    if let Some(index) = ["nene", "natsume", "triad"].iter().position(|c| *c == character) {
+                    if let Some(index) = ["nene", "natsume", "triad"]
+                        .iter()
+                        .position(|c| *c == character)
+                    {
                         counts[index] += 1;
                     }
                     metadata.insert(id.clone(), json!({"sortOrder":row.get::<_,i64>(2)?,"createdAt":row.get::<_,Option<String>>(3)?,"updatedAt":row.get::<_,Option<String>>(4)?}));
@@ -173,9 +176,14 @@ impl Catalog {
                 }
                 let mut shards = serde_json::Map::new();
                 for (key, count) in ["nene", "natsume", "shared"].into_iter().zip(counts) {
-                    shards.insert(key.into(), json!({"file":format!("scenes-{key}.json"),"count":count}));
+                    shards.insert(
+                        key.into(),
+                        json!({"file":format!("scenes-{key}.json"),"count":count}),
+                    );
                 }
-                return Ok(Some(json!({"version":2,"total":ids.len(),"shards":shards,"tiers":{"core":core},"orderedIds":ids,"metadata":metadata})));
+                return Ok(Some(
+                    json!({"version":2,"total":ids.len(),"shards":shards,"tiers":{"core":core},"orderedIds":ids,"metadata":metadata}),
+                ));
             }
             let character = match name {
                 "scenes-nene.json" => Some("nene"),
