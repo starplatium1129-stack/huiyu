@@ -268,6 +268,14 @@ fn patch(
         if task.upstream_settled && patch.upstream_settled == Some(false) {
             patch.upstream_settled = None;
         }
+        // A collection commit can win the CAS race after an observation found
+        // no outputs. Retrying that observation cannot hide durable results.
+        // Explicit discard above already clears the references and state.
+        if task.result_state == ResultState::Available
+            && patch.result_state == Some(ResultState::Unavailable)
+        {
+            patch.result_state = None;
+        }
         if task.cancel_requested_at.is_some_and(|time| time != 0)
             && !task.status.terminal()
             && patch.status.is_some_and(|status| {

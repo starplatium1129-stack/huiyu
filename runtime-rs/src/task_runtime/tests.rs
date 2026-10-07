@@ -26,6 +26,19 @@ async fn stale_observation_revision_retries_without_losing_cancelled_terminal_st
         )
         .await
         .unwrap();
+    // A provider can finish collecting after the cancellation read, while a
+    // reconciliation still holds an earlier result-unavailable observation.
+    hooks::collect(
+        &storage,
+        "owner",
+        "observed",
+        vec![crate::execution::Output::Bytes {
+            bytes: Arc::new(b"\x89PNG\r\n\x1a\ncollected fixture".to_vec()),
+            mime: "image/png".into(),
+        }],
+    )
+    .await
+    .unwrap();
     let terminal = patch_at(
         &storage,
         "owner",
@@ -48,6 +61,7 @@ async fn stale_observation_revision_retries_without_losing_cancelled_terminal_st
         TaskPatch {
             status: Some(TaskStatus::Running),
             upstream_settled: Some(false),
+            result_state: Some(ResultState::Unavailable),
             metadata: Some(serde_json::from_value(json!({"observed":true})).unwrap()),
             ..Default::default()
         },
@@ -56,12 +70,20 @@ async fn stale_observation_revision_retries_without_losing_cancelled_terminal_st
     .unwrap();
     assert_eq!(retried.status, TaskStatus::Cancelled);
     assert!(retried.upstream_settled);
+    assert_eq!(retried.result_state, ResultState::Available);
+    assert_eq!(retried.result_refs, terminal.result_refs);
+    assert_eq!(retried.result_refs.len(), 1);
     assert_eq!(retried.cancel_requested_at, terminal.cancel_requested_at);
     assert!(retried.cancel_requested_at.is_some());
     assert_eq!(retried.input, observed.input);
     assert_eq!(retried.metadata["context"], observed.metadata["context"]);
     assert_eq!(retried.metadata["observed"], true);
     assert!(retried.revision > terminal.revision);
+    let discarded = TaskRuntime::delivery(&storage, "owner", "observed", "discarded")
+        .await
+        .unwrap();
+    assert_eq!(discarded["resultState"], "unavailable");
+    assert_eq!(discarded["resultRefs"], json!([]));
     storage.close().await.unwrap();
 }
 
