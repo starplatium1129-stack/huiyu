@@ -62,6 +62,7 @@
 .artist-selected-chips { display:flex; flex-wrap:wrap; gap:var(--s-2); align-items:center; }
 .artist-style-panel .artist-style-tokens { margin:0; max-height:56px; overflow-y:auto; flex-shrink:0; }
 @media (max-width:780px) { .artist-style-panel { padding:var(--s-4); } .artist-style-panel .artist-style-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .artist-style-panel .artist-category-tabs { flex-wrap:nowrap; overflow-x:auto; } .artist-style-panel .artist-cat-btn { flex-shrink:0; } }
+@media (max-width:640px) { .artist-style-panel .artist-controls-bar { grid-template-columns:minmax(0,1fr); } .artist-style-panel .artist-category-tabs { grid-row:auto; } .artist-style-panel .artist-style-search { grid-row:1; } }
 
 /* 黄金混搭预设行 */
 .artist-presets-section {
@@ -134,13 +135,13 @@
 .artist-cat-btn {
   @apply tw:inline-flex tw:items-center tw:gap-[5px];
   flex: 0 0 auto;
-  @apply tw:min-h-[28px];
+  min-height: var(--control-height-sm);
   padding: 0 var(--s-3);
   border: 1px solid var(--border-soft);
   @apply tw:rounded-pill;
   background: var(--bg-deep);
   @apply tw:text-muted tw:cursor-pointer;
-  font: 600 var(--fs-mono-xs) var(--font-sans);
+  font: 500 var(--fs-label-sm) var(--font-sans);
   transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
 }
 .artist-cat-btn:hover {
@@ -151,20 +152,6 @@
   background: var(--accent-soft);
   @apply tw:text-accent;
 }
-.artist-style-search input {
-  @apply tw:w-full tw:min-h-[36px];
-  padding: 0 var(--s-3);
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md;
-  background: var(--bg-deep);
-  @apply tw:text-primary tw:text-label;
-}
-.artist-style-search input:focus-visible {
-  @apply tw:border-accent;
-  outline: 2px solid color-mix(in srgb, var(--accent) 25%, transparent);
-  outline-offset: 1px;
-}
-
 /* 画师网格 */
 .artist-style-grid {
   @apply tw:grid;

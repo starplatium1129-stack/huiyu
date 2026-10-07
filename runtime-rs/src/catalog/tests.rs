@@ -1,3 +1,4 @@
+mod projection_cache;
 mod scene_shards;
 
 use super::*;

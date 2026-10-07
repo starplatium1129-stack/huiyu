@@ -38,6 +38,7 @@
               type="button"
               class="artist-combo-btn"
               :class="{ active: isComboActive(combo.artistIds) }"
+              :aria-pressed="isComboActive(combo.artistIds)"
               @click="applyCombo(combo.artistIds)"
             >
               <div class="combo-top">
@@ -60,6 +61,7 @@
             type="button"
             class="artist-cat-btn"
             :class="{ active: currentCategory === cat.id }"
+            :aria-pressed="currentCategory === cat.id"
             @click="currentCategory = cat.id"
           >
             <ArchiveIcon :name="cat.icon" class="cat-icon" />
@@ -68,16 +70,7 @@
         </div>
 
         <!-- 搜索输入 -->
-        <label class="artist-style-search">
-          <input
-            v-model.trim="query"
-            type="search"
-            placeholder="搜索画师名、中文名或代表作…"
-            aria-label="搜索画师或作品"
-            autocomplete="off"
-            autofocus
-          >
-        </label>
+        <StudioSearch v-model="query" class="artist-style-search" label="搜索画师或作品" placeholder="搜索画师名、中文名或代表作…" autocomplete="off" autofocus :clear-on-escape="false" />
       </div>
 
       <!-- 画师网格 -->
@@ -141,6 +134,7 @@ import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
 import {
   type ArtistStyleEngine,
   type ArtistStyleOption,
@@ -193,15 +187,15 @@ const { recordUsage, frequentTop3Ids, recentIds } = useArtistStyleFunnel(ARTIST_
 const selectedOptions = computed(() => ARTIST_STYLE_OPTIONS.filter(option => props.selected.includes(option.id)))
 
 const filteredOptions = computed(() => {
+  const needle = query.value.trim().toLocaleLowerCase()
   let list = ARTIST_STYLE_OPTIONS
-  if (!query.value && currentScope.value !== 'all') {
+  if (!needle && currentScope.value !== 'all') {
     const ids = currentScope.value === 'frequent' ? frequentTop3Ids.value : recentIds.value
     list = list.filter(option => ids.includes(option.id))
   }
   if (currentCategory.value !== 'all') {
     list = list.filter(option => option.category === currentCategory.value)
   }
-  const needle = query.value.toLocaleLowerCase()
   let matched = list
   if (needle) {
     matched = list.filter(option => {

@@ -33,7 +33,9 @@ export function announceNavigationIntent(path: string): number | null {
   navigationPhase.value = 'intent'
   clearTimeout(intentTimer)
   intentTimer = setTimeout(() => {
-    if (intentToken !== id || navigationPhase.value !== 'intent') return
+    // A real navigation clears this timer in beforeEach. An older pending
+    // route may meanwhile change the phase to loading; it does not own this intent.
+    if (intentToken !== id) return
     clearIntent(path)
     if (navigationId.value === id) {
       navigationId.value = null

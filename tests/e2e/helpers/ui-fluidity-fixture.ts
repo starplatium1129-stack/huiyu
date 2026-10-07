@@ -165,6 +165,8 @@ export async function installUiFluidityFixture(
   }, { enabled: measurementEnabled })
 
   await page.route('**/data/**', async route => {
+    // Vite's bundled JSON modules are source imports, not runtime catalogue reads.
+    if (new URL(route.request().url()).searchParams.has('import')) return route.continue()
     const file = new URL(route.request().url()).pathname.split('/').pop() || ''
     if (!(file in fixtureData)) return route.continue()
     await route.fulfill({

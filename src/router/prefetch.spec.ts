@@ -3,6 +3,7 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 import { createRoutePrefetcher, prefetchRouteResources } from './prefetch'
 
 const access = vi.hoisted(() => ({ local: true }))
+vi.mock('virtual:data-version', () => ({ DATA_VERSION: 1 }))
 vi.mock('../utils/runtimeEnvironment', () => ({ isLocalStudioHost: () => access.local }))
 beforeEach(() => { access.local = true })
 
@@ -35,6 +36,18 @@ it('retains the remote blueprint aggregate fallback', async () => {
     prefetchRouteResources('/popular-scenes')
     await vi.waitFor(() => expect(calls).toHaveLength(3))
     expect(calls.sort()).toEqual(['curation.json', 'popular-characters.json', 'scene-blueprints.json'])
+  } finally { vi.unstubAllGlobals() }
+})
+
+it('warms the showcase module while leaving its manifest and images to the page', async () => {
+  const page = vi.fn(async () => ({})), fetch = vi.fn()
+  const router = createRouter({ history: createMemoryHistory(), routes: [{ path: '/showcase', component: page }] })
+  vi.stubGlobal('fetch', fetch)
+  try {
+    prefetchRouteResources('/showcase?scene=sample')
+    expect(await createRoutePrefetcher(router)('/showcase?scene=sample')).toBe(true)
+    expect(page).toHaveBeenCalledOnce()
+    expect(fetch).not.toHaveBeenCalled()
   } finally { vi.unstubAllGlobals() }
 })
 

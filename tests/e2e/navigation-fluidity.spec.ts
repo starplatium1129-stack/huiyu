@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { installUiFluidityFixture } from './helpers/ui-fluidity-fixture'
 
 test('initial lazy route keeps first-paint feedback until content is ready', async ({ page }) => {
   let release!: () => void
@@ -261,7 +262,8 @@ test('data-saving mode avoids speculative imports but allows normal navigation',
   await expect(page.locator('.page-main > .route-view[data-route-path="/scene-explorer"] h1')).toBeVisible()
 })
 
-test('committed route intent prewarms bounded core data and showcase thumbnails', async ({ page }) => {
+test('committed route intent prewarms bounded core data and leaves showcase loading to the page', async ({ page }) => {
+  await installUiFluidityFixture(page, false)
   await page.goto('/style')
   await expect(page.locator('main h1')).toBeVisible()
   const requests: string[] = []
@@ -279,9 +281,15 @@ test('committed route intent prewarms bounded core data and showcase thumbnails'
   expect(requests.some(url => /\/data\/scenes-(?:nene|natsume)\.json\?v=/.test(url))).toBe(false)
 
   const showcase = page.getByRole('navigation', { name: '主导航' }).getByRole('link', { name: '参考画册', exact: true })
-  const manifestRequest = page.waitForRequest(/\/scene-showcase\/manifest\.json/)
   await showcase.dispatchEvent('pointerdown', { button: 0 })
-  await manifestRequest
-  await page.waitForTimeout(250)
-  expect(prefetchThumbRequests.length).toBeLessThanOrEqual(4)
+  await showcase.click()
+  await expect(page).toHaveURL(/showcase$/)
+  const sample = page.locator('.showcase-grid .sample-visual').first()
+  await expect(sample).toBeVisible()
+  await expect(sample).toBeEnabled()
+  await expect(page.locator('.showcase-page')).not.toHaveAttribute('inert')
+  // The complete activation-to-content window owns exactly one manifest load.
+  // Image elements load the visible thumbnails; pointer intent adds no fetch copies.
+  expect(requests.filter(url => /\/scene-showcase\/manifest\.json(?:\?|$)/.test(url))).toHaveLength(1)
+  expect(prefetchThumbRequests).toHaveLength(0)
 })

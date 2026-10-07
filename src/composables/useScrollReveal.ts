@@ -36,6 +36,14 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
     })
   }
   function schedule() { if (!active || frame) return; frame = requestAnimationFrame(() => { frame = 0; observeAll() }) }
+  function onMutations(records: MutationRecord[]) {
+    if (!active || frame) return
+    // Counters, status copy and hover decoration do not introduce reveal targets.
+    const changed = records.some(record => record.type === 'attributes'
+      ? record.target instanceof Element && record.target.matches(selector)
+      : [...record.addedNodes].some(node => node instanceof Element && (node.matches(selector) || node.querySelector(selector))))
+    if (changed) schedule()
+  }
   function start() {
     if (active) return
     active = true
@@ -49,7 +57,7 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
     media.addEventListener('change', observeAll)
     window.addEventListener('atelier:motion-preference', observeAll)
     root.addEventListener('focusin', onFocus)
-    mutations = new MutationObserver(schedule)
+    mutations = new MutationObserver(onMutations)
     mutations.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-reveal-ready'] })
     observeAll()
   }

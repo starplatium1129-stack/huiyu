@@ -1,7 +1,7 @@
 <template>
   <TabsRoot v-model="active" as="aside" :unmount-on-hide="false" id="drawing-inspector"
     class="director-inspector inspector-workbench" aria-label="创作参数">
-    <div class="inspector-heading"><strong>编辑台</strong><span>{{ busy ? '正在绘制' : '调整这一幕' }}</span></div>
+    <div class="inspector-heading"><strong>绘制工具</strong><span>{{ busy ? '正在绘制' : '调整这一幕' }}</span></div>
     <TabsList class="inspector-tabs studio-segments studio-segments--compact" data-fluid-glass aria-label="参数分类">
       <AnimatedSelection />
       <TabsTrigger v-for="tab in tabs" :key="tab.id" :value="tab.id" as-child>
@@ -32,14 +32,16 @@ import '@/assets/css/director/components/DirectorInspector.css'
 
 defineProps<{ queueCount: number; busy: boolean }>()
 const tabs = [
-  { id: 'render', label: '生成' }, { id: 'prompt', label: '提示词' }, { id: 'delivery', label: '任务' },
+  { id: 'render', label: '绘制' }, { id: 'image', label: '图像' },
+  { id: 'prompt', label: '提示词' }, { id: 'delivery', label: '任务' },
 ]
 const active = ref('render')
 
-async function selectSection(section: string) {
+async function selectSection(section: string, scrollToStart = false) {
   if (!tabs.some(tab => tab.id === section)) return
   active.value = section
   await nextTick()
+  if (scrollToStart) document.getElementById(`inspector-${section}`)?.scrollTo({ top: 0, behavior: 'instant' })
   const button = document.getElementById(`inspector-tab-${section}`)
   button?.focus({ preventScroll: true })
   const bounds = button?.getBoundingClientRect()

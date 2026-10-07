@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-const props = withDefaults(defineProps<{ label: string; placeholder?: string; id?: string; clearOnEscape?: boolean; autofocus?: boolean }>(), { clearOnEscape: true, autofocus: false })
+const props = withDefaults(defineProps<{ label: string; placeholder?: string; id?: string; clearOnEscape?: boolean; autofocus?: boolean; autocomplete?: string; size?: 'sm' | 'md' }>(), { clearOnEscape: true, autofocus: false, size: 'md' })
 const value = defineModel<string>({ required: true })
 const emit = defineEmits<{ keydown: [event: KeyboardEvent] }>()
 const input = ref<HTMLInputElement | null>(null)
@@ -14,13 +14,16 @@ function keydown(event: KeyboardEvent) {
 defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 </script>
 <template>
-  <div data-fluid-glass class="studio-search tw:flex tw:items-center tw:gap-s-2 tw:min-w-0 tw:py-0 tw:px-s-3 tw:border-0 tw:rounded-pill tw:bg-surface tw:text-secondary">
+  <div data-fluid-glass :data-size="size" class="studio-search tw:flex tw:items-center tw:gap-s-2 tw:min-w-0 tw:py-0 tw:px-s-3 tw:border-0 tw:rounded-pill tw:bg-surface tw:text-secondary">
     <ArchiveIcon name="search" />
-    <input :id="id" ref="input" v-model="value" :autofocus="autofocus" class="studio-search-input tw:w-full tw:min-w-0 tw:min-h-[38px] tw:py-s-2 tw:px-0 tw:border-0 tw:[outline:0] tw:bg-transparent tw:text-primary tw:[font:400_var(--fs-body-sm)_var(--font-sans)] tw:appearance-none" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
+    <input :id="id" ref="input" v-model="value" :autofocus="autofocus" :autocomplete="autocomplete" class="studio-search-input tw:w-full tw:min-w-0 tw:py-s-2 tw:px-0 tw:border-0 tw:[outline:0] tw:bg-transparent tw:text-primary tw:[font:400_var(--fs-body-sm)_var(--font-sans)] tw:appearance-none" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
     <button v-if="value" type="button" class="tw:grid tw:place-items-center tw:[flex:0_0_32px] tw:w-[32px] tw:h-[32px] tw:border-0 tw:rounded-pill tw:bg-transparent tw:text-secondary tw:cursor-pointer" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
   </div>
 </template>
 <style scoped>
+.studio-search-input { min-height:var(--control-height); }
+.studio-search[data-size='sm'] { gap:var(--s-1); padding-inline:var(--s-2); }
+.studio-search[data-size='sm'] .studio-search-input { min-height:var(--control-height-sm); padding-block:var(--s-1); font-size:var(--fs-label-sm); }
 .studio-search:focus-within { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
 .studio-search input:focus-visible { outline:0; box-shadow:none; }
 .studio-search input::-webkit-search-cancel-button { display:none; }

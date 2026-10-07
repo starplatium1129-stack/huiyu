@@ -65,7 +65,13 @@ export const contentMotion: ObjectDirective<HTMLElement, unknown> = {
 export function installContentMotion() {
   function preference() { if (document.hidden || prefersReducedMotion()) settle() }
   function keyboard() { keyboardInput = true; settle() }
-  function pointer() { keyboardInput = false }
+  function pointer(event: Event) {
+    keyboardInput = false
+    if (!(event.target instanceof Node)) return
+    // A chosen child panel owns the next frame. Otherwise the active ancestor
+    // below suppresses its reveal, making a quick second selection look inert.
+    for (const el of active.keys()) if (el.contains(event.target)) cancel(el)
+  }
   function toggle(event: Event) {
     if (!(event.target instanceof HTMLDetailsElement)) return
     const details = event.target

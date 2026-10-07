@@ -14,7 +14,7 @@ type Connection = { saveData?: boolean; effectiveType?: string }
 
 function intentLink(event: Event): HTMLAnchorElement | null {
   const el = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null
-  if (!el || el.target === '_blank' || el.hasAttribute('download')) return null
+  if (!el || (el.target && el.target.toLowerCase() !== '_self') || el.hasAttribute('download')) return null
   const url = new URL(el.href, location.href)
   const destination = `${url.pathname}${url.search}${url.hash}`
   const current = `${location.pathname}${location.search}${location.hash}`
@@ -32,6 +32,8 @@ function canSpeculate() {
   return !connection?.saveData && !/^(slow-)?2g$/.test(connection?.effectiveType ?? '')
 }
 function prefetch(event: Event) {
+  if (event instanceof PointerEvent && event.type === 'pointerdown'
+    && (event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.defaultPrevented)) return
   const el = intentLink(event)
   if (!el) return
   if (event.type === 'pointerdown') {
@@ -41,7 +43,6 @@ function prefetch(event: Event) {
   }
   const connection = (navigator as Navigator & { connection?: Connection }).connection
   if (connection?.saveData || /^(slow-)?2g$/.test(connection?.effectiveType ?? '')) return
-  if (event instanceof PointerEvent && event.type === 'pointerdown' && event.button !== 0) return
   if (event instanceof PointerEvent && event.type === 'pointerover' && event.relatedTarget instanceof Node && el.contains(event.relatedTarget)) return
   cancelHover()
   const warm = () => {
@@ -56,7 +57,8 @@ function pointerOut(event: PointerEvent) {
   if (el && (!(event.relatedTarget instanceof Node) || !el.contains(event.relatedTarget))) cancelHover()
 }
 function keyboardActivate(event: KeyboardEvent) {
-  if (event.key !== 'Enter' && event.key !== ' ') return
+  // Space scrolls a native link; modified Enter belongs to another browsing context.
+  if (event.key !== 'Enter' || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.defaultPrevented) return
   const el = intentLink(event)
   if (!el) return
   const destination = routeDestination(el)

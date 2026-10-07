@@ -89,7 +89,9 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
       else document.documentElement.dataset.motion = previous
     }
   })
-  it('supports arrow and boundary keys on plain segmented radio groups', async () => {
+  it('supports arrow and boundary keys without a moving keyboard selection on plain segmented radio groups', async () => {
+    const previous = document.documentElement.dataset.motion
+    document.documentElement.dataset.motion = 'full'
     const selected = ref('a')
     const Container = defineComponent({ setup: () => () => h('div', { class: 'studio-segments', role: 'radiogroup' }, [
       ...['a', 'b', 'c'].map(id => h('button', {
@@ -99,15 +101,25 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
     ]) })
     const wrapper = mount(Container, { attachTo: document.body })
     try {
-      for (const button of wrapper.findAll('button')) vi.spyOn(button.element, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 80, 40))
+      vi.spyOn(wrapper.element, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 300, 40))
+      wrapper.findAll('button').forEach((button, index) => {
+        vi.spyOn(button.element, 'getBoundingClientRect').mockReturnValue(new DOMRect(index * 80, 0, 80, 40))
+      })
+      await flushIndicator()
       await wrapper.get('#a').trigger('keydown', { key: 'ArrowRight' })
       expect(wrapper.get('#c').attributes('aria-checked')).toBe('true')
       expect(document.activeElement).toBe(wrapper.get('#c').element)
+      await flushIndicator()
+      expect((wrapper.get('.animated-selection').element as HTMLElement).style.transform).toContain('translate(160px,0px)')
       await wrapper.get('#c').trigger('keydown', { key: 'Home' })
       expect(wrapper.get('#a').attributes('aria-checked')).toBe('true')
       await wrapper.get('#a').trigger('keydown', { key: 'End' })
       expect(wrapper.get('#c').attributes('aria-checked')).toBe('true')
-    } finally { wrapper.unmount() }
+    } finally {
+      wrapper.unmount()
+      if (previous === undefined) delete document.documentElement.dataset.motion
+      else document.documentElement.dataset.motion = previous
+    }
   })
   it('suspends rAF when document becomes hidden', async () => {
     let isHidden = false

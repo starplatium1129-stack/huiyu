@@ -1,7 +1,7 @@
 <template>
   <div ref="host" class="generation-particles" aria-hidden="true">
     <GenerationBloomShader v-if="loadShader && !shaderFailed && !lowEffects" :progress="progress" :colors="colors"
-      :animate="canAnimate" @unavailable="shaderFailed = true" />
+      :present="canPresent" :animate="canAnimate" @unavailable="shaderFailed = true" />
     <canvas ref="canvas"></canvas>
     <span class="generation-particle-palette"><i class="tone-pink"></i><i class="tone-cyan"></i><i class="tone-violet"></i><i class="tone-highlight"></i></span>
   </div>
@@ -40,7 +40,7 @@ function stop() {
 }
 
 function preparePalette() {
-  if (!host.value) return
+  if (!canPresent.value || !host.value) return
   colors.value = [...host.value.querySelectorAll<HTMLElement>('.generation-particle-palette i')].map(item => getComputedStyle(item).color)
   if (props.palette?.length === 3) {
     const light = host.value.closest('[data-theme]')?.getAttribute('data-theme') === 'light'

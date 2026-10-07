@@ -7,11 +7,17 @@
   .pb .prompt-health-panel { @apply tw:p-0; }
   .pb .prompt-health-summary { @apply tw:flex tw:items-center tw:gap-s-2 tw:p-s-4 tw:cursor-pointer; list-style:none; }
   .pb .prompt-health-summary::-webkit-details-marker { @apply tw:hidden; }
-  .pb .prompt-health-summary::after { content:"⌄"; @apply tw:ml-s-1 tw:text-muted; transition:transform var(--motion-hover) var(--ease-out); }
-  .pb .prompt-health-panel[open] .prompt-health-summary::after { transform:rotate(180deg); }
+  .pb .prompt-health-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); flex-basis:100%; min-width:0; }
+  .pb .prompt-health-heading .archive-icon { flex-shrink:0; }
+  .pb .prompt-health-panel[open] .prompt-health-heading .archive-icon { transform:rotate(180deg); }
+  .pb .prompt-health-summary .monitor-profile { flex-basis:100%; }
+  .pb .prompt-health-summary .token-counter { width:100%; flex-wrap:wrap; }
+  .pb .prompt-health-summary .token-counter :is(.bar,.num,.muted) { flex-shrink:0; white-space:nowrap; }
+  .pb .prompt-health-summary .prompt-health { flex-basis:100%; text-transform:none; overflow-wrap:anywhere; }
   .pb .prompt-health-summary .token-counter { @apply tw:ml-auto; }
   .pb .prompt-health-summary .monitor-profile + .token-counter { @apply tw:ml-0; }
   .pb .prompt-health-body { padding:0 var(--s-4) var(--s-4); border-top:1px solid var(--border-soft); }
+  .pb .prompt-preview-actions { margin-top:var(--s-3); }
   .pb .prompt-health-body .preview-output { @apply tw:mt-s-3; }
   .pb .prompt-health-warnings { @apply tw:grid tw:gap-s-1; margin:var(--s-3) 0 0; @apply tw:pl-[20px] tw:text-warning-text tw:text-label tw:leading-body; }
   .pb .prompt-health-ok { margin:var(--s-3) 0 0; @apply tw:text-success-text tw:text-label; }

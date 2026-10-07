@@ -5,7 +5,7 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 
-const props = defineProps<{ progress: number | null; colors: readonly string[]; animate: boolean }>()
+const props = defineProps<{ progress: number | null; colors: readonly string[]; present: boolean; animate: boolean }>()
 const emit = defineEmits<{ ready: []; unavailable: [] }>()
 const canvas = ref<HTMLCanvasElement | null>(null)
 let gl: WebGL2RenderingContext | null = null
@@ -73,7 +73,7 @@ function compile(type: number, source: string) {
   return shader
 }
 function draw() {
-  if (!gl || !program || !canvas.value) return
+  if (!props.present || !gl || !program || !canvas.value) return
   gl.viewport(0, 0, canvas.value.width, canvas.value.height)
   gl.useProgram(program)
   gl.uniform1f(uniforms.time, time); gl.uniform1f(uniforms.gather, concentration)
@@ -86,17 +86,22 @@ function draw() {
 }
 function resize() {
   const surface = canvas.value
-  if (!surface) return
+  if (!props.present || !surface) return
   const { width, height } = surface.getBoundingClientRect()
   if (!width || !height) return
   const ratio = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(280_000 / (width * height)))
-  surface.width = Math.max(1, Math.round(width * ratio)); surface.height = Math.max(1, Math.round(height * ratio))
+  const pixelWidth = Math.max(1, Math.round(width * ratio)), pixelHeight = Math.max(1, Math.round(height * ratio))
+  if (surface.width !== pixelWidth) surface.width = pixelWidth
+  if (surface.height !== pixelHeight) surface.height = pixelHeight
   draw()
 }
 function reconcile() {
   stop()
-  if (!program) return
-  if (!props.animate) { concentration = props.progress ?? concentration; draw(); return }
+  if (!program || !props.present) return
+  // A cached return paints the latest task snapshot without rebuilding GPU objects.
+  concentration = props.progress ?? concentration
+  resize()
+  if (!props.animate) return
   stopFrames = registerParticleFrame((_now, delta) => {
     time += delta / 1000
     if (props.progress !== null) concentration += (props.progress - concentration) * (1 - Math.exp(-delta / 420))
@@ -105,8 +110,12 @@ function reconcile() {
 }
 useResizeObserver(canvas, resize)
 useEventListener(canvas, 'webglcontextlost', event => { event.preventDefault(); unavailable() })
-watch(() => props.animate, reconcile, { flush: 'sync' })
-watch(() => props.progress, () => { if (!props.animate) reconcile() })
+watch([() => props.present, () => props.animate], reconcile, { flush: 'post' })
+watch(() => props.progress, progress => {
+  if (!props.present || props.animate) return
+  concentration = progress ?? concentration
+  draw()
+})
 watch(() => props.colors, draw)
 onMounted(() => {
   try {
@@ -131,7 +140,7 @@ onMounted(() => {
     const position = gl.getAttribLocation(program, 'position')
     gl.enableVertexAttribArray(position); gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0)
     uniforms = Object.fromEntries(['time','gather','aspect','pigmentA','pigmentB','pigmentC'].map(name => [name, gl!.getUniformLocation(program!, name)]))
-    resize(); reconcile(); emit('ready')
+    reconcile(); emit('ready')
   } catch { unavailable() }
 })
 onBeforeUnmount(() => {

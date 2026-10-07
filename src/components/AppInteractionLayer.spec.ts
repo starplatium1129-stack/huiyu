@@ -30,6 +30,39 @@ function setup(mode: string, current: string, href: string) {
   return link
 }
 
+it('ignores non-navigating presses before announcing or fetching and accepts plain Enter', () => {
+  const link = setup('test', '/style', '/showcase')
+  for (const options of [{ button: 1 }, { button: 2 }, { ctrlKey: true }, { metaKey: true }, { shiftKey: true }, { altKey: true }]) {
+    link.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, ...options }))
+  }
+  for (const options of [{ key: ' ' }, { key: 'Enter', ctrlKey: true }, { key: 'Enter', metaKey: true }, { key: 'Enter', shiftKey: true }, { key: 'Enter', altKey: true }]) {
+    link.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, ...options }))
+  }
+  const prevented = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+  prevented.preventDefault(); link.dispatchEvent(prevented)
+  expect(mocks.intent).not.toHaveBeenCalled()
+  expect(mocks.resources).not.toHaveBeenCalled()
+  expect(mocks.prefetch).not.toHaveBeenCalled()
+  link.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+  expect(mocks.intent).toHaveBeenCalledExactlyOnceWith('/showcase')
+  expect(mocks.resources).toHaveBeenCalledExactlyOnceWith('/showcase')
+})
+
+it('leaves downloads, external links and other browsing contexts to the browser', () => {
+  const link = setup('test', '/style', '/scene-explorer')
+  for (const target of ['_blank', '_BLANK', 'reference-window']) {
+    link.target = target
+    link.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 0 }))
+  }
+  link.removeAttribute('target'); link.download = 'scenes.json'
+  link.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 0 }))
+  link.removeAttribute('download'); link.href = 'https://example.com/scene-explorer'
+  link.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 0 }))
+  expect(mocks.intent).not.toHaveBeenCalled()
+  expect(mocks.resources).not.toHaveBeenCalled()
+  expect(mocks.prefetch).not.toHaveBeenCalled()
+})
+
 for (const mode of ['desktop', 'test']) {
   const current = mode === 'desktop' ? '/#/style' : '/style'
   const destination = '/scene-explorer?q=%E5%A4%9C#results'

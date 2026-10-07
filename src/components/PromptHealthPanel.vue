@@ -1,7 +1,7 @@
 <template>
   <details class="monitor advanced-decision prompt-health-panel" :class="{ 'prompt-health-compact': compact }" id="promptMonitor" :open="open !== false">
     <summary class="panel-title prompt-health-summary">
-      <span>{{ compact ? '提示词与编译' : 'Prompt 实时编译 · Live Preview' }}</span>
+      <span class="prompt-health-heading">提示词预览<ArchiveIcon name="chevron-down" /></span>
       <span v-if="modelName" class="monitor-profile">{{ modelName }}</span>
       <span class="token-counter" :class="report.level">
         <span class="bar"><i :style="{ '--progress': progress + '%' }"></i></span>
@@ -12,6 +12,10 @@
     </summary>
 
     <div class="prompt-health-body">
+      <div class="preview-actions prompt-preview-actions">
+        <button class="btn btn-primary" type="button" @click="emit('copy')">复制完整 Prompt</button>
+        <button class="btn btn-ghost" type="button" @click="emit('save')">保存当前草稿</button>
+      </div>
       <div v-if="!prompt" class="preview-output preview-empty">
         选择场景或勾选词条，提示词将在此实时动态编译呈现。
       </div>
@@ -60,10 +64,6 @@
       </ul>
       <p v-else class="prompt-health-ok">提示词编译完成，格式与当前引擎完全匹配。</p>
 
-      <div class="preview-actions">
-        <button class="btn btn-primary" type="button" @click="emit('copy')">复制完整 Prompt</button>
-        <button class="btn btn-ghost" type="button" @click="emit('save')">保存当前草稿</button>
-      </div>
     </div>
   </details>
 </template>
@@ -71,6 +71,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { QUALITY_WORDS } from '@/utils/promptPolicy'
 import type { PromptReport } from '@/utils/promptPolicy'
 import '@/assets/css/director/components/PromptHealthPanel.css'

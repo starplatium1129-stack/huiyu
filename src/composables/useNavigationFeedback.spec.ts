@@ -72,6 +72,23 @@ it('expires an activation intent when no navigation starts', async () => {
   expect(state.navigationId.value).toBeNull()
 })
 
+it('expires an uncommitted newer intent while the earlier navigation is still loading', async () => {
+  const state = await setup()
+  const pending = state.router.push('/first')
+  await state.firstStarted.promise
+  announceNavigationIntent('/second')
+  await vi.advanceTimersByTimeAsync(180)
+  expect(state.loading.value).toBe(true)
+  await vi.advanceTimersByTimeAsync(820)
+  expect(state.intentPath.value).toBe('')
+  expect(state.pendingPath.value).toBe('/first')
+  expect(state.loading.value).toBe(true)
+  state.first.resolve({})
+  await pending
+  expect(state.loading.value).toBe(false)
+  expect(state.router.currentRoute.value.path).toBe('/first')
+})
+
 it('does not let an older cancelled navigation hide a newer pending route', async () => {
   const state = await setup()
   const older = state.router.push('/first')

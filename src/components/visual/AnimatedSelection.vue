@@ -23,8 +23,10 @@ let destinationBox = ''
 let keyboardInput = false
 let measureFrame = 0
 function keyboard(event: KeyboardEvent) {
+  // Keep keyboard selection and its painted state together in every group;
+  // managed tablists still retain ownership of their own roving focus.
+  keyboardInput = true; fluid?.settle(); indicator.value?.style.setProperty('transition','none')
   if (parent?.classList.contains('studio-segments') && event.target instanceof HTMLButtonElement) {
-    keyboardInput = false
     // Reka owns tab/radio roving focus. Plain pressed-button groups use the same keys.
     if (parent.getAttribute('role') === 'tablist' || parent.dataset.segmentKeyboard === 'managed' || event.altKey || event.ctrlKey || event.metaKey) return
     const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End']
@@ -42,7 +44,6 @@ function keyboard(event: KeyboardEvent) {
     buttons[next].click()
     return
   }
-  keyboardInput = true; fluid?.settle(); indicator.value?.style.setProperty('transition','none')
 }
 function pointer() { keyboardInput = false; indicator.value?.style.removeProperty('transition') }
 // Motion batches all indicator reads before any indicator writes in this frame.

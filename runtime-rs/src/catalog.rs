@@ -5,6 +5,7 @@ mod dependencies;
 mod http;
 mod import;
 mod migration;
+mod projection_cache;
 mod query;
 mod snapshots;
 #[cfg(test)]
@@ -16,12 +17,12 @@ mod write;
 use crate::error::{ApiError, Result};
 pub use cli::run as cli;
 pub use http::router;
+pub(crate) use projection_cache::ProjectionCache;
 pub use query::Query;
 use rusqlite::{Connection, OptionalExtension, params};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
-pub use views::projection;
 pub use write::Change;
 
 pub const KINDS: &[&str] = &["character", "outfit", "scene", "blueprint", "document"];
@@ -95,6 +96,7 @@ impl Catalog {
                 deleted INTEGER NOT NULL DEFAULT 0 CHECK(deleted IN(0,1)),PRIMARY KEY(kind,id));
             CREATE INDEX IF NOT EXISTS catalog_browse ON content_records(kind,deleted,character_id,category,rating,sort_order,id);
             CREATE INDEX IF NOT EXISTS catalog_recent ON content_records(kind,deleted,created_at,id);
+            CREATE INDEX IF NOT EXISTS catalog_order ON content_records(kind,deleted,sort_order,id);
             CREATE TABLE IF NOT EXISTS content_seed (kind TEXT NOT NULL,id TEXT NOT NULL,record TEXT NOT NULL,deleted INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(kind,id));
             CREATE TABLE IF NOT EXISTS content_history (
                 sequence INTEGER PRIMARY KEY AUTOINCREMENT, batch TEXT NOT NULL,kind TEXT NOT NULL,id TEXT NOT NULL,

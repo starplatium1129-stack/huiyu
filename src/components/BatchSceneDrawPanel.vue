@@ -13,7 +13,7 @@
                   : '使用当前词条，一次性勾选多位角色批量出图，成片自动归入各角色画廊。')
               : '逐张串行生成；离页或重开后保留计划，点击继续核对原任务并执行剩余项。' }}</p>
           </div>
-          <button class="btn btn-ghost" type="button" aria-label="关闭" @click="emit('close')"><ArchiveIcon name="close" /></button>
+          <button class="btn btn-ghost btn-icon" type="button" aria-label="关闭批量出图" @click="emit('close')"><ArchiveIcon name="close" /></button>
         </header>
         <p v-if="batchDraw.storageError.value" class="batch-card-error" role="alert">计划尚未保存或读取失败：{{ batchDraw.storageError.value }}。恢复资料连接后再继续。</p>
 
@@ -25,9 +25,9 @@
               <div class="batch-seg studio-segments studio-segments--compact" role="group" aria-label="选择批量模式">
                 <AnimatedSelection />
                 <button type="button" :aria-pressed="batchMode === 'scene'"
-                  :class="{ active: batchMode === 'scene' }" @click="batchMode = 'scene'">按场景蓝图</button>
+                  @click="batchMode = 'scene'">按场景蓝图</button>
                 <button type="button" :aria-pressed="batchMode === 'character'"
-                  :class="{ active: batchMode === 'character' }" @click="batchMode = 'character'">按多角色漫游</button>
+                  @click="batchMode = 'character'">按多角色漫游</button>
               </div>
             </div>
             <div class="batch-field">
@@ -36,12 +36,12 @@
                 <AnimatedSelection />
                 <StudioTooltip anchor :content="!sdAvailable ? 'SD WebUI 当前离线' : undefined">
                   <button type="button" :aria-pressed="batchEngine === 'sd'"
-                    :class="{ active: batchEngine === 'sd' }" :disabled="!sdAvailable"
+                    :disabled="!sdAvailable"
                     @click="batchEngine = 'sd'">SD</button>
                 </StudioTooltip>
                 <StudioTooltip anchor :content="!animaAvailable ? 'ComfyUI 当前离线' : undefined">
                   <button type="button" :aria-pressed="batchEngine === 'anima'"
-                    :class="{ active: batchEngine === 'anima' }" :disabled="!animaAvailable"
+                    :disabled="!animaAvailable"
                     @click="batchEngine = 'anima'">{{ props.deps.animaState.value.family === 'krea2' ? 'Krea 2' : 'Anima' }}</button>
                 </StudioTooltip>
               </div>
@@ -51,9 +51,9 @@
               <div class="batch-seg studio-segments studio-segments--compact" role="group" aria-label="每项出几张">
                 <AnimatedSelection />
                 <button type="button" :aria-pressed="count === 1"
-                  :class="{ active: count === 1 }" @click="count = 1">1 张</button>
+                  @click="count = 1">1 张</button>
                 <button type="button" :aria-pressed="count === 3"
-                  :class="{ active: count === 3 }" @click="count = 3">3 张候选</button>
+                  @click="count = 3">3 张候选</button>
               </div>
             </div>
           </div>
@@ -61,7 +61,7 @@
           <!-- 场景蓝图选择视图 -->
           <template v-if="batchMode === 'scene'">
             <div class="batch-scene-toolbar">
-              <input v-model="filter" class="input" type="search" aria-label="搜索批量场景" placeholder="搜索场景 / 角色 / 地点…" />
+              <StudioSearch v-model="filter" size="sm" label="搜索批量场景" placeholder="搜索场景 / 角色 / 地点…" :clear-on-escape="false" />
               <StudioSelect v-model="categoryFilter" size="sm" label="按分类过滤" :options="categoryOptions" />
               <button class="btn btn-ghost btn-sm" type="button" @click="toggleAllScenes">{{ allFilteredScenesSelected ? '取消全选' : '全选匹配项' }}</button>
               <button class="btn btn-ghost btn-sm" type="button" @click="clearSceneSelection">清空</button>
@@ -109,7 +109,7 @@
             </div>
 
             <div class="batch-scene-toolbar">
-              <input v-model="charFilter" class="input" type="search" aria-label="搜索批量角色" placeholder="搜索角色名 / 原作…" />
+              <StudioSearch v-model="charFilter" size="sm" label="搜索批量角色" placeholder="搜索角色名 / 原作…" :clear-on-escape="false" />
               <StudioSelect v-model="franchiseFilter" size="sm" label="按作品过滤" :options="franchiseOptions" />
               <button class="btn btn-ghost btn-sm" type="button" @click="toggleAllCharacters">{{ allFilteredCharsSelected ? '取消全选' : '全选匹配项' }}</button>
               <button class="btn btn-ghost btn-sm" type="button" @click="clearCharSelection">清空</button>
@@ -239,6 +239,7 @@ import FluidTransition from "@/components/visual/FluidTransition.vue"
 import BatchArtworkPreview from '@/components/gallery/BatchArtworkPreview.vue'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import { computed, reactive, ref, watch, onUnmounted } from 'vue'

@@ -30,22 +30,10 @@
 /* ── 配置态 ── */
 .batch-config-row { @apply tw:flex tw:flex-wrap; gap: var(--s-4) var(--s-6); }
 .batch-field { @apply tw:grid tw:gap-s-2; }
-.batch-seg {
-  @apply tw:inline-flex tw:p-[3px];
-  border: 1px solid var(--border-soft); @apply tw:rounded-md;
-  background: var(--bg-deep);
-}
-.batch-seg button {
-  @apply tw:min-h-[30px]; padding: 0 var(--s-3);
-  border: 0; @apply tw:rounded-sm;
-  background: transparent; @apply tw:text-muted tw:text-label-sm tw:cursor-pointer;
-  transition: background var(--motion-hover), color var(--motion-hover);
-}
-.batch-seg button:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed; }
-.batch-seg button.active { background: var(--accent); @apply tw:text-inverse; }
+.batch-seg button { @apply tw:text-label-sm tw:cursor-pointer; }
 
 .batch-scene-toolbar { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center; }
-.batch-scene-toolbar .input { flex: 1 1 200px; }
+.batch-scene-toolbar .studio-search { flex: 1 1 200px; }
 /* 原生 select 已迁至 StudioSelect：仅保留宽度收敛，外观由触发器统一样式接管 */
 .batch-scene-toolbar .studio-select-wrapper {
   flex: 0 1 auto;

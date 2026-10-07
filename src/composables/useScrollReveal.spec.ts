@@ -70,3 +70,41 @@ it('waits for a decoded card and reveals its logical identity only once across r
     expect(observe).toHaveBeenCalledOnce()
   } finally { wrapper.unmount() }
 })
+
+it('ignores collection counter and status changes while still observing newly added cards', async () => {
+  const observe = vi.fn()
+  vi.stubGlobal('IntersectionObserver', class { observe = observe; unobserve = vi.fn(); disconnect = vi.fn() })
+  vi.stubGlobal('matchMedia', () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }))
+  const frames = new Map<number, FrameRequestCallback>()
+  let frameId = 0
+  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { frames.set(++frameId, callback); return frameId })
+  vi.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id))
+  const selected = ref(0), refreshing = ref(false), cards = ref(60)
+  // Gallery selection counts and Showcase refresh notices share a root with reveal cards.
+  const Page = defineComponent({ setup() {
+    useScrollReveal()
+    return () => h('article', [
+      h('strong', String(selected.value)),
+      refreshing.value ? h('p', { role: 'status' }, '正在刷新画册') : null,
+      h('section', Array.from({ length: cards.value }, (_, key) => h('div', { key, 'data-reveal': '' }))),
+    ])
+  } })
+  const wrapper = mount(Page, { attachTo: document.body })
+  const scan = vi.spyOn(wrapper.element, 'querySelectorAll')
+  async function flushFrame() {
+    await nextTick(); await Promise.resolve()
+    const queued = [...frames.values()]; frames.clear()
+    queued.forEach(callback => callback(0))
+  }
+  try {
+    expect(observe).toHaveBeenCalledTimes(60)
+    for (let count = 1; count <= 12; count++) {
+      selected.value = count; refreshing.value = !refreshing.value
+      await flushFrame()
+    }
+    expect(scan).not.toHaveBeenCalled()
+    cards.value++
+    await flushFrame()
+    expect(observe).toHaveBeenCalledTimes(61)
+  } finally { wrapper.unmount(); scan.mockRestore() }
+})

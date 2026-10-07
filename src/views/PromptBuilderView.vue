@@ -89,7 +89,7 @@
           :result-temporary="resultTemporary"
           :has-stashed-result="hasStashedResult"
           @generate="callGenerate()"
-          @openRecovery="inspector?.selectSection(drawEngine === 'sd' ? 'delivery' : 'render')"
+          @openRecovery="inspector?.selectSection(drawEngine === 'sd' ? 'delivery' : 'render', true)"
           @exploreScenes="materialDrawer?.selectSection('scenes')"
           @saveResult="saveResult"
           @saveScene="captureScene"
@@ -150,7 +150,10 @@
         <template #render>
           <PromptInspectorRender :bindings="renderBindings">
             <template #style><PromptInspectorStyle :bindings="styleBindings" /></template>
-            <template #reference>
+          </PromptInspectorRender>
+          <OutfitOverrideNotice v-if="outfitOverridden" />
+        </template>
+        <template #image>
               <DirectorImageTools
                 v-if="stagePanel"
                 :generation-busy="generationBusy"
@@ -174,9 +177,6 @@
                 @addToShots="addToShots"
                 @goShots="goToShots"
               />
-              <OutfitOverrideNotice v-if="outfitOverridden" />
-            </template>
-          </PromptInspectorRender>
         </template>
         <template #prompt>
           <PromptInspectorPrompt :bindings="healthBindings" />

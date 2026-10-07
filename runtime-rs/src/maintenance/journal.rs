@@ -136,22 +136,28 @@ pub(super) fn recovery_owners(ctx: &Context, journal: &Value) -> Result<Vec<Reco
     }
     Ok(result)
 }
-pub fn inspect(options: &Options) -> Value {
-    let run = || -> Result<Value> {
-        let ctx = Context::new(options)?;
-        let Some(current) = read(&ctx)? else {
-            return Ok(json!({"status":"free","recoveryRequired":false}));
-        };
-        let owners = recovery_owners(&ctx, &current.value)?;
-        let active = owners
-            .iter()
-            .find(|owner| !owner.finished && owner.process != "dead");
-        Ok(
-            json!({"status":if !owner_dead(&current.value)||active.is_some(){"active"}else{"stale"},"recoveryRequired":true,"journal":current.value,"journalSha256":current.hash,
-            "recoveryOwner":active.map(|owner|json!({"pid":owner.value["pid"],"nonce":owner.value["nonce"]}))}),
-        )
+fn inspect_context(options: &Options) -> Result<(Context, Value)> {
+    let ctx = Context::new(options)?;
+    let Some(current) = read(&ctx)? else {
+        return Ok((ctx, json!({"status":"free","recoveryRequired":false})));
     };
-    run().unwrap_or_else(|error|json!({"status":"invalid","recoveryRequired":true,"code":error.code,"error":error.message}))
+    let owners = recovery_owners(&ctx, &current.value)?;
+    let active = owners
+        .iter()
+        .find(|owner| !owner.finished && owner.process != "dead");
+    Ok((
+        ctx,
+        json!({"status":if !owner_dead(&current.value)||active.is_some(){"active"}else{"stale"},"recoveryRequired":true,"journal":current.value,"journalSha256":current.hash,
+            "recoveryOwner":active.map(|owner|json!({"pid":owner.value["pid"],"nonce":owner.value["nonce"]}))}),
+    ))
+}
+fn invalid_state(error: Error) -> Value {
+    json!({"status":"invalid","recoveryRequired":true,"code":error.code,"error":error.message})
+}
+pub fn inspect(options: &Options) -> Value {
+    inspect_context(options)
+        .map(|(_, state)| state)
+        .unwrap_or_else(invalid_state)
 }
 pub(super) fn blocked(state: &Value) -> Error {
     let status = state["status"].as_str().unwrap_or("invalid");
@@ -173,11 +179,12 @@ pub(super) fn blocked(state: &Value) -> Error {
     error
 }
 pub fn read_token(options: &Options) -> Result<Option<String>> {
-    let state = inspect(options);
+    // Reuse only this inspection's context; the trailing inspect and the HTTP
+    // response fence still build fresh contexts and recheck filesystem identity.
+    let (ctx, state) = inspect_context(options).map_err(|error| blocked(&invalid_state(error)))?;
     if state["status"] != "free" {
         return Err(blocked(&state));
     }
-    let ctx = Context::new(options)?;
     let path = ctx.state.join("epoch.json");
     if fs::safe(&path, false, true)?.is_none() {
         return Ok(None);

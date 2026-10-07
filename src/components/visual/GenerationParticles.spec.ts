@@ -37,6 +37,11 @@ it('owns one animation subscription, pauses hidden visuals and releases glow cac
     await nextTick()
     expect(frames.size).toBe(0)
     const previous = paint.clearRect.mock.calls.length
+    const sprites = paint.fillRect.mock.calls.length
+    activity.appearanceRevision.value++
+    await wrapper.setProps({ progress: .81, palette: ['#102030', '#405060', '#708090'] })
+    expect(paint.clearRect.mock.calls.length).toBe(previous)
+    expect(paint.fillRect.mock.calls.length).toBe(sprites)
     activity.canPresent.value = true
     await nextTick()
     expect(frames.size).toBe(0)
@@ -61,13 +66,23 @@ it('owns shader frames and GPU objects, pauses while hidden and cleans a partial
   const loseContext = vi.fn()
   vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(context as unknown as WebGL2RenderingContext)
   vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({ width: 320, height: 232 } as DOMRect)
-  const props = { progress: .55, colors: ['rgb(242 168 190)', 'rgb(157 221 221)', 'rgb(189 176 232)'], animate: true }
+  const props = { progress: .55, colors: ['rgb(242 168 190)', 'rgb(157 221 221)', 'rgb(189 176 232)'], present: true, animate: true }
   const wrapper = mount(GenerationBloomShader, { props })
   try {
     expect(wrapper.emitted('ready')).toHaveLength(1)
     expect(frames.size).toBe(1)
-    await wrapper.setProps({ animate: false })
+    await wrapper.setProps({ present: false, animate: false })
     expect(frames.size).toBe(0)
+    const paints = context.drawArrays.mock.calls.length
+    await wrapper.setProps({ progress: .91, colors: ['rgb(10 20 30)', 'rgb(40 50 60)', 'rgb(70 80 90)'] })
+    expect(context.drawArrays.mock.calls.length).toBe(paints)
+    await wrapper.setProps({ present: true })
+    expect(frames.size).toBe(0)
+    expect(context.drawArrays.mock.calls.length).toBeGreaterThan(paints)
+    expect(context.uniform1f).toHaveBeenCalledWith(expect.anything(), .91)
+    expect(context.uniform3f).toHaveBeenCalledWith(expect.anything(), 10 / 255, 20 / 255, 30 / 255)
+    expect(context.createProgram).toHaveBeenCalledOnce()
+    expect(context.createBuffer).toHaveBeenCalledOnce()
     await wrapper.setProps({ animate: true })
     expect(frames.size).toBe(1)
     wrapper.find('canvas').element.dispatchEvent(new Event('webglcontextlost', { cancelable: true }))

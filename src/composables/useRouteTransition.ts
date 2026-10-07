@@ -16,13 +16,15 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     || (from === '/character' && to === '/popular-scenes')
   function arriveContent(el: HTMLElement, duration: number) {
     // Only marked reading surfaces move; fixed navigation and native overlays stay anchored.
-    return [...el.querySelectorAll<HTMLElement>('[data-route-arrive]')].slice(0, 6).flatMap(surface => {
+    // Finish visibility reads before creating transforms; alternating the two
+    // would invalidate style again for every following reading surface.
+    const surfaces = [...el.querySelectorAll<HTMLElement>('[data-route-arrive]')].slice(0, 6).filter(surface => {
       const rect = surface.getBoundingClientRect()
-      if (!rect.width || !rect.height || rect.bottom <= 0 || rect.top >= innerHeight) return []
-      return [surface.animate([{ transform: 'translateY(16px)' }, { transform: 'none' }], {
-        duration, easing: 'cubic-bezier(.22,1,.36,1)',
-      })]
+      return rect.width && rect.height && rect.bottom > 0 && rect.top < innerHeight
     })
+    return surfaces.map(surface => surface.animate([{ transform: 'translateY(16px)' }, { transform: 'none' }], {
+      duration, easing: 'cubic-bezier(.22,1,.36,1)',
+    }))
   }
   function settle(el: HTMLElement) { active.get(el)?.() }
   function settleAll() {

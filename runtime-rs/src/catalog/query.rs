@@ -58,9 +58,20 @@ impl Catalog {
         };
         // Omitted filters must not hide indexed predicates behind optional ORs.
         // Bind every supplied value; only the fixed SQL fragments are assembled.
-        let mut filter = String::from("kind IN (?,?) AND deleted=0");
-        let mut values: Vec<rusqlite::types::Value> =
-            vec![first_kind.to_owned().into(), second_kind.to_owned().into()];
+        let (mut filter, mut values): (String, Vec<rusqlite::types::Value>) =
+            if query.kind == "media" {
+                (
+                    "kind IN (?,?) AND deleted=0".into(),
+                    vec![first_kind.to_owned().into(), second_kind.to_owned().into()],
+                )
+            } else {
+                // A single equality lets catalog_order satisfy pagination directly;
+                // a duplicate-value IN still introduces a temporary sort in SQLite.
+                (
+                    "kind=? AND deleted=0".into(),
+                    vec![query.kind.clone().into()],
+                )
+            };
         let search = query.search.trim().to_lowercase();
         for (predicate, value) in [
             ("instr(search_text,lower(?))>0", search.as_str()),

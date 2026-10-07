@@ -1,12 +1,20 @@
 <template>
 <div class="result-frame inspector-delivery">
-          <!-- 出图自动入册偏好（2026-08-31 用户偏好：默认关；开则直出成片自动进作品册，
-               批量/队列不受此开关影响，它们按收集语义始终入册） -->
-          <div class="auto-save-gallery-row" role="group" aria-label="出图自动入册">
-            <ToggleSwitch v-model="autoSaveToGallery" label="出图自动存入作品册" />
-            <span class="auto-save-gallery-label">出图自动存入作品册</span>
-            <span class="auto-save-gallery-hint">{{ autoSaveToGallery ? '画面生成后自动存入作品册' : '生成后，点「存入作品册」保存喜欢的画面' }}</span>
-          </div>
+          <SDRecoveryPanel :report="sdErrorReport" @recover="runRecovery" @dismiss="dismissError" />
+          <GenerationQueuePanel v-if="drawEngine === 'sd'"
+            :total="sdQueue.total.value"
+            :done="sdQueue.done.value"
+            :paused="sdQueue.paused.value"
+            :active-job="sdQueue.activeJob.value"
+            :queue="sdQueue.queue.value"
+            :progress="generationProgress"
+            :paused-reason="queuePausedReason"
+            @pause="sdQueue.pause"
+            @resume="sdQueue.resume"
+            @clear="sdQueue.clear"
+            @remove="sdQueue.remove"
+          />
+
 
           <!-- 批量出图入口（多场景 / 多角色） -->
           <div class="batch-entry-row">
@@ -23,20 +31,13 @@
           <!-- 进度统一由画布舞台的 is-generating 态承担（魔法阵 + 进度环，
                2026-08-28 审计后舞台在生成期间保持可见，不再在此重复进度条） -->
 
-          <SDRecoveryPanel :report="sdErrorReport" @recover="runRecovery" @dismiss="dismissError" />
-          <GenerationQueuePanel v-if="drawEngine === 'sd'"
-            :total="sdQueue.total.value"
-            :done="sdQueue.done.value"
-            :paused="sdQueue.paused.value"
-            :active-job="sdQueue.activeJob.value"
-            :queue="sdQueue.queue.value"
-            :progress="generationProgress"
-            :paused-reason="queuePausedReason"
-            @pause="sdQueue.pause"
-            @resume="sdQueue.resume"
-            @clear="sdQueue.clear"
-            @remove="sdQueue.remove"
-          />
+          <!-- 出图自动入册偏好（2026-08-31 用户偏好：默认关；开则直出成片自动进作品册，
+               批量/队列不受此开关影响，它们按收集语义始终入册） -->
+          <div class="auto-save-gallery-row" role="group" aria-label="出图自动入册">
+            <ToggleSwitch v-model="autoSaveToGallery" label="出图自动存入作品册" />
+            <span class="auto-save-gallery-label">出图自动存入作品册</span>
+            <span class="auto-save-gallery-hint">{{ autoSaveToGallery ? '画面生成后自动存入作品册' : '生成后，点「存入作品册」保存喜欢的画面' }}</span>
+          </div>
 
           <details class="inspector-voice">
           <summary>配音与字幕</summary>

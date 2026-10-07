@@ -113,7 +113,7 @@
     </header>
 
     <ArchiveStatePanel
-      v-if="loading"
+      v-if="loading && !scenes.length"
       kind="loading"
       title="正在读取场景档案"
       message="正在载入角色场景、策展层级和本机偏好。"
@@ -133,14 +133,14 @@
       message="本地场景数据已读取，但还没有可浏览的场景记录。"
     />
     <ArchiveStatePanel
-      v-else-if="paged.length === 0"
+      v-else-if="!loading && paged.length === 0"
       kind="filtered"
       title="没有符合当前条件的场景"
       message="可尝试更换关键词或重置筛选，浏览完整场景档案。"
     >
       <button class="btn btn-primary" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
-    <div v-else data-route-arrive v-content-motion:up="`${activeTheme}:${fTier}:${sortBy}:${showHidden}:${fChar}:${fSeason}:${fTime}:${fSeries}:${fRating}`" class="scene-grid">
+    <div v-else data-route-arrive v-content-motion:up="`${activeTheme}:${fTier}:${sortBy}:${showHidden}:${fChar}:${fSeason}:${fTime}:${fSeries}:${fRating}`" class="scene-grid" :aria-busy="loading">
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
           :class="{ 'scene-flash': flashId === s.id, 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id"
           :aria-label="'查看场景故事：' + s.title" :aria-expanded="drawerScene?.id === s.id" @pick="drawerScene = s">

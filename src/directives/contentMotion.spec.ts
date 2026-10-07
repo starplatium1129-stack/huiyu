@@ -74,6 +74,21 @@ it('settles moving content on keyboard input and keeps keyboard selection feedba
     expect(el.animate).toHaveBeenCalledTimes(3)
   } finally { stop() }
 })
+it('hands a moving surface to its selected child without cancelling unrelated content', () => {
+  const stop = installContentMotion()
+  const parent = panel(), child = panel(), unrelated = panel()
+  const button = document.createElement('button')
+  child.el.append(button); parent.el.append(child.el)
+  try {
+    update(parent.el); update(unrelated.el); update(child.el)
+    expect(child.el.animate).not.toHaveBeenCalled()
+    button.dispatchEvent(new Event('pointerdown', { bubbles: true }))
+    expect(parent.animation.cancel).toHaveBeenCalledOnce()
+    expect(unrelated.animation.cancel).not.toHaveBeenCalled()
+    update(child.el, 'selected child', 'right')
+    expect(child.el.animate).toHaveBeenCalledOnce()
+  } finally { stop() }
+})
 it('hiding or unmounting a changing panel cancels its effect', () => {
   const { el, animation } = panel(); update(el); update(el, false)
   expect(animation.cancel).toHaveBeenCalledOnce()

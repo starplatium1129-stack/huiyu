@@ -265,8 +265,8 @@ impl Catalog {
         )
     }
 }
-pub fn projection(config: &crate::config::Config, name: &str) -> Result<Option<Value>> {
-    if ![
+pub(super) fn projected_file(name: &str) -> bool {
+    [
         "characters.json",
         "popular-characters.json",
         "scene-blueprints.json",
@@ -282,8 +282,4 @@ pub fn projection(config: &crate::config::Config, name: &str) -> Result<Option<V
         "scenes-index.json",
     ]
     .contains(&name)
-    {
-        return Ok(None);
-    }
-    Catalog::open(Options::from_config(config))?.projection(name)
 }

@@ -73,14 +73,24 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
                 .is_file()
     }) {
         let config = state.config.clone();
+        let projections = state.catalog_projections.clone();
         let selected = name.to_owned();
         match tokio::task::spawn_blocking(move || {
-            // Encode large catalog projections before returning to the async executor.
-            crate::catalog::projection(&config, &selected).map(|value| {
-                value.map(|value| {
-                    ([("cache-control", "no-cache")], axum::Json(value)).into_response()
+            // Reuse encoded bytes while the SQLite authority has the same version.
+            projections
+                .read(crate::catalog::Options::from_config(&config), &selected)
+                .map(|value| {
+                    value.map(|bytes| {
+                        (
+                            [
+                                ("cache-control", "no-cache"),
+                                ("content-type", "application/json"),
+                            ],
+                            bytes,
+                        )
+                            .into_response()
+                    })
                 })
-            })
         })
         .await
         {
