@@ -72,10 +72,10 @@ import CharacterPortrait from './CharacterPortrait.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import type { DirectoryCharacter } from './CharacterDirectory.vue'
-import { useCharacterBookshelf } from '@/composables/useCharacterBookshelf'
+import { useCharacterBookshelf, type CharacterBookshelfState } from '@/composables/useCharacterBookshelf'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 
-const props = defineProps<{ items: readonly DirectoryCharacter[]; selectedId?: string }>()
+const props = defineProps<{ items: readonly DirectoryCharacter[]; selectedId?: string; initialState?: CharacterBookshelfState }>()
 const emit = defineEmits<{ select: [id: string] }>()
 const searchId = useId()
 const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
@@ -93,7 +93,7 @@ function rotatedCovers(key: string, covers: readonly DirectoryCharacter[]) {
   const offset = (coverOffsets.value[key] || 0) % (covers.length || 1)
   return [...covers.slice(offset), ...covers.slice(0, offset)]
 }
-const { query, series, page, term, groups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch } = useCharacterBookshelf(() => props.items)
+const { query, series, page, term, groups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch, snapshot } = useCharacterBookshelf(() => props.items, props.initialState)
 
 function focusResults() {
   const heading = resultsHeading.value
@@ -144,7 +144,7 @@ async function focusSelected() {
   const selected = [...(characterGrid.value?.querySelectorAll<HTMLButtonElement>('[data-character]') || [])].find(button => button.dataset.character === props.selectedId)
   ;(selected || searchInput.value)?.focus({ preventScroll: true })
 }
-defineExpose({ focusSelected })
+defineExpose({ focusSelected, snapshot })
 </script>
 
 <style scoped>

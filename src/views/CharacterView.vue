@@ -24,11 +24,11 @@
     />
     <template v-else>
       <Transition :css="false" @enter="archiveMotion.enter" @enter-cancelled="archiveMotion.dispose" @after-leave="archiveMotion.dispose">
-        <CharacterBookshelf v-show="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" @select="selectCharacter" />
+        <CharacterBookshelf v-show="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" :initial-state="initialShelf" @select="selectCharacter" />
       </Transition>
       <Transition :css="false" @enter="archiveMotion.enter" @enter-cancelled="archiveMotion.dispose" @after-leave="archiveMotion.dispose">
       <div v-if="!showShelf" class="library-layout">
-        <BrowsingCharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
+        <BrowsingCharacterDirectory v-model:search="directorySearch" :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail" data-route-arrive>
       <section v-if="current" ref="profileAnchor" class="character-hero card-direct card-level-3">
         <CharacterParticleStage :character-id="current.id" :name="current.name" :initial-original="preferOriginal">
@@ -143,6 +143,13 @@
   </article>
 </template>
 
+<script lang="ts">
+import type { CharacterBookshelfState } from '@/composables/useCharacterBookshelf'
+
+// Keep only browsing values across route unmounts, without retaining the page or its resources.
+let archiveBrowse: { search: string; shelf?: CharacterBookshelfState } = { search: '' }
+</script>
+
 <script setup lang="ts">
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
@@ -151,7 +158,7 @@ import { characterArtEntry } from '@/platform/characterArtState'
 
 import { useCharacterPortraitTransition } from '@/composables/useCharacterPortraitTransition'
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
-import { ref, computed, nextTick, onMounted, watch } from 'vue'
+import { ref, computed, nextTick, onBeforeUnmount, onMounted, watch } from 'vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useSceneStore } from '@/stores/sceneStore'
 import CharacterBookshelf from '@/components/library/CharacterBookshelf.vue'
@@ -178,6 +185,11 @@ const loading = ref(true)
 const profileAnchor = ref<HTMLElement | null>(null)
 const archiveRoot = ref<HTMLElement | null>(null)
 const bookshelf = ref<InstanceType<typeof CharacterBookshelf> | null>(null)
+const initialShelf = archiveBrowse.shelf
+const directorySearch = ref(archiveBrowse.search)
+onBeforeUnmount(() => {
+  archiveBrowse = { search: directorySearch.value, shelf: bookshelf.value?.snapshot() ?? archiveBrowse.shelf }
+})
 const { current, showShelf, lastViewedId, selectCharacter, showBookshelf } = useCharacterArchiveNavigation(
   characters, profileAnchor, () => bookshelf.value?.focusSelected(),
 )

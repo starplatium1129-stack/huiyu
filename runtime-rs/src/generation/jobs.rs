@@ -121,9 +121,8 @@ pub(super) async fn public(job: &Job) -> Result<Value> {
         .as_u64()
         .filter(|s| *s <= 9_007_199_254_740_991)
         .unwrap_or(job.input["seed"].as_u64().unwrap_or(0));
-    let mut metadata = state.metadata.clone();
-    metadata["provider"] = json!(job.provider);
-    let mut public = json!({"id":job.id,"status":state.status,"provider":job.provider,"seed":seed,"resultAvailable":available,"resultUrl":result_url,"metadata":metadata,"error":state.error,"code":state.code});
+    let mut public = json!({"id":job.id,"status":state.status,"provider":job.provider,"seed":seed,"resultAvailable":available,"resultUrl":result_url,"metadata":state.metadata,"error":state.error,"code":state.code});
+    public["metadata"]["provider"] = json!(job.provider);
     if job.provider == "comfy" {
         public["progress"] = if state.status == "succeeded" {
             json!(1)

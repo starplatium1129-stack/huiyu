@@ -156,7 +156,6 @@ impl Service {
     }
     pub async fn get_job(&self, id: &str, owner: &str) -> Result<Value> {
         let mut job = self.backend.get_job(id, owner).await?;
-        let metadata = job["metadata"].clone();
         for key in [
             "width",
             "height",
@@ -165,9 +164,9 @@ impl Service {
             "estimatedSeconds",
             "originalPrompt",
         ] {
-            job[key] = metadata[key].clone();
+            job[key] = job["metadata"][key].clone();
         }
-        job["prompt"] = metadata["originalPrompt"].clone();
+        job["prompt"] = job["metadata"]["originalPrompt"].clone();
         let now = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap_or_default()

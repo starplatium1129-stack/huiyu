@@ -1,4 +1,5 @@
 import { computed, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
+import { useEventListener } from '@vueuse/core'
 import { profileLocalStorage } from '@/platform/web/profileStorage'
 import { DIRECTOR_LAYOUT_KEY } from '@/utils/storageKeys'
 
@@ -23,6 +24,16 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   const width = ref(960), viewport = ref(1280), rootFont = ref(16), dragging = ref<Side | null>(null)
   let observer: ResizeObserver | null = null
   let observing = false
+  const scrollPositions = new Map<HTMLElement, { left: number; top: number }>()
+  // KeepAlive retains the rails, but detaching their DOM can clamp scrollTop.
+  // Remember real active scrolls before detachment; hidden layout changes do not
+  // replace the reading position, and restoration never animates or delays input.
+  useEventListener(root, 'scroll', event => {
+    const surface = event.target
+    if (observing && surface instanceof HTMLElement) {
+      scrollPositions.set(surface, { left: surface.scrollLeft, top: surface.scrollTop })
+    }
+  }, { capture: true })
   let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number } | null = null
   const baseMaterials = computed(() => Math.max(260, Math.min(21 * rootFont.value, viewport.value * .18)))
   const baseInspector = computed(() => Math.max(300, Math.min(26 * rootFont.value, viewport.value * .24)))
@@ -110,8 +121,15 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     measure()
   })
   onMounted(observe)
-  onActivated(observe)
+  onActivated(() => {
+    observe()
+    for (const [surface, position] of scrollPositions) {
+      if (!root.value?.contains(surface)) { scrollPositions.delete(surface); continue }
+      surface.scrollLeft = position.left
+      surface.scrollTop = position.top
+    }
+  })
   onDeactivated(stopObserving)
-  onBeforeUnmount(stopObserving)
+  onBeforeUnmount(() => { stopObserving(); scrollPositions.clear() })
   return { style, collapsed, dragging, desktop: computed(() => viewport.value >= 1024), materialsWidth, inspectorWidth, start, move, finish, key, toggle, reset }
 }

@@ -2,13 +2,40 @@ import { expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import CandidateCompare from './CandidateCompare.vue'
 
-const mocks = vi.hoisted(() => ({ read: vi.fn() }))
-vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { getImage: mocks.read } }))
+const mocks = vi.hoisted(() => ({ read: vi.fn(), patch: vi.fn() }))
+vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { getImage: mocks.read, patchArtworks: mocks.patch } }))
 vi.mock('@/composables/useFluidDialog', () => ({
   useFluidDialog: (dialog: { value: HTMLDialogElement }) => ({ open() { dialog.value?.setAttribute('open', '') }, close(done: () => void) { dialog.value?.removeAttribute('open'); done() } }), isBackdropClick: () => false,
 }))
 
+it('does not show a previous comparison save failure after closing and reopening another group', async () => {
+  mocks.read.mockReset().mockResolvedValue(null)
+  let rejectSave!: (error: Error) => void
+  mocks.patch.mockReset().mockImplementation(() => new Promise<void>((_resolve, reject) => { rejectSave = reject }))
+  const wrapper = mount(CandidateCompare, {
+    props: { open: true, items: [{ id: 'old', image_data: 'data:image/png;base64,old' }] },
+    global: { stubs: { Teleport: true, RouterLink: true } },
+  })
+  try {
+    await flushPromises()
+    await wrapper.get('.candidate-actions button').trigger('click')
+    expect(mocks.patch).toHaveBeenCalledOnce()
+    await wrapper.setProps({ open: false })
+    await wrapper.setProps({ open: true, items: [{ id: 'new', image_data: 'data:image/png;base64,new' }] })
+    await flushPromises()
+    rejectSave(new Error('old save failed'))
+    await flushPromises()
+    expect(wrapper.find('.candidate-error').exists()).toBe(false)
+    expect(wrapper.get('.candidate-actions button').attributes('disabled')).toBeUndefined()
+    mocks.patch.mockRejectedValueOnce(new Error('current save failed'))
+    await wrapper.get('.candidate-actions button').trigger('click')
+    await flushPromises()
+    expect(wrapper.find('.candidate-error').exists()).toBe(true)
+  } finally { wrapper.unmount() }
+})
+
 it('closing a comparison cancels all reads and reopening cannot publish its old results', async () => {
+  mocks.read.mockReset()
   const finish: Array<(blob: Blob) => void> = []
   mocks.read.mockImplementation(() => new Promise<Blob>(resolve => finish.push(resolve)))
   const create = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:comparison')

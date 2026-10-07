@@ -1,12 +1,14 @@
 <template>
   <div ref="host" class="generation-particles" aria-hidden="true">
+    <GenerationBloomShader v-if="loadShader && !shaderFailed && !lowEffects" :progress="progress" :colors="colors"
+      :animate="canAnimate" @unavailable="shaderFailed = true" />
     <canvas ref="canvas"></canvas>
     <span class="generation-particle-palette"><i class="tone-pink"></i><i class="tone-cyan"></i><i class="tone-violet"></i><i class="tone-highlight"></i></span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 import { registerParticleFrame } from '@/utils/particleScheduler'
@@ -16,9 +18,14 @@ const props = defineProps<{ progress: number | null; palette?: readonly string[]
 const host = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const { canPresent, canAnimate, lowEffects, appearanceRevision } = useVisualActivity(host)
+const loadShader = ref(false), shaderFailed = ref(false)
+const GenerationBloomShader = defineAsyncComponent({
+  loader: () => import('./GenerationBloomShader.vue'),
+  onError: (_error, _retry, fail) => { shaderFailed.value = true; fail() },
+})
 interface Point { phase: number; tone: number; bright: boolean; x: number; y: number; depth: number }
 let points: Point[] = []
-let colors: string[] = []
+const colors = ref<string[]>([])
 let sprites: HTMLCanvasElement[] = []
 let context: CanvasRenderingContext2D | null = null
 let width = 0, height = 0, ratio = 1
@@ -34,13 +41,13 @@ function stop() {
 
 function preparePalette() {
   if (!host.value) return
-  colors = [...host.value.querySelectorAll<HTMLElement>('.generation-particle-palette i')].map(item => getComputedStyle(item).color)
+  colors.value = [...host.value.querySelectorAll<HTMLElement>('.generation-particle-palette i')].map(item => getComputedStyle(item).color)
   if (props.palette?.length === 3) {
     const light = host.value.closest('[data-theme]')?.getAttribute('data-theme') === 'light'
-    colors.splice(0, 3, ...props.palette.map(color => `rgb(${visibleGenerationPigment(color, light)})`))
+    colors.value.splice(0, 3, ...props.palette.map(color => `rgb(${visibleGenerationPigment(color, light)})`))
   }
   for (const sprite of sprites) sprite.width = sprite.height = 0
-  sprites = colors.slice(0, 3).map(color => {
+  sprites = colors.value.slice(0, 3).map(color => {
     const sprite = document.createElement('canvas')
     sprite.width = sprite.height = 40
     const paint = sprite.getContext('2d')
@@ -60,7 +67,7 @@ function resize() {
   const bounds = host.value.getBoundingClientRect()
   if (!bounds.width || !bounds.height) return
   width = bounds.width; height = bounds.height
-  ratio = Math.min(window.devicePixelRatio || 1, 2)
+  ratio = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(280_000 / (width * height)))
   const pixelWidth = Math.round(width * ratio), pixelHeight = Math.round(height * ratio)
   if (canvas.value.width !== pixelWidth || canvas.value.height !== pixelHeight) {
     canvas.value.width = pixelWidth
@@ -82,8 +89,8 @@ function preparePoints() {
 }
 
 function draw() {
-  if (!context || !width || !height || !colors.length) return
-  const ctx = context, time = clock / 1000
+  if (!context || !width || !height || !colors.value.length) return
+  const ctx = context, time = clock / 1000, pigments = colors.value
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
   ctx.clearRect(0, 0, width, height)
   const centerX = width / 2, centerY = height / 2
@@ -100,7 +107,7 @@ function draw() {
     return { x:centerX+x*Math.cos(tilt)-y*Math.sin(tilt), y:centerY+x*Math.sin(tilt)+y*Math.cos(tilt) }
   }
   if (!lowEffects.value) for (let band=0; band<3; band++) {
-    ctx.strokeStyle=colors[band]; ctx.globalAlpha=.32+finishing*.08; ctx.lineWidth=1
+    ctx.strokeStyle=pigments[band]; ctx.globalAlpha=.32+finishing*.08; ctx.lineWidth=1
     ctx.beginPath()
     for (let segment=0; segment<=128; segment++) {
       const p=orbit(segment/128*Math.PI*2,band)
@@ -120,14 +127,14 @@ function draw() {
     const angle = point.phase + rotation*(direction < 0 ? -1.6 : 1.85)+point.tone*1.64
     for (let tail=6; tail>0; tail--) {
       const p = orbit(angle-direction*tail*(.035+formed*.02), point.tone)
-      ctx.fillStyle=colors[point.tone]; ctx.globalAlpha=(.12+formed*.2)*(1-tail/7)
+      ctx.fillStyle=pigments[point.tone]; ctx.globalAlpha=(.12+formed*.2)*(1-tail/7)
       ctx.beginPath(); ctx.arc(p.x,p.y,1.15*(1-tail/9),0,Math.PI*2); ctx.fill()
     }
   }
   for (const point of points) {
     const depth = point.depth, size = point.bright ? 1.4 : .5+depth*.45
     const shimmer = 0.92 + Math.sin(time * 0.8 + point.phase) * 0.08
-    ctx.fillStyle = colors[point.tone]
+    ctx.fillStyle = pigments[point.tone]
     if (!lowEffects.value) {
       const spread = size * 2.4+1.5
       ctx.globalAlpha = point.bright ? .08 : depth*.025
@@ -137,14 +144,14 @@ function draw() {
     ctx.beginPath(); ctx.arc(point.x, point.y, size, 0, Math.PI * 2); ctx.fill()
     if (point.bright) {
       ctx.globalAlpha = 0.7
-      ctx.fillStyle = colors[3]
+      ctx.fillStyle = pigments[3]
       ctx.beginPath(); ctx.arc(point.x, point.y, 0.6, 0, Math.PI * 2); ctx.fill()
     }
   }
   if (finishing > 0) for (let index=0; index<12; index++) {
     const angle = index*2.39996323+rotation*.6
     const distance = radius*(.38-finishing*.22)*(1+Math.sin(index*1.7)*.35)
-    ctx.fillStyle=colors[index%3]; ctx.globalAlpha=finishing*(.22+Math.sin(index*2.1+time)*.08)
+    ctx.fillStyle=pigments[index%3]; ctx.globalAlpha=finishing*(.22+Math.sin(index*2.1+time)*.08)
     ctx.beginPath(); ctx.arc(centerX+Math.cos(angle)*distance,centerY+Math.sin(angle)*distance*.65,.65,0,Math.PI*2); ctx.fill()
   }
   ctx.globalAlpha = 1
@@ -152,6 +159,7 @@ function draw() {
 
 function reconcile() {
   stop()
+  if (canAnimate.value && !lowEffects.value && 'WebGL2RenderingContext' in window) loadShader.value = true
   if (!canPresent.value || !context) return
   preparePoints()
   draw()
@@ -184,7 +192,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .generation-particles { position:relative; isolation:isolate; width:min(100%,clamp(320px,42cqw,420px)); aspect-ratio:1.38; margin-inline:auto; pointer-events:none; }
 /* compositor-exempt: A bounded Canvas renders particle depth; cached glow sprites avoid per-frame blur. */
-.generation-particles canvas { position:relative; display:block; width:100%; height:100%; }
+.generation-particles > canvas:not(.generation-bloom) { position:relative; display:block; width:100%; height:100%; }
 .generation-particle-palette { position:absolute; width:0; height:0; overflow:hidden; visibility:hidden; }
 .tone-pink { color:var(--accent); }
 .tone-cyan { color:var(--archive-cyan); }

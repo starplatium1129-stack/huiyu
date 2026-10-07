@@ -25,7 +25,7 @@ export interface InpaintImageSourceDeps {
  * 三个来源的优先级：本地上传（拖拽/选择，blob URL 生命周期自持）→
  * source.blob（引擎结果直通）→ source.url 兜底 fetch。换图时
  * 用实际预览图 onload 探测 naturalWidth/Height 并经 inpaintCanvasSize 收敛
- * 到受支持画幅，同时重置遮罩画布；关闭/卸载释放 blob URL。
+ * 到受支持画幅，同时重置遮罩画布；重开保留编辑，换图/卸载释放 blob URL。
  */
 export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
   const uploadedBlob = ref<Blob | null>(null)
@@ -48,7 +48,6 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     if (uploadedUrl.value) URL.revokeObjectURL(uploadedUrl.value)
     uploadedBlob.value = null
     uploadedUrl.value = ''
-    deps.clearMask()
   }
 
   function triggerUpload() {
@@ -105,15 +104,12 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     return null
   }
 
-  watch(deps.open, (isOpen) => {
-    if (isOpen) {
-      clearUploadedImage()
-    } else {
-      clearUploadedImage()
-    }
-  })
+  // A different parent result starts a new edit; closing the same edit does not.
+  watch([() => deps.source().url, () => deps.source().blob], () => {
+    if (uploadedBlob.value) clearUploadedImage()
+  }, { flush: 'sync' })
 
-  watch([activeImageUrl, () => deps.source().blob, deps.open], () => {
+  watch([activeImageUrl, () => deps.source().blob], () => {
     sourceRevision.value++
     // Adopt the URL/blob and its parent together; later gallery selection is not this source.
     sourceHistoryId.value = uploadedBlob.value ? null : deps.source().historyId
@@ -122,16 +118,27 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     deps.clearMask()
   }, { immediate: true, flush: 'sync' })
 
-  function onPreviewLoad(event: Event) {
-    const image = deps.previewImage()
+  function measurePreview(image: HTMLImageElement | null) {
     // The preview is keyed by revision: detached old images and duplicate loads
     // must never resize the active canvas or erase a stroke already drawn on it.
-    if (!deps.open() || imageReady.value || !image || event.target !== image
+    if (!deps.open() || imageReady.value || !image
       || image.dataset.sourceRevision !== String(sourceRevision.value)
       || !image.naturalWidth || !image.naturalHeight) return
     detectedResolution.value = inpaintCanvasSize(image.naturalWidth, image.naturalHeight)
     imageReady.value = deps.syncMaskCanvas()
   }
+
+  function onPreviewLoad(event: Event) {
+    const image = deps.previewImage()
+    if (event.target === image) measurePreview(image)
+  }
+
+  watch(deps.open, open => {
+    if (open) {
+      const image = deps.previewImage()
+      if (image?.complete) measurePreview(image)
+    }
+  }, { flush: 'post' })
 
   onBeforeUnmount(() => {
     clearUploadedImage()

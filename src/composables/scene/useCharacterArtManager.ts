@@ -39,9 +39,12 @@ export function useCharacterArtManager(initialId: () => string | undefined) {
     if (saving.value || file.value) throw new Error('UNSAVED_CHARACTER_ART')
   })
   onBeforeUnmount(() => { alive = false; abort.abort(); discard(); releaseMaintenance() })
-  onBeforeRouteLeave(async () => !saving.value && (!file.value || await confirmAction({
-    title: '放弃尚未保存的立绘？', message: '当前选择的图片还未应用，原有形象不受影响。', confirmLabel: '放弃替换',
-  })))
+  async function canLeave() {
+    return !saving.value && (!file.value || await confirmAction({
+      title: '放弃尚未保存的立绘？', message: '当前选择的图片还未应用，原有形象不受影响。', confirmLabel: '放弃替换',
+    }))
+  }
+  onBeforeRouteLeave(canLeave)
 
   async function selectCharacter(id: string) {
     if (saving.value || reading.value || id === selectedId.value || !profiles.value.some(item => item.id === id)) return
@@ -114,6 +117,6 @@ export function useCharacterArtManager(initialId: () => string | undefined) {
     } finally { reader = null; saving.value = false }
   }
   return { selectedId, previewUrl, feedback, error, loading, saving, reading, ready, file,
-    profiles, current, custom, originalUrl, local, load, selectCharacter, pick, discard,
+    profiles, current, custom, originalUrl, local, load, selectCharacter, pick, discard, canLeave,
     save: () => commit(), reset: () => commit(true) }
 }

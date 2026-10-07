@@ -9,11 +9,13 @@ use axum::{
 use futures_util::StreamExt;
 use serde::Deserialize;
 use std::{convert::Infallible, path::PathBuf};
-use tokio::{io::AsyncWriteExt, sync::mpsc::UnboundedSender};
+use tokio::{io::AsyncWriteExt, sync::mpsc::Sender};
 
 #[cfg(test)]
 #[path = "setup_download_tests.rs"]
 mod tests;
+
+const PROGRESS_BUFFER: usize = 16;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -70,7 +72,8 @@ impl ControlService {
             })?;
         let cancel = self.shutdown.child_token();
         let guard = cancel.clone().drop_guard();
-        let (send, receive) = tokio::sync::mpsc::unbounded_channel();
+        let (send, receive) = tokio::sync::mpsc::channel(PROGRESS_BUFFER);
+        let (finished, completion) = tokio::sync::oneshot::channel();
         let plan = DownloadPlan {
             workspace: self.config.ai_workspace_root.clone(),
             root: model_root(&self.config.ai_workspace_root, &id)?,
@@ -86,22 +89,26 @@ impl ControlService {
                 .connect_timeout(Duration::from_secs(30))
                 .build();
             let outcome = match client {
-                Ok(client) => match tokio::time::timeout(
-                    Duration::from_secs(4 * 60 * 60),
-                    download(&plan, &client, &send, &worker_cancel),
-                )
-                .await
-                {
-                    Ok(result) => result,
-                    Err(_) => {
-                        worker_cancel.cancel();
-                        Err(ApiError::new(
-                            504,
-                            "DOWNLOAD_TIMEOUT",
-                            "下载超过 4 小时，已停止，请检查网络后重试",
-                        ))
+                Ok(client) => {
+                    let operation = download(&plan, &client, &send, &worker_cancel);
+                    tokio::pin!(operation);
+                    match tokio::time::timeout(Duration::from_secs(4 * 60 * 60), &mut operation)
+                        .await
+                    {
+                        Ok(result) => result,
+                        Err(_) => {
+                            worker_cancel.cancel();
+                            // Let cooperative cancellation retain resumable bytes, but do
+                            // not turn the deadline into an unbounded wait on a stalled disk.
+                            let _ = tokio::time::timeout(Duration::from_secs(5), operation).await;
+                            Err(ApiError::new(
+                                504,
+                                "DOWNLOAD_TIMEOUT",
+                                "下载超过 4 小时，已停止，请检查网络后重试",
+                            ))
+                        }
                     }
-                },
+                }
                 Err(_) => Err(ApiError::new(
                     500,
                     "DOWNLOAD_FAILED",
@@ -119,16 +126,26 @@ impl ControlService {
                 )
             });
             if !cancel.is_cancelled() && !send.is_closed() {
-                let _ = send.send(event);
+                let _ = finished.send(event);
             }
         });
-        let stream =
-            futures_util::stream::unfold((receive, guard), |(mut receive, guard)| async move {
-                let value = receive.recv().await?;
+        // Progress is lossy when a client falls behind; the final result has its own
+        // slot, so it never blocks the worker or disappears behind a full progress queue.
+        let stream = futures_util::stream::unfold(
+            (receive, Some(completion), guard),
+            |(mut receive, mut result, guard)| async move {
+                let value = match receive.recv().await {
+                    Some(value) => value,
+                    None => result.take()?.await.ok()?,
+                };
                 let mut bytes = serde_json::to_vec(&value).unwrap();
                 bytes.push(b'\n');
-                Some((Ok::<_, Infallible>(Bytes::from(bytes)), (receive, guard)))
-            });
+                Some((
+                    Ok::<_, Infallible>(Bytes::from(bytes)),
+                    (receive, result, guard),
+                ))
+            },
+        );
         let mut response = Body::from_stream(stream).into_response();
         response.headers_mut().insert(
             "content-type",
@@ -144,7 +161,7 @@ impl ControlService {
     }
 }
 
-fn stopped(cancel: &CancellationToken, send: &UnboundedSender<Value>) -> Result<()> {
+fn stopped(cancel: &CancellationToken, send: &Sender<Value>) -> Result<()> {
     if cancel.is_cancelled() || send.is_closed() {
         Err(ApiError::new(409, "CANCELLED", "下载已取消，已有模型保留"))
     } else {
@@ -169,8 +186,8 @@ fn changed() -> ApiError {
         "下载期间工作区或模型目录改变，已停止；请重新检查",
     )
 }
-fn progress(plan: &DownloadPlan, send: &UnboundedSender<Value>, phase: &str, bytes: u64) {
-    let _ = send.send(json!({"type":"progress","modelId":plan.id,"phase":phase,"bytesRead":bytes,"expectedBytes":plan.spec.bytes}));
+fn progress(plan: &DownloadPlan, send: &Sender<Value>, phase: &str, bytes: u64) {
+    let _ = send.try_send(json!({"type":"progress","modelId":plan.id,"phase":phase,"bytesRead":bytes,"expectedBytes":plan.spec.bytes}));
 }
 fn result(
     plan: &DownloadPlan,
@@ -189,7 +206,7 @@ async fn inspect_file(
     root: PathBuf,
     spec: ModelFile,
     phase: &str,
-    send: &UnboundedSender<Value>,
+    send: &Sender<Value>,
     cancel: &CancellationToken,
 ) -> Result<Value> {
     progress(plan, send, phase, 0);
@@ -211,7 +228,7 @@ async fn inspect_file(
 async fn download(
     plan: &DownloadPlan,
     client: &reqwest::Client,
-    send: &UnboundedSender<Value>,
+    send: &Sender<Value>,
     cancel: &CancellationToken,
 ) -> Result<Value> {
     stopped(cancel, send)?;
@@ -325,7 +342,12 @@ async fn download(
         let pending = temporary.as_ref().unwrap();
         let mut output =
             tokio::fs::File::from_std(pending.as_file().try_clone().map_err(io_error)?);
-        let count = transfer::write(plan, client, send, cancel, &mut output).await?;
+        let transferred = transfer::write(plan, client, send, cancel, &mut output).await;
+        // Tokio may have accepted bytes while its blocking write is still queued.
+        // Drain that write before cancellation/error cleanup inspects and retains the file.
+        let flushed = output.flush().await;
+        let count = transferred?;
+        flushed.map_err(io_error)?;
         if count != plan.spec.bytes {
             return Err(ApiError::new(
                 502,
@@ -333,7 +355,6 @@ async fn download(
                 "下载不完整，未发布模型文件；请重试",
             ));
         }
-        output.flush().await.map_err(io_error)?;
         output.sync_all().await.map_err(io_error)?;
         drop(output);
         let temp_spec = ModelFile {

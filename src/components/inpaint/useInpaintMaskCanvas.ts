@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, onMounted, onActivated, onDeactivated, ref, type Ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, onActivated, onDeactivated, ref, watch, type Ref } from 'vue'
 
 import { MaskTileHistory } from './maskTileHistory'
 
@@ -171,6 +171,10 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
     erase = false
     lastMaskPoint = null
   }
+
+  watch(deps.active, active => {
+    if (!active) { stopMaskPaint(); cursorVisible.value = false }
+  }, { flush: 'sync' })
 
   /** 导出遮罩 PNG；空遮罩（全 0 alpha）返回 null，交由宿主提示先涂抹。 */
   async function maskBlob(): Promise<Blob | null> {

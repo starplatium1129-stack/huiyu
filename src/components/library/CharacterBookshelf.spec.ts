@@ -3,6 +3,7 @@ import { mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import CharacterBookshelf from './CharacterBookshelf.vue'
 import type { DirectoryCharacter } from './CharacterDirectory.vue'
+import type { CharacterBookshelfState } from '@/composables/useCharacterBookshelf'
 
 let wrapper: VueWrapper | undefined
 afterEach(() => { wrapper?.unmount(); wrapper = undefined })
@@ -124,6 +125,27 @@ describe('角色作品书架', () => {
     await page.setProps({ selectedId: 'blue-one' })
     await (page.vm as unknown as { focusSelected: () => Promise<void> }).focusSelected()
     expect(document.activeElement).toBe(page.get('input').element)
+  })
+
+  it('销毁后用浏览快照恢复作品分组和页码，搜索更改仍从第一页开始', async () => {
+    const page = setup(characters, 'genshin-25')
+    await page.get('[data-franchise="Genshin Impact"]').trigger('click')
+    await page.get('nav button:last-child').trigger('click')
+    const saved = (page.vm as unknown as { snapshot: () => CharacterBookshelfState }).snapshot()
+    page.unmount()
+    wrapper = mount(CharacterBookshelf, { attachTo: document.body, props: { items: characters, selectedId: 'genshin-25', initialState: saved } })
+    expect(wrapper.get('h2').text()).toBe('原神')
+    expect(wrapper.get('nav').text()).toContain('第 2 / 2 页')
+    expect(wrapper.findAll('[data-character]')).toHaveLength(3)
+    await wrapper.get('input').setValue('Amber')
+    expect(wrapper.findAll('[data-character]')).toHaveLength(1)
+    expect(saved.query).toBe('')
+    expect(saved.page).toBe(2)
+    const search = (wrapper.vm as unknown as { snapshot: () => CharacterBookshelfState }).snapshot()
+    wrapper.unmount()
+    wrapper = mount(CharacterBookshelf, { props: { items: characters, initialState: search } })
+    expect((wrapper.get('input').element as HTMLInputElement).value).toBe('Amber')
+    expect(wrapper.get('[data-character]').attributes('data-character')).toBe('genshin-25')
   })
 
   it('图片加载失败使用现有肖像占位，不伪造角色或封面数量', async () => {

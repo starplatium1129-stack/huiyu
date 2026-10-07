@@ -4,6 +4,7 @@ import LocalSetupPanel from './LocalSetupPanel.vue'
 import LocalSetupAutomation from './LocalSetupAutomation.vue'
 import StudioSelect from './ui/StudioSelect.vue'
 import type { LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup'
+import { settingsRepository } from '../storage/settingsRepository'
 
 const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), verifyModel: vi.fn(), downloadModel: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn(),getOperation:vi.fn(),serviceAction:vi.fn() }))
 vi.mock('../utils/runtimeEnvironment.ts', () => ({ isLocalStudioHost: () => fixture.local }))
@@ -41,6 +42,8 @@ beforeEach(() => {
   fixture.getStatus.mockReset().mockResolvedValue(complete())
   fixture.verifyModel.mockReset()
   fixture.downloadModel.mockReset()
+  fixture.serviceAction.mockReset()
+  fixture.getOperation.mockReset()
   fixture.getWorkspace.mockReset().mockResolvedValue({ root: 'E:\\NewAI', exists: true, activeRoot: 'D:\\AI', restartRequired: true })
   fixture.setWorkspace.mockReset().mockResolvedValue({ root: 'F:\\ChosenAI', exists: true, activeRoot: 'D:\\AI', restartRequired: true })
   fixture.pickWorkspace.mockReset().mockResolvedValue('F:\\ChosenAI')
@@ -48,6 +51,31 @@ beforeEach(() => {
 afterEach(() => vi.restoreAllMocks())
 
 describe('first local setup panel', () => {
+  it.each(['cancel', 'unmount'])('does not write preferences from late readiness after %s', async disposition => {
+    const value = complete(), late = deferred()
+    const save = vi.spyOn(settingsRepository, 'set').mockImplementation(() => {})
+    fixture.downloadModel.mockImplementation(async (id: string) => {
+      const model = value.models.find(model => model.id === id)!
+      return { type: 'result', modelId: id, path: model.path, state: 'already-present', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '已复用' }
+    })
+    const operation = { id: 'owned-setup', status: 'completed', message: '已启动', error: '' }
+    fixture.serviceAction.mockResolvedValue({ ok: true, operation })
+    fixture.getOperation.mockResolvedValue({ ok: true, operation })
+    fixture.getStatus.mockReturnValue(late.promise)
+    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
+    try {
+      await wrapper.get('.setup-review input').setValue(true)
+      await wrapper.get('.setup-buttons .btn-primary').trigger('click')
+      await flushPromises()
+      expect(fixture.getStatus).toHaveBeenCalledOnce()
+      if (disposition === 'cancel') await wrapper.findAll('button').find(button => button.text() === '取消准备')!.trigger('click')
+      else wrapper.unmount()
+      late.resolve(value)
+      await flushPromises()
+      expect(save).not.toHaveBeenCalled()
+      expect(wrapper.emitted('refresh')).toBeUndefined()
+    } finally { if (disposition !== 'unmount') wrapper.unmount() }
+  })
   it('prepares only the selected Base combination after consent and verifies the real operation before offering generation',async()=>{
     const value=complete()
     value.models.push({...value.models[0],id:'anima-base-v1.0',label:'Base',required:false,path:value.models[0].path.replace('anima-miaomiao-v1.6','anima-base-v1.0')})

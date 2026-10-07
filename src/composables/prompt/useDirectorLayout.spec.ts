@@ -80,7 +80,14 @@ it('pauses cached layout observation and refreshes geometry and preferences once
   const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => visible.value ? h(Child) : null }) }), { attachTo: document.body })
   await nextTick()
   const reads = measure.mock.calls.length
+  const rail = document.createElement('section')
+  wrapper.element.append(rail)
+  rail.scrollTop = 247; rail.scrollLeft = 12
+  rail.dispatchEvent(new Event('scroll'))
   visible.value = false; await nextTick()
+  // Browser layout can clamp a cached rail while its DOM is detached.
+  rail.scrollTop = 0; rail.scrollLeft = 0
+  rail.dispatchEvent(new Event('scroll'))
   expect(disconnect).toHaveBeenCalled()
   window.dispatchEvent(new Event('resize'))
   resize([], {} as ResizeObserver)
@@ -88,6 +95,8 @@ it('pauses cached layout observation and refreshes geometry and preferences once
   localStorage.setItem(DIRECTOR_LAYOUT_KEY, JSON.stringify({ hideInspector: true }))
   measure.mockReturnValue(960)
   visible.value = true; await nextTick()
+  expect(rail.scrollTop).toBe(247)
+  expect(rail.scrollLeft).toBe(12)
   expect(api.collapsed.value.inspector).toBe(true)
   expect(measure.mock.calls.length).toBeGreaterThan(reads)
   const beforeResize = measure.mock.calls.length

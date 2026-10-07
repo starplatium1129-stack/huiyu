@@ -5,6 +5,7 @@ import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 /** Release animation effects after navigation so fixed toolbars stay viewport-bound. */
 export function useRouteTransition(destinationPath?: () => string, options: { initialFade?: boolean } = {}) {
   const active = new Map<HTMLElement, () => void>()
+  const contentArrivals = new WeakMap<HTMLElement, () => void>()
   let interrupted = new WeakMap<HTMLElement, Keyframe>()
   const departed = new WeakSet<HTMLElement>()
   const workspaceDeparted = new WeakSet<HTMLElement>()
@@ -59,12 +60,16 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     if (path) markUiFluidityForPath(path, 'shell-ready')
     let animation: Animation | undefined, finished = false
     let content: Animation[] = []
+    const releaseContent = () => {
+      for (const effect of content) effect.cancel()
+      content = []
+      contentArrivals.delete(el)
+    }
     const finish = () => {
       if (finished) return
       finished = true
       active.delete(el); delete el.dataset.routeEntering
-      for (const effect of content) effect.cancel()
-      content = []
+      releaseContent()
       if (animation) {
         animation.onfinish = animation.oncancel = null
         try { animation.cancel() } catch { try { animation.effect = null } catch { /* Best-effort release. */ } }
@@ -76,7 +81,8 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     active.set(el, finish)
     try {
       const duration = cached ? 280 : 360
-      content = arriveContent(el, duration)
+      if (!cached) content = arriveContent(el, duration)
+      contentArrivals.set(el, releaseContent)
       animation = el.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration, easing: 'cubic-bezier(.22, 1, .36, 1)',
       })
@@ -199,10 +205,9 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       { opacity: 0, ...(current?.transform ? { transform: current.transform } : {}) },
     ]
     const leaveDuration = isArchive ? 100 : 140
-    const leaveEasing = isArchive ? 'ease-out' : 'cubic-bezier(.22, 1, .36, 1)'
     try {
       animation = el.animate(leaveFrames, {
-        duration: leaveDuration, easing: leaveEasing,
+        duration: leaveDuration, easing: 'cubic-bezier(.22, 1, .36, 1)',
       })
       leaving = el; active.set(el, finish); animation.onfinish = animation.oncancel = finish
     } catch { finish() }
@@ -225,15 +230,29 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   }
   function motionChanged() { if (prefersReducedMotion()) settleAll() }
   function visibilityChanged() { if (document.hidden) settleAll() }
+  function takeOver(event: Event) {
+    if (!(event.target instanceof Node)) return
+    // Let the chosen panel own its next frame while the page fade continues.
+    for (const el of [...active.keys()]) {
+      if (!el.inert && el.dataset.routeEntering === 'true' && el.contains(event.target)) {
+        contentArrivals.get(el)?.()
+        delete el.dataset.routeEntering
+      }
+    }
+  }
   let stopListening: (() => void) | undefined
   onMounted(() => {
     // Hidden tabs can suspend animation timelines; release Vue callbacks now.
     stopListening = listenMotionChanges(motionChanged, visibilityChanged)
+    document.addEventListener('pointerdown', takeOver, true)
+    document.addEventListener('keydown', takeOver, true)
   })
   onDeactivated(settleAll)
   onUnmounted(() => {
     settleAll()
     stopListening?.()
+    document.removeEventListener('pointerdown', takeOver, true)
+    document.removeEventListener('keydown', takeOver, true)
   })
   return { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled, completeEnter }
 }

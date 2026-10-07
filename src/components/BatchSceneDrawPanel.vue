@@ -266,12 +266,12 @@ const emit = defineEmits<{
 }>()
 
 const panel = ref<HTMLElement | null>(null)
-useFocusTrap(panel, () => props.open && !previewJob.value, { onEscape: () => emit('close') })
 const batchMode = ref<'scene' | 'character'>('scene')
 const count = ref<1 | 3>(1)
 const phase = ref<'config' | 'results'>('config')
 const previewJob = ref<BatchDrawJob | null>(null)
 const previewSource = ref<HTMLImageElement | null>(null)
+useFocusTrap(panel, () => props.open && !previewJob.value, { onEscape: () => emit('close') })
 
 // ── 场景选择态 ──
 const sceneLimit = ref(30), charLimit = ref(30)
@@ -442,10 +442,6 @@ watch([filter, categoryFilter], () => { sceneLimit.value = 30 })
 watch([charFilter, franchiseFilter], () => { charLimit.value = 30 })
 watch(() => props.open, (open) => {
   if (open) {
-    filter.value = ''
-    categoryFilter.value = ''
-    charFilter.value = ''
-    franchiseFilter.value = ''
     if (!jobs.value.length && !isRunning.value && !engineReady.value) batchEngine.value = props.animaAvailable ? 'anima' : 'sd'
   }
 })

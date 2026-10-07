@@ -1,10 +1,12 @@
 import type { Scene } from '@/types/scene'
 import type { LoraMeta } from './promptPolicyTypes'
 import type { PromptTagSource } from './promptTagDictionary'
+import type { CharacterLora } from '@/types/character'
 
 export interface PromptCharacter {
   id: string
   lora?: { name: string; weight: number }
+  profileLora?: CharacterLora
   traits?: Array<string | { tag: string; label: string; icon?: string }>
 }
 
@@ -14,6 +16,13 @@ const text = (value: unknown): value is string => typeof value === 'string'
 const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value)
 const strings = (value: unknown): value is string[] => Array.isArray(value) && value.every(text)
 const optional = (value: unknown, check: (value: unknown) => boolean) => value === undefined || check(value)
+
+function profileLora(value: unknown): value is CharacterLora {
+  return record(value) && !('weight' in value)
+    && ('trigger_words' in value || 'recommended_scene' in value)
+    && optional(value.name, text) && optional(value.trigger_words, strings)
+    && optional(value.recommended_scene, strings)
+}
 
 function scene(value: unknown): value is Scene {
   return record(value) && text(value.id) && text(value.title)
@@ -27,6 +36,7 @@ function scene(value: unknown): value is Scene {
 function character(value: unknown): value is PromptCharacter {
   return record(value) && text(value.id)
     && optional(value.lora, v => record(v) && text(v.name) && finite(v.weight))
+    && optional(value.profileLora, profileLora)
     && optional(value.traits, v => Array.isArray(v) && v.every(t => text(t) || (record(t)
       && text(t.tag) && text(t.label) && optional(t.icon, text))))
 }
@@ -54,6 +64,15 @@ function catalog<T>(value: unknown, label: string, guard: (item: unknown) => ite
 }
 
 export const parsePromptScenes = (value: unknown) => catalog(value, '工作台场景', scene)
-export const parsePromptCharacters = (value: unknown) => catalog(value, '工作台角色', character)
+export function parsePromptCharacters(value: unknown): PromptCharacter[] {
+  const projected = Array.isArray(value) ? value.map(item => {
+    // Popular profiles describe a LoRA; they do not supply executable weights.
+    // Preserve the profile separately without changing studio generation config.
+    if (!record(item) || item.type !== 'popular' || !profileLora(item.lora)) return item
+    const { lora: metadata, ...rest } = item
+    return { ...rest, profileLora: metadata }
+  }) : value
+  return catalog(projected, '工作台角色', character)
+}
 export const parsePromptLoras = (value: unknown) => catalog(value, '工作台 LoRA', lora)
 export const parsePromptTags = (value: unknown) => catalog(value, '工作台词条', tag)

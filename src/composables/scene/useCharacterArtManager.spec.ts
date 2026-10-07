@@ -68,6 +68,22 @@ it('preserves an unsaved candidate when switching is declined and retains it on 
   expect(flow.feedback.value).toBe('')
 })
 
+it('uses the same leave confirmation for a subpage switch without discarding a declined candidate', async () => {
+  const flow = setup(); await flushPromises(); await flow.pick(picture())
+  mock.confirm.mockResolvedValueOnce(false)
+  expect(await flow.canLeave()).toBe(false)
+  expect(flow.file.value).not.toBeNull()
+  expect(flow.previewUrl.value).toBe('blob:candidate')
+  expect(URL.revokeObjectURL).not.toHaveBeenCalled()
+  flow.saving.value = true
+  expect(await flow.canLeave()).toBe(false)
+  expect(mock.confirm).toHaveBeenCalledOnce()
+  flow.saving.value = false
+  expect(await flow.canLeave()).toBe(true)
+  wrapper.unmount()
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:candidate')
+})
+
 it('restores all linked resources via reset and blocks oversized or undecodable candidates', async () => {
   const flow = setup(); await flushPromises()
   adoptCharacterArtManifest({ version: '1', entries: { nene: entry } })

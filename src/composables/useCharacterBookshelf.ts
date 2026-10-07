@@ -4,11 +4,18 @@ import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 
 const PAGE_SIZE = 24
 
-export function useCharacterBookshelf(items: MaybeRefOrGetter<readonly DirectoryCharacter[]>) {
-  const query = ref('')
-  const mode = ref<'shelf' | 'characters'>('shelf')
-  const series = ref<string | null>(null)
-  const page = ref(1)
+export interface CharacterBookshelfState {
+  query: string
+  mode: 'shelf' | 'characters'
+  series: string | null
+  page: number
+}
+
+export function useCharacterBookshelf(items: MaybeRefOrGetter<readonly DirectoryCharacter[]>, initial?: CharacterBookshelfState) {
+  const query = ref(initial?.query ?? '')
+  const mode = ref(initial?.mode ?? 'shelf')
+  const series = ref(initial?.series ?? null)
+  const page = ref(initial?.page ?? 1)
   const term = computed(() => query.value.trim().toLocaleLowerCase())
   const indexed = computed(() => toValue(items).map(item => {
     const key = franchiseKey(item.source)
@@ -39,11 +46,12 @@ export function useCharacterBookshelf(items: MaybeRefOrGetter<readonly Directory
   const pageCount = computed(() => Math.max(1, Math.ceil(results.value.length / PAGE_SIZE)))
   const visibleResults = computed(() => results.value.slice((page.value - 1) * PAGE_SIZE, page.value * PAGE_SIZE))
   watch([query, mode, series], () => { page.value = 1 })
-  watch(pageCount, count => { page.value = Math.min(page.value, count) })
+  watch(pageCount, count => { page.value = Math.min(page.value, count) }, { immediate: true })
 
   function openGroup(key: string) { series.value = key; query.value = ''; mode.value = 'characters' }
   function changeMode(value: 'shelf' | 'characters') { mode.value = value; series.value = null; query.value = '' }
   function clearSearch() { query.value = '' }
+  function snapshot(): CharacterBookshelfState { return { query: query.value, mode: mode.value, series: series.value, page: page.value } }
 
-  return { query, mode, series, page, term, groups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch }
+  return { query, mode, series, page, term, groups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch, snapshot }
 }

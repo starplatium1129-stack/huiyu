@@ -52,7 +52,8 @@ import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { useCharacterArtManager } from '@/composables/scene/useCharacterArtManager'
 const props = defineProps<{ initialCharacterId?: string }>()
 const { selectedId, previewUrl, feedback, error, loading, saving, reading, ready, file,
-  profiles, current, custom, originalUrl, local, load, selectCharacter, pick, discard, save, reset } = useCharacterArtManager(() => props.initialCharacterId)
+  profiles, current, custom, originalUrl, local, load, selectCharacter, pick, discard, save, reset, canLeave } = useCharacterArtManager(() => props.initialCharacterId)
+defineExpose({ canLeave })
 const SemanticParticleField = defineAsyncComponent(() => import('@/components/visual/SemanticParticleField.vue'))
 const fileInput = ref<HTMLInputElement | null>(null), showParticles = ref(false)
 const particleTheme = computed(() => characterParticleTheme(selectedId.value))

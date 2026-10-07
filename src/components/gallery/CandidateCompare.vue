@@ -55,9 +55,10 @@ watch([() => props.open, () => candidates.value.map(({ id, image_id, image_url, 
 }, { immediate: true })
 async function save(patches: Array<{ id: string | number; patch: Partial<ArtworkRecord> }>) {
   if (busy.value) return
+  const current = version
   busy.value = true; error.value = ''
   try { await artworkRepository.patchArtworks(patches); emit('changed') }
-  catch { error.value = '标记没有保存成功，请重试；图片没有被删除。' }
+  catch { if (props.open && current === version) error.value = '标记没有保存成功，请重试；图片没有被删除。' }
   finally { busy.value = false }
 }
 function prefer(item: ArtworkRecord) { return save(candidates.value.map(candidate => ({ id: candidate.id, patch: candidate.id === item.id ? { reviewState: 'preferred', favorite: true } : candidate.reviewState === 'preferred' ? { reviewState: 'candidate' } : {} }))) }

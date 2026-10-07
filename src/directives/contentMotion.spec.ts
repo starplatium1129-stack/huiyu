@@ -31,6 +31,18 @@ it('does not start nested effects while the route is entering or a panel is hidd
   delete el.dataset.routeEntering; el.style.display = 'none'; update(el)
   expect(el.animate).not.toHaveBeenCalled()
 })
+it('releases an existing content effect when its containing surface becomes inert', () => {
+  const { el, animation } = panel(), parent = document.createElement('div')
+  document.body.append(parent); parent.append(el)
+  try {
+    update(el)
+    parent.inert = true; update(el, 'hidden update')
+    expect(animation.cancel).toHaveBeenCalledOnce()
+    expect(el.animate).toHaveBeenCalledOnce()
+    parent.inert = false; update(el, 'returned update')
+    expect(el.animate).toHaveBeenCalledTimes(2)
+  } finally { el.remove(); parent.remove() }
+})
 it('reveals the native disclosure body on open and keeps its summary still on close', () => {
   const stop = installContentMotion(), details = document.createElement('details'), summary = document.createElement('summary')
   const { el, animation } = panel()

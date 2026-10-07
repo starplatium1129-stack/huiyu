@@ -84,6 +84,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
       if(drawing.value){
         await waitOperation(await controlApi.serviceAction('comfy','start'),'service')
         const checked=await localSetupApi.getStatus({modelId:modelId.value})
+        checkpoint()
         if(checked.nodes.state!=='checked'||checked.nodes.missing.length)throw new Error('绘图节点仍有缺项：'+(checked.nodes.missing.join('、')||'尚未确认，请重新检查'))
         settingsRepository.set(DRAW_ENGINE_SETTING,'anima')
         settingsRepository.set(STARTER_MODEL_SETTING,modelId.value)
@@ -94,7 +95,9 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
         await waitOperation(result,'llama')
         checkpoint()
         await chatStorage.load()
+        checkpoint()
         await chatStorage.setApiSettings({baseUrl:result.baseUrl,model:result.model,apiKey:''})
+        checkpoint()
         chatStorage.setProvider('api')
       }
       checkpoint()

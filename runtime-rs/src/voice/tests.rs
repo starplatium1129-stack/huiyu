@@ -364,6 +364,8 @@ async fn vox_stream_starts_before_eof_caches_complete_wave_and_discards_cancelle
     assert_eq!(replay.headers()["x-tts-cache"], "hit");
     let wave = replay.into_body().collect().await.unwrap().to_bytes();
     assert_eq!(&wave[..4], b"RIFF");
+    assert_eq!(&wave[4..8], &44u32.to_le_bytes());
+    assert_eq!(&wave[40..44], &8u32.to_le_bytes());
     assert_eq!(&wave[44..], &[1, 2, 3, 4, 5, 6, 7, 8]);
     assert_eq!(
         mock.spoken.load(Ordering::SeqCst),

@@ -26,8 +26,11 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
     const root=host.value
     if (!root || !canAnimate.value || lowEffects.value || comparing()) return
     const image=root.querySelector<HTMLImageElement>('img.cg-image-target')
+    // An empty canvas belongs to GenerationParticles. Claiming it here hides
+    // that waiting visual even though there is no artwork to dissolve.
+    if (!image?.complete || !image.naturalWidth) return
     const bounds=root.getBoundingClientRect(); size={width:bounds.width,height:bounds.height}
-    effect=startCanvasTextureParticles(image?.complete && image.naturalWidth ? image : null,root,{
+    effect=startCanvasTextureParticles(image,root,{
       mode:'generation', progress:progress(), palette:[...palette()], onComplete:() => { effect=null; active.value=false },
     })
     active.value=Boolean(effect)

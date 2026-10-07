@@ -4,16 +4,16 @@
       <div class="catalog-brand"><ArchiveIcon name="manager" /><div><strong>内容工作室</strong><span>让设定与故事慢慢成形</span></div></div>
       <div class="catalog-nav-group">
         <span class="catalog-nav-caption">创作资料</span>
-        <button v-for="entry in kinds" :key="entry.value" type="button" :aria-current="section === 'records' && kind === entry.value ? 'page' : undefined" :disabled="busy" @click="switchKind(entry.value)">
+        <button v-for="entry in kinds" :key="entry.value" type="button" :aria-current="section === 'records' && kind === entry.value ? 'page' : undefined" :disabled="busy || switchingSection" @click="switchKind(entry.value)">
           <ArchiveIcon :name="entry.icon" /><span>{{ entry.label }}</span><small>{{ counts[entry.value] ?? '—' }}</small>
         </button>
       </div>
       <div class="catalog-nav-group catalog-nav-secondary">
         <span class="catalog-nav-caption">整理与备份</span>
-        <button type="button" :aria-current="section === 'portraits' ? 'page' : undefined" @click="section = 'portraits'"><ArchiveIcon name="character" /><span>角色立绘</span></button>
-        <button type="button" :aria-current="section === 'media' ? 'page' : undefined" @click="section = 'media'"><ArchiveIcon name="gallery" /><span>样张与封面</span></button>
-        <button type="button" :aria-current="section === 'bulk' ? 'page' : undefined" @click="section = 'bulk'"><ArchiveIcon name="upload" /><span>批量整理</span></button>
-        <button type="button" :aria-current="section === 'tools' ? 'page' : undefined" @click="section = 'tools'"><ArchiveIcon name="download" /><span>文件与备份</span></button>
+        <button type="button" :aria-current="section === 'portraits' ? 'page' : undefined" :disabled="busy || switchingSection" @click="switchSection('portraits')"><ArchiveIcon name="character" /><span>角色立绘</span></button>
+        <button type="button" :aria-current="section === 'media' ? 'page' : undefined" :disabled="busy || switchingSection" @click="switchSection('media')"><ArchiveIcon name="gallery" /><span>样张与封面</span></button>
+        <button type="button" :aria-current="section === 'bulk' ? 'page' : undefined" :disabled="busy || switchingSection" @click="switchSection('bulk')"><ArchiveIcon name="upload" /><span>批量整理</span></button>
+        <button type="button" :aria-current="section === 'tools' ? 'page' : undefined" :disabled="busy || switchingSection" @click="switchSection('tools')"><ArchiveIcon name="download" /><span>文件与备份</span></button>
       </div>
       <p class="catalog-sidebar-note">先选一份内容，补充它的细节。<br />写好以后，记得保存更改。</p>
     </aside>
@@ -35,7 +35,7 @@
         </div>
       </header>
       <p v-if="hint" class="catalog-feedback" role="status" aria-live="polite">{{ hint }}</p>
-      <div v-if="section === 'portraits'" v-content-motion="section" class="catalog-support-surface"><CharacterArtManager :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" /></div>
+      <div v-if="section === 'portraits'" v-content-motion="section" class="catalog-support-surface"><CharacterArtManager ref="artManager" :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" /></div>
       <div v-else-if="section === 'media'" v-content-motion="section" class="catalog-support-surface"><CatalogMediaManager :record="selected" :character-names="characterNames" /></div>
       <section v-else-if="section === 'tools'" v-content-motion="section" class="catalog-support-surface">
         <h2>给内容留一份备份</h2><p class="catalog-note">导出完整资料，或者看看之前的图片备份。每份内容的旧版本也可以在编辑区找回。</p>
@@ -119,6 +119,8 @@ import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import '@/assets/css/catalog-maintenance.css'
 const section = ref('records'), route = useRoute(), editorPane = ref<HTMLElement | null>(null)
 const CharacterArtManager = defineAsyncComponent(() => import('@/components/maintenance/CharacterArtManager.vue'))
+const artManager = ref<InstanceType<typeof CharacterArtManager> | null>(null)
+const switchingSection = ref(false)
 const CatalogMediaManager = defineAsyncComponent(() => import('@/components/maintenance/CatalogMediaManager.vue'))
 const checking = ref(false), toolHint = ref(''), backups = ref<BackupEntry[]>([])
 const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }> = [
@@ -154,7 +156,20 @@ async function saveEdits() { if (dirtyEditor.value) stage(); if (!dirtyEditor.va
 async function reviewEdits() { if (dirtyEditor.value) stage(); if (!dirtyEditor.value) await submit(true) }
 async function checkContent() { checking.value = true; try { await catalogApi.check(); toolHint.value = '检查完成，资料关联完整' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
 async function listBackups() { checking.value = true; try { backups.value = (await maintenanceApi.listBackups()).entries; toolHint.value = '找到 ' + backups.value.length + ' 份图片备份' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
-function switchKind(value: CatalogKind) { kind.value = value; character.value = ''; category.value = ''; rating.value = ''; section.value = 'records' }
+async function switchSection(value: string) {
+  if (busy.value || switchingSection.value) return false
+  if (value === section.value) return true
+  switchingSection.value = true
+  try {
+    if (artManager.value && !await artManager.value.canLeave()) return false
+    section.value = value
+    return true
+  } finally { switchingSection.value = false }
+}
+async function switchKind(value: CatalogKind) {
+  if (!await switchSection('records')) return
+  kind.value = value; character.value = ''; category.value = ''; rating.value = ''
+}
 async function readBulkFile(event: Event) { const file = (event.target as HTMLInputElement).files?.[0]; if (file) await readBulkSource(file) }
 onMounted(() => {
   if (route.query.tab === 'portraits') section.value = 'portraits'

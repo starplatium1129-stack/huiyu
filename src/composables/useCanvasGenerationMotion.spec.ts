@@ -9,16 +9,16 @@ vi.mock('@/utils/canvasTextureParticles',() => ({startCanvasTextureParticles:moc
 const cleanups:Array<() => void>=[]
 beforeEach(() => { Object.values(mock).forEach(fn => fn.mockReset()); activity.canAnimate.value=true; activity.lowEffects.value=false; mock.start.mockReturnValue({stop:mock.stop,release:mock.release,progress:mock.progress}) })
 afterEach(() => { cleanups.splice(0).forEach(fn => fn()); vi.restoreAllMocks() })
-async function fixture() {
-  const source=ref('/old.png'),busy=ref(false),progress=ref<number | null>(.23),comparing=ref(false)
+async function fixture(initialSource = '/old.png') {
+  const source=ref(initialSource),busy=ref(false),progress=ref<number | null>(.23),comparing=ref(false)
   let motion!:ReturnType<typeof useCanvasGenerationMotion>
   const wrapper=mount(defineComponent({setup() {
     const host=ref<HTMLElement | null>(null)
     motion=useCanvasGenerationMotion(host,() => source.value,() => busy.value,() => progress.value,() => comparing.value,() => ['180 80 45','35 120 160','115 60 165'])
     return () => h('div',{ref:host},source.value ? h('img',{class:'cg-image-target',src:source.value}) : [])
   }}))
-  const image=wrapper.get('img').element
-  Object.defineProperties(image,{complete:{value:true},naturalWidth:{value:800},naturalHeight:{value:600}})
+  const image=wrapper.find('img').exists() ? wrapper.get('img').element : undefined
+  if (image) Object.defineProperties(image,{complete:{value:true},naturalWidth:{value:800},naturalHeight:{value:600}})
   cleanups.push(() => wrapper.unmount())
   return {source,busy,progress,comparing,motion,wrapper,image}
 }
@@ -59,10 +59,17 @@ it('leaves the ordinary progress visual available when WebGL is unavailable',asy
   expect(busy.value).toBe(true)
 })
 
+it('keeps an empty generation canvas available for its waiting visual',async () => {
+  const {busy,motion}=await fixture('')
+  busy.value=true; await nextTick()
+  expect(mock.start).not.toHaveBeenCalled()
+  expect(motion.active.value).toBe(false)
+})
+
 it('stops unchanged old results and replaces an in-flight result when a new generation starts',async () => {
   const {source,busy,motion,image}=await fixture()
   // The image element can carry the resolved runtime URL while props stay relative.
-  image.setAttribute('src','https://runtime.example/old.png')
+  image!.setAttribute('src','https://runtime.example/old.png')
   busy.value=true; await nextTick()
   busy.value=false; await nextTick()
   expect(mock.stop).toHaveBeenCalledOnce()

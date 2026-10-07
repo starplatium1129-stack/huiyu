@@ -23,7 +23,7 @@ function reveal(el: HTMLElement, direction = 'up') {
   }
   // v-show and route state can be read without forcing layout during Vue's patch.
   for (let parent: HTMLElement | null = el; parent; parent = parent.parentElement) {
-    if (parent.hidden || parent.inert || parent.style.display === 'none' || parent.dataset.routeEntering === 'true') return
+    if (parent.hidden || parent.inert || parent.style.display === 'none' || parent.dataset.routeEntering === 'true') { cancel(el); return }
   }
   for (const surface of active.keys()) {
     if (surface !== el && surface.contains(el)) return

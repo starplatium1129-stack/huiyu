@@ -127,6 +127,10 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     let destination = '/gallery'
     const hooks = useRouteTransition(() => destination), gallery = surface('/gallery'), style = surface('/style')
     const first = counter(), second = counter(), returned = counter()
+    const readingSurface = document.createElement('div')
+    readingSurface.getBoundingClientRect = () => ({ width: 400, height: 200, top: 0, bottom: 200 } as DOMRect)
+    readingSurface.animate = vi.fn(() => new AnimationStub() as unknown as Animation)
+    gallery.el.querySelectorAll = (() => [readingSurface]) as unknown as typeof gallery.el.querySelectorAll
     hooks.onEnter(gallery.el, first.done)
     assert.equal(first.count, 0); gallery.animations[0].onfinish!()
     destination = '/style'; hooks.onLeave(gallery.el, () => {}); hooks.onEnter(style.el, second.done)
@@ -137,6 +141,33 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.equal(gallery.el.inert, false)
     assert.equal(gallery.animations.length + style.animations.length, 5)
     assert.deepEqual(gallery.calls[2][0], [{ opacity: 0 }, { opacity: 1 }])
+    assert.equal(vi.mocked(readingSurface.animate).mock.calls.length, 1)
+  })
+
+  it('hands page entry to an immediate pointer or keyboard operation before its panel updates', () => {
+    const hooks = useRouteTransition(() => '/gallery')
+    for (const callback of state.mounted.splice(0)) callback()
+    for (const type of ['pointerdown', 'keydown']) {
+      const el = document.createElement('article'), button = document.createElement('button')
+      const animation = new AnimationStub(), contentAnimation = new AnimationStub(), done = counter()
+      button.dataset.routeArrive = ''
+      button.getBoundingClientRect = () => ({ width: 400, height: 200, top: 0, bottom: 200 } as DOMRect)
+      button.animate = vi.fn(() => contentAnimation as unknown as Animation)
+      el.animate = vi.fn(() => animation as unknown as Animation)
+      el.append(button); document.body.append(el)
+      hooks.onBeforeEnter(el); hooks.onEnter(el, done.done)
+      assert.equal(el.dataset.routeEntering, 'true')
+      button.dispatchEvent(new Event(type, { bubbles: true }))
+      assert.equal(done.count, 0)
+      assert.equal(el.dataset.routeEntering, undefined)
+      assert.equal(el.inert, false)
+      assert.equal(animation.cancelCalls, 0)
+      assert.equal(contentAnimation.cancelCalls, 1)
+      animation.onfinish!()
+      assert.equal(done.count, 1)
+      assert.equal(contentAnimation.cancelCalls, 1)
+      el.remove()
+    }
   })
 
   it('crossfades peer workspaces without translating fixed controls or delaying destination input', () => {
@@ -207,7 +238,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.equal(oldPage.el.inert, true)
     assert.equal(newPage.el.inert, false)
     assert.equal(left.count, 0)
-    assert.deepEqual(oldPage.calls[0], [[{ opacity: 1 }, { opacity: 0 }], { duration: 100, easing: 'ease-out' }])
+    assert.deepEqual(oldPage.calls[0], [[{ opacity: 1 }, { opacity: 0 }], { duration: 100, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
     assert.deepEqual(newPage.calls[0][0], [{ opacity: 0, transform: 'translateX(8px)' }, { opacity: 1, transform: 'translateX(0)' }])
     hooks.onLeaveCancelled(oldPage.el)
     assert.equal(oldPage.el.inert, false)

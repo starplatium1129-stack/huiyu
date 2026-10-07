@@ -22,15 +22,24 @@ impl Catalog {
     }
     pub fn character_bundle(&self, id: &str) -> Result<Value> {
         let transaction = self.connection.unchecked_transaction()?;
-        let character = self.get("character", id)?;
-        let mut popular = character.data["popular"].clone();
+        let mut character = self.get("character", id)?;
+        let mut popular = character
+            .data
+            .get_mut("popular")
+            .map(Value::take)
+            .unwrap_or_default();
         let mut statement = self.connection.prepare(&format!("SELECT {COLUMNS} FROM content_records WHERE kind='outfit' AND character_id=?1 AND deleted=0 ORDER BY sort_order,id"))?;
         let outfits = statement
             .query_map([id], row)?
             .collect::<rusqlite::Result<Vec<_>>>()?
             .into_iter()
             .filter(|r| r.data["characterId"] == id)
-            .map(|r| r.data["outfit"].clone())
+            .map(|mut r| {
+                r.data
+                    .get_mut("outfit")
+                    .map(Value::take)
+                    .unwrap_or_default()
+            })
             .collect::<Vec<_>>();
         if popular.is_object() {
             popular["outfits"] = outfits.into();
@@ -42,7 +51,15 @@ impl Catalog {
             .into_iter()
             .map(|r| r.data)
             .collect::<Vec<_>>();
-        let value = json!({"ok":true,"version":self.version()?,"profile":character.data["profile"],"character":popular,"blueprints":blueprints});
+        // Move owned JSON bodies into the envelope instead of cloning them through json!.
+        let mut value = json!({"ok":true,"version":self.version()?,"profile":null,"character":null,"blueprints":null});
+        value["profile"] = character
+            .data
+            .get_mut("profile")
+            .map(Value::take)
+            .unwrap_or_default();
+        value["character"] = popular;
+        value["blueprints"] = Value::Array(blueprints);
         transaction.commit()?;
         Ok(value)
     }
@@ -69,34 +86,46 @@ impl Catalog {
             return Ok(Some(
                 self.records("character")?
                     .into_iter()
-                    .filter_map(|r| r.data.get("profile").cloned())
+                    .filter_map(|mut r| r.data.get_mut("profile").map(Value::take))
                     .collect::<Vec<_>>()
                     .into(),
             ));
         }
         if name == "popular-characters.json" {
             let mut outfits = std::collections::HashMap::<String, Vec<Value>>::new();
-            for r in self.records("outfit")? {
+            for mut r in self.records("outfit")? {
                 outfits
                     .entry(r.data["characterId"].as_str().unwrap().into())
                     .or_default()
-                    .push(r.data["outfit"].clone());
+                    .push(
+                        r.data
+                            .get_mut("outfit")
+                            .map(Value::take)
+                            .unwrap_or_default(),
+                    );
             }
             let characters = self
                 .records("character")?
                 .into_iter()
-                .filter_map(|r| {
-                    let mut value = r.data.get("popular")?.clone();
+                .filter_map(|mut r| {
+                    let mut value = r.data.get_mut("popular")?.take();
                     value["outfits"] = outfits.remove(&r.id).unwrap_or_default().into();
                     Some(value)
                 })
                 .collect::<Vec<_>>();
-            return Ok(Some(json!({"version":1,"characters":characters})));
+            let mut value = json!({"version":1,"characters":null});
+            value["characters"] = Value::Array(characters);
+            return Ok(Some(value));
         }
         if name == "scene-blueprints.json" {
-            return Ok(Some(
-                json!({"version":2,"blueprints":self.records("blueprint")?.into_iter().map(|r|r.data).collect::<Vec<_>>()}),
-            ));
+            let mut value = json!({"version":2,"blueprints":null});
+            value["blueprints"] = self
+                .records("blueprint")?
+                .into_iter()
+                .map(|r| r.data)
+                .collect::<Vec<_>>()
+                .into();
+            return Ok(Some(value));
         }
         if [
             "curation.json",
@@ -136,7 +165,10 @@ impl Catalog {
                 while let Some(row) = rows.next()? {
                     let id: String = row.get(0)?;
                     let character: String = row.get(1)?;
-                    if let Some(index) = ["nene", "natsume", "triad"].iter().position(|c| *c == character) {
+                    if let Some(index) = ["nene", "natsume", "triad"]
+                        .iter()
+                        .position(|c| *c == character)
+                    {
                         counts[index] += 1;
                     }
                     metadata.insert(id.clone(), json!({"sortOrder":row.get::<_,i64>(2)?,"createdAt":row.get::<_,Option<String>>(3)?,"updatedAt":row.get::<_,Option<String>>(4)?}));
@@ -144,9 +176,14 @@ impl Catalog {
                 }
                 let mut shards = serde_json::Map::new();
                 for (key, count) in ["nene", "natsume", "shared"].into_iter().zip(counts) {
-                    shards.insert(key.into(), json!({"file":format!("scenes-{key}.json"),"count":count}));
+                    shards.insert(
+                        key.into(),
+                        json!({"file":format!("scenes-{key}.json"),"count":count}),
+                    );
                 }
-                return Ok(Some(json!({"version":2,"total":ids.len(),"shards":shards,"tiers":{"core":core},"orderedIds":ids,"metadata":metadata})));
+                return Ok(Some(
+                    json!({"version":2,"total":ids.len(),"shards":shards,"tiers":{"core":core},"orderedIds":ids,"metadata":metadata}),
+                ));
             }
             let character = match name {
                 "scenes-nene.json" => Some("nene"),
@@ -167,11 +204,10 @@ impl Catalog {
             } else if name == "scenes-core.json" {
                 let mut statement = self.connection.prepare(&format!(
                     "SELECT {COLUMNS} FROM content_records WHERE kind='scene' AND deleted=0
-                     AND EXISTS (SELECT 1 FROM json_each(?1) AS core
-                         WHERE core.type='text' AND core.value=content_records.id)
+                     AND id IN (SELECT value FROM json_each(?1) WHERE type='text')
                      ORDER BY sort_order,id"
                 ))?;
-                // EXISTS preserves set membership for duplicate IDs; only strings match.
+                // Materialize membership once; duplicates still select one row, only strings match.
                 statement
                     .query_map([serde_json::to_string(&core)?], row)?
                     .collect::<rusqlite::Result<Vec<_>>>()?
