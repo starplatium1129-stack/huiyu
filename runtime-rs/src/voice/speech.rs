@@ -343,7 +343,8 @@ impl Speech {
             return Err(ApiError::new(502, "TTS_EMPTY_AUDIO", "语音服务返回空音频"));
         }
         fix_wav(&mut bytes);
-        Ok(Bytes::from(bytes))
+        // Match the PCM path: retained allocation must fit the cache's byte budget.
+        Ok(Bytes::from(bytes.into_boxed_slice()))
     }
     fn remember(&self, key: String, bytes: Bytes) {
         if self.cancel.is_cancelled() {
