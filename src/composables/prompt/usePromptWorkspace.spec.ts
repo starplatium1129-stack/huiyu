@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
-import { defineComponent, h, nextTick, ref } from 'vue'
+import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { apiClient } from '@/api/client'
 import { generationApi } from '@/api/generationApi'
@@ -39,7 +39,7 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-async function setup(query = '', loadData: () => Promise<void> = async () => {}, restoreSavedDraft = false) {
+async function setup(query = '', loadData: () => Promise<void> = async () => {}, restoreSavedDraft = false, cached = false) {
   const pinia = createPinia()
   setActivePinia(pinia)
   const pb = usePromptBuilderStore()
@@ -55,16 +55,29 @@ async function setup(query = '', loadData: () => Promise<void> = async () => {},
   await router.push('/prompt-builder' + query)
   await router.isReady()
   let workspace!: ReturnType<typeof usePromptWorkspace>
-  const wrapper = mount(defineComponent({ setup() { workspace = usePromptWorkspace(); return () => h('div') } }), { global: { plugins: [pinia, router] } })
+  const active = ref(true)
+  const page = defineComponent({ setup() { workspace = usePromptWorkspace(); return () => h('div') } })
+  const wrapper = mount(cached ? defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(page) : null }) }) : page, { global: { plugins: [pinia, router] } })
   wrappers.push(wrapper)
   // SD status and video tools load lazily during mount; flushPromises alone does
   // not wait for Vite to finish those imports before the lifecycle applies links.
   await vi.dynamicImportSettled()
   await flushPromises()
-  return { workspace, pb, catalog, router, wrapper, load, loadHistory, restoreDraft, saveDraft }
+  return { workspace, pb, catalog, router, wrapper, active, load, loadHistory, restoreDraft, saveDraft }
 }
 
 describe('workspace ownership and panel boundaries', () => {
+  it.each(['unmount', 'deactivate'])('does not apply a reference after %s while its helper is loading', async boundary => {
+    const { workspace, pb, wrapper, active } = await setup('', undefined, false, boundary === 'deactivate')
+    pb.manualTags = new Set(['smile'])
+    const applying = workspace.handleInterrogateResult({ engine: 'wd14', tags: ['forest'] })
+    if (boundary === 'unmount') wrapper.unmount()
+    else { active.value = false; await nextTick() }
+    await applying
+    expect([...pb.manualTags]).toEqual(['smile'])
+    expect(pb.referenceInput).toBeNull()
+  })
+
   it('shows no-LoRA mode for a popular character on the configured MiaoMiao 2.9B checkpoint', async () => {
     const { workspace, pb } = await setup()
     const modelId = 'anima-miaomiao-2.9b-beta1.1'
