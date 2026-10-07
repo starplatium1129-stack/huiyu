@@ -11,6 +11,7 @@ vi.mock('@/utils/downloadBlob', () => ({ downloadBlob: vi.fn() }))
 import { downloadBlob } from '@/utils/downloadBlob'
 import { resolveConfirm, useConfirmState } from '@/composables/useConfirm'
 import { mount, flushPromises } from '@vue/test-utils'
+import { effectScope } from 'vue'
 import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
 import { clearStoredChatContent } from '@/utils/chatReset'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -44,6 +45,34 @@ beforeEach(() => {
 afterEach(() => { archiveKv.clear(); vi.restoreAllMocks(); vi.unstubAllGlobals() })
 
 describe('independent chat preference persistence', () => {
+  it('releases disposed synchronization without detaching a newer owner or reporting late errors', async () => {
+    const olderScope = effectScope(), newerScope = effectScope(), onError = vi.fn()
+    const older = olderScope.run(() => useChatStorage())!
+    await older.load()
+    const newer = newerScope.run(() => useChatStorage(onError))!
+    await newer.load()
+    try {
+      olderScope.stop(); olderScope.stop()
+      archiveKv.set('chat_archive_v1', { version: 1, archived: { nene: [{ mid: 'remote', role: 'user', content: 'neutral remote line', stopped: false }] } })
+      window.dispatchEvent(new StorageEvent('storage', { key: CHAT_ARCHIVE_CHANGED_KEY }))
+      await flushPromises()
+      expect(newer.archiveCount('nene')).toBe(1)
+      expect(older.archiveCount('nene')).toBe(0)
+      let reject!: (error: Error) => void
+      vi.mocked(kvGet).mockClear().mockImplementationOnce(() => new Promise((_resolve, fail) => { reject = fail }))
+      window.dispatchEvent(new StorageEvent('storage', { key: CHAT_ARCHIVE_CHANGED_KEY }))
+      await flushPromises()
+      expect(kvGet).toHaveBeenCalledOnce()
+      newerScope.stop(); newerScope.stop()
+      reject(new Error('late archive failure')); await flushPromises()
+      expect(onError).not.toHaveBeenCalled()
+      vi.mocked(kvGet).mockClear()
+      window.dispatchEvent(new StorageEvent('storage', { key: CHAT_ARCHIVE_CHANGED_KEY }))
+      await flushPromises()
+      expect(kvGet).not.toHaveBeenCalled()
+    } finally { olderScope.stop(); newerScope.stop() }
+  })
+
   it('does not read or serialize message history or archives when typing or adjusting volume', async () => {
     const storage = await open()
     for (const [input, expected] of [[-10, 0], [120, 100], [NaN, 80], [Infinity, 80], [24.8, 25]]) {
