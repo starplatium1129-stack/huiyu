@@ -29,7 +29,7 @@ Rust 使用[官方 rustup 安装器](https://rust-lang.org/tools/install/)的 x6
 
 生成安装包：`npm run package:tauri`。它只构建，不安装、不公开发布；完成后再按下面的部署入口选择增量同步或完整安装。
 
-**公开发行与源码构建分别核对**：2026-10-07 已发布的 [1.9.1](releases/v1.9.1.md)包含 `AI-CG-Studio_1.9.1_x64-full-setup.exe`（654,864,384 字节）与 `AI-CG-Studio_1.9.1_x64-upgrade-setup.exe`（383,938,560 字节），公开自动更新指向升级包。发行身份及核验范围见[项目状态](project-status.md)；后续源码能力不能据此算入既有安装包。
+**公开发行与源码构建分别核对**：2026-10-07 已发布的 [1.9.2](releases/v1.9.2.md)绑定 `f221bd4c`，包含 `AI-CG-Studio_1.9.2_x64-full-setup.exe`（662,912,512 字节）与 `AI-CG-Studio_1.9.2_x64-upgrade-setup.exe`（391,980,544 字节），公开自动更新指向升级包。发行身份及核验范围见[项目状态](project-status.md)；本次公开发行不代表已安装到本机，后续源码能力不能据此算入既有安装包。
 
 发行入口 `npm run release:desktop` 生成 **full 完整包**与 **upgrade 轻量升级包**，并分别绑定/签名；已有构建可用 `--skip-build`，本地无签名构建显式加 `--manual`。完整包带基础素材和 WebView2，升级包在写入前核对已有安装及保留资源的精确字节后原位更新；资源不匹配时使用完整包修复。样张 ZIP 继续独立提供。`deploy-desktop.bat -UseInstaller` 自动选包时排除 upgrade 包，默认选择新装和修复均可用的完整包；如需验证升级包，应显式传入已核对的 `-InstallerPath`。
 
