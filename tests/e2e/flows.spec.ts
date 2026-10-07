@@ -130,8 +130,15 @@ async function useLocalChat(page: Page) {
 
 // 浏览器上下文按用例隔离，localStorage / IndexedDB 天然是空的 ——
 // 不要在 addInitScript 里清库：那会在 restore() 触发的 reload 上再清一次。
-test.beforeEach(async ({ request }) => {
+test.beforeEach(async ({ request, page }) => {
   await resetMocks(request);
+  // Fresh contexts see the real first-visit guide. Dismiss through its public
+  // browse action rather than forcing clicks through the modal or seeding storage.
+  const guide = page.getByRole('dialog', { name: '访客导览', exact: true });
+  await page.addLocatorHandler(guide, async () => {
+    await guide.getByRole('button', { name: '先浏览，稍后配置', exact: true }).click();
+    await expect(guide).toBeHidden();
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
