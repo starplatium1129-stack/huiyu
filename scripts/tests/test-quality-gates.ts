@@ -13,6 +13,14 @@ function read(relativePath: string) {
   return fs.readFileSync(path.join(root, relativePath), 'utf8');
 }
 
+function gitBash() {
+  const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
+  // Git for Windows exposes git.exe through cmd/, but need not add Bash to PATH.
+  const git = process.platform === 'win32' ? spawnSync('where.exe', ['git'], { encoding: 'utf8' }).stdout?.trim().split(/\r?\n/)[0] : '';
+  const sibling = git ? path.resolve(path.dirname(git), '../bin/bash.exe') : '';
+  return sibling && fs.existsSync(sibling) ? sibling : 'bash';
+}
+
 test('quality gates cover every deterministic test exactly once', () => {
   const assigned = Object.entries(QUALITY_TEST_SUITES).flatMap(([suite, files]) => files.map(file => ({ suite, file })));
   const discovered = fs.readdirSync(testsRoot)
@@ -56,10 +64,7 @@ test('quality shallow lanes fetch only validated comparison commits and retain f
   const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
   const quality = read('.github/workflows/quality.yml');
   const section = (name: string) => quality.split(`\n  ${name}:\n`)[1].split(/\n {2}[a-z-]+:\n/)[0];
-  // Git for Windows exposes git.exe through cmd/, but need not add Bash to PATH.
-  const git = process.platform === 'win32' ? spawnSync('where.exe', ['git'], { encoding: 'utf8' }).stdout?.trim().split(/\r?\n/)[0] : '';
-  const sibling = git ? path.resolve(path.dirname(git), '../bin/bash.exe') : '';
-  const bash = sibling && fs.existsSync(sibling) ? sibling : 'bash';
+  const bash = gitBash();
   const scripts = new Set<string>();
   for (const name of ['changed']) {
     const lane = section(name);
@@ -84,6 +89,60 @@ test('quality shallow lanes fetch only validated comparison commits and retain f
       assert.equal(result.stdout.includes(`git<fetch><--no-tags><--no-recurse-submodules><--depth=1><origin><${base}>`), expected);
       if (fetch === '1') assert.match(result.stdout, /full fallback suites/);
     }
+  }
+});
+
+test('new branch baseline includes every topic commit and preserves conservative fallbacks', () => {
+  const { spawnSync, execFileSync }: typeof import('node:child_process') = require('node:child_process');
+  const { pathToFileURL }: typeof import('node:url') = require('node:url');
+  const temporary = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'quality-baseline-'));
+  const source = path.join(temporary, 'source'), checkout = path.join(temporary, 'checkout');
+  const git = (cwd: string, ...args: string[]) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe', windowsHide: true }).trim();
+  const script = read('.github/workflows/quality.yml').split('      - name: Fetch only the comparison baseline\n')[1]
+    .split('        run: |\n')[1].split('      - name:')[0].replace(/^ {10}/gm, '');
+  const environment = path.join(temporary, 'environment');
+  try {
+    fs.mkdirSync(source);
+    git(source, 'init', '--initial-branch=main');
+    git(source, 'config', 'user.name', 'Fixture');
+    git(source, 'config', 'user.email', 'fixture@example.invalid');
+    const commit = (name: string) => {
+      fs.writeFileSync(path.join(source, name), name);
+      git(source, 'add', '--', name); git(source, 'commit', '-m', name);
+    };
+    commit('base.txt');
+    const common = git(source, 'rev-parse', 'HEAD');
+    git(source, 'checkout', '-b', 'topic');
+    for (const name of ['one.rs', 'two.rs', 'three.rs']) commit(name);
+    git(source, 'checkout', 'main'); commit('main-only.txt');
+    git(source, 'checkout', '--orphan', 'isolated'); git(source, 'commit', '-m', 'unrelated root');
+    git(source, 'checkout', 'main');
+    git(temporary, 'clone', '--depth=2', '--branch=topic', pathToFileURL(source).href, checkout);
+    assert.notEqual(spawnSync('git', ['cat-file', '-e', `${common}^{commit}`], { cwd: checkout }).status, 0);
+    const run = (overrides: NodeJS.ProcessEnv = {}) => {
+      fs.writeFileSync(environment, '');
+      const result = spawnSync(gitBash(), ['-e', '-o', 'pipefail', '-c', script], {
+        cwd: checkout, encoding: 'utf8', timeout: 15_000,
+        env: { ...process.env, AICS_HYGIENE_BASE_REF: '0'.repeat(40), GITHUB_EVENT_NAME: 'push',
+          NEW_BRANCH: 'true', GITHUB_REF: 'refs/heads/topic', DEFAULT_BRANCH: 'main', GITHUB_ENV: environment, ...overrides },
+      });
+      assert.ifError(result.error); assert.equal(result.status, 0, result.stderr);
+      return { output: result.stdout, saved: fs.readFileSync(environment, 'utf8') };
+    };
+    assert.equal(run().saved, `AICS_HYGIENE_BASE_REF=${common}\n`);
+    assert.deepEqual(git(checkout, 'diff', '--name-only', common, 'HEAD').split('\n'), ['one.rs', 'three.rs', 'two.rs']);
+    git(checkout, 'update-ref', '-d', 'refs/remotes/quality/default-branch');
+    const disconnected = run({ DEFAULT_BRANCH: 'isolated' });
+    assert.equal(disconnected.saved, '');
+    assert.match(disconnected.output, /full fallback suites/);
+    for (const overrides of [
+      { AICS_HYGIENE_BASE_REF: '0' }, { DEFAULT_BRANCH: 'missing' }, { DEFAULT_BRANCH: 'invalid\nbranch' },
+      { GITHUB_REF: 'refs/tags/v1' }, { GITHUB_REF: 'refs/heads/main' },
+      { NEW_BRANCH: 'false' }, { GITHUB_EVENT_NAME: 'pull_request' },
+    ]) assert.equal(run(overrides).saved, '', JSON.stringify(overrides));
+    assert.match(run({ DEFAULT_BRANCH: 'missing' }).output, /full fallback suites/);
+  } finally {
+    (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(temporary, 'quality-baseline-');
   }
 });
 
