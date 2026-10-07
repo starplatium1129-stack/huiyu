@@ -299,6 +299,9 @@ test('flow 3a · 用户档案与手动长期记忆进入后续 system prompt', a
   await pickStudioOptionByValue(page.getByLabel('关系定位'), 'confidant');
   await page.getByLabel('希望她记住的背景').fill('我习惯夜间工作，希望先听我说完。');
   await page.getByRole('button', { name: '保存档案' }).click();
+  // Saving closes the native modal asynchronously; its background is still inert
+  // until the close transition finishes, so only then type the next message.
+  await expect(page.getByRole('dialog', { name: '我的档案', exact: true })).toBeHidden();
 
   await page.locator('.chat-input').fill('我每周五晚上会玩 MMORPG。');
   await page.locator('.send-btn').click();
