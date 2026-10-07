@@ -24,6 +24,17 @@ function bridge(read: (endpoint: string) => Promise<string | null>, write: (endp
 }
 
 describe('provider draft credentials', () => {
+  it('editing one provider does not revert another provider saved by a newer editor', async () => {
+    const older = createChatApiDrafts(vi.fn())
+    await older.ready
+    older.set('custom', { baseUrl: endpoint, model: 'old', apiKey: '' })
+    const newer = createChatApiDrafts(vi.fn())
+    await newer.ready
+    newer.set('custom', { baseUrl: endpoint, model: 'new', apiKey: '' })
+    older.set('deepseek', { baseUrl: 'https://neutral-other.example/v1', model: 'other', apiKey: '' })
+    expect(JSON.parse(localStorage.getItem(CHAT_API_DRAFTS_KEY)!).custom.model).toBe('new')
+  })
+
   it('keeps vendor switching keys in memory while persisting only non-secret fields', async () => {
     const drafts = createChatApiDrafts(vi.fn())
     await drafts.ready
@@ -45,8 +56,11 @@ describe('provider draft credentials', () => {
     bridge(async target => vault.get(target) || null, async (target, value) => { await pending; vault.set(target, value) })
     const drafts = createChatApiDrafts(vi.fn())
     expect(localStorage.getItem(CHAT_API_DRAFTS_KEY)).toContain(secret)
+    const newer = createChatApiDrafts(vi.fn())
+    newer.set('opencode', { baseUrl: endpoint, model: 'newer-model', apiKey: secret })
     release()
-    await drafts.ready
+    await Promise.all([drafts.ready, newer.ready])
+    expect(JSON.parse(localStorage.getItem(CHAT_API_DRAFTS_KEY)!).opencode.model).toBe('newer-model')
     expect(localStorage.getItem(CHAT_API_DRAFTS_KEY)).not.toContain(secret)
     expect(vault.get(endpoint)).toBe('neutral-active-key')
     expect(vault.get(`${endpoint}#huiyu-api-draft-opencode`)).toBe(secret)
