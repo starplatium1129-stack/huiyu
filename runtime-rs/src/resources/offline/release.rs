@@ -230,6 +230,11 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
     } else {
         showcase.clone()
     };
+    let showcase_entries = showcase
+        .entries
+        .iter()
+        .map(|entry| (entry.path.as_str(), entry))
+        .collect::<HashMap<_, _>>();
     if !showcase_payload
         .entries
         .iter()
@@ -237,7 +242,7 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
         || showcase_payload
             .entries
             .iter()
-            .any(|entry| !showcase.entries.contains(entry))
+            .any(|entry| showcase_entries.get(entry.path.as_str()).copied() != Some(entry))
     {
         return Err(Error::new(
             "MANIFEST_INVALID",
