@@ -69,6 +69,7 @@ function modeReady(mode: StudioMode): boolean {
 
 function modeBadge(mode: StudioMode): string {
   if (statusLoading.value) return '检测中'
+  if (statusReadError.value) return '待重新检测 · 可编辑'
   if (!status.value) return '待检测'
   const modelReady = mode === 'shots' ? shotsModeReady.value
     : status.value.models.some(model => model.available && model.modes.includes(mode))
@@ -147,7 +148,8 @@ const status = ref<VideoStatusResponse | null>(null)
 
 const statusLoading = ref(false)
 
-const statusError = ref('')
+const statusError = ref(''), statusReadError = ref(''), pollError = ref('')
+const statusFeedback = computed(() => statusError.value || statusReadError.value || pollError.value)
 
 const submitting = ref(false)
 
@@ -207,6 +209,7 @@ const activeModel = computed(() => status.value?.models.find(model => model.id =
 
 const environmentState = computed(() => {
   if (statusLoading.value) return 'checking'
+  if (statusReadError.value) return 'unconfirmed'
   if (!status.value?.online) return 'offline'
   if (activeModel.value && !activeModel.value.executable) return 'planned'
   if (activeModel.value?.available) return 'ready'
@@ -214,7 +217,7 @@ const environmentState = computed(() => {
 })
 
 const environmentLabel = computed(() => ({
-  checking: '检测中',
+  checking: '检测中', unconfirmed: '状态待确认',
   offline: 'ComfyUI 离线',
   ready: '可以生成',
   missing: '权重待安装',
@@ -294,6 +297,7 @@ const canGenerate = computed(() => {
     && prompt.value.length <= 4000
     && parsedSeed.value !== null
     && canExecuteVideo(activeModel.value, mode, status.value?.online === true)
+    && !statusLoading.value && !statusReadError.value
     && !submitting.value
     && !uploadingImage.value
     && !jobActive.value
@@ -306,6 +310,7 @@ const firstFrameReady = computed(() =>
 
 const submitTitle = computed(() => {
   if (jobActive.value) return '已有视频正在生成'
+  if (statusReadError.value) return '请重新检测视频环境'
   if (!status.value?.online) return '先启动 ComfyUI'
   if (!activeModel.value?.available) return '先安装本地视频权重'
   if (selectedMode.value === 'first-last-frame' && !firstFrameReady.value) {
@@ -324,6 +329,7 @@ const submitTitle = computed(() => {
 
 const submitDescription = computed(() => {
   if (jobActive.value) return '视频任务耗时较长，为避免显存争抢，当前只允许一个页面任务。'
+  if (statusReadError.value) return '上次检测未能确认服务状态；草稿和上次目录已保留，请重新检测。'
   if (!status.value?.online) return '控制面板启动 ComfyUI 后，回到这里重新检测即可。'
   if (!activeModel.value?.available) return '页面与原生节点已经就绪，缺失文件会在右侧明确列出。'
   if (selectedMode.value === 'first-last-frame') return '工作室会锁定首尾两帧画面，中间过渡由模型按描述自由发挥。'
@@ -353,11 +359,10 @@ async function loadStatus() {
   const controller = new AbortController(); statusRequest = controller
   void taskSelection.retry()
   statusLoading.value = true
-  statusError.value = ''
   try {
     const next = await fetchVideoStatus(controller.signal)
     if (statusRequest !== controller || controller.signal.aborted || disposed) return
-    status.value = next
+    status.value = next; statusReadError.value = ''
     if (!next.models.some(model => model.id === selectedModelId.value)) {
       selectedModelId.value = next.defaults.modelId
     }
@@ -371,7 +376,7 @@ async function loadStatus() {
     }
   } catch (error) {
     if (statusRequest !== controller || controller.signal.aborted || disposed) return
-    statusError.value = error instanceof Error ? error.message : '视频环境检测失败'
+    statusReadError.value = error instanceof Error ? error.message : '视频环境检测失败'
   } finally {
     if (statusRequest === controller) { statusRequest = null; statusLoading.value = false }
   }
@@ -407,6 +412,7 @@ const stopDraftWatch = videoDraftTools.startDraftWatch()
 
 async function submitVideo() {
   if (!canGenerate.value) return
+  statusError.value = ''
   submitting.value = true
   const selection = ++selectionVersion
   selectedTaskId.value = ''
@@ -434,7 +440,7 @@ async function submitVideo() {
     // 任务记录（F1）：离页后按 jobId 重连真实状态。
     const recorded = useVideoStore().recordVideoTask({ jobId: response.job.id, mode, submittedAt: Date.now() })
     if (disposed || selection !== selectionVersion) return
-    job.value = response.job
+    job.value = response.job; pollError.value = ''
     if (!recorded) {
       statusError.value = '视频任务已提交，但任务记录保存失败；离开本页将无法自动重连，请保留当前页面并重试。'
     }
@@ -462,10 +468,10 @@ async function pollJob() {
   try {
     const response = await fetchVideoJob(id, controller.signal)
     if (disposed || !pageActive || controller.signal.aborted || job.value?.id !== id) return
-    job.value = response.job
+    job.value = response.job; pollError.value = ''
   } catch (error) {
     if (disposed || !pageActive || controller.signal.aborted || job.value?.id !== id) return
-    statusError.value = error instanceof Error ? error.message : '视频任务状态读取失败'
+    pollError.value = error instanceof Error ? error.message : '视频任务状态读取失败'
   } finally {
     if (pollRequest === controller) { pollRequest = null; schedulePoll() }
   }
@@ -485,7 +491,7 @@ async function cancelJob() {
   pollRequest?.abort(); pollRequest = null
   try {
     const response = await cancelVideoJob(id)
-    if (!disposed && selection === selectionVersion && job.value?.id === id) job.value = response.job
+    if (!disposed && selection === selectionVersion && job.value?.id === id) { job.value = response.job; pollError.value = '' }
   } catch (error) {
     if (!disposed && selection === selectionVersion && job.value?.id === id) statusError.value = error instanceof Error ? error.message : '视频任务取消失败'
   } finally {
@@ -512,7 +518,7 @@ const taskSelection = useBackendSelection(
   () => cancelling.value && selectedTaskId.value === cancellingTaskId ? '' : selectedTaskId.value,
   () => job.value?.id,
   fetchVideoJob,
-  response => { job.value = response.job; statusError.value = ''; schedulePoll() },
+  response => { job.value = response.job; statusError.value = ''; pollError.value = ''; schedulePoll() },
   error => { statusError.value = error instanceof Error ? error.message : '任务读取失败，请重新打开任务重试' },
 )
 watch(() => route.query.mode, mode => { if (route.path === '/video-studio' && mode === 'shots') selectedMode.value = 'shots' })
@@ -557,7 +563,7 @@ onMounted(() => {
   })()
 })
 
-useTrackedTask(() => ({ kind: 'video', title: '视频创作', backend: !submitting.value && job.value ? { kind: 'video', id: job.value.id } : undefined, route: job.value ? '/video-studio?job=' + encodeURIComponent(job.value.id) : '/video-studio', resultRoute: job.value?.status === 'succeeded' ? '/video-studio?job=' + encodeURIComponent(job.value.id) : undefined, status: generationTask(submitting.value ? 'submitting' : job.value?.status || 'idle').taskStatus, stage: generationTask(submitting.value ? 'submitting' : job.value?.status || 'idle').stage, progress: progressPercent.value, message: job.value?.error || statusError.value || '' }), { cancel: cancelJob })
+useTrackedTask(() => ({ kind: 'video', title: '视频创作', backend: !submitting.value && job.value ? { kind: 'video', id: job.value.id } : undefined, route: job.value ? '/video-studio?job=' + encodeURIComponent(job.value.id) : '/video-studio', resultRoute: job.value?.status === 'succeeded' ? '/video-studio?job=' + encodeURIComponent(job.value.id) : undefined, status: generationTask(submitting.value ? 'submitting' : job.value?.status || 'idle').taskStatus, stage: generationTask(submitting.value ? 'submitting' : job.value?.status || 'idle').stage, progress: progressPercent.value, message: job.value?.error || statusFeedback.value || '' }), { cancel: cancelJob })
 
 onBeforeUnmount(() => {
   disposed = true
@@ -575,7 +581,7 @@ uploadingImage, handleFrameFile, lastFrameUrl, clearLastFrame, prompt, aspectOpt
 aspectRatio, aspectSize, camera, cameraOptions, motion, motionOptions,
 quality, durationOptions, duration, activeModel, steps, negative,
 seedText, canGenerate, submitTitle, submitDescription, submitVideo, submitting,
-environmentState, environmentLabel, statusError, selectedModelId, job, jobStatusLabel,
+environmentState, environmentLabel, statusError: statusFeedback, selectedModelId, job, jobStatusLabel,
 formatTime, progressPercent, formatSeconds, progressWarning, jobErrorReport, cancelling,
 cancelJob,
 }
