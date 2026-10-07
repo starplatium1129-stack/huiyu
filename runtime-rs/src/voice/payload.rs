@@ -172,10 +172,10 @@ pub(super) fn fix_wav(bytes: &mut [u8]) {
     }
 }
 
-pub(super) fn pcm_wave(pcm: &[u8], rate: u32) -> Vec<u8> {
-    let mut wave = Vec::with_capacity(44 + pcm.len());
+pub(super) fn pcm_wave_header(rate: u32) -> Vec<u8> {
+    let mut wave = Vec::with_capacity(44);
     wave.extend_from_slice(b"RIFF");
-    wave.extend_from_slice(&((36 + pcm.len()) as u32).to_le_bytes());
+    wave.extend_from_slice(&36u32.to_le_bytes());
     wave.extend_from_slice(b"WAVEfmt ");
     wave.extend_from_slice(&16u32.to_le_bytes());
     wave.extend_from_slice(&1u16.to_le_bytes());
@@ -185,7 +185,6 @@ pub(super) fn pcm_wave(pcm: &[u8], rate: u32) -> Vec<u8> {
     wave.extend_from_slice(&2u16.to_le_bytes());
     wave.extend_from_slice(&16u16.to_le_bytes());
     wave.extend_from_slice(b"data");
-    wave.extend_from_slice(&(pcm.len() as u32).to_le_bytes());
-    wave.extend_from_slice(pcm);
+    wave.extend_from_slice(&0u32.to_le_bytes());
     wave
 }
