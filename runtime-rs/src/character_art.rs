@@ -81,7 +81,6 @@ async fn save(
     body: Bytes,
 ) -> Result<Response> {
     authorize(&app, &headers, peer)?;
-    let body: Value = serde_json::from_slice(&body).map_err(|_| invalid("无效 JSON"))?;
     let permit = service
         .writes
         .clone()
@@ -92,6 +91,8 @@ async fn save(
     let _drop = cancel.clone().drop_guard();
     let value = blocking(move || {
         let _guards = (permit, admission);
+        // Upload bodies can reach 21 MiB; parsing belongs with the image work.
+        let body: Value = serde_json::from_slice(&body).map_err(|_| invalid("无效 JSON"))?;
         store::save(&app.config, &body, &cancel)
     })
     .await?;
