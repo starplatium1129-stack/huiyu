@@ -178,6 +178,8 @@ export function useRandomInspiration() {
       pb.selections.lighting = draw.lighting
       pb.selections.composition = draw.composition
       pb.setColorMood(draw.colorMood)
+      // The replacement draw owns these tags, even if a reference used the same values.
+      pb.referenceInput = null
       pb.manualTags = new Set(draw.manualTags)
       pb.setArtistStyleIds(draw.artistStyleIds)
     } finally {
