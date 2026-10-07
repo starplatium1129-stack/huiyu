@@ -318,20 +318,28 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
     busy.value = true
     onFlash(replace ? '正在覆盖恢复…' : '正在合并恢复…')
+    let restored = false, reloadScheduled = false
+    const refreshFailed = () => {
+      busy.value = false
+      if (!disposed) onFlash('恢复已完成，但自动刷新失败，请手动刷新页面')
+    }
     try {
       // Once accepted, this exact snapshot completes even if its preview closes.
       await restoreBackupData(selected, replace)
+      restored = true
       if (current()) {
         invalidateSelection()
         onFlash((replace ? '覆盖' : '合并') + '恢复完成，即将刷新页面…')
       }
-      setTimeout(() => window.location.reload(), 700)
+      setTimeout(() => { try { window.location.reload() } catch { refreshFailed() } }, 700)
+      reloadScheduled = true
       return true
     } catch (e) {
-      console.error('backup restore failed', e)
-      if (current()) onFlash('恢复失败：' + errorMessage(e, '备份数据无效'))
-      return false
-    } finally { busy.value = false }
+      console.error(restored ? 'backup restored but refresh failed' : 'backup restore failed', e)
+      if (restored) refreshFailed()
+      else if (current()) onFlash('恢复失败：' + errorMessage(e, '备份数据无效'))
+      return restored
+    } finally { if (!reloadScheduled || disposed) busy.value = false }
   }
 
   /** 存储体检：历史条数、图片体积、配额占用 */
