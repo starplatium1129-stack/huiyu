@@ -94,10 +94,13 @@ pub(super) fn valid_hash(hash: &str) -> bool {
             .all(|c| c.is_ascii_digit() || (b'a'..=b'f').contains(&c))
 }
 pub(super) fn object_path(root: &Path, hash: &str) -> Result<PathBuf> {
+    schema::safe(root, object_relative(hash)?)
+}
+fn object_relative(hash: &str) -> Result<String> {
     if !valid_hash(hash) {
         return Err(conflict("MEDIA_INVALID", "Invalid media digest"));
     }
-    schema::safe(root, format!("media/objects/{}/{}", &hash[..2], hash))
+    Ok(format!("media/objects/{}/{}", &hash[..2], hash))
 }
 pub(super) fn staging_path(root: &Path, key: &str, alias: &str) -> Result<PathBuf> {
     if !valid_hash(key) {
@@ -206,6 +209,7 @@ impl Context {
     // Read-only callers use Storage::media and its bounded verifier instead.
     pub(super) fn resolve_media(&mut self, alias: &str) -> Result<Media> {
         let source = self.lookup_media(alias)?;
+        object_path(&self.root, &source.sha256)?;
         verify(
             self,
             &source.path,
@@ -220,7 +224,9 @@ impl Context {
         let (hash,bytes,mime)=self.db.prepare_cached("SELECT m.hash,m.bytes,m.mime FROM media_aliases a JOIN media_objects m ON m.hash=a.hash WHERE a.alias=?")?.query_row([alias],|r|Ok((r.get::<_,String>(0)?,r.get::<_,i64>(1)?,r.get::<_,String>(2)?))).optional()?.ok_or_else(||ApiError::new(404,"NOT_FOUND","Media does not exist"))?;
         let bytes = u64::try_from(bytes)
             .map_err(|_| conflict("MEDIA_INVALID", "Invalid media byte count"))?;
-        let path = object_path(&self.root, &hash)?;
+        // Read-only lookup stays on SQLite's worker. The bounded verifier
+        // checks the directory chain immediately before opening the file.
+        let path = self.root.join(object_relative(&hash)?);
         Ok(Media {
             path,
             mime,

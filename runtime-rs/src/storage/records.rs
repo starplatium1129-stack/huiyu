@@ -6,8 +6,7 @@ pub(super) const RETENTION: i64 = 30 * 24 * 60 * 60 * 1000;
 #[cfg(test)]
 mod tests;
 fn json_column(row: &Row<'_>, column: usize) -> rusqlite::Result<Value> {
-    let value: String = row.get(column)?;
-    serde_json::from_str(&value).map_err(|e| {
+    serde_json::from_str(text_column(row, column)?).map_err(|e| {
         rusqlite::Error::FromSqlConversionFailure(column, rusqlite::types::Type::Text, Box::new(e))
     })
 }
@@ -58,15 +57,21 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
             Ok(result)
         }
         "readArtworkSearchIndex" => {
-            // Project before JSON decoding: legacy inline images and arbitrary
-            // recipe fields are not needed by search. Keep raw dates/titles so
-            // the client retains its established Date/String conversion rules.
+            // Keep display fields as JSON to preserve their original types.
+            // Search text crosses SQLite as plain strings, avoiding an extra
+            // JSON encoding/decoding pass over large prompts and stories.
             let mut statement = c.db.prepare_cached(
                 "SELECT json_object('id',body -> '$.id','title',body -> '$.title',
                  'sceneTitle',body -> '$.sceneTitle','scene',body -> '$.scene',
-                 'timestamp',body -> '$.timestamp','size',body -> '$.size',
-                 'fields',json_array(body -> '$.title',body -> '$.sceneTitle',body -> '$.scene',
-                 body -> '$.character',body -> '$.characterId',body -> '$.story',body -> '$.project',body -> '$.prompt'))
+                 'timestamp',body -> '$.timestamp','size',body -> '$.size'),
+                 CASE WHEN json_type(body,'$.title')='text' THEN json_extract(body,'$.title') END,
+                 CASE WHEN json_type(body,'$.sceneTitle')='text' THEN json_extract(body,'$.sceneTitle') END,
+                 CASE WHEN json_type(body,'$.scene')='text' THEN json_extract(body,'$.scene') END,
+                 CASE WHEN json_type(body,'$.character')='text' THEN json_extract(body,'$.character') END,
+                 CASE WHEN json_type(body,'$.characterId')='text' THEN json_extract(body,'$.characterId') END,
+                 CASE WHEN json_type(body,'$.story')='text' THEN json_extract(body,'$.story') END,
+                 CASE WHEN json_type(body,'$.project')='text' THEN json_extract(body,'$.project') END,
+                 CASE WHEN json_type(body,'$.prompt')='text' THEN json_extract(body,'$.prompt') END
                  FROM artworks WHERE deleted_at IS NULL ORDER BY id_key",
             )?;
             let mut rows = statement.query([])?;
@@ -74,12 +79,12 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
             while let Some(row) = rows.next()? {
                 c.check_cancel()?;
                 let mut item = json_column(row, 0)?;
-                let fields = item.as_object_mut().unwrap().remove("fields").unwrap();
+                let fields = (1..=8)
+                    .map(|column| row.get::<_, Option<String>>(column))
+                    .collect::<rusqlite::Result<Vec<_>>>()?;
                 let text = fields
-                    .as_array()
-                    .unwrap()
                     .iter()
-                    .filter_map(|field| field.as_str().filter(|text| !text.is_empty()))
+                    .filter_map(|field| field.as_deref().filter(|text| !text.is_empty()))
                     .collect::<Vec<_>>()
                     .join(" ")
                     .to_lowercase();

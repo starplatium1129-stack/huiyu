@@ -205,25 +205,62 @@ pub(super) async fn status(
     backend: &generation::Service,
     family: &str,
 ) -> Result<Value> {
+    let root = config.ai_workspace_root.join("ComfyUI/models");
+    let anima = family == "anima";
+    let (resources, online, super_res) = tokio::join!(
+        tokio::task::spawn_blocking(move || local_status(root, anima)),
+        backend.comfy_online(),
+        generation::super_res(config, None),
+    );
+    let mut result = resources
+        .map_err(|_| ApiError::new(503, "ANIMA_STATUS_UNAVAILABLE", "生成资源状态暂不可用"))?;
+    result["online"] = json!(
+        online
+            && result["models"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|model| model["available"] == true)
+    );
+    result["hires"] = json!({"superResModel":super_res});
+    result["pending"] = json!(backend.pending());
+    Ok(result)
+}
+
+fn local_status(root: PathBuf, anima: bool) -> Value {
+    // One blocking job per poll; shared encoders/VAE are inspected once within
+    // this request. The next poll and generation preparation still read afresh.
+    let mut checked = std::collections::HashMap::new();
+    let mut available = |kind: &str, name: &str| {
+        *checked
+            .entry(root.join(kind).join(name))
+            .or_insert_with_key(|path| std::fs::metadata(path).is_ok_and(|m| m.is_file()))
+    };
     let mut models = Vec::new();
     for (id, model) in catalog::CATALOG["MODELS"].as_object().unwrap() {
-        if family == "anima" && model["family"] != "anima" {
+        if anima && model["family"] != "anima" {
             continue;
         }
-        let input = json!({"modelId":id});
-        let available = required(config, &input).await.is_ok();
         let krea = model["family"] == "krea2";
+        let available = available("diffusion_models", model["file"].as_str().unwrap())
+            && available(
+                "text_encoders",
+                if krea {
+                    "qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors"
+                } else {
+                    "qwen_3_06b_base.safetensors"
+                },
+            )
+            && available("vae", "qwen_image_vae.safetensors");
         models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCacheThresh":model.get("teaCacheThresh").cloned().unwrap_or(json!(0.08))},"sizes":model["sizes"],"capabilities":{"negative":!krea,"lora":!krea,"noLora":krea||model["noLora"]==true,"characterIdentity":!krea,"experimental":krea||model["noLora"]==true}}));
     }
     let mut loras = Vec::new();
     for (id, lora) in catalog::CATALOG["LORAS"].as_object().unwrap() {
-        loras.push(json!({"id":id,"name":lora["name"],"character":lora["character"],"characters":lora["characters"],"compatibleModels":lora["compatibleModels"],"preview":lora["preview"]==true,"validation":lora["validation"].as_str().unwrap_or("production"),"available":file(config,"loras",lora["file"].as_str().unwrap()).await.is_some()}));
+        loras.push(json!({"id":id,"name":lora["name"],"character":lora["character"],"characters":lora["characters"],"compatibleModels":lora["compatibleModels"],"preview":lora["preview"]==true,"validation":lora["validation"].as_str().unwrap_or("production"),"available":available("loras",lora["file"].as_str().unwrap())}));
     }
     let mut styles = Vec::new();
     for (id, style) in catalog::styles().as_object().unwrap() {
-        styles.push(json!({"id":id,"trigger":style["trigger"],"recommendedStrength":1,"available":file(config,"loras",style["file"].as_str().unwrap()).await.is_some()}));
+        styles.push(json!({"id":id,"trigger":style["trigger"],"recommendedStrength":1,"available":available("loras",style["file"].as_str().unwrap())}));
     }
-    Ok(
-        json!({"online":backend.comfy_online().await&&models.iter().any(|m|m["available"]==true),"models":models,"loras":loras,"styleLoras":styles,"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":generation::super_res(config, None).await},"pending":backend.pending(),"maxPending":4}),
-    )
+    json!({"online":false,"models":models,"loras":loras,"styleLoras":styles,"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":null,"pending":0,"maxPending":4})
 }

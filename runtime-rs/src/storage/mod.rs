@@ -18,7 +18,7 @@ mod verification;
 mod worker;
 
 use crate::error::{ApiError, Result};
-use rusqlite::Connection;
+use rusqlite::{Connection, Row};
 use serde_json::{Value, json};
 use std::{
     collections::HashMap,
@@ -72,6 +72,12 @@ enum Work {
         String,
         Arc<AtomicBool>,
         oneshot::Sender<Result<Value>>,
+    ),
+    TaskRecord(
+        String,
+        String,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<Option<crate::task_contract::TaskRecord>>>,
     ),
     Request(
         Value,
@@ -338,6 +344,19 @@ fn string<'a>(value: &'a Value, key: &str) -> Result<&'a str> {
         .get(key)
         .and_then(Value::as_str)
         .ok_or_else(|| invalid(&format!("{key} must be a string")))
+}
+// Borrow SQLite text without changing the errors produced by Row::get::<String>.
+fn text_column<'row>(row: &'row Row<'_>, column: usize) -> rusqlite::Result<&'row str> {
+    match row.get_ref(column)? {
+        rusqlite::types::ValueRef::Text(bytes) => {
+            std::str::from_utf8(bytes).map_err(|error| rusqlite::Error::Utf8Error(column, error))
+        }
+        value => Err(rusqlite::Error::InvalidColumnType(
+            column,
+            row.as_ref().column_name(column)?.into(),
+            value.data_type(),
+        )),
+    }
 }
 fn now() -> i64 {
     std::time::SystemTime::now()

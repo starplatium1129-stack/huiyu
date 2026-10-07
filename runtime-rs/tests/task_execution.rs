@@ -1,11 +1,12 @@
 use axum::{
     Json, Router,
-    extract::State,
+    extract::{Path, State},
     routing::{get, post},
 };
 use base64::{Engine, engine::general_purpose::STANDARD};
 use huiyu_runtime::{
     generation::{Config, GenerationService},
+    images::ImageService,
     storage::Storage,
     task_contract::{ResultState, TaskStatus},
     task_runtime::TaskRuntime,
@@ -13,8 +14,9 @@ use huiyu_runtime::{
 };
 use serde_json::{Value, json};
 use std::{
+    collections::HashMap,
     sync::{
-        Arc,
+        Arc, Mutex,
         atomic::{AtomicUsize, Ordering},
     },
     time::Duration,
@@ -24,15 +26,27 @@ use tokio_util::sync::CancellationToken;
 
 struct Mock {
     calls: AtomicUsize,
+    prefixes: Mutex<HashMap<String, String>>,
     gate: Semaphore,
     started: Notify,
 }
-async fn render(State(state): State<Arc<Mock>>) -> Json<Value> {
-    state.calls.fetch_add(1, Ordering::Relaxed);
+async fn prompt(State(state): State<Arc<Mock>>, Json(body): Json<Value>) -> Json<Value> {
+    let id = format!("p{}", state.calls.fetch_add(1, Ordering::Relaxed) + 1);
+    state.prefixes.lock().unwrap().insert(
+        id.clone(),
+        body["prompt"]["10"]["inputs"]["filename_prefix"]
+            .as_str()
+            .unwrap()
+            .into(),
+    );
     state.started.notify_one();
     state.gate.acquire().await.unwrap().forget();
+    Json(json!({"prompt_id":id}))
+}
+async fn history(State(state): State<Arc<Mock>>, Path(id): Path<String>) -> Json<Value> {
+    let prefix = state.prefixes.lock().unwrap().get(&id).unwrap().clone();
     Json(
-        json!({"images":["iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="],"info":"{\"seed\":42}"}),
+        json!({id:{"status":{"status_str":"success"},"outputs":{"10":{"images":[{"filename":format!("{prefix}_00001_.png"),"type":"output","subfolder":""}]}}}}),
     )
 }
 
@@ -41,28 +55,24 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
     let directory = tempfile::tempdir().unwrap();
     let state = Arc::new(Mock {
         calls: AtomicUsize::new(0),
+        prefixes: Mutex::new(HashMap::new()),
         gate: Semaphore::new(0),
         started: Notify::new(),
     });
     let app = Router::new()
+        .route("/system_stats", get(|| async { Json(json!({})) }))
+        .route("/free", post(|| async { Json(json!({})) }))
+        .route("/prompt", post(prompt))
+        .route("/history/{id}", get(history))
         .route(
-            "/sdapi/v1/options",
-            get(|| async { Json(json!({"sd_model_checkpoint":"waiIllustriousSDXL_v170 [abc]"})) }),
+            "/view",
+            get(|| async {
+                (
+                    [(axum::http::header::CONTENT_TYPE, "image/png")],
+                    STANDARD.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=").unwrap(),
+                )
+            }),
         )
-        .route(
-            "/sdapi/v1/sd-models",
-            get(|| async { Json(json!([{"title":"waiIllustriousSDXL_v170.safetensors"}])) }),
-        )
-        .route(
-            "/sdapi/v1/samplers",
-            get(|| async { Json(json!([{"name":"DPM++ 2M"}])) }),
-        )
-        .route("/sdapi/v1/schedulers", get(|| async { Json(json!([])) }))
-        .route(
-            "/sdapi/v1/upscalers",
-            get(|| async { Json(json!([{"name":"Latent"}])) }),
-        )
-        .route("/sdapi/v1/txt2img", post(render))
         .with_state(state.clone());
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let host = format!("http://{}", listener.local_addr().unwrap());
@@ -77,11 +87,23 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
         ai_workspace_root: directory.path().join("AI"),
         runtime_root: directory.path().join("runtime"),
     };
-    std::fs::create_dir_all(config.ai_workspace_root.join("ComfyUI")).unwrap();
+    for (kind, name) in [
+        ("diffusion_models", "anima-base-v1.0.safetensors"),
+        ("text_encoders", "qwen_3_06b_base.safetensors"),
+        ("vae", "qwen_image_vae.safetensors"),
+    ] {
+        let models = config.ai_workspace_root.join("ComfyUI/models").join(kind);
+        std::fs::create_dir_all(&models).unwrap();
+        std::fs::write(models.join(name), b"isolated fixture").unwrap();
+    }
     let provider = Arc::new(
         GenerationService::new(config.clone(), LocalUpstream::new(), shutdown.clone()).unwrap(),
     );
-    let runtime = Arc::new(TaskRuntime::new(provider, None, None, shutdown.clone()).unwrap());
+    let images = Arc::new(
+        ImageService::new(config.clone(), LocalUpstream::new(), shutdown.clone()).unwrap(),
+    );
+    let runtime =
+        Arc::new(TaskRuntime::new(provider, Some(images), None, shutdown.clone()).unwrap());
     let storage = Storage::open(
         directory.path().join("workspace"),
         "execution-fixture".into(),
@@ -89,13 +111,16 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
     )
     .await
     .unwrap();
-    let request = json!({"requestKey":"stable-user-request","kind":"generation","input":{"prompt":"neutral test portrait","negative":"","width":1024,"height":1024,"seed":42}});
+    let request = json!({"requestKey":"stable-user-request","kind":"anima","input":{"modelId":"anima-base-v1.0","prompt":"neutral test portrait","negative":"","width":1024,"height":1024,"seed":42},"context":{"title":"Original context","sceneId":"fixture"}});
     let (accepted, concurrent) = tokio::join!(
         runtime.submit(storage.clone(), "alice".into(), request.clone()),
         runtime.submit(storage.clone(), "alice".into(), request.clone()),
     );
     let accepted = accepted.unwrap();
     assert_eq!(concurrent.unwrap()["taskId"], accepted["taskId"]);
+    assert_eq!(accepted["input"]["steps"], 30);
+    assert_eq!(accepted["input"]["sampler"], "res_multistep");
+    assert_eq!(accepted["metadata"]["context"], request["context"]);
     let id = accepted["taskId"].as_str().unwrap();
     tokio::time::timeout(Duration::from_secs(5), state.started.notified())
         .await
@@ -164,6 +189,7 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
     queued.request_fingerprint = "queued-before-restart".into();
     queued.status = TaskStatus::Queued;
     queued.upstream_settled = false;
+    queued.upstream_id = None;
     queued.submission_intent_at = None;
     queued.submission_observed_at = None;
     queued.result_state = ResultState::None;
@@ -175,9 +201,12 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
         .await
         .unwrap();
     let restarted = CancellationToken::new();
-    let provider =
-        Arc::new(GenerationService::new(config, LocalUpstream::new(), restarted.clone()).unwrap());
-    let runtime = Arc::new(TaskRuntime::new(provider, None, None, restarted).unwrap());
+    let provider = Arc::new(
+        GenerationService::new(config.clone(), LocalUpstream::new(), restarted.clone()).unwrap(),
+    );
+    let images =
+        Arc::new(ImageService::new(config, LocalUpstream::new(), restarted.clone()).unwrap());
+    let runtime = Arc::new(TaskRuntime::new(provider, Some(images), None, restarted).unwrap());
     let (resume, concurrent) = tokio::join!(
         runtime.resume(
             reopened.clone(),

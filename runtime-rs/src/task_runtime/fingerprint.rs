@@ -1,7 +1,4 @@
-use crate::{
-    error::{ApiError, Result},
-    storage::stringify,
-};
+use crate::error::{ApiError, Result};
 use icu_collator::{Collator, CollatorBorrowed, options::CollatorOptions};
 use icu_locale::Locale;
 use serde_json::Value;
@@ -40,37 +37,44 @@ impl Fingerprint {
         })
     }
     pub fn hash(&self, value: &Value) -> String {
-        let mut bytes = String::new();
+        let mut bytes = Vec::new();
         self.write(value, &mut bytes);
-        hex::encode(Sha256::digest(bytes.as_bytes()))
+        hex::encode(Sha256::digest(bytes))
     }
-    fn write(&self, value: &Value, out: &mut String) {
+    fn write(&self, value: &Value, out: &mut Vec<u8>) {
         match value {
             Value::Object(map) => {
                 let mut pairs: Vec<_> = map.iter().collect();
                 pairs.sort_by(|(a, _), (b, _)| self.collator.compare(a, b));
-                out.push('{');
+                out.push(b'{');
                 for (index, (key, value)) in pairs.into_iter().enumerate() {
                     if index > 0 {
-                        out.push(',');
+                        out.push(b',');
                     }
-                    out.push_str(&stringify(&Value::String(key.clone())));
-                    out.push(':');
+                    serde_json::to_writer(&mut *out, key).unwrap();
+                    out.push(b':');
                     self.write(value, out);
                 }
-                out.push('}');
+                out.push(b'}');
             }
             Value::Array(values) => {
-                out.push('[');
+                out.push(b'[');
                 for (index, value) in values.iter().enumerate() {
                     if index > 0 {
-                        out.push(',');
+                        out.push(b',');
                     }
                     self.write(value, out);
                 }
-                out.push(']');
+                out.push(b']');
             }
-            _ => out.push_str(&stringify(value)),
+            Value::Number(number) => {
+                out.extend_from_slice(
+                    ryu_js::Buffer::new()
+                        .format(number.as_f64().unwrap())
+                        .as_bytes(),
+                );
+            }
+            _ => serde_json::to_writer(out, value).unwrap(),
         }
     }
 }

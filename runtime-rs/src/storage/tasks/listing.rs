@@ -36,20 +36,22 @@ pub(super) fn read(c: &Context, principal: &str, query: TaskListQuery) -> Result
         "SELECT {cursor},record_json FROM tasks WHERE principal_id=? AND {cursor}>? AND {cursor}<=? AND {cursor}<?{recovery} ORDER BY {cursor} DESC LIMIT ?"
     );
     let mut statement = c.db.prepare_cached(&sql)?;
-    let rows = statement.query_map(params![principal, after, through, before, limit + 1], |r| {
-        Ok((r.get::<_, i64>(0)?, r.get::<_, String>(1)?))
-    })?;
+    let mut rows = statement.query(params![principal, after, through, before, limit + 1])?;
     let mut items = Vec::new();
     let mut last_cursor = None;
     let mut next = None;
-    for row in rows {
+    while let Some(row) = rows.next().transpose() {
         c.check_cancel()?;
-        let (cursor, body) = row?;
+        let row = row?;
+        let cursor = row.get::<_, i64>(0)?;
+        // Borrow until decoding finishes; even the next-page probe need not
+        // copy its JSON. Keep the same text/UTF-8 errors as String reads.
+        let body = text_column(row, 1)?;
         if items.len() == limit as usize {
             next = last_cursor;
             break;
         }
-        let mut task: TaskRecord = serde_json::from_str(&body)?;
+        let mut task: TaskRecord = serde_json::from_str(body)?;
         task.runtime_epoch = c.epoch.clone();
         items.push(task);
         last_cursor = Some(cursor);

@@ -297,7 +297,9 @@ impl TaskRuntime {
                 .then_some(ResultState::Unavailable),
             ..Default::default()
         };
-        let task = patch(storage, principal, id, update).await?;
+        // Reuse the post-observation read for the first CAS. A concurrent write
+        // still fails that CAS and refreshes the revision before retrying.
+        let task = patch_at(storage, principal, id, latest.revision, update).await?;
         if observation.settled {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
         } else if observe_after && !observation.unknown && task.submission_intent_at.is_some() {

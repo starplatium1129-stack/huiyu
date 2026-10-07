@@ -4,6 +4,68 @@ use axum::{Json, Router, extract::State, routing::any};
 use std::sync::atomic::AtomicUsize;
 
 #[tokio::test]
+async fn stale_observation_revision_retries_without_losing_cancelled_terminal_state() {
+    let fixture = tempfile::tempdir().unwrap();
+    let storage = Storage::open(fixture.path().join("workspace"), "patch-race".into(), true)
+        .await
+        .unwrap();
+    let record = json!({"taskId":"observed","workspaceId":storage.workspace_id(),"principalId":"owner","requestKey":"observed","requestFingerprint":"fixture","kind":"anima","provider":"comfy","providerFingerprint":"fixture","upstreamId":"upstream","status":"running","recoveryState":"normal","revision":0,"runtimeEpoch":storage.runtime_epoch(),"createdAt":1,"updatedAt":1,"submissionIntentAt":1,"submissionObservedAt":1,"cancelRequestedAt":null,"upstreamSettled":false,"executionDeadline":10800000,"input":{"prompt":"original"},"inputMediaRefs":[],"resultRefs":[],"resultState":"none","deliveryState":"unseen","metadata":{"context":{"title":"original"}},"checkpoint":null});
+    storage
+        .request(json!({"kind":"task.accept","record":record}), "owner")
+        .await
+        .unwrap();
+    let observed = TaskRuntime::get(&storage, "owner", "observed")
+        .await
+        .unwrap();
+    let cancelled = storage
+        .task(
+            TaskCommand::Cancel {
+                request_key: "observed".into(),
+            },
+            "owner",
+        )
+        .await
+        .unwrap();
+    let terminal = patch_at(
+        &storage,
+        "owner",
+        "observed",
+        cancelled["revision"].as_i64().unwrap(),
+        TaskPatch {
+            status: Some(TaskStatus::Cancelled),
+            upstream_settled: Some(true),
+            ..Default::default()
+        },
+    )
+    .await
+    .unwrap();
+    assert!(observed.revision < terminal.revision);
+    let retried = patch_at(
+        &storage,
+        "owner",
+        "observed",
+        observed.revision,
+        TaskPatch {
+            status: Some(TaskStatus::Running),
+            upstream_settled: Some(false),
+            metadata: Some(serde_json::from_value(json!({"observed":true})).unwrap()),
+            ..Default::default()
+        },
+    )
+    .await
+    .unwrap();
+    assert_eq!(retried.status, TaskStatus::Cancelled);
+    assert!(retried.upstream_settled);
+    assert_eq!(retried.cancel_requested_at, terminal.cancel_requested_at);
+    assert!(retried.cancel_requested_at.is_some());
+    assert_eq!(retried.input, observed.input);
+    assert_eq!(retried.metadata["context"], observed.metadata["context"]);
+    assert_eq!(retried.metadata["observed"], true);
+    assert!(retried.revision > terminal.revision);
+    storage.close().await.unwrap();
+}
+
+#[tokio::test]
 async fn reconciliation_and_resume_cannot_steal_an_accepted_dispatcher() {
     let fixture = tempfile::tempdir().unwrap();
     let requests = Arc::new(AtomicUsize::new(0));

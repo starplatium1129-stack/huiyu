@@ -11,20 +11,20 @@ fn index(key: &str) -> Option<u32> {
     let number: u32 = key.parse().ok()?;
     (number != u32::MAX && number.to_string() == key).then_some(number)
 }
-fn write(value: &Value, canonical: bool, output: &mut String) {
+fn write(value: &Value, canonical: bool, output: &mut Vec<u8>) {
     match value {
         Value::Number(n) => {
-            output.push_str(ryu_js::Buffer::new().format(n.as_f64().unwrap()));
+            output.extend_from_slice(ryu_js::Buffer::new().format(n.as_f64().unwrap()).as_bytes());
         }
         Value::Array(items) => {
-            output.push('[');
+            output.push(b'[');
             for (i, item) in items.iter().enumerate() {
                 if i > 0 {
-                    output.push(',');
+                    output.push(b',');
                 }
                 write(item, canonical, output);
             }
-            output.push(']');
+            output.push(b']');
         }
         Value::Object(object) => {
             let mut keys: Vec<_> = object.keys().collect();
@@ -35,27 +35,27 @@ fn write(value: &Value, canonical: bool, output: &mut String) {
                 _ if canonical => a.encode_utf16().cmp(b.encode_utf16()),
                 _ => std::cmp::Ordering::Equal,
             });
-            output.push('{');
+            output.push(b'{');
             for (i, key) in keys.into_iter().enumerate() {
                 if i > 0 {
-                    output.push(',');
+                    output.push(b',');
                 }
-                output.push_str(&serde_json::to_string(key).unwrap());
-                output.push(':');
+                serde_json::to_writer(&mut *output, key).unwrap();
+                output.push(b':');
                 write(&object[key], canonical, output);
             }
-            output.push('}');
+            output.push(b'}');
         }
-        _ => output.push_str(&serde_json::to_string(value).unwrap()),
+        _ => serde_json::to_writer(output, value).unwrap(),
     }
 }
 pub(crate) fn stringify(value: &Value) -> String {
-    let mut out = String::new();
+    let mut out = Vec::new();
     write(value, false, &mut out);
-    out
+    String::from_utf8(out).expect("JSON writer only emits UTF-8")
 }
 pub fn fingerprint(value: &Value) -> String {
-    let mut out = String::new();
+    let mut out = Vec::new();
     write(value, true, &mut out);
     digest(out)
 }

@@ -20,17 +20,22 @@ fn read(
     task_id: Option<&str>,
     request_key: Option<&str>,
 ) -> Result<Option<TaskRecord>> {
-    let row: Option<String> = if let Some(id) = task_id {
+    // Decode borrowed text while the row is alive. Keep JSON failures separate
+    // from SQLite errors so malformed task JSON retains its request error.
+    let decode = |row: &rusqlite::Row<'_>| -> rusqlite::Result<serde_json::Result<TaskRecord>> {
+        Ok(serde_json::from_str(text_column(row, 0)?))
+    };
+    let row = if let Some(id) = task_id {
         c.db.prepare_cached("SELECT record_json FROM tasks WHERE principal_id=? AND task_id=?")?
-            .query_row(params![principal, id], |r| r.get(0))
+            .query_row(params![principal, id], decode)
             .optional()?
     } else {
         c.db.prepare_cached("SELECT record_json FROM tasks WHERE principal_id=? AND request_key=?")?
-            .query_row(params![principal, request_key.unwrap_or("")], |r| r.get(0))
+            .query_row(params![principal, request_key.unwrap_or("")], decode)
             .optional()?
     };
-    row.map(|body| {
-        let mut task: TaskRecord = serde_json::from_str(&body)?;
+    row.map(|decoded| {
+        let mut task = decoded?;
         task.runtime_epoch = c.epoch.clone();
         Ok(task)
     })
@@ -39,6 +44,22 @@ fn read(
 fn require(c: &Context, principal: &str, task_id: &str) -> Result<TaskRecord> {
     read(c, principal, Some(task_id), None)?
         .ok_or_else(|| ApiError::new(404, "TASK_NOT_FOUND", "Task does not exist"))
+}
+// Runtime consumers already use TaskRecord; keep JSON at the external boundary.
+pub(super) fn read_record(
+    c: &Context,
+    principal: &str,
+    task_id: &str,
+) -> Result<Option<TaskRecord>> {
+    c.check_cancel()?;
+    if principal.is_empty() {
+        return Err(ApiError::new(
+            401,
+            "UNAUTHORIZED",
+            "Desktop principal is required",
+        ));
+    }
+    read(c, principal, Some(task_id), None)
 }
 fn write(c: &Context, mut task: TaskRecord) -> Result<Value> {
     task.revision = c.next_revision()?;

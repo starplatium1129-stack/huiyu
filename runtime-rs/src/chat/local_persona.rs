@@ -2,7 +2,8 @@ use super::settings::Settings;
 use serde_json::Value;
 use std::path::{Path, PathBuf};
 
-async fn model_file(root: &Path, reference: &str) -> Option<PathBuf> {
+// read has already checked this canonical root against the import directory.
+async fn model_file(canonical_root: &Path, reference: &str) -> Option<PathBuf> {
     if reference.is_empty()
         || reference.contains([':', '%', '?', '#', '\0'])
         || Path::new(reference).is_absolute()
@@ -10,14 +11,17 @@ async fn model_file(root: &Path, reference: &str) -> Option<PathBuf> {
     {
         return None;
     }
-    let root = tokio::fs::canonicalize(root).await.ok()?;
-    let file = tokio::fs::canonicalize(root.join(reference)).await.ok()?;
-    (file.starts_with(&root) && file != root && tokio::fs::metadata(&file).await.ok()?.is_file())
-        .then_some(file)
+    let file = tokio::fs::canonicalize(canonical_root.join(reference))
+        .await
+        .ok()?;
+    (file.starts_with(canonical_root)
+        && file.as_path() != canonical_root
+        && tokio::fs::metadata(&file).await.ok()?.is_file())
+    .then_some(file)
 }
-async fn json(root: &Path, reference: &str) -> Option<Value> {
+async fn json(canonical_root: &Path, reference: &str) -> Option<Value> {
     serde_json::from_slice(
-        &tokio::fs::read(model_file(root, reference).await?)
+        &tokio::fs::read(model_file(canonical_root, reference).await?)
             .await
             .ok()?,
     )
@@ -54,12 +58,12 @@ pub(super) async fn read(settings: &Settings, app: &Path, id: &str) -> Option<St
     if !same {
         return None;
     }
-    let data = json(&directory, "companion.json").await?;
+    let data = json(&actual, "companion.json").await?;
     if data["disabled"] == true || data["character"]["id"] != id || !data["files"].is_array() {
         return None;
     }
     let persona = data["character"]["personaPrompt"].as_str()?.to_owned();
-    let model = json(&directory, data["manifest"].as_str()?).await?;
+    let model = json(&actual, data["manifest"].as_str()?).await?;
     let modern = model["Version"] == 3
         && model["FileReferences"]["Moc"].is_string()
         && model["FileReferences"]["Textures"]
@@ -110,7 +114,7 @@ pub(super) async fn read(settings: &Settings, app: &Path, id: &str) -> Option<St
         }
     }
     for reference in files {
-        model_file(&directory, reference).await?;
+        model_file(&actual, reference).await?;
     }
     Some(persona)
 }

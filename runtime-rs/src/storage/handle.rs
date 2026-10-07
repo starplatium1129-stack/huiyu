@@ -101,6 +101,24 @@ impl Storage {
             }
         })?
     }
+    pub(crate) async fn task_record(
+        &self,
+        task_id: &str,
+        principal: &str,
+    ) -> Result<Option<crate::task_contract::TaskRecord>> {
+        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+        let (reply, result) = oneshot::channel();
+        self.sender
+            .send(Work::TaskRecord(
+                task_id.into(),
+                principal.into(),
+                cancel.0.clone(),
+                reply,
+            ))
+            .await
+            .map_err(|_| unavailable())?;
+        result.await.map_err(|_| unavailable())?
+    }
     pub(crate) async fn task_media_chunk(
         &self,
         chunk: TaskMediaChunk,

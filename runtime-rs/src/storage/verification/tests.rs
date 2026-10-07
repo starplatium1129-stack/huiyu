@@ -101,6 +101,40 @@ async fn identity_change_invalidates_warm_cache_and_closed_cache_cannot_be_read(
 }
 
 #[tokio::test]
+async fn linked_media_is_rejected_by_cold_and_warm_reads_and_artwork_append() {
+    for warm in [false, true] {
+        let (directory, storage) = fixture().await;
+        if warm {
+            storage.media("image").await.unwrap();
+        }
+        let hash = hex::encode(Sha256::digest(b"\x89PNG\r\n\x1a\nfixture"));
+        let path = media::object_path(&storage.root, &hash).unwrap();
+        let outside = directory.path().join("outside-workspace.png");
+        std::fs::rename(&path, &outside).unwrap();
+        #[cfg(unix)]
+        std::os::unix::fs::symlink(&outside, &path).unwrap();
+        #[cfg(windows)]
+        std::os::windows::fs::symlink_file(&outside, &path).unwrap();
+        assert_eq!(
+            storage.media("image").await.unwrap_err().code,
+            "MEDIA_INVALID"
+        );
+        assert_eq!(
+            storage
+                .request(
+                    json!({"kind":"appendArtwork","operationId":format!("append-link-{warm}"),"artwork":{"id":2,"image_id":"image"}}),
+                    "test",
+                )
+                .await
+                .unwrap_err()
+                .code,
+            "MEDIA_INVALID"
+        );
+        storage.close().await.unwrap();
+    }
+}
+
+#[tokio::test]
 async fn warm_media_does_not_wait_for_cold_hash_worker_capacity() {
     let (_directory, storage) = fixture().await;
     let source = storage.media("image").await.unwrap();

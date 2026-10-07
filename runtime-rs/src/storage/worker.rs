@@ -75,6 +75,17 @@ pub(super) fn run(
                     let _ = reply.send(result);
                 }
             }
+            Work::TaskRecord(id, principal, cancel, reply) => {
+                if !closing.is_empty() {
+                    let _ = reply.send(Err(unavailable()));
+                    continue;
+                }
+                context.cancel = cancel;
+                if !reply.is_closed() {
+                    let result = tasks::read_record(&context, &principal, &id);
+                    let _ = reply.send(result);
+                }
+            }
             Work::Request(command, principal, cancel, reply) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));

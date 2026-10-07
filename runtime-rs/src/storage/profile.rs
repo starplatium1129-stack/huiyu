@@ -150,24 +150,21 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>) -> Result<Value> {
     let parameters = std::iter::once(domain)
         .chain(std::iter::once(prefix.as_str()))
         .chain(DRAFT.iter().copied());
-    let rows = statement.query_map(rusqlite::params_from_iter(parameters), |r| {
-        Ok((
-            r.get::<_, String>(0)?,
-            r.get::<_, String>(1)?,
-            r.get::<_, i64>(2)?,
-        ))
-    })?;
+    let mut rows = statement.query(rusqlite::params_from_iter(parameters))?;
     let mut records = Vec::new();
-    for row in rows {
+    while let Some(row) = rows.next().transpose() {
         c.check_cancel()?;
-        let (key, body, revision) = row?;
+        let row = row?;
+        let key = row.get::<_, String>(0)?;
+        let body = text_column(row, 1)?;
+        let revision = row.get::<_, i64>(2)?;
         let key = if self::domain(&key) == Some("draft") {
             key.as_str()
         } else {
             key.strip_prefix(&prefix).unwrap_or(&key)
         };
         let mut record = json!({"key":key,"value":null,"revision":revision});
-        record["value"] = serde_json::from_str(&body)?;
+        record["value"] = serde_json::from_str(body)?;
         records.push(record);
     }
     let mut snapshot = json!({"records":null,"revision":c.revision()?,"resetRevision":reset(c)?});

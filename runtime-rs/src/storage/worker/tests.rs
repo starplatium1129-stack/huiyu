@@ -37,5 +37,27 @@ async fn admitted_binary_mutation_with_lost_reply_remains_commit_unknown() {
     drop(reply);
     assert_eq!(caller.await.unwrap().unwrap_err().code, "COMMIT_UNKNOWN");
     drop(permit);
+    // Typed reads keep the ordinary read error and cancel-on-drop contract.
+    for abort_caller in [false, true] {
+        let (sender, mut receiver) = mpsc::channel(1);
+        let mut reader = storage.clone();
+        reader.sender = sender;
+        let caller = tokio::spawn(async move { reader.task_record("task", "test").await });
+        let Some(Work::TaskRecord(_, _, cancel, reply)) = receiver.recv().await else {
+            panic!("expected typed task read");
+        };
+        if abort_caller {
+            caller.abort();
+            assert!(caller.await.unwrap_err().is_cancelled());
+            assert!(cancel.load(Ordering::Relaxed));
+            assert!(reply.is_closed());
+        } else {
+            drop(reply);
+            assert_eq!(
+                caller.await.unwrap().unwrap_err().code,
+                "STORAGE_UNAVAILABLE"
+            );
+        }
+    }
     storage.close().await.unwrap();
 }

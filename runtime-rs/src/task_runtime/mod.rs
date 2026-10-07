@@ -96,20 +96,10 @@ impl TaskRuntime {
                 .is_some_and(|job| job.dispatching || job.watching)
     }
     pub async fn get(storage: &Storage, principal: &str, id: &str) -> Result<TaskRecord> {
-        let task = storage
-            .task(
-                TaskCommand::Get {
-                    task_id: Some(id.into()),
-                    request_key: None,
-                },
-                principal,
-            )
-            .await?;
-        if task.is_null() {
-            Err(ApiError::new(404, "TASK_NOT_FOUND", "Task does not exist"))
-        } else {
-            Ok(serde_json::from_value(task)?)
-        }
+        storage
+            .task_record(id, principal)
+            .await?
+            .ok_or_else(|| ApiError::new(404, "TASK_NOT_FOUND", "Task does not exist"))
     }
     fn check_running(&self) -> Result<()> {
         if self.closed.load(Ordering::Acquire) || self.shutdown.is_cancelled() {
@@ -126,13 +116,14 @@ impl TaskRuntime {
         self: &Arc<Self>,
         storage: Storage,
         principal: String,
-        request: Value,
+        mut request: Value,
     ) -> Result<Value> {
         self.check_running()?;
         let key = request["requestKey"]
             .as_str()
             .filter(|s| !s.is_empty() && s.len() <= 200)
-            .ok_or_else(|| ApiError::invalid("Invalid task request key"))?;
+            .ok_or_else(|| ApiError::invalid("Invalid task request key"))?
+            .to_owned();
         let kind: TaskKind = serde_json::from_value(request["kind"].clone()).map_err(|_| {
             ApiError::new(
                 501,
@@ -143,15 +134,16 @@ impl TaskRuntime {
         if !request["input"].is_object() {
             return Err(ApiError::invalid("Task input must be an object"));
         }
-        let mut frozen = json!({"kind":request["kind"],"input":request["input"]});
-        if let Some(context) = request.get("context") {
-            frozen["context"] = context.clone();
+        let mut frozen = json!({"kind":request["kind"],"input":null});
+        frozen["input"] = request["input"].take();
+        if let Some(context) = request.get_mut("context") {
+            frozen["context"] = context.take();
         }
         let existing = storage
             .task(
                 TaskCommand::Get {
                     task_id: None,
-                    request_key: Some(key.into()),
+                    request_key: Some(key.clone()),
                 },
                 &principal,
             )
@@ -180,7 +172,7 @@ impl TaskRuntime {
                 "SD 新生成已退役；原任务可继续查询、收集或取消",
             ));
         }
-        let prepared = self.prepare(kind, request["input"].clone()).await?;
+        let prepared = self.prepare(kind, frozen["input"].take()).await?;
         self.check_running()?;
         let task_id = uuid::Uuid::new_v4().to_string();
         let now = now();
@@ -188,7 +180,7 @@ impl TaskRuntime {
             task_id,
             workspace_id: storage.workspace_id().into(),
             principal_id: principal.clone(),
-            request_key: key.into(),
+            request_key: key,
             request_fingerprint: fingerprint,
             request_fingerprint_locale: Some(self.fingerprint.locale.clone()),
             kind,
@@ -218,7 +210,10 @@ impl TaskRuntime {
             error_code: None,
             metadata: serde_json::Map::from_iter([(
                 "context".into(),
-                request.get("context").cloned().unwrap_or(json!({})),
+                frozen
+                    .get_mut("context")
+                    .map(Value::take)
+                    .unwrap_or(json!({})),
             )]),
             checkpoint: None,
             parent_batch_id: None,
@@ -360,20 +355,31 @@ pub(super) async fn patch(
     id: &str,
     value: TaskPatch,
 ) -> Result<TaskRecord> {
+    let current = TaskRuntime::get(storage, principal, id).await?;
+    patch_at(storage, principal, id, current.revision, value).await
+}
+pub(super) async fn patch_at(
+    storage: &Storage,
+    principal: &str,
+    id: &str,
+    mut revision: i64,
+    value: TaskPatch,
+) -> Result<TaskRecord> {
     for attempt in 0..5 {
-        let current = TaskRuntime::get(storage, principal, id).await?;
         let result = storage
             .task(
                 TaskCommand::Patch {
                     task_id: id.into(),
-                    expected_revision: current.revision,
+                    expected_revision: revision,
                     patch: Box::new(value.clone()),
                 },
                 principal,
             )
             .await;
         match result {
-            Err(error) if error.code == "REVISION_CONFLICT" && attempt < 4 => continue,
+            Err(error) if error.code == "REVISION_CONFLICT" && attempt < 4 => {
+                revision = TaskRuntime::get(storage, principal, id).await?.revision;
+            }
             result => return Ok(serde_json::from_value(result?)?),
         }
     }
