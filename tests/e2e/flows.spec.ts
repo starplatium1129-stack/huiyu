@@ -63,31 +63,18 @@ function collectRuntimeErrors(page: Page) {
   return errors;
 }
 
-/**
- * 出图参数（CFG / seed / 采样器）折在 <details> 里，默认收起。
- * 用点 summary 的真实路径打开，而不是 evaluate 改 open —— 后者会绕过
- * "这个折叠区到底点不点得开"这件事。
- * 受控路线（6be3a95）：basic 模式系统自动选引擎，SD 参数面板只在
- * 专家模式 + SD 引擎下渲染，因此打开前先切到专家模式与 SD 引擎。
- */
-async function openGenerationSettings(page: Page) {
-  const panel = page.locator('details.generation-settings');
-  if (!await panel.isVisible()) {
-    await page.getByRole('button', { name: '专家模式', exact: true }).click();
-    // 受控路线默认 Anima；SD 断言需要显式切回 SD 引擎
-    await page.locator('.engine-switch button').first().click();
-    await expect(panel).toBeVisible();
-  }
-  if (await panel.evaluate(node => (node as HTMLDetailsElement).open)) return;
-  await panel.locator('summary').click();
-  await expect(panel.locator('.controls-grid')).toBeVisible();
+/** Current engine controls; use names rather than retired SD button positions. */
+async function switchToAnimaEngine(page: Page) {
+  await page.getByRole('button', { name: '专家模式', exact: true }).click();
+  await page.getByRole('group', { name: '出图引擎', exact: true }).getByRole('button', { name: 'Anima', exact: true }).click();
+  await expectStudioSelectValue(page.locator('#baseModel'), /anima/, { timeout: 10_000 });
 }
 
-/** 切到专家模式 + SD 引擎（受控路线下 SD 出图流程的前置） */
-async function switchToSdEngine(page: Page) {
+async function openGenerationSettings(page: Page) {
   await page.getByRole('button', { name: '专家模式', exact: true }).click();
-  await page.locator('.engine-switch button').first().click();
-  await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
+  const panel = page.locator('details.inspector-advanced');
+  if (!await panel.evaluate(node => (node as HTMLDetailsElement).open)) await panel.locator(':scope > summary').click();
+  await expect(panel.locator('.anima-quick-panel')).toBeVisible();
 }
 
 async function openPromptPreview(page: Page) {
@@ -123,74 +110,29 @@ async function toggle(page: Page, target: string | Locator, on: boolean) {
 async function useLocalChat(page: Page) {
   const settings = page.locator('.room-model-settings');
   if (await settings.getAttribute('open') === null) await settings.locator('summary').click();
-  const button = page.getByRole('button', { name: '本地模型', exact: true });
+  const button = page.getByRole('button', { name: '已有 Ollama', exact: true });
   if (await button.getAttribute('aria-pressed') !== 'true') await button.click();
   await expect(button).toHaveAttribute('aria-pressed', 'true');
 }
 
 // 浏览器上下文按用例隔离，localStorage / IndexedDB 天然是空的 ——
 // 不要在 addInitScript 里清库：那会在 restore() 触发的 reload 上再清一次。
-test.beforeEach(async ({ request }) => {
+test.beforeEach(async ({ request, page }) => {
   await resetMocks(request);
+  // Fresh contexts see the real first-visit guide. Dismiss through its public
+  // browse action rather than forcing clicks through the modal or seeding storage.
+  const guide = page.getByRole('dialog', { name: '访客导览', exact: true });
+  await page.addLocatorHandler(guide, async () => {
+    await guide.getByRole('button', { name: '先浏览，稍后配置', exact: true }).click();
+    await expect(guide).toBeHidden();
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 1. 出图
+// 1. 当前出图与场景切换
+// 旧 SD 新建、降负载重试和新队列出图已随 SD_RETIRED 退出。
+// 历史任务的恢复、取消与不重放仍由 generation_service/task_recovery 覆盖。
 // ─────────────────────────────────────────────────────────────────────────────
-test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送到 SD', async ({ page, request }) => {
-  const errors = collectRuntimeErrors(page);
-  // 留出观察任务等待态的时间；WebUI 未返回进度时保持不确定状态。
-  await fault(request, MOCK.sd, { renderMs: 2500 });
-  await page.goto('/prompt-builder?scene=sc001');
-
-  // 受控路线：basic 模式系统自动选 Anima 高质量路线，SD 流程需进专家模式切引擎。
-  // 先从可见入口展开推荐路线，再切 SD 引擎走 SD 出图断言。
-  await page.locator('details.inspector-route > summary').filter({ hasText: '推荐配方与复用' }).click();
-  await expect(page.locator('.managed-route-card')).toBeVisible();
-  await expect(page.locator('details.generation-settings')).toBeHidden();
-  await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
-  await switchToSdEngine(page);
-  await openGenerationSettings(page);
-  await openPromptPreview(page);
-  await expect(page.locator('.prompt-health-body')).toContainText('lora');
-  await page.getByRole('tab', { name: '生成', exact: true }).click();
-
-  // 固定尺寸与 seed，好让断言不依赖推荐值
-  await pickStudioOptionByValue(page.locator('.gen-bar-size').getByRole('combobox'), '896x1344');
-  await toggle(page, '.ctrl-seed [role="switch"]', true);
-  await page.locator('.ctrl-seed input[type="number"]').fill('4242');
-
-  await page.getByRole('button', { name: '生成图片' }).click();
-
-  // 后台生成与成片显现分开；取消可达，未返回进度时不编造百分比。
-  await expect(page.locator('.stage-ready')).toHaveText('正在生成');
-  await expect(page.getByRole('button', { name: '停止绘制', exact: true })).toBeEnabled();
-  const progress = page.getByRole('progressbar', { name: '生图进度', exact: true });
-  await expect(progress).toBeVisible();
-  await expect(progress).not.toHaveAttribute('aria-valuenow', /.+/);
-  await expect(page.locator('.stage-generating-sub')).toContainText(/SD WebUI 生成中.*已等待/);
-
-  // 成片出现 → blob URL 来自 mock 返回的 base64 PNG
-  await expect(page.locator('.result-image')).toBeVisible({ timeout: 15_000 });
-  await expect(page.locator('.pb')).toHaveClass(/has-result/);
-
-  const generated = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
-  expect(generated).toHaveLength(1);
-  expect(generated[0].body).toMatchObject({ width:896, height:1344, seed:4242 });
-  expect(String(generated[0].body?.prompt)).toContain('school_uniform');
-  expect(String(generated[0].body?.prompt)).toContain('<lora:');
-
-  // 保存快照 → IndexedDB 落盘 + 历史面板出现记录
-  await page.getByRole('button', { name: '存入作品册' }).click();
-  await expect(page.locator('.toast-msg')).toContainText('画面已存入本地作品册');
-  // 历史按首次访问加载；打开面板再核对真实保存记录。
-  await page.locator('[aria-controls="material-history"]').click();
-  await expect(page.locator('.history-item')).toHaveCount(1);
-  await expect(page.locator('.history-item').first().locator('.history-meta')).toContainText('seed 4242');
-
-  expect(errors).toEqual([]);
-});
-
 test('flow 1a · 切换场景：中文字幕跟随第二个场景更新', async ({ page }) => {
   await page.goto('/prompt-builder?scene=sc001');
   await openVoiceSettings(page);
@@ -201,52 +143,6 @@ test('flow 1a · 切换场景：中文字幕跟随第二个场景更新', async 
   await expect(page.locator('button.scene-card.active')).toContainText('樱花树下的约定');
   await expect(caption).toHaveValue(/樱花树下的约定/);
   await expect(caption).not.toHaveValue(/放学后的等待/);
-});
-
-test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', async ({ page, request }) => {
-  await fault(request, MOCK.sd, { oom: true });
-  await page.goto('/prompt-builder?scene=sc001');
-  await switchToSdEngine(page);
-
-  await openGenerationSettings(page);
-  await pickStudioOptionByValue(page.locator('.gen-bar-size').getByRole('combobox'), '1216x832');
-  await toggle(page, page.getByRole('switch', { name: 'hires.fix', exact: true }), true);
-  await page.getByRole('button', { name: '生成图片' }).click();
-
-  // 未访问任务组也必须能看到失败和恢复入口；点击后保留原分类/重试断言。
-  await expect(page.locator('.stage-placeholder.is-error')).toBeVisible();
-  await expect(page.locator('.stage-error-detail')).toContainText(/CUDA|out of memory/i);
-  await page.getByRole('button', { name: '查看恢复选项', exact: true }).click();
-  await expect(page.getByRole('tab', { name: '任务', exact: true })).toHaveAttribute('aria-selected', 'true');
-  await expect(page.locator('.sd-recovery-title')).toHaveText('显存不足');
-  const recovery = page.getByRole('button', { name: '降低负载后重试' });
-  await expect(recovery).toBeVisible();
-
-  // 让重试这次成功，断言恢复动作真的改了参数
-  await fault(request, MOCK.sd, {});
-  await recovery.click();
-  await expect(page.locator('.result-image')).toBeVisible();
-
-  const attempts = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
-  expect(attempts).toHaveLength(2);
-  expect(attempts[0].body?.enable_hr).toBe(true);
-  expect(attempts[1].body?.enable_hr).toBeUndefined();
-});
-
-test('flow 1c · 出图队列：串行执行、自动入册', async ({ page, request }) => {
-  await page.goto('/prompt-builder?scene=sc001');
-  await switchToSdEngine(page);
-
-  await page.getByRole('button', { name: '加入队列', exact: true }).click();
-  await page.getByRole('button', { name: '加入队列', exact: true }).click();
-
-  // 队列跑完：两张图都出，且都自动写进历史
-  await expect(page.locator('.sd-queue')).toBeHidden({ timeout: 20_000 });
-  await page.locator('[aria-controls="material-history"]').click();
-  await expect(page.locator('.history-item')).toHaveCount(2, { timeout: 20_000 });
-
-  const webuiCalls = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
-  expect(webuiCalls).toHaveLength(2);
 });
 
 test('flow Anima · 应用 job 经过真网关和假 ComfyUI 出图', async ({ page, request }) => {
@@ -263,9 +159,7 @@ test('flow Anima · 应用 job 经过真网关和假 ComfyUI 出图', async ({ p
   await page.goto('/prompt-builder');
   await page.getByRole('button', { name: '夏目', exact: true }).click();
   // 受控路线下引擎切换只在专家模式渲染
-  await page.getByRole('button', { name: '专家模式', exact: true }).click();
-  await page.locator('.engine-switch button').nth(1).click();
-  await expectStudioSelectValue(page.locator('#baseModel'), /anima/, { timeout: 10_000 });
+  await switchToAnimaEngine(page);
   await page.locator('[aria-controls="material-story"]').click();
   await page.locator('.story-input').fill('夏目在咖啡馆里对我微笑');
   await expect(page.getByTestId('anima-generate')).toBeEnabled({ timeout: 10_000 });
@@ -352,7 +246,7 @@ test('flow 2b · 配音失败：GPT-SoVITS 502 带出真实原因而不是"不�
   await pickStudioOptionByValue(page.locator('.voice-field').nth(1).getByRole('combobox'), 'zh');  // 跳过翻译
   await page.getByRole('button', { name: '生成 AI 声线' }).click();
 
-  await expect(page.locator('.voice-status')).toContainText('GPT-SoVITS 生成失败');
+  await expect(page.locator('.voice-status')).toContainText('语音生成失败');
   await expect(page.locator('.voice-status')).toContainText('reference audio missing');
   await expect(page.locator('.voice-audio')).toHaveCount(0);
 });
@@ -405,6 +299,9 @@ test('flow 3a · 用户档案与手动长期记忆进入后续 system prompt', a
   await pickStudioOptionByValue(page.getByLabel('关系定位'), 'confidant');
   await page.getByLabel('希望她记住的背景').fill('我习惯夜间工作，希望先听我说完。');
   await page.getByRole('button', { name: '保存档案' }).click();
+  // Saving closes the native modal asynchronously; its background is still inert
+  // until the close transition finishes, so only then type the next message.
+  await expect(page.getByRole('dialog', { name: '我的档案', exact: true })).toBeHidden();
 
   await page.locator('.chat-input').fill('我每周五晚上会玩 MMORPG。');
   await page.locator('.send-btn').click();
@@ -575,7 +472,7 @@ test('flow 3e · 情绪标签协议：标签剥离不进展示/历史，显式�
 test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份历史', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/prompt-builder?scene=sc001');
-  await switchToSdEngine(page);
+  await switchToAnimaEngine(page);
 
   // 先造一条真实历史（出图 + 保存快照），这样备份里才有 IndexedDB 图片
   await page.getByRole('button', { name: '生成图片' }).click();
@@ -840,10 +737,12 @@ test('flow 6 · 深链：?scene 决定角色，?mood 与场景推断共存', asy
   await openPromptPreview(page);
   await expect(page.locator('.preview-output-structured')).toContainText('shiki_natsume');
   await page.getByRole('button', { name: '专家模式', exact: true }).click();
-  await page.getByRole('tab', { name: '画面', exact: true }).click();
-  await expect(page.locator('.mood-card.active')).toHaveCount(1);
-  // 场景推断出的镜头/光照/构图至少落一项，否则"智能预填"等于没接
-  await expect(page.locator('.col-right .option.selected')).not.toHaveCount(0);
+  // Camera/mood controls no longer have a separate inspector tab. Check the
+  // persisted draft produced by the same deep link, without mutating the store.
+  await expect.poll(async () => page.evaluate(() => {
+    const draft = JSON.parse(localStorage.getItem('aics_pb_last_draft') || '{}');
+    return { mood: draft.colorMood, inferred: ['shot', 'lighting', 'composition'].some(key => !!draft.selections?.[key]) };
+  })).toEqual({ mood: 'warmth', inferred: true });
 
   expect(errors).toEqual([]);
 });
@@ -880,12 +779,11 @@ test('flow 6c · 深链：?resume=1 恢复上次草稿', async ({ page }) => {
   await expect(page.locator('.manual-tag')).toHaveCount(1);
 });
 
-test('flow 6d · 深链：?regen=<id> 复原历史参数与 seed', async ({ page }) => {
+test('flow 6d · 深链：?regen=<id> 复原 Anima 历史参数与 seed', async ({ page, request }) => {
   await page.goto('/prompt-builder?scene=sc001');
-  await switchToSdEngine(page);
+  await switchToAnimaEngine(page);
   await openGenerationSettings(page);
-  await toggle(page, '.ctrl-seed [role="switch"]', true);
-  await page.locator('.ctrl-seed input[type="number"]').fill('777');
+  await page.locator('.anima-quick-panel .anima-seed').fill('777');
   await page.getByRole('button', { name: '生成图片' }).click();
   await expect(page.locator('.result-image')).toBeVisible();
   await page.getByRole('button', { name: '存入作品册' }).click();
@@ -910,17 +808,19 @@ test('flow 6d · 深链：?regen=<id> 复原历史参数与 seed', async ({ page
 
   await page.goto(`/prompt-builder?regen=${entryId}`);
   await openGenerationSettings(page);
-  await expect(page.locator('.ctrl-seed input[type="number"]')).toHaveValue('777');
-  await expect(page.locator('.ctrl-seed [role="switch"]')).toBeChecked();
+  await expect(page.locator('.anima-quick-panel .anima-seed')).toHaveValue('777');
+  await expect(page.getByRole('group', { name: '出图引擎', exact: true }).getByRole('button', { name: 'Anima', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await page.locator('[aria-controls="material-story"]').click();
   await expect(page.locator('.scene-context-title')).not.toHaveText('');
 
-  // 兼容旧作品册链接：即使同时带 scene，也必须优先恢复历史快照。
+  // 兼容作品册链接：即使同时带 scene，也必须优先恢复历史快照。
   await page.goto(`/prompt-builder?scene=sc005&regen=${entryId}`);
   await openGenerationSettings(page);
-  await expect(page.locator('.ctrl-seed input[type="number"]')).toHaveValue('777');
+  await expect(page.locator('.anima-quick-panel .anima-seed')).toHaveValue('777');
   await page.locator('[aria-controls="material-story"]').click();
   await expect(page.locator('.scene-context-title')).toContainText('放学后的等待');
+  expect(await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img')).toHaveLength(0);
+  expect((await calls(request, MOCK.comfy)).filter(call => call.path === '/prompt')).toHaveLength(1);
 });
 
 test('flow 6e · 深链：未知场景 id 不得让导演台崩在半途', async ({ page }) => {
@@ -936,7 +836,7 @@ test('flow 6e · 深链：未知场景 id 不得让导演台崩在半途', async
   expect(errors).toEqual([]);
 });
 
-test('flow 6f · 快速出图：复用最近成功参数并自动提交一次生成', async ({ page, request }) => {
+test('flow 6f · 快速出图：旧 SD 参数不跨引擎迁移且只提交一次 Anima 生成', async ({ page, request }) => {
   const errors = collectRuntimeErrors(page);
   await page.addInitScript(() => {
     localStorage.setItem('aics_sd_last_success_v1', JSON.stringify({
@@ -958,26 +858,19 @@ test('flow 6f · 快速出图：复用最近成功参数并自动提交一次生
   await expect(page.locator('.result-image')).toBeVisible();
   const generated = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
   const comfyGenerated = (await calls(request, MOCK.comfy)).filter(call => call.path === '/prompt');
-  expect(generated.length + comfyGenerated.length).toBe(1);
-  // 受控路线：basic 模式宁宁单人自动走 Anima 高质量路线（V21 unified e16 LoRA），
-  // SD quick 参数不再适用于该路线；若走 SD（双人/专家模式）则按原契约断言。
-  if (generated.length) {
-    expect(generated[0].body).toMatchObject({ width: 896, height: 1152, sampler_name: 'Euler a', scheduler: 'Karras', cfg_scale: 6, steps: 22 });
-  } else {
-    const graph = comfyGenerated[0].body?.prompt as Record<string, any>;
-    const latent = Object.values(graph).find((node: any) => node?.class_type === 'EmptyLatentImage') as any;
-    expect(latent?.inputs).toMatchObject({ width: 832, height: 1216 });
-    const loraLoader = Object.values(graph).find((node: any) => node?.class_type === 'LoraLoader') as any;
-    expect(loraLoader?.inputs?.lora_name).toContain('ayachi_nene_v21_anima');
-  }
+  expect(generated).toHaveLength(0);
+  expect(comfyGenerated).toHaveLength(1);
+  const graph = comfyGenerated[0].body?.prompt as Record<string, any>;
+  const latent = Object.values(graph).find((node: any) => node?.class_type === 'EmptyLatentImage') as any;
+  expect(latent?.inputs).toMatchObject({ width: 832, height: 1216 });
+  const loraLoader = Object.values(graph).find((node: any) => node?.class_type === 'LoraLoader') as any;
+  expect(loraLoader?.inputs?.lora_name).toContain('ayachi_nene_v21_anima');
   // 受控路线 Anima 出图不写 SD 专属 quick 参数（aics_sd_last_success_v1 只记录 SD 成功参数）
   const savedAt = await page.evaluate(() => {
     const saved = JSON.parse(localStorage.getItem('aics_sd_last_success_v1') || '{}');
     return Number(saved.savedAt);
   });
-  if (generated.length) {
-    expect(savedAt).toBeGreaterThan(1);
-  }
+  expect(savedAt).toBe(1);
   expect(errors).toEqual([]);
 });
 

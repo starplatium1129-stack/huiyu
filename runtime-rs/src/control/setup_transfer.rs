@@ -29,11 +29,7 @@ pub(super) async fn write(
                 response.map_err(|_| ApiError::new(504,"DOWNLOAD_TIMEOUT","来源响应超时，请重试"))?.map_err(|_| ApiError::new(502,"DOWNLOAD_FAILED","无法连接固定模型来源，请检查网络后重试"))?,
         };
         if response.status() == reqwest::StatusCode::PARTIAL_CONTENT && count > 0 {
-            let expected = format!(
-                "bytes {count}-{}{}",
-                plan.spec.bytes - 1,
-                format!("/{}", plan.spec.bytes)
-            );
+            let expected = format!("bytes {count}-{}/{}", plan.spec.bytes - 1, plan.spec.bytes);
             if response
                 .headers()
                 .get("content-range")

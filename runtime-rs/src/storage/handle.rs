@@ -126,13 +126,8 @@ impl Storage {
     ) -> Result<u64> {
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();
-        let result_write = matches!(chunk.target, TaskMediaTarget::Result(_));
         let work = Work::TaskMediaChunk(chunk, principal.into(), cancel.0.clone(), reply);
-        let work = if result_write {
-            self.admit_result(work).await?
-        } else {
-            work
-        };
+        let work = self.admit_result(work).await?;
         self.sender.send(work).await.map_err(|_| unavailable())?;
         result.await.map_err(|_| commit_unknown())?
     }
@@ -149,7 +144,7 @@ impl Storage {
             .await
     }
     pub async fn close(&self) -> Result<()> {
-        // Wake result writers still outside the actor before draining admitted work.
+        // Wake input/result writers outside the actor before draining admitted work.
         self.result_writes.close();
         self.verification.close().await;
         self.thumbnails.close().await;

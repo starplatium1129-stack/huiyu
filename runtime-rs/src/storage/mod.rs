@@ -8,6 +8,7 @@ mod operations;
 mod organization;
 mod profile;
 mod project_commands;
+mod recent;
 mod records;
 mod result_commit;
 mod saves;

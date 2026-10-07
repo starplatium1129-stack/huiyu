@@ -313,13 +313,13 @@ async fn download(
     let partial = partial_path.clone();
     let mut temporary = Some(
         tokio::task::spawn_blocking(move || -> std::io::Result<_> {
-            if let Ok(meta) = std::fs::symlink_metadata(&partial) {
-                if !meta.is_file() {
-                    return Err(std::io::Error::new(
-                        std::io::ErrorKind::InvalidInput,
-                        "Partial download is not a regular file",
-                    ));
-                }
+            if let Ok(meta) = std::fs::symlink_metadata(&partial)
+                && !meta.is_file()
+            {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidInput,
+                    "Partial download is not a regular file",
+                ));
             }
             let mut options = std::fs::OpenOptions::new();
             options.read(true).write(true).create(true);
@@ -434,16 +434,13 @@ async fn download(
             error.code.as_str(),
             "CANCELLED" | "DOWNLOAD_TIMEOUT" | "DOWNLOAD_FAILED"
         )
-    }) {
-        if let Some(pending) = temporary.take() {
-            if pending
-                .as_file()
-                .metadata()
-                .is_ok_and(|meta| meta.len() > 0)
-            {
-                let _ = pending.keep();
-            }
-        }
+    }) && let Some(pending) = temporary.take()
+        && pending
+            .as_file()
+            .metadata()
+            .is_ok_and(|meta| meta.len() > 0)
+    {
+        let _ = pending.keep();
     }
     outcome
 }

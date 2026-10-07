@@ -1,3 +1,4 @@
+mod facet_cache;
 mod projection_cache;
 mod scene_shards;
 

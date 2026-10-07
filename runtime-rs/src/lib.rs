@@ -48,6 +48,7 @@ use tokio_util::sync::CancellationToken;
 #[derive(Clone)]
 pub struct AppState {
     pub config: Arc<config::Config>,
+    pub(crate) catalog_facets: Arc<catalog::FacetCache>,
     pub(crate) catalog_projections: Arc<catalog::ProjectionCache>,
     pub host: Arc<host::HostAuthority>,
     pub shutdown: CancellationToken,
@@ -73,6 +74,7 @@ impl AppState {
     ) -> Self {
         Self {
             config,
+            catalog_facets: Arc::new(catalog::FacetCache::default()),
             catalog_projections: Arc::new(catalog::ProjectionCache::default()),
             host,
             shutdown,
