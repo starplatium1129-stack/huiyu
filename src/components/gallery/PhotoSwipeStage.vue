@@ -115,7 +115,7 @@ function start() {
       let url = ''
       try {
         const item = items[index]
-        const blob = item.image_id ? await artworkRepository.getImage(item.image_id, request.signal) : null
+        const blob = item.image_id ? await artworkRepository.getImage(item.image_id, request.signal).catch(() => null) : null
         if (revision !== token || request.signal.aborted || !sameArtworkMedia(item, props.items[index])) return
         url = blob ? URL.createObjectURL(blob) : safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
         if (blob) ownedUrls.add(url)
