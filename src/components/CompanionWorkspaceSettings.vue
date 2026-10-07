@@ -22,7 +22,7 @@
         placeholder="目录路径"
         aria-label="AI 工作区目录路径"
         @input="emit('update:modelValue', inputValue($event))"
-        @keydown.enter.prevent="save"
+        @keydown.enter="onEnter"
       />
       <span v-if="error || pickerError" role="alert">{{ error || pickerError }}</span>
       <div class="companion-workspace-actions">
@@ -78,6 +78,11 @@ function close() {
   if (props.saving) return
   pickerRevision++
   emit('close')
+}
+function onEnter(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229) return
+  event.preventDefault()
+  save()
 }
 function save() {
   if (!props.saving && !picking.value && props.modelValue.trim()) emit('save')
