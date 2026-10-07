@@ -4,6 +4,9 @@ import type { ApiClient, ApiRequestOptions } from '@/api/client'
 import type { AnimaJobMetadata, AnimaResult } from '@/types/anima'
 import { useAnimaSession, type AnimaRequest } from './useAnimaSession'
 import type { TaskRecord } from '../../../types/tasks'
+// Load transport code outside the per-test clock; these races control HTTP
+// completion order, not Vite's cold compilation of the direct transport.
+import './animaJobPolling'
 
 const runtime = vi.hoisted(() => ({ enabled: false, submit: vi.fn(), wait: vi.fn(), fetch: vi.fn(), cancel: vi.fn() }))
 vi.mock('@/api/runtimeTaskAuthority', () => ({ hasRuntimeTasks: () => runtime.enabled }))
@@ -132,14 +135,14 @@ describe('useAnimaSession · stale asynchronous work', () => {
   it('cleans up a late accepted job through its original engine after a cross-engine retry', async () => {
     const { session, calls, generate } = fixture()
     const old = generate()
-    await vi.dynamicImportSettled()
-    const post = calls[0]
+    await vi.waitFor(() => expect(calls.find(call => call.url === '/api/anima/jobs' && call.options?.method === 'POST')).toBeDefined())
+    const post = calls.find(call => call.url === '/api/anima/jobs' && call.options?.method === 'POST')!
     await session.cancel()
     assert.equal(post.options?.signal?.aborted, true)
     session.patchState({ family: 'krea2' })
     const retry = generate()
-    await vi.dynamicImportSettled()
-    const newPost = calls[1]
+    await vi.waitFor(() => expect(calls.find(call => call.url === '/api/creative/jobs' && call.options?.method === 'POST')).toBeDefined())
+    const newPost = calls.find(call => call.url === '/api/creative/jobs' && call.options?.method === 'POST')!
     post.resolve(accepted('late-anima'))
     await old
     assert.equal(calls.at(-1)?.url, '/api/anima/jobs/late-anima')
