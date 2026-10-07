@@ -4,7 +4,6 @@
 
 | 计划 | 当前有效范围 |
 | --- | --- |
-| [014：组件交互动效](014-component-interaction-motion.md) | M1–M4 源码与定向浏览器验收完成；保留本次实施及 HTML 证据入口，原生设备／性能范围见 009 |
 | [013：Rust 运行时迁移](013-node-to-rust-migration.md) | 产品入口与本机安装已完成；旧 Node 消费者退出、原生许可、真实模型与完整设备验收仍开放 |
 | [010：桌宠与 Live2D 适配](010-companion-experience-and-live2d-adapter.md) | C6/C7 设备组合、原生端点校准、模型来源及未覆盖状态 |
 | [009：交互流畅度与运行性能](009-ui-fluidity-and-performance.md) | S03/S08、高刷与真实高负载、GPU/纹理/进程内存、功耗及 F7 验收 |
