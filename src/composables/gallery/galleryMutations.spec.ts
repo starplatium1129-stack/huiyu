@@ -82,14 +82,17 @@ it('an earlier failure cannot roll back a newer successful choice', async () => 
 describe('confirmDeleteAction', () => {
   it('does not resurrect a deleted artwork from a snapshot started before deletion', async () => {
     const ctx = deleteContext()
-    const read = deferred<{ history: ArtworkRecord[]; projects: [] }>()
-    const snapshot = { history: ctx.history.value.map(item => ({ ...item })), projects: [] as [] }
+    const read = deferred<{ history: ArtworkRecord[]; projects: Array<{ id: string; history_ids: number[] }> }>()
+    const snapshot = { history: [...ctx.history.value.map(item => ({ ...item })), { id: 3 }], projects: [{ id: 'new-album', history_ids: [1, 3] }] }
+    const projects = ref<import('./galleryStorage').GalleryProject[]>([])
     repo.readLibrarySnapshot.mockReturnValue(read.promise)
     repo.softDeleteArtwork.mockResolvedValue({ deleted: true })
-    const refresh = loadGalleryStorageAction({ ...ctx, galleryLoading: ref(false), galleryError: ref(''), projects: ref([]) })
+    const refresh = loadGalleryStorageAction({ ...ctx, galleryLoading: ref(false), galleryError: ref(''), projects })
     await confirmDeleteAction(ctx, ctx.history.value[0])
     read.resolve(snapshot); await refresh
-    expect(ctx.history.value.map(item => item.id)).toEqual([2])
+    expect(ctx.history.value.map(item => item.id)).toEqual([2, 3])
+    expect(projects.value[0]).toMatchObject({ id: 'new-album', history_ids: [3] })
+    expect(repo.readLibrarySnapshot).toHaveBeenCalledOnce()
   })
 
   it('presents only confirmed deletion before removing the card or releasing its decoded image', async () => {
