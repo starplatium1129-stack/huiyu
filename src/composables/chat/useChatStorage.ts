@@ -143,10 +143,17 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       chatStorageSyncHandler?.()
     })
   }
-  chatStorageSyncHandler = () => {
+  const syncStorage = () => {
+    if (disposed) return
     mergeRemoteIntoState()
-    void archiveStorage.refresh().catch(() => onError('无法同步另一窗口的聊天归档，现有内容已保留，请稍后重试。'))
+    void archiveStorage.refresh().catch(() => {
+      if (!disposed) onError('无法同步另一窗口的聊天归档，现有内容已保留，请稍后重试。')
+    })
   }
+  chatStorageSyncHandler = syncStorage
+  if (getCurrentScope()) onScopeDispose(() => {
+    if (chatStorageSyncHandler === syncStorage) chatStorageSyncHandler = null
+  })
 
   const pendingTrims = new Map<string, { history: ChatMessage[]; ids: Set<string> }>()
   async function saveArchive() {
