@@ -33,9 +33,14 @@ async function flush() { for (let index = 0; index < 8; index++) await Promise.r
 function fixture() {
   const calls: PendingCall[] = []
   const client = {
-    request: <T extends object>(url: string, options?: ApiRequestOptions) => new Promise<T>((resolve, reject) => {
-      calls.push({ url, options, resolve: value => resolve(value as T), reject })
-    }),
+    request: <T extends object>(url: string, options?: ApiRequestOptions) => {
+      // The local-chat release is a prerequisite, not one of the generation or
+      // status requests whose completion order this fixture controls.
+      if (url === '/api/local-setup/llama' && options?.method === 'DELETE') return Promise.resolve({ ok: true } as T)
+      return new Promise<T>((resolve, reject) => {
+        calls.push({ url, options, resolve: value => resolve(value as T), reject })
+      })
+    },
   } as unknown as ApiClient
   const session = useAnimaSession({
     getCharacter: () => 'nene', isPopular: () => false, getFamily: () => 'anima',
