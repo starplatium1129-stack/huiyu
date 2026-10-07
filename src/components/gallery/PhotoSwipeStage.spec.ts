@@ -129,12 +129,14 @@ it('partial initialization emits fallback and disposes the viewer', async () => 
   expect(mocks.destroyed).toHaveBeenCalledOnce()
 })
 
-it('external HTTP images are never revoked by the adapter', async () => {
+it('failed storage reads fall back to external originals without taking URL ownership', async () => {
+  mocks.read.mockRejectedValueOnce(new Error('storage unavailable'))
   vi.spyOn(HTMLImageElement.prototype, 'decode').mockResolvedValue()
   const revoke = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
-  const wrapper = mount(PhotoSwipeStage, { props: { items: [{ id: 1, image_url: '/fixture.png' }], index: 0 } })
+  const wrapper = mount(PhotoSwipeStage, { props: { items: [{ id: 1, image_id: 'missing', image_url: '/fixture.png' }], index: 0 } })
   await flushPromises(); wrapper.unmount()
   expect(mocks.refreshed).toHaveBeenCalledOnce()
+  expect(mocks.failed).not.toHaveBeenCalled()
   expect(revoke).not.toHaveBeenCalled()
 })
 
