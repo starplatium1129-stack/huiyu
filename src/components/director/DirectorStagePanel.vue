@@ -23,7 +23,9 @@
         <div class="stage-content" :class="{ 'is-covered': coveringResult }">
         <DirectorSceneReference v-if="!generationBusy && !waitingForResult" :size="canvasSize" />
           <div v-if="generationBusy || waitingForResult" class="stage-generating-copy">
-            <GenerationParticles v-if="!coveringResult" :class="{ 'is-handoff-pending': textureMotionActive }" :progress="generationProgress" :palette="generationPalette" />
+            <div class="stage-generation-orbit">
+              <GenerationParticles v-if="!coveringResult && !textureMotionActive" :continuation="generationContinuation" :progress="generationProgress" :palette="generationPalette" />
+            </div>
           </div>
         <div v-else-if="generationError || (displayResultUrl && failedResultUrl === displayResultUrl)" class="stage-idle" role="alert">
           <div class="stage-placeholder-title">这次画面未能生成</div>
@@ -165,7 +167,7 @@ const resultPalette = ref<string[]>([])
 const generationPalette = ref<string[]>([])
 // Capture before publication/clearing; the new image's load must not recolor an ongoing wait.
 watch(() => props.generationBusy, busy => { if (busy) generationPalette.value = [...resultPalette.value] }, { flush: 'sync' })
-const { active: textureMotionActive, release: releaseTextureMotion, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
+const { active: textureMotionActive, continuation: generationContinuation, release: releaseTextureMotion, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generationProgress, () => generationPalette.value)
 const { playClear, coveringResult, stop: stopClearMotion } = useCanvasClearMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 // A deliberate clear followed by Generate must not leave two GPU effects alive.

@@ -1,15 +1,17 @@
 import { onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from './useVisualActivity'
-import { startCanvasTextureParticles, type CanvasParticleMotion } from '@/utils/canvasTextureParticles'
+import { startCanvasTextureParticles, type CanvasParticleMotion, type GenerationContinuation } from '@/utils/canvasTextureParticles'
 
 /** Break up the old image, then hand off to the shared waiting visual.
  * Presentation never owns submission, task receipts, cancellation or results. */
 export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   source: () => string, busy: () => boolean, comparing: () => boolean,
+  progress: () => number | null, palette: () => readonly string[],
 ) {
   const { canAnimate, lowEffects } = useVisualActivity(host)
   const active = ref(false)
+  const continuation = ref<GenerationContinuation>()
   let effect: CanvasParticleMotion | null = null
   let generationSource = ''
   let size = { width:0, height:0 }
@@ -19,6 +21,7 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   }
   function start(previousSource = source()) {
     stop()
+    continuation.value=undefined
     // The task-start URL is stable across publication/settlement Vue ticks.
     // DOM src may be runtime-resolved, so don't compare it to business URLs.
     generationSource = previousSource
@@ -30,8 +33,8 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
     if (!image?.complete || !image.naturalWidth) return
     const bounds=root.getBoundingClientRect(); size={width:bounds.width,height:bounds.height}
     effect=startCanvasTextureParticles(image,root,{
-      gather:true,
-      onHandoff:() => { active.value=false },
+      generation:{progress,palette:palette()},
+      onHandoff:state => { continuation.value=state; active.value=false },
       onComplete:() => { effect=null; active.value=false },
     })
     active.value=Boolean(effect)
@@ -51,5 +54,5 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   })
   onMounted(() => { if (busy()) start() })
   onBeforeUnmount(stop)
-  return { active, release:stop, stop }
+  return { active, continuation, release:stop, stop }
 }

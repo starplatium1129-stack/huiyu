@@ -14,7 +14,7 @@ async function fixture(initialSource = '/old.png') {
   let motion!:ReturnType<typeof useCanvasGenerationMotion>
   const wrapper=mount(defineComponent({setup() {
     const host=ref<HTMLElement | null>(null)
-    motion=useCanvasGenerationMotion(host,() => source.value,() => busy.value,() => comparing.value)
+    motion=useCanvasGenerationMotion(host,() => source.value,() => busy.value,() => comparing.value,() => .15,() => [])
     return () => h('div',{ref:host},source.value ? h('img',{class:'cg-image-target',src:source.value}) : [])
   }}))
   const image=wrapper.find('img').exists() ? wrapper.get('img').element : undefined
@@ -25,9 +25,11 @@ async function fixture(initialSource = '/old.png') {
 it.each(['same tick','separate ticks'] as const)('hands breakup to the shared visual before decoded results settle in %s',async publication => {
   const {source,busy,motion,wrapper,image}=await fixture()
   source.value=''; busy.value=true; await nextTick()
-  expect(mock.start).toHaveBeenCalledExactlyOnceWith(image,wrapper.element,expect.objectContaining({gather:true,onHandoff:expect.any(Function),onComplete:expect.any(Function)}))
+  expect(mock.start).toHaveBeenCalledExactlyOnceWith(image,wrapper.element,expect.objectContaining({generation:expect.any(Object),onHandoff:expect.any(Function),onComplete:expect.any(Function)}))
   expect(wrapper.find('img').exists()).toBe(false)
-  mock.start.mock.calls[0][2].onHandoff()
+  const continuation={clock:3500,rotation:.8,concentration:.15}
+  mock.start.mock.calls[0][2].onHandoff(continuation)
+  expect(motion.continuation.value).toEqual(continuation)
   expect(motion.active.value).toBe(false)
   source.value='/new.png'
   if (publication==='separate ticks') await nextTick()
