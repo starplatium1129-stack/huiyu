@@ -1,4 +1,4 @@
-import { invalidateGalleryStorage } from './galleryStorage';
+import { recordGalleryMutation } from './galleryStorage';
 import { confirmAction } from '@/composables/useConfirm';
 import { ARTWORK_DELETE_BATCH_SIZE } from '@/application/artwork/artworkRepository';
 import { artworkRepository } from '@/storage/artworkRepository';
@@ -48,7 +48,7 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
             if (!result.updated)
                 throw new Error('没找到这幅作品，收藏没能保存');
             currentWrite.confirmed = desired;
-            invalidateGalleryStorage(ctx.history);
+            recordGalleryMutation(ctx.history, item.id, { favorite: desired });
             if (revision === currentWrite.revision) {
                 const live = ctx.history.value.find(record => record.id === item.id);
                 if (live) live.favorite = desired;
@@ -83,7 +83,7 @@ export async function confirmDeleteAction(ctx: Context, item: ArtworkRecord): Pr
             showToast('这幅作品已不在作品册，请刷新后重试', 'warning');
             return;
         }
-        invalidateGalleryStorage(history);
+        recordGalleryMutation(history, item.id, null);
         presentDeleted(ctx, [item.id]);
         history.value = history.value.filter(h => h.id !== item.id);
         releaseCardResources(item.id);
