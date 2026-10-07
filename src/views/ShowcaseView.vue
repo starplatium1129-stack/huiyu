@@ -9,7 +9,7 @@
 
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
-        <div class="collection-scope showcase-browse-modes studio-segments" role="group" aria-label="画册浏览方式"><AnimatedSelection /><button class="filter-pill" type="button" :class="{ active: !albumsOpen }" :aria-pressed="!albumsOpen" @click="showImages">{{ typeFilter === 'all' ? '全部样张' : '画册样张' }}</button><button class="filter-pill" type="button" :class="{ active: albumsOpen }" :aria-pressed="albumsOpen" @click="showAlbums"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button></div>
+        <div class="collection-scope showcase-browse-modes studio-segments" role="group" aria-label="画册浏览方式"><AnimatedSelection /><button class="filter-pill" type="button" :class="{ active: !albumsOpen }" :aria-pressed="!albumsOpen" @click="showImages">{{ !selectedAlbum && typeFilter === 'all' ? '全部样张' : '画册样张' }}</button><button class="filter-pill" type="button" :class="{ active: albumsOpen }" :aria-pressed="albumsOpen" @click="showAlbums"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button></div>
         <StudioSearch v-show="!albumsOpen" v-model="searchQuery" class="search-field" id="showcaseSearch" label="搜索画册" placeholder="搜索场景、情绪、角色或关键词…" />
         <div v-show="!albumsOpen" class="filter-group collection-scope studio-segments tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center" data-fluid-glass role="group" aria-label="样张来源">
           <AnimatedSelection />
@@ -38,11 +38,11 @@
 
     <div v-if="entries.length && (manifestLoading || reloadError)" class="showcase-load-status" role="status"><ArchiveIcon :name="manifestLoading ? 'book' : 'warning'" /><span>{{ manifestLoading ? '正在刷新画册，当前样张仍可继续浏览。' : reloadError }}</span><button v-if="reloadError && !manifestLoading" class="filter-reset" type="button" @click="loadManifest(true)">重试</button></div>
     <div v-show="albumsOpen" v-content-motion:up="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
-      <ShowcaseAlbums v-if="albums.length && !unavailable" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
-      <ArchiveStatePanel v-if="(manifestLoading && !entries.length) || unavailable || (!manifestLoading && !albums.length)" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'" message="画册按已发布样张的类型整理。"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
+      <ShowcaseAlbums v-if="albums.length && !unavailable" :albums="albums" :selected="albumSelection" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
+      <ArchiveStatePanel v-if="(manifestLoading && !entries.length) || unavailable || (!manifestLoading && !albums.length)" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'" message="画册按已发布样张的类型、场景主题与作品系列整理。"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
     </div>
     <div v-show="!albumsOpen" v-content-motion:up="!albumsOpen" class="showcase-image-browse">
-    <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ typeFilter === 'all' ? '全部样张' : (albums.find(album => album.type === typeFilter)?.title || typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status"><strong>{{ paged.length }}</strong> / {{ filtered.length }} 幅 · R18 默认模糊</span></div>
+    <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="selectedAlbum || typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ selectedAlbum?.title || (typeFilter === 'all' ? '全部样张' : typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status"><strong>{{ paged.length }}</strong> / {{ filtered.length }} 幅 · R18 默认模糊</span></div>
     <ArchiveStatePanel
       v-if="unavailable"
       class="empty empty-block"
@@ -172,7 +172,10 @@ const LABELS: Record<string,string> = { nene:'绫地宁宁', natsume:'四季夏�
 const TYPE_LABELS: Record<string,string> = { scene:'场景样张', artist:'画师风格', popular:'热门角色', lora:'LoRA 样张' }
 
 const entries   = ref<ShowcaseEntry[]>([])
-const albums = useShowcaseAlbums(entries)
+const albums = useShowcaseAlbums(entries, () => sceneStore.popularCharacters)
+const albumSelection = ref('all')
+const selectedAlbum = computed(() => albums.value.find(album => album.id === albumSelection.value))
+const albumEntryIds = computed(() => selectedAlbum.value ? new Set(selectedAlbum.value.entryIds) : null)
 const featured  = ref(new Set<string>())
 const stats     = ref({ total: '—', safe: '—', r15: '—' })
 const unavailable = ref(false)
@@ -181,9 +184,10 @@ const manifestLoading = ref(true)
 const searchQuery = ref('')
 const scope       = ref<'all' | 'featured'>('all')
 const typeFilter  = ref<'all' | ShowcaseEntryType>('all')
-const { albumsOpen, albumRoot, imageHeading, showAlbums, showImages, openAlbum } = useAlbumNavigation(typeFilter)
+const { albumsOpen, albumRoot, imageHeading, showAlbums, showImages, openAlbum: navigateAlbum } = useAlbumNavigation(albumSelection)
 const charFilter  = ref<string>('all')
 const ratingFilter= ref<'all' | ShowcaseRating>('all')
+function openAlbum(id: string) { resetFilters(); void navigateAlbum(id) }
 const visibleCount= ref(PAGE_SIZE)
 /** 无限滚动哨兵：划到底自动加载下一页，按钮保留作键盘/兜底入口 */
 const loadSentinel = ref<HTMLElement | null>(null)
@@ -243,7 +247,7 @@ let unmounted = false
 let viewActive = true
 
 // Reset visible count whenever filters change
-watch([searchQuery, scope, typeFilter, charFilter, ratingFilter], () => { visibleCount.value = PAGE_SIZE })
+watch([searchQuery, scope, typeFilter, charFilter, ratingFilter, albumSelection], () => { visibleCount.value = PAGE_SIZE })
 watch(typeFilter, () => { charFilter.value = 'all' })
 
 function norm(s: string) { return String(s||'').trim().toLocaleLowerCase('zh-CN') }
@@ -260,7 +264,7 @@ const searchIndex = computed(() => new Map(entries.value.map(entry => [entry.id,
   title: norm(entry.title), id: norm(entry.id),
   text: norm([entry.id, entry.title, entry.story, entry.category, entry.displayName || '', charLabel(entry.char), ratingLabel(entry.rating), typeLabel(entry.type)].join(' ')),
 }])))
-const hasFilters = computed(() => Boolean(searchQuery.value.trim() || scope.value !== 'all' || typeFilter.value !== 'all' || charFilter.value !== 'all' || ratingFilter.value !== 'all'))
+const hasFilters = computed(() => Boolean(selectedAlbum.value || searchQuery.value.trim() || scope.value !== 'all' || typeFilter.value !== 'all' || charFilter.value !== 'all' || ratingFilter.value !== 'all'))
 function thumbSrc(entry: ShowcaseEntry) {
   const path = entry.thumb ? `/scene-showcase/${entry.thumb}` : `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg`
   return path + (imgVersion.value ? `?cv=${imgVersion.value}` : '')
@@ -302,6 +306,7 @@ const allCharOptions = computed<{ v: string; l: string }[]>(() => {
 const filtered = computed(() => {
   const term = norm(searchQuery.value)
   const matches = entries.value.filter(e => {
+    if (albumEntryIds.value && !albumEntryIds.value.has(e.id)) return false
     if (scope.value === 'featured' && !featured.value.has(e.id)) return false
     if (typeFilter.value !== 'all' && e.type !== typeFilter.value) return false
     if (charFilter.value !== 'all' && e.char !== charFilter.value) return false
@@ -391,7 +396,7 @@ function openRandom() {
   if (!src.length) return
   openViewer(src[Math.floor(Math.random() * src.length)].id)
 }
-function resetFilters() { searchQuery.value = ''; scope.value = 'all'; typeFilter.value = 'all'; charFilter.value = 'all'; ratingFilter.value = 'all' }
+function resetFilters() { albumSelection.value = 'all'; searchQuery.value = ''; scope.value = 'all'; typeFilter.value = 'all'; charFilter.value = 'all'; ratingFilter.value = 'all' }
 
 function onKey(e: KeyboardEvent) {
   if (!dialogEl.value?.open || viewerClosing.value || !currentEntry.value || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return

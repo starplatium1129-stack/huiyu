@@ -3,6 +3,8 @@ import { DOMWrapper, mount } from '@vue/test-utils'
 import SceneStoryDialog from './SceneStoryDialog.vue'
 
 const motion = vi.hoisted(() => ({ finishLeave: () => {}, disposed: vi.fn() }))
+const authorization = vi.hoisted(() => ({ local: true }))
+vi.mock('@/utils/runtimeEnvironment', () => ({ isLocalStudioHost: () => authorization.local }))
 vi.mock('@/composables/useFluidSurface', () => ({
   DEFAULT_FLUID_PANEL_SELECTOR: '.viewer-info',
   useFluidSurface: () => ({
@@ -12,11 +14,11 @@ vi.mock('@/composables/useFluidSurface', () => ({
   }),
 }))
 const wrappers: ReturnType<typeof mount>[] = []
-afterEach(() => { wrappers.splice(0).forEach(wrapper => wrapper.unmount()); motion.disposed.mockClear(); document.body.innerHTML = '' })
+afterEach(() => { wrappers.splice(0).forEach(wrapper => wrapper.unmount()); motion.disposed.mockClear(); authorization.local = true; document.body.innerHTML = '' })
 const scene = { id: 'story', title: 'A story', story: 'Story text' }
 function fixture() {
   const wrapper = mount(SceneStoryDialog, { attachTo: document.body, props: { modelValue: scene }, global: { stubs: {
-    transition: false, ArtworkViewerStage: true, ArchiveIcon: true,
+    transition: false, ArtworkViewerStage: { name: 'ArtworkViewerStage', props: ['original', 'cardUrls', 'src'], template: '<section><slot name="image" /></section>' }, ArchiveIcon: true,
     RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' },
   } } })
   wrappers.push(wrapper)
@@ -66,4 +68,20 @@ it('uses the artwork stage for scene navigation and keeps R18 out of its neighbo
   stage.vm.$emit('toggle-original')
   await wrapper.vm.$nextTick()
   expect(stage.props('original')).toBe(true)
+})
+
+it('opens an authorized local R18 scene directly in the artwork stage without a second veil', async () => {
+  const { wrapper, dom } = fixture()
+  await wrapper.setProps({ modelValue: { ...scene, rating: 'R18' } })
+  expect(wrapper.findComponent({ name: 'ArtworkViewerStage' }).props('src')).toBe('/scene-showcase/images/story.jpg')
+  expect(dom.find('.sensitive-preview-veil').exists()).toBe(false)
+})
+
+it('keeps remote R18 previews veiled and never mounts the original image', async () => {
+  authorization.local = false
+  const { wrapper, dom } = fixture()
+  await wrapper.setProps({ modelValue: { ...scene, rating: 'R18' } })
+  expect(dom.get('.sensitive-preview-veil img').attributes('src')).toBe('/scene-showcase/thumbs/story.jpg')
+  expect(dom.find('img[src*="/images/"]').exists()).toBe(false)
+  expect(dom.text()).toContain('仅限本机预览')
 })

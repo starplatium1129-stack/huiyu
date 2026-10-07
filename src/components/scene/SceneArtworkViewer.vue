@@ -2,7 +2,7 @@
   <Teleport to="body">
     <FluidTransition @before-leave="leave" @after-leave="finishClose">
       <div v-show="selectedId" ref="viewerEl" class="art-viewer scene-artwork-viewer"
-        :class="{ 'info-open': infoOpen, 'is-restricted': current?.restricted }" data-image-transition
+        :class="{ 'info-open': infoOpen, 'is-restricted': restrictedPreview }" data-image-transition
         role="dialog" aria-modal="true" :aria-hidden="!selectedId" aria-label="场景观赏模式"
         @keydown="navigate" @load.capture="enter">
         <template v-if="current">
@@ -11,13 +11,13 @@
             :title="item => item.title" @close="selectedId = null" @select="select"
             @close-button="closeButton = $event" @toggle-original="original = !original"
             @dismiss-info="infoOpen = false" @interact="cancelFlight">
-            <template v-if="current.restricted" #image>
+            <template v-if="restrictedPreview" #image>
               <RuntimeImage :src="current.previewSrc" v-slot="{ image, failed }">
-                <div class="scene-sensitive-art sample-r18" tabindex="0" aria-label="R18 样张，悬停或聚焦预览">
+                <div class="scene-sensitive-art" aria-label="R18 样张，仅限本机预览">
                   <img v-if="image.src && !failed" v-bind="image" :alt="current.title" decoding="async" />
                   <SensitivePreviewVeil v-if="image.src && !failed" :src="image.src" :crossorigin="image.crossorigin" />
                   <div v-if="failed || !image.src" class="viewer-fallback"><ArchiveIcon name="image" /><span>样张暂时无法读取</span></div>
-                  <span v-else class="scene-sensitive-hint">R18 · 悬停或聚焦预览</span>
+                  <span v-else class="scene-sensitive-hint">R18 · 仅限本机预览</span>
                 </div>
               </RuntimeImage>
             </template>
@@ -63,6 +63,7 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 const props = defineProps<{ items: SceneArtworkPreview[] }>()
 const selectedId = defineModel<string | null>({ required: true })
@@ -73,6 +74,8 @@ const infoId = useId(), titleId = useId(), compact = useMediaQuery('(max-width: 
 const infoOpen = ref(false), original = ref(false)
 const displayedItems = ref<SceneArtworkPreview[]>([]), displayedIndex = ref(0)
 const current = computed(() => displayedItems.value[displayedIndex.value] ?? null)
+const adultEnabled = isLocalStudioHost()
+const restrictedPreview = computed(() => !!current.value?.restricted && !adultEnabled)
 // Restricted images never enter the orbit's unfiltered neighboring frames.
 const previews = computed(() => Object.fromEntries(displayedItems.value.filter(item => !item.restricted).map(item => [item.id, item.previewSrc])))
 const motion = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
@@ -142,10 +145,6 @@ defineExpose({ capture })
 <style scoped>
 .scene-sensitive-art { position:relative; display:grid; place-items:center; width:100%; height:100%; max-width:900px; min-height:0; overflow:hidden; border-radius:var(--r-md); background:var(--art-stage); --sensitive-preview-fit:contain; --sensitive-preview-position:center; }
 .scene-sensitive-art > img { display:block; width:100%; height:100%; object-fit:contain; }
-.scene-sensitive-art:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
-.scene-sensitive-hint { position:absolute; z-index:var(--z-raised); padding:var(--s-2) var(--s-3); border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); font-size:var(--fs-label-sm); pointer-events:none; transition:opacity var(--motion-hover) var(--ease-out); }
-.scene-sensitive-art:hover .scene-sensitive-hint,.scene-sensitive-art:focus-within .scene-sensitive-hint { opacity:0; }
+.scene-sensitive-hint { position:absolute; z-index:var(--z-raised); padding:var(--s-2) var(--s-3); border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); font-size:var(--fs-label-sm); pointer-events:none; }
 .scene-artwork-viewer.is-restricted :deep(.viewer-mode-switch) { display:none; }
-@media (prefers-reduced-motion:reduce) { .scene-sensitive-hint { transition:none; } }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .scene-sensitive-hint { transition:none; }
 </style>

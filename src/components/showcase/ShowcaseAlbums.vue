@@ -4,38 +4,45 @@
       <div><span class="albums-kicker tw:text-muted">THE COLLECTIONS</span><h2 id="showcaseAlbumsTitle">按册翻阅</h2></div>
       <span class="albums-count">{{ albums.length }} 本画册</span>
     </div>
-    <div class="albums-track tw:grid tw:gap-s-5">
-      <button v-for="album in albums" :key="album.type" class="album-card tw:min-w-0 tw:p-0 tw:rounded-md tw:text-primary tw:text-left tw:cursor-pointer" type="button"
-        :data-album-id="album.type" :aria-pressed="selected === album.type" :aria-label="`${album.title}，${album.count} 幅样张`" @click="emit('select', album.type)">
-        <span class="album-art tw:block tw:relative tw:isolate">
-          <span class="album-cover tw:block tw:h-full tw:overflow-hidden tw:rounded-lg">
-            <RuntimeImage :src="album.cover ? thumbSrc(album.cover) : ''" alt="" loading="lazy" decoding="async">
-              <template #fallback><span class="album-placeholder tw:h-full tw:flex tw:items-center tw:justify-center tw:flex-col tw:gap-s-2 tw:text-muted tw:text-label"><ArchiveIcon name="gallery" /><span>翻开这本画册</span></span></template>
+    <section v-for="group in groups" :key="group.id" class="album-group" :aria-label="group.title">
+      <h3>{{ group.title }} <span>{{ group.albums.length }} 本</span></h3>
+      <div class="albums-track artwork-albums-track">
+      <button v-for="album in group.albums" :key="album.id" class="album-card artwork-album tw:rounded-lg" type="button"
+        :data-album-id="album.id" :aria-pressed="selected === album.id" :aria-label="`${album.title}，${album.count} 幅样张`" @click="emit('select', album.id)">
+        <span class="album-cover artwork-album-cover" :data-covers="album.covers.length" aria-hidden="true">
+          <span v-for="cover in album.covers" :key="cover.id" class="album-picture artwork-album-picture">
+            <RuntimeImage :src="thumbSrc(cover)" alt="" loading="lazy" decoding="async">
+              <template #fallback><span class="album-placeholder tw:flex tw:items-center tw:justify-center tw:text-secondary"><ArchiveIcon name="image" /></span></template>
             </RuntimeImage>
           </span>
-          <span v-if="selected === album.type" class="album-selected tw:absolute tw:bottom-s-2 tw:right-s-2 tw:grid tw:w-[26px] tw:h-[26px] tw:rounded-pill tw:text-accent"><ArchiveIcon name="success" /></span>
+          <span v-if="!album.covers.length" class="album-placeholder tw:flex tw:items-center tw:justify-center tw:flex-col tw:gap-s-2 tw:text-secondary tw:text-label"><ArchiveIcon name="gallery" /><span>翻开这本画册</span></span>
         </span>
-        <span class="album-copy tw:flex tw:justify-between tw:items-baseline tw:gap-s-2"><strong>{{ album.title }}</strong><span>{{ album.count }} 幅</span></span>
-        <span class="album-description tw:block tw:mt-s-1 tw:text-muted tw:text-label-xs tw:leading-body">{{ album.description }}</span>
+        <span class="album-copy artwork-album-caption"><span><strong>{{ album.title }}</strong><small>{{ album.count }} 幅样张 · {{ album.description }}</small></span><ArchiveIcon :name="selected === album.id ? 'success' : 'chevron-down'" /></span>
       </button>
-    </div>
+      </div>
+    </section>
   </section>
 </template>
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { computed } from 'vue'
 import type { ShowcaseAlbum } from '@/composables/showcase/useShowcaseAlbums'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
-import type { ShowcaseEntry, ShowcaseEntryType } from '@/utils/showcaseManifest'
+import type { ShowcaseEntry } from '@/utils/showcaseManifest'
+import '@/assets/css/album-cards.css'
 
-defineProps<{
+const props = defineProps<{
   albums: ShowcaseAlbum[]
-  selected: ShowcaseEntryType | 'all'
+  selected: string
   thumbSrc: (entry: ShowcaseEntry) => string
 }>()
 const emit = defineEmits<{
-  select: [type: ShowcaseEntryType | 'all']
+  select: [id: string]
 }>()
+const groups = computed(() => [
+  { id: 'overview', title: '综合画册' }, { id: 'theme', title: '场景主题' }, { id: 'franchise', title: '作品系列' },
+].map(group => ({ ...group, albums: props.albums.filter(album => album.group === group.id) })).filter(group => group.albums.length))
 </script>
 
 <style scoped>
@@ -44,20 +51,8 @@ const emit = defineEmits<{
 .albums-kicker { font: 500 var(--fs-mono-xs) var(--font-mono); letter-spacing: .14em; }
 .albums-heading h2 { margin: var(--s-1) 0 0; @apply tw:text-body-lg tw:font-semibold; }
 .albums-count { @apply tw:text-muted tw:text-label; }
-.albums-track { grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr)); padding:var(--s-2) var(--s-1) var(--s-3); }
-.album-card { border: 0; background: transparent; font: inherit; scroll-snap-align: start; }
-.album-art { margin:var(--s-1) var(--s-1) var(--s-3); aspect-ratio:1.25; }
-.album-art::before { content:''; position:absolute; z-index:-1; inset:-5px 7px 5px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); transform:rotate(-2deg); }
-.album-cover { border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--art-mat); }
-.album-cover :deep(img) { @apply tw:block tw:w-full tw:h-full tw:object-contain; }
+.album-group + .album-group { margin-top:var(--s-6); }
+.album-group h3 { margin:0 0 var(--s-3); color:var(--text-primary); font:600 var(--fs-body-sm) var(--font-sans); }
+.album-group h3 span { margin-left:var(--s-2); color:var(--text-secondary); font:400 var(--fs-label-sm) var(--font-sans); }
 .album-placeholder > .archive-icon { @apply tw:text-title; }
-.album-card[aria-pressed="true"] .album-cover { outline: 2px solid var(--accent); outline-offset: 2px; }
-.album-selected { place-items: center; border: 1px solid var(--accent); background: var(--bg-surface); }
-.album-copy { padding:0 var(--s-1) var(--s-2); border-bottom:1px solid var(--border-soft); }
-.album-copy strong { @apply tw:text-body tw:font-semibold; }
-.album-copy > span { @apply tw:shrink-0 tw:text-secondary tw:text-label; font-variant-numeric: tabular-nums; }
-.album-description { padding-inline: var(--s-1); }
-.album-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-@media (hover:hover) and (pointer:fine) { .album-card:hover .album-copy strong { color:var(--accent); } }
-@media (max-width: 768px) { .albums-track { @apply tw:gap-s-4; } .showcase-albums { @apply tw:pb-s-4; } }
 </style>
