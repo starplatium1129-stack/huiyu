@@ -97,7 +97,8 @@ impl Catalog {
                 title TEXT NOT NULL,character_id TEXT NOT NULL,category TEXT NOT NULL,rating TEXT NOT NULL,search_text TEXT NOT NULL,
                 deleted INTEGER NOT NULL DEFAULT 0 CHECK(deleted IN(0,1)),PRIMARY KEY(kind,id));
             CREATE INDEX IF NOT EXISTS catalog_browse ON content_records(kind,deleted,character_id,category,rating,sort_order,id);
-            CREATE INDEX IF NOT EXISTS catalog_recent ON content_records(kind,deleted,created_at,id);
+            CREATE INDEX IF NOT EXISTS catalog_newest ON content_records(kind,deleted,created_at DESC,sort_order,id);
+            DROP INDEX IF EXISTS catalog_recent;
             CREATE INDEX IF NOT EXISTS catalog_order ON content_records(kind,deleted,sort_order,id);
             CREATE TABLE IF NOT EXISTS content_seed (kind TEXT NOT NULL,id TEXT NOT NULL,record TEXT NOT NULL,deleted INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(kind,id));
             CREATE TABLE IF NOT EXISTS content_history (

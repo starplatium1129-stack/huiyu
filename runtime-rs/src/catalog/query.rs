@@ -48,7 +48,9 @@ impl Catalog {
         let size = query.page_size.unwrap_or(24).clamp(1, 100);
         let order = match query.sort.as_str() {
             "title" => "title COLLATE NOCASE,sort_order,id",
-            "newest" => "created_at IS NULL,created_at DESC,sort_order,id",
+            // DESC already puts NULL last; a leading IS NULL expression
+            // prevents catalog_newest from supplying the date order.
+            "newest" => "created_at DESC,sort_order,id",
             "updated" => "updated_at IS NULL,updated_at DESC,sort_order,id",
             "id" => "id",
             "" | "order" => "sort_order,id",

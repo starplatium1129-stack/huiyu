@@ -62,12 +62,17 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
             while let Some(row) = rows.next()? {
                 c.check_cancel()?;
                 let mut item = json_column(row, 0)?;
-                let fields = (1..=8)
-                    .map(|column| row.get::<_, Option<String>>(column))
-                    .collect::<rusqlite::Result<Vec<_>>>()?;
+                // Borrow large prompts/stories until joining finishes; lowering
+                // the joined text preserves context-sensitive Unicode casing.
+                let mut fields = [""; 8];
+                for (index, field) in fields.iter_mut().enumerate() {
+                    if !matches!(row.get_ref(index + 1)?, rusqlite::types::ValueRef::Null) {
+                        *field = text_column(row, index + 1)?;
+                    }
+                }
                 let text = fields
-                    .iter()
-                    .filter_map(|field| field.as_deref().filter(|text| !text.is_empty()))
+                    .into_iter()
+                    .filter(|text| !text.is_empty())
                     .collect::<Vec<_>>()
                     .join(" ")
                     .to_lowercase();
