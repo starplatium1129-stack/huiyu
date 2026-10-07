@@ -111,3 +111,35 @@ test('manual table unknown, duplicate and missing values fail closed without exe
     assert.deepEqual(snapshot(root), before);
   }
 });
+
+
+test('scene size validation accepts both separators without relaxing numeric bounds', (t) => {
+  const { root, rows } = fixture(t);
+  const { createRequire }: typeof import('node:module') = require('node:module');
+  const { runInNewContext }: typeof import('node:vm') = require('node:vm');
+  const file = path.join(repo, 'scripts/maintenance/validate-scenes.js');
+  const source = fs.readFileSync(file, 'utf8'), actualRequire = createRequire(file);
+  const stopped = new Error('fixture exit');
+  function dimensionErrors(recommendedSize: string) {
+    const messages: string[] = [];
+    // Run the real validator against the existing neutral fixture. Other scene
+    // contracts deliberately remain outside this dimension-only assertion.
+    try {
+      runInNewContext(source, {
+        exports: {}, __dirname: path.dirname(file),
+        require: (id: string) => id === '../lib/scene-store'
+          ? { loadSceneShards: () => ({ scenes: [{ ...rows[0], char: 'nene', tags: [], recommendedSize }] }) }
+          : actualRequire(id),
+        process: { env: { AICS_DATA_ROOT: root }, exit: () => { throw stopped; } },
+        console: { error: (message: unknown) => messages.push(String(message)), log: () => {} },
+      });
+    } catch (error) { if (error !== stopped) throw error; }
+    return messages.filter(message => message.includes('recommendedSize'));
+  }
+  for (const size of ['832x1216', '832×1216', '512x512', '9999×9999']) {
+    assert.deepEqual(dimensionErrors(size), [], size);
+  }
+  for (const size of ['511x1216', '832×511', '99x1216', '10000×1216', '832X1216', '832x1216x512']) {
+    assert.equal(dimensionErrors(size).length, 1, size);
+  }
+});
