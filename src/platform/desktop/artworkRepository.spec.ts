@@ -120,6 +120,7 @@ it('reads only three recent bodies after one atomic summary while preserving tim
   expect(history.map(item => item.id)).toEqual([999, 10, 20])
   expect(history[0]).toMatchObject({ sceneTitle: 'Full body', prompt: 'neutral complete prompt' })
   expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['readArtworkRecentIndex', 'getArtworks'])
+  expect(mocks.request.mock.calls[0][0]).toEqual({ kind: 'readArtworkRecentIndex', candidateLimit: 3 })
   expect(mocks.request.mock.calls.every(([, signal]) => signal === controller.signal)).toBe(true)
   mocks.state.connection = 'unavailable'; history[0].prompt = 'consumer edit'
   expect((await repository.readRecentHistory())[0].prompt).toBe('neutral complete prompt')

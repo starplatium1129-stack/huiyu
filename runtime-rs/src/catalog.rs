@@ -2,6 +2,7 @@
 mod check;
 mod cli;
 mod dependencies;
+mod facet_cache;
 mod http;
 mod import;
 mod migration;
@@ -16,6 +17,7 @@ mod write;
 
 use crate::error::{ApiError, Result};
 pub use cli::run as cli;
+pub(crate) use facet_cache::FacetCache;
 pub use http::router;
 pub(crate) use projection_cache::ProjectionCache;
 pub use query::Query;

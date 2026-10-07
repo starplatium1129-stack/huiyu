@@ -64,9 +64,9 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (getDesktopRuntime().connection !== 'ready' && (historyLoaded || recentLoaded)) {
       return structuredClone((recentLoaded ? loadedRecent : loadedHistory).slice(0, 3))
     }
-    // One atomic id/time/revision projection retains JS Date/id fallback and
-    // stable identity tie order. Only the three selected bodies cross HTTP.
-    const result = await workspaceRequest<unknown>({ kind: 'readArtworkRecentIndex' }, signal)
+    // Bound numeric candidates on the backend; legacy timestamps still use JS
+    // Date/id fallback and stable identity ties. Fetch only three full bodies.
+    const result = await workspaceRequest<unknown>({ kind: 'readArtworkRecentIndex', candidateLimit: 3 }, signal)
     signal?.throwIfAborted()
     const selected = parseArtworkRecentIndex(result).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)
     const rows = selected.length
