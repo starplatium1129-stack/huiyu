@@ -1,3 +1,4 @@
+import { loadGalleryStorageAction } from './galleryStorage'
 import { useGallerySelection } from './useGallerySelection'
 import { computed, ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -5,6 +6,7 @@ import { bulkDeleteAction, confirmDeleteAction, toggleFavoriteAction } from './g
 import type { ArtworkRecord } from '@/types/artwork'
 
 const repo = vi.hoisted(() => ({
+  readLibrarySnapshot: vi.fn(),
   patchArtwork: vi.fn(),
   softDeleteArtwork: vi.fn(),
   softDeleteArtworks: vi.fn(),
@@ -15,6 +17,7 @@ vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: repo }))
 vi.mock('@/composables/useConfirm', () => ({ confirmAction: confirmActionMock }))
 
 beforeEach(() => {
+  repo.readLibrarySnapshot.mockReset()
   repo.patchArtwork.mockReset()
   repo.softDeleteArtwork.mockReset()
   repo.softDeleteArtworks.mockReset()
@@ -77,6 +80,18 @@ it('an earlier failure cannot roll back a newer successful choice', async () => 
 })
 
 describe('confirmDeleteAction', () => {
+  it('does not resurrect a deleted artwork from a snapshot started before deletion', async () => {
+    const ctx = deleteContext()
+    const read = deferred<{ history: ArtworkRecord[]; projects: [] }>()
+    const snapshot = { history: ctx.history.value.map(item => ({ ...item })), projects: [] as [] }
+    repo.readLibrarySnapshot.mockReturnValue(read.promise)
+    repo.softDeleteArtwork.mockResolvedValue({ deleted: true })
+    const refresh = loadGalleryStorageAction({ ...ctx, galleryLoading: ref(false), galleryError: ref(''), projects: ref([]) })
+    await confirmDeleteAction(ctx, ctx.history.value[0])
+    read.resolve(snapshot); await refresh
+    expect(ctx.history.value.map(item => item.id)).toEqual([2])
+  })
+
   it('presents only confirmed deletion before removing the card or releasing its decoded image', async () => {
     const write = deferred<{ deleted: boolean }>()
     repo.softDeleteArtwork.mockReturnValue(write.promise)
