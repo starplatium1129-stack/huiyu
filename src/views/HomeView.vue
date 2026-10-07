@@ -115,46 +115,23 @@
     </section>
 
     <!-- 创作入口 -->
-    <section class="container home-section" data-reveal>
+    <section class="container home-section home-atelier" aria-labelledby="home-atelier-title" data-reveal>
       <div class="home-section-head">
         <div>
           <span class="eyebrow">灵感，在指尖悄然发生</span>
-          <h2>今天，想写下怎样的相遇？</h2>
+          <h2 id="home-atelier-title">今天，想写下怎样的相遇？</h2>
           <p class="hint">定格一帧心动，留住一段温柔。让想象都有去处。</p>
         </div>
       </div>
-      <div class="tools-grid home-bento">
-        <RouterLink to="/prompt-builder" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">01 / MAKE</span>
-          <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
-          <span class="d">选一位主角与场景，把心动的模样画下来。</span>
-          <span class="home-entry-preview" aria-hidden="true"><RuntimeImage v-if="heroLoaded[homeMuse]" :src="homeMuse === 'nene' ? neneHero.src : natsumeHero.src" alt="" loading="lazy" /><ArchiveIcon v-else name="image" class="home-entry-placeholder" /></span>
-          <span class="go">→ 打开</span>
-        </RouterLink>
-        <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">02 / SCENE</span>
-          <span class="ic"><ArchiveIcon name="scene" /></span><span class="t">灵感场景</span>
-          <span class="d">{{ sceneLibraryCopy }}</span>
-          <span class="go">→ 打开</span>
-        </RouterLink>
-        <RouterLink to="/video-studio" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">03 / MOTION</span>
-          <span class="ic"><ArchiveIcon name="play" /></span><span class="t">故事短片</span>
-          <span class="d">让静止的画面，成为一段会呼吸的故事。</span>
-          <span class="go">→ 开始创作</span>
-        </RouterLink>
-        <RouterLink :to="`/chat?character=${homeMuse}`" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">04 / ROOM</span>
-          <span class="ic"><ArchiveIcon name="chat" /></span><span class="t">角色房间</span>
-          <span class="d">专属轻语时刻，静静聊聊今天的心情。</span>
-          <span class="go">→ 进入房间</span>
-        </RouterLink>
-        <!-- 宽屏下第 5 张卡拉通为横幅入口，避免 4+1 网格出现孤行 -->
-        <RouterLink to="/showcase" class="tool-card card-create card-level-2 tool-card-banner">
-          <span class="tool-index" aria-hidden="true">05 / ARCHIVE</span>
-          <span class="ic"><ArchiveIcon name="image" /></span>
-          <span class="banner-copy"><span class="t">参考画册</span><span class="d">翻阅心动样张，遇见下一幕的灵感。</span></span>
-          <span class="go">→ 浏览完整画册</span>
+      <div class="atelier-entries">
+        <RouterLink v-for="entry in creationEntries" :key="entry.id" :to="entry.to" class="atelier-entry" :class="{ 'atelier-entry-lead': entry.id === 'make' }">
+          <span class="atelier-entry-art" aria-hidden="true"><img :src="entry.art" width="1536" height="1024" alt="" loading="lazy" decoding="async" draggable="false" /></span>
+          <span class="atelier-entry-copy">
+            <span class="atelier-entry-label" aria-hidden="true">{{ entry.label }}</span>
+            <span class="atelier-entry-title">{{ entry.title }}</span>
+            <span class="atelier-entry-description">{{ entry.description }}</span>
+            <span class="atelier-entry-action">{{ entry.action }}<ArchiveIcon name="chevron-down" /></span>
+          </span>
         </RouterLink>
       </div>
     </section>
@@ -231,6 +208,11 @@ import HeroLightField from '@/components/visual/HeroLightField.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import studioArt from '@/assets/illustrations/atelier-studio.png'
+import sceneArt from '@/assets/illustrations/home-scene.webp'
+import motionArt from '@/assets/illustrations/home-motion.webp'
+import roomArt from '@/assets/illustrations/home-room.webp'
+import archiveArt from '@/assets/illustrations/home-archive.webp'
 import { readRecent } from '@/utils/sceneUX'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -260,6 +242,13 @@ const sceneLibraryCopy = computed(() => homeScenes.value
   : '定格心动瞬间，备好镜头与专属光影。')
 const featuredScenes = computed(() => pickFeatured(featuredIds.value, homeScenes.value || [], 6))
 const homeMuse = ref<'nene' | 'natsume'>('nene')
+const creationEntries = computed(() => [
+  { id: 'make', label: '01 / MAKE', title: '开始绘制', description: '选一位主角与场景，把心动的模样画下来。', action: '走进绘制台', to: '/prompt-builder', art: studioArt },
+  { id: 'scene', label: '02 / SCENE', title: '灵感场景', description: sceneLibraryCopy.value, action: '寻找灵感', to: '/scene-explorer', art: sceneArt },
+  { id: 'motion', label: '03 / MOTION', title: '故事短片', description: '让静止的画面，成为一段会呼吸的故事。', action: '开始创作', to: '/video-studio', art: motionArt },
+  { id: 'room', label: '04 / ROOM', title: '角色房间', description: '专属轻语时刻，静静聊聊今天的心情。', action: '进入房间', to: `/chat?character=${homeMuse.value}`, art: roomArt },
+  { id: 'archive', label: '05 / ARCHIVE', title: '参考画册', description: '翻阅心动样张，遇见下一幕的灵感。', action: '翻开画册', to: '/showcase', art: archiveArt },
+])
 const heroImmediate = ref(false)
 const heroName = computed(() => homeMuse.value === 'nene' ? '绫地宁宁' : '四季夏目')
 const { heroes } = useHomeHeroes()

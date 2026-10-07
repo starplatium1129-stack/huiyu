@@ -1,6 +1,6 @@
 'use strict';
 
-// One outline master for web, Windows icons and native installer branding.
+// The outline master supplies wordmarks; the mascot master supplies app icons.
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const sharp: typeof import('sharp') = require('sharp');
@@ -16,13 +16,15 @@ async function buildBrandAssets() {
     const body = `<g color="${accent}" transform="translate(0 0) scale(2)">${mark}</g><g fill="${ink}"><text x="58" y="30" font-family="'Noto Serif SC','SimSun',serif" font-size="29" font-weight="700" letter-spacing="3">绘遇</text><text x="60" y="44" font-family="'Segoe UI',sans-serif" font-size="9" font-weight="600" letter-spacing="4">HUIYU</text></g>`;
     fs.writeFileSync(path.join(ROOT, `assets/${name}.svg`), svg('0 0 132 48', body));
   }
-  const icon = svg('0 0 64 64', `<rect x="2" y="2" width="60" height="60" rx="14" fill="#211C30"/><g color="#F2A8BE" transform="translate(8 7) scale(2)">${mark}</g>`);
+  const appIcon = path.join(ROOT, 'assets/app-icon.png');
+  const faviconPng = await sharp(appIcon).resize(256, 256).png().toBuffer();
+  const icon = svg('0 0 256 256', `<image width="256" height="256" href="data:image/png;base64,${faviconPng.toString('base64')}"/>`);
   fs.writeFileSync(path.join(ROOT, 'assets/favicon.svg'), icon);
   const directory = path.join(ROOT, 'desktop-tauri/src-tauri/icons');
   const sizes = [16, 24, 32, 48, 64, 128, 256];
   const entries: any[] = [];
   for (const size of sizes) {
-    const png = await sharp(Buffer.from(icon), { density: 384 }).resize(size, size).png().toBuffer();
+    const png = await sharp(appIcon).resize(size, size).png().toBuffer();
     if ([32, 64, 128, 256].includes(size)) fs.writeFileSync(path.join(directory, `icon-${size}.png`), png);
     entries.push(png);
   }
@@ -41,11 +43,11 @@ async function buildBrandAssets() {
   const source = fs.readFileSync(controls, 'utf8');
   if (!/<path id="atelier" d="[^"]+"/.test(source)) throw new Error('Installer brand anchor missing');
   fs.writeFileSync(controls, source.replace(/<path id="atelier" d="[^"]+"/, `<path id="atelier" d="${outline}"`));
-  console.log('HUIYU: wordmarks, favicon, seven-size Windows ICO and installer outline generated.');
+  console.log('HUIYU: outline wordmarks and installer mark, mascot favicon and seven-size Windows ICO generated.');
 }
 
 if (require.main === module) {
-  if (process.argv.includes('--help')) console.log('Build HUIYU assets from assets/brand-mark.svg. No arguments.');
+  if (process.argv.includes('--help')) console.log('Build HUIYU wordmarks from assets/brand-mark.svg and app icons from assets/app-icon.png. No arguments.');
   else buildBrandAssets().catch((error: any) => { console.error(error); process.exitCode = 1; });
 }
 export = { buildBrandAssets };

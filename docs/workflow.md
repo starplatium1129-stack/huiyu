@@ -38,7 +38,7 @@
 | --- | --- |
 | 查找命令 | `npm run wf -- search 样张`（中英文关键词均可） |
 | 查看一个命令的运行条件 | `npm run wf -- <命令> --help`（详细 JSON 含 run 元数据） |
-| 生成品牌图标 | `npm run wf -- brand:build`（母版 `assets/brand-mark.svg` → 深浅字标、favicon、Windows ICO、安装器线条） |
+| 生成品牌图标 | `npm run wf -- brand:build`（`assets/brand-mark.svg` → 深浅字标与安装器线条；夏目 Q 版头像母图 `assets/app-icon.png` → favicon、Windows ICO 与托盘 PNG） |
 | 文档迁移后检查链接 | `npm run wf -- docs:check`（含旧地址映射；不联网核验外部来源） |
 | 查看一个分组 | `npm run wf -- reference` |
 | 查看参数与依赖 | `npm run wf -- reference:design --help` |

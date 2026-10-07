@@ -176,7 +176,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
       notes: ['本入口不导入快照、不更新 content/catalog.sqlite；人物/服装/场景/蓝图需在内容维护或 content:catalog 中预览并导入快照。仍按文件维护的数据可在此同步；写入或清缓存前需从托盘退出桌面端并释放维护锁，完成后再重启', '只同步桌面打包白名单数据，不复制 history/projects/prompts 等私有状态；覆盖前备份原始字节到 content-sync-backups/<ID>，逐文件原子写入，目标独有项保留并报告', '尊重 AICS_DESKTOP_CONFIG_ROOT 与 AICS_DESKTOP_WEBVIEW_DATA_DIR；拒绝根目录重叠、写入目标链接、陈旧预压缩副本及已检测到的并发修改；失败可能留下已同步文件与备份，不提供整批事务回滚'],
     },
   },
-  'brand:build': { desc: '从手绘 SVG 母版生成绘遇字标、网站与桌面图标', cmd: ['node', 'scripts/maintenance/build-brand-assets.js'], docs: 'docs/workflow.md',
+  'brand:build': { desc: '从手绘 SVG 生成字标，从角色头像母图生成网站与桌面图标', cmd: ['node', 'scripts/maintenance/build-brand-assets.js'], docs: 'docs/workflow.md',
     run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/build-brand-assets.js:17-26', unknown: [] } },
   'docs:check': { desc: '检查文档文件链接与旧地址映射', cmd: ['node', 'scripts/maintenance/check-doc-links.js'], docs: 'docs/workflow.md',
     run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/check-doc-links.js:38', unknown: [] } },

@@ -8,28 +8,28 @@
       <div class="curation-intro">
         <figure class="scene-atlas-portrait" aria-label="陪伴角色">
           <template v-for="character in companions" :key="character">
-            <img v-if="companionPortraits[character].src && !companionPortraits[character].failed"
-              v-bind="companionPortraits[character].image"
+            <img v-if="!companionArtwork[character].failed"
+              :src="companionArtwork[character].illustration"
               :class="[character, { current: companionId === character }]"
-              :alt="companionId === character ? (character === 'nene' ? '绫地宁宁' : '四季夏目') : ''"
-              :aria-hidden="companionId !== character" width="1024" height="1344" decoding="async" />
+              :alt="companionId === character ? companionArtwork[character].description : ''"
+              :aria-hidden="companionId !== character" width="1024" height="1024" decoding="async" draggable="false"
+              @error="companionArtwork[character].failed = true" />
             <div v-else class="companion-fallback" :class="[character, { current: companionId === character }]"
               role="status" :aria-hidden="companionId !== character">
               <ArchiveIcon name="image" />
-              <span class="companion-fallback-text">{{ character === 'nene' ? '绫地宁宁' : '四季夏目' }}的主视觉暂未加载</span>
+              <span class="companion-fallback-text">{{ companionArtwork[character].name }}的插画暂未加载</span>
             </div>
           </template>
           <figcaption class="sr-only" aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</figcaption>
         </figure>
         <div class="companion-choices">
-          <span class="companion-label">陪你翻阅<span v-if="companionPortraits[companionId].failed"> · 角色图片暂未加载</span></span>
+          <span class="companion-label">陪你翻阅</span>
           <div class="companion-switch studio-segments" data-fluid-glass role="group" aria-label="看板娘陪伴选择">
             <AnimatedSelection />
-            <button type="button" class="companion-pill nene" :class="{ active: companionId === 'nene' }" :aria-pressed="companionId === 'nene'" @click="manualCompanion = 'nene'">
-              <span class="dot"></span>绫地宁宁
-            </button>
-            <button type="button" class="companion-pill natsume" :class="{ active: companionId === 'natsume' }" :aria-pressed="companionId === 'natsume'" @click="manualCompanion = 'natsume'">
-              <span class="dot"></span>四季夏目
+            <button v-for="character in companions" :key="character" type="button" class="companion-pill" :class="{ active: companionId === character }" :aria-pressed="companionId === character" @click="manualCompanion = character">
+              <img v-if="!companionArtwork[character].avatarFailed" class="companion-avatar" :src="companionArtwork[character].avatar" width="256" height="256" alt="" aria-hidden="true" decoding="async" draggable="false" @error="companionArtwork[character].avatarFailed = true" />
+              <ArchiveIcon v-else :name="character" class="companion-avatar" />
+              {{ companionArtwork[character].name }}
             </button>
           </div>
         </div>
@@ -205,7 +205,10 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
-import { useRuntimeImage } from '@/composables/useRuntimeImage'
+import neneCompanion from '@/assets/illustrations/nene-companion.webp'
+import natsumeCompanion from '@/assets/illustrations/natsume-companion.webp'
+import neneAvatar from '@/assets/illustrations/nene-avatar.webp'
+import natsumeAvatar from '@/assets/illustrations/natsume-avatar.webp'
 import { SCENE_FILTER_OPTIONS } from '@/composables/scene/useSceneExplorerFilters'
 import { useSceneExplorerWorkspace } from '@/composables/scene/useSceneExplorerWorkspace'
 
@@ -224,12 +227,12 @@ function rememberDetails(id: string, event: Event) {
   if ((event.target as HTMLDetailsElement).open) openedDetails.add(id)
 }
 const companions = ['nene', 'natsume'] as const
-const companionPortraits = reactive({
-  nene: useRuntimeImage('/assets/characters/nene-home-cg-1024.webp'),
-  natsume: useRuntimeImage('/assets/characters/natsume-home-cg-1024.webp'),
+const companionArtwork = reactive({
+  nene: { name: '绫地宁宁', description: 'Q版宁宁抱着灵感画册，陪你挑选场景', illustration: neneCompanion, avatar: neneAvatar, failed: false, avatarFailed: false },
+  natsume: { name: '四季夏目', description: 'Q版夏目拿着咖啡与书签，陪你翻阅灵感', illustration: natsumeCompanion, avatar: natsumeAvatar, failed: false, avatarFailed: false },
 })
-// A user-driven switch retries only the selected failed portrait, never a retry loop.
-watch(companionId, id => { if (companionPortraits[id].failed) companionPortraits[id].retry() })
+// A new selection may retry its bundled illustration; failures never trigger a loop.
+watch(companionId, id => { companionArtwork[id].failed = false; companionArtwork[id].avatarFailed = false })
 </script>
 
 <style scoped src="@/assets/css/scene-discovery-browse.css"></style>

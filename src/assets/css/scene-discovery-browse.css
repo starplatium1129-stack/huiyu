@@ -4,21 +4,19 @@
 .scene-atlas-copy { grid-area:copy; min-width:0; }
 .scene-atlas .title { margin:0; color:var(--text-primary); font:600 clamp(28px,2vw,34px)/1.2 var(--font-display); letter-spacing:-.04em; }
 .scene-atlas-note { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-label-sm); }
-.curation-intro { grid-area:choices; display:flex; align-items:center; gap:var(--s-2); min-width:0; }
-.scene-atlas-portrait { flex:0 0 42px; position:relative; width:42px; height:58px; margin:0; overflow:hidden; border-radius:var(--r-sm); background:var(--art-stage); }
+.curation-intro { grid-area:choices; display:flex; align-items:center; gap:var(--s-3); min-width:0; }
+.scene-atlas-portrait { flex:0 0 auto; position:relative; width:clamp(128px,10vw,156px); aspect-ratio:1; margin:0; }
 .scene-atlas-portrait img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
 .scene-atlas-portrait img.current { opacity:1; }
-.scene-atlas-portrait .companion-fallback { position:absolute; inset:0; display:grid; place-content:center; justify-items:center; color:var(--on-art-primary); opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
+.scene-atlas-portrait .companion-fallback { position:absolute; inset:0; display:grid; place-content:center; justify-items:center; gap:var(--s-2); padding:var(--s-2); color:var(--text-secondary); text-align:center; opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
 .scene-atlas-portrait .companion-fallback.current { opacity:1; }
 .companion-fallback .archive-icon { width:24px; height:24px; }
-.companion-fallback-text { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.companion-fallback-text { font-size:var(--fs-label-xs); line-height:var(--lh-label); overflow-wrap:anywhere; }
 .companion-choices { display:grid; justify-items:start; gap:var(--s-1); min-width:0; }
 .companion-label { color:var(--text-muted); font-size:var(--fs-label-xs); }
-.companion-switch { --selection-radius:var(--r-sm); position:relative; isolation:isolate; display:flex; align-items:center; width:fit-content; gap:var(--s-1); padding:var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
-.companion-pill { position:relative; z-index:var(--z-raised); display:inline-flex; align-items:center; gap:var(--s-1); min-height:var(--control-height-sm); padding:0 var(--s-2); border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-secondary); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); cursor:pointer; }
-.companion-pill .dot { width:5px; height:5px; border-radius:50%; background:var(--cp-accent); }
-.companion-pill.nene { --cp-accent:var(--nene-violet); }
-.companion-pill.natsume { --cp-accent:var(--natsume-amber); }
+.companion-switch { --selection-radius:var(--r-sm); position:relative; isolation:isolate; display:flex; align-items:center; flex-wrap:wrap; width:fit-content; max-width:100%; gap:var(--s-1); padding:var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
+.companion-pill { position:relative; z-index:var(--z-raised); display:inline-flex; align-items:center; gap:var(--s-2); min-height:56px; padding:var(--s-1) var(--s-2); border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-secondary); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); white-space:nowrap; cursor:pointer; }
+.companion-avatar { display:block; flex:0 0 48px; width:48px; height:48px; object-fit:contain; }
 .companion-pill:hover,.companion-pill.active { color:var(--text-primary); }
 .companion-switch :deep(.animated-selection) { background:var(--accent-soft); border-color:var(--border-soft); }
 
@@ -122,6 +120,7 @@
 }
 @media (max-width:700px) {
   .scene-atlas { grid-template-columns:minmax(0,1fr); grid-template-areas:'copy' 'choices' 'moods' 'filters'; }
+  .curation-intro { flex-wrap:wrap; }
   .scene-personal-nav { flex-wrap:wrap; }
   .scene-grid { grid-template-columns:minmax(0,1fr); }
 }
