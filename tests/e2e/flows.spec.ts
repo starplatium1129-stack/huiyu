@@ -73,7 +73,7 @@ async function switchToAnimaEngine(page: Page) {
 async function openGenerationSettings(page: Page) {
   await page.getByRole('button', { name: '专家模式', exact: true }).click();
   const panel = page.locator('details.inspector-advanced');
-  if (!await panel.evaluate(node => (node as HTMLDetailsElement).open)) await panel.locator('summary').click();
+  if (!await panel.evaluate(node => (node as HTMLDetailsElement).open)) await panel.locator(':scope > summary').click();
   await expect(panel.locator('.anima-quick-panel')).toBeVisible();
 }
 
@@ -110,7 +110,7 @@ async function toggle(page: Page, target: string | Locator, on: boolean) {
 async function useLocalChat(page: Page) {
   const settings = page.locator('.room-model-settings');
   if (await settings.getAttribute('open') === null) await settings.locator('summary').click();
-  const button = page.getByRole('button', { name: '本地模型', exact: true });
+  const button = page.getByRole('button', { name: '已有 Ollama', exact: true });
   if (await button.getAttribute('aria-pressed') !== 'true') await button.click();
   await expect(button).toHaveAttribute('aria-pressed', 'true');
 }
@@ -734,10 +734,12 @@ test('flow 6 · 深链：?scene 决定角色，?mood 与场景推断共存', asy
   await openPromptPreview(page);
   await expect(page.locator('.preview-output-structured')).toContainText('shiki_natsume');
   await page.getByRole('button', { name: '专家模式', exact: true }).click();
-  await page.getByRole('tab', { name: '画面', exact: true }).click();
-  await expect(page.locator('.mood-card.active')).toHaveCount(1);
-  // 场景推断出的镜头/光照/构图至少落一项，否则"智能预填"等于没接
-  await expect(page.locator('.col-right .option.selected')).not.toHaveCount(0);
+  // Camera/mood controls no longer have a separate inspector tab. Check the
+  // persisted draft produced by the same deep link, without mutating the store.
+  await expect.poll(async () => page.evaluate(() => {
+    const draft = JSON.parse(localStorage.getItem('aics_pb_last_draft') || '{}');
+    return { mood: draft.colorMood, inferred: ['shot', 'lighting', 'composition'].some(key => !!draft.selections?.[key]) };
+  })).toEqual({ mood: 'warmth', inferred: true });
 
   expect(errors).toEqual([]);
 });

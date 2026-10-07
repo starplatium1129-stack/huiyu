@@ -154,8 +154,7 @@ jobs:
             npm run validate:all -- --verbose 2>&1 | tee runtime/quality-checks/check.log
             npm run test:e2e:critical:run 2>&1 | tee runtime/quality-checks/critical.log
           else
-            npm run build
-            node node_modules/@playwright/test/cli.js test tests/e2e/flows.spec.ts --max-failures=0 2>&1 | tee runtime/quality-checks/check.log
+            npm test -- --verbose 2>&1 | tee runtime/quality-checks/check.log
           fi
       - name: Preserve selected diagnostics
         if: always()
