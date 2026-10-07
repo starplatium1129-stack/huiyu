@@ -1,5 +1,5 @@
 <template>
-  <section ref="voiceRoot" class="voice-studio" aria-label="成片配音">
+  <section class="voice-studio" aria-label="成片配音">
     <div class="voice-head">
       <div>
         <div class="voice-title">成片配音</div>
@@ -53,7 +53,7 @@
         </div>
         <div class="voice-status">{{ voiceStatus }}</div>
         <RouterLink v-if="!voiceOnline" class="voice-recovery" to="/control">→ 到控制面板启动语音服务</RouterLink>
-        <StudioMediaPlayer v-if="voiceAudioUrl" class="voice-audio show" kind="audio" :src="resolveRuntimeUrl(voiceAudioUrl)" label="AI 声线试听" :transcript="voiceAudioTranscript" />
+        <StudioMediaPlayer v-if="voiceAudioUrl" ref="voicePlayer" @play="stopOwnedSpeech" class="voice-audio show" kind="audio" :src="resolveRuntimeUrl(voiceAudioUrl)" label="AI 声线试听" :transcript="voiceAudioTranscript" />
         <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download show" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
     </div>
   </section>
@@ -98,7 +98,7 @@ const voiceConfigured = ref(false)
 const voiceAudioUrl = ref('')
 const voiceAudioTranscript = ref('')
 let voiceObjectUrl = ''
-const voiceRoot = ref<HTMLElement | null>(null)
+const voicePlayer = ref<InstanceType<typeof StudioMediaPlayer> | null>(null)
 let lifecycle = new AbortController(), viewActive = true
 let statusRequest = 0, operationRevision = 0
 let ownedSpeech: SpeechSynthesisUtterance | null = null
@@ -200,6 +200,7 @@ function previewVoice() {
   if (!voicePlayText.value) { toast.warning('请先准备配音文本'); return }
   if (!('speechSynthesis' in window)) { voiceStatus.value = '当前浏览器没有系统语音朗读能力'; return }
   const { current } = beginOperation()
+  voicePlayer.value?.pause()
   const utterance = new SpeechSynthesisUtterance(voicePlayText.value)
   utterance.lang = voiceLang.value === 'ja' ? 'ja-JP' : 'zh-CN'
   utterance.rate = 1
@@ -270,7 +271,7 @@ function leaveVoiceStudio() {
   stopOwnedSpeech()
   if (voiceBusy.value) voiceStatus.value = '已停止本页配音请求，可重新生成。'
   voiceBusy.value = false
-  voiceRoot.value?.querySelectorAll('audio').forEach(audio => audio.pause())
+  voicePlayer.value?.pause()
 }
 onDeactivated(leaveVoiceStudio)
 onActivated(() => {
