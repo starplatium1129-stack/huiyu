@@ -31,6 +31,9 @@ struct Mock {
     downloads: AtomicUsize,
     online: AtomicBool,
     finished: AtomicBool,
+    hold_cancel: AtomicBool,
+    cancel_entered: tokio::sync::Notify,
+    cancel_release: tokio::sync::Notify,
 }
 async fn history(
     Path(id): Path<String>,
@@ -59,6 +62,10 @@ async fn queue(State(mock): State<Arc<Mock>>) -> Json<Value> {
     )
 }
 async fn cancel(State(mock): State<Arc<Mock>>) -> StatusCode {
+    if mock.hold_cancel.swap(false, Ordering::SeqCst) {
+        mock.cancel_entered.notify_one();
+        mock.cancel_release.notified().await;
+    }
     if mock.ack.load(Ordering::Relaxed) {
         StatusCode::OK
     } else {
@@ -106,6 +113,9 @@ async fn restart_recovers_node_identity_without_resubmission_and_requires_cancel
         downloads: AtomicUsize::new(0),
         online: AtomicBool::new(true),
         finished: AtomicBool::new(false),
+        hold_cancel: AtomicBool::new(false),
+        cancel_entered: tokio::sync::Notify::new(),
+        cancel_release: tokio::sync::Notify::new(),
     });
     let app = Router::new()
         .route("/history/{id}", get(history))
@@ -270,20 +280,43 @@ async fn restart_recovers_node_identity_without_resubmission_and_requires_cancel
         assert_eq!(unresolved["errorCode"], "COMFY_HISTORY_MISSING");
     }
     mock.ack.store(true, Ordering::Relaxed);
-    assert_eq!(
-        runtime
-            .reconcile(&storage, "alice", "cancel")
+    mock.hold_cancel.store(true, Ordering::SeqCst);
+    let cancelling_runtime = runtime.clone();
+    let cancelling_storage = storage.clone();
+    let caller = tokio::spawn(async move {
+        cancelling_runtime
+            .cancel(cancelling_storage, "alice".into(), "cancel".into())
             .await
-            .unwrap()["upstreamSettled"],
-        false
-    );
-    assert_eq!(
-        runtime
-            .reconcile(&storage, "alice", "cancel")
+    });
+    tokio::time::timeout(
+        std::time::Duration::from_secs(5),
+        mock.cancel_entered.notified(),
+    )
+    .await
+    .unwrap();
+    // Simulate losing the HTTP caller after the durable intent but before the
+    // provider acknowledgment. No later reconciliation may rescue the command.
+    caller.abort();
+    assert!(caller.await.unwrap_err().is_cancelled());
+    assert!(
+        !TaskRuntime::get(&storage, "alice", "cancel")
             .await
-            .unwrap()["status"],
-        "cancelled"
+            .unwrap()
+            .upstream_settled
     );
+    mock.cancel_release.notify_one();
+    tokio::time::timeout(std::time::Duration::from_secs(5), async {
+        loop {
+            let task = TaskRuntime::get(&storage, "alice", "cancel").await.unwrap();
+            if task.upstream_settled {
+                assert_eq!(task.status, TaskStatus::Cancelled);
+                break;
+            }
+            tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+        }
+    })
+    .await
+    .unwrap();
     assert_eq!(mock.posts.load(Ordering::Relaxed), 0);
     runtime.close().await;
     seed(&storage, "watch", &fingerprint, "recovered-running", false).await;
