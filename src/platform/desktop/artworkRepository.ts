@@ -30,7 +30,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   let loadedRecent: ArtworkRecord[] = [], recentLoaded = false
   let loadedPreferences: unknown[] | undefined
   let loadedSearchIndex: { items: ArtworkSearchRecord[]; revision: number; session: string; writerEpoch: string } | undefined
-  let searchSequence = 0, historySearchSession: string | undefined
+  let searchSequence = 0, historySearchSession: string | undefined, snapshotSession: string | undefined
   function searchSession() {
     requireAuthority()
     const runtime = getDesktopRuntime().bootstrap!.runtime!
@@ -38,6 +38,19 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       runtime.workspace!.runtimeEpoch, runtime.workspace!.generation])
   }
   function invalidateSearchIndex() { loadedSearchIndex = undefined; searchSequence++ }
+  function readSession() {
+    const session = searchSession()
+    if (snapshotSession !== session) {
+      if (snapshotSession && getDesktopRuntime().connection !== 'ready') throw new Error('工作区连接已变化，请重新连接后读取')
+      historyLoaded = false; projectsLoaded = false; recentLoaded = false; loadedPreferences = undefined
+      historySearchSession = undefined; snapshotSession = session
+    }
+    return session
+  }
+  function checkReadSession(session: string) {
+    if (session !== searchSession()) throw new Error('工作区在读取期间发生变更，请重新读取')
+  }
+
   async function list(includeDeleted = false, projection?: 'preference', signal?: AbortSignal): Promise<Row[]> {
     const rows: Row[] = []
     let cursor: string | null = null
@@ -53,11 +66,13 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   }
   async function readHistory(signal?: AbortSignal) {
     signal?.throwIfAborted()
+    const session = readSession()
     if (getDesktopRuntime().connection !== 'ready' && historyLoaded) return structuredClone(loadedHistory)
-    const session = searchSession()
-    loadedHistory = parseArtworkRecords((await list(false, undefined, signal)).map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
+    const rows = await list(false, undefined, signal)
+    checkReadSession(session)
+    loadedHistory = parseArtworkRecords(rows.map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
     historyLoaded = true
-    historySearchSession = session === searchSession() ? session : undefined
+    historySearchSession = session
     recentLoaded = false
     invalidateSearchIndex()
     return structuredClone(loadedHistory)
@@ -71,6 +86,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   }
   async function readRecentHistory(signal?: AbortSignal) {
     signal?.throwIfAborted()
+    const session = readSession()
     if (getDesktopRuntime().connection !== 'ready' && (historyLoaded || recentLoaded)) {
       return structuredClone((recentLoaded ? loadedRecent : loadedHistory).slice(0, 3))
     }
@@ -87,6 +103,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (parsed.some((row, index) => !row || row.deletedAt !== null || row.revision !== selected[index].revision)) {
       throw new Error('作品库在读取期间发生变更，请重新读取')
     }
+    checkReadSession(session)
     const recent = structuredClone(parsed.map(row => row!.body))
     loadedRecent = recent; recentLoaded = true
     return structuredClone(loadedRecent)
@@ -125,13 +142,18 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     return structuredClone(loadedSearchIndex.items)
   }
   async function readPreferenceHistory() {
+    const session = readSession()
     if (getDesktopRuntime().connection !== 'ready' && (loadedPreferences || historyLoaded)) return preferenceHistoryRows(loadedPreferences ?? loadedHistory)
-    loadedPreferences = preferenceHistoryRows((await list(false, 'preference')).map(row => row.body))
+    const rows = await list(false, 'preference')
+    checkReadSession(session)
+    loadedPreferences = preferenceHistoryRows(rows.map(row => row.body))
     return structuredClone(loadedPreferences)
   }
   async function readProjects() {
+    const session = readSession()
     if (getDesktopRuntime().connection !== 'ready' && projectsLoaded) return structuredClone(loadedProjects)
     const result = await workspaceRequest<{ items: Array<{ body: ArtworkProjectRecord }> }>({ kind: 'listProjects' })
+    checkReadSession(session)
     loadedProjects = result.items.map(item => item.body); projectsLoaded = true
     return structuredClone(loadedProjects)
   }

@@ -456,3 +456,42 @@ it('does not publish search reads overtaken by edits, newer reads or cancellatio
   mocks.state.connection = 'unavailable'
   expect((await repository.readSearchIndex())[0].id).toBe('newer')
 })
+
+it.each(['workspace', 'domain', 'generation'])('keeps same-authority offline snapshots but rejects a changed %s', async change => {
+  const body = { id: 'a', timestamp: 1, scene: 'scene-a' }
+  const row = { id: 'a', body, revision: 1, deletedAt: null }
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'listArtworks') return { items: [row], revision: 1, nextCursor: null }
+    if (command.kind === 'listProjects') return { items: [{ body: { id: 'album-a', title: 'A', history_ids: ['a'] } }] }
+    if (command.kind === 'readArtworkRecentIndex') return { items: [{ id: 'a', timestamp: 1, revision: 1 }], revision: 1 }
+    if (command.kind === 'getArtworks') return [row]
+    throw new Error('unexpected request')
+  })
+  const repository = createDesktopArtworkRepository()
+  const reads = [() => repository.readHistory(), () => repository.readProjects(),
+    () => repository.readPreferenceHistory(), () => repository.readRecentHistory()]
+  for (const read of reads) expect(await read()).toHaveLength(1)
+  mocks.state.connection = 'unavailable'
+  const requests = mocks.request.mock.calls.length
+  for (const read of reads) expect(await read()).toHaveLength(1)
+  if (change === 'workspace') mocks.state.bootstrap.runtime.workspace.workspaceId = 'library-b'
+  else if (change === 'domain') mocks.state.bootstrap.runtime.workspace.domains = []
+  else mocks.state.bootstrap.runtime.workspace.generation++
+  for (const read of reads) await expect(read()).rejects.toThrow()
+  expect(mocks.request).toHaveBeenCalledTimes(requests)
+})
+
+it('does not publish an old-session project response over the new offline snapshot', async () => {
+  let finish!: (value: { items: Array<{ body: { id: string; history_ids: string[] } }> }) => void
+  mocks.request.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+    .mockResolvedValueOnce({ items: [{ body: { id: 'new-album', history_ids: [] } }] })
+  const repository = createDesktopArtworkRepository()
+  const old = repository.readProjects()
+  mocks.state.bootstrap.runtime.workspace.generation++
+  expect(await repository.readProjects()).toEqual([{ id: 'new-album', history_ids: [] }])
+  finish({ items: [{ body: { id: 'old-album', history_ids: [] } }] })
+  await expect(old).rejects.toThrow('读取期间发生变更')
+  mocks.state.connection = 'unavailable'
+  expect(await repository.readProjects()).toEqual([{ id: 'new-album', history_ids: [] }])
+  expect(mocks.request).toHaveBeenCalledTimes(2)
+})
