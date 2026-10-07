@@ -18,7 +18,7 @@ it('loads only browsing data, shares in-flight shards and returns detached snaps
   a.scenes[1].title = 'changed'; a.curation.personaCoreSceneIds!.push('changed')
   expect(b.scenes[1].title).toBe('sc004'); expect(b.curation.personaCoreSceneIds).toEqual(['sc004'])
   expect(store.scenes).toEqual([]); expect(store.loaded).toBe(false)
-  await store.ensureCore(); expect(calls).toContain('scene-blueprints.json')
+  await store.ensureCore(); expect(calls).toContain('characters.json'); expect(calls).not.toContain('scene-blueprints.json')
   await store.load(); const studioIds=store.scenes.map(s=>s.id)
   await store.loadBrowserScenes('core'); expect(store.scenes.map(s=>s.id)).toEqual(studioIds)
 })
@@ -27,7 +27,7 @@ it('reuses core after switching characters and preserves full studio metadata lo
   await store.loadCore();await store.loadCharacter('natsume');await store.ensureCore()
   expect(store.scenes.map(s=>s.id)).toEqual(['sc001','sc004'])
   expect(calls.filter(f=>f==='scenes-core.json')).toHaveLength(1)
-  expect(calls).toContain('scene-blueprints.json')
+  expect(calls).toContain('characters.json'); expect(calls).not.toContain('scene-blueprints.json')
 })
 it('rejects an outdated browser snapshot after a forced refresh', async () => {
   const late=deferred<Response>();let delayed=true
@@ -36,6 +36,6 @@ it('rejects an outdated browser snapshot after a forced refresh', async () => {
 })
 it('blueprint browsing does not fetch studio options or scene shards', async () => {
   const {calls}=fixture();const store=useSceneStore();await store.loadBlueprintCatalog()
-  expect(calls.sort()).toEqual(['curation.json','popular-characters.json','scene-blueprints.json'])
+  expect(calls.sort()).toEqual(['curation.json','popular-characters.json'])
   expect(store.loaded).toBe(false)
 })
