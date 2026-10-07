@@ -171,6 +171,26 @@ async fn bounded_cpu_work_keeps_small_requests_ready_and_releases_after_cancel()
             .unwrap()["online"],
         true
     );
+    // A large Comfy history must share the same bounded worker admission,
+    // while its tiny status replies can still use the inline path.
+    let comfy_cancel = CancellationToken::new();
+    let mut comfy = Box::pin(decoder.json(
+        "comfy",
+        200,
+        serde_json::to_vec(&json!({"history":"x".repeat(BLOCKING_THRESHOLD)})).unwrap(),
+        &comfy_cancel,
+        &shutdown,
+    ));
+    assert!(futures_util::poll!(&mut comfy).is_pending());
+    assert_eq!(
+        decoder
+            .json("comfy", 200, b"{}".to_vec(), &request, &shutdown)
+            .await
+            .unwrap(),
+        json!({})
+    );
+    comfy_cancel.cancel();
+    assert_eq!(comfy.await.unwrap_err().code, "ABORT_ERR");
     request.cancel();
     assert_eq!(work.await.unwrap().unwrap_err().code, "ABORT_ERR");
     assert_eq!(
