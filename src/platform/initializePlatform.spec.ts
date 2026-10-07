@@ -16,9 +16,10 @@ vi.mock('./desktop/hostApi', () => ({ hostApi: () => ({}) }))
 vi.mock('./maintenanceParticipants', () => ({ artworkCleanupFrozen: () => false, maintenanceFrozen: () => mocks.frozen }))
 vi.mock('./desktop/maintenance', () => ({ installDesktopMaintenance: () => () => {} }))
 vi.mock('./desktop/artworkCleanup', () => ({ installDesktopArtworkCleanup: async () => () => {} }))
-afterEach(() => { mocks.listener = undefined; mocks.reconcile = undefined; mocks.frozen = false; mocks.active = false; vi.resetAllMocks() })
+afterEach(() => { mocks.listener = undefined; mocks.reconcile = undefined; mocks.frozen = false; mocks.active = false; vi.restoreAllMocks(); vi.resetAllMocks() })
 it.each([false, true])('skips only the hydrated initial replay, with publication during hydration: %s', async publishDuringHydration => {
   mocks.state = { connection: 'ready', bootstrap: { windowId: 'atelier', runtime: { workspace: { workspaceId: 'workspace', generation: 1, domains: ['settings', 'chat', 'draft'] } } } } as unknown as DesktopConnectionState
+  const events = vi.spyOn(window, 'dispatchEvent')
   let finish!: () => void
   mocks.hydrate.mockImplementation(async () => {
     await new Promise<void>(resolve => { finish = resolve })
@@ -26,10 +27,12 @@ it.each([false, true])('skips only the hydrated initial replay, with publication
   })
   const starting = initializePlatform(() => false)
   await vi.waitFor(() => expect(finish).toBeTypeOf('function'))
+  expect(events.mock.calls.some(([event]) => event.type === 'huiyu:profile-sync-complete')).toBe(false)
   if (publishDuringHydration) mocks.state = { ...mocks.state }
   finish()
   const stop = await starting
   expect(mocks.hydrate).toHaveBeenCalledTimes(1)
+  expect(events.mock.calls.some(([event]) => event.type === 'huiyu:profile-sync-complete')).toBe(true)
   expect(mocks.refresh).toHaveBeenCalledTimes(publishDuringHydration ? 1 : 0)
   // Every later publication must still pick up another window's profile edits.
   mocks.listener!(mocks.state)
