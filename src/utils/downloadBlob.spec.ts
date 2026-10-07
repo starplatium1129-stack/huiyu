@@ -16,3 +16,11 @@ it('attaches the download anchor, removes it and keeps the URL alive until the b
   vi.advanceTimersByTime(60_000)
   expect(revoke).toHaveBeenCalledWith('blob:download')
 })
+
+it('releases its URL immediately when creating the anchor fails', () => {
+  vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:failed-download')
+  const revoke = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+  vi.spyOn(document, 'createElement').mockImplementationOnce(() => { throw new Error('anchor unavailable') })
+  expect(() => downloadBlob(new Blob(['test']), 'archive.json')).toThrow('anchor unavailable')
+  expect(revoke).toHaveBeenCalledExactlyOnceWith('blob:failed-download')
+})
