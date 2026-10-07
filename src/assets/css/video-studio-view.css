@@ -120,7 +120,10 @@
 .video-details-panel .video-panel-heading { margin-bottom:var(--s-3); }
 .video-advanced { @apply tw:mt-s-4 tw:pt-s-4; border-top:1px solid var(--border-soft); }
 .video-advanced summary { @apply tw:min-h-[36px] tw:text-secondary tw:font-semibold tw:cursor-pointer; }
-.video-advanced summary:focus-visible,.video-model-catalog summary:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.video-disclosure-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); min-height:var(--control-height-sm); padding:var(--s-2); margin-inline:calc(-1 * var(--s-2)); border-radius:var(--r-sm); }
+.video-disclosure-heading > span { min-width:0; }
+.video-disclosure-heading:hover { background:var(--bg-hover); }
+.video-disclosure-heading:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 .video-advanced-grid { @apply tw:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); @apply tw:gap-s-3 tw:mt-s-3; }
 .video-steps-toggle { @apply tw:flex tw:items-start tw:gap-s-3; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-deep); @apply tw:cursor-pointer tw:text-left; }
 .video-steps-toggle > span { flex:1; }
@@ -141,13 +144,14 @@
 .video-route-note span { @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
 .video-model-catalog { @apply tw:grid tw:gap-s-2; }
 .video-model-catalog summary { @apply tw:cursor-pointer tw:text-body; font-weight:650; @apply tw:text-primary; }
-.video-model-catalog summary span { @apply tw:block tw:mt-s-2 tw:text-secondary tw:text-body-sm tw:font-normal; }
+.video-model-catalog summary small { @apply tw:block tw:mt-s-2 tw:text-secondary tw:text-body-sm tw:font-normal; }
 .video-model-catalog[open] .video-model-row { @apply tw:mt-s-3; }
 .video-model-row {
   @apply tw:grid; grid-template-columns:minmax(0,1fr) auto; @apply tw:items-center tw:gap-s-3 tw:w-full tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-md;
   background:var(--bg-deep); @apply tw:text-secondary tw:text-left tw:cursor-pointer;
 }
 .video-model-row.active { @apply tw:border-accent; background:var(--accent-soft); }
+.video-model-row:not(:disabled):hover { border-color:var(--accent); }
 .video-model-row strong,.video-model-row small { @apply tw:block; overflow-wrap:anywhere; }
 .video-model-row small { @apply tw:mt-[3px] tw:text-muted tw:text-body-sm tw:leading-label; }
 .video-model-row em { font:700 var(--fs-label) var(--font-mono); @apply tw:not-italic; }

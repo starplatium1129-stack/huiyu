@@ -2,7 +2,7 @@
   <Teleport to="body"><dialog ref="dialog" class="task-center" aria-labelledby="task-center-title" @click="onDialogClick" @cancel.prevent="opened = false" @close="onClosed">
     <header data-fluid-glass><div><h2 id="task-center-title">任务中心</h2><p>{{ activeCount ? `${activeCount} 项正在处理，切换工作区可继续查看进度。` : '创作进度与最近完成的任务都在这里。' }}</p></div><button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭任务中心" @click="opened = false"><ArchiveIcon name="close" /></button></header>
     <RuntimeTaskList v-if="runtimeTasksEnabled" :active="opened" @navigate="opened = false" />
-    <details :open="!runtimeTasksEnabled"><summary>{{ runtimeTasksEnabled ? '旧版本任务摘要 · 仅供查看' : '任务与进度' }}</summary>
+    <details :open="!runtimeTasksEnabled"><StudioDisclosureSummary>{{ runtimeTasksEnabled ? '旧版本任务摘要 · 仅供查看' : '任务与进度' }}</StudioDisclosureSummary>
     <div data-disclosure-content class="task-disclosure tw:flex tw:flex-col tw:gap-s-3 tw:flex-1 tw:min-h-0">
     <div v-if="!runtimeTasksEnabled" class="task-center-controls tw:flex tw:flex-wrap tw:items-center tw:gap-s-2"><div class="studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="任务筛选"><AnimatedSelection /><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" type="button" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button></div><button class="btn btn-ghost" type="button" @click="clearCompleted">清理完成记录</button><button class="btn btn-ghost" type="button" :disabled="refreshing" @click="refresh">{{ refreshing ? '查询中…' : '更新任务状态' }}</button></div>
     <p v-if="storageError" role="status">{{ storageError }}</p><p v-if="recoveryError" role="status">{{ recoveryError }}</p><p v-if="feedback" role="status">{{ feedback }}</p>
@@ -15,6 +15,7 @@
 import { GENERATION_STAGE_LABELS } from '@/utils/generationTask'
 import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { useTaskCenter, hydrateTasks, consumeTaskReloadApproval, type TaskStatus } from '@/composables/useTaskCenter'
 import { startRuntimeTaskPolling } from '@/api/runtimeTasks'
@@ -56,7 +57,10 @@ async function act(id: string, action: 'cancel' | 'retry') { if (busy.value) ret
 .task-center > details[open] { display:flex; flex-direction:column; flex:1; overflow:hidden; }
 .task-center > header,.task-center > footer,.task-center-controls { flex-shrink:0; }
 .task-center .task-list { flex:1; overscroll-behavior:contain; scrollbar-width:thin; padding-right:var(--s-1); }
-.task-center summary { @apply tw:cursor-pointer tw:text-secondary tw:text-label; margin-block: var(--s-2); }
+.task-center summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:shrink-0 tw:cursor-pointer tw:text-secondary tw:text-label tw:rounded-md; min-height:var(--control-height-sm); padding:var(--s-2) var(--s-3); margin-block:var(--s-2); }
+@media (hover:hover) and (pointer:fine) {
+  .task-center summary:hover { background:var(--accent-soft); color:var(--accent); }
+}
 .task-center::backdrop { background: var(--art-scrim); }
 .task-center header, .task-card-title { @apply tw:flex; align-items: start; @apply tw:justify-between tw:gap-s-3; }
 .task-center h2 { @apply tw:m-0 tw:text-title-sm; letter-spacing:-.02em; }

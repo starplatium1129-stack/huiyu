@@ -1,16 +1,16 @@
 <template>
   <section class="runtime-task-list tw:flex tw:flex-col tw:gap-s-3 tw:min-h-0" aria-label="工作区任务和结果收件箱">
-    <div class="runtime-task-controls tw:flex tw:flex-wrap tw:items-center tw:gap-s-2"><div class="studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="工作区任务筛选"><AnimatedSelection /><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button></div><button class="btn btn-ghost" :disabled="!!busy" @click="refresh">更新状态</button></div>
+    <div class="runtime-task-controls tw:flex tw:flex-wrap tw:items-center tw:gap-s-2"><div class="studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="工作区任务筛选"><AnimatedSelection /><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button></div><button class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === 'refresh'" @click="refresh">{{ busy === 'refresh' ? '查询中…' : '更新状态' }}</button></div>
     <p class="inbox-explanation">切换页面后，已接收任务由本地运行时继续处理。结果先保存在收件箱，入册设置保持不变。</p>
     <p v-if="runtimeTaskError || feedback" role="status">{{ feedback || runtimeTaskError }}</p>
     <div v-content-motion="selected" class="runtime-task-items tw:grid tw:gap-s-3 tw:min-h-0">
-    <article v-for="pending in pendingTaskRequests" :key="pending.key" class="runtime-task tw:p-s-4 tw:rounded-lg"><strong>提交结果待确认</strong><p>保留了这次操作的编号；查询不会重新生成。</p><button class="btn btn-ghost" :disabled="!!busy" @click="refresh">查询接收状态</button><button class="btn btn-ghost" :disabled="!!busy" @click="cancelKey(pending.key)">取消这次提交</button></article>
+    <article v-for="pending in pendingTaskRequests" :key="pending.key" class="runtime-task tw:p-s-4 tw:rounded-lg"><strong>提交结果待确认</strong><p>保留了这次操作的编号；查询不会重新生成。</p><button class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === 'refresh'" @click="refresh">{{ busy === 'refresh' ? '查询中…' : '查询接收状态' }}</button><button class="btn btn-ghost" :disabled="!!busy" @click="cancelKey(pending.key)">取消这次提交</button></article>
     <article v-for="task in visible" :key="task.taskId" class="runtime-task tw:p-s-4 tw:rounded-lg" :data-state="task.status" :data-attention="task.recoveryState !== 'normal' || undefined">
       <header><strong>{{ titles[task.kind] }}</strong><span>{{ task.recoveryState !== 'normal' ? '待核对' : labels[task.status] }}</span></header>
       <p>{{ taskMessage(task) }}</p><time :datetime="new Date(task.createdAt).toISOString()">{{ new Date(task.createdAt).toLocaleString('zh-CN') }}</time>
       <div class="runtime-actions tw:mt-s-3">
         <RouterLink class="btn btn-ghost" :to="routeFor(task)" @click="emit('navigate')">返回工作台</RouterLink>
-        <button v-if="task.resultRefs.length" class="btn btn-primary" @click="expanded = expanded === task.taskId ? '' : task.taskId">{{ expanded === task.taskId ? '收起结果' : '查看结果' }}</button>
+        <button v-if="task.resultRefs.length && task.deliveryState !== 'discarded'" class="btn btn-primary" :aria-expanded="active && expanded === task.taskId" :aria-controls="`${resultRegionId}-${task.taskId}`" @click="expanded = expanded === task.taskId ? '' : task.taskId">{{ expanded === task.taskId ? '收起结果' : '查看结果' }}</button>
         <button v-if="!task.upstreamSettled" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'cancel')">取消任务</button>
         <button v-if="task.deliveryState !== 'discarded' && task.errorCode !== 'WEBUI_STOP_CONFIRMED' && (task.recoveryState !== 'normal' || task.resultState === 'unavailable')" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'reconcile')">重新核对</button>
         <button v-if="task.kind === 'generation' && task.provider === 'webui' && task.recoveryState === 'unknown' && task.submissionIntentAt && !task.upstreamSettled" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'resolve-webui')">解除 WebUI 占用</button>
@@ -20,14 +20,16 @@
         <button v-if="task.upstreamSettled && task.resultState === 'available'" class="btn btn-ghost" :disabled="!!busy" @click="discarding = task.taskId">移出收件箱</button>
       </div>
       <p v-if="discarding === task.taskId">已入册作品会保留；未入册结果将从收件箱移除。<button class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'discard')">确认移出</button><button class="btn btn-ghost" @click="discarding = ''">保留结果</button></p>
-      <RuntimeTaskResult v-if="active && expanded === task.taskId && task.resultRefs.length && task.deliveryState !== 'discarded'" :task="task" />
+      <div v-if="task.resultRefs.length && task.deliveryState !== 'discarded'" :id="`${resultRegionId}-${task.taskId}`" :hidden="!active || expanded !== task.taskId">
+        <RuntimeTaskResult v-if="active && expanded === task.taskId" :task="task" />
+      </div>
     </article>
     <p v-if="!visible.length" class="runtime-empty">{{ selected === 'inbox' ? '暂时没有未入册结果。' : '这里会保留已接收任务和可找回的结果。' }}</p>
     </div>
   </section>
 </template>
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, ref, useId } from 'vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 const RuntimeTaskResult = defineAsyncComponent(() => import('./RuntimeTaskResult.vue'))
 import { refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, confirmWebuiTaskStopped, markRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
@@ -36,6 +38,7 @@ import { videoRetrySource } from '@/api/runtimeVideo'
 import { confirmAction } from '@/composables/useConfirm'
 defineProps<{ active: boolean }>()
 const emit = defineEmits<{ navigate: [] }>()
+const resultRegionId = useId()
 const selected = ref('all'), expanded = ref(''), busy = ref(''), feedback = ref(''), discarding = ref('')
 const filters = [{ id: 'all', label: '全部任务' }, { id: 'active', label: '进行中' }, { id: 'attention', label: '待处理' }, { id: 'inbox', label: '结果收件箱' }]
 const titles = { generation: 'WAI 绘图', anima: 'Anima 绘图', creative: 'Krea 2 绘图', video: '视频创作', batch: '分镜短片' }

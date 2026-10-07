@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onDeactivated, onMounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { useTaskMediaSource } from '@/composables/tasks/useTaskMediaSource'
 
 /**
@@ -209,7 +210,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
     </div>
 
     <details v-if="transcript" class="studio-media-transcript">
-      <summary class="tw:min-h-[32px] tw:text-primary tw:cursor-pointer">查看文字稿</summary>
+      <StudioDisclosureSummary class="tw:min-h-[32px] tw:text-primary tw:cursor-pointer">查看文字稿</StudioDisclosureSummary>
       <p class="tw:mt-s-2 tw:mx-0 tw:mb-0 tw:leading-body tw:whitespace-pre-wrap">{{ transcript }}</p>
     </details>
 

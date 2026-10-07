@@ -5,6 +5,7 @@ import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 
 const props = defineProps<{
   state: AnimaGenerationState
@@ -118,7 +119,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </template>
       </div>
 
-      <details class="anima-prompt-details"><summary>查看引擎接收的提示词</summary><div data-disclosure-content>
+      <details class="anima-prompt-details"><StudioDisclosureSummary>查看引擎接收的提示词</StudioDisclosureSummary><div data-disclosure-content>
       <label :for="idOf('prompt')" class="anima-label tw:mt-[4px]">正向提示词</label>
       <textarea :id="idOf('prompt')" :value="state.prompt" rows="4" class="anima-textarea tw:w-full tw:rounded-sm tw:resize-y" readonly></textarea>
 

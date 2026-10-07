@@ -279,6 +279,10 @@ onUnmounted(() => {
   background: var(--accent-soft);
   @apply tw:text-primary;
 }
+.nav-links a:focus-visible, .nav-more .nav-more-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 /* logo.svg 是 132×48 的完整字标（图形 + 绘遇），
    只能按高度缩放，不能塞进方框裁切，也不要再叠一份文字。 */
@@ -355,5 +359,6 @@ onUnmounted(() => {
     border: 0;
   }
   .nav-menu-toggle { width: 40px; height: 40px; flex: none; background: var(--album-surface); }
+  .nav-menu-toggle:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
 }
 </style>

@@ -50,7 +50,7 @@
       <section v-else-if="section === 'bulk'" v-content-motion="section" class="catalog-support-surface">
         <h2>把准备好的修改带进来</h2><p class="catalog-note">选择修改文件或完整备份，先看看哪些内容会变化，再决定保存。</p>
         <label class="catalog-file-picker"><ArchiveIcon name="upload" /><strong>选择整理文件</strong><span>支持修改文件和完整内容备份</span><input type="file" accept="application/json,.json" aria-label="选择整理文件" @change="readBulkFile" /></label>
-        <details class="catalog-advanced"><summary>直接填写修改数据</summary><div data-disclosure-content><textarea v-model="bulkInput" class="input catalog-bulk-input" rows="10" aria-label="修改数据"></textarea><button class="btn btn-ghost" type="button" :disabled="busy" @click="loadBulk">读取这些修改</button></div></details>
+        <details class="catalog-advanced"><StudioDisclosureSummary>直接填写修改数据</StudioDisclosureSummary><div data-disclosure-content><textarea v-model="bulkInput" class="input catalog-bulk-input" rows="10" aria-label="修改数据"></textarea><button class="btn btn-ghost" type="button" :disabled="busy" @click="loadBulk">读取这些修改</button></div></details>
         <p v-if="bulkError" role="alert" class="catalog-error">{{ bulkError }}</p>
         <div v-if="importSnapshot" class="catalog-actions"><span>已读取 {{ importSnapshot.records.length }} 份内容</span><button class="btn btn-ghost" type="button" :disabled="busy || dirty" @click="importContent(true)">看看导入的变化</button><button class="btn btn-primary" type="button" :disabled="busy || dirty || !importPreview" @click="importContent(false)">确认导入</button></div>
       </section>
@@ -85,15 +85,15 @@
             <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
             <template v-else-if="selected">
               <CatalogRecordEditor v-model:record="selected" :disabled="busy" :character-names="characterNames" @stage="stage" @duplicate="add(true)" @remove="remove" />
-              <details v-if="selected.revision" class="catalog-history"><summary>之前写过的版本</summary><div v-for="entry in history" :key="entry.revision" class="catalog-history-row"><span>{{ catalogDate(entry.at) }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="restore(entry.revision)">找回这一版</button></div><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="compareCurrent">看看最新保存的内容</button></details>
-              <section v-if="currentServer" class="catalog-conflict"><h3>这份内容有了新修改</h3><p>你的草稿还在上面。对照最新内容，合并好以后再保存。</p><details><summary>查看最新内容</summary><pre>{{ JSON.stringify(currentServer.data, null, 2) }}</pre></details><button class="btn btn-ghost" type="button" :disabled="busy" @click="adoptRevision">已核对，继续编辑</button></section>
+              <details v-if="selected.revision" class="catalog-history"><StudioDisclosureSummary>之前写过的版本</StudioDisclosureSummary><div v-for="entry in history" :key="entry.revision" class="catalog-history-row"><span>{{ catalogDate(entry.at) }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="restore(entry.revision)">找回这一版</button></div><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="compareCurrent">看看最新保存的内容</button></details>
+              <section v-if="currentServer" class="catalog-conflict"><h3>这份内容有了新修改</h3><p>你的草稿还在上面。对照最新内容，合并好以后再保存。</p><details><StudioDisclosureSummary>查看最新内容</StudioDisclosureSummary><pre>{{ JSON.stringify(currentServer.data, null, 2) }}</pre></details><button class="btn btn-ghost" type="button" :disabled="busy" @click="adoptRevision">已核对，继续编辑</button></section>
             </template>
             <div v-else class="catalog-editor-empty"><span class="catalog-empty-illustration"><ArchiveIcon :name="kindIcon(kind)" /></span><p>{{ sectionTitle }}</p><h2>挑一份内容，接着写</h2><span>从左侧选中它，补上设定、故事和画面细节。</span><button v-if="kind !== 'document'" class="btn btn-ghost" type="button" :disabled="busy" @click="add()">也可以从新内容开始</button></div>
           </section>
         </div>
       </template>
       <section v-if="pending.length" class="catalog-review-area">
-        <details :open="!!preview"><summary>{{ pending.length }} 项修改还没有保存</summary><div v-for="(change, index) in pending" :key="change.kind + ':' + change.id" class="catalog-history-row"><span>{{ CATALOG_LABELS[change.kind] }} · {{ pendingTitle(change) }} <small>{{ change.remove ? '准备归档' : change.expectedRevision ? '已编辑' : '新建' }}</small></span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="pending.splice(index, 1)">撤回这项</button></div></details>
+        <details :open="!!preview"><StudioDisclosureSummary>{{ pending.length }} 项修改还没有保存</StudioDisclosureSummary><div v-for="(change, index) in pending" :key="change.kind + ':' + change.id" class="catalog-history-row"><span>{{ CATALOG_LABELS[change.kind] }} · {{ pendingTitle(change) }} <small>{{ change.remove ? '准备归档' : change.expectedRevision ? '已编辑' : '新建' }}</small></span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="pending.splice(index, 1)">撤回这项</button></div></details>
       </section>
       <CatalogChangePreview v-if="preview" :preview="preview" />
     </div>
@@ -106,6 +106,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import CatalogRecordEditor from '@/components/maintenance/CatalogRecordEditor.vue'

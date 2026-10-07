@@ -62,7 +62,7 @@
       <CharacterStageSettings ref="controlsRef" :companion="surface === 'companion'" :character-id="activeId">
       <button v-if="localStudio && surface === 'companion'" type="button" class="btn btn-ghost" @click="modelStudioOpen = true">导入或校准模型</button>
       <details class="character-about">
-        <summary>关于{{ character.name }}</summary>
+        <StudioDisclosureSummary>关于{{ character.name }}</StudioDisclosureSummary>
         <p class="character-caption">{{ character.caption }}</p>
         <p class="character-description">{{ character.description }}</p>
       </details>
@@ -135,7 +135,7 @@
         <button class="btn btn-ghost" type="button" @click="resetFraming">恢复默认取景</button>
       </fieldset>
       <details v-if="live2d.adapterReport.value" class="live2d-capability-report">
-        <summary>{{ capabilitySummary }}</summary>
+        <StudioDisclosureSummary>{{ capabilitySummary }}</StudioDisclosureSummary>
         <ul>
           <li v-for="item in live2d.adapterReport.value.items" :key="item.id" :data-state="item.status">
             <span>{{ capabilityLabels[item.id] }}</span>
@@ -177,6 +177,7 @@ import CharacterStageSettings from '@/components/CharacterStageSettings.vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
 import { useStageFraming, type StageSurface } from '@/composables/chat/useStageFraming'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/character-stage.css'
 import { createEmotionRuntime, getEmotionRuntimeConfig, type EmotionRuntime } from '@/utils/emotionRuntime'

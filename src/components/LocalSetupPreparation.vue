@@ -1,6 +1,6 @@
 <template>
   <details class="preparation">
-    <summary>手动管理已有环境与逐项下载<span>{{ models.length - matched }} 项文件待核对</span></summary>
+    <StudioDisclosureSummary>手动管理已有环境与逐项下载<span>{{ models.length - matched }} 项文件待核对</span></StudioDisclosureSummary>
     <div data-disclosure-content class="preparation-body">
       <p>先核对运行方式、真实目录与来源，再显式下载固定模型文件。绘遇不会在这里安装程序、执行脚本或代你接受许可。</p>
       <label class="route-label" for="setup-comfy-route">ComfyUI 的运行方式</label>
@@ -89,7 +89,7 @@
                   <a :href="model.preparation.url" target="_blank" rel="noopener noreferrer">取得固定版本文件（{{ formatBytes(model.preparation.expectedBytes) }}）</a>
                   <p>保存到：</p><code>{{ model.path }}</code>
                   <p>SHA-256：</p><code>{{ model.preparation.sha256 }}</code>
-                  <details><summary>Windows 只读校验方法</summary><p>文件放置完成后，在 PowerShell 执行下面的只读命令，逐字对比 Hash 与上面的 SHA-256。大文件读取可能需要等待；本页不会把手动核对自动标记为通过。</p><code>{{ hashCommand(model.path) }}</code></details>
+                  <details><StudioDisclosureSummary>Windows 只读校验方法</StudioDisclosureSummary><p>文件放置完成后，在 PowerShell 执行下面的只读命令，逐字对比 Hash 与上面的 SHA-256。大文件读取可能需要等待；本页不会把手动核对自动标记为通过。</p><code>{{ hashCommand(model.path) }}</code></details>
                 </template>
               </li>
             </ol>
@@ -107,6 +107,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import StudioSelect from './ui/StudioSelect.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import type { LocalSetupModel, LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup.ts'
 import { modelPreparationState as state, formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'
 import { useLocalSetupVerification } from '../composables/useLocalSetupVerification.ts'

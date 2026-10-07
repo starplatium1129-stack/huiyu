@@ -20,7 +20,7 @@
         <RouterLink v-if="!automation.chatId.value" to="/chat" class="btn btn-ghost btn-sm">在角色房间填写 API Key</RouterLink>
       </div>
     </div>
-    <details v-if="!automation.busy.value"><summary>运行方式与下载清单</summary><div data-disclosure-content class="setup-runtime-details">
+    <details v-if="!automation.busy.value"><StudioDisclosureSummary>运行方式与下载清单</StudioDisclosureSummary><div data-disclosure-content class="setup-runtime-details">
       <label for="setup-comfy-runtime">绘图环境</label>
       <StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图环境" :options="[{value:'comfy-nvidia',label:'NVIDIA RTX · CUDA 13.0 Portable'},{value:'comfy-cu126',label:'较旧 NVIDIA · CUDA 12.6 Portable'}]" />
       <label for="setup-llama-runtime">聊天运行环境</label>
@@ -46,6 +46,7 @@ import { computed, toRef, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import type { LocalSetupResponse,LocalSetupDownloadResult } from '../../types/local-setup'
 import StudioSelect from './ui/StudioSelect.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import { useLocalSetupAutomation } from '../composables/useLocalSetupAutomation'
 import { formatSetupBytes as formatBytes } from '../utils/localSetupPreparation'

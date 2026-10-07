@@ -169,7 +169,7 @@
         <p id="tts-host-help" class="field-help">语音服务默认按需启动。</p>
 
         <details class="voice-config">
-          <summary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></summary>
+          <StudioDisclosureSummary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></StudioDisclosureSummary>
           <div data-disclosure-content class="voice-grid">
             <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
               <div class="voice-card-title">宁宁</div>
@@ -303,6 +303,7 @@ import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIc
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'

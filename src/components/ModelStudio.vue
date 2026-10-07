@@ -31,7 +31,7 @@
               <p>支持完整 Cubism 3 文件夹。最多 512 个文件、总计 256 MiB；浏览器预览的模型依赖最多 96 MiB。缺少引用会停止导入。</p>
             </fieldset>
             <details v-if="studio.inspection.value" open>
-              <summary>文件检查 · {{ studio.inspection.value.valid ? '通过' : '需要修正' }}</summary><div data-disclosure-content>
+              <StudioDisclosureSummary>文件检查 · {{ studio.inspection.value.valid ? '通过' : '需要修正' }}</StudioDisclosureSummary><div data-disclosure-content>
               <p>{{ studio.inspection.value.entries.length }} 个文件 · {{ (studio.inspection.value.totalBytes / 1048576).toFixed(1) }} MiB</p>
               <ul><li v-for="(issue, index) in studio.inspection.value.issues" :key="index">{{ issue.message }} {{ issue.path || '' }}</li></ul>
               <p v-if="studio.inspection.value.candidates.parameters.length">发现 {{ studio.inspection.value.candidates.parameters.length }} 个声明或名称候选；实际范围以预览读取为准。</p>
@@ -45,7 +45,7 @@
               <label>许可与使用范围<textarea v-model="studio.identity.terms" rows="2" maxlength="2000" placeholder="记录来源及获准的使用、修改、展示或分发范围" /></label>
             </fieldset>
             <details :open="studio.ready.value">
-              <summary>口型与眨眼</summary><div data-disclosure-content>
+              <StudioDisclosureSummary>口型与眨眼</StudioDisclosureSummary><div data-disclosure-content>
               <p>先选择参数，再调整闭合与张开值。可以反向；未选择的通道保持作者动画。</p>
               <ModelCalibrationFields title="口型" :binding="studio.mouth" :parameters="studio.parameters.value" :disabled="studio.busy.value" @update="(value, select) => updateBinding(studio.mouth, value, select)" />
               <label>模拟语音电平<input v-model.number="studio.level.value" type="range" min="0" max="1" step="0.02" :disabled="!studio.ready.value" @input="studio.test('mouth')" /></label>
@@ -54,7 +54,7 @@
               <label>眨眼开合<input v-model.number="studio.blinkLevel.value" type="range" min="0" max="1" step="0.02" :disabled="!studio.ready.value" @input="studio.test('blink')" /></label>
             </div></details>
             <details v-if="studio.ready.value">
-              <summary>作者动作、表情与视线</summary><div data-disclosure-content>
+              <StudioDisclosureSummary>作者动作、表情与视线</StudioDisclosureSummary><div data-disclosure-content>
               <p>名称仅用于识别文件；请逐项观察实际表现。</p>
               <div class="model-actions">
                 <button v-for="name in studio.expressions.value" :key="name" type="button" class="btn btn-ghost" @click="studio.play('expression', name)">{{ name }}</button>
@@ -65,7 +65,7 @@
               <label>视线上下<input v-model.number="studio.focusY.value" type="range" min="-1" max="1" step="0.05" @input="studio.test('focus')" /></label>
             </div></details>
             <details>
-              <summary>草稿、配置与诊断</summary><div data-disclosure-content>
+              <StudioDisclosureSummary>草稿、配置与诊断</StudioDisclosureSummary><div data-disclosure-content>
               <div class="model-actions">
                 <button class="btn btn-ghost" type="button" :disabled="studio.busy.value" @click="studio.saveDraft">保存校准草稿</button>
                 <button class="btn btn-ghost" type="button" :disabled="studio.busy.value" @click="studio.restoreDraft">恢复草稿</button>
@@ -101,6 +101,7 @@ import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { listCompanionUiCharacters } from '@/utils/companionRegistry'
 import ModelCalibrationFields from './ModelCalibrationFields.vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import '@/assets/css/model-studio.css'
 const emit = defineEmits<{ close: [] }>()

@@ -14,7 +14,7 @@
     <Teleport to="body">
       <dialog ref="dialog" class="directory-sheet tw:m-auto tw:p-s-5 tw:rounded-xl tw:text-primary tw:overflow-hidden" :aria-labelledby="headingId" @cancel.prevent="motion.close()"
         @click="isBackdropClick($event, dialog) && motion.close()">
-        <header class="directory-sheet-heading tw:flex tw:justify-between tw:gap-s-3 tw:shrink-0"><div><h2 :id="headingId">翻开角色画集</h2><p>按作品寻找，或输入她的名字。</p></div><button data-fluid-glass type="button" aria-label="关闭角色画集" @click="motion.close()"><ArchiveIcon name="close" /></button></header>
+        <header class="directory-sheet-heading tw:flex tw:justify-between tw:gap-s-3 tw:shrink-0"><div><h2 :id="headingId">翻开角色画集</h2><p>按作品寻找，或输入她的名字。</p></div><button class="btn btn-ghost btn-icon" data-fluid-glass type="button" aria-label="关闭角色画集" @click="motion.close()"><ArchiveIcon name="close" /></button></header>
         <div ref="dialogHost" class="directory-sheet-content tw:flex tw:min-h-0 tw:overflow-hidden"></div>
       </dialog>
     </Teleport>
@@ -65,6 +65,7 @@ onUnmounted(() => media.removeEventListener('change', resizeDirectory))
 @reference "../../assets/css/tailwind.css";
 .browsing-directory :deep(.character-directory) { @apply tw:static; }
 .directory-pocket { @apply tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[80px] tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:text-primary tw:text-left tw:cursor-pointer; }
+.directory-pocket:not(:disabled):not(:focus-visible):hover { outline:1px solid var(--accent); outline-offset:-1px; }
 .pocket-copy small { @apply tw:text-secondary tw:text-body-sm; }
 .pocket-copy strong { font:600 var(--fs-body)/var(--lh-label) var(--font-sans); overflow-wrap:anywhere; }
 .pocket-action { font:500 var(--fs-body-sm) var(--font-sans); }
@@ -74,7 +75,7 @@ onUnmounted(() => media.removeEventListener('change', resizeDirectory))
 .directory-sheet-heading { align-items:start; }
 .directory-sheet-heading h2 { margin:0 0 var(--s-1); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .directory-sheet-heading p { @apply tw:m-0 tw:text-secondary tw:text-body-sm; }
-.directory-sheet-heading button { @apply tw:grid; place-items:center; @apply tw:w-[44px] tw:h-[44px] tw:shrink-0; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-base); @apply tw:text-primary tw:cursor-pointer; }
+.directory-sheet-heading button { @apply tw:w-[44px] tw:h-[44px] tw:shrink-0; }
 .directory-sheet-content { flex:1; }
 .directory-sheet-content :deep(.character-directory) { @apply tw:w-full; }
 .directory-pocket:focus-visible, .directory-sheet-heading button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }

@@ -8,4 +8,7 @@ const { opened, activeCount } = useTaskCenter()
 @reference "../../assets/css/tailwind.css";
 .task-center-button { padding: var(--s-2) var(--s-3); border: 1px solid var(--border-soft); background: var(--bg-surface); font: 600 var(--fs-label) var(--font-sans); }
 .task-center-button strong { @apply tw:text-accent; font-variant-numeric: tabular-nums; }
+@media (hover:hover) and (pointer:fine) {
+  .task-center-button:hover { background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
+}
 </style>

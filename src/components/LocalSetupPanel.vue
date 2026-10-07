@@ -36,7 +36,7 @@
       <LocalSetupAutomation v-if="snapshot" :snapshot="snapshot" :workspace-blocked="workspacePending || workspaceUnconfirmed" @refresh="refresh" @download-result="recordDownload" @model-selected="selectSetupModel" />
       <LocalSetupPreparation v-if="snapshot" :snapshot="snapshot" :desktop="!!desktop" :workspace-pending="workspacePending" :workspace-unconfirmed="workspaceUnconfirmed" @workspace="openWorkspace" @refresh="refresh" @verification-result="recordVerification" @download-result="recordDownload" />
       <details class="setup-details">
-        <summary>查看路径与详细检查<span v-if="snapshot">{{ checkedAtLabel }}</span></summary>
+        <StudioDisclosureSummary>查看路径与详细检查<span v-if="snapshot">{{ checkedAtLabel }}</span></StudioDisclosureSummary>
         <div data-disclosure-content class="setup-detail-body">
           <div class="setup-detail">
             <h3>1. AI 工作区与 ComfyUI</h3>
@@ -98,6 +98,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import LocalSetupPreparation from './LocalSetupPreparation.vue'
 import LocalSetupAutomation from './LocalSetupAutomation.vue'
 import { modelPreparationState, formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'

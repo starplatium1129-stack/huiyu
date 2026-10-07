@@ -1,6 +1,6 @@
 <template>
   <details class="room-model-settings">
-    <summary>对话设置</summary>
+    <StudioDisclosureSummary>对话设置</StudioDisclosureSummary>
     <div data-disclosure-content class="model-controls">
       <div class="provider-switch studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="对话模型来源">
         <AnimatedSelection />
@@ -73,6 +73,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 
 const reasoningOptions = [
   { value: 'off', label: '关' },

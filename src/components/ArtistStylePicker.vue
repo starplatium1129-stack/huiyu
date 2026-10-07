@@ -21,7 +21,7 @@
       <p v-if="limitHint" class="artist-limit-hint" role="status">{{ limitHint }}</p>
       <!-- 灵感混搭黄金预设：一键应用顶级画师组合 -->
       <details class="artist-presets-section">
-        <summary>画风组合</summary>
+        <StudioDisclosureSummary>画风组合</StudioDisclosureSummary>
         <div class="artist-presets-head">
           <span class="artist-presets-head-title">
             <ArchiveIcon name="spark" class="artist-header-icon" />
@@ -135,6 +135,7 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import {
   type ArtistStyleEngine,
   type ArtistStyleOption,

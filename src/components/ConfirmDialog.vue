@@ -102,6 +102,9 @@ onUnmounted(() => {
 }
 .confirm-close { @apply tw:absolute tw:top-s-3 tw:right-s-3 tw:grid; place-items:center; @apply tw:w-[40px] tw:h-[40px]; border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-base); @apply tw:text-secondary tw:cursor-pointer; }
 .confirm-close:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+@media (hover:hover) and (pointer:fine) {
+  .confirm-close:hover { background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
+}
 .confirm-icon { @apply tw:pr-[44px] tw:min-h-[28px]; }
 .confirm-icon { @apply tw:block tw:mb-s-2 tw:text-secondary; }
 .confirm-icon, .confirm-title, .confirm-actions { flex-shrink:0; }

@@ -2,18 +2,22 @@
   <div
     ref="containerRef"
     class="image-compare-slider tw:[container-type:inline-size] tw:relative tw:block tw:w-full tw:h-full tw:overflow-hidden tw:select-none tw:cursor-ew-resize tw:touch-none tw:rounded-md tw:[outline:0]"
+    :class="{ 'is-dragging': isDragging }"
     role="slider"
-    :aria-valuenow="Math.round(splitRatio * 100)"
+    :aria-valuenow="Math.round(splitPos)"
+    :aria-valuetext="`对比位置 ${Math.round(splitPos)}%：${beforeLabel}与${afterLabel}`"
     aria-valuemin="0"
     aria-valuemax="100"
     aria-label="图像对比滑块"
+    aria-orientation="horizontal"
     tabindex="0"
     :style="sliderStyle"
     @keydown="onKeydown"
-    @pointerdown="onPointerDown"
-    @pointermove="onPointerMove"
-    @pointerup="onPointerUp"
-    @pointercancel="onPointerUp"
+    @pointerdown="startDrag"
+    @pointermove="onDrag"
+    @pointerup="stopDrag"
+    @pointercancel="stopDrag"
+    @lostpointercapture="stopDrag"
   >
     <!-- 底层 (After: 高清/修复后) -->
     <img :crossorigin="runtimeResourceCors()" class="compare-img after-img tw:absolute tw:inset-0 tw:w-full tw:h-full tw:object-contain tw:pointer-events-none" :src="resolveRuntimeUrl(afterSrc)" :alt="afterLabel" decoding="async" />
@@ -28,8 +32,7 @@
     <!-- 分割线与拖拽手柄 -->
     <div class="compare-divider tw:absolute tw:top-0 tw:bottom-0 tw:left-0 tw:w-[2px] tw:[background:color-mix(in_srgb,_var(--accent)_80%,_var(--text-primary))] tw:shadow-(--shadow-md) tw:pointer-events-none tw:[z-index:var(--z-overlay)]">
       <div class="compare-handle tw:absolute tw:top-1/2 tw:left-1/2 tw:flex tw:items-center tw:justify-center tw:gap-[2px] tw:w-[28px] tw:h-[28px] tw:rounded-full tw:bg-elevated tw:[border:1px_solid_var(--accent)] tw:text-accent tw:shadow-(--shadow-md) tw:text-body-sm tw:font-bold" aria-hidden="true">
-        <span class="handle-arrow tw:leading-flush">‹</span>
-        <span class="handle-arrow tw:leading-flush">›</span>
+        <ArchiveIcon name="compare" />
       </div>
     </div>
   </div>
@@ -37,8 +40,9 @@
 
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
-
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { useImageComparison } from '@/composables/useImageComparison'
 
 const props = withDefaults(defineProps<{
   beforeSrc: string
@@ -52,58 +56,27 @@ const props = withDefaults(defineProps<{
   initialRatio: 0.5,
 })
 
-const splitRatio = ref(props.initialRatio)
+const { position: splitPos, container: containerRef, isDragging, startDrag, onDrag, stopDrag, onKeydown } = useImageComparison(props.initialRatio * 100)
 const sliderStyle = computed(() => ({
-  '--split-pos': `${Math.round(splitRatio.value * 1000) / 10}%`,
-  '--split-x': `${Math.round(splitRatio.value * 1000) / 10}cqw`,
-  '--clip-pos': `${Math.round((1 - splitRatio.value) * 1000) / 10}%`,
+  '--split-pos': `${splitPos.value}%`,
+  '--split-x': `${splitPos.value}cqw`,
+  '--clip-pos': `${100 - splitPos.value}%`,
 }))
-const containerRef = ref<HTMLElement | null>(null)
-let isDragging = false
-
-function updateRatioFromPointer(clientX: number) {
-  if (!containerRef.value) return
-  const rect = containerRef.value.getBoundingClientRect()
-  if (rect.width <= 0) return
-  const raw = (clientX - rect.left) / rect.width
-  splitRatio.value = Math.max(0.02, Math.min(0.98, raw))
-}
-
-function onPointerDown(e: PointerEvent) {
-  isDragging = true
-  const el = containerRef.value
-  if (el) el.setPointerCapture(e.pointerId)
-  updateRatioFromPointer(e.clientX)
-}
-
-function onPointerMove(e: PointerEvent) {
-  if (!isDragging) return
-  updateRatioFromPointer(e.clientX)
-}
-
-function onPointerUp(e: PointerEvent) {
-  if (!isDragging) return
-  isDragging = false
-  const el = containerRef.value
-  if (el && el.hasPointerCapture(e.pointerId)) {
-    el.releasePointerCapture(e.pointerId)
-  }
-}
-
-function onKeydown(e: KeyboardEvent) {
-  if (e.key === 'ArrowLeft') {
-    e.preventDefault()
-    splitRatio.value = Math.max(0, Math.round((splitRatio.value - 0.05) * 100) / 100)
-  } else if (e.key === 'ArrowRight') {
-    e.preventDefault()
-    splitRatio.value = Math.min(1, Math.round((splitRatio.value + 0.05) * 100) / 100)
-  }
-}
 </script>
 
 <style scoped>
-.image-compare-slider:focus-visible .compare-handle {
-  box-shadow: 0 0 0 2px var(--accent), 0 0 12px var(--glass-shadow);
+.image-compare-slider:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.image-compare-slider:hover .compare-handle {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.image-compare-slider.is-dragging .compare-handle {
+  transform: translate(-50%, -50%) scale(1.15);
+  background: var(--accent);
+  color: var(--text-inverse);
 }
 
 .compare-overlay {
@@ -120,5 +93,8 @@ function onKeydown(e: KeyboardEvent) {
 
 .compare-handle {
   transform: translate(-50%, -50%);
+}
+@media (forced-colors: active) {
+  .image-compare-slider:focus-visible, .image-compare-slider:hover .compare-handle { outline-color: Highlight; }
 }
 </style>

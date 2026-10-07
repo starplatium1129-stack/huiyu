@@ -24,11 +24,12 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 .studio-search-input { min-height:var(--control-height); }
 .studio-search[data-size='sm'] { gap:var(--s-1); padding-inline:var(--s-2); }
 .studio-search[data-size='sm'] .studio-search-input { min-height:var(--control-height-sm); padding-block:var(--s-1); font-size:var(--fs-label-sm); }
-.studio-search:focus-within { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+/* Glass materials own shadows; the focused control owns its outline. */
+.studio-search:has(.studio-search-input:focus) { outline:2px solid var(--accent); outline-offset:-2px; }
 .studio-search input:focus-visible { outline:0; box-shadow:none; }
 .studio-search input::-webkit-search-cancel-button { display:none; }
 .studio-search input::placeholder { color:var(--text-muted); }
 .studio-search button:hover { background:var(--accent-soft); color:var(--accent); }
 .studio-search button:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
-@media(forced-colors:active) { .studio-search:focus-within { outline:2px solid Highlight; outline-offset:2px; box-shadow:none; } }
+@media(forced-colors:active) { .studio-search:has(.studio-search-input:focus) { outline-color:Highlight; } }
 </style>

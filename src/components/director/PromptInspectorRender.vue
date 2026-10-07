@@ -4,7 +4,7 @@
       <strong>{{ animaState.errorReport?.title || '绘制未完成' }}</strong>
       <p>{{ animaState.errorReport?.message || animaState.errorMsg }}</p>
       <button class="btn btn-ghost btn-sm anima-retry" type="button" :disabled="generationBusy" @click="retryAnima">按当前设置重试</button>
-      <details v-if="animaState.errorReport?.details"><summary>技术细节</summary><code>{{ animaState.errorReport.details }}</code></details>
+      <details v-if="animaState.errorReport?.details"><StudioDisclosureSummary>技术细节</StudioDisclosureSummary><code>{{ animaState.errorReport.details }}</code></details>
     </section>
     <details v-if="drawEngine !== 'sd' && generationBusy" class="inspector-route inspector-runtime">
       <summary><span>绘制详情</span><ArchiveIcon name="chevron-down" /></summary>
@@ -75,6 +75,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindings'
 const CasualCreativeSliders = defineAsyncComponent(() => import('@/components/director/CasualCreativeSliders.vue'))

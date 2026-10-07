@@ -208,6 +208,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-series button { border: 1px solid transparent; @apply tw:rounded-md; padding: var(--s-2) var(--s-3); @apply tw:min-h-[36px] tw:text-secondary; background: var(--bg-deep); font: inherit; @apply tw:text-label tw:cursor-pointer; }
 .directory-pagination .studio-select-wrapper { @apply tw:min-h-[36px]; }
 .directory-series button { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:w-full tw:min-w-0 tw:text-left tw:leading-body; overflow-wrap: anywhere; }
+.directory-series button[aria-pressed="false"]:not(:disabled):hover { background:var(--bg-hover); color:var(--text-primary); }
 .directory-series button[aria-pressed="true"] { background: var(--accent-soft); @apply tw:text-accent tw:border-accent; }
 .directory-series button span { @apply tw:text-muted tw:shrink-0; }
 /* 分页行给结果滚动区一个明确的下边界，让「未滚到底」与「被裁切」可区分。 */

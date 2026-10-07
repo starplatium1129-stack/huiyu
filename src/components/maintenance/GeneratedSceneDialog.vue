@@ -23,7 +23,7 @@
           </div>
         </div>
         <details class="generated-scene-details">
-          <summary>高级：查看这张图的生成记录</summary><div data-disclosure-content>
+          <StudioDisclosureSummary>高级：查看这张图的生成记录</StudioDisclosureSummary><div data-disclosure-content>
           <p class="generated-scene-note">来源提示词只读保留，不需要手动填写。</p>
           <label class="form-group"><span class="field-label">实际正向提示词</span><textarea class="input" :value="source.recipe.prompt" rows="4" readonly /></label>
           <label class="form-group"><span class="field-label">实际负向提示词</span><textarea class="input" :value="source.recipe.negative" rows="2" readonly /></label>
@@ -53,6 +53,7 @@ import { onBeforeRouteLeave, useRouter } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { confirmAction } from '@/composables/useConfirm'
 import { useGeneratedSceneSave } from '@/composables/scene/useGeneratedSceneSave'

@@ -32,7 +32,7 @@
               <StudioSelect size="sm" label="总时长（秒）" :model-value="total ?? ''" :options="totalOptions" @update:model-value="emit('update:total', nullableNumber($event))" />
             </label>
           </div>
-          <details class="shot-script-help"><summary>分镜生成说明</summary><p>AI 按叙事节奏切镜（景别/镜头/运动/台词/时长全自动），无首帧也可纯文字生成（T2VA）。</p></details>
+          <details class="shot-script-help"><StudioDisclosureSummary>分镜生成说明</StudioDisclosureSummary><p>AI 按叙事节奏切镜（景别/镜头/运动/台词/时长全自动），无首帧也可纯文字生成（T2VA）。</p></details>
           <footer class="shot-script-foot">
             <span v-if="referenceLabels.length" class="shot-script-hint">
               参考卡角色将作为 &lt;Picture N&gt; 注入：{{ referenceLabels.join('、') }}
@@ -53,6 +53,7 @@ import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 
 const props = defineProps<{

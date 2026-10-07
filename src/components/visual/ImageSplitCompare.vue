@@ -7,7 +7,7 @@
     tabindex="0"
     :aria-label="comparisonLabel"
     aria-orientation="horizontal"
-    :aria-valuenow="splitPos"
+    :aria-valuenow="Math.round(splitPos)"
     :aria-valuetext="splitValueText"
     aria-valuemin="0"
     aria-valuemax="100"
@@ -16,6 +16,7 @@
     @pointermove="onDrag"
     @pointerup="stopDrag"
     @pointercancel="stopDrag"
+    @lostpointercapture="stopDrag"
   >
     <!-- Before Image (Base layer) -->
     <div class="split-layer layer-before tw:absolute tw:inset-0 tw:w-full tw:h-full tw:pointer-events-none">
@@ -49,8 +50,9 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { useImageComparison } from '@/composables/useImageComparison'
 
 const props = defineProps<{
   beforeSrc: string
@@ -60,18 +62,11 @@ const props = defineProps<{
   initialPos?: number
 }>()
 
-function clampPos(value: number) {
-  if (!Number.isFinite(value)) return 50
-  return Math.max(0, Math.min(100, Math.round(value)))
-}
-
-const splitPos = ref(clampPos(props.initialPos ?? 50))
+const { position: splitPos, container: containerEl, isDragging, startDrag, onDrag, stopDrag, onKeydown } = useImageComparison(props.initialPos ?? 50)
 const beforeName = computed(() => props.beforeLabel || '原图')
 const afterName = computed(() => props.afterLabel || '换装后')
 const comparisonLabel = computed(() => `左右对比滑动条：${beforeName.value}与${afterName.value}`)
-const splitValueText = computed(() => `对比位置 ${splitPos.value}%：${beforeName.value}与${afterName.value}`)
-const isDragging = ref(false)
-const containerEl = ref<HTMLElement | null>(null)
+const splitValueText = computed(() => `对比位置 ${Math.round(splitPos.value)}%：${beforeName.value}与${afterName.value}`)
 
 // 自定义属性载体：样式规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
 const splitLayerStyle = computed(() => ({
@@ -81,49 +76,6 @@ const dividerStyle = computed(() => ({
   '--split-pos': `${splitPos.value}%`,
 }))
 
-function updatePosFromEvent(event: PointerEvent) {
-  if (!containerEl.value) return
-  const rect = containerEl.value.getBoundingClientRect()
-  if (!rect.width) return
-  const offsetX = event.clientX - rect.left
-  const clampedX = Math.max(0, Math.min(rect.width, offsetX))
-  splitPos.value = Math.round((clampedX / rect.width) * 100)
-}
-
-function startDrag(event: PointerEvent) {
-  isDragging.value = true
-  containerEl.value?.focus({ preventScroll: true })
-  event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
-  updatePosFromEvent(event)
-}
-
-function onDrag(event: PointerEvent) {
-  if (isDragging.value) {
-    updatePosFromEvent(event)
-  }
-}
-
-function stopDrag(event: PointerEvent) {
-  if (isDragging.value) {
-    isDragging.value = false
-    try {
-      event.currentTarget instanceof HTMLElement && event.currentTarget.releasePointerCapture(event.pointerId)
-    } catch {}
-  }
-}
-
-function onKeydown(event: KeyboardEvent) {
-  let next: number | null = null
-  if (event.key === 'ArrowLeft') next = splitPos.value - 1
-  else if (event.key === 'ArrowRight') next = splitPos.value + 1
-  else if (event.key === 'PageDown') next = splitPos.value - 10
-  else if (event.key === 'PageUp') next = splitPos.value + 10
-  else if (event.key === 'Home') next = 0
-  else if (event.key === 'End') next = 100
-  if (next === null) return
-  event.preventDefault()
-  splitPos.value = clampPos(next)
-}
 </script>
 
 <style scoped>
@@ -152,10 +104,17 @@ function onKeydown(event: KeyboardEvent) {
 .divider-handle {
   transform: translate(-50%, -50%);
 }
+.image-split-compare:hover .divider-handle {
+  outline: 2px solid var(--archive-blue);
+  outline-offset: 2px;
+}
 
 .is-dragging .divider-handle {
   transform: translate(-50%, -50%) scale(1.15);
   background: var(--archive-blue);
   color: var(--bg-deep);
+}
+@media (forced-colors: active) {
+  .image-split-compare:focus-visible, .image-split-compare:hover .divider-handle { outline-color: Highlight; }
 }
 </style>

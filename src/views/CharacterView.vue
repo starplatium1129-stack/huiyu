@@ -91,7 +91,7 @@
       </section>
 
       <details v-if="current?.lora" :key="current.id" class="character-production">
-        <summary><span><ArchiveIcon name="image" />模型信息</span><span class="production-hint">LoRA 与触发词</span></summary>
+        <StudioDisclosureSummary><span><ArchiveIcon name="image" />模型信息</span><span class="production-hint">LoRA 与触发词</span></StudioDisclosureSummary>
         <div class="production-content" data-disclosure-content>
           <section v-if="current.lora" class="detail-section">
             <h3 class="lab">绑定 LoRA</h3>
@@ -168,6 +168,7 @@ import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDi
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { usePortraitFallback } from '@/composables/usePortraitFallback'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'

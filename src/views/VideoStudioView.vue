@@ -151,7 +151,7 @@
           </div>
 
           <details class="video-advanced">
-            <summary>高级设置</summary>
+            <StudioDisclosureSummary class="video-disclosure-heading">高级设置</StudioDisclosureSummary>
             <div class="video-advanced-grid">
               <ToggleSwitch
                 v-if="activeModel?.id === 'minimax-h3'"
@@ -242,7 +242,7 @@
             <div v-if="jobErrorReport" class="video-inline-message error" role="alert">
               <p>{{ jobErrorReport.title }}：{{ jobErrorReport.message }}</p>
               <details v-if="jobErrorReport.details" class="video-error-detail">
-                <summary>技术细节</summary>
+                <StudioDisclosureSummary class="video-disclosure-heading">技术细节</StudioDisclosureSummary>
                 <code>{{ jobErrorReport.details }}</code>
               </details>
             </div>
@@ -255,7 +255,7 @@
             >{{ cancelling ? '正在取消…' : '取消任务' }}</button>
           </template>
           <details v-if="t8State" class="video-advanced">
-            <summary>生成速度与加速状态</summary>
+            <StudioDisclosureSummary class="video-disclosure-heading">生成速度与加速状态</StudioDisclosureSummary>
             <p class="video-t8-bar" :data-state="t8State.available ? 'fast' : 'slow'">{{ t8State.reason }}</p>
           </details>
         </section>
@@ -277,7 +277,7 @@
               <p>{{ activeModel.summary }}</p>
             </div>
             <details v-if="activeModel.missing.length" class="video-advanced">
-              <summary>需要安装 {{ activeModel.missing.length }} 项资源 · 查看详情</summary>
+              <StudioDisclosureSummary class="video-disclosure-heading">需要安装 {{ activeModel.missing.length }} 项资源 · 查看详情</StudioDisclosureSummary>
               <ul class="video-missing-list"><li v-for="file in activeModel.missing" :key="file"><code>{{ file }}</code></li></ul>
             </details>
             <p v-if="activeModel.missing.length && activeModel.executable" class="video-install-note">
@@ -297,7 +297,7 @@
         </section>
 
         <details class="video-panel video-model-catalog">
-          <summary>更换生成模型 <span>{{ activeModel?.label || '等待环境检测' }}</span></summary>
+          <StudioDisclosureSummary class="video-disclosure-heading"><span>更换生成模型 <small>{{ activeModel?.label || '等待环境检测' }}</small></span></StudioDisclosureSummary>
           <button
             v-for="model in status?.models || []"
             :key="model.id"
@@ -344,6 +344,7 @@
 <script setup lang="ts">
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import ShotListEditor from '@/components/video/ShotListEditor.vue'
 import VideoGenerationBar from '@/components/video/VideoGenerationBar.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'

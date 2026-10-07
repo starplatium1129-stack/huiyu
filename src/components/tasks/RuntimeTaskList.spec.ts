@@ -41,30 +41,42 @@ it('releases result previews when the panel closes and retains its selected inbo
   const button = (label: string) => wrapper.findAll('button').find(item => item.text() === label)!
   try {
     await button('结果收件箱').trigger('click')
-    await button('查看结果').trigger('click')
+    const resultButton = button('查看结果')
+    const regionId = resultButton.attributes('aria-controls')
+    expect(resultButton.attributes('aria-expanded')).toBe('false')
+    expect(wrapper.get(`[id="${regionId}"]`).attributes('hidden')).toBeDefined()
+    await resultButton.trigger('click')
     await flushPromises()
+    expect(resultButton.attributes('aria-expanded')).toBe('true')
+    expect(wrapper.get(`[id="${regionId}"]`).attributes('hidden')).toBeUndefined()
     expect(wrapper.text()).toContain('synthetic result')
     await wrapper.setProps({ active: false })
+    expect(resultButton.attributes('aria-expanded')).toBe('false')
     expect(wrapper.text()).not.toContain('synthetic result')
     expect(api.cancel).not.toHaveBeenCalled()
     expect(taskRecords.value[1].resultRefs).toHaveLength(1)
     await wrapper.setProps({ active: true })
     await flushPromises()
     expect(button('结果收件箱').attributes('aria-pressed')).toBe('true')
+    expect(resultButton.attributes('aria-controls')).toBe(regionId)
+    expect(resultButton.attributes('aria-expanded')).toBe('true')
     expect(wrapper.text()).toContain('synthetic result')
   } finally { wrapper.unmount() }
 })
 
 it('refresh cannot release an in-flight task cancellation and permit a second command', async () => {
   const pending = deferred()
+  const refreshing = deferred()
   api.cancel.mockReturnValue(pending.promise)
+  api.refresh.mockReturnValue(refreshing.promise)
   const wrapper = setup()
   const button = (label: string) => wrapper.findAll('button').find(item => item.text() === label)!
   try {
     await button('查看结果').trigger('click')
     await flushPromises()
     await button('取消任务').trigger('click')
-    await button('更新状态').trigger('click')
+    const refreshButton = button('更新状态')
+    await refreshButton.trigger('click')
     await flushPromises()
     await button('取消任务').trigger('click')
     expect(api.cancel).toHaveBeenCalledTimes(1)
@@ -72,9 +84,16 @@ it('refresh cannot release an in-flight task cancellation and permit a second co
     expect(wrapper.text()).toContain('synthetic result')
     expect(taskRecords.value[1].resultRefs).toHaveLength(1)
     pending.resolve(); await flushPromises()
-    await button('更新状态').trigger('click')
+    await refreshButton.trigger('click')
     expect(api.refresh).toHaveBeenCalledOnce()
-  } finally { pending.resolve(); wrapper.unmount() }
+    expect(refreshButton.attributes('aria-busy')).toBe('true')
+    expect(refreshButton.text()).toBe('查询中…')
+    expect(refreshButton.attributes('disabled')).toBeDefined()
+    refreshing.resolve(); await flushPromises()
+    expect(refreshButton.attributes('aria-busy')).toBe('false')
+    expect(refreshButton.text()).toBe('更新状态')
+    expect(refreshButton.attributes('disabled')).toBeUndefined()
+  } finally { pending.resolve(); refreshing.resolve(); wrapper.unmount() }
 })
 
 it('unknown acceptance cancellation is single-flight and can be retried after a failed response', async () => {

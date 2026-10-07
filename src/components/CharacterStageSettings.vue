@@ -10,7 +10,7 @@
     </dialog>
   </Teleport>
   <details v-else ref="details" class="character-controls" @keydown.esc.stop="close">
-    <summary><ArchiveIcon name="gear" /><span>角色设置</span></summary>
+    <StudioDisclosureSummary><ArchiveIcon name="gear" /><span>角色设置</span></StudioDisclosureSummary>
     <div data-disclosure-content class="character-controls-panel"><slot /></div>
   </details>
 </template>
@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 
 defineProps<{ companion: boolean; characterId: string }>()

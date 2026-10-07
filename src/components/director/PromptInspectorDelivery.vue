@@ -40,7 +40,7 @@
           </div>
 
           <details class="inspector-voice">
-          <summary>配音与字幕</summary>
+          <StudioDisclosureSummary>配音与字幕</StudioDisclosureSummary>
           <VoiceStudio
             ref="voiceStudioRef"
             :initial-voice="pb.char === 'natsume' ? 'natsume' : 'nene'"
@@ -68,6 +68,7 @@ import { defineAsyncComponent } from 'vue'
 import type { PromptDeliveryBindings } from '@/composables/prompt/promptPanelBindings'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecoveryPanel.vue'))
 const GenerationQueuePanel = defineAsyncComponent(() => import('@/components/GenerationQueuePanel.vue'))
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))

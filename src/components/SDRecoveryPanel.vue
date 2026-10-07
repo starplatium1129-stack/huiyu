@@ -12,7 +12,7 @@
       <button class="btn btn-ghost btn-sm" type="button" @click="emit('dismiss')">忽略</button>
     </div>
     <details v-if="report.details">
-      <summary>技术细节</summary>
+      <StudioDisclosureSummary>技术细节</StudioDisclosureSummary>
       <pre>{{ report.details }}</pre>
     </details>
   </div>
@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import type { SDErrorReport, SDRecoveryId } from '@/utils/sdError'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import '@/assets/css/director/components/SDRecoveryPanel.css'
 
 defineProps<{ report: SDErrorReport | null }>()

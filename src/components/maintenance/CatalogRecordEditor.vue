@@ -18,7 +18,7 @@
     </template>
     <CatalogDocumentEditor v-else v-model:record="record" :disabled="disabled" />
     <details class="catalog-advanced catalog-management-info" :open="!record.revision">
-      <summary>管理信息</summary>
+      <StudioDisclosureSummary>管理信息</StudioDisclosureSummary>
       <div data-disclosure-content class="form-grid">
         <label class="form-group"><span class="field-label">内部编号</span><input v-model="record.id" class="input" :disabled="!!record.revision || disabled || record.kind === 'outfit'" /><span class="catalog-field-note">用于关联资料，已有编号保持不变</span></label>
         <label class="form-group"><span class="field-label">展示位置</span><input v-model.number="record.sortOrder" class="input" type="number" step="1" :disabled="disabled" /><span class="catalog-field-note">数字越小，在列表中越靠前</span></label>
@@ -26,7 +26,7 @@
       </div>
     </details>
     <details v-if="!systemDocument" class="catalog-advanced">
-      <summary>完整数据与扩展设置</summary><div data-disclosure-content>
+      <StudioDisclosureSummary>完整数据与扩展设置</StudioDisclosureSummary><div data-disclosure-content>
       <p class="catalog-note">只在需要调整表单之外的信息时使用。</p>
       <textarea v-model="advanced" class="input" rows="12" aria-label="完整内容数据" :disabled="disabled"></textarea>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="disabled" @click="applyAdvanced">应用这些设置</button></div>
@@ -48,6 +48,7 @@ import { computed, ref, watch } from 'vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import CatalogDocumentEditor from './CatalogDocumentEditor.vue'
 import type { CatalogRecord } from '@/api/catalogApi'
 import { CATALOG_FIELDS, fieldValue, setField, type CatalogField } from '@/composables/scene/catalogFields'
