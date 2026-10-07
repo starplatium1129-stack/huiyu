@@ -9,11 +9,13 @@ use axum::{
 use futures_util::StreamExt;
 use serde::Deserialize;
 use std::{convert::Infallible, path::PathBuf};
-use tokio::{io::AsyncWriteExt, sync::mpsc::UnboundedSender};
+use tokio::{io::AsyncWriteExt, sync::mpsc::Sender};
 
 #[cfg(test)]
 #[path = "setup_download_tests.rs"]
 mod tests;
+
+const PROGRESS_BUFFER: usize = 16;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -70,7 +72,8 @@ impl ControlService {
             })?;
         let cancel = self.shutdown.child_token();
         let guard = cancel.clone().drop_guard();
-        let (send, receive) = tokio::sync::mpsc::unbounded_channel();
+        let (send, receive) = tokio::sync::mpsc::channel(PROGRESS_BUFFER);
+        let (finished, completion) = tokio::sync::oneshot::channel();
         let plan = DownloadPlan {
             workspace: self.config.ai_workspace_root.clone(),
             root: model_root(&self.config.ai_workspace_root, &id)?,
@@ -123,16 +126,26 @@ impl ControlService {
                 )
             });
             if !cancel.is_cancelled() && !send.is_closed() {
-                let _ = send.send(event);
+                let _ = finished.send(event);
             }
         });
-        let stream =
-            futures_util::stream::unfold((receive, guard), |(mut receive, guard)| async move {
-                let value = receive.recv().await?;
+        // Progress is lossy when a client falls behind; the final result has its own
+        // slot, so it never blocks the worker or disappears behind a full progress queue.
+        let stream = futures_util::stream::unfold(
+            (receive, Some(completion), guard),
+            |(mut receive, mut result, guard)| async move {
+                let value = match receive.recv().await {
+                    Some(value) => value,
+                    None => result.take()?.await.ok()?,
+                };
                 let mut bytes = serde_json::to_vec(&value).unwrap();
                 bytes.push(b'\n');
-                Some((Ok::<_, Infallible>(Bytes::from(bytes)), (receive, guard)))
-            });
+                Some((
+                    Ok::<_, Infallible>(Bytes::from(bytes)),
+                    (receive, result, guard),
+                ))
+            },
+        );
         let mut response = Body::from_stream(stream).into_response();
         response.headers_mut().insert(
             "content-type",
@@ -148,7 +161,7 @@ impl ControlService {
     }
 }
 
-fn stopped(cancel: &CancellationToken, send: &UnboundedSender<Value>) -> Result<()> {
+fn stopped(cancel: &CancellationToken, send: &Sender<Value>) -> Result<()> {
     if cancel.is_cancelled() || send.is_closed() {
         Err(ApiError::new(409, "CANCELLED", "下载已取消，已有模型保留"))
     } else {
@@ -173,8 +186,8 @@ fn changed() -> ApiError {
         "下载期间工作区或模型目录改变，已停止；请重新检查",
     )
 }
-fn progress(plan: &DownloadPlan, send: &UnboundedSender<Value>, phase: &str, bytes: u64) {
-    let _ = send.send(json!({"type":"progress","modelId":plan.id,"phase":phase,"bytesRead":bytes,"expectedBytes":plan.spec.bytes}));
+fn progress(plan: &DownloadPlan, send: &Sender<Value>, phase: &str, bytes: u64) {
+    let _ = send.try_send(json!({"type":"progress","modelId":plan.id,"phase":phase,"bytesRead":bytes,"expectedBytes":plan.spec.bytes}));
 }
 fn result(
     plan: &DownloadPlan,
@@ -193,7 +206,7 @@ async fn inspect_file(
     root: PathBuf,
     spec: ModelFile,
     phase: &str,
-    send: &UnboundedSender<Value>,
+    send: &Sender<Value>,
     cancel: &CancellationToken,
 ) -> Result<Value> {
     progress(plan, send, phase, 0);
@@ -215,7 +228,7 @@ async fn inspect_file(
 async fn download(
     plan: &DownloadPlan,
     client: &reqwest::Client,
-    send: &UnboundedSender<Value>,
+    send: &Sender<Value>,
     cancel: &CancellationToken,
 ) -> Result<Value> {
     stopped(cancel, send)?;

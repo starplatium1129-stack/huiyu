@@ -60,7 +60,7 @@ async fn resumes_cancelled_bytes_with_a_validated_range_and_final_hash() {
     ));
     let cancel = CancellationToken::new();
     let token = cancel.clone();
-    let (send, _events) = tokio::sync::mpsc::unbounded_channel();
+    let (send, _events) = tokio::sync::mpsc::channel(PROGRESS_BUFFER);
     let worker_sender = send.clone();
     let worker = tokio::spawn(async move {
         download(&spec, &reqwest::Client::new(), &worker_sender, &token).await
@@ -157,7 +157,7 @@ async fn isolated_download_checks_disk_bytes_hash_and_publishes_without_replacin
     let origin = format!("http://{}", listener.local_addr().unwrap());
     let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
     let client = reqwest::Client::new();
-    let (send, mut events) = tokio::sync::mpsc::unbounded_channel();
+    let (send, mut events) = tokio::sync::mpsc::channel(PROGRESS_BUFFER);
     let cancel = CancellationToken::new();
     let mut spec = plan(temp.path(), format!("{origin}/ok"));
     assert_eq!(
@@ -172,6 +172,11 @@ async fn isolated_download_checks_disk_bytes_hash_and_publishes_without_replacin
     }
     assert!(phases.contains(&json!("downloading")));
     assert!(phases.contains(&json!("verifying")));
+    // A stalled progress reader must not backpressure disk work or final completion.
+    for bytes in 0..PROGRESS_BUFFER * 2 {
+        progress(&spec, &send, "checking", bytes as u64);
+    }
+    assert_eq!(events.len(), PROGRESS_BUFFER);
     assert_eq!(
         download(&spec, &client, &send, &cancel).await.unwrap()["state"],
         "already-present"
@@ -259,7 +264,7 @@ async fn cancelling_isolated_stream_cleans_temporary_file_and_admission_binds_cu
     let workspace = temp.path().to_path_buf();
     let cancel = CancellationToken::new();
     let token = cancel.clone();
-    let (send, _events) = tokio::sync::mpsc::unbounded_channel();
+    let (send, _events) = tokio::sync::mpsc::channel(PROGRESS_BUFFER);
     let worker =
         tokio::spawn(async move { download(&spec, &reqwest::Client::new(), &send, &token).await });
     tokio::time::timeout(Duration::from_secs(3), entered.notified())
@@ -337,6 +342,33 @@ async fn cancelling_isolated_stream_cleans_temporary_file_and_admission_binds_cu
     .await
     .unwrap()
     .unwrap();
+    drop(_released);
+    let root = model_root(&service.config.ai_workspace_root, "qwen-vae").unwrap();
+    let target = root.join(model_file("qwen-vae").unwrap().path);
+    std::fs::create_dir_all(target.parent().unwrap()).unwrap();
+    std::fs::write(&target, b"keep existing model").unwrap();
+    let response = service
+        .download_setup_model("qwen-vae".into(), request(&active, true))
+        .unwrap();
+    // Completion must release admission before the client consumes progress or result.
+    let _released = tokio::time::timeout(
+        Duration::from_secs(3),
+        service.setup_verify_lock.clone().acquire_owned(),
+    )
+    .await
+    .unwrap()
+    .unwrap();
+    let bytes = axum::body::to_bytes(response.into_body(), 64 * 1024)
+        .await
+        .unwrap();
+    let events = bytes
+        .split(|byte| *byte == b'\n')
+        .filter(|line| !line.is_empty())
+        .map(|line| serde_json::from_slice::<Value>(line).unwrap())
+        .collect::<Vec<_>>();
+    assert_eq!(events.last().unwrap()["type"], "result");
+    assert_eq!(events.last().unwrap()["code"], "MODEL_CONFLICT");
+    assert_eq!(std::fs::read(target).unwrap(), b"keep existing model");
     service.close().await;
 }
 
@@ -374,7 +406,7 @@ fn cancellation_drains_an_accepted_write_before_retaining_partial_bytes() {
             let partial = spec.root.join("vae").join(format!(".huiyu-{}.part", spec.spec.sha256));
             let client = reqwest::Client::new();
             let cancel = CancellationToken::new();
-            let (send, mut events) = tokio::sync::mpsc::unbounded_channel();
+            let (send, mut events) = tokio::sync::mpsc::channel(PROGRESS_BUFFER);
             let operation = download(&spec, &client, &send, &cancel);
             tokio::pin!(operation);
             loop {
