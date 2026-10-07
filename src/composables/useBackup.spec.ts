@@ -100,6 +100,38 @@ describe('backup selection and cleanup', () => {
       expect(tool.busy.value).toBe(false)
     } finally { vi.clearAllTimers(); vi.useRealTimers() }
   })
+  it.each(['reload', 'schedule failure', 'reload failure'])('keeps successful restore exclusive until %s', async outcome => {
+    vi.useFakeTimers()
+    const reload = vi.spyOn(window.location, 'reload').mockImplementation(() => {
+      if (outcome === 'reload failure') throw new Error('reload blocked')
+    })
+    const warning = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const flash = vi.fn(), tool = useBackup(flash)
+    let schedule: ReturnType<typeof vi.spyOn> | undefined
+    try {
+      await tool.loadFile(new File([contents], 'restore.json'))
+      vi.mocked(restoreBackupData).mockResolvedValueOnce(undefined)
+      if (outcome === 'schedule failure') schedule = vi.spyOn(globalThis, 'setTimeout').mockImplementationOnce(() => { throw new Error('timer unavailable') })
+      expect(await tool.restore('merge')).toBe(true)
+      if (outcome === 'schedule failure') {
+        expect(tool.busy.value).toBe(false)
+      } else {
+        expect(tool.busy.value).toBe(true)
+        await tool.exportBackup(); await tool.exportImages()
+        expect(await tool.loadFile(new File([contents], 'new.json'))).toBeNull()
+        expect(await tool.restore('merge')).toBe(false)
+        expect(await tool.cleanOrphanImages()).toBe(0)
+        expect(downloadBlob).not.toHaveBeenCalled()
+        expect(restoreBackupData).toHaveBeenCalledOnce()
+        await vi.advanceTimersByTimeAsync(699)
+        expect(reload).not.toHaveBeenCalled()
+        await vi.advanceTimersByTimeAsync(1)
+        expect(reload).toHaveBeenCalledOnce()
+        expect(tool.busy.value).toBe(outcome === 'reload')
+      }
+      if (outcome !== 'reload') expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('恢复已完成，但自动刷新失败'))
+    } finally { schedule?.mockRestore(); reload.mockRestore(); warning.mockRestore(); vi.clearAllTimers(); vi.useRealTimers() }
+  })
   it('rejects orphan cleanup approval from an earlier cached-page visit', async () => {
     const active = ref(true)
     const flash = vi.fn()

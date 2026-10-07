@@ -71,7 +71,7 @@ async fn upload(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
-    Json(body): Json<Value>,
+    Json(mut body): Json<Value>,
 ) -> Response {
     if let Err(e) = state.host.check_running() {
         return e.into_response();
@@ -79,14 +79,14 @@ async fn upload(
     let owner = generation::request_owner(&headers, peer, &query);
     response(
         async {
-            let data = body["data"]
-                .as_str()
-                .filter(|s| !s.is_empty())
-                .ok_or_else(|| error(400, "INVALID_IMAGE", "缺少图片数据"))?;
+            let data = match body.get_mut("data").map(Value::take) {
+                Some(Value::String(data)) if !data.is_empty() => data,
+                _ => return Err(error(400, "INVALID_IMAGE", "缺少图片数据")),
+            };
             let name = http
                 .service
                 .upload(
-                    data.into(),
+                    data,
                     owner,
                     body["kind"] == "reference",
                     http.service.shutdown.child_token(),

@@ -569,3 +569,6 @@ async fn verified_candidate_is_backed_up_activated_and_reopened_with_new_epoch()
 
 #[path = "host_http/migration_candidates.rs"]
 mod migration_candidates;
+
+#[path = "host_http/upload_bodies.rs"]
+mod upload_bodies;

@@ -133,8 +133,7 @@ impl Decoder {
             ));
         }
         let webui = provider == "webui";
-        let size = if webui { bytes.len() } else { 0 };
-        self.run(size, request, shutdown, move || {
+        self.run(bytes.len(), request, shutdown, move || {
             if bytes.is_empty() {
                 Ok(Value::Null)
             } else if !(200..300).contains(&status) {

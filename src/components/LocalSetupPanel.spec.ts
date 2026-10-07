@@ -4,11 +4,12 @@ import LocalSetupPanel from './LocalSetupPanel.vue'
 import LocalSetupAutomation from './LocalSetupAutomation.vue'
 import StudioSelect from './ui/StudioSelect.vue'
 import type { LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup'
+import type { ControlActionResult } from '../types/api'
 import { settingsRepository } from '../storage/settingsRepository'
 
-const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), verifyModel: vi.fn(), downloadModel: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn(),getOperation:vi.fn(),serviceAction:vi.fn() }))
+const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), verifyModel: vi.fn(), downloadModel: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn(),getOperation:vi.fn(),serviceAction:vi.fn(),cancelEnvironment:vi.fn() }))
 vi.mock('../utils/runtimeEnvironment.ts', () => ({ isLocalStudioHost: () => fixture.local }))
-vi.mock('../api/localSetupApi.ts', () => ({ localSetupApi: { getStatus: fixture.getStatus, verifyModel: fixture.verifyModel, downloadModel: fixture.downloadModel,getOperation:fixture.getOperation } }))
+vi.mock('../api/localSetupApi.ts', () => ({ localSetupApi: { getStatus: fixture.getStatus, verifyModel: fixture.verifyModel, downloadModel: fixture.downloadModel,getOperation:fixture.getOperation,cancelEnvironment:fixture.cancelEnvironment } }))
 vi.mock('../api/controlApi.ts',()=>({controlApi:{serviceAction:fixture.serviceAction}}))
 vi.mock('../platform/desktop/capabilities.ts', () => ({ getDesktopCapabilities: () => fixture.desktop ? { getWorkspace: fixture.getWorkspace, setWorkspace: fixture.setWorkspace, pickWorkspace: fixture.pickWorkspace } : undefined }))
 vi.mock('../composables/useFluidDialog', () => ({ useFluidDialog: () => ({ open: vi.fn(), close: vi.fn() }) }))
@@ -44,6 +45,7 @@ beforeEach(() => {
   fixture.downloadModel.mockReset()
   fixture.serviceAction.mockReset()
   fixture.getOperation.mockReset()
+  fixture.cancelEnvironment.mockReset().mockResolvedValue({ ok: true })
   fixture.getWorkspace.mockReset().mockResolvedValue({ root: 'E:\\NewAI', exists: true, activeRoot: 'D:\\AI', restartRequired: true })
   fixture.setWorkspace.mockReset().mockResolvedValue({ root: 'F:\\ChosenAI', exists: true, activeRoot: 'D:\\AI', restartRequired: true })
   fixture.pickWorkspace.mockReset().mockResolvedValue('F:\\ChosenAI')
@@ -75,6 +77,35 @@ describe('first local setup panel', () => {
       expect(save).not.toHaveBeenCalled()
       expect(wrapper.emitted('refresh')).toBeUndefined()
     } finally { if (disposition !== 'unmount') wrapper.unmount() }
+  })
+  it.each(['cancel', 'unmount'])('handles an operation acknowledged after %s without proceeding or losing explicit cancellation', async disposition => {
+    const value = complete()
+    let acknowledge!: (result: ControlActionResult) => void
+    let finishCancel = () => {}
+    if (disposition === 'cancel') fixture.cancelEnvironment.mockReturnValue(new Promise<void>(resolve => { finishCancel = resolve }))
+    fixture.serviceAction.mockReturnValue(new Promise<ControlActionResult>(resolve => { acknowledge = resolve }))
+    fixture.downloadModel.mockImplementation(async (id: string) => {
+      const model = value.models.find(model => model.id === id)!
+      return { type: 'result', modelId: id, path: model.path, state: 'already-present', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '已复用' }
+    })
+    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
+    await wrapper.get('.setup-review input').setValue(true)
+    await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
+    expect(fixture.serviceAction).toHaveBeenCalledOnce()
+    if (disposition === 'cancel') await wrapper.findAll('button').find(button => button.text() === '取消准备')!.trigger('click')
+    else wrapper.unmount()
+    expect(fixture.cancelEnvironment).not.toHaveBeenCalled()
+    acknowledge({ ok: true, operation: { id: 'late-owned-setup', status: 'running', message: '准备中' } } as ControlActionResult)
+    await flushPromises()
+    if (disposition === 'cancel') {
+      await wrapper.findAll('button').find(button => button.text() === '取消准备')!.trigger('click')
+      expect(fixture.cancelEnvironment).toHaveBeenCalledExactlyOnceWith('late-owned-setup')
+      finishCancel(); await flushPromises()
+    } else expect(fixture.cancelEnvironment).not.toHaveBeenCalled()
+    expect(fixture.getOperation).not.toHaveBeenCalled()
+    expect(fixture.getStatus).not.toHaveBeenCalled()
+    expect(wrapper.emitted('refresh')).toBeUndefined()
+    if (disposition !== 'unmount') wrapper.unmount()
   })
   it('prepares only the selected Base combination after consent and verifies the real operation before offering generation',async()=>{
     const value=complete()
@@ -126,6 +157,26 @@ describe('first local setup panel', () => {
     wrapper.unmount()
     expect(lastSignal.aborted).toBe(true)
     last.resolve(complete()); await flushPromises()
+  })
+  it('supersedes an in-flight readiness check when the selected model changes', async () => {
+    vi.spyOn(settingsRepository, 'get').mockReturnValue('anima-miaomiao-v1.6')
+    const wrapper = render(); await flushPromises()
+    const old = deferred(), latest = deferred()
+    fixture.getStatus.mockReturnValueOnce(old.promise).mockReturnValueOnce(latest.promise)
+    const automation = wrapper.getComponent(LocalSetupAutomation)
+    automation.vm.$emit('model-selected', 'anima-base-v1.0'); await flushPromises()
+    const previousSignal = fixture.getStatus.mock.lastCall![0].signal as AbortSignal
+    automation.vm.$emit('model-selected', 'anima-miaomiao-v1.6'); await flushPromises()
+    expect(previousSignal.aborted).toBe(true)
+    expect(fixture.getStatus).toHaveBeenCalledTimes(3)
+    expect(fixture.getStatus.mock.lastCall![0].modelId).toBe('anima-miaomiao-v1.6')
+    const current = complete(); current.nodes.missing = ['CurrentModelNode']
+    latest.resolve(current); await flushPromises()
+    expect(wrapper.text()).toContain('CurrentModelNode')
+    old.resolve(complete()); await flushPromises()
+    expect(wrapper.text()).toContain('CurrentModelNode')
+    expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
+    wrapper.unmount()
   })
   it('makes no local request and exposes no workspace controls to remote viewers', async () => {
     fixture.local = false; fixture.desktop = true
@@ -274,6 +325,28 @@ describe('first local setup panel', () => {
     expect(fixture.downloadModel.mock.lastCall![1].signal.aborted).toBe(true)
     finish(success); await flushPromises()
     expect(fixture.getStatus).toHaveBeenCalledTimes(6)
+    wrapper.unmount()
+  })
+  it('does not overwrite a workspace save with a background binding read started during the save', async () => {
+    fixture.desktop = true
+    const binding = { root: 'D:\\AI', exists: true, activeRoot: 'D:\\AI', restartRequired: false }
+    fixture.getWorkspace.mockResolvedValue(binding)
+    const wrapper = render(); await flushPromises()
+    await wrapper.findAll('button').find(button => button.text().includes('选择 AI 工作区'))!.trigger('click'); await flushPromises()
+    const dialog = wrapper.findComponent({ name: 'CompanionWorkspaceSettings' })
+    let finishSave!: (value: typeof binding) => void
+    let finishRead!: (value: typeof binding) => void
+    fixture.setWorkspace.mockReturnValueOnce(new Promise<typeof binding>(resolve => { finishSave = resolve }))
+    const stale = new Promise<typeof binding>(resolve => { finishRead = resolve })
+    fixture.getWorkspace.mockReturnValueOnce(stale)
+    dialog.vm.$emit('update:modelValue', 'E:\\NewAI'); dialog.vm.$emit('save'); await flushPromises()
+    // A completed background preparation can refresh status while the native save is pending.
+    wrapper.getComponent(LocalSetupAutomation).vm.$emit('refresh'); await flushPromises()
+    finishSave({ ...binding, root: 'E:\\NewAI', restartRequired: true }); await flushPromises()
+    finishRead(binding); await flushPromises()
+    expect(wrapper.getComponent(LocalSetupAutomation).props('workspaceBlocked')).toBe(true)
+    expect(wrapper.text()).toContain('完全退出并重启绘遇后生效')
+    expect(fixture.getWorkspace).toHaveBeenCalledTimes(2)
     wrapper.unmount()
   })
   it('saves a workspace only on explicit save and retains the active runtime evidence until restart', async () => {

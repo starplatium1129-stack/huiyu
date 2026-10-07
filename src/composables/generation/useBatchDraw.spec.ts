@@ -120,7 +120,7 @@ it('a late accepted response after disposal cannot overwrite a newer restored pl
   expect(saved()?.jobs[0]).toMatchObject({ status: 'succeeded', historyId: 'saved-on-new-page' })
 })
 
-it('leaving while the identity write is pending preserves a retryable pending item and never enters the provider', async () => {
+it.each(['leave', 'stop'])('%s while the identity write is pending never enters the provider and preserves a resumable item', async action => {
   let release!: () => void, writes = 0, saved: BatchDrawPlan | null = null
   const gate = new Promise<void>(resolve => { release = resolve })
   const storage: BatchDrawPlanStorage = { read: () => saved ? parseBatchDrawPlan(saved) : null, clear: async () => {},
@@ -129,11 +129,13 @@ it('leaving while the identity write is pending preserves a retryable pending it
   const batch = useBatchDraw({ storage, prepare, run })
   const work = batch.start(items, 1, 0, '个场景', { runtimeOwned: true })
   await vi.waitFor(() => expect(writes).toBe(1))
-  batch.dispose(); release(); await work
+  if (action === 'leave') batch.dispose()
+  else batch.cancel()
+  release(); await work
   await vi.waitFor(() => expect(writes).toBe(2))
   expect(run).not.toHaveBeenCalled()
   const restored = useBatchDraw({ storage, run })
-  expect(restored.jobs.value[0].status).toBe('pending'); expect(restored.progress.value.unresolved).toBe(0)
+  expect(restored.jobs.value[0].status).toBe(action === 'leave' ? 'pending' : 'cancelled'); expect(restored.progress.value.unresolved).toBe(0)
   await restored.resume(); expect(run).toHaveBeenCalledOnce()
 })
 

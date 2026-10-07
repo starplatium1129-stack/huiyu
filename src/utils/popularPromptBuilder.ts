@@ -311,7 +311,17 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 场景蓝图自带的冲突旧动作（如坐姿）自动让位，确保最大程度还原参考图动作
   const manualPose = manual.map(mutualGroupWithCategory).find(h => h?.category === 'pose')
   const manualViewpoint = manual.map(mutualGroupWithCategory).find(h => h?.category === 'viewpoint')
+  // Only remove tokens proven to belong to the blueprint's original outfit.
+  // Do not infer clothing from action prose or delete overlapping identity anchors.
+  const sourceOutfit = blueprint?.outfitId
+    ? character.outfits.find(item => item.id === blueprint.outfitId)
+    : character.outfits.find(item => item.default) ?? character.outfits[0]
+  const stableIdentity = new Set([...identitySource, ...character.exactTokens].map(normalizeProseKey))
+  const replacedOutfit = !adultGranted && sourceOutfit && (overridden || sourceOutfit.id !== outfit.id)
+    ? new Set(sourceOutfit.tokens.map(normalizeProseKey).filter(key => !stableIdentity.has(key)))
+    : new Set<string>()
   const sceneTokensFiltered = (blueprint?.promptTokens || []).filter(token => {
+    if (replacedOutfit.has(normalizeProseKey(token))) return false
     const hit = mutualGroupWithCategory(token)
     if (manualPose && hit?.category === 'pose' && hit.group !== manualPose.group) return false
     if (manualViewpoint && hit?.category === 'viewpoint' && hit.group !== manualViewpoint.group) return false

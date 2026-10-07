@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
+import { toggleFavoriteAction } from './galleryMutations'
 import { loadGalleryStorageAction, type GalleryProject } from './galleryStorage'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { ArtworkLibrarySnapshot } from '@/application/artwork/artworkRepository'
@@ -94,4 +95,23 @@ it('keeps empty albums visible during refresh and ignores an obsolete rejection'
   expect(ctx.galleryError.value).toBe('current failure')
   expect(ctx.galleryLoading.value).toBe(false)
   expect(ctx.projects.value[0].id).toBe('empty-album')
+})
+
+it.each(['before', 'after'])('keeps the saved favorite when an older snapshot resolves %s the write', async order => {
+  const ctx = context()
+  let reply!: (value: ArtworkLibrarySnapshot) => void
+  storage.read.mockImplementationOnce(() => new Promise(resolve => { reply = resolve }))
+  let save!: (value: { updated: boolean }) => void
+  configureArtworkRepository({ ...artworkRepository, patchArtwork: () => new Promise(resolve => { save = resolve }) })
+  const refresh = loadGalleryStorageAction(ctx)
+  const write = toggleFavoriteAction({ history: ctx.history, showToast: vi.fn() }, ctx.history.value[0])
+  await Promise.resolve()
+  const incoming = { history: [...snapshot('existing').history, { id: 'new-work' }], projects: [{ id: 'new-album', history_ids: ['new-work'] }] }
+  if (order === 'before') { reply(incoming); await refresh }
+  save({ updated: true }); await write
+  if (order === 'after') { reply(incoming); await refresh }
+  expect(ctx.history.value[0].favorite).toBe(true)
+  expect(ctx.history.value.map(item => item.id)).toEqual(['existing', 'new-work'])
+  expect(ctx.projects.value[0]).toMatchObject({ id: 'new-album', history_ids: ['new-work'] })
+  expect(storage.read).toHaveBeenCalledOnce()
 })

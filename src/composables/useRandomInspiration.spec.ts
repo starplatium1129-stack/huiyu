@@ -238,3 +238,20 @@ it('does not apply a popular wardrobe from a different source context', () => {
   const state = scope.run(() => usePopularPromptAssembly(pb, ref('anima'), ref('fixture')))!
   expect(state.positivePrompt.value).toBe('')
 })
+
+it('random replacements release reference tag ownership and undo restores it', () => {
+  const pb = usePromptBuilderStore()
+  pb.manualTags = new Set(['park'])
+  pb.referenceInput = { tags: ['park'] }
+  const random = setup()
+  expect(random.roll(42)).toBe(true)
+  expect(pb.manualTags.has('park')).toBe(true)
+  expect(pb.referenceInput).toBeNull()
+  expect(random.undo()).toBe(true)
+  expect(pb.manualTags).toEqual(new Set(['park']))
+  expect(pb.referenceInput).toEqual({ tags: ['park'] })
+  random.roll(42)
+  vi.spyOn(useSceneStore(), 'loadBlueprintCharacter').mockResolvedValue(undefined)
+  pb.setPopularSubject('fixture', 'default')
+  expect(pb.manualTags.has('park')).toBe(true)
+})

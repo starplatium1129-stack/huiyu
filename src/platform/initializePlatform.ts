@@ -49,6 +49,7 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
       if (session && ['settings', 'chat', 'draft'].every(domain => session.domains.includes(domain as 'settings' | 'chat' | 'draft'))) {
         if (!profileRuntimeActive()) await activateProfileStorage(createProfilePort(workspaceRequest), state.bootstrap!.windowId)
         else { setProfileConnectionBlocked(false); await flushProfileWrites(); await refreshProfileStorage() }
+        if (alive) window.dispatchEvent(new Event('huiyu:profile-sync-complete'))
       } else if (!profileRuntimeActive() && !isNativeDesktopOrigin(location.origin)) setProfileConnectionBlocked(false)
       syncedAuthority = authority
       return state

@@ -94,3 +94,18 @@ it('reloads directories saved elsewhere on reopen without overwriting an edited 
     expect(state.workspaceTooltip.value).toContain('G:\\latest')
   } finally { wrapper.unmount() }
 })
+
+it('keeps composition Enter native and saves only after a normal Enter', async () => {
+  const wrapper = mountSettings()
+  try {
+    const input = wrapper.get('input').element
+    for (const composition of [{ isComposing: true }, { keyCode: 229 }]) {
+      const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true, ...composition })
+      input.dispatchEvent(event)
+      expect(wrapper.emitted('save')).toBeUndefined()
+      expect(event.defaultPrevented).toBe(false)
+    }
+    await wrapper.get('input').trigger('keydown', { key: 'Enter' })
+    expect(wrapper.emitted('save')).toHaveLength(1)
+  } finally { wrapper.unmount() }
+})

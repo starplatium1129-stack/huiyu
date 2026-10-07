@@ -29,3 +29,23 @@ it('bounds reads across changing candidate sets and revokes all owned URLs', asy
   expect(revoke).toHaveBeenCalledTimes(3)
   expect(media.urls).toEqual({})
 })
+
+it('uses legacy originals after a failed storage read without publishing a cancelled fallback', async () => {
+  mocks.read.mockReset()
+  const original = 'data:image/png;base64,embedded-original'
+  mocks.read.mockRejectedValueOnce(new Error('storage unavailable'))
+  const media = useCandidateMedia()
+  media.load([{ id: 'legacy', image_id: 'legacy-image', image_data: original }])
+  await flushPromises()
+  expect(media.urls.legacy).toBe(original)
+  expect(media.loading.value).toBe(false)
+
+  let reject!: (error: Error) => void
+  mocks.read.mockImplementationOnce(() => new Promise((_resolve, fail) => { reject = fail }))
+  media.load([{ id: 'obsolete', image_id: 'old-image', image_data: original }])
+  media.release()
+  reject(new Error('cancelled read'))
+  await flushPromises()
+  expect(media.urls).toEqual({})
+  expect(media.loading.value).toBe(false)
+})
