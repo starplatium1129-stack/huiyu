@@ -1,3 +1,4 @@
+import { invalidateGalleryStorage } from './galleryStorage';
 import { confirmAction } from '@/composables/useConfirm';
 import { ARTWORK_DELETE_BATCH_SIZE } from '@/application/artwork/artworkRepository';
 import { artworkRepository } from '@/storage/artworkRepository';
@@ -47,10 +48,18 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
             if (!result.updated)
                 throw new Error('没找到这幅作品，收藏没能保存');
             currentWrite.confirmed = desired;
+            invalidateGalleryStorage(ctx.history);
+            if (revision === currentWrite.revision) {
+                const live = ctx.history.value.find(record => record.id === item.id);
+                if (live) live.favorite = desired;
+            }
         }
         catch (error) {
-            if (revision === currentWrite.revision)
+            if (revision === currentWrite.revision) {
                 item.favorite = currentWrite.confirmed;
+                const live = ctx.history.value.find(record => record.id === item.id);
+                if (live) live.favorite = currentWrite.confirmed;
+            }
             ctx.showToast(storageWriteMessage(error, '收藏状态'), 'error');
         }
         finally {
