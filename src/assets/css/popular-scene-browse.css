@@ -16,7 +16,7 @@
 .popular-scene-library .library-detail .pop-hero-stat { display:flex; align-items:baseline; gap:var(--s-1); margin:0; color:var(--text-muted); font-size:var(--fs-label-xs); white-space:nowrap; }
 .popular-scene-library .pop-hero-stat strong { color:var(--text-primary); font:500 var(--fs-title)/1 var(--font-mono); }
 .popular-scene-library .pop-toolbar { gap:var(--s-2); margin-bottom:0; }
-.page.popular-scene-library .pop-toolbar { padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.page.popular-scene-library .pop-toolbar { padding:var(--s-3); border:0; border-radius:var(--r-lg); background:transparent; box-shadow:none; }
 .popular-scene-library .pop-toolbar-row { gap:var(--s-2); }
 .popular-scene-library .pop-rating-pill,.popular-scene-library .pop-cat { min-height:32px; padding:var(--s-1) var(--s-2); border-radius:var(--r-sm); background:transparent; }
 .popular-scene-library .pop-rating-pill.active,.popular-scene-library .pop-cat.active { background:var(--accent-soft); }

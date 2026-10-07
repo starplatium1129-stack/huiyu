@@ -44,10 +44,10 @@
       </div>
       </details>
     </div>
-    <div v-show="albumsOpen" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
+    <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen && albumSection" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
       <GalleryAlbumOverview :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
     </div>
-    <div v-show="!albumsOpen" class="gallery-image-browse">
+    <div v-show="!albumsOpen" v-content-motion:fade.defer="!albumsOpen && JSON.stringify([filterSnapshot, trashMode])" class="gallery-image-browse">
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
       <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
       <div class="gallery-manage-controls" role="group" aria-label="管理作品">
@@ -399,8 +399,6 @@ const { albums, characterAlbums, albumSection, visibleAlbumIds, selection, chara
   albumsOpen, albumRoot, imageHeading, showImages, showOverview, showAllWorks, openCollection, editorOpen, editorTitle, editorRule,
   editing, saving, error: albumError, previewItems, previewCovers, syncPreviews, newSmartAlbum, editSmartAlbum, removeSmartAlbum, save: saveSmartAlbum } = useGalleryCollections(workspace)
 watch(syncPreviews, items => { collectionPreviewItems.value = items }, { immediate: true })
-watch(() => JSON.stringify(albumsOpen.value ? ['albums', albumSection.value] : ['images', filterSnapshot.value, trashMode.value]),
-  () => { void nextTick(workspace.revealBrowse) }, { flush: 'post' })
 function showAlbumOverview(section: 'characters' | 'albums') {
   if (selectMode.value) toggleSelectMode()
   if (trashMode.value) toggleTrashMode()

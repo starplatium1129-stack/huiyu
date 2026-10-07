@@ -4,38 +4,37 @@ import { defineComponent, h, nextTick, ref } from 'vue'
 import { useCanvasGenerationMotion } from './useCanvasGenerationMotion'
 const activity={canAnimate:ref(true),lowEffects:ref(false),appearanceRevision:ref(0)}
 vi.mock('./useVisualActivity',() => ({useVisualActivity:() => activity}))
-const mock=vi.hoisted(() => ({start:vi.fn(),stop:vi.fn(),release:vi.fn(),progress:vi.fn()}))
+const mock=vi.hoisted(() => ({start:vi.fn(),stop:vi.fn()}))
 vi.mock('@/utils/canvasTextureParticles',() => ({startCanvasTextureParticles:mock.start}))
 const cleanups:Array<() => void>=[]
-beforeEach(() => { Object.values(mock).forEach(fn => fn.mockReset()); activity.canAnimate.value=true; activity.lowEffects.value=false; mock.start.mockReturnValue({stop:mock.stop,release:mock.release,progress:mock.progress}) })
+beforeEach(() => { Object.values(mock).forEach(fn => fn.mockReset()); activity.canAnimate.value=true; activity.lowEffects.value=false; mock.start.mockReturnValue({stop:mock.stop}) })
 afterEach(() => { cleanups.splice(0).forEach(fn => fn()); vi.restoreAllMocks() })
 async function fixture(initialSource = '/old.png') {
-  const source=ref(initialSource),busy=ref(false),progress=ref<number | null>(.23),comparing=ref(false)
+  const source=ref(initialSource),busy=ref(false),comparing=ref(false)
   let motion!:ReturnType<typeof useCanvasGenerationMotion>
   const wrapper=mount(defineComponent({setup() {
     const host=ref<HTMLElement | null>(null)
-    motion=useCanvasGenerationMotion(host,() => source.value,() => busy.value,() => progress.value,() => comparing.value,() => ['180 80 45','35 120 160','115 60 165'])
+    motion=useCanvasGenerationMotion(host,() => source.value,() => busy.value,() => comparing.value)
     return () => h('div',{ref:host},source.value ? h('img',{class:'cg-image-target',src:source.value}) : [])
   }}))
   const image=wrapper.find('img').exists() ? wrapper.get('img').element : undefined
   if (image) Object.defineProperties(image,{complete:{value:true},naturalWidth:{value:800},naturalHeight:{value:600}})
   cleanups.push(() => wrapper.unmount())
-  return {source,busy,progress,comparing,motion,wrapper,image}
+  return {source,busy,comparing,motion,wrapper,image}
 }
-it.each(['same tick','separate ticks'] as const)('holds fresh results until decoded reveal when URL and busy settle in %s',async publication => {
-  const {source,busy,progress,motion,wrapper,image}=await fixture()
+it.each(['same tick','separate ticks'] as const)('hands breakup to the shared visual before decoded results settle in %s',async publication => {
+  const {source,busy,motion,wrapper,image}=await fixture()
   source.value=''; busy.value=true; await nextTick()
-  expect(mock.start).toHaveBeenCalledExactlyOnceWith(image,wrapper.element,expect.objectContaining({mode:'generation',progress:.23,palette:['180 80 45','35 120 160','115 60 165']}))
+  expect(mock.start).toHaveBeenCalledExactlyOnceWith(image,wrapper.element,expect.objectContaining({onHandoff:expect.any(Function),onComplete:expect.any(Function)}))
   expect(wrapper.find('img').exists()).toBe(false)
-  progress.value=.72
-  expect(mock.progress).toHaveBeenCalledWith(.72)
+  mock.start.mock.calls[0][2].onHandoff()
+  expect(motion.active.value).toBe(false)
   source.value='/new.png'
   if (publication==='separate ticks') await nextTick()
   busy.value=false; await nextTick()
   expect(mock.stop).not.toHaveBeenCalled()
-  expect(mock.release).not.toHaveBeenCalled()
   motion.release()
-  expect(mock.release).toHaveBeenCalledOnce()
+  expect(mock.stop).toHaveBeenCalledOnce()
   expect(source.value).toBe('/new.png')
 })
 it.each(['cancel','comparison','reduced','unmount'] as const)('releases GPU resources on %s without owning the result',async reason => {

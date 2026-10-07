@@ -155,7 +155,7 @@ onMounted(() => {
         </SelectTrigger>
       </StudioTooltip>
 
-      <SelectPortal :to="portalTarget">
+      <SelectPortal v-if="open" :to="portalTarget">
         <SelectContent data-fluid-glass position="popper" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @close-auto-focus="onCloseAutoFocus">
           <SelectViewport class="studio-select-viewport">
             <template v-if="groups">

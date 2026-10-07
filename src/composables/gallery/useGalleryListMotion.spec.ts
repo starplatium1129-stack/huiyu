@@ -127,7 +127,7 @@ it('rejects late success feedback after an intervening interaction or leave/retu
   freshAction([1])
   expect(mocks.dissolve).toHaveBeenCalledOnce()
 })
-it('connects a filter change on retained nodes and leaves pagination and media updates still', async () => {
+it('leaves filter arrivals to the browse surface and retains nodes during pagination and media updates', async () => {
   const { items, wrapper } = await fixture()
   const animate = vi.fn(() => ({ cancel: vi.fn(), finished: new Promise(() => {}) }))
   Object.defineProperty(HTMLElement.prototype, 'animate', { configurable: true, value: animate })
@@ -135,7 +135,7 @@ it('connects a filter change on retained nodes and leaves pagination and media u
   items.value = items.value.slice(1)
   await nextTick()
   expect(wrapper.get('[data-card-id="2"]').element).toBe(survivor)
-  expect(animate).toHaveBeenCalledTimes(3)
+  expect(animate).not.toHaveBeenCalled()
   const count = animate.mock.calls.length
   items.value = [...items.value, { id: 5 } as ArtworkRecord]
   await nextTick()

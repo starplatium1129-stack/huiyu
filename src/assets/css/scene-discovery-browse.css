@@ -20,7 +20,7 @@
 .companion-pill:hover,.companion-pill.active { color:var(--text-primary); }
 .companion-switch :deep(.animated-selection) { background:var(--accent-soft); border-color:var(--border-soft); }
 
-.page.scene-discovery .scene-toolbar { grid-area:filters; display:grid; grid-template-columns:auto minmax(240px,1fr); align-items:center; gap:var(--s-2) var(--s-4); padding:var(--s-3) 0 0; border:0; border-top:1px solid var(--border-soft); border-radius:0; background:transparent; box-shadow:none; }
+.page.scene-discovery .scene-toolbar { grid-area:filters; display:grid; grid-template-columns:auto minmax(240px,1fr); align-items:center; gap:var(--s-2) var(--s-4); padding:var(--s-3); border:0; border-top:1px solid var(--border-soft); border-radius:var(--r-lg); background:transparent; box-shadow:none; }
 .toolbar-primary { grid-column:2; grid-row:1; display:flex; align-items:center; justify-content:flex-end; gap:var(--s-2); min-width:0; }
 .scene-search-wrap { position:relative; flex:1 1 240px; max-width:360px; min-width:0; }
 .scene-personal-nav { grid-column:1; grid-row:1; width:fit-content; max-width:100%; flex-wrap:wrap; }

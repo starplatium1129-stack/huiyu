@@ -132,6 +132,9 @@ export default defineConfig(async ({ mode }) => {
     target: ['chrome111', 'edge111', 'firefox128', 'safari16.4'],
     rolldownOptions: {
       output: {
+        // entriesAware names concatenate consumers; keep preload URL tables compact
+        // while retaining the content hash and original manifest chunk names.
+        chunkFileNames: (chunk: { name: string }) => `_app/${chunk.name.split('~')[0]}-[hash].js`,
         codeSplitting: {
           // Split feature groups by their actual consumers, retaining lazy
           // boundaries when shared helpers also appear in another route.

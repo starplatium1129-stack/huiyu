@@ -49,6 +49,7 @@ describe('StudioSelect', () => {
 
   it('shows the placeholder only when no option matches the value', async () => {
     const wrapper = mountSelect({ modelValue: '', placeholder: '请选择', label: '测试下拉', id: 'demo-select' })
+    expect(wrapper.findComponent({ name: 'SelectContent' }).exists()).toBe(false)
     expect(wrapper.get('.studio-select-trigger').attributes('aria-label')).toBe('测试下拉')
     expect(wrapper.get('.studio-select-trigger').attributes('id')).toBe('demo-select')
     expect(wrapper.get('.studio-select-wrapper').attributes('id')).toBeUndefined()

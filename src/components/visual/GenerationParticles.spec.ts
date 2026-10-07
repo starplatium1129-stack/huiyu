@@ -27,12 +27,13 @@ it('owns one animation subscription, pauses hidden visuals and releases glow cac
     glowCanvas = paint.drawImage.mock.calls[0][0]
     expect(frames.size).toBe(1)
     const frame = [...frames][0]
-    const first = paint.moveTo.mock.calls.at(-3)!
+    const first = paint.moveTo.mock.calls[0]!
     const distance = (point: number[]) => Math.hypot(point[0] - 160, point[1] - 116)
     await wrapper.setProps({ progress: 0.96 })
     expect([...frames][0]).toBe(frame)
+    const nextDraw = paint.moveTo.mock.calls.length
     frame(1000, 2000)
-    expect(distance(paint.moveTo.mock.calls.at(-3)!)).toBeLessThan(distance(first) * .8)
+    expect(distance(paint.moveTo.mock.calls[nextDraw]!)).toBeLessThan(distance(first) * .8)
     activity.canPresent.value = false; activity.canAnimate.value = false
     await nextTick()
     expect(frames.size).toBe(0)

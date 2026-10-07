@@ -33,7 +33,6 @@
             <button type="button" class="btn btn-ghost btn-sm" @click="retryHero"><ArchiveIcon name="refresh" />重试画页</button>
           </div>
           <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" role="status">正在载入{{ heroName }}的画页…</p>
-          <HeroLightField v-if="heroLoaded[homeMuse] && !heroFailed[homeMuse]" :muse="homeMuse" />
           <div class="orbit-label" aria-live="polite"><span>{{ homeMuse === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ homeMuse === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div>
         </aside>
         <span class="hero-jp" aria-hidden="true">ときめきの一瞬を、一枚に。</span>
@@ -204,7 +203,6 @@ import SceneCard from '@/components/SceneCard.vue'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
 import HomeCreationGuide from '@/components/home/HomeCreationGuide.vue'
-import HeroLightField from '@/components/visual/HeroLightField.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'

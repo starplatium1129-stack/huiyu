@@ -4,8 +4,12 @@ import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPrefere
 // One animation per changed surface, never one per list item. No cloned DOM,
 // delayed state update, persistent layer, or height animation during a switch.
 const active = new Map<HTMLElement, Animation>()
+const pending = new Map<HTMLElement, number>()
 let keyboardInput = false
 function cancel(el: HTMLElement) {
+  const frame = pending.get(el)
+  if (frame !== undefined) cancelAnimationFrame(frame)
+  pending.delete(el)
   const animation = active.get(el)
   active.delete(el)
   if (animation) {
@@ -13,9 +17,16 @@ function cancel(el: HTMLElement) {
     animation.cancel()
   }
 }
-function settle() { for (const el of active.keys()) cancel(el) }
+function settle() { for (const el of new Set([...active.keys(), ...pending.keys()])) cancel(el) }
+function scheduleReveal(el: HTMLElement, direction?: string, deferred = false) {
+  if (!deferred) { reveal(el, direction); return }
+  cancel(el)
+  // Album navigation finishes its DOM, focus and scroll work before starting
+  // the timeline; cold option/media setup must not consume the visible fade.
+  pending.set(el, requestAnimationFrame(() => { pending.delete(el); reveal(el, direction, true) }))
+}
 
-function reveal(el: HTMLElement, direction = 'up') {
+function reveal(el: HTMLElement, direction = 'up', holdFirstFrame = false) {
   if (document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function'
     || direction && el.matches('input, textarea') && document.activeElement === el) {
     cancel(el)
@@ -41,22 +52,30 @@ function reveal(el: HTMLElement, direction = 'up') {
   cancel(el)
   const animation = el.animate([start, end], {
     duration:keyboardInput ? 160 : 320, easing:'cubic-bezier(.22, 1, .36, 1)',
+    ...(holdFirstFrame ? { fill:'both' as const } : {}),
   })
   active.set(el, animation)
+  if (holdFirstFrame) {
+    animation.pause(); animation.currentTime = 0
+    pending.set(el, requestAnimationFrame(() => {
+      pending.delete(el)
+      if (active.get(el) === animation) animation.play()
+    }))
+  }
   animation.onfinish = animation.oncancel = () => {
     if (active.get(el) === animation) cancel(el)
   }
 }
 
 export const contentMotion: ObjectDirective<HTMLElement, unknown> = {
-  mounted(el, { value, arg }) {
+  mounted(el, { value, arg, modifiers }) {
     // Initial route entry already has motion. Later v-if panels may enter alone.
-    if (value !== false && (!el.closest('.route-view') || el.closest<HTMLElement>('.route-view')?.dataset.routeEntered === 'true')) reveal(el, arg)
+    if (value !== false && (!el.closest('.route-view') || el.closest<HTMLElement>('.route-view')?.dataset.routeEntered === 'true')) scheduleReveal(el, arg, modifiers?.defer)
   },
-  updated(el, { value, oldValue, arg }) {
+  updated(el, { value, oldValue, arg, modifiers }) {
     if (Object.is(value, oldValue)) return
     if (value === false) cancel(el)
-    else reveal(el, arg)
+    else scheduleReveal(el, arg, modifiers?.defer)
   },
   beforeUnmount: cancel,
 }

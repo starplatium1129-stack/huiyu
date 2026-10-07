@@ -11,9 +11,6 @@ vi.mock('@/stores/sceneStore', () => ({
     sceneBlueprints: [], curation: {},
   }),
 }))
-vi.mock('@/composables/useCharacterPortraitTransition', () => ({
-  useCharacterPortraitTransition: () => ({ preferOriginal: ref(false), enter: (_element: Element, done: () => void) => done(), dispose: () => {} }),
-}))
 vi.mock('@/composables/useScrollReveal', () => ({ useScrollReveal: () => {} }))
 
 let wrapper: VueWrapper | undefined

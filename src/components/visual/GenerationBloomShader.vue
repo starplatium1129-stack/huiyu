@@ -39,8 +39,9 @@ void main(){
     float distance=r-radius*(.84+b*.085)-wave;
     float phase=angle-time*(.24+b*.04)+b*2.1;
     float flow=pow(.5+.5*cos(phase),10.);
-    float thread=exp(-distance*distance/.000028)*(.08+flow*.72);
-    float aura=exp(-distance*distance/.0014)*(.045+flow*.2);
+    float edge=max(fwidth(distance),.0012);
+    float thread=(1.-smoothstep(edge*.5,edge*1.8,abs(distance)))*(.12+flow*.72);
+    float aura=exp(-distance*distance/.0005)*(.025+flow*.1);
     vec3 pigment=lane==0?pigmentA:(lane==1?pigmentB:pigmentC);
     float energy=thread+aura;
     light+=pigment*energy; weight+=energy;
@@ -89,7 +90,7 @@ function resize() {
   if (!props.present || !surface) return
   const { width, height } = surface.getBoundingClientRect()
   if (!width || !height) return
-  const ratio = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(280_000 / (width * height)))
+  const ratio = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(600_000 / (width * height)))
   const pixelWidth = Math.max(1, Math.round(width * ratio)), pixelHeight = Math.max(1, Math.round(height * ratio))
   if (surface.width !== pixelWidth) surface.width = pixelWidth
   if (surface.height !== pixelHeight) surface.height = pixelHeight
@@ -151,6 +152,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* compositor-exempt: bounded WebGL2 light layer, <=280k pixels, DPR<=1.5; follows shared RAF without an FPS cap. */
+/* compositor-exempt: local WebGL2 light layer, <=600k pixels, DPR<=2; follows shared RAF and pauses when inactive. */
 .generation-bloom { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
 </style>

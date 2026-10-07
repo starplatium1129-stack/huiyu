@@ -8,7 +8,7 @@ const elements: HTMLElement[] = []
 function panel() {
   const el = document.createElement('div')
   document.body.append(el); elements.push(el)
-  const animation = { cancel: vi.fn(), onfinish: null, oncancel: null } as unknown as Animation
+  const animation = { cancel: vi.fn(), pause:vi.fn(), play:vi.fn(), onfinish: null, oncancel: null } as unknown as Animation
   el.animate = vi.fn(() => animation)
   el.getClientRects = () => { throw new Error('synchronous layout read') }
   el.getAnimations = () => { throw new Error('synchronous animation style read') }
@@ -18,7 +18,24 @@ function update(el: HTMLElement, value: unknown = 'next', arg?: string) {
   contentMotion.updated!(el, { value, oldValue: 'previous', arg } as DirectiveBinding, {} as VNode<HTMLElement, HTMLElement>, {} as VNode<HTMLElement, HTMLElement>)
 }
 afterEach(() => {
+  vi.unstubAllGlobals()
   for (const el of elements.splice(0)) { contentMotion.beforeUnmount!(el, {} as DirectiveBinding, {} as VNode<HTMLElement, HTMLElement>, null); el.remove() }
+})
+it('starts a deferred browse arrival after the display and focus patch, and cancels a stale arrival', () => {
+  let frame: FrameRequestCallback = () => {}
+  const cancelFrame = vi.fn()
+  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { frame = callback; return 7 })
+  vi.stubGlobal('cancelAnimationFrame', cancelFrame)
+  const { el } = panel()
+  el.style.display = 'none'
+  contentMotion.updated!(el, { value:'album', oldValue:false, arg:'fade', modifiers:{defer:true}, instance:null, dir:contentMotion }, {} as VNode<HTMLElement, HTMLElement>, {} as VNode<HTMLElement, HTMLElement>)
+  expect(el.animate).not.toHaveBeenCalled()
+  el.style.display = ''
+  frame(0)
+  expect(el.animate).toHaveBeenCalledOnce()
+  contentMotion.updated!(el, { value:'next', oldValue:'album', modifiers:{defer:true}, instance:null, dir:contentMotion }, {} as VNode<HTMLElement, HTMLElement>, {} as VNode<HTMLElement, HTMLElement>)
+  update(el, false)
+  expect(cancelFrame).toHaveBeenCalledWith(7)
 })
 it('switches content without reading layout and releases the finished effect', () => {
   const { el, animation } = panel(); update(el)

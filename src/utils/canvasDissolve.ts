@@ -41,7 +41,7 @@ function sizeBacking(canvas: HTMLCanvasElement, width: number, height: number, m
 export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, profile: 'canvas' | 'thumbnail' = 'canvas',
   lifecycle?: { onHandoff?: () => void; onComplete?: () => void }): (() => void) | null {
   if (profile === 'canvas') {
-    const gpu = startCanvasTextureParticles(image, host, { mode: 'clear', ...lifecycle })
+    const gpu = startCanvasTextureParticles(image, host, { ...lifecycle })
     if (gpu) return gpu.stop
   }
   const duration = profile === 'canvas' ? CANVAS_DURATION : THUMBNAIL_DURATION

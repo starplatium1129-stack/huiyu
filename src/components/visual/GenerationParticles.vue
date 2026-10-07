@@ -1,9 +1,11 @@
 <template>
-  <div ref="host" class="generation-particles" aria-hidden="true">
+  <div class="generation-particles" aria-hidden="true">
+    <div ref="host" class="generation-particle-surface">
     <GenerationBloomShader v-if="loadShader && !shaderFailed && !lowEffects" :progress="progress" :colors="colors"
       :present="canPresent" :animate="canAnimate" @unavailable="shaderFailed = true" />
     <canvas ref="canvas"></canvas>
     <span class="generation-particle-palette"><i class="tone-pink"></i><i class="tone-cyan"></i><i class="tone-violet"></i><i class="tone-highlight"></i></span>
+    </div>
   </div>
 </template>
 
@@ -23,7 +25,7 @@ const GenerationBloomShader = defineAsyncComponent({
   loader: () => import('./GenerationBloomShader.vue'),
   onError: (_error, _retry, fail) => { shaderFailed.value = true; fail() },
 })
-interface Point { phase: number; tone: number; bright: boolean; x: number; y: number; depth: number }
+interface Point { phase: number; tone: number; x: number; y: number; depth: number }
 let points: Point[] = []
 const colors = ref<string[]>([])
 let sprites: HTMLCanvasElement[] = []
@@ -67,7 +69,8 @@ function resize() {
   const bounds = host.value.getBoundingClientRect()
   if (!bounds.width || !bounds.height) return
   width = bounds.width; height = bounds.height
-  ratio = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(280_000 / (width * height)))
+  // Spend resolution on the local effect, never stretch a stage-sized low-res bitmap.
+  ratio = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(600_000 / (width * height)))
   const pixelWidth = Math.round(width * ratio), pixelHeight = Math.round(height * ratio)
   if (canvas.value.width !== pixelWidth || canvas.value.height !== pixelHeight) {
     canvas.value.width = pixelWidth
@@ -79,12 +82,11 @@ function resize() {
 }
 
 function preparePoints() {
-  const count = lowEffects.value ? 45 : 78
+  const count = lowEffects.value ? 3 : 6
   if (points.length === count) return
-  const ordinary = lowEffects.value ? count : count - 6
   points = Array.from({ length: count }, (_, index) => ({
-    phase: index < ordinary ? Math.floor(index/3)/(ordinary/3)*Math.PI*2 : Math.floor((index-ordinary)/3)*Math.PI,
-    tone: index % 3, bright: index >= ordinary, x: 0, y: 0, depth: 0,
+    phase: Math.floor(index/3)*Math.PI,
+    tone: index % 3, x: 0, y: 0, depth: 0,
   }))
 }
 
@@ -106,7 +108,7 @@ function draw() {
     const y = Math.sin(angle)*radius*(.86+band*.08)*(.31+band*.035+formed*.1-finishing*.2)+Math.sin(angle*2+time*.12)*2.5*(1-finishing)
     return { x:centerX+x*Math.cos(tilt)-y*Math.sin(tilt), y:centerY+x*Math.sin(tilt)+y*Math.cos(tilt) }
   }
-  if (!lowEffects.value) for (let band=0; band<3; band++) {
+  for (let band=0; band<3; band++) {
     ctx.strokeStyle=pigments[band]; ctx.globalAlpha=.32+finishing*.08; ctx.lineWidth=1
     ctx.beginPath()
     for (let segment=0; segment<=128; segment++) {
@@ -116,43 +118,37 @@ function draw() {
     ctx.stroke()
   }
   for (const point of points) {
-    const angle = point.phase + (point.bright ? rotation*(point.tone === 1 ? -1.6 : 1.85)+point.tone*1.64 : rotation+point.tone*1.5)
+    const angle = point.phase + rotation*(point.tone === 1 ? -1.6 : 1.85)+point.tone*1.64
     const p=orbit(angle,point.tone)
     point.x=p.x; point.y=p.y; point.depth=Math.sin(angle)*.5+.5
   }
   points.sort((a, b) => a.depth - b.depth)
-  // Short, depth-aware trails gain definition as the drawing resolves.
-  if (!lowEffects.value) for (const point of points.filter(point => point.bright)) {
+  // Continuous fine trails replace dotted tails; the original orbit and collapse remain.
+  if (!lowEffects.value) for (const point of points) {
     const direction = point.tone === 1 ? -1 : 1
     const angle = point.phase + rotation*(direction < 0 ? -1.6 : 1.85)+point.tone*1.64
-    for (let tail=6; tail>0; tail--) {
-      const p = orbit(angle-direction*tail*(.035+formed*.02), point.tone)
-      ctx.fillStyle=pigments[point.tone]; ctx.globalAlpha=(.12+formed*.2)*(1-tail/7)
-      ctx.beginPath(); ctx.arc(p.x,p.y,1.15*(1-tail/9),0,Math.PI*2); ctx.fill()
+    ctx.strokeStyle=pigments[point.tone]; ctx.globalAlpha=.65; ctx.lineWidth=1.25
+    ctx.beginPath()
+    for (let tail=24; tail>=0; tail--) {
+      const p = orbit(angle-direction*tail*.018, point.tone)
+      if (tail===24) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y)
     }
+    ctx.stroke()
   }
   for (const point of points) {
-    const depth = point.depth, size = point.bright ? 1.4 : .5+depth*.45
+    const size = 1.4
     const shimmer = 0.92 + Math.sin(time * 0.8 + point.phase) * 0.08
     ctx.fillStyle = pigments[point.tone]
     if (!lowEffects.value) {
       const spread = size * 2.4+1.5
-      ctx.globalAlpha = point.bright ? .08 : depth*.025
+      ctx.globalAlpha = .08
       ctx.drawImage(sprites[point.tone], point.x - spread, point.y - spread, spread * 2, spread * 2)
     }
-    ctx.globalAlpha = (point.bright ? .95 : .24+depth*.58) * shimmer
+    ctx.globalAlpha = .95 * shimmer
     ctx.beginPath(); ctx.arc(point.x, point.y, size, 0, Math.PI * 2); ctx.fill()
-    if (point.bright) {
-      ctx.globalAlpha = 0.7
-      ctx.fillStyle = pigments[3]
-      ctx.beginPath(); ctx.arc(point.x, point.y, 0.6, 0, Math.PI * 2); ctx.fill()
-    }
-  }
-  if (finishing > 0) for (let index=0; index<12; index++) {
-    const angle = index*2.39996323+rotation*.6
-    const distance = radius*(.38-finishing*.22)*(1+Math.sin(index*1.7)*.35)
-    ctx.fillStyle=pigments[index%3]; ctx.globalAlpha=finishing*(.22+Math.sin(index*2.1+time)*.08)
-    ctx.beginPath(); ctx.arc(centerX+Math.cos(angle)*distance,centerY+Math.sin(angle)*distance*.65,.65,0,Math.PI*2); ctx.fill()
+    ctx.globalAlpha = 0.7
+    ctx.fillStyle = pigments[3]
+    ctx.beginPath(); ctx.arc(point.x, point.y, 0.6, 0, Math.PI * 2); ctx.fill()
   }
   ctx.globalAlpha = 1
 }
@@ -190,9 +186,13 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.generation-particles { position:relative; isolation:isolate; width:min(100%,clamp(320px,42cqw,420px)); aspect-ratio:1.38; margin-inline:auto; pointer-events:none; }
+.generation-particles { position:relative; isolation:isolate; display:grid; place-items:center; width:100%; height:100%; margin-inline:auto; pointer-events:none; }
+.generation-particle-surface { position:relative; width:min(100%,480px); max-height:100%; aspect-ratio:1.38; animation:generation-line-arrival 420ms ease-out both; }
+@keyframes generation-line-arrival { from { opacity:0; } to { opacity:1; } }
+:global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .generation-particle-surface { animation:none; }
+@media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full'])) .generation-particle-surface { animation:none; } }
 /* compositor-exempt: A bounded Canvas renders particle depth; cached glow sprites avoid per-frame blur. */
-.generation-particles > canvas:not(.generation-bloom) { position:relative; display:block; width:100%; height:100%; }
+.generation-particle-surface > canvas:not(.generation-bloom) { position:relative; display:block; width:100%; height:100%; }
 .generation-particle-palette { position:absolute; width:0; height:0; overflow:hidden; visibility:hidden; }
 .tone-pink { color:var(--accent); }
 .tone-cyan { color:var(--archive-cyan); }

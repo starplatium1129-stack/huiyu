@@ -23,11 +23,8 @@
       message="本地角色资料已就绪，当前暂无可浏览的角色记录。"
     />
     <template v-else>
-      <Transition :css="false" @enter="archiveMotion.enter" @enter-cancelled="archiveMotion.dispose" @after-leave="archiveMotion.dispose">
-        <CharacterBookshelf v-show="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" :initial-state="initialShelf" @select="selectCharacter" />
-      </Transition>
-      <Transition :css="false" @enter="archiveMotion.enter" @enter-cancelled="archiveMotion.dispose" @after-leave="archiveMotion.dispose">
-      <div v-if="!showShelf" class="library-layout">
+        <CharacterBookshelf v-show="showShelf" v-content-motion:up="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" :initial-state="initialShelf" @select="selectCharacter" />
+      <div v-if="!showShelf" v-content-motion:up="current?.id" class="library-layout">
         <BrowsingCharacterDirectory v-model:search="directorySearch" :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail" data-route-arrive>
       <section v-if="current" ref="profileAnchor" class="character-hero card-direct card-level-3">
@@ -125,7 +122,6 @@
       </section>
         </div>
       </div>
-      </Transition>
     </template>
     <Teleport to="body">
       <dialog ref="recommendationDialog" class="recommendation-story-dialog" aria-labelledby="recommendation-story-title"
@@ -156,7 +152,6 @@ import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { popularPortraitFullSrc } from '@/utils/popularPortraitSource'
 import { characterArtEntry } from '@/platform/characterArtState'
 
-import { useCharacterPortraitTransition } from '@/composables/useCharacterPortraitTransition'
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
 import { ref, computed, nextTick, onBeforeUnmount, onMounted, watch } from 'vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
@@ -191,11 +186,18 @@ const directorySearch = ref(archiveBrowse.search)
 onBeforeUnmount(() => {
   archiveBrowse = { search: directorySearch.value, shelf: bookshelf.value?.snapshot() ?? archiveBrowse.shelf }
 })
-const { current, showShelf, lastViewedId, selectCharacter, showBookshelf } = useCharacterArchiveNavigation(
+const { current, showShelf, lastViewedId, selectCharacter: navigateCharacter, showBookshelf } = useCharacterArchiveNavigation(
   characters, profileAnchor, () => bookshelf.value?.focusSelected(),
 )
-const archiveMotion = useCharacterPortraitTransition(archiveRoot, showShelf, () => current.value?.id || lastViewedId.value)
-const { preferOriginal } = archiveMotion
+const preferOriginal = ref(false)
+function selectCharacter(id: string) {
+  if (showShelf.value) {
+    const card = [...(archiveRoot.value?.querySelectorAll<HTMLElement>('.bookshelf-character') || [])].find(item => item.dataset.character === id)
+    const image = card?.querySelector('img')
+    preferOriginal.value = Boolean(image?.complete && image.naturalWidth)
+  }
+  navigateCharacter(id)
+}
 const bgExpanded = ref(false)
 useScrollReveal()
 
