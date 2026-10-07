@@ -101,10 +101,11 @@ for (const source of characters) {
 // Execute the actual submit function with isolated upload/model/image-read boundaries.
 // No Vue app, HTTP endpoint, GPU or model is invoked by these request-construction checks.
 const { stripTypeScriptTypes } = require('node:module')
+const { endfieldAnimaBinding } = require('../../src/utils/loraCatalog.ts')
 const inpaintSource = stripTypeScriptTypes(readFileSync(new URL('../../src/composables/generation/animaInpaintSubmit.ts', import.meta.url), 'utf8'))
   .replace(/^import[^\n]+\n/gm, '')
   .replace('export async function submitAnimaInpaint', 'async function submitAnimaInpaint')
-const inpaintFactory = new Function('resolveInpaintRequestBinding', 'apiClient', 'escapeKnownLiteralTags', 'readImageDataUrl',
+const inpaintFactory = new Function('resolveInpaintRequestBinding', 'apiClient', 'escapeKnownLiteralTags', 'readImageDataUrl', 'endfieldAnimaBinding',
   `${inpaintSource}\nreturn submitAnimaInpaint`)
 for (const scenario of ['raw popular identity', 'already escaped popular identity', 'studio LoRA identity']) {
   test(`inpaint request preserves literal names and outfit weights: ${scenario}`, async () => {
@@ -114,13 +115,13 @@ for (const scenario of ['raw popular identity', 'already escaped popular identit
     const submit = inpaintFactory(
       () => ({ modelId: 'fixture-anima', character: popular ? 'none' : 'nene', loraId: null, width: 832, height: 1216 }),
       { request: async () => ({ ok: true, name: 'fixture.png' }) }, escapeKnownLiteralTags,
-      async () => 'data:image/png;base64,fixture')
+      async () => 'data:image/png;base64,fixture', endfieldAnimaBinding)
     await submit({
       payload: { newOutfitPrompt: '(blue_coat:1.2), (soft lighting)', negativePrompt: 'bad hands', imageBlob: new Blob(['fixture']) },
       effectiveChar: popular ? 'none' : 'nene', isPopular: popular, identityTokens: [identity, 'arknights'],
       model: { width: 832, height: 1216, models: [], modelId: 'fixture-anima', loraStrength: 1 },
     }, {
-      signal: new AbortController().signal, current: () => true, flash() {}, submission: {},
+      signal: new AbortController().signal, current: () => true, flash() {}, submission: { request: { character: popular ? 'kaltsit' : 'nene' } },
       generate: async request => requests.push(request),
       begin: url => URL.revokeObjectURL(url), started() {},
     })
