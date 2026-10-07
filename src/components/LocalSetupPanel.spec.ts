@@ -127,6 +127,26 @@ describe('first local setup panel', () => {
     expect(lastSignal.aborted).toBe(true)
     last.resolve(complete()); await flushPromises()
   })
+  it('supersedes an in-flight readiness check when the selected model changes', async () => {
+    vi.spyOn(settingsRepository, 'get').mockReturnValue('anima-miaomiao-v1.6')
+    const wrapper = render(); await flushPromises()
+    const old = deferred(), latest = deferred()
+    fixture.getStatus.mockReturnValueOnce(old.promise).mockReturnValueOnce(latest.promise)
+    const automation = wrapper.getComponent(LocalSetupAutomation)
+    automation.vm.$emit('model-selected', 'anima-base-v1.0'); await flushPromises()
+    const previousSignal = fixture.getStatus.mock.lastCall![0].signal as AbortSignal
+    automation.vm.$emit('model-selected', 'anima-miaomiao-v1.6'); await flushPromises()
+    expect(previousSignal.aborted).toBe(true)
+    expect(fixture.getStatus).toHaveBeenCalledTimes(3)
+    expect(fixture.getStatus.mock.lastCall![0].modelId).toBe('anima-miaomiao-v1.6')
+    const current = complete(); current.nodes.missing = ['CurrentModelNode']
+    latest.resolve(current); await flushPromises()
+    expect(wrapper.text()).toContain('CurrentModelNode')
+    old.resolve(complete()); await flushPromises()
+    expect(wrapper.text()).toContain('CurrentModelNode')
+    expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
+    wrapper.unmount()
+  })
   it('makes no local request and exposes no workspace controls to remote viewers', async () => {
     fixture.local = false; fixture.desktop = true
     const wrapper = render(); await flushPromises()

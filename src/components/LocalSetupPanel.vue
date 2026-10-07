@@ -114,7 +114,13 @@ const isLocal = isLocalStudioHost()
 const desktop = isLocal ? getDesktopCapabilities() : undefined
 const snapshot = ref<LocalSetupResponse | null>(null)
 const selectedModel = ref(settingsRepository.get(STARTER_MODEL_SETTING) || 'anima-miaomiao-v1.6')
-function selectSetupModel(modelId:string) { if(selectedModel.value!==modelId){selectedModel.value=modelId;void refresh()} }
+function selectSetupModel(modelId:string) {
+  if(selectedModel.value===modelId)return
+  selectedModel.value=modelId
+  // A model change owns a new readiness check; a late previous result is no longer relevant.
+  controller?.abort();controller=null;loading.value=false
+  void refresh()
+}
 async function restartForSetup(){
   try{await flushProfileWrites();await desktop?.restartForSetup?.()}
   catch(cause){workspaceError.value=cause instanceof Error?cause.message:'重启未完成，请完全退出后重新打开绘遇'}
