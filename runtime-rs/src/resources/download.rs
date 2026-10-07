@@ -79,14 +79,14 @@ async fn entry(
             );
         }
     }
-    let response = http::response(
+    let mut response = http::response(
         client,
         policy::source_url(release, &entry.path)?,
         headers,
         &op.cancel,
     )
     .await?;
-    let start = http::range(
+    let mut start = http::range(
         &response,
         offset,
         entry.bytes,
@@ -95,7 +95,28 @@ async fn entry(
         } else {
             None
         },
-    )?;
+    );
+    if offset > 0
+        && (response.status() == reqwest::StatusCode::RANGE_NOT_SATISFIABLE
+            || start
+                .as_ref()
+                .is_err_and(|error| error.code == "HTTP_RANGE"))
+    {
+        // A stale validator or rejected range must not trap every recovery on
+        // the same checkpoint. Retry once without Range, retaining the partial
+        // until a valid full response is available. Never retry network errors.
+        drop(response);
+        op.check()?;
+        response = http::response(
+            client,
+            policy::source_url(release, &entry.path)?,
+            reqwest::header::HeaderMap::new(),
+            &op.cancel,
+        )
+        .await?;
+        start = http::range(&response, 0, entry.bytes, None);
+    }
+    let start = start?;
     fs::space(&op.ctx.store, entry.bytes - start + 65536)?;
     let etag = strong(
         response
