@@ -69,8 +69,9 @@ export function useControlActions(
   }
 
   const savingConfig = ref(false)
-  async function saveConfig() {
-    if (savingConfig.value) return
+  async function saveConfig(event?: Event) {
+    if (event instanceof KeyboardEvent && (event.isComposing || event.keyCode === 229)) return
+    if (savingConfig.value || !status.statusLoaded.value) return
     savingConfig.value = true
     status.feedbackText.value = '正在保存并重新检测…'
     try {
