@@ -30,6 +30,7 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
     if (!image?.complete || !image.naturalWidth) return
     const bounds=root.getBoundingClientRect(); size={width:bounds.width,height:bounds.height}
     effect=startCanvasTextureParticles(image,root,{
+      gather:true,
       onHandoff:() => { active.value=false },
       onComplete:() => { effect=null; active.value=false },
     })

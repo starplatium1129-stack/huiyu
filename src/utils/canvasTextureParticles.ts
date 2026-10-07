@@ -7,6 +7,7 @@ export interface CanvasParticleMotion {
   stop: () => void
 }
 interface Options {
+  gather?: boolean
   onComplete?: () => void
   onHandoff?: () => void
 }
@@ -16,6 +17,7 @@ uniform vec2 viewport;
 uniform vec4 imageRect;
 uniform vec2 grid;
 uniform float time;
+uniform vec4 handoff;
 out vec2 uv;
 out vec2 local;
 out float alpha;
@@ -33,8 +35,14 @@ void main() {
   float grain = smoothstep(.02,.48,age), flight = max(0.0,age-.03);
   vec2 breeze = vec2(cos(seed*6.283),sin(seed*6.283)) * (12.0+seed*28.0);
   vec2 point = source + breeze*flight + vec2(sin(seed*17.0+flight*3.0)*12.0*flight,-26.0*flight*flight);
+  float gathering = handoff.w*smoothstep(.4,1.45,time);
+  float band = mod(id,3.0), angle = seed*6.283+time*.3;
+  float tilt = -.64+band*.61;
+  vec2 orbit = vec2(cos(angle),sin(angle)*(.31+band*.035))*handoff.z*(.86+band*.08);
+  vec2 destination = handoff.xy+vec2(orbit.x*cos(tilt)-orbit.y*sin(tilt),orbit.x*sin(tilt)+orbit.y*cos(tilt));
+  point = mix(point,destination,gathering);
   vec2 dimensions = mix(cellSize,vec2(.65+seed*1.4),grain);
-  alpha = 1.0-smoothstep(.38,1.58,age);
+  alpha = (1.0-smoothstep(.38,1.58,age))*(1.0-gathering*.85);
   vec2 position = point + (corner-.5)*dimensions;
   gl_Position = vec4(position/viewport*vec2(2.0,-2.0)+vec2(-1.0,1.0),0,1);
 }`
@@ -123,7 +131,9 @@ export function startCanvasTextureParticles(image: HTMLImageElement, host: HTMLE
     const count = Math.min(18000,Math.max(1800,Math.round(width*height/20)))
     const columns=Math.max(1,Math.round(Math.sqrt(count*width/height))), rows=Math.max(1,Math.floor(count/columns))
     const uniform = (name: string) => gl.getUniformLocation(program!,name)
-    const timeUniform=uniform('time')
+    const timeUniform=uniform('time'), handoffUniform=uniform('handoff')
+    let handoffMeasured = !options.gather
+    gl.uniform4f(handoffUniform,0,0,0,0)
     gl.uniform2f(uniform('viewport'),bounds.width,bounds.height)
     gl.uniform4f(uniform('imageRect'),left,top,width,height); gl.uniform2f(uniform('grid'),columns,rows)
     gl.uniform1i(uniform('artwork'),0)
@@ -141,10 +151,19 @@ export function startCanvasTextureParticles(image: HTMLImageElement, host: HTMLE
     draw(); host.append(canvas); started=true
     /* compositor-exempt: finite, bounded instanced image breakup follows the shared RAF and releases its GPU context. */
     stopFrames=registerParticleFrame((_now,deltaMs) => {
+      // The waiting visual mounts in Vue's next patch. Measure its real local
+      // center once, so the fragments join the same orbit in any canvas size.
+      if (!handoffMeasured) {
+        const target = host.querySelector<HTMLElement>('.generation-particle-surface')?.getBoundingClientRect()
+        if (target?.width && target.height) {
+          gl.uniform4f(handoffUniform,target.left-bounds.left+target.width/2,target.top-bounds.top+target.height/2,Math.min(target.width*.29,target.height*.3,116),1)
+          handoffMeasured=true
+        }
+      }
       const delta=deltaMs/1000
       elapsed+=delta
       if (elapsed>=1.85) { finish(); return }
-      if (!handedOff && elapsed>=1.1) { handedOff=true; options.onHandoff?.() }
+      if (!handedOff && elapsed>=(options.gather ? .55 : 1.1)) { handedOff=true; options.onHandoff?.() }
       draw()
     })
     return { stop:finish }

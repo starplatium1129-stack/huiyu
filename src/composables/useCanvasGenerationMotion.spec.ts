@@ -25,7 +25,7 @@ async function fixture(initialSource = '/old.png') {
 it.each(['same tick','separate ticks'] as const)('hands breakup to the shared visual before decoded results settle in %s',async publication => {
   const {source,busy,motion,wrapper,image}=await fixture()
   source.value=''; busy.value=true; await nextTick()
-  expect(mock.start).toHaveBeenCalledExactlyOnceWith(image,wrapper.element,expect.objectContaining({onHandoff:expect.any(Function),onComplete:expect.any(Function)}))
+  expect(mock.start).toHaveBeenCalledExactlyOnceWith(image,wrapper.element,expect.objectContaining({gather:true,onHandoff:expect.any(Function),onComplete:expect.any(Function)}))
   expect(wrapper.find('img').exists()).toBe(false)
   mock.start.mock.calls[0][2].onHandoff()
   expect(motion.active.value).toBe(false)

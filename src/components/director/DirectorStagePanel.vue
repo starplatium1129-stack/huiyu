@@ -23,7 +23,7 @@
         <div class="stage-content" :class="{ 'is-covered': coveringResult }">
         <DirectorSceneReference v-if="!generationBusy && !waitingForResult" :size="canvasSize" />
           <div v-if="generationBusy || waitingForResult" class="stage-generating-copy">
-            <GenerationParticles v-if="!coveringResult && !textureMotionActive" :progress="generationProgress" :palette="generationPalette" />
+            <GenerationParticles v-if="!coveringResult" :class="{ 'is-handoff-pending': textureMotionActive }" :progress="generationProgress" :palette="generationPalette" />
           </div>
         <div v-else-if="generationError || (displayResultUrl && failedResultUrl === displayResultUrl)" class="stage-idle" role="alert">
           <div class="stage-placeholder-title">这次画面未能生成</div>
