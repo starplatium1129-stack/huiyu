@@ -252,7 +252,20 @@ mod health_tests {
             } else {
                 &service.catalog
             };
-            let held = catalog.cached.lock().unwrap();
+            let blocker = service.clone();
+            let (locked, acquired) = tokio::sync::oneshot::channel();
+            let (release, released) = std::sync::mpsc::channel();
+            let held = tokio::task::spawn_blocking(move || {
+                let catalog = if public {
+                    &blocker.public_catalog
+                } else {
+                    &blocker.catalog
+                };
+                let _guard = catalog.cached.lock().unwrap();
+                let _ = locked.send(());
+                let _ = released.recv();
+            });
+            acquired.await.unwrap();
             let (entered, ready) = tokio::sync::oneshot::channel();
             let worker = service.clone();
             let request = tokio::spawn(async move {
@@ -274,7 +287,8 @@ mod health_tests {
             ready.await.unwrap();
             request.abort();
             assert!(request.await.err().unwrap().is_cancelled());
-            drop(held);
+            release.send(()).unwrap();
+            held.await.unwrap();
             let drained = tokio::time::timeout(
                 Duration::from_secs(3),
                 service.workers.clone().acquire_many_owned(2),

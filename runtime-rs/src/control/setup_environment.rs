@@ -1,7 +1,10 @@
+#[cfg(windows)]
 use super::setup_verify::{inspect, model_file, model_root};
 use super::*;
 use serde::Deserialize;
+#[cfg(windows)]
 use std::process::Stdio;
+#[cfg(windows)]
 use tokio::process::Command;
 
 #[derive(Deserialize)]
@@ -68,21 +71,20 @@ impl ControlService {
     }
 
     pub(super) fn cancel_environment(&self, operation_id: Option<&str>) -> Result<Value> {
-        if let Some(id) = operation_id {
-            if self
+        if let Some(id) = operation_id
+            && self
                 .state
                 .lock()
                 .unwrap()
                 .operation
                 .as_ref()
                 .is_none_or(|operation| operation["id"] != id)
-            {
-                return Err(ApiError::new(
-                    409,
-                    "OPERATION_CHANGED",
-                    "原准备操作已结束或改变",
-                ));
-            }
+        {
+            return Err(ApiError::new(
+                409,
+                "OPERATION_CHANGED",
+                "原准备操作已结束或改变",
+            ));
         }
         if let Some(cancel) = self.environment_cancel.lock().unwrap().as_ref() {
             cancel.cancel();
@@ -104,11 +106,14 @@ impl ControlService {
         cancel: &CancellationToken,
     ) -> Result<()> {
         #[cfg(not(windows))]
-        return Err(ApiError::new(
-            400,
-            "WINDOWS_REQUIRED",
-            "自动环境准备适用于 Windows 桌面",
-        ));
+        {
+            let _ = (environment, ids, operation, cancel);
+            Err(ApiError::new(
+                400,
+                "WINDOWS_REQUIRED",
+                "自动环境准备适用于 Windows 桌面",
+            ))
+        }
         #[cfg(windows)]
         {
             let path_for = |id: &str| -> Result<std::path::PathBuf> {

@@ -126,13 +126,11 @@ impl Speech {
                 };
                 let chunk = chunk.map_err(std::io::Error::other);
                 let failed = chunk.is_err();
-                if raw_pcm {
-                    if let Ok(bytes) = &chunk {
-                        if (captured.len() - 44).saturating_add(bytes.len()) > 128 * 1024 * 1024 {
-                            break;
-                        }
-                        captured.extend_from_slice(bytes);
+                if raw_pcm && let Ok(bytes) = &chunk {
+                    if (captured.len() - 44).saturating_add(bytes.len()) > 128 * 1024 * 1024 {
+                        break;
                     }
+                    captured.extend_from_slice(bytes);
                 }
                 let sent = tokio::select! {
                     biased;

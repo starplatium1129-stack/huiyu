@@ -5,7 +5,7 @@ use std::time::Duration;
 pub(super) async fn local_hardware() -> Value {
     #[cfg(test)]
     {
-        return json!({"ramBytes":null,"devices":[]});
+        json!({"ramBytes":null,"devices":[]})
     }
     #[cfg(all(windows, not(test)))]
     {
@@ -32,16 +32,7 @@ pub(super) async fn local_hardware() -> Value {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn nvidia_memory_above_four_gib_remains_available_for_recommendation() {
-        let devices = super::parse_nvidia("NVIDIA Fixture GPU, 32768, 24576, 580.00\n");
-        assert_eq!(devices[0]["vramBytes"], 32768_u64 * 1024 * 1024);
-        assert_eq!(devices[0]["freeVramBytes"], 24576_u64 * 1024 * 1024);
-    }
-}
-
+#[cfg(any(windows, test))]
 fn parse_nvidia(text: &str) -> Vec<Value> {
     text.lines().filter_map(|line| {
         let values: Vec<_> = line.split(',').map(str::trim).collect();
@@ -81,4 +72,14 @@ fn system_ram() -> Option<u64> {
         extended: 0,
     };
     (unsafe { GlobalMemoryStatusEx(&mut status) } != 0).then_some(status.total)
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn nvidia_memory_above_four_gib_remains_available_for_recommendation() {
+        let devices = super::parse_nvidia("NVIDIA Fixture GPU, 32768, 24576, 580.00\n");
+        assert_eq!(devices[0]["vramBytes"], 32768_u64 * 1024 * 1024);
+        assert_eq!(devices[0]["freeVramBytes"], 24576_u64 * 1024 * 1024);
+    }
 }
