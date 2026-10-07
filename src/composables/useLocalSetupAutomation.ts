@@ -23,6 +23,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const chatStorage=useChatStorage(cause=>{error.value=cause})
   const hasComfy=computed(()=>snapshot.value.comfy.installation==='present')
   let disposed=false,cancelled=false,activeOperation='',operationKind=''
+  let cancelRequest:Promise<unknown>|null=null
   let initialized=false
   watch(recommendation,value=>{if(!initialized){
     chatId.value=value.modelId
@@ -68,12 +69,17 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     const id=result.operation?.id
     if(!id)throw new Error('准备操作尚未确认，请重新检查控制室')
     activeOperation=id;operationKind=kind
-    await waitLocalSetupOperation(result,{timeoutMs:60*60*1000,onMessage:value=>{checkpoint();message.value=value}})
-    checkpoint();activeOperation='';operationKind=''
+    try{
+      // Cancellation can precede the server acknowledgement that gives us an operation ID.
+      if(cancelled)await cancel()
+      checkpoint()
+      await waitLocalSetupOperation(result,{timeoutMs:60*60*1000,onMessage:value=>{checkpoint();message.value=value}})
+      checkpoint()
+    }finally{activeOperation='';operationKind=''}
   }
   async function run(){
     if(busy.value||!ready.value||(!drawing.value&&!chatId.value))return
-    busy.value=true;cancelled=false;completed.value=false;error.value=''
+    busy.value=true;cancelled=false;cancelRequest=null;completed.value=false;error.value=''
     const runtime=[...runtimeIds.value],weights=[...weightIds.value],prepareComfy=drawing.value&&needsComfyPreparation.value
     const prepareLlama=!!chatId.value&&!snapshot.value.chat?.runtimePresent,selectedChat=chatId.value,confirmedWorkspace=workspace.value
     try{
@@ -109,8 +115,11 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   }
   async function cancel(){
     cancelled=true;download.cancel()
-    if(activeOperation&&(operationKind==='environment'||operationKind==='service'))await localSetupApi.cancelEnvironment(activeOperation)
-    if(activeOperation&&operationKind==='llama')await localSetupApi.stopLlama()
+    if(activeOperation&&!cancelRequest){
+      if(operationKind==='environment'||operationKind==='service')cancelRequest=localSetupApi.cancelEnvironment(activeOperation)
+      if(operationKind==='llama')cancelRequest=localSetupApi.stopLlama()
+    }
+    await cancelRequest
   }
   onUnmounted(()=>{disposed=true;download.cancel()})
   return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,busy,message,error,completed,recommendation,imageModels,chatModels,plan,downloadBytes,download,run,cancel}
