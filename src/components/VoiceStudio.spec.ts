@@ -134,7 +134,7 @@ it('owns cached-visit requests and speech callbacks without cancelling unrelated
   const active = ref(true)
   const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, {
     default: () => active.value ? h(VoiceStudio, { initialVoice: 'nene', suggestedCaption: '你好' }) : null,
-  }) }), { global: { stubs: { RouterLink: true, ArchiveIcon: true, StudioMediaPlayer: true } } })
+  }) }), { global: { stubs: { RouterLink: true, ArchiveIcon: true } } })
   await flushPromises(); await chooseField(wrapper, 1, 'zh')
   const preview = () => wrapper.findAll('button').find(button => button.text() === '系统试听')!
   await preview().trigger('click')
@@ -168,4 +168,23 @@ it('owns cached-visit requests and speech callbacks without cancelling unrelated
   await preview().trigger('click'); spoken[2].onend!()
   wrapper.unmount()
   expect(cancel).toHaveBeenCalledTimes(2)
+})
+
+it('hands playback between generated audio and system preview without overlapping voices', async () => {
+  const cancel = vi.fn(), speak = vi.fn()
+  vi.stubGlobal('SpeechSynthesisUtterance', class {})
+  vi.stubGlobal('speechSynthesis', { cancel, speak })
+  const wrapper = await openStudio()
+  try {
+    await wrapper.find('button.btn-primary').trigger('click'); await flushPromises()
+    const audio = wrapper.get('audio').element
+    const pause = vi.spyOn(audio, 'pause').mockImplementation(() => {})
+    await wrapper.get('audio').trigger('play')
+    const preview = wrapper.findAll('button').find(button => button.text() === '系统试听')!
+    await preview.trigger('click')
+    expect(pause).toHaveBeenCalledOnce()
+    expect(speak).toHaveBeenCalledOnce()
+    await wrapper.get('audio').trigger('play')
+    expect(cancel).toHaveBeenCalledOnce()
+  } finally { wrapper.unmount() }
 })
