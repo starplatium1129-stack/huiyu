@@ -246,7 +246,7 @@ test('flow 2b · 配音失败：GPT-SoVITS 502 带出真实原因而不是"不�
   await pickStudioOptionByValue(page.locator('.voice-field').nth(1).getByRole('combobox'), 'zh');  // 跳过翻译
   await page.getByRole('button', { name: '生成 AI 声线' }).click();
 
-  await expect(page.locator('.voice-status')).toContainText('GPT-SoVITS 生成失败');
+  await expect(page.locator('.voice-status')).toContainText('语音生成失败');
   await expect(page.locator('.voice-status')).toContainText('reference audio missing');
   await expect(page.locator('.voice-audio')).toHaveCount(0);
 });
