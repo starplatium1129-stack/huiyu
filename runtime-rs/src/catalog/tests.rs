@@ -157,6 +157,25 @@ fn import_preserves_values_unknown_dates_and_summary_queries() {
         ])
     );
     assert_eq!(bundle["blueprints"], json!([blueprint.data]));
+    assert_eq!(bundle["profile"], character.data["profile"]);
+    assert_eq!(
+        catalog.projection("characters.json").unwrap().unwrap(),
+        json!([bundle["profile"]])
+    );
+    assert_eq!(
+        catalog
+            .projection("popular-characters.json")
+            .unwrap()
+            .unwrap(),
+        json!({"version":1,"characters":[bundle["character"]]})
+    );
+    assert_eq!(
+        catalog
+            .projection("scene-blueprints.json")
+            .unwrap()
+            .unwrap(),
+        json!({"version":2,"blueprints":bundle["blueprints"]})
+    );
     // Restore the fixture before exercising validated edits below.
     character.data.as_object_mut().unwrap().remove("popular");
     write::put(&catalog.connection, &character, false).unwrap();
@@ -165,22 +184,32 @@ fn import_preserves_values_unknown_dates_and_summary_queries() {
         .execute("DELETE FROM content_records WHERE kind='outfit'", [])
         .unwrap();
     assert_eq!(catalog.next_scene_id().unwrap(), "sc006");
-    let mut known_date = patch("scene", "sc001", 1, json!({}));
+    let mut known_date = patch("scene", "sc001", 1, json!({"category":"room"}));
     known_date.created_at = Some("2026-10-03T22:25:25+08:00".into());
     let mut catalog = catalog;
     catalog.apply(&[known_date.clone()], true).unwrap();
     assert!(catalog.get("scene", "sc001").unwrap().created_at.is_none());
     catalog.apply(&[known_date], false).unwrap();
-    let dates = catalog
-        .query(&Query {
-            kind: "scene".into(),
-            created_from: "2026-10-03T00:00:00+08:00".into(),
-            created_to: "2026-10-04T00:00:00+08:00".into(),
-            ..Default::default()
-        })
-        .unwrap();
+    let query = Query {
+        kind: "scene".into(),
+        created_from: "2026-10-03T00:00:00+08:00".into(),
+        created_to: "2026-10-04T00:00:00+08:00".into(),
+        ..Default::default()
+    };
+    let dates = catalog.query(&query).unwrap();
     assert_eq!(dates["total"], 1);
     assert_eq!(dates["items"][0]["id"], "sc001");
+    let filtered = catalog
+        .query(&Query {
+            search: " SC001 ".into(),
+            character: "nene".into(),
+            category: "room".into(),
+            rating: "All".into(),
+            page: Some(100),
+            ..query
+        })
+        .unwrap();
+    assert_eq!(filtered, dates);
     assert!(catalog.get("scene", "sc002").unwrap().created_at.is_none());
     let mut rewrite_date = patch("scene", "sc001", 2, json!({}));
     rewrite_date.created_at = Some("2026-10-04T00:00:00+00:00".into());

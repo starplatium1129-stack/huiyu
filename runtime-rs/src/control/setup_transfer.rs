@@ -4,7 +4,7 @@ use tokio::io::{AsyncSeekExt, AsyncWriteExt};
 pub(super) async fn write(
     plan: &DownloadPlan,
     client: &reqwest::Client,
-    send: &UnboundedSender<Value>,
+    send: &Sender<Value>,
     cancel: &CancellationToken,
     output: &mut tokio::fs::File,
 ) -> Result<u64> {

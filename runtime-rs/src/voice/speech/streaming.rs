@@ -95,7 +95,12 @@ impl Speech {
         tokio::spawn(async move {
             let _permit = permit;
             let mut upstream = response.bytes_stream();
-            let mut captured = Vec::new();
+            // Reserve the WAV header up front, then keep each PCM sample only once.
+            let mut captured = if raw_pcm {
+                super::super::payload::pcm_wave_header(48000)
+            } else {
+                Vec::new()
+            };
             loop {
                 let chunk = tokio::select! {
                     biased;
@@ -107,14 +112,14 @@ impl Speech {
                     chunk = upstream.next() => chunk,
                 };
                 let Some(chunk) = chunk else {
-                    if raw_pcm && (captured.is_empty() || captured.len() % 2 != 0) {
+                    if raw_pcm && (captured.len() == 44 || captured.len() % 2 != 0) {
                         break;
                     }
                     if let Some(key) = cache_key {
-                        if !captured.is_empty() {
-                            let wave = super::super::payload::pcm_wave(&captured, 48000);
-                            Self::remember_into(&cache, key, Bytes::from(wave));
-                        }
+                        super::super::payload::fix_wav(&mut captured);
+                        // Discard spare capacity so the cache's byte budget still counts
+                        // the retained allocation, without building a second WAV buffer.
+                        Self::remember_into(&cache, key, Bytes::from(captured.into_boxed_slice()));
                     }
                     producer_complete.store(true, Ordering::Release);
                     break;
@@ -123,7 +128,7 @@ impl Speech {
                 let failed = chunk.is_err();
                 if raw_pcm {
                     if let Ok(bytes) = &chunk {
-                        if captured.len().saturating_add(bytes.len()) > 128 * 1024 * 1024 {
+                        if (captured.len() - 44).saturating_add(bytes.len()) > 128 * 1024 * 1024 {
                             break;
                         }
                         captured.extend_from_slice(bytes);

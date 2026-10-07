@@ -156,32 +156,41 @@ impl RemoteContent {
         permit: OwnedSemaphorePermit,
     ) -> Result<Response> {
         let index = self.runtime.join("state/remote-content-release.json");
-        let index_bytes = read_bounded(&index, MAX_JSON).await?;
-        let release: Value = serde_json::from_slice(&index_bytes)?;
-        let entries = release["resources"]
-            .as_array()
-            .filter(|_| release["version"] == 1)
-            .ok_or_else(unpublished)?;
-        let mut matching = entries.iter().filter(|entry| entry["url"] == path);
-        let entry = matching
-            .next()
-            .filter(|_| matching.next().is_none())
-            .ok_or_else(unpublished)?;
-        let digest = entry["sha256"]
-            .as_str()
-            .filter(|s| {
-                s.len() == 64
-                    && s.bytes()
-                        .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
-            })
-            .ok_or_else(unpublished)?;
-        let size = entry["bytes"]
-            .as_u64()
-            .filter(|n| *n > 0 && *n <= MAX_IMAGE as u64)
-            .ok_or_else(unpublished)? as usize;
-        if entry["rating"] != "All" || !entry["reviewedAt"].as_str().is_some_and(reviewed_date) {
-            return Err(unpublished());
-        }
+        let index_bytes = Arc::new(read_bounded(&index, MAX_JSON).await?);
+        let release_bytes = index_bytes.clone();
+        let selected = path.to_owned();
+        // Keep admission with CPU work even when its async caller times out.
+        let (digest, size, permit) = tokio::task::spawn_blocking(move || -> Result<_> {
+            let release: Value = serde_json::from_slice(&release_bytes)?;
+            let entries = release["resources"]
+                .as_array()
+                .filter(|_| release["version"] == 1)
+                .ok_or_else(unpublished)?;
+            let mut matching = entries.iter().filter(|entry| entry["url"] == selected);
+            let entry = matching
+                .next()
+                .filter(|_| matching.next().is_none())
+                .ok_or_else(unpublished)?;
+            let digest = entry["sha256"]
+                .as_str()
+                .filter(|s| {
+                    s.len() == 64
+                        && s.bytes()
+                            .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+                })
+                .ok_or_else(unpublished)?;
+            let size = entry["bytes"]
+                .as_u64()
+                .filter(|n| *n > 0 && *n <= MAX_IMAGE as u64)
+                .ok_or_else(unpublished)? as usize;
+            if entry["rating"] != "All" || !entry["reviewedAt"].as_str().is_some_and(reviewed_date)
+            {
+                return Err(unpublished());
+            }
+            Ok((digest.to_owned(), size, permit))
+        })
+        .await
+        .map_err(|_| unpublished())??;
         let relative = path.get(domain.len() + 2..).ok_or_else(unpublished)?;
         let (root, json_name) = match domain {
             "data" => {
@@ -212,42 +221,44 @@ impl RemoteContent {
         }
         let file = rooted(&root, relative).await?;
         let bytes = read_bounded(&file, maximum).await?;
-        if bytes.len() != size || hex::encode(Sha256::digest(&bytes)) != digest {
-            return Err(unpublished());
-        }
-        let output = if let Some(name) = json_name {
-            let approved: Value = serde_json::from_slice(&bytes)?;
-            let database = self.runtime.join("content/catalog.sqlite");
-            let current = if database.is_file() || database.with_extension("identity.json").exists()
-            {
-                let options = crate::catalog::Options {
-                    source: self.app.clone(),
-                    database,
-                };
-                let selected = name.to_owned();
-                tokio::task::spawn_blocking(move || {
-                    crate::catalog::Catalog::open(options)?.projection(&selected)
-                })
-                .await
-                .map_err(|_| unpublished())?
-                .map_err(|_| unpublished())?
-            } else {
-                None
-            };
-            if current
-                .as_ref()
-                .is_some_and(|value| normalize_catalog(value) != normalize_catalog(&approved))
-            {
+        let name = json_name.map(str::to_owned);
+        let options = crate::catalog::Options {
+            source: self.app.clone(),
+            database: self.runtime.join("content/catalog.sqlite"),
+        };
+        let (output, permit) = tokio::task::spawn_blocking(move || -> Result<_> {
+            if bytes.len() != size || hex::encode(Sha256::digest(&bytes)) != digest {
                 return Err(unpublished());
             }
-            serde_json::to_vec(&projection::project(
-                name,
-                current.as_ref().unwrap_or(&approved),
-            ))?
-        } else {
-            bytes
-        };
-        if index_bytes != read_bounded(&index, MAX_JSON).await? {
+            let output = if let Some(name) = name {
+                let approved: Value = serde_json::from_slice(&bytes)?;
+                let current = if options.database.is_file()
+                    || options.database.with_extension("identity.json").exists()
+                {
+                    crate::catalog::Catalog::open(options)
+                        .and_then(|catalog| catalog.projection(&name))
+                        .map_err(|_| unpublished())?
+                } else {
+                    None
+                };
+                if current
+                    .as_ref()
+                    .is_some_and(|value| normalize_catalog(value) != normalize_catalog(&approved))
+                {
+                    return Err(unpublished());
+                }
+                serde_json::to_vec(&projection::project(
+                    &name,
+                    current.as_ref().unwrap_or(&approved),
+                ))?
+            } else {
+                bytes
+            };
+            Ok((output, permit))
+        })
+        .await
+        .map_err(|_| unpublished())??;
+        if index_bytes.as_ref() != &read_bounded(&index, MAX_JSON).await? {
             return Err(unpublished());
         }
         let size = output.len();
