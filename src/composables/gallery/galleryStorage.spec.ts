@@ -106,8 +106,12 @@ it.each(['before', 'after'])('keeps the saved favorite when an older snapshot re
   const refresh = loadGalleryStorageAction(ctx)
   const write = toggleFavoriteAction({ history: ctx.history, showToast: vi.fn() }, ctx.history.value[0])
   await Promise.resolve()
-  if (order === 'before') { reply(snapshot('existing')); await refresh }
+  const incoming = { history: [...snapshot('existing').history, { id: 'new-work' }], projects: [{ id: 'new-album', history_ids: ['new-work'] }] }
+  if (order === 'before') { reply(incoming); await refresh }
   save({ updated: true }); await write
-  if (order === 'after') { reply(snapshot('existing')); await refresh }
+  if (order === 'after') { reply(incoming); await refresh }
   expect(ctx.history.value[0].favorite).toBe(true)
+  expect(ctx.history.value.map(item => item.id)).toEqual(['existing', 'new-work'])
+  expect(ctx.projects.value[0]).toMatchObject({ id: 'new-album', history_ids: ['new-work'] })
+  expect(storage.read).toHaveBeenCalledOnce()
 })
