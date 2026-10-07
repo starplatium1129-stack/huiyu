@@ -34,7 +34,7 @@ pub struct TaskRuntime {
     provider: Arc<GenerationService>,
     images: Option<Arc<crate::images::ImageService>>,
     video: Option<Arc<crate::video::VideoService>>,
-    recoveries: Mutex<HashMap<String, Arc<tokio::sync::OnceCell<()>>>>,
+    recoveries: Mutex<HashMap<String, Arc<recovery::Initialization>>>,
     fingerprint: Fingerprint,
     unbound_epoch: String,
     jobs: Mutex<HashMap<String, JobBinding>>,
@@ -339,7 +339,11 @@ impl TaskRuntime {
         if let Some(video) = &self.video {
             video.close().await;
         }
-        self.tracker.close();
+        {
+            // Serialize closure with read-triggered recovery registration.
+            let _recoveries = self.recoveries.lock().unwrap();
+            self.tracker.close();
+        }
         self.tracker.wait().await;
     }
     fn binding(&self) -> String {

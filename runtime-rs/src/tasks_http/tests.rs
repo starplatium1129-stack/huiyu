@@ -288,3 +288,203 @@ async fn task_results_require_owned_reference_and_verified_original_bytes() {
     assert_eq!(body(response).await["code"], "TASK_RESULT_UNAVAILABLE");
     storage.close().await.unwrap();
 }
+
+// Held provider replies must not block the durable list or replay work.
+#[tokio::test]
+async fn task_list_starts_one_owned_recovery_and_converges_before_shutdown() {
+    let (directory, mut state, _, alice) = fixture().await;
+    let entered = Arc::new(tokio::sync::Notify::new());
+    let gate = Arc::new(tokio::sync::Semaphore::new(0));
+    let histories = Arc::new(std::sync::atomic::AtomicUsize::new(0));
+    let endpoint = {
+        let entered = entered.clone();
+        let gate = gate.clone();
+        let histories = histories.clone();
+        move || {
+            let entered = entered.clone();
+            let gate = gate.clone();
+            let histories = histories.clone();
+            async move {
+                histories.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+                entered.notify_one();
+                gate.acquire().await.unwrap().forget();
+                Json(json!({}))
+            }
+        }
+    };
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let host = format!("http://{}", listener.local_addr().unwrap());
+    let server = tokio::spawn(async move {
+        axum::serve(
+            listener,
+            Router::new()
+                .route("/history/{id}", axum::routing::get(endpoint))
+                .route(
+                    "/queue",
+                    axum::routing::get(|| async {
+                        Json(json!({"queue_running":[[0,"task-0"]],"queue_pending":[]}))
+                    }),
+                ),
+        )
+        .await
+        .unwrap();
+    });
+    let config = crate::generation::Config {
+        sd_host: host.clone(),
+        sd_auth: None,
+        comfy_host: host.clone(),
+        ai_workspace_root: directory.path().join("AI"),
+        runtime_root: directory.path().join("runtime"),
+    };
+    std::fs::create_dir_all(config.ai_workspace_root.join("ComfyUI")).unwrap();
+    let output = std::process::Command::new("node")
+        .arg(
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                .join("tests/task_recovery/legacy-provider.cjs"),
+        )
+        .arg(&config.ai_workspace_root)
+        .arg(&host)
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+    let fingerprint = String::from_utf8(output.stdout).unwrap();
+    let runtime = Arc::new(
+        crate::task_runtime::TaskRuntime::new(
+            Arc::new(
+                crate::generation::GenerationService::new(
+                    config,
+                    crate::upstream::LocalUpstream::new(),
+                    state.shutdown.clone(),
+                )
+                .unwrap(),
+            ),
+            None,
+            None,
+            state.shutdown.clone(),
+        )
+        .unwrap(),
+    );
+    state.tasks = Some(runtime.clone());
+    let storage = state.host.storage().unwrap();
+    let mut old = task("task-0", "alice", false);
+    old["provider"] = json!("comfy");
+    old["providerFingerprint"] = json!(fingerprint);
+    old["upstreamId"] = json!("task-0");
+    old["errorCode"] = Value::Null;
+    storage
+        .request(json!({"kind":"task.accept","record":old}), "alice")
+        .await
+        .unwrap();
+    let app = super::router().with_state(state.clone());
+    // An explicit no-op observation owns the lock before the first list starts.
+    let explicit_runtime = runtime.clone();
+    let explicit_storage = storage.clone();
+    let explicit = tokio::spawn(async move {
+        explicit_runtime
+            .reconcile(&explicit_storage, "alice", "task-0")
+            .await
+    });
+    tokio::time::timeout(Duration::from_secs(2), entered.notified())
+        .await
+        .unwrap();
+    let first = tokio::time::timeout(
+        Duration::from_secs(2),
+        call(&app, &alice, "GET", "/api/tasks/v1"),
+    )
+    .await
+    .unwrap();
+    assert_eq!(first.status(), StatusCode::OK);
+    let mut revision = 0;
+    for _ in 0..3 {
+        let response = tokio::time::timeout(
+            Duration::from_secs(2),
+            call(&app, &alice, "GET", "/api/tasks/v1"),
+        )
+        .await
+        .unwrap();
+        let page = body(response).await;
+        revision = page["result"]["throughRevision"].as_i64().unwrap();
+        assert_eq!(page["result"]["items"][0]["recoveryState"], "unknown");
+    }
+    assert_eq!(histories.load(std::sync::atomic::Ordering::SeqCst), 1);
+    let mut post = Box::pin(call(&app, &alice, "POST", "/api/tasks/v1"));
+    assert!(futures_util::poll!(&mut post).is_pending());
+    for path in [
+        "/api/tasks/v1/task-0",
+        "/api/tasks/v1/by-key/key%2Ftask-0",
+        "/api/tasks/v1/by-key/new",
+    ] {
+        let response =
+            tokio::time::timeout(Duration::from_secs(2), call(&app, &alice, "GET", path))
+                .await
+                .unwrap();
+        assert_eq!(response.status(), StatusCode::OK);
+        let value = body(response).await;
+        if path.ends_with("/new") {
+            assert!(value["result"].is_null());
+        }
+    }
+    let error = storage
+        .request(
+            json!({"kind":"task.accept","record":task("new", "alice", false)}),
+            "alice",
+        )
+        .await
+        .unwrap_err();
+    assert_eq!(error.code, "TASK_PROVIDER_BUSY");
+    assert!(futures_util::poll!(&mut post).is_pending());
+    drop(post);
+    gate.add_permits(1);
+    explicit.await.unwrap().unwrap();
+    // Startup must not skip the held lock and complete at the old revision.
+    tokio::time::timeout(Duration::from_secs(2), entered.notified())
+        .await
+        .unwrap();
+    assert_eq!(histories.load(std::sync::atomic::Ordering::SeqCst), 2);
+    let reconciling = crate::task_runtime::TaskRuntime::get(&storage, "alice", "task-0")
+        .await
+        .unwrap();
+    assert!(reconciling.revision > revision);
+    assert_eq!(
+        reconciling.recovery_state,
+        crate::task_contract::RecoveryState::Reconciling
+    );
+    gate.add_permits(1);
+    tokio::time::timeout(Duration::from_secs(2), async {
+        loop {
+            let record = crate::task_runtime::TaskRuntime::get(&storage, "alice", "task-0")
+                .await
+                .unwrap();
+            if record.revision > reconciling.revision
+                && record.recovery_state == crate::task_contract::RecoveryState::Normal
+            {
+                break;
+            }
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
+    let response = call(
+        &app,
+        &alice,
+        "GET",
+        &format!("/api/tasks/v1?afterRevision={revision}"),
+    )
+    .await;
+    let page = body(response).await;
+    assert_eq!(page["result"]["items"][0]["recoveryState"], "normal");
+    assert_ne!(page["result"]["items"][0]["executionAvailable"], false);
+    assert!(runtime.owns(&storage, "task-0"));
+    // The observer is now held at its next probe; shutdown must drain it.
+    tokio::time::timeout(Duration::from_secs(2), entered.notified())
+        .await
+        .unwrap();
+    assert_eq!(histories.load(std::sync::atomic::Ordering::SeqCst), 3);
+    state.shutdown.cancel();
+    tokio::time::timeout(Duration::from_secs(2), runtime.close())
+        .await
+        .unwrap();
+    storage.close().await.unwrap();
+    server.abort();
+}
