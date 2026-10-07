@@ -17,6 +17,8 @@ pub(super) struct Release {
     pub assets: Manifest,
     pub showcase_root: PathBuf,
     pub showcase: Manifest,
+    pub showcase_payload: Manifest,
+    pub baseline: Option<Value>,
     pub display: Value,
 }
 fn entries(value: &Value) -> Result<Vec<Entry>> {
@@ -141,7 +143,26 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
             "Unsupported offline release schema",
         ));
     }
-    let approved = json!({"approved":true,"kind":"full","sourceId":id,"path":"pack","packageIdentity":value["resourcePack"]["packageIdentity"],"targetIdentity":value["resourcePack"]["targetIdentity"],"releaseSha256":options.expected,"label":format!("离线资源 {id}")});
+    let incremental = value["mode"] == "delta";
+    if !value["mode"].is_null() && value["mode"] != "full" && !incremental {
+        return Err(Error::new(
+            "MANIFEST_INVALID",
+            "Unknown offline release mode",
+        ));
+    }
+    let baseline = incremental.then(|| value["baseRelease"].clone());
+    if let Some(base) = &baseline
+        && (!identifier(base["releaseId"].as_str().unwrap_or(""))
+            || ["releaseSha256", "resourceIdentity", "showcaseIdentity"]
+                .iter()
+                .any(|key| !hash(base[key].as_str().unwrap_or(""))))
+    {
+        return Err(Error::new(
+            "MANIFEST_INVALID",
+            "Invalid incremental baseline",
+        ));
+    }
+    let approved = json!({"approved":true,"kind":if incremental {"delta"}else{"full"},"sourceId":id,"path":"pack","packageIdentity":value["resourcePack"]["packageIdentity"],"targetIdentity":value["resourcePack"]["targetIdentity"],"releaseSha256":options.expected,"label":format!("离线资源 {id}")});
     if !hash(approved["packageIdentity"].as_str().unwrap_or(""))
         || !hash(approved["targetIdentity"].as_str().unwrap_or(""))
     {
@@ -155,8 +176,26 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
         fs::MAX_JSON,
         false,
     )?;
-    let pack = policy::decode(pack_raw.clone(), None, &approved)?;
-    if pack.manifest.entries.is_empty()
+    let delta_raw = if incremental {
+        Some(fs::bytes(
+            &options.package.join("pack/delta.json"),
+            fs::MAX_JSON,
+            false,
+        )?)
+    } else {
+        None
+    };
+    let pack = policy::decode(pack_raw.clone(), delta_raw.clone(), &approved)?;
+    if let Some(base) = &baseline
+        && pack.delta.as_ref().unwrap()["baseManifest"]["contentIdentity"]
+            != base["resourceIdentity"]
+    {
+        return Err(Error::new(
+            "MANIFEST_INVALID",
+            "Asset delta baseline differs from offline baseline",
+        ));
+    }
+    if (!incremental && pack.manifest.entries.is_empty())
         || pack
             .manifest
             .entries
@@ -184,6 +223,27 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
         ));
     }
     let showcase_root = options.package.join("showcase");
+    let showcase_payload = if incremental {
+        Manifest {
+            entries: entries(&value["showcase"]["payloadEntries"])?,
+        }
+    } else {
+        showcase.clone()
+    };
+    if !showcase_payload
+        .entries
+        .iter()
+        .any(|entry| entry.path == "manifest.json")
+        || showcase_payload
+            .entries
+            .iter()
+            .any(|entry| !showcase.entries.contains(entry))
+    {
+        return Err(Error::new(
+            "MANIFEST_INVALID",
+            "Invalid incremental showcase payload",
+        ));
+    }
     let display_raw = fs::bytes(&showcase_root.join("manifest.json"), fs::MAX_JSON, false)?;
     let display_value: Value = serde_json::from_slice(&display_raw)
         .map_err(|_| Error::new("MANIFEST_INVALID", "Invalid display manifest"))?;
@@ -213,11 +273,18 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
         bytes: pack_raw.len() as u64,
         sha256: digest(&pack_raw),
     }];
+    if let Some(raw) = &delta_raw {
+        expected.push(Entry {
+            path: "pack/delta.json".into(),
+            bytes: raw.len() as u64,
+            sha256: digest(raw),
+        });
+    }
     expected.extend(pack.manifest.entries.iter().map(|entry| Entry {
         path: format!("pack/{}", entry.path),
         ..entry.clone()
     }));
-    expected.extend(showcase.entries.iter().map(|entry| Entry {
+    expected.extend(showcase_payload.entries.iter().map(|entry| Entry {
         path: format!("showcase/{}", entry.path),
         ..entry.clone()
     }));
@@ -234,10 +301,14 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
     manifest::verify(
         &options.package.join("pack"),
         &pack.manifest,
-        &["manifest.json"],
+        if incremental {
+            &["manifest.json", "delta.json"]
+        } else {
+            &["manifest.json"]
+        },
         cancel,
     )?;
-    manifest::verify(&showcase_root, &showcase, &[], cancel)?;
+    manifest::verify(&showcase_root, &showcase_payload, &[], cancel)?;
     Ok(Release {
         id: id.into(),
         app_version: app_version.into(),
@@ -245,6 +316,8 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
         assets: pack.manifest,
         showcase_root,
         showcase,
+        showcase_payload,
+        baseline,
         display: display_value,
     })
 }

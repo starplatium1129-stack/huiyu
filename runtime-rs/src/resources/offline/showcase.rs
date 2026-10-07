@@ -108,6 +108,59 @@ fn seed(root: &Path) -> Result<(Value, HashMap<String, Entry>)> {
             .collect(),
     ))
 }
+pub(super) fn baseline(paths: &Paths, release: &Release) -> Result<()> {
+    let Some(base) = &release.baseline else {
+        return Ok(());
+    };
+    let pointer = paths.pointer()?;
+    if pointer["current"]["releaseSha256"] == release.approved["releaseSha256"] {
+        return Ok(());
+    }
+    if pointer["current"].is_null() {
+        return Err(Error::new(
+            "BASELINE_REQUIRED",
+            "增量包不能用于首次安装，请先安装完整资源包。",
+        ));
+    }
+    if pointer["current"]["releaseSha256"] != base["releaseSha256"]
+        || pointer["current"]["contentIdentity"] != base["showcaseIdentity"]
+    {
+        return Err(Error::new(
+            "BASELINE_MISMATCH",
+            "增量资源包需要先安装对应的基础资源包；当前样张版本不匹配。",
+        ));
+    }
+    let old = paths.current_root(&pointer)?.ok_or_else(|| {
+        Error::new(
+            "BASELINE_REQUIRED",
+            "增量包不能用于首次安装，请先安装完整资源包。",
+        )
+    })?;
+    let (seed, hashes) = seed(&old)?;
+    if seed["contentIdentity"] != base["showcaseIdentity"]
+        || seed["releaseSha256"] != base["releaseSha256"]
+    {
+        return Err(Error::new(
+            "BASELINE_MISMATCH",
+            "已安装样张基线与增量包不匹配。",
+        ));
+    }
+    let payload = release
+        .showcase_payload
+        .entries
+        .iter()
+        .map(|entry| entry.path.as_str())
+        .collect::<std::collections::HashSet<_>>();
+    for entry in &release.showcase.entries {
+        if !payload.contains(entry.path.as_str()) && hashes.get(&entry.path) != Some(entry) {
+            return Err(Error::new(
+                "MANIFEST_INVALID",
+                "增量包缺少新增或变化的样张文件。",
+            ));
+        }
+    }
+    Ok(())
+}
 fn bytes_entry(root: &Path, name: &str) -> Result<Entry> {
     fs::relative(name)?;
     let bytes = fs::bytes(&fs::child(root, name)?, 32 * 1024 * 1024, false)?;
@@ -324,11 +377,34 @@ pub(super) fn prepare(
     let parts = paths.showcase.join(format!(".parts-{nonce}"));
     fs::ensure(&staging)?;
     let result = (|| {
+        let old = paths.current_root(before)?;
+        let payload = release
+            .showcase_payload
+            .entries
+            .iter()
+            .map(|entry| entry.path.as_str())
+            .collect::<std::collections::HashSet<_>>();
         for entry in &release.showcase.entries {
-            copy::entry(op, &release.showcase_root, &staging, &parts, entry)?;
+            if payload.contains(entry.path.as_str()) {
+                copy::entry(op, &release.showcase_root, &staging, &parts, entry)?;
+            } else {
+                let source = old.as_ref().ok_or_else(|| {
+                    Error::new("BASELINE_REQUIRED", "Missing installed sample baseline")
+                })?;
+                if fs::safe(&fs::child(source, &entry.path)?, true, false)?.is_some() {
+                    // Local artwork may differ from the release seed. Snapshot
+                    // those bytes here; merge below preserves its entry/deletion.
+                    copy::entry(
+                        op,
+                        source,
+                        &staging,
+                        &parts,
+                        &bytes_entry(source, &entry.path)?,
+                    )?;
+                }
+            }
         }
-        let preserved = paths
-            .current_root(before)?
+        let preserved = old
             .map(|old| {
                 merge(
                     op,

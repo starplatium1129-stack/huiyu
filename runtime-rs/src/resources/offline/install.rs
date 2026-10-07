@@ -88,6 +88,34 @@ fn pending(options: &Options, paths: &Paths, release: &Release) -> Result<Option
     }
     Ok(Some(value))
 }
+fn incremental_baseline(
+    options: &Options,
+    paths: &Paths,
+    release: &Release,
+    cancel: &CancellationToken,
+) -> Result<()> {
+    let Some(base) = &release.baseline else {
+        return Ok(());
+    };
+    showcase::baseline(paths, release)?;
+    if paths.pointer()?["current"]["releaseSha256"] == options.expected {
+        return Ok(());
+    }
+    if !paths.policy.is_file() {
+        return Err(Error::new(
+            "BASELINE_REQUIRED",
+            "增量包需要已安装的基础资源库。",
+        ));
+    }
+    let ctx = config::load(&options.gateway(), &paths.policy, cancel.clone())?.ctx;
+    if state::read(&ctx)?["current"]["identity"] != base["resourceIdentity"] {
+        return Err(Error::new(
+            "BASELINE_MISMATCH",
+            "增量包与本机基础资源版本不匹配，请使用匹配的增量包或完整包。",
+        ));
+    }
+    Ok(())
+}
 pub(super) fn preview(
     options: &Options,
     paths: &Paths,
@@ -96,6 +124,9 @@ pub(super) fn preview(
 ) -> Result<Value> {
     configuration(options, paths, release)?;
     let transaction = pending(options, paths, release)?;
+    if transaction.is_none() {
+        incremental_baseline(options, paths, release, cancel)?;
+    }
     let pointer = paths.pointer()?;
     let current_root = paths.current_root(&pointer)?;
     // Pending recovery verifies its prepared target; a damaged old sample must
@@ -117,7 +148,7 @@ pub(super) fn preview(
     Ok(
         json!({"ok":true,"kind":"huiyu-offline-import-plan","apply":false,"releaseId":release.id,"appVersion":release.app_version,
         "releaseSha256":options.expected,"resourceFiles":release.assets.entries.len(),"resourceBytes":release.assets.bytes(),
-        "showcaseFiles":release.showcase.entries.len(),"showcaseBytes":release.showcase.bytes(),"showcaseEntries":release.display["entries"].as_array().unwrap().len(),
+        "showcaseFiles":release.showcase_payload.entries.len(),"showcaseBytes":release.showcase_payload.bytes(),"showcaseEntries":release.display["entries"].as_array().unwrap().len(),"mode":if release.baseline.is_some(){"delta"}else{"full"},"baseRelease":release.baseline,
         "userResourceRoot":paths.user,"showcaseLibraryRoot":paths.showcase,"configuration":paths.policy,
         "currentResource":installed,"currentShowcase":pointer["current"],"recoveryRequired":transaction.is_some(),"requiresDesktopClosed":true}),
     )
@@ -143,6 +174,9 @@ pub(super) fn apply_with_progress(
 ) -> Result<Value> {
     let next_config = configuration(options, paths, release)?;
     let mut journal = pending(options, paths, release)?;
+    if journal.is_none() {
+        incremental_baseline(options, paths, release, cancel)?;
+    }
     fs::ensure(&paths.user)?;
     showcase::initialize(paths)?;
     let context_file = options.runtime.join("offline-install-context.json");

@@ -9,10 +9,11 @@ const { createHash }: typeof import('node:crypto') = require('node:crypto');
 const { planRelease, applyRelease }: typeof import('../lib/offline-release') = require('../lib/offline-release');
 const { noLinks, readBytes, writeAtomic, mkdir }: typeof import('../lib/resource-install-fs') = require('../lib/resource-install-fs');
 
-const HELP = `offline:pack --showcase-root <published-directory> --release <safe-id> --out <new-output-parent> [--root <project>] [--apply]
+const HELP = `offline:pack --showcase-root <published-directory> --release <safe-id> --out <new-output-parent> [--root <project>] [--base-release <previous release.json>] [--apply]
 Default: read-only plan and source hashing. --help/--plan do not read target files.
 --apply: Windows-only verified export, ZIP and companion installer. Never overwrites releases.
 Exports only serviceable assets and the current showcase manifest's original/thumbnail files.
+--base-release: incremental ZIP; unchanged bytes are reused from that installed release. No previous asset reads.
 No model calls, downloads, content rewrites, public upload, private references or local model candidates.
 New-machine installer uses Windows PowerShell/.NET and the installed Rust executable, not Node.
 The graphical helper pins independently published release.json approvals; unknown editions fail closed.
@@ -21,7 +22,7 @@ function parse(argv: string[]) {
   const flags: Record<string, string | true> = {};
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
-    if (!['--root', '--showcase-root', '--release', '--out', '--apply'].includes(flag) || Object.hasOwn(flags, flag)) throw new Error('Unknown or duplicate option: ' + flag);
+    if (!['--root', '--showcase-root', '--release', '--out', '--base-release', '--apply'].includes(flag) || Object.hasOwn(flags, flag)) throw new Error('Unknown or duplicate option: ' + flag);
     if (flag === '--apply') flags[flag] = true;
     else { const value = argv[++i]; if (!value || value.startsWith('--')) throw new Error('Missing value: ' + flag); flags[flag] = value; }
   }
@@ -33,7 +34,8 @@ async function main(argv = process.argv.slice(2)) {
   const flags = parse(argv);
   const root = path.resolve(String(flags['--root'] || path.resolve(__dirname, '../..')));
   const destination = path.join(path.resolve(String(flags['--out'])), String(flags['--release']));
-  const plan = planRelease({ root, showcaseRoot: path.resolve(String(flags['--showcase-root'])), releaseId: String(flags['--release']), destination });
+  const plan = planRelease({ root, showcaseRoot: path.resolve(String(flags['--showcase-root'])), releaseId: String(flags['--release']), destination,
+    ...(flags['--base-release'] ? { baseRelease: path.resolve(String(flags['--base-release'])) } : {}) });
   if (!flags['--apply']) { console.log(JSON.stringify({ ...plan.summary, applied: false, archive: destination + '.zip' }, null, 2)); return; }
   if (process.platform !== 'win32') throw new Error('Offline ZIP publication is currently Windows only');
   const output = path.dirname(destination);

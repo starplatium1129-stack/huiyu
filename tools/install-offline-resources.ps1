@@ -100,6 +100,7 @@ function Invoke-NativeImport([string]$Package, [switch]$Probe) {
     $result = $output | ConvertFrom-Json
     if ($Probe) {
       if (-not $result.ok -or $result.usage -notmatch '--cancel-stdin') { throw 'USAGE: This runtime does not support --cancel-stdin. Install the matching new desktop build first.' }
+      if ($release.mode -eq 'delta' -and $result.offlineDelta -ne $true) { throw 'USAGE: This incremental resource ZIP needs a desktop build supporting offlineDelta. Update the desktop app first.' }
       return
     }
     if (-not $result.ok -or $result.kind -ne 'huiyu-offline-import-result') { throw 'Native import did not confirm success.' }
@@ -192,7 +193,7 @@ try {
   if ($seen.Count -ne $expected.Count) { throw 'ZIP is incomplete.' }
   # Fail during graphical verification, before inviting the user to install or
   # extracting gigabytes with an incompatible native runtime.
-  if ($ProgressState) { Invoke-NativeImport '' -Probe }
+  if ($ProgressState -or (($Apply -or $Verify) -and $release.mode -eq 'delta')) { Invoke-NativeImport '' -Probe }
   # TEMP may use an 8.3 alias; the native importer requires the physical long path.
   $tempRoot = [IO.Path]::GetFullPath((Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Temp')) + '\'
   if ($Apply) {
@@ -262,7 +263,7 @@ try {
     }
   }
   if (-not $Apply) {
-    @{ ok=$true; mode='preview'; releaseId=$release.releaseId; appVersion=$release.appVersion; files=$seen.Count;
+    @{ ok=$true; mode='preview'; packageMode=$(if ($release.mode -eq 'delta') { 'delta' } else { 'full' }); baseReleaseId=$release.baseRelease.releaseId; releaseId=$release.releaseId; appVersion=$release.appVersion; files=$seen.Count;
        bytes=$totalBytes; verified=[bool]$Verify; runtimeRoot=$runtimePath; installDir=$installPath;
        releaseSha256=$ExpectedReleaseSha256; trustedSource=$trustedSource } | ConvertTo-Json
     return

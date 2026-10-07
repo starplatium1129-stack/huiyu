@@ -61,6 +61,18 @@ showcase/thumbs/...             # 当前清单引用的缩略图
 
 ## 维护者发行
 
+### 已有资源机器的增量 ZIP
+
+`offline:pack` 增加 `--base-release <旧包的 release.json>`。完整包继续用于新机器；增量包只包含基础资源和画册的新增/变化文件，以及完整目标清单，不重复携带未变化的图片。旧包只读取发行元数据，不需要再次解压或读取旧图片；也可以以上一增量包的 `release.json` 为基线继续制作下一批。
+
+```powershell
+npm run wf -- offline:pack --showcase-root "D:\HuiyuContent\SceneShowcase\已发布版本" --base-release "D:\HuiyuReleases\旧版\release.json" --release huiyu-resources-delta-r2 --out "D:\HuiyuReleases\delta-r2" --apply
+```
+
+增量导入需要包含此功能的配套桌面构建；正式 1.9.1 的原生导入器尚不支持。助手按 `offlineDelta` 能力识别，在解压前拒绝旧程序。助手显示“增量包”和要求的基础版本，原生导入核对本机资源身份与已安装样张种子的发行指纹；新机器、其他基线或缺损资源不能当作匹配基线。匹配后，未打包文件从本机旧版复制到新版本目录，用户自己修改、新增或删除的样张继续按现有合并规则保留，最后通过原有事务切换；旧版仍可回退。减少的是下载和解压的包体积，本机安装仍需要新版本目录及旧版保留的磁盘空间。
+
+增量包与完整包使用同一外部审批、ZIP 字节校验、退出桌面要求、取消和恢复流程。制作候选不会自动加入受信清单，也不会上传、安装或发布；公开分发仍需独立批准新版助手与 ZIP。
+
 在源码维护机器准备当前 Node 开发工具，再显式指定已发布的样张目录与一个新的输出目录。这一阶段的 Node 打包命令不应带到安装机执行；`build:runtime` 生成维护脚本的运行文件，不构建产品 Rust 网关。预览会读取并哈希明确来源，`--help` / `--plan` 不读取目标；`--apply` 只在 Windows 实际复制和生成 ZIP，不覆盖既有发行：
 
 ```powershell
@@ -84,7 +96,7 @@ npm run wf -- offline:prerequisites-prepare -Out "D:\HuiyuReleases\prerequisites
 
 准备入口固定使用微软 HTTPS 来源，核对有效微软签名、实际字节、文件版本和 SHA-256，生成 `prerequisites.json`、离线 EXE、校验文件及安装说明。下载过的 EXE 不会被准备工具执行。公开发行时保留微软文件原样并附对应分发条件；目标机实际安装和原生加载需要另验。
 
-资源单独建立 GitHub Release 时，不设为程序的 latest，避免影响现有 `/releases/latest/download/latest.json` 更新入口。当前完整包与现有 `resource:pack` 增量候选是不同入口；本次新机 ZIP 导入只接受完整发行，增量候选继续走已有资源生命周期审批流程。
+资源单独建立 GitHub Release 时，不设为程序的 latest，避免影响现有 `/releases/latest/download/latest.json` 更新入口。面向用户的完整/增量 ZIP 统一使用 `offline:pack` 和配套原生导入器；`resource:pack` 仍是基础 assets 的独立候选入口，不含画册发行。
 
 原生发行材料、签名、真实权重/设备与视觉验收仍按[工程契约](../engineering-contracts.md)和[桌面部署指南](../desktop-deployment.md)核对，导出字节通过不能代替这些条件。
 

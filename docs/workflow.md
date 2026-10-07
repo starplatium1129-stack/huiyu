@@ -230,7 +230,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 本地 ZIP 图形安装可双击 `tools/Install-OfflineResources.cmd`；维护入口为 `offline:assistant`。助手从内置官方独立审批清单识别包，流式校验全部文件，用户确认退出绘遇后才调用原生 `offline-import`。支持进度、安全取消及同包恢复；不下载、不自动关闭应用、不改互斥或用户修改保护。图形助手需要本次支持 `--cancel-stdin` 的原生程序；尚未发布或安装，旧 1.8.0 安装程序不能视为已具备此能力。
 
-面向新机器的完整发行使用 `offline:pack --showcase-root <已发布样张目录> --release <安全版本ID> --out <新输出父目录> [--root <项目根>] [--apply]`。默认只读规划并核对真实来源字节；Windows `--apply` 导出可服务 assets 与样张清单实际引用的原图/缩略图，生成 ZIP、两种 SHA-256 及独立 PowerShell 安装入口。新机解压/原生导入不依赖 Node 或源码，外部审批指纹绑定 release.json 原始字节。导入前需退出桌面；默认自动解析用户资源库与独立可维护样张库，升级保留用户样张和旧版。完整步骤和发行边界见[离线资源安装与发行](guides/offline-resources.md)。此入口只导出已有素材，不安装模型、上传或生成/审核图片。
+面向新机器的完整发行使用 `offline:pack --showcase-root <已发布样张目录> --release <安全版本ID> --out <新输出父目录> [--root <项目根>] [--apply]`。已有资源的机器可增加 `--base-release <旧release.json>` 生成增量 ZIP，仅携带新增/变化的 assets 与画册图片、完整目标清单及基线身份；旧包只读元数据，可以上一增量继续制作。默认只读规划并核对真实来源字节；Windows `--apply` 生成 ZIP、两种 SHA-256 及独立 PowerShell 安装入口。导入不依赖 Node 或源码，外部审批指纹绑定 release.json 原始字节；增量要求配套原生 `offlineDelta` 能力（正式 1.9.1 不支持），匹配基础发行后从本机复用未变化文件，保留用户修改、旧版及事务恢复。导入前需退出桌面。完整步骤和发行边界见[离线资源安装与发行](guides/offline-resources.md)。此入口只导出已有素材，不安装模型、上传或生成/审核图片。
 
 `offline:prerequisites-plan -Out <新目录>` 只读预览微软 VC++ x64 离线材料；`offline:prerequisites-prepare -Out <新目录>` 显式下载并核对有效微软签名、版本与真实字节/SHA-256，整批完成后发布新目录，不执行安装。将其离线 EXE、回执与说明作为发行前置附件，新机由用户完成 UAC 安装；WebView2 由本次 NSIS offlineInstaller 配置提供，二者用途不同。
 

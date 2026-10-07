@@ -76,7 +76,9 @@ function Get-OfflineError([string]$Message) {
   $hint = switch -Regex ($Message) {
     'UNTRUSTED_RELEASE|approval|identity mismatch' { '资源包未获当前助手批准。请从官方来源取得匹配的助手和 ZIP；不要使用包内哈希代替审批。'; break }
     'LOCK|BUSY|lease|占用|锁' { '运行目录正在使用中。请保存工作，从托盘完全退出绘遇，等待退出完成后点击「重试安装」。'; break }
-    'USAGE|Unknown.*argument' { '当前程序版本尚不支持图形助手的安全取消功能。请安装配套新版绘遇，再重试。'; break }
+    'offlineDelta' { '此增量包需要支持增量资源导入的新版绘遇。请先更新程序，再选择同一增量 ZIP。'; break }
+    'BASELINE_MISMATCH|BASELINE_REQUIRED|基线|基础资源' { '此增量包与本机资源版本不匹配。请先安装标明的基础资源包，或选择适合当前版本的增量包；新机器使用完整包。'; break }
+    'USAGE|Unknown.*argument' { '当前程序版本尚不支持此资源助手的导入功能。请安装配套新版绘遇，再重试。'; break }
     'CANCELLED|cancelled|取消|TIMEOUT' { '任务已取消或超时，未确认安装完成。若已进入原生安装阶段，请先用同一 ZIP 重试完成恢复，再启动绘遇；待恢复事务可能阻止程序启动。'; break }
     'space|disk|空间' { '可用磁盘空间不足。请为临时解压目录与资源库准备空间后重试。'; break }
     'UnauthorizedAccess|Access.*denied|拒绝访问|权限' { '当前用户无法写入所选目录。请在高级选项选择自己的可写运行目录；不要以其他管理员身份运行助手，以免安装到其他用户的资料中。'; break }
@@ -238,6 +240,7 @@ $timer.Add_Tick({
     $controls.Progress.Value = 100
     $controls.Status.Text = '校验通过 · 等待确认安装'
     $controls.Details.Text = "版本：$($state.Result.releaseId)`r`n文件：$($state.Result.files) 项，解压后 $([Math]::Round($state.Result.bytes / 1GB, 2)) GiB`r`n程序：$($state.Result.installDir)`r`n运行目录：$($state.Result.runtimeRoot)`r`n`r`n批准来源：$($state.Result.trustedSource)`r`n审批指纹：$($state.Result.releaseSha256)"
+    if ($state.Result.packageMode -eq 'delta') { $controls.Details.Text = "增量包 · 基础版本：$($state.Result.baseReleaseId)`r`n只解压新增/变化文件，其余从本机资源库复用。`r`n`r`n" + $controls.Details.Text }
     $resume = @(Get-OfflineResumeRecords $ui.Preview)
     $ui.Staging = if ($resume.Count) { $resume[0].staging } else { $null }
     $controls.Install.Content = if ($ui.Staging) { '继续安装' } else { '确认安装' }

@@ -48,6 +48,34 @@ test('planning is zero-write, preserves showcase bytes and excludes private/code
   assert.deepEqual(fs.readFileSync(path.join(f.showcaseRoot, 'manifest.json')), before);
   assert.deepEqual(plan.releaseBytes, planRelease(f).releaseBytes);
 });
+test('incremental releases carry only changed bytes, retain complete target metadata and can be chained', async t => {
+  const f = fixture(t), baseline = planRelease(f);
+  await applyRelease(baseline);
+  const oldRelease = path.join(f.destination, 'release.json');
+  f.write(path.join(f.root, 'assets/characters/popular-test.png'), 'updated-portrait');
+  f.write(path.join(f.showcaseRoot, 'images/artist_rella.jpg'), 'new-artist');
+  f.write(path.join(f.showcaseRoot, 'thumbs/artist_rella.jpg'), 'new-artist-thumb');
+  f.write(path.join(f.showcaseRoot, 'manifest.json'), JSON.stringify({ entries: [
+    { id: 'sc1000', title: 'test', rating: 'R18', type: 'scene', provenance: { batch: 'original' } },
+    { id: 'artist_rella', title: 'Rella', char: 'rella', type: 'artist', rating: 'All' },
+  ] }));
+  // Previous media need not remain on the publishing machine; only release.json is consulted.
+  fs.unlinkSync(path.join(f.destination, 'showcase/images/sc1000.jpg'));
+  const plan = planRelease({ ...f, releaseId: 'fixture-r2', destination: path.join(f.base, 'output/r2'), baseRelease: oldRelease });
+  const names = plan.inputs.map(input => input.path);
+  assert.deepEqual(names.filter(name => !name.endsWith('manifest.json') && !name.endsWith('delta.json')).sort(), [
+    'pack/assets/characters/popular-test.png', 'showcase/images/artist_rella.jpg', 'showcase/thumbs/artist_rella.jpg',
+  ]);
+  const metadata = JSON.parse(plan.releaseBytes.toString('utf8'));
+  assert.equal(metadata.baseRelease.releaseSha256, digest(baseline.releaseBytes));
+  assert.equal(metadata.showcase.entries.length, 5);
+  assert.equal(metadata.showcase.payloadEntries.length, 3);
+  assert.equal(metadata.resourcePack.entries.length, 4);
+  await applyRelease(plan);
+  const chained = planRelease({ ...f, releaseId: 'fixture-r3', destination: path.join(f.base, 'output/r3'), baseRelease: path.join(plan.options.destination, 'release.json') });
+  assert.deepEqual(chained.inputs.map(input => input.path).sort(), ['pack/delta.json', 'pack/manifest.json', 'showcase/manifest.json']);
+  assert.equal(chained.summary.reusedFiles, 8);
+});
 test('unsafe/missing/duplicate showcase metadata and overlapping output fail before publication', t => {
   const f = fixture(t);
   assert.throws(() => planRelease({ ...f, destination: f.showcaseRoot }), /separate/);

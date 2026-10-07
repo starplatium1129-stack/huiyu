@@ -126,7 +126,7 @@ pub async fn cli(args: &[String]) -> Result<Option<Value>> {
     }
     if args.len() == 2 && ["--help", "-h"].contains(&args[1].as_str()) {
         return Ok(Some(
-            json!({"ok":true,"usage":"huiyu-runtime offline-import --package-root <absolute extracted directory> --expected-release-sha256 <SHA256 from trusted release page> --app-root <installed gateway> --runtime-root <user gateway directory> [--apply] [--cancel-stdin]","preview":"Default: validate all files without writing. Close the desktop application before --apply. Repeat the same command to recover an interrupted import.","cancellation":"With --cancel-stdin, a byte or EOF on stdin requests cooperative cancellation."}),
+            json!({"ok":true,"offlineDelta":true,"usage":"huiyu-runtime offline-import --package-root <absolute extracted directory> --expected-release-sha256 <SHA256 from trusted release page> --app-root <installed gateway> --runtime-root <user gateway directory> [--apply] [--cancel-stdin]","preview":"Default: validate all files without writing. Close the desktop application before --apply. Repeat the same command to recover an interrupted import.","cancellation":"With --cancel-stdin, a byte or EOF on stdin requests cooperative cancellation."}),
         ));
     }
     let options = parse(args)?;
