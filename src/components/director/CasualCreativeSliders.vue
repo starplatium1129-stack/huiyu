@@ -67,6 +67,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
+  (e: 'update:sdParams', params: SDParams): void
   (e: 'touch-sd', key: keyof SDParams): void
   (e: 'patch-anima', patch: Partial<AnimaGenerationState>): void
 }>()
@@ -98,7 +99,7 @@ const currentSteps = computed(() => {
 function onCfgInput(event: Event) {
   const val = Number((event.target as HTMLInputElement).value)
   if (props.drawEngine === 'sd') {
-    props.sdParams.cfg = val
+    emit('update:sdParams', { ...props.sdParams, cfg: val })
     emit('touch-sd', 'cfg')
   } else {
     emit('patch-anima', { cfg: val })
@@ -108,7 +109,7 @@ function onCfgInput(event: Event) {
 function onStepsInput(event: Event) {
   const val = Number((event.target as HTMLInputElement).value)
   if (props.drawEngine === 'sd') {
-    props.sdParams.steps = val
+    emit('update:sdParams', { ...props.sdParams, steps: val })
     emit('touch-sd', 'steps')
   } else {
     emit('patch-anima', { steps: val })

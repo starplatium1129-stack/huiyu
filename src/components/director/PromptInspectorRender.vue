@@ -44,7 +44,7 @@
       v-if="pb.directorMode !== 'pro'"
       :draw-engine="drawEngine"
       :disabled="generationBusy"
-      :sd-params="pb.sdParams"
+      v-model:sd-params="pb.sdParams"
       :anima-state="animaState"
       @touch-sd="pb.markParamTouched"
       @patch-anima="patchAnimaState"
