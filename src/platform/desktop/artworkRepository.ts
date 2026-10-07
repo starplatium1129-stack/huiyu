@@ -29,7 +29,15 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   let historyLoaded = false, projectsLoaded = false
   let loadedRecent: ArtworkRecord[] = [], recentLoaded = false
   let loadedPreferences: unknown[] | undefined
-  let loadedSearchIndex: ArtworkSearchRecord[] | undefined
+  let loadedSearchIndex: { items: ArtworkSearchRecord[]; revision: number; session: string; writerEpoch: string } | undefined
+  let searchSequence = 0, historySearchSession: string | undefined
+  function searchSession() {
+    requireAuthority()
+    const runtime = getDesktopRuntime().bootstrap!.runtime!
+    return JSON.stringify([runtime.origin, runtime.runtimeEpoch, runtime.workspace!.workspaceId,
+      runtime.workspace!.runtimeEpoch, runtime.workspace!.generation])
+  }
+  function invalidateSearchIndex() { loadedSearchIndex = undefined; searchSequence++ }
   async function list(includeDeleted = false, projection?: 'preference', signal?: AbortSignal): Promise<Row[]> {
     const rows: Row[] = []
     let cursor: string | null = null
@@ -46,10 +54,12 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   async function readHistory(signal?: AbortSignal) {
     signal?.throwIfAborted()
     if (getDesktopRuntime().connection !== 'ready' && historyLoaded) return structuredClone(loadedHistory)
+    const session = searchSession()
     loadedHistory = parseArtworkRecords((await list(false, undefined, signal)).map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
     historyLoaded = true
+    historySearchSession = session === searchSession() ? session : undefined
     recentLoaded = false
-    loadedSearchIndex = undefined
+    invalidateSearchIndex()
     return structuredClone(loadedHistory)
   }
   async function readArtwork(id: string | number, signal?: AbortSignal) {
@@ -83,15 +93,36 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   }
   async function readSearchIndex(signal?: AbortSignal) {
     signal?.throwIfAborted()
-    requireAuthority()
+    const session = searchSession()
+    if (loadedSearchIndex && loadedSearchIndex.session !== session) invalidateSearchIndex()
     if (getDesktopRuntime().connection !== 'ready') {
-      if (loadedSearchIndex) return structuredClone(loadedSearchIndex)
-      if (historyLoaded) return buildArtworkSearchIndex(loadedHistory)
+      if (loadedSearchIndex) return structuredClone(loadedSearchIndex.items)
+      if (historyLoaded && historySearchSession === session) return buildArtworkSearchIndex(loadedHistory)
     }
-    const result = await workspaceRequest<{ items: unknown }>({ kind: 'readArtworkSearchIndex' }, signal)
-    signal?.throwIfAborted()
-    loadedSearchIndex = parseArtworkSearchIndex(result.items)
-    return structuredClone(loadedSearchIndex)
+    const sequence = ++searchSequence
+    const writerEpoch = getDesktopRuntime().bootstrap!.runtime!.workspace!.runtimeEpoch
+    function checkRead() {
+      signal?.throwIfAborted()
+      if (searchSession() !== session || searchSequence !== sequence) throw new Error('作品库在读取期间发生变更，请重新读取')
+    }
+    if (loadedSearchIndex) {
+      const cached = loadedSearchIndex
+      checkRead()
+      const status = await workspaceRequest<{ revision: number; writerEpoch: string }>({ kind: 'status' }, signal)
+      checkRead()
+      if (status.writerEpoch !== writerEpoch) {
+        invalidateSearchIndex(); historySearchSession = undefined
+        throw new Error('工作区连接已变化，请重新读取')
+      }
+      if (status.revision === cached.revision && status.writerEpoch === cached.writerEpoch) return structuredClone(cached.items)
+    }
+    checkRead()
+    const result = await workspaceRequest<{ items: unknown; revision: number }>({ kind: 'readArtworkSearchIndex' }, signal)
+    checkRead()
+    if (!Number.isSafeInteger(result.revision) || result.revision < 0) throw new Error('作品搜索索引无效')
+    // The index owns its revision: a status read must never relabel an older snapshot.
+    loadedSearchIndex = { items: parseArtworkSearchIndex(result.items), revision: result.revision, session, writerEpoch }
+    return structuredClone(loadedSearchIndex.items)
   }
   async function readPreferenceHistory() {
     if (getDesktopRuntime().connection !== 'ready' && (loadedPreferences || historyLoaded)) return preferenceHistoryRows(loadedPreferences ?? loadedHistory)
@@ -110,7 +141,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (!current) return null
     const result = await workspaceRequest<Receipt>({ kind, id, operationId: crypto.randomUUID(), expectedRevision: current.revision, ...extra })
     historyLoaded = false; projectsLoaded = false; recentLoaded = false
-    loadedSearchIndex = undefined
+    invalidateSearchIndex()
     return result
   }
   async function softDeleteArtworks(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]> {
@@ -131,7 +162,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       receipt = operation.receipt
     }
     historyLoaded = false; projectsLoaded = false; recentLoaded = false
-    loadedSearchIndex = undefined
+    invalidateSearchIndex()
     const deleted = new Set((receipt.softDeleteResults ?? []).filter(item => item.deleted).map(item => String(item.id).trim()))
     return requested.map(id => ({ id, deleted: deleted.has(String(id).trim()) }))
   }
@@ -143,7 +174,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       if (operation?.state !== 'committed' || !operation.receipt) throw error
       result = operation.receipt
     }
-    historyLoaded = false; projectsLoaded = false; recentLoaded = false; loadedPreferences = undefined; loadedSearchIndex = undefined
+    historyLoaded = false; projectsLoaded = false; recentLoaded = false; loadedPreferences = undefined; invalidateSearchIndex()
     return structuredClone(result)
   }
   async function organizeArtworks(input: ArtworkOrganizationRequest) {
@@ -227,7 +258,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       await workspaceRequest({ kind: 'appendArtwork', operationId: `artwork:${String(artwork.id)}`, artwork: structuredClone(artwork) })
       historyLoaded = false
       recentLoaded = false
-      loadedSearchIndex = undefined
+      invalidateSearchIndex()
     },
     async patchArtwork(id, patch) { return { updated: Boolean((await mutate('patchArtwork', id, { patch }))?.changed) } },
     async patchArtworks(patches) { for (const item of patches) await mutate('patchArtwork', item.id, { patch: item.patch }) },
