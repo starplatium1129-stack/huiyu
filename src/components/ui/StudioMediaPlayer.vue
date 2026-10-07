@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<{
   transcript?: string
 }>(), { kind: 'video', poster: '', captionsSrc: '', transcript: '' })
 
+const emit = defineEmits<{ play: [] }>()
 const container = ref<HTMLElement | null>(null)
 const media = ref<HTMLMediaElement | null>(null)
 const taskMedia = useTaskMediaSource(() => props.src)
@@ -124,12 +125,14 @@ watch(() => props.src, () => {
   failed.value = false
 })
 
-onDeactivated(() => {
+function pause() {
   playRevision++
   resumePlaying = false
   playing.value = false
   media.value?.pause()
-})
+}
+onDeactivated(pause)
+defineExpose({ pause })
 onBeforeUnmount(() => {
   playRevision++
   document.removeEventListener('fullscreenchange', syncFullscreen)
@@ -154,7 +157,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       @click="togglePlay"
       @loadedmetadata="onLoadedMetadata"
       @timeupdate="onTimeUpdate"
-      @play="playing = true"
+      @play="playing = true; emit('play')"
       @pause="playing = false"
       @ended="onEnded"
       @volumechange="muted = ($event.target as HTMLMediaElement).muted"
@@ -171,7 +174,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       preload="metadata"
       @loadedmetadata="onLoadedMetadata"
       @timeupdate="onTimeUpdate"
-      @play="playing = true"
+      @play="playing = true; emit('play')"
       @pause="playing = false"
       @ended="onEnded"
       @volumechange="muted = ($event.target as HTMLMediaElement).muted"
