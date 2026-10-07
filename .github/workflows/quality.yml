@@ -119,9 +119,10 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             runtime-rs/target
-          key: ${{ runner.os }}-runtime-1.98.1-${{ hashFiles('runtime-rs/Cargo.lock') }}-${{ hashFiles('runtime-rs/**/*.rs') }}
+          # Keep debug/check artifacts separate from Rust Runtime's release-only cache.
+          key: ${{ runner.os }}-quality-runtime-1.98.1-${{ hashFiles('runtime-rs/Cargo.lock') }}-${{ hashFiles('runtime-rs/**/*.rs') }}
           restore-keys: |
-            ${{ runner.os }}-runtime-1.98.1-${{ hashFiles('runtime-rs/Cargo.lock') }}-
+            ${{ runner.os }}-quality-runtime-1.98.1-${{ hashFiles('runtime-rs/Cargo.lock') }}-
       - name: Prepare selected Rust toolchain
         if: steps.plan.outputs.rustToolchain == 'true'
         run: |

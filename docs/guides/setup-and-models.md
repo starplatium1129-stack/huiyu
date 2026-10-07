@@ -15,7 +15,7 @@
 | 旧 SD/WAI 作品 | 新生成已在源码退役，保留旧作品、配方原值、原任务查询／取消 | 不跨引擎冒充恢复原生成参数；可选择沿用文本、画风与构图 |
 | 本地视频 | ComfyUI、Wan 或 H3 的完整权重与节点、可用 FFmpeg | `/api/video/status`，生成并播放短片，H3 另验音频 |
 | 本地对话 | 绘遇受管 llama.cpp 与所选 GGUF；显存较少优先 API；已有 Ollama 可保留连接 | 一次短对话、取消与绘图后的按需恢复；实际速度按设备记录 |
-| 中日翻译＋角色 AI 配音 | 下述 M2M100 模型与 Python 依赖；GPT-SoVITS 环境、基础预训练组件、已授权的角色 GPT/SoVITS 权重、参考音频及对应原文 | `/api/tts/status`，分别验翻译、日文/中文配音和口型 |
+| 中日翻译＋角色 AI 配音 | 下述 M2M100 与 Python 依赖；按所选引擎准备 GPT-SoVITS 环境及角色双权重，或 VoxCPM2 环境、基座与角色 LoRA；两者都需参考音频及原文 | `/api/tts/status`，分别验翻译、配音和口型 |
 
 远程 API、Ollama 云端模型、公网分享、在线下载和更新需要联网；选择这些能力不属于离线验收。默认图片和台词预览不证明 AI 生成可用。浏览器/系统语音也需本机已安装的对应语言声音。
 
@@ -23,7 +23,7 @@
 
 ### Windows 原生前置：VC++ x64 离线安装材料
 
-当前 ONNX Runtime DLL 需要 `MSVCP140*` 与 `VCRUNTIME140*`。WebView2 离线材料和这些 VC++ 运行库是不同的前置；能够浏览素材不代表 WD14 已可推理。在联网准备机用以下入口准备微软原始安装器：
+已发布的 1.9.1 包仍含带有 VC++ x64 导入项的 ORT DLL；后续源码已退出 ORT 依赖和新包载荷，不据旧 DLL 的导入项推断新包前置条件。新构建仍须按实际原生程序和模型环境核对运行库。WebView2 与 VC++ 运行库用途不同，安装它们不等于已准备 PixAI 所需的 Python、CUDA/PyTorch 与权重。在联网准备机可用以下入口准备微软原始安装器：
 
 ```powershell
 # 默认只打印计划；不会下载、安装或写目录
@@ -34,7 +34,7 @@
 
 该入口只使用微软官方 `aka.ms/vc14/vc_redist.x64.exe`，验证有效的微软 Authenticode 签名，记录实际字节、SHA-256、文件版本和来源；全部完成才发布输出目录。签名证明这份微软材料的来源，不授予素材包或其他程序安装授权。准备机不执行安装，公开分发前仍需按微软条款核对分发资格。[微软下载与版本要求](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)
 
-把 `vc_redist.x64.exe`、对应 `.sha256` 和 `prerequisites.json` 与绘遇发行附件一起带到新机，校验值从受信发行说明取得。**新机用户先手动运行微软 x64 安装器，处理许可、UAC 与可能的重启，再安装绘遇、完全退出、导入素材包并重启。** 不从旧机复制系统 DLL。完成模型配置后另做一次断网 WD14 反推，不能以安装器退出或图片包导入成功替代推理验收。
+把 `vc_redist.x64.exe`、对应 `.sha256` 和 `prerequisites.json` 与绘遇发行附件一起带到新机，校验值从受信发行说明取得。**新机用户先手动运行微软 x64 安装器，处理许可、UAC 与可能的重启，再安装绘遇、完全退出、导入素材包并重启。** 不从旧机复制系统 DLL。需要图片反推时，完成 PixAI 配置后另做一次断网反推，不能以安装器退出或图片包导入成功替代推理验收。
 
 ## 2. 目录与运行时的对应关系
 
@@ -42,12 +42,12 @@
 
 ```powershell
 $env:AI_WORKSPACE_ROOT = 'D:\HuiyuAI'
-$env:AICS_WD14_MODEL_DIR = 'D:\HuiyuAI\Interrogate'
+$env:AICS_PIXAI_CONFIG = 'D:\HuiyuAI\PixAI\runtime-config.json'
 $env:AICS_TRANSLATION_MODEL = 'D:\HuiyuAI\Voice\models\translation\m2m100_418m'
 $env:TRANSLATION_PYTHON = 'D:\HuiyuAI\GPT-SoVITS-env\python.exe'
 ```
 
-桌面端还要在「AI 工作区」设置中用「选择文件夹」选择 `D:\HuiyuAI`（或手动输入路径）；保存后完全退出并重启绘遇生效，不会自动移动文件或中断当前生成。已保存目录与本次运行目录可能不同，不能只改变终端的扫描变量。WD14/翻译的独立环境变量需由启动绘遇的进程继承。普通新机可以提前复制下述文件，不需要安装 Node 运行下载脚本。
+桌面端还要在「AI 工作区」设置中用「选择文件夹」选择 `D:\HuiyuAI`（或手动输入路径）；保存后完全退出并重启绘遇生效，不会自动移动文件或中断当前生成。已保存目录与本次运行目录可能不同，不能只改变终端的扫描变量。上面的 PixAI 配置必须先由准备入口生成；PixAI/翻译的独立环境变量需由启动绘遇的进程继承。普通新机可以提前复制下述文件，不需要安装 Node 运行下载脚本。
 
 ```text
 D:\HuiyuAI\
@@ -56,17 +56,17 @@ D:\HuiyuAI\
 │     ├─ diffusion_models\     # Anima / Krea 2 / Wan / H3 的所选底模
 │     ├─ text_encoders\        # 各模型专用编码器
 │     ├─ vae\                  # 图像、视频、音频 VAE
-│     ├─ checkpoints\          # WAI（使用 ComfyUI 路径时）
 │     ├─ loras\                # 所选角色/风格/视频加速 LoRA
 │     └─ upscale_models\       # 可选超分权重
-├─ Interrogate\
-│  ├─ wd-v1-4-moat-tagger-v2.onnx
-│  └─ wd-v1-4-moat-tagger-v2.csv
+├─ PixAI\                     # 本机准备入口生成；Python/Torch 另按配置提供
+│  ├─ model\                  # 固定权重、代码与配置
+│  ├─ deps\                   # 独立 timm 依赖
+│  └─ runtime-config.json     # 指向本机解释器、模型与依赖的绝对路径
 ├─ GPT-SoVITS-env\             # 翻译和语音的已准备 Python 环境
 └─ Voice\                     # GPT-SoVITS、声线、参考音频、翻译模型
 ```
 
-Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/models`，源码服务缺省为应用同级 `AI/ComfyUI/models`，桌面使用选定的 AI 工作区。WD14 若未指定独立目录，还扫描 AI 工作区的 Tagger 目录与 `appRoot/runtime/models/interrogate`，不会自动从 `AICS_RUNTIME_ROOT/models/interrogate` 读取。独立 ComfyUI 若放在其他目录，可通过受控目录链接/上游模型配置使双方引用同一批真实文件；仅修改 `COMFY_HOST` 不会改变本机权重检查目录。`COMFYUI_MODELS_ROOT` **只改变体检扫描**，体检会报告它是否与网关目录一致。
+Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/models`，源码服务缺省为应用同级 `AI/ComfyUI/models`，桌面使用选定的 AI 工作区。PixAI 的配置查找顺序见下方准备说明；旧 `AICS_WD14_MODEL_DIR` 不配置现行反推。独立 ComfyUI 若放在其他目录，可通过受控目录链接/上游模型配置使双方引用同一批真实文件；仅修改 `COMFY_HOST` 不会改变本机权重检查目录。`COMFYUI_MODELS_ROOT` **只改变体检扫描**，体检会报告它是否与网关目录一致。
 
 上游只支持本机 loopback：`SD_HOST` 默认 `http://127.0.0.1:7860`，`COMFY_HOST` 默认 `http://127.0.0.1:8188`，`TTS_HOST` 默认 `http://127.0.0.1:9880`。地址/角色声线可在控制室保存；更换机器后重配参考音频和权重的绝对路径，不复制旧 PID 当作新服务已启动。
 
@@ -100,11 +100,13 @@ llama.cpp 固定 b10516，提供 CUDA 和进阶 Vulkan 运行包。默认纯文�
 
 ### PixAI 默认图片反推
 
-默认模型为 PixAI Tagger v1.0，权重约 1.95 GB，支持最多 20 MiB 图片。运行环境要求 Python 3.11 或更新版本；准备入口在下载或安装依赖前检查解释器版本，并将实际版本写入回执。执行 [PixAI 本机准备](../workflow.md#pixai-本机反推准备) 后，Rust 从选定 AI 工作区的 `PixAI/runtime-config.json` 或网关运行目录的 `pixai/runtime-config.json` 读取本机配置；`AICS_PIXAI_CONFIG` 可显式指定其他回执。准备入口复用已有 CUDA Torch 环境，仅在独立目录补齐 timm，不修改 ComfyUI。
+默认模型为 PixAI Tagger v1.0，权重约 1.95 GB，支持最多 20 MiB 图片。运行环境要求 Python 3.11 或更新版本；准备入口在下载或安装依赖前检查解释器版本，并将实际版本写入回执。执行 [PixAI 本机准备](../workflow.md#pixai-本机反推准备) 后，Rust 优先使用 `AICS_PIXAI_CONFIG` 显式指定的回执；未指定时依次查找网关运行目录的 `pixai/runtime-config.json`、选定 AI 工作区的 `PixAI/runtime-config.json`。显式回执或已找到的回执无效时，不自动改用另一配置。准备入口复用已有 CUDA Torch 环境，仅在独立目录补齐 timm，不修改 ComfyUI。换机或移动目录后须按新机路径重新生成回执，不能直接沿用旧机的绝对路径。
 
 首次反推需要加载模型，后续请求复用同一个 GPU 进程；不会在每张图结束或开始生图时自动卸载。取消活跃请求、进程故障或网关关闭会回收对应进程。显存不足明确报错，不自动变更模型或回退为演示标签。安装包只带 worker 和固定文件清单，Python 环境与权重仍需另行准备。
 
-### WD14 可选旧工具
+### WD14 旧维护工具（不用于现行桌面反推）
+
+WD14 ONNX 已退出 Rust 产品链；现行 `/api/interrogate/status` 只登记 PixAI。以下下载入口仅供仍需旧工具的维护者使用，新机器无需为绘遇反推准备 WD14，也不能用 WD14 文件齐全证明 PixAI 可用。
 
 [SmilingWolf 发布页](https://huggingface.co/SmilingWolf/wd-v1-4-moat-tagger-v2)提供 `model.onnx`（326,197,340 字节）和 `selected_tags.csv`（253,906 字节）。下载后分别命名为 `wd-v1-4-moat-tagger-v2.onnx`、`wd-v1-4-moat-tagger-v2.csv`；二者必须来自同一版本。支持 CPU，不承诺固定耗时。
 
@@ -117,7 +119,7 @@ node scripts/maintenance/download-wd14.js --target-dir 'D:\HuiyuAI\Interrogate' 
 npm run wf -- models:download-wd14 --target-dir 'D:\HuiyuAI\Interrogate'
 ```
 
-显式 `--modelscope` 使用第三方 ModelScope 副本，`--mirror` 使用 HF-Mirror；速度和可达性依网络决定，各来源均须匹配固定 SHA-256。桌面安装目录通常不可写，优先使用上面的外部目录，并让应用继承同一个 `AICS_WD14_MODEL_DIR`。安装器本身不自动下载 WD14。
+显式 `--modelscope` 使用第三方 ModelScope 副本，`--mirror` 使用 HF-Mirror；速度和可达性依网络决定，各来源均须匹配固定 SHA-256。旧维护工具使用外部可写目录，并通过 `AICS_WD14_MODEL_DIR` 选择；该变量不改变现行桌面反推引擎。安装器本身不自动下载 WD14。
 
 ### Anima：新机先选能无角色 LoRA 使用的底模
 
@@ -218,6 +220,8 @@ npm run wf -- models:download-h3 --models-root 'D:\HuiyuAI\ComfyUI\models'
 
 [GPT-SoVITS 官方安装说明](https://github.com/RVC-Boss/GPT-SoVITS)中除角色权重外，还有模型版本对应的预训练/语言组件。恢复完整版本环境、启动 `api_v2.py`，在控制室为每个角色设置 GPT 权重、SoVITS 权重、参考音频与音频实际原文；只复制一对角色 `.ckpt/.pth` 不足以实现离线声音生成。
 
+选用 VoxCPM2 时，控制室保存 `ttsEngine=voxcpm2`，角色配置使用 `loraWeightsPath`、参考音频与原文；无需为该引擎填写 GPT/SoVITS 双权重。基座与运行环境按[角色语音引擎](../workflow.md#角色语音引擎)准备。`models:check` 的每个声线报告标出所选引擎，并只检查对应角色文件；它不启动语音服务或证明实际发声通过。
+
 Ollama 安装后，在联网准备阶段先取得选定**本地**模型。迁移时同时复制模型目录中的 `blobs` 与 `manifests`，可用 `OLLAMA_MODELS` 指向新目录；Windows 默认在当前账户 `.ollama/models`。在 Ollama 进程环境中设置 `OLLAMA_NO_CLOUD=1` 并重启，避免把云端选项误算本地能力。模型名称、量化、上下文及 `ollama list` 结果一起记录，断网后使用同一个名称。[Ollama 官方 FAQ](https://docs.ollama.com/faq)
 
 ## 5. 体检、硬件与新机验收
@@ -230,8 +234,10 @@ npm run wf -- models:check --json
 npm run wf -- models:check --json --verify-hashes
 ```
 
-体检覆盖 Rust 图像/视频目录要求、WD14 与原生 DLL、WAI、角色/风格 LoRA、翻译文件/解释器、声线配置、Ollama 缓存线索。`missing` 是缺失/空文件；`file-present` 只证明有非空文件；`bytes-match` 只证明长度符合已知元数据；`sha256-match` 才证明已知权重字节一致。上游节点、Python 包、模型推理和设备性能均显示未验，不由扫描自动认证。
+此体检覆盖图像/视频目录要求、PixAI 配置与固定清单文件、Python/worker/timm/torch 路径、原生 DLL、角色/风格 LoRA、翻译文件/解释器、声线配置和 Ollama 缓存线索。PixAI 按网关相同的回执优先级与 `AICS_PIXAI_*` 路径覆盖选择目录；报告区分回执缺失、已读取和无效，不会从其他模型库拼凑缺失文件。旧 WAI 文件仍单列供保留链路诊断，WD14 不再作为现行反推扫描。
 
-硬件采购和资源安排应按目标能力分别估算：浏览不需要绘图 GPU；CPU 可承担 WD14/翻译但耗时须测；Anima/Krea/Wan/H3 的量化、分辨率、offloading 与显卡架构共同影响显存和内存。多 AI 服务共享资源，首次验收逐服务单独运行，从受支持的短任务开始，不承诺“大显存就能所有模型同时运行”。
+`missing` 是缺失/空文件；`file-present` 只证明有非空文件；`bytes-match` 只证明长度符合已知元数据；`sha256-match` 才证明已知权重字节一致。体检不会启动 Python 或加载模型，包的实际版本/可导入性、CUDA/BF16、上游节点与推理性能仍须另验。准备环境的只读核对用 `npm run wf -- models:prepare-pixai --target-dir 'D:\HuiyuAI\PixAI' --check`：默认复用目标回执保存的 Python/Torch 路径，显式参数和对应环境变量优先，回执损坏时明确失败；复查不会改写回执。应用运行状态用 `/api/interrogate/status` 查看。文件扫描不自动认证引擎就绪。
+
+硬件和资源安排应按目标能力分别核对：浏览不需要绘图 GPU；当前 PixAI worker 需要 CUDA 可用的 PyTorch 环境，不能套用旧 WD14 的 CPU 能力；Anima/Krea/Wan/H3 的量化、分辨率、offloading 与显卡架构共同影响显存和内存。多 AI 服务共享资源，首次验收逐服务单独运行，从受支持的短任务开始，不承诺“大显存就能所有模型同时运行”。
 
 每台新机的交付记录应包含：程序/素材版本与 SHA-256、实际模型文件清单和上游/依赖版本、GPU/内存、配置目录、**断网首次冷启动**及所选能力的一次真实产物。未授权私有资产或未执行能力标为未配置/未验；素材浏览完成与 AI 推理完成分开记录。

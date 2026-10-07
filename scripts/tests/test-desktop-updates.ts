@@ -84,6 +84,28 @@ test('desktop build binding rejects same-version stale sources, tampering and mi
     snapshot.mock.resetCalls(); binding.verifyDeployment(root, wrapper);
     assert.equal(fullScans(), 1, 'a wrapper does not trigger another complete build scan');
     snapshot.mock.restore();
+    fs.unlinkSync(path.join(root, 'source.ts'));
+    const deletedSource = binding.sourceIdentity(root);
+    assert.equal(deletedSource.status, 'complete');
+    assert.notEqual(deletedSource.sha256, source.sha256);
+    assert.throws(() => binding.verifyBuild(root), /源码与构建不匹配/);
+    assert.equal(git('diff', '--cached', '--name-only').length, 0, 'capture never stages the deletion');
+    assert.equal(identity.snapshot(root, [{ path:'source.ts', kind:'file' }]).status, 'incomplete', 'explicit missing inputs remain invalid');
+    const paths: typeof import('../lib/delivery-paths') = require('../lib/delivery-paths');
+    const originalResolve = paths.resolveSafe;
+    const inaccessible = t.mock.method(paths, 'resolveSafe', (selectedRoot: string, name: string, allowMissing?: boolean) => {
+      if (selectedRoot === root && name === 'source.ts') throw Object.assign(Error('fixture access denied'), { code:'EACCES' });
+      return originalResolve(selectedRoot, name, allowMissing);
+    });
+    assert.throws(() => binding.sourceIdentity(root), { code:'EACCES' });
+    inaccessible.mock.restore();
+    git('add', '--update', '--', 'source.ts');
+    assert.deepEqual(binding.sourceIdentity(root), deletedSource, 'staging identical deletion leaves source identity unchanged');
+    put('source.ts', 'A'); git('add', '--', 'source.ts');
+    const restoredSource = binding.sourceIdentity(root);
+    assert.equal(restoredSource.sha256, source.sha256);
+    assert.notEqual(restoredSource.sha256, deletedSource.sha256, 'restoring a file invalidates the deletion identity');
+    binding.verifyBuild(root);
     put('runtime/deployment-wrapper.exe', 'tampered wrapper');
     assert.throws(() => binding.verifyDeployment(root, wrapper), /封装产物已变化/);
     put(`${payload}.sig`, 'tampered signature');
@@ -179,7 +201,7 @@ test('local upgrade checks installed prerequisites before compression and wraps 
       process:{ ...process, argv:['node','fixture','--manual','--skip-build','--upgrade-only','--install-dir',installed] },
       require:(name:string) => name === '../lib/desktop-upgrade-installer' ? { buildUpgradeInstaller:async (_root:string, options:{installDir:string}) => {
         assert.equal(options.installDir, installed); return upgrade;
-      } } : name === './build-modern-installer' ? { buildModernInstaller:({payload,output}:{payload:string;output:string}) => {
+      } } : name === './build-modern-installer' ? { ...releaseRequire(name), buildModernInstaller:({payload,output}:{payload:string;output:string}) => {
         wrapped.push(payload); fs.writeFileSync(output, 'upgrade wrapper'); binding.bindDistribution(root,payload,output);
       } } : releaseRequire(name),
     });
@@ -331,7 +353,7 @@ async function releaseFixture(callback: any) {
   try {
     const gateway = 'desktop-tauri/src-tauri/resources/gateway';
     const sha = (value: string) => (require('node:crypto') as typeof import('node:crypto')).createHash('sha256').update(value).digest('hex');
-    const nativeFiles = ['libvips-42.dll', 'onnxruntime.dll'].map(name => {
+    const nativeFiles = ['libvips-42.dll'].map(name => {
       put(`${gateway}/native/${name}`, name); return { name, bytes: Buffer.byteLength(name), sha256:sha(name) };
     });
     const inventory = JSON.stringify({ schemaVersion:1, files:[{ file:'LICENSE', bytes:7, sha256:sha('license') }] });

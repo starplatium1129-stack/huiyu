@@ -25,7 +25,7 @@ const sha256 = (value: any) => crypto.createHash('sha256').update(value).digest(
 function recordingFs() {
   const calls: any = [];
   const io = Object.create(fs);
-  for (const op of ['statSync', 'readdirSync', 'realpathSync', 'readFileSync']) {
+  for (const op of ['statSync', 'readdirSync', 'realpathSync', 'readFileSync', 'openSync']) {
     io[op] = (...args: any[]) => {
       calls.push({ op, target: String(args[0]) });
       return (fs as Record<string, any>)[op](...args);
@@ -86,7 +86,13 @@ function cli(args: any) {
 
 test('生成清单路径稳定排序、字节与哈希正确，排除域不出现', (t) => {
   const fx = buildFixture(t);
-  const first = generateManifest({ root: fx.root });
+  const content = Buffer.alloc(128 * 1024 + 3);
+  for (let i = 0; i < content.length; i++) content[i] = i % 251;
+  fs.writeFileSync(path.join(fx.root, 'assets/dir/bravo.bin'), content);
+  const io = Object.create(fs);
+  io.readSync = (fd: number, buffer: Buffer, offset: number, length: number, position: number | null) =>
+    fs.readSync(fd, buffer, offset, Math.min(length, 7777), position);
+  const first = generateManifest({ root: fx.root, io });
   const second = generateManifest({ root: fx.root });
   assert.deepEqual(second.entries, first.entries);
   assert.deepEqual(second.totals, first.totals);
@@ -94,13 +100,29 @@ test('生成清单路径稳定排序、字节与哈希正确，排除域不出�
   assert.equal(first.totals.files, 4);
   assert.equal(first.entries[0].bytes, 1);
   assert.equal(first.entries[0].sha256, sha256('A'));
-  assert.equal(first.entries[1].bytes, 4);
-  assert.equal(first.entries[1].sha256, sha256(Buffer.from([0, 1, 2, 255])));
+  assert.equal(first.entries[1].bytes, content.length);
+  assert.equal(first.entries[1].sha256, sha256(content));
   assert.ok(first.scope.excluded.includes('assets/character-references'));
   assert.ok(!first.entries.some((e) => e.path.includes('character-references')));
   assert.equal(first.unverified.length, 0);
   assert.ok(first.generatedAt);
   assert.ok(first.scope.pathIdentity.includes('不声称跨重命名身份稳定'));
+});
+
+test('分块读取失败保留 read-error 并关闭已打开的文件', (t) => {
+  const fx = buildFixture(t);
+  const manifest = generateManifest({ root: fx.root });
+  const io = Object.create(fs), opened = new Set<number>();
+  io.openSync = (file: string, flags: string) => { const fd = fs.openSync(file, flags); opened.add(fd); return fd; };
+  io.readSync = () => { throw new Error('fixture read failure'); };
+  io.closeSync = (fd: number) => { fs.closeSync(fd); opened.delete(fd); };
+  const generated = generateManifest({ root: fx.root, io });
+  assert.equal(generated.entries.length, 0);
+  assert.equal(generated.unverified.filter((entry) => entry.kind === 'read-error').length, 4);
+  const verified = verifyManifestEntries({ root: fx.root, manifest, io });
+  assert.equal(verified.ok, false);
+  assert.equal(verified.errors.filter((entry: any) => entry.code === 'read-error').length, 4);
+  assert.equal(opened.size, 0, '失败读取的描述符全部关闭');
 });
 
 test('单文件内容改变仅影响该条目的字节与哈希', (t) => {
@@ -195,7 +217,7 @@ test('编码与原始越界路径先于 fs 访问被拒绝，不返回任何文�
   assert.ok(result.errors.every((e: any) => ['illegal-path', 'out-of-scope'].includes(e.code)));
   assert.ok(result.errors.every((e: any) => e.actual === undefined));
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
-  assert.ok(calls.every((c: any) => c.op !== 'readFileSync'), '越界用例不得读取任何文件内容');
+  assert.ok(calls.every((c: any) => !['readFileSync', 'openSync'].includes(c.op)), '越界用例不得读取任何文件内容');
 });
 
 test('junction 越界在校验中被拒且不读取链接目标', (t) => {
@@ -211,7 +233,7 @@ test('junction 越界在校验中被拒且不读取链接目标', (t) => {
   assert.equal(err.path, 'assets/lnk/secret.txt');
   assert.ok(!('actual' in err) && !('expected' in err));
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
-  assert.ok(calls.every((c: any) => c.op !== 'readFileSync'), 'junction 越界不得读取目标内容');
+  assert.ok(calls.every((c: any) => !['readFileSync', 'openSync'].includes(c.op)), 'junction 越界不得读取目标内容');
   assert.deepEqual(snapshot(fx.outside), before);
 });
 
@@ -305,7 +327,7 @@ test('排除域大小写与 root 内 junction 别名不能读取内容', (t) => 
     const result: any = verifyManifestEntries({ root: fx.root, io, manifest: { schemaVersion: 1, entries: [{ path: rel, bytes: 8, sha256: sha256('excluded') }] } });
     assert.equal(result.ok, false, rel);
     assert.equal(result.errors[0].code, 'out-of-scope');
-    assert.ok(calls.every((c: any) => c.op !== 'readFileSync'), rel);
+    assert.ok(calls.every((c: any) => !['readFileSync', 'openSync'].includes(c.op)), rel);
     assert.ok(calls.filter((c: any) => c.op === 'statSync').every((c: any) => c.target === fs.realpathSync(fx.root)), '拒绝目标之前不得 stat 目标');
   }
 });
@@ -318,7 +340,7 @@ test('扫描根 junction 不跟随、不遍历、不哈希', (t) => {
   fs.symlinkSync(path.join(root, 'payload'), path.join(root, 'assets'), process.platform === 'win32' ? 'junction' : 'dir');
   const { io, calls } = recordingFs();
   assert.throws(() => generateManifest({ root, io }), /符号链接/);
-  assert.ok(calls.every((c: any) => !['readFileSync', 'readdirSync'].includes(c.op)));
+  assert.ok(calls.every((c: any) => !['readFileSync', 'openSync', 'readdirSync'].includes(c.op)));
   assert.equal(cli(['--root', root]).status, 2);
 });
 

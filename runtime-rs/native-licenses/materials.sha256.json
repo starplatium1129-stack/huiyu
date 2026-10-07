@@ -1486,18 +1486,8 @@
       "file": "mxe-d973945/src/tiff.mk"
     },
     {
-      "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c",
-      "bytes": 1073,
-      "file": "onnxruntime-LICENSE.txt"
-    },
-    {
-      "sha256": "143764b952fdb1a7c69ce653bfba74a7744d6a8a573bfb73e235fba356c83de3",
-      "bytes": 338088,
-      "file": "onnxruntime-ThirdPartyNotices.txt"
-    },
-    {
-      "sha256": "8f4484f48d17010837d3721d796cd05b94f1a94d8a691ea9f1f288935a46495a",
-      "bytes": 8153,
+      "sha256": "965c852dd0d0e3e5b98c5b8ea469d429daeb03c04a52b97794760072b567650a",
+      "bytes": 11892,
       "file": "README.md"
     },
     {

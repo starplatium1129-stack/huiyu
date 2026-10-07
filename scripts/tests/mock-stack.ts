@@ -54,7 +54,7 @@ function prepare(webOnly: boolean, workspace: boolean, lightweight: boolean) {
   const application = path.join(temporary, 'app'), runtime = path.join(temporary, 'runtime'), ai = path.join(temporary, 'AI');
   try {
     fs.mkdirSync(application);
-    // Data writes and legacy WD14 fallback paths stay in the disposable app.
+    // Data writes stay in the disposable app; model/runtime roots are isolated below.
     // Large immutable images are served from the explicit read-only asset root.
     for (const name of (lightweight ? ['data'] : ['dist', 'data', 'docs', 'css'])) {
       const source = path.join(ROOT_DIR, name);
@@ -82,11 +82,8 @@ function prepare(webOnly: boolean, workspace: boolean, lightweight: boolean) {
       APPDATA: path.join(temporary, 'user/AppData/Roaming'), LOCALAPPDATA: path.join(temporary, 'user/AppData/Local'),
       SD_HOST: `http://127.0.0.1:${PORTS.sd}`, COMFY_HOST: `http://127.0.0.1:${COMFY_PORT}`,
       OLLAMA_HOST: `http://127.0.0.1:${PORTS.ollama}`, TTS_HOST: `http://127.0.0.1:${PORTS.tts}`,
-      TRANSLATE_PORT: String(PORTS.translate), TRANSLATION_PYTHON: path.join(temporary, 'no-model-python.exe'),
-      AICS_WD14_MODEL_DIR: path.join(temporary, 'no-wd14-model')
+      TRANSLATE_PORT: String(PORTS.translate), TRANSLATION_PYTHON: path.join(temporary, 'no-model-python.exe')
     });
-    // Do not resolve or load a real model library, even while selecting the image DLL.
-    env.AICS_ORT_DYLIB_PATH = path.join(temporary, 'no-model-onnxruntime.dll');
     if (process.platform === 'win32') Object.assign(env, developmentNativeEnvironment(ROOT_DIR, env));
     else {
       // Test-launcher selection only. Production loads its explicit/bundled DLL,

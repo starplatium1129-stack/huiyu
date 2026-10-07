@@ -6,7 +6,7 @@ const path: typeof import('node:path') = require('node:path');
 const { test }: typeof import('node:test') = require('node:test');
 const { fixture, tree, EVIDENCE_DIR }: typeof import('./delivery-fixture') = require('./delivery-fixture');
 const { capture }: typeof import('../lib/delivery-handoff') = require('../lib/delivery-handoff');
-const { snapshot, compareSnapshot, repository }: typeof import('../lib/delivery-identity') = require('../lib/delivery-identity');
+const { snapshot, compareSnapshot, repository, selectors, validateSnapshot }: typeof import('../lib/delivery-identity') = require('../lib/delivery-identity');
 const { saveJson, fileEntry }: typeof import('../lib/delivery-paths') = require('../lib/delivery-paths');
 const { formatReport }: typeof import('../lib/delivery-report-format') = require('../lib/delivery-report-format');
 
@@ -135,7 +135,17 @@ test('字面越界、绝对路径、ADS、重复和覆盖重叠选择项拒绝',
   for (const items of [
     [{ path: 'src', kind: 'tree' }, { path: 'src/main.js', kind: 'file' }],
     [{ path: 'src', kind: 'tree' }, { path: 'SRC', kind: 'tree' }],
+    [{ path: 'src/main.js', kind: 'file' }, { path: 'SRC/main.js', kind: 'file' }],
+    [{ path: 'SRC/main.js', kind: 'file' }, { path: 'src', kind: 'tree' }],
+    [{ path: 'src/main.js', kind: 'file' }, { path: '.', kind: 'tree' }],
   ]) assert.throws(() => snapshot(f.root, items), /重复|重叠/);
+  assert.deepEqual(selectors([{ path: 'src-other/main.js', kind: 'file' }, { path: 'src', kind: 'tree' }]),
+    [{ path: 'src', kind: 'tree' }, { path: 'src-other/main.js', kind: 'file' }]);
+  const selected = snapshot(f.root, [{ path: 'src/main.js', kind: 'file' }]);
+  const changedCase = structuredClone(selected); changedCase.entries[0].path = 'SRC/main.js';
+  assert.throws(() => validateSnapshot(changedCase), /文件不属于明确选择/);
+  const changedSeparator = structuredClone(selected); changedSeparator.entries[0].path = 'src\\main.js';
+  assert.throws(() => validateSnapshot(changedSeparator), /遗漏选择项/);
 });
 test('junction 越界与证据目录内部别名均失败关闭，不读取链接内容', t => {
   for (const aliasEvidence of [false, true]) {

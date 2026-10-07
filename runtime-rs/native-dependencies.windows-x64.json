@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "platform": "win32-x64",
   "status": "candidate-local-native-validation",
-  "loadPolicy": "app_root/native or explicit absolute AICS_ORT_DYLIB_PATH/AICS_VIPS_DYLIB_PATH; LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_SYSTEM32",
+  "loadPolicy": "app_root/native or explicit absolute AICS_VIPS_DYLIB_PATH; LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_SYSTEM32",
   "files": [
     {
       "name": "libvips-42.dll",
@@ -59,83 +59,6 @@
         "versionManifestExactMatch": true,
         "bytes": 9322134
       }
-    },
-    {
-      "name": "onnxruntime.dll",
-      "source": "node_modules/onnxruntime-node/bin/napi-v6/win32/x64/onnxruntime.dll",
-      "version": "1.30.0",
-      "package": "onnxruntime-node@1.30.0",
-      "bytes": 28754232,
-      "sha256": "508c362f5673483dd3a086379c392795b2e42d10d5e6f3f90ebd7ac21c97af67",
-      "imports": {
-        "regular": [
-          "api-ms-win-core-libraryloader-l1-2-0.dll",
-          "api-ms-win-core-string-l1-1-0.dll",
-          "api-ms-win-core-errorhandling-l1-1-0.dll",
-          "api-ms-win-core-synch-l1-1-0.dll",
-          "api-ms-win-core-heap-l1-1-0.dll",
-          "api-ms-win-core-processthreads-l1-1-0.dll",
-          "api-ms-win-core-localization-l1-2-0.dll",
-          "api-ms-win-core-debug-l1-1-0.dll",
-          "api-ms-win-core-handle-l1-1-0.dll",
-          "api-ms-win-core-memory-l1-1-0.dll",
-          "api-ms-win-core-processenvironment-l1-1-0.dll",
-          "api-ms-win-core-sysinfo-l1-2-0.dll",
-          "api-ms-win-core-kernel32-legacy-l1-1-1.dll",
-          "api-ms-win-core-file-l1-1-0.dll",
-          "api-ms-win-core-file-l1-2-0.dll",
-          "api-ms-win-core-synch-l1-2-0.dll",
-          "api-ms-win-core-sysinfo-l1-1-0.dll",
-          "api-ms-win-core-io-l1-1-0.dll",
-          "api-ms-win-core-processtopology-l1-1-0.dll",
-          "api-ms-win-core-processthreads-l1-1-1.dll",
-          "api-ms-win-eventing-provider-l1-1-0.dll",
-          "api-ms-win-core-registry-l1-1-0.dll",
-          "api-ms-win-service-core-l1-1-1.dll",
-          "api-ms-win-service-management-l1-1-0.dll",
-          "api-ms-win-core-heap-l2-1-0.dll",
-          "api-ms-win-core-path-l1-1-0.dll",
-          "api-ms-win-core-libraryloader-l1-2-1.dll",
-          "api-ms-win-core-profile-l1-1-0.dll",
-          "api-ms-win-core-rtlsupport-l1-1-0.dll",
-          "api-ms-win-core-synch-l1-2-1.dll",
-          "api-ms-win-core-kernel32-legacy-l1-1-6.dll",
-          "api-ms-win-core-kernel32-legacy-l1-1-0.dll",
-          "api-ms-win-core-console-l2-1-0.dll",
-          "api-ms-win-core-console-l1-1-0.dll",
-          "SETUPAPI.dll",
-          "KERNEL32.dll",
-          "MSVCP140.dll",
-          "MSVCP140_1.dll",
-          "MSVCP140_ATOMIC_WAIT.dll",
-          "dbghelp.dll",
-          "VCRUNTIME140_1.dll",
-          "VCRUNTIME140.dll",
-          "api-ms-win-crt-heap-l1-1-0.dll",
-          "api-ms-win-crt-runtime-l1-1-0.dll",
-          "api-ms-win-crt-string-l1-1-0.dll",
-          "api-ms-win-crt-math-l1-1-0.dll",
-          "api-ms-win-crt-stdio-l1-1-0.dll",
-          "api-ms-win-crt-convert-l1-1-0.dll",
-          "api-ms-win-crt-locale-l1-1-0.dll",
-          "api-ms-win-crt-time-l1-1-0.dll",
-          "api-ms-win-crt-filesystem-l1-1-0.dll",
-          "api-ms-win-crt-environment-l1-1-0.dll"
-        ],
-        "delayed": [
-          "SHELL32.dll",
-          "DirectML.dll",
-          "d3d12.dll",
-          "dxgi.dll",
-          "USER32.dll"
-        ]
-      },
-      "packageSource": {
-        "provenance": "Existing package-lock.json; package archive not redownloaded by this audit",
-        "noNodeRequired": "Read archive or existing local file; do not execute npm scripts or load Node bindings",
-        "url": "https://registry.npmjs.org/onnxruntime-node/-/onnxruntime-node-1.30.0.tgz",
-        "integrity": "sha512-twhs1C2C/BFkz1yc5OY0KIU2GUq6DURO7hD4bx5Q2Qy3nAMJwRXW8xU3NVczE29VA9lolLOYepoD8fjTGOfIqw=="
-      }
     }
   ],
   "licenses": [
@@ -159,20 +82,6 @@
       "upstream": "https://www.npmjs.com/package/@img/sharp-win32-x64/v/0.35.4",
       "bytes": 597,
       "sha256": "d551c859958f06b8088957f679c29be1ff53760191f7401e8183460fc5f58cf4"
-    },
-    {
-      "file": "native-licenses/onnxruntime-LICENSE.txt",
-      "source": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.30.0/LICENSE",
-      "upstream": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.30.0/LICENSE",
-      "bytes": 1073,
-      "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c"
-    },
-    {
-      "file": "native-licenses/onnxruntime-ThirdPartyNotices.txt",
-      "source": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.30.0/ThirdPartyNotices.txt",
-      "upstream": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.30.0/ThirdPartyNotices.txt",
-      "bytes": 338088,
-      "sha256": "143764b952fdb1a7c69ce653bfba74a7744d6a8a573bfb73e235fba356c83de3"
     },
     {
       "file": "native-licenses/LGPL-3.0.txt",
@@ -220,13 +129,12 @@
     "zlib-ng": "2.3.3"
   },
   "redistribution": {
-    "onnx": "Include LICENSE and ThirdPartyNotices from matching v1.30.0 source. CPU provider only; DirectML/dxcompiler/dxil and Node bindings are not used.",
     "libvips": "Official MXE v8.18.6 web-static DLL matches installed npm DLL. Source archives for all 28 versioned components match build recipe SHA256; original notices are collected, including bundled libnsgif MIT. See native-licenses/README.md for unresolved linked Rust/toolchain closure, build provenance and redistribution obligations.",
     "pending": [
-      "Resolve the Windows linked feature/target SBOM and complete notices for librsvg Rust crates (350 Cargo.lock registry packages include dev/optional packages) and compiler static runtimes.",
+      "Resolve the Windows linked feature/target SBOM and complete notices for librsvg Rust crates and compiler static runtimes. The original Cargo.lock has 350 registry packages; the pinned MXE patch removes four, leaving 346 lock candidates, not a linked dependency count.",
       "Pin the release build OCI digest and exact MXE/toolchain base; source archives and recipe snapshot do not by themselves prove a reproducible complete Corresponding Source package.",
       "Review and implement the selected LGPL/MPL source delivery, modification/recombination, replaceable-DLL and product-terms requirements; do not treat license-file collection as distribution approval.",
-      "Validate the final installer native search and prerequisite VC++ runtime, plus CPU WD14 with authorized real weights; isolated toy inference is not production model validation."
+      "Validate the final installer libvips DLL search, replaceability and applicable Windows system runtime requirements."
     ]
   },
   "licenseEvidence": {
@@ -250,18 +158,10 @@
     "versionedComponents": 28,
     "completeLinkedLicenseClosure": false,
     "readme": "native-licenses/README.md",
-    "indexBytes": 54072,
-    "indexSha256": "bc2d31525bd09eafc235aad2e8eea9a91a60f68a26f0b597edac0609a2446ecc"
+    "indexBytes": 53745,
+    "indexSha256": "854aae1c1952ba8cd191ec6ee72c3ece52f5938c80c48c40b8bcc53d43258c1f"
   },
   "systemRuntimePolicy": {
-    "vcppImports": [
-      "MSVCP140.dll",
-      "MSVCP140_1.dll",
-      "MSVCP140_ATOMIC_WAIT.dll",
-      "VCRUNTIME140.dll",
-      "VCRUNTIME140_1.dll"
-    ],
-    "optionalProvider": "CPU only; preserve delayed import records but do not bundle DirectML/dxcompiler/dxil for an unused provider",
-    "distribution": "Windows system components and officially supported VC++ Redistributable; no system DLLs copied in this audit"
+    "distribution": "Windows system components from the pinned libvips PE import table; do not copy system DLLs into the package."
   }
 }

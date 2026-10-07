@@ -42,10 +42,6 @@ const STAGING_PREFIX = '.staging-';
 
 const BYTE_ONLY_NOTE = '候选包已通过字节核验仅表示复制内容与清单记录一致；不代表图片质量、内容审核或部署完成，也不是可信发布源。';
 
-function sha256Hex(buffer: string|NodeJS.ArrayBufferView<ArrayBufferLike>) {
-  return createHash('sha256').update(buffer).digest('hex');
-}
-
 function relFromRoot(rootReal: string, abs: string) {
   return path.relative(rootReal, abs).split(path.sep).join('/');
 }
@@ -209,6 +205,26 @@ function planResourcePack({ root, name, manifestPath, io = nodeFs }: any = {}) {
 /** 复制单个条目到暂存目录并读回核验；任何失败推入 errors 并返回 false（快速终止）。 */
 function copyEntryVerified({ rootReal, staging, entry, io, errors }: any) {
   const srcAbs = path.join(rootReal, ...entry.path.split('/'));
+  const manifest = { schemaVersion: SCHEMA_VERSION, entries: [entry] };
+  try {
+    const source = verifyManifestEntries({ root: rootReal, manifest, io });
+    if (!source.ok) {
+      errors.push(...source.errors.map((error: any) => ({ ...error,
+        code: ['missing', 'not-file'].includes(error.code) ? 'read-error' : error.code })));
+      return false;
+    }
+  } catch (err) {
+    errors.push({ path: entry.path, code: 'read-error', message: `源读取失败: ${runtimeErrorMessage(err)}` });
+    return false;
+  }
+  const stageAbs = path.join(staging, ...entry.path.split('/'));
+  try {
+    io.mkdirSync(path.dirname(stageAbs), { recursive: true });
+  } catch (err) {
+    errors.push({ path: entry.path, code: 'write-error', message: `候选副本写入失败: ${runtimeErrorMessage(err)}` });
+    return false;
+  }
+  // Native copy reopens the source after hashing, so recheck its path immediately before copying.
   const boundary = resolveRealpathBoundary(io, srcAbs, rootReal);
   if (!boundary.ok) {
     errors.push({ path: entry.path, code: boundary.code, message: `复制前真实路径边界检查失败: ${boundary.message}` });
@@ -219,44 +235,43 @@ function copyEntryVerified({ rootReal, staging, entry, io, errors }: any) {
     errors.push({ path: entry.path, code: 'out-of-scope', message: '复制时源真实目标进入排除域或离开 assets，未读取' });
     return false;
   }
-  let buf;
   try {
     if (!io.statSync(srcAbs).isFile()) throw new Error('源不再是普通文件');
-    buf = io.readFileSync(srcAbs);
   } catch (err) {
     errors.push({ path: entry.path, code: 'read-error', message: `源读取失败: ${runtimeErrorMessage(err)}` });
     return false;
   }
-  if (buf.length !== entry.bytes) {
-    errors.push({ path: entry.path, code: 'size-mismatch', expected: entry.bytes, actual: buf.length, message: '复制时源字节数与清单不一致（源可能已变化），已终止' });
-    return false;
-  }
-  const srcHash = sha256Hex(buf);
-  if (srcHash !== entry.sha256.toLowerCase()) {
-    errors.push({ path: entry.path, code: 'hash-mismatch', expected: entry.sha256.toLowerCase(), actual: srcHash, message: '复制时源 SHA-256 与清单不一致（源可能已变化），已终止' });
-    return false;
-  }
-  const stageAbs = path.join(staging, ...entry.path.split('/'));
   try {
-    io.mkdirSync(path.dirname(stageAbs), { recursive: true });
-    io.writeFileSync(stageAbs, buf, { flag: 'wx' });
+    io.copyFileSync(srcAbs, stageAbs, nodeFs.constants.COPYFILE_EXCL);
   } catch (err) {
     errors.push({ path: entry.path, code: 'write-error', message: `候选副本写入失败: ${runtimeErrorMessage(err)}` });
     return false;
   }
-  let back;
   try {
-    back = io.readFileSync(stageAbs);
+    const back = verifyManifestEntries({ root: staging, manifest, io });
+    if (back.ok) return true;
+    const issue: any = back.errors[0];
+    if (!['size-mismatch', 'hash-mismatch'].includes(issue.code)) throw new Error(issue.message);
+    let actual = issue.actual;
+    if (issue.code === 'size-mismatch') {
+      // The existing report exposes SHA strings even for a wrong-sized copy.
+      // Only this failure path needs an extra bounded read: the verifier skips its hash.
+      const checked = resolveRealpathBoundary(io, stageAbs, staging);
+      if (!checked.ok || !checkManifestPath(relFromRoot(staging, checked.realTarget!)).ok) throw new Error('候选副本读回路径越界');
+      if (!io.statSync(stageAbs).isFile()) throw new Error('候选副本不再是普通文件');
+      const fd = io.openSync(stageAbs, 'r');
+      try {
+        const hash = createHash('sha256'), buffer = Buffer.allocUnsafe(64 * 1024);
+        let size;
+        while ((size = io.readSync(fd, buffer, 0, buffer.length, null)) > 0) hash.update(buffer.subarray(0, size));
+        actual = hash.digest('hex');
+      } finally { io.closeSync(fd); }
+    }
+    errors.push({ path: entry.path, code: 'copy-verify-failed', expected: entry.sha256.toLowerCase(), actual, message: '候选副本字节/SHA-256 与清单不一致，不发布最终包' });
   } catch (err) {
     errors.push({ path: entry.path, code: 'read-error', message: `候选副本读回失败: ${runtimeErrorMessage(err)}` });
-    return false;
   }
-  const backHash = sha256Hex(back);
-  if (back.length !== entry.bytes || backHash !== entry.sha256.toLowerCase()) {
-    errors.push({ path: entry.path, code: 'copy-verify-failed', expected: entry.sha256.toLowerCase(), actual: backHash, message: '候选副本字节/SHA-256 与清单不一致，不发布最终包' });
-    return false;
-  }
-  return true;
+  return false;
 }
 
 /** 全包模式的候选包元数据：manifest.json 与源清单条目逐条一致。 */

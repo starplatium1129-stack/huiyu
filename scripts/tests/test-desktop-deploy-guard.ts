@@ -82,12 +82,12 @@ test('resource-only deployment requires matching Rust executable, DLLs and embed
     const sourceHost='host-prefix\0__TAURI_BUNDLE_TYPE_VAR_UNK\0host-suffix';
     const nsisHost=sourceHost.replace('_VAR_UNK','_VAR_NSS'),installedHost=path.join(f.install,'ai-cg-studio-desktop.exe');
     put(host,sourceHost);put(installedHost,nsisHost);
-    for(const name of ['huiyu-runtime.exe','native/onnxruntime.dll','native/libvips-42.dll']){put(path.join(stage,name),name);put(path.join(f.install,'gateway',name),name);}
+    for(const name of ['huiyu-runtime.exe','native/libvips-42.dll']){put(path.join(stage,name),name);put(path.join(f.install,'gateway',name),name);}
     const script=path.join(f.root,'native-check.ps1');
     fs.writeFileSync(script,"param($Guard,$Stage,$Install,$HostFile)\n$ErrorActionPreference='Stop'\n. $Guard\ntry{Assert-DesktopRuntimeMatches -StageGateway $Stage -InstallDir $Install -HostExecutable $HostFile;exit 0}catch{Write-Output $_.Exception.Message;exit 27}\n");
     const check=()=>spawnSync('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',script,guard,stage,f.install,host],{encoding:'utf8',windowsHide:true,timeout:15000});
     const success=check();assert.equal(success.status,0,success.stdout+success.stderr);
-    for(const name of ['huiyu-runtime.exe','native/onnxruntime.dll','native/libvips-42.dll']){
+    for(const name of ['huiyu-runtime.exe','native/libvips-42.dll']){
       put(path.join(stage,name),'changed');const denied=check();assert.equal(denied.status,27);assert.match(String(denied.stdout),/DESKTOP_FULL_INSTALL_REQUIRED/);
       assert.equal(fs.readFileSync(path.join(f.install,'gateway',name),'utf8'),name);put(path.join(stage,name),name);
     }

@@ -175,7 +175,6 @@ function Assert-DesktopRuntimeMatches {
   $pairs = @(
     @{ Source = $HostExecutable; Target = (Resolve-DesktopChildPath $InstallDir 'ai-cg-studio-desktop.exe'); NsisHost = $true },
     @{ Source = (Resolve-DesktopChildPath $StageGateway 'huiyu-runtime.exe'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\huiyu-runtime.exe') },
-    @{ Source = (Resolve-DesktopChildPath $StageGateway 'native\onnxruntime.dll'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\native\onnxruntime.dll') },
     @{ Source = (Resolve-DesktopChildPath $StageGateway 'native\libvips-42.dll'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\native\libvips-42.dll') }
   )
   foreach ($pair in $pairs) {

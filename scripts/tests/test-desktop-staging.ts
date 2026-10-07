@@ -144,7 +144,7 @@ function createFixture() {
   const { SOURCES }: typeof import('../maintenance/desktop-rust-inputs') = require('../maintenance/desktop-rust-inputs');
   const { snapshot }: typeof import('../lib/delivery-identity') = require('../lib/delivery-identity');
   write(path.join(root, 'runtime/rust-evidence/build.json'), JSON.stringify({ formatVersion: 1, source: snapshot(root, SOURCES), binary: { path: binary, bytes: 6, sha256: sha('binary') } }));
-  const files = ['libvips-42.dll', 'onnxruntime.dll'].map(name => { write(path.join(root, `fixture-native/${name}`), name); return { name, source: `fixture-native/${name}`, bytes: Buffer.byteLength(name), sha256: sha(name) }; });
+  const files = ['libvips-42.dll'].map(name => { write(path.join(root, `fixture-native/${name}`), name); return { name, source: `fixture-native/${name}`, bytes: Buffer.byteLength(name), sha256: sha(name) }; });
   write(path.join(root, 'runtime-rs/native-licenses/LICENSE'), 'license');
   write(path.join(root, 'runtime-rs/native-licenses/README.md'), 'fixture notes\n');
   write(path.join(root, 'runtime-rs/native-licenses/components/fixture/COPYING'), 'upstream bytes\r\n ');
@@ -175,13 +175,15 @@ test('Rust stage verifies bound inputs, excludes legacy/private files, and repla
   const root = createFixture(), stage = path.join(root, 'desktop-tauri/src-tauri/resources');
   try {
     write(path.join(stage, 'stale.txt'), 'old');
+    write(path.join(stage, 'gateway/native/onnxruntime.dll'), 'retired');
     const result = stageResources({ root, stage, logger: () => {} });
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/huiyu-runtime.exe'), 'utf8'), 'binary');
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/tools/voxcpm-server.py'), 'utf8'), '# VoxCPM2 server');
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/scripts/lib/managed-voice.ps1'), 'utf8'), '# voice manager');
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/scripts/lib/prepare-ai-environment.ps1'), 'utf8'), '# environment preparer');
     assert.equal(fs.existsSync(path.join(stage,'gateway/scripts/lib/managed-webui.ps1')),false);
-    assert.equal(fs.existsSync(path.join(stage, 'gateway/native/onnxruntime.dll')), true);
+    assert.equal(fs.existsSync(path.join(stage, 'gateway/native/libvips-42.dll')), true);
+    assert.equal(fs.existsSync(path.join(stage, 'gateway/native/onnxruntime.dll')), false);
     assert.equal(fs.existsSync(path.join(stage, 'gateway/native-licenses/LICENSE')), true);
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/native-licenses/components/fixture/COPYING'), 'utf8'), 'upstream bytes\r\n ');
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/native-licenses/README.md'), 'utf8'), 'fixture notes\n');
@@ -220,7 +222,7 @@ test('stale Rust source or tampered DLL leaves previous complete stage untouched
   const root = createFixture(), stage = path.join(root, 'resources');
   try {
     write(path.join(stage, 'old/marker.txt'), 'old');
-    write(path.join(root, 'fixture-native/onnxruntime.dll'), 'tampered');
+    write(path.join(root, 'fixture-native/libvips-42.dll'), 'tampered');
     assert.throws(() => stageResources({ root, stage, logger: () => {} }), /bytes mismatch/);
     assert.equal(fs.readFileSync(path.join(stage, 'old/marker.txt'), 'utf8'), 'old');
     write(path.join(root, 'runtime-rs/src/main.rs'), 'changed');
@@ -246,16 +248,17 @@ test('bundle verifier isolates model hosts and credentials from inherited settin
 });
 test('development native environment uses locked DLLs and preserves explicit overrides',{skip:process.platform!=='win32'},()=>{
   const root=createFixture();const {developmentNativeEnvironment}:typeof import('../maintenance/desktop-rust-inputs')=require('../maintenance/desktop-rust-inputs');
-  try{const supplied={AICS_ORT_DYLIB_PATH:'explicit-ort.dll'};const env=developmentNativeEnvironment(root,supplied);
-    assert.equal(env.AICS_ORT_DYLIB_PATH,'explicit-ort.dll');assert.equal(env.AICS_VIPS_DYLIB_PATH,path.join(root,'fixture-native/libvips-42.dll'));assert.deepEqual(supplied,{AICS_ORT_DYLIB_PATH:'explicit-ort.dll'});
-    write(path.join(root,'fixture-native/libvips-42.dll'),'tampered');assert.throws(()=>developmentNativeEnvironment(root,supplied),/bytes mismatch/);
+  try{const supplied={AICS_VIPS_DYLIB_PATH:'explicit-vips.dll'};const env=developmentNativeEnvironment(root,supplied);
+    assert.equal(env.AICS_VIPS_DYLIB_PATH,'explicit-vips.dll');assert.deepEqual(supplied,{AICS_VIPS_DYLIB_PATH:'explicit-vips.dll'});
+    assert.equal(developmentNativeEnvironment(root,{}).AICS_VIPS_DYLIB_PATH,path.join(root,'fixture-native/libvips-42.dll'));
+    write(path.join(root,'fixture-native/libvips-42.dll'),'tampered');assert.throws(()=>developmentNativeEnvironment(root,{}),/bytes mismatch/);
   }finally{remove(root);}
 });
 test('non-Windows development does not read the Windows native manifest',{skip:process.platform==='win32'},()=>{
   const {developmentNativeEnvironment}:typeof import('../maintenance/desktop-rust-inputs')=require('../maintenance/desktop-rust-inputs');
-  const supplied:NodeJS.ProcessEnv={AICS_ORT_DYLIB_PATH:'/explicit/libonnxruntime.so',PATH:'/fixture/bin'};
+  const supplied:NodeJS.ProcessEnv={AICS_VIPS_DYLIB_PATH:'/explicit/libvips.so',PATH:'/fixture/bin'};
   const result=developmentNativeEnvironment('/missing-fixture-root',supplied);
-  assert.deepEqual(result,supplied);assert.notEqual(result,supplied);assert.equal(result.AICS_VIPS_DYLIB_PATH,undefined);
+  assert.deepEqual(result,supplied);assert.notEqual(result,supplied);
 });
 test('Windows launcher opens only on Rust readiness and preserves startup failures', { skip:process.platform!=='win32' }, () => {
   const root=fs.mkdtempSync(path.join(os.tmpdir(),'aics-launcher-fixture-'));
@@ -457,22 +460,27 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
 
 test('updater verifies distributed bytes and rejects tampering', () => {
   const crypto: typeof import('node:crypto') = require('node:crypto');
-  const { verifyUpdaterSignature }: typeof import('../maintenance/build-modern-installer') = require('../maintenance/build-modern-installer');
+  const { hashInstallerFile, verifyUpdaterSignature }: typeof import('../maintenance/build-modern-installer') = require('../maintenance/build-modern-installer');
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-updater-signature-'));
   try {
     const file = path.join(root, 'fixture.exe');
-    fs.writeFileSync(file, 'installer fixture');
+    const content = Buffer.alloc(128 * 1024 + 17, 0x5a);
+    fs.writeFileSync(file, content);
+    assert.equal(hashInstallerFile(file, 'sha256').toString('hex'), crypto.createHash('sha256').update(content).digest('hex'));
     const { privateKey, publicKey } = crypto.generateKeyPairSync('ed25519');
     const id = Buffer.from('12345678');
     const key = Buffer.concat([Buffer.from('Ed'), id, publicKey.export({ type: 'spki', format: 'der' }).subarray(-32)]);
-    const raw = crypto.sign(null, crypto.createHash('blake2b512').update(fs.readFileSync(file)).digest(), privateKey);
-    const packet = Buffer.concat([Buffer.from('ED'), id, raw]);
-    const comment = 'timestamp:1';
-    const global = crypto.sign(null, Buffer.concat([raw, Buffer.from(comment)]), privateKey);
-    const signature = Buffer.from(['untrusted comment: fixture', packet.toString('base64'), 'trusted comment: ' + comment, global.toString('base64')].join('\n')).toString('base64');
-    const pub = Buffer.from('untrusted comment: fixture\n' + key.toString('base64')).toString('base64');
-    assert.equal(verifyUpdaterSignature(file, signature, pub), true);
-    fs.appendFileSync(file, 'tampered');
-    assert.throws(() => verifyUpdaterSignature(file, signature, pub), /signature verification failed/);
+    for (const algorithm of ['ED', 'Ed']) {
+      const raw = crypto.sign(null, algorithm === 'ED' ? crypto.createHash('blake2b512').update(content).digest() : content, privateKey);
+      const packet = Buffer.concat([Buffer.from(algorithm), id, raw]);
+      const comment = 'timestamp:1';
+      const global = crypto.sign(null, Buffer.concat([raw, Buffer.from(comment)]), privateKey);
+      const signature = Buffer.from(['untrusted comment: fixture', packet.toString('base64'), 'trusted comment: ' + comment, global.toString('base64')].join('\n')).toString('base64');
+      const pub = Buffer.from('untrusted comment: fixture\n' + key.toString('base64')).toString('base64');
+      assert.equal(verifyUpdaterSignature(file, signature, pub), true);
+      fs.appendFileSync(file, 'tampered');
+      assert.throws(() => verifyUpdaterSignature(file, signature, pub), /signature verification failed/);
+      fs.writeFileSync(file, content);
+    }
   } finally { remove(root); }
 });

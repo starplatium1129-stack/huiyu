@@ -31,9 +31,9 @@ function buildModernInstaller({ payload, output, upgradeVerifier, upgrade = Bool
   fs.mkdirSync(GENERATED, { recursive: true });
   const version = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
   if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error('Installer version must be a stable semantic version');
-  const payloadHash = preview ? '' : crypto.createHash('sha256').update(fs.readFileSync(payload)).digest('hex');
+  const payloadHash = preview ? '' : hashInstallerFile(payload, 'sha256').toString('hex');
   const payloadLength = preview ? 0 : fs.statSync(payload).size;
-  const verifierHash = !preview && upgrade ? crypto.createHash('sha256').update(fs.readFileSync(upgradeVerifier)).digest('hex') : '';
+  const verifierHash = !preview && upgrade ? hashInstallerFile(upgradeVerifier, 'sha256').toString('hex') : '';
   const nsisFile = path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi');
   const estimated = fs.existsSync(nsisFile) ? /!define ESTIMATEDSIZE "(\d+)"/.exec(fs.readFileSync(nsisFile, 'utf8')) : null;
   const required = Number(estimated?.[1] || 520000) * 1024;
@@ -87,6 +87,18 @@ namespace Ayaki.Installer { internal static class PayloadInfo {
 }
 
 
+// Installer payloads are hundreds of MiB. Keep hash buffers bounded while still
+// reading every byte; retain caller ownership when passed an open descriptor.
+function hashInstallerFile(file: PathOrFileDescriptor, algorithm: 'sha256' | 'blake2b512'): Buffer {
+  const descriptor = typeof file === 'number' ? file : fs.openSync(file, 'r');
+  try {
+    const hash = crypto.createHash(algorithm), buffer = Buffer.allocUnsafe(64 * 1024);
+    let bytes;
+    while ((bytes = fs.readSync(descriptor, buffer, 0, buffer.length, null)) > 0) hash.update(buffer.subarray(0, bytes));
+    return hash.digest();
+  } finally { if (typeof file !== 'number') fs.closeSync(descriptor); }
+}
+
 function verifyUpdaterSignature(executable: PathOrFileDescriptor, signature: WithImplicitCoercion<string>, publicKey: WithImplicitCoercion<string>) {
   const key = Buffer.from(Buffer.from(publicKey, 'base64').toString('utf8').trim().split(/\r?\n/)[1] || '', 'base64');
   const lines = Buffer.from(signature, 'base64').toString('utf8').trim().split(/\r?\n/);
@@ -95,8 +107,7 @@ function verifyUpdaterSignature(executable: PathOrFileDescriptor, signature: Wit
   const algorithm = packet.subarray(0, 2).toString();
   if (!['ED', 'Ed'].includes(algorithm)) throw new Error('Unsupported updater signature algorithm');
   const verifier = crypto.createPublicKey({ key: Buffer.concat([Buffer.from('302a300506032b6570032100', 'hex'), key.subarray(10)]), format: 'der', type: 'spki' });
-  const data = fs.readFileSync(executable);
-  const message = algorithm === 'ED' ? crypto.createHash('blake2b512').update(data).digest() : data;
+  const message = algorithm === 'ED' ? hashInstallerFile(executable, 'blake2b512') : fs.readFileSync(executable);
   if (!crypto.verify(null, message, verifier, packet.subarray(10))) throw new Error('Distributed installer signature verification failed');
   if (!lines[2]?.startsWith('trusted comment: ') || !crypto.verify(null, Buffer.concat([packet.subarray(10), Buffer.from(lines[2].slice(17))]), verifier, Buffer.from(lines[3] || '', 'base64'))) throw new Error('Updater trusted comment verification failed');
   return true;
@@ -109,4 +120,4 @@ if (require.main === module) {
   else try { buildModernInstaller({ preview: args.includes('--preview'), upgrade: args.includes('--upgrade') || Boolean(value('upgrade-verifier', undefined)), upgradeVerifier: value('upgrade-verifier', undefined), capture: args.includes('--capture'), theme: value('theme', 'dark'), state: value('state', 'ready'), dpi: Number(value('dpi', '96')), payload: value('payload', undefined), output: value('output', undefined) }); }
   catch (error) { console.error(runtimeErrorMessage(error)); process.exitCode = 1; }
 }
-export = { buildModernInstaller, verifyUpdaterSignature };
+export = { buildModernInstaller, hashInstallerFile, verifyUpdaterSignature };

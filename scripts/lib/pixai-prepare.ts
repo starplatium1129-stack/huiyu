@@ -42,26 +42,35 @@ export async function pythonJson(python: string, code: string, args: string[] = 
     stdio: ['ignore', 'pipe', 'pipe'],
   })
   let stdout = '', stderr = ''
-  const timeout = setTimeout(() => child.kill(), 30_000)
-  const stop = () => child.kill()
-  process.on('SIGINT', stop); process.on('SIGTERM', stop)
+  let stopped: Error | undefined
+  const stop = (reason: Error, cancelled = false) => {
+    if (stopped) return
+    stopped = reason
+    if (cancelled) process.exitCode = 130
+    child.kill()
+  }
+  const timeout = setTimeout(() => stop(Error('PixAI Python preparation timed out after 30 seconds')), 30_000)
+  const cancel = () => stop(Error('PixAI Python preparation cancelled'), true)
+  process.on('SIGINT', cancel); process.on('SIGTERM', cancel)
   try {
     return await new Promise((resolve, reject) => {
       child.stdout.on('data', (data: Buffer) => {
+        if (stopped) return
         stdout += data.toString('utf8')
-        if (stdout.length > 64 * 1024) { child.kill(); reject(Error('Python preparation response exceeds 64 KiB')) }
+        if (stdout.length > 64 * 1024) stop(Error('Python preparation response exceeds 64 KiB'))
       })
       child.stderr.on('data', (data: Buffer) => { stderr = (stderr + data.toString('utf8')).slice(-64 * 1024) })
-      child.once('error', reject)
+      child.once('error', error => reject(stopped || error))
       child.once('close', code => {
-        if (code !== 0) reject(Error(`PixAI Python environment is unavailable: ${stderr.trim() || code}`))
+        if (stopped) reject(stopped)
+        else if (code !== 0) reject(Error(`PixAI Python environment is unavailable: ${stderr.trim() || code}`))
         else {
           try { resolve(JSON.parse(stdout.trim()) as Record<string, any>) } catch { reject(Error('Python environment returned invalid JSON')) }
         }
       })
     })
   } finally {
-    clearTimeout(timeout); process.removeListener('SIGINT', stop); process.removeListener('SIGTERM', stop)
+    clearTimeout(timeout); process.removeListener('SIGINT', cancel); process.removeListener('SIGTERM', cancel)
   }
 }
 

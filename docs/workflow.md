@@ -240,6 +240,10 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 `node scripts/workflow.js resource:pack --manifest <root内JSON> --name <包名> [--base-manifest <root内旧JSON>] [--root <目录>] [--apply]` 是 R1 之后的受控复制工具，不是安装器、下载器或发布入口。默认只预览复制计划（stdout JSON：目标路径、条目、字节合计与核验摘要），零写入；但预览会读取清单并对源文件做与 `audit:resource-manifest` 同套的核验（读取不是零读取）。`--help` / `--plan` 仅打印用法，不读取目标文件。
 
+资源清单生成、已列文件验证和候选包核验共用 64 KiB 分块 SHA-256 读取，避免把大纹理等素材整份装入内存；仍逐字节计算摘要，保持原有路径边界、排除域、错误分类与只读行为。
+
+复制阶段也不再保留整文件 Buffer：单条源分块核验后，立即复核真实路径和普通文件类型，以 `COPYFILE_EXCL` 排他复制，再分块读回候选。源会增加一次系统复制读取；收益是限制进程缓冲内存，不能据此推断整体提速。副本字节/哈希不符仍拒绝发布，原有 SHA 诊断、失败暂存保留与原子发布规则继续适用。
+
 显式 `--apply` 才实际复制：先复用现有清单核验，重复路径、非法/越界路径（含编码分隔符）、排除域（`assets/character-references`）、非空 unverified、文件缺失、字节或哈希不匹配任一失败即整体拒绝；通过后把清单已列普通文件复制到 `<root>/scripts/archive/resource-packs/<包名>/` 新目录，保留 `assets/...` 相对结构，不遍历补入未列文件，并写入可被 `audit:resource-manifest --root <包目录> --manifest manifest.json` 再次核验的 `manifest.json`。复制先写入本次专用暂存目录 `.staging-<包名>-<随机>`，逐条读回核验候选副本的字节与 SHA-256（复制时源已变化会被发现并终止），整体复核通过后才改名为最终包名，再做发布后核验；核验通过只输出「候选包已通过字节核验」，不代表图片质量、内容审核或部署完成。
 
 `--base-manifest <root内旧JSON>`（与 `--manifest <新JSON>` 同用，缺 `--manifest` 退出 2）切换为增量候选包：复用 `audit:resource-manifest` 的纯比较，只把 added/changed 项写入候选，`unchanged` 不进候选文件，`removed` 仅作为差异记录，不删除任何源/目标资源。旧清单只做结构核验（schemaVersion、条目形态、重复、路径合规），不读取其对应的磁盘资产（removed 文件可已不存在）；新清单仍按全包同套完整核验，不能用增量绕过新清单损坏；任一清单结构错误或非空 unverified 即整体拒绝。候选 `manifest.json` 只列实际复制的 added/changed 项，可被现有 verifier 再次核验；另写 `delta.json` 记录旧/新清单内容身份（按稳定 path/bytes/sha256 计算的 contentIdentity，不含 `generatedAt`）、四类数量与移除路径，供以后基线匹配用；两个元数据都在最终改名前读回核对。增量产物不是完整可安装包，也不能当作已安装更新；零差异时输出明确的零资产候选（无 assets 目录）。复制/暂存/发布协议、目标冲突与 junction 拒绝与全包模式相同。
@@ -304,6 +308,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 控制室保存 `ttsEngine` 与角色 `loraWeightsPath`、参考音频和原文，重启应用后生效；切换引擎前先停止原服务。VoxCPM2 默认基座位于 AI/Voice/models/pretrained/VoxCPM2，环境位于 AI/VoxCPM-env。宁宁和夏目使用各自 LoRA，单个基座依次切换，避免同时驻留两份模型。
 
+`models:check` 按已保存的 `ttsEngine` 报告声线文件：VoxCPM2 检查参考音频和角色 LoRA，GPT-SoVITS 检查参考音频、GPT 与 SoVITS 双权重；未配置引擎时沿用 GPT-SoVITS。文件存在性、参考原文配置与实际语音验收分别记录，不会启动模型。
+
 本机 PyTorch 2.7.1 + CUDA 12.8 使用 `triton-windows==3.3.1.post21` 启用模型官方 `torch.compile` 加速，版本对应见 [Triton Windows 文档](https://github.com/triton-lang/triton-windows#3-pytorch)。编译线程限为 1；首次预热会生成 AI/Voice/cache/voxcpm2 缓存，启动入口等待上限为 360 秒，后续复用缓存。无需更改 LoRA、参考音频或 10 步采样来加速。
 
 聊天通过 `/api/tts-stream` 接收 48kHz 单声道 PCM 分片，第一片即可播放；下一句在当前句播放时预取。完整句保存为 WAV 供重播，取消的半句不进入缓存；`/api/tts` 保留整句播放与工作台变速。首句仍需积累足够台词，中文还需日语翻译；分片传输不代表零延迟。真实音色、首片延迟和显存占用需在用户绘图结束后另测。
@@ -367,6 +373,8 @@ quick的独立领域分别保留结果：测试失败或准备异常不记为通
 `npm run check` 的 `CHECK_JOBS` 默认 4、有效范围 1–4；首次失败停止待派发步骤，收完已在途任务并分别报告失败/未运行。`npm run check -- --all` 显式收集全貌；每步限时 10 分钟，超时只清理该执行器拥有的进程树，不原样循环重跑。
 
 Quality CI 日常复用同一选测计划与 npm test，文档免依赖安装，Rust/浏览器/SPA仅按前置条件准备。quality-summary 必须要求所选任务成功；未选的最低 Node 专项仅允许 skipped。完整门禁、关键浏览器与最低 Node 兼容留在手动及北京时间02:15夜间入口；02:00扩展视觉继续独立执行，完整前端覆盖率集中到Quality。Rust专项只在相关路径变化时验证parity，日常rust:check由Quality承接；真实原生/GPU专项仅手动触发，不进入普通推送。
+
+Rust Runtime 的准备步骤仅编译 Node 维护工具（`build:runtime -- --project node`），该 lane 的 Rust/parity 不消费生成的 Node 测试或浏览器工具。Quality 的 Cargo 缓存使用独立的 `quality-runtime` 主键和恢复前缀，避免命中另一个 lane 的 release-only 缓存后反复从零编译 debug/check 产物；首次使用新键仍需准备缓存，不代表已测得远端提速。
 
 `test-interrogate-engine` 默认只在临时空目录验证无模型降级，并屏蔽模型目录环境变量；`test-interrogate-routes` 始终用 WD14 替身和本地 HTTP 夹具。只有显式设置 `AICS_TEST_REAL_WD14=1` 再运行 `node scripts/tests/test-interrogate-engine.js`，才会查找本机权重并执行真实 CPU 推理；该开关不属于普通 unit/contract/full 门禁的默认验收。
 
@@ -482,7 +490,7 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 
 聊天个人 API 密钥在 Windows 桌面版由系统凭据管理器按 API 地址保存，网页端只放在当前页面内存；浏览器持久设置保留地址/模型，不保存新密钥。旧明文记录只有安全写入和读回一致后才清除；失败保留可恢复旧值并提示重试，不降级为新明文写入。配置面板可独立清除个人密钥；备份导出排除尚未迁移的旧密钥。站主托管配置仍是服务端受限文件，与个人凭据迁移分开验收。原生测试仅使用唯一 `Huiyu/Test` 目标，不读取已有个人凭据；系统凭据库失败、升级与最终安装须另留真实 Windows 验收。
 
-- `models:check`：扫描当前硬件显存与 ComfyUI/反推模型就绪状态；
+- `models:check [--json] [--verify-hashes]`：只读扫描硬件清单、ComfyUI 模型文件和 PixAI 回执/路径，按网关优先级报告配置缺失或无效、固定清单文件、Python/worker/timm/torch 文件状态；显式哈希检查才读取大权重。Python 包可导入性、CUDA/BF16与真实推理仍未验，不将文件存在称为引擎就绪；
 - `models:download-wd14 [--target-dir <可写目录>]`：默认从固定 HuggingFace 发布者版本下载 WD14 MOAT v2（ONNX 约 311 MiB 与配套 CSV）；`--modelscope` / `--mirror` 可显式选择镜像，但同样核对固定字节与 SHA-256；`--plan` 不下载；
 - `models:download-h3 --models-root <实际ComfyUI/models目录>`：下载当前工作流完整六文件（约 43.99 GB / 40.97 GiB，含 4/8-step LoRA），固定官方 revision 和 SHA-256；`--plan` 不下载。运行依赖与硬件见[模型开箱指南](guides/setup-and-models.md)，不属于质量检查或普通安装的自动步骤。
 
@@ -490,7 +498,11 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 
 `npm run wf -- models:prepare-pixai [--target-dir <独立可写runtime根>] [--python <已有Python或venv>] [--torch-site-packages <已有torch包目录>] [--reuse-from <已下载候选根>]` 准备固定 PixAI v1.0：官方 revision 为 `9fe10addf9326e292da8a85a98ea74cd91b41771`，FP32 safetensors 为 1,945,425,796 字节，模型、代码、配置逐项核对固定大小与 SHA-256。默认根为运行目录下的 `pixai/`；模型在 `model/`，固定 timm 1.0.30 仅装入独立 `deps/`，现有 Comfy/Python 包和生图模型不修改。已匹配文件直接复用；`--reuse-from` 核验既有候选，优先硬链权重、复制代码/配置，避免重复下载。
 
-`--plan` 不联网、不写入、不启动 Python；`--check` 只读核验本机文件与依赖，不安装或推理。PixAI 要求 Python 3.11 或更新版本，解析解释器时先核对版本，再允许下载或安装；依赖检查也先拒绝旧版本。正常准备生成 `runtime-config.json`，包含实际 base Python、解释器版本、只读复用的 Torch 包目录、模型与独立依赖路径，供可信运行时配置采用。Python 首选显式参数或 `AICS_PIXAI_PYTHON`，否则查找现有 Comfy venv；包目录可用 `AICS_PIXAI_TORCH_SITE_PACKAGES` 指定。Windows worker 使用实际 base Python，避免 venv launcher 产生不能由直接取消回收的子进程。
+`--plan` 不联网、不写入、不读取目标回执、不启动 Python；`--check` 只读核验本机文件与依赖，不安装或推理。复查时按「显式参数 → 对应环境变量 → 指定目标的有效 `runtime-config.json` → 原默认」选择 Python/Torch 路径，不必重复已保存参数；已有回执损坏或路径不合法时在启动 Python 前失败，不默默改查 Comfy。模型、wheel 和独立依赖仍只检查指定目标目录，不跨库搜索，也不改写回执。
+
+PixAI 要求 Python 3.11 或更新版本，解析解释器时先核对版本，再允许下载或安装；依赖检查也先拒绝旧版本。正常准备生成 `runtime-config.json`，包含实际 base Python、解释器版本、只读复用的 Torch 包目录、模型与独立依赖路径，供可信运行时配置采用。首次准备的 Python 首选显式参数或 `AICS_PIXAI_PYTHON`，否则查找现有 Comfy venv；包目录可用 `AICS_PIXAI_TORCH_SITE_PACKAGES` 指定。Windows worker 使用实际 base Python，避免 venv launcher 产生不能由直接取消回收的子进程。
+
+准备阶段的 Python 子进程保留 30 秒期限与 64 KiB 响应上限。取消、超时或响应超限后保留首个停止原因，即使子进程随后正常退出并返回 JSON，也不作为成功；取消使用退出码 130，超时单独说明原因，结束时释放计时器与信号监听。
 
 worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签阈值 0.17，角色阈值 0.27 单独输出，一般词条最多 100。图像上限 20 MiB，边长 8192、3200 万像素，GIF 只读取首帧。模型加载后保留至 runtime 关闭或活跃推理被取消/超时；生图启动不自动卸载。Torch 分配器预算为 3 GiB，CUDA 上下文另留余量；显卡不可用或显存不足明确失败，不隐式切换 CPU。准备命令不证明 GPU 效果或设备可用性。
 
@@ -505,9 +517,9 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 
 参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口，只支持 AI 工作区下 `ComfyUI/main.py` 与 `ComfyUI/venv/Scripts/python.exe` 的 Windows venv 布局。两条启动入口在已安装 SageAttention 且 CUDA 可用时默认启用，缺依赖仍用 PyTorch，不自动安装；启动进程可设 `AICS_COMFY_USE_SAGE_ATTENTION=0` 关闭，也保留显式 `-UseSageAttention` 开关。已经运行的服务不被自动重启，默认值在下次启动时生效。其他布局需自行启动并配置服务地址，不自动迁移或安装依赖。
 
-桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认复用匹配当前源码的桌面构建回执和暂存资源，不在安装目录重建数据；`deploy:desktop:full` 先执行完整桌面构建，再校验能否同步静态资源。只有宿主 EXE、Rust EXE 和两个 DLL 均与安装版本一致时才允许增量，否则须完整安装。默认同步会清 WebView2 缓存并重启桌面端。
+桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认复用匹配当前源码的桌面构建回执和暂存资源，不在安装目录重建数据；`deploy:desktop:full` 先执行完整桌面构建，再校验能否同步静态资源。只有宿主 EXE、Rust EXE 和 libvips DLL 均与安装版本一致时才允许增量，否则须完整安装。ORT 已从新包载荷退役，旧安装中的残留文件不会由此次源码清理自动删除。默认同步会清 WebView2 缓存并重启桌面端。
 
-该入口只写安装目录：打包版网关把 `%APPDATA%\<ns>\gateway\content` 视为权威数据源且升级不覆盖，所以纯数据改动（角色/服装/蓝图/场景/参考索引）装完仍需 `desktop:content-sync --apply --clear-webview-cache` 再重启，否则桌面端继续显示旧数据；旧场景单文件等「源端删除型」残留由 bat 默认的 `-Cleanup` 按 `$STALE_ASSETS` 清理。装机后 [5/6][6/6]（清缓存、启动确认）在 NSIS 安装后可能不再回写，需自行核对。详见 [部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
+该入口只写安装目录，不覆盖个人 `content/catalog.sqlite`。人物/服装/蓝图/场景须通过内容维护或 `content:catalog` 预览并导入快照；参考索引等仍按文件维护的数据可用 `desktop:content-sync --apply --clear-webview-cache` 后重启。文件同步跳过已归记录库的目录和聚合，不读取、复制或删除它们，也不将旧目标记录分片列为多余。旧安装目录中的场景单文件等残留仍按 bat 默认 `-Cleanup` 的 `$STALE_ASSETS` 处理。装机后 [5/6][6/6]（清缓存、启动确认）在 NSIS 安装后可能不再回写，需自行核对。详见 [部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
 
 可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已验收EXE>` 需直接运行 bat）：`-UseInstaller` 使用完整安装包，默认先选择 `runtime/desktop-updates` 最新 `*-setup.exe`，也可显式指定 `-InstallerPath`；选择结果在 UAC 前固定并透传，避免提升权限期间换成另一份包。缺包退出 1，隐含跳过本地构建；`-QuietInstall` 仅随 `-UseInstaller` 静默安装，`-NoRestart` 结束后不启动，`-StartupRepair` 只同步当前绑定版本的文档、图标与快捷方式，与 `-UseInstaller` 互斥。非管理员时脚本经 UAC 重启，需用户确认。依赖/exe 变化的完整安装与 UAC 见[部署指南](desktop-deployment.md)。
 
@@ -539,11 +551,17 @@ Windows Native Live2D 的 `LIVE2D_CUBISM_SDK_DIR` 优先使用 runner 进程环�
 
 ### 011 发行输入绑定（2026-09-21）
 
-桌面 `build:tauri` / `package:tauri` 在锁内先从工作区分片刷新数据聚合，再捕获源码身份及构建两份 UI，确保新角色和蓝图进入界面读取的总表；该写入准备不改变测试/只读检查的 `onlyIfMissing` 守卫行为。已存在的桌面个人内容目录不会被安装覆盖，内容交付须另外完成备份差分同步与实际服务读取核对。
+桌面 `build:tauri` / `package:tauri` 在锁内先从已显式导出的 `data/catalog/` 快照刷新人物、服装、场景、蓝图的数据聚合，再捕获源码身份及构建两份 UI；该写入准备不改变测试/只读检查的 `onlyIfMissing` 守卫行为。已存在的个人 `content/catalog.sqlite` 不会被安装覆盖，记录式内容通过内容维护或 `content:catalog` 预览并导入快照；参考索引等仍按文件维护的数据才使用 `desktop:content-sync`。交付范围见[部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
 
 完整桌面构建在锁内捕获受 Git 管理及未忽略源码（排除 docs、plans 和一般 Markdown；原生许可目录中的 Markdown 仍纳入），复用 delivery-identity 的路径/字节哈希。`runtime/delivery-evidence/desktop-build-binding.json` 绑定 dist、桌面内嵌 web、暂存 Rust gateway/原生 DLL/清单及桌面 EXE，打包构建另绑定 NSIS；`runtime/rust-evidence/build.json` 绑定后端源码和 release EXE。Cubism 的 Core 头文件、Framework 源码与 Core 静态库也以实际字节摘要进入桌面构建环境和回执；构建前后及复用时核对，保留旧时间戳的同路径替换也会使候选失效。直接运行 Cargo 仍使用文件变化监听，常规桌面构建请走既有入口。仅原生构建不把旧 NSIS 纳入新身份。
 
+输入选择与回执归属核验使用路径集合和目录祖先查找，避免对数千项路径做两两扫描。选择项的大小写重复/目录覆盖仍拒绝；回执归属与明确选择项覆盖仍按原始大小写和路径判断。选择排序、摘要格式及全部文件字节检查保持原契约，不缓存历史 PASS。
+
+隐式构建源码选择允许尚未暂存的删除：仅跳过 Git 已列为 deleted、且当次安全路径核对确认为 ENOENT 的项。暂存相同删除不会改变身份；删除和恢复文件仍分别改变源码摘要，使不匹配的旧回执失效。Git 查询失败、链接、读取权限错误与显式指定的缺失输入仍拒绝，不改 Git 索引或补写旧回执。
+
 公开发布的 signed、manual 和 complete-manual 模式均核对绑定清单、完整材料索引、Rust EXE 与 DLL 字节；缺失材料或字节漂移仍在发行封装／上传前拒绝，独立 `publishRelease` 入口也再次核验。按用户 2026-10-06 的明确要求，`releaseReady`、pending 及许可审批标记不再阻断发布，原值保留在构建报告和更新说明中；发布仍须用户明确授权，不将公开发行写成材料审批或设备验收已完成。
+
+安装器 payload、升级校验器、分发 SHA-256 与远端资产摘要比较使用 64 KiB 分块读取；当前预哈希格式 `ED` 的签名验证同样分块计算 BLAKE2b。每个字节仍参与校验，签名和可信注释验证保留；旧 `Ed` 原文签名沿用完整消息验证。此改动限制哈希缓冲内存，不跳过源码/产物绑定，也不复用旧摘要冒充当前文件。
 
 skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同版本源码不同、锁文件变化、混包、缺回执和篡改在封装/签名/上传前拒绝。封装后追加分发文件身份并在签名/上传前核对。正常版本修改先构建再提交相同字节可用，不要求循环提交 SHA；仅文档变化不失效。旧包缺回执不能补写身份冒认已构建，应在原源码完整重建并重新审核；不得将同版本重建包冒充原公开资产。
 
@@ -553,4 +571,4 @@ skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同�
 
 `prepare-ai-environment.ps1` 是本机产品准备器，由 Rust 限定环境 ID、验证运行包后调用；没有新增通用命令权限或维护 CLI。当前选包支持 Windows x64 NVIDIA，Vulkan 为聊天进阶候选；驱动／系统许可与重启由用户完成。应用内文件准备完成不证明模型或设备验收。
 
-源码已退出 SD 新生成与 WebUI 受管启动；旧任务查询、结果收集、取消、作品与原配方继续保留。没有原引擎的旧作品不推断为新模型的可复现配方。当前公开程序包仍为原 1.9.0；本次源码要经过对应构建与安装才到达桌面，公开 LoRA 附件独立有效。
+源码已退出 SD 新生成与 WebUI 受管启动；旧任务查询、结果收集、取消、作品与原配方继续保留。没有原引擎的旧作品不推断为新模型的可复现配方。上述自动准备能力已进入 [1.9.1](releases/v1.9.1.md)，后续源码改动仍需对应构建与安装；公开 LoRA 附件独立有效。

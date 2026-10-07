@@ -29,9 +29,10 @@ const PACKS_REL = path.join('scripts', 'archive', 'resource-packs');
 function recordingIo(hooks: any = {}) {
   const calls: any = [];
   const io = Object.create(fs);
-  for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync']) {
+  for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'openSync', 'copyFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync']) {
     io[op] = (...args: any[]) => {
-      calls.push({ op, target: String(args[0]) });
+      if (op === 'copyFileSync') calls.push({ op: 'copyFileSync:source', target: String(args[0]) });
+      calls.push({ op, target: String(args[op === 'copyFileSync' ? 1 : 0]) });
       const hook = hooks[op];
       if (hook) return hook(...args);
       return (fs as Record<string, any>)[op](...args);
@@ -316,7 +317,7 @@ test('非 Windows：增量 apply 明确拒绝且零写入，预览可用', (t) =
   const result = stageResourcePackDelta({ root: fx.root, name: 'unix', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io, platform: 'linux' });
   assert.equal(result.ok, false);
   assert.equal(result.errors[0].code, 'unsupported-platform');
-  assert.ok(calls.every((c: any) => !['mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync'].includes(c.op)));
+  assert.ok(calls.every((c: any) => !['mkdirSync', 'mkdtempSync', 'writeFileSync', 'copyFileSync', 'renameSync'].includes(c.op)));
   assert.equal(planResourcePackDelta({ root: fx.root, name: 'unix', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest }).ok, true);
 });
 
@@ -334,7 +335,7 @@ test('增量模式同名目标拒绝与全程零越界访问（记录型 fs 证�
   const staged = stageResourcePackDelta({ platform: 'win32', root: fx.root, name: 'audit-pack', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
   assert.equal(staged.ok, true, JSON.stringify(staged.errors));
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
-  const writes = calls.filter((c: any) => ['writeFileSync', 'renameSync', 'mkdirSync', 'mkdtempSync'].includes(c.op));
+  const writes = calls.filter((c: any) => ['writeFileSync', 'copyFileSync', 'renameSync', 'mkdirSync', 'mkdtempSync'].includes(c.op));
   assert.ok(writes.length > 0, 'apply 确实发生了写入');
   for (const call of writes) {
     assert.ok(call.target.includes(path.join('scripts', 'archive', 'resource-packs')), `写入目标应限于候选目录: ${call.target}`);
@@ -392,7 +393,7 @@ test('unchanged 文件虽不复制仍须通过新清单完整磁盘核验', (t) 
   const result = stageResourcePackDelta({ platform: 'win32', root: fx.root, name: 'bad-unchanged', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.code === 'hash-mismatch' && e.path === 'assets/dir/bravo.bin'));
-  assert.ok(calls.every((c: any) => !['mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync'].includes(c.op)));
+  assert.ok(calls.every((c: any) => !['mkdirSync', 'mkdtempSync', 'writeFileSync', 'copyFileSync', 'renameSync'].includes(c.op)));
 });
 
 

@@ -12,7 +12,7 @@ function digest(bytes: Buffer) { return crypto.createHash('sha256').update(bytes
 function nativeManifest(bytes: Buffer) {
   const manifest = JSON.parse(bytes.toString('utf8'));
   if (manifest.schemaVersion !== 1 || manifest.platform !== 'win32-x64' || !Array.isArray(manifest.files)
-    || manifest.files.length !== 2 || [...manifest.files.map((f: any) => f.name)].sort().join(',') !== 'libvips-42.dll,onnxruntime.dll') throw Error('Invalid Windows native manifest');
+    || manifest.files.length !== 1 || manifest.files[0]?.name !== 'libvips-42.dll') throw Error('Invalid Windows native manifest');
   return manifest;
 }
 function nativeReleaseState(manifest: any) {
@@ -38,14 +38,10 @@ function runtimeBuild(root: string) {
 }
 function developmentNativeEnvironment(root:string, supplied:NodeJS.ProcessEnv=process.env):NodeJS.ProcessEnv {
   const env={...supplied};
-  if(process.platform!=='win32')return env;
-  const selected=[['libvips-42.dll','AICS_VIPS_DYLIB_PATH'],['onnxruntime.dll','AICS_ORT_DYLIB_PATH']];
-  if(selected.every(([,key])=>env[key]!==undefined))return env;
+  if(process.platform!=='win32'||env.AICS_VIPS_DYLIB_PATH!==undefined)return env;
   const manifest=JSON.parse(fs.readFileSync(safe.resolveSafe(root,NATIVE_MANIFEST),'utf8'));
-  for(const [name,key] of selected){if(env[key]!==undefined)continue;
-    const entry=manifest.files?.find((file:any)=>file.name===name);if(!entry)throw Error(`Native manifest lacks ${name}`);
-    checkedBytes(root,entry.source,entry);env[key]=safe.resolveSafe(root,entry.source);
-  }
+  const entry=manifest.files?.find((file:any)=>file.name==='libvips-42.dll');if(!entry)throw Error('Native manifest lacks libvips-42.dll');
+  checkedBytes(root,entry.source,entry);env.AICS_VIPS_DYLIB_PATH=safe.resolveSafe(root,entry.source);
   return env;
 }
 function copyRustPayload(root: string, gateway: string) {

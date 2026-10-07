@@ -5,11 +5,11 @@
 
 本机已启用 bundled UI，当前安装身份以[项目状态](project-status.md)为准；2026-09-27 的完整安装见[当次证据](evidence/memory-optimization-2026-09-27.json)。前端变化需要重新打包并完整安装；脚本默认的增量模式适用于下面决策表中的网关、数据和动态资源变化。后续源码改动需另行核对安装身份。
 
-2026-09-28 源码已将后端载荷改为 `gateway/huiyu-runtime.exe` 与锁定的原生 DLL，旧 Node 源码不随产品作为回退服务。本次 Rust 构建/安装与上述旧安装分开验收；目前原生发行材料未完成，`releaseReady=false`。后端 EXE、DLL或桌面 EXE变化必须完整安装，不能靠 `-SkipBuild` 把旧程序变成新版本。只有当前构建绑定已通过、可复制资源发生变化时才使用既有增量入口。
+2026-09-28 源码已将后端载荷改为 `gateway/huiyu-runtime.exe` 与锁定的原生 DLL，旧 Node 源码不随产品作为回退服务。本次 Rust 构建/安装与上述旧安装分开验收；目前原生发行材料未完成，`releaseReady=false`。按 2026-10-06 的发行规则，该标记与 pending 如实记录，不阻断经用户明确授权的发布；材料索引完整性及源码/产物字节核验仍须通过，发布不代表待项已验收。后端 EXE、DLL或桌面 EXE变化必须完整安装，不能靠 `-SkipBuild` 把旧程序变成新版本。只有当前构建绑定已通过、可复制资源发生变化时才使用既有增量入口。
 
 ## 打包前检查
 
-桌面构建入口在捕获源码身份及构建 Web/desktop UI 前，按当前工作区的分片刷新已缺失或陈旧的数据聚合与预压副本，再解析 `DATA_VERSION`；不会把仅因文件存在而跳过重建的测试准备模式用于发行包。已安装程序仍以个人内容目录为权威，安装不会覆盖已有目录；新增角色等内容变更另用下方备份差分同步入口交付，不能只核对 EXE/DLL 后宣称角色数据已更新。
+桌面构建入口在捕获源码身份及构建 Web/desktop UI 前，从已显式导出的 `data/catalog/` 快照刷新人物、服装、场景、蓝图的数据聚合与预压副本，再解析 `DATA_VERSION`；不会把仅因文件存在而跳过重建的测试准备模式用于发行包。已安装程序以个人 `content/catalog.sqlite` 为工作权威，安装不会覆盖已有库；新增角色等内容变更须通过内容维护的快照预览/导入交付，不能用旧分片复制或仅核对 EXE/DLL 后宣称角色数据已更新。
 
 当前 SQLite 桌面工作区使用排他 owner 锁。支持维护协议的新宿主可由部署入口正常退出：先做只读能力/进程身份核对并准备安装包或构建，写入安装目录前通知现有三个窗口冻结输入、确认延迟保存；全部确认后才通过宿主既有认证通道停止新请求，排空已准入写入、回收自有网关并确认锁释放。任一窗口仍忙、配置表单未提交或保存失败，部署就取消，不代替用户提交配置。只隐藏窗口不等于退出。
 
@@ -29,11 +29,13 @@ Rust 使用[官方 rustup 安装器](https://rust-lang.org/tools/install/)的 x6
 
 生成安装包：`npm run package:tauri`。它只构建，不安装、不公开发布；完成后再按下面的部署入口选择增量同步或完整安装。
 
-**公开发行与源码构建不同步**：2026-10-02 核对的 [1.8.1 公开版](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1)只有 `AI-CG-Studio_1.8.1_x64-setup.exe` 完整包（639,536,640 字节），没有 upgrade 附件，公开自动更新仍下载该完整包。
+**公开发行与源码构建分别核对**：2026-10-07 已发布的 [1.9.1](releases/v1.9.1.md)包含 `AI-CG-Studio_1.9.1_x64-full-setup.exe`（654,864,384 字节）与 `AI-CG-Studio_1.9.1_x64-upgrade-setup.exe`（383,938,560 字节），公开自动更新指向升级包。发行身份及核验范围见[项目状态](project-status.md)；后续源码能力不能据此算入既有安装包。
 
-当前源码的发行入口 `npm run release:desktop` 已实现生成 **full 完整包**与 **upgrade 轻量升级包**，并分别绑定/签名，尚未公开交付；已有构建可用 `--skip-build`，本地无签名构建显式加 `--manual`。完整包带基础素材和 WebView2，升级包在写入前核对已有安装及保留资源的精确字节后原位更新；资源不匹配时使用完整包修复。样张 ZIP 继续独立提供。`deploy-desktop.bat -UseInstaller` 自动选包时排除 upgrade 包，默认选择新装和修复均可用的完整包；如需验证升级包，应显式传入已核对的 `-InstallerPath`。
+发行入口 `npm run release:desktop` 生成 **full 完整包**与 **upgrade 轻量升级包**，并分别绑定/签名；已有构建可用 `--skip-build`，本地无签名构建显式加 `--manual`。完整包带基础素材和 WebView2，升级包在写入前核对已有安装及保留资源的精确字节后原位更新；资源不匹配时使用完整包修复。样张 ZIP 继续独立提供。`deploy-desktop.bat -UseInstaller` 自动选包时排除 upgrade 包，默认选择新装和修复均可用的完整包；如需验证升级包，应显式传入已核对的 `-InstallerPath`。
 
 正式构建会在 Tauri CLI 完成后将 Cargo 创建的固定 release EXE 硬链接核对字节并原子替换为独立文件，再执行原来的源码/产物绑定检查；其它位置的硬链接仍拒绝。CLI 成功不等于可发行：绑定失败返回非零并指出具体产物，回执原子更新失败保留旧回执，不再依赖一次性打包脚本修补。
+
+源码清理后的正常构建无需先暂存删除文件。构建选择只跳过 Git 确认删除且安全路径检查确认为不存在的项，捕获的身份与暂存相同删除后一致；源码删除/恢复仍会让旧构建失配。路径不安全、无法读取和显式缺失输入不会被当作普通删除忽略。
 
 Tauri 2.12 在 NSIS 内把宿主唯一的 `__TAURI_BUNDLE_TYPE_VAR_UNK` 标记改成 `NSS`，打包后恢复构建目录的原 EXE。因此安装校验从已绑定源字节计算这一精确变换后的完整 SHA-256；其它字节变化、重复/缺失标记仍拒绝，Rust 后端和 DLL 仍须原字节相等。这不用于接受签名或任意安装器修改；上游打包行为改变时需重新核验。
 
@@ -78,18 +80,22 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 
 ## 数据改动如何到达桌面端
 
-打包版网关把**个人内容目录**当作权威数据源：`%APPDATA%\com.aics.studio\gateway\content\data`
-（实现见 `runtime-rs/src/config/content.rs`，注释原文 *"Existing user content is authoritative
-across restarts and upgrades"*）。该目录只在**首次启动且目录缺失**时从安装包播种，之后
-完整安装与增量部署都只更新安装目录的 `gateway\data`，**永远不会覆盖它**。
+人物、服装、场景和蓝图的工作权威是个人运行目录中的
+**`%APPDATA%\com.aics.studio\gateway\content\catalog.sqlite`**。
+`data/catalog/` 是显式导出的项目快照，构建用它生成发行数据；旧 `content/data` 分片仅用于升级导入等保留用途。
+完整安装与增量部署都不会覆盖已有个人库。首次启用按快照或旧个人分片初始化；已启用后数据库缺失或损坏会拒绝服务，不静默重建。
 
-后果：改 `data/**` 里的角色、服装、蓝图、场景或参考索引后，光重装/增量部署，桌面端仍然
-显示旧数据（2026-09-30 实例：内容目录停在 09-29 17:27 快照，只认 161 位角色、没有
-`fiona_frost`，迦摩/美花莉的角色修正也看不到）。该目录也有 `.br/.gz` 预压缩副本：
-服务端只接受时间戳不早于原文的压缩体。复制陈旧压缩文件会刷新时间戳，因此同步前会解压
-核对它们与源 JSON 的字节；不一致时拒绝写入，需先重新生成预压缩产物。
+因此，人物等内容更新先在内容维护中预览新快照，再明确导入到实际运行目录。
+导入比较原始种子、本地修改和新快照，冲突拒绝写入，缺失记录不隐式删除。
+维护入口为 `npm run wf -- content:catalog --help`，操作见[维护手册](maintenance.md#批量修改与快照)。
+不要通过复制分片或替换 SQLite 文件来绕过个人修改与修订校验。
 
-统一入口：
+### 仍按文件维护的数据
+
+`desktop:content-sync` 保留给参考索引等仍按文件维护的数据；它不导入快照、不更新 `catalog.sqlite`，
+不能用于交付已进入记录库的人物、服装、场景或蓝图修改。源和目标中的 `catalog/`、`popular/`、`scenes/`、`blueprints/` 及对应人物/场景/蓝图聚合会直接跳过，不读取、复制、删除或计入目标多余文件；参考、标签、LoRA 与定稿保护清单等仍按文件维护的元数据保留原同步行为。它同步的 `content/data` 可能有 `.br/.gz`
+预压缩副本，写入前会解压核对与源 JSON 的字节，不一致时拒绝，需重新生成对应预压缩产物。
+文件同步入口：
 
 ```powershell
 npm run wf -- desktop:content-sync                                  # 只读预览差异
@@ -105,7 +111,7 @@ npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 We
   `natsume-core.json`，2026-08-27），它们回流后会与数字分片并存，使场景维护接口以
   「单文件与批次文件并存」拒绝服务；因此部署入口的 `$STALE_ASSETS` 已登记这九个路径
   （`.json` 与 `.br/.gz`），`deploy-desktop.bat` 默认带 `-Cleanup` 时会把它们从安装目录清掉。
-- 不动用户数据（SQLite 工作区、history/projects/prompts、`pipeline-run-state.json` 等）。
+- 不动记录式内容库及用户作品数据（`content/catalog.sqlite`、SQLite 工作区、history/projects/prompts、`pipeline-run-state.json` 等）。
 - 覆盖前将当前目标的原始字节及新增/更新文件清单保存到 `content/data` 旁的
   `content-sync-backups/<ID>/`，并输出路径。逐文件原子写入；链接路径、陈旧压缩体和已检测到的
   并发修改会拒绝。失败可能留下已同步文件与备份，不提供整批事务回滚。
@@ -126,7 +132,8 @@ npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 We
 |---|---|---|
 | `src/**` 前端代码（Vue / TS / CSS），已启用独立 UI | **完整安装** | 前端编译进 EXE，必须重新打包 |
 | `src/**` 前端代码，仍使用旧 HTTP UI 来源 | **增量** | 只需换网关 `dist/` |
-| `data/` 场景、热门角色数据 | **增量** | 只需换 `data/` 产物 |
+| `data/catalog/` 人物、服装、场景、蓝图快照 | **安装资源可增量；个人库另行导入** | 更新发行产物不会覆盖已有 `content/catalog.sqlite`，按上节预览/导入 |
+| 参考索引等仍按文件维护的 `data/` 资源 | **增量** | 更新安装资源；已有个人内容目录另按文件同步入口处理 |
 | `runtime-rs/src/`、Cargo 锁文件或后端 EXE | **完整安装** | 产品运行 Rust EXE，不能复制旧网关 JS 代替构建 |
 | `assets/` 新增/修改静态资源 | **增量** | 直接复制 |
 | `assets/` **删除**了资源 | **增量** | 必须带 `-Cleanup`，否则安装目录里那份会永久残留 |
@@ -164,7 +171,7 @@ npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 We
 ## 三、三个必须知道的坑
 
 ### 1. 原生依赖需要绑定真实载荷
-`runtime-rs/native-dependencies.windows-x64.json` 固定 DLL字节/哈希及发行材料状态，`desktop-rust-inputs.ts` 核验后暂存。新增或替换依赖要重建后端和桌面载荷；开发机能加载不证明安装包完整。`onnxruntime-node` / `sharp` 留在开发对照依赖中，不是新的产品运行依赖。
+`runtime-rs/native-dependencies.windows-x64.json` 固定 libvips DLL 字节/哈希及发行材料状态，`desktop-rust-inputs.ts` 核验后暂存。PixAI 接替 WD14 后，源码已退役 ORT 的 Rust/npm 依赖与新包载荷；`sharp` 继续用于图像维护工具。依赖变化需重建后端和桌面载荷；开发机能加载不证明安装包完整。此次退役不修改已发布 1.9.1 的字节，也不清除旧安装目录中的 ORT 文件。
 
 ### 2. 依赖变了，顺序必须是「先打包，再安装」
 先经受控构建产出并核验当前包，再使用 `-UseInstaller`；不向已安装目录手工补 DLL或 Node 依赖。构建成功和隔离 bundle 通过仍不等于完成许可材料、UAC与实际安装验收。
@@ -186,7 +193,7 @@ npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 We
 Rust 侧（`updater_cmd.rs`）、前端横幅（`useDesktopUpdater.ts` + `ControlView.vue`）均已落地；
 **只检查不自动下载；必须由用户点击“一键升级”后才下载安装**。
 
-后续源码已启用 HTTP/2，并实现失败、取消或超时后校验缓存再尝试续传；服务器不支持安全续传或资源身份变化时重新下载，完整签名校验通过后才安装。此实现尚未公开交付，不能据此认为已安装的 1.8.1 具备续传，或公开更新已改用轻量包。
+1.9.1 发行源码已启用 HTTP/2，并实现失败、取消或超时后校验缓存再尝试续传；服务器不支持安全续传或资源身份变化时重新下载，完整签名校验通过后才安装。旧客户端执行的是自身版本的下载逻辑；公开 `latest.json` 指向升级包，不会给尚未升级的 1.8.1 自动补上续传能力。
 
 ### 发版工作流（一次命令）
 
@@ -202,7 +209,7 @@ node scripts/maintenance/release-desktop-update.js --skip-build --publish
    客户端 updater 只在「远端版本 > 当前安装版本」时提示——**不 bump 就永远检不到更新**
    （2026-08-31 破案：发布与安装同为 1.5.0，功能从未触发）。
 2. 提交并推送 `main` 后用 `--skip-build --publish`，脚本会确认目标是公开主项目、
-   本地 `main` 与 `origin/main` 一致，再上传 full 与 upgrade 两份安装包、各自的 `.sig` / `.sha256`，以及指向 upgrade 的 `latest.json`。这描述当前源码流程，不改写既有 1.8.1 附件。
+   本地 `main` 与 `origin/main` 一致，再上传 full 与 upgrade 两份安装包、各自的 `.sig` / `.sha256`，以及指向 upgrade 的 `latest.json`。1.9.1 已按此流程交付；后续版本仍须核对自己的构建与公开附件。
 3. 已装客户端下次启动自动检测；GitHub 暂时不可达时静默跳过，不影响本地使用。
 
 ### 原签名私钥暂不可用时
@@ -224,7 +231,7 @@ node scripts/maintenance/release-desktop-update.js --skip-build --publish
 只有选「卸载应用」才会删旧文件（但那样不会装新的）。
 
 **Q：装完怎么确认真实反推能用？**
-先核对已安装 Rust EXE和原生 DLL的哈希、健康/反推状态，再按明确授权使用真实权重核验输出。中性图片或小模型夹具只证明对应消费链；既有 Node `require` 成功不能认证 Rust 安装或真实 WD14效果。
+先核对已安装 Rust EXE和原生 DLL的哈希，再按[模型配置指南](guides/setup-and-models.md#pixai-默认图片反推)准备 PixAI，检查 `/api/interrogate/status` 并按明确授权使用真实权重核验输出。中性图片或小模型夹具只证明对应消费链；旧 WD14 或 Node `require` 成功不能认证现行 PixAI 反推。
 
 **Q：为什么必须我点 UAC？**
 写入 `C:\Program Files` 需要管理员。部署入口会请求 Windows 提权，由用户确认 UAC；取消授权时返回失败，不记录安装成功。

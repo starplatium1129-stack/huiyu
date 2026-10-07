@@ -21,7 +21,7 @@ import { timeDesktopBuild } from '../lib/desktop-build-timing';
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { execFileSync }: typeof import('child_process') = require('child_process');
-const crypto: typeof import('crypto') = require('crypto');
+const { hashInstallerFile }: typeof import('./build-modern-installer') = require('./build-modern-installer');
 const { resolveNpmInvocation }: typeof import('./desktop-stage-resources') = require('./desktop-stage-resources');
 
 // 盘符大写归一（2026-08-31 破案）：bash 会话下 __dirname 可能带小写盘符 e:\，
@@ -181,7 +181,7 @@ function publishRelease(version: any, head: any, files: any, options: any = {}) 
   for (const file of files) {
     const asset = uploaded.assets.find((asset: any) => asset.name === path.basename(file));
     if (!asset || asset.size !== fs.statSync(file).size) throw new Error(`发行资产上传不完整：${path.basename(file)}，未晋升发布`);
-    if (asset.digest && asset.digest.toLowerCase() !== `sha256:${crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')}`) throw new Error(`发行资产校验失败：${path.basename(file)}，未晋升发布`);
+    if (asset.digest && asset.digest.toLowerCase() !== `sha256:${hashInstallerFile(file, 'sha256').toString('hex')}`) throw new Error(`发行资产校验失败：${path.basename(file)}，未晋升发布`);
   }
   run(cli, ['release', 'edit', tag, '--repo', RELEASE_REPOSITORY, '--title', `绘遇 HUIYU ${version}${manual ? ' · 手动安装版' : ''}`, '--notes-file', notesPath, '--draft=false', `--latest=${manual ? 'false' : 'true'}`], writeOptions);
 }
@@ -263,7 +263,7 @@ async function main() {
     const executable = path.join(OUT_DIR, exeName);
     await timeDesktopBuild(`${variant.kind} installer wrapper`, () => modern.buildModernInstaller({ payload:variant.payload, output:executable, upgradeVerifier:variant.verifier }));
     const shaPath = `${executable}.sha256`;
-    fs.writeFileSync(shaPath, `${crypto.createHash('sha256').update(fs.readFileSync(executable)).digest('hex').toUpperCase()}  ${exeName}\n`);
+    fs.writeFileSync(shaPath, `${hashInstallerFile(executable, 'sha256').toString('hex').toUpperCase()}  ${exeName}\n`);
     await timeDesktopBuild(`${variant.kind} distribution verification`, () => binding.verifyDistribution(ROOT, executable));
     files.push(executable, shaPath);
     if (!MANUAL) {

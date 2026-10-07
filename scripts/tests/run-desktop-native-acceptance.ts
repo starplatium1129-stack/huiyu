@@ -331,7 +331,7 @@ function installedExecutable(installLocation: any) {
 function buildResourceManifest(installLocation: any) {
   const required = [
     'gateway/huiyu-runtime.exe',
-    'gateway/native/libvips-42.dll', 'gateway/native/onnxruntime.dll',
+    'gateway/native/libvips-42.dll',
     'gateway/dist',
     'gateway/assets/live2d/nene',
     'gateway/assets/live2d/natsume',

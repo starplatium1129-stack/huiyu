@@ -1,7 +1,7 @@
 import fs = require('node:fs');
 import path = require('node:path');
 import { execFileSync } from 'node:child_process';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import identity = require('./delivery-identity');
 import deliveryPaths = require('./delivery-paths');
 
@@ -33,22 +33,33 @@ function materializeNativeExecutable(root: string) {
   if (before.nlink === 1n) return;
   const temporary = `${target}.detach-${randomUUID()}.tmp`;
   try {
-    const bytes = fs.readFileSync(target), sha256 = deliveryPaths.sha256(bytes);
+    // This known Cargo output may be hardlinked, so the general fileEntry
+    // verifier remains unavailable until the independent copy exists.
+    const hash = createHash('sha256'), buffer = Buffer.allocUnsafe(64 * 1024);
+    const descriptor = fs.openSync(target, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0));
+    let bytes = 0;
+    try {
+      let size;
+      while ((size = fs.readSync(descriptor, buffer, 0, buffer.length, null)) > 0) {
+        hash.update(buffer.subarray(0, size)); bytes += size;
+      }
+    } finally { fs.closeSync(descriptor); }
+    const sha256 = hash.digest('hex');
     fs.copyFileSync(target, temporary, fs.constants.COPYFILE_EXCL);
     const copy = deliveryPaths.fileEntry(root, path.relative(root, temporary).replace(/\\/g, '/'));
-    if (copy.status !== 'file' || copy.bytes !== bytes.length || copy.sha256 !== sha256) {
+    if (copy.status !== 'file' || copy.bytes !== bytes || copy.sha256 !== sha256) {
       throw Error('独立副本字节校验失败，保留原 EXE');
     }
     const current = fs.lstatSync(deliveryPaths.resolveSafe(root, exe), { bigint:true });
     if (current.dev !== before.dev || current.ino !== before.ino || current.size !== before.size
-      || current.mtimeNs !== before.mtimeNs || current.ctimeNs !== before.ctimeNs || BigInt(bytes.length) !== before.size) {
+      || current.mtimeNs !== before.mtimeNs || current.ctimeNs !== before.ctimeNs || BigInt(bytes) !== before.size) {
       throw Error('复制期间原 EXE 发生变化，拒绝替换');
     }
     // Same-directory rename replaces only the release name, never writes through
     // Cargo's shared inode or unlinks the old image before the copy is verified.
     fs.renameSync(temporary, target);
     const published = deliveryPaths.fileEntry(root, exe);
-    if (published.status !== 'file' || published.bytes !== bytes.length || published.sha256 !== sha256) {
+    if (published.status !== 'file' || published.bytes !== bytes || published.sha256 !== sha256) {
       throw Error('原子替换后的 EXE 字节校验失败，拒绝生成回执');
     }
   } catch (error) {
@@ -73,7 +84,14 @@ function writeReceipt(root: string, receipt: unknown, stage: string) {
 function sourceIdentity(root: string) {
   const names = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd:root, encoding:'utf8', windowsHide:true }).split('\0')
     .filter(name => name && !/^(docs|plans)\//.test(name) && (!/\.md$/i.test(name) || name.startsWith('runtime-rs/native-licenses/')));
-  const selection: Selection[] = [...new Set(names)].map(name => ({ kind:'file', path:name }));
+  const deleted = new Set(execFileSync('git', ['ls-files', '-z', '--deleted'], { cwd:root, encoding:'utf8', windowsHide:true }).split('\0').filter(Boolean));
+  const selection: Selection[] = [...new Set(names)].filter(name => {
+    if (!deleted.has(name)) return true;
+    // Staging a deletion must not change the identity of the same source bytes.
+    // Recheck it now: a restored file, unsafe ancestor or IO error cannot vanish.
+    try { deliveryPaths.resolveSafe(root, name); return true; }
+    catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return false; throw error; }
+  }).map(name => ({ kind:'file', path:name }));
   return completeSnapshot(root, selection, '发行源码身份不完整，请检查源码文件后完整构建');
 }
 function sdkIdentity(root: string, env: NodeJS.ProcessEnv = process.env) {

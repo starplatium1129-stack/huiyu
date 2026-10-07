@@ -1,12 +1,12 @@
 /**
- * sync-desktop-content.ts — 把仓库 data/ 同步进桌面端「个人内容目录」。
+ * sync-desktop-content.ts — 同步仍按文件维护的 data/ 到桌面个人内容目录。
  *
- * 为什么需要独立入口：打包版网关把 %APPDATA%\<ns>\gateway\content 视为权威内容
- * （runtime-rs/src/config/content.rs，只在目录缺失时从安装包播种）。
- * 完整安装与增量部署只更新安装目录 gateway\data，已有个人内容需显式同步。
+ * 完整安装与增量部署只更新安装目录 gateway\data，已有个人文件数据需显式同步。
+ * 人物/服装/场景/蓝图由 content/catalog.sqlite 管理；快照、旧分片和聚合文件
+ * 不参与本入口同步，记录变更应通过内容库快照预览/导入交付。
  *
  * 边界：
- * - 只同步桌面打包白名单数据；覆盖前备份当前目标字节，目标独有文件保留并报告。
+ * - 从桌面打包白名单中排除上述记录域；覆盖前备份，目标独有文件保留并报告。
  * - 不调用模型、不安装、不改安装目录、不动用户作品（history/projects/prompts 等）。
  * - 默认只读预览；写盘与清缓存需显式开关。
  *
@@ -27,6 +27,15 @@ const { includeData }: typeof import('./desktop-stage-resources') = require('./d
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const WEBVIEW_CACHE_DIRS = ['Cache', 'Code Cache', 'GPUCache'];
+// Catalog migration.rs / views.rs: four record kinds and their seed/export projections.
+// References, tag shards and file-backed policy/model metadata still have consumers.
+const CATALOG_RECORD_DIRS = new Set(['catalog', 'popular', 'scenes', 'blueprints']);
+const CATALOG_RECORD_FILES = new Set(['characters.json', 'popular-characters.json', 'scene-blueprints.json',
+  'scenes.json', 'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json', 'scenes-core.json', 'scenes-index.json']);
+function catalogRecordPath(relative: string): boolean {
+  const name = process.platform === 'win32' ? relative.toLowerCase() : relative;
+  return CATALOG_RECORD_DIRS.has(name.split('/')[0]!) || CATALOG_RECORD_FILES.has(name.replace(/\.(br|gz)$/i, ''));
+}
 
 /** 目标个人内容目录：打包版网关的 content_root/data。 */
 function defaultContentRoot(): string {
@@ -51,6 +60,7 @@ function walk(dir: string, base = '', source = false): string[] {
   const out: string[] = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const relative = base ? `${base}/${entry.name}` : entry.name;
+    if (catalogRecordPath(relative)) continue;
     const full = path.join(dir, entry.name);
     if (source && !includeData(relative.split('/'), full)) continue;
     if (source) io.safePath(full, entry.isDirectory() ? 'directory' : 'file', false);
@@ -87,7 +97,8 @@ function assertStopped(target: string) {
 function main(args = process.argv.slice(2)) {
   if (args.includes('--help')) {
     console.log('sync-desktop-content [--apply] [--clear-webview-cache] [--content-root=DIR] [--source=DIR] [--webview-root=DIR]\n'
-      + '默认只读预览差异；--apply 先备份将覆盖的个人内容，再原子写入缺失或变更文件（不删除目标文件）；\n'
+      + '仅同步参考、标签等文件维护域；跳过人物/服装/场景/蓝图，不更新 catalog.sqlite；\n'
+      + '默认只读预览；--apply 先备份覆盖项，再原子写入差异文件（不删除目标文件）；\n'
       + '--clear-webview-cache 另外删除 WebView2 的 Cache / Code Cache / GPUCache。');
     return;
   }
@@ -134,6 +145,7 @@ function main(args = process.argv.slice(2)) {
     }
   }
 
+  console.log('[desktop:content-sync] 仅同步文件维护域；已跳过人物/服装/场景/蓝图，记录变更请使用内容库快照导入。');
   console.log(`[desktop:content-sync] 源=${source}`);
   console.log(`[desktop:content-sync] 目标=${target}`);
   console.log(`[desktop:content-sync] 源文件 ${sourceFiles.length}；目标文件 ${targetFiles.length}；新增 ${toAdd.length}；更新 ${toUpdate.length}；目标多余 ${targetOnly.length}`);

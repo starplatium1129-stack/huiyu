@@ -35,7 +35,7 @@ function packRel(name: any) {
 function recordingIo(hooks: any = {}) {
   const calls: any = [];
   const io = Object.create(fs);
-  for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync', 'rmSync', 'unlinkSync']) {
+  for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'openSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync', 'rmSync', 'unlinkSync']) {
     io[op] = (...args: any[]) => {
       calls.push({ op, target: String(args[0]) });
       const hook = hooks[op];
@@ -499,7 +499,7 @@ test('候选目录真实路径越界在 stat 和读取前拒绝', (t) => {
   const { io, calls } = recordingIo();
   assert.throws(() => verifyDeltaPack({ root: fx.root, baseManifestPath: OLD_MANIFEST, packPath: 'escaped-pack', io }), /root 外/);
   assert.ok(calls.filter((c: any) => c.op === 'statSync').every((c: any) => c.target === fs.realpathSync(fx.root)));
-  assert.ok(calls.every((c: any) => c.op !== 'readFileSync'));
+  assert.ok(calls.every((c: any) => !['readFileSync', 'openSync'].includes(c.op)));
 });
 
 test('候选元数据真实路径离开包目录即使仍在 root 内也不得读取', (t) => {

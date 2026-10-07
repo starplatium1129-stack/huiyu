@@ -135,7 +135,13 @@ function resolveRealpathBoundary(io: typeof import("node:fs"), absPath: string, 
 }
 
 function hashFile(io: typeof import("node:fs"), abs: string) {
-  return createHash('sha256').update(io.readFileSync(abs)).digest('hex');
+  const fd = io.openSync(abs, 'r');
+  try {
+    const hash = createHash('sha256'), buffer = Buffer.allocUnsafe(64 * 1024);
+    let size;
+    while ((size = io.readSync(fd, buffer, 0, buffer.length, null)) > 0) hash.update(buffer.subarray(0, size));
+    return hash.digest('hex');
+  } finally { io.closeSync(fd); }
 }
 
 function comparePath(a: string, b: string) {

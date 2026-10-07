@@ -15,6 +15,7 @@ const assert: typeof import('node:assert/strict') = require('node:assert/strict'
 const fs: typeof import('node:fs') = require('node:fs');
 const os: typeof import('node:os') = require('node:os');
 const path: typeof import('node:path') = require('node:path');
+const crypto: typeof import('node:crypto') = require('node:crypto');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 
 const { validatePackName, planResourcePack, stageResourcePack }: typeof import('../lib/resource-pack') = require('../lib/resource-pack');
@@ -27,9 +28,10 @@ const PACKS_REL = path.join('scripts', 'archive', 'resource-packs');
 function recordingIo(hooks: any = {}) {
   const calls: any = [];
   const io = Object.create(fs);
-  for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync']) {
+  for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'openSync', 'copyFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync']) {
     io[op] = (...args: any[]) => {
-      calls.push({ op, target: String(args[0]) });
+      if (op === 'copyFileSync') calls.push({ op: 'copyFileSync:source', target: String(args[0]) });
+      calls.push({ op, target: String(args[op === 'copyFileSync' ? 1 : 0]) });
       const hook = hooks[op];
       if (hook) return hook(...args);
       return (fs as Record<string, any>)[op](...args);
@@ -242,19 +244,18 @@ test('复制期间源变化：不发布最终包，暂存目录保留并明确�
   const alpha = path.join(fx.root, 'assets', 'alpha.txt');
   let alphaReads = 0;
   const { io, calls } = recordingIo({
-    readFileSync: (p: any, ...rest: any[]) => {
+    openSync: (p: any, flags: any, mode?: any) => {
       if (path.resolve(String(p)) === path.resolve(alpha)) {
         alphaReads++;
         if (alphaReads === 2) {
-          fs.writeFileSync(alpha, 'Z'); // 同字节数篡改，模拟核验后、复制时源已变化
-          return Buffer.from('Z');
+          fs.writeFileSync(alpha, 'Z'); // 同字节数篡改，模拟计划核验后、复制前源已变化
         }
       }
-      return fs.readFileSync(p, ...rest);
+      return fs.openSync(p, flags, mode);
     },
   });
   const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'pack-change', manifestPath: 'artifacts/manifest.json', io });
-  assert.equal(alphaReads, 2, '核验与复制各读取一次');
+  assert.equal(alphaReads, 2, '计划核验与复制前核验各读取一次');
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.path === 'assets/alpha.txt' && e.code === 'hash-mismatch'), JSON.stringify(result.errors));
   assert.equal(result.destinationCreated, false);
@@ -269,9 +270,9 @@ test('复制期间源变化：不发布最终包，暂存目录保留并明确�
 test('候选写入失败：不发布最终包，已复制候选保留在暂存目录', (t) => {
   const fx = buildFixture(t);
   const { io } = recordingIo({
-    writeFileSync: (p: any, ...rest: any[]) => {
-      if (String(p).endsWith(path.join('assets', 'dir', 'bravo.bin'))) throw Object.assign(new Error('模拟写入失败'), { code: 'EIO' });
-      return (fs.writeFileSync as any)(p, ...rest);
+    copyFileSync: (source: string, target: string, mode?: number) => {
+      if (target.endsWith(path.join('assets', 'dir', 'bravo.bin'))) throw Object.assign(new Error('模拟写入失败'), { code: 'EIO' });
+      return fs.copyFileSync(source, target, mode);
     },
   });
   const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'pack-wfail', manifestPath: 'artifacts/manifest.json', io });
@@ -373,7 +374,7 @@ test('预览与成功导出全程零越界访问（记录型 fs 证明）', (t) 
   const staged = stageResourcePack({ platform: 'win32', root: fx.root, name: 'audit-pack', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(staged.ok, true);
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
-  const writes = calls.filter((c: any) => c.op === 'writeFileSync' || c.op === 'renameSync' || c.op === 'mkdirSync' || c.op === 'mkdtempSync');
+  const writes = calls.filter((c: any) => c.op === 'writeFileSync' || c.op === 'copyFileSync' || c.op === 'renameSync' || c.op === 'mkdirSync' || c.op === 'mkdtempSync');
   assert.ok(writes.length > 0, 'apply 确实发生了写入');
   for (const call of writes) {
     assert.ok(call.target.includes(path.join('scripts', 'archive', 'resource-packs')), `写入目标应限于候选目录: ${call.target}`);
@@ -386,7 +387,7 @@ test('非 Windows 只读预览可用，apply 明确拒绝且零写入', (t) => {
   const result = stageResourcePack({ root: fx.root, name: 'unix', manifestPath: 'artifacts/manifest.json', io, platform: 'linux' });
   assert.equal(result.ok, false);
   assert.equal(result.errors[0].code, 'unsupported-platform');
-  assert.ok(calls.every((c: any) => !['mkdirSync','mkdtempSync','writeFileSync','renameSync'].includes(c.op)));
+  assert.ok(calls.every((c: any) => !['mkdirSync','mkdtempSync','writeFileSync','copyFileSync','renameSync'].includes(c.op)));
   assert.equal(planResourcePack({ root: fx.root, name: 'unix', manifestPath: 'artifacts/manifest.json' }).ok, true);
 });
 
@@ -407,13 +408,19 @@ test('清单磁盘写入损坏或合法但丢条目均不得发布', (t) => {
 
 test('候选副本读回内容损坏不得发布', (t) => {
   const fx = buildFixture(t);
-  const { io } = recordingIo({ writeFileSync: (p: any, value: any, ...rest: any[]) => {
-    return fs.writeFileSync(p, String(p).endsWith('alpha.txt') ? Buffer.from('Z') : value, ...rest);
-  } });
-  const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'badcopy', manifestPath: 'artifacts/manifest.json', io });
-  assert.equal(result.ok, false);
-  assert.equal(result.destinationCreated, false);
-  assert.ok(result.errors.some((e: any) => e.code === 'copy-verify-failed'));
+  for (const corrupt of ['Z', 'wrong-size']) {
+    const { io } = recordingIo({ copyFileSync: (source: string, target: string, mode?: number) => {
+      fs.copyFileSync(source, target, mode);
+      if (target.endsWith('alpha.txt')) fs.writeFileSync(target, corrupt);
+    } });
+    const result = stageResourcePack({ platform: 'win32', root: fx.root, name: `badcopy-${corrupt}`, manifestPath: 'artifacts/manifest.json', io });
+    assert.equal(result.ok, false);
+    assert.equal(result.destinationCreated, false);
+    const error = result.errors.find((e: any) => e.code === 'copy-verify-failed');
+    assert.ok(error);
+    assert.equal(error.expected, crypto.createHash('sha256').update('A').digest('hex'));
+    assert.equal(error.actual, crypto.createHash('sha256').update(corrupt).digest('hex'));
+  }
 });
 
 test('源核验后内部目录变成排除域 junction，复制前拒绝读取', (t) => {
@@ -426,9 +433,12 @@ test('源核验后内部目录变成排除域 junction，复制前拒绝读取',
     fs.symlinkSync(path.join(excluded, 'saved-dir'), path.join(fx.root, 'assets/dir'), process.platform === 'win32' ? 'junction' : 'dir');
     swapped = true;
     return dir;
-  }, readFileSync: (p: any, ...rest: any[]) => {
+  }, openSync: (p: any, flags: any, mode?: any) => {
     if (swapped && String(p).startsWith(path.join(fx.root, 'assets/dir') + path.sep)) throw new Error('排除目标被读取');
-    return fs.readFileSync(p, ...rest);
+    return fs.openSync(p, flags, mode);
+  }, copyFileSync: (source: string, target: string, mode?: number) => {
+    if (swapped && source.startsWith(path.join(fx.root, 'assets/dir') + path.sep)) throw new Error('排除目标被复制');
+    return fs.copyFileSync(source, target, mode);
   } });
   const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'changed-alias', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
@@ -439,20 +449,20 @@ test('源核验后内部目录变成排除域 junction，复制前拒绝读取',
 test('源核验期间目标祖先出现 junction，首次写入前拒绝', (t) => {
   const fx = buildFixture(t);
   let inserted = false;
-  const { io, calls } = recordingIo({ readFileSync: (p: any, ...rest: any[]) => {
-    const value = fs.readFileSync(p, ...rest);
+  const { io, calls } = recordingIo({ openSync: (p: any, flags: any, mode?: any) => {
+    const fd = fs.openSync(p, flags, mode);
     if (!inserted && String(p).endsWith(path.join('assets', 'dir', 'charlie.txt'))) {
       fs.mkdirSync(path.join(fx.root, 'scripts'));
       fs.symlinkSync(fx.outside, path.join(fx.root, 'scripts/archive'), process.platform === 'win32' ? 'junction' : 'dir');
       inserted = true;
     }
-    return value;
+    return fd;
   } });
   const before = snapshot(fx.outside);
   const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'changed-parent', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.code === 'link-in-destination-chain'));
-  assert.ok(calls.every((c: any) => !['mkdirSync','mkdtempSync','writeFileSync','renameSync'].includes(c.op)));
+  assert.ok(calls.every((c: any) => !['mkdirSync','mkdtempSync','writeFileSync','copyFileSync','renameSync'].includes(c.op)));
   assert.deepEqual(snapshot(fx.outside), before);
 });
 

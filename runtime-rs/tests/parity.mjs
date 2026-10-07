@@ -60,7 +60,7 @@ async function startRust(configRoot, secret) {
     SD_HOST: 'http://127.0.0.1:1', COMFY_HOST: 'http://127.0.0.1:1', OLLAMA_HOST: 'http://127.0.0.1:1', TTS_HOST: 'http://127.0.0.1:1', TRANSLATE_PORT: '1',
     TRANSLATION_PYTHON: path.join(configRoot,'absent-python'), AICS_TOOLS_ROOT: path.join(appRoot,'tools'), AICS_DESKTOP_COMMANDS: 'disabled', DISABLE_TUNNEL:'1' });
   for (const key of ['AICS_ASSETS_ROOT', 'AICS_CHARACTER_REF_ROOT', 'AICS_DATA_ROOT']) delete env[key];
-  if(process.env.AICS_RUST_APP_ROOT)for(const key of ['AICS_ORT_DYLIB_PATH','AICS_VIPS_DYLIB_PATH'])delete env[key];
+  if(process.env.AICS_RUST_APP_ROOT)delete env.AICS_VIPS_DYLIB_PATH;
   const child = spawn(binary, ['--app-root', appRoot, '--bind', '127.0.0.1:0'], { env, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] });
   let stderr = ''; child.stderr.on('data', chunk => { stderr = (stderr + chunk).slice(-16000); });
   const origin = await new Promise((resolve, reject) => {

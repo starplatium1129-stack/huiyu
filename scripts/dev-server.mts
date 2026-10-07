@@ -75,7 +75,7 @@ export async function startDevelopment(root=defaultRoot,options:DevelopmentOptio
     const started=spawn(prepared.executable,['--app-root',root,'--bind',bind],{cwd:root,env,stdio:'inherit',windowsHide:true});
     ownership.set(started,{directory:prepared.directory,secret,profile,origin});
     started.once('close',()=>{try{fs.rmSync(prepared.directory,{recursive:true,force:true,maxRetries:3,retryDelay:50});}catch(error){reportError(error);}});
-    if(options.watch!==false)for(const key of ['AICS_ORT_DYLIB_PATH','AICS_VIPS_DYLIB_PATH'])if(env[key]){try{watchNative(env[key]!);}catch(error){reportError(error);}}
+    if(options.watch!==false&&env.AICS_VIPS_DYLIB_PATH){try{watchNative(env.AICS_VIPS_DYLIB_PATH);}catch(error){reportError(error);}}
     return started;
   };
   async function authenticatedStop(previous:ChildProcess){

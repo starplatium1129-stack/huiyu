@@ -2,9 +2,16 @@ import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } fr
 'use strict';
 const fs: typeof import('node:fs') = require('node:fs');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
-const { object, canonical, sha256, relative, within, excluded, resolveSafe, fileEntry }: typeof import('./delivery-paths') = require('./delivery-paths');
+const { object, canonical, sha256, relative, excluded, resolveSafe, fileEntry }: typeof import('./delivery-paths') = require('./delivery-paths');
 const HASH = /^[a-f\d]{64}$/;
 
+function hasTreeAncestor(name: string, trees: ReadonlySet<string>): boolean {
+  if (name !== '.' && trees.has('.')) return true;
+  for (let slash = name.lastIndexOf('/'); slash > 0; slash = name.lastIndexOf('/', slash - 1)) {
+    if (trees.has(name.slice(0, slash))) return true;
+  }
+  return false;
+}
 function selectors(input: any) {
   if (!Array.isArray(input) || !input.length) throw Error('必须明确选择至少一个文件或目录');
   const result = input.map(item => {
@@ -13,11 +20,14 @@ function selectors(input: any) {
     if (excluded(name)) throw Error(`证据目录和 .git 不能作为内容输入: ${name}`);
     return { path: name, kind: item.kind };
   }).sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
-  for (let i = 0; i < result.length; i++) for (let j = 0; j < i; j++) {
-    const a = result[j], b = result[i], left = a.path.toLowerCase(), right = b.path.toLowerCase();
-    if (left === right || (a.kind === 'tree' && (left === '.' || within(left, right)))
-      || (b.kind === 'tree' && (right === '.' || within(right, left)))) throw Error('同组选择项重复或覆盖重叠');
+  const names = new Set<string>(), trees = new Set<string>();
+  for (const item of result) {
+    const name = item.path.toLowerCase();
+    if (names.has(name)) throw Error('同组选择项重复或覆盖重叠');
+    names.add(name);
+    if (item.kind === 'tree') trees.add(name);
   }
+  for (const name of names) if (hasTreeAncestor(name, trees)) throw Error('同组选择项重复或覆盖重叠');
   return result;
 }
 // Only paths, types and bytes enter identities. No timestamps, root, environment,
@@ -63,18 +73,22 @@ function snapshot(root: any, input: any) {
 function validateSnapshot(record: any) {
   if (!object(record) || !HASH.test(record.sha256) || !Array.isArray(record.entries)) throw Error('内容身份记录缺失或格式错误');
   if (canonical(selectors(record.selectors)) !== canonical(record.selectors)) throw Error('选择项不是规范化列表');
-  const seen = new Set();
+  // Stored membership is case-sensitive, unlike selection collision checks.
+  const selected = new Set<string>(record.selectors.map((item: any) => item.path));
+  const trees = new Set<string>(record.selectors.filter((item: any) => item.kind === 'tree').map((item: any) => item.path));
+  const seen = new Set(), entryPaths = new Set();
   let previous = '';
   for (const entry of record.entries) {
     if (!object(entry)) throw Error('文件身份条目格式错误');
     const name = relative(entry.path, true), lower = name.toLowerCase();
     if (excluded(name) || seen.has(lower) || (previous && previous >= name)) throw Error('文件身份含排除路径、重复或乱序条目');
-    if (!record.selectors.some((s: any) => s.path === name || (s.kind === 'tree' && (s.path === '.' || within(s.path, name))))) throw Error('文件不属于明确选择的输入');
+    if (!selected.has(name) && !hasTreeAncestor(name, trees)) throw Error('文件不属于明确选择的输入');
     seen.add(lower); previous = name;
+    entryPaths.add(entry.path);
     if (!['file', 'directory', 'empty', 'missing', 'unsafe-or-unreadable', 'not-directory'].includes(entry.status)) throw Error('文件身份状态不支持');
     if (entry.status === 'file' && (!HASH.test(entry.sha256) || !Number.isSafeInteger(entry.bytes) || entry.bytes < 0)) throw Error('文件哈希或大小错误');
   }
-  if (!record.entries.length || !record.selectors.every((s: any) => record.entries.some((e: any) => e.path === s.path))) throw Error('身份清单遗漏选择项');
+  if (!record.entries.length || !record.selectors.every((s: any) => entryPaths.has(s.path))) throw Error('身份清单遗漏选择项');
   const status = record.entries.every((e: any) => ['file', 'directory'].includes(e.status)) ? 'complete' : 'incomplete';
   if (record.status !== status || record.sha256 !== sha256(canonical(payload(record)))) throw Error('身份摘要与清单不一致');
 }
