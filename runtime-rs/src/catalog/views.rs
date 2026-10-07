@@ -167,11 +167,10 @@ impl Catalog {
             } else if name == "scenes-core.json" {
                 let mut statement = self.connection.prepare(&format!(
                     "SELECT {COLUMNS} FROM content_records WHERE kind='scene' AND deleted=0
-                     AND EXISTS (SELECT 1 FROM json_each(?1) AS core
-                         WHERE core.type='text' AND core.value=content_records.id)
+                     AND id IN (SELECT value FROM json_each(?1) WHERE type='text')
                      ORDER BY sort_order,id"
                 ))?;
-                // EXISTS preserves set membership for duplicate IDs; only strings match.
+                // Materialize membership once; duplicates still select one row, only strings match.
                 statement
                     .query_map([serde_json::to_string(&core)?], row)?
                     .collect::<rusqlite::Result<Vec<_>>>()?
