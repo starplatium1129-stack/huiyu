@@ -198,7 +198,13 @@ pub(super) fn command(
             command
         }
         ("GET", ["artwork-search-index"]) => json!({"kind": "readArtworkSearchIndex"}),
-        ("GET", ["artwork-recent-index"]) => json!({"kind": "readArtworkRecentIndex"}),
+        ("GET", ["artwork-recent-index"]) => {
+            let mut command = json!({"kind": "readArtworkRecentIndex"});
+            if query.contains_key("candidateLimit") {
+                command["candidateLimit"] = query_int(query, "candidateLimit", 1, 1)?;
+            }
+            command
+        }
         ("GET", ["artworks", id]) => json!({"kind": "getArtwork", "id": route_id(id, query)?}),
         ("POST", ["artworks", "lookup"]) => {
             json!({"kind": "getArtworks", "ids": array(&input["ids"], true)?.iter().map(entity_id).collect::<Result<Vec<_>>>()?})
@@ -389,6 +395,16 @@ mod tests {
             )
             .unwrap(),
             json!({"kind":"getArtwork","id":"recent-index"})
+        );
+        assert_eq!(
+            command(
+                &Method::GET,
+                &segments("artwork-recent-index").unwrap(),
+                &Query::from([("candidateLimit".into(), "3".into())]),
+                &Value::Null
+            )
+            .unwrap(),
+            json!({"kind":"readArtworkRecentIndex","candidateLimit":3})
         );
         let organized = command(&Method::POST, &segments("artworks/organize").unwrap(), &Query::default(), &json!({"kind":"backup","operationId":"organize-one","ids":[42],"expectedRevisions":[{"id":42,"revision":1}],"projectId":null,"collectionTags":{"add":["keep"]}})).unwrap();
         assert_eq!(organized["kind"], "organizeArtworks");

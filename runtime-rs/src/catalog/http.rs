@@ -58,7 +58,8 @@ async fn list(
     QueryParam(query): QueryParam<Query>,
 ) -> Result<Response> {
     authorize(&app, &headers, peer)?;
-    work(&app, move |c| c.query(&query)).await
+    let cache = app.catalog_facets.clone();
+    work(&app, move |c| c.query_cached(&query, Some(&cache))).await
 }
 async fn stats(
     State(app): State<AppState>,

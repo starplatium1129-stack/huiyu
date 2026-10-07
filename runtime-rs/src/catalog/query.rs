@@ -22,6 +22,9 @@ pub struct Query {
 }
 impl Catalog {
     pub fn query(&self, query: &Query) -> Result<Value> {
+        self.query_cached(query, None)
+    }
+    pub(super) fn query_cached(&self, query: &Query, cache: Option<&FacetCache>) -> Result<Value> {
         let transaction = self.connection.unchecked_transaction()?;
         let date = |text: &str| -> Result<Option<chrono::DateTime<chrono::FixedOffset>>> {
             if text.is_empty() {
@@ -55,6 +58,14 @@ impl Catalog {
             ("scene", "blueprint")
         } else {
             (query.kind.as_str(), query.kind.as_str())
+        };
+        // Select the cache generation before any other SELECT pins this snapshot.
+        let cached = cache
+            .map(|cache| cache.select(self, &query.kind))
+            .transpose()?;
+        let version = match &cached {
+            Some((generation, _)) => generation.version,
+            None => self.version()?,
         };
         // Omitted filters must not hide indexed predicates behind optional ORs.
         // Bind every supplied value; only the fixed SQL fragments are assembled.
@@ -105,6 +116,19 @@ impl Catalog {
             Ok(json!({"kind":r.get::<_,String>(0)?,"id":r.get::<_,String>(1)?,"revision":r.get::<_,i64>(2)?,"sortOrder":r.get::<_,i64>(3)?,"createdAt":r.get::<_,Option<String>>(4)?,"updatedAt":r.get::<_,Option<String>>(5)?,
                 "title":r.get::<_,String>(6)?,"characterId":r.get::<_,String>(7)?,"category":r.get::<_,String>(8)?,"rating":r.get::<_,String>(9)?}))
         })?.collect::<rusqlite::Result<Vec<_>>>()?;
+        let (publish_generation, facets) = match cached {
+            Some((_, Some(value))) => (None, value),
+            Some((generation, None)) => (Some(generation), self.facets(first_kind, second_kind)?),
+            None => (None, self.facets(first_kind, second_kind)?),
+        };
+        let value = json!({"ok":true,"version":version,"items":items,"total":total,"page":selected_page,"pageSize":size,"facets":facets});
+        transaction.commit()?;
+        if let (Some(cache), Some(generation)) = (cache, publish_generation) {
+            cache.publish(generation, &query.kind, &value["facets"])?;
+        }
+        Ok(value)
+    }
+    fn facets(&self, first_kind: &str, second_kind: &str) -> Result<Value> {
         let mut facets = self.connection.prepare("SELECT DISTINCT character_id,category,rating FROM content_records WHERE kind IN (?1,?2) AND deleted=0")?;
         let mut characters = std::collections::BTreeSet::new();
         let mut categories = std::collections::BTreeSet::new();
@@ -127,9 +151,7 @@ impl Catalog {
                 ratings.insert(rating);
             }
         }
-        let value = json!({"ok":true,"version":self.version()?,"items":items,"total":total,"page":selected_page,"pageSize":size,"facets":{"characters":characters,"categories":categories,"ratings":ratings}});
-        transaction.commit()?;
-        Ok(value)
+        Ok(json!({"characters":characters,"categories":categories,"ratings":ratings}))
     }
     pub fn history(&self, kind: &str, id: &str) -> Result<Value> {
         validation::key(kind, id)?;

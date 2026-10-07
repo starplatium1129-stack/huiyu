@@ -115,12 +115,22 @@ fn content_gate_matches_node_and_rejects_stale_products_and_pollution() {
     write(root, "data/popular-characters.json", &popular);
     let mut blueprints = read(&source, "data/scene-blueprints.json").unwrap();
     blueprints["blueprints"][0]["kreaStyleHint"] = json!("r18_sensual_cg");
+    blueprints["blueprints"][1]["identityTokensOverride"] = json!(["ayachi_nene"]);
+    blueprints["blueprints"][2]["identityProseOverride"] = json!("official_cg");
+    blueprints["blueprints"][3]["identityTokensOverride"] = json!([]);
     write(root, "data/scene-blueprints.json", &blueprints);
     let mut scenes = read(&source, "data/scenes.json").unwrap();
     scenes[0]["mature"] = json!(true);
     write(root, "data/scenes.json", &scenes);
     let mut old = old_issues(root);
     old.sort();
+    for issue in [
+        "blueprint fixture-1 must not reference nene/natsume tokens",
+        "blueprint fixture-2 must not leak retrieval metadata",
+        "scene-blueprints.json must contain at least 20 blueprints",
+    ] {
+        assert!(old.iter().any(|found| found == issue), "{issue}: {old:?}");
+    }
     let error = validate_with(&options, std::collections::HashMap::new()).unwrap_err();
     let mut current: Vec<_> = list(&error.extra["issues"])
         .iter()

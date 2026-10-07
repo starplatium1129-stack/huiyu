@@ -25,13 +25,12 @@ pub(super) async fn prepare(
         })?,
         ApiSource::Personal(api) => api.clone(),
     };
-    if let Some((origin, key)) = managed_auth {
-        if api.model == "huiyu-local"
-            && api.base_url == *origin
-            && api.pathname == "/v1/chat/completions"
-        {
-            api.key = key.clone();
-        }
+    if let Some((origin, key)) = managed_auth
+        && api.model == "huiyu-local"
+        && api.base_url == *origin
+        && api.pathname == "/v1/chat/completions"
+    {
+        api.key = key.clone();
     }
     let body = payload(input, &api);
     let response = client

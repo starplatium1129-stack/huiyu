@@ -163,8 +163,19 @@ fn one_blueprint(value: &Value) -> std::result::Result<Option<Value>, String> {
         Some("") => json!("single"),
         _ => return Err("Invalid blueprint compositionIntent".into()),
     };
+    output["allowRepeatedSubject"] = json!(value["allowRepeatedSubject"] == true);
+    if value.get("identityTokensOverride").is_some() {
+        let tokens = strings(&value["identityTokensOverride"]);
+        if tokens.is_empty() {
+            return Err(
+                "popular data: identityTokensOverride must be a non-empty string array".into(),
+            );
+        }
+        output["identityTokensOverride"] = json!(tokens);
+    }
     for field in [
         "characterId",
+        "identityProseOverride",
         "kreaStyleHint",
         "animaStyleHint",
         "adultArtistHint",

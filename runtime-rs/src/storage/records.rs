@@ -38,24 +38,7 @@ pub(super) fn project(c: &Context, key: &str) -> Result<Option<Value>> {
 }
 pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
     match string(command, "kind")? {
-        "readArtworkRecentIndex" => {
-            let mut statement = c.db.prepare_cached(
-                "SELECT id_json,json_object('timestamp',body -> '$.timestamp'),revision
-                 FROM artworks WHERE deleted_at IS NULL ORDER BY id_key",
-            )?;
-            let mut rows = statement.query([])?;
-            let mut items = Vec::new();
-            while let Some(row) = rows.next()? {
-                c.check_cancel()?;
-                let mut item = json_column(row, 1)?;
-                item["id"] = json_column(row, 0)?;
-                item["revision"] = row.get::<_, i64>(2)?.into();
-                items.push(item);
-            }
-            let mut result = json!({"items":null,"revision":c.revision()?});
-            result["items"] = Value::Array(items);
-            Ok(result)
-        }
+        "readArtworkRecentIndex" => super::recent::read(c, command),
         "readArtworkSearchIndex" => {
             // Keep display fields as JSON to preserve their original types.
             // Search text crosses SQLite as plain strings, avoiding an extra

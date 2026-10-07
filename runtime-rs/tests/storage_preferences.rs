@@ -92,6 +92,46 @@ async fn preference_projection_preserves_paging_types_and_revision_without_large
         );
     }
     assert!(serde_json::to_vec(&recent).unwrap().len() < 512);
+    let deleted = read(&storage, json!({"kind":"getArtwork","id":3})).await;
+    read(&storage, json!({"kind":"restoreArtwork","operationId":"restore-3","id":3,"expectedRevision":deleted["revision"]})).await;
+    let candidates = read(
+        &storage,
+        json!({"kind":"readArtworkRecentIndex","candidateLimit":1}),
+    )
+    .await;
+    assert_eq!(
+        candidates["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|item| item["id"].clone())
+            .collect::<Vec<_>>(),
+        vec![json!(2), json!(3)]
+    );
+    assert_eq!(
+        candidates["items"][0]["timestamp"],
+        "Fri, 01 Jan 2021 00:00:00 GMT"
+    );
+    let restored = read(&storage, json!({"kind":"getArtwork","id":3})).await;
+    read(&storage, json!({"kind":"patchArtwork","operationId":"tie-3","id":3,"expectedRevision":restored["revision"],"patch":{"timestamp":101}})).await;
+    let legacy = read(&storage, json!({"kind":"getArtwork","id":2})).await;
+    read(&storage, json!({"kind":"patchArtwork","operationId":"legacy-2","id":2,"expectedRevision":legacy["revision"],"patch":{"timestamp":"invalid"}})).await;
+    let tied = read(
+        &storage,
+        json!({"kind":"readArtworkRecentIndex","candidateLimit":1}),
+    )
+    .await;
+    assert_eq!(
+        tied["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|item| item["id"].clone())
+            .collect::<Vec<_>>(),
+        vec![json!(1), json!(2)]
+    );
+    assert_eq!(tied["items"][1]["timestamp"], "invalid");
+
     assert!(
         read(&storage, json!({"kind":"getArtwork","id":"missing"}))
             .await
