@@ -7,7 +7,7 @@ import { useControlActions } from './useControlActions'
 
 it('configuration saves ignore repeated clicks and allow retry after failure', async () => {
   const status = {
-    lastStatus: () => ({}), pollStatus: vi.fn(), feedbackText: ref(''),
+    statusLoaded: ref(true), lastStatus: () => ({}), pollStatus: vi.fn(), feedbackText: ref(''),
     sdHost: ref('http://localhost:7860'), comfyHost: ref('http://localhost:8188'), ttsHost: ref('http://localhost:9880'),
     ttsEngine: ref('voxcpm2'), voiceNeneLora: ref('nene.safetensors'), voiceNatsumeLora: ref('natsume.safetensors'),
     voiceNeneRef: ref(''), voiceNenePrompt: ref(''), voiceNatsumeRef: ref(''), voiceNatsumePrompt: ref(''),
@@ -17,7 +17,17 @@ it('configuration saves ignore repeated clicks and allow retry after failure', a
   const showToast = vi.fn()
   const control = { saveConfig } as unknown as NonNullable<Parameters<typeof useControlActions>[1]['control']>
   const actions = useControlActions(status, { control, showToast })
-  const first = actions.saveConfig()
+  status.statusLoaded.value = false
+  await actions.saveConfig(new KeyboardEvent('keydown', { key: 'Enter' }))
+  await actions.saveConfig()
+  expect(saveConfig).not.toHaveBeenCalled()
+  status.statusLoaded.value = true
+  for (const composition of [{ isComposing: true }, { keyCode: 229 }]) {
+    const ignored = actions.saveConfig(new KeyboardEvent('keydown', { key: 'Enter', ...composition }))
+    expect(saveConfig).not.toHaveBeenCalled()
+    await ignored
+  }
+  const first = actions.saveConfig(new KeyboardEvent('keydown', { key: 'Enter' }))
   await actions.saveConfig()
   expect(saveConfig).toHaveBeenCalledTimes(1)
   expect(saveConfig).toHaveBeenCalledWith(expect.objectContaining({ ttsEngine: 'voxcpm2', voices: expect.objectContaining({
@@ -37,7 +47,7 @@ it('configuration saves ignore repeated clicks and allow retry after failure', a
 it('reports saved configuration awaiting restart and does not start sharing with stale settings', async () => {
   let pending = false
   const status = {
-    lastStatus: () => ({ restartRequired: pending }), pollStatus: vi.fn(), feedbackText: ref(''), opBusy: ref(false),
+    statusLoaded: ref(true), lastStatus: () => ({ restartRequired: pending }), pollStatus: vi.fn(), feedbackText: ref(''), opBusy: ref(false),
     sdHost: ref('http://localhost:7860'), comfyHost: ref('http://localhost:8188'), ttsHost: ref('http://localhost:9880'),
     ttsEngine: ref('gpt-sovits'), voiceNeneLora: ref(''), voiceNatsumeLora: ref(''),
     voiceNeneRef: ref(''), voiceNenePrompt: ref(''), voiceNatsumeRef: ref(''), voiceNatsumePrompt: ref(''),
