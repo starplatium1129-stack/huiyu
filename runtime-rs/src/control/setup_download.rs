@@ -86,22 +86,26 @@ impl ControlService {
                 .connect_timeout(Duration::from_secs(30))
                 .build();
             let outcome = match client {
-                Ok(client) => match tokio::time::timeout(
-                    Duration::from_secs(4 * 60 * 60),
-                    download(&plan, &client, &send, &worker_cancel),
-                )
-                .await
-                {
-                    Ok(result) => result,
-                    Err(_) => {
-                        worker_cancel.cancel();
-                        Err(ApiError::new(
-                            504,
-                            "DOWNLOAD_TIMEOUT",
-                            "下载超过 4 小时，已停止，请检查网络后重试",
-                        ))
+                Ok(client) => {
+                    let operation = download(&plan, &client, &send, &worker_cancel);
+                    tokio::pin!(operation);
+                    match tokio::time::timeout(Duration::from_secs(4 * 60 * 60), &mut operation)
+                        .await
+                    {
+                        Ok(result) => result,
+                        Err(_) => {
+                            worker_cancel.cancel();
+                            // Let cooperative cancellation retain resumable bytes, but do
+                            // not turn the deadline into an unbounded wait on a stalled disk.
+                            let _ = tokio::time::timeout(Duration::from_secs(5), operation).await;
+                            Err(ApiError::new(
+                                504,
+                                "DOWNLOAD_TIMEOUT",
+                                "下载超过 4 小时，已停止，请检查网络后重试",
+                            ))
+                        }
                     }
-                },
+                }
                 Err(_) => Err(ApiError::new(
                     500,
                     "DOWNLOAD_FAILED",
@@ -325,7 +329,12 @@ async fn download(
         let pending = temporary.as_ref().unwrap();
         let mut output =
             tokio::fs::File::from_std(pending.as_file().try_clone().map_err(io_error)?);
-        let count = transfer::write(plan, client, send, cancel, &mut output).await?;
+        let transferred = transfer::write(plan, client, send, cancel, &mut output).await;
+        // Tokio may have accepted bytes while its blocking write is still queued.
+        // Drain that write before cancellation/error cleanup inspects and retains the file.
+        let flushed = output.flush().await;
+        let count = transferred?;
+        flushed.map_err(io_error)?;
         if count != plan.spec.bytes {
             return Err(ApiError::new(
                 502,
@@ -333,7 +342,6 @@ async fn download(
                 "下载不完整，未发布模型文件；请重试",
             ));
         }
-        output.flush().await.map_err(io_error)?;
         output.sync_all().await.map_err(io_error)?;
         drop(output);
         let temp_spec = ModelFile {

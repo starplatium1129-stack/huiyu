@@ -339,3 +339,65 @@ async fn cancelling_isolated_stream_cleans_temporary_file_and_admission_binds_cu
     .unwrap();
     service.close().await;
 }
+
+#[test]
+fn cancellation_drains_an_accepted_write_before_retaining_partial_bytes() {
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .max_blocking_threads(1)
+        .build()
+        .unwrap()
+        .block_on(async {
+            let temp = tempfile::tempdir().unwrap();
+            let (release, wait) = std::sync::mpsc::channel();
+            let gate = Arc::new(std::sync::Mutex::new(Some(wait)));
+            let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+            let url = format!("http://{}/queued-write", listener.local_addr().unwrap());
+            let server = tokio::spawn(async move {
+                axum::serve(listener, Router::new().route("/queued-write", get(move || {
+                    let gate = gate.clone();
+                    async move {
+                        let (entered, ready) = tokio::sync::oneshot::channel();
+                        tokio::task::spawn_blocking(move || {
+                            let wait = gate.lock().unwrap().take().unwrap();
+                            let _ = entered.send(());
+                            let _ = wait.recv();
+                        });
+                        ready.await.unwrap();
+                        Body::from_stream(futures_util::stream::once(async {
+                            Ok::<_, Infallible>(Bytes::from_static(DATA))
+                        }).chain(futures_util::stream::pending()))
+                    }
+                }))).await.unwrap();
+            });
+            let spec = plan(temp.path(), url);
+            let partial = spec.root.join("vae").join(format!(".huiyu-{}.part", spec.spec.sha256));
+            let client = reqwest::Client::new();
+            let cancel = CancellationToken::new();
+            let (send, mut events) = tokio::sync::mpsc::unbounded_channel();
+            let operation = download(&spec, &client, &send, &cancel);
+            tokio::pin!(operation);
+            loop {
+                tokio::select! {
+                    result = &mut operation => panic!("download completed before cancellation: {result:?}"),
+                    event = events.recv() => {
+                        let event = event.unwrap();
+                        if event["phase"] == "downloading" && event["bytesRead"] == DATA.len() {
+                            break;
+                        }
+                    }
+                }
+            }
+            // All bytes were accepted, but the sole blocking worker is held by the gate.
+            assert_eq!(std::fs::metadata(&partial).unwrap().len(), 0);
+            cancel.cancel();
+            let waiting_for_write = futures_util::poll!(operation.as_mut()).is_pending();
+            // Release before asserting so a regression cannot strand runtime shutdown.
+            release.send(()).unwrap();
+            assert!(waiting_for_write, "cancellation released a still-pending file write");
+            assert_eq!(operation.await.unwrap_err().code, "CANCELLED");
+            assert_eq!(std::fs::read(&partial).unwrap(), DATA);
+            assert!(!spec.root.join(&spec.spec.path).exists());
+            server.abort();
+        });
+}
