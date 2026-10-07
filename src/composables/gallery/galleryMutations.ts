@@ -83,6 +83,7 @@ export async function confirmDeleteAction(ctx: Context, item: ArtworkRecord): Pr
             showToast('这幅作品已不在作品册，请刷新后重试', 'warning');
             return;
         }
+        invalidateGalleryStorage(history);
         presentDeleted(ctx, [item.id]);
         history.value = history.value.filter(h => h.id !== item.id);
         releaseCardResources(item.id);
