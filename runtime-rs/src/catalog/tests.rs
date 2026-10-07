@@ -443,6 +443,10 @@ fn snapshot_import_preserves_local_edits_and_exports_restore_current_and_retired
         })
         .unwrap();
     assert_eq!(retired_character["retired"][0]["id"], "other");
+
+    catalog.import(&retired_character, false).unwrap();
+    let empty = json!({"version":1,"records":[],"retired":[]});
+    assert!(catalog.import(&empty, false).is_err());
 }
 #[test]
 fn cli_character_record_and_history_read_the_same_revision_bearing_records() {
