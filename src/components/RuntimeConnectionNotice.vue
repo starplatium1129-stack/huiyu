@@ -18,15 +18,23 @@ const recoveryAvailable = ref(hasProfileRecoveryData())
 const stop = desktop ? onDesktopRuntime(state => { connection.value = state.connection }) : () => {}
 const failed = () => { saveFailed.value = true; recoveryAvailable.value = hasProfileRecoveryData() }
 function downloadRecovery() { downloadBlob(exportProfileRecovery(), '绘遇-未保存草稿.json') }
-if (desktop) window.addEventListener('huiyu:profile-write-error', failed)
+function synced() {
+  const status = profileWriteStatus()
+  saveFailed.value = Boolean(status.error) || status.pending || (status.blocked && connection.value === 'ready')
+  recoveryAvailable.value = hasProfileRecoveryData()
+}
+if (desktop) {
+  window.addEventListener('huiyu:profile-write-error', failed)
+  window.addEventListener('huiyu:profile-sync-complete', synced)
+}
 async function retry() {
   if (retrying.value) return
   retrying.value = true
-  try { await refreshDesktopRuntime(); await flushProfileWrites(); saveFailed.value = false }
+  try { await refreshDesktopRuntime(); await flushProfileWrites(); synced() }
   catch { saveFailed.value = true }
   finally { retrying.value = false }
 }
-onUnmounted(() => { stop(); window.removeEventListener('huiyu:profile-write-error', failed) })
+onUnmounted(() => { stop(); window.removeEventListener('huiyu:profile-write-error', failed); window.removeEventListener('huiyu:profile-sync-complete', synced) })
 </script>
 <style scoped>
 @reference "../assets/css/tailwind.css";
