@@ -25,6 +25,11 @@ export function galleryProjects(records: ArtworkProjectRecord[]): GalleryProject
 
 const loadVersions = new WeakMap<object, number>()
 
+/** A completed write supersedes snapshots that started before it settled. */
+export function invalidateGalleryStorage(history: object): void {
+  loadVersions.set(history, (loadVersions.get(history) || 0) + 1)
+}
+
 function unchangedRecords(current: object[], incoming: object[]): boolean {
   return current.length === incoming.length && toRaw(current).every((record, index) => {
     const previous = toRaw(record) as Record<string, unknown>, next = incoming[index] as Record<string, unknown>
