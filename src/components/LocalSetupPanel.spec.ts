@@ -276,6 +276,28 @@ describe('first local setup panel', () => {
     expect(fixture.getStatus).toHaveBeenCalledTimes(6)
     wrapper.unmount()
   })
+  it('does not overwrite a workspace save with a background binding read started during the save', async () => {
+    fixture.desktop = true
+    const binding = { root: 'D:\\AI', exists: true, activeRoot: 'D:\\AI', restartRequired: false }
+    fixture.getWorkspace.mockResolvedValue(binding)
+    const wrapper = render(); await flushPromises()
+    await wrapper.findAll('button').find(button => button.text().includes('选择 AI 工作区'))!.trigger('click'); await flushPromises()
+    const dialog = wrapper.findComponent({ name: 'CompanionWorkspaceSettings' })
+    let finishSave!: (value: typeof binding) => void
+    let finishRead!: (value: typeof binding) => void
+    fixture.setWorkspace.mockReturnValueOnce(new Promise<typeof binding>(resolve => { finishSave = resolve }))
+    const stale = new Promise<typeof binding>(resolve => { finishRead = resolve })
+    fixture.getWorkspace.mockReturnValueOnce(stale)
+    dialog.vm.$emit('update:modelValue', 'E:\\NewAI'); dialog.vm.$emit('save'); await flushPromises()
+    // A completed background preparation can refresh status while the native save is pending.
+    wrapper.getComponent(LocalSetupAutomation).vm.$emit('refresh'); await flushPromises()
+    finishSave({ ...binding, root: 'E:\\NewAI', restartRequired: true }); await flushPromises()
+    finishRead(binding); await flushPromises()
+    expect(wrapper.getComponent(LocalSetupAutomation).props('workspaceBlocked')).toBe(true)
+    expect(wrapper.text()).toContain('完全退出并重启绘遇后生效')
+    expect(fixture.getWorkspace).toHaveBeenCalledTimes(2)
+    wrapper.unmount()
+  })
   it('saves a workspace only on explicit save and retains the active runtime evidence until restart', async () => {
     fixture.desktop = true
     const wrapper = render(true); await flushPromises()

@@ -197,7 +197,7 @@ const workspaceButton = ref<HTMLElement | null>(null)
 const workspaceOpen = ref(false), workspaceDraft = ref(''), workspaceLoading = ref(false), workspaceSaving = ref(false)
 const workspaceNotice = ref(''), workspaceError = ref('')
 async function readWorkspaceBinding() {
-  if (!desktop || disposed) return
+  if (!desktop || disposed || workspaceSaving.value) return
   const read = ++workspaceRead
   workspaceError.value = ''
   try {
