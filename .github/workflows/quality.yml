@@ -34,9 +34,30 @@ jobs:
       - name: Fetch only the comparison baseline
         if: github.event_name == 'push' || github.event_name == 'pull_request'
         shell: bash
+        env:
+          NEW_BRANCH: ${{ github.event.created }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
-          # Missing/new-branch baselines retain the planner's full fallback.
           base="$AICS_HYGIENE_BASE_REF"
+          # A new topic branch has no "before" commit. Compare all of its work
+          # with a proven common ancestor, never with only HEAD's last parent.
+          if [[ "$GITHUB_EVENT_NAME" == push && "${NEW_BRANCH:-}" == true &&
+                "$base" =~ ^(0{40}|0{64})$ && "$GITHUB_REF" == refs/heads/* &&
+                -n "${DEFAULT_BRANCH:-}" && "$GITHUB_REF" != "refs/heads/$DEFAULT_BRANCH" ]]; then
+            if git check-ref-format "$GITHUB_REF" &&
+               git check-ref-format "refs/heads/$DEFAULT_BRANCH" &&
+               git fetch --no-tags --no-recurse-submodules --depth=128 origin \
+                 "$GITHUB_REF:refs/remotes/quality/pushed-branch" \
+                 "refs/heads/$DEFAULT_BRANCH:refs/remotes/quality/default-branch" &&
+               resolved=$(git merge-base HEAD refs/remotes/quality/default-branch) &&
+               [[ "$resolved" =~ ^([a-fA-F0-9]{40}|[a-fA-F0-9]{64})$ ]]; then
+              base="$resolved"
+              printf 'AICS_HYGIENE_BASE_REF=%s\n' "$base" >> "$GITHUB_ENV"
+            else
+              echo "::warning::New-branch merge base unavailable within bounded history; running the full fallback suites"
+            fi
+          fi
+          # Missing or invalid baselines still retain the planner's full fallback.
           if [[ "$base" =~ ^([a-fA-F0-9]{40}|[a-fA-F0-9]{64})$ && ! "$base" =~ ^0+$ ]] &&
              ! git cat-file -e "$base^{commit}" 2>/dev/null; then
             git fetch --no-tags --no-recurse-submodules --depth=1 origin "$base" ||
@@ -143,6 +164,7 @@ jobs:
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install selected browser runtime
         if: steps.plan.outputs.browser == 'true'
+        timeout-minutes: 7
         run: npx playwright install --with-deps chromium
       - name: Run selected checks
         if: steps.scope.outputs.docs != 'true'
