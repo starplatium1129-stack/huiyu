@@ -325,9 +325,15 @@ export function useVoice(options: {
   function prefetch() { if (playing && queue[0]?.stream) observeStream(queue[0]) }
 
   function attachAnalyser(audio: AudioWithSource) {
-    if (!audioContext || !analyser || audio.__sourceNode) return
-    try { audio.__sourceNode = audioContext.createMediaElementSource(audio); audio.__sourceNode.connect(analyser) }
-    catch { if (!_warnedAnalyser) { _warnedAnalyser = true; onError('浏览器阻止了音频分析，口型同步本次不可用。') } }
+    audio.volume = volume
+    if (!audioContext || !analyser) return
+    try {
+      if (!audio.__sourceNode) { audio.__sourceNode = audioContext.createMediaElementSource(audio); audio.__sourceNode.connect(analyser) }
+      audio.volume = 1 // The connected GainNode owns volume; avoid applying it twice.
+    } catch {
+      removeAudioSource(audio)
+      if (!_warnedAnalyser) { _warnedAnalyser = true; onError('浏览器阻止了音频分析，口型同步本次不可用。') }
+    }
   }
 
   function startLipSync() {
@@ -364,6 +370,7 @@ export function useVoice(options: {
   function setVolume(value: number) {
     volume = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1
     if (audioContext && gainNode) gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.05)
+    for (const audio of [currentAudio, replayAudio]) if (audio) audio.volume = audio.__sourceNode ? 1 : volume
   }
   function onVisibilityChange() { if (document.hidden) stopLipSync(); else if (currentAudio || currentPcm || replayAudio) startLipSync() }
   document.addEventListener('visibilitychange', onVisibilityChange)
