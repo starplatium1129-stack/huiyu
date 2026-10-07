@@ -14,6 +14,7 @@
 .gallery-create { @apply tw:shrink-0 tw:gap-s-2; }
 .gallery-count { @apply tw:flex tw:items-baseline tw:gap-s-3 tw:text-secondary; font:500 var(--fs-label-xs) var(--font-sans); @apply tw:whitespace-nowrap; }
 .gallery-count strong { @apply tw:text-primary; font:600 var(--fs-body) var(--font-display); }
+.gallery-empty-art { display:block; width:100%; height:auto; margin:auto; pointer-events:none; }
 
 /* Layout belongs to the artbook; the shared material owns its floating toolbar. */
 :root body .gallery-page .gallery-toolbar.gallery-toolbar { margin:0 auto; display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; padding:var(--s-3); border-radius:var(--r-lg); }

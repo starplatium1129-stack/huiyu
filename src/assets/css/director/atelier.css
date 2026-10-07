@@ -22,8 +22,7 @@
 .pb.atelier-workspace .stage-chrome { @apply tw:top-0 tw:left-0 tw:right-0; padding:var(--s-3) var(--s-4); @apply tw:min-h-[48px]; border-radius:var(--r-xl) var(--r-xl) 0 0; border-bottom:1px solid var(--border-soft); background:var(--bg-surface); @apply tw:text-secondary; }
 .pb.atelier-workspace .stage-message { @apply tw:w-full tw:min-w-0; transform:none; }
 .pb.atelier-workspace .stage-idle { padding:64px var(--s-5) var(--s-5); }
-.pb.atelier-workspace .atelier-canvas-mark { @apply tw:grid; place-items:center; @apply tw:w-[64px] tw:h-[64px]; margin:0 auto var(--s-5); border:0; @apply tw:rounded-lg; background:var(--character-soft,var(--accent-soft)); @apply tw:text-accent; }
-.pb.atelier-workspace .atelier-canvas-mark .archive-icon { @apply tw:w-[28px] tw:h-[28px]; }
+.pb.atelier-workspace .atelier-canvas-illustration { width:min(336px,70%); margin:0 auto var(--s-5); }
 .pb.atelier-workspace .stage-placeholder-title { @apply tw:text-primary tw:font-semibold; }
 .pb.atelier-workspace .stage-placeholder-copy { margin-inline:auto; @apply tw:leading-loose; }
 .pb.atelier-workspace .stage-quick-actions { @apply tw:flex-wrap; }
@@ -79,14 +78,14 @@
   .pb.atelier-workspace[data-director-mode] .stage-message { flex:1; @apply tw:min-h-0 tw:flex; align-items:safe center; @apply tw:justify-center tw:overflow-y-auto; scrollbar-width:thin; }
   .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-idle { @apply tw:w-full; padding:var(--s-5) var(--s-4); }
   .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-quick-actions { @apply tw:flex-row tw:items-center; }
-  .pb.atelier-workspace[data-director-mode] .atelier-canvas-mark { @apply tw:mb-s-4; }
+  .pb.atelier-workspace[data-director-mode] .atelier-canvas-illustration { @apply tw:mb-s-4; }
   /* A short character selection should not stretch into an empty full-height card. */
   .pb.journal-workspace.atelier-workspace[data-director-mode] .material-drawer { flex:0 1 auto; @apply tw:max-h-full; }
   .pb.journal-workspace.atelier-workspace[data-director-mode] .material-content { flex:0 1 auto; }
   .pb.atelier-workspace[data-director-mode] .inspector-scroll { padding: var(--s-1) var(--s-4) var(--s-4); scrollbar-gutter: stable; }
 }
 @media (min-width:1024px) and (max-height:800px) {
-  .pb.atelier-workspace[data-director-mode] .atelier-canvas-mark { @apply tw:hidden; }
+  .pb.atelier-workspace[data-director-mode] .atelier-canvas-illustration { width:240px; margin-bottom:var(--s-3); }
   .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-idle { padding-block:var(--s-4); }
 }
 @media (max-width:1200px) {

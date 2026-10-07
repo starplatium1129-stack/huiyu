@@ -39,7 +39,7 @@ body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
 .pb.journal-workspace .stage-muse { animation: none; filter: none; }
 .pb.journal-workspace .stage-idle { @apply tw:relative; z-index: var(--z-raised); padding: var(--s-6) var(--s-4); }
 .pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide { padding-block:var(--s-3); }
-.pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide :is(.atelier-canvas-mark, .stage-placeholder-title, .stage-placeholder-copy) { @apply tw:hidden; }
+.pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide :is(.atelier-canvas-illustration, .stage-placeholder-title, .stage-placeholder-copy) { @apply tw:hidden; }
 .pb.journal-workspace .stage-placeholder-title { @apply tw:text-title-sm tw:leading-label; }
 .pb.journal-workspace .stage-placeholder-copy { @apply tw:max-w-[380px] tw:text-secondary tw:text-body-sm; }
 .pb.journal-workspace .stage-quick-actions { @apply tw:gap-s-2; }

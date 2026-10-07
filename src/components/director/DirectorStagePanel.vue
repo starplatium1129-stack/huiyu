@@ -53,7 +53,7 @@
           </div>
         </div>
         <div v-else class="stage-idle stage-idle-guide">
-          <div class="atelier-canvas-mark" aria-hidden="true"><ArchiveIcon name="image" /></div>
+          <AtelierEmptyArt class="atelier-canvas-illustration" />
           <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
           <div class="stage-placeholder-copy">
             挑一幕心动场景，或写下你的构想。静待画面绽放，留存这一帧温柔。
@@ -123,6 +123,7 @@ import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 
 import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import AtelierEmptyArt from '@/components/visual/AtelierEmptyArt.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
 import GenerationParticles from '@/components/visual/GenerationParticles.vue'

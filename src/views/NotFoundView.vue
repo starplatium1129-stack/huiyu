@@ -1,12 +1,13 @@
 <template>
   <article class="page notfound-page tw:flex tw:min-h-[60vh] tw:flex-col tw:items-center tw:justify-center tw:gap-s-3 tw:text-center">
-    <img v-if="!chibiFailed" class="notfound-chibi" src="/assets/chibi/natsume-coffee.webp" alt="四季夏目 Q 版：页面迷路时也要从容地接一杯咖啡" width="480" height="288" loading="eager" decoding="async" @error="chibiFailed = true" />
+    <img v-if="!chibiFailed" class="notfound-chibi" :src="lostNatsume" alt="四季夏目抱着咖啡，和猫咪一起看着迷路地图与 404 路牌" width="1774" height="887" loading="eager" decoding="async" @error="chibiFailed = true" />
     <div v-else class="notfound-chibi notfound-chibi-fallback" role="status">
       <ArchiveIcon name="image" />
       <span class="notfound-fallback-text tw:text-label-sm tw:tracking-[.1em]">插图暂未加载</span>
     </div>
     <h1 class="title">页面走丢了</h1>
-    <p class="subtitle">地址 <code class="notfound-path tw:break-all tw:text-secondary">{{ path }}</code> 不存在。</p>
+    <p class="subtitle">这个地址暂时没有对应的页面。</p>
+    <p class="notfound-address tw:text-label-sm tw:text-secondary">地址 <code class="notfound-path tw:break-all">{{ path }}</code></p>
 
     <div class="notfound-actions tw:mt-s-4 tw:flex tw:flex-wrap tw:justify-center tw:gap-s-3">
       <RouterLink class="btn btn-primary" to="/">回到首页</RouterLink>
@@ -20,6 +21,7 @@
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import lostNatsume from '@/assets/illustrations/natsume-lost.png'
 
 const route = useRoute()
 const path = computed(() => route.fullPath)
@@ -32,14 +34,16 @@ const chibiFailed = ref(false)
 @reference "../assets/css/tailwind.css";
 
 .notfound-chibi {
-  @apply tw:w-[min(420px,78vw)] tw:aspect-[5/3] tw:object-cover tw:rounded-2xl;
-  border: 1px solid var(--border-soft);
-  box-shadow: 0 18px 44px -18px color-mix(in srgb, var(--accent) 40%, transparent);
+  width:min(700px,82vw); height:auto; max-height:44vh; object-fit:contain;
+  border:0; background:transparent; box-shadow:none;
 }
+.notfound-page .title { margin:0; font:600 clamp(28px,2.5vw,42px)/var(--lh-tight) var(--font-serif); }
+.notfound-page .subtitle,.notfound-address { margin:0; }
 
-/* 缺图占位：复用 .notfound-chibi 的外框尺寸避免布局跳动；虚线空态语言，标题/路径/返回链接不受影响 */
+/* Missing illustration keeps the reserved space; recovery links remain available. */
 .notfound-chibi-fallback {
   @apply tw:grid tw:place-content-center tw:justify-items-center tw:gap-s-2 tw:border-dashed;
+  aspect-ratio:2/1; border:1px dashed var(--border-soft);
   border-color: color-mix(in srgb, var(--border-strong) 46%, transparent);
   @apply tw:bg-elevated tw:text-muted;
   box-shadow: none;

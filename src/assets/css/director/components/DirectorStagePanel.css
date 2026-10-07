@@ -99,7 +99,7 @@
 /* Reference and status share a paper surface; reference imagery is never a result. */
 .pb.atelier-workspace .stage-content { @apply tw:w-full tw:min-w-0; padding:var(--s-4); }
 .pb.atelier-workspace .stage-content .stage-idle { padding:var(--s-3) 0 0; }
-.pb.atelier-workspace .stage-content:has(.scene-reference) .atelier-canvas-mark { @apply tw:hidden; }
+.pb.atelier-workspace .stage-content:has(.scene-reference) .atelier-canvas-illustration { @apply tw:hidden; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .stage-placeholder-title { @apply tw:text-body; }
 .pb .stage-result-status { @apply tw:inline-flex tw:items-center tw:gap-s-2; }
 .pb .stage-error-detail { @apply tw:block tw:max-h-[100px] tw:overflow-auto tw:mt-s-2; overflow-wrap:anywhere; }

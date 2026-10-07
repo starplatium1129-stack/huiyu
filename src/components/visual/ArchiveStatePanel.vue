@@ -1,12 +1,13 @@
 <template>
   <section
     class="empty-state archive-state-panel"
-    :class="{ compact }"
+    :class="{ compact, illustrated: !!$slots.illustration }"
     :data-kind="kind"
     :role="role"
     :aria-busy="kind === 'loading' ? 'true' : undefined"
   >
-    <div class="archive-state-mark tw:relative tw:grid tw:place-items-center tw:w-[68px] tw:h-[68px] tw:mt-0 tw:mx-auto tw:mb-s-3 tw:[color:var(--state-accent,var(--archive-blue))] tw:text-glyph" aria-hidden="true">
+    <div v-if="$slots.illustration" class="archive-state-illustration" aria-hidden="true"><slot name="illustration" /></div>
+    <div v-else class="archive-state-mark tw:relative tw:grid tw:place-items-center tw:w-[68px] tw:h-[68px] tw:mt-0 tw:mx-auto tw:mb-s-3 tw:[color:var(--state-accent,var(--archive-blue))] tw:text-glyph" aria-hidden="true">
       <ArchiveIcon :name="iconName" />
     </div>
     <div v-if="code" class="archive-state-code tw:text-secondary tw:[font:500_var(--fs-mono-xs)_var(--font-mono)] tw:[letter-spacing:.1em]">{{ code }}</div>
@@ -41,6 +42,10 @@ const iconName = computed<ArchiveIconName>(() => ({
 .archive-state-panel { @apply tw:min-h-[260px] tw:grid tw:place-items-center tw:content-center tw:border-soft tw:[background:var(--bg-surface)] tw:py-s-6 tw:px-s-4 tw:border-solid tw:[border-width:1px] tw:rounded-lg; }
 .archive-state-title { @apply tw:my-s-2 tw:mx-0 tw:text-title-sm tw:leading-tight tw:font-semibold; }
 .archive-state-message { @apply tw:max-w-[38em] tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-loose; }
+.archive-state-panel.illustrated { min-height:clamp(340px,48vh,500px); border:0; border-radius:0; background:transparent; box-shadow:none; }
+.archive-state-panel.illustrated::before { display:none; }
+.archive-state-illustration { width:100%; margin:0 auto var(--s-5); }
+.archive-state-panel.illustrated .archive-state-title { font:600 clamp(1.4rem,1.7vw,1.8rem)/var(--lh-tight) var(--font-serif); }
 
 .archive-state-mark::before { content:''; position:absolute; inset:4px; border-radius:var(--r-lg); background:var(--bg-elevated); }
 .archive-state-mark :deep(.archive-icon) { position:relative; }

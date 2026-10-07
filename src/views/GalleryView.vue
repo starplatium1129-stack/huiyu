@@ -108,6 +108,7 @@
         title="展墙还在等你的第一幅作品"
         message="每幅画作都会以属于它的原画比例，静静珍藏在这本私属画册里。"
       >
+        <template #illustration><img class="gallery-empty-art" :src="galleryEmptyArt" width="1774" height="887" alt="" aria-hidden="true" draggable="false" /></template>
         <RouterLink class="btn btn-primary" to="/prompt-builder">开始绘制</RouterLink>
       </ArchiveStatePanel>
       <ArchiveStatePanel
@@ -304,6 +305,7 @@ import GalleryAlbumOverview from '@/components/gallery/GalleryAlbumOverview.vue'
 import GalleryCollectionFilters from '@/components/gallery/GalleryCollectionFilters.vue'
 import GallerySmartAlbumEditor from '@/components/gallery/GallerySmartAlbumEditor.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import galleryEmptyArt from '@/assets/illustrations/atelier-gallery.png'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
