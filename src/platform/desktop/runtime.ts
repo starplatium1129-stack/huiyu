@@ -78,15 +78,22 @@ export function refreshDesktopRuntime(force = false): Promise<void> {
 export async function initializeDesktopRuntime(): Promise<() => void> {
   if (started) return stop
   started = true
+  epochController = new AbortController()
   setRuntimeFetch(desktopRuntimeFetch)
   setRuntimeOrigin(null, true)
   configureApiTransport(desktopRuntimeFetch)
   await refreshDesktopRuntime()
-  const timer = setInterval(() => { void refreshDesktopRuntime() }, 10_000)
+  let disposed = false
+  const timer = setInterval(() => { if (!disposed) void refreshDesktopRuntime() }, 10_000)
   let unlisten: (() => void) | undefined
   const events = hostApi()?.event
-  let disposed = false
-  void events?.listen('aics:gateway-ready', () => { void refreshDesktopRuntime() }).then(remove => { if (disposed) remove(); else unlisten = remove })
-  stop = () => { disposed = true; started = false; clearInterval(timer); unlisten?.(); epochController.abort(); listeners.clear() }
+  void events?.listen('aics:gateway-ready', () => { if (!disposed) void refreshDesktopRuntime() }).then(remove => { if (disposed) remove(); else unlisten = remove })
+  stop = () => {
+    if (disposed) return
+    disposed = true; started = false
+    // A pending host handshake belongs to this lifetime, not a later initialization.
+    refreshSequence++; refreshPending = null
+    clearInterval(timer); unlisten?.(); epochController.abort(); listeners.clear()
+  }
   return stop
 }
