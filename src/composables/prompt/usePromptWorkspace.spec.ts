@@ -57,11 +57,27 @@ async function setup(query = '', loadData: () => Promise<void> = async () => {},
   let workspace!: ReturnType<typeof usePromptWorkspace>
   const wrapper = mount(defineComponent({ setup() { workspace = usePromptWorkspace(); return () => h('div') } }), { global: { plugins: [pinia, router] } })
   wrappers.push(wrapper)
-  // SD status and video tools load lazily during mount; flushPromises alone does
+  // Engine status and video tools load lazily during mount; flushPromises alone does
   // not wait for Vite to finish those imports before the lifecycle applies links.
   await vi.dynamicImportSettled()
   await flushPromises()
   return { workspace, pb, catalog, router, wrapper, load, loadHistory, restoreDraft, saveDraft }
+}
+
+// The local-chat release is a prerequisite, not the image submission under test.
+function failImageSubmission() {
+  vi.mocked(apiClient.request).mockImplementation(async (url, options) => {
+    if (url === '/api/anima/jobs' && options?.method === 'POST') throw new Error('isolated submission failure')
+    return { ok: true, online: false, models: [], samplers: [], schedulers: [] } as never
+  })
+}
+function imagePosts() {
+  return vi.mocked(apiClient.request).mock.calls.filter(([url, options]) => url === '/api/anima/jobs' && options?.method === 'POST')
+}
+function configureAnima(workspace: ReturnType<typeof usePromptWorkspace>, pb: ReturnType<typeof usePromptBuilderStore>) {
+  pb.modelProfiles = parsePresetCatalog(presetCatalog).modelProfiles
+  workspace.animaSession.patchState({ online: true, modelId: 'anima-miaomiao-v1.6',
+    loraId: 'L_NENE_V21_ANIMA', loras: [{ id: 'L_NENE_V21_ANIMA', available: true }] })
 }
 
 describe('workspace ownership and panel boundaries', () => {
@@ -101,32 +117,38 @@ describe('workspace ownership and panel boundaries', () => {
     expect(saveDraft).toHaveBeenCalledOnce()
   })
 
-  it('keeps a user-picked SD draft size, while explicit scenes and history own their dimensions', async () => {
+  it('preserves legacy draft settings without reactivating SD, while current scenes and history own dimensions', async () => {
     localStorage.setItem('aics_pb_last_draft', JSON.stringify({ updatedAt: 1, story: scene.story,
       sceneId: scene.id, sceneBaseStory: scene.story, sdParams: { size: '1024x1024' }, sdParamsTouched: ['size'] }))
     const { workspace, pb, saveDraft, router } = await setup('', undefined, true)
-    expect(workspace.genBarSize.value).toBe('1024x1024')
+    expect(workspace.drawEngine.value).toBe('anima')
+    expect(pb.sdParams.size).toBe('1024x1024')
+    expect(workspace.genBarSize.value).toBe('832x1216')
     expect(saveDraft).toHaveBeenCalled()
     saveDraft.mockClear()
     workspace.genBarSize.value = '1344x896'
     await nextTick(); await nextTick()
-    expect(pb.sdParams.size).toBe('1344x896'); expect(pb.sdParamsTouched.has('size')).toBe(true)
+    expect(pb.sdParams.size).toBe('1024x1024'); expect(pb.sdParamsTouched.has('size')).toBe(true)
     expect(saveDraft).toHaveBeenCalled()
     pb.modelProfiles = [{ id: 'size-fixture', name: 'Size fixture', checkpoint_match: '.*', size: '1216x832' }]
     pb.sdModelName = 'new-checkpoint'; await nextTick(); await nextTick()
     expect(workspace.genBarSize.value).toBe('1344x896')
-    expect(pb.sdParams.size).toBe('1344x896')
+    expect(pb.sdParams.size).toBe('1024x1024')
     workspace.renderBindings.resetSdParams(); await nextTick(); await nextTick()
     expect(workspace.genBarSize.value).toBe('1216x832')
-    expect(pb.sdParams.size).toBe('1216x832')
+    expect(pb.sdParams.size).toBe('1024x1024')
     expect(pb.sdParamsTouched.has('size')).toBe(false)
     await router.push('/prompt-builder?scene=fixture-two'); await vi.dynamicImportSettled(); await flushPromises()
     expect(workspace.genBarSize.value).toBe(secondScene.recommendedSize)
     expect(pb.sdParamsTouched.has('size')).toBe(false)
     pb.history = [{ id: 'saved', engine: 'sd', character: 'nene', story: 'Saved scene', size: '1216x832', seed: 0 }]
     await router.push('/prompt-builder?regen=saved'); await vi.dynamicImportSettled(); await flushPromises()
+    expect(workspace.genBarSize.value).toBe(secondScene.recommendedSize)
+    expect(pb.historyRestoreReport?.title).toBe('原引擎已退役')
+    pb.history = [{ id: 'current', engine: 'anima', character: 'nene', story: 'Saved current scene', size: '1216x832', seed: 0 }]
+    await router.push('/prompt-builder?regen=current'); await vi.dynamicImportSettled(); await flushPromises()
     expect(workspace.genBarSize.value).toBe('1216x832')
-    expect(pb.sdParams.size).toBe('1216x832')
+    expect(pb.sdParams.size).toBe('1024x1024')
   })
 
   it('hires freezes the completed recipe before cold loading, supports loading cancellation and refuses unknown recipes', async () => {
@@ -138,7 +160,7 @@ describe('workspace ownership and panel boundaries', () => {
       result: { url: 'blob:original-A', blob: new Blob(['original'], { type: 'image/png' }), metadata: { ...anima.request,
         id: 'original-A', engine: 'anima', seed: 0, sampler: 'original', scheduler: 'original', createdAt: 0, resultUrl: null } } })
     const source = vi.spyOn(workspace.animaSession, 'resultSubmission').mockReturnValue(anima)
-    vi.mocked(apiClient.request).mockRejectedValue(new Error('isolated submission failure'))
+    failImageSubmission()
     const loading = workspace.upscaleCurrentResult()
     expect(source).toHaveBeenCalledOnce(); expect(workspace.generationBusy.value).toBe(true)
     source.mockReturnValue({ ...anima, request: { ...anima.request, prompt: 'recipe B', modelId: 'model B' } })
@@ -240,19 +262,20 @@ describe('workspace ownership and panel boundaries', () => {
   it('keeps explicit generation parameters on failure and retries through the same job path', async () => {
     const { workspace, pb } = await setup()
     workspace.materialBindings.selectScene(scene)
-    pb.sdParams = { ...pb.sdParams, steps: 23, cfg: 5.5, seed: 123, seedLock: true, hiresFix: false, faceDetailer: false }
-    const request = vi.spyOn(generationApi, 'createJob').mockRejectedValue(new Error('isolated failure'))
+    configureAnima(workspace, pb)
+    workspace.animaSession.patchState({ steps: 23, cfg: 5.5, seed: 123, hiresFix: false })
+    failImageSubmission()
     await workspace.callGenerate()
-    expect(request).toHaveBeenCalledOnce()
-    const submitted = request.mock.calls[0][0]
-    // The current SD queue conveys identity through its prompt/LoRAs; its gateway
-    // character field is empty. This refactor deliberately keeps that request contract.
-    expect(submitted).toMatchObject({ character: '', width: 1216, height: 832, steps: 23, cfg: 5.5, seed: 123, hiresFix: false, faceDetailer: false })
-    expect(submitted.prompt).toContain('garden')
+    expect(imagePosts()).toHaveLength(1)
+    const submitted = imagePosts()[0]![1]!.body
+    expect(submitted).toMatchObject({ character: 'nene', width: 1216, height: 832, steps: 23, cfg: 5.5, seed: 123 })
+    expect(submitted).not.toHaveProperty('hiresFix') // Disabled hires is omitted by the Anima transport.
+    expect((submitted as { prompt: string }).prompt).toContain('garden')
     expect(workspace.generationBusy.value).toBe(false)
-    expect(workspace.deliveryBindings.sdErrorReport.value).not.toBeNull()
+    expect(workspace.animaState.value.errorReport).not.toBeNull()
     await workspace.callGenerate()
-    expect(request.mock.calls[1][0]).toEqual(submitted)
+    expect(imagePosts()).toHaveLength(2)
+    expect(imagePosts()[1]![1]!.body).toEqual(submitted)
   })
 
   it('does not continue delayed initialization after the workspace is destroyed', async () => {
@@ -273,17 +296,19 @@ describe('workspace ownership and panel boundaries', () => {
     vi.mocked(readTempResult).mockReturnValueOnce({ imageId: 'previous-image', engine: 'sd', prompt: 'Previous scene',
       negative: '', seed: 41, size: '832x1216', savedAt: 1 })
     const read = vi.spyOn(artworkRepository, 'getImage').mockImplementationOnce(() => new Promise(resolve => { release = resolve }))
-    const { workspace } = await setup()
+    const { workspace, pb } = await setup()
     await vi.waitFor(() => expect(read).toHaveBeenCalledOnce())
     workspace.materialBindings.selectScene(scene)
-    const generate = vi.spyOn(generationApi, 'createJob').mockRejectedValue(new Error('new attempt failed'))
+    configureAnima(workspace, pb)
+    failImageSubmission()
     await workspace.callGenerate()
-    expect(generate).toHaveBeenCalledOnce()
+    expect(imagePosts()).toHaveLength(1)
     expect(workspace.generationBusy.value).toBe(false)
     release(new Blob(['previous image'], { type: 'image/png' }))
     await flushPromises()
     expect(workspace.displayResultUrl.value).toBe('')
-    expect(workspace.sd.taskState.value).toBe('failed')
-    expect(workspace.deliveryBindings.sdErrorReport.value).not.toBeNull()
+    expect(workspace.animaState.value.phase).toBe('failed')
+    expect(workspace.animaState.value.errorReport).not.toBeNull()
+    expect(workspace.sd.resultUrl.value).toBe('')
   })
 })
