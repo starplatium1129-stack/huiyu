@@ -433,3 +433,51 @@ fn cancellation_drains_an_accepted_write_before_retaining_partial_bytes() {
             server.abort();
         });
 }
+
+#[tokio::test]
+async fn hardlinked_partial_is_rejected_without_mutating_or_removing_either_file() {
+    let temp = tempfile::tempdir().unwrap();
+    let requests = Arc::new(AtomicUsize::new(0));
+    let calls = requests.clone();
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let url = format!("http://{}/model", listener.local_addr().unwrap());
+    let server = tokio::spawn(
+        axum::serve(
+            listener,
+            Router::new().route(
+                "/model",
+                get(move || {
+                    calls.fetch_add(1, Ordering::SeqCst);
+                    async { DATA }
+                }),
+            ),
+        )
+        .into_future(),
+    );
+    let spec = plan(temp.path(), url);
+    let partial = spec
+        .root
+        .join("vae")
+        .join(format!(".huiyu-{}.part", spec.spec.sha256));
+    std::fs::create_dir_all(partial.parent().unwrap()).unwrap();
+    let original = temp.path().join("unrelated.bin");
+    std::fs::write(&original, b"original unrelated data").unwrap();
+    std::fs::hard_link(&original, &partial).unwrap();
+    let (send, _events) = tokio::sync::mpsc::channel(PROGRESS_BUFFER);
+    let outcome = download(
+        &spec,
+        &reqwest::Client::new(),
+        &send,
+        &CancellationToken::new(),
+    )
+    .await;
+    server.abort();
+    assert_eq!(
+        std::fs::read(&original).unwrap(),
+        b"original unrelated data"
+    );
+    assert_eq!(std::fs::read(&partial).unwrap(), b"original unrelated data");
+    assert_eq!(outcome.unwrap_err().code, "MODEL_IO");
+    assert_eq!(requests.load(Ordering::SeqCst), 0);
+    assert!(!spec.root.join(&spec.spec.path).exists());
+}

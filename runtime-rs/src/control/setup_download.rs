@@ -326,9 +326,17 @@ async fn download(
             #[cfg(unix)]
             {
                 use std::os::unix::fs::OpenOptionsExt;
-                options.custom_flags(libc::O_NOFOLLOW);
+                options.custom_flags(libc::O_NONBLOCK | libc::O_NOFOLLOW);
             }
             let file = options.open(&partial)?;
+            // Validate the opened object before writes or TempPath cleanup own it.
+            // A resumable name can be a hard link to an unrelated existing file.
+            if !file.metadata()?.is_file() || crate::file_identity::opened(&file)?.links != 1 {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidInput,
+                    "Partial download must be an exclusively linked regular file",
+                ));
+            }
             Ok(tempfile::NamedTempFile::from_parts(
                 file,
                 tempfile::TempPath::try_from_path(partial)?,
