@@ -122,6 +122,8 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
         job.status = reconnect ? 'unknown' : 'running'; job.error = undefined
         if (storage && !await persist()) { if (!reconnect) job.status = 'pending'; break }
         if (disposed) break
+        // Stop may arrive while the request identity is being saved, before any admission.
+        if (cancelRequested.value && !reconnect) { job.status = 'cancelled'; break }
         let result: BatchDrawRunnerResult
         try { result = await run(runnerInput(job, reconnect)) }
         catch (error) { result = { ok: false, unresolved: runtimeOwned, error: error instanceof Error ? error.message : String(error) } }
