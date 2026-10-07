@@ -1,6 +1,11 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { ref } from 'vue'
 import CgImageReveal from './CgImageReveal.vue'
+import { startImageDevelopmentReveal } from '@/utils/imageDevelopmentReveal'
+
+vi.mock('@/composables/useVisualActivity', () => ({ useVisualActivity: () => ({ canAnimate: ref(true), lowEffects: ref(false) }) }))
+vi.mock('@/utils/imageDevelopmentReveal', () => ({ startImageDevelopmentReveal: vi.fn() }))
 
 const cleanup: Array<() => void> = []
 afterEach(() => cleanup.splice(0).forEach(unmount => unmount()))
@@ -33,6 +38,26 @@ describe('CgImageReveal component', () => {
     expect(wrapper.find('img').exists()).toBe(false)
     expect(wrapper.find('canvas').exists()).toBe(false)
   })
+})
 
-
+it('reuses the supplied particle surface after decoding and stops it on unmount', async () => {
+  let finish!: () => void
+  const stop = vi.fn(() => finish())
+  const effect = { stop, finished: new Promise<void>(resolve => { finish = resolve }) }
+  const revealEffect = vi.fn(() => effect)
+  const wrapper = mount(CgImageReveal, { props: { src: '/canvas-result.png', revealEffect } })
+  try {
+    const img = wrapper.get('img')
+    Object.defineProperties(img.element, {
+      complete: { value: true }, naturalWidth: { value: 320 }, naturalHeight: { value: 240 }, animate: { value: vi.fn() },
+    })
+    await img.trigger('load')
+    expect(revealEffect).toHaveBeenCalledExactlyOnceWith(img.element)
+    expect(startImageDevelopmentReveal).not.toHaveBeenCalled()
+    expect(wrapper.emitted('reveal-start')).toHaveLength(1)
+    wrapper.unmount()
+    await effect.finished
+    expect(stop).toHaveBeenCalledOnce()
+    expect(wrapper.emitted('reveal-complete')).toBeUndefined()
+  } finally { wrapper.unmount() }
 })

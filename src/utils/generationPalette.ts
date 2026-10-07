@@ -40,7 +40,7 @@ export function sampleGenerationPalette(image: HTMLImageElement): string[] {
 export function visibleGenerationPigment(color: string, light: boolean): string {
   const channels = color.split(' ').map(Number)
   const luminance = channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722
-  const target = Math.max(light ? 55 : 135, Math.min(light ? 132 : 210, luminance))
+  const target = Math.max(light ? 48 : 135, Math.min(light ? 102 : 210, luminance))
   return channels.map(channel => Math.round(luminance > target ? channel * target / luminance
     : channel + (255 - channel) * (target - luminance) / (255 - luminance))).join(' ')
 }

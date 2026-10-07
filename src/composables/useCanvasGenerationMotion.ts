@@ -1,9 +1,9 @@
 import { onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from './useVisualActivity'
-import { startCanvasTextureParticles, type CanvasParticleMotion, type GenerationContinuation } from '@/utils/canvasTextureParticles'
+import { startCanvasTextureParticles, type CanvasParticleMotion } from '@/utils/canvasTextureParticles'
 
-/** Break up the old image, then hand off to the shared waiting visual.
+/** One particle surface carries the old image through waiting into the decoded result.
  * Presentation never owns submission, task receipts, cancellation or results. */
 export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   source: () => string, busy: () => boolean, comparing: () => boolean,
@@ -11,33 +11,37 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
 ) {
   const { canAnimate, lowEffects } = useVisualActivity(host)
   const active = ref(false)
-  const continuation = ref<GenerationContinuation>()
   let effect: CanvasParticleMotion | null = null
+  let revision = 0
   let generationSource = ''
   let size = { width:0, height:0 }
   function stop() {
+    revision++
     const current=effect; effect=null; active.value=false
     current?.stop()
   }
-  function start(previousSource = source()) {
+  function start(previousSource = source(), capturePrevious = true) {
     stop()
-    continuation.value=undefined
+    const version=revision
     // The task-start URL is stable across publication/settlement Vue ticks.
     // DOM src may be runtime-resolved, so don't compare it to business URLs.
     generationSource = previousSource
     const root=host.value
     if (!root || !canAnimate.value || lowEffects.value || comparing()) return
-    const image=root.querySelector<HTMLImageElement>('img.cg-image-target')
-    // An empty canvas belongs to GenerationParticles. Claiming it here hides
-    // that waiting visual even though there is no artwork to dissolve.
-    if (!image?.complete || !image.naturalWidth) return
+    const candidate=capturePrevious ? root.querySelector<HTMLImageElement>('img.cg-image-target') : null
+    const image=candidate?.complete && candidate.naturalWidth ? candidate : null
     const bounds=root.getBoundingClientRect(); size={width:bounds.width,height:bounds.height}
     effect=startCanvasTextureParticles(image,root,{
       generation:{progress,palette:palette()},
-      onHandoff:state => { continuation.value=state; active.value=false },
-      onComplete:() => { effect=null; active.value=false },
+      onComplete:() => { if(version===revision) { effect=null; active.value=false } },
     })
     active.value=Boolean(effect)
+  }
+  function reveal(image: HTMLImageElement) {
+    if (!canAnimate.value || lowEffects.value || comparing()) { stop(); return null }
+    // Late completion or restored visibility can start from the waiting orbit.
+    if (!effect) start(source(),false)
+    return effect?.reveal(image) ?? null
   }
   watch([source,busy,comparing],([url,generating,comparison],[oldUrl,wasGenerating]) => {
     if (comparison) { stop(); return }
@@ -47,12 +51,13 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   },{flush:'pre'})
   watch([canAnimate,lowEffects],() => {
     if (!canAnimate.value || lowEffects.value) stop()
+    else if (busy() && !effect) start(source(),false)
   },{flush:'sync'})
   useResizeObserver(host,() => {
     const bounds=host.value?.getBoundingClientRect()
     if (effect && bounds && (Math.abs(bounds.width-size.width)>1 || Math.abs(bounds.height-size.height)>1)) stop()
   })
-  onMounted(() => { if (busy()) start() })
+  onMounted(() => { if (busy() && !effect) start() })
   onBeforeUnmount(stop)
-  return { active, continuation, release:stop, stop }
+  return { active, reveal, stop }
 }

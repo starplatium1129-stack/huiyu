@@ -4,10 +4,10 @@ import { defineComponent, h, nextTick, ref } from 'vue'
 import { useCanvasGenerationMotion } from './useCanvasGenerationMotion'
 const activity={canAnimate:ref(true),lowEffects:ref(false),appearanceRevision:ref(0)}
 vi.mock('./useVisualActivity',() => ({useVisualActivity:() => activity}))
-const mock=vi.hoisted(() => ({start:vi.fn(),stop:vi.fn()}))
+const mock=vi.hoisted(() => ({start:vi.fn(),stop:vi.fn(),reveal:vi.fn()}))
 vi.mock('@/utils/canvasTextureParticles',() => ({startCanvasTextureParticles:mock.start}))
 const cleanups:Array<() => void>=[]
-beforeEach(() => { Object.values(mock).forEach(fn => fn.mockReset()); activity.canAnimate.value=true; activity.lowEffects.value=false; mock.start.mockReturnValue({stop:mock.stop}) })
+beforeEach(() => { Object.values(mock).forEach(fn => fn.mockReset()); activity.canAnimate.value=true; activity.lowEffects.value=false; mock.start.mockReturnValue({stop:mock.stop,reveal:mock.reveal}) })
 afterEach(() => { cleanups.splice(0).forEach(fn => fn()); vi.restoreAllMocks() })
 async function fixture(initialSource = '/old.png') {
   const source=ref(initialSource),busy=ref(false),comparing=ref(false)
@@ -22,20 +22,23 @@ async function fixture(initialSource = '/old.png') {
   cleanups.push(() => wrapper.unmount())
   return {source,busy,comparing,motion,wrapper,image}
 }
-it.each(['same tick','separate ticks'] as const)('hands breakup to the shared visual before decoded results settle in %s',async publication => {
+it.each(['same tick','separate ticks'] as const)('keeps the same particle surface until decoded results settle in %s',async publication => {
   const {source,busy,motion,wrapper,image}=await fixture()
   source.value=''; busy.value=true; await nextTick()
-  expect(mock.start).toHaveBeenCalledExactlyOnceWith(image,wrapper.element,expect.objectContaining({generation:expect.any(Object),onHandoff:expect.any(Function),onComplete:expect.any(Function)}))
+  expect(mock.start).toHaveBeenCalledExactlyOnceWith(image,wrapper.element,expect.objectContaining({generation:expect.any(Object),onComplete:expect.any(Function)}))
   expect(wrapper.find('img').exists()).toBe(false)
-  const continuation={clock:3500,rotation:.8,concentration:.15}
-  mock.start.mock.calls[0][2].onHandoff(continuation)
-  expect(motion.continuation.value).toEqual(continuation)
-  expect(motion.active.value).toBe(false)
+  expect(motion.active.value).toBe(true)
   source.value='/new.png'
   if (publication==='separate ticks') await nextTick()
   busy.value=false; await nextTick()
   expect(mock.stop).not.toHaveBeenCalled()
-  motion.release()
+  const decoded=wrapper.get('img').element
+  const reveal={stop:mock.stop,finished:Promise.resolve()}
+  mock.reveal.mockReturnValue(reveal)
+  expect(motion.reveal(decoded)).toBe(reveal)
+  expect(mock.reveal).toHaveBeenCalledExactlyOnceWith(decoded)
+  expect(mock.start).toHaveBeenCalledOnce()
+  motion.stop()
   expect(mock.stop).toHaveBeenCalledOnce()
   expect(source.value).toBe('/new.png')
 })
@@ -60,11 +63,11 @@ it('leaves the ordinary progress visual available when WebGL is unavailable',asy
   expect(busy.value).toBe(true)
 })
 
-it('keeps an empty generation canvas available for its waiting visual',async () => {
-  const {busy,motion}=await fixture('')
+it('starts the same particle surface without an old image on an empty canvas',async () => {
+  const {busy,motion,wrapper}=await fixture('')
   busy.value=true; await nextTick()
-  expect(mock.start).not.toHaveBeenCalled()
-  expect(motion.active.value).toBe(false)
+  expect(mock.start).toHaveBeenCalledExactlyOnceWith(null,wrapper.element,expect.objectContaining({generation:expect.any(Object)}))
+  expect(motion.active.value).toBe(true)
 })
 
 it('stops unchanged old results and replaces an in-flight result when a new generation starts',async () => {

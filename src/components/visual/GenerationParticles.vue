@@ -1,6 +1,6 @@
 <template>
   <div class="generation-particles" aria-hidden="true">
-    <div ref="host" class="generation-particle-surface" :class="{ 'is-continuation': continuation }">
+    <div ref="host" class="generation-particle-surface">
     <GenerationBloomShader v-if="loadShader && !shaderFailed && !lowEffects" :progress="progress" :colors="colors"
       :present="canPresent" :animate="canAnimate" @unavailable="shaderFailed = true" />
     <canvas ref="canvas"></canvas>
@@ -15,9 +15,8 @@ import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 import { visibleGenerationPigment } from '@/utils/generationPalette'
-import type { GenerationContinuation } from '@/utils/canvasTextureParticles'
 
-const props = defineProps<{ progress: number | null; palette?: readonly string[]; continuation?: GenerationContinuation }>()
+const props = defineProps<{ progress: number | null; palette?: readonly string[] }>()
 const host = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const { canPresent, canAnimate, lowEffects, appearanceRevision } = useVisualActivity(host)
@@ -32,9 +31,9 @@ const colors = ref<string[]>([])
 let sprites: HTMLCanvasElement[] = []
 let context: CanvasRenderingContext2D | null = null
 let width = 0, height = 0, ratio = 1
-let clock = props.continuation?.clock ?? 1500
-let rotation = props.continuation?.rotation ?? .27
-let concentration = props.continuation?.concentration ?? props.progress ?? 0
+let clock = 1500
+let rotation = .27
+let concentration = props.progress ?? 0
 let stopFrames: (() => void) | null = null
 
 function stop() {
@@ -190,8 +189,6 @@ onBeforeUnmount(() => {
 .generation-particles { position:relative; isolation:isolate; display:grid; place-items:center; width:100%; height:100%; margin-inline:auto; pointer-events:none; }
 .generation-particle-surface { position:relative; width:min(100%,480px); max-height:100%; aspect-ratio:1.38; animation:generation-line-arrival 420ms ease-out both; }
 @keyframes generation-line-arrival { from { opacity:0; } to { opacity:1; } }
-.generation-particle-surface.is-continuation { animation:none; }
-.generation-particle-surface.is-continuation :deep(.generation-bloom) { animation:generation-line-arrival 600ms ease-out both; }
 :global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .generation-particle-surface { animation:none; }
 @media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full'])) .generation-particle-surface { animation:none; } }
 /* compositor-exempt: A bounded Canvas renders particle depth; cached glow sprites avoid per-frame blur. */

@@ -158,6 +158,8 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
         {
             Ok(win) => {
                 state.info("open atelier: window built");
+                #[cfg(windows)]
+                crate::window_presentation::set_taskbar_icon(&win);
                 if let Err(error) = apply_window_placement(&win, &placement) { state.warn(&format!("restore atelier bounds failed: {error}")); }
                 if presentation.maximized { let _ = win.maximize(); }
                 crate::window_presentation::restore_zoom(&win);

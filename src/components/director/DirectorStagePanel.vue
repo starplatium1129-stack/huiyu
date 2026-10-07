@@ -24,7 +24,7 @@
         <DirectorSceneReference v-if="!generationBusy && !waitingForResult" :size="canvasSize" />
           <div v-if="generationBusy || waitingForResult" class="stage-generating-copy">
             <div class="stage-generation-orbit">
-              <GenerationParticles v-if="!coveringResult && !textureMotionActive" :continuation="generationContinuation" :progress="generationProgress" :palette="generationPalette" />
+              <GenerationParticles v-if="!coveringResult && !textureMotionActive" :progress="generationProgress" :palette="generationPalette" />
             </div>
           </div>
         <div v-else-if="generationError || (displayResultUrl && failedResultUrl === displayResultUrl)" class="stage-idle" role="alert">
@@ -101,9 +101,10 @@
           img-class="result-image"
           :src="resolveRuntimeUrl(displayResultUrl)"
           :auto-reveal="loadedResultUrl === displayResultUrl && displayResultUrl === resultRevealUrl && !revealedResults.has(displayResultUrl)"
+          :reveal-effect="revealTextureResult"
           alt="当前生成的画面成片"
           @load="fitResult"
-          @reveal-start="onResultReveal"
+          @reveal-start="rememberResultReveal"
           @reveal-complete="onResultReveal"
           @error="onResultImageError"
         />
@@ -167,7 +168,7 @@ const resultPalette = ref<string[]>([])
 const generationPalette = ref<string[]>([])
 // Capture before publication/clearing; the new image's load must not recolor an ongoing wait.
 watch(() => props.generationBusy, busy => { if (busy) generationPalette.value = [...resultPalette.value] }, { flush: 'sync' })
-const { active: textureMotionActive, continuation: generationContinuation, release: releaseTextureMotion, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generationProgress, () => generationPalette.value)
+const { active: textureMotionActive, reveal: revealTextureResult, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generationProgress, () => generationPalette.value)
 const { playClear, coveringResult, stop: stopClearMotion } = useCanvasClearMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 // A deliberate clear followed by Generate must not leave two GPU effects alive.
@@ -197,7 +198,7 @@ const revealedResults = ref(new Set<string>())
 const waitingForResult = computed(() => Boolean(props.displayResultUrl && props.displayResultUrl === props.resultRevealUrl
   && !props.inpaintCompareActive && !revealedResults.value.has(props.displayResultUrl) && failedResultUrl.value !== props.displayResultUrl))
 function onResultImageError() { failedResultUrl.value = props.displayResultUrl; stopTextureMotion() }
-function onResultReveal() { releaseTextureMotion(); rememberResultReveal() }
+function onResultReveal() { stopTextureMotion(); rememberResultReveal() }
 function rememberResultReveal() {
   const source = props.displayResultUrl
   if (!source || revealedResults.value.has(source)) return
@@ -209,7 +210,8 @@ function rememberResultReveal() {
 }
 
 // Do not postpone a completion animation until the user leaves history/comparison.
-watch(() => [props.displayResultUrl, props.resultRevealUrl, props.inpaintCompareActive], () => {
+watch(() => [props.displayResultUrl, props.resultRevealUrl, props.inpaintCompareActive, props.generationBusy], () => {
+  if (!props.generationBusy && props.displayResultUrl && props.displayResultUrl !== props.resultRevealUrl) stopTextureMotion()
   if (props.inpaintCompareActive && props.displayResultUrl === props.resultRevealUrl) rememberResultReveal()
 }, { immediate: true })
 

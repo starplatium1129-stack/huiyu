@@ -50,8 +50,8 @@ describe('generation pigments', () => {
       expect(red).toBeGreaterThan(green)
       expect(green).toBeGreaterThan(blue)
       const luminance = red * .2126 + green * .7152 + blue * .0722
-      expect(luminance).toBeGreaterThanOrEqual(light ? 54 : 134)
-      expect(luminance).toBeLessThanOrEqual(light ? 133 : 211)
+      expect(luminance).toBeGreaterThanOrEqual(light ? 47 : 134)
+      expect(luminance).toBeLessThanOrEqual(light ? 103 : 211)
     }
   })
 })
