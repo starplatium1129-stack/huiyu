@@ -6,14 +6,15 @@ import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentit
 import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 import { sceneStyleBaseline } from '@/utils/randomVariationContext'
 
-export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown) {
-  if (!result || typeof result !== 'object') return
+export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true) {
+  if (!current() || !result || typeof result !== 'object') return
   if ((result as { engine?: string }).engine === 'heuristic') {
     pb.flash('本地反推模型不可用，演示标签未写入工作台，请检查 WD14 模型后重试')
     return
   }
   const { characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } = await import('@/utils/interrogateMerge')
   const { splitReferenceTags } = await import('@/utils/interrogateReference')
+  if (!current()) return
   const payload = result as { mode?: string; caption?: string; tags?: unknown; characterTags?: unknown; warning?: string }
   const rawTags = Array.isArray(payload.tags) ? payload.tags.filter((tag): tag is string => typeof tag === 'string') : []
   const characterTags = Array.isArray(payload.characterTags) ? payload.characterTags.filter((tag): tag is string => typeof tag === 'string') : []

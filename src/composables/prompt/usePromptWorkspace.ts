@@ -24,7 +24,7 @@ import { useSceneStore } from '@/stores/sceneStore';
 import type { AnimaResult,AnimaResultContext } from '@/types/anima';
 import { captureResultContext as snapshotResultContext } from '@/utils/resultContext';
 import { type SDRecoveryId } from '@/utils/sdError';
-import { computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue';
+import { computed, onActivated, onDeactivated, onScopeDispose, reactive, ref, toRef, watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,type DrawEngine,} from '@/storage/settingsRepository';
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
@@ -46,6 +46,9 @@ export function usePromptWorkspace() {
     const inpaintPreparing = ref(false);
     const hiresPreparing = ref(false);
     let hiresVersion = 0, disposed = false;
+    let interrogateVersion = 0, interrogateActive = true;
+    onActivated(() => { interrogateActive = true; });
+    onDeactivated(() => { interrogateActive = false; interrogateVersion++; });
     onScopeDispose(() => { disposed = true; hiresVersion++; hiresPreparing.value = false; }, true);
     const DIRECTOR_MODE_KEY = 'aics_pb_director_mode';
     const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING);
@@ -174,8 +177,11 @@ export function usePromptWorkspace() {
     function buildResultSnapshot(persistentUrl: string): ResultSnapshot { return snapshotResult({ animaState, drawEngine, displayResultSeed, pb, sdSize, sd }, persistentUrl); }
     // ── Actions ───────────────────────────────────────────────────────────────
     async function handleInterrogateResult(result: unknown) {
+        if (disposed || !interrogateActive) return;
+        const version = ++interrogateVersion;
+        const current = () => !disposed && interrogateActive && version === interrogateVersion;
         const { applyInterrogateResult } = await import('@/composables/prompt/applyInterrogateResult');
-        await applyInterrogateResult(pb, result);
+        if (current()) await applyInterrogateResult(pb, result, current);
     }
     function handleInterrogateError(message: string) {
         pb.flash('反推失败：' + message);

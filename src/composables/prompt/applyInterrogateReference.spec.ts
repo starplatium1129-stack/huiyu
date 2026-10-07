@@ -31,6 +31,19 @@ function fixture() {
 }
 const extract = (tags: string[], extra = {}) => ({ engine: 'wd14', mode: 'tag', tags, ...extra })
 
+it('drops an obsolete reference owner after lazy helper loading without changing the draft', async () => {
+  const pb = fixture()
+  pb.manualTags = new Set(['smile'])
+  let current = true
+  const applying = applyInterrogateResult(pb, extract(['white_coat', 'forest']), () => current)
+  current = false
+  await applying
+  expect([...pb.manualTags]).toEqual(['smile'])
+  expect(pb.outfitOverride).toBeNull()
+  expect(pb.referenceInput).toBeNull()
+})
+
+
 it.each(['anima', 'krea2'] as const)('keeps authored props while director lighting and palette add only their selected effect in %s', async engine => {
   const pb = fixture()
   pb.setColorMood('warmth')
