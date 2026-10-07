@@ -224,11 +224,29 @@ async fn provider_query_retries_collection_without_reopening_committed_source() 
         let backup = output.with_extension("saved");
         std::fs::rename(&output, &backup).unwrap();
         std::fs::write(&output, b"blocked").unwrap();
-        let accepted = runtime.submit(storage.clone(), "owner".into(), json!({
-            "requestKey":format!("background-{reject_output}"),"kind":"generation",
-            "input":{"prompt":"neutral fixture","negative":"","width":1024,"height":1024,"seed":42}
-        })).await.unwrap();
-        let task_id = accepted["taskId"].as_str().unwrap();
+        // New SD admission is retired. Seed an already accepted legacy task,
+        // then exercise its real dispatch, monitor and collection recovery.
+        let task_id = format!("background-{reject_output}");
+        let prepared = runtime
+            .prepare(TaskKind::Generation, json!({"prompt":"neutral fixture","negative":"","width":1024,"height":1024,"seed":42}))
+            .await
+            .unwrap();
+        let mut accepted = record.clone();
+        accepted["taskId"] = json!(task_id);
+        accepted["requestKey"] = json!(task_id);
+        accepted["status"] = json!("queued");
+        accepted["upstreamId"] = Value::Null;
+        accepted["submissionIntentAt"] = Value::Null;
+        accepted["submissionObservedAt"] = Value::Null;
+        storage
+            .request(json!({"kind":"task.accept","record":accepted}), "owner")
+            .await
+            .unwrap();
+        runtime
+            .clone()
+            .dispatch(storage.clone(), "owner".into(), task_id.clone(), prepared)
+            .await;
+        let task_id = task_id.as_str();
         tokio::time::timeout(std::time::Duration::from_secs(5), async {
             loop {
                 let task = TaskRuntime::get(&storage, "owner", task_id).await.unwrap();

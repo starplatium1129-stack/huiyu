@@ -19,7 +19,8 @@
     },
     {
       "path": "src/utils/popularContent.ts",
-      "sha256": "abf3dbae27a553115aaad070d3b303444dd7e91b39601b03d78cc5d6e8c7f1c9"
+      "sha256": "5b6ac5f3faa3ddb1ff9a30d84c0c448f9d0213edacdad2f0100aa34a9a47fb0b",
+      "note": "2026-10-07: Reviewed current ordinary character/blueprint parsing, duplicate checks and fail-closed blueprint eligibility against the Rust gate. Rust now preserves identityTokensOverride/identityProseOverride for pollution scans and rejects empty override token lists, covered by the existing Node oracle fixture. Generated recipes continue through the existing stricter Rust generated::validate contract (parameter bounds, identity, size and rating checks); this is not a claim of full generated-recipe parser equivalence."
     },
     {
       "path": "src/utils/popularParseGuards.ts",
@@ -27,18 +28,18 @@
     },
     {
       "path": "src/utils/popularPromptBuilder.ts",
-      "sha256": "44b77f72f89e93680268972ac0b375eee0a74aec080fdf7b1a76de1b1e0878d9",
-      "note": "2026-10-01: fe96ae82 and d4882e8a change runtime prompt-plan identity/reference composition and lighting; garment classification moved to popularIdentity.ts. The content gate does not call prompt-plan builders; its parsing, pollution and eligibility functions and the mechanical recipe snapshot are unchanged. Original extraction date and recipeSha256 are retained."
+      "sha256": "ed2e27a9d714d65c412435d56c625449a86fdf05ec0ca14736160a0eb03f29ad",
+      "note": "2026-10-07: Reviewed the content-gate consumers scanStudioTokenLeaks and scanCharacterPollution: both studio regexes, all 16 environment tokens and character/outfit scan fields agree with Rust. Prompt-plan building, rendering and identity composition are outside this gate. Original extraction date and recipeSha256 are retained."
     },
     {
       "path": "src/utils/blueprintComposition.ts",
-      "sha256": "d3f8d554018e1d17f43320429cc52e22d0a59016a5157af147afd81b13f790c9",
-      "note": "2026-10-02: 47e6950a adds three runtime triptych negative-filter tokens. The content gate only uses parseCompositionIntent through parseSceneBlueprint; that parser is byte-identical. Validation behavior and the mechanical recipe snapshot are unchanged. Original extraction date and recipeSha256 are retained."
+      "sha256": "c41beea0fef068e1748f92b58ace0a5905a3aab8f13a1addeef2bd36f057fd5d",
+      "note": "2026-10-07: Reviewed parseCompositionIntent against Rust: missing/null/empty maps to single; single/group/triptych are accepted and other values rejected. Runtime composition and repeated-subject negative filtering are not called by the content gate. Original extraction date and recipeSha256 are retained."
     },
     {
       "path": "src/config/kreaStyleRecipes.ts",
-      "sha256": "72b7c581383e63eb37aeac038baba03e13a59bfa672bf5f06b7ffe19302af948",
-      "note": "2026-10-01: f1070627 only migrated documentation-link comments; comment-free TypeScript and all 23 mechanical recipe exports are unchanged. Extraction date and recipeSha256 remain the original snapshot."
+      "sha256": "b753c5023098754dec10114cba486a052e8031924a9d7bbd2a88a6e3226475e2",
+      "note": "2026-10-07: Mechanically transpiled and exported KREA_STYLE_RECIPES; all 23 records (21 common, 2 adult) match recipes.json byte-for-byte. findStyleRecipe and fail-closed recipeEligible were reviewed; all 276 recipe/character/flag eligibility combinations match the existing contract. Runtime engine defaults and style resolution do not affect this gate. Extraction date and recipeSha256 remain the original snapshot."
     }
   ],
   "recipeSha256": "dc06bea00ff7cc9d67e8156d9d95a41fc3b73a2b713081d87cd55fe7d786c4d7"
