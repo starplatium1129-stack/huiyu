@@ -10,6 +10,7 @@ use std::{
     time::Duration,
 };
 
+mod inputs;
 mod lifecycle;
 
 const WATCHDOG: Duration = Duration::from_secs(10);

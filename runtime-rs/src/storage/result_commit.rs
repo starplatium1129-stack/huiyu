@@ -8,12 +8,19 @@ pub(super) use file::Verified;
 pub(super) fn is_write(command: &Value) -> bool {
     matches!(
         command["kind"].as_str(),
-        Some("task.result.prepare" | "task.result.chunk" | "task.result.commit")
+        Some(
+            "task.result.prepare"
+                | "task.result.chunk"
+                | "task.result.commit"
+                | "task.input.prepare"
+                | "task.input.chunk"
+                | "task.input.commit"
+        )
     )
 }
 
-// One admitted result writer per workspace. This permit and protection live on
-// the actor, even if the HTTP waiter disappears while the hash thread is running.
+// One admitted input/result writer per workspace. The existing result pipeline
+// also verifies protected inputs; its permit and protection live on the actor, even if the HTTP waiter disappears while the hash thread is running.
 pub(super) struct Pending {
     id: String,
     output: Output,

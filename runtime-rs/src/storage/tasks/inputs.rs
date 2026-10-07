@@ -4,7 +4,6 @@ enum InputCommand<'a> {
     Get,
     Prepare(&'a Value),
     Chunk(media::Chunk<'a>),
-    Commit,
 }
 
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
@@ -14,7 +13,6 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         "task.input.get" => InputCommand::Get,
         "task.input.prepare" => InputCommand::Prepare(&command["media"]),
         "task.input.chunk" => InputCommand::Chunk(media::Chunk::Encoded(command)),
-        "task.input.commit" => InputCommand::Commit,
         _ => return Err(invalid("Unknown task input command")),
     };
     apply(c, principal, id, name, command)
@@ -103,38 +101,5 @@ fn apply(
             json!({"offset": if committed { stored["bytes"].as_u64().unwrap() } else { media::upload_chunk(c, &key, &stored, chunk, false)? }}),
         );
     }
-    if committed {
-        media::cleanup(c, &key, &stored);
-        return Ok(stored);
-    }
-    media::publish(c, &key, &stored)?;
-    c.transaction(|c| {
-        let hash = string(&stored, "sha256")?;
-        c.db.execute(
-            "INSERT OR IGNORE INTO media_objects VALUES(?,?,?)",
-            params![hash, stored["bytes"].as_i64(), string(&stored, "mime")?],
-        )?;
-        c.db.execute(
-            "INSERT OR IGNORE INTO media_aliases VALUES(?,?)",
-            params![string(&stored, "alias")?, hash],
-        )?;
-        c.db.execute(
-            "INSERT OR IGNORE INTO media_refs VALUES('task-input',?,?)",
-            params![id, hash],
-        )?;
-        c.db.execute(
-            "UPDATE task_inputs SET committed=1 WHERE task_id=? AND name=?",
-            params![id, name],
-        )?;
-        c.db.execute("DELETE FROM leases WHERE id=?", [&key])?;
-        let mut task = require(c, principal, id)?;
-        let alias = string(&stored, "alias")?.to_owned();
-        if !task.input_media_refs.contains(&alias) {
-            task.input_media_refs.push(alias);
-        }
-        write(c, task)?;
-        Ok(())
-    })?;
-    media::cleanup(c, &key, &stored);
-    Ok(stored)
+    Err(invalid("Unknown task input command"))
 }

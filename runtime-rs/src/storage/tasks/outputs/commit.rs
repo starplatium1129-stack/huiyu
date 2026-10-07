@@ -5,30 +5,53 @@ pub(in crate::storage) enum Prepared {
     Verify(Output),
 }
 
-// Immutable authorization snapshot. A TaskRecord is deliberately not retained:
+// Shared input/result authorization snapshot. A TaskRecord is deliberately not retained:
 // cancellation, delivery and metadata can change while the file is being read.
 pub(in crate::storage) struct Output {
     pub key: String,
     pub media: Value,
     principal: String,
     task_id: String,
-    index: i64,
+    target: Target,
     body: String,
     request_key: String,
     fingerprint: String,
     lease_created: i64,
 }
 
-fn row(c: &Context, id: &str, index: i64) -> Result<(String, bool)> {
-    c.db.prepare_cached(
-        "SELECT media_json,committed FROM task_outputs WHERE task_id=? AND output_index=?",
-    )?
-    .query_row(params![id, index], |r| Ok((r.get(0)?, r.get(1)?)))
-    .optional()?
-    .ok_or_else(|| conflict("TASK_RESULT_MISSING", "Result was not prepared"))
+enum Target {
+    Input(String),
+    Result(i64),
+}
+impl Target {
+    fn kind(&self) -> &'static str {
+        match self {
+            Self::Input(_) => "task-input",
+            Self::Result(_) => "task-result",
+        }
+    }
+    fn task(&self, c: &Context, principal: &str, id: &str) -> Result<TaskRecord> {
+        match self {
+            Self::Input(_) => require(c, principal, id),
+            Self::Result(_) => result_task(c, principal, id),
+        }
+    }
+    fn row(&self, c: &Context, id: &str) -> Result<(String, bool)> {
+        let decode = |r: &rusqlite::Row<'_>| Ok((r.get(0)?, r.get(1)?));
+        match self {
+            Self::Input(name) => c.db.prepare_cached(
+                "SELECT media_json,committed FROM task_inputs WHERE task_id=? AND name=?",
+            )?.query_row(params![id, name], decode).optional()?
+                .ok_or_else(|| conflict("TASK_INPUT_MISSING", "Protected task input is missing")),
+            Self::Result(index) => c.db.prepare_cached(
+                "SELECT media_json,committed FROM task_outputs WHERE task_id=? AND output_index=?",
+            )?.query_row(params![id, index], decode).optional()?
+                .ok_or_else(|| conflict("TASK_RESULT_MISSING", "Result was not prepared")),
+        }
+    }
 }
 
-fn lease(c: &Context, key: &str, media: &Value) -> Result<i64> {
+fn lease(c: &Context, key: &str, media: &Value, target: &Target) -> Result<i64> {
     let stored: Option<(String, Option<String>, Option<String>, i64)> =
         c.db.query_row(
             "SELECT kind,hash,operation_key,created_at FROM leases WHERE id=?",
@@ -42,7 +65,7 @@ fn lease(c: &Context, key: &str, media: &Value) -> Result<i64> {
             "Result preparation lease is missing",
         ));
     };
-    if kind != "task-result" || hash.as_deref() != media["sha256"].as_str() || operation.is_some() {
+    if kind != target.kind() || hash.as_deref() != media["sha256"].as_str() || operation.is_some() {
         return Err(conflict(
             "TASK_RESULT_LEASE",
             "Result preparation lease changed",
@@ -67,13 +90,40 @@ pub(in crate::storage) fn prepare(
     c.writer()?;
     c.owner.check()?;
     let id = string(command, "taskId")?;
-    let task = result_task(c, principal, id)?;
-    let index = output_index(command["index"].as_u64())?;
-    let (body, committed) = row(c, id, index)?;
+    let target = if command["kind"] == "task.input.commit" {
+        let name = string(command, "name")?;
+        if name.is_empty()
+            || name.len() > 220
+            || !name
+                .bytes()
+                .all(|b| b.is_ascii_alphanumeric() || b"_.-".contains(&b))
+        {
+            return Err(conflict(
+                "TASK_INPUT_INVALID",
+                "Invalid protected input name",
+            ));
+        }
+        Target::Input(name.into())
+    } else {
+        Target::Result(output_index(command["index"].as_u64())?)
+    };
+    let task = target.task(c, principal, id)?;
+    let (key, alias) = match &target {
+        Target::Input(name) => {
+            let key = canonical::digest(format!("input:{id}:{name}"));
+            let alias = format!("task-input-{key}");
+            (key, alias)
+        }
+        Target::Result(index) => (
+            canonical::digest(format!("task:{id}:{index}")),
+            format!("task-{id}-{index}"),
+        ),
+    };
+    let (body, committed) = target.row(c, id)?;
     let media: Value = serde_json::from_str(&body)?;
     media::validate(&media)?;
-    if media["index"] != index
-        || media["alias"] != format!("task-{id}-{index}")
+    if matches!(&target, Target::Result(index) if media["index"] != *index)
+        || media["alias"] != alias
         || task.workspace_id != c.workspace_id
         || task.task_id != id
         || task.principal_id != principal
@@ -83,18 +133,20 @@ pub(in crate::storage) fn prepare(
             "Task output identity changed",
         ));
     }
-    let key = canonical::digest(format!("task:{id}:{index}"));
     if committed {
         media::cleanup(c, &key, &media);
-        return Ok(Prepared::Complete(serde_json::to_value(task)?));
+        return Ok(Prepared::Complete(match target {
+            Target::Input(_) => media,
+            Target::Result(_) => serde_json::to_value(task)?,
+        }));
     }
-    let lease_created = lease(c, &key, &media)?;
+    let lease_created = lease(c, &key, &media, &target)?;
     Ok(Prepared::Verify(Output {
         key,
         media,
         principal: principal.into(),
         task_id: id.into(),
-        index,
+        target,
         body,
         request_key: task.request_key,
         fingerprint: task.request_fingerprint,
@@ -104,20 +156,20 @@ pub(in crate::storage) fn prepare(
 
 impl Output {
     pub fn check(&self, c: &Context) -> Result<TaskRecord> {
-        let task = result_task(c, &self.principal, &self.task_id)?;
+        let task = self.target.task(c, &self.principal, &self.task_id)?;
         if task.workspace_id != c.workspace_id
             || task.principal_id != self.principal
             || task.task_id != self.task_id
             || task.request_key != self.request_key
             || task.request_fingerprint != self.fingerprint
-            || row(c, &self.task_id, self.index)? != (self.body.clone(), false)
+            || self.target.row(c, &self.task_id)? != (self.body.clone(), false)
         {
             return Err(conflict(
                 "TASK_RESULT_CONFLICT",
                 "Task output identity changed during verification",
             ));
         }
-        if lease(c, &self.key, &self.media)? != self.lease_created {
+        if lease(c, &self.key, &self.media, &self.target)? != self.lease_created {
             return Err(conflict(
                 "TASK_RESULT_LEASE",
                 "Result preparation lease changed",
@@ -175,24 +227,42 @@ impl Output {
                 params![string(&self.media, "alias")?, hash],
             )?;
             c.db.execute(
-                "INSERT OR IGNORE INTO media_refs VALUES('task-result',?,?)",
-                params![self.task_id, hash],
+                "INSERT OR IGNORE INTO media_refs VALUES(?,?,?)",
+                params![self.target.kind(), self.task_id, hash],
             )?;
-            c.db.execute(
-                "UPDATE task_outputs SET committed=1 WHERE task_id=? AND output_index=?",
-                params![self.task_id, self.index],
-            )?;
-            c.db.execute("DELETE FROM leases WHERE id=?", [&self.key])?;
-            if !task
-                .result_refs
-                .iter()
-                .any(|item| item.index == self.index as u64)
-            {
-                task.result_refs
-                    .push(serde_json::from_value(self.media.clone())?);
+            match &self.target {
+                Target::Input(name) => {
+                    c.db.execute(
+                        "UPDATE task_inputs SET committed=1 WHERE task_id=? AND name=?",
+                        params![self.task_id, name],
+                    )?;
+                    let alias = string(&self.media, "alias")?.to_owned();
+                    if !task.input_media_refs.contains(&alias) {
+                        task.input_media_refs.push(alias);
+                    }
+                }
+                Target::Result(index) => {
+                    c.db.execute(
+                        "UPDATE task_outputs SET committed=1 WHERE task_id=? AND output_index=?",
+                        params![self.task_id, index],
+                    )?;
+                    if !task
+                        .result_refs
+                        .iter()
+                        .any(|item| item.index == *index as u64)
+                    {
+                        task.result_refs
+                            .push(serde_json::from_value(self.media.clone())?);
+                    }
+                    task.result_state = ResultState::Available;
+                }
             }
-            task.result_state = ResultState::Available;
-            let result = write(c, task)?;
+            c.db.execute("DELETE FROM leases WHERE id=?", [&self.key])?;
+            let task = write(c, task)?;
+            let result = match self.target {
+                Target::Input(_) => self.media.clone(),
+                Target::Result(_) => task,
+            };
             check_file(c)?;
             Ok(result)
         })?;
