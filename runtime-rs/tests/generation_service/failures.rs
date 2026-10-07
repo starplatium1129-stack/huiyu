@@ -7,15 +7,53 @@ async fn completed_webui_response_with_invalid_image_settles_task_without_replay
     let (state, mut started) = mock(true, false);
     state.invalid_image.store(true, Ordering::Relaxed);
     let server = server(state.clone()).await;
+    std::fs::create_dir_all(temp.path().join("ai/ComfyUI")).unwrap();
     let provider = service(&server, &temp);
     let runtime =
-        Arc::new(TaskRuntime::new(provider, None, None, CancellationToken::new()).unwrap());
+        Arc::new(TaskRuntime::new(provider.clone(), None, None, CancellationToken::new()).unwrap());
     let storage = Storage::open(temp.path().join("workspace"), "epoch".into(), true)
         .await
         .unwrap();
     let request = json!({"requestKey":"invalid-result", "kind":"generation", "input":input(1)});
+    // Resume an accepted pre-retirement record; public admission must stay closed.
+    let prepared = provider
+        .prepare(input(1), true, CancellationToken::new())
+        .await
+        .unwrap();
+    let identity = std::process::Command::new("node")
+        .arg(
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                .join("tests/task_recovery/legacy-provider.cjs"),
+        )
+        .arg(temp.path().join("ai"))
+        .arg(&server.url)
+        .output()
+        .unwrap();
+    assert!(
+        identity.status.success(),
+        "{}",
+        String::from_utf8_lossy(&identity.stderr)
+    );
+    // All request keys here are ASCII; this matches the old locale-sorted wire fixture.
+    let mut frozen = json!({"kind":"generation", "input":input(1)});
+    frozen["input"].as_object_mut().unwrap().sort_keys();
+    frozen.as_object_mut().unwrap().sort_keys();
+    let fingerprint = hex::encode(Sha256::digest(serde_json::to_vec(&frozen).unwrap()));
+    let id = "invalid-result";
+    let record = json!({"taskId":id,"workspaceId":storage.workspace_id(),"principalId":"owner",
+        "requestKey":id,"requestFingerprint":fingerprint,"requestFingerprintLocale":"en-US",
+        "kind":"generation","provider":"webui","providerFingerprint":String::from_utf8(identity.stdout).unwrap(),
+        "upstreamId":null,"status":"queued","recoveryState":"normal","revision":0,
+        "runtimeEpoch":"legacy-epoch","createdAt":1,"updatedAt":1,"submissionIntentAt":null,
+        "submissionObservedAt":null,"cancelRequestedAt":null,"upstreamSettled":false,"executionDeadline":9999999999999u64,
+        "input":prepared.input,"inputMediaRefs":[],"resultState":"none","resultRefs":[],"deliveryState":"unseen",
+        "errorCode":null,"metadata":{},"checkpoint":null});
+    storage
+        .request(json!({"kind":"task.accept","record":record}), "owner")
+        .await
+        .unwrap();
     let accepted = runtime
-        .submit(storage.clone(), "owner".into(), request.clone())
+        .resume(storage.clone(), "owner".into(), id.into())
         .await
         .unwrap();
     assert_eq!(
@@ -60,15 +98,9 @@ async fn completed_webui_response_with_invalid_image_settles_task_without_replay
             json!({"requestKey":"next-result", "kind":"generation", "input":input(2)}),
         )
         .await
-        .unwrap();
-    assert_ne!(next["taskId"], accepted["taskId"]);
-    assert_eq!(
-        tokio::time::timeout(Duration::from_secs(5), started.recv())
-            .await
-            .unwrap()
-            .unwrap(),
-        "start:2"
-    );
+        .unwrap_err();
+    assert_eq!(next.code, "SD_RETIRED");
+    assert_eq!(state.txt_count.load(Ordering::Relaxed), 1);
     runtime.close().await;
     storage.close().await.unwrap();
 }
