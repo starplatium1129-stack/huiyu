@@ -10,7 +10,7 @@ impl Catalog {
         let records: Vec<Record> = serde_json::from_value(snapshot["records"].clone())?;
         let retired: Vec<Record> =
             serde_json::from_value(snapshot.get("retired").cloned().unwrap_or(json!([])))?;
-        if records.is_empty() {
+        if records.is_empty() && retired.is_empty() {
             return Err(ApiError::invalid("快照不能为空"));
         }
         let mut changes = Vec::new();

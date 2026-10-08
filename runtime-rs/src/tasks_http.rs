@@ -146,9 +146,13 @@ async fn perform(
         && (reading || *method == Method::POST)
         && let Some(runtime) = &state.tasks
     {
-        runtime
-            .ensure_recovered(&storage, &session.principal_id)
-            .await?;
+        if reading {
+            runtime.start_recovery(storage.clone(), session.principal_id.clone())?;
+        } else {
+            runtime
+                .ensure_recovered(&storage, &session.principal_id)
+                .await?;
+        }
     }
     if !reading {
         let runtime = state.tasks.as_ref().ok_or_else(|| {

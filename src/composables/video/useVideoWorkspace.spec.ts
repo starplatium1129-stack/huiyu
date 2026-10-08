@@ -50,6 +50,44 @@ beforeEach(async () => {
 })
 afterEach(() => { wrapper?.unmount(); vi.clearAllMocks(); vi.useRealTimers() })
 describe('video submission recovery', () => {
+  it('marks a failed environment refresh unconfirmed while preserving the draft and last catalog', async () => {
+    const workspace = await setup()
+    const previous = workspace.status.value, prompt = workspace.prompt.value
+    expect(workspace.canGenerate.value).toBe(true)
+    mocks.status.mockRejectedValueOnce(new Error('temporary status failure'))
+    await workspace.loadStatus()
+    expect(workspace.status.value).toBe(previous)
+    expect(workspace.prompt.value).toBe(prompt)
+    expect(workspace.environmentLabel.value).toBe('状态待确认')
+    expect(workspace.modeBadge('image')).toBe('待重新检测 · 可编辑')
+    expect(workspace.canGenerate.value).toBe(false)
+    await workspace.loadStatus()
+    expect(workspace.environmentLabel.value).toBe('可以生成')
+    expect(workspace.statusError.value).toBe('')
+    expect(workspace.canGenerate.value).toBe(true)
+  })
+  it.each([true, false])('clears recovered polling errors without losing a recording failure (recorded: %s)', async recorded => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
+    const workspace = await setup()
+    mocks.record.mockReturnValueOnce(recorded)
+    mocks.frames.mockResolvedValueOnce({})
+    mocks.create.mockResolvedValueOnce({ job: { id: 'recovering', status: 'running' } })
+    mocks.fetch.mockRejectedValueOnce(new Error('temporary poll failure'))
+      .mockResolvedValueOnce({ job: { id: 'recovering', status: 'succeeded' } })
+    await workspace.submitVideo()
+    await vi.advanceTimersByTimeAsync(1500)
+    expect(workspace.job.value?.status).toBe('running')
+    expect(workspace.canGenerate.value).toBe(false)
+    await vi.advanceTimersByTimeAsync(1500)
+    expect(workspace.job.value?.status).toBe('succeeded')
+    if (recorded) expect(workspace.statusError.value).toBe('')
+    else {
+      expect(workspace.statusError.value).toContain('任务记录保存失败')
+      await workspace.loadStatus()
+      expect(workspace.statusError.value).toContain('任务记录保存失败')
+    }
+  })
+
   it('distinguishes offline draft editing from models awaiting installation', async () => {
     const workspace = await setup()
     expect(workspace.modeBadge('image')).toBe('可生成')

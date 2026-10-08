@@ -1,6 +1,13 @@
 use super::*;
 use crate::execution::Output;
 
+#[derive(Clone, Copy, PartialEq)]
+pub(super) enum ReconcileMode {
+    Startup,
+    Explicit,
+    Follow,
+}
+
 impl TaskRuntime {
     pub(super) async fn dispatch(
         self: Arc<Self>,
@@ -112,7 +119,8 @@ impl TaskRuntime {
         id: &str,
     ) -> Result<Value> {
         Ok(serde_json::to_value(
-            self.reconcile_inner(storage, principal, id, true).await?,
+            self.reconcile_inner(storage, principal, id, ReconcileMode::Explicit)
+                .await?,
         )?)
     }
     pub(super) async fn reconcile_inner(
@@ -120,9 +128,10 @@ impl TaskRuntime {
         storage: &Storage,
         principal: &str,
         id: &str,
-        observe_after: bool,
+        mode: ReconcileMode,
     ) -> Result<TaskRecord> {
         self.check_running()?;
+        let observe_after = mode != ReconcileMode::Follow;
         // A rejected task identity must not allocate a persistent operation
         // binding, or wait on another principal's in-flight task operation.
         Self::get(storage, principal, id).await?;
@@ -134,7 +143,7 @@ impl TaskRuntime {
             .or_insert_with(|| JobBinding::new(String::new()))
             .operation
             .clone();
-        let mut cancellation = if observe_after {
+        let mut cancellation = if mode == ReconcileMode::Explicit {
             match operation.try_lock_owned() {
                 Ok(guard) => guard,
                 Err(_) => return Self::get(storage, principal, id).await,
@@ -180,6 +189,24 @@ impl TaskRuntime {
                 },
             )
             .await;
+        }
+        // Startup must publish a durable transition even if an explicit probe
+        // attached ownership while we waited: a list may already show Unknown
+        // at the old revision. Ordinary observer polls do not rewrite this state.
+        if mode == ReconcileMode::Startup
+            && !current.upstream_settled
+            && current.recovery_state == TaskRecoveryState::Normal
+        {
+            patch(
+                storage,
+                principal,
+                id,
+                TaskPatch {
+                    recovery_state: Some(TaskRecoveryState::Reconciling),
+                    ..Default::default()
+                },
+            )
+            .await?;
         }
         let job = self.job(storage, id).filter(|job| !job.is_empty());
         let mut recovered_single = job.is_none() && current.kind != TaskKind::Batch;
@@ -299,10 +326,26 @@ impl TaskRuntime {
         };
         // Reuse the post-observation read for the first CAS. A concurrent write
         // still fails that CAS and refreshes the revision before retrying.
+        let watch = !observation.settled
+            && observe_after
+            && !observation.unknown
+            && latest.submission_intent_at.is_some();
+        // Startup lists are already visible: claim observation before publishing
+        // Normal. follow waits on this guard and cannot overtake the patch.
+        if watch
+            && mode == ReconcileMode::Startup
+            && !self.monitor(storage.clone(), principal.into(), id.into())
+        {
+            return Err(ApiError::new(
+                503,
+                "TASK_RUNTIME_CLOSED",
+                "Task runtime is draining",
+            ));
+        }
         let task = patch_at(storage, principal, id, latest.revision, update).await?;
         if observation.settled {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
-        } else if observe_after && !observation.unknown && task.submission_intent_at.is_some() {
+        } else if watch && mode == ReconcileMode::Explicit {
             self.monitor(storage.clone(), principal.into(), id.into());
         }
         Ok(task)

@@ -80,13 +80,18 @@ async fn upload(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
-    Json(body): Json<Value>,
+    Json(mut body): Json<Value>,
 ) -> Response {
     if let Err(error) = state.host.check_running() {
         return error.into_response();
     }
     let owner = generation::request_owner(&headers, peer, &query);
-    let result=async{let image=body["image"].as_str().ok_or_else(||error("INVALID_BODY","请求体必须包含 image base64 字符串"))?;Ok(json!({"name":http.service.upload(image.into(),owner,http.service.shutdown.child_token()).await?}))}.await;
+    let result = async {
+        let Some(Value::String(image)) = body.get_mut("image").map(Value::take) else {
+            return Err(error("INVALID_BODY", "请求体必须包含 image base64 字符串"));
+        };
+        Ok(json!({"name":http.service.upload(image,owner,http.service.shutdown.child_token()).await?}))
+    }.await;
     response(result, StatusCode::OK)
 }
 struct SubmissionGuard {

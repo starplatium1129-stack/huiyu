@@ -44,7 +44,7 @@ export interface PromptHistoryApplyDeps {
  * 既有 SD 契约恢复。删除历史与「复用成功成片配方」同归此处。
  */
 export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
-  const { pb, animaState, patchAnimaState, clearAnimaResult, refreshAnimaBackend, setDrawEngine, resetBlueprintRotation, sdSize } = deps
+  const { pb, animaState, patchAnimaState, clearAnimaResult, refreshAnimaBackend, setDrawEngine, resetBlueprintRotation } = deps
   const { show: showToast } = useToast()
   let restoreRevision = 0
 

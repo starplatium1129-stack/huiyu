@@ -25,7 +25,7 @@ export function useCandidateMedia() {
       active++
       void (async () => {
         try {
-          const blob = job.item.image_id ? await artworkRepository.getImage(job.item.image_id, job.signal) : null
+          const blob = job.item.image_id ? await artworkRepository.getImage(job.item.image_id, job.signal).catch(() => null) : null
           if (job.version !== version || job.signal.aborted) return
           if (blob) {
             const url = URL.createObjectURL(blob)

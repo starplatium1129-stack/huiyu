@@ -6,6 +6,7 @@ const api = vi.hoisted(() => ({ getStatus: vi.fn(), prepare: vi.fn(), translate:
 vi.mock('@/api/voiceApi', () => ({ voiceApi: api }))
 const audios: FakeAudio[] = []
 class FakeAudio extends EventTarget {
+  volume = 1
   paused = true
   ended = false
   readyState = 0
@@ -240,4 +241,29 @@ it.each(['stopped', 'cleared'])('does not publish late PCM completion or failure
     expect(onAudioReady).not.toHaveBeenCalled()
     expect(voice.hasAudio('late')).toBe(false)
   }
+})
+
+it.each(['unavailable', 'attachment-fails', 'attached'])('keeps mute and volume effective with %s Web Audio, including replay', async mode => {
+  const ramp = vi.fn()
+  vi.stubGlobal('AudioContext', mode === 'unavailable' ? undefined : class {
+    state = 'running'; destination = {}; currentTime = 0
+    close = vi.fn().mockResolvedValue(undefined)
+    createAnalyser = () => ({ connect: vi.fn() })
+    createGain = () => ({ gain: { value: 1, linearRampToValueAtTime: ramp }, connect: vi.fn(), disconnect: vi.fn() })
+    createMediaElementSource = () => {
+      if (mode === 'attachment-fails') throw new Error('analysis unavailable')
+      return { connect: vi.fn(), disconnect: vi.fn() }
+    }
+  })
+  await setup()
+  voice.setVolume(0); await speak()
+  expect(audios[0].volume).toBe(mode === 'attached' ? 1 : 0)
+  voice.setVolume(0.5)
+  expect(audios[0].volume).toBe(mode === 'attached' ? 1 : 0.5)
+  const replay = voice.playMessage('first'); await flush()
+  expect(audios[1].volume).toBe(mode === 'attached' ? 1 : 0.5)
+  voice.setVolume(0)
+  expect(audios[1].volume).toBe(mode === 'attached' ? 1 : 0)
+  if (mode === 'attached') expect(ramp).toHaveBeenLastCalledWith(0, 0.05)
+  voice.stop(); await expect(replay).resolves.toBe(false)
 })

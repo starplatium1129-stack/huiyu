@@ -121,7 +121,7 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
     try {
       const { imported, skipped } = await importLocalImages(files)
       if (imported > 0) {
-        const line = `收到 ${imported} 张图片，已经放进作品册啦${skipped > 0 ? `（${skipped} 张格式不支持）` : ''}。`
+        const line = `收到 ${imported} 张图片，已经放进作品册啦${skipped > 0 ? `（${skipped} 张未导入）` : ''}。`
         deps.noteReturn(() => line)
         if (desktopBridge) desktopBridge.notify(deps.currentCharacterName(), line)
         // 导入也会让图片计数增加；重置检测器基线避免误报 sd-done

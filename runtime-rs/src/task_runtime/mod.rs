@@ -34,7 +34,7 @@ pub struct TaskRuntime {
     provider: Arc<GenerationService>,
     images: Option<Arc<crate::images::ImageService>>,
     video: Option<Arc<crate::video::VideoService>>,
-    recoveries: Mutex<HashMap<String, Arc<tokio::sync::OnceCell<()>>>>,
+    recoveries: Mutex<HashMap<String, Arc<recovery::Initialization>>>,
     fingerprint: Fingerprint,
     unbound_epoch: String,
     jobs: Mutex<HashMap<String, JobBinding>>,
@@ -271,23 +271,42 @@ impl TaskRuntime {
         key: String,
     ) -> Result<Value> {
         self.check_running()?;
-        let task = storage
-            .task(TaskCommand::Cancel { request_key: key }, &principal)
-            .await?;
-        let Some(task): Option<TaskRecord> = serde_json::from_value(task)? else {
-            return Ok(Value::Null);
-        };
-        if task.upstream_settled {
-            return Ok(serde_json::to_value(task)?);
-        }
-        let id = task.task_id.clone();
-        if let Some(job) = self.job(&storage, &id).filter(|job| !job.is_empty()) {
-            // The live registry proves ownership of WebUI's global interrupt.
-            let _ = self.cancel_provider(task.kind, &job, &principal).await;
-            return self.reconcile(&storage, &principal, &id).await;
-        }
-        self.reconcile(&storage, &principal, &id).await
+        let (reply, received) = tokio::sync::oneshot::channel();
+        let runtime = self.clone();
+        // Cancellation is a runtime-owned command just like acceptance. A lost
+        // response must not abandon a persisted intent before its first probe
+        // installs a monitor, especially for tasks recovered after a restart.
+        self.tracker.spawn(async move {
+            let result = async {
+                runtime.check_running()?;
+                let task = storage
+                    .task(TaskCommand::Cancel { request_key: key }, &principal)
+                    .await?;
+                let Some(task): Option<TaskRecord> = serde_json::from_value(task)? else {
+                    return Ok(Value::Null);
+                };
+                if task.upstream_settled {
+                    return Ok(serde_json::to_value(task)?);
+                }
+                let id = task.task_id.clone();
+                if let Some(job) = runtime.job(&storage, &id).filter(|job| !job.is_empty()) {
+                    // The live registry proves ownership of WebUI's global interrupt.
+                    let _ = runtime.cancel_provider(task.kind, &job, &principal).await;
+                }
+                runtime.reconcile(&storage, &principal, &id).await
+            }
+            .await;
+            let _ = reply.send(result);
+        });
+        received.await.map_err(|_| {
+            ApiError::new(
+                503,
+                "TASK_CANCEL_UNKNOWN",
+                "Cancellation result unknown; query the original task",
+            )
+        })?
     }
+
     pub async fn delivery(
         storage: &Storage,
         principal: &str,
@@ -320,7 +339,11 @@ impl TaskRuntime {
         if let Some(video) = &self.video {
             video.close().await;
         }
-        self.tracker.close();
+        {
+            // Serialize closure with read-triggered recovery registration.
+            let _recoveries = self.recoveries.lock().unwrap();
+            self.tracker.close();
+        }
         self.tracker.wait().await;
     }
     fn binding(&self) -> String {

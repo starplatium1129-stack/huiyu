@@ -24,3 +24,17 @@ export function mergeHistories(
   }
   return merged
 }
+
+/** Read per-character tombstones with the legacy whole-history fallback. */
+export function storedHistoryRevision(record: Record<string, unknown>, char: string): number {
+  const parsedRevision = Number(record.historiesRevision)
+  const legacyRevision = Number.isSafeInteger(parsedRevision) && parsedRevision >= 0 ? parsedRevision : 0
+  const rawRevisions = record.historiesRevisions
+  const remoteRevisions = rawRevisions && typeof rawRevisions === 'object'
+    ? rawRevisions as Record<string, unknown>
+    : {}
+  const parsedCharRevision = Number(remoteRevisions[char])
+  return Number.isSafeInteger(parsedCharRevision) && parsedCharRevision >= 0
+    ? parsedCharRevision
+    : legacyRevision
+}

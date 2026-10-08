@@ -119,10 +119,10 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (!Array.isArray(scene.usage)) errors.push(label + ': usage must be an array');
   if (typeof scene.mature !== 'boolean') errors.push(label + ': mature must be boolean');
   if (scene.recommendedSize != null) {
-    if (!/^\d{3,4}×\d{3,4}$/.test(String(scene.recommendedSize))) {
-      errors.push(label + ': recommendedSize must use WIDTH×HEIGHT');
+    if (!/^\d{3,4}[x×]\d{3,4}$/.test(String(scene.recommendedSize))) {
+      errors.push(label + ': recommendedSize must use WIDTHxHEIGHT or WIDTH×HEIGHT');
     } else {
-      const [width, height] = String(scene.recommendedSize).split('×').map(Number);
+      const [width, height] = String(scene.recommendedSize).split(/[x×]/).map(Number);
       if (width < 512 || height < 512) errors.push(label + ': recommendedSize must be at least 512x512');
     }
   }

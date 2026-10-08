@@ -1,9 +1,12 @@
 import assert from 'node:assert/strict'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { ApiClient, ApiRequestOptions } from '@/api/client'
+import { ApiClientError, type ApiClient, type ApiRequestOptions } from '@/api/client'
 import type { AnimaJobMetadata, AnimaResult } from '@/types/anima'
 import { useAnimaSession, type AnimaRequest } from './useAnimaSession'
 import type { TaskRecord } from '../../../types/tasks'
+// Load transport code outside the per-test clock; these races control HTTP
+// completion order, not Vite's cold compilation of the direct transport.
+import './animaJobPolling'
 
 const runtime = vi.hoisted(() => ({ enabled: false, submit: vi.fn(), wait: vi.fn(), fetch: vi.fn(), cancel: vi.fn() }))
 vi.mock('@/api/runtimeTaskAuthority', () => ({ hasRuntimeTasks: () => runtime.enabled }))
@@ -33,9 +36,14 @@ async function flush() { for (let index = 0; index < 8; index++) await Promise.r
 function fixture() {
   const calls: PendingCall[] = []
   const client = {
-    request: <T extends object>(url: string, options?: ApiRequestOptions) => new Promise<T>((resolve, reject) => {
-      calls.push({ url, options, resolve: value => resolve(value as T), reject })
-    }),
+    request: <T extends object>(url: string, options?: ApiRequestOptions) => {
+      // The local-chat release is a prerequisite, not one of the generation or
+      // status requests whose completion order this fixture controls.
+      if (url === '/api/local-setup/llama' && options?.method === 'DELETE') return Promise.resolve({ ok: true } as T)
+      return new Promise<T>((resolve, reject) => {
+        calls.push({ url, options, resolve: value => resolve(value as T), reject })
+      })
+    },
   } as unknown as ApiClient
   const session = useAnimaSession({
     getCharacter: () => 'nene', isPopular: () => false, getFamily: () => 'anima',
@@ -92,6 +100,20 @@ it('retains Krea runtime style processing, actual parameters and result context'
   expect(session.state.value.result?.metadata).not.toHaveProperty('context')
 })
 
+it('releases busy observation after a runtime epoch change without cancelling the accepted task', async () => {
+  const { session, task, generate } = durableFixture()
+  runtime.wait.mockImplementationOnce(async (_id: string, _signal: AbortSignal, update: (value: TaskRecord) => void) => {
+    update(task)
+    throw new ApiClientError('运行时连接已更换', { kind: 'aborted', code: 'RUNTIME_EPOCH_CHANGED' })
+  })
+  await generate()
+  expect(session.state.value).toMatchObject({ phase: 'failed', backendStatus: 'unknown',
+    statusText: '任务状态尚未确认，请到任务中心核对' })
+  expect(session.captureSubmission()).not.toBeNull()
+  expect(runtime.submit).toHaveBeenCalledOnce()
+  expect(runtime.cancel).not.toHaveBeenCalled()
+})
+
 it('a late durable cancellation receipt cannot roll a completed image back to cancelling', async () => {
   const { session, task, generate, wait } = durableFixture()
   const finish = wait(), work = generate()
@@ -127,14 +149,14 @@ describe('useAnimaSession · stale asynchronous work', () => {
   it('cleans up a late accepted job through its original engine after a cross-engine retry', async () => {
     const { session, calls, generate } = fixture()
     const old = generate()
-    await vi.dynamicImportSettled()
-    const post = calls[0]
+    await vi.waitFor(() => expect(calls.find(call => call.url === '/api/anima/jobs' && call.options?.method === 'POST')).toBeDefined())
+    const post = calls.find(call => call.url === '/api/anima/jobs' && call.options?.method === 'POST')!
     await session.cancel()
     assert.equal(post.options?.signal?.aborted, true)
     session.patchState({ family: 'krea2' })
     const retry = generate()
-    await vi.dynamicImportSettled()
-    const newPost = calls[1]
+    await vi.waitFor(() => expect(calls.find(call => call.url === '/api/creative/jobs' && call.options?.method === 'POST')).toBeDefined())
+    const newPost = calls.find(call => call.url === '/api/creative/jobs' && call.options?.method === 'POST')!
     post.resolve(accepted('late-anima'))
     await old
     assert.equal(calls.at(-1)?.url, '/api/anima/jobs/late-anima')

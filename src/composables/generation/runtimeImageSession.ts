@@ -14,7 +14,8 @@ export function imageFailurePatch(error: unknown, statusText: string) {
 export function runtimeAnimaFailure(error: unknown, stopped: boolean, accepted: boolean): Partial<AnimaGenerationState> {
   if (error instanceof AcceptedTaskTerminalError && error.status === 'cancelled') return { phase: 'cancelled', statusText: '任务已取消', errorMsg: '', errorReport: null }
   if (stopped) return { phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null }
-  if (error instanceof ApiClientError && error.kind === 'aborted') return {}
+  // Epoch changes stop observation, not the runtime-owned task or the creator's next action.
+  if (error instanceof ApiClientError && error.kind === 'aborted' && error.code !== 'RUNTIME_EPOCH_CHANGED') return {}
   const definitive = error instanceof AcceptedTaskTerminalError || !accepted && error instanceof ApiClientError && error.kind === 'http' && error.status < 500
   return { ...imageFailurePatch(error, definitive ? '生成失败' : '任务状态尚未确认，请到任务中心核对'),
     ...(!definitive ? { backendStatus: 'unknown' } : {}) }

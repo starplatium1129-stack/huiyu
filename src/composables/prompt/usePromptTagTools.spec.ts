@@ -141,12 +141,21 @@ describe('usePromptTagTools · offline meanings', () => {
   it('loads normalized and weighted aliases and keeps unknown fallback and prompt tokens intact', async () => {
     const pb = usePromptBuilderStore()
     pb.manualTags = new Set(['(DOF:+1.25)', '(Long _ Hair:.8)', "(jeanne_d'arc_alter_(fate):0.85)", 'happy_on_fixture', 'mystery_shirt'])
+    const escapedCharacter = "(jeanne_d'arc_alter_\\(fate\\):0.85)"
+    const literalOnly = String.raw`\(depth_of_field\)`
+    pb.manualTags.add(escapedCharacter)
+    pb.manualTags.add('((depth_of_field):1.2)')
+    pb.manualTags.add(literalOnly)
     const original = [...pb.manualTags]
     const tools = usePromptTagTools(pb)
     tools.tagLabel('(DOF:+1.25)')
     await vi.dynamicImportSettled()
     expect(tools.tagLabel('(DOF:+1.25)')).toBe('前景虚化与景深')
     expect(tools.tagLabel('(Long _ Hair:.8)')).toBe('长发')
+    expect(tools.tagLabel(escapedCharacter)).toBe('贞德·Alter（Fate）')
+    expect(tools.tagLabel('((depth_of_field):1.2)')).toBe('前景虚化与景深')
+    expect(tools.tagLabel(literalOnly)).toBe('')
+    expect(tools.tagMeaning('(camera)_(fixture)')).toBe('(camera) (fixture)')
     expect(tools.tagLabel("(jeanne_d'arc_alter_(fate):0.85)")).toBe('贞德·Alter（Fate）')
     expect(tools.tagLabel('happy_on_fixture')).toBe('')
     expect(tools.tagMeaning('happy_on_fixture')).toBe('Happy On Fixture')

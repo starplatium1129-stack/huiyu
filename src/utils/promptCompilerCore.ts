@@ -10,6 +10,7 @@ import {
 } from './promptPolicy.ts'
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import { sceneLighting, sceneShot } from './sceneInference.ts'
+import { authoredAnimaCaption } from './promptCaption.ts'
 import { proseToken, normalizeProseKey, actionPhrase, outfitPhrase, moodPhrase, compactMood, cameraPhrase, lightPhrase, animaLightPhrase, environmentPhrase, isEnvironmentKey, removeIndoorSkyPhrases } from './promptPhraseTables.ts'
 
 export interface PromptCompilerInput {
@@ -376,7 +377,7 @@ export function sanitizeVisualArtifacts(text: string): string {
 
 function buildStudioAnimaCaption(plan: PromptPlan): string {
   const explicit = sanitizeVisualArtifacts(proseClause(String(plan.scene?.animaCaption || '')))
-  if (explicit) return sentence(explicit)
+  if (explicit) return sentence(sanitizeVisualArtifacts(authoredAnimaCaption(plan, explicit)))
 
   const identityKeys = new Set(plan.identity.map(normalizeProseKey))
   const exactKeys = new Set(plan.exactControls.map(normalizeProseKey))

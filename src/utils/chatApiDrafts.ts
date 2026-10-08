@@ -6,6 +6,7 @@ export const CHAT_API_DRAFTS_KEY = 'aics_chat_api_drafts'
 export interface ChatApiDraft { baseUrl: string; model: string; apiKey: string }
 const vendors = new Set(['cliproxy', 'deepseek', 'opencode', 'opencode-go', 'custom'])
 const sessionDrafts: Record<string, ChatApiDraft> = {}
+const deferredDrafts = new Map<string, ChatApiDraft>()
 
 function read(): Record<string, ChatApiDraft> {
   const result: Record<string, ChatApiDraft> = {}
@@ -37,14 +38,17 @@ export function createChatApiDrafts(onError: () => void) {
     const memory = sessionDrafts[vendor]
     if (memory?.baseUrl === entry.baseUrl) drafts.value[vendor] = { ...memory }
   }
-  function persist() {
+  function persist(vendor: string, entry = drafts.value[vendor]) {
     const current = read()
-    const output: Record<string, Partial<ChatApiDraft>> = { ...current }
-    for (const [vendor, entry] of Object.entries(drafts.value)) {
-      // Preserve an unmigrated source, including its endpoint, until verification.
-      output[vendor] = current[vendor]?.apiKey ? current[vendor] : { baseUrl: entry.baseUrl, model: entry.model }
-    }
+    const deferred = Boolean(current[vendor]?.apiKey)
+    if (deferred) deferredDrafts.set(vendor, entry)
+    // Only this provider belongs to the edit; other editors may have saved
+    // newer metadata for the remaining providers since this editor opened.
+    // Preserve an unmigrated source until its secure write is verified.
+    const output = { ...current, [vendor]: current[vendor]?.apiKey
+      ? current[vendor] : { baseUrl: entry.baseUrl, model: entry.model } }
     localStorage.setItem(CHAT_API_DRAFTS_KEY, JSON.stringify(output))
+    if (!deferred) deferredDrafts.delete(vendor)
   }
   const ready = Promise.all(Object.entries(initial).map(async ([vendor, entry]) => {
     const revision = revisions[vendor] || 0
@@ -56,12 +60,13 @@ export function createChatApiDrafts(onError: () => void) {
           if (current[vendor]?.baseUrl === entry.baseUrl && current[vendor]?.apiKey === entry.apiKey) {
             current[vendor].apiKey = ''
             localStorage.setItem(CHAT_API_DRAFTS_KEY, JSON.stringify(current))
+            const deferred = deferredDrafts.get(vendor)
+            if (deferred) persist(vendor, deferred)
           }
           if ((revisions[vendor] || 0) === revision && !sessionDrafts[vendor]) {
             drafts.value[vendor] = { ...entry, apiKey: secret }
             sessionDrafts[vendor] = { ...drafts.value[vendor] }
           }
-          persist()
         },
       })
     } catch { onError() }
@@ -71,7 +76,7 @@ export function createChatApiDrafts(onError: () => void) {
     revisions[vendor] = (revisions[vendor] || 0) + 1
     drafts.value[vendor] = { ...entry }
     sessionDrafts[vendor] = { ...entry }
-    try { persist() } catch { onError() }
+    try { persist(vendor) } catch { onError() }
   }
   async function clear(vendor: string, entry: ChatApiDraft) {
     if (!vendors.has(vendor)) return

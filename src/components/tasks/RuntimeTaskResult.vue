@@ -38,10 +38,26 @@ watch(() => [props.task.taskId, index.value], async () => {
   } catch (error) { if (!signal.aborted) message.value = error instanceof Error ? error.message : '结果读取失败' }
   finally { if (!signal.aborted) loading.value = false }
 }, { immediate: true })
-async function save() { busy.value = true; try { await archiveTaskResult(props.task.taskId, index.value); message.value = '已保存到作品册。' } catch (error) { message.value = error instanceof Error ? error.message : '保存尚未确认，请重试同一结果。' } finally { busy.value = false } }
+async function save() {
+  const taskId = props.task.taskId, outputIndex = index.value, signal = controller?.signal
+  const current = () => !signal?.aborted && props.task.taskId === taskId && index.value === outputIndex
+  busy.value = true
+  try {
+    await archiveTaskResult(taskId, outputIndex)
+    if (current()) message.value = '已保存到作品册。'
+  } catch (error) {
+    if (current()) message.value = error instanceof Error ? error.message : '保存尚未确认，请重试同一结果。'
+  } finally { busy.value = false }
+}
 function download() {
   const filename = `绘遇-${props.task.taskId}-${index.value}.${selected.value?.mime.startsWith('video/') ? 'mp4' : 'png'}`
-  if (selected.value?.mime.startsWith('video/')) { void downloadTaskMedia(runtimeResultPath(props.task, index.value), filename).catch(error => { message.value = error.message }); return }
+  if (selected.value?.mime.startsWith('video/')) {
+    const taskId = props.task.taskId, outputIndex = index.value, signal = controller?.signal
+    void downloadTaskMedia(runtimeResultPath(props.task, outputIndex), filename).catch(error => {
+      if (!signal?.aborted && props.task.taskId === taskId && index.value === outputIndex) message.value = error.message
+    })
+    return
+  }
   const anchor = document.createElement('a'); anchor.href = url.value; anchor.download = filename; anchor.click()
 }
 onUnmounted(() => { controller?.abort(); release() })

@@ -6,7 +6,36 @@ const RECOVERY_PARALLELISM: usize = 2;
 const RECOVERY_TIMEOUT: Duration = Duration::from_secs(60);
 const RECOVERY_CLEANUP_TIMEOUT: Duration = Duration::from_secs(5);
 
+#[derive(Default)]
+pub(super) struct Initialization {
+    complete: tokio::sync::OnceCell<()>,
+    running: AtomicBool,
+}
+struct Scheduled(Arc<Initialization>);
+impl Drop for Scheduled {
+    fn drop(&mut self) {
+        self.0.running.store(false, Ordering::Release);
+    }
+}
 impl TaskRuntime {
+    pub fn start_recovery(self: &Arc<Self>, storage: Storage, principal: String) -> Result<()> {
+        let mut recoveries = self.recoveries.lock().unwrap();
+        self.check_running()?;
+        let key = format!("{}:{principal}", storage.runtime_epoch());
+        let once = recoveries.entry(key).or_default().clone();
+        if once.complete.get().is_some() || once.running.swap(true, Ordering::AcqRel) {
+            return Ok(());
+        }
+        let scheduled = Scheduled(once);
+        let runtime = self.clone();
+        self.tracker.spawn(async move {
+            let _scheduled = scheduled;
+            // The task owns initialization after the read disconnects. Failures
+            // leave the once-cell empty and allow the next poll to retry.
+            let _ = runtime.ensure_recovered(&storage, &principal).await;
+        });
+        Ok(())
+    }
     pub async fn ensure_recovered(
         self: &Arc<Self>,
         storage: &Storage,
@@ -19,9 +48,9 @@ impl TaskRuntime {
             .lock()
             .unwrap()
             .entry(key)
-            .or_insert_with(|| Arc::new(tokio::sync::OnceCell::new()))
+            .or_default()
             .clone();
-        let initialize = once.get_or_try_init(|| async {
+        let initialize = once.complete.get_or_try_init(|| async {
             let unfinished = Arc::new(Mutex::new(HashSet::new()));
             let scan = async {
                 let mut query = crate::task_contract::TaskListQuery {
@@ -119,7 +148,7 @@ impl TaskRuntime {
         tokio::select! {
             biased;
             _ = self.shutdown.cancelled() => Err(recovery_closed()),
-            result = tokio::time::timeout(RECOVERY_TIMEOUT, self.reconcile_inner(storage, principal, id, true)) => {
+            result = tokio::time::timeout(RECOVERY_TIMEOUT, self.reconcile_inner(storage, principal, id, execution::ReconcileMode::Startup)) => {
                 match result {
                     Ok(result) => result.map(|_| ()),
                     Err(_) => {
@@ -174,9 +203,14 @@ impl TaskRuntime {
         .await
         .map(|_| ())
     }
-    pub(super) fn monitor(self: &Arc<Self>, storage: Storage, principal: String, id: String) {
+    pub(super) fn monitor(
+        self: &Arc<Self>,
+        storage: Storage,
+        principal: String,
+        id: String,
+    ) -> bool {
         if self.check_running().is_err() {
-            return;
+            return false;
         }
         {
             let mut jobs = self.jobs.lock().unwrap();
@@ -185,7 +219,7 @@ impl TaskRuntime {
                 .or_insert_with(|| JobBinding::new(String::new()));
             if binding.dispatching || binding.watching {
                 binding.watch_requested = true;
-                return;
+                return true;
             }
             binding.watching = true;
             binding.watch_requested = false;
@@ -194,10 +228,13 @@ impl TaskRuntime {
         self.tracker.spawn(async move {
             runtime.follow(&storage, &principal, &id).await;
         });
+        true
     }
     async fn follow(self: &Arc<Self>, storage: &Storage, principal: &str, id: &str) {
         loop {
-            let observed = self.reconcile_inner(storage, principal, id, false).await;
+            let observed = self
+                .reconcile_inner(storage, principal, id, execution::ReconcileMode::Follow)
+                .await;
             let settled = observed.as_ref().is_ok_and(|task| task.upstream_settled);
             let stop = observed.as_ref().map_or(true, |task| {
                 settled || task.recovery_state == TaskRecoveryState::Unknown

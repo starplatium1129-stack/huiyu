@@ -30,7 +30,8 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   let loadedRecent: ArtworkRecord[] = [], recentLoaded = false
   let loadedPreferences: unknown[] | undefined
   let loadedSearchIndex: { items: ArtworkSearchRecord[]; revision: number; session: string; writerEpoch: string } | undefined
-  let searchSequence = 0, historySearchSession: string | undefined
+  let mutationVersion = 0
+  let searchSequence = 0, historySearchSession: string | undefined, snapshotSession: string | undefined
   function searchSession() {
     requireAuthority()
     const runtime = getDesktopRuntime().bootstrap!.runtime!
@@ -38,6 +39,24 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       runtime.workspace!.runtimeEpoch, runtime.workspace!.generation])
   }
   function invalidateSearchIndex() { loadedSearchIndex = undefined; searchSequence++ }
+  function invalidateSnapshots() {
+    mutationVersion++
+    historyLoaded = false; projectsLoaded = false; recentLoaded = false; loadedPreferences = undefined
+    invalidateSearchIndex()
+  }
+  function readSession() {
+    const session = searchSession()
+    if (snapshotSession !== session) {
+      if (snapshotSession && getDesktopRuntime().connection !== 'ready') throw new Error('工作区连接已变化，请重新连接后读取')
+      historyLoaded = false; projectsLoaded = false; recentLoaded = false; loadedPreferences = undefined
+      historySearchSession = undefined; snapshotSession = session
+    }
+    return session
+  }
+  function checkReadSession(session: string) {
+    if (session !== searchSession()) throw new Error('工作区在读取期间发生变更，请重新读取')
+  }
+
   async function list(includeDeleted = false, projection?: 'preference', signal?: AbortSignal): Promise<Row[]> {
     const rows: Row[] = []
     let cursor: string | null = null
@@ -53,14 +72,18 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   }
   async function readHistory(signal?: AbortSignal) {
     signal?.throwIfAborted()
+    const session = readSession(), version = mutationVersion
     if (getDesktopRuntime().connection !== 'ready' && historyLoaded) return structuredClone(loadedHistory)
-    const session = searchSession()
-    loadedHistory = parseArtworkRecords((await list(false, undefined, signal)).map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
-    historyLoaded = true
-    historySearchSession = session === searchSession() ? session : undefined
-    recentLoaded = false
-    invalidateSearchIndex()
-    return structuredClone(loadedHistory)
+    const rows = await list(false, undefined, signal)
+    checkReadSession(session)
+    const history = parseArtworkRecords(rows.map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
+    // Gallery may overlay confirmed edits onto this response, but an older read
+    // must not revive the invalidated offline cache after a successful write.
+    if (version === mutationVersion) {
+      loadedHistory = history; historyLoaded = true; historySearchSession = session
+      recentLoaded = false; invalidateSearchIndex()
+    }
+    return structuredClone(history)
   }
   async function readArtwork(id: string | number, signal?: AbortSignal) {
     signal?.throwIfAborted()
@@ -71,6 +94,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   }
   async function readRecentHistory(signal?: AbortSignal) {
     signal?.throwIfAborted()
+    const session = readSession(), version = mutationVersion
     if (getDesktopRuntime().connection !== 'ready' && (historyLoaded || recentLoaded)) {
       return structuredClone((recentLoaded ? loadedRecent : loadedHistory).slice(0, 3))
     }
@@ -87,9 +111,10 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (parsed.some((row, index) => !row || row.deletedAt !== null || row.revision !== selected[index].revision)) {
       throw new Error('作品库在读取期间发生变更，请重新读取')
     }
+    checkReadSession(session)
     const recent = structuredClone(parsed.map(row => row!.body))
-    loadedRecent = recent; recentLoaded = true
-    return structuredClone(loadedRecent)
+    if (version === mutationVersion) { loadedRecent = recent; recentLoaded = true }
+    return structuredClone(recent)
   }
   async function readSearchIndex(signal?: AbortSignal) {
     signal?.throwIfAborted()
@@ -125,23 +150,29 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     return structuredClone(loadedSearchIndex.items)
   }
   async function readPreferenceHistory() {
+    const session = readSession(), version = mutationVersion
     if (getDesktopRuntime().connection !== 'ready' && (loadedPreferences || historyLoaded)) return preferenceHistoryRows(loadedPreferences ?? loadedHistory)
-    loadedPreferences = preferenceHistoryRows((await list(false, 'preference')).map(row => row.body))
-    return structuredClone(loadedPreferences)
+    const rows = await list(false, 'preference')
+    checkReadSession(session)
+    const preferences = preferenceHistoryRows(rows.map(row => row.body))
+    if (version === mutationVersion) loadedPreferences = preferences
+    return structuredClone(preferences)
   }
   async function readProjects() {
+    const session = readSession(), version = mutationVersion
     if (getDesktopRuntime().connection !== 'ready' && projectsLoaded) return structuredClone(loadedProjects)
     const result = await workspaceRequest<{ items: Array<{ body: ArtworkProjectRecord }> }>({ kind: 'listProjects' })
-    loadedProjects = result.items.map(item => item.body); projectsLoaded = true
-    return structuredClone(loadedProjects)
+    checkReadSession(session)
+    const projects = result.items.map(item => item.body)
+    if (version === mutationVersion) { loadedProjects = projects; projectsLoaded = true }
+    return structuredClone(projects)
   }
   const row = (id: string | number) => workspaceRequest<Row | null>({ kind: 'getArtwork', id })
   async function mutate(kind: string, id: string | number, extra: Record<string, unknown> = {}): Promise<Receipt | null> {
     const current = await row(id)
     if (!current) return null
     const result = await workspaceRequest<Receipt>({ kind, id, operationId: crypto.randomUUID(), expectedRevision: current.revision, ...extra })
-    historyLoaded = false; projectsLoaded = false; recentLoaded = false
-    invalidateSearchIndex()
+    invalidateSnapshots()
     return result
   }
   async function softDeleteArtworks(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]> {
@@ -161,8 +192,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       if (operation?.state !== 'committed' || !operation.receipt?.softDeleteResults) throw error
       receipt = operation.receipt
     }
-    historyLoaded = false; projectsLoaded = false; recentLoaded = false
-    invalidateSearchIndex()
+    invalidateSnapshots()
     const deleted = new Set((receipt.softDeleteResults ?? []).filter(item => item.deleted).map(item => String(item.id).trim()))
     return requested.map(id => ({ id, deleted: deleted.has(String(id).trim()) }))
   }
@@ -174,7 +204,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       if (operation?.state !== 'committed' || !operation.receipt) throw error
       result = operation.receipt
     }
-    historyLoaded = false; projectsLoaded = false; recentLoaded = false; loadedPreferences = undefined; invalidateSearchIndex()
+    invalidateSnapshots()
     return structuredClone(result)
   }
   async function organizeArtworks(input: ArtworkOrganizationRequest) {
@@ -256,9 +286,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       // Entity identity is the retry key. Lost acknowledgements can safely re-read
       // the same record without generating another artwork or releasing its media.
       await workspaceRequest({ kind: 'appendArtwork', operationId: `artwork:${String(artwork.id)}`, artwork: structuredClone(artwork) })
-      historyLoaded = false
-      recentLoaded = false
-      invalidateSearchIndex()
+      invalidateSnapshots()
     },
     async patchArtwork(id, patch) { return { updated: Boolean((await mutate('patchArtwork', id, { patch }))?.changed) } },
     async patchArtworks(patches) { for (const item of patches) await mutate('patchArtwork', item.id, { patch: item.patch }) },

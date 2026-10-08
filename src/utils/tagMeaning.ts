@@ -73,9 +73,24 @@ function cleanTag(tag: string): string {
     .trim()
   // 仅当整词被括号整体包裹时才剥括号（如 (masterpiece:1.2) 加权语法）；
   // WD14 角色词尾的 (fate)/(genshin_impact) 等括号是词条的一部分，不能剥。
-  while (raw.startsWith('(') && raw.endsWith(')')) raw = raw.slice(1, -1).trim()
-  raw = raw.replace(/:\s*[+-]?(?:\d*\.)?\d+\s*$/g, '')
-  return raw.trim().toLowerCase().replace(/[\s_\-/]+/g, '_')
+  const weight = /:\s*[+-]?(?:\d*\.)?\d+\s*$/
+  raw = raw.replace(weight, '').trim()
+  while (raw.startsWith('(') && raw.endsWith(')')) {
+    let depth = 0, escaped = false, wrapsWhole = true
+    for (let index = 0; index < raw.length; index++) {
+      const character = raw[index]
+      if (escaped) { escaped = false; continue }
+      if (character === '\\') { escaped = true; continue }
+      if (character === '(') depth++
+      if (character === ')') depth--
+      if (depth === 0 && index < raw.length - 1) { wrapsWhole = false; break }
+    }
+    if (!wrapsWhole || depth !== 0) break
+    // Each pass shortens the input; nested emphasis/weights cannot loop indefinitely.
+    raw = raw.slice(1, -1).replace(weight, '').trim()
+  }
+  // Decode literal parentheses only after peeling syntax, solely for display lookup.
+  return raw.replace(/\\([()])/g, '$1').trim().toLowerCase().replace(/[\s_\-/]+/g, '_')
 }
 
 const PREPOSITION_WORDS = new Set([

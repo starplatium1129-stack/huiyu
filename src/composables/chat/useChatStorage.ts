@@ -25,7 +25,7 @@ import {
   normalizeChatArchive,
   serializeChatArchive,
 } from '@/utils/chatArchive'
-import { mergeHistories } from './chatStorageMerge'
+import { mergeHistories, storedHistoryRevision } from './chatStorageMerge'
 import { createChatNormalizeOptions, createChatStorageState } from './chatStorageState'
 import type { ChatMessage, ChatState } from './chatStorageTypes'
 export type { ChatMessage, ChatState } from './chatStorageTypes'
@@ -101,19 +101,10 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       if (!raw || typeof raw !== 'object') return true
       preserveRetiredCompanionChat(raw)
       const record = raw as Record<string, unknown>
-      const parsedRevision = Number(record.historiesRevision)
-      const legacyRevision = Number.isSafeInteger(parsedRevision) && parsedRevision >= 0 ? parsedRevision : 0
-      const rawRevisions = record.historiesRevisions
-      const remoteRevisions = rawRevisions && typeof rawRevisions === 'object'
-        ? rawRevisions as Record<string, unknown>
-        : {}
       const remote = record.histories
       if (!remote || typeof remote !== 'object') return true
       for (const char of characterIds) {
-        const parsedCharRevision = Number(remoteRevisions[char])
-        const remoteRevision = Number.isSafeInteger(parsedCharRevision) && parsedCharRevision >= 0
-          ? parsedCharRevision
-          : legacyRevision
+        const remoteRevision = storedHistoryRevision(record, char)
         const localRevision = state.historiesRevisions[char] ?? state.historiesRevision
         const list = (remote as Record<string, unknown>)[char]
         if (!Array.isArray(list)) continue
@@ -143,10 +134,17 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       chatStorageSyncHandler?.()
     })
   }
-  chatStorageSyncHandler = () => {
+  const syncStorage = () => {
+    if (disposed) return
     mergeRemoteIntoState()
-    void archiveStorage.refresh().catch(() => onError('无法同步另一窗口的聊天归档，现有内容已保留，请稍后重试。'))
+    void archiveStorage.refresh().catch(() => {
+      if (!disposed) onError('无法同步另一窗口的聊天归档，现有内容已保留，请稍后重试。')
+    })
   }
+  chatStorageSyncHandler = syncStorage
+  if (getCurrentScope()) onScopeDispose(() => {
+    if (chatStorageSyncHandler === syncStorage) chatStorageSyncHandler = null
+  })
 
   const pendingTrims = new Map<string, { history: ChatMessage[]; ids: Set<string> }>()
   async function saveArchive() {
