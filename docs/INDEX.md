@@ -1,5 +1,7 @@
 # 项目文档索引
 
+[后端系统优化覆盖与证据（HTML）](audits/2026-10-08/backend-performance-program.html)覆盖七个后端领域，落实队列让行、冷热/短词检索、任务复制、参考编码、目录并发与条件读取，记录 54 项相关用例及实际 Storage/HTTP 对照；保留性能折中与设备限制。
+
 [Rust 后端性能优化交付（HTML）](audits/2026-10-08/backend-performance-delivery.html)落实作品独立版本、有界搜索与派生读索引，记录前后测量、40 项 Rust 集成测试及前端/浏览器验证；完整 Rust 与包体预算的环境、历史失败继续保留。
 
 [Rust 后端性能优化审计（HTML）](audits/2026-10-08/backend-performance-audit.html)记录作品搜索全库传输、全局版本导致的缓存失效及最近作品扫描三项 P2，附当前函数采样、真实 Storage 复现和 17 项定向测试；未修改产品代码，保留实际桌面和大库验收边界。

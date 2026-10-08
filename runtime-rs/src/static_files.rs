@@ -75,20 +75,30 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
         let config = state.config.clone();
         let projections = state.catalog_projections.clone();
         let selected = name.to_owned();
+        let condition = request.headers().get("if-none-match").cloned();
+        let head = request.method() == Method::HEAD;
         match tokio::task::spawn_blocking(move || {
             // Reuse encoded bytes while the SQLite authority has the same version.
             projections
                 .read(crate::catalog::Options::from_config(&config), &selected)
                 .map(|value| {
-                    value.map(|bytes| {
-                        (
+                    value.map(|projection| {
+                        let length = projection.bytes.len();
+                        let mut response = (
                             [
                                 ("cache-control", "no-cache"),
                                 ("content-type", "application/json"),
                             ],
-                            bytes,
+                            projection.bytes,
                         )
-                            .into_response()
+                            .into_response();
+                        if head {
+                            *response.body_mut() = Body::empty();
+                            response
+                                .headers_mut()
+                                .insert("content-length", length.into());
+                        }
+                        conditional(response, &projection.tag, condition.as_ref())
                     })
                 })
         })

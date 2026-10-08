@@ -86,7 +86,7 @@ pub(super) fn read(c: &Context, principal: &str, query: TaskListQuery) -> Result
         items.push(task);
         last_cursor = Some(cursor);
     }
-    Ok(
-        json!({"runtimeEpoch": c.epoch, "items": items, "nextCursor": next, "throughRevision": through}),
-    )
+    let mut result = json!({"runtimeEpoch": c.epoch, "items": null, "nextCursor": next, "throughRevision": through});
+    result["items"] = Value::Array(items);
+    Ok(result)
 }

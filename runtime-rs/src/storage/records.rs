@@ -39,7 +39,7 @@ pub(super) fn project(c: &Context, key: &str) -> Result<Option<Value>> {
 pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
     match string(command, "kind")? {
         "readArtworkRecentIndex" => super::recent::read(c, command),
-        "searchArtworks" => super::artwork_index::search(c, command),
+        "searchArtworks" => super::artwork_search::read(c, command),
         "getArtwork" => Ok(artwork(c, &entity_key(&command["id"])?)?.unwrap_or(Value::Null)),
         "getArtworks" => {
             let ids = command["ids"]

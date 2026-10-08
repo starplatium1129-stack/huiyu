@@ -1,4 +1,5 @@
 mod artwork_index;
+mod artwork_search;
 mod backup;
 mod canonical;
 mod garbage;
@@ -59,6 +60,7 @@ pub struct Storage {
     verification: Arc<verification::Verifier>,
     thumbnails: Arc<thumbnail::Readers>,
     result_writes: Arc<tokio::sync::Semaphore>,
+    search_warming: Arc<AtomicBool>,
 }
 enum Work {
     AdmittedResult(Box<Work>, tokio::sync::OwnedSemaphorePermit),
@@ -86,6 +88,17 @@ enum Work {
         String,
         Arc<AtomicBool>,
         oneshot::Sender<Result<Value>>,
+    ),
+    ArtworkRead(
+        Value,
+        String,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<Option<(Value, bool)>>>,
+    ),
+    WarmArtworkSearch(
+        Arc<AtomicBool>,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<bool>>,
     ),
     Media(String, Arc<AtomicBool>, oneshot::Sender<Result<Media>>),
     CopyFinished(

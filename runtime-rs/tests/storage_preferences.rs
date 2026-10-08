@@ -23,7 +23,7 @@ async fn preference_projection_preserves_paging_types_and_revision_without_large
         let operation = format!("add-{id}");
         read(&storage, json!({"kind":"prepareSave","operationId":operation,"artwork":{
             "id":id,"title":if id==1 {json!({"future":"title"})} else {json!("ΣΟΣ İ ẞ")},
-            "sceneTitle":"Garden","scene":"sc001","character":"nene","story":"moonlight","project":"美術",
+            "sceneTitle":"Garden","scene":"sc001","character":"nene","story":"moonlight\u{0000}静かな庭","project":"美術",
             "favorite":id==1,"timestamp":if id==2 {json!("Fri, 01 Jan 2021 00:00:00 GMT")} else {json!(100+id)},
             "prompt":"x".repeat(256*1024),"image_data":"unrelated legacy image".repeat(1024)
         },"media":{"alias":format!("image-{id}"),"sha256":hex::encode(Sha256::digest(&bytes)),"bytes":bytes.len(),"mime":"image/png"}})).await;
@@ -80,6 +80,17 @@ async fn preference_projection_preserves_paging_types_and_revision_without_large
     .await;
     assert_eq!(unicode["items"].as_array().unwrap().len(), 1);
     assert_eq!(unicode["items"][0]["id"], 2);
+    assert_eq!(
+        read(
+            &storage,
+            json!({"kind":"searchArtworks","terms":["moonlight\u{0000}静かな庭"]})
+        )
+        .await["items"]
+            .as_array()
+            .unwrap()
+            .len(),
+        2
+    );
     let recent = read(&storage, json!({"kind":"readArtworkRecentIndex"})).await;
     assert_eq!(recent["revision"], full["revision"]);
     assert_eq!(recent["items"].as_array().unwrap().len(), 2);
@@ -188,17 +199,18 @@ async fn search_pages_keep_legacy_dates_and_bound_numeric_results_across_reopen(
     // Simulate an existing v3 database before the additive read index existed.
     db.execute_batch("DROP TRIGGER artwork_read_insert; DROP TRIGGER artwork_read_update; DROP TRIGGER artwork_read_delete;
         DROP TABLE artwork_read_index; DROP TABLE artwork_read_dirty;
-        DELETE FROM meta WHERE key IN ('artworkRevision','artworkReadIndexVersion');").unwrap();
+        DROP TABLE artwork_search_fts; DROP TABLE artwork_search_chars; DROP TABLE artwork_search_dirty;
+        DELETE FROM meta WHERE key IN ('artworkRevision','artworkReadIndexVersion','artworkSearchIndexVersion');").unwrap();
     let transaction = db.transaction().unwrap();
-    for index in 0..215 {
+    for index in 0..245 {
         let id = format!("item-{index:03}");
-        let timestamp = if index < 10 {
+        let timestamp = if index < 40 {
             json!(index as f64 + 0.5)
         } else {
             json!("January 1, 2020")
         };
         transaction.execute("INSERT INTO artworks VALUES(?1,?2,?3,1,NULL)", rusqlite::params![id,serde_json::to_string(&id).unwrap(),
-            json!({"id":id,"timestamp":timestamp,"title":"Night room","prompt":"blue flower"}).to_string()]).unwrap();
+            json!({"id":id,"timestamp":timestamp,"title":"Night room","prompt":if index==0 {"blue flower CAFÉ \"静かな庭\" a\u{0000}b"} else {"blue flower"}}).to_string()]).unwrap();
     }
     transaction
         .execute("UPDATE meta SET value='1' WHERE key='revision'", [])
@@ -214,17 +226,70 @@ async fn search_pages_keep_legacy_dates_and_bound_numeric_results_across_reopen(
     )
     .await;
     assert_eq!(page["items"].as_array().unwrap().len(), 205);
-    assert_eq!(page["items"][0]["id"], "item-009");
-    assert_eq!(page["items"][4]["id"], "item-005");
+    assert_eq!(page["items"][0]["id"], "item-039");
+    assert_eq!(page["items"][4]["id"], "item-035");
     let next = read(
         &storage,
         json!({"kind":"searchArtworks","terms":["night","flower"],"cursor":page["nextCursor"]}),
     )
     .await;
     assert_eq!(next["items"].as_array().unwrap().len(), 5);
-    assert_eq!(next["items"][0]["id"], "item-210");
+    assert_eq!(next["items"][0]["id"], "item-240");
     assert!(next["nextCursor"].is_null());
     assert_eq!(page["artworkRevision"], next["artworkRevision"]);
+    // Exercise the indexed path after its independent warmup, not only the
+    // correct linear fallback that answers the first request immediately.
+    let reader = rusqlite::Connection::open(root.join("huiyu.sqlite3")).unwrap();
+    tokio::time::timeout(std::time::Duration::from_secs(5), async {
+        while reader
+            .query_row("SELECT count(*) FROM artwork_search_dirty", [], |r| {
+                r.get::<_, i64>(0)
+            })
+            .unwrap()
+            > 0
+        {
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
+    drop(reader);
+    for term in [
+        "café",
+        "静かな庭",
+        "\"静か",
+        "a\u{0000}b",
+        "fé",
+        "かな",
+        "庭",
+    ] {
+        let found = read(&storage, json!({"kind":"searchArtworks","terms":[term]})).await;
+        assert_eq!(found["items"].as_array().unwrap().len(), 1, "{term:?}");
+        assert_eq!(found["items"][0]["id"], "item-000");
+    }
+    assert!(
+        read(&storage, json!({"kind":"searchArtworks","terms":["な静"]})).await["items"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
+    assert!(
+        read(
+            &storage,
+            json!({"kind":"searchArtworks","terms":["flower","flown"]})
+        )
+        .await["items"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
+    read(&storage, json!({"kind":"patchArtwork","id":"item-000","expectedRevision":1,"operationId":"replace-search-text","patch":{"prompt":"blue flower only"}})).await;
+    assert!(
+        read(&storage, json!({"kind":"searchArtworks","terms":["café"]})).await["items"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
     assert!(
         read(
             &storage,
@@ -245,7 +310,7 @@ async fn search_pages_keep_legacy_dates_and_bound_numeric_results_across_reopen(
             .unwrap(),
         0
     );
-    db.execute("DELETE FROM artworks WHERE id_key='item-009'", [])
+    db.execute("DELETE FROM artworks WHERE id_key='item-039'", [])
         .unwrap();
     drop(db);
     let storage = Storage::open(root, "search-pages".into(), false)
@@ -256,7 +321,7 @@ async fn search_pages_keep_legacy_dates_and_bound_numeric_results_across_reopen(
         json!({"kind":"searchArtworks","terms":["night","flower"]}),
     )
     .await;
-    assert_eq!(updated["items"][0]["id"], "item-008");
+    assert_eq!(updated["items"][0]["id"], "item-038");
     assert_ne!(page["artworkRevision"], updated["artworkRevision"]);
     storage.close().await.unwrap();
 }

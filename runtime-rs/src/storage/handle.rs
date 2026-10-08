@@ -31,6 +31,7 @@ impl Storage {
             verification: Arc::new(verification::Verifier::new()),
             thumbnails: Arc::new(thumbnail::Readers::new()),
             result_writes: Arc::new(tokio::sync::Semaphore::new(1)),
+            search_warming: Arc::new(AtomicBool::new(false)),
         })
     }
     pub fn workspace_id(&self) -> &str {
@@ -56,6 +57,12 @@ impl Storage {
         }
         if command["kind"] == "readMedia" {
             return verification::read(self, &command).await;
+        }
+        if matches!(
+            command["kind"].as_str(),
+            Some("searchArtworks" | "readArtworkRecentIndex")
+        ) {
+            return artwork_index::request(self, command, principal).await;
         }
         let mutation = !is_read(command["kind"].as_str().unwrap_or(""));
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));

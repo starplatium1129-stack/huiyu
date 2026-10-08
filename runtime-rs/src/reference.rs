@@ -89,12 +89,18 @@ async fn respond(
             state.config.content_root(),
             state.config.app_root.clone(),
             &state.shutdown,
-            move |reader| reader.read(id.as_deref()),
+            // Encode and drop the potentially multi-megabyte view in the same
+            // blocking job as its read, not on a Tokio request worker.
+            move |reader| {
+                reader
+                    .read(id.as_deref())
+                    .map(|value| value.map(|profile| Json(profile).into_response()))
+            },
         )
         .await
     };
     let mut response = match result {
-        Ok(Some(profile)) => Json(profile).into_response(),
+        Ok(Some(response)) => response,
         Ok(None) => (
             axum::http::StatusCode::NOT_FOUND,
             Json(json!({"error":"角色参考档案尚未登记"})),

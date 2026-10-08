@@ -84,6 +84,50 @@ pub(super) fn run(
                     let _ = reply.send(result);
                 }
             }
+            Work::ArtworkRead(command, principal, cancel, reply) => {
+                if !closing.is_empty() {
+                    let _ = reply.send(Err(unavailable()));
+                    continue;
+                }
+                context.cancel = cancel;
+                if !reply.is_closed() {
+                    // A cold read yields after one durable index chunk. Its caller
+                    // rejoins the FIFO queue, allowing status/tasks/writes to run.
+                    let result = artwork_index::refresh_chunk(&context).and_then(|worked| {
+                        let worked = worked
+                            || (command["kind"] == "searchArtworks"
+                                && artwork_search::needs_index(&command)
+                                && artwork_search::refresh_small(&context)?);
+                        if worked {
+                            Ok(None)
+                        } else {
+                            let warm = command["kind"] == "searchArtworks"
+                                && artwork_search::needs_index(&command)
+                                && !artwork_search::ready(&context)?;
+                            context
+                                .execute(&command, &principal)
+                                .map(|value| Some((value, warm)))
+                        }
+                    });
+                    let _ = reply.send(result);
+                }
+            }
+            Work::WarmArtworkSearch(cancel, warming, reply) => {
+                context.cancel = cancel;
+                let result = if !closing.is_empty() || reply.is_closed() {
+                    Err(unavailable())
+                } else {
+                    artwork_index::refresh_chunk(&context)
+                        .and_then(|worked| Ok(worked || artwork_search::refresh_chunk(&context)?))
+                };
+                // Clear under actor ordering, before notifying the producer: a
+                // later read can start new work without an older completion
+                // clearing its flag or losing the wakeup.
+                if !matches!(&result, Ok(true)) {
+                    warming.store(false, Ordering::Release);
+                }
+                let _ = reply.send(result);
+            }
             Work::Request(command, principal, cancel, reply) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));

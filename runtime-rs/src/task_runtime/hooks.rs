@@ -21,16 +21,16 @@ impl ExecutionHooks for Hooks {
     }
     fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
+            let job = value["gatewayJobId"].as_str().map(str::to_owned);
+            let input = value["effectiveInput"].as_object().cloned();
             let change = TaskPatch {
-                checkpoint: Some(Some(value.clone())),
-                input: value["effectiveInput"].as_object().cloned(),
+                checkpoint: Some(Some(value)),
+                input,
                 ..Default::default()
             };
             patch(&self.storage, &self.principal, &self.id, change).await?;
-            if let (Some(runtime), Some(job)) =
-                (self.runtime.upgrade(), value["gatewayJobId"].as_str())
-            {
-                runtime.register_job(&self.storage, &self.id, job.into());
+            if let (Some(runtime), Some(job)) = (self.runtime.upgrade(), job) {
+                runtime.register_job(&self.storage, &self.id, job);
             }
             Ok(())
         })

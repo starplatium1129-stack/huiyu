@@ -226,7 +226,7 @@ impl TaskRuntime {
         self.tracker.spawn(async move {
             let accepted = async {
                 runtime.check_running()?;
-                let result = storage
+                let mut result = storage
                     .task(
                         TaskCommand::Accept {
                             record: Box::new(record),
@@ -234,7 +234,7 @@ impl TaskRuntime {
                         &principal,
                     )
                     .await?;
-                let task: TaskRecord = serde_json::from_value(result["task"].clone())?;
+                let task: TaskRecord = serde_json::from_value(result["task"].take())?;
                 if result["created"] == true {
                     let id = task.task_id.clone();
                     runtime.jobs.lock().unwrap().insert(
