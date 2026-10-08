@@ -101,9 +101,11 @@ function Invoke-NativeImport([string]$Package, [switch]$Probe) {
     if ($Probe) {
       if (-not $result.ok -or $result.usage -notmatch '--cancel-stdin') { throw 'USAGE: This runtime does not support --cancel-stdin. Install the matching new desktop build first.' }
       if ($release.mode -eq 'delta' -and $result.offlineDelta -ne $true) { throw 'USAGE: This incremental resource ZIP needs a desktop build supporting offlineDelta. Update the desktop app first.' }
+      if ($release.catalog -and $result.offlineCatalog -ne $true) { throw 'USAGE: This resource ZIP includes character content. Update to a desktop build supporting offlineCatalog first.' }
       return
     }
     if (-not $result.ok -or $result.kind -ne 'huiyu-offline-import-result') { throw 'Native import did not confirm success.' }
+    if ($release.catalog -and $result.catalog.included -ne $true) { throw 'Native import did not confirm character content. Installation is incomplete.' }
     return $result
   } finally { $process.Dispose() }
 }
@@ -175,7 +177,7 @@ try {
   foreach ($file in $release.files) {
     Check-Cancel
     Assert-EntryPath $file.path
-    if ($file.path -notmatch '^(pack|showcase)/' -or $expected.ContainsKey($file.path) -or $file.sha256 -notmatch '^[a-f0-9]{64}$' -or $file.bytes -lt 0 -or [Math]::Floor($file.bytes) -ne $file.bytes) { throw 'Invalid release file inventory.' }
+    if (($file.path -notmatch '^(pack|showcase)/' -and $file.path -ne 'catalog.json') -or $expected.ContainsKey($file.path) -or $file.sha256 -notmatch '^[a-f0-9]{64}$' -or $file.bytes -lt 0 -or [Math]::Floor($file.bytes) -ne $file.bytes) { throw 'Invalid release file inventory.' }
     $expected[$file.path] = $file
   }
   $seen = @{}

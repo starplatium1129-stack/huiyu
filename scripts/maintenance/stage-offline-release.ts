@@ -12,7 +12,7 @@ const { noLinks, readBytes, writeAtomic, mkdir }: typeof import('../lib/resource
 const HELP = `offline:pack --showcase-root <published-directory> --release <safe-id> --out <new-output-parent> [--root <project>] [--base-release <previous release.json>] [--apply]
 Default: read-only plan and source hashing. --help/--plan do not read target files.
 --apply: Windows-only verified export, ZIP and companion installer. Never overwrites releases.
-Exports only serviceable assets and the current showcase manifest's original/thumbnail files.
+Exports serviceable assets, referenced showcase originals/thumbnails and the exported data/catalog snapshot.
 --base-release: incremental ZIP; unchanged bytes are reused from that installed release. No previous asset reads.
 No model calls, downloads, content rewrites, public upload, private references or local model candidates.
 New-machine installer uses Windows PowerShell/.NET and the installed Rust executable, not Node.

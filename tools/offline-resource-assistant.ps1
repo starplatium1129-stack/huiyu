@@ -77,6 +77,8 @@ function Get-OfflineError([string]$Message) {
     'UNTRUSTED_RELEASE|approval|identity mismatch' { '资源包未获当前助手批准。请从官方来源取得匹配的助手和 ZIP；不要使用包内哈希代替审批。'; break }
     'LOCK|BUSY|lease|占用|锁' { '运行目录正在使用中。请保存工作，从托盘完全退出绘遇，等待退出完成后点击「重试安装」。'; break }
     'offlineDelta' { '此增量包需要支持增量资源导入的新版绘遇。请先更新程序，再选择同一增量 ZIP。'; break }
+    'offlineCatalog' { '此素材包包含人物内容，需要配套新版绘遇。请先更新程序，再安装同一素材包。'; break }
+    'CATALOG_IMPORT_CONFLICT' { '人物内容与个人修改冲突，尚未切换新素材。请在绘遇的内容维护中比较并合并对应记录，再重试安装。'; break }
     'BASELINE_MISMATCH|BASELINE_REQUIRED|基线|基础资源' { '此增量包与本机资源版本不匹配。请先安装标明的基础资源包，或选择适合当前版本的增量包；新机器使用完整包。'; break }
     'USAGE|Unknown.*argument' { '当前程序版本尚不支持此资源助手的导入功能。请安装配套新版绘遇，再重试。'; break }
     'CANCELLED|cancelled|取消|TIMEOUT' { '任务已取消或超时，未确认安装完成。若已进入原生安装阶段，请先用同一 ZIP 重试完成恢复，再启动绘遇；待恢复事务可能阻止程序启动。'; break }
@@ -234,6 +236,12 @@ $timer.Add_Tick({
     $controls.Progress.Value = 100
     $controls.Status.Text = '安装完成 · 请重新启动绘遇'
     $controls.Details.Text = "已安装：$($state.Result.releaseId)`r`n`r`n请重新启动绘遇，断网检查角色原图、场景卡片及样张画册。模型需单独准备。`r`n`r`n已有自定义样张目录和个人配置会保留；如仍显示旧样张，请检查当前样张目录设置。"
+    if ($state.Result.catalog.included -eq $true) {
+      $controls.Details.Text += "`r`n`r`n人物内容已同步：更新 $($state.Result.catalog.changed) 条记录。"
+    } else {
+      $controls.Status.Text = '素材安装完成 · 此包不含人物内容'
+      $controls.Details.Text += "`r`n`r`n此旧素材包只更新图片，不会新增人物。需要新增人物时，请使用包含人物内容的新素材包及配套新版程序。"
+    }
     if ($state.Staging) { $controls.Details.Text += "`r`n`r`n安装成功，临时文件未能清理：$($state.Staging)" }
   } else {
     $ui.Preview = $state.Result; $ui.Ready = $true

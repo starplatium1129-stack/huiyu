@@ -20,6 +20,8 @@ function fixture(t: import('node:test').TestContext) {
   const root = path.join(base, 'project'), showcaseRoot = path.join(base, 'published'), destination = path.join(base, 'output/release');
   const write = (file: string, value: string | Buffer) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); };
   write(path.join(root, 'package.json'), JSON.stringify({ version: '1.7.2' }));
+  write(path.join(root, 'data/catalog/manifest.json'), JSON.stringify({ version: 1, files: ['character.json'], retired: [] }));
+  write(path.join(root, 'data/catalog/character.json'), JSON.stringify({ kind: 'character', id: 'test', revision: 1, sortOrder: 0, createdAt: null, updatedAt: null, data: { id: 'test', profile: { id: 'test', name: 'Test' } } }));
   write(path.join(root, 'assets/characters/popular-test.png'), 'portrait');
   write(path.join(root, 'assets/characters/thumbs/popular-test.webp'), 'portrait-thumb');
   write(path.join(root, 'assets/live2d/fixture/model.moc3'), 'model');
@@ -43,6 +45,9 @@ test('planning is zero-write, preserves showcase bytes and excludes private/code
   assert.deepEqual(plan.summary.showcaseRatings, { R18: 1 });
   const paths = plan.inputs.map(input => input.path);
   assert.ok(paths.includes('showcase/images/sc1000.jpg'));
+  const catalog = plan.inputs.find(input => input.path === 'catalog.json')!;
+  assert.equal(JSON.parse(catalog.contents!.toString()).records[0].id, 'test');
+  assert.deepEqual(JSON.parse(plan.releaseBytes.toString()).catalog, catalog.entry);
   assert.ok(paths.every(name => !/private|sc999|home\/|theme-bootstrap/.test(name)));
   assert.equal(plan.summary.expectedReleaseSha256, digest(plan.releaseBytes));
   assert.deepEqual(fs.readFileSync(path.join(f.showcaseRoot, 'manifest.json')), before);
@@ -64,7 +69,7 @@ test('incremental releases carry only changed bytes, retain complete target meta
   const plan = planRelease({ ...f, releaseId: 'fixture-r2', destination: path.join(f.base, 'output/r2'), baseRelease: oldRelease });
   const names = plan.inputs.map(input => input.path);
   assert.deepEqual(names.filter(name => !name.endsWith('manifest.json') && !name.endsWith('delta.json')).sort(), [
-    'pack/assets/characters/popular-test.png', 'showcase/images/artist_rella.jpg', 'showcase/thumbs/artist_rella.jpg',
+    'catalog.json', 'pack/assets/characters/popular-test.png', 'showcase/images/artist_rella.jpg', 'showcase/thumbs/artist_rella.jpg',
   ]);
   const metadata = JSON.parse(plan.releaseBytes.toString('utf8'));
   assert.equal(metadata.baseRelease.releaseSha256, digest(baseline.releaseBytes));
@@ -73,7 +78,7 @@ test('incremental releases carry only changed bytes, retain complete target meta
   assert.equal(metadata.resourcePack.entries.length, 4);
   await applyRelease(plan);
   const chained = planRelease({ ...f, releaseId: 'fixture-r3', destination: path.join(f.base, 'output/r3'), baseRelease: path.join(plan.options.destination, 'release.json') });
-  assert.deepEqual(chained.inputs.map(input => input.path).sort(), ['pack/delta.json', 'pack/manifest.json', 'showcase/manifest.json']);
+  assert.deepEqual(chained.inputs.map(input => input.path).sort(), ['catalog.json', 'pack/delta.json', 'pack/manifest.json', 'showcase/manifest.json']);
   assert.equal(chained.summary.reusedFiles, 8);
 });
 test('unsafe/missing/duplicate showcase metadata and overlapping output fail before publication', t => {
@@ -201,7 +206,7 @@ public class NativeFixture {
   public static int Main(string[] args) {
     if (Array.IndexOf(args, "--help") >= 0) {
       bool old = File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "old-runtime"));
-      Console.WriteLine(old ? "{\\\"ok\\\":true,\\\"usage\\\":\\\"old runtime\\\"}" : "{\\\"ok\\\":true,\\\"usage\\\":\\\"--cancel-stdin\\\"}"); return 0;
+      Console.WriteLine(old ? "{\\\"ok\\\":true,\\\"usage\\\":\\\"old runtime\\\"}" : "{\\\"ok\\\":true,\\\"offlineCatalog\\\":true,\\\"usage\\\":\\\"--cancel-stdin\\\"}"); return 0;
     }
     string package = args[Array.IndexOf(args, "--package-root") + 1];
     string app = args[Array.IndexOf(args, "--app-root") + 1];
@@ -210,7 +215,7 @@ public class NativeFixture {
     if (Array.IndexOf(args, "--cancel-stdin") < 0 || !File.Exists(Path.Combine(package, "release.json"))) return 42;
     File.AppendAllText(Path.Combine(app, "calls.txt"), package + "\\n");
     if (File.Exists(Path.Combine(app, "wait"))) { Console.In.Read(); Console.Error.WriteLine("CANCELLED cooperatively"); return 7; }
-    if (File.Exists(Path.Combine(app, "succeed"))) { Console.WriteLine("{\\\"ok\\\":true,\\\"kind\\\":\\\"huiyu-offline-import-result\\\",\\\"releaseId\\\":\\\"fixture-r1\\\"}"); return 0; }
+    if (File.Exists(Path.Combine(app, "succeed"))) { Console.WriteLine("{\\\"ok\\\":true,\\\"kind\\\":\\\"huiyu-offline-import-result\\\",\\\"catalog\\\":{\\\"included\\\":true,\\\"changed\\\":1},\\\"releaseId\\\":\\\"fixture-r1\\\"}"); return 0; }
     Console.Error.WriteLine("LOCKED fixture"); return 9;
   }
 }

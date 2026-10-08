@@ -8,6 +8,7 @@ const { child, noLinks, readBytes, digest, within, mkdir, writeAtomic, relativeP
 const { serviceable }: typeof import('./resource-install-resolver') = require('./resource-install-resolver');
 const { manifest, packageIdentity }: typeof import('./resource-install-policy') = require('./resource-install-policy');
 const { manifestContentIdentity }: typeof import('./resource-pack-delta') = require('./resource-pack-delta');
+const catalogSnapshot: typeof import('./catalog-snapshot') = require('./catalog-snapshot');
 
 interface Entry { path: string; bytes: number; sha256: string }
 interface Input { path: string; source?: string; contents?: Buffer; entry: Entry }
@@ -77,9 +78,16 @@ function planRelease(options: Options) {
     }
   }
   inputs.push(...showcaseInputs);
+  const records = catalogSnapshot.read(root);
+  if (!records?.length) throw new Error('Offline release requires the exported data/catalog snapshot');
+  const catalogManifest = JSON.parse(readBytes(fs, child(root, 'data/catalog/manifest.json')).toString('utf8'));
+  const catalog = generated('catalog.json', Buffer.from(JSON.stringify({ version: 1, records, retired: catalogManifest.retired || [] })));
+  if (catalog.entry.bytes > 16 * 1024 * 1024) throw new Error('Offline catalog exceeds the native 16 MiB metadata limit');
+  inputs.push(catalog);
   inputs.sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
   const metadata: Record<string, any> = {
     schemaVersion: 1, kind: 'huiyu-offline-release', releaseId: options.releaseId,
+    catalog: catalog.entry,
     appVersion: JSON.parse(readBytes(fs, child(root, 'package.json')).toString('utf8')).version,
     resourcePack: { path: 'pack', packageIdentity: packageIdentity(raw), targetIdentity: manifestContentIdentity(resourceManifest) },
     showcase: { path: 'showcase', entries: entries(showcaseInputs, 'showcase/'), contentIdentity: manifestContentIdentity({ entries: entries(showcaseInputs, 'showcase/') }) },
@@ -100,7 +108,7 @@ function planRelease(options: Options) {
     const candidateRaw = json(candidateManifest), deltaRaw = json(assetDelta.metadata);
     const assetPaths = new Set(assetDelta.candidates.map(item => 'pack/' + item.path));
     const samplePaths = new Set(sampleDelta.candidates.map(item => 'showcase/' + item.path));
-    inputs = inputs.filter(input => assetPaths.has(input.path) || samplePaths.has(input.path) || input.path === 'showcase/manifest.json');
+    inputs = inputs.filter(input => assetPaths.has(input.path) || samplePaths.has(input.path) || input.path === 'showcase/manifest.json' || input.path === 'catalog.json');
     inputs.push(generated('pack/manifest.json', candidateRaw), generated('pack/delta.json', deltaRaw));
     metadata.mode = 'delta';
     metadata.baseRelease = { releaseId: base.releaseId, releaseSha256: digest(baseRaw), resourceIdentity: base.resourcePack.targetIdentity, showcaseIdentity: base.showcase.contentIdentity };
@@ -113,11 +121,12 @@ function planRelease(options: Options) {
     summary: { releaseId: options.releaseId, destination, mode: metadata.mode || 'full', baseRelease: metadata.baseRelease,
       resourceFiles: inputs.filter(input => input.path.startsWith('pack/assets/')).length, resourceTargetFiles: resourceManifest.entries.length,
       showcaseEntries: showcase.entries.length, showcaseTypes: counts, showcaseRatings: ratings,
+      catalogRecords: records.length,
       files: inputs.length + 1, bytes: inputs.reduce((total, item) => total + item.entry.bytes, releaseBytes.length),
       expectedReleaseSha256: digest(releaseBytes),
-      reusedFiles: metadata.mode === 'delta' ? resourceManifest.entries.length + showcaseInputs.length - inputs.filter(input => input.path !== 'pack/manifest.json' && input.path !== 'pack/delta.json').length : 0,
+      reusedFiles: metadata.mode === 'delta' ? resourceManifest.entries.length + showcaseInputs.length - inputs.filter(input => input.path !== 'pack/manifest.json' && input.path !== 'pack/delta.json' && input.path !== 'catalog.json').length : 0,
       fullPayloadBytes: fullBytes,
-      note: 'Byte-complete current assets/showcase only. Model weights, upstream environments and private references are separate. Existing review/provenance are preserved; no new visual approval is asserted.' } };
+      note: 'Current assets, showcase and exported character content. Model weights, upstream environments and private references are separate. Existing review/provenance are preserved; no new visual approval is asserted.' } };
 }
 function showcaseInventory(value: Entry[]): Entry[] {
   const names = new Set<string>();

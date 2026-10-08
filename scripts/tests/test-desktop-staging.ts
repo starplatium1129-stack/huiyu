@@ -125,6 +125,8 @@ function createFixture() {
   write(path.join(root, 'scripts/lib/prepare-ai-environment.ps1'), '# environment preparer');
   write(path.join(root, 'scripts/lib/runtime.js'), 'excluded');
   write(path.join(root, 'data/characters.json'), '{}'); write(path.join(root, 'dist/index.html'), '<!doctype html>');
+  write(path.join(root, 'data/catalog/manifest.json'), '{"version":1,"files":["character/new.json"],"retired":[]}');
+  write(path.join(root, 'data/catalog/character/new.json'), '{"kind":"character","id":"new"}');
   write(path.join(root, 'assets/asset.txt'), 'asset'); write(path.join(root, 'tools/nav.js'), 'browser');
   write(path.join(root, 'tools/voxcpm-server.py'), '# VoxCPM2 server');
   for (const name of ['Install-OfflineResources.cmd', 'offline-resource-assistant.ps1', 'install-offline-resources.ps1']) {
@@ -191,6 +193,8 @@ test('Rust stage verifies bound inputs, excludes legacy/private files, and repla
     assert.equal(result.releaseReady, false); assert.deepEqual(result.pending, ['fixture notices pending']);
     for (const name of ['server.js', 'server', 'routes', 'services', 'node_modules', 'package.json', 'scripts/lib/runtime.js', 'assets/character-references/private.png', 'assets/live2d-candidates/private.model3.json','data/history.json','data/projects.json','data/prompts.json','data/live2d-candidates.json','data/live2d-candidates.json.br','tools/control-server.js']) assert.equal(fs.existsSync(path.join(stage, 'gateway', name)), false, name);
     assert.equal(fs.existsSync(path.join(stage,'gateway/data/references/fixture.json')),true);
+    assert.equal(fs.readFileSync(path.join(stage, 'gateway/data/catalog/character/new.json'), 'utf8'), '{"kind":"character","id":"new"}');
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(stage, 'gateway/data/catalog/manifest.json'), 'utf8')).files, ['character/new.json']);
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/nav.js')),true);
     for (const name of ['Install-OfflineResources.cmd', 'offline-resource-assistant.ps1', 'install-offline-resources.ps1']) {
       assert.equal(fs.readFileSync(path.join(stage, 'gateway/tools', name), 'utf8'), `offline helper: ${name}`);

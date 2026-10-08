@@ -11,6 +11,7 @@ use std::{
 use tokio_util::sync::CancellationToken;
 
 pub(super) struct Release {
+    pub catalog: Option<Value>,
     pub id: String,
     pub app_version: String,
     pub approved: Value,
@@ -293,6 +294,16 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
         path: format!("showcase/{}", entry.path),
         ..entry.clone()
     }));
+    if !value["catalog"].is_null() {
+        let catalog = entries(&json!([value["catalog"]]))?;
+        if catalog[0].path != "catalog.json" || catalog[0].bytes > fs::MAX_JSON {
+            return Err(Error::new(
+                "MANIFEST_INVALID",
+                "Invalid content catalog inventory",
+            ));
+        }
+        expected.extend(catalog);
+    }
     let expected = Manifest { entries: expected };
     if inventory.identity() != expected.identity()
         || inventory.entries.len() != expected.entries.len()
@@ -314,7 +325,30 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
         cancel,
     )?;
     manifest::verify(&showcase_root, &showcase_payload, &[], cancel)?;
+    let catalog = if value["catalog"].is_null() {
+        None
+    } else {
+        let raw = fs::bytes(&options.package.join("catalog.json"), fs::MAX_JSON, false)?;
+        if digest(&raw) != value["catalog"]["sha256"]
+            || Some(raw.len() as u64) != number(&value["catalog"]["bytes"])
+        {
+            return Err(Error::new(
+                "CONTENT_INVALID",
+                "Content catalog changed after verification",
+            ));
+        }
+        let snapshot: Value = serde_json::from_slice(&raw)
+            .map_err(|_| Error::new("METADATA_INVALID", "Invalid content catalog JSON"))?;
+        if snapshot["version"] != 1 || snapshot["records"].as_array().is_none_or(Vec::is_empty) {
+            return Err(Error::new(
+                "MANIFEST_INVALID",
+                "Invalid content catalog snapshot",
+            ));
+        }
+        Some(snapshot)
+    };
     Ok(Release {
+        catalog,
         id: id.into(),
         app_version: app_version.into(),
         approved,

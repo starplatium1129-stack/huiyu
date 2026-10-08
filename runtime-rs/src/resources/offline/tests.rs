@@ -6,6 +6,7 @@ use crate::resources::{
     policy, resolve, state,
 };
 use std::{path::Path, sync::Arc};
+mod catalog;
 mod incremental;
 mod integrity;
 

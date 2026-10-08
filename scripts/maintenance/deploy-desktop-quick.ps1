@@ -181,6 +181,11 @@ Write-DesktopDuration '安装与资源同步'
 Assert-CurrentBuildBinding
 Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable
 Write-DesktopDuration '安装后校验'
+if (-not $StartupRepair) {
+  & node (Join-Path $root 'scripts\lib\desktop-catalog-update.js') $gatewayDir (Join-Path $configRoot 'gateway')
+  if ($LASTEXITCODE -ne 0) { throw '内容库更新未完成；个人修改保留。请检查快照或合并冲突后再部署，不能仅凭素材安装成功判断人物已更新。' }
+  Write-DesktopDuration '内容快照导入与核对'
+}
 Write-Host '[5/6] Rust EXE、宿主和两份 native DLL 与候选哈希一致；不冒充模型验收' -ForegroundColor DarkGray
 $webviewBase = Join-Path $env:LOCALAPPDATA 'com.aics.studio\EBWebView\Default'
 foreach ($name in @('Cache','Code Cache','GPUCache')) {

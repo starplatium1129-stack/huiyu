@@ -150,7 +150,7 @@ pub(super) fn preview(
         "releaseSha256":options.expected,"resourceFiles":release.assets.entries.len(),"resourceBytes":release.assets.bytes(),
         "showcaseFiles":release.showcase_payload.entries.len(),"showcaseBytes":release.showcase_payload.bytes(),"showcaseEntries":release.display["entries"].as_array().unwrap().len(),"mode":if release.baseline.is_some(){"delta"}else{"full"},"baseRelease":release.baseline,
         "userResourceRoot":paths.user,"showcaseLibraryRoot":paths.showcase,"configuration":paths.policy,
-        "currentResource":installed,"currentShowcase":pointer["current"],"recoveryRequired":transaction.is_some(),"requiresDesktopClosed":true}),
+        "catalogIncluded":release.catalog.is_some(),"currentResource":installed,"currentShowcase":pointer["current"],"recoveryRequired":transaction.is_some(),"requiresDesktopClosed":true}),
     )
 }
 fn save(paths: &Paths, value: &mut Value, phase: &str) -> Result<()> {
@@ -177,6 +177,9 @@ pub(super) fn apply_with_progress(
     if journal.is_none() {
         incremental_baseline(options, paths, release, cancel)?;
     }
+    // Reject local content conflicts before activating resources or creating a
+    // pending resource transaction. The runtime lease excludes other writers.
+    let mut catalog = super::catalog::prepare(options, release)?;
     fs::ensure(&paths.user)?;
     showcase::initialize(paths)?;
     let context_file = options.runtime.join("offline-install-context.json");
@@ -203,8 +206,9 @@ pub(super) fn apply_with_progress(
             showcase::verify_current(&root, cancel)?;
         }
         fs::remove(&context_file)?;
+        let catalog = super::catalog::apply(options, release, &mut catalog)?;
         return Ok(
-            json!({"ok":true,"kind":"huiyu-offline-import-result","action":"already-installed","releaseId":release.id,"releaseSha256":options.expected,"restartRequired":true}),
+            json!({"ok":true,"kind":"huiyu-offline-import-result","action":"already-installed","releaseId":release.id,"releaseSha256":options.expected,"catalog":catalog,"restartRequired":true}),
         );
     }
     if journal.is_none() {
@@ -242,12 +246,13 @@ pub(super) fn apply_with_progress(
         fs::write_json(&paths.showcase.join("active.json"), &pointer)?;
         fs::write_json(&paths.policy, &next_config)?;
         op.check()?;
+        let catalog = super::catalog::apply(options, release, &mut catalog)?;
         fs::remove(&context_file)?;
         fs::remove(&paths.pending)?;
         Ok(
             json!({"ok":true,"kind":"huiyu-offline-import-result","action":if recovered{"recovered"}else{"installed"},"releaseId":release.id,
             "releaseSha256":options.expected,"resources":{"files":release.assets.entries.len(),"identity":release.assets.identity()},
-            "showcase":{"entries":release.display["entries"].as_array().unwrap().len(),"root":root,"preservedLocalEntries":ready["preservedLocalEntries"]},"restartRequired":true}),
+            "showcase":{"entries":release.display["entries"].as_array().unwrap().len(),"root":root,"preservedLocalEntries":ready["preservedLocalEntries"]},"catalog":catalog,"restartRequired":true}),
         )
     })();
     if result.is_err()
