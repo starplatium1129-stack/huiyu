@@ -197,7 +197,15 @@ pub(super) fn command(
             }
             command
         }
-        ("GET", ["artwork-search-index"]) => json!({"kind": "readArtworkSearchIndex"}),
+        ("GET", ["artwork-search"]) => {
+            let terms: Value =
+                serde_json::from_str(query.get("terms").map(String::as_str).unwrap_or("[]"))?;
+            let mut command = json!({"kind":"searchArtworks","terms":terms});
+            if let Some(cursor) = query.get("cursor") {
+                command["cursor"] = cursor.clone().into();
+            }
+            command
+        }
         ("GET", ["artwork-recent-index"]) => {
             let mut command = json!({"kind": "readArtworkRecentIndex"});
             if query.contains_key("candidateLimit") {
@@ -359,12 +367,12 @@ mod tests {
         assert_eq!(
             command(
                 &Method::GET,
-                &segments("artwork-search-index").unwrap(),
+                &segments("artwork-search").unwrap(),
                 &query,
                 &json!({"kind":"backup"}),
             )
             .unwrap(),
-            json!({"kind":"readArtworkSearchIndex"})
+            json!({"kind":"searchArtworks","terms":[]})
         );
         assert_eq!(
             command(

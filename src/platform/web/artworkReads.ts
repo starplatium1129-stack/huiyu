@@ -1,6 +1,6 @@
 import { kvInit } from '../../composables/useKVStore.ts'
 import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
-import { buildArtworkSearchIndex } from '../../application/artwork/searchIndex.ts'
+import { searchArtworkRecords } from '../../application/artwork/searchIndex.ts'
 import { parseArtworkRecords } from '../../types/artwork.ts'
 import type { ArtworkProjectRecord } from '../../application/artwork/artworkRepository.ts'
 import { type ArtworkKvAdapter, type WebArtworkRepositoryDependencies, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, record } from './artworkStorage.ts'
@@ -37,11 +37,11 @@ export function createArtworkReads(kv: ArtworkKvAdapter, dependencies: WebArtwor
     return found ? structuredClone(found) : null
   }
 
-  async function readSearchIndex(signal?: AbortSignal) {
+  async function searchArtworks(query: string, signal?: AbortSignal) {
     signal?.throwIfAborted()
     const raw = await kv.get(ARTWORK_HISTORY_KEY)
     signal?.throwIfAborted()
-    return buildArtworkSearchIndex(raw)
+    return searchArtworkRecords(raw, query)
   }
 
   async function readProjects() {
@@ -109,5 +109,5 @@ export function createArtworkReads(kv: ArtworkKvAdapter, dependencies: WebArtwor
     return preferenceHistoryRows(fallback)
   }
 
-  return { readHistory, readArtwork, readSearchIndex, readProjects, readLibrarySnapshot, readRecentHistory, readPreferenceHistory }
+  return { readHistory, readArtwork, searchArtworks, readProjects, readLibrarySnapshot, readRecentHistory, readPreferenceHistory }
 }

@@ -1,13 +1,13 @@
 import { ARTWORK_DELETE_BATCH_SIZE, type ArtworkRepository, type ArtworkProjectRecord, type ArtworkSoftDeleteResult } from '../../application/artwork/artworkRepository.ts'
-import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord, type ArtworkSearchRecord } from '../../types/artwork.ts'
-import { buildArtworkSearchIndex, parseArtworkSearchIndex } from '../../application/artwork/searchIndex.ts'
+import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord, type ArtworkSearchSummary } from '../../types/artwork.ts'
+import { artworkSearchTerms, searchArtworkRecords } from '../../application/artwork/searchIndex.ts'
 import { createDesktopArtworkMedia } from './artworkMedia.ts'
 import { putDesktopArtworkImage } from './artworkUpload.ts'
 import { workspaceRequest as request } from '../../api/workspace.ts'
 import { getDesktopRuntime } from './runtime.ts'
 import { trackMaintenanceWrite } from '../maintenanceParticipants.ts'
 import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
-import { parseArtworkRow, parseArtworkRecentIndex } from './artworkReadModel.ts'
+import { compareArtworkKeys, parseArtworkSearchPage, parseArtworkRow, parseArtworkRecentIndex } from './artworkReadModel.ts'
 import { normalizeArtworkOrganization, type ArtworkOrganizationRequest, type ArtworkOrganizationReceipt, type ArtworkOrganizationUndoResult } from '../../application/artwork/organization.ts'
 import { normalizeNewArtworkProject, type ArtworkProjectDraft } from '../../application/artwork/projects.ts'
 import { normalizeSmartAlbumDraft, parseSmartAlbumRule, type SmartAlbumDraft } from '../../application/artwork/smartAlbums.ts'
@@ -29,7 +29,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   let historyLoaded = false, projectsLoaded = false
   let loadedRecent: ArtworkRecord[] = [], recentLoaded = false
   let loadedPreferences: unknown[] | undefined
-  let loadedSearchIndex: { items: ArtworkSearchRecord[]; revision: number; session: string; writerEpoch: string } | undefined
+  let loadedSearchIndex: { items: ArtworkSearchSummary[]; query: string; revision: number; session: string; writerEpoch: string } | undefined
   let mutationVersion = 0
   let searchSequence = 0, historySearchSession: string | undefined, snapshotSession: string | undefined
   function searchSession() {
@@ -116,13 +116,15 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (version === mutationVersion) { loadedRecent = recent; recentLoaded = true }
     return structuredClone(recent)
   }
-  async function readSearchIndex(signal?: AbortSignal) {
+  async function searchArtworks(query: string, signal?: AbortSignal) {
     signal?.throwIfAborted()
+    const terms = artworkSearchTerms(query), queryKey = JSON.stringify(terms)
     const session = searchSession()
+    if (!terms.length) return []
     if (loadedSearchIndex && loadedSearchIndex.session !== session) invalidateSearchIndex()
     if (getDesktopRuntime().connection !== 'ready') {
-      if (loadedSearchIndex) return structuredClone(loadedSearchIndex.items)
-      if (historyLoaded && historySearchSession === session) return buildArtworkSearchIndex(loadedHistory)
+      if (loadedSearchIndex?.query === queryKey) return structuredClone(loadedSearchIndex.items)
+      if (historyLoaded && historySearchSession === session) return searchArtworkRecords(loadedHistory, query)
     }
     const sequence = ++searchSequence
     const writerEpoch = getDesktopRuntime().bootstrap!.runtime!.workspace!.runtimeEpoch
@@ -130,24 +132,30 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       signal?.throwIfAborted()
       if (searchSession() !== session || searchSequence !== sequence) throw new Error('作品库在读取期间发生变更，请重新读取')
     }
-    if (loadedSearchIndex) {
+    if (loadedSearchIndex?.query === queryKey) {
       const cached = loadedSearchIndex
-      checkRead()
-      const status = await workspaceRequest<{ revision: number; writerEpoch: string }>({ kind: 'status' }, signal)
+      const status = await workspaceRequest<{ artworkRevision: number; writerEpoch: string }>({ kind: 'status' }, signal)
       checkRead()
       if (status.writerEpoch !== writerEpoch) {
         invalidateSearchIndex(); historySearchSession = undefined
         throw new Error('工作区连接已变化，请重新读取')
       }
-      if (status.revision === cached.revision && status.writerEpoch === cached.writerEpoch) return structuredClone(cached.items)
+      if (status.artworkRevision === cached.revision && status.writerEpoch === cached.writerEpoch) return structuredClone(cached.items)
     }
-    checkRead()
-    const result = await workspaceRequest<{ items: unknown; revision: number }>({ kind: 'readArtworkSearchIndex' }, signal)
-    checkRead()
-    if (!Number.isSafeInteger(result.revision) || result.revision < 0) throw new Error('作品搜索索引无效')
-    // The index owns its revision: a status read must never relabel an older snapshot.
-    loadedSearchIndex = { items: parseArtworkSearchIndex(result.items), revision: result.revision, session, writerEpoch }
-    return structuredClone(loadedSearchIndex.items)
+    let items: ArtworkSearchSummary[] = [], cursor: string | null = null, revision: number | undefined
+    do {
+      checkRead()
+      const raw = await workspaceRequest<unknown>({ kind: 'searchArtworks', terms, ...(cursor === null ? {} : { cursor }) }, signal)
+      checkRead()
+      const page = parseArtworkSearchPage(raw)
+      if (revision !== undefined && page.revision !== revision) throw new Error('作品库在读取期间发生变更，请重新读取')
+      if (page.nextCursor !== null && cursor !== null && compareArtworkKeys(page.nextCursor, cursor) <= 0) throw new Error('作品搜索游标无效')
+      revision = page.revision
+      items = [...items, ...page.items].sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a) || compareArtworkKeys(a.id, b.id)).slice(0, 5)
+      cursor = page.nextCursor
+    } while (cursor !== null)
+    loadedSearchIndex = { items: structuredClone(items), query: queryKey, revision: revision!, session, writerEpoch }
+    return items
   }
   async function readPreferenceHistory() {
     const session = readSession(), version = mutationVersion
@@ -271,7 +279,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     return { deleted: receipt.deleted }
   }
   const repository: ArtworkRepository = {
-    readHistory, readArtwork, readSearchIndex, readProjects, readRecentHistory, readPreferenceHistory,
+    readHistory, readArtwork, searchArtworks, readProjects, readRecentHistory, readPreferenceHistory,
     organizeArtworks, undoArtworkOrganization, createProject, saveSmartAlbum, deleteSmartAlbum,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
     ...media,

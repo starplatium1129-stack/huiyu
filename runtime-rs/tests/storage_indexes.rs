@@ -313,6 +313,20 @@ async fn indexed_deletion_preserves_membership_order_and_backup_restore() {
             .await
             .is_null()
     );
+    let recent = request(
+        &storage,
+        json!({"kind":"readArtworkRecentIndex","candidateLimit":3}),
+    )
+    .await;
+    assert_eq!(
+        recent["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|item| item["id"].clone())
+            .collect::<Vec<_>>(),
+        vec![json!(1), json!(3)]
+    );
     let backup = request(&storage, json!({"kind":"backup","operationId":"backup"})).await;
     let candidate = request(
         &storage,
@@ -328,6 +342,14 @@ async fn indexed_deletion_preserves_membership_order_and_backup_restore() {
         .await
         .unwrap();
     assert_eq!(members(&restored).await, json!([[3, 1], [1]]));
+    assert_eq!(
+        request(
+            &restored,
+            json!({"kind":"readArtworkRecentIndex","candidateLimit":3})
+        )
+        .await["items"],
+        recent["items"]
+    );
     restored.close().await.unwrap();
     assert_index(&restored_root);
 }

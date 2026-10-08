@@ -1,7 +1,27 @@
 import { parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'
+import { parseArtworkSearchSummaries } from '../../application/artwork/searchIndex.ts'
 
 const key = (id: string | number) => String(id).trim()
 const revision = (value: unknown): value is number => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
+
+/** SQLite BINARY compares UTF-8/scalar order, not JavaScript UTF-16 or locale order. */
+export function compareArtworkKeys(a: string | number, b: string | number): number {
+  const left = Array.from(key(a)), right = Array.from(key(b))
+  for (let i = 0; i < Math.min(left.length, right.length); i++) {
+    const difference = left[i].codePointAt(0)! - right[i].codePointAt(0)!
+    if (difference) return difference
+  }
+  return left.length - right.length
+}
+
+export function parseArtworkSearchPage(raw: unknown) {
+  if (!raw || typeof raw !== 'object') throw new Error('作品搜索响应无效')
+  const page = raw as { items: unknown; artworkRevision: unknown; nextCursor: unknown }
+  if (!revision(page.artworkRevision) || !(page.nextCursor === null || typeof page.nextCursor === 'string' && page.nextCursor.trim())) {
+    throw new Error('作品搜索响应无效')
+  }
+  return { items: parseArtworkSearchSummaries(page.items), revision: page.artworkRevision, nextCursor: page.nextCursor as string | null }
+}
 
 export interface ArtworkRow { id: string | number; body: ArtworkRecord; revision: number; deletedAt: number | null }
 export interface ArtworkRecentEntry { id: string | number; timestamp: unknown; revision: number }

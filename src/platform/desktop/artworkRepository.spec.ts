@@ -361,98 +361,109 @@ it('reads paged recommendation fields without loading the full library cache', a
   expect((await repository.readPreferenceHistory())[0]).toMatchObject({scene:'sc001'})
 })
 
-it('reads a complete search index once, detaches offline data and invalidates it after edits', async () => {
+it('caches one bounded query, detaches offline data and invalidates it after edits', async () => {
   const record = { id: 'old', title: 'Original', timestamp: 'January 1, 2020', searchText: 'original moonlight' }
-  mocks.request.mockResolvedValue({ items: [record], revision: 9 })
+  mocks.request.mockResolvedValue({ items: [record], artworkRevision: 9, nextCursor: null })
   const repository = createDesktopArtworkRepository()
   const controller = new AbortController()
-  const index = await repository.readSearchIndex(controller.signal)
-  expect(mocks.request).toHaveBeenCalledExactlyOnceWith({ kind: 'readArtworkSearchIndex' }, controller.signal)
+  const index = await repository.searchArtworks('original', controller.signal)
+  expect(mocks.request).toHaveBeenCalledExactlyOnceWith({ kind: 'searchArtworks', terms: ['original'] }, controller.signal)
   index[0].title = 'changed by consumer'
   mocks.state.connection = 'unavailable'
-  expect((await repository.readSearchIndex())[0]).toMatchObject({ title: 'Original' })
+  expect((await repository.searchArtworks('original'))[0]).toMatchObject({ title: 'Original' })
   expect(mocks.request).toHaveBeenCalledOnce()
   controller.abort()
-  await expect(repository.readSearchIndex(controller.signal)).rejects.toMatchObject({ name: 'AbortError' })
+  await expect(repository.searchArtworks('original', controller.signal)).rejects.toMatchObject({ name: 'AbortError' })
   mocks.state.connection = 'ready'
   mocks.request.mockImplementation(async command => command.kind === 'getArtwork'
     ? { id: 'old', body: { id: 'old' }, revision: 9, deletedAt: null } : { changed: true })
   await repository.patchArtwork('old', { title: 'edited' })
   mocks.state.connection = 'unavailable'
   mocks.request.mockRejectedValue(new Error('offline'))
-  await expect(repository.readSearchIndex()).rejects.toThrow('offline')
+  await expect(repository.searchArtworks('original')).rejects.toThrow('offline')
   mocks.state.bootstrap.runtime.workspace.workspaceId = 'another-library'
-  await expect(repository.readSearchIndex()).rejects.toThrow('身份')
+  await expect(repository.searchArtworks('original')).rejects.toThrow('身份')
 })
 
 
-it('revalidates warm searches with status, reloads changes and retains the index response revision', async () => {
-  const index = (title: string, revision: number) => ({ items: [{ id: 'one', title, searchText: title }], revision })
+it('revalidates the artwork revision only, reloads artwork changes and retains the response revision', async () => {
+  const index = (title: string, revision: number) => ({ items: [{ id: 'one', title, searchText: title }], artworkRevision: revision, nextCursor: null })
   const repository = createDesktopArtworkRepository()
   mocks.request.mockResolvedValueOnce(index('original', 1))
-  await repository.readSearchIndex()
-  mocks.request.mockResolvedValueOnce({ revision: 1, writerEpoch: 'epoch-1' })
-  const warm = await repository.readSearchIndex()
+  await repository.searchArtworks('original')
+  mocks.request.mockResolvedValueOnce({ artworkRevision: 1, revision: 900, writerEpoch: 'epoch-1' })
+  const warm = await repository.searchArtworks('original')
   warm[0].title = 'consumer edit'
-  mocks.request.mockResolvedValueOnce({ revision: 2, writerEpoch: 'epoch-1' }).mockResolvedValueOnce(index('newer', 3))
-  expect((await repository.readSearchIndex())[0].title).toBe('newer')
-  mocks.request.mockResolvedValueOnce({ revision: 3, writerEpoch: 'epoch-1' })
-  expect((await repository.readSearchIndex())[0].title).toBe('newer')
+  mocks.request.mockResolvedValueOnce({ artworkRevision: 2, writerEpoch: 'epoch-1' }).mockResolvedValueOnce(index('newer', 3))
+  expect((await repository.searchArtworks('original'))[0].title).toBe('newer')
+  mocks.request.mockResolvedValueOnce({ artworkRevision: 3, writerEpoch: 'epoch-1' })
+  expect((await repository.searchArtworks('original'))[0].title).toBe('newer')
   expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual([
-    'readArtworkSearchIndex', 'status', 'status', 'readArtworkSearchIndex', 'status',
+    'searchArtworks', 'status', 'status', 'searchArtworks', 'status',
   ])
   mocks.request.mockRejectedValueOnce(new Error('status unavailable'))
-  await expect(repository.readSearchIndex()).rejects.toThrow('status unavailable')
+  await expect(repository.searchArtworks('original')).rejects.toThrow('status unavailable')
   mocks.state.connection = 'unavailable'
-  expect((await repository.readSearchIndex())[0].title).toBe('newer')
+  expect((await repository.searchArtworks('original'))[0].title).toBe('newer')
 })
 
 it('binds cached and pending search reads to the authorized session and writer epoch', async () => {
-  const page = { items: [{ id: 'one', searchText: 'original' }], revision: 1 }
+  const page = { items: [{ id: 'one', searchText: 'original' }], artworkRevision: 1, nextCursor: null }
   const repository = createDesktopArtworkRepository()
   mocks.request.mockResolvedValueOnce(page)
-  await repository.readSearchIndex()
+  await repository.searchArtworks('original')
   mocks.state.bootstrap.runtime.workspace.generation++
   mocks.request.mockResolvedValueOnce(page)
-  await repository.readSearchIndex()
-  expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['readArtworkSearchIndex', 'readArtworkSearchIndex'])
-  mocks.request.mockResolvedValueOnce({ revision: 1, writerEpoch: 'another-writer' })
-  await expect(repository.readSearchIndex()).rejects.toThrow('连接已变化')
+  await repository.searchArtworks('original')
+  expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['searchArtworks', 'searchArtworks'])
+  mocks.request.mockResolvedValueOnce({ artworkRevision: 1, revision: 900, writerEpoch: 'another-writer' })
+  await expect(repository.searchArtworks('original')).rejects.toThrow('连接已变化')
   mocks.state.connection = 'unavailable'
   mocks.request.mockRejectedValueOnce(new Error('offline'))
-  await expect(repository.readSearchIndex()).rejects.toThrow('offline')
+  await expect(repository.searchArtworks('original')).rejects.toThrow('offline')
   mocks.state.connection = 'ready'
   let finish!: (value: unknown) => void
   mocks.request.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
-  const pending = repository.readSearchIndex()
+  const pending = repository.searchArtworks('original')
   mocks.state.bootstrap.runtime.workspace.generation++
   finish(page)
   await expect(pending).rejects.toThrow('发生变更')
   mocks.state.bootstrap.runtime.workspace.domains = []
-  await expect(repository.readSearchIndex()).rejects.toThrow('身份')
+  await expect(repository.searchArtworks('original')).rejects.toThrow('身份')
 })
 
 it('does not publish search reads overtaken by edits, newer reads or cancellation', async () => {
-  const page = (id: string, revision = 1) => ({ items: [{ id, searchText: id }], revision })
+  const page = (id: string, revision = 1) => ({ items: [{ id, searchText: id }], artworkRevision: revision, nextCursor: null })
   const repository = createDesktopArtworkRepository()
   let finish!: (value: unknown) => void
   mocks.request.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
-  const beforeEdit = repository.readSearchIndex()
+  const beforeEdit = repository.searchArtworks('original')
   await repository.appendArtwork({ id: 'new' })
   finish(page('before-edit'))
   await expect(beforeEdit).rejects.toThrow('发生变更')
   mocks.request.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
-  const olderRead = repository.readSearchIndex()
+  const olderRead = repository.searchArtworks('original')
   mocks.request.mockResolvedValueOnce(page('newer', 2))
-  await repository.readSearchIndex()
+  await repository.searchArtworks('original')
   finish(page('older'))
   await expect(olderRead).rejects.toThrow('发生变更')
-  mocks.request.mockResolvedValueOnce({ revision: 3, writerEpoch: 'epoch-1' })
+  mocks.request.mockResolvedValueOnce({ artworkRevision: 3, writerEpoch: 'epoch-1' })
     .mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
-  const controller = new AbortController(), cancelled = repository.readSearchIndex(controller.signal)
+  const controller = new AbortController(), cancelled = repository.searchArtworks('original', controller.signal)
   await flushPromises()
   controller.abort(); finish(page('cancelled', 3))
   await expect(cancelled).rejects.toMatchObject({ name: 'AbortError' })
   mocks.state.connection = 'unavailable'
-  expect((await repository.readSearchIndex())[0].id).toBe('newer')
+  expect((await repository.searchArtworks('original'))[0].id).toBe('newer')
+})
+
+it('merges bounded legacy pages using browser dates and SQLite ties, rejecting revision drift', async () => {
+  const repository = createDesktopArtworkRepository()
+  mocks.request.mockResolvedValueOnce({ items: [{ id: '𐀀', timestamp: 100 }, { id: '\uE000', timestamp: 100 }], artworkRevision: 7, nextCursor: 'legacy-a' })
+    .mockResolvedValueOnce({ items: [{ id: 'old', timestamp: 'January 1, 2020' }, { id: '200', timestamp: 'invalid' }], artworkRevision: 7, nextCursor: null })
+  expect((await repository.searchArtworks('  BLUE flower ')).map(item => item.id)).toEqual(['old', '200', '\uE000', '𐀀'])
+  expect(mocks.request.mock.calls[1][0]).toEqual({ kind: 'searchArtworks', terms: ['blue', 'flower'], cursor: 'legacy-a' })
+  mocks.request.mockResolvedValueOnce({ items: [], artworkRevision: 7, nextCursor: 'legacy-a' })
+    .mockResolvedValueOnce({ items: [], artworkRevision: 8, nextCursor: null })
+  await expect(repository.searchArtworks('different')).rejects.toThrow('发生变更')
 })

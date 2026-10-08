@@ -54,32 +54,32 @@ async fn preference_projection_preserves_paging_types_and_revision_without_large
     assert_eq!(next["revision"], full["revision"]);
     assert!(serde_json::to_vec(&first).unwrap().len() < 1024);
     assert!(serde_json::to_vec(&full).unwrap().len() > 500_000);
-    let search = read(&storage, json!({"kind":"readArtworkSearchIndex"})).await;
-    assert_eq!(search["revision"], full["revision"]);
+    let search = read(
+        &storage,
+        json!({"kind":"searchArtworks","terms":["garden"]}),
+    )
+    .await;
+    assert_eq!(
+        search["artworkRevision"],
+        read(&storage, json!({"kind":"status"})).await["artworkRevision"]
+    );
     let items = search["items"].as_array().unwrap();
     assert_eq!(items.len(), 2);
     assert_eq!(items[0]["id"], 1);
     assert_eq!(items[0]["title"], json!({"future":"title"}));
     assert_eq!(items[0]["timestamp"], 101);
     assert_eq!(items[1]["timestamp"], "Fri, 01 Jan 2021 00:00:00 GMT");
-    assert!(
-        items[0]["searchText"]
-            .as_str()
-            .unwrap()
-            .starts_with("garden sc001 nene moonlight 美術 ")
-    );
-    assert!(
-        items[1]["searchText"]
-            .as_str()
-            .unwrap()
-            .starts_with("σος i\u{0307} ß garden")
-    );
-    assert!(
-        items
-            .iter()
-            .all(|item| item.get("prompt").is_none() && item.get("image_data").is_none())
-    );
-    assert!(items[1]["searchText"].as_str().unwrap().len() > 256_000);
+    assert!(items.iter().all(|item| item.get("searchText").is_none()
+        && item.get("prompt").is_none()
+        && item.get("image_data").is_none()));
+    assert!(serde_json::to_vec(&search).unwrap().len() < 1024);
+    let unicode = read(
+        &storage,
+        json!({"kind":"searchArtworks","terms":["σος", "i\u{0307}", "ß", "美術"]}),
+    )
+    .await;
+    assert_eq!(unicode["items"].as_array().unwrap().len(), 1);
+    assert_eq!(unicode["items"][0]["id"], 2);
     let recent = read(&storage, json!({"kind":"readArtworkRecentIndex"})).await;
     assert_eq!(recent["revision"], full["revision"]);
     assert_eq!(recent["items"].as_array().unwrap().len(), 2);
@@ -155,5 +155,108 @@ async fn preference_projection_preserves_paging_types_and_revision_without_large
         serde_json::to_vec(&full_page).unwrap().len(),
         serde_json::to_vec(&first).unwrap().len()
     );
+    let unchanged = read(
+        &storage,
+        json!({"kind":"searchArtworks","terms":["garden"]}),
+    )
+    .await;
+    let status = read(&storage, json!({"kind":"status"})).await;
+    read(&storage, json!({"kind":"profile.saveSetting","operationId":"theme","key":"aics_theme","value":"dark","expectedRevision":null})).await;
+    let changed = read(&storage, json!({"kind":"status"})).await;
+    assert_ne!(status["revision"], changed["revision"]);
+    assert_eq!(status["artworkRevision"], changed["artworkRevision"]);
+    assert_eq!(
+        unchanged,
+        read(
+            &storage,
+            json!({"kind":"searchArtworks","terms":["garden"]})
+        )
+        .await
+    );
+    storage.close().await.unwrap();
+}
+
+#[tokio::test]
+async fn search_pages_keep_legacy_dates_and_bound_numeric_results_across_reopen() {
+    let temp = tempfile::tempdir().unwrap();
+    let root = temp.path().join("workspace");
+    let storage = Storage::open(root.clone(), "search-pages".into(), true)
+        .await
+        .unwrap();
+    storage.close().await.unwrap();
+    let mut db = rusqlite::Connection::open(root.join("huiyu.sqlite3")).unwrap();
+    // Simulate an existing v3 database before the additive read index existed.
+    db.execute_batch("DROP TRIGGER artwork_read_insert; DROP TRIGGER artwork_read_update; DROP TRIGGER artwork_read_delete;
+        DROP TABLE artwork_read_index; DROP TABLE artwork_read_dirty;
+        DELETE FROM meta WHERE key IN ('artworkRevision','artworkReadIndexVersion');").unwrap();
+    let transaction = db.transaction().unwrap();
+    for index in 0..215 {
+        let id = format!("item-{index:03}");
+        let timestamp = if index < 10 {
+            json!(index as f64 + 0.5)
+        } else {
+            json!("January 1, 2020")
+        };
+        transaction.execute("INSERT INTO artworks VALUES(?1,?2,?3,1,NULL)", rusqlite::params![id,serde_json::to_string(&id).unwrap(),
+            json!({"id":id,"timestamp":timestamp,"title":"Night room","prompt":"blue flower"}).to_string()]).unwrap();
+    }
+    transaction
+        .execute("UPDATE meta SET value='1' WHERE key='revision'", [])
+        .unwrap();
+    transaction.commit().unwrap();
+    drop(db);
+    let storage = Storage::open(root.clone(), "search-pages".into(), false)
+        .await
+        .unwrap();
+    let page = read(
+        &storage,
+        json!({"kind":"searchArtworks","terms":["night","flower"]}),
+    )
+    .await;
+    assert_eq!(page["items"].as_array().unwrap().len(), 205);
+    assert_eq!(page["items"][0]["id"], "item-009");
+    assert_eq!(page["items"][4]["id"], "item-005");
+    let next = read(
+        &storage,
+        json!({"kind":"searchArtworks","terms":["night","flower"],"cursor":page["nextCursor"]}),
+    )
+    .await;
+    assert_eq!(next["items"].as_array().unwrap().len(), 5);
+    assert_eq!(next["items"][0]["id"], "item-210");
+    assert!(next["nextCursor"].is_null());
+    assert_eq!(page["artworkRevision"], next["artworkRevision"]);
+    assert!(
+        read(
+            &storage,
+            json!({"kind":"searchArtworks","terms":["no match"]})
+        )
+        .await["items"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
+    // A completed derived index survives reopen and a source deletion invalidates
+    // it transactionally, without replaying the full build or changing authority.
+    storage.close().await.unwrap();
+    let db = rusqlite::Connection::open(root.join("huiyu.sqlite3")).unwrap();
+    assert_eq!(
+        db.query_row("SELECT count(*) FROM artwork_read_dirty", [], |r| r
+            .get::<_, i64>(0))
+            .unwrap(),
+        0
+    );
+    db.execute("DELETE FROM artworks WHERE id_key='item-009'", [])
+        .unwrap();
+    drop(db);
+    let storage = Storage::open(root, "search-pages".into(), false)
+        .await
+        .unwrap();
+    let updated = read(
+        &storage,
+        json!({"kind":"searchArtworks","terms":["night","flower"]}),
+    )
+    .await;
+    assert_eq!(updated["items"][0]["id"], "item-008");
+    assert_ne!(page["artworkRevision"], updated["artworkRevision"]);
     storage.close().await.unwrap();
 }

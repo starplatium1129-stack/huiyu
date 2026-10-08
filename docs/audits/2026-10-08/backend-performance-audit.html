@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Rust 后端性能优化审计 · 2026-10-08</title>
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#f7f8fa,#171b22);--paper:light-dark(#fff,#212730);--ink:light-dark(#202735,#e7ebf2);--muted:light-dark(#515c6c,#bbc5d3);--line:light-dark(#d7dde6,#435064);--accent:light-dark(#284e90,#a6c8ff);--soft:light-dark(#edf3fe,#253449)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1060px;margin:auto;padding:42px 24px 56px}h1{font-size:32px;line-height:1.3;margin:8px 0 16px}h2{font-size:23px;margin:32px 0 12px}h3{font-size:19px;margin:0 0 10px}p{margin:10px 0}a{color:var(--accent);text-underline-offset:3px}.meta,small{color:var(--muted)}.lead{font-size:19px}.summary{padding:20px 24px;background:var(--soft);border-radius:12px;margin:22px 0}.finding{padding:23px;background:var(--paper);border:1px solid var(--line);border-radius:12px;margin:16px 0}.label{font-size:13px;color:var(--accent);letter-spacing:.03em}.sources{font-size:14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);overflow-wrap:anywhere}table{width:100%;border-collapse:collapse;margin:14px 0;font-variant-numeric:tabular-nums}th,td{text-align:left;border-bottom:1px solid var(--line);padding:12px;vertical-align:top}th{color:var(--muted);font-size:14px;font-weight:600}code{font-size:.9em;background:var(--soft);padding:2px 4px;border-radius:3px;overflow-wrap:anywhere}.scroll{overflow-x:auto}li{margin:7px 0}nav{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0}details{margin-top:12px}summary{cursor:pointer;color:var(--accent);padding:8px 0}footer{font-size:14px;border-top:1px solid var(--line);padding-top:18px;margin-top:32px;color:var(--muted)}@media(max-width:640px){main{padding:26px 16px}h1{font-size:26px}.finding{padding:18px}th,td{padding:9px}.lead{font-size:17px}}@media print{body{background:white;color:#202735}main{max-width:none;padding:12px}.finding{break-inside:avoid}nav{display:none}}
+</style>
+</head>
+<body><main>
+<div class="meta">AI-CG-Studio · 2026-10-08 · 源码基线 00465343</div>
+<h1>后端局部优化有效，作品读取仍有规模瓶颈</h1>
+<p><strong>后续：</strong>本报告的三项改进已实施，最新状态见<a href="backend-performance-delivery.html">优化交付与验证</a>。以下保留实施前的审计证据。</p>
+<p class="lead">本次确认 3 项 P2 性能改进项，集中在全库搜索、缓存失效范围与最近作品读取。已审查范围未发现 P0/P1 性能回归；这不是完整后端或已安装桌面的性能验收。</p>
+<div class="summary"><strong>审计结果：保留现有优化，优先收窄搜索缓存失效范围。</strong><br>本次 17 项定向行为测试通过；函数级采样和真实 Storage 隔离复现完成。产品代码未修改，3 项问题仍未修复。</div>
+<nav aria-label="报告导航"><a href="#findings">具体发现</a><a href="#measurements">当前实测</a><a href="#retained">已有优化</a><a href="#validation">验证与限制</a></nav>
+
+<section id="findings"><h2>具体发现</h2>
+<article class="finding">
+<div class="label">P2 · 建议先处理 · 已复现</div>
+<h3>1. 与作品无关的写入也会使搜索缓存失效</h3>
+<p><strong>触发：</strong>打开作品搜索后保存设置、草稿，或发生实际任务状态写入，再次读取作品搜索。</p>
+<p>客户端用整个工作区的 <code>status.revision</code> 判断搜索缓存是否有效；profile 和 task 写入也递增同一个版本。因此即使作品完全未变，也会重新执行全库索引读取、JSON 传输和客户端解析。它会放大第 2 项成本。</p>
+<p><strong>证据：</strong>本次在全新私有 workspace 调用真实 Storage，索引版本初始为 0；只保存 <code>aics_theme=dark</code> 后，status 和索引版本都变为 1，索引 items 完全相同。客户端当前缓存条件必然不命中。复现使用空作品库证明版本耦合，未测真实页面耗时。</p>
+<p><strong>建议：</strong>给作品搜索内容使用独立的持久化代次，并随影响搜索的作品变更在同一事务内递增；保留 workspace、writer epoch、恢复/重开身份和跨窗口校验。先做这一局部改动，再评估是否需要改造搜索协议。</p>
+<div class="sources">定位：<a href="../../../src/platform/desktop/artworkRepository.ts">artworkRepository.ts:136–145</a>；<a href="../../../runtime-rs/src/storage/profile.rs">profile.rs:193</a>；<a href="../../../runtime-rs/src/storage/tasks.rs">tasks.rs:65</a>；<a href="../../../runtime-rs/src/storage/mod.rs">storage/mod.rs:284–297</a>。</div>
+</article>
+
+<article class="finding">
+<div class="label">P2 · 大库/长文本触发 · 已测量</div>
+<h3>2. 搜索“索引”仍向客户端发送全库可搜索正文</h3>
+<p><code>readArtworkSearchIndex</code> 没有搜索词、结果上限或分页参数。它对每条有效作品读取 story、prompt 等八个字段，拼接并转为小写，全部放入 <code>searchText</code> 返回。借用 SQLite 字符串减少了中间分配，但未改变 O(全部可搜索文本字节) 的扫描、响应和客户端保留规模。</p>
+<p><strong>证据：</strong>直接编译当前读取函数，1,000 条 × 64 KiB 合成提示文本返回 <strong>65,664,024 B（62.62 MiB）</strong> JSON；读取函数中位数 61.06 ms。10,000 条 × 512 B 返回 6,400,024 B。序列化、HTTP、浏览器解析及 RSS 不在计时内，不能将这些数字当作页面延迟或峰值内存。</p>
+<p><strong>影响：</strong>首次搜索和缓存失效后的读取成本随全库正文增长；读取还占用唯一 SQLite worker，期间其它已排队存储操作不能执行。实际排队尾延迟本次未测。</p>
+<p><strong>建议：</strong>在服务端按搜索词返回有界摘要和游标，保留现有多词子串、Unicode、排序及取消语义。先复用已有行为再选实现；不要直接换成词项搜索而改变匹配结果。</p>
+<div class="sources">定位：<a href="../../../runtime-rs/src/storage/records.rs">records.rs:42–87</a>；<a href="../../../runtime-rs/src/storage/worker.rs">worker.rs:87、240</a>；<a href="../../../src/components/GlobalSearch.vue">GlobalSearch.vue:329–337</a>。</div>
+</article>
+
+<article class="finding">
+<div class="label">P2 · 最近作品热路径 · 已测量</div>
+<h3>3. 最近 3 条限制了数字候选数，没有限制数据库扫描量</h3>
+<p>SQL 按 <code>id_key</code> 遍历所有有效作品，从完整 JSON body 提取 timestamp，再在 Rust 中保留数字时间的前 3 条。现有有效记录索引可跳过回收站，但没有提供时间排序；二分插入也没有消除正文解析与全库扫描。</p>
+<p><strong>证据：</strong>每条 512 B 文本时，1,000 → 10,000 条使中位耗时由 <strong>2.43 → 24.80 ms</strong>；固定 1,000 条，将文本增至 64 KiB 后变为 <strong>30.97 ms</strong>，三种数字时间样本都只返回 192 B / 3 条。ISO 字符串时间保留 JS 兼容处理，1,000 条仍全部返回，不能把 <code>candidateLimit=3</code> 当作整个响应的硬上限。</p>
+<p><strong>建议：</strong>先为常见的数字时间维护轻量、可索引排序字段，避免每次解析正文；历史字符串时间采用单独、明确的兼容路径。保留数值不截断、稳定同分排序、软删和两阶段读取修订核对，不为限量而丢弃旧作品。</p>
+<div class="sources">定位：<a href="../../../runtime-rs/src/storage/recent.rs">recent.rs:14–50</a>；<a href="../../../src/platform/desktop/artworkRepository.ts">artworkRepository.ts:103–112</a>。</div>
+</article>
+<p class="meta">以上均是当前仍存在的规模成本。未建立“最近提交使其变慢”的前后对照，因此不把它们表述为这几次优化引入的回归。</p>
+</section>
+
+<section id="measurements"><h2>当前源码的隔离采样</h2>
+<div class="scroll"><table><thead><tr><th>中性合成负载</th><th>最近作品中位数</th><th>搜索中位数</th><th>搜索 JSON 字节数</th></tr></thead><tbody>
+<tr><td>1,000 条 × 512 B，数字时间</td><td>2.43 ms</td><td>6.82 ms</td><td>640,024 B</td></tr>
+<tr><td>10,000 条 × 512 B，数字时间</td><td>24.80 ms</td><td>72.61 ms</td><td>6,400,024 B</td></tr>
+<tr><td>1,000 条 × 64 KiB，数字时间</td><td>30.97 ms</td><td>61.06 ms</td><td>65,664,024 B</td></tr>
+<tr><td>1,000 条 × 512 B，ISO 字符串时间</td><td>2.58 ms</td><td>6.73 ms</td><td>649,024 B</td></tr>
+</tbody></table></div>
+<p>Windows x64，Rust 1.98.1，项目 bundled SQLite 3.53.2；独立探针 opt-level=2，链接已有 debug 构建依赖，<strong>不是产品 release 性能</strong>。直接包含当前 recent.rs，并原样提取搜索 match 分支；Context 提供真实内存 SQLite、revision 查询和无操作取消检查。每组预热 1 次、采样 7 次；结果与该组预热响应逐值相等，序列化统计在计时外。不含数据库落盘、HTTP、actor 排队、前端、GPU 或 SQLite/Rust 峰值内存。</p>
+<p>首次隔离探针额外核对目录打开 SQL：另一连接持有 WAL 写事务时，当前初始化 SQL 正常完成（单次 0.09 ms），读取仍见已提交旧版本。<strong>没有复现“缓存打开数据库必然争用写锁”</strong>，因此不把它列为问题。此处只验证已有结构下的 SQL，不涵盖首次建索引或完整 HTTP 缓存命中成本。</p>
+</section>
+
+<section id="retained"><h2>已核实、应保留的优化</h2>
+<ul>
+<li><strong>目录投影与筛选缓存：</strong>使用文件身份和版本失效；旧请求不能覆盖新代次。缓存命中、跨连接写入、导入、预览不提交、权威库缺失等现有行为测试本次通过。</li>
+<li><strong>分页和分配：</strong>单类型查询使用等值条件，newest 索引与排序相匹配；作品读路径借用 SQLite 文本、移动已解码 Value，确实减少复制。没有重新测量历史报告中的“提速百分比”。</li>
+<li><strong>媒体与大结果：</strong>媒体校验移出 SQLite worker，冷哈希和暖身份检查分别限流；缩略图同图合并、有界解码；大 WebUI 解码的许可保留到真实任务结束。此项为当前源码审查结论，本次未重跑这些专项。</li>
+<li><strong>上游与资源：</strong>本机 reqwest Client 复用连接；Comfy history 有退避与终态唤醒；资源同组读取有合并与内存许可。未用省略哈希、路径检查或取消排空换取性能。</li>
+</ul>
+</section>
+
+<section id="validation"><h2>验证状态与交付边界</h2>
+<table><thead><tr><th>状态</th><th>检查</th><th>结果与边界</th></tr></thead><tbody>
+<tr><td>通过</td><td>cargo test --locked --offline --lib catalog::</td><td>16 项通过，0 失败。过滤器也匹配到 Live2D catalog 和离线 catalog 用例；不冒充全部 Rust 测试。</td></tr>
+<tr><td>通过</td><td>cargo test --locked --offline --test storage_preferences</td><td>1 项通过，覆盖偏好/最近/搜索投影、类型、修订及大字段。MSVC 输出创建导入库提示警告，测试退出 0。</td></tr>
+<tr><td>完成</td><td>当前函数采样、Storage 版本复现</td><td>发现上述 3 项改进点，无产品补丁；不是设置性能阈值后的通过判定。</td></tr>
+<tr><td>通过</td><td>docs:check、报告变更 diff 格式</td><td>文档检查 142 文件、1,027 本地链接、70 重定向，0 失效；报告与索引格式检查通过。</td></tr>
+<tr><td>已解决的探针失败</td><td>初次版本复现</td><td>探针对 Windows 临时目录 canonicalize 后引入设备路径前缀，触发 WORKSPACE_IDENTITY。改为既有隔离夹具路径并规范子进程 TEMP/TMP 后复现成功，生产路径守卫未改；原始失败日志保留。</td></tr>
+<tr><td>未运行</td><td>全量 Rust/前端、Clippy、release 性能、HTTP 并发压测</td><td>本次只读审计，没有产品改动，不扩展至全仓门禁；没有当前完整吞吐、p95/p99 或 RSS 结论。</td></tr>
+<tr><td>需设备/实际负载验收</td><td>用户大库、已安装桌面、WebView2、真实模型/GPU</td><td>本次未访问生产 workspace、未调用模型、未安装或部署。</td></tr>
+</tbody></table>
+<details><summary>源码范围与原始证据</summary>
+<p>重点审查 905c90c8、7ccc7a80、05458900 及其后当前实现：catalog 查询/缓存/投影、artwork 读取与单 worker、媒体校验/缩略图、任务读取/版本、资源状态/同组读取、上游客户端与解码/Comfy 轮询。旧 Node 后端仅作历史线索。不是每个后端文件逐行审计。</p>
+<ul>
+<li><a href="../../../runtime/backend-performance-audit-20261008/evidence.json">函数采样、源码 SHA-256、完整 7 次样本</a></li>
+<li><a href="../../../runtime/backend-performance-audit-20261008/revision-evidence.json">真实 Storage 版本复现及链接的库</a></li>
+<li><a href="../../../runtime/backend-performance-audit-20261008/catalog-tests.log">catalog 定向测试日志</a> · <a href="../../../runtime/backend-performance-audit-20261008/storage-preferences-tests.log">作品读取测试日志</a></li>
+<li><a href="../../../runtime/backend-performance-audit-20261008/revision-probe-initial-failure.log">初次夹具路径失败日志</a></li>
+<li><a href="../../../scripts/archive/performance-audit-20261008/run-probe.cjs">一次性采样驱动</a> · <a href="../../../scripts/archive/performance-audit-20261008/run-revision.cjs">Storage 复现驱动</a></li>
+</ul><p>原始文件位于被忽略的 runtime/、scripts/archive/，仅本机可用；本报告入库不自动携带这些材料。没有创建常驻基准、增加产品测试或修改已有测试。</p>
+</details>
+</section>
+<footer>本次写入仅为 HTML 报告、文档索引及被忽略的一次性证据。保留原工作区前端/主题改动；未提交、推送、安装或发布。</footer>
+</main></body></html>

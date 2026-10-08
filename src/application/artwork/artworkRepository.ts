@@ -1,4 +1,4 @@
-import type { ArtworkRecord, ArtworkSearchRecord } from '../../types/artwork.ts'
+import type { ArtworkRecord, ArtworkSearchSummary } from '../../types/artwork.ts'
 import type { ArtworkOrganizationRequest, ArtworkOrganizationReceipt, ArtworkOrganizationUndoResult } from './organization.ts'
 import type { ArtworkProjectDraft } from './projects.ts'
 import type { SmartAlbumDraft } from './smartAlbums.ts'
@@ -39,7 +39,7 @@ export interface ArtworkRepository {
   readHistory(signal?: AbortSignal): Promise<ArtworkRecord[]>
   /** One detached, visible record; unknown outcomes can be reconciled by identity. */
   readArtwork(id: string | number, signal?: AbortSignal): Promise<ArtworkRecord | null>
-  readSearchIndex(signal?: AbortSignal): Promise<ArtworkSearchRecord[]>
+  searchArtworks(query: string, signal?: AbortSignal): Promise<ArtworkSearchSummary[]>
   readProjects(): Promise<ArtworkProjectRecord[]>
   createProject(input: ArtworkProjectDraft): Promise<ArtworkProjectRecord>
   saveSmartAlbum(input: SmartAlbumDraft): Promise<ArtworkProjectRecord>

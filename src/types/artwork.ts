@@ -33,14 +33,13 @@ export interface ArtworkRecord {
   [key: string]: unknown
 }
 
-export interface ArtworkSearchRecord {
+export interface ArtworkSearchSummary {
   id: string | number
   title?: unknown
   sceneTitle?: unknown
   scene?: unknown
   timestamp?: unknown
   size?: unknown
-  searchText: string
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

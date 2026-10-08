@@ -8,7 +8,7 @@ function resource(command: Record<string, unknown>): [string, string] {
   switch (command.kind) {
     case 'status': return ['GET', '/status']
     case 'listArtworks': return ['GET', '/artworks?' + new URLSearchParams(Object.entries(command).filter(([key, value]) => key !== 'kind' && value !== undefined).map(([key, value]) => [key, String(value)]))]
-    case 'readArtworkSearchIndex': return ['GET', '/artwork-search-index']
+    case 'searchArtworks': return ['GET', '/artwork-search?' + new URLSearchParams({ terms: JSON.stringify(command.terms), ...(command.cursor === undefined ? {} : { cursor: String(command.cursor) }) })]
     case 'readArtworkRecentIndex': return ['GET', '/artwork-recent-index' + (command.candidateLimit === undefined ? '' : `?candidateLimit=${encode(command.candidateLimit)}`)]
     case 'getArtwork': return ['GET', entity]
     case 'getArtworks': return ['POST', '/artworks/lookup']

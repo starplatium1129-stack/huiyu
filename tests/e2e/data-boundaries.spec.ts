@@ -6,6 +6,10 @@ for (const theme of ['dark', 'light']) {
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/')
+    // The first-visit modal intentionally owns keyboard input until dismissed.
+    const guide = page.getByRole('dialog', { name: '访客导览' })
+    await guide.getByRole('button', { name: '先浏览，稍后配置' }).click()
+    await expect(guide).toBeHidden()
     await page.evaluate(async () => {
       await new Promise<void>((resolve, reject) => {
         const request = indexedDB.open('aics_kv_store', 1)

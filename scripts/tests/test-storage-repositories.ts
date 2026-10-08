@@ -190,7 +190,7 @@ test('artwork repository: cancelled reads reject before copying late IndexedDB r
   finish([{ id: 'late', future: () => {} }]);
   await assert.rejects(reading, { name: 'AbortError' });
   await assert.rejects(repository.readHistory(controller.signal), { name: 'AbortError' });
-  await assert.rejects(repository.readSearchIndex(controller.signal), { name: 'AbortError' });
+  await assert.rejects(repository.searchArtworks('neutral', controller.signal), { name: 'AbortError' });
   assert.equal(reads, 1);
 });
 

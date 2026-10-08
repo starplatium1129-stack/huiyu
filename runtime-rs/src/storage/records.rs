@@ -39,50 +39,7 @@ pub(super) fn project(c: &Context, key: &str) -> Result<Option<Value>> {
 pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
     match string(command, "kind")? {
         "readArtworkRecentIndex" => super::recent::read(c, command),
-        "readArtworkSearchIndex" => {
-            // Keep display fields as JSON to preserve their original types.
-            // Search text crosses SQLite as plain strings, avoiding an extra
-            // JSON encoding/decoding pass over large prompts and stories.
-            let mut statement = c.db.prepare_cached(
-                "SELECT json_object('id',body -> '$.id','title',body -> '$.title',
-                 'sceneTitle',body -> '$.sceneTitle','scene',body -> '$.scene',
-                 'timestamp',body -> '$.timestamp','size',body -> '$.size'),
-                 CASE WHEN json_type(body,'$.title')='text' THEN json_extract(body,'$.title') END,
-                 CASE WHEN json_type(body,'$.sceneTitle')='text' THEN json_extract(body,'$.sceneTitle') END,
-                 CASE WHEN json_type(body,'$.scene')='text' THEN json_extract(body,'$.scene') END,
-                 CASE WHEN json_type(body,'$.character')='text' THEN json_extract(body,'$.character') END,
-                 CASE WHEN json_type(body,'$.characterId')='text' THEN json_extract(body,'$.characterId') END,
-                 CASE WHEN json_type(body,'$.story')='text' THEN json_extract(body,'$.story') END,
-                 CASE WHEN json_type(body,'$.project')='text' THEN json_extract(body,'$.project') END,
-                 CASE WHEN json_type(body,'$.prompt')='text' THEN json_extract(body,'$.prompt') END
-                 FROM artworks WHERE deleted_at IS NULL ORDER BY id_key",
-            )?;
-            let mut rows = statement.query([])?;
-            let mut items = Vec::new();
-            while let Some(row) = rows.next()? {
-                c.check_cancel()?;
-                let mut item = json_column(row, 0)?;
-                // Borrow large prompts/stories until joining finishes; lowering
-                // the joined text preserves context-sensitive Unicode casing.
-                let mut fields = [""; 8];
-                for (index, field) in fields.iter_mut().enumerate() {
-                    if !matches!(row.get_ref(index + 1)?, rusqlite::types::ValueRef::Null) {
-                        *field = text_column(row, index + 1)?;
-                    }
-                }
-                let text = fields
-                    .into_iter()
-                    .filter(|text| !text.is_empty())
-                    .collect::<Vec<_>>()
-                    .join(" ")
-                    .to_lowercase();
-                item["searchText"] = text.into();
-                items.push(item);
-            }
-            let mut result = json!({"items":null,"revision":c.revision()?});
-            result["items"] = Value::Array(items);
-            Ok(result)
-        }
+        "searchArtworks" => super::artwork_index::search(c, command),
         "getArtwork" => Ok(artwork(c, &entity_key(&command["id"])?)?.unwrap_or(Value::Null)),
         "getArtworks" => {
             let ids = command["ids"]

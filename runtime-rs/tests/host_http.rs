@@ -180,7 +180,7 @@ async fn session_requires_bound_browser_origin_scope_and_current_epoch() {
     let token = grant["workspace"]["token"].as_str().unwrap();
     let valid = [("origin", ORIGIN), ("x-aics-workspace-session", token)];
     for path in [
-        "/api/workspace/artwork-search-index",
+        "/api/workspace/artwork-search?terms=%5B%22neutral%22%5D",
         "/api/workspace/artwork-recent-index",
         "/api/workspace/artworks/missing",
     ] {

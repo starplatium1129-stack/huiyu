@@ -152,6 +152,7 @@ const resultsEl = ref<HTMLElement | null>(null)
 const scenes = shallowRef<SceneItem[]>([])
 const works = shallowRef<ReturnType<typeof indexArtworkSearch> | null>(null)
 const worksController = shallowRef<AbortController | null>(null)
+let worksTimer: ReturnType<typeof setTimeout> | undefined
 const worksError = ref('')
 const worksLoading = computed(() => worksController.value !== null)
 const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
@@ -212,7 +213,7 @@ function takeMatches<T extends { keywords: string }>(items: readonly T[], limit:
 const filteredPages = computed(() => PAGES.filter(p => match(p.label + ' ' + p.keywords)))
 const filteredActions = computed(() => ACTIONS.filter(a => match(a.keywords)))
 const filteredScenes = computed(() => takeMatches(scenes.value, 8))
-const filteredWorks = computed(() => takeMatches(works.value ?? [], 5).map(item => ({
+const filteredWorks = computed(() => (works.value ?? []).map(item => ({
   ...item,
   meta: [item.timestamp ? new Date(item.timestamp).toLocaleDateString() : '', item.size].filter(Boolean).join(' · '),
 })))
@@ -320,25 +321,30 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function resetWorks() {
+  clearTimeout(worksTimer)
   worksController.value?.abort()
   worksController.value = null
   works.value = null
   worksError.value = ''
 }
 
-async function loadWorks() {
-  if (works.value !== null || worksController.value || worksError.value) return
+function loadWorks() {
+  if (worksError.value) return
+  resetWorks()
   const controller = new AbortController()
   worksController.value = controller
-  try {
-    const raw = await artworkRepository.readSearchIndex(AbortSignal.any([controller.signal, AbortSignal.timeout(35_000)]))
-    if (controller.signal.aborted) return
-    works.value = indexArtworkSearch(raw)
-  } catch {
-    if (!controller.signal.aborted) worksError.value = '作品读取失败，请关闭搜索后重开以重试。'
-  } finally {
-    if (worksController.value === controller) worksController.value = null
-  }
+  const text = query.value
+  worksTimer = setTimeout(async () => {
+    try {
+      const raw = await artworkRepository.searchArtworks(text, AbortSignal.any([controller.signal, AbortSignal.timeout(35_000)]))
+      if (controller.signal.aborted) return
+      works.value = indexArtworkSearch(raw)
+    } catch {
+      if (!controller.signal.aborted) worksError.value = '作品读取失败，请关闭搜索后重开以重试。'
+    } finally {
+      if (worksController.value === controller) worksController.value = null
+    }
+  }, 150)
 }
 async function loadScenes() {
   try {

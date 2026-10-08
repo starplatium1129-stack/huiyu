@@ -1,5 +1,9 @@
 # 项目文档索引
 
+[Rust 后端性能优化交付（HTML）](audits/2026-10-08/backend-performance-delivery.html)落实作品独立版本、有界搜索与派生读索引，记录前后测量、40 项 Rust 集成测试及前端/浏览器验证；完整 Rust 与包体预算的环境、历史失败继续保留。
+
+[Rust 后端性能优化审计（HTML）](audits/2026-10-08/backend-performance-audit.html)记录作品搜索全库传输、全局版本导致的缓存失效及最近作品扫描三项 P2，附当前函数采样、真实 Storage 复现和 17 项定向测试；未修改产品代码，保留实际桌面和大库验收边界。
+
 [UX 审计修复交付（HTML）](audits/2026-10-08/product-ux-practicality-delivery.html)记录 8 项实现、草稿恢复、备份入口、任务摘要分页及本次验证；保留全量 Rust 的来源指纹与系统权限限制。
 
 [项目与 UX 实用性审计（HTML）](audits/2026-10-08/product-ux-practicality-audit.html)按数据恢复、操作效率、键盘导航、任务规模与开发环境整理 8 项建议，区分本次复现、静态风险及未验范围；本次未修改产品代码。

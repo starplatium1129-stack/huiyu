@@ -1,3 +1,4 @@
+mod artwork_index;
 mod backup;
 mod canonical;
 mod garbage;
@@ -153,7 +154,7 @@ impl Context {
             kind,
             "status"
                 | "listArtworks"
-                | "readArtworkSearchIndex"
+                | "searchArtworks"
                 | "readArtworkRecentIndex"
                 | "getArtwork"
                 | "getArtworks"
@@ -210,10 +211,10 @@ impl Context {
         }
         match kind {
             "status" => Ok(
-                json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":3,"writerEpoch":self.epoch,"revision":self.revision()?,"sqliteVersion":rusqlite::version()}),
+                json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":3,"writerEpoch":self.epoch,"revision":self.revision()?,"artworkRevision":artwork_index::revision(self)?,"sqliteVersion":rusqlite::version()}),
             ),
             "listArtworks"
-            | "readArtworkSearchIndex"
+            | "searchArtworks"
             | "readArtworkRecentIndex"
             | "getArtwork"
             | "getArtworks"
@@ -315,7 +316,7 @@ fn is_read(kind: &str) -> bool {
         kind,
         "status"
             | "listArtworks"
-            | "readArtworkSearchIndex"
+            | "searchArtworks"
             | "readArtworkRecentIndex"
             | "getArtwork"
             | "getArtworks"
