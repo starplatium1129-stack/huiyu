@@ -5,9 +5,9 @@
       <RouterLink to="/prompt-builder" class="guide-direct">已有想法？直接绘制 <ArchiveIcon name="spark" /></RouterLink>
     </header>
     <ol class="guide-steps tw:grid tw:gap-s-4 tw:p-0 tw:m-0">
-      <li><RouterLink to="/scene-explorer"><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">01</span><span><strong>挑一个场景</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">浏览故事与参考画面，找到想画的瞬间。</span></span></RouterLink></li>
-      <li><RouterLink to="/prompt-builder"><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">02</span><span><strong>在绘制台完成画面</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">确认角色、画幅与氛围，把灵感画出来。</span></span></RouterLink></li>
-      <li><RouterLink to="/gallery"><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">03</span><span><strong>在「我的作品」回看</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">查看已保存的作品，挑选喜欢的图片继续创作。</span></span></RouterLink></li>
+      <li><RouterLink to="/scene-explorer"><img class="step-art" :src="inspirationArt" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">01</span><span><strong>挑一个场景</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">浏览故事与参考画面，找到想画的瞬间。</span></span></RouterLink></li>
+      <li><RouterLink to="/prompt-builder"><img class="step-art" :src="createArt" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">02</span><span><strong>在绘制台完成画面</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">确认角色、画幅与氛围，把灵感画出来。</span></span></RouterLink></li>
+      <li><RouterLink to="/gallery"><img class="step-art" :src="collectionArt" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">03</span><span><strong>在「我的作品」回看</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">查看已保存的作品，挑选喜欢的图片继续创作。</span></span></RouterLink></li>
     </ol>
     <details class="guide-help tw:mt-s-4 tw:text-secondary tw:text-label">
       <summary>开始前：生成条件、作品保存与参考样张</summary>
@@ -23,6 +23,9 @@
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import inspirationArt from '@/assets/illustrations/atelier-inspiration-spot.webp'
+import createArt from '@/assets/illustrations/atelier-create-spot.webp'
+import collectionArt from '@/assets/illustrations/atelier-collection-spot.webp'
 </script>
 
 <style scoped>
@@ -32,7 +35,8 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 h2 { margin: var(--s-2) 0 0; font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .guide-direct { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-accent tw:text-label; }
 .guide-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; }
-.guide-steps a { @apply tw:flex tw:gap-s-3 tw:h-full tw:p-s-4; border: 1px solid transparent; @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
+.guide-steps a { @apply tw:grid tw:gap-s-3 tw:h-full tw:p-s-4; grid-template-columns:40px minmax(0,1fr); grid-template-rows:auto 1fr; border: 1px solid transparent; @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
+.step-art { grid-column:1/-1; display:block; width:100%; height:clamp(112px,12vw,164px); object-fit:contain; }
 .guide-steps a:hover { @apply tw:border-strong; background: var(--bg-surface); }
 .guide-steps a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 @media (hover: hover) and (pointer: fine) {

@@ -25,7 +25,6 @@
 .stage-portrait-missing { @apply tw:absolute; inset:0; @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-3 tw:p-s-5 tw:text-secondary; background:var(--bg-surface); @apply tw:text-center tw:text-body-sm; }
 .stage-portrait-missing > svg { @apply tw:w-[44px] tw:h-[44px] tw:text-accent; }
 .stage-portrait-missing strong { @apply tw:text-primary tw:text-title-sm; }
-.stage-reference-caption { @apply tw:absolute tw:top-s-3 tw:left-s-3 tw:right-s-3; z-index:var(--z-raised); justify-self:start; padding:var(--s-2) var(--s-3); @apply tw:rounded-sm; background:var(--bg-surface); @apply tw:text-secondary tw:text-label-xs; }
 .room-surface .character-info { flex:0 0 auto; @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; padding:var(--s-3) var(--s-2); background:transparent; border:0; border-top:1px solid var(--border-soft); }
 .room-surface .character-info-head { @apply tw:min-w-0; }
 .room-surface .character-status { @apply tw:hidden; }
@@ -99,7 +98,9 @@
 .room-current-line p { margin: var(--s-3) 0; @apply tw:whitespace-pre-wrap; }
 .room-surface.room-immersive .chat-layout { @apply tw:relative tw:block; }
 .room-surface.room-immersive .character-card { @apply tw:absolute; inset: 0; }
-.room-surface.room-immersive .character-info { @apply tw:absolute tw:right-0 tw:top-0; z-index: var(--z-raised); }
+.room-surface.room-immersive .character-info { @apply tw:absolute tw:right-0 tw:top-0 tw:rounded-md; z-index: var(--z-raised); background:var(--bg-surface); }
+.room-surface.room-immersive .portrait-stage:is([data-character='nene'],[data-character='natsume']):not(.live2d-ready) .portrait-main { object-fit:contain; object-position:center top; }
+.room-surface.room-immersive .avatar-status { right:auto; left:var(--s-3); }
 .room-surface.room-immersive .character-name { @apply tw:hidden; }
 .room-surface.room-immersive .character-controls-panel { top: calc(100% + 8px); @apply tw:bottom-auto tw:left-auto tw:right-0; width: min(340px, 84vw); }
 .room-surface.room-immersive .conversation-card { @apply tw:absolute tw:bottom-0 tw:left-[50%]; transform: translateX(-50%); animation: none; width: min(720px, 100%); @apply tw:max-h-[65%]; z-index: var(--z-raised); }
@@ -119,6 +120,8 @@
   .room-eyebrow { @apply tw:hidden; }
 }
 @media (max-width: 899px) {
+  /* Wide, shallow stages must keep the supplied portrait wallpaper's head in frame. */
+  .room-surface .portrait-stage:is([data-character='nene'],[data-character='natsume']):not(.live2d-ready) .portrait-main { object-fit:contain; object-position:center; }
   .room-surface .chat-layout,.room-surface:is([data-character='hatsune_miku'],[data-character='frieren'],[data-character='fern_frieren']) .chat-layout { grid-template-columns:1fr; grid-template-rows:minmax(150px,30%) minmax(0,1fr); @apply tw:gap-s-2; }
   /* The full API form needs intrinsic height; the fixed chat/composer grid
      otherwise compresses it to a clipped strip on narrow screens. */

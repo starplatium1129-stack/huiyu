@@ -1,9 +1,9 @@
 <template>
   <figure class="inspiration-artwork" :class="{ ready: loaded, 'inspiration-artwork-full': full }" :aria-busy="Boolean(src && !loaded && !failed)">
-    <img v-if="src && !failed" v-bind="image" :alt="scene?.title + '，完整场景构图'" decoding="async" draggable="false" />
+    <img v-if="src && !failed" v-bind="image" :alt="artwork?.alt || scene?.title + '，完整场景构图'" decoding="async" draggable="false" />
     <div v-if="!loaded" class="inspiration-artwork-fallback" :role="failed ? 'status' : undefined">
       <ArchiveIcon :name="icon" />
-      <span>{{ failed ? '预览未能加载' : !scene ? '场景预览待收录' : !src ? '图片服务未连接' : '加载画面…' }}</span>
+      <span>{{ failed ? '预览未能加载' : !scene && !artwork ? '场景预览待收录' : !src ? '图片服务未连接' : '加载画面…' }}</span>
     </div>
   </figure>
 </template>
@@ -12,9 +12,9 @@
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import type { ExplorerScene } from '@/composables/scene/sceneExplorerPresentation'
-const props = defineProps<{ scene?: ExplorerScene; icon: ArchiveIconName; full?: boolean }>()
-const { image, src, loaded, failed } = useRuntimeImage(() => props.scene?.rating === 'All' && props.scene.mature !== true
-  ? `/scene-showcase/${props.full ? 'images' : 'thumbs'}/${props.scene.id.toLowerCase().replace(/[^a-z0-9_-]/g, '')}.jpg` : '')
+const props = defineProps<{ scene?: ExplorerScene; artwork?: { src: string; alt: string }; icon: ArchiveIconName; full?: boolean }>()
+const { image, src, loaded, failed } = useRuntimeImage(() => props.artwork?.src || (props.scene?.rating === 'All' && props.scene.mature !== true
+  ? `/scene-showcase/${props.full ? 'images' : 'thumbs'}/${props.scene.id.toLowerCase().replace(/[^a-z0-9_-]/g, '')}.jpg` : ''))
 </script>
 
 <style scoped>

@@ -7,7 +7,7 @@
         <button type="button" aria-label="上一张灵感" :disabled="rails.length < 2" @click="step(-1)"><ArchiveIcon name="chevron-down" class="previous-icon" /></button>
         <span class="inspiration-deck-count" role="status" aria-live="polite" aria-atomic="true">
           <span aria-hidden="true">{{ String(index + 1).padStart(2, '0') }} / {{ String(rails.length).padStart(2, '0') }}</span>
-          <span class="sr-only">第 {{ index + 1 }} 张，共 {{ rails.length }} 张：{{ entries[index]?.scene?.title || rails[index]?.title }}</span>
+          <span class="sr-only">第 {{ index + 1 }} 张，共 {{ rails.length }} 张：{{ entries[index]?.title }}</span>
         </span>
         <button type="button" aria-label="下一张灵感" :disabled="rails.length < 2" @click="step(1)"><ArchiveIcon name="chevron-down" class="next-icon" /></button>
       </div>
@@ -21,20 +21,21 @@
         :class="{ front: depth === 0, 'inspiration-feature': depth === 0, 'only-card': cards.length === 1 }" :data-character="item.rail.character"
         :style="depth === 0 ? { '--deck-x': `${turning ? -turning * 16 : canAnimate ? dragX : 0}px`, '--deck-opacity': turning ? 0 : 1 } : undefined">
         <div v-if="depth === 0" class="inspiration-feature-copy">
-          <span class="inspiration-feature-label">{{ item.scene ? sceneCharacter(item.scene) : '灵感手帖' }}</span>
-          <h2>{{ item.scene?.title || item.rail.title }}</h2>
+          <span class="inspiration-feature-label">{{ item.artwork ? sceneCharacter(item.rail.character) : item.scene ? sceneCharacter(item.scene.char) : '灵感手帖' }}</span>
+          <h2>{{ item.title }}</h2>
           <p>{{ item.rail.subtitle }}</p>
           <div class="inspiration-feature-actions">
-            <RouterLink v-if="item.scene" class="btn btn-primary inspiration-feature-draw" :to="'/prompt-builder?scene=' + encodeURIComponent(item.scene.id)"><ArchiveIcon name="spark" />用这一幕绘制</RouterLink>
+            <RouterLink v-if="item.scene" class="btn btn-primary inspiration-feature-draw" :to="'/prompt-builder?scene=' + encodeURIComponent(item.scene.id)"><ArchiveIcon name="spark" />{{ item.artwork ? '绘制推荐场景' : '用这一幕绘制' }}</RouterLink>
             <button class="inspiration-deck-open" type="button" :disabled="Boolean(turning)" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
           </div>
         </div>
-        <button class="inspiration-deck-image" :class="{ 'inspiration-feature-image': depth === 0 }" type="button" :disabled="!item.scene"
-          :aria-label="item.scene ? '查看完整场景：' + item.scene.title : '此灵感暂未提供场景图片'" @click="item.scene && emit('open', item.scene)">
-          <InspirationArtwork :scene="item.scene" :icon="railIconName(item.rail.icon)" :full="depth === 0" />
+        <button class="inspiration-deck-image" :class="{ 'inspiration-feature-image': depth === 0, 'inspiration-header-image': item.artwork }" type="button" :disabled="!item.artwork && !item.scene"
+          :aria-label="item.artwork ? '探索题图灵感：' + item.rail.title : item.scene ? '查看完整场景：' + item.scene.title : '此灵感暂未提供场景图片'"
+          @click="item.artwork ? emit('select', item.rail) : item.scene && emit('open', item.scene)">
+          <InspirationArtwork :scene="item.scene" :artwork="item.artwork" :icon="railIconName(item.rail.icon)" :full="depth === 0" />
         </button>
         <div v-if="depth !== 0" class="inspiration-deck-copy">
-          <h2>{{ item.scene?.title || item.rail.title }}</h2>
+          <h2>{{ item.title }}</h2>
           <span class="inspiration-deck-subtitle">{{ item.rail.subtitle }}</span>
           <button class="inspiration-deck-open" type="button" :disabled="Boolean(turning)" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
         </div>
@@ -48,7 +49,7 @@ import { computed, ref, useId } from 'vue'
 import { RouterLink } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import InspirationArtwork from './InspirationArtwork.vue'
-import { railIconName, type ExplorerScene } from '@/composables/scene/sceneExplorerPresentation'
+import { DEFAULT_RAILS, railIconName, type ExplorerScene } from '@/composables/scene/sceneExplorerPresentation'
 import { useInspirationDeck } from '@/composables/scene/useInspirationDeck'
 import { analyzeQuery, matchesSearch, searchScore } from '@/utils/sceneUX'
 
@@ -72,13 +73,15 @@ const entries = computed(() => {
       if (score > bestScore) { scene = candidate; bestScore = score }
     }
     if (scene) used.add(scene.id)
-    return { rail, scene, key: `${i}:${rail.title}:${rail.query}` }
+    // Editorial headers illustrate these specific rails, never a catalog render.
+    const artwork = DEFAULT_RAILS.find(item => item.character === rail.character && item.title === rail.title && item.query === rail.query)?.artwork
+    return { rail, scene, artwork, title: artwork ? rail.title : scene?.title || rail.title, key: `${i}:${rail.title}:${rail.query}` }
   })
 })
 const keys = computed(() => entries.value.map(item => item.key))
 const { index, dragX, dragging, turning, resetting, canAnimate, step, pointerDown, pointerMove,
   pointerUp, cancel, clickCapture, keydown } = useInspirationDeck(host, () => keys.value)
-function sceneCharacter(scene: ExplorerScene) { return scene.char === 'natsume' ? '四季夏目' : scene.char === 'nene' ? '绫地宁宁' : '双人场景' }
+function sceneCharacter(character?: string) { return character === 'natsume' ? '四季夏目' : character === 'nene' ? '绫地宁宁' : '双人灵感' }
 const cards = computed(() => Array.from({ length: Math.min(3, entries.value.length) }, (_, depth) =>
   entries.value[(index.value + depth) % entries.value.length]))
 </script>
@@ -112,6 +115,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-stage.still .inspiration-deck-card { transition:none; --card-focus-lift:0px; --card-focus-scale:1; }
 .inspiration-deck-image { --inspiration-art-height:100%; display:flex; align-items:center; justify-content:center; width:100%; min-width:0; min-height:0; padding:0; border:0; background:transparent; cursor:zoom-in; }
 .inspiration-deck-image :deep(.inspiration-artwork) { width:100%; height:100%; border:0; background:transparent; }
+.inspiration-header-image { cursor:pointer; }
 .inspiration-deck-copy { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; justify-items:start; gap:var(--s-1) var(--s-2); padding-top:var(--s-2); min-width:0; }
 .inspiration-deck-copy h2 { margin:0; color:var(--text-primary); font:600 var(--fs-label-sm)/var(--lh-body) var(--font-display); letter-spacing:-.02em; }
 .inspiration-deck-subtitle { grid-column:1/-1; color:var(--text-muted); font-size:var(--fs-label-xs); }

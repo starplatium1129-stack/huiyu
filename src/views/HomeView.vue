@@ -146,28 +146,24 @@
       </div>
       <div class="tools-grid">
         <RouterLink to="/character" class="tool-card card-create">
-          <span class="tool-index" aria-hidden="true">05 / PROFILE</span>
-          <span class="ic"><ArchiveIcon name="character" /></span><span class="t">角色档案</span>
+          <img class="tool-art" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
+          <span class="t"><ArchiveIcon name="character" />角色档案</span>
           <span class="d">读懂她的性格与过往，认识下一位主角。</span>
-          <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/style" class="tool-card card-create">
-          <span class="tool-index" aria-hidden="true">06 / PALETTE</span>
-          <span class="ic"><ArchiveIcon name="palette" /></span><span class="t">画风</span>
+          <img class="tool-art" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
+          <span class="t"><ArchiveIcon name="palette" />画风</span>
           <span class="d">调配色彩情绪与光影色阶。</span>
-          <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/lora" class="tool-card card-create">
-          <span class="tool-index" aria-hidden="true">07 / MODEL</span>
-          <span class="ic"><ArchiveIcon name="model" /></span><span class="t">模型</span>
+          <img class="tool-art" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
+          <span class="t"><ArchiveIcon name="model" />模型</span>
           <span class="d">挑选契合这次笔触的底模与特征。</span>
-          <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/gallery" class="tool-card card-create">
-          <span class="tool-index" aria-hidden="true">08 / WORKS</span>
-          <span class="ic"><ArchiveIcon name="gallery" /></span><span class="t">我的作品</span>
+          <img class="tool-art" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
+          <span class="t"><ArchiveIcon name="gallery" />我的作品</span>
           <span class="d">安静珍藏属于你的每一幅心动创作。</span>
-          <span class="go">→ 打开</span>
         </RouterLink>
       </div>
     </section>
@@ -182,6 +178,7 @@
           title="画板还在等第一抹色彩"
           message="画好之后，属于你的心动画页会静静收录在这里。"
         >
+          <template #illustration><img class="recent-empty-art" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template>
           <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
         </ArchiveStatePanel>
       </div>
@@ -211,6 +208,11 @@ import sceneArt from '@/assets/illustrations/home-scene.webp'
 import motionArt from '@/assets/illustrations/home-motion.webp'
 import roomArt from '@/assets/illustrations/home-room.webp'
 import archiveArt from '@/assets/illustrations/home-archive.webp'
+import characterSpot from '@/assets/illustrations/atelier-character-spot.webp'
+import paletteSpot from '@/assets/illustrations/atelier-palette-spot.webp'
+import modelSpot from '@/assets/illustrations/atelier-model-spot.webp'
+import collectionSpot from '@/assets/illustrations/atelier-collection-spot.webp'
+import createSpot from '@/assets/illustrations/atelier-create-spot.webp'
 import { readRecent } from '@/utils/sceneUX'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useSceneStore } from '@/stores/sceneStore'

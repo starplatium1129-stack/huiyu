@@ -1,5 +1,8 @@
 import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import type { Scene } from '@/stores/sceneStore'
+import neneHeader from '@/assets/illustrations/nene-moonlit-study-header.webp'
+import natsumeHeader from '@/assets/illustrations/natsume-rainy-cafe-header.webp'
+import summerHeader from '@/assets/illustrations/nene-natsume-summer-outing-header.webp'
 
 export interface ExplorerScene extends Scene {
   title?: string
@@ -36,9 +39,12 @@ export const THEME_DEFS: Array<{
 ]
 
 export const DEFAULT_RAILS = [
-  { character: 'nene', icon: 'moonlight', title: '宁宁的月光秘密', subtitle: '图书馆 · 樱色 · 魔女', query: 'nene library' },
-  { character: 'natsume', icon: 'coffee', title: '夏目的夜灯关心', subtitle: '咖啡馆 · 雨夜 · 琥珀', query: 'natsume cafe' },
-  { character: 'shared', icon: 'goldenhour', title: '夏日远行', subtitle: '海风 · 黄昏 · 纪念', query: 'beach sunset' },
+  { character: 'nene', icon: 'moonlight', title: '宁宁的月光秘密', subtitle: '图书馆 · 樱色 · 魔女', query: 'nene library',
+    artwork: { src: neneHeader, alt: '宁宁在月光书房里写手帖，猫咪蜷在桌边' } },
+  { character: 'natsume', icon: 'coffee', title: '夏目的夜灯关心', subtitle: '咖啡馆 · 雨夜 · 琥珀', query: 'natsume cafe',
+    artwork: { src: natsumeHeader, alt: '夏目捧着热饮坐在雨夜咖啡馆里' } },
+  { character: 'shared', icon: 'goldenhour', title: '夏日远行', subtitle: '海风 · 黄昏 · 纪念', query: 'beach sunset',
+    artwork: { src: summerHeader, alt: '宁宁与夏目坐在夏日海边，分享手绘风景与饮料' } },
 ]
 
 /** moodRails 数据兼容 emoji 旧值与本地 ArchiveIconName。 */

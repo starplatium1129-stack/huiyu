@@ -63,11 +63,9 @@
 .tools-grid { @apply tw:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); @apply tw:gap-s-3; }
 .tool-card { @apply tw:relative tw:flex tw:flex-col tw:gap-s-3 tw:p-s-5 tw:min-w-0; border: 1px solid transparent; @apply tw:rounded-xl; background: var(--bg-surface); box-shadow: none; @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
 .tool-card::before, .tool-card::after { @apply tw:hidden; }
-.tool-card .tool-index { @apply tw:hidden tw:absolute tw:top-s-5 tw:right-s-4; font: 500 var(--fs-mono-xs) var(--font-mono); @apply tw:text-muted; letter-spacing: .06em; }
-.tool-card .ic { @apply tw:grid; place-items: center; @apply tw:w-[40px] tw:h-[40px] tw:rounded-md tw:text-accent; background: var(--accent-soft); @apply tw:text-title-sm; }
-.tool-card .t { @apply tw:text-title-xs tw:font-semibold; }
+.tool-card .t { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:text-title-xs tw:font-semibold; }
+.tool-card .t .archive-icon { width:18px; height:18px; color:var(--accent); }
 .tool-card .d { flex: 1; @apply tw:text-secondary tw:text-label tw:leading-loose; }
-.tool-card .go { @apply tw:text-accent tw:text-label-sm tw:mt-s-2; }
 /* Transparent illustrations and separate reading space form an open studio spread. */
 .home-atelier { padding-block:var(--s-4); }
 .atelier-entries { display:grid; grid-template-columns:1.12fr 1fr 1fr; gap:var(--s-6) var(--s-5); }
@@ -121,10 +119,10 @@
 .pop-cap-name { @apply tw:text-primary tw:text-label-sm tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .pop-cap-franchise { @apply tw:text-muted tw:text-label-xs tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .home-section-quiet .tools-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.home-section-quiet .tool-card { @apply tw:grid; grid-template-columns: auto 1fr; gap:var(--s-2) var(--s-4); @apply tw:p-s-4; background:var(--bg-surface); border:1px solid transparent; @apply tw:rounded-xl; }
-.home-section-quiet .tool-card .ic { grid-row: 1 / 3; }
-.home-section-quiet .tool-index, .home-section-quiet .go { @apply tw:hidden; }
-.home-section-quiet .tool-card .ic { background:var(--accent-soft); @apply tw:text-accent; }
+.home-section-quiet .tool-card { @apply tw:grid; grid-template-columns:clamp(84px,10vw,132px) minmax(0,1fr); grid-template-rows:1fr 1fr; gap:var(--s-2) var(--s-4); @apply tw:p-s-4; background:var(--bg-surface); border:1px solid transparent; @apply tw:rounded-xl; }
+.home-section-quiet .tool-art { grid-row:1/3; display:block; width:100%; height:auto; align-self:center; object-fit:contain; }
+.home-section-quiet .tool-card .t { align-self:end; }
+.home-section-quiet .tool-card .d { align-self:start; }
 .recent-grid { @apply tw:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); @apply tw:gap-s-4; }
 .recent-card { border: 1px solid var(--border-soft); @apply tw:rounded-xl tw:overflow-hidden; background: var(--bg-surface); @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
 .recent-cover { aspect-ratio: 4/3; @apply tw:grid; place-items: center; background: var(--bg-deep); @apply tw:overflow-hidden; }
@@ -135,6 +133,7 @@
 .recent-meta { @apply tw:mt-s-1 tw:text-label-sm tw:text-secondary; }
 .recent-scenes-row > * { flex: 0 0 min(300px, 82vw); }
 .recent-grid .recent-empty-state { grid-column: 1 / -1; @apply tw:m-0; max-width: none; @apply tw:w-full; }
+.recent-empty-art { display:block; width:clamp(160px,16vw,220px); height:auto; margin:auto; }
 .tool-card:focus-visible, .pop-card-mini:focus-visible, .sc-link:focus-visible, .recent-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (hover: hover) and (pointer: fine) {
   .tool-card:hover, .pop-card-mini:hover, .recent-card:hover { transform: translateY(-3px); @apply tw:border-strong; }
@@ -163,7 +162,6 @@
   .hero-orbit { @apply tw:h-[260px]; }
   .tools-grid { @apply tw:gap-s-2; }
   .tool-card { @apply tw:p-s-4; }
-  .tool-card .tool-index { @apply tw:hidden; }
   .home-section-head { align-items: start; @apply tw:flex-col tw:gap-s-1; }
   .pop-strip { padding: var(--s-4) 0; }
   .recent-grid { grid-template-columns: minmax(0, 1fr); }

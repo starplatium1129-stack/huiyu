@@ -9,8 +9,8 @@ vi.mock('@/composables/useVisualActivity', () => ({ useVisualActivity: () => act
 const wrappers: ReturnType<typeof mount>[] = []
 beforeEach(() => { vi.useFakeTimers(); activity.canPresent.value = true; activity.canAnimate.value = true })
 afterEach(() => { wrappers.splice(0).forEach(wrapper => wrapper.unmount()); vi.useRealTimers() })
-function fixture(scenes: NonNullable<InstanceType<typeof InspirationDeck>['$props']['scenes']> = []) {
-  const wrapper = mount(InspirationDeck, { props: { rails: DEFAULT_RAILS, scenes }, global: { stubs: { RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' } } } })
+function fixture(scenes: NonNullable<InstanceType<typeof InspirationDeck>['$props']['scenes']> = [], rails: InstanceType<typeof InspirationDeck>['$props']['rails'] = DEFAULT_RAILS) {
+  const wrapper = mount(InspirationDeck, { props: { rails, scenes }, global: { stubs: { RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' } } } })
   wrappers.push(wrapper)
   const stage = wrapper.get('.inspiration-deck-stage')
   const captured = new Set<number>()
@@ -28,6 +28,7 @@ it('turns with buttons and keyboard, announces the front, and only explicit expl
   const { wrapper, stage, title } = fixture()
   await vi.advanceTimersByTimeAsync(5000)
   expect(title()).toBe(DEFAULT_RAILS[0].title)
+  expect(wrapper.findAll('img').map(image => image.attributes('src'))).toEqual(DEFAULT_RAILS.map(rail => rail.artwork.src))
   await wrapper.get('[aria-label="下一张灵感"]').trigger('click')
   await stage.trigger('keydown', { key: 'ArrowRight' }) // no reentry during the same turn
   await vi.advanceTimersByTimeAsync(280)
@@ -42,6 +43,9 @@ it('turns with buttons and keyboard, announces the front, and only explicit expl
   expect(wrapper.emitted('select')).toEqual([[DEFAULT_RAILS[0]]])
   await wrapper.get('.inspiration-deck-card:not(.front) .inspiration-deck-open').trigger('click')
   expect(wrapper.emitted('select')?.[1]).toEqual([DEFAULT_RAILS[1]])
+  await wrapper.get('.front .inspiration-deck-image').trigger('click')
+  expect(wrapper.emitted('select')?.[2]).toEqual([DEFAULT_RAILS[0]])
+  expect(wrapper.emitted('open')).toBeUndefined() // A header explores its theme; it is not a catalog preview.
 })
 it('keeps vertical scroll, short drags and interactive button presses distinct from page turns', async () => {
   const { wrapper, pointer, title } = fixture()
@@ -111,6 +115,7 @@ it('preserves the page after a catalog reload, resets on changed rails and suppo
   expect(wrapper.emitted('select')).toEqual([[DEFAULT_RAILS[2]]])
 })
 it('uses matching All-rated catalog scenes and keeps absent or failed previews browsable', async () => {
+  const rails = DEFAULT_RAILS.map(rail => ({ ...rail, title: `自选：${rail.title}` }))
   const base = { char: 'nene', tags: ['library'], mature: false, location: '学院图书馆' }
   const sample = { ...base, id: 'sc215', title: '月光书页', story: 'library', rating: 'All' }
   const second = { ...base, char: 'natsume', id: 'sc220', title: '咖啡馆的灯', tags: ['cafe'], rating: 'All' }
@@ -121,7 +126,7 @@ it('uses matching All-rated catalog scenes and keeps absent or failed previews b
     { ...sample, id: 'sc214', story: '' }, sample, // A weaker match precedes the winner.
     { ...sample, id: 'sc216' }, // A tied match must not replace the first winner.
     { ...sample, id: 'sc002', tags: ['park'] }, second,
-  ])
+  ], rails)
   expect(title()).toBe(sample.title)
   expect(wrapper.findAll('img')).toHaveLength(2) // Each matched scene appears once, and both are reachable.
   const img = wrapper.get('.front img')
@@ -141,18 +146,18 @@ it('uses matching All-rated catalog scenes and keeps absent or failed previews b
   expect(wrapper.get('.inspiration-feature-draw').attributes('href')).toBe('/prompt-builder?scene=sc220')
   await wrapper.get('[aria-label="上一张灵感"]').trigger('click')
   await vi.advanceTimersByTimeAsync(280)
-  await wrapper.setProps({ rails: [DEFAULT_RAILS[0], { ...DEFAULT_RAILS[0], title: '另一个图书馆灵感' }] })
+  await wrapper.setProps({ rails: [rails[0], { ...rails[0], title: '另一个图书馆灵感' }] })
   expect(wrapper.findAll('img').map(image => image.attributes('src'))).toEqual([
     '/scene-showcase/images/sc215.jpg', '/scene-showcase/thumbs/sc216.jpg',
   ])
-  await wrapper.setProps({ rails: DEFAULT_RAILS })
+  await wrapper.setProps({ rails })
   const returnedImage = wrapper.get('.front img')
   await returnedImage.trigger('error')
   expect(wrapper.get('.front [role="status"]').text()).toContain('预览未能加载')
   await wrapper.get('.front button').trigger('click')
-  expect(wrapper.emitted('select')).toEqual([[DEFAULT_RAILS[0]]])
+  expect(wrapper.emitted('select')).toEqual([[rails[0]]])
   await wrapper.setProps({ scenes: [] })
-  expect(title()).toBe(DEFAULT_RAILS[0].title)
+  expect(title()).toBe(rails[0].title)
   expect(wrapper.find('img').exists()).toBe(false)
   expect(wrapper.get('.front').text()).toContain('场景预览待收录')
 })

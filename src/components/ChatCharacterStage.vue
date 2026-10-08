@@ -18,7 +18,6 @@
         <small>{{ character.roomMood }}</small>
       </div>
       <img v-if="portraitImage.src && !portraitFailed" v-bind="portraitImage" class="portrait-main" :alt="character.name" />
-      <span v-if="usesMoodPortrait && !portraitFailed && !live2d.ready.value" class="stage-reference-caption">陪伴氛围参考 · 既有场景样张</span>
       <div v-if="portraitFailed && !live2d.ready.value" class="stage-portrait-missing" role="status">
         <ArchiveIcon name="image" /><strong>{{ character.name }}</strong>
         <span>立绘暂未加载，对话仍可继续</span>
@@ -157,7 +156,8 @@ import { getNativeLive2dCapabilities } from '@/platform/desktop/nativeLive2d'
 
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import { useMoodReferences } from '@/composables/useMoodReferences'
+import neneWallpaper from '@/assets/illustrations/nene-webchat-wallpaper.webp'
+import natsumeWallpaper from '@/assets/illustrations/natsume-webchat-wallpaper.webp'
 import {
   type CharacterConfig,
 } from '@/config/characters'
@@ -216,10 +216,8 @@ const emit = defineEmits<{
 }>()
 
 const stageRef = ref<HTMLElement>()
-const { available: moodPortraits } = useMoodReferences(['sc001', 'sc022'])
-const moodPortraitId = computed(() => props.activeId === 'nene' ? 'sc001' : props.activeId === 'natsume' ? 'sc022' : '')
-const usesMoodPortrait = computed(() => (props.surface || 'room') === 'room' && moodPortraits.value.has(moodPortraitId.value))
-const staticPortraitSource = computed(() => usesMoodPortrait.value ? `/scene-showcase/thumbs/${moodPortraitId.value}.jpg` : props.character.image)
+const staticPortraitSource = computed(() => props.surface === 'companion' ? props.character.image
+  : props.activeId === 'nene' ? neneWallpaper : props.activeId === 'natsume' ? natsumeWallpaper : props.character.image)
 const { image: portraitImage, failed: portraitFailed, retry: retryPortrait } = useRuntimeImage(staticPortraitSource)
 const controlsRef = ref<InstanceType<typeof CharacterStageSettings>>()
 const ModelStudio = defineAsyncComponent(() => import('./ModelStudio.vue'))
