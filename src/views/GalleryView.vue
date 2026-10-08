@@ -309,7 +309,9 @@ import GalleryAlbumOverview from '@/components/gallery/GalleryAlbumOverview.vue'
 import GalleryCollectionFilters from '@/components/gallery/GalleryCollectionFilters.vue'
 import GallerySmartAlbumEditor from '@/components/gallery/GallerySmartAlbumEditor.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
-import galleryEmptyArt from '@/assets/illustrations/atelier-gallery.png'
+import galleryEmptyOriginal from '@/assets/illustrations/atelier-gallery.png'
+import { useThemeIllustration } from '@/composables/useThemeIllustration'
+const galleryEmptyArt = useThemeIllustration(galleryEmptyOriginal, 'collection')
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"

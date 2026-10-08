@@ -250,8 +250,10 @@ function onNavigationKey(event: KeyboardEvent) {
   const links = [...(linksEl.value?.querySelectorAll<HTMLAnchorElement>(':scope > a') ?? [])]
   const index = links.indexOf(event.target as HTMLAnchorElement)
   if (index < 0) return
+  const vertical = document.documentElement.dataset.themeStyle === 'terraria' && matchMedia('(min-width:1100px)').matches
   const next = event.key === 'Home' ? 0 : event.key === 'End' ? links.length - 1
-    : event.key === 'ArrowRight' ? (index + 1) % links.length : event.key === 'ArrowLeft' ? (index - 1 + links.length) % links.length : -1
+    : event.key === 'ArrowRight' || vertical && event.key === 'ArrowDown' ? (index + 1) % links.length
+      : event.key === 'ArrowLeft' || vertical && event.key === 'ArrowUp' ? (index - 1 + links.length) % links.length : -1
   if (next >= 0) { event.preventDefault(); links[next]?.focus() }
 }
 

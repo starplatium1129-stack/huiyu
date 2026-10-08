@@ -25,6 +25,7 @@ import './assets/css/glass-material-base.css'
 import './assets/css/native-controls.css'
 import './assets/css/desktop-layout.css'
 import './assets/css/interaction-motion.css'
+import './assets/css/terraria-theme.css'
 
 // Join before mounting: a new document must not start writing while another
 // document holds exclusive cleanup access. Browsing still works without locks;

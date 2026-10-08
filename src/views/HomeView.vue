@@ -203,22 +203,33 @@ import HomeCreationGuide from '@/components/home/HomeCreationGuide.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import studioArt from '@/assets/illustrations/atelier-studio.png'
-import sceneArt from '@/assets/illustrations/home-scene.webp'
-import motionArt from '@/assets/illustrations/home-motion.webp'
-import roomArt from '@/assets/illustrations/home-room.webp'
-import archiveArt from '@/assets/illustrations/home-archive.webp'
-import characterSpot from '@/assets/illustrations/atelier-character-spot.webp'
-import paletteSpot from '@/assets/illustrations/atelier-palette-spot.webp'
-import modelSpot from '@/assets/illustrations/atelier-model-spot.webp'
-import collectionSpot from '@/assets/illustrations/atelier-collection-spot.webp'
-import createSpot from '@/assets/illustrations/atelier-create-spot.webp'
+import studioOriginal from '@/assets/illustrations/atelier-studio.png'
+import sceneOriginal from '@/assets/illustrations/home-scene.webp'
+import motionOriginal from '@/assets/illustrations/home-motion.webp'
+import roomOriginal from '@/assets/illustrations/home-room.webp'
+import archiveOriginal from '@/assets/illustrations/home-archive.webp'
+import characterOriginal from '@/assets/illustrations/atelier-character-spot.webp'
+import paletteOriginal from '@/assets/illustrations/atelier-palette-spot.webp'
+import modelOriginal from '@/assets/illustrations/atelier-model-spot.webp'
+import collectionOriginal from '@/assets/illustrations/atelier-collection-spot.webp'
+import createOriginal from '@/assets/illustrations/atelier-create-spot.webp'
+import { useThemeIllustration } from '@/composables/useThemeIllustration'
 import { readRecent } from '@/utils/sceneUX'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useSceneStore } from '@/stores/sceneStore'
 import type { Scene } from '@/stores/sceneStore'
 
 useScrollReveal()
+const studioArt = useThemeIllustration(studioOriginal, 'draw')
+const sceneArt = useThemeIllustration(sceneOriginal, 'scene')
+const motionArt = useThemeIllustration(motionOriginal, 'motion')
+const roomArt = useThemeIllustration(roomOriginal, 'room')
+const archiveArt = useThemeIllustration(archiveOriginal, 'collection')
+const characterSpot = useThemeIllustration(characterOriginal, 'character')
+const paletteSpot = useThemeIllustration(paletteOriginal, 'palette')
+const modelSpot = useThemeIllustration(modelOriginal, 'model')
+const collectionSpot = useThemeIllustration(collectionOriginal, 'collection')
+const createSpot = useThemeIllustration(createOriginal, 'draw')
 
 const DRAFT_KEY = 'aics_pb_last_draft'
 
@@ -243,11 +254,11 @@ const sceneLibraryCopy = computed(() => homeScenes.value
 const featuredScenes = computed(() => pickFeatured(featuredIds.value, homeScenes.value || [], 6))
 const homeMuse = ref<'nene' | 'natsume'>('nene')
 const creationEntries = computed(() => [
-  { id: 'make', label: '01 / MAKE', title: '开始绘制', description: '选一位主角与场景，把心动的模样画下来。', action: '走进绘制台', to: '/prompt-builder', art: studioArt },
-  { id: 'scene', label: '02 / SCENE', title: '灵感场景', description: sceneLibraryCopy.value, action: '寻找灵感', to: '/scene-explorer', art: sceneArt },
-  { id: 'motion', label: '03 / MOTION', title: '故事短片', description: '让静止的画面，成为一段会呼吸的故事。', action: '开始创作', to: '/video-studio', art: motionArt },
-  { id: 'room', label: '04 / ROOM', title: '角色房间', description: '专属轻语时刻，静静聊聊今天的心情。', action: '进入房间', to: `/chat?character=${homeMuse.value}`, art: roomArt },
-  { id: 'archive', label: '05 / ARCHIVE', title: '参考画册', description: '翻阅心动样张，遇见下一幕的灵感。', action: '翻开画册', to: '/showcase', art: archiveArt },
+  { id: 'make', label: '01 / MAKE', title: '开始绘制', description: '选一位主角与场景，把心动的模样画下来。', action: '走进绘制台', to: '/prompt-builder', art: studioArt.value },
+  { id: 'scene', label: '02 / SCENE', title: '灵感场景', description: sceneLibraryCopy.value, action: '寻找灵感', to: '/scene-explorer', art: sceneArt.value },
+  { id: 'motion', label: '03 / MOTION', title: '故事短片', description: '让静止的画面，成为一段会呼吸的故事。', action: '开始创作', to: '/video-studio', art: motionArt.value },
+  { id: 'room', label: '04 / ROOM', title: '角色房间', description: '专属轻语时刻，静静聊聊今天的心情。', action: '进入房间', to: `/chat?character=${homeMuse.value}`, art: roomArt.value },
+  { id: 'archive', label: '05 / ARCHIVE', title: '参考画册', description: '翻阅心动样张，遇见下一幕的灵感。', action: '翻开画册', to: '/showcase', art: archiveArt.value },
 ])
 const heroImmediate = ref(false)
 const heroName = computed(() => homeMuse.value === 'nene' ? '绫地宁宁' : '四季夏目')

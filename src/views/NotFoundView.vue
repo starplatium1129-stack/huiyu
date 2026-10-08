@@ -1,6 +1,6 @@
 <template>
   <article class="page notfound-page tw:flex tw:min-h-[60vh] tw:flex-col tw:items-center tw:justify-center tw:gap-s-3 tw:text-center">
-    <img v-if="!chibiFailed" class="notfound-chibi" :src="lostNatsume" alt="四季夏目抱着咖啡，和猫咪一起看着迷路地图与 404 路牌" width="1774" height="887" loading="eager" decoding="async" @error="chibiFailed = true" />
+    <img v-if="!chibiFailed" class="notfound-chibi" :src="lostNatsume" alt="寻找方向的地图插画" width="1774" height="887" loading="eager" decoding="async" @error="chibiFailed = true" />
     <div v-else class="notfound-chibi notfound-chibi-fallback" role="status">
       <ArchiveIcon name="image" />
       <span class="notfound-fallback-text tw:text-label-sm tw:tracking-[.1em]">插图暂未加载</span>
@@ -21,7 +21,9 @@
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import lostNatsume from '@/assets/illustrations/natsume-lost.png'
+import lostOriginal from '@/assets/illustrations/natsume-lost.png'
+import { useThemeIllustration } from '@/composables/useThemeIllustration'
+const lostNatsume = useThemeIllustration(lostOriginal, 'scene')
 
 const route = useRoute()
 const path = computed(() => route.fullPath)

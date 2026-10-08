@@ -23,9 +23,13 @@
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import inspirationArt from '@/assets/illustrations/atelier-inspiration-spot.webp'
-import createArt from '@/assets/illustrations/atelier-create-spot.webp'
-import collectionArt from '@/assets/illustrations/atelier-collection-spot.webp'
+import inspirationOriginal from '@/assets/illustrations/atelier-inspiration-spot.webp'
+import createOriginal from '@/assets/illustrations/atelier-create-spot.webp'
+import collectionOriginal from '@/assets/illustrations/atelier-collection-spot.webp'
+import { useThemeIllustration } from '@/composables/useThemeIllustration'
+const inspirationArt = useThemeIllustration(inspirationOriginal, 'scene')
+const createArt = useThemeIllustration(createOriginal, 'draw')
+const collectionArt = useThemeIllustration(collectionOriginal, 'collection')
 </script>
 
 <style scoped>

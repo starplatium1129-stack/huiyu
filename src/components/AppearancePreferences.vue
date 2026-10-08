@@ -9,6 +9,16 @@
       </div>
       <div v-if="section === 'appearance'" v-content-motion:up="section" class="appearance-fields">
         <fieldset class="appearance-choice-field">
+          <legend>界面风格</legend>
+          <RadioGroupRoot v-model="selectedStyle" class="appearance-style-choices" aria-label="界面风格">
+            <RadioGroupItem v-for="choice in styleChoices" :key="choice.value" :value="choice.value" :data-value="choice.value"
+              @focus="selectedStyle = choice.value">
+              <span class="appearance-style-preview" :class="choice.value" aria-hidden="true"><i></i><i></i><i></i></span>
+              <strong>{{ choice.label }}</strong><small>{{ choice.description }}</small>
+            </RadioGroupItem>
+          </RadioGroupRoot>
+        </fieldset>
+        <fieldset class="appearance-choice-field">
           <legend>画室主题</legend>
           <RadioGroupRoot v-model="selectedTheme" class="appearance-segments studio-segments" data-segment-keyboard="managed" aria-label="画室主题">
             <AnimatedSelection />
@@ -24,13 +34,14 @@
               :data-value="choice.value" @focus="selectedMotion = choice.value">{{ choice.label }}</RadioGroupItem>
           </RadioGroupRoot>
         </fieldset>
-        <GlassMaterialChoice v-if="materialControlsReady" />
+        <GlassMaterialChoice v-if="materialControlsReady && themeStyle === 'atelier'" />
+        <p v-if="themeStyle === 'terraria'" class="appearance-note">像素主题使用实色面板与方块边框，浅色与深色分别呈现白昼和夜晚。</p>
         <label v-if="zoomAvailable" class="appearance-range">界面缩放 · {{ Math.round(zoom * 100) }}%<input type="range" min="75" max="200" step="5" :value="zoom * 100" aria-label="界面缩放" @input="setZoom(Number(($event.target as HTMLInputElement).value) / 100)"><button class="btn btn-ghost" type="button" @click="setZoom(1)">恢复 100%</button></label>
         <p v-if="zoomError" role="status">{{ zoomError }}</p>
-        <ToggleSwitch class="appearance-check" :model-value="reducedGlass" label="降低玻璃效果" @update:model-value="setReducedGlass">
+        <ToggleSwitch v-if="themeStyle === 'atelier'" class="appearance-check" :model-value="reducedGlass" label="降低玻璃效果" @update:model-value="setReducedGlass">
           <span>降低玻璃效果<small>使用更稳定的底色，减少透光与背景干扰。</small></span>
         </ToggleSwitch>
-        <p class="appearance-note">系统开启减少透明度或高对比度时，会自动降低玻璃效果。</p>
+        <p v-if="themeStyle === 'atelier'" class="appearance-note">系统开启减少透明度或高对比度时，会自动降低玻璃效果。</p>
       </div>
       <dl v-else v-content-motion:up="section" class="appearance-shortcuts">
         <div><dt><kbd>F6</kbd> / <kbd>Shift F6</kbd></dt><dd>在导航与内容之间切换</dd></div>
@@ -59,10 +70,11 @@ import { useDesktopZoom } from '@/composables/useDesktopZoom'
 import '@/assets/css/appearance-preferences.css'
 const emit = defineEmits<{ open: [] }>()
 const props = withDefaults(defineProps<{ launcherOnly?: boolean; hideTriggers?: boolean }>(), { launcherOnly: false, hideTriggers: false })
-const { themeMode, motionMode, reducedGlass, setThemeMode, setMotionMode, setReducedGlass } = useDesktopPreferences()
+const { themeMode, themeStyle, motionMode, reducedGlass, setThemeMode, setThemeStyle, setMotionMode, setReducedGlass } = useDesktopPreferences()
 // Select on roving focus so the preference and Tab stop stay aligned even when
 // keyup precedes Reka's deferred click after a short arrow-key press.
 const selectedTheme = computed({ get: () => themeMode.value, set: setThemeMode })
+const selectedStyle = computed({ get: () => themeStyle.value, set: setThemeStyle })
 const selectedMotion = computed({ get: () => motionMode.value, set: setMotionMode })
 const dialog = ref<HTMLDialogElement | null>(null)
 let keyboardInput = false
@@ -91,6 +103,10 @@ const themeChoices = [
   { value: 'system', label: '跟随系统' },
   { value: 'light', label: '浅色' },
   { value: 'dark', label: '深色' },
+] as const
+const styleChoices = [
+  { value: 'atelier', label: '绘遇画室', description: '柔和手绘 · 纸页留白' },
+  { value: 'terraria', label: '泰拉瑞亚', description: '像素森林 · 方块边框' },
 ] as const
 const motionChoices = [
   { value: 'system', label: '跟随系统' },

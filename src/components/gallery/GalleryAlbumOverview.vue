@@ -19,8 +19,11 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import GalleryProjectAlbums from './GalleryProjectAlbums.vue'
 import type { GalleryProjectAlbum } from '@/composables/gallery/useGalleryProjectAlbums'
-import characterArt from '@/assets/illustrations/atelier-character-spot.webp'
-import collectionArt from '@/assets/illustrations/atelier-collection-spot.webp'
+import characterOriginal from '@/assets/illustrations/atelier-character-spot.webp'
+import collectionOriginal from '@/assets/illustrations/atelier-collection-spot.webp'
+import { useThemeIllustration } from '@/composables/useThemeIllustration'
+const characterArt = useThemeIllustration(characterOriginal, 'character')
+const collectionArt = useThemeIllustration(collectionOriginal, 'collection')
 defineProps<{ albums: readonly GalleryProjectAlbum[]; selectedId: string; characters: boolean; loading: boolean; error: string; busy: boolean; hasHistory: boolean }>()
 const emit = defineEmits<{ select: [id: string]; edit: [id: string]; remove: [id: string]; visible: [ids: string[]]; smart: []; manual: []; images: []; retry: [] }>()
 </script>

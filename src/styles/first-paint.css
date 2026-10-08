@@ -26,6 +26,14 @@
   --first-paint-background: #faf8f4;
   --first-paint-text: #202a33;
 }
+:root[data-theme-style="terraria"] {
+  --first-paint-background:#111d2a;
+  --first-paint-text:#f6edcf;
+}
+:root[data-theme-style="terraria"][data-theme="light"] {
+  --first-paint-background:#f0f3e2;
+  --first-paint-text:#263a2c;
+}
 
 /* Native pet only: prevent the normal full-window loading card and theme wash. */
 html.companion-desktop,

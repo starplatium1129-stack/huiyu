@@ -170,10 +170,12 @@ The atelier supports dark and light themes, with dark as the default. Dark
 surfaces use warm graphite; light surfaces use warm paper and readable rose-ink
 accents. Both themes preserve the same layout, action hierarchy, and character identity.
 
+界面风格与明暗模式独立：外观设置中的「绘遇画室」为默认风格；「泰拉瑞亚」采用像素木纹、纸张面板、森林地景、灯具藤蔓和主题插画，同样支持浅色、深色和跟随系统。宽度达到 1100 CSS px 时使用木质侧栏，并支持上下方向键导航；更窄窗口沿用折叠菜单。风格通过 `data-theme-style` 应用，保存在既有外观偏好的 `style` 字段；首帧脚本同步恢复。像素主题使用不透明材质，切回画室后恢复原有玻璃偏好。原作、参考图和聊天壁纸保持原始画面；仅主题装饰通过 `useThemeIllustration` 切换，不得改变内容或分级。独立桌宠保持透明，系统高对比度颜色优先。
+
 > **2026-09-08 · 当前双主题契约**
 > 浅色已恢复，入口为 AppThemeToggle/useTheme，覆盖在 light-theme.css。
 > 本文色板为深色基线；新增颜色需适配两个主题，角色强调色与图片上文字分别验收。
-> check-contrast.js 核算双主题全局令牌与角色强调色；浏览器计算样式和视觉审查仍须覆盖动态组件与图片叠字。
+> check-contrast.js 核算两种界面风格的明暗配色及角色强调色；浏览器计算样式和视觉审查仍须覆盖动态组件、纹理背景与图片叠字。
 > ui-layout.spec.ts 的实际文字检查逐层合成文字 alpha、背景与祖先 opacity；图片和渐变背景继续用实际像素与深浅主题截图验收，不能把令牌通过视作页面整体 AA 通过。
 
 - Use `primary` only for the current selection, the main call to action, focus,

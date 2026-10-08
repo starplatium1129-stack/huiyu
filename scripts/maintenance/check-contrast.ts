@@ -13,6 +13,7 @@ const sources: typeof import('./style-sources') = require('./style-sources');
 // 而 SPA 加载的是 src/assets/css/design-system.css —— 门槛在审计一棵死树。
 const css = sources.read(sources.DESIGN_SYSTEM);
 const lightCss = sources.read('src/assets/css/light-theme.css');
+const terrariaCss = sources.read('src/assets/css/terraria-theme.css');
 
 function hexToRgb(hex: any) {
   const value = hex.replace('#', '');
@@ -50,7 +51,10 @@ function block(selector: any, source: any = css) {
 }
 const dark = block(':root');
 const light = { ...dark, ...block(':root[data-theme="light"]', lightCss) };
-const themes = [['dark', dark], ['light', light]];
+const pixel = block(":root[data-theme-style='terraria']", terrariaCss);
+const themes = [['dark', dark], ['light', light],
+  ['terraria-dark', { ...dark, ...pixel }],
+  ['terraria-light', { ...light, ...pixel, ...block(":root[data-theme-style='terraria'][data-theme='light']", terrariaCss) }]];
 
 // 真正会被当文字色使用的 token。
 // 功能色与 mood 色的原 token 只做背景/描边,故不在此列 —— 文字走 --*-text。
@@ -140,7 +144,7 @@ function characterThemes() {
       ...tokens,
       ...base,
       ...inline,
-      ...(theme === 'light' ? block(':root[data-theme="light"] .pb', lightCss) : {}),
+      ...(theme.endsWith('light') ? block(':root[data-theme="light"] .pb', lightCss) : {}),
     }];
   }));
 }

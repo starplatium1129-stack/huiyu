@@ -5,10 +5,12 @@ import { useTheme } from './useTheme'
 import { THEME_SETTING } from '@/storage/settingsRepository'
 
 type ThemeMode = 'system' | 'dark' | 'light'
+export type ThemeStyle = 'atelier' | 'terraria'
 type MotionMode = 'system' | 'full' | 'reduce'
 export type GlassMode = 'light' | 'liquid'
 const KEY = 'atelier-desktop-appearance-v1'
 const themeMode = ref<ThemeMode>('system')
+const themeStyle = ref<ThemeStyle>('atelier')
 const motionMode = ref<MotionMode>('system')
 const reducedGlass = ref(false)
 const glassMode = ref<GlassMode>('light')
@@ -17,7 +19,7 @@ const effectiveGlassMode = ref<GlassMode>('light')
 let initialized = false
 
 function save() {
-  try { localStorage.setItem(KEY, JSON.stringify({ theme: themeMode.value, motion: motionMode.value, reducedGlass: reducedGlass.value, glass: glassMode.value, glassTint: glassTint.value })) } catch { /* Optional preferences must never block the workspace. */ }
+  try { localStorage.setItem(KEY, JSON.stringify({ theme: themeMode.value, style: themeStyle.value, motion: motionMode.value, reducedGlass: reducedGlass.value, glass: glassMode.value, glassTint: glassTint.value })) } catch { /* Optional preferences must never block the workspace. */ }
 }
 function normalizedGlassTint(value: unknown) { return typeof value === 'number' && Number.isFinite(value) ? Math.round(Math.max(0, Math.min(100, value))) : 35 }
 
@@ -38,11 +40,12 @@ export function initializeDesktopPreferences() {
       const saved = JSON.parse(localStorage.getItem(KEY) || 'null')
       const legacy = localStorage.getItem(THEME_SETTING.key)
       themeMode.value = ['system', 'dark', 'light'].includes(saved?.theme) ? saved.theme : legacy === 'dark' || legacy === 'light' ? legacy : 'system'
+      themeStyle.value = saved?.style === 'terraria' ? 'terraria' : 'atelier'
       motionMode.value = ['system', 'full', 'reduce'].includes(saved?.motion) ? saved.motion : 'system'
       reducedGlass.value = saved?.reducedGlass === true
       glassMode.value = saved?.glass === 'liquid' ? 'liquid' : 'light'
       glassTint.value = normalizedGlassTint(saved?.glassTint)
-    } catch { themeMode.value = theme.value; motionMode.value = 'system'; reducedGlass.value = false; glassMode.value = 'light'; glassTint.value = 35 }
+    } catch { themeMode.value = theme.value; themeStyle.value = 'atelier'; motionMode.value = 'system'; reducedGlass.value = false; glassMode.value = 'light'; glassTint.value = 35 }
     finally { reading = false }
   }
   function apply() {
@@ -50,9 +53,10 @@ export function initializeDesktopPreferences() {
     setTheme(themeMode.value === 'system' ? dark.matches ? 'dark' : 'light' : themeMode.value)
     applyingTheme = false
     const root = document.documentElement
+    root.dataset.themeStyle = themeStyle.value
     root.dataset.motion = motionMode.value
     root.dataset.reducedMotion = String(motionMode.value === 'reduce' || motionMode.value === 'system' && reduce.matches)
-    const lowGlass = reducedGlass.value || contrast.matches || transparency.matches || forcedColors.matches
+    const lowGlass = themeStyle.value === 'terraria' || reducedGlass.value || contrast.matches || transparency.matches || forcedColors.matches
     root.dataset.reducedGlass = String(lowGlass)
     root.dataset.fluidEffects = lowGlass ? 'low' : 'full'
     effectiveGlassMode.value = lowGlass ? 'light' : glassMode.value
@@ -61,7 +65,7 @@ export function initializeDesktopPreferences() {
     window.dispatchEvent(new Event('atelier:motion-preference'))
   }
   read(); save(); apply()
-  watch([themeMode, motionMode, reducedGlass, glassMode, glassTint], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
+  watch([themeMode, themeStyle, motionMode, reducedGlass, glassMode, glassTint], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
   // Existing sun/moon controls are an explicit choice and cancel system-following.
   watch(theme, value => { if (!applyingTheme) themeMode.value = value }, { flush: 'sync' })
   for (const query of [dark, reduce, contrast, transparency, forcedColors]) query.addEventListener('change', apply)
@@ -70,11 +74,12 @@ export function initializeDesktopPreferences() {
 
 export function useDesktopPreferences() {
   return {
-    themeMode: readonly(themeMode), motionMode: readonly(motionMode), reducedGlass: readonly(reducedGlass),
+    themeMode: readonly(themeMode), themeStyle: readonly(themeStyle), motionMode: readonly(motionMode), reducedGlass: readonly(reducedGlass),
     glassMode: readonly(glassMode), effectiveGlassMode: readonly(effectiveGlassMode), glassTint: readonly(glassTint),
     setGlassMode(value: GlassMode) { glassMode.value = value === 'liquid' ? 'liquid' : 'light' },
     setGlassTint(value: number) { glassTint.value = normalizedGlassTint(value) },
     setThemeMode(value: ThemeMode) { themeMode.value = value },
+    setThemeStyle(value: ThemeStyle) { themeStyle.value = value === 'terraria' ? 'terraria' : 'atelier' },
     setMotionMode(value: MotionMode) { motionMode.value = value },
     setReducedGlass(value: boolean) { reducedGlass.value = value },
   }
