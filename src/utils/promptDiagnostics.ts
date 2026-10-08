@@ -1,5 +1,5 @@
 import { WIDE_TOKENS, CLOSE_TOKENS, MID_TOKENS } from './promptFramingTokens.ts'
-import { normalizeKey, tokenize, splitBreaks } from './promptPolicy.ts'
+import { normalizeKey, tokenize, splitBreaks } from './promptPrimitives.ts'
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import type { PromptPart, PromptEngine } from './promptPolicyTypes.ts'
 export const BANNED_TAGS = [

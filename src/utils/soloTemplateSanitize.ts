@@ -3,7 +3,7 @@
 // POV、望向镜头、牵手、浪漫氛围与中心互动/动作全部保留（viewer 相关，
 // 不产生画面中第二个可见人物）。SD 引擎保留原样（WebUI 有完整双人支持）。
 
-import { normalizeKey, splitBreaks, tokenize } from './promptPolicy.ts'
+import { normalizeKey, splitBreaks, tokenize } from './promptPrimitives.ts'
 
 const NATSUME_IDENTITY_TOKENS = new Set([
   '1girl', 'solo', 'shiki_natsume', 'black_hair', 'long_hair', 'very_long_hair',

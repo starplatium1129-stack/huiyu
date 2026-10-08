@@ -1,4 +1,4 @@
-import assert from 'node:assert/strict'
+import { legacySdJob } from './testFixtures/legacySdJob'
 import { computed, effectScope, nextTick, ref } from 'vue'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { usePromptSdQueue, type PromptSdQueueDeps } from './usePromptSdQueue'
@@ -8,7 +8,7 @@ vi.mock('@/api/runtimeTasks', () => ({ getRuntimeTaskByKey: tasks.get, cancelRun
 vi.mock('@/api/runtimeTaskAuthority', () => ({ hasRuntimeTasks: () => true }))
 import { activateProfileStorage, flushProfileWrites, refreshProfileStorage, type ProfilePort } from '@/platform/web/profileStorage'
 
-import type { SDGenerateOptions } from '@/composables/generation/useSDGenerate'
+import type { LegacySdObserveOptions } from '@/composables/generation/useLegacySdTasks'
 import { SD_PENDING_QUEUE_KEY } from '@/utils/storageKeys'
 
 let records = new Map<string, {key:string; value:unknown; revision:number}>()
@@ -27,7 +27,7 @@ const port: ProfilePort = {
 beforeEach(async () => {
   records = new Map(); revision = 0
   vi.mocked(port.saveDraft).mockReset().mockImplementation(saveDraft)
-  tasks.get.mockReset().mockResolvedValue(null); tasks.cancel.mockReset().mockResolvedValue(null)
+  tasks.get.mockReset().mockImplementation(async key => ({ taskId: key + '-task', status: 'running', recoveryState: 'normal', upstreamSettled: false })); tasks.cancel.mockReset().mockResolvedValue(null)
   await activateProfileStorage(port, 'atelier')
 })
 
@@ -49,7 +49,7 @@ function setup() {
       hiresFix: false, hiresScale: 2, hiresUpscaler: '', hiresSteps: 0, hiresDenoise: 0.5, faceDetailer: false },
     sdModelName: 'model-a', commitHistoryEntry: vi.fn().mockResolvedValue({ id: 1 }), flash: vi.fn(),
   }
-  const sd = { generate: vi.fn<(params: unknown, options?: SDGenerateOptions) => Promise<string | null>>().mockResolvedValue('blob:result'), resultSeed: ref<number | null>(0),
+  const sd = { observe: vi.fn<(params: unknown, options?: LegacySdObserveOptions) => Promise<string | null>>().mockResolvedValue('blob:result'), resultSeed: ref<number | null>(0),
     lastLoras: ref<Array<{ id: string; strength: number }>>([]), checkpoint: ref('model-a'), generating: ref(false),
     errorMsg: ref(''), resultTaskId: ref('') }
   const setResultContext = vi.fn()
@@ -67,201 +67,109 @@ function setup() {
   return { tools, pb, sd, setResultContext, scope }
 }
 
-it('restores two durable pending jobs after rebuilding the window, paused and without browser writes', async () => {
+it('restores saved identities after rebuilding the window, paused and without browser writes', async () => {
   const first = setup()
-  first.sd.generating.value = true
-  first.tools.enqueueCurrent(); first.tools.enqueueCurrent()
-  await nextTick(); await flushProfileWrites()
-  assert.equal(first.tools.sdQueue.queue.value.length, 2)
+  const recorded = [legacySdJob('a'), legacySdJob('b')]
+  first.tools.sdQueue.restore(recorded); await first.tools.sdQueue.checkpoint(); await flushProfileWrites()
   first.scope.stop()
+  const browserWrite = vi.spyOn(Storage.prototype, 'setItem')
   await activateProfileStorage(port, 'atelier')
   const restored = setup()
-  assert.equal(restored.tools.sdQueue.queue.value.length, 2)
-  assert.equal(restored.tools.sdQueue.paused.value, true)
-  assert.equal(restored.sd.generate.mock.calls.length, 0)
-  assert.equal(localStorage.length, 0)
-  assert.equal(sessionStorage.length, 0)
+  expect(restored.tools.restoredCount).toBe(2); expect(restored.tools.sdQueue.paused.value).toBe(true)
+  expect(restored.tools.sdQueue.queue.value).toEqual(recorded)
+  expect(restored.sd.observe).not.toHaveBeenCalled(); expect(tasks.get).not.toHaveBeenCalled()
+  expect(browserWrite).not.toHaveBeenCalled(); browserWrite.mockRestore()
 })
-
-it('does not dispatch before the save receipt and keeps a save failure paused until explicit resume', async () => {
-  let release!: () => void
-  vi.mocked(port.saveDraft).mockImplementationOnce(input => new Promise(resolve => { release = () => { void saveDraft(input).then(resolve) } }))
+it('waits for the queue save receipt before observing a restored task', async () => {
   const { tools, sd } = setup()
-  tools.enqueueCurrent()
-  await nextTick()
-  expect(sd.generate).not.toHaveBeenCalled()
-  expect(tools.sdQueue.total.value).toBe(1)
-  release()
-  await vi.waitFor(() => expect(tools.sdQueue.done.value).toBe(1))
-  vi.mocked(port.saveDraft).mockRejectedValue(new Error('save unavailable'))
-  tools.enqueueCurrent()
-  await vi.waitFor(() => expect(tools.sdQueue.paused.value).toBe(true))
-  expect(sd.generate).toHaveBeenCalledTimes(1)
-  vi.mocked(port.saveDraft).mockImplementation(saveDraft)
-  await flushProfileWrites()
-  expect(sd.generate).toHaveBeenCalledTimes(1)
+  tools.sdQueue.restore([legacySdJob('a')])
+  let finish!: () => void
+  vi.mocked(port.saveDraft).mockImplementationOnce(input => new Promise(resolve => { finish = () => { void saveDraft(input).then(resolve) } }))
   tools.sdQueue.resume()
-  await vi.waitFor(() => expect(tools.sdQueue.done.value).toBe(1))
-  expect(sd.generate).toHaveBeenCalledTimes(2)
+  await vi.waitFor(() => expect(finish).toBeDefined())
+  expect(sd.observe).not.toHaveBeenCalled(); expect(tasks.get).not.toHaveBeenCalled()
+  finish()
+  await vi.waitFor(() => expect(sd.observe).toHaveBeenCalledOnce())
+  expect(sd.observe.mock.calls[0][1]?.attempt?.key).toBe('request-a')
 })
-
-it('restores the submitted key, queries unknown acceptance without dispatching, then observes the original task', async () => {
-  const first = setup()
-  first.sd.generate.mockRejectedValue(new Error('acceptance response lost'))
-  first.tools.enqueueCurrent()
-  await vi.waitFor(() => expect(first.tools.sdQueue.paused.value).toBe(true))
-  await flushProfileWrites()
-  const key = savedJobs()[0].attempt.key
-  first.scope.stop()
-  await activateProfileStorage(port, 'atelier')
-  const restored = setup()
-  restored.sd.generate.mockResolvedValue(null)
-  restored.tools.sdQueue.resume()
-  await vi.waitFor(() => expect(restored.tools.sdQueue.paused.value).toBe(true))
-  expect(tasks.get).toHaveBeenCalledWith(key)
-  expect(restored.sd.generate).not.toHaveBeenCalled()
-  const accepted = { taskId: 'accepted', requestKey: key, upstreamSettled: false, status: 'running' }
-  tasks.get.mockResolvedValue(accepted)
-  restored.tools.sdQueue.resume()
-  await vi.waitFor(() => expect(restored.sd.generate).toHaveBeenCalledOnce())
-  expect(restored.sd.generate.mock.calls[0]![1]!.attempt!).toMatchObject({ key, task: accepted })
-  await vi.waitFor(() => expect(restored.tools.sdQueue.paused.value).toBe(true))
-  expect(savedJobs()[0].attempt.key).toBe(key)
-})
-
-it('a settled failure can use a new identity only when the user resumes', async () => {
+it('unknown acceptance keeps its key and resume only queries the original task', async () => {
   const { tools, sd } = setup()
-  sd.generate.mockResolvedValue(null)
-  tools.enqueueCurrent()
-  await vi.waitFor(() => expect(tools.sdQueue.paused.value).toBe(true))
-  const first = sd.generate.mock.calls[0]![1]!.attempt!.key
-  tasks.get.mockResolvedValue({ taskId: 'failed', requestKey: first, upstreamSettled: true, status: 'failed' })
-  await nextTick()
-  expect(sd.generate).toHaveBeenCalledOnce()
+  tools.sdQueue.restore([legacySdJob('a')])
+  tasks.get.mockResolvedValueOnce(null)
   tools.sdQueue.resume()
-  await vi.waitFor(() => expect(sd.generate).toHaveBeenCalledTimes(2))
-  expect(sd.generate.mock.calls[1]![1]!.attempt!.key).not.toBe(first)
+  await vi.waitFor(() => expect(tools.sdQueue.paused.value).toBe(true))
+  expect(sd.observe).not.toHaveBeenCalled(); expect(savedJobs()[0].attempt.key).toBe('request-a')
+  tools.sdQueue.resume()
+  await vi.waitFor(() => expect(sd.observe).toHaveBeenCalledOnce())
+  expect(tasks.get.mock.calls.map(([key]) => key)).toEqual(['request-a', 'request-a'])
+  expect(sd.observe.mock.calls[0][1]?.attempt?.task?.taskId).toBe('request-a-task')
 })
-
-it('replays a lost removal cancellation receipt with the original key after remount', async () => {
+it('settled failure never mints a replacement identity when the user resumes', async () => {
+  const { tools, sd } = setup()
+  tools.sdQueue.restore([legacySdJob('failed')])
+  tasks.get.mockResolvedValue({ taskId: 'failed-task', status: 'failed', upstreamSettled: true })
+  sd.observe.mockResolvedValue(null)
+  tools.sdQueue.resume(); await vi.waitFor(() => expect(tools.sdQueue.paused.value).toBe(true))
+  tools.sdQueue.resume(); await vi.waitFor(() => expect(sd.observe).toHaveBeenCalledTimes(2))
+  await flushProfileWrites()
+  expect(tasks.get.mock.calls.map(([key]) => key)).toEqual(['request-failed', 'request-failed'])
+  expect(savedJobs()[0].attempt.key).toBe('request-failed')
+})
+it('unsent legacy rows are retained without creating an attempt or dispatching', async () => {
+  const { tools, sd } = setup()
+  const row = legacySdJob('unsent'); delete row.attempt
+  tools.sdQueue.restore([row]); tools.sdQueue.resume()
+  await vi.waitFor(() => expect(tools.sdQueue.paused.value).toBe(true))
+  expect(sd.observe).not.toHaveBeenCalled(); expect(tasks.get).not.toHaveBeenCalled()
+  expect(savedJobs()[0].attempt).toBeUndefined()
+})
+it('replays a lost removal cancellation receipt using the original key after remount', async () => {
   const first = setup()
-  first.sd.generate.mockResolvedValue(null)
-  first.tools.enqueueCurrent()
-  await vi.waitFor(() => expect(first.tools.sdQueue.paused.value).toBe(true))
-  const key = first.sd.generate.mock.calls[0]![1]!.attempt!.key
-  tasks.cancel.mockRejectedValueOnce(new Error('cancel receipt lost'))
-  await first.tools.sdQueue.remove(first.tools.sdQueue.queue.value[0]!.id)
+  first.tools.sdQueue.restore([legacySdJob('a')])
+  await first.tools.sdQueue.checkpoint()
+  tasks.cancel.mockRejectedValueOnce(new Error('receipt lost'))
+  await first.tools.sdQueue.remove('a')
   await flushProfileWrites()
   expect(savedJobs()[0].removeRequested).toBe(true)
-  first.scope.stop()
-  await activateProfileStorage(port, 'atelier')
+  first.scope.stop(); await activateProfileStorage(port, 'atelier')
   const restored = setup()
+  await vi.waitFor(() => expect(tasks.cancel).toHaveBeenCalledTimes(2))
   await vi.waitFor(() => expect(restored.tools.sdQueue.total.value).toBe(0))
-  await flushProfileWrites()
-  expect(tasks.cancel.mock.calls).toEqual([[key], [key]])
-  expect(savedJobs()).toEqual([])
-  expect(restored.sd.generate).not.toHaveBeenCalled()
+  expect(tasks.cancel.mock.calls).toEqual([['request-a'], ['request-a']])
+  expect(restored.sd.observe).not.toHaveBeenCalled()
 })
-
-it('clear waiting preserves the active attempt and unloading never sends cancellation', async () => {
+it('clearing waiting rows preserves the active task and unloading never cancels it', async () => {
   const { tools, sd, scope } = setup()
   let finish!: () => void
-  sd.generate.mockImplementation(() => new Promise(resolve => { finish = () => resolve(null) }))
-  tools.enqueueCurrent(); tools.enqueueCurrent(); tools.enqueueCurrent()
-  await vi.waitFor(() => expect(sd.generate).toHaveBeenCalledOnce())
-  const key = sd.generate.mock.calls[0]![1]!.attempt!.key
+  sd.observe.mockImplementation(() => new Promise(resolve => { finish = () => resolve(null) }))
+  tools.sdQueue.restore([legacySdJob('a'), legacySdJob('b'), legacySdJob('c')]); tools.sdQueue.resume()
+  await vi.waitFor(() => expect(sd.observe).toHaveBeenCalledOnce())
   await tools.sdQueue.clear()
-  expect(tools.sdQueue.queue.value).toHaveLength(0)
-  expect(savedJobs()).toHaveLength(1)
-  expect(savedJobs()[0].attempt.key).toBe(key)
-  expect(tasks.cancel).not.toHaveBeenCalled()
+  expect(tasks.cancel.mock.calls).toEqual([['request-b'], ['request-c']])
+  expect(tools.sdQueue.activeJob.value?.attempt?.key).toBe('request-a')
   scope.stop(); finish(); await nextTick()
-  expect(tasks.cancel).not.toHaveBeenCalled()
+  expect(tasks.cancel).not.toHaveBeenCalledWith('request-a')
 })
-
-it('restores an explicit cancellation with a lost receipt and never turns recovery into generation', async () => {
+it('restores an explicit cancellation with a lost receipt without observing or resubmitting', async () => {
   const first = setup()
   let finish!: () => void
-  first.sd.generate.mockImplementation(() => new Promise(resolve => { finish = () => resolve(null) }))
-  first.tools.enqueueCurrent()
-  await vi.waitFor(() => expect(first.sd.generate).toHaveBeenCalledOnce())
-  const attempt = first.sd.generate.mock.calls[0]![1]!.attempt!
+  first.sd.observe.mockImplementation(() => new Promise(resolve => { finish = () => resolve(null) }))
+  first.tools.sdQueue.restore([legacySdJob('a')]); first.tools.sdQueue.resume()
+  await vi.waitFor(() => expect(first.sd.observe).toHaveBeenCalledOnce())
+  const attempt = first.sd.observe.mock.calls[0][1]!.attempt!
   tasks.cancel.mockRejectedValueOnce(new Error('cancel receipt lost'))
   await expect(attempt.cancel()).rejects.toThrow('cancel receipt lost')
   expect(savedJobs()[0].attempt.cancelRequested).toBe(true)
-  finish()
-  await vi.waitFor(() => expect(first.tools.sdQueue.paused.value).toBe(true))
-  first.scope.stop()
-  await flushProfileWrites(); await activateProfileStorage(port, 'atelier')
+  finish(); await vi.waitFor(() => expect(first.tools.sdQueue.paused.value).toBe(true))
+  first.scope.stop(); await flushProfileWrites(); await activateProfileStorage(port, 'atelier')
   const restored = setup()
-  await vi.waitFor(() => expect(tasks.cancel).toHaveBeenCalledTimes(2))
-  await flushProfileWrites()
-  expect(tasks.cancel.mock.calls).toEqual([[attempt.key], [attempt.key]])
-  expect(restored.sd.generate).not.toHaveBeenCalled()
-  expect(restored.tools.sdQueue.paused.value).toBe(true)
-  expect(savedJobs()[0].attempt).toBeUndefined()
+  await vi.waitFor(() => expect(tasks.cancel).toHaveBeenCalledTimes(2)); await flushProfileWrites()
+  expect(tasks.cancel.mock.calls).toEqual([['request-a'], ['request-a']])
+  expect(restored.sd.observe).not.toHaveBeenCalled(); expect(savedJobs()[0].attempt).toBeUndefined()
 })
-
-it('a late cancellation receipt cannot erase a newer explicitly resumed attempt', async () => {
-  const { tools, sd } = setup()
-  sd.generate.mockResolvedValue(null)
-  tools.enqueueCurrent()
-  await vi.waitFor(() => expect(tools.sdQueue.paused.value).toBe(true))
-  const first = sd.generate.mock.calls[0]![1]!.attempt!
-  let release!: () => void
-  tasks.cancel.mockImplementationOnce(() => new Promise(resolve => { release = () => resolve(null) }))
-  const cancelling = first.cancel()
-  await vi.waitFor(() => expect(tasks.cancel).toHaveBeenCalledOnce())
-  tools.sdQueue.resume()
-  await vi.waitFor(() => expect(sd.generate).toHaveBeenCalledTimes(2))
-  const replacement = sd.generate.mock.calls[1]![1]!.attempt!.key
-  expect(replacement).not.toBe(first.key)
-  release(); await cancelling; await flushProfileWrites()
-  expect(savedJobs()[0].attempt.key).toBe(replacement)
-})
-
-it('cancellation racing successful completion retains the accepted result identity', async () => {
-  const { tools, sd } = setup()
-  sd.generate.mockResolvedValue(null)
-  tools.enqueueCurrent()
-  await vi.waitFor(() => expect(tools.sdQueue.paused.value).toBe(true))
-  const first = sd.generate.mock.calls[0]![1]!.attempt!
-  const completed = { taskId: 'completed', requestKey: first.key, upstreamSettled: true, status: 'succeeded' }
-  tasks.cancel.mockResolvedValue(completed)
-  await first.cancel()
-  expect(savedJobs()[0].attempt.key).toBe(first.key)
-  tasks.get.mockResolvedValue(completed)
-  tools.sdQueue.resume()
-  await vi.waitFor(() => expect(sd.generate).toHaveBeenCalledTimes(2))
-  expect(sd.generate.mock.calls[1]![1]!.attempt!).toMatchObject({ key: first.key, task: completed })
-})
-
-it('a failed pre-POST identity save keeps the same unsubmitted key retryable', async () => {
-  let rejected = false
-  vi.mocked(port.saveDraft).mockImplementation(input => {
-    if (!rejected && JSON.parse(String(input.value)).jobs[0]?.attempt?.submitted) {
-      rejected = true; return Promise.reject(new Error('identity save failed'))
-    }
-    return saveDraft(input)
-  })
-  const { tools, sd } = setup()
-  sd.generate.mockResolvedValue(null)
-  tools.enqueueCurrent()
-  await vi.waitFor(() => expect(tools.sdQueue.paused.value).toBe(true))
-  await flushProfileWrites()
-  expect(sd.generate).not.toHaveBeenCalled()
-  const key = savedJobs()[0].attempt.key
-  expect(savedJobs()[0].attempt.submitted).toBe(false)
-  tools.sdQueue.resume()
-  await vi.waitFor(() => expect(sd.generate).toHaveBeenCalledOnce())
-  expect(sd.generate.mock.calls[0]![1]!.attempt!.key).toBe(key)
-  expect(tasks.get).not.toHaveBeenCalled()
-})
-
 it('a refreshed profile revision cannot authorize an old page to overwrite a newer queue', async () => {
-  const { tools, sd } = setup()
-  sd.generating.value = true
-  tools.enqueueCurrent(); await flushProfileWrites()
+  const { tools } = setup()
+  tools.sdQueue.restore([legacySdJob('a')]); await tools.sdQueue.checkpoint(); await flushProfileWrites()
   const external = { version: 1, jobs: [{ ...savedJobs()[0], id: 'newer-writer', title: 'newer queue' }] }
   records.set(SD_PENDING_QUEUE_KEY, { key: SD_PENDING_QUEUE_KEY, value: JSON.stringify(external), revision: ++revision })
   await refreshProfileStorage()

@@ -55,8 +55,13 @@ function validateRun(name: string, def: any) {
   for (const item of machine) if (!MACHINES.some(machine => machine === item)) errors.push(`${name}: 未知 machine "${String(item)}"`);
   if (run.switches != null && typeof run.switches === 'object' && !Array.isArray(run.switches)) {
     for (const [flag, effects] of Object.entries(run.switches)) {
-      const batchSwitch = def.cmd?.[0]?.endsWith('.bat') && /^-[A-Za-z]+$/.test(flag);
-      if (!flag.startsWith('--') && !batchSwitch) errors.push(`${name}: 开关名必须以 -- 开头，或为批处理入口的单杠字母开关（${flag}）`);
+      const command = Array.isArray(def.cmd) ? def.cmd : [];
+      const executable = String(command[0] || '').replace(/\\/g, '/').split('/').pop() || '';
+      const scriptIndex = command.findIndex((part: unknown) => typeof part === 'string' && part.toLowerCase() === '-file');
+      const powershellScript = /^(?:powershell|pwsh)(?:\.exe)?$/i.test(executable)
+        && scriptIndex >= 0 && /\.ps1$/i.test(String(command[scriptIndex + 1] || ''));
+      const windowsScriptSwitch = (executable.endsWith('.bat') || powershellScript) && /^-[A-Za-z]+$/.test(flag);
+      if (!flag.startsWith('--') && !windowsScriptSwitch) errors.push(`${name}: 开关名必须以 -- 开头，或为批处理/PowerShell 文件入口的单杠字母参数（${flag}）`);
       const values = list(effects);
       if (!Array.isArray(effects)) errors.push(`${name}: 开关 ${flag} 的行为必须是数组`);
       if (!values.length) errors.push(`${name}: 开关 ${flag} 的行为不能为空`);

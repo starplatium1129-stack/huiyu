@@ -96,7 +96,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 | [工程契约](engineering-contracts.md) | 模块、数据与生命周期边界 |
 | [桌面部署](desktop-deployment.md) | 构建、同步、完整安装与 UAC |
 
-协作规则见 [AGENTS.md](../AGENTS.md)。安装与换机查 [启动与排错](../STARTUP.md)、[离线资源指南](guides/offline-resources.md)与[模型开箱指南](guides/setup-and-models.md)。最新公开发行说明见 [1.9.0](releases/v1.9.0.md)，此前素材与安装记录见 [1.8.0](releases/v1.8.0.md)。
+协作规则见 [AGENTS.md](../AGENTS.md)。安装与换机查 [启动与排错](../STARTUP.md)、[离线资源指南](guides/offline-resources.md)与[模型开箱指南](guides/setup-and-models.md)。最新登记的公开发行说明见 [1.9.2](releases/v1.9.2.md)，此前素材与安装记录见 [1.8.0](releases/v1.8.0.md)。
 
 ## 现行契约与专项计划
 
@@ -115,6 +115,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 - 图像提示词查 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)，按需选择 [MiaoMiao 1.6 作者规则](../.agents/skills/studio-prompt-craft/references/miaomiao-v16.md)、[Anima 输入与编译](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md)或[数据交付](../.agents/skills/studio-prompt-craft/references/delivery.md)。
 - [浏览器阅读入口](index.html)与[上手教程](getting-started.html)。
 - [旧陪伴 CDP 探针归档说明](../scripts/archive/companion-cdp-20260930/README.md)：保留历史源码、失效原因与现行验收边界；手动窗口截图及旧热门样张恢复查[工作流](workflow.md)。
+- [历史 CI 专项归档](../.github/archive/2026-09-18/README.md)：保留固定分支/提交的复现材料，退出现行自动化入口。
 
 ## 保留的专题验收记录
 
@@ -122,6 +123,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 
 | 日期 | 主题 |
 | --- | --- |
+| 2026-10-08 | [项目状态过程与历史登记快照](audits/2026-10-08/project-status-history.md)：保留当时证据与未验范围 |
 | 2026-10-01 | [Anima 加速真实对照与舍弃决定](audits/2026-10-01/anima-acceleration-comparison.md)：EasyCache、整模型／分块编译与内存控制的实际耗时、画面及隔离收口；保持现有默认 |
 | 2026-10-01 | [动漫图片反推模型试跑](audits/2026-10-01/interrogate-model-trial.md)：三个 CPU 模型和 PixAI 的真实 CG 标签、耗时、显存与退出释放记录 |
 | 2026-09-30 | [全部前端与 Node 单测精简](audits/2026-09-30/test-total-simplification.md)及[454文件逐项决定](audits/2026-09-30/test-total-decisions.md) |

@@ -6,7 +6,7 @@ import { useSDQueue, type SDJobOutcome, type SDQueueJob } from './useSDQueue'
  *
  * 修复前：total = 等待+在途，每出完一张分母缩 1，「第 N 张」恒为 1。
  * 修复后：done（成功数）只增不减，batchTotal = done + 等待 + 在途，分母固定。
- * 验收四场景：三张队列 / 失败重试 / 途中追加 / 快照恢复。
+ * 验收四场景：三张队列 / 失败重试 / 合并已有快照 / 快照恢复。
  */
 
 function makeJob(title: string): Omit<SDQueueJob, 'id'> {
@@ -35,11 +35,11 @@ function controllableRunner() {
 }
 
 describe('useSDQueue · 批次进度计数（F6）', () => {
-  it('失败任务保留队首并暂停：不计完成、分母不变，恢复后重跑同一任务', async () => {
+  it('失败任务保留队首并暂停：不计完成、分母不变，恢复后核对同一任务', async () => {
     const { run, settleActive } = controllableRunner()
     const q = useSDQueue({ run })
-    q.enqueue(makeJob('A'))
-    q.enqueue(makeJob('B'))
+    q.restore([{ ...makeJob('A'), id: 'A' }]); q.resume()
+    q.restore([{ ...makeJob('B'), id: 'B' }]); q.resume()
 
     await settleActive({ status: 'failure' })
     expect(q.paused.value).toBe(true)
@@ -62,18 +62,18 @@ describe('useSDQueue · 批次进度计数（F6）', () => {
     const warnings: string[] = []
     const { run, settleActive } = controllableRunner()
     const q = useSDQueue({ run, onFlash: message => warnings.push(message) })
-    q.enqueue(makeJob('A'))
+    q.restore([{ ...makeJob('A'), id: 'A' }]); q.resume()
     await settleActive({ status: 'success-with-warning', error: '成片未能入册' })
     expect(q.done.value).toBe(1)
     expect(q.paused.value).toBe(false)
     expect(warnings).toContain('成片未能入册')
   })
 
-  it('批次分母不随完成缩小，只在途中追加时增长，完成数不回退', async () => {
+  it('批次分母不随完成缩小，只在合并已有快照时增长，完成数不回退', async () => {
     const { run, settleActive } = controllableRunner()
     const q = useSDQueue({ run })
-    q.enqueue(makeJob('A'))
-    q.enqueue(makeJob('B'))
+    q.restore([{ ...makeJob('A'), id: 'A' }]); q.resume()
+    q.restore([{ ...makeJob('B'), id: 'B' }]); q.resume()
     expect(q.activeJob.value?.title).toBe('A')
     expect(q.done.value).toBe(0)
     expect(q.batchTotal.value).toBe(2)
@@ -82,7 +82,7 @@ describe('useSDQueue · 批次进度计数（F6）', () => {
     expect(q.batchTotal.value).toBe(2)
     expect(q.activeJob.value?.title).toBe('B')
 
-    q.enqueue(makeJob('C'))
+    q.restore([{ ...makeJob('C'), id: 'C' }]); q.resume()
     expect(q.batchTotal.value).toBe(3)
     await settleActive({ status: 'success' })
     expect(q.done.value).toBe(2)
@@ -94,15 +94,15 @@ describe('useSDQueue · 批次进度计数（F6）', () => {
     expect(q.total.value).toBe(0)
   })
 
-  it('全部跑完后再次入队：重新开一轮（done 归零）', async () => {
+  it('全部跑完后再次恢复：重新开一轮（done 归零）', async () => {
     const { run, settleActive } = controllableRunner()
     const q = useSDQueue({ run })
-    q.enqueue(makeJob('A'))
+    q.restore([{ ...makeJob('A'), id: 'A' }]); q.resume()
     await settleActive({ status: 'success' })
     expect(q.done.value).toBe(1)
     expect(q.total.value).toBe(0)
 
-    q.enqueue(makeJob('B'))
+    q.restore([{ ...makeJob('B'), id: 'B' }]); q.resume()
     expect(q.done.value).toBe(0)
     expect(q.batchTotal.value).toBe(1)
     await settleActive({ status: 'success' })
@@ -111,8 +111,8 @@ describe('useSDQueue · 批次进度计数（F6）', () => {
   it('清空等待且无在途：本轮终结，done 归零', async () => {
     const { run, settleActive } = controllableRunner()
     const q = useSDQueue({ run })
-    q.enqueue(makeJob('A'))
-    q.enqueue(makeJob('B'))
+    q.restore([{ ...makeJob('A'), id: 'A' }]); q.resume()
+    q.restore([{ ...makeJob('B'), id: 'B' }]); q.resume()
     q.pause()
     await settleActive({ status: 'success' })
     expect(q.done.value).toBe(1)

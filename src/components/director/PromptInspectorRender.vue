@@ -54,11 +54,9 @@
       <div data-disclosure-content class="inspector-advanced-body">
         <AnimaQuickPanel v-if="pb.directorMode === 'pro'"
           :state="animaState" :no-lora="animaNoLoraMode" @update:state="patchAnimaState" />
-        <GenerationOutputControls :engine="drawEngine" :expert="pb.directorMode === 'pro'"
-          :preset-summary="generationPresetSummary" v-model:params="pb.sdParams" :vram-hint="vramHint"
-          :vram-level="vramLevel" :base-resolution-risk="baseResolutionRisk" :base-resolution-hint="baseResolutionHint"
-          :can-use-face-detailer="canUseFaceDetailer" :queue-available="pb.isPopular ? false : sdQueue.canEnqueue.value"
-          @touch="pb.markParamTouched" @enqueue="enqueueCurrent" @enqueue-variants="enqueue3Variants" />
+        <div v-if="generationPresetSummary" class="generation-auto-summary tw:flex tw:items-baseline tw:justify-between tw:gap-[12px] tw:mb-[10px] tw:rounded-md tw:text-muted tw:text-body tw:leading-body tw:flex-wrap">
+          <span>自动参数</span><strong>{{ generationPresetSummary }}</strong>
+        </div>
       </div>
     </details>
     <details v-if="managedRoute" class="inspector-route">
@@ -81,12 +79,10 @@ import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindi
 const CasualCreativeSliders = defineAsyncComponent(() => import('@/components/director/CasualCreativeSliders.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
-const GenerationOutputControls = defineAsyncComponent(() => import('@/components/GenerationOutputControls.vue'))
 const props = defineProps<{ bindings: PromptRenderBindings }>()
-const { pb, generationBusy, animaState, drawEngine, generationPresetSummary, sdQueue, managedRoute, applyManagedRoute,
+const { pb, generationBusy, animaState, drawEngine, generationPresetSummary, managedRoute, applyManagedRoute,
   reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
-  animaNoLoraMode, patchAnimaState, retryAnima, vramHint, vramLevel, baseResolutionRisk,
-  baseResolutionHint, canUseFaceDetailer, enqueueCurrent, enqueue3Variants } = props.bindings
+  animaNoLoraMode, patchAnimaState, retryAnima } = props.bindings
 const animaModelOptions = computed<StudioSelectOption[]>(() => animaState.value.models.map(model => ({
   value: model.id, label: (model.label || model.id) + (model.available === false ? ' · 模型未安装' : ''),
   disabled: model.available === false,

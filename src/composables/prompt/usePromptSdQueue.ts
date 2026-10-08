@@ -5,17 +5,16 @@ import type { SdResultSnapshot } from './sdResultActions'
 import { SD_QUEUE_SNAPSHOT_KEY } from '@/utils/storageKeys'
 import { classifySDError, type SDErrorReport } from '@/utils/sdError'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
-import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
-import type { SDGenerateOptions } from '@/composables/generation/useSDGenerate'
+import type { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks'
+import type { LegacySdObserveOptions } from '@/composables/generation/useLegacySdTasks'
 import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
 import { useSDQueue, type SDQueueJob } from '@/composables/generation/useSDQueue'
 import { sdJobRequest } from './sdJobRequest'
 import type { AnimaResultContext } from '@/types/anima'
-import { captureResultContext } from '@/utils/resultContext'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { profileLocalStorage as localStorage } from '@/platform/web/profileStorage'
 import { createPendingSdQueueStorage } from './sdQueuePersistence'
-import type { RuntimeSdAttempt } from '@/composables/generation/runtimeImageSession'
+import type { RuntimeSdAttempt } from '@/composables/generation/legacySdTaskSession'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -23,44 +22,29 @@ type PromptAssembly = ReturnType<typeof usePromptAssembly>
 
 export interface PromptSdQueueDeps {
   pb: PromptBuilderStore
-  sd: ReturnType<typeof useSDGenerate>
+  sd: ReturnType<typeof useLegacySdTasks>
   sdSize: Ref<string>
   drawEngine: Ref<DrawEngine>
-  /** 面板实时组装的提示词（studio 路径；批量/热门另有组装）。 */
-  livePrompt: ComputedRef<string>
-  negativePrompt: PromptAssembly['negativePrompt']
-  effectiveScene: PromptAssembly['effectiveScene']
-  loraSpecs: PromptAssembly['loraSpecs']
   modelProfile: PromptAssembly['modelProfile']
   animaState: AnimaSession['state']
   displayResultSeed: ComputedRef<number | null>
   /**
-   * SD 直出/队列成功时写入冻结上下文（2026-09-06 体验报告 F3）：
-   * captureJob 快照的场景与故事跟随成片，跨页交接不读当前表单。
+   * 旧任务结果写入冻结上下文；使用保存记录，跨页交接不读当前表单。
    */
   setResultContext?: (ctx: AnimaResultContext | null) => void
   /** Ephemeral presentation signal, emitted only for a newly completed generation. */
   onGenerated?: (url: string) => void
 }
 
-/**
- * 绘图页「SD 出图任务执行 + 队列」簇（2026-08-22 自 PromptBuilderView 下沉）。
- *
- * 一条执行路径三处消费：直出（callGenerate）、队列（useSDQueue 串行）、
- * 批量（usePromptBatchRunners 注入 runJob）。含：面板状态 → 任务快照
- * （captureJob）、直出高分自动挂双 ADetailer（runJob）、队列产出自动入册
- * 历史、错误分类报告（sdErrorReport）与 3-Seed 候选变体入队。
- * Anima/Krea 直出与错误恢复动作（runRecovery）仍归宿主视图。
- */
+/** Restores and observes legacy SD identities; archives frozen results without new admission. */
 export function usePromptSdQueue(deps: PromptSdQueueDeps) {
-  const { pb, sd, sdSize, drawEngine, livePrompt, negativePrompt, effectiveScene, loraSpecs, modelProfile, animaState } = deps
+  const { pb, sd, sdSize, drawEngine, modelProfile, animaState } = deps
 
   const sdErrorReport = ref<SDErrorReport | null>(null)
   const durable = hasRuntimeTasks()
   const queueStorage = durable ? createPendingSdQueueStorage() : null
   let disposed = false, queueReadError: unknown = null
   if (getCurrentScope()) onScopeDispose(() => { disposed = true })
-  function dismissError() { sdErrorReport.value = null }
 
   /**
    * 队列快照持久化（2026-08-30 UX 审计 P0-5）。
@@ -94,44 +78,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     } catch { /* 快照写失败不阻断出图主链路 */ }
   }
 
-  // 注意：watch 的 getter 在建立依赖时就会被立即执行一次，restore 也是同步调用
-  // ——两者都读 sdQueue，而 sdQueue 是下方 useSDQueue(...) 的 const 声明，必须
-  // 等它初始化之后才能挂（否则命中 TDZ，整个导演台在 setup 阶段就抛错）。
-  // 因此这两个调用放在文件末尾的「队列接线」处，不要因为读起来更顺就往上挪。
 
-  /** 把当前导演台状态快照成一个队列任务 */
-  function captureJob(): Omit<SDQueueJob, 'id'> | null {
-    if (!livePrompt.value) return null
-    const params = pb.sdParams
-    const scene = effectiveScene.value
-    const story = String(pb.story || '').trim()
-    const context = captureResultContext(pb)
-    context.history = { ...context.history, profile: modelProfile.value?.id || '' }
-    return {
-      context,
-      title: scene?.title || (story ? story.slice(0, 28) : (pb.char === 'natsume' ? '夏目构图' : '宁宁构图')),
-      prompt: livePrompt.value,
-      negative: negativePrompt.value,
-      sceneId: pb.sceneId,
-      sceneTitle: scene?.title || '',
-      char: pb.char,
-      story,
-      size: sdSize.value,
-      seed: params.seedLock && params.seed >= 0 ? params.seed : -1,
-      cfg: params.cfg,
-      steps: params.steps,
-      sampler: params.sampler,
-      scheduler: params.scheduler || '',
-      checkpoint: pb.sdModelName || sd.checkpoint.value || '',
-      lora: loraSpecs.value.map(spec => `${spec.name}:${spec.weight}`).join(', '),
-      hiresFix: params.hiresFix,
-      hiresScale: params.hiresScale,
-      hiresUpscaler: params.hiresUpscaler,
-      hiresSteps: params.hiresSteps,
-      denoisingStrength: params.hiresDenoise,
-      faceDetailer: params.faceDetailer,
-    }
-  }
 
   function historyGenerationFields(): Partial<HistoryEntry> {
     if (drawEngine.value !== 'sd') {
@@ -188,12 +135,6 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
 
   // Preserve result facts independently of the current form and later results.
   const completedJobs = new WeakMap<Omit<SDQueueJob, 'id'>, SdResultSnapshot>()
-  let completedResult: { url: string; job: SdResultSnapshot } | null = null
-  if (getCurrentScope()) onScopeDispose(() => { completedResult = null })
-  function resultJob(): SdResultSnapshot | null {
-    return completedResult && completedResult.url === sd.resultUrl.value
-      ? JSON.parse(JSON.stringify(completedResult.job)) as SdResultSnapshot : null
-  }
   function jobResultContext(job: Omit<SDQueueJob, 'id'>): AnimaResultContext {
     return {
       ...job.context, characterId: '', outfitId: null, blueprintId: null,
@@ -210,8 +151,8 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     }
   }
 
-  /** 执行一个任务（队列与直接出图共用同一条路径） */
-  async function runJob(job: Omit<SDQueueJob, 'id'>, opts: SDGenerateOptions & { disableLora?: boolean } = {}) {
+  /** Observe an existing task and freeze its original result facts for archival. */
+  async function runJob(job: Omit<SDQueueJob, 'id'>, opts: LegacySdObserveOptions & { disableLora?: boolean } = {}) {
     // Recovery edits and later form/queue mutations must not rewrite result facts.
     const submitted = JSON.parse(JSON.stringify(job)) as Omit<SDQueueJob, 'id'>
     if (opts.disableLora) {
@@ -219,7 +160,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       submitted.lora = undefined
     }
     let context = jobResultContext(submitted)
-    const url = await sd.generate({
+    const url = await sd.observe({
       ...sdJobRequest(submitted),
       runtimeContext: context as Record<string, unknown>,
     }, opts)
@@ -234,7 +175,6 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       const completedJob: SdResultSnapshot = { ...submitted, context, seed: sd.resultSeed.value ?? -1, taskId: sd.resultTaskId?.value || undefined }
       // The view receives its own context; its edits cannot mutate archive input.
       completedJobs.set(job, JSON.parse(JSON.stringify(completedJob)) as SdResultSnapshot)
-      completedResult = { url, job: JSON.parse(JSON.stringify(completedJob)) as SdResultSnapshot }
       deps.setResultContext?.(context)
       deps.onGenerated?.(url)
       // Best-effort recent settings must not turn a successful image into a failure.
@@ -340,45 +280,18 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     pb.flash(`已恢复 ${restoredCount} 个排队任务（已暂停，点「继续」逐张生成）`)
   }
 
-  function enqueueCurrent() {
-    if (drawEngine.value !== 'sd') { pb.flash(`${drawEngine.value === 'krea2' ? 'Krea 2' : 'Anima'} 引擎暂不支持队列，直接点击生成即可`); return }
-    const job = captureJob()
-    if (!job) { pb.flash('请先选择场景或填写故事'); return }
-    sdQueue.enqueue(job)
-  }
 
-  /** 一键发起 3 个不同 Seed 的候选变体入队（Midjourney / Forge 候选挑优机制） */
-  function enqueue3Variants() {
-    if (drawEngine.value !== 'sd') { pb.flash(`${drawEngine.value === 'krea2' ? 'Krea 2' : 'Anima'} 引擎暂不支持批量队列`); return }
-    const baseJob = captureJob()
-    if (!baseJob) { pb.flash('请先选择场景或填写故事'); return }
-    const baseSeed = baseJob.seed >= 0 ? baseJob.seed : Math.floor(Math.random() * 900000000)
-    let admitted = 0
-    for (let i = 0; i < 3; i++) {
-      const jobVariant = {
-        ...baseJob,
-        title: `${baseJob.title} (候选 ${i + 1}/3)`,
-        seed: baseSeed + i * 1000 + (i > 0 ? Math.floor(Math.random() * 100) : 0),
-      }
-      if (!sdQueue.enqueue(jobVariant)) break
-      admitted += 1
-    }
-    if (admitted > 0) {
-      pb.flash(`已将 ${admitted} 组不同 Seed 候选加入出图队列${admitted < 3 ? '（队列剩余容量不足）' : ''}`)
-    }
-  }
+
+
 
   return {
     sdErrorReport,
-    dismissError,
-    captureJob,
+
     historyGenerationFields,
     runJob,
-    resultJob,
     commitJobResult,
     sdQueue,
     restoredCount,
-    enqueueCurrent,
-    enqueue3Variants,
+
   }
 }

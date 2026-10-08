@@ -4,16 +4,14 @@ import { createPinia, setActivePinia } from 'pinia'
 import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { apiClient } from '@/api/client'
-import { generationApi } from '@/api/generationApi'
 import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
-import { DRAW_ENGINE_SETTING, settingsRepository } from '@/storage/settingsRepository'
+import { DRAW_ENGINE_SETTING } from '@/storage/settingsRepository'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { readTempResult } from '@/utils/tempResult'
 import { usePromptWorkspace } from './usePromptWorkspace'
 import type { AnimaSubmission } from '@/composables/generation/animaSessionContract'
 import type { PromptGenerationContext } from './promptGenerationActions'
-import type { SdResultSnapshot } from './sdResultActions'
 import presetCatalog from '../../../data/presets.json'
 import { parsePresetCatalog } from '@/utils/promptBuilderPersistence'
 
@@ -28,7 +26,7 @@ beforeEach(() => {
   localStorage.clear()
   sessionStorage.clear()
   localStorage.setItem('aics_pb_director_mode', 'pro')
-  settingsRepository.set(DRAW_ENGINE_SETTING, 'sd')
+  localStorage.setItem(DRAW_ENGINE_SETTING.key, 'sd')
   vi.mocked(readTempResult).mockReturnValue(null)
   // Every backend request is an isolated fixture; no local gateway or model is contacted.
   vi.spyOn(apiClient, 'request').mockResolvedValue({ ok: true, online: false, models: [], samplers: [], schedulers: [] })
@@ -190,26 +188,17 @@ describe('workspace ownership and panel boundaries', () => {
     expect(workspace.generationBusy.value).toBe(false)
 
     const { upscaleCurrentResultAction } = await import('./promptGenerationActions')
-    const sd = { prompt: 'recipe A', negative: 'negative A', checkpoint: 'model A', sampler: 'Euler', size: '832x1216', seed: 0, cfg: 7, steps: 24,
-      hiresFix: false, hiresScale: 1.5, denoisingStrength: 0.5, context: { char: 'nene' } } as SdResultSnapshot
     const current = { prompt: 'recipe B', model: 'model B', hiresFix: false }
-    const generate = vi.fn().mockResolvedValue(undefined), run = vi.fn().mockResolvedValue('blob:hires')
-    const capture = vi.fn(() => current), flash = vi.fn(), saved = vi.fn()
-    const context = { pb: { flash, sdParams: current }, drawEngine: ref('anima'), generationBusy: ref(false),
-      generateAnima: generate, captureJob: capture, applyManagedRoute: capture, runJob: run,
-      sd: { errorMsg: ref('') }, sdErrorReport: ref(null), tempResultTools: { handleSdResult: saved },
-    } as unknown as PromptGenerationContext
-    await upscaleCurrentResultAction(context, { engine: 'anima', anima, sd: null })
+    const generate = vi.fn().mockResolvedValue(undefined), flash = vi.fn()
+    const context = { pb: { flash, sdParams: current }, engine: 'anima', generationBusy: ref(false),
+      generateAnima: generate } as unknown as PromptGenerationContext
+    await upscaleCurrentResultAction(context, { engine: 'anima', anima })
     expect(generate).toHaveBeenCalledExactlyOnceWith({ hiresFix: true, hiresScale: 2, hiresDenoise: 0.35 }, anima)
-    context.drawEngine.value = 'sd'
-    await upscaleCurrentResultAction(context, { engine: 'sd', anima: null, sd })
-    expect(run).toHaveBeenCalledExactlyOnceWith({ ...sd, hiresFix: true, hiresScale: 2, denoisingStrength: 0.35 })
-    expect(saved).toHaveBeenCalledOnce(); expect(capture).not.toHaveBeenCalled()
-    expect(current).toEqual({ prompt: 'recipe B', model: 'model B', hiresFix: false }); expect(sd.hiresFix).toBe(false)
-    context.drawEngine.value = 'anima'
-    await upscaleCurrentResultAction(context, { engine: 'anima', anima: null, sd: null })
+    expect(current).toEqual({ prompt: 'recipe B', model: 'model B', hiresFix: false })
+    await upscaleCurrentResultAction(context, { engine: 'anima', anima: null })
     expect(generate).toHaveBeenCalledOnce()
     expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('未知'))
+
   })
   it('projects live store fields and keeps draft subscription single across mode changes', async () => {
     const { workspace, pb, catalog, saveDraft } = await setup()
@@ -295,13 +284,13 @@ describe('workspace ownership and panel boundaries', () => {
     let release!: () => void
     const waiting = new Promise<void>(resolve => { release = resolve })
     const { wrapper, loadHistory, restoreDraft } = await setup('?scene=fixture-one&generate=1', () => waiting)
-    const generate = vi.spyOn(generationApi, 'createJob')
+    const sdPosts = () => vi.mocked(apiClient.request).mock.calls.filter(([url, options]) => url === '/api/generation/jobs' && options?.method === 'POST')
     wrapper.unmount()
     release()
     await flushPromises()
     expect(loadHistory).not.toHaveBeenCalled()
     expect(restoreDraft).not.toHaveBeenCalled()
-    expect(generate).not.toHaveBeenCalled()
+    expect(sdPosts()).toHaveLength(0)
   })
 
   it('preserves a new failed attempt when startup image recovery finishes later', async () => {

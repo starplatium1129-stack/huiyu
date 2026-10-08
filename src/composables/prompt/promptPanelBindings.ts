@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { InpaintSource } from '@/components/inpaint/useInpaintImageSource'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
+import type { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint'
 import type { useDirectorEngine } from '@/composables/scene/useDirectorEngine'
@@ -10,7 +10,6 @@ import type { useDirectorPopular } from '@/composables/scene/useDirectorPopular'
 import type { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly'
 import type { useCompareSnapshots } from '@/composables/useCompareSnapshots'
 import type { DrawEngine } from '@/storage/settingsRepository'
-import type { SDRecoveryId } from '@/utils/sdError'
 import type { usePromptMaterials, VoiceStudioHandle } from './usePromptMaterials'
 import type { usePromptSdQueue } from './usePromptSdQueue'
 import type { useTempResult } from './useTempResult'
@@ -18,7 +17,7 @@ import type { PromptBatchRunnersDeps } from './usePromptBatchRunners'
 import type { ResultSnapshot } from './promptResultSnapshot'
 
 type Store = ReturnType<typeof usePromptBuilderStore>
-type Sd = ReturnType<typeof useSDGenerate>
+type Sd = ReturnType<typeof useLegacySdTasks>
 type Anima = ReturnType<typeof useAnimaSession>
 type Engine = ReturnType<typeof useDirectorEngine>
 type Derived = ReturnType<typeof useDirectorDerived>
@@ -39,11 +38,8 @@ export interface PromptMaterialBindings extends
 export interface PromptRenderBindings extends
   Pick<Engine, 'displayResultUrl' | 'generationBusy' | 'generationPresetSummary' | 'setDrawEngine' | 'supportsDualCharacter' | 'selectAnimaModel' | 'displayResultSeed' | 'animaNoLoraMode'>,
   Pick<Popular, 'managedRoute' | 'applyManagedRoute'>,
-  Pick<Derived, 'vramHint' | 'vramLevel' | 'baseResolutionRisk' | 'baseResolutionHint' | 'canUseFaceDetailer'>,
-  Pick<Queue, 'enqueueCurrent' | 'enqueue3Variants'> {
+  Pick<Derived, 'vramHint' | 'vramLevel' | 'baseResolutionRisk' | 'baseResolutionHint' | 'canUseFaceDetailer'> {
   pb: Pick<Store, 'directorMode' | 'history' | 'subject' | 'isPopular' | 'char' | 'visualDescription' | 'sdModelName' | 'sdParams' | 'markParamTouched'>
-  sd: Pick<Sd, 'models' | 'samplers' | 'schedulers'>
-  sdQueue: Pick<Queue['sdQueue'], 'canEnqueue'>
   drawEngine: Ref<DrawEngine>
   animaState: Anima['state']
   patchAnimaState: Anima['patchState']
@@ -73,11 +69,11 @@ export interface PromptHealthBindings {
   saveCurrentResult: TempResult['saveCurrentResult']
 }
 
-export interface PromptDeliveryBindings extends Pick<Engine, 'generationBusy' | 'generationProgress'>,
-  Pick<Queue, 'sdErrorReport' | 'dismissError'> {
+export interface PromptDeliveryBindings extends Pick<Engine, 'generationBusy' | 'generationProgress'> {
   pb: Pick<Store, 'char' | 'activeScene' | 'story'>
   voiceStudioRef: Ref<VoiceStudioHandle | null>
   drawEngine: Ref<DrawEngine>
+  legacyProgress: Readonly<Ref<number | null>>
   sdOnline: Sd['online']
   animaOnline: Readonly<Ref<boolean>>
   scenes: Readonly<Ref<ReturnType<PromptBatchRunnersDeps['sceneBlueprints']>>>
@@ -88,7 +84,6 @@ export interface PromptDeliveryBindings extends Pick<Engine, 'generationBusy' | 
   autoSaveToGallery: Ref<boolean>
   batchRunning: Ref<boolean>
   batchOpen: Ref<boolean>
-  runRecovery: (id: SDRecoveryId) => Promise<void>
   queuePausedReason: Readonly<Ref<string>>
   batchPanelDeps: PromptBatchRunnersDeps
 }

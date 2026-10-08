@@ -3,7 +3,7 @@ import { getCurrentScope, onScopeDispose, ref, type Ref } from 'vue'
 /**
  * usePolling —— 轮询逻辑的通用底座（2026-08-28 工程审计 P1-9）。
  *
- * 此前轮询在 6 处各自实现（useTrainingPolling/useSDGenerate/useAnimaSession/
+ * 此前轮询在 6 处各自实现（useTrainingPolling/useLegacySdTasks/useAnimaSession/
  * useControlStatus/useShotBatchMachine/useCharacterRoomSession/VideoStudioView），
  * 每套自带 timer/abort/generation 守卫，语义各异。本底座收敛共同语义：
  *   - in-flight 去重：上一次 tick 未完成时不发起下一次；
@@ -12,7 +12,7 @@ import { getCurrentScope, onScopeDispose, ref, type Ref } from 'vue'
  *   - scope 自动清理：在组件/作用域内使用时随 dispose 自动 stop。
  *
  * tick 返回 false（或 Promise<false>）表示「轮询应结束」，等效自动 stop。
- * 替换进度：useControlStatus 已接入；useSDGenerate（while-await 循环语义
+ * 替换进度：useControlStatus 已接入；useLegacySdTasks（while-await 循环语义
  * 不同，不强行套）；其余生成链路轮询按专项排期逐个迁移。
  */
 

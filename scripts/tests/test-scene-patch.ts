@@ -21,6 +21,7 @@ test('scene patch: isolated CLI dry-run only writes explicitly requested report'
   const script = path.join(root, 'scripts/maintenance/apply-scene-patch.js');
   write(script, fs.readFileSync(require.resolve('../maintenance/apply-scene-patch'), 'utf8'));
   write(path.join(root, 'scripts/lib/data-version.js'), 'exports.expectedDataVersion = () => { throw new Error("unexpected rebuild"); };');
+  write(path.join(root, 'scripts/lib/catalog-snapshot.js'), fs.readFileSync(require.resolve('../lib/catalog-snapshot'), 'utf8'));
   write(path.join(root, 'scripts/lib/runtime-errors.js'), 'exports.errorMessage = error => error && error.message ? String(error.message) : String(error);');
   write(path.join(root, 'scripts/lib/scene-store.js'), `module.exports = { loadSceneShards: () => ({sources: [{source: ${JSON.stringify(input[0].file)}}]}), aggregatePath: ${JSON.stringify(path.join(root, 'data/scenes.json'))}, browserShardPath: {}, corePath: ${JSON.stringify(path.join(root, 'data/core.json'))}, indexPath: ${JSON.stringify(path.join(root, 'data/index.json'))} };`);
   write(path.join(root, 'scripts/lib/blueprint-store.js'), `module.exports = { loadBlueprintShards: () => ({sources: [{source: ${JSON.stringify(input[1].file)}}]}), aggregatePath: ${JSON.stringify(path.join(root, 'data/blueprints.json'))} };`);
@@ -40,6 +41,11 @@ test('scene patch: isolated CLI dry-run only writes explicitly requested report'
   const failureReport = JSON.parse(fs.readFileSync(output, 'utf8'));
   assert.equal(failureReport.writeStatus, 'rolled-back'); assert.equal(failureReport.rollbackCapability.restored, true);
   assert.equal(JSON.parse(fs.readFileSync(input[0].file, 'utf8'))[0].story, 'old');
+  write(path.join(root, 'data/catalog/manifest.json'), { version: 1, files: [] });
+  const migrated = snapshot();
+  const help = run(['--help']); assert.equal(help.status, 0, help.stderr); assert.match(help.stdout, /content:catalog/);
+  const blocked = run([]); assert.equal(blocked.status, 1); assert.match(blocked.stderr, /content:catalog/);
+  assert.deepEqual(snapshot(), migrated);
 });
 test('scene patch: output rejects data, compressed siblings and parent aliases', t => {
   const root = fixture(t), input = path.join(root, 'input.json');

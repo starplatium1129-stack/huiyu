@@ -60,7 +60,7 @@ export interface BatchDrawRunOptions {
 /** Serial plan controller. Page disposal stops observation, never cancels accepted runtime tasks. */
 export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: BatchDrawRunOptions) {
   const jobs = ref<BatchDrawJob[]>([]), running = ref(false), cancelRequested = ref(false)
-  const restored = ref(false), storageError = ref(''), engine = ref<BatchEngine>('sd')
+  const restored = ref(false), storageError = ref(''), engine = ref<BatchEngine>('anima')
   const resetting = ref(false)
   let targets = new Map<string, BatchTargetItem>(), createdAt = 0, runtimeOwned = false
   let disposed = false, observer: AbortController | null = null
@@ -119,6 +119,11 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
         if (disposed || cancelRequested.value) break
         activeJobId = job.id; submissionStarted = false
         const reconnect = job.status === 'unknown' || job.status === 'accepted'
+        if (engine.value === 'sd' && !reconnect) {
+          job.status = 'failed'; job.error = 'SD 新生成已退役；未提交项已保留，不能创建替代任务。'
+          if (!await persist()) break
+          continue
+        }
         job.status = reconnect ? 'unknown' : 'running'; job.error = undefined
         if (storage && !await persist()) { if (!reconnect) job.status = 'pending'; break }
         if (disposed) break
@@ -150,11 +155,12 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   }
 
   async function start(items: BatchTargetItem[], count: number, baseSeed: number, unitLabel = '个项目',
-    planOptions: { engine?: BatchEngine; runtimeOwned?: boolean } = {}): Promise<void> {
+    planOptions: { engine?: Exclude<BatchEngine, 'sd'>; runtimeOwned?: boolean } = {}): Promise<void> {
     if (running.value || resetting.value || disposed || !items.length) return
+    if (planOptions.engine && planOptions.engine !== 'anima') { onFlash('SD 新生成已退役，请使用当前 Anima/Krea 2 配方'); return }
     if (progress.value.unresolved) { onFlash('请先核对本批已接收任务，再开启新计划。'); return }
     releaseResultUrls(); targets = new Map(items.map(item => [item.id, { ...item }]))
-    createdAt = Date.now(); engine.value = planOptions.engine || 'sd'; runtimeOwned = planOptions.runtimeOwned === true; restored.value = false
+    createdAt = Date.now(); engine.value = planOptions.engine || 'anima'; runtimeOwned = planOptions.runtimeOwned === true; restored.value = false
     const amount = Number.isFinite(count) ? Math.max(1, Math.min(3, Math.floor(count))) : 1
     jobs.value = [...targets.values()].flatMap(item => Array.from({ length: amount }, (_, variant) => ({
       id: crypto.randomUUID(), requestKey: crypto.randomUUID(), sceneId: item.id, sceneTitle: item.title,
@@ -178,6 +184,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   }
   async function retryFailed(): Promise<void> {
     if (running.value || resetting.value || disposed) return
+    if (engine.value === 'sd') { onFlash('旧 SD 批次只核对已接收任务，不能重新生成失败项'); return }
     if (progress.value.unresolved) { onFlash('请先核对本批已接收任务，再重试失败项。'); return }
     const list = jobs.value.filter(job => job.status === 'failed' || job.status === 'cancelled')
     list.forEach(job => {

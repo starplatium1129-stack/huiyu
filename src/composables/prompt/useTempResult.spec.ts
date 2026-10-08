@@ -4,7 +4,6 @@ import { useTempResult, type TempResultDeps } from './useTempResult'
 import { clearTempResult, readTempResult, writeTempResult, type TempResultRecord } from '@/utils/tempResult'
 import { artworkRepository } from '@/storage/artworkRepository'
 import type { AnimaResult, AnimaResultContext } from '@/types/anima'
-import type { SDQueueJob } from '@/composables/generation/useSDQueue'
 import type { TaskRecord } from '../../../types/tasks'
 import { copyTask, taskRecords } from '@/stores/runtimeTaskState'
 
@@ -83,7 +82,7 @@ describe('manual archive ownership', () => {
   })
 })
 
-function setupAutomatic(engine: 'anima' | 'krea2' | 'sd') {
+function setupAutomatic(engine: 'anima' | 'krea2') {
   const url = ref('')
   const autoSave = ref(true)
   const commit = vi.fn().mockResolvedValue({ id: 102 })
@@ -104,7 +103,6 @@ function setupAutomatic(engine: 'anima' | 'krea2' | 'sd') {
   } as unknown as TempResultDeps))!
   function deliver(id: string, initImage?: string) {
     url.value = 'blob:' + id
-    if (engine === 'sd') return tools.handleSdResult({ prompt: id, negative: '', size: '832x1216' } as Omit<SDQueueJob, 'id'>, url.value)
     const result = {
       url: url.value, blob: new Blob([id]),
       metadata: { engine, prompt: id, negative: '', seed: 41, width: 832, height: 1216, initImage },
@@ -129,7 +127,7 @@ it('archives the frozen source parent consistently through automatic and manual 
   }
 })
 
-describe.each(['anima', 'krea2', 'sd'] as const)('%s automatic archive ownership', engine => {
+describe.each(['anima', 'krea2'] as const)('%s automatic archive ownership', engine => {
   for (const outcome of ['success', 'failure'] as const) {
     it(`old ${outcome} cannot mark, overwrite or remove the new temporary image`, async () => {
       vi.stubGlobal('fetch', vi.fn(async () => new Response(new Blob(['pixels']))))

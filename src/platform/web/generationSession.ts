@@ -1,5 +1,5 @@
 import { ApiClientError } from '@/api/client'
-import { generationApi, type GenerationJobEnvelope, type GenerationJobPayload } from '@/api/generationApi'
+import { generationApi, type GenerationJobEnvelope } from '@/api/generationApi'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
 import { parseSDOptionList, parseSDStatus } from '@/utils/sdStatus'
 import { runtimeFetch } from '../runtimeUrl'
@@ -28,19 +28,18 @@ export async function readWebGenerationStatus(): Promise<WebGenerationStatus> {
 }
 export function cancelWebGeneration(id: string) { return generationApi.deleteJob(id) }
 /** Owns the Web request lifecycle; desktop durable jobs use a different execution owner. */
-export async function runWebGeneration(input: GenerationJobPayload, options: {
+export async function observeWebGeneration(id: string, options: {
   signal: AbortSignal; steps?: number; hires?: boolean; hiresSteps?: number;
-  resumeId?: string; onSubmitting?: () => void; preserveAccepted?: boolean;
+
   accepted(id: string, provider: 'comfy' | 'webui'): void | Promise<void>;
   progress(state: { status: string; progress?: number | null; text?: string }): void;
 }) {
   const { signal } = options
   signal.throwIfAborted()
-  let accepted
-  if (options.resumeId) accepted = await generationApi.getJob(options.resumeId, { signal })
-  else { options.onSubmitting?.(); signal.throwIfAborted(); accepted = await generationApi.createJob(input, { signal }) }
-  if (options.resumeId && accepted.job.id !== options.resumeId) throw new Error('原任务编号与响应不一致，请核对原任务。')
-  if (signal.aborted) { if (!options.preserveAccepted) void cancelWebGeneration(accepted.job.id).catch(() => {}); signal.throwIfAborted() }
+  if (!id) throw new Error('旧 SD 任务缺少原接收编号，不能创建新任务。')
+  const accepted = await generationApi.getJob(id, { signal })
+  if (accepted.job.id !== id) throw new Error('原任务编号与响应不一致，请核对原任务。')
+  signal.throwIfAborted()
   const provider = accepted.job.provider === 'comfy' ? 'comfy' : 'webui'
   await options.accepted(accepted.job.id, provider)
   let job = accepted.job
@@ -76,9 +75,9 @@ export async function runWebGeneration(input: GenerationJobPayload, options: {
       progress: job.status === 'succeeded' ? 100 : typeof job.progress === 'number' ? Math.round(job.progress * 100) : null,
       text: (job.progressText || (provider === 'comfy' ? 'ComfyUI 生成中' : 'SD WebUI 生成中'))
         + ` · 已等待 ${Math.max(0, Math.round(elapsed / 1000))}s`
-        + (elapsed > Math.max(120000, estimated * 2.5) ? ' · 耗时异常，可检查 ComfyUI 是否卡住，必要时取消后重试' : '') })
+        + (elapsed > Math.max(120000, estimated * 2.5) ? ' · 耗时异常，请核对原任务状态，必要时取消' : '') })
   }
-  if (job.status !== 'succeeded' || !job.resultUrl) { if (!options.preserveAccepted) void cancelWebGeneration(job.id).catch(() => {}); throw new Error('生成超时') }
+  if (job.status !== 'succeeded' || !job.resultUrl) throw new Error('观察超时，原任务仍由服务端管理；请核对原任务。')
   const response = await runtimeFetch(job.resultUrl, { cache: 'no-store', signal }); signal.throwIfAborted()
   if (!response.ok || !String(response.headers.get('content-type') || '').startsWith('image/')) throw new Error('生成结果不是图片')
   const blob = await response.blob(); signal.throwIfAborted()

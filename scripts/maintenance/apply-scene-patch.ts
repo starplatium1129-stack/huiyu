@@ -207,13 +207,14 @@ function runValidation(script: any) {
 }
 
 function main(argv: any = process.argv.slice(2)) {
-  (require('../lib/catalog-snapshot') as typeof import('../lib/catalog-snapshot')).assertLegacyWrite(ROOT);
   const args = parseArgs(argv);
   if (args.help) {
     console.log('用法: node scripts/maintenance/apply-scene-patch.js --patch <patch.json> [--apply] [--out <report.json>]');
-    console.log('默认 dry-run。定稿保护命中会拒绝整批；--apply 写 canonical 分片并重建，校验失败回滚。');
+    console.log('旧格式资料专用，默认 dry-run；已迁移项目请用 npm run wf -- content:catalog patch/import --runtime-root <实际运行目录>。');
+    console.log('--apply 仅写未迁移旧分片并重建，定稿保护或校验失败拒绝/回滚；旧格式修复能力保留至对应升级来源退役。');
     return;
   }
+  (require('../lib/catalog-snapshot') as typeof import('../lib/catalog-snapshot')).assertLegacyWrite(ROOT);
   if (!args.patch) throw new Error('缺少 --patch <patch.json>');
   const entries = validatePatch(readJson(args.patch));
   const pinned = loadPinnedScenes();

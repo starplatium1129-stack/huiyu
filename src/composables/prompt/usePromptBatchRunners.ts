@@ -25,7 +25,7 @@ import {
   type useAnimaSession,
   type AnimaRequest,
 } from '../generation/useAnimaSession.ts'
-import type { useSDGenerate, SDGenerateOptions } from '../generation/useSDGenerate.ts'
+import type { useLegacySdTasks, LegacySdObserveOptions } from '../generation/useLegacySdTasks.ts'
 import type { usePromptAssembly } from './usePromptAssembly.ts'
 import { useBatchDraw, type BatchDrawRunnerInput, type BatchDrawRunnerResult, type BatchEngine, type BatchTargetItem } from '../generation/useBatchDraw.ts'
 import type { SDQueueJob } from '../generation/useSDQueue.ts'
@@ -36,14 +36,14 @@ type PromptAssembly = ReturnType<typeof usePromptAssembly>
 
 export interface PromptBatchRunnersDeps {
   pb: PromptBuilderStore
-  sd: ReturnType<typeof useSDGenerate>
+  sd: ReturnType<typeof useLegacySdTasks>
   sdSize: Ref<string>
   negativePrompt: PromptAssembly['negativePrompt']
   loraSpecs: PromptAssembly['loraSpecs']
   modelProfile: PromptAssembly['modelProfile']
   animaState: AnimaSession['state']
-  /** 视图持有的 SD 执行路径（队列/直出/批量共用同一条 runJob）。 */
-  runJob: (job: Omit<SDQueueJob, 'id'>, opts?: SDGenerateOptions & { disableLora?: boolean }) => Promise<string | null>
+  /** 历史 SD 批次仅通过原任务查询与收集结果。 */
+  runJob: (job: Omit<SDQueueJob, 'id'>, opts?: LegacySdObserveOptions & { disableLora?: boolean }) => Promise<string | null>
   /** 历史入册的引擎字段快照（Anima 读 result/job metadata，SD 读面板状态）。 */
   historyGenerationFields: () => Partial<HistoryEntry>
   sceneBlueprints: () => SceneBlueprint[]
@@ -62,14 +62,14 @@ export interface PromptBatchRunnersDeps {
 export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   const { sd, runJob } = deps
   let pb = deps.pb
-  const sdSize = shallowRef(deps.sdSize.value), negativePrompt = shallowRef(deps.negativePrompt.value)
-  const loraSpecs = shallowRef(deps.loraSpecs.value), modelProfile = shallowRef(deps.modelProfile.value)
+  const negativePrompt = shallowRef(deps.negativePrompt.value)
+  const modelProfile = shallowRef(deps.modelProfile.value)
   const animaState = shallowRef(deps.animaState.value)
   const animaTransport = createBatchAnimaTransport(() => animaState.value.family)
   let characters: PopularCharacter[] | null = null
   let blueprints: SceneBlueprint[] | null = null
   let fields: Partial<HistoryEntry> = {}
-  let runEngine: BatchEngine = 'sd'
+  let runEngine: Exclude<BatchEngine, 'sd'> = 'anima'
   const plans = new Map<string, { negative: string; outfitId?: string; size?: string; colorMood?: string | null }>()
   const clone = <T,>(value: T): T => value == null ? value : JSON.parse(JSON.stringify(value)) as T
   const historyGenerationFields = () => fields
@@ -79,14 +79,14 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       manualTags: new Set(live.manualTags), outfitOverride: clone(live.outfitOverride), referenceInput: clone(live.referenceInput) } as PromptBuilderStore
     characters = clone(deps.popularCharacters?.() || live.popularCharacters)
     blueprints = clone(deps.sceneBlueprints())
-    sdSize.value = deps.sdSize.value; negativePrompt.value = deps.negativePrompt.value
-    loraSpecs.value = clone(deps.loraSpecs.value); modelProfile.value = clone(deps.modelProfile.value)
+    negativePrompt.value = deps.negativePrompt.value
+    modelProfile.value = clone(deps.modelProfile.value)
     animaState.value = clone(deps.animaState.value); fields = clone(deps.historyGenerationFields())
     runEngine = batchEngine.value; plans.clear(); pendingSaves.clear()
   }
   const blueprintList = () => blueprints || deps.sceneBlueprints()
 
-  const batchEngine = ref<BatchEngine>('sd')
+  const batchEngine = ref<Exclude<BatchEngine, 'sd'>>('anima')
 
   function getPopularList(): PopularCharacter[] {
     return characters || deps.popularCharacters?.() || pb.popularCharacters || []
@@ -179,13 +179,12 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   }
 
   /** 组装最终出图 prompt：根据目标是场景还是多角色自适应。 */
-  function buildTargetPrompt(input: BatchDrawRunnerInput, isSd: boolean): string {
+  function buildTargetPrompt(input: BatchDrawRunnerInput): string {
     const target = input.scene
     const baseText = String(target.prose || '').trim()
 
     const charInfo = resolveTargetCharacter(target)
     if (charInfo?.kind === 'popular') {
-      if (isSd) throw new Error('热门角色蓝图和漫游请使用 Anima / Krea 2 引擎')
       const pop = charInfo.char
       const blueprint = target.kind === 'scene' ? blueprintList().find(item => item.id === target.id) || null : null
       const outfit = (blueprint?.outfitId ? findOutfit(pop, blueprint.outfitId) : null) || defaultOutfit(pop)
@@ -235,81 +234,10 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     return [blueprint?.description, blueprint?.action, blueprint?.lighting].filter(Boolean).join('，')
   }
 
-  function prepareBatchSd(input: BatchDrawRunnerInput): PreparedBatchImage {
-    const prompt = buildTargetPrompt(input, true)
-    if (!prompt) throw new Error('出图描述或角色配置为空')
-    const target = input.scene
-    const charInfo = resolveTargetCharacter(target)
 
-    // 多角色模式下，若为热门角色/非当前 studio 角色，解除当前宁宁/夏目的 LoRA 绑定，防止人脸与服装串扰
-    const isTargetPopular = charInfo?.kind === 'popular'
-    const isTargetOtherStudio = charInfo?.kind === 'studio' && charInfo.charKey !== pb.char
-    const effectiveLora = (isTargetPopular || isTargetOtherStudio)
-      ? ''
-      : loraSpecs.value.map(spec => `${spec.name}:${spec.weight}`).join(', ')
-
-    const effectiveChar = charInfo?.kind === 'studio'
-      ? charInfo.charKey
-      : (isTargetPopular ? 'nene' : pb.char)
-
-    const job: Omit<SDQueueJob, 'id'> = {
-      title: target.title,
-      prompt,
-      negative: negativePrompt.value,
-      sceneId: target.id,
-      sceneTitle: target.title,
-      char: effectiveChar,
-      story: target.prose || '',
-      size: sdSize.value,
-      seed: input.seed,
-      cfg: pb.sdParams.cfg,
-      steps: pb.sdParams.steps,
-      sampler: pb.sdParams.sampler,
-      scheduler: pb.sdParams.scheduler || '',
-      checkpoint: pb.sdModelName || sd.checkpoint.value || '',
-      lora: effectiveLora,
-      hiresFix: pb.sdParams.hiresFix,
-      hiresScale: pb.sdParams.hiresScale,
-      hiresUpscaler: pb.sdParams.hiresUpscaler,
-      hiresSteps: pb.sdParams.hiresSteps,
-      denoisingStrength: pb.sdParams.hiresDenoise,
-      faceDetailer: pb.sdParams.faceDetailer,
-    }
-    return { engine: 'sd', job, disableLora: isTargetPopular || isTargetOtherStudio, adult: false, history: {
-        seed: input.seed >= 0 ? input.seed : undefined,
-        size: job.size,
-        negative: job.negative,
-        prompt: job.prompt,
-        engine: 'sd', model: job.checkpoint, checkpoint: job.checkpoint, profile: '',
-        cfg: job.cfg, steps: job.steps, sampler: job.sampler, scheduler: job.scheduler,
-        lora: job.lora || null,
-        visualDescription: pb.visualDescription, manual_tags: [...pb.manualTags], artistStyleIds: [...pb.artistStyleIds],
-        // 精准覆盖角色元数据
-        ...(isTargetPopular ? {
-          subject: 'popular' as const,
-          characterId: charInfo.char.id,
-          colorMood: plans.get(target.id)?.colorMood ?? null,
-          outfitId: plans.get(target.id)?.outfitId || defaultOutfit(charInfo.char)?.id,
-          blueprintId: target.kind === 'scene' ? target.id : null,
-        } : charInfo?.kind === 'studio' ? {
-          character: charInfo.charKey,
-          subject: 'studio' as const,
-          characterId: undefined,
-        } : {}),
-        story: target.prose || '',
-        scene: target.kind === 'scene' ? target.id : null,
-        sceneTitle: target.title || undefined,
-        hiresFix: job.hiresFix,
-        hiresScale: job.hiresScale,
-        hiresUpscaler: job.hiresUpscaler,
-        hiresSteps: job.hiresSteps,
-        hiresDenoise: job.denoisingStrength,
-        faceDetailer: job.faceDetailer,
-      } }
-  }
 
   function prepareBatchAnima(input: BatchDrawRunnerInput): PreparedBatchImage {
-    const prompt = buildTargetPrompt(input, false)
+    const prompt = buildTargetPrompt(input)
     if (!prompt) throw new Error('出图描述或角色配置为空')
     const target = input.scene
     const charInfo = resolveTargetCharacter(target)
@@ -400,7 +328,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
 
   const batchDraw = useBatchDraw({
     storage: createBatchDrawPlanStorage(),
-    prepare: input => clone(runEngine === 'sd' ? prepareBatchSd(input) : prepareBatchAnima(input)) as unknown as Record<string, unknown>,
+    prepare: input => clone(prepareBatchAnima(input)) as unknown as Record<string, unknown>,
     onFlash: (message) => pb.flash(message),
     run: async (input) => {
       const plan = readPreparedBatch(input.snapshot)
@@ -415,10 +343,11 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
           return persist(input, { ...plan.history, ...result })
         }
         if (plan.engine === 'sd') {
+          if (!input.reconnect) return { ok: false, error: 'SD 新生成已退役；仅核对原批次中已接收的任务。' }
           if (input.reconnect && !input.taskId) return { ok: false, unresolved: true, error: '当前生成环境未提供可恢复的 SD 接收编号；请核对原任务，本批不会重新提交。' }
           let generationError: unknown
           const url = await runJob(plan.job, { disableLora: plan.disableLora, requestKey: input.requestKey, signal: input.signal,
-            onSubmitting: input.submitting, onAcceptedId: input.accepted, resumeId: input.reconnect ? input.taskId : undefined,
+            onAcceptedId: input.accepted, resumeId: input.taskId,
             onError: error => { generationError = error },
             onAccepted: task => input.accepted(task.taskId) })
           if (!url) return batchFailure(input, generationError || new Error(sd.errorMsg.value || 'SD 生成失败'), batchDraw.runtimeOwned())
@@ -440,13 +369,13 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       }
     },
   })
-  if (batchDraw.restored.value) batchEngine.value = batchDraw.engine.value
+  if (batchDraw.restored.value && batchDraw.engine.value !== 'sd') batchEngine.value = batchDraw.engine.value
 
   const disposeBatch = batchDraw.dispose
   batchDraw.dispose = () => { animaTransport.dispose(); disposeBatch() }
 
   function selectedSeed() {
-    const seed = runEngine === 'anima' ? animaState.value.seed : pb.sdParams.seedLock ? pb.sdParams.seed : null
+    const seed = animaState.value.seed
     return typeof seed === 'number' && Number.isFinite(seed) && seed >= 0 ? seed : Math.floor(Math.random() * 900000000)
   }
 

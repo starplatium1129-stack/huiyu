@@ -1,9 +1,9 @@
 import { useTrackedTask } from '@/composables/useTaskCenter'
 import { generationTask } from '@/utils/generationTask'
 import type { useAnimaSession } from './useAnimaSession'
-import type { useSDGenerate } from './useSDGenerate'
+import type { useLegacySdTasks } from './useLegacySdTasks'
 
-export function useDrawingTaskTracking(sd: ReturnType<typeof useSDGenerate>, anima: ReturnType<typeof useAnimaSession>) {
+export function useDrawingTaskTracking(sd: ReturnType<typeof useLegacySdTasks>, anima: ReturnType<typeof useAnimaSession>) {
   useTrackedTask(() => {
     const state = anima.state.value
     const phase = state.phase

@@ -10,7 +10,7 @@ import {
   type SceneBlueprint,
 } from '@/utils/popularContent'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
+import type { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { DrawingRouteRecommendation } from '@/utils/drawingRoute'
 import type { DrawEngine } from '@/storage/settingsRepository'
@@ -18,7 +18,7 @@ import { applyGeneratedSceneSettings } from './applyGeneratedSceneSettings'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
-type SDGenerate = ReturnType<typeof useSDGenerate>
+type SDGenerate = ReturnType<typeof useLegacySdTasks>
 type AnimaSession = ReturnType<typeof useAnimaSession>
 
 export interface UseDirectorPopularInput {

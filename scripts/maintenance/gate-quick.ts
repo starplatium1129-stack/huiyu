@@ -10,13 +10,14 @@
  * 面积 → 步骤：
  *   ui     typecheck:app + vitest；自动模式按导入图选择相关单测，显式 ui 跑全部
  *   style  字面值、双主题对比度、颜色、动画扫描；不跑无关 TS/单测
- *   rust   现行后端 fmt、Clippy 与隔离 Rust 行为测试
+ *   rust   已登记读取模块按既有覆盖定向；未知/共享变更保留完整后端检查
+ *   native 对应宿主/渲染器 Cargo 编译；缺 Windows/SDK/工具链退出 3 并记未运行
  *   data   聚合一致性 + 内容契约 + 分片/参考库/定稿/语料契约（~15 秒）
  *   all    ui + style + rust + data 各领域连跑
  *   full   check + Rust + 前端覆盖率 + unit + contract + tooling + release + 生产打包预算。
  *          与 `npm run check` 共用同一份步骤清单，不存在第二套"全量"口径（2026-09-05 P1-03）。
  *
- * 横切重构（目录改名、模块搬迁、依赖变更）请直接用 full——爆炸半径无法事先界定。
+ * 依赖或无法界定影响面的横切改动使用 full；已登记消费者继续定向。
  */
 
 const { spawnSync } = (require('node:child_process') as typeof import('node:child_process'));
@@ -40,10 +41,12 @@ const {
   root,
 } = (require('../tests/run-quality-suite') as typeof import('../tests/run-quality-suite'));
 
+const { runtimeTestSelection, nativeTargetForFile } = require('../lib/rust-check-plan') as typeof import('../lib/rust-check-plan');
+import type { NativeRustTarget } from '../lib/rust-check-plan';
 const testsDir = path.join(root, 'scripts', 'tests');
 interface GateOptions { verbose: boolean; keepGoing: boolean }
-type GateArea = 'ui' | 'style' | 'rust' | 'data' | 'tests' | 'browser' | 'browser-types' | 'docs' | 'full';
-interface GatePlan { areas: GateArea[]; testFiles: string[]; frontendFiles?: string[]; browserFiles?: string[]; manualFiles?: string[] }
+type GateArea = 'ui' | 'style' | 'rust' | 'native' | 'data' | 'tests' | 'browser' | 'browser-types' | 'docs' | 'full';
+interface GatePlan { areas: GateArea[]; testFiles: string[]; frontendFiles?: string[]; browserFiles?: string[]; manualFiles?: string[]; rustFiles?: string[]; nativeTargets?: NativeRustTarget[] }
 const registeredTests = new Map(Object.entries(QUALITY_TEST_SUITES)
   .flatMap(([suite, files]) => files.map(file => [file, suite as keyof typeof QUALITY_TEST_SUITES] as const)));
 registeredTests.set('test-quality-gates.js', 'check');
@@ -53,7 +56,7 @@ const manualSpecs = new Set(loadLaneManifest().specs.filter(spec => ['manual', '
   .map(spec => `tests/e2e/${spec.file}`));
 let interrupted = false;
 
-async function runTool(name: string, file: string, args: string[], { verbose }: GateOptions) {
+async function runTool(name: string, file: string, args: string[], { verbose }: GateOptions, notRunExitCode?: number) {
   const controller = new AbortController();
   const interrupt = () => { interrupted = true; controller.abort(); };
   process.once('SIGINT', interrupt);
@@ -67,15 +70,16 @@ async function runTool(name: string, file: string, args: string[], { verbose }: 
     process.removeListener('SIGTERM', interrupt);
   }
   step ??= { name, ok: false, reason: 'INTERRUPTED', duration: 0, output: '' };
-  writeQualityReport(name, [{ name, status: step.ok ? 'passed' : 'failed', duration: step.duration,
+  const notRun = notRunExitCode !== undefined && step.exitCode === notRunExitCode;
+  writeQualityReport(name, [{ name, status: notRun ? 'not-run' : step.ok ? 'passed' : 'failed', duration: step.duration,
     output: step.output, reason: step.reason, timeoutMs: 600_000,
-    failureKind: classifyFailure({ status: step.exitCode ?? (step.ok ? 0 : 1), signal: step.signal,
+    failureKind: notRun ? undefined : classifyFailure({ status: step.exitCode ?? (step.ok ? 0 : 1), signal: step.signal,
       error: step.timedOut ? { code: 'ETIMEDOUT' } : step.errorCode ? { code: step.errorCode } : undefined }, step.output) }], step.duration);
-  console.log(`${step.ok ? '✔' : '✘'} ${name} ${formatDuration(step.duration)} ${step.reason}`);
+  console.log(`${notRun ? '未运行' : step.ok ? '✔' : '✘'} ${name} ${formatDuration(step.duration)} ${step.reason}`);
   if (verbose) console.log(step.output.trimEnd());
   else if (!step.ok) printExcerpt(step.output, name);
   if (step.ok && /No test files found/.test(step.output)) console.log('没有相关前端单测；本次只完成类型检查，页面风险需定向浏览器验收。');
-  return step.ok ? 0 : 1;
+  return notRun ? notRunExitCode! : step.ok ? 0 : 1;
 }
 
 function runNpmStep(name: string, script: string, timeout: number, verbose: boolean) {
@@ -108,8 +112,13 @@ const AREA_STEPS = {
   docs(options: GateOptions) {
     return runTool('documentation links', path.join(root, 'scripts/maintenance/check-doc-links.js'), [], options);
   },
-  rust(options: GateOptions) {
-    return runTool('rust:check', path.join(root, 'scripts/maintenance/run-rust-runtime.js'), ['check'], options);
+  rust(options: GateOptions, files?: readonly string[]) {
+    return runTool('rust:check', path.join(root, 'scripts/maintenance/run-rust-runtime.js'), ['check', ...(files?.flatMap(file => ['--file', file]) ?? [])], options);
+  },
+  native(targets: NativeRustTarget[], options: GateOptions) {
+    // Checking the host also checks its renderer dependency; do not compile both twice.
+    const target = targets.includes('host') || !targets.length ? 'host' : 'renderer';
+    return runTool('native Rust compilation (' + target + ')', path.join(root, 'scripts/maintenance/check-native-rust.js'), ['--target', target], options, 3);
   },
   tests(files: readonly string[], { verbose, keepGoing }: GateOptions) {
     if (files.some(file => registeredTests.get(file) !== 'check')) {
@@ -187,12 +196,14 @@ function classifyFiles(files: readonly string[], baseline = sourceAtHead): GateP
   const areas = new Set<GateArea>();
   const testFiles = new Set<string>();
   const frontendFiles = new Set<string>(), browserFiles = new Set<string>();
-  const manualFiles = new Set<string>();
+  const manualFiles = new Set<string>(), rustFiles = new Set<string>();
+  const nativeTargets = [...new Set(files.map(file => nativeTargetForFile(file.replace(/\\/g, '/'))).filter((target): target is NativeRustTarget => Boolean(target)))];
   let allFrontend = false;
-  const full = (): GatePlan => ({ areas: ['full'], testFiles: [] });
+  const full = (): GatePlan => ({ areas: ['full', ...(nativeTargets.length ? ['native' as const] : [])], testFiles: [], ...(nativeTargets.length ? { nativeTargets } : {}) });
   for (const raw of files) {
     const p = raw.replace(/\\/g, '/');
-    if (/^runtime-rs\/(?:src\/|tests\/.*\.(?:rs|json)$|Cargo\.(?:toml|lock)$)/.test(p)) { areas.add('rust'); continue; }
+    if (/^runtime-rs\/(?:src\/|tests\/.*\.(?:rs|json)$|Cargo\.(?:toml|lock)$)/.test(p)) { areas.add('rust'); rustFiles.add(p); continue; }
+    if (nativeTargetForFile(p)) { areas.add('native'); continue; }
     if (/^runtime-rs\/native-/.test(p)) { areas.add('tests'); QUALITY_TEST_SUITES.release.forEach(file => testFiles.add(file)); continue; }
     if (/^(docs\/|.*\.md$)/.test(p)) { areas.add('docs'); continue; }
     if (['tsconfig.app.json', 'vitest.config.ts'].includes(p)) { areas.add('ui'); allFrontend = true; continue; }
@@ -238,6 +249,8 @@ function classifyFiles(files: readonly string[], baseline = sourceAtHead): GateP
       && p !== 'index.html') return full();
   }
   return { areas: [...areas], testFiles: [...testFiles],
+    ...(runtimeTestSelection([...rustFiles]) ? { rustFiles: [...rustFiles] } : {}),
+    ...(nativeTargets.length ? { nativeTargets } : {}),
     ...(!allFrontend && frontendFiles.size ? { frontendFiles: [...frontendFiles] } : {}),
     ...(browserFiles.size ? { browserFiles: [...browserFiles] } : {}),
     ...(manualFiles.size ? { manualFiles: [...manualFiles] } : {}) };
@@ -265,7 +278,7 @@ function gatePrerequisites(plan: GatePlan) {
 async function main(argv: string[]) {
   interrupted = false;
   if (argv.includes('--help') || argv.includes('-h')) {
-    console.log('用法: node scripts/maintenance/gate-quick.js [ui|style|rust|data|all|full] [--base HEAD|SHA] [--plan] [--verbose] [--all]');
+    console.log('用法: node scripts/maintenance/gate-quick.js [ui|style|rust|native|data|all|full] [--base HEAD|SHA] [--plan] [--verbose] [--all]');
     console.log('缺省按 git 改动自动选面积；--all 失败后继续；--verbose 展示完整输出（contract 按文件完成后输出）。');
     return 0;
   }
@@ -276,23 +289,24 @@ async function main(argv: string[]) {
     if (!base || !/^(HEAD|[a-f0-9]{40}|[a-f0-9]{64})$/i.test(base)) { console.error('Invalid --base; expected HEAD or a commit SHA'); return 2; }
     argv = argv.filter((_arg, index) => index !== baseIndex && index !== baseIndex + 1);
   }
-  const invalid = argv.filter((arg: any) => !['ui', 'style', 'rust', 'data', 'all', 'full', '--plan', '--verbose', '--all'].includes(arg));
+  const invalid = argv.filter((arg: any) => !['ui', 'style', 'rust', 'native', 'data', 'all', 'full', '--plan', '--verbose', '--all'].includes(arg));
   if (invalid.length || argv.filter((arg: any) => !arg.startsWith('--')).length > 1) {
     console.error(`无效门禁参数: ${argv.join(' ')}`);
     return 2;
   }
   const verbose = argv.includes('--verbose');
   const keepGoing = argv.includes('--all');
-  const areaArg = argv.find((arg: any) => ['ui', 'style', 'rust', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
+  const areaArg = argv.find((arg: any) => ['ui', 'style', 'rust', 'native', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
 
   let areas: GateArea[];
   let testFiles: string[] = [];
   let frontendFiles: string[] | undefined, browserFiles: string[] = [], manualFiles: string[] = [];
+  let rustFiles: string[] | undefined, nativeTargets: NativeRustTarget[] = [];
   if (areaArg) {
     // 'full' 走完整门禁；'all' 展开领域检查。
     areas = areaArg === 'all' ? ['ui', 'style', 'rust', 'data'] : [areaArg];
   } else {
-    try { ({ areas, testFiles, frontendFiles, browserFiles = [], manualFiles = [] } = detectAreas(base)); }
+    try { ({ areas, testFiles, frontendFiles, browserFiles = [], manualFiles = [], rustFiles, nativeTargets = [] } = detectAreas(base)); }
     catch (error) {
       console.error(`${error instanceof Error ? error.message : String(error)}; falling back to full validation`);
       areas = ['full'];
@@ -300,7 +314,8 @@ async function main(argv: string[]) {
   }
   if (argv.includes('--plan')) {
     const plan: GatePlan = { areas, testFiles, ...(frontendFiles ? { frontendFiles } : {}),
-      ...(browserFiles.length ? { browserFiles } : {}), ...(manualFiles.length ? { manualFiles } : {}) };
+      ...(browserFiles.length ? { browserFiles } : {}), ...(manualFiles.length ? { manualFiles } : {}),
+      ...(rustFiles ? { rustFiles } : {}), ...(nativeTargets.length ? { nativeTargets } : {}) };
     console.log(JSON.stringify({ ...plan, prerequisites: gatePrerequisites(plan), baseline: base }));
     return 0;
   }
@@ -357,7 +372,12 @@ async function main(argv: string[]) {
       continue;
     }
     if (area === 'rust') {
-      exitCode = await AREA_STEPS.rust({ verbose, keepGoing }) || exitCode;
+      exitCode = await AREA_STEPS.rust({ verbose, keepGoing }, rustFiles) || exitCode;
+      continue;
+    }
+    if (area === 'native') {
+      const code = await AREA_STEPS.native(nativeTargets, { verbose, keepGoing });
+      exitCode = code === 3 ? (exitCode || 3) : (code || exitCode);
       continue;
     }
     if (area === 'data') {
@@ -393,7 +413,7 @@ async function main(argv: string[]) {
       console.error(`${area} 准备失败：${message}；保留失败，继续其余独立领域。`);
     }
   }
-  console.log(`gate 总计: ${exitCode === 0 ? 'PASS' : 'FAIL'} · ${formatDuration(Date.now() - started)}`);
+  console.log(`gate 总计: ${exitCode === 0 ? 'PASS' : exitCode === 3 ? 'NOT RUN (native prerequisites)' : 'FAIL'} · ${formatDuration(Date.now() - started)}`);
   return exitCode;
 }
 

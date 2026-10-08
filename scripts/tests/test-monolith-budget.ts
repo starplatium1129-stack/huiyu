@@ -22,7 +22,7 @@ type Baseline = Record<string, number>;
  * 重新生成（拆分质量仍由 code review 把关，本门禁只防回涨）。
  *
  * 扫描业务源码以及维护入口和支撑模块：
- *   src/scripts/maintenance/scripts/lib/runtime-rs/src
+ *   src/scripts/maintenance/scripts/lib/runtime-rs/src and both desktop Rust source trees
  * （相邻 TypeScript 的 .js 编译产物不重复计数）
  */
 
@@ -36,7 +36,8 @@ const BASELINE_FILE = path.join(__dirname, 'monolith-baseline.json');
 const RED_LINE = 500;
 
 // 维护入口与支撑模块同样执行 500 行预算，防止拆分后在工具侧重新堆积。
-const SCAN_DIRS = ['src', 'scripts/maintenance', 'scripts/lib', 'runtime-rs/src'];
+const SCAN_DIRS = ['src', 'scripts/maintenance', 'scripts/lib', 'runtime-rs/src',
+  'desktop-tauri/src-tauri/src', 'desktop-tauri/native-live2d/src'];
 const SCAN_EXT = /\.(ts|vue|js|rs)$/;
 function listFiles(dir: PathLike): string[] {
   const out: string[] = [];
@@ -150,4 +151,3 @@ if (process.argv.includes('--update-baseline')) {
   console.log(`基线已更新：${Object.keys(next).length} 个文件 > ${RED_LINE} 有效行 → scripts/tests/monolith-baseline.json`);
   for (const [rel, count] of Object.entries(next)) console.log(`  ${String(count).padStart(5)}  ${rel}`);
 }
-

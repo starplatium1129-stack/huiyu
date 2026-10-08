@@ -1,20 +1,18 @@
 import { ref, readonly, onUnmounted, getCurrentInstance } from 'vue'
 import type { SDGenerateParams } from '@/utils/sdRequest'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
-import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import type { TaskRecord } from '../../../types/tasks'
-import type { RuntimeSdAttempt } from './runtimeImageSession'
+import type { RuntimeSdAttempt } from './legacySdTaskSession'
 import type { AnimaResultContext } from '@/types/anima'
+import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
 export type { SDGenerateParams } from '@/utils/sdRequest'
 
-export interface SDGenerateOptions {
+export interface LegacySdObserveOptions {
   /** Existing FIFO intent; batch plans continue to own their own request keys. */
   attempt?: RuntimeSdAttempt
   requestKey?: string
   onAccepted?: (task: TaskRecord) => void | Promise<void>
   onAcceptedId?: (id: string) => void | Promise<void>
-  onSubmitting?: () => void
   resumeId?: string
   onError?: (error: unknown) => void
   signal?: AbortSignal
@@ -28,7 +26,7 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
 
-export function useSDGenerate() {
+export function useLegacySdTasks() {
   const online      = ref(false)
   const checkpoint  = ref('')
   const generating  = ref(false)
@@ -58,7 +56,6 @@ export function useSDGenerate() {
   let abortCtrl: AbortController | null = null
   let activeJobId = ''
   let durableAttempt = false, durableKey = ''
-  let batchObservation = false
   let queueAttempt: RuntimeSdAttempt | undefined
   let requestSerial = 0, cancelRequested = false
 
@@ -78,62 +75,59 @@ export function useSDGenerate() {
     if (value.upscalers) upscalers.value = value.upscalers
     return value.online
   }
-  async function generate(params: SDGenerateParams, options: SDGenerateOptions = {}): Promise<string | null> {
+  async function observe(params: SDGenerateParams, options: LegacySdObserveOptions = {}): Promise<string | null> {
     if (generating.value) {
-      // A direct click can win while the queue awaits its pre-POST checkpoint.
-      // This invocation never submitted; keep its original key safely retryable.
-      // An accepted restored task, however, must retain its runtime identity.
-      if (options.attempt && !options.attempt.task) await options.attempt.rejected()
+      // Concurrent observers keep the original persisted task identity.
+      return null
+    }
+    if (!options.attempt?.key && !options.requestKey && !options.resumeId) {
+      const error = new Error('SD 新生成已退役；只能核对已有任务编号。')
+      errorMsg.value = error.message; taskState.value = 'failed'; statusText.value = error.message
+      options.onError?.(error)
       return null
     }
     generating.value = true
-    taskState.value = 'submitting'
-    progress.value   = 0
-    statusText.value = '正在生成…'
+    taskState.value = 'running'
+    progress.value   = null
+    statusText.value = '正在核对旧任务…'
     errorMsg.value   = ''
-    // 2026-09-06 体验报告 F2：提交不再清掉上一张成片——旧图在生成期间保持可见，
+    // 观察旧任务时不清掉上一张成片；旧图在等待期间保持可见，
     // 新图落地时才由下方 revoke+替换接管；失败/取消时旧图从未离开，自然还在。
 
     abortCtrl = new AbortController()
     const controller = abortCtrl
     requestSerial += 1
     cancelRequested = false
-    let submitted = false, accepted = false
+    const submitted = Boolean(options.attempt?.key || options.requestKey || options.resumeId)
+    let accepted = false
     const stopObservation = () => controller.abort()
     options.signal?.addEventListener('abort', stopObservation, { once: true })
     if (options.signal?.aborted) controller.abort()
     durableAttempt = hasRuntimeTasks(); durableKey = options.attempt?.key || options.requestKey || ''
-    batchObservation = Boolean(options.requestKey)
     queueAttempt = options.attempt
 
     try {
       params = JSON.parse(JSON.stringify(params)) as SDGenerateParams
-      // Both projections are submission-only. Keep the frozen input and abort
-      // check around this existing lazy boundary, including a cold first click.
-      const [{ buildTxt2ImgRequest }, { buildRuntimeSdInput }] = await Promise.all([
-        import('@/utils/sdRequest'), import('@/utils/sdRuntimeRequest'),
-      ])
-      controller.signal.throwIfAborted()
-      const { payload } = buildTxt2ImgRequest(params)
-
-      statusText.value = 'SD WebUI 生成中…'
-
-      const jobInput = buildRuntimeSdInput(params, payload, isLocalStudioHost())
-      const loras = jobInput.loras
       if (durableAttempt) {
-        durableKey = options.attempt?.key || options.requestKey || runtimeRequestKey('generation', jobInput)
-        const { runRuntimeSd } = await import('./runtimeImageSession')
-        const url = await runRuntimeSd(jobInput, durableKey, controller.signal,
-          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt, resultContext }, params.runtimeContext,
-          async task => { accepted = true; await options.onAccepted?.(task) },
-          () => { submitted = true; options.onSubmitting?.() }, options.attempt)
+        if (!durableKey) throw new Error('旧 SD 任务缺少原请求编号，不能创建新任务。')
+        const { observeRuntimeSd } = await import('./legacySdTaskSession')
+        const url = await observeRuntimeSd(durableKey, controller.signal,
+          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt, resultContext },
+          async task => { accepted = true; await options.onAccepted?.(task) }, options.attempt)
         lastLoras.value = resultContext.value?.history?.loras?.map(lora => ({ ...lora })) ?? []
         return url
       }
-      const { runWebGeneration } = await import('@/platform/web/generationSession')
-      const { blob, seed } = await runWebGeneration(jobInput, {
+      if (!options.resumeId) throw new Error('旧浏览器任务没有接收编号，请在任务中心核对；不会重新提交。')
+      activeJobId = options.resumeId
+      // Frozen legacy parameters supply result facts, never a new request.
+      const [{ buildTxt2ImgRequest }, { buildRuntimeSdInput }, { isLocalStudioHost }] = await Promise.all([
+        import('@/utils/sdRequest'), import('@/utils/sdRuntimeRequest'), import('@/utils/runtimeEnvironment'),
+      ])
+      const { payload } = buildTxt2ImgRequest(params)
+      const loras = buildRuntimeSdInput(params, payload, isLocalStudioHost()).loras
+      const { observeWebGeneration } = await import('@/platform/web/generationSession')
+      const { blob, seed } = await observeWebGeneration(options.resumeId, {
         signal: controller.signal, steps: params.steps, hires: params.hr_fix, hiresSteps: params.hr_second_pass_steps,
-        resumeId: options.resumeId, onSubmitting: options.onSubmitting, preserveAccepted: batchObservation,
         async accepted(id, selectedProvider) { activeJobId = id; provider.value = selectedProvider; await options.onAcceptedId?.(id) },
         progress(value) { taskState.value = value.status; if (value.progress !== undefined) progress.value = value.progress; if (value.text !== undefined) statusText.value = value.text },
       })
@@ -153,18 +147,19 @@ export function useSDGenerate() {
     } catch (e) {
       options.onError?.(e)
       if (durableAttempt) {
-        const { runtimeSdFailure } = await import('./runtimeImageSession')
+        const { runtimeSdFailure } = await import('./legacySdTaskSession')
         const failure = runtimeSdFailure(e, controller.signal.aborted, submitted, accepted, cancelRequested)
         taskState.value = failure.state; statusText.value = failure.message; errorMsg.value = failure.error
         return null
       }
       if (isAbortError(e) || controller.signal.aborted) {
-        taskState.value = 'cancelled'; statusText.value = '已停止'
+        taskState.value = cancelRequested ? 'cancelled' : 'unknown'
+        statusText.value = cancelRequested ? '已停止' : '已停止查看，原任务仍由服务端管理'
         return null
       }
-      taskState.value = 'failed'
-      errorMsg.value   = errorMessage(e)
-      statusText.value = '生成失败'
+      taskState.value = e instanceof AcceptedTaskTerminalError ? e.status : 'unknown'
+      errorMsg.value = e instanceof AcceptedTaskTerminalError && e.status === 'cancelled' ? '' : errorMessage(e)
+      statusText.value = e instanceof AcceptedTaskTerminalError ? (e.status === 'cancelled' ? '任务已取消' : '任务失败') : '原任务状态尚未确认，请继续核对'
       return null
     } finally {
       options.signal?.removeEventListener('abort', stopObservation)
@@ -227,11 +222,10 @@ export function useSDGenerate() {
     statusText.value = '已找回上次未入册的成片'
   }
 
-  /** 组件卸载时收尾：取消 in-flight 任务并释放 blob，防止出图途中离开页面泄漏。 */
+  /** Unmount stops observation and releases owned URLs; explicit cancel owns DELETE. */
   function dispose() {
     // Persisted batch plans own their accepted IDs; page disposal releases only observation.
-    if (durableAttempt || batchObservation) abortCtrl?.abort()
-    else cancel()
+    abortCtrl?.abort()
     abortCtrl = null
     if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }
   }
@@ -248,6 +242,6 @@ export function useSDGenerate() {
     schedulers: readonly(schedulers), upscalers: readonly(upscalers),
     models: readonly(models), provider: readonly(provider),
     lastLoras: readonly(lastLoras),
-    checkStatus, generate, cancel, clearResult, adoptResult, dispose,
+    checkStatus, observe, cancel, clearResult, adoptResult, dispose,
   }
 }

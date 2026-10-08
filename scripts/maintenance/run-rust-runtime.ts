@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import identity = require('../lib/delivery-identity');
 import nativeInputs = require('./desktop-rust-inputs');
+import { runtimeTestSelection } from '../lib/rust-check-plan';
 
 const root = path.resolve(__dirname, '../..');
 const manifest = path.join(root, 'runtime-rs', 'Cargo.toml');
@@ -13,17 +14,25 @@ const candidate = path.join(cargoHome, 'bin', process.platform === 'win32' ? 'ca
 const cargo = fs.existsSync(candidate) ? candidate : 'cargo';
 const env: NodeJS.ProcessEnv = { ...process.env, CARGO_TARGET_DIR: path.join(root,'runtime-rs','target'), PATH: path.join(cargoHome, 'bin') + path.delimiter + (process.env.PATH || '') };
 
-function run(args: string[]): void {
-  const result = spawnSync(cargo, args, { cwd: root, env, windowsHide: true, stdio: 'inherit' });
+function run(args: string[], requireTests = false, command = cargo): void {
+  const result = spawnSync(command, args, { cwd: root, env, windowsHide: true, encoding: 'utf8', maxBuffer: 8 * 1024 * 1024, stdio: requireTests ? 'pipe' : 'inherit' });
+  if (requireTests) { process.stdout.write(result.stdout || ''); process.stderr.write(result.stderr || ''); }
   if (result.error) throw result.error;
   if (result.status !== 0) process.exit(result.status ?? 1);
+  if (requireTests && !/running [1-9]\d* tests?/.test(result.stdout || '')) throw Error('Selected Rust scope matched no tests');
 }
 
 const action = process.argv[2];
 if (process.argv.includes('--help')) {
   if(action==='recover') console.log('run-rust-runtime recover --root <absolute project> --runtime-root <absolute runtime> [--showcase-root <absolute root>] [--backup-id <id>] [--out <new plan>] | --apply-plan <signed plan>');
-  else console.log('run-rust-runtime <check|build|start|recover>\ncheck: fmt, clippy and isolated Rust tests\nbuild: locked release runtime; no install\nstart: run the Rust service from source\nrecover: explicit native maintenance recovery; default is preview');
-} else if (action === 'check' && process.argv.length === 3) {
+  else console.log('run-rust-runtime <check|build|start|recover>\ncheck [--file <source> ...]: fmt, clippy and registered read-path tests; unknown scope uses all runtime tests\nbuild: locked release runtime; no install\nstart: run the Rust service from source\nrecover: explicit native maintenance recovery; default is preview');
+} else if (action === 'check') {
+  const files: string[] = [];
+  for (let i = 3; i < process.argv.length; i += 2) {
+    if (process.argv[i] !== '--file' || !process.argv[i + 1] || process.argv[i + 1].startsWith('-')) throw Error('Expected --file <repository-relative source>');
+    files.push(process.argv[i + 1].replaceAll(path.win32.sep, '/'));
+  }
+  const selected = runtimeTestSelection(files);
   // Windows TEMP may use an 8.3 alias. Isolated fixtures must receive its
   // physical spelling so runtime path guards can keep rejecting junctions.
   const testTemporary = fs.realpathSync.native(os.tmpdir());
@@ -32,9 +41,13 @@ if (process.argv.includes('--help')) {
   // limits even with free RAM. Bound checks; callers can select their measured
   // safe parallelism with CARGO_BUILD_JOBS. Normal release builds stay unchanged.
   env.CARGO_BUILD_JOBS ??= '2';
-  run(['fmt', '--manifest-path', manifest, '--check']);
-  run(['clippy', '--manifest-path', manifest, '--locked', '--all-targets', '--', '-D', 'warnings']);
-  run(['test', '--manifest-path', manifest, '--locked']);
+  if (selected) {
+    const formatter = path.join(cargoHome, 'bin', process.platform === 'win32' ? 'rustfmt.exe' : 'rustfmt');
+    run(['--check', '--edition', '2024', '--config', 'skip_children=true', ...files], false, fs.existsSync(formatter) ? formatter : 'rustfmt');
+  } else run(['fmt', '--manifest-path', manifest, '--check']);
+  run(['clippy', '--manifest-path', manifest, '--locked', selected ? '--lib' : '--all-targets', '--', '-D', 'warnings']);
+  if (selected) for (const args of selected) run(['test', '--manifest-path', manifest, '--locked', ...args], true);
+  else run(['test', '--manifest-path', manifest, '--locked']);
 } else if (action === 'build' && process.argv.length === 3) {
   const selected = [{ kind: 'tree', path: 'runtime-rs/src' }, { kind: 'file', path: 'runtime-rs/Cargo.toml' }, { kind: 'file', path: 'runtime-rs/Cargo.lock' }];
   const before = identity.snapshot(root, selected);

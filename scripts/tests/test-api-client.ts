@@ -134,9 +134,6 @@ test('generation API owns the application generation job endpoints with envelope
       return jsonResponse({ ok: true, online: true, provider: 'comfy', webuiOnline: false, comfyFallbackOnline: true, checkpoint: 'wai', samplers: ['Euler a'], schedulers: [], models: [], loras: [], pending: 0, maxPending: 4, capabilities: { basic: true, hires: true, faceDetailer: false, hiresUpscalers: ['Auto'] } });
     }
     if (calls.length === 2) {
-      return jsonResponse({ ok: true, job: { id: 'job-1', status: 'queued', provider: 'comfy' } }, 202);
-    }
-    if (calls.length === 3) {
       return jsonResponse({ ok: true, job: { id: 'job-1', status: 'succeeded', provider: 'comfy', resultUrl: '/r.png' } });
     }
     return jsonResponse({ ok: true, job: { id: 'job-1', status: 'cancelled', provider: 'comfy' } });
@@ -148,19 +145,13 @@ test('generation API owns the application generation job endpoints with envelope
   assert.equal(calls[0].init.method, undefined);
   assert.equal(calls[0].url, '/api/generation/status');
 
-  const created = await api.createJob({ prompt: '1girl', steps: 28, cfg: 5.5 });
-  assert.equal(created.job.id, 'job-1');
-  assert.equal(calls[1].init.method, 'POST');
-  assert.equal(calls[1].url, '/api/generation/jobs');
-  assert.deepEqual(JSON.parse(calls[1].init.body), { prompt: '1girl', steps: 28, cfg: 5.5 });
-
   const polled = await api.getJob('job-1');
   assert.equal(polled.job.status, 'succeeded');
-  assert.equal(calls[2].url, '/api/generation/jobs/job-1');
+  assert.equal(calls[1].url, '/api/generation/jobs/job-1');
 
   await api.deleteJob('job-1');
-  assert.equal(calls[3].init.method, 'DELETE');
-  assert.equal(calls[3].url, '/api/generation/jobs/job-1');
+  assert.equal(calls[2].init.method, 'DELETE');
+  assert.equal(calls[2].url, '/api/generation/jobs/job-1');
 });
 
 test('generation API rejects malformed status and job envelopes', async () => {
@@ -168,7 +159,7 @@ test('generation API rejects malformed status and job envelopes', async () => {
   await assert.rejects(badStatus.getStatus(), error => error instanceof ApiClientError && error.kind === 'invalid-response');
 
   const badJob = createGenerationApi(createApiClient(async () => jsonResponse({ ok: true, job: { status: 'queued', provider: 'comfy' } }, 202)));
-  await assert.rejects(badJob.createJob({ prompt: 'x' }), error => error instanceof ApiClientError && error.kind === 'invalid-response');
+  await assert.rejects(badJob.getJob('job-1'), error => error instanceof ApiClientError && error.kind === 'invalid-response');
 
 });
 
@@ -419,12 +410,17 @@ test('useControlActions.doStart stops after a real config API failure', async ()
     sdHost: ref('http://127.0.0.1:7860'),
     comfyHost: ref('http://127.0.0.1:8188'),
     ttsHost: ref('http://127.0.0.1:9880'),
+    ttsEngine: ref('gpt-sovits'),
+    voiceNeneLora: ref(''),
     voiceNeneRef: ref('nene.wav'),
     voiceNenePrompt: ref('nene'),
     voiceNatsumeRef: ref('natsume.wav'),
+    voiceNatsumeLora: ref(''),
     voiceNatsumePrompt: ref('natsume'),
     feedbackText: ref(''),
     actionBusy: ref(false),
+    opBusy: ref(false),
+    operationSubmitting: ref(false),
     mainBtnLabel: ref('启动'),
     pollStatus: () => { statusPolls += 1; },
     startPolling: () => { startedPolling += 1; },

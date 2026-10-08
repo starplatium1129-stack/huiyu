@@ -43,7 +43,7 @@ describe('useSDQueue · snapshot restore boundaries', () => {
 
   it('includes the running job in the eight-job capacity', async () => {
     const { queue, settle } = fixture()
-    queue.enqueue(job('active'))
+    queue.restore([job('active')]); queue.resume()
     const active = queue.activeJob.value
     assert.equal(queue.restore(Array.from({ length: 10 }, (_, index) => job(`r${index}`))), SD_QUEUE_LIMIT - 1)
     assert.equal(queue.total.value, SD_QUEUE_LIMIT)
@@ -53,7 +53,7 @@ describe('useSDQueue · snapshot restore boundaries', () => {
 
   it('does not change state or pause execution when no capacity remains', async () => {
     const { queue, settle } = fixture()
-    for (let index = 0; index < SD_QUEUE_LIMIT; index++) queue.enqueue(job(`q${index}`))
+    queue.restore(Array.from({ length: SD_QUEUE_LIMIT }, (_, index) => job(`q${index}`))); queue.resume()
     const ids = queue.queue.value.map(item => item.id)
     assert.equal(queue.paused.value, false)
     assert.equal(queue.restore([job('overflow')]), 0)
@@ -65,7 +65,7 @@ describe('useSDQueue · snapshot restore boundaries', () => {
 
   it('skips active and waiting IDs as well as repeated incoming IDs', async () => {
     const { queue, settle } = fixture()
-    queue.enqueue(job('active'))
+    queue.restore([job('active')]); queue.resume()
     const activeId = queue.activeJob.value!.id
     assert.equal(queue.restore([job('waiting')]), 1)
     assert.equal(queue.restore([job(activeId), job('waiting'), job('new'), job('new')]), 1)
@@ -81,8 +81,8 @@ describe('useSDQueue · snapshot restore boundaries', () => {
 
   it('preserves completed progress when merging into an existing batch', async () => {
     const { queue, settle } = fixture()
-    queue.enqueue(job('a'))
-    queue.enqueue(job('b'))
+    queue.restore([job('a')]); queue.resume()
+    queue.restore([job('b')]); queue.resume()
     await settle()
     assert.equal(queue.done.value, 1)
     assert.equal(queue.restore([job('c')]), 1)
@@ -94,7 +94,7 @@ describe('useSDQueue · snapshot restore boundaries', () => {
 
   it('starts a fresh paused batch after the previous batch has finished', async () => {
     const { queue, settle } = fixture()
-    queue.enqueue(job('completed'))
+    queue.restore([job('completed')]); queue.resume()
     await settle()
     assert.equal(queue.done.value, 1)
     assert.equal(queue.total.value, 0)

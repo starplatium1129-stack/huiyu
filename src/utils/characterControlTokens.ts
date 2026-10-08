@@ -1,5 +1,5 @@
 import type { PromptScene } from './sceneFraming.ts'
-import { normalizeKey, sceneRating } from './promptPolicy.ts'
+import { normalizeKey, sceneRating } from './promptPrimitives.ts'
 
 /**
  * v18 训练 caption 中实际出现的服装词组。

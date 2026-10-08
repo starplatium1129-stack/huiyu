@@ -9,7 +9,10 @@ import {
   TUNNEL_OFF_KEY,
 } from '../utils/storageKeys.ts'
 
-export type DrawEngine = 'sd' | 'anima' | 'krea2'
+// Historical result/recipe projections keep SD; new selections do not.
+export type { DrawEngine } from '../types/promptHistory'
+export type ActiveDrawEngine = 'anima' | 'krea2'
+export function isActiveDrawEngine(value: unknown): value is ActiveDrawEngine { return value === 'anima' || value === 'krea2' }
 export const STARTER_MODEL_SETTING: SettingDefinition<string> = {
   key:'aics_setup_image_model',parse:value=>value?.startsWith('anima-')?value:null,serialize:value=>value,
 }
@@ -28,10 +31,10 @@ export interface SettingDefinition<T> {
   readonly serialize: (value: T) => string
 }
 
-export const DRAW_ENGINE_SETTING: SettingDefinition<DrawEngine> = {
+export const DRAW_ENGINE_SETTING: SettingDefinition<ActiveDrawEngine> = {
   key: DRAW_ENGINE_KEY,
   parse(raw) {
-    return raw === 'sd' || raw === 'anima' || raw === 'krea2' ? raw : null
+    return raw === 'sd' ? 'anima' : isActiveDrawEngine(raw) ? raw : null
   },
   serialize(value) {
     return value

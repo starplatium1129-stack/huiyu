@@ -1,9 +1,9 @@
 import { ref, computed, readonly, getCurrentScope, onScopeDispose } from 'vue'
 
 /**
- * 串行出图队列 — 从重构前 tools/prompt-builder/queue.js 迁移。
+ * 已接收 SD 任务的串行核对队列；只恢复已有记录，不创建新意图。
  * 规则：最多 8 个任务；一次只跑一个；失败保留在队首并自动暂停，
- * 让用户先处理原因（降尺寸 / 跳 LoRA / 换采样器）再恢复。
+ * 接收状态不明时保留原身份；用户可继续核对或明确移出。
  */
 
 export const SD_QUEUE_LIMIT = 8
@@ -67,7 +67,6 @@ export function useSDQueue(options: {
     paused.value = true
     onFlash(error instanceof Error ? error.message : '队列尚未保存，已暂停，请保持窗口打开并重试')
   }
-  function changed() { void checkpoint().catch(saveFailed) }
 
   /**
    * 本轮已完成张数（2026-09-06 体验报告 F6）。
@@ -82,27 +81,6 @@ export function useSDQueue(options: {
   const total = computed(() => queue.value.length + (activeJob.value ? 1 : 0))
   /** 本轮总量（已完成 + 等待 + 在途）：进度展示用，与容量上限无关。 */
   const batchTotal = computed(() => done.value + total.value)
-  const canEnqueue = computed(() => total.value < SD_QUEUE_LIMIT)
-
-  function makeId() {
-    return 'queue_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7)
-  }
-
-  function enqueue(job: Omit<SDQueueJob, 'id'>): boolean {
-    if (!canEnqueue.value) {
-      onFlash(`生成队列最多保留 ${SD_QUEUE_LIMIT} 个`)
-      return false
-    }
-    if (!job.prompt) { onFlash('请先生成 Prompt'); return false }
-    // 上一轮已全部跑完（无等待无在途）时重新开一轮：done 归零，批次语义重启。
-    if (!queue.value.length && !activeJob.value) done.value = 0
-    queue.value.push({ ...job, id: makeId() } as SDQueueJob)
-    changed()
-    onFlash('已加入队列：' + (job.title || '未命名'))
-    void process()
-    return true
-  }
-
   function remove(id: string) {
     if (options.beforeRemove) return removeDurably(queue.value.filter(j => j.id === id))
     queue.value = queue.value.filter(j => j.id !== id)
@@ -210,7 +188,7 @@ export function useSDQueue(options: {
     activeJob: readonly(activeJob),
     paused: readonly(paused),
     done: readonly(done),
-    total, batchTotal, canEnqueue,
-    enqueue, remove, clear, pause, resume, process, restore, checkpoint,
+    total, batchTotal,
+    remove, clear, pause, resume, process, restore, checkpoint,
   }
 }

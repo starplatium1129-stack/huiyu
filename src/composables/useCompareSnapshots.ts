@@ -6,7 +6,7 @@ import { useFocusTrap } from './useFocusTrap.ts'
 /**
  * 出图对比快照的生命周期所有权（2026-08-21 自 PromptBuilderView 拆出）。
  *
- * 引擎出新图时会 revoke 上一张的 blob URL（useSDGenerate / useAnimaSession），
+ * 引擎出新图时会 revoke 上一张的 blob URL（useLegacySdTasks / useAnimaSession），
  * 快照若直接存引擎 URL，「上一张」必然裂图。本 composable 负责：
  *   1. 轮转前把 blob 克隆成独立 URL 保活（persistCompareUrl）；
  *   2. 被替换的克隆延迟到对比弹层关闭后再释放（pending 队列，上限 8 张强制回收）；

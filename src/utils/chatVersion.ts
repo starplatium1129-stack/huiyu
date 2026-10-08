@@ -1,4 +1,3 @@
-import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 /** Missing versions are the supported pre-version format; numbered formats
  * migrate through the existing field allowlists. Never coerce version strings. */
 export function assertChatVersion(value: unknown, current: number): void {
@@ -10,13 +9,4 @@ export function assertChatVersion(value: unknown, current: number): void {
     throw new Error('聊天数据版本无效，原件已保留，无法安全修改。')
   }
   if (version > current) throw new Error('聊天数据来自更新版本，原件已保留，请升级后再发送或修改。')
-}
-
-export function assertStoredChatVersion(key: string, current: number): void {
-  const raw = localStorage.getItem(key)
-  if (raw !== null) {
-    const value: unknown = JSON.parse(raw)
-    if (value === null) throw new Error('聊天数据格式损坏，原件已保留。')
-    assertChatVersion(value, current)
-  }
 }

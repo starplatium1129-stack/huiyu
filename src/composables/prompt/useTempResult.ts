@@ -5,7 +5,7 @@ import type { usePromptBuilderStore, HistoryEntry } from '../../stores/promptBui
 import type { DrawEngine } from '../../storage/settingsRepository.ts'
 import type { AnimaResult, AnimaResultContext } from '../../types/anima.ts'
 import type { useAnimaSession } from '../generation/useAnimaSession.ts'
-import type { useSDGenerate } from '../generation/useSDGenerate.ts'
+import type { useLegacySdTasks } from '../generation/useLegacySdTasks.ts'
 import type { SDQueueJob } from '../generation/useSDQueue.ts'
 import { hasRuntimeTasks, isRuntimeTaskId } from '../../api/runtimeTaskAuthority.ts'
 import { artworkRepository } from '../../storage/artworkRepository.ts'
@@ -22,7 +22,7 @@ let tempMutation = 0
 
 export interface TempResultDeps {
   pb: PromptBuilderStore
-  sd: ReturnType<typeof useSDGenerate>
+  sd: ReturnType<typeof useLegacySdTasks>
   drawEngine: Ref<DrawEngine>
   animaState: AnimaSession['state']
   patchAnimaState: AnimaSession['patchState']
@@ -139,27 +139,6 @@ export function useTempResult(deps: TempResultDeps) {
     await handleAnimaResultAction(input, { pb, displayedResultHistoryId, captureTemp, releaseTemp })
   }
 
-  async function handleSdResult(job: Omit<SDQueueJob, 'id'>, url: string) {
-    const current = ownsResult(url)
-    const autoSave = deps.autoSaveToGallery.value
-    if (!autoSave) {
-      if (current()) displayedResultHistoryId.value = null
-      if (hasRuntimeTasks() && sd.resultTaskId?.value) { storedResultUrl.value = url; return }
-    }
-    const input = { job: freeze(job), url, current, seed: sd.resultSeed.value,
-      context: freeze(deps.resultContext.value), autoSave, save: null as Promise<HistoryEntry | null> | null }
-    // The original job reference owns the runner's already-frozen WeakMap facts.
-    // Capture its archive promise before loading completion handling; observing
-    // rejection here leaves the original promise available to the action catch.
-    if (autoSave) {
-      try { input.save = deps.commitJobResult(job, url) }
-      catch (error) { input.save = Promise.reject(error) }
-      void input.save.catch(() => {})
-    }
-    const { handleSdResultAction } = await import('./tempResultActions')
-    await handleSdResultAction(input, { pb, displayedResultHistoryId, captureTemp, releaseTemp })
-  }
-
   /** 手动「保存快照」（原 saveHistory 下沉）：入册成功即释放临时缓冲。 */
   async function saveCurrentResult() {
     if (savingResult.value || displayedResultHistoryId.value !== null) return
@@ -245,7 +224,6 @@ export function useTempResult(deps: TempResultDeps) {
     savingResult,
     resultTemporary,
     handleAnimaResult,
-    handleSdResult,
     saveCurrentResult,
     restoreTempResult,
     discardTemp,

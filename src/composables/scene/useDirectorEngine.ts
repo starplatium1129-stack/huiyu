@@ -6,7 +6,7 @@ import {
   type AnimaRequest,
 } from '@/composables/generation/useAnimaSession'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
-import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
+import type { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks'
 import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
 import type { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly'
 import type { AnimaResult } from '@/types/anima'
@@ -21,7 +21,7 @@ import {
 } from '@/storage/settingsRepository'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
-type SDGenerate = ReturnType<typeof useSDGenerate>
+type SDGenerate = ReturnType<typeof useLegacySdTasks>
 type AnimaSession = ReturnType<typeof useAnimaSession>
 type StudioAssembly = ReturnType<typeof usePromptAssembly>
 type UnifiedAssembly = ReturnType<typeof useUnifiedPromptAssembly>

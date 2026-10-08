@@ -86,20 +86,20 @@
 
 ## 数据维护
 
-2026-10-02 代码精简移除旧 `data:apply`：其 `refine-map` 批次输入已不存在。场景变更继续使用 `npm run patch:scenes -- --patch <文件>`，默认预览，显式 `--apply` 才写入；历史批次脚本从 Git 历史查阅，不恢复为现行维护入口。
+人物、服装、场景、蓝图及记录式文档通过 `content:catalog patch/import --runtime-root <实际运行目录>` 维护；默认预览，`--apply` 写入工作库，随后显式 `export --out data/catalog` 交付项目快照。具体格式见[维护手册](maintenance.md#批量修改与快照)。构建工具消费项目快照，不反向修改工作库。
 
 | 操作 | 入口 | 注意事项 |
 | --- | --- | --- |
-| 场景分片聚合 | data:build | data/scenes → scenes.json |
+| 场景快照构建 | data:build | data/catalog → scenes.json；旧项目才读取分片 |
 | 人物／服装／场景统一同步 | content:sync | 默认只读校验与登记预览；--apply 修清单 count、补参考分片并构建聚合；--ids=a,b 仅限制参考登记 |
 | 每人物参考分片聚合 | reference:build | data/references → standards/view 兼容聚合；--check 检查一致性（产物缺失会自愈）；聚合不入 Git |
-| 热门角色聚合 | popular:build | data/popular → popular-characters.json |
-| 蓝图聚合 | blueprints:build | 使用既有蓝图分片源，不直接改聚合产物 |
+| 热门角色快照构建 | popular:build | data/catalog → popular-characters.json |
+| 蓝图快照构建 | blueprints:build | data/catalog → scene-blueprints.json |
 | 词条分片与字典 | tags:build / tags:check | 校验 manifest、重复词/别名决策和源路径；保留旧 ID，生成聚合与字典，失效旧压缩 |
 | 离线释义待补词统计 | tags:untranslated --input <文件> | 读取本地 PixAI JSON/JSONL 或 WD14 CSV；按现行界面释义区分完整中文、部分中文与英文回退，保留原词；--json 输出清单，--general-top / --character-top 只限制待补候选；分别标明样本出现次数与 Danbooru 频次，不以置信度代替频次；不上传、不翻译、不写词典 |
-| 聚合反向写回分片 | data:import / popular:import / blueprints:import | 覆盖写入操作，先核对 diff；popular:split/blueprints:split 只拆分 |
+| 内容记录读写、历史与导出 | content:catalog | 显式运行目录；patch/import 默认预览，export 显式选择记录范围 |
 | 数据契约与版本 | data:validate | DATA_VERSION 哈希域以 scripts/lib/data-version.js 为唯一事实源 |
-| 分类与规范化 | data:normalize | 会写数据，不用于只读文档审计；遵守定稿保护 |
+| 未迁移旧资料修复 | legacy:* | 仅旧格式用途；已有内容库/快照拒绝回写，见[迁移与保护](maintenance.md#迁移与保护) |
 | 桌面端个人内容目录 | desktop:content-sync | 默认只读预览；退出桌面端后，`--apply` 按打包白名单先备份覆盖项、逐文件原子写入，目标独有项保留；`--clear-webview-cache` 另清 WebView2 缓存；支持实际配置/资料根覆盖，完成后再启动，不证明界面 |
 
 详细文件职责见 [维护手册](maintenance.md#文件职责)。三个聚合构建脚本默认计算 DATA_VERSION，客户端由 Vite 的 `virtual:data-version` 在构建时注入，不再改写 `src/stores/sceneStore.ts`；`--check` 不写版本——产物缺失时自愈重建（fresh clone），齐全但与源不一致时报错退出 1。校验失败需定位来源，不能只改版本掩盖数据漂移。
@@ -208,7 +208,7 @@
 
 人工审核接受 reference-human-review 或 content-human-review 的版本化记录，绑定 runId、manifestSha256 及逐条 recordId/recordSha256/sha256/inputVersion/reviewedAt；缺决定保持 pending，匹配仅证明声明绑定，不证明审核者实际看过画面。额外 `--publication <候选根相对回执> --published-root <明确目录>` 可核对 content-publication-evidence 回执及对应发布字节；专用 reference-release 由参考版本解析器核验，不冒充格式兼容。退出 0 仅表示所选明确证据匹配，1 为失败，2 为参数错误，3 为未知/过期/待验。入口从不生成、审核画面、修改清单、复制资产或激活资源。
 
-`node scripts/workflow.js audit:ownership --json` 读取当前根目录结构，报告人物档案、热门身份/服装、场景、蓝图、精选、退役、参考标准/view、主题及外部样张的字段职责、读取者、写入边界和机器条件。`--root <隔离目录>` 可替换数据根；`--domain <characters|popular|scenes|blueprints|curation|retired|references|themes|showcase>` 仅检查指定域。
+`node scripts/workflow.js audit:ownership --json` 只盘点旧格式升级源及其派生文件，保留人物、热门身份/服装、场景、蓝图、精选、退役、参考、主题和样张的旧字段职责。报告中的分片权威与写入链仅适用于旧格式，不代表当前 `content/catalog.sqlite` 工作库或 `data/catalog/` 快照；当前维护使用 `content:catalog`。`--root <隔离目录>` 可替换升级源根目录；`--domain <characters|popular|scenes|blueprints|curation|retired|references|themes|showcase>` 仅检查指定域。
 
 entries 的 role 保留 source/product 职责；status 为 source/product/missing/invalid/external-unknown。manifest 按对应领域结构解析；场景按 .1 起连续批次优先，否则读取逻辑单文件。检查真实路径边界、JSON 及浅层容器，输出实际字段名；默认不证明完整 schema、源产物一致性、字段语义、审核或图片质量。参考权威在 `data/references/` 人物分片与 manifest，standards/view 是兼容聚合，登记器经 reference-store 同步写回源与产物；外部样张保持 external-unknown，不扫描外部清单或图片。
 
@@ -348,6 +348,8 @@ PixAI 接入后，旧 WD14 ONNX／448 像素预处理代码已退出 Rust 产品
 | 文档、AGENTS、skill | 结构、链接、规则一致性及典型请求走查；不构建、不出图 |
 | 局部颜色、间距等样式 | 相关样式/对比度检查和受影响组件的双主题视觉检查；不默认跑 TypeScript、后端契约或全站回归 |
 | UI 行为或局部业务逻辑 | 定向行为测试，或显式选择 `gate:quick ui/rust/data`；补受影响的浏览器流程 |
+| 已登记 Rust 读取模块 | `rust:check --file <仓库相对路径>`；近期作品读索引复用 storage_preferences，内容查询/筛选缓存复用 catalog 现有用例；共享写入/存储/依赖等未知范围保持完整 runtime 检查 |
+| Tauri / Native Live2D Rust 源码 | 自动选择 native；`rust:check-native --target host\|renderer` 编译对应 Cargo 目标，host 同时覆盖 renderer 依赖；缺 Windows/SDK/Cargo 时退出 3、记录未运行；设备/真实模型另验 |
 | 依赖、跨域重构、未知影响面，或用户明确要求完整验证 | `gate:full`，再按风险补浏览器/设备验收 |
 
 构建用于验证产物或准备同步，不能代替视觉/设备验收。同一内容的检查不因提交而重跑；后续修复只重跑受影响范围。已核对隔离与权限边界的测试可直接执行和修复，无需逐步请求批准。
@@ -365,6 +367,8 @@ Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`node
 直接运行 `node scripts/maintenance/gate-quick.js --plan [--base <HEAD或完整SHA>]` 输出纯JSON选测范围及干净checkout所需的前置条件；只读Git与源码，不准备产物或执行测试。CI默认从 `AICS_HYGIENE_BASE_REF` 取基线；基线不可用时明确回退full，参数错误仍失败。统一workflow的 `--plan` 仍只预览命令，不替代这个选测报告。
 
 `typecheck:app` 保持全部应用及前端测试的严格类型检查，通过 `.cache/typecheck/app.tsbuildinfo` 复用编译器信息。每次重新读取当前输入并保留错误退出码，不缓存PASS；冷启动仍完整检查。CI按工具链、依赖和配置恢复编译信息，源文件变化由编译器核对。
+
+原生选测不会把通用 full 当作原生编译通过；即使混有需要 full 的改动，也保留 native 目标。Linux 等缺原生条件的执行器会得到未运行状态与退出码 3，需在有既有 SDK/工具链的 Windows 环境完成对应编译，不自动安装或调用设备。定向 Rust 选择仅登记已有覆盖的读取路径，匹配不到用例时拒绝通过；格式与库级类型/Clippy 检查继续保留。
 
 quick的独立领域分别保留结果：测试失败或准备异常不记为通过，但其余已选领域继续；混合改动的页面构建失败只将依赖新dist的浏览器标为未运行。中断仍停止后续派发，完整full仍保持失败即停。失败须说明现行要求、与本次改动的关系及影响范围，不用无关全仓重跑替代归因。
 
@@ -523,7 +527,7 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 
 可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已验收EXE>` 需直接运行 bat）：`-UseInstaller` 使用完整安装包，默认先选择 `runtime/desktop-updates` 最新 `*-setup.exe`，也可显式指定 `-InstallerPath`；选择结果在 UAC 前固定并透传，避免提升权限期间换成另一份包。缺包退出 1，隐含跳过本地构建；`-QuietInstall` 仅随 `-UseInstaller` 静默安装，`-NoRestart` 结束后不启动，`-StartupRepair` 只同步当前绑定版本的文档、图标与快捷方式，与 `-UseInstaller` 互斥。非管理员时脚本经 UAC 重启，需用户确认。依赖/exe 变化的完整安装与 UAC 见[部署指南](desktop-deployment.md)。
 
-批处理入口的单杠字母开关可以登记于 run.switches，help/plan/audit 共用；其他入口仍要求双杠元数据键。`--plan` 会显示所传安装开关的行为标签而不启动执行器。默认与开关标签是可能副作用说明，不做标签抵消或参数权限判断；具体互斥及跳过行为以本段和部署实现为准。
+批处理入口和显式 `powershell/pwsh -File <脚本.ps1>` 入口的单杠字母参数可以登记于 run.switches，help/plan/audit 共用；Node 等其他入口仍要求双杠元数据键，参数名中的空格、运算符及赋值文本仍拒绝。该识别只影响描述性元数据校验，执行路径与授权边界不变。`--plan` 显示所传开关的行为标签而不启动执行器；具体互斥及跳过行为以部署实现为准。
 
 ## 备份与清理
 

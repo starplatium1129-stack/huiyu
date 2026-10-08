@@ -1,8 +1,6 @@
-import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import type { Ref } from 'vue'
 import type { HistoryEntry } from '../../stores/promptBuilderStore'
 import type { AnimaResult, AnimaResultContext } from '../../types/anima'
-import type { SDQueueJob } from '../generation/useSDQueue'
 import type { TempResultRecord } from '../../utils/tempResult'
 import type { TempResultDeps } from './useTempResult'
 
@@ -21,15 +19,6 @@ interface AnimaAutomaticInput {
   scene: TempResultDeps['pb']['sceneId']
   autoSave: boolean
   runtimeTaskId?: string
-}
-interface SdAutomaticInput {
-  job: Omit<SDQueueJob, 'id'>
-  url: string
-  seed: number | null
-  context: AnimaResultContext | null
-  current: () => boolean
-  autoSave: boolean
-  save: Promise<HistoryEntry | null> | null
 }
 
 /** Automatic completion actions load only after a result arrives. */
@@ -89,49 +78,5 @@ export async function handleAnimaResultAction(input: AnimaAutomaticInput, owner:
       animaMetadata: result.metadata,
       context: frozen,
     }, result.blob, result.url, current)
-  }
-}
-
-
-export async function handleSdResultAction(input: SdAutomaticInput, owner: ResultActionOwner) {
-  const { job, url, current, seed, context, autoSave, save } = input
-  const { pb, displayedResultHistoryId, captureTemp, releaseTemp } = owner
-  if (!autoSave) {
-    if (current()) displayedResultHistoryId.value = null
-    try {
-      const blob = await (await runtimeFetch(url, { cache: 'no-store' })).blob()
-      if (blob.size) {
-        await captureTemp({
-          engine: 'sd',
-          prompt: job.prompt,
-          negative: job.negative,
-          seed,
-          size: job.size,
-          animaMetadata: null,
-          context,
-        }, blob, url, current)
-      }
-    } catch (error) {
-      console.warn('[temp-result] sd capture failed', error)
-    }
-    return
-  }
-  try {
-    const saved = await save
-    if (!saved) throw new Error('作品册写入失败')
-    if (current()) {
-      displayedResultHistoryId.value = saved.id
-      releaseTemp()
-      pb.flash('已自动存入作品册')
-    }
-  } catch (e) {
-    console.warn('direct autosave failed', e)
-    if (!current()) return
-    pb.flash('自动入册失败，可手动点「存入作品册」')
-    try {
-      const blob = await (await runtimeFetch(url)).blob()
-      await captureTemp({ engine: 'sd', prompt: job.prompt, negative: job.negative,
-        seed, size: job.size, context }, blob, url, current)
-    } catch { if (current()) pb.flash('临时保存也未成功，请下载当前原图') }
   }
 }

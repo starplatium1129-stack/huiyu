@@ -77,7 +77,7 @@ export async function mergeProfileChatConflict(key: string, baseValue: unknown, 
     }
     merged = { ...merged, ...archive }
   } else if (key === 'aics_chat_memories_v1') {
-    const { mergeChatMemoryStates, normalizeChatMemoryState } = await import('../../utils/chatMemory.ts')
+    const { mergeChatMemoryStates, normalizeChatMemoryState } = await import('../../utils/chatMemoryCore.ts')
     const own = normalizeChatMemoryState(local), other = normalizeChatMemoryState(remote)
     const memory = mergeChatMemoryStates(other, own)
     for (const [char, items] of Object.entries(memory.byCharacter)) {

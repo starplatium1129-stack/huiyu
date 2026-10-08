@@ -1,9 +1,11 @@
+import { legacySdJob } from './testFixtures/legacySdJob'
 import assert from 'node:assert/strict'
 import { computed, effectScope, nextTick, ref } from 'vue'
 import { afterEach, it, vi } from 'vitest'
 import { usePromptSdQueue, type PromptSdQueueDeps } from './usePromptSdQueue'
 import type { AnimaResultContext } from '@/types/anima'
 
+let restoredSerial = 0
 const scopes: ReturnType<typeof effectScope>[] = []
 afterEach(() => {
   for (const scope of scopes.splice(0)) scope.stop()
@@ -20,7 +22,7 @@ function setup() {
       hiresFix: false, hiresScale: 2, hiresUpscaler: '', hiresSteps: 0, hiresDenoise: 0.5, faceDetailer: false },
     sdModelName: 'model-a', commitHistoryEntry: vi.fn().mockResolvedValue({ id: 1 }), flash: vi.fn(),
   }
-  const sd = { generate: vi.fn().mockResolvedValue('blob:result'), resultSeed: ref<number | null>(0),
+  const sd = { observe: vi.fn().mockResolvedValue('blob:result'), resultSeed: ref<number | null>(0),
     lastLoras: ref<Array<{ id: string; strength: number }>>([]), checkpoint: ref('model-a'), generating: ref(false),
     resultTaskId: ref(''), resultContext: ref<AnimaResultContext | null>(null) }
   const setResultContext = vi.fn()
@@ -40,11 +42,11 @@ function setup() {
 
 it('archives the effective no-LoRA recovery request rather than the original failing request', async () => {
   const { tools, pb, sd } = setup()
-  const job = tools.captureJob()!
+  const job = legacySdJob()
   const original = JSON.stringify(job)
   await tools.runJob(job, { disableLora: true })
-  assert.equal(sd.generate.mock.calls[0]![0].prompt, 'A quiet park')
-  assert.equal(sd.generate.mock.calls[0]![0].lora, undefined)
+  assert.equal(sd.observe.mock.calls[0]![0].prompt, 'A quiet park')
+  assert.equal(sd.observe.mock.calls[0]![0].lora, undefined)
   assert.equal(JSON.stringify(job), original)
   assert.equal(pb.sdParams.seed, 0)
   await tools.commitJobResult(job, 'blob:result')
@@ -57,7 +59,7 @@ it('archives the effective no-LoRA recovery request rather than the original fai
 
 it('keeps submitted prompt and settings even when the caller edits the job before archival', async () => {
   const { tools, pb } = setup()
-  const job = tools.captureJob()!
+  const job = legacySdJob()
   const expectedPrompt = job.prompt
   const running = tools.runJob(job)
   job.prompt = 'Changed while running'; job.negative = 'changed'; job.size = '512x512'; job.cfg = 99
@@ -72,7 +74,7 @@ it('keeps submitted prompt and settings even when the caller edits the job befor
 
 it('view context edits cannot mutate the completed archive snapshot', async () => {
   const { tools, pb, setResultContext } = setup()
-  const job = tools.captureJob()!
+  const job = legacySdJob()
   await tools.runJob(job)
   setResultContext.mock.calls[0]![0].history.cfg = 99
   await tools.commitJobResult(job, 'blob:result')
@@ -84,7 +86,7 @@ it('restored accepted results keep their runtime recipe and original ownership i
   sd.resultTaskId.value = 'accepted-task'
   sd.resultContext.value = { char: 'natsume', sceneId: 'accepted-scene', story: 'accepted-story',
     history: { prompt: 'Accepted prompt', negative: 'Accepted negative', cfg: 3, model: 'accepted-model', size: '1216x832' } }
-  const job = tools.captureJob()!
+  const job = legacySdJob()
   await tools.runJob(job)
   await tools.commitJobResult(job, 'blob:result')
   const input = pb.commitHistoryEntry.mock.calls[0]![0]
@@ -98,66 +100,51 @@ it('restored accepted results keep their runtime recipe and original ownership i
 
 it('a failed attempt does not overwrite the selected seed with the old display result', async () => {
   const { tools, pb, sd } = setup()
-  sd.generate.mockResolvedValue(null)
-  await tools.runJob(tools.captureJob()!)
+  sd.observe.mockResolvedValue(null)
+  await tools.runJob(legacySdJob())
   assert.equal(pb.sdParams.seed, 42)
 })
 
 it('an unknown completed seed does not borrow a later result seed during archival', async () => {
   const { tools, pb, sd } = setup()
   sd.resultSeed.value = null
-  const job = tools.captureJob()!
+  const job = legacySdJob()
   await tools.runJob(job)
   sd.resultSeed.value = 12345
   await tools.commitJobResult(job, 'blob:result')
   assert.equal(pb.commitHistoryEntry.mock.calls[0]![0].seed, -1)
 })
 
-for (const available of [0, 1, 2, 3]) {
-  it(`reports actual variant admission with ${available} queue slots available`, () => {
-    const { tools, pb } = setup()
-    const base = tools.captureJob()!
-    tools.sdQueue.pause()
-    tools.sdQueue.restore(Array.from({ length: 8 - available }, (_, index) => ({ ...base, id: `saved-${index}` })))
-    pb.flash.mockClear()
-    tools.enqueue3Variants()
-    assert.equal(tools.sdQueue.total.value, 8)
-    const messages = pb.flash.mock.calls.map(call => String(call[0]))
-    const successes = messages.filter(message => message.startsWith('已将'))
-    assert.equal(successes.length, available === 0 ? 0 : 1)
-    if (available > 0) assert.ok(successes[0]!.startsWith(`已将 ${available} 组`))
-    assert.ok(messages.filter(message => message.includes('最多保留')).length <= 1)
-  })
-}
-
+// The retired three-seed creation UI has no admission path. Snapshot capacity and
+// deduplication remain covered in generation/useSDQueue-restore.spec.ts.
 
 it('starts waiting jobs after a direct generation settles, without overlapping or duplicating jobs', async () => {
   const { tools, pb, sd, setResultContext } = setup()
   const releases: Array<() => void> = []
-  sd.generate.mockImplementation(() => {
+  sd.observe.mockImplementation(() => {
     sd.generating.value = true
     sd.resultSeed.value = null
-    const seed = 100 + sd.generate.mock.calls.length
+    const seed = 100 + sd.observe.mock.calls.length
     return new Promise<string>(resolve => releases.push(() => {
       sd.resultSeed.value = seed
       sd.generating.value = false
       resolve('blob:result')
     }))
   })
-  const direct = tools.runJob(tools.captureJob()!)
-  tools.enqueueCurrent()
-  tools.enqueueCurrent()
-  assert.equal(sd.generate.mock.calls.length, 1)
+  const direct = tools.runJob(legacySdJob())
+  tools.sdQueue.restore([legacySdJob('queued-' + (++restoredSerial))]); tools.sdQueue.resume()
+  tools.sdQueue.restore([legacySdJob('queued-' + (++restoredSerial))]); tools.sdQueue.resume()
+  assert.equal(sd.observe.mock.calls.length, 1)
   assert.equal(tools.sdQueue.queue.value.length, 2)
   await nextTick() // Let the busy state become observable before the delayed reply.
   releases.shift()!()
   await direct
   await nextTick()
-  assert.equal(sd.generate.mock.calls.length, 2)
+  assert.equal(sd.observe.mock.calls.length, 2)
   assert.equal(setResultContext.mock.calls[0]![0].history.seed, 101)
   assert.equal(tools.sdQueue.queue.value.length, 1)
   releases.shift()!()
-  await vi.waitFor(() => assert.equal(sd.generate.mock.calls.length, 3))
+  await vi.waitFor(() => assert.equal(sd.observe.mock.calls.length, 3))
   releases.shift()!()
   await vi.waitFor(() => assert.equal(tools.sdQueue.done.value, 2))
   assert.equal(pb.commitHistoryEntry.mock.calls.length, 2)
@@ -167,12 +154,12 @@ it('starts waiting jobs after a direct generation settles, without overlapping o
 it('keeps user-paused waiting jobs paused when direct generation finishes', async () => {
   const { tools, sd } = setup()
   sd.generating.value = true
-  tools.enqueueCurrent()
+  tools.sdQueue.restore([legacySdJob('queued-' + (++restoredSerial))]); tools.sdQueue.resume()
   await nextTick()
   tools.sdQueue.pause()
   sd.generating.value = false
   await nextTick()
-  assert.equal(sd.generate.mock.calls.length, 0)
+  assert.equal(sd.observe.mock.calls.length, 0)
   assert.equal(tools.sdQueue.queue.value.length, 1)
   tools.sdQueue.resume()
   await vi.waitFor(() => assert.equal(tools.sdQueue.done.value, 1))
@@ -181,10 +168,10 @@ it('keeps user-paused waiting jobs paused when direct generation finishes', asyn
 it('does not wake page-owned pending jobs after its scope is disposed', async () => {
   const { tools, sd, scope } = setup()
   sd.generating.value = true
-  tools.enqueueCurrent()
+  tools.sdQueue.restore([legacySdJob('queued-' + (++restoredSerial))]); tools.sdQueue.resume()
   await nextTick()
   scope.stop()
   sd.generating.value = false
   await nextTick()
-  assert.equal(sd.generate.mock.calls.length, 0)
+  assert.equal(sd.observe.mock.calls.length, 0)
 })

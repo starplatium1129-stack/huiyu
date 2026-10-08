@@ -1,3 +1,5 @@
+import { BATCH_DRAW_PLAN_KEY } from '@/utils/storageKeys'
+import { legacySdBatch } from './testFixtures/legacySdJob'
 import { afterEach, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { apiClient, ApiClientError } from '@/api/client'
@@ -46,7 +48,7 @@ it.each(['inferred', 'selected'] as const)('retry keeps original inputs with exp
   pb.colorMood = 'sad'
   pb.manualTags.add('day'); blueprint.promptProse = 'changed scene'; state.value.modelId = 'changed'
   state.value.teaCache = true; state.value.teaCacheThresh = 0.4
-  runner.batchEngine.value = 'sd'
+  state.value.family = 'krea2'
   await runner.onRetryFailed()
   expect(request.mock.calls[1][1]?.body).toEqual(original)
 })
@@ -212,20 +214,6 @@ it('legacy acceptance without an ID remains unknown after refresh and manual con
   expect(restored.runner.batchDraw.progress.value).toMatchObject({ unresolved: 1, remaining: 2 })
 })
 
-it.each([400, 429])('Web SD definite HTTP %s admission rejection allows retry with frozen input', async status => {
-  const { runner, deps } = setup()
-  runner.batchEngine.value = 'sd'
-  deps.sd.errorMsg = ref('rejected'); deps.sd.checkpoint = ref('frozen-model')
-  const run = vi.mocked(deps.runJob).mockImplementation(async (_job, options) => {
-    options?.onSubmitting?.(); options?.onError?.(new ApiClientError('rejected', { kind: 'http', status })); return null
-  })
-  await runner.onBatchStartCharacters({ characterIds: ['nene'], count: 1, basePrompt: 'rainy cafe' })
-  expect(runner.batchDraw.progress.value).toMatchObject({ failed: 1, unresolved: 0 })
-  await runner.onRetryFailed()
-  expect(run).toHaveBeenCalledTimes(2)
-  expect(run.mock.calls[1][0]).toEqual(run.mock.calls[0][0])
-})
-
 it.each(['failed', 'cancelled'] as const)('legacy Anima known terminal %s after reconnect can be retried explicitly', async status => {
   vi.useFakeTimers()
   const first = setup()
@@ -245,24 +233,27 @@ it.each(['failed', 'cancelled'] as const)('legacy Anima known terminal %s after 
   expect(request).toHaveBeenCalledOnce(); expect(request.mock.calls[0][1]?.method).toBe('POST')
 })
 
-it('Web SD restores a known legacy accepted ID through the existing runner resume path', async () => {
-  const first = setup()
-  first.runner.batchEngine.value = 'sd'; first.deps.sd.errorMsg = ref('read interrupted'); first.deps.sd.checkpoint = ref('frozen-sd')
-  vi.mocked(first.deps.runJob).mockImplementation(async (_job, options) => {
-    options?.onSubmitting?.(); await options?.onAcceptedId?.('legacy-sd-id')
-    options?.onError?.(new ApiClientError('read interrupted', { kind: 'network' })); return null
-  })
-  await first.runner.onBatchStartCharacters({ characterIds: ['nene'], count: 1, basePrompt: 'rainy cafe' })
-  expect(first.runner.batchDraw.jobs.value[0]).toMatchObject({ taskId: 'legacy-sd-id', status: 'unknown' })
-  first.runner.batchDraw.dispose()
-  const restored = setup()
-  restored.deps.sd.resultSeed = ref(42)
-  const run = vi.mocked(restored.deps.runJob).mockImplementation(async (job, options) => {
-    expect(job.checkpoint).toBe('frozen-sd'); expect(options?.resumeId).toBe('legacy-sd-id')
+it('Web SD restores its saved ID with GET-only observation and keeps the frozen archive fields', async () => {
+  sessionStorage.setItem(BATCH_DRAW_PLAN_KEY, JSON.stringify(legacySdBatch(false)))
+  const { runner, deps, pb } = setup()
+  deps.sd.resultSeed = ref(42)
+  const run = vi.mocked(deps.runJob).mockImplementation(async (job, options) => {
+    expect(job.checkpoint).toBe('model-a'); expect(options?.resumeId).toBe('legacy-sd-id')
     await options?.onAcceptedId?.('legacy-sd-id'); return '/legacy-sd-result.png'
   })
+  const request = vi.spyOn(apiClient, 'request')
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(new Blob(['image'], { type: 'image/png' }), { headers: { 'Content-Type': 'image/png' } })))
-  await restored.runner.batchDraw.resume()
-  expect(run).toHaveBeenCalledOnce(); expect(restored.runner.batchDraw.progress.value.succeeded).toBe(1)
-  expect(restored.pb.commitHistoryEntry.mock.calls[0][0].taskId).toBeUndefined()
+  await runner.batchDraw.resume()
+  expect(run).toHaveBeenCalledOnce(); expect(request).not.toHaveBeenCalled()
+  expect(runner.batchDraw.progress.value.succeeded).toBe(1)
+  expect(pb.commitHistoryEntry.mock.calls[0][0]).toMatchObject({ model: 'model-a', cfg: 7, seed: 42 })
+  expect(pb.commitHistoryEntry.mock.calls[0][0].taskId).toBeUndefined()
+})
+it('failed legacy SD batches keep the recorded key and cannot be resubmitted', async () => {
+  const original = legacySdBatch(false, 'failed')
+  sessionStorage.setItem(BATCH_DRAW_PLAN_KEY, JSON.stringify(original))
+  const { runner, deps } = setup()
+  await runner.onRetryFailed()
+  expect(deps.runJob).not.toHaveBeenCalled()
+  expect(runner.batchDraw.jobs.value[0]).toMatchObject({ requestKey: 'saved-key', taskId: 'legacy-sd-id', status: 'failed' })
 })

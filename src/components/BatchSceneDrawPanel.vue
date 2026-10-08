@@ -32,19 +32,7 @@
             </div>
             <div class="batch-field">
               <span class="field-label">引擎</span>
-              <div class="batch-seg studio-segments studio-segments--compact" role="group" aria-label="选择批量出图引擎">
-                <AnimatedSelection />
-                <StudioTooltip anchor :content="!sdAvailable ? 'SD WebUI 当前离线' : undefined">
-                  <button type="button" :aria-pressed="batchEngine === 'sd'"
-                    :disabled="!sdAvailable"
-                    @click="batchEngine = 'sd'">SD</button>
-                </StudioTooltip>
-                <StudioTooltip anchor :content="!animaAvailable ? 'ComfyUI 当前离线' : undefined">
-                  <button type="button" :aria-pressed="batchEngine === 'anima'"
-                    :disabled="!animaAvailable"
-                    @click="batchEngine = 'anima'">{{ props.deps.animaState.value.family === 'krea2' ? 'Krea 2' : 'Anima' }}</button>
-                </StudioTooltip>
-              </div>
+              <strong>{{ props.deps.animaState.value.family === 'krea2' ? 'Krea 2' : 'Anima' }}</strong>
             </div>
             <div class="batch-field">
               <span class="field-label">每项张数</span>
@@ -209,10 +197,10 @@
               <span class="batch-hint">{{ progress.unresolved ? '原任务接收状态尚未确认；核对成功后再继续，避免重复生成。' : progress.remaining ? '继续时沿用本批原参数与种子；已完成项不会重新生成。' : '成功成片已入册，可在「我的作品」查看。' }}</span>
               <div class="batch-foot-actions">
                 <button v-if="progress.remaining || progress.unresolved" class="btn btn-primary" type="button" :disabled="batchDraw.resetting.value" @click="batchDraw.resume">
-                  <ArchiveIcon name="spark" /> {{ progress.unresolved ? '核对并继续剩余' : `继续剩余 ${progress.remaining} 张` }}
+                  <ArchiveIcon name="spark" /> {{ batchDraw.engine.value === 'sd' ? '核对旧任务' : progress.unresolved ? '核对并继续剩余' : `继续剩余 ${progress.remaining} 张` }}
                 </button>
                 <RouterLink v-if="comparisonIds.length >= 2" class="btn btn-primary" :to="`/gallery?compare=${comparisonIds.join(',')}`" @click="emit('close')">{{ progress.succeeded > 4 ? '对比前 4 张' : '对比本批候选' }}</RouterLink>
-                <button v-if="retryableCount && !progress.unresolved" class="btn btn-ghost" type="button" :disabled="batchDraw.resetting.value" @click="onRetryFailed">
+                <button v-if="batchDraw.engine.value !== 'sd' && retryableCount && !progress.unresolved" class="btn btn-ghost" type="button" :disabled="batchDraw.resetting.value" @click="onRetryFailed">
                   <ArchiveIcon name="spark" /> 重试失败 {{ retryableCount }} 张
                 </button>
                 <StudioTooltip anchor :content="progress.unresolved ? '先核对原任务，再开启新计划' : undefined">
@@ -285,13 +273,13 @@ const charFilter = ref('')
 const franchiseFilter = ref('')
 const selectedCharSet = reactive(new Set<string>())
 
-const { batchEngine, batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed } = usePromptBatchRunners(props.deps)
+const { batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed } = usePromptBatchRunners(props.deps)
 
 const currentPromptPreview = computed(() => {
   return props.deps.currentLivePrompt?.() || props.deps.currentBasePrompt?.() || props.deps.pb.story || props.deps.pb.visualDescription || ''
 })
 
-const engineReady = computed(() => batchEngine.value === 'sd' ? props.sdAvailable && batchMode.value === 'character' && [...selectedCharSet].every(id => ['nene', 'natsume'].includes(id)) : props.animaAvailable)
+const engineReady = computed(() => props.animaAvailable)
 const isRunning = computed(() => batchDraw.running.value)
 const jobs = computed(() => batchDraw.jobs.value)
 const comparisonIds = computed(() => jobs.value.filter(job => job.historyId != null).slice(0, 4).map(job => encodeURIComponent(String(job.historyId))))
@@ -441,12 +429,6 @@ function placeholderText(job: BatchDrawJob): string {
 
 watch([filter, categoryFilter], () => { sceneLimit.value = 30 })
 watch([charFilter, franchiseFilter], () => { charLimit.value = 30 })
-watch(() => props.open, (open) => {
-  if (open) {
-    if (!jobs.value.length && !isRunning.value && !engineReady.value) batchEngine.value = props.animaAvailable ? 'anima' : 'sd'
-  }
-})
-
 watch(isRunning, running => { if (running) phase.value = 'results'; emit('running-change', running) }, { immediate: true })
 if (jobs.value.length) { phase.value = 'results'; batchMode.value = jobs.value[0].kind === 'character' ? 'character' : 'scene' }
 onUnmounted(() => batchDraw.dispose())

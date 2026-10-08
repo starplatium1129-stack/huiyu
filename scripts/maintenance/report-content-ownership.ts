@@ -2,7 +2,7 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
-// Read-only ownership inventory. Never import builders: some --check paths self-heal.
+// Read-only legacy upgrade-source inventory. Never import builders: some --check paths self-heal.
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { parseManualRatings }: typeof import('./classify-scene-ratings') = require('./classify-scene-ratings');
@@ -142,7 +142,7 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
     }
     return result;
   });
-  return { schemaVersion: 2, root: base, domains, scope: '文件职责与浅层结构；readers/writers 为按实现核对的静态说明，不加载或执行所列写者，也不声称穷尽所有读写者。'
+  return { schemaVersion: 2, root: base, domains, scope: '仅描述旧格式升级源及其派生文件，不盘点当前 content/catalog.sqlite 工作库或 data/catalog 导出快照；分片权威与写入者说明只适用于旧格式。当前维护使用 content:catalog，旧写入限定 legacy:*；已迁移项目拒绝回写。readers/writers 为静态说明，不加载或执行所列写者，也不声称穷尽所有读写者。'
     + (consistency ? '本次额外只读比较 fieldContract 声明的 JSON/字段投影及数组顺序；序列化差异单列，未追踪映射为 unknown。' : '未启用 --consistency，不验证源产物一致性。')
     + '不证明字段语义、审核真实性或图片质量；局部通过不等于全库通过。' };
 }
@@ -157,9 +157,9 @@ function main(args: any = process.argv.slice(2)) {
       else throw new Error('Invalid argument: ' + arg);
     }
     if (opts.domain && !Object.hasOwn(DOMAINS, opts.domain)) throw new Error('Unknown domain: ' + opts.domain);
-    if (opts.help || opts.plan) { console.log('audit:ownership [--json] [--consistency] [--root <directory>] [--domain <' + Object.keys(DOMAINS).join('|') + '>]：只读归属报告；--consistency 比较已实现字段投影，不执行构建；unknown/mismatch 退出 1。预览不读取目标'); return 0; }
+    if (opts.help || opts.plan) { console.log('audit:ownership [--json] [--consistency] [--root <directory>] [--domain <' + Object.keys(DOMAINS).join('|') + '>]：旧格式升级源的只读归属报告；当前维护使用 content:catalog。--consistency 比较已实现字段投影，不执行构建；unknown/mismatch 退出 1。预览不读取目标'); return 0; }
     const report = reportOwnership(opts);
-    console.log(opts.json ? JSON.stringify(report, null, 2) : report.domains.map((d: any) => `${d.domain}: ${d.fields}\n${d.entries.map((e: any) => `  ${e.status} ${e.path || '(external)'}${e.reason ? ' — ' + e.reason : ''}`).join('\n')}\n读取者: ${d.readers.join(', ')}\n写入入口(未执行): ${d.writers.join(', ')}\n字段映射: ${JSON.stringify(d.fieldContract)}\n一致性: ${JSON.stringify(d.consistency)}\n边界: ${d.boundary}\n机器: ${d.machine.report}; ${d.machine.contentAcceptance}`).join('\n\n') + '\n' + report.scope);
+    console.log(opts.json ? JSON.stringify(report, null, 2) : report.scope + '\n\n' + report.domains.map((d: any) => `${d.domain}: ${d.fields}\n${d.entries.map((e: any) => `  ${e.status} ${e.path || '(external)'}${e.reason ? ' — ' + e.reason : ''}`).join('\n')}\n读取者: ${d.readers.join(', ')}\n写入入口(未执行): ${d.writers.join(', ')}\n字段映射: ${JSON.stringify(d.fieldContract)}\n一致性: ${JSON.stringify(d.consistency)}\n边界: ${d.boundary}\n机器: ${d.machine.report}; ${d.machine.contentAcceptance}`).join('\n\n'));
     return report.domains.some((d: any) => d.entries.some((e: any) => ['missing', 'invalid'].includes(e.status))
       || (opts.consistency && ['unknown', 'mismatch'].includes(d.consistency.status))) ? 1 : 0;
   } catch (error) { console.error(runtimeErrorMessage(error)); return 2; }

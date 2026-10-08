@@ -7,7 +7,6 @@ import { apiClient, type ApiClient, type ApiResponseObject } from './client.ts'
 
 export const GENERATION_API_TIMEOUTS = {
   status: 15_000,
-  create: 60_000,
   job: 15_000,
   delete: 10_000,
 } as const
@@ -45,7 +44,6 @@ export interface GenerationCallOptions {
 
 export interface GenerationApi {
   getStatus(options?: GenerationCallOptions): Promise<GenerationStatus>
-  createJob(payload: GenerationJobPayload, options?: GenerationCallOptions): Promise<GenerationJobEnvelope>
   getJob(id: string, options?: GenerationCallOptions): Promise<GenerationJobEnvelope>
   deleteJob(id: string, options?: GenerationCallOptions): Promise<GenerationJobEnvelope>
 }
@@ -59,15 +57,6 @@ export function createGenerationApi(client: ApiClient = apiClient): GenerationAp
         timeoutMs: GENERATION_API_TIMEOUTS.status,
         validate: isGenerationStatus,
       })
-    },
-    createJob(payload, options = {}) {
-      return client.request<ApiResponseObject>('/api/generation/jobs', {
-        method: 'POST',
-        cache: 'no-store',
-        body: payload,
-        signal: options.signal,
-        timeoutMs: GENERATION_API_TIMEOUTS.create,
-      }).then(decodeGenerationJobEnvelope)
     },
     getJob(id, options = {}) {
       return client.request<ApiResponseObject>(

@@ -5,10 +5,10 @@ const path: typeof import('path') = require('path');
 const sdRequest: typeof import('../../src/utils/sdRequest.ts') = require('../../src/utils/sdRequest.ts');
 const sdGenerate: typeof import('../../src/utils/sdStatus.ts') = require('../../src/utils/sdStatus.ts');
 const sdGenerateSource = fs.readFileSync(
-  path.resolve(__dirname, '../../src/composables/generation/useSDGenerate.ts'),
+  path.resolve(__dirname, '../../src/composables/generation/useLegacySdTasks.ts'),
   'utf8'
 );
-assert(!/\bany\b/.test(sdGenerateSource), 'useSDGenerate must not regress to explicit any types');
+assert(!/\bany\b/.test(sdGenerateSource), 'useLegacySdTasks must not regress to explicit any types');
 const sdQueueSource = fs.readFileSync(
   path.resolve(__dirname, '../../src/composables/generation/useSDQueue.ts'),
   'utf8'
@@ -159,7 +159,8 @@ async function testFailedQueueJobIsRetained() {
     isBusy: () => false
   });
 
-  queue.enqueue({ title: 'one', prompt: 'p', negative: '', size: '832x1216', seed: -1 } as any);
+  queue.restore([{ id: 'saved-one', title: 'one', prompt: 'p', negative: '', size: '832x1216', seed: -1 } as any]);
+  queue.resume();
   await new Promise(resolve => setTimeout(resolve, 10));
 
   assert.strictEqual(queue.paused.value, true, 'a failed job must pause the queue');
@@ -175,7 +176,7 @@ async function testFailedQueueJobIsRetained() {
     isBusy: () => true
   });
   for (let i = 0; i < 10; i += 1) {
-    full.enqueue({ title: 'j' + i, prompt: 'p', negative: '', size: '832x1216', seed: -1 } as any);
+    full.restore([{ id: 'saved-' + i, title: 'j' + i, prompt: 'p', negative: '', size: '832x1216', seed: -1 } as any]);
   }
   assert(full.total.value <= 8, 'queue must not exceed its limit');
 }

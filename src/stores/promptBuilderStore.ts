@@ -115,7 +115,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const historyRestoreReport = ref<RecipeRestoreReport | null>(null)
 
   // ── SD state ────────────────────────────────────────────────────────────
-  // 生成生命周期状态（online/generating/progress/result/error）由 useSDGenerate
+  // 生成生命周期状态（online/generating/progress/result/error）由 useLegacySdTasks
   // 与 Anima 会话组合函数拥有，store 只保留跨引擎的底模选择与种子记忆。
   const sdModelName   = ref('')
   const lastSeed      = ref<number | null>(null)

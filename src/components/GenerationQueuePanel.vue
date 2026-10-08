@@ -6,9 +6,9 @@
         旧算法 total（等待+在途）随完成缩水，运行中恒显示「第 1 张」。
         运行中：第 done+1 / 共 done+total；暂停空闲：已完成 done · 等待 N。
       -->
-      <span>出图队列 · {{ headerText }}</span>
+      <span>旧 SD 任务 · {{ headerText }}</span>
       <span class="row-tight">
-        <button v-if="paused" class="btn btn-ghost btn-sm" type="button" @click="emit('resume')">继续</button>
+        <button v-if="paused" class="btn btn-ghost btn-sm" type="button" @click="emit('resume')">核对原任务</button>
         <button v-else class="btn btn-ghost btn-sm" type="button" @click="emit('pause')">暂停</button>
         <button class="btn btn-ghost btn-sm" type="button" @click="emit('clear')">清空等待</button>
       </span>
@@ -19,7 +19,7 @@
         <BorderBeam size="sm" color-variant="accent" border-radius="var(--r-md)" />
         <!-- 速度线：斜向细线持续流动，一眼看出"这条在跑" -->
         <span class="fx-speed-lines" aria-hidden="true"></span>
-        <span class="sd-queue-index">生成中</span>
+        <span class="sd-queue-index">核对中</span>
         <div class="sd-queue-copy">
           <div class="sd-queue-title">{{ activeJob.title }}</div>
           <div class="sd-queue-meta">{{ activeJob.size }} · seed {{ seedLabel(activeJob.seed) }}</div>

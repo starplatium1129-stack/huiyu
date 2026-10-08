@@ -98,6 +98,17 @@ test('quick gate covers unknown root files, dependencies, scripts and rejects ty
   for (const file of ['runtime-rs/src/storage.rs', 'runtime-rs/tests/task_execution.rs', 'runtime-rs/tests/fixtures/task-fingerprints.json', 'runtime-rs/Cargo.toml', 'runtime-rs/Cargo.lock']) {
     assert.deepEqual(classifyFiles([file]), { areas:['rust'], testFiles:[] });
   }
+  const { runtimeTestSelection } = require('../lib/rust-check-plan') as typeof import('../lib/rust-check-plan');
+  const recent = 'runtime-rs/src/storage/recent.rs';
+  assert.deepEqual(classifyFiles([recent]), { areas: ['rust'], testFiles: [], rustFiles: [recent] });
+  assert.deepEqual(runtimeTestSelection([recent]), [['--test', 'storage_preferences']]);
+  assert.equal(runtimeTestSelection([recent, 'runtime-rs/src/storage/tasks.rs']), undefined);
+  assert.deepEqual(classifyFiles([recent, 'runtime-rs/src/storage/tasks.rs']), { areas: ['rust'], testFiles: [] });
+  const renderer = 'desktop-tauri/native-live2d/src/renderer.rs';
+  assert.deepEqual(classifyFiles([renderer]), { areas: ['native'], testFiles: [], nativeTargets: ['renderer'] });
+  assert.deepEqual(classifyFiles(['package-lock.json', renderer]), { areas: ['full', 'native'], testFiles: [], nativeTargets: ['renderer'] });
+  const native = require('../maintenance/check-native-rust') as typeof import('../maintenance/check-native-rust');
+  assert.match(native.nativePrerequisites(root, {}, 'linux').join(' '), /Windows/);
   assert.equal(await gate(['servre']), 2);
 });
 
@@ -475,7 +486,8 @@ test('deploy preview describes installer switches without invoking deployment', 
   } finally { console.error = original; }
 });
 
-test('single-dash metadata is limited to batch alphabetic flags', () => {
+test('single-dash metadata is limited to Windows script alphabetic parameters', () => {
+  for (const name of ['comfy:start', 'voice:service']) assert.deepEqual(validateRun(name, WORKFLOWS[name]), []);
   const def = WORKFLOWS['deploy:desktop'];
   for (const flag of ['-UseInstaller', '-NoRestart']) {
     const run = { ...def.run, switches: { [flag]: ['writes-release'] } };

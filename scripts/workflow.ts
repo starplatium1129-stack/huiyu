@@ -31,7 +31,9 @@ const path = (require('path') as typeof import('path'));
 
 const ROOT = path.resolve(__dirname, '..');
 
+const { LEGACY_WORKFLOWS } = require('./lib/workflow-legacy') as typeof import('./lib/workflow-legacy');
 const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
+  ...LEGACY_WORKFLOWS,
   'content:catalog': { desc: '记录式内容库：整位角色、记录/历史读取、局部快照合并导出与字段补丁；patch/import 默认预览', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'catalog'], opts: '<stats|query|record|history|character|export|patch|import|check|colors> [--root <项目目录>] --runtime-root <运行目录> [--kind <类型> --id <ID> --revision <修订>] [--character <ID> ...] [--record <kind:id> ...] [--created-from <RFC3339> --created-to <RFC3339>] [--sort <排序> --page <页> --page-size <数量>] [--file <JSON>] [--out <导出目录>] [--apply]', docs: 'docs/maintenance.md',
     run: { nature: ['preview', 'self-heal-missing'], machine: ['node'], switches: { '--apply': ['writes-product'] }, resume: 'na', evidence: 'runtime-rs/src/catalog/cli.rs', notes: ['需要 Rust/Cargo；首次使用会初始化工作内容库；export 会显式写出 --out 指定的快照目录。'], unknown: ['不执行模型调用或安装；快照不恢复跨机器的本机修订历史'] } },
   'live2d:sync-local': {
@@ -66,7 +68,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   'audit:workflow-conditions': { desc: '只读运行条件与复合副作用覆盖报告', cmd: ['node', 'scripts/maintenance/report-workflow-conditions.js'],
     opts: '--json；--root <隔离目录>；--domain <工作流分组>', docs: 'docs/workflow.md',
     run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/report-workflow-conditions.js:1', unknown: ['元数据与路径存在性不证明实际执行成功'] } },
-  'audit:ownership': { desc: '只读内容归属报告：权威源、派生文件与读写边界', cmd: ['node', 'scripts/maintenance/report-content-ownership.js'],
+  'audit:ownership': { desc: '旧格式升级源的只读归属报告；当前工作库请使用 content:catalog', cmd: ['node', 'scripts/maintenance/report-content-ownership.js'],
     opts: '--json；--consistency；--root <隔离目录>；--domain <characters|popular|scenes|blueprints|curation|retired|references|themes|showcase>', docs: 'docs/workflow.md',
     run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'], '--consistency': ['read-only', 'guard'] }, resume: 'na', evidence: 'scripts/maintenance/report-content-ownership.js:1', unknown: ['默认浅层结构与职责；--consistency 核对已实现的源/产物投影，未覆盖字段保持 unknown；内容、图片质量及外部样张未验收'] } },
   'capture:delivery': { desc: '捕获交付输入、绑定实际结果及最终提交；默认只读输出', cmd: ['node', 'scripts/maintenance/capture-delivery.js'],
@@ -140,8 +142,10 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/prototypes/benchmark-artwork-storage.js:56-135', unknown: [] } },
   'desktop:rust-bundle': { desc: '在仓库外隔离布局验证已暂存的 Rust gateway 与原生依赖', cmd: ['node', 'scripts/tests/test-rust-bundle.js'], docs: 'docs/workflow.md#门禁与构建',
     run: { nature: ['isolated-fixture', 'service'], machine: ['windows', 'node', 'build-present'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/test-rust-bundle.ts', unknown: ['真实模型与最终安装另验'], notes: ['先准备当前Rust release与staging；真实bundle映射进入临时目录，模型上游隔离，不下载、不安装、不访问用户库'] } },
-  'rust:check': { desc: '检查 Rust runtime 格式、Clippy 与隔离行为测试', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'check'], docs: 'docs/workflow.md#rust-运行时迁移',
+  'rust:check': { desc: 'Rust runtime 检查；已登记读取模块支持按源码定向，其余保留完整检查', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'check'], opts: '[--file <仓库相对源码路径> ...]', docs: 'docs/workflow.md#rust-运行时迁移',
     run: { nature: ['isolated-fixture'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/run-rust-runtime.ts', unknown: ['需要 Rust 工具链；首次可能下载锁定 crate'], notes: ['不连接生产库，不调用模型，不安装'] } },
+  'rust:check-native': { desc: '编译对应 Tauri 宿主或 Live2D 渲染器；缺条件记未运行，不调用设备', cmd: ['node', 'scripts/maintenance/check-native-rust.js'], opts: '[--target host|renderer]', docs: 'docs/workflow.md#门禁与构建',
+    run: { nature: ['guard', 'writes-product'], machine: ['node', 'windows', 'windows-toolchain'], switches: { '--target': ['guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/check-native-rust.ts main', unknown: ['真实模型、GPU 与原生窗口效果仍另验'], notes: ['缺 Windows/SDK/Cargo 退出 3，报告为未运行；host 编译同时覆盖其 renderer 依赖，不重复编译两次'] } },
   'rust:build': { desc: '构建锁定依赖的 Rust release runtime，不安装', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'build'], docs: 'docs/workflow.md#rust-运行时迁移',
     run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/run-rust-runtime.ts', unknown: ['需要 Rust 工具链；首次可能下载锁定 crate'] } },
   'rust:parity': { desc: '隔离比较 Node/Rust 工作区 HTTP、旧回执和读取时延', cmd: ['node', 'runtime-rs/tests/parity.mjs'], docs: 'docs/workflow.md#rust-运行时迁移',
@@ -221,58 +225,22 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['writes-product'], machine: ['windows', 'windows-toolchain'], switches: { '--capture': ['writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-game-installer.js:122-124', unknown: [] },
   },
   'data:build': {
-    desc: '聚合场景分片 -> scenes.json（热门角色见 popular:build）',
+    desc: '从 data/catalog 项目快照构建 scenes.json（旧项目才读取场景分片）',
     cmd: ['node', 'scripts/maintenance/build-scenes.js'],
-    docs: 'docs/maintenance.md#文件职责',
+    docs: 'docs/maintenance.md#批量修改与快照',
     run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-scenes.js:15-42', unknown: [], notes: ['默认构建写聚合并计算 DATA_VERSION，客户端由 Vite virtual:data-version 注入，不改写 sceneStore.ts；--check 不写版本：产物缺失自愈重建（fresh clone，:15-22），齐全但与源不一致报错退出 1（:24-27）'] },
   },
   'popular:build': {
-    desc: '聚合热门角色分片 -> popular-characters.json',
+    desc: '从 data/catalog 项目快照构建 popular-characters.json',
     cmd: ['node', 'scripts/maintenance/build-popular.js'],
-    docs: 'docs/maintenance.md#文件职责',
+    docs: 'docs/maintenance.md#批量修改与快照',
     run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-popular.js:12-37', unknown: [], notes: ['默认构建计算 DATA_VERSION，客户端由 Vite virtual:data-version 注入，不改写 sceneStore.ts；--check 不写版本：产物缺失自愈重建（fresh clone，:14-17），齐全但与源不一致报错退出 1（:18-21）'] },
   },
-  'popular:split': {
-    desc: 'popular→分片（仅写分片文件，不重建聚合；如需重建用 popular:import）',
-    cmd: ['node', 'scripts/maintenance/split-popular.js', '--write'],
-    docs: 'docs/maintenance.md',
-    run: { nature: ['guard'], machine: ['node'], switches: { '--write': ['writes-source'] }, resume: 'idempotent', evidence: 'scripts/maintenance/split-popular.js:4-6', unknown: [], notes: ['缺 --write 直接拒绝退出 1；注册命令已固定 --write'] },
-  },
-  'popular:import': {
-    desc: 'popular→分片+重建聚合（popular:split 超集，从聚合文件导入；改分片用 build）',
-    cmd: ['npm', 'run', 'popular:import'],
-    docs: 'docs/maintenance.md',
-    run: { nature: ['writes-source', 'writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.popular:import（split-popular --write && build-popular）', unknown: [], notes: ['从聚合反向覆盖分片，先核对 diff'] },
-  },
   'blueprints:build': {
-    desc: '聚合场景蓝图分片 -> scene-blueprints.json',
+    desc: '从 data/catalog 项目快照构建 scene-blueprints.json',
     cmd: ['node', 'scripts/maintenance/build-blueprints.js'],
-    docs: 'docs/maintenance.md#文件职责',
+    docs: 'docs/maintenance.md#批量修改与快照',
     run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-blueprints.js:24-49', unknown: [], notes: ['默认构建计算 DATA_VERSION，客户端由 Vite virtual:data-version 注入，不改写 sceneStore.ts；--check 不写版本：产物缺失自愈重建（:26-29），齐全但与源不一致报错退出 1（:30-33）'] },
-  },
-  'blueprints:split': {
-    desc: 'blueprints→分片（仅写分片文件，不重建聚合；如需重建用 blueprints:import）',
-    cmd: ['node', 'scripts/maintenance/split-blueprints.js', '--write'],
-    docs: 'docs/maintenance.md',
-    run: { nature: ['guard'], machine: ['node'], switches: { '--write': ['writes-source'] }, resume: 'idempotent', evidence: 'scripts/maintenance/split-blueprints.js:11-13', unknown: [] },
-  },
-  'blueprints:import': {
-    desc: 'blueprints→分片+重建聚合（blueprints:split 超集，从聚合文件导入；改分片用 build）',
-    cmd: ['npm', 'run', 'blueprints:import'],
-    docs: 'docs/maintenance.md',
-    run: { nature: ['writes-source', 'writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.blueprints:import（split-blueprints --write && build-blueprints）', unknown: [] },
-  },
-  'data:import': {
-    desc: 'scenes.json -> 分片 + 重建聚合（覆盖写入）',
-    cmd: ['npm', 'run', 'scenes:import'],
-    docs: 'docs/maintenance.md',
-    run: { nature: ['writes-source', 'writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.scenes:import（split-scenes --write && build-scenes）', unknown: [], notes: ['writeSceneShards 按 ID 排序重切全部分组，中间插入/退役会移动后续批次条目（计划 006 D5）'] },
-  },
-  'data:normalize': {
-    desc: '分类评级 + 规范标签 + 校验',
-    cmd: ['npm', 'run', 'scenes:normalize'],
-    docs: 'package.json',
-    run: { nature: ['writes-source'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.scenes:normalize（classify-scene-ratings --write && optimize-scenes --write && validate-scenes）', unknown: [], notes: ['末段 validate-scenes 只读；分级脚本只维护分级元数据不改写 negative；定稿保护拦截受保护字段'] },
   },
   'data:validate': {
     desc: '内容契约 + DATA_VERSION 校验',

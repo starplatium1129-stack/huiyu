@@ -1,13 +1,12 @@
 <template>
 <div class="result-frame inspector-delivery">
-          <SDRecoveryPanel :report="sdErrorReport" @recover="runRecovery" @dismiss="dismissError" />
-          <GenerationQueuePanel v-if="drawEngine === 'sd'"
+          <GenerationQueuePanel v-if="sdQueue.total.value > 0"
             :total="sdQueue.total.value"
             :done="sdQueue.done.value"
             :paused="sdQueue.paused.value"
             :active-job="sdQueue.activeJob.value"
             :queue="sdQueue.queue.value"
-            :progress="generationProgress"
+            :progress="legacyProgress"
             :paused-reason="queuePausedReason"
             @pause="sdQueue.pause"
             @resume="sdQueue.resume"
@@ -69,14 +68,13 @@ import type { PromptDeliveryBindings } from '@/composables/prompt/promptPanelBin
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecoveryPanel.vue'))
 const GenerationQueuePanel = defineAsyncComponent(() => import('@/components/GenerationQueuePanel.vue'))
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
 const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/BatchSceneDrawPanel.vue'))
 
 const props = defineProps<{ bindings: PromptDeliveryBindings }>()
-const { voiceStudioRef, pb, sdOnline, generationBusy, generationProgress, animaOnline, drawEngine, sdQueue, BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, sdErrorReport, runRecovery, dismissError, queuePausedReason, scenes, batchPanelDeps } = props.bindings
+const { voiceStudioRef, pb, sdOnline, generationBusy, legacyProgress, animaOnline, drawEngine, sdQueue, BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, queuePausedReason, scenes, batchPanelDeps } = props.bindings
 </script>
 
 <style src="@/assets/css/director/components/PromptInspectorDelivery.css"></style>

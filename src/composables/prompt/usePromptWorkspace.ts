@@ -3,7 +3,7 @@ import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
 
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
 import { useAnimaSession } from '@/composables/generation/useAnimaSession';
-import { useSDGenerate } from '@/composables/generation/useSDGenerate';
+import { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks';
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue';
 
@@ -23,10 +23,9 @@ import { usePromptBuilderStore } from '@/stores/promptBuilderStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import type { AnimaResult,AnimaResultContext } from '@/types/anima';
 import { captureResultContext as snapshotResultContext } from '@/utils/resultContext';
-import { type SDRecoveryId } from '@/utils/sdError';
 import { computed, onActivated, onDeactivated, onScopeDispose, reactive, ref, toRef, watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
-import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,type DrawEngine,} from '@/storage/settingsRepository';
+import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,isActiveDrawEngine,type ActiveDrawEngine,type DrawEngine,} from '@/storage/settingsRepository';
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function usePromptWorkspace() {
@@ -34,7 +33,7 @@ export function usePromptWorkspace() {
     const route = useRoute();
     const pb = usePromptBuilderStore();
     const sceneStore = useSceneStore();
-    const sd = useSDGenerate();
+    const sd = useLegacySdTasks();
     const { inspector, materialDrawer, voiceStudioRef, batchOpen, batchRunning, autoSaveToGallery, characterShifting } = usePromptWorkspaceUi(pb, route);
     const currentCharacterId = computed(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char);
     const currentCharacterThemeStyle = useCharacterAtmosphere(() => currentCharacterId.value, () => sceneStore.characters);
@@ -88,7 +87,7 @@ export function usePromptWorkspace() {
     }
     // ── Prompt 组装（统一出口，消除视图三元分发）──────────────────────
     const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId));
-    const { currentTraits, modelProfile, effectiveScene, loraSpecs, negativePrompt } = unified.studio;
+    const { currentTraits, modelProfile, loraSpecs, negativePrompt } = unified.studio;
     const livePrompt = unified.positivePrompt;
     const effectiveNegative = unified.negativePrompt;
     const previewPromptView = unified.previewPrompt;
@@ -200,15 +199,11 @@ export function usePromptWorkspace() {
      */
     // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
     // 一条 runJob 路径三处消费：直出 callGenerate / 队列串行 / 批量 runners 注入。
-    const { sdErrorReport, dismissError, captureJob, historyGenerationFields, runJob, resultJob, commitJobResult, sdQueue, restoredCount, enqueueCurrent, enqueue3Variants } = usePromptSdQueue({
+    const { sdErrorReport, historyGenerationFields, runJob, commitJobResult, sdQueue, restoredCount } = usePromptSdQueue({
         pb,
         sd,
         sdSize,
         drawEngine,
-        livePrompt,
-        negativePrompt,
-        effectiveScene,
-        loraSpecs,
         modelProfile,
         animaState,
         displayResultSeed,
@@ -452,22 +447,25 @@ export function usePromptWorkspace() {
                 void refreshManagedRoute();
         }
     });
-    const generationContext = { pb, applyManagedRoute, drawEngine, sd, livePrompt, currentCapabilities, generationBusy, generateAnima, sdErrorReport, captureJob, runJob, tempResultTools, sdSize }
-    function callGenerate(opts: {
-        disableLora?: boolean;
-    } = {}): Promise<void> { return import('./promptGenerationActions').then(({ callGenerateAction }) => callGenerateAction(generationContext, opts)); }
-    function runRecovery(id: SDRecoveryId): Promise<void> { return import('./promptGenerationActions').then(({ runRecoveryAction }) => runRecoveryAction(generationContext, id)); }
+    const generationContext = (engine: ActiveDrawEngine) => ({ pb, applyManagedRoute, engine, livePrompt, currentCapabilities, generationBusy, generateAnima })
+    async function callGenerate(): Promise<void> {
+        const engine = drawEngine.value
+        if (!isActiveDrawEngine(engine)) { pb.flash('历史 SD 配方仅供查看；请选择 Anima 或 Krea 2 开始新创作'); return }
+        const { callGenerateAction } = await import('./promptGenerationActions')
+        await callGenerateAction(generationContext(engine))
+    }
     async function upscaleCurrentResult(): Promise<void> {
         if (generationBusy.value || disposed) return;
         const version = ++hiresVersion, sourceUrl = displayResultUrl.value;
-        const source: HiresSource = { engine: drawEngine.value, anima: drawEngine.value === 'anima' ? animaSession.resultSubmission() : null,
-            sd: drawEngine.value === 'sd' ? resultJob() : null };
+        const engine = drawEngine.value;
+        if (!isActiveDrawEngine(engine)) { pb.flash('历史 SD 成片不再执行新重绘，请保留原配方'); return; }
+        const source: HiresSource = { engine, anima: engine === 'anima' ? animaSession.resultSubmission() : null };
         hiresPreparing.value = true;
         try {
             const { upscaleCurrentResultAction } = await import('./promptGenerationActions');
             if (disposed || version !== hiresVersion || source.engine !== drawEngine.value || sourceUrl !== displayResultUrl.value) return;
             hiresPreparing.value = false;
-            await upscaleCurrentResultAction(generationContext, source);
+            await upscaleCurrentResultAction(generationContext(source.engine), source);
         } finally { if (version === hiresVersion) hiresPreparing.value = false; }
     }
     // Each lazy panel receives a stable, explicit capability surface. Store fields are
@@ -484,14 +482,12 @@ export function usePromptWorkspace() {
             subject: toRef(pb, 'subject'), isPopular: toRef(pb, 'isPopular'), char: toRef(pb, 'char'), visualDescription: toRef(pb, 'visualDescription'),
             sdModelName: toRef(pb, 'sdModelName'), sdParams: toRef(pb, 'sdParams'), markParamTouched: pb.markParamTouched,
         }),
-        sd: { models: sd.models, samplers: sd.samplers, schedulers: sd.schedulers },
-        sdQueue: { canEnqueue: sdQueue.canEnqueue },
         displayResultUrl, generationBusy, animaState, drawEngine, upscaleCurrentResult,
         generationPresetSummary, managedRoute, applyManagedRoute, reuseSuccessfulRecipe,
         engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
         displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState,
         retryAnima, vramHint, vramLevel, baseResolutionRisk, baseResolutionHint,
-        canUseFaceDetailer, enqueueCurrent, enqueue3Variants,
+        canUseFaceDetailer,
     };
     const styleBindings: PromptStyleBindings = {
         pb: reactive({ directorMode: toRef(pb, 'directorMode'), artistStyleIds: toRef(pb, 'artistStyleIds'),
@@ -504,14 +500,14 @@ export function usePromptWorkspace() {
     };
     const deliveryBindings: PromptDeliveryBindings = {
         pb: reactive({ char: toRef(pb, 'char'), activeScene: toRef(pb, 'activeScene'), story: toRef(pb, 'story') }),
-        voiceStudioRef, sdOnline: sd.online, animaOnline: computed(() => animaState.value.online),
+        voiceStudioRef, sdOnline: sd.online, legacyProgress: computed(() => sd.progress.value === null ? null : sd.progress.value / 100), animaOnline: computed(() => animaState.value.online),
         scenes: toRef(sceneStore, 'sceneBlueprints'), generationBusy, generationProgress, drawEngine,
         shotsPending, goToShots,
         sdQueue: { total: sdQueue.total, done: sdQueue.done, paused: sdQueue.paused,
             activeJob: sdQueue.activeJob, queue: sdQueue.queue,
             pause: sdQueue.pause, resume: sdQueue.resume, clear: sdQueue.clear, remove: sdQueue.remove },
-        BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, sdErrorReport, runRecovery,
-        dismissError, queuePausedReason, batchPanelDeps,
+        BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen,
+        queuePausedReason, batchPanelDeps,
     };
     const dialogBindings: PromptDialogBindings = {
         compareEl, adultEnabled: toRef(pb, 'showMatureScenes'),
@@ -541,6 +537,6 @@ export function usePromptWorkspace() {
         handleInterrogateResult, handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason,
         cancelGeneration, outfitOverridden, sdQueue,
         materialBindings, renderBindings, styleBindings, healthBindings, deliveryBindings, dialogBindings,
-        recipePreviewContext: { engine: drawEngine, sdJob: captureJob, animaRequest: () => engine.buildAnimaRequest(true) },
+        recipePreviewContext: { engine: drawEngine, animaRequest: () => engine.buildAnimaRequest(true) },
     };
 }

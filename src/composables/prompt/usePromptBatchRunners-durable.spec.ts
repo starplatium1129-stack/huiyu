@@ -1,3 +1,4 @@
+import { legacySdBatch } from './testFixtures/legacySdJob'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { usePromptBatchRunners, type PromptBatchRunnersDeps } from './usePromptBatchRunners'
@@ -71,7 +72,7 @@ it('continues only after reconciling the accepted task, then submits untouched r
   first.runner.batchDraw.dispose()
   const restored = setup()
   restored.state.value.modelId = 'changed-model'; restored.blueprint.promptProse = 'changed blueprint'
-  restored.runner.batchEngine.value = 'sd'
+  restored.state.value.family = 'krea2'
   api.byKey.mockImplementation(async lookup => task(lookup))
   expect(api.submit).toHaveBeenCalledOnce()
   await restored.runner.batchDraw.resume()
@@ -98,32 +99,21 @@ it('reopening an unsaved result reads the same task output and retries archive w
   expect(restored.runner.batchDraw.progress.value.succeeded).toBe(1)
 })
 
-it('SD receives its durable identity and treats a definite rejection as retryable failure', async () => {
+it('legacy SD never creates or retries an admission identity', async () => {
+  sessionStorage.setItem(BATCH_DRAW_PLAN_KEY, JSON.stringify(legacySdBatch(true, 'failed')))
   const { runner, deps } = setup()
-  runner.batchEngine.value = 'sd'
-  vi.mocked(deps.runJob).mockImplementation(async (_job, options) => {
-    expect(options?.requestKey).toBe(JSON.parse(sessionStorage.getItem(BATCH_DRAW_PLAN_KEY)!).jobs[0].requestKey)
-    options?.onError?.(new ApiClientError('invalid model', { kind: 'http', status: 400 }))
-    return null
-  })
-  await runner.onBatchStartCharacters({ characterIds: ['nene'], count: 1, basePrompt: 'rainy cafe' })
-  expect(runner.batchDraw.progress.value).toMatchObject({ failed: 1, unresolved: 0 })
-  expect(api.byKey).not.toHaveBeenCalled()
+  await runner.onRetryFailed()
+  expect(api.submit).not.toHaveBeenCalled(); expect(deps.runJob).not.toHaveBeenCalled()
+  expect(runner.batchDraw.jobs.value[0].requestKey).toBe('saved-key')
 })
-
-it('SD batch archive fields belong to its frozen job even while the main workbench displays Anima facts', async () => {
+it('restored SD archive fields come from the saved plan while the workbench displays another engine', async () => {
+  sessionStorage.setItem(BATCH_DRAW_PLAN_KEY, JSON.stringify(legacySdBatch(true)))
+  api.byKey.mockResolvedValue(task('saved-key'))
   const { runner, deps, pb } = setup()
-  runner.batchEngine.value = 'sd'
-  deps.historyGenerationFields = () => ({ engine: 'anima', model: 'wrong-anima-model', cfg: 99, steps: 99, sampler: 'wrong-sampler', size: 'wrong-size', loraId: 'wrong-anima-lora' })
-  deps.sd.resultSeed = ref(42); deps.sd.resultTaskId = ref('sd-task')
-  vi.mocked(deps.runJob).mockImplementation(async (_job, options) => {
-    await options?.onAccepted?.(task(options.requestKey!) as never)
-    return '/sd-result.png'
-  })
-  const fetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(new Blob(['image'], { type: 'image/png' }), { headers: { 'Content-Type': 'image/png' } }))
-  await runner.onBatchStartCharacters({ characterIds: ['nene'], count: 1, basePrompt: 'rainy cafe' })
-  expect(pb.commitHistoryEntry).toHaveBeenCalledOnce()
-  expect(pb.commitHistoryEntry.mock.calls[0][0]).toMatchObject({ engine: 'sd', model: 'original-sd', cfg: 7, steps: 30, sampler: 'Euler', scheduler: 'normal', size: '832x1216', taskId: 'accepted-task' })
-  expect(pb.commitHistoryEntry.mock.calls[0][0].loraId).toBeUndefined()
-  fetch.mockRestore()
+  deps.historyGenerationFields = () => ({ engine: 'anima', model: 'wrong-model', cfg: 99, steps: 99, sampler: 'wrong-sampler', size: 'wrong-size' })
+  await runner.batchDraw.resume()
+  expect(api.submit).not.toHaveBeenCalled(); expect(deps.runJob).not.toHaveBeenCalled()
+  expect(api.byKey).toHaveBeenCalledWith('saved-key', expect.any(AbortSignal))
+  expect(pb.commitHistoryEntry.mock.calls[0][0]).toMatchObject({ engine: 'sd', model: 'model-a', cfg: 7, steps: 20,
+    sampler: 'euler', scheduler: 'normal', size: '832x1216', taskId: 'accepted-task' })
 })
