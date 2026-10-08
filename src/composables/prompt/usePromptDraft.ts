@@ -1,6 +1,6 @@
 import { hasEditedSceneStyle, sceneStyleBaseline } from '@/utils/randomVariationContext'
-import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
-import { onScopeDispose, watch, type Ref, type ComputedRef } from 'vue'
+import { profileLocalStorage as localStorage, profileRuntimeActive } from '../../platform/web/profileStorage.ts'
+import { onScopeDispose, ref, watch, type Ref, type ComputedRef } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
 import { isSDParamKey, parsePromptBuilderDraft, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
@@ -41,14 +41,30 @@ export function usePromptDraft(state: PromptDraftState) {
   // ── Draft persistence ────────────────────────────────────────────────────
   const DRAFT_KEY = 'aics_pb_last_draft'
   let draftTimer: ReturnType<typeof setTimeout> | null = null
-  let saveFailed = false
+  const draftSaveState = ref<'idle' | 'pending' | 'saved' | 'failed'>('idle')
+  const draftSaveError = ref('')
   function persistDraft() {
     if (draftTimer) clearTimeout(draftTimer)
     draftTimer = null
-    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshotDraft())); saveFailed = false }
-    catch (error) { saveFailed = true; throw error }
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshotDraft()))
+      draftSaveState.value = 'saved'; draftSaveError.value = ''
+    } catch (error) {
+      draftSaveState.value = 'failed'; draftSaveError.value = storageWriteMessage(error, '草稿')
+      throw error
+    }
   }
-  const releaseMaintenance = registerMaintenanceParticipant(() => { if (draftTimer || saveFailed) persistDraft() })
+  const releaseMaintenance = registerMaintenanceParticipant(() => { if (draftTimer || draftSaveState.value === 'failed') persistDraft() })
+  function retryDraftSave() {
+    if (!dataReady.value) return false
+    try { persistDraft(); return true } catch { return false }
+  }
+  function beforeUnload(event: BeforeUnloadEvent) {
+    // Desktop profiles own asynchronous write/close protection.
+    if (profileRuntimeActive() || (!draftTimer && draftSaveState.value !== 'failed')) return
+    if (!retryDraftSave()) { event.preventDefault(); event.returnValue = '' }
+  }
+  window.addEventListener('beforeunload', beforeUnload)
 
   function snapshotDraft(): PromptBuilderDraft {
     const subjectSnapshot = subject.value.kind === 'popular'
@@ -148,6 +164,7 @@ export function usePromptDraft(state: PromptDraftState) {
 
   function saveDraft() {
     if (!dataReady.value) return
+    if (draftSaveState.value !== 'failed') draftSaveState.value = 'pending'
     if (draftTimer) clearTimeout(draftTimer)
     draftTimer = setTimeout(() => {
       try {
@@ -156,7 +173,7 @@ export function usePromptDraft(state: PromptDraftState) {
         // 2026-08-30 UX 审计：原先 catch {} 静默吞掉。配额写满时界面一切正常、
         // 用户以为草稿已存，刷新即丢——必须让失败可感知并给出补救动作。
         console.warn('[draft] 草稿写入失败', e)
-        flash(storageWriteMessage(e, '草稿'))
+        flash(draftSaveError.value)
       }
     }, 280)
   }
@@ -175,6 +192,6 @@ export function usePromptDraft(state: PromptDraftState) {
   // Clearing or editing only the reference outfit does not touch manualTags.
   watch([outfitOverride, referenceInput], saveDraft, { deep: true })
 
-  onScopeDispose(() => { releaseMaintenance(); if (draftTimer) clearTimeout(draftTimer) })
-  return { snapshotDraft, saveDraft, restoreDraft }
+  onScopeDispose(() => { releaseMaintenance(); if (draftTimer) clearTimeout(draftTimer); window.removeEventListener('beforeunload', beforeUnload) })
+  return { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave }
 }

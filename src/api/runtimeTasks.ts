@@ -1,11 +1,12 @@
 import { apiClient, ApiClientError } from './client'
 import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../platform/desktop/runtime.ts'
-import type { TaskRecord, TaskSubmission } from '../../types/tasks'
+import type { TaskRecord, TaskSubmission, TaskSummary, TaskListScope, TaskPage } from '../../types/tasks'
 import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
 import { hasRuntimeTasks } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
+import { summarizeTask } from '../utils/runtimeTaskSummary'
 export { hasRuntimeTasks, isRuntimeTaskId } from './runtimeTaskAuthority'
-export type { TaskRecord } from '../../types/tasks'
+export type { TaskRecord, TaskSummary } from '../../types/tasks'
 
 const base = '/api/tasks/v1'
 let activeEpoch = '', activeWorkspace = '', sequence = 0, activeRead = 0
@@ -15,7 +16,7 @@ function ensureAuthority() {
   if (!hasRuntimeTasks()) throw new Error('私人任务工作区尚未启用')
   if (getDesktopRuntime().connection !== 'ready') throw new Error('本地运行时已断开，任务记录已保留，请恢复连接后重试。')
 }
-export const runtimeResultPath = (task: TaskRecord, index = 0) => `${base}/${encodeURIComponent(task.taskId)}/results/${index}`
+export const runtimeResultPath = (task: Pick<TaskRecord, 'taskId'>, index = 0) => `${base}/${encodeURIComponent(task.taskId)}/results/${index}`
 export const isRuntimeResultPath = (url: string) => /^\/api\/tasks\/v1\/[\w-]+\/results\/\d+$/.test(url)
 
 function remember(task: TaskRecord): TaskRecord { return rememberTask(task, epoch()) }
@@ -36,13 +37,13 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
   const expected = epoch()
   try {
     const after = readEpoch === expected ? readRevision : 0
-    const items: TaskRecord[] = []
+    const items: TaskSummary[] = []
     let before: number | null = null, through: number | undefined
     do {
-      const params = new URLSearchParams({ afterRevision: String(after), limit: '100' })
+      const params = new URLSearchParams({ afterRevision: String(after), limit: '100', summary: 'true', scope: after ? 'all' : 'overview' })
       if (before !== null) params.set('before', String(before))
       if (through !== undefined) params.set('throughRevision', String(through))
-      const page = await request<{ items: TaskRecord[]; nextCursor: number | null; throughRevision: number }>('?' + params, 'GET', undefined, signal)
+      const page = await request<TaskPage>('?' + params, 'GET', undefined, signal)
       if (read !== activeRead || expected !== epoch()) return
       if (!Number.isSafeInteger(page.throughRevision) || page.throughRevision < after || (through !== undefined && through !== page.throughRevision)
         || (page.nextCursor !== null && (!Number.isSafeInteger(page.nextCursor) || page.nextCursor <= after || (before !== null && page.nextCursor >= before)))) throw new Error('任务分页响应无效')
@@ -51,7 +52,7 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
       before = page.nextCursor
     } while (before !== null)
     signal?.throwIfAborted()
-    mergeTasks(items, expected)
+    mergeTasks(items, expected, readEpoch !== expected)
     readEpoch = expected; readRevision = through!
     runtimeTaskError.value = ''
   } catch (error) {
@@ -60,6 +61,18 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
     }
     throw error
   }
+}
+/** A bounded history page is separate from the active-task subscription and its delta cursor. */
+export async function readRuntimeTaskPage(scope: TaskListScope, options: { before?: number; through?: number; limit?: number; signal?: AbortSignal } = {}): Promise<TaskPage> {
+  const params = new URLSearchParams({ scope, summary: 'true', limit: String(options.limit ?? 30) })
+  if (options.before !== undefined) params.set('before', String(options.before))
+  if (options.through !== undefined) params.set('throughRevision', String(options.through))
+  const page = await request<TaskPage>('?' + params, 'GET', undefined, options.signal)
+  if (!Array.isArray(page.items) || !Number.isSafeInteger(page.throughRevision) || page.throughRevision < 0
+    || (options.through !== undefined && page.throughRevision !== options.through)
+    || (page.nextCursor !== null && (!Number.isSafeInteger(page.nextCursor) || page.nextCursor <= 0 || (options.before !== undefined && page.nextCursor >= options.before)))) throw new Error('任务分页响应无效')
+  if (page.items.some(task => task.runtimeEpoch !== epoch())) throw new Error('运行时已更换，请重新读取任务')
+  return { ...page, items: page.items.map(summarizeTask) }
 }
 export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<string, unknown>, key = runtimeRequestKey(kind, input), context?: Record<string, unknown>,
   observation: { signal?: AbortSignal; onSubmitting?: () => void } = {}): Promise<TaskRecord> {
@@ -116,7 +129,7 @@ export async function confirmWebuiTaskStopped(id: string, expectedRevision: numb
 export async function markRuntimeTask(id: string, state: TaskRecord['deliveryState']) {
   return remember(await request<TaskRecord>(`/${encodeURIComponent(id)}/delivery`, 'PATCH', { state }))
 }
-export function taskMessage(task: TaskRecord): string {
+export function taskMessage(task: TaskSummary): string {
   if (task.deliveryState === 'discarded') return '结果已移出收件箱，已入册作品保留。'
   if (task.errorCode === 'WEBUI_STOP_CONFIRMED') return task.resultState === 'available'
     ? '你已确认 WebUI 已停止或重启，任务占用已解除。已保存结果仍可查看和入册。'

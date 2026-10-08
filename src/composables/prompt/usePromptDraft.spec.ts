@@ -9,7 +9,11 @@ import { parsePromptBuilderDraft } from '@/utils/promptBuilderPersistence'
 import { applyInterrogateResult } from './applyInterrogateResult'
 import { usePopularPromptAssembly } from './usePopularPromptAssembly'
 
-beforeEach(() => { setActivePinia(createPinia()); localStorage.clear(); vi.useFakeTimers() })
+beforeEach(() => {
+  setActivePinia(createPinia()); localStorage.clear(); vi.useFakeTimers()
+  // Character data is supplied by each draft fixture; no live catalog reads belong here.
+  vi.spyOn(useSceneStore(), 'loadBlueprintCharacter').mockResolvedValue(undefined)
+})
 afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks() })
 
 it('coalesces edits, keeps snapshots detached and cancels the timer on store disposal', () => {
@@ -79,6 +83,17 @@ it('reports storage failures and leaves corrupt saved drafts unapplied', () => {
     pb.saveDraft(); vi.advanceTimersByTime(280)
     expect(write).toHaveBeenCalledWith('aics_pb_last_draft', expect.any(String))
     expect(warning).toHaveBeenCalled()
+    vi.advanceTimersByTime(5000)
+    expect(pb.draftSaveState).toBe('failed')
+    expect(pb.draftSaveError).toContain('草稿')
+    const unloading = new Event('beforeunload', { cancelable: true })
+    window.dispatchEvent(unloading)
+    expect(unloading.defaultPrevented).toBe(true)
+    write.mockRestore()
+    expect(pb.retryDraftSave()).toBe(true)
+    expect(pb.draftSaveState).toBe('saved')
+    expect(pb.draftSaveError).toBe('')
+    expect(JSON.parse(localStorage.getItem('aics_pb_last_draft')!).story).toBe('Keep')
   } finally {
     write.mockRestore()
     pb.$dispose()

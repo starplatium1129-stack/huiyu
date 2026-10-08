@@ -15,3 +15,10 @@ export interface TaskRecord {
   parentBatchId: string | null; stepIndex: number | null;
 }
 export interface TaskSubmission { requestKey: string; kind: TaskRecord['kind']; input: Record<string, unknown>; context?: Record<string, unknown> }
+/** List rows omit recipes and checkpoints; fetch the task before displaying its result. */
+export interface TaskSummary extends Omit<TaskRecord, 'input' | 'inputMediaRefs' | 'metadata' | 'checkpoint' | 'requestFingerprint' | 'providerFingerprint'> {
+  sourceBatchId?: string | null;
+  canConcat?: boolean;
+}
+export type TaskListScope = 'all' | 'overview' | 'open' | 'attention' | 'inbox';
+export interface TaskPage { items: TaskSummary[]; nextCursor: number | null; throughRevision: number }

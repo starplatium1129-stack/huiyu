@@ -266,6 +266,19 @@ async fn perform(
         [] => {
             let mut command = json!({"kind":"task.list"});
             for (key, value) in url::form_urlencoded::parse(uri.query().unwrap_or("").as_bytes()) {
+                if key == "scope"
+                    && matches!(
+                        value.as_ref(),
+                        "all" | "overview" | "open" | "attention" | "inbox"
+                    )
+                {
+                    command["scope"] = json!(value);
+                    continue;
+                }
+                if key == "summary" && matches!(value.as_ref(), "true" | "false") {
+                    command["summary"] = json!(value == "true");
+                    continue;
+                }
                 if !matches!(
                     key.as_ref(),
                     "before" | "afterRevision" | "throughRevision" | "limit"

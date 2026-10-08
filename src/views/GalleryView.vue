@@ -9,9 +9,12 @@
           <span aria-current="page">{{ collectionTitle }}</span>
         </nav>
       </div>
-      <RouterLink class="btn btn-primary gallery-create" to="/prompt-builder">
-        <ArchiveIcon name="spark" />新建创作
-      </RouterLink>
+      <div class="tw:flex tw:items-center tw:flex-wrap tw:gap-s-2">
+        <GalleryBackupTools />
+        <RouterLink class="btn btn-primary gallery-create" to="/prompt-builder">
+          <ArchiveIcon name="spark" />新建创作
+        </RouterLink>
+      </div>
     </header>
 
     <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
@@ -295,6 +298,7 @@ import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
 import { artworkTags } from '@/composables/gallery/artworkTags'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
+const GalleryBackupTools = defineAsyncComponent(() => import('@/components/gallery/GalleryBackupTools.vue'))
 const gestureViewer = ref(false)
 const originalViewer = ref(false)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'

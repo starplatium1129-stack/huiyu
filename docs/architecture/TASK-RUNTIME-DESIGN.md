@@ -37,7 +37,9 @@ principalId 从服务端认证产生，不信任 body 自报 owner。桌面稳�
 
 ## 3. 幂等接受协议
 
-任务 API 已固定为 `/api/tasks/v1`，由 `routes/tasks.ts` 接入已激活桌面 workspace。服务内部调用现有 generation/anima/video 逻辑，将持久化点接入它们，不另建 provider。
+任务 API 已固定为 `/api/tasks/v1`，由 `runtime-rs/src/tasks_http.rs` 接入已激活桌面 workspace。服务内部调用现有 generation/anima/video 逻辑，将持久化点接入它们，不另建 provider。
+
+任务列表支持 `summary=true` 和 `scope=all|overview|open|attention|inbox`，沿用 principal 隔离、revision 游标与 runtime epoch。SQLite 先投影、再校验摘要，不把 input、metadata、checkpoint 和输入媒体引用带进列表；单任务详情保留完整记录。`overview` 保留全部活动／待确认任务及最近 60 条记录，初次读取完成后再发布并推进增量游标，后续增量读取不限制为 overview，避免漏掉旧任务的变化。前端仅保留 60 条普通终态摘要；活动与未确认记录不截断。历史面板独立按 30 条翻页，不推进订阅游标；展开结果才读取详情，关闭面板释放预览、不取消任务。空画布恢复通过收件箱分页查找，不能只在最近 60 条缓存中找结果。
 
 1. 客户端在提交动作开始生成 requestKey；页面组件销毁后，应用级提交句柄仍能查询这个 key。一次用户重试原请求使用同 key；用户明确“重新生成”才创建新 key。
 2. 服务端校验权限、参数和准入，在短事务中建立唯一 `(principalId, requestKey)` 与 taskId，保存参数指纹、冻结输入及 queued 状态。

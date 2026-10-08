@@ -13,7 +13,7 @@ vi.mock('../platform/desktop/runtime.ts', () => ({
 }))
 import { refreshRuntimeTasks, getRuntimeTask, waitForRuntimeTask } from './runtimeTasks'
 import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
-import { taskRecords, runtimeTasks, runtimeTaskActiveCount, runtimeTaskError, unresolvedTaskRequests, pendingTaskRequests } from '../stores/runtimeTaskState'
+import { taskRecords, runtimeTasks, runtimeTaskActiveCount, runtimeTaskError, unresolvedTaskRequests, pendingTaskRequests, mergeTasks } from '../stores/runtimeTaskState'
 
 const task = (id: number, revision = 1): TaskRecord => ({
   taskId: String(id), runtimeEpoch: mocks.epoch, revision, createdAt: id,
@@ -46,6 +46,20 @@ it('does not turn an unknown accepted job into a terminal failure', async () => 
 })
 
 describe('runtime task snapshot merging', () => {
+  it('bounds terminal history while retaining every active and uncertain task and cloning only changed views', () => {
+    const active = Array.from({ length: 130 }, (_, id) => ({ ...task(id, id + 1), recoveryState: 'normal' as const }))
+    const finished = Array.from({ length: 1000 }, (_, id) => ({ ...task(id + 130, id + 131), recoveryState: 'normal' as const, status: 'succeeded' as const, upstreamSettled: true }))
+    const uncertain = { ...task(2000, 1), recoveryState: 'unknown' as const, upstreamSettled: true }
+    mergeTasks([...active, ...finished, uncertain], mocks.epoch)
+    expect(taskRecords.value).toHaveLength(191)
+    expect(runtimeTaskActiveCount.value).toBe(130)
+    expect(taskRecords.value.some(item => item.taskId === '2000')).toBe(true)
+    expect(runtimeTasks.value.every(item => !('input' in item))).toBe(true)
+    const clone = vi.spyOn(globalThis, 'structuredClone')
+    mergeTasks([{ ...active[0], revision: 3000 }], mocks.epoch)
+    expect(runtimeTasks.value).toHaveLength(191)
+    expect(clone).toHaveBeenCalledTimes(2)
+  })
   it('does not clone or invalidate 100 unchanged tasks on an idle poll', async () => {
     respond(Array.from({ length: 100 }, (_, id) => task(id)))
     await refreshRuntimeTasks()
@@ -63,7 +77,8 @@ describe('runtime task snapshot merging', () => {
     await refreshRuntimeTasks()
     const unchanged = taskRecords.value.find(item => item.taskId === '1')
     expect(runtimeTaskActiveCount.value).toBe(2)
-    expect(runtimeTasks.value[0].metadata.nested).toEqual({ value: 2 })
+    const unchangedView = runtimeTasks.value.find(item => item.taskId === '1')
+    expect(runtimeTasks.value[0]).not.toHaveProperty('metadata')
     const notify = vi.fn(), stop = watch(taskRecords, notify, { flush: 'sync' })
     const clone = vi.spyOn(globalThis, 'structuredClone')
     respond([task(1, 1), { ...task(2, 3), status: 'succeeded', upstreamSettled: true, metadata: { nested: { value: 200 } } }, { ...task(3, 1), status: 'succeeded', upstreamSettled: true }])
@@ -74,7 +89,9 @@ describe('runtime task snapshot merging', () => {
     expect(taskRecords.value.find(item => item.taskId === '1')).toBe(unchanged)
     expect(taskRecords.value[1].revision).toBe(3)
     expect(runtimeTaskActiveCount.value).toBe(1)
-    expect(runtimeTasks.value.find(item => item.taskId === '2')?.metadata.nested).toEqual({ value: 200 })
+    expect(runtimeTasks.value.find(item => item.taskId === '1')).toBe(unchangedView)
+    expect(runtimeTasks.value.find(item => item.taskId === '2')?.status).toBe('succeeded')
+    expect(clone).toHaveBeenCalledTimes(4)
     stop()
   })
 
@@ -84,8 +101,10 @@ describe('runtime task snapshot merging', () => {
     const returned = await getRuntimeTask('1')
     response.input.prompt = 'changed upstream response'
     returned.input.prompt = 'changed caller snapshot'
-    runtimeTasks.value[0].input.prompt = 'changed view snapshot'
-    expect(taskRecords.value[0].input.prompt).toBe('neutral fixture '.repeat(100))
+    runtimeTasks.value[0].status = 'cancelled'
+    expect(taskRecords.value[0].status).toBe('running')
+    expect(taskRecords.value[0]).not.toHaveProperty('input')
+    expect(returned.input.prompt).toBe('changed caller snapshot')
   })
 
   it('rejects mixed epochs atomically and resolves pending keys even without revisions changing', async () => {

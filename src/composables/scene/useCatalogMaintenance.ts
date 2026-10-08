@@ -7,8 +7,12 @@ import { confirmAction } from '@/composables/useConfirm'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { blankRecord } from './catalogFields'
 import { recordTitle } from './catalogPresentation'
+import { downloadBlob } from '@/utils/downloadBlob'
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T
 const key = (kind: string, id: string) => `${kind}:${id}`
+// New, unfinished records may not have an ID yet; the server still validates saved records.
+const isDraftRecord = (value: unknown): value is CatalogRecord => !!value && typeof value === 'object'
+  && typeof (value as CatalogRecord).id === 'string' && isCatalogRecord({ ...value, id: (value as CatalogRecord).id || 'draft' })
 export function useCatalogMaintenance() {
   const kind = ref<CatalogKind>('scene'), search = ref(''), character = ref(''), category = ref(''), rating = ref(''), sort = ref('order'), page = ref(1)
   const result = ref<CatalogPage | null>(null), counts = ref<Record<string, number>>({}), loading = ref(false), error = ref(''), hint = ref('')
@@ -179,9 +183,22 @@ export function useCatalogMaintenance() {
         importSnapshot.value = clone(snapshot); importPreview.value = false; return true
       }
       if (!value || typeof value !== 'object' || !Array.isArray((value as { changes?: unknown }).changes)) throw new Error('需要包含 changes 数组的变更文件')
-      const changes = (value as { changes: CatalogChange[] }).changes
-      if (!changes.length || changes.some(c => !c || !['character', 'outfit', 'scene', 'blueprint', 'document'].includes(c.kind) || typeof c.id !== 'string' || !Number.isSafeInteger(c.expectedRevision))) throw new Error('每条修改需要 kind、id、expectedRevision')
+      const file = value as { changes: CatalogChange[]; format?: unknown; version?: unknown; editor?: unknown; baseline?: unknown }
+      const draft = 'editor' in file
+      // Import the unversioned drafts produced before this format was introduced.
+      if (draft && file.format !== undefined && (file.format !== 'huiyu-content-draft' || file.version !== 1)) throw new Error('不支持这份草稿的格式或版本')
+      if (draft && (file.editor !== null && !isDraftRecord(file.editor)
+        || file.baseline != null && !isDraftRecord(file.baseline))) throw new Error('草稿编辑内容格式无效')
+      if (draft && dirtyEditor.value) throw new Error('请先保存或备份当前编辑，再恢复其他草稿')
+      const changes = file.changes
+      if ((!changes.length && !draft) || changes.some(c => !c || !['character', 'outfit', 'scene', 'blueprint', 'document'].includes(c.kind) || typeof c.id !== 'string' || !Number.isSafeInteger(c.expectedRevision))) throw new Error('每条修改需要 kind、id、expectedRevision')
       const keys = changes.map(c => key(c.kind, c.id)); if (new Set(keys).size !== keys.length) throw new Error('批量文件包含重复记录')
+      if (draft) {
+        resetEditor(clone(file.editor as CatalogRecord | null))
+        baseline.value = file.baseline ? JSON.stringify(file.baseline) : ''
+        if (selected.value) kind.value = selected.value.kind
+        hint.value = '草稿已恢复，尚未写入内容库。请继续编辑并核对版本后保存。'
+      }
       pending.value = [...pending.value.filter(c => !keys.includes(key(c.kind, c.id))), ...clone(changes)]; preview.value = null
       importSnapshot.value = null; importPreview.value = false
       return true
@@ -212,10 +229,10 @@ export function useCatalogMaintenance() {
     finally { busy.value = false }
   }
   function download(value: unknown, name: string) {
-    const url = URL.createObjectURL(new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json' }))
-    const link = document.createElement('a'); link.href = url; link.download = name; link.click(); URL.revokeObjectURL(url)
+    downloadBlob(new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json' }), name)
   }
-  const exportDraft = () => download({ changes: pending.value, editor: selected.value }, 'content-draft.json')
+  const exportDraft = () => download({ format: 'huiyu-content-draft', version: 1, changes: pending.value,
+    editor: selected.value, baseline: baseline.value ? JSON.parse(baseline.value) : null }, 'content-draft.json')
   async function exportSnapshot() { try { download(await catalogApi.snapshot(), 'content-snapshot.json') } catch (e) { hint.value = (e as Error).message } }
   watch([kind, character, category, rating, sort], () => { page.value = 1; void load() })
   watch(search, () => { clearTimeout(timer); timer = setTimeout(() => { page.value = 1; void load() }, 180) })

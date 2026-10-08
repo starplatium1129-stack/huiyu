@@ -1,5 +1,5 @@
 <template>
-  <!-- 桌面常驻侧栏；窄窗口与专注模式紧随画布，保留尺寸、生成与停止。 -->
+  <!-- 桌面常驻侧栏；窄窗口独立吸附于整个编辑区，保留尺寸、生成与停止。 -->
   <div class="gen-bar" :class="{ 'is-generating': busy }" role="group" aria-label="出图尺寸与生成">
     <label class="gen-bar-size">
       <ArchiveIcon name="centercomp" class="gen-bar-aspect-icon" aria-hidden="true" />

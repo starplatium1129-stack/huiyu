@@ -62,6 +62,94 @@ async fn unchanged_patch_preserves_revision_and_still_enforces_submission_and_ca
 }
 
 #[tokio::test]
+async fn summary_overview_retains_old_open_tasks_and_pages_large_history_without_inputs() {
+    let directory = tempfile::tempdir().unwrap();
+    let storage = Storage::open(directory.path().join("workspace"), "fixture".into(), true)
+        .await
+        .unwrap();
+    let mut records = Vec::new();
+    for index in 0..80 {
+        let mut record = incoming(
+            "fixture",
+            &format!("history-{index}"),
+            &format!("history-{index}"),
+        );
+        record["upstreamSettled"] = json!(true);
+        record["status"] = json!("succeeded");
+        record["input"] = json!({"prompt":"neutral fixture ".repeat(500)});
+        if index == 0 {
+            record["recoveryState"] = json!("unknown");
+        }
+        let accepted = storage
+            .request(json!({"kind":"task.accept","record":record}), PRINCIPAL)
+            .await
+            .unwrap();
+        records.push(accepted["task"].clone());
+    }
+    let open = storage.request(json!({"kind":"task.accept","record":incoming("fixture","still-running","still-running")}), PRINCIPAL).await.unwrap();
+    for record in &records[10..] {
+        patch(&storage, record, json!({"deliveryState":"saved"}))
+            .await
+            .unwrap();
+    }
+    let overview = storage
+        .request(
+            json!({"kind":"task.list","summary":true,"scope":"overview"}),
+            PRINCIPAL,
+        )
+        .await
+        .unwrap();
+    let items = overview["items"].as_array().unwrap();
+    assert_eq!(items.len(), 62);
+    assert!(items.iter().any(|item| item["taskId"] == "still-running"));
+    assert!(items.iter().any(|item| item["taskId"] == "history-0"));
+    assert!(items.iter().all(|item| item.get("input").is_none()
+        && item.get("metadata").is_none()
+        && item.get("checkpoint").is_none()));
+    let full = storage
+        .request(json!({"kind":"task.list"}), PRINCIPAL)
+        .await
+        .unwrap();
+    assert!(
+        serde_json::to_vec(&overview).unwrap().len() * 5 < serde_json::to_vec(&full).unwrap().len()
+    );
+    let first = storage
+        .request(
+            json!({"kind":"task.list","summary":true,"limit":30}),
+            PRINCIPAL,
+        )
+        .await
+        .unwrap();
+    assert_eq!(first["items"].as_array().unwrap().len(), 30);
+    let second = storage.request(json!({"kind":"task.list","summary":true,"limit":30,"before":first["nextCursor"],"throughRevision":first["throughRevision"]}), PRINCIPAL).await.unwrap();
+    assert_eq!(second["items"].as_array().unwrap().len(), 30);
+    assert!(second["items"].as_array().unwrap().iter().all(|item| {
+        !first["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|previous| previous["taskId"] == item["taskId"])
+    }));
+    let other = storage
+        .request(
+            json!({"kind":"task.list","summary":true,"scope":"overview"}),
+            "different-principal",
+        )
+        .await
+        .unwrap();
+    assert_eq!(other["items"], json!([]));
+    let detail = storage
+        .request(
+            json!({"kind":"task.get","taskId":open["task"]["taskId"]}),
+            PRINCIPAL,
+        )
+        .await
+        .unwrap();
+    assert!(detail.get("input").is_some());
+    storage.close().await.unwrap();
+}
+
+#[tokio::test]
 async fn pages_and_incremental_reads_do_not_lose_interleaved_updates() {
     let directory = tempfile::tempdir().unwrap();
     let storage = Storage::open(directory.path().join("workspace"), "fixture".into(), true)

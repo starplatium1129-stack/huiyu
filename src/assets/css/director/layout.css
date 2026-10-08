@@ -49,7 +49,7 @@
 .pb.journal-workspace .director-workspace {
   @apply tw:grid;
   grid-template-columns: 300px minmax(0, 1fr);
-  grid-template-areas: "story stage" "story decisions";
+  grid-template-areas: "actions actions" "story stage" "story decisions";
   @apply tw:gap-s-4;
   align-items: start;
 }
@@ -70,10 +70,19 @@
 .pb.journal-workspace #drawing-canvas,
 .pb.journal-workspace #stepResult { scroll-margin-top: calc(var(--drawing-sticky-top) + var(--drawing-anchor-offset)); }
 .pb.journal-workspace .gen-bar { order: 1; top: var(--drawing-sticky-top); }
+.pb.journal-workspace .director-workspace > .gen-bar { grid-area:actions; align-self:start; }
+@media (max-width:1023px) {
+  /* The full-width action row owns sticky space; the material column must not sit underneath it. */
+  .pb.journal-workspace .col-left { position:static; max-height:none; overflow:visible; }
+  .pb.journal-workspace .director-workspace :is(input,textarea,button,summary),
+  .pb.journal-workspace #drawing-materials,.pb.journal-workspace #drawing-canvas,.pb.journal-workspace #stepResult {
+    scroll-margin-top:calc(var(--drawing-sticky-top) + 9rem);
+  }
+}
 
 @media (max-width: 900px) {
   /* Match DOM and keyboard order: the single canvas precedes materials on narrow screens. */
-  .pb.journal-workspace .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage" "story" "decisions"; }
+  .pb.journal-workspace .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "actions" "stage" "story" "decisions"; }
   .pb.journal-workspace .col-left { @apply tw:static; max-height: none; @apply tw:overflow-visible; }
 }
 @media (max-width: 600px) {
@@ -104,6 +113,6 @@
   .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; }
   .pb.journal-workspace[data-director-mode] .outfit-override-note { @apply tw:shrink-0; }
 }
-.pb.journal-workspace.focus-mode .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage"; }
+.pb.journal-workspace.focus-mode .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "actions" "stage"; grid-template-rows:auto minmax(0,1fr); }
 .pb.journal-workspace.focus-mode .director-inspector { @apply tw:hidden; }
 .pb.journal-workspace.focus-mode .gen-bar { @apply tw:top-s-3; }

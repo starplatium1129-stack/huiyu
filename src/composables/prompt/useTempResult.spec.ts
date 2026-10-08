@@ -7,9 +7,10 @@ import type { AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { TaskRecord } from '../../../types/tasks'
 import { copyTask, taskRecords } from '@/stores/runtimeTaskState'
 
-const runtime = vi.hoisted(() => ({ enabled: false, refresh: vi.fn(), fetch: vi.fn(), mark: vi.fn() }))
+const runtime = vi.hoisted(() => ({ enabled: false, refresh: vi.fn(), fetch: vi.fn(), mark: vi.fn(), page: vi.fn(), get: vi.fn() }))
 vi.mock('@/api/runtimeTaskAuthority', async importOriginal => ({ ...await importOriginal<object>(), hasRuntimeTasks: () => runtime.enabled }))
 vi.mock('@/api/runtimeTasks', () => ({ refreshRuntimeTasks: runtime.refresh, fetchRuntimeResult: runtime.fetch, markRuntimeTask: runtime.mark,
+  readRuntimeTaskPage: runtime.page, getRuntimeTask: runtime.get,
   runtimeResultPath: (task: TaskRecord) => `/api/tasks/v1/${task.taskId}/results/0` }))
 
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { deleteImage: vi.fn().mockResolvedValue(undefined), getImage: vi.fn(), putImage: vi.fn() } }))
@@ -24,6 +25,8 @@ function deferred<T>() {
 }
 beforeEach(() => {
   runtime.enabled = false; runtime.refresh.mockReset(); runtime.fetch.mockReset(); runtime.mark.mockReset(); taskRecords.value = []
+  runtime.page.mockImplementation(async () => ({ items: taskRecords.value.map(copyTask), nextCursor: null, throughRevision: 1 }))
+  runtime.get.mockImplementation(async (id: string) => copyTask(taskRecords.value.find(task => task.taskId === id)!))
   vi.mocked(readTempResult).mockReturnValue(null)
   vi.mocked(writeTempResult).mockReturnValue(true)
   vi.mocked(imgPut).mockResolvedValue('temporary-image')

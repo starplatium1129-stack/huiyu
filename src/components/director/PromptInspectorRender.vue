@@ -40,18 +40,11 @@
     </div>
     </div>
     <slot name="style" />
-    <CasualCreativeSliders
-      v-if="pb.directorMode !== 'pro'"
-      :draw-engine="drawEngine"
-      :disabled="generationBusy"
-      v-model:sd-params="pb.sdParams"
-      :anima-state="animaState"
-      @touch-sd="pb.markParamTouched"
-      @patch-anima="patchAnimaState"
-    />
     <details class="inspector-route inspector-advanced">
-      <summary><span><ArchiveIcon name="gear" />{{ pb.directorMode === 'pro' ? '采样与细节' : '参数摘要' }}</span><ArchiveIcon name="chevron-down" /></summary>
+      <summary><span><ArchiveIcon name="gear" />{{ pb.directorMode === 'pro' ? '采样与细节' : '高级调整' }}</span><ArchiveIcon name="chevron-down" /></summary>
       <div data-disclosure-content class="inspector-advanced-body">
+        <CasualCreativeSliders v-if="pb.directorMode !== 'pro'" :draw-engine="drawEngine" :disabled="generationBusy"
+          v-model:sd-params="pb.sdParams" :anima-state="animaState" @touch-sd="pb.markParamTouched" @patch-anima="patchAnimaState" />
         <AnimaQuickPanel v-if="pb.directorMode === 'pro'"
           :state="animaState" :no-lora="animaNoLoraMode" @update:state="patchAnimaState" />
         <div v-if="generationPresetSummary" class="generation-auto-summary tw:flex tw:items-baseline tw:justify-between tw:gap-[12px] tw:mb-[10px] tw:rounded-md tw:text-muted tw:text-body tw:leading-body tw:flex-wrap">

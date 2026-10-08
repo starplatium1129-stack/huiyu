@@ -170,6 +170,7 @@ const PAGES: PageItem[] = [
   { id: 'chat', label: '角色房间', icon: 'chat', path: '/chat', keywords: '聊天 角色 宁宁 夏目' },
   { id: 'showcase', label: '参考画册', icon: 'image', path: '/showcase', keywords: '参考画册 CG 画册 样张 展示 定稿 gallery showcase' },
   { id: 'gallery', label: '我的作品', icon: 'gallery', path: '/gallery', keywords: '我的作品 作品册 作品 图库 收藏' },
+  { id: 'backup', label: '数据与备份 · 备份、恢复和导出作品', icon: 'download', path: '/gallery?panel=backup', keywords: '备份 恢复 导出 数据 工作区 原图 backup restore export' },
   { id: 'character', label: '角色档案', icon: 'character', path: '/character', keywords: '角色 档案 人设' },
   { id: 'style', label: '画风', icon: 'palette', path: '/style', keywords: '画师风格 画风 色彩 色板' },
   { id: 'lora', label: '模型资料', icon: 'model', path: '/lora', keywords: '角色 LoRA 模型 lora 权重' },

@@ -60,7 +60,7 @@ body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
 @media (min-width: 901px) and (max-height: 760px) {
   .pb.journal-workspace .pb-sub { @apply tw:hidden; }
 }
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .pb.journal-workspace .drawing-jump-links { @apply tw:flex tw:gap-s-2 tw:mb-s-3; border-bottom: 1px solid var(--border-soft); }
   .pb.journal-workspace .drawing-jump-links a { @apply tw:flex tw:items-center tw:justify-center; flex: 1; @apply tw:min-h-[44px] tw:text-center tw:p-s-2 tw:rounded-md tw:text-secondary tw:text-label; }
   .pb.journal-workspace .drawing-jump-links a:hover { background: var(--bg-hover); @apply tw:text-primary; }

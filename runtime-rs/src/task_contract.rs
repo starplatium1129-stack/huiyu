@@ -101,6 +101,38 @@ pub struct TaskRecord {
     pub step_index: Option<u64>,
 }
 
+/// Validated list projection. Recipes and checkpoints are available only in task detail reads.
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct TaskSummary {
+    pub task_id: String,
+    pub workspace_id: String,
+    pub principal_id: String,
+    pub request_key: String,
+    pub kind: TaskKind,
+    pub provider: String,
+    pub upstream_id: Option<String>,
+    pub status: TaskStatus,
+    pub recovery_state: RecoveryState,
+    pub revision: i64,
+    pub runtime_epoch: String,
+    pub created_at: u64,
+    pub updated_at: u64,
+    pub submission_intent_at: Option<u64>,
+    pub submission_observed_at: Option<u64>,
+    pub cancel_requested_at: Option<u64>,
+    pub upstream_settled: bool,
+    pub execution_deadline: u64,
+    pub result_state: ResultState,
+    pub result_refs: Vec<ResultRef>,
+    pub delivery_state: DeliveryState,
+    pub error_code: Option<String>,
+    pub parent_batch_id: Option<String>,
+    pub step_index: Option<u64>,
+    pub source_batch_id: Option<String>,
+    pub can_concat: bool,
+}
+
 // An absent patch leaves a nullable field untouched; explicit null clears it.
 fn present<'de, D, T>(deserializer: D) -> Result<Option<Option<T>>, D::Error>
 where
@@ -214,6 +246,21 @@ pub struct TaskListQuery {
     pub limit: Option<u32>,
     #[serde(default)]
     pub recoverable: bool,
+    #[serde(default)]
+    pub summary: bool,
+    #[serde(default)]
+    pub scope: TaskListScope,
+}
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum TaskListScope {
+    #[default]
+    All,
+    Overview,
+    Open,
+    Attention,
+    Inbox,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

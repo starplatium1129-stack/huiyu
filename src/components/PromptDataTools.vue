@@ -1,21 +1,23 @@
 <template>
   <div class="utility-menu">
-  <StudioPopover v-model:open="utilityOpen" label="数据工具" content-class="studio-data-tools"
+  <StudioPopover v-model:open="utilityOpen" :label="launcherLabel || '数据工具'" content-class="studio-data-tools"
     @close-auto-focus="onMenuCloseAutoFocus">
     <template #trigger>
       <button type="button" @focus="utilityTrigger = $event.currentTarget as HTMLButtonElement"
-        class="utility-trigger"
-        :aria-label="backupStale ? `数据工具（${backupReminder}）` : '数据工具'"
+        :class="launcherLabel ? 'btn btn-ghost btn-sm' : 'utility-trigger'"
+        :aria-label="launcherLabel || (backupStale ? `数据工具（${backupReminder}）` : '数据工具')"
       >
-        <span class="utility-trigger-dots tw:inline-flex tw:items-center tw:justify-center tw:mt-[-2px]" aria-hidden="true">···</span>
-        <span v-if="backupStale" class="utility-dot tw:absolute tw:top-[3px] tw:right-[3px] tw:w-[6px] tw:h-[6px]" aria-hidden="true"></span>
+        <template v-if="launcherLabel"><ArchiveIcon name="download" />{{ launcherLabel }}</template>
+        <span v-else class="utility-trigger-dots tw:inline-flex tw:items-center tw:justify-center tw:mt-[-2px]" aria-hidden="true">···</span>
+        <span v-if="backupStale && !launcherLabel" class="utility-dot tw:absolute tw:top-[3px] tw:right-[3px] tw:w-[6px] tw:h-[6px]" aria-hidden="true"></span>
       </button>
     </template>
-    <div class="utility-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-3 tw:text-primary tw:font-semibold">数据工具<button type="button" class="btn btn-ghost btn-icon" aria-label="关闭数据工具" @click="utilityOpen = false"><ArchiveIcon name="close" /></button></div>
+    <div class="utility-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-3 tw:text-primary tw:font-semibold">{{ launcherLabel || '数据工具' }}<button type="button" class="btn btn-ghost btn-icon" :aria-label="`关闭${launcherLabel || '数据工具'}`" @click="utilityOpen = false"><ArchiveIcon name="close" /></button></div>
       <div v-if="backupStale" class="utility-note" role="status">
         <ArchiveIcon name="health" /> {{ backupReminder }}
       </div>
       <div class="utility-label tw:text-muted">本地数据</div>
+      <p class="backup-scope">{{ backup.desktopActive.value ? '工作区备份包含作品原图与工作区记录，文件保存在本机；下载的是恢复凭证，请与备份文件一并保管。' : '备份 JSON 包含此浏览器的作品记录、图片和设置；下载后可通过下方「从备份恢复」导入。' }}</p>
       <div class="utility-actions tw:grid tw:gap-s-1">
         <StudioTooltip anchor :content="backup.desktopActive.value ? '完整备份保存在本机工作区，并下载恢复凭证' : '导出 JSON 恢复文件（含全部图片数据），用于日后「从备份恢复」'">
           <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">
@@ -40,8 +42,9 @@
         </button>
       </div>
       <div class="utility-divider tw:h-[1px]"></div>
-      <div class="utility-label tw:text-muted">创作蓝图</div>
-      <div class="utility-actions tw:grid tw:gap-s-1">
+      <p class="backup-scope">只需要原图可选「导出作品图片」。角色、服装和场景等内容资料请在<RouterLink to="/scene-manager">内容维护</RouterLink>中单独导出。</p>
+      <div v-if="blueprintData" class="utility-label tw:text-muted">创作蓝图</div>
+      <div v-if="blueprintData" class="utility-actions tw:grid tw:gap-s-1">
         <StudioTooltip content="将当前工作台的所有场景、故事、提示词与出图参数导出为独立蓝图配置文件">
           <button class="btn btn-ghost wide" type="button" @click="exportBlueprint">
             <ArchiveIcon name="spark" /> 导出当前蓝图 JSON
@@ -119,7 +122,7 @@
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import { downloadBlob } from "@/utils/downloadBlob"
+import { exportDirectorBlueprint } from '@/utils/directorBlueprintFile'
 import { ref, computed, watch, onActivated, onDeactivated, onScopeDispose } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
 import { useWorkspaceMigration } from '@/composables/useWorkspaceMigration'
@@ -130,6 +133,7 @@ import '@/assets/css/director/components/PromptDataTools.css'
 
 const props = defineProps<{
   blueprintData?: Record<string, unknown>
+  launcherLabel?: string
 }>()
 
 const emit = defineEmits<{
@@ -142,7 +146,7 @@ const migration = useWorkspaceMigration(message => emit('flash', message))
 const backupCardEl = ref<HTMLElement | null>(null)
 const backupFileEl = ref<HTMLInputElement | null>(null)
 const blueprintFileEl = ref<HTMLInputElement | null>(null)
-const utilityOpen = ref(false)
+const utilityOpen = defineModel<boolean>('open', { default: false })
 const utilityTrigger = ref<HTMLButtonElement | null>(null)
 const confirmation = useConfirmState()
 const pendingSummary = ref<BackupSummary | null>(null)
@@ -201,15 +205,7 @@ function exportBlueprint() {
     emit('flash', '当前没有可导出的蓝图数据')
     return
   }
-  const payload = {
-    ...props.blueprintData,
-    schema: 'aics-director-blueprint-v1',
-    exportedAt: Date.now(),
-  }
-  const json = JSON.stringify(payload, null, 2)
-  const blob = new Blob([json], { type: 'application/json;charset=utf-8' })
-  const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
-  downloadBlob(blob, `aics-blueprint-${stamp}.json`)
+  exportDirectorBlueprint(props.blueprintData)
   emit('flash', '蓝图 JSON 已导出')
   utilityOpen.value = false
 }
@@ -263,6 +259,8 @@ async function onBackupFilePicked(event: Event) {
 <style scoped>
 @reference "../assets/css/tailwind.css";
 .utility-trigger { @apply tw:relative; }
+.backup-scope { margin:var(--s-2) 0; color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
+.backup-scope a { color:var(--accent); text-decoration:underline; }
 .utility-label { margin:var(--s-3) 0 var(--s-2); font:600 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
 .utility-actions .btn { @apply tw:justify-start tw:min-h-[44px]; padding:var(--s-2) var(--s-3); @apply tw:text-label; }
 .utility-actions .btn:not(:disabled) { border-color:transparent; }

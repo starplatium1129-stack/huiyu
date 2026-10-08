@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { TempResultDeps } from './useTempResult'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
-import { runtimeTasks } from '@/stores/runtimeTaskState'
+import type { TaskSummary } from '../../../types/tasks'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { clearTempResult, readTempResult } from '@/utils/tempResult'
 
@@ -10,11 +10,17 @@ export async function restoreUnarchivedResult(deps: TempResultDeps, storedResult
   const { pb } = deps
   if (!current()) return false
   if (hasRuntimeTasks()) {
-    const { refreshRuntimeTasks, runtimeResultPath, fetchRuntimeResult } = await import('@/api/runtimeTasks')
-    await refreshRuntimeTasks().catch(() => {})
-    if (!current()) return false
-    const task = runtimeTasks.value.find(item => ['generation', 'anima', 'creative'].includes(item.kind) && item.resultState === 'available' && !['saved', 'discarded'].includes(item.deliveryState))
-    if (!task) return false
+    const { readRuntimeTaskPage, getRuntimeTask, runtimeResultPath, fetchRuntimeResult } = await import('@/api/runtimeTasks')
+    let summary: TaskSummary | undefined, before: number | undefined, through: number | undefined
+    do {
+      const page = await readRuntimeTaskPage('inbox', { before, through }).catch(() => null)
+      if (!page || !current()) return false
+      summary = page.items.find(item => ['generation', 'anima', 'creative'].includes(item.kind) && item.resultState === 'available' && !['saved', 'discarded'].includes(item.deliveryState))
+      before = page.nextCursor ?? undefined; through = page.throughRevision
+    } while (!summary && before !== undefined)
+    if (!summary) return false
+    const task = await getRuntimeTask(summary.taskId).catch(() => null)
+    if (!task || !current()) return false
     const blob = await fetchRuntimeResult(runtimeResultPath(task)).catch(() => null)
     if (!blob || !current()) return false
     const { runtimeImageMetadata, runtimeTaskRecipe, runtimeTaskResultContext } = await import('@/utils/runtimeTaskResult')

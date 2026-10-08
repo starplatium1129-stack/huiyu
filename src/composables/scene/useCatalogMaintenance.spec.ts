@@ -3,8 +3,9 @@ import { mount, flushPromises } from '@vue/test-utils'
 import { beforeEach, afterEach, expect, it, vi } from 'vitest'
 import { useCatalogMaintenance } from './useCatalogMaintenance'
 import type { CatalogRecord } from '@/api/catalogApi'
-const mock = vi.hoisted(() => ({ query: vi.fn(), stats: vi.fn(), record: vi.fn(), history: vi.fn(), changes: vi.fn(), importSnapshot: vi.fn(), invalidate: vi.fn() }))
-vi.mock('@/api/catalogApi', () => ({ catalogApi: mock, isCatalogRecord: () => true }))
+const mock = vi.hoisted(() => ({ query: vi.fn(), stats: vi.fn(), record: vi.fn(), history: vi.fn(), changes: vi.fn(), importSnapshot: vi.fn(), invalidate: vi.fn(), download: vi.fn() }))
+vi.mock('@/api/catalogApi', async importOriginal => ({ ...await importOriginal<object>(), catalogApi: mock }))
+vi.mock('@/utils/downloadBlob', () => ({ downloadBlob: mock.download }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ invalidate: mock.invalidate }) }))
 vi.mock('vue-router', () => ({ onBeforeRouteLeave: vi.fn() }))
 vi.mock('@/composables/useConfirm', () => ({ confirmAction: async () => true }))
@@ -51,6 +52,38 @@ it('preserves unsaved changes after a failed save and reads details separately f
   expect(flow.hint.value).toBe('storage unavailable')
   expect(flow.busy.value).toBe(false)
   expect(mock.invalidate).not.toHaveBeenCalled()
+})
+
+it.each([false, true])('restores exported editor edits and pending changes without writing the catalog (staged=%s)', async staged => {
+  let flow = setup(); await flushPromises()
+  await flow.select({ kind: 'scene', id: 'sc001' })
+  if (staged) { flow.selected.value!.data = { id: 'sc001', title: 'staged' }; flow.stage() }
+  flow.selected.value!.data = { id: 'sc001', title: 'unsaved editor' }
+  flow.exportDraft()
+  const raw = await (mock.download.mock.calls[0][0] as Blob).text()
+  wrapper.unmount(); flow = setup(); await flushPromises()
+  flow.bulkInput.value = raw; flow.loadBulk()
+  expect(flow.bulkError.value).toBe('')
+  expect(flow.selected.value).toMatchObject({ revision: 1, data: { title: 'unsaved editor' } })
+  expect(flow.dirtyEditor.value).toBe(true)
+  expect(flow.pending.value).toHaveLength(staged ? 1 : 0)
+  if (staged) expect(flow.pending.value[0]).toMatchObject({ expectedRevision: 1, data: { title: 'staged' } })
+  mock.record.mockResolvedValue({ record: record(2, 'other writer') })
+  await flow.compareCurrent()
+  expect(flow.currentServer.value?.revision).toBe(2)
+  expect(flow.selected.value?.revision).toBe(1)
+  expect(mock.changes).not.toHaveBeenCalled()
+  expect(mock.importSnapshot).not.toHaveBeenCalled()
+})
+
+it('reads the previous draft format and rejects replacing an edited draft', async () => {
+  const flow = setup(); await flushPromises()
+  flow.bulkInput.value = JSON.stringify({ changes: [], editor: record(1, 'legacy') }); flow.loadBulk()
+  expect(flow.selected.value?.data).toMatchObject({ title: 'legacy' })
+  expect(flow.dirtyEditor.value).toBe(true)
+  flow.bulkInput.value = JSON.stringify({ changes: [], editor: record(1, 'replacement') }); flow.loadBulk()
+  expect(flow.bulkError.value).toContain('当前编辑')
+  expect(flow.selected.value?.data).toMatchObject({ title: 'legacy' })
 })
 
 function deferred<T>() {

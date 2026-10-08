@@ -21,7 +21,6 @@
           :aria-current="activeId === item.id ? 'page' : undefined"
           :data-pending="pendingPath === item.to || undefined"
           :data-intent="intentRoutePath === item.to || undefined"
-          :tabindex="activeId === item.id || (!primaryNav.some(entry => entry.id === activeId) && item === primaryNav[0]) ? 0 : -1"
           @click="closeMenu"
         >
           <ArchiveIcon :name="item.icon" />

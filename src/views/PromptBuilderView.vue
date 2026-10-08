@@ -56,10 +56,29 @@
       </div>
     </div>
 
+    <PromptDraftNotice :blueprint="currentBlueprintData" />
     <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links tw:w-fit tw:rounded-pill tw:p-s-1" data-fluid-glass aria-label="绘制区快捷导航">
       <a href="#drawing-materials">创作素材</a><a href="#drawing-canvas">画布预览</a><a href="#stepResult">输出设置</a>
     </nav>
     <div ref="layoutRoot" class="director-workspace">
+      <!-- One action bar: inspector on wide screens, workspace-wide sticky row on narrow screens. -->
+      <Teleport :to="inspectorActions" :disabled="!inspectorActions || !directorLayout.desktop.value || pb.focusMode || directorLayout.collapsed.value.inspector">
+        <GenerationActionBar
+          :engine="drawEngine"
+          :busy="generationBusy"
+          :progress="generationProgress"
+          :online="engineOnline"
+          :size="genBarSize"
+          :anima-sizes="animaBarSizes"
+          :preset-summary="generationPresetSummary"
+          :blocked-reason="generateBlockReason"
+          :has-result="Boolean(displayResultUrl)"
+          @update:size="genBarSize = $event"
+          @generate="callGenerate()"
+          @cancel="cancelGeneration"
+          @clearResult="clearCanvasResult"
+        />
+      </Teleport>
       <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.collapsed.value.materials" side="materials" :width="directorLayout.materialsWidth.value"
         @start="directorLayout.start('materials', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @key="directorLayout.key('materials', $event)" @reset="directorLayout.reset" />
       <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.collapsed.value.inspector" side="inspector" :width="directorLayout.inspectorWidth.value"
@@ -98,24 +117,6 @@
           @interrogateResult="handleInterrogateResult"
           @interrogateError="handleInterrogateError"
         />
-        <!-- 主行动常驻编辑台底部；专注或收起编辑台时回到画布下方。 -->
-        <Teleport :to="inspectorActions" :disabled="!inspectorActions || !directorLayout.desktop.value || pb.focusMode || directorLayout.collapsed.value.inspector">
-        <GenerationActionBar
-          :engine="drawEngine"
-          :busy="generationBusy"
-          :progress="generationProgress"
-          :online="engineOnline"
-          :size="genBarSize"
-          :anima-sizes="animaBarSizes"
-          :preset-summary="generationPresetSummary"
-          :blocked-reason="generateBlockReason"
-          :has-result="Boolean(displayResultUrl)"
-          @update:size="genBarSize = $event"
-          @generate="callGenerate()"
-          @cancel="cancelGeneration"
-          @clearResult="clearCanvasResult"
-        />
-        </Teleport>
 
       </div>
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
@@ -216,6 +217,7 @@ import DeferredPanel from '@/components/director/DeferredPanel.vue'
 const DirectorMaterialDrawer = defineAsyncComponent(() => import('@/components/director/DirectorMaterialDrawer.vue'))
 const DirectorInspector = defineAsyncComponent(() => import('@/components/director/DirectorInspector.vue'))
 const PromptDataTools = defineAsyncComponent(() => import('@/components/PromptDataTools.vue'))
+const PromptDraftNotice = defineAsyncComponent(() => import('@/components/director/PromptDraftNotice.vue'))
 const RandomInspirationButton = defineAsyncComponent(() => import('@/components/RandomInspirationButton.vue'))
 const HistoryRestoreNotice = defineAsyncComponent(() => import('@/components/director/HistoryRestoreNotice.vue'))
 const HistoryReuseDialog = defineAsyncComponent(() => import('@/components/director/HistoryReuseDialog.vue'))

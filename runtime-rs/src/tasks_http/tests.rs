@@ -112,6 +112,31 @@ async fn task_reads_are_principal_scoped_and_never_claim_resumed_execution() {
     let listed = body(response).await;
     let tasks = listed["result"]["items"].as_array().unwrap();
     assert_eq!(tasks.len(), 2);
+    let summary = body(
+        call(
+            &router,
+            &alice,
+            "GET",
+            "/api/tasks/v1?summary=true&scope=overview&limit=1",
+        )
+        .await,
+    )
+    .await;
+    assert_eq!(summary["result"]["items"][0]["taskId"], "a2");
+    assert!(summary["result"]["items"][0].get("input").is_none());
+    assert_eq!(summary["result"]["items"][0]["recoveryState"], "unknown");
+    let next = format!(
+        "/api/tasks/v1?summary=true&limit=1&before={}&throughRevision={}",
+        summary["result"]["nextCursor"], summary["result"]["throughRevision"]
+    );
+    let history = body(call(&router, &alice, "GET", &next).await).await;
+    assert_eq!(history["result"]["items"][0]["taskId"], "a1");
+    assert_eq!(
+        call(&router, &alice, "GET", "/api/tasks/v1?scope=invalid")
+            .await
+            .status(),
+        StatusCode::BAD_REQUEST
+    );
     assert_eq!(tasks[0]["taskId"], "a2");
     assert_eq!(tasks[1]["taskId"], "a1");
     assert_eq!(tasks[0]["status"], "running");

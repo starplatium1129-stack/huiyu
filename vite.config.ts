@@ -94,6 +94,8 @@ export default defineConfig(async ({ mode }) => {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  // Only application entries participate; runtime/ may contain external research sites.
+  optimizeDeps: { entries: ['index.html'] },
   server: {
     port: 5173,
     watch: {

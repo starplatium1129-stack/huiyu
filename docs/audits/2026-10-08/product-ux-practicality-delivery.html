@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI-CG-Studio · UX 审计修复交付</title>
+<style>
+:root{font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif;color:#202e32;background:#f3f5f2;color-scheme:light}
+*{box-sizing:border-box}body{margin:0}header{background:#143438;color:#f5fbf7;padding:42px max(24px,calc((100vw - 1080px)/2))}header p{color:#c6dfd7;max-width:900px}h1{font-size:clamp(28px,4vw,42px);line-height:1.3;margin:10px 0}main{max-width:1130px;margin:auto;padding:28px 25px 55px}h2{font-size:24px;margin:30px 0 12px}p{margin:10px 0}a{color:#176c60;text-underline-offset:4px}a:focus-visible{outline:3px solid #176c60;outline-offset:4px}.meta{font-size:13px}.lead{font-size:19px}.stats{display:flex;flex-wrap:wrap;gap:14px;margin:22px 0}.stat{flex:1;min-width:180px;background:#fff;border:1px solid #d5ded8;border-radius:12px;padding:16px 20px}.stat strong{display:block;font-size:28px;color:#176c60}.stat span{font-size:13px;color:#526568}.table{overflow:auto;border:1px solid #d5ded8;border-radius:12px;background:#fff}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:13px 16px;border-bottom:1px solid #d5ded8;text-align:left;vertical-align:top}th{background:#e9f2ee}tr:last-child td{border:0}.ok{color:#14624f;font-weight:700;white-space:nowrap}.warn{color:#944127;font-weight:700;white-space:nowrap}.note{margin:20px 0;padding:18px 22px;border-left:4px solid #a46a37;background:#fff4e7;border-radius:0 10px 10px 0}.details{background:#fff;padding:20px 24px;border:1px solid #d5ded8;border-radius:12px}.details li{margin:9px 0}code{font:12px/1.7 ui-monospace,Consolas,monospace;background:#eaf0ec;padding:2px 4px;border-radius:4px;overflow-wrap:anywhere}small{color:#526568}footer{margin-top:28px;border-top:1px solid #d5ded8;padding-top:18px;color:#526568;font-size:13px}@media(max-width:700px){main{padding:20px 16px}.stat{min-width:140px}th,td{padding:10px}header{padding:28px 20px}}
+</style>
+</head>
+<body>
+<header><div class="meta">AI-CG-STUDIO · 2026-10-08 · 审计修复交付</div><h1>8 项建议已完成实现</h1><p>补齐草稿恢复与保存反馈，改善窄窗口、备份入口和键盘操作，并将任务历史改为摘要分页。交付为源码与验证记录，桌面安装和发布另行进行。</p><div class="meta">基于 b82d8e10；本报告随本次修复一起提交。原有 AGENTS.md 改动保留在工作区。</div></header>
+<main>
+<p class="lead">本次优先修复了<strong>未暂存草稿不能导回</strong>的问题，并完成报告中其余 7 项优化。没有调用真实模型、修改工作内容库或安装桌面程序。</p>
+<p><a href="product-ux-practicality-audit.html">查看原始审计与问题依据</a> · <a href="#validation">查看实际验证与限制</a></p>
+<div class="stats"><div class="stat"><strong>8 / 8</strong><span>建议已实现</span></div><div class="stat"><strong>122</strong><span>前端定向用例通过，含修复后复验</span></div><div class="stat"><strong>28</strong><span>任务相关 Rust 用例通过</span></div><div class="stat"><strong>18</strong><span>路由构建预算通过</span></div></div>
+
+<h2>逐项交付</h2>
+<div class="table"><table>
+<thead><tr><th>审计项</th><th>本次实现</th><th>验证依据</th></tr></thead><tbody>
+<tr><td>01 · 维护草稿恢复</td><td>新增版本化草稿格式，同时保存待提交变更、当前编辑与编辑基线；兼容已有未版本化草稿。恢复只进入编辑态，不自动保存到内容库；保留原 revision 与冲突核对。</td><td>“仅编辑”“暂存变更 + 当前编辑”往返及旧格式用例；浏览器读取旧导出结构成功，能继续编辑合成草稿。</td></tr>
+<tr><td>02 · 窄窗口生成入口</td><td>唯一的生成条在宽窗口停靠参数栏，在窄窗口成为整个编辑区的独立吸附行。同步处理素材栏遮挡、锚点留白及收起参数栏后的布局。</td><td>960 × 720 CSS 视口滚动后，操作条仍在 y=92～188.75；1280 × 800 正常及收起参数栏时均只有一个生成按钮。</td></tr>
+<tr><td>03 · 保存失败反馈</td><td>浏览器草稿显示保存中／已保存／失败状态。失败提示持续保留，提供重试与当前草稿导出；导出复用既有蓝图格式。离开页面时尝试完成待保存写入，失败则保留离开保护。</td><td>现有草稿用例补充失败持续性、关闭保护和重试成功。桌面继续沿用已有异步保存告警。</td></tr>
+<tr><td>04 · 备份可发现性</td><td>作品页新增“数据与备份”，复用既有导出、恢复和维护面板。全局搜索支持“备份／恢复／导出”；明确浏览器 JSON、原图、内容资料与桌面恢复凭证的差别。</td><td>搜索“备份”得到唯一目标并能 Enter 打开；Escape 返回触发按钮；面板内内容维护链接的路由竞争已修复并复验。</td></tr>
+<tr><td>05 · 主导航 Tab</td><td>取消非当前链接的 tabindex=-1，恢复普通链接的顺序导航，保留方向键辅助操作。</td><td>7 个主链接均可 Tab 到达；“我的作品”之后为“房间”，不再直接跳到“更多”。</td></tr>
+<tr><td>06 · 任务历史规模</td><td>SQLite 投影并校验摘要，初次读取保留全部活动／待确认任务与近期记录；后续仍按 revision 增量更新。普通终态缓存限 60 条，历史每页 30 条。展开结果才取完整详情，同一媒体在处置状态更新时保持挂载。空画布恢复独立查询收件箱。</td><td>存储、HTTP、所有者隔离、执行与恢复用例；1,131 条合成记录的保留边界、分页 DOM 数量及按需详情检查。未截断活动或待确认任务。</td></tr>
+<tr><td>07 · Vite 扫描范围</td><td>通过 optimizeDeps.entries 将扫描限定为 index.html，研究目录仍可保留。</td><td>强制重新优化后应用可启动，无此前研究仓库依赖缺失错误；正式 Web 构建与预算检查通过。</td></tr>
+<tr><td>08 · 场景模式简化</td><td>CFG 与 Steps 收入默认折叠的“高级调整”。选择画师前明确进入专家模式，推荐参数及现有配方恢复入口保留；未修改提示词编译或模型策略。</td><td>浏览器验证默认折叠、展开后参数可编辑；原参数事件与错误恢复组件用例继续通过。未开展真实新用户研究。</td></tr>
+</tbody></table></div>
+
+<h2 id="validation">验证结果</h2>
+<div class="table"><table>
+<thead><tr><th>结果</th><th>范围与证据</th></tr></thead><tbody>
+<tr><td class="ok">通过</td><td>前端 16 个定向测试文件、122 个用例。首次失败为新懒加载用例等待不足，已修正并定向复验；旧草稿夹具的实网读取也已隔离。后续媒体保持挂载与备份面板改动进行了对应复验，未重复运行完整前端套件。</td></tr>
+<tr><td class="ok">通过</td><td>应用与测试 TypeScript 检查、修改文件 ESLint、依赖方向检查、500 有效行门禁、差异空白检查。最后的 UI 修改使用最终源码重验应用类型及受影响文件。</td></tr>
+<tr><td class="ok">通过</td><td>Rust 编译、Clippy；任务存储 18 例，HTTP 3 例，执行与恢复 7 例。摘要 DTO 最终增加强类型校验后，定向复验摘要存储和 HTTP。任务存储另有 2 个既有显式忽略用例，未计为通过。</td></tr>
+<tr><td class="ok">通过</td><td>指定本机现有 Python 3.11 后，5 个 PixAI 标准库进程夹具通过；没有加载真实模型或 CUDA。</td></tr>
+<tr><td class="ok">通过</td><td>最终 npm run build:web:run 完成 Web 构建、18 路由预算与预压缩。工作台 JS 134.8 / 140 KiB，图库静态依赖 JS 630.5 / 680 KiB；预算未放宽。</td></tr>
+<tr><td class="ok">有限走查通过</td><td>深浅主题相关页面、960 × 720 与 1280 × 800 CSS 视口、备份搜索与回焦、Tab 顺序、草稿导入、折叠参数及操作条位置。部分预览交互超时后使用新的预览标签继续；不将自动化超时判成产品通过或产品缺陷。</td></tr>
+<tr><td class="warn">全量 Rust 未通过</td><td>首轮完整 Rust 库测试为 236 通过、7 失败、5 忽略；其中 5 个 Python 夹具问题已通过解释器配置解决。剩余两项见下方，未再次运行全量，也未声称完整门禁全绿。</td></tr>
+</tbody></table></div>
+<div class="note"><strong>仍未解决的两项全量检查问题：</strong><p>内容契约测试的来源指纹过期，涉及 <code>src/utils/popularPromptBuilder.ts</code>：当前文件与本次开始时 HEAD 的 SHA 相同，均与已有 <code>sources.json</code> 登记不一致。本次没有通过改指纹或放宽断言消除失败。</p><p>Windows 符号链接安全用例因系统错误 1314（当前进程无创建符号链接权限）无法执行。本次没有关闭该用例或更改系统权限。</p></div>
+
+<h2>任务规模的确定性结果</h2>
+<div class="details">
+<ul>
+<li>前端合成 130 条活动任务、1,000 条普通终态记录及 1 条待确认记录：缓存保留 191 条，即全部 131 条活动／待确认记录，加 60 条普通终态记录。</li>
+<li>单条任务变化时，仅复制变化记录及其展示副本；不再重新深拷贝整份任务列表。</li>
+<li>合成千条历史的组件检查中，每页始终只挂载 30 条；展开结果前不读取完整详情。</li>
+<li>Rust 合成 80 条历史与 1 条活动任务，并让旧待确认记录落在近期范围之外：概览保留 62 条。摘要不包含 input、metadata 或 checkpoint，响应字节数小于该夹具完整列表的五分之一。</li>
+</ul>
+<p><small>这些结果说明读取与保留边界已生效，不代表真实设备的帧率、长时间内存趋势或实测生成速度。</small></p>
+</div>
+
+<h2>交付边界</h2>
+<div class="details">
+<p>提交包括本次源码、针对实际行为调整的测试、任务协议说明、原始审计报告和本交付报告。既有 AGENTS.md 改动保留，不混入提交。</p>
+<p>日志、截图和诊断文件放在被忽略的 <code>runtime/ux-practicality-fixes-20261008/</code>。当前源码与已安装程序分开：本次没有推送、发布、部署或更换已安装 EXE，任务摘要协议需随匹配的新运行时一起交付。</p>
+<p>实际 CSS 视口已记录；系统 DPI、显示器缩放与浏览器 UI 缩放未核验，不用截图尺寸或 DPR 冒充物理分辨率。真实生成效果、Tauri/WebView2、跨屏／休眠与长期资源趋势仍需设备验收。</p>
+</div>
+<footer>实现与验证日期：2026-10-08。定向通过与全量未通过分别记录，提交不代表已发布或已完成原生设备验收。</footer>
+</main></body></html>
