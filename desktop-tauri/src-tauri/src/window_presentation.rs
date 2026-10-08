@@ -6,20 +6,6 @@ use tauri::{Manager, WebviewWindow};
 use crate::state::AppState;
 use crate::window_state::{bounded_window_zoom, load_window_presentation, save_window_presentation};
 
-/// Tao sets ICON_SMALL only. Give the taskbar the same window-owned icon rather
-/// than leaving ICON_BIG empty and relying on Explorer's cached executable icon.
-#[cfg(windows)]
-pub fn set_taskbar_icon(window: &WebviewWindow) {
-    use windows_sys::Win32::UI::WindowsAndMessaging::{SendMessageW, ICON_BIG, ICON_SMALL, WM_GETICON, WM_SETICON};
-    let Ok(hwnd) = window.hwnd() else { return };
-    // Borrow the existing handle: the window retains ownership until it closes.
-    // If dynamic window icons are added, update both slots together.
-    unsafe {
-        let icon = SendMessageW(hwnd.0 as _, WM_GETICON, ICON_SMALL as usize, 0);
-        if icon != 0 { SendMessageW(hwnd.0 as _, WM_SETICON, ICON_BIG as usize, icon); }
-    }
-}
-
 fn presentation_file(window: &WebviewWindow) -> Result<PathBuf, String> {
     let state = window.state::<AppState>();
     match window.label() {

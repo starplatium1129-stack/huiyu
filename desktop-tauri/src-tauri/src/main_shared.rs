@@ -158,9 +158,9 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
         {
             Ok(win) => {
                 state.info("open atelier: window built");
-                #[cfg(windows)]
-                crate::window_presentation::set_taskbar_icon(&win);
                 if let Err(error) = apply_window_placement(&win, &placement) { state.warn(&format!("restore atelier bounds failed: {error}")); }
+                #[cfg(windows)]
+                if let Err(error) = crate::window_icon::set_window_icons(&win) { state.warn(&format!("set atelier icons failed: {error}")); }
                 if presentation.maximized { let _ = win.maximize(); }
                 crate::window_presentation::restore_zoom(&win);
                 let show_result = if crate::ui_entry::isolated_hidden() { Ok(()) } else { win.show() };
@@ -197,6 +197,8 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, show_on_start
         .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
         .build()?;
     apply_window_placement(&win, &placement)?;
+    #[cfg(windows)]
+    if let Err(error) = crate::window_icon::set_window_icons(&win) { state.warn(&format!("set companion icons failed: {error}")); }
     let ignore_mouse_events = state.ignore_mouse_events.load(Ordering::Relaxed);
     if let Err(error) = win.set_ignore_cursor_events(ignore_mouse_events) {
         state.ignore_mouse_events.store(false, Ordering::Relaxed);
@@ -253,6 +255,8 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
             Ok(win) => {
                 state.info("open companion-chat: window built");
                 if let Err(error) = apply_window_placement(&win, &placement) { state.warn(&format!("restore companion-chat bounds failed: {error}")); }
+                #[cfg(windows)]
+                if let Err(error) = crate::window_icon::set_window_icons(&win) { state.warn(&format!("set companion-chat icons failed: {error}")); }
                 if presentation.maximized { let _ = win.maximize(); }
                 crate::window_presentation::restore_zoom(&win);
                 if !crate::ui_entry::isolated_hidden() { let _ = win.show(); }

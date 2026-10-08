@@ -20,6 +20,8 @@ mod updater_cmd;
 mod watchers;
 mod window_state;
 mod window_presentation;
+#[cfg(windows)]
+mod window_icon;
 mod chat_dock;
 mod live2d_framing;
 mod maintenance;
