@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { ApiClient, ApiRequestOptions } from '@/api/client'
+import { ApiClientError, type ApiClient, type ApiRequestOptions } from '@/api/client'
 import type { AnimaJobMetadata, AnimaResult } from '@/types/anima'
 import { useAnimaSession, type AnimaRequest } from './useAnimaSession'
 import type { TaskRecord } from '../../../types/tasks'
@@ -98,6 +98,20 @@ it('retains Krea runtime style processing, actual parameters and result context'
     seed: 0, steps: 12, cfg: 1, sampler: 'actual-sampler', styleLoraId: 'style-a' })
   expect(session.state.value.resultContext).toMatchObject({ story: 'Frozen story', history: { seed: 0, cfg: 1 } })
   expect(session.state.value.result?.metadata).not.toHaveProperty('context')
+})
+
+it('releases busy observation after a runtime epoch change without cancelling the accepted task', async () => {
+  const { session, task, generate } = durableFixture()
+  runtime.wait.mockImplementationOnce(async (_id: string, _signal: AbortSignal, update: (value: TaskRecord) => void) => {
+    update(task)
+    throw new ApiClientError('运行时连接已更换', { kind: 'aborted', code: 'RUNTIME_EPOCH_CHANGED' })
+  })
+  await generate()
+  expect(session.state.value).toMatchObject({ phase: 'failed', backendStatus: 'unknown',
+    statusText: '任务状态尚未确认，请到任务中心核对' })
+  expect(session.captureSubmission()).not.toBeNull()
+  expect(runtime.submit).toHaveBeenCalledOnce()
+  expect(runtime.cancel).not.toHaveBeenCalled()
 })
 
 it('a late durable cancellation receipt cannot roll a completed image back to cancelling', async () => {
