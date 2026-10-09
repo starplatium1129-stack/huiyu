@@ -1,14 +1,14 @@
 # 项目状态
 
-维护日期：2026-10-08。此页维护当前身份、能力与限制；每次更新对应行，过程与原始验证留在执行记录。[此前过程及数据登记快照](audits/2026-10-08/project-status-history.md)已归档。
+整理日期：2026-10-09。此页维护当前身份、能力与限制；旧过程已归入 Git 历史，不在工作目录保留日期副本。今天的性能交付见[执行报告](audits/2026-10-09/fullstack-performance.html)。
 
 ## 源码与本机安装
 
 | 层次 | 最近已登记状态 | 依据与边界 |
 | --- | --- | --- |
 | 当前源码 | `package.json` 版本 1.9.2，包含发行后的修复；当前工作区改动以 Git 为准 | [工程契约](engineering-contracts.md)、[工作流](workflow.md)；源码变更不等于已安装或发布 |
-| 公开发行 | 2026-10-07 记录 1.9.2 已发布并设为 latest，发行源码 `f221bd4c`，含 full/upgrade 两种包 | [1.9.2 说明](releases/v1.9.2.md)与[发行记录](audits/2026-10-08/project-status-history.md)；本次整理未重新查询远端状态 |
-| 最近本机安装记录 | 2026-10-01 完整安装 1.8.0 至 `C:/Program Files/AI-CG-Studio`；宿主、Rust EXE 与 DLL 当时核对匹配、启动 ready | [安装历史](audits/2026-10-08/project-status-history.md)；本次未检查安装目录，不以源码版本代替已装版本 |
+| 公开发行 | 2026-10-07 记录 1.9.2 已发布并设为 latest，发行源码 `f221bd4c`，含 full/upgrade 两种包 | [1.9.2 说明](releases/v1.9.2.md)；发行记录保留在 Git 历史；本次整理未重新查询远端状态 |
+| 最近本机安装记录 | 2026-10-01 完整安装 1.8.0 至 `C:/Program Files/AI-CG-Studio`；宿主、Rust EXE 与 DLL 当时核对匹配、启动 ready | 此前安装记录（Git 历史）；本次未检查安装目录，不以源码版本代替已装版本 |
 | 资料迁移记录 | 2026-09-26 曾登记旧来源迁入 SQLite；10 月 1 日对应机器未发现 active pointer，仍使用旧来源 IndexedDB | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)；按具体机器核对，不合并两次记录为已迁移结论 |
 | 桌面实现 | Tauri 宿主、Rust 网关、原生 Live2D 线程渲染；独立渲染进程仍为显式实验 | [桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)、[原生运行时](guides/desktop/live2d-native-runtime.md) |
 
@@ -27,6 +27,16 @@
 
 模块约束的权威说明在[工程契约](engineering-contracts.md)，设备与素材未完成项统一在[未来规划](roadmap.md)，此处不累加历史测试数量。
 
+## 今日交付与已知限制
+
+以下来自 2026-10-09 已有性能交付记录，文档整合未重跑这些检查：
+
+- 性能改进覆盖按需加载、内容读取、作品修订缓存、图库分批挂载及首轮尺寸读取；六条场景分级统一 All，分级差异为零。
+- 内容门禁仍失败：sc009 / sc027 原 prompt 为 99 / 94 字符，低于 100 字符规则；未为门禁改写正文。
+- 图库冷进入仍出现 56–72 ms 长任务样本；真实模型、原生安装/WebView2、物理 DPI 和长期 RSS/GPU 未验收。
+- Windows 符号链接拒绝用例因权限错误 1314 保留未验证；参考图验证已被该任务明确免除，不能记为通过。
+- 旧报告中的 ChatView 包体、来源指纹和 Python 夹具问题已在今日收口，不再列为当前未解决项。全部验证边界见[今日报告](audits/2026-10-09/fullstack-performance.html#completion-audit)。
+
 ## 当前数据
 
 | 数据 | 工作权威 / 项目来源 |
@@ -35,12 +45,11 @@
 | 项目初始化/发行快照 | 显式导出的 `data/catalog/`；构建读取快照，安装不覆盖个人工作库 |
 | 参考资料 | `data/references/<人物ID>.json` 与 manifest；本机 API 懒加载，旧聚合仅兼容 |
 
-当前数量需针对明确的运行目录通过 `content:catalog stats/query` 读取。本次未打开工作库或盘点图片，不用 2026-09-27 的历史分片数量代表当前记录库或图片实物；原登记快照保存在[历史记录](audits/2026-10-08/project-status-history.md#当前数据)。
+当前数量需针对明确的运行目录通过 `content:catalog stats/query` 读取。本次未打开工作库或盘点图片，不用 2026-09-27 的历史分片数量代表当前记录库或图片实物；旧登记快照可从 Git 历史读取。
 
 ## 验证与后续入口
 
 - [工作流分层规则](workflow.md#门禁与构建)：按实际影响选验证，复用同一源码/配置/产物/环境的有效证据。
 - [未来规划](roadmap.md)：待开发、待验收、暂停和待决策事项。
 - [计划索引](../plans/README.md)：专项执行与剩余范围。
-- [历史状态](audits/2026-10-08/project-status-history.md)：保留原过程及限制，不代替当前通过证据。
-- [文档索引](INDEX.md)：专题规范、实施报告和研究资料。
+- [文档索引](INDEX.md)：现行规范、今日报告与研究来源。

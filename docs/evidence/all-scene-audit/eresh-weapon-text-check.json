@@ -1,7 +1,0 @@
-{
-  "method": "Indexed licensed manufacturer text; no image viewed/uploaded.",
-  "source": "https://www.goodsmile.info/ja/product/7697/%E3%81%AD%E3%82%93%E3%81%A9%E3%82%8D%E3%81%84%E3%81%A9%2B%E3%83%A9%E3%83%B3%E3%82%B5%E3%83%BC%2B%E3%82%A8%E3%83%AC%E3%82%B7%E3%83%A5%E3%82%AD%E3%82%AC%E3%83%AB.html",
-  "supports": "Official accessory description identifies the spear-shaped Noble Phantasm as 発熱神殿メスラムタエア.",
-  "decision": "Use Meslamtaea / 发热神殿 for the held weapon instead of Kur Kigal Irkalla. Remove automatic staff-holding from the clothing definition.",
-  "limits": ["No claim of exact official weapon geometry or complete original-event reconstruction."]
-}

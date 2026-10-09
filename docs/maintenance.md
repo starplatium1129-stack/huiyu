@@ -1,5 +1,7 @@
 # 项目内容维护
 
+整理日期：2026-10-09。现行维护版本；历史验收不作为本次通过。
+
 人物、服装、场景和蓝图现在以记录维护，工作数据保存在运行目录的 content/catalog.sqlite。data/catalog/ 是逐条导出的项目快照，用于 Git 审查与发行初始化。详细边界见 [内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
 
 ## 日常编写

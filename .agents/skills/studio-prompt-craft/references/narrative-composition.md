@@ -16,8 +16,7 @@
 - [日常规范与原创候选案例](../../../../docs/guides/prompts/narrative-cg-prompt-standard.md)：画面简报、双引擎表达、场景／特写／多人边界与评审。
 - [单人物立绘与特写壁纸](../../../../docs/guides/prompts/character-wallpaper-prompt-standard.md)：独立目标、横幅留白、全身／面部裁切和双引擎候选；不强制背景叙事。
 - [手机竖屏壁纸](../../../../docs/guides/prompts/mobile-wallpaper-prompt-standard.md)：iPhone 17 Pro 的 1206×2622 交付基准、通用长屏比例、锁屏／主屏遮挡；不将桌面横图直接裁成竖屏。
-- [完整研究及来源](../../../../docs/research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)：官方证据、旧规则冲突、源码风险和适用范围。
-- [未执行的对照计划](../../../../docs/research/prompts/anima-krea2-narrative-eval-plan.json)：小样预算、固定 seeds、参数冻结和记录字段；不是可直接运行的生产场景清单。
+- [研究来源与采用边界](../../../../docs/research/README.md)：来源与适用范围、小样预算、固定 seeds、参数冻结和记录要求；实验尚未执行，不是可直接运行的生产场景清单。
 
 ## 背景与光影的编写检查
 

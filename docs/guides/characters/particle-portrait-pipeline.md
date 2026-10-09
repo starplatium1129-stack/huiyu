@@ -8,7 +8,7 @@
 ## 新增一个角色（3 步，前端零改动）
 
 1. **放图**：把角色图放到 `assets/characters/popular-<角色id>.png`
-   （推荐 832×1216 竖图；角色 id 与 `data/popular-characters.json` 一致）。
+   （推荐 832×1216 竖图；角色 id 与内容目录人物记录一致，旧 popular 聚合仅供兼容读取）。
 2. **生成点阵**：
    ```
    npm run particles:build                # 全量（按当前源图遍历）

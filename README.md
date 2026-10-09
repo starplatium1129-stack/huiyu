@@ -4,7 +4,7 @@
 
 <p align="center">A local AI character studio for drawing, inspiration, artwork collections and desktop companionship.</p>
 
-<p align="center"><a href="https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.1">Download HUIYU 1.9.1 for Windows</a> · <a href="docs/releases/v1.9.1.md">Release notes</a> · <a href="README_zh.md">中文说明</a></p>
+<p align="center"><a href="https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.2">Download HUIYU 1.9.2 for Windows</a> · <a href="docs/releases/v1.9.2.md">Release notes</a> · <a href="README_zh.md">中文说明</a></p>
 
 Start with a character and a scene. Choose an outfit, camera and lighting, turn the moment into a CG, then keep the finished image and its recipe in your own artwork collection. Draw directly or browse the reference album for your next idea.
 
@@ -50,7 +50,7 @@ A separate character room provides text chat, Live2D display and voice playback;
 
 ## <img src="docs/images/icons/gallery.svg" width="24" height="24" alt=""> Install and start creating
 
-1. Download an installer from the [1.9.1 release](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.1). Choose **full** for a new installation or resource repair, and **upgrade** for an existing complete installation.
+1. Download an installer from the [1.9.2 release](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.2). Choose **full** for a new installation or resource repair, and **upgrade** for an existing complete installation.
 2. Import the resources you need using the [offline resource guide](docs/guides/offline-resources.md). Resource packs are distributed separately; a program upgrade does not require downloading existing resources again.
 3. Open the control room, choose the data and AI directories, and prepare models or connect existing services.
 4. Pick a character and scene in the drawing studio. Save the finished image to My artwork.
@@ -108,7 +108,7 @@ AI-CG-Studio/
 ├── tests/                  Browser and end-to-end tests
 ├── tools/                  Model services and installation helpers
 ├── docs/                   Guides, architecture, releases and evidence
-└── plans/                  Implementation plans
+└── plans/                  Unified planning entry
 ```
 
 Local `runtime/` holds build caches and raw acceptance artifacts; it is not committed as product source. Find maintenance commands with `npm run workflow -- --help`.

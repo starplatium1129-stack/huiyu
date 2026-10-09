@@ -15,7 +15,7 @@
   "/docs/game-installer.md": "/docs/guides/desktop/game-installer.md",
   "/docs/live2d-native-runtime.md": "/docs/guides/desktop/live2d-native-runtime.md",
   "/docs/companion-dsh-agent-architecture.md": "/docs/guides/desktop/companion-dsh-agent-architecture.md",
-  "/docs/narrative-short-film-workflow.md": "/docs/guides/video/narrative-short-film-workflow.md",
+  "/docs/narrative-short-film-workflow.md": "/docs/guides/video/video-ai-storyboard.md",
   "/docs/video-ai-storyboard.md": "/docs/guides/video/video-ai-storyboard.md",
   "/docs/art-direction.html": "/docs/guides/art/art-direction.html",
   "/docs/philosophy.html": "/docs/guides/art/philosophy.html",
@@ -24,9 +24,9 @@
   "/docs/page-template.html": "/docs/guides/engineering/page-template.html",
   "/docs/random-prompt-assembler-design.md": "/docs/guides/engineering/random-prompt-assembler-design.md",
   "/docs/character-scenes-and-dna-overhaul-plan.md": "/docs/guides/characters/character-onboarding-workflow.md",
-  "/docs/future-popular-characters-candidate-plan.md": "/docs/research/characters/future-popular-characters-candidate-plan.md",
-  "/docs/krea2-prompt-research-2026-08-30.md": "/docs/research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md",
-  "/docs/prompt-skill-research-2026-09-09.md": "/docs/research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md",
+  "/docs/future-popular-characters-candidate-plan.md": "/docs/research/README.md",
+  "/docs/krea2-prompt-research-2026-08-30.md": "/docs/research/README.md",
+  "/docs/prompt-skill-research-2026-09-09.md": "/docs/research/README.md",
   "/docs/arknights-artists-research-2026-08-31.html": "/docs/research/prompts/arknights-artists-research-2026-08-31.html",
   "/docs/live2d-native-overlay-plan.md": "/docs/guides/desktop/live2d-native-runtime.md",
   "/docs/live2d-natsume-overlay-research.md": "/docs/guides/desktop/live2d-native-runtime.md",
@@ -68,5 +68,7 @@
   "/docs/research/engineering/six-task-review-2026-09-13.md": "/docs/project-status.md",
   "/docs/archive/audits/roadmap-snapshot-2026-09-21.md": "/docs/roadmap.md",
   "/docs/archive/completed/agents-baseline-2026-09-08.md": "/docs/INDEX.md",
-  "/docs/guides/engineering/model-task-briefs.md": "/docs/INDEX.md"
+  "/docs/guides/engineering/model-task-briefs.md": "/docs/INDEX.md",
+  "/docs/guides/video/narrative-short-film-workflow.md": "/docs/guides/video/video-ai-storyboard.md",
+  "/docs/audits/2026-09-20/sec-03-remote-projection-design.md": "/docs/architecture/REMOTE-CONTENT-DESIGN.md"
 }

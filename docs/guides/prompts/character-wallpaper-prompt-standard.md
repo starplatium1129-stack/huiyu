@@ -6,7 +6,7 @@
 
 手机使用见 [竖屏壁纸规范](mobile-wallpaper-prompt-standard.md)：以 iPhone 17 Pro 为主，兼容常见手机长屏；锁屏与主屏遮挡单独验收。
 
-模型语法、版本和编译边界沿用 [研究依据](../../research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)。本页为项目创作建议和原创候选，尚未真实出图验证；不覆盖既有身份、服装、分级、参数或定稿约束。
+模型语法、版本和编译边界沿用 [研究来源与采用边界](../../research/README.md)。本页为项目创作建议和原创候选，尚未真实出图验证；不覆盖既有身份、服装、分级、参数或定稿约束。
 
 ## 一、先确定壁纸类型
 
@@ -107,4 +107,4 @@ A wide anime portrait wallpaper centered on the expression of an adult woman wit
 
 最终 16:9 裁切／放大检查单独记录所用方法。先比较原始生成构图，再比较最终壁纸，避免把后处理差异归因于文本。保留所有候选和失败，不只展示最好的一张。
 
-共用 [未执行实验计划](../../research/prompts/anima-krea2-narrative-eval-plan.json)。本页扩展于 2026-09-13，尚无真实出图验收结果。生产数据写入仍遵循现有 [字段与交付](../../../.agents/skills/studio-prompt-craft/references/delivery.md)。
+共用 [研究来源与采用边界](../../research/README.md)。本页扩展于 2026-09-13，尚无真实出图验收结果。生产数据写入仍遵循现有 [字段与交付](../../../.agents/skills/studio-prompt-craft/references/delivery.md)。

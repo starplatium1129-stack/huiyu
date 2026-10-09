@@ -9,7 +9,7 @@
 
 房间和桌宠可选原始、标准、节能纹理画质，默认原始。标准/节能宽高分别除以 2/4，源资源不改写；原生桥通过 supportsTextureQuality 声明支持，并接收 textureScale（1/2/4）。浏览器模型与渲染使用同一应用时钟，显式桌宠可见性优先于非活动 WebView 的隐藏状态；原生隐藏等待可由命令唤醒。当前安装身份及实际验证范围分别查项目状态和下方证据。
 
-Native 路径已完成产品链路和 renderer 收口；当前安装身份以[项目状态](../../project-status.md)为准，2026-09-27 的实际画面、隐藏释放和重开范围见[当次安装证据](../../evidence/memory-optimization-2026-09-27.json)。正式默认仍为线程 renderer，R12 独立进程与 R13 Electron 均为实验。本机安装不等于公开发布或 D-10 全部设备组合通过。浏览器默认使用 `wl-live2d`；Companion 可见启动时才按桌面契约请求 Native，`--hidden`、隐藏窗口和用户显式关闭时不得下载或加载大模型。
+Native 路径已完成产品链路和 renderer 收口；当前安装身份以[项目状态](../../project-status.md)为准，2026-09-27 的实际画面、隐藏释放和重开范围见[当前状态与验证边界](../../project-status.md)。正式默认仍为线程 renderer，R12 独立进程与 R13 Electron 均为实验。本机安装不等于公开发布或 D-10 全部设备组合通过。浏览器默认使用 `wl-live2d`；Companion 可见启动时才按桌面契约请求 Native，`--hidden`、隐藏窗口和用户显式关闭时不得下载或加载大模型。
 
 宁宁与夏目 Native release snapshot 的角色完整性、动作、口型、情绪、hit-test、mask、透明度和颜色均通过人工检查。与 wl-live2d 对照时，同一动画帧的姿势、构图和部件完整性一致；剩余明度/饱和度差异属于校准级差异，不是结构缺陷。
 
@@ -65,7 +65,7 @@ ChatCharacterStage / useLive2D
 
 ## 验证与设备边界
 
-本机实际画面、隐藏释放和重开见 [2026-09-27 安装证据](../../evidence/memory-optimization-2026-09-27.json)，后续 mask 内存与按钮交互见 [最新专题验证](../../audits/2026-09-28/live2d-mask-memory.md)，DPI/窗口恢复见 [本地覆盖账本](../../audits/2026-09-30/local-optimization.md)。每份证据只覆盖自己的源码、构建和操作；真实音频、多屏混合 DPI、休眠及长时功耗仍按 [未来规划](../../roadmap.md)验证。
+本机实际画面、隐藏释放和重开见 [当前状态与验证边界](../../project-status.md)，后续 mask 内存与按钮交互见 [当前状态与验证边界](../../project-status.md)，DPI/窗口恢复见 [当前状态与验证边界](../../project-status.md)。每份证据只覆盖自己的源码、构建和操作；真实音频、多屏混合 DPI、休眠及长时功耗仍按 [未来规划](../../roadmap.md)验证。
 
 ## 外部参考与工作纪律
 

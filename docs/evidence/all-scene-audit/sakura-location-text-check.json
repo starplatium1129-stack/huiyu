@@ -1,9 +1,0 @@
-{
-  "method": "Text search only; no image opened or uploaded.",
-  "sources": [
-    {"url":"https://www.fate-sn.com/ubw/story/07.html","type":"official episode synopsis","supports":"Names Ryuudou Temple as Caster's base."},
-    {"url":"https://typemoon.fandom.com/wiki/Ryuudou_Temple","type":"secondary series encyclopedia","supports":"Locates Ryuudou Temple on Mount Enzou."}
-  ],
-  "decision": "Preserve the ema-hanging prayer at an explicitly imagined shrine on Fuyuki's outskirts. Do not present the old Mount Enzou shrine wording as a verified canon location.",
-  "limits": ["No claim that the sources prove no shrine could exist elsewhere on the mountain.","No official visual reproduction or comprehensive canon check is claimed."]
-}

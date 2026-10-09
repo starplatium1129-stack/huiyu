@@ -1,6 +1,7 @@
 'use strict';
 const fs = (require('node:fs') as typeof import('node:fs'));
 const path = (require('node:path') as typeof import('node:path'));
+const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const root = path.resolve(__dirname, '../..');
 
 function documents(dir: string): string[] {
@@ -21,6 +22,7 @@ function check() {
   const files = [...documents(path.join(root, 'docs')), ...documents(path.join(root, 'plans')),
     ...['README.md', 'README_zh.md', 'DESIGN.md', 'AGENTS.md', 'STARTUP.md'].map((file: any) => path.join(root, file))];
   const errors: string[] = [];
+  const repositoryLinks = new Map<string, string[]>();
   const appPaths = new Set([...fs.readFileSync(path.join(root, 'src/router/index.ts'), 'utf8').matchAll(/path:\s*['"]([^'"]*)['"]/g)].map((match: any) => '/' + match[1].replace(/^\//, '')));
   let links = 0;
   for (const file of files) {
@@ -35,13 +37,34 @@ function check() {
       const target = url.startsWith('/') ? path.join(root, url.slice(1)) : path.resolve(path.dirname(file), url);
       links += 1;
       const route = '/' + path.relative(root, target).replaceAll('\\', '/');
-      if (!fs.existsSync(target) && !generatedSourceExists(target) && !appPaths.has(route)) errors.push(path.relative(root, file).replaceAll('\\', '/') + ': ' + url);
+      if (!generatedSourceExists(target) && !appPaths.has(route)) {
+        const label = path.relative(root, file).replaceAll('\\', '/') + ': ' + url;
+        if (!fs.existsSync(target)) errors.push(label);
+        else repositoryLinks.set(route.slice(1), [...(repositoryLinks.get(route.slice(1)) ?? []), label]);
+      }
     }
   }
   const redirects: Record<string, any> = JSON.parse(fs.readFileSync(path.join(root, 'docs/redirects.json'), 'utf8'));
   for (const [old, target] of Object.entries(redirects)) {
     if (!old.startsWith('/docs/') || typeof target !== 'string' || !target.startsWith('/docs/') || target.includes('..')
       || (!fs.existsSync(path.join(root, target.slice(1))) && !generatedSourceExists(path.join(root, target.slice(1))))) errors.push('Invalid document redirect: ' + old + ' -> ' + String(target));
+    else if (!generatedSourceExists(path.join(root, target.slice(1)))) {
+      repositoryLinks.set(target.slice(1), [...(repositoryLinks.get(target.slice(1)) ?? []), 'Document redirect: ' + old + ' -> ' + target]);
+    }
+  }
+  if (repositoryLinks.size) {
+    // Local evidence can exist here while being absent from every clean CI checkout.
+    // Batch the query; tracked files remain valid even beneath an ignored directory.
+    const ignored = spawnSync('git', ['check-ignore', '--stdin', '-z'], {
+      cwd: root, input: [...repositoryLinks.keys()].join('\0') + '\0', encoding: 'utf8',
+    });
+    if (ignored.error || (ignored.status !== 0 && ignored.status !== 1)) {
+      errors.push('Cannot verify portable document links: ' + (ignored.error?.message || ignored.stderr.trim()));
+    } else {
+      for (const target of ignored.stdout.split('\0').filter(Boolean)) {
+        errors.push(...(repositoryLinks.get(target) ?? []).map(label => label + ' (ignored local file; absent from clean checkouts)'));
+      }
+    }
   }
   console.log(`Documentation: ${files.length} files, ${links} local links, ${Object.keys(redirects).length} redirects, ${errors.length} broken links.`);
   if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1; }

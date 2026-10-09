@@ -3,6 +3,7 @@
 <style>:root{color-scheme:light dark;--bg:light-dark(#f7f8fa,#171b22);--ink:light-dark(#202735,#e7ebf2);--muted:light-dark(#515c6c,#bbc5d3);--line:light-dark(#d7dde6,#435064);--accent:light-dark(#284e90,#a6c8ff)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1000px;margin:auto;padding:32px 24px}h1{font-size:28px}h2{font-size:21px;margin-top:28px}a{color:var(--accent)}table{width:100%;border-collapse:collapse}th,td{padding:11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}small,.meta{color:var(--muted)}code{overflow-wrap:anywhere}.scroll{overflow-x:auto}img{max-width:100%}li{margin:7px 0}summary{cursor:pointer;padding:10px 0}@media(max-width:650px){main{padding:20px 14px}th,td{padding:8px}}</style></head><body><main>
 <div class="meta">AI-CG-Studio · 2026-10-09 · 开工基线 dcde0d99</div>
 <p class="meta">提交说明：已与“持续优化项目”会话核对并冻结交付范围，本批合并性能优化、桌面可靠性修复与六条 All 分级调整。下方“未提交”等表述记录的是实施阶段状态；随后主分支交付以 Git 历史和本次提交回执为准。运行日志、基准原始数据和临时脚本不进入提交。</p>
+<p class="meta">文档可移植性修正（2026-10-09）：原始证据仅保留本机路径，GitHub 干净检出不包含这些文件；未重新执行或改变下列性能验收结论。</p>
 <h1>本轮优化收口 · 六条场景已统一为 All</h1>
 <p>本轮已落实当前测量确认的可行动性能改进，并复验相应行为。后续候选中，更小图库批次反而延长补齐时间，HTTP gzip 在本机对照中也未加快响应，均未保留；当前没有新的实测收益方案，按用户要求结束本轮持续优化。这不是“全项目永远没有优化空间”的保证。</p>
 <p><strong>2026-10-09 范围更新：</strong>按用户要求，参考图不再是本次必要验证项，也不再作为任务阻塞条件。此前素材路径检查的失败保留为未验证记录，不改写为通过。</p>
@@ -16,7 +17,7 @@
 <tr><td>保留限制</td><td>冷进入仍有 56–72 ms 长任务样本；真实模型、原生安装版及长期设备资源未验收。参考图不再必验；符号链接用例按用户选择保留未验证。</td></tr>
 </tbody></table>
 <p>内容库补丁按修订号校验后成功应用。Windows 拒绝了现有快照目录的整目录更名；改用原生导出到新目录，再将六份原生生成文件逐个原子更新到现有快照，保留原 manifest 与范围外记录，随后刷新派生产物。没有手写场景正文、修改权限或关闭保护。未提交、推送、安装或部署。</p>
-<p><a href="../../../runtime/performance-20261009/ratings-patch-applied.json">内容库补丁记录</a> · <a href="../../../runtime/performance-20261009/ratings-selected-export.log">原生局部导出</a> · <a href="../../../runtime/performance-20261009/ratings-final-diff.json">字段范围与未选记录核对</a> · <a href="../../../runtime/performance-20261009/ratings-final-readback.json">分级与负向回读</a> · <a href="../../../runtime/performance-20261009/ratings-user-after.json">零分级差异</a> · <a href="../../../runtime/performance-20261009/ratings-anima-corpus.log">Anima 检查</a> · <a href="../../../runtime/performance-20261009/ratings-scene-validation.log">剩余两条告警</a> · <a href="../../../runtime/performance-20261009/ratings-final-build.log">最终构建</a></p>
+<p>内容库补丁记录（<code>runtime/performance-20261009/ratings-patch-applied.json</code>） · 原生局部导出（<code>runtime/performance-20261009/ratings-selected-export.log</code>） · 字段范围与未选记录核对（<code>runtime/performance-20261009/ratings-final-diff.json</code>） · 分级与负向回读（<code>runtime/performance-20261009/ratings-final-readback.json</code>） · 零分级差异（<code>runtime/performance-20261009/ratings-user-after.json</code>） · Anima 检查（<code>runtime/performance-20261009/ratings-anima-corpus.log</code>） · 剩余两条告警（<code>runtime/performance-20261009/ratings-scene-validation.log</code>） · 最终构建（<code>runtime/performance-20261009/ratings-final-build.log</code>）</p>
 </section>
 <section id="content-warnings">
 <h2>历史告警及此次处理</h2>
@@ -32,7 +33,7 @@
 <p><strong>原分级差异的来源：</strong>分类器只检查 tags、prompt、标题和故事中的固定词表与正则；没命中就返回 All。它不读取 animaCaption，也不看实际图片。此次以用户明确指示为准统一为 All；这是指定元数据修改，不是新的视觉分级验收。</p>
 <p><strong>短提示词：</strong>校验器使用 <code>scene.prompt.length &lt; 100</code>，计算的是原字段字符数，不是模型 Token，也不是最终组装输入。sc009 和 sc027 另有 411、420 字符的 animaCaption；Anima 编译会使用该描述，但长度检查没有计入。99 和 94 并不等于缺失提示词，也不足以认定最终输入无效。</p>
 <p><strong>本次处理：</strong>只修改用户指定的分级及关联 usage 标签，正文和检查规则保持。两个长度告警仍计入内容门禁失败，不称全仓门禁通过。</p>
-<p><a href="../../../runtime/performance-20261009/content-warnings-explained.json">六条记录与开工基线比对</a> · <a href="../../../scripts/lib/prompt-policy.ts">关键词分级实现</a> · <a href="../../../scripts/maintenance/validate-scenes.ts">分级及长度校验</a> · <a href="../../../src/utils/promptCompilerCore.ts">Anima 描述编译</a></p>
+<p>六条记录与开工基线比对（<code>runtime/performance-20261009/content-warnings-explained.json</code>） · <a href="../../../scripts/lib/prompt-policy.ts">关键词分级实现</a> · <a href="../../../scripts/maintenance/validate-scenes.ts">分级及长度校验</a> · <a href="../../../src/utils/promptCompilerCore.ts">Anima 描述编译</a></p>
 </section>
 <section id="pass9">
 <h2>第九轮：首轮布局与更小批次的取舍</h2>
@@ -46,7 +47,7 @@
 <p><strong>没有保留的候选：</strong>每批 6 张在另一组交错对照中，需要 573.7–577.2 ms 补足同一视口与预加载范围，12 张需要 482.8–527.4 ms；6 张方案只挂载 30 张，12 张挂载 36 张。部分峰值较低，但完成时间反而更长，已完整恢复为 12 张。没有把降低单次峰值当作整体更快。</p>
 <p><strong>通过：</strong>3 项既有瀑布流/缓存生命周期单测；双主题图库响应式布局 2 项浏览器用例；共享调用方角色场景页双主题实看（1280×960 CSS，容器约 992 px，3 列各约 317 px，无横向溢出及页面错误）；应用类型与定向 ESLint 零错误。最终构建通过原预算，与已验证的 12 张观察器版本的 1,190 个资源文件及入口逐字节一致，复用了有效验证。</p>
 <p><strong>测量限制：</strong>真实参考素材根目录未配置，四个已登记位置不存在。用户现已免除本次参考图验证，这不再阻塞任务；无图片的合成图库测量仍不能推广到真实参考图读盘和缩略加载。完整门禁的历史内容问题单独保留。最新非诊断样本仍出现 56–72 ms 冷进入长任务，不将不同轮次的波动解释为统一速度结论。</p>
-<p><a href="../../../runtime/performance-20261009/pass9-observer-compare.json">首轮尺寸交错对照</a> · <a href="../../../runtime/performance-20261009/pass9-batch6-compare.json">未采用的 6 张批次</a> · <a href="../../../runtime/performance-20261009/pass9-masonry-tests.log">单测</a> · <a href="../../../runtime/performance-20261009/pass9-responsive-browser.log">图库布局</a> · <a href="../../../runtime/performance-20261009/pass9-popular-columns.json">共享调用方</a> · <a href="../../../runtime/performance-20261009/pass9-final-artifact-binding.json">最终产物绑定</a> · <a href="../../../runtime/performance-20261009/pass9-reference-root-status.json">素材目录现状</a></p>
+<p>首轮尺寸交错对照（<code>runtime/performance-20261009/pass9-observer-compare.json</code>） · 未采用的 6 张批次（<code>runtime/performance-20261009/pass9-batch6-compare.json</code>） · 单测（<code>runtime/performance-20261009/pass9-masonry-tests.log</code>） · 图库布局（<code>runtime/performance-20261009/pass9-responsive-browser.log</code>） · 共享调用方（<code>runtime/performance-20261009/pass9-popular-columns.json</code>） · 最终产物绑定（<code>runtime/performance-20261009/pass9-final-artifact-binding.json</code>） · 素材目录现状（<code>runtime/performance-20261009/pass9-reference-root-status.json</code>）</p>
 </section>
 <section id="completion-audit">
 <h2>当前收口状态 · 完整门禁已执行</h2>
@@ -62,7 +63,7 @@
 </tbody></table>
 <p>两处提示词测试的修正均依据现行契约：显式描述允许附加导演控制句，现改为清除导演控制后逐条验证原有关系保留；隔离重放 27bde11f 的纯编译器复现三个旧请求哈希，逐字比较确认变化仅为取消未选择的三分构图和默认 Anima 风格。负向、绑定、尺寸、种子、参数均一致，精确快照仍保留。此次没有修改产品编译器、提示词内容或调用模型。</p>
 <p>后端性能数据绑定第六轮 release 产物；此后仅更新 <code>contracts/sources.json</code> 的测试来源记录，产品 Rust 逻辑没有变化。已通过登记入口刷新 release 构建与源码绑定，当前二进制与测量时字节相同。下方分轮记录保留各阶段的范围，当前门禁状态以本节为准。</p>
-<p><a href="../../../runtime/performance-20261009/final-full-gate.log">完整门禁原始失败</a> · <a href="../../../runtime/performance-20261009/audit-final-web-build.log">当前 Web 构建</a> · <a href="../../../runtime/performance-20261009/audit-corpus-caption-fixed.log">场景描述保留</a> · <a href="../../../runtime/performance-20261009/audit-payload-reviewed-delta.json">请求字节差异审查</a> · <a href="../../../runtime/performance-20261009/audit-payload-snapshot-fixed.log">请求快照复验</a> · <a href="../../../runtime/performance-20261009/audit-rust-provenance-fixed.log">Rust 契约复验</a> · <a href="../../../runtime/performance-20261009/audit-scenes-validation-current.log">当前内容失败</a></p>
+<p>完整门禁原始失败（<code>runtime/performance-20261009/final-full-gate.log</code>） · 当前 Web 构建（<code>runtime/performance-20261009/audit-final-web-build.log</code>） · 场景描述保留（<code>runtime/performance-20261009/audit-corpus-caption-fixed.log</code>） · 请求字节差异审查（<code>runtime/performance-20261009/audit-payload-reviewed-delta.json</code>） · 请求快照复验（<code>runtime/performance-20261009/audit-payload-snapshot-fixed.log</code>） · Rust 契约复验（<code>runtime/performance-20261009/audit-rust-provenance-fixed.log</code>） · 当前内容失败（<code>runtime/performance-20261009/audit-scenes-validation-current.log</code>）</p>
 </section>
 <h2>第一轮：启动加载</h2>
 <ul><li>原生 Live2D 后端在连接时加载；保留后端选择、取消和回退。渲染停止错误常量移至契约模块，避免轻量调用者同步引入完整实现。</li><li>Ollama 模型下拉框在选择本地提供商后加载。陪伴页与独立聊天窗的语音配置面板按打开动作加载。房间语音设置的懒加载因窄窗口弹层定位回归已撤回。</li><li>外观组件拆为同步入口与按需面板。入口立即接收 F1/菜单事件，保留最新意图与原焦点，解决首次加载期间快捷键事件丢失；导航、控制室和陪伴页继续使用原入口。</li><li>像素主题颜色令牌保留在首屏，界面纹理与布局样式按需加载；应用挂载前等待已选主题。拆分前后的完整 CSS 规则逐字归一换行后相同。</li></ul>
@@ -74,7 +75,7 @@
 <p>预算未调整。构建及预压缩通过；部分页面仍超过告警线，图库静态依赖距预算较近。数值表示未压缩产物大小，不是启动时延或全部运行时 JS。最终共享工作区构建包含隔壁会话的独立图库可靠性改动，未将其改动计作本轮实现。</p>
 <p>新 Edge 上下文、真实隔离 Rust debug 网关的深浅主题请求记录确认：默认房间未请求 nativeBackend、AppearancePreferencesPanel 或 terraria-surfaces 模块；选择像素主题并刷新后，纹理、深浅配色与入口正常，未捕获页面运行错误。CSS 视口 1440×960，VisualViewport scale=1；系统 DPI、物理分辨率与浏览器菜单缩放未单独测量。采样未比较前后时延。</p>
 <h2>后端测量与取舍</h2>
-<p>当前代码已包含<a href="../2026-10-08/backend-performance-program.html">上一轮后端优化</a>，本轮不把旧成绩算作新优化。5×20 次交替采样、私有磁盘 WAL 库和相同 Rust/SQLite 依赖下，Catalog 重开与版本读取中位数约 0.3805 ms；候选只读打开约 0.2624 ms。约 0.12 ms 的差额不足以支持增加打开/迁移分支，因此未修改后端产品代码。</p>
+<p>当前代码已包含上一轮后端优化（原报告已归入 Git 历史），本轮不把旧成绩算作新优化。5×20 次交替采样、私有磁盘 WAL 库和相同 Rust/SQLite 依赖下，Catalog 重开与版本读取中位数约 0.3805 ms；候选只读打开约 0.2624 ms。约 0.12 ms 的差额不足以支持增加打开/迁移分支，因此未修改后端产品代码。</p>
 <p>同一隔离探针测得维护读取前后保护检查中位数约 5.09 ms。这是保留路径、身份和事务校验的成本，不以删减保护换取速度，也不能用它推算整条 HTTP 链路。后端进一步候选仍在调查。</p>
 <h2>验证状态</h2>
 <table><thead><tr><th>状态</th><th>证据与边界</th></tr></thead><tbody>
@@ -164,7 +165,7 @@
 <tr><td>已解决</td><td>完整前端套件首次为 2,560 通过、1 个旧夹具失败；reset 用例误点顶部关闭按钮。定位收窄后该文件 5 项通过；最终 Home 1 项、任务恢复 9 项通过，新增导入取消断言后对应 5 项定向通过。未原样重跑全套冒充新证据。</td></tr>
 <tr><td>第五轮当时限制</td><td>视频页静态闭包接近现有 680 KiB 上限（desktop 约 679.6 KiB），第六轮继续处理。全仓门禁现已执行，状态见收口审查；真实模型、实际安装版、设备与长期 RSS/GPU/功耗仍未运行，没有提交、推送或部署。</td></tr>
 </tbody></table>
-<p><a href="../../../runtime/performance-20261009/home-request-final.json">最终首页明细</a> · <a href="../../../runtime/performance-20261009/pass5-final-home-budget.log">首页验收</a> · <a href="../../../runtime/performance-20261009/pass5-final-web-build.log">Web 构建</a> · <a href="../../../runtime/performance-20261009/pass5-desktop-build.log">desktop 构建</a> · <a href="../../../runtime/performance-20261009/bundle-routes.json">18 路由</a> · <a href="../../../runtime/performance-20261009/task-center-browser.json">任务中心</a> · <a href="../../../runtime/performance-20261009/home-visual.json">图片与视口</a> · <a href="../../../runtime/performance-20261009/catalog-gzip-browser.json">压缩取舍</a></p>
+<p>最终首页明细（<code>runtime/performance-20261009/home-request-final.json</code>） · 首页验收（<code>runtime/performance-20261009/pass5-final-home-budget.log</code>） · Web 构建（<code>runtime/performance-20261009/pass5-final-web-build.log</code>） · desktop 构建（<code>runtime/performance-20261009/pass5-desktop-build.log</code>） · 18 路由（<code>runtime/performance-20261009/bundle-routes.json</code>） · 任务中心（<code>runtime/performance-20261009/task-center-browser.json</code>） · 图片与视口（<code>runtime/performance-20261009/home-visual.json</code>） · 压缩取舍（<code>runtime/performance-20261009/catalog-gzip-browser.json</code>）</p>
 <h2>第六轮：图库重复读取与视频入口</h2>
 <table><thead><tr><th>实测边界</th><th>修改前</th><th>最终结果</th></tr></thead><tbody>
 <tr><td>未变化的图库快照读取中位数</td><td>217.5 ms</td><td>12.7 ms · 减少约 94%</td></tr>
@@ -182,7 +183,7 @@
 <tr><td>已解决</td><td>视频用例曾因我误改导航链接数量失败，已恢复原 3 条断言；两项旧仓储夹具补入当前权威状态读取与修订号；新增 Rust 夹具误用无媒体的新增作品接口，改为已有记录的真实修改。失败日志保留，未放宽业务断言。</td></tr>
 <tr><td>未运行</td><td>实际安装版与物理设备、真实模型、长期 RSS/GPU；未提交或部署。本轮前端与 Rust 需配套使用，已生成匹配本地产物。</td></tr>
 </tbody></table>
-<p><a href="../../../runtime/performance-20261009/gallery-return-before.json">图库基线</a> · <a href="../../../runtime/performance-20261009/gallery-return-final.json">最终测量</a> · <a href="../../../runtime/performance-20261009/gallery-return-browser-diagnostic.json">误失效诊断</a> · <a href="../../../runtime/performance-20261009/gallery-return-browser.json">真实页面与外部修改</a> · <a href="../../../runtime/performance-20261009/pass6-artwork-revision-tests.log">40 项仓储检查</a> · <a href="../../../runtime/performance-20261009/pass6-video-browser-fixed.log">视频双主题</a> · <a href="../../../runtime/performance-20261009/pass6-final-bundles.json">组合产物</a> · <a href="../../../runtime/performance-20261009/pass6-release-binding.json">Rust 源码与 EXE</a></p>
+<p>图库基线（<code>runtime/performance-20261009/gallery-return-before.json</code>） · 最终测量（<code>runtime/performance-20261009/gallery-return-final.json</code>） · 误失效诊断（<code>runtime/performance-20261009/gallery-return-browser-diagnostic.json</code>） · 真实页面与外部修改（<code>runtime/performance-20261009/gallery-return-browser.json</code>） · 40 项仓储检查（<code>runtime/performance-20261009/pass6-artwork-revision-tests.log</code>） · 视频双主题（<code>runtime/performance-20261009/pass6-video-browser-fixed.log</code>） · 组合产物（<code>runtime/performance-20261009/pass6-final-bundles.json</code>） · Rust 源码与 EXE（<code>runtime/performance-20261009/pass6-release-binding.json</code>）</p>
 <h2>继续范围</h2>
 <p>第八轮改善了图库首次发布期间的任务排队，当时个别样本仍有约 52 ms 长任务；不把局部改进当作所有瓶颈已经消失。后续进展、剩余失败与证据边界见顶部第九轮与收口审查。已撤回的方案不算优化成果，隔壁可靠性修改保持归属。</p>
 <h2>第七轮：分批挂载图库卡片</h2>
@@ -202,7 +203,7 @@
 <tr><td>夹具修正</td><td>四项资源测试原先依赖首屏挂载 60 张。夹具现在通过实际观察器和帧回调显式展开到 45/60 张，另一个已通过的排队用例也恢复完整负载；40 张原图缓存、8 路缩略读取、释放与取消断言均保留。</td></tr>
 <tr><td>限制</td><td>一次首次进入仍有约 55 ms 长任务；原生 WebView2、物理 DPI、实际模型与长期设备资源未验收。没有提交、安装或部署。</td></tr>
 </tbody></table>
-<p><a href="../../../runtime/performance-20261009/pass7-gallery-comparison-final.json">有效前后对照</a> · <a href="../../../runtime/performance-20261009/gallery-render-compare-clean.json">全部候选对照</a> · <a href="../../../runtime/performance-20261009/home-vitals-before.json">首页布局与主线程</a> · <a href="../../../runtime/performance-20261009/pass7-gallery-filter-tests.log">分页/筛选</a> · <a href="../../../runtime/performance-20261009/pass7-gallery-workspace-tests-fixed.log">资源边界</a> · <a href="../../../runtime/performance-20261009/pass7-large-gallery-scroll.log">滚动与页外搜索</a></p>
+<p>有效前后对照（<code>runtime/performance-20261009/pass7-gallery-comparison-final.json</code>） · 全部候选对照（<code>runtime/performance-20261009/gallery-render-compare-clean.json</code>） · 首页布局与主线程（<code>runtime/performance-20261009/home-vitals-before.json</code>） · 分页/筛选（<code>runtime/performance-20261009/pass7-gallery-filter-tests.log</code>） · 资源边界（<code>runtime/performance-20261009/pass7-gallery-workspace-tests-fixed.log</code>） · 滚动与页外搜索（<code>runtime/performance-20261009/pass7-large-gallery-scroll.log</code>）</p>
 <h2>第八轮：首次快照发布让出执行权</h2>
 <p>对齐同一次 CPU 采样与时间线后，长任务中的主要工作是快照复制、Vue 更新和垃圾回收。只在图库尚无记录时，将快照读取与首次卡片挂载分到不同任务；缓存刷新路径保持。发布前继续核对最新加载代次，等待期间被后来的请求取代时不发布旧结果。</p>
 <table><thead><tr><th>交错两次对照 · 同一千条私有图库</th><th>原连续发布</th><th>首次发布让出任务</th></tr></thead><tbody>
@@ -213,24 +214,24 @@
 <p>MessageChannel 在最后一页数据解析完毕时排队，衡量主线程服务下一项任务的等待；它不是实测鼠标点击延迟。采样范围仍为真实 Vue/仓储代码、测试宿主桥接、隔离 Rust、1,000 条约 8 KiB 记录与 2560×1440 CSS 视口。时间线/CPU 分析只用于归因，最终对照关闭这些诊断采集。</p>
 <p><strong>通过：</strong>42 项相关单测的有效证据，包含首次发布被新请求取代；大图库滚动/页外搜索及真实私有工作区外部修改刷新；类型、ESLint、单体和原有 Web 包体预算。首次单测夹具只等待微任务，新增发布时机尚未到达就开始断言；夹具改为等待已知任务边界，延迟快照用例等待实际加载状态，原行为断言均保留。最后一个夹具修复后仅重跑该用例，复用其余有效通过结果。</p>
 <p><strong>限制：</strong>不宣称消除了所有长任务，也不把合成记录结果推广为任意真实图库。真实模型、原生设备与长期资源仍未运行；全仓门禁已在收口阶段执行，尚有未解决项。未提交、安装或部署。</p>
-<p><a href="../../../runtime/performance-20261009/pass8-yield-compare.json">有效交错对照</a> · <a href="../../../runtime/performance-20261009/pass8-aligned-tasks.json">同次执行归因</a> · <a href="../../../runtime/performance-20261009/pass8-yield-tests-fixed.log">相关单测</a> · <a href="../../../runtime/performance-20261009/pass8-delayed-snapshot-test.log">最后夹具修正</a> · <a href="../../../runtime/performance-20261009/pass8-gallery-browser.log">大图库流程</a> · <a href="../../../runtime/performance-20261009/pass8-authority-browser.log">外部修改刷新</a> · <a href="../../../runtime/performance-20261009/pass8-final-build.log">构建预算</a></p>
-<details><summary>本机原始证据</summary><ul>
-<li><a href="../../../runtime/performance-20261009/build-before.log">开工构建</a> · <a href="../../../runtime/performance-20261009/build-appearance-host.log">最终组合构建</a> · <a href="../../../runtime/performance-20261009/bundle-budget-current.json">包体数据</a></li>
-<li><a href="../../../runtime/performance-20261009/browser-lazy-and-theme.json">请求与主题采样</a> · <a href="../../../runtime/performance-20261009/browser-host.log">最终三项浏览器复验</a> · <a href="../../../runtime/performance-20261009/browser-chat.log">聊天流通过及初始夹具失败</a></li>
-<li><a href="../../../runtime/performance-20261009/native-factory.log">后端工厂行为</a> · <a href="../../../runtime/performance-20261009/frontend-lazy.log">生命周期与设置</a> · <a href="../../../runtime/performance-20261009/appearance-unit.log">外观状态</a> · <a href="../../../runtime/performance-20261009/typecheck-host.log">类型检查</a></li>
-<li><a href="../../../runtime/performance-20261009/catalog-open-before.json">目录打开探针</a> · <a href="../../../runtime/performance-20261009/maintenance-fence.json">维护保护探针</a></li>
-<li><a href="../../../runtime/performance-20261009/scene-paired.json">第二轮交替性能对照及源码 SHA</a> · <a href="../../../runtime/performance-20261009/scene-paired-eager.json">未保留的首次搜索方案</a></li>
-<li><a href="../../../runtime/performance-20261009/scene-lazy-tests.log">工作区与排序用例</a> · <a href="../../../runtime/performance-20261009/scene-utility-tests.log">搜索工具用例</a> · <a href="../../../runtime/performance-20261009/scene-deck-tests.log">灵感叠卡</a> · <a href="../../../runtime/performance-20261009/scene-ux-final.log">Node UX 套件</a></li>
-<li><a href="../../../runtime/performance-20261009/scene-scroll-diagnosis.json">滚动失败诊断</a> · <a href="../../../runtime/performance-20261009/browser-scenes-fixed.log">导航返回通过/滚动原始失败</a> · <a href="../../../runtime/performance-20261009/browser-scenes-scroll-final.log">滚动定向复验</a></li>
-<li><a href="../../../runtime/performance-20261009/build-scene-final.log">第二轮组合构建</a> · <a href="../../../runtime/performance-20261009/typecheck-scene-consumers.log">调用方类型复验</a> · <a href="../../../runtime/performance-20261009/catalog-http-stages.json">HTTP 与同路径组件分解</a></li>
-<li><a href="../../../runtime/performance-20261009/workspace-paired.json">第三轮完整筛选对照</a> · <a href="../../../runtime/performance-20261009/scene-classification-tests.log">分类行为</a> · <a href="../../../runtime/performance-20261009/appearance-pending-before.log">慢面板取消复现</a> · <a href="../../../runtime/performance-20261009/appearance-pending-final.log">取消与键盘复验</a></li>
-<li><a href="../../../runtime/performance-20261009/release-build-binding.json">发布源码/EXE 绑定</a> · <a href="../../../runtime/performance-20261009/catalog-http-stages-release.json">release HTTP</a> · <a href="../../../runtime/performance-20261009/catalog-browser-wire.json">真实项目快照的浏览器接收</a> · <a href="../../../runtime/performance-20261009/gzip-probe.json">gzip 成本</a></li>
-<li><a href="../../../runtime/performance-20261009/office-lifecycle-complete.json">完整 20 轮样本</a> · <a href="../../../runtime/performance-20261009/office-lifecycle-final.log">成功采样日志</a> · <a href="../../../runtime/performance-20261009/office-lifecycle.log">旧关闭定位超时</a> · <a href="../../../runtime/performance-20261009/office-lifecycle-fixed.log">歧义定位原始失败</a></li>
-<li><a href="../../../runtime/performance-20261009/build-pass3-final.log">第三轮组合构建</a> · <a href="../../../runtime/performance-20261009/typecheck-pass3-fixed.log">类型复验</a></li>
-<li><a href="../../../runtime/ui-fluidity-office-50/dark-full-1.json">50 轮与静置后 GC</a> · <a href="../../../runtime/performance-20261009/heap-diff.json">堆分类差额</a> · <a href="../../../runtime/performance-20261009/heap-owners.json">受限持有链</a> · <a href="../../../runtime/performance-20261009/office-heap.log">诊断日志</a></li>
-<li><a href="../../../runtime/performance-20261009/gallery-bundle-comparison.json">图库唯一差异构建对照</a> · <a href="../../../runtime/performance-20261009/gallery-optional-browser.log">双主题行为</a> · <a href="../../../runtime/performance-20261009/build-gallery.log">第四轮构建</a></li>
-<li><a href="../../../runtime/performance-20261009/home-request-before.json">首页请求清单</a> · <a href="../../../runtime/performance-20261009/home-budget-current.log">请求预算失败</a></li>
+<p>有效交错对照（<code>runtime/performance-20261009/pass8-yield-compare.json</code>） · 同次执行归因（<code>runtime/performance-20261009/pass8-aligned-tasks.json</code>） · 相关单测（<code>runtime/performance-20261009/pass8-yield-tests-fixed.log</code>） · 最后夹具修正（<code>runtime/performance-20261009/pass8-delayed-snapshot-test.log</code>） · 大图库流程（<code>runtime/performance-20261009/pass8-gallery-browser.log</code>） · 外部修改刷新（<code>runtime/performance-20261009/pass8-authority-browser.log</code>） · 构建预算（<code>runtime/performance-20261009/pass8-final-build.log</code>）</p>
+<details><summary>本机原始证据路径（不随仓库分发）</summary><ul>
+<li>开工构建（<code>runtime/performance-20261009/build-before.log</code>） · 最终组合构建（<code>runtime/performance-20261009/build-appearance-host.log</code>） · 包体数据（<code>runtime/performance-20261009/bundle-budget-current.json</code>）</li>
+<li>请求与主题采样（<code>runtime/performance-20261009/browser-lazy-and-theme.json</code>） · 最终三项浏览器复验（<code>runtime/performance-20261009/browser-host.log</code>） · 聊天流通过及初始夹具失败（<code>runtime/performance-20261009/browser-chat.log</code>）</li>
+<li>后端工厂行为（<code>runtime/performance-20261009/native-factory.log</code>） · 生命周期与设置（<code>runtime/performance-20261009/frontend-lazy.log</code>） · 外观状态（<code>runtime/performance-20261009/appearance-unit.log</code>） · 类型检查（<code>runtime/performance-20261009/typecheck-host.log</code>）</li>
+<li>目录打开探针（<code>runtime/performance-20261009/catalog-open-before.json</code>） · 维护保护探针（<code>runtime/performance-20261009/maintenance-fence.json</code>）</li>
+<li>第二轮交替性能对照及源码 SHA（<code>runtime/performance-20261009/scene-paired.json</code>） · 未保留的首次搜索方案（<code>runtime/performance-20261009/scene-paired-eager.json</code>）</li>
+<li>工作区与排序用例（<code>runtime/performance-20261009/scene-lazy-tests.log</code>） · 搜索工具用例（<code>runtime/performance-20261009/scene-utility-tests.log</code>） · 灵感叠卡（<code>runtime/performance-20261009/scene-deck-tests.log</code>） · Node UX 套件（<code>runtime/performance-20261009/scene-ux-final.log</code>）</li>
+<li>滚动失败诊断（<code>runtime/performance-20261009/scene-scroll-diagnosis.json</code>） · 导航返回通过/滚动原始失败（<code>runtime/performance-20261009/browser-scenes-fixed.log</code>） · 滚动定向复验（<code>runtime/performance-20261009/browser-scenes-scroll-final.log</code>）</li>
+<li>第二轮组合构建（<code>runtime/performance-20261009/build-scene-final.log</code>） · 调用方类型复验（<code>runtime/performance-20261009/typecheck-scene-consumers.log</code>） · HTTP 与同路径组件分解（<code>runtime/performance-20261009/catalog-http-stages.json</code>）</li>
+<li>第三轮完整筛选对照（<code>runtime/performance-20261009/workspace-paired.json</code>） · 分类行为（<code>runtime/performance-20261009/scene-classification-tests.log</code>） · 慢面板取消复现（<code>runtime/performance-20261009/appearance-pending-before.log</code>） · 取消与键盘复验（<code>runtime/performance-20261009/appearance-pending-final.log</code>）</li>
+<li>发布源码/EXE 绑定（<code>runtime/performance-20261009/release-build-binding.json</code>） · release HTTP（<code>runtime/performance-20261009/catalog-http-stages-release.json</code>） · 真实项目快照的浏览器接收（<code>runtime/performance-20261009/catalog-browser-wire.json</code>） · gzip 成本（<code>runtime/performance-20261009/gzip-probe.json</code>）</li>
+<li>完整 20 轮样本（<code>runtime/performance-20261009/office-lifecycle-complete.json</code>） · 成功采样日志（<code>runtime/performance-20261009/office-lifecycle-final.log</code>） · 旧关闭定位超时（<code>runtime/performance-20261009/office-lifecycle.log</code>） · 歧义定位原始失败（<code>runtime/performance-20261009/office-lifecycle-fixed.log</code>）</li>
+<li>第三轮组合构建（<code>runtime/performance-20261009/build-pass3-final.log</code>） · 类型复验（<code>runtime/performance-20261009/typecheck-pass3-fixed.log</code>）</li>
+<li>50 轮与静置后 GC（<code>runtime/ui-fluidity-office-50/dark-full-1.json</code>） · 堆分类差额（<code>runtime/performance-20261009/heap-diff.json</code>） · 受限持有链（<code>runtime/performance-20261009/heap-owners.json</code>） · 诊断日志（<code>runtime/performance-20261009/office-heap.log</code>）</li>
+<li>图库唯一差异构建对照（<code>runtime/performance-20261009/gallery-bundle-comparison.json</code>） · 双主题行为（<code>runtime/performance-20261009/gallery-optional-browser.log</code>） · 第四轮构建（<code>runtime/performance-20261009/build-gallery.log</code>）</li>
+<li>首页请求清单（<code>runtime/performance-20261009/home-request-before.json</code>） · 请求预算失败（<code>runtime/performance-20261009/home-budget-current.log</code>）</li>
 </ul><p class="meta">原始日志、截图与一次性脚本在被忽略的 runtime/ 与 scripts/archive/，不会随报告自动进入版本库。</p>
-<img src="../../../runtime/performance-20261009/pixel-reload-dark.png" alt="1440×960 CSS 视口：深色像素主题刷新后的角色房间">
-<img src="../../../runtime/performance-20261009/pixel-reload-light.png" alt="1440×960 CSS 视口：浅色像素主题刷新后的角色房间">
+<p>1440×960 CSS 视口：深色像素主题刷新后的角色房间：本机原始截图 <code>runtime/performance-20261009/pixel-reload-dark.png</code>，不随仓库分发。</p>
+<p>1440×960 CSS 视口：浅色像素主题刷新后的角色房间：本机原始截图 <code>runtime/performance-20261009/pixel-reload-light.png</code>，不随仓库分发。</p>
 </details></main></body></html>

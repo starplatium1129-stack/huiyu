@@ -1,8 +1,8 @@
 # 词条出图语义参考（Tag → Visual Semantics）
 
-> 2026-08-24 · 场景蓝图词条出图语义研究产物。
-> 数据基座：`data/scene-blueprints.json` 438 蓝图 / 1295 唯一词条普查；
-> 证据来自当时本地实验、官方说明和 Danbooru 惯例；旧实验原文从 Git 历史查询。当前编译规则见 [项目 skill](../../../.agents/skills/studio-prompt-craft/SKILL.md)，模型依据见[最新双引擎研究](../../research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)。
+> 整理日期：2026-10-09。保留词条语义参考，原研究查阅于 2026-08-24，本次未重新实验。
+> 当前数据通过运行目录 content/catalog.sqlite 与显式 data/catalog 快照读取；旧聚合普查数量不作现行规模。
+> 证据来自当时本地实验、官方说明和 Danbooru 惯例；旧实验原文从 Git 历史查询。当前编译规则见 [项目 skill](../../../.agents/skills/studio-prompt-craft/SKILL.md)，模型依据见[研究来源与采用边界](../../research/README.md)。
 > 置信度标记：🟢 官方或本项目实测背书 / 🔵 多源社区一致 / 🟡 单源推断 / ⚪ 未验证。
 
 ---
@@ -20,7 +20,7 @@
 
 **双引擎差异要点：**
 - **Anima（Qwen3-0.6B 文本编码器）**：LLM 族编码器对自然语言与词序敏感度高；超长 prompt 末尾 tag 权重衰减（"末尾=加噪声"，官方答疑 🟢）；underscore exact token 是身份/质量控制的硬锚点，普通场景词用空格形（v19 实测：`best_quality` 转空格→胸饰退化 🟢）。
-- **Krea 2（自研 12B DiT + Qwen3-VL 编码器，非 SD3.5/T5 系）**：纯英文散文 3–5 句；禁否定短语与 AI 玄学词（`beautiful/stunning/masterpiece/8k` 会拉向 generic gloss 🟢 项目契约）。架构与提示词规范见 [双引擎研究](../../research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)。
+- **Krea 2（自研 12B DiT + Qwen3-VL 编码器，非 SD3.5/T5 系）**：纯英文散文 3–5 句；禁否定短语与 AI 玄学词（`beautiful/stunning/masterpiece/8k` 会拉向 generic gloss 🟢 项目契约）。架构与提示词规范见 [研究来源与采用边界](../../research/README.md)。
 - **Illustrious/NoobAI 系（CLIP）**：纯 tag 方言；质量锚点前置有效（官方口径 "quality tags help clean up the picture" 🔵），但 Anima 两底模均 `strip_quality_tokens=true`——质量词只属于 profile 装配层，数据层携带必被剥离且属死数据 🟢。
 
 ---
@@ -127,10 +127,4 @@ recommendedSize► 视图层 closestSupportedSize(activeModel) 收敛
 
 ## 五、维护流程
 
-1. 新增/修改词条后跑 `node scripts/tests/test-popular-content.js`（22 用例含否定词禁令）。
-2. 词条普查一键审计：
-   ```powershell
-   node -e "const d=require('./data/scene-blueprints.json');const f={};d.blueprints.forEach(b=>(b.promptTokens||[]).forEach(t=>f[t]=(f[t]||0)+1));console.log(Object.entries(f).sort((a,b)=>a[1]-b[1]).slice(0,20))"
-   ```
-   （低频头部即高风险区：仅出现 1 次的词条共 828 个，新增词条优先复用既有词汇。）
-3. 散文层批量改写一律走迁移脚本规则表 + `--refresh-prose`，禁止手工散改（防中间态污染）。
+通过内容维护页或 content:catalog 对当前记录查询/预览，再按明确内容任务修改和显式导出快照，不直接回写聚合 JSON。按[工作流](../../workflow.md)选择实际改动检查；提示词/蓝图变更另核对最终编译与真实画面，定稿继续字节保护。旧低频统计与批次通过数不代表当前覆盖。

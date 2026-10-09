@@ -1,9 +1,0 @@
-{
-  "method": "Text search only; no images viewed/uploaded.",
-  "sources": [
-    {"url":"https://www.goodsmile.info/ja/product/7145/%E3%81%AD%E3%82%93%E3%81%A9%E3%82%8D%E3%81%84%E3%81%A9%2B%E3%82%A2%E3%83%BC%E3%83%81%E3%83%A3%E3%83%BC%2B%E3%82%A4%E3%82%B7%E3%83%A5%E3%82%BF%E3%83%AB.html","supports":"Licensed accessory description names the large Noble Phantasm Maanna."},
-    {"url":"https://science.nasa.gov/earth/earth-observatory/viewing-venus-from-the-space-station-145213/","supports":"Venus appears near the horizon as an evening star around sunset or a morning star around sunrise."}
-  ],
-  "decisions": ["Use Maanna; do not assert the unsupported Mount Urunus name as canon.","Set the Earth-like stargazing scene after sunset with Venus low in the west, rather than a deep-midnight Milky Way scene."],
-  "limits": ["No date-specific sky visibility or precise original vehicle geometry is certified.","The wedding remains an imagined scene, not a claim about mythological marriage history."]
-}

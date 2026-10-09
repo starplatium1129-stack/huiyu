@@ -1,6 +1,6 @@
 # 统一工作流手册
 
-> 维护日期：2026-10-03。命令注册与默认参数以 scripts/workflow.ts 源码为准，scripts/workflow.js 为开发工具的生成入口；产品后端由 Rust 提供，此页不以 Node 工具生成完成代替后端构建。
+> 整理日期：2026-10-09。命令注册与默认参数以 scripts/workflow.ts 源码为准，scripts/workflow.js 为开发工具的生成入口；产品后端由 Rust 提供，此页不以 Node 工具生成完成代替后端构建。
 
 ## 先查入口
 
@@ -39,7 +39,7 @@
 | 查找命令 | `npm run wf -- search 样张`（中英文关键词均可） |
 | 查看一个命令的运行条件 | `npm run wf -- <命令> --help`（详细 JSON 含 run 元数据） |
 | 生成品牌图标 | `npm run wf -- brand:build`（`assets/brand-mark.svg` → 深浅字标与安装器线条；夏目 Q 版头像母图 `assets/app-icon.png` → favicon、Windows ICO 与托盘 PNG） |
-| 文档迁移后检查链接 | `npm run wf -- docs:check`（含旧地址映射；不联网核验外部来源） |
+| 文档迁移后检查链接 | `npm run wf -- docs:check`（含旧地址映射与干净检出可移植性；不联网核验外部来源） |
 | 查看一个分组 | `npm run wf -- reference` |
 | 查看参数与依赖 | `npm run wf -- reference:design --help` |
 | 预览即将执行的命令 | `npm run wf -- data:build --plan` |
@@ -234,7 +234,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 `offline:prerequisites-plan -Out <新目录>` 只读预览微软 VC++ x64 离线材料；`offline:prerequisites-prepare -Out <新目录>` 显式下载并核对有效微软签名、版本与真实字节/SHA-256，整批完成后发布新目录，不执行安装。将其离线 EXE、回执与说明作为发行前置附件，新机由用户完成 UAC 安装；WebView2 由本次 NSIS offlineInstaller 配置提供，二者用途不同。
 
-本轮 1.7.4 的公开附件不转载 VC++。上面的前置准备入口用于联网准备机取得微软原始材料并带到断网新机，不应写成本次资源 ZIP 内已包含安装器。源码/签名构建已到 1.7.4，现有完整资源 r1 的 `appVersion=1.7.3` 保持原样，可由 1.7.4 导入，无需重导出；ZIP 校验 SHA 与 `release.json` 审批 SHA 分别核对，具体值和附件见 [1.7.4 说明](releases/v1.7.4.md)。真实 r1 ZIP 的隔离新用户导入及两次 Rust 启动已读取 SFW 原图/缩略图/基础资源，但不等同于正式安装、干净 Windows 或物理断网 GUI 验收，见 [有限交付报告](audits/2026-09-30/release-offline-optimization.md)。
+原生前置下载与公开附件以[当前离线资源指南](guides/offline-resources.md)为准。ZIP 校验 SHA 与 release.json 审批 SHA 分别核对，不通过修改版本号沿用旧审批。模型、真实断网与干净 Windows 安装仍需对应验收。
 
 当前 `--apply` 仅支持 Windows，其他平台拒绝写入、仍可预览。原因是普通目录 rename 在 POSIX 可覆盖并发出现的空目录；Windows 隔离回归已验证该冲突会拒绝。工具面向受控本地目录，不承诺抵御其他进程持续恶意替换路径的绝对事务隔离。
 
@@ -316,11 +316,11 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 ### Rust 运行时迁移
 
-产品后端为 `runtime-rs/`，Node 只负责前端/开发工具和旧行为对照。先 `npm run build:runtime` 准备工作流及 Node oracle，再运行：
+产品后端为 `runtime-rs/`，Node 用于前端、维护工具、假上游及构建编排。仅工具源/配置变化或所需入口缺失时准备 `npm run build:runtime`；普通 Rust 检查不默认重建工具。按需运行：
 
 - `npm run wf -- rust:check`：Rust 格式、Clippy 和隔离行为测试，不连接生产库或真实模型；显式原生素材/DLL用例与普通默认用例分开记录。
 - `npm run wf -- rust:build`：按 `runtime-rs/Cargo.lock` 构建 release 二进制及 `runtime/rust-evidence/build.json` 源码/EXE绑定，不替换桌面安装。需已有 Rust/MSVC 工具链，首次可能下载锁定 crate。
-- `npm run wf -- rust:parity`：先准备上述两类构建，再通过两个独立临时库核验 Node/Rust HTTP、旧回执重试、媒体 Range 和 Rust 写入后 Node 重开；顺序测量分页读取并记录实际行数和轮次。可设 `AICS_RUST_RUNTIME_EXE` 指定已构建候选，`AICS_RUST_PARITY_REPORT` 保存 JSON。报告是工作区切片，不能当作整机内存或完整后端迁移收益。
+- `npm run wf -- rust:parity`：使用现行 Rust 候选和带来源的旧 schema-3 固定夹具，核对 HTTP、回执重试、媒体 Range，并独立用 SQLite 读取 Rust 写入结果；不启动退役 Node 产品后端。可设 `AICS_RUST_RUNTIME_EXE` 指定候选，`AICS_RUST_PARITY_REPORT` 保存 JSON，保留实际分页行数/轮次；不视为整机内存或完整迁移收益。
 - `npm run wf -- rust:licenses:collect`：PowerShell 7 按 `components.json` 的固定配方下载公开源码并提取许可材料，跳过已核验项；不安装或执行源码。缓存不入 Git，材料变化后必须更新 `materials.sha256.json` 及根 manifest 绑定。完整来源和发行待办见[原生材料说明](../runtime-rs/native-licenses/README.md)。
 
 `rust:check` 仅在检查子进程环境中把 TEMP/TMP 规范为实际目录路径，避免 Windows 8.3 短路径令隔离夹具误触物理路径守卫；默认 Cargo 构建并发 2，避免多份集成测试同时链接超出 Windows 提交内存/页面文件额度，可通过已有 `CARGO_BUILD_JOBS` 选择实测安全并发。不改变生产路径校验、start/build 环境或用户资料目录。
@@ -331,11 +331,11 @@ PixAI 接入后，旧 WD14 ONNX／448 像素预处理代码已退出 Rust 产品
 
 - `npm run wf -- desktop:rust-bundle`：使用已暂存的实际 Rust EXE/DLL和 bundle 映射，在仓库外临时布局验证；不下载、安装或访问用户库。它替代旧 `desktop:workspace-sidecar`，不能以开发机上的 Node 启动成功替代原生包验证。
 
-源码服务用 `npm start` / `npm run start:run`（开发包装器调用 Cargo/Rust）；直接入口为 `runtime-rs/target/release/huiyu-runtime.exe --app-root <项目目录> --bind 127.0.0.1:3210`。工作区须显式私有路径/身份或受控桌面激活；未知请求不落回 Node。`build:runtime` 仍生成旧 Node 与维护工具 JS，不会产出 Rust EXE。
+源码服务用 `npm start` / `npm run start:run`（开发包装器调用 Cargo/Rust）；直接入口为 `runtime-rs/target/release/huiyu-runtime.exe --app-root <项目目录> --bind 127.0.0.1:3210`。工作区须显式私有路径/身份或受控桌面激活；未知请求不落回 Node。`build:runtime` 仅生成维护、测试和独立浏览器工具 JS，不会产出 Rust EXE。
 
-旧 Node unit/contract 和仍启动旧网关的 Playwright 结果只作旧行为对照。Rust 真正端到端由 `runtime-rs/tests/parity.mjs` 与其 `browser.mjs` 验证；最终结果、失败及默认浏览器测试栈切换分别记录，不能按路由挂载数量宣称完整覆盖。当前实现及剩余范围见 [013](../plans/013-node-to-rust-migration.md)。本机安装/UAC 已完成；真实模型、完整设备与原生许可材料仍未收口，`releaseReady=false`。
+旧后端行为由标注来源的固定夹具承接，现行端到端由 `runtime-rs/tests/parity.mjs` 与其 `browser.mjs` 验证；最终结果、失败及默认浏览器测试栈切换分别记录，不能按路由挂载数量宣称完整覆盖。当前实现与安装身份见[项目状态](project-status.md)，剩余范围见[未来规划](roadmap.md)。真实模型、完整设备与原生许可材料仍未收口，`releaseReady=false`。
 
-既有 `test-domain-type-boundaries` 也检查 Rust 任务契约、公共执行、存储与引擎模块的显式依赖方向，复用原边界门禁，不新增全仓测试入口。它识别 crate/super 路径和分组导入，不解析宏展开或完整符号依赖；编译与行为仍由 Cargo 验证。图片/视频编译及视频 AI 契约使用固定的独立旧实现期望，不再动态启动其 Node oracle；其余旧后端退出条件见 [013 分批退出](../plans/013-node-to-rust-migration.md#旧-node-实现的分批退出2026-09-28)。
+既有 `test-domain-type-boundaries` 也检查 Rust 任务契约、公共执行、存储与引擎模块的显式依赖方向，复用原边界门禁，不新增全仓测试入口。它识别 crate/super 路径和分组导入，不解析宏展开或完整符号依赖；编译与行为仍由 Cargo 验证。图片/视频编译及视频 AI 契约使用固定的独立旧实现期望，不再动态启动其 Node oracle；旧产品后端及其动态 oracle 已退出；仍有用途的维护工具对照独立保留。
 
 ### 按改动选择检查
 
@@ -416,15 +416,9 @@ E2E 仅覆盖桌面客户端与桌面浏览器，不再运行 phone/tablet 项�
 
 分组清单为 `tests/e2e/e2e-lanes.json`：critical 保留生成/保存、并发数据安全、草稿与状态、主导航和键盘操作；nightly 保留主题、资源恢复与扩展交互；manual 保存按变更选择的独立专项；device 仍需明确的设备或模型资产条件。无断言的 `capture.spec.ts` 已删除。`npx playwright test tests/e2e/<文件>.spec.ts --project desktop --workers 1` 可显式运行普通浏览器专项，可再用 `--grep` 选择相关场景；真实维护和 Live2D 等继续使用各自的隔离入口。裸 `npx playwright test` 默认只发现 critical + nightly，与 `test:e2e:all` 一致；显式文件、正则或 `--test-list` 仍可选择 manual/device，设备专项配置保留，运行条件与授权不因显式选择而省略。
 
-精确指定常规页面 E2E 文件时，只启动隔离 web Rust 服务；仅选择 flows 文件时，只启动 gateway 与模拟上游。少数 desktop 文件显式请求 gateway，保留双栈。未知/正则文件过滤、测试列表和仅 `--project desktop` 无法证明所需范围，保守保留原双栈；不复用已有服务，不降低分级、权限、并发存储、AA 或故障断言。实现与当次验证见 [日常测试精简](audits/2026-09-30/test-simplification.md)。
+精确指定常规页面 E2E 文件时，只启动隔离 web Rust 服务；仅选择 flows 文件时，只启动 gateway 与模拟上游。少数 desktop 文件显式请求 gateway，保留双栈。未知/正则文件过滤、测试列表和仅 `--project desktop` 无法证明所需范围，保守保留原双栈；不复用已有服务，不降低分级、权限、并发存储、AA 或故障断言。当前执行入口由 run-e2e-lane 维护。
 
-小改动先选测试，不先运行整套：工具/composable 逻辑用 `npx vitest run <相关spec>`；局部 UI 只运行相关 E2E 文件或场景，真实颜色/布局保留双主题，纯数据和状态逻辑不重复主题。提交本身不增加检查范围，同一产物已有证据可复用。`test:e2e` 的 critical 清单也不是每次局部修改都必跑；跨层核心改动与 PR 门禁才使用 critical。历史数量见 [全量必要性审计](audits/2026-09-28/e2e-necessity-audit.md)，当前清单由 `run-e2e-lane` 枚举。
-
-2026-09-28 第二轮逐项审计覆盖101个原始文件（98回归+3基准）、432处测试声明及参数组：回归库存913→646，critical225→95（8文件），nightly409、manual99、device43，自动全量504。首页预算移至独立性能入口，实际模型加载从 `studio.spec.ts` 拆至 `studio-live2d.spec.ts` 设备/资产专项。核心95项实际验证最终90通过、5失败；失败对应 Rust OOM/TTS 错误详情丢失及尾斜杠权限策略，原断言保留，未把失败移出门禁或标记跳过。报告记录全部文件的决定、定向复验与未执行范围。
-
-2026-09-28 第一轮记录（历史统计）：默认配置展开项从 1138 降至 913；critical 从 37 文件/554 项降至 17 文件/225 项，nightly 为 56 文件/465 项，manual 为 19 文件/167 项，device 为 6 文件/56 项。自动全量入口共 690 项；库存数量包含手动与设备专项，不代表全部执行或通过。删除移动端矩阵及重复巡检，合并保留独有断言，未削弱生成、数据安全或分级边界。
-
-本次验证复用已有 dist 和隔离 Rust 测试栈，受影响浏览器覆盖合计 110 项在修正旧夹具后通过：54 个页面主题巡检、2 个角色色板检查、工作区/粒子/材质交互 32 项、桌面布局/导航/键盘操作 22 项。E2E TypeScript、分组契约、三种自动入口枚举与差异格式检查通过；未运行全部 913 项或原生设备验收。旧夹具修正包括静态背景结构、现行菜单名称和加载完成后的角色色板；200% 文本检查保留键盘关闭和无溢出，删除触控尺寸要求。定向复验产物与最终枚举位于被忽略的 `runtime/e2e-desktop-slim*`。角色色板加载失败时的原始颜色回退未纳入本次色板通过结论。
+小改动先选测试，不先运行整套：工具/composable 逻辑用 `npx vitest run <相关spec>`；局部 UI 只运行相关 E2E 文件或场景，真实颜色/布局保留双主题，纯数据和状态逻辑不重复主题。提交本身不增加检查范围，同一产物已有证据可复用。`test:e2e` 的 critical 清单也不是每次局部修改都必跑；跨层核心改动与 PR 门禁才使用 critical。当前清单由 run-e2e-lane 枚举。
 
 应用页面错误、溢出和可读性巡检统一在 `theme-audit.spec.ts`，文档由 `page-experience-docs.spec.ts` 一次完成主题、错误、键盘及实际 AA 检查，不重复页面巡游；`ui-layout.spec.ts` 仅保留独有的对比度、侧栏和交互检查，均为扩展回归。独立 UI 预览可用 `AICS_UI_AUDIT_URL` 指向隔离服务；默认检查本机 3000，不依赖 networkidle 等待长轮询停止。
 
@@ -456,7 +450,7 @@ R13 的旧 Node Electron PoC 已随旧后端退役删除，其历史对照仍可
 
 `node scripts/maintenance/check-bundle-budget.js [dist目录] --json` 保留旧预算，同时报告入口与真实路由匹配链的静态 JS 文件并集（不计运行时动态请求）。映射来自 router AST；无 src 命名块只接受唯一匹配，缺失/歧义显式 unknown、总数 null，不能解释为零。新指标仅报告，包含文件集合、manifest/router 哈希；需将所选 dist 与相同源码配对，再用独占冷启动浏览器的 script 请求核对动态加载差异。
 
-旧 SQLite 候选与模拟任务 journal 的重复原型测试已退役；`artwork-sqlite.ts` 仍供显式 storage benchmark 使用，基准内继续检查数量与字节，不能把候选原型当产品持久化验收。当前作品、任务与恢复边界由 workspace/持久任务及 Rust 存储测试负责；物理断电、浏览器恢复 journal 与 512 MiB 大包峰值仍是独立验收范围。全部前端与 Node 的逐文件决定见 [单测精简实施](audits/2026-09-30/test-total-simplification.md)。
+旧 SQLite 候选与模拟任务 journal 的重复原型测试已退役；`artwork-sqlite.ts` 仍供显式 storage benchmark 使用，基准内继续检查数量与字节，不能把候选原型当产品持久化验收。当前作品、任务与恢复边界由 workspace/持久任务及 Rust 存储测试负责；物理断电、浏览器恢复 journal 与 512 MiB 大包峰值仍是独立验收范围。旧逐文件删并决定可从 Git 历史查回。
 
 `flows`、`anima-quick`、`office-code` 共用模拟上游，统一在 `flows` 项目的单 worker 中运行；其他页面和设备回归仍可并行。多会话验收时给每轮设置不同的 `AICS_E2E_PORT_OFFSET`（例如 `15000`），网关、浏览器和模拟上游按同一映射偏移端口，并使用隔离运行目录、拒绝复用已有服务。浏览器测试期间不得重建共享 dist；先完成构建再验收，并用独立 `--output` 目录保留每轮证据。
 
@@ -472,7 +466,7 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 
 交付时将回执与选中的脱敏日志/哈希清单一并放入受控发行 artifact，或把脱敏摘要登记到 docs/evidence 并加入文档索引；仅引用 runtime 路径无法跨机器移交。接收方恢复相同相对路径后运行 `audit:delivery`，核对 source/build 和日志是否 fresh，分别填写 installation、deviceAcceptance、modelAcceptance。现有失效检查能检出选中源码、构建或日志字节变化；哈希不认证日志语义，也不补签未运行项目。
 
-历史 Audit stability validation 已收口为人工触发、只读 token 和禁用 checkout 凭据持久化，仅保存重现补丁与证据，不提交或推送。普通 push/PR 不触发该历史工作流。`docs:check` 仅核对本地目标文件，`audit:workflow-conditions` 仅核对注册条件；标题锚点、描述语义、外部来源和实际运行结果仍需逐项检查，不能据两项通过声称全部入口可运行。
+历史 Audit stability validation 已收口为人工触发、只读 token 和禁用 checkout 凭据持久化，仅保存重现补丁与证据，不提交或推送。普通 push/PR 不触发该历史工作流。`docs:check` 核对目标文件和 Git 忽略规则：本机存在的 runtime 日志/截图不能作为仓库文档的链接或图片，只记录路径与证据边界；受控生成 JS 仍可由权威 TS 源承接。`audit:workflow-conditions` 仅核对注册条件。标题锚点、描述语义、外部来源与实际运行结果另按范围检查。
 
 预算包括路由 JS 140 KiB、CSS、入口与依赖闭包等，完整阈值见 check-bundle-budget.js。测试规模与路由数量以当次输出为准；历史 PASS 不能代替本次检查。
 
@@ -553,7 +547,7 @@ Windows 上已授权的单窗口截图可用 `powershell -NoProfile -File script
 
 Windows Native Live2D 的 `LIVE2D_CUBISM_SDK_DIR` 优先使用 runner 进程环境；未设置或仅含空白时才回退到同名仓库变量，避免不同机器的 SDK 路径互相覆盖。预检确认 Core 头文件、Framework 源文件和 Windows x64/143 Core 静态库均存在后，通过 `GITHUB_ENV` 传给后续步骤；显式配置的路径缺失或不完整会直接失败，不切换到另一个 SDK。
 
-当前实现、安装范围与未执行项目见[项目状态](project-status.md)和[未来规划](roadmap.md)。发行范围见 [1.7.4 说明](releases/v1.7.4.md)。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
+当前实现、安装范围与未执行项目见[项目状态](project-status.md)和[未来规划](roadmap.md)。发行范围见 [1.9.2 说明](releases/v1.9.2.md)。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
 
 ### 011 发行输入绑定（2026-09-21）
 
@@ -577,4 +571,4 @@ skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同�
 
 `prepare-ai-environment.ps1` 是本机产品准备器，由 Rust 限定环境 ID、验证运行包后调用；没有新增通用命令权限或维护 CLI。当前选包支持 Windows x64 NVIDIA，Vulkan 为聊天进阶候选；驱动／系统许可与重启由用户完成。应用内文件准备完成不证明模型或设备验收。
 
-源码已退出 SD 新生成与 WebUI 受管启动；旧任务查询、结果收集、取消、作品与原配方继续保留。没有原引擎的旧作品不推断为新模型的可复现配方。上述自动准备能力已进入 [1.9.1](releases/v1.9.1.md)，后续源码改动仍需对应构建与安装；公开 LoRA 附件独立有效。
+源码已退出 SD 新生成与 WebUI 受管启动；旧任务查询、结果收集、取消、作品与原配方继续保留。没有原引擎的旧作品不推断为新模型的可复现配方。上述自动准备能力已进入当前发行，见 [1.9.2](releases/v1.9.2.md)，后续源码改动仍需对应构建与安装；公开 LoRA 附件独立有效。

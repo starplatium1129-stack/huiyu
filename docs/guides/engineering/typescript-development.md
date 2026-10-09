@@ -4,21 +4,20 @@
 
 ## 编辑源码
 
-前端继续由 Vue / Vite 构建，产品网关由 `runtime-rs/` 的 Rust 源码构建。保留的 Node 网关/路由作为行为对照，维护脚本、测试及独立浏览器脚本以 `.ts` 为源码；原生 ES 模块使用 `.mts`，明确的 CommonJS 文件使用 `.cts`。第三方 vendor 文件不改写。
+前端继续由 Vue / Vite 构建，产品网关由 `runtime-rs/` 的 Rust 源码构建。旧 Node 网关/路由已退出；维护脚本、测试及独立浏览器脚本以 `.ts` 为源码；原生 ES 模块使用 `.mts`，明确的 CommonJS 文件使用 `.cts`。第三方 vendor 文件不改写。
 
 Node 与独立浏览器命令使用的 `.js`、`.mjs`、`.cjs` 是构建产物。修改对应 TypeScript 源码，再运行 `npm run build:runtime`；不要直接修改生成文件。这个命令检查和生成 Node/浏览器工具，不构建 Rust 网关；原生 release 构建入口为 `npm run wf -- rust:build`，具体分工见[工作流](../../workflow.md#rust-运行时迁移)。
 
 | 范围 | 类型检查配置 | 输出 |
 | --- | --- | --- |
 | Vue 前端 | `tsconfig.app.json` | Vite 的 `dist/` |
-| 保留的 Node 对照服务 | `tsconfig.runtime.json` | `services/` 内 `.js` 和 `.d.ts` |
-| Node 对照网关/路由及维护脚本 | `tsconfig.node.json` | 原位置的运行文件 |
+| Node 维护脚本 | `tsconfig.node.json` | 原位置的运行文件 |
 | Node 与前端交叉测试 | `tsconfig.tests.json` | 原位置的测试运行文件 |
 | 独立静态页脚本 | `tsconfig.browser-tools.json` | 原位置的浏览器 `.js` |
 
-静态页脚本分别检查，避免将不同页面的全局变量误当成同一程序。Node 对照代码和维护工具的类型检查沿用项目的 Node 版本要求及 CommonJS / ES 模块边界，不把整个仓库切换成 ES 模块。
+静态页脚本分别检查，避免将不同页面的全局变量误当成同一程序。Node 维护工具的类型检查沿用项目的 Node 版本要求及 CommonJS / ES 模块边界，不把整个仓库切换成 ES 模块。
 
-测试使用独立的严格检查配置，允许既有测试读取 Vue 前端源码与浏览器类型；保留的 Node 网关继续按 NodeNext 检查。测试运行文件仍按 Node 模块格式生成，`.ts` 的 CommonJS 测试与 `.mts` 的原生 ES 模块保持原有入口。所有测试源码都包含在完整检查中。
+测试使用独立的严格检查配置，允许既有测试读取 Vue 前端源码与浏览器类型；Node 工具按其配置检查。测试运行文件仍按 Node 模块格式生成，`.ts` 的 CommonJS 测试与 `.mts` 的原生 ES 模块保持原有入口。所有测试源码都包含在完整检查中。
 
 ## 日常循环
 
@@ -53,7 +52,7 @@ npm run wf -- gate:quick --plan
 ```sh
 npm run build:runtime
 npm run build:runtime -- --force
-node scripts/build-node.mts --project services --check
+node scripts/build-node.mts --project node --check
 node scripts/build-node.mts --help
 ```
 
@@ -75,9 +74,9 @@ node scripts/build-node.mts --help
 
 ## 工具链支持责任
 
-源码开发工具最低版本保持 package.json 的 Node >=22.18；开发与 Quality 使用 24.18.0（.nvmrc、quality.yml）。这些要求不适用于普通桌面安装机：产品网关使用 Rust，无需安装 Node。最低 Node 版本在 Quality 独立执行锁定安装、前端生产构建及保留的 Node 对照 API/模块边界/网关烟雾测试，结果参与总门禁；它不是 Rust 或目标设备验收，不能用开发机 Node 24 的通过代替最低版本验证。
+源码开发工具最低版本保持 package.json 的 Node >=22.18；开发与 Quality 使用 24.18.0（.nvmrc、quality.yml）。这些要求不适用于普通桌面安装机：产品网关使用 Rust，无需安装 Node。最低 Node 版本在 Quality 独立执行锁定安装、前端生产构建及现行工具边界检查，结果参与总门禁；它不是 Rust 或目标设备验收，不能用开发机 Node 24 的通过代替最低版本验证。
 
-@types/node 26 是声明来源，不是运行时承诺；本轮保留锁文件与依赖版本。引入新 Node API 时需在最低运行时补回归，类型检查本身不能证明该 API 已存在。
+@types/node 26 是声明来源，不是运行时承诺；运行版本以锁文件与依赖声明为准。引入新 Node API 时需在最低运行时补回归，类型检查本身不能证明该 API 已存在。
 
 ESLint 编辑入口为 eslint.config.mts；eslint.config.js 仅转发到该源码，避免两份配置漂移。生成 JS 不作为源码 lint；浏览器/服务的关键环境误用由 no-restricted-globals 与各 tsc 配置共同检查，正反例在 test-module-boundaries.mts。单体 500 有效行上限由 test-monolith-budget.ts 维护，存量超限文件按 monolith-baseline.json 只降不升。
 

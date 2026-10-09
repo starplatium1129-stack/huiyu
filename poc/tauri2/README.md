@@ -1,6 +1,6 @@
 # Tauri 2 PoC — AI-CG-Studio 桌面壳可行性验证
 
-> 历史可行性 PoC；当前桌面架构与契约见 `docs/guides/desktop/live2d-native-runtime.md`、`docs/project-status.md` 与 `AGENTS.md` 第二节（Tauri 2 已为桌面主线，迁移决策史见 `docs/archive/expired/tauri-desktop-migration-plan.md`）。
+> 整理日期：2026-10-09。此目录是历史源码样例，依赖已退役的 Node 网关，下面旧步骤不适用于当前主线，不作为受支持启动入口。当前架构见[项目状态](../../docs/project-status.md)与[Live2D 指南](../../docs/guides/desktop/live2d-native-runtime.md)；重新评估需基于当前 Rust 协议另定范围。
 
 ## 目标
 
@@ -11,7 +11,7 @@
 
 附带验证：壳 spawn 系统 `node server.js` 网关、`window.companionDesktop` shim 桥模式（前端零改动）。
 
-## 运行
+## 原实验运行方式（不可作为当前入口）
 
 ```powershell
 # 前置：项目根已有构建产物 dist/；node 在 PATH

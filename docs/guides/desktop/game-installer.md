@@ -32,7 +32,7 @@ Windows 10/11 x64 使用系统 .NET Framework 4.x/WPF，不增加浏览器运行
 
 `game-install-policy.nsh` 为本次审计的最小产品策略：对安装目录内宿主与 Rust 网关用 Restart Manager 检查占用；运行中或无法核实退出时拒绝继续，提示保存工作、从托盘退出后重试，不调用强制关闭。另为选择快捷方式的安装补充“绘遇 · 资源安装助手”，指向随包 `gateway/tools/Install-OfflineResources.cmd`；`/NS` 不创建，升级保留已有链接，卸载仅移除目标属于本安装的助手链接。助手不从提升权限的安装器自动启动，以免跨账户 UAC 把资源写入管理员资料。
 
-现成 1.8.1 包已包含助手文件，但没有这个开始菜单入口，并保留旧的强制关闭行为；本次修复须重新构建后才进入安装产物。普通用户现有入口、取消恢复及当次验收边界见[安装产物用户审计](../../audits/2026-10-02/installer-user-audit.md)与[离线资源安装](../offline-resources.md)。
+实际安装入口与能力以对应发行包为准，见[项目状态](../../project-status.md)与[离线资源安装](../offline-resources.md)。
 
 自定义目录页拒绝空路径、盘符根、Windows 系统目录与通用用户/程序根目录；选择独立应用文件夹。安装包不包含生成模型。预览脚本不调用真实安装、启动或快捷方式函数。
 
@@ -44,21 +44,4 @@ updater 签名、`latest.json` 与 SHA-256 作为同版本 GitHub Release 附件
 不伪称全绿；安装后的系统目录替换与 UAC 仍按 desktop-deployment.md 处理。
 
 
-当前发行、签名与本机安装范围见 [1.7.4 说明](../../releases/v1.7.4.md)和[项目状态](../../project-status.md)。updater 完整性签名不代表 Windows Authenticode 证书；具体设备/DPI 状态按当次实际验收记录。
-
-
-## 2026-10-02 展示改造验收范围
-
-在 `feat/installer-ui-oct2` 独立 worktree 完成安全预览。WPF 原生自测通过（路径、参数、预览隔离、双主题对比度及控件尺寸）；现有 `test-desktop-staging.js` 中 `game installer preserves upstream install and maintenance behavior` 定向用例通过。NSIS 无载荷夹具编译通过，覆盖正式 `un.*` 确认、进度及完成页接线；夹具未运行。
-
-已目视复核 WPF 深浅主题及准备、安装、成功、错误状态，NSIS 安装目录、双主题卸载确认、卸载进度和结果。原始截图保存在该 worktree 的 `runtime/installer-*.png`，汇总为 `runtime/installer-ui-evidence.json`，不入 Git。WPF 截图按 1040×650 DIP 渲染，输出 DPI 为 96/144；NSIS 原生截图为约 960×660 像素。系统显示环境查询被 CIM 访问权限阻止，系统 DPI 未独立确认；这些截图不等同于 1080p/QHD/4K 实机缩放验收，浏览器缩放及 CSS 视口不适用于本原生界面。
-
-未执行真实安装、卸载、应用数据清理、当前程序停止、UAC、真实签名或发布，也未重打完整载荷。清理二次确认逻辑已代码复核，交互点击分支与真实错误恢复仍需后续设备验收。NSIS 预览中“未写出卸载器”和“未引用页面函数”的编译警告源于无副作用预览结构。
-
-## 2026-10-02 双包流程验证
-
-在独立 `codex/installer-tiers-oct2` 分支复用既有安装／发行用例，补充一项实际 Windows NSIS 隔离夹具：新装误用升级包、未登记安装、缺少 WebView2、同尺寸坏素材均拒绝；有效升级不调用旧卸载器，素材字节保持；随后卸载清理保留的程序素材而不删除无关文件。夹具另覆盖带空格和 `$` 的路径。多产物绑定、派生载荷篡改、两个安装包各自的签名附件与远端摘要检查通过。
-
-完整／升级界面的深浅主题在 1040×650、96 DPI 原生安全预览中复核，四次原生自测通过；不等同于多显示器或物理 DPI 验收。实际已安装的 1.8.1 只读检查通过安装登记、WebView2、宿主版本及 636 个可复用文件哈希，共约 337.3 MiB。用真实 Tauri NSIS 输入核对省略资源及完整卸载清单，派生宿主的 NSS 字节变换与已安装宿主 SHA-256 一致。
-
-Node 工具编译、应用／工具类型检查、21 步静态检查范围、已有部署守卫和工作流用例通过；首轮新 PowerShell 夹具换行格式被卫生检查拦截，规范化后仅复跑失败项。原始日志与预览位于该 worktree 的忽略目录 `runtime/installer-tiers/`、`runtime/installer-modern-*.png`。本轮没有新程序全量构建、正式双包签名／发布、真实升级／卸载或用户数据写入；完整发行仍须正常构建和既有材料门禁。
+当前发行、签名与本机安装范围见 [1.9.2 说明](../../releases/v1.9.2.md)和[项目状态](../../project-status.md)。updater 完整性签名不代表 Windows Authenticode 证书；具体设备/DPI 状态按当次实际验收记录。

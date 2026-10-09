@@ -1,74 +1,27 @@
-# 分镜短片「AI 整理」链路（2026-08-16）
+# 视频与分镜工作流
 
-> 历史实现记录（2026-09-27 整理）：下文保留 8 月 16–17 日的交接、接口与验证范围，不代表当前完整视频功能或文件所有权。现行能力见 [项目状态](../../project-status.md)，未验收项见 [未来规划](../../roadmap.md)。当前源码入口为 `src/components/video/ShotListEditor.vue`、`src/api/videoApi.ts` 与 `routes/video-ai.ts`，已包含整批编排、对白建议、质量检查及脚本生成；批量绘图调度已移至 `src/composables/generation/useBatchDraw.ts`。历史执行命令中的 `.js` 为构建后入口，不应直接换成 `.ts` 执行。
+整理日期：2026-10-09。合并原视频调研和 AI 整理记录；操作与实现入口按当前源码核对，真实视频质量、声音、成本和设备仍待[规划 V06](../../roadmap.md#素材与设备验收)。
 
-> 给视频页分镜模式加的智能化层：从绘图页带入的镜头，点一次「✦ AI 整理分镜」
-> 就把静态绘图提示词改写成视频分镜描述，并推断景别/镜头/主体运动/对白。
-> 服务端新文件 `routes/video-ai.js`（不碰 `routes/video.js`），前端改动
-> 集中在 `ShotListEditor.vue` + `src/api/videoApi.ts`。
+## 使用流程
 
-## 绘图页批量出图 → 历史加入分镜（2026-08-17 追加）
+1. 绘制作品可加入分镜，也可从故事梗概创建镜头。角色/服装从内容目录读取，参考图按需要上传；核对人物、衣装、动作、景别、运镜、时长与对白。
+2. AI 整理逐镜改写动态描述，失败保留原文，可重试和撤销；整批编排调整节奏，独立快照撤销。另有对白备选、质量检查和脚本生成；迟到结果不覆盖正在编辑的镜头，忙碌时阻止重复操作。
+3. 核对首尾帧及所选模型能力后提交单镜/整批；按实际任务停止、重试失败镜头或合成。离开页面不取消已接受任务。
 
-多场景批量出图，让"出图 → 挑图 → 攒分镜"一条龙：
+## 维护入口
 
-1. 绘图页点「批量出图 · 多场景」→ 面板多选场景蓝图 + 引擎（SD/Anima）+ 每场景 1/3 张；
-2. `useBatchDraw`（`src/composables/useBatchDraw.ts`）串行逐张执行：
-   - SD 走 `runJob` 同路径（复用现有参数/细节器/入册逻辑），
-   - Anima 直接 `POST /api/anima/jobs` + 轮询 + fetchImage（`animaRequestPayload` 复用）；
-   - 每张自动 `commitHistoryEntry` 入册历史（prompt 为该场景 prose + 角色锚点）；
-3. 结果在「历史」面板挑选：每张历史图新增「加入分镜」按钮
-   （`HistoryPanel` emit to-shots → `handleHistoryToShots`：IndexedDB 取 blob +
-   条目 prompt → `tagsToVideoProse` → `appendShotsCtx`）；
-4. 攒齐后「去分镜短片」→ AI 整理 → 批量生成。
+| 职责 | 当前源码 |
+| --- | --- |
+| 分镜展示 | src/components/video/ShotListEditor.vue |
+| AI 工具 | src/components/video/useShotAiTools.ts |
+| 分镜状态 | src/components/video/useShotWorkspace.ts、useShotDraft.ts |
+| 批次和单镜 | src/components/video/useShotBatchMachine.ts、src/composables/video/useVideoWorkspace.ts |
+| API 边界 | src/api/videoApi.ts、videoApiResponse.ts |
+| Rust 视频 | runtime-rs/src/video/http.rs、service.rs、batch.rs、storyboard.rs、ai.rs |
+| 绘图批次 | src/composables/generation/useBatchDraw.ts |
 
-要点：
-- 批量 prompt = `场景 prose + 角色锚点`（热门角色 identityProse / 工作室 CHAR_PROMPT tag），
-  不经过完整词条流——批量是快速选图场景，精修仍走单张出图；
-- 3 候选 = baseSeed + variant*1000（锁定可复现）；
-- 单张失败不打断整批；取消 = 当前张完成后停止；
-- Anima 批量固定 `/api/anima/jobs`（Krea 2 不批量，与 3 组候选限制一致）。
+视频接口包括 /api/video/status、images、jobs、batches、storyboard；批次支持 shots/{index}/retry 和 concat。/api/video-ai/status 查询可用源，rewrite/polish/dialogue/review/script 复用现行聊天模型配置，写调用要求本机直连。模型和文件名以运行时目录为准，不使用旧 Node routes 或 SD 新生成方案。
 
-## 用法
+## 验证边界
 
-1. 绘图页出图 →「加入分镜」→「去分镜短片」；
-2. 分镜页自动完成：角色锚点填充（ctx.characterId → identityProse）、
-   逐镜景别/镜头/运动关键词推断（`inferShotParams`）；
-3. 点「✦ AI 整理分镜」：逐镜改写（前端并发 2），失败单镜保留原描述可重试，
-   应用前整批快照，「撤销整理」可一键恢复；
-4. 检查后「生成全部镜头」。
-
-## 端点
-
-- `GET /api/video-ai/status`（公开）：`{ available, source: 'api'|'ollama', model, label, reason? }`
-- `POST /api/video-ai/rewrite`（localOnly，批量改写消耗站主 LLM 额度）：
-  `{ identity?, prompt(1-4000), shotSize?, camera?, motion?, dialogue? }` →
-  `{ source, model, shot: { prompt, shotSize, camera, motion, dialogue } }`
-
-## LLM 源（复用聊天配置，零新增设置）
-
-1. 站主 API 托管配置优先（`chat_api_config.json`，与 `routes/chat.js` 同源）；
-2. 否则本地 Ollama（`OLLAMA_HOST` + `OLLAMA_MODEL`，未配置时取已装第一个）。
-
-DeepSeek vendor 自动关 thinking（改写是机械任务）。API 非流式 120s 超时；
-Ollama 走 `ollama-service.streamChat`（NDJSON 累积 + 串行队列），180s 超时。
-
-## 提示词契约
-
-system prompt 要求输出**严格 JSON**（prompt/shotSize/camera/motion/dialogue）；
-服务端 `cleanRewriteOutput` 宽容清洗：markdown 围栏提取、非法枚举回退输入原值、
-非法景别回退 null、prompt 为空回退原描述——模型输出再离谱也不会弄坏镜头参数。
-prompt 输出约束：1-3 句英文（H3 是自然语言模型），写动作/镜头/时间流动，
-不重复身份锚点、不写首帧已锁定的构图细节。
-
-## 踩坑记录
-
-- 无 LLM 源时 rewrite 返回 409（非 502）：可预期状态，前端提示去聊天设置配置。
-- Ollama mock 的 /api/chat 是 NDJSON 流式（即使请求 stream:false），
-  因此 Ollama 源必须走 `streamChat` 累积而非直接 readBody 解析单 JSON。
-- status 端点每次探测都会打一次 Ollama /api/tags（3s 超时）——本地可接受，未缓存。
-
-## 测试
-
-`scripts/tests/test-video-ai.js`（contract 套件）：无源 409、API 源（Bearer/
-stream:false/提示词结构断言）、markdown 围栏、非法枚举回退、非 JSON 回退、
-输入白名单 400、Ollama 源 NDJSON 累积、上游 502 统一信封。
+图像走受控上传和输入校验，模型能力按实际目录/服务状态核对。只显示真实返回阶段/进度，保留超时、取消与恢复；AI 整理完成不代表视频已生成或质量合格。按[工作流](../../workflow.md#门禁与构建)选受影响检查；首尾帧、停止/重试、成片、音画同步和成本需要真实任务证据，本次未运行。

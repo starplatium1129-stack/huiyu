@@ -1,9 +1,11 @@
 # 桌面端部署：增量 还是 完整安装
 
+整理日期：2026-10-09。现行维护版本；历史验收不作为本次通过。
+
 统一入口只有一个：**`deploy-desktop.bat`**（项目根）。实现脚本也只有一个：
 `scripts/maintenance/deploy-desktop-quick.ps1`。不要再新建部署脚本。
 
-本机已启用 bundled UI，当前安装身份以[项目状态](project-status.md)为准；2026-09-27 的完整安装见[当次证据](evidence/memory-optimization-2026-09-27.json)。前端变化需要重新打包并完整安装；脚本默认的增量模式适用于下面决策表中的网关、数据和动态资源变化。后续源码改动需另行核对安装身份。
+本机已启用 bundled UI，当前安装身份以[项目状态](project-status.md)为准；不同机器与日期的安装记录不互相替代。前端变化需要重新打包并完整安装；脚本默认的增量模式适用于下面决策表中的网关、数据和动态资源变化。后续源码改动需另行核对安装身份。
 
 2026-09-28 源码已将后端载荷改为 `gateway/huiyu-runtime.exe` 与锁定的原生 DLL，旧 Node 源码不随产品作为回退服务。本次 Rust 构建/安装与上述旧安装分开验收；目前原生发行材料未完成，`releaseReady=false`。按 2026-10-06 的发行规则，该标记与 pending 如实记录，不阻断经用户明确授权的发布；材料索引完整性及源码/产物字节核验仍须通过，发布不代表待项已验收。后端 EXE、DLL或桌面 EXE变化必须完整安装，不能靠 `-SkipBuild` 把旧程序变成新版本。只有当前构建绑定已通过、可复制资源发生变化时才使用既有增量入口。
 
@@ -17,7 +19,7 @@
 
 `npm run wf -- check:desktop-deploy` 使用临时安装目录、独立 owner 记录及真实进程夹具，验证受控退出、旧版本拒绝、进程身份变化与未知残留锁保留；不操作当前安装或触发 UAC。安装后重启会核对新宿主实例及其认证网关就绪，页面/图片显示另做实际界面验收。`-NoRestart` 不执行启动确认，不能据此记录启动成功。
 
-`package:tauri` 暂存实际 Rust EXE、原生 DLL、清单与资源，并按 `bundle.resources` 在仓库外隔离布局启动该 EXE；验证器拒绝旧 `server.js`、服务端 `node_modules` 等误入载荷。可用 `npm run wf -- desktop:verify-gateway` 或 `desktop:rust-bundle` 复验。开发机旧 Node 网关或 Live2D 自测不能代替实际包布局验证；最终结果见[Rust 迁移与剩余验收](../plans/013-node-to-rust-migration.md)。
+`package:tauri` 暂存实际 Rust EXE、原生 DLL、清单与资源，并按 `bundle.resources` 在仓库外隔离布局启动该 EXE；验证器拒绝旧 `server.js`、服务端 `node_modules` 等误入载荷。可用 `npm run wf -- desktop:verify-gateway` 或 `desktop:rust-bundle` 复验。开发机旧 Node 网关或 Live2D 自测不能代替实际包布局验证；最终结果见[统一规划](roadmap.md)。
 
 旧 1.6.0 的缺失 `docs/redirects.json` 修复属于历史 Node 版本，应使用对应版本的发行流程。当前 `-StartupRepair` 仅为已匹配 Rust 构建的安装同步文档、图标和快捷方式，不能升级旧 Node 安装。部署入口从卸载登记读取实际安装位置，多个安装需用 `-InstallDir` 明确选择。
 

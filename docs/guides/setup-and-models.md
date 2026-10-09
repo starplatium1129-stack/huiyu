@@ -2,7 +2,7 @@
 
 新机器先安装桌面程序和完整素材包，随后按需要准备本地 AI 服务。**素材包提供角色、场景样张和浏览所需图片；生图、视频、对话、反推和 AI 配音需要各自的模型及运行环境。** 文件存在或下载校验通过，不能代替真实功能验收。
 
-> 2026-10-07：以下自动准备能力进入 [1.9.1 安装包](../releases/v1.9.1.md)，原 1.9.0 程序包使用旧准备流程。宁宁、夏目 Anima v21 绘图 LoRA 继续使用 [1.9.0 独立附件](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0)，由绘遇作者亲自训练；语音声线与参考库不属于这两份附件。素材安装见 [离线资源指南](offline-resources.md)，启动见 [STARTUP](../../STARTUP.md)。
+> 整理日期：2026-10-09。当前自动准备能力见 [1.9.2](../releases/v1.9.2.md)，源码与安装身份分别核对。宁宁、夏目 Anima v21 绘图 LoRA 仍使用 [1.9.0 独立附件](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0)；声线与参考库是独立资源。安装见[离线资源指南](offline-resources.md)，启动见[STARTUP](../../STARTUP.md)。
 
 ## 1. 一台新机器需要哪些交付物
 
@@ -23,7 +23,7 @@
 
 ### Windows 原生前置：VC++ x64 离线安装材料
 
-已发布的 1.9.1 包仍含带有 VC++ x64 导入项的 ORT DLL；后续源码已退出 ORT 依赖和新包载荷，不据旧 DLL 的导入项推断新包前置条件。新构建仍须按实际原生程序和模型环境核对运行库。WebView2 与 VC++ 运行库用途不同，安装它们不等于已准备 PixAI 所需的 Python、CUDA/PyTorch 与权重。在联网准备机可用以下入口准备微软原始安装器：
+源码已退出 ORT 依赖与新包载荷，旧 DLL 不作为当前包前置条件；按实际原生程序及模型环境核对运行库。WebView2 与 VC++ 用途不同，安装它们不代表 PixAI 的 Python、CUDA/PyTorch 与权重就绪。在联网准备机可用以下入口准备微软原始安装器：
 
 ```powershell
 # 默认只打印计划；不会下载、安装或写目录
@@ -145,7 +145,7 @@ MiaoMiao 发布附件中的 `*_txt.safetensors` 与此 Qwen 0.6B 文件 SHA-256 
 
 2.9B 使用独立的 `anima-miaomiao-2.9b-beta1.1` / `anima_miaomiao_29b_beta11` 身份，旧作品与旧底模文件保留原身份。作者的该版本设置为 Euler / sgm_uniform、28–50 步、CFG 3.5–5；项目起点为 30 步 / 4.5，质量评分词通过最终编译保留。1.6 继续作为公共首选；现有宁宁、夏目及终末地角色 LoRA 尚未在新扩层微调上验收，不声明兼容。下载固定 Civitai 版本 `3360028`、文件 `3247723`，5,843,203,272 字节，SHA-256 `0fb5286099cb6059c5be09c1eb50d222ac6eae9626d761166b7514f8e38ded12`；受限时可使用同大小、同哈希的公开镜像，文件校验与实际出图分别记录。
 
-2026-10-07 本机下载与摘要核对通过，确认 925 个 tensor / 40 层 DiT；在 RTX 4070 Ti SUPER / ComfyUI 0.39.0 上，经 Rust 网关以新模型 ID 生成并目检一张 832×1216 全年龄咖啡馆读书样图（30 步、CFG 4.5、Euler / sgm_uniform、TeaCache 0.08）。最终请求保留评分词，回执确认新 profile、无 LoRA 和所选参数；证据在 `runtime/miaomiao29-integration/`。5 项既有图像契约通过。初次桌面构建因绘制页包体超限被拒绝，1.9.1 准备时已通过按需布局与共用参数装配恢复原有预算；安装包与实际发行证据见 [1.9.1 更新说明](../releases/v1.9.1.md)及[项目状态](../project-status.md)。不以本机样图宣称全库画质或角色 LoRA 已验收。
+2026-10-07 本机下载与摘要核对通过，确认 925 个 tensor / 40 层 DiT；在 RTX 4070 Ti SUPER / ComfyUI 0.39.0 上，经 Rust 网关以新模型 ID 生成并目检一张 832×1216 全年龄咖啡馆读书样图（30 步、CFG 4.5、Euler / sgm_uniform、TeaCache 0.08）。最终请求保留评分词，回执确认新 profile、无 LoRA 和所选参数；证据在 `runtime/miaomiao29-integration/`。5 项既有图像契约通过。安装包与实际发行证据见 [当前发行说明](../releases/v1.9.2.md)及[项目状态](../project-status.md)。不以本机样图宣称全库画质或角色 LoRA 已验收。
 
 ### 终末地角色专用 Anima LoRA
 

@@ -1,12 +1,12 @@
 # 绘遇 HUIYU 启动与排错
 
-本页是换机搭建和故障恢复入口。普通新机器先按 [离线资源发布与换机](docs/guides/offline-resources.md) 安装桌面程序、导入完整素材包，再按需要准备生图、视频、语音和聊天服务。完整素材浏览与本地 AI 推理分开验收；硬件、指定模型下载和运行环境见 [本地模型配置指南](docs/guides/setup-and-models.md)。当前公开桌面版为 [1.9.1](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.1)，使用 Rust 产品后端；公开安装包、本机已安装版本与后续源码改动分别见[项目状态](docs/project-status.md)。[1.9.1 发行说明](docs/releases/v1.9.1.md)记录已交付范围，后续源码修复不因版本号相同而自动到达安装版。
+本页是换机搭建和故障恢复入口。普通新机器先按 [离线资源发布与换机](docs/guides/offline-resources.md) 安装桌面程序、导入完整素材包，再按需要准备生图、视频、语音和聊天服务。完整素材浏览与本地 AI 推理分开验收；硬件、指定模型下载和运行环境见 [本地模型配置指南](docs/guides/setup-and-models.md)。最近登记的公开桌面版为 [1.9.2](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.2)，使用 Rust 产品后端；公开安装包、本机已安装版本与后续源码改动分别见[项目状态](docs/project-status.md)。[1.9.2 发行说明](docs/releases/v1.9.2.md)记录已交付范围，后续源码修复不因版本号相同而自动到达安装版。
 
 ## 新机器的桌面离线安装
 
-准备 [1.9.1 完整桌面安装包](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.1)和[完整素材 `huiyu-resources-20261006-r1.zip`](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1)（481 项基础资源、2,092 条样张），保留发布页的校验文件与配套安装助手。程序安装不自动下载该 ZIP，程序升级也不代表已更新用户素材。图形助手自动检查内置审批指纹；维护者使用单独的 `Install-OfflineResources.ps1` 时，`-ExpectedReleaseSha256` 必须取自独立受信发布说明里的 `release.json` 审批 SHA-256，不能用 ZIP SHA-256 代替。
+准备 [1.9.2 完整桌面安装包](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.2)和[完整素材 `huiyu-resources-20261006-r1.zip`](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1)（481 项基础资源、2,092 条样张），保留发布页的校验文件与配套安装助手。程序安装不自动下载该 ZIP，程序升级也不代表已更新用户素材。图形助手自动检查内置审批指纹；维护者使用单独的 `Install-OfflineResources.ps1` 时，`-ExpectedReleaseSha256` 必须取自独立受信发布说明里的 `release.json` 审批 SHA-256，不能用 ZIP SHA-256 代替。
 
-本次公开附件不转载微软 VC++ 安装器。完全断网的新机须先在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器并带到新机，核对后手动安装，处理许可/UAC与可能的重启，再安装绘遇。1.9.1 完整安装包内嵌 WebView2 离线安装器。安装后完全退出绘遇及其运行时，以自己的普通用户身份双击安装目录 `gateway\tools\Install-OfflineResources.cmd`，选择上述 ZIP 校验并确认安装，成功后重启；也可从开始菜单打开资源安装助手。素材导入使用已安装的 Rust 原生入口，不要求新机具备 E 盘、开发机目录、Node、npm、Python 或克隆 Git。自定义安装/运行目录可按指南传 `-InstallDir` / `-RuntimeRoot`。
+本次公开附件不转载微软 VC++ 安装器。完全断网的新机须先在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器并带到新机，核对后手动安装，处理许可/UAC与可能的重启，再安装绘遇。1.9.2 完整安装包内嵌 WebView2 离线安装器。安装后完全退出绘遇及其运行时，以自己的普通用户身份双击安装目录 `gateway\tools\Install-OfflineResources.cmd`，选择上述 ZIP 校验并确认安装，成功后重启；也可从开始菜单打开资源安装助手。素材导入使用已安装的 Rust 原生入口，不要求新机具备 E 盘、开发机目录、Node、npm、Python 或克隆 Git。自定义安装/运行目录可按指南传 `-InstallDir` / `-RuntimeRoot`。
 
 微软材料可在联网准备机用 `scripts/maintenance/prepare-offline-prerequisites.ps1 -Out <新目录>` 查看只读计划，加 `-Apply` 才下载、验微软签名并记录实际版本/字节/SHA-256；脚本不会执行安装器。下载与新机安装步骤见 [原生前置说明](docs/guides/setup-and-models.md#windows-原生前置vc-x64-离线安装材料)。图片浏览、运行库安装与 PixAI 真实推理分别验收；源码已退出 ORT 依赖和新包载荷，不因此改变既有公开包或已安装文件。
 
@@ -17,14 +17,14 @@ AI 权重不在素材 ZIP 中。提前在联网准备机上取得所选能力的
 1. 先联机准备符合 `package.json` 的 Node.js（最低 22.18，CI 版本见 `.github/workflows/quality.yml`）、Rust/Cargo 与 Windows 对应构建工具；在项目根目录执行 `npm ci`。完全离线的源码构建还需预先准备 npm/Cargo 依赖缓存与原生构建材料，Git 源码不包含这些环境。
 2. 执行 `npm run build` 生成网页和维护命令，再执行 `npm start`。当前产品入口经 `run-rust-runtime` 编译/启动 `runtime-rs`，默认访问 `http://127.0.0.1:3000`；旧 Node 网关已退出产品路径。
 3. 开发网页时另外执行 `npm run wf -- dev:web`，访问 `http://localhost:5173`；保留网关进程，它提供 `/api`、`/data` 与素材。页面能打开但素材一直加载时，先检查网关是否在线。
-4. 数据聚合产物由现有构建流程补齐，不把生成的工具 `.js` 或聚合 JSON 手工复制回 Git。`build:runtime` 仅编译 `node`、`tests`、`browser` 三个工具项目，不生成旧 Node 网关。源码分片修改后的构建入口见 [统一工作流](docs/workflow.md)。
+4. 人物、服装、场景和蓝图的工作权威为运行目录 content/catalog.sqlite；data/catalog/ 是显式项目快照。生成工具 .js 与聚合 JSON 不直接编辑；build:runtime 只在工具源/配置变化或所需入口缺失时准备，见[统一工作流](docs/workflow.md)。
 5. 按 [工作流分层规则](docs/workflow.md#门禁与构建)选择代码、数据契约和构建检查；跨领域整合需要时执行 `npm run wf -- gate:full`，不在每次启动或小改后重复。参考媒体不入 Git：未配置素材根（`AI_WORKSPACE_ROOT` 或 `AICS_CHARACTER_REF_ROOT`）的机器上，`npm run check` 与 `gate:full` 的 `content-contracts`、`ref-urls` 两步会因参考图缺失而失败——这是预期防线，先按下文恢复素材，不要改写索引迁就缺图。只做索引结构核对的办公机可设 `AICS_REFERENCE_AUDIT_MODE=structure`；它只验证索引结构，不能算作图片交付。
 
 ## 本机 AI 服务与模型
 
 | 能力 | 默认地址 / 环境变量 | 资源与验证入口 |
 | --- | --- | --- |
-| SD / WAI | `http://127.0.0.1:7860` / `SD_HOST` | WebUI 需 `--api`；控制面板检查连接 |
+| 旧 SD / WAI 任务兼容 | `http://127.0.0.1:7860` / `SD_HOST` | WebUI 需 `--api`；控制面板检查连接 |
 | Anima / Krea 2 / 视频 | `http://127.0.0.1:8188` / `COMFY_HOST` | 启动已有 ComfyUI 可用 `npm run wf -- comfy:start`；该入口不负责安装 ComfyUI 或下载模型 |
 | 角色语音 | `http://127.0.0.1:9880` / `TTS_HOST` | GPT-SoVITS 权重与参考音频；控制面板配置角色声线 |
 | 本地聊天 | `http://127.0.0.1:11434` / `OLLAMA_HOST` | Ollama 模型由 `OLLAMA_MODEL` 或页面选择 |
@@ -47,54 +47,11 @@ Windows 的 npm/npx 通过已安装的 CLI JavaScript 入口执行，不启用�
 - 本机使用不需要分享令牌。分享链接首次认证后会换为 HttpOnly cookie 并清除地址里的 token；停止分享后再进行配置迁移。排错时可用 `DISABLE_TUNNEL=1` 启动仅本机网关。
 - 桌面安装版可能使用独立的运行目录；从托盘的运行目录入口确认实际位置，部署与完整安装按 [桌面部署指南](docs/desktop-deployment.md) 操作。
 
-## 完整模式：连接 SD WebUI
+## 桌面程序与旧任务
 
-远程访客的生成与取消使用应用任务接口。原生 SD 配置写入、直接生成、中断和 WebSocket 兼容通道只允许本机直连；持有分享 token 不会获得这些全局操作能力。模型、采样器和进度等必要只读查询继续保留。
+普通用户直接启动绘遇；源码开发使用 npm run dev:tauri。Companion 提供透明悬浮窗、聊天、托盘与全局快捷键，Atelier 是完整工作台。桌面部署和升级统一见[部署指南](docs/desktop-deployment.md)。
 
-### 准备条件
-
-- Windows 桌面安装版；使用源码启动入口时另需 Node.js 与 Rust 构建工具
-- 由 Stability Matrix 启动的 AUTOMATIC1111、Forge 或 ReForge
-- WebUI 启动参数中包含 `--api`
-- 如需生成公网分享链接，本机还要安装 `cloudflared`
-
-建议在 Stability Matrix 中使用：
-
-```text
---api --port 7860
-```
-
-`--api` 不会关闭 WebUI 自带页面，也不会妨碍本地正常使用。它让绘遇通过接口读取配置和提交出图任务。
-
-### 启动步骤
-
-1. 先在 Stability Matrix 中启动 WebUI。
-2. 查看日志中的地址，通常是 `http://127.0.0.1:7860`。
-3. 双击项目根目录的 `control.bat`。
-4. 在控制面板填写 WebUI 地址，等待状态显示已连接。
-5. 本地使用点击 **本机地址 → 打开**，不需要启动公网分享。
-6. 需要分享时开启公网分享通道，点击 **启动并生成分享链接**，再复制带 Token 的链接给朋友。
-7. 使用结束后在控制面板「本机服务」区按需停止各服务（网站网关始终在运行，只能停止公网分享）。ComfyUI 与 reForge 无论由面板启动还是手动启动，只要监听的是面板配置的端口、且命令行含 `main.py` / `launch.py`，「停止」都能关闭；占用同一端口的无关进程不会被误杀。
-
-源码启动器 `control.bat` 在缺依赖时会执行 `npm ci`，缺网页时执行 `npm run build`，之后编译并启动 Rust 网关，收到就绪消息后自动打开浏览器；这些准备步骤可能需要网络和构建工具。窗口只显示准备阶段、就绪后的实际控制室地址与必要警告/错误；构建、备份和运行时原始输出保存在每次独立的 `runtime/logs/startup-<时间>-<进程号>.log`。Cargo首次编译期间保留窗口等待，准备失败会显示末尾诊断与日志位置并等待确认；备份失败只警告，不阻断启动。普通桌面安装版直接用绘遇程序。控制室默认在 `http://127.0.0.1:3000/control`，创作网站在同一网关根路径；设置 `PORT` 后启动器按实际端口检查占用并打开页面。
-
-### 本地使用和朋友分享的区别
-
-- **本地网站**：只允许当前电脑访问，不需要 Token。
-- **朋友链接**：通过临时公网通道访问，必须带 Token。
-- **没有 cloudflared**：本地网站和 SD 连接照常使用，但不会出现公网域名。
-- **重新启动网关**：Token 持久保存在 runtime/state/ 下，重启后保持不变；只有临时公网域名可能变化，需要重新发链接。
-
-朋友不需要安装 SD WebUI，所有生成任务仍由你的电脑执行。请只把链接发给信任的人，并在不用时停止分享。
-
-## 可选：桌面 Companion 应用
-
-Tauri 2 是桌面壳。开发执行 `npm run dev:tauri`，构建 NSIS 执行 `npm run package:tauri`（安装版 `setup.exe` 静默安装 `setup.exe /S`）。桌面 Companion：无边框透明置顶的角色悬浮窗，内置角色聊天、托盘菜单（置顶 / 鼠标穿透 / 开机启动 / 打开运行时与日志）、全局快捷键（Ctrl+Shift+Space 显隐、Ctrl+Shift+A 打开 Atelier 工作台、Ctrl+Shift+P 切换鼠标穿透）、剪贴板感知与安静时段提醒；带 `--hidden` 参数启动时只驻留托盘不显示窗口（适合开机自启）。Electron 回退版已退役（存档见 `desktop-electron-legacy` tag）。
-
-- Companion 会自动拉起（或接管已运行的）本地网关，Atelier 工作台是完整网站窗口。
-- Tauri packaged 模式保留维护契约：场景维护相关接口返回 `501 DESKTOP_MAINTENANCE_UNAVAILABLE`；展示集与 home-hero 写入不受该限制。
-
-出图方面，SD/WAI 与 Anima/Krea 2（ComfyUI）双主路径并行：SD/WAI 走 WebUI，Anima/Krea 2 走固定 Comfy 工作流；WAI 兼容请求优先 Comfy，仅超出白名单时回退 WebUI。Krea 无负面词（Turbo CFG≈0 负面失效）；热门角色默认无专属 LoRA，角色一致性靠「角色名+系列+identityProse 外貌散文」锚定（见 `docs/research/prompts/krea2-prompt-research-2026-08-30.md`）；detailer 与 ControlNet 仍依赖 WebUI，仅当 Comfy 可用时的 latent `nearest-exact` hires（1.5x/20 steps/denoise 0.4）与 Remacri 2x 像素超分可走 Comfy 直出。
+新生成只使用 Anima/Krea 2；SD/WAI 新生成及受管启动已退出，保留旧任务查询、取消、收集和历史作品。仅为恢复旧任务时核对原 WebUI 地址/认证，不将其作为新用户必装步骤。远程分享只提供经过授权的内容投影，未知或未发布状态拒绝访问。
 
 ## 可选：GPT-SoVITS 角色语音
 
@@ -127,57 +84,6 @@ npm run start:run
 ```
 
 网页端聊天记录保存在当前浏览器；桌面 workspace 激活后，聊天、设置和草稿保存到本机私库，由 runtime 统一读写。运行时断开不会改写旧浏览器库。关闭 Ollama 不会影响场景浏览、Prompt 或 SD 出图；角色房间会显示离线状态。开启“回复后自动配音”时，中文回复会先经过现有本地翻译链路，再调用 GPT-SoVITS 生成日语声音。
-
-## 双人构图增强
-
-当前电脑的 reForge 已配置 Regional Prompter、内置 ControlNet 与 ADetailer。导演台选择“宁宁 × 夏目”的双人场景时会自动按当前能力启用：
-
-- **角色分区**：把共同环境、左侧宁宁和右侧夏目的提示词分开，减少脸、发色、瞳色与服装互相污染。
-- **姿势约束**：读取 `assets/dual-poses/场景ID.png`，使用 Xinsir SDXL OpenPose 模型稳定两人的位置、朝向与互动关系。
-- **双脸精修**：只对 `wide_shot` 或 `full_body` 双人场景启用低重绘幅度 ADetailer，避免近景中已经稳定的官方脸被二次改坏。
-
-这些能力只对双人角色生效。宁宁或夏目的单人生成仍使用已逐场景审核的原模型、Prompt、LoRA 权重和采样参数，不会附带 Regional Prompter、ControlNet 或 ADetailer。
-
-控制面板启动 reForge 时会自动添加共享模型目录：
-
-```text
---controlnet-dir E:\code\2\lora\AI\Data\Models\ControlNet
-```
-
-当前姿势模型为 `xinsir_openpose_sdxl_1.0.safetensors`。逐场景姿势图如需重建，请先启动 WebUI，再执行：
-
-```powershell
-python scripts/maintenance/generate-dual-pose-assets.py
-```
-
-若扩展或模型暂时不可用，网站会按实际检测到的能力自动降级，普通出图仍可继续。
-
-## WebUI 地址不是 7860
-
-Stability Matrix 可能自动分配其他端口。不要猜端口，直接复制日志中显示的本机地址，例如：
-
-```text
-http://127.0.0.1:7861
-```
-
-在控制面板停止分享后修改地址，再重新启动。地址只接受当前电脑的 `http://127.0.0.1:端口` 或 `http://localhost:端口`。
-
-## WebUI 使用 API 认证
-
-如果 WebUI 的启动参数包含：
-
-```text
---api-auth user:password
-```
-
-请在启动 `control.bat` 前打开 PowerShell，并在当前窗口设置：
-
-```powershell
-$env:SD_API_AUTH = 'user:password'
-./control.bat
-```
-
-关闭该 PowerShell 窗口后，环境变量不会继续保留。
 
 ## 只浏览页面
 
@@ -234,11 +140,11 @@ C:\Program Files (x86)\cloudflared\cloudflared.exe
 ```powershell
 npm ci
 npm run build
-$env:SD_HOST = 'http://127.0.0.1:7860'
+$env:COMFY_HOST = 'http://127.0.0.1:8188'
 npm run start:run
 ```
 
-`npm ci` 的 postinstall 构建 TypeScript 维护命令，`npm run build` 构建网页；这些产物不入 Git。`npm run start:run` / `npm start` 使用 Rust/Cargo 产品入口，需要前述构建工具与原生库。`build:runtime` 构建的是维护、测试和保留对照模块，不能把它的成功当作 Rust 二进制已经构建或启动。持续开发可使用 `npm run dev:server`。
+`npm ci` 的 postinstall 构建 TypeScript 维护命令，`npm run build` 构建网页；这些产物不入 Git。`npm run start:run` / `npm start` 使用 Rust/Cargo 产品入口，需要前述构建工具与原生库。`build:runtime` 构建的是维护、测试和浏览器工具，不能把它的成功当作 Rust 二进制已经构建或启动。持续开发可使用 `npm run dev:server`。
 
 网关默认不开公网分享；`AUTO_TUNNEL=1` 或已保存的自动分享偏好才会在启动时打开。需要明确禁止隧道时：
 
@@ -261,23 +167,4 @@ npm run start:run
 
 旧版根目录中的 `.gateway_*`、`tunnel.log` 和 `friend_outputs/` 会在首次启动时自动迁移。`runtime/` 已被 Git 忽略，不应提交。
 
-- `data/scenes/*.json` / `data/blueprints/*.json`：场景与蓝图权威源；规模见[项目状态](docs/project-status.md)
-- `data/scenes.json` / `data/scene-blueprints.json`：从分片构建的聚合产物，不直接编辑
-- `data/characters.json`：角色设定
-- `data/tags.json`：统一标签
-- `data/loras.json`：LoRA 配置
-- `scripts/maintenance/validate-scenes.js`：场景一致性校验
-- `scripts/maintenance/optimize-scenes.js`：规范标签、镜头、负面词与未解析占位符
-- `scripts/maintenance/clean-scenes.js`：批量清洗脚本，运行前会创建备份
-
-开发工作区日常增删场景或替换样张，请进入本机网站的“更多 → 场景管理”。点击“保存到项目”时会自动创建备份并执行对应数据检查。桌面安装版不开放场景源库写入接口；展示集与首页插画维护另有入口。
-
-只有直接批量编辑场景源文件时，才需要手动执行：
-
-```powershell
-npm run validate
-```
-
-批量导入或修改 `data/scenes/*.json` 后，可先运行 `npm run optimize-scenes`，再运行校验。不要直接编辑自动生成的 `data/scenes.json`。
-
-批量清洗会直接改写场景数据，不应作为普通启动步骤；只有明确需要整理数据时再使用。
+人物、服装、场景、蓝图和记录式文档通过内容维护页或 content:catalog 记录 API 维护，实际运行目录 content/catalog.sqlite 是工作权威。data/catalog/ 是显式导出的初始化/发行快照，旧分片只作升级来源；不要手写聚合文件或执行旧批量清洗作为启动步骤。参考源继续使用 data/references/ 分片，图片发布、审核和备份各走受控入口。详见[内容维护](docs/maintenance.md)与[工作流](docs/workflow.md)。

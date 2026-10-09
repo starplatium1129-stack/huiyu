@@ -1,7 +1,0 @@
-{
-  "id": "shirogane_kei_sfw_b8_01",
-  "beforeSha256": "9bde2067b58dde58026992cc0fc3dbc7ea92b50557509388d71f6c04c8ca92e5",
-  "afterSha256": "10b25b4a5ed26e1532b367ce4aea43670b8e5e6587c02a73c3397c16d03a6c49",
-  "reason": "Use mailbox for the postal object so it is distinct from the letterbox border suppression term. This is lexical disambiguation, not a claimed observed image failure.",
-  "visualReview": "pending-user-manual-review"
-}

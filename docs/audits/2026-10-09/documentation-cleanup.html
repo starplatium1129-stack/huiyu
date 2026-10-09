@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>文档归纳与清理 · 2026-10-09</title>
+<style>:root{color-scheme:light dark;--bg:light-dark(#faf9f6,#191b20);--text:light-dark(#252932,#e9eaf0);--muted:light-dark(#555c69,#b7bfcc);--line:light-dark(#d8dce2,#434b58);--link:light-dark(#2459a0,#a4c9ff)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:900px;margin:auto;padding:32px 24px}h1{font-size:28px;margin:8px 0 16px}h2{font-size:20px;margin-top:28px}p{margin:10px 0}a{color:var(--link)}.meta{color:var(--muted)}.number{font-size:32px;font-weight:650;font-variant-numeric:tabular-nums}table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}td:last-child{font-variant-numeric:tabular-nums}code{overflow-wrap:anywhere}li{margin:6px 0}@media(max-width:600px){main{padding:20px 14px}h1{font-size:24px}th,td{padding:8px 4px}}</style></head><body><main>
+<p class="meta">AI-CG-Studio · 2026-10-09 · 文档维护</p><h1>现行文档已收敛，旧过程退出工作目录</h1>
+<p class="number">620 → 65 个文件</p><p class="meta">统计范围：docs/ 与 plans/，包含原有证据、配套脚本与图片。移除 558 个旧文件，新增 3 个归纳文件；第三方许可证和随代码保留的使用说明不计入。</p>
+<p><a href="../../INDEX.md">现行文档索引</a> · <a href="../../index.html">浏览入口</a> · <a href="../../project-status.md">项目状态</a> · <a href="../../roadmap.md">统一规划</a></p>
+<h2>本次归纳</h2><ul>
+<li>状态、待办、操作命令分别归入固定入口；合并 004 / 009 / 010 / 013 专项计划，保留暂停决定。</li>
+<li>将原 012 的 85 项外部条件和性能/陪伴场景整理为<a href="../../architecture/acceptance-checklist.md">现行验收清单</a>，去掉旧 PASS 与已修复问题。</li>
+<li>将远程投影迁为<a href="../../architecture/REMOTE-CONTENT-DESIGN.md">架构契约</a>，研究合并为<a href="../../research/README.md">来源与采用边界</a>，两份视频文档合为一份当前工作流。</li>
+<li>修正 README、启动、离线资源和 TypeScript 文档中的旧版本、已退役 Node/SD 入口与数据权威说明；更新导航及旧地址映射。</li>
+</ul>
+<h2>清理范围</h2><table><thead><tr><th>类别</th><th>移除文件</th></tr></thead><tbody><tr><td>旧审计与交接</td><td>88</td></tr><tr><td>原始证据与截图</td><td>436</td></tr><tr><td>重复研究与候选快照</td><td>24</td></tr><tr><td>旧版发行说明</td><td>5</td></tr><tr><td>专项计划副本</td><td>4</td></tr><tr><td>重复视频指南</td><td>1</td></tr></tbody></table>
+<p>保留现行指南、当前发行说明和<a href="fullstack-performance.html">今日性能报告</a>。生产数据、提示词正文、模型、图片资产和程序代码未改动。旧材料仍在 Git 历史；清理前提交为 <code>c5e0be4567f721ca2dec244ec80219ec27e5cbc4</code>，可按原路径查回，不另建归档副本。</p>
+<h2>必要验证</h2><table><thead><tr><th>状态</th><th>检查与边界</th></tr></thead><tbody>
+<tr><td id="links-status">通过</td><td id="links-detail">55 份阅读文档、444 个可分发链接、72 条旧地址映射，0 处断链。GitHub 干净检出曾暴露本机证据链接问题；99 个日志链接与 2 张截图现改为本机路径说明，检查器新增 Git 忽略规则核验。外部网站或全部标题锚点不在此检查范围。</td></tr>
+<tr><td id="diff-status">通过</td><td id="diff-detail">git diff --check 无格式错误；558 个删除文件与清理清单一致，未改程序源码。已复核脚本消费者，保留计划目录入口、发行说明与运行时重定向。</td></tr>
+<tr><td>通过</td><td>本次后续修复仅修改文档检查器及其既有测试。npm test 自动选择 docs + test-doc-redirects，3 个回归全部通过；工具和测试 TypeScript 编译通过，定向 ESLint 0 错误，保留 6 条既有 any 警告。</td></tr>
+<tr><td>未运行</td><td>全仓门禁、应用构建、外部来源重验、真实模型、安装或设备测试；本次仅整理文档。</td></tr>
+</tbody></table>
+<h2>仍保留的项目限制</h2><p>今日已有报告中的 sc009/sc027 长度规则失败、Windows 符号链接用例未验证、冷进入长任务及真实模型/原生设备/长期资源边界均已保留。本次定向检查不改变这些结论，不宣称全仓门禁已通过；没有安装或部署。</p>
+</main></body></html>

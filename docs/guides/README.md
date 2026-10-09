@@ -1,11 +1,12 @@
 # 专题指南
 
-按问题查阅；通用约束以 DESIGN 与工程契约为准。下方列出现行操作入口和独立创作参考；专题中的旧参数、验证日期与完成数量不代表当前生产状态。现行实现与安装见 [项目状态](../project-status.md)，待办见 [未来规划](../roadmap.md)。
+整理日期：2026-10-09。按问题查阅，通用约束以 DESIGN 和工程契约为准。以下只保留现行操作入口与独立创作参考；历史参数/实验不作为本次验证。当前实现见[项目状态](../project-status.md)，待办见[未来规划](../roadmap.md)。
 
 [返回主索引](../INDEX.md)
 
 ## 环境与模型
 
+- [离线素材安装与发行](offline-resources.md)：程序、素材与模型分开准备。
 - [本地硬件与模型配置指南](setup-and-models.md)：文件位置、下载入口与体检；服务连接、实际推理和设备验收分别核对。
 
 <a id="art"></a>
@@ -42,6 +43,8 @@
 - [随机灵感（Random Prompt Assembler）设计文档](engineering/random-prompt-assembler-design.md)
 - [工程维护边界](engineering/maintainability-boundaries.md)
 - [TypeScript 开发与生成物边界](engineering/typescript-development.md)
+- [Tailwind 样式维护](engineering/tailwind-styling.md)
+- [Apple HIG Web 指南](design/apple-hig-web-guidelines.md)
 
 <a id="prompts"></a>
 
@@ -55,11 +58,10 @@
 - [人物与环境融合的叙事 CG 提示词规范](prompts/narrative-cg-prompt-standard.md)：双引擎写法、原创案例和主力机对照验收。
 - [Prompt 规范 · 绫季绘境](prompts/prompt-spec.html)
 - [标签规范 · 绫季绘境](prompts/tag-standard.html)
-- [词条出图语义参考（2026-08-24 研究快照）](prompts/tag-visual-semantics.md)
+- [词条出图语义参考](prompts/tag-visual-semantics.md)
 
 <a id="video"></a>
 
 ## 视频
 
-- [剧情短片工作流调研与应用方案（历史研究）](video/narrative-short-film-workflow.md)
-- [分镜短片「AI 整理」链路（2026-08-16 历史实现）](video/video-ai-storyboard.md)
+- [视频与分镜工作流](video/video-ai-storyboard.md)：操作、当前 Rust/前端入口和真实成片验收边界。

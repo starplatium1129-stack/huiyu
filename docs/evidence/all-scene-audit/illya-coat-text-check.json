@@ -1,9 +1,0 @@
-{
-  "method": "Text search only; no image opened/uploaded.",
-  "sources": [
-    {"url":"https://taka1993.livedoor.blog/archives/2016-07.html","type":"secondary fan episode commentary, July 2016","supports":"Explicitly associates the purple coat with stay-night Illya, distinguishing it from the spinoff's summer look."},
-    {"url":"https://gamefaqs.gamespot.com/boards/180151-fate-grand-order/77411073?page=5","type":"secondary fan discussion","supports":"Describes Illyasviel's heavy purple coat in the first Fate story."}
-  ],
-  "decision": "Correct the project's red winter-coat prose/token to purple, and refresh the two affected SFW scenes. Other costume structure retained.",
-  "limits": ["No primary textual color confirmation found in this search; fanfiction and image-board tags were not used as canon proof.","No claim of complete official costume reproduction or visual verification.","Existing purple-cloak variant and character profile also use purple, but project data is not independent canon proof."]
-}

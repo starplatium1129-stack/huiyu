@@ -4,7 +4,7 @@
 
 手机壁纸作为与 [桌面人物壁纸](character-wallpaper-prompt-standard.md)、[叙事 CG](narrative-cg-prompt-standard.md)并列的图像交付方向。应用本身仍以 PC 端为主，本规范不要求开发手机版界面。
 
-模型语法和证据分级沿用 [Anima／Krea 2 研究](../../research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)。本页新增的布局建议和候选尚未真实出图或手机验收。主验收机型已明确为 iPhone 17 Pro，同时覆盖其他常见长竖幅；实际锁屏时钟、组件和通知布局仍需在设备上确认。
+模型语法和证据分级沿用 [研究来源与采用边界](../../research/README.md)。本页新增的布局建议和候选尚未真实出图或手机验收。主验收机型已明确为 iPhone 17 Pro，同时覆盖其他常见长竖幅；实际锁屏时钟、组件和通知布局仍需在设备上确认。
 
 ## 一、先确定目标屏幕
 
@@ -85,7 +85,7 @@ A tall anime portrait of an adult woman with long dark hair and amber eyes, wear
 
 验收分三层：原图的身份／姿态／画质；目标比例裁切的关键区域；实际手机锁屏／主屏遮挡。分别保留无通知、带通知和常用图标布局的预览结果，不能只展示空白手机界面。
 
-实验登记见 [共同计划](../../research/prompts/anima-krea2-narrative-eval-plan.json)。此处所有示例是图像创作建议，不涉及安装版 UI 或真实设备设置变更。
+实验登记见 [研究来源与采用边界](../../research/README.md)。此处所有示例是图像创作建议，不涉及安装版 UI 或真实设备设置变更。
 
 ## 来源
 

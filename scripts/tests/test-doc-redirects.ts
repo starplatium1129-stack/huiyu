@@ -26,3 +26,26 @@ test('unbuilt documented tools and redirects require an existing authoritative s
     assert.equal(process.exitCode, 0, 'unbuilt generated redirects must resolve through their source');
   } finally { process.exitCode = previousCode; }
 });
+
+test('locally present ignored evidence cannot make repository links pass', t => {
+  const { check }: typeof import('../maintenance/check-doc-links') = require('../maintenance/check-doc-links');
+  const fs: typeof import('node:fs') = require('node:fs');
+  const root = path.resolve(__dirname, '../..');
+  const document = path.join(root, 'docs/INDEX.md');
+  const evidence = path.join(root, 'runtime/doc-link-regression/evidence.html');
+  const read = fs.readFileSync, exists = fs.existsSync, previousCode = process.exitCode;
+  const messages: string[] = [];
+  t.mock.method(fs, 'readFileSync', ((...args: Parameters<typeof read>) => {
+    const content = read(...args);
+    return args[0] === document ? String(content) + '\n[Local evidence](../runtime/doc-link-regression/evidence.html)\n' : content;
+  }) as typeof read);
+  t.mock.method(fs, 'existsSync', (file: import('node:fs').PathLike) => file === evidence || exists(file));
+  t.mock.method(console, 'error', (message: string) => messages.push(message));
+  t.mock.method(console, 'log', () => {});
+  try {
+    process.exitCode = 0;
+    check();
+    assert.equal(process.exitCode, 1);
+    assert.match(messages.join('\n'), /doc-link-regression\/evidence\.html \(ignored local file/);
+  } finally { process.exitCode = previousCode; }
+});

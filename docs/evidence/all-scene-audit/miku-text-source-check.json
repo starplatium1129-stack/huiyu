@@ -1,9 +1,0 @@
-{
-  "method": "Text search only; no images viewed/uploaded.",
-  "sources": [
-    {"url":"https://piapro.net/pages/character","type":"official profile","supports":"Hatsune Miku is officially age 16 and blue-green is her image color."},
-    {"url":"https://blog.piapro.net/2012/10/post-581.html","type":"official costume announcement","supports":"Lists jacket, skirt, tie, arm covers, boot covers, headset and hair ornaments as separate costume pieces."},
-    {"url":"https://project-diva.fandom.com/wiki/Hatsune_Miku","type":"secondary game appearance description","supports":"Connects default look to V2 box art and describes grey/silver sleeveless top, turquoise tie, dark skirt/legwear and footwear."}
-  ],
-  "limits": ["Exact color rendering and footwear construction were not visually inspected.","Anniversary elapsed years do not change the official character age.","No generated art from third-party sites or image-board tags was used as appearance proof."]
-}
