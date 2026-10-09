@@ -11,24 +11,25 @@
     </div>
     <p v-if="!isLocal" class="setup-note">请在运行绘遇的本机打开控制室；远程访问不会读取工作区或设备信息。</p>
     <template v-else>
-      <p class="setup-scope">绘图首选 MiaoMiao 1.6，Base 为更自由的风格候选。绘遇可以准备环境、模型与作者亲训的角色 LoRA；聊天按硬件推荐 llama.cpp 或 API。</p>
+      <p class="setup-scope">先准备绘图：选择 AI 工作区，核对环境、模型、连接与节点。默认使用 MiaoMiao 1.6；聊天可以稍后按需配置。</p>
       <div class="setup-result" :data-state="basicComplete ? 'checked' : 'pending'" role="status" aria-live="polite">
         <ArchiveIcon :name="basicComplete ? 'success' : 'info'" /><strong>{{ summary }}</strong>
       </div>
       <p v-if="error" class="setup-error" role="alert">{{ error }}</p>
-      <div v-if="snapshot" class="setup-overview" aria-label="基础检查摘要">
-        <span>ComfyUI 入口：{{ fileLabel(snapshot.comfy.installation) }}</span>
-        <span>服务：{{ connectionLabel }}</span>
-        <span>推荐文件：{{ presentRecommended }} / {{ recommendedModels.length }} 大小相符</span>
-        <span>节点：{{ nodeLabel }}</span>
-      </div>
+      <ol v-if="snapshot" class="setup-overview" aria-label="绘图准备进度">
+        <li v-for="step in checklist" :key="step.id" :data-ready="step.ready">
+          <ArchiveIcon :name="step.ready ? 'success' : 'info'" aria-hidden="true" />
+          <span>{{ step.label }}</span><strong>{{ step.ready ? '已确认' : '待确认' }}</strong>
+        </li>
+      </ol>
       <p class="setup-next"><strong>下一步</strong> {{ nextStep }}</p>
       <div class="setup-actions">
         <button v-if="desktop" ref="workspaceButton" class="btn btn-ghost btn-sm" type="button" :disabled="workspaceLoading || workspaceSaving" @click="openWorkspace">
           <ArchiveIcon name="gear" />{{ workspaceLoading ? '读取目录中…' : '选择 AI 工作区' }}
         </button>
-        <RouterLink v-if="basicComplete" class="btn btn-ghost btn-sm" to="/prompt-builder"><ArchiveIcon name="spark" />前往工作台验证</RouterLink>
+        <RouterLink class="btn btn-ghost btn-sm" to="/prompt-builder"><ArchiveIcon name="spark" />{{ basicComplete ? '前往绘图画室' : '先准备创作草稿' }}</RouterLink>
       </div>
+      <p v-if="!basicComplete" class="setup-note">模型尚未就绪时，也可以先选择角色、场景并编排提示词；生成时再连接绘图服务。</p>
       <p v-if="workspaceNotice" class="setup-note" role="status">{{ workspaceNotice }}</p>
       <button v-if="workspacePending && desktop?.restartForSetup" class="btn btn-primary btn-sm" type="button" @click="restartForSetup">重启绘遇并继续配置</button>
       <p v-if="downloadNotice" class="setup-note" role="status">{{ downloadNotice }}</p>
@@ -95,163 +96,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import LocalSetupPreparation from './LocalSetupPreparation.vue'
 import LocalSetupAutomation from './LocalSetupAutomation.vue'
-import { modelPreparationState, formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'
 import CompanionWorkspaceSettings from './CompanionWorkspaceSettings.vue'
-import { localSetupApi } from '../api/localSetupApi.ts'
-import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
-import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
-import { STARTER_MODEL_SETTING, settingsRepository } from '../storage/settingsRepository'
-import { flushProfileWrites } from '../platform/web/profileStorage'
-import type { LocalSetupFileState, LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup.ts'
+import { formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'
+import { useLocalSetup } from '../composables/useLocalSetup'
 
-const isLocal = isLocalStudioHost()
-const desktop = isLocal ? getDesktopCapabilities() : undefined
-const snapshot = ref<LocalSetupResponse | null>(null)
-const selectedModel = ref(settingsRepository.get(STARTER_MODEL_SETTING) || 'anima-miaomiao-v1.6')
-function selectSetupModel(modelId:string) {
-  if(selectedModel.value===modelId)return
-  selectedModel.value=modelId
-  // A model change owns a new readiness check; a late previous result is no longer relevant.
-  controller?.abort();controller=null;loading.value=false
-  void refresh()
-}
-async function restartForSetup(){
-  try{await flushProfileWrites();await desktop?.restartForSetup?.()}
-  catch(cause){workspaceError.value=cause instanceof Error?cause.message:'重启未完成，请完全退出后重新打开绘遇'}
-}
-const verificationFailures = ref<Record<string, string>>({})
-const downloadNotice = ref(''), workspacePending = ref(false)
-const workspaceActiveRoot = ref<string | null>(null)
-const workspaceUnconfirmed = computed(() => !!desktop && workspaceActiveRoot.value !== snapshot.value?.workspace.path)
-let workspaceRead = 0
-const loading = ref(false), error = ref(''), cancelled = ref(false)
-let controller: AbortController | null = null
-let disposed = false
-const recommendedModels = computed(() => snapshot.value?.models.filter(model => model.required) ?? [])
-const otherModels = computed(() => snapshot.value?.models.filter(model => !model.required && (!model.kind || model.kind === 'image')) ?? [])
-const presentRecommended = computed(() => recommendedModels.value.filter(model => modelPreparationState(model) === 'bytes-match').length)
-const nodesChecked = computed(() => snapshot.value?.nodes.state === 'checked' && snapshot.value.nodes.required.length > 0)
-const failedModels = computed(() => recommendedModels.value.filter(model => verificationFailures.value[model.id] === model.path))
-function recordVerification(result: LocalSetupVerificationResult) {
-  const failures = { ...verificationFailures.value }
-  if (result.state === 'sha256-match') delete failures[result.modelId]
-  else failures[result.modelId] = result.path
-  verificationFailures.value = failures
-}
-function recordDownload(result: LocalSetupDownloadResult) {
-  if (result.state === 'failed') {
-    if (result.code === 'MODEL_CONFLICT') verificationFailures.value = { ...verificationFailures.value, [result.modelId]: result.path }
-    return
-  }
-  downloadNotice.value = result.message
-  const failures = { ...verificationFailures.value }; delete failures[result.modelId]; verificationFailures.value = failures
-  void refresh()
-}
-const basicComplete = computed(() => !loading.value && !error.value && !cancelled.value && failedModels.value.length === 0 && !!snapshot.value && snapshot.value.workspace.state === 'present'
-  && snapshot.value.comfy.installation === 'present' && snapshot.value.comfy.connection === 'online'
-  && recommendedModels.value.length >= 3 && presentRecommended.value === recommendedModels.value.length
-  && nodesChecked.value && snapshot.value.nodes.missing.length === 0)
-const connectionLabel = computed(() => snapshot.value?.comfy.connection === 'online' ? '在线' : snapshot.value?.comfy.connection === 'offline' ? '未连接' : '未知')
-const nodeLabel = computed(() => !nodesChecked.value ? '尚未确认' : snapshot.value!.nodes.missing.length ? `缺少 ${snapshot.value!.nodes.missing.length} 项` : '所需节点已注册')
-const checkedAtLabel = computed(() => snapshot.value ? new Date(snapshot.value.checkedAt).toLocaleTimeString('zh-CN') + ' 检查' : '')
-const summary = computed(() => loading.value ? '正在读取本机配置…' : error.value ? '检查未完成，状态待确认'
-  : cancelled.value ? '检查已取消' : basicComplete.value ? '基础只读检查已完成，尚未真实出图'
-    : snapshot.value ? '推荐起步路径还有项目待确认' : '尚未检查')
-const nextStep = computed(() => {
-  const value = snapshot.value
-  if (loading.value) return '等待本次只读检查，或取消后稍后再试。'
-  if (error.value || cancelled.value) return '本次检查尚未确认；保留的路径来自上次结果，请重新检查后再判断准备状态。'
-  if (!value) return '重新检查以读取当前配置；此操作不会安装文件或启动服务。'
-  if (failedModels.value.length) return `${failedModels.value.map(model => model.label).join('、')} 的完整性校验未通过。重新检查不会清除此问题；请核对文件并重新校验 SHA-256 后再尝试出图。`
-  if (value.workspace.state !== 'present' || value.comfy.installation !== 'present') return '先选择 AI 数据磁盘，再用下方一键准备环境与模型。已有服务可在手动管理中核对。'
-  if (presentRecommended.value < recommendedModels.value.length) return '打开准备向导，按来源、大小与精确路径补齐或核对推荐组合；已有其他底模仍可按原配置使用。'
-  if (value.comfy.connection !== 'online') return '用下方一键准备或控制室启动 ComfyUI；外部管理的环境沿用原入口。'
-  if (!nodesChecked.value) return '节点注册信息尚未确认，请核对连接的 ComfyUI 服务后重新检查。'
-  if (value.nodes.missing.length) return '按下方缺少的节点注册名检查 ComfyUI 扩展，手动重启该服务后重新检查。'
-  return '去工作台生成一张全龄图片，或进入角色房间发送短消息，确认本机实际效果。'
-})
-const fileLabel = (state: LocalSetupFileState) => ({ present: '已发现', missing: '未发现', unknown: '未知' })[state]
-async function refresh() {
-  if (!isLocal || loading.value || disposed) return
-  const request = new AbortController()
-  controller = request
-  loading.value = true; error.value = ''; cancelled.value = false
-  // Keep the download owner mounted; a new snapshot still resets read-only verification.
-  if (snapshot.value) snapshot.value = { ...snapshot.value }
-  if (desktop) void readWorkspaceBinding()
-  try {
-    const result = await localSetupApi.getStatus({ signal: request.signal, modelId: selectedModel.value })
-    if (!disposed && controller === request && !request.signal.aborted) snapshot.value = result
-  } catch (cause) {
-    if (!disposed && controller === request && !request.signal.aborted) error.value = cause instanceof Error ? cause.message : '读取配置失败，请重新检查。'
-  } finally {
-    if (!disposed && controller === request) { loading.value = false; controller = null }
-  }
-}
-function cancelCheck() {
-  ++workspaceRead
-  controller?.abort(); controller = null; loading.value = false; error.value = ''; cancelled.value = true
-}
-
-const workspaceButton = ref<HTMLElement | null>(null)
-const workspaceOpen = ref(false), workspaceDraft = ref(''), workspaceLoading = ref(false), workspaceSaving = ref(false)
-const workspaceNotice = ref(''), workspaceError = ref('')
-async function readWorkspaceBinding() {
-  if (!desktop || disposed || workspaceSaving.value) return
-  const read = ++workspaceRead
-  workspaceError.value = ''
-  try {
-    const result = await desktop.getWorkspace()
-    if (!disposed && read === workspaceRead) { workspaceActiveRoot.value = result.activeRoot; workspacePending.value = result.restartRequired }
-  } catch (cause) {
-    if (!disposed && read === workspaceRead) { workspaceActiveRoot.value = null; workspaceError.value = cause instanceof Error ? cause.message : '当前工作区尚未确认，请重新读取。' }
-  }
-}
-async function openWorkspace() {
-  if (!desktop || workspaceLoading.value || workspaceSaving.value || disposed) return
-  workspaceLoading.value = true; workspaceError.value = ''
-  ++workspaceRead
-  try {
-    const result = await desktop.getWorkspace()
-    if (!disposed) {
-      workspaceDraft.value = result.root
-      workspacePending.value = result.restartRequired
-      workspaceActiveRoot.value = result.activeRoot
-      workspaceNotice.value = result.restartRequired ? '已保存的 AI 工作区尚未生效，完全退出并重启绘遇后使用新目录。当前检查仍基于本次运行时目录。' : ''
-      workspaceOpen.value = true
-    }
-  } catch (cause) {
-    if (!disposed) workspaceError.value = cause instanceof Error ? cause.message : '读取 AI 工作区失败。'
-  } finally { if (!disposed) workspaceLoading.value = false }
-}
-function closeWorkspace() { if (!workspaceSaving.value) workspaceOpen.value = false }
-async function saveWorkspace() {
-  if (!desktop || workspaceSaving.value || !workspaceOpen.value || disposed) return
-  workspaceSaving.value = true; workspaceError.value = ''; workspaceNotice.value = ''
-  ++workspaceRead
-  try {
-    const result = await desktop.setWorkspace(workspaceDraft.value.trim())
-    if (!disposed) {
-      workspaceDraft.value = result.root
-      workspacePending.value = result.restartRequired
-      workspaceActiveRoot.value = result.activeRoot
-      workspaceOpen.value = false
-      workspaceNotice.value = result.restartRequired
-        ? 'AI 工作区已保存，完全退出并重启绘遇后生效。当前检查仍基于本次运行时目录。'
-        : 'AI 工作区已保存，当前运行时目录未改变。'
-    }
-  } catch (cause) {
-    if (!disposed) workspaceError.value = cause instanceof Error ? cause.message : '保存失败，工作区尚未确认变更。'
-  } finally { if (!disposed) workspaceSaving.value = false }
-}
-onMounted(() => { void refresh() })
-onUnmounted(() => { disposed = true; controller?.abort(); controller = null })
+const { isLocal, desktop, snapshot, loading, error, summary, nextStep, basicComplete,
+  recommendedModels, otherModels, nodeLabel, checkedAtLabel, checklist, fileLabel,
+  workspaceButton, workspaceOpen, workspaceDraft, workspaceLoading, workspaceSaving,
+  workspaceNotice, workspaceError, workspacePending, workspaceUnconfirmed, downloadNotice,
+  refresh, cancelCheck, selectSetupModel, recordDownload, recordVerification,
+  openWorkspace, closeWorkspace, saveWorkspace, restartForSetup } = useLocalSetup()
 </script>
 
 <style scoped>
@@ -263,7 +122,11 @@ onUnmounted(() => { disposed = true; controller?.abort(); controller = null })
 .setup-scope, .setup-note, .setup-next, .setup-detail p { color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); margin:var(--s-3) 0; }
 .setup-result { display:flex; align-items:center; gap:var(--s-2); font-size:var(--fs-label); margin-top:var(--s-4); }
 .setup-result[data-state="checked"] { color:var(--success-text); }
-.setup-overview { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-4); margin-top:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-xs); }
+.setup-overview { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-2) var(--s-4); margin:var(--s-3) 0; padding:0; list-style:none; color:var(--text-secondary); font-size:var(--fs-label); }
+.setup-overview li { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); }
+.setup-overview strong { font-size:var(--fs-label-xs); font-weight:500; }
+.setup-overview li[data-ready="true"] strong { color:var(--success-text); }
+@media(max-width:1100px) { .setup-overview { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 .setup-next strong { color:var(--text-primary); margin-right:var(--s-2); }
 .setup-error { color:var(--danger-text); font-size:var(--fs-label); overflow-wrap:anywhere; }
 .setup-detail .setup-warning { color:var(--warning-text); }

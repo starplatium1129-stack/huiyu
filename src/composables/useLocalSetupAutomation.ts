@@ -6,7 +6,7 @@ import { controlApi } from '../api/controlApi'
 import { waitLocalSetupOperation } from '../api/localSetupOperation'
 import { useLocalSetupDownload } from './useLocalSetupDownload'
 import { localChatRecommendation } from '../utils/localChatRecommendation'
-import { modelPreparationState } from '../utils/localSetupPreparation'
+import { modelPreparationState, drawingSetupReadiness } from '../utils/localSetupPreparation'
 import { useChatStorage } from './chat/useChatStorage'
 import { settingsRepository, DRAW_ENGINE_SETTING, STARTER_MODEL_SETTING } from '../storage/settingsRepository'
 
@@ -19,7 +19,8 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const imageModels=computed(()=>snapshot.value.models.filter(model=>model.id.startsWith('anima-')&&model.preparation))
   const chatModels=computed(()=>snapshot.value.models.filter(model=>model.kind==='chat'))
   const workspace=computed(()=>snapshot.value.workspace.path)
-  const ready=computed(()=>reviewed.value&&!blocked.value)
+  const hasSelection=computed(()=>drawing.value||!!chatId.value)
+  const ready=computed(()=>reviewed.value&&!blocked.value&&hasSelection.value)
   const download=useLocalSetupDownload(workspace,ready,onResult)
   const chatStorage=useChatStorage(cause=>{error.value=cause})
   const hasComfy=computed(()=>snapshot.value.comfy.installation==='present')
@@ -27,8 +28,8 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   let activeOperation:ControlActionResult|null=null
   let cancelRequest:Promise<void>|null=null
   let initialized=false
-  watch(recommendation,value=>{if(!initialized){
-    chatId.value=value.modelId
+  watch(recommendation,()=>{if(!initialized){
+    // Chat is opt-in; a hardware recommendation never adds a second model to drawing preparation.
     if(!hasComfy.value&&!snapshot.value.hardware.devices.some(device=>device.type==='cuda'&&/nvidia|geforce/i.test(device.name)))drawing.value=false
     initialized=true
   }}, {immediate:true})
@@ -100,18 +101,21 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     busy.value=true;cancelled=false;cancelState.value='idle';operationUncertain.value=false;completed.value=false;error.value=''
     const runtime=[...runtimeIds.value],weights=[...weightIds.value],prepareComfy=drawing.value&&needsComfyPreparation.value
     const prepareLlama=!!chatId.value&&!snapshot.value.chat?.runtimePresent,selectedChat=chatId.value,confirmedWorkspace=workspace.value
+    const prepareDrawing=drawing.value,selectedModel=modelId.value
     try{
       for(const id of runtime)await fetchFile(id)
       if(prepareComfy)await waitOperation(await localSetupApi.prepareEnvironment(environment.value,confirmedWorkspace))
       if(prepareLlama)await waitOperation(await localSetupApi.prepareEnvironment(llamaEnvironment.value,confirmedWorkspace))
       for(const id of weights)await fetchFile(id)
-      if(drawing.value){
+      if(prepareDrawing){
         await waitOperation(await controlApi.serviceAction('comfy','start'))
-        const checked=await localSetupApi.getStatus({modelId:modelId.value})
+        const checked=await localSetupApi.getStatus({modelId:selectedModel})
         checkpoint()
-        if(checked.nodes.state!=='checked'||checked.nodes.missing.length)throw new Error('绘图节点仍有缺项：'+(checked.nodes.missing.join('、')||'尚未确认，请重新检查'))
+        if(blocked.value||checked.workspace.path!==confirmedWorkspace)throw new Error('AI 工作区尚未确认或已改变，请重新检查后继续准备。')
+        const readiness=drawingSetupReadiness(checked,selectedModel)
+        if(!readiness.complete)throw new Error('绘图准备尚未完成：'+readiness.nextStep)
         settingsRepository.set(DRAW_ENGINE_SETTING,'anima')
-        settingsRepository.set(STARTER_MODEL_SETTING,modelId.value)
+        settingsRepository.set(STARTER_MODEL_SETTING,selectedModel)
       }
       if(selectedChat){
         checkpoint()
@@ -126,7 +130,9 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
       }
       checkpoint()
       completed.value=true
-      message.value='环境与文件已准备。接下来生成一张全龄图片或发送一条短消息，确认本机实际效果。'
+      message.value=prepareDrawing
+        ? '绘图环境与文件已准备。前往绘图画室检查角色、场景与参数，再生成一张全龄图片确认实际效果。'
+        : '聊天环境与文件已准备。进入角色房间发送一条短消息，确认本机实际效果。'
       refresh()
     }catch(cause){if(!disposed)error.value=cause instanceof Error?cause.message:'准备未完成，请重试'}
     finally{if(!disposed)busy.value=!!activeOperation}
@@ -156,5 +162,5 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     finally{if(!disposed)busy.value=!!activeOperation}
   }
   onUnmounted(()=>{disposed=true;download.cancel()})
-  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,busy,message,error,completed,recommendation,imageModels,chatModels,plan,downloadBytes,download,run,cancel,cancelState,operationUncertain,retryOperation}
+  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,busy,message,error,completed,recommendation,imageModels,chatModels,plan,downloadBytes,download,hasSelection,run,cancel,cancelState,operationUncertain,retryOperation}
 }

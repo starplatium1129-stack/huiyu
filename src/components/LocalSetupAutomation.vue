@@ -1,9 +1,7 @@
 <template>
   <div class="setup-automation">
     <h3>让绘遇为你准备</h3>
-    <p>选好能力与磁盘后，一次准备运行环境、模型和角色 LoRA。已有文件会校验复用。</p>
-    <p class="setup-device"><strong>{{ automation.recommendation.value.label }}</strong> · {{ automation.recommendation.value.note }}</p>
-    <p v-for="device in snapshot.hardware.devices" :key="device.name">{{ device.name }} · {{ device.vramBytes===null?'显存未知':formatBytes(device.vramBytes) }} 标称显存</p>
+    <p>先选绘图模型，准备环境与角色 LoRA。已有文件会校验复用；本地聊天按需选择。</p>
     <div class="setup-fields">
       <label><input v-model="automation.drawing.value" type="checkbox" :disabled="automation.busy.value">准备 Anima 绘图</label>
       <div v-if="automation.drawing.value">
@@ -12,19 +10,28 @@
         <p>{{ selectedImage?.purpose }}</p>
         <label><input v-model="automation.loras.value" type="checkbox" :disabled="automation.busy.value">同时准备宁宁与夏目 LoRA · 由绘遇作者亲自训练</label>
       </div>
-      <div>
+      <details class="setup-chat">
+        <StudioDisclosureSummary>可选：同时准备本地聊天</StudioDisclosureSummary>
+        <div data-disclosure-content class="setup-chat-options">
+        <p class="setup-device"><strong>{{ automation.recommendation.value.label }}</strong> · {{ automation.recommendation.value.note }}</p>
         <label for="setup-chat-model">聊天方式</label>
         <StudioSelect id="setup-chat-model" v-model="automation.chatId.value" label="聊天方式" :disabled="automation.busy.value" :options="chatOptions" />
         <p v-if="selectedChat">{{ selectedChat.purpose }}</p>
         <p>显存较少可使用 API。候选分档不是最低运行要求；绘图与聊天会按需释放显存。</p>
         <RouterLink v-if="!automation.chatId.value" to="/chat" class="btn btn-ghost btn-sm">在角色房间填写 API Key</RouterLink>
-      </div>
+        </div>
+      </details>
     </div>
+    <p v-if="!automation.hasSelection.value" role="status">请选择要准备的能力，也可以先在绘图画室编排创作草稿。</p>
     <details v-if="!automation.busy.value"><StudioDisclosureSummary>运行方式与下载清单</StudioDisclosureSummary><div data-disclosure-content class="setup-runtime-details">
-      <label for="setup-comfy-runtime">绘图环境</label>
-      <StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图环境" :options="[{value:'comfy-nvidia',label:'NVIDIA RTX · CUDA 13.0 Portable'},{value:'comfy-cu126',label:'较旧 NVIDIA · CUDA 12.6 Portable'}]" />
-      <label for="setup-llama-runtime">聊天运行环境</label>
-      <StudioSelect id="setup-llama-runtime" v-model="automation.llamaEnvironment.value" label="聊天运行环境" :options="[{value:'llama-cuda',label:'NVIDIA · CUDA'},{value:'llama-vulkan',label:'Vulkan · 进阶候选'}]" />
+      <template v-if="automation.drawing.value">
+        <label for="setup-comfy-runtime">绘图环境</label>
+        <StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图环境" :options="[{value:'comfy-nvidia',label:'NVIDIA RTX · CUDA 13.0 Portable'},{value:'comfy-cu126',label:'较旧 NVIDIA · CUDA 12.6 Portable'}]" />
+      </template>
+      <template v-if="automation.chatId.value">
+        <label for="setup-llama-runtime">聊天运行环境</label>
+        <StudioSelect id="setup-llama-runtime" v-model="automation.llamaEnvironment.value" label="聊天运行环境" :options="[{value:'llama-cuda',label:'NVIDIA · CUDA'},{value:'llama-vulkan',label:'Vulkan · 进阶候选'}]" />
+      </template>
       <ul><li v-for="model in automation.plan.value" :key="model.id"><strong>{{ model.label }}</strong> · {{ formatBytes(model.preparation!.expectedBytes) }}<br><a :href="model.preparation!.modelCardUrl" target="_blank" rel="noopener noreferrer">来源说明</a> · <a :href="model.preparation!.licenseUrl" target="_blank" rel="noopener noreferrer">使用条件</a></li></ul>
       <p>驱动、系统授权／重启和网站登录仍可能需要你操作。外部管理的已有环境保留，不能运行时会提示具体缺项。</p>
     </div></details>
@@ -32,14 +39,14 @@
     <label class="setup-review"><input v-model="automation.reviewed.value" type="checkbox" :disabled="automation.busy.value">我已确认当前磁盘、推荐组合与使用条件，同意绘遇下载并准备所选能力</label>
     <p v-if="workspaceBlocked" role="status">工作区尚未生效或未确认，请先选择磁盘并按提示重启绘遇。</p>
     <div class="setup-buttons">
-      <button class="btn btn-primary" type="button" :disabled="automation.busy.value||workspaceBlocked||!automation.reviewed.value" @click="automation.run"><ArchiveIcon name="download" />{{ automation.busy.value?'正在准备…':'一键准备所选能力' }}</button>
+      <button class="btn btn-primary" type="button" :disabled="automation.busy.value||workspaceBlocked||!automation.reviewed.value||!automation.hasSelection.value" @click="automation.run"><ArchiveIcon name="download" />{{ automation.busy.value?'正在准备…':'一键准备所选能力' }}</button>
       <button v-if="automation.busy.value" class="btn btn-ghost" type="button" :disabled="automation.cancelState.value==='pending'||automation.cancelState.value==='accepted'" @click="automation.cancel">{{ automation.cancelState.value==='pending'?'正在请求取消…':automation.cancelState.value==='accepted'?'等待当前步骤结束…':automation.cancelState.value==='failed'?'重试取消':'取消准备' }}</button>
       <button v-if="automation.operationUncertain.value" class="btn btn-ghost" type="button" @click="automation.retryOperation">重新检查状态</button>
     </div>
     <p v-if="automation.message.value" role="status" aria-live="polite">{{ automation.message.value }}</p>
     <p v-if="automation.download.activeId.value" role="status">{{ formatBytes(automation.download.bytesRead.value) }} / {{ formatBytes(automation.download.expectedBytes.value) }}</p>
     <p v-if="automation.error.value" class="setup-error" role="alert">{{ automation.error.value }}</p>
-    <div v-if="automation.completed.value" class="setup-buttons"><RouterLink v-if="automation.drawing.value" class="btn btn-primary" to="/prompt-builder">生成第一张图片</RouterLink><RouterLink class="btn btn-ghost" to="/chat">进入角色房间</RouterLink></div>
+    <div v-if="automation.completed.value" class="setup-buttons"><RouterLink v-if="automation.drawing.value" class="btn btn-primary" to="/prompt-builder">生成第一张图片</RouterLink><RouterLink v-if="automation.chatId.value" class="btn btn-ghost" to="/chat">进入角色房间</RouterLink></div>
   </div>
 </template>
 <script setup lang="ts">
@@ -59,14 +66,15 @@ const imageOptions=computed(()=>automation.imageModels.value.map(model=>({value:
 const rank=(id:string)=>id==='anima-miaomiao-v1.6'?0:id==='anima-base-v1.0'?1:id==='anima-aesthetic-v1.1'?2:3
 const selectedImage=computed(()=>automation.imageModels.value.find(model=>model.id===automation.modelId.value))
 const selectedChat=computed(()=>automation.chatModels.value.find(model=>model.id===automation.chatId.value))
-const chatOptions=computed(()=>[{value:'',label:'API 聊天 · 不下载本地权重'},...automation.chatModels.value.map(model=>({value:model.id,label:model.label+' · '+formatBytes(model.preparation!.expectedBytes)}))])
+const chatOptions=computed(()=>[{value:'',label:'暂不准备本地聊天'},...automation.chatModels.value.map(model=>({value:model.id,label:model.label+' · '+formatBytes(model.preparation!.expectedBytes)}))])
 </script>
 <style scoped>
 .setup-automation{display:grid;gap:var(--s-3);margin-block:var(--s-4)}
 .setup-automation h3,.setup-automation p{margin:0}
 .setup-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-4)}
 .setup-fields>label{grid-column:1/-1}
-.setup-fields>div{display:grid;gap:var(--s-2);align-content:start;min-width:0}
+.setup-fields>div,.setup-chat-options{display:grid;gap:var(--s-2);align-content:start;min-width:0}
+.setup-chat{min-width:0;align-content:start}
 .setup-fields label,.setup-review{display:flex;gap:var(--s-2);align-items:center}
 .setup-automation details{display:grid;gap:var(--s-2)}
 .setup-runtime-details{display:grid;gap:var(--s-2)}
