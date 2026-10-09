@@ -172,7 +172,10 @@ pub async fn set_workspace(
 #[tauri::command]
 pub fn restart_for_setup(app: AppHandle, state: State<AppState>) {
     state.quitting.store(true, std::sync::atomic::Ordering::Relaxed);
-    app.restart();
+    // This synchronous command runs on the main thread. restart() skips
+    // ExitRequested there, leaving our gateway alive; queue the normal exit
+    // events so the existing cleanup releases the port before relaunch.
+    app.request_restart();
 }
 
 #[tauri::command]

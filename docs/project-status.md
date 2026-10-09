@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | 当前源码 | `package.json` 版本 1.9.2，包含发行后的修复；当前工作区改动以 Git 为准 | [工程契约](engineering-contracts.md)、[工作流](workflow.md)；源码变更不等于已安装或发布 |
 | 公开发行 | 2026-10-07 记录 1.9.2 已发布并设为 latest，发行源码 `f221bd4c`，含 full/upgrade 两种包 | [1.9.2 说明](releases/v1.9.2.md)；发行记录保留在 Git 历史；本次整理未重新查询远端状态 |
-| 最近本机安装记录 | 2026-10-01 完整安装 1.8.0 至 `C:/Program Files/AI-CG-Studio`；宿主、Rust EXE 与 DLL 当时核对匹配、启动 ready | 此前安装记录（Git 历史）；本次未检查安装目录，不以源码版本代替已装版本 |
+| 最近本机安装记录 | 2026-10-09 23:06（Asia/Shanghai）将源码 `8e9fd0f4` 的 1.9.2 本机无压缩构建完整安装至 `D:/AI-CG-Studio`；宿主、Rust EXE、libvips DLL 字节核对及认证启动 ready 通过，内容快照变更为 0 | 经 `deploy-desktop.bat -UseInstaller -QuietInstall` 安装；本机回执 `runtime/install-latest-20261009/installation.json`、构建日志和 `runtime/desktop-deploy-last.log`，原始记录不入 Git。未公开发布；真实模型与原生画面/设备验收未运行 |
 | 资料迁移记录 | 2026-09-26 曾登记旧来源迁入 SQLite；10 月 1 日对应机器未发现 active pointer，仍使用旧来源 IndexedDB | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)；按具体机器核对，不合并两次记录为已迁移结论 |
 | 桌面实现 | Tauri 宿主、Rust 网关、原生 Live2D 线程渲染；独立渲染进程仍为显式实验 | [桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)、[原生运行时](guides/desktop/live2d-native-runtime.md) |
 
