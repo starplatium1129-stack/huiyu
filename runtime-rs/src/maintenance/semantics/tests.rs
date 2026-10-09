@@ -37,6 +37,13 @@ fn semantic_pipeline_matches_original_node_with_neutral_fixtures() {
     rated["mature"] = true.into();
     rated["tags"] = json!(["adult", "book"]);
     scenes.push(rated);
+    let mut short = scene("sc905");
+    short["story"] = "A reader sits beside a window with an open book on the desk. Daylight falls across the page.".into();
+    short["prompt"] = "1girl, ayachi_nene, reading".into();
+    scenes.push(short.clone());
+    short["id"] = "sc906".into();
+    short["prompt"] = " \t ".into();
+    scenes.push(short);
     let pins = json!({"sc902":true});
     let files = json!({"prompt-pinned-scenes.json":{"scenes":pins},"characters.json":[],"presets.json":{},"curation.json":{},"retired-scenes.json":{"records":[]}});
     let input = json!({"scenes":scenes,"files":files});
@@ -103,6 +110,12 @@ fn semantic_pipeline_matches_original_node_with_neutral_fixtures() {
         .unwrap();
     }
     let mut actual = validate(directory.path(), &scenes);
+    assert!(
+        actual.iter().all(|issue| !issue.starts_with("sc905:")),
+        "{actual:?}"
+    );
+    assert!(actual.contains(&"sc906: prompt must be a nonempty string".to_owned()));
+    assert!(actual.contains(&"sc900: unresolved prompt placeholder".to_owned()));
     actual.sort();
     let mut expected = prompt::strings(&oracle["validation"]);
     expected.sort();

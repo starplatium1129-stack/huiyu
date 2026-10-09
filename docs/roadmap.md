@@ -4,7 +4,7 @@
 
 ## 当前优先级
 
-1. **明确失败**：sc009、sc027 原 prompt 分别为 99、94 字符，仍触发 100 字符规则；正文与规则未修改。后续按内容任务决定，不为门禁凑字数。见[今日报告](audits/2026-10-09/fullstack-performance.html#content-warnings)。
+1. **内容一致性与检查失败**：固定提示词长度配额已按 studio-prompt-craft 移除，sc009／sc027 正文未改。当前四项内容断言涉及默认服装 SFW、服装与角色场景覆盖及圆扇编译保真；按当前内容需求、快照与最终输入分别核对，不机械扩写或删断言。完整 Rust 检查另因 desktop_tools 两个未改动文件的格式失败，本次语义定向通过不关闭完整门禁。当前证据见[项目状态](project-status.md#今日交付与已知限制)，原长度失败只保留为[历史记录](audits/2026-10-09/fullstack-performance.html#content-warnings)。
 2. **目标安装版验收**：源码、公开发行与已安装程序分别核对。使用[部署入口](desktop-deployment.md)检查源码、构建、EXE/DLL、资料保持和重启身份，UAC 由用户操作。
 3. **真实模型与设备**：明确能力、机器与范围后取得对应证据。原生许可材料 releaseReady=false / pending 继续登记，不等同已审批。
 4. **按测量优化**：图库冷进入仍有 56–72 ms 长任务样本；同机同负载测量后决定改动，合成浏览器样本不代表原生 WebView2、GPU 或长期趋势。

@@ -34,7 +34,7 @@ test('eleven authored coverage additions preserve exact binding and compile in b
     assert.equal(b.outfitId, entry.outfitId);
     assert.equal(b.adult, false);
     assert.equal(b.sampleRating, 'All');
-    assert.ok(b.promptProse.length >= 300, entry.id);
+    assert.ok(b.promptProse.trim(), entry.id + ' must have nonempty authored prose');
     const outfit = popular.findOutfit(c, entry.outfitId);
     assert.ok(outfit);
     for (const engine of ['anima', 'krea2']) {

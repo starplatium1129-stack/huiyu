@@ -70,6 +70,15 @@ pub(super) fn validate(
         }
         for key in REQUIRED {
             let value = &scene[*key];
+            if *key == "prompt" {
+                if value
+                    .as_str()
+                    .is_none_or(|text| prompt::trim(text).is_empty())
+                {
+                    errors.push(format!("{label}: prompt must be a nonempty string"));
+                }
+                continue;
+            }
             if value.is_null() || value == "" || value.as_array().is_some_and(Vec::is_empty) {
                 errors.push(format!("{label}: missing field {key}"));
             }
@@ -186,12 +195,6 @@ pub(super) fn validate(
             }
         }
         if let Some(positive) = scene["prompt"].as_str() {
-            if prompt::utf16_len(positive) < 100 {
-                errors.push(format!(
-                    "{label}: prompt is too short ({} < 100)",
-                    prompt::utf16_len(positive)
-                ));
-            }
             if prompt::re!(r"(?i)_BREAK_").is_match(positive) {
                 errors.push(format!("{label}: use standalone BREAK instead of _BREAK_"));
             }

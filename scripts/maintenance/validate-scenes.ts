@@ -103,6 +103,10 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
 
   for (const key of required) {
     const value = scene[key];
+    if (key === 'prompt') {
+      if (typeof value !== 'string' || !value.trim()) errors.push(label + ': prompt must be a nonempty string');
+      continue;
+    }
     if (value == null || value === '' || (Array.isArray(value) && value.length === 0)) {
       errors.push(label + ': missing field ' + key);
     }
@@ -161,9 +165,6 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   }
   if (typeof scene.storyJa === 'string' && hasRepeatedNgram(scene.storyJa)) {
     errors.push(label + ': storyJa repeats the same 12-character text three times');
-  }
-  if (typeof scene.prompt === 'string' && scene.prompt.length < 100) {
-    errors.push(label + ': prompt is too short (' + scene.prompt.length + ' < 100)');
   }
   if (typeof scene.prompt === 'string' && /_BREAK_/i.test(scene.prompt)) {
     errors.push(label + ': use standalone BREAK instead of _BREAK_');

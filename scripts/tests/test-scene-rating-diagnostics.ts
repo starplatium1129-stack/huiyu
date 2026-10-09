@@ -113,33 +113,39 @@ test('manual table unknown, duplicate and missing values fail closed without exe
 });
 
 
-test('scene size validation accepts both separators without relaxing numeric bounds', (t) => {
+test('scene validation preserves size bounds and prompt structure without length quotas', (t) => {
   const { root, rows } = fixture(t);
   const { createRequire }: typeof import('node:module') = require('node:module');
   const { runInNewContext }: typeof import('node:vm') = require('node:vm');
   const file = path.join(repo, 'scripts/maintenance/validate-scenes.js');
   const source = fs.readFileSync(file, 'utf8'), actualRequire = createRequire(file);
   const stopped = new Error('fixture exit');
-  function dimensionErrors(recommendedSize: string) {
+  function validationMessages(fields: Record<string, unknown>) {
     const messages: string[] = [];
-    // Run the real validator against the existing neutral fixture. Other scene
-    // contracts deliberately remain outside this dimension-only assertion.
+    // Run the real validator against the existing neutral fixture; each check
+    // below selects only its own field diagnostics.
     try {
       runInNewContext(source, {
         exports: {}, __dirname: path.dirname(file),
         require: (id: string) => id === '../lib/scene-store'
-          ? { loadSceneShards: () => ({ scenes: [{ ...rows[0], char: 'nene', tags: [], recommendedSize }] }) }
+          ? { loadSceneShards: () => ({ scenes: [{ ...rows[0], char: 'nene', tags: [], ...fields }] }) }
           : actualRequire(id),
         process: { env: { AICS_DATA_ROOT: root }, exit: () => { throw stopped; } },
         console: { error: (message: unknown) => messages.push(String(message)), log: () => {} },
       });
     } catch (error) { if (error !== stopped) throw error; }
-    return messages.filter(message => message.includes('recommendedSize'));
+    return messages;
   }
   for (const size of ['832x1216', '832×1216', '512x512', '9999×9999']) {
-    assert.deepEqual(dimensionErrors(size), [], size);
+    assert.deepEqual(validationMessages({ recommendedSize: size }).filter(message => message.includes('recommendedSize')), [], size);
   }
   for (const size of ['511x1216', '832×511', '99x1216', '10000×1216', '832X1216', '832x1216x512']) {
-    assert.equal(dimensionErrors(size).length, 1, size);
+    assert.equal(validationMessages({ recommendedSize: size }).filter(message => message.includes('recommendedSize')).length, 1, size);
   }
+  const promptMessages = (prompt: unknown) => validationMessages({ prompt }).filter(message => message.includes('sc001:') && message.includes('prompt'));
+  assert.deepEqual(promptMessages('1girl, ayachi_nene, reading'), []);
+  for (const prompt of ['', ' \t\n ', null, 123]) {
+    assert.ok(promptMessages(prompt).some(message => message.includes('prompt must be a nonempty string')));
+  }
+  assert.ok(promptMessages('ayachi_nene, {outfit}').some(message => message.includes('unresolved prompt placeholder')));
 });

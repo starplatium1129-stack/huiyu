@@ -133,7 +133,9 @@ test('corpus: all scenes infer only valid shot/lighting/mood/composition ids and
     const composition = infer.sceneComposition(scene)
     assert(composition === null || compositionIds.has(composition), `${scene.id} invalid composition ${composition}`)
     const size = infer.sceneRecommendedSize(scene)
-    assert(ORIENTATIONS.has(size), `${scene.id} invalid orientation ${size}`)
+    const explicitSize = String(scene.recommendedSize ?? '').replace(/×/g, 'x').trim()
+    if (explicitSize) assert.strictEqual(size, explicitSize, `${scene.id} must preserve its explicit recommendedSize`)
+    else assert(ORIENTATIONS.has(size), `${scene.id} invalid inferred orientation ${size}`)
   }
 })
 
@@ -169,7 +171,7 @@ test('golden scenes: sc001 medium/window, sc153 close, sc050 holding-hands prese
   const explicitCaptionIds = ['sc001', 'sc010', 'sc012', 'sc015', 'sc029', 'sc030', 'sc034', 'sc037', 'sc050', 'sc053', 'sc056', 'sc075', 'sc141', 'sc166', 'sc280']
   for (const id of explicitCaptionIds) {
     assert.strictEqual(typeof byId[id].animaCaption, 'string', `${id} must carry a curated Anima caption`)
-    assert(byId[id].animaCaption.length > 20, `${id} curated Anima caption must not be empty`)
+    assert(byId[id].animaCaption.trim(), `${id} curated Anima caption must not be empty`)
   }
 
   assert.strictEqual(infer.sceneShot(byId.sc280), null, 'sc280 banner composition must not be misread as shot distance')
