@@ -4,6 +4,7 @@ const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const test: typeof import('node:test') = require('node:test');
 const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
+const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
 const repairs: typeof import('./fixtures/scene-coverage-repairs.json') = require('./fixtures/scene-coverage-repairs.json');
 const ROOT = path.resolve(__dirname, '..', '..');
 function readData(file: string): unknown {
@@ -14,7 +15,7 @@ const blueprints: any[] = popular.parseSceneBlueprints(readData('scene-blueprint
 const profiles: any[] = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles;
 test('all characters have an owned SFW blueprint for their exact default outfit', () => {
   const missing = characters.filter(c => !blueprints.some(b => b.characterId === c.id && !b.adult && b.outfitId === popular.defaultOutfit(c).id));
-  assert.deepEqual(missing.map(c => c.id), []);
+  assert.deepEqual(missing.map(c => c.id + '/' + popular.defaultOutfit(c).id), []);
 });
 test('all wardrobe coverage gaps are reported together, not masked by the first character', () => {
   const missing = characters.flatMap((c: any) => c.outfits.filter((o: any) => !blueprints.some((b: any) => b.characterId === c.id && b.outfitId === o.id)).map((o: any) => c.id + '/' + o.id));
@@ -40,7 +41,7 @@ test('eleven authored coverage additions preserve exact binding and compile in b
       const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
       const profile = profiles.find(p => p.model_id === model);
       assert.ok(profile, model);
-    const plan = popular.buildPopularPromptPlan({ character: c, blueprint: b, outfit, engine: engine as any, profile, adultEnabled: false });
+      const plan = popularPrompt.buildPopularPromptPlan({ character: c, blueprint: b, outfit, engine: engine as any, profile, adultEnabled: false });
       assert.ok(plan, entry.id + ':' + engine);
       assert.equal(plan.adult, false);
       assert.ok(plan.prompt.includes(b.promptProse.split('.')[0]), entry.id);
@@ -50,35 +51,38 @@ test('eleven authored coverage additions preserve exact binding and compile in b
   }
 });
 test('season and festival stay with their scenes and do not pollute reusable outfits', () => {
-  for (const [cid, oid, bid, token] of [
-    ['krista_lenz', 'coronation_winter_wall', 'krista_lenz_snowy_wall', 'winter'],
-    ['murasame', 'festival_red_yukata_no_fan', 'murasame_festival_goldfish_scooping_joy', 'festival'],
+  for (const { cid, oid, bid, token, sceneMeaning } of [
+    { cid: 'krista_lenz', oid: 'coronation_winter_wall', bid: 'krista_lenz_snowy_wall', token: 'winter', sceneMeaning: /\bsnow(?:y|field|fall|covered)?\b/i },
+    { cid: 'murasame', oid: 'festival_red_yukata_no_fan', bid: 'murasame_festival_goldfish_scooping_joy', token: 'festival', sceneMeaning: /\bfestival\b/i },
   ]) {
     const c = characters.find(x => x.id === cid);
     assert.ok(!popular.findOutfit!(c, oid)!.tokens.includes(token));
-    assert.ok(blueprints.find!(b => b.id === bid).promptTokens.includes(token));
-    assert.deepEqual(popular.scanCharacterPollution(c), []);
+    // Prose is model input; sceneTags alone would only prove retrieval metadata.
+    assert.match(blueprints.find!(b => b.id === bid).promptProse, sceneMeaning, bid);
+    assert.deepEqual(popularPrompt.scanCharacterPollution(c), []);
   }
 });
-test('the preserved round-fan outfit does not become a folding fan or replace the fishing variant', () => {
+
+test('round fan belongs to the fireworks scene payload, not reusable clothes or the fishing variant', () => {
   const c = characters.find(x => x.id === 'murasame');
   const outfit = popular.findOutfit(c, 'summer_yukata');
-  assert.ok(outfit!.tokens.includes('uchiwa'));
-  assert.ok(!outfit!.tokens.includes('folding_fan'));
+  assert.ok(outfit);
+  assert.doesNotMatch(outfit.tokens.join(' ') + ' ' + outfit.prose, /\b(?:uchiwa|(?:paper|round|folding)[ _]fan|holding[ _]fan)\b/i);
   assert.equal(blueprints.find!(b => b.id === 'murasame_festival_goldfish_scooping_joy').outfitId, 'festival_red_yukata_no_fan');
-});
-
-
-test('Ellen tea-service depth of field is retained in both payloads without duplicate tags', () => {
-  const b = blueprints.find(item => item.id === 'ellen_maid_cafe_tea_service_deadpan')!;
-  const c = characters.find(item => item.id === b!.characterId)!;
-  assert.ok(!b!.promptTokens.includes('depth_of_field'));
-  assert.ok(b!.promptProse.includes('depth of field'));
+  const b = blueprints.find(item => item.id === 'murasame_hoori_fireworks_fan_pause')!;
+  assert.ok(b);
+  assert.equal(b.outfitId, outfit.id);
+  const missing: string[] = [];
   for (const engine of ['anima', 'krea2']) {
-    const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
+    const model = engine === 'anima' ? 'anima-miaomiao-v1.6' : 'krea2-turbo-fp8';
     const profile = profiles.find(item => item.model_id === model);
-    const plan = popular.buildPopularPromptPlan({ character:c, blueprint:b, outfit:popular.findOutfit(c,b!.outfitId)!, engine: engine as any, profile, adultEnabled:false });
+    const plan = popularPrompt.buildPopularPromptPlan({ character:c, blueprint:b, outfit, engine: engine as any, profile, adultEnabled:false });
     assert.ok(plan);
-    assert.ok(plan.prompt.includes('depth of field'));
+    assert.doesNotMatch(plan.prompt, /\bfolding[ _]fan\b/i);
+    if (!/\b(?:uchiwa|round(?:[ _]paper)?[ _]fan)\b/i.test(plan.prompt)) missing.push(engine);
   }
+  assert.deepEqual(missing, [], b.id + ' must send the round-fan shape to the model; sceneTags do not count');
 });
+
+// Explicit depth-of-field prose preservation now uses a neutral input in
+// src/utils/promptCompiler.spec.ts; Ellen's current scene does not request it.

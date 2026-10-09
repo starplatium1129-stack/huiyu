@@ -59,6 +59,7 @@ export function useCharacterRoomSession() {
   let statusTimer = 0
   let errorTimer = 0
   let disposed = false
+  const confirmationController = new AbortController()
 
   function setError(message: string, kind = 'error', timeout = 7000) {
     clearTimeout(errorTimer)
@@ -302,16 +303,16 @@ export function useCharacterRoomSession() {
   })
 
   function handleSend(customText?: string | Event, imageUrl?: string, accepted?: (value: boolean) => boolean | void) {
-    if (!storage.canWrite()) { accepted?.(false); return }
+    if (disposed || !storage.canWrite()) { accepted?.(false); return }
     characterStageRef.value?.setUserMessage()
     const text = typeof customText === 'string' ? customText : undefined
     const character = activeChar.value
     void withChatTurn(async () => {
-      if (activeChar.value !== character || busy.value || !chatReady.value || !(text ?? inputText.value).trim()) { accepted?.(false); return }
+      if (disposed || activeChar.value !== character || busy.value || !chatReady.value || !(text ?? inputText.value).trim()) { accepted?.(false); return }
       if (accepted?.(true) === false) { setError('跨窗口状态暂不可用，请在完整房间继续聊天。'); return }
       try { localStorage.setItem(CHAT_TURN_KEY, String(Date.now())) } catch { /* optional playback coordination */ }
       await sendMessage(text, imageUrl)
-    }, () => { accepted?.(false); setError('另一个聊天窗口正在回复，草稿已保留。请等回复结束，或在那个窗口停止。', 'info') })
+    }, () => { accepted?.(false); if (!disposed) setError('另一个聊天窗口正在回复，草稿已保留。请等回复结束，或在那个窗口停止。', 'info') })
   }
 
   function stopEverything() {
@@ -341,6 +342,7 @@ export function useCharacterRoomSession() {
       message: '将清空当前角色的本地对话记录并开始新对话，此操作无法撤销。',
       confirmLabel: '清空对话',
       danger: true,
+      signal: confirmationController.signal,
     })
     if (!confirmed) return
     if (disposed || activeChar.value !== targetCharacter) return
@@ -360,8 +362,9 @@ export function useCharacterRoomSession() {
       message: '清除所有当前及退休角色的对话、归档、事实记忆、草稿、个人称呼与备注和本会话语音缓存。保留 API 连接、凭据、外观、音量及行为偏好。已导出的文件和第三方记录不受影响。此操作无法撤销。',
       confirmLabel: '清空聊天内容',
       danger: true,
+      signal: confirmationController.signal,
     })
-    if (!confirmed) return
+    if (!confirmed || disposed) return
     if (busy.value) abortCurrentRequest(true)
     voice.stop({ preserveMessageAudio: false, silent: true })
     try {
@@ -428,6 +431,7 @@ export function useCharacterRoomSession() {
 
   onUnmounted(() => {
     disposed = true
+    confirmationController.abort()
     window.removeEventListener('storage', onChatAuxStorage)
     clearInterval(statusTimer)
     destroyRoomSetup()

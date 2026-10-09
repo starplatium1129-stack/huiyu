@@ -112,6 +112,7 @@ const speechButtonText = computed(() => {
   if (speechState.value === 'acquiring') return '启动中…'
   if (speechState.value === 'capturing') return '松开结束'
   if (speechState.value === 'recognizing') return '识别中…'
+  if (speechState.value === 'error') return '重试'
   return '按住说话'
 })
 

@@ -63,15 +63,13 @@ impl Service {
     }
     pub(super) async fn t8(&self, cancel: &CancellationToken) -> bool {
         let mut cache = self.t8.lock().await;
-        if cache.0
-            || cache
-                .1
-                .is_some_and(|t| t.elapsed() < Duration::from_secs(60))
+        if cache
+            .1
+            .is_some_and(|t| t.elapsed() < Duration::from_secs(60))
         {
             return cache.0;
         }
-        cache.1 = Some(tokio::time::Instant::now());
-        cache.0 = self
+        let available = self
             .transport
             .json(
                 &self.config.comfy_host,
@@ -86,7 +84,12 @@ impl Service {
                 (200..300).contains(&status)
                     && value.is_ok_and(|v| v.get("MiniMaxH3DualClockSamplerT8").is_some())
             });
-        cache.0
+        // Publish only completed probes. Dropped/cancelled requests must not
+        // poison subsequent status reads or generation preparation.
+        if !cancel.is_cancelled() {
+            *cache = (available, Some(tokio::time::Instant::now()));
+        }
+        available
     }
     pub async fn prepare(
         &self,
@@ -229,7 +232,7 @@ impl Service {
         for model in catalog::constants()["MODEL_CATALOG"].as_array().unwrap() {
             models.push(resources::available(&self.config, model).await);
         }
-        let t8 = self.t8(&self.shutdown).await;
+        let (t8, online) = tokio::join!(self.t8(&self.shutdown), self.backend.comfy_online());
         let qualities = catalog::constants()["QUALITIES"]
             .as_object()
             .unwrap()
@@ -250,7 +253,7 @@ impl Service {
             })
             .collect::<Vec<_>>();
         Ok(
-            json!({"online":self.backend.comfy_online().await,"pending":self.backend.pending(),"maxPending":2,"models":models,"qualities":qualities,"defaults":{"modelId":"wan2.2-ti2v-5b","aspectRatio":"landscape","duration":3,"camera":"still","motion":"subtle","quality":"standard"},"t8":{"available":t8,"reason":if t8{"T8 双时钟采样 + 4 步加速 LoRA（最快路径）"}else{"已降级：原生采样器（速度约慢 1 倍）；提交任务时会自动重新探测"}}}),
+            json!({"online":online,"pending":self.backend.pending(),"maxPending":2,"models":models,"qualities":qualities,"defaults":{"modelId":"wan2.2-ti2v-5b","aspectRatio":"landscape","duration":3,"camera":"still","motion":"subtle","quality":"standard"},"t8":{"available":t8,"reason":if t8{"T8 双时钟采样 + 4 步加速 LoRA（最快路径）"}else{"已降级：原生采样器（速度约慢 1 倍）；提交任务时会自动重新探测"}}}),
         )
     }
     pub async fn close(&self) {

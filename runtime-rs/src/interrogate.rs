@@ -28,6 +28,7 @@ const MAX_BODY_BYTES: usize = MAX_BYTES.div_ceil(3) * 4 + 64 * 1024;
 pub struct InterrogateService {
     client: pixai::Client,
     shutdown: CancellationToken,
+    validation: Arc<tokio::sync::Semaphore>,
 }
 impl InterrogateService {
     pub fn new(config: &Config, shutdown: CancellationToken) -> Self {
@@ -37,23 +38,34 @@ impl InterrogateService {
         Self {
             client: pixai::Client::new(settings),
             shutdown,
+            validation: Arc::new(tokio::sync::Semaphore::new(1)),
         }
     }
     pub async fn close(&self) {
         self.shutdown.cancel();
-        self.client.close().await;
+        // Detached validation retains its slot until its bounded CPU work ends.
+        let _drained = tokio::join!(self.client.close(), self.validation.acquire());
     }
     async fn interrogate(&self, input: Value) -> Result<Value> {
         if self.shutdown.is_cancelled() {
-            return Err(ApiError::new(
-                503,
-                "INTERROGATE_CLOSED",
-                "Interrogation service closed",
-            ));
+            return Err(closed());
         }
-        let input = validate(input)?;
         let cancel = self.shutdown.child_token();
         let _cancel = cancel.clone().drop_guard();
+        let permit = tokio::select! { biased;
+            _ = cancel.cancelled() => return Err(closed()),
+            permit = self.validation.clone().acquire_owned() => permit.map_err(|_| closed())?,
+        };
+        let validation_cancel = cancel.clone();
+        let input = tokio::task::spawn_blocking(move || {
+            let _permit = permit;
+            if validation_cancel.is_cancelled() {
+                return Err(closed());
+            }
+            validate(input)
+        })
+        .await
+        .map_err(|_| ApiError::new(503, "INTERROGATE_UNAVAILABLE", "图片校验未完成"))??;
         let result = self
             .client
             .run(input.image, input.threshold, cancel)
@@ -65,6 +77,9 @@ impl InterrogateService {
             input.threshold,
         ))
     }
+}
+fn closed() -> ApiError {
+    ApiError::new(503, "INTERROGATE_CLOSED", "Interrogation service closed")
 }
 struct Input {
     mode: String,

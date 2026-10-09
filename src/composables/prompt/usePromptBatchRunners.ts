@@ -12,9 +12,11 @@ import { artistStyleProse, artistTagsForEngine } from '../../config/artistStyles
 import { popularPortraitSrc } from '../../utils/popularPortraitSource.ts'
 import { usePromptBuilderStore, CHAR_PROMPT, type HistoryEntry } from '../../stores/promptBuilderStore.ts'
 import { createBatchAnimaTransport } from './batchAnimaJob.ts'
+import { buildPopularPromptPlan } from '../../utils/popularPromptBuilder.ts'
+import { inferBlueprintDecisions } from '../../utils/popularBlueprintDecisions.ts'
 import {
   findCharacter as findPopularCharacter,
-  buildPopularPromptPlan, defaultOutfit, findOutfit, inferBlueprintDecisions,
+  defaultOutfit, findOutfit,
   type SceneBlueprint,
   type PopularCharacter,
 } from '../../utils/popularContent.ts'

@@ -18,6 +18,16 @@ export async function prepareOffice(page: Page, theme: string, mode: OfficeMode)
     return route.fallback()
   })
   await installUiFluidityFixture(page, false)
+  // Keep model detection deterministic before taking the resource baseline.
+  // The real isolated runtime probes otherwise finish between baseline and sample 10.
+  await page.route('**/api/video/status*', route => route.fulfill({ json: {
+    ok:true, online:false, pending:0, maxPending:2,
+    models:[{ id:'minimax-h3', label:'MiniMax H3', family:'H3', tier:'本地', summary:'009 隔离视频界面夹具',
+      executable:true, available:true, reason:'离线界面夹具', modes:['text','image','first-last-frame'], requirements:[], missing:[] }],
+    qualities:[{ id:'standard', label:'标准', summary:'日常创作', sizes:{ landscape:'832 × 480', portrait:'480 × 832', square:'640 × 640' } }],
+    defaults:{ modelId:'minimax-h3', aspectRatio:'landscape', duration:3, camera:'still', motion:'subtle', quality:'standard' },
+    t8:{ available:false, reason:'隔离夹具不调用视频模型' },
+  } }))
   await page.goto('/style')
   await expect(page.locator('main h1')).toBeVisible()
   await page.evaluate(async ({ theme, mode, fixture }) => {
@@ -59,6 +69,7 @@ export async function visitOfficeRoute(page: Page, path: string) {
   await clickNavPath(page, path)
   await settledRoute(page)
   await expect(page.locator('main h1')).toBeVisible()
+  if (path === '/video-studio') await expect(page.locator('.video-status-pill')).toHaveAttribute('data-state', 'offline')
 }
 
 /** Snapshot in capture phase, after automation scrolling but before Vue opens the surface. */

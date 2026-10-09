@@ -5,6 +5,10 @@ let fs: typeof import('fs') = require('fs');
 let path: typeof import('path') = require('path');
 let test: typeof import('node:test') = require('node:test');
 let popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
+const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
+const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
+const popularGuards: typeof import('../../src/utils/popularParseGuards.ts') = require('../../src/utils/popularParseGuards.ts');
+const { recommendBlueprints }: typeof import('../../src/utils/blueprintRecommendations.ts') = require('../../src/utils/blueprintRecommendations.ts');
 let recipes: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
 let persistence: typeof import('../../src/utils/promptBuilderPersistence.ts') = require('../../src/utils/promptBuilderPersistence.ts');
 
@@ -43,13 +47,13 @@ test('explicit SFW composition survives core and showcase guards without relaxin
       assert.ok(neg.includes('duplicate'), 'group still prevents accidental clones');
       assert.ok(neg.includes('triptych'), 'group remains one frame');
     }
-    const k = popular.buildPopularPromptPlan({character:c,blueprint:b,outfit:popular.findOutfit(c,b!.outfitId!)!,engine:'krea2',adultEnabled:false});
+    const k = popularPrompt.buildPopularPromptPlan({character:c,blueprint:b,outfit:popular.findOutfit(c,b!.outfitId!)!,engine:'krea2',adultEnabled:false});
     assert.ok(k && k.prompt.includes(b!.promptProse.split('.')[0]));
-    assert.strictEqual(popular.buildPopularPromptPlan({character:c,blueprint:{...b,adult:true},outfit:popular.findOutfit(c,b!.outfitId!)!,engine:'anima',profile: profile as any,adultEnabled:false}),null);
+    assert.strictEqual(popularPrompt.buildPopularPromptPlan({character:c,blueprint:{...b,adult:true},outfit:popular.findOutfit(c,b!.outfitId!)!,engine:'anima',profile: profile as any,adultEnabled:false}),null);
     assert.strictEqual(policy.compositionIntent({...b,adult:true}), 'single');
   }
-  assert.throws(() => policy.parseCompositionIntent('anything'), /Invalid/);
-  assert.strictEqual(policy.parseCompositionIntent(undefined), 'single');
+  assert.throws(() => popularGuards.parseCompositionIntent('anything'), /Invalid/);
+  assert.strictEqual(popularGuards.parseCompositionIntent(undefined), 'single');
   const ordinary = blueprints.find(b => !b.adult && b.compositionIntent === 'single');
   const c = characters.find(c => c.id === ordinary!.characterId);
   const a = generator.buildCandidate(c, ordinary, profile, 1);
@@ -66,9 +70,9 @@ test('explicit SFW composition survives core and showcase guards without relaxin
   assert.ok(tokens(reflection.negative).includes('triptych'));
   const child = {...ordinary!,identityTokensOverride:['fixture_child','green_hair'],identityProseOverride:'The nonsexual childhood form of the same character.'};
   const childOutfit = {...popular.findOutfit(c!,child.outfitId!)!,tokens:['blue_coat'],prose:'a closed blue coat over trousers and boots'};
-  const childPrompt = popular.buildPopularPromptPlan({character:c!,blueprint:child,outfit:childOutfit,engine:'anima',profile,adultEnabled:false})!;
+  const childPrompt = popularPrompt.buildPopularPromptPlan({character:c!,blueprint:child,outfit:childOutfit,engine:'anima',profile,adultEnabled:false})!;
   assert.ok(childPrompt.prompt.includes('green hair') && childPrompt.prompt.includes(child.identityProseOverride.replace(/[.!?]+$/,'')));
-  assert.strictEqual(popular.buildPopularPromptPlan({character:c!,blueprint:{...child,adult:true},outfit:childOutfit,engine:'anima',profile,adultEnabled:true}),null);
+  assert.strictEqual(popularPrompt.buildPopularPromptPlan({character:c!,blueprint:{...child,adult:true},outfit:childOutfit,engine:'anima',profile,adultEnabled:true}),null);
 });
 
 test('onboarding scenes keep their outfit binding and compile safely in both engines', function () {
@@ -100,7 +104,7 @@ test('onboarding scenes keep their outfit binding and compile safely in both eng
       for (const engine of ['anima', 'krea2'] as const) {
         const model = engine === 'anima' ? 'anima-miaomiao-v1.6' : 'krea2-turbo-fp8';
         const profile: any = resolveModelProfile(catalog.modelProfiles, model, engine);
-        const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: true });
+        const plan = popularPrompt.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: true });
         assert.ok(plan, blueprint.id + ' must compile for ' + engine);
         assert.strictEqual(plan.adult, blueprint.adult);
         if (!blueprint.adult) assert.ok(!/\bnsfw\b|\bnude\b|\blingerie\b|bare breasts|exposed pussy/i.test(plan.prompt));
@@ -128,7 +132,7 @@ test('batch five: six migrated adult characters each have six SFW plus four R18 
       for (const engine of ['anima', 'krea2'] as const) {
         const model = engine === 'anima' ? 'anima-miaomiao-v1.6' : 'krea2-turbo-fp8';
         const profile: any = resolveModelProfile(catalog.modelProfiles, model, engine);
-        const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: true });
+        const plan = popularPrompt.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: true });
         assert.ok(plan, blueprint.id + ' must compile for ' + engine);
         assert.strictEqual(plan.adult, blueprint.adult);
         if (!blueprint.adult) assert.ok(!/rating:explicit|\bnsfw\b|\bnude\b|bare breasts|exposed pussy/i.test(plan.prompt), blueprint.id + ' positive prompt must stay SFW');
@@ -171,7 +175,7 @@ let adults = characters.filter(function (character) { return character.adultElig
 test('popular data: all character fields never leak nene/natsume anchors', function () {
   characters.forEach(function (character) {
     // 全字段扫描：identityTokens/exactTokens/identityProse/aliases/exactPrefixes/outfit prose+tokens。
-    let leaks = popular.scanCharacterPollution(character);
+    let leaks = popularPrompt.scanCharacterPollution(character);
     assert.deepStrictEqual(leaks, [], character.id + ' leaked studio LoRA anchors: ' + leaks.join(' | '));
     character.identityTokens.concat(character.exactTokens).forEach(function (token) {
       assert.ok(!/(?:ayachi_nene|shiki_natsume|^nene_|^natsume_)/i.test(token),
@@ -180,10 +184,10 @@ test('popular data: all character fields never leak nene/natsume anchors', funct
   });
   let synthetic = JSON.parse(JSON.stringify(characters[0]));
   synthetic.identityProse = 'a girl who looks like ayachi_nene in the rain';
-  assert.deepStrictEqual(popular.scanCharacterPollution(synthetic), ['raiden_shogun.identityProse: studio character name']);
+  assert.deepStrictEqual(popularPrompt.scanCharacterPollution(synthetic), ['raiden_shogun.identityProse: studio character name']);
   synthetic.identityProse = 'plain prose';
   synthetic.outfits[0].tokens = ['nene_school_uniform', 'school_uniform'];
-  assert.deepStrictEqual(popular.scanCharacterPollution(synthetic), ['raiden_shogun.outfit.shogun_robes: studio control prefix']);
+  assert.deepStrictEqual(popularPrompt.scanCharacterPollution(synthetic), ['raiden_shogun.outfit.shogun_robes: studio control prefix']);
 });
 
 test('blueprints preserve valid metadata and fail closed for non-adults', function () {
@@ -206,7 +210,7 @@ test('blueprints preserve valid metadata and fail closed for non-adults', functi
     adultBlueprints.forEach(function (blueprint) {
       assert.strictEqual(popular.blueprintEligible(blueprint, character, { adultEnabled: true }), false,
         character.id + ' must never see adult blueprint ' + blueprint.id);
-      assert.strictEqual(popular.buildPopularPromptPlan({
+      assert.strictEqual(popularPrompt.buildPopularPromptPlan({
         character: character, outfit: character.outfits[0], blueprint: blueprint,
         engine: 'anima', adultEnabled: true,
       }), null, character.id + ' must fail closed when building an adult blueprint');
@@ -241,7 +245,7 @@ test('source-audited adult records cannot re-enter SFW planning', function () {
     assert.ok(blueprint && blueprint.adult && blueprint.sampleRating === 'R18', id + ' must retain its reviewed classification');
     const character = characters.find(c => c.id === blueprint.characterId)!;
     for (const engine of ['anima', 'krea2'] as const) {
-      assert.strictEqual(popular.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId!)!, blueprint, engine, adultEnabled: false }), null, id + ' must fail closed in ' + engine);
+      assert.strictEqual(popularPrompt.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId!)!, blueprint, engine, adultEnabled: false }), null, id + ' must fail closed in ' + engine);
     }
   }
 });
@@ -253,7 +257,7 @@ test('SFW character variants keep intended hairstyles and exclude sexualized jun
   for (const blueprint of blueprints.filter(b => !b.adult && ['katou_megumi', 'yamada_anna'].includes(b.characterId!))) {
     const character = blueprint.characterId === megumi!.id ? megumi : anna;
     for (const engine of ['anima', 'krea2'] as const) {
-      const plan = popular.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId!)!, blueprint, engine, adultEnabled: false });
+      const plan = popularPrompt.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId!)!, blueprint, engine, adultEnabled: false });
       assert.ok(plan);
       if (character === anna) assert.ok(!/large[_ ]breasts|voluptuous|full bust|endlessly long|jaw-dropping/i.test(plan.prompt), blueprint.id + ' must remain a nonsexual everyday depiction');
       if (character === megumi && ['casual_ponytail_summer', 'sfw_kitchen_apron'].includes(blueprint.outfitId!)) {
@@ -266,22 +270,17 @@ test('SFW character variants keep intended hairstyles and exclude sexualized jun
 
 test('Mahiru first meeting follows the official umbrella lending direction', function () {
   const scene = blueprints.find(b => b.id === 'mahiru_rain_umbrella_park');
-  assert.ok(scene!.promptTokens.includes('receiving_umbrella'));
-  assert.ok(!scene!.promptTokens.includes('offering_umbrella'));
-  assert.ok(scene!.promptProse.includes('Amane offers her his umbrella'));
+  assert.ok(scene);
+  // The authored relationship is the contract; tags may use natural phrases.
+  assert.match(scene.promptProse, /Amane(?: Fujimiya)?[^.]*offers (?:her )?his umbrella/i);
+  assert.match(scene.promptProse, /she[^.]*reaches[^.]*handle/i);
+  assert.doesNotMatch(scene.promptProse, /(?:Mahiru(?: Shiina)?|she)\s+(?:offers|holds out|hands over)\b[^.]*umbrella/i);
 });
 
-// 2026-08-23 场景库二次优化：用户验收标准契约化——
-// ① 每套服装至少被 1 个场景引用；② 每角色 ≥1 名场面(iconic) + ≥1 日常(daily)；
-// ③ 成人侧每角色 ≥1 特殊NSFW（coverageTags=special_nsfw）。
-test('scene coverage: every outfit referenced, >=1 iconic + >=1 daily per character, >=1 special_nsfw among adults', function () {
+// All-outfit/default-SFW coverage is reported together by test-content-gate-repairs.
+test('scene coverage: >=1 iconic + >=1 daily per character, >=1 special_nsfw among adults', function () {
   characters.forEach(function (character) {
     let owned = blueprints.filter(function (blueprint) { return blueprint.characterId === character.id; });
-    let usedOutfits = new Set(owned.map(function (blueprint) { return blueprint.outfitId; }).filter(Boolean));
-    character.outfits.forEach(function (outfit) {
-      assert.ok(usedOutfits.has(outfit.id),
-        character.id + ' outfit ' + outfit.id + ' must be referenced by at least one scene');
-    });
     let hasTag = function (tag: any) {
       return owned.some(function (blueprint) {
         return Array.isArray(blueprint.coverageTags) && blueprint.coverageTags.includes(tag);
@@ -301,22 +300,16 @@ test('scene coverage: every outfit referenced, >=1 iconic + >=1 daily per charac
   });
 });
 
-// 2026-08-23 壁纸级质感契约——成人 hint 必须是 r18_* 配方 id（自由短语会以垃圾前缀
-// 直接拼进 Krea 提示词开头）；尺寸收敛到高分辨率；原型场景须有实质环境描述。
-// 一句完整叙事可含动作和具体光影，不以追加模板句凑句号。质量词属于 profile 装配层（quality_prefix 恰好一次，且
-// aesthetic/2.9B 均 strip_quality_tokens=true），场景数据严禁携带政策质量词与玄学词；
-// 具体光影/环境 tag（detailed_background/cinematic_lighting 等）作为壁纸层保留。
-test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words in data layer', function () {
+// Scene completeness is structural here, not visual acceptance. Current authoring
+// preserves concrete light/space relations instead of mandating fog or DOF tags.
+// Optional style hints and adult eligibility have independent guards below.
+test('wallpaper-grade scenes: high-res sizes, authored atmosphere and no assembly quality words', function () {
   let forbidden = [
     'masterpiece', 'best_quality', 'amazing_quality', 'very_aesthetic',
     'absurdres', 'newest', 'highres', 'highly_detailed',
     'intricate_details', 'ultra_detailed', '8k', '4k',
   ];
   blueprints.forEach(function (blueprint) {
-    if (blueprint.adult && !["mash_kyrielight_dangerous_beast","caren_blizzard_shroud_magdalene_exorcism","caren_stigmata_fever_hugged_blush","caren_fireplace_bible_shoulder_lean","caren_cloister_sunlit_breeze_smile","ishtar_pool_mismatched_bikini","caren_summer_poolside_white_swimsuit","raiden_shogun_tenshukaku","raiden_shogun_convenience","haruno_record_player_melancholy","sakurajima_mai_library"].includes(blueprint.id)) {
-      assert.ok(blueprint.kreaStyleHint && /^r18_/.test(blueprint.kreaStyleHint),
-        blueprint.id + ' adult kreaStyleHint must be an r18_* recipe id');
-    }
     let legalSizes = ['1152x1536', '1536x1152', '1216x832', '832x1216'];
     assert.ok(legalSizes.includes(blueprint.recommendedSize),
       blueprint.id + ' recommendedSize must be wallpaper high-res, got ' + blueprint.recommendedSize);
@@ -332,26 +325,9 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
       // Aisha and Fiona use concrete emitters, not a mandatory fog/DOF template.
       || blueprint.characterId === 'aisha_greyrat'
       || blueprint.characterId === 'fiona_frost') {
-      assert.ok(blueprint.promptTokens.some(t => /light|sun|dawn|morning|afternoon|noon|night|evening|lantern|neon|lamp|shade/.test(t)), blueprint.id + ' must specify scene lighting or time');
+      assert.ok([...blueprint.promptTokens, blueprint.promptProse].some(t => /light|sun|dawn|morning|afternoon|noon|night|evening|lantern|neon|lamp|shade/i.test(t)), blueprint.id + ' must specify scene lighting or time in model input');
       assert.ok(blueprint.promptProse.length >= 300, blueprint.id + ' needs a complete independently written scene');
-    } else ['detailed_background', 'cinematic_lighting', 'volumetric_lighting', 'depth_of_field'].forEach(function (token) {
-      const phrase = token.replaceAll('_', ' ');
-      if (blueprint.promptTokens.includes(token)) return;
-      assert.ok(blueprint.promptProse.toLowerCase().includes(phrase),
-        blueprint.id + ' missing atmosphere in both tags and authored prose: ' + token);
-      // Prose is a production input, not a UI label. When it supplies an anchor,
-      // verify both actual engine payloads retain it instead of adding duplicate tags.
-      const character = characters.find(item => item.id === blueprint.characterId)!;
-      const outfit = popular.findOutfit(character, blueprint.outfitId!)!;
-      const profiles = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles;
-      for (const engine of ['anima', 'krea2'] as const) {
-        const model = engine === 'anima' ? 'anima-miaomiao-v1.6' : 'krea2-turbo-fp8';
-        const profile: any = profiles.find(item => item.model_id === model);
-        const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: false });
-        assert.ok(plan && plan.prompt.toLowerCase().includes(phrase),
-          blueprint.id + ':' + engine + ' must preserve prose atmosphere ' + token);
-      }
-    });
+    }
     if (!blueprint.adult) {
       assert.ok(hasAtmosphericSceneProse(blueprint.promptProse),
         blueprint.id + ' needs complete scene prose with atmospheric content, not punctuation padding');
@@ -432,67 +408,18 @@ test('negation-free prompts: no invented no_* tags, prose carries positive solit
 test('blueprint rotation: deterministic, changes per cursor, avoids immediate repeat', function () {
   let raiden = popular.findCharacter(characters, 'raiden_shogun');
   let pool = popular.eligibleBlueprints(blueprints, raiden, { adultEnabled: true });
-  let first = popular.recommendBlueprints(pool, 'raiden_shogun#shogun_robes', 0, null, 3);
+  let first = recommendBlueprints(pool, 'raiden_shogun#shogun_robes', 0, null, 3);
   assert.strictEqual(first.length, 3);
-  let repeat = popular.recommendBlueprints(pool, 'raiden_shogun#shogun_robes', 0, null, 3);
+  let repeat = recommendBlueprints(pool, 'raiden_shogun#shogun_robes', 0, null, 3);
   assert.deepStrictEqual(first.map(function (blueprint) { return blueprint.id; }), repeat.map(function (blueprint) { return blueprint.id; }),
     'same cursor must be deterministic');
-  let second = popular.recommendBlueprints(pool, 'raiden_shogun#shogun_robes', 1, first.map(function (blueprint) { return blueprint.id; }), 3);
+  let second = recommendBlueprints(pool, 'raiden_shogun#shogun_robes', 1, first.map(function (blueprint) { return blueprint.id; }), 3);
   assert.notDeepStrictEqual(second.map(function (blueprint) { return blueprint.id; }), first.map(function (blueprint) { return blueprint.id; }),
     'consecutive cursor must avoid the previous set');
 });
 
-test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, Krea negative always empty', function () {
-  let raiden = popular.findCharacter(characters, 'raiden_shogun')!;
-  let outfit = raiden!.outfits.find(function (item) { return item.default; }) || raiden!.outfits[0];
-  let blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; })!;
-
-  let anima = popular.buildPopularPromptPlan({
-    character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null, adultEnabled: true,
-  });
-  assert.ok(anima, 'anima plan must build for a safe blueprint');
-  assert.ok(anima.prompt.includes('raiden_shogun'), 'canonical identity anchor must be preserved exactly');
-  assert.ok(anima.prompt.includes('narukami'), 'blueprint tokens must be synthesized');
-  assert.ok(anima.prompt.includes('japanese_clothes') || anima.prompt.includes('kimono'), 'outfit tokens must be synthesized');
-  assert.ok(anima.negative.length > 0, 'Anima no-LoRA workflow keeps negative tokens');
-
-  let visualAnima = popular.buildPopularPromptPlan({
-    character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null, adultEnabled: true,
-    visualDescription: 'The girl gently holds a bouquet of flowers, petals drifting onto her shoulder.',
-    palette: ['pink theme', 'warm light'],
-  });
-  assert.ok(visualAnima!.prompt.includes('bouquet'), 'user visual description must enter the no-LoRA prompt');
-  assert.ok(visualAnima!.prompt.includes('pink theme') && visualAnima!.prompt.includes('warm light'),
-    'director color mood must enter the Anima request');
-  assert.ok(visualAnima!.prompt.includes('japanese_clothes') || visualAnima!.prompt.includes('kimono'),
-    'user visual description must not replace the selected outfit');
-  let fallbackAnima = popular.buildPopularPromptPlan({
-    character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null, adultEnabled: true,
-  });
-  assert.ok(fallbackAnima!.prompt.includes('japanese_clothes') || fallbackAnima!.prompt.includes('kimono'),
-    'empty visual description still keeps the selected outfit tokens');
-
-  let animaText = [anima.prompt, anima.negative].join(' ');
-  assert.ok(!/(?:ayachi_nene|shiki_natsume)/i.test(animaText), 'no studio character name');
-  assert.ok(!/(?:nene_|natsume_)[a-z0-9_]+/i.test(animaText), 'no studio control tokens');
-  assert.ok(!/<lora:/i.test(animaText), 'no lora syntax');
-  assert.ok(!/official_cg|visual_audited/i.test(animaText), 'no retrieval metadata');
-  assert.ok(!/这是故事|台词|心理活动/i.test(animaText), 'no story/dialogue/psychology leakage');
-
-  let krea = popular.buildPopularPromptPlan({
-    character: raiden, outfit: outfit, blueprint: blueprint, engine: 'krea2', profile: null, adultEnabled: true,
-    palette: ['pink theme', 'warm light'],
-  });
-  assert.ok(krea, 'krea plan must build');
-  assert.strictEqual(krea.negative, '', 'Krea must never carry a negative');
-  let kreaText = krea.prompt;
-  assert.ok(!/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(kreaText), 'krea no studio pollution');
-  assert.ok(!/<lora:/i.test(kreaText), 'krea no lora syntax');
-  assert.ok(!/official_cg|visual_audited/i.test(kreaText), 'krea no retrieval metadata');
-  assert.ok(kreaText.includes('color palette uses pink theme and warm light'), 'director color mood must enter Krea prose');
-  assert.strictEqual((kreaText.match(/flowing purple Japanese robes/gi) || []).length, 1, 'selected outfit must appear exactly once');
-  assert.ok(!/completely deserted|not a single other person|no commuters/i.test(kreaText), 'Krea must not force every public scene to be deserted');
-});
+// Identity, outfit, scene, user direction and negative behavior use neutral fixtures in
+// src/utils/popularPromptBuilder.spec.ts, independent of authored catalogue rewrites.
 
 test('adult blueprints compile as explicit adult versions in both engines', function () {
   let adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
@@ -506,11 +433,11 @@ test('adult blueprints compile as explicit adult versions in both engines', func
     let outfit = character!.outfits.find(function (item) { return item.id === blueprint.outfitId; })
       || character!.outfits.find(function (item) { return item.default; })
       || character!.outfits[0];
-    let anima = popular.buildPopularPromptPlan({
+    let anima = popularPrompt.buildPopularPromptPlan({
       character: character, outfit: outfit, blueprint: blueprint,
       engine: 'anima', profile: animaProfile, adultEnabled: true,
     });
-    let krea = popular.buildPopularPromptPlan({
+    let krea = popularPrompt.buildPopularPromptPlan({
       character: character, outfit: outfit, blueprint: blueprint,
       engine: 'krea2', profile: kreaProfile, adultEnabled: true,
     });
@@ -559,7 +486,7 @@ test('blueprint framing: authored and compiled directions match recommended dime
     const character = popular.findCharacter(characters, blueprint.characterId!)!;
     const outfit = popular.findOutfit(character, blueprint.outfitId!)!;
     for (const engine of ['anima', 'krea2'] as const) {
-      const result = popular.buildPopularPromptPlan({
+      const result = popularPrompt.buildPopularPromptPlan({
         character, outfit, blueprint, engine, profile: profiles[engine], adultEnabled: true,
       });
       assert.ok(result, blueprint.id + ' must compile for ' + engine);
@@ -572,7 +499,7 @@ test('blueprint framing: authored and compiled directions match recommended dime
 
 test('blueprint lighting: explicit emitters outrank prose colors, titles and time-only tags', function () {
   const base = blueprints.find(b => b.id === 'raiden_shogun_narukami_shrine');
-  const decide = (fields: any) => popular.inferBlueprintDecisions({ ...base, ...fields }).lighting;
+  const decide = (fields: any) => blueprintDecisions.inferBlueprintDecisions({ ...base, ...fields }).lighting;
   assert.strictEqual(decide({ lighting: 'soft daylight', timeOfDay: 'day', promptProse: 'Saber from Fate/stay night with golden eyes.', sceneTags: [] }), null);
   assert.strictEqual(decide({ lighting: 'blue neon through the window', timeOfDay: 'night', sceneTags: ['night', 'golden_eyes'] }), null);
   assert.strictEqual(decide({ lighting: '月光透过窗户', timeOfDay: 'night', sceneTags: [] }), 'moon');
@@ -595,48 +522,48 @@ test('blueprint lighting: explicit emitters outrank prose colors, titles and tim
 
 test('blueprint lighting: all SFW decisions are independent of prose, mood and camera contamination', function () {
   for (const blueprint of blueprints.filter(b => !b.adult)) {
-    const expected = popular.inferBlueprintDecisions(blueprint).lighting;
+    const expected = blueprintDecisions.inferBlueprintDecisions(blueprint).lighting;
     const noisy = { ...blueprint, camera: 'window portrait', mood: 'golden autumn night', promptProse: 'Golden eyes and moon-shaped jewelry from Fate/stay night, sunlight, candlelight.' };
-    assert.strictEqual(popular.inferBlueprintDecisions(noisy).lighting, expected, blueprint.id + ': prose/camera/mood must not override the authored light');
+    assert.strictEqual(blueprintDecisions.inferBlueprintDecisions(noisy).lighting, expected, blueprint.id + ': prose/camera/mood must not override the authored light');
   }
 });
 
 test('blueprint decisions: authored camera keywords resolve without borrowing prose', function () {
   let thunderNight = blueprints.find(function (item) { return item.id === 'raiden_shogun_thunder_night'; })!;
-  let decision = popular.inferBlueprintDecisions(thunderNight);
+  let decision = blueprintDecisions.inferBlueprintDecisions(thunderNight);
   assert.strictEqual(decision.shot, 'wide', 'the corrected beach scene must retain its authored full-body framing');
-  assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: 'wide shot, dramatic low angle' } as any).shot, 'low',
+  assert.strictEqual(blueprintDecisions.inferBlueprintDecisions({ ...thunderNight, camera: 'wide shot, dramatic low angle' } as any).shot, 'low',
     'authored "wide shot, dramatic low angle" must resolve to low angle, not lose to the longer "wide shot"/"medium" substring');
-  assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: 'medium shot', sceneTags: ['looking_back'], promptProse: 'Looking back over her shoulder.' } as any).shot, 'medium',
+  assert.strictEqual(blueprintDecisions.inferBlueprintDecisions({ ...thunderNight, camera: 'medium shot', sceneTags: ['looking_back'], promptProse: 'Looking back over her shoulder.' } as any).shot, 'medium',
     'an action in scene prose must not replace the explicit camera distance');
-  for (const adult of [false, true]) assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, adult, camera: 'full body, front view' } as any).shot, 'wide', 'frontal full-body camera must not become looking back');
-  for (const adult of [false, true]) assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, adult, camera: 'medium close-up, front view' } as any).shot, 'close', 'frontal close view must retain its framing');
+  for (const adult of [false, true]) assert.strictEqual(blueprintDecisions.inferBlueprintDecisions({ ...thunderNight, adult, camera: 'full body, front view' } as any).shot, 'wide', 'frontal full-body camera must not become looking back');
+  for (const adult of [false, true]) assert.strictEqual(blueprintDecisions.inferBlueprintDecisions({ ...thunderNight, adult, camera: 'medium close-up, front view' } as any).shot, 'close', 'frontal close view must retain its framing');
   let maiLibrary = blueprints.find(function (item) { return item.id === 'sakurajima_mai_library'; })!;
-  assert.strictEqual(popular.inferBlueprintDecisions(maiLibrary).shot, 'low',
+  assert.strictEqual(blueprintDecisions.inferBlueprintDecisions(maiLibrary).shot, 'low',
     '"cinematic low angle medium shot" must keep the authored low angle');
-  assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: '', promptProse: 'A wide shot.' }).shot, null,
+  assert.strictEqual(blueprintDecisions.inferBlueprintDecisions({ ...thunderNight, camera: '', promptProse: 'A wide shot.' }).shot, null,
     'unsupported camera metadata must not be filled from scene prose');
 });
 
 test('blueprint decisions: word boundaries and authored symmetry preserve explicit choices', () => {
   const mash = blueprints.find(b => b.id === 'mash_kyrielight_ortinax_launch')!;
-  assert.strictEqual(popular.inferBlueprintDecisions(mash).shot, 'wide');
-  assert.strictEqual(popular.inferBlueprintDecisions({ ...mash, camera: 'close-up of closed fists' }).shot, 'close');
-  assert.strictEqual(popular.inferBlueprintDecisions({ ...mash, camera: 'full-body shot, low angle' }).shot, 'low');
+  assert.strictEqual(blueprintDecisions.inferBlueprintDecisions(mash).shot, 'wide');
+  assert.strictEqual(blueprintDecisions.inferBlueprintDecisions({ ...mash, camera: 'close-up of closed fists' }).shot, 'close');
+  assert.strictEqual(blueprintDecisions.inferBlueprintDecisions({ ...mash, camera: 'full-body shot, low angle' }).shot, 'low');
   const mika = blueprints.find(b => b.id === 'misono_mika_tea_throne')!;
   const character = characters.find(c => c.id === mika.characterId)!;
   const outfit = popular.findOutfit(character, mika.outfitId!)!;
-  const decisions = popular.inferBlueprintDecisions(mika);
+  const decisions = blueprintDecisions.inferBlueprintDecisions(mika);
   assert.strictEqual(decisions.composition, 'center');
-  assert.strictEqual(popular.inferBlueprintDecisions({ ...mika, camera: 'medium shot, asymmetrical composition' }).composition, null);
+  assert.strictEqual(blueprintDecisions.inferBlueprintDecisions({ ...mika, camera: 'medium shot, asymmetrical composition' }).composition, null);
   for (const engine of ['anima', 'krea2'] as const) {
-    const automatic = popular.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, ...decisions })!;
+    const automatic = popularPrompt.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, ...decisions })!;
     assert.ok(automatic.prompt.includes('centered composition'));
     assert.ok(!automatic.prompt.includes('rule of thirds'));
-    const explicit = popular.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, ...decisions, shot: 'wide', composition: 'right' })!;
+    const explicit = popularPrompt.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, ...decisions, shot: 'wide', composition: 'right' })!;
     assert.ok(explicit.prompt.includes('subject on the right side of the image'));
     assert.ok(!explicit.prompt.includes('centered composition'));
-    const framed = popular.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, composition: 'frame' })!;
+    const framed = popularPrompt.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, composition: 'frame' })!;
     assert.ok(framed.prompt.includes('natural framing'));
     assert.ok(!framed.prompt.split('\n')[0].split(',').map(t => t.trim()).includes('framed'));
   }
@@ -649,7 +576,7 @@ test('shared compiler retains reference outfit, manual pose, visual background a
   const blueprint = { ...source, promptTokens: ['sitting', 'garden'], promptProse: 'A garden beside a stone path.', mood: '' };
   const before = JSON.stringify({ character, outfit, blueprint });
   for (const engine of ['anima', 'krea2'] as const) {
-    const result = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine,
+    const result = popularPrompt.buildPopularPromptPlan({ character, outfit, blueprint, engine,
       outfitOverride: ['blue_coat'], manual: ['standing'], visualDescription: 'A forest path continues behind her.',
       shot: 'close', composition: 'left', lighting: 'moon',
     })!;
@@ -668,7 +595,7 @@ test('krea prose: director shot/lighting decisions must reach the compiled promp
   let yor = popular.findCharacter(characters, 'yor_forger')!;
   let outfit = yor!.outfits.find(function (item) { return item.default; }) || yor!.outfits[0];
   let blueprint = blueprints.find(function (item) { return item.id === 'yor_moonlit_rooftop_stiletto'; })!;
-  let built = popular.buildPopularPromptPlan({
+  let built = popularPrompt.buildPopularPromptPlan({
     character: yor, outfit: outfit, blueprint: blueprint, engine: 'krea2', profile: null,
     adultEnabled: false, shot: 'medium', lighting: 'moon', composition: 'rule3',
   });
@@ -679,7 +606,7 @@ test('krea prose: director shot/lighting decisions must reach the compiled promp
     'time words are not light sources; night/stars stay out of krea lighting prose');
   assert.ok(!/wearing wearing|wears wearing/i.test(built.prompt),
     'outfit prose starting with "wearing" must not duplicate the verb in krea composition');
-  let anima = popular.buildPopularPromptPlan({
+  let anima = popularPrompt.buildPopularPromptPlan({
     character: yor, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null,
     adultEnabled: false, shot: 'medium', lighting: 'moon', composition: 'rule3',
   });
@@ -694,9 +621,9 @@ test('prompt compiler: manual expert tags are sanitized against studio control t
   let raiden = popular.findCharacter(characters, 'raiden_shogun')!;
   let outfit = raiden!.outfits[0];
   let manual = ['nene_school_uniform', 'shiki_natsume', 'raiden_shogun', 'thighhighs', 'natsume_cafe_uniform'];
-  let sanitized = popular.sanitizePopularManual(manual);
+  let sanitized = popularPrompt.sanitizePopularManual(manual);
   assert.deepStrictEqual(sanitized, ['raiden_shogun', 'thighhighs']);
-  let anima = popular.buildPopularPromptPlan({
+  let anima = popularPrompt.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: null, engine: 'anima', profile: null, manual: manual, adultEnabled: true,
   });
   let text = anima!.prompt;
@@ -752,17 +679,17 @@ test('krea style recipes: resolution is engine-default -> blueprint hint -> sele
   assert.strictEqual(auto!.lead, 'A polished visual novel event CG with refined cel shading, flat colors and crisp character work');
   let animaAuto = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'anima', null, null, raiden, { adultEnabled: true });
   assert.strictEqual(animaAuto, null, 'Anima automatic styling must leave the rendering to authored hints and selected artists');
-  let animaBuilt = popular.buildPopularPromptPlan({
+  let animaBuilt = popularPrompt.buildPopularPromptPlan({
     character: raiden, outfit: raiden!.outfits[0], blueprint: null, engine: 'anima', profile: null, adultEnabled: true, style: animaAuto,
   });
   assert.ok(!/anime key visual|flat cel shading|clean lineart|saturated colors/.test(animaBuilt!.prompt), 'Anima must not invent a default rendering style');
   assert.ok(animaBuilt!.prompt.includes('Raiden Shogun from Genshin Impact'), 'Anima must receive the popular character identity prose');
   const explicitAnima = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'anima', null, 'anime_key_visual', raiden);
-  const explicitBuilt = popular.buildPopularPromptPlan({ character: raiden, outfit: raiden.outfits[0], blueprint: null,
+  const explicitBuilt = popularPrompt.buildPopularPromptPlan({ character: raiden, outfit: raiden.outfits[0], blueprint: null,
     engine: 'anima', style: explicitAnima });
   assert.ok(explicitBuilt!.prompt.includes('flat cel shading'), 'Explicit cel styling must remain available');
 
-  // 角色原型场景无 hint：引擎缺省即兜底（hint 仅成人蓝图与手选携带）。
+  // 无 hint 时采用引擎缺省；hint 是否出现与蓝图分级独立。
   let hinted = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', flower, null, raiden, { adultEnabled: true });
   assert.strictEqual(hinted!.lead, auto!.lead, 'character scene without kreaStyleHint must fall back to the engine default');
   let hintedAnima = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'anima', flower, null, raiden, { adultEnabled: true });
@@ -787,72 +714,18 @@ test('krea style recipes: resolution is engine-default -> blueprint hint -> sele
   assert.strictEqual(freeHint!.adult, false, 'free phrase hints are never adult');
 });
 
-test('krea prose: automatic style first, 3-5 visual sentences, no meta phrases or tag stuffing', function () {
-  let raiden = popular.findCharacter(characters, 'raiden_shogun')!;
-  let outfit = raiden!.outfits.find(function (item) { return item.default; }) || raiden!.outfits[0];
-  let blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; })!;
-  let style = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', blueprint, null, raiden, { adultEnabled: true });
+// Krea prose and build-layer adult-style rejection are covered with neutral fixtures
+// in src/utils/popularPromptBuilder.spec.ts; recipe eligibility above stays independent.
 
-  let krea = popular.buildPopularPromptPlan({
-    character: raiden, outfit: outfit, blueprint: blueprint, engine: 'krea2', profile: null, adultEnabled: true, style: style,
-  });
-  assert.ok(krea);
-  assert.strictEqual(krea.negative, '');
-  let text = krea.prompt;
-
-  // 风格配方开头（角色场景无 hint → 引擎默认）。
-  assert.ok(text.startsWith('A polished visual novel event CG'), 'engine default style lead must open the Krea prompt');
-  // 无 meta 短语 / 无检索元数据 / 无工作室污染。
-  assert.ok(!/(?:In this image|The image shows|Scene details:|Composition and lighting|A visual novel event CG featuring)/i.test(text));
-  assert.ok(!/official_cg|visual_audited/i.test(text));
-  assert.ok(!/(?:ayachi_nene|shiki_natsume|nene_|natsume_|<lora:)/i.test(text));
-  // 无逗号标签堆砌：不出现下划线 token，也不出现连续逗号标签。
-  assert.ok(!/[a-z]+_[a-z]+/i.test(text), 'krea prose must not carry raw danbooru tokens');
-  assert.ok(!/,\s*\w+,\s*\w+,\s*\w+,\s*$/.test(text), 'krea prose must not end with a comma-stuffed list');
-  // identityProse / outfitProse / promptProse 作为自然语言织入，未退化成标签流。
-  assert.ok(text.includes('Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon'),
-    'identityProse must be woven verbatim');
-  assert.ok(/the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid/i.test(text),
-    'outfitProse must be woven verbatim');
-  assert.ok(text.includes("A single cherry petal settles on Raiden Ei's open palm beneath the Sacred Sakura"),
-    'blueprint promptProse must be woven verbatim');
-  // 散文句子必须以句号收束。
-  let sentences = text.split(/(?<=\.)\s/);
-  assert.ok(sentences.length >= 3 && sentences.length <= 5, 'Krea prompt must contain 3-5 concise visual sentences');
-  sentences.forEach(function (sentenceText) {
-    assert.ok(/\.$/.test(sentenceText.trim()), 'each prose sentence must end with a period');
-  });
-});
-
-test('krea prose: adult recipe fails closed inside buildPopularPromptPlan for ineligible characters', function () {
-  let ineligible = JSON.parse(JSON.stringify(characters[0]));
-  ineligible.adultEligibility = 'underage';
-  let adultBp = blueprints.find(function (blueprint) { return blueprint.adult; })!;
-  let adultStyle = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', adultBp, null, ineligible, { adultEnabled: true });
-  assert.strictEqual(adultStyle, null, 'underage must never resolve an adult style');
-  // 即便调用方绕过解析直接传 adult 配方，build 层也要再 fail-closed 一次。
-  let sneaked = popular.buildPopularPromptPlan({
-    character: ineligible, outfit: ineligible.outfits[0], blueprint: adultBp, engine: 'krea2',
-    profile: null, adultEnabled: true, style: { lead: 'mature sensual content', adult: true },
-  });
-  assert.strictEqual(sneaked, null, 'build layer must reject an adult style for an ineligible character');
-  let raiden = popular.findCharacter(characters, 'raiden_shogun')!;
-  let legit = popular.buildPopularPromptPlan({
-    character: raiden, outfit: raiden!.outfits[0], blueprint: adultBp, engine: 'krea2',
-    profile: null, adultEnabled: true, style: { lead: 'mature sensual content', medium: 'mature art', adult: true },
-  });
-  assert.ok(legit, 'adult character + mature switch must build with an adult style');
-  assert.ok(/mature sensual content/i.test(legit.prompt), 'adult style lead must reach the prompt');
-  assert.ok(legit.prompt.split(/(?<=\.)\s/).length <= 5, 'adult Krea prompt must remain concise');
-});
-
-test('blueprint hints: kreaStyleHint/animaStyleHint stay optional; adult blueprints must carry an adult hint', function () {
-  let shrine = blueprints.find(function (blueprint) { return blueprint.id === 'raiden_shogun_narukami_shrine'; });
-  assert.ok(shrine && shrine.kreaStyleHint === undefined, 'character prototype scenes may omit style hints');
-  let adultBp = blueprints.find(function (blueprint) { return blueprint.adult; });
-  assert.ok(adultBp!.kreaStyleHint && /^r18_/.test(adultBp!.kreaStyleHint), 'adult blueprint must carry an adult recipe hint');
-  let unknown = blueprints.find(function (blueprint) { return blueprint.kreaStyleHint === undefined; });
-  assert.ok(unknown, 'hints must be optional for blueprints without a strong style identity');
+test('blueprint style hints are optional independently of the rating gate', function () {
+  const source = blueprints.find(blueprint => !blueprint.adult)!;
+  for (const adult of [false, true]) {
+    const [parsed] = popular.parseSceneBlueprints([{ ...source, adult, kreaStyleHint: undefined, animaStyleHint: undefined }]);
+    assert.ok(parsed);
+    assert.strictEqual(parsed.adult, adult);
+    assert.strictEqual(parsed.kreaStyleHint, undefined);
+    assert.strictEqual(parsed.animaStyleHint, undefined);
+  }
 });
 
 test('prompt compiler: Anima negative merges profile negative_prefix per negative_mode, Krea stays empty', function () {
@@ -863,7 +736,7 @@ test('prompt compiler: Anima negative merges profile negative_prefix per negativ
   // anima_aesthetic_v11：negative_mode=replace, replace_scope=boilerplate。
   let profile: any = { engine: 'anima', negative_prefix: 'worst quality, low quality, artist name, blurry, jpeg artifacts, chromatic aberration', negative_mode: 'replace', negative_replace_scope: 'boilerplate', exact_tokens: ['best_quality'] };
 
-  let anima = popular.buildPopularPromptPlan({
+  let anima = popularPrompt.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: profile, adultEnabled: true,
   });
   assert.ok(anima, 'anima plan must build');
@@ -872,7 +745,7 @@ test('prompt compiler: Anima negative merges profile negative_prefix per negativ
   assert.ok(anima.negative.includes('neon'), 'fixture non-boilerplate negative must be kept');
   assert.ok(!anima.negative.includes('<lora:'), 'no lora syntax in negative');
 
-  let krea = popular.buildPopularPromptPlan({
+  let krea = popularPrompt.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'krea2', profile: profile, adultEnabled: true,
   });
   assert.ok(krea);
@@ -883,12 +756,12 @@ test('curated artist styles use native Anima tags and Krea prose', function () {
   let raiden = popular.findCharacter(characters, 'raiden_shogun')!;
   let outfit = raiden!.outfits[0];
   let blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; })!;
-  let anima = popular.buildPopularPromptPlan({
+  let anima = popularPrompt.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: { engine:'anima' },
     artistTags: ['@kantoku', '@mika pikazo'], artistProse: 'with visual styling inspired by Kantoku and Mika Pikazo',
   });
   assert.ok(anima!.prompt.includes('@kantoku') && anima!.prompt.includes('@mika pikazo'));
-  let krea = popular.buildPopularPromptPlan({
+  let krea = popularPrompt.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'krea2', profile: { engine:'krea2' },
     style: { lead:'A polished visual novel event CG', medium:'visual novel event CG' },
     artistTags: [], artistProse: 'with visual styling inspired by Kantoku and Mika Pikazo',
@@ -903,7 +776,7 @@ test('prompt compiler: restored adult blueprint fails closed for ineligible char
   let adultBlueprint = blueprints.find(function (item) { return item.adult; });
   assert.ok(adultBlueprint);
   // 无论 manualTags / profile 是否携带显式词，组装必须整体拒绝。
-  let rejected = popular.buildPopularPromptPlan({
+  let rejected = popularPrompt.buildPopularPromptPlan({
     character: ineligible, outfit: ineligible.outfits[0], blueprint: adultBlueprint, engine: 'anima', profile: null, adultEnabled: true,
   });
   assert.strictEqual(rejected, null, 'underage character must never assemble an adult blueprint');

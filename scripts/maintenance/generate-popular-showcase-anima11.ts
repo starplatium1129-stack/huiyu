@@ -21,6 +21,8 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
 const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
+const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
+const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
 const { showcaseSubjectGuards, compositionNegative }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
 const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
 const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
@@ -90,9 +92,9 @@ function buildCandidate(character: any, blueprint: any, profile: any, attempt: a
   // 蓝图指定服装（outfitId）优先；缺失时回退默认服装。
   const outfit = (blueprint.outfitId && popularContent.findOutfit(character, blueprint.outfitId))
     || popularContent.defaultOutfit(character);
-  const decisions = popularContent.inferBlueprintDecisions(blueprint);
+  const decisions = blueprintDecisions.inferBlueprintDecisions(blueprint);
   const adult = Boolean(blueprint.adult);
-  const result = popularContent.buildPopularPromptPlan({
+  const result = popularPrompt.buildPopularPromptPlan({
     character,
     outfit,
     blueprint,

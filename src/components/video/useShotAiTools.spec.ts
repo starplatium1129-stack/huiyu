@@ -1,4 +1,4 @@
-import { computed, effectScope, ref } from 'vue'
+import { computed, effectScope, nextTick, ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useShotAiTools } from './useShotAiTools'
 import type { ShotDraft } from './shotListTypes'
@@ -94,8 +94,40 @@ describe('shot AI editing integrity', () => {
     vi.mocked(api.reviewVideoShots).mockResolvedValue({ ok: true, source: 'api', model: 'test', issues: [{ index: 0, field: 'prompt', severity: 'warn', message: 'test', suggestion: 'Old suggestion' }] } as Awaited<ReturnType<typeof api.reviewVideoShots>>)
     const { tools, shots } = setup()
     await tools.runAiReview()
+    const issue = tools.reviewIssues.value[0]
+    shots.value[0].prompt = 'A user edit keeps the review visible'
+    await nextTick()
+    expect(tools.reviewIssues.value).toEqual([issue])
     shots.value.reverse()
-    tools.applyReviewSuggestion(tools.reviewIssues.value[0])
+    await nextTick()
+    expect(tools.reviewIssues.value).toEqual([])
+    expect(tools.shotIssueCount(0)).toBe(0)
+    tools.applyReviewSuggestion(issue)
     expect(shots.value[0].prompt).toBe('Original scene')
+  })
+  it('does not publish a pending review after the shot order changes', async () => {
+    let resolve!: (value: Awaited<ReturnType<typeof api.reviewVideoShots>>) => void
+    vi.mocked(api.reviewVideoShots).mockReturnValueOnce(new Promise(done => { resolve = done }))
+    const { tools, shots } = setup()
+    const pending = tools.runAiReview()
+    shots.value.reverse()
+    await nextTick()
+    resolve({ ok: true, source: 'api', model: 'test', issues: [{ index: 0, field: 'prompt', severity: 'warn', message: 'Old review', suggestion: 'Stale suggestion' }] } as Awaited<ReturnType<typeof api.reviewVideoShots>>)
+    await pending
+    expect(tools.reviewIssues.value).toEqual([])
+    expect(tools.shotIssueCount(0)).toBe(0)
+  })
+  it('closes dialogue candidates when reordering changes the shot at their visible row', async () => {
+    vi.mocked(api.suggestDialogue).mockResolvedValue({ ok: true, options: [{ label: 'Suggestion', text: 'Suggested dialogue' }] } as Awaited<ReturnType<typeof api.suggestDialogue>>)
+    const { tools, shots } = setup()
+    await tools.runAiDialogue(0)
+    expect(tools.dialogueIndex.value).toBe(0)
+    expect(tools.dialogueOptions.value).toHaveLength(1)
+    shots.value.reverse()
+    await nextTick()
+    expect(tools.dialogueIndex.value).toBe(-1)
+    expect(tools.dialogueOptions.value).toEqual([])
+    tools.applyDialogueOption(0, 'Suggested dialogue')
+    expect(shots.value.every(shot => shot.dialogue === 'Original dialogue')).toBe(true)
   })
 })

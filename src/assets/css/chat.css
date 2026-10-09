@@ -297,7 +297,16 @@ body:has(.chat-page) .sakura-fall {
   @apply tw:cursor-pointer;
 }
 
-.chat-page .portrait-stage.live2d-reacting .live2d-host {
+/* Paint the decorative glow once; animate its opacity without filtering the live canvas. */
+.chat-page .live2d-host::before {
+  content: "";
+  position: absolute;
+  inset: 15% 8%;
+  z-index: -1;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--character-accent) 18%, transparent), transparent 70%);
+  opacity: 0;
+}
+.chat-page .portrait-stage.live2d-reacting .live2d-host::before {
   animation: live2d-response .55s var(--ease-out);
 }
 
@@ -308,40 +317,6 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .portrait-stage.speaking .portrait-main {
   filter: drop-shadow(0 22px 30px color-mix(in srgb, var(--character-accent) 28%, transparent));
 }
-
-/*   ============================================================
-   语音光环：情绪色映射 / 触摸共振 / 头像状态
-  ============================================================ */
-.chat-page .voice-halo {
-  @apply tw:absolute tw:bottom-[8%] tw:left-[50%] tw:w-[42%];
-  border: 1px solid color-mix(in srgb, var(--halo-accent, var(--character-accent)) 32%, transparent);
-  border-radius: 50%;
-  aspect-ratio: 1;
-  opacity: 0;
-  @apply tw:pointer-events-none;
-  transform: translateX(-50%);
-}
-
-.chat-page .portrait-stage.speaking .voice-halo {
-  animation: voice-pulse 1.1s ease-out infinite;
-  opacity: .9;
-}
-
-.chat-page .portrait-stage.touch-pulse .voice-halo {
-  animation: touch-resonance 1.2s var(--ease-out) forwards;
-  opacity: .95;
-}
-@keyframes touch-resonance {
-  0% { transform: translateX(-50%) scale(0.85); opacity: .95; filter: drop-shadow(0 0 16px var(--halo-accent, var(--character-accent))); }
-  100% { transform: translateX(-50%) scale(1.25); opacity: 0; filter: none; }
-}
-
-/* TTS 情绪 → 光环色（情绪不触碰服装 expression，纯 CSS 通道） */
-.chat-page .portrait-stage.emotion-shy .voice-halo     { --halo-accent: var(--mood-love); }
-.chat-page .portrait-stage.emotion-happy .voice-halo   { --halo-accent: var(--mood-joy); }
-.chat-page .portrait-stage.emotion-sad .voice-halo     { --halo-accent: var(--mood-sad); }
-.chat-page .portrait-stage.emotion-serious .voice-halo { --halo-accent: var(--mood-tension); }
-.chat-page .portrait-stage.emotion-gentle .voice-halo  { --halo-accent: var(--mood-calm); }
 
 .chat-page .avatar-status {
   @apply tw:absolute;
@@ -446,8 +421,8 @@ body:has(.chat-page) .sakura-fall {
   box-shadow: var(--shadow-md);
 }
 @keyframes live2d-response {
-  0%, 100% { filter: none; }
-  45% { filter: drop-shadow(0 0 18px color-mix(in srgb, var(--character-accent) 42%, transparent)); }
+  0%, 100% { opacity: 0; }
+  45% { opacity: 1; }
 }
 
 /*   ============================================================
@@ -1481,12 +1456,6 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .chat-error[data-kind="info"] {
   @apply tw:text-secondary;
-}
-
-@keyframes voice-pulse {
-  0% { opacity: .1; transform: translateX(-50%) scale(.75); }
-  70% { opacity: .65; transform: translateX(-50%) scale(1.12); }
-  100% { opacity: 0; transform: translateX(-50%) scale(1.2); }
 }
 
 @keyframes cursor-blink {

@@ -1,6 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { installShowcaseFixture } from './helpers/showcase'
-import { textContrast } from './helpers/contrast'
+import { paintedTextContrast, textContrast } from './helpers/contrast'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 for (const theme of ['dark', 'light']) {
@@ -9,6 +9,7 @@ for (const theme of ['dark', 'light']) {
     await page.emulateMedia({ reducedMotion:'reduce' })
     await page.addInitScript(value => {
       localStorage.setItem('aics_theme', value)
+      localStorage.setItem('aics_guest_guide_dismissed', '1')
       localStorage.setItem('aics_chat_v1', JSON.stringify({ version:1, activeChar:'nene', conversations:{ nene:[], natsume:[] }, settings:{ live2dEnabled:false } }))
       localStorage.setItem('aics_chat_memories_v1', JSON.stringify({ version:1, byCharacter:{ nene:Array.from({ length:12 }, (_, index) => ({
         id:`panel-memory-${index}`, character:'nene', text:`用于布局验收的记忆 ${index}`, sourceMid:'', createdAt:1, updatedAt:1, pinned:true,
@@ -25,7 +26,7 @@ for (const theme of ['dark', 'light']) {
     const menu = page.getByRole('menu', { name:'更多房间操作', exact:true })
     if (behavior) await expect(menu.getByRole('menuitem', { name:'对话归档', exact:true })).toBeFocused()
     await contained(menu, 1097, 617)
-    expect(await menu.getByRole('menuitem', { name:'我的档案', exact:true }).evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+    expect(await paintedTextContrast(menu.getByRole('menuitem', { name:'我的档案', exact:true }).locator('span'))).toBeGreaterThanOrEqual(4.5)
     if (behavior) {
       await page.keyboard.press('End')
       await expect(menu.getByRole('menuitem', { name:'清空聊天内容与个人档案', exact:true })).toBeFocused()
@@ -51,6 +52,12 @@ for (const theme of ['dark', 'light']) {
       await expect(panel.getByRole('button', { name:closeLabel, exact:true })).toBeFocused()
       await expect(panel.getByRole('button', { name:closeLabel, exact:true })).toBeInViewport({ ratio:1 })
       expect(await panel.locator('strong').first().evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      if (label === '对话归档') {
+        const clear = panel.getByRole('button', { name:'清空归档', exact:true })
+        await expect(clear).toBeDisabled()
+        expect(await clear.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+        await panel.screenshot({ path:info.outputPath(`chat-archive-${theme}.png`) })
+      }
       if (behavior && label === '长期记忆') {
         await expect(panel.locator('.memory-item')).toHaveCount(12)
         const remove = panel.locator('.memory-item').last().getByRole('button', { name:'删除', exact:true })
@@ -75,6 +82,35 @@ for (const theme of ['dark', 'light']) {
       await expect(dialog).toBeHidden()
       await expect(trigger).toBeFocused()
     }
+    // Inspect interaction paint behind a transparent canvas fixture; no model or GPU runtime.
+    await page.emulateMedia({ reducedMotion:'no-preference' })
+    const stage = page.locator('.portrait-stage')
+    const paint = await stage.evaluate(async element => {
+      const host = element.querySelector<HTMLElement>('.live2d-host')!
+      element.querySelector<HTMLImageElement>('.portrait-main')!.style.visibility = 'hidden'
+      const canvas = document.createElement('canvas')
+      canvas.width = 256; canvas.height = 384
+      const context = canvas.getContext('2d')!
+      context.fillStyle = getComputedStyle(element).getPropertyValue('--text-secondary')
+      context.beginPath(); context.arc(128, 85, 40, 0, Math.PI * 2); context.fill()
+      context.beginPath(); context.ellipse(128, 235, 75, 110, 0, 0, Math.PI * 2); context.fill()
+      canvas.style.cssText = 'width:100%;height:100%;object-fit:contain;transform:translateX(-50%)'
+      host.append(canvas)
+      host.style.opacity = '1'
+      const before = host.getBoundingClientRect().toJSON()
+      element.classList.add('live2d-reacting')
+      await new Promise(requestAnimationFrame)
+      for (const animation of host.getAnimations({ subtree:true })) {
+        animation.pause()
+        animation.currentTime = Number(animation.effect?.getComputedTiming().duration) * .45
+      }
+      return { before, after:host.getBoundingClientRect().toJSON(), filter:getComputedStyle(host).filter,
+        glow:Number(getComputedStyle(host, '::before').opacity) }
+    })
+    expect(paint.after).toEqual(paint.before)
+    expect(paint.filter).toBe('none')
+    expect(paint.glow).toBeGreaterThan(.5)
+    await stage.screenshot({ path:info.outputPath(`chat-interaction-paint-${theme}.png`) })
   })
 }
 

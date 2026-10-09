@@ -31,13 +31,13 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
     // Register the window lease before the final startup authority read, so a
     // concurrent migration either awaits this window or precedes its handshake.
     await refreshDesktopRuntime()
-    let selected = '', syncing = Promise.resolve(), syncedAuthority = ''
+    let selected = '', syncing = Promise.resolve(), syncedAuthority = '', syncQueued = false
     const authorityKey = () => {
       const bootstrap = getDesktopRuntime().bootstrap, session = bootstrap?.runtime?.workspace
       return JSON.stringify([bootstrap?.sourceProfileId, bootstrap?.sourceOrigin, session?.workspaceId, session?.generation, session?.activeMigrationId, session?.domains])
     }
     const sync = async () => {
-      if (maintenanceFrozen()) return
+      if (!alive || maintenanceFrozen()) return
       const state = getDesktopRuntime(), session = state.bootstrap?.runtime?.workspace, authority = authorityKey()
       if (state.connection !== 'ready') { setProfileConnectionBlocked(true); return }
       if (session?.domains.includes('artwork')) {
@@ -63,8 +63,11 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
       // replaces the state object, and later same-authority reads still refresh.
       const alreadySynced = initialReplay && state === initialState
       initialReplay = false
-      if (alreadySynced) return
-      syncing = syncing.then(async () => { syncFailure = undefined; await sync() }).catch(error => { syncFailure = error; failure() })
+      if (alreadySynced || syncQueued) return
+      // One pending read catches up with the latest state after the active read.
+      // Repeated health publications must not grow a backlog of identical reads.
+      syncQueued = true
+      syncing = syncing.then(async () => { syncQueued = false; syncFailure = undefined; await sync() }).catch(error => { syncFailure = error; failure() })
     })
     initializeMigrationParticipant({ reconcileAuthority: async target => {
       if (!alive || maintenanceFrozen()) throw new Error('资料窗口正在维护或已关闭，请在活动窗口重新核对。')

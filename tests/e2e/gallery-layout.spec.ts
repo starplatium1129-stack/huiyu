@@ -31,6 +31,22 @@ async function seedGallery(page: Page, theme: string, empty = false, reducedMoti
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
 }
 
+test('gallery disclosure headings preserve native keyboard order in the viewer', async ({ page }) => {
+  await seedGallery(page, 'dark')
+  await page.locator('.artwork-button').first().click()
+  const viewer = page.locator('.art-viewer')
+  await expect(viewer).toBeVisible()
+  const details = viewer.locator('.viewer-details:not(.viewer-more) summary')
+  const more = viewer.locator('.viewer-more summary')
+  await details.focus()
+  await page.keyboard.press('Tab')
+  await expect(more).toBeFocused()
+  await page.keyboard.press('Shift+Tab')
+  await expect(details).toBeFocused()
+  await page.keyboard.press('Escape')
+  await expect(viewer).toBeHidden()
+})
+
 for (const theme of ['dark', 'light']) {
   test(`gallery optional panels activate without losing organization undo ${theme}`, async ({ page }, info) => {
     await page.setViewportSize({ width: 1440, height: 960 })

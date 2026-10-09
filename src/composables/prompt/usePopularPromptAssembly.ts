@@ -1,8 +1,8 @@
 import { activeRandomVariation, variedPopularScene } from '@/utils/randomVariationContext'
 import { computed, type Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
+import { buildPopularPromptPlan } from '@/utils/popularPromptBuilder.ts'
 import {
-  buildPopularPromptPlan,
   defaultOutfit,
   findBlueprint,
   findCharacter,

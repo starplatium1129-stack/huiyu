@@ -253,6 +253,9 @@
 .artist-style-status.curated {
   @apply tw:text-info-text;
 }
+.artist-style-grid button:disabled :is(.artist-cn-name, .artist-en-name, .artist-desc, .artist-masterpiece, .masterpiece-badge, .artist-frequent, .artist-curated, .artist-style-status) {
+  @apply tw:text-disabled;
+}
 .artist-style-empty {
   padding: var(--s-4) 0;
   @apply tw:text-center tw:text-muted;

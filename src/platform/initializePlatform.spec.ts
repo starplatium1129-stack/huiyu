@@ -1,4 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest'
+import { flushPromises } from '@vue/test-utils'
 import { initializePlatform } from './initializePlatform'
 import type { MigrationAuthorityTarget } from './web/migrationAuthority'
 import type { DesktopConnectionState } from './desktop/runtime'
@@ -17,6 +18,26 @@ vi.mock('./maintenanceParticipants', () => ({ artworkCleanupFrozen: () => false,
 vi.mock('./desktop/maintenance', () => ({ installDesktopMaintenance: () => () => {} }))
 vi.mock('./desktop/artworkCleanup', () => ({ installDesktopArtworkCleanup: async () => () => {} }))
 afterEach(() => { mocks.listener = undefined; mocks.reconcile = undefined; mocks.frozen = false; mocks.active = false; vi.restoreAllMocks(); vi.resetAllMocks() })
+it('coalesces publications behind a slow profile refresh and drops queued work after disposal', async () => {
+  mocks.state = { connection:'ready', bootstrap:{ windowId:'atelier', runtime:{ workspace:{ workspaceId:'workspace', generation:1, domains:['settings','chat','draft'] } } } } as unknown as DesktopConnectionState
+  mocks.active = true
+  const stop = await initializePlatform(() => false)
+  mocks.refresh.mockClear()
+  let release!: () => void
+  mocks.refresh.mockImplementationOnce(() => new Promise<void>(resolve => { release = resolve }))
+  mocks.listener!(mocks.state)
+  await flushPromises()
+  for (let i = 0; i < 5; i++) mocks.listener!(mocks.state)
+  expect(mocks.refresh).toHaveBeenCalledTimes(1)
+  release(); await flushPromises()
+  expect(mocks.refresh).toHaveBeenCalledTimes(2)
+  mocks.refresh.mockImplementationOnce(() => new Promise<void>(resolve => { release = resolve }))
+  mocks.listener!(mocks.state)
+  await flushPromises()
+  mocks.listener!(mocks.state)
+  stop(); release(); await flushPromises()
+  expect(mocks.refresh).toHaveBeenCalledTimes(3)
+})
 it.each([false, true])('skips only the hydrated initial replay, with publication during hydration: %s', async publishDuringHydration => {
   mocks.state = { connection: 'ready', bootstrap: { windowId: 'atelier', runtime: { workspace: { workspaceId: 'workspace', generation: 1, domains: ['settings', 'chat', 'draft'] } } } } as unknown as DesktopConnectionState
   const events = vi.spyOn(window, 'dispatchEvent')

@@ -3,7 +3,7 @@
 html.companion-desktop:has(.companion-redesign), html.companion-desktop:has(.companion-redesign) body, html.companion-desktop:has(.companion-redesign) #app { background:transparent; transition:none; }
 html.companion-desktop:has(.companion-redesign) body::before, html.companion-desktop:has(.companion-redesign) body::after { @apply tw:hidden; }
 .companion-redesign .portrait-stage .live2d-host, .companion-redesign .live2d-host > *, .companion-redesign .live2d-host canvas, .companion-redesign .portrait-main { filter: none; box-shadow: none; }
-.companion-redesign::before, .companion-redesign::after, .companion-redesign .companion-ambience, .companion-redesign .room-signal, .companion-redesign .portrait-stage::before, .companion-redesign .portrait-stage::after, .companion-redesign .voice-halo { @apply tw:hidden; }
+.companion-redesign::before, .companion-redesign::after, .companion-redesign .companion-ambience, .companion-redesign .room-signal, .companion-redesign .portrait-stage::before, .companion-redesign .portrait-stage::after { @apply tw:hidden; }
 .companion-redesign .companion-toolbar { --companion-ink: var(--text-primary); --companion-ink-soft: var(--text-secondary); inset: var(--s-3) var(--s-3) auto; @apply tw:min-h-[48px] tw:p-s-2; border: 0; @apply tw:rounded-lg; background: var(--bg-surface); @apply tw:text-primary; box-shadow: none; backdrop-filter: none; }
 .companion-redesign .companion-toolbar .companion-identity > span { @apply tw:text-secondary; text-shadow: none; }
 .companion-redesign .companion-toolbar .companion-identity h1 { @apply tw:text-primary; text-shadow: none; }

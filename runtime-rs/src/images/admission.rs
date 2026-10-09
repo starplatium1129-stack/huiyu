@@ -223,9 +223,7 @@ pub(crate) async fn store_for(
         let salt = owner_salt(&root, &cancel).await?;
         if salt.len()!=32{return Err(ApiError::new(409,"IMAGE_STORAGE_INVALID","素材身份文件损坏，请检查后重试。"))}let filename=name(&salt,&owner,&bytes,extension,kind);let target=root.join(&filename);
         match tokio::fs::read(&target).await{Ok(existing)if existing.as_slice()==bytes.as_slice()=>return Ok(filename),Ok(_)=>{},Err(error)if error.kind()==std::io::ErrorKind::NotFound=>{},Err(error)=>return Err(error.into())}
-        let(mut used_bytes,mut files)=(0u64,0u64);let mut entries=tokio::fs::read_dir(&root).await?;
-        while let Some(entry)=entries.next_entry().await?{if !OWNED.is_match(&entry.file_name().to_string_lossy()){continue}
-if !entry.file_type().await?.is_file(){return Err(ApiError::new(409,"IMAGE_STORAGE_INVALID","素材库存在异常文件，请先检查。"))}used_bytes=used_bytes.saturating_add(entry.metadata().await?.len());files+=1;}
+        let (used_bytes, files) = usage(root.clone(), cancel.clone()).await?;
         if used_bytes.saturating_add(bytes.len()as u64)>limits.bytes||files+1>limits.files{return Err(ApiError::new(413,"IMAGE_QUOTA",format!("素材额度不足（{files}/{} 文件，{used_bytes}/{} 字节）；请先检查并整理未引用素材。",limits.files,limits.bytes)))}
         decode::validate(bytes.clone(),&cancel).await?;if cancel.is_cancelled(){return Err(inputs::cancelled())}
         let file=tokio::fs::OpenOptions::new().write(true).create_new(true).open(&pending).await?;
@@ -246,4 +244,46 @@ if !entry.file_type().await?.is_file(){return Err(ApiError::new(409,"IMAGE_STORA
         cleanup?;
     }
     result
+}
+
+async fn usage(root: PathBuf, cancel: CancellationToken) -> Result<(u64, u64)> {
+    #[cfg(test)]
+    let scan_cancellation = tests::scan_cancellation();
+    // The tracked upload keeps SERIAL and its on-disk lock while awaiting this
+    // single filesystem job. Cancellation returns through the normal cleanup.
+    tokio::task::spawn_blocking(move || {
+        if cancel.is_cancelled() {
+            return Err(inputs::cancelled());
+        }
+        let (mut bytes, mut files) = (0u64, 0u64);
+        for entry in std::fs::read_dir(root)? {
+            if cancel.is_cancelled() {
+                return Err(inputs::cancelled());
+            }
+            let entry = entry?;
+            if !OWNED.is_match(&entry.file_name().to_string_lossy()) {
+                continue;
+            }
+            if !entry.file_type()?.is_file() {
+                return Err(ApiError::new(
+                    409,
+                    "IMAGE_STORAGE_INVALID",
+                    "素材库存在异常文件，请先检查。",
+                ));
+            }
+            bytes = bytes.saturating_add(entry.metadata()?.len());
+            files += 1;
+            #[cfg(test)]
+            if let Some(reads) = &scan_cancellation {
+                reads.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                cancel.cancel();
+            }
+        }
+        if cancel.is_cancelled() {
+            return Err(inputs::cancelled());
+        }
+        Ok((bytes, files))
+    })
+    .await
+    .map_err(|_| ApiError::new(503, "IMAGE_STORAGE_UNAVAILABLE", "素材额度检查未完成"))?
 }

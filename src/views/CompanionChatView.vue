@@ -133,9 +133,10 @@
             @click="onSend"
           >{{ sending ? '发送中…' : liveState.busy ? '回复中' : '发送' }}</button>
         </div>
-        <div v-if="liveState.chatReady || errorText || speechSessionActive" class="companion-chat-meta" aria-live="polite">
+        <div v-if="liveState.chatReady || errorText || speechState === 'error' || speechSessionActive" class="companion-chat-meta" aria-live="polite">
           <span>{{ metaText }}</span>
           <span v-if="errorText" class="companion-chat-error">{{ errorText }}</span>
+          <span v-if="speechState === 'error'" class="companion-chat-error">{{ speechError }}</span>
           <span v-if="speechSessionActive" class="companion-chat-continuous">
             连续对话中
             <button type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button>

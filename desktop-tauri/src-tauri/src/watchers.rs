@@ -4,7 +4,7 @@ use std::time::{Duration, Instant};
 use serde::Serialize;
 use tauri::{AppHandle, Emitter, Manager};
 use windows_sys::Win32::Foundation::POINT;
-use windows_sys::Win32::System::DataExchange::{CloseClipboard, GetClipboardData, OpenClipboard};
+use windows_sys::Win32::System::DataExchange::{CloseClipboard, GetClipboardData, GetClipboardSequenceNumber, OpenClipboard};
 use windows_sys::Win32::System::Memory::{GlobalLock, GlobalSize, GlobalUnlock};
 use windows_sys::Win32::System::Power::GetSystemPowerStatus;
 use windows_sys::Win32::UI::WindowsAndMessaging::GetCursorPos;
@@ -27,7 +27,7 @@ pub fn start_global_mouse_watch(app: AppHandle) {
                     continue;
                 }
             }
-            if (pt.x - last_x).abs() < 2 && (pt.y - last_y).abs() < 2 {
+            if pt.x.abs_diff(last_x) < 2 && pt.y.abs_diff(last_y) < 2 {
                 continue;
             }
             last_x = pt.x;
@@ -82,12 +82,18 @@ pub fn start_clipboard_watch(app: AppHandle) {
     thread::spawn(move || {
         let mut text_signature = String::new();
         let mut image_signature = 0u32;
+        let mut clipboard_sequence = 0u32;
         loop {
             thread::sleep(Duration::from_millis(1500));
             if app.get_webview_window("companion").map(|w| w.is_visible().unwrap_or(false)).unwrap_or(false) == false {
                 continue;
             }
+            let sequence = unsafe { GetClipboardSequenceNumber() };
+            if sequence != 0 && sequence == clipboard_sequence {
+                continue;
+            }
             if let Some((png, signature)) = read_clipboard_image() {
+                clipboard_sequence = sequence;
                 if signature != image_signature && !png.is_empty() {
                     image_signature = signature;
                     let _ = app.emit("aics:clipboard-image", png);
@@ -95,6 +101,8 @@ pub fn start_clipboard_watch(app: AppHandle) {
                 continue;
             }
             if let Some(text) = read_clipboard_text() {
+                // Failed reads remain eligible for the next poll (clipboard contention).
+                clipboard_sequence = sequence;
                 let trimmed = text.trim().to_string();
                 if (4..=400).contains(&trimmed.chars().count()) {
                     let signature = hash_string(&trimmed);
@@ -125,19 +133,19 @@ fn read_clipboard_text() -> Option<String> {
             CloseClipboard();
             return None;
         }
-        let mut len = 0;
-        while *ptr.add(len) != 0 {
-            len += 1;
-        }
-        let text = String::from_utf16_lossy(std::slice::from_raw_parts(ptr, len));
+        // Other applications supply this allocation; a missing terminator must
+        // never let the read escape its actual byte length.
+        let units = std::slice::from_raw_parts(ptr, GlobalSize(handle) / std::mem::size_of::<u16>());
+        let text = units.iter().position(|unit| *unit == 0)
+            .map(|len| String::from_utf16_lossy(&units[..len]));
         GlobalUnlock(handle);
         CloseClipboard();
-        Some(text)
+        text
     }
 }
 
 fn read_clipboard_image() -> Option<(Vec<u8>, u32)> {
-    unsafe {
+    let data = unsafe {
         if OpenClipboard(std::ptr::null_mut()) == 0 {
             return None;
         }
@@ -152,13 +160,15 @@ fn read_clipboard_image() -> Option<(Vec<u8>, u32)> {
             return None;
         }
         let size = GlobalSize(handle);
-        let data = std::slice::from_raw_parts(ptr, size);
-        let png = dib_to_png(data);
-        let signature = data.iter().fold(5381u32, |h, b| h.wrapping_mul(33).wrapping_add(*b as u32));
+        let data = std::slice::from_raw_parts(ptr, size).to_vec();
         GlobalUnlock(handle);
         CloseClipboard();
-        png.map(|p| (p, signature))
-    }
+        data
+    };
+    // Encoding can be expensive; never hold the system clipboard lock for it.
+    let png = dib_to_png(&data)?;
+    let signature = data.iter().fold(5381u32, |h, b| h.wrapping_mul(33).wrapping_add(*b as u32));
+    Some((png, signature))
 }
 
 /// CF_DIB（BITMAPINFOHEADER + 像素）→ 补 BITMAPFILEHEADER 构造完整 BMP → 解码 → PNG。

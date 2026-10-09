@@ -54,6 +54,8 @@ function loadInputs(opts: any) {
 
 function collectTasks(opts: any, input: any) {
   const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
+  const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
+  const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
   const { parsePresetCatalog }: typeof import('../../src/utils/promptBuilderPersistence.ts') = require('../../src/utils/promptBuilderPersistence.ts');
   const { KREA_STYLE_RECIPES, resolveStyleRecipe }: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
   const characters = popular.parsePopularCharacters(input.data['data/popular-characters.json']);
@@ -69,13 +71,13 @@ function collectTasks(opts: any, input: any) {
   const only = opts.only ? opts.only.split(',').map((s: any) => s.trim()).filter(Boolean) : null;
   const decisionCache = new Map();
   function decisionsOf(bp: any) {
-    if (!decisionCache.has(bp.id)) decisionCache.set(bp.id, popular.inferBlueprintDecisions(bp));
+    if (!decisionCache.has(bp.id)) decisionCache.set(bp.id, blueprintDecisions.inferBlueprintDecisions(bp));
     return decisionCache.get(bp.id);
   }
   /** 与 UI 一致的装配参数（usePopularPromptAssembly 对齐）。 */
   function buildPlan(character: any, bp: any) {
     const d = decisionsOf(bp);
-    return popular.buildPopularPromptPlan({
+    return popularPrompt.buildPopularPromptPlan({
       character,
       outfit: character.outfits.find((o: any) => o.id === bp.outfitId) || character.outfits[0],
       blueprint: bp,

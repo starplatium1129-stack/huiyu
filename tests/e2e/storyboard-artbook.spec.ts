@@ -40,6 +40,7 @@ for (const theme of ['dark', 'light']) for (const width of [1440]) {
     await page.emulateMedia({ reducedMotion:'reduce' })
     await page.addInitScript(theme => {
       localStorage.setItem('aics_theme', theme)
+      localStorage.setItem('aics_guest_guide_dismissed', '1')
       Object.defineProperty(navigator, 'clipboard', { configurable:true, value:{ writeText:async (text: string) => { document.documentElement.dataset.copiedPrompt = text } } })
     }, theme)
     const submitted = await installVideoFixture(page)
@@ -60,7 +61,7 @@ for (const theme of ['dark', 'light']) for (const width of [1440]) {
         for (const [actIndex, act] of scenario.acts.entries()) {
           const copy = page.locator('.act').nth(actIndex).getByRole('button', { name:'复制本幕 Prompt', exact:true })
           await copy.focus(); await page.keyboard.press('Enter')
-          const expected = substituteScenarioPrompt(act.prompt, character).split(',').map(value => value.trim().replace(/[\s-]+/g, '_')).join(', ')
+          const expected = substituteScenarioPrompt(act.prompt, character).split(/[,\r\n]+/).map(value => value.trim().replace(/[\s-]+/g, '_')).filter(Boolean).join(', ')
           await expect(page.locator('html')).toHaveAttribute('data-copied-prompt', expected)
         }
       }
@@ -111,6 +112,17 @@ for (const theme of ['dark', 'light']) for (const width of [1440]) {
     await expect(page.locator('.storyboard-frame').first()).toContainText(acts[1]!.desc)
     await expect(page.locator('.storyboard-frame').nth(1).locator('img')).toHaveCount(1)
     await expect(page.locator('.storyboard-frame').nth(1)).toContainText('5 秒')
+    // Repeated keyboard moves follow the same shot, rather than the reused row index.
+    if (theme === 'dark') {
+      await page.locator('.shot-row').nth(2).getByRole('button', { name:'上移镜头', exact:true }).focus()
+      await page.keyboard.press('Enter')
+      await expect(page.locator('.shot-row').nth(1).getByRole('button', { name:'上移镜头', exact:true })).toBeFocused()
+      await page.keyboard.press('Enter')
+      await expect(page.locator('.shot-row').first()).toBeFocused()
+      await expect(page.locator('.storyboard-frame').first()).toContainText(acts[2]!.desc)
+      await expect(page.locator('.storyboard-frame').nth(1)).toContainText(acts[1]!.desc)
+      await expect(page.locator('.storyboard-frame').nth(2)).toContainText(acts[0]!.desc)
+    }
     for (const label of await overview.locator('.storyboard-caption, .storyboard-description').all()) expect(await label.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
     await dismissNotices(page)
     await overview.scrollIntoViewIfNeeded()

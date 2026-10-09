@@ -81,6 +81,13 @@ describe('control room state', () => {
     status.renderStatus(snapshot())
     expect(status.readyLabel.value).toBe('1 / 4 服务在线')
     expect(status.feedbackText.value).toBe('画面创作就绪')
+    status.renderStatus(snapshot({ ttsOnline: true, llama: { online: true, managed: true, host: 'http://127.0.0.1:8080', label: 'llama.cpp' } }))
+    expect(status.readyLabel.value).toBe('3 / 4 服务在线')
+    expect(status.feedbackText.value).toBe('画面、语音与聊天均已就绪')
+    status.renderStatus(snapshot({ ttsOnline: true, ollamaOnline: true }))
+    expect(status.feedbackText.value).toBe('画面、语音与聊天均已就绪')
+    status.renderStatus(snapshot({ ttsOnline: true }))
+    expect(status.feedbackText.value).toBe('画面与语音就绪')
     status.stopPolling()
   })
   it('preserves edits to several fields across polls and accepts acknowledged saves', () => {

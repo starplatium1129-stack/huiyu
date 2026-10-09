@@ -69,7 +69,6 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const webBuild = ref<{ distReady: boolean; builtAt: string | null; stale: boolean } | null>(null)
   const actionBusy = ref(false)
   const mainBtnLabel = ref('启动并生成分享链接')
-  const feedbackClass = ref('config-feedback warn')
   const feedbackText = ref('正在检测本地服务…')
   const actionNote = ref('')
   const logs = ref<string[]>([])
@@ -129,12 +128,6 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     const timeNudge = Math.min(12, elapsedSec * 1.2)
     return Math.min(95, base + onlineBump + timeNudge)
   })
-  const ollamaBadgeText = computed(() => {
-    if (!ollamaOnline.value) return '未连接'
-    if (!ollamaModels.value.length) return '在线 · 模型未加载'
-    const v = fmtVram(ollamaVram.value)
-    return '已加载 ' + ollamaModels.value.length + ' 个' + (v ? ' · ' + v : '')
-  })
   const ollamaMeta = computed(() => {
     if (!ollamaOnline.value) return '未连接'
     if (!ollamaModels.value.length) return '在线 · 无加载模型'
@@ -146,13 +139,6 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     if (voiceNeneRef.value.trim() && voiceNenePrompt.value.trim() && (ttsEngine.value !== 'voxcpm2' || voiceNeneLora.value.trim())) n += 1
     if (voiceNatsumeRef.value.trim() && voiceNatsumePrompt.value.trim() && (ttsEngine.value !== 'voxcpm2' || voiceNatsumeLora.value.trim())) n += 1
     return n
-  })
-  const shareState = computed(() => tunnelActive.value ? 'on' : (tunnelStatus.value === 'disabled' ? 'off' : 'warn'))
-  const shareLabel = computed(() => tunnelActive.value ? '通道已开' : (tunnelStatus.value === 'disabled' ? '仅本机' : '待启用'))
-  const readyState = computed(() => {
-    if ((sdOnline.value || comfyOnline.value) && ttsOnline.value) return 'on'
-    if (sdOnline.value || comfyOnline.value || ttsOnline.value) return 'warn'
-    return 'off'
   })
   const readyLabel = computed(() => {
     if (statusError.value) return '服务状态待确认'
@@ -241,29 +227,23 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     mainBtnLabel.value = tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
 
     const imageOnline = data.sdOnline || data.comfyOnline
-    if (imageOnline && data.ttsOnline && data.ollamaOnline) {
-      feedbackClass.value = 'config-feedback ok'
+    if (imageOnline && data.ttsOnline && (data.llama?.online || data.ollamaOnline)) {
       feedbackText.value = '画面、语音与聊天均已就绪'
       actionNote.value = '可以完整使用绘制台、角色房间与配音。'
     } else if (imageOnline && data.ttsOnline) {
-      feedbackClass.value = 'config-feedback ok'
       feedbackText.value = '画面与语音就绪'
       actionNote.value = '出图与 AI 声线可用；本地聊天可在首次配置中准备 llama.cpp，也可使用 API。'
     } else if (imageOnline) {
-      feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '画面创作就绪'
       actionNote.value = '可正常出图。需要角色声线时启动语音服务。'
     } else if (data.ttsOnline) {
-      feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '语音已连接 · 等待绘图引擎'
       actionNote.value = '按需启动 ComfyUI，即可开始绘图。'
     } else {
-      feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '浏览可用 · 等待生成服务'
       actionNote.value = '网站本身正常。按需启动绘图或语音服务，也可以先浏览角色与场景。'
     }
     if (data.restartRequired) {
-      feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '配置已保存，重新启动应用后生效'
       actionNote.value = '当前连接仍使用原设置；重新启动后会使用下方已保存的配置。'
     }
@@ -394,9 +374,9 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     modeBusy, operation, operationSubmitting, serviceChecking, statusLoaded, statusError, scripts,
     sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
-    feedbackClass, feedbackText, actionNote, logs, logBoxEl, logIndex,
-    opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,
-    shareState, shareLabel, readyState, readyLabel,
+    feedbackText, actionNote, logs, logBoxEl, logIndex,
+    opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
+    readyLabel,
     lastStatus: () => lastStatus,
     renderStatus, loadShareLink, pollStatus, pollLogs, clearLogs, startPolling, stopPolling,
     fmtVram, lineClass,

@@ -168,6 +168,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   }
 
   function onSpeechCancel() {
+    if (!speechHeldByPointer) return
     speechHeldByPointer = false
     speechCancel()
   }

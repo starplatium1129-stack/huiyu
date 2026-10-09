@@ -4,7 +4,7 @@
     <div
       ref="stageRef"
       class="portrait-stage"
-      :class="[{ speaking, 'live2d-ready': live2d.ready.value && live2d.loadedCharacter.value === activeId, 'touch-pulse': touchResonanceActive }, `emotion-${emotion}`]"
+      :class="[{ speaking, 'live2d-ready': live2d.ready.value && live2d.loadedCharacter.value === activeId }, `emotion-${emotion}`]"
       :data-character="activeId"
       :data-emotion="emotion"
       :data-presence="presence || undefined"
@@ -24,7 +24,6 @@
         <button type="button" class="btn btn-ghost btn-sm" @click="retryPortrait">重新加载立绘</button>
       </div>
       <div ref="live2dHostRef" class="live2d-host" aria-hidden="true"></div>
-      <div class="voice-halo" aria-hidden="true"></div>
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint" aria-live="polite">
         {{ live2d.interactionHint.value }}
       </div>
@@ -315,17 +314,6 @@ function activeRuntime(): EmotionRuntime | null {
   return definition ? emotionRuntimes.get(definition.id) || null : null
 }
 
-const touchResonanceActive = ref(false)
-let touchTimer: ReturnType<typeof setTimeout> | undefined
-
-watch(live2d.interactionHint, (hint) => {
-  if (hint && hint !== '这个动作正在进行中' && hint !== '动作没有启动，请重试') {
-    touchResonanceActive.value = true
-    if (touchTimer) clearTimeout(touchTimer)
-    touchTimer = setTimeout(() => { touchResonanceActive.value = false }, 1400)
-  }
-})
-
 const avatarActionable = computed(() =>
   avatarState.value !== 'checking'
     && avatarState.value !== 'loading'
@@ -506,7 +494,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  clearTimeout(touchTimer)
   live2d.attachEmotionRuntime(null)
   live2d.destroy()
 })

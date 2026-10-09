@@ -77,7 +77,7 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   let recognitionController: AbortController | null = null
   const pendingSegments: Float32Array[] = []
   const releaseMaintenance = registerMaintenanceParticipant(() => {
-    if (capturing || recognizing || state.value === 'acquiring' || pendingSegments.length) throw new Error('SPEECH_BUSY')
+    if (capturing || state.value === 'recognizing' || state.value === 'acquiring' || pendingSegments.length) throw new Error('SPEECH_BUSY')
   })
 
   function setState(next: VoiceInputState, detail?: string): void {
@@ -133,11 +133,15 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
       .catch(error => {
         if (!current()) return
         const message = error instanceof Error ? error.message : '语音识别失败'
-        setState(mode === 'auto' ? 'capturing' : 'idle')
-        if (current()) options.onError?.(message)
-        if (current() && mode === 'auto') drainAutoQueue(token)
+        // End capture before publishing the failure so automatic-listen
+        // reconciliation cannot clear it or immediately send queued audio.
+        cancel()
+        setState('error', message)
+        options.onError?.(message)
       })
-      .finally(() => { if (recognitionController === controller) recognitionController = null })
+      .finally(() => {
+        if (recognitionController === controller) { recognitionController = null; recognizing = false }
+      })
   }
 
   /** 自动模式：按序处理积压段，全部处理后若仍在采集则恢复监听。 */
@@ -251,13 +255,13 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
       const rms = rmsOf(channel, 0, channel.length)
       level.value = Number.isFinite(rms) ? Math.min(1, rms * 3.5) : 0
       vad.push(resampleTo16k(channel, context?.sampleRate ?? TARGET_RATE))
-      if (mode === 'auto' && !recognizing) {
+      if (mode === 'auto') {
         const segments = vad.takeSegments()
         for (const segment of segments) {
           if (pendingSegments.length >= MAX_PENDING_SEGMENTS) pendingSegments.shift()
           pendingSegments.push(segment)
         }
-        drainAutoQueue()
+        if (!recognizing) drainAutoQueue()
       }
     }
 
@@ -271,8 +275,9 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
     capturing = false
     const wasAuto = mode === 'auto'
     if (wasAuto) {
-      // 自动模式：停止监听，丢弃未完成段；已入队的段继续识别。
+      // 自动模式：丢弃未完成及尚未提交的段；仅在途识别照常完成。
       vad = null
+      pendingSegments.length = 0
       mode = 'manual'
     } else {
       handleManualStop()

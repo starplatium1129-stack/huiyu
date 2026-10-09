@@ -36,11 +36,26 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         "thumbnails-rust-v1"
     };
     let relative = format!("cache/{version}/{}.jpg", source.sha256);
-    let cache = schema::safe(&root, Path::new(&relative))?;
-    match tokio::fs::read(&cache).await {
-        Ok(bytes) => return Ok(format!("data:image/jpeg;base64,{}", STANDARD.encode(bytes)).into()),
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
-        Err(error) => return Err(error.into()),
+    let owner = storage.sender.clone();
+    let (cache_root, cache_relative, read_cancel) =
+        (root.clone(), relative.clone(), cancelled.clone());
+    let (cache, cached, reader, owner) = tokio::task::spawn_blocking(move || {
+        // Warm reads still validate every ancestor. Keep their lifetime with
+        // the worker too, so close drains an abandoned filesystem read.
+        if read_cancel.is_cancelled() {
+            return Err(super::unavailable());
+        }
+        let cache = schema::safe(&cache_root, Path::new(&cache_relative))?;
+        let cached = read_cached(&cache)?;
+        if read_cancel.is_cancelled() {
+            return Err(super::unavailable());
+        }
+        Ok::<_, ApiError>((cache, cached, reader, owner))
+    })
+    .await
+    .map_err(|_| worker_failed())??;
+    if let Some(value) = cached {
+        return Ok(value);
     }
     let queue = DECODERS.get_or_init(queue::Queue::new);
     // Coalesce the same workspace/hash/cache-version before taking a decoder
@@ -49,16 +64,26 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         _ = cancelled.cancelled() => return Err(super::unavailable()),
         guard = queue.image(cache.clone()) => guard,
     };
-    match tokio::fs::read(&cache).await {
-        Ok(bytes) => return Ok(format!("data:image/jpeg;base64,{}", STANDARD.encode(bytes)).into()),
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
-        Err(error) => return Err(error.into()),
+    let (cache_path, read_cancel) = (cache.clone(), cancelled.clone());
+    let (cached, image_guard, reader, owner) = tokio::task::spawn_blocking(move || {
+        if read_cancel.is_cancelled() {
+            return Err(super::unavailable());
+        }
+        let cached = read_cached(&cache_path)?;
+        if read_cancel.is_cancelled() {
+            return Err(super::unavailable());
+        }
+        Ok::<_, ApiError>((cached, image_guard, reader, owner))
+    })
+    .await
+    .map_err(|_| worker_failed())??;
+    if let Some(value) = cached {
+        return Ok(value);
     }
     let permit = tokio::select! { biased;
         _ = cancelled.cancelled() => return Err(super::unavailable()),
         permit = queue.decoder() => permit?,
     };
-    let owner = storage.sender.clone();
     #[cfg(test)]
     let readers = storage.thumbnails.clone();
     tokio::task::spawn_blocking(move || {
@@ -97,7 +122,21 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         Ok(format!("data:image/jpeg;base64,{}", STANDARD.encode(bytes)).into())
     })
     .await
-    .map_err(|_| ApiError::new(503, "THUMBNAIL_FAILED", "Thumbnail worker failed"))?
+    .map_err(|_| worker_failed())?
+}
+
+fn read_cached(cache: &Path) -> Result<Option<Value>> {
+    match fs::read(cache) {
+        Ok(bytes) => Ok(Some(
+            format!("data:image/jpeg;base64,{}", STANDARD.encode(bytes)).into(),
+        )),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
+        Err(error) => Err(error.into()),
+    }
+}
+
+fn worker_failed() -> ApiError {
+    ApiError::new(503, "THUMBNAIL_FAILED", "Thumbnail worker failed")
 }
 
 fn encode(path: &Path) -> Result<Option<Vec<u8>>> {

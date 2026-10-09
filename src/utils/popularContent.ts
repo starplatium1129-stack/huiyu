@@ -11,15 +11,13 @@ export type { SceneBlueprint } from '../types/sceneBlueprint'
 import {
   isRecord,
   negativeStringList,
+  parseCompositionIntent,
   requiredString,
   requiredStringList,
   stringList,
   stringValue,
 } from './popularParseGuards.ts'
-import { parseCompositionIntent } from './blueprintComposition.ts'
 import { parseGeneratedRecipe } from './generatedSceneDraft.ts'
-export * from './popularBlueprintDecisions.ts'
-export * from './popularPromptBuilder.ts'
 
 export type DrawSubject =
   | { kind: 'studio' }
@@ -227,7 +225,3 @@ export function eligibleBlueprints(
 export function blueprintCategories(blueprints: SceneBlueprint[]): string[] {
   return [...new Set(blueprints.map(blueprint => blueprint.category))].sort((a, b) => a.localeCompare(b, 'zh'))
 }
-
-// ── 确定性轮换 ─────────────────────────────────────────────────────────────
-
-export { recommendBlueprints } from './blueprintRecommendations.ts'

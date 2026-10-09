@@ -101,6 +101,32 @@ struct Mock {
     unknown: bool,
     active: AtomicBool,
     missing: AtomicBool,
+    t8_available: AtomicBool,
+    t8_calls: AtomicUsize,
+    t8_hold: AtomicBool,
+    t8_entered: tokio::sync::Notify,
+    t8_release: tokio::sync::Notify,
+    probe_barrier: Mutex<Option<Arc<tokio::sync::Barrier>>>,
+}
+async fn wait_probe(mock: &Mock) {
+    let barrier = mock.probe_barrier.lock().unwrap().clone();
+    if let Some(barrier) = barrier {
+        barrier.wait().await;
+    }
+}
+async fn t8_info(State(mock): State<Arc<Mock>>) -> Json<Value> {
+    mock.t8_calls.fetch_add(1, Ordering::SeqCst);
+    let held = mock.t8_hold.swap(false, Ordering::SeqCst);
+    mock.t8_entered.notify_one();
+    if held {
+        mock.t8_release.notified().await;
+    }
+    wait_probe(&mock).await;
+    Json(if mock.t8_available.load(Ordering::SeqCst) {
+        json!({"MiniMaxH3DualClockSamplerT8":{}})
+    } else {
+        json!({})
+    })
 }
 async fn prompt(State(mock): State<Arc<Mock>>, Json(body): Json<Value>) -> Json<Value> {
     let index = mock.posts.fetch_add(1, Ordering::SeqCst);
@@ -178,12 +204,21 @@ async fn fixture(
         unknown,
         active: AtomicBool::new(false),
         missing: AtomicBool::new(false),
+        t8_available: AtomicBool::new(true),
+        t8_calls: AtomicUsize::new(0),
+        t8_hold: AtomicBool::new(false),
+        t8_entered: tokio::sync::Notify::new(),
+        t8_release: tokio::sync::Notify::new(),
+        probe_barrier: Mutex::new(None),
     });
     let app = Router::new()
-        .route("/system_stats", get(|| async { Json(json!({})) }))
+        .route("/system_stats", get(|State(mock): State<Arc<Mock>>| async move {
+            wait_probe(&mock).await;
+            Json(json!({}))
+        }))
         .route(
             "/object_info/MiniMaxH3DualClockSamplerT8",
-            get(|| async { Json(json!({"MiniMaxH3DualClockSamplerT8":{}})) }),
+            get(t8_info),
         )
         .route("/free", post(|| async { Json(json!({})) }))
         .route("/prompt", post(prompt))
@@ -246,6 +281,65 @@ async fn wait(service: &Service, id: &str, status: &str) -> Value {
     })
     .await
     .unwrap()
+}
+#[tokio::test]
+async fn status_refreshes_expired_t8_capabilities() {
+    let (_temp, service, mock, _runner, _server, _config) = fixture(false).await;
+    assert_eq!(service.get_status().await.unwrap()["t8"]["available"], true);
+    mock.t8_available.store(false, Ordering::SeqCst);
+    assert_eq!(service.get_status().await.unwrap()["t8"]["available"], true);
+    assert_eq!(mock.t8_calls.load(Ordering::SeqCst), 1);
+    tokio::time::pause();
+    tokio::time::advance(Duration::from_secs(61)).await;
+    tokio::time::resume();
+    assert_eq!(
+        service.get_status().await.unwrap()["t8"]["available"],
+        false
+    );
+    assert_eq!(mock.t8_calls.load(Ordering::SeqCst), 2);
+    service.close().await;
+}
+#[tokio::test]
+async fn cancelled_t8_probe_does_not_cache_unavailability() {
+    let (_temp, service, mock, _runner, _server, _config) = fixture(false).await;
+    mock.t8_hold.store(true, Ordering::SeqCst);
+    let cancel = CancellationToken::new();
+    let pending = tokio::spawn({
+        let service = service.clone();
+        let cancel = cancel.clone();
+        async move {
+            service.prepare(json!({"prompt":"A quiet room.","modelId":"minimax-h3","aspectRatio":"landscape","duration":3,"camera":"still","motion":"subtle","seed":1}), true, cancel).await
+        }
+    });
+    tokio::time::timeout(Duration::from_secs(3), mock.t8_entered.notified())
+        .await
+        .unwrap();
+    cancel.cancel();
+    assert!(
+        tokio::time::timeout(Duration::from_secs(3), pending)
+            .await
+            .unwrap()
+            .unwrap()
+            .is_err()
+    );
+    mock.t8_release.notify_one();
+    assert_eq!(service.get_status().await.unwrap()["t8"]["available"], true);
+    assert_eq!(mock.t8_calls.load(Ordering::SeqCst), 2);
+    service.close().await;
+}
+#[tokio::test]
+async fn status_probes_t8_and_connectivity_concurrently() {
+    let (_temp, service, mock, _runner, _server, _config) = fixture(false).await;
+    *mock.probe_barrier.lock().unwrap() = Some(Arc::new(tokio::sync::Barrier::new(2)));
+    let status = tokio::time::timeout(Duration::from_secs(10), service.get_status())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(status["online"], true);
+    assert_eq!(status["t8"]["available"], true);
+    assert_eq!(mock.t8_calls.load(Ordering::SeqCst), 1);
+    *mock.probe_barrier.lock().unwrap() = None;
+    service.close().await;
 }
 #[tokio::test]
 async fn protected_sequential_shots_skip_reference_tail_and_concat_retries_only_collection() {

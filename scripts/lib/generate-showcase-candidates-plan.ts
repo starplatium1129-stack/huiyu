@@ -3,6 +3,8 @@
 // generate-showcase-candidates: batch and review-attempt planning.
 const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
+const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
+const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
 const artistCatalog: typeof import('../../src/config/artistStyleCatalog.ts') = require('../../src/config/artistStyleCatalog.ts');
 const kreaRecipes: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
 const qualityPromptContract: typeof import('../maintenance/quality-prompt-contract.js') = require('../maintenance/quality-prompt-contract.js');
@@ -270,7 +272,7 @@ function popularGridBatch(seedBase: any) {
     for (const blueprint of eligible) {
       for (const engine of ['anima', 'krea2'] as const) {
         const profile = engine === 'anima' ? animaProfile : krea;
-        const decisions = popularContent.inferBlueprintDecisions(blueprint);
+        const decisions = blueprintDecisions.inferBlueprintDecisions(blueprint);
         const style = kreaRecipes.resolveStyleRecipe(
           kreaRecipes.KREA_STYLE_RECIPES,
           engine,
@@ -279,7 +281,7 @@ function popularGridBatch(seedBase: any) {
           character.adultEligibility === 'adult' ? { adultEligibility: 'adult' } : null,
           { adultEnabled: true },
         );
-        const result = popularContent.buildPopularPromptPlan({
+        const result = popularPrompt.buildPopularPromptPlan({
           character,
           outfit: popularContent.defaultOutfit(character),
           blueprint,

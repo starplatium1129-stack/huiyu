@@ -23,4 +23,4 @@
 }
 .archive-file-input { @apply tw:hidden; }
 .danger { @apply tw:text-danger-text; }
-.danger:disabled { @apply tw:text-muted; }
+.danger:disabled { @apply tw:text-disabled; }

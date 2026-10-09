@@ -16,7 +16,7 @@
 .room-surface .chat-layout { flex:1; @apply tw:h-auto; grid-template-columns:minmax(0,2fr) minmax(390px,3fr); gap:clamp(20px,2.5vw,36px); @apply tw:min-h-0; }
 .room-surface:is([data-character='hatsune_miku'],[data-character='frieren'],[data-character='fern_frieren']) .chat-layout { grid-template-columns:minmax(0,.46fr) minmax(390px,.54fr); }
 .room-surface .character-card { border: 0; border-radius: 0; background: transparent; box-shadow: none; @apply tw:overflow-visible tw:min-w-0; }
-.room-surface .character-card::before, .room-surface .portrait-stage::before, .room-surface .portrait-stage::after, .room-surface .room-signal, .room-surface .voice-halo { @apply tw:hidden; }
+.room-surface .character-card::before, .room-surface .portrait-stage::before, .room-surface .portrait-stage::after, .room-surface .room-signal { @apply tw:hidden; }
 .room-surface .portrait-stage { @apply tw:min-h-0; background: transparent; border: 0; @apply tw:overflow-hidden; }
 .room-surface .portrait-stage[data-character] { background: transparent; }
 .room-surface .portrait-main { @apply tw:max-h-full; width: min(95%, 680px); @apply tw:bottom-0; }

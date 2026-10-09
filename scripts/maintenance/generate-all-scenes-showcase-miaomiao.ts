@@ -31,6 +31,8 @@ function resolveProfile(presets: any) {
 
 function collectAllSceneTasks(opts: any, input: any) {
   const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
+  const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
+  const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
   const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
   const tasks: any[] = [];
   const popularRaw = input.data['data/popular-characters.json'];
@@ -50,10 +52,10 @@ function collectAllSceneTasks(opts: any, input: any) {
       const height = isHorizontal ? 832 : 1216;
 
       const outfit = (bp.outfitId && popularContent.findOutfit(character, bp.outfitId)) || popularContent.defaultOutfit(character);
-      const decisions = popularContent.inferBlueprintDecisions(bp);
+      const decisions = blueprintDecisions.inferBlueprintDecisions(bp);
       const adult = Boolean(bp.adult);
 
-      const plan = popularContent.buildPopularPromptPlan({
+      const plan = popularPrompt.buildPopularPromptPlan({
         character,
         outfit,
         blueprint: bp,

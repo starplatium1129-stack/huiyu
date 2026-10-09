@@ -20,6 +20,7 @@ mod updater_cmd;
 mod watchers;
 mod window_state;
 mod window_presentation;
+mod window_persistence;
 #[cfg(windows)]
 mod window_icon;
 mod chat_dock;
@@ -53,7 +54,7 @@ fn start_gateway_monitor(app: AppHandle) {
             let Some(supervisor) = app.try_state::<gateway::GatewaySupervisor>() else {
                 continue;
             };
-            let healthy = supervisor.is_healthy();
+            let healthy = supervisor.is_healthy_async().await;
             if healthy {
                 failures = 0;
                 restart_attempt = 0;
@@ -267,6 +268,7 @@ fn main() {
             if maintenance::is_client() { std::process::exit(3); }
             let state = AppState::new(paths::resolve_paths(app.handle()));
             app.manage(state);
+            app.manage(window_persistence::WindowStateWriter::new());
             let state = app.state::<AppState>();
             let publish = ui_entry::isolated_profile().is_none() || std::env::var("AICS_DESKTOP_MAINTENANCE_TEST").as_deref() == Ok("1");
             app.manage(maintenance::MaintenanceHost::new(state.paths.config_root.clone(), app.config().identifier.clone(), publish).map_err(std::io::Error::other)?);
@@ -332,7 +334,7 @@ fn main() {
                 .filter(|p| (1024..=65_535).contains(p))
                 .unwrap_or_else(|| window_state::load_desktop_gateway_port(&state.paths.gateway_port_file, 3000));
 
-            let log_path = state.paths.desktop_log.clone();
+            let gateway_log = state.log.clone();
             state.info(&format!(
                 "gateway paths: packaged={is_packaged} executable={} cwd={}",
                 state.paths.gateway_executable.display(),
@@ -353,8 +355,7 @@ fn main() {
                 env
             })
             .on_output(move |stream, text| {
-                let log = logger::FileLogger::new(&log_path);
-                log.debug(&format!("[gateway:{stream}] {}", text.trim()));
+                gateway_log.debug(&format!("[gateway:{stream}] {}", text.trim()));
             })
             .build();
             app.manage(supervisor);
@@ -444,17 +445,6 @@ fn main() {
                 loop { tokio::time::sleep(Duration::from_secs(3600)).await; }
             });
 
-            // 窗口状态持久化
-            let handle = app.handle().clone();
-            tauri::async_runtime::spawn(async move {
-                let h = handle.clone();
-                h.listen("aics:save-bounds", {
-                    let inner = h.clone();
-                    move |_| main_shared::persist_window_bounds(&inner)
-                });
-                loop { tokio::time::sleep(Duration::from_secs(3600)).await; }
-            });
-
             let _ = tray::create_tray(app.handle());
             if ui_entry::isolated_profile().is_none() { register_shortcuts(app.handle()); }
             let handle = app.handle().clone();
@@ -480,6 +470,7 @@ fn main() {
                 if !state.quitting.load(Ordering::Relaxed) {
                     api.prevent_exit();
                 } else {
+                    window_persistence::shutdown(app_handle);
                     live2d_process::shutdown();
                     if let Some(supervisor) = app_handle.try_state::<gateway::GatewaySupervisor>() {
                     // 显式退出：先停掉自有的 sidecar 网关，避免 node 孤儿进程
@@ -491,7 +482,7 @@ fn main() {
             RunEvent::WindowEvent { label, event: win_event, .. } => match win_event {
                 tauri::WindowEvent::Moved(_) | tauri::WindowEvent::Resized(_) => {
                     if label == "companion" { chat_dock::follow(app_handle); }
-                    let _ = app_handle.emit("aics:save-bounds", ());
+                    window_persistence::changed(app_handle, &label);
                     if label == "atelier" {
                         if let Some(window) = app_handle.get_webview_window("atelier") {
                             let _ = window.emit("aics:maximized", window.is_maximized().unwrap_or(false));
@@ -500,6 +491,7 @@ fn main() {
                 }
                 tauri::WindowEvent::CloseRequested { api, .. } => {
                     if label == "atelier" {
+                        window_persistence::closing(app_handle, &label);
                         api.prevent_close();
                         if let Some(w) = app_handle.get_webview_window("atelier") {
                             let _ = w.hide();
@@ -509,9 +501,7 @@ fn main() {
                         main_shared::hide_companion(app_handle);
                     } else if label == "companion-chat" {
                         api.prevent_close();
-                        if let Some(w) = app_handle.get_webview_window(&label) {
-                            let _ = w.hide();
-                        }
+                        main_shared::hide_companion_chat(app_handle);
                     }
                 }
                 _ => {}

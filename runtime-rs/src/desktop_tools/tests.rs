@@ -6,6 +6,56 @@ use http_body_util::BodyExt;
 use std::{path::Path, time::Duration};
 use tower::ServiceExt;
 
+#[test]
+fn abandoned_file_write_reclaims_temporary_at_io_boundaries() {
+    let runtime = tokio::runtime::Builder::new_current_thread()
+        .max_blocking_threads(1).enable_all().build().unwrap();
+    // Walk the real I/O suspension points without depending on their number or
+    // adding a production hook. The occupied pool keeps the next I/O queued.
+    for abort_at in 0..32 {
+        let directory = tempfile::tempdir().unwrap();
+        let root = directory.path().canonicalize().unwrap();
+        let target = root.join("existing.txt");
+        std::fs::write(&target, b"previous content").unwrap();
+        let completed = runtime.block_on(async {
+            let cancel = CancellationToken::new();
+            let mut writing = Box::pin(files::atomic(&root, "existing.txt", &target, b"new content", &cancel));
+            for step in 0..=abort_at {
+                let (started, ready) = tokio::sync::oneshot::channel();
+                let (release, resume) = std::sync::mpsc::channel();
+                let blocker = tokio::task::spawn_blocking(move || {
+                    let _ = started.send(());
+                    let _ = resume.recv_timeout(Duration::from_secs(5));
+                });
+                ready.await.unwrap();
+                let polled = futures_util::poll!(writing.as_mut());
+                if polled.is_pending() && step == abort_at {
+                    drop(writing);
+                    release.send(()).unwrap();
+                    blocker.await.unwrap();
+                    // FIFO on the sole worker drains the detached file operation.
+                    tokio::task::spawn_blocking(|| {}).await.unwrap();
+                    return false;
+                }
+                release.send(()).unwrap();
+                blocker.await.unwrap();
+                tokio::task::spawn_blocking(|| {}).await.unwrap();
+                if let std::task::Poll::Ready(result) = polled {
+                    result.unwrap();
+                    return true;
+                }
+            }
+            unreachable!()
+        });
+        let entries: Vec<_> = std::fs::read_dir(&root).unwrap()
+            .map(|entry| entry.unwrap().file_name()).collect();
+        assert_eq!(entries, vec![std::ffi::OsString::from("existing.txt")], "temporary leaked after cancelling I/O boundary {abort_at}");
+        assert_eq!(std::fs::read(&target).unwrap(), if completed { b"new content".as_slice() } else { b"previous content".as_slice() });
+        if completed { return; }
+    }
+    panic!("the bounded file write never completed");
+}
+
 fn fixture() -> (tempfile::TempDir, Arc<DesktopToolsService>, Router) {
     fixture_with_trust(false)
 }

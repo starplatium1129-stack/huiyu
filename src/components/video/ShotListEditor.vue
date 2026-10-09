@@ -258,10 +258,10 @@
             </span>
             <div class="shot-row-actions">
               <StudioTooltip anchor content="上移镜头">
-                <button type="button" :disabled="index === 0 || batchActive || submitting" aria-label="上移镜头" @click="moveShot(index, -1)"><ArchiveIcon name="chevron-down" class="shot-move-up" /></button>
+                <button type="button" :disabled="index === 0 || batchActive || submitting" aria-label="上移镜头" @click="moveShotWithFocus(index, -1)"><ArchiveIcon name="chevron-down" class="shot-move-up" /></button>
               </StudioTooltip>
               <StudioTooltip anchor content="下移镜头">
-                <button type="button" :disabled="index === shots.length - 1 || batchActive || submitting" aria-label="下移镜头" @click="moveShot(index, 1)"><ArchiveIcon name="chevron-down" /></button>
+                <button type="button" :disabled="index === shots.length - 1 || batchActive || submitting" aria-label="下移镜头" @click="moveShotWithFocus(index, 1)"><ArchiveIcon name="chevron-down" /></button>
               </StudioTooltip>
               <StudioTooltip anchor content="删除镜头">
                 <button type="button" :disabled="batchActive || submitting" aria-label="删除镜头" @click="removeShot(index)"><ArchiveIcon name="close" /></button>
@@ -469,6 +469,15 @@ scriptTotal, runAiScript, canSubmit, submitTitle, submitDescription, cancelling,
 cancelBatch, batch, retryAllFailed, canConcat, concating, concatBatch,
 submitBatch, submitting, retrying, batchError, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, retryBatchRead, canReturnToBatch, returnToCurrentBatch, batchStatusLabel, progressPercent,
 } = useShotWorkspace(props)
+
+async function moveShotWithFocus(index: number, delta: number) {
+  moveShot(index, delta)
+  await nextTick()
+  const row = editorRoot.value?.querySelector<HTMLElement>(`[data-shot-index="${index + delta}"]`)
+  const focusTarget = row?.querySelector<HTMLButtonElement>(`[aria-label="${delta < 0 ? '上移镜头' : '下移镜头'}"]:not(:disabled)`) ?? row
+  row?.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+  focusTarget?.focus({ preventScroll: true })
+}
 
 const concatTranscript = computed(() => (batch.value?.shots ?? [])
   .map(shot => (shot.dialogue || '').trim())

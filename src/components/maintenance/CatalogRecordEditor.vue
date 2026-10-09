@@ -105,5 +105,7 @@ function applyAdvanced() {
   try { const value: unknown = JSON.parse(advanced.value); if (!value || typeof value !== 'object' || (Array.isArray(value) && record.value.kind !== 'document')) throw new Error('请填写有效的内容数据'); record.value.data = value as Record<string, unknown> | unknown[]; error.value = '' }
   catch (e) { error.value = (e as Error).message }
 }
+// Copy/new/reset replaces the record; a parser error belongs to the previous editor session.
+watch(record, () => { error.value = '' })
 watch(() => record.value.data, value => { advanced.value = JSON.stringify(value, null, 2) }, { immediate: true, deep: true })
 </script>

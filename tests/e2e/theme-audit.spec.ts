@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
-import { THEME_KEY } from '../../src/utils/storageKeys';
+import { GUEST_GUIDE_DISMISSED_KEY, THEME_KEY } from '../../src/utils/storageKeys';
 import { characterThemeStyle } from '../../src/utils/characterTheme';
 import { POPULAR_CHARACTER_THEMES } from '../../src/utils/characterThemeCatalog';
 import { installSceneStateFixture } from './helpers/sceneState';
@@ -60,6 +60,11 @@ const ROUTE_ARTWORK: Record<string, string> = {
 };
 
 const THEMES = ['dark', 'light'] as const;
+
+test.beforeEach(async ({ page }) => {
+  // Inspect the page itself instead of the first-run onboarding overlay.
+  await page.addInitScript(key => localStorage.setItem(key, '1'), GUEST_GUIDE_DISMISSED_KEY);
+});
 
 function collectErrors(page: Page): string[] {
   const errors: string[] = [];

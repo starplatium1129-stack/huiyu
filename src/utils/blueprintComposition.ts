@@ -4,12 +4,6 @@ import type { BlueprintCompositionIntent } from '../types/sceneBlueprint'
 export type { BlueprintCompositionIntent } from '../types/sceneBlueprint'
 type CompositionSource = { adult?: boolean; compositionIntent?: BlueprintCompositionIntent; allowRepeatedSubject?: boolean }
 
-export function parseCompositionIntent(value: unknown): BlueprintCompositionIntent {
-  if (value == null || value === '') return 'single'
-  if (value === 'single' || value === 'group' || value === 'triptych') return value
-  throw new Error('Invalid blueprint compositionIntent')
-}
-
 export function compositionIntent(source?: CompositionSource | null): BlueprintCompositionIntent {
   return source?.adult ? 'single' : (source?.compositionIntent || 'single')
 }

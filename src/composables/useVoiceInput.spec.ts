@@ -1,15 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useVoiceInput } from './useVoiceInput'
-import { recognizeWithAsr, type AsrResult } from '@/utils/voiceApi'
+import { encodeWav16k, recognizeWithAsr, type AsrResult } from '@/utils/voiceApi'
 import type { SpeechInputConfig } from '@/utils/speechInputConfig'
+import { maintenanceParticipants } from '@/platform/maintenanceParticipants'
 
+const vadFixture = vi.hoisted(() => ({ create: vi.fn() }))
 vi.mock('@/utils/voiceApi', () => ({
   resampleTo16k: (samples: Float32Array) => samples,
-  encodeWav16k: () => new Uint8Array([1, 2]), recognizeWithAsr: vi.fn(),
+  encodeWav16k: vi.fn(() => new Uint8Array([1, 2])), recognizeWithAsr: vi.fn(),
 }))
 vi.mock('@/utils/vadSegmenter', async importOriginal => {
   const original = await importOriginal<typeof import('@/utils/vadSegmenter')>()
-  return { ...original, createVadSegmenter: () => ({ push() {}, takeSegments: () => [new Float32Array([0.5])] }) }
+  return { ...original, createVadSegmenter: () => vadFixture.create() ?? ({ push() {}, takeSegments: () => [new Float32Array([0.5])] }) }
 })
 const tracks: Array<{ stop: ReturnType<typeof vi.fn> }> = []
 const processors: Array<{ onaudioprocess: ((event: AudioProcessingEvent) => void) | null; disconnect: ReturnType<typeof vi.fn> }> = []
@@ -39,10 +41,88 @@ beforeEach(() => {
     return { getTracks: () => [track] }
   }) } })
 })
-afterEach(() => { vi.unstubAllGlobals(); vi.clearAllMocks(); tracks.length = 0; processors.length = 0 })
+afterEach(() => { vi.unstubAllGlobals(); vi.clearAllMocks(); vadFixture.create.mockReset(); vi.mocked(recognizeWithAsr).mockReset(); tracks.length = 0; processors.length = 0 })
 const settle = () => new Promise(resolve => setTimeout(resolve, 0))
 
 describe('voice session ownership', () => {
+  it.each(['manual', 'auto'] as const)('surfaces a %s ASR failure, releases capture, and allows an explicit retry', async mode => {
+    vi.mocked(recognizeWithAsr).mockRejectedValueOnce(new Error('语音识别超时，请稍后重试'))
+      .mockResolvedValueOnce({ text: 'retry transcript', latencyMs: 1 })
+    const onText = vi.fn()
+    const voice = useVoiceInput({ config: () => ({} as SpeechInputConfig), onText })
+    try {
+      await voice.start(mode)
+      if (mode === 'manual') voice.stop()
+      else processors[0].onaudioprocess!(audioEvent(0.5))
+      await settle()
+      expect(voice.state.value).toBe('error')
+      expect(voice.errorMessage.value).toBe('语音识别超时，请稍后重试')
+      expect(voice.autoListening.value).toBe(false)
+      expect(tracks[0].stop).toHaveBeenCalledOnce()
+      expect(processors[0].onaudioprocess).toBeNull()
+      expect(onText).not.toHaveBeenCalled()
+      await voice.start()
+      expect(voice.errorMessage.value).toBe('')
+      voice.stop(); await settle()
+      expect(onText).toHaveBeenCalledExactlyOnceWith('retry transcript', 'manual')
+      expect(voice.state.value).toBe('idle')
+    } finally { voice.release() }
+  })
+  it('retains only the latest four completed segments while auto recognition is pending', async () => {
+    const completed: Float32Array[] = []
+    vadFixture.create.mockReturnValueOnce({
+      push: (samples: Float32Array) => completed.push(samples),
+      takeSegments: () => completed.splice(0),
+    })
+    const pending = deferred(), onText = vi.fn()
+    vi.mocked(recognizeWithAsr).mockReturnValueOnce(pending.promise)
+    for (let i = 0; i < 4; i++) vi.mocked(recognizeWithAsr).mockResolvedValueOnce({ text: 'queued', latencyMs: 1 })
+    const voice = useVoiceInput({ config: () => ({} as SpeechInputConfig), onText })
+    try {
+      await voice.start('auto')
+      const process = processors[0].onaudioprocess!
+      for (let value = 1; value <= 7; value++) process(audioEvent(value / 8))
+      expect(recognizeWithAsr).toHaveBeenCalledOnce()
+      pending.resolve({ text: 'first', latencyMs: 1 }); await settle()
+      // Finished speech must drain without waiting for another microphone callback.
+      expect(vi.mocked(encodeWav16k).mock.calls.map(([samples]) => samples[0])).toEqual([1, 4, 5, 6, 7].map(value => value / 8))
+      expect(onText).toHaveBeenCalledTimes(5)
+      expect(voice.state.value).toBe('capturing')
+    } finally { voice.release() }
+  })
+  it('stops auto capture without retaining or transcribing queued segments after the current result', async () => {
+    const pending = deferred(), onText = vi.fn()
+    // A VAD read can contain several completed segments after a slow recognition.
+    vadFixture.create.mockReturnValueOnce({ push() {}, takeSegments: () => [new Float32Array([0.125]), new Float32Array([0.25])] })
+    vi.mocked(recognizeWithAsr).mockReturnValueOnce(pending.promise)
+    const previous = new Set(maintenanceParticipants())
+    const voice = useVoiceInput({ config: () => ({} as SpeechInputConfig), onText })
+    const prepare = maintenanceParticipants().find(participant => !previous.has(participant))!
+    try {
+      await voice.start('auto'); processors[0].onaudioprocess!(audioEvent(0.5)); voice.stop()
+      expect(tracks[0].stop).toHaveBeenCalledOnce()
+      expect(prepare).toThrow('SPEECH_BUSY')
+      pending.resolve({ text: 'in-flight', latencyMs: 1 }); await settle()
+      expect(onText).toHaveBeenCalledExactlyOnceWith('in-flight', 'auto')
+      expect(recognizeWithAsr).toHaveBeenCalledOnce()
+      expect(voice.state.value).toBe('idle')
+      expect(prepare).not.toThrow()
+    } finally { voice.release() }
+  })
+  it('keeps maintenance blocked until a stopped manual recording finishes recognition', async () => {
+    const pending = deferred()
+    vi.mocked(recognizeWithAsr).mockReturnValueOnce(pending.promise)
+    const previous = new Set(maintenanceParticipants())
+    const voice = useVoiceInput({ config: () => ({} as SpeechInputConfig) })
+    const prepare = maintenanceParticipants().find(participant => !previous.has(participant))!
+    try {
+      await voice.start(); voice.stop()
+      expect(voice.state.value).toBe('recognizing')
+      expect(prepare).toThrow('SPEECH_BUSY')
+      pending.resolve({ text: 'completed', latencyMs: 1 }); await settle()
+      expect(prepare).not.toThrow()
+    } finally { voice.release() }
+  })
   it.each(['cancel', 'release'] as const)('%s stops a microphone stream granted after capture ownership ended', async operation => {
     let grant!: (stream: MediaStream) => void
     vi.mocked(navigator.mediaDevices.getUserMedia).mockReturnValueOnce(new Promise(resolve => { grant = resolve }))

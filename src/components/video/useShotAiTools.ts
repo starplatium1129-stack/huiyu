@@ -1,4 +1,4 @@
-import { computed, onScopeDispose, ref, type ComputedRef, type Ref } from 'vue'
+import { computed, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
 import {
   fetchVideoAiStatus,
   generateVideoScript,
@@ -320,7 +320,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
         currentDialogue: shot.dialogue.trim() || undefined,
       }, signal)
       if (signal.aborted) return
-      if (shots.value[index] !== shot) { dialogueIndex.value = -1; return }
+      if (dialogueTarget !== shot || dialogueIndex.value !== index || shots.value[index] !== shot) { dialogueIndex.value = -1; return }
       dialogueOptions.value = response.options
       if (!response.options.length) {
         dialogueIndex.value = -1
@@ -347,6 +347,20 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   /** 质量检查结果（index 对齐 shots）。 */
   const reviewIssues = ref<VideoAiIssue[]>([])
   const reviewBusy = ref(false)
+  const reviewOrderMatches = () => shots.value.length === reviewTargets.length
+    && shots.value.every((shot, index) => shot === reviewTargets[index])
+  // Watch row identity/order only; editing text must not discard visible results.
+  watch(() => shots.value.slice(), () => {
+    if (dialogueIndex.value >= 0 && shots.value[dialogueIndex.value] !== dialogueTarget) {
+      dialogueIndex.value = -1
+      dialogueOptions.value = []
+      dialogueTarget = null
+    }
+    if ((reviewBusy.value || reviewIssues.value.length) && !reviewOrderMatches()) {
+      reviewIssues.value = []
+      aiNote.value = '镜头顺序已变化，请重新检查质量'
+    }
+  })
 
   async function runAiReview() {
     if (anyAiBusy() || !shots.value.length) return
@@ -363,6 +377,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
         dialogue: shot.dialogue || undefined,
       })), signal)
       if (signal.aborted) return
+      if (!reviewOrderMatches()) { aiNote.value = '镜头顺序已变化，请重新检查质量'; return }
       reviewIssues.value = response.issues
       aiNote.value = response.issues.length
         ? `质量检查：发现 ${response.issues.length} 个问题（${response.issues.filter(i => i.severity === 'error').length} 个必须修），可点击建议应用`

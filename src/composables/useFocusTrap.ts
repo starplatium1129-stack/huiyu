@@ -18,6 +18,7 @@ const FOCUSABLE = [
   'input:not([disabled]):not([type="hidden"])',
   'textarea:not([disabled])',
   'select:not([disabled])',
+  'details > summary:first-of-type',
   '[tabindex]:not([tabindex="-1"])',
 ].join(',')
 

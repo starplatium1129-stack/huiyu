@@ -23,6 +23,7 @@ import DeferredPanel from './DeferredPanel.vue'
 import AnimatedSelection from '../visual/AnimatedSelection.vue'
 import ArchiveIcon, { type ArchiveIconName } from '../visual/ArchiveIcon.vue'
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
+import { scrollBehavior } from '@/utils/motionPreference'
 
 const props = defineProps<{ expert: boolean; sceneContext?: string }>()
 const drawerEl = ref<HTMLElement | null>(null)
@@ -37,7 +38,7 @@ async function selectSection(section: string) {
   await nextTick()
   drawerEl.value?.querySelector<HTMLButtonElement>('[aria-controls="material-' + section + '"]')?.focus({ preventScroll: true })
   const rect = drawerEl.value?.getBoundingClientRect()
-  if (rect && (rect.top < 0 || rect.top > innerHeight - 100)) drawerEl.value?.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+  if (rect && (rect.top < 0 || rect.top > innerHeight - 100)) drawerEl.value?.scrollIntoView({ block: 'start', behavior: scrollBehavior() })
 }
 watch(() => props.sceneContext, value => { if (value) active.value = 'scenes' })
 defineExpose({ selectSection })

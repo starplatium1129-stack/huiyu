@@ -174,6 +174,66 @@ for (const desktop of [false, true]) for (const theme of ['dark', 'light']) for 
   })
 }
 
+for (const [route, theme] of [['/companion', 'dark'], ['/companion-chat', 'light']] as const) {
+  test(`speech failure stays visible and keyboard retry works in ${route}`, async ({ page }, testInfo) => {
+    if (route === '/companion-chat') await desktopFixture(page, theme, true)
+    await page.setViewportSize({ width: 500, height: 600 })
+    await page.addInitScript(theme => {
+      localStorage.setItem('aics_theme', theme)
+      localStorage.setItem('aics_guest_guide_dismissed', '1')
+      localStorage.setItem('aics_chat_v1', JSON.stringify({ version: 3, active: 'nene', histories: { nene: [] },
+        settings: { provider: 'api', apiBaseUrl: 'https://local.example/v1', apiModel: 'fixture', apiKey: 'fixture',
+          live2dEnabled: false, autoVoice: false, drafts: { nene: '' } } }))
+      localStorage.setItem('aics_companion_live2d_v1', 'false')
+      localStorage.setItem('aics_speech_input_v1', JSON.stringify({ enabled: true, endpoint: location.origin + '/asr-fixture',
+        wakeEnabled: false, autoSend: false }))
+      Object.defineProperty(navigator, 'mediaDevices', { configurable: true,
+        value: { getUserMedia: async () => ({ getTracks: () => [{ stop() {} }] }) } })
+      class AudioFixture {
+        sampleRate = 16000; destination = {}; state = 'running'
+        createMediaStreamSource() { return { connect() {}, disconnect() {} } }
+        createScriptProcessor() {
+          const processor = { connect() {}, disconnect() {}, onaudioprocess: null }
+          ;(window as any).__speechFailureProcessor = processor
+          return processor
+        }
+        createGain() { return { gain: { value: 0 }, connect() {}, disconnect() {} } }
+        close() { this.state = 'closed'; return Promise.resolve() }
+      }
+      ;(window as any).AudioContext = AudioFixture
+    }, theme)
+    let requests = 0
+    await page.route('**/asr-fixture/audio/transcriptions', intercept => intercept.fulfill({
+      status: ++requests === 1 ? 503 : 200, contentType: 'application/json', body: JSON.stringify({ text: '重试后的草稿' }),
+    }))
+    await page.goto(route)
+    const speech = page.locator(route === '/companion' ? '.companion-speech-btn' : '.companion-chat-speech[data-state]')
+    const input = page.locator(route === '/companion' ? '.companion-input' : '.companion-chat-input')
+    const speak = async (key: 'Enter' | ' ') => {
+      await speech.focus(); await page.keyboard.down(key)
+      await expect(speech).toHaveAttribute('data-state', 'capturing')
+      await page.evaluate(() => (window as any).__speechFailureProcessor.onaudioprocess({
+        inputBuffer: { getChannelData: () => new Float32Array(16000).fill(0.2) },
+      }))
+      await page.keyboard.up(key)
+    }
+    await speak('Enter')
+    await expect(speech).toHaveText(/重试/)
+    const error = page.locator('.companion-error, .companion-chat-error').filter({ hasText: '语音识别服务返回 503' })
+    await expect(error).toBeVisible()
+    await input.focus()
+    await expect(error).toBeVisible()
+    expect(await paintedTextContrast(error)).toBeGreaterThanOrEqual(4.5)
+    const bounds = (await error.boundingBox())!
+    expect(bounds.y + bounds.height).toBeLessThanOrEqual(600)
+    await page.screenshot({ path: testInfo.outputPath(`speech-error-${theme}.png`) })
+    await speak(' ')
+    await expect(input).toHaveValue('重试后的草稿')
+    await expect(error).toHaveCount(0)
+    expect(requests).toBe(2)
+  })
+}
+
 for (const theme of ['dark', 'light']) {
   for (const [width, height] of [[360, 520], [480, 720]]) {
     test(`companion character window ${theme} ${width}`, async ({ page }, testInfo) => {

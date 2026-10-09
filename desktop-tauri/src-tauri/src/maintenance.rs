@@ -83,8 +83,11 @@ pub fn handle(app: &AppHandle, argv: &[String]) -> bool {
             let phase = host.handoff.lock().unwrap().as_ref().map(|value| value.phase);
             // This is process/gateway readiness, not proof that frontend JS or
             // images have mounted. Real window acceptance remains separate.
-            let ready = app.try_state::<crate::gateway::GatewaySupervisor>().is_some_and(|gateway| gateway.owns_gateway() && gateway.is_healthy())
-                && !app.webview_windows().is_empty();
+            let healthy = match app.try_state::<crate::gateway::GatewaySupervisor>() {
+                Some(gateway) if gateway.owns_gateway() => gateway.is_healthy_async().await,
+                _ => false,
+            };
+            let ready = healthy && !app.webview_windows().is_empty();
             host.respond(&id, phase.unwrap_or(if ready { "ready" } else { "starting" }), None);
         } else { shutdown(app, id).await; }
     });

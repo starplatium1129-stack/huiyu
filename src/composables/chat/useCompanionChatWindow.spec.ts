@@ -64,6 +64,42 @@ afterEach(() => { wrapper?.unmount(); wrapper = undefined; voice?.destroy(); voi
   desktopFixture.current = undefined; vi.unstubAllGlobals(); vi.restoreAllMocks() })
 
 describe('companion chat speech ownership', () => {
+  it.each([
+    { reason: 'hidden', mode: 'auto', phase: 'recognizing' },
+    { reason: 'blur', mode: 'manual', phase: 'acquiring' },
+  ])('chat cancels $mode speech on $reason and rejects its late transcript', async ({ reason, mode, phase }) => {
+    localStorage.setItem(SPEECH_INPUT_KEY, JSON.stringify({ ...DEFAULT_SPEECH_INPUT_CONFIG,
+      enabled: true, endpoint: 'http://127.0.0.1:9999', wakeEnabled: mode === 'auto', autoSend: true, wakeWords: ['你好'] }))
+    const inputText = ref('原有草稿'), handleSend = vi.fn()
+    let speech!: ReturnType<typeof useChatSpeechInteraction>
+    mountSession(() => { speech = useChatSpeechInteraction({ currentCharacter: ref(getCompanionCharacterConfig('nene')!),
+      busy: ref(false), chatReady: ref(true), inputText, handleSend }) })
+    await nextTick()
+    if (mode === 'auto') fixture.onText('你好', 'auto')
+    else speech.onSpeechPress()
+    state.value = phase
+    if (reason === 'hidden') {
+      vi.spyOn(document, 'hidden', 'get').mockReturnValue(true)
+      document.dispatchEvent(new Event('visibilitychange'))
+    } else {
+      vi.mocked(document.hasFocus).mockReturnValue(false)
+      window.dispatchEvent(new Event('blur'))
+    }
+    await nextTick()
+    expect(cancel).toHaveBeenCalled()
+    expect(state.value).toBe('idle')
+    fixture.onText('已经失去焦点的识别结果', mode)
+    expect(inputText.value).toBe('原有草稿')
+    expect(handleSend).not.toHaveBeenCalled()
+    vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
+    vi.mocked(document.hasFocus).mockReturnValue(true)
+    window.dispatchEvent(new Event('focus')); await nextTick()
+    if (mode === 'manual') speech.onSpeechPress()
+    expect(start).toHaveBeenLastCalledWith(mode)
+    fixture.onText('恢复之后的新识别结果', mode)
+    expect(inputText.value).toBe('恢复之后的新识别结果')
+    expect(handleSend).toHaveBeenCalledOnce()
+  })
   it('preserves each browser fallback draft when switching characters before the debounce completes', async () => {
     vi.useFakeTimers()
     desktopFixture.current = undefined

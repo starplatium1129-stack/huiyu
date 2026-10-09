@@ -86,7 +86,7 @@ export interface AsrResult {
 }
 
 export interface AsrError extends Error {
-  kind: 'network' | 'http' | 'payload' | 'canceled'
+  kind: 'network' | 'http' | 'payload' | 'canceled' | 'timeout'
   status?: number
 }
 
@@ -98,7 +98,7 @@ function asrError(kind: AsrError['kind'], message: string, status?: number): Asr
 }
 
 /**
- * 调用 ASR 端点识别一段 WAV。signal 支持取消（AbortController）。
+ * 调用 ASR 端点识别一段 WAV。signal 支持取消，120 秒期限覆盖响应正文读取。
  * 抛出的错误带 kind/status，UI 可据此分类展示。
  */
 export async function recognizeWithAsr(
@@ -106,40 +106,54 @@ export async function recognizeWithAsr(
   wavBytes: Uint8Array,
   signal?: AbortSignal,
 ): Promise<AsrResult> {
+  if (signal?.aborted) throw asrError('canceled', '语音识别已取消')
   const started = Date.now()
   const parts = buildAsrRequestParts(config)
   const form = new FormData()
   form.append('file', new Blob([wavBytes as BlobPart], { type: parts.mime }), parts.filename)
   for (const field of parts.formFields) form.append(field.name, field.value)
-  let response: Response
+  const controller = new AbortController()
+  const abort = () => controller.abort()
+  signal?.addEventListener('abort', abort, { once: true })
+  let timedOut = false
+  const timer = setTimeout(() => { timedOut = true; controller.abort() }, 120_000)
   try {
-    response = await fetch(parts.url, {
-      method: parts.method,
-      headers: config.apiKey ? { Authorization: `Bearer ${config.apiKey}` } : undefined,
-      body: form,
-      signal,
-    })
+    let response: Response
+    try {
+      response = await fetch(parts.url, {
+        method: parts.method,
+        headers: config.apiKey ? { Authorization: `Bearer ${config.apiKey}` } : undefined,
+        body: form,
+        signal: controller.signal,
+      })
+    } catch (error) {
+      throw asrError('network', `无法连接语音识别服务：${error instanceof Error ? error.message : String(error)}`)
+    }
+
+    if (!response.ok) {
+      throw asrError('http', `语音识别服务返回 ${response.status}`, response.status)
+    }
+
+    let payload: unknown
+    try {
+      payload = await response.json()
+    } catch {
+      throw asrError('payload', '语音识别服务返回了无法解析的内容')
+    }
+
+    const text = (payload && typeof payload === 'object' && 'text' in payload
+      ? (payload as { text?: unknown }).text
+      : null) as string | null
+    if (typeof text !== 'string' || !text.trim()) {
+      throw asrError('payload', '语音识别服务未返回识别文本')
+    }
+    return { text: text.trim(), latencyMs: Date.now() - started }
   } catch (error) {
     if (signal?.aborted) throw asrError('canceled', '语音识别已取消')
-    throw asrError('network', `无法连接语音识别服务：${error instanceof Error ? error.message : String(error)}`)
+    if (timedOut) throw asrError('timeout', '语音识别超时，请稍后重试')
+    throw error
+  } finally {
+    clearTimeout(timer)
+    signal?.removeEventListener('abort', abort)
   }
-
-  if (!response.ok) {
-    throw asrError('http', `语音识别服务返回 ${response.status}`, response.status)
-  }
-
-  let payload: unknown
-  try {
-    payload = await response.json()
-  } catch {
-    throw asrError('payload', '语音识别服务返回了无法解析的内容')
-  }
-
-  const text = (payload && typeof payload === 'object' && 'text' in payload
-    ? (payload as { text?: unknown }).text
-    : null) as string | null
-  if (typeof text !== 'string' || !text.trim()) {
-    throw asrError('payload', '语音识别服务未返回识别文本')
-  }
-  return { text: text.trim(), latencyMs: Date.now() - started }
 }

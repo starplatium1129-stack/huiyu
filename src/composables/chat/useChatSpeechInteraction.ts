@@ -99,6 +99,7 @@ export function useChatSpeechInteraction({
   }
 
   function onSpeechText(text: string, source: VoiceTextSource): void {
+    if (document.hidden || !document.hasFocus()) return
     // 自动监听：未进会话时先做唤醒词匹配；未命中不打扰。
     if (source === 'auto' && !speechSession.isSessionActive()) {
       if (speechSession.onWakeText(text)) {
@@ -197,16 +198,24 @@ export function useChatSpeechInteraction({
     reconcileAutoListen()
   }
 
+  function onPagePresenceChange(): void {
+    if (document.hidden || !document.hasFocus()) {
+      manualSpeechHeld = false
+      // Losing the page cancels pending permissions/ASR as well as capture.
+      speechCancel()
+    } else reconcileAutoListen()
+  }
+
   onBeforeUnmount(() => {
-    window.removeEventListener('focus', reconcileAutoListen)
-    window.removeEventListener('blur', reconcileAutoListen)
-    document.removeEventListener('visibilitychange', reconcileAutoListen)
+    window.removeEventListener('focus', onPagePresenceChange)
+    window.removeEventListener('blur', onPagePresenceChange)
+    document.removeEventListener('visibilitychange', onPagePresenceChange)
     stopSpeechSessionWatch()
     speechRelease()
   })
-  window.addEventListener('focus', reconcileAutoListen)
-  window.addEventListener('blur', reconcileAutoListen)
-  document.addEventListener('visibilitychange', reconcileAutoListen)
+  window.addEventListener('focus', onPagePresenceChange)
+  window.addEventListener('blur', onPagePresenceChange)
+  document.addEventListener('visibilitychange', onPagePresenceChange)
 
   return {
     speechConfig,

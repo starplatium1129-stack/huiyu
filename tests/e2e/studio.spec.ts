@@ -263,8 +263,10 @@ test('showcase viewer restores focus and changing content type clears an incompa
 test('room settings switch provider presets and merge discovered models without loading Live2D', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   const live2dAssetRequests: string[] = [];
+  const selectRequests: string[] = [];
   page.on('request', request => {
     if (request.url().includes('/assets/live2d-current/nene/')) live2dAssetRequests.push(request.url());
+    if (request.resourceType() === 'script' && /\/StudioSelect(?:-[^/?]+\.js|\.vue)(?:\?|$)/.test(request.url())) selectRequests.push(request.url());
   });
   await page.route('**/api/chat-provider/test', route => route.fulfill({
     contentType: 'application/json',
@@ -277,16 +279,17 @@ test('room settings switch provider presets and merge discovered models without 
     }),
   }));
   // 本机 runtime/state/chat_api_config.json 可能已存在站主托管配置；
-  // 预置"用户已配置"的本地 API 草稿，让本用例聚焦供应商预设切换，
+  // 保存本地模型来源与已配置的 API 草稿，先验证折叠设置不加载选择器，再切换供应商，
   // 不依赖站主配置是否存在，也不去清除用户真实配置。
   await page.addInitScript(() => {
+    localStorage.setItem('aics_guest_guide_dismissed', '1');
     localStorage.setItem('aics_chat_v1', JSON.stringify({
       version: 3,
       active: 'nene',
       histories: { nene: [], natsume: [] },
       settings: {
         model: 'local-model',
-        provider: 'api',
+        provider: 'local',
         apiBaseUrl: 'https://local.example/v1',
         apiModel: 'local-model',
         apiKey: 'local-key',
@@ -308,14 +311,27 @@ test('room settings switch provider presets and merge discovered models without 
   await expect(page.locator('.voice-console')).toBeVisible();
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载绫地宁宁动态立绘');
   expect(live2dAssetRequests).toEqual([]);
+  expect(selectRequests).toEqual([]);
   // 角色目录可扩展；原有两位角色仍可通过角色菜单切换。
   await page.getByRole('combobox', { name: '切换角色', exact: true }).click();
   await expect(page.locator('.companion-picker-option[data-value="nene"], .companion-picker-option[data-value="natsume"]')).toHaveCount(2);
   await page.locator('.companion-picker-option[data-value="natsume"]').click();
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载四季夏目动态立绘');
   await expect(page.locator('.provider-switch')).toBeHidden();
-  await page.locator('.room-model-settings summary').click();
+  const modelSummary = page.locator('.room-model-settings summary');
+  await modelSummary.focus();
+  await modelSummary.press('Enter');
   await expect(page.locator('.provider-switch')).toBeVisible();
+  await expect(modelSummary).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: '已有 Ollama', exact: true })).toBeFocused();
+  await expect(page.getByLabel('选择本地聊天模型')).toBeVisible();
+  expect(selectRequests.length).toBeGreaterThan(0);
+  await modelSummary.press('Enter');
+  await expect(page.locator('.provider-switch')).toBeHidden();
+  await modelSummary.press('Enter');
+  await expect(page.getByRole('button', { name: '已有 Ollama', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'llama.cpp / API', exact: true }).click();
   await page.locator('.api-settings-toggle').click();
   await expect(page.locator('.api-settings')).toBeVisible();
   await page.locator('[data-vendor="deepseek"]').click();
@@ -440,6 +456,11 @@ test('companion chat window renders history from storage and relays sends to the
 test('speech input: hold-talk entry hidden until ASR endpoint configured', async ({ page }, info) => {
   await page.setViewportSize({ width:1097, height:617 });
   const errors = collectRuntimeErrors(page);
+  const speechModule = /\/SpeechInputSettings(?:-[^/?]+\.js|\.vue)(?:\?|$)/;
+  const speechRequests: string[] = [];
+  page.on('request', request => {
+    if (request.resourceType() === 'script' && speechModule.test(request.url())) speechRequests.push(request.url());
+  });
   await page.addInitScript(() => {
     localStorage.setItem('aics_chat_v1', JSON.stringify({
       version: 3,
@@ -468,9 +489,29 @@ test('speech input: hold-talk entry hidden until ASR endpoint configured', async
   await expect(guide).toBeHidden();
   await expect(page.locator('.chat-input')).toBeVisible();
   await expect(page.locator('.hold-talk-btn')).toHaveCount(0);
-  await page.getByRole('button', { name: '语音输入设置' }).click();
-  await expect(page.locator('.speech-settings')).toBeVisible();
+  expect(speechRequests).toEqual([]);
+  let releaseSpeech!: () => void;
+  const speechGate = new Promise<void>(resolve => { releaseSpeech = resolve; });
+  await page.route(speechModule, async route => { await speechGate; await route.continue(); });
   const settings = page.getByRole('dialog', { name:'语音输入设置', exact:true });
+  try {
+    await page.getByRole('button', { name: '语音输入设置' }).press('Enter');
+    await expect(settings).toBeVisible();
+    await expect(settings).toBeFocused();
+    for (const theme of ['light', 'dark']) {
+      await page.evaluate(value => {
+        localStorage.setItem('aics_theme', value);
+        window.dispatchEvent(new StorageEvent('storage', { key:'aics_theme', newValue:value }));
+      }, theme);
+      await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+      await settings.screenshot({ path:info.outputPath(`speech-loading-${theme}.png`) });
+    }
+    releaseSpeech();
+    await expect(page.locator('.speech-settings')).toBeVisible();
+    await expect(settings.getByRole('switch', { name: '启用语音输入', exact: true })).toBeFocused();
+    expect(speechRequests.length).toBeGreaterThan(0);
+  } finally { releaseSpeech(); }
+  await page.unroute(speechModule);
   const bounds = (await settings.boundingBox())!;
   expect(bounds.x).toBeGreaterThanOrEqual(0);
   expect(bounds.y).toBeGreaterThanOrEqual(0);

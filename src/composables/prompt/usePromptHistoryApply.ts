@@ -5,11 +5,11 @@ import type { Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import { restoreHistorySceneStory } from '@/utils/promptBuilderPersistence'
+import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 import {
   findBlueprint as findPopularBlueprint,
   findCharacter as findPopularCharacter,
   findOutfit as findPopularOutfit,
-  inferBlueprintDecisions,
 } from '@/utils/popularContent'
 import { ANIMA_LORA_BY_CHARACTER, type useAnimaSession } from '@/composables/generation/useAnimaSession'
 import { confirmAction } from '@/composables/useConfirm'

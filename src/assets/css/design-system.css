@@ -1517,21 +1517,22 @@ body:has(.pb) .route-atmosphere .route-index {
 }
 .flash-value { animation: flash-accent .9s var(--ease-out) both; }
 
-/* ── 平滑主题切换 ──
-   过去这里用 `*` 给全站每个节点挂颜色过渡：首页实测 193 个元素命中，
-   主题切换与滚动都要对近 200 个节点做颜色插值，导演台标签密集时会掉帧。
-   现在只覆盖真正会换底色的表面元素，其余保持瞬时响应。 */
-:where(
-  body, .nav, .card, .card-info, .card-create, .card-direct,
-  .panel, .btn, .chip, .filter-pill, .badge, .sc, .mood-card,
-  .input, .textarea, .option, .tag-chip, .scene-card,
-  .status-tile, .service-row, .mode-card, .panel-card,
-  .artwork, .sample, .history-item, .tool-card, .stat-card
-) {
-  transition:
-    background-color var(--motion-control) ease,
-    border-color     var(--motion-control) ease,
-    color            var(--motion-press) ease;
+/* Theme changes composite two complete frames, including teleported overlays.
+   Suppress local interpolation only while capturing the final palette. */
+:root[data-theme-transition] *,
+:root[data-theme-transition] *::before,
+:root[data-theme-transition] *::after { transition: none !important; }
+:root[data-theme-transition]::view-transition { pointer-events: none; }
+:root[data-theme-transition]::view-transition-group(root),
+:root[data-theme-transition]::view-transition-old(root) { animation: none; }
+:root[data-theme-transition]::view-transition-new(root) {
+  mix-blend-mode: normal;
+  animation: theme-frame-in var(--motion-control) var(--ease-out) both;
+}
+@keyframes theme-frame-in { from { opacity: 0; } to { opacity: 1; } }
+:root:is([data-motion='reduce'], [data-reduced-motion='true'])::view-transition-new(root) { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full'])::view-transition-new(root) { animation: none; }
 }
 /* 禁止为动画元素叠加颜色过渡（避免闪烁） */
 [data-no-theme-transition],

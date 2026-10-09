@@ -1,5 +1,50 @@
 use super::*;
 
+#[test]
+fn asynchronous_health_yields_and_rejects_superseded_proofs() {
+    for superseded in [false, true] {
+        let listener = std::net::TcpListener::bind(("127.0.0.1", 0)).unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let secret = "a".repeat(64);
+        let signing_secret = secret.clone();
+        let (entered, received) = tokio::sync::oneshot::channel();
+        let (release, resume) = std::sync::mpsc::channel();
+        let server = std::thread::spawn(move || {
+            let (mut stream, _) = listener.accept().unwrap();
+            stream.set_read_timeout(Some(Duration::from_secs(3))).unwrap();
+            let mut request = Vec::new();
+            let mut buffer = [0; 1024];
+            while !request.windows(4).any(|part| part == b"\r\n\r\n") {
+                let read = stream.read(&mut buffer).unwrap();
+                assert!(read > 0);
+                request.extend_from_slice(&buffer[..read]);
+            }
+            entered.send(()).unwrap();
+            resume.recv_timeout(Duration::from_secs(3)).unwrap();
+            let request = String::from_utf8(request).unwrap();
+            let challenge = request.lines().find_map(|line| line.strip_prefix("X-AICS-Desktop-Challenge: ")).unwrap();
+            let proof = ring::hmac::sign(&ring::hmac::Key::new(ring::hmac::HMAC_SHA256, signing_secret.as_bytes()), challenge.as_bytes());
+            let proof: String = proof.as_ref().iter().map(|byte| format!("{byte:02x}")).collect();
+            let body = serde_json::json!({"ok":true,"app":"ai-cg-studio","desktopProtocol":1,"desktopProof":proof}).to_string();
+            write!(stream, "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: {}\r\n\r\n{body}", body.len()).unwrap();
+        });
+        let supervisor = GatewaySupervisorBuilder::new(std::env::current_exe().unwrap(), std::env::temp_dir()).port(port).build();
+        *supervisor.identity_token.lock().unwrap() = Some(secret);
+        let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build().unwrap();
+        let healthy = runtime.block_on(async {
+            let (healthy, ()) = tokio::join!(supervisor.is_healthy_async(), async {
+                received.await.unwrap();
+                if superseded { *supervisor.identity_token.lock().unwrap() = Some("b".repeat(64)); }
+                release.send(()).unwrap();
+            });
+            healthy
+        });
+        server.join().unwrap();
+        assert_eq!(healthy, !superseded);
+        assert_eq!(supervisor.authenticated.load(Ordering::SeqCst), !superseded);
+    }
+}
+
 // Node is confined to protocol fixtures; no interpreter branch is compiled
 // into the shipped supervisor.
 fn fixture_builder(script: std::path::PathBuf, root: std::path::PathBuf) -> GatewaySupervisorBuilder {

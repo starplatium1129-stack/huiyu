@@ -236,12 +236,26 @@ impl GatewaySupervisor {
         healthy
     }
 
+    pub async fn is_healthy_async(&self) -> bool {
+        let Some(token) = self.identity_token.lock().unwrap().clone() else { return false; };
+        let base = self.base_url();
+        let generation = self.stop_generation.load(Ordering::SeqCst);
+        let (target, secret) = (base.clone(), token.clone());
+        let healthy = tauri::async_runtime::spawn_blocking(move || authenticated_health(&target, &secret))
+            .await.unwrap_or(false);
+        // A probe from before stop/restart cannot authenticate the replacement.
+        if self.stop_generation.load(Ordering::SeqCst) != generation
+            || self.base_url() != base
+            || self.identity_token.lock().unwrap().as_ref() != Some(&token) {
+            return false;
+        }
+        self.authenticated.store(healthy, Ordering::SeqCst);
+        healthy
+    }
+
     fn check_authenticated_health(&self) -> bool {
         let Some(token) = self.identity_token.lock().unwrap().clone() else { return false; };
-        let Ok(challenge) = identity::random_secret() else { return false; };
-        read_health(&self.base_url(), Duration::from_millis(1200), Some(&challenge))
-            .map(|h| is_desktop_gateway_compatible(&h) && identity::verify_proof(&token, &challenge, &h.desktop_proof))
-            .unwrap_or(false)
+        authenticated_health(&self.base_url(), &token)
     }
 
     pub async fn start(&self) -> Result<String, String> {
@@ -257,7 +271,11 @@ impl GatewaySupervisor {
         }
         let generation = self.stop_generation.load(Ordering::SeqCst);
         // 已有兼容网关 → attach
-        if self.is_healthy() {
+        let healthy = self.is_healthy_async().await;
+        if self.stop_generation.load(Ordering::SeqCst) != generation {
+            return Err("Gateway start cancelled".into());
+        }
+        if healthy {
             *self.authenticated_port.lock().unwrap() = Some(self.port());
             return Ok(self.base_url());
         }
@@ -333,7 +351,7 @@ impl GatewaySupervisor {
                 let _ = self.stop().await;
                 return Err("Gateway exited during startup".into());
             }
-            if self.is_healthy() {
+            if self.is_healthy_async().await {
                 let mut slot = self.child.lock().unwrap();
                 if self.stop_generation.load(Ordering::SeqCst) != generation {
                     terminate_child(&mut child);
@@ -383,7 +401,7 @@ impl GatewaySupervisor {
         if !self.owns_gateway() { return Err("MAINTENANCE_REQUIRES_OWNED_GATEWAY".into()); }
         let secret = self.identity_token.lock().unwrap().clone().ok_or("HOST_IDENTITY_UNAVAILABLE")?;
         let profile = self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_SOURCE_PROFILE_ID").ok_or("HOST_PROFILE_UNAVAILABLE")?;
-        if !self.is_healthy() { return Err("HOST_IDENTITY_UNAVAILABLE".into()); }
+        if !self.is_healthy_async().await { return Err("HOST_IDENTITY_UNAVAILABLE".into()); }
         let drained = host::request(&self.base_url(), &secret, serde_json::json!({
             "action":"shutdown", "windowId":"atelier", "origin":self.base_url(), "sourceProfileId":profile.1,
         }))?;
@@ -411,6 +429,13 @@ impl GatewaySupervisor {
     pub fn was_owned(&self) -> bool {
         self.owned.load(Ordering::Relaxed)
     }
+}
+
+fn authenticated_health(base: &str, token: &str) -> bool {
+    let Ok(challenge) = identity::random_secret() else { return false; };
+    read_health(base, Duration::from_millis(1200), Some(&challenge))
+        .map(|health| is_desktop_gateway_compatible(&health) && identity::verify_proof(token, &challenge, &health.desktop_proof))
+        .unwrap_or(false)
 }
 
 /// 应用退出（含托盘 quit → app.exit）时清理自己拥有的网关子进程。

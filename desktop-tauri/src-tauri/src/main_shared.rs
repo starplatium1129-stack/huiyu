@@ -5,7 +5,7 @@ use crate::paths::DesktopPaths;
 use crate::state::AppState;
 use crate::window_state::{
     load_window_bounds, load_window_presentation, normalize_companion_bounds, physical_to_logical_bounds,
-    restore_window_placement, save_window_bounds, save_window_presentation, DisplayWorkArea,
+    restore_window_placement, save_window_bounds, DisplayWorkArea,
     WindowBounds, WindowPlacement,
 };
 
@@ -105,6 +105,7 @@ pub fn show_companion(app: &AppHandle, focus: bool) {
 pub fn hide_companion(app: &AppHandle) {
     let Some(w) = app.get_webview_window("companion") else { return };
     let was_visible = w.is_visible().unwrap_or(false);
+    if was_visible { crate::window_persistence::closing(app, "companion"); }
     let _ = w.hide();
     if was_visible {
         let _ = w.emit("aics:visibility", false);
@@ -271,7 +272,7 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
 pub fn toggle_companion_chat(app: &AppHandle, gateway_url: &str) {
     if let Some(w) = app.get_webview_window("companion-chat") {
         if w.is_visible().unwrap_or(false) {
-            let _ = w.hide();
+            hide_companion_chat(app);
         } else {
             open_companion_chat(app, gateway_url);
         }
@@ -285,6 +286,7 @@ pub fn toggle_companion_chat(app: &AppHandle, gateway_url: &str) {
 pub fn hide_companion_chat(app: &AppHandle) {
     if let Some(w) = app.get_webview_window("companion-chat") {
         if w.is_visible().unwrap_or(false) {
+            crate::window_persistence::closing(app, "companion-chat");
             let _ = w.hide();
         }
     }
@@ -296,7 +298,7 @@ fn webview_bounds(w: &tauri::WebviewWindow) -> Option<WindowBounds> {
     Some(WindowBounds { x: p.x as i64, y: p.y as i64, width: s.width as i64, height: s.height as i64 })
 }
 
-fn persisted_webview_bounds(w: &tauri::WebviewWindow) -> Option<(WindowBounds, WindowBounds)> {
+pub(crate) fn persisted_webview_bounds(w: &tauri::WebviewWindow) -> Option<(WindowBounds, WindowBounds)> {
     let physical = webview_bounds(w)?;
     let scale_factor = w.scale_factor().ok()?;
     Some((physical_to_logical_bounds(&physical, scale_factor), physical))
@@ -304,33 +306,6 @@ fn persisted_webview_bounds(w: &tauri::WebviewWindow) -> Option<(WindowBounds, W
 
 pub fn companion_window_bounds(app: &AppHandle) -> Option<WindowBounds> {
     app.get_webview_window("companion").and_then(|w| webview_bounds(&w))
-}
-
-pub fn persist_window_bounds(app: &AppHandle) {
-    let state = app.state::<AppState>();
-    if let Some(w) = app.get_webview_window("companion") {
-        if let Some(bounds) = webview_bounds(&w) {
-            if let Some((logical_bounds, physical)) = persisted_webview_bounds(&w) {
-                save_window_bounds(&state.paths.companion_window_file, &logical_bounds, Some(&physical));
-            }
-            let _ = w.emit("aics:window-bounds", bounds);
-        }
-    }
-    for (label, file) in [
-        ("atelier", &state.paths.atelier_window_file),
-        ("companion-chat", &state.paths.companion_chat_window_file),
-    ] {
-        if let Some(w) = app.get_webview_window(label) {
-            // Keep the last normal geometry; maximized/fullscreen/minimized sizes
-            // would otherwise replace the rectangle used by the restore button.
-            if w.is_minimized().unwrap_or(true) || w.is_fullscreen().unwrap_or(true) { continue; }
-            let Ok(maximized) = w.is_maximized() else { continue };
-            if !maximized {
-                if let Some((bounds, physical)) = persisted_webview_bounds(&w) { save_window_bounds(file, &bounds, Some(&physical)); }
-            }
-            save_window_presentation(file, None, Some(maximized));
-        }
-    }
 }
 
 pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Option<&str>) -> Vec<(String, String)> {

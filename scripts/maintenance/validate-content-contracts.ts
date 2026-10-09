@@ -189,6 +189,7 @@ function validatePopularContent() {
   let errors: any[] = [];
   try {
     let popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
+    const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
     let recipes: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
     let characters = popular.parsePopularCharacters(readJson('data/popular-characters.json'));
     let blueprints = popular.parseSceneBlueprints(readJson('data/scene-blueprints.json'));
@@ -197,7 +198,7 @@ function validatePopularContent() {
       let defaults = character.outfits.filter(function (outfit: any) { return outfit.default; });
       if (defaults.length !== 1) errors.push(character.id + ' must have exactly one default outfit');
       // 全字段污染扫描：identityProse/aliases/exactPrefixes/outfit prose+tokens 都覆盖。
-      popular.scanCharacterPollution(character).forEach(function (leak: any) {
+      popularPrompt.scanCharacterPollution(character).forEach(function (leak: any) {
         errors.push('pollution: ' + leak);
       });
     });
@@ -214,7 +215,7 @@ function validatePopularContent() {
     });
     (blueprints || []).forEach(function (blueprint: any) {
       let text = JSON.stringify(blueprint);
-      if (popular.scanStudioTokenLeaks(text).length) {
+      if (popularPrompt.scanStudioTokenLeaks(text).length) {
         errors.push('blueprint ' + blueprint.id + ' must not reference nene/natsume tokens');
       }
       if (/(?:official_cg|visual_audited)/i.test(text)) {

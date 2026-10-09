@@ -2,16 +2,61 @@ import { expect, test } from '@playwright/test'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 import { textContrast } from './helpers/contrast'
 
-test('theme switch persists through reload and preserves native control colors', async ({ page }) => {
+test('theme switch persists through reload and preserves native control colors', async ({ page }, info) => {
   await page.emulateMedia({ colorScheme: 'dark' })
+  await page.addInitScript(() => localStorage.setItem('aics_guest_guide_dismissed', '1'))
   await page.goto('/')
+  await page.evaluate(() => {
+    const native = document.startViewTransition.bind(document)
+    const transitions: ViewTransition[] = []
+    const samples: Array<Promise<{ duration: string; name: string }>> = []
+    Object.assign(window, { themeTransitions: transitions, themeSamples: samples })
+    document.startViewTransition = (...args) => {
+      const transition = native(...args)
+      transitions.push(transition)
+      samples.push(transition.ready.then(() => {
+        const style = getComputedStyle(document.documentElement, '::view-transition-new(root)')
+        return { duration: style.animationDuration, name: style.animationName }
+      }))
+      return transition
+    }
+  })
   await page.getByRole('button', { name: '切换为亮色模式' }).click()
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+  const animation = await page.evaluate(async () => {
+    const { themeTransitions: transitions, themeSamples: samples } = window as Window & {
+      themeTransitions: ViewTransition[]; themeSamples: Array<Promise<{ duration: string; name: string }>>
+    }
+    const transition = transitions.at(-1)!
+    const result = { count: transitions.length, ...await samples.at(-1)! }
+    await transition.finished
+    return result
+  })
+  expect(animation.count).toBe(1)
+  expect(parseFloat(animation.duration)).toBeGreaterThan(0)
+  expect(parseFloat(animation.duration)).toBeLessThanOrEqual(.3)
+  expect(animation.name).not.toBe('none')
+  await expect(page.locator('html')).not.toHaveAttribute('data-theme-transition')
+  await page.screenshot({ path: info.outputPath('theme-light.png') })
   await page.reload()
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
   expect(await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme)).toBe('light')
   await page.getByRole('button', { name: '切换为深色模式' }).click()
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+  await expect(page.locator('html')).not.toHaveAttribute('data-theme-transition')
+  await page.screenshot({ path: info.outputPath('theme-dark.png') })
+  await page.evaluate(() => {
+    const toggle = document.querySelector<HTMLButtonElement>('.app-theme-toggle')!
+    toggle.click(); toggle.click(); toggle.click()
+  })
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+  await expect(page.locator('html')).not.toHaveAttribute('data-theme-transition')
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  const reduced = await page.evaluate(() => {
+    document.querySelector<HTMLButtonElement>('.app-theme-toggle')!.click()
+    return { theme: document.documentElement.dataset.theme, animated: document.documentElement.hasAttribute('data-theme-transition') }
+  })
+  expect(reduced).toEqual({ theme: 'dark', animated: false })
 })
 
 for (const theme of ['light', 'dark']) {

@@ -4,6 +4,8 @@
 const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 const promptCompiler: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
 const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
+const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
+const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
 const { artistStyleProse, artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
 const genConst: any = (require('./generation/sd-catalog.js') as typeof import('./generation/sd-catalog.js'));
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
@@ -156,8 +158,8 @@ function buildStudioPrompt({ engine, characterId, composition, loraId, override 
 
 function buildPopularPrompt(character: any, blueprint: any, profile: any, override: any) {
   const outfit = popularContent.defaultOutfit(character);
-  const decisions = popularContent.inferBlueprintDecisions(blueprint);
-  const result = popularContent.buildPopularPromptPlan({
+  const decisions = blueprintDecisions.inferBlueprintDecisions(blueprint);
+  const result = popularPrompt.buildPopularPromptPlan({
     character,
     outfit,
     blueprint,

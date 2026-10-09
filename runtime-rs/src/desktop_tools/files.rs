@@ -109,53 +109,35 @@ pub(super) async fn atomic(
     bytes: &[u8],
     cancel: &CancellationToken,
 ) -> Result<()> {
-    tokio::fs::create_dir_all(
-        target
-            .parent()
-            .ok_or_else(|| Error::plain("目标路径不可写"))?,
-    )
-    .await?;
+    let parent = target.parent().ok_or_else(|| Error::plain("目标路径不可写"))?;
+    tokio::fs::create_dir_all(parent).await?;
     if cancel.is_cancelled() {
         return Err(Error::cancelled());
     }
     if paths::resolve(root, relative).await? != target {
         return Err(Error::plain("路径在写入期间发生变化"));
     }
-    let temporary = target.with_file_name(format!(
-        "{}.{}.tool.tmp",
-        target.file_name().unwrap().to_string_lossy(),
-        uuid::Uuid::new_v4()
-    ));
-    let _cleanup = Temporary(temporary.clone());
-    let result = async {
-        let mut file = tokio::fs::OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(&temporary)
-            .await?;
-        file.write_all(bytes).await?;
-        // Tokio may still have a background write after write_all returns.
-        // Complete it before publishing the path or acknowledging the draft.
-        file.flush().await?;
-        drop(file);
-        if cancel.is_cancelled() {
-            return Err(Error::cancelled());
-        }
-        if paths::resolve(root, relative).await? != target {
-            return Err(Error::plain("路径在写入期间发生变化"));
-        }
-        tokio::fs::rename(&temporary, target).await?;
-        Ok(())
+    // Own the actual file before any cancellable I/O. An abandoned Tokio open
+    // could otherwise create a file after a path-only cleanup guard has run.
+    let (file, pending) = tempfile::Builder::new()
+        .prefix(&format!("{}.", target.file_name().unwrap().to_string_lossy()))
+        .suffix(".tool.tmp")
+        .tempfile_in(parent)?
+        .into_parts();
+    let mut file = tokio::fs::File::from_std(file);
+    file.write_all(bytes).await?;
+    // Tokio may still have a background write after write_all returns.
+    // Complete it before publishing the path or acknowledging the draft.
+    file.flush().await?;
+    drop(file);
+    if cancel.is_cancelled() {
+        return Err(Error::cancelled());
     }
-    .await;
-    let _ = tokio::fs::remove_file(temporary).await;
-    result
-}
-struct Temporary(std::path::PathBuf);
-impl Drop for Temporary {
-    fn drop(&mut self) {
-        let _ = std::fs::remove_file(&self.0);
+    if paths::resolve(root, relative).await? != target {
+        return Err(Error::plain("路径在写入期间发生变化"));
     }
+    pending.persist(target).map_err(|error| Error::from(error.error))?;
+    Ok(())
 }
 pub(super) async fn image(root: &Path, input: &Value) -> Result<Value> {
     let file = paths::resolve(root, &text(&input["path"])).await?;

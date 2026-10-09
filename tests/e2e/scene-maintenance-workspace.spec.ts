@@ -18,6 +18,24 @@ async function prepare(page: Page, baseURL: string | undefined) {
   return state
 }
 
+test('copying a record clears only the previous advanced JSON error', async ({ page, baseURL }) => {
+  await prepare(page, baseURL)
+  await page.goto(url(baseURL))
+  await page.getByRole('region', { name:'内容列表', exact:true }).locator('.catalog-record-row').first().click()
+  const editor = page.getByRole('region', { name:'编写内容', exact:true })
+  await editor.getByText('完整数据与扩展设置', { exact:true }).click()
+  const advanced = editor.getByRole('textbox', { name:'完整内容数据', exact:true })
+  await advanced.fill('{')
+  await editor.getByRole('button', { name:'应用这些设置', exact:true }).click()
+  await expect(editor.getByRole('alert')).toBeVisible()
+  await expect(editor.getByRole('button', { name:'暂存修改', exact:true })).toBeDisabled()
+  await editor.getByRole('button', { name:'复制一份', exact:true }).click()
+  await expect(editor.getByRole('textbox', { name:/内部编号/ })).toHaveValue('sc1000')
+  await expect(editor.getByRole('alert')).toHaveCount(0)
+  await expect(editor.getByRole('button', { name:'暂存修改', exact:true })).toBeEnabled()
+  expect(JSON.parse(await advanced.inputValue())).toEqual(catalogScene('sc001').data)
+})
+
 for (const [theme, width, height] of [['dark', 1440, 960], ['light', 1280, 800], ['dark', 1024, 800], ['dark', 2560, 1440], ['light', 2560, 1440]] as const) {
   test(`scene maintenance workspace ${theme} ${width}`, async ({ page, baseURL }, testInfo) => {
     await prepare(page, baseURL)

@@ -165,6 +165,17 @@ describe('renderPromptPlan krea2', () => {
     expect(render([])).toBe(inherited)
   })
 
+  // Replaces the historical requirement to add DOF to Ellen's catalogue scene.
+  it('preserves an explicitly authored depth-of-field relation without duplicate tags', () => {
+    const plan = createPromptPlan({ subjectProse: 'An adult reader', outfitProse: 'a blue coat',
+      sceneProse: 'She reads beside a garden bench, with shallow depth of field keeping the distant hedge soft.' })
+    for (const engine of ['anima', 'krea2'] as const) {
+      const { prompt } = renderPromptPlan(plan, engine)
+      expect(prompt).toContain('shallow depth of field keeping the distant hedge soft')
+      expect(prompt.match(/depth[_ ]of[_ ]field/g)).toHaveLength(1)
+    }
+  })
+
   it('medium 未出现在 lead 中时，以 polished X finish 收尾织入散文', () => {
     const plan = createPromptPlan({
       style: ['A 1990s cel anime illustration with bold outlines, crisp line art and nostalgic flat colors'],

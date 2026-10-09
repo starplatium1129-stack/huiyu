@@ -250,6 +250,8 @@ function getBaselineData(baselineCommit: string, ids?: Set<string>, root = ROOT)
 
 function compileDelivery(input: any, root: string, items: any[], out: string) {
   const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
+  const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
+  const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
   const persistence: typeof import('../../src/utils/promptBuilderPersistence.ts') = require('../../src/utils/promptBuilderPersistence.ts');
   const recipes: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
   const records = input.records?.some((r:any)=>r.kind==='character') ? input.records : catalog.read(root);
@@ -264,11 +266,11 @@ function compileDelivery(input: any, root: string, items: any[], out: string) {
     const character = characters.find(c=>c.id===item.characterId);
     const outfit = character?.outfits.find(o=>o.id===item.outfitId || (!item.outfitId && o.default));
     if (!blueprint || !character || !outfit) throw new Error(`${item.id} 的人物或服装绑定无效`);
-    const decisions = popular.inferBlueprintDecisions(blueprint);
+    const decisions = blueprintDecisions.inferBlueprintDecisions(blueprint);
     for (const engine of ['anima','krea2'] as const) {
       const profile = profiles.find(p=>p.id===(engine==='anima'?'anima_miaomiao_v16':'krea2_turbo_fp8'));
       if (!profile) throw new Error(`缺少 ${engine} 当前模型 profile`);
-      const result = popular.buildPopularPromptPlan({character,outfit,blueprint,engine,profile,
+      const result = popularPrompt.buildPopularPromptPlan({character,outfit,blueprint,engine,profile,
         shot:decisions.shot,lighting:decisions.lighting,composition:decisions.composition,
         adultEnabled:Boolean(blueprint.adult),
         style:recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES,engine,blueprint,null,character,{adultEnabled:Boolean(blueprint.adult)})});

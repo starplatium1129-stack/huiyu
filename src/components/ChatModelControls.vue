@@ -1,7 +1,7 @@
 <template>
-  <details class="room-model-settings">
+  <details class="room-model-settings" @toggle="onToggle">
     <StudioDisclosureSummary>对话设置</StudioDisclosureSummary>
-    <div data-disclosure-content class="model-controls">
+    <div v-if="visited" data-disclosure-content class="model-controls">
       <div class="provider-switch studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="对话模型来源">
         <AnimatedSelection />
         <button
@@ -71,11 +71,13 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 
 const StudioSelect = defineAsyncComponent(() => import('@/components/ui/StudioSelect.vue'))
+const visited = ref(false)
+function onToggle(event: Event) { if ((event.currentTarget as HTMLDetailsElement).open) visited.value = true }
 
 const reasoningOptions = [
   { value: 'off', label: '关' },

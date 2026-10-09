@@ -268,12 +268,16 @@
               </span>
               <span v-if="speechNotice" class="speech-notice" role="status">{{ speechNotice }}</span>
             </template>
-            <StudioPopover v-model:open="speechSettingsOpen" label="语音输入设置" content-class="chat-speech-settings">
+            <StudioPopover v-model:open="speechSettingsOpen" label="语音输入设置" content-class="chat-speech-settings" @open-auto-focus="focusSpeechPopover">
               <template #trigger>
                 <button class="speech-config-btn" type="button" aria-label="语音输入设置">语音输入设置</button>
               </template>
-              <SpeechInputSettings :data-character="activeChar"
-                @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
+              <Suspense>
+                <SpeechInputSettings :data-character="activeChar"
+                  @vue:mounted="focusSpeechSettings"
+                  @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
+                <template #fallback><p role="status" class="tw:m-0 tw:p-s-4 tw:rounded-lg tw:bg-surface tw:text-secondary">正在加载语音设置…</p></template>
+              </Suspense>
             </StudioPopover>
             <span class="keyboard-hint">Enter 发送 · Shift+Enter 换行</span>
           </div>
@@ -302,7 +306,6 @@ import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSess
 import ChatModelControls from '@/components/ChatModelControls.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import ChatActionsMenu from '@/components/ChatActionsMenu.vue'
-import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useChatSpeechInteraction } from '@/composables/chat/useChatSpeechInteraction'
 import type { ChatUserProfile } from '@/utils/chatUserProfile'
@@ -310,6 +313,7 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
 const ChatApiSettings = defineAsyncComponent(() => import('@/components/ChatApiSettings.vue'))
+const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
 // These panels mount only after a menu action; load their component CSS then too.
 const ChatArchivePanel = defineAsyncComponent(() => import('@/components/ChatArchivePanel.vue'))
 const ChatUserProfilePanel = defineAsyncComponent(() => import('@/components/ChatUserProfilePanel.vue'))
@@ -467,4 +471,19 @@ const {
   inputText,
   handleSend,
 })
+async function focusSpeechPopover(event: Event) {
+  event.preventDefault()
+  const opener = document.activeElement
+  await nextTick()
+  const panel = document.querySelector<HTMLElement>('.chat-speech-settings')
+  if (!speechSettingsOpen.value || !panel || (document.activeElement !== opener && !panel.contains(document.activeElement))) return
+  ;(panel.querySelector<HTMLElement>('button:not(:disabled), input:not(:disabled)') || panel).focus({ preventScroll: true })
+}
+function focusSpeechSettings() {
+  const panel = document.querySelector<HTMLElement>('.chat-speech-settings')
+  // An uncached editor arrives after Reka focuses the empty popover. Preserve
+  // any focus the user has moved elsewhere while it was loading.
+  if (speechSettingsOpen.value && panel === document.activeElement)
+    panel?.querySelector<HTMLElement>('button:not(:disabled), input:not(:disabled)')?.focus({ preventScroll: true })
+}
 </script>

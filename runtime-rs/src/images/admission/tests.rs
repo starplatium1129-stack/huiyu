@@ -9,6 +9,11 @@ enum Fault {
 tokio::task_local! {
     static FAULT: Fault;
     static SALT_FAULT: Fault;
+    static SCAN_CANCEL: Arc<std::sync::atomic::AtomicUsize>;
+}
+
+pub(super) fn scan_cancellation() -> Option<Arc<std::sync::atomic::AtomicUsize>> {
+    SCAN_CANCEL.try_with(Arc::clone).ok()
 }
 
 pub(super) fn pending_file(
@@ -125,4 +130,47 @@ async fn upload_write_failure_and_cancellation_do_not_publish_or_leave_pending_f
             );
         }
     }
+}
+
+#[tokio::test]
+async fn cancellation_during_quota_scan_stops_reads_and_releases_upload_lock() {
+    let temp = tempfile::tempdir().unwrap();
+    let mut bytes = Vec::new();
+    image::codecs::png::PngEncoder::new(&mut bytes)
+        .write_image(&[1, 2, 3], 1, 1, image::ExtendedColorType::Rgb8)
+        .unwrap();
+    for id in ["01", "02"] {
+        std::fs::write(
+            temp.path().join(format!("aics_anima_input_{id}.png")),
+            &bytes,
+        )
+        .unwrap();
+    }
+    let reads = Arc::new(std::sync::atomic::AtomicUsize::new(0));
+    let result = SCAN_CANCEL
+        .scope(
+            reads.clone(),
+            store(
+                temp.path().into(),
+                STANDARD.encode(&bytes),
+                "owner".into(),
+                Limits::default(),
+                CancellationToken::new(),
+            ),
+        )
+        .await;
+    assert_eq!(result.unwrap_err().code, "CANCELLED");
+    assert_eq!(reads.load(std::sync::atomic::Ordering::Relaxed), 1);
+    assert!(!temp.path().join(".aics-image-admission.lock").exists());
+    let filename = store(
+        temp.path().into(),
+        STANDARD.encode(&bytes),
+        "owner".into(),
+        Limits::default(),
+        CancellationToken::new(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(std::fs::read(temp.path().join(filename)).unwrap(), bytes);
+    assert!(!temp.path().join(".aics-image-admission.lock").exists());
 }

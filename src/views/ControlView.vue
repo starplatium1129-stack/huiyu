@@ -342,7 +342,7 @@ const {
   sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, llamaOnline,llamaManaged,llamaLabel,voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
   feedbackText, actionNote, logs, logBoxEl,
-  opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,
+  opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
   readyLabel,
   pollStatus, clearLogs,
 } = status

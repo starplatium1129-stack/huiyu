@@ -239,9 +239,12 @@
                 @pointerup="onSpeechRelease"
                 @pointercancel="onSpeechCancel"
                 @pointerleave="onSpeechLeave"
+                @keydown.space.prevent="!$event.repeat && onSpeechPress()" @keyup.space.prevent="onSpeechRelease"
+                @keydown.enter.prevent="!$event.repeat && onSpeechPress()" @keyup.enter.prevent="onSpeechRelease"
+                @blur="onSpeechCancel"
               >{{ speechButtonText }}</button>
             </StudioTooltip>
-            <span class="companion-speech-state" role="status" aria-live="polite">
+            <span v-if="speechState !== 'error'" class="companion-speech-state" role="status" aria-live="polite">
               {{ speechStateText || (speechAutoListening ? '听候唤醒' : '') }}
             </span>
              <span v-if="speechSessionActive" class="companion-speech-session" role="status">
@@ -289,6 +292,7 @@
           @close="speechSettingsOpen = false"
         />
 
+        <div v-if="speechState === 'error'" class="companion-error" role="status" aria-live="polite">{{ speechError }}</div>
         <div v-show="chatError" class="companion-error" role="status" aria-live="polite" :data-kind="chatErrorKind">
           {{ chatError }}
         </div>

@@ -2,6 +2,14 @@
 // 2026-09-05 从 popularContent.ts 抽出（单体门禁 604>600 拆分）。
 // 纯函数、零依赖；popularContent 与任何需要同款 JSON 守卫的模块共用。
 
+import type { BlueprintCompositionIntent } from '../types/sceneBlueprint'
+
+export function parseCompositionIntent(value: unknown): BlueprintCompositionIntent {
+  if (value == null || value === '') return 'single'
+  if (value === 'single' || value === 'group' || value === 'triptych') return value
+  throw new Error('Invalid blueprint compositionIntent')
+}
+
 export function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }

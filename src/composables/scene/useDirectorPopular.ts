@@ -1,11 +1,11 @@
 import { computed, ref, type Ref } from 'vue'
+import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
+import { recommendBlueprints } from '@/utils/blueprintRecommendations'
 import {
   blueprintCategories as collectBlueprintCategories,
   eligibleBlueprints,
   findBlueprint as findPopularBlueprint,
   findCharacter as findPopularCharacter,
-  inferBlueprintDecisions,
-  recommendBlueprints,
   type PopularCharacter,
   type SceneBlueprint,
 } from '@/utils/popularContent'
