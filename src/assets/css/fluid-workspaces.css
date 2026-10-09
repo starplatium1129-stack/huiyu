@@ -219,7 +219,6 @@ html .scene-maintenance-page .table-wrap { @apply tw:rounded-lg; }
 /* Home and recovery: retain the editorial hero and make destinations tactile. */
 html .home-page .tool-card {
   @apply tw:rounded-xl;
-  box-shadow: var(--workspace-inset);
   transition: transform var(--motion-surface) var(--ease-out);
 }
 html .home-page .hero-muses {

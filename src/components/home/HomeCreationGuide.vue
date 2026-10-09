@@ -39,9 +39,9 @@ const collectionArt = useThemeIllustration(collectionOriginal, 'collection')
 h2 { margin: var(--s-2) 0 0; font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .guide-direct { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-accent tw:text-label; }
 .guide-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; }
-.guide-steps a { @apply tw:grid tw:gap-s-3 tw:h-full tw:p-s-4; grid-template-columns:40px minmax(0,1fr); grid-template-rows:auto 1fr; border: 1px solid transparent; @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
+.guide-steps a { @apply tw:grid tw:gap-s-3 tw:h-full tw:p-s-4; grid-template-columns:40px minmax(0,1fr); grid-template-rows:auto 1fr; border: 1px solid transparent; @apply tw:rounded-xl; background: transparent; @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
 .step-art { grid-column:1/-1; display:block; width:100%; height:clamp(112px,12vw,164px); object-fit:contain; }
-.guide-steps a:hover { @apply tw:border-strong; background: var(--bg-surface); }
+.guide-steps a:hover strong { text-decoration:underline; text-underline-offset:.25em; }
 .guide-steps a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 @media (hover: hover) and (pointer: fine) {
   .guide-steps a:hover { transform: translateY(-2px); }
@@ -51,7 +51,7 @@ h2 { margin: var(--s-2) 0 0; font: 500 var(--fs-title-sm)/var(--lh-label) var(--
   .guide-steps a:hover { transform: none; }
 }
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .creation-guide .guide-steps a { transition:none; transform:none; }
-.step-number { place-items:center; flex:0 0 40px; background:var(--accent-soft); font:500 var(--fs-body)/var(--lh-label) var(--font-sans); }
+.step-number { place-items:center; flex:0 0 40px; font:500 var(--fs-body)/var(--lh-label) var(--font-sans); }
 .guide-steps strong { @apply tw:block tw:text-body-sm; }
 .guide-help { border-bottom: 1px solid var(--border-soft); }
 .guide-help summary { padding-block: var(--s-3); @apply tw:min-h-[44px] tw:cursor-pointer; }

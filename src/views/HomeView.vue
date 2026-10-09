@@ -145,22 +145,22 @@
         </div>
       </div>
       <div class="tools-grid">
-        <RouterLink to="/character" class="tool-card card-create">
+        <RouterLink to="/character" class="tool-card">
           <img v-if="artworkReady.tools" class="tool-art" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="character" />角色档案</span>
           <span class="d">读懂她的性格与过往，认识下一位主角。</span>
         </RouterLink>
-        <RouterLink to="/style" class="tool-card card-create">
+        <RouterLink to="/style" class="tool-card">
           <img v-if="artworkReady.tools" class="tool-art" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="palette" />画风</span>
           <span class="d">调配色彩情绪与光影色阶。</span>
         </RouterLink>
-        <RouterLink to="/lora" class="tool-card card-create">
+        <RouterLink to="/lora" class="tool-card">
           <img v-if="artworkReady.tools" class="tool-art" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="model" />模型</span>
           <span class="d">挑选契合这次笔触的底模与特征。</span>
         </RouterLink>
-        <RouterLink to="/gallery" class="tool-card card-create">
+        <RouterLink to="/gallery" class="tool-card">
           <img v-if="artworkReady.tools" class="tool-art" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="gallery" />我的作品</span>
           <span class="d">安静珍藏属于你的每一幅心动创作。</span>
