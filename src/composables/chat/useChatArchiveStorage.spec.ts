@@ -50,15 +50,17 @@ it('accepts additions after a queued clear and preserves simultaneous clears of 
   expect((await open()).archive.value.archived.natsume).toEqual([])
 })
 
-it('keeps failed writes retryable and does not publish a failed clear', async () => {
-  const a = await open()
+it.each(['quota', 'database unavailable'])('keeps a failed clear retryable and accurately reports %s', async failure => {
+  const notice = vi.fn(), a = await open(notice)
   a.add('nene', [message('old')]); await a.save()
   const original = JSON.stringify(archiveKv.get('chat_archive_v1'))
   a.clear('nene')
-  const set = vi.mocked(kvSet).mockRejectedValueOnce(Error('quota'))
+  const set = vi.mocked(kvSet).mockRejectedValueOnce(failure === 'quota' ? new DOMException('Full', 'QuotaExceededError') : new Error('Database unavailable'))
   expect(await a.save()).toBe(false)
   expect(JSON.stringify(archiveKv.get('chat_archive_v1'))).toBe(original)
   expect(set).toHaveBeenCalled()
+  expect(notice).toHaveBeenCalledWith(expect.stringContaining(failure === 'quota' ? '本地空间已满' : '聊天归档保存失败'))
+  if (failure !== 'quota') expect(notice.mock.calls[0]![0]).not.toMatch(/空间.*(?:满|不足)/)
   expect(await a.save()).toBe(true)
   expect((await open()).archive.value.archived.nene).toEqual([])
 })

@@ -45,6 +45,9 @@ async function openWithTheme(page: Page, path: string, theme: Theme) {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto(path, { waitUntil: 'domcontentloaded' })
   await expect(page.locator('h1').first()).toBeVisible()
+  const guide = page.getByRole('dialog', { name: '访客导览', exact: true })
+  await guide.getByRole('button', { name: '先浏览，稍后配置', exact: true }).click()
+  await expect(guide).toBeHidden()
 }
 
 async function shot(page: Page, testInfo: TestInfo, caseId: string, theme: Theme) {

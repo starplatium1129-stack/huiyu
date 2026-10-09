@@ -23,6 +23,8 @@ afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); toastError.mockClear
 it('honors explicit companion choice without changing filters and resets empty recommendations to the full library', async () => {
   // A removed favorite still selects the personal startup view, which can be empty.
   localStorage.setItem('aics_scene_favorites', JSON.stringify(['removed']))
+  catalog.mockResolvedValue({ scenes: [{ id: 'available', title: 'Available', char: 'nene', rating: 'All' }],
+    curation: { personaCoreSceneIds: ['available'], signatureSceneIds: ['available'], reviewSceneIds: ['available'], curatedSceneIds: ['available'] } })
   let workspace!: ReturnType<typeof useSceneExplorerWorkspace>
   const wrapper = mount(defineComponent({ setup() { workspace = useSceneExplorerWorkspace(); return () => null } }))
   try {
@@ -40,6 +42,12 @@ it('honors explicit companion choice without changing filters and resets empty r
     await flushPromises()
     expect(workspace.fTier.value).toBe('all')
     expect(workspace.fChar.value).toBe('all')
+    expect(workspace.filtered.value.map(scene => scene.id)).toEqual(['available'])
+    workspace.fTier.value = 'signature'; await flushPromises()
+    expect(workspace.filtered.value.map(scene => scene.id)).toEqual(['available'])
+    workspace.fTier.value = 'curated'; await flushPromises()
+    expect(workspace.filtered.value).toHaveLength(0) // Signature membership takes precedence.
+    workspace.fTier.value = 'core'; await flushPromises()
     expect(workspace.filtered.value.map(scene => scene.id)).toEqual(['available'])
   } finally { wrapper.unmount() }
 })
@@ -146,7 +154,7 @@ it('restores combined filters from the URL after creating a scene changes the st
   } finally { wrapper.unmount() }
 })
 
-it('analyzes aliases once for one filter-and-score pass over 64 scenes', async () => {
+it('analyzes aliases once per pass and replaces search data with a refreshed catalog', async () => {
   route.query = { q: '雨夜', tier: 'all' }
   const aliases = vi.fn(() => ({ 夜雨: ['雨夜', 'rain night'] }))
   catalog.mockResolvedValue({ scenes: Array.from({ length: 64 }, (_, index) => ({ id: `sample-${index}`, title: '雨夜', char: 'nene', rating: 'All' })),
@@ -157,5 +165,10 @@ it('analyzes aliases once for one filter-and-score pass over 64 scenes', async (
     await flushPromises(); aliases.mockClear()
     expect(workspace.filtered.value).toHaveLength(64)
     expect(aliases).toHaveBeenCalledOnce()
+    catalog.mockResolvedValueOnce({ scenes: [{ id: 'sample-0', title: '晴天', char: 'nene', rating: 'All' }], curation: {} })
+    await workspace.init(); await flushPromises()
+    expect(workspace.filtered.value).toHaveLength(0)
+    route.query = { q: '晴天', tier: 'all' }; await flushPromises()
+    expect(workspace.filtered.value.map(scene => scene.title)).toEqual(['晴天'])
   } finally { wrapper.unmount() }
 })

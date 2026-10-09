@@ -2,25 +2,14 @@ import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
 import { artworkRepository } from '../../storage/artworkRepository.ts'
 import { buildArtworkFileName } from '../../utils/artworkFileName.ts'
-import { formatA1111Parameters, injectPngMetadata, isPng } from '../../utils/pngMetadata.ts'
+import { formatA1111Parameters, injectPngMetadata } from '../../utils/pngMetadata.ts'
+import { imageFormat } from '../../utils/imageFormat.ts'
 import { safeImageUrl } from './galleryHelpers.ts'
 import type { useGalleryWorkspace } from './useGalleryWorkspace.ts'
 import { getCurrentInstance, getCurrentScope, onActivated, onDeactivated, onScopeDispose, ref, type Ref } from 'vue'
 import { copyWithFeedback } from '../useCopyFeedback.ts'
 
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, 'current' | 'stamp' | 'sceneTitle' | 'characterName' | 'showToast'>
-
-function imageFormat(buffer: ArrayBuffer): { ext: string; mime: string } {
-  if (isPng(buffer)) return { ext: 'png', mime: 'image/png' }
-  const bytes = new Uint8Array(buffer)
-  if (bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255) return { ext: 'jpg', mime: 'image/jpeg' }
-  const text = new TextDecoder().decode(bytes.subarray(0, 12))
-  if (text.startsWith('RIFF') && text.slice(8) === 'WEBP') return { ext: 'webp', mime: 'image/webp' }
-  if (/^GIF8[79]a/.test(text)) return { ext: 'gif', mime: 'image/gif' }
-  if (text.startsWith('BM')) return { ext: 'bmp', mime: 'image/bmp' }
-  if (text.slice(4, 8) === 'ftyp' && /^avi[fs]$/.test(text.slice(8, 12))) return { ext: 'avif', mime: 'image/avif' }
-  throw new Error('原图格式无法识别，请重新导入有效图片')
-}
 
 export function useGalleryExports({ current, stamp, sceneTitle, characterName, showToast }: Context): { downloadCurrent: () => Promise<void>; copyPrompt: () => Promise<void>; copiedPrompt: Ref<boolean> } {
   const copiedPrompt = ref(false)

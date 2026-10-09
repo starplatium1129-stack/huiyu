@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { readChatArchive, writeChatArchive, withChatArchiveMutation } from '@/storage/chatArchiveRepository'
 import { archiveMessages, emptyChatArchive, type ChatArchive } from '@/utils/chatArchive'
 import type { PersistedChatMessage } from '@/utils/chatStorageCore'
+import { storageWriteMessage } from '@/utils/storageWriteError'
 
 type Mutation = { character: string; revision: string; all?: boolean; messages?: PersistedChatMessage[] }
 
@@ -82,7 +83,7 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
           return true
         })
       } catch (error) {
-        onError(error instanceof Error && error.message.includes('浏览器不支持') ? error.message : '浏览器存储空间不足，聊天归档暂未保存；内容保留在当前窗口，请重试保存。')
+        onError(error instanceof Error && error.message.includes('浏览器不支持') ? error.message : storageWriteMessage(error, '聊天归档') + '；内容保留在当前窗口，请重试保存。')
         return false
       }
     }).finally(() => { running = undefined })

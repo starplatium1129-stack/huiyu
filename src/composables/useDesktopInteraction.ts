@@ -23,8 +23,13 @@ function save() {
 }
 function normalizedGlassTint(value: unknown) { return typeof value === 'number' && Number.isFinite(value) ? Math.round(Math.max(0, Math.min(100, value))) : 35 }
 
+function loadThemeStyle() {
+  if (themeStyle.value === 'terraria') return import('@/assets/css/terraria-surfaces.css')
+    .catch(error => console.warn('像素主题样式加载失败，可刷新后重试', error))
+}
+
 export function initializeDesktopPreferences() {
-  if (initialized) return
+  if (initialized) return loadThemeStyle()
   initialized = true
   const dark = matchMedia('(prefers-color-scheme: dark)')
   const reduce = matchMedia('(prefers-reduced-motion: reduce)')
@@ -63,13 +68,15 @@ export function initializeDesktopPreferences() {
     root.dataset.glassMaterial = effectiveGlassMode.value
     root.style.setProperty('--glass-tint', String(glassTint.value / 100))
     window.dispatchEvent(new Event('atelier:motion-preference'))
+    return loadThemeStyle()
   }
-  read(); save(); apply()
+  read(); save(); const appearanceReady = apply()
   watch([themeMode, themeStyle, motionMode, reducedGlass, glassMode, glassTint], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
   // Existing sun/moon controls are an explicit choice and cancel system-following.
   watch(theme, value => { if (!applyingTheme) themeMode.value = value }, { flush: 'sync' })
   for (const query of [dark, reduce, contrast, transparency, forcedColors]) query.addEventListener('change', apply)
   window.addEventListener('storage', event => { if (event.key === KEY || event.key === null) { read(); apply() } })
+  return appearanceReady
 }
 
 export function useDesktopPreferences() {

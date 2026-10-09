@@ -411,19 +411,18 @@ test('payload snapshots retain prompts, bindings and dimensions with the current
     // profileId belongs to the compiler input above, not the HTTP payload.
     assert.equal(F.sha(JSON.stringify({ ...value, modelId: 'anima-miaomiao-v1.2', teaCacheThresh: 0.08 })), hash);
   };
-  // The popular/batch and two gap hashes below come from pre-migration 27bde11f:
-  // its original 1.2 generators, fixture and compiler were replayed independently.
-  // fe96ae82 removed the automatic "Compose it as a finished anime wallpaper ..."
-  // caption after 9ab9; only that prompt sentence changed these three snapshots.
-  // Preserve historical prompt/binding/dimension hashes; independently assert
-  // the authorized model identity and new Euler cache threshold above.
-  snapshot(payload(tasks[0]), '458a062f3aafe4ed14a36ee74afec9e52851336b1298e18b96a1f18cf91020c9');
+  // Replaying 27bde11f's pure compiler reproduces all three old hashes. Current
+  // engineering contracts remove unselected rule-of-thirds tokens/prose and the
+  // gap renderer's implicit Anima style (key visual/lineart/cel shading/colors).
+  // Byte comparison confirmed no other prompt, negative, binding, size or seed
+  // changes; retain exact snapshots and separate model/cache assertions above.
+  snapshot(payload(tasks[0]), 'a7d090e275d97a1542cbc388318b32aa6361560806899fcb3ad4d20730799c0a');
   for (const [character, hash] of Object.entries({
     nene: '75a003ccdf092e76e84993be6605247683045d6615ac1b2f555da703e0cdc9dc',
     natsume: 'cfa9057ca57e15873c5f9089275524cc3ae82c88fa3fea0c72487f6fbc64a4a9',
     generic: '5d8306f0ce1489fed3bdb34f27af957712980e056bc846eaf01c84a6c458c428',
   })) snapshot(payload(tasks[1], character), hash);
   const gap = modules[2].collectTasks({}, modules[2].loadInputs({ root: f.root, env: f.env }))[0];
-  snapshot(gap.payload(1), '99205048bc222e2e21278649944215fc621255d8e07b7e8a7e75f7d2b58e5203');
-  snapshot(gap.payload(2), 'd11e878cc89e52002f2f7398806dc46f9649863721c50c5a383ce06466fa1244');
+  snapshot(gap.payload(1), 'e4add4ca4fe45017c0596579f1d2934016b8f4b8da5d6346f8a527ce8ddcdf0b');
+  snapshot(gap.payload(2), '2580d6846c018c22f2215e17126baedc955ce1adb5b0551bbf2571de1a6245f1');
 });

@@ -463,6 +463,9 @@ test('speech input: hold-talk entry hidden until ASR endpoint configured', async
   await page.goto('/chat');
 
   // 未配置 ASR 端点：按住说话入口不出现
+  const guide = page.getByRole('dialog', { name: '访客导览', exact: true });
+  await guide.getByRole('button', { name: '先浏览，稍后配置', exact: true }).click();
+  await expect(guide).toBeHidden();
   await expect(page.locator('.chat-input')).toBeVisible();
   await expect(page.locator('.hold-talk-btn')).toHaveCount(0);
   await page.getByRole('button', { name: '语音输入设置' }).click();

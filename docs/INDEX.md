@@ -1,5 +1,7 @@
 # 项目文档索引
 
+[前后端持续优化执行记录（HTML）](audits/2026-10-09/fullstack-performance.html)本轮已收口，记录九轮性能改进与未采用方案；六条场景按用户要求统一为 All，分级检查零差异，保留两条原始 prompt 长度告警及未验收范围。
+
 [后端系统优化覆盖与证据（HTML）](audits/2026-10-08/backend-performance-program.html)覆盖七个后端领域，落实队列让行、冷热/短词检索、任务复制、参考编码、目录并发与条件读取，记录 54 项相关用例及实际 Storage/HTTP 对照；保留性能折中与设备限制。
 
 [Rust 后端性能优化交付（HTML）](audits/2026-10-08/backend-performance-delivery.html)落实作品独立版本、有界搜索与派生读索引，记录前后测量、40 项 Rust 集成测试及前端/浏览器验证；完整 Rust 与包体预算的环境、历史失败继续保留。

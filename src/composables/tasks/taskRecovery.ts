@@ -1,10 +1,11 @@
-import { cancelVideoBatch, cancelVideoJob, fetchVideoBatch, fetchVideoJob } from '@/api/videoApi'
 import type { TaskRecord, TaskSummary } from '@/composables/useTaskCenter'
 import { generationTask } from '@/utils/generationTask'
 
 export async function queryTask(task: TaskRecord, signal?: AbortSignal): Promise<Partial<TaskSummary>> {
   const backend = task.backend
   if (!backend) return {}
+  const { fetchVideoBatch, fetchVideoJob } = await import('@/api/videoApi')
+  signal?.throwIfAborted()
   if (backend.kind === 'video') {
     const { job } = await fetchVideoJob(backend.id, signal)
     const taskState = generationTask(job.status, job.progress)
@@ -25,6 +26,9 @@ export async function queryTask(task: TaskRecord, signal?: AbortSignal): Promise
 }
 
 export async function cancelRecoveredTask(task: TaskRecord, signal?: AbortSignal): Promise<void> {
+  if (!task.backend) return
+  const { cancelVideoBatch, cancelVideoJob } = await import('@/api/videoApi')
+  signal?.throwIfAborted()
   if (task.backend?.kind === 'video') await cancelVideoJob(task.backend.id, signal)
   else if (task.backend?.kind === 'video-batch') await cancelVideoBatch(task.backend.id, signal)
 }

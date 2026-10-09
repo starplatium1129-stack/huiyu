@@ -351,7 +351,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
-import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
+const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"
 const {
 chatListRef,characterStageRef,activeChar,

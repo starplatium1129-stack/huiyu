@@ -4,8 +4,24 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI-CG-Studio · UX 审计修复交付</title>
 <style>
-:root{font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif;color:#202e32;background:#f3f5f2;color-scheme:light}
-*{box-sizing:border-box}body{margin:0}header{background:#143438;color:#f5fbf7;padding:42px max(24px,calc((100vw - 1080px)/2))}header p{color:#c6dfd7;max-width:900px}h1{font-size:clamp(28px,4vw,42px);line-height:1.3;margin:10px 0}main{max-width:1130px;margin:auto;padding:28px 25px 55px}h2{font-size:24px;margin:30px 0 12px}p{margin:10px 0}a{color:#176c60;text-underline-offset:4px}a:focus-visible{outline:3px solid #176c60;outline-offset:4px}.meta{font-size:13px}.lead{font-size:19px}.stats{display:flex;flex-wrap:wrap;gap:14px;margin:22px 0}.stat{flex:1;min-width:180px;background:#fff;border:1px solid #d5ded8;border-radius:12px;padding:16px 20px}.stat strong{display:block;font-size:28px;color:#176c60}.stat span{font-size:13px;color:#526568}.table{overflow:auto;border:1px solid #d5ded8;border-radius:12px;background:#fff}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:13px 16px;border-bottom:1px solid #d5ded8;text-align:left;vertical-align:top}th{background:#e9f2ee}tr:last-child td{border:0}.ok{color:#14624f;font-weight:700;white-space:nowrap}.warn{color:#944127;font-weight:700;white-space:nowrap}.note{margin:20px 0;padding:18px 22px;border-left:4px solid #a46a37;background:#fff4e7;border-radius:0 10px 10px 0}.details{background:#fff;padding:20px 24px;border:1px solid #d5ded8;border-radius:12px}.details li{margin:9px 0}code{font:12px/1.7 ui-monospace,Consolas,monospace;background:#eaf0ec;padding:2px 4px;border-radius:4px;overflow-wrap:anywhere}small{color:#526568}footer{margin-top:28px;border-top:1px solid #d5ded8;padding-top:18px;color:#526568;font-size:13px}@media(max-width:700px){main{padding:20px 16px}.stat{min-width:140px}th,td{padding:10px}header{padding:28px 20px}}
+:root{
+--report-text:#202e32;
+--report-background:#f3f5f2;
+--report-header:#143438;
+--report-header-text:#f5fbf7;
+--report-header-muted:#c6dfd7;
+--report-accent:#176c60;
+--report-border:#d5ded8;
+--report-muted:#526568;
+--report-heading:#e9f2ee;
+--report-success:#14624f;
+--report-warning:#944127;
+--report-note-edge:#a46a37;
+--report-note:#fff4e7;
+--report-code:#eaf0ec;
+--report-surface:#fff;font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif;color:var(--report-text);background:var(--report-background);color-scheme:light
+}
+*{box-sizing:border-box}body{margin:0}header{background:var(--report-header);color:var(--report-header-text);padding:42px max(24px,calc((100vw - 1080px)/2))}header p{color:var(--report-header-muted);max-width:900px}h1{font-size:clamp(28px,4vw,42px);line-height:1.3;margin:10px 0}main{max-width:1130px;margin:auto;padding:28px 25px 55px}h2{font-size:24px;margin:30px 0 12px}p{margin:10px 0}a{color:var(--report-accent);text-underline-offset:4px}a:focus-visible{outline:3px solid var(--report-accent);outline-offset:4px}.meta{font-size:13px}.lead{font-size:19px}.stats{display:flex;flex-wrap:wrap;gap:14px;margin:22px 0}.stat{flex:1;min-width:180px;background:var(--report-surface);border:1px solid var(--report-border);border-radius:12px;padding:16px 20px}.stat strong{display:block;font-size:28px;color:var(--report-accent)}.stat span{font-size:13px;color:var(--report-muted)}.table{overflow:auto;border:1px solid var(--report-border);border-radius:12px;background:var(--report-surface)}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:13px 16px;border-bottom:1px solid var(--report-border);text-align:left;vertical-align:top}th{background:var(--report-heading)}tr:last-child td{border:0}.ok{color:var(--report-success);font-weight:700;white-space:nowrap}.warn{color:var(--report-warning);font-weight:700;white-space:nowrap}.note{margin:20px 0;padding:18px 22px;border-left:4px solid var(--report-note-edge);background:var(--report-note);border-radius:0 10px 10px 0}.details{background:var(--report-surface);padding:20px 24px;border:1px solid var(--report-border);border-radius:12px}.details li{margin:9px 0}code{font:12px/1.7 ui-monospace,Consolas,monospace;background:var(--report-code);padding:2px 4px;border-radius:4px;overflow-wrap:anywhere}small{color:var(--report-muted)}footer{margin-top:28px;border-top:1px solid var(--report-border);padding-top:18px;color:var(--report-muted);font-size:13px}@media(max-width:700px){main{padding:20px 16px}.stat{min-width:140px}th,td{padding:10px}header{padding:28px 20px}}
 </style>
 </head>
 <body>

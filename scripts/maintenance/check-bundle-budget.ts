@@ -129,7 +129,16 @@ function evaluateManifest(manifest: any, sizeOf: any, budgets: any = DEFAULT_BUD
       warnings.push(`${route.route} static closure JavaScript ${kib(route.closureJavaScript)} > 90% of ${kib(budgets.routeClosureJavaScript)}`);
     }
   }
-  return { routes, violations, warnings };
+  const entry = entryEntry(manifest);
+  // Initial styles can belong to a shared bootstrap chunk. Count their actual
+  // static closure once, without including asynchronously loaded font styles.
+  const entryCssFiles: string[] = entry ? [...new Set<string>(staticClosureKeys(manifest, entry.key)
+    .flatMap(key => manifest[key]?.css || []))] : [];
+  const entryCss = entryCssFiles.reduce((total, file) => total + sizeOf(file), 0);
+  if (entryCss > budgets.entryCss) {
+    violations.push(`Entry CSS ${entryCssFiles.join(', ')} = ${entryCss} > ${budgets.entryCss}`);
+  }
+  return { routes, violations, warnings, entryCss };
 }
 
 function kib(bytes: any) {
@@ -178,11 +187,7 @@ function run(distDir: any = path.resolve(__dirname, '../../dist'), options: { js
   }
 
   const entry = entryEntry(manifest);
-  const entryCssBytes = entry ? (entry.css || []).reduce((total: any, file: any) => total + sizeOf(file), 0) : 0;
-  if (entryCssBytes > DEFAULT_BUDGETS.entryCss) {
-    throw new Error(`Entry CSS budget exceeded: ${(entry.css || []).join(', ')} = ${entryCssBytes} > ${DEFAULT_BUDGETS.entryCss}`
-      + '\n字体声明走 src/assets/fonts.ts 异步 chunk，勿在 main.ts 同步 import @fontsource 或大样式。');
-  }
+  const entryCssBytes = result.entryCss;
 
   // 2026-09-06 审计 P2-03：入口静态闭包 = 每个页面的真实首屏 JS 负担。
   if (entry) {

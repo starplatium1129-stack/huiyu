@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>前后端持续优化 · 执行记录</title>
+<style>:root{color-scheme:light dark;--bg:light-dark(#f7f8fa,#171b22);--ink:light-dark(#202735,#e7ebf2);--muted:light-dark(#515c6c,#bbc5d3);--line:light-dark(#d7dde6,#435064);--accent:light-dark(#284e90,#a6c8ff)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1000px;margin:auto;padding:32px 24px}h1{font-size:28px}h2{font-size:21px;margin-top:28px}a{color:var(--accent)}table{width:100%;border-collapse:collapse}th,td{padding:11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}small,.meta{color:var(--muted)}code{overflow-wrap:anywhere}.scroll{overflow-x:auto}img{max-width:100%}li{margin:7px 0}summary{cursor:pointer;padding:10px 0}@media(max-width:650px){main{padding:20px 14px}th,td{padding:8px}}</style></head><body><main>
+<div class="meta">AI-CG-Studio · 2026-10-09 · 开工基线 dcde0d99</div>
+<p class="meta">提交说明：已与“持续优化项目”会话核对并冻结交付范围，本批合并性能优化、桌面可靠性修复与六条 All 分级调整。下方“未提交”等表述记录的是实施阶段状态；随后主分支交付以 Git 历史和本次提交回执为准。运行日志、基准原始数据和临时脚本不进入提交。</p>
+<h1>本轮优化收口 · 六条场景已统一为 All</h1>
+<p>本轮已落实当前测量确认的可行动性能改进，并复验相应行为。后续候选中，更小图库批次反而延长补齐时间，HTTP gzip 在本机对照中也未加快响应，均未保留；当前没有新的实测收益方案，按用户要求结束本轮持续优化。这不是“全项目永远没有优化空间”的保证。</p>
+<p><strong>2026-10-09 范围更新：</strong>按用户要求，参考图不再是本次必要验证项，也不再作为任务阻塞条件。此前素材路径检查的失败保留为未验证记录，不改写为通过。</p>
+<section id="final-delivery">
+<h2>最终交付与检查</h2>
+<p>sc009、sc026、sc027、sc048、sc053、sc098 已在项目本地内容库与导出快照中改为 All，同步移除 usage 内的 R15 标签。mature 保持 false；原始 prompt、negative、animaCaption、人物、画幅与故事均未改动。修订历史和修改前备份保留。</p>
+<table><thead><tr><th>状态</th><th>结果</th></tr></thead><tbody>
+<tr><td>通过</td><td>分级检查 changedCount = 0；六条记录回读一致，默认负向组装包含 All 对应的 nsfw 抑制；Anima 语料检查通过。六条之外的目录记录字节不变。</td></tr>
+<tr><td>通过</td><td>场景派生产物已刷新；最终 Web 构建通过原有 18 路由预算，未放宽阈值。</td></tr>
+<tr><td>仍失败 · 非性能项</td><td>sc009 的 prompt 为 99 字符、sc027 为 94 字符，仍低于原字段 100 字符规则。两条描述字段分别另有 411、420 字符；没有为过门禁凑字数或修改校验器。完整门禁不宣称全绿。</td></tr>
+<tr><td>保留限制</td><td>冷进入仍有 56–72 ms 长任务样本；真实模型、原生安装版及长期设备资源未验收。参考图不再必验；符号链接用例按用户选择保留未验证。</td></tr>
+</tbody></table>
+<p>内容库补丁按修订号校验后成功应用。Windows 拒绝了现有快照目录的整目录更名；改用原生导出到新目录，再将六份原生生成文件逐个原子更新到现有快照，保留原 manifest 与范围外记录，随后刷新派生产物。没有手写场景正文、修改权限或关闭保护。未提交、推送、安装或部署。</p>
+<p><a href="../../../runtime/performance-20261009/ratings-patch-applied.json">内容库补丁记录</a> · <a href="../../../runtime/performance-20261009/ratings-selected-export.log">原生局部导出</a> · <a href="../../../runtime/performance-20261009/ratings-final-diff.json">字段范围与未选记录核对</a> · <a href="../../../runtime/performance-20261009/ratings-final-readback.json">分级与负向回读</a> · <a href="../../../runtime/performance-20261009/ratings-user-after.json">零分级差异</a> · <a href="../../../runtime/performance-20261009/ratings-anima-corpus.log">Anima 检查</a> · <a href="../../../runtime/performance-20261009/ratings-scene-validation.log">剩余两条告警</a> · <a href="../../../runtime/performance-20261009/ratings-final-build.log">最终构建</a></p>
+</section>
+<section id="content-warnings">
+<h2>历史告警及此次处理</h2>
+<p>原来的 8 条内容告警涉及 6 个场景：六条 R15 与关键词推算 All 的差异，加上其中两条原始 prompt 长度告警。前六条已按用户要求修正，长度告警仍保留。</p>
+<table><thead><tr><th>场景</th><th>记录 / 规则推断</th><th>额外长度告警</th></tr></thead><tbody>
+<tr><td>sc009 · 咖啡杯旁的偷看</td><td>All / All · 已统一</td><td>99 字符，阈值 100</td></tr>
+<tr><td>sc026 · 器材室里被困的五分钟</td><td>All / All · 已统一</td><td>无</td></tr>
+<tr><td>sc027 · 没有挂断的深夜电话</td><td>All / All · 已统一</td><td>94 字符，阈值 100</td></tr>
+<tr><td>sc048 · 晨光叫醒的真心话</td><td>All / All · 已统一</td><td>无</td></tr>
+<tr><td>sc053 · 烘干结束前的十分钟</td><td>All / All · 已统一</td><td>无</td></tr>
+<tr><td>sc098 · 膝上倒映的眼睛</td><td>All / All · 已统一</td><td>无</td></tr>
+</tbody></table>
+<p><strong>原分级差异的来源：</strong>分类器只检查 tags、prompt、标题和故事中的固定词表与正则；没命中就返回 All。它不读取 animaCaption，也不看实际图片。此次以用户明确指示为准统一为 All；这是指定元数据修改，不是新的视觉分级验收。</p>
+<p><strong>短提示词：</strong>校验器使用 <code>scene.prompt.length &lt; 100</code>，计算的是原字段字符数，不是模型 Token，也不是最终组装输入。sc009 和 sc027 另有 411、420 字符的 animaCaption；Anima 编译会使用该描述，但长度检查没有计入。99 和 94 并不等于缺失提示词，也不足以认定最终输入无效。</p>
+<p><strong>本次处理：</strong>只修改用户指定的分级及关联 usage 标签，正文和检查规则保持。两个长度告警仍计入内容门禁失败，不称全仓门禁通过。</p>
+<p><a href="../../../runtime/performance-20261009/content-warnings-explained.json">六条记录与开工基线比对</a> · <a href="../../../scripts/lib/prompt-policy.ts">关键词分级实现</a> · <a href="../../../scripts/maintenance/validate-scenes.ts">分级及长度校验</a> · <a href="../../../src/utils/promptCompilerCore.ts">Anima 描述编译</a></p>
+</section>
+<section id="pass9">
+<h2>第九轮：首轮布局与更小批次的取舍</h2>
+<p>同一次 CPU 与时间线诊断把图库进入阶段的一次强制布局追溯到瀑布流的 <code>clientWidth</code> 读取。现在在支持 ResizeObserver 的路径上，首轮和缓存返回都使用观察器交付的容器尺寸，保留无观察器时的窗口回退和停用/销毁逻辑。移除同步读取及其一次性标记，没有增加新的缓存或依赖。</p>
+<table><thead><tr><th>交错对照 · 每种两次</th><th>原首轮同步测量</th><th>观察器首轮测量</th></tr></thead><tbody>
+<tr><td>冷进入至视口范围补齐</td><td>460.4 / 470.7 ms</td><td>406.9 / 453.0 ms</td></tr>
+<tr><td>首次进入最大长任务</td><td>63 / 56 ms</td><td>56 / 58 ms</td></tr>
+<tr><td>最终挂载卡片</td><td>36</td><td>36</td></tr>
+</tbody></table>
+<p>上述是关闭 CPU/时间线采集的对照；1,000 条约 8 KiB 的隔离记录、2560×1440 CSS 视口、同一真实 Vue/桌面仓储/Rust 路径。完成时间包含路由、API、渲染及探针就绪等待，不是隔离函数耗时。样本较少，仅支持本工作负载下缩短进入路径的迹象，不证明稳定的硬件通用收益，也不证明消除了长任务。</p>
+<p><strong>没有保留的候选：</strong>每批 6 张在另一组交错对照中，需要 573.7–577.2 ms 补足同一视口与预加载范围，12 张需要 482.8–527.4 ms；6 张方案只挂载 30 张，12 张挂载 36 张。部分峰值较低，但完成时间反而更长，已完整恢复为 12 张。没有把降低单次峰值当作整体更快。</p>
+<p><strong>通过：</strong>3 项既有瀑布流/缓存生命周期单测；双主题图库响应式布局 2 项浏览器用例；共享调用方角色场景页双主题实看（1280×960 CSS，容器约 992 px，3 列各约 317 px，无横向溢出及页面错误）；应用类型与定向 ESLint 零错误。最终构建通过原预算，与已验证的 12 张观察器版本的 1,190 个资源文件及入口逐字节一致，复用了有效验证。</p>
+<p><strong>测量限制：</strong>真实参考素材根目录未配置，四个已登记位置不存在。用户现已免除本次参考图验证，这不再阻塞任务；无图片的合成图库测量仍不能推广到真实参考图读盘和缩略加载。完整门禁的历史内容问题单独保留。最新非诊断样本仍出现 56–72 ms 冷进入长任务，不将不同轮次的波动解释为统一速度结论。</p>
+<p><a href="../../../runtime/performance-20261009/pass9-observer-compare.json">首轮尺寸交错对照</a> · <a href="../../../runtime/performance-20261009/pass9-batch6-compare.json">未采用的 6 张批次</a> · <a href="../../../runtime/performance-20261009/pass9-masonry-tests.log">单测</a> · <a href="../../../runtime/performance-20261009/pass9-responsive-browser.log">图库布局</a> · <a href="../../../runtime/performance-20261009/pass9-popular-columns.json">共享调用方</a> · <a href="../../../runtime/performance-20261009/pass9-final-artifact-binding.json">最终产物绑定</a> · <a href="../../../runtime/performance-20261009/pass9-reference-root-status.json">素材目录现状</a></p>
+</section>
+<section id="completion-audit">
+<h2>当前收口状态 · 完整门禁已执行</h2>
+<p>依赖锁与构建配置变化触发仓库的 full 检查范围，已执行一次 <code>node scripts/maintenance/gate-quick.js full --all</code>，11 分 27 秒结束，结果为失败。后续只复验有相关修复或新诊断证据的项，没有重复整套门禁。最终范围与保留限制见顶部交付记录；未提交、推送、安装或部署。</p>
+<table><thead><tr><th>状态</th><th>当前证据</th></tr></thead><tbody>
+<tr><td>通过</td><td>完整门禁中的前端覆盖率任务通过（第九轮之前）；随后改动按影响面定向复验。最终 Web 构建通过原预算：18 个路由、入口 JS 250.0 KiB、入口 CSS 98.1 KiB、最大静态路由依赖 667.0 KiB。高于 90% 告警线的页面继续保留告警。</td></tr>
+<tr><td>修复并定向通过</td><td>聊天存储的 Node 导入与默认配置夹具（2 项）；资源安装器流式读取的字节统计与并发故障注入（32 项）；场景金标与显式描述保留（2 项，302 个场景）；生成请求快照（1 项）；Rust 内容契约与指纹核验（1 项）。</td></tr>
+<tr><td>修复并定向通过</td><td>通过登记入口刷新四类被忽略的派生产物；目录一致性 6 项、保护基线 7 项通过。没有改动受保护提示词或目录源数据。完整类型检查及新增测试类型检查通过；定向 ESLint 零错误，已有 81 条 any 警告保留。历史报告配色只做等值令牌整理。</td></tr>
+<tr><td>已解决 6 条，仍失败 2 条</td><td>六个分级差异已按用户指示统一为 All，分级复验零差异。sc009/sc027 原始 prompt 长度 99/94，仍小于 100；未修改正文凑字数。</td></tr>
+<tr><td>本次不要求验证 · 素材</td><td>按用户最新要求，人物参考图验证不再作为本次必要条件。原检查的 2,534 项 URL 未找到及 4,718 项 pending 保留为历史记录，不计作通过或资产交付，没有改索引掩盖缺图。</td></tr>
+<tr><td>未验证 · 用户确认保留</td><td>Rust 符号链接拒绝用例在创建夹具时收到 Windows OS 1314（缺少特权）。用户确认当前没有相应验收环境，保留为未验证；原安全断言保持。Rust 全套原结果为 244 通过、2 失败、5 忽略，其中内容指纹失败已定向解决。</td></tr>
+<tr><td>未运行</td><td>真实模型/渲染、原生安装版与 WebView2、物理 DPI、长期 RSS/GPU/功耗。既有性能对照只支持其记录的工作负载；最新样本仍有 56–72 ms 冷进入长任务，不能宣称全部卡顿已消失。</td></tr>
+</tbody></table>
+<p>两处提示词测试的修正均依据现行契约：显式描述允许附加导演控制句，现改为清除导演控制后逐条验证原有关系保留；隔离重放 27bde11f 的纯编译器复现三个旧请求哈希，逐字比较确认变化仅为取消未选择的三分构图和默认 Anima 风格。负向、绑定、尺寸、种子、参数均一致，精确快照仍保留。此次没有修改产品编译器、提示词内容或调用模型。</p>
+<p>后端性能数据绑定第六轮 release 产物；此后仅更新 <code>contracts/sources.json</code> 的测试来源记录，产品 Rust 逻辑没有变化。已通过登记入口刷新 release 构建与源码绑定，当前二进制与测量时字节相同。下方分轮记录保留各阶段的范围，当前门禁状态以本节为准。</p>
+<p><a href="../../../runtime/performance-20261009/final-full-gate.log">完整门禁原始失败</a> · <a href="../../../runtime/performance-20261009/audit-final-web-build.log">当前 Web 构建</a> · <a href="../../../runtime/performance-20261009/audit-corpus-caption-fixed.log">场景描述保留</a> · <a href="../../../runtime/performance-20261009/audit-payload-reviewed-delta.json">请求字节差异审查</a> · <a href="../../../runtime/performance-20261009/audit-payload-snapshot-fixed.log">请求快照复验</a> · <a href="../../../runtime/performance-20261009/audit-rust-provenance-fixed.log">Rust 契约复验</a> · <a href="../../../runtime/performance-20261009/audit-scenes-validation-current.log">当前内容失败</a></p>
+</section>
+<h2>第一轮：启动加载</h2>
+<ul><li>原生 Live2D 后端在连接时加载；保留后端选择、取消和回退。渲染停止错误常量移至契约模块，避免轻量调用者同步引入完整实现。</li><li>Ollama 模型下拉框在选择本地提供商后加载。陪伴页与独立聊天窗的语音配置面板按打开动作加载。房间语音设置的懒加载因窄窗口弹层定位回归已撤回。</li><li>外观组件拆为同步入口与按需面板。入口立即接收 F1/菜单事件，保留最新意图与原焦点，解决首次加载期间快捷键事件丢失；导航、控制室和陪伴页继续使用原入口。</li><li>像素主题颜色令牌保留在首屏，界面纹理与布局样式按需加载；应用挂载前等待已选主题。拆分前后的完整 CSS 规则逐字归一换行后相同。</li></ul>
+<h2>产物与请求证据</h2>
+<div class="scroll"><table><thead><tr><th>指标</th><th>开工构建</th><th>第一轮组合构建</th><th>现有预算</th></tr></thead><tbody>
+<tr><td>聊天页静态 JS 依赖</td><td>704,542 B</td><td>672,090 B</td><td>696,320 B · 通过</td></tr>
+<tr><td>入口 CSS</td><td>113,849 B</td><td>100,408 B</td><td>102,400 B · 通过</td></tr>
+</tbody></table></div>
+<p>预算未调整。构建及预压缩通过；部分页面仍超过告警线，图库静态依赖距预算较近。数值表示未压缩产物大小，不是启动时延或全部运行时 JS。最终共享工作区构建包含隔壁会话的独立图库可靠性改动，未将其改动计作本轮实现。</p>
+<p>新 Edge 上下文、真实隔离 Rust debug 网关的深浅主题请求记录确认：默认房间未请求 nativeBackend、AppearancePreferencesPanel 或 terraria-surfaces 模块；选择像素主题并刷新后，纹理、深浅配色与入口正常，未捕获页面运行错误。CSS 视口 1440×960，VisualViewport scale=1；系统 DPI、物理分辨率与浏览器菜单缩放未单独测量。采样未比较前后时延。</p>
+<h2>后端测量与取舍</h2>
+<p>当前代码已包含<a href="../2026-10-08/backend-performance-program.html">上一轮后端优化</a>，本轮不把旧成绩算作新优化。5×20 次交替采样、私有磁盘 WAL 库和相同 Rust/SQLite 依赖下，Catalog 重开与版本读取中位数约 0.3805 ms；候选只读打开约 0.2624 ms。约 0.12 ms 的差额不足以支持增加打开/迁移分支，因此未修改后端产品代码。</p>
+<p>同一隔离探针测得维护读取前后保护检查中位数约 5.09 ms。这是保留路径、身份和事务校验的成本，不以删减保护换取速度，也不能用它推算整条 HTTP 链路。后端进一步候选仍在调查。</p>
+<h2>验证状态</h2>
+<table><thead><tr><th>状态</th><th>证据与边界</th></tr></thead><tbody>
+<tr><td>通过</td><td>32 项 Live2D 后端 Node 行为用例；37 项生命周期/语音设置 Vitest 用例；8 项外观与桌面交互 Vitest 用例。新增的最小取消用例确认等待模块期间取消不会创建模型。</td></tr>
+<tr><td>通过</td><td>4 项隔离 E2E：Ollama 聊天流、窄窗口语音设置、深浅主题外观键盘与刷新。额外双主题请求/像素主题刷新采样及截图已检查。</td></tr>
+<tr><td>通过</td><td>应用类型检查、所改文件 ESLint（既有 any 警告保留）、单体预算、diff 空白检查、Web 构建与所有包体预算。</td></tr>
+<tr><td>已解决</td><td>新增用例漏填 character 的编译错误已补齐；旧语音夹具缺少关闭访客导览步骤已补正常交互；异步语音弹层定位回归通过撤回该处优化解决；F1 首次事件丢失通过同步入口保存意图解决。原断言与预算均保留。</td></tr>
+<tr><td>第一轮当时未运行</td><td>完整全仓回归（现已执行，状态见收口审查）、真实模型、实际安装版与 WebView2、长期 RSS/GPU/功耗。本轮没有提交、推送或部署。</td></tr>
+</tbody></table>
+<h2>第二轮：场景搜索与排序</h2>
+<p>浏览器场景列表使用已拥有且只读的目录快照，改用浅层响应式。最新日期每次排序仅解析一次；搜索文本随目录快照预处理，评分字段只在场景命中后整理，后续查询复用，清空查询时释放。灵感叠卡复用同一文档接口；刷新目录会替换派生数据。搜索别名、中文边界、权重、分级拒绝与返回顺序保持。</p>
+<table><thead><tr><th>函数级中位数</th><th>原实现</th><th>最终实现</th></tr></thead><tbody>
+<tr><td>302 条项目快照 · 首次搜索</td><td>4.82 ms</td><td>3.23 ms</td></tr>
+<tr><td>302 条项目快照 · 后续搜索</td><td>4.33 ms</td><td>0.73 ms</td></tr>
+<tr><td>3,000 条合成记录 · 首次搜索</td><td>35.04 ms</td><td>23.32 ms</td></tr>
+<tr><td>3,000 条合成记录 · 后续搜索</td><td>34.63 ms</td><td>4.76 ms</td></tr>
+<tr><td>3,000 条合成记录 · 最新排序</td><td>35.31 ms</td><td>5.19 ms</td></tr>
+</tbody></table>
+<p>同一 Node/Vue 进程中交替运行 HEAD 基线模块和当前模块，搜索使用六种中英文/别名/无匹配查询，每类 30 对样本；排序每类 5 对。130 对结果的有序 ID SHA 全部相同。计时包含实际搜索、评分、排序与 Vue computed 跟踪，不包含 DOM、HTTP、150 ms 输入防抖或整页总时延。未把缓存热读当作首次收益：预先整理所有评分字段的中间方案会拖慢首次搜索，已改成命中后整理。</p>
+<p><strong>第二轮通过：</strong>20 项相关 Vitest、1 个 Node 场景 UX 套件、3 项浏览器导航/筛选位置用例、应用类型检查、定向 ESLint、单体与 Web 包体预算。共享构建包含隔壁会话各自的可靠性修改；源码归属分别记录。没有重跑全仓回归。</p>
+<p><strong>本轮失败处理：</strong>搜索接口的灵感叠卡和既有单测调用方曾漏迁，类型检查定位后已同步，未保留多余旧接口。滚动夹具先被访客导览挡住，随后两项位置断言仍失败；独立页面记录证明输入框在视口外，Playwright 自动滚动改变了基准，且异步滚轮与 scrollTo 互相竞态。改为记录实际输入前的位置，并等待真实滚轮落点后通过，保留 2 px 位置约束；产品滚动实现未修改。</p>
+<h2>后端链路进一步定位</h2>
+<p>同一正在运行的私有 HTTP 夹具（500 条 × 8 KiB 中性蓝图），当前 debug 网关的 15 轮串行暖读中位数：健康接口约 1.82 ms，完整 4,114,918 B 响应约 42.50 ms，条件读取 304/0 B 约 22.47 ms，HEAD 约 21.95 ms。同路径直接调用当前库，目录打开约 0.79 ms，维护读取前后保护约 18.33 ms。与第一轮空临时目录的 5.09 ms 不混同比；真实夹具的保护状态和路径检查占主要头部等待。</p>
+<p>上述是定位证据，没有新后端改造或延迟改善声明。首次 HTTP 采样与构建重叠，已单独保留为受干扰数据，未用于最终数字。下一步先核实匹配源码的 release 产物，再决定哪些成本值得改；不以 debug 样本为由删减事务或路径保护。</p>
+<h2>第三轮：完整筛选与首次加载取消</h2>
+<p>完整场景工作区此前在全库、核心和搜索等不需要分类的分支里，也逐条扫描招牌、审核和精选名单。现在按目录建立核心集合和分类映射，并跳过无用分类；招牌优先于审核、审核优先于精选的规则和重叠成员行为保留。</p>
+<table><thead><tr><th>3,000 条完整工作区计算</th><th>第二轮实现</th><th>第三轮实现</th></tr></thead><tbody>
+<tr><td>全库，无查询</td><td>15.78 ms</td><td>7.59 ms</td></tr>
+<tr><td>全库，查询“夜”</td><td>43.68 ms</td><td>32.61 ms</td></tr>
+<tr><td>精选集合</td><td>11.23 ms</td><td>3.33 ms</td></tr>
+<tr><td>招牌集合</td><td>9.49 ms</td><td>2.40 ms</td></tr>
+<tr><td>核心集合</td><td>13.65 ms</td><td>3.32 ms</td></tr>
+</tbody></table>
+<p>实际 composable 挂载于隔离 happy-dom，302/3,000 两档快照、六种集合/查询、每种五对交替样本，60 对返回顺序全部一致。包含筛选、分类、评分和排序，不含网络与 DOM 绘制；目录覆盖切换会替换快照，因此不能与上一节单独搜索函数的热读数字直接同比。</p>
+<p>本轮还复现了外观面板慢加载期间按 Escape 后仍迟到弹出的边界问题。同步入口现在取消待打开意图并恢复焦点，面板就绪后仍走原关闭行为。保留首次按需加载与取消后重新打开；深浅主题键盘流程均通过。</p>
+<p><strong>第三轮验证：</strong>5 项场景工作区用例、2 项外观浏览器流程、类型检查、Web 构建、原有包体预算、单体与定向 ESLint 通过。早期 ready 标志的模板字面量类型错误已改为显式处理函数后通过；未放宽类型或行为断言。</p>
+<h2>发布配置核对与压缩候选</h2>
+<p>旧 release 回执来自 10 月 3 日，与当前 Rust 源码不匹配。已通过既有 rust:build 离线重建（单编译并发，4 分 19 秒），并由 runtimeBuild 同时核对源码与 EXE SHA；未安装或部署。发布配置下，私有夹具条件请求约 20.98 ms、HEAD 约 19.95 ms，维护保护成本没有因为优化编译就消失。</p>
+<p>真实项目蓝图快照共 1,752 条，紧凑 JSON 为 4,249,376 B。匹配 release 网关与 Edge 的十次暖读中位数为：响应头约 25.3 ms，正文读取约 25.5 ms，解码/解析约 10.7 ms，总计约 60 ms。各阶段中位数不要求相加等于总中位数。</p>
+<p>当前 release flate2 的快速 gzip 将该快照压到 1,612,599 B，但编码约需 17.13 ms；默认级别约需 63.35 ms。已验证解压后的字节完全相同，尚无端到端加速证明，因此没有加入新的压缩协议或缓存。本机蓝图浏览实际走按角色接口，全量 JSON 主要是远程回退路径；不把合成全量请求当作本机常用路径。远程真实带宽与授权素材范围本轮未测。探针第一次链接未带项目 thin LTO，按 release 配置对齐后完成，原始链接失败日志保留。</p>
+<h2>20 轮生命周期采样：操作通过，堆增长待归因</h2>
+<p>复用现有 office 性能入口，只运行 dark/full/round1 一组 20 轮，单 worker、隔离 release 网关、合成图像与资料，无模型调用或 HTTP 写入。预热后反复访问绘制、图库、参考画册和视频页，执行预览打开/关闭、返回焦点、合成隐藏/恢复与 GC 采样。</p>
+<table><thead><tr><th>指标</th><th>预热后基线</th><th>第 20 轮</th></tr></thead><tbody>
+<tr><td>GC 后 DOM 节点</td><td>4,925</td><td>4,929</td></tr>
+<tr><td>GC 后事件监听器</td><td>1,687</td><td>1,687</td></tr>
+<tr><td>GC 后 JS 堆</td><td>17.42 MB</td><td>19.09 MB（+9.6%）</td></tr>
+<tr><td>预览返回位置误差</td><td colspan="2">20 轮均为 0 px；原 2 px 约束保留</td></tr>
+<tr><td>路由根 / 合成隐藏时 rAF</td><td colspan="2">每轮一个路由根，隐藏时待执行 rAF 均为 0；结束时 rAF 与有限动画均为 0</td></tr>
+</tbody></table>
+<p>非 GC 中间样本有临时对象和监听器分配，上表仅比较 GC 端点。9.6% 堆增长尚不能证明泄漏，也不能据此关闭长期资源问题。后续区分测量/运行时预热与真实保留。CSS 视口 1440×960；物理刷新率、系统 DPI、GPU/原生进程内存与真实最小化/休眠未测。导航数值包含自动化动作和动画；视频入口还需打开“更多”，不作为纯渲染或 INP 对比。</p>
+<p>夹具先后暴露旧 #viewerClose 和通用 .art-viewer 的歧义：后者同时匹配缓存的画册与图库。已改成当前可访问名称，保留真正隐藏、焦点及位置断言，图库产品代码未改。失败报告现在记录阶段并在页面存活时读取 DPR，避免清理掩盖原错；动作超时收紧为 15 秒，整轮 240 秒上限没有提高。合成隐藏同时更新 hidden 与 visibilityState，与当前 VueUse 读取方式一致。</p>
+<h2>第四轮：堆增长归因与图库按需加载</h2>
+<p>核对配置确认，前一次 office 采样已经关闭 tracing。针对堆增长追加同一构建的单组 50 轮与 15 秒无操作后 GC，保存三份 V8 堆快照。操作断言全部通过；GC 后 JS 堆为 17.29 → 19.73 → 19.72 MB。第 10–50 轮节点固定为 5,061、监听器固定为 1,694，静置后监听器为 1,692；与初始基线的差额未继续按轮次累加。</p>
+<p>代码节点的 self size 增加约 2.14 MB，普通对象、数组和闭包合计约 0.14 MB。较大代码增量连接到 render 函数；两个增长的 WeakMap 表连接到响应式 effect 上下文，另有字体与浏览器网络记录增长。这是自占尺寸和受限反向引用采样，不是完整 retained-size 分析或进程 RSS。当前没有证实需要产品泄漏修复的持有链，不通过清除运行时代码缓存压低数字；长期设备边界保留。</p>
+<p>图库的整理、条件筛选、角色/标签筛选与回收站改为使用时加载；画册总览、整理和智能画册编辑首次访问前不挂载，访问后保留组件状态，保持撤销和退出过程。对话框实现仍同步可用。隔壁的回收站加载、错误、重试和数量未确认状态全部保留。</p>
+<table><thead><tr><th>同配置、同其余源码，仅替换 GalleryView</th><th>交接基线</th><th>本轮</th></tr></thead><tbody>
+<tr><td>图库静态 JS 依赖</td><td>691,635 B</td><td>675,402 B（减少 16,233 B）</td></tr>
+<tr><td>图库页面 JS 并集</td><td>713,413 B</td><td>697,214 B</td></tr>
+</tbody></table>
+<p>静态体积不代表整页时延。两项双主题浏览器流程通过：首次打开/关闭/重开智能画册、筛选入口、首次整理、退出选择后撤销，以及回收站首次加载。应用类型、定向 ESLint、单体、Web 构建及包体预算通过；整理面板深浅主题截图已检查。未重复完整视口矩阵。</p>
+<h2>第四轮收口检查发现的首页问题</h2>
+<p><strong>当时未通过，已由第五轮修复：</strong>130 次非字体请求（上限 62）、6,840,179 B 资源净负荷（上限 4,000,000 B）。DOM 562 个节点、87 个带过渡元素；没有调整预算。</p>
+<table><thead><tr><th>首屏资源</th><th>数量</th><th>净负荷</th></tr></thead><tbody>
+<tr><td>JavaScript</td><td>80</td><td>225,471 B</td></tr>
+<tr><td>CSS</td><td>15</td><td>101,635 B</td></tr>
+<tr><td>数据 JSON</td><td>6</td><td>1,558,388 B</td></tr>
+<tr><td>图片</td><td>26</td><td>3,496,476 B</td></tr>
+<tr><td>字体（不计入请求数门槛）</td><td>43</td><td>1,331,256 B</td></tr>
+</tbody></table>
+<p>atelier-studio PNG 单文件约 1.69 MB，四张入口 WebP 合计约 1.11 MB；JSON 未压缩。下一轮按请求清单处理过细拆包、图片交付尺寸/格式与数据传输，保留懒加载和读取保护。已核对当前 Rolldown 支持小共享组的合并阈值，尚未改配置；参数与模块执行时机约束见<a href="https://rolldown.rs/reference/TypeAlias.CodeSplittingGroup">官方 CodeSplittingGroup 文档</a>。</p>
+<p>两张内置 Hero 实物均为 1024×1497，HomeView 却声明为 1344。测试高度曾暂改成页面值，随后实物元数据证实页面有误，已恢复原 1497 断言并修正页面声明。CSS 仍按原画框 cover；第五轮已完成真实产物与原断言复验。</p>
+<h2>第五轮：首页请求与图片交付</h2>
+<table><thead><tr><th>相同首页预算口径</th><th>修改前</th><th>最终结果</th></tr></thead><tbody>
+<tr><td>非字体请求</td><td>130</td><td>58 · 上限 62，通过</td></tr>
+<tr><td>资源净负荷</td><td>6,840,179 B</td><td>3,780,314 B · 上限 4,000,000 B，通过</td></tr>
+<tr><td>JS 请求（含预加载）</td><td>80</td><td>31</td></tr>
+<tr><td>入口 CSS 静态并集</td><td>100,408 B</td><td>约 98.1 KiB · 上限 100 KiB，通过</td></tr>
+</tbody></table>
+<p>请求减少 55.4%，净负荷减少 44.7%。测试为全新 Edge 上下文、1440×960 CSS 视口、隔离 Rust release 网关与项目目录快照；样张路径在该夹具中缺失，走既有回退。前后均使用此夹具，不能将 3.78 MB 当作用户工作库全部实际样张的体积，也没有把请求数降低直接换算为首屏时间。</p>
+<ul><li>初始依赖合并，常用视觉原语共用代码与样式；小型共享模块内联保持单次执行与共享状态。为此在 Vite 已允许的补丁范围内将 Rolldown 1.2.11 更新到 1.2.13，未新增运行时依赖。采用其<a href="https://rolldown.rs/reference/TypeAlias.ExperimentalInlineCommonChunksOptions">实验性共享块选项</a>，排除 CSS，并保留严格执行顺序。18 个路由通过真实 Router 连续切换，无页面脚本异常；后续升级仍需关注该实验性接口。</li><li>修正入口 CSS 检查：共享 bootstrap 中的初始样式纳入并集，异步字体样式不计入，去重后仍按原 100 KiB 门禁。没有借移动样式绕过预算。</li><li>任务中心保持启动轮询与恢复，收件箱界面首次打开时加载并保留筛选状态；旧视频恢复 API 在确有待恢复任务时加载，导入期间取消后不请求后端。首页没有最近场景时不加载 SceneCard。</li><li>原工作室插画改为无损 WebP：所有 alpha 和非透明 RGB 像素相同，完全透明像素的 RGB 会由编码器归零。五张插画增加 768px 版本供普通窗口选择，高缩放保留 1536px 原图。下方头像、插画接近视口时加载，文字与入口始终可用。</li></ul>
+<p>400px 预热候选因目录尚未填充时区块暂时上移而提前加载，实测未减少请求；改为 100px 后验证有效。1440×960 双主题及 2560×1440、模拟 DPR 1.5 的图片选择与滚动显示通过，插画区高度前后相同。已查看深浅主题截图。VisualViewport scale=1；系统 DPI、物理分辨率和原生 WebView2 未验收，模拟 DPR 不代表物理屏幕。</p>
+<h2>第五轮后端候选：gzip 已撤回</h2>
+<p>实现并验证了 SQLite 投影 gzip：解压字节一致、HEAD、分编码 ETag/304、质量参数拒绝、已提交修订刷新及权威库丢失时拒绝均通过。但同一私有 release 网关交替采样，大蓝图 4,249,376 → 1,612,599 B 的同时，Node HTTP 中位数 47.81 → 58.52 ms；实际首页三份大分片在 Edge 并行请求并解析的中位数 81.6 → 85.2 ms。每次编码增加的本机耗时不符合桌面优先取舍，已撤回全部 Rust 产品改动。原 release EXE 与原构建回执先核对字节及完整源码哈希后恢复，最终首页结果使用恢复后的未压缩目录响应。</p>
+<table><thead><tr><th>第五轮验证状态</th><th>证据</th></tr></thead><tbody>
+<tr><td>通过</td><td>最终首页原预算；Web 与独立目录中的 desktop 模式构建预算；入口 CSS 回归 4 个 Node 用例；应用严格类型、所改文件 ESLint、单体预算。</td></tr>
+<tr><td>通过</td><td>7 个 E2E 覆盖双主题搜索、慢模块取消、Hero 与头像失败恢复；独立真实 Rust 私有工作区确认后台轮询、慢收件箱导入时 Escape、焦点恢复与筛选保留。18 路由无脚本异常的证据复用于未改动的模块。</td></tr>
+<tr><td>已解决</td><td>完整前端套件首次为 2,560 通过、1 个旧夹具失败；reset 用例误点顶部关闭按钮。定位收窄后该文件 5 项通过；最终 Home 1 项、任务恢复 9 项通过，新增导入取消断言后对应 5 项定向通过。未原样重跑全套冒充新证据。</td></tr>
+<tr><td>第五轮当时限制</td><td>视频页静态闭包接近现有 680 KiB 上限（desktop 约 679.6 KiB），第六轮继续处理。全仓门禁现已执行，状态见收口审查；真实模型、实际安装版、设备与长期 RSS/GPU/功耗仍未运行，没有提交、推送或部署。</td></tr>
+</tbody></table>
+<p><a href="../../../runtime/performance-20261009/home-request-final.json">最终首页明细</a> · <a href="../../../runtime/performance-20261009/pass5-final-home-budget.log">首页验收</a> · <a href="../../../runtime/performance-20261009/pass5-final-web-build.log">Web 构建</a> · <a href="../../../runtime/performance-20261009/pass5-desktop-build.log">desktop 构建</a> · <a href="../../../runtime/performance-20261009/bundle-routes.json">18 路由</a> · <a href="../../../runtime/performance-20261009/task-center-browser.json">任务中心</a> · <a href="../../../runtime/performance-20261009/home-visual.json">图片与视口</a> · <a href="../../../runtime/performance-20261009/catalog-gzip-browser.json">压缩取舍</a></p>
+<h2>第六轮：图库重复读取与视频入口</h2>
+<table><thead><tr><th>实测边界</th><th>修改前</th><th>最终结果</th></tr></thead><tbody>
+<tr><td>未变化的图库快照读取中位数</td><td>217.5 ms</td><td>12.7 ms · 减少约 94%</td></tr>
+<tr><td>同一次快照读取的 HTTP 正文</td><td>8,374,854 B</td><td>546 B</td></tr>
+<tr><td>同一次读取的请求数</td><td>6</td><td>2 · 权威状态与画册</td></tr>
+<tr><td>独立分镜懒加载前后的视频页静态 JS</td><td>695,579 B</td><td>602,714 B · 减少 92,865 B</td></tr>
+</tbody></table>
+<p>图库测量使用真实桌面仓储代码、协议解码、Node fetch/structuredClone 与隔离 Rust release 工作区，包含 1,000 条约 8 KiB 的中性记录；首次读取后连续五次未变化读取取中位数。不是浏览器整页渲染耗时，也不宣称首次全库读取得到同等改善。最终组合构建另见产物明细，所有原有包体预算保持通过。</p>
+<p>Rust 列表响应增加已有的 <code>artworkRevision</code>，不增加表、索引或另一份数据权威。前端复用原有的完整内存快照，每次返回仍先向后端核对作品修订号与运行时代际，返回独立副本；失败不被缓存隐藏，确认写入、代际变化与取消仍生效。保留全局分页一致性检查，较早开始而较晚结束的旧读取不覆盖更新的缓存。</p>
+<p>第一版使用全局修订号，仓储基准已提速，但真实图库首次返回仍重读。HTTP 诊断显示空回收站维护使全局版本 3→4，作品版本仍为 3；最终改用作品版本后，真实 Vue/KeepAlive 页面返回没有新增全库请求，另一客户端通过真实 PATCH 修改作品后重新读取并显示了新标题。该验证使用测试宿主桥接与私有 Rust 工作区，不是原生 WebView2 验收。</p>
+<p>视频页默认文字成片时不再下载整个分镜编辑器，进入分镜模式时才加载。双主题用例确认首次请求边界、编辑器可用及返回文字模式后描述保留；原有上传与禁止生成断言保持。独立对照中的静态依赖减少约 91 KiB，原本接近上限的视频页已有余量。</p>
+<table><thead><tr><th>第六轮验证</th><th>结果与边界</th></tr></thead><tbody>
+<tr><td>通过</td><td>40 项桌面仓储用例；两种主题的视频编辑 E2E；私有工作区真实页面返回与外部修改刷新；应用类型、所改文件 ESLint、单体预算及最终 Web 构建。</td></tr>
+<tr><td>通过</td><td>6 项既有 Rust records 行为用例与新增作品版本用例；lib Clippy；匹配源码的 release 构建和哈希绑定。后端改动仅为列表元数据，验证为定向检查，不称全仓门禁通过。</td></tr>
+<tr><td>已解决</td><td>视频用例曾因我误改导航链接数量失败，已恢复原 3 条断言；两项旧仓储夹具补入当前权威状态读取与修订号；新增 Rust 夹具误用无媒体的新增作品接口，改为已有记录的真实修改。失败日志保留，未放宽业务断言。</td></tr>
+<tr><td>未运行</td><td>实际安装版与物理设备、真实模型、长期 RSS/GPU；未提交或部署。本轮前端与 Rust 需配套使用，已生成匹配本地产物。</td></tr>
+</tbody></table>
+<p><a href="../../../runtime/performance-20261009/gallery-return-before.json">图库基线</a> · <a href="../../../runtime/performance-20261009/gallery-return-final.json">最终测量</a> · <a href="../../../runtime/performance-20261009/gallery-return-browser-diagnostic.json">误失效诊断</a> · <a href="../../../runtime/performance-20261009/gallery-return-browser.json">真实页面与外部修改</a> · <a href="../../../runtime/performance-20261009/pass6-artwork-revision-tests.log">40 项仓储检查</a> · <a href="../../../runtime/performance-20261009/pass6-video-browser-fixed.log">视频双主题</a> · <a href="../../../runtime/performance-20261009/pass6-final-bundles.json">组合产物</a> · <a href="../../../runtime/performance-20261009/pass6-release-binding.json">Rust 源码与 EXE</a></p>
+<h2>继续范围</h2>
+<p>第八轮改善了图库首次发布期间的任务排队，当时个别样本仍有约 52 ms 长任务；不把局部改进当作所有瓶颈已经消失。后续进展、剩余失败与证据边界见顶部第九轮与收口审查。已撤回的方案不算优化成果，隔壁可靠性修改保持归属。</p>
+<h2>第七轮：分批挂载图库卡片</h2>
+<p>展墙从每批 60 张改为每批 12 张。滚动补页通过 requestAnimationFrame 合并，每次重新检查当前筛选、视口、显示状态与页面生命周期，宽窗口分帧补足可见区域；组件销毁后不继续补页。没有截断完整记录、筛选或查看器数据，也没有改动原图缓存与读取并发限制。</p>
+<table><thead><tr><th>两次交错对照 · 2560×1440 CSS 视口</th><th>原 60 张批次</th><th>最终 12 张分帧</th></tr></thead><tbody>
+<tr><td>清空搜索时最大 rAF 帧间隔</td><td>69.3–76.3 ms</td><td>20.9–27.9 ms</td></tr>
+<tr><td>清空搜索时 ≥50 ms 的长任务</td><td>60、71 ms</td><td>未观察到；不表示该操作耗时为零</td></tr>
+<tr><td>首次进入的最大长任务</td><td>105–123 ms</td><td>55 ms · 仍待调查</td></tr>
+<tr><td>宽窗口补足后挂载卡片</td><td>60</td><td>36；全库仍为 1,000 条</td></tr>
+</tbody></table>
+<p>比较使用真实 Vue、桌面仓储、隔离 Rust 工作区、1,000 条约 8 KiB 的记录和横图比例。两种主要方案各两次，按交错顺序运行；中间方案用于判断批次数量与调度的取舍。相同条件下普通窗口先显示 12 张，宽窗口自动补页。帧间隔是浏览器采样值，不能推广为全部硬件或负载的稳定帧率。</p>
+<p><strong>测量纠正：</strong>最初探针在内容尚未出现时使用 Playwright 断言，CPU 调用栈显示 <code>ariaSnapshotForExpectFailure → generateAriaTree</code> 的无障碍快照开销混入结果。最终数据改用轻量 DOM 就绪检查和 CSS 输入定位，重新完成对照。最初的诊断数字不用于最终收益结论。</p>
+<p>首页布局候选同时完成自然加载采样：1440×960 的三次 CLS 均为 0；2560×1440 为 0.013889、0、0；六次均未观察到 ≥50 ms 的长任务，LCP 中位数分别为 224、236 ms。目录到达时的主要变化在首屏以下，目前没有足够收益依据增加加载占位。此处是返回用户、文档/HTTP 缓存冷、服务端与操作系统缓存未清空的隔离场景；缺失样张仍使用回退，没有注入限速或额外延迟。</p>
+<table><thead><tr><th>第七轮验证</th><th>结果与边界</th></tr></thead><tbody>
+<tr><td>通过</td><td>13 项筛选/分页测试，验证逐帧与重复请求合并、隐藏/销毁后停止，以及 160 条记录全部可达；33 项图库资源测试；应用类型、ESLint 无错误、单体预算及 Web 构建原预算。</td></tr>
+<tr><td>通过</td><td>3,000 条记录的浏览器用例：初始挂载有界，真实滚动触发补页，搜索命中初始页之外最旧的唯一记录。</td></tr>
+<tr><td>夹具修正</td><td>四项资源测试原先依赖首屏挂载 60 张。夹具现在通过实际观察器和帧回调显式展开到 45/60 张，另一个已通过的排队用例也恢复完整负载；40 张原图缓存、8 路缩略读取、释放与取消断言均保留。</td></tr>
+<tr><td>限制</td><td>一次首次进入仍有约 55 ms 长任务；原生 WebView2、物理 DPI、实际模型与长期设备资源未验收。没有提交、安装或部署。</td></tr>
+</tbody></table>
+<p><a href="../../../runtime/performance-20261009/pass7-gallery-comparison-final.json">有效前后对照</a> · <a href="../../../runtime/performance-20261009/gallery-render-compare-clean.json">全部候选对照</a> · <a href="../../../runtime/performance-20261009/home-vitals-before.json">首页布局与主线程</a> · <a href="../../../runtime/performance-20261009/pass7-gallery-filter-tests.log">分页/筛选</a> · <a href="../../../runtime/performance-20261009/pass7-gallery-workspace-tests-fixed.log">资源边界</a> · <a href="../../../runtime/performance-20261009/pass7-large-gallery-scroll.log">滚动与页外搜索</a></p>
+<h2>第八轮：首次快照发布让出执行权</h2>
+<p>对齐同一次 CPU 采样与时间线后，长任务中的主要工作是快照复制、Vue 更新和垃圾回收。只在图库尚无记录时，将快照读取与首次卡片挂载分到不同任务；缓存刷新路径保持。发布前继续核对最新加载代次，等待期间被后来的请求取代时不发布旧结果。</p>
+<table><thead><tr><th>交错两次对照 · 同一千条私有图库</th><th>原连续发布</th><th>首次发布让出任务</th></tr></thead><tbody>
+<tr><td>排队 MessageChannel 任务等待</td><td>68.3–74.2 ms</td><td>9.2–12.2 ms</td></tr>
+<tr><td>首次进入最大 rAF 帧间隔</td><td>83.1 ms</td><td>56.0–69.1 ms</td></tr>
+<tr><td>首次进入 ≥50 ms 长任务</td><td>68、73 ms</td><td>一次未观察到、一次 52 ms</td></tr>
+</tbody></table>
+<p>MessageChannel 在最后一页数据解析完毕时排队，衡量主线程服务下一项任务的等待；它不是实测鼠标点击延迟。采样范围仍为真实 Vue/仓储代码、测试宿主桥接、隔离 Rust、1,000 条约 8 KiB 记录与 2560×1440 CSS 视口。时间线/CPU 分析只用于归因，最终对照关闭这些诊断采集。</p>
+<p><strong>通过：</strong>42 项相关单测的有效证据，包含首次发布被新请求取代；大图库滚动/页外搜索及真实私有工作区外部修改刷新；类型、ESLint、单体和原有 Web 包体预算。首次单测夹具只等待微任务，新增发布时机尚未到达就开始断言；夹具改为等待已知任务边界，延迟快照用例等待实际加载状态，原行为断言均保留。最后一个夹具修复后仅重跑该用例，复用其余有效通过结果。</p>
+<p><strong>限制：</strong>不宣称消除了所有长任务，也不把合成记录结果推广为任意真实图库。真实模型、原生设备与长期资源仍未运行；全仓门禁已在收口阶段执行，尚有未解决项。未提交、安装或部署。</p>
+<p><a href="../../../runtime/performance-20261009/pass8-yield-compare.json">有效交错对照</a> · <a href="../../../runtime/performance-20261009/pass8-aligned-tasks.json">同次执行归因</a> · <a href="../../../runtime/performance-20261009/pass8-yield-tests-fixed.log">相关单测</a> · <a href="../../../runtime/performance-20261009/pass8-delayed-snapshot-test.log">最后夹具修正</a> · <a href="../../../runtime/performance-20261009/pass8-gallery-browser.log">大图库流程</a> · <a href="../../../runtime/performance-20261009/pass8-authority-browser.log">外部修改刷新</a> · <a href="../../../runtime/performance-20261009/pass8-final-build.log">构建预算</a></p>
+<details><summary>本机原始证据</summary><ul>
+<li><a href="../../../runtime/performance-20261009/build-before.log">开工构建</a> · <a href="../../../runtime/performance-20261009/build-appearance-host.log">最终组合构建</a> · <a href="../../../runtime/performance-20261009/bundle-budget-current.json">包体数据</a></li>
+<li><a href="../../../runtime/performance-20261009/browser-lazy-and-theme.json">请求与主题采样</a> · <a href="../../../runtime/performance-20261009/browser-host.log">最终三项浏览器复验</a> · <a href="../../../runtime/performance-20261009/browser-chat.log">聊天流通过及初始夹具失败</a></li>
+<li><a href="../../../runtime/performance-20261009/native-factory.log">后端工厂行为</a> · <a href="../../../runtime/performance-20261009/frontend-lazy.log">生命周期与设置</a> · <a href="../../../runtime/performance-20261009/appearance-unit.log">外观状态</a> · <a href="../../../runtime/performance-20261009/typecheck-host.log">类型检查</a></li>
+<li><a href="../../../runtime/performance-20261009/catalog-open-before.json">目录打开探针</a> · <a href="../../../runtime/performance-20261009/maintenance-fence.json">维护保护探针</a></li>
+<li><a href="../../../runtime/performance-20261009/scene-paired.json">第二轮交替性能对照及源码 SHA</a> · <a href="../../../runtime/performance-20261009/scene-paired-eager.json">未保留的首次搜索方案</a></li>
+<li><a href="../../../runtime/performance-20261009/scene-lazy-tests.log">工作区与排序用例</a> · <a href="../../../runtime/performance-20261009/scene-utility-tests.log">搜索工具用例</a> · <a href="../../../runtime/performance-20261009/scene-deck-tests.log">灵感叠卡</a> · <a href="../../../runtime/performance-20261009/scene-ux-final.log">Node UX 套件</a></li>
+<li><a href="../../../runtime/performance-20261009/scene-scroll-diagnosis.json">滚动失败诊断</a> · <a href="../../../runtime/performance-20261009/browser-scenes-fixed.log">导航返回通过/滚动原始失败</a> · <a href="../../../runtime/performance-20261009/browser-scenes-scroll-final.log">滚动定向复验</a></li>
+<li><a href="../../../runtime/performance-20261009/build-scene-final.log">第二轮组合构建</a> · <a href="../../../runtime/performance-20261009/typecheck-scene-consumers.log">调用方类型复验</a> · <a href="../../../runtime/performance-20261009/catalog-http-stages.json">HTTP 与同路径组件分解</a></li>
+<li><a href="../../../runtime/performance-20261009/workspace-paired.json">第三轮完整筛选对照</a> · <a href="../../../runtime/performance-20261009/scene-classification-tests.log">分类行为</a> · <a href="../../../runtime/performance-20261009/appearance-pending-before.log">慢面板取消复现</a> · <a href="../../../runtime/performance-20261009/appearance-pending-final.log">取消与键盘复验</a></li>
+<li><a href="../../../runtime/performance-20261009/release-build-binding.json">发布源码/EXE 绑定</a> · <a href="../../../runtime/performance-20261009/catalog-http-stages-release.json">release HTTP</a> · <a href="../../../runtime/performance-20261009/catalog-browser-wire.json">真实项目快照的浏览器接收</a> · <a href="../../../runtime/performance-20261009/gzip-probe.json">gzip 成本</a></li>
+<li><a href="../../../runtime/performance-20261009/office-lifecycle-complete.json">完整 20 轮样本</a> · <a href="../../../runtime/performance-20261009/office-lifecycle-final.log">成功采样日志</a> · <a href="../../../runtime/performance-20261009/office-lifecycle.log">旧关闭定位超时</a> · <a href="../../../runtime/performance-20261009/office-lifecycle-fixed.log">歧义定位原始失败</a></li>
+<li><a href="../../../runtime/performance-20261009/build-pass3-final.log">第三轮组合构建</a> · <a href="../../../runtime/performance-20261009/typecheck-pass3-fixed.log">类型复验</a></li>
+<li><a href="../../../runtime/ui-fluidity-office-50/dark-full-1.json">50 轮与静置后 GC</a> · <a href="../../../runtime/performance-20261009/heap-diff.json">堆分类差额</a> · <a href="../../../runtime/performance-20261009/heap-owners.json">受限持有链</a> · <a href="../../../runtime/performance-20261009/office-heap.log">诊断日志</a></li>
+<li><a href="../../../runtime/performance-20261009/gallery-bundle-comparison.json">图库唯一差异构建对照</a> · <a href="../../../runtime/performance-20261009/gallery-optional-browser.log">双主题行为</a> · <a href="../../../runtime/performance-20261009/build-gallery.log">第四轮构建</a></li>
+<li><a href="../../../runtime/performance-20261009/home-request-before.json">首页请求清单</a> · <a href="../../../runtime/performance-20261009/home-budget-current.log">请求预算失败</a></li>
+</ul><p class="meta">原始日志、截图与一次性脚本在被忽略的 runtime/ 与 scripts/archive/，不会随报告自动进入版本库。</p>
+<img src="../../../runtime/performance-20261009/pixel-reload-dark.png" alt="1440×960 CSS 视口：深色像素主题刷新后的角色房间">
+<img src="../../../runtime/performance-20261009/pixel-reload-light.png" alt="1440×960 CSS 视口：浅色像素主题刷新后的角色房间">
+</details></main></body></html>

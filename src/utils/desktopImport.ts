@@ -5,6 +5,7 @@
  */
 
 import { artworkRepository } from '../storage/artworkRepository'
+import { imageFormat, withImageMime } from './imageFormat'
 import {
   buildImportedRecord,
   filterImageFiles,
@@ -40,12 +41,14 @@ export async function importLocalImages(files: readonly ImportSourceFile[]): Pro
       let pendingRecord: ReturnType<typeof buildImportedRecord> | null = null
       const operationId = crypto.randomUUID()
       try {
-        imageId = await repository.putImage(file.blob)
-        const measured = await measureBlob(file.blob)
+        const format = imageFormat(await file.blob.slice(0, 12).arrayBuffer())
+        const blob = await withImageMime(file.blob, format.mime)
+        imageId = await repository.putImage(blob)
+        const measured = await measureBlob(blob)
         const record = buildImportedRecord(file, imageId, measured)
         pendingRecord = record
         await repository.appendArtwork(record)
-        void repository.cacheThumbnail(imageId, file.blob).catch(() => {})
+        void repository.cacheThumbnail(imageId, blob).catch(() => {})
         imported += 1
       } catch (error) {
         if (pendingRecord) {

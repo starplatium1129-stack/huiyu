@@ -1,5 +1,6 @@
 import type { StoredImageRecord } from '@/composables/useImageStore'
 import { createBackup, normalizeBackup, summarizeBackup } from './backupCore'
+import { withImageMime } from './imageFormat'
 
 /** One byte limit for both directions; never offer a file this version rejects. */
 export const MAX_BACKUP_BYTES = 512 * 1024 * 1024
@@ -44,10 +45,24 @@ export async function buildBackupBlob(
   const limit = options.maxBytes ?? MAX_BACKUP_BYTES
   checkSize(limit, MAX_BACKUP_BYTES)
   checkAbort(options.signal)
-  const prefixes = images.map(record => {
+  const preparedImages: StoredImageRecord[] = []
+  for (const record of images) {
+    checkAbort(options.signal)
     if (!(record.blob instanceof Blob) || !record.blob.size) throw new Error(`图片 ${record.id} 无法读取，未生成不完整备份`)
-    return `data:${record.blob.type};base64,`
-  })
+    let blob: Blob
+    try { blob = await withImageMime(record.blob) }
+    catch {
+      checkAbort(options.signal)
+      throw new Error(`图片 ${record.name || record.id}（${record.id}，${record.blob.type || '类型未标注'}）无法读取或识别，请先用“导出作品图片”核对原件；本次未生成备份。`)
+    }
+    if (!/^image\/(?:png|jpeg|webp|gif|bmp|avif)$/i.test(blob.type)) {
+      throw new Error(`备份含不支持或无效图片格式：${record.name || record.id}（${record.id}，${blob.type}）。请先用“导出作品图片”保留原件，再转换为 PNG/JPEG 等支持格式；本次未生成备份。`)
+    }
+    preparedImages.push(blob === record.blob ? record : { ...record, blob, type: blob.type })
+  }
+  checkAbort(options.signal)
+  images = preparedImages
+  const prefixes = images.map(record => `data:${record.blob.type};base64,`)
   // Small placeholders let the existing importer check metadata/IDs/MIME before
   // any expensive file reading. Actual payloads are checked again below.
   const backup = createBackup({ ...payload, images: images.map((record, index) => ({

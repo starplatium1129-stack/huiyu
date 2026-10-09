@@ -1,4 +1,4 @@
-import { defineConfig, type Plugin } from 'vite'
+import { defineConfig, type Plugin, type UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { compile, Polyfills, toSourceMap } from '@tailwindcss/node'
@@ -58,9 +58,58 @@ function dataVersionPlugin(): Plugin {
   }
 }
 
+function featureChunk(id: string) {
+  // 框架单独成块：应用代码改动不该让 Vue/Router/Pinia 的缓存一起失效
+  if (id.includes('node_modules/vue/') ||
+      id.includes('node_modules/@vue/') ||
+      id.includes('node_modules/vue-router/') ||
+      id.includes('node_modules/pinia/')) {
+    return 'vendor'
+  }
+  if (id.includes('node_modules/motion/') || id.includes('node_modules/framer-motion/')) {
+    return 'motion'
+  }
+  // Shared helpers belong outside the Live2D group. entriesAware also
+  // separates consumers within each group to retain lazy boundaries.
+  if (id.includes('node_modules/@vueuse/') ||
+      id.includes('src/api/client') ||
+      id.includes('src/api/mediaStatusApi') ||
+      // Shared by the entry and Live2D: never pull the heavy chunk into first paint.
+      id.includes('src/utils/motionPreference') ||
+      id.includes('src/utils/storageKeys') ||
+      id.includes('src/utils/localDiagnostics') ||
+      id.includes('src/utils/sdStatus') ||
+      id.includes('src/config/characters') ||
+      id.includes('companionAffection') ||
+      id.includes('useCompanionAffection') ||
+      id.includes('vite/preload-helper')) {
+    return 'shared'
+  }
+  // Prompt rendering, draft persistence and shared variation helpers are cached
+  // by their actual consumers; full static closures remain budgeted.
+  if (id.includes('src/composables/prompt/usePromptDraft') ||
+      id.includes('src/composables/prompt/usePromptHistoryReuse') ||
+      id.includes('src/utils/promptBuilderPersistence') ||
+      id.includes('src/utils/randomVariation') ||
+      id.includes('src/utils/promptPolicy') ||
+      id.includes('src/utils/promptCompiler') ||
+      id.includes('src/utils/studioDualSubject') ||
+      id.includes('src/utils/popularContent') ||
+      id.includes('src/config/artistStyleCatalog') ||
+      id.includes('src/config/artistStyles')) {
+    return 'prompt'
+  }
+  if (id.includes('src/composables/live2d/') ||
+      id.includes('src/utils/emotionRuntime') ||
+      id.includes('src/utils/blinkScheduler')) {
+    return 'live2d'
+  }
+  return undefined
+}
+
 // Rust gateway 默认运行在 3000 端口；Vite dev server 在 5173
 // 生产时 Rust gateway 直接 serve dist/
-export default defineConfig(async ({ mode }) => {
+export default defineConfig(async ({ mode }): Promise<UserConfig> => {
   const plugins = [
     componentTailwindPlugin(),
     tailwindcss(),
@@ -133,61 +182,31 @@ export default defineConfig(async ({ mode }) => {
     // 固定构建目标，别随 Vite 默认值漂移；与 package.json 的 browserslist 对齐
     target: ['chrome111', 'edge111', 'firefox128', 'safari16.4'],
     rolldownOptions: {
+      preserveEntrySignatures: false,
       output: {
+        strictExecutionOrder: true,
         // entriesAware names concatenate consumers; keep preload URL tables compact
         // while retaining the content hash and original manifest chunk names.
         chunkFileNames: (chunk: { name: string }) => `_app/${chunk.name.split('~')[0]}-[hash].js`,
         codeSplitting: {
           // Split feature groups by their actual consumers, retaining lazy
           // boundaries when shared helpers also appear in another route.
-          groups: [{ entriesAware: true, name(id: string) {
-          // 框架单独成块：应用代码改动不该让 Vue/Router/Pinia 的缓存一起失效
-          if (id.includes('node_modules/vue/') ||
-              id.includes('node_modules/@vue/') ||
-              id.includes('node_modules/vue-router/') ||
-              id.includes('node_modules/pinia/')) {
-            return 'vendor'
-          }
-          if (id.includes('node_modules/motion/') || id.includes('node_modules/framer-motion/')) {
-            return 'motion'
-          }
-          // Shared helpers belong outside the Live2D group. entriesAware also
-          // separates consumers within each group to retain lazy boundaries.
-          if (id.includes('node_modules/@vueuse/') ||
-              id.includes('src/api/client') ||
-              id.includes('src/api/mediaStatusApi') ||
-              // Shared by the entry and Live2D: never pull the heavy chunk into first paint.
-              id.includes('src/utils/motionPreference') ||
-              id.includes('src/utils/storageKeys') ||
-              id.includes('src/utils/localDiagnostics') ||
-              id.includes('src/utils/sdStatus') ||
-              id.includes('src/config/characters') ||
-              id.includes('companionAffection') ||
-              id.includes('useCompanionAffection') ||
-              id.includes('vite/preload-helper')) {
-            return 'shared'
-          }
-          // Prompt rendering, draft persistence and shared variation helpers are cached
-          // by their actual consumers; full static closures remain budgeted.
-          if (id.includes('src/composables/prompt/usePromptDraft') ||
-              id.includes('src/composables/prompt/usePromptHistoryReuse') ||
-              id.includes('src/utils/promptBuilderPersistence') ||
-              id.includes('src/utils/randomVariation') ||
-              id.includes('src/utils/promptPolicy') ||
-              id.includes('src/utils/promptCompiler') ||
-              id.includes('src/utils/studioDualSubject') ||
-              id.includes('src/utils/popularContent') ||
-              id.includes('src/config/artistStyleCatalog') ||
-              id.includes('src/config/artistStyles')) {
-            return 'prompt'
-          }
-          if (id.includes('src/composables/live2d/') ||
-              id.includes('src/utils/emotionRuntime') ||
-              id.includes('src/utils/blinkScheduler')) {
-            return 'live2d'
-          }
-          return undefined
-        } }],
+          // Initial modules always travel together. Shared visual primitives also
+          // share one stylesheet instead of one request per consumer subset.
+          experimentalInlineCommonChunks: {
+            maxSize: 8192,
+            // Vite must retain a single owner for each component stylesheet.
+            exclude: /\.(css|scss|sass|less|styl|stylus|pcss|postcss|sss)(\?|$)/,
+          },
+          groups: [
+            { name: 'bootstrap', tags: ['$initial'], priority: 100 },
+            { name: 'ui-base', priority: 95,
+              test: /[\\/]src[\\/]components[\\/](visual[\\/](ArchiveIcon|FluidTransition|AnimatedSelection|ToggleSwitch|ArchiveStatePanel)|ui[\\/](StudioTooltip|StudioPopover|StudioDisclosureSummary|StudioSearch))\.vue/ },
+            ...['vendor', 'shared', 'motion', 'prompt', 'live2d'].map((name, index) => ({
+              name, test: (id: string) => featureChunk(id) === name,
+              priority: 80 - index * 10, entriesAware: true,
+            })),
+          ],
         },
       }
     }

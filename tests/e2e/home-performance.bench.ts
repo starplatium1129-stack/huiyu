@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
+import { writeFile } from 'node:fs/promises'
 
-test('home page stays inside the performance budget', async ({ page }) => {
+test('home page stays inside the performance budget', async ({ page }, info) => {
   await page.goto('/');
   await expect(page.locator('.journal-entry').first()).toBeVisible();
   // 等待首屏真实渲染与网络结算（避免采样时处于画册样张异步加载中的时序竞态）
@@ -33,8 +34,13 @@ test('home page stays inside the performance budget', async ({ page }) => {
         return d && d !== '0s';
       }).length,
       font500: fontRequests.filter(item => /-500-/.test(item.name)).length,
+      resources: resources.map(item => ({ path: new URL(item.name).pathname, kind: item.initiatorType,
+        bytes: item.encodedBodySize, decodedBytes: item.decodedBodySize })).sort((a, b) => b.bytes - a.bytes),
     };
   });
+  const report = info.outputPath('home-budget.json');
+  await writeFile(report, JSON.stringify({ viewport: page.viewportSize(), ...budget }, null, 2));
+  await info.attach('home-budget', { path: report, contentType: 'application/json' });
   expect(budget.requests).toBeLessThanOrEqual(62);
   // 预算调整说明（2026-09-25 复核）：
   // 首屏在 networkidle 结算时，真实完整加载构成：

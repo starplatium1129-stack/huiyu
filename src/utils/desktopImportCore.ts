@@ -20,7 +20,7 @@ export interface ImportSourceFile {
 }
 
 function isImageFile(file: ImportSourceFile): boolean {
-  return (file.type.startsWith('image/') || /\.(png|jpe?g|webp|gif|bmp|avif|heic)$/i.test(file.name))
+  return (/^image\/(?:png|jpeg|webp|gif|bmp|avif)$/i.test(file.type) || /\.(png|jpe?g|webp|gif|bmp|avif)$/i.test(file.name))
     && file.size > 0
     && file.size <= MAX_IMPORT_BYTES
 }

@@ -14,6 +14,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const modelId=ref(snapshot.value.recommendedModel??snapshot.value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'),chatId=ref(''), drawing=ref(true), loras=ref(true), reviewed=ref(false)
   const environment=ref('comfy-nvidia'),llamaEnvironment=ref('llama-cuda')
   const busy=ref(false),message=ref(''),error=ref(''),completed=ref(false)
+  const cancelState=ref<'idle'|'pending'|'accepted'|'failed'>('idle'),operationUncertain=ref(false)
   const recommendation=computed(()=>localChatRecommendation(snapshot.value.hardware))
   const imageModels=computed(()=>snapshot.value.models.filter(model=>model.id.startsWith('anima-')&&model.preparation))
   const chatModels=computed(()=>snapshot.value.models.filter(model=>model.kind==='chat'))
@@ -22,8 +23,9 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const download=useLocalSetupDownload(workspace,ready,onResult)
   const chatStorage=useChatStorage(cause=>{error.value=cause})
   const hasComfy=computed(()=>snapshot.value.comfy.installation==='present')
-  let disposed=false,cancelled=false,activeOperation='',operationKind=''
-  let cancelRequest:Promise<unknown>|null=null
+  let disposed=false,cancelled=false
+  let activeOperation:ControlActionResult|null=null
+  let cancelRequest:Promise<void>|null=null
   let initialized=false
   watch(recommendation,value=>{if(!initialized){
     chatId.value=value.modelId
@@ -65,30 +67,46 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     checkpoint()
     if(download.failed.value[id])throw new Error(download.notices.value[id]||'下载未完成')
   }
-  async function waitOperation(result:ControlActionResult,kind:string){
+  async function waitOperation(result:ControlActionResult){
     const id=result.operation?.id
     if(!id)throw new Error('准备操作尚未确认，请重新检查控制室')
-    activeOperation=id;operationKind=kind
+    if(disposed)checkpoint()
+    const lateCancellation=cancelled&&!activeOperation
+    activeOperation=result;operationUncertain.value=false
     try{
       // Cancellation can precede the server acknowledgement that gives us an operation ID.
-      if(cancelled)await cancel()
-      checkpoint()
-      await waitLocalSetupOperation(result,{timeoutMs:60*60*1000,onMessage:value=>{checkpoint();message.value=value}})
-      checkpoint()
-    }finally{activeOperation='';operationKind=''}
+      if(lateCancellation)void cancel()
+      await waitLocalSetupOperation(result,{timeoutMs:60*60*1000,onOperation:operation=>{
+        if(disposed)checkpoint()
+        if(operation?.id!==id||operation.status==='failed'||operation.status==='completed')activeOperation=null
+      },onMessage:value=>{
+        if(disposed)checkpoint()
+        message.value=cancelState.value==='accepted'&&activeOperation?'已请求取消，等待当前步骤结束：'+value:value
+      }})
+      if(cancelled)throw new Error('当前步骤已完成；后续准备已停止，已完成文件保留')
+    }catch(cause){
+      if(!disposed&&activeOperation){
+        operationUncertain.value=true
+        throw new Error('当前准备状态尚未确认，请重新检查状态；后台操作可能仍在运行。'+(cause instanceof Error?cause.message:''))
+      }
+      throw cause
+    }finally{
+      // A late cancellation receipt must settle before another preparation can start.
+      if(!activeOperation)await cancelRequest
+    }
   }
   async function run(){
     if(busy.value||!ready.value||(!drawing.value&&!chatId.value))return
-    busy.value=true;cancelled=false;cancelRequest=null;completed.value=false;error.value=''
+    busy.value=true;cancelled=false;cancelState.value='idle';operationUncertain.value=false;completed.value=false;error.value=''
     const runtime=[...runtimeIds.value],weights=[...weightIds.value],prepareComfy=drawing.value&&needsComfyPreparation.value
     const prepareLlama=!!chatId.value&&!snapshot.value.chat?.runtimePresent,selectedChat=chatId.value,confirmedWorkspace=workspace.value
     try{
       for(const id of runtime)await fetchFile(id)
-      if(prepareComfy)await waitOperation(await localSetupApi.prepareEnvironment(environment.value,confirmedWorkspace),'environment')
-      if(prepareLlama)await waitOperation(await localSetupApi.prepareEnvironment(llamaEnvironment.value,confirmedWorkspace),'environment')
+      if(prepareComfy)await waitOperation(await localSetupApi.prepareEnvironment(environment.value,confirmedWorkspace))
+      if(prepareLlama)await waitOperation(await localSetupApi.prepareEnvironment(llamaEnvironment.value,confirmedWorkspace))
       for(const id of weights)await fetchFile(id)
       if(drawing.value){
-        await waitOperation(await controlApi.serviceAction('comfy','start'),'service')
+        await waitOperation(await controlApi.serviceAction('comfy','start'))
         const checked=await localSetupApi.getStatus({modelId:modelId.value})
         checkpoint()
         if(checked.nodes.state!=='checked'||checked.nodes.missing.length)throw new Error('绘图节点仍有缺项：'+(checked.nodes.missing.join('、')||'尚未确认，请重新检查'))
@@ -98,7 +116,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
       if(selectedChat){
         checkpoint()
         const result=await localSetupApi.startLlama(selectedChat,confirmedWorkspace)
-        await waitOperation(result,'llama')
+        await waitOperation(result)
         checkpoint()
         await chatStorage.load()
         checkpoint()
@@ -111,16 +129,32 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
       message.value='环境与文件已准备。接下来生成一张全龄图片或发送一条短消息，确认本机实际效果。'
       refresh()
     }catch(cause){if(!disposed)error.value=cause instanceof Error?cause.message:'准备未完成，请重试'}
-    finally{if(!disposed)busy.value=false}
+    finally{if(!disposed)busy.value=!!activeOperation}
   }
   async function cancel(){
+    if(disposed||!busy.value)return
     cancelled=true;download.cancel()
-    if(activeOperation&&!cancelRequest){
-      if(operationKind==='environment'||operationKind==='service')cancelRequest=localSetupApi.cancelEnvironment(activeOperation)
-      if(operationKind==='llama')cancelRequest=localSetupApi.stopLlama()
-    }
+    if(cancelRequest)return cancelRequest
+    const operation=activeOperation,id=operation?.operation?.id
+    if(!id||cancelState.value==='accepted')return
+    cancelState.value='pending'
+    cancelRequest=(async()=>{
+      try{
+        await localSetupApi.cancelEnvironment(id)
+        if(!disposed&&activeOperation===operation){cancelState.value='accepted';error.value='';message.value='已请求取消，等待当前步骤结束…'}
+      }catch{
+        if(!disposed&&activeOperation===operation){cancelState.value='failed';error.value='取消结果尚未确认，后台操作可能仍在运行；请重试取消。'}
+      }finally{cancelRequest=null}
+    })()
     await cancelRequest
   }
+  async function retryOperation(){
+    if(disposed||!operationUncertain.value||!activeOperation)return
+    error.value=''
+    try{await waitOperation(activeOperation);message.value='当前步骤已完成，请重新检查后继续准备。'}
+    catch(cause){if(!disposed)error.value=cause instanceof Error?cause.message:'准备状态尚未确认'}
+    finally{if(!disposed)busy.value=!!activeOperation}
+  }
   onUnmounted(()=>{disposed=true;download.cancel()})
-  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,busy,message,error,completed,recommendation,imageModels,chatModels,plan,downloadBytes,download,run,cancel}
+  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,busy,message,error,completed,recommendation,imageModels,chatModels,plan,downloadBytes,download,run,cancel,cancelState,operationUncertain,retryOperation}
 }

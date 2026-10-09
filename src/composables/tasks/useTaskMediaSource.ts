@@ -8,7 +8,9 @@ export function useTaskMediaSource(source: () => string) {
   const url = ref(''), error = ref('')
   let controller: AbortController | undefined, timer: ReturnType<typeof setTimeout> | undefined
   let revision = 0, disposed = false
+  function stopRenewal() { revision++; controller?.abort(); clearTimeout(timer); timer = undefined }
   async function refresh() {
+    if (disposed) return
     const path = source(); const current = ++revision
     controller?.abort(); const request = new AbortController(); controller = request; clearTimeout(timer)
     if (!isRuntimeResultPath(path)) { url.value = resolveRuntimeUrl(path); error.value = ''; return }
@@ -26,7 +28,7 @@ export function useTaskMediaSource(source: () => string) {
       timer = setTimeout(() => { void refresh() }, Math.max(1000, capability.expiresAt - Date.now() - 15000))
     } catch (cause) { if (!disposed && current === revision && !request.signal.aborted) error.value = cause instanceof Error ? cause.message : '媒体暂时无法读取' }
   }
-  watch(source, () => { url.value = ''; void refresh() }, { immediate: true })
+  watch(source, () => { url.value = ''; error.value = ''; void refresh() }, { immediate: true })
   // The source watcher owns the first lookup; the subscription renews on later identity changes.
   let runtimeIdentity: string | undefined
   const unsubscribe = onDesktopRuntime(state => {
@@ -35,6 +37,6 @@ export function useTaskMediaSource(source: () => string) {
     runtimeIdentity = identity
     if (previous !== undefined && identity !== previous && state.connection === 'ready' && isRuntimeResultPath(source())) void refresh()
   })
-  onUnmounted(() => { disposed = true; controller?.abort(); clearTimeout(timer); unsubscribe() })
-  return { url, error, refresh }
+  onUnmounted(() => { disposed = true; stopRenewal(); unsubscribe() })
+  return { url, error, refresh, stopRenewal }
 }

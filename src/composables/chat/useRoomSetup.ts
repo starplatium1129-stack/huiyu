@@ -64,6 +64,13 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
     await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
   }
 
+  function readinessMessage() {
+    if (chatProvider.value === 'local' && !ollamaOnline.value) return '聊天优先切换已完成；本地聊天模型仍未就绪，请在控制面板检查 Ollama 和模型。'
+    if (chatProvider.value === 'api' && !apiConfigured.value) return '聊天优先切换已完成；请确认 API 配置和聊天连接。'
+    if (!voice.readyFor(currentCharacter.value.voice)) return '聊天服务已连接；角色语音仍未就绪，请检查语音服务与声线配置。'
+    return '聊天环境已就绪。'
+  }
+
   let roomPollOperationId = ''
   let roomPollRequest: AbortController | null = null
   let roomActionRequest: AbortController | null = null
@@ -73,33 +80,40 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
     tick: async () => {
       const controller = new AbortController()
       roomPollRequest = controller
+      const current = () => roomPollRequest === controller && !controller.signal.aborted && !isDisposed()
       try {
         const data = await controlApi.getStatus({ signal: controller.signal })
-        if (roomPollRequest !== controller) return false
+        if (!current()) return false
         const operation = data.operation
         if (!operation || operation.id !== roomPollOperationId) {
           if (!data.ok) { roomSetupText.value = '准备结果尚未确认；状态暂时无法读取。'; return }
           roomPoll.stop()
           roomPollOperationId = ''
-          preparingRoom.value = false
-          roomSetupText.value = '准备结果尚未确认；正在重新检查服务，可再次尝试准备。'
+          roomSetupText.value = '准备结果尚未确认；正在重新检查服务。'
           setError(roomSetupText.value)
           await Promise.allSettled([refreshChatStatus(), refreshVoiceStatus()])
+          if (!current()) return false
+          preparingRoom.value = false
+          roomSetupText.value = '准备结果尚未确认；服务状态已重新检查，可再次尝试准备。'
           return false
         }
         roomSetupText.value = operation.message || '正在准备本地服务…'
         if (operation.status === 'running') return // void = 继续，完成本次后由底座排下一次
-        preparingRoom.value = false
         if (operation.status === 'failed') {
+          preparingRoom.value = false
           setError(operation.error || '聊天环境准备失败，请到控制面板查看。')
           roomSetupText.value = '准备失败；可以到控制面板查看服务状态。'
           return false
         }
-        await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
-        roomSetupText.value = '聊天环境已就绪。'
+        roomSetupText.value = '准备步骤已完成，正在核对聊天与语音服务…'
+        const checks = await Promise.allSettled([refreshChatStatus(), refreshVoiceStatus()])
+        if (!current()) return false
+        preparingRoom.value = false
+        roomSetupText.value = checks.some(check => check.status === 'rejected')
+          ? '准备步骤已完成，但服务状态尚未确认，请到控制面板重新检查。' : readinessMessage()
         return false
       } catch {
-        if (controller.signal.aborted) return false
+        if (!current()) return false
         roomSetupText.value = '仍在后台准备；状态暂时无法读取。'
         return // 瞬时网络抖动：完成本次查询后再安排下一次
       } finally {
@@ -115,7 +129,7 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
   }
 
   async function prepareRoom() {
-    if (preparingRoom.value) return
+    if (preparingRoom.value || isDisposed()) return
     preparingRoom.value = true
     setError('')
     roomSetupText.value = '正在提交聊天优先切换…'
@@ -124,12 +138,14 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
     roomActionRequest = controller
     try {
       const data = await controlApi.switchMode('chat', { signal: controller.signal })
-      if (roomActionRequest !== controller || controller.signal.aborted) return
+      if (roomActionRequest !== controller || controller.signal.aborted || isDisposed()) return
       const operationId = String(data.operation?.id || '')
       roomSetupText.value = data.message || '正在准备聊天环境…'
       if (!operationId) {
+        await Promise.allSettled([refreshChatStatus(), refreshVoiceStatus()])
+        if (roomActionRequest !== controller || controller.signal.aborted || isDisposed()) return
         preparingRoom.value = false
-        await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
+        roomSetupText.value = '准备结果尚未确认；服务状态已重新检查，请到控制面板核对。'
         return
       }
       roomPollRequest?.abort()
@@ -138,7 +154,7 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
       roomPollOperationId = operationId
       roomPoll.start()
     } catch (error) {
-      if (controller.signal.aborted) return
+      if (controller.signal.aborted || isDisposed()) return
       preparingRoom.value = false
       roomSetupText.value = '准备失败；可以到控制面板手动处理。'
       setError(error instanceof Error && error.message ? error.message : '聊天环境准备失败')

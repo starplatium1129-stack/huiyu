@@ -71,7 +71,7 @@ export function useControlActions(
   const savingConfig = ref(false)
   async function saveConfig(event?: Event) {
     if (event instanceof KeyboardEvent && (event.isComposing || event.keyCode === 229)) return
-    if (savingConfig.value || !status.statusLoaded.value) return
+    if (savingConfig.value || status.opBusy.value || !status.statusLoaded.value) return
     savingConfig.value = true
     status.feedbackText.value = '正在保存并重新检测…'
     try {
@@ -141,7 +141,7 @@ export function useControlActions(
   }
 
   async function doStart() {
-    if (status.opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
+    if (status.opBusy.value || savingConfig.value) { showToast('有操作正在进行，请稍候', true); return }
     if (!status.lastStatus()) { showToast('控制面板仍在读取配置，请稍候再试', true); status.pollStatus(); return }
     if (status.lastStatus()?.restartRequired) { showToast('配置已保存，请重新启动应用后再启用公网分享'); return }
     status.actionBusy.value = true

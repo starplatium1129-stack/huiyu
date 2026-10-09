@@ -1,6 +1,46 @@
 use super::*;
 
 #[test]
+fn list_artwork_revision_ignores_empty_maintenance_but_tracks_artwork_writes() {
+    let directory = tempfile::tempdir().unwrap();
+    let mut c = schema::open(
+        directory.path().join("workspace"),
+        "list-test".into(),
+        "epoch".into(),
+        true,
+    )
+    .unwrap();
+    let revision = c.next_revision().unwrap();
+    c.db.execute(
+        "INSERT INTO artworks VALUES(?,?,?, ?,NULL)",
+        params![
+            "one",
+            "\"one\"",
+            "{\"id\":\"one\",\"title\":\"before\"}",
+            revision
+        ],
+    )
+    .unwrap();
+    let command = json!({"kind":"listArtworks"});
+    let before = c.execute(&command, "test").unwrap();
+    c.execute(
+        &json!({"kind":"purgeExpiredTrash","operationId":"empty-cleanup"}),
+        "test",
+    )
+    .unwrap();
+    let maintained = c.execute(&command, "test").unwrap();
+    assert_eq!(maintained["items"], before["items"]);
+    assert_eq!(maintained["artworkRevision"], before["artworkRevision"]);
+    assert!(maintained["revision"].as_i64() > before["revision"].as_i64());
+    c.execute(&json!({"kind":"patchArtwork","operationId":"patch-one","id":"one","expectedRevision":revision,"patch":{"title":"after"}}), "test").unwrap();
+    let changed = c.execute(&command, "test").unwrap();
+    assert!(changed["artworkRevision"].as_i64() > maintained["artworkRevision"].as_i64());
+    assert_eq!(changed["items"][0]["id"], "one");
+    assert_eq!(changed["items"][0]["body"]["title"], "after");
+    c.shutdown().unwrap();
+}
+
+#[test]
 fn batch_reads_honor_cancellation_before_deserializing_rows() {
     let (_directory, mut c) = fixture();
     c.db.execute(

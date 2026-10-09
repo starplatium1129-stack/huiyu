@@ -1,7 +1,4 @@
 @reference "./tailwind.css";
-.appearance-entry { @apply tw:flex tw:items-center tw:gap-s-2; grid-column: 1 / -1; @apply tw:p-s-3; border: 0; @apply tw:rounded-md; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-left tw:cursor-pointer; }
-.appearance-entry:hover { background: var(--accent-soft); @apply tw:text-accent; }
-.appearance-entry kbd { margin-inline-start: auto; }
 .appearance-dialog { width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); @apply tw:m-auto; padding: clamp(20px, 4vw, 32px); @apply tw:box-border tw:overflow-auto tw:text-primary; background: var(--bg-elevated, var(--bg-surface)); border: 1px solid var(--border-soft); @apply tw:rounded-xl; box-shadow: var(--shadow-lg); }
 .appearance-dialog::backdrop { background: var(--art-backdrop); backdrop-filter: blur(8px); }
 .appearance-heading { @apply tw:flex; align-items: start; @apply tw:justify-between tw:gap-s-4 tw:mb-s-5; }

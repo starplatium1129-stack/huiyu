@@ -2,11 +2,56 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
 import StudioMediaPlayer from './StudioMediaPlayer.vue'
+import * as taskApi from '@/api/runtimeTasks'
+import * as runtime from '@/platform/desktop/runtime'
 
 let wrapper: ReturnType<typeof mount> | undefined
 afterEach(() => { wrapper?.unmount(); wrapper = undefined; vi.restoreAllMocks() })
 
 describe('StudioMediaPlayer', () => {
+  it('stops repeated capability renewal after one automatic media recovery, even if metadata briefly succeeds', async () => {
+    vi.useFakeTimers()
+    const get = vi.spyOn(taskApi, 'getRuntimeTask').mockResolvedValue({ resultRefs: [{ index: 0, alias: 'fixture' }] } as never)
+    let capability = 0
+    const fetch = vi.spyOn(runtime, 'desktopRuntimeFetch').mockImplementation(async () => new Response(JSON.stringify({ url: `/media/cap-${++capability}.mp4`, expiresAt: Date.now() + 30_000 })))
+    try {
+      wrapper = mount(StudioMediaPlayer, { props: { src: '/api/tasks/v1/fixture/results/0', label: '损坏的任务结果' } })
+      await flushPromises()
+      expect(fetch).toHaveBeenCalledOnce()
+      await wrapper.get('video').trigger('error'); await flushPromises()
+      expect(fetch).toHaveBeenCalledTimes(2)
+      await wrapper.get('video').trigger('loadedmetadata')
+      await wrapper.get('video').trigger('error'); await flushPromises()
+      expect(fetch).toHaveBeenCalledTimes(2)
+      await vi.advanceTimersByTimeAsync(60_000)
+      expect(fetch).toHaveBeenCalledTimes(2)
+      let finish!: (value: never) => void
+      get.mockReturnValueOnce(new Promise(resolve => { finish = resolve }))
+      const retry = wrapper.get('.studio-media-error button')
+      await retry.trigger('click'); await retry.trigger('click')
+      expect(retry.attributes('disabled')).toBeDefined()
+      expect(get).toHaveBeenCalledTimes(3)
+      finish({ resultRefs: [{ index: 0, alias: 'fixture' }] } as never)
+      await flushPromises()
+      expect(fetch).toHaveBeenCalledTimes(3)
+      expect(retry.attributes('disabled')).toBeUndefined()
+    } finally { wrapper?.unmount(); wrapper = undefined; vi.useRealTimers() }
+  })
+
+  it.each(['video', 'audio'] as const)('really reloads the same %s URL on manual retry and restores its position', async kind => {
+    wrapper = mount(StudioMediaPlayer, { props: { src: '/media/clip', kind, label: '本地媒体' } })
+    const element = wrapper.get(kind).element as HTMLMediaElement
+    const load = vi.spyOn(element, 'load').mockImplementation(() => { element.currentTime = 0 })
+    element.currentTime = 25
+    await wrapper.get(kind).trigger('error')
+    expect(load).not.toHaveBeenCalled()
+    await wrapper.get('.studio-media-error button').trigger('click'); await flushPromises()
+    expect(load).toHaveBeenCalledOnce()
+    await wrapper.get(kind).trigger('loadedmetadata')
+    expect(element.currentTime).toBe(25)
+    expect(wrapper.find('.studio-media-error').exists()).toBe(false)
+  })
+
   it('pauses cached playback and releases its media source before removal', async () => {
     const active = ref(true)
     wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, {

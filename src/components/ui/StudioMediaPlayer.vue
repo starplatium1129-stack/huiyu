@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onDeactivated, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onDeactivated, onMounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { useTaskMediaSource } from '@/composables/tasks/useTaskMediaSource'
+import { isRuntimeResultPath } from '@/api/runtimeTasks'
 
 /**
  * 原生 <audio controls> / <video controls> 的替代品。
@@ -33,6 +34,8 @@ const mediaSource = taskMedia.url
 const mediaError = taskMedia.error
 let resumeAt = 0, resumePlaying = false
 let playRevision = 0
+let reloadRevision = 0, automaticRecoveryAttempted = false
+const reloading = ref(false)
 // Capture a URL renewal before the logical-source watcher clears old playback.
 // A deferred snapshot would restore the previous clip after switching sources.
 watch(mediaSource, (_next, previous) => {
@@ -116,8 +119,38 @@ function onTimeUpdate() {
 
 function onEnded() { playing.value = false }
 
+async function reloadMedia() {
+  const element = media.value
+  if (!element || reloading.value) return
+  const source = props.src, previousUrl = mediaSource.value, revision = ++reloadRevision
+  reloading.value = true
+  playRevision++
+  try {
+    await taskMedia.refresh()
+    await nextTick()
+    if (revision !== reloadRevision || source !== props.src || element !== media.value || mediaError.value) return
+    // A renewed capability changes src itself; ordinary URLs need an explicit reload.
+    if (mediaSource.value === previousUrl) {
+      resumeAt = element.currentTime || 0
+      resumePlaying = !element.paused
+      element.load()
+    }
+  } finally { if (revision === reloadRevision) reloading.value = false }
+}
+
+function onMediaError() {
+  failed.value = true
+  // Broken media can emit metadata before failing again; only changing clips
+  // resets automatic recovery, not a new capability URL or playback event.
+  if (isRuntimeResultPath(props.src) && !automaticRecoveryAttempted) {
+    automaticRecoveryAttempted = true
+    void reloadMedia()
+  } else taskMedia.stopRenewal()
+}
+
 // 换片（重新生成 / 换镜头）时把整条状态复位，避免沿用上一条的进度与错误。
 watch(() => props.src, () => {
+  reloadRevision++; reloading.value = false; automaticRecoveryAttempted = false
   resumeAt = 0; resumePlaying = false
   playing.value = false
   currentTime.value = 0
@@ -135,6 +168,7 @@ onDeactivated(pause)
 defineExpose({ pause })
 onBeforeUnmount(() => {
   playRevision++
+  reloadRevision++
   document.removeEventListener('fullscreenchange', syncFullscreen)
   // Removing the DOM node alone can leave an in-flight media response or decoder alive.
   const element = media.value
@@ -149,7 +183,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       v-if="kind === 'video'"
       ref="media"
       class="studio-media-frame"
-      :src="mediaSource"
+      :src="mediaSource || undefined"
       :poster="poster || undefined"
       :aria-label="label"
       playsinline
@@ -161,7 +195,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       @pause="playing = false"
       @ended="onEnded"
       @volumechange="muted = ($event.target as HTMLMediaElement).muted"
-      @error="failed = true; taskMedia.refresh()"
+      @error="onMediaError"
     >
       <track v-if="captionsSrc" kind="captions" :src="captionsSrc" srclang="zh-CN" label="中文字幕" default />
     </video>
@@ -178,7 +212,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       @pause="playing = false"
       @ended="onEnded"
       @volumechange="muted = ($event.target as HTMLMediaElement).muted"
-      @error="failed = true"
+      @error="onMediaError"
     ></audio>
 
     <div class="studio-media-bar">
@@ -217,7 +251,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       <p class="tw:mt-s-2 tw:mx-0 tw:mb-0 tw:leading-body tw:whitespace-pre-wrap">{{ transcript }}</p>
     </details>
 
-    <p v-if="failed || mediaError" class="studio-media-error" role="status">{{ mediaError || '这段媒体暂时无法播放，可重新读取已保存的结果，或下载后查看。' }}<button class="btn btn-ghost btn-sm" type="button" @click="taskMedia.refresh()">重新读取</button></p>
+    <p v-if="failed || mediaError" class="studio-media-error" role="status">{{ mediaError || '这段媒体暂时无法播放，可重新读取已保存的结果，或下载后查看。' }}<button class="btn btn-ghost btn-sm" type="button" :disabled="reloading" :aria-busy="reloading" @click="reloadMedia">{{ reloading ? '读取中…' : '重新读取' }}</button></p>
   </figure>
 </template>
 

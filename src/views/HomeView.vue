@@ -25,8 +25,8 @@
           </div>
         </div>
         <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] }" :aria-label="`${heroName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
-          <img v-if="neneHero.src && !heroFailed.nene" v-bind="neneHero" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" />
-          <img v-if="natsumeHero.src && !heroFailed.natsume" v-bind="natsumeHero" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" />
+          <img v-if="neneHero.src && !heroFailed.nene" v-bind="neneHero" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1497" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" />
+          <img v-if="natsumeHero.src && !heroFailed.natsume" v-bind="natsumeHero" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1497" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" />
           <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="homeMuse">
             <ArchiveIcon name="image" />
             <div role="status" class="hero-fallback-copy"><strong class="hero-fallback-text">主视觉暂未加载</strong><p>{{ heroName }}的画页暂时无法读取。</p></div>
@@ -85,7 +85,7 @@
     <HomeCreationGuide />
     <HomeArtJournal :scenes="featuredScenes" />
 
-    <section class="container home-inspiration" aria-label="场景与角色灵感">
+    <section ref="inspirationSection" class="container home-inspiration" aria-label="场景与角色灵感">
         <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
         <div v-if="popularCharacters.length" class="pop-strip" aria-labelledby="popStripLabel">
           <div class="strip-label" id="popStripLabel">
@@ -99,7 +99,7 @@
               :to="`/popular-scenes?character=${encodeURIComponent(c.id)}`"
             >
               <RuntimeImage
-                :src="portraitSrc(c.id)"
+                :src="artworkReady.characters ? portraitSrc(c.id) : undefined"
                 :alt="c.displayName"
                 loading="lazy"
                 decoding="async"
@@ -114,7 +114,7 @@
     </section>
 
     <!-- 创作入口 -->
-    <section class="container home-section home-atelier" aria-labelledby="home-atelier-title" data-reveal>
+    <section ref="atelierSection" class="container home-section home-atelier" aria-labelledby="home-atelier-title" data-reveal>
       <div class="home-section-head">
         <div>
           <span class="eyebrow">灵感，在指尖悄然发生</span>
@@ -124,7 +124,7 @@
       </div>
       <div class="atelier-entries">
         <RouterLink v-for="entry in creationEntries" :key="entry.id" :to="entry.to" class="atelier-entry" :class="{ 'atelier-entry-lead': entry.id === 'make' }">
-          <span class="atelier-entry-art" aria-hidden="true"><img :src="entry.art" width="1536" height="1024" alt="" loading="lazy" decoding="async" draggable="false" /></span>
+          <span class="atelier-entry-art" aria-hidden="true"><img v-if="artworkReady.entries" :srcset="entrySrcset(entry.art)" sizes="(max-width: 1000px) 46vw, min(33vw, 520px)" :src="entry.art" width="1536" height="1024" alt="" loading="lazy" decoding="async" draggable="false" /></span>
           <span class="atelier-entry-copy">
             <span class="atelier-entry-label" aria-hidden="true">{{ entry.label }}</span>
             <span class="atelier-entry-title">{{ entry.title }}</span>
@@ -136,7 +136,7 @@
     </section>
 
     <!-- 资料区 -->
-    <section class="container home-section home-section-quiet" data-reveal>
+    <section ref="toolsSection" class="container home-section home-section-quiet" data-reveal>
       <div class="home-section-head">
         <div>
           <span class="eyebrow">资料与回顾</span>
@@ -146,22 +146,22 @@
       </div>
       <div class="tools-grid">
         <RouterLink to="/character" class="tool-card card-create">
-          <img class="tool-art" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
+          <img v-if="artworkReady.tools" class="tool-art" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="character" />角色档案</span>
           <span class="d">读懂她的性格与过往，认识下一位主角。</span>
         </RouterLink>
         <RouterLink to="/style" class="tool-card card-create">
-          <img class="tool-art" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
+          <img v-if="artworkReady.tools" class="tool-art" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="palette" />画风</span>
           <span class="d">调配色彩情绪与光影色阶。</span>
         </RouterLink>
         <RouterLink to="/lora" class="tool-card card-create">
-          <img class="tool-art" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
+          <img v-if="artworkReady.tools" class="tool-art" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="model" />模型</span>
           <span class="d">挑选契合这次笔触的底模与特征。</span>
         </RouterLink>
         <RouterLink to="/gallery" class="tool-card card-create">
-          <img class="tool-art" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
+          <img v-if="artworkReady.tools" class="tool-art" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="gallery" />我的作品</span>
           <span class="d">安静珍藏属于你的每一幅心动创作。</span>
         </RouterLink>
@@ -178,7 +178,7 @@
           title="画板还在等第一抹色彩"
           message="画好之后，属于你的心动画页会静静收录在这里。"
         >
-          <template #illustration><img class="recent-empty-art" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template>
+          <template #illustration><img v-if="artworkReady.tools" class="recent-empty-art" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template>
           <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
         </ArchiveStatePanel>
       </div>
@@ -195,15 +195,20 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, computed, nextTick, onMounted, watch } from 'vue'
-import SceneCard from '@/components/SceneCard.vue'
+import { ref, reactive, computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, watch } from 'vue'
+const SceneCard = defineAsyncComponent(() => import('@/components/SceneCard.vue'))
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
 import HomeCreationGuide from '@/components/home/HomeCreationGuide.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import studioOriginal from '@/assets/illustrations/atelier-studio.png'
+import studioOriginal from '@/assets/illustrations/atelier-studio.webp'
+import studioPreview from '@/assets/illustrations/atelier-studio-768.webp'
+import scenePreview from '@/assets/illustrations/home-scene-768.webp'
+import motionPreview from '@/assets/illustrations/home-motion-768.webp'
+import roomPreview from '@/assets/illustrations/home-room-768.webp'
+import archivePreview from '@/assets/illustrations/home-archive-768.webp'
 import sceneOriginal from '@/assets/illustrations/home-scene.webp'
 import motionOriginal from '@/assets/illustrations/home-motion.webp'
 import roomOriginal from '@/assets/illustrations/home-room.webp'
@@ -220,6 +225,33 @@ import { useSceneStore } from '@/stores/sceneStore'
 import type { Scene } from '@/stores/sceneStore'
 
 useScrollReveal()
+const inspirationSection = ref<HTMLElement | null>(null)
+const atelierSection = ref<HTMLElement | null>(null)
+const toolsSection = ref<HTMLElement | null>(null)
+const artworkReady = reactive({ characters: false, entries: false, tools: false })
+let artworkObserver: IntersectionObserver | undefined
+onMounted(() => {
+  if (!('IntersectionObserver' in window)) {
+    artworkReady.characters = artworkReady.entries = artworkReady.tools = true
+    return
+  }
+  const sections = new Map<HTMLElement | null, keyof typeof artworkReady>([
+    [inspirationSection.value, 'characters'], [atelierSection.value, 'entries'], [toolsSection.value, 'tools'],
+  ])
+  // Native lazy loading eagerly fetches several screens ahead. Keep links and
+  // reserved artwork space immediately available, then warm images near view.
+  artworkObserver = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      const section = sections.get(entry.target as HTMLElement)
+      if (entry.isIntersecting && section) {
+        artworkReady[section] = true
+        artworkObserver?.unobserve(entry.target)
+      }
+    }
+  }, { rootMargin: '100px' })
+  for (const section of sections.keys()) if (section) artworkObserver.observe(section)
+})
+onUnmounted(() => artworkObserver?.disconnect())
 const studioArt = useThemeIllustration(studioOriginal, 'draw')
 const sceneArt = useThemeIllustration(sceneOriginal, 'scene')
 const motionArt = useThemeIllustration(motionOriginal, 'motion')
@@ -253,6 +285,12 @@ const sceneLibraryCopy = computed(() => homeScenes.value
   : '定格心动瞬间，备好镜头与专属光影。')
 const featuredScenes = computed(() => pickFeatured(featuredIds.value, homeScenes.value || [], 6))
 const homeMuse = ref<'nene' | 'natsume'>('nene')
+const entryPreviews = new Map([[studioOriginal, studioPreview], [sceneOriginal, scenePreview],
+  [motionOriginal, motionPreview], [roomOriginal, roomPreview], [archiveOriginal, archivePreview]])
+function entrySrcset(source: string) {
+  const preview = entryPreviews.get(source)
+  return preview ? `${preview} 768w, ${source} 1536w` : undefined
+}
 const creationEntries = computed(() => [
   { id: 'make', label: '01 / MAKE', title: '开始绘制', description: '选一位主角与场景，把心动的模样画下来。', action: '走进绘制台', to: '/prompt-builder', art: studioArt.value },
   { id: 'scene', label: '02 / SCENE', title: '灵感场景', description: sceneLibraryCopy.value, action: '寻找灵感', to: '/scene-explorer', art: sceneArt.value },

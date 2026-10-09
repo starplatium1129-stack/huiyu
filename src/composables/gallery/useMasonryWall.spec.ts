@@ -77,6 +77,7 @@ it('preserves cached gallery columns while hidden and measures the actual contai
   } })
   const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(Gallery) : null }) }))
   try {
+    resize([{ contentRect: { width } } as ResizeObserverEntry], {} as ResizeObserver)
     expect(columns.columnCount.value).toBe(3)
     active.value = false
     await nextTick()

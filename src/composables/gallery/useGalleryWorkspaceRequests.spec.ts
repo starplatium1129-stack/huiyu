@@ -18,7 +18,7 @@ it('restores library filters after its snapshot without waiting for scene or LoR
   const item = { ...record(1), scene: 'scene-1', sceneTitle: 'Saved title', lora: 'lora-1' }
   library({ history: [item, { ...record(2), sceneTitle: 'Saved title' }], projects: [{ id: 'album', history_ids: [1] }] })
   await flushPromises()
-  expect(gallery.galleryLoading.value).toBe(false)
+  await vi.waitFor(() => expect(gallery.galleryLoading.value).toBe(false))
   expect(gallery.projectFilter.value).toBe('album')
   expect(gallery.projectUnavailable.value).toBe(false)
   expect(gallery.visible.value.map(value => value.id)).toEqual([1])
@@ -105,7 +105,7 @@ it('cancels originals outside the scroll margin and drops their queued reads whi
 it('coalesces a bulk media replacement into one wall scan and observes the current cards', async () => {
   const history = Array.from({ length: 60 }, (_, index) => record(index + 1))
   mocks.snapshot.mockResolvedValue({ history, projects: [] })
-  const { gallery } = await setup()
+  const { gallery } = await setup(false, 60)
   const scan = vi.spyOn(gallery.shellEl.value!, 'querySelectorAll')
   const observer = Observer.instances.find(value => value.options.rootMargin === '600px 0px')!
   gallery.history.value = history.map(item => ({ ...item, image_id: `${item.image_id}-replacement` }))

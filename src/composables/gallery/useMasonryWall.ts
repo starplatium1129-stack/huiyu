@@ -53,7 +53,6 @@ export function buildMasonryGroups<T extends Pick<ArtworkRecord, 'id'> = Artwork
 export function useMasonryColumns(containerRef?: Ref<HTMLElement | null>) {
   const columnCount = ref(4)
   let active = false
-  let measured = false
 
   function update(measuredWidth?: number) {
     if (!active) return
@@ -83,9 +82,8 @@ export function useMasonryColumns(containerRef?: Ref<HTMLElement | null>) {
     if (active) return
     active = true
     if (containerRef?.value && typeof ResizeObserver !== 'undefined') {
-      // The first mount needs its actual columns immediately. Cached returns
-      // keep them until ResizeObserver supplies fresh geometry after layout.
-      if (!measured) { update(); measured = true }
+      // Use layout's delivered geometry on first mount as well as cached returns;
+      // reading clientWidth here forces a full layout inside Vue's mount flush.
       resizeObserver = new ResizeObserver(entries => {
         const entry = entries[0]
         if (entry) update(entry.contentRect.width)

@@ -7,7 +7,7 @@ import { useControlActions } from './useControlActions'
 
 it('configuration saves ignore repeated clicks and allow retry after failure', async () => {
   const status = {
-    statusLoaded: ref(true), lastStatus: () => ({}), pollStatus: vi.fn(), feedbackText: ref(''),
+    statusLoaded: ref(true), lastStatus: () => ({}), pollStatus: vi.fn(), feedbackText: ref(''), opBusy: ref(false),
     sdHost: ref('http://localhost:7860'), comfyHost: ref('http://localhost:8188'), ttsHost: ref('http://localhost:9880'),
     ttsEngine: ref('voxcpm2'), voiceNeneLora: ref('nene.safetensors'), voiceNatsumeLora: ref('natsume.safetensors'),
     voiceNeneRef: ref(''), voiceNenePrompt: ref(''), voiceNatsumeRef: ref(''), voiceNatsumePrompt: ref(''),
@@ -122,6 +122,33 @@ it('serializes service and mode submissions even when an in-flight status has no
   await actions.switchMode('chat')
   expect(switchMode).toHaveBeenCalledOnce()
   status.stopPolling()
+})
+
+it('configuration saving and sharing cannot overlap their configuration writes', async () => {
+  let finish!: () => void
+  const control = { saveConfig: vi.fn(() => new Promise<{ ok: true }>(resolve => { finish = () => resolve({ ok: true }) })),
+    start: vi.fn().mockResolvedValue({ ok: true }), getStatus: vi.fn().mockResolvedValue({ ok: true, operation: null }),
+    getLogs: vi.fn().mockResolvedValue({ logs: [], total: 0 }),
+  } as unknown as NonNullable<Parameters<typeof useControlActions>[1]['control']>
+  const status = useControlStatus({ api: control, showToast: vi.fn() })
+  const actions = useControlActions(status, { control, showToast: vi.fn() })
+  status.renderStatus({ ok: true, operation: null } as ControlStatus)
+  try {
+    const saving = actions.saveConfig()
+    const blockedStart = actions.doStart()
+    expect(control.saveConfig).toHaveBeenCalledOnce()
+    expect(control.start).not.toHaveBeenCalled()
+    await blockedStart
+    finish(); await saving
+    const sharing = actions.doStart()
+    const blockedSave = actions.saveConfig()
+    expect(control.saveConfig).toHaveBeenCalledTimes(2)
+    await blockedSave
+    finish(); await sharing
+    expect(control.start).toHaveBeenCalledOnce()
+    expect(actions.savingConfig.value).toBe(false)
+    expect(status.opBusy.value).toBe(false)
+  } finally { status.stopPolling() }
 })
 
 it('locks sharing with all service commands and cannot revive polling after its owner is disposed', async () => {

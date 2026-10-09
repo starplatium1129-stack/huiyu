@@ -342,10 +342,11 @@
 </template>
 
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-import ShotListEditor from '@/components/video/ShotListEditor.vue'
+const ShotListEditor = defineAsyncComponent(() => import('@/components/video/ShotListEditor.vue'))
 import VideoGenerationBar from '@/components/video/VideoGenerationBar.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'

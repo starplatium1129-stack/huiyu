@@ -64,6 +64,21 @@ afterEach(() => { wrapper?.unmount(); wrapper = undefined; voice?.destroy(); voi
   desktopFixture.current = undefined; vi.unstubAllGlobals(); vi.restoreAllMocks() })
 
 describe('companion chat speech ownership', () => {
+  it('preserves each browser fallback draft when switching characters before the debounce completes', async () => {
+    vi.useFakeTimers()
+    desktopFixture.current = undefined
+    try {
+      setup(); await flushPromises()
+      chat.inputText.value = '宁宁尚未自动保存的末尾'; chat.onInput()
+      chat.switchCharacter('natsume'); await nextTick()
+      chat.inputText.value = '夏目的另一份草稿'; chat.onInput()
+      chat.switchCharacter('nene'); await nextTick()
+      expect(chat.inputText.value).toBe('宁宁尚未自动保存的末尾')
+      await vi.advanceTimersByTimeAsync(240)
+      chat.switchCharacter('natsume'); await nextTick()
+      expect(chat.inputText.value).toBe('夏目的另一份草稿')
+    } finally { wrapper?.unmount(); wrapper = undefined; vi.useRealTimers() }
+  })
   it.each(['blur', 'hidden', 'native-hidden'])('cancels manual recording on %s without submitting it', async reason => {
     setup(); chat.onSpeechPress(); await nextTick(); expect(state.value).toBe('capturing')
     if (reason === 'blur') { vi.mocked(document.hasFocus).mockReturnValue(false); window.dispatchEvent(new Event('blur')) }

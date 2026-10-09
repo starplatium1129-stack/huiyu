@@ -51,7 +51,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import InspirationArtwork from './InspirationArtwork.vue'
 import { DEFAULT_RAILS, railIconName, type ExplorerScene } from '@/composables/scene/sceneExplorerPresentation'
 import { useInspirationDeck } from '@/composables/scene/useInspirationDeck'
-import { analyzeQuery, matchesSearch, searchScore } from '@/utils/sceneUX'
+import { analyzeQuery, matchesSearch, prepareSceneSearch, searchScore } from '@/utils/sceneUX'
 
 interface MoodRail { character: string; icon?: string; title: string; subtitle: string; query: string }
 const props = withDefaults(defineProps<{ rails: MoodRail[]; scenes?: ExplorerScene[] }>(), { scenes: () => [] })
@@ -62,14 +62,17 @@ const host = ref<HTMLElement | null>(null)
 // scene per rail. Missing matches keep their usable exploration link.
 const entries = computed(() => {
   const used = new Set<string>()
+  const documents = new Map<ExplorerScene, ReturnType<typeof prepareSceneSearch>>()
   return props.rails.map((rail, i) => {
     const analysis = analyzeQuery(rail.query, null)
     let scene: ExplorerScene | undefined, bestScore = -Infinity
     for (const candidate of props.scenes) {
       if (used.has(candidate.id) || candidate.rating !== 'All' || candidate.mature === true
-        || (rail.character !== 'shared' && candidate.char !== rail.character)
-        || !matchesSearch(candidate, rail.query, null, undefined, analysis)) continue
-      const score = searchScore(candidate, rail.query, null, undefined, analysis)
+        || (rail.character !== 'shared' && candidate.char !== rail.character)) continue
+      let document = documents.get(candidate)
+      if (!document) { document = prepareSceneSearch(candidate); documents.set(candidate, document) }
+      if (!matchesSearch(document, analysis)) continue
+      const score = searchScore(document, analysis)
       if (score > bestScore) { scene = candidate; bestScore = score }
     }
     if (scene) used.add(scene.id)

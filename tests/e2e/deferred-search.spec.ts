@@ -1,5 +1,12 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
+
+async function openHome(page: Page) {
+  await page.goto('/')
+  const guide = page.getByRole('dialog', { name: '访客导览', exact: true })
+  await guide.getByRole('button', { name: '先浏览，稍后配置', exact: true }).click()
+  await expect(guide).toBeHidden()
+}
 
 for (const theme of ['light', 'dark']) {
   test(`search loads on demand and preserves keyboard and pointer focus ${theme}`, async ({ page }, testInfo) => {
@@ -10,11 +17,12 @@ for (const theme of ['light', 'dark']) {
     }, theme)
     const loaded: string[] = []
     page.on('request', request => loaded.push(request.url()))
-    await page.goto('/')
+    await openHome(page)
     const trigger = page.getByRole('button', { name: '搜索页面、场景与作品', exact: true })
     await expect(trigger).toBeVisible()
     expect(loaded.filter(url => /\/GlobalSearch-[^/]+\.(js|css)/.test(url))).toEqual([])
     expect(loaded.filter(url => /\/fluidGlassRenderer-[^/]+\.js/.test(url))).toEqual([])
+    expect(loaded.filter(url => /\/RuntimeTaskList-[^/]+\.js/.test(url))).toEqual([])
     const tasks = page.getByRole('dialog', { name:'任务中心', exact:true })
     await page.locator('.task-center-button').click()
     await expect(tasks).toBeVisible()
@@ -71,7 +79,7 @@ test('a slow first search can be cancelled before its code arrives', async ({ pa
     await blocked
     await route.continue()
   })
-  await page.goto('/')
+  await openHome(page)
   const trigger = page.getByRole('button', { name: '搜索页面、场景与作品', exact: true })
   await trigger.focus()
   await page.keyboard.press('Control+k')

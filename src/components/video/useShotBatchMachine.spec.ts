@@ -201,13 +201,89 @@ describe('shot batch operation recovery', () => {
     vi.mocked(api.fetchVideoBatch).mockRejectedValueOnce(new ApiClientError('temporary', { kind: 'http', status: 503 }))
     const { machine, error } = setup()
     expect(await machine.reconnectBatch('saved')).toBe(true)
-    expect(error.value).toBe('temporary')
+    expect(machine.batchReadError.value).toBe('temporary')
+    expect(machine.batchReadRetryable.value).toBe(true)
+    expect(error.value).toBe('')
   })
   it('only discards reconnect information when the batch is missing', async () => {
     vi.mocked(api.fetchVideoBatch).mockRejectedValueOnce(new ApiClientError('gone', { kind: 'http', status: 410 }))
     const { machine, error } = setup()
     expect(await machine.reconnectBatch('saved')).toBe(false)
-    expect(error.value).toContain('已不存在')
+    expect(machine.batchReadError.value).toContain('已不存在')
+    expect(machine.batchReadRetryable.value).toBe(false)
+    expect(error.value).toBe('')
+  })
+  it('does not admit a new batch while an existing target is loading or still unconfirmed', async () => {
+    const { machine, shots } = setup()
+    machine.batch.value = null
+    shots.value = [{ prompt: 'An existing complete shot draft', dialogue: '', shotSize: 'medium', camera: 'still', motion: 'subtle', duration: 3, seedText: '', imageName: '', imageUrl: '', cast: '' }]
+    let reject!: (error: Error) => void
+    vi.mocked(api.fetchVideoBatch).mockReturnValueOnce(new Promise((_resolve, fail) => { reject = fail }))
+    const read = machine.reconnectBatch('saved')
+    expect(machine.canSubmit.value).toBe(false)
+    await machine.submitBatch()
+    expect(api.createVideoBatch).not.toHaveBeenCalled()
+    reject(new ApiClientError('temporary', { kind: 'http', status: 503 })); await read
+    expect(machine.canSubmit.value).toBe(false)
+    expect(machine.batchReadRetryable.value).toBe(true)
+    vi.mocked(api.fetchVideoBatch).mockResolvedValueOnce({ ok: true, batch: { ...batch('done'), id: 'saved' } })
+    await machine.reconnectBatch('saved')
+    expect(machine.canSubmit.value).toBe(true)
+    expect(shots.value[0].prompt).toBe('An existing complete shot draft')
+  })
+  it.each(['cancel', 'retry-one', 'retry-failed', 'concat'] as const)('does not %s the previous batch while a different target is loading', async action => {
+    const { machine, shots } = setup()
+    machine.batch.value = action === 'concat' ? { ...batch('done'), progress: { total: 2, succeeded: 2, failed: 0 } } : batch(action === 'cancel' ? 'running' : 'paused')
+    shots.value = [{ prompt: 'A preserved shot', seedText: '' } as ShotDraft]
+    machine.restoreShotSubmission(shots.value[0], { batchId: 'original', shotIndex: 0 })
+    let finish!: (value: Awaited<ReturnType<typeof api.fetchVideoBatch>>) => void
+    vi.mocked(api.fetchVideoBatch).mockReturnValueOnce(new Promise(resolve => { finish = resolve }))
+    const read = machine.reconnectBatch('next')
+    if (action === 'cancel') await machine.cancelBatch()
+    if (action === 'retry-one') await machine.retryShotAt(0)
+    if (action === 'retry-failed') await machine.retryAllFailed()
+    if (action === 'concat') await machine.concatBatch()
+    expect(api.cancelVideoBatch).not.toHaveBeenCalled()
+    expect(api.retryVideoShot).not.toHaveBeenCalled()
+    expect(api.concatVideoBatch).not.toHaveBeenCalled()
+    finish({ ok: true, batch: { ...batch('done'), id: 'next' } }); await read
+    expect(machine.batchRecoveryPending.value).toBe(false)
+    expect(machine.batchSelectionPending.value).toBe(false)
+  })
+  it('can still cancel the known current batch while its own status is being reread', async () => {
+    const { machine } = setup()
+    machine.batch.value = batch('running')
+    vi.mocked(api.fetchVideoBatch).mockRejectedValueOnce(new Error('temporary read failure'))
+    await machine.reconnectBatch('original'); await vi.advanceTimersByTimeAsync(3000)
+    let finish!: (value: Awaited<ReturnType<typeof api.fetchVideoBatch>>) => void
+    vi.mocked(api.fetchVideoBatch).mockReturnValueOnce(new Promise(resolve => { finish = resolve }))
+    const read = machine.reconnectBatch('original')
+    const signal = vi.mocked(api.fetchVideoBatch).mock.lastCall![1]!
+    vi.mocked(api.cancelVideoBatch).mockResolvedValueOnce({ ok: true, batch: batch('cancelled') })
+    await machine.cancelBatch()
+    expect(api.cancelVideoBatch).toHaveBeenCalledWith('original')
+    expect(signal.aborted).toBe(true)
+    finish({ ok: true, batch: batch('running') }); await read
+    expect(machine.batch.value?.status).toBe('cancelled')
+    expect(machine.batchRecoveryPending.value).toBe(false)
+  })
+  it.each([404, 410])('unlocks preserved drafts when rereading the displayed running batch confirms %s', async status => {
+    const { machine, shots } = setup()
+    machine.batch.value = batch('running')
+    shots.value = [{ prompt: 'An existing complete shot draft', seedText: '' } as ShotDraft]
+    vi.mocked(api.fetchVideoBatch).mockRejectedValueOnce(new Error('temporary read failure'))
+    // Reconnection of the same displayed batch schedules its normal status read.
+    await machine.reconnectBatch('original')
+    await vi.advanceTimersByTimeAsync(3000)
+    expect(machine.canSubmit.value).toBe(false)
+    expect(machine.batchReadRetryable.value).toBe(true)
+    vi.mocked(api.fetchVideoBatch).mockRejectedValueOnce(new ApiClientError('missing', { kind: 'http', status }))
+    expect(await machine.reconnectBatch('original')).toBe(false)
+    expect(machine.batch.value).toBeNull()
+    expect(shots.value[0].prompt).toBe('An existing complete shot draft')
+    expect(machine.canSubmit.value).toBe(true)
+    expect(machine.batchReadRetryable.value).toBe(false)
+    expect(api.createVideoBatch).not.toHaveBeenCalled()
   })
   it('ignores a missing response from an older reconnect after a newer selection succeeds', async () => {
     let reject!: (error: Error) => void
@@ -220,6 +296,7 @@ describe('shot batch operation recovery', () => {
     expect(await old).toBe(true)
     expect(machine.batch.value?.id).toBe('new')
     expect(error.value).toBe('')
+    expect(machine.batchReadError.value).toBe('')
     let resolve!: (value: Awaited<ReturnType<typeof api.fetchVideoBatch>>) => void
     vi.mocked(api.fetchVideoBatch).mockReturnValueOnce(new Promise(done => { resolve = done }))
     const pending = machine.reconnectBatch('obsolete')
@@ -246,6 +323,7 @@ describe('shot batch operation recovery', () => {
     await vi.advanceTimersByTimeAsync(12000)
     expect(api.fetchVideoBatch).toHaveBeenCalledTimes(2)
     expect(error.value).toBe('')
+    expect(machine.batchReadError.value).toBe('')
     expect(api.cancelVideoBatch).not.toHaveBeenCalled()
     vi.mocked(api.fetchVideoBatch).mockResolvedValueOnce({ batch: { ...batch('done'), id: 'saved' } } as Awaited<ReturnType<typeof api.fetchVideoBatch>>)
     active.value = true
@@ -294,7 +372,7 @@ describe('shot batch operation recovery', () => {
         .mockRejectedValueOnce(new ApiClientError('unavailable source', { kind: 'http', status }))
       expect(await machine.reconnectBatch('retry-child')).toBe(false)
       expect(machine.batch.value?.id).toBe('original')
-      expect(error.value).toContain('不存在或无权访问')
+      expect(machine.batchReadError.value).toContain('不存在或无权访问')
     }
   })
 

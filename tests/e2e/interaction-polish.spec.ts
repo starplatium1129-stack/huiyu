@@ -51,15 +51,23 @@ for (const theme of ['dark']) {
 test('large gallery keeps its initial render bounded and searches the complete archive', async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem('aics_pb_history', JSON.stringify(Array.from({ length: 3000 }, (_, index) => ({
-      id: 'scale-' + index, sceneTitle: '规模条目 ' + index, prompt: 'archive performance fixture', timestamp: index + 1000,
+      id: 'scale-' + index, sceneTitle: index === 0 ? '页外唯一作品' : '规模条目 ' + index, prompt: 'archive performance fixture', timestamp: index + 1000,
     }))))
   })
   await page.goto('/gallery')
+  await page.getByRole('dialog', { name: '访客导览', exact: true }).getByRole('button', { name: '先浏览，稍后配置', exact: true }).click()
   await expect(page.locator('.gallery-count')).toContainText('3000')
-  await expect(page.locator('.artwork')).toHaveCount(60)
-  await page.getByRole('searchbox', { name: '搜索作品' }).fill('规模条目 2999')
+  await expect(page.locator('.artwork')).toHaveCount(12)
+  await expect(page.locator('.artwork').filter({ hasText: '页外唯一作品' })).toHaveCount(0)
+  // Move into the preload range once; repeatedly following the moving sentinel
+  // would scroll through the entire archive instead of checking one page fill.
+  await page.locator('.gallery-more').evaluate(element => {
+    window.scrollTo({ top: scrollY + element.getBoundingClientRect().top - innerHeight + 100, behavior: 'instant' })
+  })
+  await expect.poll(() => page.locator('.artwork').count()).toBeGreaterThan(12)
+  await page.getByRole('searchbox', { name: '搜索作品' }).fill('页外唯一作品')
   await expect(page.locator('.artwork')).toHaveCount(1)
-  await expect(page.locator('.artwork')).toContainText('规模条目 2999')
+  await expect(page.locator('.artwork')).toContainText('页外唯一作品')
 })
 
 test('video task query retries from the workspace without navigating away', async ({ page }) => {

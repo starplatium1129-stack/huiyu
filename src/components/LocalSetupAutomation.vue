@@ -33,7 +33,8 @@
     <p v-if="workspaceBlocked" role="status">工作区尚未生效或未确认，请先选择磁盘并按提示重启绘遇。</p>
     <div class="setup-buttons">
       <button class="btn btn-primary" type="button" :disabled="automation.busy.value||workspaceBlocked||!automation.reviewed.value" @click="automation.run"><ArchiveIcon name="download" />{{ automation.busy.value?'正在准备…':'一键准备所选能力' }}</button>
-      <button v-if="automation.busy.value" class="btn btn-ghost" type="button" @click="automation.cancel">取消准备</button>
+      <button v-if="automation.busy.value" class="btn btn-ghost" type="button" :disabled="automation.cancelState.value==='pending'||automation.cancelState.value==='accepted'" @click="automation.cancel">{{ automation.cancelState.value==='pending'?'正在请求取消…':automation.cancelState.value==='accepted'?'等待当前步骤结束…':automation.cancelState.value==='failed'?'重试取消':'取消准备' }}</button>
+      <button v-if="automation.operationUncertain.value" class="btn btn-ghost" type="button" @click="automation.retryOperation">重新检查状态</button>
     </div>
     <p v-if="automation.message.value" role="status" aria-live="polite">{{ automation.message.value }}</p>
     <p v-if="automation.download.activeId.value" role="status">{{ formatBytes(automation.download.bytesRead.value) }} / {{ formatBytes(automation.download.expectedBytes.value) }}</p>

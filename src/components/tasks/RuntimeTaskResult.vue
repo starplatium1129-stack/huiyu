@@ -3,7 +3,8 @@
     <div class="result-toolbar tw:flex tw:flex-wrap tw:items-center tw:gap-s-2" data-fluid-glass>
       <StudioSelect v-if="task.resultRefs.length > 1" label="选择任务结果" size="sm" inline :model-value="index" :options="resultOptions" @update:model-value="index = Number($event)" />
       <button v-if="selected?.mime.startsWith('image/')" class="btn btn-primary" :disabled="busy || task.deliveryState === 'saved'" @click="save">{{ task.deliveryState === 'saved' ? '已入册' : busy ? '保存中…' : '保存到作品册' }}</button>
-      <button class="btn btn-ghost" :disabled="!url && !selected?.mime.startsWith('video/')" @click="download">下载结果</button>
+      <TaskMediaDownload v-if="selected?.mime.startsWith('video/')" class="btn btn-ghost" :src="runtimeResultPath(task, index)" :filename="`绘遇-${task.taskId}-${index}.mp4`">下载结果</TaskMediaDownload>
+      <button v-else class="btn btn-ghost" :disabled="!url" @click="download">下载结果</button>
     </div>
     <p v-if="message" role="status">{{ message }}</p>
     <div v-content-motion:fade="loading ? false : index">
@@ -15,7 +16,8 @@
 </template>
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watch } from 'vue'
-import { fetchRuntimeResult, markRuntimeTask, runtimeResultPath, downloadTaskMedia, type TaskRecord } from '@/api/runtimeTasks'
+import { fetchRuntimeResult, markRuntimeTask, runtimeResultPath, type TaskRecord } from '@/api/runtimeTasks'
+import TaskMediaDownload from './TaskMediaDownload.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
@@ -50,14 +52,7 @@ async function save() {
   } finally { busy.value = false }
 }
 function download() {
-  const filename = `绘遇-${props.task.taskId}-${index.value}.${selected.value?.mime.startsWith('video/') ? 'mp4' : 'png'}`
-  if (selected.value?.mime.startsWith('video/')) {
-    const taskId = props.task.taskId, outputIndex = index.value, signal = controller?.signal
-    void downloadTaskMedia(runtimeResultPath(props.task, outputIndex), filename).catch(error => {
-      if (!signal?.aborted && props.task.taskId === taskId && index.value === outputIndex) message.value = error.message
-    })
-    return
-  }
+  const filename = `绘遇-${props.task.taskId}-${index.value}.png`
   const anchor = document.createElement('a'); anchor.href = url.value; anchor.download = filename; anchor.click()
 }
 onUnmounted(() => { controller?.abort(); release() })

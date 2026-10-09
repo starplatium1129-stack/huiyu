@@ -61,7 +61,12 @@ const manifest = {
     file: '_app/index.js',
     isEntry: true,
     src: 'src/main.ts',
+    css: ['_app/entry.css'],
+    imports: ['bootstrap'],
+    dynamicImports: ['fonts'],
   },
+  bootstrap: { file: '_app/bootstrap.js', css: ['_app/entry.css', '_app/shared.css'] },
+  fonts: { file: '_app/fonts.js', css: ['_app/fonts.css'] },
   'src/views/HomeView.vue': {
     file: '_app/HomeView.js',
     css: ['_app/HomeView.css'],
@@ -87,6 +92,9 @@ const manifest = {
 };
 const sizes = new Map([
   ['_app/index.js', 100 * 1024],
+  ['_app/bootstrap.js', 1024],
+  ['_app/entry.css', 60 * 1024],
+  ['_app/fonts.css', 400 * 1024],
   ['_app/HomeView.js', 40 * 1024],
   ['_app/HomeView.css', 20 * 1024],
   ['_app/ChatView.js', 80 * 1024],
@@ -100,6 +108,11 @@ const sizes = new Map([
 assert.strictEqual(routeEntries(manifest).length, 3, 'named facade-free view chunks must still belong to route budgets');
 const passing = evaluateManifest(manifest, (file: any) => sizes.get(file));
 assert.deepStrictEqual(passing.violations, []);
+assert.equal(passing.entryCss, 64 * 1024, 'shared initial CSS counts once; lazy font CSS stays deferred');
+const initialCssOverflow = evaluateManifest(manifest, (file: string) =>
+  file === '_app/shared.css' ? DEFAULT_BUDGETS.entryCss : sizes.get(file));
+assert(initialCssOverflow.violations.some(message => message.startsWith('Entry CSS')),
+  'moving initial CSS into bootstrap must not bypass the existing budget');
 assert.strictEqual(passing.routes.find!(route => route.route === 'ChatView').css, 34 * 1024);
 assert.strictEqual(passing.routes.find!(route => route.route === 'PromptBuilderView').javascript, 120 * 1024);
 

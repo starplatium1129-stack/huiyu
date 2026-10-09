@@ -77,7 +77,8 @@ describe('saved artwork tag filtering',()=>{
 })
 
 describe('gallery filter metadata reuse', () => {
-  it('does not keep loading hidden image pages while browsing album covers', async () => {
+  it('fills visible pages in bounded frames, coalesces requests and stops hidden or disposed work', async () => {
+    vi.useFakeTimers()
     const { filters, stop } = setup(ref(Array.from({ length: 160 }, (_, id) => ({ id, timestamp: id }))))
     const sentinel = document.createElement('div')
     const rects = vi.spyOn(sentinel, 'getClientRects').mockReturnValue([] as unknown as DOMRectList)
@@ -85,12 +86,27 @@ describe('gallery filter metadata reuse', () => {
     filters.loadMoreIfNeeded(sentinel)
     await nextTick()
     expect(filters.pagedVisible.value).toHaveLength(initialCount)
-    rects.mockReturnValue([new DOMRect(0, 4000, 1, 1)] as unknown as DOMRectList)
-    vi.spyOn(sentinel, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 4000, 1, 1))
+    rects.mockReturnValue([new DOMRect(0, 200, 1, 1)] as unknown as DOMRectList)
+    vi.spyOn(sentinel, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 200, 1, 1))
     filters.loadMoreIfNeeded(sentinel)
+    filters.loadMoreIfNeeded(sentinel)
+    expect(filters.pagedVisible.value).toHaveLength(initialCount)
+    vi.advanceTimersToNextFrame()
     await nextTick()
-    expect(filters.pagedVisible.value.length).toBeGreaterThan(initialCount)
+    expect(filters.pagedVisible.value).toHaveLength(initialCount + 12)
+    rects.mockReturnValue([] as unknown as DOMRectList)
+    vi.advanceTimersToNextFrame(); await nextTick()
+    expect(filters.pagedVisible.value).toHaveLength(initialCount + 12)
+    rects.mockReturnValue([new DOMRect(0, 200, 1, 1)] as unknown as DOMRectList)
+    filters.loadMoreIfNeeded(sentinel)
+    for (let frame = 0; frame < 14; frame++) { vi.advanceTimersToNextFrame(); await nextTick() }
+    expect(filters.pagedVisible.value.map(item => item.id)).toEqual(filters.visible.value.map(item => item.id))
+    expect(filters.pagedVisible.value).toHaveLength(160)
+    filters.renderLimit.value = 12
+    filters.loadMoreIfNeeded(sentinel)
     stop()
+    vi.advanceTimersToNextFrame(); await nextTick()
+    expect(filters.renderLimit.value).toBe(12)
   })
 
   it('keeps stable ordering, strict project IDs and live metadata changes', () => {
@@ -227,7 +243,7 @@ describe('gallery generation conditions and reusable searches', () => {
     filters.renderLimit.value = 120
     filters.generationConditions.value.engine = recordedCondition('sd')
     await nextTick()
-    expect(filters.renderLimit.value).toBe(60)
+    expect(filters.renderLimit.value).toBe(12)
     await vi.advanceTimersByTimeAsync(300)
     expect(replace).toHaveBeenLastCalledWith({ query: { compare: 'preserve', gEngine: recordedCondition('sd') } })
     filters.renderLimit.value = 120

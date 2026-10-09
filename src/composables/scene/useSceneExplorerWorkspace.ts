@@ -6,7 +6,7 @@ import { useSceneStore,type CurationData,type SceneBrowseTarget } from '@/stores
 import { scrollBehavior } from '@/utils/motionPreference';
 import { quickCreateUrl } from '@/utils/quickCreate';
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment';
-import { buildPreferenceProfile,isPersonaCore,readHiddenScenes,readSceneUsage,analyzeQuery as uxAnalyze,isPersonalFavorite as uxIsFav,matchesSearch as uxMatchesSearch,personalReason as uxPersonalReason,searchScore as uxSearchScore,tier as uxTier,writeHiddenScenes,type PreferenceProfile,type SceneUsageRecord,type SceneUXConfig } from '@/utils/sceneUX';
+import { buildPreferenceProfile,readHiddenScenes,readSceneUsage,analyzeQuery as uxAnalyze,isPersonalFavorite as uxIsFav,matchesSearch as uxMatchesSearch,personalReason as uxPersonalReason,prepareSceneSearch,searchScore as uxSearchScore,tier as uxTier,writeHiddenScenes,type PreferenceProfile,type SceneUsageRecord,type SceneUXConfig } from '@/utils/sceneUX';
 import { captureScrollAnchor,restoreScrollAnchor,watchForUserScroll,type ScrollAnchor } from '@/utils/scrollAnchor';
 import {
     DEFAULT_RAILS,
@@ -22,7 +22,7 @@ import {
     type ExplorerScene,
 } from './sceneExplorerPresentation';
 import { orderExplorerScenes } from './sceneExplorerOrdering';
-import { computed,nextTick,onMounted,onUnmounted,ref,watch } from 'vue';
+import { computed,nextTick,onMounted,onUnmounted,ref,shallowRef,watch } from 'vue';
 import { useRoute } from 'vue-router';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useSceneExplorerWorkspace() {
@@ -41,7 +41,8 @@ export function useSceneExplorerWorkspace() {
     const route = useRoute();
     const sceneStore = useSceneStore();
     const toast = useToast();
-    const scenes = ref<ExplorerScene[]>([]);
+    // loadBrowserScenes supplies an owned snapshot; browsing replaces it, never edits its rows.
+    const scenes = shallowRef<ExplorerScene[]>([]);
     const curation = ref<ExplorerCuration>({ curatedSceneIds: [], moodRails: [], signatureSceneIds: [], reviewSceneIds: [] });
     const profile = ref<PreferenceProfile>(buildPreferenceProfile([]));
     const loading = ref(true);
@@ -136,8 +137,19 @@ export function useSceneExplorerWorkspace() {
             return '搜索结果';
         return ({ personal: '我的常用', core: '人设核心', featured: '精选', signature: '招牌', curated: '精选', all: '全库' } as Record<string, string>)[fTier.value] || '场景';
     });
-    function tier(s: ExplorerScene) { return uxTier(s, curation.value); }
-    function isCore(s: ExplorerScene) { return isPersonaCore(s, curation.value); }
+    const classification = computed(() => {
+        const config = curation.value;
+        const core = new Set(Array.isArray(config.personaCoreSceneIds) ? config.personaCoreSceneIds : []);
+        const tiers = new Map<string, ReturnType<typeof uxTier>>();
+        // Preserve signature > review > curated precedence, including overlaps.
+        for (const name of ['signature', 'review', 'curated'] as const) {
+            const ids = config[`${name}SceneIds`];
+            if (Array.isArray(ids)) for (const id of ids) if (!tiers.has(id)) tiers.set(id, name);
+        }
+        return { core, tiers };
+    });
+    function tier(s: ExplorerScene) { return classification.value.tiers.get(s.id) || 'standard'; }
+    function isCore(s: ExplorerScene) { return classification.value.core.has(s.id); }
     function personalReason(s: ExplorerScene) {
         const usage = usageFor(s);
         const localReason = usage
@@ -157,12 +169,20 @@ export function useSceneExplorerWorkspace() {
     const themeCounts = computed<Record<string, number>>(() => Object.fromEntries(THEME_DEFS.map(({ id }) => [id,
         scenes.value.filter(s => (showMature.value || !s.mature) && !hiddenIds.value.has(s.id) && matchesTheme(s, id)).length])));
     function themeCount(id: string) { return themeCounts.value[id] || 0; }
+    const searching = computed(() => !!debouncedQuery.value.trim());
+    const searchDocuments = computed(() => searching.value
+        ? new Map(scenes.value.map(scene => [scene, prepareSceneSearch(scene, [primaryCategory(scene), timeLabel(scene.timeOfDay)])])) : null);
+    // Release normalized strings when clearing a search, including a cached page.
+    watch(searching, active => { if (!active) void searchDocuments.value; }, { flush: 'sync' });
     const filtered = computed(() => {
         // 用 debounce 后的值：直接读 searchQuery 会让下面的过滤+排序在每次击键时重跑
         const q = debouncedQuery.value.trim().toLowerCase();
         const analysis = q ? uxAnalyze(q, curation.value) : undefined;
+        const documents = searchDocuments.value;
+        const collection = fTier.value, hidden = showHidden.value;
+        const needsTier = !hidden && ((!q && collection === 'featured') || !['all', 'personal', 'featured', 'core'].includes(collection));
         let r = scenes.value.filter(s => {
-            if (showHidden.value ? !hiddenIds.value.has(s.id) : hiddenIds.value.has(s.id))
+            if (hidden ? !hiddenIds.value.has(s.id) : hiddenIds.value.has(s.id))
                 return false;
             if (!showMature.value && s.mature)
                 return false;
@@ -178,27 +198,26 @@ export function useSceneExplorerWorkspace() {
                 return false;
             if (fRating.value !== 'all' && (s.rating || (s.mature ? 'R18' : 'All')) !== fRating.value)
                 return false;
-            const t = tier(s);
-            if (!showHidden.value) {
-                if (!q && fTier.value === 'personal' && !isPersonalScene(s))
+            if (!hidden) {
+                if (!q && collection === 'personal' && !isPersonalScene(s))
                     return false;
-                if (!q && fTier.value === 'core' && !isCore(s))
+                if (!q && collection === 'core' && !isCore(s))
                     return false;
-                if (!q && fTier.value === 'featured' && t !== 'signature' && t !== 'curated')
-                    return false;
-                if (fTier.value !== 'all' && fTier.value !== 'personal' && fTier.value !== 'featured' && fTier.value !== 'core' && t !== fTier.value)
-                    return false;
+                if (needsTier) {
+                    const selected = tier(s);
+                    if (collection === 'featured' ? selected !== 'signature' && selected !== 'curated' : selected !== collection) return false;
+                }
             }
             if (sortBy.value === 'favorite' && !favs.value.has(s.id) && !uxIsFav(s, profile.value))
                 return false;
-            return !q || uxMatchesSearch(s, q, curation.value, [primaryCategory(s), timeLabel(s.timeOfDay)], analysis);
+            return !analysis || uxMatchesSearch(documents!.get(s)!, analysis);
         });
         // 相关度先算一遍存 Map:原先在比较器里每次比较都调 uxSearchScore 两次,
         // 297 条 ≈ 每次重算 4900 次评分,每次还带字符串归一化
         const relevance = new Map<string, number>();
-        if (q) {
+        if (analysis) {
             for (const s of r) {
-                relevance.set(s.id, uxSearchScore(s, q, curation.value, [primaryCategory(s), timeLabel(s.timeOfDay)], analysis));
+                relevance.set(s.id, uxSearchScore(documents!.get(s)!, analysis));
             }
         }
         return orderExplorerScenes(r, { mode: sortBy.value, curation: curation.value,

@@ -16,6 +16,12 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
   let command: AbortController | null = null
   let stopped = false
   let rejectedStart = ''
+  let unconfirmedCancel = ''
+  const cancelNotice = '取消尚未确认，请检查任务状态或重试取消。'
+  function cancellationNotice(task: ResourceStatus['task']) {
+    if (unconfirmedCancel && (!task || task.id !== unconfirmedCancel || task.state !== 'running')) unconfirmedCancel = ''
+    return unconfirmedCancel ? cancelNotice : ''
+  }
   const busy = computed(() => submitting.value || status.value?.busy === true)
   const selected = computed(() => status.value?.releases.find(item => item.id === selectedId.value) || null)
   const enabled = computed(() => isLocal && status.value?.managementEnabled === true && !busy.value && !error.value)
@@ -71,10 +77,10 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
       if (ticket !== generation || stopped) return
       status.value = result
       if (fresh) rejectedStart = ''
-      error.value = rejectedStart
+      error.value = cancellationNotice(result.task) || rejectedStart
       if (!result.releases.some(item => item.id === selectedId.value)) selectedId.value = result.releases[0]?.id || ''
     } catch {
-      if (ticket === generation && !stopped) error.value = '资源状态暂时无法读取，请重新检查。'
+      if (ticket === generation && !stopped) error.value = (unconfirmedCancel ? cancelNotice + ' ' : '') + '资源状态暂时无法读取，请重新检查。'
     } finally {
       if (ticket === generation) { loading.value = false; request = null; schedule() }
     }
@@ -114,8 +120,11 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
     command = new AbortController()
     try {
       const result = await api.cancel(task.id, command.signal)
-      if (!stopped && status.value) status.value = { ...status.value, task: result.task }
-    } catch { if (!stopped) error.value = '取消尚未确认，请检查任务状态。' }
+      if (!stopped && status.value) {
+        status.value = { ...status.value, task: result.task }
+        error.value = cancellationNotice(result.task) || rejectedStart
+      }
+    } catch { if (!stopped) { unconfirmedCancel = task.id; error.value = cancelNotice } }
     finally { submitting.value = false; command = null; if (!stopped) await refresh() }
   }
   function stop() {

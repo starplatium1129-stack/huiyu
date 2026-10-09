@@ -1,7 +1,6 @@
 import { selectLive2DBackend } from '@/live2d/createBackend'
 import { compileAdapterProfile } from '@/live2d/adapterProfile'
-import { NATIVE_RENDER_STOPPED } from '@/live2d/nativeBackend'
-import type { Live2DBackendKind,Live2DModelHandle,Live2DStageSession } from '@/live2d/types'
+import { NATIVE_RENDER_STOPPED, type Live2DBackendKind, type Live2DModelHandle, type Live2DStageSession } from '@/live2d/types'
 import { normalizeLive2DQuality } from '@/live2d/quality'
 import { isStageHidden, prefersReducedMotion, type Live2DCtx, type Live2DStatus } from '@/composables/live2d/context'
 import { LEAVE_PLAY_MS } from '@/composables/live2d/constants'

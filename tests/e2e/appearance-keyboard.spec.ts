@@ -22,10 +22,29 @@ for (const theme of ['dark', 'light']) {
       if (!['theme-bootstrap.js', 'favicon.svg', 'logo.svg', 'logo-light.svg'].includes(asset) && !asset.startsWith('fonts/')) return route.abort()
       return route.fulfill({ path: resolve('assets', asset) })
     })
+    let releasePanel = () => {}
+    let panelRequested = false
+    let panelStarted!: () => void
+    const panelStart = new Promise<void>(resolve => { panelStarted = resolve })
+    if (theme === 'dark') {
+      const held = new Promise<void>(resolve => { releasePanel = resolve })
+      await page.route(/\/AppearancePreferencesPanel-[^/]+\.js$/, async route => {
+        panelRequested = true; panelStarted(); await held; await route.continue()
+      })
+    }
     await page.goto('/appearance-keyboard-fixture', { waitUntil: 'domcontentloaded' })
     await expect(page.getByRole('heading', { name: '页面走丢了', exact: true })).toBeVisible()
-    await page.keyboard.press('F1')
     const shortcuts = page.getByRole('dialog', { name: '键盘快捷键', exact: true })
+    if (theme === 'dark') {
+      try {
+        expect(panelRequested).toBe(false)
+        await page.keyboard.press('F1'); await panelStart
+        await page.keyboard.press('Escape')
+      } finally { releasePanel() }
+      await page.waitForLoadState('networkidle')
+      await expect(shortcuts).toBeHidden()
+    }
+    await page.keyboard.press('F1')
     await expect(shortcuts).toBeVisible()
     await page.keyboard.press('Escape')
     await expect(shortcuts).toBeHidden()

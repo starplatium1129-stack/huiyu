@@ -197,7 +197,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
               anchor.href = url
               anchor.download = buildArtworkFileName({
                 title: record.name, timestamp: record.created_at, id: record.id,
-                ext: (blob.type || 'image/png').split('/')[1] || 'png',
+                ext: blob.type === 'image/svg+xml' ? 'svg' : (blob.type || 'image/png').split('/')[1] || 'png',
               })
               document.body.appendChild(anchor)
               anchor.click()

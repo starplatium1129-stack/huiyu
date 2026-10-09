@@ -136,6 +136,40 @@ describe('resource library interaction', () => {
     expect(calls.cancel).toHaveBeenCalledWith(task.id, expect.any(AbortSignal))
     expect(model.status.value?.task?.state).toBe('cancelled'); model.stop()
   })
+  it('retains uncertain cancellation across running status reads until a retry is observed cancelling', async () => {
+    const calls = api(); vi.mocked(calls.status).mockResolvedValue(status({ busy: true, task }))
+    vi.mocked(calls.cancel).mockRejectedValueOnce(new Error('permission changed'))
+    const model = useResourceLibrary(calls, true)
+    try {
+      await model.refresh(); await model.cancel()
+      expect(model.error.value).toContain('取消尚未确认')
+      expect(model.status.value?.task?.state).toBe('running')
+      await model.refresh(true)
+      expect(model.error.value).toContain('取消尚未确认')
+      vi.mocked(calls.status).mockRejectedValueOnce(new Error('offline'))
+      await model.refresh()
+      expect(model.error.value).toContain('取消尚未确认')
+      await model.refresh()
+      expect(model.error.value).toContain('取消尚未确认')
+      vi.mocked(calls.status).mockResolvedValue(status({ busy: true, task: { ...task, state: 'cancelling' } }))
+      await model.cancel()
+      expect(calls.cancel).toHaveBeenCalledTimes(2)
+      expect(model.status.value?.task?.state).toBe('cancelling')
+      expect(model.error.value).toBe('')
+    } finally { model.stop() }
+  })
+  it.each(['completed', 'replaced'] as const)('drops an uncertain cancellation only after its task is %s', async state => {
+    const calls = api(); vi.mocked(calls.status).mockResolvedValue(status({ busy: true, task }))
+    vi.mocked(calls.cancel).mockRejectedValueOnce(new Error('response lost'))
+    const model = useResourceLibrary(calls, true)
+    try {
+      await model.refresh(); await model.cancel()
+      expect(model.error.value).toContain('取消尚未确认')
+      vi.mocked(calls.status).mockResolvedValue(status({ busy: state === 'replaced', task: state === 'replaced' ? { ...task, id: 'next-task' } : { ...task, state: 'completed' } }))
+      await model.refresh()
+      expect(model.error.value).toBe('')
+    } finally { model.stop() }
+  })
   it('unmount stops polling but does not cancel a server resource operation', async () => {
     vi.useFakeTimers(); const calls = api(); const model = useResourceLibrary(calls, true)
     await model.refresh(); model.stop(); await vi.advanceTimersByTimeAsync(30000)

@@ -12,6 +12,9 @@
 
 export type Live2DBackendKind = 'browser' | 'native'
 
+/** Renderer loss is retryable without eagerly importing the native backend. */
+export const NATIVE_RENDER_STOPPED = 'NATIVE_RENDER_STOPPED'
+
 /** 后端能力位。useLive2D 依据它决定哪些"浏览器 hack"可以跳过。 */
 export interface Live2DCapability {
   /** 前端能否逐帧覆写模型参数（浏览器 true；原生 false，参数由作者工程执行） */

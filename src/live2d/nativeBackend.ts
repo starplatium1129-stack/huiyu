@@ -13,6 +13,7 @@ import { getNativeLive2dCapabilities } from '../platform/desktop/nativeLive2d.ts
 
 import {
   NATIVE_BACKEND_UNAVAILABLE,
+  NATIVE_RENDER_STOPPED,
   NATIVE_CAPABILITY,
   type Live2DConnectOptions,
   type Live2DModelHandle,
@@ -21,12 +22,6 @@ import {
 } from './types.ts'
 import type { Live2DMotionPriority, Live2DNativeBridge } from '../types/live2dNative.ts'
 import { createLatestIntent } from './latestIntent.ts'
-
-/**
- * 原生渲染线程停止错误名。useLive2D 依此区分"渲染线程退出"与普通模型
- * 错误：前者 overlay 不可用，应显示错误并可重试重新拉起线程。
- */
-export const NATIVE_RENDER_STOPPED = 'NATIVE_RENDER_STOPPED'
 
 export type NativeBridgeProvider = () => Live2DNativeBridge | null | undefined
 

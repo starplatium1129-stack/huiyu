@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import studioOriginal from '@/assets/illustrations/atelier-studio.png'
+import studioOriginal from '@/assets/illustrations/atelier-studio.webp'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
 const studioArt = useThemeIllustration(studioOriginal, 'draw')
 </script>

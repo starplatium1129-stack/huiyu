@@ -112,7 +112,8 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
 
   /* ---------- 分页渲染：滚动触底递增，避免数百作品全量铺 DOM ----------
      查看器导航仍走完整 visible；分页只约束「展墙渲染多少张」。 */
-  const PAGE_SIZE = 60;
+  // Each card owns several interactive controls; bound synchronous mount work.
+  const PAGE_SIZE = 12;
   const renderLimit = ref(PAGE_SIZE);
   const pagedVisible = computed(() => visible.value.slice(0, renderLimit.value));
   const hasMoreToRender = computed(() => visible.value.length > pagedVisible.value.length);
@@ -230,14 +231,27 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   }
   onScopeDispose(cleanupFilterSync);
 
+  let pageFrame = 0;
+  let pageDisposed = false;
+  function cancelPageFill() { cancelAnimationFrame(pageFrame); pageFrame = 0; }
+  onScopeDispose(() => { pageDisposed = true; cancelPageFill(); });
   function loadMoreIfNeeded(sentinelEl: HTMLElement | null) {
-    if ((isViewActive && !isViewActive()) || !hasMoreToRender.value) return;
+    if (pageDisposed || pageFrame || (isViewActive && !isViewActive()) || !hasMoreToRender.value) return;
     if (sentinelEl && !sentinelEl.getClientRects().length) return;
-    renderLimit.value = Math.min(renderLimit.value + PAGE_SIZE, visible.value.length);
-    void nextTick(() => {
-      if ((isViewActive && !isViewActive()) || !hasMoreToRender.value || !sentinelEl || !sentinelEl.getClientRects().length) return;
-      if (sentinelEl.getBoundingClientRect().top < window.innerHeight + 800)
-        loadMoreIfNeeded(sentinelEl);
+    // A wide viewport may need several batches. Give each one a rendering
+    // opportunity instead of joining all mounts into one nextTick chain.
+    pageFrame = requestAnimationFrame(() => {
+      pageFrame = 0;
+      if (pageDisposed || (isViewActive && !isViewActive()) || !hasMoreToRender.value) return;
+      if (sentinelEl && !sentinelEl.getClientRects().length) return;
+      // Filters/scroll can change before this frame; no old rows are captured.
+      if (sentinelEl && sentinelEl.getBoundingClientRect().top > window.innerHeight + 800) return;
+      renderLimit.value = Math.min(renderLimit.value + PAGE_SIZE, visible.value.length);
+      void nextTick(() => {
+        if (!sentinelEl || !sentinelEl.getClientRects().length) return;
+        if (sentinelEl.getBoundingClientRect().top < window.innerHeight + 800)
+          loadMoreIfNeeded(sentinelEl);
+      });
     });
   }
 

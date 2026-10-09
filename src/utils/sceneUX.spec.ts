@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import {
-  analyzeQuery, matchesSearch, searchScore, readHiddenScenes,
+  analyzeQuery, matchesSearch, prepareSceneSearch, searchScore, readHiddenScenes,
   readSceneUsage,
   recordSceneUsage,
   sceneUsageScore,
@@ -98,12 +98,12 @@ describe('sceneUX · 排序评分', () => {
 it('reuses one query analysis without changing aliases, stop phrases, Chinese boundaries or ranking weights', () => {
   const config = { searchAliases: { 夜雨: ['雨夜', 'rain night'], 夏日: ['夏'] } }
   const analysis = analyzeQuery('雨夜', config)
-  const title = { title: '雨夜', story: '' }, story = { title: '', story: '雨夜' }
-  expect(matchesSearch(title, '雨夜', config, [], analysis)).toBe(true)
-  expect(searchScore(title, '雨夜', config, [], analysis)).toBe(88)
-  expect(searchScore(story, '雨夜', config, [], analysis)).toBe(42)
-  expect(matchesSearch({ title: 'rain night' }, '请帮我找，雨夜。', config)).toBe(true)
+  const title = prepareSceneSearch({ title: '雨夜', story: '' }), story = prepareSceneSearch({ title: '', story: '雨夜' })
+  expect(matchesSearch(title, analysis)).toBe(true)
+  expect(searchScore(title, analysis)).toBe(88)
+  expect(searchScore(story, analysis)).toBe(42)
+  expect(matchesSearch(prepareSceneSearch({ title: 'rain night' }), analyzeQuery('请帮我找，雨夜。', config))).toBe(true)
   expect(analyzeQuery('夏目', config).intents).not.toContain('夏日')
-  expect(matchesSearch(title, '晴天', config)).toBe(false)
-  expect(searchScore(title, '晴天', config)).toBe(0)
+  expect(matchesSearch(title, analyzeQuery('晴天', config))).toBe(false)
+  expect(searchScore(title, analyzeQuery('晴天', config))).toBe(0)
 })

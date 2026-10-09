@@ -27,6 +27,23 @@ it('an older load cannot overwrite a newer completed refresh', async () => {
   expect(ctx.history.value[0].id).toBe('new')
 })
 
+it('rechecks the current load after yielding the first snapshot for publication', async () => {
+  vi.useFakeTimers()
+  try {
+    const ctx = context()
+    ctx.history.value = []
+    storage.read.mockResolvedValueOnce(snapshot('old')).mockResolvedValueOnce(snapshot('new'))
+    const old = loadGalleryStorageAction(ctx)
+    await Promise.resolve()
+    expect(ctx.history.value).toEqual([])
+    const latest = loadGalleryStorageAction(ctx)
+    await vi.runAllTimersAsync()
+    await Promise.all([old, latest])
+    expect(ctx.history.value.map(item => item.id)).toEqual(['new'])
+    expect(ctx.galleryLoading.value).toBe(false)
+  } finally { vi.useRealTimers() }
+})
+
 it('completion of an old request cannot clear the loading indicator of a newer request', async () => {
   const ctx = context()
   ctx.history.value = []

@@ -10,6 +10,16 @@ function image(id = 'one'): StoredImageRecord {
 const url = 'data:image/png;base64,YQ=='
 
 describe('bounded, importable backup export', () => {
+  it.each(['', 'application/octet-stream'])('exports previously stored images with unspecified MIME %s without altering their bytes', async type => {
+    const bytes = Uint8Array.from(atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aX1sAAAAASUVORK5CYII='), value => value.charCodeAt(0))
+    const original = { ...image(), type, blob: new Blob([bytes], { type }) }
+    const { blob } = await buildBackupBlob(payload, [original])
+    const restored = normalizeBackup(JSON.parse(await blob.text())).images[0]!
+    expect(restored.type).toBe('image/png')
+    expect(restored.dataUrl).toMatch(/^data:image\/png;base64,/)
+    expect(Uint8Array.from(atob(restored.dataUrl.split(',')[1]!), value => value.charCodeAt(0))).toEqual(bytes)
+    expect(original.blob.type).toBe(type)
+  })
   it('round-trips every image and metadata through the production importer', async () => {
     const onProgress = vi.fn(), read = vi.fn(async () => url)
     const { blob, summary } = await buildBackupBlob(payload, [image(), image('two')], { read, onProgress })
@@ -62,6 +72,14 @@ describe('bounded, importable backup export', () => {
     await expect(buildBackupBlob(payload, [image(), image()], { read })).rejects.toThrow('重复图片 ID')
     await expect(buildBackupBlob(payload, [{ ...image(), blob: new Blob(['a'], { type: 'text/plain' }) }], { read })).rejects.toThrow('无效图片')
     expect(read).not.toHaveBeenCalled()
+  })
+  it.each(['image/svg+xml', 'image/heic', ''])('identifies a previously stored unsupported %s original and points to raw export', async type => {
+    const original = { ...image('legacy-original'), name: 'my-original', type, blob: new Blob(['original bytes'], { type }) }
+    const read = vi.fn(async () => url)
+    await expect(buildBackupBlob(payload, [original], { read })).rejects.toThrow(/my-original.*legacy-original.*导出作品图片/)
+    expect(read).not.toHaveBeenCalled()
+    expect(await original.blob.text()).toBe('original bytes')
+    expect(original.blob.type).toBe(type)
   })
   it('supports records-only and images-only backups without changing schema', async () => {
     const records = await buildBackupBlob(payload, [])

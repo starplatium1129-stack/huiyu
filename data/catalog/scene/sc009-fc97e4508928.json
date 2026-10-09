@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc009",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-09T04:23:07.783264200+00:00",
   "data": {
     "animaCaption": "The latte mug rests between Ayachi Nene's hands as she sits by the cafe window in a cream knit sweater. She glances sideways over its rim, then lowers her eyes with a shy smile. The table edge leads toward the window and the street beyond; empty chairs overlap farther inside the cafe. Afternoon light reveals the knit texture and mug steam, with a clear mug shadow on the wood and gentle fill beneath her chin.",
     "auditRevision": "careful-batch04-2026-08-27",
@@ -22,7 +22,7 @@
     "mature": false,
     "negative": "duplicate mugs, hands inside cup, opaque steam covering face",
     "prompt": "1girl, ayachi_nene, cream knit sweater, holding mug, sitting, cafe table, window light, medium shot",
-    "rating": "R15",
+    "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 咖啡杯旁的偷看】秋日午后，宁宁坐在靠窗的位置翻一本轻松漫画，咖啡的热气不时遮住她的表情。她早就察觉你在对面看她，却故意多翻了两页才抬眼，呆毛不满地晃了晃。等你移开视线，她又把甜点推到桌子中央——「一直盯着很没礼貌哦。作为赔礼，这块蛋糕要和我一人一半。」",
     "storyJa": "【寧々・コーヒーカップの横を覗いてください】秋の午後、寧々さんは窓際に座って軽い漫画を読んでいましたが、コーヒーの熱さで時折表情が見えなくなりました。彼女は、あなたが向かい側から自分を見ていることにずっと気づいていましたが、わざとさらに2ページめくって目を上げ、アホ毛は不満そうに首を振りました。あなたが目をそらすと、彼女はデザートをテーブルの中央に押し込みます――「そんなにじっと見つめるのは失礼ですよ。お詫びに、このケーキは私と半分こです。」",
@@ -40,8 +40,7 @@
     "timeOfDay": "afternoon",
     "title": "咖啡杯旁的偷看",
     "usage": [
-      "展示图",
-      "R15"
+      "展示图"
     ],
     "weather": "晴"
   }

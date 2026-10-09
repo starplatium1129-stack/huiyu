@@ -60,6 +60,9 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryError, h
   galleryError.value = ''
   try {
     const snapshot = await artworkRepository.readLibrarySnapshot()
+    // Separate first-load decoding/cache copying from card mounting, leaving a
+    // task boundary for navigation. Cached refreshes keep their existing path.
+    if (!history.value.length) await new Promise<void>(resolve => setTimeout(resolve, 0))
     if (!isCurrent()) return
     // A refresh still reads the authority, but unchanged metadata must not
     // invalidate every filter, album and keyed image card on a cached return.

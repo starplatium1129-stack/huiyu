@@ -3,7 +3,8 @@ import { importLocalImages } from './desktopImport'
 import { artworkRepository } from '@/storage/artworkRepository'
 
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { appendArtwork: vi.fn(), putImage: vi.fn(), deleteImage: vi.fn(), readArtwork: vi.fn(), cacheThumbnail: vi.fn(), withStaging: (work: () => Promise<unknown>) => work() } }))
-const file = { name: 'fixture.png', size: 1, type: 'image/png', blob: new Blob(['a']) }
+const pngBytes = Uint8Array.from(atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aX1sAAAAASUVORK5CYII='), value => value.charCodeAt(0))
+const file = { name: 'fixture.png', size: pngBytes.length, type: 'image/png', blob: new Blob([pngBytes], { type: 'image/png' }) }
 beforeEach(() => {
   vi.resetAllMocks()
   vi.spyOn(console, 'warn').mockImplementation(() => {})
@@ -18,6 +19,33 @@ beforeEach(() => {
   vi.mocked(artworkRepository.readArtwork).mockResolvedValue(null)
   vi.mocked(artworkRepository.appendArtwork).mockResolvedValue()
   vi.mocked(artworkRepository.cacheThumbnail).mockResolvedValue()
+})
+it('stores an unspecified image MIME from its bytes instead of its filename', async () => {
+  const blob = new File([pngBytes], 'photo.JPG', { lastModified: 123 })
+  expect(await importLocalImages([{ name: blob.name, type: '', size: blob.size, blob }])).toEqual({ imported: 1, skipped: 0 })
+  const stored = vi.mocked(artworkRepository.putImage).mock.calls[0]![0]
+  expect(stored.type).toBe('image/png')
+  expect(stored).toMatchObject({ name: 'photo.JPG', lastModified: 123 })
+  expect(new Uint8Array(await stored.arrayBuffer())).toEqual(pngBytes)
+  expect(artworkRepository.cacheThumbnail).toHaveBeenCalledWith('new-image', stored)
+  expect(blob.type).toBe('')
+})
+it.each([
+  ['vector.svg', 'image/svg+xml'],
+  ['photo.heic', 'image/heic'],
+  ['disguised.png', 'image/png'],
+])('does not store unsupported bytes even with an image name or MIME: %s', async (name, type) => {
+  const blob = new Blob(['<svg xmlns="http://www.w3.org/2000/svg"/>'], { type })
+  expect(await importLocalImages([{ name, type, size: blob.size, blob }])).toEqual({ imported: 0, skipped: 1 })
+  expect(artworkRepository.putImage).not.toHaveBeenCalled()
+  expect(artworkRepository.appendArtwork).not.toHaveBeenCalled()
+})
+it('uses the detected format when a supported filename declares the wrong image MIME', async () => {
+  const blob = new File([pngBytes], 'photo.JPG', { type: 'image/jpeg', lastModified: 123 })
+  expect(await importLocalImages([{ name: blob.name, type: blob.type, size: blob.size, blob }])).toEqual({ imported: 1, skipped: 0 })
+  const stored = vi.mocked(artworkRepository.putImage).mock.calls[0]![0]
+  expect(stored).toMatchObject({ name: 'photo.JPG', type: 'image/png', lastModified: 123 })
+  expect(new Uint8Array(await stored.arrayBuffer())).toEqual(pngBytes)
 })
 it('reads back a committed import after a lost acknowledgement', async () => {
   vi.mocked(artworkRepository.appendArtwork).mockImplementation(async entry => {

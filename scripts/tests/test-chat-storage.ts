@@ -4,6 +4,7 @@ const assert: typeof import('assert') = require('assert');
 const core: typeof import('../../src/utils/chatStorageCore.ts') = require('../../src/utils/chatStorageCore.ts');
 const profile: typeof import('../../src/utils/chatUserProfile.ts') = require('../../src/utils/chatUserProfile.ts');
 const memory: typeof import('../../src/utils/chatMemory.ts') = require('../../src/utils/chatMemory.ts');
+const { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL }: typeof import('../../src/config/chatApi.ts') = require('../../src/config/chatApi.ts');
 
 const { test }: typeof import('node:test') = require('node:test');
 
@@ -100,8 +101,8 @@ assert.strictEqual(damaged.state.version, 3);
 assert.strictEqual(damaged.state.active, 'nene');
 assert.deepStrictEqual(damaged.state.histories, { nene:[], natsume:[] });
 assert.strictEqual(damaged.state.settings.provider, 'api');
-assert.strictEqual(damaged.state.settings.apiBaseUrl, 'http://127.0.0.1:8317/v1');
-assert.strictEqual(damaged.state.settings.apiModel, 'gemini-3.6-flash-high');
+assert.strictEqual(damaged.state.settings.apiBaseUrl, DEEPSEEK_BASE_URL);
+assert.strictEqual(damaged.state.settings.apiModel, DEEPSEEK_DEFAULT_MODEL);
 assert.strictEqual(damaged.state.settings.apiKey, '',
   'the retired local-proxy placeholder must be scrubbed on load');
 assert.strictEqual(damaged.state.settings.webSearchEnabled, true);

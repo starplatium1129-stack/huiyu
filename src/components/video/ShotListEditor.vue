@@ -1,6 +1,13 @@
 <template>
   <section ref="editorRoot" class="shot-editor">
     <p v-if="batchError" class="video-panel" role="status">{{ batchError }}</p>
+    <p v-if="batchReadError || batchRecoveryPending" class="video-panel" role="status">
+      {{ batchReading ? '正在读取分镜批次…' : batchReadError }}
+      <template v-if="batchReadRetryable">仅查询已有任务，不会重新生成。
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="batchReading || submitting || cancelling || retrying || concating" :aria-busy="batchReading" @click="retryBatchRead">重新读取批次</button>
+      </template>
+      <button v-if="canReturnToBatch" class="btn btn-ghost btn-sm" type="button" :disabled="batchReading || submitting || cancelling || retrying || concating" @click="returnToCurrentBatch">返回当前批次</button>
+    </p>
     <div v-if="!h3Ready" class="video-panel shot-blocked">
       <p>分镜短片模式需要 MiniMax H3 权重就绪（支持首尾帧衔接与原生对白）。安装完成后点击「重新检测」即可使用。</p>
     </div>
@@ -362,7 +369,7 @@
           <p v-if="serverShot(index)?.error" class="shot-error">{{ serverShot(index)?.error }}</p>
           <StudioMediaPlayer v-if="serverShot(index)?.resultUrl" class="shot-result" kind="video" :src="serverShot(index)?.resultUrl ?? ''" label="本镜生成结果" :transcript="(shot.dialogue || '').trim()" />
           <div v-if="serverShot(index)?.status === 'failed'" class="shot-retry">
-            <button class="btn btn-primary" type="button" :disabled="retrying || cancelling || concating || submitting" @click="retryShotAt(index)">{{ retrying ? '正在重试…' : '重抽本镜（同 Seed）' }}</button>
+            <button class="btn btn-primary" type="button" :disabled="batchRecoveryPending || retrying || cancelling || concating || submitting" @click="retryShotAt(index)">{{ retrying ? '正在重试…' : '重抽本镜（同 Seed）' }}</button>
           </div>
         </article>
 
@@ -393,7 +400,7 @@
           <p>{{ submitDescription }}</p>
         </div>
         <div class="shot-submit-actions">
-          <button v-if="batchActive" class="btn btn-danger" type="button" :disabled="cancelling" @click="cancelBatch">
+          <button v-if="batchActive" class="btn btn-danger" type="button" :disabled="batchSelectionPending || cancelling" @click="cancelBatch">
             {{ cancelling ? '正在取消…' : '取消整批' }}
           </button>
           <template v-else>
@@ -401,14 +408,14 @@
               v-if="batch && batch.shots.some((shot) => shot.status === 'failed')"
               class="btn btn-primary"
               type="button"
-              :disabled="retrying || concating || cancelling || submitting"
+              :disabled="batchRecoveryPending || retrying || concating || cancelling || submitting"
               @click="retryAllFailed"
             >{{ retrying ? '正在重试…' : '重抽失败镜头' }}</button>
             <button
               v-if="batch && canConcat"
               class="btn btn-primary"
               type="button"
-              :disabled="concating || retrying || cancelling || submitting"
+              :disabled="batchRecoveryPending || concating || retrying || cancelling || submitting"
               @click="concatBatch"
             >{{ concating ? '正在拼接…' : '拼接成片' }}</button>
             <button class="btn btn-primary btn-lg" type="button" :disabled="!canSubmit" @click="submitBatch">
@@ -460,7 +467,7 @@ dialogueIndex, dialogueOptions, applyDialogueOption, cameraOptions, motionOption
 retryShotFrame, clearFrame, onFramePicked, retryShotAt, scriptStory, scriptCount,
 scriptTotal, runAiScript, canSubmit, submitTitle, submitDescription, cancelling,
 cancelBatch, batch, retryAllFailed, canConcat, concating, concatBatch,
-submitBatch, submitting, retrying, batchError, batchStatusLabel, progressPercent,
+submitBatch, submitting, retrying, batchError, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, retryBatchRead, canReturnToBatch, returnToCurrentBatch, batchStatusLabel, progressPercent,
 } = useShotWorkspace(props)
 
 const concatTranscript = computed(() => (batch.value?.shots ?? [])

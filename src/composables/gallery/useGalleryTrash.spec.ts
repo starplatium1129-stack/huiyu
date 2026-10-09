@@ -179,17 +179,34 @@ it('rejects a restored item thumbnail while still hydrating the remaining entrie
   expect(gallery.trashThumbs.remaining).toBe('thumb:image-remaining')
 })
 
-it('can retry a failed list without losing the displayed entries', async () => {
+it.each([false, true])('reports a failed list and supports retry with existing entries: %s', async existing => {
   vi.spyOn(console, 'warn').mockImplementation(() => {})
   const gallery = setup()
-  gallery.trashItems.value = [entry('existing')]
+  gallery.trashItems.value = existing ? [entry('existing')] : []
   repo.listTrash.mockRejectedValueOnce(new Error('temporarily unavailable'))
-  await gallery.loadTrash()
-  expect(gallery.trashItems.value.map(item => item.id)).toEqual(['existing'])
+  const loading = gallery.loadTrash()
+  expect(gallery.trashLoading.value).toBe(true)
+  await loading
+  expect(gallery.trashLoading.value).toBe(false)
+  expect(gallery.trashError.value).toContain('重新读取')
+  expect(gallery.trashItems.value.map(item => item.id)).toEqual(existing ? ['existing'] : [])
   repo.listTrash.mockResolvedValueOnce([entry('recovered')])
   await gallery.loadTrash()
+  expect(gallery.trashError.value).toBe('')
   expect(gallery.trashItems.value.map(item => item.id)).toEqual(['recovered'])
   expect(gallery.trashThumbs.recovered).toBe('thumb:image-recovered')
+})
+
+it('keeps a thumbnail failure separate from a successful list and continues remaining previews', async () => {
+  vi.spyOn(console, 'warn').mockImplementation(() => {})
+  repo.listTrash.mockResolvedValueOnce([entry('missing', 2), entry('available')])
+  repo.getThumbnail.mockRejectedValueOnce(new Error('thumbnail unavailable'))
+  const gallery = setup()
+  await gallery.loadTrash()
+  expect(gallery.trashItems.value.map(item => item.id)).toEqual(['missing', 'available'])
+  expect(gallery.trashError.value).toBe('')
+  expect(gallery.trashLoading.value).toBe(false)
+  expect(gallery.trashThumbs.available).toBe('thumb:image-available')
 })
 
 it('a failed restoration does not invalidate a still-current list or leave restore busy', async () => {

@@ -165,7 +165,7 @@ test('validated media snapshot has exact URL-relative allowlist, identity and im
   ]);
   assert.equal(Object.isFrozen(result), true);
   assert.equal(Object.isFrozen(result.relativePaths), true);
-  const byteReads = new Set(reads.filter((read: any) => read.op === 'readFileSync').map((read: any) => read.file));
+  const byteReads = new Set(reads.filter((read: any) => ['readFileSync', 'readSync'].includes(read.op)).map((read: any) => read.file));
   for (const entry of manifest.entries) assert.ok(byteReads.has(path.join(result.versionRoot, entry.path)), entry.path);
   assert.ok(reads.every((read: any) => !read.file?.startsWith(f.source)), 'resolver read removable source data');
 });
@@ -395,7 +395,7 @@ for (const fault of ['state-switch', 'pending-appears', 'lock-appears', 'manifes
     const expected: any = { 'state-switch': 'STATE_CONFLICT', 'pending-appears': 'PENDING_TRANSACTION', 'lock-appears': 'BUSY',
       'manifest-changes': 'STATE_CONFLICT', 'config-revoked': 'CONFIG_CHANGED', 'access-revoked': 'ACCESS_DENIED' };
     checked(f, { options, error: expected[fault], injectedMutation: true, onRead: (op: any, file: any) => {
-      if (fired || op !== 'readFileSync' || file !== path.join(installed.installedRoot, 'assets/a.txt')) return;
+      if (fired || !['readFileSync', 'readSync'].includes(op) || file !== path.join(installed.installedRoot, 'assets/a.txt')) return;
       fired = true;
       if (fault === 'state-switch') write(path.join(f.installer().root, 'current.json'), JSON.stringify({ ...installed.state, sequence: 2 }));
       if (fault === 'pending-appears') write(path.join(f.installer().root, 'pending.json'), '{}');

@@ -39,8 +39,8 @@ const capabilities: CompanionDesktopBridge = {
   onClipboardImage: listener => on<number[]>('aics:clipboard-image', bytes => listener(Uint8Array.from(bytes))), offClipboardImage: off,
   onClipboardText: listener => on('aics:clipboard-text', listener), offClipboardText: off,
   onGlobalMouse: listener => on('aics:global-mouse', listener), offGlobalMouse: off,
-  minimizeWindow: () => { void invoke('window_minimize') }, toggleMaximizeWindow: () => { void invoke('window_maximize_toggle') },
-  closeWindow: () => { void invoke('window_close') }, getWindowState: () => invoke('get_window_state'),
+  minimizeWindow: () => invoke('window_minimize'), toggleMaximizeWindow: () => invoke('window_maximize_toggle'),
+  closeWindow: () => invoke('window_close'), getWindowState: () => invoke('get_window_state'),
   onMaximizedChanged: listener => on('aics:maximized', listener), offMaximizedChanged: off,
 }
 const cssDragCapabilities: CompanionDesktopBridge = { ...capabilities, startDragging: undefined }

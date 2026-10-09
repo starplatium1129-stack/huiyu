@@ -128,12 +128,27 @@ test('selectLive2DBackend：native 无桥 → 回退 browser 并带原因', () =
   assert.match(selection.fallbackReason!, /回退/);
 });
 
-test('selectLive2DBackend：native 有桥 → 原生后端', () => {
+test('selectLive2DBackend：native 有桥 → 按需连接原生后端', async () => {
   const bridge = createStubBridge();
   const selection = selectLive2DBackend('native', () => bridge);
   assert.equal(selection.effectiveKind, 'native');
   assert.equal(selection.backend.kind, 'native');
   assert.equal(selection.fallbackReason, null);
+  assert.equal(bridge.calls.setCharacter.length, 0);
+  const session = await selection.backend.connect({ selector: '#host', modelUrl: '/moc.json', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
+  assert.equal(session.kind, 'native');
+  assert.equal(bridge.calls.setCharacter.length, 1);
+  session.destroy();
+});
+
+test('selectLive2DBackend：等待原生模块时取消不创建模型', async () => {
+  const bridge = createStubBridge();
+  const selection = selectLive2DBackend('native', () => bridge);
+  const controller = new AbortController();
+  const connection = selection.backend.connect({ selector: '#host', modelUrl: '/moc.json', canvasWidth: 420, canvasHeight: 610, character: 'nene', signal: controller.signal });
+  controller.abort(new Error('cancel before module resolves'));
+  await assert.rejects(connection, /cancel before module resolves/);
+  assert.equal(bridge.calls.setCharacter.length, 0);
 });
 
 test('原生后端 capability：参数/眨眼/口型/情绪由 Rust 执行，命中与入场原生接管', () => {

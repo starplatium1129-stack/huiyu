@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body"><dialog ref="dialog" class="task-center" aria-labelledby="task-center-title" @click="onDialogClick" @cancel.prevent="opened = false" @close="onClosed">
     <header data-fluid-glass><div><h2 id="task-center-title">任务中心</h2><p>{{ activeCount ? `${activeCount} 项正在处理，切换工作区可继续查看进度。` : '创作进度与最近完成的任务都在这里。' }}</p></div><button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭任务中心" @click="opened = false"><ArchiveIcon name="close" /></button></header>
-    <RuntimeTaskList v-if="runtimeTasksEnabled" :active="opened" @navigate="opened = false" />
+    <RuntimeTaskList v-if="runtimeTasksEnabled && inspected" :active="opened" @navigate="opened = false" />
     <details :open="!runtimeTasksEnabled"><StudioDisclosureSummary>{{ runtimeTasksEnabled ? '旧版本任务摘要 · 仅供查看' : '任务与进度' }}</StudioDisclosureSummary>
     <div data-disclosure-content class="task-disclosure tw:flex tw:flex-col tw:gap-s-3 tw:flex-1 tw:min-h-0">
     <div v-if="!runtimeTasksEnabled" class="task-center-controls tw:flex tw:flex-wrap tw:items-center tw:gap-s-2"><div class="studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="任务筛选"><AnimatedSelection /><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" type="button" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button></div><button class="btn btn-ghost" type="button" @click="clearCompleted">清理完成记录</button><button class="btn btn-ghost" type="button" :disabled="refreshing" @click="refresh">{{ refreshing ? '查询中…' : '更新任务状态' }}</button></div>
@@ -13,19 +13,22 @@
 </template>
 <script setup lang="ts">
 import { GENERATION_STAGE_LABELS } from '@/utils/generationTask'
-import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { useTaskCenter, hydrateTasks, consumeTaskReloadApproval, type TaskStatus } from '@/composables/useTaskCenter'
 import { startRuntimeTaskPolling } from '@/api/runtimeTasks'
 import { runtimeTasksEnabled } from '@/stores/runtimeTaskState'
-import RuntimeTaskList from './RuntimeTaskList.vue'
+const RuntimeTaskList = defineAsyncComponent(() => import('./RuntimeTaskList.vue'))
 import { useTaskRecovery } from '@/composables/tasks/useTaskRecovery'
 import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
 const recovery = useTaskRecovery()
 const { refreshing, error: recoveryError, refresh } = recovery
 const { tasks, opened, activeCount, controls, storageError, clearCompleted } = useTaskCenter()
+// Keep recovery/polling active from startup; load the inbox UI on first inspection
+// and retain its filters and pagination when the dialog is closed again.
+const inspected = ref(opened.value)
 const dialog = ref<HTMLDialogElement | null>(null), selected = ref('all'), busy = ref(''), feedback = ref('')
 // Frequent inspection responds immediately; native focus and scroll ownership stay intact.
 const motion = useFluidDialog(dialog, { enter: (_el, done) => done(), leave: (_el, done) => done(), dispose: () => {} })
@@ -35,6 +38,7 @@ const visible = computed(() => tasks.value.filter(task => selected.value === 'al
 function onDialogClick(event: MouseEvent) { if (isBackdropClick(event, dialog.value)) opened.value = false }
 function onClosed() { if (!dialog.value?.open) opened.value = false }
 watch(opened, async value => {
+  if (value) inspected.value = true
   const source = document.activeElement as HTMLElement | null
   await nextTick()
   const el = dialog.value

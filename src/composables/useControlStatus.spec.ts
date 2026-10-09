@@ -138,6 +138,62 @@ describe('control room state', () => {
     status.stopPolling()
   })
 
+  it.each([
+    [false, true, '本地聊天模型仍未就绪'],
+    [true, false, '角色语音仍未就绪'],
+    [true, true, '聊天环境已就绪'],
+  ] as const)('keeps room preparation locked through readiness checks (chat %s, voice %s)', async (online, voiceReady, expected) => {
+    vi.useFakeTimers()
+    const switchMode = vi.spyOn(controlApi, 'switchMode').mockResolvedValue({ ok: true, operation: running })
+    const getStatus = vi.spyOn(controlApi, 'getStatus').mockResolvedValue(snapshot({ operation: { ...running, status: 'completed' } }))
+    let finish!: () => void
+    const room = useRoomSetup({
+      chatProvider: ref('local'), apiConfigured: ref(false), ollamaOnline: ref(online), autoVoice: ref(false),
+      currentCharacter: computed(() => ({ voice: 'fixture' })),
+      voice: { refreshAvailability: vi.fn().mockResolvedValue(undefined), readyFor: () => voiceReady, prepare: vi.fn() },
+      refreshChatStatus: () => new Promise<void>(resolve => { finish = resolve }), setError: vi.fn(),
+      updateVoiceCapability: vi.fn(), isDisposed: () => false,
+    } as unknown as Parameters<typeof useRoomSetup>[0])
+    try {
+      await room.prepareRoom(); await flushPromises()
+      expect(room.preparingRoom.value).toBe(true)
+      expect(room.roomSetupText.value).toContain('正在核对')
+      await room.prepareRoom()
+      expect(switchMode).toHaveBeenCalledOnce()
+      finish(); await flushPromises()
+      expect(room.preparingRoom.value).toBe(false)
+      expect(room.roomSetupText.value).toContain(expected)
+      expect(vi.getTimerCount()).toBe(0)
+    } finally { room.destroy(); switchMode.mockRestore(); getStatus.mockRestore(); vi.useRealTimers() }
+  })
+
+  it.each(['failed refresh', 'disposal'] as const)('does not publish readiness after a %s', async outcome => {
+    vi.useFakeTimers()
+    const switchMode = vi.spyOn(controlApi, 'switchMode').mockResolvedValue({ ok: true, operation: running })
+    const getStatus = vi.spyOn(controlApi, 'getStatus').mockResolvedValue(snapshot({ operation: { ...running, status: 'completed' } }))
+    let reject!: (cause: Error) => void, disposed = false
+    const room = useRoomSetup({
+      chatProvider: ref('local'), apiConfigured: ref(false), ollamaOnline: ref(true), autoVoice: ref(false),
+      currentCharacter: computed(() => ({ voice: 'fixture' })),
+      voice: { refreshAvailability: vi.fn().mockResolvedValue(undefined), readyFor: () => true, prepare: vi.fn() },
+      refreshChatStatus: () => new Promise<void>((_resolve, fail) => { reject = fail }), setError: vi.fn(),
+      updateVoiceCapability: vi.fn(), isDisposed: () => disposed,
+    } as unknown as Parameters<typeof useRoomSetup>[0])
+    try {
+      await room.prepareRoom(); await flushPromises()
+      const before = room.roomSetupText.value
+      if (outcome === 'disposal') { disposed = true; room.destroy() }
+      reject(new Error('offline')); await flushPromises()
+      expect(room.roomSetupText.value).not.toContain('聊天环境已就绪')
+      if (outcome === 'disposal') expect(room.roomSetupText.value).toBe(before)
+      else {
+        expect(room.preparingRoom.value).toBe(false)
+        expect(room.roomSetupText.value).toContain('服务状态尚未确认')
+      }
+      expect(vi.getTimerCount()).toBe(0)
+    } finally { room.destroy(); switchMode.mockRestore(); getStatus.mockRestore(); vi.useRealTimers() }
+  })
+
   it('releases room preparation when its operation disappears or is replaced, without claiming success', async () => {
     vi.useFakeTimers()
     const switchMode = vi.spyOn(controlApi, 'switchMode').mockResolvedValue({ ok: true, operation: running })

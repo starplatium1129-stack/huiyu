@@ -7,6 +7,7 @@ const api = vi.hoisted(() => ({ fetch: vi.fn(), archive: vi.fn(), download: vi.f
 vi.mock('@/api/runtimeTasks', () => ({
   fetchRuntimeResult: api.fetch, markRuntimeTask: vi.fn(), downloadTaskMedia: api.download,
   runtimeResultPath: (task: TaskRecord, index: number) => `/fixture/${task.taskId}/${index}`,
+  isRuntimeResultPath: () => true,
 }))
 vi.mock('@/composables/tasks/taskArtwork', () => ({ archiveTaskResult: api.archive }))
 vi.mock('@/utils/runtimeEnvironment', () => ({ isLocalStudioHost: () => true }))
@@ -27,25 +28,36 @@ beforeEach(() => {
   vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
 })
 
-it('does not attach a late video download error to a replacement output', async () => {
-  let reject!: (error: Error) => void
+it('locks each selected video download and isolates late errors from a replacement output', async () => {
+  let reject!: (error: Error) => void, rejectCurrent!: (error: Error) => void
   api.download.mockReturnValueOnce(new Promise<void>((_done, fail) => { reject = fail }))
+    .mockReturnValueOnce(new Promise<void>((_done, fail) => { rejectCurrent = fail }))
   const videoTask = { ...task, resultRefs: task.resultRefs.map(output => ({ ...output, mime: 'video/mp4' })) }
   const wrapper = mount(RuntimeTaskResult, { props: { task: videoTask }, global: {
     stubs: { StudioSelect: true, StudioMediaPlayer: true }, directives: { 'content-motion': {} },
   } })
   try {
     await wrapper.get('button.btn-ghost').trigger('click')
+    await wrapper.get('button.btn-ghost').trigger('click')
+    expect(api.download).toHaveBeenCalledOnce()
+    expect(wrapper.get('button.btn-ghost').attributes('disabled')).toBeDefined()
     expect(api.download).toHaveBeenCalledWith('/fixture/fixture/0', '绘遇-fixture-0.mp4')
     wrapper.getComponent({ name: 'StudioSelect' }).vm.$emit('update:model-value', 1)
     await flushPromises()
+    expect(wrapper.get('button.btn-ghost').attributes('disabled')).toBeUndefined()
+    await wrapper.get('button.btn-ghost').trigger('click')
     reject(new Error('first video download failed'))
     await flushPromises()
     expect(wrapper.text()).not.toContain('first video download failed')
-    api.download.mockRejectedValueOnce(new Error('current video download failed'))
-    await wrapper.get('button.btn-ghost').trigger('click')
+    expect(wrapper.get('button.btn-ghost').attributes('disabled')).toBeDefined()
+    rejectCurrent(new Error('current video download failed'))
     await flushPromises()
     expect(wrapper.text()).toContain('current video download failed')
+    expect(wrapper.get('button.btn-ghost').attributes('disabled')).toBeUndefined()
+    api.download.mockResolvedValueOnce(undefined)
+    await wrapper.get('button.btn-ghost').trigger('click'); await flushPromises()
+    expect(api.download).toHaveBeenCalledTimes(3)
+    expect(wrapper.text()).not.toContain('current video download failed')
   } finally { wrapper.unmount() }
 })
 afterEach(() => vi.restoreAllMocks())

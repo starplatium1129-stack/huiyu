@@ -62,7 +62,7 @@ beforeEach(() => {
 })
 afterEach(() => { wrappers.splice(0).forEach(wrapper => wrapper.unmount()); vi.useRealTimers(); vi.unstubAllGlobals() })
 
-export async function setup(masonry = false) {
+export async function setup(masonry = false, renderedCount?: number) {
   let gallery!: ReturnType<typeof useGalleryWorkspace>
   const active = ref(true)
   const Gallery = defineComponent({ name: 'GalleryView', setup() {
@@ -75,13 +75,32 @@ export async function setup(masonry = false) {
         complete: { value: true, configurable: true }, naturalWidth: { value: gallery.thumbUrls[item.id] ? 100 : 0, configurable: true },
       }) },
     })])
-    return () => h('div', { ref: gallery.shellEl }, masonry
+    return () => h('div', { ref: gallery.shellEl }, [masonry
       ? gallery.masonryGroups.value.map(group => h('section', { key: group.key }, group.columns.map((column, index) => h('div', { key: index }, column.map(card)))))
-      : gallery.pagedVisible.value.map(card))
+      : gallery.pagedVisible.value.map(card),
+    gallery.hasMoreToRender.value ? h('div', { ref: gallery.sentinelEl }) : null])
   } })
   const wrapper = mount(createGalleryKeepAliveHost(active, Gallery))
   wrappers.push(wrapper)
   await flushPromises()
+  // The first snapshot deliberately yields one task before mounting the wall.
+  await new Promise<void>(resolve => setTimeout(resolve, 0))
+  await flushPromises()
+  // Resource-pressure cases explicitly page to their workload; their limits
+  // must not silently become weaker when the initial render batch gets smaller.
+  while (renderedCount && gallery.pagedVisible.value.length < Math.min(renderedCount, gallery.visible.value.length)) {
+    const sentinel = gallery.sentinelEl.value!
+    const boundary = new DOMRect(0, window.innerHeight + 800, 1, 1)
+    const rects = vi.spyOn(sentinel, 'getClientRects').mockReturnValue([boundary] as unknown as DOMRectList)
+    const bounds = vi.spyOn(sentinel, 'getBoundingClientRect').mockReturnValue(boundary)
+    const before = gallery.pagedVisible.value.length
+    try {
+      Observer.instances.find(observer => observer.options.rootMargin === '800px 0px')!.intersect()
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
+      await flushPromises()
+      if (gallery.pagedVisible.value.length <= before) throw new Error('Gallery fixture did not advance its page')
+    } finally { rects.mockRestore(); bounds.mockRestore() }
+  }
   return { gallery, wrapper,
     async hide() { active.value = false; await nextTick() },
     async show() { active.value = true; await flushPromises() },

@@ -22,12 +22,12 @@
 import { getDesktopCapabilities, onDesktopNavigate } from '@/platform/desktop/capabilities'
 import { getDesktopWindowRole } from '@/platform/desktop/runtime'
 
-import { computed, defineAsyncComponent, onMounted, onUnmounted, watch } from 'vue'
+import { computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
-const AppearancePreferences = defineAsyncComponent(() => import('@/components/AppearancePreferences.vue'))
+import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import TaskCenter from '@/components/tasks/TaskCenter.vue'
 import GlobalSearch from '@/components/GlobalSearchHost.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'

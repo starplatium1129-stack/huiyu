@@ -2,7 +2,7 @@ import { loadGalleryStorageAction } from './galleryStorage'
 import { useGallerySelection } from './useGallerySelection'
 import { computed, ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { bulkDeleteAction, confirmDeleteAction, toggleFavoriteAction } from './galleryMutations'
+import { bulkDeleteAction, confirmDeleteAction, toggleFavoriteAction, undoBulkDeleteAction } from './galleryMutations'
 import type { ArtworkRecord } from '@/types/artwork'
 
 const repo = vi.hoisted(() => ({
@@ -10,6 +10,7 @@ const repo = vi.hoisted(() => ({
   patchArtwork: vi.fn(),
   softDeleteArtwork: vi.fn(),
   softDeleteArtworks: vi.fn(),
+  restoreArtwork: vi.fn(),
 }))
 const confirmActionMock = vi.hoisted(() => vi.fn())
 
@@ -21,6 +22,7 @@ beforeEach(() => {
   repo.patchArtwork.mockReset()
   repo.softDeleteArtwork.mockReset()
   repo.softDeleteArtworks.mockReset()
+  repo.restoreArtwork.mockReset()
   confirmActionMock.mockReset()
 })
 afterEach(() => vi.restoreAllMocks())
@@ -77,6 +79,31 @@ it('an earlier failure cannot roll back a newer successful choice', async () => 
   const ctx = context(), item = artwork()
   await Promise.all([toggleFavoriteAction(ctx, item), toggleFavoriteAction(ctx, item)])
   expect(item.favorite).toBe(false)
+})
+
+describe('undoBulkDeleteAction', () => {
+  it('reports unconfirmed restores as retryable instead of claiming the trash is empty', async () => {
+    const ctx = deleteContext()
+    repo.restoreArtwork.mockRejectedValue(new Error('storage unavailable'))
+    await undoBulkDeleteAction(ctx, [1, 2])
+    expect(repo.restoreArtwork.mock.calls).toEqual([[1], [2]])
+    expect(ctx.loadGalleryStorage).toHaveBeenCalledOnce()
+    expect(ctx.showToast).toHaveBeenCalledWith(expect.stringMatching(/2 幅恢复尚未确认.*重试/), 'warning')
+  })
+
+  it('preserves each partial outcome and only reports complete restoration as success', async () => {
+    const ctx = deleteContext([1, 2, 3, 4])
+    repo.restoreArtwork.mockResolvedValueOnce({ restored: true })
+      .mockRejectedValueOnce(new Error('lost response'))
+      .mockResolvedValueOnce({ restored: false, missingImageIds: ['missing'] })
+      .mockResolvedValueOnce({ restored: false })
+    await undoBulkDeleteAction(ctx, [1, 2, 3, 4])
+    expect(repo.restoreArtwork.mock.calls).toEqual([[1], [2], [3], [4]])
+    expect(ctx.showToast).toHaveBeenCalledWith(expect.stringMatching(/1 幅.*1 幅原图.*1 幅已不在回收站.*1 幅恢复尚未确认/), 'warning')
+    repo.restoreArtwork.mockResolvedValue({ restored: true })
+    await undoBulkDeleteAction(ctx, [2, 3])
+    expect(ctx.showToast).toHaveBeenLastCalledWith('已把 2 幅放回展墙', 'success')
+  })
 })
 
 describe('confirmDeleteAction', () => {

@@ -40,7 +40,7 @@ it.each(['new text', 'initial value', 'reset'])('keeps newer %s edits when a sub
     expect(wrapper.emitted('close')).toBeUndefined()
     if (edit === 'new text') await wrapper.find('textarea').setValue('Newer draft')
     else if (edit === 'initial value') await wrapper.find('input').setValue(profile.callName)
-    else await wrapper.find('.btn-ghost').trigger('click')
+    else await wrapper.find('.profile-actions .btn-ghost').trigger('click')
     await wrapper.setProps({ profile: { ...profile, callName: 'Submitted', note: 'Remote note' } })
     acknowledge(true); await flushPromises()
     expect(wrapper.emitted('close')).toBeUndefined()

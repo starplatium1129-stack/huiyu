@@ -113,7 +113,7 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 items.push(decode_artwork(row)?);
                 last = row.get(4)?;
             }
-            let mut result = json!({"items":null,"nextCursor":cursor,"revision":c.revision()?});
+            let mut result = json!({"items":null,"nextCursor":cursor,"revision":c.revision()?,"artworkRevision":super::artwork_index::revision(c)?});
             result["items"] = Value::Array(items);
             Ok(result)
         }

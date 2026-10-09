@@ -1,5 +1,5 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
-import { assertChatVersion } from '../utils/chatVersion'
+import { assertChatVersion } from '../utils/chatVersion.ts'
 
 export function assertStoredChatVersion(key: string, current: number): void {
   const raw = localStorage.getItem(key)

@@ -71,9 +71,11 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import StudioSelect from '@/components/ui/StudioSelect.vue'
+import { defineAsyncComponent } from 'vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+
+const StudioSelect = defineAsyncComponent(() => import('@/components/ui/StudioSelect.vue'))
 
 const reasoningOptions = [
   { value: 'off', label: '关' },

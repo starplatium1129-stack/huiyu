@@ -51,12 +51,13 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   const cancelling = ref(false)
   const concating = ref(false)
   const retrying = ref(false)
+  const batchReadError = ref(''), batchReading = ref(false), batchReadRetryable = ref(false)
   let pollTimer = 0
   let disposed = false
   let pageActive = true
   let pollRequest: AbortController | null = null
   let reconnectRequest: AbortController | null = null
-  let reconnectTarget = ''
+  const reconnectTarget = ref('')
   let reconnectSerial = 0
   let operationSerial = 0
   const shotSubmissions = new WeakMap<ShotDraft, ShotSubmissionRecord>()
@@ -65,10 +66,12 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     window.clearTimeout(pollTimer)
     pollRequest?.abort(); pollRequest = null
     reconnectRequest?.abort(); reconnectRequest = null
+    batchReading.value = false
   }
   function beginOperation() {
     stopReads()
-    reconnectTarget = ''
+    reconnectTarget.value = ''
+    batchReadError.value = ''; batchReadRetryable.value = false
     return ++operationSerial
   }
 
@@ -83,10 +86,13 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   }
 
   const batchActive = computed(() => batch.value?.status === 'running')
+  const batchRecoveryPending = computed(() => Boolean(reconnectTarget.value))
+  const batchSelectionPending = computed(() => Boolean(reconnectTarget.value && reconnectTarget.value !== batch.value?.id))
   const canSubmit = computed(() =>
     shots.value.length > 0
     && shots.value.every((shot) => shot.prompt.trim().length >= 8 && shot.prompt.trim().length <= 4000)
     && !submitting.value
+    && !batchRecoveryPending.value
     && !deps.inputsBusy?.value
     && !retrying.value && !cancelling.value && !concating.value
     && h3Ready.value
@@ -176,20 +182,23 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   }
 
   async function pollBatch() {
-    if (!batch.value || disposed || !pageActive || pollRequest || submitting.value || retrying.value || cancelling.value || concating.value) return
+    if (!batch.value || disposed || !pageActive || pollRequest || reconnectRequest || submitting.value || retrying.value || cancelling.value || concating.value) return
     if (batch.value.status !== 'running' && batch.value.status !== 'paused') return
     const id = batch.value.id
     const serial = operationSerial
     const controller = new AbortController(); pollRequest = controller
+    batchReading.value = true
     try {
       const response = await fetchVideoBatch(id, controller.signal)
       if (disposed || !pageActive || controller.signal.aborted || batch.value?.id !== id || serial !== operationSerial) return
       batch.value = response.batch
+      batchReadError.value = ''; batchReadRetryable.value = false
     } catch (error) {
       if (disposed || !pageActive || controller.signal.aborted || batch.value?.id !== id || serial !== operationSerial) return
-      batchError.value = error instanceof Error ? error.message : '批量状态读取失败'
+      batchReadError.value = error instanceof Error ? error.message : '批量状态读取失败'
+      batchReadRetryable.value = true
     } finally {
-      if (pollRequest === controller) { pollRequest = null; schedulePoll() }
+      if (pollRequest === controller) { pollRequest = null; batchReading.value = false; schedulePoll() }
     }
   }
 
@@ -201,7 +210,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   }
 
   async function cancelBatch() {
-    if (!batch.value || cancelling.value) return
+    if (!batch.value || cancelling.value || batchSelectionPending.value) return
     const id = batch.value.id
     const serial = beginOperation()
     cancelling.value = true
@@ -219,7 +228,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
 
   async function retryShotAt(index: number) {
     const sourceIndex = submittedIndex(index)
-    if (!batch.value || retrying.value || cancelling.value || concating.value || sourceIndex < 0 || !batch.value.shots[sourceIndex]) return
+    if (!batch.value || retrying.value || cancelling.value || concating.value || batchRecoveryPending.value || sourceIndex < 0 || !batch.value.shots[sourceIndex]) return
     const id = batch.value.id
     const serial = beginOperation()
     retrying.value = true
@@ -236,7 +245,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   }
 
   async function retryAllFailed() {
-    if (!batch.value || retrying.value || cancelling.value || concating.value) return
+    if (!batch.value || retrying.value || cancelling.value || concating.value || batchRecoveryPending.value) return
     const id = batch.value.id
     const serial = beginOperation()
     const indices = batch.value.shots.flatMap((shot, index) => shot.status === 'failed' || shot.status === 'cancelled' ? [index] : [])
@@ -262,7 +271,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   }
 
   async function concatBatch() {
-    if (!batch.value || concating.value || retrying.value || cancelling.value || !canConcat.value) return
+    if (!batch.value || concating.value || retrying.value || cancelling.value || batchRecoveryPending.value || !canConcat.value) return
     const id = batch.value.id
     const serial = beginOperation()
     concating.value = true
@@ -283,13 +292,14 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
    * false，由宿主清记录并向用户解释。
    */
   async function reconnectBatch(id: string): Promise<boolean> {
-    reconnectTarget = id
+    reconnectTarget.value = id
     if (disposed || !pageActive) return true
     stopReads()
     const serial = ++reconnectSerial, operation = ++operationSerial
-    if (batch.value?.id === id) { reconnectTarget = ''; schedulePoll(); return true }
+    if (batch.value?.id === id && !batchReadError.value) { reconnectTarget.value = ''; schedulePoll(); return true }
     const previousId = batch.value?.id
     const controller = new AbortController(); reconnectRequest = controller
+    batchReading.value = true
     const current = () => !disposed && !controller.signal.aborted && serial === reconnectSerial
       && operation === operationSerial && batch.value?.id === previousId
     let returningToSource = false
@@ -304,26 +314,30 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
         if (!current()) return true
         if (response.batch.retrySource) throw new Error('重抽来源无法确认，请在任务中心查看独立结果。')
       }
-      reconnectTarget = ''
+      reconnectTarget.value = ''
       acceptBatch(response.batch)
+      batchReadError.value = ''; batchReadRetryable.value = false
       if (returningToSource) batchError.value = '当前显示原分镜批次；重抽结果独立保留在任务中心，尚未替换原镜头或自动续拼接。'
       schedulePoll()
       return true
     } catch (error) {
       if (!current()) return true
       if (error instanceof ApiClientError && (error.status === 404 || error.status === 410 || returningToSource && error.status === 403)) {
-        reconnectTarget = ''
-        batchError.value = returningToSource ? '原分镜批次不存在或无权访问；独立重抽结果仍请到任务中心查看，未绑定到当前草稿。'
-          : '上一批分镜任务已不存在，镜头草稿仍在，可重新提交。'
+        reconnectTarget.value = ''
+        if (!returningToSource && batch.value?.id === id) batch.value = null
+        batchReadRetryable.value = false
+        batchReadError.value = returningToSource ? '原分镜批次不存在或无权访问；独立重抽结果仍请到任务中心查看，未绑定到当前草稿。'
+          : batch.value ? '请求的分镜批次已不存在；当前批次与草稿已保留，可返回该批次继续查看进度。' : '上一批分镜任务已不存在，镜头草稿仍在，可重新提交。'
         return false
       }
-      batchError.value = error instanceof Error ? error.message : '批次暂时无法读取，请稍后重试'
+      batchReadError.value = error instanceof Error ? error.message : '批次暂时无法读取，请稍后重试'
+      batchReadRetryable.value = true
       return true
-    } finally { if (reconnectRequest === controller) reconnectRequest = null }
+    } finally { if (reconnectRequest === controller) { reconnectRequest = null; batchReading.value = false } }
   }
 
   onDeactivated(() => { pageActive = false; stopReads() })
-  onActivated(() => { pageActive = true; if (reconnectTarget) void reconnectBatch(reconnectTarget); else void pollBatch() })
+  onActivated(() => { pageActive = true; if (reconnectTarget.value) void reconnectBatch(reconnectTarget.value); else void pollBatch() })
   onBeforeUnmount(() => {
     disposed = true
     pageActive = false
@@ -333,6 +347,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   useTrackedTask(() => ({ kind: 'video', title: '分镜批量视频', backend: !submitting.value && batch.value ? { kind: 'video-batch', id: batch.value.id } : undefined, route: batch.value ? '/video-studio?mode=shots&batch=' + encodeURIComponent(batch.value.id) : '/video-studio?mode=shots', resultRoute: batch.value ? '/video-studio?mode=shots&batch=' + encodeURIComponent(batch.value.id) : undefined, status: submitting.value || concating.value || batchActive.value ? 'running' : !batch.value ? 'idle' : batchError.value || batch.value.status === 'paused' || batch.value.progress.failed ? 'failed' : batch.value.status === 'cancelled' ? 'cancelled' : 'succeeded', progress: progressPercent.value, message: batchError.value || (concating.value ? '正在拼接成片…' : batch.value ? `${batch.value.progress.succeeded} / ${batch.value.progress.total} 镜完成` : '') }), { get cancel() { return concating.value ? undefined : cancelBatch }, get retry() { return batch.value?.progress.failed ? retryAllFailed : undefined } })
   return {
     batch,
+    batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending,
     submitting,
     cancelling,
     concating,

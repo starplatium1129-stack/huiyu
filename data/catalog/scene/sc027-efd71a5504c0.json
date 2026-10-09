@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc027",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-09T04:23:07.783264200+00:00",
   "data": {
     "animaCaption": "The call continues as Ayachi Nene sits beside her pillow in soft pink pajamas, keeping the phone at her ear. The close composition concentrates on her listening expression and the hand around the phone. A bedside lamp stands farther back on the table, with the bed edge leading into the shaded room. Its warm light touches her cheek and sleeve; the phone casts a small facial shadow while the pillow returns gentle fill.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -22,7 +22,7 @@
     "mature": false,
     "negative": "duplicate phones, phone fused with ear, extra foreground faces",
     "prompt": "1girl, ayachi_nene, pink pajamas, holding phone to ear, bedroom, bedside lamp, night, close up",
-    "rating": "R15",
+    "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 没有挂断的深夜电话】秋夜里，宁宁在床上反复点开你的号码，终于拨通后却紧张得一句话也说不出。你没有催促，只隔着听筒陪她听窗外的风。很久以后，她把脸埋进枕头，小声承认——「其实没有急事……只是今天一直没见到你。听到声音以后，好像就能安心睡着了。」",
     "storyJa": "【寧々・深夜の電話は一度も切られなかった】秋の夜、寧々はベッドの上であなたの番号を繰り返しクリックしました。ようやく電話をかけた後、彼女は緊張のあまり何も言えなかった。あなたは彼女を急かすこともなく、ただ受話器を通して彼女と一緒に窓の外の風を聞いていました。久しぶりに枕に顔を埋めてささやいた――「実は、急ぎの用事なんてないんです……今日はずっと会えなかったから。声を聞いたら、安心して眠れそうな気がして。」",
@@ -41,8 +41,7 @@
     "timeOfDay": "late_night",
     "title": "没有挂断的深夜电话",
     "usage": [
-      "展示图",
-      "R15"
+      "展示图"
     ],
     "weather": "晴"
   }

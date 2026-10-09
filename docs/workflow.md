@@ -339,6 +339,8 @@ PixAI 接入后，旧 WD14 ONNX／448 像素预处理代码已退出 Rust 产品
 
 ### 按改动选择检查
 
+性能资源诊断复用 `npm run test:e2e:performance -- --project=fluidity-office --grep "dark full round 1$"`，单 worker、隔离夹具、默认 20 轮，不与构建或其他浏览器测量并发。`AICS_OFFICE_RESOURCE_SAMPLES=20..100` 选择有证据需要的持续轮次；`AICS_OFFICE_HEAP_SNAPSHOTS=1` 显式保存基线/结束的 V8 堆快照，`AICS_OFFICE_IDLE_MS=0..30000` 增加静置后 GC（可同时保存第三份快照）。默认不启用两项额外诊断。快照会扰动运行，资源结果不能当作无探针时延或原生 GPU 验收；输出保存在 `runtime/ui-fluidity-office[-轮数]/`。
+
 内容契约 CLI（`check:content` / `test:content`）支持 `AICS_DATA_ROOT || AICS_APP_ROOT || 仓库根`。该根须提供完整 data/assets/src/stores 布局；数据、压缩产物和 DATA_VERSION 核对均使用所选根，缺文件失败，不回退到仓库数据。校验规则代码仍从代码仓库加载；显式外部素材路径配置仍生效。隔离回归 `test-content-contract-root.js` 验证根优先级、损坏定位、零写入及不读取仓库数据域。
 
 按影响面选验证，不按“改了代码”或“准备提交”一律升级；新增测试、证据复用与失败止损遵循 [协作指南](../AGENTS.md#风险验证)。失败先分类并缩小范围，没有相关修复或新诊断证据不原样重跑；同一失败再次出现须报告原因、影响和下一步，不用全量重跑或无关改动追求绿灯。

@@ -28,8 +28,8 @@
     },
     {
       "path": "src/utils/popularPromptBuilder.ts",
-      "sha256": "ed2e27a9d714d65c412435d56c625449a86fdf05ec0ca14736160a0eb03f29ad",
-      "note": "2026-10-07: Reviewed the content-gate consumers scanStudioTokenLeaks and scanCharacterPollution: both studio regexes, all 16 environment tokens and character/outfit scan fields agree with Rust. Prompt-plan building, rendering and identity composition are outside this gate. Original extraction date and recipeSha256 are retained."
+      "sha256": "2a021527b1869c99a341f435965d4f6e5fdc095a370523cf0db3f36899df0385",
+      "note": "2026-10-07: Reviewed the content-gate consumers scanStudioTokenLeaks and scanCharacterPollution: both studio regexes, all 16 environment tokens and character/outfit scan fields agree with Rust. 2026-10-09: Diff against fc2ad3fb is confined to buildPopularPromptPlan removing replaced outfit tokens while preserving overlapping identity anchors; neither gate consumer changed. The Node/Rust issue-parity fixture still agrees. Prompt-plan building, rendering and identity composition are outside this gate. Original extraction date and recipeSha256 are retained."
     },
     {
       "path": "src/utils/blueprintComposition.ts",

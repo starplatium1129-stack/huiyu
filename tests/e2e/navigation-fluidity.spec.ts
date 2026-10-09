@@ -1,5 +1,20 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 import { installUiFluidityFixture } from './helpers/ui-fluidity-fixture'
+
+async function openSceneBrowser(page: Page) {
+  await page.goto('/scene-explorer')
+  const guide = page.getByRole('dialog', { name: '访客导览', exact: true })
+  await guide.getByRole('button', { name: '先浏览，稍后配置', exact: true }).click()
+  await expect(guide).toBeHidden()
+}
+
+async function placeSceneSearch(page: Page) {
+  const input = page.locator('#sceneSearch')
+  await input.scrollIntoViewIfNeeded()
+  await input.evaluate(element => window.scrollTo({ top: Math.max(0, window.scrollY + element.getBoundingClientRect().top - 120), behavior: 'instant' }))
+  await expect(input).toBeInViewport({ ratio: 1 })
+  return input
+}
 
 test('initial lazy route keeps first-paint feedback until content is ready', async ({ page }) => {
   let release!: () => void
@@ -66,7 +81,7 @@ test('changing motion preference settles an active route transition', async ({ p
 })
 
 test('explicit revisit and browser back restore the scene list window scroll position', async ({ page }) => {
-  await page.goto('/scene-explorer')
+  await openSceneBrowser(page)
   await expect(page.locator('.scene-grid .sc').first()).toBeVisible()
   await page.evaluate(() => window.scrollTo(0, 640))
   const saved = await page.evaluate(() => window.scrollY)
@@ -87,43 +102,50 @@ test('explicit revisit and browser back restore the scene list window scroll pos
 })
 
 test('clearing a scene filter returns to the pre-filter scroll position', async ({ page }) => {
-  await page.goto('/scene-explorer')
+  await openSceneBrowser(page)
   const cards = page.locator('.scene-grid .sc')
   await expect(cards.first()).toBeVisible()
-  await page.evaluate(() => window.scrollTo(0, 700))
+  // Capture after Playwright has made the field visible; locator.fill must not
+  // introduce a separate viewport movement between this anchor and the input.
+  const input = await placeSceneSearch(page)
   const saved = await page.evaluate(() => window.scrollY)
   expect(saved).toBeGreaterThan(0)
 
   // 筛到空结果：列表塌缩、文档变矮，浏览器会把滚动位置钳掉
-  await page.locator('#sceneSearch').fill('zzz-没有这种场景-zzz')
+  await input.fill('zzz-没有这种场景-zzz')
   await expect(page.locator('.scene-grid')).toHaveCount(0)
   expect(await page.evaluate(() => window.scrollY)).toBeLessThan(saved)
 
   // 清空筛选：列表长回来，位置必须回到筛选前，而不是停在被钳掉的地方
-  await page.locator('#sceneSearch').fill('')
+  await input.fill('')
   await expect(cards.first()).toBeVisible()
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThanOrEqual(saved - 2)
 })
 
 test('a deliberate scroll while filtered wins over the remembered position', async ({ page }) => {
-  await page.goto('/scene-explorer')
+  await openSceneBrowser(page)
   const cards = page.locator('.scene-grid .sc')
   await expect(cards.first()).toBeVisible()
-  await page.evaluate(() => window.scrollTo(0, 700))
+  const input = await placeSceneSearch(page)
 
   // 筛到仍有结果的查询：列表变短但没塌空
-  await page.locator('#sceneSearch').fill('宁宁')
+  await input.fill('宁宁')
+  await expect(page).toHaveURL(/q=/)
+  await expect(page.locator('.scene-grid')).toHaveAttribute('aria-busy', 'false')
   await expect(cards.first()).toBeVisible()
-  // 真实手势（滚轮）代表"用户自己接管了位置"，之后把位置钉在顶部便于断言
-  await page.mouse.wheel(0, 300)
-  await page.evaluate(() => window.scrollTo(0, 0))
-  await page.waitForTimeout(400)
+  // Wheel over a card, outside the editable field. Wait for that actual scroll
+  // before clearing, rather than racing an asynchronous wheel with scrollTo(0).
+  await cards.first().hover()
+  const chosen = Math.max(0, await page.evaluate(() => window.scrollY) - 200)
+  await page.mouse.wheel(0, -200)
+  await expect.poll(async () => Math.abs(await page.evaluate(() => window.scrollY) - chosen)).toBeLessThanOrEqual(2)
+  await expect(input).toBeInViewport({ ratio: 1 })
 
-  await page.locator('#sceneSearch').fill('')
+  await input.fill('')
+  await expect(page).not.toHaveURL(/q=/)
+  await expect(page.locator('.scene-grid')).toHaveAttribute('aria-busy', 'false')
   await expect(cards.first()).toBeVisible()
-  await page.waitForTimeout(400)
-  // 用户动过位置就不该被拽回筛选前的 700
-  expect(await page.evaluate(() => window.scrollY)).toBeLessThan(200)
+  await expect.poll(async () => Math.abs(await page.evaluate(() => window.scrollY) - chosen)).toBeLessThanOrEqual(2)
 })
 
 

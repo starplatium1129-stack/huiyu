@@ -32,6 +32,8 @@ interface ClipboardCard {
   png?: Uint8Array | number[]
   previewUrl?: string
   text?: string
+  saving?: boolean
+  error?: string
 }
 
 /**
@@ -95,17 +97,24 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
 
   async function acceptClipboardCard() {
     const card = clipboardCard.value
-    if (!card) return
+    if (!alive || !card || card.saving) return
     if (card.kind === 'image' && card.png) {
       const blob = clipboardPngBlob(card.png)
-      dismissClipboardCard()
-      if (!blob) return
-      const { imported } = await importLocalImages([{ name: `剪贴板-${Date.now()}.png`, size: blob.size, type: 'image/png', blob }])
-      if (imported > 0) {
-        deps.noteReturnPlain('收到剪贴板里的图片，已经放进作品册啦。')
-        if (desktopBridge) desktopBridge.notify(deps.currentCharacterName(), '图片已存入作品册')
-        deps.resetEventDetector()
-      }
+      clearTimeout(clipboardCardTimer)
+      if (!blob) { card.error = '图片暂时无法读取，请重新复制后重试。'; return }
+      card.saving = true; card.error = ''
+      try {
+        const { imported } = await importLocalImages([{ name: `剪贴板-${Date.now()}.png`, size: blob.size, type: 'image/png', blob }])
+        if (!alive) return
+        if (imported > 0) {
+          if (clipboardCard.value === card) dismissClipboardCard()
+          deps.noteReturnPlain('收到剪贴板里的图片，已经放进作品册啦。')
+          if (desktopBridge) desktopBridge.notify(deps.currentCharacterName(), '图片已存入作品册')
+          deps.resetEventDetector()
+        } else if (clipboardCard.value === card) card.error = '图片尚未确认入册，请先查看作品册，再决定是否重试。'
+      } catch {
+        if (alive && clipboardCard.value === card) card.error = '图片尚未确认入册，请先查看作品册，再决定是否重试。'
+      } finally { if (clipboardCard.value === card) card.saving = false }
     } else if (card.kind === 'text' && card.text) {
       const text = card.text
       dismissClipboardCard()
@@ -120,6 +129,7 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
     importBusy = true
     try {
       const { imported, skipped } = await importLocalImages(files)
+      if (!alive) return
       if (imported > 0) {
         const line = `收到 ${imported} 张图片，已经放进作品册啦${skipped > 0 ? `（${skipped} 张未导入）` : ''}。`
         deps.noteReturn(() => line)
@@ -127,8 +137,10 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
         // 导入也会让图片计数增加；重置检测器基线避免误报 sd-done
         deps.resetEventDetector()
       } else if (skipped > 0) {
-        deps.noteReturnPlain('这几张图片好像打不开……再试试别的？')
+        deps.noteReturnPlain('图片尚未确认入册，请先查看作品册，再决定是否重试。')
       }
+    } catch {
+      if (alive) deps.noteReturnPlain('图片尚未确认入册，请先查看作品册，再决定是否重试。')
     } finally {
       importBusy = false
     }
@@ -174,7 +186,7 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
     const revision = characterRevision
     const character = activeChar.value
     const card = clipboardCard.value
-    if (!card || card.kind !== 'image' || !card.png) return
+    if (!card || card.saving || card.kind !== 'image' || !card.png) return
     const blob = clipboardPngBlob(card.png)
     dismissClipboardCard()
     if (!blob) return

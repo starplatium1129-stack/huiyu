@@ -6,8 +6,18 @@
 <meta name="color-scheme" content="light dark">
 <title>Rust 后端性能优化审计 · 2026-10-08</title>
 <style>
-:root{color-scheme:light dark;--bg:light-dark(#f7f8fa,#171b22);--paper:light-dark(#fff,#212730);--ink:light-dark(#202735,#e7ebf2);--muted:light-dark(#515c6c,#bbc5d3);--line:light-dark(#d7dde6,#435064);--accent:light-dark(#284e90,#a6c8ff);--soft:light-dark(#edf3fe,#253449)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1060px;margin:auto;padding:42px 24px 56px}h1{font-size:32px;line-height:1.3;margin:8px 0 16px}h2{font-size:23px;margin:32px 0 12px}h3{font-size:19px;margin:0 0 10px}p{margin:10px 0}a{color:var(--accent);text-underline-offset:3px}.meta,small{color:var(--muted)}.lead{font-size:19px}.summary{padding:20px 24px;background:var(--soft);border-radius:12px;margin:22px 0}.finding{padding:23px;background:var(--paper);border:1px solid var(--line);border-radius:12px;margin:16px 0}.label{font-size:13px;color:var(--accent);letter-spacing:.03em}.sources{font-size:14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);overflow-wrap:anywhere}table{width:100%;border-collapse:collapse;margin:14px 0;font-variant-numeric:tabular-nums}th,td{text-align:left;border-bottom:1px solid var(--line);padding:12px;vertical-align:top}th{color:var(--muted);font-size:14px;font-weight:600}code{font-size:.9em;background:var(--soft);padding:2px 4px;border-radius:3px;overflow-wrap:anywhere}.scroll{overflow-x:auto}li{margin:7px 0}nav{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0}details{margin-top:12px}summary{cursor:pointer;color:var(--accent);padding:8px 0}footer{font-size:14px;border-top:1px solid var(--line);padding-top:18px;margin-top:32px;color:var(--muted)}@media(max-width:640px){main{padding:26px 16px}h1{font-size:26px}.finding{padding:18px}th,td{padding:9px}.lead{font-size:17px}}@media print{body{background:white;color:#202735}main{max-width:none;padding:12px}.finding{break-inside:avoid}nav{display:none}}
+:root{
+--print-ink:#202735;
+color-scheme:light dark;
+--bg:light-dark(#f7f8fa,#171b22);
+--paper:light-dark(#fff,#212730);
+--ink:light-dark(#202735,#e7ebf2);
+--muted:light-dark(#515c6c,#bbc5d3);
+--line:light-dark(#d7dde6,#435064);
+--accent:light-dark(#284e90,#a6c8ff);
+--soft:light-dark(#edf3fe,#253449)
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1060px;margin:auto;padding:42px 24px 56px}h1{font-size:32px;line-height:1.3;margin:8px 0 16px}h2{font-size:23px;margin:32px 0 12px}h3{font-size:19px;margin:0 0 10px}p{margin:10px 0}a{color:var(--accent);text-underline-offset:3px}.meta,small{color:var(--muted)}.lead{font-size:19px}.summary{padding:20px 24px;background:var(--soft);border-radius:12px;margin:22px 0}.finding{padding:23px;background:var(--paper);border:1px solid var(--line);border-radius:12px;margin:16px 0}.label{font-size:13px;color:var(--accent);letter-spacing:.03em}.sources{font-size:14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);overflow-wrap:anywhere}table{width:100%;border-collapse:collapse;margin:14px 0;font-variant-numeric:tabular-nums}th,td{text-align:left;border-bottom:1px solid var(--line);padding:12px;vertical-align:top}th{color:var(--muted);font-size:14px;font-weight:600}code{font-size:.9em;background:var(--soft);padding:2px 4px;border-radius:3px;overflow-wrap:anywhere}.scroll{overflow-x:auto}li{margin:7px 0}nav{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0}details{margin-top:12px}summary{cursor:pointer;color:var(--accent);padding:8px 0}footer{font-size:14px;border-top:1px solid var(--line);padding-top:18px;margin-top:32px;color:var(--muted)}@media(max-width:640px){main{padding:26px 16px}h1{font-size:26px}.finding{padding:18px}th,td{padding:9px}.lead{font-size:17px}}@media print{body{background:white;color:var(--print-ink)}main{max-width:none;padding:12px}.finding{break-inside:avoid}nav{display:none}}
 </style>
 </head>
 <body><main>

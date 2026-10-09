@@ -119,7 +119,7 @@ export function useShotWorkspace(props: {
         onCardRemoved: index => { shots.value.forEach(shot => { shot.cast = removeCastSlot(shot.cast, index); }); },
     });
     // ── 批量提交状态机（提交/3s 轮询/取消/重抽/拼接）已下沉 useShotBatchMachine ──
-    const { batch, submitting, cancelling, concating, retrying, batchActive, canSubmit, canConcat, progressPercent, serverShot, getShotSubmission, restoreShotSubmission, submitBatch, cancelBatch, retryShotAt, retryAllFailed, concatBatch, reconnectBatch } = useShotBatchMachine({
+    const { batch, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, submitting, cancelling, concating, retrying, batchActive, canSubmit, canConcat, progressPercent, serverShot, getShotSubmission, restoreShotSubmission, submitBatch, cancelBatch, retryShotAt, retryAllFailed, concatBatch, reconnectBatch } = useShotBatchMachine({
         shots,
         identityCard,
         aspectRatio,
@@ -161,6 +161,7 @@ export function useShotWorkspace(props: {
         if (ok !== undefined) batchError.value = ok ? '' : `镜头 ${index + 1} 首帧暂未挂载：请重试，或重新上传图片`;
     }
     const submitTitle = computed(() => {
+        if (batchRecoveryPending.value) return batchReading.value ? '正在恢复已有批次' : '已有批次状态尚未确认';
         if (batchActive.value)
             return '整批正在生成中';
         if (!props.status?.online)
@@ -180,6 +181,7 @@ export function useShotWorkspace(props: {
         return `${shots.value.length} 镜 · ${aspectRatio.value === 'landscape' ? '横屏' : aspectRatio.value === 'portrait' ? '竖屏' : '方形'} · ${qualityLabel.value}`;
     });
     const submitDescription = computed(() => {
+        if (batchRecoveryPending.value) return '正在核对已有批次；确认后才能生成、重抽或拼接。';
         if (batchActive.value)
             return '逐镜串行排队，可离开页面；失败镜头可单独重抽。';
         if (!props.status?.online)
@@ -423,15 +425,24 @@ export function useShotWorkspace(props: {
     /** 整批任务重连（F1）：离页不中断服务端批次，回来按 batchId 接回真实进度。 */
     async function reconnectShotsBatch() {
         const requestedBatch = typeof route.query.batch === 'string' ? route.query.batch : '';
-        const record = requestedBatch ? { batchId: requestedBatch } : videoStore.shotsBatch;
+        const record = requestedBatch ? { batchId: requestedBatch } : videoStore.shotsBatch ?? (batch.value ? { batchId: batch.value.id } : null);
         if (!record)
             return;
         const ok = await reconnectBatch(record.batchId);
         if (!ok) {
             if ((typeof route.query.batch === 'string' ? route.query.batch : '') !== requestedBatch) return;
             if (videoStore.shotsBatch?.batchId === record.batchId) videoStore.clearShotsBatch();
-            batchError.value ||= '上一批分镜任务已不存在（网关重启或已过期），镜头草稿仍在，可重新提交';
+            batchReadError.value ||= '上一批分镜任务已不存在（网关重启或已过期），镜头草稿仍在，可重新提交';
         }
+    }
+    async function retryBatchRead() {
+        if (!batchReadRetryable.value || batchReading.value || submitting.value || cancelling.value || retrying.value || concating.value) return;
+        await reconnectShotsBatch();
+    }
+    const canReturnToBatch = computed(() => Boolean(batch.value && batchReadError.value && !batchReadRetryable.value && route.query.batch !== batch.value.id));
+    function returnToCurrentBatch() {
+        if (!canReturnToBatch.value || batchReading.value || submitting.value || cancelling.value || retrying.value || concating.value) return;
+        return router.replace({ path: '/video-studio', query: { ...route.query, mode: 'shots', batch: batch.value!.id } });
     }
     watch(() => route.query.batch, () => {
         if (route.path === '/video-studio') void reconnectShotsBatch();
@@ -474,6 +485,6 @@ frameInputs,
         retryShotFrame, clearFrame, onFramePicked, retryShotAt, scriptStory, scriptCount,
         scriptTotal, runAiScript, canSubmit, submitTitle, submitDescription, cancelling,
         cancelBatch, batch, retryAllFailed, canConcat, concating, concatBatch,
-        submitBatch, submitting, retrying, batchError, batchStatusLabel, progressPercent,
+        submitBatch, submitting, retrying, batchError, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, retryBatchRead, canReturnToBatch, returnToCurrentBatch, batchStatusLabel, progressPercent,
     };
 }

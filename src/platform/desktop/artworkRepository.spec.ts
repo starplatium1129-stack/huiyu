@@ -137,21 +137,21 @@ it('keeps the last complete recent snapshot when a body lookup fails or its revi
   expect((await repository.readRecentHistory()).map(item => item.id)).toEqual(['recent'])
 })
 it('uses the latest completed snapshot when recent and full-library reads alternate before disconnecting', async () => {
-  const row = (id: string) => ({ id, body: { id }, revision: 1, deletedAt: null })
-  const page = (id: string) => ({ items: [row(id)], nextCursor: null, revision: 1 })
+  const row = (id: string, revision = 1) => ({ id, body: { id }, revision, deletedAt: null })
+  const page = (id: string, revision = 1) => ({ items: [row(id, revision)], nextCursor: null, revision, artworkRevision: revision })
   const repository = createDesktopArtworkRepository()
   mocks.request.mockResolvedValueOnce(page('older-full')); await repository.readHistory()
-  mocks.request.mockResolvedValueOnce(page('newer-recent')).mockResolvedValueOnce([row('newer-recent')]); await repository.readRecentHistory()
+  mocks.request.mockResolvedValueOnce(page('newer-recent', 2)).mockResolvedValueOnce([row('newer-recent', 2)]); await repository.readRecentHistory()
   mocks.state.connection = 'unavailable'
   expect((await repository.readRecentHistory())[0].id).toBe('newer-recent')
   mocks.state.connection = 'ready'
-  mocks.request.mockResolvedValueOnce(page('latest-full')); await repository.readHistory()
+  mocks.request.mockResolvedValueOnce({ revision: 3, artworkRevision: 3, writerEpoch: 'epoch-1' }).mockResolvedValueOnce(page('latest-full', 3)); await repository.readHistory()
   mocks.state.connection = 'unavailable'
   expect((await repository.readRecentHistory())[0].id).toBe('latest-full')
 })
 it('cancels recent-work pages and late body lookups without replacing the cached snapshot', async () => {
   const selected = { id: 'saved', body: { id: 'saved' }, revision: 1, deletedAt: null }
-  const page = { items: [selected], nextCursor: null, revision: 1 }
+  const page = { items: [selected], nextCursor: null, revision: 1, artworkRevision: 1 }
   const repository = createDesktopArtworkRepository()
   mocks.request.mockResolvedValueOnce(page).mockResolvedValueOnce([selected]); await repository.readRecentHistory()
   let finish!: (value: unknown) => void
@@ -169,7 +169,7 @@ it('cancels recent-work pages and late body lookups without replacing the cached
 })
 it('keeps detached loaded history while disconnected and uses the same artwork identity for retries', async () => {
   mocks.request.mockImplementation(async command => command.kind === 'listArtworks'
-    ? { items: [{ id: 'original', body: { id: 'original', image_id: 'image' }, revision: 1, deletedAt: null }], nextCursor: null, revision: 1 }
+    ? { items: [{ id: 'original', body: { id: 'original', image_id: 'image' }, revision: 1, deletedAt: null }], nextCursor: null, revision: 1, artworkRevision: 1 }
     : { revision: 2 })
   const repository = createDesktopArtworkRepository()
   const history = await repository.readHistory()
@@ -236,22 +236,22 @@ it('organizes a bounded selection with one revision lookup and recovers its stab
 })
 
 it('cancels paginated reads without starting another page or replacing the last complete history', async () => {
-  const page = (id: string, nextCursor: string | null) => ({ items: [{ id, body: { id }, revision: 1, deletedAt: null }], nextCursor, revision: 1 })
-  mocks.request.mockResolvedValueOnce(page('saved', null))
+  const page = (id: string, nextCursor: string | null, revision = 2) => ({ items: [{ id, body: { id }, revision, deletedAt: null }], nextCursor, revision, artworkRevision: revision })
+  mocks.request.mockResolvedValueOnce(page('saved', null, 1))
   const repository = createDesktopArtworkRepository()
   await repository.readHistory()
   mocks.request.mockClear()
   let finish!: (value: ReturnType<typeof page>) => void
-  mocks.request.mockResolvedValueOnce(page('partial', 'next'))
+  mocks.request.mockResolvedValueOnce({ revision: 2, artworkRevision: 2, writerEpoch: 'epoch-1' }).mockResolvedValueOnce(page('partial', 'next'))
     .mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
   const controller = new AbortController()
   const reading = repository.readHistory(controller.signal)
-  await vi.waitFor(() => expect(mocks.request).toHaveBeenCalledTimes(2))
+  await vi.waitFor(() => expect(mocks.request).toHaveBeenCalledTimes(3))
   expect(mocks.request.mock.calls.every(([, signal]) => signal === controller.signal)).toBe(true)
   controller.abort()
   finish(page('late', 'third'))
   await expect(reading).rejects.toMatchObject({ name: 'AbortError' })
-  expect(mocks.request).toHaveBeenCalledTimes(2)
+  expect(mocks.request).toHaveBeenCalledTimes(3)
   mocks.state.connection = 'unavailable'
   expect((await repository.readHistory()).map(item => item.id)).toEqual(['saved'])
 })
@@ -352,7 +352,7 @@ it('forgets released media and cannot repopulate its cache from an older read', 
   expect(await repository.getThumbnail('image')).toBeNull()
 })
 it('reads paged recommendation fields without loading the full library cache', async () => {
-  mocks.request.mockImplementation(async command => ({items:[{id:command.cursor?'b':'a',body:{id:command.cursor?'b':'a',scene:'sc001',favorite:true},revision:3,deletedAt:null}],nextCursor:command.cursor?null:'next',revision:3}))
+  mocks.request.mockImplementation(async command => ({items:[{id:command.cursor?'b':'a',body:{id:command.cursor?'b':'a',scene:'sc001',favorite:true},revision:3,deletedAt:null}],nextCursor:command.cursor?null:'next',revision:3,artworkRevision:3}))
   const repository=createDesktopArtworkRepository();const rows=await repository.readPreferenceHistory()
   expect(rows).toHaveLength(2)
   expect(mocks.request.mock.calls.map(([c])=>c.projection)).toEqual(['preference','preference'])

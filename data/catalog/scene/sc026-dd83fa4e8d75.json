@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc026",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 24,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-09T04:23:07.783264200+00:00",
   "data": {
     "animaCaption": "Shiki Natsume waits on a gym mat with her knees drawn up, dressed in a white T-shirt and navy gym shorts. Her sneakers rest beside the mat as she gives the viewer an embarrassed, amused glance. Equipment shelves overlap along the tight storeroom aisle. An oblique beam from the high window crosses the shelf fronts and her shoulder; the mat's contact shadow and faint room reflection keep her seated position clear.",
     "auditRevision": "careful-batch08-2026-08-27",
@@ -22,7 +22,7 @@
     "mature": false,
     "negative": "floating gym mat, fused shelf and body, duplicate sneakers",
     "prompt": "1girl, shiki_natsume, white t shirt, gym shorts, sitting on gym mat, knees drawn up, equipment room, high window, close up",
-    "rating": "R15",
+    "rating": "All",
     "season": "夏",
     "story": "【夏目 · 器材室里被困的五分钟】大学体育馆活动结束后，夏目请你帮忙归还器材，门却被风意外带上。狭小仓库里只剩高窗漏进来的光，她检查门锁时还很冷静，转身发现你们距离过近才迅速红了耳根——「先想办法开门，别露出那种表情。还有……退后一点，我不是在紧张，只是这里太闷。」",
     "storyJa": "【夏目・機器室に5分間閉じ込められる】大学の体育館での活動後、夏目さんから機材の返却を手伝ってほしいと頼まれましたが、風で誤ってドアが閉まってしまいました。狭い倉庫には高窓から光が漏れてくるだけだった。ドアの鍵を確認したときはまだ冷静だったが、振り返って二人が近すぎることに気づくと、すぐに顔を赤らめた。――「まずは扉を開ける方法を考えて。そんな顔しないの。それと……少し離れて。緊張してるんじゃなくて、ここが蒸し暑いだけだから。」",
@@ -41,8 +41,7 @@
     "title": "器材室里被困的五分钟",
     "usage": [
       "展示图",
-      "头像",
-      "R15"
+      "头像"
     ],
     "weather": "晴"
   }

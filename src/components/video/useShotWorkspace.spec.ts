@@ -116,6 +116,43 @@ it('applies only the latest explicit character/outfit after draft restore and do
   } finally { wrapper.unmount() }
 })
 
+it('retries an existing batch read once and clears only its read error after recovery', async () => {
+  route.query = { batch: 'saved' }
+  let finish!: (value: Awaited<ReturnType<typeof fetchVideoBatch>>) => void
+  vi.mocked(fetchVideoBatch).mockRejectedValueOnce(new Error('temporary batch read failure'))
+    .mockReturnValueOnce(new Promise(resolve => { finish = resolve }))
+  let tools!: ReturnType<typeof useShotWorkspace>
+  const wrapper = mount(defineComponent({ setup() { tools = useShotWorkspace({ status: null }); return () => null } }))
+  try {
+    await flushPromises()
+    expect(tools.batch.value).toBeNull()
+    expect(tools.batchReadError.value).toBe('temporary batch read failure')
+    expect(tools.batchError.value).toBe('')
+    expect(tools.batchReadRetryable.value).toBe(true)
+    tools.batchError.value = '首帧尚未挂载'
+    const retry = tools.retryBatchRead()
+    await tools.retryBatchRead()
+    expect(fetchVideoBatch).toHaveBeenCalledTimes(2)
+    expect(tools.batchReading.value).toBe(true)
+    const batch: VideoBatch = { id: 'saved', status: 'done', modelId: 'minimax-h3', aspectRatio: 'landscape', quality: 'standard', steps: 4,
+      linkLastFrame: false, progress: { total: 0, succeeded: 0, failed: 0 }, createdAt: 1, shots: [], concatAvailable: false, concatUrl: null }
+    finish({ ok: true, batch }); await retry
+    expect(tools.batch.value?.id).toBe('saved')
+    expect(tools.batchReadError.value).toBe('')
+    expect(tools.batchReadRetryable.value).toBe(false)
+    expect(tools.batchReading.value).toBe(false)
+    expect(tools.batchError.value).toBe('首帧尚未挂载')
+    vi.mocked(fetchVideoBatch).mockRejectedValueOnce(new Error('other batch unavailable'))
+    route.query = { batch: 'other' }; await flushPromises()
+    expect(tools.batchReadError.value).toBe('other batch unavailable')
+    vi.mocked(fetchVideoBatch).mockResolvedValueOnce({ ok: true, batch })
+    route.query = { batch: 'saved' }; await flushPromises()
+    expect(tools.batchReadError.value).toBe('')
+    expect(tools.batchError.value).toBe('首帧尚未挂载')
+    expect(tools.batch.value?.id).toBe('saved')
+  } finally { wrapper.unmount() }
+})
+
 it('invalidates an in-flight B reconnect when the host route reselects the already displayed A', async () => {
   const batch = (id: string): VideoBatch => ({ id, status: 'paused', modelId: 'minimax-h3', aspectRatio: 'landscape', quality: 'standard', steps: 4,
     linkLastFrame: false, progress: { total: 0, succeeded: 0, failed: 0 }, createdAt: 1, shots: [], concatAvailable: false, concatUrl: null })
@@ -136,6 +173,18 @@ it('invalidates an in-flight B reconnect when the host route reselects the alrea
     finishB({ ok: true, batch: batch('B') }); await flushPromises()
     expect(tools.batch.value?.id).toBe('A')
     expect(savedBatch.value?.batchId).toBe('A')
+    const { ApiClientError } = await import('@/api/client')
+    vi.mocked(fetchVideoBatch).mockRejectedValueOnce(new ApiClientError('missing', { kind: 'http', status: 404 }))
+    route.query = { batch: 'missing', extra: 'retained' }; await flushPromises()
+    expect(tools.batch.value?.id).toBe('A')
+    expect(tools.canReturnToBatch.value).toBe(true)
+    expect(tools.batchReadError.value).toContain('已不存在')
+    vi.mocked(fetchVideoBatch).mockResolvedValueOnce({ ok: true, batch: batch('A') })
+    await tools.returnToCurrentBatch(); await flushPromises()
+    expect(route.query).toEqual({ batch: 'A', mode: 'shots', extra: 'retained' })
+    expect(fetchVideoBatch).toHaveBeenLastCalledWith('A', expect.any(AbortSignal))
+    expect(tools.batchReadError.value).toBe('')
+    expect(tools.canReturnToBatch.value).toBe(false)
   } finally { wrapper.unmount() }
 })
 

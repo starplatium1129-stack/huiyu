@@ -8,11 +8,65 @@ import { createDesktopArtworkRepository } from './artworkRepository'
 beforeEach(() => { mocks.request.mockResolvedValue(null) })
 afterEach(() => { mocks.request.mockReset(); mocks.state.connection = 'ready'; mocks.state.bootstrap.runtime.workspace = { workspaceId: 'library-1', runtimeEpoch: 'epoch-1', generation: 1, domains: ['artwork'] } })
 
+it('revalidates unchanged history without rereading bodies and reloads a changed authority revision', async () => {
+  let revision = 1, title = 'original'
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'status') return { revision: 900 + revision, artworkRevision: revision, writerEpoch: 'epoch-1' }
+    if (command.kind === 'listArtworks') return { items: [{ id: 'a', body: { id: 'a', title }, revision, deletedAt: null }], revision, artworkRevision: revision, nextCursor: null }
+    throw new Error('unexpected request')
+  })
+  const repository = createDesktopArtworkRepository()
+  const first = await repository.readHistory()
+  first[0]!.title = 'caller edit'
+  expect(await repository.readHistory()).toEqual([{ id: 'a', title: 'original' }])
+  expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['listArtworks', 'status'])
+  revision = 2; title = 'other window edit'
+  expect(await repository.readHistory()).toEqual([{ id: 'a', title }])
+  expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['listArtworks', 'status', 'status', 'listArtworks'])
+  mocks.request.mockRejectedValueOnce(new Error('authority unavailable'))
+  await expect(repository.readHistory()).rejects.toThrow('authority unavailable')
+  mocks.request.mockResolvedValueOnce({ revision: 900 + revision, artworkRevision: revision, writerEpoch: 'different-writer' })
+  await expect(repository.readHistory()).rejects.toThrow('连接已变化')
+})
+
+it('does not reuse a history snapshot after cancellation or a write during its status check', async () => {
+  let favorite = false, revision = 1, acknowledge!: (value: unknown) => void
+  const row = () => ({ id: 'a', body: { id: 'a', favorite }, revision, deletedAt: null })
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'listArtworks') return { items: [row()], revision, artworkRevision: revision, nextCursor: null }
+    if (command.kind === 'status') return new Promise(resolve => { acknowledge = resolve })
+    if (command.kind === 'getArtwork') return row()
+    if (command.kind === 'patchArtwork') { favorite = true; revision++; return { changed: true } }
+    throw new Error('unexpected request')
+  })
+  const repository = createDesktopArtworkRepository()
+  await repository.readHistory()
+  const controller = new AbortController(), cancelled = repository.readHistory(controller.signal)
+  controller.abort(); acknowledge({ revision: 1, artworkRevision: 1, writerEpoch: 'epoch-1' })
+  await expect(cancelled).rejects.toMatchObject({ name: 'AbortError' })
+  const pending = repository.readHistory()
+  await repository.patchArtwork('a', { favorite: true })
+  acknowledge({ revision: 1, artworkRevision: 1, writerEpoch: 'epoch-1' })
+  expect(await pending).toEqual([{ id: 'a', favorite: true }])
+})
+
+it('does not replace a newer cached revision with an older read that finishes later', async () => {
+  const pending: Array<(value: unknown) => void> = []
+  mocks.request.mockImplementation(() => new Promise(resolve => { pending.push(resolve) }))
+  const repository = createDesktopArtworkRepository()
+  const older = repository.readHistory(), newer = repository.readHistory()
+  const page = (revision: number) => ({ items: [{ id: 'a', body: { id: 'a', title: String(revision) }, revision, deletedAt: null }], revision, artworkRevision: revision, nextCursor: null })
+  pending[1]!(page(2)); await newer
+  pending[0]!(page(1)); await older
+  mocks.state.connection = 'unavailable'
+  expect(await repository.readHistory()).toEqual([{ id: 'a', title: '2' }])
+})
+
 it.each(['workspace', 'domain', 'generation'])('keeps same-authority offline snapshots but rejects a changed %s', async change => {
   const body = { id: 'a', timestamp: 1, scene: 'scene-a' }
   const row = { id: 'a', body, revision: 1, deletedAt: null }
   mocks.request.mockImplementation(async command => {
-    if (command.kind === 'listArtworks') return { items: [row], revision: 1, nextCursor: null }
+    if (command.kind === 'listArtworks') return { items: [row], revision: 1, artworkRevision: 1, nextCursor: null }
     if (command.kind === 'listProjects') return { items: [{ body: { id: 'album-a', title: 'A', history_ids: ['a'] } }] }
     if (command.kind === 'readArtworkRecentIndex') return { items: [{ id: 'a', timestamp: 1, revision: 1 }], revision: 1 }
     if (command.kind === 'getArtworks') return [row]
@@ -50,7 +104,7 @@ it('does not publish an old-session project response over the new offline snapsh
 it.each(['history', 'projects', 'preferences', 'recent'])('keeps a pre-write %s response consumable without republishing it as an offline cache', async kind => {
   const item = { id: 'saved', body: { id: 'saved', favorite: false }, revision: 1, deletedAt: null }
   const old = kind === 'projects' ? { items: [{ body: { id: 'new-album', history_ids: ['saved'] } }] }
-    : kind === 'recent' ? [item] : { items: [item], nextCursor: null, revision: 1 }
+    : kind === 'recent' ? [item] : { items: [item], nextCursor: null, revision: 1, artworkRevision: 1 }
   let finish!: (value: unknown) => void
   mocks.request.mockImplementation(async command => {
     if (command.kind === 'getArtwork') return item
@@ -73,7 +127,7 @@ it.each(['history', 'projects', 'preferences', 'recent'])('keeps a pre-write %s 
   const updated = { ...item, body: { ...item.body, favorite: true } }
   mocks.request.mockImplementation(async command => command.kind === 'listProjects' ? old
     : command.kind === 'readArtworkRecentIndex' ? { items: [{ id: 'saved', revision: 1, timestamp: 1 }], revision: 1 }
-      : command.kind === 'getArtworks' ? [updated] : { items: [updated], nextCursor: null, revision: 2 })
+      : command.kind === 'getArtworks' ? [updated] : { items: [updated], nextCursor: null, revision: 2, artworkRevision: 2 })
   const fresh = await read(), calls = mocks.request.mock.calls.length
   mocks.state.connection = 'unavailable'
   expect(await read()).toEqual(fresh)

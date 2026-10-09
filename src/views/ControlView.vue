@@ -195,7 +195,7 @@
             </div>
           </div>
         </details>
-        <div class="config-save-row" :aria-busy="savingConfig"><p>自动检测保留未保存的输入。</p><button class="btn btn-primary" type="button" :disabled="savingConfig || !statusLoaded" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button></div>
+        <div class="config-save-row" :aria-busy="savingConfig"><p>自动检测保留未保存的输入。</p><button class="btn btn-primary" type="button" :disabled="savingConfig || opBusy || !statusLoaded" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button></div>
       </section>
 
       <!-- 公网分享 -->
@@ -220,7 +220,7 @@
         <button
           class="btn btn-primary share-start"
           type="button"
-          :disabled="actionBusy || opBusy"
+          :disabled="actionBusy || opBusy || (!tunnelActive && savingConfig)"
           @click="tunnelActive ? doStop() : doStart()"
         >{{ mainBtnLabel }}</button>
         <p class="action-note">{{ tunnelActive ? '分享通道运行中；停止只关公网，不影响本机绘图与聊天。' : '启动后生成本地与分享入口。' }}</p>

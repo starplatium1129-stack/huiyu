@@ -41,8 +41,12 @@ for (const theme of ['dark', 'light']) for (const width of [1440]) {
     await page.emulateMedia({ reducedMotion:'reduce' })
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     const writes = await mockVideo(page)
+    const modules: string[] = []
+    page.on('request', request => { if (request.resourceType() === 'script') modules.push(request.url()) })
     await page.goto('/video-studio')
+    await page.getByRole('dialog', { name:'访客导览', exact:true }).getByRole('button', { name:'先浏览，稍后配置', exact:true }).click()
     await expect(page.getByRole('heading', { name:'把脑海中的一幕，写成镜头' })).toBeVisible()
+    expect(modules.some(url => /\/ShotListEditor-[^/]+\.js/.test(url))).toBe(false)
     const navigation = page.getByRole('navigation', { name:'视频工作区导航' })
     await expect(navigation.getByRole('link')).toHaveCount(3)
     await expect(page.getByRole('button', { name:'生成视频', exact:true })).toBeDisabled()
@@ -79,6 +83,12 @@ for (const theme of ['dark', 'light']) for (const width of [1440]) {
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
     await page.screenshot({ path:info.outputPath(`video-artbook-mock-${theme}-${width}.png`), fullPage:true })
+    await page.getByRole('button', { name:/分镜短片/ }).click()
+    await expect(page.locator('.shot-editor')).toBeVisible()
+    await expect(page.getByRole('heading', { name:'画幅统一，镜头自由' })).toBeVisible()
+    expect(modules.some(url => /\/ShotListEditor-[^/]+\.js/.test(url))).toBe(true)
+    await page.getByRole('button', { name:/文字成片/ }).click()
+    await expect(prompt).toHaveValue('窗边的角色轻轻挥手，镜头保持静止，窗帘缓缓摆动。')
     expect(writes).toEqual(['/api/video/images', '/api/video/images'])
   })
 }

@@ -176,6 +176,8 @@ export async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[
     const { showToast, loadGalleryStorage } = ctx;
     let restored = 0;
     let missingImages = 0;
+    let missingEntries = 0;
+    let unconfirmed = 0;
     for (const id of ids) {
         try {
             const result = await artworkRepository.restoreArtwork(id);
@@ -183,14 +185,18 @@ export async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[
                 restored += 1;
             else if (result.missingImageIds?.length)
                 missingImages += 1;
+            else
+                missingEntries += 1;
         }
-        catch { /* 逐条继续，不因一条失败放弃其余 */ }
+        catch { unconfirmed += 1; }
     }
     await loadGalleryStorage();
-    showToast(restored
-        ? `已把 ${restored} 幅放回展墙${missingImages ? `，${missingImages} 幅因原图缺失未恢复` : ''}`
-        : missingImages ? `${missingImages} 幅原图已缺失，无法完整恢复；回收站快照仍保留` : '这些作品已不在回收站，无法恢复',
-    restored ? 'success' : 'warning');
+    const outcomes: string[] = [];
+    if (restored) outcomes.push(`已把 ${restored} 幅放回展墙`);
+    if (missingImages) outcomes.push(`${missingImages} 幅原图已缺失，无法完整恢复；回收站快照仍保留`);
+    if (missingEntries) outcomes.push(`${missingEntries} 幅已不在回收站`);
+    if (unconfirmed) outcomes.push(`${unconfirmed} 幅恢复尚未确认，请重新查看回收站后重试`);
+    showToast(outcomes.join('；'), restored === ids.length ? 'success' : 'warning');
 }
 export async function undoDeleteAction(ctx: Context, item: ArtworkRecord): Promise<void> {
     const { showToast, loadGalleryStorage } = ctx;

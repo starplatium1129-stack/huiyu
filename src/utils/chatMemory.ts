@@ -1,13 +1,13 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
-import { assertStoredChatVersion } from '../storage/chatVersionStorage'
+import { assertStoredChatVersion } from '../storage/chatVersionStorage.ts'
 import { CHAT_MEMORY_KEY } from './storageKeys.ts'
 import { chatResetRevision } from './chatReset.ts'
 import {
   emptyChatMemoryState as emptyState, normalizeChatMemoryState as normalizeState,
   mergeChatMemoryStates as mergeStates, type ChatMemoryState,
-} from './chatMemoryCore'
-export type { ChatMemoryCharacter, ChatMemoryItem, ChatMemoryState } from './chatMemoryCore'
-export { rememberChatFact, editChatFact, removeChatFact, isChatFactRemembered, recallChatFacts } from './chatMemoryCore'
+} from './chatMemoryCore.ts'
+export type { ChatMemoryCharacter, ChatMemoryItem, ChatMemoryState } from './chatMemoryCore.ts'
+export { rememberChatFact, editChatFact, removeChatFact, isChatFactRemembered, recallChatFacts } from './chatMemoryCore.ts'
 
 const resetStamp = Symbol('chatReset')
 function stamp(state: ChatMemoryState): ChatMemoryState {

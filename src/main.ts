@@ -25,6 +25,7 @@ import './assets/css/glass-material-base.css'
 import './assets/css/native-controls.css'
 import './assets/css/desktop-layout.css'
 import './assets/css/interaction-motion.css'
+// Keep saved pixel-theme colors in the loading frame; its surfaces load on demand.
 import './assets/css/terraria-theme.css'
 
 // Join before mounting: a new document must not start writing while another
@@ -39,7 +40,7 @@ void (async () => {
   const center = useTaskCenter()
   stopPlatform = await initializePlatform(() => center.activeCount.value > 0)
   initializeTheme()
-  initializeDesktopPreferences()
+  await initializeDesktopPreferences()
   const [{ default: App }, { default: router }] = await Promise.all([import('./App.vue'), import('./router')])
   installRouteRecovery(router)
   stopNavigationFeedback = installNavigationFeedback(router)

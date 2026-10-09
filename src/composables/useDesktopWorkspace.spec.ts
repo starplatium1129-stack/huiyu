@@ -50,4 +50,23 @@ describe('desktop workspace preferences', () => {
     await flushPromises()
     expect(router.currentRoute.value.path).toBe('/')
   })
+  it('keeps remembering later navigation when the restored page fails to load', async () => {
+    const { settings } = fixture()
+    const router = createRouter({ history: createMemoryHistory(), routes: [
+      { path: '/', component: {} },
+      { path: '/gallery', component: () => Promise.reject(new Error('offline page chunk')) },
+      { path: '/video-studio', component: {} },
+    ] })
+    router.onError(() => {})
+    settings.set(DESKTOP_START_PAGE_SETTING, 'last')
+    settings.set(DESKTOP_LAST_PAGE_SETTING, '/gallery')
+    await router.push('/')
+    const detach = attachDesktopWorkspace(router, settings)
+    try {
+      await flushPromises()
+      expect(router.currentRoute.value.path).toBe('/')
+      await router.push('/video-studio?job=private-job')
+      expect(settings.get(DESKTOP_LAST_PAGE_SETTING)).toBe('/video-studio')
+    } finally { detach() }
+  })
 })

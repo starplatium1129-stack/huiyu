@@ -11,6 +11,13 @@ const sceneUx: typeof import('../../src/utils/sceneUX.ts') = require('../../src/
 const root = path.resolve(__dirname, '..', '..');
 const scenes = readJson(path.join(root, 'data', 'scenes.json'));
 const curation = readJson(path.join(root, 'data', 'curation.json'));
+const searchDocuments = new Map<object, ReturnType<typeof sceneUx.prepareSceneSearch>>(
+  scenes.map((scene: Record<string, unknown>) => [scene, sceneUx.prepareSceneSearch(scene)]),
+);
+const search = (query: string) => {
+  const analysis = sceneUx.analyzeQuery(query, curation);
+  return scenes.filter((scene: Record<string, unknown>) => sceneUx.matchesSearch(searchDocuments.get(scene)!, analysis));
+};
 
 assert(scenes.length > 0, 'scene data must not be empty');
 assert(curation.signatureSceneIds.length > 0, 'signature scenes must be configured');
@@ -21,13 +28,13 @@ assert.deepStrictEqual(sorted.slice(0, curation.signatureSceneIds.length).map((s
   'signature scenes must preserve the curator-defined order');
 
 for (const intent of Object.keys(curation.searchAliases || {})) {
-  const matches = scenes.filter((scene: Record<string,any>) => sceneUx.matchesSearch(scene, intent, curation));
+  const matches = search(intent);
   assert(matches.length > 0, 'semantic intent must return scenes: ' + intent);
 }
 
-const neneMatches = scenes.filter((scene: Record<string,any>) => sceneUx.matchesSearch(scene, '宁宁经典感', curation));
+const neneMatches = search('宁宁经典感');
 assert(neneMatches.every((scene: { char: string; }) => scene.char === 'nene' || scene.char === 'triad'), 'Nene intent must not return Natsume-only scenes');
-const natsumeMatches = scenes.filter((scene: Record<string,any>) => sceneUx.matchesSearch(scene, '夏目经典感', curation));
+const natsumeMatches = search('夏目经典感');
 assert(natsumeMatches.every((scene: { char: string; }) => scene.char === 'natsume' || scene.char === 'triad'), 'Natsume intent must not return Nene-only scenes');
 
 const sentence = '我想画一个安静的夏目雨夜';
@@ -35,7 +42,7 @@ const sentenceAnalysis = sceneUx.analyzeQuery(sentence, curation);
 assert.deepStrictEqual(sentenceAnalysis.residualTerms, [], 'natural-language filler must not become a required search term');
 assert(sentenceAnalysis.intents.includes('安静') && sentenceAnalysis.intents.includes('夏目经典感') && sentenceAnalysis.intents.includes('雨天'),
   'natural-language search must recognize mood, character, and weather intents');
-const sentenceMatches = scenes.filter((scene: Record<string,any>) => sceneUx.matchesSearch(scene, sentence, curation));
+const sentenceMatches = search(sentence);
 assert(sentenceMatches.length > 0, 'natural-language sentence must return scenes');
 assert(sentenceMatches.every((scene: { char: string; }) => scene.char === 'natsume' || scene.char === 'triad'), 'natural-language character intent must be respected');
 assert(!sceneUx.analyzeQuery('夏目', curation).intents.includes('夏日'), 'single-character aliases must not match inside longer names');
@@ -43,7 +50,8 @@ assert(!sceneUx.analyzeQuery('夏目', curation).intents.includes('夏日'), 'si
 const rankConfig = { searchAliases:{ '雨夜':['雨夜','rainy_night'] } };
 const titleMatch = { id:'title', title:'雨夜告白', story:'两个人终于说出心意', char:'natsume', tags:[] };
 const storyMatch = { id:'story', title:'迟来的约定', story:'故事发生在雨夜', char:'natsume', tags:[] };
-assert(sceneUx.searchScore(titleMatch, '雨夜', rankConfig) > sceneUx.searchScore(storyMatch, '雨夜', rankConfig),
+const rankAnalysis = sceneUx.analyzeQuery('雨夜', rankConfig);
+assert(sceneUx.searchScore(sceneUx.prepareSceneSearch(titleMatch), rankAnalysis) > sceneUx.searchScore(sceneUx.prepareSceneSearch(storyMatch), rankAnalysis),
   'title matches must rank above story-only matches');
 
 const preferenceNow = Date.UTC(2026, 6, 22);

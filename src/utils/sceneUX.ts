@@ -216,16 +216,13 @@ export function analyzeQuery(query: string, config: SceneUXConfig | null | undef
   return { normalized, groups, intents, residualTerms }
 }
 
-export function matchesSearch(scene: Record<string, unknown>, query: string, config: SceneUXConfig | null | undefined, extras?: string[], analysis = analyzeQuery(query, config)): boolean {
-  const { groups } = analysis
-  if (!groups.length) return true
-  const hay = searchText(scene, extras)
-  return groups.every(grp => grp.some(t => hay.includes(t.toLowerCase())))
+export interface SceneSearchDocument {
+  readonly text: string
+  readonly fields: ReadonlyArray<Readonly<{ value: string; w: number }>>
 }
 
-export function searchScore(scene: Record<string, unknown>, query: string, config: SceneUXConfig | null | undefined, extras?: string[], analysis = analyzeQuery(query, config)): number {
-  const { groups, normalized } = analysis
-  if (!groups.length) return 0
+/** Owned search data for one catalog snapshot; reuse until that snapshot changes. */
+export function prepareSceneSearch(scene: Record<string, unknown>, extras?: string[]): SceneSearchDocument {
   const fields = [
     { value: scene.title, w: 36 }, { value: characterLabel(String(scene.char ?? '')), w: 30 },
     { value: scene.emotion, w: 28 }, { value: scene.location, w: 24 },
@@ -234,17 +231,36 @@ export function searchScore(scene: Record<string, unknown>, query: string, confi
     { value: Array.isArray(scene.tags) ? scene.tags.join(' ') : '', w: 14 },
     { value: [scene.camera, scene.lighting, scene.season, scene.timeOfDay].join(' '), w: 10 },
     { value: (extras ?? []).join(' '), w: 8 },
-  ].map(field => ({ ...field, value: normalizeQuery(String(field.value ?? '')) }))
+  ].map(field => ({ ...field, value: String(field.value ?? '') }))
+  let normalized = false
+  return { text: searchText(scene, extras), get fields() {
+    // Sparse searches need matching text only. Normalize scoring fields once,
+    // and only after this scene actually matches a query in this snapshot.
+    if (!normalized) {
+      for (const field of fields) field.value = normalizeQuery(field.value)
+      normalized = true
+    }
+    return fields
+  } }
+}
+
+export function matchesSearch(document: SceneSearchDocument, analysis: ReturnType<typeof analyzeQuery>): boolean {
+  return analysis.groups.every(grp => grp.some(term => document.text.includes(term)))
+}
+
+export function searchScore(document: SceneSearchDocument, analysis: ReturnType<typeof analyzeQuery>): number {
+  const { groups, normalized } = analysis
+  if (!groups.length) return 0
+  const fields = document.fields
   let score = groups.reduce((sum, grp) => {
     let best = 0
     grp.forEach(term => {
-      const t = normalizeQuery(term)
-      fields.forEach(f => { if (f.value.includes(t)) best = Math.max(best, f.w + Math.min(t.length, 8)) })
+      fields.forEach(f => { if (f.value.includes(term)) best = Math.max(best, f.w + Math.min(term.length, 8)) })
     })
     return sum + best
   }, 0)
-  const title = normalizeQuery(String(scene.title ?? ''))
-  const story = normalizeQuery(String(scene.story ?? ''))
+  const title = fields[0].value
+  const story = fields[6].value
   if (normalized && title.includes(normalized)) score += 50
   else if (normalized && story.includes(normalized)) score += 24
   return score

@@ -206,7 +206,7 @@ it('discards thumbnail reads and original-derived thumbnail backfills from an ea
 
 it('keeps only 40 gallery originals while active and retains only return previews on exit', async () => {
   mocks.snapshot.mockImplementation(async () => ({ history: Array.from({ length: 45 }, (_, index) => record(index + 1)), projects: [] }))
-  const env = await setup()
+  const env = await setup(false, 45)
   await env.intersect()
   expect(Object.keys(env.gallery.cardUrls)).toHaveLength(40)
   expect(URL.revokeObjectURL).toHaveBeenCalledTimes(5)
@@ -263,7 +263,7 @@ it('coalesces overlapping wall thumbnail hydration into one bounded read batch',
     active--
     return 'data:image/jpeg;base64,thumb'
   })
-  const { gallery } = await setup()
+  const { gallery } = await setup(false, 60)
   const initialReads = mocks.getThumbnail.mock.calls.length
   release()
   await flushPromises()
@@ -278,7 +278,7 @@ it('drops queued originals that are no longer visible after a filter change', as
   mocks.snapshot.mockResolvedValue({ history: Array.from({ length: 60 }, (_, index) => record(index + 1)), projects: [] })
   const pending: Array<(blob: Blob) => void> = []
   mocks.getImage.mockImplementation(() => new Promise<Blob>(resolve => { pending.push(resolve) }))
-  const env = await setup()
+  const env = await setup(false, 60)
   await env.intersect()
   expect(mocks.getImage).toHaveBeenCalledTimes(4)
   env.gallery.searchQuery.value = 'work-60'
@@ -322,7 +322,7 @@ it('keeps the selected queued original and stops obsolete thumbnail work after f
   mocks.getThumbnail.mockImplementation(async () => { await gate; return null })
   const pending: Array<(blob: Blob) => void> = []
   mocks.getImage.mockImplementation(() => new Promise<Blob>(resolve => { pending.push(resolve) }))
-  const env = await setup()
+  const env = await setup(false, 60)
   await env.intersect()
   env.gallery.searchQuery.value = 'only-target'
   await flushPromises()

@@ -42,6 +42,15 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 describe('original image export lifecycle', () => {
+  it('preserves a legacy SVG original with a usable svg extension', async () => {
+    const blob = new Blob(['<svg xmlns="http://www.w3.org/2000/svg"/>'], { type: 'image/svg+xml' })
+    vi.mocked(readWebBackupImages).mockResolvedValue([{ ...records[0], blob }])
+    const { tool } = setup()
+    const running = tool.exportImages()
+    await vi.runAllTimersAsync(); await running
+    expect(URL.createObjectURL).toHaveBeenCalledWith(blob)
+    expect((click.mock.instances[0] as HTMLAnchorElement).download).toMatch(/\.svg$/)
+  })
   it('continues after one failed image read and reports the partial batch accurately', async () => {
     vi.mocked(readWebBackupImage).mockRejectedValueOnce(new Error('image missing'))
     const { tool, flash } = setup()

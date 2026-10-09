@@ -19,7 +19,9 @@ export function orderExplorerScenes(scenes: readonly ExplorerScene[], options: {
   const { mode, curation, profile, usage, favorites, relevance } = options
   const ranks = new Map<string, number>()
   const scores = new Map<string, number>()
-  if (mode !== 'newest' && mode !== 'title') {
+  if (mode === 'newest') {
+    for (const scene of scenes) scores.set(scene.id, created(scene))
+  } else if (mode !== 'title') {
     const needsCuration = mode !== 'used' && mode !== 'favorite'
     if (needsCuration) {
       const groups = [curation.personaCoreSceneIds || curation.signatureSceneIds || [], curation.signatureSceneIds || [], curation.curatedSceneIds || []]
@@ -39,7 +41,6 @@ export function orderExplorerScenes(scenes: readonly ExplorerScene[], options: {
   return [...scenes].sort((a, b) => {
     const relevant = (relevance.get(b.id) ?? 0) - (relevance.get(a.id) ?? 0)
     if (relevant) return relevant
-    if (mode === 'newest') return created(b) - created(a) || baseOrder(a, b)
     if (mode === 'title') return titleOrder.compare(String(a.title), String(b.title)) || baseOrder(a, b)
     return (scores.get(b.id) ?? 0) - (scores.get(a.id) ?? 0) || baseOrder(a, b)
   })

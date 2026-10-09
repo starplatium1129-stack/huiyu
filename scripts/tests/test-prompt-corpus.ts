@@ -240,7 +240,8 @@ test('corpus: Anima Base single tag stream, underscores only on score/contract t
   const base = profileOf('anima_base_v10')
   for (const scene of scenes) {
     const effective = animaProfile(base, scene)
-    const rendered = compiler.renderPromptPlan(planFor(scene, base, 'anima'), 'anima', effective)
+    const plan = planFor(scene, base, 'anima')
+    const rendered = compiler.renderPromptPlan(plan, 'anima', effective)
     const prompt = rendered.prompt
     const [tagStream, prose = ''] = prompt.split('\n')
     assert.strictEqual(policy.assembleNegative(effective, scene, 'anima', { shot: null, character: charOf(scene) }).length > 0, true,
@@ -263,7 +264,17 @@ test('corpus: Anima Base single tag stream, underscores only on score/contract t
     }
     assert(tagStream.includes('best quality'), `${scene.id} Base must carry official quality prefix`)
     assert(tagStream.includes('score_7'), `${scene.id} Base must carry score_7`)
-    assert.strictEqual(prose.split(/(?<=\.)\s/).filter(Boolean).length, 1, `${scene.id} studio Anima caption must stay at one sentence`)
+    if (scene.animaCaption) {
+      // Director controls may append sentences; authored relationships must survive
+      // when those controls are cleared. The artifact sanitizer remains intentional.
+      const authored = compiler.renderPromptPlan({ ...plan, camera: [], lighting: [] }, 'anima', effective)
+        .prompt.split('\n').slice(1).join('\n')
+      const words = (value: string) => value.replace(/[.!?;]+\s*/g, ' ').replace(/\s+/g, ' ').trim()
+      assert.strictEqual(words(authored), words(compiler.sanitizeVisualArtifacts(scene.animaCaption)),
+        `${scene.id} Anima caption must preserve authored relationships`)
+    } else {
+      assert.strictEqual(prose.split(/(?<=\.)\s/).filter(Boolean).length, 1, `${scene.id} automatic Anima caption must stay at one sentence`)
+    }
     assert(!/[\u3400-\u9fff]/.test(prose), `${scene.id} Anima prose must not leak untranslated metadata`)
   }
 })

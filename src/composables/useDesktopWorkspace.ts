@@ -12,7 +12,9 @@ export function attachDesktopWorkspace(router: Router, settings: SettingsReposit
     const choice = settings.get(DESKTOP_START_PAGE_SETTING)
     const target = choice === 'last' ? settings.get(DESKTOP_LAST_PAGE_SETTING) : choice
     // 明确的深链、带查询参数/锚点的首页以及桌宠表面一律保留。
-    if (initial.fullPath === '/' && target && target !== '/') await router.replace(target)
+    if (initial.fullPath === '/' && target && target !== '/') {
+      try { await router.replace(target) } catch { /* Keep tracking later successful navigation after a failed restore. */ }
+    }
     if (disposed) return
     const remember = (path: string) => {
       if (isDesktopPage(path)) settings.set(DESKTOP_LAST_PAGE_SETTING, path)

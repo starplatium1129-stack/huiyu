@@ -11,8 +11,8 @@ import { getNativeLive2dCapabilities } from '../platform/desktop/nativeLive2d.ts
  * host.dataset（E2E 可断言）并提示用户当前是浏览器渲染。
  */
 
-import { createNativeLive2DBackend, type NativeBridgeProvider } from './nativeBackend.ts'
-import { BROWSER_CAPABILITY, type Live2DBackendKind, type Live2DStageBackend } from './types.ts'
+import type { NativeBridgeProvider } from './nativeBackend.ts'
+import { BROWSER_CAPABILITY, NATIVE_CAPABILITY, type Live2DBackendKind, type Live2DStageBackend } from './types.ts'
 
 function createBrowserLive2DBackend(): Live2DStageBackend {
   return { kind: 'browser', capability: BROWSER_CAPABILITY, async connect(options) {
@@ -42,7 +42,12 @@ export function selectLive2DBackend(
   }
   const bridge = bridgeProvider()
   if (bridge) {
-    return { backend: createNativeLive2DBackend(bridgeProvider), effectiveKind: 'native', fallbackReason: null }
+    const backend: Live2DStageBackend = { kind: 'native', capability: NATIVE_CAPABILITY, async connect(options) {
+      const { createNativeLive2DBackend } = await import('./nativeBackend.ts')
+      options.signal?.throwIfAborted()
+      return createNativeLive2DBackend(bridgeProvider).connect(options)
+    } }
+    return { backend, effectiveKind: 'native', fallbackReason: null }
   }
   return {
     backend: createBrowserLive2DBackend(),

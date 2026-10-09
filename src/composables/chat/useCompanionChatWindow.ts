@@ -194,6 +194,8 @@ function switchCharacter(id: string) {
   if (bridge) {
     void bridge.chatRelay({ command: 'switch-character', character: id }).catch(() => listenerError('角色切换失败，请重试。'))
   } else {
+    draft.clear()
+    storage.setDraft(activeChar.value, inputText.value)
     storage.setActive(id)
     liveState.activeChar = id
   }

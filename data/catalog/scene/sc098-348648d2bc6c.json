@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc098",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-10-06T13:30:17.204187300+00:00",
+  "updatedAt": "2026-10-09T04:23:07.783264200+00:00",
   "data": {
     "animaCaption": "Ayachi Nene rests her head on the viewer's clothed lap at the edge of the tatami and tilts her face upward with a gentle smile, her pink knit camisole and light silk lounge layer still visible. Keep the close view on her face, relaxed shoulder line and the fabric supporting her head. Tatami seams and a folded cushion continue into the quieter rear plane. Afternoon window light reveals the hair around her eyes, while reflected mat light softens the underside of her chin. A slight indentation and soft head-to-fabric shadow make the lap support readable.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -22,7 +22,7 @@
     "mature": false,
     "negative": "transparent clothing, extra foreground faces, hair obscuring both eyes",
     "prompt": "1girl, ayachi_nene, pink knit camisole, silk lounge layer, lying on tatami, head on viewer lap, lap pillow, looking up, afternoon window light, face close up",
-    "rating": "R15",
+    "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 膝上倒映的眼睛】秋日下午，宁宁躺在你腿上看窗外摇动的树影，忽然转过脸认真端详你。她说从这个角度能看见平时忽略的表情，随后用手指轻轻描过你的掌纹。被问在想什么，她眯起眼笑——「在确认我喜欢的人是不是还在这里。答案没有变，所以可以放心睡一会儿了。」",
     "storyJa": "【寧々・膝に映る目】秋の午後、寧々はあなたの膝の上に寝そべって、窓の外に揺れる木々の影を眺めていましたが、突然顔を向けてあなたを真剣に見つめました。この角度からは普段無視していた表情が見えると言い、そっと掌紋を指でなぞってくれました。何を考えているのかと尋ねると、彼女は目を細めて微笑んだ。――「好きな人がまだここにいるか、確かめていたんです。答えは変わっていないから、安心してもう少し眠れます。」",
@@ -42,8 +42,7 @@
     "timeOfDay": "afternoon",
     "title": "膝上倒映的眼睛",
     "usage": [
-      "展示图",
-      "R15"
+      "展示图"
     ],
     "weather": "晴"
   }

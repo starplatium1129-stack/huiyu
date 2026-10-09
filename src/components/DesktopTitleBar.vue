@@ -9,7 +9,7 @@
     </div>
     <div class="titlebar-controls" data-tauri-drag-region="false">
       <StudioTooltip content="最小化">
-        <button class="tb-btn" type="button" aria-label="最小化" @click="bridge?.minimizeWindow()">
+        <button class="tb-btn" type="button" aria-label="最小化" @click="runWindowAction('minimizeWindow')">
           <!-- 审计修复(2026-08-28)：原为 <rect fill="currentColor"> 实心块，违反
                「图标一律手绘线条、严禁实心填充」红线。改为描边横线，与相邻
                最大化/关闭两个控件同为 stroke 1.3 的线宽，视觉上一家。 -->
@@ -17,13 +17,13 @@
         </button>
       </StudioTooltip>
       <StudioTooltip :content="maximized ? '还原' : '最大化'">
-        <button class="tb-btn" type="button" :aria-label="maximized ? '还原' : '最大化'" @click="bridge?.toggleMaximizeWindow()">
+        <button class="tb-btn" type="button" :aria-label="maximized ? '还原' : '最大化'" @click="runWindowAction('toggleMaximizeWindow')">
           <svg v-if="!maximized" viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3" /></svg>
           <svg v-else viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M3.5 3.5v-2h7v7h-2M1.5 4.5v6h6v-6z" fill="none" stroke="currentColor" stroke-width="1.3" /></svg>
         </button>
       </StudioTooltip>
       <StudioTooltip content="关闭">
-        <button class="tb-btn tb-close" type="button" aria-label="关闭" @click="bridge?.closeWindow()">
+        <button class="tb-btn tb-close" type="button" aria-label="关闭" @click="runWindowAction('closeWindow')">
           <svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
         </button>
       </StudioTooltip>
@@ -38,8 +38,10 @@ import { getDesktopWindowRole } from '@/platform/desktop/runtime'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import { useToast } from '@/composables/useToast'
 
 const bridge = getDesktopCapabilities()
+const toast = useToast()
 const route = useRoute()
 const maximized = ref(false)
 const pageTitle = computed(() => {
@@ -51,6 +53,10 @@ const visible = computed(() => Boolean(bridge) && route.path !== '/companion' &&
 let maximizedSub: number | null = null
 let disposed = false
 let receivedWindowEvent = false
+async function runWindowAction(action: 'minimizeWindow' | 'toggleMaximizeWindow' | 'closeWindow') {
+  try { await bridge?.[action]() }
+  catch { if (!disposed) toast.warning('窗口操作未完成，请重试。') }
+}
 
 onMounted(async () => {
   // 挂载早期 route.path 可能尚未就绪，用 location.pathname 硬守卫桌宠表面

@@ -3,15 +3,16 @@ import { artworkRepository } from '@/storage/artworkRepository'
 import { confirmAction } from '@/composables/useConfirm'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "trashMode" | "trashItems" | "trashThumbs" | "trashBusy" | "showToast" | "loadGalleryStorage">
-export function useGalleryTrash({ trashMode, trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage }: Context): { loadTrash: () => Promise<void>; restoreTrashItem: (id: string | number) => Promise<void>; clearTrash: () => Promise<void>; trashClearing: Ref<boolean> } {
+export function useGalleryTrash({ trashMode, trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage }: Context): { loadTrash: () => Promise<void>; restoreTrashItem: (id: string | number) => Promise<void>; clearTrash: () => Promise<void>; trashClearing: Ref<boolean>; trashLoading: Ref<boolean>; trashError: Ref<string> } {
 const trashClearing = ref(false)
+const trashLoading = ref(false), trashError = ref('')
 let loadVersion = 0
 let restoreVersion = 0
 let viewRevision = 0
 let publishedIds = new Set<string | number>()
 let active = true
 let disposed = false
-function invalidateLoads() { loadVersion++ }
+function invalidateLoads() { loadVersion++; trashLoading.value = false }
 function invalidateView() { viewRevision++; invalidateLoads() }
 onDeactivated(() => { active = false; invalidateView() })
 onUnmounted(() => { disposed = true; active = false; invalidateView() })
@@ -26,11 +27,14 @@ async function loadTrash() {
   if (disposed || !active || !trashMode.value || trashClearing.value) return
   const version = ++loadVersion
   const restoration = restoreVersion
+  trashLoading.value = true
+  trashError.value = ''
   try {
     const entries = await artworkRepository.listTrash()
     if (version !== loadVersion || restoration !== restoreVersion) return
     entries.sort((a, b) => Number(b.deletedAt) - Number(a.deletedAt))
     trashItems.value = entries
+    trashLoading.value = false
     const ids = publishedIds = new Set<string | number>(entries.map(entry => entry.id))
     const keys = new Set(entries.map(entry => String(entry.id)))
     for (const key of Object.keys(trashThumbs)) if (!keys.has(key)) delete trashThumbs[key]
@@ -39,12 +43,19 @@ async function loadTrash() {
       if (!ids.has(entry.id)) continue
       const imageId = entry.imageIds?.[0]
       if (!imageId || trashThumbs[entry.id]) continue
-      const thumb = await artworkRepository.getThumbnail(imageId)
-      if (version !== loadVersion) return
-      if (thumb && ids.has(entry.id)) trashThumbs[entry.id] = thumb
+      try {
+        const thumb = await artworkRepository.getThumbnail(imageId)
+        if (version !== loadVersion) return
+        if (thumb && ids.has(entry.id)) trashThumbs[entry.id] = thumb
+      } catch (error) {
+        console.warn('[gallery] load trash thumbnail failed', error)
+      }
     }
   } catch (e) {
+    if (version === loadVersion && restoration === restoreVersion) trashError.value = '暂时无法读取回收站，请重新读取；已有作品不会因此被删除。'
     console.warn('[gallery] load trash failed', e)
+  } finally {
+    if (version === loadVersion) trashLoading.value = false
   }
 }
 
@@ -100,5 +111,5 @@ async function clearTrash() {
     if (accepted || revision !== viewRevision) await loadTrash()
   }
 }
-return { loadTrash, restoreTrashItem, clearTrash, trashClearing }
+return { loadTrash, restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError }
 }

@@ -31,6 +31,43 @@ async function seedGallery(page: Page, theme: string, empty = false, reducedMoti
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
 }
 
+for (const theme of ['dark', 'light']) {
+  test(`gallery optional panels activate without losing organization undo ${theme}`, async ({ page }, info) => {
+    await page.setViewportSize({ width: 1440, height: 960 })
+    await seedGallery(page, theme)
+    await expect(page.locator('[data-card-id]')).toHaveCount(6)
+    await page.getByRole('button', { name: /^按画册/ }).click()
+    await page.getByRole('button', { name: '新建智能画册', exact: true }).click()
+    const editor = page.getByRole('dialog', { name: '新建智能画册', exact: true })
+    await expect(editor.getByRole('textbox', { name: '画册名称', exact: true })).toBeVisible()
+    await expect.poll(() => editor.evaluate(element => element.contains(document.activeElement))).toBe(true)
+    await page.keyboard.press('Escape'); await expect(editor).toBeHidden()
+    await page.getByRole('button', { name: '新建智能画册', exact: true }).click()
+    await editor.getByRole('button', { name: '关闭智能画册窗口', exact: true }).click()
+    await expect(editor).toBeHidden()
+    await page.getByRole('button', { name: '全部作品', exact: true }).click()
+    await page.locator('.gallery-refine-disclosure > summary').click()
+    await expect(page.getByRole('group', { name: '作品角色与标签筛选', exact: true })).toBeVisible()
+    await page.locator('.gallery-generation-filters > details > summary').click()
+    await page.getByRole('combobox', { name: '按引擎筛选', exact: true }).click()
+    await page.keyboard.press('Escape')
+    await page.getByRole('button', { name: '选择', exact: true }).click()
+    await page.locator('[data-card-id="gallery-review-2"] .artwork-button').click()
+    await page.locator('[data-card-id="gallery-review-3"] .artwork-button').click()
+    await page.getByRole('button', { name: '整理画册与标签', exact: true }).click()
+    await page.getByLabel('添加整理标签', { exact: true }).fill('加载验收')
+    await page.locator('.gallery-organization').screenshot({ path: info.outputPath(`optional-organization-${theme}.png`) })
+    await page.getByRole('button', { name: '整理 2 幅作品', exact: true }).click()
+    await expect(page.getByRole('button', { name: '撤销本次整理', exact: true })).toBeEnabled()
+    await page.getByRole('button', { name: '完成', exact: true }).click()
+    await page.getByRole('button', { name: '撤销本次整理', exact: true }).click()
+    await expect(page.locator('.gallery-organization [role="status"]')).toContainText('已撤销 2 幅作品')
+    await page.getByRole('group', { name: '管理作品', exact: true }).getByRole('button', { name: /回收站/ }).click()
+    await expect(page.locator('.trash-wall')).toBeVisible()
+    await expect(page.locator('.trash-wall')).toHaveAttribute('aria-busy', 'false')
+  })
+}
+
 test('art walls reveal decoded cards once without blank HD frames', async ({ page }, info) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await seedGallery(page, 'dark', false, 'no-preference', true)

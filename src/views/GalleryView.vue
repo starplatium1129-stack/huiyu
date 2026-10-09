@@ -48,14 +48,14 @@
       </details>
     </div>
     <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen && albumSection" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
-      <GalleryAlbumOverview :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
+      <GalleryAlbumOverview v-if="visitedPanels.albums" :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
     </div>
     <div v-show="!albumsOpen" v-content-motion:fade.defer="!albumsOpen && JSON.stringify([filterSnapshot, trashMode])" class="gallery-image-browse">
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
-      <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
+      <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? (trashLoading ? '读取中…' : trashError ? '数量待确认' : `${trashItems.length} 幅作品`) : countLabel }}</span>
       <div class="gallery-manage-controls" role="group" aria-label="管理作品">
         <button v-if="!trashMode" ref="selectionToggle" class="gallery-filter gallery-select-toggle" type="button" :class="{ active: selectMode }" :aria-pressed="selectMode" @click="toggleSelectMode"><ArchiveIcon name="pin" />{{ selectMode ? '退出选择' : '选择' }}</button>
-        <button class="gallery-filter gallery-trash-toggle" type="button" :class="{ active: trashMode }" :aria-pressed="trashMode" @click="selectMode && toggleSelectMode(); toggleTrashMode()"><ArchiveIcon name="trash" />回收站{{ trashItems.length ? `（${trashItems.length}）` : '' }}</button>
+        <button class="gallery-filter gallery-trash-toggle" type="button" :class="{ active: trashMode }" :aria-pressed="trashMode" @click="selectMode && toggleSelectMode(); toggleTrashMode()"><ArchiveIcon name="trash" />回收站{{ !trashLoading && !trashError && trashItems.length ? `（${trashItems.length}）` : '' }}</button>
       </div>
       <span v-if="trashMode" class="gallery-toolbar-note">删除的作品保留 30 天，可随时恢复</span>
     </div>
@@ -72,7 +72,7 @@
         <button class="btn btn-ghost btn-sm" type="button" @click="finishSelection">完成</button>
       </span>
     </div>
-    <GalleryOrganization :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
+    <GalleryOrganization v-if="visitedPanels.organization" :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
     </div>
 
     <CandidateCompare :open="compareOpen" :items="compareItems" @close="compareOpen = false" @changed="loadGalleryStorage" />
@@ -85,6 +85,7 @@
         :trash-thumbs="trashThumbs"
         :trash-busy="trashBusy"
         :trash-clearing="trashClearing"
+        :trash-loading="trashLoading" :trash-error="trashError" @reload="loadTrash"
         @clear="clearTrash"
         @restore="restoreTrashItem"
       />
@@ -155,7 +156,7 @@
     </section>
 
     </div>
-    <GallerySmartAlbumEditor v-model:open="editorOpen" v-model:title="editorTitle" v-model:rule="editorRule" :editing="!!editing" :busy="saving" :error="albumError" :count="previewItems.length" :characters="characterOptions" :tags="tagOptions" :projects="manualProjects" :covers="previewCovers" @save="saveSmartAlbum" />
+    <GallerySmartAlbumEditor v-if="visitedPanels.editor" v-model:open="editorOpen" v-model:title="editorTitle" v-model:rule="editorRule" :editing="!!editing" :busy="saving" :error="albumError" :count="previewItems.length" :characters="characterOptions" :tags="tagOptions" :projects="manualProjects" :covers="previewCovers" @save="saveSmartAlbum" />
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
@@ -295,18 +296,18 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
-import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { defineAsyncComponent, nextTick, reactive, ref, watch } from 'vue'
 import { artworkTags } from '@/composables/gallery/artworkTags'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
 const GalleryBackupTools = defineAsyncComponent(() => import('@/components/gallery/GalleryBackupTools.vue'))
 const gestureViewer = ref(false)
 const originalViewer = ref(false)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
-import GalleryOrganization from '@/components/gallery/GalleryOrganization.vue'
-import GalleryTrashWall from '@/components/gallery/GalleryTrashWall.vue'
-import GalleryGenerationFilters from '@/components/gallery/GalleryGenerationFilters.vue'
+const GalleryOrganization = defineAsyncComponent(() => import('@/components/gallery/GalleryOrganization.vue'))
+const GalleryTrashWall = defineAsyncComponent(() => import('@/components/gallery/GalleryTrashWall.vue'))
+const GalleryGenerationFilters = defineAsyncComponent(() => import('@/components/gallery/GalleryGenerationFilters.vue'))
 import GalleryAlbumOverview from '@/components/gallery/GalleryAlbumOverview.vue'
-import GalleryCollectionFilters from '@/components/gallery/GalleryCollectionFilters.vue'
+const GalleryCollectionFilters = defineAsyncComponent(() => import('@/components/gallery/GalleryCollectionFilters.vue'))
 import GallerySmartAlbumEditor from '@/components/gallery/GallerySmartAlbumEditor.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import galleryEmptyOriginal from '@/assets/illustrations/atelier-gallery.png'
@@ -345,7 +346,7 @@ trashThumbs,
 trashPrompt,
 formatTrashTime,
 restoreTrashItem,
-clearTrash, trashClearing,
+clearTrash, trashClearing, trashLoading, trashError, loadTrash,
 galleryLoading,
 galleryError,
 history,
@@ -404,6 +405,13 @@ function openFromCard(index: number, event: MouseEvent) {
 const { albums, characterAlbums, albumSection, visibleAlbumIds, selection, characterOptions, manualProjects, collectionTitle, currentSmartRule,
   albumsOpen, albumRoot, imageHeading, showImages, showOverview, showAllWorks, openCollection, editorOpen, editorTitle, editorRule,
   editing, saving, error: albumError, previewItems, previewCovers, syncPreviews, newSmartAlbum, editSmartAlbum, removeSmartAlbum, save: saveSmartAlbum } = useGalleryCollections(workspace)
+// Keep visited panels alive so closing selection or a dialog retains undo and exit state.
+const visitedPanels = reactive({ albums: false, organization: false, editor: false })
+watch([albumsOpen, selectMode, editorOpen], ([albums, organization, editor]) => {
+  if (albums) visitedPanels.albums = true
+  if (organization) visitedPanels.organization = true
+  if (editor) visitedPanels.editor = true
+}, { immediate: true, flush: 'sync' })
 watch(syncPreviews, items => { collectionPreviewItems.value = items }, { immediate: true })
 function showAlbumOverview(section: 'characters' | 'albums') {
   if (selectMode.value) toggleSelectMode()
