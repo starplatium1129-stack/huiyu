@@ -2,7 +2,7 @@ use super::*;
 use crate::{AppState, security};
 use axum::{
     Extension, Json, Router,
-    body::Body,
+    body::{Body, Bytes},
     extract::{ConnectInfo, DefaultBodyLimit, OriginalUri, Path, Query, State},
     http::{HeaderMap, HeaderValue, StatusCode, header},
     response::{IntoResponse, Response},
@@ -218,6 +218,12 @@ async fn cancel(
     };
     response(result, status)
 }
+struct SharedBytes(Arc<Vec<u8>>);
+impl AsRef<[u8]> for SharedBytes {
+    fn as_ref(&self) -> &[u8] {
+        self.0.as_slice()
+    }
+}
 async fn result(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
@@ -237,27 +243,35 @@ async fn result(
                 family(&uri),
             )
             .await?;
-        let Output::File { path, mime, .. } = output else {
-            return Err(ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"));
+        let mime = output.mime().to_string();
+        let (body, length) = match output {
+            Output::Bytes { bytes, .. } => {
+                let length = bytes.len() as u64;
+                (Body::from(Bytes::from_owner(SharedBytes(bytes))), length)
+            }
+            Output::File { path, .. } => {
+                let root =
+                    tokio::fs::canonicalize(http.service.config.runtime_root.join("outputs/anima"))
+                        .await?;
+                let file = tokio::fs::canonicalize(path).await?;
+                if !file.starts_with(root) {
+                    return Err(ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"));
+                }
+                let file = tokio::fs::File::open(file).await?;
+                let stat = file.metadata().await?;
+                if !stat.is_file() {
+                    return Err(ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"));
+                }
+                (Body::from_stream(ReaderStream::new(file)), stat.len())
+            }
         };
-        let root =
-            tokio::fs::canonicalize(http.service.config.runtime_root.join("outputs/anima")).await?;
-        let file = tokio::fs::canonicalize(path).await?;
-        if !file.starts_with(root) {
-            return Err(ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"));
-        }
-        let file = tokio::fs::File::open(file).await?;
-        let stat = file.metadata().await?;
-        if !stat.is_file() {
-            return Err(ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"));
-        }
         Response::builder()
             .status(200)
             .header(header::CACHE_CONTROL, "no-store")
             .header(header::CONTENT_TYPE, mime)
-            .header(header::CONTENT_LENGTH, stat.len())
+            .header(header::CONTENT_LENGTH, length)
             .header(header::X_CONTENT_TYPE_OPTIONS, "nosniff")
-            .body(Body::from_stream(ReaderStream::new(file)))
+            .body(body)
             .map_err(|_| ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"))
     }
     .await;

@@ -231,7 +231,7 @@ class WorkerTests(unittest.TestCase):
         with modules:
             worker.load_loras(pipeline, [{"path": "/models/style.safetensors", "strength": 0.6},
                                          {"path": "/models/second.safetensors", "strength": -0.2}])
-        self.assertEqual(calls[0], ("/models", {"weight_name": "style.safetensors", "adapter_name": "huiyu_0", "local_files_only": True, "use_safetensors": True}))
+        self.assertEqual(calls[0], (str(Path("/models")), {"weight_name": "style.safetensors", "adapter_name": "huiyu_0", "local_files_only": True, "use_safetensors": True}))
         self.assertEqual(calls[1][1]["adapter_name"], "huiyu_1")
         self.assertEqual(calls[2], (["huiyu_0", "huiyu_1"], {"adapter_weights": [0.6, -0.2]}))
 
