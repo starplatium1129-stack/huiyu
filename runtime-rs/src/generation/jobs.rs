@@ -37,7 +37,7 @@ pub(super) fn create(
             let mut metadata = plan.input.clone();
             metadata["engine"] = plan.input["family"].clone();
             metadata
-        },
+        }
     };
     metadata["id"] = json!(id);
     if prepared.selected == "comfy" {
@@ -59,7 +59,12 @@ pub(super) fn create(
             upstream_id: String::new(),
             progress: None,
             current_node: None,
-            progress_text: if prepared.selected == "native" { "等待独立推理" } else { "等待提交到 ComfyUI…" }.into(),
+            progress_text: if prepared.selected == "native" {
+                "等待独立推理"
+            } else {
+                "等待提交到 ComfyUI…"
+            }
+            .into(),
             history_urgent: false,
             history_finishing: None,
             progress_live: false,

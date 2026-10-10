@@ -17,7 +17,12 @@ impl Settings {
         if !matches!(self.engine.as_str(), "comfy" | "native") {
             return Err(ApiError::invalid("推理引擎仅支持 comfy 或 native"));
         }
-        for path in [&self.python, &self.worker, &self.models_root, &self.loras_root] {
+        for path in [
+            &self.python,
+            &self.worker,
+            &self.models_root,
+            &self.loras_root,
+        ] {
             if !path.is_absolute() || path.to_str().is_none_or(|p| p.contains('\0')) {
                 return Err(ApiError::invalid("推理路径必须是有效的绝对路径"));
             }
@@ -28,7 +33,11 @@ impl Settings {
         self.validate()?;
         for path in [&self.python, &self.worker] {
             if !tokio::fs::metadata(path).await.is_ok_and(|m| m.is_file()) {
-                return Err(ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", "独立推理 Python 或 worker 未安装"));
+                return Err(ApiError::new(
+                    503,
+                    "NATIVE_RUNTIME_UNAVAILABLE",
+                    "独立推理 Python 或 worker 未安装",
+                ));
             }
         }
         Ok(())
@@ -42,10 +51,19 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
     // Preparation receipts are optional installation hints, not application
     // configuration. A stale receipt must not disable the default Comfy engine.
     let receipt = read_optional(&root.join("runtime-config.json")).unwrap_or(Value::Null);
-    let packaged_worker = std::env::current_exe().ok()
-        .and_then(|path| path.parent().map(|root| root.join("tools/inference/worker.py")))
+    let packaged_worker = std::env::current_exe()
+        .ok()
+        .and_then(|path| {
+            path.parent()
+                .map(|root| root.join("tools/inference/worker.py"))
+        })
         .filter(|path| path.is_file());
-    let worker = packaged_worker.unwrap_or_else(|| PathBuf::from(env!("CARGO_MANIFEST_DIR")).parent().unwrap().join("tools/inference/worker.py"));
+    let worker = packaged_worker.unwrap_or_else(|| {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .join("tools/inference/worker.py")
+    });
     let defaults = json!({
         "engine":"comfy",
         "python":root.join(if cfg!(windows) { "venv/Scripts/python.exe" } else { "venv/bin/python" }),
@@ -54,14 +72,18 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
     let mut value = defaults;
     // The preparation receipt supplies paths, never switches the selected engine.
     for key in ["python", "worker"] {
-        if receipt["schemaVersion"] == 1 && receipt["engine"] == "native" {
-            if let Some(path) = receipt[key].as_str().filter(|p| std::path::Path::new(p).is_absolute() && !p.contains('\0')) {
-                value[key] = json!(path);
-            }
+        if receipt["schemaVersion"] == 1
+            && receipt["engine"] == "native"
+            && let Some(path) = receipt[key]
+                .as_str()
+                .filter(|p| std::path::Path::new(p).is_absolute() && !p.contains('\0'))
+        {
+            value[key] = json!(path);
         }
     }
     if let Some(inference) = saved.get("inference") {
-        let settings: Settings = serde_json::from_value(inference.clone()).map_err(|_| config_error())?;
+        let settings: Settings =
+            serde_json::from_value(inference.clone()).map_err(|_| config_error())?;
         value = serde_json::to_value(settings)?;
     }
     let mut overrides = Vec::new();
@@ -90,7 +112,11 @@ fn read_optional(path: &std::path::Path) -> Result<Value> {
     }
 }
 fn config_error() -> ApiError {
-    ApiError::new(503, "NATIVE_CONFIG_INVALID", "独立推理配置无效，请检查引擎及绝对路径")
+    ApiError::new(
+        503,
+        "NATIVE_CONFIG_INVALID",
+        "独立推理配置无效，请检查引擎及绝对路径",
+    )
 }
 
 #[cfg(test)]
@@ -100,20 +126,44 @@ mod tests {
     fn persisted_engine_paths_and_frozen_identity_do_not_require_comfy() {
         let temp = tempfile::tempdir().unwrap();
         let root = temp.path();
-        let config = Config { sd_host:"http://127.0.0.1:1".into(), sd_auth:None,
-            comfy_host:"http://127.0.0.1:2".into(), ai_workspace_root:root.join("AI"), runtime_root:root.join("runtime") };
+        let config = Config {
+            sd_host: "http://127.0.0.1:1".into(),
+            sd_auth: None,
+            comfy_host: "http://127.0.0.1:2".into(),
+            ai_workspace_root: root.join("AI"),
+            runtime_root: root.join("runtime"),
+        };
         std::fs::create_dir_all(&config.runtime_root).unwrap();
         let mut settings = load(&config).unwrap();
         assert_eq!(settings.engine, "comfy");
-        assert_eq!(settings.models_root, config.ai_workspace_root.join("inference/models"));
+        assert_eq!(
+            settings.models_root,
+            config.ai_workspace_root.join("inference/models")
+        );
         settings.engine = "native".into();
         settings.models_root = root.join("custom-models");
-        std::fs::write(config.runtime_root.join("config.json"), serde_json::to_vec(&json!({"inference":settings})).unwrap()).unwrap();
-        let service = Service::for_images(config.clone(), LocalUpstream::new(), CancellationToken::new()).unwrap();
+        std::fs::write(
+            config.runtime_root.join("config.json"),
+            serde_json::to_vec(&json!({"inference":settings})).unwrap(),
+        )
+        .unwrap();
+        let service = Service::for_images(
+            config.clone(),
+            LocalUpstream::new(),
+            CancellationToken::new(),
+        )
+        .unwrap();
         let identity = service.provider_identity("test");
         settings.models_root = root.join("next-models");
-        std::fs::write(config.runtime_root.join("config.json"), serde_json::to_vec(&json!({"inference":settings})).unwrap()).unwrap();
-        assert_eq!(service.native_settings().unwrap().models_root, root.join("custom-models"));
+        std::fs::write(
+            config.runtime_root.join("config.json"),
+            serde_json::to_vec(&json!({"inference":settings})).unwrap(),
+        )
+        .unwrap();
+        assert_eq!(
+            service.native_settings().unwrap().models_root,
+            root.join("custom-models")
+        );
         assert_eq!(service.provider_identity("test"), identity);
         assert_eq!(load(&config).unwrap().models_root, root.join("next-models"));
     }
@@ -125,10 +175,20 @@ mod tests {
         let settings: Settings = serde_json::from_value(value.clone()).unwrap();
         settings.validate().unwrap();
         value["modelsRoot"] = json!("relative");
-        assert!(serde_json::from_value::<Settings>(value.clone()).unwrap().validate().is_err());
+        assert!(
+            serde_json::from_value::<Settings>(value.clone())
+                .unwrap()
+                .validate()
+                .is_err()
+        );
         value["modelsRoot"] = json!(path.join("models"));
         value["engine"] = json!("automatic");
-        assert!(serde_json::from_value::<Settings>(value.clone()).unwrap().validate().is_err());
+        assert!(
+            serde_json::from_value::<Settings>(value.clone())
+                .unwrap()
+                .validate()
+                .is_err()
+        );
         value["unknown"] = json!(true);
         assert!(serde_json::from_value::<Settings>(value).is_err());
     }

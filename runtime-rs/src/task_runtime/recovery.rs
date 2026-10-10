@@ -276,12 +276,20 @@ impl TaskRuntime {
         if task.provider == "native" {
             // A live child whose termination is unconfirmed is not a restart.
             // Preserve its authoritative unsettled observation before recovery.
-            let gateway = task.upstream_id.as_deref().or_else(|| task.checkpoint.as_ref().and_then(|value| value["gatewayJobId"].as_str()));
+            let gateway = task.upstream_id.as_deref().or_else(|| {
+                task.checkpoint
+                    .as_ref()
+                    .and_then(|value| value["gatewayJobId"].as_str())
+            });
             if let (Some(images), Some(id)) = (&self.images, gateway) {
-                let family = if task.kind == TaskKind::Creative { "krea2" } else { "anima" };
+                let family = if task.kind == TaskKind::Creative {
+                    "krea2"
+                } else {
+                    "anima"
+                };
                 match images.query(id, principal, family).await {
                     Ok(observation) => return Ok(observation),
-                    Err(error) if matches!(error.code.as_str(), "JOB_NOT_FOUND" | "JOB_LOST") => {},
+                    Err(error) if matches!(error.code.as_str(), "JOB_NOT_FOUND" | "JOB_LOST") => {}
                     Err(error) => return Err(error),
                 }
             }

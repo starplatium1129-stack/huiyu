@@ -8,9 +8,9 @@ mod recovery;
 mod resume;
 use providers::Preparation;
 #[cfg(test)]
-mod tests;
-#[cfg(test)]
 mod binding_tests;
+#[cfg(test)]
+mod tests;
 
 use crate::{
     error::{ApiError, Result},
@@ -349,10 +349,12 @@ impl TaskRuntime {
         self.tracker.wait().await;
     }
     fn binding_for(&self, kind: TaskKind) -> String {
-        if matches!(kind, TaskKind::Anima | TaskKind::Creative) {
-            if let Some(images) = &self.images {
-                return self.fingerprint.hash(&images.provider_identity(&self.unbound_epoch));
-            }
+        if matches!(kind, TaskKind::Anima | TaskKind::Creative)
+            && let Some(images) = &self.images
+        {
+            return self
+                .fingerprint
+                .hash(&images.provider_identity(&self.unbound_epoch));
         }
         self.binding()
     }

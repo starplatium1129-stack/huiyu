@@ -3,8 +3,12 @@ use crate::{generation::Config, upstream::LocalUpstream};
 
 fn runtime(config: Config) -> TaskRuntime {
     let shutdown = CancellationToken::new();
-    let provider = Arc::new(GenerationService::new(config.clone(), LocalUpstream::new(), shutdown.clone()).unwrap());
-    let images = Arc::new(crate::images::ImageService::new(config, LocalUpstream::new(), shutdown.clone()).unwrap());
+    let provider = Arc::new(
+        GenerationService::new(config.clone(), LocalUpstream::new(), shutdown.clone()).unwrap(),
+    );
+    let images = Arc::new(
+        crate::images::ImageService::new(config, LocalUpstream::new(), shutdown.clone()).unwrap(),
+    );
     TaskRuntime::new(provider, Some(images), None, shutdown).unwrap()
 }
 
@@ -13,15 +17,21 @@ async fn native_image_binding_survives_restart_and_unrelated_comfy_changes() {
     let fixture = tempfile::tempdir().unwrap();
     let root = fixture.path();
     let mut config = Config {
-        sd_host: "http://127.0.0.1:1".into(), sd_auth: None,
+        sd_host: "http://127.0.0.1:1".into(),
+        sd_auth: None,
         comfy_host: "http://127.0.0.1:2".into(),
-        ai_workspace_root: root.join("AI"), runtime_root: root.join("runtime"),
+        ai_workspace_root: root.join("AI"),
+        runtime_root: root.join("runtime"),
     };
     std::fs::create_dir_all(&config.runtime_root).unwrap();
     let mut settings = crate::generation::native::load(&config).unwrap();
     settings.engine = "native".into();
     let save = |settings: &crate::generation::native::Settings| {
-        std::fs::write(config.runtime_root.join("config.json"), serde_json::to_vec(&json!({"inference":settings})).unwrap()).unwrap();
+        std::fs::write(
+            config.runtime_root.join("config.json"),
+            serde_json::to_vec(&json!({"inference":settings})).unwrap(),
+        )
+        .unwrap();
     };
     save(&settings);
     // No Comfy installation, Python, models, process launches or SQLite access.

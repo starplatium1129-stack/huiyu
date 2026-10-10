@@ -114,14 +114,17 @@ impl Service {
         }
         let (prepared, originals) = if self.native {
             let input = native::normalize(&raw, input)?;
-            let originals = inputs::capture(&self.config, &input, direct_local, owner, &cancel).await?;
+            let originals =
+                inputs::capture(&self.config, &input, direct_local, owner, &cancel).await?;
             let plan = native::plan(&self.backend.native_settings()?, input, &originals).await?;
             let prepared = self.backend.prepare_native(plan, cancel.clone()).await?;
             (prepared, originals)
         } else {
             let plan = resources::plan(&self.config, input).await?;
             let prepared = self.backend.prepare_comfy(plan, cancel.clone()).await?;
-            let originals = inputs::capture(&self.config, &prepared.input, direct_local, owner, &cancel).await?;
+            let originals =
+                inputs::capture(&self.config, &prepared.input, direct_local, owner, &cancel)
+                    .await?;
             (prepared, originals)
         };
         Ok(Prepared {
@@ -194,10 +197,7 @@ impl Service {
         }
         let scope = self.shutdown.child_token();
         let guard = scope.clone().drop_guard();
-        let (root, limits) = (
-            inputs::root(&self.config, self.native),
-            self.limits,
-        );
+        let (root, limits) = (inputs::root(&self.config, self.native), self.limits);
         let (reply, result) = tokio::sync::oneshot::channel();
         self.uploads.spawn(async move {
             let value = admission::store(root, image, owner, limits, scope).await;

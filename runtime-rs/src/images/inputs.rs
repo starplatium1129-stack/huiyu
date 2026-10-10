@@ -15,7 +15,11 @@ pub(super) fn cancelled() -> ApiError {
     ApiError::new(499, "CANCELLED", "图像操作已取消")
 }
 pub(super) fn root(config: &Config, native: bool) -> PathBuf {
-    config.ai_workspace_root.join(if native { "inference/input" } else { "ComfyUI/input" })
+    config.ai_workspace_root.join(if native {
+        "inference/input"
+    } else {
+        "ComfyUI/input"
+    })
 }
 pub(super) fn path(config: &Config, name: &str) -> Result<PathBuf> {
     path_for(config, name, false)
@@ -73,14 +77,7 @@ pub(super) async fn capture(
             let owner = owner.ok_or_else(|| {
                 ApiError::new(403, "TASK_INPUT_FORBIDDEN", "图像素材需要所有者授权")
             })?;
-            if !admission::owner_matches(
-                &root(config, native),
-                name,
-                &bytes,
-                owner,
-            )
-            .await?
-            {
+            if !admission::owner_matches(&root(config, native), name, &bytes, owner).await? {
                 return Err(ApiError::new(
                     403,
                     "TASK_INPUT_FORBIDDEN",
@@ -150,7 +147,11 @@ pub(super) async fn protect_and_restore(
                 }
             }
         }
-        if read(config, &original.name, original.native).await?.as_slice() != original.bytes.as_slice() {
+        if read(config, &original.name, original.native)
+            .await?
+            .as_slice()
+            != original.bytes.as_slice()
+        {
             return Err(ApiError::new(
                 409,
                 "TASK_INPUT_CHANGED",
@@ -170,22 +171,44 @@ mod tests {
     #[tokio::test]
     async fn native_uploads_retain_owner_checks_and_restore_without_comfy() {
         let directory = tempfile::tempdir().unwrap();
-        let config = Config { sd_host: "http://127.0.0.1:1".into(), sd_auth: None,
-            comfy_host: "http://127.0.0.1:1".into(), ai_workspace_root: directory.path().into(),
-            runtime_root: directory.path().join("runtime") };
+        let config = Config {
+            sd_host: "http://127.0.0.1:1".into(),
+            sd_auth: None,
+            comfy_host: "http://127.0.0.1:1".into(),
+            ai_workspace_root: directory.path().into(),
+            runtime_root: directory.path().join("runtime"),
+        };
         let mut bytes = Vec::new();
         image::codecs::png::PngEncoder::new(&mut bytes)
-            .write_image(&[255, 0, 0], 1, 1, image::ExtendedColorType::Rgb8).unwrap();
+            .write_image(&[255, 0, 0], 1, 1, image::ExtendedColorType::Rgb8)
+            .unwrap();
         let cancel = CancellationToken::new();
-        let name = admission::store(root(&config, true), format!("data:image/png;base64,{}", STANDARD.encode(&bytes)),
-            "owner".into(), Limits::default(), cancel.clone()).await.unwrap();
+        let name = admission::store(
+            root(&config, true),
+            format!("data:image/png;base64,{}", STANDARD.encode(&bytes)),
+            "owner".into(),
+            Limits::default(),
+            cancel.clone(),
+        )
+        .await
+        .unwrap();
         let mut mask_bytes = Vec::new();
         image::codecs::png::PngEncoder::new(&mut mask_bytes)
-            .write_image(&[255, 255, 255], 1, 1, image::ExtendedColorType::Rgb8).unwrap();
-        let mask_name = admission::store(root(&config, true), format!("data:image/png;base64,{}", STANDARD.encode(&mask_bytes)),
-            "owner".into(), Limits::default(), cancel.clone()).await.unwrap();
+            .write_image(&[255, 255, 255], 1, 1, image::ExtendedColorType::Rgb8)
+            .unwrap();
+        let mask_name = admission::store(
+            root(&config, true),
+            format!("data:image/png;base64,{}", STANDARD.encode(&mask_bytes)),
+            "owner".into(),
+            Limits::default(),
+            cancel.clone(),
+        )
+        .await
+        .unwrap();
         let input = json!({"inferenceEngine":"native","initImage":name,"maskImage":mask_name});
-        let originals = capture(&config, &input, false, Some("owner"), &cancel).await.unwrap();
+        let originals = capture(&config, &input, false, Some("owner"), &cancel)
+            .await
+            .unwrap();
         match capture(&config, &input, false, Some("intruder"), &cancel).await {
             Err(error) => assert_eq!(error.code, "TASK_INPUT_FORBIDDEN"),
             Ok(_) => panic!("another owner must not capture the upload"),
@@ -195,7 +218,9 @@ mod tests {
         tokio::fs::remove_file(&mask_path).await.unwrap();
         let path = path_for(&config, &name, true).unwrap();
         tokio::fs::remove_file(&path).await.unwrap();
-        protect_and_restore(&config, &originals, None, &cancel).await.unwrap();
+        protect_and_restore(&config, &originals, None, &cancel)
+            .await
+            .unwrap();
         assert_eq!(tokio::fs::read(path).await.unwrap(), bytes);
         assert_eq!(tokio::fs::read(mask_path).await.unwrap(), mask_bytes);
         assert!(!directory.path().join("ComfyUI").exists());
