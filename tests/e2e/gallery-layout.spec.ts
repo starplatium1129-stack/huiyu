@@ -153,18 +153,33 @@ test('gallery orbit reverses continuously and keeps original zoom, pan and retur
   const positions = await viewer.evaluate(async host => {
     const card = host.querySelector<HTMLElement>('[data-orbit-index="2"]')!
     const renderedX = () => new DOMMatrixReadOnly(getComputedStyle(card).transform).m41
+    const waitForTravel = async (previous?: Animation) => {
+      const deadline = performance.now() + 2000
+      while (performance.now() < deadline) {
+        const animation = card.getAnimations().find(item => item.id === 'gallery-cover-flow' && item !== previous)
+        if (animation) return animation
+        await new Promise(requestAnimationFrame)
+      }
+      throw new Error('The rendered orbit did not start its composited travel')
+    }
+    const sampleAt = (time: number) => {
+      for (const animation of host.getAnimations({ subtree: true }).filter(item => item.id === 'gallery-cover-flow')) {
+        animation.pause(); animation.currentTime = time
+      }
+      return renderedX()
+    }
     host.querySelector<HTMLButtonElement>('.viewer-next')!.click()
-    for (let frame = 0; frame < 3; frame++) await new Promise(requestAnimationFrame)
-    // data-position is the destination; WAAPI owns the actual intermediate image pose.
-    const animation = card.getAnimations().find(item => item.id === 'gallery-cover-flow')!
-    const frames = (animation.effect as KeyframeEffect).getKeyframes()
+    const forward = await waitForTravel()
+    const frames = (forward.effect as KeyframeEffect).getKeyframes()
     const destination = new DOMMatrixReadOnly(String(frames.at(-1)!.transform)).m41
-    const before = renderedX(), samples: number[] = []
+    // Sample the real composited pose at a fixed point, independent of CI frame cadence.
+    // data-position is already the destination and cannot describe this intermediate image.
+    const before = sampleAt(50)
     host.querySelector<HTMLButtonElement>('.viewer-prev')!.click()
-    for (let frame = 0; frame < 3; frame++) { await new Promise(requestAnimationFrame); samples.push(renderedX()) }
-    const reversed = card.getAnimations().find(item => item.id === 'gallery-cover-flow')!
-    const start = (reversed.effect as KeyframeEffect).getKeyframes()[0]!
-    return { before, destination, samples, reversedStart: new DOMMatrixReadOnly(String(start.transform)).m41 }
+    await waitForTravel(forward)
+    const reversedStart = sampleAt(0), samples = [sampleAt(1000 / 60)]
+    for (const animation of host.getAnimations({ subtree: true }).filter(item => item.id === 'gallery-cover-flow')) animation.play()
+    return { before, destination, samples, reversedStart }
   })
   expect(positions.before).toBeLessThan(0)
   expect(positions.before).toBeGreaterThan(positions.destination)
