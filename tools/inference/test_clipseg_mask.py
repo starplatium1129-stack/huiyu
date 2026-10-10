@@ -218,8 +218,9 @@ class ClipsegTests(unittest.TestCase):
 
     def test_explicit_cpu_loaders_and_four_phrase_batches_merge_by_max(self):
         calls = []
-        with patch.dict("sys.modules", segmentation_fakes(calls, expose_conditioning=False)):
-            mask = clipseg_mask.generate_mask(Path("/approved/clipseg"), Image.new("RGB", (352, 352)),
+        with tempfile.TemporaryDirectory() as directory, patch.dict("sys.modules", segmentation_fakes(calls, expose_conditioning=False)):
+            root = local_model(Path(directory) / "clipseg")
+            mask = clipseg_mask.generate_mask(root, Image.new("RGB", (352, 352)),
                 "coat|shirt|skirt|jacket|sleeves", 0.5)
         self.assertEqual([call[1][0] for call in calls if call[0] == "inference"], [4, 1])
         self.assertTrue(all(not call[2] for call in calls if call[0] == "conditioning"))
@@ -228,7 +229,7 @@ class ClipsegTests(unittest.TestCase):
             self.assertEqual(mask.getpixel((x + 30, 0)), 0)
         for call in calls:
             if call[0] in {"tokenizer", "processor", "model"}:
-                self.assertEqual(call[1], str(Path("/approved/clipseg")))
+                self.assertEqual(call[1], str(root))
                 self.assertTrue(call[2]["local_files_only"])
                 self.assertFalse(call[2]["trust_remote_code"])
         model_call = next(call for call in calls if call[0] == "model")
@@ -241,8 +242,10 @@ class ClipsegTests(unittest.TestCase):
     def test_long_phrases_and_partial_checkpoints_fail_before_inference(self):
         for token_length, info, message in ((78, {}, "77-token"), (4, {"missing_keys": ["decoder.x"]}, "completely")):
             calls = []
-            with patch.dict("sys.modules", segmentation_fakes(calls, token_length, info)), self.assertRaisesRegex(ValueError, message):
-                clipseg_mask.generate_mask(Path("/approved/clipseg"), Image.new("RGB", (64, 64)), "jacket", 0.45)
+            with tempfile.TemporaryDirectory() as directory, patch.dict("sys.modules", segmentation_fakes(calls, token_length, info)):
+                root = local_model(Path(directory) / "clipseg")
+                with self.assertRaisesRegex(ValueError, message):
+                    clipseg_mask.generate_mask(root, Image.new("RGB", (64, 64)), "jacket", 0.45)
             self.assertFalse(any(call[0] == "inference" for call in calls))
 
     def test_resident_cache_reuses_exact_pixels_and_reloads_changed_bytes(self):
@@ -328,9 +331,23 @@ class ClipsegTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = local_model(Path(directory) / "clipseg")
             image = Image.new("RGB", (64, 64))
-            cache = clipseg_mask.MaskCache()
-            with patch.dict("sys.modules", segmentation_fakes([])):
-                clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache)
+            cache, calls = clipseg_mask.MaskCache(), []
+            self.assertEqual(clipseg_mask.validate_model(str(root)), root)
+            config_path = root / "preprocessor_config.json"
+            original = config_path.read_text()
+            config_path.write_text(json.dumps({**json.loads(original), "resample": 0}))
+            with patch.dict("sys.modules", segmentation_fakes(calls)):
+                with self.assertRaisesRegex(ValueError, "bilinear resize"):
+                    clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache)
+                self.assertEqual(calls, [], "changed config must fail before tokenizer/processor/model load")
+                self.assertIsNone(cache.components)
+                self.assertIsNone(cache.logits)
+                config_path.write_text(original)
+                with patch.object(clipseg_mask, "validate_model", wraps=clipseg_mask.validate_model) as validated:
+                    clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache)
+                    clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache)
+                    self.assertEqual(validated.call_count, 1, "warm result reuse must not revalidate configs")
+                    self.assertTrue(cache.result_reused)
                 with self.assertRaisesRegex(ValueError, "maskPrompt"):
                     clipseg_mask.generate_mask(root, image, "|", 0.5, cache=cache)
                 self.assertIsNone(cache.components)

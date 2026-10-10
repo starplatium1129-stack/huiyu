@@ -181,6 +181,7 @@ def _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256):
             return logits_mask(cache.logits, image.size, threshold)
     components = cache.components if cache is not None else None
     if components is None:
+        root = validate_model(str(root))
         tokenizer = CLIPTokenizer.from_pretrained(str(root), local_files_only=True, trust_remote_code=False)
         processor = ViTImageProcessorPil.from_pretrained(str(root), local_files_only=True, trust_remote_code=False,
             do_center_crop=False, do_pad=False)

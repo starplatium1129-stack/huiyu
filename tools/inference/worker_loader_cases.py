@@ -32,7 +32,7 @@ def assert_local_model_layout(test, model):
         test.assertEqual(error.exception.code, "MODEL_INCOMPLETE")
 
 
-def assert_local_loader_contract(test):
+def assert_local_loader_contract(test, model):
     calls, updates, transfers = [], [], []
     reports = {}
 
@@ -63,7 +63,20 @@ def assert_local_loader_contract(test):
         T5Tokenizer=Component, T5TokenizerFast=Component)
     torch = types.SimpleNamespace(cuda=types.SimpleNamespace(is_available=lambda: True,
         is_bf16_supported=lambda: True), bfloat16="bf16")
-    with patch.dict("sys.modules", {"torch": torch, "diffusers": diffusers, "transformers": transformers}):
+    with tempfile.TemporaryDirectory() as directory, patch.dict("sys.modules", {
+            "torch": torch, "diffusers": diffusers, "transformers": transformers}):
+        root = model(Path(directory))
+        test.assertEqual(worker.validate_model(str(root)), root)
+        scheduler = root / "scheduler" / "scheduler_config.json"
+        original = scheduler.read_text()
+        scheduler.write_text(json.dumps({"_class_name": "FlowMatchEulerDiscreteScheduler", "stochastic_sampling": True}))
+        with test.assertRaisesRegex(worker.WorkerError, "deterministic FlowMatchEuler") as error:
+            worker.load_pipeline(root, 5.0)
+        test.assertEqual(error.exception.code, "UNSUPPORTED_MODEL")
+        test.assertEqual(calls, [], "changed config must fail before any component loads")
+        test.assertEqual(updates, [])
+        test.assertEqual(transfers, [])
+        scheduler.write_text(original)
         for name, field, values in (
                 ("text_encoder", "missing_keys", {"layers.0.self_attn.q_proj.weight"}),
                 ("text_conditioner", "missing_keys", ["proj.weight"]),
@@ -73,7 +86,7 @@ def assert_local_loader_contract(test):
             reports[name] = {field: values}
             calls.clear()
             with test.assertRaisesRegex(ValueError, f"{name}.*{field}"):
-                worker.load_pipeline(Path("/local-model"), 5.0)
+                worker.load_pipeline(root, 5.0)
             test.assertEqual(calls[-1][0], name)
             test.assertEqual(updates, [], "incomplete weights must not reach pipeline components")
             test.assertEqual(transfers, [], "incomplete weights must fail before CUDA transfer")
@@ -81,7 +94,7 @@ def assert_local_loader_contract(test):
         reports["text_encoder"] = {"missing_keys": set(), "mismatched_keys": set(),
                                    "error_msgs": [], "unexpected_keys": {"lm_head.weight"}}
         calls.clear()
-        pipeline = worker.load_pipeline(Path("/local-model"), 5.0)
+        pipeline = worker.load_pipeline(root, 5.0)
     test.assertEqual(pipeline.components["guider"], {"guidance_scale": 5.0})
     test.assertEqual(pipeline.device, "cuda")
     test.assertEqual(len(calls), 7)

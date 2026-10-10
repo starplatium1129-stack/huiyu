@@ -328,6 +328,7 @@ def load_loras(pipeline, adapters):
 
 
 def load_pipeline(root, cfg, blocks=None):
+    root = validate_model(str(root))
     import torch
     from diffusers import AnimaModularPipeline, AnimaTextConditioner, AutoencoderKLQwenImage, CosmosTransformer3DModel, FlowMatchEulerDiscreteScheduler, ClassifierFreeGuidance
     from transformers import Qwen3Model, Qwen2Tokenizer, T5Tokenizer, T5TokenizerFast
@@ -342,11 +343,10 @@ def load_pipeline(root, cfg, blocks=None):
     components = {}
     for name, cls in classes.items():
         kwargs = {"local_files_only": True}
-        if name in WEIGHTS:
-            kwargs.update(use_safetensors=True, torch_dtype=dtype)
         if name in ("text_encoder", "tokenizer", "t5_tokenizer"):
             kwargs["trust_remote_code"] = False
         if name in WEIGHTS:
+            kwargs.update(use_safetensors=True, torch_dtype=dtype)
             components[name] = load_mask_tools("resident_anima").load_weights(name, cls, str(root / name), **kwargs)
         else:
             components[name] = cls.from_pretrained(str(root / name), **kwargs)

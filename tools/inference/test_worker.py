@@ -352,7 +352,7 @@ class WorkerTests(unittest.TestCase):
 
     def test_loader_uses_fixed_local_classes_and_cfg_component(self):
         from worker_loader_cases import assert_local_loader_contract
-        assert_local_loader_contract(self)
+        assert_local_loader_contract(self, model)
 
     def test_fake_pipeline_protocol_and_atomic_output(self):
         class FakeImage:
