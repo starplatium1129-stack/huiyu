@@ -4,6 +4,7 @@ import type { DrawEngine } from '@/storage/settingsRepository'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
 import type { InpaintSubmissionSnapshot } from './animaInpaintSubmit'
+import { nativeAnimaRequestBlocker } from './nativeAnimaCapabilities'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -70,12 +71,17 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
       pb.flash('局部换装目前专属于 Anima 引擎')
       return
     }
+    if (deps.animaState.value.provider === 'native' && payload.editMode !== 'whole' && !payload.maskBlob && !deps.animaState.value.automaticMaskAvailable) {
+      pb.flash('自动识别需要完整的本地 CLIPSeg 模型文件，请先准备 clipseg-rd64-refined 目录、使用手绘遮罩，或明确选择整图重绘。'); return
+    }
     const submission = deps.captureAnimaSubmission()
     if (!submission || submission.family !== 'anima') { pb.flash('当前 Anima 配方尚未就绪，请重新确认后换装'); return }
+    const nativeBlocker = deps.animaState.value.provider === 'native' && nativeAnimaRequestBlocker(deps.animaState.value.models, submission.request)
+    if (nativeBlocker) { pb.flash(nativeBlocker); return }
     submission.context = { ...submission.context, parentId: payload.sourceHistoryId }
     // Capture before even the lazy import: no later upload or form edit owns this operation.
     const snapshot: InpaintSubmissionSnapshot = {
-      payload: { ...payload },
+      provider: deps.animaState.value.provider, automaticMaskAvailable: deps.animaState.value.automaticMaskAvailable, payload: { ...payload },
       effectiveChar: payload.characterOverride !== undefined ? payload.characterOverride : inpaintCharacter.value,
       isPopular: isPopular.value, identityTokens: [...deps.popularIdentityTokens.value],
       model: { models: JSON.parse(JSON.stringify(deps.animaState.value.models)), modelId: deps.animaState.value.modelId,

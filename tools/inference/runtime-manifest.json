@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "runtime": "huiyu-independent-anima",
+  "entrypoint": "worker.py",
+  "python": "3.11",
+  "protocol": "one-job-per-process-jsonl-v1",
+  "engine": "diffusers.AnimaModularPipeline",
+  "engineVersion": "0.41.0",
+  "capabilities": {
+    "txt2img": true,
+    "img2img": true,
+    "lora": true,
+    "singleFileCheckpoints": false,
+    "devices": [
+      "cuda"
+    ],
+    "samplers": [
+      "euler"
+    ],
+    "schedulers": [
+      "simple"
+    ],
+    "scheduleMeaning": "Native FlowMatchEulerDiscreteScheduler from the local scheduler config; not ComfyUI simple schedule equivalence",
+    "outputs": [
+      "png"
+    ],
+    "masks": true,
+    "composite": true,
+    "loraFormat": "Native Diffusers or officially mapped diffusion_model-prefixed Anima LoRA A/B safetensors; generic Kohya down/up/alpha unsupported",
+    "loraComponents": [
+      "transformer",
+      "text_conditioner"
+    ],
+    "loraScaleRange": [
+      -2,
+      2
+    ],
+    "maxLoras": 16,
+    "maskMode": "experimental-manual-or-clipseg-latent-blend",
+    "autoMasks": true,
+    "maskGrowth": "Square max-filter radius 0..32 in output pixels; no ComfyUI kernel equivalence",
+    "automaticMask": {
+      "model": "local clipseg-rd64-refined",
+      "folder": "clipseg-rd64-refined",
+      "device": "cpu",
+      "dtype": "float32",
+      "maxPhrases": 32,
+      "maxPromptCharacters": 4096,
+      "maxTokensPerPhrase": 77,
+      "phraseBatchSize": 4,
+      "thresholdRange": [
+        0.05,
+        0.95
+      ],
+      "thresholdDefault": 0.45,
+      "postprocess": "max phrase logits; bilinear output resize; sigmoid >= threshold; native square growth; no smoothing/feathering or ComfyUI equivalence",
+      "files": [
+        "config.json",
+        "preprocessor_config.json",
+        "tokenizer_config.json",
+        "special_tokens_map.json",
+        "vocab.json",
+        "merges.txt",
+        "model.safetensors"
+      ],
+      "readiness": "files-only; loaded weights/imports/quality remain unverified",
+      "weightLicense": "separate review required; original model card not accessible during implementation review"
+    },
+    "teaCache": {
+      "enabledByDefault": false,
+      "mode": "experimental-locally-calibrated-residual-reuse",
+      "profileFile": "teacache-profile.json",
+      "profileMaxBytes": 65536,
+      "algorithm": "huiyu-anima-first-norm-residual-v1",
+      "requires": "exact compatible local calibration and explicit held-out device acceptance",
+      "threshold": "profile default; explicit 0.01..1 bounded by profile maxThreshold",
+      "maxConsecutiveSkips": [
+        1,
+        3
+      ],
+      "firstAndLastActualSteps": "always full compute",
+      "scope": [
+        "txt2img",
+        "img2img",
+        "masked"
+      ],
+      "isolation": "one-job controller, separate CFG lanes, exact conditioning snapshots",
+      "helpers": [
+        "teacache_anima.py",
+        "teacache_profile.py"
+      ],
+      "licenseNotice": "TEACACHE_LICENSE.txt",
+      "realDeviceValidation": "Not run; no coefficients, speedup or quality claim supplied"
+    }
+  },
+  "security": {
+    "localFilesOnly": true,
+    "safetensorsOnly": true,
+    "trustRemoteCode": false,
+    "automaticDownloads": false,
+    "automaticInstallation": false
+  },
+  "dependencies": [
+    {
+      "name": "torch",
+      "version": "2.8.0",
+      "license": "BSD-3-Clause",
+      "source": "https://pypi.org/project/torch/2.8.0/"
+    },
+    {
+      "name": "diffusers",
+      "version": "0.41.0",
+      "license": "Apache-2.0",
+      "source": "https://pypi.org/project/diffusers/0.41.0/"
+    },
+    {
+      "name": "transformers",
+      "version": "5.10.1",
+      "license": "Apache-2.0",
+      "source": "https://pypi.org/project/transformers/5.10.1/"
+    },
+    {
+      "name": "accelerate",
+      "version": "1.12.0",
+      "license": "Apache-2.0",
+      "source": "https://pypi.org/project/accelerate/1.12.0/"
+    },
+    {
+      "name": "safetensors",
+      "version": "0.8.0",
+      "license": "Apache-2.0",
+      "source": "https://pypi.org/project/safetensors/0.8.0/"
+    },
+    {
+      "name": "Pillow",
+      "version": "11.3.0",
+      "license": "MIT-CMU",
+      "source": "https://pypi.org/project/Pillow/11.3.0/"
+    },
+    {
+      "name": "peft",
+      "version": "0.19.0",
+      "license": "Apache-2.0",
+      "source": "https://pypi.org/project/peft/0.19.0/"
+    },
+    {
+      "name": "sentencepiece",
+      "version": "0.2.1",
+      "license": "Apache-2.0",
+      "source": "https://pypi.org/project/sentencepiece/0.2.1/"
+    },
+    {
+      "name": "protobuf",
+      "version": "6.33.5",
+      "license": "BSD-3-Clause",
+      "source": "https://pypi.org/project/protobuf/6.33.5/"
+    },
+    {
+      "name": "huggingface-hub",
+      "version": "1.32.0",
+      "license": "Apache-2.0",
+      "source": "https://pypi.org/project/huggingface-hub/1.32.0/"
+    }
+  ],
+  "licenseScope": "Direct Python dependency license identifiers only, not a bundled distribution SBOM. Retain upstream package notices and review transitive/CUDA runtime licenses before redistribution. No model weights are bundled or downloaded. Each model and LoRA has separate license terms; this manifest grants no rights to them.",
+  "sources": [
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/modular_pipelines/anima/modular_pipeline.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/modular_pipelines/anima/modular_blocks_anima.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/modular_pipelines/anima/encoders.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/modular_pipelines/anima/denoise.py",
+    "https://github.com/huggingface/transformers/blob/v5.10.1/src/transformers/models/qwen2/tokenization_qwen2.py",
+    "https://github.com/huggingface/transformers/blob/v5.10.1/src/transformers/models/t5/tokenization_t5.py",
+    "https://github.com/huggingface/transformers/blob/v5.10.1/src/transformers/utils/import_utils.py",
+    "https://github.com/huggingface/transformers/blob/v5.10.1/src/transformers/convert_slow_tokenizer.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/modular_pipelines/anima/before_denoise.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/loaders/lora_pipeline.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/loaders/lora_base.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/loaders/peft.py",
+    "https://github.com/huggingface/peft/blob/v0.19.0/src/peft/utils/save_and_load.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/loaders/lora_conversion_utils.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/schedulers/scheduling_flow_match_euler_discrete.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/pipelines/flux/pipeline_flux_inpaint.py",
+    "https://github.com/huggingface/transformers/blob/v5.10.1/src/transformers/models/clipseg/modeling_clipseg.py",
+    "https://github.com/huggingface/transformers/blob/v5.10.1/src/transformers/models/clip/tokenization_clip.py",
+    "https://github.com/huggingface/transformers/blob/v5.10.1/src/transformers/models/vit/image_processing_pil_vit.py",
+    "https://github.com/ali-vilab/TeaCache",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/models/transformers/transformer_cosmos.py",
+    "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/guiders/classifier_free_guidance.py"
+  ],
+  "validation": {
+    "unitTests": "No-GPU tests use explicit fake ML modules/tensors/models and real Pillow/NumPy mask processing/composite; not real inference validation",
+    "realGeneration": "Not run; requires user-authorized CUDA hardware and complete local Anima pipeline",
+    "environmentInstall": "Not installed. Metadata-only pip dry run passed for Windows amd64 / CPython 3.11 with all 10 exact direct pins. Independently checked 13 inter-package Requires-Dist constraints, Python 3.11 compatibility and non-yanked status against PyPI metadata. Full transitive resolution and runtime imports remain untested.",
+    "validateCommand": "python worker.py --validate /absolute/path/to/anima-diffusers",
+    "validateScope": "Checks layout, safetensors shard presence, exact installed dependency versions and imports. Does not load weights, verify model semantics, test GPU memory, or generate.",
+    "diagnoseCommand": "python worker.py --diagnose",
+    "diagnoseScope": "Checks bundled manual/CLIPSeg helpers, exact dependency versions/imports including PIL image processor and CLIP tokenizer, CUDA availability and device name; no model required, no tensors allocated, no weights loaded, no generation."
+  }
+}

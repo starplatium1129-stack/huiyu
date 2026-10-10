@@ -178,7 +178,9 @@ pub(super) async fn submit(
         jobs::remove(&inner, &job).await;
         return Err(closed());
     }
-    if job.provider == "webui" {
+    if job.provider == "native" {
+        native::submit(inner.clone(), job.clone()).await;
+    } else if job.provider == "webui" {
         let mut state = inner.state.lock().await;
         state.queue.push_back(job.clone());
         if !state.runner {
@@ -259,6 +261,7 @@ pub(super) async fn close(inner: Arc<Inner>) {
     if inner.closed.swap(true, Ordering::Relaxed) {
         inner.tasks.wait().await;
         inner.decoder.close().await;
+        inner.native.close().await;
         return;
     }
     inner.admission.close();
@@ -266,6 +269,7 @@ pub(super) async fn close(inner: Arc<Inner>) {
     inner.tasks.close();
     inner.tasks.wait().await;
     inner.decoder.close().await;
+    inner.native.close().await;
     let monitor = inner
         .initialized
         .get()

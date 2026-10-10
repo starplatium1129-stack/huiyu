@@ -164,3 +164,71 @@ describe('换装提交按操作加载', () => {
     }
   })
 })
+
+it('rejects native masked requests before upload and submits explicitly selected whole-image redraw', async () => {
+  const { deps, tools, generate, flash } = harness(true)
+  deps.animaState.value.provider = 'native'
+  await tools.handleInpaintSubmit(payload)
+  expect(apiClient.request).not.toHaveBeenCalled()
+  expect(generate).not.toHaveBeenCalled()
+  expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('明确选择整图重绘'))
+  const captured = deps.captureAnimaSubmission()!
+  vi.mocked(deps.captureAnimaSubmission).mockReturnValueOnce({ ...captured, request: { ...captured.request, teaCache: true } })
+  await tools.handleInpaintSubmit({ ...payload, editMode: 'whole' })
+  expect(apiClient.request).not.toHaveBeenCalled()
+  expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('校准档'))
+  await tools.handleInpaintSubmit({ ...payload, editMode: 'whole' })
+  expect(apiClient.request).toHaveBeenCalledTimes(1)
+  const request = generate.mock.calls[0][0]
+  expect(request).toMatchObject({ initImage: 'source.png', denoisingStrength: 0.6, teaCache: false, negative: 'blur' })
+  expect(request).not.toHaveProperty('maskPrompt')
+  expect(request).not.toHaveProperty('maskThreshold')
+  expect(request).not.toHaveProperty('maskImage')
+  expect(request).not.toHaveProperty('growMaskBy')
+})
+
+it('submits native manual mask without automatic recognition fields', async () => {
+  const { deps, tools, generate } = harness(true)
+  deps.animaState.value.provider = 'native'
+  vi.mocked(apiClient.request)
+    .mockResolvedValueOnce({ ok: true, name: 'source.png' })
+    .mockResolvedValueOnce({ ok: true, name: 'mask.png' })
+  await tools.handleInpaintSubmit({ ...payload, editMode: 'masked', maskBlob: new Blob(['mask']) })
+  expect(apiClient.request).toHaveBeenCalledTimes(2)
+  const request = generate.mock.calls[0][0]
+  expect(request).toMatchObject({ initImage: 'source.png', maskImage: 'mask.png', growMaskBy: 12, teaCache: false })
+  expect(request).not.toHaveProperty('maskPrompt')
+  expect(request).not.toHaveProperty('maskThreshold')
+})
+
+it('preserves explicitly enabled native TeaCache in inpaint and checks the resolved model profile', async () => {
+  const { deps, tools, generate, flash } = harness(true)
+  deps.animaState.value.provider = 'native'
+  deps.animaState.value.models = deps.animaState.value.models.map(model => ({ ...model,
+    capabilities: { negative: true, lora: true, characterIdentity: true, experimental: true, ...model.capabilities, teaCache: true },
+    teaCacheProfile: { support: 'experimental-candidate', readiness: 'profile-files-only', validation: 'on-load', performanceVerified: false, qualityVerified: false },
+  }))
+  const captured = deps.captureAnimaSubmission()!
+  vi.mocked(deps.captureAnimaSubmission).mockReturnValue({ ...captured, request: { ...captured.request, teaCache: true } })
+  deps.animaState.value.models[1].teaCacheProfile!.readiness = 'missing'
+  await tools.handleInpaintSubmit({ ...payload, editMode: 'whole' })
+  expect(generate).not.toHaveBeenCalled()
+  expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('缺少所选模型'))
+  deps.animaState.value.models[1].teaCacheProfile!.readiness = 'profile-files-only'
+  await tools.handleInpaintSubmit({ ...payload, editMode: 'whole' })
+  expect(generate.mock.calls[0][0]).toMatchObject({ modelId: 'base-model', teaCache: true })
+})
+
+it('submits native automatic masks only after local resource readiness and keeps the frozen mask parameters', async () => {
+  const { deps, tools, generate } = harness(true)
+  deps.animaState.value.provider = 'native'
+  deps.animaState.value.automaticMaskAvailable = true
+  const automatic = { ...payload, maskPrompt: 'jacket | sleeves', maskThreshold: 0.65, growMaskBy: 4 }
+  const pending = tools.handleInpaintSubmit(automatic)
+  automatic.maskPrompt = 'changed later'
+  automatic.maskThreshold = 0.2
+  await pending
+  expect(apiClient.request).toHaveBeenCalledOnce()
+  expect(generate.mock.calls[0][0]).toMatchObject({ initImage: 'source.png', maskPrompt: 'jacket | sleeves', maskThreshold: 0.65, growMaskBy: 4, teaCache: false })
+  expect(generate.mock.calls[0][0]).not.toHaveProperty('maskImage')
+})

@@ -220,7 +220,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
       width: state.width, height: state.height, steps: state.steps, cfg: state.cfg,
       ...(state.seed == null ? {} : { seed: state.seed }),
       hiresFix: Boolean(state.hiresFix), hiresScale: state.hiresScale, hiresDenoise: state.hiresDenoise,
-      teaCache: state.teaCache !== false, teaCacheThresh: state.teaCacheThresh, adultEnabled: pb.showMatureScenes,
+      teaCache: state.provider === 'native' ? state.teaCache === true : state.teaCache !== false, teaCacheThresh: state.teaCacheThresh, adultEnabled: pb.showMatureScenes,
     }
   }
 

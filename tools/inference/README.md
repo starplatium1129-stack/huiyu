@@ -1,0 +1,106 @@
+# Independent Anima inference worker
+
+This milestone implements local Anima text-to-image, image-to-image, experimental manual/CLIPSeg masked editing and local Anima LoRA with Diffusers 0.41.0. It has no ComfyUI runtime, imports, server or path dependency. It does not yet load arbitrary Anima/MiaoMiao split checkpoint files. No model weights are supplied.
+
+## Explicit preparation
+
+Use a dedicated Python 3.11 environment and the exact direct pins in `requirements.txt`. Installation must be initiated by the user/preparation workflow; generation never installs anything. The ten direct pins passed a metadata-only pip dry run targeting Windows amd64 / CPython 3.11. All 13 constraints between these packages, Python compatibility, and non-yanked release status were checked against PyPI metadata. Full transitive resolution, installation and runtime imports remain untested. Transformers 5.10.1 retains Qwen2Tokenizer and the T5TokenizerFast compatibility alias; SentencePiece assets require both sentencepiece and protobuf. Torch must be a compatible CUDA build (a local `+cu...` version suffix is accepted). GPU inference has not been run.
+
+Place a complete local Anima Diffusers export in `modelDir`:
+
+- `modular_model_index.json` or `model_index.json` with `_class_name: AnimaModularPipeline`
+- `text_encoder/`, `text_conditioner/`, `transformer/`, `vae/`: `config.json` and safetensors weights, with all indexed shards present
+- `tokenizer/`: `tokenizer_config.json`, `vocab.json`, `merges.txt`
+- `t5_tokenizer/`: `tokenizer_config.json`, `spiece.model` (SentencePiece) or `tokenizer.json` (fast-tokenizer serialization)
+- `scheduler/scheduler_config.json`: `FlowMatchEulerDiscreteScheduler`
+
+The worker explicitly loads trusted package component classes from these local folders; index references to other repositories or custom classes are never followed. Quantization/custom-code configs are rejected. Missing assets fail with a preparation error; they are never fetched automatically. Raw model conversion requires the correct architecture config and separately available encoder, VAE and tokenizer assets; renaming a checkpoint or placing it beside these folders is insufficient.
+
+`python tools/inference/worker.py --validate /absolute/model/directory` checks local layout and dependency versions/imports without loading weights or generating. A successful check is not GPU/model acceptance.
+
+`python tools/inference/worker.py --diagnose` checks both bundled mask helpers and pinned dependency versions/imports and reports CUDA availability/device name without a model path, loading weights, allocating tensors or generating. It emits a single `diagnostic` JSONL event, or an `error` event with a nonzero exit for dependency failures. CUDA availability alone does not establish model fit or generation readiness.
+
+## JSONL contract
+
+Start one process per job; write one newline-terminated JSON object to stdin:
+
+```json
+{"id":"job-1","op":"generate","modelDir":"/models/anima-diffusers","outputPath":"/outputs/job-1.png","input":{"prompt":"a landscape","negativePrompt":"","width":1024,"height":1024,"steps":28,"cfg":4,"seed":42,"family":"anima","sampler":"euler","scheduler":"simple"}}
+```
+
+Stdout contains only `{id,event:"progress",step,total}`, `{id,event:"result",outputPath}` or `{id,event:"error",code,message}` objects. Diagnostic output goes to stderr. Progress follows actual scheduler updates; model loading/text encoding can take time before the first update. Output is atomically renamed after PNG encoding. A nonzero exit means failure. The host owns cancellation/timeout by terminating this one-job process.
+
+`euler/simple` means the local Diffusers FlowMatch Euler configuration and default timesteps. It does not promise parity with ComfyUI's `simple` schedule. No `res_multistep` fallback occurs. CFG is configured on `ClassifierFreeGuidance`, not passed as an ignored modular-pipeline call parameter.
+
+Limits: Anima generation requires CUDA; one image; dimensions divisible by 16, 64–4096; steps 1–200; CFG 1–30; nonnegative 63-bit seed; PNG output. All Anima components are loaded to GPU; no CPU/offload/low-VRAM guarantee. Optional CLIPSeg runs first on CPU in float32. RCAS, hires/upscaling and unrecognized options are explicitly rejected. TeaCache is optional, disabled by default and requires an explicitly accepted compatible local calibration profile (see below). Unsupported effects never silently disappear.
+
+## Image-to-image and LoRA
+
+The host resolves uploads and catalog LoRAs into approved absolute local paths. These are trusted top-level worker fields, never accepted as raw paths from a remote generation request:
+
+```json
+{"id":"job-2","op":"generate","modelDir":"/models/anima-diffusers","outputPath":"/outputs/job-2.png","inputImagePath":"/inputs/upload.png","loras":[{"path":"/models/loras/style.safetensors","strength":0.6}],"input":{"prompt":"a landscape","steps":28,"denoisingStrength":0.75}}
+```
+
+- `inputImagePath` is optional/null for txt2img, otherwise an existing PNG/JPEG/WebP still image of at most 4096×4096 pixels in area. The worker decodes locally, applies EXIF orientation, and converts to RGB. The upstream image processor resizes to requested output dimensions. It does not fetch URLs.
+- `input.denoisingStrength` defaults to 0.75 for img2img and must be greater than zero and at most one. Without an input image, specifying strength is an error. The `image` and `strength` call arguments activate upstream Anima auto blocks, including VAE encoding and strength-sliced noise timesteps. Progress totals use upstream's `steps - int(steps - steps * strength)` formula.
+- `loras` defaults to an empty array, with at most 16 entries, each containing only `path` and `strength` (−2 through 2). Each adapter gets a distinct name and the requested scale. Either or both `transformer` and `text_conditioner` component prefixes are supported.
+- Native Diffusers/PEFT `component.target.lora_A.weight` and matching `lora_B.weight` safetensors are supported, plus the exact raw Anima `diffusion_model.*` A/B layout recognized by Diffusers 0.41.0. The official Anima converter maps transformer blocks/projections and `diffusion_model.llm_adapter.*` into `text_conditioner.*`; header keys are preflighted through that same helper before the local-file loader maps the real tensors. Colliding targets are rejected. Generic Kohya `lora_down`/`lora_up` plus alpha, flattened names and other raw formats remain unsupported: the Anima helper does not convert their suffixes or fold alpha scaling. Those files need an explicitly prepared Anima-aware export, preserving training alpha/rank and both component roles; simply renaming the file or suffixes is insufficient. Checkpoint keys, target modules, component-prefixed adapter metadata and the actual loaded adapter key set are checked, so unsupported or partially loaded weights cannot silently disappear. Supported metadata, including alpha/rank values, is preserved by the upstream file loader. DoRA, bias weights, saved extra modules and advanced unsupported adapter variants are rejected. Informational file metadata is not used to execute code.
+- Input-level path aliases and active `input.loras` remain rejected: the host must resolve authorized files and send the trusted top-level contract. The worker is a one-job child process, not a public file-access boundary; the host owns canonical containment checks and access policy.
+
+## Targeted tests
+
+`python -m unittest discover -s tools/inference -p 'test_*.py' -v`
+
+Tests use explicitly fake dependency modules/tensors and fake model outputs; mask preprocessing/composite tests use real Pillow images. They validate protocol, trusted local-loader arguments, CFG wiring, img2img image/strength/timestep arguments, named local LoRA loading/scaling and unsupported keys/metadata, dependency diagnostics, rejection and output behavior; they do not claim to test real inference. Real CUDA generation, visual quality, peak VRAM, cancellation under GPU load and complete dependency installation remain device acceptance work.
+
+## Experimental manual masked editing
+
+The host can send trusted top-level `maskImagePath` alongside `inputImagePath`, with `input.growMaskBy` (integer 0–32, default 0). Mask and oriented input dimensions must match. White edits; black preserves; grayscale gives a soft blend. RGBA alpha is multiplied into luminance, so transparent/erased pixels preserve. The mask is resized with nearest sampling to the requested output, then expanded using a square max-filter of radius `growMaskBy`. The input is resized to that same output with Lanczos. Empty manual masks fail before model loading.
+
+This is masked denoising, not a whole-image generation followed only by an overlay. The bundled `masked_anima.py` replaces Diffusers 0.41.0 modular prepare-latents and after-denoiser leaves before pipeline construction. Qwen VAE image latents retain their temporal singleton dimension. Float32 noise is drawn once and retained; each Euler step blends protected latents with the original latent re-noised at the next timestep using that same noise. The last step restores clean original latents. One effective resized/expanded mask supplies both the downsampled latent mask and final original-pixel composite. Black-mask output pixels equal the resized original; that guarantee does not mean latent-boundary appearance or outfit quality has been model-validated.
+
+The native implementation follows the public Apache-2.0 Diffusers block/scheduler contracts. It does not copy or run ComfyUI/GPL code, and it does not promise matching dilation kernels, latent resampling, scheduler behavior, output quality or seeded pixels. Real model/GPU masked-outfit acceptance has not run. CPU tests cover alpha, mask expansion, pixel preservation, temporal shape, same-noise reuse, next-timestep/final-step blending, worker wiring and invalid requests with explicit tensor/model fakes. The isolated worker loads only its bundled sibling helper by absolute path, not ambient `PYTHONPATH`.
+
+
+## Experimental local automatic masks
+
+Prepare a separately licensed, complete local `CIDAS/clipseg-rd64-refined` export at the host's configured `models_root/clipseg-rd64-refined`. The worker requires these nonempty files inside that directory:
+
+- `config.json`: `model_type: clipseg`, `reduce_dim: 64`, `use_complex_transposed_convolution: true`
+- `model.safetensors`: one complete, matching rd64-refined checkpoint
+- `preprocessor_config.json`: 352×352 bilinear resize, rescale by 1/255, and the checkpoint's three finite channel means/positive standard deviations. Omitted normalization/rescale fields use official `ViTImageProcessorPil` defaults (mean/std 0.5 per channel, rescale 1/255); preserve the matching export's explicit values rather than substituting another checkpoint's normalization
+- `tokenizer_config.json`, `special_tokens_map.json`, `vocab.json`, `merges.txt`
+
+A raw original CLIPSeg `.pth`, pickle `.bin`, renamed file, partial export or missing tokenizer is insufficient. The worker does not convert weights, accept remote model code or download missing assets. File availability is only readiness to try loading; it does not verify weights, license, installation, hardware fit or mask quality. The original CIDAS model card/license could not be fetched during this implementation review. Review that checkpoint's actual license and provenance separately before use or redistribution; nothing here grants rights to its weights.
+
+The trusted host sends top-level `maskModelDir` plus `inputImagePath`, with `input.maskPrompt`, optional `input.maskThreshold` (finite 0.05–0.95, default 0.45), and `input.growMaskBy` (integer 0–32, standalone worker default 8; host-normalized values take precedence). Automatic and uploaded manual masks are mutually exclusive. `maskModelDir` and `maskThreshold` require an automatic-mask request.
+
+`maskPrompt` is a `|`-separated union of 1–32 distinct nonempty phrases, at most 4096 characters total. Empty parts are discarded and duplicates removed. Each phrase must fit the 77-token CLIP context; overlong phrases fail rather than being silently truncated. Existing clothing synonyms are processed as separate queries, never one long caption.
+
+The oriented RGB source is resized to output dimensions with Lanczos first, matching native masked editing. Explicit package classes `CLIPTokenizer`, `ViTImageProcessorPil` and `CLIPSegForImageSegmentation` use local-only assets. The PIL image processor avoids a new torchvision dependency; CLIP tokenization uses the existing Transformers `tokenizers` dependency. NumPy is already a transitive dependency used by the manual-mask path. No direct dependency pins change. CPU float32 inference uses batches of at most four image/text pairs under inference mode; the segmentation model is no longer referenced after mask generation, before loading Anima. This avoids CLIPSeg GPU allocations, but requires additional CPU memory/time and is not a low-RAM performance guarantee.
+
+For each phrase the model returns 352×352 logits. Take their pixelwise maximum, resize those logits bilinearly to output size, apply sigmoid and threshold (`>=`) into a binary white-edit/black-preserve mask. Apply the same native square max-filter growth as manual editing, then pass that one effective mask into both latent denoising and original-pixel compositing. There is no extra smoothing/feathering or ComfyUI kernel/effect equivalence. Invalid/nonfinite, empty or incompletely loaded masks fail before Anima loads. This is an experimental automatic starting point; it can include body/background or miss clothing, so use a manual mask for precise control.
+
+The exact Transformers 5.10.1 CLIPSeg model, CLIP tokenizer and PIL ViT processor sources were inspected without installing dependencies. Focused tests use explicit fake model/tensor classes and real Pillow/NumPy transformations. They are not real CLIPSeg/model or outfit acceptance. No checkpoint, inference dependency or model was installed or downloaded, and no real neural inference ran.
+
+
+## Experimental calibrated TeaCache
+
+TeaCache is now an actual transformer-stack residual cache for the pinned Anima/Cosmos runtime. `input.teaCache` is a strict boolean, default `false`. The trusted host resolves `teaCacheProfilePath` to the selected model directory's `teacache-profile.json`; the worker accepts only a nonempty, at-most-64-KiB local profile contained by that model directory. Missing, unaccepted or incompatible profiles fail clearly before model loading. `input.teaCacheThresh` is optional: omission uses that profile's calibrated default. An explicit value must be finite, at least 0.01, at most 1 and no larger than the profile's accepted maximum. A threshold/profile with TeaCache disabled is rejected rather than carrying a stale ComfyUI setting. No universal coefficient or threshold is supplied.
+
+The bundled `teacache_anima.py` retains the original Diffusers 0.41.0 transformer forward. Per-call instance wrappers measure the first block's time-modulated norm1 output, including its extra positional embedding. Full computation stores the last block output minus the raw first block input. When the fitted, accumulated relative-L1 estimate is below the accepted threshold, the first wrapper adds that residual once and all remaining wrappers bypass their actual attention/feed-forward forwards. Current positional preparation, timestep conditioning, output normalization and projection still run. This really skips the expensive stack; it does not merely change a UI flag or lower the requested sampling steps.
+
+- Every job has its own controller, created after selecting its exact model/LoRA scope. CFG conditional/unconditional calls have separate lanes and residuals.
+- Each lane must follow consecutive indices and strictly decreasing finite timesteps. Shape, dtype, device, total count, exact conditioning and padding changes invalidate reuse. Tensor snapshots avoid relying on inference tensor version counters.
+- The first and last actual timesteps always compute fully, including strength-sliced img2img. At most the locally calibrated 1–3 consecutive steps can be reused. Nonfinite proxies/residuals/statistics and out-of-calibration proxy values force full computation.
+- Txt2img, img2img and masked editing use the same cache denoiser. Existing masked after-step blending and final pixel composite are retained, including the temporal singleton in image latents. ControlNet/condition-mask transformer variants and before/after projection blocks are rejected.
+- All temporary instance forwards and scheduler progress wrappers are restored in `finally`; no class monkey-patch or model-global cache survives a job. Normal progress and atomic PNG output remain. Host process termination still owns cancellation.
+
+`teacache_profile.py` defines the version-1 schema and all validation. `algorithm` is `huiyu-anima-first-norm-residual-v1`; runtime pins are Diffusers 0.41.0 and Torch 2.8.0. The exact compatibility object identifies SHA-256 content of all local pipeline component assets and ordered LoRA bytes/strengths, width, height, steps, CFG, mode, denoising strength, sampler/scheduler, dtype and GPU device name. Masked scope also binds manual/CLIPSeg source kind, growth, threshold and mask prompt; automatic masking binds all local CLIPSeg asset bytes. Prompt/seed and source/mask image content may vary within the independently tested calibration set. This is not a guarantee for unseen content.
+
+The profile carries 1–6 finite polynomial `coefficients` in ascending power order, `proxyRange`, `defaultThreshold`, `maxThreshold`, `maxConsecutiveSkips`, and `calibration` containing `source: local-full-compute`, a valid-pair `sampleCount` and `traceSha256`. Product generation additionally requires `acceptance.status: accepted` and `acceptance.reportSha256`, set only by the explicit local acceptance workflow after reviewing held-out results. These are local evidence links, not cryptographic certification of quality. Changing weights, adapters/scales, sampling/edit scope, dtype or GPU requires a compatible new calibration. Full content hashing is deliberately repeated rather than trusting file names or mtimes, and adds cold-start I/O.
+
+Maintenance-only Python APIs are separate from the product JSONL protocol: `worker.generate(..., collect_teacache=True)` always fully computes and returns paired `proxyRelativeL1`/`residualRelativeL1` samples for fitting. `teacache_profile=<candidate dict>` can evaluate an unaccepted candidate but still enforces exact compatibility and calibration. `measure_teacache=True` on a disabled held-out baseline returns timing/memory without cache hooks, proxy collection or model hashing (`compatibility: null`, `fingerprintSeconds: 0`); the calibration runner binds independently checked identity outside the run timer. Cached/collection reports include compatibility, samples, full/skip/block/reset/nonfinite counts, fingerprint time, synchronized model-load time including LoRAs, whole-pipeline time including encoding/denoising/decoding, and peak allocated CUDA bytes. `generationSeconds` is an alias of `pipelineSeconds`, never pure sampler time. The outer process wall clock remains necessary to judge actual end-to-end benefit; accepted caching can still be slower on a device because of hashing, synchronization or memory pressure. Cache tensors increase VRAM use.
+
+No model-specific Cosmos polynomial or community Anima fit has been adopted. The algorithm is based on the public Apache-2.0 TeaCache idea; modular integration follows Apache-2.0 Diffusers (not ComfyUI code). Retain `TEACACHE_LICENSE.txt`. No dependency pins change. CPU tests use explicitly fake tensor/modules to verify actual block skip counts, branch isolation, reset rules, endpoint guarantees, restoration, profile identity/acceptance, baseline measurement and worker output/progress. CUDA generation, visual quality, calibration, actual memory overhead and acceleration have not been run in this environment. A profile must be produced and accepted on authorized local hardware before this opt-in feature is usable.

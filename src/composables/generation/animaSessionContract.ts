@@ -19,6 +19,8 @@ export interface AnimaPublicJob {
 }
 
 export interface AnimaStatusResponse {
+  capabilities?: { automaticMask?: boolean }
+  provider?: 'comfy' | 'native'
   ok?: boolean
   online?: boolean
   models?: AnimaOption[]

@@ -3,6 +3,7 @@ mod catalog;
 mod decode;
 mod http;
 mod inputs;
+mod native;
 mod resources;
 mod resume;
 mod validation;
@@ -18,6 +19,9 @@ pub use admission::Limits;
 pub(crate) use admission::{Kind as ImageKind, owner_matches_for, store_for};
 pub use catalog::catalog;
 pub(crate) use decode::sniff;
+pub(crate) async fn validate_native_output(bytes: Arc<Vec<u8>>, cancel: &CancellationToken) -> Result<()> {
+    decode::validate(bytes, cancel).await
+}
 pub use generation::Config;
 use serde_json::{Value, json};
 use std::{path::PathBuf, sync::Arc};
@@ -33,6 +37,7 @@ pub struct Prepared {
 }
 pub struct Service {
     backend: Arc<generation::Service>,
+    native: bool,
     config: Config,
     shutdown: CancellationToken,
     uploads: TaskTracker,
@@ -45,6 +50,9 @@ impl Drop for Service {
     }
 }
 impl Service {
+    pub(crate) fn provider_identity(&self, unbound_epoch: &str) -> Value {
+        self.backend.provider_identity(unbound_epoch)
+    }
     pub fn new(
         config: Config,
         transport: LocalUpstream,
@@ -64,8 +72,10 @@ impl Service {
             transport,
             shutdown.clone(),
         )?);
+        let native = backend.native_enabled();
         Ok(Self {
             backend,
+            native,
             config,
             shutdown,
             uploads: TaskTracker::new(),
@@ -105,10 +115,18 @@ impl Service {
                 "当前本地 Krea 2 工作流未接入图像编辑或遮罩",
             ));
         }
-        let plan = resources::plan(&self.config, input).await?;
-        let prepared = self.backend.prepare_comfy(plan, cancel.clone()).await?;
-        let originals =
-            inputs::capture(&self.config, &prepared.input, direct_local, owner, &cancel).await?;
+        let (prepared, originals) = if self.native {
+            let input = native::normalize(&raw, input)?;
+            let originals = inputs::capture(&self.config, &input, direct_local, owner, &cancel).await?;
+            let plan = native::plan(&self.backend.native_settings()?, input, &originals).await?;
+            let prepared = self.backend.prepare_native(plan, cancel.clone()).await?;
+            (prepared, originals)
+        } else {
+            let plan = resources::plan(&self.config, input).await?;
+            let prepared = self.backend.prepare_comfy(plan, cancel.clone()).await?;
+            let originals = inputs::capture(&self.config, &prepared.input, direct_local, owner, &cancel).await?;
+            (prepared, originals)
+        };
         Ok(Prepared {
             input: prepared.input.clone(),
             provider: prepared.provider.clone(),
@@ -138,7 +156,11 @@ impl Service {
             .await
     }
     pub async fn get_status(&self, family: &str) -> Result<Value> {
-        resources::status(&self.config, &self.backend, family).await
+        if self.native {
+            native::status(&self.backend, family).await
+        } else {
+            resources::status(&self.config, &self.backend, family).await
+        }
     }
     pub async fn get_job(&self, id: &str, owner: &str, family: &str) -> Result<Value> {
         self.backend.family_allowed(id, owner, family).await?;
@@ -176,7 +198,7 @@ impl Service {
         let scope = self.shutdown.child_token();
         let guard = scope.clone().drop_guard();
         let (root, limits) = (
-            self.config.ai_workspace_root.join("ComfyUI/input"),
+            inputs::root(&self.config, self.native),
             self.limits,
         );
         let (reply, result) = tokio::sync::oneshot::channel();

@@ -58,7 +58,7 @@ pub(super) async fn run_queue(inner: Arc<Inner>) {
                 "/sdapi/v1/txt2img",
                 Some(&payload(match &job.execution {
                     Execution::Webui(input) => input,
-                    Execution::Comfy(_) => unreachable!("WebUI queue owns only WebUI plans"),
+                    Execution::Comfy(_) | Execution::Native(_) => unreachable!("WebUI queue owns only WebUI plans"),
                 })),
                 Duration::from_secs(20 * 60),
                 &inner.cancel,

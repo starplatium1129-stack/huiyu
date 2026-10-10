@@ -12,6 +12,7 @@ import { artistStyleProse, artistTagsForEngine } from '../../config/artistStyles
 import { popularPortraitSrc } from '../../utils/popularPortraitSource.ts'
 import { usePromptBuilderStore, CHAR_PROMPT, type HistoryEntry } from '../../stores/promptBuilderStore.ts'
 import { createBatchAnimaTransport } from './batchAnimaJob.ts'
+import { nativeAnimaRequestBlocker } from '../generation/nativeAnimaCapabilities'
 import { buildPopularPromptPlan } from '../../utils/popularPromptBuilder.ts'
 import { inferBlueprintDecisions } from '../../utils/popularBlueprintDecisions.ts'
 import {
@@ -272,7 +273,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       height: dimensions ? Number(dimensions[2]) : animaState.value.height,
       steps: animaState.value.steps,
       cfg: animaState.value.cfg,
-      teaCache: animaState.value.teaCache !== false,
+      teaCache: animaState.value.provider === 'native' ? animaState.value.teaCache === true : animaState.value.teaCache !== false,
       teaCacheThresh: animaState.value.teaCacheThresh,
       ...(input.seed >= 0 ? { seed: input.seed } : {}),
       adultEnabled: isLocalStudioHost() && pb.showMatureScenes,
@@ -360,6 +361,8 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
           return persist(input, { ...plan.history, blob, seed: input.seed >= 0 ? input.seed : sd.resultSeed.value ?? undefined,
             ...(input.taskId && batchDraw.runtimeOwned() ? { taskId: input.taskId } : sd.resultTaskId?.value ? { taskId: sd.resultTaskId.value } : {}) })
         }
+        const nativeBlocker = !input.reconnect && deps.animaState.value.provider === 'native' && nativeAnimaRequestBlocker(deps.animaState.value.models, plan.request)
+        if (nativeBlocker) return { ok: false, error: nativeBlocker }
         const result = await animaTransport.run(plan.request, plan.context, () => batchDraw.cancelRequested.value, input.report,
           { requestKey: input.requestKey, onAccepted: input.accepted, signal: input.signal, resumeId: input.reconnect ? input.taskId : undefined,
             onSubmitting: input.submitting,

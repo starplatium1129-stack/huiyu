@@ -7,6 +7,7 @@ import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import { usePolling } from '@/composables/usePolling'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
+import { nativeAnimaRequestBlocker, nativeTeaCacheReady } from './nativeAnimaCapabilities'
 import {
   ANIMA_LORA_BY_CHARACTER,
   animaRequestPayload,
@@ -42,13 +43,16 @@ const INITIAL_STATE: AnimaGenerationState = {
 export function useAnimaSession(options: AnimaSessionOptions) {
   const client = options.client ?? apiClient
   const state = ref<AnimaGenerationState>({ ...INITIAL_STATE })
-  let settingsRevision = 0, reconcilingSettings = false
+  let settingsRevision = 0, reconcilingSettings = false, teaCacheSettingsTouched = false
   const editableKeys = ['family', 'modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height',
     'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'teaCache', 'teaCacheThresh'] as const
   // Observe direct v-model writes as well as patchState, excluding only our
   // synchronous backend reconciliation, never the time spent awaiting status.
   const stopSettingsWatch = watch(editableKeys.map(key => () => state.value[key]), () => {
     if (!reconcilingSettings) settingsRevision++
+  }, { flush: 'sync' })
+  const stopTeaCacheWatch = watch([() => state.value.teaCache, () => state.value.teaCacheThresh], () => {
+    if (!reconcilingSettings) teaCacheSettingsTouched = true
   }, { flush: 'sync' })
   const getSettingsRevision = () => settingsRevision
 
@@ -117,18 +121,20 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   let defaultsAppliedFor: string | null = null
 
   function restoreSettings(patch: Partial<AnimaGenerationState>) {
+    if ('teaCache' in patch || 'teaCacheThresh' in patch) teaCacheSettingsTouched = true
     defaultsAppliedFor = patch.modelId ?? state.value.modelId
     patchState(patch)
   }
 
-  function modelDefaults(model: AnimaOption | undefined) {
+  function modelDefaults(model: AnimaOption | undefined, provider = state.value.provider) {
     const defaults = model?.defaults
     return {
       steps: Number(defaults?.steps) || state.value.steps,
       cfg: Number(defaults?.cfg) || state.value.cfg,
       sampler: String(defaults?.sampler || state.value.sampler),
       scheduler: String(defaults?.scheduler || state.value.scheduler),
-      teaCacheThresh: typeof defaults?.teaCacheThresh === 'number' ? defaults.teaCacheThresh : state.value.teaCacheThresh,
+      teaCache: provider === 'native' ? false : typeof defaults?.teaCache === 'boolean' ? defaults.teaCache : state.value.provider === 'native' ? INITIAL_STATE.teaCache : state.value.teaCache,
+      teaCacheThresh: provider === 'native' ? undefined : typeof defaults?.teaCacheThresh === 'number' ? defaults.teaCacheThresh : state.value.provider === 'native' ? INITIAL_STATE.teaCacheThresh : state.value.teaCacheThresh,
     }
   }
 
@@ -214,7 +220,9 @@ export function useAnimaSession(options: AnimaSessionOptions) {
        * 现在：首次拉取 / 底模真的变了（用户换的，或原底模从后端消失导致的回落）
        * 才套用默认值，其余心跳只更新在线状态与候选列表。
        */
-      const shouldApplyDefaults = defaultsAppliedFor !== modelIdCurrent && settingsRevision === initialSettingsRevision
+      const provider = data.provider === 'native' ? 'native' : 'comfy'
+      const nativeCacheDefaults = provider === 'native' && state.value.provider !== 'native' && !teaCacheSettingsTouched
+      const shouldApplyDefaults = (defaultsAppliedFor !== modelIdCurrent || (state.value.provider && state.value.provider !== provider)) && settingsRevision === initialSettingsRevision
       // 风格 LoRA 只在候选里已经不存在时才清空，而不是每 15 秒清一次
       const styleLoraId = styleLoras.some(lora => lora.id === state.value.styleLoraId)
         ? state.value.styleLoraId
@@ -222,14 +230,15 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       reconcilingSettings = true
       try {
         patchState({
-          online,
+          online, provider, automaticMaskAvailable: data.capabilities?.automaticMask === true,
           checkMsg: online
-            ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
-            : `${familyLabel} 不可用（请检查 ComfyUI 与当前模型文件）`,
+            ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA${provider === 'native' ? ` · 原生局部重绘（实验性）${data.capabilities?.automaticMask === true ? ' · 本地自动识别文件就绪' : ' · 自动识别缺少本地 CLIPSeg 文件'} · TeaCache ${nativeTeaCacheReady(selectedModel) ? '校准档文件就绪（待加载核验）' : '缺少本地校准档'} · 不支持高清修复` : ''}`
+            : `${familyLabel} 不可用（请检查${data.provider === 'native' ? '原生推理服务' : 'ComfyUI'}与当前模型文件）`,
           models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
           ...(endfield && loraId === endfield.loraId && state.value.loraId !== loraId ? { loraStrength: endfield.loraStrength } : {}),
           family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
-          ...(shouldApplyDefaults ? modelDefaults(selectedModel) : {}),
+          ...(shouldApplyDefaults ? modelDefaults(selectedModel, provider) : {}),
+          ...(nativeCacheDefaults ? { teaCache: false, teaCacheThresh: undefined } : {}),
         })
         // An edit during discovery owns these defaults for this model, including later polls.
         defaultsAppliedFor = modelIdCurrent
@@ -239,7 +248,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     } catch (error) {
       if (statusRequest !== controller || controller.signal.aborted) return latest()
       if (error instanceof ApiClientError && error.kind === 'aborted') return false
-      patchState({ online: false, checkMsg: `${options.getFamily() === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
+      patchState({ online: false, automaticMaskAvailable: false, checkMsg: `${options.getFamily() === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
       return true
     } finally {
       if (statusRequest === controller) statusRequest = null
@@ -346,7 +355,12 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     if (!submission) return
     if (frozen && submission.family !== options.getFamily()) { options.flash('创作引擎已更换，请重新确认后提交'); return }
     const { request, family } = submission
-    if (!state.value.online) { options.flash('Anima ComfyUI 当前未连接'); return }
+    if (!state.value.online) { options.flash('Anima 推理服务当前未连接'); return }
+    const nativeBlocker = state.value.provider === 'native' && nativeAnimaRequestBlocker(state.value.models, request)
+    if (nativeBlocker) { options.flash(nativeBlocker); return }
+    if (state.value.provider === 'native' && request.maskPrompt && !state.value.automaticMaskAvailable) {
+      options.flash('自动识别需要完整的本地 CLIPSeg 模型文件，请先准备 clipseg-rd64-refined 目录或使用手绘遮罩。'); return
+    }
     const serial = ++requestSerial
     activeFamily = family
     jobRequest?.abort()
@@ -357,7 +371,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     const onResult = (result: AnimaResult) => { completedSubmissions.set(toRaw(result.blob), JSON.parse(JSON.stringify(submission)) as AnimaSubmission); options.onResult(result) }
     // F2：提交不再销毁上一张成片——移入 stash，失败/取消可找回（见 stashedResult）。
     stashCurrentResult()
-    patchState({ phase: 'submitting', job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '', errorReport: null })
+    patchState({ phase: 'submitting', job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: state.value.provider === 'native' ? '正在连接原生推理…' : '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '', errorReport: null })
     let accepted = false
     const releaseLocalChat = async () => {
       if(isLocalStudioHost()) {
@@ -445,6 +459,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   function dispose() {
     disposed = true
     stopSettingsWatch()
+    stopTeaCacheWatch()
     requestSerial += 1
     pauseStatusPolling()
     jobRequest?.abort()

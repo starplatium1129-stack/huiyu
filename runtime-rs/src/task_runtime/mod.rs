@@ -9,6 +9,8 @@ mod resume;
 use providers::Preparation;
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod binding_tests;
 
 use crate::{
     error::{ApiError, Result},
@@ -185,7 +187,7 @@ impl TaskRuntime {
             request_fingerprint_locale: Some(self.fingerprint.locale.clone()),
             kind,
             provider: prepared.provider().into(),
-            provider_fingerprint: self.binding(),
+            provider_fingerprint: self.binding_for(kind),
             upstream_id: None,
             status: TaskStatus::Queued,
             recovery_state: TaskRecoveryState::Normal,
@@ -345,6 +347,14 @@ impl TaskRuntime {
             self.tracker.close();
         }
         self.tracker.wait().await;
+    }
+    fn binding_for(&self, kind: TaskKind) -> String {
+        if matches!(kind, TaskKind::Anima | TaskKind::Creative) {
+            if let Some(images) = &self.images {
+                return self.fingerprint.hash(&images.provider_identity(&self.unbound_epoch));
+            }
+        }
+        self.binding()
     }
     fn binding(&self) -> String {
         self.fingerprint

@@ -51,3 +51,31 @@ it('keeps mask undo scoped to active modal controls rather than text edits or an
     expect(undo).toHaveBeenCalledTimes(3)
   } finally { wrapper.unmount(); vi.restoreAllMocks() }
 })
+
+it('uses full-strength native paint and erase while leaving Comfy paint unchanged', async () => {
+  const context = { beginPath() {}, arc() {}, fill: vi.fn() } as unknown as CanvasRenderingContext2D
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(context)
+  vi.spyOn(MaskTileHistory.prototype, 'capture').mockImplementation(() => {})
+  const native = ref(true)
+  let mask: ReturnType<typeof useInpaintMaskCanvas>
+  const wrapper = mount(defineComponent({ setup() {
+    mask = useInpaintMaskCanvas({ active: () => true, imageEl: ref(null), resolution: () => null, opaquePaint: () => native.value })
+    mask.maskMode.value = 'paint'
+    return () => h('canvas', { ref: mask.maskCanvasEl, onPointerdown: mask.startMaskPaint })
+  } }))
+  try {
+    const canvas = wrapper.get('canvas').element
+    canvas.setPointerCapture = vi.fn()
+    vi.spyOn(canvas, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 300, height: 150 } as DOMRect)
+    await wrapper.get('canvas').trigger('pointerdown', { clientX: 20, clientY: 20 })
+    expect(context.fillStyle).toBe('white')
+    mask!.stopMaskPaint()
+    await wrapper.get('canvas').trigger('pointerdown', { clientX: 20, clientY: 20, shiftKey: true })
+    expect(context.globalCompositeOperation).toBe('destination-out')
+    expect(context.fillStyle).toBe('white')
+    mask!.stopMaskPaint()
+    native.value = false
+    await wrapper.get('canvas').trigger('pointerdown', { clientX: 20, clientY: 20 })
+    expect(context.fillStyle).toBe('rgba(255, 255, 255, 0.72)')
+  } finally { wrapper.unmount(); vi.restoreAllMocks() }
+})

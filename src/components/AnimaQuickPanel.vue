@@ -2,6 +2,7 @@
 import { computed, useId } from 'vue'
 import type { AnimaGenerationState } from '@/types/anima'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
+import { nativeTeaCacheReady } from '@/composables/generation/nativeAnimaCapabilities'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -13,6 +14,7 @@ const props = defineProps<{
   noLora?: boolean
 }>()
 const state = computed(() => props.state)
+const native = computed(() => props.state.provider === 'native')
 const emit = defineEmits<{
   (event: 'update:state', patch: Partial<AnimaGenerationState>): void
 }>()
@@ -34,7 +36,8 @@ const loraStrength = computed({ get: () => props.state.loraStrength, set: value 
 const seed = computed({ get: () => props.state.seed ?? '', set: value => patch({ seed: value === '' ? null : Number(value) }) })
 const steps = computed({ get: () => props.state.steps, set: value => patch({ steps: value }) })
 const cfg = computed({ get: () => props.state.cfg, set: value => patch({ cfg: value }) })
-const teaCache = computed({ get: () => props.state.teaCache !== false, set: value => patch({ teaCache: value }) })
+const teaCache = computed({ get: () => native.value ? props.state.teaCache === true : props.state.teaCache !== false,
+  set: value => patch({ teaCache: value, ...(native.value ? { teaCacheThresh: undefined } : {}) }) })
 const hiresFix = computed({ get: () => Boolean(props.state.hiresFix), set: value => patch({ hiresFix: value }) })
 const hiresScale = computed({ get: () => props.state.hiresScale || 2.0, set: value => patch({ hiresScale: value }) })
 const hiresDenoise = computed({ get: () => props.state.hiresDenoise || 0.35, set: value => patch({ hiresDenoise: value }) })
@@ -44,6 +47,7 @@ const outputSize = computed(() => {
   return `${Math.round(props.state.width * scale / 8) * 8} × ${Math.round(props.state.height * scale / 8) * 8}`
 })
 const selectedModel = computed(() => props.state.models.find(model => model.id === props.state.modelId) ?? null)
+const nativeTeaCacheAvailable = computed(() => nativeTeaCacheReady(selectedModel.value))
 const selectedLora = computed(() => props.state.loras.find(lora => lora.id === props.state.loraId) ?? null)
 /** 当前底模能力表：引擎默认值 + 后端模型能力合并（UI 不再按 family 散落判断）。 */
 const capabilities = computed(() => resolveDrawCapabilities(props.state.family, null, selectedModel.value?.capabilities ?? null))
@@ -101,22 +105,29 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
       <p class="anima-output-note tw:flex tw:flex-wrap tw:items-center tw:gap-[6px] tw:p-[10px] tw:rounded-sm tw:text-primary"><ArchiveIcon name="spark" />预计成片 {{ outputSize }}<span>放大倍率越高，显存与等待时间通常越多</span></p>
 
       <!-- 加速与高清修复控制（由能力表驱动，当前仅 Anima 开启） -->
-      <div v-if="capabilities.hires || capabilities.teaCache" class="anima-row anima-hires-row">
-        <ToggleSwitch v-model="teaCache" :disabled="busy" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
+      <div v-if="native || capabilities.hires || capabilities.teaCache" class="anima-row anima-hires-row">
+        <ToggleSwitch v-model="teaCache" :disabled="busy || (!(native ? nativeTeaCacheAvailable : capabilities.teaCache) && !teaCache)" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
           <ArchiveIcon name="lightning" class="anima-hires-icon" />
           <span>特征缓存加速 · TeaCache</span>
         </ToggleSwitch>
-        <ToggleSwitch v-model="hiresFix" :disabled="busy" label="高清放大修复" class="anima-hires-toggle">
+        <ToggleSwitch v-model="hiresFix" :disabled="busy || ((native || !capabilities.hires) && !hiresFix)" label="高清放大修复" class="anima-hires-toggle">
           <ArchiveIcon name="spark" class="anima-hires-icon" />
           <span>高清放大</span>
         </ToggleSwitch>
-        <template v-if="hiresFix">
+        <template v-if="hiresFix && !native">
           <label :for="idOf('scale')" class="anima-inline tw:text-label-xs tw:text-secondary">倍率</label>
           <StudioSelect :id="idOf('scale')" v-model.number="hiresScale" label="倍率" :disabled="busy"
             :options="[{ value: 1.5, label: '1.5×' }, { value: 2.0, label: '2.0×' }]" />
           <label :for="idOf('denoise')" class="anima-inline tw:text-label-xs tw:text-secondary">重绘幅度</label>
           <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="anima-num" :disabled="busy" />
         </template>
+      </div>
+      <p v-if="native" class="anima-hint tw:text-label-xs tw:text-warning-text tw:m-0">
+        TeaCache 实验候选，默认关闭。{{ nativeTeaCacheAvailable ? '仅确认校准档文件存在，模型、LoRA 与采样参数将在加载时核验。' : '需要所选模型目录内的 teacache-profile.json 本地校准档。' }}速度与画质尚未验收，不兼容时会明确报错。
+      </p>
+      <div v-if="native && state.teaCacheThresh !== undefined" class="anima-row">
+        <span class="tw:text-label-xs tw:text-warning-text">已保存的阈值 {{ state.teaCacheThresh }} 不能直接用于原生推理。</span>
+        <button type="button" class="anima-btn tw:rounded-sm tw:text-label-xs tw:cursor-pointer" :disabled="busy" @click="patch({ teaCacheThresh: undefined })">使用本地校准档阈值</button>
       </div>
 
       <details class="anima-prompt-details"><StudioDisclosureSummary>查看引擎接收的提示词</StudioDisclosureSummary><div data-disclosure-content>

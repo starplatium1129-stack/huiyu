@@ -37,7 +37,7 @@ export function useInpaintPreparation(deps: {
     const current = () => controller === active && !active.signal.aborted && deps.open()
     try {
       // Invoke both reads now, before either can yield to a different form/source.
-      const [imageBlob, maskBlob] = await Promise.all([deps.getBlob(active.signal), deps.maskBlob()])
+      const [imageBlob, maskBlob] = await Promise.all([deps.getBlob(active.signal), draft.editMode === 'whole' ? Promise.resolve(null) : deps.maskBlob()])
       if (!current() || deps.busy()) return
       if (draft.requiresAdult && !deps.adultEnabled()) { deps.error('请先在工作台开启分级内容，才能使用该服装预设'); return }
       if (!imageBlob) { deps.error('请先上传或选择需要换装的图片'); return }

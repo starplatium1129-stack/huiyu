@@ -29,6 +29,8 @@
 
 009、010、013 的剩余范围和 004 的暂停决定统一维护在[未来规划](roadmap.md)，不再并行维护专项进度副本。
 
+- [独立推理候选接入](guides/independent-inference.md)：无 ComfyUI 文生图里程碑、独立运行库与未验收范围。
+
 ## 专题指南
 
 [专题索引](guides/README.md)按环境、角色、美术、提示词、视频、桌面与工程分类。专题只维护可复用规则，当前状态不重复登记。
@@ -41,8 +43,20 @@
 
 ## 今日记录
 
+- [独立推理当前候选汇总](audits/2026-10-09/independent-inference-current.html)：自动/手绘局部重绘、严格离线单文件转换、实际验证与发行缺口。
+
+- [独立推理手绘局部重绘](audits/2026-10-09/independent-inference-phase3.html)：逐步蒙版采样、输入保护与应用交互；真实设备验收待完成。
+
+- [独立推理第二阶段](audits/2026-10-09/independent-inference-phase2.html)：LoRA、图生图、应用配置与诊断；编译和实机验收仍待完成。
+
+- [独立推理候选切片](audits/2026-10-09/independent-inference.html)：本次实现、定向验证与尚未完成的替代范围。
+
 - [前后端持续优化](audits/2026-10-09/fullstack-performance.html)：九轮改进、舍弃方案、内容门禁剩余失败和未验范围。
 - [文档归纳与清理](audits/2026-10-09/documentation-cleanup.html)：本次合并、清理数量、链接检查和范围。
+
+- [独立推理 TeaCache 候选](audits/2026-10-10/independent-inference-teacache.html)：默认关闭的缓存执行、本机校准/验收与设备阻塞。
+
+- [独立推理编译与离线初装](audits/2026-10-10/independent-inference-setup.html)：Rust 编译、应用离线准备、完整目录导入及设备验收限制。
 
 ## 维护方式
 

@@ -572,3 +572,13 @@ skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同�
 `prepare-ai-environment.ps1` 是本机产品准备器，由 Rust 限定环境 ID、验证运行包后调用；没有新增通用命令权限或维护 CLI。当前选包支持 Windows x64 NVIDIA，Vulkan 为聊天进阶候选；驱动／系统许可与重启由用户完成。应用内文件准备完成不证明模型或设备验收。
 
 源码已退出 SD 新生成与 WebUI 受管启动；旧任务查询、结果收集、取消、作品与原配方继续保留。没有原引擎的旧作品不推断为新模型的可复现配方。上述自动准备能力已进入当前发行，见 [1.9.2](releases/v1.9.2.md)，后续源码改动仍需对应构建与安装；公开 LoRA 附件独立有效。
+
+## 独立推理运行库
+
+`npm run wf -- models:convert-anima --profile anima-cosmos2b-v041 ...` 默认只读单文件结构计划；`--check` 在已有独立运行库中核验完整 meta 键/形状和本地 tokenizer；`--apply` 显式 CPU 离线转换到全新模型目录。未知架构拒绝，不联网/安装，不覆盖输入或已有输出。完整必填参数见[独立推理指南](guides/independent-inference.md#经架构核验的离线转换)。实际权重和 GPU 出图尚未验收。
+
+`npm run wf -- models:prepare-inference --target-dir <AI工作区/inference>` 默认只读预览；`--preflight --wheelhouse <目录>` 在任何 venv 写入前离线解析完整 wheel 依赖；`--check` 通过完整 worker 诊断核验本地回执、依赖与 helper；只有 `--apply --wheelhouse <可信离线wheel目录>` 创建全新独立 venv。任何模式均不下载模型或依赖，不复用/修改 ComfyUI。需已有受信 Python，平台发行材料与真实 GPU 推理另验。详见[独立推理候选接入](guides/independent-inference.md)。
+
+`npm run wf -- models:calibrate-anima-teacache ...` 默认只读计划；`--run` 明确执行本地 CUDA 全计算采样、拟合与留出对照，`--accept-run ... --accept-quality --accept-performance` 在人工画质/性能验收和实际提速核对后写入模型校准档。已有档按精确 SHA-256 显式替换。无下载/安装，未验收档拒绝用于产品；见[TeaCache 校准与验收](guides/independent-inference.md#teacache-本机校准与验收)。
+
+`npm run wf -- models:import-anima-directory --source-dir <完整模型目录> --target-dir <全新目标>` 默认只读布局计划；`--apply` 明确复制完整资源，不覆盖或移动来源。控制室提供同一能力的确认入口及离线运行库准备，沿用本机操作互斥与取消；文件证据不代表实际模型/GPU兼容，见[独立推理指南](guides/independent-inference.md#应用内离线准备与完整目录导入)。

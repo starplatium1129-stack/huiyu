@@ -16,7 +16,9 @@ const DATA_SHARDS=new Set(['catalog','blueprints','popular','references','scenes
 const OFFLINE_TOOLS = ['Install-OfflineResources.cmd', 'offline-resource-assistant.ps1', 'install-offline-resources.ps1'];
 const TOOLS=new Set(['nav.js','theme.js','local-status.js','translate-zh-ja.py','voxcpm-server.py','install-translation-model.ps1', ...OFFLINE_TOOLS]);
 const INTERROGATE_TOOLS=new Set(['pixai_worker.py','pixai-manifest.json']);
+const INFERENCE_TOOLS=new Set(['worker.py','masked_anima.py','clipseg_mask.py','anima_conversion.py','anima_conversion_profile.py','ANIMA_CONVERSION_LICENSE.txt','teacache_anima.py','teacache_profile.py','teacache_calibration.py','TEACACHE_LICENSE.txt','requirements.txt','runtime-manifest.json']);
 function includeTools(parts:string[],file:string):boolean {
+  if(parts[0]==='inference') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&INFERENCE_TOOLS.has(parts[1]);
   if(parts[0]==='interrogate') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&INTERROGATE_TOOLS.has(parts[1]);
   return parts.length===1&&TOOLS.has(parts[0].replace(/\.(?:br|gz)$/i,''));
 }
@@ -82,6 +84,8 @@ function stageResources(options: StageOptions = {}) {
     }
     const scripts = path.join(gateway, 'scripts/lib'); fs.mkdirSync(scripts, { recursive: true });
     for (const name of ['managed-comfyui.ps1', 'managed-voice.ps1', 'prepare-ai-environment.ps1']) fs.copyFileSync(safe.resolveSafe(root, `scripts/lib/${name}`), path.join(scripts, name));
+    const inferencePrep = path.join(gateway, 'scripts/maintenance'); fs.mkdirSync(inferencePrep, { recursive: true });
+    for (const name of ['prepare-inference.py', 'inspect-anima-checkpoint.py', 'convert-anima-checkpoint.py', 'calibrate-anima-teacache.py', 'import-anima-directory.py']) fs.copyFileSync(safe.resolveSafe(root, `scripts/maintenance/${name}`), path.join(inferencePrep, name));
     execFileSync(process.execPath, [path.join(__dirname, 'desktop-resource-profile.js'), root, gateway, profile], { windowsHide: true, stdio: 'pipe' });
     const after = runtimeBuild(root);
     if (after.receipt.source.sha256 !== report.source || after.receipt.binary.sha256 !== report.runtime.sha256) throw Error('Rust build changed during staging');

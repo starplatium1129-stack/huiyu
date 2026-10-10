@@ -5,6 +5,8 @@ import { MaskTileHistory } from './maskTileHistory'
 export interface InpaintMaskCanvasDeps {
   /** 弹窗是否打开（关闭时不响应撤销快捷键）。 */
   active: () => boolean
+  /** Native masks keep full paint strength; preview transparency is CSS-only. */
+  opaquePaint?: () => boolean
   /** 预览 <img> 元素（同步画布尺寸时读 naturalWidth/Height）。 */
   imageEl: Ref<HTMLImageElement | null>
   /** 检测到的目标画幅（优先于 naturalWidth，见 useInpaintImageSource）。 */
@@ -124,8 +126,8 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
       Math.max(previous.y, position.y) + radius + 2)
     maskUndoCount.value = history.strokes.length
     context.globalCompositeOperation = erase ? 'destination-out' : 'source-over'
-    context.fillStyle = 'rgba(255, 255, 255, 0.72)'
-    context.strokeStyle = 'rgba(255, 255, 255, 0.72)'
+    context.fillStyle = deps.opaquePaint?.() ? 'white' : 'rgba(255, 255, 255, 0.72)'
+    context.strokeStyle = context.fillStyle
     context.lineWidth = radius * 2
     context.lineCap = 'round'
     if (lastMaskPoint) {
