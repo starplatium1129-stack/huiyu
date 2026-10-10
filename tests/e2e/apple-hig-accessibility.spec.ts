@@ -22,14 +22,13 @@ for (const theme of ['dark', 'light'] as const) {
     page.on('console', message => { if (message.type() === 'error') runtimeErrors.push(message.text()) })
     await page.goto('/scene-explorer')
     const trigger = page.getByRole('button', { name: '故事', exact: true }).first()
-    await trigger.focus()
-    await expect(trigger).toBeFocused()
-    await page.keyboard.press('Enter')
     const drawer = page.getByRole('dialog', { name: '场景观赏模式', exact: true })
     const close = drawer.getByRole('button', { name: '关闭', exact: true })
-    await expect(close).toBeFocused().catch(async error => {
+    const logActivationFailure = async (error: unknown) => {
       console.error('Scene viewer open diagnostics', JSON.stringify({ runtimeErrors, dom: await page.evaluate(() => ({
         active: document.activeElement?.outerHTML.slice(0, 600),
+        story: [...document.querySelectorAll<HTMLElement>('.ex-actions button')].find(element => element.textContent?.trim() === '故事')?.outerHTML,
+        card: (() => { const element = document.querySelector<HTMLElement>('.sc'); return element ? { rect: element.getBoundingClientRect().toJSON(), hidden: element.hidden, inertAncestor: element.closest('[inert]')?.outerHTML.slice(0, 300), visibility: getComputedStyle(element).visibility } : null })(),
         expandedScenes: [...document.querySelectorAll('.sc[aria-expanded="true"]')].map(element => element.getAttribute('data-scene-id')),
         viewers: [...document.querySelectorAll<HTMLElement>('[role="dialog"]')].map(element => ({
           label: element.getAttribute('aria-label'), hidden: element.getAttribute('aria-hidden'),
@@ -38,7 +37,13 @@ for (const theme of ['dark', 'light'] as const) {
         storyButtons: [...document.querySelectorAll('.ex-actions button')].filter(element => element.textContent?.trim() === '故事').length,
       })) }))
       throw error
-    })
+    }
+    // Content-visibility cards must be in view before their nested action can focus.
+    await trigger.scrollIntoViewIfNeeded().catch(logActivationFailure)
+    await trigger.focus().catch(logActivationFailure)
+    await expect(trigger).toBeFocused().catch(logActivationFailure)
+    await page.keyboard.press('Enter')
+    await expect(close).toBeFocused().catch(logActivationFailure)
     // Exercise the browser's real top layer, both outside and inside the custom trap.
     for (const nested of [false, true]) {
       await page.evaluate(nested => {
