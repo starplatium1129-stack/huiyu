@@ -2,6 +2,11 @@ import { expect, test } from '@playwright/test'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 import { textContrast } from './helpers/contrast'
 
+interface ThemeTransitionProbeWindow extends Window {
+  themeTransitions?: ViewTransition[]
+  themeSamples?: Array<Promise<{ duration: string; name: string }>>
+}
+
 test('theme switch persists through reload and preserves native control colors', async ({ page }, info) => {
   await page.emulateMedia({ colorScheme: 'dark' })
   await page.addInitScript(() => localStorage.setItem('aics_guest_guide_dismissed', '1'))
@@ -24,9 +29,9 @@ test('theme switch persists through reload and preserves native control colors',
   await page.getByRole('button', { name: '切换为亮色模式' }).click()
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
   const animation = await page.evaluate(async () => {
-    const { themeTransitions: transitions, themeSamples: samples } = window as Window & {
-      themeTransitions: ViewTransition[]; themeSamples: Array<Promise<{ duration: string; name: string }>>
-    }
+    const probe: ThemeTransitionProbeWindow = window
+    const { themeTransitions: transitions, themeSamples: samples } = probe
+    if (!transitions || !samples) throw new Error('Theme transition probe is not initialized')
     const transition = transitions.at(-1)!
     const result = { count: transitions.length, ...await samples.at(-1)! }
     await transition.finished
