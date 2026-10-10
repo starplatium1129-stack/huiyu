@@ -249,9 +249,9 @@ test('gallery filtering does not retain hidden selections', async ({ page }) => 
   await page.goto('/gallery')
   await page.getByRole('button', { name: '选择', exact: true }).click()
   await page.getByRole('checkbox', { name: '全选当前作品', exact: true }).check()
-  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 2 / 2')
+  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*2\s*\/\s*2\s*$/)
   await page.getByLabel('搜索作品', { exact: true }).fill('审计甲')
-  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 0 / 1')
+  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*0\s*\/\s*1\s*$/)
   await expect(page.getByRole('button', { name: '移入回收站（0）', exact: true })).toBeDisabled()
 })
 
@@ -292,7 +292,7 @@ test('gallery keeps failed bulk items selected for retry', async ({ page }) => {
   await page.getByRole('button', { name: '移入回收站（2）', exact: true }).click()
   await page.getByRole('alertdialog').getByRole('button', { name: '移入回收站', exact: true }).click()
   await expect(page.locator('.toast-msg')).toContainText('1 幅没成功')
-  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 1 / 1')
+  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*1\s*\/\s*1\s*$/)
   await expect(page.getByRole('button', { name: '移入回收站（1）', exact: true })).toBeEnabled()
 })
 
