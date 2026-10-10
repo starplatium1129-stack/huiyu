@@ -29,7 +29,7 @@ const EFFECTS = Object.freeze([
   'isolated-fixture',   // 仅使用临时夹具，不触碰生产数据
 ]);
 const MACHINES = Object.freeze([
-  'node', 'windows', 'windows-toolchain', 'python-pillow', 'gateway',
+  'node', 'windows', 'windows-toolchain', 'python', 'python-pillow', 'gateway',
   'comfyui', 'vision-api', 'network', 'playwright-browser', 'build-present',
 ]);
 const RESUME_MODES = Object.freeze(['idempotent', 'checkpoint', 'na']);

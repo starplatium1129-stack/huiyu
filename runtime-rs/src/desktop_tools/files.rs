@@ -109,7 +109,9 @@ pub(super) async fn atomic(
     bytes: &[u8],
     cancel: &CancellationToken,
 ) -> Result<()> {
-    let parent = target.parent().ok_or_else(|| Error::plain("目标路径不可写"))?;
+    let parent = target
+        .parent()
+        .ok_or_else(|| Error::plain("目标路径不可写"))?;
     tokio::fs::create_dir_all(parent).await?;
     if cancel.is_cancelled() {
         return Err(Error::cancelled());
@@ -120,7 +122,10 @@ pub(super) async fn atomic(
     // Own the actual file before any cancellable I/O. An abandoned Tokio open
     // could otherwise create a file after a path-only cleanup guard has run.
     let (file, pending) = tempfile::Builder::new()
-        .prefix(&format!("{}.", target.file_name().unwrap().to_string_lossy()))
+        .prefix(&format!(
+            "{}.",
+            target.file_name().unwrap().to_string_lossy()
+        ))
         .suffix(".tool.tmp")
         .tempfile_in(parent)?
         .into_parts();
@@ -136,7 +141,9 @@ pub(super) async fn atomic(
     if paths::resolve(root, relative).await? != target {
         return Err(Error::plain("路径在写入期间发生变化"));
     }
-    pending.persist(target).map_err(|error| Error::from(error.error))?;
+    pending
+        .persist(target)
+        .map_err(|error| Error::from(error.error))?;
     Ok(())
 }
 pub(super) async fn image(root: &Path, input: &Value) -> Result<Value> {

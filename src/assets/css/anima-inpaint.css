@@ -126,6 +126,9 @@
   z-index: var(--z-base);
 }
 
+/* Preview opacity must not reduce native mask sampling/compositing strength. */
+.mask-canvas.native-mask { opacity: 0.72; }
+
 .brush-cursor-indicator {
   @apply tw:absolute;
   left: var(--cursor-x, -100px);

@@ -17,7 +17,14 @@ export interface AnimaOption {
   family?: 'anima' | 'krea2'
   profileId?: string
   defaults?: Record<string, unknown>
-  capabilities?: { negative: boolean; lora: boolean; noLora?: boolean; characterIdentity: boolean; experimental: boolean }
+  teaCacheProfile?: {
+    support: 'experimental-candidate'
+    readiness: 'profile-files-only' | 'missing'
+    validation: 'on-load'
+    performanceVerified: boolean
+    qualityVerified: boolean
+  }
+  capabilities?: { negative: boolean; lora: boolean; noLora?: boolean; img2img?: boolean; mask?: boolean; teaCache?: boolean; hires?: boolean; characterIdentity: boolean; experimental: boolean }
   sizes?: string[]
 }
 
@@ -57,6 +64,8 @@ export interface AnimaResultContext {
 
 export interface AnimaGenerationState {
   phase: AnimaPhase
+  provider?: 'comfy' | 'native'
+  automaticMaskAvailable?: boolean
   backendStatus?: string
   /** ComfyUI 当前只通过轮询提供阶段；未知采样步数时保持 null，禁止伪造百分比。 */
   progress: number | null

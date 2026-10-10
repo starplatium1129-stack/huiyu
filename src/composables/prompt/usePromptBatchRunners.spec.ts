@@ -7,6 +7,9 @@ import { usePromptBatchRunners, type PromptBatchRunnersDeps } from './usePromptB
 import { applyInterrogateResult } from './applyInterrogateResult'
 import type { DraftOutfitOverride, DraftReferenceInput } from '@/utils/promptBuilderPersistence'
 
+// Batch fixtures supply their own catalog; do not build unrelated content data.
+vi.mock('virtual:data-version', () => ({ DATA_VERSION: 0 }))
+
 function setup() {
   const character = { id: 'audit', displayName: '测试角色', aliases: ['audit_(series)'], identityProse: 'An adult woman with black hair and blue eyes', identityTokens: ['1girl', 'solo', 'black_hair', 'blue_eyes'], exactTokens: ['audit_(series)'], exactPrefixes: [], adultEligibility: 'adult', outfits: [
     { id: 'school', name: '校服', tokens: ['school_uniform'], prose: 'a school uniform', default: true },
@@ -23,6 +26,24 @@ function setup() {
   return { runner, deps, pb, state, blueprint }
 }
 afterEach(() => { sessionStorage.clear(); vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.useRealTimers() })
+
+it.each(['missing', 'legacy-threshold', 'default-off', 'ready'] as const)('native batch TeaCache respects %s settings without silent downgrade', async scenario => {
+  const { runner, deps } = setup()
+  Object.assign(deps.animaState.value, { provider: 'native', teaCache: scenario === 'default-off' ? undefined : true,
+    teaCacheThresh: scenario === 'legacy-threshold' ? 0.1 : undefined,
+    models: [{ id: 'test-model', capabilities: { teaCache: scenario !== 'missing' }, teaCacheProfile: { readiness: 'profile-files-only' } }],
+  })
+  const request = vi.spyOn(apiClient, 'request').mockRejectedValue(new ApiClientError('isolated fixture', { kind: 'http', status: 400 }))
+  await runner.onBatchStart({ sceneIds: ['one'], count: 1 })
+  if (scenario === 'missing' || scenario === 'legacy-threshold') {
+    expect(request).not.toHaveBeenCalled()
+    expect(runner.batchDraw.jobs.value[0].error).toContain(scenario === 'missing' ? '校准档' : '不沿用已保存的数值阈值')
+  } else {
+    expect(request).toHaveBeenCalledOnce()
+    expect(request.mock.calls[0][1]?.body).toMatchObject({ teaCache: scenario === 'ready' })
+    expect(request.mock.calls[0][1]?.body).not.toHaveProperty('teaCacheThresh')
+  }
+})
 
 it.each(['inferred', 'selected'] as const)('retry keeps original inputs with explicit palette and %s lighting', async palette => {
   const { runner, pb, state, blueprint } = setup()

@@ -1,7 +1,7 @@
 export type WorkflowEffect = 'read-only' | 'preview' | 'self-heal-missing' | 'guard'
   | 'writes-source' | 'writes-product' | 'writes-release' | 'writes-baseline'
   | 'delete' | 'external-model' | 'network-download' | 'publish-remote' | 'service' | 'isolated-fixture';
-export type WorkflowMachine = 'node' | 'windows' | 'windows-toolchain' | 'python-pillow'
+export type WorkflowMachine = 'node' | 'windows' | 'windows-toolchain' | 'python' | 'python-pillow'
   | 'gateway' | 'comfyui' | 'vision-api' | 'network' | 'playwright-browser' | 'build-present';
 export interface WorkflowRun {
   nature: WorkflowEffect[];

@@ -329,3 +329,104 @@ it('cancels while the direct transport loads without POST, then permits a fresh 
   await session.generate()
   expect(call).toHaveBeenCalledOnce()
 })
+
+it('honors native TeaCache defaults without overwriting later edits and rejects unsupported requests', async () => {
+  const call = vi.fn(async () => ({ ok: true, online: true, provider: 'native', models: [
+    { id: 'anima-fixture', family: 'anima', available: true, defaults: { teaCache: false } },
+  ], loras: [] }))
+  const flash = vi.fn()
+  const session = createSession({ request: call } as unknown as ApiClient, { flash })
+  await session.refreshBackend()
+  expect(session.state.value).toMatchObject({ provider: 'native', teaCache: false, online: true })
+  expect(session.state.value.teaCacheThresh).toBeUndefined()
+  session.patchState({ teaCache: true })
+  await session.refreshBackend()
+  expect(session.state.value.teaCache).toBe(true)
+  call.mockClear()
+  for (const [options, message] of [[{ teaCache: true }, '缺少所选模型'], [{ hiresFix: true }, '暂不支持高清修复']] as const) {
+    await session.generate(options)
+    expect(flash).toHaveBeenLastCalledWith(expect.stringContaining(message))
+  }
+  expect(call).not.toHaveBeenCalled()
+  expect(session.state.value.phase).toBe('idle')
+})
+
+it('admits native TeaCache only for the requested model with local profile files and refuses saved Comfy thresholds', async () => {
+  vi.spyOn(environment, 'isLocalStudioHost').mockReturnValue(false)
+  let ready = false
+  const call = vi.fn(async (url: string, _options?: ApiRequestOptions) => url === '/api/creative/status'
+    ? { ok: true, online: true, provider: 'native', models: [{ id: 'anima-fixture', family: 'anima', available: true,
+      capabilities: { teaCache: ready }, teaCacheProfile: { readiness: ready ? 'profile-files-only' : 'missing' } }], loras: [] }
+    : { ok: false, error: 'fixture transport reached' })
+  const flash = vi.fn()
+  const session = createSession({ request: call } as unknown as ApiClient, { flash })
+  session.restoreSettings({ modelId: 'anima-fixture', teaCache: true, teaCacheThresh: 0.1 })
+  await session.refreshBackend()
+  expect(session.state.value).toMatchObject({ teaCache: true, teaCacheThresh: 0.1 })
+  call.mockClear()
+  await session.generate({ teaCache: true, teaCacheThresh: 0.1 })
+  expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('不沿用已保存的数值阈值'))
+  expect(call).not.toHaveBeenCalled()
+  ready = true
+  await session.refreshBackend()
+  call.mockClear()
+  await session.generate({ teaCache: true, modelId: 'other-model' })
+  expect(call).not.toHaveBeenCalled()
+  expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('缺少所选模型'))
+  await session.generate({ teaCache: true })
+  expect(call).toHaveBeenCalledExactlyOnceWith('/api/anima/jobs', expect.objectContaining({ method: 'POST', body: expect.objectContaining({ teaCache: true }) }))
+  expect(call.mock.calls[0]?.[1]?.body).not.toHaveProperty('teaCacheThresh')
+})
+
+it('keeps native TeaCache off when unrelated settings are edited during first discovery', async () => {
+  let complete!: (value: unknown) => void
+  const call = vi.fn(() => new Promise(resolve => { complete = resolve }))
+  const session = createSession({ request: call } as unknown as ApiClient)
+  const pending = session.refreshBackend()
+  session.patchState({ cfg: 7 })
+  complete({ ok: true, online: true, provider: 'native', models: [{ id: 'anima-fixture', family: 'anima', available: true }], loras: [] })
+  await pending
+  expect(session.state.value).toMatchObject({ cfg: 7, teaCache: false })
+  expect(session.state.value.teaCacheThresh).toBeUndefined()
+})
+
+
+it('submits native manual mask through the session transport without automatic mask fields', async () => {
+  vi.spyOn(environment, 'isLocalStudioHost').mockReturnValue(false)
+  const call = vi.fn(async (_url: string, _options?: ApiRequestOptions) => ({ ok: false, error: 'fixture transport reached' }))
+  const session = createSession({ request: call } as unknown as ApiClient)
+  session.patchState({ online: true, provider: 'native' })
+  await session.generate({ initImage: 'source.png', maskImage: 'mask.png', growMaskBy: 12, denoisingStrength: 0.6, teaCache: false })
+  expect(call).toHaveBeenCalledExactlyOnceWith('/api/anima/jobs', expect.objectContaining({ method: 'POST',
+    body: expect.objectContaining({ initImage: 'source.png', maskImage: 'mask.png', growMaskBy: 12, denoisingStrength: 0.6, teaCache: false }),
+  }))
+  expect(call.mock.calls[0]?.[1]?.body).not.toHaveProperty('maskPrompt')
+})
+
+
+it('refreshes native automatic mask readiness and admits only locally ready automatic requests', async () => {
+  vi.spyOn(environment, 'isLocalStudioHost').mockReturnValue(false)
+  let ready = false
+  const call = vi.fn(async (url: string, _options?: ApiRequestOptions) => url === '/api/creative/status'
+    ? { ok: true, online: true, provider: 'native', capabilities: { automaticMask: ready },
+      models: [{ id: 'anima-fixture', family: 'anima', available: true }], loras: [] }
+    : { ok: false, error: 'fixture transport reached' })
+  const flash = vi.fn()
+  const session = createSession({ request: call } as unknown as ApiClient, { flash })
+  const mask = { initImage: 'source.png', maskPrompt: 'jacket | sleeves', maskThreshold: 0.65, growMaskBy: 4, teaCache: false }
+  await session.refreshBackend()
+  call.mockClear()
+  await session.generate(mask)
+  expect(call).not.toHaveBeenCalled()
+  expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('本地 CLIPSeg'))
+  ready = true
+  await session.refreshBackend()
+  expect(session.state.value.automaticMaskAvailable).toBe(true)
+  call.mockClear()
+  await session.generate(mask)
+  expect(call).toHaveBeenCalledExactlyOnceWith('/api/anima/jobs', expect.objectContaining({ method: 'POST', body: expect.objectContaining(mask) }))
+  expect(call.mock.calls[0]?.[1]?.body).not.toHaveProperty('maskImage')
+  ready = false
+  await session.refreshBackend()
+  expect(session.state.value.automaticMaskAvailable).toBe(false)
+})

@@ -47,8 +47,14 @@ export function bindsOnlyCustomProps(source: string, binding: string): boolean {
     try {
       if (ts.isParenthesizedExpression(node) || ts.isAsExpression(node) || ts.isTypeAssertionExpression(node)
         || ts.isSatisfiesExpression(node)) return check(node.expression, properties);
-      if (ts.isIdentifier(node)) return check(lookup(node.text, node)
-        ?? (node.getSourceFile() === expressionTree ? entry(node.text) : undefined), properties);
+      if (ts.isIdentifier(node)) {
+        const definition = lookup(node.text, node)
+          ?? (node.getSourceFile() === expressionTree ? entry(node.text) : undefined);
+        // Vue removes the binding for an absent style. A shadowed identifier
+        // still needs proof; it must not bypass the custom-property restriction.
+        return node.text === 'undefined' && !definition && properties.length === 0
+          || check(definition, properties);
+      }
       if (ts.isVariableDeclaration(node)) return check(node.initializer, properties);
       if (ts.isPropertyAccessExpression(node) && !node.questionDotToken) return check(node.expression, [node.name.text, ...properties]);
       if (ts.isConditionalExpression(node)) return check(node.whenTrue, properties) && check(node.whenFalse, properties);

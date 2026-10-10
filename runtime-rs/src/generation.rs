@@ -3,6 +3,7 @@ mod constants;
 mod decoder;
 mod http;
 mod jobs;
+pub(crate) mod native;
 mod output;
 mod plan;
 mod probe;
@@ -73,6 +74,9 @@ impl Drop for Life {
 }
 
 struct Inner {
+    native: native::Engine,
+    native_images: bool,
+    native_settings: native::Settings,
     scope: Scope,
     config: Config,
     transport: LocalUpstream,
@@ -170,6 +174,12 @@ struct JobState {
 }
 
 impl Service {
+    pub(crate) fn native_settings(&self) -> Result<native::Settings> {
+        Ok(self.inner.native_settings.clone())
+    }
+    pub(crate) fn native_enabled(&self) -> bool {
+        self.inner.native_settings.engine == "native"
+    }
     pub fn new(
         config: Config,
         transport: LocalUpstream,
@@ -186,7 +196,11 @@ impl Service {
         crate::upstream::local_url(&config.sd_host)?;
         crate::upstream::local_url(&config.comfy_host)?;
         let cancel = shutdown.child_token();
+        let native_settings = native::load(&config)?;
         let inner = Arc::new(Inner {
+            native: native::Engine::default(),
+            native_images: matches!(scope, Scope::Images) && native_settings.engine == "native",
+            native_settings,
             scope,
             config,
             transport,
@@ -252,7 +266,9 @@ impl Service {
     }
     pub async fn cancel(&self, id: &str, owner: &str) -> Result<Value> {
         let job = jobs::find(&self.inner, id, owner, false).await?;
-        if job.provider == "webui" {
+        if job.provider == "native" {
+            native::cancel(self.inner.clone(), job.clone()).await?;
+        } else if job.provider == "webui" {
             webui::cancel(self.inner.clone(), job.clone()).await?;
         } else {
             comfy::cancel(self.inner.clone(), job.clone()).await?;

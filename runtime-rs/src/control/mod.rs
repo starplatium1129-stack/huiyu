@@ -2,6 +2,8 @@ mod actions;
 mod comfy;
 mod hardware;
 mod http;
+mod inference;
+mod inference_setup;
 mod llama;
 mod probe;
 mod settings;
@@ -40,6 +42,8 @@ pub struct ControlService {
     tasks: TaskTracker,
     settings: RwLock<Value>,
     config_write: Arc<tokio::sync::Mutex<()>>,
+    inference: Result<crate::generation::native::Settings>,
+    inference_probe: tokio::sync::Mutex<()>,
     saved: Arc<RwLock<Value>>,
     state: Mutex<ControlState>,
     probe_lock: tokio::sync::Mutex<()>,
@@ -99,8 +103,17 @@ impl ControlService {
                 .unwrap_or(default.into())
         };
         let settings = json!({"sdHost":config.sd_host,"comfyHost":config.comfy_host,"ttsHost":host("TTS_HOST","ttsHost","http://127.0.0.1:9880"),"ttsEngine":if saved["ttsEngine"]=="voxcpm2"{"voxcpm2"}else{"gpt-sovits"},"ollamaHost":host("OLLAMA_HOST","ollamaHost","http://127.0.0.1:11434"),"llamaHost":host("LLAMA_HOST","llamaHost","http://127.0.0.1:8000"),"llamaModel":saved["llamaModel"],"voices":saved.get("voices").filter(|v|v.is_object()).cloned().unwrap_or(json!({})),"autoStartVoice":saved["autoStartVoice"]==true});
+        let inference = crate::generation::native::load(&crate::generation::Config {
+            sd_host: config.sd_host.clone(),
+            sd_auth: config.sd_auth.clone(),
+            comfy_host: config.comfy_host.clone(),
+            ai_workspace_root: config.ai_workspace_root.clone(),
+            runtime_root: config.runtime_root.clone(),
+        });
         let service = Arc::new(Self {
             voice,
+            inference,
+            inference_probe: tokio::sync::Mutex::new(()),
             config,
             remote,
             shutdown: shutdown.child_token(),

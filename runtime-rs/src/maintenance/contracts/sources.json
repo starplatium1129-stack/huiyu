@@ -5,7 +5,8 @@
   "sources": [
     {
       "path": "scripts/maintenance/validate-content-contracts.ts",
-      "sha256": "ae79e30124b17ba08c9f2296db2de2edd2d839c54be349d83661bd9c1d86cf79"
+      "sha256": "548fc9b8942bebcf770b6be132eb6feeda774b31c61cde66c93f8df7d67816b1",
+      "note": "2026-10-10: Reviewed diff against fbe38fd0158708b289aa439143d917d7d3bafba4. Pollution scanners now import directly from popularPromptBuilder; validation decisions are unchanged. The existing Node/Rust fixture retains clean-data, stale-product and pollution issue-parity assertions. Original extraction date and recipeSha256 are retained."
     },
     {
       "path": "scripts/maintenance/check-ref-urls.ts",
@@ -19,12 +20,13 @@
     },
     {
       "path": "src/utils/popularContent.ts",
-      "sha256": "5b6ac5f3faa3ddb1ff9a30d84c0c448f9d0213edacdad2f0100aa34a9a47fb0b",
-      "note": "2026-10-07: Reviewed current ordinary character/blueprint parsing, duplicate checks and fail-closed blueprint eligibility against the Rust gate. Rust now preserves identityTokensOverride/identityProseOverride for pollution scans and rejects empty override token lists, covered by the existing Node oracle fixture. Generated recipes continue through the existing stricter Rust generated::validate contract (parameter bounds, identity, size and rating checks); this is not a claim of full generated-recipe parser equivalence."
+      "sha256": "2a7beb150caf86641185b44b91720cc079f958e36f03b5eb29ec2c2dda79fa6d",
+      "note": "2026-10-07: Reviewed current ordinary character/blueprint parsing, duplicate checks and fail-closed blueprint eligibility against the Rust gate. Rust now preserves identityTokensOverride/identityProseOverride for pollution scans and rejects empty override token lists, covered by the existing Node oracle fixture. Generated recipes continue through the existing stricter Rust generated::validate contract (parameter bounds, identity, size and rating checks); this is not a claim of full generated-recipe parser equivalence. 2026-10-10: Diff against fbe38fd0158708b289aa439143d917d7d3bafba4 only moves the composition parser import to popularParseGuards and removes unused re-exports; parsing and gate decisions are unchanged."
     },
     {
       "path": "src/utils/popularParseGuards.ts",
-      "sha256": "2a0f21bba452370c6605286c89f61fe2ca41118ffb2fff807037959c837f60f5"
+      "sha256": "6dedacb3013f99b1a5f48a14e06dd5c64890c73fe198a63dc2b0010cc7171926",
+      "note": "2026-10-10: Diff against fbe38fd0158708b289aa439143d917d7d3bafba4 adds the unchanged parseCompositionIntent implementation moved from blueprintComposition. Missing/null/empty defaults and strict single/group/triptych validation remain unchanged."
     },
     {
       "path": "src/utils/popularPromptBuilder.ts",
@@ -33,8 +35,8 @@
     },
     {
       "path": "src/utils/blueprintComposition.ts",
-      "sha256": "c41beea0fef068e1748f92b58ace0a5905a3aab8f13a1addeef2bd36f057fd5d",
-      "note": "2026-10-07: Reviewed parseCompositionIntent against Rust: missing/null/empty maps to single; single/group/triptych are accepted and other values rejected. Runtime composition and repeated-subject negative filtering are not called by the content gate. Original extraction date and recipeSha256 are retained."
+      "sha256": "c0c827877be85acdb574332e5a1ddc9db14c607fa5af0193afcde8e0181fa3e7",
+      "note": "2026-10-07: Reviewed parseCompositionIntent against Rust: missing/null/empty maps to single; single/group/triptych are accepted and other values rejected. Runtime composition and repeated-subject negative filtering are not called by the content gate. Original extraction date and recipeSha256 are retained. 2026-10-10: Diff against fbe38fd0158708b289aa439143d917d7d3bafba4 only removes parseCompositionIntent after its unchanged move to popularParseGuards."
     },
     {
       "path": "src/config/kreaStyleRecipes.ts",

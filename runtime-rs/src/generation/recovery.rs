@@ -63,6 +63,11 @@ impl Service {
     /// This is the same installation identity used by the Node task provider.
     /// An address alone cannot prove that a restarted server owns an old prompt.
     pub(crate) fn provider_identity(&self, unbound_epoch: &str) -> Value {
+        // A native image task belongs to this frozen engine configuration. It
+        // has no Comfy/WebUI installation or address dependency.
+        if self.inner.native_images {
+            return json!({"native":self.inner.native_settings});
+        }
         let root = self.inner.config.ai_workspace_root.join("ComfyUI");
         let identity = (|| {
             let metadata = std::fs::metadata(&root).ok()?;
@@ -73,7 +78,7 @@ impl Service {
             let root = canonical.to_string_lossy();
             let root = root.strip_prefix(r"\\?\").unwrap_or(&root);
             Some(json!({"root":root,"created":created.as_secs() as f64*1000.0+created.subsec_nanos() as f64/1_000_000.0,"inode":inode as f64}))
-        })().unwrap_or_else(||json!({"unboundEpoch":unbound_epoch}));
+        })().unwrap_or_else(|| json!({"unboundEpoch":unbound_epoch}));
         json!({"comfy":self.inner.config.comfy_host,"webui":self.inner.config.sd_host,"identity":identity})
     }
 
@@ -90,6 +95,12 @@ impl Service {
             metadata: task["metadata"].clone(),
             outputs: vec![],
         };
+        if task["provider"] == "native" {
+            result.status = "failed".into();
+            result.settled = true;
+            result.error_code = Some("NATIVE_RESTART_INTERRUPTED".into());
+            return Ok(result);
+        }
         if task["provider"] == "webui" {
             snapshots::initialize(self.inner.clone()).await?;
             if let Some(recovered) = webui_results::recover(&self.inner, task).await? {

@@ -176,7 +176,7 @@ impl TaskRuntime {
             let known = current.recovery_state == TaskRecoveryState::Normal;
             return clear_collection_diagnostic(storage, principal, id, current, known).await;
         }
-        if current.provider_fingerprint != self.binding() {
+        if current.provider_fingerprint != self.binding_for(current.kind) {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
             return patch(
                 storage,

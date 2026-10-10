@@ -123,6 +123,7 @@ function createFixture() {
   write(path.join(root, 'scripts/lib/managed-comfyui.ps1'), '# fixture');
   write(path.join(root, 'scripts/lib/managed-voice.ps1'), '# voice manager');
   write(path.join(root, 'scripts/lib/prepare-ai-environment.ps1'), '# environment preparer');
+  for (const name of ['prepare-inference.py', 'inspect-anima-checkpoint.py', 'convert-anima-checkpoint.py', 'calibrate-anima-teacache.py', 'import-anima-directory.py']) write(path.join(root, 'scripts/maintenance', name), '# native runtime preparer');
   write(path.join(root, 'scripts/lib/runtime.js'), 'excluded');
   write(path.join(root, 'data/characters.json'), '{}'); write(path.join(root, 'dist/index.html'), '<!doctype html>');
   write(path.join(root, 'data/catalog/manifest.json'), '{"version":1,"files":["character/new.json"],"retired":[]}');
@@ -135,6 +136,8 @@ function createFixture() {
   write(path.join(root, 'tools/interrogate/pixai_worker.py'), '# model worker');
   write(path.join(root, 'tools/interrogate/pixai-manifest.json'), '{}');
   write(path.join(root, 'tools/interrogate/test_pixai_worker.py'), '# excluded test');
+  for (const name of ['worker.py', 'masked_anima.py','clipseg_mask.py','anima_conversion.py','anima_conversion_profile.py','ANIMA_CONVERSION_LICENSE.txt','teacache_anima.py','teacache_profile.py','teacache_calibration.py','TEACACHE_LICENSE.txt', 'requirements.txt', 'runtime-manifest.json']) write(path.join(root, 'tools/inference', name), 'native inference fixture');
+  write(path.join(root, 'tools/inference/test_worker.py'), '# excluded test');
   for(const name of ['history.json','projects.json','prompts.json','live2d-candidates.json','live2d-candidates.json.br'])write(path.join(root,'data',name),'private');
   write(path.join(root,'data/references/fixture.json'),'{}');write(path.join(root,'tools/control-server.js'),'old-node-service');
   write(path.join(root, 'assets/character-references/private.png'), 'private');
@@ -183,6 +186,7 @@ test('Rust stage verifies bound inputs, excludes legacy/private files, and repla
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/tools/voxcpm-server.py'), 'utf8'), '# VoxCPM2 server');
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/scripts/lib/managed-voice.ps1'), 'utf8'), '# voice manager');
     assert.equal(fs.readFileSync(path.join(stage, 'gateway/scripts/lib/prepare-ai-environment.ps1'), 'utf8'), '# environment preparer');
+    for (const name of ['prepare-inference.py', 'inspect-anima-checkpoint.py', 'convert-anima-checkpoint.py', 'calibrate-anima-teacache.py', 'import-anima-directory.py']) assert.equal(fs.readFileSync(path.join(stage, 'gateway/scripts/maintenance', name), 'utf8'), '# native runtime preparer');
     assert.equal(fs.existsSync(path.join(stage,'gateway/scripts/lib/managed-webui.ps1')),false);
     assert.equal(fs.existsSync(path.join(stage, 'gateway/native/libvips-42.dll')), true);
     assert.equal(fs.existsSync(path.join(stage, 'gateway/native/onnxruntime.dll')), false);
@@ -210,6 +214,8 @@ test('Rust stage verifies bound inputs, excludes legacy/private files, and repla
     assert.equal(fs.readFileSync(path.join(stage,'gateway/tools/interrogate/pixai_worker.py'),'utf8'),'# model worker');
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/pixai-manifest.json')),true);
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/test_pixai_worker.py')),false);
+    for (const name of ['worker.py', 'masked_anima.py','clipseg_mask.py','anima_conversion.py','anima_conversion_profile.py','ANIMA_CONVERSION_LICENSE.txt','teacache_anima.py','teacache_profile.py','teacache_calibration.py','TEACACHE_LICENSE.txt', 'requirements.txt', 'runtime-manifest.json']) assert.equal(fs.readFileSync(path.join(stage, 'gateway/tools/inference', name), 'utf8'), 'native inference fixture');
+    assert.equal(fs.existsSync(path.join(stage, 'gateway/tools/inference/test_worker.py')), false);
     assert.equal(fs.existsSync(path.join(stage, 'stale.txt')), false);
     const { assertNativeReleaseIntegrity }: typeof import('../maintenance/desktop-rust-inputs') = require('../maintenance/desktop-rust-inputs');
     assert.doesNotThrow(() => assertNativeReleaseIntegrity(path.join(stage,'gateway')));

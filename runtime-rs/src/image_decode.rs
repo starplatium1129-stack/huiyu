@@ -1,6 +1,7 @@
-use super::*;
+use crate::error::{ApiError, Result};
 use image::{ImageDecoder, ImageReader};
-use std::io::Cursor;
+use std::{io::Cursor, sync::Arc};
+use tokio_util::sync::CancellationToken;
 static DECODERS: std::sync::LazyLock<Arc<tokio::sync::Semaphore>> =
     std::sync::LazyLock::new(|| Arc::new(tokio::sync::Semaphore::new(2)));
 pub(crate) fn sniff(bytes: &[u8]) -> Option<(&'static str, &'static str)> {
@@ -15,12 +16,16 @@ pub(crate) fn sniff(bytes: &[u8]) -> Option<(&'static str, &'static str)> {
     }
 }
 fn invalid() -> ApiError {
-    error(
+    ApiError::new(
+        400,
         "INVALID_IMAGE",
         "图片损坏、动画或超出解码预算（8192 边长、32M 像素、单帧）",
     )
 }
-pub(super) async fn validate(bytes: Arc<Vec<u8>>, cancel: &CancellationToken) -> Result<()> {
+fn cancelled() -> ApiError {
+    ApiError::new(499, "CANCELLED", "图像操作已取消")
+}
+pub(crate) async fn validate(bytes: Arc<Vec<u8>>, cancel: &CancellationToken) -> Result<()> {
     let permit = DECODERS
         .clone()
         .try_acquire_owned()
@@ -29,7 +34,7 @@ pub(super) async fn validate(bytes: Arc<Vec<u8>>, cancel: &CancellationToken) ->
     let work = tokio::task::spawn_blocking(move || {
         let _permit = permit;
         if worker_cancel.is_cancelled() {
-            return Err(inputs::cancelled());
+            return Err(cancelled());
         }
         let format = sniff(&bytes).ok_or_else(invalid)?.1;
         if format == "png" {
@@ -70,9 +75,9 @@ pub(super) async fn validate(bytes: Arc<Vec<u8>>, cancel: &CancellationToken) ->
         // The request deadline can abandon this bounded CPU work, never publish it.
         image::DynamicImage::from_decoder(decoder).map_err(|_| invalid())?;
         if worker_cancel.is_cancelled() {
-            return Err(inputs::cancelled());
+            return Err(cancelled());
         }
         Ok(())
     });
-    tokio::select! {result=tokio::time::timeout(std::time::Duration::from_secs(5),work)=>result.map_err(|_|invalid())?.map_err(|_|invalid())?,_=cancel.cancelled()=>Err(inputs::cancelled())}
+    tokio::select! {result=tokio::time::timeout(std::time::Duration::from_secs(5),work)=>result.map_err(|_|invalid())?.map_err(|_|invalid())?,_=cancel.cancelled()=>Err(cancelled())}
 }

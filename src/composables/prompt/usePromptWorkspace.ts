@@ -510,6 +510,7 @@ export function usePromptWorkspace() {
         queuePausedReason, batchPanelDeps,
     };
     const dialogBindings: PromptDialogBindings = {
+        inpaintProvider: computed(() => animaState.value.provider), inpaintAutomaticMaskAvailable: computed(() => animaState.value.automaticMaskAvailable === true),
         compareEl, adultEnabled: toRef(pb, 'showMatureScenes'),
         inpaintImageSource: computed(() => ({ url: displayResultUrl.value, blob: animaState.value.result?.blob, historyId: displayedResultHistoryId.value })),
         displayResultUrl, generationBusy, inpaintPreparing, prevResult, inpaintOpen, compareOpen, displayResultSeed,

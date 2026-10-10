@@ -33,6 +33,11 @@ pub(super) fn create(
     let mut metadata = match &prepared.execution {
         Execution::Webui(input) => wai_metadata(input, "webui"),
         Execution::Comfy(plan) => plan.metadata.clone(),
+        Execution::Native(plan) => {
+            let mut metadata = plan.input.clone();
+            metadata["engine"] = plan.input["family"].clone();
+            metadata
+        }
     };
     metadata["id"] = json!(id);
     if prepared.selected == "comfy" {
@@ -54,7 +59,12 @@ pub(super) fn create(
             upstream_id: String::new(),
             progress: None,
             current_node: None,
-            progress_text: "等待提交到 ComfyUI…".into(),
+            progress_text: if prepared.selected == "native" {
+                "等待独立推理"
+            } else {
+                "等待提交到 ComfyUI…"
+            }
+            .into(),
             history_urgent: false,
             history_finishing: None,
             progress_live: false,
@@ -123,7 +133,7 @@ pub(super) async fn public(job: &Job) -> Result<Value> {
         .unwrap_or(job.input["seed"].as_u64().unwrap_or(0));
     let mut public = json!({"id":job.id,"status":state.status,"provider":job.provider,"seed":seed,"resultAvailable":available,"resultUrl":result_url,"metadata":state.metadata,"error":state.error,"code":state.code});
     public["metadata"]["provider"] = json!(job.provider);
-    if job.provider == "comfy" {
+    if matches!(job.provider, "comfy" | "native") {
         public["progress"] = if state.status == "succeeded" {
             json!(1)
         } else if state.status == "queued" {

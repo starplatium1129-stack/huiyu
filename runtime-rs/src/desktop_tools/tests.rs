@@ -9,7 +9,10 @@ use tower::ServiceExt;
 #[test]
 fn abandoned_file_write_reclaims_temporary_at_io_boundaries() {
     let runtime = tokio::runtime::Builder::new_current_thread()
-        .max_blocking_threads(1).enable_all().build().unwrap();
+        .max_blocking_threads(1)
+        .enable_all()
+        .build()
+        .unwrap();
     // Walk the real I/O suspension points without depending on their number or
     // adding a production hook. The occupied pool keeps the next I/O queued.
     for abort_at in 0..32 {
@@ -19,7 +22,13 @@ fn abandoned_file_write_reclaims_temporary_at_io_boundaries() {
         std::fs::write(&target, b"previous content").unwrap();
         let completed = runtime.block_on(async {
             let cancel = CancellationToken::new();
-            let mut writing = Box::pin(files::atomic(&root, "existing.txt", &target, b"new content", &cancel));
+            let mut writing = Box::pin(files::atomic(
+                &root,
+                "existing.txt",
+                &target,
+                b"new content",
+                &cancel,
+            ));
             for step in 0..=abort_at {
                 let (started, ready) = tokio::sync::oneshot::channel();
                 let (release, resume) = std::sync::mpsc::channel();
@@ -47,11 +56,26 @@ fn abandoned_file_write_reclaims_temporary_at_io_boundaries() {
             }
             unreachable!()
         });
-        let entries: Vec<_> = std::fs::read_dir(&root).unwrap()
-            .map(|entry| entry.unwrap().file_name()).collect();
-        assert_eq!(entries, vec![std::ffi::OsString::from("existing.txt")], "temporary leaked after cancelling I/O boundary {abort_at}");
-        assert_eq!(std::fs::read(&target).unwrap(), if completed { b"new content".as_slice() } else { b"previous content".as_slice() });
-        if completed { return; }
+        let entries: Vec<_> = std::fs::read_dir(&root)
+            .unwrap()
+            .map(|entry| entry.unwrap().file_name())
+            .collect();
+        assert_eq!(
+            entries,
+            vec![std::ffi::OsString::from("existing.txt")],
+            "temporary leaked after cancelling I/O boundary {abort_at}"
+        );
+        assert_eq!(
+            std::fs::read(&target).unwrap(),
+            if completed {
+                b"new content".as_slice()
+            } else {
+                b"previous content".as_slice()
+            }
+        );
+        if completed {
+            return;
+        }
     }
     panic!("the bounded file write never completed");
 }

@@ -80,7 +80,8 @@ for (const character of characters) {
   })
 }
 
-const { buildPopularPromptPlan, parsePopularCharacter, defaultOutfit } = require('../../src/utils/popularContent.ts')
+const { parsePopularCharacter, defaultOutfit } = require('../../src/utils/popularContent.ts')
+const { buildPopularPromptPlan } = require('../../src/utils/popularPromptBuilder.ts')
 for (const source of characters) {
   test(`popular builder keeps identity/caption boundaries for both engines: ${source.id}`, () => {
     const character = parsePopularCharacter(source)

@@ -389,6 +389,9 @@ async fn routes_reject_tunnel_local_spoof_and_preserve_sd_status_shape() {
     let app = router(s.clone()).with_state(state);
     for path in [
         "/api/share-link",
+        "/api/inference/settings",
+        "/api/inference/status",
+        "/api/inference/diagnostics",
         "/api/local-setup",
         "/api/local-setup/verify/qwen-vae",
         "/api/local-setup/download/qwen-vae",
@@ -396,7 +399,10 @@ async fn routes_reject_tunnel_local_spoof_and_preserve_sd_status_shape() {
         let request = Request::builder()
             .uri(path)
             .method(
-                if path.contains("/verify/") || path.contains("/download/") {
+                if path.contains("/verify/")
+                    || path.contains("/download/")
+                    || path.ends_with("/diagnostics")
+                {
                     "POST"
                 } else {
                     "GET"

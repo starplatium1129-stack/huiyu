@@ -25,18 +25,21 @@ pub(crate) enum MediaKind {
 pub(super) enum Execution {
     Webui(Box<Input>),
     Comfy(Box<ComfyPlan>),
+    Native(Box<native::Plan>),
 }
 impl Execution {
     pub fn input(&self) -> Value {
         match self {
             Self::Webui(input) => serde_json::to_value(input).expect("validated input is JSON"),
             Self::Comfy(plan) => plan.input.clone(),
+            Self::Native(plan) => plan.input.clone(),
         }
     }
     pub fn route_base(&self) -> &str {
         match self {
             Self::Webui(_) => "/api/generation",
             Self::Comfy(plan) => plan.route_base,
+            Self::Native(_) => "/api/anima",
         }
     }
 }

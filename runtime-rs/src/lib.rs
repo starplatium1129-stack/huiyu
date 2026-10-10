@@ -13,6 +13,7 @@ pub(crate) mod file_identity;
 mod file_paths;
 pub mod generation;
 pub mod host;
+mod image_decode;
 pub mod images;
 pub mod interrogate;
 pub mod live2d;

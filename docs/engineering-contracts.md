@@ -62,3 +62,5 @@ destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capabili
 6. **门禁、质检与桌面端同步**：必须跑通 `node scripts/tests/test-popular-content.js`、`npm run typecheck:app` 与 `npm run build`，并执行 `deploy-desktop.bat -SkipBuild` 完成桌面端闭环同步与 Git 推送。
 
 自动化辅助入口见 [接入工作流](guides/characters/character-onboarding-workflow.md)。脚本执行成功不等于主题、头像、按需制作的参考图和真实样张全部验收通过；必须逐层核对。场景数量是接入目标，不能为凑数覆盖已定稿内容；现存更多场景无需删减。
+
+内容回归核对每位角色拥有可选 SFW、已编排蓝图的角色／衣装关联有效，以及成人资格、分级与开关隔离。衣橱可保留未编排或仅用于成人场景的服装，默认衣装不要求另配 SFW 蓝图；coverageTags 为可选技术元数据，不按 iconic/daily/special_nsfw 强制类别配额。道具保真核对当前已写入的模型载荷，不从检索标签补入已退出的形状或其他美术细节；编译通过仍不代表真实渲染验收。

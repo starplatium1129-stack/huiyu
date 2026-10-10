@@ -42,8 +42,8 @@ export interface SceneBlueprint {
   nsfwProse?: string
   /** 可选：本场景应使用的角色服装 id（角色 outfits 之一）；缺省时用 defaultOutfit。 */
   outfitId?: string
-  /** 可选：验收覆盖标注（2026-08-23 场景库二次优化）：
+  /** 可选：场景覆盖元数据：
    *  iconic=名场面 / daily=日常生活 / special_nsfw=特殊NSFW。
-   *  契约测试保证每角色 ≥1 iconic + ≥1 daily，成人侧 ≥1 special_nsfw。 */
+   *  不作为可选场景、衣装绑定或成人门控的类别配额。 */
   coverageTags?: string[]
 }
