@@ -121,6 +121,53 @@ class ClipsegTests(unittest.TestCase):
                 clipseg_mask.validate_model(str(root))
             processor_path.write_text('{"size":352,"image_mean":[0.5,0.5,0.5],"image_std":[0.5,0.5,0.5]}')
             self.assertEqual(clipseg_mask.validate_model(str(root)), root)
+            nested_path = root / "processor_config.json"
+            for nested, error in (({}, None), ({"image_processor": None}, None),
+                    ({"image_processor": {"size": 352, "input_data_format": None}}, None),
+                    ({"image_processor": {"size": {"height": 352, "width": 352},
+                        "default_to_square": False, "input_data_format": "channels_last"}}, None),
+                    ({"image_processor": {}}, "352x352"),
+                    ({"image_processor": []}, "image_processor must contain an object"),
+                    ({"image_processor": {"size": 352, "resample": 0}}, "bilinear"),
+                    ({"image_processor": {"size": 352, "do_rescale": False}}, "do_rescale"),
+                    ({"image_processor": {"size": 352, "default_to_square": False}}, "352x352"),
+                    ({"image_processor": {"size": 352, "default_to_square": None}}, "352x352"),
+                    ({"image_processor": {"size": 352, "input_data_format": "channels_first"}}, "channels_last"),
+                    ({"image_processor": {"size": 352, "auto_map": {"fixture": "unsupported"}}}, "Custom-code")):
+                with self.subTest(nested=nested):
+                    nested_path.write_text(json.dumps(nested))
+                    if error is None:
+                        self.assertEqual(clipseg_mask.validate_model(str(root)), root)
+                    else:
+                        with self.assertRaisesRegex(ValueError, error):
+                            clipseg_mask.validate_model(str(root))
+            processor_path.write_text('{"size":224}')
+            nested_path.write_text('{"image_processor":{"size":352}}')
+            self.assertEqual(clipseg_mask.validate_model(str(root)), root)
+            nested_path.write_text('{"image_processor":null}')
+            with self.assertRaisesRegex(ValueError, "352x352"):
+                clipseg_mask.validate_model(str(root))
+            processor_path.write_text('{"size":352,"default_to_square":false}')
+            nested_path.unlink()
+            with self.assertRaisesRegex(ValueError, "352x352"):
+                clipseg_mask.validate_model(str(root))
+            processor_path.write_text('{"size":352}')
+            nested_path.write_text('{"image_processor":[]}')
+            source = Path(directory) / "source.png"
+            Image.new("RGB", (1, 1)).save(source)
+            with self.assertRaisesRegex(worker.WorkerError, "image_processor must contain an object") as failure:
+                worker.validate_job({"id": "invalid-processor", "op": "generate", "maskModelDir": str(root),
+                    "inputImagePath": str(source), "input": {"prompt": "fixture", "maskPrompt": "jacket"}})
+            self.assertEqual(failure.exception.code, "MASK_MODEL_INVALID")
+            nested_path.write_text('{"image_processor":{"size":352}}')
+            external_processor = Path(directory) / "processor-outside.json"
+            external_processor.write_text('{"image_processor":{"size":352}}')
+            resolve = Path.resolve
+            with patch.object(Path, "resolve", autospec=True, side_effect=lambda path, *a, **kw:
+                    external_processor if path == nested_path else resolve(path, *a, **kw)), \
+                    self.assertRaisesRegex(ValueError, "unsafe.*processor_config"):
+                clipseg_mask.validate_model(str(root))
+            nested_path.unlink()
             weights = root / "model.safetensors"
             weights.unlink()
             with self.assertRaisesRegex(ValueError, "model.safetensors"):

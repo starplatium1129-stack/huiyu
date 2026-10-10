@@ -54,9 +54,25 @@ def validate_model(value):
             settings = _json(root / name)
             if settings.get("auto_map") or settings.get("quantization_config"):
                 raise ValueError("Custom-code/quantized CLIPSeg components are unsupported")
-    processor = _json(root / "preprocessor_config.json")
-    if processor.get("size") not in (352, {"height": 352, "width": 352}):
+    processor = None
+    processor_path = root / "processor_config.json"
+    if processor_path.is_file():
+        processor_path = processor_path.resolve()
+        if not processor_path.is_relative_to(root):
+            raise ValueError("Missing/unsafe local CLIPSeg file: processor_config.json")
+        processor = _json(processor_path).get("image_processor")
+    # Transformers 5.10.1 prefers nested settings; only None falls back.
+    if processor is None:
+        processor = _json(root / "preprocessor_config.json")
+    if not isinstance(processor, dict):
+        raise ValueError("CLIPSeg image_processor must contain an object")
+    if processor.get("auto_map") or processor.get("quantization_config"):
+        raise ValueError("Custom-code/quantized CLIPSeg components are unsupported")
+    if (processor.get("size") not in (352, {"height": 352, "width": 352})
+            or (processor.get("size") == 352 and not processor.get("default_to_square", True))):
         raise ValueError("CLIPSeg requires 352x352 image preprocessing")
+    if processor.get("input_data_format") not in (None, "channels_last"):
+        raise ValueError("CLIPSeg RGB input requires input_data_format=channels_last or null")
     for flag in ("do_resize", "do_rescale", "do_normalize"):
         if processor.get(flag, True) is not True:
             raise ValueError(f"CLIPSeg requires {flag}=true")
