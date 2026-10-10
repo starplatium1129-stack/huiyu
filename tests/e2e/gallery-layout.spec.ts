@@ -151,18 +151,28 @@ test('gallery orbit reverses continuously and keeps original zoom, pan and retur
   await expect(orbit).toBeVisible()
   await expect(viewer.locator('.gallery-orbit-neighbor')).toHaveCount(4)
   const positions = await viewer.evaluate(async host => {
-    const surface = host.querySelector<HTMLElement>('.gallery-orbit')!
+    const card = host.querySelector<HTMLElement>('[data-orbit-index="2"]')!
+    const renderedX = () => new DOMMatrixReadOnly(getComputedStyle(card).transform).m41
     host.querySelector<HTMLButtonElement>('.viewer-next')!.click()
     for (let frame = 0; frame < 3; frame++) await new Promise(requestAnimationFrame)
-    const before = Number(surface.dataset.position), samples: number[] = []
+    // data-position is the destination; WAAPI owns the actual intermediate image pose.
+    const animation = card.getAnimations().find(item => item.id === 'gallery-cover-flow')!
+    const frames = (animation.effect as KeyframeEffect).getKeyframes()
+    const destination = new DOMMatrixReadOnly(String(frames.at(-1)!.transform)).m41
+    const before = renderedX(), samples: number[] = []
     host.querySelector<HTMLButtonElement>('.viewer-prev')!.click()
-    for (let frame = 0; frame < 3; frame++) { await new Promise(requestAnimationFrame); samples.push(Number(surface.dataset.position)) }
-    return { before, samples }
+    for (let frame = 0; frame < 3; frame++) { await new Promise(requestAnimationFrame); samples.push(renderedX()) }
+    const reversed = card.getAnimations().find(item => item.id === 'gallery-cover-flow')!
+    const start = (reversed.effect as KeyframeEffect).getKeyframes()[0]!
+    return { before, destination, samples, reversedStart: new DOMMatrixReadOnly(String(start.transform)).m41 }
   })
-  expect(positions.before).toBeGreaterThan(2)
-  expect(positions.before).toBeLessThan(3)
-  expect(positions.samples[0]).toBeGreaterThan(positions.before)
+  expect(positions.before).toBeLessThan(0)
+  expect(positions.before).toBeGreaterThan(positions.destination)
+  expect(Math.abs(positions.reversedStart - positions.before)).toBeLessThan(1)
+  expect(positions.samples[0]).toBeLessThan(positions.before)
   await expect.poll(() => orbit.getAttribute('data-position')).toBe('2')
+  await expect.poll(() => orbit.locator('[data-orbit-index="2"]').evaluate(card =>
+    Math.abs(new DOMMatrixReadOnly(getComputedStyle(card).transform).m41))).toBeLessThan(.1)
   await viewer.getByRole('button', { name:'原图 / 缩放', exact:true }).click()
   await expect(orbit).toHaveCount(0)
   const zoom = viewer.locator('.zoomable-image-viewer')
