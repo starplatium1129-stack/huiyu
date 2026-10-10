@@ -44,7 +44,7 @@ for (const theme of ['dark']) {
     await page.route('**/api/video/jobs', route => route.fulfill({ status: 503, json: { ok: false, error: '测试视频提交失败，请重试' } }))
     await page.goto('/video-studio')
     await page.locator('.video-prompt').fill('A calm afternoon by the window')
-    const submit = page.locator('.video-submit-panel button')
+    const submit = page.getByRole('button', { name: '生成视频', exact: true })
     await expect(submit).toBeEnabled()
     await submit.click()
     await expect(page.locator('.video-inline-message.error')).toContainText('ComfyUI 未连接')
