@@ -103,6 +103,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-coverage-report.js',
     'test-content-impact.js',
     'test-generation-workflow-safety.js',
+    'test-anima-benchmark.js',
     'test-reference-candidate-workflow.js',
     'test-scene-write.js',
     'test-scene-change-set.js',

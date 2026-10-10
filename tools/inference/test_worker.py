@@ -1,7 +1,9 @@
 """No-GPU protocol/loader tests using explicit fakes; not inference acceptance."""
 import io
 from dataclasses import dataclass
+from contextlib import contextmanager
 import json
+import os
 from pathlib import Path
 import tempfile
 import types
@@ -34,15 +36,18 @@ def job(root):
 
 
 class WorkerTests(unittest.TestCase):
-    def test_resident_reuses_weights_with_fresh_cfg_scheduler_and_byte_invalidation(self):
+    @contextmanager
+    def resident_fixture(self):
         import resident_anima
-        from test_anima_text_cache import Blocks, Encoder, State, modules, np
-        loaded, used = [], []
+        from test_anima_text_cache import Encoder, State, modules, np
+        f = types.SimpleNamespace(loaded=[], used=[], specs={}, failure=None, encoder=Encoder)
         class Pipeline:
             def __init__(self, blocks=None):
                 self.blocks = blocks
                 self.scheduler = types.SimpleNamespace(config={"shift": 1}, step=lambda: None)
                 self.components = {name: object() for name in worker.COMPONENTS if name != "scheduler"}
+                for name in ("transformer", "text_conditioner"):
+                    self.components[name] = types.SimpleNamespace(adapters={}, peft_config={})
                 self.text_encoder = self.components["text_encoder"] = types.SimpleNamespace(dtype=np.float32)
                 self._execution_device = "cpu"
                 self.guider = types.SimpleNamespace(num_conditions=2)
@@ -52,63 +57,165 @@ class WorkerTests(unittest.TestCase):
                 self.text_encoder = components["text_encoder"]
                 self.guider = types.SimpleNamespace(num_conditions=2 if components["guider"]["guidance_scale"] > 1 else 1)
             def set_adapters(self, names, adapter_weights):
-                self.adapter_weights = list(adapter_weights)
+                for component in (self.components[name] for name in ("transformer", "text_conditioner")):
+                    for name, strength in zip(names, adapter_weights):
+                        if name in component.adapters:
+                            component.adapters[name] = (component.adapters[name][0], strength)
+                    if f.failure == "scale":
+                        raise RuntimeError("partial scale failure")
+            def unload_lora_weights(self):
+                for name in ("transformer", "text_conditioner"):
+                    self.components[name].adapters.clear()
+                    self.components[name].peft_config.clear()
+                    if f.failure == "unload":
+                        raise RuntimeError("partial unload failure")
             def set_progress_bar_config(self, **kwargs):
                 pass
             def __call__(self, **kwargs):
-                used.append((self, kwargs))
+                f.used.append((self, kwargs))
                 state = State(prompt=kwargs["prompt"], negative_prompt=kwargs["negative_prompt"], max_sequence_length=512)
                 self.blocks.sub_blocks["text_encoder"](self, state)
                 self.scheduler.step()
-                return [types.SimpleNamespace(save=lambda path, format: Path(path).write_bytes(b"FAKE PNG"))]
+                return [types.SimpleNamespace(save=lambda path, format, compress_level: Path(path).write_bytes(b"FAKE PNG"))]
         def load(root, cfg, blocks=None):
             result = Pipeline(blocks)
-            loaded.append(result)
+            f.loaded.append(result)
             return result
+        def load_adapters(pipeline, adapters):
+            for i, adapter in enumerate(adapters):
+                data = Path(adapter["path"]).read_bytes()
+                targets, init = f.specs.get(data, (("transformer", "text_conditioner"), True))
+                for name in targets:
+                    component = pipeline.components[name]
+                    component.adapters[f"huiyu_{i}"] = (data, adapter["strength"])
+                    component.peft_config[f"huiyu_{i}"] = types.SimpleNamespace(init_lora_weights=init)
+                    if f.failure == "load":
+                        raise RuntimeError("partial load failure")
+            if f.failure == "changed_bytes":
+                Path(adapters[0]["path"]).write_bytes(b"CHANGED DURING LOAD")
         diffusers = types.SimpleNamespace(AnimaModularPipeline=Pipeline,
             FlowMatchEulerDiscreteScheduler=types.SimpleNamespace(from_config=lambda c: types.SimpleNamespace(config=dict(c), step=lambda: None)),
             ClassifierFreeGuidance=lambda **kw: kw)
-        torch = types.SimpleNamespace(no_grad=lambda: lambda fn: fn, cuda=types.SimpleNamespace(is_available=lambda: False),
+        torch = types.SimpleNamespace(no_grad=lambda: lambda fn: fn,
+            cuda=types.SimpleNamespace(is_available=lambda: False, synchronize=lambda: None,
+                                      reset_peak_memory_stats=lambda device: None, max_memory_allocated=lambda device: 0),
             Generator=lambda device: types.SimpleNamespace(manual_seed=lambda seed: seed))
-        fake_modules = {**modules(), "torch": torch, "diffusers": diffusers}
         Encoder.calls = 0
-        with tempfile.TemporaryDirectory() as directory, patch.dict("sys.modules", fake_modules), \
-                patch.object(worker, "dependencies") as checks, patch.object(worker, "load_pipeline", side_effect=load), \
-                patch.object(worker, "load_loras") as adapters:
-            root = model(Path(directory))
-            resident = resident_anima.PipelineCache()
-            request = job(root)
-            (root / "lora.safetensors").write_bytes(b"FAKE LORA")
-            request["loras"] = [{"path": str(root / "lora.safetensors"), "strength": .5}]
-            first = io.StringIO()
-            worker.generate(request, first, resident=resident)
-            request["input"].update(cfg=7, seed=2, steps=3)
+        with tempfile.TemporaryDirectory() as directory, patch.dict("sys.modules", {**modules(), "torch": torch, "diffusers": diffusers}), \
+                patch.object(worker, "dependencies") as f.checks, patch.object(worker, "load_pipeline", side_effect=load), \
+                patch.object(worker, "load_loras", side_effect=load_adapters) as f.adapters:
+            f.root = model(Path(directory))
+            f.resident = resident_anima.PipelineCache()
+            f.request = job(f.root)
+            f.path = f.root / "lora.safetensors"
+            f.path.write_bytes(b"FAKE LORA")
+            f.request["loras"] = [{"path": str(f.path), "strength": .5}]
+            yield f
+
+    def test_resident_reuses_base_across_adapters_with_fresh_job_state(self):
+        with self.resident_fixture() as f:
+            worker.generate(f.request, io.StringIO(), resident=f.resident)
+            f.request["input"].update(cfg=7, seed=2, steps=3)
             second = io.StringIO()
-            worker.generate(request, second, resident=resident)
-            self.assertEqual(len(loaded), 1)
-            self.assertEqual(adapters.call_count, 1)
-            self.assertIs(used[0][0].components["transformer"], used[1][0].components["transformer"])
-            self.assertIsNot(used[0][0].scheduler, used[1][0].scheduler)
-            self.assertEqual(used[1][0].components["guider"], {"guidance_scale": 7})
-            self.assertEqual(used[1][1]["generator"], 2)
+            worker.generate(f.request, second, resident=f.resident)
+            self.assertEqual(f.adapters.call_count, 1)
+            self.assertIs(f.used[0][0].components["transformer"], f.used[1][0].components["transformer"])
+            self.assertIsNot(f.used[0][0].scheduler, f.used[1][0].scheduler)
+            self.assertEqual(f.used[1][0].components["guider"], {"guidance_scale": 7})
+            self.assertEqual(f.used[1][1]["generator"], 2)
             self.assertTrue(json.loads(second.getvalue().splitlines()[-1])["modelReused"])
             self.assertEqual(json.loads(second.getvalue().splitlines()[-1])["textCache"]["hits"], 1)
-            self.assertEqual(Encoder.calls, 1)
-            request["loras"][0]["strength"] = .9
-            worker.generate(request, io.StringIO(), resident=resident)
-            self.assertEqual(len(loaded), 1)
-            self.assertEqual(used[-1][0].adapter_weights, [.9])
-            self.assertEqual(Encoder.calls, 1)
-            request["loras"][0]["strength"] = .5
-            worker.generate(request, io.StringIO(), resident=resident)
-            self.assertEqual(used[-1][0].adapter_weights, [.5])
-            (root / "transformer/model.safetensors").write_bytes(b"MODIFIED TEST WEIGHTS")
-            worker.generate(request, io.StringIO(), resident=resident)
-            self.assertEqual(len(loaded), 2)
-            self.assertEqual(Encoder.calls, 2)
-            self.assertEqual(checks.call_count, 1)
-            resident.clear()
-            self.assertIsNone(resident.components)
+            for strength in (.9, 0, -.2, .5):
+                f.request["loras"][0]["strength"] = strength
+                worker.generate(f.request, io.StringIO(), resident=f.resident)
+                for name in ("transformer", "text_conditioner"):
+                    self.assertEqual(f.resident.components[name].adapters, {"huiyu_0": (b"FAKE LORA", strength)})
+            self.assertEqual(f.adapters.call_count, 1)
+            # Equal length and timestamps must not hide different adapter bytes.
+            stamp = f.path.stat()
+            f.path.write_bytes(b"NEXT LORA")
+            os.utime(f.path, ns=(stamp.st_atime_ns, stamp.st_mtime_ns))
+            f.specs[b"NEXT LORA"] = (("transformer",), True)
+            worker.generate(f.request, second, resident=f.resident)
+            self.assertEqual(f.resident.components["transformer"].adapters, {"huiyu_0": (b"NEXT LORA", .5)})
+            self.assertEqual(f.resident.components["text_conditioner"].adapters, {})
+            self.assertTrue(json.loads(second.getvalue().splitlines()[-1])["modelReused"])
+            self.assertTrue(f.resident.weights_loaded)
+            for data in (b"FAKE LORA", None, b"NEXT LORA"):
+                f.request["loras"] = [] if data is None else [{"path": str(f.path), "strength": .5}]
+                if data is not None:
+                    f.path.write_bytes(data)
+                worker.generate(f.request, io.StringIO(), resident=f.resident)
+                for name in ("transformer", "text_conditioner"):
+                    expected = {} if data is None or (data == b"NEXT LORA" and name == "text_conditioner") else {"huiyu_0": (data, .5)}
+                    self.assertEqual(f.resident.components[name].adapters, expected)
+            self.assertEqual(len(f.loaded), 1)
+            self.assertEqual(f.encoder.calls, 1)  # Only unconditioned text outputs are retained.
+            mask_cleared = []
+            f.resident.mask_cache = types.SimpleNamespace(components=None, clear=lambda: mask_cleared.append(True))
+            (f.root / "transformer/model.safetensors").write_bytes(b"MODIFIED TEST WEIGHTS")
+            worker.generate(f.request, io.StringIO(), resident=f.resident)
+            self.assertEqual(len(f.loaded), 2)
+            self.assertEqual(f.encoder.calls, 2)
+            self.assertEqual(f.checks.call_count, 1)
+            self.assertEqual(mask_cleared, [])
+            f.resident.clear()
+            self.assertIsNone(f.resident.components)
+            self.assertEqual(mask_cleared, [True])
+
+    def test_resident_reloads_base_mutating_adapters_on_group_change(self):
+        with self.resident_fixture() as f:
+            f.specs[b"FAKE LORA"] = (("text_conditioner",), "pissa")
+            worker.generate(f.request, io.StringIO(), resident=f.resident)
+            f.request["loras"][0]["strength"] = 0
+            worker.generate(f.request, io.StringIO(), resident=f.resident)
+            self.assertEqual(len(f.loaded), 1)
+            f.request["loras"] = []
+            worker.generate(f.request, io.StringIO(), resident=f.resident)
+            self.assertEqual(len(f.loaded), 2)
+            self.assertEqual(f.resident.components["text_conditioner"].adapters, {})
+
+    def test_resident_discards_partial_adapter_changes_and_changed_load_bytes(self):
+        for failure in ("unload", "load", "scale", "changed_bytes"):
+            with self.subTest(failure=failure), self.resident_fixture() as f:
+                worker.generate(f.request, io.StringIO(), resident=f.resident)
+                if failure == "scale":
+                    f.request["loras"][0]["strength"] = .9
+                else:
+                    f.path.write_bytes(b"NEXT LORA")
+                f.failure = failure
+                with self.assertRaises((RuntimeError, worker.WorkerError)) as error:
+                    worker.generate(f.request, io.StringIO(), resident=f.resident)
+                if failure == "changed_bytes":
+                    self.assertEqual(error.exception.code, "MODEL_CHANGED")
+                self.assertIsNone(f.resident.identity)
+                self.assertIsNone(f.resident.components)
+                self.assertEqual(f.resident.text_cache.stats()["entries"], 0)
+                f.failure = None
+                worker.generate(f.request, io.StringIO(), resident=f.resident)
+                self.assertEqual(len(f.loaded), 2)
+
+    def test_resident_timing_separates_all_byte_checks_from_adapter_loading(self):
+        with self.resident_fixture() as f:
+            profile = worker.load_mask_tools("teacache_profile")
+            identity, load = profile.model_identity, f.adapters.side_effect
+            clock = [0]
+            def fingerprint(*args):
+                clock[0] += 5
+                return identity(*args)
+            def adapters(*args):
+                clock[0] += 3
+                return load(*args)
+            f.adapters.side_effect = adapters
+            with patch.object(profile, "model_identity", side_effect=fingerprint), \
+                    patch.object(worker.time, "perf_counter", side_effect=lambda: clock[0]):
+                for contents, fingerprints, loading in ((b"FAKE LORA", 10, 3), (b"FAKE LORA", 5, 0), (b"NEXT LORA", 10, 3)):
+                    f.path.write_bytes(contents)
+                    report = worker.generate(f.request, io.StringIO(), resident=f.resident, measure_teacache=True)
+                    self.assertEqual(report["residentFingerprintSeconds"], fingerprints)
+                    self.assertEqual(report["modelLoadSeconds"], loading)
+                    self.assertEqual(report["outputSaveSeconds"], 0)
+                    self.assertEqual(report["outputBytes"], len(b"FAKE PNG"))
 
     def test_helper_modules_are_loaded_once_until_explicit_initialization(self):
         worker.load_mask_tools.cache_clear()
@@ -136,6 +243,16 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(calls, ["first", "second"])
         events = [json.loads(line) for line in stdout.getvalue().splitlines()]
         self.assertEqual([(e["id"], e["event"]) for e in events], [("first", "result"), ("first", "ready"), ("second", "error")])
+
+    def test_serve_cleanup_preserves_missing_torch_error(self):
+        stdout = io.StringIO()
+        with patch("sys.stdin", io.StringIO('{"id":"missing-runtime"}\n')), patch("sys.stdout", stdout), \
+                patch.dict("sys.modules", {"torch": None}), patch("gc.collect") as collect, \
+                patch.object(worker, "generate", side_effect=worker.WorkerError("DEPENDENCY_MISSING", "torch")):
+            self.assertEqual(worker.main(["--serve"]), 1)
+        self.assertEqual(json.loads(stdout.getvalue()),
+                         {"id": "missing-runtime", "event": "error", "code": "DEPENDENCY_MISSING", "message": "torch"})
+        collect.assert_not_called()
 
     def test_rejects_active_unsupported_options_before_loading(self):
         for key, value in (("mask", "x.png"), ("loras", [{"path": "x"}]),
@@ -202,7 +319,7 @@ class WorkerTests(unittest.TestCase):
 
     def test_fake_pipeline_protocol_and_atomic_output(self):
         class FakeImage:
-            def save(self, path, format):
+            def save(self, path, format, compress_level):
                 Path(path).write_bytes(b"FAKE IMAGE ONLY")
 
         class FakePipeline:
@@ -271,7 +388,7 @@ class WorkerTests(unittest.TestCase):
                 arguments.update(kwargs)
                 for _ in range(3):
                     self.scheduler.step()
-                return [types.SimpleNamespace(save=lambda path, format: Path(path).write_bytes(b"FAKE PNG"))]
+                return [types.SimpleNamespace(save=lambda path, format, compress_level: Path(path).write_bytes(b"FAKE PNG"))]
 
         generator = types.SimpleNamespace(manual_seed=lambda seed: "FAKE GENERATOR")
         with tempfile.TemporaryDirectory() as directory:

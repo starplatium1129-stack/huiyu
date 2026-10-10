@@ -6,13 +6,14 @@ from pathlib import Path
 import tempfile
 import types
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import numpy as np
 from PIL import Image
 
 import clipseg_mask
 import masked_anima
+import resident_benchmark
 import worker
 from test_masked_anima import Blocks, fake_modules
 
@@ -167,6 +168,67 @@ class ClipsegTests(unittest.TestCase):
                 clipseg_mask.generate_mask(Path("/approved/clipseg"), Image.new("RGB", (64, 64)), "jacket", 0.45)
             self.assertFalse(any(call[0] == "inference" for call in calls))
 
+    def test_resident_cache_reuses_exact_pixels_and_reloads_changed_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = local_model(Path(directory) / "clipseg")
+            cache, calls = clipseg_mask.MaskCache(), []
+            image = Image.new("RGB", (64, 64), "blue")
+            with patch.dict("sys.modules", segmentation_fakes(calls)):
+                original = clipseg_mask.generate_mask(root, image, "coat|shirt", 0.5, cache=cache)
+                # Threshold stays outside the logits key; returned images are independent.
+                repeated = clipseg_mask.generate_mask(root, image.copy(), " coat |shirt|coat ", 0.6, cache=cache)
+                self.assertEqual(original.tobytes(), repeated.tobytes())
+                repeated.paste(0, (0, 0, 64, 64))
+                self.assertEqual(clipseg_mask.generate_mask(root, image, "coat|shirt", 0.5, cache=cache).tobytes(), original.tobytes())
+                self.assertEqual(sum(row[0] == "model" for row in calls), 1)
+                self.assertEqual(sum(row[0] == "inference" for row in calls), 1)
+                self.assertEqual(cache.logits.nbytes, 352 * 352 * 4)
+                changed = image.copy()
+                changed.putpixel((0, 0), (1, 2, 3))
+                clipseg_mask.generate_mask(root, changed, "coat|shirt", 0.5, cache=cache)
+                clipseg_mask.generate_mask(root, changed, "coat", 0.5, cache=cache)
+                self.assertEqual(sum(row[0] == "model" for row in calls), 1)
+                self.assertEqual(sum(row[0] == "inference" for row in calls), 3)
+                # Same-length content and restored mtime still invalidate the model.
+                weights = root / "model.safetensors"
+                stat = weights.stat()
+                weights.write_bytes(b"x" * stat.st_size)
+                import os
+                os.utime(weights, ns=(stat.st_atime_ns, stat.st_mtime_ns))
+                clipseg_mask.generate_mask(root, changed, "coat", 0.5, cache=cache)
+                self.assertEqual(sum(row[0] == "model" for row in calls), 2)
+                self.assertEqual(sum(row[0] == "inference" for row in calls), 4)
+                optional = root / "tokenizer.json"
+                for value in ('{"optional":1}', '{"optional":2}', None):
+                    if value is None:
+                        optional.unlink()
+                    else:
+                        optional.write_text(value)
+                    clipseg_mask.generate_mask(root, changed, "coat", 0.5, cache=cache)
+                self.assertEqual(sum(row[0] == "model" for row in calls), 5)
+                self.assertEqual(sum(row[0] == "inference" for row in calls), 7)
+            cache.clear()
+            self.assertIsNone(cache.components)
+            self.assertIsNone(cache.logits)
+
+    def test_resident_mask_failure_and_loading_mutation_clear_cache(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = local_model(Path(directory) / "clipseg")
+            image = Image.new("RGB", (64, 64))
+            cache = clipseg_mask.MaskCache()
+            with patch.dict("sys.modules", segmentation_fakes([])):
+                clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache)
+                with self.assertRaisesRegex(ValueError, "maskPrompt"):
+                    clipseg_mask.generate_mask(root, image, "|", 0.5, cache=cache)
+                self.assertIsNone(cache.components)
+                self.assertIsNone(cache.logits)
+                with patch.object(clipseg_mask, "model_identity", side_effect=[("before",), ("after",)]), \
+                        self.assertRaisesRegex(ValueError, "changed while loading"):
+                    clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache)
+                self.assertIsNone(cache.identity)
+                self.assertIsNone(cache.components)
+                self.assertIsNone(cache.logits)
+
     def test_worker_auto_mask_contract_and_same_masked_denoise_path(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -192,8 +254,12 @@ class ClipsegTests(unittest.TestCase):
                 def __call__(self, **kwargs):
                     arguments.update(kwargs)
                     return [Image.new("RGB", (64, 64), "red")]
-            auto_module = types.SimpleNamespace(phrases=clipseg_mask.phrases, validate_model=clipseg_mask.validate_model)
-            def segment(model, image, prompt, threshold):
+            cache = types.SimpleNamespace(stats=lambda: {"resultReused": True})
+            auto_module = types.SimpleNamespace(phrases=clipseg_mask.phrases, validate_model=clipseg_mask.validate_model,
+                                               MaskCache=Mock(return_value=cache))
+            cache_options = []
+            def segment(model, image, prompt, threshold, **options):
+                cache_options.append(options)
                 self.assertEqual(image.size, (64, 64))
                 logits = np.full((352, 352), -8, dtype=np.float32)
                 logits[:, 176:] = 8
@@ -201,11 +267,33 @@ class ClipsegTests(unittest.TestCase):
             auto_module.generate_mask = segment
             modules = fake_modules([])
             modules["torch"].Generator = lambda device: types.SimpleNamespace(manual_seed=lambda seed: "seeded")
+            modules["torch"].cuda = types.SimpleNamespace(reset_peak_memory_stats=lambda _: None,
+                synchronize=lambda: None, max_memory_allocated=lambda _: 0)
+            profile_module = types.SimpleNamespace(model_identity=lambda *args: {"loras": []})
+            resident = types.SimpleNamespace(mask_cache=None, text_cache=None, weights_loaded=False,
+                prepare=lambda check: check(), acquire=lambda *args: (Pipeline(), True))
             with patch.dict("sys.modules", modules), patch.object(worker, "dependencies"), \
                     patch.object(worker, "validate_model", return_value=root), \
-                    patch.object(worker, "load_mask_tools", side_effect=lambda name="masked_anima": auto_module if name == "clipseg_mask" else masked_anima), \
+                    patch.object(worker, "load_mask_tools", side_effect=lambda name="masked_anima":
+                        {"clipseg_mask": auto_module, "teacache_profile": profile_module,
+                         "resident_benchmark": resident_benchmark}.get(name, masked_anima)), \
                     patch.object(worker, "load_pipeline", return_value=Pipeline()) as load:
-                worker.generate(request, io.StringIO())
+                cold = worker.generate(request, io.StringIO(), measure_teacache=True)
+                self.assertIs(cold["maskCacheEnabled"], False)
+                enabled = worker.generate(request, io.StringIO(), resident=resident, cache_text=False, measure_teacache=True)
+                self.assertIs(enabled["maskCacheEnabled"], True)
+                self.assertEqual(enabled["maskCache"], cache.stats())
+                self.assertEqual(cache_options[-1], {"cache": cache})
+                disabled = worker.generate(request, io.StringIO(), resident=resident, cache_text=False,
+                    cache_mask=False, measure_teacache=True)
+                self.assertIs(disabled["maskCacheEnabled"], False)
+                self.assertNotIn("maskCache", disabled)
+                self.assertEqual(cache_options[-1], {})
+                self.assertIs(resident.mask_cache, cache)
+                resident.mask_cache = None
+                worker.generate(request, io.StringIO(), resident=resident, cache_text=False, cache_mask=False)
+                self.assertIsNone(resident.mask_cache)
+                auto_module.MaskCache.assert_called_once_with()
             self.assertIsInstance(load.call_args.kwargs["blocks"], Blocks)
             self.assertEqual(arguments["mask_image"].getbbox(), (32, 0, 64, 64))
             with Image.open(root / "out.png") as output:

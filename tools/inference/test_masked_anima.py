@@ -78,6 +78,51 @@ def fake_modules(draws):
 
 
 class MaskTests(unittest.TestCase):
+    def test_png_output_preserves_exact_pixels_and_reports_saved_size(self):
+        pixels = np.arange(19 * 13 * 3, dtype=np.uint8).reshape(13, 19, 3)
+        image = Image.fromarray(pixels)
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "nested" / "result.png"
+            report = masked_anima.save_png(image, output)
+            with Image.open(output) as saved:
+                self.assertEqual(saved.format, "PNG")
+                self.assertEqual(saved.mode, image.mode)
+                self.assertEqual(saved.size, image.size)
+                self.assertEqual(saved.tobytes(), image.tobytes())
+            self.assertEqual(report["outputBytes"], output.stat().st_size)
+            self.assertGreaterEqual(report["outputSaveSeconds"], 0)
+            self.assertEqual(list(output.parent.iterdir()), [output])
+
+    def test_png_size_fallback_stays_atomic_and_cleans_up_failures(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "result.png"
+            for fail in (False, True):
+                with self.subTest(fallback_fails=fail):
+                    output.write_bytes(b"previous output")
+                    levels = []
+                    def save(path, format, compress_level):
+                        self.assertEqual(format, "PNG")
+                        self.assertEqual(output.read_bytes(), b"previous output")
+                        levels.append(compress_level)
+                        if compress_level == 4:
+                            with Path(path).open("wb") as stream:
+                                stream.truncate(32 * 1024 * 1024 + 1)  # sparse, no giant image fixture
+                        elif fail:
+                            raise OSError("fixture fallback failure")
+                        else:
+                            Path(path).write_bytes(b"fake default-compressed PNG")
+                    image = types.SimpleNamespace(save=save)
+                    if fail:
+                        with self.assertRaisesRegex(OSError, "fallback failure"):
+                            masked_anima.save_png(image, output)
+                        self.assertEqual(output.read_bytes(), b"previous output")
+                    else:
+                        report = masked_anima.save_png(image, output)
+                        self.assertEqual(output.read_bytes(), b"fake default-compressed PNG")
+                        self.assertEqual(report["outputBytes"], output.stat().st_size)
+                    self.assertEqual(levels, [4, 6])
+                    self.assertEqual(list(output.parent.iterdir()), [output])
+
     def test_bundled_helper_is_checked_before_dependency_diagnostics(self):
         module = worker.load_mask_tools()
         self.assertEqual(Path(module.__file__).resolve(), Path(worker.__file__).with_name("masked_anima.py").resolve())

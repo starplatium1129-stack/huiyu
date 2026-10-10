@@ -26,8 +26,9 @@ def finite_tensor(tensor):
 def relative_l1(current, previous):
     # Accumulation in float32 avoids low-precision overflow in calibration/statistics.
     import torch
-    numerator = (current.float() - previous.float()).abs().mean()
-    denominator = torch.clamp(previous.float().abs().mean(), min=1e-8)
+    current, previous = current.float(), previous.float()
+    numerator = (current - previous).abs().mean()
+    denominator = torch.clamp(previous.abs().mean(), min=1e-8)
     value = (numerator / denominator).item()
     return value if math.isfinite(value) else None
 
@@ -53,10 +54,19 @@ def estimate_change(profile, change, step, total):
     return max(0.0, estimate) if math.isfinite(estimate) else None
 
 
-def same_tensor(current, previous):
+def same_inputs(conditioning, padding, lane):
     import torch
-    return (current.shape == previous.shape and current.dtype == previous.dtype
-            and current.device == previous.device and bool(torch.equal(current, previous)))
+    pairs = ((conditioning, lane["conditioning"]), (padding, lane["padding"]))
+    if any(current.shape != previous.shape or current.dtype != previous.dtype
+           or current.device != previous.device for current, previous in pairs):
+        return False
+    if conditioning.device != padding.device or any(tensor.has_names() for pair in pairs for tensor in pair):
+        return all(bool(torch.equal(current, previous)) for current, previous in pairs)
+    # Pinned CUDA equal uses eq(...).all().item(); keep both exact comparisons but
+    # combine their device scalars before synchronizing with the host once.
+    # https://github.com/pytorch/pytorch/blob/v2.8.0/aten/src/ATen/native/cuda/Equal.cpp
+    equal = (conditioning == lane["conditioning"]).all() & (padding == lane["padding"]).all()
+    return bool(equal.item())
 
 
 class TeaCacheController:
@@ -80,8 +90,7 @@ class TeaCacheController:
         shape = (tuple(hidden.shape), str(hidden.dtype), str(hidden.device), total)
         valid = (lane is not None and lane["shape"] == shape and step == lane["step"] + 1
                  and math.isfinite(timestep) and timestep < lane["timestep"]
-                 and same_tensor(conditioning, lane["conditioning"])
-                 and same_tensor(padding, lane["padding"]))
+                 and same_inputs(conditioning, padding, lane))
         if not valid:
             if lane is not None:
                 self.stats["resets"] += 1
@@ -145,7 +154,8 @@ class TeaCacheController:
                     if not execution["skip"]:
                         residual = result - execution["input"]
                         if finite_tensor(residual) and execution["proxy"] is not None:
-                            if lane["residual"] is not None:
+                            # Residual change is calibration-only; avoid its reduction/sync in generation.
+                            if self.collect and lane["residual"] is not None:
                                 residual_change = relative_l1(residual, lane["residual"])
                             lane["residual"] = snapshot(residual)
                         else:
@@ -191,6 +201,7 @@ def apply_blocks(blocks, controller):
         def __call__(self, components, block, i, t):
             components.guider.set_state(step=i, num_inference_steps=block.num_inference_steps, timestep=t)
             batches = components.guider.prepare_inputs_from_block_state(block, self._guider_input_fields)
+            timestep_value = t.item()
             # The fixed ClassifierFreeGuidance returns stable separate lanes. Include
             # batch count so a changed guidance layout cannot reuse another branch.
             for lane, batch in enumerate(batches):
@@ -198,7 +209,7 @@ def apply_blocks(blocks, controller):
                 try:
                     condition = {key: getattr(batch, key).to(block.dtype) for key in self._guider_input_fields}
                     batch.noise_pred = controller.call(components.transformer,
-                        branch=f"cfg:{len(batches)}:{lane}", step=i, total=len(block.timesteps), timestep_value=t.item(),
+                        branch=f"cfg:{len(batches)}:{lane}", step=i, total=len(block.timesteps), timestep_value=timestep_value,
                         hidden_states=block.latent_model_input, timestep=block.timestep,
                         padding_mask=block.padding_mask, return_dict=False, **condition)[0]
                 finally:

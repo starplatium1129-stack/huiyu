@@ -577,6 +577,8 @@ skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同�
 
 `npm run wf -- models:convert-anima --profile anima-cosmos2b-v041 ...` 默认只读单文件结构计划；`--check` 在已有独立运行库中核验完整 meta 键/形状和本地 tokenizer；`--apply` 显式 CPU 离线转换到全新模型目录。未知架构拒绝，不联网/安装，不覆盖输入或已有输出。完整必填参数见[独立推理指南](guides/independent-inference.md#经架构核验的离线转换)。实际权重和 GPU 出图尚未验收。
 
+`npm run wf -- models:benchmark-anima-comfy --workflow <Comfy API JSON> --sampler-node <KSampler id> --output-dir <全新runtime目录>` 复用原 ComfyUI benchmark 入口，默认只读计划、零网络。只有显式 `--run` 才向已准备的本机 ComfyUI 提交列出的任务；可用 `--teacache-node <AnimaTeaCache id>` 增加同工作流缓存对照。暖机独列、轮次变 seed、AB/BA 顺序、失败/整图缓存拒绝及 JSON/HTML 证据见 [worker 基准说明](../tools/inference/README.md#comfyui-comparison-evidence)。本工具不启动服务、不下载模型、不自动中断共享服务，不据同名 scheduler 宣称 native 等价或加速。
+
 `npm run wf -- models:prepare-inference --target-dir <AI工作区/inference>` 默认只读预览；`--preflight --wheelhouse <目录>` 在任何 venv 写入前离线解析完整 wheel 依赖；`--check` 通过完整 worker 诊断核验本地回执、依赖与 helper；只有 `--apply --wheelhouse <可信离线wheel目录>` 创建全新独立 venv。任何模式均不下载模型或依赖，不复用/修改 ComfyUI。需已有受信 Python，平台发行材料与真实 GPU 推理另验。详见[独立推理候选接入](guides/independent-inference.md)。
 
 `npm run wf -- models:calibrate-anima-teacache ...` 默认只读计划；`--run` 明确执行本地 CUDA 全计算采样、拟合与留出对照，`--accept-run ... --accept-quality --accept-performance` 在人工画质/性能验收和实际提速核对后写入模型校准档。已有档按精确 SHA-256 显式替换。无下载/安装，未验收档拒绝用于产品；见[TeaCache 校准与验收](guides/independent-inference.md#teacache-本机校准与验收)。

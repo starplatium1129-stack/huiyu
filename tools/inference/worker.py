@@ -15,7 +15,6 @@ import os
 import re
 from pathlib import Path
 import sys
-import tempfile
 import time
 
 # Set before any ML imports. Component classes and paths below are explicit.
@@ -347,7 +346,7 @@ def load_pipeline(root, cfg, blocks=None):
     return pipeline
 
 
-def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True):
+def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True):
     data = validate_job(job)
     root = validate_model(job.get("modelDir"))
     if resident is None:
@@ -356,10 +355,8 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         resident.prepare(dependencies)
     import torch
     tea, tea_report, blocks = None, None, None
-    identity = None
     identity_started = time.perf_counter()
-    if resident is not None:
-        identity = load_mask_tools("teacache_profile").model_identity(root, job.get("loras", []))
+    identity = load_mask_tools("teacache_profile").model_identity(root, job.get("loras", [])) if resident is not None else None
     resident_fingerprint = time.perf_counter() - identity_started if resident is not None else 0
     if data["teaCache"] or collect_teacache:
         profile_tools = load_mask_tools("teacache_profile")
@@ -379,15 +376,14 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                 fingerprintSeconds=time.perf_counter() - started)
             threshold = profile_tools.validate_profile(profile, scope, data.get("teaCacheThresh"),
                 require_accepted=teacache_profile is None) if profile is not None else None
-            if data["teaCache"] or collect_teacache:
-                tea = load_mask_tools("teacache_anima").TeaCacheController(profile, threshold, collect_teacache)
+            tea = load_mask_tools("teacache_anima").TeaCacheController(profile, threshold, collect_teacache)
         except profile_tools.TeaCacheError as exc:
             raise WorkerError(exc.code, str(exc)) from exc
     elif measure_teacache:
         tea_report = dict(schemaVersion=1, teaCacheEnabled=False, compatibility=None, fingerprintSeconds=0)
     if tea_report is not None:
-        tea_report["residentFingerprintSeconds"] = resident_fingerprint
         torch.cuda.reset_peak_memory_stats(0)
+    mask_started = time.perf_counter()
     image = load_input_image(job["inputImagePath"]) if job.get("inputImagePath") else None
     mask_tools = None
     if job.get("maskImagePath") or data.get("maskPrompt"):
@@ -398,40 +394,51 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                 from PIL import Image
                 image = image.resize(size, Image.Resampling.LANCZOS)
                 auto_tools = load_mask_tools("clipseg_mask")
-                mask = auto_tools.generate_mask(Path(job["maskModelDir"]).resolve(), image, data["maskPrompt"], data["maskThreshold"])
+                if resident is not None and cache_mask and resident.mask_cache is None:
+                    resident.mask_cache = auto_tools.MaskCache()
+                mask = auto_tools.generate_mask(Path(job["maskModelDir"]).resolve(), image, data["maskPrompt"], data["maskThreshold"],
+                    **({"cache": resident.mask_cache} if resident is not None and cache_mask else {}))
                 image, mask = mask_tools.prepare_mask(image, mask, size, data["growMaskBy"])
             else:
                 image, mask = mask_tools.prepare_images(image, job["maskImagePath"], size, data["growMaskBy"])
         except ValueError as exc:
             raise WorkerError("INVALID_INPUT", str(exc)) from exc
         blocks = mask_tools.masked_blocks()
+    if tea_report is not None:
+        tea_report["imagePreparationSeconds"] = time.perf_counter() - mask_started
+        tea_report["maskCacheEnabled"] = resident is not None and cache_mask
+        if resident is not None and cache_mask and data.get("maskPrompt"):
+            tea_report["maskCache"] = resident.mask_cache.stats()
+    if blocks is None and (tea is not None or (resident is not None and cache_text)):
+        from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
+        blocks = AnimaAutoBlocks()
     if tea is not None:
-        if blocks is None:
-            from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
-            blocks = AnimaAutoBlocks()
         blocks = load_mask_tools("teacache_anima").apply_blocks(blocks, tea)
     if resident is not None and cache_text:
         text_tools = load_mask_tools("anima_text_cache")
         if resident.text_cache is None:
             resident.text_cache = text_tools.TextCache()
-        if blocks is None:
-            from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
-            blocks = AnimaAutoBlocks()
         blocks = text_tools.apply_text_cache(blocks, resident.text_cache)
     started = time.perf_counter()
-    reused = False
+    post_load_fingerprint, reused = 0, False
     if resident is None:
         pipeline = load_pipeline(root, data["cfg"], blocks=blocks) if blocks is not None else load_pipeline(root, data["cfg"])
         load_loras(pipeline, job.get("loras", []))
     else:
         key = {"root": str(root), **identity}
         pipeline, reused = resident.acquire(key, root, data["cfg"], blocks, job.get("loras", []), load_pipeline, load_loras)
-        if not reused and load_mask_tools("teacache_profile").model_identity(root, job.get("loras", [])) != identity:
-            resident.clear()
-            raise WorkerError("MODEL_CHANGED", "Model or LoRA bytes changed while loading; retry after preparation completes")
+        if resident.weights_loaded:
+            verified_at = time.perf_counter()
+            loaded_identity = load_mask_tools("teacache_profile").model_identity(root, job.get("loras", []))
+            post_load_fingerprint = time.perf_counter() - verified_at
+            resident_fingerprint += post_load_fingerprint
+            if loaded_identity != identity:
+                resident.clear()
+                raise WorkerError("MODEL_CHANGED", "Model or LoRA bytes changed while loading; retry after preparation completes")
     if tea_report is not None:
         torch.cuda.synchronize()
-        tea_report["modelLoadSeconds"] = time.perf_counter() - started
+        tea_report["residentFingerprintSeconds"] = resident_fingerprint
+        tea_report["modelLoadSeconds"] = time.perf_counter() - started - post_load_fingerprint
         tea_report["modelReused"] = reused
     if resident is not None and resident.text_cache is not None:
         resident.text_cache.begin_job()
@@ -468,21 +475,15 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             samples=tea.samples if tea is not None else [], stats=dict(tea.stats) if tea is not None else None,
             peakAllocatedBytes=torch.cuda.max_memory_allocated(0))
         tea_report["textCacheEnabled"] = resident is not None and cache_text
+        if collect_teacache or measure_teacache or teacache_profile is not None:
+            tea_report["schedule"] = load_mask_tools("resident_benchmark").capture_schedule(pipeline.scheduler, step)
     if not images or len(images) != 1:
         raise WorkerError("GENERATION_FAILED", "Pipeline returned no single image")
     if mask_tools is not None:
         images[0] = mask_tools.composite(images[0], image, mask)
-    output = Path(job["outputPath"]).expanduser().resolve()
-    output.parent.mkdir(parents=True, exist_ok=True)
-    temporary = None
-    try:
-        with tempfile.NamedTemporaryFile(dir=output.parent, suffix=".png", delete=False) as file:
-            temporary = Path(file.name)
-        images[0].save(temporary, format="PNG")
-        os.replace(temporary, output)
-    finally:
-        if temporary is not None:
-            temporary.unlink(missing_ok=True)
+    output_report = load_mask_tools().save_png(images[0], job["outputPath"])
+    if tea_report is not None:
+        tea_report.update(output_report)
     emit(stream, job["id"], "result", outputPath=job["outputPath"], modelReused=reused,
          **({"textCache": resident.text_cache.stats()} if resident is not None and cache_text else {}),
          **({"teaCache": dict(tea.stats)} if tea is not None else {}))

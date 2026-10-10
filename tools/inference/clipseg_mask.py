@@ -3,8 +3,10 @@
 No ComfyUI code, remote model code, weight conversion, or implicit downloads.
 The checkpoint and its license are separate from the Transformers implementation.
 """
+import hashlib
 import json
 import math
+import time
 from pathlib import Path
 
 
@@ -86,24 +88,99 @@ def logits_mask(logits, size, threshold):
     return mask
 
 
-def generate_mask(root, image, prompt, threshold):
-    """Segment the output-sized RGB image on CPU, in bounded phrase batches."""
+class MaskCache:
+    """One CPU checkpoint and one 352x352 logit map, owned by a serial worker."""
+    def __init__(self):
+        self.clear()
+
+    def clear(self):
+        self.identity = self.components = self.result_key = self.logits = None
+        self.begin_job()
+
+    def begin_job(self):
+        self.model_reused = self.result_reused = False
+        self.fingerprint_seconds = 0.0
+
+    def stats(self):
+        return dict(modelReused=self.model_reused, resultReused=self.result_reused,
+                    fingerprintSeconds=self.fingerprint_seconds,
+                    resultBytes=0 if self.logits is None else self.logits.nbytes)
+
+
+def model_identity(root):
+    """Re-read exact bytes every job; metadata is never an invalidation proof."""
+    root = Path(root).resolve()
+    # Tokenizers may load optional tokenizer.json/added_tokens.json or a locally
+    # selected versioned asset, so the required-file list is not a complete key.
+    rows = []
+    for path in sorted(root.rglob("*")):
+        resolved = path.resolve()
+        if not resolved.is_relative_to(root):
+            raise ValueError("CLIPSeg model component escapes its selected directory")
+        if path.is_file():
+            with path.open("rb") as source:
+                rows.append((path.relative_to(root).as_posix(), hashlib.file_digest(source, "sha256").hexdigest()))
+    if not rows:
+        raise ValueError("No local CLIPSeg files to fingerprint")
+    return str(root), tuple(rows)
+
+
+def generate_mask(root, image, prompt, threshold, *, cache=None):
+    """Segment on CPU; optional exact-content cache never retains image pixels."""
+    try:
+        if cache is not None:
+            cache.begin_job()
+        return _generate_mask(root, image, prompt, threshold, cache)
+    except BaseException:
+        if cache is not None:
+            cache.clear()
+        raise
+
+
+def _generate_mask(root, image, prompt, threshold, cache):
     import numpy as np
     import torch
     from transformers import CLIPSegForImageSegmentation, CLIPTokenizer, ViTImageProcessorPil
     texts = phrases(prompt)
-    tokenizer = CLIPTokenizer.from_pretrained(str(root), local_files_only=True, trust_remote_code=False)
-    processor = ViTImageProcessorPil.from_pretrained(str(root), local_files_only=True, trust_remote_code=False,
-        do_center_crop=False, do_pad=False)
+    fingerprint_started = time.perf_counter()
+    identity = model_identity(root) if cache is not None else None
+    fingerprint_seconds = time.perf_counter() - fingerprint_started
+    result_key = None
+    if cache is not None:
+        if cache.identity != identity:
+            cache.clear()
+        cache.fingerprint_seconds = fingerprint_seconds
+        cache.model_reused = cache.components is not None
+        # The image already has the final oriented, resized RGB pixels. Store only
+        # their digest and the small logits; threshold/growth remain per-request.
+        result_key = (image.mode, image.size, hashlib.sha256(image.tobytes()).digest(), tuple(texts))
+        if cache.result_key == result_key and cache.logits is not None:
+            cache.result_reused = True
+            return logits_mask(cache.logits, image.size, threshold)
+    components = cache.components if cache is not None else None
+    if components is None:
+        tokenizer = CLIPTokenizer.from_pretrained(str(root), local_files_only=True, trust_remote_code=False)
+        processor = ViTImageProcessorPil.from_pretrained(str(root), local_files_only=True, trust_remote_code=False,
+            do_center_crop=False, do_pad=False)
+    else:
+        tokenizer, processor, model = components
     tokens = tokenizer(texts, padding=True, truncation=False, return_tensors="pt")
     if tokens["input_ids"].shape[-1] > 77:
         raise ValueError("Each maskPrompt phrase must fit CLIPSeg's 77-token context; shorten the phrase")
     pixels = processor(images=image, return_tensors="pt")["pixel_values"].to(device="cpu", dtype=torch.float32)
-    model, info = CLIPSegForImageSegmentation.from_pretrained(str(root), local_files_only=True,
-        trust_remote_code=False, use_safetensors=True, dtype=torch.float32, output_loading_info=True)
-    if any(info.get(key) for key in ("missing_keys", "unexpected_keys", "mismatched_keys", "error_msgs")):
-        raise ValueError("CLIPSeg checkpoint did not load completely; prepare a matching rd64-refined export")
-    model = model.to("cpu").eval()
+    if components is None:
+        model, info = CLIPSegForImageSegmentation.from_pretrained(str(root), local_files_only=True,
+            trust_remote_code=False, use_safetensors=True, dtype=torch.float32, output_loading_info=True)
+        if any(info.get(key) for key in ("missing_keys", "unexpected_keys", "mismatched_keys", "error_msgs")):
+            raise ValueError("CLIPSeg checkpoint did not load completely; prepare a matching rd64-refined export")
+        model = model.to("cpu").eval()
+        if cache is not None:
+            fingerprint_started = time.perf_counter()
+            loaded_identity = model_identity(root)
+            cache.fingerprint_seconds += time.perf_counter() - fingerprint_started
+            if loaded_identity != identity:
+                raise ValueError("CLIPSeg model bytes changed while loading; retry after preparation completes")
+            cache.identity, cache.components = identity, (tokenizer, processor, model)
     combined = None
     with torch.inference_mode():
         for start in range(0, len(texts), 4):
@@ -116,4 +193,7 @@ def generate_mask(root, image, prompt, threshold):
                 raise ValueError("CLIPSeg returned invalid/nonfinite mask logits")
             batch = logits.max(axis=0)
             combined = batch if combined is None else np.maximum(combined, batch)
-    return logits_mask(combined, image.size, threshold)
+    mask = logits_mask(combined, image.size, threshold)
+    if cache is not None:
+        cache.result_key, cache.logits = result_key, combined.copy()
+    return mask

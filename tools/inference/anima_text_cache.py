@@ -2,6 +2,9 @@
 
 Integration: Apache-2.0 Diffusers 0.41.0 AnimaTextEncoderStep.
 https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/modular_pipelines/anima/encoders.py
+
+Tensor.to(copy=True) also makes independent same-device copies (PyTorch 2.8):
+https://docs.pytorch.org/docs/2.8/generated/torch.Tensor.to.html
 """
 from collections import OrderedDict
 
@@ -28,14 +31,14 @@ class TextCache:
             return None
         self.hits += 1
         self.entries.move_to_end(key)
-        return {name: value.to(device=device).clone() if value is not None else None
+        return {name: value.to(device=device, copy=True) if value is not None else None
                 for name, value in item[0].items()}
 
     def put(self, key, values):
         size = sum(value.numel() * value.element_size() for value in values.values() if value is not None)
         if size > self.max_bytes:
             return
-        snapshots = {name: value.detach().to(device="cpu").clone() if value is not None else None
+        snapshots = {name: value.detach().to(device="cpu", copy=True) if value is not None else None
                      for name, value in values.items()}
         previous = self.entries.pop(key, None)
         self.bytes -= previous[1] if previous else 0

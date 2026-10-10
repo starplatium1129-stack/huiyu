@@ -6,7 +6,7 @@ from pathlib import Path
 import tempfile
 import types
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import numpy as np
 
@@ -36,6 +36,10 @@ class Tensor(np.ndarray):
         return np.abs(self)
     def to(self, dtype):
         return self
+    def has_names(self):
+        return False
+    def item(self):
+        return super().item()
 
 
 def fake_torch():
@@ -133,6 +137,30 @@ class Guider:
 
 
 class TeaTests(unittest.TestCase):
+    def test_exact_input_comparisons_share_one_scalar_read(self):
+        with patch.dict("sys.modules", modules()):
+            for values, expected in (([1, 2], True), ([], True), ([np.nan], False)):
+                with self.subTest(values=values):
+                    conditioning, padding = Tensor(values), Tensor([0])
+                    lane = dict(conditioning=conditioning.clone(), padding=padding.clone())
+                    with patch.object(Tensor, "item", autospec=True, side_effect=Tensor.item) as scalar:
+                        self.assertEqual(tea.same_inputs(conditioning, padding, lane), expected)
+                    self.assertEqual(scalar.call_count, 1)
+            padding = Tensor([0], device="other-device")
+            lane = dict(conditioning=Tensor([1]), padding=padding.clone())
+            self.assertTrue(tea.same_inputs(Tensor([1]), padding, lane))
+
+    def test_relative_l1_converts_each_input_to_float32_only_once(self):
+        with patch.dict("sys.modules", modules()):
+            for values in (([3, 6], [1, 2]), ([60000], [-60000])):
+                with self.subTest(values=values):
+                    current, previous = (Tensor(value, dtype=np.float16) for value in values)
+                    with patch.object(Tensor, "float", autospec=True, side_effect=Tensor.float) as cast:
+                        self.assertEqual(tea.relative_l1(current, previous), 2)
+                    self.assertEqual(cast.call_count, 2)
+                    self.assertIs(cast.call_args_list[0].args[0], current)
+                    self.assertIs(cast.call_args_list[1].args[0], previous)
+
     def test_phase_envelope_preserves_spikes_refreshes_phase_boundaries_and_rejects_unseen_range(self):
         value = profile()
         value.update(schemaVersion=2, algorithm=profiles.PHASE_ALGORITHM,
@@ -155,13 +183,16 @@ class TeaTests(unittest.TestCase):
 
     def test_real_block_skip_cfg_isolation_endpoints_bounds_and_current_head(self):
         model, cache = Model(), tea.TeaCacheController(profile(), 0.15)
-        with patch.dict("sys.modules", modules()):
+        with patch.dict("sys.modules", modules()), patch.object(tea, "relative_l1", wraps=tea.relative_l1) as metric:
             for step in range(7):
                 for branch in ("cond", "uncond"):
                     kwargs = arguments(step, branch=branch)
                     result = cache.call(model, **kwargs)[0]
                     expected = (kwargs["hidden_states"] + 3 * (0.2 + kwargs["encoder_hidden_states"].mean())) * 2 + kwargs["timestep"]
                     np.testing.assert_allclose(result, expected, rtol=1e-6)
+        # Runtime needs only consecutive proxy comparisons, never residual calibration metrics.
+        self.assertEqual(metric.call_count, 12)
+        self.assertEqual(cache.samples, [])
         self.assertEqual(cache.stats["fullComputes"], 6)
         self.assertEqual(cache.stats["skippedComputes"], 8)
         self.assertEqual(cache.stats["skippedBlocks"], 24)
@@ -190,6 +221,15 @@ class TeaTests(unittest.TestCase):
             new_model = Model()
             cache.call(new_model, **arguments(1))
             self.assertEqual(new_model.transformer_blocks[0].calls, 1)
+            for key in ("encoder_hidden_states", "padding_mask"):
+                with self.subTest(mutated_in_place=key):
+                    model, cache = Model(), tea.TeaCacheController(profile(), 0.15)
+                    initial = arguments(0)
+                    cache.call(model, **initial)
+                    initial[key].flat[0] += 1
+                    cache.call(model, **arguments(1, **{key: initial[key]}))
+                    self.assertEqual(cache.stats["resets"], 1)
+                    self.assertEqual(cache.stats["skippedComputes"], 0)
 
     def test_nonfinite_and_out_of_calibration_domain_force_full_and_failure_restores(self):
         model, cache = Model(), tea.TeaCacheController(profile(), 0.15)
@@ -212,9 +252,10 @@ class TeaTests(unittest.TestCase):
 
     def test_collection_is_full_compute_and_produces_finite_paired_samples(self):
         model, cache = Model(), tea.TeaCacheController(collect=True)
-        with patch.dict("sys.modules", modules()):
+        with patch.dict("sys.modules", modules()), patch.object(tea, "relative_l1", wraps=tea.relative_l1) as metric:
             for step in range(4):
                 cache.call(model, **arguments(step, total=4))
+        self.assertEqual(metric.call_count, 6)
         self.assertEqual(cache.stats["fullComputes"], 4)
         self.assertEqual(cache.stats["skippedComputes"], 0)
         self.assertEqual(len(cache.samples), 4)
@@ -222,6 +263,25 @@ class TeaTests(unittest.TestCase):
         self.assertIsNone(cache.samples[0]["residualRelativeL1"])
         self.assertGreater(cache.samples[1]["proxyRelativeL1"], 0)
         self.assertGreaterEqual(cache.samples[1]["residualRelativeL1"], 0)
+
+    def test_nonfinite_residual_is_not_retained_with_or_without_collection(self):
+        with patch.dict("sys.modules", modules()):
+            for collect in (False, True):
+                with self.subTest(collect=collect):
+                    model, cache = Model(), tea.TeaCacheController(profile(), 0.01, collect=collect)
+                    cache.call(model, **arguments(0, total=3))
+                    last = model.transformer_blocks[-1]
+                    with patch.object(last, "forward", return_value=Tensor([np.inf])):
+                        cache.call(model, **arguments(1, total=3))
+                    self.assertIsNone(cache.lanes["cond"]["residual"])
+                    self.assertEqual(cache.stats["nonfinite"], 1)
+                    cache.call(model, **arguments(2, total=3))
+                    self.assertEqual(cache.stats["fullComputes"], 3)
+                    self.assertEqual(cache.stats["skippedComputes"], 0)
+                    self.assertTrue(np.isfinite(cache.lanes["cond"]["residual"]).all())
+                    if collect:
+                        self.assertIsNone(cache.samples[1]["residualRelativeL1"])
+                        self.assertIsNone(cache.samples[2]["residualRelativeL1"])
 
     def test_both_modular_modes_preserve_after_and_use_actual_sliced_final_step(self):
         cache, blocks = tea.TeaCacheController(profile(), 0.15), AutoBlocks()
@@ -237,7 +297,9 @@ class TeaTests(unittest.TestCase):
                     latent_model_input=arguments(0)["hidden_states"], timestep=Tensor(0.5), dtype=np.float32,
                     padding_mask=arguments(0)["padding_mask"], prompt_embeds=Tensor([1]), negative_prompt_embeds=Tensor([4]))
                 for step, t in enumerate(state.timesteps):
+                    t = types.SimpleNamespace(item=Mock(return_value=float(t)))
                     denoiser(components, state, step, t)
+                    t.item.assert_called_once_with()
                 self.assertEqual(model.transformer_blocks[0].calls, 4)
                 self.assertEqual(components.guider.cleanups, 4)
         self.assertEqual(cache.stats["skippedComputes"], 0)
@@ -291,7 +353,7 @@ class TeaTests(unittest.TestCase):
                         else:
                             self.transformer(**args)
                         self.scheduler.step()
-                    return [types.SimpleNamespace(save=lambda path, format: Path(path).write_bytes(b"FAKE PNG"))]
+                    return [types.SimpleNamespace(save=lambda path, format, compress_level: Path(path).write_bytes(b"FAKE PNG"))]
             def load(root, cfg, blocks=None):
                 loaded.append(Pipeline(blocks))
                 return loaded[-1]
@@ -301,6 +363,8 @@ class TeaTests(unittest.TestCase):
                 self.assertIsNone(baseline["compatibility"])
                 self.assertEqual(baseline["fingerprintSeconds"], 0)
                 self.assertIsNone(baseline["stats"])
+                self.assertEqual(baseline["schedule"]["status"], "unverified")
+                self.assertEqual(baseline["schedule"]["source"], "scheduler-post-run")
                 data = worker.validate_job(request)
                 scope = profiles.compatibility(root, [], data, "txt2img", "torch.bfloat16", "fake CUDA")
                 value = profile(scope)
@@ -315,6 +379,7 @@ class TeaTests(unittest.TestCase):
                 self.assertIs(loaded[-1].scheduler.step, loaded[-1].original_step)
                 self.assertEqual(report["peakAllocatedBytes"], 1234)
                 self.assertEqual(report["pipelineSeconds"], report["generationSeconds"])
+                self.assertNotIn("schedule", report, "product generation must not read back benchmark schedule tensors")
                 events = [json.loads(line) for line in stream.getvalue().splitlines()]
                 self.assertEqual([event["step"] for event in events if event["event"] == "progress"], [1, 2, 3])
                 self.assertEqual(events[-1]["event"], "result")

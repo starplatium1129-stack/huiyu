@@ -315,6 +315,73 @@ print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath']}),f
 }
 
 #[tokio::test]
+async fn native_idle_release_survives_busy_submission_slot_and_worker_reuse() {
+    for outcome in ["failed", "reused", "shutdown"] {
+        let root = tempfile::tempdir().unwrap();
+        let (service, plan) = fixture(root.path(), "");
+        let slot = service.inner.native.slot.acquire().await.unwrap();
+        let resident = service
+            .inner
+            .native
+            .take_worker(&plan.settings)
+            .await
+            .unwrap();
+        tokio::time::pause();
+        Engine::retain_worker(service.inner.clone(), resident).await;
+        tokio::task::yield_now().await;
+        tokio::time::advance(Duration::from_secs(121)).await;
+        tokio::task::yield_now().await;
+        assert!(service.inner.native.worker.lock().await.is_some());
+        if outcome == "shutdown" {
+            // Shutdown must interrupt the timer even while submission holds
+            // the slot; close waits for tracked tasks before process cleanup.
+            tokio::time::resume();
+            tokio::time::timeout(Duration::from_secs(2), service.close())
+                .await
+                .expect("shutdown must cancel an idle timer waiting for the slot");
+            assert!(service.inner.native.worker.lock().await.is_none());
+            continue;
+        }
+        if outcome == "reused" {
+            // A successful submission cancels the expired timer and gives the
+            // same process a new idle lifetime before releasing its GPU slot.
+            let resident = service
+                .inner
+                .native
+                .take_worker(&plan.settings)
+                .await
+                .unwrap();
+            Engine::retain_worker(service.inner.clone(), resident).await;
+            tokio::task::yield_now().await;
+        }
+        // Otherwise submission failed/cancelled before take_worker, so the old
+        // resident must still be released after its already-expired deadline.
+        drop(slot);
+        if outcome == "reused" {
+            tokio::time::advance(Duration::from_secs(119)).await;
+            tokio::task::yield_now().await;
+            assert!(
+                service.inner.native.worker.lock().await.is_some(),
+                "an expired old timer must not stop the newly retained worker"
+            );
+            tokio::time::advance(Duration::from_secs(2)).await;
+        }
+        tokio::time::resume();
+        let released = tokio::time::timeout(Duration::from_secs(2), async {
+            while service.inner.native.worker.lock().await.is_some() {
+                tokio::time::sleep(Duration::from_millis(10)).await;
+            }
+        })
+        .await;
+        service.close().await;
+        assert!(
+            released.is_ok(),
+            "resident lost its idle release after slot contention"
+        );
+    }
+}
+
+#[tokio::test]
 async fn cancellation_before_registration_and_after_worker_success_settles() {
     for completed in [false, true] {
         let root = tempfile::tempdir().unwrap();

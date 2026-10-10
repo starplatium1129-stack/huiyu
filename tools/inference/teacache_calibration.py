@@ -177,6 +177,7 @@ def stop(process):
 def child(request_path):
     request = read(request_path)
     report = load("worker").generate(request["job"], sys.stdout,
+                                    cache_mask=False,
                                     collect_teacache=request["collect"],
                                     teacache_profile=request.get("profile"),
                                     measure_teacache=not request["collect"] and request.get("profile") is None)
@@ -347,7 +348,8 @@ def measured_run(args, training, heldout, target, session):
     pairs = []
     for index, job in enumerate(heldout * args.repeats):
         pair = {"index": index, "seed": job["input"]["seed"], "prompt": job["input"]["prompt"]}
-        order = ("baseline", "cached") if index % 2 == 0 else ("cached", "baseline")
+        repeat_index, job_index = divmod(index, len(heldout))
+        order = ("baseline", "cached") if (repeat_index + job_index) % 2 == 0 else ("cached", "baseline")
         for name in order:
             result = measured(job, target / f"heldout-{index}-{name}", False,
                               profile if name == "cached" else None, expected=profile)
@@ -358,6 +360,8 @@ def measured_run(args, training, heldout, target, session):
             raise ValueError("Warm comparison must reuse the same loaded weights on both sides")
         if session is not None and any(pair[name]["report"].get("textCacheEnabled") is not False for name in ("baseline", "cached")):
             raise ValueError("TeaCache comparison must disable text caching on both sides to avoid first-side misses")
+        if any(pair[name]["report"].get("maskCacheEnabled") is not False for name in ("baseline", "cached")):
+            raise ValueError("TeaCache comparison must explicitly disable mask caching on both sides to avoid first-side misses")
         if cached.get("compatibility") != profile["compatibility"] or cached.get("stats", {}).get("nonfinite") != 0:
             raise ValueError("Held-out cached execution lacks matching finite runtime evidence")
         if (pair["baseline"]["report"].get("teaCacheEnabled") is not False or
@@ -402,6 +406,8 @@ def accept(args):
             raise ValueError("Warm comparison lost its weight-reuse evidence")
         if report.get("executionMode") == "resident" and any(pair[name].get("report", {}).get("textCacheEnabled") is not False for name in ("baseline", "cached")):
             raise ValueError("TeaCache comparison lost its disabled text-cache evidence")
+        if any(pair[name].get("report", {}).get("maskCacheEnabled") is not False for name in ("baseline", "cached")):
+            raise ValueError("TeaCache comparison lost its disabled mask-cache evidence")
         if (cached_report.get("compatibility") != profile["compatibility"] or
                 pair["baseline"].get("identityScope") != profile["compatibility"] or
                 pair["baseline"].get("report", {}).get("fingerprintSeconds") != 0 or

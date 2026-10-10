@@ -8,11 +8,25 @@ import anima_text_cache as text
 
 
 class Tensor(np.ndarray):
-    def __new__(cls, value, dtype=np.float32):
-        return np.asarray(value, dtype=dtype).view(cls)
+    def __new__(cls, value, dtype=np.float32, device="cpu"):
+        result = np.asarray(value, dtype=dtype).view(cls)
+        result._device = device
+        return result
+    def __array_finalize__(self, source):
+        self._device = getattr(source, "_device", "cpu")
+    @property
+    def device(self): return self._device
     def detach(self): return self
     def clone(self): return self.copy()
-    def to(self, device=None): return self
+    def copy(self, order="K"): return super().copy(order=order)
+    def to(self, device=None, copy=False):
+        # Explicit fake device transfer: CPU storage only, including the CUDA label.
+        device = self.device if device is None else str(device)
+        if copy or device != self.device:
+            result = self.copy()
+            result._device = device
+            return result
+        return self
     def numel(self): return self.size
     def element_size(self): return self.itemsize
 
@@ -58,6 +72,31 @@ def modules():
 
 
 class TextTests(unittest.TestCase):
+    def test_put_and_get_each_make_one_independent_copy(self):
+        for device, dtype in (("cpu", np.float16), ("cuda", np.float16), ("cpu", np.int64), ("cuda", np.int64)):
+            with self.subTest(fake_device=device, dtype=dtype):
+                cache = text.TextCache()
+                original = Tensor([[1, 2, 3], [4, 5, 6]], dtype, device).T
+                with patch.object(Tensor, "copy", autospec=True, side_effect=Tensor.copy) as copies, \
+                        patch.object(Tensor, "detach", autospec=True, side_effect=Tensor.detach) as detach:
+                    cache.put("sample", {"embedding": original, "negative": None})
+                    self.assertEqual(copies.call_count, 1)
+                    detach.assert_called_once()
+                snapshot = cache.entries["sample"][0]["embedding"]
+                self.assertEqual(snapshot.device, "cpu")
+                original[0, 0] = -1
+                with patch.object(Tensor, "copy", autospec=True, side_effect=Tensor.copy) as copies:
+                    result = cache.get("sample", device)
+                    self.assertEqual(copies.call_count, 1)
+                returned = result["embedding"]
+                self.assertEqual((returned.device, returned.dtype, returned.strides), (device, original.dtype, original.strides))
+                self.assertEqual(returned[0, 0], 1)
+                self.assertFalse(np.shares_memory(original, snapshot))
+                self.assertFalse(np.shares_memory(returned, snapshot))
+                returned[0, 0] = -2
+                self.assertEqual(cache.get("sample", device)["embedding"][0, 0], 1)
+                self.assertIsNone(result["negative"])
+
     def test_seed_reuse_returns_independent_tensors_and_separates_cfg_dtype_and_text(self):
         cache, blocks = text.TextCache(), Blocks()
         Encoder.calls = 0

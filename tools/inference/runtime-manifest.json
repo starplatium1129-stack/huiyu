@@ -5,8 +5,8 @@
   "python": "3.11",
   "protocol": "serial-job-jsonl-v2",
   "residency": {
-    "mode": "one-exact-model-and-lora-weight-set",
-    "identity": "full component and LoRA bytes checked for every job; reload on change",
+    "mode": "one-exact-base-and-active-lora-group",
+    "identity": "full component and LoRA bytes checked every job and after loading; base changes reload; safe ordinary adapter groups unload before replacement",
     "isolation": "fresh pipeline blocks, scheduler, guider and TeaCache controller per job",
     "initialization": "dependencies and bundled helpers verified once per worker; standalone diagnostics verify afresh",
     "loraStrengthChanges": "reuse unchanged base/adapter bytes; update active adapter weights without reloading",
@@ -20,7 +20,17 @@
     },
     "idleReleaseSeconds": 120,
     "cancelErrorTimeout": "terminate owned worker before GPU slot reuse",
-    "realDeviceValidation": "Not run; RTX 4070 Ti SUPER target remains pending"
+    "realDeviceValidation": "Not run; RTX 4070 Ti SUPER target remains pending",
+    "loraGroupChanges": "reuse base only for known non-mutating PEFT initialization; unknown or base-mutating adapter configurations retain full reload behavior",
+    "maskCache": {
+      "location": "CPU only; complete model overlaps Anima residency",
+      "maxModels": 1,
+      "maxLogitMaps": 1,
+      "logitBytes": 495616,
+      "identity": "all local model asset bytes, image mode/size/pixel SHA-256 and normalized phrases; threshold/growth applied each job",
+      "invalidation": "model bytes change, failure or worker retirement",
+      "benchmark": "disabled on both sides of TeaCache comparison"
+    }
   },
   "engine": "diffusers.AnimaModularPipeline",
   "engineVersion": "0.41.0",
