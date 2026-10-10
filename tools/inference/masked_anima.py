@@ -64,6 +64,26 @@ def prepare_mask(image, mask, size, grow):
     return image.resize(size, Image.Resampling.LANCZOS), mask
 
 
+def _block_maximum(values, radius, axis):
+    """Exact uint8 box maximum from each window's block suffix and prefix."""
+    import numpy as np
+    rows = values if axis == 1 else values.T
+    count, length = rows.shape
+    window = 2 * radius + 1
+    padded_length = ((length + 2 * radius + window - 1) // window) * window
+    # C-order work storage avoids copying the transposed input before padding.
+    backward = np.empty((count, padded_length), dtype=np.uint8)
+    backward[:, radius:radius + length] = rows
+    backward[:, :radius] = rows[:, :1]
+    backward[:, radius + length:] = rows[:, -1:]
+    blocks = backward.reshape(count, -1, window)
+    forward = np.maximum.accumulate(blocks, axis=-1).reshape(count, padded_length)
+    reverse = blocks[..., ::-1]
+    np.maximum.accumulate(reverse, axis=-1, out=reverse)
+    result = np.maximum(backward[:, :length], forward[:, window - 1:window - 1 + length])
+    return result if axis == 1 else result.T
+
+
 def _prepare_effective_mask(mask, size, grow):
     """Keep mask copy/growth semantics when the caller already owns its resized RGB."""
     from PIL import Image, ImageFilter
@@ -73,12 +93,17 @@ def _prepare_effective_mask(mask, size, grow):
         import numpy as np
         # A square max is exactly separable, including all 8-bit soft-mask values.
         values, window = np.asarray(mask), 2 * grow + 1
-        horizontal = np.lib.stride_tricks.sliding_window_view(
-            np.pad(values, ((0, 0), (grow, grow)), mode="edge"), window, axis=1).max(axis=-1)
-        vertical = np.lib.stride_tricks.sliding_window_view(
-            np.pad(horizontal, ((grow, grow), (0, 0)), mode="edge"), window, axis=0).max(axis=-1)
+        if grow >= 8:
+            horizontal = _block_maximum(values, grow, 1)
+            vertical = _block_maximum(horizontal, grow, 0)
+        else:
+            horizontal = np.lib.stride_tricks.sliding_window_view(
+                np.pad(values, ((0, 0), (grow, grow)), mode="edge"), window, axis=1).max(axis=-1)
+            vertical = np.lib.stride_tricks.sliding_window_view(
+                np.pad(horizontal, ((grow, grow), (0, 0)), mode="edge"), window, axis=0).max(axis=-1)
+        del horizontal  # Release scratch before the transposed result's PIL conversion.
         mask = Image.fromarray(vertical)
-        del values, horizontal, vertical  # Release growth scratch before returning the mask.
+        del values, vertical
     elif grow:
         mask = mask.filter(ImageFilter.MaxFilter(2 * grow + 1))
     if mask.getbbox() is None:

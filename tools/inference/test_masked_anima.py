@@ -210,8 +210,9 @@ class MaskTests(unittest.TestCase):
                        np.array([[255], [0], [128]], dtype=np.uint8), np.array([[3]], dtype=np.uint8)):
             source = Image.fromarray(values)
             before = source.tobytes()
-            for grow in (1, 8, 32):
-                with self.subTest(size=source.size, grow=grow):
+            for grow in (1, 2, 8, 32):
+                with self.subTest(size=source.size, grow=grow), \
+                        patch.object(masked_anima, "_block_maximum", wraps=masked_anima._block_maximum) as block_maximum:
                     if grow == 1:
                         # Tiny kernels are faster in Pillow; preserve the measured crossover.
                         with patch.object(np, "pad", side_effect=AssertionError("radius 1 must keep Pillow")):
@@ -219,6 +220,7 @@ class MaskTests(unittest.TestCase):
                     else:
                         _, grown = masked_anima.prepare_mask(Image.new("RGB", source.size), source, source.size, grow)
                     expected = source.filter(ImageFilter.MaxFilter(2 * grow + 1))
+                    self.assertEqual(block_maximum.call_count, 2 if grow >= 8 else 0)
                     self.assertEqual((grown.mode, grown.size, grown.tobytes()), ("L", source.size, expected.tobytes()))
                     grown.putpixel((0, 0), 73)
                     self.assertEqual(source.tobytes(), before)
