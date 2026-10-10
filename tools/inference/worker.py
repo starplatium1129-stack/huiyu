@@ -298,6 +298,7 @@ def load_loras(pipeline, adapters):
         if "lora_adapter_metadata" in metadata:
             try:
                 config = json.loads(metadata["lora_adapter_metadata"])
+                json.dumps(config, allow_nan=False)
             except (ValueError, TypeError) as exc:
                 raise WorkerError("UNSUPPORTED_LORA", "Malformed LoRA adapter metadata") from exc
             if not isinstance(config, dict):
@@ -412,7 +413,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                     **({"cache": resident.mask_cache} if resident is not None and cache_mask else {}),
                     **({"expected_mask_sha256": tea_report["compatibility"]["maskModelSha256"]}
                        if tea_report is not None and tea_report["compatibility"] is not None else {}))
-                image, mask = mask_tools.prepare_mask(image, mask, size, data["growMaskBy"])
+                mask = mask_tools._prepare_effective_mask(mask, size, data["growMaskBy"])
             else:
                 image, mask = mask_tools.prepare_images(image, job["maskImagePath"], size, data["growMaskBy"])
         except ValueError as exc:

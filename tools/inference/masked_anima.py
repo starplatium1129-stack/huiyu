@@ -59,6 +59,13 @@ def prepare_images(image, mask_path, size, grow):
 
 def prepare_mask(image, mask, size, grow):
     """Shared effective mask for manual and locally segmented inputs."""
+    from PIL import Image
+    mask = _prepare_effective_mask(mask, size, grow)
+    return image.resize(size, Image.Resampling.LANCZOS), mask
+
+
+def _prepare_effective_mask(mask, size, grow):
+    """Keep mask copy/growth semantics when the caller already owns its resized RGB."""
     from PIL import Image, ImageFilter
     mask = mask.resize(size, Image.Resampling.NEAREST)
     # Radius 1 regressed with NumPy conversion/two passes in the CPU probe.
@@ -71,12 +78,12 @@ def prepare_mask(image, mask, size, grow):
         vertical = np.lib.stride_tricks.sliding_window_view(
             np.pad(horizontal, ((grow, grow), (0, 0)), mode="edge"), window, axis=0).max(axis=-1)
         mask = Image.fromarray(vertical)
-        del values, horizontal, vertical  # Release scratch before resizing the RGB source.
+        del values, horizontal, vertical  # Release growth scratch before returning the mask.
     elif grow:
         mask = mask.filter(ImageFilter.MaxFilter(2 * grow + 1))
     if mask.getbbox() is None:
         raise ValueError("Mask has no editable pixels")
-    return image.resize(size, Image.Resampling.LANCZOS), mask
+    return mask
 
 
 def composite(generated, original, mask):

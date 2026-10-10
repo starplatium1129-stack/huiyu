@@ -362,11 +362,19 @@ class ClipsegTests(unittest.TestCase):
             no_source = {**request, "inputImagePath": None}
             with self.assertRaisesRegex(worker.WorkerError, "requires inputImagePath"):
                 worker.validate_job(no_source)
-            arguments = {}
+            arguments, loaded_images, segmented_images = {}, [], []
+            original_load, case = worker.load_input_image, self
+            def load_input(path):
+                image = original_load(path)
+                loaded_images.append(image)
+                return image
             class Pipeline:
                 scheduler = types.SimpleNamespace(step=lambda: None)
                 def __call__(self, **kwargs):
                     arguments.update(kwargs)
+                    case.assertIs(kwargs["image"], segmented_images[-1])
+                    case.assertEqual(loaded_images[-1].size, (16, 32))
+                    case.assertEqual(loaded_images[-1].getpixel((0, 0)), (0, 0, 255))
                     return [Image.new("RGB", (64, 64), "red")]
             cache = types.SimpleNamespace(stats=lambda: {"resultReused": True})
             auto_module = types.SimpleNamespace(phrases=clipseg_mask.phrases, validate_model=clipseg_mask.validate_model,
@@ -374,6 +382,8 @@ class ClipsegTests(unittest.TestCase):
             cache_options = []
             def segment(model, image, prompt, threshold, **options):
                 cache_options.append(options)
+                segmented_images.append(image)
+                self.assertIsNot(image, loaded_images[-1])
                 self.assertEqual(image.size, (64, 64))
                 logits = np.full((352, 352), -8, dtype=np.float32)
                 logits[:, 176:] = 8
@@ -391,6 +401,7 @@ class ClipsegTests(unittest.TestCase):
             resident = types.SimpleNamespace(mask_cache=None, text_cache=None, weights_loaded=False,
                 prepare=lambda check: check(), acquire=lambda *args: (Pipeline(), True))
             with patch.dict("sys.modules", modules), patch.object(worker, "dependencies"), \
+                    patch.object(worker, "load_input_image", side_effect=load_input), \
                     patch.object(worker, "validate_model", return_value=root), \
                     patch.object(worker, "load_mask_tools", side_effect=lambda name="masked_anima":
                         {"clipseg_mask": auto_module, "teacache_profile": profile_module,

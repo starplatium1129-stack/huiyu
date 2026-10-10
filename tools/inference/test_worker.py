@@ -450,6 +450,8 @@ class WorkerTests(unittest.TestCase):
             r: int = 4
             use_dora: bool = False
             lora_dropout: float = 0.0
+            lora_alpha: float = 8
+            alpha_pattern: dict = None
 
         class File:
             def __enter__(self):
@@ -500,7 +502,7 @@ class WorkerTests(unittest.TestCase):
 
     def test_lora_local_safe_load_scales_both_components(self):
         keys = {f"{component}.layer.lora_{side}.weight" for component in ("transformer", "text_conditioner") for side in "AB"}
-        metadata = {"lora_adapter_metadata": '{"transformer.r":4,"text_conditioner.r":4,"transformer.lora_dropout":0.25,"text_conditioner.lora_dropout":0.25}'}
+        metadata = {"lora_adapter_metadata": '{"transformer.r":4,"text_conditioner.r":4,"transformer.lora_dropout":0.25,"text_conditioner.lora_dropout":0.25,"transformer.lora_alpha":8,"transformer.alpha_pattern":{"layer":4}}'}
         pipeline, calls, modules = self.lora_fakes(keys, metadata)
         with modules:
             worker.load_loras(pipeline, [{"path": "/models/style.safetensors", "strength": 0.6},
@@ -532,20 +534,8 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(calls, [])
 
     def test_lora_rejects_silent_drops_and_unsupported_metadata(self):
-        keys = {f"transformer.layer.lora_{side}.weight" for side in "AB"}
-        for extra, metadata in (({"text_encoder.layer.lora_A.weight"}, None),
-                                ({"transformer.layer.dora_scale"}, None),
-                                (set(), {"lora_adapter_metadata": '{"transformer.use_dora":true}'}),
-                                (set(), {"lora_adapter_metadata": '{"unknown.r":4}'})):
-            pipeline, calls, modules = self.lora_fakes(keys | extra, metadata)
-            with self.subTest(extra=extra, metadata=metadata), modules, self.assertRaises(worker.WorkerError) as error:
-                worker.load_loras(pipeline, [{"path": "/models/style.safetensors", "strength": 1}])
-            self.assertEqual(error.exception.code, "UNSUPPORTED_LORA")
-            self.assertEqual(calls, [])
-        pipeline, calls, modules = self.lora_fakes(keys, loaded_keys=set())
-        with modules, self.assertRaises(worker.WorkerError):
-            worker.load_loras(pipeline, [{"path": "/models/style.safetensors", "strength": 1}])
-        self.assertEqual(len(calls), 1)  # Never activate a partially loaded adapter.
+        from worker_loader_cases import assert_lora_metadata_contract
+        assert_lora_metadata_contract(self)
 
     def test_diagnose_without_model_or_gpu_allocations(self):
         stream = io.StringIO()

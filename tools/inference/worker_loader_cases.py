@@ -97,3 +97,26 @@ def assert_local_loader_contract(test):
             test.assertNotIn("use_safetensors", kwargs)
         if name in ("text_encoder", "tokenizer", "t5_tokenizer"):
             test.assertFalse(kwargs["trust_remote_code"])
+
+
+def assert_lora_metadata_contract(test):
+    keys = {f"transformer.layer.lora_{side}.weight" for side in "AB"}
+    for extra, metadata in (({"text_encoder.layer.lora_A.weight"}, None),
+                            ({"transformer.layer.dora_scale"}, None),
+                            (set(), {"lora_adapter_metadata": '{"transformer.use_dora":true}'}),
+                            (set(), {"lora_adapter_metadata": '{"unknown.r":4}'}),
+                            *((set(), {"lora_adapter_metadata": value}) for value in (
+                                '{"transformer.lora_alpha":NaN}',
+                                '{"transformer.lora_alpha":Infinity}',
+                                '{"transformer.lora_alpha":1e999}',
+                                '{"transformer.alpha_pattern":{"layer":-Infinity}}'))):
+        pipeline, calls, modules = test.lora_fakes(keys | extra, metadata)
+        with test.subTest(extra=extra, metadata=metadata):
+            with modules, test.assertRaises(worker.WorkerError) as error:
+                worker.load_loras(pipeline, [{"path": "/models/style.safetensors", "strength": 1}])
+            test.assertEqual(error.exception.code, "UNSUPPORTED_LORA")
+            test.assertEqual(calls, [])
+    pipeline, calls, modules = test.lora_fakes(keys, loaded_keys=set())
+    with modules, test.assertRaises(worker.WorkerError):
+        worker.load_loras(pipeline, [{"path": "/models/style.safetensors", "strength": 1}])
+    test.assertEqual(len(calls), 1)  # Never activate a partially loaded adapter.
