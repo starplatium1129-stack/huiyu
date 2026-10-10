@@ -60,7 +60,6 @@ test('large gallery keeps its initial render bounded and searches the complete a
     }))))
   })
   await page.goto('/gallery')
-  await page.getByRole('dialog', { name: '访客导览', exact: true }).getByRole('button', { name: '先浏览，稍后配置', exact: true }).click()
   await expect(page.locator('.gallery-count')).toContainText('3000')
   await expect(page.locator('.artwork')).toHaveCount(12)
   await expect(page.locator('.artwork').filter({ hasText: '页外唯一作品' })).toHaveCount(0)
