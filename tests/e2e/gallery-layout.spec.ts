@@ -391,7 +391,8 @@ for (const theme of ['light', 'dark']) {
   })
   test(`gallery creates an album from 40 existing artworks ${theme}`, async ({ page }, info) => {
     await seedGallery(page, theme, false, 'reduce', true)
-    await expect(page.locator('[data-card-id]')).toHaveCount(40)
+    await expect(page.locator('.gallery-count')).toContainText('40')
+    await expect(page.locator('[data-card-id]')).toHaveCount(12)
     await page.getByRole('button', { name: /^按画册/ }).click()
     await expect(page.getByText('还没有成册的作品', { exact: true })).toBeVisible()
     await page.getByRole('button', { name: '选择作品成册', exact: true }).click()
@@ -425,6 +426,13 @@ for (const theme of ['light', 'dark']) {
     await expect(page).toHaveURL(/project=album-/)
     await page.reload()
     await expect(page.locator('.gallery-count strong')).toHaveText('四十幅创作手记')
+    await expect(page.locator('.gallery-count')).toContainText('40')
+    // Album membership covers all 40 records, while cards are revealed in 12-item pages.
+    while (await page.locator('[data-card-id]').count() < 40) {
+      const before = await page.locator('[data-card-id]').count()
+      await page.evaluate(() => document.querySelector('.gallery-more')?.scrollIntoView({ block: 'end', behavior: 'instant' }))
+      await expect.poll(() => page.locator('[data-card-id]').count()).toBeGreaterThan(before)
+    }
     await expect(page.locator('[data-card-id]')).toHaveCount(40)
     await page.screenshot({ path: info.outputPath(`album-open-${theme}.png`) })
   })
