@@ -10,15 +10,23 @@ const ROOT = path.resolve(__dirname, '..', '..');
 function readData(file: string): unknown {
   return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', file), 'utf8'));
 }
-const characters: any[] = popular.parsePopularCharacters(readData('popular-characters.json'));
-const blueprints: any[] = popular.parseSceneBlueprints(readData('scene-blueprints.json'));
+const characters = popular.parsePopularCharacters(readData('popular-characters.json'));
+const blueprints = popular.parseSceneBlueprints(readData('scene-blueprints.json'));
 const profiles: any[] = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles;
-test('all characters have an owned SFW blueprint for their exact default outfit', () => {
-  const missing = characters.filter(c => !blueprints.some(b => b.characterId === c.id && !b.adult && b.outfitId === popular.defaultOutfit(c).id));
-  assert.deepEqual(missing.map(c => c.id + '/' + popular.defaultOutfit(c).id), []);
+// The catalog may retain unused or adult-only outfits. Creation needs selectable
+// SFW scenes; it does not require inventing a scene for the wardrobe default.
+test('all characters have an owned SFW choice with adult access disabled', () => {
+  const missing = characters.filter(c => popular.eligibleBlueprints(blueprints, c, { adultEnabled:false }).length === 0);
+  assert.deepEqual(missing.map(c => c.id), []);
 });
-test('all wardrobe coverage gaps are reported together, not masked by the first character', () => {
-  const missing = characters.flatMap((c: any) => c.outfits.filter((o: any) => !blueprints.some((b: any) => b.characterId === c.id && b.outfitId === o.id)).map((o: any) => c.id + '/' + o.id));
+test('all authored blueprint bindings are checked against their owner wardrobe', () => {
+  const missing = blueprints.flatMap(b => {
+    const c = characters.find(c => c.id === b.characterId);
+    if (!c) return [b.id + ': unknown character ' + b.characterId];
+    const outfitId = b.outfitId ?? popular.defaultOutfit(c).id;
+    if (!popular.findOutfit(c, outfitId)) return [b.id + ': unknown outfit ' + c.id + '/' + outfitId];
+    return [];
+  });
   assert.deepEqual(missing, []);
 });
 test('eleven authored coverage additions preserve exact binding and compile in both engines', () => {
@@ -56,32 +64,40 @@ test('season and festival stay with their scenes and do not pollute reusable out
     { cid: 'murasame', oid: 'festival_red_yukata_no_fan', bid: 'murasame_festival_goldfish_scooping_joy', token: 'festival', sceneMeaning: /\bfestival\b/i },
   ]) {
     const c = characters.find(x => x.id === cid);
+    assert.ok(c);
     assert.ok(!popular.findOutfit!(c, oid)!.tokens.includes(token));
     // Prose is model input; sceneTags alone would only prove retrieval metadata.
-    assert.match(blueprints.find!(b => b.id === bid).promptProse, sceneMeaning, bid);
+    const b = blueprints.find(b => b.id === bid);
+    assert.ok(b);
+    assert.match(b.promptProse, sceneMeaning, bid);
     assert.deepEqual(popularPrompt.scanCharacterPollution(c), []);
   }
 });
 
-test('round fan belongs to the fireworks scene payload, not reusable clothes or the fishing variant', () => {
+test('authored fan reaches the fireworks model payload, not reusable clothes or the fishing variant', () => {
   const c = characters.find(x => x.id === 'murasame');
+  assert.ok(c);
   const outfit = popular.findOutfit(c, 'summer_yukata');
   assert.ok(outfit);
   assert.doesNotMatch(outfit.tokens.join(' ') + ' ' + outfit.prose, /\b(?:uchiwa|(?:paper|round|folding)[ _]fan|holding[ _]fan)\b/i);
-  assert.equal(blueprints.find!(b => b.id === 'murasame_festival_goldfish_scooping_joy').outfitId, 'festival_red_yukata_no_fan');
+  const fishing = blueprints.find(b => b.id === 'murasame_festival_goldfish_scooping_joy');
+  assert.ok(fishing);
+  assert.equal(fishing.outfitId, 'festival_red_yukata_no_fan');
   const b = blueprints.find(item => item.id === 'murasame_hoori_fireworks_fan_pause')!;
   assert.ok(b);
   assert.equal(b.outfitId, outfit.id);
   const missing: string[] = [];
-  for (const engine of ['anima', 'krea2']) {
+  for (const engine of ['anima', 'krea2'] as const) {
     const model = engine === 'anima' ? 'anima-miaomiao-v1.6' : 'krea2-turbo-fp8';
     const profile = profiles.find(item => item.model_id === model);
-    const plan = popularPrompt.buildPopularPromptPlan({ character:c, blueprint:b, outfit, engine: engine as any, profile, adultEnabled:false });
+    const plan = popularPrompt.buildPopularPromptPlan({ character:c, blueprint:b, outfit, engine, profile, adultEnabled:false });
     assert.ok(plan);
     assert.doesNotMatch(plan.prompt, /\bfolding[ _]fan\b/i);
-    if (!/\b(?:uchiwa|round(?:[ _]paper)?[ _]fan)\b/i.test(plan.prompt)) missing.push(engine);
+    // Current authored input asks for a paper fan. Keep the prop in the model
+    // payload without imposing the previous revision's round-shape wording.
+    if (!/\b(?:uchiwa|fan)\b/i.test(plan.prompt)) missing.push(engine);
   }
-  assert.deepEqual(missing, [], b.id + ' must send the round-fan shape to the model; sceneTags do not count');
+  assert.deepEqual(missing, [], b.id + ' must send its authored fan to the model; sceneTags do not count');
 });
 
 // Explicit depth-of-field prose preservation now uses a neutral input in

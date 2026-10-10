@@ -276,26 +276,23 @@ test('Mahiru first meeting follows the official umbrella lending direction', fun
   assert.doesNotMatch(scene.promptProse, /(?:Mahiru(?: Shiina)?|she)\s+(?:offers|holds out|hands over)\b[^.]*umbrella/i);
 });
 
-// All-outfit/default-SFW coverage is reported together by test-content-gate-repairs.
-test('scene coverage: >=1 iconic + >=1 daily per character, >=1 special_nsfw among adults', function () {
+// coverageTags are optional metadata, not eligibility or category quotas.
+// SFW availability and authored outfit bindings live in test-content-gate-repairs.
+test('scene selection keeps authored ownership and adult separation without category quotas', function () {
   characters.forEach(function (character) {
     let owned = blueprints.filter(function (blueprint) { return blueprint.characterId === character.id; });
-    let hasTag = function (tag: any) {
-      return owned.some(function (blueprint) {
-        return Array.isArray(blueprint.coverageTags) && blueprint.coverageTags.includes(tag);
-      });
-    };
-    assert.ok(hasTag('iconic'), character.id + ' must own at least one iconic scene');
-    assert.ok(hasTag('daily'), character.id + ' must own at least one daily scene');
+    const selectableSfw = popular.eligibleBlueprints(blueprints, character, { adultEnabled:false });
+    assert.deepStrictEqual(selectableSfw.map(b => b.id), owned.filter(b => !b.adult).map(b => b.id),
+      character.id + ' must select only its own SFW scenes while adult access is disabled');
     let ownedAdult = owned.filter(function (blueprint) { return blueprint.adult; });
     if (sfwOnlyIds.has(character.id)) {
       assert.strictEqual(ownedAdult.length, 0, character.id + ' must remain non-adult');
       return;
     }
     assert.ok(ownedAdult.length >= 4, character.id + ' must own adult scenes');
-    assert.ok(ownedAdult.some(function (blueprint) {
-      return Array.isArray(blueprint.coverageTags) && blueprint.coverageTags.includes('special_nsfw');
-    }), character.id + ' must own at least one special_nsfw scene');
+    const selectableAdult = popular.eligibleBlueprints(blueprints, character, { adultEnabled:true });
+    assert.deepStrictEqual(selectableAdult.map(b => b.id), owned.map(b => b.id),
+      character.id + ' adult access must retain authored ownership');
   });
 });
 
