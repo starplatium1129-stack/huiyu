@@ -3,6 +3,11 @@ import { textContrast } from './helpers/contrast'
 
 const appearanceKey = 'atelier-desktop-appearance-v1'
 
+// These cases exercise existing surfaces, not the separately covered first-visit tour.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('aics_guest_guide_dismissed', '1'))
+})
+
 async function openAppearance(page: Page) {
   const toggle = page.locator('.nav-menu-toggle')
   if (await toggle.isVisible() && await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click()
@@ -17,33 +22,14 @@ async function openAppearance(page: Page) {
 for (const theme of ['dark', 'light'] as const) {
   if (theme === 'dark') test(`native modal keeps keyboard control above an existing scene viewer ${theme}`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' })
-    const runtimeErrors: string[] = []
-    page.on('pageerror', error => runtimeErrors.push(error.message))
-    page.on('console', message => { if (message.type() === 'error') runtimeErrors.push(message.text()) })
     await page.goto('/scene-explorer')
     const trigger = page.getByRole('button', { name: '故事', exact: true }).first()
     const drawer = page.getByRole('dialog', { name: '场景观赏模式', exact: true })
     const close = drawer.getByRole('button', { name: '关闭', exact: true })
-    const logActivationFailure = async (error: unknown) => {
-      console.error('Scene viewer open diagnostics', JSON.stringify({ runtimeErrors, dom: await page.evaluate(() => ({
-        active: document.activeElement?.outerHTML.slice(0, 600),
-        story: [...document.querySelectorAll<HTMLElement>('.ex-actions button')].find(element => element.textContent?.trim() === '故事')?.outerHTML,
-        card: (() => { const element = document.querySelector<HTMLElement>('.sc'); return element ? { rect: element.getBoundingClientRect().toJSON(), hidden: element.hidden, inertAncestor: element.closest('[inert]')?.outerHTML.slice(0, 300), visibility: getComputedStyle(element).visibility } : null })(),
-        expandedScenes: [...document.querySelectorAll('.sc[aria-expanded="true"]')].map(element => element.getAttribute('data-scene-id')),
-        viewers: [...document.querySelectorAll<HTMLElement>('[role="dialog"]')].map(element => ({
-          label: element.getAttribute('aria-label'), hidden: element.getAttribute('aria-hidden'),
-          inert: element.inert, display: getComputedStyle(element).display, visibility: getComputedStyle(element).visibility, buttons: element.querySelectorAll('button').length, text: element.textContent?.slice(0, 200),
-        })),
-        storyButtons: [...document.querySelectorAll('.ex-actions button')].filter(element => element.textContent?.trim() === '故事').length,
-      })) }))
-      throw error
-    }
-    // Content-visibility cards must be in view before their nested action can focus.
-    await trigger.scrollIntoViewIfNeeded().catch(logActivationFailure)
-    await trigger.focus().catch(logActivationFailure)
-    await expect(trigger).toBeFocused().catch(logActivationFailure)
+    await trigger.focus()
+    await expect(trigger).toBeFocused()
     await page.keyboard.press('Enter')
-    await expect(close).toBeFocused().catch(logActivationFailure)
+    await expect(close).toBeFocused()
     // Exercise the browser's real top layer, both outside and inside the custom trap.
     for (const nested of [false, true]) {
       await page.evaluate(nested => {

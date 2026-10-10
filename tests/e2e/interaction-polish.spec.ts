@@ -2,6 +2,11 @@ import { expect, test, type Page } from '@playwright/test'
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
 import { readFileSync } from 'node:fs'
 
+// Existing-workflow checks start after the separately covered first-visit tour.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('aics_guest_guide_dismissed', '1'))
+})
+
 for (const theme of ['dark']) {
   test(`gallery original export preserves JPEG ${theme}`, async ({ page }) => {
     await page.addInitScript(value => {

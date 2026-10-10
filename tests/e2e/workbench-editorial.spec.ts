@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
 
+// Existing-workflow checks start after the separately covered first-visit tour.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('aics_guest_guide_dismissed', '1'))
+})
+
 async function prepare(page: Page, theme: string, online = false) {
   await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json: { ok: true, online: false, models: [], loras: [], styleLoras: [] } }))
   await page.route('**/api/generation/status', route => route.fulfill({ json: {
