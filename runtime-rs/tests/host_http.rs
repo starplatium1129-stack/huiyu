@@ -572,3 +572,6 @@ mod migration_candidates;
 
 #[path = "host_http/upload_bodies.rs"]
 mod upload_bodies;
+
+#[path = "host_http/native_results.rs"]
+mod native_results;

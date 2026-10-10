@@ -102,10 +102,15 @@ class ClipsegTests(unittest.TestCase):
             weights.unlink()
             with self.assertRaisesRegex(ValueError, "model.safetensors"):
                 clipseg_mask.validate_model(str(root))
-            outside = Path(directory) / "external.safetensors"
+            outside = (Path(directory) / "external.safetensors").resolve()
             outside.write_bytes(b"FAKE")
-            weights.symlink_to(outside)
-            with self.assertRaisesRegex(ValueError, "unsafe"):
+            weights.write_bytes(b"FAKE")
+            original_resolve = Path.resolve
+            # Simulate the resolved resource alias without Windows symlink privileges.
+            # The real containment guard still checks the existing outside file.
+            def resolved_alias(candidate, *args, **kwargs):
+                return outside if candidate == weights else original_resolve(candidate, *args, **kwargs)
+            with patch.object(Path, "resolve", autospec=True, side_effect=resolved_alias), self.assertRaisesRegex(ValueError, "unsafe"):
                 clipseg_mask.validate_model(str(root))
             weights.unlink()
             weights.write_bytes(b"FAKE")
@@ -145,7 +150,7 @@ class ClipsegTests(unittest.TestCase):
             self.assertEqual(mask.getpixel((x + 30, 0)), 0)
         for call in calls:
             if call[0] in {"tokenizer", "processor", "model"}:
-                self.assertEqual(call[1], "/approved/clipseg")
+                self.assertEqual(call[1], str(Path("/approved/clipseg")))
                 self.assertTrue(call[2]["local_files_only"])
                 self.assertFalse(call[2]["trust_remote_code"])
         model_call = next(call for call in calls if call[0] == "model")
