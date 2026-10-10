@@ -49,7 +49,7 @@ def prepare_images(image, mask_path, size, grow):
             source = ImageOps.exif_transpose(source)
             if source.size != image.size:
                 raise ValueError("Mask dimensions must match the oriented input image")
-            rgba = source.convert("RGBA")
+            rgba = source if source.mode == "RGBA" else source.convert("RGBA")
             # Transparent paint/erased pixels preserve even when RGB remains white.
             mask = ImageChops.multiply(rgba.convert("L"), rgba.getchannel("A"))
     except (OSError, Image.DecompressionBombError) as exc:

@@ -178,8 +178,22 @@ class MaskTests(unittest.TestCase):
         paint.putpixel((2, 2), (255, 255, 255, 255))
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "mask.png"
-            paint.save(path)
-            resized, mask = masked_anima.prepare_images(original, path, (5, 5), 1)
+            exif = Image.Exif()
+            exif[274] = 6
+            exif[34665] = {36867: "2026:10:10 22:44:00"}
+            paint.save(path, exif=exif)
+            conversions, convert = [], Image.Image.convert
+            def observed_convert(source, mode=None, *args, **kwargs):
+                conversions.append((source.mode, mode))
+                return convert(source, mode, *args, **kwargs)
+            with patch.object(Image.Image, "convert", observed_convert):
+                resized, mask = masked_anima.prepare_images(original, path, (5, 5), 1)
+            self.assertNotIn(("RGBA", "RGBA"), conversions)
+            self.assertIn(("RGBA", "L"), conversions)
+            self.assertNotIn(274, mask.getexif())
+            self.assertEqual(mask.getexif().get_ifd(34665), {36867: "2026:10:10 22:44:00"})
+            self.assertEqual(mask.readonly, 0)
+            self.assertIsNot(resized, original)
             self.assertEqual(mask.getbbox(), (1, 1, 4, 4))
             generated = Image.new("RGB", (5, 5), "red")
             before = [image.tobytes() for image in (generated, resized, mask)]
