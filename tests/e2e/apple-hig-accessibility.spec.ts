@@ -57,7 +57,7 @@ for (const theme of ['dark', 'light'] as const) {
     ])))
     await page.goto('/gallery')
     await page.getByRole('button', { name: '选择', exact: true }).click()
-    await page.getByRole('button', { name: /全选/ }).click()
+    await page.getByRole('checkbox', { name: '全选当前作品', exact: true }).check()
     const trigger = page.getByRole('button', { name: '移入回收站（2）', exact: true })
     await trigger.click()
     const dialog = page.getByRole('alertdialog')

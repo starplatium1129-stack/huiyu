@@ -24,9 +24,9 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 <style scoped>
 .studio-checkbox { position:relative; display:inline-flex; align-items:center; gap:var(--s-2); min-width:calc(var(--control-height) + var(--s-1)); min-height:calc(var(--control-height) + var(--s-1)); padding:var(--s-1) var(--s-2); color:var(--text-primary); font:600 var(--fs-label-sm)/var(--lh-label) var(--font-sans); cursor:pointer; }
 .studio-checkbox-input { position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:inherit; }
-.studio-checkbox-box { display:inline-flex; align-items:center; justify-content:center; flex:0 0 22px; width:22px; height:22px; border:1.5px solid var(--text-muted); border-radius:var(--r-xs); background:var(--bg-surface); color:var(--text-inverse); pointer-events:none; }
+.studio-checkbox-box { display:inline-flex; align-items:center; justify-content:center; flex:0 0 22px; width:22px; height:22px; border:1.5px solid var(--text-muted); border-radius:var(--r-xs); background:var(--bg-surface); color:var(--text-primary); pointer-events:none; }
 .studio-checkbox-input:checked + .studio-checkbox-box,
-.studio-checkbox-input:indeterminate + .studio-checkbox-box { border-color:var(--accent); background:var(--accent); }
+.studio-checkbox-input:indeterminate + .studio-checkbox-box { border-color:var(--accent); background:var(--accent); color:var(--text-inverse); }
 .studio-checkbox-input:focus-visible + .studio-checkbox-box { outline:2px solid var(--accent); outline-offset:3px; }
 .studio-checkbox-box :deep(.archive-icon) { width:20px; height:20px; }
 /* compositor-exempt: A one-shot 160ms stroke redraw in the 20px checkmark only;
