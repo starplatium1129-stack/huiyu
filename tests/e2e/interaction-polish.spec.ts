@@ -300,8 +300,9 @@ test('gallery keeps an atomically failed batch selected for retry', async ({ pag
 test('director blueprint round-trips full decisions and material conflicts', async ({ page }) => {
   await page.goto('/prompt-builder')
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  await page.locator('.engine-switch button').first().click()
-  await expect(page.locator('.engine-switch button').first()).toHaveClass(/active/)
+  const engine = page.getByRole('group', { name: '出图引擎', exact: true }).getByRole('button', { name: 'Anima', exact: true })
+  await engine.click()
+  await expect(engine).toHaveAttribute('aria-pressed', 'true')
 
   await page.locator('[aria-controls="material-story"]').click()
   await page.locator('.story-input').fill('蓝图往返故事')
@@ -326,7 +327,7 @@ test('director blueprint round-trips full decisions and material conflicts', asy
     schema: 'aics-director-blueprint-v1', story: '蓝图往返故事',
     visualDescription: 'A red umbrella beside a rain-covered window.',
     colorMood: 'sad', directorMode: 'pro', subject: 'studio',
-    selections: { composition: null }, drawEngine: 'sd',
+    selections: { composition: null }, drawEngine: 'anima',
   })
   expect(payload.manualTags).toEqual(['school_uniform', 'pleated_skirt'])
   expect(payload.anima).toEqual(expect.objectContaining({ modelId: expect.any(String) }))
