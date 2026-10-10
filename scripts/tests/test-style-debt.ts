@@ -91,16 +91,18 @@ test('style arrays recursively resolve only proven custom-property carriers', ()
     const unknown = incoming;
   `;
   for (const binding of ['[theme, layout.style.value]', '[theme, [{ "--fill": value }, layout.style.value]]',
-    '[{ style: { "--fill": value } }.style]']) {
+    '[{ style: { "--fill": value } }.style]', 'enabled ? { "--fill": value } : undefined']) {
     assert.equal(bindsOnlyCustomProps(source, binding), true, binding);
   }
   for (const binding of ['[theme, unknown]', '[theme, unsafe]', '[theme, { opacity: 1 }]',
     '[theme, ...unknown]', '[theme, layout.missing.value]', '[theme, layout[key]]', '[theme, , layout.style.value]',
-    '[theme, enabled ? layout.style.value : unsafe]', '[theme', '[{ "--fill": value',
+    '[theme, enabled ? layout.style.value : unsafe]', 'enabled ? { opacity: 1 } : undefined',
+    'undefined.style', '[theme', '[{ "--fill": value',
     '[{ style: theme, style: unknown }.style]']) {
     assert.equal(bindsOnlyCustomProps(source, binding), false, binding);
   }
   assert.equal(bindsOnlyCustomProps(`${source}\nconst replaced = { ...unknown, style: theme };`, '[theme, replaced.style]'), false);
+  assert.equal(bindsOnlyCustomProps('const undefined = { opacity: 1 };', 'enabled ? { "--fill": value } : undefined'), false);
 });
 
 test("style-debt", () => {
