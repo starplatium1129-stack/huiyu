@@ -273,7 +273,13 @@ class MaskTests(unittest.TestCase):
             self.assertEqual(len(scales), 2)  # final step never re-noises original
             # Precomputed noise remains exact; no hidden second random draw.
             state["latents"] = draws[0][0]
-            prepare(components, state)
+            gray = np.arange(256, dtype=np.uint8).reshape(16, 16)
+            state["mask_image"] = Image.fromarray(gray)
+            with patch("torch.from_numpy", wraps=Tensor) as convert:
+                prepare(components, state)
+            expected = gray.astype(np.float32) / 255
+            self.assertEqual(convert.call_args.args[0].tobytes(), expected.tobytes())
+            np.testing.assert_array_equal(np.asarray(state["mask_image"]), gray)
             self.assertEqual(len(draws), 1)
             self.assertIs(state["mask_noise"], draws[0][0])
 

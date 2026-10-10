@@ -83,7 +83,7 @@ def logits_mask(logits, size, threshold):
         raise ValueError("CLIPSeg returned invalid/nonfinite mask logits")
     resized = np.asarray(Image.fromarray(logits).resize(size, Image.Resampling.BILINEAR))
     probabilities = 1 / (1 + np.exp(-np.clip(resized, -80, 80)))
-    mask = Image.fromarray(np.where(probabilities >= threshold, 255, 0).astype(np.uint8))
+    mask = Image.fromarray(np.where(probabilities >= threshold, np.uint8(255), np.uint8(0)))
     if mask.getbbox() is None:
         raise ValueError("Automatic mask has no editable pixels; adjust maskPrompt/threshold or use a manual mask")
     return mask

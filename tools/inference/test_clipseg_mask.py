@@ -150,7 +150,14 @@ class ClipsegTests(unittest.TestCase):
     def test_threshold_resize_growth_and_empty_nonfinite_masks(self):
         logits = np.full((352, 352), -8, dtype=np.float32)
         logits[:, 176:] = 8
-        mask = clipseg_mask.logits_mask(logits, (64, 32), 0.5)
+        where = np.where
+        def binary_where(*args):
+            result = where(*args)
+            self.assertEqual(result.dtype, np.uint8)
+            return result
+        with patch.object(np, "where", side_effect=binary_where):
+            mask = clipseg_mask.logits_mask(logits, (64, 32), 0.5)
+        self.assertEqual(set(mask.getdata()), {0, 255})
         self.assertEqual(mask.getbbox(), (32, 0, 64, 32))
         original, grown = masked_anima.prepare_mask(Image.new("RGB", mask.size, "blue"), mask, mask.size, 2)
         output = masked_anima.composite(Image.new("RGB", mask.size, "red"), original, grown)

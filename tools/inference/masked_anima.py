@@ -158,7 +158,9 @@ def masked_blocks():
             block.mask_noise = (randn_tensor(image_latents.shape, generator=block.generator,
                 device=components._execution_device, dtype=torch.float32) if block.latents is None
                 else block.latents.to(device=components._execution_device, dtype=torch.float32))
-            mask = torch.from_numpy(np.array(block.mask_image, dtype=np.float32) / 255).unsqueeze(0).unsqueeze(0)
+            mask = np.array(block.mask_image, dtype=np.float32)
+            mask /= 255
+            mask = torch.from_numpy(mask).unsqueeze(0).unsqueeze(0)
             mask = torch.nn.functional.interpolate(mask, size=image_latents.shape[-2:], mode="nearest")
             block.latent_mask = mask.unsqueeze(2).to(device=image_latents.device, dtype=torch.float32)
             timestep = block.timesteps[:1].repeat(image_latents.shape[0])

@@ -23,7 +23,7 @@ const portrait = defineComponent({
 
 it.each(['media', 'records'])('keeps the portrait subpage when leaving for %s is declined, then switches after consent', async target => {
   leave.mockResolvedValue(false)
-  wrapper = shallowMount(SceneManagerView, { global: { stubs: { CharacterArtManager: portrait }, directives: { 'content-motion': {} } } })
+  wrapper = shallowMount(SceneManagerView, { global: { stubs: { CharacterArtManager: portrait, CatalogMediaManager: true }, directives: { 'content-motion': {} } } })
   await flushPromises()
   const destination = () => target === 'media'
     ? wrapper!.findAll('.catalog-nav-secondary button')[1]!
