@@ -3,7 +3,25 @@
   "runtime": "huiyu-independent-anima",
   "entrypoint": "worker.py",
   "python": "3.11",
-  "protocol": "one-job-per-process-jsonl-v1",
+  "protocol": "serial-job-jsonl-v2",
+  "residency": {
+    "mode": "one-exact-model-and-lora-weight-set",
+    "identity": "full component and LoRA bytes checked for every job; reload on change",
+    "isolation": "fresh pipeline blocks, scheduler, guider and TeaCache controller per job",
+    "initialization": "dependencies and bundled helpers verified once per worker; standalone diagnostics verify afresh",
+    "loraStrengthChanges": "reuse unchanged base/adapter bytes; update active adapter weights without reloading",
+    "textEncodingCache": {
+      "location": "CPU only",
+      "maxEntries": 4,
+      "maxBytes": 16777216,
+      "scope": "Qwen embeddings and T5 ids/masks; conditioned embeddings always recomputed",
+      "invalidation": "base model reload/release; keys bind prompt, negative, length, CFG branch count, dtype and device",
+      "benchmark": "disabled on both sides of TeaCache comparison"
+    },
+    "idleReleaseSeconds": 120,
+    "cancelErrorTimeout": "terminate owned worker before GPU slot reuse",
+    "realDeviceValidation": "Not run; RTX 4070 Ti SUPER target remains pending"
+  },
   "engine": "diffusers.AnimaModularPipeline",
   "engineVersion": "0.41.0",
   "capabilities": {
@@ -72,6 +90,8 @@
       "profileFile": "teacache-profile.json",
       "profileMaxBytes": 65536,
       "algorithm": "huiyu-anima-first-norm-residual-v1",
+      "candidateAlgorithm": "huiyu-anima-phase-envelope-v2",
+      "candidateMeaning": "phase-specific observed error envelopes; refresh on phase transition; not a semantic quality bound",
       "requires": "exact compatible local calibration and explicit held-out device acceptance",
       "threshold": "profile default; explicit 0.01..1 bounded by profile maxThreshold",
       "maxConsecutiveSkips": [
@@ -87,7 +107,10 @@
       "isolation": "one-job controller, separate CFG lanes, exact conditioning snapshots",
       "helpers": [
         "teacache_anima.py",
-        "teacache_profile.py"
+        "teacache_profile.py",
+        "resident_anima.py",
+        "resident_benchmark.py",
+        "anima_text_cache.py"
       ],
       "licenseNotice": "TEACACHE_LICENSE.txt",
       "realDeviceValidation": "Not run; no coefficients, speedup or quality claim supplied"

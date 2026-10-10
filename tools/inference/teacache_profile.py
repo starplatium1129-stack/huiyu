@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 
 ALGORITHM = "huiyu-anima-first-norm-residual-v1"
+PHASE_ALGORITHM = "huiyu-anima-phase-envelope-v2"
 RUNTIME = {"diffusers": "0.41.0", "torch": "2.8.0"}
 COMPONENTS = ("text_encoder", "text_conditioner", "transformer", "vae", "tokenizer", "t5_tokenizer", "scheduler")
 
@@ -21,14 +22,11 @@ def canonical_sha256(value):
 
 
 def file_sha256(path):
-    digest = hashlib.sha256()
     with Path(path).open("rb") as source:
-        for chunk in iter(lambda: source.read(8 * 1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+        return hashlib.file_digest(source, "sha256").hexdigest()
 
 
-def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir=None):
+def model_identity(root, loras):
     """Hash exact local component bytes, not filenames/mtime or a model display ID.
 
     Full hashing is intentionally uncached across jobs. Its cold-start cost must be
@@ -44,6 +42,13 @@ def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir
         identities.append([path.relative_to(root).as_posix(), file_sha256(path)])
     if not identities:
         raise TeaCacheError("No local model files to fingerprint")
+    return {"modelSha256": canonical_sha256(identities),
+            "loras": [{"sha256": file_sha256(row["path"]), "strength": row["strength"]} for row in loras]}
+
+
+def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir=None, identity=None):
+    root = Path(root).resolve()
+    identity = model_identity(root, loras) if identity is None else identity
     mask_identity = None
     if mode == "masked" and data.get("maskPrompt"):
         if mask_model_dir is None:
@@ -53,8 +58,7 @@ def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir
         if not mask_files or any(not p.resolve().is_relative_to(mask_root) for p in mask_files):
             raise TeaCacheError("Invalid local CLIPSeg calibration identity")
         mask_identity = canonical_sha256([[p.relative_to(mask_root).as_posix(), file_sha256(p)] for p in mask_files])
-    return {"modelSha256": canonical_sha256(identities), "maskModelSha256": mask_identity,
-        "loras": [{"sha256": file_sha256(row["path"]), "strength": row["strength"]} for row in loras],
+    return {**identity, "maskModelSha256": mask_identity,
         "sampling": {"width": data["width"], "height": data["height"], "steps": data["steps"],
             "cfg": data["cfg"], "mode": mode, "denoisingStrength": data.get("denoisingStrength"),
             "sampler": data.get("sampler", "euler"), "scheduler": data.get("scheduler", "simple"),
@@ -72,16 +76,26 @@ def finite(value, low=None, high=None):
 
 def validate_profile(profile, expected, threshold=None, *, require_accepted=True):
     """Validate a profile and return the resolved threshold. No silent fallback."""
-    if not isinstance(profile, dict) or profile.get("schemaVersion") != 1 or profile.get("algorithm") != ALGORITHM:
+    if not isinstance(profile, dict) or (profile.get("schemaVersion"), profile.get("algorithm")) not in ((1, ALGORITHM), (2, PHASE_ALGORITHM)):
         raise TeaCacheError("Unsupported TeaCache profile schema/algorithm; locally calibrate this runtime")
     if profile.get("runtime") != RUNTIME or profile.get("compatibility") != expected:
         raise TeaCacheError("TeaCache profile does not match the exact model/LoRAs, sampling scope, dtype or device; recalibrate")
-    coefficients = profile.get("coefficients")
-    if not isinstance(coefficients, list) or not 1 <= len(coefficients) <= 6 or not all(finite(c) for c in coefficients):
-        raise TeaCacheError("TeaCache coefficients must be 1..6 finite ascending-order polynomial coefficients")
-    domain = profile.get("proxyRange")
-    if not isinstance(domain, list) or len(domain) != 2 or not all(finite(x, 0) for x in domain) or domain[0] > domain[1]:
-        raise TeaCacheError("TeaCache proxyRange must be the finite nonnegative calibrated interval")
+    if profile["schemaVersion"] == 1:
+        coefficients = profile.get("coefficients")
+        if not isinstance(coefficients, list) or not 1 <= len(coefficients) <= 6 or not all(finite(c) for c in coefficients):
+            raise TeaCacheError("TeaCache coefficients must be 1..6 finite ascending-order polynomial coefficients")
+        domain = profile.get("proxyRange")
+        if not isinstance(domain, list) or len(domain) != 2 or not all(finite(x, 0) for x in domain) or domain[0] > domain[1]:
+            raise TeaCacheError("TeaCache proxyRange must be the finite nonnegative calibrated interval")
+    else:
+        phases = profile.get("phaseEnvelopes")
+        if not isinstance(phases, list) or len(phases) != 3:
+            raise TeaCacheError("Phase calibration requires exactly three observed phase envelopes")
+        for points in phases:
+            if (not isinstance(points, list) or not 2 <= len(points) <= 32 or
+                    any(not isinstance(p, list) or len(p) != 2 or not all(finite(v, 0) for v in p) for p in points) or
+                    any(a[0] >= b[0] for a, b in zip(points, points[1:]))):
+                raise TeaCacheError("Phase envelope needs finite nonnegative, strictly ordered proxy/error points")
     default, maximum = profile.get("defaultThreshold"), profile.get("maxThreshold")
     if not finite(default, 0.01, 1) or not finite(maximum, default, 1):
         raise TeaCacheError("TeaCache profile threshold bounds are invalid")

@@ -98,14 +98,14 @@ Transformers 实现许可证为 Apache-2.0；CLIPSeg 权重许可独立于代码
 
 ## TeaCache 本机校准与验收
 
-独立 Anima/Cosmos 路径已实现首层 norm1 代理与整个 transformer block 栈残差复用，实际跳过 attention/MLP；模型外层预处理与输出层仍运行。按 CFG 分支独立缓存，每任务独立进程；实际首尾采样步全算，连续跳步有上限，条件、形状、设备或时间序列变化清理缓存，异常恢复原调用。图生图及手绘/CLIPSeg 遮罩继续执行原逐步约束与最终合成，不把缓存当换装算法。
+独立 Anima/Cosmos 路径已实现首层 norm1 代理与整个 transformer block 栈残差复用，实际跳过 attention/MLP；模型外层预处理与输出层仍运行。按 CFG 分支独立缓存，每任务新建缓存控制器；受控 Worker 串行复用已加载权重，实际首尾采样步全算，连续跳步有上限，条件、形状、设备或时间序列变化清理缓存，异常恢复原调用。图生图及手绘/CLIPSeg 遮罩继续执行原逐步约束与最终合成，不把缓存当换装算法。
 
 实现针对固定 Diffusers 0.41.0 的标准 Anima/Cosmos 结构；不能推及所有 MiaoMiao 版本。没有内置借用的拟合系数，也没有实机速度/画质结论。官方 TeaCache 的 Apache-2.0 许可随包保留；其 Cosmos 示例不是 Anima 校准证据，权重许可另计。
 
 使用已经准备好的独立运行库 Python。准备至少一份校准任务 JSON 与一份验证任务 JSON，结构与 worker 任务相同（modelDir、outputPath、input 等见 tools/inference/README.md），均关闭 TeaCache。验证提示词与种子必须未用于校准；模型、LoRA、尺寸、步数、CFG、编辑模式/强度和遮罩参数必须一致。允许不同原图与手绘遮罩。工具会把输出重定位到全新的结果目录，不覆盖任务原输出。
 
 ```text
-python -I scripts/maintenance/calibrate-anima-teacache.py --calibration-job train.json --validation-job heldout.json --output-dir <全新结果目录> --threshold 0.05 --repeats 2
+python -I scripts/maintenance/calibrate-anima-teacache.py --calibration-job train.json --validation-job heldout.json --output-dir <全新结果目录> --threshold 0.05 --repeats 2 --strategy phase-envelope
 ```
 
 默认只读计划，不加载 ML、不出图、不写文件。可重复指定两类 job。阈值 0.05 仅是候选输入，不是已验证推荐值。确认任务和运行次数后，追加 `--run` 才在本机 CUDA 执行全计算轨迹采集、新拟合以及每个留出案例的无缓存/缓存对照；`--timeout` 限制每个进程等待。统一维护入口为 `npm run wf -- models:calibrate-anima-teacache ...`，需确保该入口的 Python 是已准备运行库。
@@ -121,3 +121,23 @@ python -I scripts/maintenance/calibrate-anima-teacache.py --accept-run <结果�
 验收入口再次核对资产、源图片/遮罩和报告输出，要求每个留出缓存任务确有有限数值跳步，重新计算端到端中位数比且确实快于基线，才写入所选模型目录 teacache-profile.json。已有档不会自动覆盖；明确替换需提供其 `--replace-profile-sha256`。验收后也不会自动开启 UI 开关。
 
 校准档严格绑定模型各组件文件字节、LoRA 与强度、尺寸、步数、CFG、dtype/设备、图生图强度、手绘/自动遮罩及其参数与 CLIPSeg 资源。改变这些条件需重新校准；每个启用任务验证完整指纹，成本必须纳入实际收益判断。界面看到校准文件只表示文件存在，最终由 worker 验证身份与验收记录，不代表设备已经通过验收。当前云端仅完成模拟张量/协议及 UI 测试，未采集真实系数、未安装校准档、未运行 GPU 出图。
+
+## 模型驻留与分阶段缓存候选
+
+独立引擎以 `--serve` 串行执行任务，复用一份模型／LoRA 权重，连续任务无需重新启动 Python 或重新搬入同一份权重。每任务仍核对完整文件指纹；新加载后再核对一次，基座或 LoRA 字节／顺序变化会释放旧权重并重新加载；同一组 LoRA 仅变强度时直接更新适配器权重。每次创建新的管线块、调度器、CFG 与 TeaCache 状态，不保留 seed 或中间潜变量；文本编码使用下述有界 CPU 缓存。成功任务的 `result` 后必须收到同身份 `ready`，才允许接收下一任务；取消、错误、超时和退出终止所属 Worker，确认停止前不放行 GPU 队列。空闲 120 秒释放进程与模型。
+
+校准默认采用 `phase-envelope`：按实际采样进度分为三个阶段，保留各阶段观测到的变化峰值；超出观测范围或跨阶段时全算刷新。每阶段至少三个有效配对样本及两种代理变化；最多 32 个保守边界压缩数据，避免一个全局多项式平滑掉局部峰值。它仍是经验性误差估计，不能保证人物、纹理或换装边缘的画质。原 `--strategy polynomial` 可作算法对照，已有 v1 档仍按原策略执行。两种策略都默认关闭并要求人工验收。
+
+校准与留出对照默认复用同一份已加载权重，双方须有 `modelReused=true` 证据；`--no-resident` 可另测冷任务。进程创建开销单列，Python 导入与首次模型加载计入首个训练任务；暖任务总耗时包含指纹、编码、采样、解码和写图；每任务重置 CUDA 分配峰值。两种模式不能混为同一速度结论。当前仅有隔离逻辑与协议验证，RTX 4070 Ti SUPER 的独立运行库、真实权重、速度、显存和成图仍待设备验收。
+
+## 办公机完成的准备与文本缓存
+
+驻留 Worker 仅在首次任务核对依赖并加载辅助模块，后续复用已验证的运行代码；单独诊断仍重新检查，更新运行库或脚本后需重启。模型文件每任务仍做完整 SHA-256 字节核验，读取改用标准流式缓冲以减少 Python 分配峰值，未改为按文件名／时间复用。
+
+相同文本换 seed 的任务复用 Qwen 编码与 T5 token／mask，CPU 缓存最多 4 项、16 MiB；按文本、负面词、序列上限、CFG 分支、dtype 和设备区分，重载／释放模型时清空，任务获取独立张量副本。LoRA 仅作用于 transformer／text_conditioner，后者每任务仍运行，因此强度回切可复用基座和原始文本编码。基座或适配器字节改变仍会重载。
+
+结果事件记录文本缓存命中、未命中与保留字节数。TeaCache 速度对照双方明确关闭文本缓存，验收也核对该证据，避免第一侧未命中造成比较偏差。主力机保留真实权重加载、GPU 耗时／显存、画质和取消释放验收；办公机的模拟模型及小组件验证不替代这些结果。
+
+办公机已用隔离 Python 3.11 与全部锁定版本（Torch 2.8.0+cpu、Diffusers 0.41.0、Transformers 5.10.1、PEFT 0.19.0 等）执行真实 CPU 小组件：随机 Qwen／Cosmos／text_conditioner／VAE、当地构造的 tokenizer，确认缓存编码与原始编码一致、两个 LoRA 组件强度回切恢复相同输出、新调度器与文本释放，以及两次完整 64×64 小管线文本复用。它只产出随机小组件噪声，未加载真实 Anima/MiaoMiao 权重，不作为画质或 GPU 速度证据。安装只在被忽略的 runtime/office-anima-cpu/ 中，不改系统 Python、ComfyUI 或产品 CUDA 准备契约；首次 CDN 下载不完整且哈希失败，改用经响应核对的官方主域名后保留原 SHA-256 核验并成功安装。
+
+本机证据位于 runtime/office-inference-20261010/：cpu-smoke/report.json 与 hash-benchmark.json。32 MiB 合成文件、暖文件缓存、每方案两次交替读取中，SHA-256 相同；流式读取的 Python 分配峰值从约 16.0 MiB 降至 0.26 MiB，耗时中位数约 37.4 ms／30.0 ms。这是该读取样本，不能推广为模型加载或出图增益。源码、夹具输出与其范围分别记录；实际权重与 GPU 最终验收仍保留。

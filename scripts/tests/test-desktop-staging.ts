@@ -136,7 +136,7 @@ function createFixture() {
   write(path.join(root, 'tools/interrogate/pixai_worker.py'), '# model worker');
   write(path.join(root, 'tools/interrogate/pixai-manifest.json'), '{}');
   write(path.join(root, 'tools/interrogate/test_pixai_worker.py'), '# excluded test');
-  for (const name of ['worker.py', 'masked_anima.py','clipseg_mask.py','anima_conversion.py','anima_conversion_profile.py','ANIMA_CONVERSION_LICENSE.txt','teacache_anima.py','teacache_profile.py','teacache_calibration.py','TEACACHE_LICENSE.txt', 'requirements.txt', 'runtime-manifest.json']) write(path.join(root, 'tools/inference', name), 'native inference fixture');
+  for (const name of ['worker.py', 'resident_anima.py', 'resident_benchmark.py', 'anima_text_cache.py', 'masked_anima.py','clipseg_mask.py','anima_conversion.py','anima_conversion_profile.py','ANIMA_CONVERSION_LICENSE.txt','teacache_anima.py','teacache_profile.py','teacache_calibration.py','TEACACHE_LICENSE.txt', 'requirements.txt', 'runtime-manifest.json']) write(path.join(root, 'tools/inference', name), 'native inference fixture');
   write(path.join(root, 'tools/inference/test_worker.py'), '# excluded test');
   for(const name of ['history.json','projects.json','prompts.json','live2d-candidates.json','live2d-candidates.json.br'])write(path.join(root,'data',name),'private');
   write(path.join(root,'data/references/fixture.json'),'{}');write(path.join(root,'tools/control-server.js'),'old-node-service');
@@ -214,7 +214,7 @@ test('Rust stage verifies bound inputs, excludes legacy/private files, and repla
     assert.equal(fs.readFileSync(path.join(stage,'gateway/tools/interrogate/pixai_worker.py'),'utf8'),'# model worker');
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/pixai-manifest.json')),true);
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/test_pixai_worker.py')),false);
-    for (const name of ['worker.py', 'masked_anima.py','clipseg_mask.py','anima_conversion.py','anima_conversion_profile.py','ANIMA_CONVERSION_LICENSE.txt','teacache_anima.py','teacache_profile.py','teacache_calibration.py','TEACACHE_LICENSE.txt', 'requirements.txt', 'runtime-manifest.json']) assert.equal(fs.readFileSync(path.join(stage, 'gateway/tools/inference', name), 'utf8'), 'native inference fixture');
+    for (const name of ['worker.py', 'resident_anima.py', 'resident_benchmark.py', 'anima_text_cache.py', 'masked_anima.py','clipseg_mask.py','anima_conversion.py','anima_conversion_profile.py','ANIMA_CONVERSION_LICENSE.txt','teacache_anima.py','teacache_profile.py','teacache_calibration.py','TEACACHE_LICENSE.txt', 'requirements.txt', 'runtime-manifest.json']) assert.equal(fs.readFileSync(path.join(stage, 'gateway/tools/inference', name), 'utf8'), 'native inference fixture');
     assert.equal(fs.existsSync(path.join(stage, 'gateway/tools/inference/test_worker.py')), false);
     assert.equal(fs.existsSync(path.join(stage, 'stale.txt')), false);
     const { assertNativeReleaseIntegrity }: typeof import('../maintenance/desktop-rust-inputs') = require('../maintenance/desktop-rust-inputs');

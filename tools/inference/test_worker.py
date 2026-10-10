@@ -34,6 +34,109 @@ def job(root):
 
 
 class WorkerTests(unittest.TestCase):
+    def test_resident_reuses_weights_with_fresh_cfg_scheduler_and_byte_invalidation(self):
+        import resident_anima
+        from test_anima_text_cache import Blocks, Encoder, State, modules, np
+        loaded, used = [], []
+        class Pipeline:
+            def __init__(self, blocks=None):
+                self.blocks = blocks
+                self.scheduler = types.SimpleNamespace(config={"shift": 1}, step=lambda: None)
+                self.components = {name: object() for name in worker.COMPONENTS if name != "scheduler"}
+                self.text_encoder = self.components["text_encoder"] = types.SimpleNamespace(dtype=np.float32)
+                self._execution_device = "cpu"
+                self.guider = types.SimpleNamespace(num_conditions=2)
+            def update_components(self, **components):
+                self.components = components
+                self.scheduler = components["scheduler"]
+                self.text_encoder = components["text_encoder"]
+                self.guider = types.SimpleNamespace(num_conditions=2 if components["guider"]["guidance_scale"] > 1 else 1)
+            def set_adapters(self, names, adapter_weights):
+                self.adapter_weights = list(adapter_weights)
+            def set_progress_bar_config(self, **kwargs):
+                pass
+            def __call__(self, **kwargs):
+                used.append((self, kwargs))
+                state = State(prompt=kwargs["prompt"], negative_prompt=kwargs["negative_prompt"], max_sequence_length=512)
+                self.blocks.sub_blocks["text_encoder"](self, state)
+                self.scheduler.step()
+                return [types.SimpleNamespace(save=lambda path, format: Path(path).write_bytes(b"FAKE PNG"))]
+        def load(root, cfg, blocks=None):
+            result = Pipeline(blocks)
+            loaded.append(result)
+            return result
+        diffusers = types.SimpleNamespace(AnimaModularPipeline=Pipeline,
+            FlowMatchEulerDiscreteScheduler=types.SimpleNamespace(from_config=lambda c: types.SimpleNamespace(config=dict(c), step=lambda: None)),
+            ClassifierFreeGuidance=lambda **kw: kw)
+        torch = types.SimpleNamespace(no_grad=lambda: lambda fn: fn, cuda=types.SimpleNamespace(is_available=lambda: False),
+            Generator=lambda device: types.SimpleNamespace(manual_seed=lambda seed: seed))
+        fake_modules = {**modules(), "torch": torch, "diffusers": diffusers}
+        Encoder.calls = 0
+        with tempfile.TemporaryDirectory() as directory, patch.dict("sys.modules", fake_modules), \
+                patch.object(worker, "dependencies") as checks, patch.object(worker, "load_pipeline", side_effect=load), \
+                patch.object(worker, "load_loras") as adapters:
+            root = model(Path(directory))
+            resident = resident_anima.PipelineCache()
+            request = job(root)
+            (root / "lora.safetensors").write_bytes(b"FAKE LORA")
+            request["loras"] = [{"path": str(root / "lora.safetensors"), "strength": .5}]
+            first = io.StringIO()
+            worker.generate(request, first, resident=resident)
+            request["input"].update(cfg=7, seed=2, steps=3)
+            second = io.StringIO()
+            worker.generate(request, second, resident=resident)
+            self.assertEqual(len(loaded), 1)
+            self.assertEqual(adapters.call_count, 1)
+            self.assertIs(used[0][0].components["transformer"], used[1][0].components["transformer"])
+            self.assertIsNot(used[0][0].scheduler, used[1][0].scheduler)
+            self.assertEqual(used[1][0].components["guider"], {"guidance_scale": 7})
+            self.assertEqual(used[1][1]["generator"], 2)
+            self.assertTrue(json.loads(second.getvalue().splitlines()[-1])["modelReused"])
+            self.assertEqual(json.loads(second.getvalue().splitlines()[-1])["textCache"]["hits"], 1)
+            self.assertEqual(Encoder.calls, 1)
+            request["loras"][0]["strength"] = .9
+            worker.generate(request, io.StringIO(), resident=resident)
+            self.assertEqual(len(loaded), 1)
+            self.assertEqual(used[-1][0].adapter_weights, [.9])
+            self.assertEqual(Encoder.calls, 1)
+            request["loras"][0]["strength"] = .5
+            worker.generate(request, io.StringIO(), resident=resident)
+            self.assertEqual(used[-1][0].adapter_weights, [.5])
+            (root / "transformer/model.safetensors").write_bytes(b"MODIFIED TEST WEIGHTS")
+            worker.generate(request, io.StringIO(), resident=resident)
+            self.assertEqual(len(loaded), 2)
+            self.assertEqual(Encoder.calls, 2)
+            self.assertEqual(checks.call_count, 1)
+            resident.clear()
+            self.assertIsNone(resident.components)
+
+    def test_helper_modules_are_loaded_once_until_explicit_initialization(self):
+        worker.load_mask_tools.cache_clear()
+        with patch("importlib.util.spec_from_file_location", wraps=__import__("importlib.util", fromlist=["spec_from_file_location"]).spec_from_file_location) as load:
+            first = worker.load_mask_tools("anima_text_cache")
+            second = worker.load_mask_tools("anima_text_cache")
+        self.assertIs(first, second)
+        self.assertEqual(load.call_count, 1)
+
+    def test_serve_has_job_ready_boundaries_and_exits_on_failure(self):
+        cache = types.SimpleNamespace(clear=lambda: None)
+        stdout = io.StringIO()
+        jobs = [dict(id="first"), dict(id="second"), dict(id="third")]
+        calls = []
+        def generate(request, stream, resident=None):
+            self.assertIs(resident, cache)
+            calls.append(request["id"])
+            if request["id"] == "second":
+                raise worker.WorkerError("LOAD_FAILED", "fixture failure")
+            worker.emit(stream, request["id"], "result", outputPath="fixture.png")
+        with patch("sys.stdin", io.StringIO("".join(json.dumps(j) + "\n" for j in jobs))), \
+                patch("sys.stdout", stdout), patch.object(worker, "generate", side_effect=generate), \
+                patch.object(worker, "load_mask_tools", return_value=types.SimpleNamespace(PipelineCache=lambda: cache)):
+            self.assertEqual(worker.main(["--serve"]), 1)
+        self.assertEqual(calls, ["first", "second"])
+        events = [json.loads(line) for line in stdout.getvalue().splitlines()]
+        self.assertEqual([(e["id"], e["event"]) for e in events], [("first", "result"), ("first", "ready"), ("second", "error")])
+
     def test_rejects_active_unsupported_options_before_loading(self):
         for key, value in (("mask", "x.png"), ("loras", [{"path": "x"}]),
                            ("rcas", 0.5), ("inputImagePath", "x.png"), ("upscaler", "x")):

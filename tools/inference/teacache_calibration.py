@@ -1,7 +1,7 @@
 """Bounded, offline TeaCache calibration and explicit quality/performance acceptance.
 
 Default: read local job JSON, print a plan, no ML imports, subprocesses or writes.
---run: full-compute training traces, a fresh polynomial, then held-out baseline/cache
+--run: full-compute training traces, a fresh phase envelope or polynomial, then held-out baseline/cache
 pairs. Pixel differences are not semantic, identity, anatomy or edit-quality verdicts.
 Use the prepared inference Python; no packages or models are installed/downloaded.
 """
@@ -29,8 +29,9 @@ ALGORITHM = "huiyu-anima-first-norm-residual-v1"
 DISCLAIMER = ("Pixel metrics measure numerical image differences only. Inspect every held-out pair for "
               "identity, composition, anatomy, texture and masked-edit boundaries. Neither these metrics "
               "nor synthetic tests establish semantic quality. Whole-image metrics may hide local edit regressions "
-              "when preserved pixels dominate; review the edited region and edges directly. Timings include fresh process/model load "
-              "and the cached path's required fingerprint overhead; uncached timing excludes preflight identity hashes. "
+              "when preserved pixels dominate; review the edited region and edges directly. Cold jobs include fresh process/model load; "
+              "resident pairs retain weights and include per-job identity checks. Process creation is recorded separately; imports/first load belong to the first training job. "
+              "Both modes include cache scope overhead; uncached timing excludes preflight identity hashes. "
               "Preflight hashes may warm the operating-system file cache. Pipeline timings include encoding, "
               "denoising and decoding, not pure sampling. Skipped blocks are not wall-clock savings.")
 
@@ -128,7 +129,8 @@ def plan(args):
     return training, heldout, target, {
         "mode": "plan", "modelCalls": len(training) + len(heldout) * args.repeats * 2,
         "trainingJobs": len(training), "heldoutJobs": len(heldout), "repeats": args.repeats,
-        "outputDir": str(target), "threshold": args.threshold, "polynomialDegree": args.degree,
+        "outputDir": str(target), "threshold": args.threshold, "strategy": args.strategy,
+        "executionMode": "resident" if args.resident else "cold", "polynomialDegree": args.degree,
         "scopeStatus": "Exact model/config hashes, dtype and device will be established by real worker traces",
         "installsProfile": False, "limitations": DISCLAIMER,
         "next": "Use --run only on the authorized CUDA device with the prepared inference Python."}
@@ -215,7 +217,7 @@ def fit(traces, args):
     compatibility = traces[0].get("compatibility")
     if not isinstance(compatibility, dict) or not compatibility:
         raise ValueError("Trace lacks an established compatibility scope")
-    points = []
+    points, phase_points = [], [[], [], []]
     for trace in traces:
         stats = trace.get("stats", {})
         if (trace.get("schemaVersion") != 1 or trace.get("compatibility") != compatibility or
@@ -228,6 +230,37 @@ def fit(traces, args):
             if not all(type(v) in (int, float) and math.isfinite(v) and v >= 0 for v in (x, y)):
                 raise ValueError("Trace has invalid relative-L1 samples")
             points.append((x, y))
+            if args.strategy == "phase-envelope":
+                step, total = sample.get("step"), sample.get("total")
+                if type(step) is not int or type(total) is not int or not 0 <= step < total or total < 2:
+                    raise ValueError("Phase calibration requires actual step/total trace identity")
+                phase_points[min(2, 3 * step // (total - 1))].append((x, y))
+    if args.strategy == "phase-envelope":
+        envelopes = []
+        for samples in phase_points:
+            observed = {}
+            for x, y in samples:
+                observed[x] = max(y, observed.get(x, 0))
+            if len(samples) < 3 or len(observed) < 2:
+                raise ValueError("Each phase needs >=3 paired observations and >=2 distinct proxies")
+            ordered = sorted(observed.items())
+            size = max(1, math.ceil(len(ordered) / 31))
+            points_in_phase = []
+            for start in range(0, len(ordered), size):
+                group = ordered[start:start + size]
+                upper = max(y for _, y in group)
+                if not points_in_phase:
+                    points_in_phase.append([group[0][0], upper])
+                if group[-1][0] != points_in_phase[-1][0]:
+                    points_in_phase.append([group[-1][0], upper])
+            envelopes.append(points_in_phase)
+        helper = load("teacache_profile")
+        return {"schemaVersion": 2, "algorithm": helper.PHASE_ALGORITHM, "runtime": helper.RUNTIME,
+                "compatibility": compatibility, "phaseEnvelopes": envelopes,
+                "defaultThreshold": args.threshold, "maxThreshold": args.threshold, "maxConsecutiveSkips": 1,
+                "calibration": {"source": "local-full-compute", "sampleCount": len(points), "traceSha256": canonical(traces)},
+                "fitDiagnostics": {"method": "phase-local observed upper envelope; not a semantic error bound",
+                                   "phaseSampleCounts": [len(group) for group in phase_points]}}
     if len(points) < max(8, 2 * (args.degree + 1)):
         raise ValueError("Insufficient paired trace samples for a fresh polynomial")
     x, y = np.asarray(points, dtype=float).T
@@ -281,13 +314,23 @@ def review_html(target, report):
 
 def run(args, training, heldout, target):
     target.mkdir(parents=True)
+    api = argparse.Namespace(__file__=__file__, stop=stop, read=read, write=write, digest=digest)
+    session = load("resident_benchmark").Session(api, target) if args.resident else None
+    try:
+        return measured_run(args, training, heldout, target, session)
+    finally:
+        if session is not None:
+            session.close()
+
+
+def measured_run(args, training, heldout, target, session):
     sources = input_files(training + heldout)
     write(target / "source-jobs.json", {"training": training, "heldout": heldout, "inputFiles": sources})
     def measured(job, folder, collect, profile, expected=None):
         verify_inputs(sources)
         if expected is not None and profile is None and job_scope(job, expected) != expected["compatibility"]:
             raise ValueError("Baseline model/LoRA scope changed before generation")
-        result = execute(job, folder, collect, profile, args.timeout)
+        result = (session.execute if session is not None else execute)(job, folder, collect, profile, args.timeout)
         verify_inputs(sources)
         if expected is not None and profile is None:
             result["identityScope"] = job_scope(job, expected)
@@ -311,6 +354,10 @@ def run(args, training, heldout, target):
             result["output"] = Path(result["output"]).relative_to(target).as_posix()
             pair[name] = result
         cached = pair["cached"]["report"]
+        if session is not None and any(pair[name]["report"].get("modelReused") is not True for name in ("baseline", "cached")):
+            raise ValueError("Warm comparison must reuse the same loaded weights on both sides")
+        if session is not None and any(pair[name]["report"].get("textCacheEnabled") is not False for name in ("baseline", "cached")):
+            raise ValueError("TeaCache comparison must disable text caching on both sides to avoid first-side misses")
         if cached.get("compatibility") != profile["compatibility"] or cached.get("stats", {}).get("nonfinite") != 0:
             raise ValueError("Held-out cached execution lacks matching finite runtime evidence")
         if (pair["baseline"]["report"].get("teaCacheEnabled") is not False or
@@ -322,6 +369,8 @@ def run(args, training, heldout, target):
     baseline = statistics.median(pair["baseline"]["wallSeconds"] for pair in pairs)
     cached = statistics.median(pair["cached"]["wallSeconds"] for pair in pairs)
     report = {"schemaVersion": 1, "status": "awaiting-operator-acceptance", "pairs": pairs,
+              "executionMode": "resident" if session is not None else "cold",
+              "residentStartupSeconds": session.startup_seconds if session is not None else 0,
               "medianBaselineWallSeconds": baseline, "medianCachedWallSeconds": cached,
               "observedEndToEndSpeedup": baseline / cached, "humanQualityAccepted": False,
               "candidateSha256": digest(target / "candidate-profile.json"),
@@ -349,6 +398,10 @@ def accept(args):
         raise ValueError("Candidate is not bound to its collected traces")
     for pair in report["pairs"]:
         cached_report = pair["cached"].get("report", {})
+        if report.get("executionMode") == "resident" and any(pair[name].get("report", {}).get("modelReused") is not True for name in ("baseline", "cached")):
+            raise ValueError("Warm comparison lost its weight-reuse evidence")
+        if report.get("executionMode") == "resident" and any(pair[name].get("report", {}).get("textCacheEnabled") is not False for name in ("baseline", "cached")):
+            raise ValueError("TeaCache comparison lost its disabled text-cache evidence")
         if (cached_report.get("compatibility") != profile["compatibility"] or
                 pair["baseline"].get("identityScope") != profile["compatibility"] or
                 pair["baseline"].get("report", {}).get("fingerprintSeconds") != 0 or
@@ -407,6 +460,10 @@ def main(argv=None):
     parser.add_argument("--output-dir", help="New output directory outside model directory")
     parser.add_argument("--threshold", type=float, default=0.05, help="Candidate threshold only, not a universal quality recommendation")
     parser.add_argument("--degree", type=int, choices=range(1, 6), default=2)
+    parser.add_argument("--strategy", choices=("phase-envelope", "polynomial"), default="phase-envelope",
+                        help="Phase-specific observed error envelopes (default) or original polynomial baseline")
+    parser.add_argument("--resident", action=argparse.BooleanOptionalAction, default=True,
+                        help="Compare warm jobs using one resident weight set (default); --no-resident measures cold jobs")
     parser.add_argument("--repeats", type=int, default=1, help="Held-out repetitions; use >=2 to alternate pair order")
     parser.add_argument("--timeout", type=float, default=1800, help="Maximum seconds per worker process")
     mode = parser.add_mutually_exclusive_group()
@@ -416,8 +473,11 @@ def main(argv=None):
     parser.add_argument("--accept-performance", action="store_true", help="Operator accepts measured end-to-end timings")
     parser.add_argument("--replace-profile-sha256", help="Explicit expected digest of an existing profile to replace")
     parser.add_argument("--_worker-job", help=argparse.SUPPRESS)
+    parser.add_argument("--_worker-session", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     try:
+        if args._worker_session:
+            return load("resident_benchmark").child_session(argparse.Namespace(load=load, read=read, write=write))
         if args._worker_job:
             child(args._worker_job)
             return 0

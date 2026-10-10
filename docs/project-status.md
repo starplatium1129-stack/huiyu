@@ -20,6 +20,7 @@
 | --- | --- | --- |
 | 持久化与任务 | Web 保留 IndexedDB；桌面激活后由 Rust/SQLite 持有权威；已接受任务独立于页面生命周期，失联不降级双写 | 历史来源、其他机器、大规模数据及真实故障场景按 [Workspace](architecture/WORKSPACE-MIGRATION-DESIGN.md) 与[任务契约](architecture/TASK-RUNTIME-DESIGN.md)分别验收 |
 | 创作 | Anima/Krea 2 新生成、换装、蓝图、入册与视频分镜；SD 新生成已退出，旧任务查询/取消/收集及历史作品保留 | 聊天绘画工具仍只准备草稿；真实模型、视频效果与成本按 [roadmap](roadmap.md) 验收 |
+| 独立推理源码候选 | Anima 串行 Worker 驻留、初始化复用、同 LoRA 强度回切和 4 项／16 MiB CPU 文本缓存；每任务重建采样状态，空闲／取消退出释放；分阶段 TeaCache 校准及公平留出对照。办公机同版本真实 CPU 随机小组件的编码、适配器和完整管线验证通过 | 默认 ComfyUI，TeaCache 仍关闭；小组件不代表真实权重或画质。RTX 4070 Ti SUPER 的真实权重、GPU 耗时／显存／释放和画质待验，未同步桌面安装，见[独立推理指南](guides/independent-inference.md) |
 | 内容维护 | 记录 API、修订历史、字段补丁、批量预览/导入与项目快照导出；立绘/样张走图片事务 | 工作库与项目快照独立；pending、记录登记和结构校验不计为图片交付，见[维护手册](maintenance.md) |
 | 界面与陪伴 | Vue/Pinia、双主题、Reka 控件、路由按需加载、角色身份/Profile、独立聊天窗与浏览器/原生 Live2D | WebView2、DPI/多屏/休眠、真实语音与长期资源趋势保留设备验收范围 |
 | 资源生命周期 | 隐藏桌宠释放模型与原生 GPU context；桌面缩略缓存限 96 项/8 MiB；图库停用释放高清 URL | 既有短样本不推广为全部 GPU、大图库或长时间运行结论 |

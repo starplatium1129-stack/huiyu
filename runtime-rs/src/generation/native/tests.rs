@@ -33,7 +33,12 @@ impl ExecutionHooks for Hooks {
 }
 fn fixture(root: &std::path::Path, script: &str) -> (Arc<Service>, Plan) {
     let worker = root.join("worker.py");
-    std::fs::write(&worker, script).unwrap();
+    let body = script.replace("r=json.loads(sys.stdin.readline())", "r=request");
+    let body = body
+        .lines()
+        .map(|line| format!("    {line}\n"))
+        .collect::<String>();
+    std::fs::write(&worker, format!("import json,sys\nfor line in sys.stdin:\n    request=json.loads(line)\n{body}    print(json.dumps({{'id':request['id'],'event':'ready'}}),flush=True)\n")).unwrap();
     let mut service = Service::for_images(
         Config {
             sd_host: "http://127.0.0.1:1".into(),
@@ -52,7 +57,9 @@ fn fixture(root: &std::path::Path, script: &str) -> (Arc<Service>, Plan) {
         input: json!({"family":"anima","modelId":"anima-base-v1.0","prompt":"fixture","negative":"","width":1,"height":1,"steps":2,"cfg":4.5,"seed":1,"sampler":"euler","scheduler":"simple","teaCache":false,"inferenceEngine":"native"}),
         settings: Settings {
             engine: "native".into(),
-            python: PathBuf::from("python3"),
+            python: std::env::var_os("HUIYU_TEST_PYTHON")
+                .map(PathBuf::from)
+                .unwrap_or_else(|| PathBuf::from(if cfg!(windows) { "py" } else { "python3" })),
             worker,
             models_root: root.join("models"),
             loras_root: root.join("loras"),
@@ -198,7 +205,7 @@ async fn native_cancel_terminates_owned_worker_before_settling() {
         .await
         .unwrap();
     let id = submitted["id"].as_str().unwrap();
-    let pid: i32 = tokio::time::timeout(Duration::from_secs(5), async {
+    let pid: u64 = tokio::time::timeout(Duration::from_secs(5), async {
         loop {
             if let Ok(text) = tokio::fs::read_to_string(&marker).await
                 && let Ok(pid) = text.parse()
@@ -213,8 +220,8 @@ async fn native_cancel_terminates_owned_worker_before_settling() {
     service.cancel(id, "owner").await.unwrap();
     assert_eq!(settled(&service, id).await["status"], "cancelled");
     assert_eq!(
-        unsafe { libc::kill(pid, 0) },
-        -1,
+        crate::processes::liveness(pid),
+        "dead",
         "owned worker must be reaped before cancellation settles"
     );
     assert_eq!(service.pending(), 0);
@@ -222,15 +229,106 @@ async fn native_cancel_terminates_owned_worker_before_settling() {
 }
 
 #[tokio::test]
+async fn native_reuses_owned_worker_then_releases_idle_model() {
+    let root = tempfile::tempdir().unwrap();
+    let script = r#"import base64,os,json,sys
+r=json.loads(sys.stdin.readline())
+with open(r['modelDir']+'/pid','a') as record: record.write(str(os.getpid())+'\n')
+open(r['outputPath'],'wb').write(base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='))
+print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath']}),flush=True)
+"#;
+    let (mut service, first) = fixture(root.path(), script);
+    Arc::get_mut(&mut Arc::get_mut(&mut service).unwrap().inner)
+        .unwrap()
+        .native
+        .idle_timeout = Duration::from_millis(400);
+    let next = |source: &Plan| Plan {
+        input: source.input.clone(),
+        settings: source.settings.clone(),
+        model_dir: source.model_dir.clone(),
+        mask_model_dir: None,
+        tea_cache_profile_path: None,
+        init_image: None,
+        mask_image: None,
+        loras: vec![],
+    };
+    let second = next(&first);
+    let third = next(&first);
+    for plan in [first, second] {
+        let prepared = service
+            .prepare_native(plan, CancellationToken::new())
+            .await
+            .unwrap();
+        let submitted = service
+            .clone()
+            .submit(prepared, "owner".into(), None)
+            .await
+            .unwrap();
+        assert_eq!(
+            settled(&service, submitted["id"].as_str().unwrap()).await["status"],
+            "succeeded"
+        );
+    }
+    let pids = std::fs::read_to_string(root.path().join("pid"))
+        .unwrap()
+        .lines()
+        .map(|line| line.parse::<u64>().unwrap())
+        .collect::<Vec<_>>();
+    assert_eq!(pids.len(), 2);
+    assert_eq!(
+        pids[0], pids[1],
+        "both requests must use the same owned process"
+    );
+    let pid = pids[0];
+    // The first process is still owned/resident and serves the second request.
+    assert_eq!(crate::processes::liveness(pid), "alive");
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while crate::processes::liveness(pid) != "dead" {
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+    })
+    .await
+    .unwrap();
+    let prepared = service
+        .prepare_native(third, CancellationToken::new())
+        .await
+        .unwrap();
+    let submitted = service
+        .clone()
+        .submit(prepared, "owner".into(), None)
+        .await
+        .unwrap();
+    assert_eq!(
+        settled(&service, submitted["id"].as_str().unwrap()).await["status"],
+        "succeeded"
+    );
+    let fresh: u64 = std::fs::read_to_string(root.path().join("pid"))
+        .unwrap()
+        .lines()
+        .last()
+        .unwrap()
+        .parse()
+        .unwrap();
+    assert_ne!(pid, fresh);
+    service.close().await;
+    assert_eq!(crate::processes::liveness(fresh), "dead");
+}
+
+#[tokio::test]
 async fn cancellation_before_registration_and_after_worker_success_settles() {
     for completed in [false, true] {
         let root = tempfile::tempdir().unwrap();
         let (service, plan) = fixture(root.path(), "");
+        let settings = plan.settings.clone();
         let prepared = service
             .prepare_native(plan, CancellationToken::new())
             .await
             .unwrap();
         let job = jobs::create(prepared, "owner".into(), None);
+        if completed {
+            let resident = service.inner.native.take_worker(&settings).await.unwrap();
+            Engine::retain_worker(service.inner.clone(), resident).await;
+        }
         // No registered cancellation token yet, or already completed process.
         cancel(service.inner.clone(), job.clone()).await.unwrap();
         let outcome = if completed {
@@ -250,6 +348,10 @@ async fn cancellation_before_registration_and_after_worker_success_settles() {
         assert_eq!(state.status, "cancelled");
         assert!(state.settled && state.result.is_none() && state.permit.is_none());
         drop(state);
+        assert!(
+            service.inner.native.worker.lock().await.is_none(),
+            "late cancellation must retire the resident model before settlement"
+        );
         assert_eq!(service.pending(), 0);
         service.close().await;
     }

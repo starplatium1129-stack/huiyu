@@ -11,6 +11,7 @@ Distributed AS IS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND.
 from __future__ import annotations
 
 import math
+from bisect import bisect_left
 
 
 def snapshot(tensor):
@@ -24,10 +25,32 @@ def finite_tensor(tensor):
 
 def relative_l1(current, previous):
     # Accumulation in float32 avoids low-precision overflow in calibration/statistics.
-    numerator = (current.float() - previous.float()).abs().mean().item()
-    denominator = previous.float().abs().mean().item()
-    value = numerator / max(denominator, 1e-8)
+    import torch
+    numerator = (current.float() - previous.float()).abs().mean()
+    denominator = torch.clamp(previous.float().abs().mean(), min=1e-8)
+    value = (numerator / denominator).item()
     return value if math.isfinite(value) else None
+
+
+def phase_index(step, total):
+    return min(2, 3 * step // max(1, total - 1))
+
+
+def estimate_change(profile, change, step, total):
+    if profile["schemaVersion"] == 2:
+        points = profile["phaseEnvelopes"][phase_index(step, total)]
+        if not points[0][0] <= change <= points[-1][0]:
+            return None
+        right = bisect_left([point[0] for point in points], change)
+        # Use the larger adjoining observed error, rather than an average fit.
+        return max(points[max(0, right - 1)][1], points[right][1])
+    low, high = profile["proxyRange"]
+    if not low <= change <= high:
+        return None
+    estimate = 0.0
+    for coefficient in reversed(profile["coefficients"]):
+        estimate = estimate * change + coefficient
+    return max(0.0, estimate) if math.isfinite(estimate) else None
 
 
 def same_tensor(current, previous):
@@ -87,10 +110,9 @@ class TeaCacheController:
             def forward(hidden, encoder, embedded, temb, rotary, extra, mask, control):
                 execution["visited"] += 1
                 if index == 0:
-                    execution["input"] = snapshot(hidden)
                     norm_input = hidden + extra if extra is not None else hidden
                     proxy = blocks[0].norm1(norm_input, embedded, temb)[0]
-                    safe = finite_tensor(proxy) and finite_tensor(hidden) and math.isfinite(float(timestep_value))
+                    safe = bool((torch.isfinite(proxy).all() & torch.isfinite(hidden).all()).item()) and math.isfinite(float(timestep_value))
                     change = relative_l1(proxy, lane["proxy"]) if safe and lane["proxy"] is not None else None
                     execution.update(proxy=snapshot(proxy) if safe else None, change=change)
                     if not safe or (lane["proxy"] is not None and change is None):
@@ -98,21 +120,20 @@ class TeaCacheController:
                         lane.update(proxy=None, residual=None, accumulated=0.0, skips=0)
                     estimate = None
                     if change is not None and not self.collect:
-                        low, high = self.profile["proxyRange"]
-                        if low <= change <= high:
-                            estimate = 0.0
-                            for coefficient in reversed(self.profile["coefficients"]):
-                                estimate = estimate * change + coefficient
-                            estimate = max(0.0, estimate) if math.isfinite(estimate) else None
+                        estimate = estimate_change(self.profile, change, step, total)
+                    phase = phase_index(step, total)
+                    phase_changed = self.profile is not None and self.profile["schemaVersion"] == 2 and lane.get("phase") != phase
+                    lane["phase"] = phase
                     accumulated = lane["accumulated"] + estimate if estimate is not None else math.inf
                     execution["skip"] = (not self.collect and 0 < step < total - 1
-                        and lane["residual"] is not None and estimate is not None
+                        and not phase_changed and lane["residual"] is not None and estimate is not None
                         and accumulated < self.threshold and lane["skips"] < self.profile["maxConsecutiveSkips"])
                     if execution["skip"]:
                         lane.update(accumulated=accumulated, skips=lane["skips"] + 1)
                         self.stats["skippedComputes"] += 1
                         self.stats["skippedBlocks"] += len(blocks)
                     else:
+                        execution["input"] = snapshot(hidden)
                         lane.update(accumulated=0.0, skips=0)
                         self.stats["fullComputes"] += 1
                 if execution["skip"]:
@@ -132,7 +153,7 @@ class TeaCacheController:
                             lane["residual"] = None
                     lane["proxy"] = execution["proxy"]
                     if self.collect:
-                        self.samples.append(dict(branch=branch, step=step, timestep=float(timestep_value),
+                        self.samples.append(dict(branch=branch, step=step, total=total, timestep=float(timestep_value),
                             proxyRelativeL1=execution["change"], residualRelativeL1=residual_change))
                 return result
             return forward

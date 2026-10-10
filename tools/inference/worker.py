@@ -1,4 +1,4 @@
-"""One local-only Anima generation per process. stdout is exclusively JSONL.
+"""Local-only Anima generation; --serve reuses weights with fresh per-job state.
 
 No dependency installation, downloads, arbitrary model code, or single-file conversion.
 --validate checks local layout/dependency imports, not weight correctness or GPU fit.
@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import contextlib
 import importlib.metadata
+from functools import lru_cache
 import json
 import math
 import os
@@ -91,6 +92,7 @@ def validate_model(value):
     return root
 
 
+@lru_cache(maxsize=16)
 def load_mask_tools(name="masked_anima"):
     # -I excludes the script directory: load only this bundled sibling, never PYTHONPATH.
     import importlib.util
@@ -104,10 +106,15 @@ def load_mask_tools(name="masked_anima"):
 
 
 def dependencies():
+    # A diagnostic/first-job check reads the bundled code afresh. A resident
+    # worker freezes those modules after successful initialization.
+    load_mask_tools.cache_clear()
     load_mask_tools()
     load_mask_tools("clipseg_mask")
     load_mask_tools("teacache_anima")
     load_mask_tools("teacache_profile")
+    load_mask_tools("resident_anima")
+    load_mask_tools("anima_text_cache")
     versions = {}
     for name, expected in PINS.items():
         try:
@@ -340,12 +347,20 @@ def load_pipeline(root, cfg, blocks=None):
     return pipeline
 
 
-def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False):
+def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True):
     data = validate_job(job)
     root = validate_model(job.get("modelDir"))
-    dependencies()
+    if resident is None:
+        dependencies()
+    else:
+        resident.prepare(dependencies)
     import torch
     tea, tea_report, blocks = None, None, None
+    identity = None
+    identity_started = time.perf_counter()
+    if resident is not None:
+        identity = load_mask_tools("teacache_profile").model_identity(root, job.get("loras", []))
+    resident_fingerprint = time.perf_counter() - identity_started if resident is not None else 0
     if data["teaCache"] or collect_teacache:
         profile_tools = load_mask_tools("teacache_profile")
         if collect_teacache and data["teaCache"]:
@@ -359,7 +374,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             mode = "masked" if job.get("maskImagePath") or data.get("maskPrompt") else ("img2img" if job.get("inputImagePath") else "txt2img")
             started = time.perf_counter()
             scope = profile_tools.compatibility(root, job.get("loras", []), data, mode, dtype, torch.cuda.get_device_name(0),
-                mask_model_dir=job.get("maskModelDir"))
+                mask_model_dir=job.get("maskModelDir"), identity=identity)
             tea_report = dict(schemaVersion=1, teaCacheEnabled=data["teaCache"], compatibility=scope,
                 fingerprintSeconds=time.perf_counter() - started)
             threshold = profile_tools.validate_profile(profile, scope, data.get("teaCacheThresh"),
@@ -370,6 +385,9 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             raise WorkerError(exc.code, str(exc)) from exc
     elif measure_teacache:
         tea_report = dict(schemaVersion=1, teaCacheEnabled=False, compatibility=None, fingerprintSeconds=0)
+    if tea_report is not None:
+        tea_report["residentFingerprintSeconds"] = resident_fingerprint
+        torch.cuda.reset_peak_memory_stats(0)
     image = load_input_image(job["inputImagePath"]) if job.get("inputImagePath") else None
     mask_tools = None
     if job.get("maskImagePath") or data.get("maskPrompt"):
@@ -392,12 +410,31 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
             blocks = AnimaAutoBlocks()
         blocks = load_mask_tools("teacache_anima").apply_blocks(blocks, tea)
+    if resident is not None and cache_text:
+        text_tools = load_mask_tools("anima_text_cache")
+        if resident.text_cache is None:
+            resident.text_cache = text_tools.TextCache()
+        if blocks is None:
+            from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
+            blocks = AnimaAutoBlocks()
+        blocks = text_tools.apply_text_cache(blocks, resident.text_cache)
     started = time.perf_counter()
-    pipeline = load_pipeline(root, data["cfg"], blocks=blocks) if blocks is not None else load_pipeline(root, data["cfg"])
-    load_loras(pipeline, job.get("loras", []))
+    reused = False
+    if resident is None:
+        pipeline = load_pipeline(root, data["cfg"], blocks=blocks) if blocks is not None else load_pipeline(root, data["cfg"])
+        load_loras(pipeline, job.get("loras", []))
+    else:
+        key = {"root": str(root), **identity}
+        pipeline, reused = resident.acquire(key, root, data["cfg"], blocks, job.get("loras", []), load_pipeline, load_loras)
+        if not reused and load_mask_tools("teacache_profile").model_identity(root, job.get("loras", [])) != identity:
+            resident.clear()
+            raise WorkerError("MODEL_CHANGED", "Model or LoRA bytes changed while loading; retry after preparation completes")
     if tea_report is not None:
         torch.cuda.synchronize()
         tea_report["modelLoadSeconds"] = time.perf_counter() - started
+        tea_report["modelReused"] = reused
+    if resident is not None and resident.text_cache is not None:
+        resident.text_cache.begin_job()
     total = data["steps"] - int(data["steps"] - data["steps"] * data["denoisingStrength"]) if image is not None else data["steps"]
     step = 0
     original_step = pipeline.scheduler.step
@@ -430,6 +467,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             timingScope="pipeline includes encoding, denoising and decoding; modelLoad includes LoRAs",
             samples=tea.samples if tea is not None else [], stats=dict(tea.stats) if tea is not None else None,
             peakAllocatedBytes=torch.cuda.max_memory_allocated(0))
+        tea_report["textCacheEnabled"] = resident is not None and cache_text
     if not images or len(images) != 1:
         raise WorkerError("GENERATION_FAILED", "Pipeline returned no single image")
     if mask_tools is not None:
@@ -445,7 +483,8 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
-    emit(stream, job["id"], "result", outputPath=job["outputPath"],
+    emit(stream, job["id"], "result", outputPath=job["outputPath"], modelReused=reused,
+         **({"textCache": resident.text_cache.stats()} if resident is not None and cache_text else {}),
          **({"teaCache": dict(tea.stats)} if tea is not None else {}))
     return tea_report
 
@@ -455,6 +494,7 @@ def main(argv=None):
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--validate", metavar="MODEL_DIR")
     mode.add_argument("--diagnose", action="store_true")
+    mode.add_argument("--serve", action="store_true", help="Serial JSONL jobs; reuse one exact model/LoRA weight set")
     args = parser.parse_args(argv)
     stream = sys.stdout
     job_id = None
@@ -474,15 +514,26 @@ def main(argv=None):
                 emit(stream, None, "validation", valid=True, modelDir=str(root), dependencies=versions,
                      scope="layout-and-imports-only; weights and GPU generation not tested")
             else:
-                line = sys.stdin.readline(2 * 1024 * 1024 + 1)
-                if len(line) > 2 * 1024 * 1024:
-                    raise WorkerError("INVALID_REQUEST", "JSONL request exceeds 2 MiB")
+                resident = load_mask_tools("resident_anima").PipelineCache() if args.serve else None
                 try:
-                    job = json.loads(line)
-                except ValueError as exc:
-                    raise WorkerError("INVALID_REQUEST", "Expected a JSONL generation request") from exc
-                job_id = job.get("id") if isinstance(job, dict) else None
-                generate(job, stream)
+                    while True:
+                        line = sys.stdin.readline(2 * 1024 * 1024 + 1)
+                        if not line and args.serve:
+                            break
+                        if len(line) > 2 * 1024 * 1024:
+                            raise WorkerError("INVALID_REQUEST", "JSONL request exceeds 2 MiB")
+                        try:
+                            job = json.loads(line)
+                        except ValueError as exc:
+                            raise WorkerError("INVALID_REQUEST", "Expected a JSONL generation request") from exc
+                        job_id = job.get("id") if isinstance(job, dict) else None
+                        generate(job, stream, resident=resident)
+                        if not args.serve:
+                            break
+                        emit(stream, job_id, "ready")
+                finally:
+                    if resident is not None:
+                        resident.clear()
         return 0
     except Exception as exc:
         code = exc.code if isinstance(exc, WorkerError) else "GENERATION_FAILED"

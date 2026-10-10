@@ -33,7 +33,7 @@ async fn native_memory_result_is_served_by_legacy_image_route_with_owner_and_hea
     const PNG: &str = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";
     std::fs::write(
         &worker,
-        format!("import base64,json,sys\nr=json.loads(sys.stdin.readline())\nopen(r['outputPath'],'wb').write(base64.b64decode('{PNG}'))\nprint(json.dumps({{'id':r['id'],'event':'result','outputPath':r['outputPath']}}),flush=True)\n"),
+        format!("import base64,json,sys\nr=json.loads(sys.stdin.readline())\nopen(r['outputPath'],'wb').write(base64.b64decode('{PNG}'))\nprint(json.dumps({{'id':r['id'],'event':'result','outputPath':r['outputPath']}}),flush=True)\nprint(json.dumps({{'id':r['id'],'event':'ready'}}),flush=True)\n"),
     )
     .unwrap();
     std::fs::write(

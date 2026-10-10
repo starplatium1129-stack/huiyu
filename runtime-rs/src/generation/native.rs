@@ -1,4 +1,5 @@
 mod config;
+mod worker;
 use super::*;
 pub(crate) use config::{Settings, load};
 use std::{path::PathBuf, process::Stdio};
@@ -18,6 +19,8 @@ pub(super) struct Engine {
     processes: Arc<crate::processes::Processes>,
     tokens: Mutex<HashMap<String, CancellationToken>>,
     slot: Semaphore,
+    worker: Mutex<Option<worker::Worker>>,
+    idle_timeout: Duration,
 }
 impl Default for Engine {
     fn default() -> Self {
@@ -25,12 +28,17 @@ impl Default for Engine {
             processes: Arc::default(),
             tokens: Mutex::default(),
             slot: Semaphore::new(1),
+            worker: Mutex::new(None),
+            idle_timeout: Duration::from_secs(120),
         }
     }
 }
 impl Engine {
     pub async fn close(&self) {
         self.processes.close().await;
+        if let Some(mut worker) = self.worker.lock().await.take() {
+            let _ = worker.stop().await;
+        }
     }
 }
 impl Service {
@@ -67,8 +75,24 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
         .insert(job.id.clone(), token.clone());
     let worker = inner.clone();
     inner.tasks.spawn(async move {
-        let outcome = run(&worker, &job, &token).await;
-        settle(&worker, &job, outcome, token.is_cancelled()).await;
+        let slot = tokio::select! {
+            biased;
+            _ = token.cancelled() => Err(closed()),
+            slot = worker.native.slot.acquire() => slot.map_err(|_| closed()),
+        };
+        match slot {
+            Ok(slot) => {
+                let outcome = run(&worker, &job, &token).await;
+                // Hold the GPU slot through publication/cancel settlement. A
+                // cancelling completed job must not retire the next job's model.
+                if settle(&worker, &job, outcome, token.is_cancelled()).await {
+                    slot.forget();
+                }
+            }
+            Err(error) => {
+                settle(&worker, &job, Err(error), true).await;
+            }
+        }
         worker.native.tokens.lock().await.remove(&job.id);
     });
 }
@@ -77,44 +101,58 @@ async fn settle(
     job: &Arc<Job>,
     outcome: Result<Output>,
     token_cancelled: bool,
-) {
-    match outcome {
+) -> bool {
+    let error = match outcome {
         Ok(output) => {
             jobs::succeed(inner, job, output).await;
             // Cancellation can win between worker completion and publication.
             // succeed intentionally refuses publication in cancelling state.
             if job.state.lock().await.status == "cancelling" {
-                cancelled(job).await;
-            }
-        }
-        Err(error) => {
-            let mut state = job.state.lock().await;
-            if error.code == "TERMINATION_UNCONFIRMED" {
-                state.status = "failed".into();
-                state.unknown = true;
-                state.settled = false;
-                state.code = Some(error.code);
-                state.error = Some(error.message);
-            } else {
-                // Decide under the same lock as cancel, including cancellation
-                // accepted before a process/token was registered.
-                if token_cancelled || state.status == "cancelling" {
-                    state.status = "cancelled".into();
+                let resident = inner.native.worker.lock().await.take();
+                if let Some(mut resident) = resident {
+                    if let Err(error) = resident.stop().await {
+                        error
+                    } else {
+                        cancelled(job).await;
+                        return false;
+                    }
                 } else {
-                    state.status = "failed".into();
-                    state.code = Some(error.code);
-                    state.error = Some(error.message);
+                    cancelled(job).await;
+                    return false;
                 }
-                state.unknown = false;
-                state.settled = true;
-                state.finished = Some(now());
-                state.permit.take();
+            } else {
+                return false;
             }
-            drop(state);
-            job.notify.notify_waiters();
-            jobs::notify_settled(job);
         }
+        Err(error) => error,
+    };
+    let unconfirmed = error.code == "TERMINATION_UNCONFIRMED";
+    let mut state = job.state.lock().await;
+    if unconfirmed {
+        state.status = "failed".into();
+        state.unknown = true;
+        state.settled = false;
+        state.code = Some(error.code);
+        state.error = Some(error.message);
+    } else {
+        // Decide under the same lock as cancel, including cancellation
+        // accepted before a process/token was registered.
+        if token_cancelled || state.status == "cancelling" {
+            state.status = "cancelled".into();
+        } else {
+            state.status = "failed".into();
+            state.code = Some(error.code);
+            state.error = Some(error.message);
+        }
+        state.unknown = false;
+        state.settled = true;
+        state.finished = Some(now());
+        state.permit.take();
     }
+    drop(state);
+    job.notify.notify_waiters();
+    jobs::notify_settled(job);
+    unconfirmed
 }
 async fn cancelled(job: &Job) {
     let mut state = job.state.lock().await;
@@ -141,7 +179,6 @@ pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
     Ok(())
 }
 async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> Result<Output> {
-    let slot = tokio::select! { biased; _=token.cancelled()=>return Err(closed()), slot=inner.native.slot.acquire()=>slot.map_err(|_| closed())? };
     let Execution::Native(plan) = &job.execution else {
         unreachable!()
     };
@@ -200,31 +237,12 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         None
     };
     let request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"teaCacheProfilePath":plan.tea_cache_profile_path,"outputPath":output,"input":input,"inputImagePath":input_image_path,"maskImagePath":mask_image_path,"loras":plan.loras});
-    let mut command = tokio::process::Command::new(&plan.settings.python);
-    command
-        .arg("-I")
-        .arg("-u")
-        .arg(&plan.settings.worker)
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .env_remove("PYTHONPATH")
-        .env_remove("PYTHONHOME")
-        .env("HF_HUB_OFFLINE", "1")
-        .env("TRANSFORMERS_OFFLINE", "1");
-    let process = inner.native.processes.spawn(&mut command)?;
+    let mut worker = inner.native.take_worker(&plan.settings).await?;
     let result = async {
-        let mut stdin = process.take_input().ok_or_else(protocol_error)?;
-        stdin.write_all(format!("{}\n", request).as_bytes()).await?;
-        stdin.shutdown().await?;
-        drop(stdin);
-        let (stdout, stderr) = process.take_output();
-        let mut stdout = BufReader::new(stdout.ok_or_else(protocol_error)?);
-        let mut stderr = stderr.ok_or_else(protocol_error)?;
-        // Drain diagnostics without retaining unbounded model log output.
-        let drain = async {
-            let _ = tokio::io::copy(&mut stderr, &mut tokio::io::sink()).await;
-        };
+        worker
+            .input
+            .write_all(format!("{}\n", request).as_bytes())
+            .await?;
         let events = async {
             {
                 let mut state = job.state.lock().await;
@@ -244,9 +262,10 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                     .await?;
             }
             let mut line = Vec::new();
+            let mut produced = false;
             loop {
                 line.clear();
-                let count = (&mut stdout)
+                let count = (&mut worker.output)
                     .take(65537)
                     .read_until(b'\n', &mut line)
                     .await?;
@@ -258,7 +277,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                     return Err(protocol_error());
                 }
                 match event["event"].as_str() {
-                    Some("progress") => {
+                    Some("progress") if !produced => {
                         let step = event["step"].as_u64().ok_or_else(protocol_error)?;
                         let total = event["total"]
                             .as_u64()
@@ -268,12 +287,13 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                         state.progress = Some(step as f64 / total as f64);
                         state.progress_text = format!("独立推理 {step}/{total}");
                     }
-                    Some("result") => {
+                    Some("result") if !produced => {
                         if event["outputPath"].as_str() != output.to_str() {
                             return Err(protocol_error());
                         }
-                        return Ok(());
+                        produced = true;
                     }
+                    Some("ready") if produced => return Ok(()),
                     Some("error") => {
                         return Err(ApiError::new(
                             502,
@@ -285,10 +305,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                 }
             }
         };
-        tokio::pin!(drain);
-        tokio::pin!(events);
-        let result = tokio::select! { result=&mut events=>result, _=&mut drain=>events.await };
-        result?;
+        events.await?;
         // Output paths are chosen by this runtime, never accepted from worker input.
         let metadata = tokio::fs::symlink_metadata(&output).await?;
         if !metadata.is_file()
@@ -309,18 +326,18 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
             mime: "image/png".into(),
         })
     };
-    // Cancellation drops only protocol work; always await owned process termination.
+    // Cancel/error/timeout retires the resident process before another GPU job.
     let value = tokio::select! { biased; _=token.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","独立推理已取消")), value=tokio::time::timeout(Duration::from_secs(600),result)=>value.unwrap_or_else(|_| Err(ApiError::new(504,"NATIVE_TIMEOUT","独立推理超时"))) };
-    if let Err(error) = process.stop().await {
-        // Do not admit another GPU process when termination is unconfirmed.
-        slot.forget();
-        return Err(error);
+    if value.is_ok() && !token.is_cancelled() {
+        Engine::retain_worker(inner.clone(), worker).await;
+        return value;
     }
+    worker.stop().await?;
     value
 }
 fn protocol_error() -> ApiError {
     ApiError::new(502, "NATIVE_PROTOCOL_ERROR", "独立推理协议或结果无效")
 }
 
-#[cfg(all(test, unix))]
+#[cfg(test)]
 mod tests;

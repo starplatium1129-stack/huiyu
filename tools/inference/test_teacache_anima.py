@@ -40,9 +40,11 @@ class Tensor(np.ndarray):
 
 def fake_torch():
     return types.SimpleNamespace(is_grad_enabled=lambda: False, isfinite=np.isfinite, equal=np.array_equal,
+        clamp=lambda value, min: np.maximum(value, min),
         no_grad=lambda: lambda fn: fn, bfloat16="torch.bfloat16", float16="torch.float16",
         cuda=types.SimpleNamespace(is_available=lambda: True, is_bf16_supported=lambda: True,
-            get_device_name=lambda _: "fake CUDA", synchronize=lambda: None, max_memory_allocated=lambda _: 1234),
+            get_device_name=lambda _: "fake CUDA", synchronize=lambda: None, max_memory_allocated=lambda _: 1234,
+            reset_peak_memory_stats=lambda _: None),
         Generator=lambda device: types.SimpleNamespace(manual_seed=lambda seed: seed))
 
 
@@ -131,6 +133,26 @@ class Guider:
 
 
 class TeaTests(unittest.TestCase):
+    def test_phase_envelope_preserves_spikes_refreshes_phase_boundaries_and_rejects_unseen_range(self):
+        value = profile()
+        value.update(schemaVersion=2, algorithm=profiles.PHASE_ALGORITHM,
+                     phaseEnvelopes=[[[0, 0.01], [0.1, 0.03]], [[0, 0.2], [0.1, 0.3]], [[0, 0.01], [0.1, 0.02]]])
+        self.assertEqual(profiles.validate_profile(value, {}), 0.15)
+        self.assertEqual(tea.estimate_change(value, .05, 3, 10), .3)
+        self.assertIsNone(tea.estimate_change(value, .2, 1, 10))
+        model, cache = Model(), tea.TeaCacheController(value, .15)
+        with patch.dict("sys.modules", modules()):
+            for step in range(10):
+                before = cache.stats["fullComputes"]
+                cache.call(model, **arguments(step, total=10))
+                if step in (0, 3, 4, 5, 6, 9):
+                    self.assertEqual(cache.stats["fullComputes"], before + 1)
+        self.assertGreater(cache.stats["skippedComputes"], 0)
+        self.assertFalse(any("forward" in block.__dict__ for block in model.transformer_blocks))
+        value["phaseEnvelopes"][0][1][0] = 0
+        with self.assertRaisesRegex(profiles.TeaCacheError, "strictly ordered"):
+            profiles.validate_profile(value, {})
+
     def test_real_block_skip_cfg_isolation_endpoints_bounds_and_current_head(self):
         model, cache = Model(), tea.TeaCacheController(profile(), 0.15)
         with patch.dict("sys.modules", modules()):

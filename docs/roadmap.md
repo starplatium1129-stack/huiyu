@@ -57,6 +57,7 @@ S03/S08、高刷、高负载、四类 KeepAlive、GPU/纹理/进程内存与功�
 
 ## 创作、研究与接线
 
+- 独立 Anima 的模型驻留、初始化复用、CPU 文本缓存、同 LoRA 强度回切和分阶段 TeaCache 候选已写入源码；办公机同版本真实 CPU 小组件已验证编码等价、适配器回切及完整管线。主力机保留三组验收：真实权重／配套加载，GPU 首张／连续耗时与显存／取消释放，人物细节／换装边界及 TeaCache 留出画质。默认 TeaCache 对照双方复用权重并关闭文本缓存，冷任务另测；小组件不代表实际提速或画质。未验收前 TeaCache 关闭，操作见[独立推理指南](guides/independent-inference.md#办公机完成的准备与文本缓存)。
 - 叙事、人物壁纸和手机壁纸分别小样对照：固定 checkpoint/参数/seeds，保留全部输出和硬条件失败，核查最终请求与画面。[指南](guides/README.md#prompts)与[研究来源](research/README.md)不是本地画质增益证明，不自动扩批或更改定稿。
 - 角色绘画工具当前只准备草稿。接受控队列时明确 queued/running/succeeded/failed，真实出图验收后再启用图片成功结果与奖励。
 - PhotoSwipe 保持按需试验，实体触屏、Windows/Tauri、大图集缩放/拖拽和资源趋势对照后再决定替换默认查看器；fflate/压缩待实际 manifest/原图包需求。
