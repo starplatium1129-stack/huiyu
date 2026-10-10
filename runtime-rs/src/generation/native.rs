@@ -178,7 +178,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         if !bytes.starts_with(b"\x89PNG\r\n\x1a\n") { return Err(protocol_error()); }
         // Fully decode bounded PNG output; a signature alone is not an image.
         let bytes = Arc::new(bytes);
-        crate::images::validate_native_output(bytes.clone(), token).await?;
+        crate::image_decode::validate(bytes.clone(), token).await?;
         Ok(Output::Bytes { bytes, mime: "image/png".into() })
     };
     // Cancellation drops only protocol work; always await owned process termination.

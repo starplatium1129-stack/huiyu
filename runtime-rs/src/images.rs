@@ -1,6 +1,5 @@
 mod admission;
 mod catalog;
-mod decode;
 mod http;
 mod inputs;
 mod native;
@@ -13,15 +12,13 @@ use crate::{
     error::{ApiError, Result},
     execution::{ExecutionHooks, Observation, Output},
     generation::{self, ComfyPlan},
+    image_decode as decode,
     upstream::LocalUpstream,
 };
 pub use admission::Limits;
 pub(crate) use admission::{Kind as ImageKind, owner_matches_for, store_for};
 pub use catalog::catalog;
 pub(crate) use decode::sniff;
-pub(crate) async fn validate_native_output(bytes: Arc<Vec<u8>>, cancel: &CancellationToken) -> Result<()> {
-    decode::validate(bytes, cancel).await
-}
 pub use generation::Config;
 use serde_json::{Value, json};
 use std::{path::PathBuf, sync::Arc};
