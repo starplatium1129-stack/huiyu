@@ -18,6 +18,7 @@ class TextCache:
 
     def begin_job(self):
         self.hits = self.misses = 0
+        self.partial_negative_hits = 0
 
     def clear(self):
         self.entries.clear()
@@ -43,8 +44,12 @@ class TextCache:
 
     def get_negative(self, key, device):
         values = self._negative_snapshots(key)
-        return ({name: value.to(device=device, copy=True) if value is not None else None
-                 for name, value in values.items()} if values is not None else None)
+        if values is None:
+            return None
+        result = {name: value.to(device=device, copy=True) if value is not None else None
+                  for name, value in values.items()}
+        self.partial_negative_hits += 1
+        return result
 
     def put(self, key, values, *, reuse_negative=False):
         size = sum(value.numel() * value.element_size() for value in values.values() if value is not None)
@@ -65,7 +70,8 @@ class TextCache:
         self.bytes += size
 
     def stats(self):
-        return dict(hits=self.hits, misses=self.misses, entries=len(self.entries), cpuBytes=self.bytes)
+        return dict(hits=self.hits, misses=self.misses, partialNegativeHits=self.partial_negative_hits,
+                    entries=len(self.entries), cpuBytes=self.bytes)
 
 
 def apply_text_cache(blocks, cache):

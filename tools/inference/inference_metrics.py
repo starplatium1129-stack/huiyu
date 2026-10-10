@@ -86,7 +86,7 @@ class RuntimeMetrics:
                             outputSaveSeconds=output["outputSaveSeconds"])
         text = dict(enabled=resident is not None and cache_text)
         if text["enabled"]:
-            text.update(_counts(resident.text_cache.stats(), ("hits", "misses", "entries", "cpuBytes")))
+            text.update(_counts(resident.text_cache.stats(), ("hits", "misses", "partialNegativeHits", "entries", "cpuBytes")))
         mask = dict(enabled=resident is not None and cache_mask, used=self.mask_cache is not None)
         if self.mask_cache is not None:
             mask.update({name: self.mask_cache[name] for name in ("modelReused", "resultReused")

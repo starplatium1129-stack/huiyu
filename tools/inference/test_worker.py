@@ -347,16 +347,8 @@ class WorkerTests(unittest.TestCase):
                 worker.validate_job(request)
 
     def test_layout_checks_missing_shards(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = model(Path(directory))
-            self.assertEqual(worker.validate_model(str(root)), root)
-            (root / "t5_tokenizer" / "tokenizer.json").unlink()
-            (root / "t5_tokenizer" / "spiece.model").write_bytes(b"FAKE SENTENCEPIECE")
-            self.assertEqual(worker.validate_model(str(root)), root)
-            (root / "transformer" / "model.safetensors.index.json").write_text('{"weight_map":{"x":"missing.safetensors"}}')
-            with self.assertRaises(worker.WorkerError) as error:
-                worker.validate_model(str(root))
-            self.assertEqual(error.exception.code, "MODEL_INCOMPLETE")
+        from worker_loader_cases import assert_local_model_layout
+        assert_local_model_layout(self, model)
 
     def test_loader_uses_fixed_local_classes_and_cfg_component(self):
         from worker_loader_cases import assert_local_loader_contract

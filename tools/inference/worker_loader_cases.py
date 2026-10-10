@@ -1,9 +1,35 @@
 """Explicit loading-info fakes; no real model, Torch or GPU acceptance."""
 from pathlib import Path
+import json
+import tempfile
 import types
 from unittest.mock import patch
 
 import worker
+
+
+def assert_local_model_layout(test, model):
+    with tempfile.TemporaryDirectory() as directory:
+        root = model(Path(directory))
+        test.assertEqual(worker.validate_model(str(root)), root)
+        scheduler = root / "scheduler" / "scheduler_config.json"
+        supported = {"_class_name": "FlowMatchEulerDiscreteScheduler", "stochastic_sampling": False}
+        scheduler.write_text(json.dumps(supported))
+        test.assertEqual(worker.validate_model(str(root)), root)
+        for config in ({**supported, "stochastic_sampling": True},
+                       {**supported, "_class_name": "EulerDiscreteScheduler"}):
+            scheduler.write_text(json.dumps(config))
+            with test.assertRaisesRegex(worker.WorkerError, "deterministic FlowMatchEuler") as error:
+                worker.validate_model(str(root))
+            test.assertEqual(error.exception.code, "UNSUPPORTED_MODEL")
+        scheduler.write_text(json.dumps(supported))
+        (root / "t5_tokenizer" / "tokenizer.json").unlink()
+        (root / "t5_tokenizer" / "spiece.model").write_bytes(b"FAKE SENTENCEPIECE")
+        test.assertEqual(worker.validate_model(str(root)), root)
+        (root / "transformer" / "model.safetensors.index.json").write_text('{"weight_map":{"x":"missing.safetensors"}}')
+        with test.assertRaises(worker.WorkerError) as error:
+            worker.validate_model(str(root))
+        test.assertEqual(error.exception.code, "MODEL_INCOMPLETE")
 
 
 def assert_local_loader_contract(test):

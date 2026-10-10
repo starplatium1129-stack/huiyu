@@ -380,7 +380,17 @@ fn native_runtime(value: &Value) -> Value {
             result["timings"][key] = json!(finite(&value["timings"][key])?);
         }
         let groups: [(&str, &[&str], &[&str]); 3] = [
-            ("textCache", &[], &["hits", "misses", "entries", "cpuBytes"]),
+            (
+                "textCache",
+                &[],
+                &[
+                    "hits",
+                    "misses",
+                    "partialNegativeHits",
+                    "entries",
+                    "cpuBytes",
+                ],
+            ),
             (
                 "maskCache",
                 &["used", "modelReused", "resultReused"],

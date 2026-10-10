@@ -171,6 +171,7 @@ class TextTests(unittest.TestCase):
             expected = run("P2", encoder=Encoder())
             Encoder.qwen_calls, Encoder.t5_calls = [], []
             first = run("P1")
+            self.assertEqual(cache.stats()["partialNegativeHits"], 0)
             with patch.object(Tensor, "to", autospec=True, side_effect=Tensor.to) as transfers:
                 second = run("P2")
             routes = [(call.args[0].device, call.kwargs["device"]) for call in transfers.call_args_list]
@@ -180,6 +181,11 @@ class TextTests(unittest.TestCase):
             self.assertEqual(Encoder.qwen_calls, [["P1"], ["N"], ["P2"]])
             self.assertEqual(Encoder.t5_calls, Encoder.qwen_calls)
             self.assertEqual((cache.hits, cache.misses, len(cache.entries)), (0, 1, 2))
+            self.assertEqual(cache.stats()["partialNegativeHits"], 1, "put snapshot reuse must not double-count")
+            from inference_metrics import RuntimeMetrics
+            observed = RuntimeMetrics(types.SimpleNamespace(), 0).result(
+                {"outputSaveSeconds": 0}, True, types.SimpleNamespace(text_cache=cache), True, False, None, None, 0)
+            self.assertEqual(observed["textCache"]["partialNegativeHits"], 1)
             snapshots = [item[0] for item in cache.entries.values()]
             for name in FIELDS[4:]: self.assertIs(snapshots[0][name], snapshots[1][name])
             pair_bytes = sum(second.get(name).numel() * second.get(name).element_size() for name in FIELDS)
@@ -196,6 +202,7 @@ class TextTests(unittest.TestCase):
             repeated = run("P2")
             for name in FIELDS: np.testing.assert_array_equal(repeated.get(name), expected.get(name))
             self.assertEqual((cache.hits, cache.misses, len(Encoder.qwen_calls)), (1, 0, 3))
+            self.assertEqual(cache.stats()["partialNegativeHits"], 0, "each job resets partial observations")
             run("P3", "other")
             run("P4", "different")
             before = list(cache.entries)
@@ -232,6 +239,7 @@ class TextTests(unittest.TestCase):
                 expected = [["P2"]] + ([] if components.guider.num_conditions == 1 else [[change.get("negative") or ""]])
                 self.assertEqual(Encoder.qwen_calls, expected)
                 self.assertEqual(Encoder.t5_calls, expected)
+                self.assertEqual(cache.stats()["partialNegativeHits"], 0)
                 if components.guider.num_conditions == 1:
                     self.assertTrue(all(state.get(name) is None for name in FIELDS[4:]))
         with patch.dict("sys.modules", modules()):
@@ -253,6 +261,10 @@ class TextTests(unittest.TestCase):
             encoder = blocks.sub_blocks["text_encoder"]
             encoder(components, State(prompt="P1", negative_prompt="N", max_sequence_length=512))
             before, size = list(cache.entries), cache.bytes
+            with patch.object(Tensor, "to", side_effect=RuntimeError("negative transfer failed")):
+                with self.assertRaisesRegex(RuntimeError, "negative transfer failed"):
+                    cache.get_negative(("P2", *before[0][1:]), "cuda")
+            self.assertEqual(cache.stats()["partialNegativeHits"], 0)
             state = State(prompt="P2", negative_prompt="N", max_sequence_length=512)
             with patch.object(Encoder, "_get_qwen_prompt_embeds", side_effect=RuntimeError("encoder failed")):
                 with self.assertRaisesRegex(RuntimeError, "encoder failed"): encoder(components, state)

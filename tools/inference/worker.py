@@ -81,8 +81,8 @@ def validate_model(value):
                         raise WorkerError("MODEL_INCOMPLETE", f"Missing/unsafe safetensors shard in {shard_index}: {shard}")
         elif name == "scheduler":
             config = read_json(folder / "scheduler_config.json")
-            if config.get("_class_name") != "FlowMatchEulerDiscreteScheduler":
-                raise WorkerError("UNSUPPORTED_MODEL", "Only FlowMatchEulerDiscreteScheduler is supported")
+            if config.get("_class_name") != "FlowMatchEulerDiscreteScheduler" or config.get("stochastic_sampling"):
+                raise WorkerError("UNSUPPORTED_MODEL", "Only deterministic FlowMatchEulerDiscreteScheduler (stochastic_sampling=false) is supported")
         else:
             read_json(folder / "tokenizer_config.json")
             required = ("vocab.json", "merges.txt") if name == "tokenizer" else (() if (folder / "spiece.model").is_file() else ("tokenizer.json",))
