@@ -78,6 +78,47 @@ def fake_modules(draws):
 
 
 class MaskTests(unittest.TestCase):
+    def test_input_image_reuses_independent_rgb_exif_result(self):
+        from PIL import ImageOps
+        original_open, original_convert = Image.open, Image.Image.convert
+        for format, mode, orientation in (("PNG", "RGB", 1), ("JPEG", "RGB", 6),
+                                          ("PNG", "RGBA", 6), ("PNG", "L", 1)):
+            with self.subTest(format=format, mode=mode, orientation=orientation), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / ("input." + format.lower())
+                image = Image.new("RGB", (3, 2))
+                image.putdata([(i * 40, 255 - i * 30, i * 20) for i in range(6)])
+                exif = Image.Exif()
+                exif[274], exif[271] = orientation, "input-copy-fixture"
+                exif[34665] = {36867: "2026:10:10 20:36:00"}
+                image.convert(mode).save(path, format=format, exif=exif)
+                with original_open(path) as source:
+                    expected = ImageOps.exif_transpose(source).convert("RGB")
+                opened, conversions = [], []
+
+                def open_image(*args, **kwargs):
+                    source = original_open(*args, **kwargs)
+                    opened.append(source)
+                    return source
+
+                def convert(source, *args, **kwargs):
+                    conversions.append(source.mode)
+                    return original_convert(source, *args, **kwargs)
+
+                with patch.object(Image, "open", side_effect=open_image), patch.object(Image.Image, "convert", convert):
+                    actual = worker.load_input_image(path)
+                self.assertIsNone(opened[0].fp)
+                self.assertIsNot(actual, opened[0])
+                self.assertEqual(conversions, [] if mode == "RGB" and orientation == 1 else [mode])
+                self.assertEqual((actual.mode, actual.size, actual.tobytes()),
+                                 (expected.mode, expected.size, expected.tobytes()))
+                self.assertEqual(actual.info, expected.info)
+                self.assertEqual(dict(actual.getexif()), dict(expected.getexif()))
+                self.assertEqual(actual.getexif().get_ifd(34665), expected.getexif().get_ifd(34665))
+                source_pixels = opened[0].tobytes()
+                path.unlink()
+                actual.putpixel((0, 0), (1, 2, 3))
+                self.assertEqual(opened[0].tobytes(), source_pixels)
+
     def test_png_output_preserves_exact_pixels_and_reports_saved_size(self):
         pixels = np.arange(19 * 13 * 3, dtype=np.uint8).reshape(13, 19, 3)
         image = Image.fromarray(pixels)

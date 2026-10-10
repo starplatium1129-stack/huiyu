@@ -249,7 +249,10 @@ def load_input_image(path):
                 raise WorkerError("INVALID_INPUT", "Input image must be PNG, JPEG or WebP")
             if image.width * image.height > 4096 * 4096 or getattr(image, "n_frames", 1) != 1:
                 raise WorkerError("INVALID_INPUT", "Input must be one still image of at most 16 megapixels")
-            return ImageOps.exif_transpose(image).convert("RGB")
+            oriented = ImageOps.exif_transpose(image)
+            # Transposed EXIF needs convert's copy to normalize nested IFD offsets.
+            untransposed = image.getexif().get(274) not in range(2, 9)
+            return oriented if oriented.mode == "RGB" and untransposed else oriented.convert("RGB")
     except (OSError, ValueError, Image.DecompressionBombError) as exc:
         raise WorkerError("INVALID_INPUT", f"Cannot decode input image: {exc}") from exc
 
@@ -342,7 +345,10 @@ def load_pipeline(root, cfg, blocks=None):
             kwargs.update(use_safetensors=True, torch_dtype=dtype)
         if name in ("text_encoder", "tokenizer", "t5_tokenizer"):
             kwargs["trust_remote_code"] = False
-        components[name] = cls.from_pretrained(str(root / name), **kwargs)
+        if name in WEIGHTS:
+            components[name] = load_mask_tools("resident_anima").load_weights(name, cls, str(root / name), **kwargs)
+        else:
+            components[name] = cls.from_pretrained(str(root / name), **kwargs)
     # CFG is a component, not an ignored call-time guidance_scale argument.
     components["guider"] = ClassifierFreeGuidance(guidance_scale=cfg)
     pipeline.update_components(**components)

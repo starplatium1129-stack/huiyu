@@ -359,38 +359,8 @@ class WorkerTests(unittest.TestCase):
             self.assertEqual(error.exception.code, "MODEL_INCOMPLETE")
 
     def test_loader_uses_fixed_local_classes_and_cfg_component(self):
-        calls = []
-
-        class Component:
-            @classmethod
-            def from_pretrained(cls, path, **kwargs):
-                calls.append((Path(path).name, kwargs))
-                return cls()
-
-        class Pipeline:
-            def update_components(self, **kwargs):
-                self.components = kwargs
-            def to(self, device):
-                self.device = device
-            def set_progress_bar_config(self, **kwargs):
-                pass
-
-        diffusers = types.SimpleNamespace(AnimaModularPipeline=Pipeline, AnimaTextConditioner=Component,
-            AutoencoderKLQwenImage=Component, CosmosTransformer3DModel=Component,
-            FlowMatchEulerDiscreteScheduler=Component, ClassifierFreeGuidance=lambda **kw: kw)
-        transformers = types.SimpleNamespace(Qwen3Model=Component, Qwen2Tokenizer=Component, T5Tokenizer=Component, T5TokenizerFast=Component)
-        torch = types.SimpleNamespace(cuda=types.SimpleNamespace(is_available=lambda: True, is_bf16_supported=lambda: True), bfloat16="bf16")
-        with patch.dict("sys.modules", {"torch": torch, "diffusers": diffusers, "transformers": transformers}):
-            pipeline = worker.load_pipeline(Path("/local-model"), 5.0)
-        self.assertEqual(pipeline.components["guider"], {"guidance_scale": 5.0})
-        self.assertEqual(pipeline.device, "cuda")
-        self.assertEqual(len(calls), 7)
-        for name, kwargs in calls:
-            self.assertTrue(kwargs["local_files_only"])
-            if name in worker.WEIGHTS:
-                self.assertTrue(kwargs["use_safetensors"])
-            if name in ("text_encoder", "tokenizer", "t5_tokenizer"):
-                self.assertFalse(kwargs["trust_remote_code"])
+        from worker_loader_cases import assert_local_loader_contract
+        assert_local_loader_contract(self)
 
     def test_fake_pipeline_protocol_and_atomic_output(self):
         class FakeImage:

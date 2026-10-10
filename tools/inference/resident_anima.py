@@ -6,6 +6,15 @@ import copy
 import sys
 
 
+def load_weights(name, cls, path, **kwargs):
+    component, info = cls.from_pretrained(path, output_loading_info=True, **kwargs)
+    # Use upstream's final tied/ignored-key report; unexpected export heads are allowed.
+    issues = [key for key in ("missing_keys", "mismatched_keys", "error_msgs") if info.get(key)]
+    if issues:
+        raise ValueError(f"Anima {name} weights incomplete ({', '.join(issues)}); prepare a matching local export")
+    return component
+
+
 def _can_unload_adapters(components):
     # PEFT 0.19 PiSSA/OLoRA/CorDA/LoftQ/LoRA-GA initialization can mutate
     # base weights. Preserve their existing reload behavior, and only reuse
