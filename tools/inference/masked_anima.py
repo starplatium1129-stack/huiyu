@@ -61,7 +61,8 @@ def prepare_mask(image, mask, size, grow):
     """Shared effective mask for manual and locally segmented inputs."""
     from PIL import Image, ImageFilter
     mask = mask.resize(size, Image.Resampling.NEAREST)
-    if grow and mask.mode == "L":
+    # Radius 1 regressed with NumPy conversion/two passes in the CPU probe.
+    if grow >= 2 and mask.mode == "L":
         import numpy as np
         # A square max is exactly separable, including all 8-bit soft-mask values.
         values, window = np.asarray(mask), 2 * grow + 1
