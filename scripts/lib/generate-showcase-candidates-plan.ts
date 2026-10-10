@@ -56,11 +56,16 @@ function artistBatch(seedBase: any) {
   });
 }
 
-/** 默认衣装样张必须选同衣装的全年龄场景，不能因排序选中成人条目。 */
-function characterDefaultBlueprint(blueprints: any, characterId: any, outfitId: any) {
-  const match = blueprints.find((bp: any) => bp.characterId === characterId && !bp.adult && bp.outfitId === outfitId)
-    || blueprints.find((bp: any) => !bp.characterId && !bp.adult);
-  if (!match) throw new Error(`no safe default-outfit blueprint for ${characterId}`);
+/** 优先默认衣装的 SFW 场景；否则使用角色自己的 SFW 场景及其既有衣装绑定。 */
+function characterSafeBlueprint(
+  blueprints: import('../../src/types/sceneBlueprint').SceneBlueprint[],
+  character: import('../../src/types/character').PopularCharacter,
+) {
+  const outfit = popularContent.defaultOutfit(character);
+  const safe = popularContent.eligibleBlueprints(blueprints, character, { adultEnabled: false })
+    .filter(blueprint => blueprint.sampleRating !== 'R18');
+  const match = safe.find(blueprint => (blueprint.outfitId || outfit.id) === outfit.id) || safe[0];
+  if (!match) throw new Error(`no safe character blueprint for ${character.id}`);
   return match;
 }
 
@@ -69,8 +74,8 @@ function popularBatch(seedBase: any) {
   const blueprints = popularContent.parseSceneBlueprints(blueprintData);
   const profile = resolveModelProfile(presets.model_profiles as any, ANIMA_AESTHETIC_ID, 'anima');
   if (!profile) throw new Error('anima_aesthetic_v11 profile missing');
-  return characters.map((character: any) => {
-    const blueprint = characterDefaultBlueprint(blueprints, character.id, popularContent.defaultOutfit(character).id);
+  return characters.map(character => {
+    const blueprint = characterSafeBlueprint(blueprints, character);
     const { prompt, negative, outfit } = buildPopularPrompt(character, blueprint, profile, undefined);
     const model = animaConst.MODELS[ANIMA_AESTHETIC_ID];
     const size = blueprint.recommendedSize.match(/(\d+)\s*[x×]\s*(\d+)/i);
@@ -169,9 +174,10 @@ function rebuildWithOverride(base: any, override: any) {
   if (base.batch === 'popular') {
     const characters = popularContent.parsePopularCharacters(popularData);
     const blueprints = popularContent.parseSceneBlueprints(blueprintData);
-    const character: any = popularContent.findCharacter(characters, base.subject);
+    const character = popularContent.findCharacter(characters, base.subject);
+    if (!character) throw new Error(`unknown character ${base.subject}`);
     const blueprint = popularContent.findBlueprint(blueprints, base.sceneId)
-      || characterDefaultBlueprint(blueprints, base.subject, popularContent.defaultOutfit(character).id);
+      || characterSafeBlueprint(blueprints, character);
     const profile = resolveModelProfile(presets.model_profiles as any, ANIMA_AESTHETIC_ID, 'anima');
     const { prompt, negative } = buildPopularPrompt(character, blueprint, profile, override);
     return Object.assign({}, base, { prompt, negative });

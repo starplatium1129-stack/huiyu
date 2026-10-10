@@ -156,8 +156,14 @@ function buildStudioPrompt({ engine, characterId, composition, loraId, override 
   return { prompt, negative };
 }
 
-function buildPopularPrompt(character: any, blueprint: any, profile: any, override: any) {
-  const outfit = popularContent.defaultOutfit(character);
+function buildPopularPrompt(
+  character: import('../../src/types/character').PopularCharacter,
+  blueprint: import('../../src/types/sceneBlueprint').SceneBlueprint,
+  profile: any, override: any,
+) {
+  const outfitId = blueprint.outfitId || popularContent.defaultOutfit(character).id;
+  const outfit = popularContent.findOutfit(character, outfitId);
+  if (!outfit) throw new Error(`unknown outfit ${outfitId} for ${character.id}`);
   const decisions = blueprintDecisions.inferBlueprintDecisions(blueprint);
   const result = popularPrompt.buildPopularPromptPlan({
     character,

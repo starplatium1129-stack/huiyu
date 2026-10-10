@@ -197,7 +197,7 @@ test('artist batch: curated artists + 1 no-artist baseline, one artist tag each'
   }
 });
 
-test(`popular batch covers all ${popularCount} characters with default outfit and safe blueprint`, () => {
+test(`popular batch covers all ${popularCount} characters with their authored safe blueprint and bound outfit`, () => {
   const characters = popularData.characters;
   assert.strictEqual(characters.length, popularCount);
   const popular = gen.popularBatch(20260812);
@@ -218,15 +218,20 @@ test(`popular batch covers all ${popularCount} characters with default outfit an
     assert.strictEqual(item.prompt, item.prompt.replace(/(ayachi_nene|shiki_natsume|nene_|natsume_)/gi, ''),
       `${character.id} prompt leaked studio LoRA anchor`);
     const defaultOutfit = character.outfits.find(outfit => outfit.default) || character.outfits[0];
-    assert.strictEqual(item.outfitId, defaultOutfit.id, `${character.id} must use its default outfit`);
     if (character.adultEligibility !== 'adult') {
       assert.ok(!/(nsfw|nude|explicit)/i.test(item.prompt), `${character.id} non-adult character must stay safe`);
     }
     const scene = sceneBlueprints.find(blueprint => blueprint.id === item.sceneId);
     assert.ok(scene && !scene.adult && scene.sampleRating !== 'R18', `${character.id} default batch must skip adult records`);
-    assert.strictEqual(scene.outfitId, defaultOutfit.id, `${character.id} scene must match the default outfit being rendered`);
     assert.ok(scene && scene.characterId === character.id,
       `${character.id} must use its own prototype scene, got ${item.sceneId}`);
+    const outfitId = scene.outfitId || defaultOutfit.id;
+    assert.ok(character.outfits.some(outfit => outfit.id === outfitId), `${character.id} scene outfit must exist`);
+    assert.strictEqual(item.outfitId, outfitId, `${character.id} candidate must render the scene's bound outfit`);
+    const defaultScene = sceneBlueprints.find(blueprint => blueprint.characterId === character.id
+      && !blueprint.adult && blueprint.sampleRating !== 'R18'
+      && (blueprint.outfitId || defaultOutfit.id) === defaultOutfit.id);
+    if (defaultScene) assert.strictEqual(item.outfitId, defaultOutfit.id, `${character.id} should prefer an authored safe default-outfit scene`);
   }
 });
 
