@@ -23,6 +23,36 @@ fn png(image: &image::DynamicImage) -> Result<Vec<u8>> {
 pub(super) fn hash(bytes: &[u8]) -> String {
     hex::encode(Sha256::digest(bytes))
 }
+// image-webp allocates EXIF from declared chunk sizes before reading its bytes.
+// Bound every RIFF chunk first; bytes after the RIFF container are not image data.
+fn webp_container(bytes: &[u8]) -> Result<&[u8]> {
+    let invalid = || super::invalid("WebP 数据块超出文件边界");
+    let size = bytes.get(4..8).ok_or_else(invalid)?;
+    let end = (u32::from_le_bytes(size.try_into().unwrap()) as usize)
+        .checked_add(8)
+        .filter(|end| *end >= 12 && *end <= bytes.len())
+        .ok_or_else(invalid)?;
+    webp_chunks(&bytes[12..end], true)?;
+    Ok(&bytes[..end])
+}
+fn webp_chunks(mut bytes: &[u8], frames: bool) -> Result<()> {
+    let invalid = || super::invalid("WebP 数据块超出文件边界");
+    while !bytes.is_empty() {
+        let header = bytes.get(..8).ok_or_else(invalid)?;
+        let size = u32::from_le_bytes(header[4..8].try_into().unwrap()) as usize;
+        let end = 8usize.checked_add(size).ok_or_else(invalid)?;
+        let padded = end
+            .checked_add(size & 1)
+            .filter(|end| *end <= bytes.len())
+            .ok_or_else(invalid)?;
+        // The codec also discovers metadata inside the first animation frame.
+        if frames && &header[..4] == b"ANMF" {
+            webp_chunks(bytes.get(24..end).ok_or_else(invalid)?, false)?;
+        }
+        bytes = &bytes[padded..];
+    }
+    Ok(())
+}
 pub(super) fn build(
     id: &str,
     data: &str,
@@ -47,7 +77,12 @@ pub(super) fn build(
     if bytes.len() > 15 * 1024 * 1024 || image::guess_format(&bytes).ok() != Some(format) {
         return Err(invalid("图片格式或大小无效"));
     }
-    let (width, height) = ImageReader::with_format(Cursor::new(&bytes), format)
+    let bytes = if format == ImageFormat::WebP {
+        webp_container(&bytes)?
+    } else {
+        &bytes
+    };
+    let (width, height) = ImageReader::with_format(Cursor::new(bytes), format)
         .into_dimensions()
         .map_err(|_| invalid("无法读取图片尺寸"))?;
     if width == 0
@@ -59,7 +94,7 @@ pub(super) fn build(
         return Err(invalid("图片尺寸超过 8192 边长或 3200 万像素"));
     }
     check(cancel, started)?;
-    let mut reader = ImageReader::with_format(Cursor::new(&bytes), format);
+    let mut reader = ImageReader::with_format(Cursor::new(bytes), format);
     let mut limits = image::Limits::default();
     limits.max_image_width = Some(8192);
     limits.max_image_height = Some(8192);
