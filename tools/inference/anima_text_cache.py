@@ -34,19 +34,27 @@ class TextCache:
         return {name: value.to(device=device, copy=True) if value is not None else None
                 for name, value in item[0].items()}
 
-    def get_negative(self, key, device):
+    def _negative_snapshots(self, key):
         # Partial reuse is still a pair miss and does not refresh the source pair's LRU.
         for previous, (values, _) in self.entries.items():
             if previous[1:] == key[1:]:
-                return {name: value.to(device=device, copy=True) if value is not None else None
-                        for name, value in values.items() if name.startswith("negative_")}
+                return {name: value for name, value in values.items() if name.startswith("negative_")}
         return None
 
-    def put(self, key, values):
+    def get_negative(self, key, device):
+        values = self._negative_snapshots(key)
+        return ({name: value.to(device=device, copy=True) if value is not None else None
+                 for name, value in values.items()} if values is not None else None)
+
+    def put(self, key, values, *, reuse_negative=False):
         size = sum(value.numel() * value.element_size() for value in values.values() if value is not None)
         if size > self.max_bytes:
             return
-        snapshots = {name: value.detach().to(device="cpu", copy=True) if value is not None else None
+        # Only the partial-hit encoder path reuses untouched negatives; public reads still copy.
+        # Count their bytes per pair even when the immutable CPU storage is shared.
+        negative = (self._negative_snapshots(key) or {}) if reuse_negative else {}
+        snapshots = {name: negative[name] if name in negative else
+                     (value.detach().to(device="cpu", copy=True) if value is not None else None)
                      for name, value in values.items()}
         previous = self.entries.pop(key, None)
         self.bytes -= previous[1] if previous else 0
@@ -91,7 +99,7 @@ def apply_text_cache(blocks, cache):
                 setattr(block, name, value)
             self.set_block_state(state, block)
             if missed:
-                cache.put(key, values)
+                cache.put(key, values, reuse_negative=True)
             return components, state
 
     blocks.sub_blocks["text_encoder"] = CachedEncoder()

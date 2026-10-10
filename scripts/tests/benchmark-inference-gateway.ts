@@ -13,10 +13,11 @@ type Options = { payload: string; output: string; gateway: string; provider: 'na
 type Run = { phase: 'warmup' | 'measured'; index: number; requestedSeed: number; request: Record<string, any>; expectedNormalizedPrompt?: string };
 const LIMITATIONS = 'Product gateway wall time from submission through polling, download, PNG validation, hashing and local image save. '
   + 'Warm-ups are excluded from statistics; warm residency, process/disk-cold state and exclusive GPU use are not proven. '
-  + 'Product conditioning/model/mask caches remain enabled as configured. Fresh seeds and distinct job IDs/image bytes guard against result reuse, but sampler execution/cache misses are not observed. '
+  + 'Product conditioning/model/mask caches remain enabled as configured. Requested seeds and distinct job IDs are checked; duplicate complete PNG files are rejected. Different PNG file hashes do not prove different decoded pixels or fresh sampling: metadata or encoding may differ. Sampler execution/cache misses are not observed. '
   + 'Distinct requested prompts within this suite do not prove distinct tokens, unseen text in prior sessions or encoder cache misses. '
   + 'Server-reported seeds are metadata, not captured RNG/noise tensors. Poll intervals add observation latency; HTTP latency is additional, so the interval is not an end-to-end error bound. '
   + 'Known product differences: Comfy plain img2img currently leaves the source-image latent disconnected, and plain txt2img includes RCAS sharpening absent from native. Identical payloads therefore measure different product work, not equivalent inference. '
+  + 'Server metadata is partial: Comfy mask defaults and native profile-selected TeaCache settings may be absent. Missing fields do not establish defaults or equality; effective masks are not captured or matched. '
   + 'Sigma schedules, checkpoint/export/LoRA equivalence, precision, attention, total-device peak VRAM and image quality are unverified. No cross-backend speedup or parity verdict is produced.';
 const HELP = 'node scripts/tests/benchmark-inference-gateway.js --payload <actual API payload.json> --expect-provider native|comfy '
   + '--output-dir <new runtime directory> [--prompt-variants <JSON with warmup/measured string arrays>] [--gateway http://127.0.0.1:3000] [--warmups 1] [--repeats 6] [--poll-ms 100] [--timeout 600] [--run]\n'
@@ -175,7 +176,7 @@ async function measure(opts: Options, run: Run, seenIds: Set<string>, seenImages
 
 function review(report: any) {
   const escape = (value: any) => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]!);
-  const rows = report.runs.map((run: any) => `<figure><figcaption>${escape(run.phase)} ${run.index} · ${escape(run.provider)} · seed ${run.actualSeed} · ${run.wallSeconds.toFixed(3)}s · ${run.width}×${run.height}</figcaption><img src="${escape(run.image)}" width="384"><details><summary>Server parameters and native observations, if available</summary><pre>${escape(JSON.stringify(run.serverMetadata ?? null, null, 2))}</pre></details></figure>`).join('');
+  const rows = report.runs.map((run: any) => `<figure><figcaption>${escape(run.phase)} ${run.index} · ${escape(run.provider)} · seed ${run.actualSeed} · ${run.wallSeconds.toFixed(3)}s · ${run.width}×${run.height}</figcaption><img src="${escape(run.image)}" width="384"><details><summary>Partial server metadata / native observations (missing does not mean default or equal)</summary><pre>${escape(JSON.stringify(run.serverMetadata ?? null, null, 2))}</pre></details></figure>`).join('');
   return '<!doctype html><meta charset="utf-8"><title>Product gateway benchmark</title><style>body{font:16px system-ui;max-width:1100px;margin:2em auto;padding:1em;background:#f8fafc;color:#17202a}main{display:flex;flex-wrap:wrap}figure{margin:12px}img{max-width:100%;height:auto}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style>'
     + `<h1>${escape(report.expectProvider)} product gateway: measured, quality unreviewed</h1><p>Prompt population: ${escape(report.promptPopulation)}</p><p>${escape(LIMITATIONS)}</p><p>Run each engine alone on the GPU. After switching engines, release the previous engine and warm up again. No speedup verdict.</p><pre>${escape(JSON.stringify(report.summary, null, 2))}</pre><main>${rows}</main>`;
 }

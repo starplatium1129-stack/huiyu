@@ -171,10 +171,19 @@ class TextTests(unittest.TestCase):
             expected = run("P2", encoder=Encoder())
             Encoder.qwen_calls, Encoder.t5_calls = [], []
             first = run("P1")
-            second = run("P2")
+            with patch.object(Tensor, "to", autospec=True, side_effect=Tensor.to) as transfers:
+                second = run("P2")
+            routes = [(call.args[0].device, call.kwargs["device"]) for call in transfers.call_args_list]
+            self.assertEqual(routes.count(("cpu", "cuda")), 4)
+            self.assertEqual(routes.count(("cuda", "cpu")), 4)  # Fresh positive snapshots only.
+            self.assertEqual(len(routes), 8)
             self.assertEqual(Encoder.qwen_calls, [["P1"], ["N"], ["P2"]])
             self.assertEqual(Encoder.t5_calls, Encoder.qwen_calls)
             self.assertEqual((cache.hits, cache.misses, len(cache.entries)), (0, 1, 2))
+            snapshots = [item[0] for item in cache.entries.values()]
+            for name in FIELDS[4:]: self.assertIs(snapshots[0][name], snapshots[1][name])
+            pair_bytes = sum(second.get(name).numel() * second.get(name).element_size() for name in FIELDS)
+            self.assertEqual(cache.bytes, 2 * pair_bytes)  # Shared storage still counts once per pair.
             for name in FIELDS:
                 actual = second.get(name)
                 np.testing.assert_array_equal(actual, expected.get(name))
@@ -191,11 +200,16 @@ class TextTests(unittest.TestCase):
             run("P4", "different")
             before = list(cache.entries)
             self.assertEqual(len(before), 4)
+            oldest = cache.entries[before[0]][0]
             run("P5")  # Reusing the oldest pair's negative must not refresh that pair.
             self.assertEqual(list(cache.entries)[:-1], before[1:])
+            newest = next(reversed(cache.entries.values()))[0]
+            for name in FIELDS[4:]: self.assertIs(newest[name], oldest[name])
             self.assertEqual((cache.hits, cache.misses, len(cache.entries)), (0, 1, 4))
             self.assertEqual(cache.bytes, sum(size for _, size in cache.entries.values()))
             self.assertLessEqual(cache.bytes, 16 * 1024 * 1024)
+            after_eviction = run("P5")
+            for name in FIELDS[4:]: np.testing.assert_array_equal(after_eviction.get(name), expected.get(name))
 
     def test_partial_reuse_respects_all_key_fields_and_stock_list_fallback(self):
         changes = ({"negative": "different"}, {"conditions": 1}, {"length": 128},
@@ -232,7 +246,7 @@ class TextTests(unittest.TestCase):
 
     def test_partial_encode_failure_does_not_publish_outputs_or_insert_pair(self):
         cache, blocks = text.TextCache(), Blocks()
-        components = types.SimpleNamespace(_execution_device="cpu", text_encoder=types.SimpleNamespace(dtype=np.float32),
+        components = types.SimpleNamespace(_execution_device="cuda", text_encoder=types.SimpleNamespace(dtype=np.float32),
                                            guider=types.SimpleNamespace(num_conditions=2))
         with patch.dict("sys.modules", modules()):
             text.apply_text_cache(blocks, cache)
@@ -244,6 +258,17 @@ class TextTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, "encoder failed"): encoder(components, state)
             self.assertEqual((list(cache.entries), cache.bytes), (before, size))
             self.assertTrue(all(state.get(name) is None for name in FIELDS))
+            saved = {name: value.copy() for name, value in cache.entries[before[0]][0].items()}
+            original_to = Tensor.to
+            def fail_snapshot(tensor, device=None, copy=False):
+                if tensor.device == "cuda" and device == "cpu":
+                    raise RuntimeError("snapshot failed")
+                return original_to(tensor, device=device, copy=copy)
+            with patch.object(Tensor, "to", autospec=True, side_effect=fail_snapshot):
+                with self.assertRaisesRegex(RuntimeError, "snapshot failed"):
+                    encoder(components, State(prompt="P2", negative_prompt="N", max_sequence_length=512))
+            self.assertEqual((list(cache.entries), cache.bytes), (before, size))
+            for name, value in cache.entries[before[0]][0].items(): np.testing.assert_array_equal(value, saved[name])
 
     def test_capacity_byte_limit_lru_and_release(self):
         cache = text.TextCache(max_entries=2, max_bytes=16)
@@ -258,6 +283,18 @@ class TextTests(unittest.TestCase):
         cache.clear()
         self.assertEqual(cache.stats()["cpuBytes"], 0)
         self.assertIsNone(cache.get("first", "cpu"))
+        first, second = ((prompt, "N", 512, True, "float32", "cuda") for prompt in ("P1", "P2"))
+        cache.put(first, {"qwen_prompt_embeds": Tensor([1, 2], device="cuda"),
+                          "negative_qwen_prompt_embeds": Tensor([3, 4], device="cuda")})
+        source = cache.entries[first][0]["negative_qwen_prompt_embeds"]
+        values = {"qwen_prompt_embeds": Tensor([5, 6], device="cuda"), **cache.get_negative(second, "cuda")}
+        cache.put(second, values, reuse_negative=True)
+        self.assertEqual(list(cache.entries), [second])  # Logical bytes evict even when storage is shared.
+        self.assertEqual(cache.bytes, 16)
+        self.assertIs(cache.entries[second][0]["negative_qwen_prompt_embeds"], source)
+        escaped = cache.get(second, "cpu")["negative_qwen_prompt_embeds"]
+        escaped[:] = -1
+        np.testing.assert_array_equal(source, [3, 4])
 
 
 if __name__ == "__main__": unittest.main()

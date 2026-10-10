@@ -17,6 +17,7 @@ type Run = { phase: 'warmup' | 'measured'; variant: Variant; index: number; seed
 const LIMITATIONS = 'Warmed workflow measurements, not verified GPU residency or a disk-cold start. '
   + 'Completion includes submission, queue, graph execution, PNG saving and history polling; delivered time also includes downloading and verifying PNGs. '
   + 'Server event time is graph time, not synchronized sampler-only GPU time. Poll interval bounds extra observation latency only, not HTTP latency. '
+  + 'Output SHA-256 covers complete PNG files, including metadata; differing hashes do not establish differing decoded pixels or fresh sampling. '
   + 'System stats are snapshots, not peak VRAM. Checkpoint bytes, actual sigma schedules, precision, attention and native/ComfyUI numerical equivalence are not verified. '
   + 'The same sampler/scheduler names or seeds do not establish parity. No cross-backend speedup or image-quality verdict is produced.';
 const HELP = 'node scripts/tests/benchmark-anima-teacache.js --workflow <Comfy API JSON> --sampler-node <KSampler id> '

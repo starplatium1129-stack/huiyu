@@ -61,7 +61,17 @@ def prepare_mask(image, mask, size, grow):
     """Shared effective mask for manual and locally segmented inputs."""
     from PIL import Image, ImageFilter
     mask = mask.resize(size, Image.Resampling.NEAREST)
-    if grow:
+    if grow and mask.mode == "L":
+        import numpy as np
+        # A square max is exactly separable, including all 8-bit soft-mask values.
+        values, window = np.asarray(mask), 2 * grow + 1
+        horizontal = np.lib.stride_tricks.sliding_window_view(
+            np.pad(values, ((0, 0), (grow, grow)), mode="edge"), window, axis=1).max(axis=-1)
+        vertical = np.lib.stride_tricks.sliding_window_view(
+            np.pad(horizontal, ((grow, grow), (0, 0)), mode="edge"), window, axis=0).max(axis=-1)
+        mask = Image.fromarray(vertical)
+        del values, horizontal, vertical  # Release scratch before resizing the RGB source.
+    elif grow:
         mask = mask.filter(ImageFilter.MaxFilter(2 * grow + 1))
     if mask.getbbox() is None:
         raise ValueError("Mask has no editable pixels")

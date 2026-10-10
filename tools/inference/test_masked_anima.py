@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 
 import masked_anima
 import worker
@@ -154,11 +154,31 @@ class MaskTests(unittest.TestCase):
             paint.save(path)
             _, soft_mask = masked_anima.prepare_images(original, path, (5, 5), 0)
             self.assertEqual(soft_mask.getpixel((2, 2)), 128)
+            _, grown_soft = masked_anima.prepare_images(original, path, (5, 5), 1)
+            self.assertEqual(grown_soft.getpixel((1, 1)), 128)
+            self.assertEqual(grown_soft.getpixel((0, 0)), 0)
             with self.assertRaisesRegex(ValueError, "dimensions"):
                 masked_anima.prepare_images(Image.new("RGB", (4, 5)), path, (5, 5), 0)
             Image.new("RGBA", (5, 5), (255, 255, 255, 0)).save(path)
-            with self.assertRaisesRegex(ValueError, "no editable"):
-                masked_anima.prepare_images(original, path, (5, 5), 0)
+            for grow in (0, 8):
+                with self.assertRaisesRegex(ValueError, "no editable"):
+                    masked_anima.prepare_images(original, path, (5, 5), grow)
+        # All gray levels, replicated borders and kernels wider than either axis.
+        for values in (np.arange(256, dtype=np.uint8).reshape(16, 16),
+                       np.array([[0, 17, 255, 2, 99]], dtype=np.uint8),
+                       np.array([[255], [0], [128]], dtype=np.uint8), np.array([[3]], dtype=np.uint8)):
+            source = Image.fromarray(values)
+            before = source.tobytes()
+            for grow in (1, 8, 32):
+                with self.subTest(size=source.size, grow=grow):
+                    _, grown = masked_anima.prepare_mask(Image.new("RGB", source.size), source, source.size, grow)
+                    expected = source.filter(ImageFilter.MaxFilter(2 * grow + 1))
+                    self.assertEqual((grown.mode, grown.size, grown.tobytes()), ("L", source.size, expected.tobytes()))
+                    grown.putpixel((0, 0), 73)
+                    self.assertEqual(source.tobytes(), before)
+        rgb_mask = Image.fromarray(np.arange(27, dtype=np.uint8).reshape(3, 3, 3))
+        _, grown = masked_anima.prepare_mask(Image.new("RGB", (3, 3)), rgb_mask, (3, 3), 1)
+        self.assertEqual((grown.mode, grown.tobytes()), ("RGB", rgb_mask.filter(ImageFilter.MaxFilter(3)).tobytes()))
 
     def test_custom_blocks_reuse_noise_and_restore_next_then_clean_latents(self):
         draws, scales = [], []
