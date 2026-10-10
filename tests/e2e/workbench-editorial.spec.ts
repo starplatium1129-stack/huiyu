@@ -159,7 +159,7 @@ test(`atelier mocked generation states and saving dark`, async ({ page }, testIn
   await expect(page.locator('#inspector-tab-delivery')).toBeFocused()
   await expect(page.locator('.director-inspector')).toBeVisible()
   state = 'succeeded'
-  await page.getByRole('button', { name: '生成图片', exact: true }).click()
+  await page.getByRole('button', { name: '重试生成', exact: true }).click()
   await expect(page.locator('.result-image')).toBeVisible()
   await expect(page.locator('.result-image')).toHaveJSProperty('complete', true)
   await expect(page.locator('.result-image')).not.toHaveJSProperty('naturalWidth', 0)

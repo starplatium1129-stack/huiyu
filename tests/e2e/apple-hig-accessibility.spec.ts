@@ -17,13 +17,28 @@ async function openAppearance(page: Page) {
 for (const theme of ['dark', 'light'] as const) {
   if (theme === 'dark') test(`native modal keeps keyboard control above an existing scene viewer ${theme}`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' })
+    const runtimeErrors: string[] = []
+    page.on('pageerror', error => runtimeErrors.push(error.message))
+    page.on('console', message => { if (message.type() === 'error') runtimeErrors.push(message.text()) })
     await page.goto('/scene-explorer')
     const trigger = page.getByRole('button', { name: '故事', exact: true }).first()
     await trigger.focus()
+    await expect(trigger).toBeFocused()
     await page.keyboard.press('Enter')
     const drawer = page.getByRole('dialog', { name: '场景观赏模式', exact: true })
     const close = drawer.getByRole('button', { name: '关闭', exact: true })
-    await expect(close).toBeFocused()
+    await expect(close).toBeFocused().catch(async error => {
+      console.error('Scene viewer open diagnostics', JSON.stringify({ runtimeErrors, dom: await page.evaluate(() => ({
+        active: document.activeElement?.outerHTML.slice(0, 600),
+        expandedScenes: [...document.querySelectorAll('.sc[aria-expanded="true"]')].map(element => element.getAttribute('data-scene-id')),
+        viewers: [...document.querySelectorAll<HTMLElement>('[role="dialog"]')].map(element => ({
+          label: element.getAttribute('aria-label'), hidden: element.getAttribute('aria-hidden'),
+          inert: element.inert, display: getComputedStyle(element).display, visibility: getComputedStyle(element).visibility, buttons: element.querySelectorAll('button').length, text: element.textContent?.slice(0, 200),
+        })),
+        storyButtons: [...document.querySelectorAll('.ex-actions button')].filter(element => element.textContent?.trim() === '故事').length,
+      })) }))
+      throw error
+    })
     // Exercise the browser's real top layer, both outside and inside the custom trap.
     for (const nested of [false, true]) {
       await page.evaluate(nested => {
