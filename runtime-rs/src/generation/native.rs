@@ -243,6 +243,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
             .input
             .write_all(format!("{}\n", request).as_bytes())
             .await?;
+        let mut runtime_observation = Value::Null;
         let events = async {
             {
                 let mut state = job.state.lock().await;
@@ -291,6 +292,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                         if event["outputPath"].as_str() != output.to_str() {
                             return Err(protocol_error());
                         }
+                        runtime_observation = native_runtime(&event["nativeRuntime"]);
                         produced = true;
                     }
                     Some("ready") if produced => return Ok(()),
@@ -321,6 +323,12 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         // Fully decode bounded PNG output; a signature alone is not an image.
         let bytes = Arc::new(bytes);
         crate::image_decode::validate(bytes.clone(), token).await?;
+        {
+            let mut state = job.state.lock().await;
+            if state.status == "running" {
+                state.metadata["nativeRuntime"] = runtime_observation;
+            }
+        }
         Ok(Output::Bytes {
             bytes,
             mime: "image/png".into(),
@@ -337,6 +345,108 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
 }
 fn protocol_error() -> ApiError {
     ApiError::new(502, "NATIVE_PROTOCOL_ERROR", "独立推理协议或结果无效")
+}
+
+// Optional evidence must neither break legacy workers nor forward arbitrary worker data.
+// Missing/malformed evidence stays visibly unverified; image/protocol checks are unchanged.
+fn native_runtime(value: &Value) -> Value {
+    fn finite(value: &Value) -> Option<f64> {
+        value.as_f64().filter(|n| n.is_finite() && *n >= 0.)
+    }
+    let parsed = (|| -> Option<Value> {
+        if value["schemaVersion"] != 1
+            || value["timingMode"] != "cpu-wall-no-extra-sync"
+            || value["timingsAreAdditive"] != false
+        {
+            return None;
+        }
+        let mut result = json!({"schemaVersion":1,"timingMode":"cpu-wall-no-extra-sync",
+            "timingsAreAdditive":false,"baseReused":value["baseReused"].as_bool()?,
+            "existingReportSynchronization":value["existingReportSynchronization"].as_bool()?,
+            "completedSteps":value["completedSteps"].as_u64()?,"timings":{}});
+        for key in [
+            "workerWallSeconds",
+            "imagePreparationWallSeconds",
+            "modelAcquireWallSeconds",
+            "pipelineWallSeconds",
+            "compositeWallSeconds",
+            "outputSaveSeconds",
+            "residentFingerprintSeconds",
+        ] {
+            result["timings"][key] = json!(finite(&value["timings"][key])?);
+        }
+        let groups: [(&str, &[&str], &[&str]); 3] = [
+            ("textCache", &[], &["hits", "misses", "entries", "cpuBytes"]),
+            (
+                "maskCache",
+                &["used", "modelReused", "resultReused"],
+                &["resultBytes"],
+            ),
+            (
+                "teaCache",
+                &[],
+                &[
+                    "fullComputes",
+                    "skippedComputes",
+                    "skippedBlocks",
+                    "resets",
+                    "nonfinite",
+                ],
+            ),
+        ];
+        for (group, flags, counters) in groups {
+            let source = value[group].as_object()?;
+            result[group] = json!({"enabled":source.get("enabled")?.as_bool()?});
+            for &key in flags {
+                if let Some(v) = source.get(key) {
+                    result[group][key] = json!(v.as_bool()?);
+                }
+            }
+            for &key in counters {
+                if let Some(v) = source.get(key) {
+                    result[group][key] = json!(v.as_u64()?);
+                }
+            }
+        }
+        if let Some(v) = value["maskCache"].get("fingerprintSeconds") {
+            result["maskCache"]["fingerprintSeconds"] = json!(finite(v)?);
+        }
+        let memory = &value["memory"];
+        if memory["deviceIndex"] != 0 || memory["scope"] != "image-preparation-through-pipeline" {
+            return None;
+        }
+        let mut captured = json!({"deviceIndex":0,"scope":"image-preparation-through-pipeline"});
+        match memory["status"].as_str()? {
+            "per-job-allocator" => {
+                captured["status"] = json!("per-job-allocator");
+                captured["reason"] = Value::Null;
+                for key in ["peakAllocatedBytes", "peakReservedBytes"] {
+                    captured[key] = json!(memory[key].as_u64()?);
+                }
+            }
+            "unverified" => {
+                let reason = memory["reason"].as_str()?;
+                if !matches!(
+                    reason,
+                    "cuda-uninitialized-at-window-start"
+                        | "unsupported-allocator"
+                        | "allocator-observation-error"
+                ) || !memory["peakAllocatedBytes"].is_null()
+                    || !memory["peakReservedBytes"].is_null()
+                {
+                    return None;
+                }
+                captured["status"] = json!("unverified");
+                captured["reason"] = json!(reason);
+                captured["peakAllocatedBytes"] = Value::Null;
+                captured["peakReservedBytes"] = Value::Null;
+            }
+            _ => return None,
+        }
+        result["memory"] = captured;
+        Some(result)
+    })();
+    parsed.unwrap_or_else(|| json!({"status":"unverified","reason":if value.is_null(){"worker-metrics-missing"}else{"invalid-worker-metrics"}}))
 }
 
 #[cfg(test)]

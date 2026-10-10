@@ -76,9 +76,17 @@ impl Engine {
                 _ = owner.cancel.cancelled() => return,
                 _ = tokio::time::sleep(owner.native.idle_timeout) => {}
             }
-            // A running/queued job owns the same GPU slot and cancels this timer.
-            let Ok(slot) = owner.native.slot.try_acquire() else {
-                return;
+            // Submission can fail before take_worker cancels the old timer.
+            // Wait for its GPU slot instead of abandoning idle cleanup, but
+            // stop waiting if that worker is reused or the service shuts down.
+            let slot = tokio::select! {
+                biased;
+                _ = idle.cancelled() => return,
+                _ = owner.cancel.cancelled() => return,
+                slot = owner.native.slot.acquire() => match slot {
+                    Ok(slot) => slot,
+                    Err(_) => return,
+                }
             };
             let mut resident = owner.native.worker.lock().await;
             if idle.is_cancelled() {

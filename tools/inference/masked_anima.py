@@ -1,4 +1,4 @@
-"""Independent manual-mask Anima blocks, pinned to Diffusers 0.41.0.
+"""Anima image preparation/output and manual-mask blocks for Diffusers 0.41.0.
 
 Prepare/after-step integration adapted from Hugging Face Diffusers (Apache-2.0):
 Copyright 2026 The HuggingFace Team. All rights reserved.
@@ -8,6 +8,33 @@ Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/L
 Distributed on an AS IS BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND.
 No ComfyUI implementation or sampler-equivalence claim.
 """
+import os
+from pathlib import Path
+import tempfile
+import time
+
+
+def save_png(image, path):
+    """Atomically save lossless PNG; retry default compression above 32 MiB."""
+    started = time.perf_counter()
+    output = Path(path).expanduser().resolve()
+    output.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=output.parent, suffix=".png", delete=False) as file:
+            temporary = Path(file.name)
+        image.save(temporary, format="PNG", compress_level=4)
+        size = temporary.stat().st_size
+        if size > 32 * 1024 * 1024:
+            # Level 4 can be larger than the previous Pillow default. Retry that
+            # default before the host applies its unchanged output-size bound.
+            image.save(temporary, format="PNG", compress_level=6)
+            size = temporary.stat().st_size
+        os.replace(temporary, output)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+    return dict(outputSaveSeconds=time.perf_counter() - started, outputBytes=size)
 
 
 def prepare_images(image, mask_path, size, grow):
@@ -34,7 +61,18 @@ def prepare_mask(image, mask, size, grow):
     """Shared effective mask for manual and locally segmented inputs."""
     from PIL import Image, ImageFilter
     mask = mask.resize(size, Image.Resampling.NEAREST)
-    if grow:
+    # Radius 1 regressed with NumPy conversion/two passes in the CPU probe.
+    if grow >= 2 and mask.mode == "L":
+        import numpy as np
+        # A square max is exactly separable, including all 8-bit soft-mask values.
+        values, window = np.asarray(mask), 2 * grow + 1
+        horizontal = np.lib.stride_tricks.sliding_window_view(
+            np.pad(values, ((0, 0), (grow, grow)), mode="edge"), window, axis=1).max(axis=-1)
+        vertical = np.lib.stride_tricks.sliding_window_view(
+            np.pad(horizontal, ((grow, grow), (0, 0)), mode="edge"), window, axis=0).max(axis=-1)
+        mask = Image.fromarray(vertical)
+        del values, horizontal, vertical  # Release scratch before resizing the RGB source.
+    elif grow:
         mask = mask.filter(ImageFilter.MaxFilter(2 * grow + 1))
     if mask.getbbox() is None:
         raise ValueError("Mask has no editable pixels")
@@ -45,7 +83,9 @@ def composite(generated, original, mask):
     from PIL import Image
     if generated.size != original.size or mask.size != original.size:
         raise ValueError("Generated image and effective mask dimensions differ")
-    return Image.composite(generated.convert("RGB"), original.convert("RGB"), mask)
+    generated = generated if generated.mode == "RGB" else generated.convert("RGB")
+    original = original if original.mode == "RGB" else original.convert("RGB")
+    return Image.composite(generated, original, mask)
 
 
 def blend_latents(scheduler, latents, image_latents, noise, mask, timesteps, index):

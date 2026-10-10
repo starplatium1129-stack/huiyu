@@ -2,6 +2,9 @@
 
 Integration: Apache-2.0 Diffusers 0.41.0 AnimaTextEncoderStep.
 https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/modular_pipelines/anima/encoders.py
+
+Tensor.to(copy=True) also makes independent same-device copies (PyTorch 2.8):
+https://docs.pytorch.org/docs/2.8/generated/torch.Tensor.to.html
 """
 from collections import OrderedDict
 
@@ -28,14 +31,30 @@ class TextCache:
             return None
         self.hits += 1
         self.entries.move_to_end(key)
-        return {name: value.to(device=device).clone() if value is not None else None
+        return {name: value.to(device=device, copy=True) if value is not None else None
                 for name, value in item[0].items()}
 
-    def put(self, key, values):
+    def _negative_snapshots(self, key):
+        # Partial reuse is still a pair miss and does not refresh the source pair's LRU.
+        for previous, (values, _) in self.entries.items():
+            if previous[1:] == key[1:]:
+                return {name: value for name, value in values.items() if name.startswith("negative_")}
+        return None
+
+    def get_negative(self, key, device):
+        values = self._negative_snapshots(key)
+        return ({name: value.to(device=device, copy=True) if value is not None else None
+                 for name, value in values.items()} if values is not None else None)
+
+    def put(self, key, values, *, reuse_negative=False):
         size = sum(value.numel() * value.element_size() for value in values.values() if value is not None)
         if size > self.max_bytes:
             return
-        snapshots = {name: value.detach().to(device="cpu").clone() if value is not None else None
+        # Only the partial-hit encoder path reuses untouched negatives; public reads still copy.
+        # Count their bytes per pair even when the immutable CPU storage is shared.
+        negative = (self._negative_snapshots(key) or {}) if reuse_negative else {}
+        snapshots = {name: negative[name] if name in negative else
+                     (value.detach().to(device="cpu", copy=True) if value is not None else None)
                      for name, value in values.items()}
         previous = self.entries.pop(key, None)
         self.bytes -= previous[1] if previous else 0
@@ -65,14 +84,22 @@ def apply_text_cache(blocks, cache):
             key = (block.prompt, block.negative_prompt, block.max_sequence_length,
                    components.guider.num_conditions > 1, str(components.text_encoder.dtype), str(device))
             values = cache.get(key, device)
-            if values is None:
-                components, state = super().__call__(components, state)
-                values = {output.name: state.get(output.name) for output in self.intermediate_outputs}
-                cache.put(key, values)
-            else:
-                for name, value in values.items():
-                    setattr(block, name, value)
-                self.set_block_state(state, block)
+            missed = values is None
+            if missed:
+                negative = cache.get_negative(key, device) if key[3] else None
+                if negative is None:
+                    components, state = super().__call__(components, state)
+                    cache.put(key, {output.name: state.get(output.name) for output in self.intermediate_outputs})
+                    return components, state
+                values = super().encode_prompt(
+                    components=components, prompt=block.prompt, prepare_unconditional_embeds=False,
+                    max_sequence_length=block.max_sequence_length, device=device, dtype=components.text_encoder.dtype)
+                values.update(negative)
+            for name, value in values.items():
+                setattr(block, name, value)
+            self.set_block_state(state, block)
+            if missed:
+                cache.put(key, values, reuse_negative=True)
             return components, state
 
     blocks.sub_blocks["text_encoder"] = CachedEncoder()

@@ -41,7 +41,7 @@ def trace_for(job):
     helper = module.load("teacache_profile")
     mode = "masked" if job.get("maskImagePath") else ("img2img" if job.get("inputImagePath") else "txt2img")
     scope = helper.compatibility(Path(job["modelDir"]), [], job["input"], mode, "torch.float16", "FAKE TEST DEVICE")
-    return {"schemaVersion": 1, "compatibility": scope,
+    return {"schemaVersion": 1, "runtime": helper.RUNTIME, "compatibility": scope,
             "samples": [{"branch": 0, "step": i, "total": 13, "timestep": 20 - i,
                          "proxyRelativeL1": i / 100, "residualRelativeL1": .01 + 2 * i / 100 + 3 * (i / 100) ** 2}
                         for i in range(1, 13)],
@@ -50,7 +50,7 @@ def trace_for(job):
 
 def fake_profile(traces, args):
     return {"schemaVersion": 1, "algorithm": module.ALGORITHM,
-            "runtime": {"diffusers": "0.41.0", "torch": "2.8.0"},
+            "runtime": module.load("teacache_profile").RUNTIME,
             "compatibility": traces[0]["compatibility"], "coefficients": [.01, 2, 3],
             "proxyRange": [.01, .12], "defaultThreshold": .05, "maxThreshold": .05,
             "maxConsecutiveSkips": 1, "calibration": {"source": "local-full-compute", "sampleCount": 12,
@@ -58,13 +58,89 @@ def fake_profile(traces, args):
 
 
 class CalibrationTests(unittest.TestCase):
-    def test_resident_child_disables_text_cache_for_fair_teacache_pairs(self):
+    def test_schedule_capture_uses_one_host_transfer_and_observed_img2img_range(self):
+        helper = module.load("resident_benchmark")
+        calls = []
+
+        class Tensor:
+            ndim = 1
+            dtype = "float32"
+            def __init__(self, values, device):
+                self.values = list(values)
+                self.device = types.SimpleNamespace(type=device)
+            def numel(self): return len(self.values)
+            def is_floating_point(self): return True
+            def detach(self): return self
+            def cpu(self):
+                calls.append("cpu-transfer")
+                return Tensor(self.values, "cpu")
+            def tolist(self): return list(self.values)
+
+        def cat(values):
+            calls.append("cat")
+            return Tensor([item for value in values for item in value.values], values[0].device.type)
+
+        torch = types.SimpleNamespace(is_tensor=lambda value: isinstance(value, Tensor), cat=cat)
+        for sigma_device in ("cpu", "cuda"):
+            calls.clear()
+            scheduler = types.SimpleNamespace(config={"shift": 1.0, "defaults": ("shift",)},
+                begin_index=1, step_index=3, order=1,
+                timesteps=Tensor([1000., 750., 250.], "cuda"),
+                sigmas=Tensor([1., .75, .25, 0.], sigma_device))
+            before = [list(scheduler.timesteps.values), list(scheduler.sigmas.values)]
+            with patch.dict(sys.modules, {"torch": torch}):
+                evidence = helper.capture_schedule(scheduler, 2)
+            self.assertEqual(evidence["status"], "actual-captured")
+            self.assertEqual(evidence["activeTimesteps"], [750., 250.])
+            self.assertEqual(evidence["activeSigmas"], [.75, .25, 0.])
+            self.assertEqual(evidence["fullSigmas"]["values"], before[1])
+            self.assertEqual(evidence["completedSteps"], 2)
+            self.assertEqual(evidence["config"]["defaults"], ["shift"])
+            self.assertEqual(calls.count("cpu-transfer"), 1)
+            self.assertEqual(calls.count("cat"), int(sigma_device == "cuda"))
+            self.assertEqual([scheduler.timesteps.values, scheduler.sigmas.values], before)
+            self.assertGreaterEqual(evidence["evidenceSeconds"], 0)
+            json.dumps(evidence, allow_nan=False)
+            scheduler.config = {"shift": float("inf")}
+            with patch.dict(sys.modules, {"torch": torch}):
+                invalid_config = helper.capture_schedule(scheduler, 2)
+            self.assertEqual(invalid_config["status"], "unverified")
+            self.assertEqual(invalid_config["activeSigmas"], [.75, .25, 0.])
+            json.dumps(invalid_config, allow_nan=False)
+            scheduler.config = {"shift": 1.0}
+            scheduler.sigmas.values[1] = float("nan")
+            with patch.dict(sys.modules, {"torch": torch}):
+                nonfinite = helper.capture_schedule(scheduler, 2)
+            self.assertEqual(nonfinite["status"], "unverified")
+            self.assertIsNone(nonfinite["fullSigmas"])
+            json.dumps(nonfinite, allow_nan=False)
+            scheduler.sigmas.values[1] = .75
+            scheduler.begin_index = 0
+            scheduler.step_index = 3
+            with patch.dict(sys.modules, {"torch": torch}):
+                self.assertEqual(helper.capture_schedule(scheduler, 2)["status"], "unverified")
+
+    def test_schedule_capture_unavailable_or_nonfinite_state_keeps_reports_json_safe(self):
+        helper = module.load("resident_benchmark")
+        for config in ({"shift": float("inf")}, {"custom": object()}, {}):
+            scheduler = types.SimpleNamespace(config=config, begin_index=None, step_index=None, order=1)
+            with patch.dict(sys.modules, {"torch": types.SimpleNamespace(is_tensor=lambda _: False)}):
+                evidence = helper.capture_schedule(scheduler, 0)
+            self.assertEqual(evidence["status"], "unverified")
+            self.assertTrue(evidence["issues"])
+            self.assertIsNone(evidence["activeSigmas"])
+            if config:
+                self.assertIsNone(evidence["config"])
+                self.assertEqual(evidence["configStatus"], "unverified")
+            json.dumps(evidence, allow_nan=False)
+
+    def test_resident_child_disables_text_and_mask_caches_for_fair_teacache_pairs(self):
         helper = module.load("resident_benchmark")
         calls, cleared = [], []
         resident = types.SimpleNamespace(clear=lambda: cleared.append(True))
         def generate(job, stream, **options):
             calls.append(options)
-            return {"textCacheEnabled": False}
+            return {"textCacheEnabled": False, "maskCacheEnabled": False}
         worker = types.SimpleNamespace(generate=generate,
             load_mask_tools=lambda _: types.SimpleNamespace(PipelineCache=lambda: resident))
         with tempfile.TemporaryDirectory() as directory:
@@ -76,6 +152,7 @@ class CalibrationTests(unittest.TestCase):
                 self.assertEqual(helper.child_session(api), 0)
             self.assertIs(calls[0]["resident"], resident)
             self.assertIs(calls[0]["cache_text"], False)
+            self.assertIs(calls[0]["cache_mask"], False)
             self.assertEqual(cleared, [True])
 
     def test_resident_measurement_protocol_reuses_process_and_closes_owned_child(self):
@@ -119,6 +196,7 @@ for line in sys.stdin:
             trace["samples"][4]["residualRelativeL1"] = .8
             value = module.fit([trace], args)
             self.assertEqual(value["schemaVersion"], 2)
+            self.assertEqual(value["runtime"]["huiyuInference"], "lora-eval-v1")
             self.assertIn([.05, .8], value["phaseEnvelopes"][1])
             self.assertEqual(value["fitDiagnostics"]["phaseSampleCounts"], [3, 4, 5])
             module.load("teacache_profile").validate_profile(value, value["compatibility"], require_accepted=False)
@@ -164,9 +242,16 @@ for line in sys.stdin:
             training, _, _, _ = module.plan(args)
             trace = trace_for(training[0])
             profile = module.fit([trace], args)
+            helper = module.load("teacache_profile")
+            self.assertEqual(profile["runtime"], helper.RUNTIME)
+            helper.validate_profile(profile, profile["compatibility"], require_accepted=False)
             for actual, expected in zip(profile["coefficients"], [.01, 2, 3]):
                 self.assertAlmostEqual(actual, expected, places=8)
             self.assertNotIn("acceptance", profile)
+            for runtime in (None, {"diffusers": "0.41.0", "torch": "2.8.0"}):
+                legacy = {**trace, "runtime": runtime}
+                with self.subTest(runtime=runtime), self.assertRaisesRegex(ValueError, "runtime.*recalibrate"):
+                    module.fit([legacy], args)
             trace["stats"]["skippedComputes"] = 1
             with self.assertRaisesRegex(ValueError, "full-compute"):
                 module.fit([trace], args)
@@ -176,7 +261,7 @@ for line in sys.stdin:
             with self.assertRaisesRegex(ValueError, "full-rank"):
                 module.fit([trace], args)
 
-    def make_run(self, args, skips=2, cached_seconds=6):
+    def make_run(self, args, skips=2, cached_seconds=6, mask_cache=False, legacy_runtime=False):
         training, heldout, target, _ = module.plan(args)
         calls = []
         def fake_execute(job, folder, collect, profile, timeout):
@@ -186,10 +271,17 @@ for line in sys.stdin:
             output.write_bytes(PNG)
             trace = trace_for(job)
             trace.update(teaCacheEnabled=profile is not None, pipelineSeconds=8, modelLoadSeconds=1,
-                         modelReused=not collect, textCacheEnabled=False, fingerprintSeconds=.1 if collect or profile else 0)
+                         modelReused=not collect, textCacheEnabled=False, maskCacheEnabled=False,
+                         fingerprintSeconds=.1 if collect or profile else 0)
             if not collect:
                 trace["samples"] = []
+                if legacy_runtime:
+                    trace.pop("runtime")
             if profile:
+                if mask_cache is None:
+                    trace.pop("maskCacheEnabled")
+                else:
+                    trace["maskCacheEnabled"] = mask_cache
                 trace["samples"] = []
                 trace["stats"]["skippedComputes"] = skips
                 trace["stats"]["skippedBlocks"] = skips * 28
@@ -209,6 +301,21 @@ for line in sys.stdin:
             result = module.run(args, training, heldout, target)
         return result, calls
 
+    def test_each_heldout_case_reverses_order_across_repeats(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            args = fixture(root)
+            second = module.read(Path(args.validation_job[0]))
+            second["id"] = "second-heldout"
+            second["input"].update(prompt="held-out landscape", seed=12)
+            path = root / "second-heldout.json"
+            module.write(path, second)
+            args.validation_job.append(str(path))
+            _, calls = self.make_run(args)
+            for seed in (11, 12):
+                order = [cached for actual_seed, collect, cached in calls if actual_seed == seed and not collect]
+                self.assertEqual(order[:2], list(reversed(order[2:])))
+
     def test_warm_comparison_records_reuse_and_acceptance_requires_both_sides(self):
         with tempfile.TemporaryDirectory() as directory:
             args = fixture(Path(directory))
@@ -227,6 +334,33 @@ for line in sys.stdin:
             path.write_text(json.dumps(report))
             with self.assertRaisesRegex(ValueError, "text-cache evidence"):
                 module.accept(args)
+            report["pairs"][0]["baseline"]["report"]["textCacheEnabled"] = False
+            for name, value in (("baseline", True), ("cached", None)):
+                with self.subTest(side=name, mask_cache=value):
+                    evidence = report["pairs"][0][name]["report"]
+                    if value is None:
+                        evidence.pop("maskCacheEnabled")
+                    else:
+                        evidence["maskCacheEnabled"] = value
+                    path.write_text(json.dumps(report))
+                    with self.assertRaisesRegex(ValueError, "mask-cache evidence"):
+                        module.accept(args)
+                    evidence["maskCacheEnabled"] = False
+
+    def test_run_rejects_enabled_or_missing_mask_cache_evidence(self):
+        for value in (True, None):
+            with self.subTest(mask_cache=value), tempfile.TemporaryDirectory() as directory:
+                args = fixture(Path(directory))
+                args.resident = True
+                with self.assertRaisesRegex(ValueError, "explicitly disable mask caching"):
+                    self.make_run(args, mask_cache=value)
+                self.assertFalse((Path(args.output_dir) / "report.json").exists())
+
+    def test_runtime_revision_rejects_old_run_pairs_and_bound_training_traces(self):
+        spec = importlib.util.spec_from_file_location("calibration_runtime_cases", Path(__file__).with_name("calibration_runtime_cases.py"))
+        cases = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cases)
+        cases.check_runtime_revision(self, fixture, module)
 
     def test_synthetic_protocol_preserves_baseline_and_candidate_needs_explicit_acceptance(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -252,6 +386,24 @@ for line in sys.stdin:
                 module.accept(args)
             args.replace_profile_sha256 = accepted["sha256"]
             self.assertEqual(module.accept(args)["installedProfile"], accepted["installedProfile"])
+            installed_path = Path(accepted["installedProfile"])
+            original = installed_path.read_bytes()
+            report_path = Path(args.output_dir) / "report.json"
+            report = module.read(report_path)
+            for name in ("baseline", "cached"):
+                evidence = report["pairs"][0][name]["report"]
+                runtime = evidence.pop("runtime")
+                report_path.write_text(json.dumps(report))
+                with self.subTest(side=name), self.assertRaisesRegex(ValueError, "runtime.*recalibrate"):
+                    module.accept(args)
+                self.assertEqual(installed_path.read_bytes(), original)
+                evidence["runtime"] = runtime
+            report["pairs"][0]["baseline"]["report"].pop("maskCacheEnabled")
+            report_path.write_text(json.dumps(report))
+            with self.assertRaisesRegex(ValueError, "mask-cache evidence"):
+                module.accept(args)
+            self.assertEqual(installed_path.read_bytes(), original)
+            helper.validate_profile(module.read(installed_path), installed["compatibility"])
 
     def test_acceptance_rejects_missing_actual_skips_slow_wallclock_and_changed_model(self):
         for skips, seconds, change, message in ((0, 6, False, "actual cache skips"),
@@ -335,7 +487,7 @@ for line in sys.stdin:
                 return {"schemaVersion": 1, "testFixture": True}
             with patch.object(module, "load", return_value=types.SimpleNamespace(generate=generate)):
                 module.child(request)
-            self.assertEqual(calls, [({"id": "fake"}, {"collect_teacache": True, "teacache_profile": None, "measure_teacache": False})])
+            self.assertEqual(calls, [({"id": "fake"}, {"cache_mask": False, "collect_teacache": True, "teacache_profile": None, "measure_teacache": False})])
             self.assertTrue(module.read(request.with_name("worker-report.json"))["testFixture"])
 
     def test_timeout_and_keyboard_interrupt_terminate_worker_process(self):

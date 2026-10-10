@@ -82,7 +82,7 @@ python -I scripts/maintenance/convert-anima-checkpoint.py --profile anima-cosmos
 
 在配置的模型根目录下放置 `clipseg-rd64-refined/`，需完整的 `config.json`、`preprocessor_config.json`、`tokenizer_config.json`、`special_tokens_map.json`、`vocab.json`、`merges.txt` 和 `model.safetensors`。不接受只有 pickle/bin 权重的目录，也不会代为下载或转换它。状态只检查文件存在、非空与目录边界；实际结构、完整加载与分割质量仍在执行时验证。
 
-自动模式将 `|` 分隔的区域词分别送入 CPU float32 CLIPSeg，合并结果、调整尺寸并按阈值二值化，然后复用手绘模式的遮罩膨胀、逐步潜空间约束与像素合成。CPU 分割在 Anima 加载前结束，不额外占用 GPU；耗时未在真实设备上测量。这里的边缘处理不宣称与旧 ComfyUI 节点 smooth/blur 参数等价。手绘与自动请求互斥，不会静默替换；原有整图模式保留。
+自动模式将 `|` 分隔的区域词分别送入 CPU float32 CLIPSeg，合并结果、调整尺寸并按阈值二值化，然后复用手绘模式的遮罩膨胀、逐步潜空间约束与像素合成。CPU 分割在 Anima 加载前结束，不额外占用 GPU。驻留 Worker 可保留一个完整 CPU CLIPSeg 模型／tokenizer／processor 和一个 352×352 float32 logits（495,616 字节）；模型 RAM 与 Anima 驻留重叠，不保证低内存。每任务完整哈希本地所有模型资产，包括可选 tokenizer 文件，加载后再次核验；相同像素／尺寸／词组才复用 logits，阈值和膨胀仍每次处理，失败及退出清空。真实 CPU 耗时、RAM 和遮罩画质仍待设备验收。这里的边缘处理不宣称与旧 ComfyUI 节点 smooth/blur 参数等价。手绘与自动请求互斥，不会静默替换；原有整图模式保留。
 
 Transformers 实现许可证为 Apache-2.0；CLIPSeg 权重许可独立于代码许可，本次未下载或分发权重，尚未核实所选权重的发行许可。用户需使用有权使用且已准备的可信本地 safetensors 配套。
 
@@ -124,7 +124,7 @@ python -I scripts/maintenance/calibrate-anima-teacache.py --accept-run <结果�
 
 ## 模型驻留与分阶段缓存候选
 
-独立引擎以 `--serve` 串行执行任务，复用一份模型／LoRA 权重，连续任务无需重新启动 Python 或重新搬入同一份权重。每任务仍核对完整文件指纹；新加载后再核对一次，基座或 LoRA 字节／顺序变化会释放旧权重并重新加载；同一组 LoRA 仅变强度时直接更新适配器权重。每次创建新的管线块、调度器、CFG 与 TeaCache 状态，不保留 seed 或中间潜变量；文本编码使用下述有界 CPU 缓存。成功任务的 `result` 后必须收到同身份 `ready`，才允许接收下一任务；取消、错误、超时和退出终止所属 Worker，确认停止前不放行 GPU 队列。空闲 120 秒释放进程与模型。
+独立引擎以 `--serve` 串行执行任务，复用一份模型／LoRA 权重，连续任务无需重新启动 Python 或重新搬入同一份权重。每任务仍核对完整文件指纹；新加载后再核对一次，基座字节变化会重载；普通 LoRA 字节／顺序变化时先完整卸载 transformer 和 text_conditioner 的适配器，再加载新组，保留基座。可能改写基座的初始化或未核实变体仍整组重载；同组仅变强度直接更新权重。每次创建新的管线块、调度器、CFG 与 TeaCache 状态，不保留 seed 或中间潜变量；文本编码使用下述有界 CPU 缓存。成功任务的 `result` 后必须收到同身份 `ready`，才允许接收下一任务；取消、错误、超时和退出终止所属 Worker，确认停止前不放行 GPU 队列。空闲 120 秒释放进程与模型。
 
 校准默认采用 `phase-envelope`：按实际采样进度分为三个阶段，保留各阶段观测到的变化峰值；超出观测范围或跨阶段时全算刷新。每阶段至少三个有效配对样本及两种代理变化；最多 32 个保守边界压缩数据，避免一个全局多项式平滑掉局部峰值。它仍是经验性误差估计，不能保证人物、纹理或换装边缘的画质。原 `--strategy polynomial` 可作算法对照，已有 v1 档仍按原策略执行。两种策略都默认关闭并要求人工验收。
 
@@ -134,9 +134,9 @@ python -I scripts/maintenance/calibrate-anima-teacache.py --accept-run <结果�
 
 驻留 Worker 仅在首次任务核对依赖并加载辅助模块，后续复用已验证的运行代码；单独诊断仍重新检查，更新运行库或脚本后需重启。模型文件每任务仍做完整 SHA-256 字节核验，读取改用标准流式缓冲以减少 Python 分配峰值，未改为按文件名／时间复用。
 
-相同文本换 seed 的任务复用 Qwen 编码与 T5 token／mask，CPU 缓存最多 4 项、16 MiB；按文本、负面词、序列上限、CFG 分支、dtype 和设备区分，重载／释放模型时清空，任务获取独立张量副本。LoRA 仅作用于 transformer／text_conditioner，后者每任务仍运行，因此强度回切可复用基座和原始文本编码。基座或适配器字节改变仍会重载。
+相同文本换 seed 的任务复用 Qwen 编码与 T5 token／mask，CPU 缓存最多 4 项、16 MiB；按文本、负面词、序列上限、CFG 分支、dtype 和设备区分，重载／释放模型时清空，任务获取独立张量副本。LoRA 仅作用于 transformer／text_conditioner，后者每任务仍运行，因此强度回切可复用基座和原始文本编码。基座字节改变仍重载；普通适配器换组完整卸载再加载，可能改写基座的变体退出时保守重载。
 
-结果事件记录文本缓存命中、未命中与保留字节数。TeaCache 速度对照双方明确关闭文本缓存，验收也核对该证据，避免第一侧未命中造成比较偏差。主力机保留真实权重加载、GPU 耗时／显存、画质和取消释放验收；办公机的模拟模型及小组件验证不替代这些结果。
+结果事件记录文本缓存命中、未命中与保留字节数。TeaCache 速度对照双方明确关闭文本缓存和 CLIPSeg 模型／结果缓存，运行与验收均要求明确的禁用证据，避免第一侧未命中造成比较偏差。旧测量报告缺新 mask 缓存证据时不能用于新的验收；已安装的已验收 profile 不改写。主力机保留真实权重加载、GPU 耗时／显存、画质和取消释放验收；办公机的模拟模型及小组件验证不替代这些结果。
 
 办公机已用隔离 Python 3.11 与全部锁定版本（Torch 2.8.0+cpu、Diffusers 0.41.0、Transformers 5.10.1、PEFT 0.19.0 等）执行真实 CPU 小组件：随机 Qwen／Cosmos／text_conditioner／VAE、当地构造的 tokenizer，确认缓存编码与原始编码一致、两个 LoRA 组件强度回切恢复相同输出、新调度器与文本释放，以及两次完整 64×64 小管线文本复用。它只产出随机小组件噪声，未加载真实 Anima/MiaoMiao 权重，不作为画质或 GPU 速度证据。安装只在被忽略的 runtime/office-anima-cpu/ 中，不改系统 Python、ComfyUI 或产品 CUDA 准备契约；首次 CDN 下载不完整且哈希失败，改用经响应核对的官方主域名后保留原 SHA-256 核验并成功安装。
 
