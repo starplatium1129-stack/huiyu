@@ -5,11 +5,16 @@ mod observations;
 use observations::runtime_metrics;
 
 #[derive(Default)]
-struct Hooks(std::sync::Mutex<Vec<&'static str>>);
+struct Hooks(std::sync::Mutex<Vec<&'static str>>, Option<Arc<Service>>);
 impl ExecutionHooks for Hooks {
-    fn checkpoint(&self, _: Value) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async {
+    fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>> {
+        Box::pin(async move {
             self.0.lock().unwrap().push("checkpoint");
+            if let Some(service) = &self.1 {
+                let id = value["gatewayJobId"].as_str().unwrap();
+                assert!(!service.inner.native.tokens.lock().await.contains_key(id));
+                assert_eq!(service.cancel(id, "owner").await?["status"], "cancelling");
+            }
             Ok(())
         })
     }
@@ -395,26 +400,41 @@ async fn cancellation_before_registration_and_after_worker_success_settles() {
             .prepare_native(plan, CancellationToken::new())
             .await
             .unwrap();
-        let job = jobs::create(prepared, "owner".into(), None);
-        if completed {
+        let slot = service.inner.native.slot.acquire().await.unwrap();
+        let job = if completed {
+            let job = jobs::create(prepared, "owner".into(), None);
             let resident = service.inner.native.take_worker(&settings).await.unwrap();
             Engine::retain_worker(service.inner.clone(), resident).await;
-        }
-        // No registered cancellation token yet, or already completed process.
-        cancel(service.inner.clone(), job.clone()).await.unwrap();
-        let outcome = if completed {
-            Ok(Output::Bytes {
+            cancel(service.inner.clone(), job.clone()).await.unwrap();
+            let output = Output::Bytes {
                 bytes: Arc::new(vec![1]),
                 mime: "image/png".into(),
-            })
+            };
+            settle(&service.inner, &job, Ok(output), false).await;
+            job
         } else {
-            Err(ApiError::new(
-                499,
-                "ABORT_ERR",
-                "cancelled before worker spawn",
-            ))
+            // The real checkpoint exposes the job before token registration.
+            // Cancel there while another job still owns the GPU slot.
+            let hooks = Arc::new(Hooks(Default::default(), Some(service.clone())));
+            let submitted = service
+                .clone()
+                .submit(prepared, "owner".into(), Some(hooks))
+                .await
+                .unwrap();
+            let id = submitted["id"].as_str().unwrap();
+            let result = tokio::time::timeout(Duration::from_secs(1), settled(&service, id)).await;
+            if result.is_err() {
+                let observed = service.get_job(id, "owner").await.unwrap();
+                let pending = service.pending();
+                service.close().await;
+                panic!(
+                    "pre-registration cancellation waited for a busy GPU slot: {observed}; pending={pending}"
+                );
+            }
+            jobs::find(&service.inner, id, "owner", false)
+                .await
+                .unwrap()
         };
-        settle(&service.inner, &job, outcome, false).await;
         let state = job.state.lock().await;
         assert_eq!(state.status, "cancelled");
         assert!(state.settled && state.result.is_none() && state.permit.is_none());
@@ -424,6 +444,8 @@ async fn cancellation_before_registration_and_after_worker_success_settles() {
             "late cancellation must retire the resident model before settlement"
         );
         assert_eq!(service.pending(), 0);
+        assert!(service.inner.native.slot.try_acquire().is_err());
+        drop(slot);
         service.close().await;
     }
 }

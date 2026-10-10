@@ -73,6 +73,10 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
         .lock()
         .await
         .insert(job.id.clone(), token.clone());
+    // A checkpoint can expose the job to cancellation before token registration.
+    if job.state.lock().await.status == "cancelling" {
+        token.cancel();
+    }
     let worker = inner.clone();
     inner.tasks.spawn(async move {
         let slot = tokio::select! {
