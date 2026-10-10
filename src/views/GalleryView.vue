@@ -67,7 +67,8 @@
         <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选（2–4 张）</button>
         <StudioCheckbox :checked="allVisibleSelected" :indeterminate="!allVisibleSelected && visible.some(item => selectedIds.has(item.id))"
           :disabled="!visible.length" label="全选当前作品" @update:checked="selectAllVisible">全选当前</StudioCheckbox>
-        <button class="btn btn-danger btn-sm" type="button" :disabled="!selectedIds.size || bulkDeleting"
+        <!-- Keep the confirmation opener focusable while busy; bulkDelete guards re-entry. -->
+        <button class="btn btn-danger btn-sm" type="button" :disabled="!selectedIds.size" :aria-disabled="bulkDeleting || undefined"
           @click="bulkDelete">{{ bulkDeleting ? '处理中…' : `移入回收站（${selectedIds.size}）` }}</button>
         <button class="btn btn-ghost btn-sm" type="button" @click="finishSelection">完成</button>
       </span>
