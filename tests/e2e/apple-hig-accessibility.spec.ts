@@ -15,14 +15,14 @@ async function openAppearance(page: Page) {
 }
 
 for (const theme of ['dark', 'light'] as const) {
-  if (theme === 'dark') test(`native modal keeps keyboard control above an existing story drawer ${theme}`, async ({ page }) => {
+  if (theme === 'dark') test(`native modal keeps keyboard control above an existing scene viewer ${theme}`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' })
     await page.goto('/scene-explorer')
     const trigger = page.getByRole('button', { name: '故事', exact: true }).first()
     await trigger.focus()
     await page.keyboard.press('Enter')
-    const drawer = page.getByRole('dialog', { name: '场景故事', exact: true })
-    const close = drawer.getByRole('button', { name: '关闭故事', exact: true })
+    const drawer = page.getByRole('dialog', { name: '场景观赏模式', exact: true })
+    const close = drawer.getByRole('button', { name: '关闭', exact: true })
     await expect(close).toBeFocused()
     // Exercise the browser's real top layer, both outside and inside the custom trap.
     for (const nested of [false, true]) {
@@ -31,7 +31,7 @@ for (const theme of ['dark', 'light'] as const) {
         native.id = 'native-focus-regression'
         native.setAttribute('aria-label', '原生弹窗验证')
         native.innerHTML = '<button>第一项</button><button>第二项</button>'
-        ;(nested ? document.querySelector('.story-card')! : document.body).append(native)
+        ;(nested ? document.querySelector('.scene-artwork-viewer')! : document.body).append(native)
         native.showModal()
       }, nested)
       const native = page.locator('#native-focus-regression')
