@@ -65,8 +65,8 @@
       <span class="gallery-bulk-count" aria-live="polite"><ArchiveIcon name="success" />已选 <strong>{{ selectedIds.size }}</strong><span>/ {{ visible.length }}</span></span>
       <span class="gallery-bulk-actions">
         <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选（2–4 张）</button>
-        <button class="btn btn-ghost btn-sm" type="button" :disabled="!visible.length"
-          @click="selectAllVisible">{{ allVisibleSelected ? '取消全选' : '全选当前' }}</button>
+        <StudioCheckbox :checked="allVisibleSelected" :indeterminate="!allVisibleSelected && visible.some(item => selectedIds.has(item.id))"
+          :disabled="!visible.length" label="全选当前作品" @update:checked="selectAllVisible">全选当前</StudioCheckbox>
         <button class="btn btn-danger btn-sm" type="button" :disabled="!selectedIds.size || bulkDeleting"
           @click="bulkDelete">{{ bulkDeleting ? '处理中…' : `移入回收站（${selectedIds.size}）` }}</button>
         <button class="btn btn-ghost btn-sm" type="button" @click="finishSelection">完成</button>
@@ -214,7 +214,7 @@
             <ArchiveIcon name="close" /><span>关闭信息</span>
           </button>
         </header>
-        <h2 id="viewer-info-title" class="viewer-title">{{ sceneTitle(displayedCurrent.scene, displayedCurrent) }}</h2>
+        <h2 id="viewer-info-title" v-content-motion="viewerIndex < 0 ? false : displayedCurrent.id" class="viewer-title">{{ sceneTitle(displayedCurrent.scene, displayedCurrent) }}</h2>
         <div class="viewer-meta">
           {{ characterName(displayedCurrent.character, displayedCurrent) }} · {{ formatDate(stamp(displayedCurrent)) }}
         </div>
@@ -289,8 +289,10 @@
 import '@/assets/css/viewer.css'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
+import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'

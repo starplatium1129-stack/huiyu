@@ -21,8 +21,11 @@
 /* 多选选中态：描边与题注底色保持原有画框尺寸。 */
 .artwork-selected,.artwork-selected:hover { @apply tw:border-accent; box-shadow:var(--selection-shadow); }
 .artwork-selected .artwork-caption { background:var(--accent-soft); }
-.artwork-check { @apply tw:absolute; z-index:var(--z-raised); top:var(--s-3); right:var(--s-3); @apply tw:inline-flex tw:items-center tw:justify-center tw:w-[28px] tw:h-[28px]; border:1.5px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); color:var(--on-art-primary); }
-.artwork-selected .artwork-check { @apply tw:border-accent; background:var(--accent); @apply tw:text-inverse; }
+/* The native checkbox is the sole selection tab stop; its label covers the card. */
+.artwork-check { position:absolute; inset:0; z-index:var(--z-raised); padding:0; }
+.artwork-check :deep(.studio-checkbox-box) { position:absolute; top:var(--s-3); right:var(--s-3); width:28px; height:28px; border-radius:var(--r-pill); }
+.artwork-selectable:has(input:focus-visible) { outline:3px solid var(--accent); outline-offset:2px; }
+.artwork-selectable .artwork-recovery { z-index:var(--z-raised); }
 .artwork-tool { @apply tw:inline-flex tw:items-center tw:gap-[5px] tw:min-h-[32px] tw:min-w-[32px] tw:justify-center; padding:0 var(--s-2); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); @apply tw:cursor-pointer; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover); }
 .artwork-tool:hover:not(:disabled) { border-color:var(--on-art-sheen); background:var(--on-art-fill); }
 /* 全局 a:hover 链接色 (0,1,1) 会盖过 .artwork-tool 的 on-art 墨色——深色画膜上变暗梅色难以辨认，钉回 */
