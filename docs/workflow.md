@@ -575,6 +575,8 @@ skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同�
 
 ## 独立推理运行库
 
+`npm run wf -- models:benchmark-inference-gateway --payload <实际API请求.json> --expect-provider native --output-dir <全新runtime目录>` 默认零网络计划；显式 `--run` 经项目现有 `/api/anima/jobs` 测实际产品暖任务，复用网关传输与 PNG 验证，保留产品 conditioning/遮罩/驻留缓存。完成后强制核对 provider、服务端 seed，暖机剔除，保存请求/输出哈希、实际尺寸、壁钟统计及 HTML。分别切换到已准备的 native / comfy 独占 GPU 会话后各跑一次；不要同时驻留两引擎，切换后重新暖机。控制配置未证、冷启动/实际 sigma/精度/画质未证均明示，不输出跨后端加速结论。详见[实际产品网关暖任务](../tools/inference/README.md#product-gateway-warm-measurements)。
+
 `npm run wf -- models:convert-anima --profile anima-cosmos2b-v041 ...` 默认只读单文件结构计划；`--check` 在已有独立运行库中核验完整 meta 键/形状和本地 tokenizer；`--apply` 显式 CPU 离线转换到全新模型目录。未知架构拒绝，不联网/安装，不覆盖输入或已有输出。完整必填参数见[独立推理指南](guides/independent-inference.md#经架构核验的离线转换)。实际权重和 GPU 出图尚未验收。
 
 `npm run wf -- models:benchmark-anima-comfy --workflow <Comfy API JSON> --sampler-node <KSampler id> --output-dir <全新runtime目录>` 复用原 ComfyUI benchmark 入口，默认只读计划、零网络。只有显式 `--run` 才向已准备的本机 ComfyUI 提交列出的任务；可用 `--teacache-node <AnimaTeaCache id>` 增加同工作流缓存对照。暖机独列、轮次变 seed、AB/BA 顺序、失败/整图缓存拒绝及 JSON/HTML 证据见 [worker 基准说明](../tools/inference/README.md#comfyui-comparison-evidence)。本工具不启动服务、不下载模型、不自动中断共享服务，不据同名 scheduler 宣称 native 等价或加速。

@@ -11,6 +11,7 @@ from unittest.mock import Mock, patch
 import numpy as np
 
 import teacache_anima as tea
+import teacache_calibration as calibration
 import teacache_profile as profiles
 import worker
 from test_worker import model as model_fixture, job as job_fixture
@@ -36,6 +37,8 @@ class Tensor(np.ndarray):
         return np.abs(self)
     def to(self, dtype):
         return self
+    def cpu(self):
+        return Tensor(self.copy(), dtype=self.dtype, device="cpu")
     def has_names(self):
         return False
     def item(self):
@@ -48,6 +51,8 @@ def fake_torch():
         no_grad=lambda: lambda fn: fn, bfloat16="torch.bfloat16", float16="torch.float16",
         cuda=types.SimpleNamespace(is_available=lambda: True, is_bf16_supported=lambda: True,
             get_device_name=lambda _: "fake CUDA", synchronize=lambda: None, max_memory_allocated=lambda _: 1234,
+            is_initialized=lambda: True, get_allocator_backend=lambda: "native",
+            memory_stats=lambda _: {"allocated_bytes.all.peak": 1234, "reserved_bytes.all.peak": 2048},
             reset_peak_memory_stats=lambda _: None),
         Generator=lambda device: types.SimpleNamespace(manual_seed=lambda seed: seed))
 
@@ -121,19 +126,20 @@ def modules():
 
 
 class Guider:
-    def __init__(self):
+    def __init__(self, lanes=2):
         self.cleanups = 0
+        self.lanes = lanes
     def set_state(self, **kwargs):
         pass
     def prepare_inputs_from_block_state(self, state, fields):
         return [types.SimpleNamespace(encoder_hidden_states=value) for value in
-                (state.prompt_embeds, state.negative_prompt_embeds)]
+                (state.prompt_embeds, state.negative_prompt_embeds)[:self.lanes]]
     def prepare_models(self, model):
         pass
     def cleanup_models(self, model):
         self.cleanups += 1
     def __call__(self, batches):
-        return (batches[0].noise_pred - batches[1].noise_pred,)
+        return (batches[0].noise_pred if len(batches) == 1 else batches[0].noise_pred - batches[1].noise_pred,)
 
 
 class TeaTests(unittest.TestCase):
@@ -264,6 +270,25 @@ class TeaTests(unittest.TestCase):
         self.assertGreater(cache.samples[1]["proxyRelativeL1"], 0)
         self.assertGreaterEqual(cache.samples[1]["residualRelativeL1"], 0)
 
+    def test_collection_counts_residual_reduction_overflow_and_fit_rejects_trace(self):
+        model, cache = Model(), tea.TeaCacheController(collect=True)
+        residuals = [Tensor(np.full((1, 2, 1, 2, 2), value)) for value in (-1e38, 1e38)]
+        self.assertTrue(all(np.isfinite(value).all() for value in residuals))
+        self.assertTrue(np.isfinite(residuals[1] - residuals[0]).all())
+        # Explicit NumPy float32 reduction overflow; all tensor inputs/outputs stay finite.
+        with patch.dict("sys.modules", modules()), np.errstate(over="ignore", invalid="ignore"):
+            for step, residual in enumerate(residuals):
+                with patch.object(model.transformer_blocks[-1], "forward", return_value=residual):
+                    result = cache.call(model, **arguments(step, total=3))[0]
+                self.assertTrue(np.isfinite(result).all())
+                self.assertEqual(cache.stats["nonfinite"], step)
+        self.assertIsNotNone(cache.samples[1]["proxyRelativeL1"])
+        self.assertIsNone(cache.samples[1]["residualRelativeL1"])
+        trace = dict(schemaVersion=1, compatibility={"fixture": "finite-input reduction overflow"},
+                     stats=cache.stats, samples=cache.samples)
+        with self.assertRaisesRegex(ValueError, "finite, full-compute worker traces"):
+            calibration.fit([trace], types.SimpleNamespace(strategy="phase-envelope"))
+
     def test_nonfinite_residual_is_not_retained_with_or_without_collection(self):
         with patch.dict("sys.modules", modules()):
             for collect in (False, True):
@@ -284,26 +309,36 @@ class TeaTests(unittest.TestCase):
                         self.assertIsNone(cache.samples[2]["residualRelativeL1"])
 
     def test_both_modular_modes_preserve_after_and_use_actual_sliced_final_step(self):
-        cache, blocks = tea.TeaCacheController(profile(), 0.15), AutoBlocks()
-        after = blocks.sub_blocks["denoise"].sub_blocks["img2img"].sub_blocks["denoise"].sub_blocks["after_denoiser"]
+        cache = tea.TeaCacheController(profile(), 0.15)
         with patch.dict("sys.modules", modules()):
-            tea.apply_blocks(blocks, cache)
-            for mode in ("text2image", "img2img"):
+            for mode, lanes, timesteps in (("text2image", 2, Tensor([0.5, 0.1])),
+                                           ("img2img", 1, Tensor([1.0, 0.3, 0.05])[1:])):
                 cache.clear()
+                blocks = AutoBlocks()
+                after = blocks.sub_blocks["denoise"].sub_blocks["img2img"].sub_blocks["denoise"].sub_blocks["after_denoiser"]
+                tea.apply_blocks(blocks, cache)
                 model = Model()
-                components = types.SimpleNamespace(transformer=model, guider=Guider())
+                components = types.SimpleNamespace(transformer=model, guider=Guider(lanes))
                 denoiser = blocks.sub_blocks["denoise"].sub_blocks[mode].sub_blocks["denoise"].sub_blocks["denoiser"]
-                state = types.SimpleNamespace(num_inference_steps=28, timesteps=Tensor([0.5, 0.1]),
+                state = types.SimpleNamespace(num_inference_steps=28, timesteps=timesteps,
                     latent_model_input=arguments(0)["hidden_states"], timestep=Tensor(0.5), dtype=np.float32,
                     padding_mask=arguments(0)["padding_mask"], prompt_embeds=Tensor([1]), negative_prompt_embeds=Tensor([4]))
-                for step, t in enumerate(state.timesteps):
-                    t = types.SimpleNamespace(item=Mock(return_value=float(t)))
-                    denoiser(components, state, step, t)
-                    t.item.assert_called_once_with()
-                self.assertEqual(model.transformer_blocks[0].calls, 4)
-                self.assertEqual(components.guider.cleanups, 4)
-        self.assertEqual(cache.stats["skippedComputes"], 0)
-        self.assertIs(blocks.sub_blocks["denoise"].sub_blocks["img2img"].sub_blocks["denoise"].sub_blocks["after_denoiser"], after)
+                with patch.object(Tensor, "cpu", autospec=True, side_effect=Tensor.cpu) as snapshot, \
+                        patch.object(cache, "call", wraps=cache.call) as calls, \
+                        patch.object(components.guider, "set_state") as set_state:
+                    for step, value in enumerate(state.timesteps):
+                        t = types.SimpleNamespace(item=Mock(return_value=float(value)))
+                        denoiser(components, state, step, t)
+                        t.item.assert_not_called()
+                        self.assertIs(set_state.call_args.kwargs["timestep"], t)
+                snapshot.assert_called_once()
+                self.assertIs(snapshot.call_args.args[0], state.timesteps)
+                self.assertEqual([call.kwargs["timestep_value"] for call in calls.call_args_list],
+                                 [float(value) for value in timesteps for _ in range(lanes)])
+                self.assertEqual(model.transformer_blocks[0].calls, 2 * lanes)
+                self.assertEqual(components.guider.cleanups, 2 * lanes)
+                self.assertIs(blocks.sub_blocks["denoise"].sub_blocks["img2img"].sub_blocks["denoise"].sub_blocks["after_denoiser"], after)
+            self.assertEqual(cache.stats["skippedComputes"], 0)
 
     def test_profile_scope_hashes_exact_bytes_and_requires_local_acceptance(self):
         with tempfile.TemporaryDirectory() as directory:

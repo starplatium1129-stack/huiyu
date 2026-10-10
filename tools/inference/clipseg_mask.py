@@ -125,26 +125,30 @@ def model_identity(root):
     return str(root), tuple(rows)
 
 
-def generate_mask(root, image, prompt, threshold, *, cache=None):
-    """Segment on CPU; optional exact-content cache never retains image pixels."""
+def generate_mask(root, image, prompt, threshold, *, cache=None, expected_mask_sha256=None):
+    """Segment on CPU; bind a supplied profile scope before cache reuse or loading."""
     try:
         if cache is not None:
             cache.begin_job()
-        return _generate_mask(root, image, prompt, threshold, cache)
+        return _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256)
     except BaseException:
         if cache is not None:
             cache.clear()
         raise
 
 
-def _generate_mask(root, image, prompt, threshold, cache):
+def _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256):
     import numpy as np
     import torch
     from transformers import CLIPSegForImageSegmentation, CLIPTokenizer, ViTImageProcessorPil
     texts = phrases(prompt)
     fingerprint_started = time.perf_counter()
-    identity = model_identity(root) if cache is not None else None
+    identity = model_identity(root) if cache is not None or expected_mask_sha256 is not None else None
     fingerprint_seconds = time.perf_counter() - fingerprint_started
+    if expected_mask_sha256 is not None:
+        digest = hashlib.sha256(json.dumps(identity[1], sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+        if digest != expected_mask_sha256:
+            raise ValueError("CLIPSeg model bytes changed since TeaCache profile scope validation")
     result_key = None
     if cache is not None:
         if cache.identity != identity:
@@ -174,12 +178,14 @@ def _generate_mask(root, image, prompt, threshold, cache):
         if any(info.get(key) for key in ("missing_keys", "unexpected_keys", "mismatched_keys", "error_msgs")):
             raise ValueError("CLIPSeg checkpoint did not load completely; prepare a matching rd64-refined export")
         model = model.to("cpu").eval()
-        if cache is not None:
+        if identity is not None:
             fingerprint_started = time.perf_counter()
             loaded_identity = model_identity(root)
-            cache.fingerprint_seconds += time.perf_counter() - fingerprint_started
+            if cache is not None:
+                cache.fingerprint_seconds += time.perf_counter() - fingerprint_started
             if loaded_identity != identity:
                 raise ValueError("CLIPSeg model bytes changed while loading; retry after preparation completes")
+        if cache is not None:
             cache.identity, cache.components = identity, (tokenizer, processor, model)
     combined = None
     with torch.inference_mode():

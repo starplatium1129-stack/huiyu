@@ -117,7 +117,14 @@ async function generate(record: any, save: any, options: any = {}) {
     const data = await json(`${record.gateway}/api/anima/jobs/${encodeURIComponent(record.jobId)}`);
     const job = data.job || data;
     if (job.id !== undefined && job.id !== record.jobId) throw new Error('gateway returned a different job ID');
-    if (['failed', 'cancelled'].includes(job.status)) throw definitive(`job ${job.status}`);
+    if (['failed', 'cancelled', 'succeeded', 'completed'].includes(job.status)) record.serverMetadata = job.metadata ?? null;
+    if (['failed', 'cancelled'].includes(job.status)) {
+      record.serverCode = job.code ?? null;
+      record.serverError = job.error ?? null;
+      record.status = job.status;
+      save(record);
+      throw definitive(`job ${job.status}`);
+    }
     if (['succeeded', 'completed'].includes(job.status)) {
       const result = job.resultUrl || job.outputs?.[0];
       if (typeof result !== 'string' || !result.trim()) throw definitive('completed job has no result URL');

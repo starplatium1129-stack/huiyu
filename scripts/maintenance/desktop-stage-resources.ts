@@ -16,7 +16,7 @@ const DATA_SHARDS=new Set(['catalog','blueprints','popular','references','scenes
 const OFFLINE_TOOLS = ['Install-OfflineResources.cmd', 'offline-resource-assistant.ps1', 'install-offline-resources.ps1'];
 const TOOLS=new Set(['nav.js','theme.js','local-status.js','translate-zh-ja.py','voxcpm-server.py','install-translation-model.ps1', ...OFFLINE_TOOLS]);
 const INTERROGATE_TOOLS=new Set(['pixai_worker.py','pixai-manifest.json']);
-const INFERENCE_TOOLS=new Set(['worker.py','resident_anima.py','resident_benchmark.py','anima_text_cache.py','masked_anima.py','clipseg_mask.py','anima_conversion.py','anima_conversion_profile.py','ANIMA_CONVERSION_LICENSE.txt','teacache_anima.py','teacache_profile.py','teacache_calibration.py','TEACACHE_LICENSE.txt','requirements.txt','runtime-manifest.json']);
+const INFERENCE_TOOLS=new Set(['worker.py','resident_anima.py','resident_benchmark.py','anima_text_cache.py','inference_metrics.py','masked_anima.py','clipseg_mask.py','anima_conversion.py','anima_conversion_profile.py','ANIMA_CONVERSION_LICENSE.txt','teacache_anima.py','teacache_profile.py','teacache_calibration.py','TEACACHE_LICENSE.txt','requirements.txt','runtime-manifest.json']);
 function includeTools(parts:string[],file:string):boolean {
   if(parts[0]==='inference') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&INFERENCE_TOOLS.has(parts[1]);
   if(parts[0]==='interrogate') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&INTERROGATE_TOOLS.has(parts[1]);

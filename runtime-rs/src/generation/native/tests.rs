@@ -87,12 +87,44 @@ async fn settled(service: &Service, id: &str) -> Value {
     .await
     .expect("fixture worker must settle")
 }
+fn runtime_metrics() -> Value {
+    json!({"schemaVersion":1,"timingMode":"cpu-wall-no-extra-sync","timingsAreAdditive":false,
+        "existingReportSynchronization":false,"baseReused":true,"completedSteps":1,
+        "timings":{"workerWallSeconds":4.0,"imagePreparationWallSeconds":0.1,"modelAcquireWallSeconds":0.2,
+            "pipelineWallSeconds":3.0,"compositeWallSeconds":0.1,"outputSaveSeconds":0.2,"residentFingerprintSeconds":0.1},
+        "textCache":{"enabled":true,"hits":1,"misses":0,"entries":1,"cpuBytes":1024},
+        "maskCache":{"enabled":true,"used":false},"teaCache":{"enabled":false},
+        "memory":{"status":"per-job-allocator","reason":null,"deviceIndex":0,
+            "scope":"image-preparation-through-pipeline","peakAllocatedBytes":1234,"peakReservedBytes":2048}})
+}
+#[test]
+fn runtime_metadata_is_optional_bounded_and_never_labels_history_as_job_peak() {
+    let mut valid = runtime_metrics();
+    valid["outputPath"] = json!("/private/path");
+    valid["textCache"]["arbitrary"] = json!({"must":"not escape"});
+    valid["memory"]["untrusted"] = json!("ignored");
+    assert_eq!(native_runtime(&valid), runtime_metrics());
+    assert_eq!(
+        native_runtime(&Value::Null)["reason"],
+        "worker-metrics-missing"
+    );
+    let mut cold = runtime_metrics();
+    cold["memory"]["status"] = json!("unverified");
+    cold["memory"]["reason"] = json!("cuda-uninitialized-at-window-start");
+    cold["memory"]["peakAllocatedBytes"] = Value::Null;
+    cold["memory"]["peakReservedBytes"] = Value::Null;
+    assert_eq!(native_runtime(&cold), cold);
+    cold["memory"]["peakAllocatedBytes"] = json!(999999);
+    assert_eq!(native_runtime(&cold)["reason"], "invalid-worker-metrics");
+    valid["timings"]["pipelineWallSeconds"] = json!(-1);
+    assert_eq!(native_runtime(&valid)["reason"], "invalid-worker-metrics");
+}
 #[tokio::test]
 async fn native_result_uses_jobs_hooks_and_owner_authorization_without_comfy() {
     let root = tempfile::tempdir().unwrap();
     let (service, mut plan) = fixture(
         root.path(),
-        r#"import json,sys,zlib,struct
+        &r#"import json,sys,zlib,struct
 r=json.loads(sys.stdin.readline())
 assert r['input']['teaCache'] is False
 assert 'teaCacheThresh' not in r['input'] and r['teaCacheProfilePath'] is None
@@ -108,8 +140,8 @@ def chunk(t,d): return struct.pack('>I',len(d))+t+d+struct.pack('>I',zlib.crc32(
 png=b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>2I5B',1,1,8,2,0,0,0))+chunk(b'IDAT',zlib.compress(b'\0\xff\0\0'))+chunk(b'IEND',b'')
 open(r['outputPath'],'wb').write(png)
 print(json.dumps({'id':r['id'],'event':'progress','step':1,'total':2}),flush=True)
-print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath']}),flush=True)
-"#,
+print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath'],'nativeRuntime':METRICS}),flush=True)
+"#.replace("METRICS", &format!("json.loads({:?})", runtime_metrics().to_string())),
     );
     plan.init_image = Some(Arc::new(b"accepted original".to_vec()));
     plan.input["denoisingStrength"] = json!(0.8);
@@ -131,6 +163,7 @@ print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath']}),f
     assert_eq!(result["status"], "succeeded", "{result}");
     assert_eq!(result["provider"], "native");
     assert_eq!(result["progress"], 1);
+    assert_eq!(result["metadata"]["nativeRuntime"], runtime_metrics());
     assert_eq!(
         service.result(id, "intruder").await.unwrap_err().code,
         "RESULT_NOT_FOUND"

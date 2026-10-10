@@ -13,7 +13,9 @@ from PIL import Image
 
 import clipseg_mask
 import masked_anima
+import inference_metrics
 import resident_benchmark
+import teacache_profile as profiles
 import worker
 from test_masked_anima import Blocks, fake_modules
 
@@ -229,6 +231,47 @@ class ClipsegTests(unittest.TestCase):
                 self.assertIsNone(cache.components)
                 self.assertIsNone(cache.logits)
 
+    def test_expected_profile_scope_binds_cached_and_uncached_masks(self):
+        for cache in (None, clipseg_mask.MaskCache()):
+            with self.subTest(cached=cache is not None), tempfile.TemporaryDirectory() as directory:
+                root = local_model(Path(directory) / "clipseg")
+                image, calls = Image.new("RGB", (64, 64)), []
+                # Acceptance uses the profile's canonical algorithm, not a test copy.
+                expected = profiles.canonical_sha256(clipseg_mask.model_identity(root)[1])
+                modules = segmentation_fakes(calls)
+                with patch.dict("sys.modules", modules):
+                    with patch.object(clipseg_mask, "model_identity", wraps=clipseg_mask.model_identity) as identities:
+                        clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache, expected_mask_sha256=expected)
+                        self.assertEqual(identities.call_count, 2)
+                        if cache is not None:
+                            clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache, expected_mask_sha256=expected)
+                            self.assertTrue(cache.result_reused)
+                            self.assertEqual(identities.call_count, 3, "bound cache hit needs only its existing byte scan")
+                    weights = root / "model.safetensors"
+                    weights.write_bytes(b"CHANGED BEFORE GENERATION")
+                    before = len(calls)
+                    with self.assertRaisesRegex(ValueError, "profile scope"):
+                        clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache, expected_mask_sha256=expected)
+                    self.assertEqual(len(calls), before, "scope mismatch must fail before loaders or inference")
+                    if cache is not None:
+                        self.assertIsNone(cache.components)
+                        self.assertIsNone(cache.logits)
+                    expected = profiles.canonical_sha256(clipseg_mask.model_identity(root)[1])
+                    model = modules["transformers"].CLIPSegForImageSegmentation
+                    load = model.from_pretrained
+                    def replaced_while_loading(*args, **kwargs):
+                        weights.write_bytes(b"CHANGED DURING LOADING")
+                        return load(*args, **kwargs)
+                    before = sum(row[0] == "inference" for row in calls)
+                    with patch.object(model, "from_pretrained", side_effect=replaced_while_loading), \
+                            self.assertRaisesRegex(ValueError, "changed while loading"):
+                        clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache, expected_mask_sha256=expected)
+                    self.assertEqual(sum(row[0] == "inference" for row in calls), before)
+                    if cache is not None:
+                        self.assertIsNone(cache.identity)
+                        self.assertIsNone(cache.components)
+                        self.assertIsNone(cache.logits)
+
     def test_worker_auto_mask_contract_and_same_masked_denoise_path(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -267,16 +310,21 @@ class ClipsegTests(unittest.TestCase):
             auto_module.generate_mask = segment
             modules = fake_modules([])
             modules["torch"].Generator = lambda device: types.SimpleNamespace(manual_seed=lambda seed: "seeded")
+            modules["torch"].bfloat16 = "fixture bf16"
             modules["torch"].cuda = types.SimpleNamespace(reset_peak_memory_stats=lambda _: None,
-                synchronize=lambda: None, max_memory_allocated=lambda _: 0)
-            profile_module = types.SimpleNamespace(model_identity=lambda *args: {"loras": []})
+                synchronize=lambda: None, max_memory_allocated=lambda _: 0,
+                is_available=lambda: True, is_bf16_supported=lambda: True, get_device_name=lambda _: "fixture GPU")
+            profile_module = types.SimpleNamespace(model_identity=lambda *args: {"loras": []},
+                compatibility=lambda *args, **kwargs: {"maskModelSha256": "a" * 64}, TeaCacheError=profiles.TeaCacheError)
+            tea_module = types.SimpleNamespace(TeaCacheController=lambda *args: object())
             resident = types.SimpleNamespace(mask_cache=None, text_cache=None, weights_loaded=False,
                 prepare=lambda check: check(), acquire=lambda *args: (Pipeline(), True))
             with patch.dict("sys.modules", modules), patch.object(worker, "dependencies"), \
                     patch.object(worker, "validate_model", return_value=root), \
                     patch.object(worker, "load_mask_tools", side_effect=lambda name="masked_anima":
                         {"clipseg_mask": auto_module, "teacache_profile": profile_module,
-                         "resident_benchmark": resident_benchmark}.get(name, masked_anima)), \
+                         "resident_benchmark": resident_benchmark, "inference_metrics": inference_metrics,
+                         "teacache_anima": tea_module}.get(name, masked_anima)), \
                     patch.object(worker, "load_pipeline", return_value=Pipeline()) as load:
                 cold = worker.generate(request, io.StringIO(), measure_teacache=True)
                 self.assertIs(cold["maskCacheEnabled"], False)
@@ -294,6 +342,11 @@ class ClipsegTests(unittest.TestCase):
                 worker.generate(request, io.StringIO(), resident=resident, cache_text=False, cache_mask=False)
                 self.assertIsNone(resident.mask_cache)
                 auto_module.MaskCache.assert_called_once_with()
+                with patch.object(auto_module, "generate_mask", side_effect=ValueError("scope binding fixture")) as scoped:
+                    with self.assertRaisesRegex(worker.WorkerError, "scope binding fixture"):
+                        worker.generate(request, io.StringIO(), resident=resident, cache_text=False,
+                            cache_mask=False, collect_teacache=True)
+                    self.assertEqual(scoped.call_args.kwargs, {"expected_mask_sha256": "a" * 64})
             self.assertIsInstance(load.call_args.kwargs["blocks"], Blocks)
             self.assertEqual(arguments["mask_image"].getbbox(), (32, 0, 64, 64))
             with Image.open(root / "out.png") as output:

@@ -40,7 +40,8 @@ class WorkerTests(unittest.TestCase):
     def resident_fixture(self):
         import resident_anima
         from test_anima_text_cache import Encoder, State, modules, np
-        f = types.SimpleNamespace(loaded=[], used=[], specs={}, failure=None, encoder=Encoder)
+        f = types.SimpleNamespace(loaded=[], used=[], specs={}, failure=None, encoder=Encoder,
+                                  initialized=False, allocator="native", resets=0, reads=0, metrics_error=None)
         class Pipeline:
             def __init__(self, blocks=None):
                 self.blocks = blocks
@@ -78,6 +79,7 @@ class WorkerTests(unittest.TestCase):
                 self.scheduler.step()
                 return [types.SimpleNamespace(save=lambda path, format, compress_level: Path(path).write_bytes(b"FAKE PNG"))]
         def load(root, cfg, blocks=None):
+            f.initialized = True
             result = Pipeline(blocks)
             f.loaded.append(result)
             return result
@@ -96,10 +98,22 @@ class WorkerTests(unittest.TestCase):
         diffusers = types.SimpleNamespace(AnimaModularPipeline=Pipeline,
             FlowMatchEulerDiscreteScheduler=types.SimpleNamespace(from_config=lambda c: types.SimpleNamespace(config=dict(c), step=lambda: None)),
             ClassifierFreeGuidance=lambda **kw: kw)
+        def reset_metrics(device):
+            f.resets += 1
+            if f.metrics_error == "reset":
+                raise RuntimeError("synthetic allocator reset failure")
+        def read_metrics(device):
+            f.reads += 1
+            if f.metrics_error == "read":
+                raise RuntimeError("synthetic allocator stats failure")
+            return {"allocated_bytes.all.peak": float("nan") if f.metrics_error == "invalid" else 1234,
+                    "reserved_bytes.all.peak": 2048}
         torch = types.SimpleNamespace(no_grad=lambda: lambda fn: fn,
             cuda=types.SimpleNamespace(is_available=lambda: False, synchronize=lambda: None,
-                                      reset_peak_memory_stats=lambda device: None, max_memory_allocated=lambda device: 0),
+                is_initialized=lambda: f.initialized, get_allocator_backend=lambda: f.allocator,
+                reset_peak_memory_stats=reset_metrics, memory_stats=read_metrics),
             Generator=lambda device: types.SimpleNamespace(manual_seed=lambda seed: seed))
+        f.cuda = torch.cuda
         Encoder.calls = 0
         with tempfile.TemporaryDirectory() as directory, patch.dict("sys.modules", {**modules(), "torch": torch, "diffusers": diffusers}), \
                 patch.object(worker, "dependencies") as f.checks, patch.object(worker, "load_pipeline", side_effect=load), \
@@ -111,6 +125,67 @@ class WorkerTests(unittest.TestCase):
             f.path.write_bytes(b"FAKE LORA")
             f.request["loras"] = [{"path": str(f.path), "strength": .5}]
             yield f
+
+    def test_native_observations_distinguish_cold_warm_and_actual_steps_without_new_sync(self):
+        with self.resident_fixture() as f, patch.object(f.cuda, "synchronize", side_effect=AssertionError("new sync forbidden")) as sync:
+            results = []
+            for _ in range(2):
+                stream = io.StringIO()
+                self.assertIsNone(worker.generate(f.request, stream, resident=f.resident))
+                results.append(json.loads(stream.getvalue().splitlines()[-1])["nativeRuntime"])
+            cold, warm = results
+            self.assertEqual(cold["memory"]["reason"], "cuda-uninitialized-at-window-start")
+            self.assertIsNone(cold["memory"]["peakAllocatedBytes"])
+            self.assertFalse(cold["baseReused"])
+            self.assertTrue(warm["baseReused"])
+            self.assertEqual((f.resets, f.reads), (1, 1))
+            self.assertEqual(warm["memory"]["status"], "per-job-allocator")
+            self.assertEqual(warm["memory"]["peakAllocatedBytes"], 1234)
+            self.assertEqual(warm["textCache"]["hits"], 1)
+            self.assertEqual(cold["textCache"]["misses"], 1)
+            self.assertEqual(warm["completedSteps"], 1)
+            self.assertNotEqual(warm["completedSteps"], f.request["input"]["steps"])
+            self.assertFalse(warm["timingsAreAdditive"])
+            self.assertFalse(warm["existingReportSynchronization"])
+            self.assertGreaterEqual(warm["timings"]["workerWallSeconds"], warm["timings"]["pipelineWallSeconds"])
+            self.assertNotIn("outputPath", warm)
+            self.assertNotIn("schedule", warm)
+            json.dumps(results, allow_nan=False)
+            sync.assert_not_called()
+
+    def test_native_observation_failures_do_not_break_output_or_reuse_stale_mask_stats(self):
+        with self.resident_fixture() as f:
+            worker.generate(f.request, io.StringIO(), resident=f.resident)
+            f.resident.mask_cache = types.SimpleNamespace(stats=lambda: self.fail("unused mask stats must not leak"))
+            for backend, failure in (("cudaMallocAsync", None), ("native", "reset"), ("native", "read"), ("native", "invalid")):
+                with self.subTest(backend=backend, failure=failure):
+                    f.allocator, f.metrics_error = backend, failure
+                    stream = io.StringIO()
+                    worker.generate(f.request, stream, resident=f.resident)
+                    result = json.loads(stream.getvalue().splitlines()[-1])
+                    self.assertEqual(result["event"], "result")
+                    self.assertTrue(Path(f.request["outputPath"]).is_file())
+                    evidence = result["nativeRuntime"]
+                    self.assertEqual(evidence["memory"]["status"], "unverified")
+                    self.assertIsNone(evidence["memory"]["peakAllocatedBytes"])
+                    self.assertEqual(evidence["memory"]["reason"], "unsupported-allocator" if failure is None else "allocator-observation-error")
+                    self.assertEqual(evidence["maskCache"], {"enabled": True, "used": False})
+                    json.dumps(evidence, allow_nan=False)
+
+    def test_explicit_measure_report_retains_one_cold_reset_and_existing_timing_keys(self):
+        with self.resident_fixture() as f, patch.object(f.cuda, "synchronize") as sync:
+            self.assertFalse(f.initialized)
+            stream = io.StringIO()
+            report = worker.generate(f.request, stream, resident=f.resident, measure_teacache=True)
+            evidence = json.loads(stream.getvalue().splitlines()[-1])["nativeRuntime"]
+            self.assertEqual((f.resets, f.reads), (1, 1))
+            self.assertEqual(sync.call_count, 2, "retain existing report fences without new ones")
+            self.assertEqual(report["peakAllocatedBytes"], 1234)
+            self.assertEqual(report["pipelineSeconds"], report["generationSeconds"])
+            self.assertIn("modelLoadSeconds", report)
+            self.assertEqual(report["fingerprintSeconds"], 0)
+            self.assertEqual(evidence["memory"]["peakAllocatedBytes"], report["peakAllocatedBytes"])
+            self.assertTrue(evidence["existingReportSynchronization"])
 
     def test_resident_reuses_base_across_adapters_with_fresh_job_state(self):
         with self.resident_fixture() as f:

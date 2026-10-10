@@ -157,6 +157,8 @@ class TeaCacheController:
                             # Residual change is calibration-only; avoid its reduction/sync in generation.
                             if self.collect and lane["residual"] is not None:
                                 residual_change = relative_l1(residual, lane["residual"])
+                                if residual_change is None:
+                                    self.stats["nonfinite"] += 1
                             lane["residual"] = snapshot(residual)
                         else:
                             self.stats["nonfinite"] += 1
@@ -201,7 +203,11 @@ def apply_blocks(blocks, controller):
         def __call__(self, components, block, i, t):
             components.guider.set_state(step=i, num_inference_steps=block.num_inference_steps, timestep=t)
             batches = components.guider.prepare_inputs_from_block_state(block, self._guider_input_fields)
-            timestep_value = t.item()
+            if i == 0:
+                # The pinned loop enumerates this fixed, already strength-sliced
+                # schedule. Copy once per run instead of synchronizing every step.
+                self._timestep_values = block.timesteps.detach().cpu().tolist()
+            timestep_value = self._timestep_values[i]
             # The fixed ClassifierFreeGuidance returns stable separate lanes. Include
             # batch count so a changed guidance layout cannot reuse another branch.
             for lane, batch in enumerate(batches):

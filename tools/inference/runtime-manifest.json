@@ -34,6 +34,22 @@
   },
   "engine": "diffusers.AnimaModularPipeline",
   "engineVersion": "0.41.0",
+  "observations": {
+    "helper": "inference_metrics.py",
+    "metadata": "nativeRuntime",
+    "timing": "CPU wall intervals with no additional GPU synchronization; existing TeaCache report synchronization is explicitly marked",
+    "boundaries": "workerWall includes validation/imports through PNG save; pipelineWall includes encoding, denoising and decoding; outputSave includes compression and atomic write; composite is CPU pixel compositing",
+    "notAdditive": "workerWall includes the other intervals; residentFingerprint includes initial identity and post-load verification that can overlap modelAcquire; do not sum these fields",
+    "completedSteps": "observed scheduler.step calls, not requested inference steps or proof of Comfy schedule equivalence",
+    "memory": "per-job PyTorch native allocator peaks on initialized CUDA device 0, reset before image preparation and read after pipeline; includes retained allocations/reservations, excludes non-PyTorch/device-wide memory",
+    "memoryUnverified": "ordinary product jobs with cold uninitialized CUDA, non-native allocator, unavailable/invalid counters; existing explicit TeaCache/measure/collect reports retain one reset attempt, with failure unverified; never initialize CUDA or read historical peaks for observation",
+    "cacheScope": "baseReused describes the base only; text hit/miss counters are per job, entries/CPU bytes are resident; automatic mask stats appear only when used in this job",
+    "validation": "CPU/fake protocol only; real GPU observation overhead, memory accuracy and visual quality are unverified",
+    "sources": [
+      "https://github.com/pytorch/pytorch/blob/v2.8.0/c10/cuda/CUDACachingAllocator.cpp#L1674-L1720",
+      "https://github.com/pytorch/pytorch/blob/v2.8.0/torch/cuda/memory.py#L329-L344"
+    ]
+  },
   "capabilities": {
     "txt2img": true,
     "img2img": true,
