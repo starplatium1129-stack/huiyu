@@ -41,7 +41,7 @@ def trace_for(job):
     helper = module.load("teacache_profile")
     mode = "masked" if job.get("maskImagePath") else ("img2img" if job.get("inputImagePath") else "txt2img")
     scope = helper.compatibility(Path(job["modelDir"]), [], job["input"], mode, "torch.float16", "FAKE TEST DEVICE")
-    return {"schemaVersion": 1, "compatibility": scope,
+    return {"schemaVersion": 1, "runtime": helper.RUNTIME, "compatibility": scope,
             "samples": [{"branch": 0, "step": i, "total": 13, "timestep": 20 - i,
                          "proxyRelativeL1": i / 100, "residualRelativeL1": .01 + 2 * i / 100 + 3 * (i / 100) ** 2}
                         for i in range(1, 13)],
@@ -50,7 +50,7 @@ def trace_for(job):
 
 def fake_profile(traces, args):
     return {"schemaVersion": 1, "algorithm": module.ALGORITHM,
-            "runtime": {"diffusers": "0.41.0", "torch": "2.8.0"},
+            "runtime": module.load("teacache_profile").RUNTIME,
             "compatibility": traces[0]["compatibility"], "coefficients": [.01, 2, 3],
             "proxyRange": [.01, .12], "defaultThreshold": .05, "maxThreshold": .05,
             "maxConsecutiveSkips": 1, "calibration": {"source": "local-full-compute", "sampleCount": 12,
@@ -196,6 +196,7 @@ for line in sys.stdin:
             trace["samples"][4]["residualRelativeL1"] = .8
             value = module.fit([trace], args)
             self.assertEqual(value["schemaVersion"], 2)
+            self.assertEqual(value["runtime"]["huiyuInference"], "lora-eval-v1")
             self.assertIn([.05, .8], value["phaseEnvelopes"][1])
             self.assertEqual(value["fitDiagnostics"]["phaseSampleCounts"], [3, 4, 5])
             module.load("teacache_profile").validate_profile(value, value["compatibility"], require_accepted=False)
@@ -241,9 +242,16 @@ for line in sys.stdin:
             training, _, _, _ = module.plan(args)
             trace = trace_for(training[0])
             profile = module.fit([trace], args)
+            helper = module.load("teacache_profile")
+            self.assertEqual(profile["runtime"], helper.RUNTIME)
+            helper.validate_profile(profile, profile["compatibility"], require_accepted=False)
             for actual, expected in zip(profile["coefficients"], [.01, 2, 3]):
                 self.assertAlmostEqual(actual, expected, places=8)
             self.assertNotIn("acceptance", profile)
+            for runtime in (None, {"diffusers": "0.41.0", "torch": "2.8.0"}):
+                legacy = {**trace, "runtime": runtime}
+                with self.subTest(runtime=runtime), self.assertRaisesRegex(ValueError, "runtime.*recalibrate"):
+                    module.fit([legacy], args)
             trace["stats"]["skippedComputes"] = 1
             with self.assertRaisesRegex(ValueError, "full-compute"):
                 module.fit([trace], args)
@@ -253,7 +261,7 @@ for line in sys.stdin:
             with self.assertRaisesRegex(ValueError, "full-rank"):
                 module.fit([trace], args)
 
-    def make_run(self, args, skips=2, cached_seconds=6, mask_cache=False):
+    def make_run(self, args, skips=2, cached_seconds=6, mask_cache=False, legacy_runtime=False):
         training, heldout, target, _ = module.plan(args)
         calls = []
         def fake_execute(job, folder, collect, profile, timeout):
@@ -267,6 +275,8 @@ for line in sys.stdin:
                          fingerprintSeconds=.1 if collect or profile else 0)
             if not collect:
                 trace["samples"] = []
+                if legacy_runtime:
+                    trace.pop("runtime")
             if profile:
                 if mask_cache is None:
                     trace.pop("maskCacheEnabled")
@@ -346,6 +356,12 @@ for line in sys.stdin:
                     self.make_run(args, mask_cache=value)
                 self.assertFalse((Path(args.output_dir) / "report.json").exists())
 
+    def test_runtime_revision_rejects_old_run_pairs_and_bound_training_traces(self):
+        spec = importlib.util.spec_from_file_location("calibration_runtime_cases", Path(__file__).with_name("calibration_runtime_cases.py"))
+        cases = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cases)
+        cases.check_runtime_revision(self, fixture, module)
+
     def test_synthetic_protocol_preserves_baseline_and_candidate_needs_explicit_acceptance(self):
         with tempfile.TemporaryDirectory() as directory:
             args = fixture(Path(directory))
@@ -374,6 +390,14 @@ for line in sys.stdin:
             original = installed_path.read_bytes()
             report_path = Path(args.output_dir) / "report.json"
             report = module.read(report_path)
+            for name in ("baseline", "cached"):
+                evidence = report["pairs"][0][name]["report"]
+                runtime = evidence.pop("runtime")
+                report_path.write_text(json.dumps(report))
+                with self.subTest(side=name), self.assertRaisesRegex(ValueError, "runtime.*recalibrate"):
+                    module.accept(args)
+                self.assertEqual(installed_path.read_bytes(), original)
+                evidence["runtime"] = runtime
             report["pairs"][0]["baseline"]["report"].pop("maskCacheEnabled")
             report_path.write_text(json.dumps(report))
             with self.assertRaisesRegex(ValueError, "mask-cache evidence"):

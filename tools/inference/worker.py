@@ -317,6 +317,10 @@ def load_loras(pipeline, adapters):
         names.append(name)
         scales.append(adapter["strength"])
     pipeline.set_adapters(names, adapter_weights=scales)
+    # PEFT injection adds training-mode children after the base model was evaluated.
+    # https://github.com/huggingface/peft/blob/v0.19.0/src/peft/tuners/lora/layer.py#L189-L198
+    pipeline.transformer.eval()
+    pipeline.text_conditioner.eval()
 
 
 def load_pipeline(root, cfg, blocks=None):
@@ -375,7 +379,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             started = time.perf_counter()
             scope = profile_tools.compatibility(root, job.get("loras", []), data, mode, dtype, torch.cuda.get_device_name(0),
                 mask_model_dir=job.get("maskModelDir"), identity=identity)
-            tea_report = dict(schemaVersion=1, teaCacheEnabled=data["teaCache"], compatibility=scope,
+            tea_report = dict(schemaVersion=1, runtime=profile_tools.RUNTIME, teaCacheEnabled=data["teaCache"], compatibility=scope,
                 fingerprintSeconds=time.perf_counter() - started)
             threshold = profile_tools.validate_profile(profile, scope, data.get("teaCacheThresh"),
                 require_accepted=teacache_profile is None) if profile is not None else None
@@ -383,7 +387,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         except profile_tools.TeaCacheError as exc:
             raise WorkerError(exc.code, str(exc)) from exc
     elif measure_teacache:
-        tea_report = dict(schemaVersion=1, teaCacheEnabled=False, compatibility=None, fingerprintSeconds=0)
+        tea_report = dict(schemaVersion=1, runtime=load_mask_tools("teacache_profile").RUNTIME, teaCacheEnabled=False, compatibility=None, fingerprintSeconds=0)
     metrics.begin_memory(tea_report is not None)
     mask_started = time.perf_counter()
     image = load_input_image(job["inputImagePath"]) if job.get("inputImagePath") else None

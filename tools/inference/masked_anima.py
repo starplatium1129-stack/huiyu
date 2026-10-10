@@ -72,7 +72,9 @@ def composite(generated, original, mask):
     from PIL import Image
     if generated.size != original.size or mask.size != original.size:
         raise ValueError("Generated image and effective mask dimensions differ")
-    return Image.composite(generated.convert("RGB"), original.convert("RGB"), mask)
+    generated = generated if generated.mode == "RGB" else generated.convert("RGB")
+    original = original if original.mode == "RGB" else original.convert("RGB")
+    return Image.composite(generated, original, mask)
 
 
 def blend_latents(scheduler, latents, image_latents, noise, mask, timesteps, index):

@@ -487,6 +487,7 @@ class WorkerTests(unittest.TestCase):
         class Config:
             r: int = 4
             use_dora: bool = False
+            lora_dropout: float = 0.0
 
         class File:
             def __enter__(self):
@@ -501,15 +502,30 @@ class WorkerTests(unittest.TestCase):
         class Component:
             def __init__(self, name):
                 self.name = name
+                self.training, self.adapters = False, {}
             def get_submodule(self, target):
                 if target != "layer":
                     raise AttributeError(target)
                 return object()
+            def eval(self):
+                calls.append(("eval", self.name))
+                self.training = False
+                for adapter in self.adapters.values():
+                    adapter.training = adapter.dropout.training = False
+                return self
+
+        def load(path, **kwargs):
+            calls.append((path, kwargs))
+            # Explicit state fake: newly injected children do not inherit parent eval.
+            for name in ("transformer", "text_conditioner"):
+                if any(key.startswith(name + ".") for key in (keys if loaded_keys is None else loaded_keys)):
+                    getattr(pipeline, name).adapters[kwargs["adapter_name"]] = types.SimpleNamespace(
+                        training=True, dropout=types.SimpleNamespace(training=True))
 
         calls = []
         pipeline = types.SimpleNamespace(
             transformer=Component("transformer"), text_conditioner=Component("text_conditioner"),
-            load_lora_weights=lambda path, **kwargs: calls.append((path, kwargs)),
+            load_lora_weights=load,
             set_adapters=lambda names, **kwargs: calls.append((names, kwargs)))
         modules = {"safetensors": types.SimpleNamespace(safe_open=lambda *args, **kwargs: File()),
                    "peft": types.SimpleNamespace(LoraConfig=Config, get_peft_model_state_dict=lambda component, **kwargs: {
@@ -522,13 +538,21 @@ class WorkerTests(unittest.TestCase):
 
     def test_lora_local_safe_load_scales_both_components(self):
         keys = {f"{component}.layer.lora_{side}.weight" for component in ("transformer", "text_conditioner") for side in "AB"}
-        pipeline, calls, modules = self.lora_fakes(keys, {"lora_adapter_metadata": '{"transformer.r":4,"text_conditioner.r":4}'})
+        metadata = {"lora_adapter_metadata": '{"transformer.r":4,"text_conditioner.r":4,"transformer.lora_dropout":0.25,"text_conditioner.lora_dropout":0.25}'}
+        pipeline, calls, modules = self.lora_fakes(keys, metadata)
         with modules:
             worker.load_loras(pipeline, [{"path": "/models/style.safetensors", "strength": 0.6},
                                          {"path": "/models/second.safetensors", "strength": -0.2}])
         self.assertEqual(calls[0], (str(Path("/models")), {"weight_name": "style.safetensors", "adapter_name": "huiyu_0", "local_files_only": True, "use_safetensors": True}))
         self.assertEqual(calls[1][1]["adapter_name"], "huiyu_1")
         self.assertEqual(calls[2], (["huiyu_0", "huiyu_1"], {"adapter_weights": [0.6, -0.2]}))
+        for component in (pipeline.transformer, pipeline.text_conditioner):
+            self.assertFalse(component.training)
+            self.assertEqual(set(component.adapters), {"huiyu_0", "huiyu_1"})
+            for adapter in component.adapters.values():
+                self.assertFalse(adapter.training)
+                self.assertFalse(adapter.dropout.training)
+        self.assertEqual(calls[3:], [("eval", "transformer"), ("eval", "text_conditioner")])
 
     def test_lora_official_raw_anima_mapping_and_collision_rejection(self):
         raw = {f"diffusion_model.llm_adapter.layer.lora_{side}.weight" for side in "AB"}
@@ -537,7 +561,8 @@ class WorkerTests(unittest.TestCase):
         with modules:
             worker.load_loras(pipeline, [{"path": "/models/raw.safetensors", "strength": 0.5}])
         self.assertEqual(calls[0][1]["weight_name"], "raw.safetensors")
-        self.assertEqual(calls[-1], (["huiyu_0"], {"adapter_weights": [0.5]}))
+        self.assertEqual(calls[1], (["huiyu_0"], {"adapter_weights": [0.5]}))
+        self.assertEqual(calls[2:], [("eval", "transformer"), ("eval", "text_conditioner")])
         pipeline, calls, modules = self.lora_fakes(raw | converted, converted_keys=converted)
         with modules, self.assertRaises(worker.WorkerError) as error:
             worker.load_loras(pipeline, [{"path": "/models/collision.safetensors", "strength": 1}])

@@ -215,15 +215,16 @@ def execute(job, folder, collect, profile, timeout):
 
 def fit(traces, args):
     import numpy as np  # only --run, in the operator's prepared runtime
+    helper = load("teacache_profile")
     compatibility = traces[0].get("compatibility")
     if not isinstance(compatibility, dict) or not compatibility:
         raise ValueError("Trace lacks an established compatibility scope")
     points, phase_points = [], [[], [], []]
     for trace in traces:
         stats = trace.get("stats", {})
-        if (trace.get("schemaVersion") != 1 or trace.get("compatibility") != compatibility or
+        if (trace.get("schemaVersion") != 1 or trace.get("runtime") != helper.RUNTIME or trace.get("compatibility") != compatibility or
                 not positive(stats.get("fullComputes")) or stats.get("skippedComputes") != 0 or stats.get("nonfinite") != 0):
-            raise ValueError("Require compatible, finite, full-compute worker traces")
+            raise ValueError("Require compatible runtime, finite, full-compute worker traces; recollect and recalibrate")
         for sample in trace.get("samples", []):
             x, y = sample.get("proxyRelativeL1"), sample.get("residualRelativeL1")
             if x is None or y is None:
@@ -255,7 +256,6 @@ def fit(traces, args):
                 if group[-1][0] != points_in_phase[-1][0]:
                     points_in_phase.append([group[-1][0], upper])
             envelopes.append(points_in_phase)
-        helper = load("teacache_profile")
         return {"schemaVersion": 2, "algorithm": helper.PHASE_ALGORITHM, "runtime": helper.RUNTIME,
                 "compatibility": compatibility, "phaseEnvelopes": envelopes,
                 "defaultThreshold": args.threshold, "maxThreshold": args.threshold, "maxConsecutiveSkips": 1,
@@ -270,7 +270,7 @@ def fit(traces, args):
         raise ValueError("Trace proxy variation is insufficient for a stable full-rank fit")
     error = np.maximum(0, np.polynomial.polynomial.polyval(x, coefficients)) - y
     return {"schemaVersion": 1, "algorithm": ALGORITHM,
-            "runtime": {"diffusers": "0.41.0", "torch": "2.8.0"},
+            "runtime": helper.RUNTIME,
             "compatibility": compatibility, "coefficients": coefficients.tolist(),
             "proxyRange": [float(x.min()), float(x.max())], "defaultThreshold": args.threshold,
             "maxThreshold": args.threshold, "maxConsecutiveSkips": 1,
@@ -356,6 +356,8 @@ def measured_run(args, training, heldout, target, session):
             result["output"] = Path(result["output"]).relative_to(target).as_posix()
             pair[name] = result
         cached = pair["cached"]["report"]
+        if any(pair[name]["report"].get("runtime") != profile["runtime"] for name in ("baseline", "cached")):
+            raise ValueError("Held-out runtime mismatch; recollect and recalibrate")
         if session is not None and any(pair[name]["report"].get("modelReused") is not True for name in ("baseline", "cached")):
             raise ValueError("Warm comparison must reuse the same loaded weights on both sides")
         if session is not None and any(pair[name]["report"].get("textCacheEnabled") is not False for name in ("baseline", "cached")):
@@ -392,6 +394,7 @@ def accept(args):
         raise ValueError("Review held-out images and timings; explicitly provide --accept-quality and --accept-performance")
     target = Path(args.accept_run).expanduser().resolve()
     report, profile = read(target / "report.json"), read(target / "candidate-profile.json")
+    helper = load("teacache_profile")
     if report.get("status") != "awaiting-operator-acceptance" or not report.get("pairs"):
         raise ValueError("Run is incomplete; no profile can be accepted")
     for name, key in (("candidate-profile.json", "candidateSha256"), ("source-jobs.json", "sourceJobsSha256"), ("traces.json", "tracesSha256")):
@@ -400,8 +403,12 @@ def accept(args):
     traces = read(target / "traces.json")["traces"]
     if canonical(traces) != profile.get("calibration", {}).get("traceSha256"):
         raise ValueError("Candidate is not bound to its collected traces")
+    if any(trace.get("runtime") != helper.RUNTIME for trace in traces):
+        raise ValueError("Trace runtime mismatch; recollect and recalibrate")
     for pair in report["pairs"]:
         cached_report = pair["cached"].get("report", {})
+        if any(pair[name].get("report", {}).get("runtime") != helper.RUNTIME for name in ("baseline", "cached")):
+            raise ValueError("Held-out runtime mismatch; recollect and recalibrate")
         if report.get("executionMode") == "resident" and any(pair[name].get("report", {}).get("modelReused") is not True for name in ("baseline", "cached")):
             raise ValueError("Warm comparison lost its weight-reuse evidence")
         if report.get("executionMode") == "resident" and any(pair[name].get("report", {}).get("textCacheEnabled") is not False for name in ("baseline", "cached")):
@@ -427,7 +434,6 @@ def accept(args):
     sources = read(target / "source-jobs.json")
     verify_inputs(sources["inputFiles"])
     source = sources["training"][0]
-    helper = load("teacache_profile")
     current = job_scope(source, profile)
     helper.validate_profile(profile, current, require_accepted=False)
     destination = Path(source["modelDir"]) / "teacache-profile.json"

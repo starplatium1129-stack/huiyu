@@ -15,6 +15,7 @@ const LIMITATIONS = 'Product gateway wall time from submission through polling, 
   + 'Warm-ups are excluded from statistics; warm residency, process/disk-cold state and exclusive GPU use are not proven. '
   + 'Product conditioning/model/mask caches remain enabled as configured. Fresh seeds and distinct job IDs/image bytes guard against result reuse, but sampler execution/cache misses are not observed. '
   + 'Server-reported seeds are metadata, not captured RNG/noise tensors. Poll intervals add observation latency; HTTP latency is additional, so the interval is not an end-to-end error bound. '
+  + 'Known product differences: Comfy plain img2img currently leaves the source-image latent disconnected, and plain txt2img includes RCAS sharpening absent from native. Identical payloads therefore measure different product work, not equivalent inference. '
   + 'Sigma schedules, checkpoint/export/LoRA equivalence, precision, attention, total-device peak VRAM and image quality are unverified. No cross-backend speedup or parity verdict is produced.';
 const HELP = 'node scripts/tests/benchmark-inference-gateway.js --payload <actual API payload.json> --expect-provider native|comfy '
   + '--output-dir <new runtime directory> [--gateway http://127.0.0.1:3000] [--warmups 1] [--repeats 6] [--poll-ms 100] [--timeout 600] [--run]\n'

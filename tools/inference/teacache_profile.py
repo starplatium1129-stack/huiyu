@@ -9,7 +9,7 @@ import re
 
 ALGORITHM = "huiyu-anima-first-norm-residual-v1"
 PHASE_ALGORITHM = "huiyu-anima-phase-envelope-v2"
-RUNTIME = {"diffusers": "0.41.0", "torch": "2.8.0"}
+RUNTIME = {"diffusers": "0.41.0", "torch": "2.8.0", "huiyuInference": "lora-eval-v1"}
 COMPONENTS = ("text_encoder", "text_conditioner", "transformer", "vae", "tokenizer", "t5_tokenizer", "scheduler")
 
 
@@ -79,7 +79,7 @@ def validate_profile(profile, expected, threshold=None, *, require_accepted=True
     if not isinstance(profile, dict) or (profile.get("schemaVersion"), profile.get("algorithm")) not in ((1, ALGORITHM), (2, PHASE_ALGORITHM)):
         raise TeaCacheError("Unsupported TeaCache profile schema/algorithm; locally calibrate this runtime")
     if profile.get("runtime") != RUNTIME or profile.get("compatibility") != expected:
-        raise TeaCacheError("TeaCache profile does not match the exact model/LoRAs, sampling scope, dtype or device; recalibrate")
+        raise TeaCacheError("TeaCache profile does not match the exact runtime, model/LoRAs, sampling scope, dtype or device; recalibrate")
     if profile["schemaVersion"] == 1:
         coefficients = profile.get("coefficients")
         if not isinstance(coefficients, list) or not 1 <= len(coefficients) <= 6 or not all(finite(c) for c in coefficients):

@@ -340,7 +340,7 @@ class TeaTests(unittest.TestCase):
                 self.assertEqual(cache.stats["nonfinite"], step)
         self.assertIsNotNone(cache.samples[1]["proxyRelativeL1"])
         self.assertIsNone(cache.samples[1]["residualRelativeL1"])
-        trace = dict(schemaVersion=1, compatibility={"fixture": "finite-input reduction overflow"},
+        trace = dict(schemaVersion=1, runtime=profiles.RUNTIME, compatibility={"fixture": "finite-input reduction overflow"},
                      stats=cache.stats, samples=cache.samples)
         with self.assertRaisesRegex(ValueError, "finite, full-compute worker traces"):
             calibration.fit([trace], types.SimpleNamespace(strategy="phase-envelope"))
@@ -404,6 +404,10 @@ class TeaTests(unittest.TestCase):
             scope = profiles.compatibility(root, [], data, "txt2img", "torch.bfloat16", "fake CUDA")
             value = profile(scope)
             self.assertEqual(profiles.validate_profile(value, scope), 0.15)
+            legacy = copy.deepcopy(value)
+            legacy["runtime"] = {"diffusers": "0.41.0", "torch": "2.8.0"}
+            with self.assertRaisesRegex(profiles.TeaCacheError, "runtime.*recalibrate"):
+                profiles.validate_profile(legacy, scope)
             candidate = copy.deepcopy(value)
             candidate.pop("acceptance")
             with self.assertRaisesRegex(profiles.TeaCacheError, "acceptance"):
@@ -450,6 +454,7 @@ class TeaTests(unittest.TestCase):
                 return loaded[-1]
             with patch.dict("sys.modules", modules()), patch.object(worker, "dependencies"), patch.object(worker, "load_pipeline", side_effect=load):
                 baseline = worker.generate(request, io.StringIO(), measure_teacache=True)
+                self.assertEqual(baseline["runtime"], profiles.RUNTIME)
                 self.assertIsNone(loaded[-1].blocks)
                 self.assertIsNone(baseline["compatibility"])
                 self.assertEqual(baseline["fingerprintSeconds"], 0)
@@ -465,6 +470,7 @@ class TeaTests(unittest.TestCase):
                 request["input"]["teaCache"] = True
                 stream = io.StringIO()
                 report = worker.generate(request, stream)
+                self.assertEqual(report["runtime"], profiles.RUNTIME)
                 self.assertEqual(report["stats"]["skippedComputes"], 2)
                 self.assertEqual(loaded[-1].transformer.transformer_blocks[0].calls, 4)
                 self.assertIs(loaded[-1].scheduler.step, loaded[-1].original_step)
