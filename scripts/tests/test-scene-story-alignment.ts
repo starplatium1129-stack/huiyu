@@ -4,29 +4,41 @@
 /**
  * scripts/tests/test-scene-story-alignment.js — 场景「故事 vs 提示词」对齐门禁
  *
- * 原则（AGENTS.md 最高红线）：故事是唯一事实源，任何提示词修改必须贴合故事。
- * 本测试对 data/scenes.json 全库做 story↔prompt 关键要素对齐校验：
+ * 检查已写入的标签和显式 Anima 描述；故事关键词仅用于提示对齐疑点，
+ * 不能忽略实际消费的 animaCaption 或为近景强补旧姿态／时段词。
+ * 本测试对 data/scenes.json 全库做 story↔模型输入关键要素对齐校验：
  *   姿势（躺/坐/站/跪/跨坐）、服装（裸/睡衣/浴巾/泳装/浴衣/婚纱/制服）、
  *   时段（夜/晨/夕阳）、天气（雨/雪）、道具（烟花/樱花/伞）
  *
  * 用法：
  *   node scripts/tests/test-scene-story-alignment.js [--report <path>] [--exempt <path>]
  *   --report：同时输出全量对齐明细（含 pass）到指定文件
- *   --exempt：豁免清单 JSON（[{"id":"sc004","label":"坐姿"}]，人工核对过的合理省略）
+ *   --exempt：豁免清单 JSON（id/label；新核对记录附原因和 sourceSha256，
+ *             源字段改变后不再豁免），仅表达文本核对，不代表模型画面验收。
  *             默认读取 scripts/tests/fixtures/scene-story-exemptions.json
  */
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
+const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+const { createHash }: typeof import('node:crypto') = require('node:crypto');
+interface SceneInput { id: string; title?: string; char?: string; story?: string; prompt?: string; animaCaption?: string }
+interface Exemption { id: string; label: string; reason?: string; sourceSha256?: string }
+function sourceHash(s: SceneInput): string {
+  return createHash('sha256').update(JSON.stringify([s.story || '', s.prompt || '', s.animaCaption || ''])).digest('hex');
+}
+function modelInput(s: SceneInput): string {
+  return [s.prompt, s.animaCaption].filter(Boolean).join('\n').toLowerCase();
+}
 const ROOT = path.resolve(__dirname, '..', '..');
-const scenes = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'scenes.json'), 'utf8'));
+const scenes: SceneInput[] = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'scenes.json'), 'utf8'));
 
 // 关键要素表：故事中文正则（已排除误报：雪白=肤色、站台/车站=地点、起身≠站立等）
 // promptRe 为英文 tag 匹配；允许"故事含糊时 prompt 省略"（如只写氛围词），仅报明确矛盾。
 const CHECKS = [
   { label: '躺卧', storyRe: /躺(?!椅)\|(?<!主)卧(?!室|房)\|趴(?!下位)\|仰面\|侧躺\|趴着/, promptRe: /lying|lying_on|on_back|on_side|face_down|prone|sprawled|reclin|prostrate|laid_out|spread_eagled/ },
-  { label: '坐姿', storyRe: /坐(?!下位|标|在这里|在能|在沙发|在床|在窗)/, promptRe: /sitting|kneeling|kneel|seated|perched|squat|sit_|astride|straddl|on_lap|riding|on_couch|on_sofa/ },
-  { label: '站立', storyRe: /(?<!公交|车|月|站台)站(?!台)/, promptRe: /standing|stand_|upright|on_her_feet|walking|strolling|pacing|leaning_against|turning_around/ },
+  { label: '坐姿', storyRe: /坐(?!下位|标|在这里|在能|在沙发|在床|在窗)/, promptRe: /sitting|sits|seat|kneeling|kneel|perched|squat|sit_|astride|straddl|on_lap|riding|on_couch|on_sofa|hands[- ]and[- ]knees/ },
+  { label: '站立', storyRe: /(?<!公交|车|月|站台)站(?!台)/, promptRe: /standing|stands|stand_|upright|on_her_feet|walking|strolling|pacing|leaning_against|turning_around|feet[^.]*planted/ },
   { label: '跨坐', storyRe: /跨坐|骑(?!士)/, promptRe: /straddl|astride|riding|on_lap|cowgirl/ },
   { label: '裸体', storyRe: /全裸|裸体|一丝不挂|赤裸|不着一缕/, promptRe: /naked|nude|completely_naked|no_clothes|no_underwear|apron_only|bare_breasts|topless|bottomless/ },
   { label: '真空', storyRe: /真空|身上仅仅|只穿着?(?!校)/, promptRe: /no_bra|no bra|no_panties|no panties|no_underwear|nothing_beneath|wearing_only|apron_only|transparen|translucent|see-through|bare_|semi-transparent|sheer/ },
@@ -37,7 +49,7 @@ const CHECKS = [
   { label: '浴衣和服', storyRe: /浴衣|和服|振袖|巫女/, promptRe: /yukata|kimono|furisode|miko|shrine_maiden|wafuku|hakama/ },
   { label: '婚纱礼服', storyRe: /婚纱|晚礼服|礼裙|婚裙/, promptRe: /wedding_dress|bridal|evening_gown|gown|dress_unzipped|formal|chiffon|slip_dress/ },
   { label: '制服', storyRe: /校服|制服|女仆装|水手服/, promptRe: /uniform|maid|sailor|serafuku|blazer|waitress|witch_outfit|agent|tactical|jumpsuit|bodysuit/ },
-  { label: '夜晚', storyRe: /(?:深夜|夜晚|夜里|夜色|月夜|月下|月光|星海|星空|夜景|天黑|入夜|夜蓝)/, promptRe: /night|moon|moonlight|star|lantern|dim|dark|evening|nocturnal|lamplight|city_lights|candlelight|neon/ },
+  { label: '夜晚', storyRe: /(?:深夜|夜晚|夜里|夜色|月夜|月下|月光|星海|星空|夜景|天黑|入夜|夜蓝)/, promptRe: /night|moon|moonlight|star|lantern|dim|dark|evening|nocturnal|lamplight|city_lights|candle(?:light|lit)|neon/ },
   { label: '晨光', storyRe: /清晨|晨光|破晓|朝阳|拂晓|天亮/, promptRe: /morning|dawn|sunrise|golden_hour|first_light/ },
   { label: '夕阳', storyRe: /夕阳|黄昏|暮色|日落|晚霞|夕照/, promptRe: /sunset|dusk|twilight|afterglow|golden/ },
   { label: '雨', storyRe: /(?:秋雨|细雨|暴雨|大雨|阵雨|雨声|雨幕|淋雨|雨水|下雨|雷雨|冬雨)/, promptRe: /rain|rainy|downpour|storm|drizzle|wet_/ },
@@ -59,14 +71,42 @@ const OUTFIT_ANCHORS = [
   { char: 'natsume', storyRe: /咖啡(?:馆|厅)?(?:店)?制服|店员服/, anchor: 'natsume_cafe_uniform' },
 ];
 // 豁免清单：人工核对的合理省略（台词/叙述指观者、POV 构图隐含姿态等）
-let exempts = new Set();
+let exempts = new Map<string, Exemption>();
 const exemptArg = process.argv.indexOf('--exempt');
 const exemptFile = exemptArg >= 0 && process.argv[exemptArg + 1]
   ? path.resolve(process.argv[exemptArg + 1])
   : path.join(__dirname, 'fixtures', 'scene-story-exemptions.json');
 try {
-  exempts = new Set(JSON.parse(fs.readFileSync(exemptFile, 'utf8')).map((x: any) => x.id + '#' + x.label));
+  const entries: Exemption[] = JSON.parse(fs.readFileSync(exemptFile, 'utf8'));
+  exempts = new Map(entries.map(x => [x.id + '#' + x.label, x]));
 } catch (e) { /* 豁免文件缺失则全量校验 */ }
+
+function sceneIssues(s: SceneInput, exceptions: ReadonlyMap<string, Exemption>): string[] {
+  const story = s.story || '';
+  const prompt = modelInput(s);
+  const exempt = (label: string) => {
+    const entry = exceptions.get(s.id + '#' + label);
+    return entry !== undefined && (!entry.sourceSha256 || entry.sourceSha256 === sourceHash(s));
+  };
+  const missing = CHECKS.filter(c => c.storyRe.test(story) && !c.promptRe.test(prompt) && !exempt(c.label)).map(c => c.label);
+  for (const o of OUTFIT_ANCHORS) {
+    if (s.char === o.char && o.storyRe.test(story) && !(s.prompt || '').includes(o.anchor) && !exempt('锚定:' + o.anchor)) {
+      missing.push('官方锚定:' + o.anchor);
+    }
+  }
+  return missing;
+}
+
+// Exercise the scanner's actual regression boundaries without a model call.
+const emptyExceptions = new Map<string, Exemption>();
+assert.deepStrictEqual(sceneIssues({ id:'caption', story:'清晨她坐着。', animaCaption:'Seated beside the window in Morning light.' }, emptyExceptions), []);
+const absentRain = { id:'rain', story:'窗外下雨。', prompt:'clear sky' };
+assert.ok(sceneIssues(absentRain, emptyExceptions).includes('雨'), 'missing weather must still fail');
+assert.ok(sceneIssues({ id:'anchor', char:'nene', story:'她穿着学园制服。', prompt:'school uniform', animaCaption:'nene_school_uniform' }, emptyExceptions).includes('官方锚定:nene_school_uniform'),
+  'official outfit anchors must still fail closed');
+const reviewed = new Map<string, Exemption>([['rain#雨', { id:'rain', label:'雨', sourceSha256:sourceHash(absentRain) }]]);
+assert.deepStrictEqual(sceneIssues(absentRain, reviewed), []);
+assert.ok(sceneIssues({ ...absentRain, prompt:'bright blue sky' }, reviewed).includes('雨'), 'changed source must revoke reviewed omission');
 
 // 定稿保护感知（AGENTS.md 红线 8）：prompt-pinned-scenes.json 中的渲染字段为
 // 字节级基线，AI 不得擅自修改；命中定稿的场景矛盾降级为「待人工核对」警告，
@@ -96,29 +136,16 @@ const warnings = [];
 const detail = [];
 
 for (const s of scenes) {
-  const story = s.story || '';
-  const prompt = s.prompt || '';
-  let sceneIssues = [];
-  for (const c of CHECKS) {
-    if (c.storyRe.test(story) && !c.promptRe.test(prompt) && !exempts.has(s.id + '#' + c.label)) {
-      sceneIssues.push(c.label);
-    }
-  }
-  for (const o of OUTFIT_ANCHORS) {
-    if (s.char !== o.char) continue;
-    if (o.storyRe.test(story) && !prompt.includes(o.anchor) && !exempts.has(s.id + '#锚定:' + o.anchor)) {
-      sceneIssues.push('官方锚定:' + o.anchor);
-    }
-  }
+  const missing = sceneIssues(s, exempts);
   // 定稿保护场景：矛盾降级为「待人工核对」警告（渲染字段是字节级基线，AI 不得擅改）。
-  if (sceneIssues.length) {
+  if (missing.length) {
     if (pinned.has(s.id)) {
-      warnings.push({ id: s.id, title: s.title, missing: sceneIssues });
+      warnings.push({ id: s.id, title: s.title, missing });
     } else {
-      issues.push({ id: s.id, title: s.title, missing: sceneIssues });
+      issues.push({ id: s.id, title: s.title, missing });
     }
   }
-  detail.push({ id: s.id, title: s.title, ok: sceneIssues.length === 0, missing: sceneIssues });
+  detail.push({ id: s.id, title: s.title, ok: missing.length === 0, missing });
 }
 
 const reportArg = process.argv.indexOf('--report');
@@ -133,7 +160,7 @@ if (reportArg >= 0 && process.argv[reportArg + 1]) {
 }
 
 console.log('==============================================================');
-console.log('[门禁] 场景故事 vs 提示词对齐（story 是唯一事实源）');
+console.log('[门禁] 场景故事 vs 模型输入对齐（标签与显式 Anima 描述）');
 console.log('[门禁] 场景总数 ' + scenes.length
   + ' | 潜在不一致 ' + (issues.length + warnings.length)
   + (warnings.length ? '（含定稿待核对 ' + warnings.length + '）' : ''));

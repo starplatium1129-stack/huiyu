@@ -202,5 +202,82 @@
  {
   "id": "sc095",
   "label": "浴巾"
+ },
+ {
+  "id": "sc047",
+  "label": "站立",
+  "reason": "当前半身构图保留窗帘、回头与背后拥抱关系，不要求额外站姿关键词。",
+  "sourceSha256": "b29ddb3ad0f1fa80b870a7856ee7c68d08e9e50319a14c7dec93a8bbc2f2d1e2",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
+ },
+ {
+  "id": "sc059",
+  "label": "站立",
+  "reason": "当前厨房画面保留持杯与整理衣领；姿态由动作关系表达，不机械补站姿词。",
+  "sourceSha256": "c55a611cc78f70c7f4eb2a970bed95525461b2be61015c2263bc4f7df4ec8f46",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
+ },
+ {
+  "id": "sc066",
+  "label": "站立",
+  "reason": "当前全身构图写明沙地转身与足部接触阴影，standing 词不是唯一表达。",
+  "sourceSha256": "b22a951165f0710356671a0daf5d8cd5dc73b9ff36341eeab9bebeb6c7dbfb58",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
+ },
+ {
+  "id": "sc084",
+  "label": "站立",
+  "reason": "当前全身构图写明木屐与祭典路面接触、转身伸手，站姿由支撑关系表达。",
+  "sourceSha256": "c8570d6ee42c940bd050ed432aa53b275e525f24c0ad200fcd209742f762b5b5",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
+ },
+ {
+  "id": "sc086",
+  "label": "站立",
+  "reason": "当前全身构图保留路口持伞、牵手与地面接触阴影，不另设站姿词配额。",
+  "sourceSha256": "e7db359815a9a5013697ab94d968ce4f8694c8907c979774597b98ef94a86f2d",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
+ },
+ {
+  "id": "sc094",
+  "label": "站立",
+  "reason": "当前婚纱试衣画面保留转身、提裙与足部接触，standing 词不是唯一表达。",
+  "sourceSha256": "a8ce55935e47c5d1bb87ae6f2bcca58ced682fccbbc1b45af945449e604df407",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
+ },
+ {
+  "id": "sc205",
+  "label": "站立",
+  "reason": "当前近景只要求扶栏、转脸与服装；不能为故事里的站立强改已写定的取景。",
+  "sourceSha256": "566e3051c2954d56a694b50da6962fbe11f78dc8f587529fead623663af6d5fe",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
+ },
+ {
+  "id": "sc236",
+  "label": "坐姿",
+  "reason": "故事坐姿指观看者；当前输入保留角色绊倒后被扶稳，不能给角色补坐姿。",
+  "sourceSha256": "0cda3ad00c6bdff707f2696b9c13a959ae26a05b993fc467bcd5c9f80a391da5",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
+ },
+ {
+  "id": "sc245",
+  "label": "夜晚",
+  "reason": "当前闭店后的室内近景保留单盏吊灯与饮茶关系，不强制不可见的外部时段词。",
+  "sourceSha256": "957fdec78f0ba5ea3a3409778549596cae6f5fdcb3c077722f0e5971f5c4baf0",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
+ },
+ {
+  "id": "sc293",
+  "label": "站立",
+  "reason": "故事含先蹲后起的过程；当前近景取清点后持衣领的一刻，不把全过程变成姿态配额。",
+  "sourceSha256": "425add0be9edc18c39baa06779282fd378efea9bce8d379dec4f75152c67063b",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
+ },
+ {
+  "id": "sc295",
+  "label": "夜晚",
+  "reason": "当前旅馆近景保留站台微弱灯光与室内暖光，不要求额外夜空或 night 词。",
+  "sourceSha256": "98844ba218d1af5d5bb016706cf5ceb327d2ec9ba78053df4b7f3c5580d2d0c6",
+  "reviewScope": "文本与实际消费字段核对；不代表真实模型或画面验收"
  }
 ]
