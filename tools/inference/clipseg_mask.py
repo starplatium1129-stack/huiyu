@@ -14,6 +14,7 @@ FILES = ("config.json", "preprocessor_config.json", "tokenizer_config.json",
          "special_tokens_map.json", "vocab.json", "merges.txt", "model.safetensors")
 MAX_PHRASES = 32
 MAX_PROMPT_LENGTH = 4096
+MAX_CONDITIONING_BYTES = 64 * 1024
 
 
 def phrases(prompt):
@@ -89,12 +90,13 @@ def logits_mask(logits, size, threshold):
 
 
 class MaskCache:
-    """One CPU checkpoint and one 352x352 logit map, owned by a serial worker."""
+    """One CPU checkpoint/logit map and at most 64 KiB of text conditioning."""
     def __init__(self):
         self.clear()
 
     def clear(self):
         self.identity = self.components = self.result_key = self.logits = None
+        self.conditioning_key = self.conditioning = None
         self.begin_job()
 
     def begin_job(self):
@@ -187,19 +189,34 @@ def _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256):
                 raise ValueError("CLIPSeg model bytes changed while loading; retry after preparation completes")
         if cache is not None:
             cache.identity, cache.components = identity, (tokenizer, processor, model)
+    conditioning = cache.conditioning if cache is not None and cache.conditioning_key == tuple(texts) else None
+    pending = [] if cache is not None and conditioning is None else None
+    pending_bytes = 0
     combined = None
     with torch.inference_mode():
         for start in range(0, len(texts), 4):
             count = min(4, len(texts) - start)
             inputs = {name: value[start:start + count].to("cpu") for name, value in tokens.items()
                       if name in ("input_ids", "attention_mask")}
+            if conditioning is not None:
+                inputs["conditional_embeddings"] = conditioning[start // 4].to(device="cpu", copy=True)
             output = model(pixel_values=pixels.repeat(count, 1, 1, 1), return_dict=True, **inputs)
             logits = output.logits.detach().to(device="cpu", dtype=torch.float32).numpy()
             if logits.shape != (count, 352, 352) or not np.isfinite(logits).all():
                 raise ValueError("CLIPSeg returned invalid/nonfinite mask logits")
+            if pending is not None:
+                embedding = output.conditional_embeddings
+                pending_bytes += embedding.numel() * embedding.element_size()
+                if pending_bytes <= MAX_CONDITIONING_BYTES:
+                    pending.append(embedding.detach().to(device="cpu", copy=True))
+                else:
+                    pending = None  # Oversized conditioning still produces an ordinary mask.
+                del embedding
             batch = logits.max(axis=0)
             combined = batch if combined is None else np.maximum(combined, batch)
     mask = logits_mask(combined, image.size, threshold)
     if cache is not None:
         cache.result_key, cache.logits = result_key, combined.copy()
+        if conditioning is None:
+            cache.conditioning_key, cache.conditioning = (tuple(texts), tuple(pending)) if pending is not None else (None, None)
     return mask

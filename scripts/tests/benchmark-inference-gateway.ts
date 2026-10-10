@@ -9,24 +9,28 @@ const gateway: typeof import('../lib/generation-gateway') = require('../lib/gene
 const { statistics }: typeof import('./benchmark-anima-teacache') = require('./benchmark-anima-teacache');
 
 type Options = { payload: string; output: string; gateway: string; provider: 'native' | 'comfy';
-  warmups: number; repeats: number; poll: number; timeout: number; run: boolean };
-type Run = { phase: 'warmup' | 'measured'; index: number; requestedSeed: number };
+  promptVariants?: string; warmups: number; repeats: number; poll: number; timeout: number; run: boolean };
+type Run = { phase: 'warmup' | 'measured'; index: number; requestedSeed: number; request: Record<string, any>; expectedNormalizedPrompt?: string };
 const LIMITATIONS = 'Product gateway wall time from submission through polling, download, PNG validation, hashing and local image save. '
   + 'Warm-ups are excluded from statistics; warm residency, process/disk-cold state and exclusive GPU use are not proven. '
   + 'Product conditioning/model/mask caches remain enabled as configured. Fresh seeds and distinct job IDs/image bytes guard against result reuse, but sampler execution/cache misses are not observed. '
+  + 'Distinct requested prompts within this suite do not prove distinct tokens, unseen text in prior sessions or encoder cache misses. '
   + 'Server-reported seeds are metadata, not captured RNG/noise tensors. Poll intervals add observation latency; HTTP latency is additional, so the interval is not an end-to-end error bound. '
   + 'Known product differences: Comfy plain img2img currently leaves the source-image latent disconnected, and plain txt2img includes RCAS sharpening absent from native. Identical payloads therefore measure different product work, not equivalent inference. '
   + 'Sigma schedules, checkpoint/export/LoRA equivalence, precision, attention, total-device peak VRAM and image quality are unverified. No cross-backend speedup or parity verdict is produced.';
 const HELP = 'node scripts/tests/benchmark-inference-gateway.js --payload <actual API payload.json> --expect-provider native|comfy '
-  + '--output-dir <new runtime directory> [--gateway http://127.0.0.1:3000] [--warmups 1] [--repeats 6] [--poll-ms 100] [--timeout 600] [--run]\n'
+  + '--output-dir <new runtime directory> [--prompt-variants <JSON with warmup/measured string arrays>] [--gateway http://127.0.0.1:3000] [--warmups 1] [--repeats 6] [--poll-ms 100] [--timeout 600] [--run]\n'
+  + 'Optional prompt variants must exactly match warmup/measured counts; measured strings after API whitespace trimming must differ from all warmup and measured strings. Requests preserve the original text; only prompt and the existing seed sequence vary.\n'
   + 'Default is a zero-network, no-write plan. --run uses an already prepared exclusive local GPU session. '
   + 'Never starts services, switches engines, clears caches, retries submissions or interrupts jobs. Run the engines separately and warm up again after switching.\n' + LIMITATIONS;
 const hash = (value: string | Buffer) => crypto.createHash('sha256').update(value).digest('hex');
 const write = (file: string, value: any) => fs.writeFileSync(file, JSON.stringify(value, null, 2) + '\n', { flag: 'wx' });
+// images/validation.rs uses Rust str::trim (Unicode White_Space), not JS trim's BOM rule.
+const normalizedPrompt = (prompt: string) => prompt.replace(/^\p{White_Space}+|\p{White_Space}+$/gu, '');
 
 function options(argv: string[]): Options {
   const values: Record<string, string> = {};
-  const flags = new Set(['--payload', '--output-dir', '--expect-provider', '--gateway', '--warmups', '--repeats', '--poll-ms', '--timeout']);
+  const flags = new Set(['--payload', '--output-dir', '--expect-provider', '--prompt-variants', '--gateway', '--warmups', '--repeats', '--poll-ms', '--timeout']);
   let run = false;
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
@@ -47,6 +51,7 @@ function options(argv: string[]): Options {
     return value;
   }
   return { payload: path.resolve(values['--payload']), output: path.resolve(values['--output-dir']), gateway: url.origin, provider, run,
+    promptVariants: values['--prompt-variants'] ? path.resolve(values['--prompt-variants']) : undefined,
     warmups: bounded('--warmups', 1, 1, 5), repeats: bounded('--repeats', 6, 2, 50),
     poll: bounded('--poll-ms', 100, 10, 5000), timeout: bounded('--timeout', 600, 1, 3600) };
 }
@@ -59,11 +64,34 @@ function prepare(opts: Options) {
   if (!payload || typeof payload !== 'object' || Array.isArray(payload) || typeof payload.prompt !== 'string' || !payload.prompt.trim()) throw Error('Supply an actual API payload object with a nonempty prompt');
   for (const field of ['sampler', 'scheduler']) if (Object.hasOwn(payload, field)) throw Error(`${field} is not accepted by /api/anima/jobs; sampler and scheduler are selected by the provider/catalog`);
   if (!Number.isSafeInteger(payload.seed) || payload.seed < 0 || !Number.isSafeInteger(payload.seed + opts.warmups + opts.repeats - 1)) throw Error('Payload needs an explicit nonnegative safe integer seed and a safe seed sequence');
+  let prompts = Array<string>(opts.warmups + opts.repeats).fill(payload.prompt), sourcePromptVariantsSha256 = null;
+  if (opts.promptVariants) {
+    const rawVariants = fs.readFileSync(opts.promptVariants);
+    if (rawVariants.length > 64 * 1024) throw Error('Prompt variants exceed 64 KiB');
+    const variants = JSON.parse(rawVariants.toString('utf8'));
+    if (!variants || typeof variants !== 'object' || Array.isArray(variants)
+      || Object.keys(variants).some(key => !['warmup', 'measured'].includes(key))
+      || !Array.isArray(variants.warmup) || !Array.isArray(variants.measured)
+      || variants.warmup.length !== opts.warmups || variants.measured.length !== opts.repeats) throw Error('Prompt variants require only warmup/measured arrays matching --warmups/--repeats exactly');
+    prompts = [...variants.warmup, ...variants.measured];
+    if (prompts.some(prompt => typeof prompt !== 'string' || !normalizedPrompt(prompt) || prompt.length > 12000)) throw Error('Every prompt variant must be a nonempty string of at most 12000 UTF-16 characters');
+    const seen = new Set<string>(variants.warmup.map(normalizedPrompt));
+    for (const prompt of variants.measured.map(normalizedPrompt)) {
+      if (seen.has(prompt)) throw Error('Measured prompt variants must be distinct after API whitespace trimming from every warmup and measured prompt');
+      seen.add(prompt);
+    }
+    sourcePromptVariantsSha256 = hash(rawVariants);
+  }
   const runs: Run[] = [];
-  for (let i = 0; i < opts.warmups + opts.repeats; i++) runs.push({ phase: i < opts.warmups ? 'warmup' : 'measured',
-    index: i < opts.warmups ? i : i - opts.warmups, requestedSeed: payload.seed + i });
+  for (let i = 0; i < prompts.length; i++) {
+    const request = { ...payload, prompt: prompts[i], seed: payload.seed + i };
+    if (Buffer.byteLength(JSON.stringify(request)) > 64 * 1024) throw Error('A planned request exceeds the gateway 64 KiB request limit');
+    runs.push({ phase: i < opts.warmups ? 'warmup' : 'measured', index: i < opts.warmups ? i : i - opts.warmups,
+      requestedSeed: request.seed, request, ...(opts.promptVariants ? { expectedNormalizedPrompt: normalizedPrompt(request.prompt) } : {}) });
+  }
   const plan = { mode: 'plan', gateway: opts.gateway, expectProvider: opts.provider, outputDir: opts.output,
-    sourcePayloadSha256: hash(raw), payload, submissions: runs.length, runs, pollMilliseconds: opts.poll,
+    sourcePayloadSha256: hash(raw), sourcePromptVariantsSha256, payload, submissions: runs.length, runs, pollMilliseconds: opts.poll,
+    promptPopulation: opts.promptVariants ? 'requested-distinct-prompts-within-suite' : 'repeated-prompt',
     configurationEvidence: 'not-read-in-plan', scheduleEvidence: 'unverified', qualityEvidence: 'unreviewed', limitations: LIMITATIONS };
   return { payload, runs, plan };
 }
@@ -101,13 +129,13 @@ function verifyPreflight(opts: Options, settings: any, status: any) {
     settingsRead: settings.status, statusRead: status.status };
 }
 
-async function measure(opts: Options, payload: any, run: Run, seenIds: Set<string>, seenImages: Set<string>) {
+async function measure(opts: Options, run: Run, seenIds: Set<string>, seenImages: Set<string>) {
   const label = `${run.phase}-${run.index}`, folder = path.join(opts.output, label);
   fs.mkdirSync(folder);
-  const request = { ...payload, seed: run.requestedSeed };
+  const { request, ...identity } = run;
   write(path.join(folder, 'request.json'), request);
   // No record.seed fallback: an absent server seed must stay unverified and fail.
-  const record: Record<string, any> = { ...run, gateway: opts.gateway, payload: request, requestSha256: hash(JSON.stringify(request)), status: 'preflight' };
+  const record: Record<string, any> = { ...identity, gateway: opts.gateway, payload: request, requestSha256: hash(JSON.stringify(request)), status: 'preflight' };
   const save = () => fs.writeFileSync(path.join(folder, 'status.json'), JSON.stringify(record, null, 2) + '\n');
   save();
   try {
@@ -125,6 +153,7 @@ async function measure(opts: Options, payload: any, run: Run, seenIds: Set<strin
       if (record.status === 'downloading') {
         if (record.provider !== opts.provider) throw Error(`Completed provider ${record.provider || '(missing)'} does not match expected ${opts.provider}`);
         if (!Number.isSafeInteger(record.actualSeed) || record.actualSeed !== run.requestedSeed) throw Error('Server-reported seed is missing or differs from the requested fresh seed');
+        if (opts.promptVariants && record.serverMetadata?.prompt !== run.expectedNormalizedPrompt) throw Error('Server-reported prompt is missing or differs from the planned normalized prompt; text execution is unverified');
       }
     }, { pollMs: opts.poll, timeoutMs: opts.timeout * 1000, signal: AbortSignal.timeout(opts.timeout * 1000),
       fetchImpl: (input: any, init: any) => fetch(input, { ...init, cache: 'no-store' }) });
@@ -148,7 +177,7 @@ function review(report: any) {
   const escape = (value: any) => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]!);
   const rows = report.runs.map((run: any) => `<figure><figcaption>${escape(run.phase)} ${run.index} · ${escape(run.provider)} · seed ${run.actualSeed} · ${run.wallSeconds.toFixed(3)}s · ${run.width}×${run.height}</figcaption><img src="${escape(run.image)}" width="384"><details><summary>Server parameters and native observations, if available</summary><pre>${escape(JSON.stringify(run.serverMetadata ?? null, null, 2))}</pre></details></figure>`).join('');
   return '<!doctype html><meta charset="utf-8"><title>Product gateway benchmark</title><style>body{font:16px system-ui;max-width:1100px;margin:2em auto;padding:1em;background:#f8fafc;color:#17202a}main{display:flex;flex-wrap:wrap}figure{margin:12px}img{max-width:100%;height:auto}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style>'
-    + `<h1>${escape(report.expectProvider)} product gateway: measured, quality unreviewed</h1><p>${escape(LIMITATIONS)}</p><p>Run each engine alone on the GPU. After switching engines, release the previous engine and warm up again. No speedup verdict.</p><pre>${escape(JSON.stringify(report.summary, null, 2))}</pre><main>${rows}</main>`;
+    + `<h1>${escape(report.expectProvider)} product gateway: measured, quality unreviewed</h1><p>Prompt population: ${escape(report.promptPopulation)}</p><p>${escape(LIMITATIONS)}</p><p>Run each engine alone on the GPU. After switching engines, release the previous engine and warm up again. No speedup verdict.</p><pre>${escape(JSON.stringify(report.summary, null, 2))}</pre><main>${rows}</main>`;
 }
 
 async function main(argv = process.argv.slice(2)) {
@@ -159,9 +188,10 @@ async function main(argv = process.argv.slice(2)) {
   fs.mkdirSync(opts.output);
   write(path.join(opts.output, 'plan.json'), prepared.plan);
   const runs = [], seenIds = new Set<string>(), seenImages = new Set<string>();
-  for (const run of prepared.runs) runs.push(await measure(opts, prepared.payload, run, seenIds, seenImages));
+  for (const run of prepared.runs) runs.push(await measure(opts, run, seenIds, seenImages));
   const report = { schemaVersion: 1, status: 'measured-quality-unreviewed', expectProvider: opts.provider,
     gateway: opts.gateway, sourcePayloadSha256: prepared.plan.sourcePayloadSha256, pollMilliseconds: opts.poll,
+    sourcePromptVariantsSha256: prepared.plan.sourcePromptVariantsSha256, promptPopulation: prepared.plan.promptPopulation,
     scheduleEvidence: 'unverified', precisionParity: 'unverified', qualityEvidence: 'unreviewed', peakVram: null,
     summary: { wallSeconds: statistics(runs.filter(run => run.phase === 'measured').map(run => run.wallSeconds)),
       preflight: { engineUnverifiedRuns: runs.filter(run => run.preflight.engineEvidence === 'unverified-until-job-completion').length,

@@ -36,16 +36,20 @@ class Tensor(np.ndarray):
     def __new__(cls, values):
         return np.asarray(values).view(cls)
     def to(self, *args, **kwargs):
-        return self
+        return self.astype(kwargs.get("dtype", self.dtype), copy=kwargs.get("copy", False))
     def detach(self):
         return self
     def numpy(self):
         return np.asarray(self)
     def repeat(self, *repeats):
         return Tensor(np.tile(np.asarray(self), repeats))
+    def numel(self):
+        return self.size
+    def element_size(self):
+        return self.itemsize
 
 
-def segmentation_fakes(calls, token_length=4, info=None):
+def segmentation_fakes(calls, token_length=4, info=None, projection_dim=512, expose_conditioning=True):
     class Tokenizer:
         @classmethod
         def from_pretrained(cls, path, **kwargs):
@@ -74,13 +78,29 @@ def segmentation_fakes(calls, token_length=4, info=None):
         def eval(self):
             calls.append(("eval",))
             return self
-        def __call__(self, pixel_values, input_ids, attention_mask, return_dict):
+        def __call__(self, pixel_values, input_ids, attention_mask, return_dict, **kwargs):
             calls.append(("inference", pixel_values.shape, input_ids.shape, return_dict))
+            if set(kwargs) - {"conditional_embeddings"}:
+                raise AssertionError("Unexpected model arguments")
+            embeddings = kwargs.get("conditional_embeddings")
+            if embeddings is None:
+                calls.append(("text_inference", input_ids.shape))
+                embeddings = Tensor(np.repeat(input_ids[:, :1], projection_dim, axis=1).astype(np.float32))
+            elif embeddings.shape != (len(input_ids), projection_dim):
+                raise ValueError("Invalid conditional shape")
+            calls.append(("conditioning", embeddings, tuple(kwargs)))
             output = np.full((len(input_ids), 352, 352), -8, dtype=np.float32)
-            for index, phrase in enumerate(input_ids[:, 0]):
+            for index, phrase in enumerate(embeddings[:, 0]):
                 left = int(phrase) * 60
                 output[index, :, left:left + 20] = 8
-            return types.SimpleNamespace(logits=Tensor(output))
+            class Result:
+                logits = Tensor(output)
+                @property
+                def conditional_embeddings(self):
+                    if not expose_conditioning:
+                        raise AssertionError("Cache-disabled path must not read conditional embeddings")
+                    return embeddings
+            return Result()
     return {"torch": types.SimpleNamespace(float32="float32", inference_mode=contextlib.nullcontext),
         "transformers": types.SimpleNamespace(CLIPTokenizer=Tokenizer, ViTImageProcessorPil=Processor,
             CLIPSegForImageSegmentation=Model)}
@@ -144,10 +164,11 @@ class ClipsegTests(unittest.TestCase):
 
     def test_explicit_cpu_loaders_and_four_phrase_batches_merge_by_max(self):
         calls = []
-        with patch.dict("sys.modules", segmentation_fakes(calls)):
+        with patch.dict("sys.modules", segmentation_fakes(calls, expose_conditioning=False)):
             mask = clipseg_mask.generate_mask(Path("/approved/clipseg"), Image.new("RGB", (352, 352)),
                 "coat|shirt|skirt|jacket|sleeves", 0.5)
         self.assertEqual([call[1][0] for call in calls if call[0] == "inference"], [4, 1])
+        self.assertTrue(all(not call[2] for call in calls if call[0] == "conditioning"))
         for x in (0, 60, 120, 180, 240):
             self.assertEqual(mask.getpixel((x, 0)), 255)
             self.assertEqual(mask.getpixel((x + 30, 0)), 0)
@@ -174,23 +195,41 @@ class ClipsegTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = local_model(Path(directory) / "clipseg")
             cache, calls = clipseg_mask.MaskCache(), []
-            image = Image.new("RGB", (64, 64), "blue")
+            image = Image.new("RGB", (352, 352), "blue")
+            prompt = "coat|shirt|skirt|jacket|sleeves"
             with patch.dict("sys.modules", segmentation_fakes(calls)):
-                original = clipseg_mask.generate_mask(root, image, "coat|shirt", 0.5, cache=cache)
+                original = clipseg_mask.generate_mask(root, image, prompt, 0.5, cache=cache)
+                self.assertEqual([value.shape for value in cache.conditioning], [(4, 512), (1, 512)])
+                for snapshot, call in zip(cache.conditioning, [row for row in calls if row[0] == "conditioning"]):
+                    self.assertFalse(np.shares_memory(snapshot, call[1]))
+                    call[1][:] = -123  # Returned model tensors cannot contaminate snapshots.
                 # Threshold stays outside the logits key; returned images are independent.
-                repeated = clipseg_mask.generate_mask(root, image.copy(), " coat |shirt|coat ", 0.6, cache=cache)
+                repeated = clipseg_mask.generate_mask(root, image.copy(), f" {prompt} |coat ", 0.6, cache=cache)
                 self.assertEqual(original.tobytes(), repeated.tobytes())
                 repeated.paste(0, (0, 0, 64, 64))
-                self.assertEqual(clipseg_mask.generate_mask(root, image, "coat|shirt", 0.5, cache=cache).tobytes(), original.tobytes())
+                self.assertEqual(clipseg_mask.generate_mask(root, image, prompt, 0.5, cache=cache).tobytes(), original.tobytes())
                 self.assertEqual(sum(row[0] == "model" for row in calls), 1)
-                self.assertEqual(sum(row[0] == "inference" for row in calls), 1)
+                self.assertEqual(sum(row[0] == "inference" for row in calls), 2)
                 self.assertEqual(cache.logits.nbytes, 352 * 352 * 4)
                 changed = image.copy()
                 changed.putpixel((0, 0), (1, 2, 3))
-                clipseg_mask.generate_mask(root, changed, "coat|shirt", 0.5, cache=cache)
+                reused = clipseg_mask.generate_mask(root, changed, prompt, 0.5, cache=cache)
+                self.assertEqual([row[1][0] for row in calls if row[0] == "inference"], [4, 1, 4, 1])
+                self.assertEqual(sum(row[0] == "text_inference" for row in calls), 2)
+                for snapshot, call in zip(cache.conditioning, [row for row in calls if row[0] == "conditioning"][-2:]):
+                    self.assertEqual(call[2], ("conditional_embeddings",))
+                    self.assertFalse(np.shares_memory(snapshot, call[1]))
+                    np.testing.assert_array_equal(snapshot, call[1])
+                    call[1][:] = -456
+                    self.assertTrue(np.all(snapshot >= 0))
+                with patch.dict("sys.modules", segmentation_fakes([], expose_conditioning=False)):
+                    expected = clipseg_mask.generate_mask(root, changed, prompt, 0.5)
+                self.assertEqual(reused.tobytes(), expected.tobytes())
+                clipseg_mask.generate_mask(root, changed, "|".join(reversed(prompt.split("|"))), 0.5, cache=cache)
+                self.assertEqual(sum(row[0] == "text_inference" for row in calls), 4)
                 clipseg_mask.generate_mask(root, changed, "coat", 0.5, cache=cache)
                 self.assertEqual(sum(row[0] == "model" for row in calls), 1)
-                self.assertEqual(sum(row[0] == "inference" for row in calls), 3)
+                self.assertEqual(sum(row[0] == "inference" for row in calls), 7)
                 # Same-length content and restored mtime still invalidate the model.
                 weights = root / "model.safetensors"
                 stat = weights.stat()
@@ -199,7 +238,8 @@ class ClipsegTests(unittest.TestCase):
                 os.utime(weights, ns=(stat.st_atime_ns, stat.st_mtime_ns))
                 clipseg_mask.generate_mask(root, changed, "coat", 0.5, cache=cache)
                 self.assertEqual(sum(row[0] == "model" for row in calls), 2)
-                self.assertEqual(sum(row[0] == "inference" for row in calls), 4)
+                self.assertEqual(sum(row[0] == "inference" for row in calls), 8)
+                self.assertEqual(sum(row[0] == "text_inference" for row in calls), 6)
                 optional = root / "tokenizer.json"
                 for value in ('{"optional":1}', '{"optional":2}', None):
                     if value is None:
@@ -208,10 +248,27 @@ class ClipsegTests(unittest.TestCase):
                         optional.write_text(value)
                     clipseg_mask.generate_mask(root, changed, "coat", 0.5, cache=cache)
                 self.assertEqual(sum(row[0] == "model" for row in calls), 5)
-                self.assertEqual(sum(row[0] == "inference" for row in calls), 7)
+                self.assertEqual(sum(row[0] == "inference" for row in calls), 11)
+                self.assertEqual(sum(row[0] == "text_inference" for row in calls), 9)
             cache.clear()
             self.assertIsNone(cache.components)
             self.assertIsNone(cache.logits)
+            self.assertIsNone(cache.conditioning_key)
+            self.assertIsNone(cache.conditioning)
+
+    def test_conditioning_payload_limit_skips_retention_without_rejecting_mask(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = local_model(Path(directory) / "clipseg")
+            cache, calls = clipseg_mask.MaskCache(), []
+            image = Image.new("RGB", (64, 64))
+            with patch.dict("sys.modules", segmentation_fakes(calls, projection_dim=4096)):
+                clipseg_mask.generate_mask(root, image, "a|b|c|d", 0.5, cache=cache)
+                self.assertEqual(sum(value.numel() * value.element_size() for value in cache.conditioning), 64 * 1024)
+                mask = clipseg_mask.generate_mask(root, image, "a|b|c|d|e", 0.5, cache=cache)
+                self.assertIsNotNone(mask.getbbox())
+                self.assertIsNotNone(cache.logits)
+                self.assertIsNone(cache.conditioning_key)
+                self.assertIsNone(cache.conditioning)
 
     def test_resident_mask_failure_and_loading_mutation_clear_cache(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -224,12 +281,26 @@ class ClipsegTests(unittest.TestCase):
                     clipseg_mask.generate_mask(root, image, "|", 0.5, cache=cache)
                 self.assertIsNone(cache.components)
                 self.assertIsNone(cache.logits)
+                self.assertIsNone(cache.conditioning_key)
+                self.assertIsNone(cache.conditioning)
+                clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache)
+                def failed_mask(*args):
+                    self.assertEqual(cache.conditioning_key, ("coat",), "publish only after a valid final mask")
+                    raise ValueError("no editable pixels")
+                with patch.object(clipseg_mask, "logits_mask", side_effect=failed_mask), self.assertRaisesRegex(ValueError, "no editable"):
+                    clipseg_mask.generate_mask(root, image, "coat|shirt|skirt|jacket|sleeves", 0.5, cache=cache)
+                self.assertIsNone(cache.components)
+                self.assertIsNone(cache.logits)
+                self.assertIsNone(cache.conditioning_key)
+                self.assertIsNone(cache.conditioning)
                 with patch.object(clipseg_mask, "model_identity", side_effect=[("before",), ("after",)]), \
                         self.assertRaisesRegex(ValueError, "changed while loading"):
                     clipseg_mask.generate_mask(root, image, "coat", 0.5, cache=cache)
                 self.assertIsNone(cache.identity)
                 self.assertIsNone(cache.components)
                 self.assertIsNone(cache.logits)
+                self.assertIsNone(cache.conditioning_key)
+                self.assertIsNone(cache.conditioning)
 
     def test_expected_profile_scope_binds_cached_and_uncached_masks(self):
         for cache in (None, clipseg_mask.MaskCache()):
@@ -314,7 +385,7 @@ class ClipsegTests(unittest.TestCase):
             modules["torch"].cuda = types.SimpleNamespace(reset_peak_memory_stats=lambda _: None,
                 synchronize=lambda: None, max_memory_allocated=lambda _: 0,
                 is_available=lambda: True, is_bf16_supported=lambda: True, get_device_name=lambda _: "fixture GPU")
-            profile_module = types.SimpleNamespace(model_identity=lambda *args: {"loras": []},
+            profile_module = types.SimpleNamespace(RUNTIME=profiles.RUNTIME, model_identity=lambda *args: {"loras": []},
                 compatibility=lambda *args, **kwargs: {"maskModelSha256": "a" * 64}, TeaCacheError=profiles.TeaCacheError)
             tea_module = types.SimpleNamespace(TeaCacheController=lambda *args: object())
             resident = types.SimpleNamespace(mask_cache=None, text_cache=None, weights_loaded=False,

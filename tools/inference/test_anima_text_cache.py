@@ -43,20 +43,53 @@ class State:
 
 class Encoder:
     calls = 0
+    qwen_calls, t5_calls = [], []
     intermediate_outputs = [types.SimpleNamespace(name=name) for name in FIELDS]
     def get_block_state(self, state):
         return types.SimpleNamespace(**{name: state.get(name) for name in ("prompt", "negative_prompt", "max_sequence_length")})
     def set_block_state(self, state, block):
         for name in FIELDS: state.values[name] = getattr(block, name)
     def check_inputs(self, block):
-        if not isinstance(block.prompt, str): raise ValueError("fixture prompt must be a string")
-    def __call__(self, components, state):
+        if not isinstance(block.prompt, (str, list)): raise ValueError("prompt must be a string or list")
+        if block.max_sequence_length is not None and block.max_sequence_length > 4096:
+            raise ValueError("max_sequence_length exceeds 4096")
+    @staticmethod
+    def _get_qwen_prompt_embeds(components, prompt, max_sequence_length, device, dtype):
+        Encoder.qwen_calls.append(list(prompt))
+        return (Tensor([[len(value), sum(map(ord, value))] for value in prompt], dtype, device),
+                Tensor([[1, 1] for _ in prompt], np.int64, device))
+    @staticmethod
+    def _get_t5_prompt_ids(components, prompt, max_sequence_length, device):
+        Encoder.t5_calls.append(list(prompt))
+        return (Tensor([[sum(map(ord, value)), max_sequence_length] for value in prompt], np.int64, device),
+                Tensor([[1, 1] for _ in prompt], np.int64, device))
+    @classmethod
+    def encode_prompt(cls, components, prompt, negative_prompt=None, prepare_unconditional_embeds=True,
+                      max_sequence_length=512, device=None, dtype=None):
+        # Pinned 0.41.0 contract: positive and negative invoke Qwen/T5 separately.
         Encoder.calls += 1
+        device, dtype = device or components._execution_device, dtype or components.text_encoder.dtype
+        prompt = [prompt] if isinstance(prompt, str) else prompt
+        values = dict.fromkeys(FIELDS)
+        def encode(text, fields):
+            outputs = (*cls._get_qwen_prompt_embeds(components, text, max_sequence_length, device, dtype),
+                       *cls._get_t5_prompt_ids(components, text, max_sequence_length, device))
+            values.update(zip(fields, outputs))
+        encode(prompt, FIELDS[:4])
+        if prepare_unconditional_embeds:
+            negative_prompt = negative_prompt if negative_prompt is not None else ""
+            negative_prompt = len(prompt) * [negative_prompt] if isinstance(negative_prompt, str) else negative_prompt
+            if type(prompt) is not type(negative_prompt): raise TypeError("prompt types differ")
+            if len(prompt) != len(negative_prompt): raise ValueError("prompt batch sizes differ")
+            encode(negative_prompt, FIELDS[4:])
+        return values
+    def __call__(self, components, state):
         block = self.get_block_state(state)
-        for name in FIELDS:
-            value = Tensor([len(block.prompt), 2], components.text_encoder.dtype)
-            if name.startswith("negative_") and components.guider.num_conditions == 1: value = None
-            setattr(block, name, value)
+        self.check_inputs(block)
+        values = self.encode_prompt(components, block.prompt, block.negative_prompt,
+            components.guider.num_conditions > 1, block.max_sequence_length,
+            components._execution_device, components.text_encoder.dtype)
+        for name, value in values.items(): setattr(block, name, value)
         self.set_block_state(state, block)
         return components, state
 
@@ -113,9 +146,9 @@ class TextTests(unittest.TestCase):
             first.qwen_prompt_embeds[0] = -123
             second = run(seed=2)
             self.assertEqual(Encoder.calls, 1)
-            np.testing.assert_array_equal(second.qwen_prompt_embeds, [6, 2])
+            np.testing.assert_array_equal(second.qwen_prompt_embeds, [[6, 642]])
             second.qwen_prompt_embeds[0] = -456
-            np.testing.assert_array_equal(run(seed=3).qwen_prompt_embeds, [6, 2])
+            np.testing.assert_array_equal(run(seed=3).qwen_prompt_embeds, [[6, 642]])
             self.assertEqual(cache.stats()["hits"], 1)
             run(negative="changed")
             components.guider.num_conditions = 1
@@ -123,6 +156,94 @@ class TextTests(unittest.TestCase):
             components.text_encoder.dtype = np.float16
             run()
             self.assertEqual(Encoder.calls, 4)
+
+    def test_negative_partial_reuse_preserves_outputs_independence_pair_counts_and_lru(self):
+        cache, blocks = text.TextCache(), Blocks()
+        components = types.SimpleNamespace(_execution_device="cuda", text_encoder=types.SimpleNamespace(dtype=np.float16),
+                                           guider=types.SimpleNamespace(num_conditions=2))
+        def run(prompt, negative="N", encoder=None):
+            cache.begin_job()
+            state = State(prompt=prompt, negative_prompt=negative, max_sequence_length=512)
+            (encoder or blocks.sub_blocks["text_encoder"])(components, state)
+            return state
+        with patch.dict("sys.modules", modules()):
+            text.apply_text_cache(blocks, cache)
+            expected = run("P2", encoder=Encoder())
+            Encoder.qwen_calls, Encoder.t5_calls = [], []
+            first = run("P1")
+            second = run("P2")
+            self.assertEqual(Encoder.qwen_calls, [["P1"], ["N"], ["P2"]])
+            self.assertEqual(Encoder.t5_calls, Encoder.qwen_calls)
+            self.assertEqual((cache.hits, cache.misses, len(cache.entries)), (0, 1, 2))
+            for name in FIELDS:
+                actual = second.get(name)
+                np.testing.assert_array_equal(actual, expected.get(name))
+                self.assertEqual((actual.device, actual.dtype), ("cuda", expected.get(name).dtype))
+                for snapshots, _ in cache.entries.values():
+                    self.assertFalse(np.shares_memory(actual, snapshots[name]))
+                self.assertFalse(np.shares_memory(actual, first.get(name)))
+                actual[:] = -123
+            # A full pair hit neither re-encodes nor returns the mutated prior outputs.
+            repeated = run("P2")
+            for name in FIELDS: np.testing.assert_array_equal(repeated.get(name), expected.get(name))
+            self.assertEqual((cache.hits, cache.misses, len(Encoder.qwen_calls)), (1, 0, 3))
+            run("P3", "other")
+            run("P4", "different")
+            before = list(cache.entries)
+            self.assertEqual(len(before), 4)
+            run("P5")  # Reusing the oldest pair's negative must not refresh that pair.
+            self.assertEqual(list(cache.entries)[:-1], before[1:])
+            self.assertEqual((cache.hits, cache.misses, len(cache.entries)), (0, 1, 4))
+            self.assertEqual(cache.bytes, sum(size for _, size in cache.entries.values()))
+            self.assertLessEqual(cache.bytes, 16 * 1024 * 1024)
+
+    def test_partial_reuse_respects_all_key_fields_and_stock_list_fallback(self):
+        changes = ({"negative": "different"}, {"conditions": 1}, {"length": 128},
+                   {"dtype": np.float16}, {"device": "cuda"}, {"negative": None})
+        for change in changes:
+            with self.subTest(change=change), patch.dict("sys.modules", modules()):
+                cache, blocks = text.TextCache(), Blocks()
+                components = types.SimpleNamespace(_execution_device="cpu", text_encoder=types.SimpleNamespace(dtype=np.float32),
+                                                   guider=types.SimpleNamespace(num_conditions=2))
+                text.apply_text_cache(blocks, cache)
+                encoder = blocks.sub_blocks["text_encoder"]
+                encoder(components, State(prompt="P1", negative_prompt="", max_sequence_length=512))
+                components._execution_device = change.get("device", "cpu")
+                components.text_encoder.dtype = change.get("dtype", np.float32)
+                components.guider.num_conditions = change.get("conditions", 2)
+                Encoder.qwen_calls, Encoder.t5_calls = [], []
+                state = State(prompt="P2", negative_prompt=change.get("negative", ""),
+                              max_sequence_length=change.get("length", 512))
+                encoder(components, state)
+                expected = [["P2"]] + ([] if components.guider.num_conditions == 1 else [[change.get("negative") or ""]])
+                self.assertEqual(Encoder.qwen_calls, expected)
+                self.assertEqual(Encoder.t5_calls, expected)
+                if components.guider.num_conditions == 1:
+                    self.assertTrue(all(state.get(name) is None for name in FIELDS[4:]))
+        with patch.dict("sys.modules", modules()):
+            cache, blocks = text.TextCache(), Blocks()
+            components.guider.num_conditions = 2
+            text.apply_text_cache(blocks, cache)
+            for prompt, negative in ((["P"], "N"), ("P", ["N"])):
+                Encoder.qwen_calls = []
+                blocks.sub_blocks["text_encoder"](components, State(prompt=prompt, negative_prompt=negative, max_sequence_length=512))
+                self.assertEqual(Encoder.qwen_calls, [["P"], ["N"]])
+                self.assertEqual((cache.hits, cache.misses, len(cache.entries)), (0, 0, 0))
+
+    def test_partial_encode_failure_does_not_publish_outputs_or_insert_pair(self):
+        cache, blocks = text.TextCache(), Blocks()
+        components = types.SimpleNamespace(_execution_device="cpu", text_encoder=types.SimpleNamespace(dtype=np.float32),
+                                           guider=types.SimpleNamespace(num_conditions=2))
+        with patch.dict("sys.modules", modules()):
+            text.apply_text_cache(blocks, cache)
+            encoder = blocks.sub_blocks["text_encoder"]
+            encoder(components, State(prompt="P1", negative_prompt="N", max_sequence_length=512))
+            before, size = list(cache.entries), cache.bytes
+            state = State(prompt="P2", negative_prompt="N", max_sequence_length=512)
+            with patch.object(Encoder, "_get_qwen_prompt_embeds", side_effect=RuntimeError("encoder failed")):
+                with self.assertRaisesRegex(RuntimeError, "encoder failed"): encoder(components, state)
+            self.assertEqual((list(cache.entries), cache.bytes), (before, size))
+            self.assertTrue(all(state.get(name) is None for name in FIELDS))
 
     def test_capacity_byte_limit_lru_and_release(self):
         cache = text.TextCache(max_entries=2, max_bytes=16)
