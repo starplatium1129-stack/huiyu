@@ -6,10 +6,11 @@ const path: typeof import('node:path') = require('node:path');
 const crypto: typeof import('node:crypto') = require('node:crypto');
 const { performance }: typeof import('node:perf_hooks') = require('node:perf_hooks');
 const gateway: typeof import('../lib/generation-gateway') = require('../lib/generation-gateway');
+const memory: typeof import('../lib/benchmark-device-memory') = require('../lib/benchmark-device-memory');
 const { statistics }: typeof import('./benchmark-anima-teacache') = require('./benchmark-anima-teacache');
 
 type Options = { payload: string; output: string; gateway: string; provider: 'native' | 'comfy';
-  promptVariants?: string; warmups: number; repeats: number; poll: number; timeout: number; run: boolean };
+  promptVariants?: string; sampling?: import('../lib/benchmark-device-memory').SamplingOptions; warmups: number; repeats: number; poll: number; timeout: number; run: boolean };
 type Run = { phase: 'warmup' | 'measured'; index: number; requestedSeed: number; request: Record<string, any>; expectedNormalizedPrompt?: string };
 const LIMITATIONS = 'Product gateway wall time from submission through polling, download, PNG validation, hashing and local image save. '
   + 'Warm-ups are excluded from statistics; warm residency, process/disk-cold state and exclusive GPU use are not proven. '
@@ -20,8 +21,9 @@ const LIMITATIONS = 'Product gateway wall time from submission through polling, 
   + 'Server metadata is partial: Comfy mask defaults and native profile-selected TeaCache settings may be absent. Missing fields do not establish defaults or equality; effective masks are not captured or matched. '
   + 'Sigma schedules, checkpoint/export/LoRA equivalence, precision, attention, total-device peak VRAM and image quality are unverified. No cross-backend speedup or parity verdict is produced.';
 const HELP = 'node scripts/tests/benchmark-inference-gateway.js --payload <actual API payload.json> --expect-provider native|comfy '
-  + '--output-dir <new runtime directory> [--prompt-variants <JSON with warmup/measured string arrays>] [--gateway http://127.0.0.1:3000] [--warmups 1] [--repeats 6] [--poll-ms 100] [--timeout 600] [--run]\n'
+  + '--output-dir <new runtime directory> [--prompt-variants <JSON with warmup/measured string arrays>] [--sample-device-memory GPU-<full UUID> --nvidia-smi <existing official absolute CLI path>] [--gateway http://127.0.0.1:3000] [--warmups 1] [--repeats 6] [--poll-ms 100] [--timeout 600] [--run]\n'
   + 'Optional prompt variants must exactly match warmup/measured counts; measured strings after API whitespace trimming must differ from all warmup and measured strings. Requests preserve the original text; only prompt and the existing seed sequence vary.\n'
+  + 'Optional device sampling starts one 1-second CLI loop only with --run; plan/default never spawn. The operator must verify both engines actually use the selected physical UUID. SIGINT stops local waiting, not the server job.\n'
   + 'Default is a zero-network, no-write plan. --run uses an already prepared exclusive local GPU session. '
   + 'Never starts services, switches engines, clears caches, retries submissions or interrupts jobs. Run the engines separately and warm up again after switching.\n' + LIMITATIONS;
 const hash = (value: string | Buffer) => crypto.createHash('sha256').update(value).digest('hex');
@@ -31,7 +33,7 @@ const normalizedPrompt = (prompt: string) => prompt.replace(/^\p{White_Space}+|\
 
 function options(argv: string[]): Options {
   const values: Record<string, string> = {};
-  const flags = new Set(['--payload', '--output-dir', '--expect-provider', '--prompt-variants', '--gateway', '--warmups', '--repeats', '--poll-ms', '--timeout']);
+  const flags = new Set(['--payload', '--output-dir', '--expect-provider', '--prompt-variants', '--sample-device-memory', '--nvidia-smi', '--gateway', '--warmups', '--repeats', '--poll-ms', '--timeout']);
   let run = false;
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
@@ -44,6 +46,10 @@ function options(argv: string[]): Options {
   for (const flag of ['--payload', '--output-dir', '--expect-provider']) if (!values[flag]) throw Error('Required: ' + flag);
   const provider = values['--expect-provider'];
   if (provider !== 'native' && provider !== 'comfy') throw Error('--expect-provider must be native or comfy');
+  const gpuUuid = values['--sample-device-memory'], executable = values['--nvidia-smi'];
+  if (Boolean(gpuUuid) !== Boolean(executable)) throw Error('Device sampling requires both --sample-device-memory and --nvidia-smi');
+  if (gpuUuid && !/^GPU-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(gpuUuid)) throw Error('Supply a full physical GPU UUID; indices, prefixes and MIG IDs are not accepted');
+  if (executable && (!path.isAbsolute(executable) || !/^nvidia-smi(?:\.exe)?$/i.test(path.basename(executable)))) throw Error('--nvidia-smi must name an existing official nvidia-smi executable by absolute path');
   const url = new URL(gateway.gatewayUrl(values['--gateway'] ?? 'http://127.0.0.1:3000'));
   if (url.protocol !== 'http:' || !['127.0.0.1', '[::1]'].includes(url.hostname) || url.pathname !== '/') throw Error('--gateway must be a literal loopback HTTP origin');
   function bounded(flag: string, fallback: number, min: number, max: number) {
@@ -52,6 +58,7 @@ function options(argv: string[]): Options {
     return value;
   }
   return { payload: path.resolve(values['--payload']), output: path.resolve(values['--output-dir']), gateway: url.origin, provider, run,
+    sampling: gpuUuid ? { gpuUuid, executable } : undefined,
     promptVariants: values['--prompt-variants'] ? path.resolve(values['--prompt-variants']) : undefined,
     warmups: bounded('--warmups', 1, 1, 5), repeats: bounded('--repeats', 6, 2, 50),
     poll: bounded('--poll-ms', 100, 10, 5000), timeout: bounded('--timeout', 600, 1, 3600) };
@@ -93,13 +100,14 @@ function prepare(opts: Options) {
   const plan = { mode: 'plan', gateway: opts.gateway, expectProvider: opts.provider, outputDir: opts.output,
     sourcePayloadSha256: hash(raw), sourcePromptVariantsSha256, payload, submissions: runs.length, runs, pollMilliseconds: opts.poll,
     promptPopulation: opts.promptVariants ? 'requested-distinct-prompts-within-suite' : 'repeated-prompt',
+    deviceMemorySampling: opts.sampling ? { status: 'planned-not-started', command: memory.command(opts.sampling), limitations: memory.LIMITATIONS } : { status: 'disabled' },
     configurationEvidence: 'not-read-in-plan', scheduleEvidence: 'unverified', qualityEvidence: 'unreviewed', limitations: LIMITATIONS };
   return { payload, runs, plan };
 }
 
-async function observation(opts: Options, route: string) {
+async function observation(opts: Options, route: string, signal?: AbortSignal) {
   try {
-    const response = await fetch(opts.gateway + route, { redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(10000) });
+    const response = await fetch(opts.gateway + route, { redirect: 'error', cache: 'no-store', signal: AbortSignal.any([AbortSignal.timeout(10000), ...(signal ? [signal] : [])]) });
     if (!response.ok) throw Error('HTTP ' + response.status);
     const chunks: Uint8Array[] = [];
     let bytes = 0;
@@ -130,7 +138,8 @@ function verifyPreflight(opts: Options, settings: any, status: any) {
     settingsRead: settings.status, statusRead: status.status };
 }
 
-async function measure(opts: Options, run: Run, seenIds: Set<string>, seenImages: Set<string>) {
+async function measure(opts: Options, run: Run, seenIds: Set<string>, seenImages: Set<string>,
+  sampler?: import('../lib/benchmark-device-memory').DeviceMemorySampler, signal?: AbortSignal, onRecord?: (record: any) => void) {
   const label = `${run.phase}-${run.index}`, folder = path.join(opts.output, label);
   fs.mkdirSync(folder);
   const { request, ...identity } = run;
@@ -138,13 +147,17 @@ async function measure(opts: Options, run: Run, seenIds: Set<string>, seenImages
   // No record.seed fallback: an absent server seed must stay unverified and fail.
   const record: Record<string, any> = { ...identity, gateway: opts.gateway, payload: request, requestSha256: hash(JSON.stringify(request)), status: 'preflight' };
   const save = () => fs.writeFileSync(path.join(folder, 'status.json'), JSON.stringify(record, null, 2) + '\n');
-  save();
+  save(); onRecord?.(record);
+  let windowStarted = false, windowEnded = false;
   try {
-    const settings = await observation(opts, '/api/inference/settings');
-    const status = await observation(opts, '/api/anima/status');
+    signal?.throwIfAborted(); sampler?.assertHealthy();
+    const settings = await observation(opts, '/api/inference/settings', signal);
+    const status = await observation(opts, '/api/anima/status', signal);
     write(path.join(folder, 'preflight.json'), { settings, status });
     record.preflight = verifyPreflight(opts, settings, status);
+    signal?.throwIfAborted(); sampler?.assertHealthy();
     const started = performance.now();
+    sampler?.beginWindow(label, started); windowStarted = Boolean(sampler);
     const image = await gateway.generate(record, () => {
       save();
       if (record.status === 'submitted') {
@@ -156,11 +169,13 @@ async function measure(opts: Options, run: Run, seenIds: Set<string>, seenImages
         if (!Number.isSafeInteger(record.actualSeed) || record.actualSeed !== run.requestedSeed) throw Error('Server-reported seed is missing or differs from the requested fresh seed');
         if (opts.promptVariants && record.serverMetadata?.prompt !== run.expectedNormalizedPrompt) throw Error('Server-reported prompt is missing or differs from the planned normalized prompt; text execution is unverified');
       }
-    }, { pollMs: opts.poll, timeoutMs: opts.timeout * 1000, signal: AbortSignal.timeout(opts.timeout * 1000),
+    }, { pollMs: opts.poll, timeoutMs: opts.timeout * 1000, signal: AbortSignal.any([AbortSignal.timeout(opts.timeout * 1000), ...(signal ? [signal] : [])]),
       fetchImpl: (input: any, init: any) => fetch(input, { ...init, cache: 'no-store' }) });
     const outputSha256 = hash(image.buffer);
     fs.writeFileSync(path.join(folder, 'output.png'), image.buffer, { flag: 'wx' });
-    Object.assign(record, { wallSeconds: (performance.now() - started) / 1000, outputSha256,
+    const ended = performance.now();
+    sampler?.endWindow(label, ended); windowEnded = true;
+    Object.assign(record, { wallSeconds: (ended - started) / 1000, outputSha256,
       image: `${label}/output.png`, width: image.width, height: image.height, bytes: image.buffer.length });
     if (seenImages.has(outputSha256)) throw Error('Identical image bytes returned for different seeds; result reuse or degenerate output must be investigated');
     seenImages.add(outputSha256);
@@ -171,14 +186,19 @@ async function measure(opts: Options, run: Run, seenIds: Set<string>, seenImages
     record.status = record.status === 'submitting' && !record.jobId ? 'submission-unknown' : 'stopped';
     save();
     throw Error(`${record.failure}; evidence: ${folder}; job ${record.jobId ?? 'not identified'}. No retry or interrupt was sent; inspect the gateway before another run.`);
+  } finally {
+    if (sampler) {
+      if (windowStarted && !windowEnded) sampler.endWindow(label, performance.now());
+      record.deviceMemorySampling = sampler.window(label); save();
+    }
   }
 }
 
 function review(report: any) {
   const escape = (value: any) => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]!);
-  const rows = report.runs.map((run: any) => `<figure><figcaption>${escape(run.phase)} ${run.index} · ${escape(run.provider)} · seed ${run.actualSeed} · ${run.wallSeconds.toFixed(3)}s · ${run.width}×${run.height}</figcaption><img src="${escape(run.image)}" width="384"><details><summary>Partial server metadata / native observations (missing does not mean default or equal)</summary><pre>${escape(JSON.stringify(run.serverMetadata ?? null, null, 2))}</pre></details></figure>`).join('');
+  const rows = report.runs.map((run: any) => `<figure><figcaption>${escape(run.phase)} ${run.index} · ${escape(run.provider)} · seed ${run.actualSeed} · ${Number.isFinite(run.wallSeconds) ? run.wallSeconds.toFixed(3) + 's' : 'incomplete'} · ${run.width ?? '?'}×${run.height ?? '?'} · ${escape(run.status)}</figcaption>${run.image ? `<img src="${escape(run.image)}" width="384">` : ''}<details><summary>Partial server metadata / native observations (missing does not mean default or equal)</summary><pre>${escape(JSON.stringify(run.serverMetadata ?? null, null, 2))}</pre></details>${run.deviceMemorySampling ? `<details><summary>Sampled device-used maximum / job window (not a true peak)</summary><pre>${escape(JSON.stringify(run.deviceMemorySampling, null, 2))}</pre></details>` : ''}</figure>`).join('');
   return '<!doctype html><meta charset="utf-8"><title>Product gateway benchmark</title><style>body{font:16px system-ui;max-width:1100px;margin:2em auto;padding:1em;background:#f8fafc;color:#17202a}main{display:flex;flex-wrap:wrap}figure{margin:12px}img{max-width:100%;height:auto}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style>'
-    + `<h1>${escape(report.expectProvider)} product gateway: measured, quality unreviewed</h1><p>Prompt population: ${escape(report.promptPopulation)}</p><p>${escape(LIMITATIONS)}</p><p>Run each engine alone on the GPU. After switching engines, release the previous engine and warm up again. No speedup verdict.</p><pre>${escape(JSON.stringify(report.summary, null, 2))}</pre><main>${rows}</main>`;
+    + `<h1>${escape(report.expectProvider)} product gateway: ${report.status === 'partial-stopped' ? 'partial, stopped' : 'measured'}, quality unreviewed</h1><p>${escape(report.measurementMode)}</p><p>Prompt population: ${escape(report.promptPopulation)}</p><p>${escape(LIMITATIONS)}</p><p>Run each engine alone on the GPU. After switching engines, release the previous engine and warm up again. No speedup verdict.</p><pre>${escape(JSON.stringify(report.summary, null, 2))}</pre>${report.deviceMemorySampling ? `<h2>Sampled device memory (not a true peak)</h2><pre>${escape(JSON.stringify(report.deviceMemorySampling, null, 2))}</pre>` : ''}${report.failure ? `<p>${escape(report.failure)}</p>` : ''}<main>${rows}</main>`;
 }
 
 async function main(argv = process.argv.slice(2)) {
@@ -188,21 +208,59 @@ async function main(argv = process.argv.slice(2)) {
   fs.mkdirSync(path.dirname(opts.output), { recursive: true });
   fs.mkdirSync(opts.output);
   write(path.join(opts.output, 'plan.json'), prepared.plan);
-  const runs = [], seenIds = new Set<string>(), seenImages = new Set<string>();
-  for (const run of prepared.runs) runs.push(await measure(opts, run, seenIds, seenImages));
-  const report = { schemaVersion: 1, status: 'measured-quality-unreviewed', expectProvider: opts.provider,
+  const runs: any[] = [], seenIds = new Set<string>(), seenImages = new Set<string>();
+  let sampler: import('../lib/benchmark-device-memory').DeviceMemorySampler | undefined, failure: string | null = null;
+  let samplingEvidence: ReturnType<import('../lib/benchmark-device-memory').DeviceMemorySampler['snapshot']> | null = null;
+  const local = new AbortController();
+  const interrupted = () => {
+    local.abort(Error('SIGINT: local waiting stopped; server submission/job state may remain active; no cancellation was sent'));
+    sampler?.fail('SIGINT stopped local monitoring; server job was not cancelled');
+    void sampler?.stop().catch(() => {}); // awaited and reported by finally below
+  };
+  try {
+    if (opts.sampling) {
+      sampler = new memory.DeviceMemorySampler(opts.sampling, opts.output);
+      process.on('SIGINT', interrupted);
+      await sampler.ready;
+    }
+    for (const run of prepared.runs) {
+      const record = await measure(opts, run, seenIds, seenImages, sampler, sampler ? local.signal : undefined, sampler ? value => runs.push(value) : undefined);
+      if (!sampler) runs.push(record);
+      sampler?.assertHealthy();
+    }
+  } catch (error) {
+    if (!sampler) throw error;
+    failure = error instanceof Error ? error.message : String(error);
+  } finally {
+    if (sampler) {
+      try { await sampler.stop(); } catch (error) { failure = `${failure ?? ''} Sampling cleanup/evidence error: ${String(error)}`; }
+      process.removeListener('SIGINT', interrupted);
+      samplingEvidence = sampler.snapshot(); // One final observation shared by both evidence files.
+      fs.writeFileSync(path.join(opts.output, 'device-memory-sampling.json'), JSON.stringify(samplingEvidence, null, 2) + '\n');
+      if (samplingEvidence.issues.length) failure ??= samplingEvidence.issues.join('; ');
+      for (const record of runs) {
+        record.deviceMemorySampling = sampler.window(`${record.phase}-${record.index}`);
+        fs.writeFileSync(path.join(opts.output, `${record.phase}-${record.index}`, 'status.json'), JSON.stringify(record, null, 2) + '\n');
+      }
+    }
+  }
+  const measured = runs.filter(run => run.phase === 'measured' && run.status === 'succeeded').map(run => run.wallSeconds);
+  const report = { schemaVersion: 1, status: failure ? 'partial-stopped' : 'measured-quality-unreviewed', expectProvider: opts.provider,
     gateway: opts.gateway, sourcePayloadSha256: prepared.plan.sourcePayloadSha256, pollMilliseconds: opts.poll,
     sourcePromptVariantsSha256: prepared.plan.sourcePromptVariantsSha256, promptPopulation: prepared.plan.promptPopulation,
+    measurementMode: sampler ? 'monitoring-enabled' : 'monitoring-disabled', failure,
+    deviceMemorySampling: samplingEvidence,
     scheduleEvidence: 'unverified', precisionParity: 'unverified', qualityEvidence: 'unreviewed', peakVram: null,
-    summary: { wallSeconds: statistics(runs.filter(run => run.phase === 'measured').map(run => run.wallSeconds)),
-      preflight: { engineUnverifiedRuns: runs.filter(run => run.preflight.engineEvidence === 'unverified-until-job-completion').length,
-        queueUnverifiedRuns: runs.filter(run => run.preflight.queueEvidence === 'unverified').length,
-        restartRequiredRuns: runs.filter(run => run.preflight.restartRequired === true).length,
+    summary: { wallSeconds: measured.length ? statistics(measured) : { count: 0, min: null, median: null, max: null, p95: null },
+      preflight: { engineUnverifiedRuns: runs.filter(run => run.preflight?.engineEvidence === 'unverified-until-job-completion').length,
+        queueUnverifiedRuns: runs.filter(run => run.preflight?.queueEvidence === 'unverified').length,
+        restartRequiredRuns: runs.filter(run => run.preflight?.restartRequired === true).length,
         note: 'Missing settings/status evidence is not proof of engine selection or GPU exclusivity. Completed provider and server seed are checked for every job.' } },
     limitations: LIMITATIONS, runs };
   write(path.join(opts.output, 'report.json'), report);
   fs.writeFileSync(path.join(opts.output, 'review.html'), review(report), { flag: 'wx' });
   console.log(JSON.stringify({ status: report.status, provider: opts.provider, summary: report.summary, review: path.join(opts.output, 'review.html') }, null, 2));
+  if (failure) throw Error(`${failure}; partial report: ${opts.output}. No server cancellation or retry was sent; inspect saved job state.`);
   return report;
 }
 
