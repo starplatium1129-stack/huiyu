@@ -48,6 +48,7 @@ class Tensor(np.ndarray):
 def fake_torch():
     return types.SimpleNamespace(is_grad_enabled=lambda: False, isfinite=np.isfinite, equal=np.array_equal,
         clamp=lambda value, min: np.maximum(value, min),
+        stack=lambda values: Tensor(np.stack(values)),
         no_grad=lambda: lambda fn: fn, bfloat16="torch.bfloat16", float16="torch.float16",
         cuda=types.SimpleNamespace(is_available=lambda: True, is_bf16_supported=lambda: True,
             get_device_name=lambda _: "fake CUDA", synchronize=lambda: None, max_memory_allocated=lambda _: 1234,
@@ -167,6 +168,61 @@ class TeaTests(unittest.TestCase):
                     self.assertIs(cast.call_args_list[0].args[0], current)
                     self.assertIs(cast.call_args_list[1].args[0], previous)
 
+    def test_proxy_finite_and_change_share_one_host_read_on_reused_lane(self):
+        model, cache = Model(), tea.TeaCacheController(profile(), 0.15)
+        with patch.dict("sys.modules", modules()):
+            cache.call(model, **arguments(0))
+            previous = cache.lanes["cond"]["proxy"]
+            kwargs = arguments(1)
+            expected = tea.relative_l1(kwargs["hidden_states"] + Tensor(0.2) + kwargs["timestep"], previous)
+            with patch.object(Tensor, "item", autospec=True, side_effect=Tensor.item) as scalar, \
+                    patch.object(Tensor, "cpu", autospec=True, side_effect=Tensor.cpu) as transfer:
+                cache.call(model, **kwargs)
+            # Explicit fakes count host observation boundaries, not CUDA latency.
+            self.assertEqual(scalar.call_count + transfer.call_count, 2)
+            self.assertEqual(scalar.call_count, 1)  # Exact conditioning/padding equality.
+            self.assertEqual(transfer.call_count, 1)
+            observation = transfer.call_args.args[0]
+            self.assertEqual(observation.dtype, np.float32)
+            self.assertEqual(observation.tolist(), [1.0, expected])
+            self.assertEqual(cache.stats["skippedComputes"], 1)
+
+    def test_combined_proxy_observation_distinguishes_unsafe_from_metric_overflow(self):
+        for unsafe_hidden in (True, False):
+            with self.subTest(unsafe_hidden=unsafe_hidden), patch.dict("sys.modules", modules()), \
+                    np.errstate(over="ignore", invalid="ignore"):
+                model, cache = Model(), tea.TeaCacheController(collect=True)
+                first = model.transformer_blocks[0]
+                shape = arguments(0)["hidden_states"].shape
+                previous = Tensor(np.full(shape, 1 if unsafe_hidden else -1e38))
+                current = Tensor(np.full(shape, 1 if unsafe_hidden else 1e38))
+                self.assertTrue(np.isfinite(previous).all() and np.isfinite(current).all())
+                with patch.object(first, "norm1", return_value=(previous, Tensor(1))), \
+                        patch.object(tea, "_relative_l1_tensor", wraps=tea._relative_l1_tensor) as metric:
+                    cache.call(model, **arguments(0, total=3))
+                    metric.assert_not_called()  # No previous proxy needs no ratio.
+                with patch.object(first, "norm1", return_value=(current, Tensor(1))):
+                    kwargs = arguments(1, total=3)
+                    if unsafe_hidden:
+                        kwargs["hidden_states"] = Tensor(np.full(shape, np.nan))
+                        self.assertEqual(tea.relative_l1(current, previous), 0)
+                    else:
+                        self.assertTrue(np.isfinite(current - previous).all())
+                        self.assertIsNone(tea.relative_l1(current, previous))
+                    cache.call(model, **kwargs)
+                self.assertIsNone(cache.samples[-1]["proxyRelativeL1"])
+                self.assertIsNone(cache.samples[-1]["residualRelativeL1"])
+                self.assertEqual(cache.stats["skippedComputes"], 0)
+                self.assertEqual(cache.stats["nonfinite"], 2 if unsafe_hidden else 1)
+                if unsafe_hidden:
+                    self.assertIsNone(cache.lanes["cond"]["proxy"])
+                    self.assertIsNone(cache.lanes["cond"]["residual"])
+                else:
+                    # The old lane state was discarded; this full step stores a new
+                    # finite proxy/residual exactly as before the combined readback.
+                    np.testing.assert_array_equal(cache.lanes["cond"]["proxy"], current)
+                    self.assertTrue(np.isfinite(cache.lanes["cond"]["residual"]).all())
+
     def test_phase_envelope_preserves_spikes_refreshes_phase_boundaries_and_rejects_unseen_range(self):
         value = profile()
         value.update(schemaVersion=2, algorithm=profiles.PHASE_ALGORITHM,
@@ -189,7 +245,7 @@ class TeaTests(unittest.TestCase):
 
     def test_real_block_skip_cfg_isolation_endpoints_bounds_and_current_head(self):
         model, cache = Model(), tea.TeaCacheController(profile(), 0.15)
-        with patch.dict("sys.modules", modules()), patch.object(tea, "relative_l1", wraps=tea.relative_l1) as metric:
+        with patch.dict("sys.modules", modules()), patch.object(tea, "_relative_l1_tensor", wraps=tea._relative_l1_tensor) as metric:
             for step in range(7):
                 for branch in ("cond", "uncond"):
                     kwargs = arguments(step, branch=branch)
@@ -258,7 +314,7 @@ class TeaTests(unittest.TestCase):
 
     def test_collection_is_full_compute_and_produces_finite_paired_samples(self):
         model, cache = Model(), tea.TeaCacheController(collect=True)
-        with patch.dict("sys.modules", modules()), patch.object(tea, "relative_l1", wraps=tea.relative_l1) as metric:
+        with patch.dict("sys.modules", modules()), patch.object(tea, "_relative_l1_tensor", wraps=tea._relative_l1_tensor) as metric:
             for step in range(4):
                 cache.call(model, **arguments(step, total=4))
         self.assertEqual(metric.call_count, 6)
@@ -331,8 +387,8 @@ class TeaTests(unittest.TestCase):
                         denoiser(components, state, step, t)
                         t.item.assert_not_called()
                         self.assertIs(set_state.call_args.kwargs["timestep"], t)
-                snapshot.assert_called_once()
-                self.assertIs(snapshot.call_args.args[0], state.timesteps)
+                schedule_copies = [call for call in snapshot.call_args_list if call.args[0] is state.timesteps]
+                self.assertEqual(len(schedule_copies), 1)
                 self.assertEqual([call.kwargs["timestep_value"] for call in calls.call_args_list],
                                  [float(value) for value in timesteps for _ in range(lanes)])
                 self.assertEqual(model.transformer_blocks[0].calls, 2 * lanes)

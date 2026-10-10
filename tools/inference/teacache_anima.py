@@ -23,13 +23,17 @@ def finite_tensor(tensor):
     return bool(torch.isfinite(tensor).all().item())
 
 
-def relative_l1(current, previous):
+def _relative_l1_tensor(current, previous):
     # Accumulation in float32 avoids low-precision overflow in calibration/statistics.
     import torch
     current, previous = current.float(), previous.float()
     numerator = (current - previous).abs().mean()
     denominator = torch.clamp(previous.abs().mean(), min=1e-8)
-    value = (numerator / denominator).item()
+    return numerator / denominator
+
+
+def relative_l1(current, previous):
+    value = _relative_l1_tensor(current, previous).item()
     return value if math.isfinite(value) else None
 
 
@@ -121,8 +125,16 @@ class TeaCacheController:
                 if index == 0:
                     norm_input = hidden + extra if extra is not None else hidden
                     proxy = blocks[0].norm1(norm_input, embedded, temb)[0]
-                    safe = bool((torch.isfinite(proxy).all() & torch.isfinite(hidden).all()).item()) and math.isfinite(float(timestep_value))
-                    change = relative_l1(proxy, lane["proxy"]) if safe and lane["proxy"] is not None else None
+                    safe = torch.isfinite(proxy).all() & torch.isfinite(hidden).all()
+                    change = None
+                    if lane["proxy"] is None:
+                        safe = bool(safe.item())
+                    else:
+                        # Keep both observations distinct: finite tensors can still
+                        # overflow the metric. Transfer their float32 scalars together.
+                        safe, change = torch.stack((safe.float(), _relative_l1_tensor(proxy, lane["proxy"]))).cpu().tolist()
+                    safe = bool(safe) and math.isfinite(float(timestep_value))
+                    change = change if safe and change is not None and math.isfinite(change) else None
                     execution.update(proxy=snapshot(proxy) if safe else None, change=change)
                     if not safe or (lane["proxy"] is not None and change is None):
                         self.stats["nonfinite"] += 1
