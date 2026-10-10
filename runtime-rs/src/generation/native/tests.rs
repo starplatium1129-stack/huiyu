@@ -200,10 +200,10 @@ async fn native_cancel_terminates_owned_worker_before_settling() {
     let id = submitted["id"].as_str().unwrap();
     let pid: i32 = tokio::time::timeout(Duration::from_secs(5), async {
         loop {
-            if let Ok(text) = tokio::fs::read_to_string(&marker).await {
-                if let Ok(pid) = text.parse() {
-                    return pid;
-                }
+            if let Ok(text) = tokio::fs::read_to_string(&marker).await
+                && let Ok(pid) = text.parse()
+            {
+                return pid;
             }
             tokio::time::sleep(Duration::from_millis(10)).await;
         }
