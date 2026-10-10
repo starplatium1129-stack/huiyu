@@ -273,7 +273,7 @@ test('gallery viewer never retargets actions when its artwork leaves the active 
 })
 
 
-test('gallery keeps failed bulk items selected for retry', async ({ page }) => {
+test('gallery keeps an atomically failed batch selected for retry', async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem('aics_pb_history', JSON.stringify([
       { id: 'audit-one', sceneTitle: '审计甲', prompt: 'audit first' },
@@ -290,9 +290,11 @@ test('gallery keeps failed bulk items selected for retry', async ({ page }) => {
   await page.getByRole('checkbox', { name: '全选当前作品', exact: true }).check()
   await page.getByRole('button', { name: '移入回收站（2）', exact: true }).click()
   await page.getByRole('alertdialog').getByRole('button', { name: '移入回收站', exact: true }).click()
-  await expect(page.locator('.toast-msg')).toContainText('1 幅没成功')
-  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*1\s*\/\s*1\s*$/)
-  await expect(page.getByRole('button', { name: '移入回收站（1）', exact: true })).toBeEnabled()
+  // The Web repository now writes the selected batch in one atomic transaction.
+  await expect(page.locator('.toast-msg')).toContainText('尚未确认作品已移入回收站，请重新读取后重试')
+  await expect(page.locator('.artwork')).toHaveCount(2)
+  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*2\s*\/\s*2\s*$/)
+  await expect(page.getByRole('button', { name: '移入回收站（2）', exact: true })).toBeEnabled()
 })
 
 test('director blueprint round-trips full decisions and material conflicts', async ({ page }) => {
