@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
 
+// Existing-workflow checks start after the separately covered first-visit tour.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('aics_guest_guide_dismissed', '1'))
+})
+
 async function prepare(page: Page, theme: string, online = false) {
   await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json: { ok: true, online: false, models: [], loras: [], styleLoras: [] } }))
   await page.route('**/api/generation/status', route => route.fulfill({ json: {
@@ -159,7 +164,7 @@ test(`atelier mocked generation states and saving dark`, async ({ page }, testIn
   await expect(page.locator('#inspector-tab-delivery')).toBeFocused()
   await expect(page.locator('.director-inspector')).toBeVisible()
   state = 'succeeded'
-  await page.getByRole('button', { name: '生成图片', exact: true }).click()
+  await page.getByRole('button', { name: '重试生成', exact: true }).click()
   await expect(page.locator('.result-image')).toBeVisible()
   await expect(page.locator('.result-image')).toHaveJSProperty('complete', true)
   await expect(page.locator('.result-image')).not.toHaveJSProperty('naturalWidth', 0)

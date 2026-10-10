@@ -27,15 +27,16 @@
           ref="generationAction"
           :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
           class="btn generation-action"
-          :class="[busy ? 'btn-ghost' : 'btn-primary', { 'is-drawing': busy }]"
+          :class="[status === 'idle' ? 'btn-primary' : 'btn-ghost', { 'is-drawing': busy }]"
+          :data-state="status"
           type="button"
-          :aria-label="busy ? '停止绘制' : '生成图片'"
+          :aria-label="actionLabel"
           :disabled="!busy && (!online || !!blockedReason)"
           @click="busy ? $emit('cancel') : $emit('generate')"
         >
           <span class="generation-action-surface" aria-hidden="true" />
           <span class="generation-action-content">
-            <span class="generation-action-label"><ArchiveIcon :name="busy ? 'close' : 'spark'" aria-hidden="true" /><span v-content-motion="busy">{{ busy ? '停止绘制' : '生成图片' }}</span></span>
+            <span class="generation-action-label"><ArchiveIcon :name="actionIcon" aria-hidden="true" /><span v-content-motion="status">{{ actionText }}</span></span>
             <strong v-if="busy && progressValue !== null" class="generation-percent" aria-hidden="true">{{ progressValue }}%</strong>
             <span v-if="busy" class="generation-track" :class="{ 'is-indeterminate': progressValue === null }" role="progressbar" aria-label="当前绘制进度" :aria-valuenow="progressValue ?? undefined" aria-valuemin="0" aria-valuemax="100"><i :style="{ '--generation-progress': progressValue === null ? 1 : progressValue / 100 }" /></span>
           </span>
@@ -45,6 +46,7 @@
         <button class="btn btn-quiet" type="button" :disabled="!hasResult" @click="$emit('clearResult')">清除图片</button>
       </StudioTooltip>
     </div>
+    <span class="sr-only" role="status" aria-live="polite" aria-atomic="true">{{ announcement }}</span>
   </div>
 </template>
 
@@ -72,6 +74,11 @@ const props = defineProps<{
   animaSizes: string[]
   presetSummary: string
   hasResult: boolean
+  /** Completion comes from the task phase, never the presence of an older image. */
+  completed?: boolean
+  statusText?: string
+  error?: string
+  stopped?: boolean
   /**
    * 提交前校验的原因（2026-08-30 UX 审计 P1）。非空即禁用生成按钮，并把原因
    * 常驻在按钮旁。
@@ -82,6 +89,15 @@ const props = defineProps<{
   blockedReason?: string
 }>()
 
+const status = computed(() => props.busy ? 'loading' : props.error ? 'error'
+  // Restoring an older result also uses succeeded; only the generation receipt
+  // (legacy or runtime inbox variant) announces a newly completed drawing.
+  : props.completed && props.hasResult && !props.stopped && props.statusText?.startsWith('生成完成') ? 'success' : 'idle')
+const actionText = computed(() => ({ idle: '生成图片', loading: '停止绘制', success: '完成 · 再生成', error: '重试生成' })[status.value])
+const actionLabel = computed(() => status.value === 'success' ? '生成完成，再生成图片' : actionText.value)
+const actionIcon = computed(() => ({ idle: 'spark', loading: 'close', success: 'success', error: 'refresh' } as const)[status.value])
+const announcement = computed(() => props.busy ? '正在绘制，可随时停止。' : props.stopped ? '绘制已停止。'
+  : status.value === 'error' ? `生成失败：${props.error}` : status.value === 'success' ? '生成完成，可以查看画布或再次生成。' : '')
 const unavailableReason = computed(() => props.blockedReason || (!props.online ? '绘图服务未连接，请先在控制面板启动并检查连接。' : ''))
 const progressValue = computed(() => typeof props.progress === 'number' && Number.isFinite(props.progress)
   ? Math.round(Math.max(0, Math.min(1, props.progress)) * 100) : null)
@@ -89,7 +105,7 @@ const generationAction = ref<HTMLButtonElement | null>(null)
 let captureMorph: typeof import('@/utils/generationControlMorph')['captureGenerationMorph'] | undefined
 let cancelMorph: typeof import('@/utils/generationControlMorph')['cancelGenerationMorph'] | undefined
 void import('@/utils/generationControlMorph').then(module => { captureMorph = module.captureGenerationMorph; cancelMorph = module.cancelGenerationMorph })
-watch(() => props.busy, () => { const finish = captureMorph?.(generationAction.value); if (finish) void nextTick(finish) })
+watch(status, () => { const finish = captureMorph?.(generationAction.value); if (finish) void nextTick(finish) })
 const settleMorph = () => cancelMorph?.(generationAction.value)
 useEventListener(document, 'visibilitychange', () => { if (document.hidden) settleMorph() })
 useEventListener(window, 'atelier:motion-preference', settleMorph)

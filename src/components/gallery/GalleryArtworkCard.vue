@@ -7,10 +7,8 @@
   :data-reveal-ready="thumbLoaded || imageLoaded || previewFailed || missing"
   :style="{ '--art-ratio': String(ratio) }"
 >
-  <!-- 多选勾选标记：只在选择模式出现，纯视觉，状态由按钮的 aria-pressed 承载 -->
-  <span v-if="selectionMode" class="artwork-check" aria-hidden="true">
-    <ArchiveIcon v-if="selected" name="success" />
-  </span>
+  <StudioCheckbox v-if="selectionMode" ref="artworkCheckbox" class="artwork-check"
+    :checked="selected" :label="`选择作品：${title}`" @update:checked="emit('select')" />
   <!--
     快捷工具条：选择模式下让位给右上角的勾选标记。此时点卡片是勾选而非
     进大图，把收藏/沿用配方/删除留在原位会与勾选标记叠在一起，且容易误触。
@@ -46,15 +44,13 @@
       </StudioTooltip>
     </template>
   </div>
-  <button
+  <component
+    :is="selectionMode ? 'div' : 'button'"
     ref="artworkButton"
     class="artwork-button"
-    type="button"
-    :aria-pressed="selectionMode ? selected : undefined"
-    :aria-label="selectionMode
-      ? `${selected ? '取消选择' : '选择'}作品：${title}`
-      : `欣赏作品：${title}`"
-    @click="selectionMode ? emit('select') : emit('open', $event)"
+    :type="selectionMode ? undefined : 'button'"
+    :aria-label="selectionMode ? undefined : `欣赏作品：${title}`"
+    @click="!selectionMode && emit('open', $event)"
   >
     <div class="artwork-media" :style="{ '--art-ratio': String(ratio) }">
       <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
@@ -93,7 +89,7 @@
         </span>
         <span v-if="item.favorite" class="artwork-mark"><ArchiveIcon name="love" /></span>
       </div>
-  </button>
+  </component>
   <div v-if="previewFailed || (!imageUrl && !thumbUrl && missing)" class="artwork-recovery" role="status">
     <ArchiveIcon name="image" />
     <span>作品图片暂时无法读取</span>
@@ -107,12 +103,14 @@ import type { ArtworkRecord } from '@/types/artwork'
 import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 const props = defineProps<{
   item: ArtworkRecord; title: string; character: string; formattedDate: string; ratio: number;
   thumbUrl: string; imageUrl: string; cors?: 'anonymous'; missing: boolean;
   selectionMode: boolean; selected: boolean; confirmingDelete: boolean; deleting: boolean;
 }>()
-const artworkButton = ref<HTMLButtonElement | null>(null)
+const artworkButton = ref<HTMLElement | null>(null)
+const artworkCheckbox = ref<InstanceType<typeof StudioCheckbox> | null>(null)
 const hdImage = ref<HTMLImageElement | null>(null)
 const thumbFailed = ref(false), imageFailed = ref(false)
 const thumbLoaded = ref(false), imageLoaded = ref(false), retryAttempt = ref(0)
@@ -137,7 +135,7 @@ async function onHdLoad(event: Event) {
 function retryPreview() {
   thumbFailed.value = false; imageFailed.value = false
   thumbLoaded.value = false; imageLoaded.value = false; retryAttempt.value++
-  void nextTick(() => artworkButton.value?.focus({ preventScroll: true }))
+  void nextTick(() => (props.selectionMode ? artworkCheckbox.value : artworkButton.value)?.focus({ preventScroll: true }))
 }
 const emit = defineEmits<{
   select: []; open: [event: MouseEvent]; favorite: []; requestDelete: []; cancelDelete: []; delete: [];

@@ -2,6 +2,11 @@ import { expect, test, type Page } from '@playwright/test'
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
 import { readFileSync } from 'node:fs'
 
+// Existing-workflow checks start after the separately covered first-visit tour.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('aics_guest_guide_dismissed', '1'))
+})
+
 for (const theme of ['dark']) {
   test(`gallery original export preserves JPEG ${theme}`, async ({ page }) => {
     await page.addInitScript(value => {
@@ -39,7 +44,7 @@ for (const theme of ['dark']) {
     await page.route('**/api/video/jobs', route => route.fulfill({ status: 503, json: { ok: false, error: '测试视频提交失败，请重试' } }))
     await page.goto('/video-studio')
     await page.locator('.video-prompt').fill('A calm afternoon by the window')
-    const submit = page.locator('.video-submit-panel button')
+    const submit = page.getByRole('button', { name: '生成视频', exact: true })
     await expect(submit).toBeEnabled()
     await submit.click()
     await expect(page.locator('.video-inline-message.error')).toContainText('ComfyUI 未连接')
@@ -243,10 +248,10 @@ test('gallery filtering does not retain hidden selections', async ({ page }) => 
   })
   await page.goto('/gallery')
   await page.getByRole('button', { name: '选择', exact: true }).click()
-  await page.getByRole('button', { name: /全选/ }).click()
-  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 2 / 2')
+  await page.getByRole('checkbox', { name: '全选当前作品', exact: true }).check()
+  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*2\s*\/\s*2\s*$/)
   await page.getByLabel('搜索作品', { exact: true }).fill('审计甲')
-  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 0 / 1')
+  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*0\s*\/\s*1\s*$/)
   await expect(page.getByRole('button', { name: '移入回收站（0）', exact: true })).toBeDisabled()
 })
 
@@ -283,11 +288,11 @@ test('gallery keeps failed bulk items selected for retry', async ({ page }) => {
   })
   await page.goto('/gallery')
   await page.getByRole('button', { name: '选择', exact: true }).click()
-  await page.getByRole('button', { name: /全选/ }).click()
+  await page.getByRole('checkbox', { name: '全选当前作品', exact: true }).check()
   await page.getByRole('button', { name: '移入回收站（2）', exact: true }).click()
   await page.getByRole('alertdialog').getByRole('button', { name: '移入回收站', exact: true }).click()
   await expect(page.locator('.toast-msg')).toContainText('1 幅没成功')
-  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 1 / 1')
+  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*1\s*\/\s*1\s*$/)
   await expect(page.getByRole('button', { name: '移入回收站（1）', exact: true })).toBeEnabled()
 })
 

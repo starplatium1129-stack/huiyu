@@ -68,8 +68,8 @@ for (const theme of ['dark', 'light']) {
     await page.getByRole('combobox', { name: '按引擎筛选', exact: true }).click()
     await page.keyboard.press('Escape')
     await page.getByRole('button', { name: '选择', exact: true }).click()
-    await page.locator('[data-card-id="gallery-review-2"] .artwork-button').click()
-    await page.locator('[data-card-id="gallery-review-3"] .artwork-button').click()
+    await page.locator('[data-card-id="gallery-review-2"]').getByRole('checkbox').check()
+    await page.locator('[data-card-id="gallery-review-3"]').getByRole('checkbox').check()
     await page.getByRole('button', { name: '整理画册与标签', exact: true }).click()
     await page.getByLabel('添加整理标签', { exact: true }).fill('加载验收')
     await page.locator('.gallery-organization').screenshot({ path: info.outputPath(`optional-organization-${theme}.png`) })
@@ -151,18 +151,28 @@ test('gallery orbit reverses continuously and keeps original zoom, pan and retur
   await expect(orbit).toBeVisible()
   await expect(viewer.locator('.gallery-orbit-neighbor')).toHaveCount(4)
   const positions = await viewer.evaluate(async host => {
-    const surface = host.querySelector<HTMLElement>('.gallery-orbit')!
+    const card = host.querySelector<HTMLElement>('[data-orbit-index="2"]')!
+    const renderedX = () => new DOMMatrixReadOnly(getComputedStyle(card).transform).m41
     host.querySelector<HTMLButtonElement>('.viewer-next')!.click()
     for (let frame = 0; frame < 3; frame++) await new Promise(requestAnimationFrame)
-    const before = Number(surface.dataset.position), samples: number[] = []
+    // data-position is the destination; WAAPI owns the actual intermediate image pose.
+    const animation = card.getAnimations().find(item => item.id === 'gallery-cover-flow')!
+    const frames = (animation.effect as KeyframeEffect).getKeyframes()
+    const destination = new DOMMatrixReadOnly(String(frames.at(-1)!.transform)).m41
+    const before = renderedX(), samples: number[] = []
     host.querySelector<HTMLButtonElement>('.viewer-prev')!.click()
-    for (let frame = 0; frame < 3; frame++) { await new Promise(requestAnimationFrame); samples.push(Number(surface.dataset.position)) }
-    return { before, samples }
+    for (let frame = 0; frame < 3; frame++) { await new Promise(requestAnimationFrame); samples.push(renderedX()) }
+    const reversed = card.getAnimations().find(item => item.id === 'gallery-cover-flow')!
+    const start = (reversed.effect as KeyframeEffect).getKeyframes()[0]!
+    return { before, destination, samples, reversedStart: new DOMMatrixReadOnly(String(start.transform)).m41 }
   })
-  expect(positions.before).toBeGreaterThan(2)
-  expect(positions.before).toBeLessThan(3)
-  expect(positions.samples[0]).toBeGreaterThan(positions.before)
+  expect(positions.before).toBeLessThan(0)
+  expect(positions.before).toBeGreaterThan(positions.destination)
+  expect(Math.abs(positions.reversedStart - positions.before)).toBeLessThan(1)
+  expect(positions.samples[0]).toBeLessThan(positions.before)
   await expect.poll(() => orbit.getAttribute('data-position')).toBe('2')
+  await expect.poll(() => orbit.locator('[data-orbit-index="2"]').evaluate(card =>
+    Math.abs(new DOMMatrixReadOnly(getComputedStyle(card).transform).m41))).toBeLessThan(.1)
   await viewer.getByRole('button', { name:'原图 / 缩放', exact:true }).click()
   await expect(orbit).toHaveCount(0)
   const zoom = viewer.locator('.zoomable-image-viewer')
@@ -370,7 +380,7 @@ for (const theme of ['light', 'dark']) {
     await page.getByRole('button', { name: /^按画册/ }).click()
     await expect(page.getByText('还没有成册的作品', { exact: true })).toBeVisible()
     await page.getByRole('button', { name: '选择作品成册', exact: true }).click()
-    await page.getByRole('button', { name: '全选当前', exact: true }).click()
+    await page.getByRole('checkbox', { name: '全选当前作品', exact: true }).check()
     await page.locator('.gallery-organization').getByRole('button', { name: '新建画册', exact: true }).click()
     await page.getByRole('textbox', { name: '画册名称', exact: true }).fill('四十幅创作手记')
     const create = page.getByRole('button', { name: '创建画册并加入 40 幅作品', exact: true })
@@ -406,8 +416,8 @@ for (const theme of ['light', 'dark']) {
   test(`gallery trash styled restoration and confirmed clearing ${theme}`, async ({ page }, info) => {
     await seedGallery(page, theme)
     await page.getByRole('button', { name: '选择', exact: true }).click()
-    await page.locator('[data-card-id="gallery-review-0"] .artwork-button').click()
-    await page.locator('[data-card-id="gallery-review-1"] .artwork-button').click()
+    await page.locator('[data-card-id="gallery-review-0"]').getByRole('checkbox').check()
+    await page.locator('[data-card-id="gallery-review-1"]').getByRole('checkbox').check()
     await page.getByRole('button', { name: '移入回收站（2）', exact: true }).click()
     await page.getByRole('alertdialog').getByRole('button', { name: '移入回收站', exact: true }).click()
     await page.getByRole('group', { name: '管理作品' }).getByRole('button', { name: /回收站/ }).click()
@@ -578,18 +588,20 @@ for (const theme of ['light', 'dark']) {
     await page.getByRole('button', { name: '选择', exact: true }).click()
     await expect(cards.locator('.artwork-check')).toHaveCount(6)
     await expect(cards.locator('.artwork-tools')).toHaveCount(0)
-    await expect(selectedCard.locator('.artwork-button')).toHaveAttribute('aria-pressed', 'false')
-    await selectedCard.locator('.artwork-button').click()
-    await expect(selectedCard.locator('.artwork-button')).toHaveAttribute('aria-pressed', 'true')
+    await expect(selectedCard.getByRole('checkbox')).not.toBeChecked()
+    await selectedCard.getByRole('checkbox').focus()
+    await page.keyboard.press('Space')
+    await expect(selectedCard.getByRole('checkbox')).toBeChecked()
     await expect(selectedCard.locator('.artwork-check .archive-icon')).toBeVisible()
-    await page.locator('[data-card-id="gallery-review-1"] .artwork-button').click()
+    await expect(page.getByRole('checkbox', { name: '全选当前作品', exact: true })).toHaveJSProperty('indeterminate', true)
+    await page.locator('[data-card-id="gallery-review-1"]').getByRole('checkbox').check()
     await page.getByRole('button', { name: '移入回收站（2）', exact: true }).click()
     const deleteDialog = page.getByRole('alertdialog')
     await expect(deleteDialog).toContainText('把 2 幅作品移入回收站？')
     await deleteDialog.getByRole('button', { name: '取消', exact: true }).click()
     await expect(deleteDialog).toBeHidden()
     await expect(cards).toHaveCount(6)
-    await expect(selectedCard.locator('.artwork-button')).toHaveAttribute('aria-pressed', 'true')
+    await expect(selectedCard.getByRole('checkbox')).toBeChecked()
     await page.getByRole('button', { name: '退出选择', exact: true }).click()
     await expect(page.getByRole('button', { name: '选择', exact: true })).toHaveAttribute('aria-pressed', 'false')
     await expect(cards.locator('.artwork-check')).toHaveCount(0)
@@ -677,8 +689,8 @@ for (const theme of ['light', 'dark']) {
     const cards = page.locator('.artwork')
     await expect(cards).toHaveCount(6)
     await page.getByRole('button', { name: '选择', exact: true }).click()
-    await page.locator('[data-card-id="gallery-review-2"] .artwork-button').click()
-    await page.locator('[data-card-id="gallery-review-3"] .artwork-button').click()
+    await page.locator('[data-card-id="gallery-review-2"]').getByRole('checkbox').check()
+    await page.locator('[data-card-id="gallery-review-3"]').getByRole('checkbox').check()
     await page.getByRole('button', { name: '整理画册与标签', exact: true }).click()
     await pickStudioOptionByValue(page.getByRole('combobox', { name: '整理到画册', exact: true }), 'album:review')
     await page.getByLabel('添加整理标签', { exact: true }).fill('验收标签')
@@ -696,8 +708,8 @@ for (const theme of ['light', 'dark']) {
     await pickStudioOptionByValue(page.getByRole('combobox', { name: '按画册筛选', exact: true }), '')
     await expect(cards).toHaveCount(6)
     await page.getByRole('button', { name: '选择', exact: true }).click()
-    await page.locator('[data-card-id="gallery-review-0"] .artwork-button').click()
-    await page.locator('[data-card-id="gallery-review-1"] .artwork-button').click()
+    await page.locator('[data-card-id="gallery-review-0"]').getByRole('checkbox').check()
+    await page.locator('[data-card-id="gallery-review-1"]').getByRole('checkbox').check()
     await page.getByRole('button', { name: '对比挑选（2–4 张）', exact: true }).click()
     const compare = page.getByRole('dialog', { name: '对比挑选', exact: true })
     const viewports = compare.locator('.candidate-viewport')
