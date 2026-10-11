@@ -169,6 +169,8 @@ it('omits unset transport fields and never overrides an explicit denied adult au
   expect(animaRequestPayload({ ...request, loraId: 'L', loraStrength: 0, styleLoraId: 'S', seed: 0 }))
     .toEqual({ ...minimal, loraId: 'L', loraStrength: 0, styleLoraId: 'S', seed: 0 })
   expect(animaRequestPayload({ ...request, adultEnabled: false })).not.toHaveProperty('adultEnabled')
+  expect(animaRequestPayload({ ...request, hiresFix: true, hiresScale: 1.5, hiresDenoise: .4, hiresUpscaler: 'Remacri' }))
+    .toMatchObject({ hiresFix: true, hiresScale: 1.5, hiresDenoise: .4, hiresUpscaler: 'Remacri' })
   vi.mocked(environment.isLocalStudioHost).mockReturnValue(false)
   expect(animaRequestPayload(request)).not.toHaveProperty('adultEnabled')
 })
@@ -351,12 +353,12 @@ it('honors native TeaCache defaults without overwriting later edits and rejects 
   expect(session.state.value.phase).toBe('idle')
 })
 
-it('admits native TeaCache only for the requested model with local profile files and refuses saved Comfy thresholds', async () => {
+it('admits native hires TeaCache for on-load whole-operation validation and refuses saved Comfy thresholds', async () => {
   vi.spyOn(environment, 'isLocalStudioHost').mockReturnValue(false)
   let ready = false
   const call = vi.fn(async (url: string, _options?: ApiRequestOptions) => url === '/api/creative/status'
     ? { ok: true, online: true, provider: 'native', models: [{ id: 'anima-fixture', family: 'anima', available: true,
-      capabilities: { teaCache: ready }, teaCacheProfile: { readiness: ready ? 'profile-files-only' : 'missing' } }], loras: [] }
+      capabilities: { hires: true, teaCache: ready }, teaCacheProfile: { readiness: ready ? 'profile-files-only' : 'missing' } }], loras: [] }
     : { ok: false, error: 'fixture transport reached' })
   const flash = vi.fn()
   const session = createSession({ request: call } as unknown as ApiClient, { flash })
@@ -373,8 +375,8 @@ it('admits native TeaCache only for the requested model with local profile files
   await session.generate({ teaCache: true, modelId: 'other-model' })
   expect(call).not.toHaveBeenCalled()
   expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('缺少所选模型'))
-  await session.generate({ teaCache: true })
-  expect(call).toHaveBeenCalledExactlyOnceWith('/api/anima/jobs', expect.objectContaining({ method: 'POST', body: expect.objectContaining({ teaCache: true }) }))
+  await session.generate({ teaCache: true, hiresFix: true, hiresScale: 1.5, hiresDenoise: .35, hiresUpscaler: 'Latent' })
+  expect(call).toHaveBeenCalledExactlyOnceWith('/api/anima/jobs', expect.objectContaining({ method: 'POST', body: expect.objectContaining({ teaCache: true, hiresFix: true, hiresScale: 1.5, hiresDenoise: .35, hiresUpscaler: 'Latent' }) }))
   expect(call.mock.calls[0]?.[1]?.body).not.toHaveProperty('teaCacheThresh')
 })
 

@@ -283,6 +283,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       hiresFix: Boolean(animaState.value.hiresFix),
       hiresScale: animaState.value.hiresScale,
       hiresDenoise: animaState.value.hiresDenoise,
+      hiresUpscaler: animaState.value.hiresUpscaler,
     }
     const history = {
         ...historyGenerationFields(),

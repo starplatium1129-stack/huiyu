@@ -3,6 +3,8 @@ import { mount } from '@vue/test-utils'
 import AnimaQuickPanel from './AnimaQuickPanel.vue'
 import ToggleSwitch from './visual/ToggleSwitch.vue'
 import type { AnimaGenerationState } from '@/types/anima'
+import StudioSelect from './ui/StudioSelect.vue'
+import { nativeAnimaRequestBlocker } from '@/composables/generation/nativeAnimaCapabilities'
 
 it('prevents enabling native unsupported features but lets the user clear restored selections', async () => {
   const state = { provider: 'native', phase: 'idle', family: 'anima', modelId: 'native-model',
@@ -18,6 +20,25 @@ it('prevents enabling native unsupported features but lets the user clear restor
     toggles[0].vm.$emit('update:modelValue', false)
     toggles[1].vm.$emit('update:modelValue', false)
     expect(wrapper.emitted('update:state')).toEqual([[{ teaCache: false, teaCacheThresh: undefined }], [{ hiresFix: false }]])
+  } finally { wrapper.unmount() }
+})
+
+it('admits native hires with TeaCache for whole-operation calibration while respecting upscaler readiness', async () => {
+  const model = { id: 'native-model', capabilities: { hires: true, hiresUpscalers: ['Auto', 'Latent'], teaCache: true, weightSyntax: true },
+    teaCacheProfile: { readiness: 'profile-files-only' } }
+  const state = { provider: 'native', phase: 'idle', family: 'anima', modelId: model.id, models: [model], loras: [],
+    width: 832, height: 1216, steps: 30, cfg: 4.5, teaCache: false, hiresFix: true } as unknown as AnimaGenerationState
+  const wrapper = mount(AnimaQuickPanel, { props: { state } })
+  try {
+    expect(wrapper.findAllComponents(ToggleSwitch).map(toggle => toggle.props('disabled'))).toEqual([false, false])
+    const select = wrapper.findAllComponents(StudioSelect).find(select => select.props('label') === '放大方式')!
+    expect(select.props('options')).toContainEqual({ value: 'Remacri', label: 'Remacri', disabled: true })
+    await wrapper.setProps({ state: { ...state, teaCache: true, hiresFix: false } })
+    expect(wrapper.findAllComponents(ToggleSwitch).map(toggle => toggle.props('disabled'))).toEqual([false, false])
+    expect(nativeAnimaRequestBlocker(state.models, { modelId: model.id, hiresFix: true, teaCache: true })).toBeNull()
+    expect(nativeAnimaRequestBlocker(state.models, { modelId: model.id, hiresFix: true, hiresUpscaler: 'Remacri' })).toContain('文件未就绪')
+    expect(nativeAnimaRequestBlocker(state.models, { modelId: model.id, prompt: '(red coat:1.2)', negative: '[blue sky] BREAK' })).toBeNull()
+    expect(nativeAnimaRequestBlocker(state.models, { modelId: model.id, prompt: String.raw`rossi \(arknights\)`, hiresFix: true, hiresUpscaler: 'Latent' })).toBeNull()
   } finally { wrapper.unmount() }
 })
 

@@ -144,6 +144,10 @@ class Guider:
 
 
 class TeaTests(unittest.TestCase):
+    def setUp(self):
+        stub = patch.object(worker.load_mask_tools("anima_prompt_weights"), "apply_prompt_weights", side_effect=lambda blocks, **_: blocks)
+        stub.start()
+        self.addCleanup(stub.stop)
     def test_exact_input_comparisons_share_one_scalar_read(self):
         with patch.dict("sys.modules", modules()):
             for values, expected in (([1, 2], True), ([], True), ([np.nan], False)):
@@ -397,32 +401,16 @@ class TeaTests(unittest.TestCase):
             self.assertEqual(cache.stats["skippedComputes"], 0)
 
     def test_profile_scope_hashes_exact_bytes_and_requires_local_acceptance(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = model_fixture(Path(directory))
-            request = job_fixture(root)
-            data = worker.validate_job(request)
-            scope = profiles.compatibility(root, [], data, "txt2img", "torch.bfloat16", "fake CUDA")
-            value = profile(scope)
-            self.assertEqual(profiles.validate_profile(value, scope), 0.15)
-            legacy = copy.deepcopy(value)
-            legacy["runtime"] = {"diffusers": "0.41.0", "torch": "2.8.0"}
-            with self.assertRaisesRegex(profiles.TeaCacheError, "runtime.*recalibrate"):
-                profiles.validate_profile(legacy, scope)
-            candidate = copy.deepcopy(value)
-            candidate.pop("acceptance")
-            with self.assertRaisesRegex(profiles.TeaCacheError, "acceptance"):
-                profiles.validate_profile(candidate, scope)
-            self.assertEqual(profiles.validate_profile(candidate, scope, require_accepted=False), 0.15)
-            with self.assertRaises(profiles.TeaCacheError):
-                profiles.validate_profile(value, scope, 0.21)
-            (root / "transformer" / "model.safetensors").write_bytes(b"CHANGED WEIGHTS")
-            changed = profiles.compatibility(root, [], data, "txt2img", "torch.bfloat16", "fake CUDA")
-            with self.assertRaisesRegex(profiles.TeaCacheError, "does not match"):
-                profiles.validate_profile(value, changed)
-            lora = root / "style.safetensors"
-            lora.write_bytes(b"LORA")
-            with_lora = profiles.compatibility(root, [{"path": str(lora), "strength": 0.5}], data, "txt2img", "torch.bfloat16", "fake CUDA")
-            self.assertNotEqual(changed, with_lora)
+        from teacache_profile_cases import test_profile_scope_hashes_exact_bytes_and_requires_local_acceptance
+        test_profile_scope_hashes_exact_bytes_and_requires_local_acceptance(self, profiles, profile, worker, model_fixture, job_fixture)
+
+    def test_profile_collection_selects_exact_scope_and_preserves_numeric_equality(self):
+        from teacache_profile_cases import test_profile_collection_selects_exact_scope_and_preserves_numeric_equality
+        test_profile_collection_selects_exact_scope_and_preserves_numeric_equality(self, profiles, profile)
+
+    def test_profile_collection_install_preserves_other_scopes_and_publication_bounds(self):
+        from teacache_profile_cases import test_profile_collection_install_preserves_other_scopes_and_publication_bounds
+        test_profile_collection_install_preserves_other_scopes_and_publication_bounds(self, profiles, profile)
 
     def test_worker_measure_only_is_uninstrumented_and_enabled_reuses_actual_blocks(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -431,6 +419,7 @@ class TeaTests(unittest.TestCase):
             request["input"]["steps"] = 3
             loaded = []
             class Pipeline:
+                _execution_device = "cpu"
                 def __init__(self, blocks):
                     self.blocks = blocks
                     self.scheduler = types.SimpleNamespace(step=lambda: None)
@@ -465,7 +454,8 @@ class TeaTests(unittest.TestCase):
                 scope = profiles.compatibility(root, [], data, "txt2img", "torch.bfloat16", "fake CUDA")
                 value = profile(scope)
                 target = root / "teacache-profile.json"
-                target.write_text(json.dumps(value))
+                other = profile({**scope, "loras": [{"sha256": "another-adapter", "strength": .8}]})
+                target.write_text(json.dumps(dict(schemaVersion=1, kind=profiles.PROFILE_SET_KIND, profiles=[other, value])))
                 request["teaCacheProfilePath"] = str(target)
                 request["input"]["teaCache"] = True
                 stream = io.StringIO()
@@ -481,6 +471,18 @@ class TeaTests(unittest.TestCase):
                 self.assertEqual([event["step"] for event in events if event["event"] == "progress"], [1, 2, 3])
                 self.assertEqual(events[-1]["event"], "result")
                 self.assertTrue(Path(request["outputPath"]).is_file())
+                previous = Path(request["outputPath"]).read_bytes()
+                controller = worker.load_mask_tools("teacache_anima").TeaCacheController
+                original_clear = controller.clear
+                def invalid(current):
+                    original_clear(current)
+                    current.stats["nonfinite"] = 1
+                failed = io.StringIO()
+                with patch.object(controller, "clear", invalid), self.assertRaises(worker.WorkerError) as error:
+                    worker.generate(request, failed)
+                self.assertEqual(error.exception.code, "NONFINITE_INFERENCE")
+                self.assertEqual(Path(request["outputPath"]).read_bytes(), previous)
+                self.assertFalse(any(json.loads(line)["event"] == "result" for line in failed.getvalue().splitlines()))
 
     def test_enabled_worker_validates_profile_before_loading_and_default_stays_off(self):
         with tempfile.TemporaryDirectory() as directory:

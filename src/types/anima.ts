@@ -24,7 +24,7 @@ export interface AnimaOption {
     performanceVerified: boolean
     qualityVerified: boolean
   }
-  capabilities?: { negative: boolean; lora: boolean; noLora?: boolean; img2img?: boolean; mask?: boolean; teaCache?: boolean; hires?: boolean; characterIdentity: boolean; experimental: boolean }
+  capabilities?: { negative: boolean; lora: boolean; noLora?: boolean; img2img?: boolean; mask?: boolean; teaCache?: boolean; hires?: boolean; hiresUpscalers?: string[]; rcas?: boolean; weightSyntax?: boolean; characterIdentity: boolean; experimental: boolean }
   sizes?: string[]
 }
 
@@ -94,6 +94,7 @@ export interface AnimaGenerationState {
   hiresFix?: boolean
   hiresScale?: number
   hiresDenoise?: number
+  hiresUpscaler?: 'Auto' | 'Latent' | 'Remacri'
   teaCache?: boolean
   teaCacheThresh?: number
   job: AnimaJobMetadata | null

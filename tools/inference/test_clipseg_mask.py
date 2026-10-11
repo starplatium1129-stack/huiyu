@@ -107,6 +107,10 @@ def segmentation_fakes(calls, token_length=4, info=None, projection_dim=512, exp
 
 
 class ClipsegTests(unittest.TestCase):
+    def setUp(self):
+        stub = patch.object(worker.load_mask_tools("anima_prompt_weights"), "apply_prompt_weights", side_effect=lambda blocks, **_: blocks)
+        stub.start()
+        self.addCleanup(stub.stop)
     def test_local_layout_rejects_missing_unsafe_and_custom_components(self):
         with tempfile.TemporaryDirectory() as directory:
             root = local_model(Path(directory) / "clipseg")
@@ -440,6 +444,7 @@ class ClipsegTests(unittest.TestCase):
                 loaded_images.append(image)
                 return image
             class Pipeline:
+                _execution_device = "cpu"
                 scheduler = types.SimpleNamespace(step=lambda: None)
                 def __call__(self, **kwargs):
                     arguments.update(kwargs)
@@ -470,14 +475,15 @@ class ClipsegTests(unittest.TestCase):
                 compatibility=lambda *args, **kwargs: {"maskModelSha256": "a" * 64}, TeaCacheError=profiles.TeaCacheError)
             tea_module = types.SimpleNamespace(TeaCacheController=lambda *args: object())
             resident = types.SimpleNamespace(mask_cache=None, text_cache=None, weights_loaded=False,
-                prepare=lambda check: check(), acquire=lambda *args: (Pipeline(), True))
+                prepare_and_fingerprint=lambda *args: ({"loras": []}, 0), acquire=lambda *args: (Pipeline(), True))
+            original_tools = worker.load_mask_tools
             with patch.dict("sys.modules", modules), patch.object(worker, "dependencies"), \
                     patch.object(worker, "load_input_image", side_effect=load_input), \
                     patch.object(worker, "validate_model", return_value=root), \
                     patch.object(worker, "load_mask_tools", side_effect=lambda name="masked_anima":
                         {"clipseg_mask": auto_module, "teacache_profile": profile_module,
                          "resident_benchmark": resident_benchmark, "inference_metrics": inference_metrics,
-                         "teacache_anima": tea_module}.get(name, masked_anima)), \
+                         "teacache_anima": tea_module}.get(name) or original_tools(name)), \
                     patch.object(worker, "load_pipeline", return_value=Pipeline()) as load:
                 cold = worker.generate(request, io.StringIO(), measure_teacache=True)
                 self.assertIs(cold["maskCacheEnabled"], False)

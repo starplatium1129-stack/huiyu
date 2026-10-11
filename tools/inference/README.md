@@ -1,10 +1,12 @@
 # Independent Anima inference worker
 
-This milestone implements local Anima text-to-image, image-to-image, experimental manual/CLIPSeg masked editing and local Anima LoRA with Diffusers 0.41.0. It has no ComfyUI runtime, imports, server or path dependency. It does not yet load arbitrary Anima/MiaoMiao split checkpoint files. No model weights are supplied.
+This milestone implements local Anima text-to-image, image-to-image, experimental manual/CLIPSeg masked editing, local Anima LoRA, RCAS, Latent/fixed Remacri hires and round-bracket prompt weighting with Diffusers 0.41.0. It has no ComfyUI runtime, imports, server or path dependency. Three explicit conversion profiles cover the six locally registered Anima models. All six now have actual GPU generation evidence: 11 images, with Nene/Natsume on each of the five 28-layer models and no LoRA on the 40-layer MiaoMiao 2.9B. This is not every model/effect combination. Arbitrary checkpoints, non-Anima families and video remain outside this scope; no model weights are supplied.
+
+See the [current Anima replacement report](../../docs/audits/2026-10-11/native-anima-replacement.html) for the measured scope and limits. Accepted Nene/Natsume profiles use normal/RCAS 0.75, threshold 0.25 and at most 3 consecutive skips: 12 matched warm public-API jobs per backend measured native median 4.419s versus ComfyUI + TeaCache 5.686s, a 22.3% reduction on this device. Latent 2x profiles use threshold 0.25 and at most 2 consecutive skips; Nene's two warm API samples remained slower (26.610s versus 23.671s). Cold loading also remains slower. One Nene cached sample duplicated an umbrella; disabling TeaCache restored a single umbrella. Endfield, the third public LoRA dynamically inserted by the Rust catalog, completed one Laevatain API sample; this does not cover every Endfield identity. Default engine, acceleration environment and TeaCache defaults remain unchanged; no desktop deployment was performed. An unstable, unaccepted hires candidate produced nonfinite values; the worker now rejects observed nonfinite inference/decoded pixels before publishing output. More aggressive hires candidates remain uninstalled.
 
 ## Explicit preparation
 
-Use a dedicated Python 3.11 environment and the exact direct pins in `requirements.txt`. Installation must be initiated by the user/preparation workflow; generation never installs anything. The ten direct pins passed a metadata-only pip dry run targeting Windows amd64 / CPython 3.11. All 13 constraints between these packages, Python compatibility, and non-yanked release status were checked against PyPI metadata. Full transitive resolution, installation and runtime imports remain untested. Transformers 5.10.1 retains Qwen2Tokenizer and the T5TokenizerFast compatibility alias; SentencePiece assets require both sentencepiece and protobuf. Torch must be a compatible CUDA build (a local `+cu...` version suffix is accepted). GPU inference has not been run.
+Use a dedicated Python 3.11 environment and the eleven exact direct pins in `requirements.txt`. Installation must be initiated by the user/preparation workflow; generation never installs anything. Torch and torchvision must use compatible builds (local `+cu...` suffixes are accepted). Cosmos uses torchvision resize during its first actual forward, so import-only Diffusers checks are insufficient: diagnosis now imports that operation explicitly. Transformers 5.10.1 retains Qwen2Tokenizer and T5TokenizerFast; SentencePiece assets require sentencepiece and protobuf. The pinned Windows CUDA 12.8 environment was installed offline and real MiaoMiao 1.6 generation was exercised on an RTX 4070 Ti SUPER on 2026-10-11; see the [device report](../../docs/audits/2026-10-11/native-backend-gpu.html) for the measured scope and remaining limits.
 
 Place a complete local Anima Diffusers export in `modelDir`:
 
@@ -14,13 +16,111 @@ Place a complete local Anima Diffusers export in `modelDir`:
 - `t5_tokenizer/`: `tokenizer_config.json`, `spiece.model` (SentencePiece) or `tokenizer.json` (fast-tokenizer serialization)
 - `scheduler/scheduler_config.json`: `FlowMatchEulerDiscreteScheduler`
 
+## Optional measured Windows acceleration
+
+`HUIYU_INFERENCE_ACCELERATION=compiled-sage` selects the measured SM89 candidate;
+`sage` provides the eager-kernel control, and `native` remains the default.
+The exact optional wheel versions, provenance and SHA256 values are recorded in
+`runtime-manifest.json`. After verifying those local wheels, install them into
+the dedicated environment using `python -m pip install --no-index --no-deps`
+with their exact local paths. Never copy ABI extensions from ComfyUI or upgrade
+Torch implicitly. The first compiled request and new shapes/adapter settings can
+take longer; repeated hot tasks are a separate performance population. More
+than Torch's default recompilation budget can fall back to eager execution.
+
+The `compiled-sage` candidate wraps only Cosmos attention and compiles the original block
+forwards before TeaCache wraps them. It keeps PEFT's real projection modules and
+active scales; no adapter or base-weight fusion is used. Execution mode and the
+pinned candidate revision are part of calibration identity, so older Tea files
+must be recalibrated. CUDA graphs and VAE compilation were rejected during
+device experiments and are not enabled.
+
+`compiled-fused-sage` additionally fuses supported standard Linear LoRAs for
+resident inference. Base-preserving adapters with a live source lease now restore
+the touched weights from their verified safetensors offsets through `readinto`,
+using at most 32 MiB of reusable CPU read/conversion buffers. This replaces the
+previous roughly 3.28 GiB CPU snapshots for either measured character v21 adapter
+on that protected path; it is not a cap on OS file caching or total process RAM.
+Callers without valid source protection retain exact CPU snapshots. Strength/group
+changes restore original values before changing PEFT state; unloading restores
+the unadapted base. The lease is checked around source reads and copies; failure
+discards the resident. BF16 delta subtraction is never used for restoration.
+Fusion changes floating-point evaluation order and requires separate Tea calibration
+and visual acceptance. Original model/LoRA files stay unchanged.
+The [LoRA + Tea full API report](../../docs/audits/2026-10-11/native-backend-lora-tea.html)
+records the accepted Nene/Natsume v21 strength-0.8 scopes, the 12 matched hot API
+jobs per backend, and slower native cold/adapter-switch warmups for that revision.
+Its numbers do not measure the newer loading, hotswap, scheduling or hires changes
+below, or establish mathematical equivalence or arbitrary LoRA/shape coverage.
+
+On fixed local NTFS, resident identity checks hold read-only file handles and
+deny writes/deletes while the weights are resident. File IDs and persistent
+directory name/attribute notifications guard reuse, including temporary changes
+that disappear before the next request. Directory handles still allow atomic
+child-file saves; data files remain protected. Loading keeps its lease and
+rejects any intervening membership/attribute event, even if a rehashed digest
+happens to match. Stop/restart the worker or allow its 120-second idle release
+before replacing a selected model/LoRA file. Unsupported filesystems, reparse
+paths or unavailable sharing protection use complete SHA256 each time; Windows
+CNG accelerates that full-byte operation without changing the digest. No mtime
+or size-only cache is used. See the [continued device report](../../docs/audits/2026-10-11/native-backend-performance.html).
+
+Base and adapter identities have independent leases. Switching LoRAs retains a
+valid base lease and hashes newly selected adapter bytes; changed base members or
+attributes still invalidate reuse. Source restoration checks that same uninterrupted
+base protection. On the first resident request, dependency imports run concurrently
+with full identity hashing. Directory notifications remain on the long-lived caller
+thread, and failure joins the import task before releasing resources. This overlaps
+real cold-request work without moving it outside the request timer.
+
 The worker explicitly loads trusted package component classes from these local folders; index references to other repositories or custom classes are never followed. Quantization/custom-code configs are rejected. Missing assets fail with a preparation error; they are never fetched automatically. Raw model conversion requires the correct architecture config and separately available encoder, VAE and tokenizer assets; renaming a checkpoint or placing it beside these folders is insufficient.
 
 During actual weight loading, all four model components request the pinned upstream final loading report and reject nonempty `missing_keys`, `mismatched_keys` or `error_msgs` before pipeline publication or CUDA transfer. This prevents Qwen's warning-only initialization of missing required parameters. Upstream tied/ignored-key rules remain authoritative, and unexpected-only entries retain upstream warning behavior, including an unused `lm_head.weight` in a compatible Qwen CausalLM export. The report is not independent certification of shard-index contents or model quality; layout-only diagnostics below still do not load weights.
 
+After those checks, `native_upload.py` can pack the four privately owned CPU
+components into GPU storage grouped by dtype, retaining Parameter/Buffer objects,
+shapes, dtypes and values. Each source copies directly to its destination slice;
+there is no concatenated full host-weight staging copy. Unsupported layouts return
+to the existing `pipeline.to` route before mutation. Allocation, copy or publication
+errors propagate instead of falling back after a partial change. LoRA fusion keeps
+packed views attached when PEFT replaces weight storage. The four-job diagnostic
+sequence preserved all four PNGs byte-for-byte, removed the extra approximately
+3.28 GiB complete CPU base snapshots on the protected source path, and used at
+most 32 MiB temporary read/conversion buffers. Observed working set fell from
+about 5.63 to 1.80 GiB. Private bytes include GPU-driver-related accounting and
+are not physical RAM. `runtime/backend-cost-20261011/startup-comparison.json`
+records these separate diagnostic samples, not the final product API comparison.
+
 `python tools/inference/worker.py --validate /absolute/model/directory` checks local layout and dependency versions/imports without loading weights or generating. A successful check is not GPU/model acceptance.
 
 `python tools/inference/worker.py --diagnose` checks both bundled mask helpers and pinned dependency versions/imports and reports CUDA availability/device name without a model path, loading weights, allocating tensors or generating. It emits a single `diagnostic` JSONL event, or an `error` event with a nonzero exit for dependency failures. CUDA availability alone does not establish model fit or generation readiness.
+
+## Strict offline checkpoint conversion
+
+`scripts/maintenance/convert-anima-checkpoint.py` supports three explicit profiles:
+`anima-cosmos2b-v041` for the 28-layer Base 1.0, Aesthetic 1.1 and MiaoMiao 1.2/1.6;
+`anima-cosmos29b-v041` for the 40-layer MiaoMiao 2.9B Beta 1.1;
+and `anima-yume2b-rope-v041` for 28-layer Yume 1.0. All six local models have now
+undergone real strict CPU conversion. This is conversion evidence, not six-model
+GPU, LoRA or image-quality acceptance.
+
+The converter accepts one complete `net.*` or `model.diffusion_model.*` namespace,
+rejecting mixed prefixes and collisions. Yume requires its observed `net.*` form.
+Every learned key and shape is checked; unknown tensors are not discarded.
+Yume alone permits three exact derived RoPE buffers after their names, BF16 shapes
+and formula-derived bits match. Its `--check` reads those 598 bytes with `pread`,
+records their original hashes and regenerates only those confirmed constants;
+other profiles' checks remain header/meta-schema/tokenizer checks. Default plan
+mode reads no tensor payload. Only `--apply` reads and converts complete CPU weights.
+
+All profiles use the checked six-layer conditioner, Qwen3-0.6B, Qwen Image VAE and
+tokenizer assets. The original encoder/VAE/tokenizer inputs used for MiaoMiao 1.6
+can be reused after the same strict checks. The 40-layer model requires its explicit
+profile/config; it is never relabeled as 28 layers. Unknown shapes, quantization and
+custom code remain rejected. See the [offline conversion guide](../../docs/guides/independent-inference.md#经架构核验的离线转换)
+for the CLI and publication boundary. A converted report still says
+`readyForInference: false` until independent device acceptance; no automatic
+download or source-weight modification occurs.
 
 ## JSONL contract
 
@@ -34,13 +134,90 @@ Stdout contains only `{id,event:"progress",step,total}`, `{id,event:"result",out
 
 PNG output uses lossless compression level 4, with a level-6 retry if the encoded file exceeds the existing 32 MiB host limit. This changes file bytes and encoding cost, not decoded pixels; compression gains depend on image content. Atomic replacement preserves an existing destination on encoding failure. Result metrics include `outputSaveSeconds` and `outputBytes`. CPU fixtures are not evidence of generation speed.
 
-`resident_anima.py` retains one exact base model and one adapter group. Full file hashes are checked each job, and every base/adapter load is checked again before inference. Cold base and CLIPSeg loads revalidate supported configuration at the actual load boundary, inside the existing pre/post fingerprint interval when enabled; warm reuse adds no validation pass or weight scan. This catches a stable configuration replacement after early request validation, but is not an atomic filesystem snapshot: finish preparing model assets before generation. Changed base bytes reload the base. Changed ordinary LoRA groups unload both transformer and text-conditioner adapters through Diffusers before loading the new group, preserving base components; an empty group restores the unadapted base. Strength-only changes update active scales, including zero and negative values. PEFT initializers that can change base weights (such as PiSSA) and nonstandard variants retain conservative whole-base reload behavior when switching groups. Partial adapter updates discard the resident state. `modelReused` reports base reuse, including supported adapter-group switches. Fresh pipeline blocks, scheduler, CFG guider and TeaCache controller wrap the loaded weights on subsequent jobs. Seed, steps and editing state are not retained. A bounded CPU cache retains only raw Qwen embeddings and T5 ids/masks for repeated text. Cancellation, timeout, protocol failure and shutdown retire the owned process before another GPU task. Warm model reuse is a code capability, not a measured CUDA speedup.
+`resident_anima.py` retains one exact base model and one adapter group. Every job checks content identity, using the protected NTFS lease described above when available; acquiring or invalidating a lease and unsupported paths require full-byte SHA256. Every base/adapter load is checked again before inference. Cold base and CLIPSeg loads revalidate supported configuration at the actual load boundary. The full-hash fallback is not an atomic filesystem snapshot: finish preparing model assets before generation. Changed base bytes reload the base.
 
-`euler/simple` means the local Diffusers FlowMatch Euler configuration and default timesteps. It does not promise parity with ComfyUI's `simple` schedule. No `res_multistep` fallback occurs. CFG is configured on `ClassifierFreeGuidance`, not passed as an ignored modular-pipeline call parameter.
+Changed ordinary LoRA groups restore fusion first, then try in-place hotswap only
+when both components' adapter names, complete target keys, shapes, ranks, ordinary
+PEFT configurations and destination dtypes agree. Every source is checked before
+mutation. An inapplicable group uses the existing unload/reload path for both
+transformer and text conditioner; a partial hotswap failure discards the resident
+rather than retrying on modified weights. An empty group restores the unadapted
+base. Strength-only changes update active scales, including zero and negative values,
+with prior restoration in fused mode. Base-modifying initializers and unverified
+variants retain conservative whole-base reload behavior.
+
+`modelReused` reports base reuse, including supported adapter-group switches.
+Fresh pipeline blocks, scheduler, CFG guider and TeaCache controller wrap the weights
+for each job. Seed, steps and editing state are not retained. The bounded CPU text
+cache stores only raw Qwen embeddings and T5 ids/masks. Cancellation, timeout,
+protocol failure and shutdown retire the owned process before another GPU task.
+
+`anima_sampling.new_scheduler(sampler, original_config)` creates a fresh official
+Euler or independent deterministic `res_multistep` scheduler for each pass, preserving
+the base checkpoint config. `sampling_options(sampler, scheduler_name, steps, scheduler)`
+provides the shared options dispatch. Both modules load their exact bundled sibling
+by file path, including under the worker's `python -I`; no `sys.path` or `PYTHONPATH`
+change is required. CFG is configured on `ClassifierFreeGuidance`, not passed as an
+ignored modular-pipeline call parameter.
+
+`normal` and `sgm_uniform` require static shift=3, training table=1000 and no other
+sigma transformation. With S(t)=3t/(1+2t), normal spans [1, S(float32(1/1000))]
+in N FP32 points; sgm_uniform uses N equal intervals and excludes the last endpoint.
+The official scheduler applies the shift once and appends zero. Complete 24/30-step
+CPU sigma vectors match the isolated Comfy reference bitwise. `euler/simple` retains
+the original Diffusers pipeline defaults; `res_multistep/simple` explicitly subsamples
+the 1000-entry training grid. Those two simple options are not interchangeable.
+
+RES independently integrates a linear extrapolation of denoised output in log-sigma
+time, following the mathematical method in [Zhang, Song & Chen §3.5/D.1](https://arxiv.org/abs/2308.02157).
+Flow velocity is converted as D=x−σv. State/history stay FP32; the first available
+and terminal-zero steps use Euler. Its mathematical order is two but its Diffusers
+API `order=1` denotes one model evaluation per update. `set_timesteps` and
+`set_begin_index` reset history, including img2img starts; completion releases it.
+Only eta=0, no CFG++ and strictly decreasing positive sigmas followed by zero are
+supported. Ancestral/per-token variants, dynamic shifting and duplicate sigmas are
+rejected; a simple full grid longer than 1000 entries is outside this adapter.
+CPU small-ODE, vector, BF16-output and isolated-load checks are not proof of matching
+transformer/CFG arithmetic, noise or final pixels. No Euler, UniPC or DPM++ substitution
+is presented as RES equivalence. A changed sampler/scheduler needs its own accepted
+TeaCache scope.
 
 The local scheduler must not enable `stochastic_sampling`: pinned Anima's after-denoiser does not forward the job generator to the scheduler's optional random-update branch. Such a configuration is explicitly rejected before runtime loading instead of silently disabling it or using global RNG. The upstream default and the project converter use the supported non-stochastic path; their sampling behavior is unchanged. This does not promise bitwise deterministic CUDA kernels or cross-backend noise equality.
 
-Limits: Anima generation requires CUDA; one image; dimensions divisible by 16, 64–4096; steps 1–200; CFG 1–30; nonnegative 63-bit seed; PNG output. All Anima components are loaded to GPU; no CPU/offload/low-VRAM guarantee. Optional CLIPSeg runs first on CPU in float32. RCAS, hires/upscaling and unrecognized options are explicitly rejected. TeaCache is optional, disabled by default and requires an explicitly accepted compatible local calibration profile (see below). Unsupported effects never silently disappear.
+Limits: Anima generation requires CUDA; one image; initial dimensions divisible by 16, 64–4096; steps 1–200; CFG 1–30; nonnegative 63-bit seed; PNG output. All Anima components are loaded to GPU; no CPU/offload/low-VRAM guarantee. Optional CLIPSeg runs first on CPU in float32. TeaCache is optional, disabled by default and requires an explicitly accepted compatible local calibration profile (see below). Hires and weighted prompts have distinct calibration scopes; an ordinary single-pass profile cannot authorize them. Arbitrary super-resolution models and non-Anima families remain unsupported. Unsupported effects never silently disappear.
+
+RCAS and Latent/fixed Remacri hires have actual GPU generation evidence.
+`anima_postprocess.py` ports the AMD MIT RCAS reference using FP32 arithmetic;
+`rcasStrength=0` is unchanged output, positive strengths are not a claim of matching
+another node's slider. `anima_upscale.py` accepts only the fixed local
+`4x_foolhardy_Remacri.safetensors` with the checked 23-block RRDB architecture,
+using Apache-2.0 BasicSR components and separately licensed supplied weights.
+The trusted host resolves Auto to Latent or an available fixed Remacri file at
+`models_root/upscale_models/4x_foolhardy_Remacri.safetensors`; an explicit missing
+Remacri selection fails. Latent always refines; unmasked Remacri is pixel-only,
+while masked Remacri also refines. RCAS follows the existing workflow conditions
+and runs before the final mask composite, without a new public strength control.
+The refinement pass uses a fresh scheduler and seed+1 independent noise. Shared
+`refinement_options` takes the requested-step tail of the full grid and supplies
+`strength=1.0`, avoiding a second strength slice. Latent 2x, manual-mask Latent 2x,
+Remacri 2x and automatic-mask Remacri 2x produced 1664x2432 images; measured black
+mask pixels exactly matched the resized original. The required RoPE capacity of
+152 exceeded the initial 128 and is now extended for the operation, then restored.
+Observed warm allocator peaks were about 9.33 GiB; cold first-image null readings
+mean unavailable, not zero or total-device VRAM. Final API costs and broader
+quality/cancellation coverage remain separate; earlier API timings do not cover
+these combinations.
+
+`anima_prompt_weights.py` supports positive/negative `(text)` weighting (inherited
+weight times 1.1), nested groups, explicit `(text:number)` and escaped parentheses.
+Square brackets and `BREAK` remain literal text in this Anima contract. Qwen uses
+the fragment token IDs; T5 weights scale the conditioner output, with unit EOS
+and padding weights. Fourteen real-tokenizer comparisons matched the inspected
+Comfy Anima Qwen/T5 IDs and weighting rules; eight focused tests passed. An actual
+weighted GPU image succeeded, and the plain-prompt PNG SHA256 matched the prior
+implementation. Unbalanced parentheses, invalid/nonfinite weights and input over
+512 tokens fail explicitly instead of truncating. This does not establish seeded
+pixel equivalence across backends. Weighted requests use their own TeaCache scope.
 
 ## Image-to-image and LoRA
 
@@ -53,14 +230,21 @@ The host resolves uploads and catalog LoRAs into approved absolute local paths. 
 - `inputImagePath` is optional/null for txt2img, otherwise an existing PNG/JPEG/WebP still image of at most 4096×4096 pixels in area. The worker decodes locally, applies EXIF orientation, and converts to RGB. The upstream image processor resizes to requested output dimensions. It does not fetch URLs.
 - `input.denoisingStrength` defaults to 0.75 for img2img and must be greater than zero and at most one. Without an input image, specifying strength is an error. The `image` and `strength` call arguments activate upstream Anima auto blocks, including VAE encoding and strength-sliced noise timesteps. Progress totals use upstream's `steps - int(steps - steps * strength)` formula.
 - `loras` defaults to an empty array, with at most 16 entries, each containing only `path` and `strength` (−2 through 2). Each adapter gets a distinct name and the requested scale. Either or both `transformer` and `text_conditioner` component prefixes are supported.
-- Native Diffusers/PEFT `component.target.lora_A.weight` and matching `lora_B.weight` safetensors are supported, plus the exact raw Anima `diffusion_model.*` A/B layout recognized by Diffusers 0.41.0. The official Anima converter maps transformer blocks/projections and `diffusion_model.llm_adapter.*` into `text_conditioner.*`; header keys are preflighted through that same helper before the local-file loader maps the real tensors. Colliding targets are rejected. Generic Kohya `lora_down`/`lora_up` plus alpha, flattened names and other raw formats remain unsupported: the Anima helper does not convert their suffixes or fold alpha scaling. Those files need an explicitly prepared Anima-aware export, preserving training alpha/rank and both component roles; simply renaming the file or suffixes is insufficient. Checkpoint keys, target modules, component-prefixed adapter metadata and the actual loaded adapter key set are checked, so unsupported or partially loaded weights cannot silently disappear. Supported metadata, including alpha/rank values, is preserved by the upstream file loader. Adapter configuration JSON must contain only finite numbers, including nested alpha patterns; NaN, Infinity and numeric overflow are rejected before loading. DoRA, bias weights, saved extra modules and advanced unsupported adapter variants are rejected. Informational file metadata is not used to execute code.
+- Native Diffusers/PEFT `component.target.lora_A.weight` and matching `lora_B.weight` safetensors are supported, plus the exact raw Anima `diffusion_model.*` A/B layout recognized by Diffusers 0.41.0. The official Anima converter maps transformer blocks/projections and `diffusion_model.llm_adapter.*` into `text_conditioner.*`; header keys are preflighted through that same helper before the local-file loader maps the real tensors. Colliding targets are rejected. The local Anima Kohya export layout `lora_unet_<original_module>.lora_down.weight` / `.lora_up.weight` / `.alpha` is also supported for checked linear targets. `anima_lora.py` enumerates original Anima transformer names through the pinned official converter and exact `llm_adapter` conditioner module names; it rejects ambiguous flattened names, missing triples, unknown targets, incompatible matrix shapes and nonfinite values. Down/up must be CPU F16/BF16/F32 matrices and alpha a finite nonnegative scalar (or one-element vector). It folds alpha/rank into float32 B before the ordinary PEFT loader, retaining both components and the user-selected adapter strength. It does not write or modify source files. Mixed layouts, generic Kohya families, convolutional adapters, DoRA and PEFT metadata overrides accompanying alpha triples remain unsupported. Checkpoint keys, target modules, component-prefixed adapter metadata and the actual loaded adapter key set are checked, so unsupported or partially loaded weights cannot silently disappear. Supported metadata, including alpha/rank values, is preserved by the upstream file loader. Adapter configuration JSON must contain only finite numbers, including nested alpha patterns; NaN, Infinity and numeric overflow are rejected before loading. DoRA, bias weights, saved extra modules and advanced unsupported adapter variants are rejected. Informational file metadata is not used to execute code.
 - Input-level path aliases and active `input.loras` remain rejected: the host must resolve authorized files and send the trusted top-level contract. The worker is a host-owned serial child process, not a public file-access boundary; the host owns canonical containment checks and access policy.
 
 ## Targeted tests
 
 `python -m unittest discover -s tools/inference -p 'test_*.py' -v`
 
-Tests use explicitly fake dependency modules/tensors and fake model outputs; mask preprocessing/composite tests use real Pillow images. They validate protocol, trusted local-loader arguments, CFG wiring, img2img image/strength/timestep arguments, named local LoRA loading/scaling and unsupported keys/metadata, dependency diagnostics, rejection and output behavior; they do not claim to test real inference. Real CUDA generation, visual quality, peak VRAM, cancellation under GPU load and complete dependency installation remain device acceptance work.
+Protocol tests use explicitly fake dependency modules/tensors and model outputs;
+mask preprocessing/composite tests use real Pillow images. Scheduler contracts
+also use the pinned real Torch/Diffusers CPU libraries, captured numeric vectors
+and an isolated `python -I` child process. These checks validate their respective
+loader, scheduling, state, rejection and output behavior, not full real-model
+inference. Run only the affected modules for a change. Real CUDA generation,
+visual quality, peak VRAM and cancellation under GPU load require separate device
+evidence; current measured scopes and pending acceptance are linked above.
 
 ## Experimental manual masked editing
 
@@ -68,7 +252,7 @@ The host can send trusted top-level `maskImagePath` alongside `inputImagePath`, 
 
 This is masked denoising, not a whole-image generation followed only by an overlay. The bundled `masked_anima.py` replaces Diffusers 0.41.0 modular prepare-latents and after-denoiser leaves before pipeline construction. Qwen VAE image latents retain their temporal singleton dimension. Float32 noise is drawn once and retained; each Euler step blends protected latents with the original latent re-noised at the next timestep using that same noise. The last step restores clean original latents. One effective resized/expanded mask supplies both the downsampled latent mask and final original-pixel composite. Black-mask output pixels equal the resized original; that guarantee does not mean latent-boundary appearance or outfit quality has been model-validated.
 
-The native implementation follows the public Apache-2.0 Diffusers block/scheduler contracts. It does not copy or run ComfyUI/GPL code, and it does not promise matching dilation kernels, latent resampling, scheduler behavior, output quality or seeded pixels. Real model/GPU masked-outfit acceptance has not run. CPU tests cover alpha, mask expansion, pixel preservation, temporal shape, same-noise reuse, next-timestep/final-step blending, worker wiring and invalid requests with explicit tensor/model fakes. The isolated worker loads only its bundled sibling helper by absolute path, not ambient `PYTHONPATH`.
+The native implementation follows the public Apache-2.0 Diffusers block/scheduler contracts. It does not copy or run ComfyUI/GPL code, and it does not promise matching dilation kernels, latent resampling, scheduler behavior, output quality or seeded pixels. Current GPU evidence includes manual and automatic masked hires with exact black-pixel protection; it does not establish arbitrary outfit quality. CPU tests cover alpha, mask expansion, pixel preservation, temporal shape, same-noise reuse, next-timestep/final-step blending, worker wiring and invalid requests with explicit tensor/model fakes. The isolated worker loads only its bundled sibling helper by absolute path, not ambient `PYTHONPATH`.
 
 
 ## Experimental local automatic masks
@@ -92,7 +276,7 @@ The oriented RGB source is resized to output dimensions with Lanczos first, matc
 
 For each phrase the model returns 352×352 logits. Take their pixelwise maximum, resize those logits bilinearly to output size, apply sigmoid and threshold (`>=`) into a binary white-edit/black-preserve mask. Apply the same native square max-filter growth as manual editing, then pass that one effective mask into both latent denoising and original-pixel compositing. There is no extra smoothing/feathering or ComfyUI kernel/effect equivalence. Invalid/nonfinite, empty or incompletely loaded masks fail before Anima loads. This is an experimental automatic starting point; it can include body/background or miss clothing, so use a manual mask for precise control.
 
-The exact Transformers 5.10.1 CLIPSeg model, CLIP tokenizer and PIL ViT processor sources were inspected without installing dependencies. Focused tests use explicit fake model/tensor classes and real Pillow/NumPy transformations. They are not real CLIPSeg/model or outfit acceptance. No checkpoint, inference dependency or model was installed or downloaded, and no real neural inference ran.
+The initial focused tests used explicit fake model/tensor classes and real Pillow/NumPy transformations. Current evidence additionally includes actual CPU CLIPSeg segmentation and a GPU automatic-mask Remacri 2x result with exact final black-pixel protection. This validates those local assets and examples, not arbitrary clothing segmentation or model redistribution rights. Raw evidence remains under ignored `runtime/`.
 
 
 ## Experimental calibrated TeaCache
@@ -111,17 +295,45 @@ The bundled `teacache_anima.py` retains the original Diffusers 0.41.0 transforme
 
 `teacache_profile.py` validates the original version-1 polynomial and the version-2 `huiyu-anima-phase-envelope-v2` candidate; runtime pins are Diffusers 0.41.0 and Torch 2.8.0. The exact compatibility object identifies SHA-256 content of all local pipeline component assets and ordered LoRA bytes/strengths, width, height, steps, CFG, mode, denoising strength, sampler/scheduler, dtype and GPU device name. Masked scope also binds manual/CLIPSeg source kind, growth, threshold and mask prompt; automatic masking binds all local CLIPSeg asset bytes. The accepted or collected mask digest is checked against the assets actually used before cache reuse/loading and again after a new load, including calibration with mask caching disabled; a changed checkpoint aborts instead of attributing a new mask to the old scope. Prompt/seed and source/mask image content may vary within the independently tested calibration set. This is not a guarantee for unseen content.
 
-The version-1 profile carries 1–6 finite polynomial `coefficients` in ascending power order, `proxyRange`, `defaultThreshold`, `maxThreshold`, `maxConsecutiveSkips`, and `calibration` containing `source: local-full-compute`, a valid-pair `sampleCount` and `traceSha256`. Product generation additionally requires `acceptance.status: accepted` and `acceptance.reportSha256`, set only by the explicit local acceptance workflow after reviewing held-out results. These are local evidence links, not cryptographic certification of quality. Changing weights, adapters/scales, sampling/edit scope, dtype or GPU requires a compatible new calibration. Full content hashing is deliberately repeated rather than trusting file names or mtimes, and adds cold-start I/O.
+The version-1 profile carries 1–6 finite polynomial `coefficients` in ascending power order, `proxyRange`, `defaultThreshold`, `maxThreshold`, `maxConsecutiveSkips`, and `calibration` containing `source: local-full-compute`, a valid-pair `sampleCount` and `traceSha256`. Product generation additionally requires `acceptance.status: accepted` and `acceptance.reportSha256`, set only by the explicit local acceptance workflow after reviewing held-out results. These are local evidence links, not cryptographic certification of quality. Changing weights, adapters/scales, sampling/edit scope, dtype, GPU or execution mode/revision requires a compatible new calibration. Identity comes from full content hashes or a still-protected lease to those exact bytes, never file names or mtimes alone. First acquisition and fallback hashing add I/O.
+
+The fixed `teacache-profile.json` can also hold a `huiyu-teacache-profile-set`
+collection (schemaVersion 1, profiles array): at most 16 entries and 64 KiB total.
+The worker selects exactly one matching runtime and compatibility scope, then
+performs the usual acceptance and coefficient validation. Different character
+LoRAs and strengths never borrow each other's profiles. The acceptance command
+appends a new scope or replaces the same scope while preserving other entries;
+both operations require the old whole-file `--replace-profile-sha256` and atomic
+publication. A leftover `.teacache-profile.lock` requires local inspection after
+an interrupted acceptance; it is never silently stolen.
+
+Hires is calibrated as one complete operation, including both denoising passes
+where applicable. Its scope also binds hires scale/denoise, resolved upscaler,
+second-pass sampler/scheduler, refinement revision and the Remacri weight SHA256;
+positive RCAS strength and prompt weighting mode also participate when active.
+The same controller is cleared at the pass boundary and attached to fresh second
+pass blocks, so residuals never cross resolutions. Actual GPU evidence captured
+24+14 updates. Nene/Natsume Latent 2x candidate diagnostic baselines around 41.7 s
+became approximately 24.7–26.1 s with caching; image review and explicit acceptance
+remain pending. These are full-operation calibration candidates, not final API
+comparisons with ComfyUI. Ordinary profiles never serve as implicit authorization
+for hires or weighted scopes. UI file readiness remains distinct from exact
+scope and acceptance validation at load time.
+
+Calibration accepts `--max-consecutive-skips 1..3` (default 1). A higher bound
+only creates a candidate: first/last steps and the accumulated error threshold
+still control actual skips, and held-out quality/performance acceptance remains
+required. It does not reduce the requested scheduler step count.
 
 Maintenance-only Python APIs are separate from the product JSONL protocol: `worker.generate(..., collect_teacache=True)` always fully computes and returns paired `proxyRelativeL1`/`residualRelativeL1` samples for fitting. `teacache_profile=<candidate dict>` can evaluate an unaccepted candidate but still enforces exact compatibility and calibration. `measure_teacache=True` on a disabled held-out baseline returns timing/memory without TeaCache hooks, proxy collection or TeaCache scope hashing (`compatibility: null`, `fingerprintSeconds: 0`); resident jobs still verify their weight identity; the calibration runner binds independently checked identity outside the run timer. Cached/collection reports include compatibility, samples, full/skip/block/reset/nonfinite counts, fingerprint time, synchronized model-load time including LoRAs, whole-pipeline time including encoding/denoising/decoding, and peak allocated CUDA bytes. `generationSeconds` is an alias of `pipelineSeconds`, never pure sampler time. The outer process wall clock remains necessary to judge actual end-to-end benefit; accepted caching can still be slower on a device because of hashing, synchronization or memory pressure. Cache tensors increase VRAM use.
 
-No model-specific Cosmos polynomial or community Anima fit has been adopted. The algorithm is based on the public Apache-2.0 TeaCache idea; modular integration follows Apache-2.0 Diffusers (not ComfyUI code). Retain `TEACACHE_LICENSE.txt`. No dependency pins change. CPU tests use explicitly fake tensor/modules to verify actual block skip counts, branch isolation, reset rules, endpoint guarantees, restoration, profile identity/acceptance, baseline measurement and worker output/progress. CUDA generation, visual quality, calibration, actual memory overhead and acceleration have not been run in this environment. A profile must be produced and accepted on authorized local hardware before this opt-in feature is usable.
+No model-specific Cosmos polynomial or community Anima fit has been adopted. The algorithm is based on the public Apache-2.0 TeaCache idea; modular integration follows Apache-2.0 Diffusers (not ComfyUI code). Retain `TEACACHE_LICENSE.txt`. No dependency pins change. CPU tests use explicitly fake tensor/modules to verify actual block skip counts, branch isolation, reset rules, endpoint guarantees, restoration, profile identity/acceptance, baseline measurement and worker output/progress. The 2026-10-11 device report records actual CUDA generation, one held-out calibration scope and measured cache overhead/acceleration; wider prompt and model quality remains unverified. A profile must be produced and accepted on authorized local hardware before this opt-in feature is usable.
 
 ## Phase-specific Anima cache candidate and warm comparison
 
 The default calibration strategy is `--strategy phase-envelope`; `--strategy polynomial` preserves the original comparison baseline. Version 2 stores three ordered `phaseEnvelopes` of observed proxy/residual changes. Each phase needs at least three paired observations and two distinct proxies. Up to 32 conservative boundaries retain the maximum observed error in adjoining intervals instead of smoothing away spikes with one global polynomial. Unobserved proxy ranges compute fully. Actual sliced sampling steps determine the phase, and transitions, first/last steps and bounded consecutive reuse trigger full refresh. These are empirical observations, not a semantic error guarantee. No unaccepted profile can enable product caching.
 
-Calibration now defaults to one resident weight set for training and held-out baseline/cache pairs. Both sides must report `modelReused: true`; each job gets new blocks, scheduler, guider and cache controller. `--no-resident` separately measures cold jobs. Process creation is recorded separately; runtime imports and first model load are charged to the first training job; warm job wall times include fingerprinting, encoding, sampling, decoding and output. `residentFingerprintSeconds` includes both the initial byte-identity check and any post-load verification; `modelLoadSeconds` excludes that post-load hashing time. `fingerprintSeconds` records additional TeaCache scope work. Per-job CUDA allocation peaks are reset before generation. Review actual images, edited regions and boundaries as well as timings before accepting. Warm code/protocol fixtures do not establish RTX 4070 Ti SUPER throughput, memory or quality.
+Calibration now defaults to one resident weight set for training and held-out baseline/cache pairs. Both sides must report `modelReused: true`; each job gets new blocks, scheduler, guider and cache controller. `--no-resident` separately measures cold jobs. Process creation is recorded separately; runtime imports and first model load are charged to the first training job; warm job wall times include fingerprinting, encoding, sampling, decoding and output. `residentFingerprintSeconds` includes both the initial byte-identity check and any post-load verification; `modelLoadSeconds` excludes that post-load hashing time. `fingerprintSeconds` records additional TeaCache scope work. Per-job CUDA allocation peaks are reset before generation. Review actual images, edited regions and boundaries as well as timings before accepting. Warm code/protocol fixtures alone do not establish device performance; see the 2026-10-11 report for the measured RTX 4070 Ti SUPER scope.
 
 ## Office-verifiable preparation and text reuse
 
@@ -161,7 +373,7 @@ To request different positive text on a warmed model, optionally add `--prompt-v
 
 For an uncached-algorithm baseline, explicitly set `teaCache: false` and remove `teaCacheThresh` from both payloads: omission currently enables Comfy TeaCache but disables native TeaCache. This does not disable product model/text/mask residency. For editing, upload the same source/mask bytes through the normal product flow separately after selecting each engine: native uses `inference/input`, while Comfy uses `ComfyUI/input`. Reusing the other engine's upload name can fail. Retain each engine's actual payload and source-image hashes; their upload names may differ.
 
-Known product-work differences currently prevent an equivalent-inference verdict even with identical payloads. Comfy plain img2img (`initImage` without `maskImage` or `maskPrompt`) leaves the encoded source latent disconnected and retains the text-to-image sampler input/denoise; do not use that path as an img2img comparison until independently fixed and validated. Comfy plain txt2img also always adds RCAS sharpening at strength 0.75, which native does not implement and this API cannot turn off. Its time and output therefore include different work. These measurements remain separate product wall distributions; changing a diagnostic Comfy workflow does not establish product-path parity.
+Known product-work differences prevent an automatic equivalent-inference verdict even with identical payloads. At the inspected Comfy revision, plain img2img (`initImage` without `maskImage` or `maskPrompt`) leaves the encoded source latent disconnected and retains the text-to-image sampler input/denoise; do not use that path as an img2img comparison until independently fixed and validated. Earlier API reports also compared Comfy's strength-0.75 RCAS against native output without RCAS. Native RCAS now has actual full-path GPU evidence, without claiming the same slider arithmetic or changing those historical reports. These measurements remain separate product wall distributions; changing a diagnostic workflow does not establish product-path parity.
 
 Only append `--run` when the actual local gateway and model environment are prepared. `--gateway` accepts a literal-loopback HTTP origin, default `http://127.0.0.1:3000`. Run one provider at a time on an otherwise idle GPU: measure native, release its resident worker through the normal product controls, configure/restart for Comfy as required, then warm up and measure again with `--expect-provider comfy` and a different new output directory. Do not keep both engines resident or generating concurrently. This runner never changes settings, starts/restarts services, unloads models, flushes caches, downloads anything, retries an uncertain submission or sends cancellation/global interrupts. The operator owns exclusivity; the tool cannot prove no other GPU process exists.
 
@@ -183,4 +395,4 @@ New native workers also report `job.metadata.nativeRuntime`, retained in each jo
 
 The native allocator observation resets once before image preparation and reads counters after the pipeline. A supported, already initialized PyTorch native CUDA allocator reports allocated/reserved interval peaks, including previously resident memory. This is process/device-0 allocator evidence, not total-device VRAM or incremental bytes attributable only to the job. Cold ordinary tasks, unsupported allocators or observation errors report null/unverified; an explicit existing measurement report preserves its one reset attempt without initializing CUDA or falling back to a historical peak. Legacy workers or malformed observations remain unverified and do not invalidate an otherwise valid image. Real GPU overhead and accuracy remain untested. Server metadata also retains normalized parameters; inspect them rather than assuming omitted request defaults match across engines.
 
-These are separate observed product wall distributions, never an automatic speedup, parity or quality verdict. Without opt-in sampling no GPU/driver fingerprint is collected. Backend GPU binding, actual sigma capture, total-device true peak VRAM, precision match, checkpoint/export equivalence, process/disk-cold state and guaranteed residency remain unverified even with sampling. Record device/library/model provenance separately and review real images/edited boundaries. Product payload defaults can differ between providers; explicitly choose supported comparable parameters when comparison is intended, without assuming the same seed or sampler/scheduler name makes them equivalent. The implemented entry and mock PNG tests have not run a real model or GPU.
+These are separate observed product wall distributions, never an automatic speedup, parity or quality verdict. Without opt-in sampling no GPU/driver fingerprint is collected. The runner alone cannot establish backend GPU binding, actual sigma capture, total-device true peak VRAM, precision match, checkpoint/export equivalence, process/disk-cold state or guaranteed residency. Record device/library/model provenance separately and review real images/edited boundaries. Product payload defaults can differ between providers; explicitly choose supported comparable parameters when comparison is intended, without assuming the same seed or sampler/scheduler name makes them equivalent. The linked 2026-10-11 reports contain real device runs for their recorded revisions. The current report separates new model/hires/weighting evidence from the still-pending final API comparison; no older timing population substitutes for it.

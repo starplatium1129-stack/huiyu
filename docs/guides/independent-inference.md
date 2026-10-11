@@ -1,6 +1,22 @@
-# 独立图像推理候选接入
+# 独立 Anima 图像推理接入
 
-这是迁移中的可评审切片，不是已完成的 ComfyUI 替代发行。默认引擎仍为既有 ComfyUI；显式选择 native 后不自动回退，以免参数或结果在用户不知情时改变。
+绘遇现有 Anima 主流程已接入独立后端并完成本机实测，可在控制室显式选择 native 使用。默认引擎仍为既有 ComfyUI；选择 native 后不自动回退。其他模型家族、视频及任意 Comfy 节点不在本轮范围，桌面安装包尚未部署。
+
+本轮已完成六个登记 Anima 模型的真实 GPU 加载与 11 张出图：五个 28 层模型各验证宁宁、夏目，40 层 MiaoMiao 2.9B 验证无 LoRA。Latent 2×、手绘蒙版 Latent 2×、Remacri 2×、自动蒙版 Remacri 2× 均产出 1664×2432，已测遮罩黑区与最终尺寸的原图完全一致。Endfield 第三个 LoRA 另完成 Laevatain 一张完整 API 出图。证据范围、完整 API 对照及限制见[本轮 Anima 替代报告](../audits/2026-10-11/native-anima-replacement.html)。这不表示每个模型都已跑遍每种编辑组合或全部 Endfield 角色。
+
+圆括号权重与高清 TeaCache 的独立校准契约已接入。普通提示词 PNG 与权重 helper 接入前的对照 SHA256 完全一致；加权提示词已真实 GPU 出图。普通单轮校准档不能用于高清或加权范围。宁宁/夏目 normal + RCAS 0.75、阈值 0.25、连续跳步上限 3 的角色档已接受：双方各 12 个完整 API 热任务中位数为 native 4.419 秒、ComfyUI + TeaCache 5.686 秒，耗时减少 22.3%，12 对均更快。范围限于 MiaoMiao 1.6、832×1216、24 步、CFG 4、LoRA 0.8 与本机配置。TeaCache 默认关闭；宁宁一例出现双雨伞而无缓存对照为单雨伞，不能承诺物件数量、姿态或逐像素一致。
+
+[角色 LoRA + TeaCache 完整 API 报告](../audits/2026-10-11/native-backend-lora-tea.html)记录了宁宁/夏目 v21 强度 0.8、832×1216、24 步、CFG 4：双方各 12 个热任务，独立后端中位 4.819 秒，对照 Comfy + Tea 为 5.741 秒，该轮所有 native 热样本均更快。报告中的冷启动与换组暖机较慢，两引擎调度与锐化不同；这些历史数字不代表下述新调度、加载与精修实现的性能，也不推广至任意参数或数学等价。fused 模式的无 LoRA 与两角色档已共存，默认 Tea 开关不变。
+
+2026-10-11 主力机已用独立 Python/CUDA 运行 MiaoMiao 1.6 真实文生图、图生图、手绘蒙版和两个现有角色 LoRA，初轮结果见[本机 GPU 报告](../audits/2026-10-11/native-backend-gpu.html)。后续优化与完整 API 验证见[性能续报](../audits/2026-10-11/native-backend-performance.html)：显式启用 compiled-sage，结合受保护文件身份复用和本机多项式 TeaCache 校准，在本机两个已测尺寸的连续同提示词换 seed 任务中超过 ComfyUI + TeaCache。该结论限于报告中的配置与热任务，不代表全模型、全 LoRA 或冷启动领先。
+
+可选模式通过 `HUIYU_INFERENCE_ACCELERATION=compiled-sage` 启用，默认为 `native`。仅支持已锁定的 Windows Torch 2.8.0+cu128、SageAttention 与 Triton 版本及 Ada SM89，安装来源与 SHA256 见 `tools/inference/runtime-manifest.json`。首次编译、尺寸或 LoRA 设置改变会增加耗时；组件权重与 PEFT 强度保持原调用，不融合适配器。按用户确认的“主体、清晰度和风格保持，允许局部细节变化”检查留出样张后，已安装本机 MiaoMiao 1.6、832×1216、24 步、CFG 4、无 LoRA 的校准档；其他尺寸/适配器组合需单独校准，默认 TeaCache 仍关闭。
+
+角色 LoRA 的进一步候选为 `HUIYU_INFERENCE_ACCELERATION=compiled-fused-sage`。普通、保持基座的线性 LoRA 在有效源文件租约下，从原始 safetensors 的已核对位置通过 `readinto` 恢复基座；可复用 CPU 读取及转换缓冲合计最多 32 MiB，恢复前后持续检查基座身份，替代此前两角色各约 3.28 GiB 的完整 CPU 快照。这个上限不含操作系统文件缓存、模型与其他进程内存；源保护不可用的调用仍保留 CPU 快照路径。改强度、换组和卸载前先恢复原值，不通过 BF16 相减恢复，不改写文件。融合仍改变浮点运算顺序，使用单独校准身份，不能沿用未融合档。
+
+模型身份首次读取完整 SHA256；固定本地 NTFS 通过文件句柄禁止所选权重写入/删除，结合文件 ID、目录成员和属性通知复用身份。基座与 LoRA 独立持有保护：换组保留有效基座租约，仅为新适配器读取完整字节；基座成员或属性事件仍使复用失效，加载期间发生变化后又恢复原状也会拒绝。支持 Rust 传入的 Windows 扩展本地路径，网络、重解析或保护不可用的路径仍全量哈希。首次任务将依赖导入与完整身份读取并行，但目录通知留在驻留主线程，全部初始化成本仍计入冷请求。更换所选模型或 LoRA 文件前需先停止 Worker 或等待 120 秒空闲释放。后文的办公机记录只说明当时的验证范围。
+
+四个组件完成严格加载核验后，新增按 dtype 打包的 GPU 上传：保留 Parameter/Buffer 对象、形状、dtype 与数值，只将底层存储切成目标 GPU 分配的视图，不额外拼接一份完整 CPU 权重。不适用的布局在修改前返回原上传路径，复制或发布失败则明确失败。普通同拓扑 LoRA 在完整键、shape、rank、配置与 dtype 核验后可原位 hotswap；不匹配则使用既有卸载/加载路径，发生部分修改后失败会丢弃驻留模型。四任务诊断对照中，4 张 PNG 字节完全一致，额外完整 CPU 原权重快照从约 3.28 GiB 降为 0，临时缓冲最多 32 MiB，进程工作集从约 5.63 GiB 降至 1.80 GiB。private bytes 含 GPU 驱动相关记账，不等于物理 RAM；这些诊断样本不代替最终 API 性能对照。原始记录在 `runtime/backend-cost-20261011/startup-comparison.json`。
 
 ## 第一里程碑与边界
 
@@ -8,7 +24,8 @@
 - 已接入本地完整 Diffusers 目录的文生图、图生图、实验性手绘遮罩局部重绘及本地兼容 LoRA，沿用绘遇的任务身份、进度、取消与结果协议。
 - 模型目录默认按现有 catalog 的 modelId 组织在 `AI_WORKSPACE_ROOT/inference/models/<modelId>/`；控制室中可配置模型根目录与独立 LoRA 根目录。目录必须包含该权重对应的配置、tokenizer、文本编码器、conditioner、transformer 与 VAE。
 - 现有裸 MiaoMiao / Anima safetensors 文件不能简单重命名为完整目录；对应结构与配套资源必须先通过转换器的精确核验；实际出图仍需核验。不同 MiaoMiao 架构不能仅靠名字认定兼容。
-- TeaCache 已有默认关闭、须本机校准并显式验收的实验性路径，详见下文；Remacri/RealESRGAN、RCAS、Krea 2、SDXL 尚未接入；请求未接入的能力应明确失败。已支持的 LoRA 格式为原生 Diffusers/PEFT A/B 及官方识别的 `diffusion_model.*` A/B（含 llm_adapter）；通用 Kohya down/up/alpha、DoRA 和未知格式明确拒绝。实际角色权重兼容性仍需加载验收。
+- TeaCache 默认关闭，须本机校准并显式验收。RCAS、Latent / 固定 Remacri 高清与圆括号提示词权重已有真实 GPU 证据；hires + TeaCache 必须为完整操作单独校准及验收。任意 RealESRGAN 权重、非 Anima 家族与视频仍不支持，不能静默忽略或改采样器完成请求。Krea 2、SDXL 等属于后续范围。
+- 已支持的 LoRA 格式为原生 Diffusers/PEFT A/B 及官方识别的 `diffusion_model.*` A/B（含 llm_adapter）；另支持经原始模块名及实际 Linear 形状严格核验的 Anima Kohya `lora_unet_*` down/up/alpha 三元组（含 llm_adapter），按 alpha/rank 缩放 B；通用 Kohya 家族、卷积适配器、DoRA、残缺/非有限权重及未知格式明确拒绝。已测角色与模型组合见本轮报告，未知权重仍须实际加载验收。
 
 ## 独立运行库准备
 
@@ -48,7 +65,7 @@ python scripts/maintenance/inspect-anima-checkpoint.py --checkpoint <现有Anima
 
 可用 `--transformer-config`、`--text-encoder`、`--vae`、`--qwen-tokenizer`、`--t5-tokenizer`、`--diffusers-source`、`--output-dir` 指定已有配套材料。`npm run wf -- models:inspect-anima ...` 为同一入口。
 
-脚本只读取每个 safetensors 的有界 JSON 头，不加载张量，不联网，不写转换结果。输出实际层数/宽度/conditioning 结构与缺失配套。官方 Diffusers 0.41.0 `convert_anima_to_diffusers.py` 固定使用 Cosmos 2B 配置（28 层、宽度 2048）；不匹配的 MiaoMiao 变体明确阻塞，不能只更名或盲用基座配置。1.2/1.6 是仓库中的版本标签，不推断为参数规模。
+脚本只读取每个 safetensors 的有界 JSON 头，不加载张量，不联网，不写转换结果。输出实际层数/宽度/conditioning 结构与缺失配套。官方 Diffusers 0.41.0 `convert_anima_to_diffusers.py` 固定使用 Cosmos 2B 配置（28 层、宽度 2048）；本地转换器另有显式 40 层 profile，不把 2.9B 冒充 28 层。1.2/1.6 是仓库中的版本标签，不推断为参数规模；检查器的基座判断不能代替下面的精确 profile 核验。
 
 即使结构匹配，只读检查报告的 `readyForInference` 仍为 false。现在提供下面这个架构严格限定的离线转换入口；未知形状不尝试推断，不执行官方脚本中的联网配套获取。
 
@@ -60,13 +77,37 @@ python scripts/maintenance/inspect-anima-checkpoint.py --checkpoint <现有Anima
 python -I scripts/maintenance/convert-anima-checkpoint.py --profile anima-cosmos2b-v041 --checkpoint <原始Anima.safetensors> --transformer-config <对应config.json> --text-encoder <原始Qwen3-0.6B.safetensors> --vae <原始QwenImageVAE.safetensors> --qwen-tokenizer <本地目录> --t5-tokenizer <本地目录> --output-dir <模型根目录/已选modelId>
 ```
 
-默认仅读有界 safetensors 文件头和本地配置，不读张量载荷、不写输出；加 `--check` 会利用已安装库建立 meta 模型，逐个检查完整键名/形状与 tokenizer 配套，不加载权重；只有显式 `--apply` 才在 CPU 读取并转换张量。维护入口 `npm run wf -- models:convert-anima ...` 参数相同。输出必须不存在、父目录已存在且与输入资源分离。
+默认仅读有界 safetensors 文件头和本地配置，不读张量载荷、不写输出；加 `--check` 会利用已安装库建立 meta 模型，逐个检查完整键名/形状与 tokenizer 配套。Yume 的检查还通过 `pread` 读取下述 598 字节派生缓冲，不读取学习权重；只有显式 `--apply` 才在 CPU 读取并转换完整权重。维护入口 `npm run wf -- models:convert-anima ...` 参数相同。输出必须不存在、父目录已存在且与输入资源分离。
 
-目前唯一 profile 固定为 Diffusers 0.41.0 官方 Anima/Cosmos2B 的 28 层、2048 宽 transformer、6 层 conditioner、Qwen3-0.6B 与 Qwen Image VAE 配套。每个张量键和形状必须匹配，未知/多余键、量化/自定义代码配置与其他 MiaoMiao 变体会被拒绝，不静默舍弃张量或猜配置。映射源为官方 Apache-2.0 转换器，随包提供适用许可证；模型和 tokenizer 许可仍需另计。
+本轮三个显式 profile 已覆盖本机登记的六个 Anima 模型，并完成真实 CPU 严格转换：
 
-转换先在独立临时目录保存 safetensors 分片与各组件，复核保存后的键/形状/dtype和 tokenizer token ID，再校验 worker 所需布局。全新输出目录独占创建，最后发布 model_index.json；不覆盖旧模型或改写输入。失败的未完成发布目录保留供检查，不能当可用模型。大权重转换的 CPU 内存、磁盘与耗时尚未实测，请事先留足空间。
+| Profile | 架构与已转换模型 |
+| --- | --- |
+| `anima-cosmos2b-v041` | 28 层、2048 宽：Anima Base 1.0、Aesthetic 1.1、MiaoMiao 1.2、MiaoMiao 1.6 |
+| `anima-cosmos29b-v041` | 独立 40 层、2048 宽：MiaoMiao 2.9B Beta 1.1 |
+| `anima-yume2b-rope-v041` | 28 层 Yume 1.0，额外核验三个已观测的静态 RoPE 派生缓冲 |
 
-六项无 ML 环境测试只使用显式模拟库与合成文件头，证明对应协议/拒绝/发布行为；未对实际 Anima/MiaoMiao 权重执行转换或出图。即使转换完成，报告仍为 `readyForInference: false`，必须做完整加载和实际设备验收，不能把形状匹配当成权重语义/画质保证。
+通用键映射只接受完整的 `net.*` 或 `model.diffusion_model.*` 单一前缀，混用或碰撞拒绝；Yume profile 限定其已观测的 `net.*`。三个 Yume 缓冲必须同时满足精确名称、BF16 shape 与独立公式位级值，才允许按官方语义再生，并记录原摘要与读取字节数；未知键和学习参数不能借此忽略。三种架构共享已核对的 6 层 conditioner、Qwen3-0.6B、Qwen Image VAE 和 tokenizer 配套，仍逐键逐 shape 核验；可复用 MiaoMiao 1.6 转换时使用的同一套原始 encoder/VAE/tokenizer 输入。量化、自定义代码及未知形状拒绝，不猜配置。映射源为官方 Apache-2.0 转换器，模型和 tokenizer 许可另计。
+
+转换先在独立临时目录保存 safetensors 分片与各组件，复核保存后的键/形状/dtype 和 tokenizer token ID，再校验 worker 所需布局。全新输出目录独占创建，最后发布 model_index.json；不覆盖旧模型或改写输入。失败的未完成发布目录保留供检查，不能当可用模型。真实 CPU 转换已执行；本文不新增其时间或内存结论，仍需为输入、临时文件和完整输出留足空间。
+
+早期无 ML 夹具只证明协议、拒绝与发布行为；本轮真实六模型 CPU 转换及上述 11 张 GPU 出图补充了实际权重证据。转换器自身仍输出 `readyForInference: false`，不会将转换成功冒充设备验收；新资产及未测组合仍需完整加载和出图验证。
+
+## 调度与两阶段精修
+
+独立路径支持 Euler 与标准确定性 `res_multistep`，不把后者替换为 Euler。`normal` 与 `sgm_uniform` 使用固定 shift=3、训练表 1000 的数学网格，通过官方 Diffusers scheduler 施加一次移位并追加零终点；24、30 步 CPU 完整 sigma 已与隔离 Comfy 参考位级核对。`sgm_uniform` 将同一区间分为 N 段并排除末端，`normal` 保留两端。旧 Euler/simple 沿用 Diffusers 默认；RES/simple 明确使用 1000 点训练表抽样，不能只看名字认定两种 simple 相同。
+
+RES 根据公开指数积分数学独立实现二阶多步更新，flow velocity 先转为 denoised，首步与零终点使用 Euler；每个任务及精修阶段新建状态，图生图 begin_index 清空历史。支持范围为 eta=0、无 CFG++；动态移位、其他 sigma 变换、随机变体和重复 sigma 拒绝。CPU 小 ODE、向量、BF16 输出转换及隔离 `python -I` 加载已验证，不等于真实 transformer、CFG、噪声或成图逐位一致。改变 sampler/scheduler 必须使用对应 TeaCache 校准范围。
+
+RCAS 来自 AMD MIT 参考的 FP32 实现；Remacri 仅接受模型根下 `upscale_models/4x_foolhardy_Remacri.safetensors` 的严格 BasicSR RRDB 结构。Auto 按可用本地文件解析为 Remacri 或 Latent；显式选择缺失的 Remacri 会拒绝。Latent 总会二次采样；无蒙版 Remacri 仅像素超分，有蒙版时仍二次采样并最终合成原图。RCAS 遵循现有工作流条件，在最终遮罩合成前执行，不新增公开参数。
+
+二次采样使用新调度器、seed+1 独立噪声及完整网格尾部，保留实际进度。1664×2432 验收暴露的 RoPE 容量 128 小于所需 152 已修复：按本次形状扩展，结束后恢复共享配置。上述四种高清路径已真实出图，已测暖任务 allocator 峰值约 9.33 GiB；冷首张观测为 null，不是零，也不是整卡显存证据。此结果不宣称与 Comfy 节点滑块、像素或性能等价。
+
+高清 TeaCache 已按完整两阶段操作采集、拟合和留出对照，GPU 实际捕获 24+14 次采样更新；阶段切换清空残差。scope 额外绑定高清倍率、重绘幅度、实际放大方式、二轮采样器/调度器、精修版本与 Remacri 文件字节。普通单轮档不能复用。两角色 Latent 2×、重绘 0.35 的档已接受，阈值 0.25、最多连续跳 2 步；宁宁完整 API 两个热样本的中位数为 26.610 秒，对照 Comfy 为 23.671 秒，高清目前仍慢约 12.4%。后续更激进的跳 3 步候选没有启用；其中夏目阈值 0.30 曾出现非有限值，已拒绝，Worker 增加非有限结果发布拦截。
+
+## 提示词权重
+
+支持正向与负向圆括号权重：`(text)` 为继承权重乘 1.1，`(text:number)` 使用显式值，支持嵌套及转义括号。`[]` 和 `BREAK` 按当前 Anima 规则保留为字面文本，不赋予减权或分段语义。Qwen/T5 两路 token ID 与权重规则已有 14 项实际 tokenizer 对照，8 项定向测试通过；加权真实 GPU 出图成功，普通提示词对照 PNG SHA256 不变。不平衡括号、非法/非有限权重及超过 512 token 的输入明确拒绝。加权请求使用独立 TeaCache scope，不能借用普通提示词档；token 对齐不等于跨后端成图逐像素相同。
 
 ## 开启候选引擎
 
@@ -74,7 +115,7 @@ python -I scripts/maintenance/convert-anima-checkpoint.py --profile anima-cosmos
 
 “检查配置与文件”只检查已保存路径；“检查当前运行时依赖与设备”显式调用 Worker 的 `--diagnose`，检查当前解释器内依赖与 CUDA 可见性，不加载模型、不生成图片、不安装软件。CUDA 可见不等于显存足够或实际出图成功。设置与诊断 API 继承既有本机控制面的 Host/Origin、直接 loopback 与代理头限制，不开放给远程控制请求。
 
-生成界面遵循 native 的 TeaCache=false 默认；缺少已验收校准档时不能开启缓存；恢复出的旧 Comfy 阈值需明确清除，改用本地校准档阈值。图像编辑支持实验性手绘遮罩，或明确选择“整图重绘”（脸部和背景也会变化）；不会把既有遮罩换装请求静默转成整图重绘。手绘路径将同一有效遮罩用于逐步潜空间约束和最终原图合成，遮罩外使用与初始采样相同的噪声恢复到下一步 sigma，最后一步恢复干净原图潜变量。它不是只在整图生成后贴图，但未经 GPU 验收，也不宣称与 ComfyUI 采样器/膨胀边界等价。自动识别使用额外的本地 CLIPSeg 配套，缺失时只禁用自动模式。上传素材在独立 inference/input 中保留所有者与原始字节，排队后读取已接受的不可变副本；LoRA 只从 catalog 白名单和配置目录解析。
+生成界面遵循 native 的 TeaCache=false 默认；文件发现只代表校准档存在，加载时仍须精确匹配已接受 scope，缺失或不匹配明确失败。恢复出的旧 Comfy 阈值需明确清除，改用本地档阈值。高清与 TeaCache 可同时选择，界面提示组合需单独校准。图像编辑支持实验性手绘遮罩，或明确选择“整图重绘”（脸部和背景也会变化）；不会把既有遮罩换装请求静默转成整图重绘。手绘路径将同一有效遮罩用于逐步潜空间约束和最终原图合成，遮罩外使用与初始采样相同的噪声恢复到下一步 sigma，最后一步恢复干净原图潜变量。已测编辑组合不代表与 ComfyUI 采样器或膨胀边界等价。自动识别使用额外的本地 CLIPSeg 配套，缺失时只禁用自动模式。上传素材在独立 inference/input 中保留所有者与原始字节，排队后读取已接受的不可变副本；LoRA 只从完整 catalog 白名单和配置目录解析，包括 Rust 动态注入项。
 
 开发覆盖仍可使用 `HUIYU_IMAGE_ENGINE`、`HUIYU_INFERENCE_PYTHON`、`HUIYU_INFERENCE_WORKER`、`HUIYU_INFERENCE_MODELS_ROOT` 与 `HUIYU_INFERENCE_LORAS_ROOT`。界面显示覆盖来源并拒绝保存冲突值；不要指向未验证脚本。独立路径找不到运行库、模型或不支持请求时返回明确错误，不借用 ComfyUI。
 
@@ -82,7 +123,7 @@ python -I scripts/maintenance/convert-anima-checkpoint.py --profile anima-cosmos
 
 在配置的模型根目录下放置 `clipseg-rd64-refined/`，需完整的 `config.json`、`preprocessor_config.json`、`tokenizer_config.json`、`special_tokens_map.json`、`vocab.json`、`merges.txt` 和 `model.safetensors`。不接受只有 pickle/bin 权重的目录，也不会代为下载或转换它。状态只检查文件存在、非空与目录边界；实际结构、完整加载与分割质量仍在执行时验证。
 
-自动模式将 `|` 分隔的区域词分别送入 CPU float32 CLIPSeg，合并结果、调整尺寸并按阈值二值化，然后复用手绘模式的遮罩膨胀、逐步潜空间约束与像素合成。CPU 分割在 Anima 加载前结束，不额外占用 GPU。驻留 Worker 可保留一个完整 CPU CLIPSeg 模型／tokenizer／processor 和一个 352×352 float32 logits（495,616 字节）；模型 RAM 与 Anima 驻留重叠，不保证低内存。每任务完整哈希本地所有模型资产，包括可选 tokenizer 文件，加载后再次核验；相同像素／尺寸／词组才复用 logits，阈值和膨胀仍每次处理，失败及退出清空。真实 CPU 耗时、RAM 和遮罩画质仍待设备验收。这里的边缘处理不宣称与旧 ComfyUI 节点 smooth/blur 参数等价。手绘与自动请求互斥，不会静默替换；原有整图模式保留。
+自动模式将 `|` 分隔的区域词分别送入 CPU float32 CLIPSeg，合并结果、调整尺寸并按阈值二值化，然后复用手绘模式的遮罩膨胀、逐步潜空间约束与像素合成。CPU 分割在 Anima 加载前结束，不额外占用 GPU。驻留 Worker 可保留一个完整 CPU CLIPSeg 模型／tokenizer／processor 和一个 352×352 float32 logits（495,616 字节）；模型 RAM 与 Anima 驻留重叠，不保证低内存。每任务完整哈希本地所有模型资产，包括可选 tokenizer 文件，加载后再次核验；相同像素／尺寸／词组才复用 logits，阈值和膨胀仍每次处理，失败及退出清空。已完成真实 CPU 分割及自动蒙版 Remacri 2× 出图；这些样例不保证任意服装分割质量。边缘处理不宣称与旧 ComfyUI 节点 smooth/blur 参数等价。手绘与自动请求互斥，不会静默替换；原有整图模式保留。
 
 Transformers 实现许可证为 Apache-2.0；CLIPSeg 权重许可独立于代码许可，本次未下载或分发权重，尚未核实所选权重的发行许可。用户需使用有权使用且已准备的可信本地 safetensors 配套。
 
@@ -100,7 +141,7 @@ Transformers 实现许可证为 Apache-2.0；CLIPSeg 权重许可独立于代码
 
 独立 Anima/Cosmos 路径已实现首层 norm1 代理与整个 transformer block 栈残差复用，实际跳过 attention/MLP；模型外层预处理与输出层仍运行。按 CFG 分支独立缓存，每任务新建缓存控制器；受控 Worker 串行复用已加载权重，实际首尾采样步全算，连续跳步有上限，条件、形状、设备或时间序列变化清理缓存，异常恢复原调用。图生图及手绘/CLIPSeg 遮罩继续执行原逐步约束与最终合成，不把缓存当换装算法。
 
-实现针对固定 Diffusers 0.41.0 的标准 Anima/Cosmos 结构；不能推及所有 MiaoMiao 版本。没有内置借用的拟合系数，也没有实机速度/画质结论。官方 TeaCache 的 Apache-2.0 许可随包保留；其 Cosmos 示例不是 Anima 校准证据，权重许可另计。
+实现针对固定 Diffusers 0.41.0 的标准 Anima/Cosmos 结构；不能推及所有 MiaoMiao 版本。没有内置借用的拟合系数，本机系数与留出速度/画质证据见续报。官方 TeaCache 的 Apache-2.0 许可随包保留；其 Cosmos 示例不是 Anima 校准证据，权重许可另计。
 
 使用已经准备好的独立运行库 Python。准备至少一份校准任务 JSON 与一份验证任务 JSON，结构与 worker 任务相同（modelDir、outputPath、input 等见 tools/inference/README.md），均关闭 TeaCache。验证提示词与种子必须未用于校准；模型、LoRA、尺寸、步数、CFG、编辑模式/强度和遮罩参数必须一致。允许不同原图与手绘遮罩。工具会把输出重定位到全新的结果目录，不覆盖任务原输出。
 
@@ -120,21 +161,25 @@ python -I scripts/maintenance/calibrate-anima-teacache.py --accept-run <结果�
 
 验收入口再次核对资产、源图片/遮罩和报告输出，要求每个留出缓存任务确有有限数值跳步，重新计算端到端中位数比且确实快于基线，才写入所选模型目录 teacache-profile.json。已有档不会自动覆盖；明确替换需提供其 `--replace-profile-sha256`。验收后也不会自动开启 UI 开关。
 
-校准档严格绑定模型各组件文件字节、LoRA 与强度、尺寸、步数、CFG、dtype/设备、图生图强度、手绘/自动遮罩及其参数与 CLIPSeg 资源。改变这些条件需重新校准；每个启用任务验证完整指纹，成本必须纳入实际收益判断。界面看到校准文件只表示文件存在，最终由 worker 验证身份与验收记录，不代表设备已经通过验收。当前云端仅完成模拟张量/协议及 UI 测试，未采集真实系数、未安装校准档、未运行 GPU 出图。
+同一固定文件现在可存最多 16 份、合计不超过 64 KiB 的校准集合。不同 runtime、角色 LoRA、强度、尺寸等范围分别保存；worker 只选择精确匹配的一份，无匹配或重复范围明确拒绝。接受新范围会保留旧范围；追加或替换均需提供旧整文件 SHA256，并通过独占接受锁和原子写入发布。异常中断留下的 `.teacache-profile.lock` 需先人工核对，不自动抢锁。
+
+校准器可显式传 `--max-consecutive-skips 2`（支持 1–3，默认仍为 1）。该值只是候选的连续跳过上限，首尾步和累积误差阈值仍生效，必须重新执行留出对照及画质验收；不减少请求的调度步数，也不全局改变现有档。
+
+校准档严格绑定模型各组件文件字节、LoRA 与强度、尺寸、步数、CFG、dtype/设备、执行模式及版本、图生图强度、手绘/自动遮罩及其参数与 CLIPSeg 资源；新范围还绑定正值 RCAS、提示词加权模式及完整高清操作/超分权重。改变这些条件需重新校准；每个启用任务通过完整哈希或仍受保护的租约核验身份，成本必须纳入实际收益判断。界面看到校准文件只表示文件存在，最终由 worker 验证身份与验收记录，不代表任意配置都已通过验收。当前已安装的本机校准范围见上文。
 
 ## 模型驻留与分阶段缓存候选
 
-独立引擎以 `--serve` 串行执行任务，复用一份模型／LoRA 权重，连续任务无需重新启动 Python 或重新搬入同一份权重。每任务仍核对完整文件指纹；新加载后再核对一次，基座字节变化会重载；普通 LoRA 字节／顺序变化时先完整卸载 transformer 和 text_conditioner 的适配器，再加载新组，保留基座。可能改写基座的初始化或未核实变体仍整组重载；同组仅变强度直接更新权重。每次创建新的管线块、调度器、CFG 与 TeaCache 状态，不保留 seed 或中间潜变量；文本编码使用下述有界 CPU 缓存。成功任务的 `result` 后必须收到同身份 `ready`，才允许接收下一任务；取消、错误、超时和退出终止所属 Worker，确认停止前不放行 GPU 队列。空闲 120 秒释放进程与模型。
+独立引擎以 `--serve` 串行执行任务，复用一份模型／LoRA 权重，连续任务无需重新启动 Python 或重新搬入同一份权重。每任务核对完整字节身份或仍有效的受保护租约，新加载后继续核验；基座变化会重载。普通 LoRA 换组先恢复融合基座，再尝试严格同拓扑 hotswap；不适用时完整卸载 transformer 和 text_conditioner 的适配器再加载，空组恢复无适配器基座。可能改写基座的初始化或未核实变体仍整组重载；同组仅变强度更新权重，融合模式同样先恢复。每次创建新的管线块、调度器、CFG 与 TeaCache 状态，不保留 seed 或中间潜变量；文本编码使用下述有界 CPU 缓存。成功任务的 `result` 后必须收到同身份 `ready`，才允许接收下一任务；取消、错误、超时和退出终止所属 Worker，确认停止前不放行 GPU 队列。空闲 120 秒释放进程与模型。
 
 校准默认采用 `phase-envelope`：按实际采样进度分为三个阶段，保留各阶段观测到的变化峰值；超出观测范围或跨阶段时全算刷新。每阶段至少三个有效配对样本及两种代理变化；最多 32 个保守边界压缩数据，避免一个全局多项式平滑掉局部峰值。它仍是经验性误差估计，不能保证人物、纹理或换装边缘的画质。原 `--strategy polynomial` 可作算法对照，已有 v1 档仍按原策略执行。两种策略都默认关闭并要求人工验收。
 
-校准与留出对照默认复用同一份已加载权重，双方须有 `modelReused=true` 证据；`--no-resident` 可另测冷任务。进程创建开销单列，Python 导入与首次模型加载计入首个训练任务；暖任务总耗时包含指纹、编码、采样、解码和写图；每任务重置 CUDA 分配峰值。两种模式不能混为同一速度结论。当前仅有隔离逻辑与协议验证，RTX 4070 Ti SUPER 的独立运行库、真实权重、速度、显存和成图仍待设备验收。
+校准与留出对照默认复用同一份已加载权重，双方须有 `modelReused=true` 证据；`--no-resident` 可另测冷任务。进程创建开销单列，Python 导入与首次模型加载计入首个训练任务；暖任务总耗时包含指纹、编码、采样、解码和写图；每任务重置 CUDA 分配峰值。两种模式不能混为同一速度结论。RTX 4070 Ti SUPER 的实际配置和原始证据见性能续报。
 
 ## 办公机完成的准备与文本缓存
 
-驻留 Worker 仅在首次任务核对依赖并加载辅助模块，后续复用已验证的运行代码；单独诊断仍重新检查，更新运行库或脚本后需重启。模型文件每任务仍做完整 SHA-256 字节核验，读取改用标准流式缓冲以减少 Python 分配峰值，未改为按文件名／时间复用。
+驻留 Worker 仅在首次任务核对依赖并加载辅助模块，后续复用已验证的运行代码；单独诊断仍重新检查，更新运行库或脚本后需重启。办公机阶段逐任务全量哈希；当前主力机路径使用上文的受保护租约，完整哈希走 Windows CNG 或其他平台的 hashlib，未改为按文件名／时间复用。
 
-相同文本换 seed 的任务复用 Qwen 编码与 T5 token／mask，CPU 缓存最多 4 项、16 MiB；按文本、负面词、序列上限、CFG 分支、dtype 和设备区分，重载／释放模型时清空，任务获取独立张量副本。LoRA 仅作用于 transformer／text_conditioner，后者每任务仍运行，因此强度回切可复用基座和原始文本编码。基座字节改变仍重载；普通适配器换组完整卸载再加载，可能改写基座的变体退出时保守重载。
+相同文本换 seed 的任务复用 Qwen 编码与 T5 token／mask，CPU 缓存最多 4 项、16 MiB；按文本、负面词、序列上限、CFG 分支、dtype 和设备区分，重载／释放模型时清空，任务获取独立张量副本。LoRA 仅作用于 transformer／text_conditioner，后者每任务仍运行，因此强度回切可复用基座和原始文本编码。基座字节改变仍重载；普通适配器换组现在按上文的 hotswap／卸载加载规则执行，可能改写基座的变体退出时保守重载。
 
 结果事件记录文本缓存命中、未命中与保留字节数。TeaCache 速度对照双方明确关闭文本缓存和 CLIPSeg 模型／结果缓存，运行与验收均要求明确的禁用证据，避免第一侧未命中造成比较偏差。旧测量报告缺新 mask 缓存证据时不能用于新的验收；已安装的已验收 profile 不改写。主力机保留真实权重加载、GPU 耗时／显存、画质和取消释放验收；办公机的模拟模型及小组件验证不替代这些结果。
 

@@ -78,6 +78,10 @@ def fake_modules(draws):
 
 
 class MaskTests(unittest.TestCase):
+    def setUp(self):
+        stub = patch.object(worker.load_mask_tools("anima_prompt_weights"), "apply_prompt_weights", side_effect=lambda blocks, **_: blocks)
+        stub.start()
+        self.addCleanup(stub.stop)
     def test_input_image_reuses_independent_rgb_exif_result(self):
         from PIL import ImageOps
         original_open, original_convert = Image.open, Image.Image.convert
@@ -311,6 +315,7 @@ class MaskTests(unittest.TestCase):
                 "input": {"prompt": "test", "width": 64, "height": 64, "steps": 1}}
             arguments = {}
             class Pipeline:
+                _execution_device = "cpu"
                 scheduler = types.SimpleNamespace(step=lambda: None)
                 def __call__(self, **kwargs):
                     arguments.update(kwargs)

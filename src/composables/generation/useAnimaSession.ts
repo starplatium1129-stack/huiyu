@@ -35,7 +35,7 @@ const INITIAL_STATE: AnimaGenerationState = {
   loraStrength: 0.85, width: 832, height: 1216, steps: 30, cfg: 4.5,
   family: 'anima',
   sampler: 'euler', scheduler: 'normal', seed: null,
-  hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35,
+  hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35, hiresUpscaler: 'Auto',
   teaCache: true, teaCacheThresh: 0.10,
   job: null, result: null, resultContext: null, statusText: '', errorMsg: '', errorReport: null,
 }
@@ -45,7 +45,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   const state = ref<AnimaGenerationState>({ ...INITIAL_STATE })
   let settingsRevision = 0, reconcilingSettings = false, teaCacheSettingsTouched = false
   const editableKeys = ['family', 'modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height',
-    'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'teaCache', 'teaCacheThresh'] as const
+    'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
   // Observe direct v-model writes as well as patchState, excluding only our
   // synchronous backend reconciliation, never the time spent awaiting status.
   const stopSettingsWatch = watch(editableKeys.map(key => () => state.value[key]), () => {
@@ -232,7 +232,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         patchState({
           online, provider, automaticMaskAvailable: data.capabilities?.automaticMask === true,
           checkMsg: online
-            ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA${provider === 'native' ? ` · 原生局部重绘（实验性）${data.capabilities?.automaticMask === true ? ' · 本地自动识别文件就绪' : ' · 自动识别缺少本地 CLIPSeg 文件'} · TeaCache ${nativeTeaCacheReady(selectedModel) ? '校准档文件就绪（待加载核验）' : '缺少本地校准档'} · 不支持高清修复` : ''}`
+            ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA${provider === 'native' ? ` · 原生局部重绘（实验性）${data.capabilities?.automaticMask === true ? ' · 本地自动识别文件就绪' : ' · 自动识别缺少本地 CLIPSeg 文件'} · TeaCache ${nativeTeaCacheReady(selectedModel) ? '校准档文件就绪（待加载核验）' : '缺少本地校准档'} · ${selectedModel?.capabilities?.hires ? '支持高清放大（TeaCache 高清组合需单独校准）' : '不支持高清修复'}` : ''}`
             : `${familyLabel} 不可用（请检查${data.provider === 'native' ? '原生推理服务' : 'ComfyUI'}与当前模型文件）`,
           models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
           ...(endfield && loraId === endfield.loraId && state.value.loraId !== loraId ? { loraStrength: endfield.loraStrength } : {}),

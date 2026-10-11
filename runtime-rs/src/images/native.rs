@@ -12,6 +12,15 @@ const CLIPSEG_FILES: [&str; 7] = [
     "model.safetensors",
 ];
 const TEACACHE_PROFILE: &str = "teacache-profile.json";
+const REMACRI_FILE: &str = "4x_foolhardy_Remacri.safetensors";
+
+fn supported_sampling(input: &Value) -> bool {
+    matches!(input["sampler"].as_str(), Some("euler" | "res_multistep"))
+        && matches!(
+            input["scheduler"].as_str(),
+            Some("simple" | "normal" | "sgm_uniform")
+        )
+}
 
 pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
     if input["family"] != "anima" {
@@ -26,7 +35,7 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
     }
     // Defaults belong to the selected provider. Explicit unsupported requests
     // are never silently converted into a different operation.
-    for key in ["hiresFix", "styleLoraId", "rcas", "faceDetailer"] {
+    for key in ["styleLoraId", "rcas", "faceDetailer"] {
         if generation::truthy(&raw[key]) {
             return Err(ApiError::new(
                 501,
@@ -77,16 +86,20 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
         }
         validation::number(&input["growMaskBy"], "growMaskBy", 0., 32., true)?;
     }
-    for key in ["sampler", "scheduler"] {
-        let expected = if key == "sampler" { "euler" } else { "simple" };
-        if raw.get(key).is_some_and(|value| value != expected) {
-            return Err(ApiError::new(
-                501,
-                "NATIVE_FEATURE_UNSUPPORTED",
-                format!("独立推理仅支持 {key}={expected}"),
-            ));
-        }
-        input[key] = json!(expected);
+    // Public requests cannot supply these fields. Preserve the catalog recipe
+    // already normalized by validation, and the frozen recipe on task resume.
+    if input["sampler"].is_null() {
+        input["sampler"] = json!("res_multistep");
+    }
+    if input["scheduler"].is_null() {
+        input["scheduler"] = json!("simple");
+    }
+    if !supported_sampling(&input) {
+        return Err(ApiError::new(
+            501,
+            "NATIVE_FEATURE_UNSUPPORTED",
+            "原生推理不支持该采样组合",
+        ));
     }
     let tea_cache = match raw.get("teaCache") {
         None => false,
@@ -94,6 +107,22 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
         Some(_) => return Err(error("INVALID_PARAMETER", "独立推理 teaCache 必须为布尔值")),
     };
     input["teaCache"] = json!(tea_cache);
+    if input["hiresFix"] == true {
+        validation::number(&input["hiresScale"], "hiresScale", 1.1, 3., false)?;
+        validation::number(&input["hiresDenoise"], "hiresDenoise", 0.1, 0.7, false)?;
+        if !matches!(
+            raw.get("hiresUpscaler")
+                .unwrap_or(&input["hiresUpscaler"])
+                .as_str(),
+            Some("Auto" | "Latent" | "Remacri")
+        ) {
+            return Err(ApiError::new(
+                501,
+                "NATIVE_FEATURE_UNSUPPORTED",
+                "原生高清放大仅支持 Auto、Latent 或 Remacri",
+            ));
+        }
+    }
     // Shared validation supplies Comfy defaults. Native calibration owns its
     // threshold instead, unless this request explicitly chose a numeric value.
     input.as_object_mut().unwrap().remove("teaCacheThresh");
@@ -111,13 +140,12 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
 }
 pub(super) async fn plan(
     settings: &Settings,
-    input: Value,
+    mut input: Value,
     originals: &[inputs::Original],
 ) -> Result<Plan> {
     if input["inferenceEngine"] != "native"
         || input["family"] != "anima"
-        || input["sampler"] != "euler"
-        || input["scheduler"] != "simple"
+        || !supported_sampling(&input)
     {
         return Err(ApiError::new(
             409,
@@ -129,9 +157,10 @@ pub(super) async fn plan(
     settings.validate_files().await?;
     let id = input["modelId"]
         .as_str()
-        .ok_or_else(|| error("UNKNOWN_MODEL", "未知生成模型"))?;
-    catalog::model(id)?;
-    let model_dir = contained(&settings.models_root, id).await.ok_or_else(|| {
+        .ok_or_else(|| error("UNKNOWN_MODEL", "未知生成模型"))?
+        .to_owned();
+    catalog::model(&id)?;
+    let model_dir = contained(&settings.models_root, &id).await.ok_or_else(|| {
         ApiError::new(
             503,
             "NATIVE_MODEL_UNAVAILABLE",
@@ -144,6 +173,75 @@ pub(super) async fn plan(
             "NATIVE_MODEL_UNAVAILABLE",
             "独立推理需要完整本地 Diffusers 模型目录",
         ));
+    }
+    let upscale_model_path = if input["hiresFix"] == true {
+        input["requestedHiresUpscaler"] = input
+            .get("requestedHiresUpscaler")
+            .cloned()
+            .unwrap_or_else(|| input["hiresUpscaler"].clone());
+        let resource = remacri_path(settings).await;
+        let requested = input["hiresUpscaler"].as_str().unwrap_or("Auto");
+        if requested == "Remacri" && resource.is_none() {
+            return Err(ApiError::new(
+                503,
+                "NATIVE_UPSCALER_UNAVAILABLE",
+                "Remacri 需要独立模型根目录 upscale_models 内的固定 safetensors 文件",
+            ));
+        }
+        let selected = if requested == "Latent" {
+            None
+        } else {
+            resource
+        };
+        input["hiresUpscaler"] = json!(if selected.is_some() {
+            "Remacri"
+        } else {
+            "Latent"
+        });
+        input["superResModel"] = selected
+            .as_ref()
+            .map(|_| json!(REMACRI_FILE))
+            .unwrap_or(Value::Null);
+        let model = catalog::model(&id)?;
+        input["hiresSampler"] = input
+            .get("hiresSampler")
+            .filter(|value| !value.is_null())
+            .cloned()
+            .unwrap_or_else(|| {
+                model
+                    .get("hiresSampler")
+                    .unwrap_or(&catalog::contract()["HIRES_SAMPLER"])
+                    .clone()
+            });
+        input["hiresScheduler"] = input
+            .get("hiresScheduler")
+            .filter(|value| !value.is_null())
+            .cloned()
+            .unwrap_or_else(|| {
+                model
+                    .get("hiresScheduler")
+                    .unwrap_or(&catalog::contract()["HIRES_SCHEDULER"])
+                    .clone()
+            });
+        selected
+    } else {
+        input["superResModel"] = Value::Null;
+        None
+    };
+    let init = generation::truthy(&input["initImage"]);
+    let masked =
+        generation::truthy(&input["maskImage"]) || generation::truthy(&input["maskPrompt"]);
+    let sharpen = if input["hiresFix"] == true {
+        upscale_model_path.is_none()
+    } else {
+        !init
+    };
+    // Masked latent hires sharpens the generated source before final composite.
+    // Pixel Remacri (including masked refinement) has no extra RCAS pass.
+    input["rcasStrength"] = json!(if sharpen { 0.75 } else { 0. });
+    if input["hiresFix"] == true && !masked && upscale_model_path.is_some() {
+        input["hiresSampler"] = Value::Null;
+        input["hiresScheduler"] = Value::Null;
     }
     let tea_cache_profile_path = if input["teaCache"] == true {
         Some(tea_cache_profile(&model_dir).await.ok_or_else(|| ApiError::new(503,
@@ -217,6 +315,7 @@ pub(super) async fn plan(
         model_dir,
         mask_model_dir,
         tea_cache_profile_path,
+        upscale_model_path,
         settings: settings.clone(),
         init_image,
         mask_image,
@@ -252,6 +351,18 @@ async fn tea_cache_profile(model_dir: &std::path::Path) -> Option<PathBuf> {
     let metadata = tokio::fs::metadata(&path).await.ok()?;
     (metadata.is_file() && metadata.len() > 0 && metadata.len() <= 65536).then_some(path)
 }
+async fn remacri_path(settings: &Settings) -> Option<PathBuf> {
+    let path = contained(
+        &settings.models_root,
+        &format!("upscale_models/{REMACRI_FILE}"),
+    )
+    .await?;
+    tokio::fs::metadata(&path)
+        .await
+        .ok()
+        .filter(|value| value.is_file() && value.len() > 0)
+        .map(|_| path)
+}
 async fn clipseg_model_dir(settings: &Settings) -> Option<PathBuf> {
     let path = contained(&settings.models_root, CLIPSEG_FOLDER).await?;
     for name in CLIPSEG_FILES {
@@ -267,6 +378,12 @@ pub(super) async fn status(backend: &generation::Service, family: &str) -> Resul
     let runtime = backend.native_settings()?;
     let runtime_error = runtime.validate_files().await.err().map(|error| error.code);
     let automatic_mask = runtime_error.is_none() && clipseg_model_dir(&runtime).await.is_some();
+    let remacri = runtime_error.is_none() && remacri_path(&runtime).await.is_some();
+    let hires_upscalers = if remacri {
+        vec!["Auto", "Latent", "Remacri"]
+    } else {
+        vec!["Auto", "Latent"]
+    };
     let mut models = Vec::new();
     for (id, model) in catalog::CATALOG["MODELS"].as_object().unwrap() {
         if family == "anima" && model["family"] != "anima" {
@@ -283,7 +400,7 @@ pub(super) async fn status(backend: &generation::Service, family: &str) -> Resul
             Some(path) => tea_cache_profile(path).await.is_some(),
             None => false,
         };
-        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"sizes":model["sizes"],"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":"euler","scheduler":"simple","teaCache":false},"teaCacheProfile":{"support":"experimental-candidate","readiness":if profile_present {"profile-files-only"} else {"missing"},"validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available && profile_present,"hires":false}}));
+        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"sizes":model["sizes"],"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCache":false},"teaCacheProfile":{"support":"experimental-candidate","readiness":if profile_present {"profile-files-only"} else {"missing"},"validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available && profile_present,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
     }
     let mut loras = Vec::new();
     {
@@ -293,7 +410,7 @@ pub(super) async fn status(backend: &generation::Service, family: &str) -> Resul
     }
     let online = models.iter().any(|model| model["available"] == true);
     Ok(
-        json!({"provider":"native","engine":"native","online":online,"readiness":"files-only","runtimeError":runtime_error,"models":models,"loras":loras,"styleLoras":[],"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":null,"capabilities":{"txt2img":true,"img2img":true,"mask":true,"manualMask":true,"automaticMask":automatic_mask,"experimental":true,"lora":true,"teaCache":true,"teaCacheReadiness":"per-model-profile-files-only","rcas":false,"hires":false,"upscalers":false},"pending":backend.pending(),"maxPending":4}),
+        json!({"provider":"native","engine":"native","online":online,"readiness":"files-only","runtimeError":runtime_error,"models":models,"loras":loras,"styleLoras":[],"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":if remacri {Some(REMACRI_FILE)} else {None}},"capabilities":{"txt2img":true,"img2img":true,"mask":true,"manualMask":true,"automaticMask":automatic_mask,"experimental":true,"lora":true,"teaCache":true,"teaCacheReadiness":"per-model-profile-files-only","rcas":true,"hires":true,"hiresTeaCache":true,"upscalers":remacri,"hiresUpscalers":hires_upscalers,"weightSyntax":true},"pending":backend.pending(),"maxPending":4}),
     )
 }
 

@@ -36,6 +36,15 @@ def job(root):
 
 
 class WorkerTests(unittest.TestCase):
+    def setUp(self):
+        # These protocol fixtures intentionally contain no tokenizer/model.
+        stub = patch.object(worker.load_mask_tools("anima_prompt_weights"), "apply_prompt_weights", side_effect=lambda blocks, **_: blocks)
+        stub.start()
+        self.addCleanup(stub.stop)
+    def test_diagnosis_requires_cosmos_resize_dependency(self):
+        from worker_loader_cases import assert_diagnosis_requires_cosmos_resize_dependency
+        assert_diagnosis_requires_cosmos_resize_dependency(self)
+
     @contextmanager
     def resident_fixture(self):
         import resident_anima
@@ -116,6 +125,8 @@ class WorkerTests(unittest.TestCase):
         f.cuda = torch.cuda
         Encoder.calls = 0
         with tempfile.TemporaryDirectory() as directory, patch.dict("sys.modules", {**modules(), "torch": torch, "diffusers": diffusers}), \
+                patch.object(worker.load_mask_tools("locked_identity"), "_Windows", return_value=None), \
+                patch.object(worker, "try_hotswap_loras", return_value=False), \
                 patch.object(worker, "dependencies") as f.checks, patch.object(worker, "load_pipeline", side_effect=load), \
                 patch.object(worker, "load_loras", side_effect=load_adapters) as f.adapters:
             f.root = model(Path(directory))
@@ -124,7 +135,20 @@ class WorkerTests(unittest.TestCase):
             f.path = f.root / "lora.safetensors"
             f.path.write_bytes(b"FAKE LORA")
             f.request["loras"] = [{"path": str(f.path), "strength": .5}]
-            yield f
+            # Existing mutation fixtures exercise the unprotected/full-hash
+            # fallback; real Windows read protection is covered separately.
+            try:
+                yield f
+            finally:
+                f.resident.clear()
+
+    def test_protected_resident_reuses_identity_and_releases_on_clear(self):
+        from worker_loader_cases import assert_protected_resident_reuses_identity_and_releases_on_clear
+        assert_protected_resident_reuses_identity_and_releases_on_clear(self)
+
+    def test_transient_membership_during_protected_load_is_rejected(self):
+        from worker_loader_cases import assert_transient_membership_during_protected_load_is_rejected
+        assert_transient_membership_during_protected_load_is_rejected(self)
 
     def test_native_observations_distinguish_cold_warm_and_actual_steps_without_new_sync(self):
         with self.resident_fixture() as f, patch.object(f.cuda, "synchronize", side_effect=AssertionError("new sync forbidden")) as sync:
@@ -156,7 +180,7 @@ class WorkerTests(unittest.TestCase):
     def test_native_observation_failures_do_not_break_output_or_reuse_stale_mask_stats(self):
         with self.resident_fixture() as f:
             worker.generate(f.request, io.StringIO(), resident=f.resident)
-            f.resident.mask_cache = types.SimpleNamespace(stats=lambda: self.fail("unused mask stats must not leak"))
+            f.resident.mask_cache = types.SimpleNamespace(clear=lambda: None, stats=lambda: self.fail("unused mask stats must not leak"))
             for backend, failure in (("cudaMallocAsync", None), ("native", "reset"), ("native", "read"), ("native", "invalid")):
                 with self.subTest(backend=backend, failure=failure):
                     f.allocator, f.metrics_error = backend, failure
@@ -339,7 +363,7 @@ class WorkerTests(unittest.TestCase):
             self.assertEqual(error.exception.code, "UNSUPPORTED_OPTION")
 
     def test_rejects_sampler_and_invalid_numbers(self):
-        for key, value in (("sampler", "res_multistep"), ("steps", True), ("cfg", float("nan")),
+        for key, value in (("sampler", "unsupported"), ("steps", True), ("cfg", float("nan")),
                            ("width", 65), ("seed", -1)):
             request = job(Path("unused"))
             request["input"][key] = value
@@ -360,6 +384,7 @@ class WorkerTests(unittest.TestCase):
                 Path(path).write_bytes(b"FAKE IMAGE ONLY")
 
         class FakePipeline:
+            _execution_device = "cpu"
             scheduler = types.SimpleNamespace(step=lambda: None)
             def __call__(self, **kwargs):
                 self.arguments = kwargs
@@ -421,6 +446,7 @@ class WorkerTests(unittest.TestCase):
 
         class Pipeline:
             scheduler = pipeline.scheduler
+            _execution_device = "cpu"
             def __call__(self, **kwargs):
                 arguments.update(kwargs)
                 for _ in range(3):
@@ -501,41 +527,20 @@ class WorkerTests(unittest.TestCase):
         return pipeline, calls, patch.dict("sys.modules", modules)
 
     def test_lora_local_safe_load_scales_both_components(self):
-        keys = {f"{component}.layer.lora_{side}.weight" for component in ("transformer", "text_conditioner") for side in "AB"}
-        metadata = {"lora_adapter_metadata": '{"transformer.r":4,"text_conditioner.r":4,"transformer.lora_dropout":0.25,"text_conditioner.lora_dropout":0.25,"transformer.lora_alpha":8,"transformer.alpha_pattern":{"layer":4}}'}
-        pipeline, calls, modules = self.lora_fakes(keys, metadata)
-        with modules:
-            worker.load_loras(pipeline, [{"path": "/models/style.safetensors", "strength": 0.6},
-                                         {"path": "/models/second.safetensors", "strength": -0.2}])
-        self.assertEqual(calls[0], (str(Path("/models")), {"weight_name": "style.safetensors", "adapter_name": "huiyu_0", "local_files_only": True, "use_safetensors": True}))
-        self.assertEqual(calls[1][1]["adapter_name"], "huiyu_1")
-        self.assertEqual(calls[2], (["huiyu_0", "huiyu_1"], {"adapter_weights": [0.6, -0.2]}))
-        for component in (pipeline.transformer, pipeline.text_conditioner):
-            self.assertFalse(component.training)
-            self.assertEqual(set(component.adapters), {"huiyu_0", "huiyu_1"})
-            for adapter in component.adapters.values():
-                self.assertFalse(adapter.training)
-                self.assertFalse(adapter.dropout.training)
-        self.assertEqual(calls[3:], [("eval", "transformer"), ("eval", "text_conditioner")])
+        from worker_loader_cases import assert_lora_local_safe_load_scales_both_components
+        assert_lora_local_safe_load_scales_both_components(self)
 
     def test_lora_official_raw_anima_mapping_and_collision_rejection(self):
-        raw = {f"diffusion_model.llm_adapter.layer.lora_{side}.weight" for side in "AB"}
-        converted = {f"text_conditioner.layer.lora_{side}.weight" for side in "AB"}
-        pipeline, calls, modules = self.lora_fakes(raw, loaded_keys=converted, converted_keys=converted)
-        with modules:
-            worker.load_loras(pipeline, [{"path": "/models/raw.safetensors", "strength": 0.5}])
-        self.assertEqual(calls[0][1]["weight_name"], "raw.safetensors")
-        self.assertEqual(calls[1], (["huiyu_0"], {"adapter_weights": [0.5]}))
-        self.assertEqual(calls[2:], [("eval", "transformer"), ("eval", "text_conditioner")])
-        pipeline, calls, modules = self.lora_fakes(raw | converted, converted_keys=converted)
-        with modules, self.assertRaises(worker.WorkerError) as error:
-            worker.load_loras(pipeline, [{"path": "/models/collision.safetensors", "strength": 1}])
-        self.assertEqual(error.exception.code, "UNSUPPORTED_LORA")
-        self.assertEqual(calls, [])
+        from worker_loader_cases import assert_lora_official_raw_anima_mapping_and_collision_rejection
+        assert_lora_official_raw_anima_mapping_and_collision_rejection(self)
 
     def test_lora_rejects_silent_drops_and_unsupported_metadata(self):
         from worker_loader_cases import assert_lora_metadata_contract
         assert_lora_metadata_contract(self)
+
+    def test_kohya_lora_scales_and_validates_both_components_before_loading(self):
+        from worker_loader_cases import assert_kohya_lora_contract
+        assert_kohya_lora_contract(self)
 
     def test_diagnose_without_model_or_gpu_allocations(self):
         stream = io.StringIO()

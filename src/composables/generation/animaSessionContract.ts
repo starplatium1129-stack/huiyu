@@ -46,6 +46,7 @@ export interface AnimaRequest {
   hiresFix?: boolean
   hiresScale?: number
   hiresDenoise?: number
+  hiresUpscaler?: 'Auto' | 'Latent' | 'Remacri'
   teaCache?: boolean
   teaCacheThresh?: number
   initImage?: string
@@ -149,6 +150,7 @@ export function animaRequestPayload(
       hiresFix: true,
       hiresScale: request.hiresScale || 2.0,
       hiresDenoise: request.hiresDenoise || 0.35,
+      ...(request.hiresUpscaler ? { hiresUpscaler: request.hiresUpscaler } : {}),
     } : {}),
     ...(request.teaCache !== undefined ? { teaCache: request.teaCache } : {}),
     ...(request.teaCacheThresh !== undefined ? { teaCacheThresh: request.teaCacheThresh } : {}),

@@ -34,7 +34,7 @@ def fixture(root):
     return argparse.Namespace(calibration_job=paths[:1], validation_job=paths[1:],
         output_dir=str(root / "run"), threshold=.05, degree=2, repeats=2, timeout=10,
         accept_run=str(root / "run"), accept_quality=True, accept_performance=True,
-        replace_profile_sha256=None, strategy="polynomial", resident=False)
+        replace_profile_sha256=None, strategy="polynomial", resident=False, max_consecutive_skips=1)
 
 
 def trace_for(job):
@@ -191,11 +191,13 @@ for line in sys.stdin:
         with tempfile.TemporaryDirectory() as directory:
             args = fixture(Path(directory))
             args.strategy = "phase-envelope"
+            args.max_consecutive_skips = 2
             training, _, _, _ = module.plan(args)
             trace = trace_for(training[0])
             trace["samples"][4]["residualRelativeL1"] = .8
             value = module.fit([trace], args)
             self.assertEqual(value["schemaVersion"], 2)
+            self.assertEqual(value["maxConsecutiveSkips"], 2)
             self.assertEqual(value["runtime"]["huiyuInference"], "lora-eval-v1")
             self.assertIn([.05, .8], value["phaseEnvelopes"][1])
             self.assertEqual(value["fitDiagnostics"]["phaseSampleCounts"], [3, 4, 5])
@@ -239,11 +241,13 @@ for line in sys.stdin:
             self.skipTest("NumPy unavailable; polynomial fitting must be checked in prepared inference runtime")
         with tempfile.TemporaryDirectory() as directory:
             args = fixture(Path(directory))
+            args.max_consecutive_skips = 2
             training, _, _, _ = module.plan(args)
             trace = trace_for(training[0])
             profile = module.fit([trace], args)
             helper = module.load("teacache_profile")
             self.assertEqual(profile["runtime"], helper.RUNTIME)
+            self.assertEqual(profile["maxConsecutiveSkips"], 2)
             helper.validate_profile(profile, profile["compatibility"], require_accepted=False)
             for actual, expected in zip(profile["coefficients"], [.01, 2, 3]):
                 self.assertAlmostEqual(actual, expected, places=8)
@@ -404,6 +408,12 @@ for line in sys.stdin:
                 module.accept(args)
             self.assertEqual(installed_path.read_bytes(), original)
             helper.validate_profile(module.read(installed_path), installed["compatibility"])
+
+    def test_acceptance_appends_reviewed_scope_with_exact_previous_file_digest(self):
+        spec = importlib.util.spec_from_file_location("calibration_runtime_cases", Path(__file__).with_name("calibration_runtime_cases.py"))
+        cases = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cases)
+        cases.check_append_scope(self, fixture, module)
 
     def test_acceptance_rejects_missing_actual_skips_slow_wallclock_and_changed_model(self):
         for skips, seconds, change, message in ((0, 6, False, "actual cache skips"),

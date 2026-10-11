@@ -4,6 +4,8 @@ No ComfyUI code, remote model code, weight conversion, or implicit downloads.
 The checkpoint and its license are separate from the Transformers implementation.
 """
 import hashlib
+import importlib.util
+from functools import lru_cache
 import json
 import math
 import time
@@ -125,6 +127,14 @@ class MaskCache:
                     resultBytes=0 if self.logits is None else self.logits.nbytes)
 
 
+@lru_cache(maxsize=1)
+def _file_hasher():
+    spec = importlib.util.spec_from_file_location("huiyu_native_hash", Path(__file__).with_name("native_hash.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.file_sha256
+
+
 def model_identity(root):
     """Re-read exact bytes every job; metadata is never an invalidation proof."""
     root = Path(root).resolve()
@@ -136,8 +146,7 @@ def model_identity(root):
         if not resolved.is_relative_to(root):
             raise ValueError("CLIPSeg model component escapes its selected directory")
         if path.is_file():
-            with path.open("rb") as source:
-                rows.append((path.relative_to(root).as_posix(), hashlib.file_digest(source, "sha256").hexdigest()))
+            rows.append((path.relative_to(root).as_posix(), _file_hasher()(path)))
     if not rows:
         raise ValueError("No local CLIPSeg files to fingerprint")
     return str(root), tuple(rows)

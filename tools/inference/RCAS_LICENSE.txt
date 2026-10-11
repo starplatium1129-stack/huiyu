@@ -1,0 +1,34 @@
+AMD FidelityFX FSR1 RCAS provenance
+Source revision: a21ffb8f6c13233ba336352bdff293894c706575
+Kernel: https://raw.githubusercontent.com/GPUOpen-Effects/FidelityFX-FSR/a21ffb8f6c13233ba336352bdff293894c706575/ffx-fsr/ffx_fsr1.h
+Kernel SHA-256: 93c3922362ea7fc99cbcc698ca30c98de4f8c246d1fbb0b09e015ddef38ce3a5
+License: https://raw.githubusercontent.com/GPUOpen-Effects/FidelityFX-FSR/a21ffb8f6c13233ba336352bdff293894c706575/license.txt
+License SHA-256: db089274ce766da70f5b7d791029c3486f9f9e27c8c79c652689603d3192e802
+
+Local changes: Torch NCHW RGB port of the FsrRcasF cross filter, noise reduction disabled;
+linear strength 0..1 instead of sharpness stops; replicated border samples;
+float32 arithmetic with ordinary division, zero-denominator endpoint guards,
+and final 0..1 clamp before restoring input dtype. No FSR upscaling is included.
+No ComfyUI or KJNodes code is used.
+
+Upstream license follows verbatim:
+
+Copyright (c) 2021 Advanced Micro Devices, Inc. All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

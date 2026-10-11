@@ -19,7 +19,6 @@ import signal
 import statistics
 import subprocess
 import sys
-import tempfile
 import time
 
 sys.dont_write_bytecode = True
@@ -130,6 +129,7 @@ def plan(args):
         "mode": "plan", "modelCalls": len(training) + len(heldout) * args.repeats * 2,
         "trainingJobs": len(training), "heldoutJobs": len(heldout), "repeats": args.repeats,
         "outputDir": str(target), "threshold": args.threshold, "strategy": args.strategy,
+        "maxConsecutiveSkips": args.max_consecutive_skips,
         "executionMode": "resident" if args.resident else "cold", "polynomialDegree": args.degree,
         "scopeStatus": "Exact model/config hashes, dtype and device will be established by real worker traces",
         "installsProfile": False, "limitations": DISCLAIMER,
@@ -138,7 +138,7 @@ def plan(args):
 
 def input_files(all_jobs):
     return {str(Path(job[key]).resolve()): digest(Path(job[key])) for job in all_jobs
-            for key in ("inputImagePath", "maskImagePath") if job.get(key)}
+            for key in ("inputImagePath", "maskImagePath", "upscaleModelPath") if job.get(key)}
 
 
 def verify_inputs(expected):
@@ -150,7 +150,7 @@ def job_scope(job, profile):
     scope = profile["compatibility"]
     mode = "masked" if job.get("maskImagePath") or job["input"].get("maskPrompt") else ("img2img" if job.get("inputImagePath") else "txt2img")
     return load("teacache_profile").compatibility(Path(job["modelDir"]), job.get("loras", []), job["input"],
-        mode, scope["dtype"], scope["deviceName"], mask_model_dir=job.get("maskModelDir"))
+        mode, scope["dtype"], scope["deviceName"], mask_model_dir=job.get("maskModelDir"), upscale_model_path=job.get("upscaleModelPath"))
 
 
 def stop(process):
@@ -258,7 +258,7 @@ def fit(traces, args):
             envelopes.append(points_in_phase)
         return {"schemaVersion": 2, "algorithm": helper.PHASE_ALGORITHM, "runtime": helper.RUNTIME,
                 "compatibility": compatibility, "phaseEnvelopes": envelopes,
-                "defaultThreshold": args.threshold, "maxThreshold": args.threshold, "maxConsecutiveSkips": 1,
+                "defaultThreshold": args.threshold, "maxThreshold": args.threshold, "maxConsecutiveSkips": args.max_consecutive_skips,
                 "calibration": {"source": "local-full-compute", "sampleCount": len(points), "traceSha256": canonical(traces)},
                 "fitDiagnostics": {"method": "phase-local observed upper envelope; not a semantic error bound",
                                    "phaseSampleCounts": [len(group) for group in phase_points]}}
@@ -273,7 +273,7 @@ def fit(traces, args):
             "runtime": helper.RUNTIME,
             "compatibility": compatibility, "coefficients": coefficients.tolist(),
             "proxyRange": [float(x.min()), float(x.max())], "defaultThreshold": args.threshold,
-            "maxThreshold": args.threshold, "maxConsecutiveSkips": 1,
+            "maxThreshold": args.threshold, "maxConsecutiveSkips": args.max_consecutive_skips,
             "calibration": {"source": "local-full-compute", "sampleCount": len(points),
                             "traceSha256": canonical(traces)},
             "fitDiagnostics": {"trainingRmse": float(np.sqrt(np.mean(error ** 2))),
@@ -436,32 +436,12 @@ def accept(args):
     source = sources["training"][0]
     current = job_scope(source, profile)
     helper.validate_profile(profile, current, require_accepted=False)
-    destination = Path(source["modelDir"]) / "teacache-profile.json"
-    if destination.is_symlink():
-        raise ValueError("Refusing to replace a symbolic-link profile")
-    replacing = destination.exists()
-    if replacing and (not args.replace_profile_sha256 or digest(destination) != args.replace_profile_sha256):
-        raise ValueError("Existing profile preserved; replacement requires its exact --replace-profile-sha256")
-    if not replacing and args.replace_profile_sha256:
-        raise ValueError("Expected replacement profile is missing")
     profile["acceptance"] = {"status": "accepted", "operatorQualityAccepted": True, "operatorPerformanceAccepted": True,
                              "reportSha256": digest(target / "report.json"),
                              "acceptedAtUnix": time.time(), "scope": "only the recorded device/model/job configuration"}
     helper.validate_profile(profile, current)
-    if not replacing:
-        write(destination, profile)
-    else:
-        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=destination.parent,
-                                         prefix=".teacache-", suffix=".json", delete=False) as stream:
-            temporary = Path(stream.name)
-            json.dump(profile, stream, indent=2, allow_nan=False)
-        try:
-            if digest(destination) != args.replace_profile_sha256:
-                raise ValueError("Existing profile changed during acceptance")
-            os.replace(temporary, destination)
-        finally:
-            temporary.unlink(missing_ok=True)
-    return {"mode": "accept", "installedProfile": str(destination), "sha256": digest(destination),
+    destination, installed_digest = helper.install_profile(source["modelDir"], profile, args.replace_profile_sha256)
+    return {"mode": "accept", "installedProfile": str(destination), "sha256": installed_digest,
             "teaCacheDefaultEnabled": False}
 
 
@@ -472,6 +452,8 @@ def main(argv=None):
     parser.add_argument("--output-dir", help="New output directory outside model directory")
     parser.add_argument("--threshold", type=float, default=0.05, help="Candidate threshold only, not a universal quality recommendation")
     parser.add_argument("--degree", type=int, choices=range(1, 6), default=2)
+    parser.add_argument("--max-consecutive-skips", type=int, choices=(1, 2, 3), default=1,
+                        help="Candidate skip limit; default 1. Larger limits still require held-out quality acceptance")
     parser.add_argument("--strategy", choices=("phase-envelope", "polynomial"), default="phase-envelope",
                         help="Phase-specific observed error envelopes (default) or original polynomial baseline")
     parser.add_argument("--resident", action=argparse.BooleanOptionalAction, default=True,

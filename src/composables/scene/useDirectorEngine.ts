@@ -219,7 +219,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
       prompt: livePrompt.value, negative: effectiveNegative.value, profileId, modelId: state.modelId,
       width: state.width, height: state.height, steps: state.steps, cfg: state.cfg,
       ...(state.seed == null ? {} : { seed: state.seed }),
-      hiresFix: Boolean(state.hiresFix), hiresScale: state.hiresScale, hiresDenoise: state.hiresDenoise,
+      hiresFix: Boolean(state.hiresFix), hiresScale: state.hiresScale, hiresDenoise: state.hiresDenoise, hiresUpscaler: state.hiresUpscaler,
       teaCache: state.provider === 'native' ? state.teaCache === true : state.teaCache !== false, teaCacheThresh: state.teaCacheThresh, adultEnabled: pb.showMatureScenes,
     }
   }

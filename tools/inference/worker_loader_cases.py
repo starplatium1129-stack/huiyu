@@ -1,5 +1,6 @@
 """Explicit loading-info fakes; no real model, Torch or GPU acceptance."""
 from pathlib import Path
+import io
 import json
 import tempfile
 import types
@@ -50,6 +51,7 @@ def assert_local_loader_contract(test, model):
         def update_components(self, **kwargs):
             updates.append(kwargs)
             self.components = kwargs
+            self.transformer = kwargs["transformer"]
         def to(self, device):
             transfers.append(device)
             self.device = device
@@ -63,7 +65,9 @@ def assert_local_loader_contract(test, model):
         T5Tokenizer=Component, T5TokenizerFast=Component)
     torch = types.SimpleNamespace(cuda=types.SimpleNamespace(is_available=lambda: True,
         is_bf16_supported=lambda: True), bfloat16="bf16")
-    with tempfile.TemporaryDirectory() as directory, patch.dict("sys.modules", {
+    with tempfile.TemporaryDirectory() as directory, \
+            patch.object(worker.load_mask_tools("native_upload"), "try_packed_upload", return_value=False), \
+            patch.dict("sys.modules", {
             "torch": torch, "diffusers": diffusers, "transformers": transformers}):
         root = model(Path(directory))
         test.assertEqual(worker.validate_model(str(root)), root)
@@ -133,3 +137,182 @@ def assert_lora_metadata_contract(test):
     with modules, test.assertRaises(worker.WorkerError):
         worker.load_loras(pipeline, [{"path": "/models/style.safetensors", "strength": 1}])
     test.assertEqual(len(calls), 1)  # Never activate a partially loaded adapter.
+
+
+def assert_kohya_lora_contract(test):
+    """CPU array fakes cover conversion math; no ML dependency or GPU is required."""
+    import numpy as np
+    helper = worker.load_mask_tools("anima_lora")
+
+    class Tensor(np.ndarray):
+        device = types.SimpleNamespace(type="cpu")
+        def __new__(cls, value):
+            return np.array(value, dtype=np.float32).view(cls)
+        def float(self):
+            return self.astype(np.float32)
+
+    class Linear:
+        in_features, out_features = 2, 3
+
+    class Component:
+        transformer_blocks = [None]
+        def __init__(self, target):
+            self.target = target
+        def get_submodule(self, name):
+            if name != self.target:
+                raise AttributeError(name)
+            return Linear()
+        def named_modules(self):
+            return [(self.target, Linear())]
+
+    transformer = "transformer_blocks.0.attn2.to_k"
+    conditioner = "blocks.0.cross_attn.k_proj"
+    pipeline = types.SimpleNamespace(transformer=Component(transformer), text_conditioner=Component(conditioner))
+    raw_targets = {"diffusion_model.blocks.0.cross_attn.k_proj": "transformer." + transformer,
+                   "diffusion_model.llm_adapter." + conditioner: "text_conditioner." + conditioner}
+    def remap(state):
+        return {raw_targets.get(key.removesuffix(".lora_A.weight"), "transformer.unsupported") + ".lora_A.weight": value
+                for key, value in state.items()}
+
+    aliases = ["lora_unet_blocks_0_cross_attn_k_proj", "lora_unet_llm_adapter_blocks_0_cross_attn_k_proj"]
+    weights = {f"{alias}.{part}": Tensor(value) for alias in aliases for part, value in (
+        ("alpha", 1.0), ("lora_down.weight", [[1, 2], [3, 4]]), ("lora_up.weight", [[2, 3], [4, 5], [6, 7]]))}
+
+    class File:
+        def keys(self):
+            return weights.keys()
+        def metadata(self):
+            return {}
+        def get_tensor(self, key):
+            return weights[key]
+
+    fake_torch = types.SimpleNamespace(nn=types.SimpleNamespace(Linear=Linear),
+        float16=np.dtype("float16"), bfloat16="bf16", float32=np.dtype("float32"), isfinite=np.isfinite)
+    with patch.dict("sys.modules", {"torch": fake_torch,
+            "diffusers.loaders.lora_conversion_utils": types.SimpleNamespace(_convert_non_diffusers_anima_lora_to_diffusers=remap)}):
+        converted = helper.load_kohya(File(), pipeline)
+        for alias, target in zip(aliases, ("transformer." + transformer, "text_conditioner." + conditioner)):
+            np.testing.assert_array_equal(converted[target + ".lora_B.weight"] @ converted[target + ".lora_A.weight"],
+                (weights[alias + ".lora_up.weight"] @ weights[alias + ".lora_down.weight"]) * 0.5)
+            np.testing.assert_array_equal(weights[alias + ".lora_up.weight"], [[2, 3], [4, 5], [6, 7]])
+        key = aliases[0] + ".alpha"
+        valid = weights[key]
+        for value in (Tensor(float("nan")), Tensor(-1), Tensor([1, 2])):
+            weights[key] = value
+            with test.assertRaises(ValueError):
+                helper.load_kohya(File(), pipeline)
+        weights[key] = valid
+        del weights[key]
+        with test.assertRaisesRegex(ValueError, "Incomplete"):
+            helper.load_kohya(File(), pipeline)
+        weights[key] = valid
+        key = aliases[0] + ".lora_down.weight"
+        valid = weights[key]
+        for value in (Tensor([[1, 2, 3]]), Tensor([[float("inf"), 0], [0, 1]])):
+            weights[key] = value
+            with test.assertRaises(ValueError):
+                helper.load_kohya(File(), pipeline)
+        weights[key] = valid
+        weights["lora_unet_unknown.alpha"] = Tensor(1)
+        with test.assertRaisesRegex(ValueError, "unknown"):
+            helper.load_kohya(File(), pipeline)
+        del weights["lora_unet_unknown.alpha"]
+        with patch.object(File, "metadata", return_value={"lora_adapter_metadata": "{}"}), test.assertRaises(ValueError):
+            helper.load_kohya(File(), pipeline)
+
+    raw = {aliases[0] + suffix for suffix in (".alpha", ".lora_down.weight", ".lora_up.weight")}
+    native = {f"transformer.layer.lora_{side}.weight": object() for side in "AB"}
+    pipeline, calls, modules = test.lora_fakes(raw, loaded_keys=set(native))
+    with modules, patch.object(worker.load_mask_tools("anima_lora"), "load_kohya", return_value=native):
+        worker.load_loras(pipeline, [{"path": "/models/kohya.safetensors", "strength": 0.6}])
+    test.assertIs(calls[0][0], native)
+    test.assertNotIn("weight_name", calls[0][1])
+    test.assertEqual(calls[1], (["huiyu_0"], {"adapter_weights": [0.6]}))
+
+
+def assert_diagnosis_requires_cosmos_resize_dependency(test):
+    def version(name):
+        if name == "torchvision":
+            raise worker.importlib.metadata.PackageNotFoundError(name)
+        return worker.PINS[name]
+    with patch.object(worker.importlib.metadata, "version", side_effect=version):
+        with test.assertRaises(worker.WorkerError) as caught:
+            worker.dependencies()
+        test.assertEqual(caught.exception.code, "DEPENDENCY_MISSING")
+        test.assertIn("torchvision", str(caught.exception))
+    with patch.object(worker.importlib.metadata, "version", side_effect=lambda name: worker.PINS[name]), \
+            patch.dict("sys.modules", {"torch": types.SimpleNamespace(), "torchvision": None}):
+        with test.assertRaises(worker.WorkerError) as caught:
+            worker.dependencies()
+        test.assertEqual(caught.exception.code, "DEPENDENCY_IMPORT")
+
+
+def assert_protected_resident_reuses_identity_and_releases_on_clear(test):
+    lease = worker.load_mask_tools("locked_identity").IdentityLease()
+    if lease._windows is None:
+        test.skipTest("Windows read protection")
+    with test.resident_fixture() as f:
+        f.resident.file_identity = lease
+        worker.generate(f.request, io.StringIO(), resident=f.resident)
+        test.assertTrue(lease.cached)
+        test.assertTrue(lease.reused)
+        with test.assertRaises(OSError):
+            f.path.write_bytes(b"CANNOT CHANGE RESIDENT WEIGHTS")
+        worker.generate(f.request, io.StringIO(), resident=f.resident)
+        test.assertEqual(len(f.loaded), 1)
+        f.resident.clear()
+        f.path.write_bytes(b"CAN REPLACE AFTER RELEASE")
+
+
+def assert_transient_membership_during_protected_load_is_rejected(test):
+    lease = worker.load_mask_tools("locked_identity").IdentityLease()
+    if lease._windows is None:
+        test.skipTest("Windows read protection")
+    with test.resident_fixture() as f:
+        f.resident.file_identity = lease
+        original = f.adapters.side_effect
+        def changed(*args):
+            original(*args)
+            transient = f.root / "transformer" / "transient.json"
+            transient.write_text("{}")
+            transient.unlink()
+        f.adapters.side_effect = changed
+        with test.assertRaises(worker.WorkerError) as error:
+            worker.generate(f.request, io.StringIO(), resident=f.resident)
+        test.assertEqual(error.exception.code, "MODEL_CHANGED")
+        test.assertFalse(lease.cached)
+
+
+def assert_lora_local_safe_load_scales_both_components(test):
+    keys = {f"{component}.layer.lora_{side}.weight" for component in ("transformer", "text_conditioner") for side in "AB"}
+    metadata = {"lora_adapter_metadata": '{"transformer.r":4,"text_conditioner.r":4,"transformer.lora_dropout":0.25,"text_conditioner.lora_dropout":0.25,"transformer.lora_alpha":8,"transformer.alpha_pattern":{"layer":4}}'}
+    pipeline, calls, modules = test.lora_fakes(keys, metadata)
+    with modules:
+        worker.load_loras(pipeline, [{"path": "/models/style.safetensors", "strength": 0.6},
+                                     {"path": "/models/second.safetensors", "strength": -0.2}])
+    test.assertEqual(calls[0], (str(Path("/models")), {"weight_name": "style.safetensors", "adapter_name": "huiyu_0", "local_files_only": True, "use_safetensors": True}))
+    test.assertEqual(calls[1][1]["adapter_name"], "huiyu_1")
+    test.assertEqual(calls[2], (["huiyu_0", "huiyu_1"], {"adapter_weights": [0.6, -0.2]}))
+    for component in (pipeline.transformer, pipeline.text_conditioner):
+        test.assertFalse(component.training)
+        test.assertEqual(set(component.adapters), {"huiyu_0", "huiyu_1"})
+        for adapter in component.adapters.values():
+            test.assertFalse(adapter.training)
+            test.assertFalse(adapter.dropout.training)
+    test.assertEqual(calls[3:], [("eval", "transformer"), ("eval", "text_conditioner")])
+
+
+def assert_lora_official_raw_anima_mapping_and_collision_rejection(test):
+    raw = {f"diffusion_model.llm_adapter.layer.lora_{side}.weight" for side in "AB"}
+    converted = {f"text_conditioner.layer.lora_{side}.weight" for side in "AB"}
+    pipeline, calls, modules = test.lora_fakes(raw, loaded_keys=converted, converted_keys=converted)
+    with modules:
+        worker.load_loras(pipeline, [{"path": "/models/raw.safetensors", "strength": 0.5}])
+    test.assertEqual(calls[0][1]["weight_name"], "raw.safetensors")
+    test.assertEqual(calls[1], (["huiyu_0"], {"adapter_weights": [0.5]}))
+    test.assertEqual(calls[2:], [("eval", "transformer"), ("eval", "text_conditioner")])
+    pipeline, calls, modules = test.lora_fakes(raw | converted, converted_keys=converted)
+    with modules, test.assertRaises(worker.WorkerError) as error:
+        worker.load_loras(pipeline, [{"path": "/models/collision.safetensors", "strength": 1}])
+    test.assertEqual(error.exception.code, "UNSUPPORTED_LORA")
+    test.assertEqual(calls, [])

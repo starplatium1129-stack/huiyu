@@ -5,12 +5,14 @@ No download/install/inference paths. See anima_conversion_profile.py for provena
 from __future__ import annotations
 
 import contextlib
+import hashlib
 import importlib.metadata
 import importlib.util
 import json
 import os
 from pathlib import Path
 import shutil
+import struct
 import sys
 import tempfile
 
@@ -66,8 +68,7 @@ def tokenizer_assets(path, kind):
 
 
 def inputs(args):
-    if args.profile != profile.PROFILE:
-        raise ValueError(f"Only explicit profile {profile.PROFILE} is supported")
+    profile.transformer_config(args.profile)
     paths = {}
     for name in ("checkpoint", "transformer_config", "text_encoder", "vae", "qwen_tokenizer", "t5_tokenizer"):
         path = Path(getattr(args, name)).expanduser().resolve(strict=True)
@@ -78,7 +79,7 @@ def inputs(args):
         elif not path.is_file() or (name != "transformer_config" and path.suffix != ".safetensors"):
             raise ValueError(f"{name} must be an existing local {'JSON' if name == 'transformer_config' else 'safetensors'} file")
         paths[name] = path
-    profile.validate_config(header_tools.read_config(paths["transformer_config"]))
+    profile.validate_config(header_tools.read_config(paths["transformer_config"]), args.profile)
     output = Path(args.output_dir).expanduser().absolute()
     if any(path.is_symlink() for path in (output, *output.parents)):
         raise ValueError("Output must not traverse symlinks")
@@ -90,8 +91,8 @@ def inputs(args):
             raise ValueError("Output must be separate from every input/asset directory")
     paths["output"] = output
     headers = {name: header_tools.read_header(paths[name]) for name in ("checkpoint", "text_encoder", "vae")}
-    mapping = profile.map_headers(headers)
-    profile.validate_anchors(headers)
+    mapping = profile.map_headers(headers, args.profile)
+    profile.validate_anchors(headers, args.profile)
     return paths, headers, mapping
 
 
@@ -121,8 +122,8 @@ def source_name(component):
     return "checkpoint" if component in ("transformer", "text_conditioner") else component
 
 
-def schemas_and_models(runtime_info, headers, mapping):
-    configs = {"transformer": profile.TRANSFORMER, "text_conditioner": profile.CONDITIONER,
+def schemas_and_models(runtime_info, headers, mapping, profile_name=profile.PROFILE):
+    configs = {"transformer": profile.transformer_config(profile_name), "text_conditioner": profile.CONDITIONER,
                "text_encoder": {}, "vae": profile.VAE}
     models = {}
     # Parameters are meta; small non-persistent RoPE buffers must stay on CPU.
@@ -133,7 +134,7 @@ def schemas_and_models(runtime_info, headers, mapping):
             converted = mapping[component]
             missing, extra = set(expected) - set(converted), set(converted) - set(expected)
             if missing or extra:
-                raise ValueError(f"{component} exact key mismatch; missing={sorted(missing)}, unexpected={sorted(extra)}; no tensor keys are discarded")
+                raise ValueError(f"{component} exact key mismatch; missing={sorted(missing)}, unexpected={sorted(extra)}; no unknown tensor keys are discarded")
             for key, shape in expected.items():
                 old = converted[key]
                 actual = headers[source_name(component)][old]["shape"]
@@ -141,6 +142,38 @@ def schemas_and_models(runtime_info, headers, mapping):
                     raise ValueError(f"{component}.{old} shape {actual} != required {shape}")
             models[component] = model
     return models
+
+
+def verify_derived_rope(runtime_info, paths, headers, profile_name):
+    """Read only Yume's 598 buffer bytes; never approximate unknown frequencies.
+
+    Apache Diffusers' Cosmos 2 converter removes these exact cache keys. Its
+    Anima converter uses that mapping; CosmosRotaryPosEmbed regenerates FP32
+    ranges, with the profile's theta/NTK/patch configuration unchanged.
+    """
+    buffers = profile.derived_rope_buffers(headers, profile_name)
+    if not buffers:
+        return []
+    torch = runtime_info["torch"]
+    expected = (torch.arange(0, 42, 2, dtype=torch.float32, device="cpu") / 42,
+                torch.arange(0, 44, 2, dtype=torch.float32, device="cpu") / 44,
+                torch.arange(256, dtype=torch.float32, device="cpu"))
+    records = []
+    with runtime_info["safe_open"](str(paths["checkpoint"]), framework="pt", device="cpu", backend="pread") as source:
+        if set(source.keys()) != set(headers["checkpoint"]):
+            raise ValueError("Input keys changed during derived RoPE verification")
+        for (name, shape), canonical in zip(buffers.items(), expected):
+            tensor = source.get_tensor(name)
+            if (list(tensor.shape) != shape or tensor.dtype != torch.bfloat16
+                    or tensor.device.type != "cpu" or tensor.layout != torch.strided or not tensor.is_contiguous()
+                    or not torch.equal(tensor.view(torch.int16), canonical.to(torch.bfloat16).view(torch.int16))):
+                raise ValueError(f"Noncanonical Yume derived RoPE buffer: {name}")
+            values = tensor.view(torch.int16).tolist()
+            raw = struct.pack("<" + "H" * len(values), *(value & 0xffff for value in values))
+            records.append({"source": name, "shape": shape, "dtype": "BF16", "bytes": len(raw),
+                            "sha256": hashlib.sha256(raw).hexdigest(), "validation": "canonical-bf16-bitwise",
+                            "disposition": "regenerated-by-upstream-CosmosRotaryPosEmbed-fp32"})
+    return records
 
 
 def checked_tokenizer(cls, path, capacity, kind):
@@ -246,6 +279,7 @@ def apply(runtime_info, models, loaded_tokenizers, paths, headers, mapping, repo
         verify_saved_weights(staged, headers, mapping)
         sibling("huiyu_anima_worker_layout", HERE / "worker.py").validate_model(str(staged))
         completed = {**report, "mode": "converted", "tensorDataRead": True, "outputWritten": True,
+                     "weightTensorDataRead": True,
                      "weightsStrictlyLoaded": True, "savedKeyShapeDtypeVerified": True}
         write_json(staged / "conversion.json", completed)
         publish(staged, output)
@@ -254,31 +288,39 @@ def apply(runtime_info, models, loaded_tokenizers, paths, headers, mapping, repo
 
 def convert(args):
     paths, headers, mapping = inputs(args)
-    report = {"schemaVersion": 1, "profile": profile.PROFILE, "mode": "plan", "downloads": False,
+    report = {"schemaVersion": 1, "profile": args.profile, "mode": "plan", "downloads": False,
+              "checkpointPrefix": profile.checkpoint_prefix(headers["checkpoint"]),
+              "transformerLayers": profile.PROFILES[args.profile],
               "tensorDataRead": False, "outputWritten": False, "architectureVerified": False,
+              "weightTensorDataRead": False, "derivedBufferBytesRead": 0, "derivedBuffers": [],
+              "derivedBufferCount": len(profile.derived_rope_buffers(headers, args.profile)),
+              "derivedBufferVerification": "pending" if args.profile == profile.YUME_PROFILE else "not-required",
               "readyForInference": False, "generationAcceptance": "not performed",
               "inputs": {name: str(path) for name, path in paths.items() if name != "output"},
               "outputDir": str(paths["output"]), "tensorCounts": {name: len(keys) for name, keys in mapping.items()},
               "sources": profile.SOURCES, "sourceGitBlobs": profile.SOURCE_BLOBS,
-              "scope": "Only this fixed architecture, not arbitrary Anima/MiaoMiao versions. Header anchors are preliminary; --check performs exact meta-schema/tokenizer checks; --apply loads CPU weights.",
+              "scope": "Only the selected explicit architecture. Header anchors are preliminary; --check verifies exact meta schemas/tokenizers and Yume's 598 derived-buffer bytes; --apply loads CPU weights. No trainable or unknown tensor keys are discarded. Verified Yume caches follow upstream FP32 regeneration, not BF16 runtime frequency injection.",
               "license": "Conversion mappings: Apache-2.0; source model/tokenizer licenses remain separate."}
     if not args.check and not args.apply:
         return report
     info = runtime()
-    models = schemas_and_models(info, headers, mapping)
+    models = schemas_and_models(info, headers, mapping, args.profile)
+    derived = verify_derived_rope(info, paths, headers, args.profile)
     loaded_tokenizers = tokenizers(info, paths)
-    report.update(mode="checked", architectureVerified=True, dependencies=info["versions"])
+    report.update(mode="checked", architectureVerified=True, dependencies=info["versions"],
+                  tensorDataRead=bool(derived), derivedBufferBytesRead=sum(row["bytes"] for row in derived),
+                  derivedBuffers=derived, derivedBufferVerification="passed" if derived else "not-required")
     return apply(info, models, loaded_tokenizers, paths, headers, mapping, report) if args.apply else report
 
 
 def main(argv=None):
     import argparse
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--profile", required=True, choices=[profile.PROFILE])
+    parser.add_argument("--profile", required=True, choices=list(profile.PROFILES))
     for name in ("checkpoint", "transformer-config", "text-encoder", "vae", "qwen-tokenizer", "t5-tokenizer", "output-dir"):
         parser.add_argument("--" + name, required=True)
     mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--check", action="store_true", help="Validate exact meta schemas and local tokenizers; no weight data read or output")
+    mode.add_argument("--check", action="store_true", help="Validate exact meta schemas/tokenizers; Yume reads 598 derived-buffer bytes, no trainable weight data or output")
     mode.add_argument("--apply", action="store_true", help="Explicitly convert CPU tensors into a separate new pipeline directory")
     args = parser.parse_args(argv)
     try:

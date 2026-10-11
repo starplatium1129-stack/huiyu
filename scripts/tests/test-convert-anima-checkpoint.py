@@ -1,10 +1,11 @@
-"""Offline conversion tests with explicit fake ML models/tensors, never real weights.
+"""Offline conversion tests with fake ML weights and 598 bytes of CPU BF16 cache data.
 
 Sparse safetensors files exercise real header and saved-output validation only.
 This does not establish real-model conversion or device/inference acceptance.
 """
 import argparse
 import contextlib
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -176,6 +177,134 @@ def fake_runtime(calls):
 
 
 class ConversionTests(unittest.TestCase):
+    def test_yume_cache_check_reads_only_exact_derived_values_and_reports_digests(self):
+        import torch
+        from safetensors import safe_open
+
+        # Fixed bytes observed in the local Yume buffers; independent of the
+        # converter's generated reference, including their BF16 rounding.
+        payloads = dict(zip(module.profile.YUME_ROPE_BUFFERS, (
+            bytes.fromhex("0000433dc33d123e433e743e923eab3ec33edb3ef43e063f123f1e3f2b3f373f433f4f3f5b3f683f743f"),
+            bytes.fromhex("00003a3dba3d0c3e3a3e693e8c3ea33eba3ed13ee93e003f0c3f173f233f2f3f3a3f463f513f5d3f693f743f"),
+            b"".join(struct.pack("<f", float(index))[2:] for index in range(256)),
+        )))
+        with tempfile.TemporaryDirectory() as directory:
+            args, calls = fixture(Path(directory)), []
+            args.profile = module.profile.YUME_PROFILE
+            safetensors(Path(args.checkpoint), {**RAW["checkpoint"], **module.profile.YUME_ROPE_BUFFERS})
+            with Path(args.checkpoint).open("r+b") as source:
+                size = struct.unpack("<Q", source.read(8))[0]
+                header = json.loads(source.read(size))
+                for name, payload in payloads.items():
+                    source.seek(8 + size + header[name]["data_offsets"][0])
+                    source.write(payload)
+            planned = module.convert(args)
+            self.assertFalse(planned["tensorDataRead"])
+            self.assertEqual(planned["derivedBufferVerification"], "pending")
+            args.check = True
+            info = fake_runtime(calls)
+            info.update(torch=torch, safe_open=safe_open)
+            with patch.object(module, "runtime", return_value=info):
+                checked = module.convert(args)
+                self.assertTrue(checked["tensorDataRead"])
+                self.assertFalse(checked["weightTensorDataRead"])
+                self.assertEqual(checked["derivedBufferBytesRead"], 598)
+                self.assertEqual(checked["derivedBufferVerification"], "passed")
+                self.assertEqual({row["source"]: row["sha256"] for row in checked["derivedBuffers"]},
+                                 {name: hashlib.sha256(data).hexdigest() for name, data in payloads.items()})
+                self.assertEqual(calls, [])
+                first = next(iter(payloads))
+                for bad in (b"\0\x80", b"\x80\x3f", b"\xc0\x7f"):  # -0, 1, NaN all violate exact values.
+                    with Path(args.checkpoint).open("r+b") as source:
+                        source.seek(8 + size + header[first]["data_offsets"][0])
+                        source.write(bad)
+                    with self.subTest(bytes=bad), self.assertRaisesRegex(ValueError, "Noncanonical Yume"):
+                        module.convert(args)
+            self.assertFalse(Path(args.output_dir).exists())
+            self.assertFalse(torch.cuda.is_initialized())
+
+    def test_yume_cache_header_allowlist_does_not_hide_unknown_weights(self):
+        headers = {source: {key: {"shape": shape, "dtype": "BF16"} for key, shape in tensors.items()}
+                   for source, tensors in RAW.items()}
+        headers["checkpoint"].update({key: {"shape": shape, "dtype": "BF16"}
+                                      for key, shape in module.profile.YUME_ROPE_BUFFERS.items()})
+        first = next(iter(module.profile.YUME_ROPE_BUFFERS))
+        for invalid in (None, {"shape": [20], "dtype": "BF16"}, {"shape": [21], "dtype": "F32"}):
+            checkpoint = dict(headers["checkpoint"])
+            if invalid is None:
+                del checkpoint[first]
+            else:
+                checkpoint[first] = invalid
+            with self.subTest(header=invalid), self.assertRaisesRegex(ValueError, "exact derived buffer"):
+                module.profile.map_headers({**headers, "checkpoint": checkpoint}, module.profile.YUME_PROFILE)
+        for key in ("net.accum_iteration", "net.pos_embedder.learned_frequency"):
+            checkpoint = {**headers["checkpoint"], key: {"shape": [1], "dtype": "BF16"}}
+            unknown = {**headers, "checkpoint": checkpoint}
+            mapping = module.profile.map_headers(unknown, module.profile.YUME_PROFILE)
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, "exact key mismatch"):
+                module.schemas_and_models(fake_runtime([]), unknown, mapping, module.profile.YUME_PROFILE)
+
+    def test_complete_checkpoint_prefixes_and_collisions(self):
+        headers = {source: {key: {"shape": shape, "dtype": "BF16"} for key, shape in tensors.items()}
+                   for source, tensors in RAW.items()}
+        expected = module.profile.map_headers(headers)
+        for prefix in module.profile.CHECKPOINT_PREFIXES:
+            with self.subTest(prefix=prefix):
+                checkpoint = {prefix + key.removeprefix("net."): value for key, value in headers["checkpoint"].items()}
+                alternate = {**headers, "checkpoint": checkpoint}
+                mapping = module.profile.map_headers(alternate)
+                module.profile.validate_anchors(alternate)
+                self.assertEqual({name: set(keys) for name, keys in mapping.items()},
+                                 {name: set(keys) for name, keys in expected.items()})
+                self.assertEqual(mapping["transformer"]["patch_embed.proj.weight"], prefix + "x_embedder.proj.1.weight")
+        for mixed_key in ("model.diffusion_model.x_embedder.proj.1.weight", "blocks.0.self_attn.q_norm.weight"):
+            with self.subTest(key=mixed_key), self.assertRaisesRegex(ValueError, "complete checkpoint prefix"):
+                module.profile.map_headers({**headers, "checkpoint": {**headers["checkpoint"],
+                    mixed_key: headers["checkpoint"]["net.x_embedder.proj.1.weight"]}})
+        colliding = {key.replace("net.", "model.diffusion_model.", 1): value
+                     for key, value in headers["checkpoint"].items()}
+        colliding["model.diffusion_model.patch_embed.proj.weight"] = {"shape": [2048, 68], "dtype": "BF16"}
+        with self.assertRaisesRegex(ValueError, "collision"):
+            module.profile.map_headers({**headers, "checkpoint": colliding})
+
+    def test_expanded_profile_is_explicit_and_uses_its_exact_meta_schema(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args, calls = fixture(Path(directory)), []
+            args.profile, args.check = module.profile.EXPANDED_PROFILE, True
+            with self.assertRaisesRegex(ValueError, "num_layers"):
+                module.convert(args)
+            Path(args.transformer_config).write_text(json.dumps(module.profile.transformer_config(args.profile)))
+            with self.assertRaisesRegex(ValueError, "blocks.39"):
+                module.convert(args)
+            expanded = dict(RAW["checkpoint"])
+            expanded["net.blocks.39.mlp.layer1.weight"] = expanded.pop("net.blocks.27.mlp.layer1.weight")
+            safetensors(Path(args.checkpoint), expanded)
+            schema = dict(SCHEMAS["transformer"])
+            schema["transformer_blocks.39.ff.net.0.proj.weight"] = schema.pop("transformer_blocks.27.ff.net.0.proj.weight")
+            runtime, configs = fake_runtime(calls), []
+            def transformer(**config):
+                configs.append(config)
+                return FakeModel("transformer", calls)
+            runtime["transformer"] = transformer
+            with patch.dict(SCHEMAS["transformer"], schema, clear=True), patch.object(module, "runtime", return_value=runtime):
+                report = module.convert(args)
+                self.assertEqual(report["profile"], module.profile.EXPANDED_PROFILE)
+                self.assertEqual(report["transformerLayers"], 40)
+                self.assertEqual(configs[0]["num_layers"], 40)
+                self.assertEqual(calls, [])
+                args.profile = module.profile.PROFILE
+                Path(args.transformer_config).write_text(json.dumps(module.profile.TRANSFORMER))
+                with self.assertRaisesRegex(ValueError, "layers exceed"):
+                    module.convert(args)
+                args.profile = module.profile.EXPANDED_PROFILE
+                Path(args.transformer_config).write_text(json.dumps(module.profile.transformer_config(args.profile)))
+                expanded["net.blocks.0.unexpected_tensor"] = [1]
+                safetensors(Path(args.checkpoint), expanded)
+                with self.assertRaisesRegex(ValueError, "exact key mismatch"):
+                    module.convert(args)
+            self.assertEqual(module.profile.TRANSFORMER["num_layers"], 28)
+            self.assertFalse(Path(args.output_dir).exists())
+
     def test_plan_cli_is_stdlib_only_and_does_not_create_output(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -210,12 +339,12 @@ class ConversionTests(unittest.TestCase):
             self.assertEqual(len([c for c in calls if c[0] == "read_tensor"]), sum(map(len, RAW.values())))
             self.assertEqual(len([c for c in calls if c[0] == "strict_load"]), 4)
             worker = module.sibling("conversion_test_worker", ROOT / "tools/inference/worker.py")
-            self.assertEqual(worker.validate_model(args.output_dir), Path(args.output_dir))
+            self.assertEqual(worker.validate_model(args.output_dir), Path(args.output_dir).resolve())
             for path, stat in originals.items():
                 self.assertEqual((path.stat().st_size, path.stat().st_mtime_ns), stat)
 
     def test_profile_config_shape_dtype_and_unknown_keys_fail_closed(self):
-        cases = ("wrong_profile", "wrong_config", "wrong_anchor", "wrong_other_shape", "quantized", "extra_counter", "collision")
+        cases = ("wrong_profile", "wrong_config", "wrong_anchor", "wrong_other_shape", "quantized", "extra_counter", "position_buffer", "collision")
         for case in cases:
             with self.subTest(case=case), tempfile.TemporaryDirectory() as directory:
                 args, calls = fixture(Path(directory)), []
@@ -231,6 +360,8 @@ class ConversionTests(unittest.TestCase):
                         raw["net.blocks.0.self_attn.k_proj.weight"] = [2047, 2048]
                     elif case == "extra_counter":
                         raw["net.accum_iteration"] = [1]
+                    elif case == "position_buffer":
+                        raw["net.pos_embedder.dim_spatial_range"] = [21]
                     elif case == "collision":
                         raw["net.time_embed.t_embedder.linear_1.weight"] = [2048, 2048]
                     safetensors(Path(args.checkpoint), raw, "F8_E4M3" if case == "quantized" else "BF16")

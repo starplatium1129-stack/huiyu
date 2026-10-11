@@ -11,6 +11,7 @@ pub(crate) struct Plan {
     pub model_dir: PathBuf,
     pub mask_model_dir: Option<PathBuf>,
     pub tea_cache_profile_path: Option<PathBuf>,
+    pub upscale_model_path: Option<PathBuf>,
     pub init_image: Option<Arc<Vec<u8>>>,
     pub mask_image: Option<Arc<Vec<u8>>>,
     pub loras: Vec<Value>,
@@ -211,6 +212,14 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         "sampler",
         "scheduler",
         "teaCache",
+        "hiresFix",
+        "hiresScale",
+        "hiresDenoise",
+        "hiresUpscaler",
+        "superResModel",
+        "hiresSampler",
+        "hiresScheduler",
+        "rcasStrength",
     ] {
         input[key] = plan.input[key].clone();
     }
@@ -240,7 +249,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     } else {
         None
     };
-    let request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"teaCacheProfilePath":plan.tea_cache_profile_path,"outputPath":output,"input":input,"inputImagePath":input_image_path,"maskImagePath":mask_image_path,"loras":plan.loras});
+    let request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"teaCacheProfilePath":plan.tea_cache_profile_path,"upscaleModelPath":plan.upscale_model_path,"outputPath":output,"input":input,"inputImagePath":input_image_path,"maskImagePath":mask_image_path,"loras":plan.loras});
     let mut worker = inner.native.take_worker(&plan.settings).await?;
     let result = async {
         worker
