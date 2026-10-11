@@ -16,7 +16,6 @@ $stageRoot=Join-Path $setupRoot 'staging'
 $stagePath=Join-Path $stageRoot 'environment'
 if (-not (Test-Path -LiteralPath $workspacePath -PathType Container)) { throw 'AI 工作区尚未建立' }
 $resolvedWorkspace=(Get-Item -LiteralPath $workspacePath).FullName
-New-Item -ItemType Directory -Force -Path $stageRoot | Out-Null
 function Assert-InWorkspace([string]$path) {
   $resolved=[IO.Path]::GetFullPath($path)
   if (-not $resolved.StartsWith($resolvedWorkspace.TrimEnd('\')+'\',[StringComparison]::OrdinalIgnoreCase)) { throw '环境目录越出 AI 工作区' }
@@ -30,6 +29,7 @@ function Assert-InWorkspace([string]$path) {
   }
 }
 Assert-InWorkspace $stagePath
+New-Item -ItemType Directory -Force -Path $stageRoot | Out-Null
 if (Test-Path -LiteralPath $stagePath) { Remove-Item -LiteralPath $stagePath -Recurse -Force }
 New-Item -ItemType Directory -Path $stagePath | Out-Null
 function Expand-Package([string]$source,[string]$destination) {
@@ -70,7 +70,9 @@ function Install-Node([string]$source,[string]$name,[string]$comfy,[string]$pyth
   }
   $requirements=Join-Path $nodeRoot 'requirements.txt'
   if (Test-Path -LiteralPath $requirements) {
-    & $python -s -m pip install --disable-pip-version-check --cache-dir (Join-Path $setupRoot 'pip-cache') -r $requirements
+    $pipCache=Join-Path $setupRoot 'pip-cache'
+    Assert-InWorkspace $pipCache
+    & $python -s -m pip install --disable-pip-version-check --cache-dir $pipCache -r $requirements
     if ($LASTEXITCODE -ne 0) { throw ('节点依赖安装失败：'+$name) }
   }
   New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
