@@ -21,6 +21,7 @@
         :data-vendor="option.value"
         :class="{ active: vendorProxy === option.value }"
         :aria-pressed="vendorProxy === option.value"
+        :disabled="credentialsLoading"
         @click="selectVendor(option.value)"
       >
         <span>{{ option.label }}</span>
@@ -116,6 +117,7 @@ const props = defineProps<{
   baseUrl: string
   model: string
   apiKey: string
+  credentialsLoading?: boolean
   hint?: string
   isLocalHost?: boolean
   hostConfigured?: boolean
@@ -203,7 +205,7 @@ const modelOptions = computed(() => discoveredModels.value.length
 const modelNote = computed(() => discoveredModels.value.length
   ? '列表由当前服务返回，可能包含非聊天模型；选择前核对模型的 Chat Completions 支持与价格。'
   : '参考模型核对于 2026-10-11；账号可用范围会变化，以服务商控制台和测试返回为准。')
-const statusText = computed(() => testMessage.value || props.hint || '填好地址和密钥即可测试，无需先填模型。')
+const statusText = computed(() => props.credentialsLoading ? '正在读取已保存的 API 密钥，请稍候…' : testMessage.value || props.hint || '填好地址和密钥即可测试，无需先填模型。')
 
 function connectionError(error: unknown): string {
   if (!(error instanceof ApiClientError)) return '连接测试失败，请检查地址、服务是否启动和网络后重试。'
@@ -224,11 +226,11 @@ function connectionError(error: unknown): string {
 
 async function selectVendor(vendor: ApiVendor) {
   const selection = ++vendorSelection
-  if (vendor === props.vendor) return
+  if (vendor === props.vendor || props.credentialsLoading) return
   invalidateTest()
   const revision = draftRevision
   await draftStore.ready
-  if (selection !== vendorSelection || revision !== draftRevision) return
+  if (props.credentialsLoading || selection !== vendorSelection || revision !== draftRevision) return
   showApiKey.value = false
   const current = props.vendor
   // 先把当前商家的草稿存起来
@@ -293,6 +295,7 @@ async function testConnection() {
 </script>
 
 <style scoped>
+.api-settings .api-vendor-picker button:disabled, .api-settings .api-vendor-picker button:disabled :is(span, small) { color:var(--text-disabled); cursor:wait; }
 .api-provider-help, .api-host-advanced { color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.6; }
 .api-provider-help p, .api-host-advanced p { margin:0 0 var(--s-2); }
 .api-help-links { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-4); }

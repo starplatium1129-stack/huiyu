@@ -295,7 +295,7 @@ npm run wf -- models:check --json --verify-hashes
 - [GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna)及 GPT-6 Sol 在 Chat Completions 里只支持 `reasoning_effort=none` 的工具调用，工具启用时绘遇设为 `none`。GPT-6.1 Sol / Astra 工具调用需 Responses，因此不列为默认推荐；直接选择后若启用房间工具会在发请求前提示关闭工具或换 Luna。对话设置提供「房间工具」开关。
 - [DeepSeek 思考模式](https://api-docs.deepseek.com/guides/thinking_mode/)的工具模式要求跨轮完整 `reasoning_content`。房间只保存对话台词，因此当前用工具请关闭思考；不支持的组合在发送前拒绝并给出可操作提示。普通角色聊天默认关闭思考。低/中/高映射至官方 low/high/max。Kimi K3 同样不在此简化历史协议里伪装为已支持。
 - Gemini 工具调用的 [thought signature](https://ai.google.dev/gemini-api/docs/generate-content/thought-signatures#openai)按官方字段原样透传，仅保留当前工具循环的内存；不解码、不展示、不入持久聊天记录。签名与工具参数均有边界校验。默认生成参数不对未知兼容服务强行套用某一家的思考字段。
-- 密钥默认隐藏，切服务商不会把前一家密钥带给新端点。桌面继续使用 Windows 凭据管理器，网页只保留当前页面会话密钥，普通备份与草稿元数据不写入新明文密钥。地址不能携带账号、查询参数或锚点；上游错误 body 不回显，避免把授权头/Key 带进页面或诊断信息。
+- 密钥默认隐藏，切服务商不会把前一家密钥带给新端点。桌面继续使用 Windows 凭据管理器，网页只保留当前页面会话密钥，普通备份与草稿元数据不写入新明文密钥。地址不能携带账号、查询参数或锚点；上游错误 body 不回显，避免把授权头/Key 带进页面或诊断信息。 桌面重开可恢复正式保存过的服务商密钥；安全凭据读取期间会提示稍候并暂缓切换服务商。未保存密钥仍仅留当前会话，明确清除或后续编辑不会被较早保存请求恢复；个人配置缺少密钥时需自行补齐，不悄悄改用站主额度。
 - 错误区分别说明 401 密钥、403 权限/地域、402 计费、429 配额、404/405 目录不支持、超时、服务未启动及错误响应格式。目录测试不会替用户创建账号、密钥、订阅或购买额度。
 
 Gemini 的低 / 中 / 高通过 `reasoning_effort` 原样传递；Gemini 3 和 2.5 Pro 不允许关闭思考，因此界面明确说明「关」按低档发送，其他 Gemini 2.5 使用 `none`。详见 [Google 官方 OpenAI 兼容层 Thinking](https://ai.google.dev/gemini-api/docs/openai#thinking)。未保存推理偏好的新房间默认关闭，已有明确偏好保持不变；DeepSeek 开房间工具时需关闭推理。

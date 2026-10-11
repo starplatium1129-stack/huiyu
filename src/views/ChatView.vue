@@ -77,6 +77,7 @@
           :base-url="apiBaseUrl"
           :model="apiModel"
           :api-key="apiKey"
+          :credentials-loading="storage.credentialsLoading.value"
           :hint="apiConfigHint"
           :is-local-host="isLocalHost"
           :host-configured="hostApiConfigured"

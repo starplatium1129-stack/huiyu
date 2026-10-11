@@ -214,11 +214,12 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     settingsWrites++
     try {
       await storage.setApiSettings(draft)
+      if (latest()) savedConnection = [...storedConnection(), vendor]
+      // A completed save owns its stored connection, not later edits or clears
+      // that were published when this editor switched to another provider.
+      if (!current()) return
       let remembered = true
-      if (latest()) {
-        savedConnection = [...storedConnection(), vendor]
-        try { await rememberSavedChatApiDraft(vendor, draft) } catch { remembered = false }
-      }
+      try { await rememberSavedChatApiDraft(vendor, draft) } catch { remembered = false }
       if (!current()) return
       apiConfigHint.value = getDesktopCapabilities() ? '配置已保存，密钥由 Windows 凭据管理器保护。' : '配置已保存，密钥仅用于当前页面会话。'
       if (!remembered) apiConfigHint.value += ' 服务商切换记录未能保存，请重试。'
