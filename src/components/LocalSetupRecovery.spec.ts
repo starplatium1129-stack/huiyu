@@ -187,6 +187,49 @@ describe('first setup reopens with workspace-bound evidence', () => {
     reopened.unmount(); await flushPromises()
   })
 
+  it('retries a failed runtime download through preparation and startup but waits for fresh readiness', async () => {
+    const value = complete(), checked = deferred(), calls: string[] = []
+    value.comfy.installation = 'missing'; value.nodes.state = 'unknown'
+    let corrupt = true
+    api.downloadModel.mockImplementation(async (id: string) => {
+      calls.push(id)
+      const model = value.models.find(item => item.id === id)!
+      if (corrupt && id === 'runtime-kjnodes') return { type: 'result', modelId: id, path: model.path,
+        state: 'failed', code: 'HASH_MISMATCH', message: '摘要不符，请重试' }
+      return { type: 'result', modelId: id, path: model.path, state: 'downloaded', bytes: 10,
+        sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '已校验' }
+    })
+    let operation = { ...op(), status: 'completed' as const }
+    api.prepareEnvironment.mockImplementation(async () => { calls.push('prepare'); return { ok: true, operation } })
+    api.serviceAction.mockImplementation(async () => {
+      calls.push('start'); operation = { ...op('comfy-start'), id: 'owned-start', status: 'completed' }
+      return { ok: true, operation }
+    })
+    api.getOperation.mockImplementation(async () => ({ ok: true, operation }))
+    api.getStatus.mockImplementation(() => { calls.push('readiness'); return checked.promise })
+    const wrapper = automation(value)
+    try {
+      await wrapper.get('.setup-review input').setValue(true)
+      await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
+      expect(calls).toEqual(['runtime-comfy-nvidia', 'runtime-kjnodes'])
+      expect(wrapper.get('[role="alert"]').text()).toContain('摘要不符')
+      expect(api.prepareEnvironment).not.toHaveBeenCalled()
+      expect(api.serviceAction).not.toHaveBeenCalled()
+      expect(wrapper.text()).not.toContain('生成第一张图片')
+      expect(wrapper.get('.setup-buttons .btn-primary').attributes('disabled')).toBeUndefined()
+      corrupt = false; calls.length = 0
+      await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
+      expect(calls).toEqual(['runtime-comfy-nvidia', 'runtime-kjnodes', 'runtime-anima-teacache', 'prepare',
+        'anima-miaomiao-v1.6', 'qwen-encoder', 'qwen-vae', 'L_NENE_V21_ANIMA', 'L_NAT_V21_ANIMA', 'start', 'readiness'])
+      expect(api.prepareEnvironment).toHaveBeenCalledExactlyOnceWith('comfy-nvidia', value.workspace.path)
+      expect(api.serviceAction).toHaveBeenCalledExactlyOnceWith('comfy', 'start')
+      expect(wrapper.text()).not.toContain('生成第一张图片')
+      checked.resolve(complete()); await flushPromises()
+      expect(wrapper.text()).toContain('生成第一张图片')
+      expect(wrapper.emitted('refresh')).toHaveLength(1)
+    } finally { wrapper.unmount() }
+  })
+
   it.each(['prepare-environment', 'comfy-start', 'llama-start'] as const)('recovers owned %s, cancels only its ID, and rechecks real status when it settles', async kind => {
     vi.useFakeTimers()
     let operation = op(kind); saveOperation(operation)

@@ -129,6 +129,8 @@ async fn isolated_download_checks_disk_bytes_hash_and_publishes_without_replacin
     let target = temp.path().join("ComfyUI/models/vae/fixture.safetensors");
     let count = Arc::new(AtomicUsize::new(0));
     let calls = count.clone();
+    let bad_count = Arc::new(AtomicUsize::new(0));
+    let bad_calls = bad_count.clone();
     let race_target = target.clone();
     let app = Router::new()
         .route(
@@ -141,7 +143,19 @@ async fn isolated_download_checks_disk_bytes_hash_and_publishes_without_replacin
                 }
             }),
         )
-        .route("/bad", get(|| async { vec![b'x'; DATA.len()] }))
+        .route(
+            "/bad",
+            get(move || {
+                let attempt = bad_calls.fetch_add(1, Ordering::SeqCst);
+                async move {
+                    if attempt == 0 {
+                        vec![b'x'; DATA.len()]
+                    } else {
+                        DATA.to_vec()
+                    }
+                }
+            }),
+        )
         .route("/short", get(|| async { b"partial" }))
         .route(
             "/race",
@@ -208,6 +222,17 @@ async fn isolated_download_checks_disk_bytes_hash_and_publishes_without_replacin
         );
         assert!(!target.exists());
         no_parts(temp.path());
+        if route == "bad" {
+            // The same model and source can recover after an integrity failure.
+            let recovered = download(&spec, &client, &send, &cancel).await.unwrap();
+            assert_eq!(recovered["modelId"], spec.id);
+            assert_eq!(recovered["state"], "downloaded");
+            assert_eq!(recovered["sha256"], spec.spec.sha256);
+            assert_eq!(std::fs::read(&target).unwrap(), DATA);
+            assert_eq!(bad_count.load(Ordering::SeqCst), 2);
+            no_parts(temp.path());
+            std::fs::remove_file(&target).unwrap();
+        }
     }
     let old_bytes = spec.spec.bytes;
     spec.spec.bytes = u64::MAX;

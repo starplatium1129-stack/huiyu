@@ -239,7 +239,9 @@ async fn preparation_requires_explicit_stop_without_killing_live_services() {
     );
     assert!(service.comfy_owned().await);
     assert!(service.online(1, &service.settings()).await);
-    service.close().await;
+    let stop = service.begin("comfy-stop", &["stop", "verify"]).unwrap();
+    service.service_action(1, false, &stop).await.unwrap();
+    service.finish(&stop, Ok(()));
     service
         .require_stopped_comfy_for_preparation()
         .await
@@ -259,4 +261,51 @@ async fn preparation_requires_explicit_stop_without_killing_live_services() {
         "COMFY_STOP_REQUIRED"
     );
     assert!(listener.local_addr().is_ok());
+    // A non-Comfy HTTP service keeps the port occupied while startup is retried.
+    let external = tokio::spawn(async move {
+        axum::serve(listener, axum::Router::new()).await.unwrap();
+    });
+    let start = service.begin("comfy-start", &["start", "verify"]).unwrap();
+    let failure = service.service_action(1, true, &start).await.unwrap_err();
+    assert_eq!(failure.code, "COMFY_START_FAILED");
+    service.finish(&start, Err(failure));
+    assert_eq!(
+        service.state.lock().unwrap().operation.as_ref().unwrap()["status"],
+        "failed"
+    );
+    assert!(!service.comfy_owned().await);
+    assert!(service.comfy_cancel.lock().unwrap().is_none());
+    assert_eq!(
+        service
+            .request(&service.config.comfy_host, "/system_stats", None, 3)
+            .await
+            .unwrap()
+            .0,
+        404
+    );
+    external.abort();
+    assert!(external.await.unwrap_err().is_cancelled());
+    service
+        .require_stopped_comfy_for_preparation()
+        .await
+        .unwrap();
+    let retry = service.begin("comfy-start", &["start", "verify"]).unwrap();
+    service.service_action(1, true, &retry).await.unwrap();
+    service.finish(&retry, Ok(()));
+    assert_eq!(
+        service.state.lock().unwrap().operation.as_ref().unwrap()["status"],
+        "completed"
+    );
+    assert!(service.comfy_owned().await);
+    assert!(service.state.lock().unwrap().managed[1].desired);
+    assert!(service.online(1, &service.settings()).await);
+    assert_eq!(
+        std::fs::read_to_string(service.comfy_root().join("fixture-starts.log"))
+            .unwrap()
+            .lines()
+            .count(),
+        3
+    );
+    service.close().await;
+    assert!(!service.online(1, &service.settings()).await);
 }
