@@ -45,7 +45,7 @@ describe('first local setup panel', () => {
     const operation={id:'owned-setup',status:'completed',message:'已启动',error:''}
     fixture.serviceAction.mockResolvedValue({ok:true,operation})
     fixture.getOperation.mockResolvedValue({ok:true,operation})
-    const wrapper=mount(LocalSetupAutomation,{props:{snapshot:value,workspaceBlocked:false,statusConfirmed:true},global:{stubs:{ArchiveIcon:true,RouterLink:{template:'<a><slot /></a>'}}}})
+    const wrapper=mount(LocalSetupAutomation,{props:{snapshot:value,workspaceBlocked:false,statusConfirmed:true},global:{stubs:{ArchiveIcon:true,RouterLink:{name:'RouterLink',props:['to'],template:'<a><slot /></a>'}}}})
     await wrapper.getComponent(StudioSelect).setValue('anima-base-v1.0')
     await wrapper.findAll('input[type="checkbox"]')[1].setValue(false)
     const prepare=wrapper.findAll('button').find(button=>button.text().includes('一键准备'))!
@@ -59,6 +59,8 @@ describe('first local setup panel', () => {
     expect(fixture.getStatus).toHaveBeenCalledWith({modelId:'anima-base-v1.0'})
     expect(fixture.startLlama).not.toHaveBeenCalled()
     expect(wrapper.text()).toContain('生成第一张图片')
+    expect(wrapper.findAllComponents({ name: 'RouterLink' }).find(link => link.text() === '生成第一张图片')?.props('to')).toEqual({path:'/prompt-builder',query:{preparedModel:'anima-base-v1.0'}})
+    expect(wrapper.text()).toContain('宁宁与夏目仍需对应权重')
     wrapper.unmount()
   })
   it.each(['offline', 'missing-model', 'wrong-workspace', 'wrong-model'])('does not declare drawing ready after preparation with %s evidence', async condition => {

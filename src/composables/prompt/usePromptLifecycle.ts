@@ -1,8 +1,9 @@
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { useSceneStore } from '@/stores/sceneStore'
+import { settingsRepository, STARTER_MODEL_SETTING } from '@/storage/settingsRepository'
 
 import { nextTick,onActivated,onBeforeUnmount,onDeactivated,onMounted,watch } from 'vue';
-import type { RouteLocationNormalizedLoaded } from 'vue-router';
+import type { RouteLocationNormalizedLoaded, Router } from 'vue-router';
 import type { UseDirectorPopularInput, useDirectorPopular } from '@/composables/scene/useDirectorPopular';
 import type { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession';
@@ -13,14 +14,15 @@ import type { useTempResult } from './useTempResult';
 import type { usePromptVideoBridge } from './usePromptVideoBridge';
 
 export interface PromptLifecycleDeps extends
-    Pick<UseDirectorPopularInput, 'pb' | 'sd' | 'drawEngine' | 'sdSize' | 'animaState' | 'patchAnimaState' | 'refreshAnimaBackend' | 'setDrawEngine' | 'applyRecommendedSize'>,
-    Pick<ReturnType<typeof useDirectorPopular>, 'applyManagedRoute' | 'refreshManagedRoute' | 'restorePopularDraft' | 'syncManagedRoute' | 'popularBlueprintPool' | 'blueprintCategories' | 'popularCategory'>,
+    Pick<UseDirectorPopularInput, 'generationBusy' | 'pb' | 'sd' | 'drawEngine' | 'sdSize' | 'animaState' | 'patchAnimaState' | 'refreshAnimaBackend' | 'setDrawEngine' | 'applyRecommendedSize'>,
+    Pick<ReturnType<typeof useDirectorPopular>, 'applyPreparedModel' | 'applyManagedRoute' | 'refreshManagedRoute' | 'restorePopularDraft' | 'syncManagedRoute' | 'popularBlueprintPool' | 'blueprintCategories' | 'popularCategory'>,
     Pick<ReturnType<typeof useDirectorEngine>, 'displayResultUrl' | 'engineOnline' | 'updateAnimaPromptState'>,
     Pick<ReturnType<typeof usePromptMaterials>, 'sceneCollection' | 'sceneLimit'>,
     Pick<ReturnType<typeof usePromptDeepLink>, 'applyDeepLink'>,
     Pick<ReturnType<typeof useTempResult>, 'restoreTempResult'>,
     Pick<ReturnType<typeof usePromptVideoBridge>, 'refreshShotsPending'> {
     route: RouteLocationNormalizedLoaded;
+    router: Router;
     DIRECTOR_MODE_KEY: string;
     syncAnimaCharacter: ReturnType<typeof useAnimaSession>['syncCharacter'];
     animaSession: Pick<ReturnType<typeof useAnimaSession>, 'startStatusPolling' | 'stopStatusPolling' | 'pauseStatusPolling'>;
@@ -30,12 +32,31 @@ export interface PromptLifecycleDeps extends
 }
 
 /** Installed once by the workspace owner, independent of how its view exposes panels. */
-export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession }: PromptLifecycleDeps): void {
+export function usePromptLifecycle({ router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession }: PromptLifecycleDeps): void {
     // A delayed storage/backend response must not resume setup or submit a deep-link job
     // after its workspace has been destroyed. KeepAlive deactivation retains its tasks.
     let disposed = false;
     let viewActive = true;
     let draftInitialized = false;
+    let consumedPreparedQuery: unknown;
+    async function applyPreparedLink() {
+        const q = route.query;
+        if (route.path !== '/prompt-builder' || typeof q.preparedModel !== 'string' || q === consumedPreparedQuery) return;
+        consumedPreparedQuery = q;
+        const modelId = q.preparedModel, wasBusy = generationBusy.value;
+        const query = { ...q }; delete query.preparedModel;
+        const target = router.resolve({ path: route.path, query, hash: route.hash }).fullPath;
+        await router.replace(target);
+        const current = () => !disposed && viewActive && consumedPreparedQuery === q && route.fullPath === target;
+        if (!current() || ['remix', 'regen', 'variant'].some(key => typeof q[key] === 'string')) return;
+        if (wasBusy || generationBusy.value) { pb.flash('生成进行中，完成或停止后再从控制室选用准备的底模'); return; }
+        if (modelId !== settingsRepository.get(STARTER_MODEL_SETTING)) {
+            pb.flash('准备的底模选择已改变，请回到控制室重新检查');
+            return;
+        }
+        await applyPreparedModel(modelId, current);
+    }
+    watch(() => route.query, () => { if (draftInitialized && viewActive) void applyPreparedLink(); });
     function saveWorkspaceDraft() {
         // Backend defaults may arrive before the saved inputs have been adopted.
         if (!draftInitialized) return;
@@ -43,7 +64,7 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
         pb.saveDraft?.();
     }
     onBeforeUnmount(() => { disposed = true; viewActive = false; });
-    onDeactivated(() => { viewActive = false; animaSession.pauseStatusPolling(); });
+    onDeactivated(() => { viewActive = false; consumedPreparedQuery = undefined; animaSession.pauseStatusPolling(); });
     onActivated(async () => {
         if (viewActive || disposed)
             return;
@@ -53,6 +74,8 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
             if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
             if (disposed || !viewActive) return;
         }
+        if (draftInitialized) await applyPreparedLink();
+        if (disposed || !viewActive) return;
         if (drawEngine.value !== 'sd')
             animaSession.startStatusPolling();
     });
@@ -107,6 +130,8 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
         if (disposed) return;
         // 热门角色草稿恢复（底模/蓝图尺寸/导演决策/后端白名单收敛）已下沉 useDirectorPopular
         if (!restoredRecipe) restorePopularDraft();
+        await applyPreparedLink();
+        if (disposed) return;
         draftInitialized = true;
         saveWorkspaceDraft();
         if (route.query.quick === '1') {

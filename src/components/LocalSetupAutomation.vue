@@ -13,6 +13,7 @@
         <StudioSelect id="setup-image-model" v-model="automation.modelId.value" label="绘图底模" :disabled="automation.busy.value" :options="imageOptions" />
         <p>{{ selectedImage?.purpose }}</p>
         <label><input v-model="automation.loras.value" type="checkbox" :disabled="automation.busy.value">同时准备宁宁与夏目 LoRA · 由绘遇作者亲自训练</label>
+        <p v-if="!automation.loras.value">不准备这两份 LoRA 时，请使用支持无专用 LoRA 的热门角色与底模组合；宁宁与夏目仍需对应权重。</p>
       </div>
       <details class="setup-chat">
         <StudioDisclosureSummary>可选：同时准备本地聊天</StudioDisclosureSummary>
@@ -56,7 +57,7 @@
     <p v-if="automation.message.value" role="status" aria-live="polite">{{ automation.message.value }}</p>
     <p v-if="automation.download.activeId.value" role="status">{{ formatBytes(automation.download.bytesRead.value) }} / {{ formatBytes(automation.download.expectedBytes.value) }}</p>
     <p v-if="automation.error.value" class="setup-error" role="alert">{{ automation.error.value }}</p>
-    <div v-if="automation.completed.value" class="setup-buttons"><RouterLink v-if="automation.drawing.value" class="btn btn-primary" to="/prompt-builder">生成第一张图片</RouterLink><RouterLink v-if="automation.chatId.value" class="btn btn-ghost" to="/chat">进入角色房间</RouterLink></div>
+    <div v-if="automation.completed.value" class="setup-buttons"><RouterLink v-if="automation.drawing.value" class="btn btn-primary" :to="{path:'/prompt-builder',query:{preparedModel:automation.modelId.value}}">生成第一张图片</RouterLink><RouterLink v-if="automation.chatId.value" class="btn btn-ghost" to="/chat">进入角色房间</RouterLink></div>
   </div>
 </template>
 <script setup lang="ts">

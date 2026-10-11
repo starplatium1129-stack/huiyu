@@ -164,21 +164,21 @@ export function useAnimaSession(options: AnimaSessionOptions) {
    * 成功响应即使 offline 也采用（清空列表）；只有请求失败才标记离线。
    */
   // Awaiters follow a superseding refresh; false means the view cancelled discovery.
-  function refreshBackend(): Promise<boolean> {
+  function refreshBackend(checkedStatus?: AnimaStatusResponse): Promise<boolean> {
     if (disposed) return Promise.resolve(false)
     // Superseding discovery still belongs to the pending read's edit baseline.
     if (!statusRequest) refreshSettingsRevision = settingsRevision
     statusRequest?.abort()
     const controller = new AbortController()
     statusRequest = controller
-    statusRefresh = readBackendStatus(controller, statusEpoch, refreshSettingsRevision)
+    statusRefresh = readBackendStatus(controller, statusEpoch, refreshSettingsRevision, checkedStatus)
     return statusRefresh
   }
 
-  async function readBackendStatus(controller: AbortController, epoch: number, initialSettingsRevision: number): Promise<boolean> {
+  async function readBackendStatus(controller: AbortController, epoch: number, initialSettingsRevision: number, checkedStatus?: AnimaStatusResponse): Promise<boolean> {
     const latest = () => epoch === statusEpoch && statusRequest !== controller ? statusRefresh ?? false : false
     try {
-      const data = await client.request<AnimaStatusResponse>('/api/creative/status', {
+      const data = checkedStatus ?? await client.request<AnimaStatusResponse>('/api/creative/status', {
         cache: 'no-store', signal: controller.signal, timeoutMs: 10_000,
         validate: value => value.ok === true,
       })
