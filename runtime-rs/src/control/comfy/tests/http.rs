@@ -71,6 +71,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         body = json.loads(self.rfile.read(int(self.headers.get('Content-Length',0))) or b'{}')
         if self.path != '/prompt': self.send({}); return
         graph = body['prompt']
+        pathlib.Path('fixture-prompts.log').open('a').write('prompt\n')
         for node in graph.values():
             if node['class_type'] == 'LoadImage': assert (root / node['inputs']['image']).is_file()
         pathlib.Path('fixture-workflow.json').write_text(json.dumps(graph))
@@ -257,6 +258,15 @@ async fn gateway_upload_mask_lora_hires_retry_and_reopen_share_managed_installat
             .count(),
         2
     );
+    assert_eq!(
+        std::fs::read_to_string(control.comfy_root().join("fixture-prompts.log"))
+            .unwrap()
+            .lines()
+            .count(),
+        3
+    );
     images.close().await;
     reopened.close().await;
 }
+
+mod durable;
