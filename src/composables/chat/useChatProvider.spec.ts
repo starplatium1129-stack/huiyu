@@ -204,3 +204,32 @@ it('recognizes new provider bindings and distinguishes an empty Ollama service f
     expect(provider.checkingChatStatus.value).toBe(false)
   } finally { scope.stop() }
 })
+
+
+it('only treats the selected personal or host route as ready and reopens invalid personal settings', async () => {
+  const scope = effectScope()
+  const neverConfigured = ref(false)
+  const state = reactive({ settings: { provider: 'local', model: '', apiBaseUrl: 'https://api.deepseek.com', apiModel: 'saved-model', apiKey: '' } })
+  const provider = scope.run(() => useChatProvider({ isBusy: ref(false), storage: {
+    state, neverConfigured, setProvider: (value: string) => { state.settings.provider = value },
+    setApiSettings: async (value: { apiKey: string }) => { state.settings.apiKey = value.apiKey; neverConfigured.value = false },
+  } as never }))!
+  try {
+    provider.hostApiConfigured.value = true
+    provider.setChatProvider('api')
+    expect(provider.useHostConfig.value).toBe(false)
+    expect(provider.chatReady.value).toBe(false)
+    expect(provider.apiSettingsOpen.value).toBe(true)
+    expect(provider.statusKind.value).toBe('')
+    provider.apiKey.value = 'neutral-personal-key'
+    expect(provider.chatReady.value).toBe(true)
+    await provider.clearApiCredential()
+    expect(provider.chatReady.value).toBe(false)
+    provider.setBusy(false)
+    expect(provider.statusKind.value).toBe('')
+    expect(provider.apiBaseUrl.value).toBe('https://api.deepseek.com')
+    neverConfigured.value = true
+    expect(provider.useHostConfig.value).toBe(true)
+    expect(provider.chatReady.value).toBe(true)
+  } finally { scope.stop() }
+})

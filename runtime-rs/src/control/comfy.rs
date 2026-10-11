@@ -1,3 +1,4 @@
+mod model_paths;
 use super::*;
 use std::process::Stdio;
 use tokio::process::Command;
@@ -198,6 +199,8 @@ impl ControlService {
         let logs = self.config.runtime_root.join("logs");
         tokio::fs::create_dir_all(&logs).await?;
         let output = std::fs::File::create(logs.join("comfyui.log"))?;
+        let model_paths =
+            model_paths::create(&self.config.ai_workspace_root, &self.config.runtime_root)?;
         let mut command = Command::new(python);
         command
             .current_dir(&root)
@@ -211,6 +214,8 @@ impl ControlService {
             .arg(endpoint.port_or_known_default().unwrap_or(8188).to_string())
             .args(["--disable-auto-launch", "--input-directory"])
             .arg(&input)
+            .arg("--extra-model-paths-config")
+            .arg(&model_paths)
             .stdin(Stdio::null())
             .stdout(Stdio::from(output.try_clone()?))
             .stderr(Stdio::from(output));

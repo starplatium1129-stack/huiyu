@@ -211,7 +211,7 @@ impl ControlService {
         Ok(
             json!({"ok":true,"checkedAt":now(),"recommendedModel":recommended,
             "workspace":{"path":workspace,"state":workspace_state},
-            "comfy":{"path":comfy,"installation":installation,"layout":if venv{"venv"}else if external_venv{"external-venv"}else if portable{"portable"}else{"unrecognized"},"host":host,"connection":connection,"managedEnvironment":setup_environment::managed_comfy_environment(&comfy)},
+            "comfy":{"path":comfy,"installation":installation,"layout":if portable{"portable"}else if venv{"venv"}else if external_venv{"external-venv"}else{"unrecognized"},"host":host,"connection":connection,"managedEnvironment":setup_environment::managed_comfy_environment(&comfy)},
             "models":models,"chat":{"host":self.settings()["llamaHost"],"runtimePresent":workspace.join("Chat/runtime/llama-server.exe").is_file()},"nodes":{"state":if node_info.is_some(){"checked"}else{"unknown"},"required":required,"missing":missing},
             "hardware":{"state":if ram.is_some()||!devices.is_empty(){"reported"}else{"unknown"},"devices":devices,"ramBytes":ram}}),
         )
@@ -313,6 +313,15 @@ mod tests {
         let report = service.local_setup().await.unwrap();
         assert_eq!(report["comfy"]["connection"], "online");
         assert_eq!(report["comfy"]["layout"], "portable");
+        // Runtime and preparation choose embedded Python before a leftover venv.
+        let leftover_venv = root.join("ComfyUI/venv/Scripts/python.exe");
+        std::fs::create_dir_all(leftover_venv.parent().unwrap()).unwrap();
+        std::fs::write(&leftover_venv, b"leftover fixture").unwrap();
+        assert_eq!(
+            service.local_setup().await.unwrap()["comfy"]["layout"],
+            "portable"
+        );
+        std::fs::remove_file(leftover_venv).unwrap();
         assert_eq!(
             report["comfy"]["managedEnvironment"],
             json!({"state":"unknown","environment":null})
@@ -368,6 +377,11 @@ mod tests {
         let interpreter = root.join("ComfyUI/.venv/Scripts/python.exe");
         std::fs::create_dir_all(interpreter.parent().unwrap()).unwrap();
         std::fs::write(&interpreter, b"fixture").unwrap();
+        assert_eq!(
+            service.local_setup().await.unwrap()["comfy"]["layout"],
+            "portable"
+        );
+        std::fs::remove_file(root.join("python_embeded/python.exe")).unwrap();
         assert_eq!(
             service.local_setup().await.unwrap()["comfy"]["layout"],
             "external-venv"

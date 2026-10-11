@@ -22,6 +22,16 @@ beforeEach(() => {
   api.cancelEnvironment.mockResolvedValue({ ok: true })
 })
 describe('explicit existing environment recovery', () => {
+  it('explains explicit stopping before repairing nodes in a live environment', async () => {
+    const value = complete(); value.nodes.missing = ['ImageSharpenKJ']
+    const wrapper = render(value)
+    expect(wrapper.get('[data-testid="setup-node-restart-guidance"]').text()).toContain('先结束生成并停止 ComfyUI')
+    expect(api.serviceAction).not.toHaveBeenCalled()
+    expect(api.prepareEnvironment).not.toHaveBeenCalled()
+    await wrapper.setProps({ snapshot: complete() })
+    expect(wrapper.find('[data-testid="setup-node-restart-guidance"]').exists()).toBe(false)
+    wrapper.unmount()
+  })
   it.each(['portable', 'venv'] as const)('starts existing %s without download or preparation consent', async layout => {
     const value = complete(); value.comfy.layout = layout; value.comfy.connection = 'offline'; value.nodes.state = 'unknown'
     const wrapper = render(value)

@@ -141,6 +141,7 @@ const testState = ref('')
 const testMessage = ref('')
 const discoveredModels = ref<string[]>([])
 let draftRevision = 0
+let vendorSelection = 0
 const clearingKey = ref(false)
 let testController: AbortController | null = null
 function invalidateTest(clearModels = true) {
@@ -221,9 +222,13 @@ function connectionError(error: unknown): string {
   return '连接测试失败，服务可能暂时不可用；请核对官方接入说明后重试。'
 }
 
-function selectVendor(vendor: ApiVendor) {
+async function selectVendor(vendor: ApiVendor) {
+  const selection = ++vendorSelection
   if (vendor === props.vendor) return
   invalidateTest()
+  const revision = draftRevision
+  await draftStore.ready
+  if (selection !== vendorSelection || revision !== draftRevision) return
   showApiKey.value = false
   const current = props.vendor
   // 先把当前商家的草稿存起来

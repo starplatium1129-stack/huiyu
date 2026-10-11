@@ -41,6 +41,9 @@ import http.server, json, pathlib, sys, time
 args = sys.argv
 port = int(args[args.index('--port') + 1])
 input_dir = args[args.index('--input-directory') + 1]
+models = json.loads(pathlib.Path(args[args.index('--extra-model-paths-config') + 1]).read_text())['huiyu_models']
+assert pathlib.Path(models['base_path']) == pathlib.Path(input_dir).parent / 'models'
+assert models['is_default'] is True
 pathlib.Path('fixture-starts.log').open('a').write(input_dir + '\n')
 time.sleep({delay})
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -217,3 +220,43 @@ async fn drawing_waits_for_cancelled_chat_startup_to_finish_its_owned_cleanup() 
 
 #[cfg(unix)]
 mod http;
+
+#[cfg(unix)]
+#[tokio::test]
+async fn preparation_requires_explicit_stop_without_killing_live_services() {
+    let (_temp, service) = fixture(0.0).await;
+    service
+        .ensure_comfy(&CancellationToken::new())
+        .await
+        .unwrap();
+    assert_eq!(
+        service
+            .require_stopped_comfy_for_preparation()
+            .await
+            .unwrap_err()
+            .code,
+        "COMFY_STOP_REQUIRED"
+    );
+    assert!(service.comfy_owned().await);
+    assert!(service.online(1, &service.settings()).await);
+    service.close().await;
+    service
+        .require_stopped_comfy_for_preparation()
+        .await
+        .unwrap();
+    // A responding TCP port is sufficient to protect external services, even
+    // when their HTTP health endpoint is unavailable or a generation is busy.
+    let endpoint = crate::upstream::local_url(&service.config.comfy_host).unwrap();
+    let listener = tokio::net::TcpListener::bind(("127.0.0.1", endpoint.port().unwrap()))
+        .await
+        .unwrap();
+    assert_eq!(
+        service
+            .require_stopped_comfy_for_preparation()
+            .await
+            .unwrap_err()
+            .code,
+        "COMFY_STOP_REQUIRED"
+    );
+    assert!(listener.local_addr().is_ok());
+}

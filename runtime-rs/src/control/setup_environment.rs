@@ -100,6 +100,42 @@ impl ControlService {
         Ok(json!({"ok":true}))
     }
 
+    #[cfg(any(windows, test))]
+    pub(super) async fn require_stopped_comfy_for_preparation(&self) -> Result<()> {
+        let running = || {
+            ApiError::new(
+                409,
+                "COMFY_STOP_REQUIRED",
+                "绘图服务仍在运行。请先结束生成，并在控制室或原启动入口停止 ComfyUI，再重试准备；准备后重新启动并检查节点。",
+            )
+        };
+        // Never restart a live process after a non-atomic queue check. Stopping
+        // is an explicit user action; package changes require a stopped host.
+        if self.comfy_owned().await {
+            return Err(running());
+        }
+        let endpoint = crate::upstream::local_url(&self.config.comfy_host)?;
+        let host = endpoint
+            .host_str()
+            .unwrap_or("127.0.0.1")
+            .trim_matches(&['[', ']'][..]);
+        let port = endpoint.port_or_known_default().unwrap_or(8188);
+        match tokio::time::timeout(
+            Duration::from_secs(2),
+            tokio::net::TcpStream::connect((host, port)),
+        )
+        .await
+        {
+            Ok(Ok(_)) => Err(running()),
+            Ok(Err(error)) if error.kind() == std::io::ErrorKind::ConnectionRefused => Ok(()),
+            _ => Err(ApiError::new(
+                503,
+                "COMFY_STOP_UNCONFIRMED",
+                "无法确认绘图服务已经停止，尚未修改环境；请核对配置地址与当前任务后重试。",
+            )),
+        }
+    }
+
     async fn install_environment(
         &self,
         environment: &str,
@@ -118,6 +154,9 @@ impl ControlService {
         }
         #[cfg(windows)]
         {
+            if environment.starts_with("comfy-") {
+                self.require_stopped_comfy_for_preparation().await?;
+            }
             let path_for = |id: &str| -> Result<std::path::PathBuf> {
                 Ok(model_root(&self.config.ai_workspace_root, id)?.join(model_file(id)?.path))
             };

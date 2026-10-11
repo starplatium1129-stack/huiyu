@@ -6,6 +6,7 @@ import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL, chatApiPreset, chatApiVendor
 import { STORAGE_KEY } from '../../config/characters.ts'
 import { chatApi } from '../../api/chatApi.ts'
 import { ApiClientError } from '../../api/client.ts'
+import { rememberSavedChatApiDraft } from '../../utils/chatApiDrafts.ts'
 
 export type { ApiVendor } from '../../config/chatApi.ts'
 type ChatStorage = ReturnType<typeof useChatStorage>
@@ -140,7 +141,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   )
   const chatReady = computed(() =>
     chatProvider.value === 'api'
-      ? apiConfigured.value || hostApiConfigured.value
+      ? apiConfigured.value || useHostConfig.value
       : ollamaOnline.value,
   )
 
@@ -194,8 +195,8 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     storage.setProvider(provider)
     apiConfigHint.value = ''
     if (provider === 'api') {
-      apiSettingsOpen.value = !apiConfigured.value && !hostApiConfigured.value
-      setChatStatus(apiStatusText(), (apiConfigured.value || hostApiConfigured.value) ? 'online' : '')
+      apiSettingsOpen.value = !apiConfigured.value && !useHostConfig.value
+      setChatStatus(apiStatusText(), (apiConfigured.value || useHostConfig.value) ? 'online' : '')
     } else {
       setChatStatus(localStatusText.value, ollamaOnline.value ? 'online' : '')
     }
@@ -213,9 +214,14 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     settingsWrites++
     try {
       await storage.setApiSettings(draft)
-      if (latest()) savedConnection = [...storedConnection(), vendor]
+      let remembered = true
+      if (latest()) {
+        savedConnection = [...storedConnection(), vendor]
+        try { await rememberSavedChatApiDraft(vendor, draft) } catch { remembered = false }
+      }
       if (!current()) return
       apiConfigHint.value = getDesktopCapabilities() ? '配置已保存，密钥由 Windows 凭据管理器保护。' : '配置已保存，密钥仅用于当前页面会话。'
+      if (!remembered) apiConfigHint.value += ' 服务商切换记录未能保存，请重试。'
       apiSettingsOpen.value = false
       setChatStatus(`自定义 API · ${draft.model}`, 'online')
     } catch {
@@ -242,7 +248,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     isBusy.value = value
     if (value) setChatStatus('正在生成回复…', 'busy')
     else if (chatProvider.value === 'api') {
-      setChatStatus(apiStatusText(), (apiConfigured.value || hostApiConfigured.value) ? 'online' : '')
+      setChatStatus(apiStatusText(), (apiConfigured.value || useHostConfig.value) ? 'online' : '')
     } else {
       setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : '聊天模型未连接', ollamaOnline.value ? 'online' : '')
     }

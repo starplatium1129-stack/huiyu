@@ -7,12 +7,13 @@ import { chatApi } from '@/api/chatApi'
 import type { ChatApiDraft } from '@/utils/chatApiDrafts'
 
 const clearDraft = vi.hoisted(() => vi.fn())
+const draftFixture = vi.hoisted(() => ({ ready: undefined as Promise<void> | undefined, entries: {} as Record<string, ChatApiDraft> }))
 vi.mock('@/api/chatApi', () => ({ chatApi: { testProvider: vi.fn() } }))
 vi.mock('@/utils/chatApiDrafts', () => ({ createChatApiDrafts: () => {
-  const drafts = ref<Record<string, ChatApiDraft>>({})
-  return { drafts, set: (vendor: string, draft: ChatApiDraft) => { drafts.value[vendor] = { ...draft } }, clear: clearDraft }
+  const drafts = ref<Record<string, ChatApiDraft>>(draftFixture.entries)
+  return { drafts, ready: draftFixture.ready, set: (vendor: string, draft: ChatApiDraft) => { drafts.value[vendor] = { ...draft } }, clear: clearDraft }
 } }))
-beforeEach(() => { vi.mocked(chatApi.testProvider).mockReset(); clearDraft.mockReset() })
+beforeEach(() => { vi.mocked(chatApi.testProvider).mockReset(); clearDraft.mockReset(); draftFixture.ready = undefined; draftFixture.entries = {} })
 it('ignores replaced draft results, owns the newer busy state and aborts on unmount', async () => {
   const pending: Array<{ resolve: (value: { ok: true; models: string[] }) => void; reject: (reason: Error) => void }> = []
   vi.mocked(chatApi.testProvider).mockImplementation(() => new Promise((resolve, reject) => { pending.push({ resolve, reject }) }))
@@ -166,4 +167,34 @@ it('blocks credential-bearing URLs and reports actionable failures without rende
       expect(wrapper.text()).not.toContain('SECRET_ECHO')
     }
   } finally { wrapper.unmount() }
+})
+
+
+it.each(['replace', 'cancel', 'edit', 'dismiss'])('waits for saved credentials and owns only its unchanged selection (%s)', async action => {
+  let release!: () => void
+  draftFixture.ready = new Promise(resolve => { release = resolve })
+  const saved = { baseUrl: 'https://saved.example/custom/v1', model: 'saved-model', apiKey: '' }
+  draftFixture.entries.custom = saved
+  const wrapper = mount(ChatApiSettings, { props: { vendor: 'deepseek', baseUrl: 'https://api.deepseek.com', model: 'current', apiKey: 'neutral-current' },
+    global: { stubs: { ArchiveIcon: true, StudioSelect: true } } })
+  try {
+    await wrapper.get('[data-vendor="custom"]').trigger('click')
+    expect(wrapper.emitted('update:apiKey')).toBeUndefined()
+    if (action === 'replace') await wrapper.get('[data-vendor="openai"]').trigger('click')
+    else if (action === 'cancel') await wrapper.get('[data-vendor="deepseek"]').trigger('click')
+    else if (action === 'edit') await wrapper.get('input[aria-label="API Key"]').setValue('neutral-new-input')
+    else wrapper.unmount()
+    saved.apiKey = 'neutral-restored'
+    release(); await flushPromises()
+    if (action === 'replace') {
+      expect(wrapper.emitted('update:vendor')).toEqual([['openai']])
+      expect(wrapper.emitted('update:apiKey')).toEqual([['']])
+      await wrapper.get('[data-vendor="custom"]').trigger('click')
+      expect(wrapper.emitted('update:baseUrl')!.at(-1)).toEqual([saved.baseUrl])
+      expect(wrapper.emitted('update:apiKey')!.at(-1)).toEqual(['neutral-restored'])
+    } else {
+      expect(wrapper.emitted('update:vendor')).toBeUndefined()
+      expect(wrapper.emitted('update:apiKey')).toEqual(action === 'edit' ? [['neutral-new-input']] : undefined)
+    }
+  } finally { if (wrapper.exists()) wrapper.unmount() }
 })

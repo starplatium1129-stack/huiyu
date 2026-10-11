@@ -54,6 +54,9 @@ fn upstream(control: &ControlService, bytes: &[u8]) {
 import base64, http.server, json, pathlib, sys
 args = sys.argv
 root = pathlib.Path(args[args.index('--input-directory') + 1])
+models = json.loads(pathlib.Path(args[args.index('--extra-model-paths-config') + 1]).read_text())['huiyu_models']
+assert pathlib.Path(models['base_path']) == root.parent / 'models'
+assert models['is_default'] is True
 pathlib.Path('fixture-starts.log').open('a').write(str(root) + '\n')
 records = {}
 class Handler(http.server.BaseHTTPRequestHandler):

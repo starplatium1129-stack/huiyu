@@ -4,6 +4,7 @@
     <p>先选绘图模型，再确认下方下载清单。已有文件会校验复用，失败或取消后可重试；角色 LoRA 和本地聊天可按需选择。</p>
     <p v-if="automation.externalEnvironment.value" class="setup-device" role="status">已发现外部管理或未识别布局的 ComfyUI：保留现有环境，仅准备模型文件。请沿用原入口启动，并核对它读取的模型目录。</p>
     <p v-else class="setup-device">绘遇会在确认的工作区准备并启动服务。完成一次受管启动后，重开绘遇可在生成时按需唤醒，无需另开 ComfyUI 界面。</p>
+    <p v-if="automation.drawing.value && !automation.externalEnvironment.value && snapshot.comfy.connection === 'online' && (snapshot.nodes.state !== 'checked' || snapshot.nodes.missing.length > 0)" class="setup-device" role="status" data-testid="setup-node-restart-guidance">当前服务已连接，但节点尚未全部确认。若需补装节点，请先结束生成并停止 ComfyUI，再准备、启动并重新检查；绘遇不会自动中断现有任务。</p>
     <p v-if="snapshot.hardware.state === 'unknown'" class="setup-device">显卡信息尚未确认。自动安装仅面向 Windows + NVIDIA；缺少设备报告不代表没有显卡，文件检查也不代表驱动或 GPU 已可运行。</p>
     <div class="setup-fields">
       <label><input v-model="automation.drawing.value" type="checkbox" :disabled="automation.busy.value">准备 Anima 绘图</label>
