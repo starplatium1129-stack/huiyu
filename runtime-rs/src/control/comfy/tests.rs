@@ -214,3 +214,6 @@ async fn drawing_waits_for_cancelled_chat_startup_to_finish_its_owned_cleanup() 
     stopping.await.unwrap().unwrap();
     service.close().await;
 }
+
+#[cfg(unix)]
+mod http;

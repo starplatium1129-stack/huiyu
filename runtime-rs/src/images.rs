@@ -26,6 +26,12 @@ use tokio_util::{sync::CancellationToken, task::TaskTracker};
 pub use validation::validate;
 pub use workflow::build as build_workflow;
 
+// Independent unit fixtures must not consume each other's process-wide upload
+// admission budget. Each fixture still exercises the real two-slot limiter.
+#[cfg(test)]
+pub(crate) static UPLOAD_TEST_LOCK: std::sync::LazyLock<tokio::sync::Mutex<()>> =
+    std::sync::LazyLock::new(|| tokio::sync::Mutex::new(()));
+
 pub struct Prepared {
     pub input: Value,
     pub provider: String,

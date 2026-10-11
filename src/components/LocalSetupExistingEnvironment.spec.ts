@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
+import { LOCAL_SETUP_DRAFT_SETTING } from '../utils/localSetupDraft'
 import LocalSetupAutomation from './LocalSetupAutomation.vue'
 import StudioSelect from './ui/StudioSelect.vue'
 import { complete, deferred } from './__fixtures__/localSetup'
@@ -13,6 +14,7 @@ function render(snapshot = complete()) {
 }
 const operation = { id: 'existing-start', status: 'completed', message: '已启动', error: '' }
 beforeEach(() => {
+  settingsRepository.remove(LOCAL_SETUP_DRAFT_SETTING)
   vi.clearAllMocks()
   api.getStatus.mockResolvedValue(complete())
   api.serviceAction.mockResolvedValue({ ok: true, operation })

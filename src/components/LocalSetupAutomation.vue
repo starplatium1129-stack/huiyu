@@ -48,7 +48,7 @@
     <div class="setup-buttons">
       <button class="btn btn-primary" type="button" :disabled="automation.busy.value||statusConfirmed===false||workspaceBlocked||automation.environmentRequired.value||!automation.reviewed.value||!automation.hasSelection.value" @click="automation.run"><ArchiveIcon name="download" />{{ automation.busy.value?'正在准备…':automation.error.value?'重试准备所选能力':'一键准备所选能力' }}</button>
       <button v-if="automation.canStartExisting.value" class="btn btn-ghost" type="button" :disabled="automation.busy.value||statusConfirmed===false||workspaceBlocked" @click="automation.startExisting">启动现有环境并重新检查</button>
-      <button v-if="automation.busy.value" class="btn btn-ghost" type="button" :disabled="automation.cancelState.value==='pending'||automation.cancelState.value==='accepted'" @click="automation.cancel">{{ automation.cancelState.value==='pending'?'正在请求取消…':automation.cancelState.value==='accepted'?'等待当前步骤结束…':automation.cancelState.value==='failed'?'重试取消':'取消准备' }}</button>
+      <button v-if="automation.busy.value" class="btn btn-ghost" type="button" :disabled="automation.recoveryPending.value||automation.cancelState.value==='pending'||automation.cancelState.value==='accepted'" @click="automation.cancel">{{ automation.cancelState.value==='pending'?'正在请求取消…':automation.cancelState.value==='accepted'?'等待当前步骤结束…':automation.cancelState.value==='failed'?'重试取消':'取消准备' }}</button>
       <button v-if="automation.operationUncertain.value" class="btn btn-ghost" type="button" @click="automation.retryOperation">重新检查状态</button>
     </div>
     <p v-if="automation.busy.value && automation.stage.value" class="setup-stage" role="status">当前步骤：{{ stageLabels[automation.stage.value] }}</p>
@@ -71,7 +71,7 @@ const stageLabels={environment:'1 / 4 · 准备运行环境',models:'2 / 4 · �
 const props=defineProps<{snapshot:LocalSetupResponse;workspaceBlocked:boolean;statusConfirmed:boolean}>()
 const emit=defineEmits<{refresh:[];'download-result':[result:LocalSetupDownloadResult];'model-selected':[modelId:string]}>()
 const automation=useLocalSetupAutomation(toRef(props,'snapshot'),toRef(props,'workspaceBlocked'),result=>emit('download-result',result),()=>emit('refresh'),computed(()=>props.statusConfirmed!==false))
-watch(automation.modelId,model=>emit('model-selected',model))
+watch(automation.modelId,model=>emit('model-selected',model),{immediate:true})
 const imageOptions=computed(()=>automation.imageModels.value.map(model=>({value:model.id,label:model.label})).sort((a,b)=>rank(a.value)-rank(b.value)))
 const rank=(id:string)=>id==='anima-miaomiao-v1.6'?0:id==='anima-base-v1.0'?1:id==='anima-aesthetic-v1.1'?2:3
 const selectedImage=computed(()=>automation.imageModels.value.find(model=>model.id===automation.modelId.value))

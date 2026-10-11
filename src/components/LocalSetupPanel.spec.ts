@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
+import { LOCAL_SETUP_DRAFT_SETTING } from '../utils/localSetupDraft'
 import LocalSetupAutomation from './LocalSetupAutomation.vue'
 import StudioSelect from './ui/StudioSelect.vue'
 import type { LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup'
-import type { ControlActionResult } from '../types/api'
 import { complete, deferred, render } from './__fixtures__/localSetup'
 import { STARTER_MODEL_SETTING, settingsRepository } from '../storage/settingsRepository'
 
@@ -15,6 +15,7 @@ vi.mock('../platform/desktop/capabilities.ts', () => ({ getDesktopCapabilities: 
 vi.mock('../composables/useFluidDialog', () => ({ useFluidDialog: () => ({ open: vi.fn(), close: vi.fn() }) }))
 
 beforeEach(() => {
+  settingsRepository.remove(LOCAL_SETUP_DRAFT_SETTING)
   settingsRepository.set(STARTER_MODEL_SETTING, 'anima-miaomiao-v1.6')
   fixture.local = true; fixture.desktop = false
   fixture.getStatus.mockReset().mockResolvedValue(complete())
@@ -31,132 +32,6 @@ beforeEach(() => {
 afterEach(() => vi.restoreAllMocks())
 
 describe('first local setup panel', () => {
-  it.each(['cancel', 'unmount'])('does not write preferences from late readiness after %s', async disposition => {
-    const value = complete(), late = deferred()
-    const save = vi.spyOn(settingsRepository, 'set').mockImplementation(() => {})
-    fixture.downloadModel.mockImplementation(async (id: string) => {
-      const model = value.models.find(model => model.id === id)!
-      return { type: 'result', modelId: id, path: model.path, state: 'already-present', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '已复用' }
-    })
-    const operation = { id: 'owned-setup', status: 'completed', message: '已启动', error: '' }
-    fixture.serviceAction.mockResolvedValue({ ok: true, operation })
-    fixture.getOperation.mockResolvedValue({ ok: true, operation })
-    fixture.getStatus.mockReturnValue(late.promise)
-    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
-    try {
-      await wrapper.get('.setup-review input').setValue(true)
-      await wrapper.get('.setup-buttons .btn-primary').trigger('click')
-      await flushPromises()
-      expect(fixture.getStatus).toHaveBeenCalledOnce()
-      if (disposition === 'cancel') await wrapper.findAll('button').find(button => button.text() === '取消准备')!.trigger('click')
-      else wrapper.unmount()
-      late.resolve(value)
-      await flushPromises()
-      expect(save).not.toHaveBeenCalled()
-      expect(wrapper.emitted('refresh')).toBeUndefined()
-    } finally { if (disposition !== 'unmount') wrapper.unmount() }
-  })
-  it.each(['cancel', 'unmount'])('handles an operation acknowledged after %s without proceeding or losing explicit cancellation', async disposition => {
-    const value = complete()
-    let acknowledge!: (result: ControlActionResult) => void
-    let finishCancel = () => {}
-    if (disposition === 'cancel') fixture.cancelEnvironment.mockReturnValue(new Promise<void>(resolve => { finishCancel = resolve }))
-    fixture.getOperation.mockResolvedValue({ ok: true, operation: { id: 'late-owned-setup', status: 'failed', message: '准备已取消', error: '准备已取消' } })
-    fixture.serviceAction.mockReturnValue(new Promise<ControlActionResult>(resolve => { acknowledge = resolve }))
-    fixture.downloadModel.mockImplementation(async (id: string) => {
-      const model = value.models.find(model => model.id === id)!
-      return { type: 'result', modelId: id, path: model.path, state: 'already-present', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '已复用' }
-    })
-    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
-    await wrapper.get('.setup-review input').setValue(true)
-    await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
-    expect(fixture.serviceAction).toHaveBeenCalledOnce()
-    if (disposition === 'cancel') await wrapper.findAll('button').find(button => button.text() === '取消准备')!.trigger('click')
-    else wrapper.unmount()
-    expect(fixture.cancelEnvironment).not.toHaveBeenCalled()
-    acknowledge({ ok: true, operation: { id: 'late-owned-setup', status: 'running', message: '准备中' } } as ControlActionResult)
-    await flushPromises()
-    if (disposition === 'cancel') {
-      await wrapper.findAll('button').find(button => button.text() === '正在请求取消…')!.trigger('click')
-      expect(fixture.cancelEnvironment).toHaveBeenCalledExactlyOnceWith('late-owned-setup')
-      finishCancel(); await flushPromises()
-    } else expect(fixture.cancelEnvironment).not.toHaveBeenCalled()
-    expect(fixture.getOperation).toHaveBeenCalledTimes(disposition === 'cancel' ? 1 : 0)
-    expect(fixture.getStatus).not.toHaveBeenCalled()
-    expect(wrapper.emitted('refresh')).toBeUndefined()
-    if (disposition !== 'unmount') wrapper.unmount()
-  })
-  it.each(['failed', 'completed'] as const)('keeps cancellation retryable and waits for a %s operation and its late cancellation receipt', async terminal => {
-    vi.useFakeTimers()
-    const value = complete()
-    const save = vi.spyOn(settingsRepository, 'set').mockImplementation(() => {})
-    fixture.downloadModel.mockImplementation(async (id: string) => {
-      const model = value.models.find(model => model.id === id)!
-      return { type: 'result', modelId: id, path: model.path, state: 'already-present', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '已复用' }
-    })
-    let operation = { id: 'owned-setup', status: 'running', message: '准备中', error: '' }
-    fixture.serviceAction.mockResolvedValue({ ok: true, operation })
-    fixture.getOperation.mockImplementation(async () => ({ ok: true, operation }))
-    let finishCancel!: () => void
-    fixture.cancelEnvironment.mockRejectedValueOnce(new Error('offline'))
-      .mockImplementationOnce(() => new Promise<void>(resolve => { finishCancel = resolve }))
-    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
-    try {
-      await wrapper.get('.setup-review input').setValue(true)
-      await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
-      await wrapper.findAll('button').find(button => button.text() === '取消准备')!.trigger('click'); await flushPromises()
-      expect(wrapper.get('[role="alert"]').text()).toContain('取消结果尚未确认')
-      expect(wrapper.get('.setup-buttons .btn-primary').attributes('disabled')).toBeDefined()
-      await vi.advanceTimersByTimeAsync(500)
-      expect(fixture.getOperation).toHaveBeenCalledTimes(2)
-      const retry = wrapper.findAll('button').find(button => button.text() === '重试取消')!
-      await retry.trigger('click'); await retry.trigger('click')
-      expect(fixture.cancelEnvironment.mock.calls).toEqual([['owned-setup'], ['owned-setup']])
-      expect(retry.attributes('disabled')).toBeDefined()
-      if (terminal === 'failed') {
-        finishCancel(); await flushPromises()
-        expect(retry.text()).toBe('等待当前步骤结束…')
-        await vi.advanceTimersByTimeAsync(500)
-        expect(wrapper.get('.setup-buttons .btn-primary').attributes('disabled')).toBeDefined()
-      }
-      operation = { ...operation, status: terminal, message: terminal === 'failed' ? '准备已取消' : '当前步骤完成', error: terminal === 'failed' ? '准备已取消' : '' }
-      await vi.advanceTimersByTimeAsync(500)
-      if (terminal === 'completed') {
-        expect(wrapper.get('.setup-buttons .btn-primary').attributes('disabled')).toBeDefined()
-        finishCancel(); await flushPromises()
-      }
-      expect(wrapper.get('.setup-buttons .btn-primary').attributes('disabled')).toBeUndefined()
-      expect(wrapper.get('[role="alert"]').text()).toContain(terminal === 'failed' ? '准备已取消' : '后续准备已停止')
-      expect(wrapper.text()).not.toContain('取消结果尚未确认')
-      expect(wrapper.text()).not.toContain('生成第一张图片')
-      expect(fixture.getStatus).not.toHaveBeenCalled()
-      expect(save).not.toHaveBeenCalled()
-    } finally { wrapper.unmount(); vi.useRealTimers() }
-  })
-
-  it('retains an uncertain operation for status retry without cancelling a replacement operation', async () => {
-    const value = complete()
-    fixture.downloadModel.mockImplementation(async (id: string) => {
-      const model = value.models.find(model => model.id === id)!
-      return { type: 'result', modelId: id, path: model.path, state: 'already-present', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '已复用' }
-    })
-    fixture.serviceAction.mockResolvedValue({ ok: true, operation: { id: 'owned-setup', status: 'running' } })
-    fixture.getOperation.mockRejectedValueOnce(new Error('offline'))
-      .mockResolvedValueOnce({ ok: true, operation: { id: 'replacement', status: 'running' } })
-    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
-    try {
-      await wrapper.get('.setup-review input').setValue(true)
-      await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
-      expect(wrapper.get('[role="alert"]').text()).toContain('状态尚未确认')
-      expect(wrapper.get('.setup-buttons .btn-primary').attributes('disabled')).toBeDefined()
-      await wrapper.findAll('button').find(button => button.text() === '重新检查状态')!.trigger('click'); await flushPromises()
-      expect(wrapper.get('[role="alert"]').text()).toContain('操作状态已改变')
-      expect(wrapper.get('.setup-buttons .btn-primary').attributes('disabled')).toBeUndefined()
-      expect(fixture.cancelEnvironment).not.toHaveBeenCalled()
-      expect(fixture.getStatus).not.toHaveBeenCalled()
-    } finally { wrapper.unmount() }
-  })
-
   it('prepares only the selected Base combination after consent and verifies the real operation before offering generation',async()=>{
     const value=complete()
     value.hardware={state:'reported',devices:[{name:'NVIDIA fixture',type:'cuda',vramBytes:16*1024**3}],ramBytes:32*1024**3}

@@ -89,6 +89,7 @@ async fn initial_salt_failure_does_not_poison_retry_or_replace_existing_identity
 
 #[tokio::test]
 async fn upload_write_failure_and_cancellation_do_not_publish_or_leave_pending_files() {
+    let _upload_isolation = crate::images::UPLOAD_TEST_LOCK.lock().await;
     let mut bytes = Vec::new();
     image::codecs::png::PngEncoder::new(&mut bytes)
         .write_image(&[1, 2, 3], 1, 1, image::ExtendedColorType::Rgb8)
@@ -134,6 +135,7 @@ async fn upload_write_failure_and_cancellation_do_not_publish_or_leave_pending_f
 
 #[tokio::test]
 async fn cancellation_during_quota_scan_stops_reads_and_releases_upload_lock() {
+    let _upload_isolation = crate::images::UPLOAD_TEST_LOCK.lock().await;
     let temp = tempfile::tempdir().unwrap();
     let mut bytes = Vec::new();
     image::codecs::png::PngEncoder::new(&mut bytes)
