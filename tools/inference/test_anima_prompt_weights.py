@@ -90,10 +90,12 @@ class PromptWeightTests(unittest.TestCase):
                          weights.tokenize_prompt("(red hair:1.2)", self.qwen, self.fast)["t5_ids"])
 
     def test_plain_prompts_preserve_original_encoder_and_conditioner_values(self):
+        from native_upload import offload_after_encoding
         original, wrapped = AnimaAutoBlocks(), AnimaAutoBlocks()
         cache = TextCache()
         apply_text_cache(wrapped, cache)
         weights.apply_prompt_weights(wrapped, cache=cache)
+        offload_after_encoding(wrapped)
         first = self.condition(original, self.encode(original, "red hair [blue] BREAK"))
         second = self.condition(wrapped, self.encode(wrapped, "red hair [blue] BREAK"))
         for name in ("qwen_prompt_embeds", "t5_input_ids", "prompt_embeds", "negative_prompt_embeds"):

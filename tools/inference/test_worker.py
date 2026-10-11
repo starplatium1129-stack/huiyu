@@ -41,6 +41,9 @@ class WorkerTests(unittest.TestCase):
         stub = patch.object(worker.load_mask_tools("anima_prompt_weights"), "apply_prompt_weights", side_effect=lambda blocks, **_: blocks)
         stub.start()
         self.addCleanup(stub.stop)
+        offload = patch.object(worker.load_mask_tools("native_upload"), "offload_after_encoding", side_effect=lambda blocks: blocks)
+        offload.start()
+        self.addCleanup(offload.stop)
     def test_diagnosis_requires_cosmos_resize_dependency(self):
         from worker_loader_cases import assert_diagnosis_requires_cosmos_resize_dependency
         assert_diagnosis_requires_cosmos_resize_dependency(self)
@@ -118,7 +121,7 @@ class WorkerTests(unittest.TestCase):
             return {"allocated_bytes.all.peak": float("nan") if f.metrics_error == "invalid" else 1234,
                     "reserved_bytes.all.peak": 2048}
         torch = types.SimpleNamespace(no_grad=lambda: lambda fn: fn,
-            cuda=types.SimpleNamespace(is_available=lambda: False, synchronize=lambda: None,
+            cuda=types.SimpleNamespace(is_available=lambda: False, synchronize=lambda: None, empty_cache=lambda: None,
                 is_initialized=lambda: f.initialized, get_allocator_backend=lambda: f.allocator,
                 reset_peak_memory_stats=reset_metrics, memory_stats=read_metrics),
             Generator=lambda device: types.SimpleNamespace(manual_seed=lambda seed: seed))

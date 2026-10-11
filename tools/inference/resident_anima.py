@@ -114,6 +114,13 @@ class PipelineCache:
                 reused = False
             if reused and adapters_changed:
                 reused = _can_unload_adapters(self.components)
+            if reused and identity != self.identity:
+                # Restore/fuse and adapter replacement retain their original GPU
+                # math, even when the previous image left the denoiser on CPU.
+                transformer = self.components["transformer"]
+                hook = getattr(transformer, "_hf_hook", None)
+                if hook is not None:
+                    hook.onload(transformer)
             if not reused:
                 # The just-validated read lease must protect the ensuing load.
                 self.clear(keep_mask=True, keep_fingerprint=True)

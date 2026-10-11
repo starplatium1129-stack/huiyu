@@ -52,6 +52,7 @@ def assert_local_loader_contract(test, model):
             updates.append(kwargs)
             self.components = kwargs
             self.transformer = kwargs["transformer"]
+            self.text_encoder = kwargs["text_encoder"]
         def to(self, device):
             transfers.append(device)
             self.device = device
@@ -67,6 +68,7 @@ def assert_local_loader_contract(test, model):
         is_bf16_supported=lambda: True), bfloat16="bf16")
     with tempfile.TemporaryDirectory() as directory, \
             patch.object(worker.load_mask_tools("native_upload"), "try_packed_upload", return_value=False), \
+            patch.object(worker.load_mask_tools("native_upload"), "configure_staged_upload"), \
             patch.dict("sys.modules", {
             "torch": torch, "diffusers": diffusers, "transformers": transformers}):
         root = model(Path(directory))

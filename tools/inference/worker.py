@@ -336,6 +336,7 @@ def load_pipeline(root, cfg, blocks=None):
     if not load_mask_tools("native_upload").try_packed_upload(components[name] for name in WEIGHTS):
         pipeline.to("cuda")
     load_mask_tools("anima_acceleration").configure(pipeline.transformer)
+    load_mask_tools("native_upload").configure_staged_upload(pipeline)
     pipeline.set_progress_bar_config(disable=True)
     return pipeline
 
@@ -415,6 +416,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         blocks = text_tools.apply_text_cache(blocks, resident.text_cache)
     blocks = load_mask_tools("anima_prompt_weights").apply_prompt_weights(blocks,
         cache=resident.text_cache if resident is not None and cache_text else None)
+    blocks = load_mask_tools("native_upload").offload_after_encoding(blocks)
     started = time.perf_counter()
     post_load_fingerprint, reused = 0, False
     if resident is None:
@@ -477,6 +479,8 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             load_mask_tools("resident_benchmark").capture_schedule(pipeline.scheduler, step))
     metrics.timings.update({key: refinement[key] for key in ("compositeWallSeconds", "postprocessWallSeconds")})
     output_report = load_mask_tools().save_png(result, job["outputPath"])
+    if resident is not None:
+        torch.cuda.empty_cache()  # Return completed-job scratch allocations while the model stays resident.
     if tea_report is not None:
         tea_report.update(output_report)
         tea_report["refinement"] = refinement

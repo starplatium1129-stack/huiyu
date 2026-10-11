@@ -32,6 +32,18 @@ def snapshot(model):
 
 
 class PackedUploadTests(unittest.TestCase):
+    def test_components_have_independent_storage_with_unchanged_outputs(self):
+        encoder, transformer = SmallModel(), SmallModel()
+        value = torch.tensor([[1., 2., 3.]])
+        expected = [module(value).detach() for module in (encoder, transformer)]
+        self.assertTrue(try_packed_upload([encoder, transformer], target_device="cpu"))
+        encoder_storage = {tensor.untyped_storage()._cdata for tensor in encoder.parameters()}
+        transformer_storage = {tensor.untyped_storage()._cdata for tensor in transformer.parameters()}
+        self.assertTrue(encoder_storage.isdisjoint(transformer_storage))
+        for module, output in zip((encoder, transformer), expected):
+            self.assertTrue(torch.equal(module(value), output))
+        self.assertFalse(torch.cuda.is_initialized())
+
     def test_output_values_dtypes_parameter_identity_and_shared_objects_are_preserved(self):
         model = SmallModel()
         other = nn.Module()
