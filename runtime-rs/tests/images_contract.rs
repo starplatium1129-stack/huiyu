@@ -35,8 +35,93 @@ fn images_validation_and_graphs_preserve_compiled_contracts() {
 }
 
 #[test]
+fn unmasked_img2img_samples_the_encoded_original_with_requested_denoise() {
+    let original = "aics_anima_input_0123456789abcdef.png";
+    let mut actual = Vec::new();
+    let mut expected = Vec::new();
+    for (model, first, decoded, empty) in [
+        (json!({"modelId":"anima-miaomiao-v1.6"}), "7", "8", "6"),
+        (
+            json!({"modelId":"anima-base-v1.0","loraId":"L_NENE_V21_ANIMA","loraStrength":0.85,"character":"nene"}),
+            "8",
+            "9",
+            "7",
+        ),
+    ] {
+        let mut body = model;
+        body.as_object_mut().unwrap().extend(
+            json!({"prompt":"a clear illustrated scene","width":832,"height":1216,"seed":42,"initImage":original,"denoisingStrength":0.6})
+                .as_object().unwrap().clone(),
+        );
+        for upscaler in [None, Some("Latent"), Some("Remacri")] {
+            body["hiresFix"] = json!(upscaler.is_some());
+            body["hiresUpscaler"] = json!(upscaler);
+            let mut input = images::validate(&body, "anima", true).unwrap();
+            assert_eq!(input["initImage"], original);
+            assert!(input["maskImage"].is_null() && input["maskPrompt"].is_null());
+            if upscaler == Some("Remacri") {
+                input["superResModel"] = json!("4x_foolhardy_Remacri.safetensors");
+            }
+            let graph = images::build_workflow(&input).unwrap();
+            assert_eq!(graph["15"]["inputs"]["image"], original);
+            assert_eq!(graph["19"]["inputs"]["image"], json!(["15", 0]));
+            assert_eq!(graph["18"]["class_type"], "VAEEncode");
+            assert_eq!(graph["18"]["inputs"]["pixels"], json!(["19", 0]));
+            assert_eq!(graph["18"]["inputs"]["vae"], json!(["3", 0]));
+            assert!(graph.get("17").is_none() && graph.get("30").is_none());
+            match upscaler {
+                None => assert_eq!(graph["10"]["inputs"]["images"], json!([decoded, 0])),
+                Some("Latent") => {
+                    assert_eq!(graph["11"]["inputs"]["samples"], json!([first, 0]));
+                    assert_eq!(graph["12"]["inputs"]["latent_image"], json!(["11", 0]));
+                    assert_eq!(graph["12"]["inputs"]["denoise"], 0.35);
+                    assert_eq!(graph[decoded]["inputs"]["samples"], json!(["12", 0]));
+                    assert_eq!(graph["35"]["inputs"]["image"], json!([decoded, 0]));
+                    assert_eq!(graph["10"]["inputs"]["images"], json!(["35", 0]));
+                }
+                Some("Remacri") => {
+                    assert_eq!(graph["20"]["inputs"]["samples"], json!([first, 0]));
+                    assert_eq!(graph["22"]["inputs"]["image"], json!(["20", 0]));
+                    assert_eq!(graph["23"]["inputs"]["image"], json!(["22", 0]));
+                    assert_eq!(graph["10"]["inputs"]["images"], json!(["23", 0]));
+                    assert_eq!(
+                        graph
+                            .as_object()
+                            .unwrap()
+                            .values()
+                            .filter(|node| node["class_type"] == "KSampler")
+                            .count(),
+                        1
+                    );
+                }
+                _ => unreachable!(),
+            }
+            let case = json!({"model":body["modelId"],"upscaler":upscaler});
+            actual.push(json!({"case":case,"latent":graph[first]["inputs"]["latent_image"],"denoise":graph[first]["inputs"]["denoise"]}));
+            expected.push(json!({"case":case,"latent":["18",0],"denoise":0.6}));
+        }
+        body["hiresFix"] = json!(false);
+        body.as_object_mut().unwrap().remove("denoisingStrength");
+        let input = images::validate(&body, "anima", true).unwrap();
+        let graph = images::build_workflow(&input).unwrap();
+        actual.push(
+            json!({"case":body["modelId"],"defaultDenoise":graph[first]["inputs"]["denoise"]}),
+        );
+        expected.push(json!({"case":body["modelId"],"defaultDenoise":0.8}));
+
+        body["initImage"] = Value::Null;
+        body["denoisingStrength"] = json!(0.6);
+        let graph =
+            images::build_workflow(&images::validate(&body, "anima", true).unwrap()).unwrap();
+        assert_eq!(graph[first]["inputs"]["latent_image"], json!([empty, 0]));
+        assert_eq!(graph[first]["inputs"]["denoise"], 1.);
+    }
+    assert_eq!(actual, expected);
+}
+
+#[test]
 fn inpaint_hires_keeps_mask_and_reference_aligned_through_final_composite() {
-    let body = json!({"prompt":"a new jacket","modelId":"anima-miaomiao-v1.6","width":832,"height":1216,"seed":42,"hiresFix":true,"hiresScale":1.3125,"hiresDenoise":0.4,"initImage":"aics_anima_input_0123456789abcdef.png","maskImage":"aics_anima_input_abcdef0123456789.png"});
+    let body = json!({"prompt":"a new jacket","modelId":"anima-miaomiao-v1.6","width":832,"height":1216,"seed":42,"hiresFix":true,"hiresScale":1.3125,"hiresDenoise":0.4,"initImage":"aics_anima_input_0123456789abcdef.png","maskImage":"aics_anima_input_abcdef0123456789.png","denoisingStrength":0.65});
     let mut input = images::validate(&body, "anima", true).unwrap();
     for super_res in [false, true] {
         input["superResModel"] = if super_res {
@@ -45,6 +130,8 @@ fn inpaint_hires_keeps_mask_and_reference_aligned_through_final_composite() {
             Value::Null
         };
         let graph = images::build_workflow(&input).unwrap();
+        assert_eq!(graph["7"]["inputs"]["latent_image"], json!(["17", 0]));
+        assert_eq!(graph["7"]["inputs"]["denoise"], 0.65);
         assert_eq!(
             graph["hires_mask_image"]["inputs"]["mask"],
             graph["17"]["inputs"]["mask"]
@@ -102,6 +189,8 @@ fn inpaint_hires_keeps_mask_and_reference_aligned_through_final_composite() {
     }
     input["hiresFix"] = json!(false);
     let graph = images::build_workflow(&input).unwrap();
+    assert_eq!(graph["7"]["inputs"]["latent_image"], json!(["17", 0]));
+    assert_eq!(graph["7"]["inputs"]["denoise"], 0.65);
     assert_eq!(graph["10"]["inputs"]["images"], json!(["30", 0]));
     assert!(graph.get("hires_composite").is_none());
 }

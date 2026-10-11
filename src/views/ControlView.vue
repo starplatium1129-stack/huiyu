@@ -88,6 +88,7 @@
 
       <InferenceSettingsPanel />
       <LocalSetupPanel />
+      <div id="control-interrogate" tabindex="-1" aria-label="PixAI 图片反推配置"><InterrogateSetupPanel /></div>
 
       <!-- 操作进度 -->
       <div v-if="operation" class="panel-card operation-panel" :class="operation.status">
@@ -298,7 +299,7 @@ import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import AppearanceButton from '@/components/AppearanceButton.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
 import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
@@ -313,6 +314,7 @@ import LocalSetupPanel from '@/components/LocalSetupPanel.vue'
 import InferenceSettingsPanel from '@/components/InferenceSettingsPanel.vue'
 import ResourceLibraryPanel from '@/components/ResourceLibraryPanel.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
+const InterrogateSetupPanel = defineAsyncComponent(() => import('@/components/InterrogateSetupPanel.vue'))
 import { useControlNavigation } from '@/composables/useControlNavigation'
 import { useToast } from '@/composables/useToast'
 // 桌面端更新横幅已收敛到全局 DesktopUpdateBanner（2026-08-31，任何页面可见）。
@@ -398,6 +400,7 @@ const sections: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
   { id: 'control-overview', label: '运行概览', icon: 'eye' },
   { id: 'control-inference', label: '绘图引擎', icon: 'model' },
   { id: 'control-setup', label: '首次配置', icon: 'gear' },
+  { id: 'control-interrogate', label: '图片反推', icon: 'search' },
   { id: 'control-resources', label: '服务与显存', icon: 'model' },
   { id: 'control-library', label: '离线资源库', icon: 'image' },
   { id: 'control-services', label: '连接与声线', icon: 'gear' },

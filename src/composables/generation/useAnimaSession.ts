@@ -7,7 +7,8 @@ import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import { usePolling } from '@/composables/usePolling'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
-import { nativeAnimaRequestBlocker, nativeTeaCacheReady } from './nativeAnimaCapabilities'
+import { nativeAnimaRequestBlocker } from './nativeAnimaCapabilities'
+import { automaticMaskBlocker, backendReadiness } from './animaBackendReadiness'
 import {
   ANIMA_LORA_BY_CHARACTER,
   animaRequestPayload,
@@ -96,6 +97,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   function patchState(patch: Partial<AnimaGenerationState>) {
     if (!reconcilingSettings && 'loraStrength' in patch) loraStrengthTouched = true
+    if (patch.provider && patch.provider !== state.value.provider && !('autoHiresModel' in patch)) patch = { ...patch, autoHiresModel: undefined }
     state.value = { ...state.value, ...patch }
   }
 
@@ -215,9 +217,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         const [nextWidth, nextHeight] = String(selectedModel.sizes[0]).split('x').map(Number)
         if (Number.isInteger(nextWidth) && Number.isInteger(nextHeight)) { width = nextWidth; height = nextHeight }
       }
-      const familyLabel = family === 'krea2' ? 'Krea 2' : 'Anima'
-      const online = data.online === true && selectedModel?.available === true
-      const managedStartAvailable = data.provider !== 'native' && data.managedStartAvailable === true && selectedModel?.available === true
       /**
        * 底模默认值只在「换底模」时才重施（2026-08-30 UX 审计 P0-2）。
        *
@@ -237,10 +236,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       reconcilingSettings = true
       try {
         patchState({
-          online, managedStartAvailable, provider, automaticMaskAvailable: data.capabilities?.automaticMask === true,
-          checkMsg: online
-            ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA${provider === 'native' ? ` · 原生局部重绘（实验性）${data.capabilities?.automaticMask === true ? ' · 本地自动识别文件就绪' : ' · 自动识别缺少本地 CLIPSeg 文件'} · TeaCache ${nativeTeaCacheReady(selectedModel) ? '校准档文件就绪（待加载核验）' : '缺少本地校准档'} · ${selectedModel?.capabilities?.hires ? '支持高清放大（TeaCache 高清组合需单独校准）' : '不支持高清修复'}` : ''}`
-            : managedStartAvailable ? `${familyLabel} 已准备 · 生成时自动启动受管 ComfyUI` : `${familyLabel} 不可用（请检查${data.provider === 'native' ? '原生推理服务' : 'ComfyUI'}与当前模型文件）`,
+          ...backendReadiness(data, selectedModel, family, visibleModels.length, familyLoras.length),
           models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
           ...(endfield && loraId === endfield.loraId && state.value.loraId !== loraId ? { loraStrength: endfield.loraStrength } : {}),
           family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
@@ -255,7 +251,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     } catch (error) {
       if (statusRequest !== controller || controller.signal.aborted) return latest()
       if (error instanceof ApiClientError && error.kind === 'aborted') return false
-      patchState({ online: false, managedStartAvailable: false, automaticMaskAvailable: false, checkMsg: `${options.getFamily() === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
+      patchState({ online: false, managedStartAvailable: false, automaticMaskAvailable: false, automaticMaskStatus: undefined, autoHiresModel: undefined, checkMsg: `${options.getFamily() === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
       return true
     } finally {
       if (statusRequest === controller) statusRequest = null
@@ -362,12 +358,11 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     if (!submission) return
     if (frozen && submission.family !== options.getFamily()) { options.flash('创作引擎已更换，请重新确认后提交'); return }
     const { request, family } = submission
-    if (!state.value.online && !state.value.managedStartAvailable) { options.flash('Anima 推理服务当前未连接'); return }
+    if (!state.value.online && !state.value.managedStartAvailable) { options.flash(`${family === 'krea2' ? 'Krea 2' : 'Anima'} 当前未连接或尚未就绪。${state.value.checkMsg}`); return }
     const nativeBlocker = state.value.provider === 'native' && nativeAnimaRequestBlocker(state.value.models, request)
     if (nativeBlocker) { options.flash(nativeBlocker); return }
-    if (state.value.provider === 'native' && request.maskPrompt && !state.value.automaticMaskAvailable) {
-      options.flash('自动识别需要完整的本地 CLIPSeg 模型文件，请先准备 clipseg-rd64-refined 目录或使用手绘遮罩。'); return
-    }
+    const maskBlocker = request.maskPrompt && automaticMaskBlocker(state.value)
+    if (maskBlocker) { options.flash(maskBlocker); return }
     const serial = ++requestSerial
     activeFamily = family
     jobRequest?.abort()

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
+import { RouterLink } from 'vue-router'
 import type { AnimaGenerationState } from '@/types/anima'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { nativeTeaCacheReady } from '@/composables/generation/nativeAnimaCapabilities'
@@ -42,6 +43,16 @@ const hiresFix = computed({ get: () => Boolean(props.state.hiresFix), set: value
 const hiresScale = computed({ get: () => props.state.hiresScale || 2.0, set: value => patch({ hiresScale: value }) })
 const hiresDenoise = computed({ get: () => props.state.hiresDenoise || 0.35, set: value => patch({ hiresDenoise: value }) })
 const hiresUpscaler = computed({ get: () => props.state.hiresUpscaler || 'Auto', set: (value: 'Auto' | 'Latent' | 'Remacri') => patch({ hiresUpscaler: value }) })
+const comfyHiresPath = computed(() => {
+  if (hiresUpscaler.value === 'Latent') return 'latent'
+  if (hiresUpscaler.value === 'Remacri') return 'pixel'
+  if (props.state.autoHiresModel === undefined) return 'unknown'
+  return props.state.autoHiresModel ? 'pixel' : 'latent'
+})
+const comfyUpscalers = computed(() => [
+  { value: 'Auto', label: 'Auto · 按已识别资源' }, { value: 'Latent', label: 'Latent · 二次重绘' },
+  ...(hiresUpscaler.value === 'Remacri' ? [{ value: 'Remacri', label: 'Remacri · 已保存选择' }] : []),
+])
 const busy = computed(() => ['submitting', 'running', 'cancelling'].includes(props.state.phase))
 const outputSize = computed(() => {
   const scale = props.state.hiresFix ? (props.state.hiresScale ?? 2) : 1
@@ -65,6 +76,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
     </div>
     <div data-disclosure-content class="anima-body tw:flex tw:flex-col tw:gap-[8px]">
        <p class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">{{ state.checkMsg }}</p>
+       <RouterLink v-if="state.family === 'krea2' && !state.online" class="anima-btn" :to="{ path: '/control', query: { engine: 'krea2' } }">查看 Krea 环境与准备范围</RouterLink>
        <p v-if="capabilities.promptFormat === 'natural-language'" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>Krea 2 实验</strong> · 纯自然语言、无角色 LoRA，身份还原需以实际出图为准。</p>
         <p v-else-if="noLoraMode" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>无需 LoRA</strong> · 通用底模直出，不加载角色 LoRA，身份由词条锚定</p>
         <p v-else-if="selectedLora?.preview" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>实验预览</strong> · 此 LoRA 为实验版</p>
@@ -121,13 +133,23 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
             <StudioSelect :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy"
               :options="[{ value: 'Auto', label: 'Auto · 优先 Remacri' }, { value: 'Latent', label: 'Latent · 二次采样' }, { value: 'Remacri', label: 'Remacri', disabled: !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri') }]" />
           </template>
+          <template v-else>
+            <label :for="idOf('upscaler')" class="anima-inline tw:text-label-xs tw:text-secondary">放大方式</label>
+            <StudioSelect :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy" :options="comfyUpscalers" />
+          </template>
           <label :for="idOf('scale')" class="anima-inline tw:text-label-xs tw:text-secondary">倍率</label>
           <StudioSelect :id="idOf('scale')" v-model.number="hiresScale" label="倍率" :disabled="busy"
             :options="[{ value: 1.5, label: '1.5×' }, { value: 2.0, label: '2.0×' }]" />
-          <label :for="idOf('denoise')" class="anima-inline tw:text-label-xs tw:text-secondary">重绘幅度</label>
-          <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="anima-num" :disabled="busy" />
+          <label :for="idOf('denoise')" class="anima-inline tw:text-label-xs tw:text-secondary">二次重绘幅度</label>
+          <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="anima-num" :disabled="busy || (!native && comfyHiresPath !== 'latent')" />
         </template>
       </div>
+      <p v-if="!native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">
+        <template v-if="comfyHiresPath === 'unknown'">Auto 放大路径待确认，请刷新引擎状态；暂不调整二次重绘幅度。</template>
+        <template v-else-if="comfyHiresPath === 'pixel'">按当前资源，普通出图采用像素放大{{ hiresUpscaler === 'Auto' && state.autoHiresModel ? `（${state.autoHiresModel}）` : '' }}，不做二次采样，因此此处幅度不生效。选择 Latent 可进行二次重绘。</template>
+        <template v-else>按当前资源，普通出图采用 Latent 二次重绘，幅度控制这一次采样。最终文件在提交时重新核对。</template>
+        局部蒙版高清另有二次采样与合成，仍使用保存的幅度；切换放大方式不会清除该值。
+      </p>
       <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-warning-text tw:m-0">高清组合会单独匹配 TeaCache 校准档，自动模式未匹配时照常生成。放大方式 Auto 优先选择本地 Remacri，否则使用 Latent；局部重绘保留遮罩合成。</p>
       <p v-if="native" class="anima-hint tw:text-label-xs tw:text-warning-text tw:m-0">
         TeaCache 默认自动开启：匹配已验收校准档时加速，未匹配时照常生成。{{ nativeTeaCacheAvailable ? '模型、LoRA 与采样参数将在加载时核验。' : '当前未发现本地校准档，将使用完整计算。' }}{{ state.teaCache === true ? '当前保存的配置要求严格开启，未匹配时会报错；关闭后重新开启可恢复自动模式。' : '' }}可手动关闭以使用完整计算。

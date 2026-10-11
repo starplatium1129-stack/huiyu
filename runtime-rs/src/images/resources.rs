@@ -207,10 +207,11 @@ pub(super) async fn status(
 ) -> Result<Value> {
     let root = config.ai_workspace_root.join("ComfyUI/models");
     let anima = family == "anima";
-    let (resources, online, super_res) = tokio::join!(
+    let (resources, online, super_res, nodes) = tokio::join!(
         tokio::task::spawn_blocking(move || local_status(root, anima)),
         backend.comfy_online(),
         generation::super_res(config, None),
+        backend.comfy_optional_status(),
     );
     let mut result = resources
         .map_err(|_| ApiError::new(503, "ANIMA_STATUS_UNAVAILABLE", "生成资源状态暂不可用"))?;
@@ -222,6 +223,13 @@ pub(super) async fn status(
                 .iter()
                 .any(|model| model["available"] == true)
     );
+    result["provider"] = json!("comfy");
+    result["capabilities"] = json!({"automaticMask":nodes["automaticMask"]["state"] == "ready","automaticMaskStatus":nodes["automaticMask"]});
+    for model in result["models"].as_array_mut().unwrap() {
+        if model["family"] == "krea2" {
+            model["nodeReadiness"] = nodes["krea2"].clone();
+        }
+    }
     result["managedStartAvailable"] = json!(backend.comfy_start_available());
     result["hires"] = json!({"superResModel":super_res});
     result["pending"] = json!(backend.pending());

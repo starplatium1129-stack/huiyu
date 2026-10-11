@@ -19,7 +19,7 @@ function harness(popular = false) {
   const deps = {
     pb: { char: 'nene', flash }, drawEngine: ref('anima'),
     animaState: ref({
-      phase: 'idle', family: 'anima', modelId: 'character-model', width: 832, height: 1216, loraStrength: 0.75,
+      automaticMaskAvailable: true, phase: 'idle', family: 'anima', modelId: 'character-model', width: 832, height: 1216, loraStrength: 0.75,
       models: [
         { id: 'character-model', sizes: ['832x1216'] },
         { id: 'base-model', sizes: ['1024x1024'], capabilities: { noLora: true } },
@@ -168,6 +168,7 @@ describe('换装提交按操作加载', () => {
 it('adversarial TeaCache blocks strict missing-profile inpaint before upload but preserves automatic intent', async () => {
   const { deps, tools, generate, flash } = harness(true)
   deps.animaState.value.provider = 'native'
+  deps.animaState.value.automaticMaskAvailable = false
   await tools.handleInpaintSubmit(payload)
   expect(apiClient.request).not.toHaveBeenCalled()
   expect(generate).not.toHaveBeenCalled()
@@ -231,4 +232,19 @@ it('submits native automatic masks only after local resource readiness and keeps
   expect(apiClient.request).toHaveBeenCalledOnce()
   expect(generate.mock.calls[0][0]).toMatchObject({ initImage: 'source.png', maskPrompt: 'jacket | sleeves', maskThreshold: 0.65, growMaskBy: 4, teaCache: undefined })
   expect(generate.mock.calls[0][0]).not.toHaveProperty('maskImage')
+})
+
+
+it('blocks unavailable Comfy text masks before reading or uploading the source, but retains manual input', async () => {
+  const { deps, tools, generate, flash } = harness()
+  deps.animaState.value.provider = 'comfy'
+  deps.animaState.value.automaticMaskAvailable = false
+  deps.animaState.value.automaticMaskStatus = { state: 'missing', required: ['AP_CLIPSeg_TextMask'], missing: ['AP_CLIPSeg_TextMask'] }
+  await tools.handleInpaintSubmit(payload)
+  expect(apiClient.request).not.toHaveBeenCalled()
+  expect(generate).not.toHaveBeenCalled()
+  expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('AP_CLIPSeg_TextMask'))
+  expect(tools.inpaintOpen.value).toBe(true)
+  await tools.handleInpaintSubmit({ ...payload, maskBlob: new Blob(['mask']) })
+  expect(generate).toHaveBeenCalledWith(expect.objectContaining({ maskImage: 'source.png' }), expect.anything())
 })

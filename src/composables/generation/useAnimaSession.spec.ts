@@ -144,6 +144,7 @@ describe('useAnimaSession · backend status and polling', () => {
         id: 'model-a',
         family: 'krea2',
         available: true,
+        nodeReadiness: { state: 'ready', required: ['ConditioningKrea2Rebalance', 'ComfyUI-Krea2T-Enhancer'], missing: [] },
         sizes: ['1024x1024'],
         defaults: { steps: 20, cfg: 5 },
       }],
