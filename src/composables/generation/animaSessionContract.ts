@@ -47,6 +47,7 @@ export interface AnimaRequest {
   hiresScale?: number
   hiresDenoise?: number
   hiresUpscaler?: 'Auto' | 'Latent' | 'Remacri'
+  /** Native: omitted is automatic, false disables, true requires a matching accepted profile. */
   teaCache?: boolean
   teaCacheThresh?: number
   initImage?: string

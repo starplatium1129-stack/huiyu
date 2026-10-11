@@ -4,7 +4,8 @@ fn native_defaults_are_explicit_and_unsupported_effects_fail() {
     let input = json!({"family":"anima","sampler":"res_multistep","scheduler":"simple","teaCache":true,"teaCacheThresh":0.08});
     let normalized = normalize(&json!({}), input.clone()).unwrap();
     assert_eq!(normalized["sampler"], "res_multistep");
-    assert_eq!(normalized["teaCache"], false);
+    assert_eq!(normalized["teaCache"], true);
+    assert_eq!(normalized["teaCacheAuto"], true);
     assert!(normalized.get("teaCacheThresh").is_none());
     assert_eq!(normalized["inferenceEngine"], "native");
     for key in ["styleLoraId", "rcas"] {
@@ -123,6 +124,7 @@ fn native_teacache_requires_explicit_boolean_and_does_not_inherit_comfy_threshol
     let input = json!({"family":"anima","teaCache":true,"teaCacheThresh":0.08});
     let enabled = normalize(&json!({"teaCache":true}), input.clone()).unwrap();
     assert_eq!(enabled["teaCache"], true);
+    assert_eq!(enabled["teaCacheAuto"], false);
     assert!(enabled.get("teaCacheThresh").is_none());
     assert_eq!(
         normalize(
@@ -137,10 +139,22 @@ fn native_teacache_requires_explicit_boolean_and_does_not_inherit_comfy_threshol
         json!({"teaCache":false,"teaCacheThresh":0.08}),
         json!({"teaCache":true,"teaCacheThresh":0.}),
         json!({"teaCache":true,"teaCacheThresh":1.01}),
+        json!({"teaCacheThresh":0.2}),
     ] {
         assert_eq!(
             normalize(&raw, input.clone()).unwrap_err().code,
             "INVALID_PARAMETER"
+        );
+    }
+    // A caller cannot forge the host-owned marker to weaken explicit requests.
+    for enabled in [true, false] {
+        let raw = json!({"teaCache":enabled,"teaCacheAuto":true});
+        let normalized = normalize(&raw, input.clone()).unwrap();
+        assert_eq!(normalized["teaCache"], enabled);
+        assert_eq!(normalized["teaCacheAuto"], false);
+        assert_eq!(
+            validation::validate(&raw, "anima", true).unwrap_err().code,
+            "UNKNOWN_PARAMETER"
         );
     }
 }
@@ -174,9 +188,26 @@ async fn native_teacache_requires_a_contained_local_profile_without_silent_fallb
         Err(error) => assert_eq!(error.code, "NATIVE_TEACACHE_PROFILE_UNAVAILABLE"),
         Ok(_) => panic!("explicit TeaCache must not silently disable caching"),
     }
+    let auto = normalize(&json!({}), input.clone()).unwrap();
+    let prepared = plan(&settings, auto.clone(), &[]).await.unwrap();
+    assert!(prepared.tea_cache_profile_path.is_none());
+    // Resuming the frozen input must not turn auto into a strict true request.
+    let resumed = plan(&settings, prepared.input, &[]).await.unwrap();
+    assert_eq!(resumed.input["teaCacheAuto"], true);
+    assert!(resumed.tea_cache_profile_path.is_none());
     let profile = model.join(TEACACHE_PROFILE);
     std::fs::write(&profile, "").unwrap();
-    assert!(tea_cache_profile(&model).await.is_none());
+    assert!(tea_cache_profile(&model).await.is_err());
+    assert!(matches!(plan(&settings, auto.clone(), &[]).await,
+        Err(error) if error.code == "NATIVE_TEACACHE_PROFILE_UNAVAILABLE"));
+    std::fs::write(&profile, vec![b' '; 65537]).unwrap();
+    assert!(matches!(plan(&settings, auto.clone(), &[]).await,
+        Err(error) if error.code == "NATIVE_TEACACHE_PROFILE_UNAVAILABLE"));
+    std::fs::remove_file(&profile).unwrap();
+    std::fs::create_dir(&profile).unwrap();
+    assert!(matches!(plan(&settings, auto, &[]).await,
+        Err(error) if error.code == "NATIVE_TEACACHE_PROFILE_UNAVAILABLE"));
+    std::fs::remove_dir(&profile).unwrap();
     // Host reports file readiness only. Calibration validity belongs to the worker.
     std::fs::write(&profile, "{}").unwrap();
     input["teaCacheProfilePath"] = json!("/untrusted/profile.json");
@@ -209,7 +240,8 @@ async fn native_teacache_requires_a_contained_local_profile_without_silent_fallb
         .iter()
         .find(|model| model["id"] == "anima-base-v1.0")
         .unwrap();
-    assert_eq!(selected["defaults"]["teaCache"], false);
+    assert_eq!(selected["defaults"]["teaCache"], true);
+    assert_eq!(selected["defaults"]["teaCachePolicy"], "auto");
     assert_eq!(selected["capabilities"]["teaCache"], true);
     assert_eq!(
         selected["teaCacheProfile"]["readiness"],
@@ -225,7 +257,7 @@ async fn native_teacache_requires_a_contained_local_profile_without_silent_fallb
         let external = root.path().join("external.json");
         std::fs::write(&external, "{}").unwrap();
         std::os::unix::fs::symlink(&external, &profile).unwrap();
-        assert!(tea_cache_profile(&model).await.is_none());
+        assert!(tea_cache_profile(&model).await.is_err());
     }
 }
 #[test]

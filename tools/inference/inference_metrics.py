@@ -95,7 +95,8 @@ class RuntimeMetrics:
             value = self.mask_cache.get("fingerprintSeconds")
             if type(value) in (float, int) and math.isfinite(value) and value >= 0:
                 mask["fingerprintSeconds"] = value
-        cached = dict(enabled=report is not None and report["teaCacheEnabled"])
+        cached = dict(enabled=report is not None and report["teaCacheEnabled"],
+            reason=report.get("selectionReason", "request-disabled") if report is not None else "request-disabled")
         if tea is not None:
             cached.update(_counts(tea.stats, ("fullComputes", "skippedComputes", "skippedBlocks", "resets", "nonfinite")))
         return dict(schemaVersion=1, timingMode="cpu-wall-no-extra-sync", timingsAreAdditive=False,

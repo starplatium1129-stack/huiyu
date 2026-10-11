@@ -223,6 +223,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     ] {
         input[key] = plan.input[key].clone();
     }
+    input["teaCacheAuto"] = json!(plan.input["teaCacheAuto"] == true);
     if let Some(threshold) = plan.input.get("teaCacheThresh") {
         input["teaCacheThresh"] = threshold.clone();
     }
@@ -433,6 +434,16 @@ fn native_runtime(value: &Value) -> Value {
         }
         if let Some(v) = value["maskCache"].get("fingerprintSeconds") {
             result["maskCache"]["fingerprintSeconds"] = json!(finite(v)?);
+        }
+        if let Some(reason) = value["teaCache"].get("reason") {
+            let reason = reason.as_str()?;
+            if !matches!(
+                reason,
+                "matched-profile" | "request-disabled" | "no-matching-profile"
+            ) {
+                return None;
+            }
+            result["teaCache"]["reason"] = json!(reason);
         }
         let memory = &value["memory"];
         if memory["deviceIndex"] != 0 || memory["scope"] != "image-preparation-through-pipeline" {

@@ -75,7 +75,7 @@
         <tr><td>更激进的高清跳 3 步候选</td><td>夏目阈值 0.30 曾出现非有限值及黑图，校准拒绝；其余新候选也未安装</td><td><span class="badge fail">未采用</span></td></tr>
       </tbody>
     </table></div>
-    <p class="note">TeaCache 沿用默认关闭，可手动启用已校准组合，目前没有按精确范围自动开启的策略。普通单轮 profile 不能用于高清；固定文件中可共存至多 16 项、64 KiB 的精确范围。范围不匹配或未接受会明确拒绝。Worker 已增加非有限推理与解码像素拦截，防止发布黑图；针对性 CPU 用例通过，原失败输入在新进程中未复现非有限值，不将该重放记作拦截成功。</p>
+    <p class="note">TeaCache 已改为默认自动开启：精确匹配已接受校准档时加速，缺档或无匹配时完整计算。手动关闭在模型切换、后台刷新、批量和局部重绘中保留；蓝图也保留自动模式。普通单轮 profile 不能用于高清；固定文件中可共存至多 16 项、64 KiB 的精确范围。显式 API 强制开启仍要求匹配；损坏、重复或越界档案仍拒绝，实际是否使用缓存与原因写入任务运行记录。已测加速档对应 compiled-fused-sage，执行模式和请求参数必须匹配，未擅自更改采样参数来命中档案。Worker 已增加非有限推理与解码像素拦截，防止发布黑图；针对性 CPU 用例通过，原失败输入在新进程中未复现非有限值，不将该重放记作拦截成功。</p>
   </section>
 
   <section aria-labelledby="startup">
@@ -108,7 +108,7 @@
         <tr><td>性能结论</td><td>已测普通角色热任务稳定领先；首次载入和高清尚未全面领先。不将这一小样本推广至所有模型、输入和设备</td></tr>
       </tbody>
     </table></div>
-    <p class="note">原始汇总：<code>runtime/backend-cost-20261011/api-comparison-final.json</code>。次序为 Comfy A、诊断/校准（排除）、Native A/B、Comfy B，未随机化。双方使用 normal 配方与锐化，但 RNG、注意力、TeaCache 与 RCAS 实现不同，不是数学或像素等价对照；小样本不报告 p95。计时后仅增加非有限输出拦截，未改变有限值图像运算，未重新运行性能测量。尝试收紧宁宁阈值至 0.20 仍有双伞，未替换已接受档。</p>
+    <p class="note">原始汇总：<code>runtime/backend-cost-20261011/api-comparison-final.json</code>。次序为 Comfy A、诊断/校准（排除）、Native A/B、Comfy B，未随机化。双方使用 normal 配方与锐化，但 RNG、注意力、TeaCache 与 RCAS 实现不同，不是数学或像素等价对照；小样本不报告 p95。计时后增加非有限输出拦截和默认自动匹配策略；已匹配档的有限值采样算法未变，未重新运行性能测量。尝试收紧宁宁阈值至 0.20 仍有双伞，未替换已接受档。</p>
   </section>
 
   <section aria-labelledby="checks">
@@ -119,7 +119,7 @@
       <li><span class="badge pass">已有工程验证</span> 运行工具生成、Rust release 构建和 clippy 完成；Rust 原生请求契约、UI、权重、加载恢复、高清与非有限输出的定向检查已有通过记录。只报告本次相关检查，不宣称全仓通过。</li>
       <li><span class="badge pending">覆盖有限</span> Endfield 仅 Laevatain 一例；2.9B 仅无 LoRA；成功样本不代表所有提示词、模型/LoRA/精修组合。Remacri 细线有平滑，自动遮罩个别边缘略生硬。</li>
       <li><span class="badge pending">未实施</span> 非 Anima 家族、视频、FaceDetailer、styleLoraId 接口、任意 Comfy 节点与任意超分权重；RCAS 随配方执行。未切换默认引擎或加速环境，未执行桌面部署。</li>
-      <li><span class="badge pending">遵照最新要求停止测试</span> 后续未追加测试、构建或模型调用；本报告整理已完成证据。项目接入后，在控制室选择独立引擎并按配置提示重启即可使用已准备的本地运行库。</li>
+      <li><span class="badge pass">22 项对抗性检查通过</span> 用户要求默认开启后，仅检查错档、损坏档、内部标记注入、旧阈值和显式关闭被覆盖等场景（UI 14、Python 4、Rust 4）。两处新夹具准备错误已修正并仅复验对应项，原日志保留。未追加普通回归、发布构建或 GPU 调用；此前 release 构建早于本次默认策略，新增策略未再做实机计时。项目接入后，在控制室选择独立引擎并按配置提示重启即可使用已准备的本地运行库。</li>
     </ul>
     <p>原始 JSON、PNG、截图和日志保留在被忽略的 <code>runtime/</code>，本报告不嵌入原图。对照应同时核对实际采样、噪声、精度及缓存状态；相同 seed 或算法名称不能单独证明数学等价。</p>
   </section>

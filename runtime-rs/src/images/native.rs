@@ -102,11 +102,14 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
         ));
     }
     let tea_cache = match raw.get("teaCache") {
-        None => false,
+        None => true,
         Some(Value::Bool(enabled)) => *enabled,
         Some(_) => return Err(error("INVALID_PARAMETER", "独立推理 teaCache 必须为布尔值")),
     };
     input["teaCache"] = json!(tea_cache);
+    // This marker is host-owned. The frozen input preserves auto on resume;
+    // explicit booleans always select strict enablement or disablement.
+    input["teaCacheAuto"] = json!(raw.get("teaCache").is_none());
     if input["hiresFix"] == true {
         validation::number(&input["hiresScale"], "hiresScale", 1.1, 3., false)?;
         validation::number(&input["hiresDenoise"], "hiresDenoise", 0.1, 0.7, false)?;
@@ -127,6 +130,12 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
     // threshold instead, unless this request explicitly chose a numeric value.
     input.as_object_mut().unwrap().remove("teaCacheThresh");
     if let Some(threshold) = raw.get("teaCacheThresh") {
+        if input["teaCacheAuto"] == true {
+            return Err(error(
+                "INVALID_PARAMETER",
+                "指定 teaCacheThresh 时必须明确设置 teaCache=true",
+            ));
+        }
         if !tea_cache {
             return Err(error(
                 "INVALID_PARAMETER",
@@ -244,8 +253,11 @@ pub(super) async fn plan(
         input["hiresScheduler"] = Value::Null;
     }
     let tea_cache_profile_path = if input["teaCache"] == true {
-        Some(tea_cache_profile(&model_dir).await.ok_or_else(|| ApiError::new(503,
-            "NATIVE_TEACACHE_PROFILE_UNAVAILABLE", "TeaCache 需要所选模型目录内的本地 teacache-profile.json 校准档；缺失、空文件或越界路径不会回退为无缓存生成"))?)
+        let profile = tea_cache_profile(&model_dir).await?;
+        if profile.is_none() && input["teaCacheAuto"] != true {
+            return Err(tea_cache_profile_error());
+        }
+        profile
     } else {
         None
     };
@@ -346,10 +358,29 @@ async fn model_available(path: &std::path::Path) -> bool {
     }
     false
 }
-async fn tea_cache_profile(model_dir: &std::path::Path) -> Option<PathBuf> {
-    let path = contained(model_dir, TEACACHE_PROFILE).await?;
-    let metadata = tokio::fs::metadata(&path).await.ok()?;
-    (metadata.is_file() && metadata.len() > 0 && metadata.len() <= 65536).then_some(path)
+fn tea_cache_profile_error() -> ApiError {
+    ApiError::new(
+        503,
+        "NATIVE_TEACACHE_PROFILE_UNAVAILABLE",
+        "TeaCache 校准档不可用；自动模式仅允许缺档回退，空文件、异常文件或越界路径仍会拒绝",
+    )
+}
+async fn tea_cache_profile(model_dir: &std::path::Path) -> Result<Option<PathBuf>> {
+    match tokio::fs::symlink_metadata(model_dir.join(TEACACHE_PROFILE)).await {
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+        Err(_) => return Err(tea_cache_profile_error()),
+        Ok(_) => {}
+    }
+    let path = contained(model_dir, TEACACHE_PROFILE)
+        .await
+        .ok_or_else(tea_cache_profile_error)?;
+    let metadata = tokio::fs::metadata(&path)
+        .await
+        .map_err(|_| tea_cache_profile_error())?;
+    if !metadata.is_file() || metadata.len() == 0 || metadata.len() > 65536 {
+        return Err(tea_cache_profile_error());
+    }
+    Ok(Some(path))
 }
 async fn remacri_path(settings: &Settings) -> Option<PathBuf> {
     let path = contained(
@@ -397,10 +428,10 @@ pub(super) async fn status(backend: &generation::Service, family: &str) -> Resul
                 None => false,
             };
         let profile_present = match &model_dir {
-            Some(path) => tea_cache_profile(path).await.is_some(),
+            Some(path) => tea_cache_profile(path).await.ok().flatten().is_some(),
             None => false,
         };
-        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"sizes":model["sizes"],"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCache":false},"teaCacheProfile":{"support":"experimental-candidate","readiness":if profile_present {"profile-files-only"} else {"missing"},"validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available && profile_present,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
+        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"sizes":model["sizes"],"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCache":true,"teaCachePolicy":"auto"},"teaCacheProfile":{"support":"experimental-candidate","readiness":if profile_present {"profile-files-only"} else {"missing"},"policy":"matching-accepted-profile","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
     }
     let mut loras = Vec::new();
     {

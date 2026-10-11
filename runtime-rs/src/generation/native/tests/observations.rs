@@ -17,6 +17,11 @@ fn runtime_metadata_is_optional_bounded_and_never_labels_history_as_job_peak() {
     valid["textCache"]["arbitrary"] = json!({"must":"not escape"});
     valid["memory"]["untrusted"] = json!("ignored");
     assert_eq!(native_runtime(&valid), runtime_metrics());
+    let mut auto = runtime_metrics();
+    auto["teaCache"]["reason"] = json!("no-matching-profile");
+    assert_eq!(native_runtime(&auto), auto);
+    auto["teaCache"]["reason"] = json!("/untrusted/private/profile.json");
+    assert_eq!(native_runtime(&auto)["reason"], "invalid-worker-metrics");
     let mut legacy = runtime_metrics();
     legacy["textCache"]
         .as_object_mut()

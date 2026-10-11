@@ -132,11 +132,12 @@
       "weightLicense": "separate review required; original model card not accessible during implementation review"
     },
     "teaCache": {
-      "enabledByDefault": false,
-      "mode": "experimental-locally-calibrated-residual-reuse",
+      "enabledByDefault": true,
+      "defaultPolicy": "auto: use only an exact accepted profile; absent/unmatched profiles use full computation. Explicit false disables; explicit true is strict. Malformed profiles still fail",
+      "mode": "locally-calibrated-residual-reuse",
       "profileFile": "teacache-profile.json",
       "profileMaxBytes": 65536,
-      "profileCollection": "Fixed teacache-profile.json supports one legacy profile or at most 16 exact runtime/compatibility scopes; unique on-load selection, no fallback. Append/replacement requires the existing whole-file SHA and preserves other scopes",
+      "profileCollection": "Fixed teacache-profile.json supports one legacy profile or at most 16 exact runtime/compatibility scopes; unique on-load selection; auto may use full computation on absent/unmatched profiles, explicit enablement stays strict. Append/replacement requires the existing whole-file SHA and preserves other scopes",
       "algorithm": "huiyu-anima-first-norm-residual-v1",
       "candidateAlgorithm": "huiyu-anima-phase-envelope-v2",
       "candidateMeaning": "phase-specific observed error envelopes; refresh on phase transition; not a semantic quality bound",
@@ -161,7 +162,7 @@
         "anima_text_cache.py"
       ],
       "licenseNotice": "TEACACHE_LICENSE.txt",
-      "realDeviceValidation": "2026-10-11: accepted compiled-fused-sage MiaoMiao 1.6 Nene/Natsume v21 0.8 profiles at 832x1216, 24 steps, CFG 4, normal/RCAS 0.75: threshold 0.25, skip limit 3. Separate Latent 2x/denoise 0.35 profiles use threshold 0.25, skip limit 2. Previous simple/no-LoRA profiles preserved. Subject/clarity/style reviewed; one Nene cached sample duplicated an umbrella. More aggressive hires candidates remain unaccepted/uninstalled; a threshold 0.30 Natsume candidate produced nonfinite values. Default remains disabled; other scopes need calibration"
+      "realDeviceValidation": "2026-10-11: accepted compiled-fused-sage MiaoMiao 1.6 Nene/Natsume v21 0.8 profiles at 832x1216, 24 steps, CFG 4, normal/RCAS 0.75: threshold 0.25, skip limit 3. Separate Latent 2x/denoise 0.35 profiles use threshold 0.25, skip limit 2. Previous simple/no-LoRA profiles preserved. Subject/clarity/style reviewed; one Nene cached sample duplicated an umbrella. More aggressive hires candidates remain unaccepted/uninstalled; a threshold 0.30 Natsume candidate produced nonfinite values. Default automatically selects accepted exact scopes; other scopes use full computation until calibrated"
     }
   },
   "security": {

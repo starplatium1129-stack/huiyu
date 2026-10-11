@@ -95,6 +95,7 @@ export interface AnimaGenerationState {
   hiresScale?: number
   hiresDenoise?: number
   hiresUpscaler?: 'Auto' | 'Latent' | 'Remacri'
+  /** Native: omitted selects an accepted matching profile automatically; false disables; true requires one. */
   teaCache?: boolean
   teaCacheThresh?: number
   job: AnimaJobMetadata | null

@@ -164,7 +164,7 @@ def validate_job(job):
     data = job.get("input")
     if not isinstance(data, dict):
         raise WorkerError("INVALID_INPUT", "input must be an object")
-    supported = {"prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "family", "modelId", "sampler", "scheduler", "denoisingStrength", "growMaskBy", "maskPrompt", "maskThreshold", "teaCache", "teaCacheThresh", "hiresFix", "hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel", "rcasStrength"}
+    supported = {"prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "family", "modelId", "sampler", "scheduler", "denoisingStrength", "growMaskBy", "maskPrompt", "maskThreshold", "teaCache", "teaCacheAuto", "teaCacheThresh", "hiresFix", "hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel", "rcasStrength"}
     # Empty/disabled UI options are harmless; active options never silently degrade.
     disabled = {"teacache", "mask", "maskPath", "loras", "lora", "hires", "rcas", "upscaler", "inputImage", "inputImagePath", "image", "initImage"}
     for key, value in data.items():
@@ -184,6 +184,8 @@ def validate_job(job):
     if type(data.get("teaCache", False)) is not bool:
         raise WorkerError("INVALID_INPUT", "teaCache must be a boolean")
     result["teaCache"] = data.get("teaCache", False)
+    if type(data.get("teaCacheAuto", False)) is not bool or (data.get("teaCacheAuto") and (not result["teaCache"] or "teaCacheThresh" in data)):
+        raise WorkerError("INVALID_INPUT", "teaCacheAuto requires teaCache enabled without an explicit threshold")
     if type(data.get("hiresFix", False)) is not bool:
         raise WorkerError("INVALID_INPUT", "hiresFix must be a boolean")
     result["rcasStrength"] = number(data, "rcasStrength", 0, 0, 1)
@@ -364,12 +366,14 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             scope = profile_tools.compatibility(root, job.get("loras", []), data, mode, dtype, torch.cuda.get_device_name(0),
                 mask_model_dir=job.get("maskModelDir"), upscale_model_path=job.get("upscaleModelPath"), identity=identity)
             profile = (teacache_profile if teacache_profile is not None else
-                profile_tools.read_profile(job.get("teaCacheProfilePath"), root, expected=scope)) if data["teaCache"] else None
-            tea_report = dict(schemaVersion=1, runtime=profile_tools.RUNTIME, teaCacheEnabled=data["teaCache"], compatibility=scope,
+                profile_tools.read_profile(job.get("teaCacheProfilePath"), root, expected=scope, auto=data.get("teaCacheAuto", False))) if data["teaCache"] else None
+            tea_report = dict(schemaVersion=1, runtime=profile_tools.RUNTIME, teaCacheEnabled=profile is not None, compatibility=scope,
+                selectionReason="matched-profile" if profile is not None else "no-matching-profile",
                 fingerprintSeconds=time.perf_counter() - started)
             threshold = profile_tools.validate_profile(profile, scope, data.get("teaCacheThresh"),
                 require_accepted=teacache_profile is None) if profile is not None else None
-            tea = load_mask_tools("teacache_anima").TeaCacheController(profile, threshold, collect_teacache)
+            if profile is not None or collect_teacache:
+                tea = load_mask_tools("teacache_anima").TeaCacheController(profile, threshold, collect_teacache)
         except profile_tools.TeaCacheError as exc:
             raise WorkerError(exc.code, str(exc)) from exc
     elif measure_teacache:

@@ -6,14 +6,14 @@ import type { AnimaGenerationState } from '@/types/anima'
 import StudioSelect from './ui/StudioSelect.vue'
 import { nativeAnimaRequestBlocker } from '@/composables/generation/nativeAnimaCapabilities'
 
-it('prevents enabling native unsupported features but lets the user clear restored selections', async () => {
+it('adversarial TeaCache keeps auto available with missing files while preserving unsupported hires blocking', async () => {
   const state = { provider: 'native', phase: 'idle', family: 'anima', modelId: 'native-model',
     models: [{ id: 'native-model', capabilities: { hires: false, teaCache: false } }], loras: [],
     width: 832, height: 1216, steps: 30, cfg: 4.5, teaCache: false, hiresFix: false,
   } as unknown as AnimaGenerationState
   const wrapper = mount(AnimaQuickPanel, { props: { state } })
   try {
-    expect(wrapper.findAllComponents(ToggleSwitch).map(toggle => toggle.props('disabled'))).toEqual([true, true])
+    expect(wrapper.findAllComponents(ToggleSwitch).map(toggle => toggle.props('disabled'))).toEqual([false, true])
     await wrapper.setProps({ state: { ...state, teaCache: true, hiresFix: true } })
     const toggles = wrapper.findAllComponents(ToggleSwitch)
     expect(toggles.map(toggle => toggle.props('disabled'))).toEqual([false, false])
@@ -42,7 +42,7 @@ it('admits native hires with TeaCache for whole-operation calibration while resp
   } finally { wrapper.unmount() }
 })
 
-it('offers explicit experimental native activation only for local profile files and clears legacy thresholds on user choice', async () => {
+it('adversarial TeaCache clears stale thresholds on automatic activation without requiring a profile file', async () => {
   const state = { provider: 'native', phase: 'idle', family: 'anima', modelId: 'native-model',
     models: [{ id: 'native-model', capabilities: { teaCache: true }, teaCacheProfile: { readiness: 'profile-files-only' } }], loras: [],
     width: 832, height: 1216, steps: 30, cfg: 4.5, hiresFix: false,
@@ -50,17 +50,18 @@ it('offers explicit experimental native activation only for local profile files 
   const wrapper = mount(AnimaQuickPanel, { props: { state } })
   try {
     const toggle = wrapper.findAllComponents(ToggleSwitch)[0]
-    expect(toggle.props()).toMatchObject({ modelValue: false, disabled: false })
-    expect(wrapper.text()).toContain('速度与画质尚未验收')
+    expect(toggle.props()).toMatchObject({ modelValue: true, disabled: false })
+    expect(wrapper.text()).toContain('未匹配时照常生成')
     expect(wrapper.emitted('update:state')).toBeUndefined()
     toggle.vm.$emit('update:modelValue', true)
-    expect(wrapper.emitted('update:state')).toEqual([[{ teaCache: true, teaCacheThresh: undefined }]])
+    expect(wrapper.emitted('update:state')).toEqual([[{ teaCache: undefined, teaCacheThresh: undefined }]])
     await wrapper.setProps({ state: { ...state, teaCache: true, teaCacheThresh: 0.1 } })
     expect(wrapper.text()).toContain('已保存的阈值 0.1')
     const reset = wrapper.findAll('button').find(button => button.text() === '使用本地校准档阈值')!
     await reset.trigger('click')
     expect(wrapper.emitted('update:state')?.at(-1)).toEqual([{ teaCacheThresh: undefined }])
     await wrapper.setProps({ state: { ...state, models: [{ id: 'native-model', capabilities: state.models[0].capabilities }] } })
-    expect(toggle.props('disabled')).toBe(true)
+    expect(toggle.props('disabled')).toBe(false)
+    expect(nativeAnimaRequestBlocker(state.models, { modelId: state.modelId })).toBeNull()
   } finally { wrapper.unmount() }
 })

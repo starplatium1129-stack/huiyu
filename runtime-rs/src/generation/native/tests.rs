@@ -133,12 +133,14 @@ async fn native_teacache_forwards_only_the_host_selected_profile_and_explicit_pa
 r=json.loads(sys.stdin.readline())
 assert r['teaCacheProfilePath'].endswith('teacache-profile.json')
 assert r['input']['teaCache'] is True and r['input']['teaCacheThresh']==0.2
+assert r['input']['teaCacheAuto'] is False
 assert 'teaCacheProfilePath' not in r['input']
 print(json.dumps({'id':r['id'],'event':'error','code':'FIXTURE_TEACACHE_VERIFIED','message':'contract verified'}),flush=True)
 "#,
     );
     plan.tea_cache_profile_path = Some(root.path().join("teacache-profile.json"));
     plan.input["teaCache"] = json!(true);
+    plan.input["teaCacheAuto"] = json!(false);
     plan.input["teaCacheThresh"] = json!(0.2);
     plan.input["teaCacheProfilePath"] = json!("/untrusted/request/path");
     let prepared = service

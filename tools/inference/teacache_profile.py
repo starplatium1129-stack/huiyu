@@ -221,16 +221,28 @@ def _read_profile_file(path, root):
         raise TeaCacheError(f"Cannot read local TeaCache profile: {exc}") from exc
 
 
-def read_profile(path, root, expected=None):
+def read_profile(path, root, expected=None, *, auto=False):
+    # Automatic selection may decline a scope, but never suppress a corrupt file.
+    if auto and path is None:
+        return None
     document, _ = _read_profile_file(path, root)
-    if "kind" not in document and expected is None:
+    if "kind" not in document and expected is None and not auto:
         return document
     if expected is None:
         raise TeaCacheError("TeaCache collection selection requires the current compatibility scope")
     matches = [entry for entry in profile_entries(document)
                if entry["runtime"] == RUNTIME and entry["compatibility"] == expected]
+    if auto and not matches:
+        return None
     if len(matches) != 1:
         raise TeaCacheError("No accepted TeaCache profile matches the exact runtime and compatibility scope; recalibrate")
+    if auto:
+        validate_profile(matches[0], expected, require_accepted=False)
+        acceptance = matches[0].get("acceptance", {})
+        if not isinstance(acceptance, dict):
+            raise TeaCacheError("Malformed TeaCache acceptance record")
+        if acceptance.get("status") != "accepted":
+            return None
     validate_profile(matches[0], expected)
     return matches[0]
 

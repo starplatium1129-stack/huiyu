@@ -206,7 +206,9 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
     if (hiresScale !== undefined) patch.hiresScale = hiresScale
     if (hiresDenoise !== undefined) patch.hiresDenoise = hiresDenoise
     if (typeof anima.teaCache === 'boolean') patch.teaCache = anima.teaCache
+    else if (ctx.animaState.value.provider === 'native' && anima.teaCache === undefined) patch.teaCache = undefined
     if (teaCacheThresh !== undefined) patch.teaCacheThresh = teaCacheThresh
+    else if (ctx.animaState.value.provider === 'native' && anima.teaCacheThresh === undefined) patch.teaCacheThresh = undefined
     ctx.patchAnimaState(patch)
     const animaSize = size || validSize(`${anima.width ?? ''}x${anima.height ?? ''}`)
     if (animaSize) ctx.applyRecommendedSize(animaSize)

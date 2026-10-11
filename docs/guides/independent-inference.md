@@ -4,13 +4,13 @@
 
 本轮已完成六个登记 Anima 模型的真实 GPU 加载与 11 张出图：五个 28 层模型各验证宁宁、夏目，40 层 MiaoMiao 2.9B 验证无 LoRA。Latent 2×、手绘蒙版 Latent 2×、Remacri 2×、自动蒙版 Remacri 2× 均产出 1664×2432，已测遮罩黑区与最终尺寸的原图完全一致。Endfield 第三个 LoRA 另完成 Laevatain 一张完整 API 出图。证据范围、完整 API 对照及限制见[本轮 Anima 替代报告](../audits/2026-10-11/native-anima-replacement.html)。这不表示每个模型都已跑遍每种编辑组合或全部 Endfield 角色。
 
-圆括号权重与高清 TeaCache 的独立校准契约已接入。普通提示词 PNG 与权重 helper 接入前的对照 SHA256 完全一致；加权提示词已真实 GPU 出图。普通单轮校准档不能用于高清或加权范围。宁宁/夏目 normal + RCAS 0.75、阈值 0.25、连续跳步上限 3 的角色档已接受：双方各 12 个完整 API 热任务中位数为 native 4.419 秒、ComfyUI + TeaCache 5.686 秒，耗时减少 22.3%，12 对均更快。范围限于 MiaoMiao 1.6、832×1216、24 步、CFG 4、LoRA 0.8 与本机配置。TeaCache 默认关闭；宁宁一例出现双雨伞而无缓存对照为单雨伞，不能承诺物件数量、姿态或逐像素一致。
+圆括号权重与高清 TeaCache 的独立校准契约已接入。普通提示词 PNG 与权重 helper 接入前的对照 SHA256 完全一致；加权提示词已真实 GPU 出图。普通单轮校准档不能用于高清或加权范围。宁宁/夏目 normal + RCAS 0.75、阈值 0.25、连续跳步上限 3 的角色档已接受：双方各 12 个完整 API 热任务中位数为 native 4.419 秒、ComfyUI + TeaCache 5.686 秒，耗时减少 22.3%，12 对均更快。范围限于 MiaoMiao 1.6、832×1216、24 步、CFG 4、LoRA 0.8 与本机配置。TeaCache 默认自动开启，精确匹配已接受档案才使用缓存，缺档或无匹配时完整计算；宁宁一例出现双雨伞而无缓存对照为单雨伞，不能承诺物件数量、姿态或逐像素一致。
 
-[角色 LoRA + TeaCache 完整 API 报告](../audits/2026-10-11/native-backend-lora-tea.html)记录了宁宁/夏目 v21 强度 0.8、832×1216、24 步、CFG 4：双方各 12 个热任务，独立后端中位 4.819 秒，对照 Comfy + Tea 为 5.741 秒，该轮所有 native 热样本均更快。报告中的冷启动与换组暖机较慢，两引擎调度与锐化不同；这些历史数字不代表下述新调度、加载与精修实现的性能，也不推广至任意参数或数学等价。fused 模式的无 LoRA 与两角色档已共存，默认 Tea 开关不变。
+[角色 LoRA + TeaCache 完整 API 报告](../audits/2026-10-11/native-backend-lora-tea.html)记录了宁宁/夏目 v21 强度 0.8、832×1216、24 步、CFG 4：双方各 12 个热任务，独立后端中位 4.819 秒，对照 Comfy + Tea 为 5.741 秒，该轮所有 native 热样本均更快。报告中的冷启动与换组暖机较慢，两引擎调度与锐化不同；这些历史数字不代表下述新调度、加载与精修实现的性能，也不推广至任意参数或数学等价。fused 模式的无 LoRA 与两角色档已共存，该历史轮次未更改默认开关；当前已改为自动匹配开启。
 
 2026-10-11 主力机已用独立 Python/CUDA 运行 MiaoMiao 1.6 真实文生图、图生图、手绘蒙版和两个现有角色 LoRA，初轮结果见[本机 GPU 报告](../audits/2026-10-11/native-backend-gpu.html)。后续优化与完整 API 验证见[性能续报](../audits/2026-10-11/native-backend-performance.html)：显式启用 compiled-sage，结合受保护文件身份复用和本机多项式 TeaCache 校准，在本机两个已测尺寸的连续同提示词换 seed 任务中超过 ComfyUI + TeaCache。该结论限于报告中的配置与热任务，不代表全模型、全 LoRA 或冷启动领先。
 
-可选模式通过 `HUIYU_INFERENCE_ACCELERATION=compiled-sage` 启用，默认为 `native`。仅支持已锁定的 Windows Torch 2.8.0+cu128、SageAttention 与 Triton 版本及 Ada SM89，安装来源与 SHA256 见 `tools/inference/runtime-manifest.json`。首次编译、尺寸或 LoRA 设置改变会增加耗时；组件权重与 PEFT 强度保持原调用，不融合适配器。按用户确认的“主体、清晰度和风格保持，允许局部细节变化”检查留出样张后，已安装本机 MiaoMiao 1.6、832×1216、24 步、CFG 4、无 LoRA 的校准档；其他尺寸/适配器组合需单独校准，默认 TeaCache 仍关闭。
+可选模式通过 `HUIYU_INFERENCE_ACCELERATION=compiled-sage` 启用，默认为 `native`。仅支持已锁定的 Windows Torch 2.8.0+cu128、SageAttention 与 Triton 版本及 Ada SM89，安装来源与 SHA256 见 `tools/inference/runtime-manifest.json`。首次编译、尺寸或 LoRA 设置改变会增加耗时；组件权重与 PEFT 强度保持原调用，不融合适配器。按用户确认的“主体、清晰度和风格保持，允许局部细节变化”检查留出样张后，已安装本机 MiaoMiao 1.6、832×1216、24 步、CFG 4、无 LoRA 的校准档；其他尺寸/适配器组合需单独校准，当前 TeaCache 默认自动匹配已接受档案；执行模式也必须与档案一致。
 
 角色 LoRA 的进一步候选为 `HUIYU_INFERENCE_ACCELERATION=compiled-fused-sage`。普通、保持基座的线性 LoRA 在有效源文件租约下，从原始 safetensors 的已核对位置通过 `readinto` 恢复基座；可复用 CPU 读取及转换缓冲合计最多 32 MiB，恢复前后持续检查基座身份，替代此前两角色各约 3.28 GiB 的完整 CPU 快照。这个上限不含操作系统文件缓存、模型与其他进程内存；源保护不可用的调用仍保留 CPU 快照路径。改强度、换组和卸载前先恢复原值，不通过 BF16 相减恢复，不改写文件。融合仍改变浮点运算顺序，使用单独校准身份，不能沿用未融合档。
 
@@ -24,7 +24,7 @@
 - 已接入本地完整 Diffusers 目录的文生图、图生图、实验性手绘遮罩局部重绘及本地兼容 LoRA，沿用绘遇的任务身份、进度、取消与结果协议。
 - 模型目录默认按现有 catalog 的 modelId 组织在 `AI_WORKSPACE_ROOT/inference/models/<modelId>/`；控制室中可配置模型根目录与独立 LoRA 根目录。目录必须包含该权重对应的配置、tokenizer、文本编码器、conditioner、transformer 与 VAE。
 - 现有裸 MiaoMiao / Anima safetensors 文件不能简单重命名为完整目录；对应结构与配套资源必须先通过转换器的精确核验；实际出图仍需核验。不同 MiaoMiao 架构不能仅靠名字认定兼容。
-- TeaCache 默认关闭，须本机校准并显式验收。RCAS、Latent / 固定 Remacri 高清与圆括号提示词权重已有真实 GPU 证据；hires + TeaCache 必须为完整操作单独校准及验收。任意 RealESRGAN 权重、非 Anima 家族与视频仍不支持，不能静默忽略或改采样器完成请求。Krea 2、SDXL 等属于后续范围。
+- TeaCache 默认自动匹配已接受的本机校准档；手动关闭仍保留，无匹配不会阻断生成。显式 API `teaCache: true` 仍严格要求匹配，`false` 明确关闭，省略为自动。RCAS、Latent / 固定 Remacri 高清与圆括号提示词权重已有真实 GPU 证据；hires + TeaCache 必须为完整操作单独校准及验收。任意 RealESRGAN 权重、非 Anima 家族与视频仍不支持，不能静默忽略或改采样器完成请求。Krea 2、SDXL 等属于后续范围。
 - 已支持的 LoRA 格式为原生 Diffusers/PEFT A/B 及官方识别的 `diffusion_model.*` A/B（含 llm_adapter）；另支持经原始模块名及实际 Linear 形状严格核验的 Anima Kohya `lora_unet_*` down/up/alpha 三元组（含 llm_adapter），按 alpha/rank 缩放 B；通用 Kohya 家族、卷积适配器、DoRA、残缺/非有限权重及未知格式明确拒绝。已测角色与模型组合见本轮报告，未知权重仍须实际加载验收。
 
 ## 独立运行库准备
@@ -159,7 +159,7 @@ python -I scripts/maintenance/calibrate-anima-teacache.py --calibration-job trai
 python -I scripts/maintenance/calibrate-anima-teacache.py --accept-run <结果目录> --accept-quality --accept-performance
 ```
 
-验收入口再次核对资产、源图片/遮罩和报告输出，要求每个留出缓存任务确有有限数值跳步，重新计算端到端中位数比且确实快于基线，才写入所选模型目录 teacache-profile.json。已有档不会自动覆盖；明确替换需提供其 `--replace-profile-sha256`。验收后也不会自动开启 UI 开关。
+验收入口再次核对资产、源图片/遮罩和报告输出，要求每个留出缓存任务确有有限数值跳步，重新计算端到端中位数比且确实快于基线，才写入所选模型目录 teacache-profile.json。已有档不会自动覆盖；明确替换需提供其 `--replace-profile-sha256`。默认自动模式会在下一次兼容请求中使用已接受档；显式关闭不会被验收或模型切换覆盖。
 
 同一固定文件现在可存最多 16 份、合计不超过 64 KiB 的校准集合。不同 runtime、角色 LoRA、强度、尺寸等范围分别保存；worker 只选择精确匹配的一份，无匹配或重复范围明确拒绝。接受新范围会保留旧范围；追加或替换均需提供旧整文件 SHA256，并通过独占接受锁和原子写入发布。异常中断留下的 `.teacache-profile.lock` 需先人工核对，不自动抢锁。
 
@@ -171,7 +171,7 @@ python -I scripts/maintenance/calibrate-anima-teacache.py --accept-run <结果�
 
 独立引擎以 `--serve` 串行执行任务，复用一份模型／LoRA 权重，连续任务无需重新启动 Python 或重新搬入同一份权重。每任务核对完整字节身份或仍有效的受保护租约，新加载后继续核验；基座变化会重载。普通 LoRA 换组先恢复融合基座，再尝试严格同拓扑 hotswap；不适用时完整卸载 transformer 和 text_conditioner 的适配器再加载，空组恢复无适配器基座。可能改写基座的初始化或未核实变体仍整组重载；同组仅变强度更新权重，融合模式同样先恢复。每次创建新的管线块、调度器、CFG 与 TeaCache 状态，不保留 seed 或中间潜变量；文本编码使用下述有界 CPU 缓存。成功任务的 `result` 后必须收到同身份 `ready`，才允许接收下一任务；取消、错误、超时和退出终止所属 Worker，确认停止前不放行 GPU 队列。空闲 120 秒释放进程与模型。
 
-校准默认采用 `phase-envelope`：按实际采样进度分为三个阶段，保留各阶段观测到的变化峰值；超出观测范围或跨阶段时全算刷新。每阶段至少三个有效配对样本及两种代理变化；最多 32 个保守边界压缩数据，避免一个全局多项式平滑掉局部峰值。它仍是经验性误差估计，不能保证人物、纹理或换装边缘的画质。原 `--strategy polynomial` 可作算法对照，已有 v1 档仍按原策略执行。两种策略都默认关闭并要求人工验收。
+校准默认采用 `phase-envelope`：按实际采样进度分为三个阶段，保留各阶段观测到的变化峰值；超出观测范围或跨阶段时全算刷新。每阶段至少三个有效配对样本及两种代理变化；最多 32 个保守边界压缩数据，避免一个全局多项式平滑掉局部峰值。它仍是经验性误差估计，不能保证人物、纹理或换装边缘的画质。原 `--strategy polynomial` 可作算法对照，已有 v1 档仍按原策略执行。两种策略均要求人工验收；默认自动模式只选择已接受的精确匹配档。
 
 校准与留出对照默认复用同一份已加载权重，双方须有 `modelReused=true` 证据；`--no-resident` 可另测冷任务。进程创建开销单列，Python 导入与首次模型加载计入首个训练任务；暖任务总耗时包含指纹、编码、采样、解码和写图；每任务重置 CUDA 分配峰值。两种模式不能混为同一速度结论。RTX 4070 Ti SUPER 的实际配置和原始证据见性能续报。
 

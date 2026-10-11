@@ -27,11 +27,11 @@ function setup() {
 }
 afterEach(() => { sessionStorage.clear(); vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.useRealTimers() })
 
-it.each(['missing', 'legacy-threshold', 'default-off', 'ready'] as const)('native batch TeaCache respects %s settings without silent downgrade', async scenario => {
+it.each(['missing', 'legacy-threshold', 'auto-missing', 'disabled', 'ready'] as const)('adversarial TeaCache batch preserves %s settings without converting auto to disabled', async scenario => {
   const { runner, deps } = setup()
-  Object.assign(deps.animaState.value, { provider: 'native', teaCache: scenario === 'default-off' ? undefined : true,
+  Object.assign(deps.animaState.value, { provider: 'native', teaCache: scenario === 'auto-missing' ? undefined : scenario !== 'disabled',
     teaCacheThresh: scenario === 'legacy-threshold' ? 0.1 : undefined,
-    models: [{ id: 'test-model', capabilities: { teaCache: scenario !== 'missing' }, teaCacheProfile: { readiness: 'profile-files-only' } }],
+    models: [{ id: 'test-model', capabilities: { teaCache: !scenario.includes('missing') }, teaCacheProfile: { readiness: scenario.includes('missing') ? 'missing' : 'profile-files-only' } }],
   })
   const request = vi.spyOn(apiClient, 'request').mockRejectedValue(new ApiClientError('isolated fixture', { kind: 'http', status: 400 }))
   await runner.onBatchStart({ sceneIds: ['one'], count: 1 })
@@ -40,7 +40,8 @@ it.each(['missing', 'legacy-threshold', 'default-off', 'ready'] as const)('nativ
     expect(runner.batchDraw.jobs.value[0].error).toContain(scenario === 'missing' ? '校准档' : '不沿用已保存的数值阈值')
   } else {
     expect(request).toHaveBeenCalledOnce()
-    expect(request.mock.calls[0][1]?.body).toMatchObject({ teaCache: scenario === 'ready' })
+    if (scenario === 'auto-missing') expect(request.mock.calls[0][1]?.body).not.toHaveProperty('teaCache')
+    else expect(request.mock.calls[0][1]?.body).toMatchObject({ teaCache: scenario === 'ready' })
     expect(request.mock.calls[0][1]?.body).not.toHaveProperty('teaCacheThresh')
   }
 })

@@ -133,7 +133,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       cfg: Number(defaults?.cfg) || state.value.cfg,
       sampler: String(defaults?.sampler || state.value.sampler),
       scheduler: String(defaults?.scheduler || state.value.scheduler),
-      teaCache: provider === 'native' ? false : typeof defaults?.teaCache === 'boolean' ? defaults.teaCache : state.value.provider === 'native' ? INITIAL_STATE.teaCache : state.value.teaCache,
+      teaCache: provider === 'native' ? (state.value.provider === 'native' || teaCacheSettingsTouched ? state.value.teaCache : undefined) : typeof defaults?.teaCache === 'boolean' ? defaults.teaCache : state.value.provider === 'native' ? INITIAL_STATE.teaCache : state.value.teaCache,
       teaCacheThresh: provider === 'native' ? undefined : typeof defaults?.teaCacheThresh === 'number' ? defaults.teaCacheThresh : state.value.provider === 'native' ? INITIAL_STATE.teaCacheThresh : state.value.teaCacheThresh,
     }
   }
@@ -238,7 +238,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
           ...(endfield && loraId === endfield.loraId && state.value.loraId !== loraId ? { loraStrength: endfield.loraStrength } : {}),
           family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
           ...(shouldApplyDefaults ? modelDefaults(selectedModel, provider) : {}),
-          ...(nativeCacheDefaults ? { teaCache: false, teaCacheThresh: undefined } : {}),
+          ...(nativeCacheDefaults ? { teaCache: undefined, teaCacheThresh: undefined } : {}),
         })
         // An edit during discovery owns these defaults for this model, including later polls.
         defaultsAppliedFor = modelIdCurrent

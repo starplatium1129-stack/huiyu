@@ -332,15 +332,23 @@ it('cancels while the direct transport loads without POST, then permits a fresh 
   expect(call).toHaveBeenCalledOnce()
 })
 
-it('honors native TeaCache defaults without overwriting later edits and rejects unsupported requests', async () => {
+it('adversarial TeaCache preserves explicit disable across model switches and still rejects strict missing-profile requests', async () => {
   const call = vi.fn(async () => ({ ok: true, online: true, provider: 'native', models: [
     { id: 'anima-fixture', family: 'anima', available: true, defaults: { teaCache: false } },
+    { id: 'anima-other', family: 'anima', available: true, defaults: { teaCache: true } },
   ], loras: [] }))
   const flash = vi.fn()
   const session = createSession({ request: call } as unknown as ApiClient, { flash })
   await session.refreshBackend()
-  expect(session.state.value).toMatchObject({ provider: 'native', teaCache: false, online: true })
+  expect(session.state.value).toMatchObject({ provider: 'native', online: true })
+  expect(session.state.value.teaCache).toBeUndefined()
   expect(session.state.value.teaCacheThresh).toBeUndefined()
+  session.patchState({ teaCache: false })
+  session.applyModel('anima-other')
+  await session.refreshBackend()
+  expect(session.state.value.teaCache).toBe(false)
+  session.applyModel('anima-fixture')
+  expect(session.state.value.teaCache).toBe(false)
   session.patchState({ teaCache: true })
   await session.refreshBackend()
   expect(session.state.value.teaCache).toBe(true)
@@ -380,15 +388,17 @@ it('admits native hires TeaCache for on-load whole-operation validation and refu
   expect(call.mock.calls[0]?.[1]?.body).not.toHaveProperty('teaCacheThresh')
 })
 
-it('keeps native TeaCache off when unrelated settings are edited during first discovery', async () => {
+it.each([undefined, false] as const)('adversarial TeaCache preserves %s intent during delayed discovery with unrelated edits', async teaCache => {
   let complete!: (value: unknown) => void
   const call = vi.fn(() => new Promise(resolve => { complete = resolve }))
   const session = createSession({ request: call } as unknown as ApiClient)
   const pending = session.refreshBackend()
   session.patchState({ cfg: 7 })
+  if (teaCache === false) session.patchState({ teaCache: false, teaCacheThresh: undefined })
   complete({ ok: true, online: true, provider: 'native', models: [{ id: 'anima-fixture', family: 'anima', available: true }], loras: [] })
   await pending
-  expect(session.state.value).toMatchObject({ cfg: 7, teaCache: false })
+  expect(session.state.value.cfg).toBe(7)
+  expect(session.state.value.teaCache).toBe(teaCache)
   expect(session.state.value.teaCacheThresh).toBeUndefined()
 })
 
