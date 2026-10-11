@@ -64,6 +64,7 @@ async fn native_hires_resolves_fixed_remacri_resource_and_freezes_effective_path
     let root = tempfile::tempdir().unwrap();
     let settings = Settings {
         engine: "native".into(),
+        acceleration: "native".into(),
         python: root.path().join("python"),
         worker: root.path().join("worker.py"),
         models_root: root.path().join("models"),
@@ -163,6 +164,7 @@ async fn native_teacache_requires_a_contained_local_profile_without_silent_fallb
     let root = tempfile::tempdir().unwrap();
     let settings = Settings {
         engine: "native".into(),
+        acceleration: "native".into(),
         python: root.path().join("python"),
         worker: root.path().join("worker.py"),
         models_root: root.path().join("models"),
@@ -318,6 +320,7 @@ async fn native_automatic_mask_requires_complete_contained_safetensors_resources
     let root = tempfile::tempdir().unwrap();
     let settings = Settings {
         engine: "native".into(),
+        acceleration: "native".into(),
         python: root.path().join("python"),
         worker: root.path().join("worker.py"),
         models_root: root.path().join("models"),
@@ -393,6 +396,7 @@ async fn native_lora_resolves_only_compatible_catalog_resources() {
     let root = tempfile::tempdir().unwrap();
     let settings = Settings {
         engine: "native".into(),
+        acceleration: "native".into(),
         python: root.path().join("python"),
         worker: root.path().join("worker.py"),
         models_root: root.path().join("models"),

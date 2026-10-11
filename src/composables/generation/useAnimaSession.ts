@@ -43,7 +43,7 @@ const INITIAL_STATE: AnimaGenerationState = {
 export function useAnimaSession(options: AnimaSessionOptions) {
   const client = options.client ?? apiClient
   const state = ref<AnimaGenerationState>({ ...INITIAL_STATE })
-  let settingsRevision = 0, reconcilingSettings = false, teaCacheSettingsTouched = false
+  let settingsRevision = 0, reconcilingSettings = false, teaCacheSettingsTouched = false, loraStrengthTouched = false
   const editableKeys = ['family', 'modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height',
     'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
   // Observe direct v-model writes as well as patchState, excluding only our
@@ -51,8 +51,11 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   const stopSettingsWatch = watch(editableKeys.map(key => () => state.value[key]), () => {
     if (!reconcilingSettings) settingsRevision++
   }, { flush: 'sync' })
-  const stopTeaCacheWatch = watch([() => state.value.teaCache, () => state.value.teaCacheThresh], () => {
-    if (!reconcilingSettings) teaCacheSettingsTouched = true
+  const stopTeaCacheWatch = watch([() => state.value.teaCache, () => state.value.teaCacheThresh, () => state.value.loraStrength], (next, previous) => {
+    if (!reconcilingSettings) {
+      if (next[0] !== previous[0] || next[1] !== previous[1]) teaCacheSettingsTouched = true
+      if (next[2] !== previous[2]) loraStrengthTouched = true
+    }
   }, { flush: 'sync' })
   const getSettingsRevision = () => settingsRevision
 
@@ -92,6 +95,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   })
 
   function patchState(patch: Partial<AnimaGenerationState>) {
+    if (!reconcilingSettings && 'loraStrength' in patch) loraStrengthTouched = true
     state.value = { ...state.value, ...patch }
   }
 
@@ -133,6 +137,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       cfg: Number(defaults?.cfg) || state.value.cfg,
       sampler: String(defaults?.sampler || state.value.sampler),
       scheduler: String(defaults?.scheduler || state.value.scheduler),
+      ...(!state.value.provider && !loraStrengthTouched && provider === 'native' && !options.isPopular() && ['nene', 'natsume'].includes(options.getCharacter()) && typeof defaults?.loraStrength === 'number'
+        ? { loraStrength: defaults.loraStrength } : {}),
       teaCache: provider === 'native' ? (state.value.provider === 'native' || teaCacheSettingsTouched ? state.value.teaCache : undefined) : typeof defaults?.teaCache === 'boolean' ? defaults.teaCache : state.value.provider === 'native' ? INITIAL_STATE.teaCache : state.value.teaCache,
       teaCacheThresh: provider === 'native' ? undefined : typeof defaults?.teaCacheThresh === 'number' ? defaults.teaCacheThresh : state.value.provider === 'native' ? INITIAL_STATE.teaCacheThresh : state.value.teaCacheThresh,
     }

@@ -17,7 +17,7 @@ vi.mock('@/api/inferenceSetupApi', async original => ({
 vi.mock('@/api/localSetupApi', () => ({ localSetupApi: { getOperation: vi.fn(), cancelEnvironment: vi.fn() } }))
 describe('inference settings panel', () => {
   it('labels path inputs, separates readiness evidence and shows restart-needed save feedback', async () => {
-    const settings = { engine: 'comfy' as const, modelsRoot: '/models', lorasRoot: '/loras', python: '/python', worker: '/worker' }
+    const settings = { engine: 'comfy' as const, acceleration: 'compiled-fused-sage' as const, modelsRoot: '/models', lorasRoot: '/loras', python: '/python', worker: '/worker' }
     const response = { ok: true as const, active: settings, configured: settings, restartRequired: false, environmentOverrides: [] }
     vi.mocked(inferenceSettingsApi.getStatus).mockResolvedValue({ ...response, diagnostics: {
       basis: 'configured', configuration: 'valid', files: { python: true, worker: true, modelsRoot: true, lorasRoot: false }, dependencies: 'unchecked', runtime: 'unverified', message: '',

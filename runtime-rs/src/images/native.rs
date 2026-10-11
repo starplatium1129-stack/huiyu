@@ -431,7 +431,13 @@ pub(super) async fn status(backend: &generation::Service, family: &str) -> Resul
             Some(path) => tea_cache_profile(path).await.ok().flatten().is_some(),
             None => false,
         };
-        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"sizes":model["sizes"],"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCache":true,"teaCachePolicy":"auto"},"teaCacheProfile":{"support":"experimental-candidate","readiness":if profile_present {"profile-files-only"} else {"missing"},"policy":"matching-accepted-profile","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
+        let mut defaults = json!({"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCache":true,"teaCachePolicy":"auto"});
+        if id == "anima-miaomiao-v1.6" {
+            defaults["steps"] = json!(24);
+            defaults["cfg"] = json!(4.);
+            defaults["loraStrength"] = json!(0.8);
+        }
+        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"sizes":model["sizes"],"defaults":defaults,"teaCacheProfile":{"support":"experimental-candidate","readiness":if profile_present {"profile-files-only"} else {"missing"},"policy":"matching-accepted-profile","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
     }
     let mut loras = Vec::new();
     {

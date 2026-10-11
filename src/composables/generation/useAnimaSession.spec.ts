@@ -33,6 +33,29 @@ function createSession(client: ApiClient, options: Partial<AnimaSessionOptions> 
   return session
 }
 
+it('adversarial native defaults never replace explicit LoRA strength or Endfield strength', async () => {
+  const status = { ok: true, provider: 'native', online: true, models: [
+    { id: 'anima-miaomiao-v1.6', family: 'anima', available: true, capabilities: { noLora: true }, sizes: ['832x1216'], defaults: { steps: 24, cfg: 4, loraStrength: .8, sampler: 'euler', scheduler: 'normal' } },
+  ], loras: [{ id: 'L_NENE_V21_ANIMA', character: 'nene', available: true }, { id: 'L_NATSUME_V21_ANIMA', character: 'natsume', available: true }, { id: 'L_ENDFIELD_ALL_V1_ANIMA', characters: ['laevatain_arknights'], available: true }] }
+  for (const character of ['nene', 'natsume'] as const) {
+    const session = createSession({ request: vi.fn(async () => status) } as unknown as ApiClient, { getCharacter: () => character })
+    await session.refreshBackend()
+    expect(session.state.value).toMatchObject({ steps: 24, cfg: 4, loraStrength: .8, teaCache: undefined })
+    session.patchState({ loraStrength: .65 })
+    await session.refreshBackend()
+    session.applyModel('anima-miaomiao-v1.6')
+    expect(session.state.value.loraStrength).toBe(.65)
+  }
+  for (const popular of [false, true]) {
+    let resolve!: (value: typeof status) => void
+    const session = createSession({ request: vi.fn(() => new Promise(done => { resolve = done })) } as unknown as ApiClient, { isPopular: () => popular, getPopularCharacterId: () => popular ? 'laevatain_arknights' : null })
+    if (!popular) session.patchState({ loraStrength: .85 })
+    const pending = session.refreshBackend()
+    resolve(status); await pending
+    expect(session.state.value.loraStrength).toBe(popular ? 1 : .85)
+  }
+})
+
 it('keeps the default MiaoMiao 1.6 offline rather than silently substituting an older available model', async () => {
   const client = { request: vi.fn(async () => ({ ok: true, online: true, models: [
     { id: 'anima-miaomiao-v1.2', family: 'anima', available: true, sizes: ['832x1216'], defaults: { steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple', teaCacheThresh: 0.08 } },

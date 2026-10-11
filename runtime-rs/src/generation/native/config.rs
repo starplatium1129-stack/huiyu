@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub(crate) struct Settings {
     pub engine: String,
+    #[serde(default = "default_acceleration")]
+    pub acceleration: String,
     pub python: PathBuf,
     pub worker: PathBuf,
     pub models_root: PathBuf,
@@ -12,10 +14,19 @@ pub(crate) struct Settings {
     #[serde(skip)]
     pub environment_overrides: Vec<String>,
 }
+fn default_acceleration() -> String {
+    "native".into()
+}
 impl Settings {
     pub(crate) fn validate(&self) -> Result<()> {
         if !matches!(self.engine.as_str(), "comfy" | "native") {
             return Err(ApiError::invalid("推理引擎仅支持 comfy 或 native"));
+        }
+        if !matches!(
+            self.acceleration.as_str(),
+            "native" | "sage" | "compiled-sage" | "compiled-fused-sage"
+        ) {
+            return Err(ApiError::invalid("独立推理加速模式无效"));
         }
         for path in [
             &self.python,
@@ -65,7 +76,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
             .join("tools/inference/worker.py")
     });
     let defaults = json!({
-        "engine":"comfy",
+        "engine":"comfy","acceleration":"native",
         "python":root.join(if cfg!(windows) { "venv/Scripts/python.exe" } else { "venv/bin/python" }),
         "worker":worker,"modelsRoot":root.join("models"),"lorasRoot":root.join("loras")
     });
@@ -89,6 +100,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
     let mut overrides = Vec::new();
     for (key, env) in [
         ("engine", "HUIYU_IMAGE_ENGINE"),
+        ("acceleration", "HUIYU_INFERENCE_ACCELERATION"),
         ("python", "HUIYU_INFERENCE_PYTHON"),
         ("worker", "HUIYU_INFERENCE_WORKER"),
         ("modelsRoot", "HUIYU_INFERENCE_MODELS_ROOT"),
@@ -191,5 +203,29 @@ mod tests {
         );
         value["unknown"] = json!(true);
         assert!(serde_json::from_value::<Settings>(value).is_err());
+    }
+    #[test]
+    fn adversarial_acceleration_rejects_invalid_modes_and_preserves_legacy_default() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path();
+        let mut value = json!({"engine":"native","python":root.join("python"),"worker":root.join("worker.py"),"modelsRoot":root.join("models"),"lorasRoot":root.join("loras")});
+        let legacy: Settings = serde_json::from_value(value.clone()).unwrap();
+        assert_eq!(legacy.acceleration, "native");
+        for mode in ["", "auto", "compiled-fused-sage; command", "native\0sage"] {
+            value["acceleration"] = json!(mode);
+            assert!(
+                serde_json::from_value::<Settings>(value.clone())
+                    .unwrap()
+                    .validate()
+                    .is_err()
+            );
+        }
+        value["acceleration"] = json!("compiled-fused-sage");
+        let accepted: Settings = serde_json::from_value(value).unwrap();
+        accepted.validate().unwrap();
+        assert_eq!(
+            serde_json::to_value(accepted).unwrap()["acceleration"],
+            "compiled-fused-sage"
+        );
     }
 }

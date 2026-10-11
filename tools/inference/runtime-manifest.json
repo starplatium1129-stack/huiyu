@@ -36,6 +36,7 @@
   "engineVersion": "0.41.0",
   "optionalAcceleration": {
     "environmentVariable": "HUIYU_INFERENCE_ACCELERATION",
+    "settingsField": "inference.acceleration; persisted by the host and forwarded to worker/diagnosis; environment override takes precedence",
     "default": "native",
     "modes": ["native", "sage", "compiled-sage", "compiled-fused-sage"],
     "validatedPlatform": "Windows CPython 3.11, Torch 2.8.0+cu128, NVIDIA Ada SM89",

@@ -20,6 +20,13 @@ Place a complete local Anima Diffusers export in `modelDir`:
 
 `HUIYU_INFERENCE_ACCELERATION=compiled-sage` selects the measured SM89 candidate;
 `sage` provides the eager-kernel control, and `native` remains the default.
+The host now persists `inference.acceleration` in its local settings and passes
+the selected mode to both the worker and dependency diagnosis. Existing settings
+without this field resolve to `native`; the environment variable remains an
+explicit override. A desktop installation can therefore select the measured
+mode once without depending on a temporary shell environment. Native MiaoMiao
+1.6 defaults use 24 steps/CFG 4 and Nene/Natsume strength 0.8; subsequent explicit
+user edits and restored recipes remain authoritative.
 The exact optional wheel versions, provenance and SHA256 values are recorded in
 `runtime-manifest.json`. After verifying those local wheels, install them into
 the dedicated environment using `python -m pip install --no-index --no-deps`

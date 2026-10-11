@@ -3,7 +3,7 @@ import { createApiClient, type FetchImplementation } from './client'
 import { createInferenceSettingsApi } from './inferenceSettingsApi'
 const access = vi.hoisted(() => ({ local: true }))
 vi.mock('../utils/runtimeEnvironment.ts', () => ({ isLocalStudioHost: () => access.local }))
-const settings = { engine: 'native', modelsRoot: '/models', lorasRoot: '/loras', python: '/python', worker: '/worker' }
+const settings = { engine: 'native', acceleration: 'compiled-fused-sage' as const, modelsRoot: '/models', lorasRoot: '/loras', python: '/python', worker: '/worker' }
 const response = { ok: true, active: settings, configured: settings, restartRequired: false, environmentOverrides: [] }
 const diagnostics = { basis: 'configured', configuration: 'valid', files: { python: true, worker: true, modelsRoot: true, lorasRoot: false }, dependencies: 'unchecked', runtime: 'unverified', message: 'Files only' }
 function setup(body: object) {
@@ -24,6 +24,15 @@ describe('inference settings HTTP boundary', () => {
     await expect(setup({ ...response, diagnostics: { ...diagnostics, runtime: 'ready' } }).api.getStatus()).rejects.toMatchObject({ kind: 'invalid-response' })
     const { fetch, api } = setup(response)
     fetch.mockResolvedValueOnce(new Response(JSON.stringify({ ok: false, code: 'CONFIG_ENV_OVERRIDE', error: 'Environment override' }), { status: 409 }))
+    await expect(api.save(settings as Parameters<typeof api.save>[0])).rejects.toMatchObject({ status: 409, code: 'CONFIG_ENV_OVERRIDE' })
+  })
+  it('adversarial acceleration rejects unknown mode and preserves environment conflict', async () => {
+    for (const acceleration of ['compiled-fused-sage; arbitrary-command', ['native'], null]) {
+      const invalid = { ...settings, acceleration }
+      await expect(setup({ ...response, active: invalid, diagnostics }).api.getStatus()).rejects.toMatchObject({ kind: 'invalid-response' })
+    }
+    const { fetch, api } = setup(response)
+    fetch.mockResolvedValueOnce(new Response(JSON.stringify({ ok: false, code: 'CONFIG_ENV_OVERRIDE', error: 'acceleration is overridden' }), { status: 409 }))
     await expect(api.save(settings as Parameters<typeof api.save>[0])).rejects.toMatchObject({ status: 409, code: 'CONFIG_ENV_OVERRIDE' })
   })
   it('validates the active-only dependency probe without claiming generation verification', async () => {

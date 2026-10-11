@@ -23,6 +23,7 @@ impl Worker {
             .stderr(Stdio::piped())
             .env_remove("PYTHONPATH")
             .env_remove("PYTHONHOME")
+            .env("HUIYU_INFERENCE_ACCELERATION", &settings.acceleration)
             .env("HF_HUB_OFFLINE", "1")
             .env("TRANSFORMERS_OFFLINE", "1");
         let process = engine.processes.spawn(&mut command)?;

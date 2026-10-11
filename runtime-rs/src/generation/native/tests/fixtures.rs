@@ -26,6 +26,7 @@ pub(super) fn fixture(root: &std::path::Path, script: &str) -> (Arc<Service>, Pl
         input: json!({"family":"anima","modelId":"anima-base-v1.0","prompt":"fixture","negative":"","width":1,"height":1,"steps":2,"cfg":4.5,"seed":1,"sampler":"euler","scheduler":"simple","teaCache":false,"inferenceEngine":"native"}),
         settings: Settings {
             engine: "native".into(),
+            acceleration: "native".into(),
             python: std::env::var_os("HUIYU_TEST_PYTHON")
                 .map(PathBuf::from)
                 .unwrap_or_else(|| PathBuf::from(if cfg!(windows) { "py" } else { "python3" })),
