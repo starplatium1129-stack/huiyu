@@ -74,7 +74,7 @@ export function useCharacterRoomSession() {
   storage.load()
 
   const {
-    ollamaOnline,
+    ollamaOnline, localStatusText, checkingChatStatus,
     models,
     currentModel,
     chatProvider,
@@ -229,8 +229,8 @@ export function useCharacterRoomSession() {
   const thinkingActivity = ref(false)
   /** 本地环境启用本地工具（网关有 security.isDirectLocalRequest 本机安全守卫） */
   const companionTools = ref(true)
-  /** 模型推理强度（opencode 风格多档：off/low/medium/high；默认中档） */
-  const reasoning = ref<ReasoningLevel>(settingsRepository.get(CHAT_THINKING_SETTING) ?? 'medium')
+  /** 模型推理强度（opencode 风格多档：off/low/medium/high；默认关闭，以兼容房间工具） */
+  const reasoning = ref<ReasoningLevel>(settingsRepository.get(CHAT_THINKING_SETTING) ?? 'off')
 
   function onReasoningChange(level: 'off' | 'low' | 'medium' | 'high') {
     reasoning.value = level
@@ -470,7 +470,7 @@ export function useCharacterRoomSession() {
     preparingRoom,
     roomSetupText,
     storage,
-    ollamaOnline,
+    ollamaOnline, localStatusText, checkingChatStatus,
     models,
     currentModel,
     chatProvider,
@@ -492,7 +492,7 @@ export function useCharacterRoomSession() {
     currentCharacter,
     currentMessages,
     companionMessages,
-    webSearchEnabled,
+    webSearchEnabled, companionTools,
     setupTitle,
     setupDescription,
     hasReplayable,
@@ -506,6 +506,7 @@ export function useCharacterRoomSession() {
     setChatProvider,
     saveApiSettings,
     clearApiCredential,
+    refreshChatStatus,
     onVolumeChange,
     handleSend,
     useStarter,

@@ -189,13 +189,13 @@ async fn inspect(
     let result = async {
         local(&headers, peer)?;
         let body = body.map_err(body_error)?;
-        let mut api = validation::api(
+        let mut api = validation::inspect_api(
             &serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?,
         )?;
         running(&app)?;
         if let Some(control) = &app.control {
             let (origin, key) = control.llama_auth();
-            if api.model == "huiyu-local"
+            if (api.model == "huiyu-local" || api.model.is_empty())
                 && api.base_url == origin
                 && api.pathname == "/v1/chat/completions"
             {

@@ -17,16 +17,19 @@ impl ControlService {
     pub(super) fn saved_comfy_intent(&self) -> bool {
         let saved = self.saved.read().unwrap();
         let managed = &saved["managedServices"];
-        let host = managed["comfyHost"]
-            .as_str()
-            .or_else(|| saved["comfyHost"].as_str())
-            .unwrap_or("http://127.0.0.1:8188");
+        let (Some(host), Some(root)) =
+            (managed["comfyHost"].as_str(), managed["comfyRoot"].as_str())
+        else {
+            // Legacy booleans cannot prove ownership after a workspace change.
+            // One explicit start records the current installation identity.
+            return false;
+        };
         managed["comfy"] == true
-            && crate::upstream::local_url(host).ok()
-                == crate::upstream::local_url(&self.config.comfy_host).ok()
-            && managed["comfyRoot"]
-                .as_str()
-                .is_none_or(|root| std::path::Path::new(root) == self.comfy_root())
+            && crate::upstream::local_url(host)
+                .ok()
+                .zip(crate::upstream::local_url(&self.config.comfy_host).ok())
+                .is_some_and(|(saved, active)| saved == active)
+            && std::path::Path::new(root) == self.comfy_root()
     }
 
     pub(crate) fn comfy_start_available(&self) -> bool {
@@ -61,6 +64,12 @@ impl ControlService {
         if cancel.is_cancelled() {
             return Err(ApiError::new(499, "ABORT_ERR", "生成请求已取消"));
         }
+        if self.online(1, &self.settings()).await {
+            // Drawing already releases our local chat from the UI. Keep the
+            // same owned-only memory handoff for direct and durable API callers.
+            self.stop_llama().await?;
+            return Ok(());
+        }
         if !self.comfy_start_available() {
             return Err(ApiError::new(
                 503,
@@ -68,6 +77,7 @@ impl ControlService {
                 "ComfyUI 未连接，请先在控制面板准备并启动受管环境",
             ));
         }
+        self.stop_llama().await?;
         // Join an existing start instead of creating another process. Operations
         // remain tracked when the requesting job is cancelled or disconnected.
         let operation = {

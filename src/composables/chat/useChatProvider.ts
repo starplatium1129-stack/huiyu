@@ -2,12 +2,12 @@ import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
 import { computed, getCurrentScope, onScopeDispose, ref, watch, type Ref } from 'vue'
 import { useChatStorage, type ChatState } from './useChatStorage.ts'
 import { parseChatStatus, type ChatModel } from '../../utils/chatStatus.ts'
-import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '../../config/chatApi.ts'
+import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL, chatApiPreset, chatApiVendorFor, chatApiAddressError, type ApiVendor } from '../../config/chatApi.ts'
 import { STORAGE_KEY } from '../../config/characters.ts'
 import { chatApi } from '../../api/chatApi.ts'
 import { ApiClientError } from '../../api/client.ts'
 
-export type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
+export type { ApiVendor } from '../../config/chatApi.ts'
 type ChatStorage = ReturnType<typeof useChatStorage>
 
 interface ChatProviderOptions {
@@ -17,6 +17,8 @@ interface ChatProviderOptions {
 
 export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   const ollamaOnline = ref(false)
+  const localStatusText = ref('正在检测绘遇后端电脑上的 Ollama…')
+  const checkingChatStatus = ref(false)
   const models = ref<ChatModel[]>([])
   const currentModel = ref('')
   const chatProvider = ref<'local' | 'api'>('local')
@@ -33,20 +35,13 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   const chatStatusText = ref('正在检查本地聊天模型…')
   const statusKind = ref('')
 
-  function vendorFor(baseUrl: string): ApiVendor {
-    const endpoint = baseUrl.replace(/\/+$/, '')
-    return endpoint === 'https://api.deepseek.com' ? 'deepseek'
-      : endpoint === 'http://127.0.0.1:8317/v1' ? 'cliproxy'
-      : endpoint === 'https://opencode.ai/zen/v1' ? 'opencode'
-      : endpoint === 'https://opencode.ai/zen/go/v1' ? 'opencode-go' : 'custom'
-  }
   function restoreSettings(state: ChatState, resetEditor = true) {
     currentModel.value = state.settings.model || ''
     chatProvider.value = state.settings.provider
     apiBaseUrl.value = state.settings.apiBaseUrl
     apiModel.value = state.settings.apiModel
     apiKey.value = state.settings.apiKey
-    apiVendor.value = vendorFor(apiBaseUrl.value)
+    apiVendor.value = chatApiVendorFor(apiBaseUrl.value)
     if (resetEditor) apiSettingsOpen.value = chatProvider.value === 'api' && !apiModel.value
   }
 
@@ -64,7 +59,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   watch(storedConnection, next => {
     if (settingsWrites) return
     const clean = cleanConnection()
-    const vendor = next[2] === savedConnection[2] ? savedConnection[5] as ApiVendor : vendorFor(next[2])
+    const vendor = next[2] === savedConnection[2] ? savedConnection[5] as ApiVendor : chatApiVendorFor(next[2])
     if (clean) { restoreSettings(storage.state, false); apiVendor.value = vendor }
     savedConnection = [...next, vendor]
   })
@@ -134,8 +129,8 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   }
 
   const apiConfigured = computed(() =>
-    Boolean(apiBaseUrl.value.trim() && apiModel.value.trim()
-      && (apiVendor.value === 'custom' || apiKey.value.trim())),
+    Boolean(!chatApiAddressError(apiBaseUrl.value) && apiModel.value.trim()
+      && (!chatApiPreset(apiVendor.value).keyRequired || apiKey.value.trim())),
   )
   /** 用户真实保存过自己的 API 配置（而非开箱即用的兜底默认值） */
   const apiConfiguredByUser = computed(() => !storage.neverConfigured.value)
@@ -155,14 +150,18 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   }
 
   async function refreshChatStatus() {
-    if (disposed) return
+    if (disposed || checkingChatStatus.value) return
+    checkingChatStatus.value = true
     try {
       const data = parseChatStatus(await chatApi.getStatus({ signal: readController.signal }))
       if (disposed) return
       ollamaOnline.value = data.online && Boolean(data.models.length)
+      localStatusText.value = data.online
+        ? (data.models.length ? `Ollama 已连接，发现 ${data.models.length} 个聊天模型。` : 'Ollama 已启动，但没有可用聊天模型；请先下载模型，再重新检测。')
+        : '未连接到 Ollama；请在绘遇后端电脑启动 Ollama，再重新检测。'
       models.value = data.models
       if (!isBusy.value && chatProvider.value === 'local') {
-        setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : 'Ollama 未启动', ollamaOnline.value ? 'online' : '')
+        setChatStatus(localStatusText.value, ollamaOnline.value ? 'online' : '')
       }
       const saved = storage.state.settings.model
       if (data.models.some(model => model.name === saved)) {
@@ -173,14 +172,15 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
       }
       if (!data.models.length) {
         currentModel.value = ''
-        if (chatProvider.value === 'local') setChatStatus('Ollama 未启动')
+        if (chatProvider.value === 'local') setChatStatus(localStatusText.value)
       }
     } catch {
       if (disposed) return
       ollamaOnline.value = false
       models.value = []
-      if (!isBusy.value && chatProvider.value === 'local') setChatStatus('Ollama 未启动')
-    }
+      localStatusText.value = 'Ollama 检测未完成，请确认绘遇后端和 Ollama 已启动后重试。'
+      if (!isBusy.value && chatProvider.value === 'local') setChatStatus(localStatusText.value)
+    } finally { checkingChatStatus.value = false }
   }
 
   function apiStatusText(): string {
@@ -197,15 +197,14 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
       apiSettingsOpen.value = !apiConfigured.value && !hostApiConfigured.value
       setChatStatus(apiStatusText(), (apiConfigured.value || hostApiConfigured.value) ? 'online' : '')
     } else {
-      setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : 'Ollama 未启动', ollamaOnline.value ? 'online' : '')
+      setChatStatus(localStatusText.value, ollamaOnline.value ? 'online' : '')
     }
   }
 
   async function saveApiSettings() {
     if (!apiConfigured.value) {
-      apiConfigHint.value = apiVendor.value !== 'custom'
-        ? `请填写 ${apiVendor.value === 'opencode' ? 'OpenCode Zen' : apiVendor.value === 'opencode-go' ? 'OpenCode Go' : 'DeepSeek'} API Key。`
-        : '请填写 API 地址和模型名。'
+      apiConfigHint.value = chatApiAddressError(apiBaseUrl.value)
+        || (!apiModel.value.trim() ? '请填写模型 ID，或先测试连接再选择模型。' : `请填写 ${chatApiPreset(apiVendor.value).label} API Key。`)
       return
     }
     const { latest, current } = settingsOwner()
@@ -268,7 +267,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   }
 
   return {
-    ollamaOnline, models, currentModel, chatProvider, apiBaseUrl, apiModel, apiKey,
+    ollamaOnline, localStatusText, checkingChatStatus, models, currentModel, chatProvider, apiBaseUrl, apiModel, apiKey,
     apiVendor, apiSettingsOpen, apiConfigHint, chatStatusText, statusKind,
     hostApiConfigured, hostApiModel, hostApiBaseUrl, useHostConfig,
     apiConfigured, apiConfiguredByUser, chatReady, refreshChatStatus, refreshHostConfig,

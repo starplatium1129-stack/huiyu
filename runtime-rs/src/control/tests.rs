@@ -1,9 +1,12 @@
 use super::*;
 use axum::{Json, Router, routing::get};
 
-pub(super) fn fixture(saved: Value) -> (tempfile::TempDir, Arc<ControlService>) {
+pub(super) fn fixture(mut saved: Value) -> (tempfile::TempDir, Arc<ControlService>) {
     let temp = tempfile::tempdir().unwrap();
     let root = temp.path().to_path_buf();
+    if saved["managedServices"]["comfyRoot"] == "$COMFY_ROOT" {
+        saved["managedServices"]["comfyRoot"] = json!(root.join("AI/.runtimes/comfy/ComfyUI"));
+    }
     std::fs::create_dir_all(root.join("runtime")).unwrap();
     std::fs::write(
         root.join("runtime/config.json"),
@@ -120,7 +123,7 @@ async fn operation_is_exclusive_and_old_completion_cannot_finish_new_work() {
 #[tokio::test]
 async fn saved_comfy_intent_is_restored_lazily_without_enabling_other_services() {
     let (_temp, s) = fixture(
-        json!({"comfyHost":"http://127.0.0.1:1","autoStartVoice":true,"autoTunnel":true,"managedServices":{"webui":true,"comfy":true}}),
+        json!({"comfyHost":"http://127.0.0.1:1","autoStartVoice":true,"autoTunnel":true,"managedServices":{"webui":true,"comfy":true,"comfyHost":"http://127.0.0.1:1","comfyRoot":"$COMFY_ROOT"}}),
     );
     s.watchdog().await;
     assert!(
@@ -152,6 +155,7 @@ async fn healthy_external_service_is_not_adopted_by_watchdog() {
     s.settings.write().unwrap()["comfyHost"] = json!(format!("http://{addr}"));
     let op = s.begin("comfy-start", &["start", "verify"]).unwrap();
     s.service_action(1, true, &op).await.unwrap();
+    s.ensure_comfy(&CancellationToken::new()).await.unwrap();
     assert!(!s.state.lock().unwrap().managed[1].owned);
     assert!(!s.state.lock().unwrap().managed[1].desired);
     s.finish(&op, Ok(()));

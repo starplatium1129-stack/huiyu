@@ -1,10 +1,11 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { ref } from 'vue'
+import { CHAT_API_PRESETS } from '../config/chatApi.ts'
 import { createChatCredentials } from './chatCredentials'
 
 export const CHAT_API_DRAFTS_KEY = 'aics_chat_api_drafts'
 export interface ChatApiDraft { baseUrl: string; model: string; apiKey: string }
-const vendors = new Set(['cliproxy', 'deepseek', 'opencode', 'opencode-go', 'custom'])
+const vendors = new Set<string>(CHAT_API_PRESETS.map(preset => preset.value))
 const sessionDrafts: Record<string, ChatApiDraft> = {}
 const deferredDrafts = new Map<string, ChatApiDraft>()
 

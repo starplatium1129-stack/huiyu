@@ -113,3 +113,57 @@ it('keeps discovered models while editing or selecting a model, and discards the
     expect(wrapper.find('.api-discovered-models').exists()).toBe(false)
   } finally { wrapper.unmount() }
 })
+
+it('autofills a new official provider without carrying a key and keeps arbitrary saved model IDs editable', async () => {
+  const wrapper = mount(ChatApiSettings, { props: { vendor: 'deepseek', baseUrl: 'https://api.deepseek.com', model: 'legacy-private-model', apiKey: 'fixture-secret' }, global: { stubs: { ArchiveIcon: true, StudioSelect: true } } })
+  try {
+    expect(wrapper.get<HTMLInputElement>('input[aria-label="模型名"]').element.value).toBe('legacy-private-model')
+    expect(wrapper.get('input[aria-label="API Key"]').attributes('type')).toBe('password')
+    await wrapper.get('[data-vendor="openai"]').trigger('click')
+    expect(wrapper.emitted('update:baseUrl')!.at(-1)).toEqual(['https://api.openai.com/v1'])
+    expect(wrapper.emitted('update:model')!.at(-1)).toEqual(['gpt-6-luna'])
+    expect(wrapper.emitted('update:apiKey')!.at(-1)).toEqual([''])
+    await wrapper.setProps({ vendor: 'openai', baseUrl: 'https://api.openai.com/v1', model: 'gpt-6-luna', apiKey: '' })
+    expect(wrapper.findAll('a').some(a => a.attributes('href') === 'https://platform.openai.com/api-keys')).toBe(true)
+    expect(wrapper.get('button[type="submit"]').attributes('disabled')).toBeDefined()
+  } finally { wrapper.unmount() }
+})
+
+it('discovers local models without a model or key and distinguishes empty or mismatched catalogs', async () => {
+  vi.mocked(chatApi.testProvider).mockResolvedValueOnce({ ok: true, models: [] })
+    .mockResolvedValueOnce({ ok: true, models: ['installed-chat'] })
+  const wrapper = mount(ChatApiSettings, { props: { vendor: 'lmstudio', baseUrl: 'http://127.0.0.1:1234/v1', model: '', apiKey: '' }, global: { stubs: { ArchiveIcon: true, StudioSelect: true } } })
+  const test = () => wrapper.findAll('button').find(button => /测试连接|测试中/.test(button.text()))!
+  try {
+    expect(test().attributes('disabled')).toBeUndefined()
+    expect(wrapper.text()).toContain('Developer')
+    await test().trigger('click'); await flushPromises()
+    expect(vi.mocked(chatApi.testProvider).mock.calls[0]![0]).toMatchObject({ model: '', apiKey: '' })
+    expect(wrapper.get('.api-test-status').attributes('data-state')).toBe('warning')
+    expect(wrapper.text()).toContain('模型列表为空')
+    await wrapper.setProps({ model: 'not-installed' })
+    await test().trigger('click'); await flushPromises()
+    expect(wrapper.get('.api-test-status').attributes('data-state')).toBe('warning')
+    wrapper.getComponent(StudioSelect).vm.$emit('update:modelValue', 'installed-chat')
+    expect(wrapper.emitted('update:model')!.at(-1)).toEqual(['installed-chat'])
+    await wrapper.setProps({ model: 'installed-chat' })
+    expect(wrapper.get('button[type="submit"]').attributes('disabled')).toBeUndefined()
+  } finally { wrapper.unmount() }
+})
+
+it('blocks credential-bearing URLs and reports actionable failures without rendering upstream secrets', async () => {
+  const { ApiClientError } = await import('@/api/client')
+  const wrapper = mount(ChatApiSettings, { props: { vendor: 'custom', baseUrl: 'https://example.test/v1?key=fixture', model: 'chat', apiKey: '' }, global: { stubs: { ArchiveIcon: true, StudioSelect: true } } })
+  const test = () => wrapper.findAll('button').find(button => /测试连接|测试中/.test(button.text()))!
+  try {
+    expect(test().attributes('disabled')).toBeDefined()
+    expect(wrapper.text()).toContain('地址不能带账号')
+    await wrapper.setProps({ baseUrl: 'https://example.test/v1' })
+    for (const [status, text] of [[401, '密钥校验失败'], [429, '额度受限'], [404, '模型目录不可用']] as const) {
+      vi.mocked(chatApi.testProvider).mockRejectedValueOnce(new ApiClientError('SECRET_ECHO', { kind: 'http', status, detail: 'SECRET_ECHO' }))
+      await test().trigger('click'); await flushPromises()
+      expect(wrapper.get('.api-test-status').text()).toContain(text)
+      expect(wrapper.text()).not.toContain('SECRET_ECHO')
+    }
+  } finally { wrapper.unmount() }
+})

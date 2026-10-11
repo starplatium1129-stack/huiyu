@@ -382,7 +382,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     let accepted = false
     const releaseLocalChat = async () => {
       if(isLocalStudioHost()) {
-        await client.request('/api/local-setup/llama',{method:'DELETE',signal:controller.signal,timeoutMs:10_000,validate:value=>value.ok===true})
+        await client.request('/api/local-setup/llama',{method:'DELETE',signal:controller.signal,timeoutMs:15_000,validate:value=>value.ok===true})
         controller.signal.throwIfAborted()
       }
     }

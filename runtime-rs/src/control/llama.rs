@@ -115,11 +115,46 @@ impl ControlService {
     }
 
     pub(super) async fn stop_llama(&self) -> Result<()> {
+        let loading = self
+            .state
+            .lock()
+            .unwrap()
+            .operation
+            .as_ref()
+            .filter(|op| op["kind"] == "llama-start" && op["status"] == "running")
+            .map(|op| op["id"].clone());
         if let Some(cancel) = self.llama_cancel.lock().unwrap().as_ref() {
             cancel.cancel();
         }
         if let Some(process) = self.llama_process.lock().await.take() {
             process.stop().await?;
+        }
+        if let Some(id) = loading {
+            // Before readiness the loading task owns the child locally. Its
+            // cancellation is not a completed VRAM handoff until cleanup ends.
+            tokio::time::timeout(Duration::from_secs(10), async {
+                loop {
+                    let running = self
+                        .state
+                        .lock()
+                        .unwrap()
+                        .operation
+                        .as_ref()
+                        .is_some_and(|op| op["id"] == id && op["status"] == "running");
+                    if !running {
+                        break;
+                    }
+                    tokio::time::sleep(Duration::from_millis(25)).await;
+                }
+            })
+            .await
+            .map_err(|_| {
+                ApiError::new(
+                    503,
+                    "LLAMA_STOP_UNCONFIRMED",
+                    "聊天服务仍在停止，请等待控制面板确认后再绘图",
+                )
+            })?;
         }
         Ok(())
     }

@@ -7,6 +7,8 @@ export interface ChatStreamEvent {
   id?: string
   name?: string
   arguments?: string
+  /** Opaque Gemini tool signature; only replay within the current tool loop. */
+  thoughtSignature?: string
 }
 
 export interface RoleplaySpeech {
@@ -28,6 +30,7 @@ function parseChatStreamEvent(value: unknown): ChatStreamEvent | null {
     id: typeof value.id === 'string' ? value.id : undefined,
     name: typeof value.name === 'string' ? value.name : undefined,
     arguments: typeof value.arguments === 'string' ? value.arguments : undefined,
+    thoughtSignature: typeof value.thoughtSignature === 'string' && value.thoughtSignature.length <= 65536 ? value.thoughtSignature : undefined,
   }
 }
 

@@ -110,12 +110,11 @@ impl Service {
                     ));
                 }
             }
-            if !probe::comfy_status(&self.inner, &cancel).await {
-                let control = self.inner.control.read().unwrap().upgrade();
-                let Some(control) = control else {
-                    return Err(ApiError::new(503, "COMFY_UNAVAILABLE", "ComfyUI 不可用"));
-                };
+            let control = self.inner.control.read().unwrap().upgrade();
+            if let Some(control) = control {
                 control.ensure_comfy(&cancel).await?;
+            } else if !probe::comfy_status(&self.inner, &cancel).await {
+                return Err(ApiError::new(503, "COMFY_UNAVAILABLE", "ComfyUI 不可用"));
             }
             Ok(Prepared {
                 input: plan.input.clone(),

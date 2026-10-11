@@ -186,3 +186,21 @@ it('rehydrates cross-window connections, defers an event during model writes, an
     else Reflect.deleteProperty(navigator, 'locks')
   }
 })
+
+it('recognizes new provider bindings and distinguishes an empty Ollama service from a stopped service', async () => {
+  const scope = effectScope()
+  const state = reactive({ settings: { provider: 'local', model: '', apiBaseUrl: 'http://127.0.0.1:1234/v1', apiModel: 'installed-chat', apiKey: '' } })
+  const provider = scope.run(() => useChatProvider({ isBusy: ref(false), storage: { state, setModel: vi.fn(), neverConfigured: ref(false) } as never }))!
+  try {
+    expect(provider.apiVendor.value).toBe('lmstudio')
+    expect(provider.apiConfigured.value).toBe(true)
+    vi.mocked(chatApi.getStatus).mockResolvedValueOnce({ online: true, model: '', models: [] })
+    await provider.refreshChatStatus()
+    expect(provider.ollamaOnline.value).toBe(false)
+    expect(provider.localStatusText.value).toContain('已启动，但没有可用聊天模型')
+    vi.mocked(chatApi.getStatus).mockResolvedValueOnce({ online: false, model: '', models: [] })
+    await provider.refreshChatStatus()
+    expect(provider.localStatusText.value).toContain('启动 Ollama')
+    expect(provider.checkingChatStatus.value).toBe(false)
+  } finally { scope.stop() }
+})

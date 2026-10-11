@@ -4,6 +4,8 @@ use super::*;
 async fn restored_intent_is_bound_to_the_saved_endpoint_and_installation() {
     for binding in [
         json!({"comfy":false}),
+        json!({"comfy":true}),
+        json!({"comfy":true,"comfyHost":"http://127.0.0.1:1"}),
         json!({"comfy":true,"comfyHost":"http://127.0.0.1:9999"}),
         json!({"comfy":true,"comfyRoot":"/different/installation"}),
     ] {
@@ -59,7 +61,7 @@ async fn fixture(delay: f64) -> (tempfile::TempDir, Arc<ControlService>) {
     let host = format!("http://{}", listener.local_addr().unwrap());
     drop(listener);
     let (temp, service) = crate::control::tests::fixture(json!({
-        "comfyHost":host,"managedServices":{"comfy":true},"autoTunnel":false,
+        "comfyHost":host,"managedServices":{"comfy":true,"comfyHost":host,"comfyRoot":"$COMFY_ROOT"},"autoTunnel":false,
     }));
     install_fixture(&service, delay);
     (temp, service)
@@ -188,4 +190,27 @@ async fn immediate_cancel_and_shutdown_do_not_leave_a_starting_child() {
         .await
         .unwrap();
     assert!(service.comfy_process.lock().await.is_none());
+}
+
+#[tokio::test]
+async fn drawing_waits_for_cancelled_chat_startup_to_finish_its_owned_cleanup() {
+    let (_temp, service) = crate::control::tests::fixture(json!({}));
+    let operation = service.begin("llama-start", &["loading"]).unwrap();
+    let cancel = service.shutdown.child_token();
+    *service.llama_cancel.lock().unwrap() = Some(cancel.clone());
+    let stopping = tokio::spawn({
+        let service = service.clone();
+        async move { service.stop_llama().await }
+    });
+    tokio::time::timeout(Duration::from_secs(1), cancel.cancelled())
+        .await
+        .unwrap();
+    assert!(!stopping.is_finished());
+    service.llama_cancel.lock().unwrap().take();
+    service.finish(
+        &operation,
+        Err(ApiError::new(499, "CANCELLED", "fixture stopped")),
+    );
+    stopping.await.unwrap().unwrap();
+    service.close().await;
 }
