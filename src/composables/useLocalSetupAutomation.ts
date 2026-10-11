@@ -10,9 +10,11 @@ import { modelPreparationState, drawingSetupReadiness } from '../utils/localSetu
 import { useChatStorage } from './chat/useChatStorage'
 import { settingsRepository, DRAW_ENGINE_SETTING, STARTER_MODEL_SETTING } from '../storage/settingsRepository'
 
-export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, blocked: Ref<boolean>, onResult:(result:LocalSetupDownloadResult)=>void, refresh:()=>void) {
+export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, blocked: Ref<boolean>, onResult:(result:LocalSetupDownloadResult)=>void, refresh:()=>void, statusConfirmed:Ref<boolean>) {
   const modelId=ref(snapshot.value.recommendedModel??snapshot.value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'),chatId=ref(''), drawing=ref(true), loras=ref(true), reviewed=ref(false)
-  const environment=ref('comfy-nvidia'),llamaEnvironment=ref('llama-cuda')
+  const installed=snapshot.value.comfy.managedEnvironment
+  // Initialize from verified installation evidence once; later refreshes must preserve the user's choice.
+  const environment=ref(installed?.state==='verified'?installed.environment:snapshot.value.comfy.installation==='missing'?'comfy-nvidia':''),llamaEnvironment=ref('llama-cuda')
   const busy=ref(false),message=ref(''),error=ref(''),completed=ref(false)
   const cancelState=ref<'idle'|'pending'|'accepted'|'failed'>('idle'),operationUncertain=ref(false)
   const recommendation=computed(()=>localChatRecommendation(snapshot.value.hardware))
@@ -27,14 +29,13 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   let disposed=false,cancelled=false
   let activeOperation:ControlActionResult|null=null
   let cancelRequest:Promise<void>|null=null
-  let initialized=false
-  watch(recommendation,()=>{if(!initialized){
-    // Chat is opt-in; a hardware recommendation never adds a second model to drawing preparation.
-    if(!hasComfy.value&&!snapshot.value.hardware.devices.some(device=>device.type==='cuda'&&/nvidia|geforce/i.test(device.name)))drawing.value=false
-    initialized=true
-  }}, {immediate:true})
+  // Hardware may be unknown until the service is started; absence of a report is not a negative GPU check.
+  const externalEnvironment=computed(()=>hasComfy.value&&!['portable','venv'].includes(snapshot.value.comfy.layout))
+  const canStartExisting=computed(()=>drawing.value&&hasComfy.value&&!externalEnvironment.value)
+  const stage=ref<'environment'|'models'|'service'|'validation'|null>(null)
   watch([modelId,chatId,drawing,loras,environment,llamaEnvironment,workspace],()=>{reviewed.value=false;completed.value=false})
-  const needsComfyPreparation=computed(()=>!hasComfy.value||snapshot.value.nodes.state!=='checked'||snapshot.value.nodes.missing.length>0)
+  const needsComfyPreparation=computed(()=>!externalEnvironment.value&&(!hasComfy.value||snapshot.value.nodes.state!=='checked'||snapshot.value.nodes.missing.length>0))
+  const environmentRequired=computed(()=>drawing.value&&needsComfyPreparation.value&&snapshot.value.comfy.layout!=='venv'&&!environment.value)
   function requireModel(id:string):LocalSetupModel {
     const model=snapshot.value.models.find(model=>model.id===id&&model.preparation)
     if(!model) throw new Error('准备清单缺少 '+id+'，请重新检查')
@@ -96,28 +97,55 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
       if(!activeOperation)await cancelRequest
     }
   }
-  async function run(){
-    if(busy.value||!ready.value||(!drawing.value&&!chatId.value))return
+  async function checkDrawing(confirmedWorkspace:string,selectedModel:string,externalDrawing=false){
+    stage.value='validation'
+    message.value='正在检查所选模型、服务连接与工作流节点…'
+    const checked=await localSetupApi.getStatus({modelId:selectedModel})
+    checkpoint()
+    if(blocked.value||checked.workspace.path!==confirmedWorkspace)throw new Error('AI 工作区尚未确认或已改变，请重新检查后继续准备。')
+    if(externalDrawing&&checked.comfy.connection!=='online')throw new Error('模型文件已保留。此环境由外部管理，请从原入口启动，再回到绘遇重新检查；不会另装或接管该环境。')
+    const readiness=drawingSetupReadiness(checked,selectedModel)
+    if(!readiness.complete)throw new Error('绘图准备尚未完成：'+readiness.nextStep)
+    settingsRepository.set(DRAW_ENGINE_SETTING,'anima')
+    settingsRepository.set(STARTER_MODEL_SETTING,selectedModel)
+  }
+  function beginRun(){
     busy.value=true;cancelled=false;cancelState.value='idle';operationUncertain.value=false;completed.value=false;error.value=''
+  }
+  async function startExisting(){
+    if(busy.value||!statusConfirmed.value||blocked.value||!canStartExisting.value)return
+    beginRun()
+    const confirmedWorkspace=workspace.value,selectedModel=modelId.value
+    try{
+      stage.value='service';message.value='正在启动现有环境，不下载或切换运行包…'
+      await waitOperation(await controlApi.serviceAction('comfy','start'))
+      await checkDrawing(confirmedWorkspace,selectedModel)
+      completed.value=true;message.value='现有绘图服务已连接，基础检查完成；可生成第一张图片验证实际效果。'
+    }catch(cause){if(!disposed)error.value=cause instanceof Error?cause.message:'启动未完成，请重试'}
+    finally{if(!disposed){busy.value=!!activeOperation;if(!activeOperation&&!cancelled)refresh()}}
+  }
+  async function run(){
+    if(busy.value||!statusConfirmed.value||environmentRequired.value||!ready.value||(!drawing.value&&!chatId.value))return
+    beginRun()
     const runtime=[...runtimeIds.value],weights=[...weightIds.value],prepareComfy=drawing.value&&needsComfyPreparation.value
     const prepareLlama=!!chatId.value&&!snapshot.value.chat?.runtimePresent,selectedChat=chatId.value,confirmedWorkspace=workspace.value
-    const prepareDrawing=drawing.value,selectedModel=modelId.value
+    const prepareDrawing=drawing.value,selectedModel=modelId.value,externalDrawing=externalEnvironment.value
+    // The existing venv API route prepares only nodes; it does not choose or replace its CUDA runtime.
+    const selectedEnvironment=snapshot.value.comfy.layout==='venv'?'comfy-nvidia':environment.value
     try{
+      stage.value='environment'
       for(const id of runtime)await fetchFile(id)
-      if(prepareComfy)await waitOperation(await localSetupApi.prepareEnvironment(environment.value,confirmedWorkspace))
+      if(prepareComfy)await waitOperation(await localSetupApi.prepareEnvironment(selectedEnvironment,confirmedWorkspace))
       if(prepareLlama)await waitOperation(await localSetupApi.prepareEnvironment(llamaEnvironment.value,confirmedWorkspace))
+      stage.value='models'
       for(const id of weights)await fetchFile(id)
       if(prepareDrawing){
-        await waitOperation(await controlApi.serviceAction('comfy','start'))
-        const checked=await localSetupApi.getStatus({modelId:selectedModel})
-        checkpoint()
-        if(blocked.value||checked.workspace.path!==confirmedWorkspace)throw new Error('AI 工作区尚未确认或已改变，请重新检查后继续准备。')
-        const readiness=drawingSetupReadiness(checked,selectedModel)
-        if(!readiness.complete)throw new Error('绘图准备尚未完成：'+readiness.nextStep)
-        settingsRepository.set(DRAW_ENGINE_SETTING,'anima')
-        settingsRepository.set(STARTER_MODEL_SETTING,selectedModel)
+        stage.value='service'
+        if(!externalDrawing)await waitOperation(await controlApi.serviceAction('comfy','start'))
+        await checkDrawing(confirmedWorkspace,selectedModel,externalDrawing)
       }
       if(selectedChat){
+        stage.value='service'
         checkpoint()
         const result=await localSetupApi.startLlama(selectedChat,confirmedWorkspace)
         await waitOperation(result)
@@ -131,7 +159,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
       checkpoint()
       completed.value=true
       message.value=prepareDrawing
-        ? '绘图环境与文件已准备。前往绘图画室检查角色、场景与参数，再生成一张全龄图片确认实际效果。'
+        ? '绘图服务已连接，所选模型与节点检查已完成。前往绘图画室生成第一张图片，确认实际效果。'
         : '聊天环境与文件已准备。进入角色房间发送一条短消息，确认本机实际效果。'
       refresh()
     }catch(cause){if(!disposed)error.value=cause instanceof Error?cause.message:'准备未完成，请重试'}
@@ -162,5 +190,5 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     finally{if(!disposed)busy.value=!!activeOperation}
   }
   onUnmounted(()=>{disposed=true;download.cancel()})
-  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,busy,message,error,completed,recommendation,imageModels,chatModels,plan,downloadBytes,download,hasSelection,run,cancel,cancelState,operationUncertain,retryOperation}
+  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,busy,message,error,completed,recommendation,imageModels,chatModels,plan,downloadBytes,download,hasSelection,externalEnvironment,canStartExisting,environmentRequired,stage,startExisting,run,cancel,cancelState,operationUncertain,retryOperation}
 }

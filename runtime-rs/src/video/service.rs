@@ -23,6 +23,9 @@ impl Drop for Service {
     }
 }
 impl Service {
+    pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
+        self.backend.bind_control(control);
+    }
     pub fn new(
         config: Config,
         transport: LocalUpstream,

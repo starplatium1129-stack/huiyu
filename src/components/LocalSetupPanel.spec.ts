@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import LocalSetupPanel from './LocalSetupPanel.vue'
 import LocalSetupAutomation from './LocalSetupAutomation.vue'
 import StudioSelect from './ui/StudioSelect.vue'
-import type { LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup'
+import type { LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup'
 import type { ControlActionResult } from '../types/api'
+import { complete, deferred, render } from './__fixtures__/localSetup'
 import { STARTER_MODEL_SETTING, settingsRepository } from '../storage/settingsRepository'
 
 const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), verifyModel: vi.fn(), downloadModel: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn(),getOperation:vi.fn(),serviceAction:vi.fn(),cancelEnvironment:vi.fn(),startLlama:vi.fn() }))
@@ -14,30 +14,6 @@ vi.mock('../api/controlApi.ts',()=>({controlApi:{serviceAction:fixture.serviceAc
 vi.mock('../platform/desktop/capabilities.ts', () => ({ getDesktopCapabilities: () => fixture.desktop ? { getWorkspace: fixture.getWorkspace, setWorkspace: fixture.setWorkspace, pickWorkspace: fixture.pickWorkspace } : undefined }))
 vi.mock('../composables/useFluidDialog', () => ({ useFluidDialog: () => ({ open: vi.fn(), close: vi.fn() }) }))
 
-function complete(): LocalSetupResponse {
-  const snapshot: LocalSetupResponse = { ok: true, checkedAt: 1_791_083_000_000,
-    workspace: { path: 'D:\\AI', state: 'present' },
-    comfy: { path: 'D:\\AI\\ComfyUI', installation: 'present', layout: 'unrecognized', host: 'http://127.0.0.1:8188', connection: 'online' },
-    models: ['anima-miaomiao-v1.6', 'qwen-encoder', 'qwen-vae'].map(id => ({ id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'present', bytes: 10, required: true, preparation: { url: 'https://huggingface.co/circlestone-labs/Anima/resolve/' + 'a'.repeat(40) + '/model.safetensors', modelCardUrl: 'https://huggingface.co/circlestone-labs/Anima', licenseUrl: 'https://huggingface.co/circlestone-labs/Anima/blob/' + 'a'.repeat(40) + '/LICENSE.md', upstreamLicenseUrl: null, revision: 'a'.repeat(40), expectedBytes: 10, sha256: 'b'.repeat(64) } })),
-    nodes: { state: 'checked', required: ['ImageSharpenKJ'], missing: [] },
-    hardware: { state: 'unknown', devices: [], ramBytes: null } }
-  for(const id of ['L_NENE_V21_ANIMA','L_NAT_V21_ANIMA']) snapshot.models.push({
-    ...snapshot.models[0],id,kind:'lora',required:false,path:snapshot.models[0].path.replace('anima-miaomiao-v1.6',id),
-  })
-  for(const id of ['runtime-comfy-nvidia','runtime-kjnodes','runtime-anima-teacache','runtime-llama-cuda','runtime-llama-cudart']) snapshot.models.push({
-    ...snapshot.models[0],id,kind:'runtime',required:false,path:snapshot.models[0].path.replace('anima-miaomiao-v1.6',id),
-  })
-  return snapshot
-}
-function deferred() {
-  let resolve!: (value: LocalSetupResponse) => void
-  const promise = new Promise<LocalSetupResponse>(finish => { resolve = finish })
-  return { promise, resolve }
-}
-function render(realSettings = false) {
-  return mount(LocalSetupPanel, { global: { directives: { 'content-motion': {} }, stubs: { ArchiveIcon: true, Teleport: true, RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' },
-    CompanionWorkspaceSettings: realSettings ? false : { name: 'CompanionWorkspaceSettings', props: ['open', 'modelValue', 'saving', 'error'], emits: ['save', 'close', 'update:modelValue'], template: '<div />' } } } })
-}
 beforeEach(() => {
   settingsRepository.set(STARTER_MODEL_SETTING, 'anima-miaomiao-v1.6')
   fixture.local = true; fixture.desktop = false
@@ -66,7 +42,7 @@ describe('first local setup panel', () => {
     fixture.serviceAction.mockResolvedValue({ ok: true, operation })
     fixture.getOperation.mockResolvedValue({ ok: true, operation })
     fixture.getStatus.mockReturnValue(late.promise)
-    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
+    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
     try {
       await wrapper.get('.setup-review input').setValue(true)
       await wrapper.get('.setup-buttons .btn-primary').trigger('click')
@@ -91,7 +67,7 @@ describe('first local setup panel', () => {
       const model = value.models.find(model => model.id === id)!
       return { type: 'result', modelId: id, path: model.path, state: 'already-present', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '已复用' }
     })
-    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
+    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
     await wrapper.get('.setup-review input').setValue(true)
     await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
     expect(fixture.serviceAction).toHaveBeenCalledOnce()
@@ -124,7 +100,7 @@ describe('first local setup panel', () => {
     let finishCancel!: () => void
     fixture.cancelEnvironment.mockRejectedValueOnce(new Error('offline'))
       .mockImplementationOnce(() => new Promise<void>(resolve => { finishCancel = resolve }))
-    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
+    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
     try {
       await wrapper.get('.setup-review input').setValue(true)
       await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
@@ -167,7 +143,7 @@ describe('first local setup panel', () => {
     fixture.serviceAction.mockResolvedValue({ ok: true, operation: { id: 'owned-setup', status: 'running' } })
     fixture.getOperation.mockRejectedValueOnce(new Error('offline'))
       .mockResolvedValueOnce({ ok: true, operation: { id: 'replacement', status: 'running' } })
-    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
+    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
     try {
       await wrapper.get('.setup-review input').setValue(true)
       await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
@@ -194,7 +170,7 @@ describe('first local setup panel', () => {
     const operation={id:'owned-setup',status:'completed',message:'已启动',error:''}
     fixture.serviceAction.mockResolvedValue({ok:true,operation})
     fixture.getOperation.mockResolvedValue({ok:true,operation})
-    const wrapper=mount(LocalSetupAutomation,{props:{snapshot:value,workspaceBlocked:false},global:{stubs:{ArchiveIcon:true,RouterLink:{template:'<a><slot /></a>'}}}})
+    const wrapper=mount(LocalSetupAutomation,{props:{snapshot:value,workspaceBlocked:false,statusConfirmed:true},global:{stubs:{ArchiveIcon:true,RouterLink:{template:'<a><slot /></a>'}}}})
     await wrapper.getComponent(StudioSelect).setValue('anima-base-v1.0')
     await wrapper.findAll('input[type="checkbox"]')[1].setValue(false)
     const prepare=wrapper.findAll('button').find(button=>button.text().includes('一键准备'))!
@@ -223,7 +199,7 @@ describe('first local setup panel', () => {
     fixture.serviceAction.mockResolvedValue({ ok: true, operation })
     fixture.getOperation.mockResolvedValue({ ok: true, operation })
     const save = vi.spyOn(settingsRepository, 'set').mockImplementation(() => {})
-    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false }, global: { stubs: { ArchiveIcon: true, RouterLink: true } } })
+    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: true } } })
     await wrapper.get('.setup-review input').setValue(true)
     await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
     expect(wrapper.get('[role="alert"]').text()).toContain(condition === 'wrong-workspace' ? 'AI 工作区尚未确认或已改变' : '绘图准备尚未完成')
@@ -231,10 +207,36 @@ describe('first local setup panel', () => {
     expect(wrapper.text()).not.toContain('生成第一张图片')
     wrapper.unmount()
   })
+  it.each(['online', 'offline'] as const)('preserves an external environment while preparing models with %s service', async connection => {
+    const value = complete()
+    value.comfy.layout = 'external-venv'; value.comfy.connection = connection
+    value.nodes.state = 'unknown'; value.nodes.required = []; value.nodes.missing = []
+    const checked = complete(); checked.comfy = { ...value.comfy }
+    fixture.getStatus.mockResolvedValue(checked)
+    fixture.downloadModel.mockImplementation(async (id: string) => ({ type: 'result', modelId: id,
+      path: value.models.find(model => model.id === id)!.path, state: 'already-present', bytes: 10,
+      sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '已复用' }))
+    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' } } } })
+    await wrapper.get('.setup-review input').setValue(true)
+    await wrapper.get('.setup-buttons .btn-primary').trigger('click'); await flushPromises()
+    expect(fixture.downloadModel.mock.calls.map(call => call[0])).toEqual(['anima-miaomiao-v1.6', 'qwen-encoder', 'qwen-vae', 'L_NENE_V21_ANIMA', 'L_NAT_V21_ANIMA'])
+    expect(fixture.serviceAction).not.toHaveBeenCalled()
+    expect(fixture.getOperation).not.toHaveBeenCalled()
+    if (connection === 'online') expect(wrapper.text()).toContain('生成第一张图片')
+    else {
+      expect(wrapper.get('[role="alert"]').text()).toContain('请从原入口启动')
+      expect(wrapper.text()).not.toContain('生成第一张图片')
+      expect(wrapper.get('.setup-buttons .btn-primary').text()).toContain('重试')
+    }
+    wrapper.unmount()
+  })
   it('requires a capability selection and explicitly adds local chat to the reviewed plan', async () => {
     const value = complete(); value.comfy.installation = 'missing'
     value.models.push({ ...value.models[0], id: 'chat-fixture', label: 'Local chat', kind: 'chat', required: false })
-    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false }, global: { stubs: { ArchiveIcon: true, RouterLink: true } } })
+    const wrapper = mount(LocalSetupAutomation, { props: { snapshot: value, workspaceBlocked: false, statusConfirmed: true }, global: { stubs: { ArchiveIcon: true, RouterLink: true } } })
+    expect((wrapper.get('.setup-fields > label input').element as HTMLInputElement).checked).toBe(true)
+    expect(wrapper.text()).toContain('显卡信息尚未确认')
+    await wrapper.get('.setup-fields > label input').setValue(false)
     await wrapper.get('.setup-review input').setValue(true)
     expect(wrapper.get('.setup-buttons .btn-primary').attributes('disabled')).toBeDefined()
     expect(wrapper.get('.setup-runtime-details ul').text()).toBe('')
@@ -263,6 +265,9 @@ describe('first local setup panel', () => {
     expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
     expect(wrapper.find('.setup-overview').exists()).toBe(true)
     expect(wrapper.find('[role="alert"]').text()).toBe('读取失败')
+    expect(wrapper.getComponent(LocalSetupAutomation).props('statusConfirmed')).toBe(false)
+    await wrapper.get('.setup-review input').setValue(true)
+    expect(wrapper.get('.setup-buttons .btn-primary').attributes('disabled')).toBeDefined()
     expect(wrapper.find('.setup-next').text()).toContain('上次结果')
     const last = deferred(); fixture.getStatus.mockReturnValueOnce(last.promise)
     await wrapper.find('.setup-heading button').trigger('click')
@@ -327,7 +332,7 @@ describe('first local setup panel', () => {
     expect(wrapper.find('.download-checklist').findAll('a')).toHaveLength(3)
     expect(wrapper.find('.download-checklist').text()).toContain("Get-FileHash -LiteralPath 'D:\\AI")
     expect(fixture.getStatus).toHaveBeenCalledTimes(1)
-    await wrapper.find('.preparation').getComponent(StudioSelect).setValue('portable')
+    await wrapper.find('.preparation').getComponent(StudioSelect).setValue('manual')
     expect(wrapper.find('.download-checklist').exists()).toBe(false)
     expect(confirm.attributes('disabled')).toBeDefined()
     await wrapper.find('.preparation-ack input').setValue(true)

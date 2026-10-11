@@ -222,6 +222,7 @@ pub(super) async fn status(
                 .iter()
                 .any(|model| model["available"] == true)
     );
+    result["managedStartAvailable"] = json!(backend.comfy_start_available());
     result["hires"] = json!({"superResModel":super_res});
     result["pending"] = json!(backend.pending());
     Ok(result)

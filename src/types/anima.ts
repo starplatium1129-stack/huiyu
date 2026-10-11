@@ -73,6 +73,7 @@ export interface AnimaGenerationState {
   progressText: string
   currentNode: string | null
   online: boolean
+  managedStartAvailable?: boolean
   checkMsg: string
   models: AnimaOption[]
   loras: AnimaOption[]

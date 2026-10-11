@@ -47,6 +47,9 @@ impl Drop for Service {
     }
 }
 impl Service {
+    pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
+        self.backend.bind_control(control);
+    }
     pub(crate) fn provider_identity(&self, unbound_epoch: &str) -> Value {
         self.backend.provider_identity(unbound_epoch)
     }

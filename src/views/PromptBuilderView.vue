@@ -34,6 +34,10 @@
       </div>
       <div class="pb-top-actions">
         <div class="pb-mode-actions">
+          <button v-if="descriptionInHeader"
+            class="btn btn-ghost btn-sm" type="button" @click="editDescription">
+            <ArchiveIcon name="spark" />编辑画面描述
+          </button>
           <DirectorModeSwitch :model-value="pb.directorMode" @update:model-value="setDirectorMode" />
           <button class="focus-mode-btn" type="button"
             :aria-label="pb.focusMode ? '退出专注成片模式' : '进入专注成片模式'"
@@ -149,7 +153,7 @@
 
       <DirectorInspector ref="inspector" v-content-motion:fade="pb.directorMode" :queue-count="sdQueue.total.value" :busy="generationBusy">
         <template #render>
-          <PromptInspectorRender :bindings="renderBindings">
+          <PromptInspectorRender :bindings="renderBindings" :description-in-header="descriptionInHeader" @edit-description="editDescription">
             <template #style><PromptInspectorStyle :bindings="styleBindings" /></template>
           </PromptInspectorRender>
           <OutfitOverrideNotice v-if="outfitOverridden" />
@@ -201,7 +205,7 @@
 
 <script setup lang="ts">
 import '@/assets/css/director.css'
-import { defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref } from 'vue'
 import { useDirectorLayout } from '@/composables/prompt/useDirectorLayout'
 const DirectorResizeHandle = defineAsyncComponent(() => import('@/components/director/DirectorResizeHandle.vue'))
 const DirectorLayoutControls = defineAsyncComponent(() => import('@/components/director/DirectorLayoutControls.vue'))
@@ -223,7 +227,7 @@ const HistoryRestoreNotice = defineAsyncComponent(() => import('@/components/dir
 const HistoryReuseDialog = defineAsyncComponent(() => import('@/components/director/HistoryReuseDialog.vue'))
 const DrawingTaskObserver = defineAsyncComponent(() => import('@/components/tasks/DrawingTaskObserver.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
-const DirectorStoryPanel = defineAsyncComponent(() => import('@/components/director/DirectorStoryPanel.vue'))
+import DirectorStoryPanel from '@/components/director/DirectorStoryPanel.vue'
 const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/director/DirectorCharacterPanel.vue'))
 const PromptMaterialScenes = defineAsyncComponent(() => import('@/components/director/PromptMaterialScenes.vue'))
 const DirectorStagePanel = defineAsyncComponent(() => import('@/components/director/DirectorStagePanel.vue'))
@@ -307,6 +311,17 @@ healthBindings,
 deliveryBindings,
 dialogBindings
 } = workspace
+const descriptionInHeader = computed(() => pb.focusMode || !directorLayout.desktop.value
+  || directorLayout.collapsed.value.materials || directorLayout.collapsed.value.inspector)
+async function editDescription() {
+  pb.focusMode = false
+  if (directorLayout.collapsed.value.materials) directorLayout.toggle('materials')
+  await nextTick()
+  await materialDrawer.value?.selectSection('story')
+  const input = layoutRoot.value?.querySelector<HTMLTextAreaElement>('#visualDescription')
+  input?.focus({ preventScroll: true })
+  input?.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+}
 function clearCanvasResult() {
   stagePanel.value?.playClear()
   onClearResult()

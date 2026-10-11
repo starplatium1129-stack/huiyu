@@ -16,7 +16,10 @@ pub(super) fn fixture(saved: Value) -> (tempfile::TempDir, Arc<ControlService>) 
         ai_workspace_root: root.join("AI"),
         sd_host: "http://127.0.0.1:1".into(),
         sd_auth: None,
-        comfy_host: "http://127.0.0.1:1".into(),
+        comfy_host: saved["comfyHost"]
+            .as_str()
+            .unwrap_or("http://127.0.0.1:1")
+            .into(),
         bind: "127.0.0.1:3210".parse().unwrap(),
         token: "fixture-secret-token".into(),
         desktop_secret: None,
@@ -115,9 +118,9 @@ async fn operation_is_exclusive_and_old_completion_cannot_finish_new_work() {
     s.close().await;
 }
 #[tokio::test]
-async fn saved_managed_preferences_never_authorize_automatic_launch() {
+async fn saved_comfy_intent_is_restored_lazily_without_enabling_other_services() {
     let (_temp, s) = fixture(
-        json!({"autoStartVoice":true,"autoTunnel":true,"managedServices":{"webui":true,"comfy":true}}),
+        json!({"comfyHost":"http://127.0.0.1:1","autoStartVoice":true,"autoTunnel":true,"managedServices":{"webui":true,"comfy":true}}),
     );
     s.watchdog().await;
     assert!(
@@ -126,7 +129,8 @@ async fn saved_managed_preferences_never_authorize_automatic_launch() {
             .unwrap()
             .managed
             .iter()
-            .all(|m| !m.desired && !m.owned)
+            .enumerate()
+            .all(|(index, m)| m.desired == (index == 1) && !m.owned)
     );
     assert!(s.tunnel.lock().await.is_none());
     assert!(s.remote.tunnel_url().is_empty());

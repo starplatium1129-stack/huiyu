@@ -19,16 +19,16 @@ export function drawingSetupReadiness(snapshot: LocalSetupResponse, modelId?: st
     && (!modelId || models.some(model => model.id === modelId))
   const nodesChecked = snapshot.nodes.state === 'checked' && snapshot.nodes.required.length > 0
   const steps = [
-    { id: 'workspace', label: 'AI 工作区', ready: snapshot.workspace.state === 'present' },
-    { id: 'files', label: '绘图环境与模型', ready: snapshot.comfy.installation === 'present' && modelsReady },
-    { id: 'connection', label: 'ComfyUI 连接', ready: snapshot.comfy.connection === 'online' },
-    { id: 'nodes', label: '工作流节点', ready: nodesChecked && snapshot.nodes.missing.length === 0 },
+    { id: 'workspace', label: '1. 准备环境', ready: snapshot.workspace.state === 'present' && snapshot.comfy.installation === 'present', detail: snapshot.comfy.installation === 'present' ? '已识别环境目录；依赖与 GPU 仍需启动确认' : '选择工作区后，由绘遇下载并准备环境' },
+    { id: 'files', label: '2. 配置模型', ready: modelsReady, detail: modelsReady ? '所选组合大小相符；下载时另做 SHA-256 校验' : '在下方选择模型，自动下载到对应目录' },
+    { id: 'connection', label: '3. 启动服务', ready: snapshot.comfy.connection === 'online', detail: snapshot.comfy.connection === 'online' ? '服务已连接；请确认是当前环境' : '准备完成后启动绘图服务' },
+    { id: 'nodes', label: '4. 开始生成', ready: snapshot.workspace.state === 'present' && snapshot.comfy.installation === 'present' && modelsReady && snapshot.comfy.connection === 'online' && nodesChecked && snapshot.nodes.missing.length === 0, detail: nodesChecked && snapshot.nodes.missing.length === 0 ? '节点已注册；第一张图仍需实际验证' : '连接后检查工作流节点，再进入画室' },
   ]
   const complete = steps.every(step => step.ready)
   const nextStep = !steps[0].ready || snapshot.comfy.installation !== 'present'
-    ? '先选择 AI 数据磁盘，再用下方一键准备环境与模型。已有服务可在手动管理中核对。'
+    ? '先选择 AI 工作区，再在下方选择模型并一键准备。已有服务可在手动管理中核对。'
     : !modelsReady ? '按来源、大小与精确路径补齐或核对所选模型组合；已有其他底模仍可按原配置使用。'
-    : !steps[2].ready ? '用下方一键准备或控制室启动 ComfyUI；外部管理的环境沿用原入口。'
+    : !steps[2].ready ? '用下方一键准备或控制室启动绘图服务，无需另开 ComfyUI 界面；外部管理的环境沿用原入口。'
     : !nodesChecked ? '节点注册信息尚未确认，请核对连接的 ComfyUI 服务后重新检查。'
     : !steps[3].ready ? `缺少工作流节点：${snapshot.nodes.missing.join('、')}。按下方说明检查扩展，重启 ComfyUI 后重新检查。`
     : '前往绘图画室选择角色和场景、检查提示词与参数。模型就绪的机器可继续生成一张全龄图片。'

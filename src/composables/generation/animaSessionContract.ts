@@ -23,6 +23,7 @@ export interface AnimaStatusResponse {
   provider?: 'comfy' | 'native'
   ok?: boolean
   online?: boolean
+  managedStartAvailable?: boolean
   models?: AnimaOption[]
   loras?: AnimaOption[]
   styleLoras?: AnimaGenerationState['styleLoras']

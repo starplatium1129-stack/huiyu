@@ -211,7 +211,7 @@ impl ControlService {
         Ok(
             json!({"ok":true,"checkedAt":now(),"recommendedModel":recommended,
             "workspace":{"path":workspace,"state":workspace_state},
-            "comfy":{"path":comfy,"installation":installation,"layout":if venv{"venv"}else if external_venv{"external-venv"}else if portable{"portable"}else{"unrecognized"},"host":host,"connection":connection},
+            "comfy":{"path":comfy,"installation":installation,"layout":if venv{"venv"}else if external_venv{"external-venv"}else if portable{"portable"}else{"unrecognized"},"host":host,"connection":connection,"managedEnvironment":setup_environment::managed_comfy_environment(&comfy)},
             "models":models,"chat":{"host":self.settings()["llamaHost"],"runtimePresent":workspace.join("Chat/runtime/llama-server.exe").is_file()},"nodes":{"state":if node_info.is_some(){"checked"}else{"unknown"},"required":required,"missing":missing},
             "hardware":{"state":if ram.is_some()||!devices.is_empty(){"reported"}else{"unknown"},"devices":devices,"ramBytes":ram}}),
         )
@@ -313,6 +313,38 @@ mod tests {
         let report = service.local_setup().await.unwrap();
         assert_eq!(report["comfy"]["connection"], "online");
         assert_eq!(report["comfy"]["layout"], "portable");
+        assert_eq!(
+            report["comfy"]["managedEnvironment"],
+            json!({"state":"unknown","environment":null})
+        );
+        let spec = setup_verify::model_file("runtime-comfy-cu126").unwrap();
+        std::fs::write(
+            root.join("huiyu-environment.json"),
+            json!({"schemaVersion":1,"environment":"comfy-cu126","archiveSha256":spec.sha256})
+                .to_string(),
+        )
+        .unwrap();
+        let receipt_report = service.local_setup().await.unwrap();
+        assert_eq!(
+            receipt_report["comfy"]["managedEnvironment"],
+            json!({"state":"verified","environment":"comfy-cu126"})
+        );
+        assert!(
+            !receipt_report["comfy"]["managedEnvironment"]
+                .to_string()
+                .contains("archiveSha256")
+        );
+        std::fs::write(
+            root.join("huiyu-environment.json"),
+            json!({"schemaVersion":1,"environment":"comfy-cu126","archiveSha256":"outdated"})
+                .to_string(),
+        )
+        .unwrap();
+        assert_eq!(
+            service.local_setup().await.unwrap()["comfy"]["managedEnvironment"],
+            json!({"state":"mismatch","environment":null})
+        );
+
         assert_eq!(report["models"][0]["state"], "present");
         assert_eq!(report["models"][1]["state"], "missing");
         assert_eq!(report["nodes"]["state"], "checked");

@@ -55,14 +55,14 @@ export function useLocalSetup() {
   const currentCheck = computed(() => !loading.value && !error.value && !cancelled.value && !workspacePending.value && !workspaceUnconfirmed.value)
   const basicComplete = computed(() => currentCheck.value && failedModels.value.length === 0 && readiness.value?.complete === true)
   const checklist = computed(() => readiness.value?.steps.map(step => ({
-    ...step, ready: currentCheck.value && step.ready && (step.id !== 'files' || failedModels.value.length === 0),
+    ...step, ready: currentCheck.value && step.ready && (!['files', 'nodes'].includes(step.id) || failedModels.value.length === 0),
   })) ?? [])
   const nodeLabel = computed(() => !nodesChecked.value ? '尚未确认' : snapshot.value!.nodes.missing.length ? `缺少 ${snapshot.value!.nodes.missing.length} 项` : '所需节点已注册')
   const checkedAtLabel = computed(() => snapshot.value ? new Date(snapshot.value.checkedAt).toLocaleTimeString('zh-CN') + ' 检查' : '')
   const summary = computed(() => loading.value ? '正在读取本机配置…' : error.value ? '检查未完成，状态待确认'
     : cancelled.value ? '检查已取消' : workspacePending.value ? '工作区已保存，重启后继续检查'
-      : workspaceUnconfirmed.value ? '当前工作区尚未确认' : basicComplete.value ? '基础只读检查已完成，尚未真实出图'
-      : snapshot.value ? '推荐起步路径还有项目待确认' : '尚未检查')
+      : workspaceUnconfirmed.value ? '当前工作区尚未确认' : basicComplete.value ? '环境、模型文件、连接与节点已确认，可尝试生成第一张图（尚未实际出图）'
+      : snapshot.value ? '绘图准备尚未完成，请按下方步骤继续' : '尚未检查')
   const nextStep = computed(() => {
     const value = snapshot.value
     if (loading.value) return '等待本次只读检查，或取消后稍后再试。'
@@ -150,7 +150,7 @@ export function useLocalSetup() {
   onMounted(() => { void refresh() })
   onUnmounted(() => { disposed = true; controller?.abort(); controller = null })
 
-  return { isLocal, desktop, snapshot, loading, error, summary, nextStep, basicComplete,
+  return { isLocal, desktop, snapshot, loading, error, summary, nextStep, basicComplete, currentCheck,
     recommendedModels, otherModels, nodeLabel, checkedAtLabel, checklist, fileLabel,
     workspaceButton, workspaceOpen, workspaceDraft, workspaceLoading, workspaceSaving,
     workspaceNotice, workspaceError, workspacePending, workspaceUnconfirmed, downloadNotice,
