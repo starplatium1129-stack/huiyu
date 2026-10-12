@@ -1,6 +1,9 @@
 mod history;
 mod inputs;
 mod listing;
+mod scopes;
+
+pub(super) use scopes::initialize;
 
 pub(super) mod outputs;
 
