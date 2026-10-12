@@ -23,6 +23,11 @@
             <StudioSelect id="inference-acceleration" v-model="draft.acceleration" label="独立引擎加速模式" :options="accelerationOptions" :disabled="saving || loading || setupBusy" />
             <small>Sage 模式需匹配本机运行库与显卡；TeaCache 使用该模式对应的校准档。</small>
           </div>
+          <div class="inference-field">
+            <label for="inference-memory">独立引擎显存策略</label>
+            <StudioSelect id="inference-memory" v-model="draft.memoryPolicy" label="独立引擎显存策略" :options="memoryOptions" :disabled="saving || loading || setupBusy" />
+            <small>分阶段将暂不用的模型移到内存，减少同时占用的显存；会增加传输时间，也不保证任意尺寸均能运行。保存后重启生效。</small>
+          </div>
           <div v-for="field in pathFields" :key="field.key" class="inference-field">
             <label :for="`inference-${field.key}`">{{ field.label }}</label>
             <input :id="`inference-${field.key}`" v-model="draft[field.key]" type="text" :disabled="saving || loading || setupBusy" spellcheck="false" autocomplete="off" required :aria-describedby="`inference-${field.key}-hint`" />
@@ -80,6 +85,7 @@ function fillPreparedPaths(paths: PreparedInferencePaths) {
 }
 const engineOptions = [{ value: 'comfy', label: 'ComfyUI' }, { value: 'native', label: '独立引擎（Native Anima）' }]
 const accelerationOptions = [{ value: 'native', label: '原生计算' }, { value: 'sage', label: 'SageAttention' }, { value: 'compiled-sage', label: '编译 + SageAttention' }, { value: 'compiled-fused-sage', label: '编译 + SageAttention + LoRA 融合' }]
+const memoryOptions = [{ value: 'resident', label: '模型常驻显卡（连续生成优先）' }, { value: 'offload', label: '分阶段加载（减少显存占用）' }]
 const engineLabel = (engine: string) => engine === 'native' ? '独立引擎（Native Anima）' : 'ComfyUI'
 const pathFields = [
   { key: 'modelsRoot', label: '模型根目录', hint: '目录格式：模型根目录 / 模型 ID / 完整 Diffusers 组件；不是 ComfyUI 的原始权重目录。' },

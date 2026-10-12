@@ -7,6 +7,8 @@ pub(crate) struct Settings {
     pub engine: String,
     #[serde(default = "default_acceleration")]
     pub acceleration: String,
+    #[serde(default = "default_memory_policy")]
+    pub memory_policy: String,
     pub python: PathBuf,
     pub worker: PathBuf,
     pub models_root: PathBuf,
@@ -16,6 +18,9 @@ pub(crate) struct Settings {
 }
 fn default_acceleration() -> String {
     "native".into()
+}
+fn default_memory_policy() -> String {
+    "resident".into()
 }
 impl Settings {
     pub(crate) fn validate(&self) -> Result<()> {
@@ -27,6 +32,9 @@ impl Settings {
             "native" | "sage" | "compiled-sage" | "compiled-fused-sage"
         ) {
             return Err(ApiError::invalid("独立推理加速模式无效"));
+        }
+        if !matches!(self.memory_policy.as_str(), "resident" | "offload") {
+            return Err(ApiError::invalid("独立推理显存策略无效"));
         }
         for path in [
             &self.python,
@@ -76,7 +84,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
             .join("tools/inference/worker.py")
     });
     let defaults = json!({
-        "engine":"comfy","acceleration":"native",
+        "engine":"comfy","acceleration":"native","memoryPolicy":"resident",
         "python":root.join(if cfg!(windows) { "venv/Scripts/python.exe" } else { "venv/bin/python" }),
         "worker":worker,"modelsRoot":root.join("models"),"lorasRoot":root.join("loras")
     });
@@ -101,6 +109,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
     for (key, env) in [
         ("engine", "HUIYU_IMAGE_ENGINE"),
         ("acceleration", "HUIYU_INFERENCE_ACCELERATION"),
+        ("memoryPolicy", "HUIYU_INFERENCE_MEMORY"),
         ("python", "HUIYU_INFERENCE_PYTHON"),
         ("worker", "HUIYU_INFERENCE_WORKER"),
         ("modelsRoot", "HUIYU_INFERENCE_MODELS_ROOT"),

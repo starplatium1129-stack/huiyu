@@ -121,6 +121,13 @@ impl ControlService {
         result["comfyOnline"] = json!(comfy);
         result["ttsOnline"] = json!(tts);
         result["llama"] = llama;
+        let inference = self.active_inference().ok();
+        result["imageProvider"] = json!(inference.as_ref().map(|settings| &settings.engine));
+        result["nativeRuntimeFilesReady"] = json!(match inference {
+            Some(settings) if settings.engine == "native" =>
+                settings.validate_files().await.is_ok(),
+            _ => false,
+        });
         let comfy_owned = self.comfy_owned().await;
         let mut state = self.state.lock().unwrap();
         result["webuiManaged"] = json!(state.managed[0].owned);

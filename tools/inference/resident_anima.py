@@ -41,6 +41,8 @@ class PipelineCache:
         self.weights_loaded = False
         self.file_identity = None
         self.fusion = None
+        self.memory = None
+        self.reused_components = ()
 
     def prepare(self, check):
         if not self.runtime_ready:
@@ -77,7 +79,7 @@ class PipelineCache:
             self.clear()
             raise
 
-    def clear(self, *, keep_mask=False, keep_fingerprint=False):
+    def clear(self, *, keep_mask=False, keep_fingerprint=False, keep_text=False):
         if not keep_fingerprint and self.file_identity is not None:
             self.file_identity.close()
         had_resources = (self.components is not None or
@@ -85,10 +87,14 @@ class PipelineCache:
                          (not keep_mask and self.mask_cache is not None and self.mask_cache.components is not None))
         self.identity = self.components = None
         self.weights_loaded = False
+        self.reused_components = ()
+        if self.memory is not None:
+            self.memory.close()
+            self.memory = None
         if self.fusion is not None:
             self.fusion.clear()
             self.fusion = None
-        if self.text_cache is not None:
+        if not keep_text and self.text_cache is not None:
             self.text_cache.clear()
         if not keep_mask and self.mask_cache is not None:
             self.mask_cache.clear()
@@ -99,7 +105,7 @@ class PipelineCache:
         if cuda is not None and cuda.is_available():
             cuda.empty_cache()
 
-    def acquire(self, identity, root, cfg, blocks, loras, load, load_loras, try_hotswap=None):
+    def acquire(self, identity, root, cfg, blocks, loras, load, load_loras, try_hotswap=None, *, memory_tools):
         from diffusers import AnimaModularPipeline, FlowMatchEulerDiscreteScheduler, ClassifierFreeGuidance
         base_key = {key: value for key, value in identity.items() if key != "loras"}
         previous_base = ({key: value for key, value in self.identity.items() if key != "loras"}
@@ -108,16 +114,31 @@ class PipelineCache:
             [row["sha256"] for row in identity["loras"]] != [row["sha256"] for row in self.identity["loras"]])
         reused = base_key == previous_base and self.components is not None
         self.weights_loaded = False
+        self.reused_components = ()
         try:
             if (reused and self.fusion is not None and self.fusion.source_bytes
                     and not self.file_identity.base_is_valid(root, identity["modelSha256"])):
                 reused = False
             if reused and adapters_changed:
                 reused = _can_unload_adapters(self.components)
+            if self.memory is not None and (not reused or identity != self.identity):
+                self.memory.close()
+                self.memory = None
             if not reused:
+                previous = self.identity.get("componentSha256", {}) if self.identity else {}
+                current = identity.get("componentSha256", {})
+                # LoRA can mutate transformer/conditioner; those always reload.
+                shared = {name: self.components[name] for name in
+                    ("text_encoder", "vae", "tokenizer", "t5_tokenizer")
+                    if self.components is not None and name in current and previous.get(name) == current[name]}
+                keep_text = all(name in shared for name in ("text_encoder", "tokenizer", "t5_tokenizer"))
                 # The just-validated read lease must protect the ensuing load.
-                self.clear(keep_mask=True, keep_fingerprint=True)
-                pipeline = load(root, cfg, blocks=blocks)
+                self.clear(keep_mask=True, keep_fingerprint=True, keep_text=keep_text)
+                pipeline = load(root, cfg, blocks=blocks, reusable=shared)
+                self.reused_components = pipeline._huiyu_component_reuse
+                if keep_text and not all(name in self.reused_components for name in
+                        ("text_encoder", "tokenizer", "t5_tokenizer")) and self.text_cache is not None:
+                    self.text_cache.clear()
                 load_loras(pipeline, loras)
                 self.components = {name: pipeline.components[name] for name in
                                    ("text_encoder", "text_conditioner", "transformer", "vae", "tokenizer", "t5_tokenizer")}
@@ -154,7 +175,11 @@ class PipelineCache:
                     lease, model_sha256 = self.file_identity, identity["modelSha256"]
                     self.fusion.bind_source(root, model_sha256,
                         lambda: lease.base_is_valid(root, model_sha256))
-                self.fusion.fuse(self.components)
+                self.fusion.fuse(self.components,
+                    stage_device="cuda:0" if memory_tools.POLICY == "offload" else None)
+            if self.memory is None:
+                self.memory = memory_tools.Residency(self.components)
+            self.memory.bind(pipeline)
             self.identity = copy.deepcopy(identity)
         except Exception:
             # A failed unload/load/scale may have modified either shared component.

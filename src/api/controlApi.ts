@@ -71,6 +71,8 @@ function isControlStatus(value: ApiResponseObject): boolean {
     && typeof value.running === 'boolean'
     && typeof value.sdOnline === 'boolean'
     && typeof value.comfyOnline === 'boolean'
+    && (value.imageProvider === undefined || value.imageProvider === null || value.imageProvider === 'comfy' || value.imageProvider === 'native')
+    && (value.nativeRuntimeFilesReady === undefined || typeof value.nativeRuntimeFilesReady === 'boolean')
     && typeof value.ttsOnline === 'boolean'
     && typeof value.ollamaOnline === 'boolean'
     && (value.llama===undefined || (isObject(value.llama)&&typeof value.llama.online==='boolean'&&typeof value.llama.managed==='boolean'&&typeof value.llama.host==='string'))

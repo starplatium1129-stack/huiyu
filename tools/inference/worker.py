@@ -90,7 +90,7 @@ def validate_model(value):
     return root
 
 
-@lru_cache(maxsize=24)
+@lru_cache(maxsize=32)
 def load_mask_tools(name="masked_anima"):
     # -I excludes the script directory: load only this bundled sibling, never PYTHONPATH.
     import importlib.util
@@ -118,11 +118,15 @@ def dependencies():
     load_mask_tools("anima_lora_fusion")
     load_mask_tools("anima_sampling")
     load_mask_tools("anima_refinement")
+    load_mask_tools("anima_vae")
+    load_mask_tools("anima_tiling")
     load_mask_tools("anima_postprocess")
     load_mask_tools("anima_prompt_weights")
     load_mask_tools("anima_upscale")
     load_mask_tools("native_hash")
     load_mask_tools("native_upload")
+    load_mask_tools("anima_loader")
+    load_mask_tools("anima_memory").validate()
     load_mask_tools("locked_identity")
     load_mask_tools("anima_acceleration").validate()
     versions = {}
@@ -216,7 +220,7 @@ def validate_job(job):
         if result[key] % 16:
             raise WorkerError("INVALID_INPUT", f"{key} must be divisible by 16")
     result["steps"] = number(data, "steps", 28, 1, 200, True)
-    result["cfg"] = number(data, "cfg", 4.0, 1, 30)
+    result["cfg"] = number(data, "cfg", 4.0, 0.5, 30)
     result["seed"] = number(data, "seed", 0, 0, 2**63 - 1, True)
     image_path = job.get("inputImagePath")
     if image_path is not None:
@@ -307,37 +311,9 @@ def try_hotswap_loras(pipeline, adapters):
         raise WorkerError("UNSUPPORTED_LORA", str(exc)) from exc
 
 
-def load_pipeline(root, cfg, blocks=None):
-    root = validate_model(str(root))
-    import torch
-    from diffusers import AnimaModularPipeline, AnimaTextConditioner, AutoencoderKLQwenImage, CosmosTransformer3DModel, FlowMatchEulerDiscreteScheduler, ClassifierFreeGuidance
-    from transformers import Qwen3Model, Qwen2Tokenizer, T5Tokenizer, T5TokenizerFast
-    if not torch.cuda.is_available():
-        raise WorkerError("DEVICE_UNAVAILABLE", "A CUDA-capable PyTorch installation and NVIDIA GPU are required; no CPU fallback is attempted")
-    dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
-    pipeline = AnimaModularPipeline(blocks=blocks) if blocks is not None else AnimaModularPipeline()
-    classes = {"text_encoder": Qwen3Model, "text_conditioner": AnimaTextConditioner,
-               "transformer": CosmosTransformer3DModel, "vae": AutoencoderKLQwenImage,
-               "tokenizer": Qwen2Tokenizer, "t5_tokenizer": (T5Tokenizer if (root / "t5_tokenizer" / "spiece.model").is_file() else T5TokenizerFast),
-               "scheduler": FlowMatchEulerDiscreteScheduler}
-    components = {}
-    for name, cls in classes.items():
-        kwargs = {"local_files_only": True}
-        if name in ("text_encoder", "tokenizer", "t5_tokenizer"):
-            kwargs["trust_remote_code"] = False
-        if name in WEIGHTS:
-            kwargs.update(use_safetensors=True, torch_dtype=dtype)
-            components[name] = load_mask_tools("resident_anima").load_weights(name, cls, str(root / name), **kwargs)
-        else:
-            components[name] = cls.from_pretrained(str(root / name), **kwargs)
-    # CFG is a component, not an ignored call-time guidance_scale argument.
-    components["guider"] = ClassifierFreeGuidance(guidance_scale=cfg)
-    pipeline.update_components(**components)
-    if not load_mask_tools("native_upload").try_packed_upload(components[name] for name in WEIGHTS):
-        pipeline.to("cuda")
-    load_mask_tools("anima_acceleration").configure(pipeline.transformer)
-    pipeline.set_progress_bar_config(disable=True)
-    return pipeline
+def load_pipeline(root, cfg, blocks=None, reusable=None):
+    return load_mask_tools("anima_loader").load(validate_model(str(root)), cfg,
+        blocks, reusable, load_mask_tools, WorkerError)
 
 
 def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True):
@@ -387,21 +363,22 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         try:
             size = (data["width"], data["height"])
             if data.get("maskPrompt"):
-                from PIL import Image
-                image = image.resize(size, Image.Resampling.LANCZOS)
+                image = mask_tools.resize_image(image, size)
                 auto_tools = load_mask_tools("clipseg_mask")
                 if resident is not None and cache_mask and resident.mask_cache is None:
                     resident.mask_cache = auto_tools.MaskCache()
                 mask = auto_tools.generate_mask(Path(job["maskModelDir"]).resolve(), image, data["maskPrompt"], data["maskThreshold"],
+                    grow=data["growMaskBy"],
                     **({"cache": resident.mask_cache} if resident is not None and cache_mask else {}),
                     **({"expected_mask_sha256": tea_report["compatibility"]["maskModelSha256"]}
                        if tea_report is not None and tea_report["compatibility"] is not None else {}))
-                mask = mask_tools._prepare_effective_mask(mask, size, data["growMaskBy"])
             else:
                 image, mask = mask_tools.prepare_images(image, job["maskImagePath"], size, data["growMaskBy"])
         except ValueError as exc:
             raise WorkerError("INVALID_INPUT", str(exc)) from exc
         blocks = mask_tools.masked_blocks()
+    elif image is not None:
+        image = load_mask_tools().resize_image(image, (data["width"], data["height"]))
     metrics.image_prepared(mask_started, tea_report, resident, cache_mask, bool(data.get("maskPrompt")))
     if blocks is None and (tea is not None or (resident is not None and cache_text)):
         from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
@@ -415,16 +392,21 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         blocks = text_tools.apply_text_cache(blocks, resident.text_cache)
     blocks = load_mask_tools("anima_prompt_weights").apply_prompt_weights(blocks,
         cache=resident.text_cache if resident is not None and cache_text else None)
+    blocks = load_mask_tools("anima_vae").apply_blocks(blocks, load_mask_tools("anima_tiling"))
     started = time.perf_counter()
     post_load_fingerprint, reused = 0, False
     if resident is None:
         pipeline = load_pipeline(root, data["cfg"], blocks=blocks) if blocks is not None else load_pipeline(root, data["cfg"])
         load_loras(pipeline, job.get("loras", []))
         if load_mask_tools("anima_acceleration").MODE == "compiled-fused-sage":
-            pipeline.transformer._huiyu_lora_fusion.fuse(pipeline.components)
+            pipeline.transformer._huiyu_lora_fusion.fuse(pipeline.components,
+                stage_device="cuda:0" if load_mask_tools("anima_memory").POLICY == "offload" else None)
+        memory = load_mask_tools("anima_memory").Residency(pipeline.components)
+        memory.bind(pipeline)
     else:
         key = {"root": str(root), **identity}
-        pipeline, reused = resident.acquire(key, root, data["cfg"], blocks, job.get("loras", []), load_pipeline, load_loras, try_hotswap_loras)
+        pipeline, reused = resident.acquire(key, root, data["cfg"], blocks, job.get("loras", []), load_pipeline, load_loras, try_hotswap_loras,
+            memory_tools=load_mask_tools("anima_memory"))
         if resident.weights_loaded:
             protected_load = resident.file_identity.cached
             verified_at = time.perf_counter()
@@ -435,6 +417,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                 resident.clear()
                 raise WorkerError("MODEL_CHANGED", "Model or LoRA bytes changed while loading; retry after preparation completes")
     metrics.model_acquired(started, tea_report, reused, resident_fingerprint, post_load_fingerprint)
+    pipeline.vae._huiyu_vae_events = []
     sampling = load_mask_tools("anima_sampling")
     if data.get("sampler", "euler") != "euler":
         pipeline.update_components(scheduler=sampling.new_scheduler(data["sampler"], dict(pipeline.scheduler.config)))
@@ -442,13 +425,15 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         resident.text_cache.begin_job()
     def upscale(images):
         helper = load_mask_tools("anima_upscale")
+        pipeline._huiyu_memory.offload_all()
         expected = tea_report["compatibility"].get("upscaleModelSha256") if tea is not None else None
         if expected is not None and load_mask_tools("native_hash").file_sha256(job["upscaleModelPath"]) != expected:
             raise WorkerError("MODEL_CHANGED", "Upscaler bytes changed after profile validation")
-        model = helper.load_remacri(job["upscaleModelPath"], device=images.device)
+        model = helper.load_remacri(job["upscaleModelPath"], device=pipeline._execution_device)
         if expected is not None and load_mask_tools("native_hash").file_sha256(job["upscaleModelPath"]) != expected:
             raise WorkerError("MODEL_CHANGED", "Upscaler bytes changed while loading")
-        return helper.upscale_4x(model, images)
+        pipeline._huiyu_upscale_report = {}
+        return helper.upscale_4x(model, images, tiling=load_mask_tools("anima_tiling"), report=pipeline._huiyu_upscale_report)
     def prepare_second(blocks):
         if tea is not None:
             if tea.stats["nonfinite"]:
@@ -456,6 +441,11 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             tea.clear()
             return load_mask_tools("teacache_anima").apply_blocks(blocks, tea)
         return blocks
+    def before_decode():
+        if tea is not None:
+            if tea.stats["nonfinite"]:
+                raise WorkerError("NONFINITE_INFERENCE", "Denoising left the finite calibration scope; no result is published")
+            tea.clear()  # Retain observations, release GPU residuals before VAE.
     capture = tea_report is not None and (collect_teacache or measure_teacache or teacache_profile is not None)
     started = time.perf_counter()
     try:
@@ -464,11 +454,15 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
             upscale=upscale if job.get("upscaleModelPath") else None,
             prepare_second_blocks=prepare_second,
+            before_decode=before_decode,
+            vae_tools=load_mask_tools("anima_vae"), tiling=load_mask_tools("anima_tiling"),
             observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
             progress=lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
     finally:
         if tea is not None:
             tea.clear()
+        if resident is None:
+            memory.close()
     if tea is not None and tea.stats["nonfinite"]:
         raise WorkerError("NONFINITE_INFERENCE", "Inference left the finite calibration scope; no result is published")
     metrics.pipeline_finished(started, tea_report, tea, resident is not None and cache_text)
@@ -476,12 +470,14 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         tea_report["schedule"] = ({"schemaVersion": 2, "passes": refinement["schedules"]} if data.get("hiresFix") else
             load_mask_tools("resident_benchmark").capture_schedule(pipeline.scheduler, step))
     metrics.timings.update({key: refinement[key] for key in ("compositeWallSeconds", "postprocessWallSeconds")})
+    metrics.refinement = {"vaeOperations": refinement["vaeOperations"], "upscale": getattr(pipeline, "_huiyu_upscale_report", None)}
     output_report = load_mask_tools().save_png(result, job["outputPath"])
     if tea_report is not None:
         tea_report.update(output_report)
         tea_report["refinement"] = refinement
     emit(stream, job["id"], "result", outputPath=job["outputPath"], modelReused=reused,
-         nativeRuntime=metrics.result(output_report, reused, resident, cache_text, cache_mask, tea, tea_report, step),
+         nativeRuntime=metrics.result(output_report, reused, resident, cache_text, cache_mask, tea, tea_report, step,
+             memory_policy=pipeline._huiyu_memory.policy, component_reuse=getattr(pipeline, "_huiyu_component_reuse", ())),
          **({"textCache": resident.text_cache.stats()} if resident is not None and cache_text else {}),
          **({"teaCache": dict(tea.stats)} if tea is not None else {}))
     return tea_report

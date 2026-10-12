@@ -219,7 +219,7 @@ class LoraFusionState:
                 # after this serial worker's restore operation has completed.
                 torch._C._host_emptyCache()
 
-    def fuse(self, components):
+    def fuse(self, components, *, stage_device=None):
         import torch
         from peft.tuners.lora.layer import Linear
         from peft.tuners.tuners_utils import BaseTunerLayer
@@ -259,15 +259,26 @@ class LoraFusionState:
             self.source_bytes = sum(record["bytes"] for record in sources.values())
             self._merged = [target[0] for target in targets]
             try:
-                for layer, active, *_ in targets:
-                    weight = layer.get_base_layer().weight
-                    packed = weight.data if getattr(weight, "_huiyu_packed_storage", False) else None
-                    layer.merge(safe_merge=True, adapter_names=active)
-                    if packed is not None:
-                        # PEFT's safe merge replaces .data with a validated clone.
-                        # Retain the packed allocation without changing its values.
-                        packed.copy_(weight.data)
-                        weight.data = packed
+                for name in ("transformer", "text_conditioner"):
+                    selected = [row for row in targets if row[2] == name]
+                    if not selected:
+                        continue
+                    # Keep CUDA BF16/F16 merge arithmetic in staged mode. CPU
+                    # PEFT matmul has a different FP32-upcast path.
+                    if stage_device is not None:
+                        components[name].to(stage_device)
+                    try:
+                        for layer, active, *_ in selected:
+                            weight = layer.get_base_layer().weight
+                            packed = weight.data if getattr(weight, "_huiyu_packed_storage", False) else None
+                            layer.merge(safe_merge=True, adapter_names=active)
+                            if packed is not None:
+                                packed.copy_(weight.data)
+                                weight.data = packed
+                    finally:
+                        if stage_device is not None:
+                            components[name].to("cpu")
+                            torch.cuda.empty_cache()
             except BaseException:
                 self.restore()
                 raise

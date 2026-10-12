@@ -21,6 +21,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const tunnelActive = ref(false)
   const sdOnline = ref(false)
   const comfyOnline = ref(false)
+  const imageProvider = ref<ControlStatus['imageProvider']>(null)
   const ttsOnline = ref(false)
   const ollamaOnline = ref(false)
   const llamaOnline=ref(false),llamaManaged=ref(false),llamaLabel=ref('')
@@ -226,7 +227,16 @@ export function useControlStatus({ showToast }: StatusHooks) {
     mainBtnLabel.value = tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
 
     const imageOnline = data.sdOnline || data.comfyOnline
-    if (imageOnline && data.ttsOnline && (data.llama?.online || data.ollamaOnline)) {
+    imageProvider.value = data.imageProvider === undefined ? 'comfy' : data.imageProvider
+    if (imageProvider.value === 'native') {
+      feedbackText.value = data.nativeRuntimeFilesReady ? '独立绘图入口已准备' : '独立绘图入口待准备'
+      actionNote.value = data.nativeRuntimeFilesReady
+        ? '首次生成时按需加载独立模型；请在下方检查依赖与 CUDA，并核对所选模型。切换到聊天会释放空闲绘图显存。'
+        : '请在下方独立引擎设置中准备 Python 与 worker，再检查依赖和模型文件。'
+    } else if (imageProvider.value === null) {
+      feedbackText.value = '绘图引擎配置待确认'
+      actionNote.value = '请检查下方独立引擎设置，修正配置后重新启动应用。'
+    } else if (imageOnline && data.ttsOnline && (data.llama?.online || data.ollamaOnline)) {
       feedbackText.value = '画面、语音与聊天均已就绪'
       actionNote.value = '可以完整使用绘制台、角色房间与配音。'
     } else if (imageOnline && data.ttsOnline) {
@@ -373,7 +383,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     modeBusy, operation, operationSubmitting, serviceChecking, statusLoaded, statusError, scripts,
     sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
-    feedbackText, actionNote, logs, logBoxEl, logIndex,
+    feedbackText, actionNote, imageProvider, logs, logBoxEl, logIndex,
     opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
     readyLabel,
     lastStatus: () => lastStatus,

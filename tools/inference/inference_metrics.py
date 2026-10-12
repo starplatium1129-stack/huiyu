@@ -81,7 +81,7 @@ class RuntimeMetrics:
                 samples=tea.samples if tea is not None else [], stats=dict(tea.stats) if tea is not None else None,
                 peakAllocatedBytes=self.memory["peakAllocatedBytes"], textCacheEnabled=cache_text)
 
-    def result(self, output, reused, resident, cache_text, cache_mask, tea, report, completed_steps):
+    def result(self, output, reused, resident, cache_text, cache_mask, tea, report, completed_steps, *, memory_policy, component_reuse):
         self.timings.update(workerWallSeconds=time.perf_counter() - self.started,
                             outputSaveSeconds=output["outputSaveSeconds"])
         text = dict(enabled=resident is not None and cache_text)
@@ -101,4 +101,6 @@ class RuntimeMetrics:
             cached.update(_counts(tea.stats, ("fullComputes", "skippedComputes", "skippedBlocks", "resets", "nonfinite")))
         return dict(schemaVersion=1, timingMode="cpu-wall-no-extra-sync", timingsAreAdditive=False,
             existingReportSynchronization=report is not None, timings=self.timings, baseReused=reused, completedSteps=completed_steps,
-            textCache=text, maskCache=mask, teaCache=cached, memory=self.memory)
+            textCache=text, maskCache=mask, teaCache=cached, memory=self.memory,
+            memoryPolicy=memory_policy, componentReuse=list(component_reuse), samplingRevision="anima-workflow-effects-v3",
+            refinement=self.refinement)

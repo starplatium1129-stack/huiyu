@@ -20,6 +20,26 @@
 
 四个组件完成严格加载核验后，新增按 dtype 打包的 GPU 上传：保留 Parameter/Buffer 对象、形状、dtype 与数值，只将底层存储切成目标 GPU 分配的视图，不额外拼接一份完整 CPU 权重。不适用的布局在修改前返回原上传路径，复制或发布失败则明确失败。普通同拓扑 LoRA 在完整键、shape、rank、配置与 dtype 核验后可原位 hotswap；不匹配则使用既有卸载/加载路径，发生部分修改后失败会丢弃驻留模型。四任务诊断对照中，4 张 PNG 字节完全一致，额外完整 CPU 原权重快照从约 3.28 GiB 降为 0，临时缓冲最多 32 MiB，进程工作集从约 5.63 GiB 降至 1.80 GiB。private bytes 含 GPU 驱动相关记账，不等于物理 RAM；这些诊断样本不代替最终 API 性能对照。原始记录在 `runtime/backend-cost-20261011/startup-comparison.json`。
 
+## 当前参数对齐与显存策略（2026-10-12）
+
+当前采样身份为 `anima-workflow-effects-v3`，并绑定 `memoryPolicy`。延续 Euler/simple、尾部 N 步、CPU 噪声及 CFG 0.5 对齐，本轮补齐蒙版、KJ RCAS 功能参数、Remacri 羽化/量化及单帧 VAE 路径；所有旧 Tea 档失配，自动模式完整计算，显式开启严格拒绝。10 月 11 日的样张/耗时/档案只属于原版本。
+
+本机控制室可选“模型常驻显卡”或“分阶段加载”，持久字段为 `inference.memoryPolicy`，环境覆盖为 `HUIYU_INFERENCE_MEMORY=resident|offload`，保存后重启。默认 resident 保留热吞吐；offload 使用 Diffusers 0.41 的 ComponentsManager，在 Qwen、conditioner、transformer、VAE 实际 forward 之间切换，去噪循环内不来回卸载 transformer，Remacri 前卸载 Anima。LoRA 融合逐组件在 CUDA 完成后回 CPU，不偷换 CPU 融合数值。尚无 transformer 块级流式卸载；去噪器和激活仍须能放入显存，不保证任意 4/8 GB 设备。
+
+GPU packed storage 按组件与 dtype 分开；切底模仅复用字节摘要、精确类型及 dtype 都一致的 Qwen、VAE 和两个 tokenizer。Qwen＋两个 tokenizer 真正复用才保留原始文本缓存；已适配 transformer/conditioner 不跨底模复用。身份摘要使用已有全字节读取，不靠文件名/mtime。完全冷首张仍有哈希和加载成本，当前没有测得冷加载提速。
+
+高清保留过期张量清理与解码前释放 Tea 残差。VAE 普通整图先行，单帧禁用跨帧 feature clone；严格 CausalConv 单帧/无 cache 条件截取最后时间核并用隐式空间 padding，RMS 按原 dtype 归一化，latent 统计、raw-latent bicubic 与显示边界用 FP32。仅实际 CUDA OOM 回退：encode256/overlap64；decode 从32 latent 按当前可用显存预算倍增，overlap为tile/4。CPU FP32双侧羽化、累加/权重和归一；不回退精度或 CPU 推理。
+
+Remacri 从512/32网格开始，不再使用192 core＋halo硬裁；只有真实 CUDA OOM 才整次256/128重算。RRDB按CUDA模型设备逐块上传，完整4×结果与Lanczos留CPU；VAE回退CPU像素不会使RRDB误走CPU。Lanczos与PNG均RGB uint8截断。`nativeRuntime.refinement`记录实际VAE整图/分块、tile/overlap/count、输出设备和Remacri块信息。当前AMD 880M无可用NVIDIA CUDA，本轮无真实模型/测试/部署；数学路径已接入，但kernel/浮点舍入、画面与性能仍须设备验收，见[高清与蒙版补齐](../audits/2026-10-12/native-anima-effects.html)。
+
+## 控制室切换与结果保护
+
+2026-10-12 源码补齐了独立引擎的显存交接：控制室“绘图优先”按活跃引擎选择入口，native 只检查独立 Python/worker 文件，不启动 ComfyUI，也不丢弃已有空闲 native 驻留。普通 API 与持久任务实际进入 native GPU 槽后，先停止应用持有的 llama.cpp。控制室概览分别说明所选引擎与入口文件状态，不将文件存在认作依赖、CUDA 或出图通过。
+
+“聊天与语音优先”及 llama.cpp 加载先独占全部 native 任务准入，检查 GPU 槽并停止空闲 Worker；权限保持到服务启动/健康检查结束。已有 prepared、排队、运行或尚在结算的生图返回忙碌，不自动取消。进程退出未确认时阻止新任务与本地聊天继续占用 GPU，排队项保留失败原因，须完全退出并重启应用。应用不停止外部管理的聊天进程。
+
+结果保护继续在原始decoder/tile输出的显示clamp前观察非有限值，并检查VAE输入、Latent放大前状态与Remacri raw tile。v3统一pt输出及最终truncate量化，移除了原PIL分支；采样、蒙版和VAE数值路径按本轮工作流对齐更新，不能沿用初次guard接入时的“数值保持”结论。设备开销/有限样本成图仍待验，见[高清与蒙版补齐](../audits/2026-10-12/native-anima-effects.html)。
+
 ## 第一里程碑与边界
 
 - 使用官方 Apache-2.0 Diffusers Anima 组件，独立 Python 子进程运行，不导入或启动 ComfyUI。
@@ -97,11 +117,11 @@ python -I scripts/maintenance/convert-anima-checkpoint.py --profile anima-cosmos
 
 ## 调度与两阶段精修
 
-独立路径支持 Euler 与标准确定性 `res_multistep`，不把后者替换为 Euler。`normal` 与 `sgm_uniform` 使用固定 shift=3、训练表 1000 的数学网格，通过官方 Diffusers scheduler 施加一次移位并追加零终点；24、30 步 CPU 完整 sigma 已与隔离 Comfy 参考位级核对。`sgm_uniform` 将同一区间分为 N 段并排除末端，`normal` 保留两端。旧 Euler/simple 沿用 Diffusers 默认；RES/simple 明确使用 1000 点训练表抽样，不能只看名字认定两种 simple 相同。
+独立路径支持 Euler 与标准确定性 `res_multistep`，不把后者替换为 Euler。`normal` 与 `sgm_uniform` 使用固定 shift=3、训练表 1000 的数学网格，由官方 Diffusers scheduler 施加一次移位并追加零终点；旧版 24、30 步 CPU sigma 有隔离参考核对记录。`sgm_uniform` 排除末端，`normal` 保留两端。本次 Euler/simple 与 RES/simple 统一抽取 1000 点训练表；图生图与精修都从 `int(N/denoise)` 完整网格取尾部 N 步，并传 strength=1，避免上游再次截短。两阶段改用 CPU FP32 generator；同种子不承诺跨后端逐像素一致。
 
 RES 根据公开指数积分数学独立实现二阶多步更新，flow velocity 先转为 denoised，首步与零终点使用 Euler；每个任务及精修阶段新建状态，图生图 begin_index 清空历史。支持范围为 eta=0、无 CFG++；动态移位、其他 sigma 变换、随机变体和重复 sigma 拒绝。CPU 小 ODE、向量、BF16 输出转换及隔离 `python -I` 加载已验证，不等于真实 transformer、CFG、噪声或成图逐位一致。改变 sampler/scheduler 必须使用对应 TeaCache 校准范围。
 
-RCAS 来自 AMD MIT 参考的 FP32 实现；Remacri 仅接受模型根下 `upscale_models/4x_foolhardy_Remacri.safetensors` 的严格 BasicSR RRDB 结构。Auto 按可用本地文件解析为 Remacri 或 Latent；显式选择缺失的 Remacri 会拒绝。Latent 总会二次采样；无蒙版 Remacri 仅像素超分，有蒙版时仍二次采样并最终合成原图。RCAS 遵循现有工作流条件，在最终遮罩合成前执行，不新增公开参数。
+RCAS 为独立实现的工作流变体：reflect边界、中心＋四邻极值、RGB最负lobe、epsilon1e-6，先乘strength再限幅、reciprocal归一化；沿用KJ固定版本d3cfe216的0.75功能参数。Remacri仍仅接受严格BasicSR RRDB固定权重；Auto解析、Latent二轮/Remacri蒙版二轮条件保持现有工作流。浮点/kernel不同仍不能按源码声称像素完全相等。
 
 二次采样使用新调度器、seed+1 独立噪声及完整网格尾部，保留实际进度。1664×2432 验收暴露的 RoPE 容量 128 小于所需 152 已修复：按本次形状扩展，结束后恢复共享配置。上述四种高清路径已真实出图，已测暖任务 allocator 峰值约 9.33 GiB；冷首张观测为 null，不是零，也不是整卡显存证据。此结果不宣称与 Comfy 节点滑块、像素或性能等价。
 
@@ -117,7 +137,7 @@ RCAS 来自 AMD MIT 参考的 FP32 实现；Remacri 仅接受模型根下 `upsca
 
 “检查配置与文件”只检查已保存路径；“检查当前运行时依赖与设备”显式调用 Worker 的 `--diagnose`，检查当前解释器内依赖与 CUDA 可见性，不加载模型、不生成图片、不安装软件。CUDA 可见不等于显存足够或实际出图成功。设置与诊断 API 继承既有本机控制面的 Host/Origin、直接 loopback 与代理头限制，不开放给远程控制请求。
 
-生成界面遵循 native 的 TeaCache=false 默认；文件发现只代表校准档存在，加载时仍须精确匹配已接受 scope，缺失或不匹配明确失败。恢复出的旧 Comfy 阈值需明确清除，改用本地档阈值。高清与 TeaCache 可同时选择，界面提示组合需单独校准。图像编辑支持实验性手绘遮罩，或明确选择“整图重绘”（脸部和背景也会变化）；不会把既有遮罩换装请求静默转成整图重绘。手绘路径将同一有效遮罩用于逐步潜空间约束和最终原图合成，遮罩外使用与初始采样相同的噪声恢复到下一步 sigma，最后一步恢复干净原图潜变量。已测编辑组合不代表与 ComfyUI 采样器或膨胀边界等价。自动识别使用额外的本地 CLIPSeg 配套，缺失时只禁用自动模式。上传素材在独立 inference/input 中保留所有者与原始字节，排队后读取已接受的不可变副本；LoRA 只从完整 catalog 白名单和配置目录解析，包括 Rust 动态注入项。
+生成界面使用 TeaCache 自动精确匹配，v3没有已接受档案时完整计算；显式开启严格拒绝失配，文件存在不算匹配。蒙版与原图等比缩放并居中黑边，手绘读取RGB红通道，用反复五点最大值形成tapered增长。有效float蒙版先trilinear缩到潜空间，高清nearest-exact放大；模型输入在当前sigma混合原噪声参考，denoised再混合干净参考，RES历史保持该约束；最终合成仍使用同一软蒙版。上传素材与catalog LoRA授权、原图/遮罩不可变副本协议保持。
 
 开发覆盖仍可使用 `HUIYU_IMAGE_ENGINE`、`HUIYU_INFERENCE_PYTHON`、`HUIYU_INFERENCE_WORKER`、`HUIYU_INFERENCE_MODELS_ROOT` 与 `HUIYU_INFERENCE_LORAS_ROOT`。界面显示覆盖来源并拒绝保存冲突值；不要指向未验证脚本。独立路径找不到运行库、模型或不支持请求时返回明确错误，不借用 ComfyUI。
 
@@ -125,7 +145,7 @@ RCAS 来自 AMD MIT 参考的 FP32 实现；Remacri 仅接受模型根下 `upsca
 
 在配置的模型根目录下放置 `clipseg-rd64-refined/`，需完整的 `config.json`、`preprocessor_config.json`、`tokenizer_config.json`、`special_tokens_map.json`、`vocab.json`、`merges.txt` 和 `model.safetensors`。不接受只有 pickle/bin 权重的目录，也不会代为下载或转换它。状态只检查文件存在、非空与目录边界；实际结构、完整加载与分割质量仍在执行时验证。
 
-自动模式将 `|` 分隔的区域词分别送入 CPU float32 CLIPSeg，合并结果、调整尺寸并按阈值二值化，然后复用手绘模式的遮罩膨胀、逐步潜空间约束与像素合成。CPU 分割在 Anima 加载前结束，不额外占用 GPU。驻留 Worker 可保留一个完整 CPU CLIPSeg 模型／tokenizer／processor 和一个 352×352 float32 logits（495,616 字节）；模型 RAM 与 Anima 驻留重叠，不保证低内存。每任务完整哈希本地所有模型资产，包括可选 tokenizer 文件，加载后再次核验；相同像素／尺寸／词组才复用 logits，阈值和膨胀仍每次处理，失败及退出清空。已完成真实 CPU 分割及自动蒙版 Remacri 2× 出图；这些样例不保证任意服装分割质量。边缘处理不宣称与旧 ComfyUI 节点 smooth/blur 参数等价。手绘与自动请求互斥，不会静默替换；原有整图模式保留。
+自动模式保留重复的 `|` 区域词，将CPU float32 CLIPSeg logits按所有词求均值，经Torch bilinear、3次5×5 reflect平滑、sigmoid阈值、正方形膨胀及3次25×25 reflect羽化。有效蒙版保持float，不再量化L图或二次手绘扩张。驻留模型/小logits/conditioning缓存仍有边界和完整字节身份；缓存均值logits，阈值/增长/模糊每请求处理。AP MIT后处理许可随包保留；当前v3的分割质量与CPU开销未实测，旧样例不验证新边界。
 
 Transformers 实现许可证为 Apache-2.0；CLIPSeg 权重许可独立于代码许可，本次未下载或分发权重，尚未核实所选权重的发行许可。用户需使用有权使用且已准备的可信本地 safetensors 配套。
 

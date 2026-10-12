@@ -6,10 +6,13 @@ License: https://raw.githubusercontent.com/GPUOpen-Effects/FidelityFX-FSR/a21ffb
 License SHA-256: db089274ce766da70f5b7d791029c3486f9f9e27c8c79c652689603d3192e802
 
 Local changes: Torch NCHW RGB port of the FsrRcasF cross filter, noise reduction disabled;
-linear strength 0..1 instead of sharpness stops; replicated border samples;
-float32 arithmetic with ordinary division, zero-denominator endpoint guards,
-and final 0..1 clamp before restoring input dtype. No FSR upscaling is included.
+linear strength 0..1; the workflow variant uses reflected borders, five-point
+extrema, RGB minimum lobe, epsilon 1e-6 and strength before limiting. These
+functional parameters match the product's ImageSharpenKJ rcas route, using an
+independent Torch implementation of the cross filter; this is not AMD shader
+bit emulation. Final display clamp precedes dtype restoration. No FSR upscaling.
 No ComfyUI or KJNodes code is used.
+Workflow specification: https://github.com/kijai/ComfyUI-KJNodes/blob/d3cfe21625e5170126ce06fbfcfe1d88108688c3/nodes/sharpen_nodes.py
 
 Upstream license follows verbatim:
 

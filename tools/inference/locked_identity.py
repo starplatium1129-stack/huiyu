@@ -189,6 +189,7 @@ class IdentityLease:
         self._base = self._adapters = None
         self._root = self._model_sha256 = self._adapter_scope = None
         self._adapter_hashes = {}
+        self._component_sha256 = {}
         self.cached = self.reused = False
 
     def close(self):
@@ -198,6 +199,7 @@ class IdentityLease:
         self._base = self._adapters = None
         self._root = self._model_sha256 = self._adapter_scope = None
         self._adapter_hashes = {}
+        self._component_sha256 = {}
         self.cached = self.reused = False
 
     def base_is_valid(self, root=None, model_sha256=None):
@@ -262,6 +264,7 @@ class IdentityLease:
                     rows = compute_adapters(list(missing.values()))
                     hashes.update((path, row["sha256"]) for path, row in zip(missing, rows))
                 result = {"modelSha256": self._model_sha256,
+                          "componentSha256": copy.deepcopy(self._component_sha256),
                           "loras": [{"sha256": hashes[path], "strength": row["strength"]}
                                     for path, row in zip(scope, loras)]}
             if (_inventory(root) != inventory or not base.valid() or not adapters.valid()
@@ -288,6 +291,7 @@ class IdentityLease:
                 self._adapters.close()
             self._adapters = adapters
         self._root, self._model_sha256, self._adapter_scope = str(root), result["modelSha256"], scope
+        self._component_sha256 = copy.deepcopy(result.get("componentSha256", {}))
         self._adapter_hashes = {path: row["sha256"] for path, row in zip(scope, result["loras"])}
         self.cached, self.reused = True, bool(base_same and adapters_same)
         return result

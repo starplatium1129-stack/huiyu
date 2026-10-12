@@ -30,6 +30,9 @@
 009、010、013 的剩余范围和 004 的暂停决定统一维护在[未来规划](roadmap.md)，不再并行维护专项进度副本。
 
 - [独立 Anima 推理接入](guides/independent-inference.md)：现有 Anima 主流程、独立运行库与使用范围。
+- [Native 独立接入续报](audits/2026-10-12/native-backend-independence.html)：按引擎切换绘图、聊天显存交接、异常退出阻断与非有限结果拦截；本轮构建及设备验收边界。
+- [Native Anima 参数与性能对齐](audits/2026-10-12/native-anima-alignment.html)：分阶段显存、共享组件冷切、高清资源清理与采样对齐；旧 Tea 档失配和逐项算法差异。
+- [Native Anima 高清与蒙版补齐](audits/2026-10-12/native-anima-effects.html)：单帧 VAE 普通优先/OOM 羽化、Remacri CPU 拼接、KJ RCAS 功能参数与浮点蒙版；v3 源码/构建及设备验收边界。
 - [Anima 独立后端交付](audits/2026-10-11/native-anima-replacement.html)：六模型、三 LoRA 样例、高清/遮罩/权重接入、完整 API 热任务减少 22.3% 及剩余限制。
 - [独立后端主力机 GPU 实测](audits/2026-10-11/native-backend-gpu.html)：PR #71 最新提交、真实 Anima/LoRA/TeaCache、ComfyUI 对照、修复与剩余限制。
 - [独立后端性能优化续测](audits/2026-10-11/native-backend-performance.html)：Windows 读取保护、原生 SHA-256、Sage/编译候选、画质与 LoRA 检查及 ComfyUI + TeaCache 新对照。

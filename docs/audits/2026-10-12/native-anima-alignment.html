@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Native Anima 参数与性能对齐 · 2026-10-12</title>
+<style>
+:root{color-scheme:light dark;--ink:light-dark(#202631,#eef1f6);--paper:light-dark(#fafbfc,#151922);--line:light-dark(#cbd0d9,#4a5363);--link:light-dark(#234da0,#b0c9ff)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1080px;margin:auto;padding:32px 24px}h1{font-size:28px}h2{font-size:21px;margin-top:30px}a{color:var(--link)}code{overflow-wrap:anywhere}table{width:100%;border-collapse:collapse;font-size:15px}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:12px 9px;overflow-wrap:anywhere}th:first-child{width:18%}details{margin-top:20px}summary{padding:8px 0}li{margin:8px 0}footer{margin-top:30px;border-top:1px solid var(--line);padding-top:16px}@media(max-width:660px){main{padding:20px 14px}table,tbody,tr,td{display:block}thead{display:none}th:first-child{width:auto}td{padding:8px 0}td:first-child{font-weight:600}tr{margin-bottom:18px}td::before{content:attr(data-label);display:block;font-weight:600}}
+</style>
+</head>
+<body><main>
+<h1>Native Anima：完成一轮源码对齐与资源优化</h1>
+<p>2026-10-12。参考现有 Anima 工作流与固定 ComfyUI 版本，补齐分阶段显存管理、共享组件冷切复用和高清张量清理，并修正采样基础差异。当前仍为待 CUDA 验收的替代候选，默认引擎仍是 ComfyUI。</p>
+<h2>本轮实际改动</h2>
+<ul>
+<li><strong>低显存：</strong>新增本机设置 <code>inference.memoryPolicy</code>，默认 resident；offload 在 Qwen、conditioner、transformer、VAE 实际 forward 间切换整个组件，去噪循环内保留 transformer，Remacri 前卸载 Anima。采用已锁定 Diffusers ComponentsManager API。LoRA 融合逐组件在 CUDA 完成，再回 CPU。</li>
+<li><strong>冷加载与切模型：</strong>GPU packed storage 从跨组件共用改为组件＋dtype 分开，单个组件能释放自身存储。利用既有完整字节哈希计算组件摘要，跨底模复用精确 class/dtype 与字节都一致的 Qwen、VAE、两个 tokenizer；只有 encoder＋两个 tokenizer 实际复用才保留原始文本缓存。已适配 transformer/conditioner 不跨底模复用。</li>
+<li><strong>高清：</strong>释放首轮结果和二轮输入的过期张量，解码前释放 Tea 残差，非蒙版 Remacri 最终缩放留 CPU，避免无用 H2D/D2H；Qwen VAE 分块缓存卷积计数，保留原 tile 和 blend。普通 VAE 在内部 clamp 前临时观察 decoder 原始输出，补齐 Inf 漏检；逐 tile 仅设备标量聚合，最终合并一次既有读回。临时 hook/方法均在 finally 恢复。</li>
+<li><strong>采样：</strong>Euler/simple 统一训练表抽样；图生图从完整 int(N/denoise) 网格取尾部 N 次更新，避免 Diffusers 再缩短；两阶段使用 CPU FP32 RNG；取消 native 对 CFG&lt;1 的额外拒绝，下界与产品 0.5 对齐。图生图此前可能少执行更新，本次完整 N 步可能增加单张时间，这是语义修正。</li>
+<li><strong>落地：</strong>显存策略经过 UI、保存、环境覆盖、依赖诊断与 Worker；旧设置默认 resident。两个新 helper 已登记桌面资源白名单。nativeRuntime 增加 memoryPolicy、componentReuse、samplingRevision，并保留后处理时间；可选观测在 Rust 边界校验。</li>
+</ul>
+<p>启用入口：本机控制室 → 绘图引擎设置 → 独立引擎显存策略 → 分阶段加载 → 保存并重启。显式环境覆盖为 <code>HUIYU_INFERENCE_MEMORY=offload</code>。尚无 transformer 块级流式卸载，去噪器＋活跃张量仍须放入显存；更多 CPU 内存与 PCIe 传输是代价，不能承诺任意 4/8 GB 设备可用。</p>
+<h2>逐项对齐结果</h2>
+<table><thead><tr><th>项目</th><th>现有 Comfy 工作流</th><th>当前 native 与剩余差异</th></tr></thead><tbody>
+<tr><td>模型与提示词</td><td data-label="Comfy">Anima 底模、Qwen/T5、LoRA 顺序/强度与 CFG</td><td data-label="Native">继续使用现有转换与提示词权重路径；共享只限未适配组件。历史样张不能证明本轮融合/offload 画面相同。</td></tr>
+<tr><td>调度网格</td><td data-label="Comfy">simple 抽训练表；normal/sgm_uniform 静态 flow</td><td data-label="Native">Euler/simple 与已有 RES/simple 统一；保留 shift=3、训练表1000、零终点。RES 限 eta=0、无 CFG++，不支持重复 sigma。</td></tr>
+<tr><td>图生图步数</td><td data-label="Comfy">完整 int(N/denoise) 网格取尾部 N 步</td><td data-label="Native">首轮与高清二轮采用同一尾段策略，传 strength=1 防止二次截短；实际进度按 scheduler.step 记录。</td></tr>
+<tr><td>种子与噪声</td><td data-label="Comfy">CPU FP32 噪声；现有高清 workflow 使用 seed+1</td><td data-label="Native">两轮改 CPU generator，保持 seed/seed+1。仅统一生成设备与参数，不承诺形状布局/精度/内核导致的逐像素等价。</td></tr>
+<tr><td>原图与手绘蒙版</td><td data-label="Comfy">ResizeAndPadImage：等比缩放＋黑边；红通道与 tapered GrowMask</td><td data-label="Native">待对齐：仍直接缩放，蒙版 luminance×alpha 与方形增长，保护区结果和边界可能不同。</td></tr>
+<tr><td>潜空间蒙版</td><td data-label="Comfy">采样输入按当前 sigma 混合；denoised 按干净原 latent 混合</td><td data-label="Native">待对齐：nearest 潜空间蒙版与更新后重加噪混合；RES 的 denoised 历史约束不同。</td></tr>
+<tr><td>自动蒙版</td><td data-label="Comfy">AP CLIPSeg：smooth_radius=2、mask_blur=12、膨胀</td><td data-label="Native">待对齐：本地 CPU CLIPSeg logits/threshold，无对应平滑/羽化；不能借用 Comfy 的自动换装效果结论。</td></tr>
+<tr><td>RCAS</td><td data-label="Comfy">ImageSharpenKJ：rcas，strength=0.75</td><td data-label="Native">条件与强度沿用工作流；数值仍为 AMD 参考移植。中心 min/max、RGB lobe、strength/clamp 顺序与 reflect 边界待对齐。</td></tr>
+<tr><td>Remacri</td><td data-label="Comfy">4x RRDB；512 tile、32 overlap、feather；Lanczos 经 uint8</td><td data-label="Native">固定权重/路线已接入；仍192 core＋32 halo硬裁拼接和float-channel Lanczos。最终 CPU 路径已精简，拼接/量化待对齐。</td></tr>
+<tr><td>Latent 高清与 VAE</td><td data-label="Comfy">bicubic、二轮 max(12,round(N×0.6))、普通 VAE，OOM 分块回退</td><td data-label="Native">倍率/步数/种子沿用；VAE 仍固定512/384分块。临时缓存与生命周期已优化，分块算法/速度及画面仍需设备对照。</td></tr>
+</tbody></table>
+<h2>TeaCache 与历史证据</h2>
+<p>当前采样版本为 <code>anima-comfy-noise-tail-v2</code>，绑定显存策略。所有旧 TeaCache 档案均失配：auto 完整计算，显式开启严格拒绝。未重校准、未改写或安装新接受档；10 月 11 日的速度与成图记录只属于当时版本。本轮没有可报告的提速百分比或显存降幅。</p>
+<h2>必要验证与未运行项</h2>
+<ul>
+<li><strong>通过：</strong>三份独立源码复核及最终 raw decoder hook 复核；12个受影响 Python 文件语法编译；Rust locked/offline check 与发布构建；前端类型检查；维护工具编译；前端生产构建与18路由预算；git diff --check。Rust发布用时3分50秒，带既有 linker 输出警告；不是推理耗时。</li>
+<li><strong>失败：</strong><code>npm run wf -- docs:check</code> 检查69文件、496本地链接，报1个断链：roadmap 的 <code>../scripts/tests/fixtures/scene-coverage-repairs.json</code>。HEAD原有相同引用，当前文件不存在；本次新增链接未被报告。未重跑、未恢复测试夹具，该旧文档问题仍未解决。</li>
+<li><strong>构建警告：</strong>既有 Vite 配置、Live2D CommonJS/browser externalization、静态/动态导入及接近预算提示；前端构建与预算退出码为0，未扩大本轮修复范围。</li>
+<li><strong>未运行：</strong>遵守仓库禁令，未编写或运行任何测试；未运行真实模型、安装、桌面部署、提交或推送。</li>
+<li><strong>需设备验收：</strong>当前主机 AMD Radeon 880M，无可用 NVIDIA CUDA。offload/fused 成图、真实显存、完全冷首张/切底模/高清时间、CPU RAM、取消与异常释放均未测。控制室新增选择器双主题、键鼠与弹层未进行人工画面验收；CSS视口、系统DPI/缩放、浏览器缩放没有本次记录。</li>
+</ul>
+<h2>参考与源码范围</h2>
+<p>采样依据固定 ComfyUI 提交 <code>b058ec652802e1de24f1d429b3c7c1fb868f791c</code> 的
+<a href="https://github.com/Comfy-Org/ComfyUI/blob/b058ec652802e1de24f1d429b3c7c1fb868f791c/comfy/samplers.py#L584-L591">simple网格</a>、
+<a href="https://github.com/Comfy-Org/ComfyUI/blob/b058ec652802e1de24f1d429b3c7c1fb868f791c/comfy/samplers.py#L1297-L1307">KSampler尾段</a>和
+<a href="https://github.com/Comfy-Org/ComfyUI/blob/b058ec652802e1de24f1d429b3c7c1fb868f791c/comfy/sample.py#L8-L34">CPU噪声</a>。阶段驻留参考
+<a href="https://github.com/Comfy-Org/ComfyUI/blob/b058ec652802e1de24f1d429b3c7c1fb868f791c/comfy/model_management.py#L852">模型管理</a>思路；落地使用现有 Apache-2.0 Diffusers API，未复制或导入 ComfyUI GPL 实现。</p>
+<p>改动集中于 tools/inference 的 loader/memory、resident/identity/upload/fusion、sampling/refinement/metrics/profile；Rust native 配置/观测、worker/诊断与 CFG 路由；前端引擎设置和桌面资源白名单。模型权重、提示词、内容库与默认引擎未改。阅读<a href="../../guides/independent-inference.md">独立推理指南</a>。</p>
+<footer id="final-verification"><strong>最终登记：</strong>源码候选与构建已完成；发布身份留在被忽略的 runtime/native-anima-alignment-20261012/rust-build.json，原始检查结果留在本会话工具输出。文档门禁有1个已确认原有断链；无真实CUDA、桌面安装或全量替代通过结论。</footer>
+</main></body></html>

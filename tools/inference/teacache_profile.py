@@ -15,7 +15,8 @@ import tempfile
 ALGORITHM = "huiyu-anima-first-norm-residual-v1"
 PHASE_ALGORITHM = "huiyu-anima-phase-envelope-v2"
 EXECUTION = os.environ.get("HUIYU_INFERENCE_ACCELERATION", "native")
-RUNTIME = {"diffusers": "0.41.0", "torch": "2.8.0", "huiyuInference": "lora-eval-v1",
+RUNTIME = {"diffusers": "0.41.0", "torch": "2.8.0", "huiyuInference": "anima-workflow-effects-v3",
+           "memoryPolicy": os.environ.get("HUIYU_INFERENCE_MEMORY", "resident"),
            "execution": EXECUTION,
            "executionRevision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21" +
                ("-fusion-cpu-base-v1" if EXECUTION == "compiled-fused-sage" else "")}
@@ -86,6 +87,8 @@ def model_identity(root, loras):
         hashes = list(pool.map(file_sha256, paths))
     identities = [[path.relative_to(root).as_posix(), digest] for path, digest in zip(files, hashes)]
     return {"modelSha256": canonical_sha256(identities),
+            "componentSha256": {name: canonical_sha256([[path[len(name) + 1:], digest]
+                for path, digest in identities if path.startswith(name + "/")]) for name in COMPONENTS},
             "loras": [{"sha256": digest, "strength": row["strength"]}
                       for row, digest in zip(loras, hashes[len(files):])]}
 
@@ -93,6 +96,8 @@ def model_identity(root, loras):
 def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir=None, upscale_model_path=None, identity=None):
     root = Path(root).resolve()
     identity = model_identity(root, loras) if identity is None else identity
+    # Component reuse is private residency metadata, not a calibration ABI.
+    identity = {key: identity[key] for key in ("modelSha256", "loras")}
     mask_identity = None
     if mode == "masked" and data.get("maskPrompt"):
         if mask_model_dir is None:
@@ -115,7 +120,7 @@ def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir
             **({"rcasStrength": data["rcasStrength"]} if data.get("rcasStrength", 0) else {}),
             **({"promptWeighting": weighting} if weighting else {}),
             **({"hires": {key: data.get(key) for key in ("hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel")},
-                "refinementRevision": "fresh-tail-pass-seed1-grid2-vae512-stride384-v1"} if data.get("hiresFix") else {}),
+                "refinementRevision": "fp32-vae-full-oom-feather-remacri512-kjrcas-v3"} if data.get("hiresFix") else {}),
             "maskSource": ("clipseg" if data.get("maskPrompt") else "manual") if mode == "masked" else None,
             "growMaskBy": data.get("growMaskBy", 0) if mode == "masked" else None,
             "maskThreshold": data.get("maskThreshold") if mode == "masked" else None,

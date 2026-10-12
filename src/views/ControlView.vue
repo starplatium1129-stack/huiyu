@@ -118,7 +118,7 @@
         <div class="mode-grid">
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('draw')">
             <span class="mode-title"><ArchiveIcon name="spark" /> Anima 绘图优先<span class="mode-arrow">→</span></span>
-            <span class="mode-desc">释放本地聊天与语音显存，启动 ComfyUI。</span>
+            <span class="mode-desc">{{ imageProvider === 'native' ? '释放本地聊天与语音显存，独立模型在生成时按需加载。' : '释放本地聊天与语音显存，启动 ComfyUI。' }}</span>
           </button>
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('chat')">
             <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天与语音优先<span class="mode-arrow">→</span></span>            <span class="mode-desc">释放空闲绘图模型，启动语音；发送消息时加载本地聊天。</span>
@@ -129,9 +129,9 @@
           <span>打开控制室时自动启动语音<span class="autostart-hint">显存紧张时建议关闭</span></span>
         </ToggleSwitch>
         <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖角色语音服务。</p>
-        <p v-if="!scripts.comfy || !scripts.voiceStart" class="script-hint">
+        <p v-if="(imageProvider !== 'native' && !scripts.comfy) || !scripts.voiceStart" class="script-hint">
           未检测到部分快捷启停脚本（仅影响一键启动，若服务已手动运行仍可正常连接）：
-          <span v-if="!scripts.comfy">ComfyUI 脚本 </span>
+          <span v-if="imageProvider !== 'native' && !scripts.comfy">ComfyUI 脚本 </span>
           <span v-if="!scripts.voiceStart">语音启动脚本 </span>
           <span v-if="!scripts.voiceStop">语音停止脚本 </span>
         </p>
@@ -345,7 +345,7 @@ const {
   modeBusy, operation, selfHealing, serviceChecking, statusLoaded, statusError, scripts,
   sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, llamaOnline,llamaManaged,llamaLabel,voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
-  feedbackText, actionNote, logs, logBoxEl,
+  feedbackText, actionNote, imageProvider, logs, logBoxEl,
   opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
   readyLabel,
   pollStatus, clearLogs,

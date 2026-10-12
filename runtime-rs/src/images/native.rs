@@ -30,9 +30,6 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
             "独立推理当前仅支持 Anima",
         ));
     }
-    if input["cfg"].as_f64().is_some_and(|cfg| cfg < 1.) {
-        return Err(error("INVALID_PARAMETER", "独立推理 CFG 必须至少为 1"));
-    }
     // Defaults belong to the selected provider. Explicit unsupported requests
     // are never silently converted into a different operation.
     for key in ["styleLoraId", "rcas", "faceDetailer"] {
@@ -64,12 +61,12 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
         return Err(error("INVALID_PARAMETER", "手绘遮罩与自动识别不能同时提交"));
     }
     if let Some(prompt) = automatic {
-        let phrases: std::collections::HashSet<_> = prompt
+        let phrases = prompt
             .split('|')
             .map(str::trim)
             .filter(|s| !s.is_empty())
-            .collect();
-        if prompt.chars().count() > 4096 || phrases.is_empty() || phrases.len() > 32 {
+            .count();
+        if prompt.chars().count() > 4096 || phrases == 0 || phrases > 32 {
             return Err(error(
                 "INVALID_PARAMETER",
                 "自动识别词最多 4096 字符、32 个以 | 分隔的区域词",

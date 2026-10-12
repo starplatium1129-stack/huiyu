@@ -2,6 +2,7 @@
 
 No ComfyUI code, remote model code, weight conversion, or implicit downloads.
 The checkpoint and its license are separate from the Transformers implementation.
+Postprocessing follows AP ClipSEG Light's MIT workflow; retain MASK_PROCESSING_LICENSE.txt.
 """
 import hashlib
 import importlib.util
@@ -22,7 +23,7 @@ MAX_CONDITIONING_BYTES = 64 * 1024
 def phrases(prompt):
     if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > MAX_PROMPT_LENGTH:
         raise ValueError("maskPrompt must contain 1..4096 characters")
-    result = list(dict.fromkeys(part.strip() for part in prompt.split("|") if part.strip()))
+    result = [part.strip() for part in prompt.split("|") if part.strip()]
     if not result or len(result) > MAX_PHRASES:
         raise ValueError("maskPrompt must contain 1..32 nonempty phrases separated by |")
     return result
@@ -92,17 +93,31 @@ def validate_model(value):
     return root
 
 
-def logits_mask(logits, size, threshold):
-    """Max-phrase logits, bilinear resize, sigmoid, then a binary edit mask."""
+def logits_mask(logits, size, threshold, grow=8):
+    """Mean logits, bilinear resize, AP-style smooth/threshold/grow/feather."""
     import numpy as np
-    from PIL import Image
+    import torch
+    from torch.nn import functional as functional
     logits = np.asarray(logits, dtype=np.float32)
     if logits.shape != (352, 352) or not np.isfinite(logits).all():
         raise ValueError("CLIPSeg returned invalid/nonfinite mask logits")
-    resized = np.asarray(Image.fromarray(logits).resize(size, Image.Resampling.BILINEAR))
-    probabilities = 1 / (1 + np.exp(-np.clip(resized, -80, 80)))
-    mask = Image.fromarray(np.where(probabilities >= threshold, np.uint8(255), np.uint8(0)))
-    if mask.getbbox() is None:
+    resized = functional.interpolate(torch.from_numpy(logits)[None, None],
+        size=(size[1], size[0]), mode="bilinear", align_corners=False)
+    def blur(values, radius):
+        width = 2 * radius + 1
+        # A uniform 2D box is separable. Keep the same reflected three-pass
+        # filter while avoiding a width*width convolution on the full image.
+        horizontal = values.new_full((1, 1, 1, width), 1 / width)
+        vertical = horizontal.transpose(-1, -2)
+        for _ in range(3):
+            values = functional.conv2d(functional.pad(values, (radius, radius, 0, 0), mode="reflect"), horizontal)
+            values = functional.conv2d(functional.pad(values, (0, 0, radius, radius), mode="reflect"), vertical)
+        return values
+    mask = (blur(resized, 2).sigmoid() >= threshold).float()
+    if grow:
+        mask = functional.max_pool2d(mask, 2 * grow + 1, stride=1, padding=grow)
+    mask = blur(mask, 12).clamp(0, 1)[0, 0].numpy()
+    if not np.any(mask > 0):
         raise ValueError("Automatic mask has no editable pixels; adjust maskPrompt/threshold or use a manual mask")
     return mask
 
@@ -152,19 +167,19 @@ def model_identity(root):
     return str(root), tuple(rows)
 
 
-def generate_mask(root, image, prompt, threshold, *, cache=None, expected_mask_sha256=None):
+def generate_mask(root, image, prompt, threshold, *, grow=8, cache=None, expected_mask_sha256=None):
     """Segment on CPU; bind a supplied profile scope before cache reuse or loading."""
     try:
         if cache is not None:
             cache.begin_job()
-        return _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256)
+        return _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sha256)
     except BaseException:
         if cache is not None:
             cache.clear()
         raise
 
 
-def _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256):
+def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sha256):
     import numpy as np
     import torch
     from transformers import CLIPSegForImageSegmentation, CLIPTokenizer, ViTImageProcessorPil
@@ -187,7 +202,7 @@ def _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256):
         result_key = (image.mode, image.size, hashlib.sha256(image.tobytes()).digest(), tuple(texts))
         if cache.result_key == result_key and cache.logits is not None:
             cache.result_reused = True
-            return logits_mask(cache.logits, image.size, threshold)
+            return logits_mask(cache.logits, image.size, threshold, grow)
     components = cache.components if cache is not None else None
     if components is None:
         root = validate_model(str(root))
@@ -238,9 +253,11 @@ def _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256):
                 else:
                     pending = None  # Oversized conditioning still produces an ordinary mask.
                 del embedding
-            batch = logits.max(axis=0)
-            combined = batch if combined is None else np.maximum(combined, batch)
-    mask = logits_mask(combined, image.size, threshold)
+            # Preserve phrase order, duplicates and a short final batch's weight.
+            for phrase_logits in logits:
+                combined = phrase_logits.copy() if combined is None else combined + phrase_logits
+    combined /= len(texts)
+    mask = logits_mask(combined, image.size, threshold, grow)
     if cache is not None:
         cache.result_key, cache.logits = result_key, combined.copy()
         if conditioning is None:

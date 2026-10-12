@@ -43,6 +43,7 @@ pub struct ControlService {
     config_write: Arc<tokio::sync::Mutex<()>>,
     inference: Result<crate::generation::native::Settings>,
     inference_probe: tokio::sync::Mutex<()>,
+    images: RwLock<std::sync::Weak<crate::images::ImageService>>,
     saved: Arc<RwLock<Value>>,
     state: Mutex<ControlState>,
     probe_lock: tokio::sync::Mutex<()>,
@@ -70,6 +71,7 @@ struct Managed {
 }
 #[derive(Default)]
 struct ControlState {
+    llama_release_unconfirmed: bool,
     operation: Option<Value>,
     seq: u64,
     logs: VecDeque<String>,
@@ -114,6 +116,7 @@ impl ControlService {
             voice,
             inference,
             inference_probe: tokio::sync::Mutex::new(()),
+            images: RwLock::default(),
             config,
             remote,
             shutdown: shutdown.child_token(),

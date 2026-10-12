@@ -4,10 +4,10 @@ Copyright (c) 2021 Advanced Micro Devices, Inc. All rights reserved.
 See RCAS_LICENSE.txt for the complete permission notice and pinned provenance.
 https://github.com/GPUOpen-Effects/FidelityFX-FSR/blob/a21ffb8f6c13233ba336352bdff293894c706575/ffx-fsr/ffx_fsr1.h#L682-L767
 
-This is a float32 tensor port, not bit-identical shader emulation: ordinary
-division replaces GPU reciprocal approximations; borders replicate; singular
-black/white endpoints use zero lobe limits; output is clamped to display range.
-The optional FSR_RCAS_DENOISE path is disabled. No Comfy/KJ code is included.
+The product variant independently follows its KJ workflow's functional math:
+five-point extrema, RGB minimum lobe, reflect borders, epsilon stabilization,
+strength before limiting, reciprocal normalization. This differs from AMD's
+shader reference; no Comfy/KJ source code or runtime is included.
 """
 import math
 
@@ -18,8 +18,7 @@ def rcas(images, strength=0.75):
     CPU/CUDA float16, bfloat16 and float32 are supported. Shape, dtype and device
     are preserved; input is never modified. Strength must be a finite scalar in
     [0,1]: 0 returns the original tensor exactly, 1 is maximum RCAS, and 0.75 is
-    a candidate amplitude (AMD sharpness stops = -log2(strength), about 0.415).
-    This parameter is not a claim of parity with any ComfyUI node's slider.
+    the product workflow's sharpening strength.
 
     Pixel range/finite checks belong to the decoder boundary; this function
     performs metadata-only validation, without GPU readbacks or implicit sync.
@@ -40,19 +39,13 @@ def rcas(images, strength=0.75):
         return images
     with torch.no_grad():
         center = images.float()
-        padded = functional.pad(center, (1, 1, 1, 1), mode="replicate")
+        padded = functional.pad(center, (1, 1, 1, 1), mode="reflect")
         north, south = padded[:, :, :-2, 1:-1], padded[:, :, 2:, 1:-1]
         west, east = padded[:, :, 1:-1, :-2], padded[:, :, 1:-1, 2:]
-        minimum = torch.minimum(torch.minimum(north, south), torch.minimum(west, east))
-        maximum = torch.maximum(torch.maximum(north, south), torch.maximum(west, east))
-        # For valid [0,1] inputs, these guards only define the degenerate black
-        # and white ring denominators. They do not soften ordinary contrast.
-        tiny = torch.finfo(torch.float32).tiny
-        hit_min = torch.minimum(minimum, center) / (4 * maximum).clamp_min(tiny)
-        hit_max = (1 - torch.maximum(maximum, center)) / (4 * minimum - 4).clamp_max(-tiny)
-        # One shared RGB lobe, as in FsrRcasF; independent channel lobes would
-        # alter the reference's color-limiting behavior.
-        lobe = torch.maximum(-hit_min, hit_max).amax(dim=1, keepdim=True)
-        lobe = lobe.clamp(min=-0.1875, max=0) * strength
-        result = (center + lobe * (north + west + south + east)) / (1 + 4 * lobe)
+        minimum = torch.minimum(torch.minimum(torch.minimum(torch.minimum(north, south), west), east), center)
+        maximum = torch.maximum(torch.maximum(torch.maximum(torch.maximum(north, south), west), east), center)
+        lower_limit = -minimum / (4 * maximum + 1e-6)
+        upper_limit = -(1 - maximum) / (4 * (1 - minimum) + 1e-6)
+        lobe = (torch.maximum(lower_limit, upper_limit).amin(dim=1, keepdim=True) * strength).clamp(-.1875, 0)
+        result = (center + ((north + south) + east + west) * lobe) * (1 + 4 * lobe).reciprocal()
         return result.clamp(0, 1).to(dtype=images.dtype)

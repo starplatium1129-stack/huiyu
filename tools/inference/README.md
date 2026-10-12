@@ -2,7 +2,79 @@
 
 This milestone implements local Anima text-to-image, image-to-image, experimental manual/CLIPSeg masked editing, local Anima LoRA, RCAS, Latent/fixed Remacri hires and round-bracket prompt weighting with Diffusers 0.41.0. It has no ComfyUI runtime, imports, server or path dependency. Three explicit conversion profiles cover the six locally registered Anima models. All six now have actual GPU generation evidence: 11 images, with Nene/Natsume on each of the five 28-layer models and no LoRA on the 40-layer MiaoMiao 2.9B. This is not every model/effect combination. Arbitrary checkpoints, non-Anima families and video remain outside this scope; no model weights are supplied.
 
-See the [current Anima replacement report](../../docs/audits/2026-10-11/native-anima-replacement.html) for the measured scope and limits. Accepted Nene/Natsume profiles use normal/RCAS 0.75, threshold 0.25 and at most 3 consecutive skips: 12 matched warm public-API jobs per backend measured native median 4.419s versus ComfyUI + TeaCache 5.686s, a 22.3% reduction on this device. Latent 2x profiles use threshold 0.25 and at most 2 consecutive skips; Nene's two warm API samples remained slower (26.610s versus 23.671s). Cold loading also remains slower. One Nene cached sample duplicated an umbrella; disabling TeaCache restored a single umbrella. Endfield, the third public LoRA dynamically inserted by the Rust catalog, completed one Laevatain API sample; this does not cover every Endfield identity. Default engine and acceleration environment remain unchanged; TeaCache now defaults to automatic matching of accepted profiles; no desktop deployment was performed. An unstable, unaccepted hires candidate produced nonfinite values; the worker now rejects observed nonfinite inference/decoded pixels before publishing output. More aggressive hires candidates remain uninstalled.
+The [2026-10-11 replacement report](../../docs/audits/2026-10-11/native-anima-replacement.html) records historical GPU samples and timings for its source revision. Those accepted Tea profiles and performance figures do not validate the current `anima-workflow-effects-v3` revision; all old Tea scopes now mismatch. Current auto mode performs full computation until a new exact scope is accepted. The default engine remains ComfyUI, and this revision has not been deployed or exercised on CUDA. Finite-result guards remain in place.
+
+## Native desktop handoff and finite output boundaries
+
+The control room now uses the active image engine for drawing mode. Native checks
+only its dedicated Python/worker files and loads on the first generation; selecting
+drawing mode retains an existing idle resident. File presence is not CUDA/model
+acceptance. Each actual native GPU job stops the application's owned llama.cpp
+before taking model memory.
+
+Chat/voice mode and llama.cpp startup reserve every native admission permit before
+retiring an idle worker, retaining the reservation through startup/health checking.
+Prepared, queued, running or settling image jobs refuse the handoff without being
+cancelled. Unconfirmed owned-process retirement blocks further GPU use until the
+runtime restarts; queued native jobs receive an explicit failure instead of hanging.
+
+VAE inputs and raw decoded tensors are checked before display clamping/PIL
+conversion on every decode, including ordinary no-RCAS generation and both
+hires passes. The latent-only first pass is checked before upscaling. Remacri checks
+its raw tiles before clamping, accumulating a device flag and reading it
+after assembly. V3 updates sampling, pixel conversion and compositing to the
+workflow math described below. These checks add finite scans and boundary synchronization;
+GPU overhead, finite-image PNG equivalence and real control-room handoff have not
+been measured in this revision. See the [source delivery report](../../docs/audits/2026-10-12/native-backend-independence.html).
+
+## 2026-10-12 Comfy workflow alignment
+
+The current sampling revision is `anima-workflow-effects-v3`. Euler/simple now
+uses the training-table grid, both passes draw FP32 noise with CPU generators,
+and ordinary img2img preserves N actual updates using the tail of a full
+`int(N/denoise)` schedule. CFG below one is accepted down to 0.5. These change
+results and cost; all previous Tea profiles are incompatible with this revision.
+Automatic selection uses full computation until a current profile is accepted;
+explicit Tea enablement rejects an unmatched profile. Previous GPU timings and
+image acceptance apply only to their recorded source, not these changes.
+
+Select `inference.memoryPolicy=offload` in local engine settings, or explicitly
+override with `HUIYU_INFERENCE_MEMORY=offload`. The default `resident` keeps warm
+throughput. Offload uses pinned Diffusers ComponentsManager hooks on all four
+weight components: Qwen, conditioner, denoiser and VAE switch at actual forwards,
+and the denoiser stays on CUDA for its loop. Remacri first retires Anima weights.
+Fused LoRAs merge one component at a time on CUDA before returning to CPU.
+This is whole-component offload: denoiser weights plus active tensors must still
+fit GPU. It adds host RAM and transfers; arbitrary 4/8 GB devices are not proven.
+
+Resident packed storage is now per component/dtype. A base switch retains only
+byte-identical unadapted Qwen, VAE and tokenizers, after exact class/dtype checks.
+The raw text cache survives only if Qwen and both tokenizers really survive.
+Adapted transformer/conditioner always reload on a base change. First acquisition
+still hashes all bytes and loads the necessary weights; this is not a measured
+improvement of a completely cold first job.
+
+Hires releases first-pass outputs and retired inputs before the next stage,
+clears Tea residuals before VAE decode, keeps final nonmasked Remacri resize on
+CPU. VAE now executes a whole frame before a bounded CUDA-OOM-only feathered
+fallback, without single-frame video feature caches. Exact Qwen CausalConv
+single-frame/no-cache predicates select the last temporal weight slice with
+implicit spatial padding; RMS uses original-dtype normalization. FP32 mean/std,
+raw-latent bicubic and display boundaries follow the workflow. Remacri uses
+512/32 overlapping tiles, CPU FP32 weighted assembly and CUDA OOM 256/128 retry.
+Both Lanczos and PNG use RGB uint8 truncation. Task metadata records actual VAE
+mode and VAE/Remacri tile count/size/output device, plus postprocess wall time.
+The desktop allowlist includes new helpers and the AP mask license notice.
+
+Source review and compilation do not establish output or performance parity.
+The requested mask/RCAS/Remacri/VAE mathematical paths are now implemented:
+contain/pad/red channel, tapered manual growth, masked model input/denoised
+history, mean-logit automatic smoothing/square growth/float feather, and the
+fixed KJ RCAS functional variant. FP32 accumulation order, device kernels and
+batching still prevent a source-only pixel-equivalence claim. The current host
+has AMD 880M and no usable NVIDIA CUDA. No model calls, tests, installs or
+deployment were performed. See the
+[effects delivery](../../docs/audits/2026-10-12/native-anima-effects.html).
 
 ## Explicit preparation
 
@@ -171,9 +243,9 @@ ignored modular-pipeline call parameter.
 sigma transformation. With S(t)=3t/(1+2t), normal spans [1, S(float32(1/1000))]
 in N FP32 points; sgm_uniform uses N equal intervals and excludes the last endpoint.
 The official scheduler applies the shift once and appends zero. Complete 24/30-step
-CPU sigma vectors match the isolated Comfy reference bitwise. `euler/simple` retains
-the original Diffusers pipeline defaults; `res_multistep/simple` explicitly subsamples
-the 1000-entry training grid. Those two simple options are not interchangeable.
+CPU sigma vectors historically matched the isolated Comfy reference bitwise.
+Both Euler/simple and RES/simple now explicitly subsample the 1000-entry
+training grid. Current-revision runtime validation has not been performed.
 
 RES independently integrates a linear extrapolation of denoised output in log-sigma
 time, following the mathematical method in [Zhang, Song & Chen §3.5/D.1](https://arxiv.org/abs/2308.02157).
@@ -191,12 +263,12 @@ TeaCache scope.
 
 The local scheduler must not enable `stochastic_sampling`: pinned Anima's after-denoiser does not forward the job generator to the scheduler's optional random-update branch. Such a configuration is explicitly rejected before runtime loading instead of silently disabling it or using global RNG. The upstream default and the project converter use the supported non-stochastic path; their sampling behavior is unchanged. This does not promise bitwise deterministic CUDA kernels or cross-backend noise equality.
 
-Limits: Anima generation requires CUDA; one image; initial dimensions divisible by 16, 64–4096; steps 1–200; CFG 1–30; nonnegative 63-bit seed; PNG output. All Anima components are loaded to GPU; no CPU/offload/low-VRAM guarantee. Optional CLIPSeg runs first on CPU in float32. TeaCache defaults to automatic matching of an accepted compatible local calibration profile. A missing/unmatched profile runs full computation; manual disablement is preserved. Hires and weighted prompts have distinct calibration scopes; an ordinary single-pass profile cannot authorize them. Arbitrary super-resolution models and non-Anima families remain unsupported. Unsupported effects never silently disappear.
+Limits: Anima requires CUDA; one image; initial dimensions divisible by 16, 64–4096; worker steps 1–200 and CFG 0.5–30, while the public host applies narrower product ranges; nonnegative 63-bit seed; PNG output. Default resident holds all weight components on GPU; explicit offload moves whole components at stage boundaries. Neither offers CPU inference or an arbitrary low-VRAM guarantee. Optional CLIPSeg runs on CPU in float32. TeaCache auto mode uses an accepted exact current profile or full computation; explicit enablement stays strict. Hires/weighted prompts have distinct scopes. Other super-resolution weights and non-Anima families remain unsupported.
 
-RCAS and Latent/fixed Remacri hires have actual GPU generation evidence.
-`anima_postprocess.py` ports the AMD MIT RCAS reference using FP32 arithmetic;
-`rcasStrength=0` is unchanged output, positive strengths are not a claim of matching
-another node's slider. `anima_upscale.py` accepts only the fixed local
+Earlier RCAS and Latent/fixed Remacri revisions have historical GPU evidence.
+`anima_postprocess.py` independently implements the product's KJ functional
+RCAS parameters in FP32; strength=0 preserves input, the workflow uses 0.75.
+`anima_upscale.py` accepts only the fixed local
 `4x_foolhardy_Remacri.safetensors` with the checked 23-block RRDB architecture,
 using Apache-2.0 BasicSR components and separately licensed supplied weights.
 The trusted host resolves Auto to Latent or an available fixed Remacri file at
@@ -235,31 +307,26 @@ The host resolves uploads and catalog LoRAs into approved absolute local paths. 
 ```
 
 - `inputImagePath` is optional/null for txt2img, otherwise an existing PNG/JPEG/WebP still image of at most 4096×4096 pixels in area. The worker decodes locally, applies EXIF orientation, and converts to RGB. The upstream image processor resizes to requested output dimensions. It does not fetch URLs.
-- `input.denoisingStrength` defaults to 0.75 for img2img and must be greater than zero and at most one. Without an input image, specifying strength is an error. The `image` and `strength` call arguments activate upstream Anima auto blocks, including VAE encoding and strength-sliced noise timesteps. Progress totals use upstream's `steps - int(steps - steps * strength)` formula.
+- `input.denoisingStrength` defaults to 0.75 for direct worker img2img and must be greater than zero and at most one. Without an input image, specifying strength is an error. Image input activates VAE encoding. Native computes a full `int(N/strength)` schedule and passes its last N positive sigmas with strength=1 to avoid slicing twice; progress counts N actual updates, matching the Comfy KSampler tail convention. Product defaults are resolved by the host before the worker call.
 - `loras` defaults to an empty array, with at most 16 entries, each containing only `path` and `strength` (−2 through 2). Each adapter gets a distinct name and the requested scale. Either or both `transformer` and `text_conditioner` component prefixes are supported.
 - Native Diffusers/PEFT `component.target.lora_A.weight` and matching `lora_B.weight` safetensors are supported, plus the exact raw Anima `diffusion_model.*` A/B layout recognized by Diffusers 0.41.0. The official Anima converter maps transformer blocks/projections and `diffusion_model.llm_adapter.*` into `text_conditioner.*`; header keys are preflighted through that same helper before the local-file loader maps the real tensors. Colliding targets are rejected. The local Anima Kohya export layout `lora_unet_<original_module>.lora_down.weight` / `.lora_up.weight` / `.alpha` is also supported for checked linear targets. `anima_lora.py` enumerates original Anima transformer names through the pinned official converter and exact `llm_adapter` conditioner module names; it rejects ambiguous flattened names, missing triples, unknown targets, incompatible matrix shapes and nonfinite values. Down/up must be CPU F16/BF16/F32 matrices and alpha a finite nonnegative scalar (or one-element vector). It folds alpha/rank into float32 B before the ordinary PEFT loader, retaining both components and the user-selected adapter strength. It does not write or modify source files. Mixed layouts, generic Kohya families, convolutional adapters, DoRA and PEFT metadata overrides accompanying alpha triples remain unsupported. Checkpoint keys, target modules, component-prefixed adapter metadata and the actual loaded adapter key set are checked, so unsupported or partially loaded weights cannot silently disappear. Supported metadata, including alpha/rank values, is preserved by the upstream file loader. Adapter configuration JSON must contain only finite numbers, including nested alpha patterns; NaN, Infinity and numeric overflow are rejected before loading. DoRA, bias weights, saved extra modules and advanced unsupported adapter variants are rejected. Informational file metadata is not used to execute code.
 - Input-level path aliases and active `input.loras` remain rejected: the host must resolve authorized files and send the trusted top-level contract. The worker is a host-owned serial child process, not a public file-access boundary; the host owns canonical containment checks and access policy.
 
-## Targeted tests
+## Current verification policy
 
-`python -m unittest discover -s tools/inference -p 'test_*.py' -v`
-
-Protocol tests use explicitly fake dependency modules/tensors and model outputs;
-mask preprocessing/composite tests use real Pillow images. Scheduler contracts
-also use the pinned real Torch/Diffusers CPU libraries, captured numeric vectors
-and an isolated `python -I` child process. These checks validate their respective
-loader, scheduling, state, rejection and output behavior, not full real-model
-inference. Run only the affected modules for a change. Real CUDA generation,
-visual quality, peak VRAM and cancellation under GPU load require separate device
-evidence; current measured scopes and pending acceptance are linked above.
+Repository instructions prohibit writing or running tests. Review affected
+source and diffs, then use necessary type checks, syntax compilation and product
+builds. Historical CPU fixtures and GPU reports do not validate this revision.
+Real CUDA generation, visual quality, peak VRAM and cancellation under GPU load
+require separately recorded device acceptance within the user's authorization.
 
 ## Experimental manual masked editing
 
-The host can send trusted top-level `maskImagePath` alongside `inputImagePath`, with `input.growMaskBy` (integer 0–32, default 0). Mask and oriented input dimensions must match. White edits; black preserves; grayscale gives a soft blend. RGBA alpha is multiplied into luminance, so transparent/erased pixels preserve. The mask is resized with nearest sampling to the requested output, then expanded using a square max-filter of radius `growMaskBy`. The input is resized to that same output with Lanczos. Empty manual masks fail before model loading.
+The host sends trusted maskImagePath alongside inputImagePath. Input and oriented mask dimensions must match. Both share contain/Lanczos/center-black resize; the workflow reads the resized RGB red channel, not alpha multiplied by luminance. Repeated five-neighbour maxima implement growMaskBy's tapered diamond. Empty masks fail before Anima loads.
 
-This is masked denoising, not a whole-image generation followed only by an overlay. The bundled `masked_anima.py` replaces Diffusers 0.41.0 modular prepare-latents and after-denoiser leaves before pipeline construction. Qwen VAE image latents retain their temporal singleton dimension. Float32 noise is drawn once and retained; each Euler step blends protected latents with the original latent re-noised at the next timestep using that same noise. The last step restores clean original latents. One effective resized/expanded mask supplies both the downsampled latent mask and final original-pixel composite. Black-mask output pixels equal the resized original; that guarantee does not mean latent-boundary appearance or outfit quality has been model-validated.
+The bundled masked_anima.py replaces prepare/before/after denoiser leaves. Effective float masks are trilinear at single-frame latent resolution and nearest-exact for hires. With clean latent z, original noise epsilon, state x and white-edit mask m, model input is m*x+(1-m)*((1-sigma)*z+sigma*epsilon). Predicted denoised is blended with clean z before the scheduler integrates original x; RES therefore retains masked denoised history. Final pixel composite uses the same unquantized effective mask.
 
-The native implementation follows the public Apache-2.0 Diffusers block/scheduler contracts. It does not copy or run ComfyUI/GPL code, and it does not promise matching dilation kernels, latent resampling, scheduler behavior, output quality or seeded pixels. Current GPU evidence includes manual and automatic masked hires with exact black-pixel protection; it does not establish arbitrary outfit quality. CPU tests cover alpha, mask expansion, pixel preservation, temporal shape, same-noise reuse, next-timestep/final-step blending, worker wiring and invalid requests with explicit tensor/model fakes. The isolated worker loads only its bundled sibling helper by absolute path, not ambient `PYTHONPATH`.
+The integration uses the public Apache-2.0 Diffusers block/scheduler APIs, with independently implemented workflow mathematics. No Comfy runtime or GPL code is copied. Source agreement does not establish CUDA mask boundaries, clothing quality or PNG equality; all current v3 device behavior remains unverified.
 
 
 ## Experimental local automatic masks
@@ -279,9 +346,9 @@ The trusted host sends top-level `maskModelDir` plus `inputImagePath`, with `inp
 
 `maskPrompt` is a `|`-separated union of 1–32 distinct nonempty phrases, at most 4096 characters total. Empty parts are discarded and duplicates removed. Each phrase must fit the 77-token CLIP context; overlong phrases fail rather than being silently truncated. Existing clothing synonyms are processed as separate queries, never one long caption.
 
-The oriented RGB source is resized to output dimensions with Lanczos first, matching native masked editing. Explicit package classes `CLIPTokenizer`, `ViTImageProcessorPil` and `CLIPSegForImageSegmentation` use local-only assets. The PIL image processor avoids a new torchvision dependency; CLIP tokenization uses the existing Transformers `tokenizers` dependency. NumPy is already a transitive dependency used by the manual-mask path. No direct dependency pins change. CPU float32 inference uses batches of at most four image/text pairs under inference mode. One-shot workers release segmentation resources after mask generation. A resident `--serve` worker retains at most one complete CPU CLIPSeg model/tokenizer/processor and one 352×352 float32 logits map (495,616 bytes). It also retains at most 64 KiB of independent CPU conditioning snapshots for one complete phrase sequence, reusing text encoding across different images with the original four-phrase batches; oversized conditioning skips retention without rejecting the mask. Its CPU model memory overlaps Anima loading/residency; this is not a low-RAM guarantee. With the mask cache or an explicit expected TeaCache asset scope enabled, automatic-mask jobs rehash all local checkpoint assets, including optional tokenizer files, and loading is checked again afterward. Exact model bytes, image mode/size/pixel digest and normalized phrases govern reuse. Threshold and mask growth remain per-request. Model changes, failures and worker retirement release cached state; no image pixels or GPU segmentation model are retained. Reuse avoids repeated loading and, for identical inputs, inference, but real CPU latency/RAM and mask quality remain device acceptance work.
+The oriented RGB source uses the same contain/Lanczos/center-black geometry as manual editing. Explicit local CLIPTokenizer, ViTImageProcessorPil and CLIPSegForImageSegmentation preserve the existing dependency pins. CPU FP32 phrase inference remains batched at four, with one bounded model/mean-logit map and at most 64 KiB conditioning snapshots. Model assets are fully hashed and rechecked after loading; pixel/size/ordered phrase identity governs logits reuse, while threshold/growth/feather are applied every job. Failures and worker retirement clear the cache. This is not a total-process RAM guarantee.
 
-For each phrase the model returns 352×352 logits. Take their pixelwise maximum, resize those logits bilinearly to output size, apply sigmoid and threshold (`>=`) into a binary white-edit/black-preserve mask. Apply the same native square max-filter growth as manual editing, then pass that one effective mask into both latent denoising and original-pixel compositing. There is no extra smoothing/feathering or ComfyUI kernel/effect equivalence. Invalid/nonfinite, empty or incompletely loaded masks fail before Anima loads. This is an experimental automatic starting point; it can include body/background or miss clothing, so use a manual mask for precise control.
+Per-phrase 352x352 FP32 logits are averaged with duplicate phrases preserved, then Torch bilinear resized. AP postprocessing applies three 5x5 reflect box smooths, sigmoid >= threshold, square max-pool growth, then three 25x25 reflect box blurs. Uniform boxes use separable horizontal/vertical convolutions to reduce full-image work; the mathematical filter matches, FP32 accumulation may differ. Float masks go directly to sampling/compositing without uint8 or a second growth pass. Retain MASK_PROCESSING_LICENSE.txt; real boundary quality and CPU cost are unverified.
 
 The initial focused tests used explicit fake model/tensor classes and real Pillow/NumPy transformations. Current evidence additionally includes actual CPU CLIPSeg segmentation and a GPU automatic-mask Remacri 2x result with exact final black-pixel protection. This validates those local assets and examples, not arbitrary clothing segmentation or model redistribution rights. Raw evidence remains under ignored `runtime/`.
 
@@ -297,7 +364,7 @@ The bundled `teacache_anima.py` retains the original Diffusers 0.41.0 transforme
 - Every job has its own controller, created after selecting its exact model/LoRA scope. CFG conditional/unconditional calls have separate lanes and residuals.
 - Each lane must follow consecutive indices and strictly decreasing finite timesteps. Shape, dtype, device, total count, exact conditioning and padding changes invalidate reuse. Tensor snapshots avoid relying on inference tensor version counters.
 - The first and last actual timesteps always compute fully, including strength-sliced img2img. At most the locally calibrated 1–3 consecutive steps can be reused. Nonfinite proxies/residuals/statistics and out-of-calibration proxy values force full computation.
-- Txt2img, img2img and masked editing use the same cache denoiser. Existing masked after-step blending and final pixel composite are retained, including the temporal singleton in image latents. ControlNet/condition-mask transformer variants and before/after projection blocks are rejected.
+- Txt2img, img2img and masked editing share the cache denoiser. V3 masked input/denoised constraints and the final float pixel composite remain active during cached inference; cache reuse never replaces the mask algorithm.
 - All temporary instance forwards and scheduler progress wrappers are restored in `finally`; no class monkey-patch or model-global cache survives a job. Normal progress and atomic PNG output remain. Host process termination still owns cancellation.
 
 `teacache_profile.py` validates the original version-1 polynomial and the version-2 `huiyu-anima-phase-envelope-v2` candidate; runtime pins are Diffusers 0.41.0 and Torch 2.8.0. The exact compatibility object identifies SHA-256 content of all local pipeline component assets and ordered LoRA bytes/strengths, width, height, steps, CFG, mode, denoising strength, sampler/scheduler, dtype and GPU device name. Masked scope also binds manual/CLIPSeg source kind, growth, threshold and mask prompt; automatic masking binds all local CLIPSeg asset bytes. The accepted or collected mask digest is checked against the assets actually used before cache reuse/loading and again after a new load, including calibration with mask caching disabled; a changed checkpoint aborts instead of attributing a new mask to the old scope. Prompt/seed and source/mask image content may vary within the independently tested calibration set. This is not a guarantee for unseen content.
@@ -363,7 +430,7 @@ The tool requires an empty queue before every submission and successful, matchin
 
 Raw requests/history, environment snapshot, PNGs and timing JSON belong in the ignored `runtime/` directory. `review.html` provides local image pairs and statistics. Output SHA-256 identifies complete PNG file bytes, not decoded pixels: Comfy SaveImage can embed the prompt graph, so changing seed/prompt metadata changes the hash even when pixels match. Completion time covers submission through successful output history, including queue, text encoding, sampling, VAE decoding, PNG save and polling. Delivered time additionally includes local evidence IO, PNG download and validation. Server event duration covers graph execution, not synchronized sampler-only GPU work. The default 100 ms polling interval is recorded (`--poll-ms`); HTTP latency remains additional. Report median/min/max/sample count; nearest-rank p95 is omitted below 20 measured rounds. System stats do not provide peak VRAM. No automatic image-quality approval or cross-backend speedup is emitted.
 
-For actual product-path warm timings, use the gateway entry below. Keep `resident_benchmark.py` and the native calibration evidence for the separate TeaCache algorithm experiment: its deliberately disabled text/mask caches are not the product-speed population. Establish exact checkpoint/export and LoRA provenance, tokenizer/text conditioning, actual sigma/timestep sequence, CFG formulation, resolution, seed/noise construction, dtype/attention, preview/output policy, GPU/driver/library versions and comparable cache/residency states before a cross-backend claim. Native `euler/simple` currently means the Diffusers configuration; ComfyUI's same names do not prove the same schedule. Cold process/load, warm novel prompt and warm repeated prompt are separate populations. Identical seeds do not establish identical random tensors or image quality across runtimes. Keep all raw observations, failures and outputs; compare matched images and edited boundaries before describing quality or speed gains.
+Use the existing gateway runner for authorized product timings. Keep cold process/load, warm novel prompt and warm repeated prompt separate. Establish checkpoint/export, LoRAs, prompt conditioning, sigmas, noise, dtype/kernel and cache scope, then inspect actual images before speed or quality claims. Current simple uses the training grid; identical seed/name alone never establishes cross-backend equality. Historical benchmark reports remain tied to their original source.
 
 For img2img, native slices the original step schedule by strength, whereas [ComfyUI KSampler at the inspected commit](https://github.com/Comfy-Org/ComfyUI/blob/b058ec652802e1de24f1d429b3c7c1fb868f791c/comfy/samplers.py#L1431-L1463) constructs a longer schedule before taking its requested-step suffix: with Euler, 28 steps at strength/denoise 0.5 means 14 native updates versus 28 Comfy updates, not matched work. The native worker uses a CUDA generator, while [ComfyUI's inspected noise path](https://github.com/Comfy-Org/ComfyUI/blob/b058ec652802e1de24f1d429b3c7c1fb868f791c/comfy/sample.py#L9-L38) draws CPU float32 noise before casting to the latent dtype; disclose this difference rather than treating equal seeds as equal noise or silently changing either backend's defaults.
 
@@ -379,7 +446,7 @@ To request different positive text on a warmed model, optionally add `--prompt-v
 
 For an uncached-algorithm baseline, explicitly set `teaCache: false` and remove `teaCacheThresh` from both payloads: omission enables Comfy TeaCache and selects automatic matching on native; actual native use is reported in runtime observations. This does not disable product model/text/mask residency. For editing, upload the same source/mask bytes through the normal product flow separately after selecting each engine: native uses `inference/input`, while Comfy uses `ComfyUI/input`. Reusing the other engine's upload name can fail. Retain each engine's actual payload and source-image hashes; their upload names may differ.
 
-Known product-work differences prevent an automatic equivalent-inference verdict even with identical payloads. At the inspected Comfy revision, plain img2img (`initImage` without `maskImage` or `maskPrompt`) leaves the encoded source latent disconnected and retains the text-to-image sampler input/denoise; do not use that path as an img2img comparison until independently fixed and validated. Earlier API reports also compared Comfy's strength-0.75 RCAS against native output without RCAS. Native RCAS now has actual full-path GPU evidence, without claiming the same slider arithmetic or changing those historical reports. These measurements remain separate product wall distributions; changing a diagnostic workflow does not establish product-path parity.
+Current Comfy ordinary img2img connects VAE-encoded source latents and denoisingStrength before the optional mask branch. Native v3 now implements the requested mask, KJ RCAS, RRDB assembly, quantization and VAE boundaries. Neither the implemented formulas nor old diagnostic workflows establish current device/pixel/performance parity; compare exact v3 outputs and recorded runtime operations on authorized CUDA hardware.
 
 Only append `--run` when the actual local gateway and model environment are prepared. `--gateway` accepts a literal-loopback HTTP origin, default `http://127.0.0.1:3000`. Run one provider at a time on an otherwise idle GPU: measure native, release its resident worker through the normal product controls, configure/restart for Comfy as required, then warm up and measure again with `--expect-provider comfy` and a different new output directory. Do not keep both engines resident or generating concurrently. This runner never changes settings, starts/restarts services, unloads models, flushes caches, downloads anything, retries an uncertain submission or sends cancellation/global interrupts. The operator owns exclusivity; the tool cannot prove no other GPU process exists.
 

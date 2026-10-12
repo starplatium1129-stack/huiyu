@@ -103,6 +103,7 @@ pub fn router(state: AppState) -> Router {
         }
         if let Some(service) = &state.images {
             service.bind_control(control);
+            control.bind_images(service);
         }
         if let Some(service) = &state.video {
             service.bind_control(control);

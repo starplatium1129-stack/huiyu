@@ -11,6 +11,25 @@ pub(super) struct StartRequest {
 }
 
 impl ControlService {
+    pub(super) fn check_llama_release(&self) -> Result<()> {
+        if self.state.lock().unwrap().llama_release_unconfirmed {
+            return Err(ApiError::new(
+                503,
+                "LLAMA_STOP_UNCONFIRMED",
+                "聊天显存释放未确认，请完全退出并重启应用",
+            ));
+        }
+        Ok(())
+    }
+    async fn retire_llama(&self, process: &crate::processes::OwnedProcess) -> Result<()> {
+        let result = process.stop().await;
+        if result.is_err() {
+            // stop() transfers the child to cleanup before awaiting termination;
+            // its now-absent handle cannot prove the GPU has been released.
+            self.state.lock().unwrap().llama_release_unconfirmed = true;
+        }
+        result
+    }
     pub(crate) fn llama_auth(&self) -> (String, String) {
         let host = self.settings()["llamaHost"]
             .as_str()
@@ -85,6 +104,7 @@ impl ControlService {
     }
 
     pub(super) fn start_llama(self: &Arc<Self>, body: StartRequest) -> Result<Value> {
+        self.check_llama_release()?;
         if body.workspace_path != self.config.ai_workspace_root.to_string_lossy() {
             return Err(ApiError::new(
                 409,
@@ -115,6 +135,7 @@ impl ControlService {
     }
 
     pub(super) async fn stop_llama(&self) -> Result<()> {
+        self.check_llama_release()?;
         let loading = self
             .state
             .lock()
@@ -127,7 +148,7 @@ impl ControlService {
             cancel.cancel();
         }
         if let Some(process) = self.llama_process.lock().await.take() {
-            process.stop().await?;
+            self.retire_llama(&process).await?;
         }
         if let Some(id) = loading {
             // Before readiness the loading task owns the child locally. Its
@@ -156,7 +177,9 @@ impl ControlService {
                 )
             })?;
         }
-        Ok(())
+        // A concurrent stopper may have held llama_process after our first
+        // check and lost its handle without confirming termination.
+        self.check_llama_release()
     }
 
     async fn launch_llama(
@@ -165,9 +188,11 @@ impl ControlService {
         operation: &Value,
         cancel: &CancellationToken,
     ) -> Result<()> {
+        let _handoff = self.native_chat_handoff().await?;
         if let Some(process) = self.llama_process.lock().await.take() {
-            process.stop().await?;
+            self.retire_llama(&process).await?;
         }
+        self.check_llama_release()?;
         let settings = self.settings();
         let host = settings["llamaHost"]
             .as_str()
@@ -236,18 +261,26 @@ impl ControlService {
             .stdout(Stdio::from(log.try_clone()?))
             .stderr(Stdio::from(log));
         self.stage(operation, 1);
+        self.check_llama_release()?;
         let process = self.processes.spawn(&mut command)?;
         let deadline = Instant::now() + Duration::from_secs(180);
         loop {
             if cancel.is_cancelled() || Instant::now() >= deadline {
-                process.stop().await?;
+                self.retire_llama(&process).await?;
                 return Err(ApiError::new(
                     if cancel.is_cancelled() { 499 } else { 504 },
                     "LLAMA_LOAD_STOPPED",
                     "聊天模型加载已停止；可选择更小模型或 API，详情见 llama-server.log",
                 ));
             }
-            if process.exited()?.is_some() {
+            let exited = match process.exited() {
+                Ok(exited) => exited,
+                Err(error) => {
+                    self.retire_llama(&process).await?;
+                    return Err(error);
+                }
+            };
+            if exited.is_some() {
                 return Err(ApiError::new(
                     503,
                     "LLAMA_LOAD_FAILED",
@@ -265,7 +298,7 @@ impl ControlService {
         }
         let mut owner = self.llama_process.lock().await;
         if cancel.is_cancelled() {
-            process.stop().await?;
+            self.retire_llama(&process).await?;
             return Err(ApiError::new(499, "CANCELLED", "聊天模型加载已取消"));
         }
         *owner = Some(process);

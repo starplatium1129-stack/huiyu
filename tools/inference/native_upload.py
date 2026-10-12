@@ -8,7 +8,7 @@ model loading, installation, device fallback or numerical kernel dependency.
 
 
 def try_packed_upload(modules, target_device="cuda"):
-    """Pack registered tensors into one target storage per dtype; return success.
+    """Pack registered tensors into target storage per component/dtype.
 
     Pass an iterable of the fully loaded nn.Modules (the four Anima weight
     components). Unsupported CPU layouts, subclasses, dtypes, gradients and
@@ -16,7 +16,7 @@ def try_packed_upload(modules, target_device="cuda"):
     without mutations, so the caller can use its existing pipeline.to path.
     Repeated references to the SAME Parameter/Buffer object are supported.
 
-    Allocate only target-device flat storage per dtype; each original CPU view
+    Allocate only target-device flat storage per component/dtype; each CPU view
     copies directly into its target slice with non_blocking=True. There is no
     CPU concatenation, pinned staging allocation or complete host-weight copy.
     CPU detach references remain live through the last CUDA synchronization.
@@ -29,7 +29,7 @@ def try_packed_upload(modules, target_device="cuda"):
     _huiyu_packed_storage=True. Consumers replacing Parameter.data (e.g. PEFT
     merge) must restore its packed view by copying the new values back, otherwise
     the original shared allocation remains live alongside new allocations.
-    CPU target exists for isolated semantic tests; this is not GPU speed proof.
+    This layout alone is not evidence of GPU transfer speed.
     """
     import torch
 
@@ -40,7 +40,7 @@ def try_packed_upload(modules, target_device="cuda"):
     supported = {torch.float16, torch.bfloat16, torch.float32, torch.float64,
                  torch.int8, torch.uint8, torch.int16, torch.int32, torch.int64, torch.bool}
     seen, storages, intervals, groups = set(), set(), [], {}
-    for root in roots:
+    for component_index, root in enumerate(roots):
         for module in root.modules():
             # named_parameters removes duplicate names, but direct registrations
             # also include shared buffers and nonpersistent rotary/mask buffers.
@@ -63,7 +63,7 @@ def try_packed_upload(modules, target_device="cuda"):
                 if source.numel():
                     start = source.data_ptr()
                     intervals.append((start, start + source.numel() * source.element_size()))
-                group = groups.setdefault(source.dtype, [])
+                group = groups.setdefault((component_index, source.dtype), [])
                 alignment = 256 // source.element_size()
                 previous_end = group[-1][2] + group[-1][1].numel() if group else 0
                 offset = (previous_end + alignment - 1) // alignment * alignment
@@ -79,10 +79,10 @@ def try_packed_upload(modules, target_device="cuda"):
     target_flats = {}
     with torch.no_grad():
         try:
-            for dtype, group in groups.items():
+            for key, group in groups.items():
                 total = group[-1][2] + group[-1][1].numel()
-                destination = torch.empty(total, dtype=dtype, device=target)
-                target_flats[dtype] = destination
+                destination = torch.empty(total, dtype=key[1], device=target)
+                target_flats[key] = destination
                 for _, source, offset in group:
                     destination.narrow(0, offset, source.numel()).copy_(source.view(-1), non_blocking=True)
         finally:
@@ -90,9 +90,9 @@ def try_packed_upload(modules, target_device="cuda"):
             # failed. Original modules have not been changed at this point.
             if target.type == "cuda" and target_flats:
                 torch.cuda.synchronize(target)
-        for dtype, group in groups.items():
+        for key, group in groups.items():
             for tensor, source, offset in group:
-                tensor.data = target_flats[dtype].narrow(0, offset, source.numel()).view(source.shape)
+                tensor.data = target_flats[key].narrow(0, offset, source.numel()).view(source.shape)
                 if isinstance(tensor, torch.nn.Parameter):
                     tensor._huiyu_packed_storage = True
     # The views now own target storage. Drop CPU detaches after the final
