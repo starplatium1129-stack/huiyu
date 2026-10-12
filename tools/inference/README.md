@@ -427,8 +427,9 @@ feather convolution. This private binary selector is not used for fractional
 manual masks. Smooth/feather convolutions, parameters, execution revision and cache
 scope are unchanged. Fixed Torch 2.8.0+cpu normal postprocessing observations,
 including the full helper and the preceding two-axis implementation, are recorded
-in the existing backend HTML report. They do not validate real CLIPSeg outputs,
-Windows/Python 3.11, RSS, model inference or GPU speed.
+in the existing backend HTML report, including separate Linux Python 3.11/3.12
+timing and default 1536²/grow6 process-RSS observations. Real CLIPSeg outputs,
+Windows, model/cache residency, GPU speed and VRAM still need device acceptance.
 
 Earlier evidence includes CPU CLIPSeg segmentation and a GPU automatic-mask Remacri 2x result, tied to their recorded older source. It does not validate `clipseg-single-image-vision-v1`: changing the vision batch shape can change FP32 results near threshold boundaries. This revision has source/API and compilation review plus neutral-logit CPU postprocessing timing observations, with no tests or model calls. Actual masks, complete model-mask CPU cost and cache RAM need device acceptance. Raw historical evidence remains under ignored `runtime/`.
 
