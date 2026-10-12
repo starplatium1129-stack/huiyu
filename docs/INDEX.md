@@ -37,7 +37,7 @@
 - [Native Anima 局部风险缓存候选](audits/2026-10-12/native-anima-local-cache.html)：全局/局部双预算、独立采集与校准、维护候选隔离；尚无真实画质/性能或选择结论。
 - [后端性能优化续报](audits/2026-10-12/backend-performance.html)：相册最终批量写入、内部文件入库、完整语音缓存及角色立绘内存优化；本轮源码、构建与设备验收边界。
 - [CLIPSeg 与分句翻译性能优化](audits/2026-10-13/clipseg-translation-performance.html)：单图视觉层复用、分句 LRU、自动遮罩执行身份与本轮编译 / 设备验收边界。
-- [后端热点优化续报](audits/2026-10-13/backend-hotpaths.html)：蒙版分配、暖模型身份、内容批量写与任务 JSON / CAS；补充任务列表部分索引、云端读写对照及设备验收边界。
+- [后端热点优化续报](audits/2026-10-13/backend-hotpaths.html)：蒙版分配、暖模型身份、内容批量写与任务 JSON / CAS；补充任务列表索引、手动遮罩／RGB 准备 CPU 对照及设备验收边界。
 - [后端注意力、Live2D 与内容导入优化](audits/2026-10-13/backend-attention-catalog.html)：默认注意力去冗余拷贝、大依赖组并发校验、SQL 复用与导入所有权；本轮编译及设备验收边界。
 - [Anima 独立后端交付](audits/2026-10-11/native-anima-replacement.html)：六模型、三 LoRA 样例、高清/遮罩/权重接入、完整 API 热任务减少 22.3% 及剩余限制。
 - [独立后端主力机 GPU 实测](audits/2026-10-11/native-backend-gpu.html)：PR #71 最新提交、真实 Anima/LoRA/TeaCache、ComfyUI 对照、修复与剩余限制。

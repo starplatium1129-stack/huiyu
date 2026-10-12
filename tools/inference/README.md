@@ -356,6 +356,18 @@ require separately recorded device acceptance within the user's authorization.
 
 The host sends trusted maskImagePath alongside inputImagePath. Input and oriented mask dimensions must match. Both share contain/Lanczos/center-black resize; the workflow reads the resized RGB red channel, not alpha multiplied by luminance. Repeated five-neighbour maxima implement growMaskBy's tapered diamond. Empty masks fail before Anima loads.
 
+Manual preparation now selects R after the same RGB color conversion and resizes
+only that 8-bit band. Pinned Pillow 11.3.0 applies the same per-band Lanczos
+coefficients, rounding and clipping for RGB and L. The shared helper borrows
+already-normalized RGB pixels read-only and skips same-size intermediate copies;
+it still returns an independent new canvas with no inherited EXIF/info. Upstream
+EXIF normalization, non-RGB conversion, contain geometry, black padding, FP32
+division and downstream mask processing are retained. CPU stage observations
+with small and 16-megapixel decoded RGB inputs are recorded in the
+[backend report](../../docs/audits/2026-10-13/backend-hotpaths.html#cloud-image-preparation).
+They exclude decoding, Torch, model work and device acceptance; no image behavior
+tests were run. Manual v3/Tea identity is retained on the pinned source reasoning.
+
 Manual growth now reads each round from edge padding and writes the ordered
 five-neighbour maxima into its independent FP32 resized output. It no longer
 constructs a five-image stack or allocates a new output per round. At 4096² the
