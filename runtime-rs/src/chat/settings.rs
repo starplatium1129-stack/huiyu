@@ -60,14 +60,11 @@ impl Settings {
                     .map(|v| v.path().into())
             })?;
         Some(Api {
-            vendor: if base_url.contains("api.deepseek.com") {
-                "deepseek"
-            } else if base_url.contains("opencode.ai") {
-                "opencode"
-            } else {
-                "custom"
-            }
-            .into(),
+            vendor: url::Url::parse(&base_url)
+                .ok()
+                .and_then(|base| base.join(&pathname).ok())
+                .map(|target| super::validation::vendor(&target))
+                .unwrap_or_else(|| "custom".into()),
             base_url,
             pathname,
             model,
@@ -120,7 +117,15 @@ fn io_error() -> Error {
 pub(super) fn public(api: Option<&Api>) -> Value {
     match api {
         Some(api) => {
-            json!({"ok":true,"configured":true,"baseUrl":api.base_url,"model":api.model,"updatedAt":null})
+            let origin = url::Url::parse(&api.base_url)
+                .map(|url| url.origin().ascii_serialization())
+                .unwrap_or_else(|_| api.base_url.clone());
+            let base_url = format!(
+                "{}{}",
+                origin,
+                api.pathname.strip_suffix("/chat/completions").unwrap_or("")
+            );
+            json!({"ok":true,"configured":true,"baseUrl":base_url,"model":api.model,"updatedAt":null})
         }
         None => json!({"ok":true,"configured":false}),
     }

@@ -43,39 +43,7 @@ impl ChatService {
                 .get_or_init(|| settings::Settings::read(config))
                 .await;
             if let Some(api) = settings.read_host().await {
-                let target = url::Url::parse(&api.base_url)
-                    .and_then(|base| base.join(&api.pathname))
-                    .map_err(|_| Error::invalid("站主 API 地址无效"))?;
-                let mut body =
-                    json!({"model":api.model,"messages":messages,"stream":false,"temperature":0.6});
-                if api.vendor == "deepseek" {
-                    body["thinking"] = json!({"type":"disabled"});
-                }
-                let response = self
-                    .transport
-                    .send(
-                        target,
-                        transport::Request {
-                            body: Some(&body),
-                            key: &api.key,
-                            public_only: false,
-                            idle: Duration::from_secs(120),
-                            total: Duration::from_secs(120),
-                            accept: "application/json",
-                        },
-                    )
-                    .await?;
-                let response = transport::success(response, 64 * 1024, "AI 上游返回").await?;
-                let value: Value =
-                    serde_json::from_slice(&transport::bounded(response, 1024 * 1024).await?)
-                        .map_err(|_| {
-                            Error::stream("INVALID_UPSTREAM_JSON", "AI 上游返回了无法解析的响应")
-                        })?;
-                return value["choices"][0]["message"]["content"]
-                    .as_str()
-                    .filter(|s| !s.trim().is_empty())
-                    .map(str::to_owned)
-                    .ok_or_else(|| Error::stream("EMPTY_RESPONSE", "AI 上游返回空内容"));
+                return complete_api(&self.transport, &api, messages).await;
             }
             let input = validation::Input {
                 model: String::new(),
@@ -99,4 +67,46 @@ impl ChatService {
 }
 fn cancelled() -> ApiError {
     ApiError::new(499, "ABORT_ERR", "AI 请求已取消")
+}
+
+// Keep non-conversational calls on the same provider parameter contract.
+pub(super) async fn complete_api(
+    client: &transport::Transport,
+    api: &validation::Api,
+    messages: Vec<Value>,
+) -> Result<String> {
+    let target = url::Url::parse(&api.base_url)
+        .and_then(|base| base.join(&api.pathname))
+        .map_err(|_| Error::invalid("站主 API 地址无效"))?;
+    let input = validation::Input {
+        model: api.model.clone(),
+        api: None,
+        tools: false,
+        web_search: false,
+        reasoning: "off".into(),
+        messages,
+    };
+    let mut body = compatible::payload(&input, api);
+    body["stream"] = json!(false);
+    let response = client
+        .send(
+            target,
+            transport::Request {
+                body: Some(&body),
+                key: &api.key,
+                public_only: false,
+                idle: Duration::from_secs(120),
+                total: Duration::from_secs(120),
+                accept: "application/json",
+            },
+        )
+        .await?;
+    let response = transport::success(response, 64 * 1024, "AI 上游返回").await?;
+    let value: Value = serde_json::from_slice(&transport::bounded(response, 1024 * 1024).await?)
+        .map_err(|_| Error::stream("INVALID_UPSTREAM_JSON", "AI 上游返回了无法解析的响应"))?;
+    value["choices"][0]["message"]["content"]
+        .as_str()
+        .filter(|s| !s.trim().is_empty())
+        .map(str::to_owned)
+        .ok_or_else(|| Error::stream("EMPTY_RESPONSE", "AI 上游返回空内容"))
 }

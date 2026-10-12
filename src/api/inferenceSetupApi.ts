@@ -4,7 +4,7 @@ import type { ControlOperationView } from '@/types/api'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import catalog from '../../runtime-rs/src/control/setup-models.json'
 
-export type PreparedInferencePaths = Omit<InferenceSettings, 'engine'>
+export type PreparedInferencePaths = Pick<InferenceSettings, 'python' | 'worker' | 'modelsRoot' | 'lorasRoot'>
 export interface RuntimePreparationInput { basePython: string; wheelhouse: string; workspacePath: string; reviewed: true }
 export interface ModelInspectionInput { modelId: string; sourceDir: string }
 export interface ModelImportInput extends ModelInspectionInput { modelsRoot: string; reviewed: true }

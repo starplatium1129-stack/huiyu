@@ -1,8 +1,13 @@
-import { afterEach, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { useInterrogate } from './useInterrogate'
 import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
 import { mount } from '@vue/test-utils'
 
+const readiness = vi.hoisted(() => ({ refresh: vi.fn() }))
+vi.mock('./useInterrogateReadiness', () => ({ useInterrogateReadiness: () => ({
+  refresh: readiness.refresh, status: ref({ state: 'missing', message: '缺少完整 PixAI 模型文件，请先准备后重新检查。' }),
+}) }))
+beforeEach(() => { readiness.refresh.mockReset().mockResolvedValue(true) })
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
 const file = () => new File(['image'], 'test.png', { type: 'image/png' })
 const result = {
@@ -165,6 +170,7 @@ it('aborts file reading on disposal and never posts a late file', async () => {
   const scope = effectScope()
   const task = scope.run(() => useInterrogate())!
   const pending = task.interrogate(file())
+  await vi.waitFor(() => expect(reader).toBeDefined())
   scope.stop()
   expect(reader.abort).toHaveBeenCalledOnce()
   reader.onload?.()
@@ -286,4 +292,36 @@ it('keeps interrogation ownership separate between application roots', async () 
     requests[1].finish(new Response(JSON.stringify({ ...result, tags: ['sky'], scores: { sky: 0.87 } })))
     expect(await second).toMatchObject({ tags: ['sky'] })
   } finally { if (!firstUnmounted) firstApp.unmount(); secondApp.unmount() }
+})
+
+
+it('starts a user-activated clipboard read synchronously while status is slow, but defers the upload', async () => {
+  let checked!: (ready: boolean) => void
+  readiness.refresh.mockImplementationOnce(() => new Promise(resolve => { checked = resolve }))
+  const source = vi.fn().mockResolvedValue(file())
+  const upload = vi.fn().mockResolvedValue(new Response(JSON.stringify(result)))
+  vi.stubGlobal('fetch', upload)
+  const task = useInterrogate(), pending = task.interrogate(source)
+  expect(source).toHaveBeenCalledOnce()
+  expect(task.busy.value).toBe(true)
+  expect(upload).not.toHaveBeenCalled()
+  checked(true)
+  await expect(pending).resolves.toMatchObject({ tags: ['smile'] })
+  expect(upload).toHaveBeenCalledOnce()
+})
+
+it.each(['cancel', 'missing status'])('consumes clipboard rejection during slow status after %s without uploading', async outcome => {
+  let checked!: (ready: boolean) => void, rejectSource!: (error: unknown) => void
+  readiness.refresh.mockImplementationOnce(() => new Promise(resolve => { checked = resolve }))
+  const source = vi.fn(() => new Promise<File>((_resolve, reject) => { rejectSource = reject }))
+  const upload = vi.fn(); vi.stubGlobal('fetch', upload)
+  const task = useInterrogate(), pending = task.interrogate(source)
+  expect(source).toHaveBeenCalledOnce()
+  const observed = outcome === 'cancel' ? expect(pending).resolves.toBeNull() : expect(pending).rejects.toThrow('缺少完整 PixAI')
+  if (outcome === 'cancel') task.cancel()
+  rejectSource(new DOMException('Clipboard access denied', 'NotAllowedError'))
+  await Promise.resolve()
+  checked(false); await observed
+  expect(upload).not.toHaveBeenCalled()
+  expect(task.busy.value).toBe(false)
 })

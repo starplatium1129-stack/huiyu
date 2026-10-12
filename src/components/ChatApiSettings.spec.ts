@@ -7,12 +7,13 @@ import { chatApi } from '@/api/chatApi'
 import type { ChatApiDraft } from '@/utils/chatApiDrafts'
 
 const clearDraft = vi.hoisted(() => vi.fn())
+const draftFixture = vi.hoisted(() => ({ ready: undefined as Promise<void> | undefined, entries: {} as Record<string, ChatApiDraft> }))
 vi.mock('@/api/chatApi', () => ({ chatApi: { testProvider: vi.fn() } }))
 vi.mock('@/utils/chatApiDrafts', () => ({ createChatApiDrafts: () => {
-  const drafts = ref<Record<string, ChatApiDraft>>({})
-  return { drafts, set: (vendor: string, draft: ChatApiDraft) => { drafts.value[vendor] = { ...draft } }, clear: clearDraft }
+  const drafts = ref<Record<string, ChatApiDraft>>(draftFixture.entries)
+  return { drafts, ready: draftFixture.ready, set: (vendor: string, draft: ChatApiDraft) => { drafts.value[vendor] = { ...draft } }, clear: clearDraft }
 } }))
-beforeEach(() => { vi.mocked(chatApi.testProvider).mockReset(); clearDraft.mockReset() })
+beforeEach(() => { vi.mocked(chatApi.testProvider).mockReset(); clearDraft.mockReset(); draftFixture.ready = undefined; draftFixture.entries = {} })
 it('ignores replaced draft results, owns the newer busy state and aborts on unmount', async () => {
   const pending: Array<{ resolve: (value: { ok: true; models: string[] }) => void; reject: (reason: Error) => void }> = []
   vi.mocked(chatApi.testProvider).mockImplementation(() => new Promise((resolve, reject) => { pending.push({ resolve, reject }) }))
@@ -112,4 +113,88 @@ it('keeps discovered models while editing or selecting a model, and discards the
     await wrapper.setProps({ apiKey: 'replacement-fixture-key' })
     expect(wrapper.find('.api-discovered-models').exists()).toBe(false)
   } finally { wrapper.unmount() }
+})
+
+it('autofills a new official provider without carrying a key and keeps arbitrary saved model IDs editable', async () => {
+  const wrapper = mount(ChatApiSettings, { props: { vendor: 'deepseek', baseUrl: 'https://api.deepseek.com', model: 'legacy-private-model', apiKey: 'fixture-secret' }, global: { stubs: { ArchiveIcon: true, StudioSelect: true } } })
+  try {
+    expect(wrapper.get<HTMLInputElement>('input[aria-label="模型名"]').element.value).toBe('legacy-private-model')
+    expect(wrapper.get('input[aria-label="API Key"]').attributes('type')).toBe('password')
+    await wrapper.get('[data-vendor="openai"]').trigger('click')
+    expect(wrapper.emitted('update:baseUrl')!.at(-1)).toEqual(['https://api.openai.com/v1'])
+    expect(wrapper.emitted('update:model')!.at(-1)).toEqual(['gpt-6-luna'])
+    expect(wrapper.emitted('update:apiKey')!.at(-1)).toEqual([''])
+    await wrapper.setProps({ vendor: 'openai', baseUrl: 'https://api.openai.com/v1', model: 'gpt-6-luna', apiKey: '' })
+    expect(wrapper.findAll('a').some(a => a.attributes('href') === 'https://platform.openai.com/api-keys')).toBe(true)
+    expect(wrapper.get('button[type="submit"]').attributes('disabled')).toBeDefined()
+  } finally { wrapper.unmount() }
+})
+
+it('discovers local models without a model or key and distinguishes empty or mismatched catalogs', async () => {
+  vi.mocked(chatApi.testProvider).mockResolvedValueOnce({ ok: true, models: [] })
+    .mockResolvedValueOnce({ ok: true, models: ['installed-chat'] })
+  const wrapper = mount(ChatApiSettings, { props: { vendor: 'lmstudio', baseUrl: 'http://127.0.0.1:1234/v1', model: '', apiKey: '' }, global: { stubs: { ArchiveIcon: true, StudioSelect: true } } })
+  const test = () => wrapper.findAll('button').find(button => /测试连接|测试中/.test(button.text()))!
+  try {
+    expect(test().attributes('disabled')).toBeUndefined()
+    expect(wrapper.text()).toContain('Developer')
+    await test().trigger('click'); await flushPromises()
+    expect(vi.mocked(chatApi.testProvider).mock.calls[0]![0]).toMatchObject({ model: '', apiKey: '' })
+    expect(wrapper.get('.api-test-status').attributes('data-state')).toBe('warning')
+    expect(wrapper.text()).toContain('模型列表为空')
+    await wrapper.setProps({ model: 'not-installed' })
+    await test().trigger('click'); await flushPromises()
+    expect(wrapper.get('.api-test-status').attributes('data-state')).toBe('warning')
+    wrapper.getComponent(StudioSelect).vm.$emit('update:modelValue', 'installed-chat')
+    expect(wrapper.emitted('update:model')!.at(-1)).toEqual(['installed-chat'])
+    await wrapper.setProps({ model: 'installed-chat' })
+    expect(wrapper.get('button[type="submit"]').attributes('disabled')).toBeUndefined()
+  } finally { wrapper.unmount() }
+})
+
+it('blocks credential-bearing URLs and reports actionable failures without rendering upstream secrets', async () => {
+  const { ApiClientError } = await import('@/api/client')
+  const wrapper = mount(ChatApiSettings, { props: { vendor: 'custom', baseUrl: 'https://example.test/v1?key=fixture', model: 'chat', apiKey: '' }, global: { stubs: { ArchiveIcon: true, StudioSelect: true } } })
+  const test = () => wrapper.findAll('button').find(button => /测试连接|测试中/.test(button.text()))!
+  try {
+    expect(test().attributes('disabled')).toBeDefined()
+    expect(wrapper.text()).toContain('地址不能带账号')
+    await wrapper.setProps({ baseUrl: 'https://example.test/v1' })
+    for (const [status, text] of [[401, '密钥校验失败'], [429, '额度受限'], [404, '模型目录不可用']] as const) {
+      vi.mocked(chatApi.testProvider).mockRejectedValueOnce(new ApiClientError('SECRET_ECHO', { kind: 'http', status, detail: 'SECRET_ECHO' }))
+      await test().trigger('click'); await flushPromises()
+      expect(wrapper.get('.api-test-status').text()).toContain(text)
+      expect(wrapper.text()).not.toContain('SECRET_ECHO')
+    }
+  } finally { wrapper.unmount() }
+})
+
+
+it.each(['replace', 'cancel', 'edit', 'dismiss'])('waits for saved credentials and owns only its unchanged selection (%s)', async action => {
+  let release!: () => void
+  draftFixture.ready = new Promise(resolve => { release = resolve })
+  const saved = { baseUrl: 'https://saved.example/custom/v1', model: 'saved-model', apiKey: '' }
+  draftFixture.entries.custom = saved
+  const wrapper = mount(ChatApiSettings, { props: { vendor: 'deepseek', baseUrl: 'https://api.deepseek.com', model: 'current', apiKey: 'neutral-current' },
+    global: { stubs: { ArchiveIcon: true, StudioSelect: true } } })
+  try {
+    await wrapper.get('[data-vendor="custom"]').trigger('click')
+    expect(wrapper.emitted('update:apiKey')).toBeUndefined()
+    if (action === 'replace') await wrapper.get('[data-vendor="openai"]').trigger('click')
+    else if (action === 'cancel') await wrapper.get('[data-vendor="deepseek"]').trigger('click')
+    else if (action === 'edit') await wrapper.get('input[aria-label="API Key"]').setValue('neutral-new-input')
+    else wrapper.unmount()
+    saved.apiKey = 'neutral-restored'
+    release(); await flushPromises()
+    if (action === 'replace') {
+      expect(wrapper.emitted('update:vendor')).toEqual([['openai']])
+      expect(wrapper.emitted('update:apiKey')).toEqual([['']])
+      await wrapper.get('[data-vendor="custom"]').trigger('click')
+      expect(wrapper.emitted('update:baseUrl')!.at(-1)).toEqual([saved.baseUrl])
+      expect(wrapper.emitted('update:apiKey')!.at(-1)).toEqual(['neutral-restored'])
+    } else {
+      expect(wrapper.emitted('update:vendor')).toBeUndefined()
+      expect(wrapper.emitted('update:apiKey')).toEqual(action === 'edit' ? [['neutral-new-input']] : undefined)
+    }
+  } finally { if (wrapper.exists()) wrapper.unmount() }
 })

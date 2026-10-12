@@ -58,6 +58,7 @@ describe('inference settings panel', () => {
     expect(wrapper.text()).toContain('已填入路径草稿')
     expect(inferenceSettingsApi.save).toHaveBeenCalledTimes(1)
     expect(wrapper.getComponent(InferenceSetupPanel).props('configured').engine).toBe('comfy')
+    expect(wrapper.findAllComponents({ name: 'StudioSelect' })[1]!.props('modelValue')).toBe('compiled-fused-sage')
     wrapper.unmount()
   })
 })

@@ -46,8 +46,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   const credentials = createChatCredentials()
   let pendingLegacyKey = ''
   let credentialRevision = 0, credentialWrites = 0, connectionReloadPending = false
-  let connectionSnapshot = '', disposed = false
-  if (getCurrentScope()) onScopeDispose(() => { disposed = true })
+  let connectionSnapshot = '', disposed = false, credentialLoad = 0
+  const credentialsLoading = ref(false)
+  if (getCurrentScope()) onScopeDispose(() => { disposed = true; credentialsLoading.value = false })
   const characterIds = listCompanionCharacterIds()
   const state = reactive<ChatState>(createChatStorageState(characterIds))
   const normalizeOptions = createChatNormalizeOptions(characterIds)
@@ -234,10 +235,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   async function load() {
-    if (!canWrite()) return
+    if (disposed || !canWrite()) return
     const revision = ++credentialRevision
-    let stored = ''
-    let raw: unknown
+    let stored = '', raw: unknown
     try {
       stored = localStorage.getItem(STORAGE_KEY) || ''
     } catch {
@@ -251,6 +251,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       onError('本地聊天记录损坏，原件已保留，无法安全修改。')
       return
     }
+    const loading = ++credentialLoad; credentialsLoading.value = true
     try {
       assertChatVersion(raw, STORAGE_VERSION)
       preserveRetiredCompanionChat(raw)
@@ -321,7 +322,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       }
     } catch {
       onError('浏览器存储不可用或空间不足，聊天记录保留在当前会话中，暂时无法保存。')
-    }
+    } finally { if (loading === credentialLoad) credentialsLoading.value = false }
   }
 
   // Separate keys remain authoritative after a legacy/full-history save from
@@ -543,7 +544,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   return {
-    state, load, save, messages, neverConfigured, canWrite, writeBlocked, flushArchive: saveArchive,
+    state, load, save, messages, neverConfigured, canWrite, writeBlocked, credentialsLoading, flushArchive: saveArchive,
     setActive, setModel, setProvider, setApiSettings, reloadConnectionSettings, setWebSearchEnabled,
     setLive2dEnabled, live2dOutfit, setLive2dOutfit, setAutoVoice, setVolume, draft, setDraft, trim, clear,
     archiveCount, exportArchiveJson, exportArchiveMarkdown, importArchiveJson,

@@ -49,7 +49,7 @@ export async function runDirectAnima(options: DirectOwner & { request: AnimaRequ
   const { client, request, family, signal, current, patch } = options
   if (!current()) return
   const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(family), {
-    method: 'POST', body: animaRequestPayload(request), signal, timeoutMs: 30_000,
+    method: 'POST', body: animaRequestPayload(request), signal, timeoutMs: 150_000,
   })
   if (data.ok !== true || !data.job?.id) throw new Error(data.error || 'Anima 任务创建失败')
   if (!current()) {

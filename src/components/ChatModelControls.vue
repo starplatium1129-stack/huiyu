@@ -29,13 +29,18 @@
           :model-value="currentModel"
           :disabled="busy || !ollamaOnline || !models.length"
           label="选择本地聊天模型"
-          :placeholder="ollamaOnline ? (models.length ? '选择本地模型' : '无可用模型') : '正在发现模型…'"
+          :placeholder="ollamaOnline ? (models.length ? '选择本地模型' : '无可用模型') : '尚未连接聊天模型'"
           :options="models.map(m => ({ value: m.name, label: m.name + (m.parameters ? ' · ' + m.parameters : '') }))"
           @update:model-value="emit('update:currentModel', String($event))"
         />
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="busy || checkingLocal" @click="emit('refresh-local')">{{ checkingLocal ? '检测中…' : '重新检测' }}</button>
+        <p class="local-model-help" role="status">{{ localStatusText }}<br>连接的是绘遇后端电脑上的 Ollama。请先启动 Ollama 并下载聊天模型；首次使用可到控制室准备绘遇受管 llama.cpp。</p>
       </div>
       <div v-else v-content-motion:right="chatProvider" class="provider-model-controls">
-        <StudioTooltip content="模型推理强度（像 OpenCode 一样多档；关表示不思考）">
+        <StudioTooltip content="允许模型请求房间工具（例如准备绘画草稿）；仅本机可用。不支持工具的模型请关闭。">
+          <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="companionTools" :disabled="busy" @click="emit('update:companion-tools', !companionTools)">房间工具：{{ companionTools ? '开' : '关' }}</button>
+        </StudioTooltip>
+        <StudioTooltip content="推理强度依服务商支持；部分模型不能关闭。Luna 启用房间工具时固定不思考。">
           <div class="thinking-group">
             <span class="thinking-title">推理</span>
             <div class="thinking-segments studio-segments studio-segments--compact" role="radiogroup" aria-label="模型推理强度">
@@ -53,6 +58,7 @@
             </div>
           </div>
         </StudioTooltip>
+        <p class="local-model-help">DeepSeek 开启房间工具时请关闭推理。Gemini 3 / 2.5 Pro 不能关闭思考，选择「关」会使用低档；其他 Gemini 2.5 使用 none 关闭。Kimi K2.6 的低 / 中 / 高均为开启思考，不区分强度。</p>
         <button
           class="api-settings-toggle"
           type="button"
@@ -90,9 +96,12 @@ defineProps<{
   chatProvider: string
   busy: boolean
   ollamaOnline: boolean
+  localStatusText?: string
+  checkingLocal?: boolean
   models: Array<{ name: string; parameters?: string }>
   currentModel: string
   reasoning: string
+  companionTools?: boolean
   apiSettingsOpen: boolean
   useHostConfig: boolean
   hostApiModel: string
@@ -105,9 +114,12 @@ const emit = defineEmits<{
   (e: 'update:currentModel', model: string): void
   (e: 'reasoning-change', level: 'off' | 'low' | 'medium' | 'high'): void
   (e: 'toggle-api-settings'): void
+  (e: 'refresh-local'): void
+  (e: 'update:companion-tools', enabled: boolean): void
 }>()
 </script>
 
 <style scoped>
 .provider-model-controls { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); min-width:0; }
+.local-model-help { flex-basis:100%; margin:0; color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:1.6; }
 </style>

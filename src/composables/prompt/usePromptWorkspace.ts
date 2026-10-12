@@ -146,7 +146,7 @@ export function usePromptWorkspace() {
     // ── 热门角色编排层（2026-08-28 编排下沉）：subject/服装/蓝图选择与轮换、
     // 蓝图池过滤与推荐、受控绘图路线、热门草稿恢复。
     const materials = usePromptMaterials({
-        getAnimaSettingsRevision: animaSession.getSettingsRevision,
+        preparedModelId: starterModel, getAnimaSettingsRevision: animaSession.getSettingsRevision,
         voiceStudioRef,
         pb,
         sd,
@@ -161,7 +161,7 @@ export function usePromptWorkspace() {
         sdSize,
         flash: message => pb.flash(message),
     });
-    const { popularCategory, showAllBlueprints, managedRoute, refreshManagedRoute, popularBlueprintPool, filteredPopularBlueprints, blueprintCategories, recommendedBlueprints, resetBlueprintRotation, applyRecommendedEngine, selectPopularSource, selectPopularCharacter, selectPopularOutfit, selectBlueprint, rotateBlueprintSet, toggleBlueprintList, applyManagedRoute, syncManagedRoute, restorePopularDraft } = materials.popular;
+    const { popularCategory, showAllBlueprints, managedRoute, refreshManagedRoute, popularBlueprintPool, filteredPopularBlueprints, blueprintCategories, recommendedBlueprints, resetBlueprintRotation, applyRecommendedEngine, selectPopularSource, selectPopularCharacter, selectPopularOutfit, selectBlueprint, rotateBlueprintSet, toggleBlueprintList, applyManagedRoute, applyPreparedModel, syncManagedRoute, restorePopularDraft } = materials.popular;
     const { personaCoreIds, availableScenes, visibleScenes, personaCoreCount, curatedCount, vramLevel, baseResolutionRisk, vramHint, baseResolutionHint, canUseFaceDetailer } = materials.derived;
     const { sceneLimit, sceneCollection, setDirectorMode, setSceneCollection, selectScene, currentBlueprintData, handleLoadBlueprint } = materials;
     // ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
@@ -510,14 +510,14 @@ export function usePromptWorkspace() {
         queuePausedReason, batchPanelDeps,
     };
     const dialogBindings: PromptDialogBindings = {
-        inpaintProvider: computed(() => animaState.value.provider), inpaintAutomaticMaskAvailable: computed(() => animaState.value.automaticMaskAvailable === true),
+        inpaintProvider: computed(() => animaState.value.provider), inpaintManagedStartAvailable: computed(() => animaState.value.managedStartAvailable === true), inpaintAutomaticMaskAvailable: computed(() => animaState.value.automaticMaskAvailable === true), inpaintAutomaticMaskStatus: computed(() => animaState.value.automaticMaskStatus),
         compareEl, adultEnabled: toRef(pb, 'showMatureScenes'),
         inpaintImageSource: computed(() => ({ url: displayResultUrl.value, blob: animaState.value.result?.blob, historyId: displayedResultHistoryId.value })),
         displayResultUrl, generationBusy, inpaintPreparing, prevResult, inpaintOpen, compareOpen, displayResultSeed,
         lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit,
     };
     usePromptLifecycle({
-        refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY,
+        router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY,
         pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize,
         applyManagedRoute, refreshManagedRoute, restorePopularDraft,
         animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative,

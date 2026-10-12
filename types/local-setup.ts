@@ -32,6 +32,8 @@ export interface LocalSetupResponse {
   comfy: {
     path: string
     installation: LocalSetupFileState
+    managedEnvironment?: { state: 'verified'; environment: 'comfy-nvidia' | 'comfy-cu126' }
+      | { state: 'unknown' | 'mismatch'; environment: null }
     layout: 'venv' | 'external-venv' | 'portable' | 'unrecognized'
     host: string
     connection: 'online' | 'offline' | 'unknown'

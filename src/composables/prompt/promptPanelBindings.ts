@@ -93,7 +93,9 @@ export interface PromptDialogBindings extends Pick<Engine, 'displayResultUrl' | 
   Pick<Compare, 'compareEl' | 'prevResult' | 'lastResult' | 'compareOpen'> {
   adultEnabled: Readonly<Ref<boolean>>
   inpaintProvider: Readonly<Ref<'comfy' | 'native' | undefined>>
+  inpaintManagedStartAvailable: Readonly<Ref<boolean>>
   inpaintAutomaticMaskAvailable: Readonly<Ref<boolean>>
+  inpaintAutomaticMaskStatus: Readonly<Ref<import('@/types/anima').ComfyNodeReadiness | undefined>>
   inpaintPreparing: Readonly<Ref<boolean>>
   inpaintImageSource: Readonly<Ref<InpaintSource>>
   livePrompt: Assembly['positivePrompt']

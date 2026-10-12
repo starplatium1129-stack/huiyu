@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import type { ProfilePort } from './profileStorage'
 import type { ProfileSnapshot } from '../../../types/profile'
-import { WORKSPACE_BACKUP_PENDING_PREFIX, BATCH_DRAW_PLAN_KEY, CHAT_DRAFT_PREFIX, SD_PENDING_QUEUE_KEY, SD_QUEUE_SNAPSHOT_KEY, TEMP_RESULT_KEY, VIDEO_CONTEXT_KEY, VIDEO_DRAFT_KEY, VIDEO_SCENARIO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY, VIDEO_SHOTS_DRAFT_KEY } from '../../utils/storageKeys'
+import { LOCAL_SETUP_DRAFT_KEY, WORKSPACE_BACKUP_PENDING_PREFIX, BATCH_DRAW_PLAN_KEY, CHAT_DRAFT_PREFIX, SD_PENDING_QUEUE_KEY, SD_QUEUE_SNAPSHOT_KEY, TEMP_RESULT_KEY, VIDEO_CONTEXT_KEY, VIDEO_DRAFT_KEY, VIDEO_SCENARIO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY, VIDEO_SHOTS_DRAFT_KEY } from '../../utils/storageKeys'
 import { classifyMigrationKey } from './migrationClassification'
 
 afterEach(() => { vi.resetModules(); localStorage.clear(); sessionStorage.clear() })
@@ -133,6 +133,7 @@ it('fails closed on pending SD CAS conflicts instead of overwriting a newer auth
 it.each([
   { key: 'aics_pb_last_draft', local: true },
   { key: 'aics-model-draft-fixture', local: true },
+  { key: LOCAL_SETUP_DRAFT_KEY, local: true },
   { key: `aics-model-draft-fixture:${CHAT_DRAFT_PREFIX}nene`, local: true },
   ...[BATCH_DRAW_PLAN_KEY, VIDEO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY, VIDEO_SCENARIO_CONTEXT_KEY,
     VIDEO_DRAFT_KEY, VIDEO_SHOTS_DRAFT_KEY, TEMP_RESULT_KEY, SD_PENDING_QUEUE_KEY].map(key => ({ key, local: false })),

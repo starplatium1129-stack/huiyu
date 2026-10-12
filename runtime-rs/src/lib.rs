@@ -97,6 +97,17 @@ impl AppState {
 }
 
 pub fn router(state: AppState) -> Router {
+    if let Some(control) = &state.control {
+        if let Some(service) = &state.generation {
+            service.bind_control(control);
+        }
+        if let Some(service) = &state.images {
+            service.bind_control(control);
+        }
+        if let Some(service) = &state.video {
+            service.bind_control(control);
+        }
+    }
     let mut router = Router::new()
         .route("/api/health", get(health))
         .merge(host::router())

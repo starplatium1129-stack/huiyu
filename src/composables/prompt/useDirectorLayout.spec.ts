@@ -107,3 +107,14 @@ it('pauses cached layout observation and refreshes geometry and preferences once
   window.dispatchEvent(new Event('resize'))
   expect(measure).toHaveBeenCalledTimes(beforeResize + 1)
 })
+
+it('fits default rails to the measured content width without saving temporary geometry', () => {
+  const { api, wrapper } = setup(900)
+  try {
+    expect(api.materialsWidth.value + api.inspectorWidth.value + 352).toBeLessThanOrEqual(900)
+    expect(localStorage.getItem(DIRECTOR_LAYOUT_KEY)).toBeNull()
+    api.toggle('materials')
+    const saved = JSON.parse(localStorage.getItem(DIRECTOR_LAYOUT_KEY)!)
+    expect(saved).toEqual({ materials: null, inspector: null, hideMaterials: true, hideInspector: false })
+  } finally { wrapper.unmount() }
+})

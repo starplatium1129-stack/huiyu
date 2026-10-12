@@ -6,7 +6,7 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 import { apiClient } from '@/api/client'
 import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
-import { DRAW_ENGINE_SETTING } from '@/storage/settingsRepository'
+import { DRAW_ENGINE_SETTING, STARTER_MODEL_SETTING } from '@/storage/settingsRepository'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { readTempResult } from '@/utils/tempResult'
 import { usePromptWorkspace } from './usePromptWorkspace'
@@ -49,7 +49,7 @@ async function setup(query = '', loadData: () => Promise<void> = async () => {},
   const restoreDraft = vi.spyOn(pb, 'restoreDraft')
   if (!restoreSavedDraft) restoreDraft.mockReturnValue(false)
   const saveDraft = vi.spyOn(pb, 'saveDraft').mockImplementation(() => {})
-  const router = createRouter({ history: createMemoryHistory(), routes: [{ path: '/prompt-builder', component: { render: () => null } }] })
+  const router = createRouter({ history: createMemoryHistory(), routes: ['/prompt-builder', '/settings'].map(path => ({ path, component: { render: () => null } })) })
   await router.push('/prompt-builder' + query)
   await router.isReady()
   let workspace!: ReturnType<typeof usePromptWorkspace>
@@ -80,7 +80,165 @@ function configureAnima(workspace: ReturnType<typeof usePromptWorkspace>, pb: Re
     loraId: 'L_NENE_V21_ANIMA', loras: [{ id: 'L_NENE_V21_ANIMA', available: true }] })
 }
 
+function preparedModelBackend(unavailable = '') {
+  const status = { ok: true, online: true, models: [
+    { id: 'anima-miaomiao-v1.6', family: 'anima', available: true },
+    { id: 'anima-base-v1.0', family: 'anima', available: true },
+    { id: 'anima-aesthetic-v1.1', family: 'anima', available: true },
+    { id: 'krea2-turbo-fp8', family: 'krea2', available: true },
+  ], loras: [{ id: 'L_NENE_V21_ANIMA', character: 'nene', available: true },
+    { id: 'L_NAT_V21_ANIMA', character: 'natsume', available: true }] }
+  vi.mocked(apiClient.request).mockImplementation(async (url, options) => {
+    if (url.endsWith('/jobs') && options?.method === 'POST') throw new Error('isolated submission failure')
+    return status as never
+  })
+  if (unavailable) status.models.find(model => model.id === unavailable)!.available = false
+}
+
 describe('workspace ownership and panel boundaries', () => {
+  it.each(['anima', 'krea2'] as const)('hands a prepared Base model to a cached %s workspace and its actual basic-mode request once', async previousEngine => {
+    preparedModelBackend()
+    localStorage.setItem(DRAW_ENGINE_SETTING.key, previousEngine)
+    const { workspace, pb, router, active } = await setup('', undefined, false, true)
+    pb.modelProfiles = parsePresetCatalog(presetCatalog).modelProfiles
+    workspace.materialBindings.selectScene(scene)
+    await vi.dynamicImportSettled(); await flushPromises()
+    active.value = false; await nextTick()
+    await router.push('/settings')
+    localStorage.setItem(DRAW_ENGINE_SETTING.key, 'anima')
+    localStorage.setItem(STARTER_MODEL_SETTING.key, 'anima-base-v1.0')
+    await router.push('/prompt-builder?preparedModel=anima-base-v1.0')
+    active.value = true; await nextTick(); await vi.dynamicImportSettled(); await flushPromises()
+    expect(workspace.drawEngine.value).toBe('anima')
+    expect(workspace.animaState.value.modelId).toBe('anima-base-v1.0')
+    expect(router.currentRoute.value.query.preparedModel).toBeUndefined()
+    pb.directorMode = 'basic'
+    await workspace.callGenerate()
+    expect(imagePosts()).toHaveLength(1)
+    expect(imagePosts()[0]![1]!.body).toMatchObject({ modelId: 'anima-base-v1.0', character: 'nene' })
+    pb.char = 'natsume'
+    await vi.dynamicImportSettled(); await flushPromises()
+    await workspace.callGenerate()
+    expect(imagePosts()).toHaveLength(2)
+    expect(imagePosts()[1]![1]!.body).toMatchObject({ modelId: 'anima-base-v1.0', character: 'natsume', loraId: 'L_NAT_V21_ANIMA' })
+    workspace.renderBindings.selectAnimaModel('anima-miaomiao-v1.6')
+    active.value = false; await nextTick(); active.value = true
+    await nextTick(); await vi.dynamicImportSettled(); await flushPromises()
+    expect(workspace.animaState.value.modelId).toBe('anima-miaomiao-v1.6')
+  })
+
+  it('keeps the prepared model through fresh basic-mode initialization, submission and reopening', async () => {
+    preparedModelBackend()
+    localStorage.setItem('aics_pb_director_mode', 'basic')
+    localStorage.setItem(STARTER_MODEL_SETTING.key, 'anima-base-v1.0')
+    const loadProfiles = async () => { usePromptBuilderStore().modelProfiles = parsePresetCatalog(presetCatalog).modelProfiles }
+    const { workspace, pb, router, wrapper } = await setup('?preparedModel=anima-base-v1.0', loadProfiles)
+    workspace.materialBindings.selectScene(scene)
+    await workspace.callGenerate()
+    expect(pb.directorMode).toBe('basic')
+    expect(router.currentRoute.value.query).toEqual({})
+    expect(imagePosts()).toHaveLength(1)
+    expect(imagePosts()[0]![1]!.body).toMatchObject({ modelId: 'anima-base-v1.0', loraId: 'L_NENE_V21_ANIMA' })
+    wrapper.unmount()
+    const reopened = await setup('', loadProfiles)
+    reopened.workspace.materialBindings.selectScene(scene)
+    await reopened.workspace.callGenerate()
+    expect(imagePosts()).toHaveLength(2)
+    expect(imagePosts()[1]![1]!.body).toMatchObject({ modelId: 'anima-base-v1.0', loraId: 'L_NENE_V21_ANIMA' })
+  })
+
+  it.each(['busy', 'unknown', 'other-family', 'unavailable'] as const)('rejects a %s prepared-model handoff without changing the current model', async condition => {
+    const selected = condition === 'unknown' ? 'anima-unknown' : condition === 'other-family' ? 'krea2-turbo-fp8' : 'anima-base-v1.0'
+    preparedModelBackend(condition === 'unavailable' ? selected : '')
+    const { workspace, pb, router, active } = await setup('', undefined, false, true)
+    pb.modelProfiles = parsePresetCatalog(presetCatalog).modelProfiles
+    if (condition === 'busy') workspace.animaSession.patchState({ phase: 'running' })
+    active.value = false; await nextTick(); await router.push('/settings')
+    localStorage.setItem(STARTER_MODEL_SETTING.key, selected)
+    await router.push('/prompt-builder?preparedModel=' + selected)
+    active.value = true; await nextTick(); await vi.dynamicImportSettled(); await flushPromises()
+    expect(workspace.animaState.value.modelId).toBe('anima-miaomiao-v1.6')
+    expect(router.currentRoute.value.query.preparedModel).toBeUndefined()
+    if (condition === 'busy') {
+      expect(workspace.animaState.value.phase).toBe('running')
+      workspace.animaSession.patchState({ phase: 'idle' })
+      await nextTick()
+      expect(workspace.animaState.value.modelId).toBe('anima-miaomiao-v1.6')
+    }
+    expect(imagePosts()).toHaveLength(0)
+  })
+
+  it.each(['unavailable', 'failed-check', 'cached-failed-check'] as const)('preserves the previous recipe when a prepared-model handoff has %s evidence', async condition => {
+    preparedModelBackend(condition === 'unavailable' ? 'anima-base-v1.0' : '')
+    const previousEngine = condition === 'cached-failed-check' ? 'anima' : 'krea2'
+    localStorage.setItem(DRAW_ENGINE_SETTING.key, previousEngine)
+    const { workspace, pb, router } = await setup()
+    pb.modelProfiles = parsePresetCatalog(presetCatalog).modelProfiles
+    workspace.animaSession.patchState({ cfg: 6.5, steps: 19, seed: 42 })
+    if (condition !== 'unavailable') vi.mocked(apiClient.request).mockRejectedValueOnce(new Error('isolated status failure'))
+    localStorage.setItem(STARTER_MODEL_SETTING.key, 'anima-base-v1.0')
+    await router.push('/prompt-builder?preparedModel=anima-base-v1.0'); await flushPromises()
+    expect(workspace.drawEngine.value).toBe(previousEngine)
+    expect(workspace.animaState.value).toMatchObject({ family: previousEngine,
+      modelId: previousEngine === 'krea2' ? 'krea2-turbo-fp8' : 'anima-miaomiao-v1.6', cfg: 6.5, steps: 19, seed: 42 })
+    expect(imagePosts()).toHaveLength(0)
+  })
+
+  it('uses only the latest prepared-model link when preflight responses arrive in old-first order', async () => {
+    preparedModelBackend()
+    const { workspace, pb, router } = await setup()
+    pb.modelProfiles = parsePresetCatalog(presetCatalog).modelProfiles
+    const respond = vi.mocked(apiClient.request).getMockImplementation()!
+    const releases: (() => void)[] = []
+    vi.mocked(apiClient.request).mockImplementation(async (...args) => {
+      if (args[0] === '/api/creative/status') await new Promise<void>(resolve => releases.push(resolve))
+      return respond(...args)
+    })
+    localStorage.setItem(STARTER_MODEL_SETTING.key, 'anima-base-v1.0')
+    await router.push('/prompt-builder?preparedModel=anima-base-v1.0'); await flushPromises()
+    localStorage.setItem(STARTER_MODEL_SETTING.key, 'anima-aesthetic-v1.1')
+    await router.push('/prompt-builder?preparedModel=anima-aesthetic-v1.1'); await flushPromises()
+    expect(releases).toHaveLength(2)
+    releases[0]!(); await flushPromises()
+    expect(workspace.animaState.value.modelId).toBe('anima-miaomiao-v1.6')
+    releases[1]!(); await flushPromises()
+    expect(workspace.animaState.value.modelId).toBe('anima-aesthetic-v1.1')
+    expect(router.currentRoute.value.query).toEqual({})
+  })
+
+  it('does not apply a delayed prepared-model response over newer user settings', async () => {
+    preparedModelBackend()
+    const { workspace, pb, router } = await setup()
+    pb.modelProfiles = parsePresetCatalog(presetCatalog).modelProfiles
+    const respond = vi.mocked(apiClient.request).getMockImplementation()!
+    let release!: () => void
+    const waiting = new Promise<void>(resolve => { release = resolve })
+    vi.mocked(apiClient.request).mockImplementation(async (...args) => {
+      if (args[0] === '/api/creative/status') await waiting
+      return respond(...args)
+    })
+    localStorage.setItem(STARTER_MODEL_SETTING.key, 'anima-base-v1.0')
+    await router.push('/prompt-builder?preparedModel=anima-base-v1.0'); await flushPromises()
+    workspace.animaSession.patchState({ cfg: 6.5 })
+    release(); await flushPromises()
+    expect(workspace.animaState.value.modelId).toBe('anima-miaomiao-v1.6')
+    expect(workspace.animaState.value.cfg).toBe(6.5)
+  })
+
+  it('gives an explicit history recipe priority over a prepared-model link', async () => {
+    preparedModelBackend()
+    localStorage.setItem(STARTER_MODEL_SETTING.key, 'anima-base-v1.0')
+    const { workspace, pb, router } = await setup()
+    pb.modelProfiles = parsePresetCatalog(presetCatalog).modelProfiles
+    pb.history = [{ id: 'saved', engine: 'anima', character: 'nene', story: 'Saved recipe', model: 'anima-miaomiao-v1.6', size: '1216x832', seed: 42 }]
+    await router.push('/prompt-builder?regen=saved&preparedModel=anima-base-v1.0')
+    await vi.dynamicImportSettled(); await flushPromises()
+    expect(pb.story).toBe('Saved recipe')
+    expect(workspace.animaState.value.modelId).toBe('anima-miaomiao-v1.6')
+    expect(workspace.animaState.value.seed).toBe(42)
+    expect(router.currentRoute.value.query).toEqual({ regen: 'saved' })
+  })
+
   it.each(['unmount', 'deactivate'])('does not apply a reference after %s while its helper is loading', async boundary => {
     const { workspace, pb, wrapper, active } = await setup('', undefined, false, boundary === 'deactivate')
     pb.manualTags = new Set(['smile'])

@@ -75,7 +75,7 @@ import { useInferenceSettings } from '@/composables/useInferenceSettings'
 const { isLocal, draft, snapshot, diagnostics, loading, saving, error, notice, dirty, refresh, save, probe, probing, probeError, diagnose } = useInferenceSettings()
 const setupBusy = ref(false)
 function fillPreparedPaths(paths: PreparedInferencePaths) {
-  Object.assign(draft, paths)
+  for (const key of ['python', 'worker', 'modelsRoot', 'lorasRoot'] as const) draft[key] = paths[key]
   notice.value = '已填入路径草稿。请确认引擎选择后保存，再重启运行时；当前运行与已保存配置未改变。'
 }
 const engineOptions = [{ value: 'comfy', label: 'ComfyUI' }, { value: 'native', label: '独立引擎（Native Anima）' }]

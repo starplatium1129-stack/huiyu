@@ -25,6 +25,11 @@ it('keeps failure recovery accessible in scene mode and blocks retry while gener
   })
   try {
     expect(wrapper.get('[role="alert"]').text()).toContain('请检查绘图服务后重试')
+    expect(wrapper.find('textarea').exists()).toBe(false)
+    await wrapper.get('.inspector-description-link').trigger('click')
+    expect(wrapper.emitted('editDescription')).toEqual([[]])
+    await wrapper.setProps({ descriptionInHeader: true })
+    expect(wrapper.find('.inspector-description-link').exists()).toBe(false)
     expect(wrapper.find('.inspector-advanced[open]').exists()).toBe(false)
     expect(wrapper.get('.anima-retry').element.closest('details')).toBeNull()
     await wrapper.get('.anima-retry').trigger('click')

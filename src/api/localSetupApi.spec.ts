@@ -35,6 +35,20 @@ describe('local setup read-only HTTP boundary', () => {
     expect(fetch).toHaveBeenCalledTimes(2)
     expect(fetch.mock.calls[0]).toEqual(['/api/local-setup', expect.objectContaining({ method: 'GET', cache: 'no-store', signal: expect.any(AbortSignal) })])
   })
+  it('validates installed runtime evidence without guessing an unknown variant', async () => {
+    const value = snapshot()
+    for (const evidence of [
+      { state: 'verified', environment: 'comfy-cu126' },
+      { state: 'unknown', environment: null },
+      { state: 'mismatch', environment: null },
+    ]) {
+      const body = { ...value, comfy: { ...value.comfy, managedEnvironment: evidence } }
+      await expect(setup(body).api.getStatus()).resolves.toEqual(body)
+    }
+    for (const evidence of [{ state: 'verified', environment: null }, { state: 'unknown', environment: 'comfy-nvidia' }]) {
+      await expect(setup({ ...value, comfy: { ...value.comfy, managedEnvironment: evidence } }).api.getStatus()).rejects.toMatchObject({ kind: 'invalid-response' })
+    }
+  })
   it('refuses non-local reads before contacting the runtime', async () => {
     access.local = false
     const { fetch, api } = setup(snapshot())

@@ -43,8 +43,9 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     available.value - (preferences.value.hideInspector ? 0 : Math.min(preferences.value.inspector ?? baseInspector.value, Math.max(280, available.value - 240))))))
   const inspectorWidth = computed(() => Math.max(280, Math.min(preferences.value.inspector ?? baseInspector.value,
     available.value - (preferences.value.hideMaterials ? 0 : materialsWidth.value))))
-  const style = computed(() => preferences.value.materials !== null || preferences.value.inspector !== null
-    ? { '--director-material-width': `${materialsWidth.value}px`, '--director-inspector-width': `${inspectorWidth.value}px` } : {})
+  // Theme navigation and page framing reduce the actual workspace even before
+  // a user resizes either rail. Clamp defaults too, without rewriting preferences.
+  const style = computed(() => ({ '--director-material-width': `${materialsWidth.value}px`, '--director-inspector-width': `${inspectorWidth.value}px` }))
   const collapsed = computed(() => ({ materials: preferences.value.hideMaterials, inspector: preferences.value.hideInspector }))
   function save() {
     try { profileLocalStorage.setItem(DIRECTOR_LAYOUT_KEY, JSON.stringify(preferences.value)) } catch { /* The current layout remains usable if storage is unavailable. */ }

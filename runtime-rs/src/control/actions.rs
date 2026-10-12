@@ -186,6 +186,11 @@ impl ControlService {
             self.save_managed().await?;
         }
         if start && self.online(index, &settings).await {
+            if index == 1 {
+                let owned = self.comfy_owned().await;
+                self.state.lock().unwrap().managed[1].owned = owned;
+                self.comfy_cancel.lock().unwrap().take();
+            }
             if !op["kind"]
                 .as_str()
                 .is_some_and(|kind| kind.starts_with("mode-"))
@@ -211,6 +216,9 @@ impl ControlService {
             )
             .await
         };
+        if index == 1 {
+            self.comfy_cancel.lock().unwrap().take();
+        }
         if self.shutdown.is_cancelled() {
             return Err(ApiError::new(499, "ABORTED", "服务操作已取消"));
         }
@@ -249,7 +257,7 @@ impl ControlService {
     async fn save_managed(&self) -> Result<()> {
         let managed = {
             let state = self.state.lock().unwrap();
-            json!({"webui":state.managed[0].desired,"comfy":state.managed[1].desired})
+            json!({"webui":state.managed[0].desired,"comfy":state.managed[1].desired, "comfyHost":self.config.comfy_host, "comfyRoot":self.comfy_root()})
         };
         self.patch(json!({"managedServices":managed})).await?;
         Ok(())
@@ -311,6 +319,9 @@ impl ControlService {
             vec!["正在操作服务", "正在验证服务状态"]
         };
         let op = self.begin(&kind, &stages)?;
+        if matches!(kind.as_str(), "comfy-start" | "mode-draw") {
+            *self.comfy_cancel.lock().unwrap() = Some(self.shutdown.child_token());
+        }
         let response = json!({"ok":true,"pending":true,"operation":op,"message":"操作已开始"});
         let service = self.clone();
         self.tasks.spawn(async move {

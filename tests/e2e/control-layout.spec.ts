@@ -17,7 +17,7 @@ async function mockControl(page: Page) {
     ok: true, checkedAt: 1_791_083_000_000, recommendedModel: 'anima-miaomiao-v1.6',
     workspace: { path: 'D:\\AI', state: 'present' },
     comfy: { path: 'D:\\AI\\ComfyUI', installation: 'present', layout: 'venv', host: state.comfyHost, connection: 'online' },
-    models: ['anima-miaomiao-v1.6', 'qwen-encoder', 'qwen-vae', 'L_NENE_V21_ANIMA', 'L_NAT_V21_ANIMA'].map((id, index) => ({
+    models: ['anima-miaomiao-v1.6', 'qwen-encoder', 'qwen-vae', 'L_NENE_V21_ANIMA', 'L_NAT_V21_ANIMA', 'runtime-comfy-nvidia', 'runtime-kjnodes', 'runtime-anima-teacache'].map((id, index) => ({
       id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'present', bytes: 10, required: index < 3,
       preparation: { url: 'https://huggingface.co/circlestone-labs/Anima/resolve/fixture/model.safetensors',
         modelCardUrl: 'https://huggingface.co/circlestone-labs/Anima', licenseUrl: 'https://huggingface.co/circlestone-labs/Anima/blob/fixture/LICENSE.md',
@@ -52,6 +52,8 @@ for (const theme of ['dark', 'light']) {
     await page.goto(base + '/control')
     const panel = page.locator('#control-setup')
     await expect(panel.getByRole('list', { name: '绘图准备进度' })).toBeVisible()
+    await expect(panel.getByRole('checkbox', { name: '准备 Anima 绘图', exact: true })).toBeChecked()
+    await expect(panel.getByText('显卡信息尚未确认。', { exact: false })).toBeVisible()
     const draft = panel.getByRole('link', { name: '先准备创作草稿', exact: true })
     await expect(draft).toBeVisible()
     await expect(panel.getByRole('button', { name: '一键准备所选能力', exact: true })).toBeDisabled()

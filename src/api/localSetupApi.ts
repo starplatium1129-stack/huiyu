@@ -22,11 +22,15 @@ const preparation = (value: unknown) => value === null || (object(value)
   && typeof value.expectedBytes === 'number' && Number.isSafeInteger(value.expectedBytes) && value.expectedBytes > 0)
 const strings = (value: unknown): value is string[] => Array.isArray(value) && value.every(item => typeof item === 'string')
 
+const managedEnvironment = (value: unknown) => value === undefined || (object(value)
+  && (value.state === 'verified' ? value.environment === 'comfy-nvidia' || value.environment === 'comfy-cu126'
+    : (value.state === 'unknown' || value.state === 'mismatch') && value.environment === null))
+
 function validSetup(value: ApiResponseObject): boolean {
   const { workspace, comfy, models, nodes, hardware } = value
   return value.ok === true && typeof value.checkedAt === 'number' && Number.isFinite(value.checkedAt) && value.checkedAt >= 0
     && object(workspace) && typeof workspace.path === 'string' && fileState(workspace.state)
-    && object(comfy) && typeof comfy.path === 'string' && fileState(comfy.installation)
+    && object(comfy) && managedEnvironment(comfy.managedEnvironment) && typeof comfy.path === 'string' && fileState(comfy.installation)
     && (comfy.layout === 'venv' || comfy.layout === 'external-venv' || comfy.layout === 'portable' || comfy.layout === 'unrecognized')
     && typeof comfy.host === 'string' && (comfy.connection === 'online' || comfy.connection === 'offline' || comfy.connection === 'unknown')
     && Array.isArray(models) && models.every(model => object(model) && typeof model.id === 'string'
