@@ -29,4 +29,6 @@
 <p>最终源码执行 <code>cargo build --locked --offline --manifest-path runtime-rs/Cargo.toml</code>，退出 0，45.30 秒；仅 Rust 产品 debug 编译。首次候选也编译成功，之后补了枚举后取消检查，所以重新构建最终源码。两处 Atomic fetch_update 弃用警告也出现在 PR #74 基线。两个变更源文件总行数为 241 / 196，均低于 500；差异空白与实际消费者已源码审查。</p>
 <p>未运行任何测试 / 断言 / 夹具、Windows 桌面或真实模型目录、并发 / 取消场景、release / 安装 / 部署或 GPU 推理。文档全库扫描未重跑：前轮已知 roadmap 仍引用被删除的测试夹具，本轮只读确认 86f9421c 也存在该链接；没有恢复夹具、改门禁或把旧失败改写为当前通过。新 HTML 及 docs/INDEX.md 入口只完成定向源码检查。</p>
 <p>提交只含 <code>runtime-rs/src/desktop_tools/files.rs</code>、<code>runtime-rs/src/desktop_tools.rs</code>、本 HTML 和 docs/INDEX.md。files.rs 的变更限于 imports / 目录列表（原 6–65 行）；read_bounded、read、write、image 函数未改。若主任务修改同文件的图像正文路径，整合时保留双方 hunk。不改 schema 或任务索引，不另开 PR，不合并、发布或部署；独立分支供主任务整合 PR #74。</p>
+<h2>整合后官方 release 观测</h2>
+<p>主会话 cherry-pick 为 7ee8f6c2，并在另一云环境用同一 Rust 1.98.1 official locked release profile 的稳定基线／整合产物执行真实普通 API：五 CPU、同目录、单 persistent HTTP 调用者，首次另列＋十轮 ABBA，各侧 n=20 热样本，无编译或 strace 并行，OS cache 未清空。大目录 median 9.840→2.427 ms，热 P95 10.896→3.012 ms；小目录 median 6.238→1.225 ms，热 P95 6.494→1.370 ms。与上面作者 debug 观测独立，绝不混用比例或环境。完整范围、首次值、源码／产物 SHA、隔离启动／正常清理及 raw 来源见 <a href="../2026-10-13/backend-hotpaths.html#cloud-directory-integration">主任务已有 HTML</a>。仍未运行测试、并发取消、Windows／NAS／真实模型或 GPU 验收。</p>
 </html>
