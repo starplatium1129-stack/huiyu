@@ -140,7 +140,7 @@
         0.95
       ],
       "thresholdDefault": 0.45,
-      "postprocess": "ordered mean phrase logits with repeats; Torch bilinear; 3x 5x5 reflect box smooth; sigmoid threshold to FP32 0/1; exact square growth by horizontal then vertical max-pool with the same stride/negative-infinity boundary; 3x 25x25 reflect box feather; float masks preserved through latent trilinear and hires nearest-exact/composite",
+      "postprocess": "ordered mean phrase logits with repeats; Torch bilinear; 3x 5x5 reflect box smooth; sigmoid threshold to FP32 0/1; exact binary square growth by bounded integer row/column prefix presence with clipped coordinates and owned FP32 canonical output; 3x 25x25 reflect box feather; float masks preserved through latent trilinear and hires nearest-exact/composite",
       "files": [
         "config.json",
         "preprocessor_config.json",
