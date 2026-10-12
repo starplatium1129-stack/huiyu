@@ -153,11 +153,12 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   const drawEngineLabel = computed(() => drawEngine.value === 'sd' ? 'SD' : drawEngine.value === 'anima' ? 'Anima' : 'Krea 2')
   const generationStatusText = computed(() => drawEngine.value === 'sd' ? sd.statusText.value : animaState.value.statusText)
   const engineOnline = computed(() => {
+    const ready = animaState.value.online || animaState.value.managedStartAvailable === true
     if (drawEngine.value === 'anima') {
-      if (pb.isPopular) return animaState.value.online && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false)
-      return (currentCapabilities.value.dualCharacter || pb.char !== 'triad') && Boolean(animaState.value.loraId) && animaState.value.online
+      if (pb.isPopular) return ready && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false)
+      return (currentCapabilities.value.dualCharacter || pb.char !== 'triad') && Boolean(animaState.value.loraId) && ready
     }
-    if (drawEngine.value === 'krea2') return animaState.value.online
+    if (drawEngine.value === 'krea2') return ready
     return sd.online.value
   })
   const generationBusy = computed(() => sd.generating.value || (['submitting', 'running', 'cancelling'] as string[]).includes(animaState.value.phase))

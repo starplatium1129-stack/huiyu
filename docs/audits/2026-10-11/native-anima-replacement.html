@@ -1,14 +1,15 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <title>绘遇 Anima 独立后端 · 本轮验证</title>
+  <link rel="stylesheet" href="../../../src/assets/css/design-system.css">
+  <link rel="stylesheet" href="../../../src/assets/css/light-theme.css" media="(prefers-color-scheme: light)">
   <style>
-    :root{color-scheme:light dark;--bg:#f4f6f9;--card:#fff;--text:#17202d;--muted:#46546a;--line:#c8d0dd;--link:#174db0;--ok:#165c40;--ok-bg:#e4f4eb;--pending:#714707;--pending-bg:#fff0cf;--fail:#9d2630;--fail-bg:#ffe8ea}
-    @media(prefers-color-scheme:dark){:root{--bg:#131820;--card:#1c2430;--text:#edf2fa;--muted:#b8c6d8;--line:#455268;--link:#9cc3ff;--ok:#9ce1bc;--ok-bg:#193c2c;--pending:#ffda90;--pending-bg:#483716;--fail:#ffb1b8;--fail-bg:#4b252b}}
-    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.75 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1120px;margin:auto;padding:40px 24px 64px}header{margin-bottom:28px}h1{font-size:clamp(26px,4vw,38px);line-height:1.3;margin:10px 0 18px}h2{font-size:22px;line-height:1.4;margin:0 0 16px}p{margin:10px 0}a{color:var(--link);text-underline-offset:3px}a:focus-visible{outline:3px solid var(--link);outline-offset:4px}section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:18px 0}.eyebrow,.muted{color:var(--muted)}.eyebrow{font-size:14px;letter-spacing:.06em}.summary{font-size:19px;max-width:900px}.badge{display:inline-block;border-radius:5px;padding:2px 8px;font-size:13px;font-weight:650;white-space:nowrap}.pass{color:var(--ok);background:var(--ok-bg)}.pending{color:var(--pending);background:var(--pending-bg)}.fail{color:var(--fail);background:var(--fail-bg)}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:15px}caption{text-align:left;color:var(--muted);margin:0 0 12px}th,td{padding:12px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{font-weight:650}tbody tr:last-child td{border-bottom:0}code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;overflow-wrap:anywhere}ul{padding-left:24px;margin:10px 0}li+li{margin-top:8px}.note{border-left:4px solid var(--line);padding-left:14px;color:var(--muted)}footer{color:var(--muted);font-size:14px;margin-top:24px}@media(max-width:650px){main{padding:24px 14px 40px}section{padding:18px 14px}th,td{padding:10px 7px}}
+    :root{color-scheme:light dark;--bg:var(--bg-base);--card:var(--bg-surface);--text:var(--text-primary);--muted:var(--text-secondary);--line:var(--border-strong);--link:var(--accent);--ok:var(--success-text);--ok-bg:var(--bg-elevated);--pending:var(--warning-text);--pending-bg:var(--bg-elevated);--fail:var(--danger-text);--fail-bg:var(--bg-elevated)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.75 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1120px;margin:auto;padding:40px 24px 64px}header{margin-bottom:28px}h1{font-size:clamp(26px,4vw,38px);line-height:1.3;margin:10px 0 18px}h2{font-size:22px;line-height:1.4;margin:0 0 16px}p{margin:10px 0}a{color:var(--link);text-decoration:underline;text-underline-offset:3px}a:focus-visible{outline:3px solid var(--link);outline-offset:4px}section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:18px 0}.eyebrow,.muted{color:var(--muted)}.eyebrow{font-size:14px;letter-spacing:.06em}.summary{font-size:19px;max-width:900px}.badge{display:inline-block;border-radius:5px;padding:2px 8px;font-size:13px;font-weight:650;white-space:nowrap}.pass{color:var(--ok);background:var(--ok-bg)}.pending{color:var(--pending);background:var(--pending-bg)}.fail{color:var(--fail);background:var(--fail-bg)}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:15px}caption{text-align:left;color:var(--muted);margin:0 0 12px}th,td{padding:12px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{font-weight:650}tbody tr:last-child td{border-bottom:0}code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;overflow-wrap:anywhere}ul{padding-left:24px;margin:10px 0}li+li{margin-top:8px}.note{border-left:4px solid var(--line);padding-left:14px;color:var(--muted)}footer{color:var(--muted);font-size:14px;margin-top:24px}@media(max-width:650px){main{padding:24px 14px 40px}section{padding:18px 14px}th,td{padding:10px 7px}}
   </style>
 </head>
 <body>
@@ -16,6 +17,7 @@
   <header>
     <p class="eyebrow">2026-10-11 · 本机实测与项目接入</p>
     <h1>绘遇 Anima 独立后端</h1>
+    <p><small>证据可访问性：本页保留当时的测量与人工看图结论，不代表本次重新运行。原始 JSON、PNG 和日志仅存于测试设备的 runtime/，未随仓库分发，无法从本页公开访问或独立复核；下列路径均为仓库根目录起算的本机记录，不是下载链接。</small></p>
     <p class="summary">绘遇现有 Anima 主流程已接入独立引擎：六个模型真实出图，支持 LoRA、图生图、蒙版、高清和圆括号权重。已校准角色组合的完整 API 热任务耗时减少 <strong>22.3%</strong>，并消除受保护加载路径约 <strong>3.28 GiB</strong> 的额外 CPU 原权重快照。</p>
     <p class="muted">本报告只记录这轮变化、验证与限制。默认引擎和加速环境设置未改，未执行桌面部署；非 Anima 模型和视频不在本次实现范围。</p>
   </header>

@@ -7,7 +7,8 @@ import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import { usePolling } from '@/composables/usePolling'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
-import { nativeAnimaRequestBlocker, nativeTeaCacheReady } from './nativeAnimaCapabilities'
+import { nativeAnimaRequestBlocker } from './nativeAnimaCapabilities'
+import { automaticMaskBlocker, backendReadiness } from './animaBackendReadiness'
 import {
   ANIMA_LORA_BY_CHARACTER,
   animaRequestPayload,
@@ -96,6 +97,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   function patchState(patch: Partial<AnimaGenerationState>) {
     if (!reconcilingSettings && 'loraStrength' in patch) loraStrengthTouched = true
+    if (patch.provider && patch.provider !== state.value.provider && !('autoHiresModel' in patch)) patch = { ...patch, autoHiresModel: undefined }
     state.value = { ...state.value, ...patch }
   }
 
@@ -164,21 +166,21 @@ export function useAnimaSession(options: AnimaSessionOptions) {
    * 成功响应即使 offline 也采用（清空列表）；只有请求失败才标记离线。
    */
   // Awaiters follow a superseding refresh; false means the view cancelled discovery.
-  function refreshBackend(): Promise<boolean> {
+  function refreshBackend(checkedStatus?: AnimaStatusResponse): Promise<boolean> {
     if (disposed) return Promise.resolve(false)
     // Superseding discovery still belongs to the pending read's edit baseline.
     if (!statusRequest) refreshSettingsRevision = settingsRevision
     statusRequest?.abort()
     const controller = new AbortController()
     statusRequest = controller
-    statusRefresh = readBackendStatus(controller, statusEpoch, refreshSettingsRevision)
+    statusRefresh = readBackendStatus(controller, statusEpoch, refreshSettingsRevision, checkedStatus)
     return statusRefresh
   }
 
-  async function readBackendStatus(controller: AbortController, epoch: number, initialSettingsRevision: number): Promise<boolean> {
+  async function readBackendStatus(controller: AbortController, epoch: number, initialSettingsRevision: number, checkedStatus?: AnimaStatusResponse): Promise<boolean> {
     const latest = () => epoch === statusEpoch && statusRequest !== controller ? statusRefresh ?? false : false
     try {
-      const data = await client.request<AnimaStatusResponse>('/api/creative/status', {
+      const data = checkedStatus ?? await client.request<AnimaStatusResponse>('/api/creative/status', {
         cache: 'no-store', signal: controller.signal, timeoutMs: 10_000,
         validate: value => value.ok === true,
       })
@@ -215,8 +217,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         const [nextWidth, nextHeight] = String(selectedModel.sizes[0]).split('x').map(Number)
         if (Number.isInteger(nextWidth) && Number.isInteger(nextHeight)) { width = nextWidth; height = nextHeight }
       }
-      const familyLabel = family === 'krea2' ? 'Krea 2' : 'Anima'
-      const online = data.online === true && selectedModel?.available === true
       /**
        * 底模默认值只在「换底模」时才重施（2026-08-30 UX 审计 P0-2）。
        *
@@ -236,10 +236,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       reconcilingSettings = true
       try {
         patchState({
-          online, provider, automaticMaskAvailable: data.capabilities?.automaticMask === true,
-          checkMsg: online
-            ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA${provider === 'native' ? ` · 原生局部重绘（实验性）${data.capabilities?.automaticMask === true ? ' · 本地自动识别文件就绪' : ' · 自动识别缺少本地 CLIPSeg 文件'} · TeaCache ${nativeTeaCacheReady(selectedModel) ? '校准档文件就绪（待加载核验）' : '缺少本地校准档'} · ${selectedModel?.capabilities?.hires ? '支持高清放大（TeaCache 高清组合需单独校准）' : '不支持高清修复'}` : ''}`
-            : `${familyLabel} 不可用（请检查${data.provider === 'native' ? '原生推理服务' : 'ComfyUI'}与当前模型文件）`,
+          ...backendReadiness(data, selectedModel, family, visibleModels.length, familyLoras.length),
           models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
           ...(endfield && loraId === endfield.loraId && state.value.loraId !== loraId ? { loraStrength: endfield.loraStrength } : {}),
           family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
@@ -254,7 +251,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     } catch (error) {
       if (statusRequest !== controller || controller.signal.aborted) return latest()
       if (error instanceof ApiClientError && error.kind === 'aborted') return false
-      patchState({ online: false, automaticMaskAvailable: false, checkMsg: `${options.getFamily() === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
+      patchState({ online: false, managedStartAvailable: false, automaticMaskAvailable: false, automaticMaskStatus: undefined, autoHiresModel: undefined, checkMsg: `${options.getFamily() === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
       return true
     } finally {
       if (statusRequest === controller) statusRequest = null
@@ -361,12 +358,11 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     if (!submission) return
     if (frozen && submission.family !== options.getFamily()) { options.flash('创作引擎已更换，请重新确认后提交'); return }
     const { request, family } = submission
-    if (!state.value.online) { options.flash('Anima 推理服务当前未连接'); return }
+    if (!state.value.online && !state.value.managedStartAvailable) { options.flash(`${family === 'krea2' ? 'Krea 2' : 'Anima'} 当前未连接或尚未就绪。${state.value.checkMsg}`); return }
     const nativeBlocker = state.value.provider === 'native' && nativeAnimaRequestBlocker(state.value.models, request)
     if (nativeBlocker) { options.flash(nativeBlocker); return }
-    if (state.value.provider === 'native' && request.maskPrompt && !state.value.automaticMaskAvailable) {
-      options.flash('自动识别需要完整的本地 CLIPSeg 模型文件，请先准备 clipseg-rd64-refined 目录或使用手绘遮罩。'); return
-    }
+    const maskBlocker = request.maskPrompt && automaticMaskBlocker(state.value)
+    if (maskBlocker) { options.flash(maskBlocker); return }
     const serial = ++requestSerial
     activeFamily = family
     jobRequest?.abort()
@@ -377,11 +373,11 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     const onResult = (result: AnimaResult) => { completedSubmissions.set(toRaw(result.blob), JSON.parse(JSON.stringify(submission)) as AnimaSubmission); options.onResult(result) }
     // F2：提交不再销毁上一张成片——移入 stash，失败/取消可找回（见 stashedResult）。
     stashCurrentResult()
-    patchState({ phase: 'submitting', job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: state.value.provider === 'native' ? '正在连接原生推理…' : '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '', errorReport: null })
+    patchState({ phase: 'submitting', job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: state.value.provider === 'native' ? '正在连接原生推理…' : state.value.online ? '正在连接 ComfyUI…' : '正在启动受管绘图服务…', statusText: '提交任务…', errorMsg: '', errorReport: null })
     let accepted = false
     const releaseLocalChat = async () => {
       if(isLocalStudioHost()) {
-        await client.request('/api/local-setup/llama',{method:'DELETE',signal:controller.signal,timeoutMs:10_000,validate:value=>value.ok===true})
+        await client.request('/api/local-setup/llama',{method:'DELETE',signal:controller.signal,timeoutMs:15_000,validate:value=>value.ok===true})
         controller.signal.throwIfAborted()
       }
     }

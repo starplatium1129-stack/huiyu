@@ -54,18 +54,18 @@
           <ChatModelControls
             :chat-provider="chatProvider"
             :busy="busy"
-            :ollama-online="ollamaOnline"
+            :ollama-online="ollamaOnline" :local-status-text="localStatusText" :checking-local="checkingChatStatus"
             :models="models"
             :current-model="currentModel"
-            :reasoning="reasoning"
+            :reasoning="reasoning" :companion-tools="companionTools"
             :api-settings-open="apiSettingsOpen"
             :use-host-config="useHostConfig"
             :host-api-model="hostApiModel"
             :api-configured="apiConfigured"
             :api-model="apiModel"
-            @set-provider="setChatProvider"
+            @set-provider="setChatProvider" @refresh-local="refreshChatStatus"
             @update:current-model="currentModel = $event"
-            @reasoning-change="onReasoningChange"
+            @reasoning-change="onReasoningChange" @update:companion-tools="companionTools = $event"
             @toggle-api-settings="apiSettingsOpen = !apiSettingsOpen"
           ><label v-if="currentCharacter.voice" class="room-volume"><span>播放音量 <small>{{ volume }}%</small></span><input type="range" v-model.number="volume" min="0" max="100" aria-label="播放音量" @input="onVolumeChange" /></label></ChatModelControls>
         </div>
@@ -74,9 +74,10 @@
 <ChatApiSettings
           v-if="chatProvider === 'api' && apiSettingsOpen"
           :vendor="apiVendor"
-          :base-url="useHostConfig ? (hostApiBaseUrl || apiBaseUrl) : apiBaseUrl"
-          :model="useHostConfig ? (hostApiModel || apiModel) : apiModel"
-          :api-key="useHostConfig ? '' : apiKey"
+          :base-url="apiBaseUrl"
+          :model="apiModel"
+          :api-key="apiKey"
+          :credentials-loading="storage.credentialsLoading.value"
           :hint="apiConfigHint"
           :is-local-host="isLocalHost"
           :host-configured="hostApiConfigured"
@@ -337,7 +338,7 @@ const {
   volume,
   preparingRoom,
   storage,
-  ollamaOnline,
+  ollamaOnline, localStatusText, checkingChatStatus, refreshChatStatus,
   models,
   currentModel,
   chatProvider,
@@ -351,7 +352,6 @@ const {
   statusKind,
   hostApiConfigured,
   hostApiModel,
-  hostApiBaseUrl,
   useHostConfig,
   apiConfigured,
   chatReady,
@@ -369,7 +369,7 @@ const {
   deleteMemory,
   messageRemembered,
   onReasoningChange,
-  webSearchEnabled,
+  webSearchEnabled, companionTools,
   setupTitle,
   setupDescription,
   hasReplayable,

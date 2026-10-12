@@ -74,6 +74,7 @@ impl Drop for Life {
 }
 
 struct Inner {
+    control: std::sync::RwLock<std::sync::Weak<crate::control::ControlService>>,
     native: native::Engine,
     native_images: bool,
     native_settings: native::Settings,
@@ -174,6 +175,17 @@ struct JobState {
 }
 
 impl Service {
+    pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
+        *self.inner.control.write().unwrap() = Arc::downgrade(control);
+    }
+    pub(crate) fn comfy_start_available(&self) -> bool {
+        self.inner
+            .control
+            .read()
+            .unwrap()
+            .upgrade()
+            .is_some_and(|control| control.comfy_start_available())
+    }
     pub(crate) fn native_settings(&self) -> Result<native::Settings> {
         Ok(self.inner.native_settings.clone())
     }
@@ -198,6 +210,7 @@ impl Service {
         let cancel = shutdown.child_token();
         let native_settings = native::load(&config)?;
         let inner = Arc::new(Inner {
+            control: std::sync::RwLock::new(std::sync::Weak::new()),
             native: native::Engine::default(),
             native_images: matches!(scope, Scope::Images) && native_settings.engine == "native",
             native_settings,

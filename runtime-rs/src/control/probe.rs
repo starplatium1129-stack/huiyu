@@ -121,9 +121,10 @@ impl ControlService {
         result["comfyOnline"] = json!(comfy);
         result["ttsOnline"] = json!(tts);
         result["llama"] = llama;
+        let comfy_owned = self.comfy_owned().await;
         let mut state = self.state.lock().unwrap();
         result["webuiManaged"] = json!(state.managed[0].owned);
-        result["comfyManaged"] = json!(state.managed[1].owned);
+        result["comfyManaged"] = json!(comfy_owned);
         state.health = result.clone();
         state.health_at = Some(Instant::now());
         result

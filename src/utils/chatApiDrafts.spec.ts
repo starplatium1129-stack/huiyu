@@ -2,6 +2,8 @@ import type { CompanionDesktopBridge } from '@/types/desktop'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createChatApiDrafts, CHAT_API_DRAFTS_KEY } from './chatApiDrafts'
 import { createBackup } from './backupCore'
+import { effectScope, ref } from 'vue'
+import type { ApiVendor } from '@/config/chatApi'
 
 const endpoint = 'https://neutral-drafts.example/v1'
 const secret = 'neutral-legacy-draft-key'
@@ -46,6 +48,68 @@ describe('provider draft credentials', () => {
     const reopened = createChatApiDrafts(vi.fn())
     await reopened.ready
     expect(reopened.drafts.value.custom.apiKey).toBe('neutral-new-draft-key')
+  })
+
+  it('recovers only saved exact-endpoint credentials after a module reload and preserves explicit clears', async () => {
+    const a = { baseUrl: 'https://saved-a.example/custom/v1', model: 'private-a', apiKey: 'neutral-saved-a' }
+    const b = { baseUrl: 'https://saved-b.example/v1', model: 'private-b', apiKey: 'neutral-saved-b' }
+    const unsaved = { baseUrl: 'https://unsaved.example/v1', model: 'private-c', apiKey: 'neutral-unsaved' }
+    const vault = new Map<string, string>()
+    const write = vi.fn(async (target: string, value: string) => { vault.set(target, value) })
+    bridge(async target => vault.get(target) || null, write)
+    const { useChatStorage } = await import('@/composables/chat/useChatStorage')
+    const { useChatProvider } = await import('@/composables/chat/useChatProvider')
+    const scope = effectScope()
+    const storage = scope.run(() => useChatStorage())!
+    const provider = scope.run(() => useChatProvider({ storage, isBusy: ref(false) }))!
+    const save = async (vendor: ApiVendor, entry: typeof a) => {
+      provider.apiVendor.value = vendor; provider.apiBaseUrl.value = entry.baseUrl
+      provider.apiModel.value = entry.model; provider.apiKey.value = entry.apiKey
+      await provider.saveApiSettings()
+      expect(storage.state.settings.apiKey).toBe(entry.apiKey)
+    }
+    try {
+      await save('custom', a)
+      const drafts = createChatApiDrafts(vi.fn()); await drafts.ready
+      drafts.set('custom', a)
+      await save('deepseek', b)
+      drafts.set('openai', unsaved)
+      const reopen = async () => {
+        vi.resetModules()
+        const module = await import('./chatApiDrafts')
+        const next = module.createChatApiDrafts(vi.fn())
+        await next.ready
+        return next
+      }
+      let reopened = await reopen()
+      expect(reopened.drafts.value.custom).toEqual(a)
+      expect(reopened.drafts.value.deepseek).toEqual(b)
+      expect(reopened.drafts.value.openai).toEqual({ ...unsaved, apiKey: '' })
+      expect(write.mock.calls).toEqual([[a.baseUrl, a.apiKey], [b.baseUrl, b.apiKey]])
+      expect(localStorage.getItem(CHAT_API_DRAFTS_KEY)).not.toContain('neutral-')
+      // A replaced selection may leave the active endpoint's deletion unconfirmed.
+      // Its draft clear must still prevent recovery of the old saved key.
+      await reopened.clear('custom', a)
+      expect(vault.get(a.baseUrl)).toBe(a.apiKey)
+      reopened = await reopen()
+      expect(reopened.drafts.value.custom).toMatchObject({ ...a, apiKey: '' })
+      const replacement = { ...a, apiKey: 'neutral-replacement' }
+      provider.apiVendor.value = 'custom'; provider.apiBaseUrl.value = a.baseUrl
+      provider.apiModel.value = a.model; provider.apiKey.value = replacement.apiKey
+      write.mockRejectedValueOnce(new Error('neutral-vault-failure'))
+      await provider.saveApiSettings()
+      expect(provider.apiConfigHint.value).toContain('配置保存未完成')
+      reopened = await reopen()
+      expect(reopened.drafts.value.custom).toMatchObject({ ...a, apiKey: '' })
+      expect(vault.get(a.baseUrl)).toBe(a.apiKey)
+      await save('custom', replacement)
+      reopened = await reopen()
+      expect(reopened.drafts.value.custom).toEqual(replacement)
+      reopened.set('custom', { ...a, baseUrl: 'https://different.example/v1', apiKey: '' })
+      reopened = await reopen()
+      expect(reopened.drafts.value.custom.apiKey).toBe('')
+      expect(reopened.drafts.value.custom.baseUrl).toBe('https://different.example/v1')
+    } finally { scope.stop() }
   })
 
   it('verifies a legacy draft in its own secure target before removing plaintext', async () => {
@@ -106,7 +170,7 @@ describe('provider draft credentials', () => {
     await started
     latest.set('cliproxy', { ...newest, model: 'metadata-edited' })
     release(); await metadataClear
-    expect(latest.drafts.value.cliproxy).toEqual({ ...newest, model: 'metadata-edited', apiKey: '' })
+    expect(latest.drafts.value.cliproxy).toEqual({ ...newest, model: 'metadata-edited', apiKey: '', keyCleared: true })
   })
 
   it('preserves failed legacy sources but excludes them from backups', async () => {

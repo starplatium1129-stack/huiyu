@@ -26,7 +26,7 @@ async function request<T>(path: string, method = 'GET', body?: unknown, signal?:
   const expected = epoch()
   onSubmitting?.()
   const response = await apiClient.request<{ result: T; runtimeEpoch: string }>(base + path, {
-    method, body, signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: method === 'POST' && path.endsWith('/concat') ? 120_000 : 30_000,
+    method, body, signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: method === 'POST' && path === '' ? 150_000 : method === 'POST' && path.endsWith('/concat') ? 120_000 : 30_000,
   })
   if (expected !== epoch() || response.runtimeEpoch !== expected) throw new ApiClientError('运行时连接已更换', { kind: 'aborted', code: 'RUNTIME_EPOCH_CHANGED' })
   return response.result

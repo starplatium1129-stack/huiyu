@@ -2,7 +2,7 @@
 
 新机器先安装桌面程序和完整素材包，随后按需要准备本地 AI 服务。**素材包提供角色、场景样张和浏览所需图片；生图、视频、对话、反推和 AI 配音需要各自的模型及运行环境。** 文件存在或下载校验通过，不能代替真实功能验收。
 
-> 整理日期：2026-10-09。当前自动准备能力见 [1.9.2](../releases/v1.9.2.md)，源码与安装身份分别核对。宁宁、夏目 Anima v21 绘图 LoRA 仍使用 [1.9.0 独立附件](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0)；声线与参考库是独立资源。安装见[离线资源指南](offline-resources.md)，启动见[STARTUP](../../STARTUP.md)。
+> 整理日期：2026-10-11。当前自动准备能力见 [1.9.2](../releases/v1.9.2.md)，源码与安装身份分别核对。宁宁、夏目 Anima v21 绘图 LoRA 仍使用 [1.9.0 独立附件](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0)；声线与参考库是独立资源。安装见[离线资源指南](offline-resources.md)，启动见[STARTUP](../../STARTUP.md)。
 
 ## 1. 一台新机器需要哪些交付物
 
@@ -16,6 +16,8 @@
 | 本地视频 | ComfyUI、Wan 或 H3 的完整权重与节点、可用 FFmpeg | `/api/video/status`，生成并播放短片，H3 另验音频 |
 | 本地对话 | 绘遇受管 llama.cpp 与所选 GGUF；显存较少优先 API；已有 Ollama 可保留连接 | 一次短对话、取消与绘图后的按需恢复；实际速度按设备记录 |
 | 中日翻译＋角色 AI 配音 | 下述 M2M100 与 Python 依赖；按所选引擎准备 GPT-SoVITS 环境及角色双权重，或 VoxCPM2 环境、基座与角色 LoRA；两者都需参考音频及原文 | `/api/tts/status`，分别验翻译、配音和口型 |
+
+控制室的“图片反推”区以及画室展开后的“图片反推”入口会读取当前 PixAI 文件／依赖状态，显示缺项、上次运行信息与准备说明；上传执行前仍会重新核对。文件被发现不等于 CUDA 或模型加载成功。桌面暂没有反推一键安装，源码维护准备必须使用当前运行时实际读取的目标目录，或通过启动进程继承的 `AICS_PIXAI_CONFIG` 指向真实 `runtime-config.json`；不能把源码默认输出目录当作已安装桌面的目录。反推只提取词条，不自动把所选图变为换装底图；局部换装需在换装窗口导入原图或使用当前成片。
 
 远程 API、Ollama 云端模型、公网分享、在线下载和更新需要联网；选择这些能力不属于离线验收。默认图片和台词预览不证明 AI 生成可用。浏览器/系统语音也需本机已安装的对应语言声音。
 
@@ -68,19 +70,35 @@ D:\HuiyuAI\
 
 Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/models`，源码服务缺省为应用同级 `AI/ComfyUI/models`，桌面使用选定的 AI 工作区。PixAI 的配置查找顺序见下方准备说明；旧 `AICS_WD14_MODEL_DIR` 不配置现行反推。独立 ComfyUI 若放在其他目录，可通过受控目录链接/上游模型配置使双方引用同一批真实文件；仅修改 `COMFY_HOST` 不会改变本机权重检查目录。`COMFYUI_MODELS_ROOT` **只改变体检扫描**，体检会报告它是否与网关目录一致。
 
+新 Portable 的可执行环境放在 `AI_WORKSPACE_ROOT/.runtimes/comfy/ComfyUI`，模型仍使用上述 `ComfyUI/models`。绘遇受管启动显式指定 `ComfyUI/input`，图生图、蒙版与视频输入不随 Portable 安装位置漂移；外部服务需自行对齐模型及输入目录，仅改连接地址不会搬运这些文件。
+
+只有在控制室明确启动且由绘遇持有的 ComfyUI 才保存托管意愿，并绑定当前地址与安装目录。重开应用只恢复地址和安装目录均匹配的意愿，不立即占用 GPU；旧配置只有布尔标志时，先用“启动现有环境并重新检查”确认一次。Anima/Krea 2 显示“生成时自动启动”后，提交会先检查本地资源，再复用现有管理器唤醒服务。手动停止会关闭这一意愿；已在线的外部服务不会因此被接管。取消一张图停止该提交的等待，不中断其他请求共用的服务启动；控制室可取消启动，退出绘遇会清理自有进程。
+
 上游只支持本机 loopback：`SD_HOST` 默认 `http://127.0.0.1:7860`，`COMFY_HOST` 默认 `http://127.0.0.1:8188`，`TTS_HOST` 默认 `http://127.0.0.1:9880`。地址/角色声线可在控制室保存；更换机器后重配参考音频和权重的绝对路径，不复制旧 PID 当作新服务已启动。
 
 ### 首次配置与一键准备
 
 初次打开本机会显示欢迎入口，进入控制室首次配置。先选择 AI 数据目录；保存的新目录在重启后生效，桌面可点击“重启绘遇并继续配置”，先确认个人配置写入再重启。浏览器连接已准备的本机服务，目录选择仍由桌面宿主完成。
 
-首次配置按 AI 工作区、绘图环境与模型、ComfyUI 连接、工作流节点显示准备进度。新目录尚未生效或当前目录未确认时，不沿用旧检查结果显示完成。模型未准备的办公机也可以通过“先准备创作草稿”进入绘图画室，选择角色、场景并检查提示词与参数，实际生成留到模型就绪的机器。
+首次配置按“准备环境 → 配置模型 → 启动服务 → 开始生成”显示进度，同时说明每步证据：目录识别不等于依赖或 GPU 可运行，模型大小相符不等于 SHA-256 校验，节点注册不等于真实出图。新目录尚未生效或当前目录未确认时，不沿用旧检查结果显示完成。模型未准备的办公机也可以通过“先准备创作草稿”进入绘图画室，选择角色、场景并检查提示词与参数，实际生成留到模型就绪的机器。
 
-绘图首选 **MiaoMiao Harem Anima 1.6**，其次 **Base v1.0**；选择不同底模后，检查与下载清单跟随该底模，不要求全部候选同时存在。共享 Qwen 编码器和 VAE 复用，宁宁／夏目角色 LoRA 可随组合下载。模型卡展示用途、来源与使用条件；只有用户确认当前目录与组合并点击准备后才下载或运行环境代码。
+绘图首选 **MiaoMiao Harem Anima 1.6**，其次 **Base v1.0**；选择不同底模后，检查与下载清单跟随该底模，不要求全部候选同时存在。共享 Qwen 编码器和 VAE 复用，宁宁／夏目角色 LoRA 可随组合下载。 不准备这两份 LoRA 时，请使用支持无专用 LoRA 的热门角色与底模组合；宁宁／夏目创作仍需对应权重，扩层 2.9B 的兼容限制见下方清单。模型卡展示用途、来源与使用条件；只有用户确认当前目录与组合并点击准备后才下载或运行环境代码。
+
+未完成的底模、聊天、LoRA 与运行包选择按 AI 工作区保存，重开后须重新确认清单，不会自动续下载或启动；已有安装仍以已验证的运行包记录为准。离开控制室后返回，可重新核对并显示此前已确认的本工作区准备／受管启动操作，按原操作 ID 安全取消；操作结束后重新读取真实环境状态，不接管其他服务操作。
 
 本地聊天放在可选分区，硬件推荐不会自动把聊天模型加入绘图下载组合；选择聊天模型后需重新确认准备清单。未选择任何能力时，准备按钮不可用；使用 API 聊天可直接在角色房间配置。
 
-自动环境起步面向 Windows x64＋NVIDIA。受管 ComfyUI Portable、独立 Python、KJNodes 和 Anima TeaCache 先在工作区暂存完成，再整套发布到 `.runtimes/comfy/`；模型保持在 `ComfyUI/models/`，由自动生成的模型目录配置关联。已有 ComfyUI 环境和文件保留；已有外部管理环境沿原入口启动，缺项与冲突明确报告，不强行覆盖。
+自动环境起步面向 Windows x64＋NVIDIA。受管 ComfyUI Portable、独立 Python、KJNodes 和 Anima TeaCache 先在工作区暂存完成，再整套发布到 `.runtimes/comfy/`；模型保持在 `ComfyUI/models/`，由自动生成的模型目录配置关联。已有 ComfyUI 环境和文件保留；`.venv` 或未识别布局只准备模型，不自动安装扩展或接管启动。已有外部管理环境沿原入口启动，缺项与冲突明确报告，不强行覆盖。设备尚未上报时仍可选择绘图组合，不把未知状态当作无显卡结论。
+
+受管 Portable 首次准备会保留所选 CUDA 变体和固定运行包摘要。已有就绪环境始终沿用，选择框变化不会切换 CUDA。需要重新准备环境时，仅复用同一身份；所选 CUDA 13／12.6 变体或运行包版本不符会提示“本次未切换”，不会覆盖旧环境。旧版或外部 Portable 缺少该记录时，标为无法确认版本：仍可用下方“启动现有环境并重新检查”或原入口继续使用；确需更换运行包时选择新的 AI 工作区准备；不补写未经核实的身份，也不替用户删除环境。已有 `venv` 只准备节点，保留其 Python／CUDA。
+
+已有 KJNodes／Anima TeaCache 不能仅凭目录存在算完成：准备过程会用已校验节点包对照 Python 源文件和依赖声明，缺失或不同会报告具体节点与文件，保留原目录。用户可用原环境的管理方式修复，或自行备份并移走该节点目录后重试；只有匹配固定源码的既有节点才补装声明依赖。此检查和安装成功仍不证明节点已加载，后续必须检查 ComfyUI 节点注册，真实出图仍属目标设备验收。
+
+补装或修复节点前，必须先结束当前生成并停止 ComfyUI。绘遇会阻止向仍在运行的绘图环境安装依赖，不会凭一次空队列检查自动杀进程或重启。受管服务在控制室停止；外部服务从原入口停止。准备完成后重新启动并检查节点注册，不能只因安装脚本结束就视为节点已经加载。
+
+工作区整体搬盘后，重新选择目录并重启绘遇；新的安装路径仍需显式启动确认受管身份。每次受管启动使用绘遇专用模型映射，将当前工作区的 `ComfyUI/models/` 放在旧路径之前，输入仍使用当前 `ComfyUI/input/`；不覆盖用户的 `extra_model_paths.yaml`，不借搬盘放宽自动唤醒授权。
+
+已有 Portable 或受支持的 `venv` 可直接点击“启动现有环境并重新检查”：只启动已有解释器并重新读取模型、连接和节点，不重新准备运行包、不切换 CUDA。旧 Portable 缺少准备凭据或变体未知时可用此入口；`.venv` 和未识别布局仍沿原管理器启动。已验证的受管 Portable 变体用于首次默认选择，后续刷新不覆盖用户本次手选。取消或启动失败后保留原环境，缺少模型/节点时仍显示未完成。
 
 llama.cpp 固定 b10516，提供 CUDA 和进阶 Vulkan 运行包。默认纯文字、短上下文、关闭深度思考；聊天前释放空闲受管绘图模型，绘图前释放受管聊天模型。加载有取消和期限，子进程由 Rust 持有并在退出时回收；空闲五分钟可睡眠。服务使用仅在后端内存中的访问密钥，新人不必额外填写本地模型 Key。已有 Ollama 作为连接选项保留。
 
@@ -96,7 +114,7 @@ llama.cpp 固定 b10516，提供 CUDA 和进阶 Vulkan 运行包。默认纯文�
 
 每个下载只接受已登记 ID 与当前工作区，先检查磁盘；同名文件经过大小和 SHA-256 相符后复用，异内容保留并报冲突。取消／网络中断保留已接收部分；支持 Range 的来源按精确 Content-Range 续传，不支持时重新下载，最终完整摘要相符才原子发布。前端下载与校验使用同一清单，不接受任意 URL 或输出路径。
 
-绘图准备结束后重新核对所选工作区、模型组合、服务连接和节点注册，检查未完成时不显示准备成功。真实生成一张全龄图，或对所选聊天能力发送一条短消息，仍需在目标机器另行验收；文件／服务就绪不等于出图、语音或设备性能验收。驱动、UAC／系统重启、服务商密钥和网站登录由用户完成。高级视频、语音、反推与 Krea 不加入首次必下载组合。
+绘图准备结束后重新核对所选工作区、模型组合、服务连接和节点注册，检查未完成时不显示准备成功。 点击“生成第一张图片”会把刚准备的底模带入画室，包括之前已打开的画室；检查失败或正在生成时保留原选择。基础模式和重开不会仅因默认推荐改回未下载底模，宁宁／夏目切换仍同步各自 LoRA；用户随后明确改模型或载入作品配方时，以新选择为准。真实生成一张全龄图，或对所选聊天能力发送一条短消息，仍需在目标机器另行验收；文件／服务就绪不等于出图、语音或设备性能验收。驱动、UAC／系统重启、服务商密钥和网站登录由用户完成。高级视频、语音、反推与 Krea 不加入首次必下载组合。
 
 ## 3. 公共模型下载清单
 
@@ -177,6 +195,16 @@ MiaoMiao 发布附件中的 `*_txt.safetensors` 与此 Qwen 0.6B 文件 SHA-256 
 
 Anime6B 超分识别官方文件名 `RealESRGAN_x4plus_anime_6B.pth`，同时保留旧别名 `R-ESRGAN 4x+ Anime6B.pth`；显式模型选择只解析该模型的固定文件，Auto 按已有优先级选择。能力展示和新生成记录区分请求选项、实际超分名称与文件，不改写历史作品。高清局部换装继续二次采样，缩放后的有效蒙版同时约束采样与最终合成；未选区域来自对应高清尺寸的参考底图，锐化在最终合成之前。主力机同图的脸部、背景及蒙版边界效果待验，不承诺与原始尺寸图片像素绝对相同。
 
+### 固定运行包的高清与蒙版边界
+
+本轮受管组合固定为 [ComfyUI v0.39.0](https://github.com/Comfy-Org/ComfyUI/tree/v0.39.0)、[KJNodes d3cfe216](https://github.com/kijai/ComfyUI-KJNodes/tree/d3cfe21625e5170126ce06fbfcfe1d88108688c3) 和 [Anima TeaCache e7a73823](https://github.com/CocyNoric/ComfyUI-Anima-TeaCache/tree/e7a73823c057b4884ca6b70778da803c1f60d557)。已用固定源码逐项核对真实生成工作流的节点名、必需输入、枚举、连线类型和输出槽位；RCAS 的 `method.strength` 是该版本支持的动态输入，不需要改成另一套节点参数。此核对不等同于权重加载或目标显卡画质验收。
+
+- 常用 Anima 底模、宁宁／夏目 LoRA、普通高清与手绘蒙版所需节点在这套固定源码中存在；六个底模、两份角色 LoRA、共享编码器和 VAE 的工作流文件名与下载清单一致。2.9B 的角色 LoRA 限制仍按上方说明，不因节点兼容而放宽。
+- Comfy 高清可明确选 Auto 或 Latent。Auto 根据当前工作区已识别的超分文件决定路径；未确认时界面显示待确认。普通像素超分不做二次采样，二次重绘幅度不生效；Latent 和局部蒙版高清会二次采样。切换路径保留幅度值，提交时重新核对实际文件。首次基础下载不含超分权重，没有时 Auto 使用 Latent。
+- 二次采样步数沿用现有规则：首轮步数的 60% 四舍五入，至少 12 步；MiaoMiao 1.6 使用 Euler / normal，其余当前 Anima 高清默认 res_multistep / sgm_uniform。此处没有新增自动调参或性能承诺。
+- 无蒙版“整图重绘”现将原图 VAE latent 接入首轮采样，使用所选重绘强度；这是纠正旧 Comfy 路径忽略原图的既有行为。不能把旧文生图耗时与新真实图生图当作同一工作量比较。有蒙版仍通过噪声蒙版采样和最终合成保留未选区域。
+- 文字自动蒙版另需 `AP_CLIPSeg_TextMask` 及其实际模型；Krea 另需 `ConditioningKrea2Rebalance`／`ComfyUI-Krea2T-Enhancer`。这三个节点不在上述固定基础包中，控制室基础准备成功不能视为它们已安装。手绘蒙版无需 CLIPSeg；未知来源扩展不会由一键准备擅自安装。画室会具体显示缺哪个节点，并提供控制面板的环境／准备范围入口；该入口不承诺安装清单外扩展。明确受管但离线、能力待确认时，可显式选择自动识别，启动后重新查节点，通过前不提交工作流。节点注册仍不代表自动蒙版模型已加载。
+
 ### Wan 2.2 TI2V 5B
 
 [ComfyUI 官方教程](https://docs.comfy.org/tutorials/video/wan/wan2_2)与 [Comfy-Org 权重目录](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged)提供三件套，约 **18.14 GB**：
@@ -245,3 +273,43 @@ npm run wf -- models:check --json --verify-hashes
 硬件和资源安排应按目标能力分别核对：浏览不需要绘图 GPU；当前 PixAI worker 需要 CUDA 可用的 PyTorch 环境，不能套用旧 WD14 的 CPU 能力；Anima/Krea/Wan/H3 的量化、分辨率、offloading 与显卡架构共同影响显存和内存。多 AI 服务共享资源，首次验收逐服务单独运行，从受支持的短任务开始，不承诺“大显存就能所有模型同时运行”。
 
 每台新机的交付记录应包含：程序/素材版本与 SHA-256、实际模型文件清单和上游/依赖版本、GPU/内存、配置目录、**断网首次冷启动**及所选能力的一次真实产物。未授权私有资产或未执行能力标为未配置/未验；素材浏览完成与 AI 推理完成分开记录。
+
+## 房间 API 连接
+
+在角色房间打开「对话设置 → llama.cpp / API」，点击「配置 API」；已有配置时，点击当前模型名称（受管服务显示「绘遇本地聊天」）旁的齿轮。选择服务商会自动填入对应 Base URL；从页面的官方入口自行获取密钥，粘贴后点「测试连接」，选择或手填模型 ID，最后「保存并使用」。测试允许先不填模型，只请求该服务的 `GET /models`，**不发对话、不做付费生成探测**。目录可访问不证明密钥有效、余额充足、模型有生成权限或支持全部工具；部分目录公开或不完整，部分服务不提供目录。无目录时按服务商控制台的准确 ID 手填，之后实际聊天按服务商规则计费。
+
+以下为 **2026-10-11 核对的官方来源**。模型目录变化不自动覆盖用户已保存的地址、模型或分服务商草稿；旧 ID 可保留并手动修改。参考列表不是账号授权列表，聚合商和本机代理不硬编码未经证实的模型。
+
+| 服务 | 自动填入的 Base URL | 当前参考 / 获取入口 |
+| --- | --- | --- |
+| DeepSeek | `https://api.deepseek.com` | `deepseek-flash`、`deepseek-v4-pro`；[官方接入与旧 Flash 名称迁移](https://api-docs.deepseek.com/)、[模型版本及价格](https://api-docs.deepseek.com/quick_start/pricing/)、[获取密钥](https://platform.deepseek.com/api_keys)。`deepseek-v4-flash` 已指向 V4.1 Flash，新配置用 `deepseek-flash`，不强改旧配置。 |
+| OpenAI | `https://api.openai.com/v1` | 默认 `gpt-6-luna`；[Luna 模型卡](https://developers.openai.com/api/docs/models/gpt-6-luna)、[GPT-6 协议迁移](https://developers.openai.com/api/docs/guides/latest-model)、[获取密钥](https://platform.openai.com/api-keys)。API 单独计费，ChatGPT 订阅不是 API 额度。 |
+| Google Gemini | `https://generativelanguage.googleapis.com/v1beta/openai` | `gemini-3.8-flash`；[官方 OpenAI 兼容接口与模型列表](https://ai.google.dev/gemini-api/docs/openai)、[AI Studio 密钥](https://aistudio.google.com/apikey)。 |
+| OpenRouter | `https://openrouter.ai/api/v1` | 不猜聚合模型 ID，使用返回列表或官方目录；[接入说明](https://openrouter.ai/docs/quickstart)、[密钥](https://openrouter.ai/settings/keys)。Claude 等模型通过其兼容层使用；价格与工具能力按模型页面核对。 |
+| 硅基流动 | `https://api.siliconflow.cn/v1` | 先取模型列表；[官方快速开始](https://docs.siliconflow.cn/docs/userguide/quickstart)、[密钥](https://cloud.siliconflow.cn/account/ak)。模型 ID 需包含组织前缀。 |
+| 通义千问 / 百炼 | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `qwen3.8-flash`、`qwen3.7-plus`；[Chat Completions 与模型参数](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions)、[获取地域对应的密钥](https://help.aliyun.com/zh/model-studio/get-api-key)。预设为北京地域，工作空间专属域名和其他地域按官方说明修改；不用 Coding / Token Plan 专用密钥替代按量密钥。 |
+| Kimi | `https://api.moonshot.cn/v1` | 默认可非思考的 `kimi-k2.6`；[官方快速开始与模型说明](https://platform.kimi.com/docs/get-api-key)、[密钥](https://platform.kimi.com/console/api-keys)。[K3 官方限制](https://platform.kimi.com/docs/guide/kimi-k3-quickstart)要求跨轮完整 assistant 思考上下文，当前房间不推荐或冒充接入 K3。 |
+| OpenCode Zen | `https://opencode.ai/zen/v1` | `deepseek-v4.1-flash`、`kimi-k2.6`、`minimax-m3`；[官方模型与各自协议](https://opencode.ai/docs/zen/)、[控制台入口](https://opencode.ai/auth)。只推荐标明 `/chat/completions` 的模型；不把原生 Messages、Gemini、Responses 模型直接套用。免费模型可能限时退出。 |
+| OpenCode Go | `https://opencode.ai/zen/go/v1` | 仅保留旧配置入口，不提供新聊天推荐。[官方使用要求](https://opencode.ai/docs/go/)面向编码代理流量，不能称为角色聊天“高速通道”。 |
+
+### 本机到底连接什么
+
+- **绘遇受管 llama.cpp**：到控制室选择并准备聊天 GGUF 与受管运行环境，绘遇管理服务及后端内存密钥。房间使用准备过程写入的 `huiyu-local` 配置，新人无需手填端口或密钥。下载文件完成不等于模型已经加载并完成回复。
+- **已有 Ollama**：在运行绘遇后端的同一台电脑启动 Ollama 并下载一个聊天模型。对话设置的「已有 Ollama」会发现模型并可「重新检测」，分别说明服务离线和已启动但无模型；也可选「Ollama API」，默认 `http://127.0.0.1:11434/v1`、未设认证时不填 Key。[官方兼容 API](https://docs.ollama.com/api/openai-compatibility)。`ollama pull 模型名` 会下载模型，云模型不算离线能力。
+- **已有 LM Studio**：先下载并加载聊天模型，在 Developer 页面启动 API Server；默认 `http://127.0.0.1:1234/v1`，认证关闭时 Key 留空。[官方启动说明](https://lmstudio.ai/docs/developer/core/server)、[兼容端点](https://lmstudio.ai/docs/developer/openai-compat)。
+- **已有 CLIProxyAPI / CPA**：先启动并完成自己已有代理的账号/模型配置，默认 `http://127.0.0.1:8317/v1`；Key 是代理访问密钥，模型以该代理 `/models` 为准。[项目官方说明](https://help.router-for.me/)。它转发账号服务，不代表本地离线 Gemini，不再内置猜测的模型别名。
+
+`127.0.0.1` 指绘遇后端所在电脑，不是远程访客打开网页的电脑。远程自配地址必须为公网 HTTPS；本机服务需要站主在本机配置。测试和修改站主配置仅限本机直连。站主配置藏在进阶区：访客会消费站主额度，后端保留密钥，公开回读仅返回地址和模型且保留完整路径。普通个人配置不会自动变成站主共享配置。
+
+### 协议与凭据边界
+
+- 房间走 OpenAI-compatible **Chat Completions + SSE**，不增加 Responses / Anthropic Messages 原生协议。模型名输入始终可编辑，自定义兼容服务保留。图片沿用当前选定 API，不会偷偷切换到另一台代理；图片/工具能力需按该模型核对。
+- [GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna)及 GPT-6 Sol 在 Chat Completions 里只支持 `reasoning_effort=none` 的工具调用，工具启用时绘遇设为 `none`。GPT-6.1 Sol / Astra 工具调用需 Responses，因此不列为默认推荐；直接选择后若启用房间工具会在发请求前提示关闭工具或换 Luna。对话设置提供「房间工具」开关。
+- [DeepSeek 思考模式](https://api-docs.deepseek.com/guides/thinking_mode/)的工具模式要求跨轮完整 `reasoning_content`。房间只保存对话台词，因此当前用工具请关闭思考；不支持的组合在发送前拒绝并给出可操作提示。普通角色聊天默认关闭思考。低/中/高映射至官方 low/high/max。Kimi K3 同样不在此简化历史协议里伪装为已支持。
+- Gemini 工具调用的 [thought signature](https://ai.google.dev/gemini-api/docs/generate-content/thought-signatures#openai)按官方字段原样透传，仅保留当前工具循环的内存；不解码、不展示、不入持久聊天记录。签名与工具参数均有边界校验。默认生成参数不对未知兼容服务强行套用某一家的思考字段。
+- 密钥默认隐藏，切服务商不会把前一家密钥带给新端点。桌面继续使用 Windows 凭据管理器，网页只保留当前页面会话密钥，普通备份与草稿元数据不写入新明文密钥。地址不能携带账号、查询参数或锚点；上游错误 body 不回显，避免把授权头/Key 带进页面或诊断信息。 桌面重开可恢复正式保存过的服务商密钥；安全凭据读取期间会提示稍候并暂缓切换服务商。未保存密钥仍仅留当前会话，明确清除或后续编辑不会被较早保存请求恢复；个人配置缺少密钥时需自行补齐，不悄悄改用站主额度。
+- 错误区分别说明 401 密钥、403 权限/地域、402 计费、429 配额、404/405 目录不支持、超时、服务未启动及错误响应格式。目录测试不会替用户创建账号、密钥、订阅或购买额度。
+
+Gemini 的低 / 中 / 高通过 `reasoning_effort` 原样传递；Gemini 3 和 2.5 Pro 不允许关闭思考，因此界面明确说明「关」按低档发送，其他 Gemini 2.5 使用 `none`。详见 [Google 官方 OpenAI 兼容层 Thinking](https://ai.google.dev/gemini-api/docs/openai#thinking)。未保存推理偏好的新房间默认关闭，已有明确偏好保持不变；DeepSeek 开房间工具时需关闭推理。
+
+[Kimi 官方模型参数参考](https://platform.kimi.com/docs/api/models-overview)确认 K2.6 仅有思考开关、不支持 `reasoning_effort`，故低 / 中 / 高均仅开启思考；K2.7 Code / Highspeed 和 K3 要求保留完整思考上下文，当前房间会在上游请求前明确拒绝，建议选 K2.6。

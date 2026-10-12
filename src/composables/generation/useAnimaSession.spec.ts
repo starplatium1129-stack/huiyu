@@ -56,6 +56,25 @@ it('adversarial native defaults never replace explicit LoRA strength or Endfield
   }
 })
 
+it('allows offline submission only for an explicitly managed, locally available model', async () => {
+  const runDirectAnima = vi.fn(async () => {})
+  vi.doMock('./animaJobPolling', () => ({ runDirectAnima }))
+  const status = { ok: true, online: false, managedStartAvailable: true, models: [
+    { id: 'anima-miaomiao-v1.6', family: 'anima', available: true, sizes: ['832x1216'] },
+  ], loras: [] }
+  const client = { request: vi.fn(async (path: string) => path.endsWith('/status') ? status : { ok: true }) } as unknown as ApiClient
+  const session = createSession(client)
+  await session.refreshBackend()
+  expect(session.state.value).toMatchObject({ online: false, managedStartAvailable: true })
+  expect(session.state.value.checkMsg).toContain('生成时自动启动')
+  await session.generate()
+  expect(runDirectAnima).toHaveBeenCalledOnce()
+  expect(session.state.value.progressText).toContain('正在启动受管')
+  status.models[0]!.available = false
+  await session.refreshBackend()
+  expect(session.state.value.managedStartAvailable).toBe(false)
+})
+
 it('keeps the default MiaoMiao 1.6 offline rather than silently substituting an older available model', async () => {
   const client = { request: vi.fn(async () => ({ ok: true, online: true, models: [
     { id: 'anima-miaomiao-v1.2', family: 'anima', available: true, sizes: ['832x1216'], defaults: { steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple', teaCacheThresh: 0.08 } },
@@ -125,6 +144,7 @@ describe('useAnimaSession · backend status and polling', () => {
         id: 'model-a',
         family: 'krea2',
         available: true,
+        nodeReadiness: { state: 'ready', required: ['ConditioningKrea2Rebalance', 'ComfyUI-Krea2T-Enhancer'], missing: [] },
         sizes: ['1024x1024'],
         defaults: { steps: 20, cfg: 5 },
       }],

@@ -4,6 +4,7 @@ use http_body_util::BodyExt;
 use std::{convert::Infallible, path::Path};
 use tokio_util::sync::CancellationToken;
 
+mod provider_setup;
 mod stream_lifecycle;
 
 fn settings(root: &Path, host: &str) -> settings::Settings {
@@ -303,6 +304,7 @@ async fn host_config_roundtrip_never_publishes_secret() {
     assert_eq!(loaded.key, "isolated-secret");
     let public = settings::public(Some(&loaded));
     assert_eq!(public["configured"], true);
+    assert_eq!(public["baseUrl"], "https://api.example.test/v1");
     assert!(!public.to_string().contains("isolated-secret"));
     assert!(public.get("apiKey").is_none());
     let file = directory.path().join("state/chat_api_config.json");

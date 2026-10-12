@@ -1,5 +1,5 @@
 import type { ApiClient } from '@/api/client'
-import type { AnimaGenerationState, AnimaJobMetadata, AnimaOption, AnimaResult, AnimaResultContext } from '@/types/anima'
+import type { AnimaGenerationState, AnimaJobMetadata, AnimaOption, ComfyNodeReadiness, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
@@ -19,10 +19,12 @@ export interface AnimaPublicJob {
 }
 
 export interface AnimaStatusResponse {
-  capabilities?: { automaticMask?: boolean }
+  capabilities?: { automaticMask?: boolean; automaticMaskStatus?: ComfyNodeReadiness }
+  hires?: { superResModel?: string | null }
   provider?: 'comfy' | 'native'
   ok?: boolean
   online?: boolean
+  managedStartAvailable?: boolean
   models?: AnimaOption[]
   loras?: AnimaOption[]
   styleLoras?: AnimaGenerationState['styleLoras']

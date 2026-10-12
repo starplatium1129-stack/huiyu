@@ -4,6 +4,7 @@ import type { DrawEngine } from '@/storage/settingsRepository'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
 import type { InpaintSubmissionSnapshot } from './animaInpaintSubmit'
+import { automaticMaskBlocker } from './animaBackendReadiness'
 import { nativeAnimaRequestBlocker } from './nativeAnimaCapabilities'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
@@ -71,9 +72,8 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
       pb.flash('局部换装目前专属于 Anima 引擎')
       return
     }
-    if (deps.animaState.value.provider === 'native' && payload.editMode !== 'whole' && !payload.maskBlob && !deps.animaState.value.automaticMaskAvailable) {
-      pb.flash('自动识别需要完整的本地 CLIPSeg 模型文件，请先准备 clipseg-rd64-refined 目录、使用手绘遮罩，或明确选择整图重绘。'); return
-    }
+    const maskBlocker = payload.editMode !== 'whole' && !payload.maskBlob && automaticMaskBlocker(deps.animaState.value)
+    if (maskBlocker) { pb.flash(maskBlocker); return }
     const submission = deps.captureAnimaSubmission()
     if (!submission || submission.family !== 'anima') { pb.flash('当前 Anima 配方尚未就绪，请重新确认后换装'); return }
     const nativeBlocker = deps.animaState.value.provider === 'native' && nativeAnimaRequestBlocker(deps.animaState.value.models, submission.request)
@@ -81,7 +81,7 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
     submission.context = { ...submission.context, parentId: payload.sourceHistoryId }
     // Capture before even the lazy import: no later upload or form edit owns this operation.
     const snapshot: InpaintSubmissionSnapshot = {
-      provider: deps.animaState.value.provider, automaticMaskAvailable: deps.animaState.value.automaticMaskAvailable, payload: { ...payload },
+      provider: deps.animaState.value.provider, automaticMaskAvailable: deps.animaState.value.automaticMaskAvailable, automaticMaskStatus: deps.animaState.value.automaticMaskStatus, managedStartAvailable: deps.animaState.value.managedStartAvailable, payload: { ...payload },
       effectiveChar: payload.characterOverride !== undefined ? payload.characterOverride : inpaintCharacter.value,
       isPopular: isPopular.value, identityTokens: [...deps.popularIdentityTokens.value],
       model: { models: JSON.parse(JSON.stringify(deps.animaState.value.models)), modelId: deps.animaState.value.modelId,

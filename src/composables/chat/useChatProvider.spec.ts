@@ -1,15 +1,17 @@
-import { effectScope, nextTick, reactive, ref } from 'vue'
+import { effectScope, h, nextTick, reactive, ref } from 'vue'
 import { expect, it, vi } from 'vitest'
 import { chatApi } from '@/api/chatApi'
 import { useChatProvider } from './useChatProvider'
 import { useChatStorage } from './useChatStorage'
 import { STORAGE_KEY } from '@/config/characters'
-import { flushPromises } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
+import { createChatApiDrafts, rememberSavedChatApiDraft, CHAT_API_DRAFTS_KEY } from '@/utils/chatApiDrafts'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 
+const archiveFixture = vi.hoisted(() => ({ gate: undefined as Promise<void> | undefined }))
 const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
 vi.mock('@/platform/desktop/capabilities.ts', () => ({ getDesktopCapabilities: () => desktopFixture.current }))
-vi.mock('@/storage/chatArchiveRepository', () => ({ readChatArchive: async () => ({ version: 1, archived: {}, revisions: {} }), writeChatArchive: vi.fn(), withChatArchiveMutation: async (work: () => unknown) => work() }))
+vi.mock('@/storage/chatArchiveRepository', () => ({ readChatArchive: async () => { await archiveFixture.gate; return { version: 1, archived: {}, revisions: {} } }, writeChatArchive: vi.fn(), withChatArchiveMutation: async (work: () => unknown) => work() }))
 
 vi.mock('@/api/chatApi', () => ({ chatApi: { getStatus: vi.fn(), getHostConfig: vi.fn(), clearHostConfig: vi.fn(), saveHostConfig: vi.fn() } }))
 it('reports only acknowledged host removal and rejects pre-acknowledgement reads', async () => {
@@ -182,6 +184,155 @@ it('rehydrates cross-window connections, defers an event during model writes, an
     expect(localStorage.getItem(STORAGE_KEY)).not.toContain('remote-key')
   } finally {
     scope.stop(); desktopFixture.current = undefined; localStorage.clear()
+    if (lockDescriptor) Object.defineProperty(navigator, 'locks', lockDescriptor)
+    else Reflect.deleteProperty(navigator, 'locks')
+  }
+})
+
+it('recognizes new provider bindings and distinguishes an empty Ollama service from a stopped service', async () => {
+  const scope = effectScope()
+  const state = reactive({ settings: { provider: 'local', model: '', apiBaseUrl: 'http://127.0.0.1:1234/v1', apiModel: 'installed-chat', apiKey: '' } })
+  const provider = scope.run(() => useChatProvider({ isBusy: ref(false), storage: { state, setModel: vi.fn(), neverConfigured: ref(false) } as never }))!
+  try {
+    expect(provider.apiVendor.value).toBe('lmstudio')
+    expect(provider.apiConfigured.value).toBe(true)
+    vi.mocked(chatApi.getStatus).mockResolvedValueOnce({ online: true, model: '', models: [] })
+    await provider.refreshChatStatus()
+    expect(provider.ollamaOnline.value).toBe(false)
+    expect(provider.localStatusText.value).toContain('已启动，但没有可用聊天模型')
+    vi.mocked(chatApi.getStatus).mockResolvedValueOnce({ online: false, model: '', models: [] })
+    await provider.refreshChatStatus()
+    expect(provider.localStatusText.value).toContain('启动 Ollama')
+    expect(provider.checkingChatStatus.value).toBe(false)
+  } finally { scope.stop() }
+})
+
+
+it('only treats the selected personal or host route as ready and reopens invalid personal settings', async () => {
+  const scope = effectScope()
+  const neverConfigured = ref(false)
+  const state = reactive({ settings: { provider: 'local', model: '', apiBaseUrl: 'https://api.deepseek.com', apiModel: 'saved-model', apiKey: '' } })
+  const provider = scope.run(() => useChatProvider({ isBusy: ref(false), storage: {
+    state, neverConfigured, setProvider: (value: string) => { state.settings.provider = value },
+    setApiSettings: async (value: { apiKey: string }) => { state.settings.apiKey = value.apiKey; neverConfigured.value = false },
+  } as never }))!
+  try {
+    provider.hostApiConfigured.value = true
+    provider.setChatProvider('api')
+    expect(provider.useHostConfig.value).toBe(false)
+    expect(provider.chatReady.value).toBe(false)
+    expect(provider.apiSettingsOpen.value).toBe(true)
+    expect(provider.statusKind.value).toBe('')
+    provider.apiKey.value = 'neutral-personal-key'
+    expect(provider.chatReady.value).toBe(true)
+    await provider.clearApiCredential()
+    expect(provider.chatReady.value).toBe(false)
+    provider.setBusy(false)
+    expect(provider.statusKind.value).toBe('')
+    expect(provider.apiBaseUrl.value).toBe('https://api.deepseek.com')
+    neverConfigured.value = true
+    expect(provider.useHostConfig.value).toBe(true)
+    expect(provider.chatReady.value).toBe(true)
+  } finally { scope.stop() }
+})
+
+
+it.each(['edited', 'cleared'])('does not replace a newer provider draft when an earlier save completes (%s)', async action => {
+  localStorage.clear()
+  const original = { baseUrl: 'https://neutral-save-race.example/v1', model: 'original-model', apiKey: 'neutral-original-key' }
+  await rememberSavedChatApiDraft('custom', original)
+  const editor = createChatApiDrafts(vi.fn()); await editor.ready
+  const scope = effectScope()
+  let finish!: () => void
+  const gate = new Promise<void>(resolve => { finish = resolve })
+  const state = reactive({ settings: { provider: 'api', model: '', apiBaseUrl: original.baseUrl, apiModel: original.model, apiKey: original.apiKey } })
+  const provider = scope.run(() => useChatProvider({ isBusy: ref(false), storage: {
+    state, neverConfigured: ref(false), setApiSettings: async () => { await gate },
+  } as never }))!
+  try {
+    const pending = provider.saveApiSettings()
+    const expected = action === 'edited' ? { ...original, model: 'newer-model', apiKey: 'neutral-newer-key' }
+      : { ...original, apiKey: '', keyCleared: true as const }
+    if (action === 'edited') {
+      provider.apiModel.value = expected.model; provider.apiKey.value = expected.apiKey
+      editor.set('custom', expected)
+    } else await editor.clear('custom', original)
+    // Switching out publishes the new draft, but is not another save request.
+    provider.apiVendor.value = 'openai'; provider.apiBaseUrl.value = 'https://api.openai.com/v1'
+    provider.apiModel.value = 'other-model'; provider.apiKey.value = 'neutral-other-key'
+    finish(); await pending
+    const reopened = createChatApiDrafts(vi.fn()); await reopened.ready
+    expect(editor.drafts.value.custom).toEqual(expected)
+    expect(reopened.drafts.value.custom).toEqual(expected)
+    expect(JSON.parse(localStorage.getItem(CHAT_API_DRAFTS_KEY)!).custom.model).toBe(expected.model)
+    expect(localStorage.getItem(CHAT_API_DRAFTS_KEY)).not.toContain(original.apiKey)
+    expect(localStorage.getItem(CHAT_API_DRAFTS_KEY)).not.toContain('neutral-newer-key')
+    expect(provider.apiModel.value).toBe('other-model')
+    expect(state.settings.apiKey).toBe(original.apiKey)
+  } finally { scope.stop(); localStorage.clear() }
+})
+
+
+it.each(['success', 'failure', 'disposed'])('guards provider switching during actual credential hydration (%s)', async outcome => {
+  const { default: ChatApiSettings } = await import('@/components/ChatApiSettings.vue')
+  localStorage.clear()
+  const saved = { baseUrl: 'https://neutral-hydration.example/v1', model: 'saved-model', apiKey: 'neutral-saved-key' }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 3, settings: {
+    provider: 'api', apiBaseUrl: saved.baseUrl, apiModel: saved.model, apiKey: '', apiConfiguredByUser: true,
+  }, histories: {} }))
+  localStorage.setItem(CHAT_API_DRAFTS_KEY, JSON.stringify({ custom: { baseUrl: saved.baseUrl, model: saved.model } }))
+  let release!: () => void, failRead = false
+  archiveFixture.gate = new Promise<void>(resolve => { release = resolve })
+  const secureRead = vi.fn(async (endpoint: string) => {
+    if (failRead) throw new Error('neutral-read-failure')
+    return endpoint === saved.baseUrl ? saved.apiKey : null
+  })
+  desktopFixture.current = { readChatCredential: secureRead, writeChatCredential: vi.fn() } as unknown as CompanionDesktopBridge
+  const lockDescriptor = Object.getOwnPropertyDescriptor(navigator, 'locks')
+  Object.defineProperty(navigator, 'locks', { configurable: true, value: { request: async (_name: string, work: () => unknown) => work() } })
+  const scope = effectScope(), onError = vi.fn(), showing = ref(true)
+  const storage = scope.run(() => useChatStorage(onError))!
+  const loading = storage.load()
+  const provider = scope.run(() => useChatProvider({ storage, isBusy: ref(false) }))!
+  const wrapper = mount({ setup: () => () => showing.value ? h(ChatApiSettings, {
+    vendor: provider.apiVendor.value, baseUrl: provider.apiBaseUrl.value, model: provider.apiModel.value,
+    apiKey: provider.apiKey.value, credentialsLoading: storage.credentialsLoading.value,
+    'onUpdate:vendor': value => { provider.apiVendor.value = value },
+    'onUpdate:baseUrl': value => { provider.apiBaseUrl.value = value },
+    'onUpdate:model': value => { provider.apiModel.value = value },
+    'onUpdate:apiKey': value => { provider.apiKey.value = value },
+  }) : null }, { global: { stubs: { ArchiveIcon: true, StudioSelect: true } } })
+  try {
+    await flushPromises()
+    expect(storage.credentialsLoading.value).toBe(true)
+    expect(provider.apiKey.value).toBe('')
+    expect(secureRead).toHaveBeenCalledWith(saved.baseUrl)
+    const other = wrapper.get('[data-vendor="openai"]')
+    expect(other.attributes('disabled')).toBeDefined()
+    other.element.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    await flushPromises()
+    expect(provider.apiVendor.value).toBe('custom')
+    if (outcome === 'disposed') { wrapper.unmount(); scope.stop() }
+    if (outcome === 'failure') failRead = true
+    release(); await loading; await flushPromises()
+    expect(storage.credentialsLoading.value).toBe(false)
+    if (outcome === 'disposed') return
+    expect(wrapper.get('[data-vendor="openai"]').attributes('disabled')).toBeUndefined()
+    if (outcome === 'failure') { expect(onError).toHaveBeenCalled(); return }
+    expect(provider.apiKey.value).toBe(saved.apiKey)
+    const roundTrip = async () => {
+      await wrapper.get('[data-vendor="openai"]').trigger('click'); await flushPromises()
+      await wrapper.get('[data-vendor="custom"]').trigger('click'); await flushPromises()
+    }
+    await roundTrip()
+    expect(provider.apiKey.value).toBe(saved.apiKey)
+    await wrapper.get('input[aria-label="API Key"]').setValue('')
+    showing.value = false; await nextTick(); showing.value = true; await flushPromises()
+    await roundTrip()
+    expect(provider.apiKey.value).toBe('')
+  } finally {
+    release(); await loading; if (wrapper.exists()) wrapper.unmount(); scope.stop()
+    archiveFixture.gate = undefined; desktopFixture.current = undefined; localStorage.clear()
     if (lockDescriptor) Object.defineProperty(navigator, 'locks', lockDescriptor)
     else Reflect.deleteProperty(navigator, 'locks')
   }

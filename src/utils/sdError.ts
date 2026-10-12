@@ -80,6 +80,9 @@ export function classifySDError(error: unknown, backend: SDBackend = 'webui'): S
   if (name === 'AbortError') {
     return report('cancelled', '已停止生成', '本次出图任务已停止，当前的画面配置与 Prompt 已妥善保留。', null, text, backend)
   }
+  if (source.code === 'COMFY_OPTIONAL_NODES_UNAVAILABLE' || /(?:文字自动蒙版|Krea 2).*ComfyUI 节点/.test(text) && /缺少|尚未确认/.test(text)) {
+    return report('parameters', '所选功能尚未就绪', text, { id: 'open_settings', label: '查看准备范围' }, text, backend)
+  }
   if (/cuda out of memory|out of memory|outofmemory|显存不足|显存溢出|vram/.test(lower)) {
     return report('oom', '显存不足',
       '当前解析度或高清修复占用过高。可尝试关闭高清修复或微调分辨率后重试。',

@@ -1,6 +1,8 @@
-import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { flushPromises, mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
+import { createMemoryHistory, createRouter } from 'vue-router'
+import { apiClient } from '@/api/client'
 import DirectorResultTools from './DirectorResultTools.vue'
 import DirectorImageTools from './DirectorImageTools.vue'
 import GenerationActionBar from './GenerationActionBar.vue'
@@ -12,6 +14,13 @@ const props = {
   inpaintCompareActive: false, shotsPending: 2, hasPrevResult: true,
   resultArchived: false, resultTemporary: true,
   interrogateError: null,
+}
+function mountImageTools(overrides: Partial<typeof props> = {}) {
+  const router = createRouter({
+    history: createMemoryHistory(),
+    routes: ['/', '/control'].map(path => ({ path, component: { render: () => null } })),
+  })
+  return mount(DirectorImageTools, { props: { ...props, ...overrides }, global: { plugins: [router] } })
 }
 describe('result tools', () => {
   it('keeps canvas saving, sidebar actions and clearing independently callable', async () => {
@@ -36,7 +45,7 @@ describe('result tools', () => {
     expect(wrapper.text()).toContain('未入册 · 已暂存')
     await wrapper.setProps({ generationBusy:true })
     expect(wrapper.get('.stage-result-status').text()).toContain('当前成片保留')
-    const tools = mount(DirectorImageTools, { props })
+    const tools = mountImageTools()
     await tools.findAll('button').find(button => button.text() === '加入分镜')!.trigger('click')
     expect(tools.emitted('addToShots')).toHaveLength(1)
     const bar = mount(GenerationActionBar, { props: {
@@ -123,7 +132,7 @@ describe('result tools', () => {
     bar.unmount()
   })
   it('retains busy-state explanations and disables changes during generation', () => {
-    const wrapper = mount(DirectorImageTools, { props: { ...props, generationBusy: true } })
+    const wrapper = mountImageTools({ generationBusy: true })
     const tooltips = wrapper.findAllComponents(StudioTooltip)
     for (const label of ['局部换装', '高清放大 2x', '生成短片', '加入分镜']) {
       const button = wrapper.findAll('button').find(item => item.text() === label)!
@@ -140,7 +149,12 @@ describe('result tools', () => {
     wrapper.unmount()
   })
   it('routes all reference sources and cancellation through the shared owner', async () => {
-    const wrapper = mount(DirectorImageTools, { props })
+    vi.spyOn(apiClient, 'request').mockResolvedValue({ ok: true, local: true, defaultEngine: 'pixai', pixai: {
+      engine: 'pixai', model: 'pixai-tagger-v1.0', available: true, modelPresent: true, dependencyPresent: true, reason: null,
+    } })
+    const wrapper = mountImageTools()
+    await wrapper.findAll('button').find(item => item.text() === '重新检查反推条件')!.trigger('click')
+    await flushPromises()
     await wrapper.findAll('button').find(item => item.text() === '上传反推')!.trigger('click')
     await wrapper.findAll('button').find(item => item.text() === '反推当前图')!.trigger('click')
     await wrapper.get('.reference-paste').trigger('click')

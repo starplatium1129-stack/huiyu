@@ -13,11 +13,9 @@
         <p v-if="animaState.currentNode">当前节点：{{ animaState.currentNode }}</p>
       </div>
     </details>
-    <label class="inspector-visual-description" for="inspectorVisualDescription">
-      <span>画面描述</span>
-      <textarea id="inspectorVisualDescription" v-model="pb.visualDescription" rows="3"
-        placeholder="角色的动作、服装与周围的画面…" />
-    </label>
+    <button v-if="!descriptionInHeader" class="btn btn-ghost btn-sm inspector-description-link" type="button" @click="emit('editDescription')">
+      <ArchiveIcon name="spark" />编辑画面描述
+    </button>
     <div class="inspector-engine-settings" role="group" aria-label="模型与引擎">
     <div class="engine-switch studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="出图引擎">
       <AnimatedSelection />
@@ -72,7 +70,8 @@ import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindi
 const CasualCreativeSliders = defineAsyncComponent(() => import('@/components/director/CasualCreativeSliders.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
-const props = defineProps<{ bindings: PromptRenderBindings }>()
+const props = defineProps<{ bindings: PromptRenderBindings; descriptionInHeader?: boolean }>()
+const emit = defineEmits<{ editDescription: [] }>()
 const { pb, generationBusy, animaState, drawEngine, generationPresetSummary, managedRoute, applyManagedRoute,
   reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
   animaNoLoraMode, patchAnimaState, retryAnima } = props.bindings

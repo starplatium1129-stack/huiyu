@@ -97,12 +97,13 @@ describe('chat recovery and tool lifecycle', () => {
     addScore.mockClear()
     const output = '已保存绘画草稿。尚未提交生成任务，也未生成图片。'
     const fetchMock = vi.fn()
-      .mockResolvedValueOnce(stream([{ type: 'tool-call', id: 'draft', name: 'generate_character_image', arguments: '{"description":"海边"}' }, { type: 'done' }]))
+      .mockResolvedValueOnce(stream([{ type: 'tool-call', id: 'draft', name: 'generate_character_image', arguments: '{"description":"海边"}', thoughtSignature: 'opaque-fixture-signature' }, { type: 'done' }]))
       .mockResolvedValueOnce(Response.json({ ok: true, status: 'draft', output }))
       .mockResolvedValueOnce(stream([{ type: 'token', content: '草稿准备好了' }, { type: 'done' }]))
     vi.stubGlobal('fetch', fetchMock)
     await setup().conversation.sendMessage('准备一幅画')
     expect(JSON.parse(fetchMock.mock.calls[2][1].body).messages.at(-1).content).toContain(output)
+    expect(JSON.parse(fetchMock.mock.calls[2][1].body).messages.at(-2).tool_calls[0].extra_content).toEqual({ google: { thought_signature: 'opaque-fixture-signature' } })
     expect(addScore).not.toHaveBeenCalled()
   })
   it('preserves received text when the connection ends unexpectedly', async () => {
@@ -245,5 +246,17 @@ it.each([false, true])('keeps tool rounds on their submitted connection while me
   }
   expect(messages).toHaveLength(2)
   expect(messages[1].content).toBe('Finished')
+  conversation.destroy()
+})
+
+
+it('keeps an image turn on the user-selected keyless local API instead of a hidden proxy', async () => {
+  const fetchMock = vi.fn().mockResolvedValue(stream([{ type: 'token', content: '图片收到了' }, { type: 'done' }]))
+  vi.stubGlobal('fetch', fetchMock)
+  const { conversation, options } = setup()
+  options.apiKey.value = ''
+  options.apiModel.value = 'my-local-vision-model'
+  await conversation.sendMessage('看这张图', 'data:image/png;base64,AA==')
+  expect(JSON.parse(fetchMock.mock.calls[0][1].body).api).toEqual({ baseUrl: 'http://localhost:1234/v1', model: 'my-local-vision-model', apiKey: '' })
   conversation.destroy()
 })

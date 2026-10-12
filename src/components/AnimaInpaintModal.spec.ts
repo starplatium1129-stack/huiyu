@@ -1,11 +1,12 @@
 import { expect, it } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { mount, RouterLinkStub } from '@vue/test-utils'
 import AnimaInpaintModal from './AnimaInpaintModal.vue'
 
 it('retains the same outfit form, draft and scroll position across dismissal and reopen', async () => {
   const previousMotion = document.documentElement.dataset.motion
   document.documentElement.dataset.motion = 'reduce'
   const wrapper = mount(AnimaInpaintModal, {
+    global: { stubs: { RouterLink: RouterLinkStub } },
     props: { open: false, imageSource: { url: null, blob: null, historyId: null } },
     attachTo: document.body,
   })
@@ -34,6 +35,7 @@ it('retains the same outfit form, draft and scroll position across dismissal and
 it('enables native manual masks, rejects empty paint and keeps explicit whole-image choice', async () => {
   const source = new Blob(['image'], { type: 'image/png' })
   const wrapper = mount(AnimaInpaintModal, {
+    global: { stubs: { RouterLink: RouterLinkStub } },
     props: { open: true, provider: 'native', imageSource: { url: 'blob:source', blob: source, historyId: null } },
   })
   try {
@@ -67,6 +69,7 @@ it('enables native manual masks, rejects empty paint and keeps explicit whole-im
 it('gates native automatic recognition on local readiness and retains the choice when readiness is lost', async () => {
   const source = new Blob(['image'], { type: 'image/png' })
   const wrapper = mount(AnimaInpaintModal, {
+    global: { stubs: { RouterLink: RouterLinkStub } },
     props: { open: true, provider: 'native', automaticMaskAvailable: false, imageSource: { url: 'blob:source', blob: source, historyId: null } },
   })
   try {
@@ -86,6 +89,65 @@ it('gates native automatic recognition on local readiness and retains the choice
     expect(wrapper.emitted('submit')?.[0]?.[0]).toMatchObject({ editMode: 'masked', maskBlob: null, maskPrompt: 'jacket | sleeves' })
     await wrapper.setProps({ automaticMaskAvailable: false })
     expect(automatic.attributes('aria-pressed')).toBe('true')
+    await wrapper.get('.btn-submit-inpaint').trigger('click')
+    await new Promise(resolve => setTimeout(resolve, 0))
+    expect(wrapper.emitted('submit')).toHaveLength(1)
+  } finally { wrapper.unmount() }
+})
+
+
+it('keeps Comfy automatic masks unavailable until registered and offers the existing setup route', async () => {
+  const wrapper = mount(AnimaInpaintModal, {
+    global: { stubs: { RouterLink: RouterLinkStub } },
+    props: { open: true, provider: 'comfy', automaticMaskAvailable: false,
+      automaticMaskStatus: { state: 'missing', required: ['AP_CLIPSeg_TextMask'], missing: ['AP_CLIPSeg_TextMask'] },
+      imageSource: { url: null, blob: null, historyId: null } },
+  })
+  try {
+    const [manual, automatic] = wrapper.findAll('[aria-label="遮罩模式"] button')
+    expect(manual.attributes('disabled')).toBeUndefined()
+    expect(manual.attributes('aria-pressed')).toBe('true')
+    expect(automatic.attributes('disabled')).toBeDefined()
+    expect(wrapper.text()).toContain('AP_CLIPSeg_TextMask')
+    expect(wrapper.text()).toContain('一键准备包不包含')
+    expect(wrapper.getComponent(RouterLinkStub).props('to')).toEqual({ path: '/control', query: { engine: 'anima' } })
+    await wrapper.setProps({ automaticMaskAvailable: true, automaticMaskStatus: { state: 'ready', required: ['AP_CLIPSeg_TextMask'], missing: [] } })
+    expect(automatic.attributes('disabled')).toBeUndefined()
+    await automatic.trigger('click')
+    await wrapper.get('#maskPromptInput').setValue('jacket')
+    expect(wrapper.text()).toContain('不代表其模型文件、加载或识别效果已验证')
+    await wrapper.setProps({ automaticMaskAvailable: false, automaticMaskStatus: { state: 'unknown', required: ['AP_CLIPSeg_TextMask'], missing: [] } })
+    expect(automatic.attributes('aria-pressed')).toBe('true')
+    expect(wrapper.text()).toContain('尚未确认')
+    expect(manual.attributes('disabled')).toBeUndefined()
+  } finally { wrapper.unmount() }
+})
+
+
+it('allows explicit automatic selection for an offline managed service without claiming registered nodes', async () => {
+  const source = new Blob(['image'], { type: 'image/png' })
+  const wrapper = mount(AnimaInpaintModal, {
+    global: { stubs: { RouterLink: RouterLinkStub } },
+    props: { open: true, provider: 'comfy', managedStartAvailable: true, automaticMaskAvailable: false,
+      automaticMaskStatus: { state: 'unknown', required: ['AP_CLIPSeg_TextMask'], missing: [] },
+      imageSource: { url: 'blob:source', blob: source, historyId: null } },
+  })
+  try {
+    const image = wrapper.get('img').element as HTMLImageElement
+    Object.defineProperties(image, { naturalWidth: { value: 832 }, naturalHeight: { value: 1216 } })
+    await wrapper.get('img').trigger('load')
+    const [manual, automatic] = wrapper.findAll('[aria-label="遮罩模式"] button')
+    expect(manual.attributes('aria-pressed')).toBe('true')
+    expect(automatic.attributes('disabled')).toBeUndefined()
+    expect(wrapper.text()).toContain('启动受管服务并检查节点')
+    expect(wrapper.text()).not.toContain('文字自动蒙版节点已注册')
+    await automatic.trigger('click')
+    await wrapper.get('#maskPromptInput').setValue('jacket')
+    await wrapper.get('.btn-submit-inpaint').trigger('click')
+    await new Promise(resolve => setTimeout(resolve, 0))
+    expect(wrapper.emitted('submit')?.[0]?.[0]).toMatchObject({ maskPrompt: 'jacket', maskBlob: null })
+    await wrapper.setProps({ automaticMaskStatus: { state: 'missing', required: ['AP_CLIPSeg_TextMask'], missing: ['AP_CLIPSeg_TextMask'] } })
+    expect(automatic.attributes('disabled')).toBeDefined()
     await wrapper.get('.btn-submit-inpaint').trigger('click')
     await new Promise(resolve => setTimeout(resolve, 0))
     expect(wrapper.emitted('submit')).toHaveLength(1)

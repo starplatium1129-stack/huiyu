@@ -132,6 +132,11 @@ fn inpaint(graph: &mut Value, input: &Value, first: &str, decoded: &str) {
     };
     graph["19"] = resize("15");
     graph["18"] = node("VAEEncode", json!({"pixels":["19",0],"vae":["3",0]}));
+    graph[first]["inputs"]["latent_image"] = link("18", 0);
+    graph[first]["inputs"]["denoise"] = input
+        .get("denoisingStrength")
+        .cloned()
+        .unwrap_or(json!(0.8));
     let mask = if truthy(&input["maskImage"]) {
         graph["15_mask"] = node("LoadImage", json!({"image":input["maskImage"]}));
         graph["19_mask"] = resize("15_mask");
@@ -164,10 +169,6 @@ fn inpaint(graph: &mut Value, input: &Value, first: &str, decoded: &str) {
         );
         graph["10"]["inputs"]["images"] = link("30", 0);
         graph[first]["inputs"]["latent_image"] = link("17", 0);
-        graph[first]["inputs"]["denoise"] = input
-            .get("denoisingStrength")
-            .cloned()
-            .unwrap_or(json!(0.8));
     }
 }
 fn scale(input: &Value, source: &str) -> Value {

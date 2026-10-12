@@ -1,4 +1,6 @@
-import { computed, ref, type Ref } from 'vue'
+import { computed, ref, watch, type Ref } from 'vue'
+import { apiClient } from '@/api/client'
+import type { AnimaStatusResponse } from '@/composables/generation/animaSessionContract'
 import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 import { recommendBlueprints } from '@/utils/blueprintRecommendations'
 import {
@@ -34,6 +36,8 @@ export interface UseDirectorPopularInput {
   applyModel: AnimaSession['applyModel']
   sdSize: Ref<string>
   flash: (message: string) => void
+  getAnimaSettingsRevision?: () => number
+  preparedModelId?: string | null
 }
 
 /**
@@ -223,16 +227,67 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       ? pb.sceneBlueprints.find(item => item.id === subject.blueprintId)?.generatedRecipe
       : pb.activeScene?.generatedRecipe
   }
+  // A verified setup choice (including the saved startup default) survives silent
+  // recommendations until the user
+  // changes the engine, model or subject family. Character LoRAs still follow the route.
+  const modelSelection = () => JSON.stringify([drawEngine.value, animaState.value.modelId,
+    pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char === 'triad' ? 'studio-dual' : 'studio-single'])
+  let preparedSelection = drawEngine.value === 'anima' && animaState.value.modelId === input.preparedModelId ? modelSelection() : ''
+  watch(modelSelection, value => { if (value !== preparedSelection) preparedSelection = '' }, { flush: 'sync' })
+  async function applyPreparedModel(modelId: string, isCurrent: () => boolean) {
+    if (generationBusy.value || !isCurrent()) return
+    if (!pb.modelProfiles.some(profile => profile.engine === 'anima' && profile.model_id === modelId)) {
+      flash('准备的底模未登记为 Anima 模型，请回到控制室重新检查')
+      return
+    }
+    const revision = input.getAnimaSettingsRevision?.(), selection = JSON.stringify([pb.subject, pb.char, drawEngine.value])
+    const current = () => isCurrent() && !generationBusy.value && revision === input.getAnimaSettingsRevision?.()
+      && selection === JSON.stringify([pb.subject, pb.char, drawEngine.value])
+    let status: AnimaStatusResponse
+    try {
+      // Read all families before changing the workspace; failed handoffs retain its recipe.
+      status = await apiClient.request<AnimaStatusResponse>('/api/creative/status', {
+        cache: 'no-store', timeoutMs: 10_000, validate: value => value.ok === true,
+      })
+    } catch {
+      if (current()) flash('底模可用性检查未完成，当前选择已保留，请回到控制室重新检查')
+      return
+    }
+    if (!current()) return
+    const model = Array.isArray(status.models)
+      ? status.models.find(model => model.id === modelId && model.family === 'anima' && model.available === true) : undefined
+    const popularId = pb.subject.kind === 'popular' ? pb.subject.characterId : null
+    if (!model || (popularId && (model.capabilities?.noLora !== true
+      || (endfieldAnimaBinding(popularId, 'anima') && !endfieldAnimaBinding(popularId, 'anima', modelId))))) {
+      flash('准备的底模当前不可用或不适用于当前角色，请回到控制室重新检查')
+      return
+    }
+    setDrawEngine('anima', { silent: true })
+    if (drawEngine.value !== 'anima') return
+    const appliedRevision = input.getAnimaSettingsRevision?.(), subject = JSON.stringify([pb.subject, pb.char])
+    // Adopt the checked response through the session's existing whitelist/default policy.
+    if (!await refreshAnimaBackend(status) || !isCurrent() || generationBusy.value
+      || drawEngine.value !== 'anima' || appliedRevision !== input.getAnimaSettingsRevision?.()
+      || subject !== JSON.stringify([pb.subject, pb.char])) return
+    applyModel(modelId)
+    preparedSelection = modelSelection()
+    flash('已选用刚准备的 Anima 底模，可以开始创作')
+  }
   async function applyManagedRoute(options: { silent?: boolean } = {}): Promise<void> {
     const selection = JSON.stringify([pb.subject, pb.char, pb.sceneId, pb.directorMode])
     const route = await refreshManagedRoute()
+    if (!options.silent) preparedSelection = ''
     if (generationBusy.value || selection !== JSON.stringify([pb.subject, pb.char, pb.sceneId, pb.directorMode])
       || (options.silent && currentGeneratedRecipe())) return
+    const preservePreparedModel = options.silent && preparedSelection === modelSelection() && route.engine === drawEngine.value
+      && pb.modelProfiles.some(profile => profile.engine === 'anima' && profile.model_id === animaState.value.modelId)
+      && animaState.value.models.some(model => model.id === animaState.value.modelId && model.family === 'anima' && model.available === true)
+    const targetModelId = preservePreparedModel ? animaState.value.modelId : route.modelId
     const selectedModel = route.engine === 'sd'
       ? pb.sdModelName || sd.checkpoint.value
       : animaState.value.modelId
     const alreadyApplied = drawEngine.value === route.engine
-      && selectedModel.includes(route.modelId)
+      && selectedModel.includes(targetModelId)
       && (route.engine === 'sd' || route.engine === 'krea2' || animaState.value.loraId === route.loraId)
     if (alreadyApplied) return
     if (route.engine !== drawEngine.value) setDrawEngine(route.engine, { silent: options.silent })
@@ -244,7 +299,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       }
       applyRecommendedSize(pb.lastRecommendedSize)
     } else {
-      if (animaState.value.modelId !== route.modelId) applyModel(route.modelId)
+      if (animaState.value.modelId !== targetModelId) applyModel(targetModelId)
       patchAnimaState({ loraId: route.loraId, styleLoraId: '' })
       await refreshAnimaBackend()
     }
@@ -315,6 +370,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     rotateBlueprintSet,
     toggleBlueprintList,
     applyManagedRoute,
+    applyPreparedModel,
     syncManagedRoute,
     restorePopularDraft,
   }

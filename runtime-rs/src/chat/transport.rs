@@ -109,8 +109,10 @@ pub(super) async fn success(
         return Ok(response);
     }
     let status = response.status().as_u16();
-    let body = bounded(response, limit).await?;
-    let mut error = Error::new(
+    // Providers may echo authorization headers, keys, or credential-bearing URLs.
+    // Drain only bounded bytes; never publish/log upstream error bodies.
+    let _ = bounded(response, limit).await?;
+    let error = Error::new(
         if (400..500).contains(&status) {
             status
         } else {
@@ -119,7 +121,6 @@ pub(super) async fn success(
         "UPSTREAM_STATUS",
         format!("{message} {status}"),
     );
-    error.detail = String::from_utf8_lossy(&body).chars().take(500).collect();
     Err(error)
 }
 fn network_error(error: reqwest::Error) -> Error {

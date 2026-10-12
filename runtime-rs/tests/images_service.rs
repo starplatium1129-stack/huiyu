@@ -212,7 +212,8 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
         next: AtomicUsize::new(1),
     });
     let router = Router::new()
-        .route("/system_stats", get(|| async { Json(json!({})) }))
+        .route("/system_stats", get(|State(state): State<Arc<Mock>>| async move { state.events.lock().unwrap().push("stats".into()); Json(json!({})) }))
+        .route("/object_info", get(|State(state): State<Arc<Mock>>| async move { state.events.lock().unwrap().push("nodes".into()); Json(json!({"ConditioningKrea2Rebalance":{"input":{}},"ComfyUI-Krea2T-Enhancer":{"input":{}}})) }))
         .route("/free", post(free))
         .route("/prompt", post(prompt))
         .route("/history/{id}", get(history))
@@ -256,6 +257,23 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
         )
         .await
         .unwrap();
+    // Same uploaded image and local resources, but the fixed environment has
+    // no automatic-mask node. Admission probes the online service first, then
+    // refuses the optional graph without posting a prompt or removing inputs.
+    let automatic = service.prepare(
+        json!({"modelId":"anima-miaomiao-v1.6","prompt":"blue jacket","width":896,"height":1280,"seed":1234,"initImage":original,"maskPrompt":"jacket"}),
+        "anima", true, CancellationToken::new(),
+    ).await.err().expect("missing automatic-mask node must be rejected");
+    assert_eq!(automatic.code, "COMFY_OPTIONAL_NODES_UNAVAILABLE");
+    assert!(automatic.message.contains("AP_CLIPSeg_TextMask"));
+    assert_eq!(*events.lock().unwrap(), vec!["stats", "nodes"]);
+    assert!(state.workflows.lock().unwrap().is_empty());
+    assert!(
+        cfg.ai_workspace_root
+            .join("ComfyUI/input")
+            .join(&original)
+            .is_file()
+    );
     let mask = service
         .upload(
             STANDARD.encode(png(255)),
@@ -363,7 +381,7 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
         service.get_status("anima").await.unwrap()["hires"]["superResModel"],
         "RealESRGAN_x4plus_anime_6B.pth"
     );
-    let mut pure = json!({"modelId":"anima-miaomiao-v1.6","prompt":"A clear scene","width":896,"height":1280,"seed":9,"hiresFix":true,"hiresUpscaler":"R-ESRGAN 4x+ Anime6B","initImage":original});
+    let mut pure = json!({"modelId":"anima-miaomiao-v1.6","prompt":"A clear scene","width":896,"height":1280,"seed":9,"hiresFix":true,"hiresUpscaler":"R-ESRGAN 4x+ Anime6B","initImage":original,"denoisingStrength":0.6});
     let prepared = service
         .prepare(pure.clone(), "anima", true, CancellationToken::new())
         .await
@@ -381,6 +399,14 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
     assert_eq!(metadata["superResModel"], "RealESRGAN_x4plus_anime_6B.pth");
     assert!(metadata["hiresSampler"].is_null());
     assert!(metadata["hiresScheduler"].is_null());
+    {
+        let graphs = state.workflows.lock().unwrap();
+        let graph = &graphs.last().unwrap()["prompt"];
+        assert_eq!(graph["15"]["inputs"]["image"], original);
+        assert_eq!(graph["7"]["inputs"]["latent_image"], json!(["18", 0]));
+        assert_eq!(graph["7"]["inputs"]["denoise"], 0.6);
+        assert_eq!(graph["20"]["inputs"]["samples"], json!(["7", 0]));
+    }
     pure["hiresUpscaler"] = json!("Remacri");
     let missing = service
         .prepare(pure, "anima", true, CancellationToken::new())

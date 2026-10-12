@@ -53,6 +53,7 @@ pub struct ControlService {
     llama_process: tokio::sync::Mutex<Option<crate::processes::OwnedProcess>>,
     llama_secret: String,
     comfy_cancel: Mutex<Option<CancellationToken>>,
+    comfy_action: tokio::sync::Mutex<()>,
     comfy_process: tokio::sync::Mutex<Option<crate::processes::OwnedProcess>>,
     started: Instant,
     tunnel: tokio::sync::Mutex<Option<tunnel::TunnelRun>>,
@@ -131,14 +132,16 @@ impl ControlService {
             llama_process: tokio::sync::Mutex::new(None),
             llama_secret: uuid::Uuid::new_v4().to_string(),
             comfy_cancel: Mutex::new(None),
+            comfy_action: tokio::sync::Mutex::new(()),
             comfy_process: tokio::sync::Mutex::new(None),
             started: Instant::now(),
             tunnel: tokio::sync::Mutex::new(None),
             tunnel_action: tokio::sync::Mutex::new(()),
             build_cache: tokio::sync::Mutex::new(None),
         });
-        // No saved preference constitutes authorization to launch a model. The
-        // watchdog stays inert until an explicit start was verified this session.
+        // Restore only the explicitly managed Comfy intent. Opening the app does
+        // not launch a model: the first generation wakes it, then watchdog owns it.
+        service.state.lock().unwrap().managed[1].desired = service.saved_comfy_intent();
         let weak = Arc::downgrade(&service);
         let cancel = service.shutdown.clone();
         service.tasks.spawn(async move {loop {tokio::select! {_=cancel.cancelled()=>break,_=tokio::time::sleep(Duration::from_secs(5))=>{}}

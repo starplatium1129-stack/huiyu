@@ -4,7 +4,6 @@ import { reactive, ref, type ComputedRef, type Ref } from 'vue'
 import { createMessageId, type CharacterConfig } from '../../config/characters.ts'
 import { useChatStorage } from './useChatStorage.ts'
 import { useVoice } from '../useVoice.ts'
-import { CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL } from '../../config/chatApi.ts'
 import {
   inferEmotion,
   isAbortError,
@@ -67,6 +66,7 @@ interface PendingToolCall {
   id: string
   name: string
   arguments: string
+  thoughtSignature?: string
 }
 
 const MAX_TOOL_ROUNDS = 4
@@ -324,16 +324,12 @@ export function useChatConversation(options: ChatConversationOptions) {
     connection: TurnConnection
   }): string {
     const { characterId, text, imageUrl, hostMode, useVision, toolsEnabled, roundMessages, messages, connection } = args
-    // 若用户配置的模型名包含 gemini/gpt-4/qwen-vl 等视觉模型，或用户有独立配置 API，则优先走用户当前的 API
-    const userHasVision = /gemini|gpt-4|qwen-vl|claude|^huiyu-local$/i.test(connection.apiModel)
     const userApi = {
       baseUrl: connection.baseUrl,
       model: connection.apiModel,
       apiKey: connection.apiKey,
     }
-    const visionApi = userHasVision || connection.apiKey
-      ? userApi
-      : { baseUrl: CLIPROXY_BASE_URL, model: CLIPROXY_DEFAULT_MODEL, apiKey: CLIPROXY_API_KEY }
+    // Images use the selected service too; never silently route to an unconfigured local proxy.
     const historyList = (useVision && imageUrl)
       ? messages.slice(0, -2).map(message => ({ role: message.role, content: message.content }))
       : messages.slice(0, -1).map(message => ({ role: message.role, content: message.content }))
@@ -341,7 +337,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       character: characterId,
       provider: connection.provider,
       model: hostMode ? '' : connection.currentModel,
-      api: !hostMode && connection.provider === 'api' ? (useVision ? visionApi : userApi) : undefined,
+      api: !hostMode && connection.provider === 'api' ? userApi : undefined,
       hostConfig: hostMode || undefined,
       webSearch: connection.provider === 'api' && connection.webSearch,
       companionTools: toolsEnabled || undefined,
@@ -392,8 +388,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       // 不进持久化历史：它们是同一轮对话的中间过程，不应污染聊天记录。
       const roundMessages: Array<Record<string, unknown>> = []
       let toolRounds = 0
-      // 视觉轮：带有 imageUrl 或 read_image 成功后的下一轮改用本地 Gemini（视觉模型）发图，
-      // 看完成回到用户配置的聊天模型继续对话。
+      // 视觉轮沿用本次选定的 API；模型是否支持图片由服务商确认。
       let visionRound = Boolean(imageUrl)
       if (imageUrl) {
         roundMessages.push({
@@ -436,7 +431,7 @@ export function useChatConversation(options: ChatConversationOptions) {
           }
           if (event.type === 'tool-call') {
             if (event.id && event.name) {
-              toolCalls.push({ id: event.id, name: event.name, arguments: String(event.arguments || '{}') })
+              toolCalls.push({ id: event.id, name: event.name, arguments: String(event.arguments || '{}'), thoughtSignature: event.thoughtSignature })
             }
             return
           }
@@ -463,6 +458,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             id: call.id,
             type: 'function',
             function: { name: call.name, arguments: call.arguments },
+            ...(call.thoughtSignature ? { extra_content: { google: { thought_signature: call.thoughtSignature } } } : {}),
           })),
         })
         for (const call of toolCalls) {

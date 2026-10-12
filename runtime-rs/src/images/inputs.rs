@@ -170,6 +170,7 @@ mod tests {
 
     #[tokio::test]
     async fn native_uploads_retain_owner_checks_and_restore_without_comfy() {
+        let _upload_isolation = crate::images::UPLOAD_TEST_LOCK.lock().await;
         let directory = tempfile::tempdir().unwrap();
         let config = Config {
             sd_host: "http://127.0.0.1:1".into(),

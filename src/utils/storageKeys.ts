@@ -48,6 +48,8 @@ export const GUEST_GUIDE_DISMISSED_KEY = 'aics_guest_guide_dismissed'
 export const AUTO_SAVE_TO_GALLERY_KEY = 'aics_auto_save_to_gallery'
 /** Gallery search preferences; contains conditions, never artwork facts or image data. */
 export const GALLERY_FILTER_PRESETS_KEY = 'aics_gallery_filter_presets_v1'
+/** Workspace-bound first-use choices; operation IDs are rechecked, never resumed as commands. */
+export const LOCAL_SETUP_DRAFT_KEY = 'aics-model-draft-local-setup'
 
 /**
  * 上次成功备份的时间戳（localStorage）——活键但刻意不参与备份导出：
