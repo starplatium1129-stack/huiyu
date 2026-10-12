@@ -37,6 +37,7 @@
 - [Native Anima 局部风险缓存候选](audits/2026-10-12/native-anima-local-cache.html)：全局/局部双预算、独立采集与校准、维护候选隔离；尚无真实画质/性能或选择结论。
 - [后端性能优化续报](audits/2026-10-12/backend-performance.html)：相册最终批量写入、内部文件入库、完整语音缓存及角色立绘内存优化；本轮源码、构建与设备验收边界。
 - [回收站读取与 Live2D 健康探测优化](audits/2026-10-12/trash-live2d-performance.html)：删除专用完整记录查询、对称部分索引与健康布尔短路；真实内置模型文件调用观测及未测数据库 / 设备边界。
+- [目录列表调度优化](audits/2026-10-12/directory-listing-performance.html)：集中枚举、ICU 排序和 metadata，四个工作者及关闭等待；正常 API 真实目录壁钟观测与未验并发 / 设备边界。
 - [CLIPSeg 与分句翻译性能优化](audits/2026-10-13/clipseg-translation-performance.html)：单图视觉层复用、分句 LRU、自动遮罩执行身份与本轮编译 / 设备验收边界。
 - [后端热点优化续报](audits/2026-10-13/backend-hotpaths.html)：蒙版分配、暖模型身份、内容批量写与任务 JSON / CAS；补充任务列表索引、手动遮罩／RGB 准备 CPU 对照及设备验收边界。
 - [后端注意力、Live2D 与内容导入优化](audits/2026-10-13/backend-attention-catalog.html)：默认注意力去冗余拷贝、大依赖组并发校验、SQL 复用与导入所有权；本轮编译及设备验收边界。
