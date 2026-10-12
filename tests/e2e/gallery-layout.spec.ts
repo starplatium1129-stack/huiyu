@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { textContrast } from './helpers/contrast'
+import { paintedTextContrast, textContrast } from './helpers/contrast'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 // Browser-local fixture: no personal artwork or generation endpoint is used.
@@ -720,11 +720,16 @@ for (const theme of ['light', 'dark']) {
     await page.getByLabel('添加整理标签', { exact: true }).fill('验收标签')
     await page.screenshot({ path: info.outputPath('gallery-organization-form.png') })
     for (const control of await page.locator('.organization-form label, .organization-note, .organization-form button').all()) {
-      expect(await control.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      const contrast = await control.evaluate(element => element.matches('.studio-select-trigger'))
+        ? await paintedTextContrast(control.locator('.studio-select-value'))
+        : await control.evaluate(element => element.matches('.organization-form > button'))
+          ? await paintedTextContrast(control) : await control.evaluate(textContrast)
+      expect(contrast).toBeGreaterThanOrEqual(4.5)
     }
     await page.getByRole('button', { name: '整理 2 幅作品', exact: true }).click()
     await expect(page.getByRole('button', { name: '撤销本次整理', exact: true })).toBeVisible()
     await page.getByRole('button', { name: '退出选择', exact: true }).click()
+    await page.locator('.gallery-refine-disclosure > summary').click()
     await pickStudioOptionByValue(page.getByRole('combobox', { name: '按画册筛选', exact: true }), 'review')
     await expect(cards).toHaveCount(4)
     await page.getByRole('button', { name: '撤销本次整理', exact: true }).click()
