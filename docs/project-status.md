@@ -21,7 +21,7 @@
 | 持久化与任务 | Web 保留 IndexedDB；桌面激活后由 Rust/SQLite 持有权威；已接受任务独立于页面生命周期，失联不降级双写 | 历史来源、其他机器、大规模数据及真实故障场景按 [Workspace](architecture/WORKSPACE-MIGRATION-DESIGN.md) 与[任务契约](architecture/TASK-RUNTIME-DESIGN.md)分别验收 |
 | 创作 | Anima/Krea 2 新生成、换装、蓝图、入册与视频分镜；SD 新生成已退出，旧任务查询/取消/收集及历史作品保留 | 聊天绘画工具仍只准备草稿；真实模型、视频效果与成本按 [roadmap](roadmap.md) 验收 |
 | 首次配置与受管绘图 | 沿用 Portable、固定模型下载/校验和标准目录；显式受管意愿跨重开保留，首次生成按需唤醒；输入目录与 Portable 安装位置对齐；未知运行包与节点差异明确失败并保留已有文件 | 进程/HTTP、下载小夹具和界面逻辑可在 CPU 验证；真实 Windows/CUDA、节点加载、LoRA＋高清出图仍需主力机验收，见[配置指南](guides/setup-and-models.md) |
-| 独立 Anima 推理 | 当前v3补齐蒙版几何/denoised约束、AP软边、KJ RCAS参数、Remacri CPU羽化/Lanczos及普通优先的单帧VAE内核/FP32边界；沿用整组件卸载、共享组件冷切和任务协议 | 数学路径已接入，尚无v3 CUDA成图/性能验收；所有旧Tea档失配，auto完整计算，默认仍ComfyUI。FP32结合次序、kernel/批处理、取消/OOM释放和桌面安装待设备核对；旧样张不能当当前证据，见[高清与蒙版补齐](audits/2026-10-12/native-anima-effects.html) |
+| 独立 Anima 推理 | v3现有数学路径与resident逐组件/双缓冲加载已接入；另实现local-guard全局/局部双预算缓存维护候选，产品排除该候选、默认策略不变 | 无当前CUDA成图/加载/高清或局部缓存性能证据；旧Tea档仍失配，auto完整计算，默认ComfyUI。局部候选待真实对照后由用户选择，见[缓存候选](audits/2026-10-12/native-anima-local-cache.html)、[加载优化](audits/2026-10-12/native-anima-loading.html)与[高清补齐](audits/2026-10-12/native-anima-effects.html) |
 | 内容维护 | 记录 API、修订历史、字段补丁、批量预览/导入与项目快照导出；立绘/样张走图片事务 | 工作库与项目快照独立；pending、记录登记和结构校验不计为图片交付，见[维护手册](maintenance.md) |
 | 界面与陪伴 | Vue/Pinia、双主题、Reka 控件、路由按需加载、角色身份/Profile、独立聊天窗与浏览器/原生 Live2D | WebView2、DPI/多屏/休眠、真实语音与长期资源趋势保留设备验收范围 |
 | 资源生命周期 | 隐藏桌宠释放模型与原生 GPU context；桌面缩略缓存限 96 项/8 MiB；图库停用释放高清 URL | 既有短样本不推广为全部 GPU、大图库或长时间运行结论 |

@@ -57,7 +57,7 @@ S03/S08、高刷、高负载、四类 KeepAlive、GPU/纹理/进程内存与功�
 
 ## 创作、研究与接线
 
-- 独立Anima v3已补齐现有工作流的蒙版、RCAS功能参数、Remacri羽化/量化与单帧VAE路径；下一步在授权CUDA设备核对实际高清耗时、整图/OOM分块画面、tile拼接/软蒙版边界、offload/fused稳定性、显存/CPU RAM与取消释放，再判断默认替代。旧Tea档失配，需针对v3重新校准/接纳；浮点/kernel与批次差异不承诺PNG相等。当前AMD主机不能提供这些设备证据。Krea 2、视频、完整运行库发行与桌面安装保持独立范围，见[独立推理指南](guides/independent-inference.md)。
+- 独立Anima v3数学与有界加载路径已接入；local-guard双预算缓存已作为维护候选实现，产品不选择。后续同配方比较完整计算/原缓存/局部候选，核对画质、编辑边界、端到端速度/显存及拒绝/跳算率，再由用户选择；冷加载/高清/取消/OOM仍需CUDA核对，旧Tea档仍须v3校准。Transformer分层流式加载尚无，Tea首层norm与group预取生命周期有冲突，不能仅挂hooks宣称通过。当前AMD主机不能提供CUDA证据。Krea 2、视频、完整运行库发行与安装保持独立范围，见[独立推理指南](guides/independent-inference.md)。
 - 叙事、人物壁纸和手机壁纸分别小样对照：固定 checkpoint/参数/seeds，保留全部输出和硬条件失败，核查最终请求与画面。[指南](guides/README.md#prompts)与[研究来源](research/README.md)不是本地画质增益证明，不自动扩批或更改定稿。
 - 角色绘画工具当前只准备草稿。接受控队列时明确 queued/running/succeeded/failed，真实出图验收后再启用图片成功结果与奖励。
 - PhotoSwipe 保持按需试验，实体触屏、Windows/Tauri、大图集缩放/拖拽和资源趋势对照后再决定替换默认查看器；fflate/压缩待实际 manifest/原图包需求。

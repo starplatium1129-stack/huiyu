@@ -110,6 +110,7 @@ def dependencies():
     load_mask_tools()
     load_mask_tools("clipseg_mask")
     load_mask_tools("teacache_anima")
+    load_mask_tools("anima_local_cache")
     load_mask_tools("teacache_profile")
     load_mask_tools("resident_anima")
     load_mask_tools("anima_text_cache")
@@ -316,7 +317,7 @@ def load_pipeline(root, cfg, blocks=None, reusable=None):
         blocks, reusable, load_mask_tools, WorkerError)
 
 
-def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True):
+def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True, collect_cache_strategy="phase-envelope"):
     job_started = time.perf_counter()
     data = validate_job(job)
     root = validate_model(job.get("modelDir"))
@@ -349,7 +350,9 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             threshold = profile_tools.validate_profile(profile, scope, data.get("teaCacheThresh"),
                 require_accepted=teacache_profile is None) if profile is not None else None
             if profile is not None or collect_teacache:
-                tea = load_mask_tools("teacache_anima").TeaCacheController(profile, threshold, collect_teacache)
+                local_tools = load_mask_tools("anima_local_cache")
+                tea = load_mask_tools("teacache_anima").TeaCacheController(profile, threshold, collect_teacache, collect_local=collect_cache_strategy == "local-guard", local_tools=local_tools)
+                tea_report.update(cacheProfile=local_tools.execution_identity(profile) if profile is not None else None, collectionMetric=local_tools.METRIC if tea.local_guard else None)
         except profile_tools.TeaCacheError as exc:
             raise WorkerError(exc.code, str(exc)) from exc
     elif measure_teacache:
@@ -417,6 +420,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                 resident.clear()
                 raise WorkerError("MODEL_CHANGED", "Model or LoRA bytes changed while loading; retry after preparation completes")
     metrics.model_acquired(started, tea_report, reused, resident_fingerprint, post_load_fingerprint)
+    metrics.loading = getattr(pipeline, "_huiyu_loading", None)
     pipeline.vae._huiyu_vae_events = []
     sampling = load_mask_tools("anima_sampling")
     if data.get("sampler", "euler") != "euler":

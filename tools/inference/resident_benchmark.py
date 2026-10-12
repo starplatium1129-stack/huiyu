@@ -103,6 +103,7 @@ def child_session(api):
                 with path.with_name("stdout.jsonl").open("x") as events, contextlib.redirect_stdout(sys.stderr):
                     report = worker.generate(request["job"], events, resident=resident, cache_text=False, cache_mask=False,
                         collect_teacache=request["collect"], teacache_profile=request.get("profile"),
+                        collect_cache_strategy=request.get("cacheStrategy", "phase-envelope"),
                         measure_teacache=not request["collect"] and request.get("profile") is None)
                 api.write(path.with_name("worker-report.json"), report)
                 print(json.dumps({"request": str(path), "done": True}), flush=True)
@@ -138,14 +139,14 @@ class Session:
         self.reader.start()
         self.startup_seconds = time.perf_counter() - started
 
-    def execute(self, job, folder, collect, profile, timeout):
+    def execute(self, job, folder, collect, profile, timeout, *, cache_strategy="phase-envelope"):
         folder.mkdir()
         job = json.loads(json.dumps(job))
         job["outputPath"] = str(folder / "output.png")
         job["input"].pop("teacache", None)
         job["input"]["teaCache"] = profile is not None
         request = folder / "request.json"
-        self.api.write(request, {"job": job, "collect": collect, "profile": profile})
+        self.api.write(request, {"job": job, "collect": collect, "profile": profile, "cacheStrategy": cache_strategy})
         started = time.perf_counter()
         try:
             self.process.stdin.write(json.dumps(str(request)) + "\n")

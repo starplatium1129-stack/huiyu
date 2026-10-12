@@ -8,7 +8,7 @@
     "mode": "one-exact-base-and-active-lora-group",
     "identity": "complete SHA256 and per-component SHA256 at acquisition; fixed local NTFS retains read-only file leases, stable file IDs and membership/attribute notifications before reuse and after load; otherwise repeat full bytes. Base changes reload adapted transformer/conditioner; byte-identical unadapted Qwen/VAE/tokenizers may be reused after exact class/dtype checks",
     "isolation": "fresh pipeline blocks, scheduler, guider and TeaCache controller per job",
-    "initialization": "first dependency imports overlap full-byte identity on the resident caller thread. Resident CUDA storage is grouped by component and dtype, so one component never retains another component allocation. Offload starts with CPU weights and migrates whole components at actual forwards",
+    "initialization": "first dependency imports overlap full-byte identity on the resident caller thread. Resident loads and uploads one checked component at a time, then releases its CPU sources before loading the next; per-component/dtype CUDA flats use two <=32MiB pinned byte staging slabs, Event-gated reuse and copy-stream completion before view publication. Staging allocation failure uses direct copies; DMA failures propagate. Active staging <=64MiB excludes the host allocator cache. Offload remains CPU-loaded whole-component forward migration. Source/compilation reviewed; no current CUDA loading performance or image evidence",
     "loraStrengthChanges": "reuse unchanged base/adapter bytes; update active adapter weights without reloading",
     "textEncodingCache": {
       "location": "CPU only",
@@ -156,6 +156,16 @@
       "algorithm": "huiyu-anima-first-norm-residual-v1",
       "candidateAlgorithm": "huiyu-anima-phase-envelope-v2",
       "candidateMeaning": "phase-specific observed error envelopes; refresh on phase transition; not a semantic quality bound",
+      "localGuardCandidate": {
+        "algorithm": "huiyu-anima-local-guard-v1",
+        "profileSchema": 3,
+        "metric": "raster-contiguous-c16-fp32-v1",
+        "maxGroups": 16,
+        "decision": "both global mean and worst contiguous-token-group empirical phase budgets must permit reuse; no semantic/error guarantee",
+        "selection": "maintenance --strategy local-guard; product read_profile excludes schema3 even if stored/accepted, preserving existing production choices",
+        "calibration": "requires exact collector and paired global/local proxy/residual traces; explicit future CUDA --run; candidate file has no automatic acceptance",
+        "status": "source and compilation only; no real calibration, output or performance evidence"
+      },
       "requires": "exact compatible local calibration and explicit held-out device acceptance",
       "threshold": "profile default; explicit 0.01..1 bounded by profile maxThreshold",
       "maxConsecutiveSkips": [

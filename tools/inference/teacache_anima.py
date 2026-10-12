@@ -41,9 +41,9 @@ def phase_index(step, total):
     return min(2, 3 * step // max(1, total - 1))
 
 
-def estimate_change(profile, change, step, total):
-    if profile["schemaVersion"] == 2:
-        points = profile["phaseEnvelopes"][phase_index(step, total)]
+def estimate_change(profile, change, step, total, field="phaseEnvelopes"):
+    if profile["schemaVersion"] in (2, 3):
+        points = profile[field][phase_index(step, total)]
         if not points[0][0] <= change <= points[-1][0]:
             return None
         right = bisect_left([point[0] for point in points], change)
@@ -75,12 +75,18 @@ def same_inputs(conditioning, padding, lane):
 
 class TeaCacheController:
     """One job only; distinct CFG lanes and no class/global model patching."""
-    def __init__(self, profile=None, threshold=None, collect=False):
+    def __init__(self, profile=None, threshold=None, collect=False, *, collect_local=False, local_tools=None):
         if not collect and (profile is None or threshold is None):
             raise ValueError("TeaCache needs a validated local profile and threshold")
         self.profile, self.threshold, self.collect = profile, threshold, collect
+        self.local_guard = (collect and collect_local) or (profile is not None and profile["schemaVersion"] == 3)
+        self.local_tools = local_tools
+        if self.local_guard and local_tools is None:
+            raise ValueError("Local cache requires the bundled local metric")
         self.lanes, self.samples, self.model = {}, [], None
         self.stats = dict(fullComputes=0, skippedComputes=0, skippedBlocks=0, resets=0, nonfinite=0)
+        if self.local_guard:
+            self.stats.update(localChecks=0, localRiskRejects=0)
 
     def clear(self):
         self.lanes.clear()
@@ -99,7 +105,7 @@ class TeaCacheController:
             if lane is not None:
                 self.stats["resets"] += 1
             lane = dict(shape=shape, conditioning=snapshot(conditioning), padding=snapshot(padding),
-                        proxy=None, residual=None, accumulated=0.0, skips=0)
+                        proxy=None, residual=None, accumulated=0.0, local_accumulated=0.0, skips=0)
             self.lanes[branch] = lane
         lane.update(step=step, timestep=timestep)
         return lane
@@ -117,7 +123,7 @@ class TeaCacheController:
         lane = self._lane(model, branch, step, total, float(timestep_value), kwargs["hidden_states"],
                           kwargs["encoder_hidden_states"], kwargs["padding_mask"])
         originals = [(block, block.forward, "forward" in block.__dict__) for block in blocks]
-        execution = dict(skip=False, input=None, proxy=None, change=None, visited=0)
+        execution = dict(skip=False, input=None, proxy=None, change=None, local_change=None, visited=0)
 
         def wrap(index, original):
             def forward(hidden, encoder, embedded, temb, rotary, extra, mask, control):
@@ -126,49 +132,69 @@ class TeaCacheController:
                     norm_input = hidden + extra if extra is not None else hidden
                     proxy = blocks[0].norm1(norm_input, embedded, temb)[0]
                     safe = torch.isfinite(proxy).all() & torch.isfinite(hidden).all()
-                    change = None
+                    change, local_change = None, None
                     if lane["proxy"] is None:
                         safe = bool(safe.item())
                     else:
                         # Keep both observations distinct: finite tensors can still
                         # overflow the metric. Transfer their float32 scalars together.
-                        safe, change = torch.stack((safe.float(), _relative_l1_tensor(proxy, lane["proxy"]))).cpu().tolist()
+                        if self.local_guard:
+                            changes = self.local_tools.relative_changes(proxy, lane["proxy"])
+                            safe, change, local_change = torch.cat((safe.float().reshape(1), changes)).cpu().tolist()
+                            self.stats["localChecks"] += 1
+                        else:
+                            safe, change = torch.stack((safe.float(), _relative_l1_tensor(proxy, lane["proxy"]))).cpu().tolist()
                     safe = bool(safe) and math.isfinite(float(timestep_value))
                     change = change if safe and change is not None and math.isfinite(change) else None
-                    execution.update(proxy=snapshot(proxy) if safe else None, change=change)
-                    if not safe or (lane["proxy"] is not None and change is None):
+                    local_change = local_change if safe and local_change is not None and math.isfinite(local_change) else None
+                    execution.update(proxy=snapshot(proxy) if safe else None, change=change, local_change=local_change)
+                    if not safe or (lane["proxy"] is not None and (change is None or (self.local_guard and local_change is None))):
                         self.stats["nonfinite"] += 1
-                        lane.update(proxy=None, residual=None, accumulated=0.0, skips=0)
+                        lane.update(proxy=None, residual=None, accumulated=0.0, local_accumulated=0.0, skips=0)
                     estimate = None
                     if change is not None and not self.collect:
                         estimate = estimate_change(self.profile, change, step, total)
                     phase = phase_index(step, total)
-                    phase_changed = self.profile is not None and self.profile["schemaVersion"] == 2 and lane.get("phase") != phase
+                    phase_changed = self.profile is not None and self.profile["schemaVersion"] in (2, 3) and lane.get("phase") != phase
                     lane["phase"] = phase
                     accumulated = lane["accumulated"] + estimate if estimate is not None else math.inf
                     execution["skip"] = (not self.collect and 0 < step < total - 1
                         and not phase_changed and lane["residual"] is not None and estimate is not None
                         and accumulated < self.threshold and lane["skips"] < self.profile["maxConsecutiveSkips"])
+                    local_accumulated = math.inf
+                    if self.local_guard and not self.collect:
+                        local_estimate = (estimate_change(self.profile, local_change, step, total, "localPhaseEnvelopes")
+                            if local_change is not None else None)
+                        if local_estimate is not None:
+                            local_accumulated = lane["local_accumulated"] + local_estimate
+                        local_ok = local_accumulated < self.profile["localThreshold"]
+                        self.stats["localRiskRejects"] += int(execution["skip"] and not local_ok)
+                        execution["skip"] = execution["skip"] and local_ok
                     if execution["skip"]:
-                        lane.update(accumulated=accumulated, skips=lane["skips"] + 1)
+                        lane.update(accumulated=accumulated, local_accumulated=local_accumulated, skips=lane["skips"] + 1)
                         self.stats["skippedComputes"] += 1
                         self.stats["skippedBlocks"] += len(blocks)
                     else:
                         execution["input"] = snapshot(hidden)
-                        lane.update(accumulated=0.0, skips=0)
+                        lane.update(accumulated=0.0, local_accumulated=0.0, skips=0)
                         self.stats["fullComputes"] += 1
                 if execution["skip"]:
                     result = hidden + lane["residual"] if index == 0 else hidden
                 else:
                     result = original(hidden, encoder, embedded, temb, rotary, extra, mask, control)
                 if index == len(blocks) - 1:
-                    residual_change = None
+                    residual_change, local_residual_change = None, None
                     if not execution["skip"]:
                         residual = result - execution["input"]
                         if finite_tensor(residual) and execution["proxy"] is not None:
                             # Residual change is calibration-only; avoid its reduction/sync in generation.
                             if self.collect and lane["residual"] is not None:
-                                residual_change = relative_l1(residual, lane["residual"])
+                                if self.local_guard:
+                                    residual_change, local_residual_change = self.local_tools.relative_changes(residual, lane["residual"]).cpu().tolist()
+                                    if not all(math.isfinite(value) for value in (residual_change, local_residual_change)):
+                                        residual_change = local_residual_change = None
+                                else:
+                                    residual_change = relative_l1(residual, lane["residual"])
                                 if residual_change is None:
                                     self.stats["nonfinite"] += 1
                             lane["residual"] = snapshot(residual)
@@ -177,8 +203,11 @@ class TeaCacheController:
                             lane["residual"] = None
                     lane["proxy"] = execution["proxy"]
                     if self.collect:
-                        self.samples.append(dict(branch=branch, step=step, total=total, timestep=float(timestep_value),
-                            proxyRelativeL1=execution["change"], residualRelativeL1=residual_change))
+                        sample = dict(branch=branch, step=step, total=total, timestep=float(timestep_value),
+                            proxyRelativeL1=execution["change"], residualRelativeL1=residual_change)
+                        if self.local_guard:
+                            sample.update(localProxyRelativeL1=execution["local_change"], localResidualRelativeL1=local_residual_change)
+                        self.samples.append(sample)
                 return result
             return forward
 

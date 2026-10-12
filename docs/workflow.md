@@ -432,4 +432,6 @@ skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同�
 
 `npm run wf -- models:calibrate-anima-teacache ...` 默认只读计划；`--run` 明确执行本地 CUDA 全计算采样、拟合与留出对照，可用 `--max-consecutive-skips 1..3` 设置候选上限（默认 1）。`--accept-run ... --accept-quality --accept-performance` 在画质/性能验收和实际提速核对后写入模型校准档；不同 runtime/LoRA/参数范围可保存于同一有界集合，追加或替换均按旧整文件 SHA-256 显式核验。无下载/安装，未验收档拒绝用于产品；见[TeaCache 校准与验收](guides/independent-inference.md#teacache-本机校准与验收)。
 
+`--strategy phase-envelope|polynomial|local-guard` 选择维护候选，默认phase-envelope。local-guard增加独立局部风险预算，`--local-threshold` 只适用于该策略；schema3档独立保存，产品不选择。当前仅完成源码/编译，不执行真实对照，不替用户选择算法。
+
 `npm run wf -- models:import-anima-directory --source-dir <完整模型目录> --target-dir <全新目标>` 默认只读布局计划；`--apply` 明确复制完整资源，不覆盖或移动来源。控制室提供同一能力的确认入口及离线运行库准备，沿用本机操作互斥与取消；文件证据不代表实际模型/GPU兼容，见[独立推理指南](guides/independent-inference.md#应用内离线准备与完整目录导入)。

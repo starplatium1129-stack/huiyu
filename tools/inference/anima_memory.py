@@ -16,15 +16,15 @@ def validate():
     return POLICY
 
 
-def upload(pipeline, tools):
-    """Resident upload only; staged loading must never allocate every weight."""
+def upload_component(component, tools):
+    """Retire one loaded CPU component before materializing the next one."""
     if validate() == "offload":
-        return
-    modules = [pipeline.components[name] for name in WEIGHTS
-               if pipeline.components[name].device.type == "cpu"]
-    if modules and not tools("native_upload").try_packed_upload(modules):
-        for module in modules:
-            module.to("cuda")
+        return {"strategy": "deferred"}
+    observation = {}
+    if not tools("native_upload").try_packed_upload([component], observation=observation):
+        component.to("cuda")
+        observation["strategy"] = "module-to"
+    return observation
 
 
 class Residency:

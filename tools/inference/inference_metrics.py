@@ -18,6 +18,7 @@ class RuntimeMetrics:
     def __init__(self, torch, started):
         self.torch, self.started = torch, started
         self.timings, self.mask_cache = {}, None
+        self.loading = None
         self.tracking = False
         self.memory = dict(status="unverified", reason="not-started", deviceIndex=0,
             scope="image-preparation-through-pipeline", peakAllocatedBytes=None, peakReservedBytes=None)
@@ -103,4 +104,4 @@ class RuntimeMetrics:
             existingReportSynchronization=report is not None, timings=self.timings, baseReused=reused, completedSteps=completed_steps,
             textCache=text, maskCache=mask, teaCache=cached, memory=self.memory,
             memoryPolicy=memory_policy, componentReuse=list(component_reuse), samplingRevision="anima-workflow-effects-v3",
-            refinement=self.refinement)
+            refinement=self.refinement, loading=self.loading)

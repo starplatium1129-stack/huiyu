@@ -28,6 +28,8 @@
 
 GPU packed storage 按组件与 dtype 分开；切底模仅复用字节摘要、精确类型及 dtype 都一致的 Qwen、VAE 和两个 tokenizer。Qwen＋两个 tokenizer 真正复用才保留原始文本缓存；已适配 transformer/conditioner 不跨底模复用。身份摘要使用已有全字节读取，不靠文件名/mtime。完全冷首张仍有哈希和加载成本，当前没有测得冷加载提速。
 
+Resident 加载现在每组件检查完即上传，避免四组件一起持有 CPU 权重；上传按连续目标窗口合并张量，用最多两块32 MiB锁页缓冲与专用CUDA stream交错填充/传输。Event确认传输完成后才复用缓冲，全部传输完成后才发布GPU视图；锁页分配失败使用原直接拷贝，真实CUDA错误仍失败。64 MiB仅是活跃staging上限，PyTorch锁页缓存和进程RSS另计。Offload加载方式不变。`nativeRuntime.loading`记录本次实际组件加载/上传耗时、策略、字节和copy次数，热复用不带旧冷加载耗时。本轮只改变搬运，配方、精度和Tea身份保持；无当前GPU提速/画质证据，见[加载优化](../audits/2026-10-12/native-anima-loading.html)。
+
 高清保留过期张量清理与解码前释放 Tea 残差。VAE 普通整图先行，单帧禁用跨帧 feature clone；严格 CausalConv 单帧/无 cache 条件截取最后时间核并用隐式空间 padding，RMS 按原 dtype 归一化，latent 统计、raw-latent bicubic 与显示边界用 FP32。仅实际 CUDA OOM 回退：encode256/overlap64；decode 从32 latent 按当前可用显存预算倍增，overlap为tile/4。CPU FP32双侧羽化、累加/权重和归一；不回退精度或 CPU 推理。
 
 Remacri 从512/32网格开始，不再使用192 core＋halo硬裁；只有真实 CUDA OOM 才整次256/128重算。RRDB按CUDA模型设备逐块上传，完整4×结果与Lanczos留CPU；VAE回退CPU像素不会使RRDB误走CPU。Lanczos与PNG均RGB uint8截断。`nativeRuntime.refinement`记录实际VAE整图/分块、tile/overlap/count、输出设备和Remacri块信息。当前AMD 880M无可用NVIDIA CUDA，本轮无真实模型/测试/部署；数学路径已接入，但kernel/浮点舍入、画面与性能仍须设备验收，见[高清与蒙版补齐](../audits/2026-10-12/native-anima-effects.html)。
@@ -160,6 +162,10 @@ Transformers 实现许可证为 Apache-2.0；CLIPSeg 权重许可独立于代码
 
 
 ## TeaCache 本机校准与验收
+
+本轮另实现维护候选 `local-guard`（schema3 / `huiyu-anima-local-guard-v1`）：按每批最多16个连续raster token组的相对L1峰值，与全局均值分别校准三阶段关系；两套累计预算都允许才复用。它是粗粒度特征风险筛选，不识别脸/手部，不构成画质误差界。生成两指标合并一次读回，局部残差指标仅全算校准时采集。原phase/poly路径不执行此额外计算。
+
+后续在授权CUDA设备用同一维护入口的 `--strategy local-guard` 生成新候选目录，`--local-threshold` 可单独给局部门槛，不提供时使用本次 `--threshold`；都需在0.01–1范围内。默认strategy仍phase-envelope，不加 `--run` 只有计划。本轮没有实际采集、拟合、接受或安装任何档案。schema3独立成族，产品选择明确排除它，即使将来存入集合也不会覆盖或自动取代原算法；后续实际使用时再选择与接入。详见[局部风险缓存候选](../audits/2026-10-12/native-anima-local-cache.html)。
 
 独立 Anima/Cosmos 路径已实现首层 norm1 代理与整个 transformer block 栈残差复用，实际跳过 attention/MLP；模型外层预处理与输出层仍运行。按 CFG 分支独立缓存，每任务新建缓存控制器；受控 Worker 串行复用已加载权重，实际首尾采样步全算，连续跳步有上限，条件、形状、设备或时间序列变化清理缓存，异常恢复原调用。图生图及手绘/CLIPSeg 遮罩继续执行原逐步约束与最终合成，不把缓存当换装算法。
 

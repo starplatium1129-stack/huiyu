@@ -60,6 +60,55 @@ pub(super) fn capture(value: &Value) -> Value {
         if let Some(seconds) = value["timings"].get("postprocessWallSeconds") {
             result["timings"]["postprocessWallSeconds"] = json!(finite(seconds)?);
         }
+        if let Some(loading) = value.get("loading").filter(|v| !v.is_null()) {
+            if loading["strategy"] != "component-sequential-v1" {
+                return None;
+            }
+            let components = loading["components"].as_array()?;
+            if components.len() > 4 {
+                return None;
+            }
+            let mut names = std::collections::HashSet::new();
+            let mut captured_components = Vec::new();
+            for component in components {
+                let name = component["name"].as_str()?;
+                if !matches!(
+                    name,
+                    "text_encoder" | "text_conditioner" | "transformer" | "vae"
+                ) || !names.insert(name)
+                {
+                    return None;
+                }
+                let strategy = component["upload"]["strategy"].as_str()?;
+                if !matches!(
+                    strategy,
+                    "packed-pinned" | "packed-direct" | "module-to" | "deferred"
+                ) {
+                    return None;
+                }
+                let mut captured = json!({"name":name,
+                    "readWallSeconds":finite(&component["readWallSeconds"])?,
+                    "uploadWallSeconds":finite(&component["uploadWallSeconds"])?,
+                    "upload":{"strategy":strategy}});
+                for (key, maximum) in [
+                    ("tensorBytes", 1_u64 << 40),
+                    ("transferBytes", 1 << 40),
+                    ("copyCalls", 1_000_000),
+                    ("stagingBytes", 64 * 1024 * 1024),
+                ] {
+                    if let Some(value) = component["upload"].get(key) {
+                        let count = value.as_u64()?;
+                        if count > maximum {
+                            return None;
+                        }
+                        captured["upload"][key] = json!(count);
+                    }
+                }
+                captured_components.push(captured);
+            }
+            result["loading"] =
+                json!({"strategy":"component-sequential-v1","components":captured_components});
+        }
         let groups: [(&str, &[&str], &[&str]); 3] = [
             (
                 "textCache",

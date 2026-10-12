@@ -154,15 +154,29 @@ real cold-request work without moving it outside the request timer.
 
 The worker explicitly loads trusted package component classes from these local folders; index references to other repositories or custom classes are never followed. Quantization/custom-code configs are rejected. Missing assets fail with a preparation error; they are never fetched automatically. Raw model conversion requires the correct architecture config and separately available encoder, VAE and tokenizer assets; renaming a checkpoint or placing it beside these folders is insufficient.
 
-During actual weight loading, all four model components request the pinned upstream final loading report and reject nonempty `missing_keys`, `mismatched_keys` or `error_msgs` before pipeline publication or CUDA transfer. This prevents Qwen's warning-only initialization of missing required parameters. Upstream tied/ignored-key rules remain authoritative, and unexpected-only entries retain upstream warning behavior, including an unused `lm_head.weight` in a compatible Qwen CausalLM export. The report is not independent certification of shard-index contents or model quality; layout-only diagnostics below still do not load weights.
+During actual weight loading, each of the four model components requests the pinned upstream final loading report and rejects nonempty `missing_keys`, `mismatched_keys` or `error_msgs` before that component's CUDA transfer. No pipeline is published until all components and adapters are ready. This prevents Qwen's warning-only initialization of missing required parameters. Upstream tied/ignored-key rules remain authoritative, and unexpected-only entries retain upstream warning behavior, including an unused `lm_head.weight` in a compatible Qwen CausalLM export. The report is not independent certification of shard-index contents or model quality; layout-only diagnostics below still do not load weights.
 
-After those checks, `native_upload.py` can pack the four privately owned CPU
-components into GPU storage grouped by dtype, retaining Parameter/Buffer objects,
-shapes, dtypes and values. Each source copies directly to its destination slice;
-there is no concatenated full host-weight staging copy. Unsupported layouts return
-to the existing `pipeline.to` route before mutation. Allocation, copy or publication
-errors propagate instead of falling back after a partial change. LoRA fusion keeps
-packed views attached when PEFT replaces weight storage. The four-job diagnostic
+Resident loading now uploads each checked component before loading the next CPU
+component. `native_upload.py` retains per-component/dtype GPU flats and the same
+Parameter/Buffer objects, shapes, dtypes and values. It coalesces tensor byte spans
+and 256-byte alignment gaps through two reusable pinned slabs, at most 32 MiB
+each, on one copy stream. CPU filling overlaps the preceding DMA; Events prevent
+overwriting an in-flight slab. The stream drains, including on failure, before
+publishing views. Active staging is at most 64 MiB; PyTorch may retain freed pinned
+buffers in its host allocator cache. Small uploads or a staging allocation failure
+use the earlier direct-copy path; unsupported layouts use `component.to` before
+mutation. Actual CUDA allocation/copy/Event/publication errors propagate. Offload
+keeps CPU components until their ordinary forward hooks; its transfer algorithm
+is unchanged. This changes neither the recipe nor Tea calibration identity.
+`nativeRuntime.loading` reports fresh component read/upload wall times and actual
+strategy, tensor/transfer bytes, copy calls and active staging bytes. Warm base
+reuse reports no prior loading record. First-request hashing, OS file cache and
+GPU inference still have their original costs. There is no current CUDA timing
+or image evidence for this loading revision; see the
+[loading delivery](../../docs/audits/2026-10-12/native-anima-loading.html).
+
+LoRA fusion keeps packed views attached when PEFT replaces weight storage.
+Historical evidence below belongs to the earlier direct-copy path. The four-job diagnostic
 sequence preserved all four PNGs byte-for-byte, removed the extra approximately
 3.28 GiB complete CPU base snapshots on the protected source path, and used at
 most 32 MiB temporary read/conversion buffers. Observed working set fell from
@@ -367,19 +381,43 @@ The bundled `teacache_anima.py` retains the original Diffusers 0.41.0 transforme
 - Txt2img, img2img and masked editing share the cache denoiser. V3 masked input/denoised constraints and the final float pixel composite remain active during cached inference; cache reuse never replaces the mask algorithm.
 - All temporary instance forwards and scheduler progress wrappers are restored in `finally`; no class monkey-patch or model-global cache survives a job. Normal progress and atomic PNG output remain. Host process termination still owns cancellation.
 
-`teacache_profile.py` validates the original version-1 polynomial and the version-2 `huiyu-anima-phase-envelope-v2` candidate; runtime pins are Diffusers 0.41.0 and Torch 2.8.0. The exact compatibility object identifies SHA-256 content of all local pipeline component assets and ordered LoRA bytes/strengths, width, height, steps, CFG, mode, denoising strength, sampler/scheduler, dtype and GPU device name. Masked scope also binds manual/CLIPSeg source kind, growth, threshold and mask prompt; automatic masking binds all local CLIPSeg asset bytes. The accepted or collected mask digest is checked against the assets actually used before cache reuse/loading and again after a new load, including calibration with mask caching disabled; a changed checkpoint aborts instead of attributing a new mask to the old scope. Prompt/seed and source/mask image content may vary within the independently tested calibration set. This is not a guarantee for unseen content.
+`teacache_profile.py` validates the version-1 polynomial, version-2 phase envelope and maintenance-only version-3 `huiyu-anima-local-guard-v1`; product profile selection excludes version 3. Runtime pins are Diffusers 0.41.0 and Torch 2.8.0. The exact compatibility object identifies SHA-256 content of all local pipeline component assets and ordered LoRA bytes/strengths, width, height, steps, CFG, mode, denoising strength, sampler/scheduler, dtype and GPU device name. Masked scope also binds manual/CLIPSeg source kind, growth, threshold and mask prompt; automatic masking binds all local CLIPSeg asset bytes. The accepted or collected mask digest is checked against the assets actually used before cache reuse/loading and again after a new load, including calibration with mask caching disabled; a changed checkpoint aborts instead of attributing a new mask to the old scope. Prompt/seed and source/mask image content may vary within the independently tested calibration set. This is not a guarantee for unseen content.
 
 The version-1 profile carries 1–6 finite polynomial `coefficients` in ascending power order, `proxyRange`, `defaultThreshold`, `maxThreshold`, `maxConsecutiveSkips`, and `calibration` containing `source: local-full-compute`, a valid-pair `sampleCount` and `traceSha256`. Product generation additionally requires `acceptance.status: accepted` and `acceptance.reportSha256`, set only by the explicit local acceptance workflow after reviewing held-out results. These are local evidence links, not cryptographic certification of quality. Changing weights, adapters/scales, sampling/edit scope, dtype, GPU or execution mode/revision requires a compatible new calibration. Identity comes from full content hashes or a still-protected lease to those exact bytes, never file names or mtimes alone. First acquisition and fallback hashing add I/O.
 
 The fixed `teacache-profile.json` can also hold a `huiyu-teacache-profile-set`
 collection (schemaVersion 1, profiles array): at most 16 entries and 64 KiB total.
 The worker selects exactly one matching runtime and compatibility scope, then
-performs the usual acceptance and coefficient validation. Different character
+performs the usual acceptance and coefficient validation, excluding local-guard.
+Version 3 is a separate family, so storing it never replaces same-scope v1/v2.
+Different character
 LoRAs and strengths never borrow each other's profiles. The acceptance command
 appends a new scope or replaces the same scope while preserving other entries;
 both operations require the old whole-file `--replace-profile-sha256` and atomic
 publication. A leftover `.teacache-profile.lock` requires local inspection after
 an interrupted acceptance; it is never silently stolen.
+
+Experimental `--strategy local-guard` adds a second independently calibrated
+budget to the phase-envelope cache. `anima_local_cache.py` reduces `[B,N,C]`
+features in FP32, partitions each batch into at most 16 contiguous raster-token
+groups and takes the maximum group relative L1. The short final group's epsilon
+uses its actual token count. These groups may cross image rows; they are coarse
+features, not faces/hands or semantic masks. Global/local metrics share one host
+readback; only calibration additionally measures local residual changes. A skip
+requires both phase envelopes to be in-domain and both accumulated budgets below
+their own thresholds. Full refresh resets both; nonfinite values retain the
+existing failure/publication guard. No extra long-lived feature cache is added.
+
+The tool collects only when explicitly selecting local-guard, fits paired global
+and local proxy/residual observations, and records the actual algorithm/metric
+and `localChecks`/`localRiskRejects` for run/acceptance review. `--local-threshold`
+is optional, defaults to that run's global threshold and is bounded 0.01..1;
+neither threshold is a recommendation or semantic error bound. The CLI still
+defaults to phase-envelope, no-run is only a plan, and schema3 is never selected
+by the product even if stored. Future selection remains a separate user decision.
+No model calls/calibration were performed for this candidate. It may skip less
+or cost more than ordinary TeaCache; see the
+[candidate delivery](../../docs/audits/2026-10-12/native-anima-local-cache.html).
 
 Hires is calibrated as one complete operation, including both denoising passes
 where applicable. Its scope also binds hires scale/denoise, resolved upscaler,

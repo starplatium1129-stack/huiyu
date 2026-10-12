@@ -14,6 +14,8 @@ import tempfile
 
 ALGORITHM = "huiyu-anima-first-norm-residual-v1"
 PHASE_ALGORITHM = "huiyu-anima-phase-envelope-v2"
+LOCAL_ALGORITHM = "huiyu-anima-local-guard-v1"
+PROFILE_ALGORITHMS = ((1, ALGORITHM), (2, PHASE_ALGORITHM), (3, LOCAL_ALGORITHM))
 EXECUTION = os.environ.get("HUIYU_INFERENCE_ACCELERATION", "native")
 RUNTIME = {"diffusers": "0.41.0", "torch": "2.8.0", "huiyuInference": "anima-workflow-effects-v3",
            "memoryPolicy": os.environ.get("HUIYU_INFERENCE_MEMORY", "resident"),
@@ -135,7 +137,7 @@ def finite(value, low=None, high=None):
 
 def validate_profile(profile, expected, threshold=None, *, require_accepted=True):
     """Validate a profile and return the resolved threshold. No silent fallback."""
-    if not isinstance(profile, dict) or (profile.get("schemaVersion"), profile.get("algorithm")) not in ((1, ALGORITHM), (2, PHASE_ALGORITHM)):
+    if not isinstance(profile, dict) or (profile.get("schemaVersion"), profile.get("algorithm")) not in PROFILE_ALGORITHMS:
         raise TeaCacheError("Unsupported TeaCache profile schema/algorithm; locally calibrate this runtime")
     if profile.get("runtime") != RUNTIME or profile.get("compatibility") != expected:
         raise TeaCacheError("TeaCache profile does not match the exact runtime, model/LoRAs, sampling scope, dtype or device; recalibrate")
@@ -147,14 +149,19 @@ def validate_profile(profile, expected, threshold=None, *, require_accepted=True
         if not isinstance(domain, list) or len(domain) != 2 or not all(finite(x, 0) for x in domain) or domain[0] > domain[1]:
             raise TeaCacheError("TeaCache proxyRange must be the finite nonnegative calibrated interval")
     else:
-        phases = profile.get("phaseEnvelopes")
-        if not isinstance(phases, list) or len(phases) != 3:
-            raise TeaCacheError("Phase calibration requires exactly three observed phase envelopes")
-        for points in phases:
-            if (not isinstance(points, list) or not 2 <= len(points) <= 32 or
-                    any(not isinstance(p, list) or len(p) != 2 or not all(finite(v, 0) for v in p) for p in points) or
-                    any(a[0] >= b[0] for a, b in zip(points, points[1:]))):
-                raise TeaCacheError("Phase envelope needs finite nonnegative, strictly ordered proxy/error points")
+        fields = ("phaseEnvelopes", "localPhaseEnvelopes") if profile["schemaVersion"] == 3 else ("phaseEnvelopes",)
+        for field in fields:
+            phases = profile.get(field)
+            if not isinstance(phases, list) or len(phases) != 3:
+                raise TeaCacheError("Phase calibration requires exactly three observed phase envelopes")
+            for points in phases:
+                if (not isinstance(points, list) or not 2 <= len(points) <= 32 or
+                        any(not isinstance(p, list) or len(p) != 2 or not all(finite(v, 0) for v in p) for p in points) or
+                        any(a[0] >= b[0] for a, b in zip(points, points[1:]))):
+                    raise TeaCacheError("Phase envelope needs finite nonnegative, strictly ordered proxy/error points")
+        if profile["schemaVersion"] == 3 and (profile.get("localMetric") != "raster-contiguous-c16-fp32-v1"
+                or profile.get("maxGroups") != 16 or not finite(profile.get("localThreshold"), 0.01, 1)):
+            raise TeaCacheError("Local cache needs its exact metric and calibrated local threshold")
     default, maximum = profile.get("defaultThreshold"), profile.get("maxThreshold")
     if not finite(default, 0.01, 1) or not finite(maximum, default, 1):
         raise TeaCacheError("TeaCache profile threshold bounds are invalid")
@@ -194,7 +201,7 @@ def profile_entries(document):
     for index, entry in enumerate(entries):
         if (not isinstance(entry, dict) or not isinstance(entry.get("runtime"), dict)
                 or not isinstance(entry.get("compatibility"), dict)
-                or (entry.get("schemaVersion"), entry.get("algorithm")) not in ((1, ALGORITHM), (2, PHASE_ALGORITHM))):
+                or (entry.get("schemaVersion"), entry.get("algorithm")) not in PROFILE_ALGORITHMS):
             raise TeaCacheError("Invalid TeaCache profile entry")
         if any(same_scope(entry, previous) for previous in entries[:index]):
             raise TeaCacheError("Duplicate TeaCache runtime/compatibility scope")
@@ -203,7 +210,8 @@ def profile_entries(document):
 
 def same_scope(left, right):
     # Preserve existing validation equality: e.g. CFG 4 and 4.0 are equivalent.
-    return left["runtime"] == right["runtime"] and left["compatibility"] == right["compatibility"]
+    return (left["runtime"] == right["runtime"] and left["compatibility"] == right["compatibility"]
+            and (left["schemaVersion"] == 3) == (right["schemaVersion"] == 3))
 
 
 def _read_profile_file(path, root):
@@ -231,12 +239,12 @@ def read_profile(path, root, expected=None, *, auto=False):
     if auto and path is None:
         return None
     document, _ = _read_profile_file(path, root)
-    if "kind" not in document and expected is None and not auto:
+    if "kind" not in document and document["schemaVersion"] != 3 and expected is None and not auto:
         return document
     if expected is None:
         raise TeaCacheError("TeaCache collection selection requires the current compatibility scope")
     matches = [entry for entry in profile_entries(document)
-               if entry["runtime"] == RUNTIME and entry["compatibility"] == expected]
+               if entry["schemaVersion"] != 3 and entry["runtime"] == RUNTIME and entry["compatibility"] == expected]
     if auto and not matches:
         return None
     if len(matches) != 1:
