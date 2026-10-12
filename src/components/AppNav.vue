@@ -50,8 +50,9 @@
             type="button"
             class="nav-search tw:cursor-pointer"
             aria-label="搜索页面、场景与作品"
+            aria-keyshortcuts="Control+K Meta+K"
             @click="openSearch"
-          ><ArchiveIcon name="search" /></button>
+          ><ArchiveIcon name="search" /><span class="nav-search-label">搜索</span><kbd class="nav-search-shortcut" aria-hidden="true">Ctrl K</kbd></button>
         </StudioTooltip>
         <TaskCenterButton />
         <span class="nav-utility-divider" aria-hidden="true"></span>
@@ -296,6 +297,7 @@ onUnmounted(() => {
 .nav-links :deep(.animated-selection) { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
 .nav-more-chevron { transition:none; }
 .nav-links > a { white-space:nowrap; }
+.nav-links > a:not(.active) { font-weight: 500; }
 @media (min-width:1600px) { .nav-brand-note { display: block; } }
 @media (min-width:1001px) and (max-width:1200px) {
   .nav-inner { gap:var(--s-2); }
@@ -337,6 +339,22 @@ onUnmounted(() => {
 }
 .nav-utilities :deep(button:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: none; transition: none; }
 .nav-utility-divider { width: 1px; height: 16px; margin: 0 var(--s-1); background: var(--border-soft); }
+.nav-search-label, .nav-search-shortcut { display: none; }
+/* A visible search affordance fits wide atelier windows; compact and wood-rail
+   navigation retain their existing icon target. The tooltip lists both shortcuts. */
+@media (min-width: 1440px) {
+  :global(:root:not([data-theme-style='terraria']) .nav-utilities .nav-search) {
+    width: auto; gap: var(--s-2); padding: 0 var(--s-3);
+    border-color: var(--border-soft); background: var(--bg-surface);
+  }
+  :global(:root:not([data-theme-style='terraria']) .nav-search-label) { display: inline; font-size: var(--fs-label-sm); }
+  :global(:root:not([data-theme-style='terraria']) .nav-search-shortcut) {
+    display: inline; padding: 2px var(--s-1); border: 1px solid var(--border-soft);
+    border-radius: var(--r-sm); color: var(--text-secondary);
+    font: 400 var(--fs-label-xs)/var(--lh-label) var(--font-sans);
+  }
+  :global(:root:not([data-theme-style='terraria']) .nav-utilities .nav-search:hover) { background: var(--accent-soft); border-color: var(--border-strong); }
+}
 
 @media (max-width: 1000px) {
   /* Keep compact desktop windows on the existing two-column navigation surface. */
