@@ -7,7 +7,7 @@
 :root{color-scheme:light dark}body{font:16px/1.7 system-ui,sans-serif;color:CanvasText;background:Canvas;max-width:960px;margin:36px auto;padding:0 20px}h1{font-size:26px}h2{font-size:20px}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:12px 10px;border-bottom:1px solid GrayText}code{overflow-wrap:anywhere}a{color:LinkText}footer{margin-top:24px}
 </style>
 <h1>后端热点优化续报</h1>
-<p>2026-10-13。本轮继续落实四组热点优化，减少整图临时分配、目录遍历、重复基线解析和任务大 JSON 深拷贝。没有新增依赖或持久化格式迁移。收益为源码操作量推导，尚无本轮真实耗时或 RSS 对照。</p>
+<p>本页保留 2026-10-13 main 既有热点优化记录；云端续测从 f06a51e3 开始，后续章节记录任务列表、图像准备及回收站／Live2D 的实际改动、各自环境与性能边界。前四组原记录仅为当时源码操作量推导，不能与云端实测混用。</p><h2>此前 main 的四组实现记录</h2>
 <table aria-label="本轮改动与边界">
 <thead><tr><th>范围</th><th>实际改动</th><th>边界</th></tr></thead>
 <tbody>
@@ -63,6 +63,21 @@
 <h3>验证及交付边界</h3>
 <p>通过：最终源码／消费路径／所有权审查、当前 CPython 3.12 的 py_compile（仅语法）、git diff --check；文件有效行低于 500。未运行：按现行 AGENTS 禁测范围，不执行行为测试、图像对比、夹具或模型调用；没有新 Rust 变更，不重复此前有效构建。仍需主力机记录实际 Python 3.11／Windows、各输入格式／EXIF、输出图像、软遮罩边界、整任务耗时及内存，当前没有访问主力机或改变 UI。</p>
 <p>最终 raw JSON／每个热样本／首次值／源码摘要／安装日志保存在被忽略的 <code>runtime/mask-perf-20261012/</code>，纯观测工具在 <code>scripts/archive/mask-perf-20261012/</code>。较早提案与中间生命周期版本仅作过程记录，不混入最终表。</p>
+</section>
+<section id="cloud-integration">
+<h2>回收站与 Live2D 整合 · 云端续测 2026-10-12 UTC</h2>
+<p>源码审查并 cherry-pick 独立分支 <code>perf/trash-live2d-20261012</code> 的 <code>0657f9a5d1aa8b6dd54733515b2122084f7c238b</code>，整合提交 <code>58944ea69004376a154a4e1e60f7907d31f67b0c</code>。完整审查六个产品文件、API 参数和客户端序列化：deletedOnly=true 优先筛选删除行，旧 includeDeleted=true 全量与默认活跃语义不变，正文／游标／双修订／取消／原 TrashEntry 映射保留。schema 同时保留所有任务索引与新删除作品索引。新参数须前后端一起交付；跨页 session／epoch 未固定为既有问题，本轮未扩大修复，也未复现或宣称已解决。</p>
+<p>Live2D 健康 worker 只求布尔可用性，在第一个经过完整内置或导入模型检查且启用的候选后停止；catalog／资源授权仍走完整路径。共享原检查，未放宽 manifest、依赖、receipt、目录和链接边界；仍由实际 blocking worker 持有许可与 refreshing 标志，保留 4 秒 TTL、60 秒期限、取消后等待、revision 失效及 shutdown。主会话与另一独立审查未发现新增阻塞项。</p>
+<p>并行作者的 <a href="../2026-10-12/trash-live2d-performance.html">原 HTML 与环境记录</a> 报告：Linux Xeon 8573C／Rust 1.99 debug、仓库两套真实内置模型，无导入模型，带模型路径文件调用 382→93；重复刷新调用区间中位数 19.33→5.19 ms。它含 strace 跟踪开销，不能当作实际请求时延／完整 worker 时间；本主环境没有重跑该观测。原包 <a href="oai-library://libfile_4feeb13313948191b1deb07bcb5b60de/huiyu-trash-live2d-20261012.zip">huiyu-trash-live2d-20261012.zip</a>，v0、732,392 字节，作者提供 SHA-256 <code>e5bb0a831d43bea00f862f8c80773599399647051326d9499cafedc9dd270c33</code>。本环境通过当前 Library 支持流程准备后下载失败，尚未重新核验其中原始日志；保留独立来源，不声称日志已装入本主证据包或已本地复测。</p>
+<h3>回收站读取的补充纯观测</h3>
+<p>本主环境 Linux／Xeon 8370C、Rust 1.98.1、bundled SQLite 3.53.2。直接调用最终实际 Storage actor，再对每页返回 Value 做 Serde JSON 序列化并计数；单调用者、limit=200、完整 body、读至 nextCursor=null。基线为原 includeDeleted=true 路径，候选为 deletedOnly=true；两种请求用同一最终二进制（未变的旧 SQL 筛选路径），不是完整旧／新发布版本 A/B。包含 SQL、JSON 解码、actor 等待与序列化；不含 HTTP、JS JSON.parse、原客户端收集／TrashEntry 映射、图片编解码、网络传输或 UI。没有断言、预期输出、错误场景或行为回归。</p>
+<p>中性合成人口：5,000 行完整正文共 120,338,890 字节，每行约 24 KB neutral prompt 与简单元数据；稀疏人口删除 id_key 前 100 行，密集人口删除前 4,000 行；小人口 200 行、正文 34,090 字节、删除前 10 行。删除按键连续排列，不代表真实分布。准备及索引建立不计入查询。两侧先各一次首值，再十轮 ABBA，每侧 n=20 热样本，未清 OS／磁盘缓存；编译均结束后测量。表为同人口整次分页读取，不能冒充单个 HTTP 请求。</p>
+<table aria-label="回收站读取热中位数与范围，毫秒"><thead><tr><th>人口</th><th>原路径 median / min–max ms</th><th>删除专用 median / min–max ms</th><th>页数</th><th>实际序列化 JSON 字节</th><th>首次 ms</th></tr></thead><tbody><tr><td>5,000 条／100 删除</td><td>169.429 / 164.991–256.955</td><td>3.491 / 3.025–10.115</td><td>25→1</td><td>120,665,593→2,413,845</td><td>189.533→3.862</td></tr><tr><td>5,000 条／4,000 删除</td><td>171.067 / 168.007–199.655</td><td>138.248 / 132.503–147.773</td><td>25→20</td><td>120,700,693→96,567,308</td><td>198.406→146.388</td></tr><tr><td>200 条／10 删除</td><td>0.568 / 0.489–0.761</td><td>0.125 / 0.082–0.311</td><td>1→1</td><td>46,934→2,464</td><td>0.855→0.207</td></tr></tbody></table>
+<p>本合成人口观察到稀疏删除读取减少约 97.9%，密集删除减少约 19.2%；小人口绝对只少约 0.442 ms。实际真实工作库、分页变化、并发和客户端成本未测。删除索引 DDL 只做每人口一次纯观察：大稀疏 11.135 ms／SQLite 文件新增 4,096 字节，大密集 9.767 ms／94,208 字节，小人口 0.755 ms／4,096 字节；均为预热数据库内单次建立，不是生产冷开库分布或索引实际 payload 大小。未测软删除／恢复／保存写成本，不能把读取节省称为零写入或零存储成本。</p>
+<h3>整合验证</h3>
+<p>通过：必要应用类型检查 <code>npm run typecheck:app</code>；两处 rustfmt 差异按本环境 Rust 1.98.1 修正后，五个 Rust 文件 edition 2024／skip_children 格式检查与 diff --check；变更源文件均少于 500 总行。最终现有入口 <code>CARGO_NET_OFFLINE=true npm run wf -- rust:build</code> release 成功，Rust 输出 5 分 31 秒；源绑定 <code>63c60ae9eeca5a7ec0b80e7d15163d6b148e5ef86e0379c89720e81ae077fc9f</code>，Linux 二进制 29,391,144 字节／SHA-256 <code>ce8fe9eb7d3c5b2fbf3ce4fbc439e0935d6c2776750a607c62cf6aaf5bcd354f</code>。第一次构建为统一格式而中断，本会话子进程组也已终止，最终日志独立保存。未运行行为测试、模型／GPU／Windows／真实工作库验收。</p>
+<p>图像准备阶段已推送的 40443455 查询返回 statuses=[]、PR workflow_runs=[]、check_runs 总数 0；现有 CI 仅计划／手动依赖审计，没有 push／PR 触发。这是没有检查运行，不能写 CI passed。草稿 PR #74 保持草稿，未合并、发版或部署。原 docs:check 的 main 既有失效夹具链接仍未修复，不恢复被禁的测试资产。</p>
+<p>整合构建／类型日志与绑定保存于被忽略的 runtime/；回收站每个样本及 SQLite 数据人口位于 <code>runtime/trash-perf-20261012/</code>，一次性纯观测源码位于 <code>scripts/archive/trash-perf-20261012/</code>。没有新增产品依赖或 UI 设计改动。</p>
 </section>
 <footer>原始日志、源码哈希与构建回执保存在被忽略的 <code>runtime/backend-performance-20261013/round2/</code>。此前优化保留；本报告只列本轮新增改动与必要验证。当前未部署。</footer>
 </html>

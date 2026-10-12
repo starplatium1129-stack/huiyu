@@ -102,8 +102,12 @@ pub(super) fn available(
         if cancel.is_cancelled() {
             return None;
         }
-        if inspect_builtin(&builtins.join(id), &format!("{id}.model3.json"), Some(cancel))
-            .is_ok_and(|(_, missing)| missing.is_empty())
+        if inspect_builtin(
+            &builtins.join(id),
+            &format!("{id}.model3.json"),
+            Some(cancel),
+        )
+        .is_ok_and(|(_, missing)| missing.is_empty())
         {
             return (!cancel.is_cancelled()).then_some(true);
         }

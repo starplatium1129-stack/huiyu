@@ -94,8 +94,7 @@ impl Live2dService {
             // Hold the deduplication flag and permit until the actual blocking
             // work exits, including after timeout or service cancellation.
             let (_guard, _permit) = (guard, permit);
-            if let Some(available) =
-                catalog::available(&self.builtins, &self.local, &work_cancel)
+            if let Some(available) = catalog::available(&self.builtins, &self.local, &work_cancel)
                 && !work_cancel.is_cancelled()
             {
                 *self.health.observation.lock().unwrap() = Some(Observation {
