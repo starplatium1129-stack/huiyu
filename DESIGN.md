@@ -176,7 +176,7 @@ accents. Both themes preserve the same layout, action hierarchy, and character i
 > 浅色已恢复，入口为 AppThemeToggle/useTheme，覆盖在 light-theme.css。
 > 本文色板为深色基线；新增颜色需适配两个主题，角色强调色与图片上文字分别验收。
 > check-contrast.js 核算两种界面风格的明暗配色及角色强调色；浏览器计算样式和视觉审查仍须覆盖动态组件、纹理背景与图片叠字。
-> 实际文字审查须考虑文字 alpha、背景与祖先 opacity；图片和渐变背景用实际画面与深浅主题截图验收，不能把令牌通过视作页面整体 AA 通过。
+> ui-layout.spec.ts 的实际文字检查逐层合成文字 alpha、背景与祖先 opacity；图片和渐变背景继续用实际像素与深浅主题截图验收，不能把令牌通过视作页面整体 AA 通过。
 
 - Use `primary` only for the current selection, the main call to action, focus,
   or a small piece of emphasis. A page must not look uniformly pink.
@@ -213,16 +213,6 @@ harder to understand.
 - Never depend on font weight or color alone to distinguish a critical state.
 
 ## Layout
-
-首页保持角色主视觉与独立阅读面，首要创作动作拥有最高视觉权重。
-三步导览共用一张紧凑纸面，编号、说明与小插画并排；下方创作入口以
-一个主入口和四个辅助入口组成，资料区用更小的插画与中性文字收束。
-同级章节标题使用无衬线字体，衬线保留给首页主标题与故事内容。
-宽桌面导航在 1440 CSS px 起显示搜索文字与快捷键，较窄窗口和像素主题
-保留原图标入口。降低辅助控件的装饰权重时，仍使用达标的文字令牌。
-这些取舍参考 [Spectrum 的注意力层级](https://spectrum.adobe.com/foundations/composition/attention-hierarchy)
-与 [Linear 的界面整理](https://linear.app/now/behind-the-latest-design-refresh)，
-沿用绘遇的角色色、手绘图标和双主题。
 
 Use the 4/8/12/16/24/32/48/64 spacing scale. Normal pages use a `1200px` content
 maximum. Dense creative workspaces may use the available viewport width while

@@ -50,8 +50,6 @@
 
 ## 今日记录
 
-- [视觉设计融合](audits/2026-10-12/visual-design.html)：首页与导航的视觉层级、紧凑导览、双主题定向查看、构建与原生设备验收边界。
-
 - [独立推理当前候选汇总](audits/2026-10-09/independent-inference-current.html)：自动/手绘局部重绘、严格离线单文件转换、实际验证与发行缺口。
 
 - [独立推理手绘局部重绘](audits/2026-10-09/independent-inference-phase3.html)：逐步蒙版采样、输入保护与应用交互；真实设备验收待完成。

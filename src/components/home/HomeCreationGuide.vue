@@ -4,7 +4,7 @@
       <div><span class="eyebrow">从灵感到作品</span><h2 id="creation-guide-title">第一张 CG，从这里开始</h2></div>
       <RouterLink to="/prompt-builder" class="guide-direct">已有想法？直接绘制 <ArchiveIcon name="spark" /></RouterLink>
     </header>
-    <ol class="guide-steps tw:grid tw:p-0 tw:m-0">
+    <ol class="guide-steps tw:grid tw:gap-s-4 tw:p-0 tw:m-0">
       <li><RouterLink to="/scene-explorer"><img class="step-art" :src="inspirationArt" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">01</span><span><strong>挑一个场景</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">浏览故事与参考画面，找到想画的瞬间。</span></span></RouterLink></li>
       <li><RouterLink to="/prompt-builder"><img class="step-art" :src="createArt" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">02</span><span><strong>在绘制台完成画面</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">确认角色、画幅与氛围，把灵感画出来。</span></span></RouterLink></li>
       <li><RouterLink to="/gallery"><img class="step-art" :src="collectionArt" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">03</span><span><strong>在「我的作品」回看</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">查看已保存的作品，挑选喜欢的图片继续创作。</span></span></RouterLink></li>
@@ -36,32 +36,30 @@ const collectionArt = useThemeIllustration(collectionOriginal, 'collection')
 @reference "../../assets/css/tailwind.css";
 .creation-guide { margin-block: var(--s-6); }
 .eyebrow { @apply tw:text-secondary tw:text-label-sm; }
-h2 { margin: var(--s-2) 0 0; font: 600 var(--fs-title-sm)/var(--lh-label) var(--font-sans); text-wrap: balance; }
-.guide-direct { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-secondary tw:text-label; }
-.guide-direct:hover { color: var(--accent); text-decoration: underline; text-underline-offset: .25em; }
-/* One quiet reading surface keeps the three steps together, below the hero CTA. */
-.guide-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-1); list-style: none; padding: var(--s-2); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface); }
-.guide-steps li { min-width: 0; }
-.guide-steps a { @apply tw:grid tw:h-full tw:p-s-3; align-items: start; gap: var(--s-3); grid-template-columns:32px minmax(0,1fr) 64px; border-radius: var(--r-md); color: var(--text-primary); text-decoration: none; }
-.step-art { grid-column:3; grid-row:1; align-self:center; display:block; width:64px; height:72px; object-fit:contain; }
-.guide-steps .step-number { grid-column:1; grid-row:1; height:32px; background: var(--bg-base); color:var(--text-secondary); font-size:var(--fs-label-sm); font-variant-numeric:tabular-nums; }
-.guide-steps a > span:last-child { grid-column:2; grid-row:1; min-width:0; }
+h2 { margin: var(--s-2) 0 0; font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
+.guide-direct { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-accent tw:text-label; }
+.guide-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; }
+.guide-steps a { @apply tw:grid tw:gap-s-3 tw:h-full tw:p-s-4; grid-template-columns:40px minmax(0,1fr); grid-template-rows:auto 1fr; border: 1px solid transparent; @apply tw:rounded-xl; background: transparent; @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
+.step-art { grid-column:1/-1; display:block; width:100%; height:clamp(112px,12vw,164px); object-fit:contain; }
 .guide-steps a:hover strong { text-decoration:underline; text-underline-offset:.25em; }
 .guide-steps a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 @media (hover: hover) and (pointer: fine) {
-  .guide-steps a:hover { background: var(--bg-hover); }
+  .guide-steps a:hover { transform: translateY(-2px); }
 }
-.step-number { place-items:center; font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); }
+@media (prefers-reduced-motion: reduce) {
+  .guide-steps a { transition: none; }
+  .guide-steps a:hover { transform: none; }
+}
+:root:is([data-motion="reduce"], [data-motion="reduced"]) .creation-guide .guide-steps a { transition:none; transform:none; }
+.step-number { place-items:center; flex:0 0 40px; font:500 var(--fs-body)/var(--lh-label) var(--font-sans); }
 .guide-steps strong { @apply tw:block tw:text-body-sm; }
-.guide-steps .step-copy { margin-top:var(--s-1); font-size:var(--fs-label-sm); overflow-wrap:anywhere; }
 .guide-help { border-bottom: 1px solid var(--border-soft); }
 .guide-help summary { padding-block: var(--s-3); @apply tw:min-h-[44px] tw:cursor-pointer; }
-.guide-help summary:focus-visible, .guide-direct:focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:var(--r-sm); }
 .guide-help-body { max-width: 80ch; }
 .guide-help-body p { margin: 0 0 var(--s-3); }
 .guide-help-body a { @apply tw:text-accent; text-decoration: underline; text-underline-offset: .2em; }
 @media (max-width: 768px) {
   .guide-heading { align-items: start; @apply tw:flex-col tw:gap-s-2; }
-  .guide-steps { grid-template-columns: minmax(0, 1fr); }
+  .guide-steps { grid-template-columns: minmax(0, 1fr); @apply tw:gap-s-2; }
 }
 </style>

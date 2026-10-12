@@ -24,7 +24,7 @@ function excerpt(story?: string) { return (story || '一些想留下的光影，
 @reference "../../assets/css/tailwind.css";
 .art-journal { margin-block: var(--s-7); }
 .journal-heading { align-items: end; }
-.journal-heading h2 { font: 600 var(--fs-title-sm)/var(--lh-label) var(--font-sans); margin:var(--s-2) 0 0; text-wrap:balance; }
+.journal-heading h2 { font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); margin:var(--s-2) 0 0; }
 .journal-heading .eyebrow { @apply tw:text-label-xs; letter-spacing: .16em; @apply tw:text-muted; }
 .journal-more { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-label tw:text-secondary tw:whitespace-nowrap; }
 .journal-spread { grid-template-columns: 1.2fr 1fr; gap: var(--s-5); }
