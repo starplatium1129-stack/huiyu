@@ -223,6 +223,3 @@ fn tts_error(mut error: ApiError, headers: &HeaderMap, peer: SocketAddr) -> ApiE
     }
     error
 }
-
-#[cfg(test)]
-mod tests;

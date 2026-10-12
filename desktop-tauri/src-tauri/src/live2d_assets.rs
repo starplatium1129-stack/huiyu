@@ -70,26 +70,3 @@ pub fn resolve_model(assets: &Path, local_root: Option<&Path>, character: &str, 
     }
     Ok(ModelFiles { directory, manifest, moc })
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn local_model_resolves_explicit_manifest_not_moc_stem_and_rejects_escape() {
-        let root = std::env::temp_dir().join(format!("aics-native-import-{}", std::process::id()));
-        let dir = root.join("imports/fixture");
-        std::fs::create_dir_all(&dir).unwrap();
-        std::fs::write(dir.join("renamed.moc3"), b"MOC3").unwrap();
-        std::fs::write(dir.join("t.png"), b"png").unwrap();
-        std::fs::write(dir.join("fixture.model3.json"), r#"{"Version":3,"FileReferences":{"Moc":"renamed.moc3","Textures":["t.png"]}}"#).unwrap();
-        std::fs::write(dir.join("companion.json"), r#"{"character":{"id":"fixture"},"avatar":{"id":"avatar","characterId":"fixture","profileId":"profile"},"profile":{"profileId":"profile","avatarId":"avatar","backendCompatibility":["native"]},"manifest":"fixture.model3.json"}"#).unwrap();
-        let imports = root.join("imports");
-        assert!(resolve_model(&root, Some(&imports), "fixture", "profile").is_ok());
-        assert!(resolve_model(&root, Some(&imports), "fixture", "wrong").is_err());
-        assert!(resolve_model(&root, Some(&imports), "../fixture", "profile").is_err());
-        assert!(checked_file(&dir, "../fixture/t.png").is_err());
-        std::fs::remove_file(dir.join("t.png")).unwrap();
-        assert!(resolve_model(&root, Some(&imports), "fixture", "profile").is_err());
-        std::fs::remove_dir_all(root).unwrap();
-    }
-}

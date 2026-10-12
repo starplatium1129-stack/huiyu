@@ -7,7 +7,6 @@ import ts from 'typescript';
 /** Bootstrap from TypeScript itself; works on a clean checkout before any JS exists. */
 export const PROJECTS = {
   node: 'tsconfig.node.json',
-  tests: 'tsconfig.tests.json',
   browser: 'tsconfig.browser-tools.json',
 } as const;
 type ProjectName = keyof typeof PROJECTS;
@@ -137,9 +136,8 @@ function sourceForOutput(relative: string): string {
 function ownedOutput(project: ProjectName, relative: string): boolean {
   if (!canonicalRelative(relative) || !/\.(?:[cm]?js|d\.ts)$/.test(relative)) return false;
   if (project === 'browser') return /^(?:tools\/|assets\/theme-bootstrap\.|docs\/guides\/prompts\/)/.test(relative);
-  if (project === 'tests') return relative.startsWith('scripts/tests/');
   return /^(?:scripts\/|poc\/|eslint\.config\.)/.test(relative)
-    && !relative.startsWith('scripts/archive/') && !relative.startsWith('scripts/tests/') && !relative.includes('/vendor/');
+    && !relative.startsWith('scripts/archive/') && !relative.includes('/vendor/');
 }
 
 /** No output is published until every selected project passes type checking. */
@@ -179,7 +177,7 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
     }
     // Classic browser scripts execute on different pages, in their own scopes.
     const groups = project === 'browser' ? parsed.fileNames.map(file => [file]) : [parsed.fileNames];
-    const isolatedEmit = project === 'node' || project === 'tests';
+    const isolatedEmit = project === 'node';
     const queries = new Map<string, FilesystemQuery>();
     const compilerOptions = { ...parsed.options, noEmit: isolatedEmit,
       ...(isolatedEmit ? { isolatedModules: true, allowImportingTsExtensions: true } : {}),
@@ -192,7 +190,7 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
       if (diagnostics.length) throw new Error(formatDiagnostics(diagnostics, root));
       if (options.check) continue;
       if (isolatedEmit) {
-        // Full strict checking above includes native TypeScript imports from test helpers.
+        // Full strict checking above includes native TypeScript imports from maintenance helpers.
         // Isolated modules can then be transformed without rewriting those working paths.
         for (const sourceFile of parsed.fileNames.filter(file => !file.endsWith('.d.ts'))) {
           const source = program.getSourceFile(sourceFile);
@@ -201,7 +199,6 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
             fileName: sourceFile,
             reportDiagnostics: true,
             compilerOptions: { ...parsed.options, noEmit: false, noEmitOnError: false,
-              ...(project === 'tests' ? { module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext } : {}),
               isolatedModules: true, allowImportingTsExtensions: false, declaration: false,
               declarationMap: false, sourceMap: false, incremental: false },
           });
@@ -270,10 +267,10 @@ if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === imp
       else if (argument === '--force') options.force = true;
       else if (argument === '--project') {
         const project = process.argv[++index];
-        if (!project || !(project in PROJECTS)) throw new Error('Project must be node, tests, or browser');
+        if (!project || !(project in PROJECTS)) throw new Error('Project must be node or browser');
         (options.projects ||= []).push(project as ProjectName);
       } else if (argument === '--help' || argument === '--plan') {
-        console.log('build-node.mts [--check] [--force] [--project node|tests|browser]\nStrictly check and compile source files in place. --check writes nothing.\nProjects: ' + Object.values(PROJECTS).join(', '));
+        console.log('build-node.mts [--check] [--force] [--project node|browser]\nStrictly check and compile source files in place. --check writes nothing.\nProjects: ' + Object.values(PROJECTS).join(', '));
         process.exit(0);
       } else throw new Error(`Unknown argument: ${argument}`);
     }

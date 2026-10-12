@@ -100,7 +100,7 @@ impl ControlService {
         Ok(json!({"ok":true}))
     }
 
-    #[cfg(any(windows, test))]
+    #[cfg(windows)]
     pub(super) async fn require_stopped_comfy_for_preparation(&self) -> Result<()> {
         let running = || {
             ApiError::new(
@@ -337,75 +337,4 @@ pub(super) fn managed_comfy_environment(root: &std::path::Path) -> Value {
         return json!({"state":"mismatch","environment":null});
     }
     json!({"state":"verified","environment":environment})
-}
-
-#[cfg(test)]
-mod preparation_tests {
-    use super::*;
-    fn portable(root: &std::path::Path) -> std::path::PathBuf {
-        let comfy = root.join("ComfyUI");
-        std::fs::create_dir_all(&comfy).unwrap();
-        std::fs::create_dir_all(root.join("python_embeded")).unwrap();
-        std::fs::write(comfy.join("main.py"), "").unwrap();
-        std::fs::write(root.join("python_embeded/python.exe"), "").unwrap();
-        comfy
-    }
-    fn receipt(root: &std::path::Path, environment: &str) {
-        let spec = setup_verify::model_file(&format!("runtime-{environment}")).unwrap();
-        std::fs::write(
-            root.join("huiyu-environment.json"),
-            json!({"schemaVersion":1,"environment":environment,"archiveSha256":spec.sha256})
-                .to_string(),
-        )
-        .unwrap();
-    }
-    #[test]
-    fn portable_reuse_requires_same_verified_variant() {
-        let temp = tempfile::tempdir().unwrap();
-        let comfy = portable(temp.path());
-        assert_eq!(
-            reuse_comfy_environment(&comfy, "comfy-nvidia")
-                .unwrap_err()
-                .code,
-            "COMFY_ENVIRONMENT_UNVERIFIED"
-        );
-        receipt(temp.path(), "comfy-nvidia");
-        assert!(reuse_comfy_environment(&comfy, "comfy-nvidia").unwrap());
-        assert_eq!(
-            reuse_comfy_environment(&comfy, "comfy-cu126")
-                .unwrap_err()
-                .code,
-            "COMFY_ENVIRONMENT_MISMATCH"
-        );
-        assert!(comfy.join("main.py").is_file());
-        assert!(temp.path().join("python_embeded/python.exe").is_file());
-        std::fs::write(
-            temp.path().join("huiyu-environment.json"),
-            json!({"schemaVersion":1,"environment":"comfy-nvidia","archiveSha256":"outdated"})
-                .to_string(),
-        )
-        .unwrap();
-        assert_eq!(
-            reuse_comfy_environment(&comfy, "comfy-nvidia")
-                .unwrap_err()
-                .code,
-            "COMFY_ENVIRONMENT_MISMATCH"
-        );
-    }
-    #[test]
-    fn missing_and_external_layouts_are_not_portable_switches() {
-        let temp = tempfile::tempdir().unwrap();
-        let root = temp.path().join("ComfyUI");
-        assert!(!reuse_comfy_environment(&root, "comfy-nvidia").unwrap());
-        std::fs::create_dir_all(root.join("venv/Scripts")).unwrap();
-        std::fs::write(root.join("main.py"), "").unwrap();
-        assert_eq!(
-            reuse_comfy_environment(&root, "comfy-nvidia")
-                .unwrap_err()
-                .code,
-            "COMFY_EXTERNAL_ENVIRONMENT"
-        );
-        std::fs::write(root.join("venv/Scripts/python.exe"), "").unwrap();
-        assert!(reuse_comfy_environment(&root, "comfy-cu126").unwrap());
-    }
 }

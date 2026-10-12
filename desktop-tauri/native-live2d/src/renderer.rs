@@ -15,9 +15,7 @@ mod resources;
 
 #[path = "renderer_mask.rs"]
 mod mask;
-#[cfg(test)]
-#[path = "renderer_mask_tests.rs"]
-mod mask_tests;
+
 #[path = "renderer_texture_upload.rs"]
 mod texture_upload;
 

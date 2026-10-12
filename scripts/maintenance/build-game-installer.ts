@@ -122,7 +122,7 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
     if (result.error || result.status !== 0) throw new Error(`NSIS preview compile failed: ${result.error?.message || result.status}`);
     console.log(`Preview: ${path.join(generated, `atelier-preview-${page}.exe`)}`);
     if (capture) {
-      const windows: typeof import('../tests/desktop-native/windows') = require('../tests/desktop-native/windows');
+      const windows: typeof import('../lib/installer-window-capture') = require('../lib/installer-window-capture');
       const exe = path.join(generated, `atelier-preview-${page}.exe`).replace(/'/g, "''");
       const pid = Number(windows.powershell(`(Start-Process -FilePath '${exe}' -WindowStyle Hidden -PassThru).Id`));
       try {

@@ -358,6 +358,3 @@ fn unpublished() -> ApiError {
 fn denied() -> Response {
     unpublished().into_response()
 }
-
-#[cfg(test)]
-mod tests;

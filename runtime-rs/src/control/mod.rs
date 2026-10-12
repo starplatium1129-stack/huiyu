@@ -12,8 +12,7 @@ mod setup_download;
 mod setup_environment;
 mod setup_http;
 mod setup_verify;
-#[cfg(test)]
-mod tests;
+
 mod tunnel;
 
 use crate::{

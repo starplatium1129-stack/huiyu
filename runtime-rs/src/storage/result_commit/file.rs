@@ -51,8 +51,7 @@ pub(super) fn verify(identity: &Identity, path: &Path, media: &Value) -> Result<
     let mut file = File::open(path)?;
     let native = file_identity::opened(&file)?;
     let version = media::FileIdentity::of(&file)?;
-    #[cfg(test)]
-    tasks::media_tests::commit_validation::pause(path, "before-hash");
+
     let (bytes, hash, mime) = media::hash_opened(&mut file, || identity.cancelled())?;
     if bytes != media["bytes"].as_u64().unwrap()
         || hash != string(media, "sha256")?
@@ -71,7 +70,6 @@ pub(super) fn verify(identity: &Identity, path: &Path, media: &Value) -> Result<
     };
     verified.check(&identity.root)?;
     identity.cancelled()?;
-    #[cfg(test)]
-    tasks::media_tests::commit_validation::pause(path, "verified");
+
     Ok(verified)
 }

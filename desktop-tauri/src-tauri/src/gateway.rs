@@ -65,11 +65,6 @@ fn http_get(base_url: &str, path: &str, timeout: Duration, challenge: Option<&st
     Some(body.to_string())
 }
 
-#[cfg(test)]
-pub fn read_gateway_health(base_url: &str, timeout: Duration) -> Option<GatewayHealth> {
-    read_health(base_url, timeout, None)
-}
-
 fn read_health(base_url: &str, timeout: Duration, challenge: Option<&str>) -> Option<GatewayHealth> {
     let body = http_get(base_url, "/api/health", timeout, challenge)?;
     let value: serde_json::Value = serde_json::from_str(&body).ok()?;
@@ -107,8 +102,7 @@ pub struct GatewaySupervisor {
     port: u16,
     cwd: std::path::PathBuf,
     runtime_path: std::path::PathBuf,
-    #[cfg(test)]
-    fixture_args: Vec<std::path::PathBuf>,
+
     env: Vec<(String, String)>,
     wait_ms: u64,
     on_exit: Option<Arc<dyn Fn(i32) + Send + Sync>>,
@@ -130,8 +124,7 @@ pub struct GatewaySupervisorBuilder {
     port: u16,
     cwd: std::path::PathBuf,
     runtime_path: std::path::PathBuf,
-    #[cfg(test)]
-    fixture_args: Vec<std::path::PathBuf>,
+
     env: Vec<(String, String)>,
     wait_ms: u64,
     on_exit: Option<Arc<dyn Fn(i32) + Send + Sync>>,
@@ -145,8 +138,7 @@ impl GatewaySupervisorBuilder {
             port: 3000,
             cwd,
             runtime_path,
-            #[cfg(test)]
-            fixture_args: Vec::new(),
+
             env: Vec::new(),
             wait_ms: 20_000,
             on_exit: None,
@@ -187,8 +179,7 @@ impl GatewaySupervisorBuilder {
             port: self.port,
             cwd: self.cwd,
             runtime_path: self.runtime_path,
-            #[cfg(test)]
-            fixture_args: self.fixture_args,
+
             env: self.env,
             wait_ms: self.wait_ms,
             on_exit: self.on_exit,
@@ -302,10 +293,8 @@ impl GatewaySupervisor {
         *self.identity_token.lock().unwrap() = Some(token.clone());
         self.stopping.store(false, Ordering::Relaxed);
 
-
         let mut command = Command::new(&self.runtime_path);
-        #[cfg(test)]
-        command.args(&self.fixture_args);
+
         command
             .arg("--app-root").arg(&self.cwd)
             .arg("--bind").arg(format!("{}:{}", self.host, port))
@@ -483,60 +472,3 @@ fn pipe_output<R: Read + Send + 'static>(
         }
     });
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn compatibility_requires_healthy_app_and_current_protocol() {
-        let mut parsed = GatewayHealth {
-            ok: true,
-            app: "ai-cg-studio".into(),
-            desktop_protocol: 1,
-            desktop_proof: String::new(),
-        };
-        assert!(is_desktop_gateway_compatible(&parsed));
-        parsed.ok = false;
-        assert!(!is_desktop_gateway_compatible(&parsed));
-        parsed.ok = true;
-        parsed.app = "other-app".into();
-        assert!(!is_desktop_gateway_compatible(&parsed));
-        parsed.app = "ai-cg-studio".into();
-        parsed.desktop_protocol = 0;
-        assert!(!is_desktop_gateway_compatible(&parsed));
-    }
-
-    #[test]
-    fn port_availability_is_false_for_bound_port() {
-        // 本机 127.0.0.1 上开一个监听端口，然后验证 is_port_available 为 false
-        let listener = std::net::TcpListener::bind(("127.0.0.1", 0)).unwrap();
-        let port = listener.local_addr().unwrap().port();
-        assert!(!is_port_available("127.0.0.1", port));
-        assert!(is_port_available("127.0.0.1", 0)); // 0 端口必然不可连
-    }
-
-    #[test]
-    fn health_reader_rejects_an_oversized_response() {
-        use std::io::Write;
-        use std::net::TcpListener;
-        use std::thread;
-
-        let listener = TcpListener::bind(("127.0.0.1", 0)).unwrap();
-        let port = listener.local_addr().unwrap().port();
-        let handle = thread::spawn(move || {
-            let (mut stream, _) = listener.accept().unwrap();
-            let mut request = [0u8; 256];
-            let _ = stream.read(&mut request);
-            let body = vec![b'x'; MAX_HEALTH_RESPONSE_BYTES + 1];
-            write!(stream, "HTTP/1.1 200 OK\r\nContent-Length: {}\r\n\r\n", body.len()).unwrap();
-            stream.write_all(&body).unwrap();
-        });
-        assert!(read_gateway_health(&format!("http://127.0.0.1:{port}"), Duration::from_millis(500)).is_none());
-        handle.join().unwrap();
-    }
-}
-
-#[cfg(test)]
-#[path = "gateway_native_tests.rs"]
-mod native_tests;

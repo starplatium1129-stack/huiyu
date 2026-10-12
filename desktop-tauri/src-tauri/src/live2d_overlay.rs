@@ -7,7 +7,7 @@ use std::time::{Duration, Instant};
 use tauri::{AppHandle, Emitter, Manager};
 use windows_sys::Win32::Foundation::HWND;
 use windows_sys::Win32::UI::WindowsAndMessaging::{ShowWindow, SW_HIDE};
-pub use crate::live2d_renderer::{Live2DOverlayState, OverlayRect, selftest};
+pub use crate::live2d_renderer::{Live2DOverlayState, OverlayRect};
 use crate::live2d_renderer::*;
 use crate::live2d_renderer::live2d_adapter::Live2DAdapterConfig;
 use crate::live2d_renderer::live2d_assets;
@@ -42,7 +42,6 @@ fn overlay_assets_root(app: &AppHandle) -> std::path::PathBuf {
         .assets_root
         .clone()
 }
-
 
 pub fn apply_frame(app: &AppHandle, local_rect: OverlayRect, visible: bool, opacity: Option<u32>) -> Result<(), String> {
     let state = ensure_overlay(app, overlay_assets_root(app));

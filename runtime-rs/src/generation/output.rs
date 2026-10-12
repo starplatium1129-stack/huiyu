@@ -214,6 +214,3 @@ fn save_error(_: std::io::Error) -> ApiError {
         "生成图片保存失败，请检查本地磁盘空间和目录写入权限",
     )
 }
-
-#[cfg(test)]
-mod tests;

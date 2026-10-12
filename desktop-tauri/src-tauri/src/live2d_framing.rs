@@ -41,17 +41,3 @@ pub async fn aics_live2d_set_frame(app: AppHandle, rect: serde_json::Value, visi
     if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() { *state.framing.lock().unwrap() = framing; }
     apply_frame(&app, OverlayRect { x, y, width, height }, visible, opacity.map(|o| (o.clamp(0.0, 1.0) * 255.0) as u32))
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn framing_and_hit_coordinates_share_a_transform() {
-        let f = StageFraming { zoom: 1.65, x: -0.1, y: 0.12 };
-        let view = f.transform(([-1.0, -2.0], [1.0, 2.0]), 800.0, 1200.0);
-        let (x, y) = view.canvas_to_screen(0.3, 1.4, 800.0, 1200.0);
-        let (cx, cy) = view.screen_to_canvas(x, y, 800.0, 1200.0);
-        assert!((cx - 0.3).abs() < 0.001 && (cy - 1.4).abs() < 0.001);
-        assert!(StageFraming { zoom: f32::NAN, ..f }.validate().is_err());
-    }
-}

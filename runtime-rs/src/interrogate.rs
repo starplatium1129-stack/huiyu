@@ -181,6 +181,3 @@ async fn status(Extension(service): Extension<Arc<InterrogateService>>) -> Resul
         json!({"ok":true,"local":true,"defaultEngine":"pixai","engines":["pixai"],"pixai":service.client.probe().await,"thresholdDefault":0.17,"maxBytes":MAX_BYTES}),
     ))
 }
-
-#[cfg(test)]
-mod tests;

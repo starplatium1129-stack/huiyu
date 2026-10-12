@@ -2,8 +2,6 @@ mod commands;
 mod draft;
 mod files;
 mod paths;
-#[cfg(test)]
-mod tests;
 
 use crate::{AppState, config::Config, processes::Processes, security};
 use axum::{

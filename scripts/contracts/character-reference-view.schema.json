@@ -2,31 +2,71 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "character-reference-view-v2",
   "title": "character-reference-view-v2",
-  "description": "前端运行时懒加载的参考档案视图（data/character-reference-view.json，键为角色 id）的结构契约。视角字段必须逐字段镜像 standards 的 perspectives 定义，交叉校验见 scripts/tests/test-character-reference-contract.js。2026-08-31：新增 3 个设计图基线占位视角（pending 无 url）。",
+  "description": "前端运行时懒加载的参考档案视图（data/character-reference-view.json，键为角色 id）的结构契约。视角字段必须逐字段镜像 standards 的 perspectives 定义。2026-08-31：新增 3 个设计图基线占位视角（pending 无 url）。",
   "type": "object",
-  "propertyNames": { "pattern": "^[a-z0-9_]+$" },
+  "propertyNames": {
+    "pattern": "^[a-z0-9_]+$"
+  },
   "additionalProperties": {
     "type": "object",
     "additionalProperties": false,
-    "required": ["characterId", "displayName", "source", "identityProse", "outfits"],
+    "required": [
+      "characterId",
+      "displayName",
+      "source",
+      "identityProse",
+      "outfits"
+    ],
     "properties": {
-      "characterId": { "type": "string", "minLength": 1 },
-      "displayName": { "type": "string", "minLength": 1 },
-      "source": { "type": "string", "minLength": 1 },
-      "identityProse": { "type": "string", "minLength": 1 },
+      "characterId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "displayName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "source": {
+        "type": "string",
+        "minLength": 1
+      },
+      "identityProse": {
+        "type": "string",
+        "minLength": 1
+      },
       "outfits": {
         "type": "array",
         "minItems": 0,
         "items": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["outfitId", "outfitName", "isDefault", "isNsfw", "prose", "references"],
+          "required": [
+            "outfitId",
+            "outfitName",
+            "isDefault",
+            "isNsfw",
+            "prose",
+            "references"
+          ],
           "properties": {
-            "outfitId": { "type": "string", "pattern": "^[a-z0-9_]+$" },
-            "outfitName": { "type": "string", "minLength": 1 },
-            "isDefault": { "type": "boolean" },
-            "isNsfw": { "type": "boolean" },
-            "prose": { "type": "string", "minLength": 1 },
+            "outfitId": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]+$"
+            },
+            "outfitName": {
+              "type": "string",
+              "minLength": 1
+            },
+            "isDefault": {
+              "type": "boolean"
+            },
+            "isNsfw": {
+              "type": "boolean"
+            },
+            "prose": {
+              "type": "string",
+              "minLength": 1
+            },
             "references": {
               "type": "array",
               "minItems": 4,
@@ -34,7 +74,15 @@
               "items": {
                 "type": "object",
                 "additionalProperties": false,
-                "required": ["id", "name", "shotType", "lens", "targetUsage", "fileName", "url"],
+                "required": [
+                  "id",
+                  "name",
+                  "shotType",
+                  "lens",
+                  "targetUsage",
+                  "fileName",
+                  "url"
+                ],
                 "properties": {
                   "id": {
                     "enum": [
@@ -47,22 +95,44 @@
                       "ref_design_back"
                     ]
                   },
-                  "name": { "type": "string", "minLength": 1 },
-                  "shotType": { "type": "string", "minLength": 1 },
-                  "lens": { "type": "string", "minLength": 1 },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "shotType": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "lens": {
+                    "type": "string",
+                    "minLength": 1
+                  },
                   "targetUsage": {
                     "type": "array",
                     "minItems": 1,
-                    "items": { "type": "string", "minLength": 1 }
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
                   },
-                  "fileName": { "type": "string", "minLength": 1 },
+                  "fileName": {
+                    "type": "string",
+                    "minLength": 1
+                  },
                   "url": {
                     "anyOf": [
-                      { "type": "string", "pattern": "^/character-references/" },
-                      { "const": "" }
+                      {
+                        "type": "string",
+                        "pattern": "^/character-references/"
+                      },
+                      {
+                        "const": ""
+                      }
                     ]
                   },
-                  "pending": { "type": "boolean" }
+                  "pending": {
+                    "type": "boolean"
+                  }
                 }
               }
             }

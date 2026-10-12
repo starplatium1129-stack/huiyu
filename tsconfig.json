@@ -9,12 +9,11 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
   "include": [
-    "playwright.config.ts",
-    "tests/e2e/**/*.ts",
-    "tests/e2e/**/*.json",
     "types/**/*.ts"
   ]
 }

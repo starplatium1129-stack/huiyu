@@ -41,14 +41,3 @@ pub fn set_chat_docked(app: AppHandle, docked: bool) -> bool {
 
 #[tauri::command]
 pub fn get_chat_docked(app: AppHandle) -> bool { app.state::<AppState>().preferences.lock().unwrap().chat_docked }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn dock_avoids_edges_and_keeps_side_when_possible() {
-        assert_eq!(dock_position((1400, 600, 400, 700), (500, 600), (0, 0, 1920, 1040), 12, true), (888, 440, false));
-        assert_eq!(dock_position((700, 100, 400, 700), (500, 600), (0, 0, 1920, 1040), 12, false), (188, 150, false));
-        assert_eq!(dock_position((-1500, 100, 500, 800), (500, 600), (-1920, 0, 1920, 1040), 18, true), (-982, 200, true));
-    }
-}

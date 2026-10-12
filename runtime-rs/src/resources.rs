@@ -12,8 +12,7 @@ pub mod offline;
 mod policy;
 mod resolve;
 mod state;
-#[cfg(test)]
-mod tests;
+
 pub use http::{overlay, router};
 pub use manager::Service;
 

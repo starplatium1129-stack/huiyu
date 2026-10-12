@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process';
 import type { RefactorAllowance } from './refactor-boundaries';
 
 export interface RefactorSeed { baseCommit: string; entries: RefactorAllowance[] }
-export const REFACTOR_ALLOWLIST_PATH = 'scripts/tests/refactor-boundary-allowlist.json';
+export const REFACTOR_ALLOWLIST_PATH = 'scripts/lib/refactor-boundary-allowlist.json';
 
 /** Missing Git history is an error. Only pre-R0 ancestors may use the sealed initial seed. */
 export function readRefactorAllowancesAtRef(root: string, ref: string, seed: RefactorSeed): RefactorAllowance[] {

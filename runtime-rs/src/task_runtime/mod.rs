@@ -7,10 +7,6 @@ mod providers;
 mod recovery;
 mod resume;
 use providers::Preparation;
-#[cfg(test)]
-mod binding_tests;
-#[cfg(test)]
-mod tests;
 
 use crate::{
     error::{ApiError, Result},

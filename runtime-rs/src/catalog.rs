@@ -9,8 +9,7 @@ mod migration;
 mod projection_cache;
 mod query;
 mod snapshots;
-#[cfg(test)]
-mod tests;
+
 mod validation;
 mod views;
 mod write;

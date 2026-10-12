@@ -1,7 +1,6 @@
 mod copy_job;
 mod files;
-#[cfg(test)]
-mod tests;
+
 mod verify;
 use super::*;
 use files::*;

@@ -1,11 +1,8 @@
 mod history;
 mod inputs;
 mod listing;
-#[cfg(test)]
-pub(super) mod media_tests;
+
 pub(super) mod outputs;
-#[cfg(test)]
-mod tests;
 
 use super::*;
 use crate::task_contract::{

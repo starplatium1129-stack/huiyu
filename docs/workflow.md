@@ -44,19 +44,14 @@
 | 查看参数与依赖 | `npm run wf -- reference:design --help` |
 | 预览即将执行的命令 | `npm run wf -- data:build --plan` |
 | 检查入口是否失效 | `npm run wf -- audit:workflows --json` |
-| 检查工作流行为回归 | `npm run wf -- check:workflows` |
-| 检查部署退出与锁保护 | `npm run wf -- check:desktop-deploy`（Windows 隔离夹具，不操作实际安装） |
-| 检查维护脚本孤儿 | `npm run wf -- audit:orphans --check`（已纳入 check 与 CI，候选须人工复核） |
+| 检查维护脚本孤儿 | `npm run wf -- audit:orphans --check`（候选须人工复核） |
 | 查看内容覆盖差额 | `npm run wf -- audit:coverage`（只读报告：热门服装→参考登记、角色→主题契约；`--json` 机器可读；覆盖差额本身不作为门禁失败依据） |
 | 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server`（分别在两个终端运行） |
 | 检查办公机工程入口 | `npm run wf -- office:health`（只检查目录与入口，不代替工具链验证） |
 | 只读严格检查 TypeScript | `npm run wf -- check:typescript`（服务、网关、工具与独立浏览器脚本） |
-| 验证构建和开发重启行为 | `npm run wf -- check:typescript-build`（中性隔离夹具） |
-| 按当前改动验证 | `npm run wf -- gate:quick` |
-| 跨域/构建链等全量验证 | `npm run wf -- gate:full` |
 | 检查本机桌面打包能力 | `npm run wf -- desktop:doctor --json`（只检测，不安装） |
 | 检查安装包网关资源完整性 | `npm run wf -- desktop:verify-gateway`（需要已暂存资源；隔离目录真实启动，打包前自动执行） |
-| 生成本机测试安装包 | `npm run wf -- desktop:package-local`（跳过压缩，不安装） |
+| 生成本机候选安装包 | `npm run wf -- desktop:package-local`（跳过压缩，不安装） |
 
 所有执行固定在项目根目录。Node/npm 参数保留空格，npm 自动补转发分隔符。复合步骤失败即停止；reference:full 由专用候选入口处理公共参数和人工审核待验状态。只读审计覆盖注册文件、npm 入口、文档存在性、复合依赖循环和 run 元数据合法性，不代表模型、账户、外部服务或桌面安装已经验收。
 
@@ -112,7 +107,7 @@
 
 参考图库已退出角色档案及新增角色/服装的必备清单。分镜的角色和服装文字读取内容目录，参考图片按项目需要上传。以下入口仅用于主动维护既有参考素材；`content:sync` 与 `character:onboard` 不再自动登记或生成参考图库。
 
-评级诊断：`node scripts/maintenance/classify-scene-ratings.js --check --json`（`--explain` 同义）只读输出 totals、changedCount、changes 的 current/expected rating/mature/category/usage 及推导来源。sources 汇总 manual/policy/existing-mature/pinned；差异退出 1，参数或结构无效退出 2。诊断禁止与 `--write` 组合，不生成文件；默认人类汇总及正常 `--write` 路径保留。隔离测试通过 `AICS_DATA_ROOT` 定位夹具，入口为 `node scripts/tests/test-scene-rating-diagnostics.js`。
+评级诊断：`node scripts/maintenance/classify-scene-ratings.js --check --json`（`--explain` 同义）只读输出 totals、changedCount、changes 的 current/expected rating/mature/category/usage 及推导来源。sources 汇总 manual/policy/existing-mature/pinned；差异退出 1，参数或结构无效退出 2。诊断禁止与 `--write` 组合，不生成文件；默认人类汇总及正常 `--write` 路径保留。
 
 归属报告支持 `node scripts/workflow.js audit:ownership --domain scene-ratings --json`：人工表 `scripts/lib/manual-scene-ratings.js` 为源，`classify-scene-ratings.js` 为读取/派生入口，场景分片的 rating/mature/category/usage 为字段产物。这些字段不属于提示词正文；人工审核语义与真实画面仍未验证。人工表静态解析，缺失、未知值、重复键或缺值报告 missing/invalid，不执行表内代码。
 
@@ -212,7 +207,7 @@
 
 entries 的 role 保留 source/product 职责；status 为 source/product/missing/invalid/external-unknown。manifest 按对应领域结构解析；场景按 .1 起连续批次优先，否则读取逻辑单文件。检查真实路径边界、JSON 及浅层容器，输出实际字段名；默认不证明完整 schema、源产物一致性、字段语义、审核或图片质量。参考权威在 `data/references/` 人物分片与 manifest，standards/view 是兼容聚合，登记器经 reference-store 同步写回源与产物；外部样张保持 external-unknown，不扫描外部清单或图片。
 
-写入入口仅展示，不执行 builders（包括可能自愈写入的 --check）、模型或网络。`--help` / `--plan` 不读取目标目录；退出码 0 表示读取完成（允许 external-unknown），1 表示有 missing/invalid，2 表示参数或根目录错误。隔离回归：`node scripts/tests/test-content-ownership.js`。
+写入入口仅展示，不执行 builders（包括可能自愈写入的 --check）、模型或网络。`--help` / `--plan` 不读取目标目录；退出码 0 表示读取完成（允许 external-unknown），1 表示有 missing/invalid，2 表示参数或根目录错误。
 
 ## 本地资源清单生成与校验
 
@@ -222,7 +217,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 `--manifest <旧JSON> --compare-manifest <新JSON>`（两份均须位于 root 内）切换为差异比较：先对两份清单做与校验一致的结构检查（schemaVersion、条目形态、重复与 Windows 大小写重复、路径合规），再按精确路径输出新增、移除、内容改变与未改变数量。结果顺序稳定；`changed` 携带前后 `bytes`/`sha256`，`added`/`removed` 保留对应条目；`old→new` 由参数顺序决定，不用 `generatedAt` 判定新旧，不按相同哈希猜测重命名。比较只读取这两份指定清单，不读取/哈希实际 `assets`，旧清单已移除的文件不因当前磁盘缺失而无法比较；除非空 `unverified` 外的任何结构错误都会阻止差异计算。非空 `unverified` 时仍列出已列条目差异，但整体失败：`identical` 只表示两份清单已列条目的集合与记录内容一致，`ok` 且 `identical` 同时为真才构成一致结论，且这仍不证明目录覆盖完整、当前文件存在、内容已审核或已交付。存在差异本身不算比较失败（退出 0）。
 
-退出码：0 表示生成无未核验项、校验全部通过或比较有效完成（比较含结构错误/非空 unverified 时为 1，参数非法或 `--compare-manifest` 缺少 `--manifest` 为 2）；1 表示目标内容有问题（生成含未核验项、校验错误、清单格式错误或不支持的 schemaVersion）；2 表示参数或环境问题（参数非法、root/扫描根不可用、manifest 路径越界或不可读）。`--help` / `--plan` 不读取目标文件、不计算哈希。哈希相等只证明字节一致；文件存在不代表内容已交付、图片质量或审核通过，清单不代表可信发布源。隔离回归：`node scripts/tests/test-resource-manifest.js`（已登记 unit 套件）。
+退出码：0 表示生成无未核验项、校验全部通过或比较有效完成（比较含结构错误/非空 unverified 时为 1，参数非法或 `--compare-manifest` 缺少 `--manifest` 为 2）；1 表示目标内容有问题（生成含未核验项、校验错误、清单格式错误或不支持的 schemaVersion）；2 表示参数或环境问题（参数非法、root/扫描根不可用、manifest 路径越界或不可读）。`--help` / `--plan` 不读取目标文件、不计算哈希。哈希相等只证明字节一致；文件存在不代表内容已交付、图片质量或审核通过，清单不代表可信发布源。
 
 筛选覆盖报告可使用 `audit:coverage --character <规范ID> [--outfit <角色内ID>]`。outfit 必须与 character 同用，未知 ID 或缺参数退出 2。参考条目和计数按所选范围重算，JSON 增加 scope；全域结构错误仍保留，可能来自未选对象。素材存在性仅核对所选角色/服装的参考；不影响无筛选参数时的全库输出和退出码。
 
@@ -250,7 +245,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 安全边界：包名限字母、数字、下划线、短横线（1-64 字符），拒绝路径片段；目标只要已存在（含空目录、文件或链接）即拒绝，不覆盖任何旧包；目标祖先链中已存在的符号链接/junction（realpath 与字面路径不一致）先于任何写入被拒；复制期间源变化、候选写入失败或发布冲突都不报告成功，暂存目录保留并在结果中给出明确路径（残缺暂存不是可用候选包），不删除任何目录。不转换或重采样图片，不执行复制内容，无 ZIP 解压/安装/缓存淘汰与网络行为，写入范围限 `--root` 内候选目录。
 
-退出码：0 表示预览计划可行或候选包已通过字节核验并落盘；1 表示目标或内容问题（清单核验失败/格式错误/不支持版本、目标已存在、目标链含链接、复制或发布后核验失败；增量模式含任一清单结构错误或非空 unverified）；2 表示参数或环境问题（包名非法、参数缺失或无法识别、root 不可用、清单路径越界或不可读）。隔离回归：`node scripts/tests/test-resource-pack.js` 与 `node scripts/tests/test-resource-pack-delta.js`（已登记 unit 套件，全部夹具位于临时目录，不导出真实素材）。
+退出码：0 表示预览计划可行或候选包已通过字节核验并落盘；1 表示目标或内容问题（清单核验失败/格式错误/不支持版本、目标已存在、目标链含链接、复制或发布后核验失败；增量模式含任一清单结构错误或非空 unverified）；2 表示参数或环境问题（包名非法、参数缺失或无法识别、root 不可用、清单路径越界或不可读）。
 
 ## 增量候选包与基线兼容核验
 
@@ -258,7 +253,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 核验分两层。元数据兼容层（纯函数）：先复用 `audit:resource-manifest` 同套结构检查（schemaVersion、条目形态、重复与 Windows 大小写重复、路径合规、非空 unverified），再核对 `delta.json` 的 kind/schemaVersion 与身份/数量字段形态；验证基线 `contentIdentity`/`entryCount`/`totalBytes` 与 `delta.baseManifest` 相符；以基线移除 `delta.removed` 后叠加候选 added/changed 重建目标条目，其身份三项必须与 `delta.newManifest` 相符；按基线→目标的实际集合关系重算 added/removed/changed/unchanged，与 `delta.totals` 逐项一致，且 `delta.candidate` 的 files/bytes/zeroAssets 与候选 manifest 实际条目一致。不只对比总数：removed 每项必须确实存在于基线且 bytes/sha256 相符，路径唯一且不得同时出现在候选中；候选与基线同路径同内容的条目不能冒充 changed。IO 层：只读取明确指定的基线 JSON、候选 `manifest.json`/`delta.json` 与候选已列资源（复用现有清单核验逐条核验候选实际字节）；不 stat/read 基线资产、不扫描安装目录，基线文件可已不存在而元数据仍可核验；基线清单、候选目录与内部路径遵守 root 与真实路径边界，junction 或坏路径访问外部目录在读取前拒绝。
 
-退出码：0 核验通过；1 内容/不兼容（元数据缺失/损坏/不支持版本、清单结构错误或非空 unverified、基线或重建目标身份/数量失配、totals/candidate 与实际不符、候选实际字节核验失败）；2 参数/越界/环境（参数缺失或无法识别、root 不可用、基线清单越界/缺失/不可读、候选目录越界/缺失/不是目录/junction 逃逸、内部异常）。隔离回归：`node scripts/tests/test-resource-pack-verify.js`（已登记 unit 套件，候选包由 G13 导出器在临时夹具内生成，记录型 fs 证明旧资产零访问与全程零写入）。
+退出码：0 核验通过；1 内容/不兼容（元数据缺失/损坏/不支持版本、清单结构错误或非空 unverified、基线或重建目标身份/数量失配、totals/candidate 与实际不符、候选实际字节核验失败）；2 参数/越界/环境（参数缺失或无法识别、root 不可用、基线清单越界/缺失/不可读、候选目录越界/缺失/不是目录/junction 逃逸、内部异常）。
 
 ## 办公机工程阶段入口（2026-09-15）
 
@@ -300,175 +295,33 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 ## 门禁与构建
 
-记录式内容管理使用 npm run wf -- content:catalog --help。stats/query 读取工作库（首次使用会初始化）；record/history 读取完整记录与历史，character 返回含修订号的整位角色快照。query 支持排序、分页和带时区的创建时间范围；createdAt 仅允许以有来源的时间补录空值。patch/import 默认预览，--apply 写入；export --out 显式导出逐条项目快照，--character / --record 可重复选择并合并到既有快照，保留范围外内容；check 检查结构与关联，colors 复用原生配色检查。--root 默认当前项目，--runtime-root 必须显式指定，命令需要 Rust/Cargo。check:rewrite 可直接读记录快照及编写前 baseline-file，按角色/ID/SFW 选测并用 compiled-out 输出双引擎文本，不调用模型。权威边界和操作格式见[维护手册](maintenance.md)与[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
+仓库按用户要求移除全部测试、夹具、测试框架依赖和 CI 测试入口。不运行或恢复单测、组件测试、E2E、对抗性测试、覆盖率与测试门禁；旧报告中的测试结果只作历史记录。
+
+按任务授权审查源码、差异和已有日志。产品构建、类型检查及真实维护操作保留独立入口，不在提交、推送或普通代码审查时自动执行：
+
+| 入口 | 用途 |
+| --- | --- |
+| npm run build:runtime | 从 TypeScript 生成维护与独立浏览器工具，不生成测试或 Rust EXE |
+| npm run typecheck | 应用、Node 维护工具与独立浏览器工具类型检查 |
+| npm run build | 前端构建、包体预算与预压缩 |
+| npm run wf -- rust:build | 按锁文件构建 Rust release 及源码/EXE 绑定回执 |
+| npm run build:tauri / package:tauri | 原生桌面构建 / 安装包制作 |
+
+仅工具源或配置变化、所需生成入口缺失时准备 build:runtime；不手改生成的 JS。未运行构建或产品验收时如实记录，不把源码审查视为行为通过。
+
+记录式内容管理使用 npm run wf -- content:catalog --help。stats/query 读取工作库；record/history 读取记录与历史。patch/import 默认预览，--apply 写入；export --out 显式导出项目快照，保留范围外内容。check 检查工作库结构与关联，colors 检查配色，均为真实内容维护。权威边界见[维护手册](maintenance.md)与[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
 
 ### 角色语音引擎
 
-`npm run wf -- voice:service -AIWorkspaceRoot <AI目录> -RuntimeRoot <运行目录> -TtsHost http://127.0.0.1:9880 -Engine voxcpm2` 默认只探测状态。显式 `-Action Start` 加载已有 VoxCPM2 基座和角色 LoRA，写入 PID/日志；`-Action Stop` 只停止本应用启动的 VoxCPM2。GPT-SoVITS 使用 `-Engine gpt-sovits`，沿用 AI/Voice 的启停脚本。入口不下载模型，也不卸载绘图服务。
+npm run wf -- voice:service -AIWorkspaceRoot <AI目录> -RuntimeRoot <运行目录> -TtsHost http://127.0.0.1:9880 -Engine voxcpm2 默认只探测状态。显式 -Action Start 加载已有基座和角色 LoRA；-Action Stop 只停止本应用启动的服务。GPT-SoVITS 使用 -Engine gpt-sovits。入口不下载模型；真实调用按用户授权。
 
-控制室保存 `ttsEngine` 与角色 `loraWeightsPath`、参考音频和原文，重启应用后生效；切换引擎前先停止原服务。VoxCPM2 默认基座位于 AI/Voice/models/pretrained/VoxCPM2，环境位于 AI/VoxCPM-env。宁宁和夏目使用各自 LoRA，单个基座依次切换，避免同时驻留两份模型。
+控制室保存 ttsEngine、loraWeightsPath、参考音频和原文，重启后生效；切换引擎前先停止原服务。models:check 只报告已配置声线文件，不启动模型。
 
-`models:check` 按已保存的 `ttsEngine` 报告声线文件：VoxCPM2 检查参考音频和角色 LoRA，GPT-SoVITS 检查参考音频、GPT 与 SoVITS 双权重；未配置引擎时沿用 GPT-SoVITS。文件存在性、参考原文配置与实际语音验收分别记录，不会启动模型。
+### Rust 运行时
 
-本机 PyTorch 2.7.1 + CUDA 12.8 使用 `triton-windows==3.3.1.post21` 启用模型官方 `torch.compile` 加速，版本对应见 [Triton Windows 文档](https://github.com/triton-lang/triton-windows#3-pytorch)。编译线程限为 1；首次预热会生成 AI/Voice/cache/voxcpm2 缓存，启动入口等待上限为 360 秒，后续复用缓存。无需更改 LoRA、参考音频或 10 步采样来加速。
+产品后端为 runtime-rs，Node 用于前端、维护工具及构建编排。源码服务使用 npm start / npm run start:run；直接入口为 runtime-rs/target/release/huiyu-runtime.exe --app-root <项目目录> --bind 127.0.0.1:3210。工作区须显式私有路径/身份或受控桌面激活。
 
-聊天通过 `/api/tts-stream` 接收 48kHz 单声道 PCM 分片，第一片即可播放；下一句在当前句播放时预取。完整句保存为 WAV 供重播，取消的半句不进入缓存；`/api/tts` 保留整句播放与工作台变速。首句仍需积累足够台词，中文还需日语翻译；分片传输不代表零延迟。真实音色、首片延迟和显存占用需在用户绘图结束后另测。
-
-### Rust 运行时迁移
-
-产品后端为 `runtime-rs/`，Node 用于前端、维护工具、假上游及构建编排。仅工具源/配置变化或所需入口缺失时准备 `npm run build:runtime`；普通 Rust 检查不默认重建工具。按需运行：
-
-- `npm run wf -- rust:check`：Rust 格式、Clippy 和隔离行为测试，不连接生产库或真实模型；显式原生素材/DLL用例与普通默认用例分开记录。
-- `npm run wf -- rust:build`：按 `runtime-rs/Cargo.lock` 构建 release 二进制及 `runtime/rust-evidence/build.json` 源码/EXE绑定，不替换桌面安装。需已有 Rust/MSVC 工具链，首次可能下载锁定 crate。
-- `npm run wf -- rust:parity`：使用现行 Rust 候选和带来源的旧 schema-3 固定夹具，核对 HTTP、回执重试、媒体 Range，并独立用 SQLite 读取 Rust 写入结果；不启动退役 Node 产品后端。可设 `AICS_RUST_RUNTIME_EXE` 指定候选，`AICS_RUST_PARITY_REPORT` 保存 JSON，保留实际分页行数/轮次；不视为整机内存或完整迁移收益。
-- `npm run wf -- rust:licenses:collect`：PowerShell 7 按 `components.json` 的固定配方下载公开源码并提取许可材料，跳过已核验项；不安装或执行源码。缓存不入 Git，材料变化后必须更新 `materials.sha256.json` 及根 manifest 绑定。完整来源和发行待办见[原生材料说明](../runtime-rs/native-licenses/README.md)。
-
-`rust:check` 仅在检查子进程环境中把 TEMP/TMP 规范为实际目录路径，避免 Windows 8.3 短路径令隔离夹具误触物理路径守卫；默认 Cargo 构建并发 2，避免多份集成测试同时链接超出 Windows 提交内存/页面文件额度，可通过已有 `CARGO_BUILD_JOBS` 选择实测安全并发。不改变生产路径校验、start/build 环境或用户资料目录。
-
-PixAI 接入后，旧 WD14 ONNX／448 像素预处理代码已退出 Rust 产品链，其两份引用已删除模块的集成夹具与专用 toy model builder 也退出默认 Cargo 发现，由 Git 历史保留；不通过恢复兼容模块或缩小 all-targets 来绕过。现行 PixAI 子进程、Python worker、libvips atlas／thumbnail 与 Live2D 像素断言继续保留。仍在使用的 `interrogate/golden.mjs` 及原生像素夹具变量不因旧名称改动。
-
-设置 `AICS_RUST_BROWSER_REPORT=<新证据目录>` 会在同一 parity 运行中调用 `browser.mjs`，用真实 Rust 服务执行图库/控制台双主题操作并保留截图；`AICS_RUST_APP_ROOT=<已暂存gateway>` 可验证该布局及其中的 EXE，未设置时使用源码应用根。夹具设置关闭真实模型/隧道并使用临时配置和 workspace，不能把它改指用户资料作普通回归。
-
-- `npm run wf -- desktop:rust-bundle`：使用已暂存的实际 Rust EXE/DLL和 bundle 映射，在仓库外临时布局验证；不下载、安装或访问用户库。它替代旧 `desktop:workspace-sidecar`，不能以开发机上的 Node 启动成功替代原生包验证。
-
-源码服务用 `npm start` / `npm run start:run`（开发包装器调用 Cargo/Rust）；直接入口为 `runtime-rs/target/release/huiyu-runtime.exe --app-root <项目目录> --bind 127.0.0.1:3210`。工作区须显式私有路径/身份或受控桌面激活；未知请求不落回 Node。`build:runtime` 仅生成维护、测试和独立浏览器工具 JS，不会产出 Rust EXE。
-
-旧后端行为由标注来源的固定夹具承接，现行端到端由 `runtime-rs/tests/parity.mjs` 与其 `browser.mjs` 验证；最终结果、失败及默认浏览器测试栈切换分别记录，不能按路由挂载数量宣称完整覆盖。当前实现与安装身份见[项目状态](project-status.md)，剩余范围见[未来规划](roadmap.md)。真实模型、完整设备与原生许可材料仍未收口，`releaseReady=false`。
-
-既有 `test-domain-type-boundaries` 也检查 Rust 任务契约、公共执行、存储与引擎模块的显式依赖方向，复用原边界门禁，不新增全仓测试入口。它识别 crate/super 路径和分组导入，不解析宏展开或完整符号依赖；编译与行为仍由 Cargo 验证。图片/视频编译及视频 AI 契约使用固定的独立旧实现期望，不再动态启动其 Node oracle；旧产品后端及其动态 oracle 已退出；仍有用途的维护工具对照独立保留。
-
-### 按改动选择检查
-
-性能资源诊断复用 `npm run test:e2e:performance -- --project=fluidity-office --grep "dark full round 1$"`，单 worker、隔离夹具、默认 20 轮，不与构建或其他浏览器测量并发。`AICS_OFFICE_RESOURCE_SAMPLES=20..100` 选择有证据需要的持续轮次；`AICS_OFFICE_HEAP_SNAPSHOTS=1` 显式保存基线/结束的 V8 堆快照，`AICS_OFFICE_IDLE_MS=0..30000` 增加静置后 GC（可同时保存第三份快照）。默认不启用两项额外诊断。快照会扰动运行，资源结果不能当作无探针时延或原生 GPU 验收；输出保存在 `runtime/ui-fluidity-office[-轮数]/`。
-
-内容契约 CLI（`check:content` / `test:content`）支持 `AICS_DATA_ROOT || AICS_APP_ROOT || 仓库根`。该根须提供完整 data/assets/src/stores 布局；数据、压缩产物和 DATA_VERSION 核对均使用所选根，缺文件失败，不回退到仓库数据。校验规则代码仍从代码仓库加载；显式外部素材路径配置仍生效。隔离回归 `test-content-contract-root.js` 验证根优先级、损坏定位、零写入及不读取仓库数据域。
-
-按影响面选验证，不按“改了代码”或“准备提交”一律升级；新增测试、证据复用与失败止损遵循 [协作指南](../AGENTS.md#风险验证)。失败先分类并缩小范围，没有相关修复或新诊断证据不原样重跑；同一失败再次出现须报告原因、影响和下一步，不用全量重跑或无关改动追求绿灯。
-
-| 本次改动 | 验证边界 |
-| --- | --- |
-| 文档、AGENTS、skill | 结构、链接、规则一致性及典型请求走查；不构建、不出图 |
-| 局部颜色、间距等样式 | 相关样式/对比度检查和受影响组件的双主题视觉检查；不默认跑 TypeScript、后端契约或全站回归 |
-| UI 行为或局部业务逻辑 | 定向行为测试，或显式选择 `gate:quick ui/rust/data`；补受影响的浏览器流程 |
-| 已登记 Rust 读取模块 | `rust:check --file <仓库相对路径>`；近期作品读索引复用 storage_preferences，内容查询/筛选缓存复用 catalog 现有用例；共享写入/存储/依赖等未知范围保持完整 runtime 检查 |
-| Tauri / Native Live2D Rust 源码 | 自动选择 native；`rust:check-native --target host\|renderer` 编译对应 Cargo 目标，host 同时覆盖 renderer 依赖；缺 Windows/SDK/Cargo 时退出 3、记录未运行；设备/真实模型另验 |
-| 依赖、跨域重构、未知影响面，或用户明确要求完整验证 | `gate:full`，再按风险补浏览器/设备验收 |
-
-构建用于验证产物或准备同步，不能代替视觉/设备验收。同一内容的检查不因提交而重跑；后续修复只重跑受影响范围。已核对隔离与权限边界的测试可直接执行和修复，无需逐步请求批准。
-
-日常使用 `npm test` 或 `npm run validate`（与 `gate:quick` 同一入口），默认按当前 Git 改动选择测试。前端 TS/Vue 使用 Vitest 原生导入图运行相关单测；UI 门禁在类型检查前仅补齐缺失的 `data/popular-characters.json`（复用 `ensurePopularBuilt({ onlyIfMissing: true })`），不重建其他数据域，也不覆盖已存在的陈旧产物；CSS 独立选择 `style` 的字面值、双主题对比度、颜色、动画扫描，不跑无关类型检查/单测；其他静态资源与显式 `ui` 仍运行整个前端套件。没有相关单测时明确显示只完成类型检查，不能当作浏览器验收。已登记的 Node 测试按文件选择并去重；critical/nightly 中的 E2E 测试本身变化只跑所改文件并复用已有 dist，混合 UI/style/data 改动先构建。已登记工具/CI消费者按现有用例定向；应用/Vitest配置选UI，Node整体构建配置仍保留full；未登记共享夹具、注册表、依赖、未知或删除的测试仍升级 full；manual/device 测试源修改只验证浏览器测试类型，不执行专项；真实设备与模型仍显式选择。
-
-Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`node scripts/tests/run-quality-suite.js check test-native-controls.ts`。支持登记的源文件或生成入口、稳定去重；错误文件名、跨套件文件及未知选项失败，不静默跳过。省略参数执行所选lane完整清单，整合验证使用 `gate:full`。unit/contract/optional 不自动 prebuild；工具源或配置变化、生成入口缺失时才先 `npm run build:runtime`，纯 Rust 检查不附带 Node 构建。
-
-短期限的 `test-generation-workflow-safety` 独立于 Node 并发批次执行，保留其 250ms 夹具期限与显式超时场景；Windows 的 `test-desktop-deploy-guard` 使用真实 PowerShell 进程探测，也单独执行。其他文件仍并发 4。每个选中文件只执行一次，整体仍共用原 300 秒上限，阶段失败/未运行分别记录，不放宽退出与锁清理断言。
-
-自动模式进一步比较已有 Vue 文件与 HEAD：仅 style 内容变化时选择 style；script、template、自定义块、style 属性或 CSS v-bind 依赖变化，以及 module 样式、新增/缺失基线、解析异常，继续选择 UI。显式 ui 的范围不变；纯样式仍需受影响页面的双主题视觉检查。
-
-### 验证并发与复用
-
-直接运行 `node scripts/maintenance/gate-quick.js --plan [--base <HEAD或完整SHA>]` 输出纯JSON选测范围及干净checkout所需的前置条件；只读Git与源码，不准备产物或执行测试。CI默认从 `AICS_HYGIENE_BASE_REF` 取基线；基线不可用时明确回退full，参数错误仍失败。统一workflow的 `--plan` 仍只预览命令，不替代这个选测报告。
-
-`typecheck:app` 保持全部应用及前端测试的严格类型检查，通过 `.cache/typecheck/app.tsbuildinfo` 复用编译器信息。每次重新读取当前输入并保留错误退出码，不缓存PASS；冷启动仍完整检查。CI按工具链、依赖和配置恢复编译信息，源文件变化由编译器核对。
-
-原生选测不会把通用 full 当作原生编译通过；即使混有需要 full 的改动，也保留 native 目标。Linux 等缺原生条件的执行器会得到未运行状态与退出码 3，需在有既有 SDK/工具链的 Windows 环境完成对应编译，不自动安装或调用设备。定向 Rust 选择仅登记已有覆盖的读取路径，匹配不到用例时拒绝通过；格式与库级类型/Clippy 检查继续保留。
-
-quick的独立领域分别保留结果：测试失败或准备异常不记为通过，但其余已选领域继续；混合改动的页面构建失败只将依赖新dist的浏览器标为未运行。中断仍停止后续派发，完整full仍保持失败即停。失败须说明现行要求、与本次改动的关系及影响范围，不用无关全仓重跑替代归因。
-
-文档链接检查在生成JS缺失时，仅接受已登记生成范围内存在的对应TS权威源；缺源、非生成范围和真实断链仍失败。新checkout的纯文档CI可直接运行TS工具，不必为这些链接先安装依赖或编译全部工具。
-
-`npm run check` 的 `CHECK_JOBS` 默认 4、有效范围 1–4；首次失败停止待派发步骤，收完已在途任务并分别报告失败/未运行。`npm run check -- --all` 显式收集全貌；每步限时 10 分钟，超时只清理该执行器拥有的进程树，不原样循环重跑。
-
-Quality CI 日常复用同一选测计划与 npm test，文档免依赖安装，Rust/浏览器/SPA仅按前置条件准备。quality-summary 必须要求所选任务成功；未选的最低 Node 专项仅允许 skipped。完整门禁、关键浏览器与最低 Node 兼容留在手动及北京时间02:15夜间入口；02:00扩展视觉继续独立执行，完整前端覆盖率集中到Quality。Rust专项只在相关路径变化时验证parity，日常rust:check由Quality承接；真实原生/GPU专项仅手动触发，不进入普通推送。
-
-Rust Runtime 的准备步骤仅编译 Node 维护工具（`build:runtime -- --project node`），该 lane 的 Rust/parity 不消费生成的 Node 测试或浏览器工具。Quality 的 Cargo 缓存使用独立的 `quality-runtime` 主键和恢复前缀，避免命中另一个 lane 的 release-only 缓存后反复从零编译 debug/check 产物；首次使用新键仍需准备缓存，不代表已测得远端提速。
-
-`test-interrogate-engine` 默认只在临时空目录验证无模型降级，并屏蔽模型目录环境变量；`test-interrogate-routes` 始终用 WD14 替身和本地 HTTP 夹具。只有显式设置 `AICS_TEST_REAL_WD14=1` 再运行 `node scripts/tests/test-interrogate-engine.js`，才会查找本机权重并执行真实 CPU 推理；该开关不属于普通 unit/contract/full 门禁的默认验收。
-
-`test:contract` 和 `gate:full` 共用契约执行器。`CONTRACT_TEST_JOBS` 默认 2，有效范围 1–4；只有 `scripts/tests/contract-test-policy.ts` 已记录临时目录、独立进程和动态端口边界的文件进入并行批次，较慢文件先启动。该批次结束后，其余文件按原顺序串行；新测试默认串行，修改已有夹具的隔离边界时须重新复核登记。设 `CONTRACT_TEST_JOBS=1` 可按完整原顺序执行，便于对照或低内存机器排障。
-
-失败时停止派发新测试，等待已启动的夹具结束；`--all` 继续执行全部文件。超时、信号、输出超限与启动失败均为失败，未执行项单独计数。中断或超时只终止执行器自己启动的进程树。并行契约的 `--verbose` 按文件完成后输出整块日志，避免混杂。单文件时限与单测已有并发不变，目录准备和真实断言没有省略。
-
-生产构建的预压使用 `PRECOMPRESS_JOBS`（默认 2，范围 1–4）限制同时处理的文件数，继续使用 Brotli 11 / gzip 9，不缓存测试 PASS、不依赖文件时间戳跳过压缩，也不放宽包体预算。同步 `compress()` 接口保持兼容，`precompress --check` 仍只读核对源字节、孤儿与陈旧产物。
-
-同一批内容已有通过证据时，后续局部修复只重跑受影响项；准备提交本身不要求再次构建。定向与完整门禁共用当前登记清单，删除/合并须记录保留覆盖与当次验收。耗时比较使用同机、同输入和相同参数独占测量。
-
-测试精简已逐项核对当前前端、Node、浏览器与 Rust/Tauri/Python 的行为覆盖；重复用例合入所属套件，无消费者的旧后端/实验入口及其自测退出。现行测试 lane 直接登记，日常使用 `npm test` 按实际改动选测，类型、AA、权限和数据安全断言保持。
-
-| 入口 | 实际范围 |
-| --- | --- |
-| npm test / validate / gate:quick ui/style/rust/data/all | 自动模式按文件选相关前端、样式、Node、Rust、常规 E2E；Rust 源码、Cargo 与 Rust 隔离夹具只派发 rust:check；显式参数选整个领域；已登记工具与域配置选相关检查；依赖及未知影响面升级full；文档只查链接 |
-| check:quick | npm run check 的全部已注册并行检查 |
-| gate:full / gate:all / check:full / validate:all | 同一 full 入口：check、Rust、前端覆盖率、unit、contract、tooling、release，最后一次 build:web:run（含打包预算）；默认失败即停，--all 收集全貌。不含浏览器、设备或真实模型验收 |
-| test:tooling / test:release | 维护工具、发行/资源包专项；不作为纯前端改动的固定成本 |
-| test:optional | 已登记测试自身变化精确到文件并去重；已登记工具消费者定向；其余工具/桌面消费者源码改动执行相关完整专项。纯 Rust 源码/Cargo/隔离夹具由 gate:quick 的 rust 区域处理，原生发行材料仍派发 release；未知影响面、无有效CI基线及配置变更保守全跑 |
-| build:web / build:runtime / rust:build | 前端预算/预压；Node 开发维护脚本编译；Rust 产品后端 release 构建。三者不相互替代，`start:run` 启动 Rust |
-| check:style-debt | 样式字面值趋势、颜色、动画和双主题全局/角色令牌对比度；包含 Vue/TS 工具类及 `@apply` 取样，维护约定见 [Tailwind 样式维护](guides/engineering/tailwind-styling.md)；字面量默认只报告，`npm run test:style-debt:strict` 才阻断；动态组件另做视觉验收 |
-| check:monolith / check:pinned-scenes / check:rewrite | 体量检查覆盖应用、服务及 `scripts/maintenance` 维护入口、`scripts/lib` 支撑模块；定稿与改写完整性继续独立检查。rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
-| check:domain-types | 指定公共作品/生成类型、结果快照及保存用例的可达依赖；复用 AST/真实路径/别名/再导出/Vue 脚本解析；禁止直连具体存储/API/Node 平台；类型边单列，违规、未知路径和运行候选循环阻断 |
-| check:popular / check:anima-routes / check:frontend | 热门、Anima 接口与前端单测 |
-| test:contract / test:e2e:critical | 契约套件与关键浏览器回归；test:e2e:critical 工作流走无 build 的 `test:e2e:critical:run` 入口，复用已有构建产物（npm 脚本 `test:e2e:critical` 才先 build） |
-| test:e2e / test:e2e:all | 默认 `test:e2e` 构建后只跑 critical；已有构建的 `test:e2e:all` 运行 critical + nightly，不包含 manual/device |
-| test:e2e:performance | 已构建产物的单 worker 冷／热进入与首次操作测量；与回归分开执行 |
-
-质量套件可设置 AICS_TEST_REPORT_DIR 为隔离日志目录，保存逐文件状态、失败分类、超时、耗时和Node跳过数量；失败与未运行不改标通过。Quality的前端使用Git基线关联测试，无有效基线时全跑；完整前端覆盖率和既有门槛由夜间及显式全量入口执行。旧 Node 后端及 legacy lane 已退役，核心contract不准备旧SPA；核心Rust CI与Node22.18检查保留。JSON与日志按[报告契约](guides/engineering/maintainability-boundaries.md#测试职责与报告)接入capture:delivery，报告不代替实际执行。
-
-E2E 仅覆盖桌面客户端与桌面浏览器，不再运行 phone/tablet 项目或手机、平板专用尺寸及触屏用例。保留桌面窄窗口、分屏、双主题、键鼠可达性与减少动态效果检查；桌宠原生小窗口尺寸不属于移动端，继续覆盖。不要把手机尺寸替换成同数量的桌面尺寸来扩大矩阵。
-
-分组清单为 `tests/e2e/e2e-lanes.json`：critical 保留生成/保存、并发数据安全、草稿与状态、主导航和键盘操作；nightly 保留主题、资源恢复与扩展交互；manual 保存按变更选择的独立专项；device 仍需明确的设备或模型资产条件。无断言的 `capture.spec.ts` 已删除。`npx playwright test tests/e2e/<文件>.spec.ts --project desktop --workers 1` 可显式运行普通浏览器专项，可再用 `--grep` 选择相关场景；真实维护和 Live2D 等继续使用各自的隔离入口。裸 `npx playwright test` 默认只发现 critical + nightly，与 `test:e2e:all` 一致；显式文件、正则或 `--test-list` 仍可选择 manual/device，设备专项配置保留，运行条件与授权不因显式选择而省略。
-
-精确指定常规页面 E2E 文件时，只启动隔离 web Rust 服务；仅选择 flows 文件时，只启动 gateway 与模拟上游。少数 desktop 文件显式请求 gateway，保留双栈。未知/正则文件过滤、测试列表和仅 `--project desktop` 无法证明所需范围，保守保留原双栈；不复用已有服务，不降低分级、权限、并发存储、AA 或故障断言。当前执行入口由 run-e2e-lane 维护。
-
-小改动先选测试，不先运行整套：工具/composable 逻辑用 `npx vitest run <相关spec>`；局部 UI 只运行相关 E2E 文件或场景，真实颜色/布局保留双主题，纯数据和状态逻辑不重复主题。提交本身不增加检查范围，同一产物已有证据可复用。`test:e2e` 的 critical 清单也不是每次局部修改都必跑；跨层核心改动与 PR 门禁才使用 critical。当前清单由 run-e2e-lane 枚举。
-
-应用页面错误、溢出和可读性巡检统一在 `theme-audit.spec.ts`，文档由 `page-experience-docs.spec.ts` 一次完成主题、错误、键盘及实际 AA 检查，不重复页面巡游；`ui-layout.spec.ts` 仅保留独有的对比度、侧栏和交互检查，均为扩展回归。独立 UI 预览可用 `AICS_UI_AUDIT_URL` 指向隔离服务；默认检查本机 3000，不依赖 networkidle 等待长轮询停止。
-
-`github-reference.spec.ts` 属于扩展回归：统一词条、固定种子候选、配方兼容检查和 PhotoSwipe 试验。图库使用中性本地图片夹具，保留鼠标缩放、键盘操作和双主题各 20 次开关；DOM/Blob URL 趋势保留在 `runtime/github-reference/`，不代表真实模型或 GPU 内存验收。
-
-资源故障与恢复的定向用例在 `tests/e2e/resource-recovery.spec.ts`：角色列表头像、场景卡片、参考卡片与画册灯箱，共四种流程的深浅主题检查。使用本地响应夹具，确认故障请求命中并验证恢复后的图片加载。可运行 `node node_modules/@playwright/test/cli.js test tests/e2e/resource-recovery.spec.ts --project desktop --workers 1`；需要已有 dist，设置独立 AICS_E2E_PORT_OFFSET 可隔离服务端口与运行目录。该文件由默认 e2e 发现，未加入显式 critical 清单；不代表参考灯箱、Live2D 或全部离线资源验收。
-
-首页英雄图/热门横条回退见 `home-image-recovery.spec.ts`，角色详情主图/缩略图失败及恢复见 `character-detail-recovery.spec.ts`；`image-fallback-visual.spec.ts` 覆盖两处新增文字 AA 对比度、标签避让与普通桌面/2560×1440 DPR1.5 的双主题截图。它们沿用上述 Playwright 定向入口，默认 e2e 可发现，未加入显式 critical 清单。DPR1.5 是浏览器等效视口，不替代主力机 Windows DPI/WebView2 验收；装饰遮罩与实际图像叠字仍需查看截图。
-
-`illustration-recovery.spec.ts` 补充场景手帖两角色图片失败/切换/恢复与 404 页插图回退、返回导航；纯恢复逻辑执行一次，1440桌面占位/台词避让和 AA 检查保留双主题。404 插图的固定 src 会被构建成带哈希的资源地址，拦截测试须兼容实际打包路径，不能只核对源码 URL。
-
-`workbench-loading.spec.ts` 检查生产构建的实际脚本请求：未打开的素材分类、专家面板和结果弹窗应保持未加载；首次打开后切换分类不丢搜索或草稿。覆盖场景／专家模式与深浅主题，防止只拆分文件却仍在首屏请求全部分片。
-
-`office-code.spec.ts` 同属关键浏览器入口，覆盖文档安全策略、存储受限导航、键盘出图入册、按需对比面板及脱敏诊断下载；麦克风策略使用浏览器模拟设备与真实响应头，不读取操作员麦克风。`library-concurrency.spec.ts` 使用真实双页 IndexedDB/Web Locks，验证并发入册、收藏、软删恢复、备份合并与失败重试；页面壳是隔离夹具，仓储源码和存储未替换。`office-performance.bench.ts` 经独立性能入口执行，记录本机 runtime 下的冷／热进入与首次操作耗时，不与浏览器回归争抢资源。生成链路使用模拟上游，不代表真实模型或桌面安装验收。
-
-`ui-fluidity-office.bench.ts` 默认每组 20 次往返；显式 `AICS_OFFICE_RESOURCE_SAMPLES=100` 可延长到 100 次（范围 20–100），每 10 次和最终检查点采集 GC 后堆/DOM/监听器。非默认样本数输出到 `runtime/ui-fluidity-office-<次数>/`，不覆盖旧 20 次证据。用 `--config=playwright.performance.config.ts --project=fluidity-office --grep 'full round 1$'` 选择深浅主题各一组；这不冒充默认完整三组或真实 GPU/进程内存验收。测试独占运行，不与构建、GPU 基准并发。
-
-`npm run wf -- desktop:storage-benchmark` 独立运行桌面持久化候选比较：使用 Node 内置 `node:sqlite`、已安装 Playwright 浏览器（可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`）和临时目录，输出 JSON 后清理夹具，不连接生产网关、不打开真实浏览器资料。比较 1,000/10,000 条作品索引及 64 对原图/缩略图，各三轮；耗时不设 CI 阈值，运行时不要并发构建或浏览器测试。方法限制和推荐结论见 [剩余验收与规划](roadmap.md#pc-桌面架构整理后的验收)。迁移/任务日志故障注入原型已登记 unit 套件，均不接入生产运行时。
-
-`npm run wf -- desktop:rust-bundle` 使用真实 bundle 映射和当前 Rust 载荷验证隔离安装布局；先准备 `rust:build` 与桌面 staging。旧 `desktop:workspace-sidecar` 已退出注册表，旧 Node worker测试仅作对照。临时库验证不能替代正式安装、WebView2 或物理断电验收。
-
-`npm run wf -- desktop:renderer-process-check --exe <候选EXE> --assets-root <已有assets目录> --out <新证据目录>` 在 Windows 上验证 Live2D 独立渲染进程；先生成 Node 测试入口并构建支持 `--live2d-renderer-probe-host` / `--live2d-renderer-child` 的候选 EXE。脚本使用独立 config/profile、可见测试窗口与现有宁宁/夏目模型，记录 GPU 快照、帧数和 60/120/165 FPS 各两秒实测（可用 `--sample-ms` 调整），检验加载中杀子进程、超时、父进程存活、显式重连以及 Shutdown/EOF/父进程突然退出的无孤儿回收。GPU 快照须实际查看；帧率为测量值，没有把目标帧率视为性能门禁。只读模型资源，不启动已安装生产应用、不访问生产资料、不下载或调用 AI 生成。该入口与其他 GPU 测量串行，单独运行，不进入默认 unit/validate 套件；证据目录保留 JSONL、stderr、PNG 和结果 JSON。
-
-R13 的旧 Node Electron PoC 已随旧后端退役删除，其历史对照仍可从 Git 查询。当前默认继续使用 Tauri；重新评估 Electron 需基于现行 Rust 协议另定范围，旧 PoC 不再登记为可执行设备验收入口。
-
-`npm run wf -- desktop:thumbnail-benchmark` 复用生产 `galleryThumbnailWarmup.ts` 的调度核心，在临时 loopback 服务和私有浏览器上下文运行真实 IndexedDB 与图片解码；它测量 Web 预热，桌面 workspace 当前不做全库预热。1k/10k 历史共用 64 张中性 1024px 图，前台/后台/双页各三轮观察五秒；报告实际 visibility、读写/生成次数、重复图片读取、CDP JS 堆与脚本/任务时间及源码/夹具哈希。后台未实际 hidden 时标为 unavailable，不模拟后台性能，不把小图结果当作用户大图/GPU成本。独占运行后保存 stdout JSON；不新增性能阻断阈值。
-
-`npm run wf -- desktop:restore-benchmark` 在新私有上下文按 1k/10k 历史各跑三轮，64 张确定性中性噪声 PNG 经真实 `buildBackupBlob → Blob.text → JSON.parse/normalizeBackup → restoreBackupData`，核对条目、原图字节数、图片重映射及旧原图保全。分别报告导出/读取/解析/恢复时间、实际备份字节与约 25ms CDP JS 堆采样；observedPeak 是观测下界，不含 Blob 原生后备内存、完整进程/GPU，也不代表 512MiB 峰值、可取消性或断电恢复。独占运行，无生产库访问。
-
-`node scripts/maintenance/check-bundle-budget.js [dist目录] --json` 保留旧预算，同时报告入口与真实路由匹配链的静态 JS 文件并集（不计运行时动态请求）。映射来自 router AST；无 src 命名块只接受唯一匹配，缺失/歧义显式 unknown、总数 null，不能解释为零。新指标仅报告，包含文件集合、manifest/router 哈希；需将所选 dist 与相同源码配对，再用独占冷启动浏览器的 script 请求核对动态加载差异。
-
-旧 SQLite 候选与模拟任务 journal 的重复原型测试已退役；`artwork-sqlite.ts` 仍供显式 storage benchmark 使用，基准内继续检查数量与字节，不能把候选原型当产品持久化验收。当前作品、任务与恢复边界由 workspace/持久任务及 Rust 存储测试负责；物理断电、浏览器恢复 journal 与 512 MiB 大包峰值仍是独立验收范围。旧逐文件删并决定可从 Git 历史查回。
-
-`flows`、`anima-quick`、`office-code` 共用模拟上游，统一在 `flows` 项目的单 worker 中运行；其他页面和设备回归仍可并行。多会话验收时给每轮设置不同的 `AICS_E2E_PORT_OFFSET`（例如 `15000`），网关、浏览器和模拟上游按同一映射偏移端口，并使用隔离运行目录、拒绝复用已有服务。浏览器测试期间不得重建共享 dist；先完成构建再验收，并用独立 `--output` 目录保留每轮证据。
-
-无参考素材的办公机可沿用 CI 的 `AICS_REFERENCE_AUDIT_MODE=structure` 执行结构校验；报告必须注明该模式，不能据此声明参考 URL 或图片验收通过。主力机不设置该变量，继续核对实际素材文件。
-
-首次建立 worktree 仍按本次风险选检查：文档无需构建；所选 Node 工具缺少生成入口时才准备 `npm run build:runtime`；浏览器或产物检查需要匹配的 dist 时才执行 `npm run build`。缺少构建产物不自动升级为完整门禁。隔离验收副本只带入本任务文件，不能通过忽略其他会话的失败文件而宣称原共享工作区全量通过。
-
-每周 Dependency Audit 同时检查运行时与完整依赖树，高危/致命阻断，并保留 JSON 报告 14 天。中危告警须按实际调用路径评估，不能把流程通过理解为零漏洞。
-
-Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/src-tauri/Cargo.lock`（发行桌面壳）和 `desktop-tauri/native-live2d/Cargo.lock`（原生渲染器独立构建）；PoC 锁文件不冒充发行依赖。发现 advisory 或扫描不可用均失败，保留 JSON、stderr、退出码、工具版本、源码 SHA 和锁文件哈希。原生 SDK 不属于 Cargo advisory 数据库：`native-live2d/build.rs` 声明 Cubism Native 5-r.5，实际 SDK 字节与许可仍需发行机单独记录。两份 Cargo 清单与 npm 锁文件随 CI artifact 保存；14 天留存不能代替长期发行归档。
-
-发行交接继续复用 `capture:delivery`：源码选择包含 npm/Cargo 锁文件与 SDK 构建配置，构建选择包含安装包、Rust EXE、原生 DLL/许可证清单、暂存资源及实际 Cubism SDK身份。Node是开发构建工具，不再填作随包后端。先捕获身份，再记录实际命令、环境、失败/跳过和日志；缺失安装包、SDK或原生发行材料保持 pending，不以声明值替代实测。
-
-交付时将回执与选中的脱敏日志/哈希清单一并放入受控发行 artifact，或把脱敏摘要登记到 docs/evidence 并加入文档索引；仅引用 runtime 路径无法跨机器移交。接收方恢复相同相对路径后运行 `audit:delivery`，核对 source/build 和日志是否 fresh，分别填写 installation、deviceAcceptance、modelAcceptance。现有失效检查能检出选中源码、构建或日志字节变化；哈希不认证日志语义，也不补签未运行项目。
-
-历史 Audit stability validation 已收口为人工触发、只读 token 和禁用 checkout 凭据持久化，仅保存重现补丁与证据，不提交或推送。普通 push/PR 不触发该历史工作流。`docs:check` 核对目标文件和 Git 忽略规则：本机存在的 runtime 日志/截图不能作为仓库文档的链接或图片，只记录路径与证据边界；受控生成 JS 仍可由权威 TS 源承接。`audit:workflow-conditions` 仅核对注册条件。标题锚点、描述语义、外部来源与实际运行结果另按范围检查。
-
-预算包括路由 JS 140 KiB、CSS、入口与依赖闭包等，完整阈值见 check-bundle-budget.js。测试规模与路由数量以当次输出为准；历史 PASS 不能代替本次检查。
+rust:build 需要已有 Rust/MSVC 工具链，首次可能下载锁定 crate，不替换桌面安装。rust:licenses:collect 按 components.json 的固定配方下载公开源码并提取许可材料，不安装或执行源码；材料变化后更新摘要绑定，见[原生材料说明](../runtime-rs/native-licenses/README.md)。
 
 ## 服务与桌面部署
 
@@ -484,7 +337,7 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 
 本机直连的陪伴页、聊天页从 `/api/live2d-companions` 加载本机身份与 Adapter Profile；资源仅经本机受限接口按导入文件清单提供。远程/隧道请求不返回本机角色和模型，候选原件也不进入静态资产路由、资源包或桌面暂存。新角色尚无专属音色时保持文字聊天，不借用内置角色声音。Cubism 3 本机模型支持浏览器与 Native；Cubism 2 的蕾姆保持浏览器回退。原生端仅接受与本机导入回执身份一致且引用完整的模型，不接收 WebView 的任意文件路径。
 
-真实模型浏览器检查：完成构建和导入后，设置 `AICS_LIVE2D_IMPORTS=1` 与独立 `AICS_E2E_PORT_OFFSET`，运行 `node node_modules/@playwright/test/cli.js test tests/e2e/live2d-imports.spec.ts --project desktop --workers 1`。未显式设置时跳过私有资产测试；开启后使用实际运行库、模型及贴图，保存双主题截图，不替代原生 GPU 或音频设备验收。
+实际 Live2D 模型与原生 GPU、音频设备按用户授权进行人工验收。
 
 环境与本机凭据说明见 [启动与排错](../STARTUP.md) 与 [全功能硬件配置与模型开箱指南](guides/setup-and-models.md)。
 
@@ -533,25 +386,19 @@ Windows 上已授权的单窗口截图可用 `powershell -NoProfile -File script
 
 `-Scale` 默认 2，只调整截图位图，不改变实际窗口、系统 DPI 或 CSS 视口。`PrintWindow` 返回失败仍可能落盘，日志里的 saved 不能证明画面正确；须人工打开 PNG 检查黑屏、透明或缺失内容，并独立记录实际分辨率、DPI/缩放和主题。此处仅说明静态审查确认的用途和限制，未宣称当次 Windows/WebView2 端到端验收。
 
-2026-09-30 的四个旧 CDP 探针已原样移至 `scripts/archive/companion-cdp-20260930/`，本次特意保留 Git 跟踪供审阅与恢复，详见[归档理由](../scripts/archive/companion-cdp-20260930/README.md)。它们硬编码调试端口、存在失效 DOM 选择器/用户路径，且只打印状态而没有回归断言，因此不再作为维护入口或通过证据。当前陪伴交互回归见 `tests/e2e/companion-focus.spec.ts` 和 `tests/e2e/studio-live2d.spec.ts`，后者仍需对应模型/设备条件；归档不代表这些回归已在当前环境执行。
+2026-09-30 的四个旧 CDP 探针已原样移至 `scripts/archive/companion-cdp-20260930/`，本次特意保留 Git 跟踪供审阅与恢复，详见[归档理由](../scripts/archive/companion-cdp-20260930/README.md)。它们硬编码调试端口、存在失效 DOM 选择器/用户路径，且只打印状态而没有回归断言，因此不再作为维护入口或通过证据。归档探针不作为当前验收证据。
 
 `backup:git` 创建本地 bundle 增量链（2 个锚点 + 默认 10 个增量），不能替代 push 或异地副本。`runtime:clean` 默认只预览；`--prune --days 60` 会实际清理。先检查路径与白名单，避免清除当前运行资料。
 
-## 自动化检查与审计入口
+## 自动化审计入口
 
-| 自动化 | 触发与范围 |
-| --- | --- |
-| Quality | push / PR：构建、核心静态检查、关联前端、核心unit/contract、变更触发专项、关键浏览器回归 |
-| Nightly visual regression | 每日北京时间 02:00 / 手动：完整前端覆盖率门槛、主题、截图与视觉矩阵 |
-| Windows Native Live2D | main push / 手动：自托管 Windows 的 Tauri、Rust、原生自测与稳定性检查 |
+五条测试工作流（Quality、Nightly E2E、Windows Native、Prompt Tag Contracts、Rust Runtime）已停用并删除。保留 dependency-audit.yml 的依赖安全审计；它不运行测试。提交和 PR 不再触发测试 CI。
 
-Windows Native Live2D 的 `LIVE2D_CUBISM_SDK_DIR` 优先使用 runner 进程环境；未设置或仅含空白时才回退到同名仓库变量，避免不同机器的 SDK 路径互相覆盖。预检确认 Core 头文件、Framework 源文件和 Windows x64/143 Core 静态库均存在后，通过 `GITHUB_ENV` 传给后续步骤；显式配置的路径缺失或不完整会直接失败，不切换到另一个 SDK。
-
-当前实现、安装范围与未执行项目见[项目状态](project-status.md)和[未来规划](roadmap.md)。发行范围见 [1.9.2 说明](releases/v1.9.2.md)。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
+当前实现与安装范围见[项目状态](project-status.md)；旧测试报告及历史计划不作为现行执行要求。
 
 ### 011 发行输入绑定（2026-09-21）
 
-桌面 `build:tauri` / `package:tauri` 在锁内先从已显式导出的 `data/catalog/` 快照刷新人物、服装、场景、蓝图的数据聚合，再捕获源码身份及构建两份 UI；该写入准备不改变测试/只读检查的 `onlyIfMissing` 守卫行为。已存在的个人 `content/catalog.sqlite` 不会被安装覆盖，记录式内容通过内容维护或 `content:catalog` 预览并导入快照；参考索引等仍按文件维护的数据才使用 `desktop:content-sync`。交付范围见[部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
+桌面 `build:tauri` / `package:tauri` 在锁内先从已显式导出的 `data/catalog/` 快照刷新人物、服装、场景、蓝图的数据聚合，再捕获源码身份及构建两份 UI；该写入准备不改变只读维护检查的 `onlyIfMissing` 守卫行为。已存在的个人 `content/catalog.sqlite` 不会被安装覆盖，记录式内容通过内容维护或 `content:catalog` 预览并导入快照；参考索引等仍按文件维护的数据才使用 `desktop:content-sync`。交付范围见[部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
 
 完整桌面构建在锁内捕获受 Git 管理及未忽略源码（排除 docs、plans 和一般 Markdown；原生许可目录中的 Markdown 仍纳入），复用 delivery-identity 的路径/字节哈希。`runtime/delivery-evidence/desktop-build-binding.json` 绑定 dist、桌面内嵌 web、暂存 Rust gateway/原生 DLL/清单及桌面 EXE，打包构建另绑定 NSIS；`runtime/rust-evidence/build.json` 绑定后端源码和 release EXE。Cubism 的 Core 头文件、Framework 源码与 Core 静态库也以实际字节摘要进入桌面构建环境和回执；构建前后及复用时核对，保留旧时间戳的同路径替换也会使候选失效。直接运行 Cargo 仍使用文件变化监听，常规桌面构建请走既有入口。仅原生构建不把旧 NSIS 纳入新身份。
 

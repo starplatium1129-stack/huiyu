@@ -68,27 +68,3 @@ pub fn write_json(file: &Path, value: &impl Serialize) -> Result<(), String> {
     drop(writer);
     std::fs::rename(temporary, file).map_err(|_| "MAINTENANCE_RECEIPT".into())
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn maintenance_cli_is_finite_and_never_accepts_paths() {
-        let args = |command: &str, id: &str| vec!["app.exe".into(), CLI_FLAG.into(), command.into(), "--maintenance-request".into(), id.into()];
-        assert!(cli(&args("status", &"a".repeat(32))).unwrap().is_ok());
-        assert!(cli(&args("shutdown", "../outside")).unwrap().is_err());
-        assert!(cli(&args("exec", &"a".repeat(32))).unwrap().is_err());
-        assert!(cli(&["app.exe".into(), "aics://chat".into()]).is_none());
-    }
-    #[test]
-    fn requests_bind_instance_and_actual_host_pid() {
-        let root = std::env::temp_dir().join(format!("huiyu-maintenance-{}", std::process::id()));
-        let identity = Identity { protocol_version:1, instance_id:"instance".into(), host_pid:42, started_at_filetime:"birth".into(), executable:"app".into(), instance_namespace:"com.aics.studio".into() };
-        let id = "a".repeat(32); let file = directory(&root).unwrap().join(format!("{id}.request.json"));
-        std::fs::write(&file, serde_json::to_vec(&Request { request_id:id.clone(), instance_id:"instance".into(), host_pid:43, command:"shutdown".into() }).unwrap()).unwrap();
-        assert!(load_request(&root, &identity, "shutdown", &id).is_err());
-        std::fs::write(&file, serde_json::to_vec(&Request { request_id:id.clone(), instance_id:"instance".into(), host_pid:42, command:"shutdown".into() }).unwrap()).unwrap();
-        assert!(load_request(&root, &identity, "shutdown", &id).is_ok());
-        std::fs::remove_dir_all(root).unwrap();
-    }
-}

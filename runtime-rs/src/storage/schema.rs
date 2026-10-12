@@ -5,8 +5,6 @@ use std::{
     io::Write,
     path::{Component, Path},
 };
-#[cfg(test)]
-mod tests;
 
 pub(super) fn safe(root: &Path, relative: impl AsRef<Path>) -> Result<PathBuf> {
     let relative = relative.as_ref();

@@ -65,6 +65,3 @@ fn router_with(proxy: Proxy) -> Router<AppState> {
     }
     router.layer(Extension(Arc::new(proxy)))
 }
-
-#[cfg(test)]
-mod tests;

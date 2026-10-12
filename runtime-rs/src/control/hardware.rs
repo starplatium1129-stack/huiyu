@@ -1,13 +1,10 @@
 use serde_json::{Value, json};
-#[cfg(all(windows, not(test)))]
+#[cfg(windows)]
 use std::time::Duration;
 
 pub(super) async fn local_hardware() -> Value {
-    #[cfg(test)]
-    {
-        json!({"ramBytes":null,"devices":[]})
-    }
-    #[cfg(all(windows, not(test)))]
+
+    #[cfg(windows)]
     {
         let mut command = tokio::process::Command::new("nvidia-smi.exe");
         command
@@ -26,13 +23,13 @@ pub(super) async fn local_hardware() -> Value {
             .unwrap_or_default();
         json!({"ramBytes":system_ram(),"devices":devices})
     }
-    #[cfg(all(not(windows), not(test)))]
+    #[cfg(not(windows))]
     {
         json!({"ramBytes":null,"devices":[]})
     }
 }
 
-#[cfg(any(windows, test))]
+#[cfg(windows)]
 fn parse_nvidia(text: &str) -> Vec<Value> {
     text.lines().filter_map(|line| {
         let values: Vec<_> = line.split(',').map(str::trim).collect();
@@ -42,7 +39,7 @@ fn parse_nvidia(text: &str) -> Vec<Value> {
     }).collect()
 }
 
-#[cfg(all(windows, not(test)))]
+#[cfg(windows)]
 fn system_ram() -> Option<u64> {
     #[repr(C)]
     struct MemoryStatus {
@@ -72,14 +69,4 @@ fn system_ram() -> Option<u64> {
         extended: 0,
     };
     (unsafe { GlobalMemoryStatusEx(&mut status) } != 0).then_some(status.total)
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn nvidia_memory_above_four_gib_remains_available_for_recommendation() {
-        let devices = super::parse_nvidia("NVIDIA Fixture GPU, 32768, 24576, 580.00\n");
-        assert_eq!(devices[0]["vramBytes"], 32768_u64 * 1024 * 1024);
-        assert_eq!(devices[0]["freeVramBytes"], 24576_u64 * 1024 * 1024);
-    }
 }

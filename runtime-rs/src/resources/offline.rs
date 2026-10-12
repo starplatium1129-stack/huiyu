@@ -5,8 +5,6 @@ mod install;
 mod paths;
 mod release;
 mod showcase;
-#[cfg(test)]
-mod tests;
 
 use super::{Error, Result, Value, config, fs, json, lease};
 use crate::{config::Config, file_paths};

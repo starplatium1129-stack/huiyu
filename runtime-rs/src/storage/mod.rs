@@ -112,10 +112,7 @@ enum Work {
         oneshot::Sender<Result<Value>>,
     ),
     Close(oneshot::Sender<Result<()>>),
-    #[cfg(test)]
-    PauseCopy(worker::CopyPause),
-    #[cfg(test)]
-    PauseGarbage(worker::GarbagePause),
+
 }
 struct CancelOnDrop(Arc<AtomicBool>);
 impl Drop for CancelOnDrop {

@@ -193,14 +193,8 @@ export default tseslint.config(
     rules: { 'no-restricted-globals': ['error', ...Object.keys(BROWSER_ONLY_GLOBALS)] },
   },
   {
-    // 浏览器自动化在 evaluate/addInitScript 回调中执行 DOM 代码。
-    // 仅这些明确的混合环境入口允许浏览器全局；普通 Node 工具仍禁止。
-    files: ['scripts/maintenance/cdp-*.ts', 'scripts/maintenance/regress-chat-voice-live.mts',
-      'scripts/tests/{rust-browser-fixture,test-desktop-library-browser,test-task-center-browser,test-workspace-migration-browser,test-resource-ui-visual}.mts',
-      'scripts/tests/prototypes/benchmark-{artwork-storage,backup-restore,thumbnail-warmup}.ts'],
-    languageOptions: {
-      globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS, ...BROWSER_ONLY_GLOBALS },
-    },
+    files: ['scripts/maintenance/cdp-*.ts'],
+    languageOptions: { globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS, ...BROWSER_ONLY_GLOBALS } },
     rules: { 'no-restricted-globals': 'off' },
   },
   {
@@ -218,7 +212,6 @@ export default tseslint.config(
       'no-console': 'off',
     },
   },
-  // 体量硬门禁唯一入口：test-monolith-budget.ts（500 有效行），不保留 1000 行旧预警。
   {
     files: ['src/**/*.{ts,vue}', 'tools/**/*.ts'],
     rules: { 'no-restricted-globals': ['error', 'process', 'require', '__dirname', 'Buffer'] },

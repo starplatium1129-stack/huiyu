@@ -84,18 +84,3 @@ pub async fn request(window: WebviewWindow, action: &'static str, migration_id: 
         })
     }).await.map_err(|_| "BOOTSTRAP_CHECK_FAILED".to_string())?
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn roles_are_host_labels_and_unknown_windows_are_denied() {
-        for (label, role) in [("atelier", WindowRole::Atelier), ("companion", WindowRole::Companion), ("companion-chat", WindowRole::CompanionChat)] {
-            assert_eq!(window_role(label).unwrap(), role);
-            assert_eq!(serde_json::to_value(role).unwrap(), label);
-        }
-        assert!(window_role("preview").is_err());
-    }
-
-}

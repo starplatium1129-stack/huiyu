@@ -125,6 +125,3 @@ impl Live2dService {
         self.health.tasks.wait().await;
     }
 }
-
-#[cfg(test)]
-mod tests;

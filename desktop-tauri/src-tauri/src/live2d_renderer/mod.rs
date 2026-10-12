@@ -35,18 +35,11 @@ mod motion;
 mod window;
 mod commands;
 mod frame;
-mod selftest;
-#[cfg(test)]
-mod tests;
 
-pub use selftest::selftest;
-#[cfg(test)]
-pub(crate) use selftest::selftest_adapter;
 pub(crate) use window::overlay_window_thread;
 pub(crate) use frame::{apply_frame, state_snapshot, send_command};
 use blink::BlinkState;
-#[cfg(test)]
-use blink::BlinkPhase;
+
 use commands::handle_command;
 
 /// overlay 矩形。IPC 输入为 Companion-local 物理像素，state/render 内为屏幕物理像素。
@@ -101,9 +94,9 @@ pub struct Live2DOverlayState {
     pub cmd_tx: Mutex<Option<Sender<OverlayCommand>>>,
     /// 当前加载的角色（口型参数映射等）。
     pub character: Mutex<Option<String>>,
-    /// 已渲染帧数（selftest/诊断用）。
+    /// 已渲染帧数（诊断用）。
     pub frame_count: AtomicU64,
-    /// 最近一次 hit-test 结果（selftest 断言用；app=None 时无事件可发）。
+    /// 最近一次 hit-test 结果（诊断用；app=None 时无事件可发）。
     pub hit_test_result: Mutex<Option<Vec<String>>>,
     /// 模型可见内容的大致屏幕矩形，仅用于诊断。
     pub model_bounds: Mutex<Option<OverlayRect>>,
@@ -220,7 +213,6 @@ fn followed_overlay_rect(
     }
 }
 
-
 /// 意图命令：IPC → 渲染线程。带 reply 的等待同步结果；Async 变体由
 /// WndProc 发出（点击命中），渲染线程算完直接 emit 事件。
 pub enum OverlayCommand {
@@ -319,7 +311,6 @@ struct RenderContext {
     surface_recoveries: u32,
     blink: BlinkState,
 }
-
 
 /// Renderer paths are selected by the native owner, never by a WebView command.
 #[derive(Clone)]

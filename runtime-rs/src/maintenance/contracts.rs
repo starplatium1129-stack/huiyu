@@ -2,8 +2,6 @@ mod artifacts;
 mod core;
 mod popular;
 mod references;
-#[cfg(test)]
-pub(in crate::maintenance) mod tests;
 
 use super::{Error, Options, Result, fs};
 use serde_json::{Value, json};

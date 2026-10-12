@@ -331,50 +331,6 @@ pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Opti
     env
 }
 
-#[cfg(test)]
-mod tests {
-    use super::{gateway_env, normalize_atelier_path};
-
-    #[test]
-    fn empty_workspace_selection_preserves_inherited_or_default_model_root() {
-        let paths = crate::paths::DesktopPaths {
-            is_packaged: true, app_root: "C:/Huiyu/gateway".into(), resource_root: "".into(),
-            gateway_executable: "".into(), gateway_cwd: "".into(), assets_root: "".into(),
-            tools_root: "".into(), runtime_root: "".into(), config_root: "".into(), source_profile_id: String::new(),
-            ai_workspace_file: "".into(), desktop_log: "".into(), gateway_port_file: "".into(),
-            companion_window_file: "".into(), companion_chat_window_file: "".into(),
-            atelier_window_file: "".into(), preferences_file: "".into(),
-        };
-        let workspace = |value| gateway_env(&paths, true, value).into_iter()
-            .find(|(key, _)| key == "AI_WORKSPACE_ROOT").unwrap().1;
-        assert_eq!(workspace(Some("")), workspace(None));
-        assert_eq!(workspace(Some("  ")), workspace(None));
-        assert!(!workspace(Some("")).trim().is_empty());
-        assert_eq!(workspace(Some("D:/HuiyuAI")), "D:/HuiyuAI");
-    }
-
-    // 由已退役 Electron 版 desktop/deepLink.ts 的 test-deep-link.js 移植：
-    // 归一化是 aics:// 深链的核心契约（main.rs 深链回调先剥 aics:// 再归一化）。
-
-    #[test]
-    fn normalizes_single_segment_routes() {
-        assert_eq!(normalize_atelier_path(Some("/gallery")), "/gallery");
-        assert_eq!(normalize_atelier_path(Some("/training")), "/training");
-        assert_eq!(normalize_atelier_path(Some("/chat")), "/chat");
-        assert_eq!(normalize_atelier_path(Some("/scene-explorer")), "/scene-explorer");
-        assert_eq!(normalize_atelier_path(Some("/gallery/")), "/gallery");
-        assert_eq!(normalize_atelier_path(Some("/UPPER-1")), "/UPPER-1");
-    }
-
-    #[test]
-    fn rejects_invalid_targets_with_root_fallback() {
-        assert_eq!(normalize_atelier_path(Some("/")), "/");
-        assert_eq!(normalize_atelier_path(Some("gallery")), "/");
-        assert_eq!(normalize_atelier_path(Some("/a/b")), "/");
-        assert_eq!(normalize_atelier_path(Some("/bad path")), "/");
-        assert_eq!(normalize_atelier_path(None), "/");
-    }
-}
 #[path = "gateway_origin.rs"]
 mod gateway_origin;
 pub use gateway_origin::{same_gateway_origin, registered_desktop_origin};

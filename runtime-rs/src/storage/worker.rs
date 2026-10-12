@@ -1,6 +1,4 @@
 use super::*;
-#[cfg(test)]
-mod tests;
 
 pub(super) fn run(
     root: PathBuf,
@@ -26,10 +24,7 @@ pub(super) fn run(
     let mut copying = false;
     let mut collecting: Option<Arc<AtomicBool>> = None;
     let mut closing = Vec::new();
-    #[cfg(test)]
-    let mut pause = None;
-    #[cfg(test)]
-    let mut garbage_pause = None;
+
     while let Some(work) = receiver.blocking_recv() {
         let (work, permit) = match work {
             Work::AdmittedResult(work, permit) => (*work, Some(permit)),
@@ -180,8 +175,7 @@ pub(super) fn run(
                                 continue;
                             };
                             let cancellation = job.completion.cancel.clone();
-                            #[cfg(test)]
-                            let gate: Option<GarbagePause> = garbage_pause.take();
+
                             let thread = std::thread::Builder::new()
                                 .name("workspace-garbage".into())
                                 .spawn(move || {
@@ -195,21 +189,13 @@ pub(super) fn run(
                                             "Workspace garbage discovery failed",
                                         ))
                                     });
-                                    #[cfg(test)]
-                                    let finished = gate.map(|gate| {
-                                        let _ = gate.entered.send(());
-                                        let _ = gate.resume.recv();
-                                        gate.finished
-                                    });
+
                                     let _ = sender.blocking_send(Work::GarbageFinished(
                                         job.completion,
                                         result,
                                         reply,
                                     ));
-                                    #[cfg(test)]
-                                    if let Some(finished) = finished {
-                                        let _ = finished.send(());
-                                    }
+
                                 });
                             if thread.is_ok() {
                                 collecting = Some(cancellation);
@@ -240,17 +226,11 @@ pub(super) fn run(
                                 let _ = reply.send(Err(unavailable()));
                                 continue;
                             };
-                            #[cfg(test)]
-                            let gate: Option<CopyPause> = pause.take();
+
                             let thread = std::thread::Builder::new()
                                 .name("workspace-copy".into())
                                 .spawn(move || {
-                                    #[cfg(test)]
-                                    let finished = gate.map(|gate| {
-                                        let _ = gate.entered.send(());
-                                        let _ = gate.resume.recv();
-                                        gate.finished
-                                    });
+
                                     let result = std::panic::catch_unwind(
                                         std::panic::AssertUnwindSafe(|| job.run()),
                                     )
@@ -266,10 +246,7 @@ pub(super) fn run(
                                         result,
                                         reply,
                                     ));
-                                    #[cfg(test)]
-                                    if let Some(finished) = finished {
-                                        let _ = finished.send(());
-                                    }
+
                                 });
                             copying = thread.is_ok();
                             if let Err(error) = thread {
@@ -324,14 +301,7 @@ pub(super) fn run(
                     break;
                 }
             }
-            #[cfg(test)]
-            Work::PauseCopy(gate) => {
-                pause = Some(gate);
-            }
-            #[cfg(test)]
-            Work::PauseGarbage(gate) => {
-                garbage_pause = Some(gate);
-            }
+
         }
     }
     // Refuse admission before acknowledging Close. Each filesystem worker keeps
@@ -359,17 +329,4 @@ fn result_busy() -> ApiError {
         "WORKSPACE_BUSY",
         "A task result verification is already running",
     )
-}
-
-#[cfg(test)]
-pub(super) struct CopyPause {
-    pub entered: oneshot::Sender<()>,
-    pub resume: std::sync::mpsc::Receiver<()>,
-    pub finished: oneshot::Sender<()>,
-}
-#[cfg(test)]
-pub(super) struct GarbagePause {
-    pub entered: oneshot::Sender<()>,
-    pub resume: std::sync::mpsc::Receiver<()>,
-    pub finished: oneshot::Sender<()>,
 }

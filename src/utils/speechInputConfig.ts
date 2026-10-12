@@ -7,7 +7,7 @@ import { profileLocalStorage as localStorage } from '../platform/web/profileStor
  *
  * 注意：SPEECH_INPUT_KEY 与 src/utils/storageKeys.ts 双源登记，
  * 由 test-vad-segmenter.js 断言两者一致；storageKeys 保持零依赖供
- * node:test 直测，不得反向 import 本模块。
+ * 不得反向 import 本模块。
  */
 
 /** localStorage 键（storageKeys.ts 同步登记，测试校验一致性）。 */

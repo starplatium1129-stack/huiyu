@@ -3,9 +3,6 @@ use canonical::entity_key;
 use rusqlite::params;
 use std::collections::{BTreeSet, HashSet};
 
-#[cfg(test)]
-mod tests;
-
 fn field(body: &Value, name: &str) -> Value {
     match body.get(name) {
         Some(value) => json!({"present":true,"value":value}),

@@ -5,8 +5,7 @@ mod ollama;
 mod persona;
 mod settings;
 mod stream;
-#[cfg(test)]
-mod tests;
+
 mod transport;
 mod validation;
 

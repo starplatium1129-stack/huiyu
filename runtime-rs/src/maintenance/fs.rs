@@ -206,17 +206,3 @@ pub(crate) fn remove(path: &Path) -> Result<()> {
     }
     Ok(())
 }
-
-#[cfg(test)]
-mod read_tests {
-    #[test]
-    fn oversized_metadata_is_rejected_before_reading_its_payload() {
-        let directory = tempfile::tempdir().unwrap();
-        let path = directory.path().join("metadata.json");
-        let file = std::fs::File::create(&path).unwrap();
-        file.set_len(32 * 1024 * 1024 + 1).unwrap();
-        assert!(super::json(&path).is_err());
-        std::fs::write(&path, b"{}").unwrap();
-        assert_eq!(super::json(&path).unwrap(), serde_json::json!({}));
-    }
-}

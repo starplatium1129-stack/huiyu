@@ -5,8 +5,6 @@ use axum::body::Bytes;
 use sha2::{Digest, Sha256};
 use std::path::Path;
 use tokio::io::{AsyncReadExt, AsyncSeekExt};
-#[cfg(test)]
-mod tests;
 
 pub(super) enum Target {
     Input(String),

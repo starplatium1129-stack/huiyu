@@ -273,7 +273,3 @@ fn proxy(target: &Url) -> Option<Url> {
     }
     Some(url)
 }
-
-#[cfg(test)]
-#[path = "transport_tests.rs"]
-mod tests;

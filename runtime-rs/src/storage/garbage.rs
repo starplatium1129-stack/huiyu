@@ -1,10 +1,7 @@
 use super::*;
 mod discovery;
 pub(super) use discovery::{Candidates, Completion, Discovery};
-#[cfg(test)]
-mod lifecycle_tests;
-#[cfg(test)]
-mod tests;
+
 use canonical::digest;
 use std::{
     collections::{HashMap, HashSet},

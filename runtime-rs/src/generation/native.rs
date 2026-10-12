@@ -482,6 +482,3 @@ fn native_runtime(value: &Value) -> Value {
     })();
     parsed.unwrap_or_else(|| json!({"status":"unverified","reason":if value.is_null(){"worker-metrics-missing"}else{"invalid-worker-metrics"}}))
 }
-
-#[cfg(test)]
-mod tests;

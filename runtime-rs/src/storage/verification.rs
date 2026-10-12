@@ -19,10 +19,7 @@ pub(super) struct Verifier {
     paths: Mutex<HashMap<PathBuf, Weak<AsyncMutex<()>>>>,
     cache: Mutex<HashMap<PathBuf, media::FileIdentity>>,
     closed: CancellationToken,
-    #[cfg(test)]
-    pause: Mutex<Option<Pause>>,
-    #[cfg(test)]
-    hashes: std::sync::atomic::AtomicUsize,
+
 }
 impl Verifier {
     pub fn new() -> Self {
@@ -32,10 +29,7 @@ impl Verifier {
             paths: Mutex::new(HashMap::new()),
             cache: Mutex::new(HashMap::new()),
             closed: CancellationToken::new(),
-            #[cfg(test)]
-            pause: Mutex::new(None),
-            #[cfg(test)]
-            hashes: std::sync::atomic::AtomicUsize::new(0),
+
         }
     }
     pub async fn verify(
@@ -82,8 +76,7 @@ impl Verifier {
                         .map_err(|_| invalid("Media path escapes workspace"))?,
                 )?;
                 let file = File::open(&source.path)?;
-                #[cfg(test)]
-                verifier.paused();
+
                 let before = media::FileIdentity::of(&file)?;
                 let cached = verifier.cache.lock().unwrap().get(&source.path) == Some(&before);
                 check(&checking_cancel)?;
@@ -118,13 +111,7 @@ impl Verifier {
             )?;
             let mut file = File::open(&source.path)?;
             let before = media::FileIdentity::of(&file)?;
-            #[cfg(test)]
-            {
-                verifier.paused();
-                verifier
-                    .hashes
-                    .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-            }
+
             let (bytes, hash, mime) = media::hash_opened(&mut file, || check(&cancelled))?;
             if bytes != source.total_bytes
                 || hash != source.sha256
@@ -160,14 +147,7 @@ impl Verifier {
             self.workers.acquire_many(WORKERS),
         );
     }
-    #[cfg(test)]
-    fn paused(&self) {
-        let pause = self.pause.lock().unwrap().take();
-        if let Some(pause) = pause {
-            let _ = pause.entered.send(());
-            let _ = pause.resume.recv();
-        }
-    }
+
 }
 
 fn check(cancelled: &CancellationToken) -> Result<()> {
@@ -201,11 +181,3 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         json!({"data":STANDARD.encode(data),"mime":source.mime,"totalBytes":source.total_bytes,"sha256":source.sha256,"offset":offset}),
     )
 }
-
-#[cfg(test)]
-struct Pause {
-    entered: tokio::sync::oneshot::Sender<()>,
-    resume: std::sync::mpsc::Receiver<()>,
-}
-#[cfg(test)]
-mod tests;

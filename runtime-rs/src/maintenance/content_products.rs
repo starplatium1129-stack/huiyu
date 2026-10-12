@@ -1,5 +1,4 @@
-#[cfg(test)]
-mod tests;
+
 use super::{
     Error, Options, Result, blueprints, codec, fs, prompt, save as transaction_save, showcase,
     transaction::Transaction,

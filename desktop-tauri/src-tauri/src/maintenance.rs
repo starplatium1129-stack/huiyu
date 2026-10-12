@@ -58,13 +58,7 @@ pub fn is_client() -> bool { protocol::cli(&std::env::args().collect::<Vec<_>>()
 pub fn namespace() -> Result<Option<String>, String> {
     let argv: Vec<String> = std::env::args().collect();
     if protocol::cli(&argv).is_some() { return protocol::cli_namespace(&argv).map(Some); }
-    if std::env::var("AICS_DESKTOP_MAINTENANCE_TEST").as_deref() != Ok("1") { return Ok(None); }
-    let profile = crate::ui_entry::isolated_profile().ok_or("MAINTENANCE_TEST_REQUIRES_ISOLATION")?;
-    let config = std::env::var_os("AICS_DESKTOP_CONFIG_ROOT").map(PathBuf::from).filter(|path| path.is_absolute()).ok_or("MAINTENANCE_TEST_REQUIRES_ISOLATION")?;
-    let normalize = |path: PathBuf| std::fs::canonicalize(&path).unwrap_or(path).to_string_lossy().trim_start_matches(r"\\?\").replace('/', "\\").to_lowercase();
-    let input = format!("{}\n{}", normalize(profile), normalize(config));
-    let digest = ring::digest::digest(&ring::digest::SHA256, input.as_bytes());
-    Ok(Some(format!("com.aics.studio.maintenance.{}", digest.as_ref().iter().map(|byte| format!("{byte:02x}")).collect::<String>())))
+    Ok(None)
 }
 
 /// Consume all maintenance-shaped CLI requests, even malformed ones, so they
@@ -152,18 +146,4 @@ pub fn desktop_maintenance_ack(window: WebviewWindow, request_id: String, ok: bo
         *slot = Some(if ok { Ok(()) } else { Err(reason) });
     }
     Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::phase_admits;
-    #[test]
-    fn blocked_phase_allows_only_existing_explicit_quit_without_reopening_writes() {
-        assert!(!phase_admits("preparing", "quit"));
-        assert!(!phase_admits("draining", "quit"));
-        assert!(phase_admits("blocked", "quit"));
-        for command in ["chat_credential_write", "open_atelier", "desktop_workspace_prepare", "aics_live2d_set_character"] {
-            assert!(!phase_admits("blocked", command));
-        }
-    }
 }

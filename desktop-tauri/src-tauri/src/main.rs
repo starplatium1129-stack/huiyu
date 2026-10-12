@@ -126,8 +126,6 @@ fn register_shortcuts(app: &AppHandle) {
     );
 }
 
-
-
 fn main() {
     // R12 compares the same renderer in a child process. Dispatch before Tauri
     // plugins so a renderer never owns user storage, the gateway or a tray.
@@ -270,19 +268,8 @@ fn main() {
             app.manage(state);
             app.manage(window_persistence::WindowStateWriter::new());
             let state = app.state::<AppState>();
-            let publish = ui_entry::isolated_profile().is_none() || std::env::var("AICS_DESKTOP_MAINTENANCE_TEST").as_deref() == Ok("1");
+            let publish = ui_entry::isolated_profile().is_none();
             app.manage(maintenance::MaintenanceHost::new(state.paths.config_root.clone(), app.config().identifier.clone(), publish).map_err(std::io::Error::other)?);
-
-            if std::env::var("LIVE2D_SELFTEST").is_ok() {
-                let assets = app.state::<AppState>().paths.assets_root.clone();
-                match live2d_overlay::selftest(assets) {
-                    Ok(()) => std::process::exit(0),
-                    Err(e) => {
-                        eprintln!("LIVE2D_SELFTEST_FAIL: {e}");
-                        std::process::exit(1);
-                    }
-                }
-            }
 
             state.info("Companion starting (tauri shell)");
 

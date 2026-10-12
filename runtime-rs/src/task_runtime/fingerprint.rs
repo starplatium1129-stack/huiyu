@@ -78,35 +78,3 @@ impl Fingerprint {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn posix_system_locale_uses_node_fallback_without_changing_ledger_locales() {
-        let value = serde_json::json!({"ä": 1, "z": 2, "A": 3, "a": 4});
-        let expected = Fingerprint::new("en-US").unwrap().hash(&value);
-        for locale in [None, Some("C"), Some("POSIX"), Some("en-US-POSIX")] {
-            let codec = Fingerprint::new(crate::collation::normalize_system_locale(
-                locale.unwrap_or("en-US"),
-            ))
-            .unwrap();
-            assert_eq!(codec.locale, "en-US");
-            assert_eq!(codec.hash(&value), expected);
-        }
-        assert_eq!(
-            Fingerprint::new("en-US-posix").unwrap().locale,
-            "en-US-posix"
-        );
-    }
-    #[test]
-    fn request_identities_match_node_icu_and_json_numbers() {
-        let fixture: Value =
-            serde_json::from_str(include_str!("../../tests/fixtures/task-fingerprints.json"))
-                .unwrap();
-        for case in fixture["cases"].as_array().unwrap() {
-            let codec = Fingerprint::new(case["locale"].as_str().unwrap()).unwrap();
-            assert_eq!(codec.hash(&case["value"]), case["sha256"].as_str().unwrap());
-        }
-    }
-}

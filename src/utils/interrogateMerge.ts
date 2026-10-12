@@ -15,7 +15,7 @@ import {
  * 反推词条合并器（2026-08-29，随机灵感/反推优化）。
  *
  * 职责：反推（interrogate）词条写入 manualTags 前的「不重复叠加」与
- * 「人物身份冲突」「互斥组冲突」消解。纯函数，无 Vue/IO 依赖，可被 node:test 单测。
+ * 「人物身份冲突」「互斥组冲突」消解。纯函数，无 Vue/IO 依赖。
  *
  * 三重去重：manualTags（已有手动词条）∪ 身份行（charPrompt / identityTokens
  * + exactTokens + outfit tokens）∪ 场景行（scene.prompt / blueprint.promptTokens）。

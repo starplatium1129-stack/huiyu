@@ -212,17 +212,5 @@ impl GroupReads {
             notified.await;
         }
     }
-    #[cfg(test)]
-    pub fn retained_bytes(&self) -> usize {
-        BUDGET as usize - self.memory.available_permits()
-    }
-    #[cfg(test)]
-    pub fn listeners(&self) -> usize {
-        self.pending
-            .lock()
-            .unwrap()
-            .values()
-            .map(|f| f.listeners.load(Ordering::Acquire))
-            .sum()
-    }
+
 }

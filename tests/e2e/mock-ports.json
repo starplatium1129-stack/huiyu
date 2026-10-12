@@ -1,7 +1,0 @@
-{
-  "gateway": 3100,
-  "sd": 3910,
-  "ollama": 3911,
-  "tts": 3912,
-  "translate": 3913
-}

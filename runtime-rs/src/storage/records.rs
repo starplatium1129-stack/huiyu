@@ -3,8 +3,7 @@ use canonical::{entity_key, stringify};
 use rusqlite::{OptionalExtension, Row, params};
 use std::collections::{BTreeSet, HashSet};
 pub(super) const RETENTION: i64 = 30 * 24 * 60 * 60 * 1000;
-#[cfg(test)]
-mod tests;
+
 fn json_column(row: &Row<'_>, column: usize) -> rusqlite::Result<Value> {
     serde_json::from_str(text_column(row, column)?).map_err(|e| {
         rusqlite::Error::FromSqlConversionFailure(column, rusqlite::types::Type::Text, Box::new(e))

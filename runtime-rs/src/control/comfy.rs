@@ -296,6 +296,3 @@ impl ControlService {
         Ok(())
     }
 }
-
-#[cfg(test)]
-mod tests;

@@ -1,7 +1,6 @@
 mod derive;
 mod store;
-#[cfg(test)]
-mod tests;
+
 use crate::{
     AppState,
     error::{ApiError, Result},

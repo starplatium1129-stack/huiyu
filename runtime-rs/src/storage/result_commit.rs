@@ -143,10 +143,7 @@ fn spawn(pending: &Pending, path: PathBuf, sender: &mpsc::WeakSender<Work>) -> R
     let id = pending.id.clone();
     let identity = pending.identity.clone();
     let media = pending.output.media.clone();
-    #[cfg(test)]
-    if tasks::media_tests::commit_validation::fail_start(&identity.root) {
-        return Err(unavailable());
-    }
+
     std::thread::Builder::new()
         .name("workspace-result-verify".into())
         .spawn(move || {

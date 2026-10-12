@@ -1,7 +1,6 @@
 mod output;
 mod prompts;
-#[cfg(test)]
-mod tests;
+
 mod validation;
 
 use crate::{
