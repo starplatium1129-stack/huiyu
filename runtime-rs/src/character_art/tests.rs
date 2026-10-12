@@ -311,6 +311,18 @@ fn rejects_oversize_dimensions_and_cancelled_processing() {
         STANDARD.encode(out.into_inner())
     );
     assert!(derive::build("nene", &data, &CancellationToken::new(), Instant::now()).is_err());
+    // Tiny containers must not allocate a declared-but-absent EXIF payload.
+    let mut webp = b"RIFF".to_vec();
+    webp.extend_from_slice(&44u32.to_le_bytes());
+    webp.extend_from_slice(
+        b"WEBPVP8X\x0a\0\0\0\x08\0\0\0\0\0\0\0\0\0VP8L\x05\0\0\0\x2f\0\0\0\0\0EXIF",
+    );
+    webp.extend_from_slice(&(1024 * 1024u32).to_le_bytes());
+    let data = format!("data:image/webp;base64,{}", STANDARD.encode(webp));
+    let error = derive::build("nene", &data, &CancellationToken::new(), Instant::now())
+        .err()
+        .unwrap();
+    assert_eq!(error.message, "WebP 数据块超出文件边界");
     let (_dir, config, data) = fixture();
     let cancel = CancellationToken::new();
     cancel.cancel();
@@ -404,6 +416,27 @@ fn jpeg_orientation_and_particle_grid_minimum_are_normalized() {
     assert_eq!((art.width, art.height), (24, 12));
     let portrait = image::load_from_memory(&art.portrait).unwrap();
     assert_eq!((portrait.width(), portrait.height()), (24, 12));
+    // Preserve valid WebP EXIF, unknown odd-sized chunks and trailing metadata.
+    let mut webp = Cursor::new(Vec::new());
+    image::DynamicImage::ImageRgb8(image::RgbImage::from_pixel(
+        12,
+        24,
+        image::Rgb([180, 70, 20]),
+    ))
+    .write_to(&mut webp, image::ImageFormat::WebP)
+    .unwrap();
+    let mut payload = b"WEBPVP8X\x0a\0\0\0\x08\0\0\0\x0b\0\0\x17\0\0".to_vec();
+    payload.extend_from_slice(&webp.into_inner()[12..]);
+    payload.extend_from_slice(b"JUNK\x01\0\0\0x\0EXIF");
+    payload.extend_from_slice(&((exif.len() - 6) as u32).to_le_bytes());
+    payload.extend_from_slice(&exif[6..]);
+    let mut webp = b"RIFF".to_vec();
+    webp.extend_from_slice(&(payload.len() as u32).to_le_bytes());
+    webp.extend_from_slice(&payload);
+    webp.extend_from_slice(b"outside RIFF");
+    let data = format!("data:image/webp;base64,{}", STANDARD.encode(&webp));
+    let art = derive::build("nene", &data, &CancellationToken::new(), Instant::now()).unwrap();
+    assert_eq!((art.width, art.height), (24, 12));
     for (width, height) in [(4, 4), (5, 2000)] {
         let mut bytes = Cursor::new(Vec::new());
         image::DynamicImage::new_rgba8(width, height)
