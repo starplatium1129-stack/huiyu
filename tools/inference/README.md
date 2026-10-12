@@ -411,9 +411,19 @@ The oriented RGB source uses the same contain/Lanczos/center-black geometry as m
 
 The CPU cache retains one model, one mean-logit map, at most 64 KiB conditioning and one owned selected-layer snapshot capped at 16 MiB. Complete model asset bytes are hashed every job and rechecked after loading. Image mode/size/pixel SHA-256 plus execution revision govern vision reuse across prompt edits; ordered stripped phrases additionally govern logits reuse. Threshold/growth/feather are applied every job. Only successful masks update snapshots; failures and worker retirement clear them. Oversized activations still generate masks but are not retained. These are retained tensor payload limits, not a total-process RAM guarantee.
 
-Per-phrase 352x352 FP32 logits are averaged with duplicate phrases preserved, then Torch bilinear resized. AP postprocessing applies three 5x5 reflect box smooths, sigmoid >= threshold, square max-pool growth, then three 25x25 reflect box blurs. Uniform boxes use separable horizontal/vertical convolutions to reduce full-image work; the mathematical filter matches, FP32 accumulation may differ. Float masks go directly to sampling/compositing without uint8 or a second growth pass. Retain MASK_PROCESSING_LICENSE.txt; real boundary quality and CPU cost are unverified.
+Per-phrase 352x352 FP32 logits are averaged with duplicate phrases preserved, then Torch bilinear resized. AP postprocessing applies three 5x5 reflect box smooths, sigmoid >= threshold, square max-pool growth, then three 25x25 reflect box blurs. Uniform boxes use separable horizontal/vertical convolutions to reduce full-image work; the mathematical filter matches, FP32 accumulation may differ. Float masks go directly to sampling/compositing without uint8 or a second growth pass. Retain MASK_PROCESSING_LICENSE.txt; real boundary quality and complete model-mask CPU cost are unverified.
 
-Earlier evidence includes CPU CLIPSeg segmentation and a GPU automatic-mask Remacri 2x result, tied to their recorded older source. It does not validate `clipseg-single-image-vision-v1`: changing the vision batch shape can change FP32 results near threshold boundaries. This revision has source/API and compilation review only, with no tests or model calls. Actual masks, CPU cost and cache RAM need device acceptance. Raw historical evidence remains under ignored `runtime/`.
+Square growth selects maxima along the horizontal and vertical axes separately,
+with the same stride and implicit negative-infinity boundary. Its input is the
+thresholded FP32 0/1 mask; both passes select the same Cartesian window maximum
+without floating-point sums. Pool indices and gradients are not consumed. The
+existing smooth/feather convolutions and manual-mask diamond growth are unchanged.
+This CPU selector change retains the automatic-mask execution revision and cache
+scope. Fixed Torch 2.8.0+cpu normal postprocessing observations, including the full
+helper, are recorded in the existing backend HTML report; they do not validate
+real CLIPSeg outputs, Windows/Python 3.11, RSS, model inference or GPU speed.
+
+Earlier evidence includes CPU CLIPSeg segmentation and a GPU automatic-mask Remacri 2x result, tied to their recorded older source. It does not validate `clipseg-single-image-vision-v1`: changing the vision batch shape can change FP32 results near threshold boundaries. This revision has source/API and compilation review plus neutral-logit CPU postprocessing timing observations, with no tests or model calls. Actual masks, complete model-mask CPU cost and cache RAM need device acceptance. Raw historical evidence remains under ignored `runtime/`.
 
 
 ## Experimental calibrated TeaCache

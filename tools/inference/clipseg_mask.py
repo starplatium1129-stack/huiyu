@@ -117,7 +117,9 @@ def logits_mask(logits, size, threshold, grow=8):
         return values
     mask = (blur(resized, 2).sigmoid() >= threshold).float()
     if grow:
-        mask = functional.max_pool2d(mask, 2 * grow + 1, stride=1, padding=grow)
+        width = 2 * grow + 1
+        mask = functional.max_pool2d(mask, (1, width), stride=1, padding=(0, grow))
+        mask = functional.max_pool2d(mask, (width, 1), stride=1, padding=(grow, 0))
     mask = blur(mask, 12).clamp(0, 1)[0, 0].numpy()
     if not np.any(mask > 0):
         raise ValueError("Automatic mask has no editable pixels; adjust maskPrompt/threshold or use a manual mask")

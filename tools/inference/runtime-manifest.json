@@ -140,7 +140,7 @@
         0.95
       ],
       "thresholdDefault": 0.45,
-      "postprocess": "ordered mean phrase logits with repeats; Torch bilinear; 3x 5x5 reflect box smooth; sigmoid threshold; square growth; 3x 25x25 reflect box feather; float masks preserved through latent trilinear and hires nearest-exact/composite",
+      "postprocess": "ordered mean phrase logits with repeats; Torch bilinear; 3x 5x5 reflect box smooth; sigmoid threshold to FP32 0/1; exact square growth by horizontal then vertical max-pool with the same stride/negative-infinity boundary; 3x 25x25 reflect box feather; float masks preserved through latent trilinear and hires nearest-exact/composite",
       "files": [
         "config.json",
         "preprocessor_config.json",
@@ -298,7 +298,7 @@
     "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/guiders/classifier_free_guidance.py"
   ],
   "validation": {
-    "currentRevision": "2026-10-13: anima-workflow-effects-v3 plus automatic-mask clipseg-single-image-vision-v1 (single query-image encode, bounded selected-layer reuse) and native-only cosmos-v3-native-no-kv-repeat-v1 (skip unit K/V repeats). Source/API and compilation review only, no tests/model calls. Earlier masks, image/timing/Tea acceptance do not validate these changed execution paths; Sage revisions are unchanged by the native processor installation",
+    "currentRevision": "2026-10-13: anima-workflow-effects-v3 plus automatic-mask clipseg-single-image-vision-v1 (single query-image encode, bounded selected-layer reuse) and native-only cosmos-v3-native-no-kv-repeat-v1 (skip unit K/V repeats). Source/API and compilation review; binary square growth also has neutral-logit CPU postprocessing timing, with no tests/model calls. Earlier masks, image/timing/Tea acceptance do not validate these changed execution paths; Sage revisions are unchanged by the native processor installation",
     "realGeneration": "2026-10-11: six registered Anima models generated 11 GPU samples, plus one Endfield/Laevatain public-API sample. Nene/Natsume normal/RCAS LoRA+Tea: 12 matched warm API jobs per backend on RTX 4070 Ti SUPER, native median 4.419s vs Comfy+Tea 5.686s, all 12 pairs faster. Latent 2x Nene: two warm API jobs per backend, native 26.610s vs Comfy 23.671s; cold loading also remains slower. Protected-source restore removed 3.28 GiB CPU snapshots and preserved four diagnostic PNG hashes. Not mathematical or pixel parity. See docs/audits/2026-10-11/native-anima-replacement.html",
     "environmentInstall": "2026-10-11: all 11 exact direct pins resolved, installed offline in dedicated Windows CPython 3.11 venv, and imports/CUDA diagnosis passed; torch and torchvision use cu128 wheels. No inference-time installation or ComfyUI environment reuse",
     "validateCommand": "python worker.py --validate /absolute/path/to/anima-diffusers",
