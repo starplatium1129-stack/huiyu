@@ -46,7 +46,7 @@ async fn work(
     // JSON encoding and dropping the large Value tree are CPU work too. Keep
     // them off Tokio request workers together with the catalog query.
     tokio::task::spawn_blocking(move || {
-        Ok(Json(action(&mut Catalog::open(options)?)?).into_response())
+        Ok(Json(action(&mut Catalog::open_existing(options)?)?).into_response())
     })
     .await
     .map_err(|_| ApiError::new(503, "CATALOG_UNAVAILABLE", "内容库暂不可用"))?

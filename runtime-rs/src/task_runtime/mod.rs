@@ -46,6 +46,7 @@ struct JobBinding {
     dispatching: bool,
     watching: bool,
     watch_requested: bool,
+    changed: Arc<tokio::sync::Notify>,
     operation: Arc<tokio::sync::Mutex<RecoveryState>>,
 }
 #[derive(Default)]
@@ -60,6 +61,7 @@ impl JobBinding {
             dispatching: false,
             watching: false,
             watch_requested: false,
+            changed: Arc::new(tokio::sync::Notify::new()),
             operation: Arc::new(tokio::sync::Mutex::new(RecoveryState::default())),
         }
     }
@@ -276,6 +278,14 @@ impl TaskRuntime {
                 let Some(task): Option<TaskRecord> = serde_json::from_value(task)? else {
                     return Ok(Value::Null);
                 };
+                if let Some(binding) = runtime
+                    .jobs
+                    .lock()
+                    .unwrap()
+                    .get(&identity(&storage, &task.task_id))
+                {
+                    binding.changed.notify_one();
+                }
                 if task.upstream_settled {
                     return Ok(serde_json::to_value(task)?);
                 }

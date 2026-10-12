@@ -12,7 +12,7 @@ pub(super) struct Hooks {
 impl ExecutionHooks for Hooks {
     fn observation_changed(&self) {
         if let Some(runtime) = self.runtime.upgrade() {
-            runtime.monitor(
+            runtime.monitor_changed(
                 self.storage.clone(),
                 self.principal.clone(),
                 self.id.clone(),
@@ -23,14 +23,29 @@ impl ExecutionHooks for Hooks {
         Box::pin(async move {
             let job = value["gatewayJobId"].as_str().map(str::to_owned);
             let input = value["effectiveInput"].as_object().cloned();
+            let revision = TaskRuntime::get(&self.storage, &self.principal, &self.id)
+                .await?
+                .revision;
             let change = TaskPatch {
                 checkpoint: Some(Some(value)),
                 input,
                 ..Default::default()
             };
-            patch(&self.storage, &self.principal, &self.id, change).await?;
-            if let (Some(runtime), Some(job)) = (self.runtime.upgrade(), job) {
-                runtime.register_job(&self.storage, &self.id, job);
+            let task = patch_at(&self.storage, &self.principal, &self.id, revision, change).await?;
+            if let Some(runtime) = self.runtime.upgrade() {
+                if let Some(job) = job {
+                    runtime.register_job(&self.storage, &self.id, job);
+                }
+                // Recovery can save the same checkpoint on every probe. A no-op
+                // CAS retains its revision; a concurrent durable change also
+                // merits observation rather than losing its signal on a retry.
+                if task.revision != revision {
+                    runtime.monitor_changed(
+                        self.storage.clone(),
+                        self.principal.clone(),
+                        self.id.clone(),
+                    );
+                }
             }
             Ok(())
         })
@@ -60,7 +75,7 @@ impl ExecutionHooks for Hooks {
                 },
             )
             .await?;
-            runtime.monitor(
+            runtime.monitor_changed(
                 self.storage.clone(),
                 self.principal.clone(),
                 self.id.clone(),
@@ -84,7 +99,7 @@ impl ExecutionHooks for Hooks {
             )
             .await?;
             if let Some(runtime) = self.runtime.upgrade() {
-                runtime.monitor(
+                runtime.monitor_changed(
                     self.storage.clone(),
                     self.principal.clone(),
                     self.id.clone(),

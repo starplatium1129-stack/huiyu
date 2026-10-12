@@ -124,10 +124,7 @@ pub(super) fn run(
                 if reply.is_closed() {
                     continue;
                 }
-                if matches!(
-                    command["kind"].as_str(),
-                    Some("task.result.commit" | "task.input.commit")
-                ) {
+                if result_commit::is_commit(&command) {
                     result_commit::start(
                         &mut context,
                         &command,
@@ -183,7 +180,6 @@ pub(super) fn run(
                                         result,
                                         reply,
                                     ));
-
                                 });
                             if thread.is_ok() {
                                 collecting = Some(cancellation);
@@ -218,7 +214,6 @@ pub(super) fn run(
                             let thread = std::thread::Builder::new()
                                 .name("workspace-copy".into())
                                 .spawn(move || {
-
                                     let result = std::panic::catch_unwind(
                                         std::panic::AssertUnwindSafe(|| job.run()),
                                     )
@@ -234,7 +229,6 @@ pub(super) fn run(
                                         result,
                                         reply,
                                     ));
-
                                 });
                             copying = thread.is_ok();
                             if let Err(error) = thread {
@@ -289,7 +283,6 @@ pub(super) fn run(
                     break;
                 }
             }
-
         }
     }
     // Refuse admission before acknowledging Close. Each filesystem worker keeps

@@ -349,6 +349,7 @@ pub(super) fn open(
         owner,
         cancel: Arc::new(AtomicBool::new(false)),
         result_commit: None,
+        media_verified: None,
     })
 }
 fn normalize_root(root: PathBuf) -> Result<PathBuf> {

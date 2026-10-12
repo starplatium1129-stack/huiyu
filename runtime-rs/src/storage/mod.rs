@@ -113,7 +113,6 @@ enum Work {
         oneshot::Sender<Result<Value>>,
     ),
     Close(oneshot::Sender<Result<()>>),
-
 }
 struct CancelOnDrop(Arc<AtomicBool>);
 impl Drop for CancelOnDrop {
@@ -130,6 +129,7 @@ pub(super) struct Context {
     owner: schema::Owner,
     cancel: Arc<AtomicBool>,
     result_commit: Option<result_commit::Pending>,
+    media_verified: Option<result_commit::Verified>,
 }
 impl Context {
     fn execute(&mut self, command: &Value, principal: &str) -> Result<Value> {
@@ -241,9 +241,8 @@ impl Context {
             "organizeArtworks" | "undoArtworkOrganization" => {
                 organization::execute(self, principal, command)
             }
-            "prepareSave" | "uploadChunk" | "commitSave" | "abortSave" | "prepareMedia"
-            | "uploadMediaChunk" | "commitMedia" | "releaseMedia" | "appendArtwork"
-            | "countMedia" => saves::execute(self, principal, command),
+            "prepareSave" | "uploadChunk" | "abortSave" | "prepareMedia" | "uploadMediaChunk"
+            | "releaseMedia" | "countMedia" => saves::execute(self, principal, command),
             kind if kind.starts_with("profile.") => profile::execute(self, principal, command),
             _ => Err(ApiError::new(
                 501,

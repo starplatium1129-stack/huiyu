@@ -78,7 +78,7 @@ impl ProjectionCache {
         loop {
             // Always reopen the authority: a warm cache must never hide a missing or
             // invalid database. File identity also invalidates a restored/replaced DB.
-            let catalog = Catalog::open(options.clone())?;
+            let catalog = Catalog::open_existing(options.clone())?;
             let transaction = catalog.connection.unchecked_transaction()?;
             let identity = {
                 let mut cache = self.encoded.lock().unwrap();

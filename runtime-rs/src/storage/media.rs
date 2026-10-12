@@ -205,20 +205,6 @@ pub(super) fn verify_checked(
     Ok(())
 }
 impl Context {
-    // Mutation paths still verify synchronously before publishing references.
-    // Read-only callers use Storage::media and its bounded verifier instead.
-    pub(super) fn resolve_media(&mut self, alias: &str) -> Result<Media> {
-        let source = self.lookup_media(alias)?;
-        object_path(&self.root, &source.sha256)?;
-        verify(
-            self,
-            &source.path,
-            &source.sha256,
-            source.total_bytes,
-            &source.mime,
-        )?;
-        Ok(source)
-    }
     pub(super) fn lookup_media(&mut self, alias: &str) -> Result<Media> {
         self.check_cancel()?;
         let (hash,bytes,mime)=self.db.prepare_cached("SELECT m.hash,m.bytes,m.mime FROM media_aliases a JOIN media_objects m ON m.hash=a.hash WHERE a.alias=?")?.query_row([alias],|r|Ok((r.get::<_,String>(0)?,r.get::<_,i64>(1)?,r.get::<_,String>(2)?))).optional()?.ok_or_else(||ApiError::new(404,"NOT_FOUND","Media does not exist"))?;

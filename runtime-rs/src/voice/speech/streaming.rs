@@ -22,26 +22,8 @@ impl Speech {
             ));
         }
         let key = self.cache_key(&value);
-        let cached = self
-            .cache
-            .lock()
-            .unwrap()
-            .entries
-            .iter()
-            .find(|(id, _)| *id == key)
-            .map(|(_, bytes)| bytes.clone());
-        if let Some(wave) = cached {
-            return Ok((
-                [
-                    ("content-type", "audio/pcm"),
-                    ("x-audio-sample-rate", "48000"),
-                    ("x-audio-channels", "1"),
-                    ("x-audio-format", "pcm_s16le"),
-                    ("x-tts-cache", "hit"),
-                ],
-                wave.slice(44..),
-            )
-                .into_response());
+        if let Some(response) = self.cached_pcm(&key) {
+            return Ok(response);
         }
         value.payload["streaming_mode"] = true.into();
         value.payload["media_type"] = "raw".into();
@@ -52,7 +34,25 @@ impl Speech {
         value: Validated,
         cache_key: Option<String>,
     ) -> Result<Response> {
-        let (response, permit, deadline) = self.upstream(&value, self.queue.reserve()?).await?;
+        let permit = self
+            .queue
+            .enter(self.queue.reserve()?, &self.cancel)
+            .await?;
+        // A queued duplicate can replay audio completed while it waited, before
+        // switching voice weights or requesting another synthesis.
+        if let Some(key) = &cache_key
+            && let Some(mut response) = self.cached_pcm(key)
+        {
+            response.headers_mut().insert(
+                "x-voice-queue-wait",
+                permit.wait_ms.to_string().parse().unwrap(),
+            );
+            response
+                .headers_mut()
+                .insert("x-accel-buffering", HeaderValue::from_static("no"));
+            return Ok(response);
+        }
+        let (response, permit, deadline) = self.upstream(&value, permit).await?;
         let mime = response
             .headers()
             .get("content-type")
@@ -181,5 +181,28 @@ impl Speech {
             .headers_mut()
             .insert("x-accel-buffering", HeaderValue::from_static("no"));
         Ok(response)
+    }
+    fn cached_pcm(&self, key: &str) -> Option<Response> {
+        let wave = self
+            .cache
+            .lock()
+            .unwrap()
+            .entries
+            .iter()
+            .find(|(id, _)| id == key)
+            .map(|(_, bytes)| bytes.clone())?;
+        Some(
+            (
+                [
+                    ("content-type", "audio/pcm"),
+                    ("x-audio-sample-rate", "48000"),
+                    ("x-audio-channels", "1"),
+                    ("x-audio-format", "pcm_s16le"),
+                    ("x-tts-cache", "hit"),
+                ],
+                wave.slice(44..),
+            )
+                .into_response(),
+        )
     }
 }

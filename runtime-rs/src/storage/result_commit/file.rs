@@ -6,8 +6,17 @@ pub(in crate::storage) struct Verified {
     file: File,
     native: file_identity::Identity,
     version: media::FileIdentity,
+    bytes: u64,
+    hash: String,
+    mime: Option<String>,
 }
 impl Verified {
+    pub(super) fn matches(&self, path: &Path, media: &Value) -> bool {
+        self.path == path
+            && Some(self.bytes) == media["bytes"].as_u64()
+            && Some(self.hash.as_str()) == media["sha256"].as_str()
+            && self.mime.as_deref() == media["mime"].as_str()
+    }
     pub(super) fn check(&self, root: &Path) -> Result<()> {
         let relative = self
             .path
@@ -30,6 +39,9 @@ impl Verified {
 }
 
 pub(super) fn source(pending: &Pending) -> Result<PathBuf> {
+    if let Publication::Artwork(output) = &pending.output {
+        return output.source(&pending.identity.root);
+    }
     let path = media::object_path(&pending.identity.root, pending.hash())?;
     if path.try_exists()? {
         return Ok(path);
@@ -37,7 +49,7 @@ pub(super) fn source(pending: &Pending) -> Result<PathBuf> {
     media::staging_path(
         &pending.identity.root,
         pending.key(),
-        string(&pending.output.media, "alias")?,
+        string(pending.output.media(), "alias")?,
     )
 }
 
@@ -67,6 +79,9 @@ pub(super) fn verify(identity: &Identity, path: &Path, media: &Value) -> Result<
         file,
         native,
         version,
+        bytes,
+        hash,
+        mime,
     };
     verified.check(&identity.root)?;
     identity.cancelled()?;

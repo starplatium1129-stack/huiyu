@@ -208,9 +208,8 @@ impl Speech {
     async fn upstream(
         &self,
         value: &Validated,
-        reservation: Reservation,
+        permit: Permit,
     ) -> Result<(reqwest::Response, Permit, tokio::time::Instant)> {
-        let permit = self.queue.enter(reservation, &self.cancel).await?;
         self.activate(value).await?;
         let request = self
             .transport
@@ -320,7 +319,8 @@ impl Speech {
         ))
     }
     async fn collect(&self, value: Validated, reservation: Reservation) -> Result<Bytes> {
-        let (response, _permit, deadline) = self.upstream(&value, reservation).await?;
+        let permit = self.queue.enter(reservation, &self.cancel).await?;
+        let (response, _permit, deadline) = self.upstream(&value, permit).await?;
         let mut stream = response.bytes_stream();
         let mut bytes = Vec::new();
         loop {
