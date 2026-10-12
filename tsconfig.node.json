@@ -27,9 +27,6 @@
   "include": [
     "scripts/**/*.ts",
     "scripts/**/*.mts",
-    "poc/**/*.mts",
-    "poc/**/*.cts",
-    "poc/**/*.ts",
     "eslint.config.mts",
     "types/**/*.d.ts"
   ],

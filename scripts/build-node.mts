@@ -136,7 +136,7 @@ function sourceForOutput(relative: string): string {
 function ownedOutput(project: ProjectName, relative: string): boolean {
   if (!canonicalRelative(relative) || !/\.(?:[cm]?js|d\.ts)$/.test(relative)) return false;
   if (project === 'browser') return /^(?:tools\/|assets\/theme-bootstrap\.|docs\/guides\/prompts\/)/.test(relative);
-  return /^(?:scripts\/|poc\/|eslint\.config\.)/.test(relative)
+  return /^(?:scripts\/|eslint\.config\.)/.test(relative)
     && !relative.startsWith('scripts/archive/') && !relative.includes('/vendor/');
 }
 

@@ -6,25 +6,25 @@
 
 以下根据试点实际 import 核对，区分运行时与纯类型引用；不是全仓循环依赖或性能结论。
 
-| 公开入口 | 内部依赖 / 所有权 | 对应回归 |
-| --- | --- | --- |
-| promptHistoryStore | 经 artworkRepository 读取 ArtworkRecord[]、项目及软删/恢复；平台适配选择 Web 或桌面 workspace；持有读取代际，不声明旧作品具有完整配方 | promptHistoryStore.spec、artworkRepository.test、desktop/artworkRepository.spec |
-| promptBuilderStore | 保留创作状态和兼容接口；草稿、筛选和作品持久化分别经 usePromptDraft / usePromptSceneFilters / usePromptArtworkHistory；后者复用 historyStore 同一 ref | promptBuilderStore.spec、usePromptDraft.spec、promptBuilderHistory.spec |
-| types/promptHistory | 新生成记录、角色和工作台选择的纯类型；store 保留兼容转导出 | typecheck:app / typecheck:tests |
-| historyRecipe → usePromptHistoryApply | 只读校验投影，不写回数据库；无效引擎拒绝覆盖草稿，旧缺字段保留缺失并显示检查说明；合法零值与原 ID 保留 | historyRecipe.spec、usePromptHistoryApply.spec、usePromptDeepLink.spec |
-| generationApi → generationResponse → generationTask | 统一客户端负责传输，解码器检查业务字段，generationTask 唯一映射 UI 阶段；非空未知阶段保持 unknown，未知进度保持 null | generationApi.spec、generationTask.spec、test-api-client |
+| 公开入口 | 内部依赖 / 所有权 |
+| --- | --- |
+| promptHistoryStore | 经 artworkRepository 读取 ArtworkRecord[]、项目及软删/恢复；平台适配选择 Web 或桌面 workspace；持有读取代际，不声明旧作品具有完整配方 |
+| promptBuilderStore | 保留创作状态和兼容接口；草稿、筛选和作品持久化分别经 usePromptDraft / usePromptSceneFilters / usePromptArtworkHistory；后者复用 historyStore 同一 ref |
+| types/promptHistory | 新生成记录、角色和工作台选择的纯类型；store 保留兼容转导出 |
+| historyRecipe → usePromptHistoryApply | 只读校验投影，不写回数据库；无效引擎拒绝覆盖草稿，旧缺字段保留缺失并显示检查说明；合法零值与原 ID 保留 |
+| generationApi → generationResponse → generationTask | 统一客户端负责传输，解码器检查业务字段，generationTask 唯一映射 UI 阶段；非空未知阶段保持 unknown，未知进度保持 null |
 
-前端纯类型可按既有规则使用现存转导出入口；runtime 不得反向依赖 `src/`，包括纯类型和间接边。应用用例通过端口与平台适配连接，不能从纯计算层引入 Store 或具体持久化实现；当前规则见 `scripts/lib/refactor-boundaries.ts`，早期试点决策不放宽该护栏。
+前端纯类型可按既有规则使用现存转导出入口；runtime 不得反向依赖 `src/`，包括纯类型和间接边。应用用例通过端口与平台适配连接，不能从纯计算层引入 Store 或具体持久化实现。
 
-已迁出的 `types/promptHistory`、`types/artwork`、`types/generation`、`types/anima` 和 `utils/resultContext` 有更窄的保护：它们的可达依赖连类型边也不再引用 Store/展示层/Vue。`check:domain-types` 检查实际路径与间接导入，复用 `source-imports.ts` 的 AST 读取能力；原 ESLint 试点及 PhotoSwipe/存储规则继续保留。其余兼容入口按既有规则逐步迁移，不扩大为全仓类型禁令。检查不解析完整运行时依赖图，unknown 不能视为通过。
+`types/promptHistory`、`types/artwork`、`types/generation`、`types/anima` 和 `utils/resultContext` 的可达依赖连类型边也不引用 Store、展示层或 Vue。按源码调用关系审查；已无调用方的独立扫描器和豁免清单已移除。
 
-ESLint 的 huiyu/module-boundaries 对以下方向执行检查：types 与 historyRecipe/generationTask/promptPolicy 不得运行时加载页面、状态或浏览器服务；storage 不得反向加载页面/组件/store；PhotoSwipe 依赖（含类型）只能从 PhotoSwipeStage 引用。规则解析普通导入、再导出、动态 import、require 和 TS import-equals，统一别名与相对路径；试点底层的非字面量加载拒绝检查绕过。test-module-boundaries 用允许/禁止夹具验证。它不检查任意 eval、运行时加载器或未纳入试点的全仓依赖图。
+现行 [ESLint 规则](../../../scripts/lib/module-boundaries.mts) 保留：types 与 historyRecipe/generationTask/promptPolicy 不得运行时加载页面、状态或浏览器服务；storage 不反向加载页面、组件或 Store；PhotoSwipe 依赖（含类型）只从 PhotoSwipeStage 引用。规则解析普通导入、再导出、动态 import、require 和 TS import-equals；不声称覆盖全仓间接依赖。仓库禁止编写和运行测试，见 [AGENTS.md](../../../AGENTS.md)。
 
 ## 资源所有权
 
-生成作品保存由 `src/application/artwork/saveGeneratedArtwork.ts` 承担编排，`usePromptArtworkHistory` 注入图片、缩略图、测量、ID、暂存和 Repository 能力，成功后更新显示。`check:domain-types` 与重构护栏保护用例及其可达依赖，拒绝具体存储/API 与 Node 平台实现。保存输入在异步工作开始前复制；runtime 任务另在接收时保存输入与结果上下文，两者是各自独立的快照边界。写入应答丢失时按作品身份读回，无法确认提交则保留媒体并报告未知，不能误当回滚成功。当前任务与持久化边界见[工程契约](../../engineering-contracts.md#重构期间的任务与持久化边界)。
+生成作品保存由 `src/application/artwork/saveGeneratedArtwork.ts` 承担编排，`usePromptArtworkHistory` 注入图片、缩略图、测量、ID、暂存和 Repository 能力，成功后更新显示。用例及其可达依赖不直接绑定具体存储/API 或 Node 平台实现。保存输入在异步工作开始前复制；runtime 任务另在接收时保存输入与结果上下文，两者是各自独立的快照边界。写入应答丢失时按作品身份读回，无法确认提交则保留媒体并报告未知，不能误当回滚成功。当前任务与持久化边界见[工程契约](../../engineering-contracts.md#重构期间的任务与持久化边界)。
 
-WAI HTTP、参数校验和任务执行位于 `runtime-rs/src/generation/`；图片引擎、公共执行契约与存储保持单向依赖，边界检查见 `scripts/lib/rust-boundaries.ts`。旧 Node HTTP 路由与服务已退役，离线样张工具仅保留 `scripts/lib/generation/` 中实际使用的参数、目录与窄用途节点图。工作台不得直接导入持久化/传输实现，草稿与筛选适配不得反向加载 Store 或作品服务。这些前端约束继续由既有 ESLint 与依赖夹具保护，不声称覆盖全仓所有间接边。
+WAI HTTP、参数校验和任务执行位于 `runtime-rs/src/generation/`；图片引擎、公共执行契约与存储保持单向依赖。旧 Node HTTP 路由与服务已退役，离线样张工具仅保留 `scripts/lib/generation/` 中实际使用的参数、目录与窄用途节点图。工作台不得直接导入持久化/传输实现，草稿与筛选适配不得反向加载 Store 或作品服务；按源码审查，保留现行 ESLint 约束。
 
 | 资源 | 唯一拥有者 / 停止动作 | 保持的语义 |
 | --- | --- | --- |
