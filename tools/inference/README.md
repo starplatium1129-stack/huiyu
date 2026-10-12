@@ -356,17 +356,22 @@ require separately recorded device acceptance within the user's authorization.
 
 The host sends trusted maskImagePath alongside inputImagePath. Input and oriented mask dimensions must match. Both share contain/Lanczos/center-black resize; the workflow reads the resized RGB red channel, not alpha multiplied by luminance. Repeated five-neighbour maxima implement growMaskBy's tapered diamond. Empty masks fail before Anima loads.
 
-Manual preparation now selects R after the same RGB color conversion and resizes
-only that 8-bit band. Pinned Pillow 11.3.0 applies the same per-band Lanczos
-coefficients, rounding and clipping for RGB and L. The shared helper borrows
-already-normalized RGB pixels read-only and skips same-size intermediate copies;
-it still returns an independent new canvas with no inherited EXIF/info. Upstream
-EXIF normalization, non-RGB conversion, contain geometry, black padding, FP32
-division and downstream mask processing are retained. CPU stage observations
-with small and 16-megapixel decoded RGB inputs are recorded in the
-[backend report](../../docs/audits/2026-10-13/backend-hotpaths.html#cloud-image-preparation).
-They exclude decoding, Torch, model work and device acceptance; no image behavior
-tests were run. Manual v3/Tea identity is retained on the pinned source reasoning.
+Manual preparation resizes only the 8-bit band equivalent to RGB R. With
+straight RGBA and red-only masking, pinned Pillow 11.3.0's RGBA-to-RGB conversion
+only copies RGB and drops alpha, so the helper takes the same R directly and
+avoids a full RGB temporary. RGB is borrowed read-only; palette, grayscale,
+CMYK, premultiplied RGBa and other modes retain the original RGB conversion.
+Ordinary image resizing still converts non-RGB inputs. Pinned Pillow applies
+the same per-band Lanczos coefficients, rounding and clipping for RGB and L.
+The helper skips same-size intermediate copies and returns an independent new
+canvas without inherited EXIF/info. EXIF normalization, checks, contain geometry,
+black padding, FP32 division and downstream mask processing are retained.
+The [backend report](../../docs/audits/2026-10-13/backend-hotpaths.html) separately
+binds historical stage timings, complete actual CPU preparation and fresh-process
+high-water RSS observations to their source snapshots. Process maxRSS includes
+startup/imports and does not establish production residency, model or VRAM peaks.
+No behavior tests or pixel comparisons were run; image/EXIF behavior still needs
+device acceptance. Manual v3/Tea identity is retained on pinned source reasoning.
 
 The manual mask owns its decoded ImageFile inside `with`; EXIF transpose now
 runs in place there and the source is released before image resize/Torch growth.

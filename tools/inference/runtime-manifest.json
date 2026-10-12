@@ -122,7 +122,7 @@
     "maxLoras": 16,
     "maskMode": "manual-or-clipseg-denoised-mask",
     "autoMasks": true,
-    "maskGrowth": "manual red-channel contain/pad, ordered five-neighbour max writes into the independent FP32 resized output from per-round edge padding without a five-image stack; same tapered diamond and manual v3 identity. Automatic masks separately use square dilation then float feather; current allocation benefit is source-derived, not measured RSS/speed",
+    "maskGrowth": "manual equivalent RGB red-channel contain/pad (straight RGBA red-only takes R directly; other modes preserve RGB conversion), ordered five-neighbour max writes into the independent FP32 resized output from per-round edge padding without a five-image stack; same tapered diamond and manual v3 identity. Automatic masks separately use square dilation then float feather; growth-loop allocation benefit is source-derived; complete CPU preparation timing and fresh-process high-water RSS are separately measured, not model/VRAM/production peaks",
     "automaticMask": {
       "postprocessSource": "AP ClipSEG Light af83f91335822be272b23e29040e34d82622601c, MIT; retained MASK_PROCESSING_LICENSE.txt; local loading remains native, no upstream automatic download or TensorFlow stub",
       "model": "local clipseg-rd64-refined",

@@ -44,9 +44,11 @@ def resize_image(image, size, *, red_only=False):
     fitted = (max(1, int(image.width * ratio)), max(1, int(image.height * ratio)))
     # Borrow already-normalized RGB pixels read-only; the returned canvas owns
     # its pixels and deliberately does not inherit input EXIF/info metadata.
-    converted = image if image.mode == "RGB" else image.convert("RGB")
+    # Straight RGBA to RGB only drops alpha; red-only may read the same R.
+    converted = (image if image.mode == "RGB" or (red_only and image.mode == "RGBA")
+        else image.convert("RGB"))
     if red_only:
-        # Keep palette/CMYK conversion and RGBA alpha handling before selecting R.
+        # Keep palette/CMYK and premultiplied modes on the original RGB conversion.
         # Pillow 11.3 Lanczos resamples each 8-bit RGB/L band independently.
         converted = converted.getchannel("R")
     resized = (converted if converted.size == fitted else
