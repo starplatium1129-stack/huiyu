@@ -644,6 +644,7 @@ for (const theme of ['light', 'dark']) {
     await expect(page.locator('.archive-state-panel[data-kind="filtered"]')).toBeVisible()
     await page.getByRole('button', { name: '重置筛选', exact: true }).click()
     await expect(cards).toHaveCount(6)
+    await page.locator('.gallery-refine-disclosure > summary').click()
     await pickStudioOptionByValue(page.getByLabel('按画册筛选'), 'review')
     await expect(cards).toHaveCount(2)
     await expect(page.getByRole('navigation', { name: '画册位置' })).toContainText('秋日手记')
