@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>目录列表调度优化 · 2026-10-12</title>
+<style>:root{color-scheme:light dark}body{font:16px/1.7 system-ui,sans-serif;color:CanvasText;background:Canvas;max-width:980px;margin:36px auto;padding:0 20px}h1{font-size:26px}h2{font-size:20px}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:12px 10px;border-bottom:1px solid GrayText}code{overflow-wrap:anywhere}a{color:LinkText}</style>
+<h1>目录列表调度优化</h1>
+<p>基于 PR #74 的 <code>86f9421cf2b20b42ffdd64750231a0ecc1ae7387</code>，独立分支 <code>perf/backend-scan-20261012-pr74</code>。本轮只改桌面工具 <code>list_files</code> 的目录读取调度及关闭时的工作跟踪；没有改 UI、任务列表、回收站、Live2D、图像正文读取、resize 或 PNG 编码。没有编写或运行任何测试、断言、行为验证脚本或夹具。</p>
+<h2>明确的热点与改动</h2>
+<p>基线通过 Tokio 分批枚举目录，随后对首屏最多 200 个非目录项分别等待 <code>tokio::fs::symlink_metadata</code>，造成多次阻塞池投递 / 唤醒；ICU 部分选择与排序仍占异步请求线程。大模型 / 素材 / 源码目录中，文件数量和首屏非目录比例会放大开销。本轮将同一请求的枚举、ICU 部分选择、排序与所选 metadata 检查集中到一个阻塞 worker；不省略文件系统检查，也不跨请求缓存状态。</p>
+<p>每个 DesktopToolsService 的目录 worker 上限为 4，超出并发的请求等许可；关闭后等待者被取消。请求拥有 shutdown 子令牌和 drop guard；HTTP 被丢弃时令牌取消，worker 在枚举与逐项 metadata 检查之间退出。worker 持有许可和 TaskTracker token，实际工作退出前不提前释放；登记与 close 共用互斥门，避免 close 漏掉迟到登记。进程回收和目录工作等待并行启动，目录退出等待不会推迟命令进程的取消。</p>
+<h2>真实普通 API 观测</h2>
+<p>云环境 Linux x86_64、Intel Xeon Platinum 8573C、5 个可见 CPU；Rust 1.99.0，两个版本均为相同配置的 debug 构建。正常 <code>POST /api/desktop-tools</code> 请求 <code>name=list_files</code>，只读云工作区已有文件，不访问用户电脑、不读图像正文或凭据。没有 strace、并发负载或输出正确性比较。编译结束后，每目录每版本 20 次交错请求；大目录以基线 / 候选交替，小目录交换顺序为候选 / 基线。各组首个观测单列，重复中位数取其余 19 次；OS 缓存已暖且未清理，不称为磁盘冷启动。</p>
+<table aria-label="正常 API 壁钟观测">
+<thead><tr><th>真实目录规模</th><th>基线重复中位数</th><th>候选重复中位数</th><th>全部 20 次 P95（最近秩）</th></tr></thead>
+<tbody>
+<tr><td><code>node_modules/@fontsource/noto-sans-sc/files</code>：1,836 文件，0 子目录；返回首 200 项</td><td>128.598 ms</td><td>54.902 ms，约减少 57.3%</td><td>188.226 → 78.675 ms</td></tr>
+<tr><td><code>assets/characters</code>：181 文件，1 子目录；返回全部 182 项</td><td>101.369 ms</td><td>15.775 ms，约减少 84.4%</td><td>145.114 → 26.087 ms</td></tr>
+</tbody></table>
+<p>首个交错观测：大目录基线 97.672 / 候选 56.895 ms，小目录基线 61.246 / 候选 15.744 ms。完整大目录范围 59.096–209.607 / 26.974–118.754 ms，小目录范围 20.213–147.784 / 6.224–27.061 ms。云环境波动明显，不能把中位数比例泛化到 Windows、NAS、真实模型目录或桌面尾延迟。</p>
+<p>早期基线单独 20 次大目录观测约 41–110 ms，与随后交错组存在环境波动；原样保留但不用于配对统计。早期小目录组与编译并行，也单独保留，不用于配对结论。HTTP 耗时包含路径解析、读取、排序、所选 metadata 和 JSON 响应，但不包括启动 curl 进程。观测每次都重新读取实际目录；不读取文件内容，无 GPU / 出图提速声明。</p>
+<p>原始时刻、全部响应、逐次 HTTP 计时、目录数量、环境、构建日志及二进制 SHA-256 保存于 <code>runtime/perf-file-list/</code>，汇总为 <code>observation.json</code>，随恢复包交付。没有量测线程唤醒次数、峰值内存、磁盘字节或 Windows syscall 数；多次 Tokio 投递的消除是源码操作量推导，不能当作该指标实测。</p>
+<h2>语义与所有权源码审查</h2>
+<table aria-label="保留的行为及未验收条件"><thead><tr><th>范围</th><th>源码结论</th></tr></thead><tbody>
+<tr><td>路径与类型</td><td>原 paths::resolve 的相对路径、父穿越、canonicalize 与工作区包含判断不变。原文件类型读取改用同一 std::fs::DirEntry 实现；逐所选文件仍以目录拼接同一 lossy 名字执行 symlink_metadata，不改用追随 symlink 的 metadata，不从跨请求缓存获得字节数。</td></tr>
+<tr><td>顺序与字段</td><td>仍目录优先，使用同一 system locale / ICU comparator；枚举索引仍是同分稳定次序。select_nth_unstable_by(200)、截断后排序、目录末尾斜杠、文件大小及 metadata 失败时省略大小、空目录文案、总数与输出字段均沿用原代码。没有输出匹配测试或行为验收。</td></tr>
+<tr><td>取消与关闭</td><td>等待许可可取消；close 与新 token 登记在同一锁下，锁不跨 await。队列中的 blocking task 启动后先查取消；运行中的任务在每个枚举项 / metadata 前检查。已取消 HTTP 的 token / 许可由真实 worker 持有至退出。新四 worker 限制会给高并发读取增加等待，避免无界占用阻塞池；并发 / 取消场景仅源码审查。</td></tr>
+<tr><td>固有限制</td><td>一次 OS 文件调用及一次 ICU 选择 / 排序不能安全中断，关闭需等其返回。目录集合仍全量保存，内存仍随目录项数增长，未新增逐项流式 top-200 堆。路径解析仍走原 Tokio I/O，目录变更与路径替换的原时间窗口未宣称修复。</td></tr>
+</tbody></table>
+<h2>必要验证与交付</h2>
+<p>最终源码执行 <code>cargo build --locked --offline --manifest-path runtime-rs/Cargo.toml</code>，退出 0，45.30 秒；仅 Rust 产品 debug 编译。首次候选也编译成功，之后补了枚举后取消检查，所以重新构建最终源码。两处 Atomic fetch_update 弃用警告也出现在 PR #74 基线。两个变更源文件总行数为 241 / 196，均低于 500；差异空白与实际消费者已源码审查。</p>
+<p>未运行任何测试 / 断言 / 夹具、Windows 桌面或真实模型目录、并发 / 取消场景、release / 安装 / 部署或 GPU 推理。文档全库扫描未重跑：前轮已知 roadmap 仍引用被删除的测试夹具，本轮只读确认 86f9421c 也存在该链接；没有恢复夹具、改门禁或把旧失败改写为当前通过。新 HTML 及 docs/INDEX.md 入口只完成定向源码检查。</p>
+<p>提交只含 <code>runtime-rs/src/desktop_tools/files.rs</code>、<code>runtime-rs/src/desktop_tools.rs</code>、本 HTML 和 docs/INDEX.md。files.rs 的变更限于 imports / 目录列表（原 6–65 行）；read_bounded、read、write、image 函数未改。若主任务修改同文件的图像正文路径，整合时保留双方 hunk。不改 schema 或任务索引，不另开 PR，不合并、发布或部署；独立分支供主任务整合 PR #74。</p>
+</html>

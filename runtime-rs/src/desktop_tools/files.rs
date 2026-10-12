@@ -3,23 +3,91 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use icu_collator::{Collator, options::CollatorOptions};
 use icu_locale::Locale;
 use serde_json::{Value, json};
-use std::path::Path;
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
-use tokio_util::sync::CancellationToken;
+use std::{
+    path::Path,
+    sync::{Arc, Mutex},
+};
+use tokio::{
+    io::{AsyncReadExt, AsyncWriteExt},
+    sync::Semaphore,
+};
+use tokio_util::{sync::CancellationToken, task::TaskTracker};
 
-pub(super) async fn list(root: &Path, input: &Value) -> Result<Value> {
-    let directory = paths::resolve(root, &text(&input["path"])).await?;
-    let mut source = tokio::fs::read_dir(&directory)
+pub(super) struct Listings {
+    workers: Arc<Semaphore>,
+    active: TaskTracker,
+    closed: Mutex<bool>,
+}
+impl Listings {
+    pub fn new() -> Self {
+        Self {
+            workers: Arc::new(Semaphore::new(4)),
+            active: TaskTracker::new(),
+            closed: Mutex::new(false),
+        }
+    }
+    pub async fn list(
+        &self,
+        root: &Path,
+        input: &Value,
+        shutdown: &CancellationToken,
+    ) -> Result<Value> {
+        let cancel = shutdown.child_token();
+        let _cancel = cancel.clone().drop_guard();
+        let directory = paths::resolve(root, &text(&input["path"])).await?;
+        let permit = tokio::select! { biased;
+            _ = cancel.cancelled() => return Err(Error::cancelled()),
+            permit = self.workers.clone().acquire_owned() => permit.map_err(|_| Error::cancelled())?,
+        };
+        let tracked = {
+            let closed = self.closed.lock().unwrap();
+            if *closed || cancel.is_cancelled() {
+                return Err(Error::cancelled());
+            }
+            // Register under the same lock as close so a shutdown cannot miss
+            // blocking work. The worker owns this token even if HTTP is dropped.
+            self.active.token()
+        };
+        tokio::task::spawn_blocking(move || {
+            let (_tracked, _permit) = (tracked, permit);
+            list_directory(&directory, &cancel)
+        })
         .await
+        .map_err(|_| Error::plain("目录读取未完成"))?
+    }
+    pub async fn close(&self) {
+        {
+            let mut closed = self.closed.lock().unwrap();
+            *closed = true;
+            self.workers.close();
+            self.active.close();
+        }
+        self.active.wait().await;
+    }
+}
+fn list_directory(directory: &Path, cancel: &CancellationToken) -> Result<Value> {
+    if cancel.is_cancelled() {
+        return Err(Error::cancelled());
+    }
+    // Keep one request's traversal, ICU selection and up to 200 metadata reads
+    // in one bounded worker rather than dispatching each read through Tokio.
+    let source = std::fs::read_dir(directory)
         .map_err(|error| Error::plain(format!("目录不存在或不可读：{error}")))?;
     let mut entries = Vec::new();
-    while let Some(entry) = source.next_entry().await? {
-        let kind = entry.file_type().await?;
+    for entry in source {
+        if cancel.is_cancelled() {
+            return Err(Error::cancelled());
+        }
+        let entry = entry?;
+        let kind = entry.file_type()?;
         entries.push((
             kind.is_dir(),
             entry.file_name().to_string_lossy().into_owned(),
             entries.len(),
         ));
+    }
+    if cancel.is_cancelled() {
+        return Err(Error::cancelled());
     }
     let locale: Locale = crate::collation::system_locale()
         .parse()
@@ -41,11 +109,13 @@ pub(super) async fn list(root: &Path, input: &Value) -> Result<Value> {
     entries.sort_unstable_by(compare);
     let mut rows = Vec::new();
     for (dir, name, _) in entries {
+        if cancel.is_cancelled() {
+            return Err(Error::cancelled());
+        }
         if dir {
             rows.push(format!("{name}/"));
         } else {
-            let extra = tokio::fs::symlink_metadata(directory.join(&name))
-                .await
+            let extra = std::fs::symlink_metadata(directory.join(&name))
                 .ok()
                 .map(|stat| format!(" ({} B)", stat.len()))
                 .unwrap_or_default();
