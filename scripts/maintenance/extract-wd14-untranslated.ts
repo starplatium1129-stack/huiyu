@@ -7,7 +7,7 @@
  */
 const fs: typeof import('node:fs') = require('node:fs')
 const path: typeof import('node:path') = require('node:path')
-const { resolveTagMeaning }: typeof import('../../src/utils/tagMeaning.ts') = require('../../src/utils/tagMeaning.ts')
+const { resolveTagMeaning }: typeof import('../../src/utils/tagMeaning.mts') = require('../../src/utils/tagMeaning.mts')
 
 type Coverage = ReturnType<typeof resolveTagMeaning>['coverage']
 type Category = 'general' | 'character'

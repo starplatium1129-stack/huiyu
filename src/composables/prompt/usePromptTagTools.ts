@@ -14,17 +14,17 @@ type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
  */
 export function usePromptTagTools(pb: PromptBuilderStore) {
   /* ── 词条释义字典（懒加载）───────────────────────────────────────────
-   * tagMeaning.ts 是 ~20KB 纯数据字典，只服务词条 chip 的 tooltip 与中文
+   * tagMeaning.mts 是 ~20KB 纯数据字典，只服务词条 chip 的 tooltip 与中文
    * 副标题，静态导入会把它钉进路由主块（当时 146KiB 预算只剩 0.6KiB）。
    * 改为首次调用时动态拉取：字典到位前退回目录中文标签或词条本身，
    * 到位后 ref 触发重渲染补齐释义。 */
-  type TagMeaningFn = typeof import('@/utils/tagMeaning')['tagMeaning']
+  type TagMeaningFn = typeof import('@/utils/tagMeaning.mts')['tagMeaning']
   const tagMeaningLookup = ref<TagMeaningFn | null>(null)
   let tagMeaningRequested = false
   function tagMeaning(tag: string, catalogLabel = ''): string {
     if (!tagMeaningRequested) {
       tagMeaningRequested = true
-      void import('@/utils/tagMeaning').then(m => { tagMeaningLookup.value = m.tagMeaning }).catch(() => { tagMeaningRequested = false })
+      void import('@/utils/tagMeaning.mts').then(m => { tagMeaningLookup.value = m.tagMeaning }).catch(() => { tagMeaningRequested = false })
     }
     catalogLabel = pb.tagDictionary.lookup(tag)?.zhLabel || catalogLabel
     const lookup = tagMeaningLookup.value
