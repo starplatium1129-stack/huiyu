@@ -92,6 +92,44 @@ test('quality shallow lanes fetch only validated comparison commits and retain f
   }
 });
 
+test('inference CPU CI follows changed paths and retains full-event/baseline fallbacks', () => {
+  const vm: typeof import('node:vm') = require('node:vm');
+  const workflow = read('.github/workflows/quality.yml');
+  const source = workflow.split('      - name: Select validation scope\n')[1]
+    .split("          node <<'NODE'\n")[1].split('          NODE')[0];
+  function scope(files: string[], event = 'pull_request', baseline = true) {
+    let output = '';
+    vm.runInNewContext(source, {
+      process: { env: { GITHUB_EVENT_NAME: event, AICS_HYGIENE_BASE_REF: 'a'.repeat(40), GITHUB_OUTPUT: 'fixture' } },
+      console: { error() {} },
+      require(name: string) {
+        if (name === 'node:fs') return { appendFileSync: (_file: string, value: string) => { output += value; } };
+        assert.equal(name, 'node:child_process');
+        return { execFileSync: (file: string, args: string[]) => {
+          assert.equal(file, 'git', 'scope selection must not start Python, installs or tests');
+          if (!baseline) throw Error('missing baseline');
+          return args[0] === 'diff' ? files.join('\0') : '';
+        } };
+      },
+    });
+    return Object.fromEntries(output.trim().split('\n').map(line => line.split('=')));
+  }
+  for (const file of ['tools/inference/worker.py', 'tools/inference/worker_loader_cases.py',
+    'tools/inference/requirements.txt', 'tools/inference/runtime-manifest.json',
+    'scripts/maintenance/prepare-inference.py', 'scripts/maintenance/calibrate-anima-teacache.py',
+    'scripts/tests/test-prepare-inference.py', 'scripts/tests/test-calibrate-anima-teacache.py',
+    'scripts/tests/calibration_runtime_cases.py', '.github/workflows/quality.yml']) {
+    assert.equal(scope([file]).inference, 'true', file);
+  }
+  for (const file of ['src/App.vue', 'runtime-rs/src/generation/native.rs', 'tools/inference/README.md',
+    'scripts/tests/test-inference-gateway-benchmark.ts', 'package.json']) {
+    assert.equal(scope([file]).inference, 'false', file);
+  }
+  assert.deepEqual(scope(['docs/workflow.md']), { full: 'false', docs: 'true', inference: 'false' });
+  for (const event of ['schedule', 'workflow_dispatch']) assert.equal(scope([], event).inference, 'true');
+  assert.deepEqual(scope([], 'push', false), { full: 'true', docs: 'false', inference: 'true' });
+});
+
 test('new branch baseline includes every topic commit and preserves conservative fallbacks', () => {
   const { spawnSync, execFileSync }: typeof import('node:child_process') = require('node:child_process');
   const { pathToFileURL }: typeof import('node:url') = require('node:url');

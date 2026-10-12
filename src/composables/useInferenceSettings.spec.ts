@@ -4,7 +4,7 @@ import { useInferenceSettings } from './useInferenceSettings'
 import type { InferenceSettingsApi, InferenceStatusResponse, InferenceSettingsResponse, InferenceProbeResponse } from '@/api/inferenceSettingsApi'
 vi.mock('@/utils/runtimeEnvironment', () => ({ isLocalStudioHost: () => true }))
 function fixture(): InferenceStatusResponse {
-  const settings = { engine: 'comfy' as const, modelsRoot: '/models', lorasRoot: '/loras', python: '/python', worker: '/worker' }
+  const settings = { engine: 'comfy' as const, acceleration: 'compiled-fused-sage' as const, modelsRoot: '/models', lorasRoot: '/loras', python: '/python', worker: '/worker' }
   return { ok: true, active: { ...settings }, configured: { ...settings }, restartRequired: false, environmentOverrides: [],
     diagnostics: { basis: 'configured', configuration: 'valid', files: { modelsRoot: true, lorasRoot: false, python: true, worker: true }, dependencies: 'unchecked', runtime: 'unverified', message: '' } }
 }
@@ -32,12 +32,14 @@ describe('inference settings workflow', () => {
     expect(state.dirty.value).toBe(true)
     scope.stop()
   })
-  it('shows saved versus active settings and does not overwrite edits made during save', async () => {
+  it('adversarial delayed save preserves acceleration and newer user edits', async () => {
     let resolve!: (value: InferenceSettingsResponse) => void
-    const { state, scope } = setup({ save: vi.fn(() => new Promise<InferenceSettingsResponse>(done => { resolve = done })) })
+    const { api, state, scope } = setup({ save: vi.fn(() => new Promise<InferenceSettingsResponse>(done => { resolve = done })) })
     await state.refresh()
     state.draft.engine = 'native'
     const pending = state.save()
+    expect(api.save).toHaveBeenCalledWith(expect.objectContaining({ acceleration: 'compiled-fused-sage' }), expect.any(AbortSignal))
+    state.draft.acceleration = 'sage'
     state.draft.modelsRoot = '/newer-edit'
     const result = fixture(); result.configured.engine = 'native'; result.restartRequired = true
     resolve(result)
@@ -45,6 +47,7 @@ describe('inference settings workflow', () => {
     expect(state.snapshot.value?.active.engine).toBe('comfy')
     expect(state.notice.value).toContain('重启')
     expect(state.draft.modelsRoot).toBe('/newer-edit')
+    expect(state.draft.acceleration).toBe('sage')
     expect(state.diagnostics.value).toBeNull()
     scope.stop()
   })

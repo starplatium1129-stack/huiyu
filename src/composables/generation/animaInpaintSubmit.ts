@@ -132,7 +132,7 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
     loraStrength: isCharacterLora || endfield ? snapshot.model.loraStrength : null,
     width: binding.width,
     height: binding.height,
-    teaCache: snapshot.provider === 'native' ? context.submission.request.teaCache === true : true,
+    teaCache: snapshot.provider === 'native' ? context.submission.request.teaCache : true,
   }, context.submission) }
   finally { context.started() }
   await pending

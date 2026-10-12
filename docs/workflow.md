@@ -575,10 +575,14 @@ skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同�
 
 ## 独立推理运行库
 
-`npm run wf -- models:convert-anima --profile anima-cosmos2b-v041 ...` 默认只读单文件结构计划；`--check` 在已有独立运行库中核验完整 meta 键/形状和本地 tokenizer；`--apply` 显式 CPU 离线转换到全新模型目录。未知架构拒绝，不联网/安装，不覆盖输入或已有输出。完整必填参数见[独立推理指南](guides/independent-inference.md#经架构核验的离线转换)。实际权重和 GPU 出图尚未验收。
+`npm run wf -- models:benchmark-inference-gateway --payload <实际API请求.json> --expect-provider native --output-dir <全新runtime目录>` 默认零网络计划；显式 `--run` 经项目现有 `/api/anima/jobs` 测实际产品暖任务，复用网关传输与 PNG 验证，保留产品 conditioning/遮罩/驻留缓存。完成后强制核对 provider、服务端 seed，暖机剔除，保存请求/输出哈希、实际尺寸、壁钟统计及 HTML。分别切换到已准备的 native / comfy 独占 GPU 会话后各跑一次；不要同时驻留两引擎，切换后重新暖机。控制配置未证、冷启动/实际 sigma/精度/画质未证均明示，不输出跨后端加速结论。详见[实际产品网关暖任务](../tools/inference/README.md#product-gateway-warm-measurements)。
+
+`npm run wf -- models:convert-anima --profile anima-cosmos2b-v041 ...` 默认只读单文件结构计划；另有 40 层 `anima-cosmos29b-v041` 和严格核验派生 RoPE 缓冲的 `anima-yume2b-rope-v041`。`--check` 在已有独立运行库中核验完整 meta 键/形状和本地 tokenizer；Yume 额外读取并核对 598 字节派生缓冲；`--apply` 显式 CPU 离线转换到全新模型目录。未知架构拒绝，不联网/安装，不覆盖输入或已有输出。六个现有 Anima 已完成本机严格转换，设备验收范围另见报告。完整参数见[独立推理指南](guides/independent-inference.md#经架构核验的离线转换)。
+
+`npm run wf -- models:benchmark-anima-comfy --workflow <Comfy API JSON> --sampler-node <KSampler id> --output-dir <全新runtime目录>` 复用原 ComfyUI benchmark 入口，默认只读计划、零网络。只有显式 `--run` 才向已准备的本机 ComfyUI 提交列出的任务；可用 `--teacache-node <AnimaTeaCache id>` 增加同工作流缓存对照。暖机独列、轮次变 seed、AB/BA 顺序、失败/整图缓存拒绝及 JSON/HTML 证据见 [worker 基准说明](../tools/inference/README.md#comfyui-comparison-evidence)。本工具不启动服务、不下载模型、不自动中断共享服务，不据同名 scheduler 宣称 native 等价或加速。
 
 `npm run wf -- models:prepare-inference --target-dir <AI工作区/inference>` 默认只读预览；`--preflight --wheelhouse <目录>` 在任何 venv 写入前离线解析完整 wheel 依赖；`--check` 通过完整 worker 诊断核验本地回执、依赖与 helper；只有 `--apply --wheelhouse <可信离线wheel目录>` 创建全新独立 venv。任何模式均不下载模型或依赖，不复用/修改 ComfyUI。需已有受信 Python，平台发行材料与真实 GPU 推理另验。详见[独立推理候选接入](guides/independent-inference.md)。
 
-`npm run wf -- models:calibrate-anima-teacache ...` 默认只读计划；`--run` 明确执行本地 CUDA 全计算采样、拟合与留出对照，`--accept-run ... --accept-quality --accept-performance` 在人工画质/性能验收和实际提速核对后写入模型校准档。已有档按精确 SHA-256 显式替换。无下载/安装，未验收档拒绝用于产品；见[TeaCache 校准与验收](guides/independent-inference.md#teacache-本机校准与验收)。
+`npm run wf -- models:calibrate-anima-teacache ...` 默认只读计划；`--run` 明确执行本地 CUDA 全计算采样、拟合与留出对照，可用 `--max-consecutive-skips 1..3` 设置候选上限（默认 1）。`--accept-run ... --accept-quality --accept-performance` 在画质/性能验收和实际提速核对后写入模型校准档；不同 runtime/LoRA/参数范围可保存于同一有界集合，追加或替换均按旧整文件 SHA-256 显式核验。无下载/安装，未验收档拒绝用于产品；见[TeaCache 校准与验收](guides/independent-inference.md#teacache-本机校准与验收)。
 
 `npm run wf -- models:import-anima-directory --source-dir <完整模型目录> --target-dir <全新目标>` 默认只读布局计划；`--apply` 明确复制完整资源，不覆盖或移动来源。控制室提供同一能力的确认入口及离线运行库准备，沿用本机操作互斥与取消；文件证据不代表实际模型/GPU兼容，见[独立推理指南](guides/independent-inference.md#应用内离线准备与完整目录导入)。

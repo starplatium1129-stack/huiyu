@@ -12,10 +12,8 @@ from functools import lru_cache
 import json
 import math
 import os
-import re
 from pathlib import Path
 import sys
-import tempfile
 import time
 
 # Set before any ML imports. Component classes and paths below are explicit.
@@ -25,7 +23,7 @@ os.environ["DO_NOT_TRACK"] = "1"
 
 WEIGHTS = ("text_encoder", "text_conditioner", "transformer", "vae")
 COMPONENTS = WEIGHTS + ("tokenizer", "t5_tokenizer", "scheduler")
-PINS = {"torch": "2.8.0", "diffusers": "0.41.0", "transformers": "5.10.1",
+PINS = {"torch": "2.8.0", "torchvision": "0.23.0", "diffusers": "0.41.0", "transformers": "5.10.1",
         "accelerate": "1.12.0", "safetensors": "0.8.0", "Pillow": "11.3.0",
         "peft": "0.19.0", "sentencepiece": "0.2.1", "protobuf": "6.33.5",
         "huggingface-hub": "1.32.0"}
@@ -82,8 +80,8 @@ def validate_model(value):
                         raise WorkerError("MODEL_INCOMPLETE", f"Missing/unsafe safetensors shard in {shard_index}: {shard}")
         elif name == "scheduler":
             config = read_json(folder / "scheduler_config.json")
-            if config.get("_class_name") != "FlowMatchEulerDiscreteScheduler":
-                raise WorkerError("UNSUPPORTED_MODEL", "Only FlowMatchEulerDiscreteScheduler is supported")
+            if config.get("_class_name") != "FlowMatchEulerDiscreteScheduler" or config.get("stochastic_sampling"):
+                raise WorkerError("UNSUPPORTED_MODEL", "Only deterministic FlowMatchEulerDiscreteScheduler (stochastic_sampling=false) is supported")
         else:
             read_json(folder / "tokenizer_config.json")
             required = ("vocab.json", "merges.txt") if name == "tokenizer" else (() if (folder / "spiece.model").is_file() else ("tokenizer.json",))
@@ -92,7 +90,7 @@ def validate_model(value):
     return root
 
 
-@lru_cache(maxsize=16)
+@lru_cache(maxsize=24)
 def load_mask_tools(name="masked_anima"):
     # -I excludes the script directory: load only this bundled sibling, never PYTHONPATH.
     import importlib.util
@@ -115,6 +113,18 @@ def dependencies():
     load_mask_tools("teacache_profile")
     load_mask_tools("resident_anima")
     load_mask_tools("anima_text_cache")
+    load_mask_tools("inference_metrics")
+    load_mask_tools("anima_lora")
+    load_mask_tools("anima_lora_fusion")
+    load_mask_tools("anima_sampling")
+    load_mask_tools("anima_refinement")
+    load_mask_tools("anima_postprocess")
+    load_mask_tools("anima_prompt_weights")
+    load_mask_tools("anima_upscale")
+    load_mask_tools("native_hash")
+    load_mask_tools("native_upload")
+    load_mask_tools("locked_identity")
+    load_mask_tools("anima_acceleration").validate()
     versions = {}
     for name, expected in PINS.items():
         try:
@@ -126,6 +136,7 @@ def dependencies():
         versions[name] = version
     try:
         import torch
+        from torchvision.transforms.functional import resize
         from diffusers import AnimaModularPipeline, AnimaTextConditioner, AutoencoderKLQwenImage, CosmosTransformer3DModel, FlowMatchEulerDiscreteScheduler, ClassifierFreeGuidance
         from transformers import Qwen3Model, Qwen2Tokenizer, T5Tokenizer, T5TokenizerFast, CLIPSegForImageSegmentation, CLIPTokenizer, ViTImageProcessorPil
         from PIL import Image, ImageOps
@@ -148,12 +159,12 @@ def validate_job(job):
         raise WorkerError("INVALID_REQUEST", "Expected one object with op=generate")
     if not isinstance(job.get("id"), str) or not job["id"]:
         raise WorkerError("INVALID_REQUEST", "id must be a nonempty string")
-    if set(job) - {"id", "op", "modelDir", "outputPath", "input", "inputImagePath", "maskImagePath", "maskModelDir", "loras", "teaCacheProfilePath"}:
+    if set(job) - {"id", "op", "modelDir", "outputPath", "input", "inputImagePath", "maskImagePath", "maskModelDir", "loras", "teaCacheProfilePath", "upscaleModelPath"}:
         raise WorkerError("UNSUPPORTED_OPTION", "Unknown top-level worker option")
     data = job.get("input")
     if not isinstance(data, dict):
         raise WorkerError("INVALID_INPUT", "input must be an object")
-    supported = {"prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "family", "modelId", "sampler", "scheduler", "denoisingStrength", "growMaskBy", "maskPrompt", "maskThreshold", "teaCache", "teaCacheThresh"}
+    supported = {"prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "family", "modelId", "sampler", "scheduler", "denoisingStrength", "growMaskBy", "maskPrompt", "maskThreshold", "teaCache", "teaCacheAuto", "teaCacheThresh", "hiresFix", "hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel", "rcasStrength"}
     # Empty/disabled UI options are harmless; active options never silently degrade.
     disabled = {"teacache", "mask", "maskPath", "loras", "lora", "hires", "rcas", "upscaler", "inputImage", "inputImagePath", "image", "initImage"}
     for key, value in data.items():
@@ -163,8 +174,8 @@ def validate_job(job):
             raise WorkerError("UNSUPPORTED_OPTION", f"Independent Anima does not support {key}")
     if data.get("family", "anima") != "anima":
         raise WorkerError("UNSUPPORTED_MODEL", "Only Anima Diffusers directories are supported")
-    if data.get("sampler", "euler") != "euler" or data.get("scheduler", "simple") != "simple":
-        raise WorkerError("UNSUPPORTED_SAMPLER", "Use euler/simple: native Diffusers FlowMatch Euler schedule; res_multistep and ComfyUI schedule equivalence are unsupported")
+    if data.get("sampler", "euler") not in ("euler", "res_multistep") or data.get("scheduler", "simple") not in ("simple", "normal", "sgm_uniform"):
+        raise WorkerError("UNSUPPORTED_SAMPLER", "Use euler/res_multistep with simple/normal/sgm_uniform")
     if not isinstance(data.get("prompt"), str) or not data["prompt"].strip():
         raise WorkerError("INVALID_INPUT", "prompt must be a nonempty string")
     if not isinstance(data.get("negativePrompt", ""), str):
@@ -173,6 +184,27 @@ def validate_job(job):
     if type(data.get("teaCache", False)) is not bool:
         raise WorkerError("INVALID_INPUT", "teaCache must be a boolean")
     result["teaCache"] = data.get("teaCache", False)
+    if type(data.get("teaCacheAuto", False)) is not bool or (data.get("teaCacheAuto") and (not result["teaCache"] or "teaCacheThresh" in data)):
+        raise WorkerError("INVALID_INPUT", "teaCacheAuto requires teaCache enabled without an explicit threshold")
+    if type(data.get("hiresFix", False)) is not bool:
+        raise WorkerError("INVALID_INPUT", "hiresFix must be a boolean")
+    result["rcasStrength"] = number(data, "rcasStrength", 0, 0, 1)
+    if data.get("hiresFix", False):
+        result["hiresScale"] = number(data, "hiresScale", 2, 1.1, 3)
+        result["hiresDenoise"] = number(data, "hiresDenoise", 0.35, 0.1, 0.7)
+        if data.get("hiresUpscaler", "Latent") not in ("Latent", "Remacri", "Auto"):
+            raise WorkerError("UNSUPPORTED_OPTION", "Native hires supports Latent or Remacri")
+        if (data.get("hiresSampler") or data.get("sampler", "euler")) not in ("euler", "res_multistep") or (data.get("hiresScheduler") or data.get("scheduler", "simple")) not in ("simple", "normal", "sgm_uniform"):
+            raise WorkerError("UNSUPPORTED_SAMPLER", "Unsupported hires sampler/scheduler")
+    needs_upscale = bool(data.get("hiresFix") and data.get("superResModel"))
+    if data.get("hiresFix") and data.get("hiresUpscaler") == "Remacri" and not needs_upscale:
+        raise WorkerError("INVALID_INPUT", "Remacri requires its host-resolved checkpoint")
+    if needs_upscale:
+        path = local_file(job.get("upscaleModelPath"), "upscaleModelPath", {".safetensors"})
+        if path.name != "4x_foolhardy_Remacri.safetensors" or data["superResModel"] != path.name:
+            raise WorkerError("UNSUPPORTED_OPTION", "Only the fixed Remacri checkpoint is supported")
+    elif job.get("upscaleModelPath") is not None:
+        raise WorkerError("INVALID_INPUT", "upscaleModelPath requires a Remacri hires operation")
     if "teaCacheThresh" in data:
         result["teaCacheThresh"] = number(data, "teaCacheThresh", None, 0.01, 1)
         if not result["teaCache"]:
@@ -249,7 +281,10 @@ def load_input_image(path):
                 raise WorkerError("INVALID_INPUT", "Input image must be PNG, JPEG or WebP")
             if image.width * image.height > 4096 * 4096 or getattr(image, "n_frames", 1) != 1:
                 raise WorkerError("INVALID_INPUT", "Input must be one still image of at most 16 megapixels")
-            return ImageOps.exif_transpose(image).convert("RGB")
+            oriented = ImageOps.exif_transpose(image)
+            # Transposed EXIF needs convert's copy to normalize nested IFD offsets.
+            untransposed = image.getexif().get(274) not in range(2, 9)
+            return oriented if oriented.mode == "RGB" and untransposed else oriented.convert("RGB")
     except (OSError, ValueError, Image.DecompressionBombError) as exc:
         raise WorkerError("INVALID_INPUT", f"Cannot decode input image: {exc}") from exc
 
@@ -257,69 +292,23 @@ def load_input_image(path):
 def load_loras(pipeline, adapters):
     if not adapters:
         return
-    from safetensors import safe_open
-    from peft import get_peft_model_state_dict, LoraConfig
-    from dataclasses import fields
-    config_fields = {field.name for field in fields(LoraConfig)}
-    names, scales = [], []
-    for index, adapter in enumerate(adapters):
-        path = Path(adapter["path"])
-        name = f"huiyu_{index}"
-        # Inspect before upstream can silently discard DoRA or unknown component keys.
-        with safe_open(str(path), framework="pt", device="cpu") as file:
-            keys = set(file.keys())
-            metadata = file.metadata() or {}
-        if any(key.startswith("diffusion_model.") for key in keys):
-            from diffusers.loaders.lora_conversion_utils import _convert_non_diffusers_anima_lora_to_diffusers
-            # This pinned upstream helper only renames Anima keys; inspect without loading tensors.
-            converted = _convert_non_diffusers_anima_lora_to_diffusers(dict.fromkeys(keys))
-            if len(converted) != len(keys):
-                raise WorkerError("UNSUPPORTED_LORA", "Anima LoRA conversion contains colliding target keys")
-            keys = set(converted)
-        targets = {}
-        for key in keys:
-            match = re.fullmatch(r"(transformer|text_conditioner)\.(.+)\.lora_([AB])\.weight", key)
-            if not match:
-                raise WorkerError("UNSUPPORTED_LORA", f"Expected native or diffusion_model-prefixed Anima LoRA A/B weights; unsupported key: {key}")
-            component, target, side = match.groups()
-            other = f"{component}.{target}.lora_{'B' if side == 'A' else 'A'}.weight"
-            if other not in keys:
-                raise WorkerError("UNSUPPORTED_LORA", f"Unpaired LoRA weight: {key}")
-            try:
-                getattr(pipeline, component).get_submodule(target)
-            except (AttributeError, KeyError) as exc:
-                raise WorkerError("UNSUPPORTED_LORA", f"Unknown Anima LoRA target: {component}.{target}") from exc
-            targets.setdefault(component, set()).add(key.removeprefix(component + "."))
-        if not targets:
-            raise WorkerError("UNSUPPORTED_LORA", "LoRA contains no supported weights")
-        if "lora_adapter_metadata" in metadata:
-            try:
-                config = json.loads(metadata["lora_adapter_metadata"])
-            except (ValueError, TypeError) as exc:
-                raise WorkerError("UNSUPPORTED_LORA", "Malformed LoRA adapter metadata") from exc
-            if not isinstance(config, dict):
-                raise WorkerError("UNSUPPORTED_LORA", "LoRA adapter metadata must be an object")
-            for key, value in config.items():
-                component, _, field = key.partition(".")
-                if component not in targets or field not in config_fields:
-                    raise WorkerError("UNSUPPORTED_LORA", f"Unsupported LoRA metadata: {key}")
-                if field in {"use_dora", "modules_to_save", "target_parameters", "layer_replication", "trainable_token_indices", "alora_invocation_tokens", "lora_bias"} and value:
-                    raise WorkerError("UNSUPPORTED_LORA", f"Unsupported LoRA option: {key}")
-                if field == "bias" and value != "none":
-                    raise WorkerError("UNSUPPORTED_LORA", "LoRA bias weights are unsupported")
-        pipeline.load_lora_weights(str(path.parent), weight_name=path.name, adapter_name=name,
-                                   local_files_only=True, use_safetensors=True)
-        # Upstream warns on unhandled keys. Fail instead of silently generating a partial adapter.
-        for component, expected in targets.items():
-            actual = set(get_peft_model_state_dict(getattr(pipeline, component), adapter_name=name, save_embedding_layers=False))
-            if actual != expected:
-                raise WorkerError("UNSUPPORTED_LORA", f"Loaded {component} adapter keys do not match the checkpoint")
-        names.append(name)
-        scales.append(adapter["strength"])
-    pipeline.set_adapters(names, adapter_weights=scales)
+    helper = load_mask_tools("anima_lora")
+    try:
+        helper.load_loras(pipeline, adapters)
+    except helper.UnsupportedLora as exc:
+        raise WorkerError("UNSUPPORTED_LORA", str(exc)) from exc
+
+
+def try_hotswap_loras(pipeline, adapters):
+    helper = load_mask_tools("anima_lora")
+    try:
+        return helper.try_hotswap(pipeline, adapters)
+    except helper.UnsupportedLora as exc:
+        raise WorkerError("UNSUPPORTED_LORA", str(exc)) from exc
 
 
 def load_pipeline(root, cfg, blocks=None):
+    root = validate_model(str(root))
     import torch
     from diffusers import AnimaModularPipeline, AnimaTextConditioner, AutoencoderKLQwenImage, CosmosTransformer3DModel, FlowMatchEulerDiscreteScheduler, ClassifierFreeGuidance
     from transformers import Qwen3Model, Qwen2Tokenizer, T5Tokenizer, T5TokenizerFast
@@ -334,60 +323,63 @@ def load_pipeline(root, cfg, blocks=None):
     components = {}
     for name, cls in classes.items():
         kwargs = {"local_files_only": True}
-        if name in WEIGHTS:
-            kwargs.update(use_safetensors=True, torch_dtype=dtype)
         if name in ("text_encoder", "tokenizer", "t5_tokenizer"):
             kwargs["trust_remote_code"] = False
-        components[name] = cls.from_pretrained(str(root / name), **kwargs)
+        if name in WEIGHTS:
+            kwargs.update(use_safetensors=True, torch_dtype=dtype)
+            components[name] = load_mask_tools("resident_anima").load_weights(name, cls, str(root / name), **kwargs)
+        else:
+            components[name] = cls.from_pretrained(str(root / name), **kwargs)
     # CFG is a component, not an ignored call-time guidance_scale argument.
     components["guider"] = ClassifierFreeGuidance(guidance_scale=cfg)
     pipeline.update_components(**components)
-    pipeline.to("cuda")
+    if not load_mask_tools("native_upload").try_packed_upload(components[name] for name in WEIGHTS):
+        pipeline.to("cuda")
+    load_mask_tools("anima_acceleration").configure(pipeline.transformer)
     pipeline.set_progress_bar_config(disable=True)
     return pipeline
 
 
-def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True):
+def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True):
+    job_started = time.perf_counter()
     data = validate_job(job)
     root = validate_model(job.get("modelDir"))
+    identity, resident_fingerprint = None, 0
     if resident is None:
         dependencies()
     else:
-        resident.prepare(dependencies)
+        identity, resident_fingerprint = resident.prepare_and_fingerprint(
+            dependencies, root, job.get("loras", []), load_mask_tools)
     import torch
+    metrics = load_mask_tools("inference_metrics").RuntimeMetrics(torch, job_started)
     tea, tea_report, blocks = None, None, None
-    identity = None
-    identity_started = time.perf_counter()
-    if resident is not None:
-        identity = load_mask_tools("teacache_profile").model_identity(root, job.get("loras", []))
-    resident_fingerprint = time.perf_counter() - identity_started if resident is not None else 0
     if data["teaCache"] or collect_teacache:
         profile_tools = load_mask_tools("teacache_profile")
         if collect_teacache and data["teaCache"]:
             raise WorkerError("INVALID_INPUT", "Calibration collection requires TeaCache disabled")
         try:
-            profile = (teacache_profile if teacache_profile is not None else
-                profile_tools.read_profile(job.get("teaCacheProfilePath"), root)) if data["teaCache"] else None
             if not torch.cuda.is_available():
                 raise WorkerError("DEVICE_UNAVAILABLE", "TeaCache requires the selected CUDA inference device")
             dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
             mode = "masked" if job.get("maskImagePath") or data.get("maskPrompt") else ("img2img" if job.get("inputImagePath") else "txt2img")
             started = time.perf_counter()
             scope = profile_tools.compatibility(root, job.get("loras", []), data, mode, dtype, torch.cuda.get_device_name(0),
-                mask_model_dir=job.get("maskModelDir"), identity=identity)
-            tea_report = dict(schemaVersion=1, teaCacheEnabled=data["teaCache"], compatibility=scope,
+                mask_model_dir=job.get("maskModelDir"), upscale_model_path=job.get("upscaleModelPath"), identity=identity)
+            profile = (teacache_profile if teacache_profile is not None else
+                profile_tools.read_profile(job.get("teaCacheProfilePath"), root, expected=scope, auto=data.get("teaCacheAuto", False))) if data["teaCache"] else None
+            tea_report = dict(schemaVersion=1, runtime=profile_tools.RUNTIME, teaCacheEnabled=profile is not None, compatibility=scope,
+                selectionReason="matched-profile" if profile is not None else "no-matching-profile",
                 fingerprintSeconds=time.perf_counter() - started)
             threshold = profile_tools.validate_profile(profile, scope, data.get("teaCacheThresh"),
                 require_accepted=teacache_profile is None) if profile is not None else None
-            if data["teaCache"] or collect_teacache:
+            if profile is not None or collect_teacache:
                 tea = load_mask_tools("teacache_anima").TeaCacheController(profile, threshold, collect_teacache)
         except profile_tools.TeaCacheError as exc:
             raise WorkerError(exc.code, str(exc)) from exc
     elif measure_teacache:
-        tea_report = dict(schemaVersion=1, teaCacheEnabled=False, compatibility=None, fingerprintSeconds=0)
-    if tea_report is not None:
-        tea_report["residentFingerprintSeconds"] = resident_fingerprint
-        torch.cuda.reset_peak_memory_stats(0)
+        tea_report = dict(schemaVersion=1, runtime=load_mask_tools("teacache_profile").RUNTIME, teaCacheEnabled=False, compatibility=None, fingerprintSeconds=0)
+    metrics.begin_memory(tea_report is not None)
+    mask_started = time.perf_counter()
     image = load_input_image(job["inputImagePath"]) if job.get("inputImagePath") else None
     mask_tools = None
     if job.get("maskImagePath") or data.get("maskPrompt"):
@@ -398,92 +390,98 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                 from PIL import Image
                 image = image.resize(size, Image.Resampling.LANCZOS)
                 auto_tools = load_mask_tools("clipseg_mask")
-                mask = auto_tools.generate_mask(Path(job["maskModelDir"]).resolve(), image, data["maskPrompt"], data["maskThreshold"])
-                image, mask = mask_tools.prepare_mask(image, mask, size, data["growMaskBy"])
+                if resident is not None and cache_mask and resident.mask_cache is None:
+                    resident.mask_cache = auto_tools.MaskCache()
+                mask = auto_tools.generate_mask(Path(job["maskModelDir"]).resolve(), image, data["maskPrompt"], data["maskThreshold"],
+                    **({"cache": resident.mask_cache} if resident is not None and cache_mask else {}),
+                    **({"expected_mask_sha256": tea_report["compatibility"]["maskModelSha256"]}
+                       if tea_report is not None and tea_report["compatibility"] is not None else {}))
+                mask = mask_tools._prepare_effective_mask(mask, size, data["growMaskBy"])
             else:
                 image, mask = mask_tools.prepare_images(image, job["maskImagePath"], size, data["growMaskBy"])
         except ValueError as exc:
             raise WorkerError("INVALID_INPUT", str(exc)) from exc
         blocks = mask_tools.masked_blocks()
+    metrics.image_prepared(mask_started, tea_report, resident, cache_mask, bool(data.get("maskPrompt")))
+    if blocks is None and (tea is not None or (resident is not None and cache_text)):
+        from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
+        blocks = AnimaAutoBlocks()
     if tea is not None:
-        if blocks is None:
-            from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
-            blocks = AnimaAutoBlocks()
         blocks = load_mask_tools("teacache_anima").apply_blocks(blocks, tea)
     if resident is not None and cache_text:
         text_tools = load_mask_tools("anima_text_cache")
         if resident.text_cache is None:
             resident.text_cache = text_tools.TextCache()
-        if blocks is None:
-            from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
-            blocks = AnimaAutoBlocks()
         blocks = text_tools.apply_text_cache(blocks, resident.text_cache)
+    blocks = load_mask_tools("anima_prompt_weights").apply_prompt_weights(blocks,
+        cache=resident.text_cache if resident is not None and cache_text else None)
     started = time.perf_counter()
-    reused = False
+    post_load_fingerprint, reused = 0, False
     if resident is None:
         pipeline = load_pipeline(root, data["cfg"], blocks=blocks) if blocks is not None else load_pipeline(root, data["cfg"])
         load_loras(pipeline, job.get("loras", []))
+        if load_mask_tools("anima_acceleration").MODE == "compiled-fused-sage":
+            pipeline.transformer._huiyu_lora_fusion.fuse(pipeline.components)
     else:
         key = {"root": str(root), **identity}
-        pipeline, reused = resident.acquire(key, root, data["cfg"], blocks, job.get("loras", []), load_pipeline, load_loras)
-        if not reused and load_mask_tools("teacache_profile").model_identity(root, job.get("loras", [])) != identity:
-            resident.clear()
-            raise WorkerError("MODEL_CHANGED", "Model or LoRA bytes changed while loading; retry after preparation completes")
-    if tea_report is not None:
-        torch.cuda.synchronize()
-        tea_report["modelLoadSeconds"] = time.perf_counter() - started
-        tea_report["modelReused"] = reused
+        pipeline, reused = resident.acquire(key, root, data["cfg"], blocks, job.get("loras", []), load_pipeline, load_loras, try_hotswap_loras)
+        if resident.weights_loaded:
+            protected_load = resident.file_identity.cached
+            verified_at = time.perf_counter()
+            loaded_identity = resident.fingerprint(root, job.get("loras", []), load_mask_tools)
+            post_load_fingerprint = time.perf_counter() - verified_at
+            resident_fingerprint += post_load_fingerprint
+            if loaded_identity != identity or (protected_load and not resident.file_identity.reused):
+                resident.clear()
+                raise WorkerError("MODEL_CHANGED", "Model or LoRA bytes changed while loading; retry after preparation completes")
+    metrics.model_acquired(started, tea_report, reused, resident_fingerprint, post_load_fingerprint)
+    sampling = load_mask_tools("anima_sampling")
+    if data.get("sampler", "euler") != "euler":
+        pipeline.update_components(scheduler=sampling.new_scheduler(data["sampler"], dict(pipeline.scheduler.config)))
     if resident is not None and resident.text_cache is not None:
         resident.text_cache.begin_job()
-    total = data["steps"] - int(data["steps"] - data["steps"] * data["denoisingStrength"]) if image is not None else data["steps"]
-    step = 0
-    original_step = pipeline.scheduler.step
-
-    def report_step(*args, **kwargs):
-        nonlocal step
-        value = original_step(*args, **kwargs)
-        step += 1
-        emit(stream, job["id"], "progress", step=step, total=total)
-        return value
-
-    pipeline.scheduler.step = report_step
-    image_kwargs = {"image": image, "strength": data["denoisingStrength"]} if image is not None else {}
-    if mask_tools is not None:
-        image_kwargs["mask_image"] = mask
+    def upscale(images):
+        helper = load_mask_tools("anima_upscale")
+        expected = tea_report["compatibility"].get("upscaleModelSha256") if tea is not None else None
+        if expected is not None and load_mask_tools("native_hash").file_sha256(job["upscaleModelPath"]) != expected:
+            raise WorkerError("MODEL_CHANGED", "Upscaler bytes changed after profile validation")
+        model = helper.load_remacri(job["upscaleModelPath"], device=images.device)
+        if expected is not None and load_mask_tools("native_hash").file_sha256(job["upscaleModelPath"]) != expected:
+            raise WorkerError("MODEL_CHANGED", "Upscaler bytes changed while loading")
+        return helper.upscale_4x(model, images)
+    def prepare_second(blocks):
+        if tea is not None:
+            if tea.stats["nonfinite"]:
+                raise WorkerError("NONFINITE_INFERENCE", "The first pass left the finite calibration scope; no result is published")
+            tea.clear()
+            return load_mask_tools("teacache_anima").apply_blocks(blocks, tea)
+        return blocks
+    capture = tea_report is not None and (collect_teacache or measure_teacache or teacache_profile is not None)
     started = time.perf_counter()
     try:
-        images = pipeline(prompt=data["prompt"], negative_prompt=data.get("negativePrompt", ""),
-                          width=data["width"], height=data["height"], num_inference_steps=data["steps"],
-                          generator=torch.Generator(device="cuda").manual_seed(data["seed"]),
-                          output_type="pil", output="images", **image_kwargs)
+        result, step, refinement = load_mask_tools("anima_refinement").run(pipeline, data,
+            image=image, mask=mask if mask_tools is not None else None, mask_tools=mask_tools,
+            sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
+            upscale=upscale if job.get("upscaleModelPath") else None,
+            prepare_second_blocks=prepare_second,
+            observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
+            progress=lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
     finally:
-        pipeline.scheduler.step = original_step
         if tea is not None:
             tea.clear()
+    if tea is not None and tea.stats["nonfinite"]:
+        raise WorkerError("NONFINITE_INFERENCE", "Inference left the finite calibration scope; no result is published")
+    metrics.pipeline_finished(started, tea_report, tea, resident is not None and cache_text)
+    if capture:
+        tea_report["schedule"] = ({"schemaVersion": 2, "passes": refinement["schedules"]} if data.get("hiresFix") else
+            load_mask_tools("resident_benchmark").capture_schedule(pipeline.scheduler, step))
+    metrics.timings.update({key: refinement[key] for key in ("compositeWallSeconds", "postprocessWallSeconds")})
+    output_report = load_mask_tools().save_png(result, job["outputPath"])
     if tea_report is not None:
-        torch.cuda.synchronize()
-        elapsed = time.perf_counter() - started
-        tea_report.update(pipelineSeconds=elapsed, generationSeconds=elapsed,
-            timingScope="pipeline includes encoding, denoising and decoding; modelLoad includes LoRAs",
-            samples=tea.samples if tea is not None else [], stats=dict(tea.stats) if tea is not None else None,
-            peakAllocatedBytes=torch.cuda.max_memory_allocated(0))
-        tea_report["textCacheEnabled"] = resident is not None and cache_text
-    if not images or len(images) != 1:
-        raise WorkerError("GENERATION_FAILED", "Pipeline returned no single image")
-    if mask_tools is not None:
-        images[0] = mask_tools.composite(images[0], image, mask)
-    output = Path(job["outputPath"]).expanduser().resolve()
-    output.parent.mkdir(parents=True, exist_ok=True)
-    temporary = None
-    try:
-        with tempfile.NamedTemporaryFile(dir=output.parent, suffix=".png", delete=False) as file:
-            temporary = Path(file.name)
-        images[0].save(temporary, format="PNG")
-        os.replace(temporary, output)
-    finally:
-        if temporary is not None:
-            temporary.unlink(missing_ok=True)
+        tea_report.update(output_report)
+        tea_report["refinement"] = refinement
     emit(stream, job["id"], "result", outputPath=job["outputPath"], modelReused=reused,
+         nativeRuntime=metrics.result(output_report, reused, resident, cache_text, cache_mask, tea, tea_report, step),
          **({"textCache": resident.text_cache.stats()} if resident is not None and cache_text else {}),
          **({"teaCache": dict(tea.stats)} if tea is not None else {}))
     return tea_report

@@ -7,6 +7,8 @@ import { loadBlueprint } from './promptBlueprintActions'
 import { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { ApiClient } from '@/api/client'
 
+vi.mock('virtual:data-version', () => ({ DATA_VERSION: 0 }))
+
 function fixture() {
   const pb = usePromptBuilderStore()
   const engine = ref<'sd' | 'anima' | 'krea2'>('sd')
@@ -51,6 +53,16 @@ beforeEach(() => {
     outfits: [{ id: 'outfit-one', name: '服装一', default: true, tokens: ['dress'], prose: 'a dress' }],
   }] as any
   store.sceneBlueprints = [{ id: 'blueprint-one', characterId: 'popular-one', title: '蓝图一', category: 'daily', promptTokens: [], negativeTokens: [] }] as any
+})
+
+it.each([undefined, false, true] as const)('adversarial TeaCache blueprint restores %s without inheriting stale cache settings', async teaCache => {
+  const { animaState, context } = fixture()
+  Object.assign(animaState.value, { provider: 'native', teaCache: false, teaCacheThresh: 0.1 })
+  const result = await loadBlueprint({ schema: 'aics-director-blueprint-v1', subject: 'studio', char: 'nene', story: 'Saved scene',
+    drawEngine: 'anima', anima: { modelId: 'anima-aesthetic-v1.1', ...(teaCache === undefined ? {} : { teaCache }) } }, context as any)
+  expect(result.applied).toBe(true)
+  expect(animaState.value.teaCache).toBe(teaCache)
+  expect(animaState.value.teaCacheThresh).toBeUndefined()
 })
 
 describe('director blueprint round-trip', () => {

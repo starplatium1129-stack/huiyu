@@ -22,7 +22,7 @@ function deferred<T>() {
 const scopes: ReturnType<typeof effectScope>[] = []
 function setup(overrides: Partial<InferenceSetupApi> = {}) {
   const api: InferenceSetupApi = { prepareRuntime: vi.fn().mockResolvedValue({ ok: true, operation: operation(), preparedPaths: paths }), inspectModel: vi.fn().mockResolvedValue(plan), importModel: vi.fn(), ...overrides }
-  const configured = ref<InferenceSettings>({ engine: 'comfy', python: '/saved-python', worker: '/saved-worker', modelsRoot: '/saved-models', lorasRoot: '/saved-loras' })
+  const configured = ref<InferenceSettings>({ engine: 'comfy', acceleration: 'native', python: '/saved-python', worker: '/saved-worker', modelsRoot: '/saved-models', lorasRoot: '/saved-loras' })
   const scope = effectScope(); scopes.push(scope)
   const state = scope.run(() => useInferenceSetup(configured, ref(false), api))!
   state.basePython.value = input.basePython; state.wheelhouse.value = input.wheelhouse; state.workspacePath.value = input.workspacePath

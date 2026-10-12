@@ -1,5 +1,6 @@
 # Python 3.11; install explicitly into a dedicated environment, never at generation time.
 torch==2.8.0
+torchvision==0.23.0
 diffusers==0.41.0
 transformers==5.10.1
 accelerate==1.12.0

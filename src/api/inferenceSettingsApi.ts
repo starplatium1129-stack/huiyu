@@ -3,6 +3,7 @@ import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 
 export interface InferenceSettings {
   engine: 'comfy' | 'native'
+  acceleration: 'native' | 'sage' | 'compiled-sage' | 'compiled-fused-sage'
   modelsRoot: string
   lorasRoot: string
   python: string
@@ -18,7 +19,7 @@ export interface InferenceSettingsResponse {
 export interface InferenceDiagnostics {
   basis: 'configured'
   configuration: 'valid' | 'invalid'
-  files: Record<Exclude<keyof InferenceSettings, 'engine'>, boolean>
+  files: Record<Exclude<keyof InferenceSettings, 'engine' | 'acceleration'>, boolean>
   dependencies: 'unchecked'
   runtime: 'unverified'
   message: string
@@ -36,10 +37,11 @@ export interface InferenceSettingsApi {
   getStatus(signal?: AbortSignal): Promise<InferenceStatusResponse>
   save(settings: InferenceSettings, signal?: AbortSignal): Promise<InferenceSettingsResponse>
 }
-export const inferenceSettingKeys = ['engine', 'modelsRoot', 'lorasRoot', 'python', 'worker'] as const
+export const inferenceSettingKeys = ['engine', 'acceleration', 'modelsRoot', 'lorasRoot', 'python', 'worker'] as const
 const object = (value: unknown): value is ApiResponseObject => typeof value === 'object' && value !== null && !Array.isArray(value)
 function settings(value: unknown): boolean {
   return object(value) && (value.engine === 'comfy' || value.engine === 'native')
+    && typeof value.acceleration === 'string' && ['native', 'sage', 'compiled-sage', 'compiled-fused-sage'].includes(value.acceleration)
     && ['modelsRoot', 'lorasRoot', 'python', 'worker'].every(key => typeof value[key] === 'string')
 }
 function response(value: ApiResponseObject): boolean {

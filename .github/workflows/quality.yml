@@ -76,26 +76,64 @@ jobs:
           const { execFileSync } = require('node:child_process');
           let full = ['schedule', 'workflow_dispatch'].includes(process.env.GITHUB_EVENT_NAME);
           let docs = false;
+          let inference = full;
           const base = process.env.AICS_HYGIENE_BASE_REF || '';
           if (!full) {
             try {
               if (!/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i.test(base) || /^0+$/.test(base)) throw new Error('Invalid baseline');
               execFileSync('git', ['cat-file', '-e', base + '^{commit}']);
               const files = execFileSync('git', ['diff', '--name-only', '-z', base, '--'], { encoding: 'utf8' }).split('\0').filter(Boolean);
+              inference = files.some(file => /^tools\/inference\/.*\.py$/.test(file)
+                || /^tools\/inference\/(requirements\.txt|runtime-manifest\.json)$/.test(file)
+                || /^scripts\/maintenance\/(prepare-inference|calibrate-anima-teacache)\.py$/.test(file)
+                || /^scripts\/tests\/(test-prepare-inference|test-calibrate-anima-teacache|calibration_runtime_cases)\.py$/.test(file)
+                || file === '.github/workflows/quality.yml');
               docs = files.length > 0 && files.every(file => /^(docs|plans)\//.test(file)
                 || (/\.md$/.test(file) && !/^runtime-rs\/native-/.test(file)));
             } catch (error) {
               console.error('Unavailable comparison baseline; full validation selected:', error.message);
               full = true;
+              inference = true;
             }
           }
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `full=${full}\ndocs=${docs}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `full=${full}\ndocs=${docs}\ninference=${inference}\n`);
           NODE
       - name: Validate documentation
         if: steps.scope.outputs.docs == 'true'
         run: |
           git diff --check "$AICS_HYGIENE_BASE_REF" --
           node --experimental-transform-types scripts/maintenance/check-doc-links.ts
+      - name: Use Python for selected inference CPU contracts
+        if: steps.scope.outputs.inference == 'true'
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+      - name: Prepare isolated NumPy and Pillow fixtures
+        if: steps.scope.outputs.inference == 'true'
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p runtime/quality-checks
+          python -m venv runtime/inference-ci/venv
+          # Test-only pins: product NumPy is transitive, not pinned by this lane.
+          # Do not install tools/inference/requirements.txt or any ML packages.
+          runtime/inference-ci/venv/bin/python -m pip --isolated install --index-url https://pypi.org/simple --disable-pip-version-check --only-binary=:all: --no-deps \
+            numpy==2.3.5 Pillow==11.3.0 2>&1 | tee runtime/quality-checks/inference-python-install.log
+      - name: Run selected inference CPU and fake contracts
+        if: steps.scope.outputs.inference == 'true'
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          python=runtime/inference-ci/venv/bin/python
+          {
+            "$python" --version
+            "$python" -c "import numpy, PIL; print('NumPy', numpy.__version__, 'Pillow', PIL.__version__)"
+            "$python" -m unittest discover -s tools/inference -p 'test_*.py' -v
+            "$python" scripts/tests/test-prepare-inference.py -v
+            "$python" scripts/tests/test-calibrate-anima-teacache.py -v
+          } 2>&1 | tee runtime/quality-checks/inference-python.log
       - name: Install dependencies
         if: steps.scope.outputs.docs != 'true'
         run: npm ci

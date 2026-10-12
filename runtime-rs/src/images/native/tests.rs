@@ -3,11 +3,12 @@ use super::*;
 fn native_defaults_are_explicit_and_unsupported_effects_fail() {
     let input = json!({"family":"anima","sampler":"res_multistep","scheduler":"simple","teaCache":true,"teaCacheThresh":0.08});
     let normalized = normalize(&json!({}), input.clone()).unwrap();
-    assert_eq!(normalized["sampler"], "euler");
-    assert_eq!(normalized["teaCache"], false);
+    assert_eq!(normalized["sampler"], "res_multistep");
+    assert_eq!(normalized["teaCache"], true);
+    assert_eq!(normalized["teaCacheAuto"], true);
     assert!(normalized.get("teaCacheThresh").is_none());
     assert_eq!(normalized["inferenceEngine"], "native");
-    for key in ["hiresFix", "styleLoraId", "rcas"] {
+    for key in ["styleLoraId", "rcas"] {
         let raw = json!({key:true});
         assert_eq!(
             normalize(&raw, input.clone()).unwrap_err().code,
@@ -22,10 +23,109 @@ fn native_defaults_are_explicit_and_unsupported_effects_fail() {
     );
 }
 #[test]
+fn native_sampling_and_hires_preserve_supported_recipes_for_calibration_validation() {
+    for (sampler, scheduler) in [
+        ("euler", "normal"),
+        ("euler", "sgm_uniform"),
+        ("res_multistep", "simple"),
+    ] {
+        let input = json!({"family":"anima","sampler":sampler,"scheduler":scheduler});
+        let accepted = normalize(&json!({}), input).unwrap();
+        assert_eq!(accepted["sampler"], sampler);
+        assert_eq!(accepted["scheduler"], scheduler);
+    }
+    let input = json!({"family":"anima","hiresFix":true,"hiresScale":1.5,"hiresDenoise":0.35,"hiresUpscaler":"Latent"});
+    assert!(normalize(&json!({}), input.clone()).is_ok());
+    assert_eq!(
+        normalize(&json!({"teaCache":true}), input.clone()).unwrap()["teaCache"],
+        true
+    );
+    assert!(normalize(&json!({"hiresUpscaler":"unknown"}), input).is_err());
+    for prompt in ["(red coat:1.2)", "[blue sky]", "a BREAK b"] {
+        let accepted = normalize(
+            &json!({}),
+            json!({"family":"anima","prompt":prompt,"negative":prompt}),
+        )
+        .unwrap();
+        assert_eq!(accepted["prompt"], prompt);
+        assert_eq!(accepted["negative"], prompt);
+    }
+    assert!(
+        normalize(
+            &json!({}),
+            json!({"family":"anima","prompt":r"rossi \(arknights\), coat"})
+        )
+        .is_ok()
+    );
+}
+
+#[tokio::test]
+async fn native_hires_resolves_fixed_remacri_resource_and_freezes_effective_path() {
+    let root = tempfile::tempdir().unwrap();
+    let settings = Settings {
+        engine: "native".into(),
+        acceleration: "native".into(),
+        python: root.path().join("python"),
+        worker: root.path().join("worker.py"),
+        models_root: root.path().join("models"),
+        loras_root: root.path().join("loras"),
+        environment_overrides: vec![],
+    };
+    std::fs::write(&settings.python, "fixture").unwrap();
+    std::fs::write(&settings.worker, "fixture").unwrap();
+    let model = settings.models_root.join("anima-miaomiao-v1.6");
+    std::fs::create_dir_all(&model).unwrap();
+    std::fs::write(model.join("model_index.json"), "{}").unwrap();
+    let profile = model.join(TEACACHE_PROFILE);
+    std::fs::write(&profile, "{}").unwrap();
+    let input = normalize(&json!({"teaCache":true}), json!({"family":"anima","modelId":"anima-miaomiao-v1.6",
+        "sampler":"euler","scheduler":"normal","hiresFix":true,"hiresScale":1.5,"hiresDenoise":0.35,"hiresUpscaler":"Auto"})).unwrap();
+    let latent = plan(&settings, input.clone(), &[]).await.unwrap();
+    assert_eq!(latent.input["hiresUpscaler"], "Latent");
+    assert_eq!(latent.input["hiresSampler"], "euler");
+    assert_eq!(latent.input["hiresScheduler"], "normal");
+    assert_eq!(latent.input["rcasStrength"], 0.75);
+    assert_eq!(latent.input["teaCache"], true);
+    assert_eq!(
+        latent.tea_cache_profile_path,
+        Some(std::fs::canonicalize(&profile).unwrap())
+    );
+    assert!(latent.upscale_model_path.is_none());
+    let mut required = input.clone();
+    required["hiresUpscaler"] = json!("Remacri");
+    assert!(
+        matches!(plan(&settings, required, &[]).await, Err(error) if error.code == "NATIVE_UPSCALER_UNAVAILABLE")
+    );
+    let weights = settings
+        .models_root
+        .join("upscale_models")
+        .join(REMACRI_FILE);
+    std::fs::create_dir_all(weights.parent().unwrap()).unwrap();
+    std::fs::write(&weights, "fixture").unwrap();
+    let mut injected = input;
+    injected["upscaleModelPath"] = json!("/untrusted/path");
+    injected["superResModel"] = json!("untrusted.safetensors");
+    let pixel = plan(&settings, injected, &[]).await.unwrap();
+    assert_eq!(
+        pixel.upscale_model_path,
+        Some(std::fs::canonicalize(&weights).unwrap())
+    );
+    assert_eq!(pixel.input["requestedHiresUpscaler"], "Auto");
+    assert_eq!(pixel.input["hiresUpscaler"], "Remacri");
+    assert_eq!(pixel.input["superResModel"], REMACRI_FILE);
+    assert_eq!(pixel.input["rcasStrength"], 0.);
+    assert!(pixel.input["hiresSampler"].is_null());
+    std::fs::remove_file(&weights).unwrap();
+    assert!(
+        matches!(plan(&settings, pixel.input, &[]).await, Err(error) if error.code == "NATIVE_UPSCALER_UNAVAILABLE")
+    );
+}
+#[test]
 fn native_teacache_requires_explicit_boolean_and_does_not_inherit_comfy_thresholds() {
     let input = json!({"family":"anima","teaCache":true,"teaCacheThresh":0.08});
     let enabled = normalize(&json!({"teaCache":true}), input.clone()).unwrap();
     assert_eq!(enabled["teaCache"], true);
+    assert_eq!(enabled["teaCacheAuto"], false);
     assert!(enabled.get("teaCacheThresh").is_none());
     assert_eq!(
         normalize(
@@ -40,10 +140,22 @@ fn native_teacache_requires_explicit_boolean_and_does_not_inherit_comfy_threshol
         json!({"teaCache":false,"teaCacheThresh":0.08}),
         json!({"teaCache":true,"teaCacheThresh":0.}),
         json!({"teaCache":true,"teaCacheThresh":1.01}),
+        json!({"teaCacheThresh":0.2}),
     ] {
         assert_eq!(
             normalize(&raw, input.clone()).unwrap_err().code,
             "INVALID_PARAMETER"
+        );
+    }
+    // A caller cannot forge the host-owned marker to weaken explicit requests.
+    for enabled in [true, false] {
+        let raw = json!({"teaCache":enabled,"teaCacheAuto":true});
+        let normalized = normalize(&raw, input.clone()).unwrap();
+        assert_eq!(normalized["teaCache"], enabled);
+        assert_eq!(normalized["teaCacheAuto"], false);
+        assert_eq!(
+            validation::validate(&raw, "anima", true).unwrap_err().code,
+            "UNKNOWN_PARAMETER"
         );
     }
 }
@@ -52,6 +164,7 @@ async fn native_teacache_requires_a_contained_local_profile_without_silent_fallb
     let root = tempfile::tempdir().unwrap();
     let settings = Settings {
         engine: "native".into(),
+        acceleration: "native".into(),
         python: root.path().join("python"),
         worker: root.path().join("worker.py"),
         models_root: root.path().join("models"),
@@ -77,9 +190,26 @@ async fn native_teacache_requires_a_contained_local_profile_without_silent_fallb
         Err(error) => assert_eq!(error.code, "NATIVE_TEACACHE_PROFILE_UNAVAILABLE"),
         Ok(_) => panic!("explicit TeaCache must not silently disable caching"),
     }
+    let auto = normalize(&json!({}), input.clone()).unwrap();
+    let prepared = plan(&settings, auto.clone(), &[]).await.unwrap();
+    assert!(prepared.tea_cache_profile_path.is_none());
+    // Resuming the frozen input must not turn auto into a strict true request.
+    let resumed = plan(&settings, prepared.input, &[]).await.unwrap();
+    assert_eq!(resumed.input["teaCacheAuto"], true);
+    assert!(resumed.tea_cache_profile_path.is_none());
     let profile = model.join(TEACACHE_PROFILE);
     std::fs::write(&profile, "").unwrap();
-    assert!(tea_cache_profile(&model).await.is_none());
+    assert!(tea_cache_profile(&model).await.is_err());
+    assert!(matches!(plan(&settings, auto.clone(), &[]).await,
+        Err(error) if error.code == "NATIVE_TEACACHE_PROFILE_UNAVAILABLE"));
+    std::fs::write(&profile, vec![b' '; 65537]).unwrap();
+    assert!(matches!(plan(&settings, auto.clone(), &[]).await,
+        Err(error) if error.code == "NATIVE_TEACACHE_PROFILE_UNAVAILABLE"));
+    std::fs::remove_file(&profile).unwrap();
+    std::fs::create_dir(&profile).unwrap();
+    assert!(matches!(plan(&settings, auto, &[]).await,
+        Err(error) if error.code == "NATIVE_TEACACHE_PROFILE_UNAVAILABLE"));
+    std::fs::remove_dir(&profile).unwrap();
     // Host reports file readiness only. Calibration validity belongs to the worker.
     std::fs::write(&profile, "{}").unwrap();
     input["teaCacheProfilePath"] = json!("/untrusted/profile.json");
@@ -105,13 +235,15 @@ async fn native_teacache_requires_a_contained_local_profile_without_silent_fallb
         generation::Service::for_images(config, LocalUpstream::new(), CancellationToken::new())
             .unwrap();
     let snapshot = status(&backend, "anima").await.unwrap();
+    assert_eq!(snapshot["capabilities"]["hiresTeaCache"], true);
     let selected = snapshot["models"]
         .as_array()
         .unwrap()
         .iter()
         .find(|model| model["id"] == "anima-base-v1.0")
         .unwrap();
-    assert_eq!(selected["defaults"]["teaCache"], false);
+    assert_eq!(selected["defaults"]["teaCache"], true);
+    assert_eq!(selected["defaults"]["teaCachePolicy"], "auto");
     assert_eq!(selected["capabilities"]["teaCache"], true);
     assert_eq!(
         selected["teaCacheProfile"]["readiness"],
@@ -127,7 +259,7 @@ async fn native_teacache_requires_a_contained_local_profile_without_silent_fallb
         let external = root.path().join("external.json");
         std::fs::write(&external, "{}").unwrap();
         std::os::unix::fs::symlink(&external, &profile).unwrap();
-        assert!(tea_cache_profile(&model).await.is_none());
+        assert!(tea_cache_profile(&model).await.is_err());
     }
 }
 #[test]
@@ -188,6 +320,7 @@ async fn native_automatic_mask_requires_complete_contained_safetensors_resources
     let root = tempfile::tempdir().unwrap();
     let settings = Settings {
         engine: "native".into(),
+        acceleration: "native".into(),
         python: root.path().join("python"),
         worker: root.path().join("worker.py"),
         models_root: root.path().join("models"),
@@ -263,6 +396,7 @@ async fn native_lora_resolves_only_compatible_catalog_resources() {
     let root = tempfile::tempdir().unwrap();
     let settings = Settings {
         engine: "native".into(),
+        acceleration: "native".into(),
         python: root.path().join("python"),
         worker: root.path().join("worker.py"),
         models_root: root.path().join("models"),

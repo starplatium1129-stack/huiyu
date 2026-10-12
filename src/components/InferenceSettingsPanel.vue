@@ -18,6 +18,11 @@
             <StudioSelect id="inference-engine" v-model="draft.engine" label="Anima 绘图引擎" :options="engineOptions" :disabled="saving || loading || setupBusy" />
           </div>
           <p class="inference-scope">以下为独立引擎路径，均填写运行绘遇的电脑上的绝对路径。模型根目录下以模型 ID 建立完整 Diffusers 模型目录，包含模型索引、transformer、文本编码器、VAE 与 tokenizer 等组件。</p>
+          <div class="inference-field">
+            <label for="inference-acceleration">独立引擎加速模式</label>
+            <StudioSelect id="inference-acceleration" v-model="draft.acceleration" label="独立引擎加速模式" :options="accelerationOptions" :disabled="saving || loading || setupBusy" />
+            <small>Sage 模式需匹配本机运行库与显卡；TeaCache 使用该模式对应的校准档。</small>
+          </div>
           <div v-for="field in pathFields" :key="field.key" class="inference-field">
             <label :for="`inference-${field.key}`">{{ field.label }}</label>
             <input :id="`inference-${field.key}`" v-model="draft[field.key]" type="text" :disabled="saving || loading || setupBusy" spellcheck="false" autocomplete="off" required :aria-describedby="`inference-${field.key}-hint`" />
@@ -50,9 +55,9 @@
         <details class="inference-capabilities">
           <summary>独立引擎支持范围与限制</summary>
           <div>
-            <p>已实现：Anima 文生图、无遮罩图生图、本地兼容 LoRA（transformer / text_conditioner）。实际模型兼容性仍需设备验收。原始 MiaoMiao 权重仍需转换为完整 Diffusers 模型目录，尚未完成转换验收。</p>
-            <p>实验候选：手绘或本地 CLIPSeg 蒙版重绘与合成；TeaCache 默认关闭，需要所选模型目录内的 teacache-profile.json 校准档，文件存在仅表示可尝试加载。模型、LoRA 与本次采样的匹配由 Worker 核验，速度与画质尚未验收。</p>
-            <p>暂不支持：高清修复与放大器、RCAS、Krea、SDXL、DoRA 及不兼容的 LoRA 格式。请为这些功能使用对应的其他后端。</p>
+            <p>已实现：Anima 文生图、图生图、本地兼容 LoRA、手绘或 CLIPSeg 蒙版重绘、高清修复、Remacri 放大与 RCAS。原始权重需转换为完整 Diffusers 模型目录。</p>
+            <p>TeaCache 默认自动开启：匹配模型、LoRA、加速模式及采样参数的本地校准档时加速，未匹配时使用完整计算。文件存在不代表当前组合已匹配，速度与画面以对应组合的本机验收为准。</p>
+            <p>暂不支持：Krea、SDXL、DoRA 及不兼容的 LoRA 格式。请为这些功能使用对应的其他后端。</p>
           </div>
         </details>
       </template>
@@ -74,6 +79,7 @@ function fillPreparedPaths(paths: PreparedInferencePaths) {
   notice.value = '已填入路径草稿。请确认引擎选择后保存，再重启运行时；当前运行与已保存配置未改变。'
 }
 const engineOptions = [{ value: 'comfy', label: 'ComfyUI' }, { value: 'native', label: '独立引擎（Native Anima）' }]
+const accelerationOptions = [{ value: 'native', label: '原生计算' }, { value: 'sage', label: 'SageAttention' }, { value: 'compiled-sage', label: '编译 + SageAttention' }, { value: 'compiled-fused-sage', label: '编译 + SageAttention + LoRA 融合' }]
 const engineLabel = (engine: string) => engine === 'native' ? '独立引擎（Native Anima）' : 'ComfyUI'
 const pathFields = [
   { key: 'modelsRoot', label: '模型根目录', hint: '目录格式：模型根目录 / 模型 ID / 完整 Diffusers 组件；不是 ComfyUI 的原始权重目录。' },

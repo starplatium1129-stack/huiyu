@@ -113,6 +113,7 @@ async fn diagnose(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<V
         .stderr(Stdio::null())
         .env_remove("PYTHONPATH")
         .env_remove("PYTHONHOME")
+        .env("HUIYU_INFERENCE_ACCELERATION", &settings.acceleration)
         .env("HF_HUB_OFFLINE", "1")
         .env("TRANSFORMERS_OFFLINE", "1");
     let process = s.processes.spawn(&mut command)?;

@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 
 import masked_anima
 import worker
@@ -78,6 +78,96 @@ def fake_modules(draws):
 
 
 class MaskTests(unittest.TestCase):
+    def setUp(self):
+        stub = patch.object(worker.load_mask_tools("anima_prompt_weights"), "apply_prompt_weights", side_effect=lambda blocks, **_: blocks)
+        stub.start()
+        self.addCleanup(stub.stop)
+    def test_input_image_reuses_independent_rgb_exif_result(self):
+        from PIL import ImageOps
+        original_open, original_convert = Image.open, Image.Image.convert
+        for format, mode, orientation in (("PNG", "RGB", 1), ("JPEG", "RGB", 6),
+                                          ("PNG", "RGBA", 6), ("PNG", "L", 1)):
+            with self.subTest(format=format, mode=mode, orientation=orientation), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / ("input." + format.lower())
+                image = Image.new("RGB", (3, 2))
+                image.putdata([(i * 40, 255 - i * 30, i * 20) for i in range(6)])
+                exif = Image.Exif()
+                exif[274], exif[271] = orientation, "input-copy-fixture"
+                exif[34665] = {36867: "2026:10:10 20:36:00"}
+                image.convert(mode).save(path, format=format, exif=exif)
+                with original_open(path) as source:
+                    expected = ImageOps.exif_transpose(source).convert("RGB")
+                opened, conversions = [], []
+
+                def open_image(*args, **kwargs):
+                    source = original_open(*args, **kwargs)
+                    opened.append(source)
+                    return source
+
+                def convert(source, *args, **kwargs):
+                    conversions.append(source.mode)
+                    return original_convert(source, *args, **kwargs)
+
+                with patch.object(Image, "open", side_effect=open_image), patch.object(Image.Image, "convert", convert):
+                    actual = worker.load_input_image(path)
+                self.assertIsNone(opened[0].fp)
+                self.assertIsNot(actual, opened[0])
+                self.assertEqual(conversions, [] if mode == "RGB" and orientation == 1 else [mode])
+                self.assertEqual((actual.mode, actual.size, actual.tobytes()),
+                                 (expected.mode, expected.size, expected.tobytes()))
+                self.assertEqual(actual.info, expected.info)
+                self.assertEqual(dict(actual.getexif()), dict(expected.getexif()))
+                self.assertEqual(actual.getexif().get_ifd(34665), expected.getexif().get_ifd(34665))
+                source_pixels = opened[0].tobytes()
+                path.unlink()
+                actual.putpixel((0, 0), (1, 2, 3))
+                self.assertEqual(opened[0].tobytes(), source_pixels)
+
+    def test_png_output_preserves_exact_pixels_and_reports_saved_size(self):
+        pixels = np.arange(19 * 13 * 3, dtype=np.uint8).reshape(13, 19, 3)
+        image = Image.fromarray(pixels)
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "nested" / "result.png"
+            report = masked_anima.save_png(image, output)
+            with Image.open(output) as saved:
+                self.assertEqual(saved.format, "PNG")
+                self.assertEqual(saved.mode, image.mode)
+                self.assertEqual(saved.size, image.size)
+                self.assertEqual(saved.tobytes(), image.tobytes())
+            self.assertEqual(report["outputBytes"], output.stat().st_size)
+            self.assertGreaterEqual(report["outputSaveSeconds"], 0)
+            self.assertEqual(list(output.parent.iterdir()), [output])
+
+    def test_png_size_fallback_stays_atomic_and_cleans_up_failures(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "result.png"
+            for fail in (False, True):
+                with self.subTest(fallback_fails=fail):
+                    output.write_bytes(b"previous output")
+                    levels = []
+                    def save(path, format, compress_level):
+                        self.assertEqual(format, "PNG")
+                        self.assertEqual(output.read_bytes(), b"previous output")
+                        levels.append(compress_level)
+                        if compress_level == 4:
+                            with Path(path).open("wb") as stream:
+                                stream.truncate(32 * 1024 * 1024 + 1)  # sparse, no giant image fixture
+                        elif fail:
+                            raise OSError("fixture fallback failure")
+                        else:
+                            Path(path).write_bytes(b"fake default-compressed PNG")
+                    image = types.SimpleNamespace(save=save)
+                    if fail:
+                        with self.assertRaisesRegex(OSError, "fallback failure"):
+                            masked_anima.save_png(image, output)
+                        self.assertEqual(output.read_bytes(), b"previous output")
+                    else:
+                        report = masked_anima.save_png(image, output)
+                        self.assertEqual(output.read_bytes(), b"fake default-compressed PNG")
+                        self.assertEqual(report["outputBytes"], output.stat().st_size)
+                    self.assertEqual(levels, [4, 6])
+                    self.assertEqual(list(output.parent.iterdir()), [output])
+
     def test_bundled_helper_is_checked_before_dependency_diagnostics(self):
         module = worker.load_mask_tools()
         self.assertEqual(Path(module.__file__).resolve(), Path(worker.__file__).with_name("masked_anima.py").resolve())
@@ -92,21 +182,69 @@ class MaskTests(unittest.TestCase):
         paint.putpixel((2, 2), (255, 255, 255, 255))
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "mask.png"
-            paint.save(path)
-            resized, mask = masked_anima.prepare_images(original, path, (5, 5), 1)
+            exif = Image.Exif()
+            exif[274] = 6
+            exif[34665] = {36867: "2026:10:10 22:44:00"}
+            paint.save(path, exif=exif)
+            conversions, convert = [], Image.Image.convert
+            def observed_convert(source, mode=None, *args, **kwargs):
+                conversions.append((source.mode, mode))
+                return convert(source, mode, *args, **kwargs)
+            with patch.object(Image.Image, "convert", observed_convert):
+                resized, mask = masked_anima.prepare_images(original, path, (5, 5), 1)
+            self.assertNotIn(("RGBA", "RGBA"), conversions)
+            self.assertIn(("RGBA", "L"), conversions)
+            self.assertNotIn(274, mask.getexif())
+            self.assertEqual(mask.getexif().get_ifd(34665), {36867: "2026:10:10 22:44:00"})
+            self.assertEqual(mask.readonly, 0)
+            self.assertIsNot(resized, original)
             self.assertEqual(mask.getbbox(), (1, 1, 4, 4))
-            result = masked_anima.composite(Image.new("RGB", (5, 5), "red"), resized, mask)
+            generated = Image.new("RGB", (5, 5), "red")
+            before = [image.tobytes() for image in (generated, resized, mask)]
+            result = masked_anima.composite(generated, resized, mask)
+            expected = Image.composite(generated.convert("RGB"), resized.convert("RGB"), mask)
+            self.assertEqual(result.tobytes(), expected.tobytes())
             self.assertEqual(result.getpixel((0, 0)), original.getpixel((0, 0)))
             self.assertEqual(result.getpixel((1, 1)), (255, 0, 0))
+            result.putpixel((0, 0), (1, 2, 3))
+            self.assertEqual([image.tobytes() for image in (generated, resized, mask)], before)
+            self.assertEqual(masked_anima.composite(generated.convert("RGBA"), resized, mask).tobytes(), expected.tobytes())
             paint.putpixel((2, 2), (255, 255, 255, 128))
             paint.save(path)
             _, soft_mask = masked_anima.prepare_images(original, path, (5, 5), 0)
             self.assertEqual(soft_mask.getpixel((2, 2)), 128)
+            _, grown_soft = masked_anima.prepare_images(original, path, (5, 5), 1)
+            self.assertEqual(grown_soft.getpixel((1, 1)), 128)
+            self.assertEqual(grown_soft.getpixel((0, 0)), 0)
             with self.assertRaisesRegex(ValueError, "dimensions"):
                 masked_anima.prepare_images(Image.new("RGB", (4, 5)), path, (5, 5), 0)
             Image.new("RGBA", (5, 5), (255, 255, 255, 0)).save(path)
-            with self.assertRaisesRegex(ValueError, "no editable"):
-                masked_anima.prepare_images(original, path, (5, 5), 0)
+            for grow in (0, 8):
+                with self.assertRaisesRegex(ValueError, "no editable"):
+                    masked_anima.prepare_images(original, path, (5, 5), grow)
+        # All gray levels, replicated borders and kernels wider than either axis.
+        for values in (np.arange(256, dtype=np.uint8).reshape(16, 16),
+                       np.array([[0, 17, 255, 2, 99]], dtype=np.uint8),
+                       np.array([[255], [0], [128]], dtype=np.uint8), np.array([[3]], dtype=np.uint8)):
+            source = Image.fromarray(values)
+            before = source.tobytes()
+            for grow in (1, 2, 8, 32):
+                with self.subTest(size=source.size, grow=grow), \
+                        patch.object(masked_anima, "_block_maximum", wraps=masked_anima._block_maximum) as block_maximum:
+                    if grow == 1:
+                        # Tiny kernels are faster in Pillow; preserve the measured crossover.
+                        with patch.object(np, "pad", side_effect=AssertionError("radius 1 must keep Pillow")):
+                            _, grown = masked_anima.prepare_mask(Image.new("RGB", source.size), source, source.size, grow)
+                    else:
+                        _, grown = masked_anima.prepare_mask(Image.new("RGB", source.size), source, source.size, grow)
+                    expected = source.filter(ImageFilter.MaxFilter(2 * grow + 1))
+                    self.assertEqual(block_maximum.call_count, 2 if grow >= 8 else 0)
+                    self.assertEqual((grown.mode, grown.size, grown.tobytes()), ("L", source.size, expected.tobytes()))
+                    grown.putpixel((0, 0), 73)
+                    self.assertEqual(source.tobytes(), before)
+        rgb_mask = Image.fromarray(np.arange(27, dtype=np.uint8).reshape(3, 3, 3))
+        _, grown = masked_anima.prepare_mask(Image.new("RGB", (3, 3)), rgb_mask, (3, 3), 1)
+        self.assertEqual((grown.mode, grown.tobytes()), ("RGB", rgb_mask.filter(ImageFilter.MaxFilter(3)).tobytes()))
 
     def test_custom_blocks_reuse_noise_and_restore_next_then_clean_latents(self):
         draws, scales = [], []
@@ -153,7 +291,13 @@ class MaskTests(unittest.TestCase):
             self.assertEqual(len(scales), 2)  # final step never re-noises original
             # Precomputed noise remains exact; no hidden second random draw.
             state["latents"] = draws[0][0]
-            prepare(components, state)
+            gray = np.arange(256, dtype=np.uint8).reshape(16, 16)
+            state["mask_image"] = Image.fromarray(gray)
+            with patch("torch.from_numpy", wraps=Tensor) as convert:
+                prepare(components, state)
+            expected = gray.astype(np.float32) / 255
+            self.assertEqual(convert.call_args.args[0].tobytes(), expected.tobytes())
+            np.testing.assert_array_equal(np.asarray(state["mask_image"]), gray)
             self.assertEqual(len(draws), 1)
             self.assertIs(state["mask_noise"], draws[0][0])
 
@@ -171,6 +315,7 @@ class MaskTests(unittest.TestCase):
                 "input": {"prompt": "test", "width": 64, "height": 64, "steps": 1}}
             arguments = {}
             class Pipeline:
+                _execution_device = "cpu"
                 scheduler = types.SimpleNamespace(step=lambda: None)
                 def __call__(self, **kwargs):
                     arguments.update(kwargs)

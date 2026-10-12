@@ -1,12 +1,22 @@
 use super::*;
 use futures_util::future::BoxFuture;
 
+mod fixtures;
+mod observations;
+use fixtures::fixture;
+use observations::runtime_metrics;
+
 #[derive(Default)]
-struct Hooks(std::sync::Mutex<Vec<&'static str>>);
+struct Hooks(std::sync::Mutex<Vec<&'static str>>, Option<Arc<Service>>);
 impl ExecutionHooks for Hooks {
-    fn checkpoint(&self, _: Value) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async {
+    fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>> {
+        Box::pin(async move {
             self.0.lock().unwrap().push("checkpoint");
+            if let Some(service) = &self.1 {
+                let id = value["gatewayJobId"].as_str().unwrap();
+                assert!(!service.inner.native.tokens.lock().await.contains_key(id));
+                assert_eq!(service.cancel(id, "owner").await?["status"], "cancelling");
+            }
             Ok(())
         })
     }
@@ -31,49 +41,6 @@ impl ExecutionHooks for Hooks {
         })
     }
 }
-fn fixture(root: &std::path::Path, script: &str) -> (Arc<Service>, Plan) {
-    let worker = root.join("worker.py");
-    let body = script.replace("r=json.loads(sys.stdin.readline())", "r=request");
-    let body = body
-        .lines()
-        .map(|line| format!("    {line}\n"))
-        .collect::<String>();
-    std::fs::write(&worker, format!("import json,sys\nfor line in sys.stdin:\n    request=json.loads(line)\n{body}    print(json.dumps({{'id':request['id'],'event':'ready'}}),flush=True)\n")).unwrap();
-    let mut service = Service::for_images(
-        Config {
-            sd_host: "http://127.0.0.1:1".into(),
-            sd_auth: None,
-            comfy_host: "http://127.0.0.1:1".into(),
-            ai_workspace_root: root.into(),
-            runtime_root: root.join("runtime"),
-        },
-        LocalUpstream::new(),
-        CancellationToken::new(),
-    )
-    .unwrap();
-    // Inject the selected engine without process-global environment mutation.
-    Arc::get_mut(&mut service.inner).unwrap().native_images = true;
-    let plan = Plan {
-        input: json!({"family":"anima","modelId":"anima-base-v1.0","prompt":"fixture","negative":"","width":1,"height":1,"steps":2,"cfg":4.5,"seed":1,"sampler":"euler","scheduler":"simple","teaCache":false,"inferenceEngine":"native"}),
-        settings: Settings {
-            engine: "native".into(),
-            python: std::env::var_os("HUIYU_TEST_PYTHON")
-                .map(PathBuf::from)
-                .unwrap_or_else(|| PathBuf::from(if cfg!(windows) { "py" } else { "python3" })),
-            worker,
-            models_root: root.join("models"),
-            loras_root: root.join("loras"),
-            environment_overrides: vec![],
-        },
-        model_dir: root.into(),
-        mask_model_dir: None,
-        tea_cache_profile_path: None,
-        init_image: None,
-        mask_image: None,
-        loras: vec![],
-    };
-    (Arc::new(service), plan)
-}
 async fn settled(service: &Service, id: &str) -> Value {
     tokio::time::timeout(Duration::from_secs(10), async {
         loop {
@@ -92,7 +59,7 @@ async fn native_result_uses_jobs_hooks_and_owner_authorization_without_comfy() {
     let root = tempfile::tempdir().unwrap();
     let (service, mut plan) = fixture(
         root.path(),
-        r#"import json,sys,zlib,struct
+        &r#"import json,sys,zlib,struct
 r=json.loads(sys.stdin.readline())
 assert r['input']['teaCache'] is False
 assert 'teaCacheThresh' not in r['input'] and r['teaCacheProfilePath'] is None
@@ -108,8 +75,8 @@ def chunk(t,d): return struct.pack('>I',len(d))+t+d+struct.pack('>I',zlib.crc32(
 png=b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>2I5B',1,1,8,2,0,0,0))+chunk(b'IDAT',zlib.compress(b'\0\xff\0\0'))+chunk(b'IEND',b'')
 open(r['outputPath'],'wb').write(png)
 print(json.dumps({'id':r['id'],'event':'progress','step':1,'total':2}),flush=True)
-print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath']}),flush=True)
-"#,
+print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath'],'nativeRuntime':METRICS}),flush=True)
+"#.replace("METRICS", &format!("json.loads({:?})", runtime_metrics().to_string())),
     );
     plan.init_image = Some(Arc::new(b"accepted original".to_vec()));
     plan.input["denoisingStrength"] = json!(0.8);
@@ -131,6 +98,7 @@ print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath']}),f
     assert_eq!(result["status"], "succeeded", "{result}");
     assert_eq!(result["provider"], "native");
     assert_eq!(result["progress"], 1);
+    assert_eq!(result["metadata"]["nativeRuntime"], runtime_metrics());
     assert_eq!(
         service.result(id, "intruder").await.unwrap_err().code,
         "RESULT_NOT_FOUND"
@@ -165,12 +133,14 @@ async fn native_teacache_forwards_only_the_host_selected_profile_and_explicit_pa
 r=json.loads(sys.stdin.readline())
 assert r['teaCacheProfilePath'].endswith('teacache-profile.json')
 assert r['input']['teaCache'] is True and r['input']['teaCacheThresh']==0.2
+assert r['input']['teaCacheAuto'] is False
 assert 'teaCacheProfilePath' not in r['input']
 print(json.dumps({'id':r['id'],'event':'error','code':'FIXTURE_TEACACHE_VERIFIED','message':'contract verified'}),flush=True)
 "#,
     );
     plan.tea_cache_profile_path = Some(root.path().join("teacache-profile.json"));
     plan.input["teaCache"] = json!(true);
+    plan.input["teaCacheAuto"] = json!(false);
     plan.input["teaCacheThresh"] = json!(0.2);
     plan.input["teaCacheProfilePath"] = json!("/untrusted/request/path");
     let prepared = service
@@ -184,6 +154,41 @@ print(json.dumps({'id':r['id'],'event':'error','code':'FIXTURE_TEACACHE_VERIFIED
         .unwrap();
     let result = settled(&service, submitted["id"].as_str().unwrap()).await;
     assert_eq!(result["code"], "FIXTURE_TEACACHE_VERIFIED", "{result}");
+    service.close().await;
+}
+
+#[tokio::test]
+async fn native_hires_forwards_only_host_selected_resource_and_frozen_recipe() {
+    let root = tempfile::tempdir().unwrap();
+    let script = r#"import base64,json,sys
+r=json.loads(sys.stdin.readline())
+assert r['upscaleModelPath'].endswith('4x_foolhardy_Remacri.safetensors')
+assert 'upscaleModelPath' not in r['input']
+assert r['input']['hiresFix'] is True and r['input']['hiresScale']==1.5
+assert r['input']['hiresUpscaler']=='Remacri' and r['input']['rcasStrength']==0
+assert r['input']['hiresSampler']=='res_multistep' and r['input']['hiresScheduler']=='sgm_uniform'
+open(r['outputPath'],'wb').write(base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='))
+print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath']}),flush=True)
+"#;
+    let (service, mut plan) = fixture(root.path(), script);
+    plan.upscale_model_path = Some(root.path().join("4x_foolhardy_Remacri.safetensors"));
+    for (key, value) in json!({"hiresFix":true,"hiresScale":1.5,"hiresDenoise":0.35,"hiresUpscaler":"Remacri",
+        "hiresSampler":"res_multistep","hiresScheduler":"sgm_uniform","rcasStrength":0,"upscaleModelPath":"/untrusted"}).as_object().unwrap() {
+        plan.input[key] = value.clone();
+    }
+    let prepared = service
+        .prepare_native(plan, CancellationToken::new())
+        .await
+        .unwrap();
+    let submitted = service
+        .clone()
+        .submit(prepared, "owner".into(), None)
+        .await
+        .unwrap();
+    assert_eq!(
+        settled(&service, submitted["id"].as_str().unwrap()).await["status"],
+        "succeeded"
+    );
     service.close().await;
 }
 #[tokio::test]
@@ -248,6 +253,7 @@ print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath']}),f
         model_dir: source.model_dir.clone(),
         mask_model_dir: None,
         tea_cache_profile_path: None,
+        upscale_model_path: None,
         init_image: None,
         mask_image: None,
         loras: vec![],
@@ -315,6 +321,73 @@ print(json.dumps({'id':r['id'],'event':'result','outputPath':r['outputPath']}),f
 }
 
 #[tokio::test]
+async fn native_idle_release_survives_busy_submission_slot_and_worker_reuse() {
+    for outcome in ["failed", "reused", "shutdown"] {
+        let root = tempfile::tempdir().unwrap();
+        let (service, plan) = fixture(root.path(), "");
+        let slot = service.inner.native.slot.acquire().await.unwrap();
+        let resident = service
+            .inner
+            .native
+            .take_worker(&plan.settings)
+            .await
+            .unwrap();
+        tokio::time::pause();
+        Engine::retain_worker(service.inner.clone(), resident).await;
+        tokio::task::yield_now().await;
+        tokio::time::advance(Duration::from_secs(121)).await;
+        tokio::task::yield_now().await;
+        assert!(service.inner.native.worker.lock().await.is_some());
+        if outcome == "shutdown" {
+            // Shutdown must interrupt the timer even while submission holds
+            // the slot; close waits for tracked tasks before process cleanup.
+            tokio::time::resume();
+            tokio::time::timeout(Duration::from_secs(2), service.close())
+                .await
+                .expect("shutdown must cancel an idle timer waiting for the slot");
+            assert!(service.inner.native.worker.lock().await.is_none());
+            continue;
+        }
+        if outcome == "reused" {
+            // A successful submission cancels the expired timer and gives the
+            // same process a new idle lifetime before releasing its GPU slot.
+            let resident = service
+                .inner
+                .native
+                .take_worker(&plan.settings)
+                .await
+                .unwrap();
+            Engine::retain_worker(service.inner.clone(), resident).await;
+            tokio::task::yield_now().await;
+        }
+        // Otherwise submission failed/cancelled before take_worker, so the old
+        // resident must still be released after its already-expired deadline.
+        drop(slot);
+        if outcome == "reused" {
+            tokio::time::advance(Duration::from_secs(119)).await;
+            tokio::task::yield_now().await;
+            assert!(
+                service.inner.native.worker.lock().await.is_some(),
+                "an expired old timer must not stop the newly retained worker"
+            );
+            tokio::time::advance(Duration::from_secs(2)).await;
+        }
+        tokio::time::resume();
+        let released = tokio::time::timeout(Duration::from_secs(2), async {
+            while service.inner.native.worker.lock().await.is_some() {
+                tokio::time::sleep(Duration::from_millis(10)).await;
+            }
+        })
+        .await;
+        service.close().await;
+        assert!(
+            released.is_ok(),
+            "resident lost its idle release after slot contention"
+        );
+    }
+}
+
+#[tokio::test]
 async fn cancellation_before_registration_and_after_worker_success_settles() {
     for completed in [false, true] {
         let root = tempfile::tempdir().unwrap();
@@ -324,26 +397,41 @@ async fn cancellation_before_registration_and_after_worker_success_settles() {
             .prepare_native(plan, CancellationToken::new())
             .await
             .unwrap();
-        let job = jobs::create(prepared, "owner".into(), None);
-        if completed {
+        let slot = service.inner.native.slot.acquire().await.unwrap();
+        let job = if completed {
+            let job = jobs::create(prepared, "owner".into(), None);
             let resident = service.inner.native.take_worker(&settings).await.unwrap();
             Engine::retain_worker(service.inner.clone(), resident).await;
-        }
-        // No registered cancellation token yet, or already completed process.
-        cancel(service.inner.clone(), job.clone()).await.unwrap();
-        let outcome = if completed {
-            Ok(Output::Bytes {
+            cancel(service.inner.clone(), job.clone()).await.unwrap();
+            let output = Output::Bytes {
                 bytes: Arc::new(vec![1]),
                 mime: "image/png".into(),
-            })
+            };
+            settle(&service.inner, &job, Ok(output), false).await;
+            job
         } else {
-            Err(ApiError::new(
-                499,
-                "ABORT_ERR",
-                "cancelled before worker spawn",
-            ))
+            // The real checkpoint exposes the job before token registration.
+            // Cancel there while another job still owns the GPU slot.
+            let hooks = Arc::new(Hooks(Default::default(), Some(service.clone())));
+            let submitted = service
+                .clone()
+                .submit(prepared, "owner".into(), Some(hooks))
+                .await
+                .unwrap();
+            let id = submitted["id"].as_str().unwrap();
+            let result = tokio::time::timeout(Duration::from_secs(1), settled(&service, id)).await;
+            if result.is_err() {
+                let observed = service.get_job(id, "owner").await.unwrap();
+                let pending = service.pending();
+                service.close().await;
+                panic!(
+                    "pre-registration cancellation waited for a busy GPU slot: {observed}; pending={pending}"
+                );
+            }
+            jobs::find(&service.inner, id, "owner", false)
+                .await
+                .unwrap()
         };
-        settle(&service.inner, &job, outcome, false).await;
         let state = job.state.lock().await;
         assert_eq!(state.status, "cancelled");
         assert!(state.settled && state.result.is_none() && state.permit.is_none());
@@ -353,6 +441,8 @@ async fn cancellation_before_registration_and_after_worker_success_settles() {
             "late cancellation must retire the resident model before settlement"
         );
         assert_eq!(service.pending(), 0);
+        assert!(service.inner.native.slot.try_acquire().is_err());
+        drop(slot);
         service.close().await;
     }
 }

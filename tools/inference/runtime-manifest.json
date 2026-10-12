@@ -5,10 +5,10 @@
   "python": "3.11",
   "protocol": "serial-job-jsonl-v2",
   "residency": {
-    "mode": "one-exact-model-and-lora-weight-set",
-    "identity": "full component and LoRA bytes checked for every job; reload on change",
+    "mode": "one-exact-base-and-active-lora-group",
+    "identity": "complete SHA256 at acquisition; on fixed local NTFS retain read-only file leases, stable file IDs and persistent membership/attribute notifications before reuse and after load; otherwise repeat full bytes. Base changes reload; safe ordinary adapter groups unload before replacement",
     "isolation": "fresh pipeline blocks, scheduler, guider and TeaCache controller per job",
-    "initialization": "dependencies and bundled helpers verified once per worker; standalone diagnostics verify afresh",
+    "initialization": "first dependency imports overlap full-byte identity on the resident caller thread; Windows notification handles remain on that thread. Validated CPU weights upload into dtype-grouped CUDA storage without a second host copy",
     "loraStrengthChanges": "reuse unchanged base/adapter bytes; update active adapter weights without reloading",
     "textEncodingCache": {
       "location": "CPU only",
@@ -20,10 +20,53 @@
     },
     "idleReleaseSeconds": 120,
     "cancelErrorTimeout": "terminate owned worker before GPU slot reuse",
-    "realDeviceValidation": "Not run; RTX 4070 Ti SUPER target remains pending"
+    "realDeviceValidation": "2026-10-11: RTX 4070 Ti SUPER, converted MiaoMiao 1.6, real text/image/manual-mask and two Kohya character adapters; bounded sample only, see docs/audits/2026-10-11/native-backend-gpu.html",
+    "loraGroupChanges": "independent base/adapter leases; same exact topology/config uses preflighted PEFT hotswap after base restoration. Other safe groups unload/load; unknown or base-mutating initialization reloads the base",
+    "maskCache": {
+      "location": "CPU only; complete model overlaps Anima residency",
+      "maxModels": 1,
+      "maxLogitMaps": 1,
+      "logitBytes": 495616,
+      "identity": "all local model asset bytes, image mode/size/pixel SHA-256 and normalized phrases; threshold/growth applied each job",
+      "invalidation": "model bytes change, failure or worker retirement",
+      "benchmark": "disabled on both sides of TeaCache comparison"
+    }
   },
   "engine": "diffusers.AnimaModularPipeline",
   "engineVersion": "0.41.0",
+  "optionalAcceleration": {
+    "environmentVariable": "HUIYU_INFERENCE_ACCELERATION",
+    "settingsField": "inference.acceleration; persisted by the host and forwarded to worker/diagnosis; environment override takes precedence",
+    "default": "native",
+    "modes": ["native", "sage", "compiled-sage", "compiled-fused-sage"],
+    "validatedPlatform": "Windows CPython 3.11, Torch 2.8.0+cu128, NVIDIA Ada SM89",
+    "revision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21",
+    "scope": "Cosmos attention only; conditioner and VAE attention retain their original paths. compiled-sage keeps PEFT projections; compiled-fused-sage explicitly merges supported Linear LoRAs into resident weights",
+    "fusion": "Opt-in compiled-fused-sage: protected base-preserving adapters restore exact safetensors bytes through a temporary <=32 MiB readinto buffer; no persistent CPU base snapshot. CPU snapshot fallback remains when no continuously valid source lease exists. Pinned CUDA copies are blocking; Torch 2.8 host buffer cache is released afterward. Safe merge retains packed CUDA storage. Strength/group/unload restores before PEFT mutation, never rounded delta subtraction",
+    "fusionRevision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21-fusion-cpu-base-v1",
+    "compile": "original block.forward, fullgraph=false, mode=default; no CUDA graphs, no VAE compile; first-use/shape/LoRA changes may compile and have extra latency",
+    "calibration": "execution mode and revision bind the Tea profile; earlier profiles require fresh calibration",
+    "dependencies": [
+      {"name":"sageattention","version":"2.2.0+cu128torch2.8.0.post3","license":"Apache-2.0","source":"https://github.com/woct0rdho/SageAttention/releases/tag/v2.2.0-windows.post3","distribution":"Windows maintainer binary, not the upstream authors' official binary","wheelSha256":"7dabcd00e63229b28f046c5a69ec37cf4756afb375dbadd1975dadec045ae21c"},
+      {"name":"triton-windows","version":"3.4.0.post21","license":"MIT","source":"https://pypi.org/project/triton-windows/3.4.0.post21/","wheelSha256":"2740d13717bb1d38b77fb8e29e78c3be2ec3e89e8bba624d90abb554e0158cc6"}
+    ]
+  },
+  "observations": {
+    "helper": "inference_metrics.py",
+    "metadata": "nativeRuntime",
+    "timing": "CPU wall intervals with no additional GPU synchronization; existing TeaCache report synchronization is explicitly marked",
+    "boundaries": "workerWall includes validation/imports through PNG save; pipelineWall includes encoding, denoising and decoding; outputSave includes compression and atomic write; composite is CPU pixel compositing",
+    "notAdditive": "workerWall includes the other intervals; residentFingerprint includes initial identity and post-load verification that can overlap modelAcquire; do not sum these fields",
+    "completedSteps": "observed scheduler.step calls, not requested inference steps or proof of Comfy schedule equivalence",
+    "memory": "per-job PyTorch native allocator peaks on initialized CUDA device 0, reset before image preparation and read after pipeline; includes retained allocations/reservations, excludes non-PyTorch/device-wide memory",
+    "memoryUnverified": "ordinary product jobs with cold uninitialized CUDA, non-native allocator, unavailable/invalid counters; existing explicit TeaCache/measure/collect reports retain one reset attempt, with failure unverified; never initialize CUDA or read historical peaks for observation",
+    "cacheScope": "baseReused describes the base only; text hit/miss counters are per job, entries/CPU bytes are resident; automatic mask stats appear only when used in this job",
+    "validation": "2026-10-11 real CUDA jobs record stage timings and allocator peaks; whole-device memory parity and measurement-overhead isolation remain unverified; see native-backend-performance.html",
+    "sources": [
+      "https://github.com/pytorch/pytorch/blob/v2.8.0/c10/cuda/CUDACachingAllocator.cpp#L1674-L1720",
+      "https://github.com/pytorch/pytorch/blob/v2.8.0/torch/cuda/memory.py#L329-L344"
+    ]
+  },
   "capabilities": {
     "txt2img": true,
     "img2img": true,
@@ -33,18 +76,23 @@
       "cuda"
     ],
     "samplers": [
-      "euler"
+      "euler", "res_multistep"
     ],
     "schedulers": [
-      "simple"
+      "simple", "normal", "sgm_uniform"
     ],
-    "scheduleMeaning": "Native FlowMatchEulerDiscreteScheduler from the local scheduler config; not ComfyUI simple schedule equivalence",
+    "scheduleMeaning": "normal/sgm_uniform use explicit Anima shift-3 grids; RES/simple uses the 1000-entry training grid. Legacy Euler/simple retains the Diffusers continuous default. Independent deterministic RES uses FP32 history, eta=0, no CFG++",
+    "rcas": "AMD FSR1 RCAS float32 tensor port; amplitude 0..1, no shader reciprocal emulation",
+    "hiresFix": "Latent bicubic plus a fresh tail-schedule pass, or fixed FP32 Remacri 4x then target resize; masked paths preserve the resized reference outside the effective mask",
+    "hiresTeaCache": "requires a separately accepted whole-operation scope; clear lanes and wrap fresh second-pass blocks; first/last steps of each pass fully compute",
+    "weightSyntax": "Anima round-bracket and explicit nested weights; Qwen fragments unweighted, T5 conditioner output weighted once. Square brackets and BREAK remain literal. Both tokenizer streams are bounded to 512 tokens with explicit rejection before truncation",
+    "upscaler": "models_root/upscale_models/4x_foolhardy_Remacri.safetensors, strict 23-block RRDB only",
     "outputs": [
       "png"
     ],
     "masks": true,
     "composite": true,
-    "loraFormat": "Native Diffusers or officially mapped diffusion_model-prefixed Anima LoRA A/B safetensors; generic Kohya down/up/alpha unsupported",
+    "loraFormat": "Native Diffusers or officially mapped diffusion_model-prefixed Anima A/B; strict original-Anima lora_unet linear down/up/alpha triples with exact loaded-target shapes and alpha/rank scaling. Other Kohya variants and DoRA unsupported",
     "loraComponents": [
       "transformer",
       "text_conditioner"
@@ -85,10 +133,12 @@
       "weightLicense": "separate review required; original model card not accessible during implementation review"
     },
     "teaCache": {
-      "enabledByDefault": false,
-      "mode": "experimental-locally-calibrated-residual-reuse",
+      "enabledByDefault": true,
+      "defaultPolicy": "auto: use only an exact accepted profile; absent/unmatched profiles use full computation. Explicit false disables; explicit true is strict. Malformed profiles still fail",
+      "mode": "locally-calibrated-residual-reuse",
       "profileFile": "teacache-profile.json",
       "profileMaxBytes": 65536,
+      "profileCollection": "Fixed teacache-profile.json supports one legacy profile or at most 16 exact runtime/compatibility scopes; unique on-load selection; auto may use full computation on absent/unmatched profiles, explicit enablement stays strict. Append/replacement requires the existing whole-file SHA and preserves other scopes",
       "algorithm": "huiyu-anima-first-norm-residual-v1",
       "candidateAlgorithm": "huiyu-anima-phase-envelope-v2",
       "candidateMeaning": "phase-specific observed error envelopes; refresh on phase transition; not a semantic quality bound",
@@ -113,7 +163,7 @@
         "anima_text_cache.py"
       ],
       "licenseNotice": "TEACACHE_LICENSE.txt",
-      "realDeviceValidation": "Not run; no coefficients, speedup or quality claim supplied"
+      "realDeviceValidation": "2026-10-11: accepted compiled-fused-sage MiaoMiao 1.6 Nene/Natsume v21 0.8 profiles at 832x1216, 24 steps, CFG 4, normal/RCAS 0.75: threshold 0.25, skip limit 3. Separate Latent 2x/denoise 0.35 profiles use threshold 0.25, skip limit 2. Previous simple/no-LoRA profiles preserved. Subject/clarity/style reviewed; one Nene cached sample duplicated an umbrella. More aggressive hires candidates remain unaccepted/uninstalled; a threshold 0.30 Natsume candidate produced nonfinite values. Default automatically selects accepted exact scopes; other scopes use full computation until calibrated"
     }
   },
   "security": {
@@ -124,6 +174,12 @@
     "automaticInstallation": false
   },
   "dependencies": [
+    {
+      "name": "torchvision",
+      "version": "0.23.0",
+      "license": "BSD-3-Clause",
+      "source": "https://pypi.org/project/torchvision/0.23.0/"
+    },
     {
       "name": "torch",
       "version": "2.8.0",
@@ -212,8 +268,8 @@
   ],
   "validation": {
     "unitTests": "No-GPU tests use explicit fake ML modules/tensors/models and real Pillow/NumPy mask processing/composite; not real inference validation",
-    "realGeneration": "Not run; requires user-authorized CUDA hardware and complete local Anima pipeline",
-    "environmentInstall": "Not installed. Metadata-only pip dry run passed for Windows amd64 / CPython 3.11 with all 10 exact direct pins. Independently checked 13 inter-package Requires-Dist constraints, Python 3.11 compatibility and non-yanked status against PyPI metadata. Full transitive resolution and runtime imports remain untested.",
+    "realGeneration": "2026-10-11: six registered Anima models generated 11 GPU samples, plus one Endfield/Laevatain public-API sample. Nene/Natsume normal/RCAS LoRA+Tea: 12 matched warm API jobs per backend on RTX 4070 Ti SUPER, native median 4.419s vs Comfy+Tea 5.686s, all 12 pairs faster. Latent 2x Nene: two warm API jobs per backend, native 26.610s vs Comfy 23.671s; cold loading also remains slower. Protected-source restore removed 3.28 GiB CPU snapshots and preserved four diagnostic PNG hashes. Not mathematical or pixel parity. See docs/audits/2026-10-11/native-anima-replacement.html",
+    "environmentInstall": "2026-10-11: all 11 exact direct pins resolved, installed offline in dedicated Windows CPython 3.11 venv, and imports/CUDA diagnosis passed; torch and torchvision use cu128 wheels. No inference-time installation or ComfyUI environment reuse",
     "validateCommand": "python worker.py --validate /absolute/path/to/anima-diffusers",
     "validateScope": "Checks layout, safetensors shard presence, exact installed dependency versions and imports. Does not load weights, verify model semantics, test GPU memory, or generate.",
     "diagnoseCommand": "python worker.py --diagnose",

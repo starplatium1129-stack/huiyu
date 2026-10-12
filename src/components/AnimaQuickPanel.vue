@@ -36,11 +36,12 @@ const loraStrength = computed({ get: () => props.state.loraStrength, set: value 
 const seed = computed({ get: () => props.state.seed ?? '', set: value => patch({ seed: value === '' ? null : Number(value) }) })
 const steps = computed({ get: () => props.state.steps, set: value => patch({ steps: value }) })
 const cfg = computed({ get: () => props.state.cfg, set: value => patch({ cfg: value }) })
-const teaCache = computed({ get: () => native.value ? props.state.teaCache === true : props.state.teaCache !== false,
-  set: value => patch({ teaCache: value, ...(native.value ? { teaCacheThresh: undefined } : {}) }) })
+const teaCache = computed({ get: () => props.state.teaCache !== false,
+  set: value => patch({ teaCache: native.value && value ? undefined : value, ...(native.value ? { teaCacheThresh: undefined } : {}) }) })
 const hiresFix = computed({ get: () => Boolean(props.state.hiresFix), set: value => patch({ hiresFix: value }) })
 const hiresScale = computed({ get: () => props.state.hiresScale || 2.0, set: value => patch({ hiresScale: value }) })
 const hiresDenoise = computed({ get: () => props.state.hiresDenoise || 0.35, set: value => patch({ hiresDenoise: value }) })
+const hiresUpscaler = computed({ get: () => props.state.hiresUpscaler || 'Auto', set: (value: 'Auto' | 'Latent' | 'Remacri') => patch({ hiresUpscaler: value }) })
 const busy = computed(() => ['submitting', 'running', 'cancelling'].includes(props.state.phase))
 const outputSize = computed(() => {
   const scale = props.state.hiresFix ? (props.state.hiresScale ?? 2) : 1
@@ -106,15 +107,20 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 
       <!-- 加速与高清修复控制（由能力表驱动，当前仅 Anima 开启） -->
       <div v-if="native || capabilities.hires || capabilities.teaCache" class="anima-row anima-hires-row">
-        <ToggleSwitch v-model="teaCache" :disabled="busy || (!(native ? nativeTeaCacheAvailable : capabilities.teaCache) && !teaCache)" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
+        <ToggleSwitch v-model="teaCache" :disabled="busy || (!native && !capabilities.teaCache && !teaCache)" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
           <ArchiveIcon name="lightning" class="anima-hires-icon" />
           <span>特征缓存加速 · TeaCache</span>
         </ToggleSwitch>
-        <ToggleSwitch v-model="hiresFix" :disabled="busy || ((native || !capabilities.hires) && !hiresFix)" label="高清放大修复" class="anima-hires-toggle">
+        <ToggleSwitch v-model="hiresFix" :disabled="busy || (!(native ? selectedModel?.capabilities?.hires === true : capabilities.hires) && !hiresFix)" label="高清放大修复" class="anima-hires-toggle">
           <ArchiveIcon name="spark" class="anima-hires-icon" />
           <span>高清放大</span>
         </ToggleSwitch>
-        <template v-if="hiresFix && !native">
+        <template v-if="hiresFix">
+          <template v-if="native">
+            <label :for="idOf('upscaler')" class="anima-inline tw:text-label-xs tw:text-secondary">放大方式</label>
+            <StudioSelect :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy"
+              :options="[{ value: 'Auto', label: 'Auto · 优先 Remacri' }, { value: 'Latent', label: 'Latent · 二次采样' }, { value: 'Remacri', label: 'Remacri', disabled: !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri') }]" />
+          </template>
           <label :for="idOf('scale')" class="anima-inline tw:text-label-xs tw:text-secondary">倍率</label>
           <StudioSelect :id="idOf('scale')" v-model.number="hiresScale" label="倍率" :disabled="busy"
             :options="[{ value: 1.5, label: '1.5×' }, { value: 2.0, label: '2.0×' }]" />
@@ -122,8 +128,9 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
           <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="anima-num" :disabled="busy" />
         </template>
       </div>
+      <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-warning-text tw:m-0">高清组合会单独匹配 TeaCache 校准档，自动模式未匹配时照常生成。放大方式 Auto 优先选择本地 Remacri，否则使用 Latent；局部重绘保留遮罩合成。</p>
       <p v-if="native" class="anima-hint tw:text-label-xs tw:text-warning-text tw:m-0">
-        TeaCache 实验候选，默认关闭。{{ nativeTeaCacheAvailable ? '仅确认校准档文件存在，模型、LoRA 与采样参数将在加载时核验。' : '需要所选模型目录内的 teacache-profile.json 本地校准档。' }}速度与画质尚未验收，不兼容时会明确报错。
+        TeaCache 默认自动开启：匹配已验收校准档时加速，未匹配时照常生成。{{ nativeTeaCacheAvailable ? '模型、LoRA 与采样参数将在加载时核验。' : '当前未发现本地校准档，将使用完整计算。' }}{{ state.teaCache === true ? '当前保存的配置要求严格开启，未匹配时会报错；关闭后重新开启可恢复自动模式。' : '' }}可手动关闭以使用完整计算。
       </p>
       <div v-if="native && state.teaCacheThresh !== undefined" class="anima-row">
         <span class="tw:text-label-xs tw:text-warning-text">已保存的阈值 {{ state.teaCacheThresh }} 不能直接用于原生推理。</span>

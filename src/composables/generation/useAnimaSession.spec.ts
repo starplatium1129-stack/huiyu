@@ -33,6 +33,29 @@ function createSession(client: ApiClient, options: Partial<AnimaSessionOptions> 
   return session
 }
 
+it('adversarial native defaults never replace explicit LoRA strength or Endfield strength', async () => {
+  const status = { ok: true, provider: 'native', online: true, models: [
+    { id: 'anima-miaomiao-v1.6', family: 'anima', available: true, capabilities: { noLora: true }, sizes: ['832x1216'], defaults: { steps: 24, cfg: 4, loraStrength: .8, sampler: 'euler', scheduler: 'normal' } },
+  ], loras: [{ id: 'L_NENE_V21_ANIMA', character: 'nene', available: true }, { id: 'L_NATSUME_V21_ANIMA', character: 'natsume', available: true }, { id: 'L_ENDFIELD_ALL_V1_ANIMA', characters: ['laevatain_arknights'], available: true }] }
+  for (const character of ['nene', 'natsume'] as const) {
+    const session = createSession({ request: vi.fn(async () => status) } as unknown as ApiClient, { getCharacter: () => character })
+    await session.refreshBackend()
+    expect(session.state.value).toMatchObject({ steps: 24, cfg: 4, loraStrength: .8, teaCache: undefined })
+    session.patchState({ loraStrength: .65 })
+    await session.refreshBackend()
+    session.applyModel('anima-miaomiao-v1.6')
+    expect(session.state.value.loraStrength).toBe(.65)
+  }
+  for (const popular of [false, true]) {
+    let resolve!: (value: typeof status) => void
+    const session = createSession({ request: vi.fn(() => new Promise(done => { resolve = done })) } as unknown as ApiClient, { isPopular: () => popular, getPopularCharacterId: () => popular ? 'laevatain_arknights' : null })
+    if (!popular) session.patchState({ loraStrength: .85 })
+    const pending = session.refreshBackend()
+    resolve(status); await pending
+    expect(session.state.value.loraStrength).toBe(popular ? 1 : .85)
+  }
+})
+
 it('keeps the default MiaoMiao 1.6 offline rather than silently substituting an older available model', async () => {
   const client = { request: vi.fn(async () => ({ ok: true, online: true, models: [
     { id: 'anima-miaomiao-v1.2', family: 'anima', available: true, sizes: ['832x1216'], defaults: { steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple', teaCacheThresh: 0.08 } },
@@ -169,6 +192,8 @@ it('omits unset transport fields and never overrides an explicit denied adult au
   expect(animaRequestPayload({ ...request, loraId: 'L', loraStrength: 0, styleLoraId: 'S', seed: 0 }))
     .toEqual({ ...minimal, loraId: 'L', loraStrength: 0, styleLoraId: 'S', seed: 0 })
   expect(animaRequestPayload({ ...request, adultEnabled: false })).not.toHaveProperty('adultEnabled')
+  expect(animaRequestPayload({ ...request, hiresFix: true, hiresScale: 1.5, hiresDenoise: .4, hiresUpscaler: 'Remacri' }))
+    .toMatchObject({ hiresFix: true, hiresScale: 1.5, hiresDenoise: .4, hiresUpscaler: 'Remacri' })
   vi.mocked(environment.isLocalStudioHost).mockReturnValue(false)
   expect(animaRequestPayload(request)).not.toHaveProperty('adultEnabled')
 })
@@ -330,15 +355,23 @@ it('cancels while the direct transport loads without POST, then permits a fresh 
   expect(call).toHaveBeenCalledOnce()
 })
 
-it('honors native TeaCache defaults without overwriting later edits and rejects unsupported requests', async () => {
+it('adversarial TeaCache preserves explicit disable across model switches and still rejects strict missing-profile requests', async () => {
   const call = vi.fn(async () => ({ ok: true, online: true, provider: 'native', models: [
     { id: 'anima-fixture', family: 'anima', available: true, defaults: { teaCache: false } },
+    { id: 'anima-other', family: 'anima', available: true, defaults: { teaCache: true } },
   ], loras: [] }))
   const flash = vi.fn()
   const session = createSession({ request: call } as unknown as ApiClient, { flash })
   await session.refreshBackend()
-  expect(session.state.value).toMatchObject({ provider: 'native', teaCache: false, online: true })
+  expect(session.state.value).toMatchObject({ provider: 'native', online: true })
+  expect(session.state.value.teaCache).toBeUndefined()
   expect(session.state.value.teaCacheThresh).toBeUndefined()
+  session.patchState({ teaCache: false })
+  session.applyModel('anima-other')
+  await session.refreshBackend()
+  expect(session.state.value.teaCache).toBe(false)
+  session.applyModel('anima-fixture')
+  expect(session.state.value.teaCache).toBe(false)
   session.patchState({ teaCache: true })
   await session.refreshBackend()
   expect(session.state.value.teaCache).toBe(true)
@@ -351,12 +384,12 @@ it('honors native TeaCache defaults without overwriting later edits and rejects 
   expect(session.state.value.phase).toBe('idle')
 })
 
-it('admits native TeaCache only for the requested model with local profile files and refuses saved Comfy thresholds', async () => {
+it('admits native hires TeaCache for on-load whole-operation validation and refuses saved Comfy thresholds', async () => {
   vi.spyOn(environment, 'isLocalStudioHost').mockReturnValue(false)
   let ready = false
   const call = vi.fn(async (url: string, _options?: ApiRequestOptions) => url === '/api/creative/status'
     ? { ok: true, online: true, provider: 'native', models: [{ id: 'anima-fixture', family: 'anima', available: true,
-      capabilities: { teaCache: ready }, teaCacheProfile: { readiness: ready ? 'profile-files-only' : 'missing' } }], loras: [] }
+      capabilities: { hires: true, teaCache: ready }, teaCacheProfile: { readiness: ready ? 'profile-files-only' : 'missing' } }], loras: [] }
     : { ok: false, error: 'fixture transport reached' })
   const flash = vi.fn()
   const session = createSession({ request: call } as unknown as ApiClient, { flash })
@@ -373,20 +406,22 @@ it('admits native TeaCache only for the requested model with local profile files
   await session.generate({ teaCache: true, modelId: 'other-model' })
   expect(call).not.toHaveBeenCalled()
   expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('缺少所选模型'))
-  await session.generate({ teaCache: true })
-  expect(call).toHaveBeenCalledExactlyOnceWith('/api/anima/jobs', expect.objectContaining({ method: 'POST', body: expect.objectContaining({ teaCache: true }) }))
+  await session.generate({ teaCache: true, hiresFix: true, hiresScale: 1.5, hiresDenoise: .35, hiresUpscaler: 'Latent' })
+  expect(call).toHaveBeenCalledExactlyOnceWith('/api/anima/jobs', expect.objectContaining({ method: 'POST', body: expect.objectContaining({ teaCache: true, hiresFix: true, hiresScale: 1.5, hiresDenoise: .35, hiresUpscaler: 'Latent' }) }))
   expect(call.mock.calls[0]?.[1]?.body).not.toHaveProperty('teaCacheThresh')
 })
 
-it('keeps native TeaCache off when unrelated settings are edited during first discovery', async () => {
+it.each([undefined, false] as const)('adversarial TeaCache preserves %s intent during delayed discovery with unrelated edits', async teaCache => {
   let complete!: (value: unknown) => void
   const call = vi.fn(() => new Promise(resolve => { complete = resolve }))
   const session = createSession({ request: call } as unknown as ApiClient)
   const pending = session.refreshBackend()
   session.patchState({ cfg: 7 })
+  if (teaCache === false) session.patchState({ teaCache: false, teaCacheThresh: undefined })
   complete({ ok: true, online: true, provider: 'native', models: [{ id: 'anima-fixture', family: 'anima', available: true }], loras: [] })
   await pending
-  expect(session.state.value).toMatchObject({ cfg: 7, teaCache: false })
+  expect(session.state.value.cfg).toBe(7)
+  expect(session.state.value.teaCache).toBe(teaCache)
   expect(session.state.value.teaCacheThresh).toBeUndefined()
 })
 

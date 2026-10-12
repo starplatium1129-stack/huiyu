@@ -35,7 +35,7 @@ const INITIAL_STATE: AnimaGenerationState = {
   loraStrength: 0.85, width: 832, height: 1216, steps: 30, cfg: 4.5,
   family: 'anima',
   sampler: 'euler', scheduler: 'normal', seed: null,
-  hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35,
+  hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35, hiresUpscaler: 'Auto',
   teaCache: true, teaCacheThresh: 0.10,
   job: null, result: null, resultContext: null, statusText: '', errorMsg: '', errorReport: null,
 }
@@ -43,16 +43,19 @@ const INITIAL_STATE: AnimaGenerationState = {
 export function useAnimaSession(options: AnimaSessionOptions) {
   const client = options.client ?? apiClient
   const state = ref<AnimaGenerationState>({ ...INITIAL_STATE })
-  let settingsRevision = 0, reconcilingSettings = false, teaCacheSettingsTouched = false
+  let settingsRevision = 0, reconcilingSettings = false, teaCacheSettingsTouched = false, loraStrengthTouched = false
   const editableKeys = ['family', 'modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height',
-    'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'teaCache', 'teaCacheThresh'] as const
+    'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
   // Observe direct v-model writes as well as patchState, excluding only our
   // synchronous backend reconciliation, never the time spent awaiting status.
   const stopSettingsWatch = watch(editableKeys.map(key => () => state.value[key]), () => {
     if (!reconcilingSettings) settingsRevision++
   }, { flush: 'sync' })
-  const stopTeaCacheWatch = watch([() => state.value.teaCache, () => state.value.teaCacheThresh], () => {
-    if (!reconcilingSettings) teaCacheSettingsTouched = true
+  const stopTeaCacheWatch = watch([() => state.value.teaCache, () => state.value.teaCacheThresh, () => state.value.loraStrength], (next, previous) => {
+    if (!reconcilingSettings) {
+      if (next[0] !== previous[0] || next[1] !== previous[1]) teaCacheSettingsTouched = true
+      if (next[2] !== previous[2]) loraStrengthTouched = true
+    }
   }, { flush: 'sync' })
   const getSettingsRevision = () => settingsRevision
 
@@ -92,6 +95,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   })
 
   function patchState(patch: Partial<AnimaGenerationState>) {
+    if (!reconcilingSettings && 'loraStrength' in patch) loraStrengthTouched = true
     state.value = { ...state.value, ...patch }
   }
 
@@ -133,7 +137,9 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       cfg: Number(defaults?.cfg) || state.value.cfg,
       sampler: String(defaults?.sampler || state.value.sampler),
       scheduler: String(defaults?.scheduler || state.value.scheduler),
-      teaCache: provider === 'native' ? false : typeof defaults?.teaCache === 'boolean' ? defaults.teaCache : state.value.provider === 'native' ? INITIAL_STATE.teaCache : state.value.teaCache,
+      ...(!state.value.provider && !loraStrengthTouched && provider === 'native' && !options.isPopular() && ['nene', 'natsume'].includes(options.getCharacter()) && typeof defaults?.loraStrength === 'number'
+        ? { loraStrength: defaults.loraStrength } : {}),
+      teaCache: provider === 'native' ? (state.value.provider === 'native' || teaCacheSettingsTouched ? state.value.teaCache : undefined) : typeof defaults?.teaCache === 'boolean' ? defaults.teaCache : state.value.provider === 'native' ? INITIAL_STATE.teaCache : state.value.teaCache,
       teaCacheThresh: provider === 'native' ? undefined : typeof defaults?.teaCacheThresh === 'number' ? defaults.teaCacheThresh : state.value.provider === 'native' ? INITIAL_STATE.teaCacheThresh : state.value.teaCacheThresh,
     }
   }
@@ -232,13 +238,13 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         patchState({
           online, provider, automaticMaskAvailable: data.capabilities?.automaticMask === true,
           checkMsg: online
-            ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA${provider === 'native' ? ` · 原生局部重绘（实验性）${data.capabilities?.automaticMask === true ? ' · 本地自动识别文件就绪' : ' · 自动识别缺少本地 CLIPSeg 文件'} · TeaCache ${nativeTeaCacheReady(selectedModel) ? '校准档文件就绪（待加载核验）' : '缺少本地校准档'} · 不支持高清修复` : ''}`
+            ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA${provider === 'native' ? ` · 原生局部重绘（实验性）${data.capabilities?.automaticMask === true ? ' · 本地自动识别文件就绪' : ' · 自动识别缺少本地 CLIPSeg 文件'} · TeaCache ${nativeTeaCacheReady(selectedModel) ? '校准档文件就绪（待加载核验）' : '缺少本地校准档'} · ${selectedModel?.capabilities?.hires ? '支持高清放大（TeaCache 高清组合需单独校准）' : '不支持高清修复'}` : ''}`
             : `${familyLabel} 不可用（请检查${data.provider === 'native' ? '原生推理服务' : 'ComfyUI'}与当前模型文件）`,
           models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
           ...(endfield && loraId === endfield.loraId && state.value.loraId !== loraId ? { loraStrength: endfield.loraStrength } : {}),
           family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
           ...(shouldApplyDefaults ? modelDefaults(selectedModel, provider) : {}),
-          ...(nativeCacheDefaults ? { teaCache: false, teaCacheThresh: undefined } : {}),
+          ...(nativeCacheDefaults ? { teaCache: undefined, teaCacheThresh: undefined } : {}),
         })
         // An edit during discovery owns these defaults for this model, including later polls.
         defaultsAppliedFor = modelIdCurrent

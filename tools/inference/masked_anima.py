@@ -1,4 +1,4 @@
-"""Independent manual-mask Anima blocks, pinned to Diffusers 0.41.0.
+"""Anima image preparation/output and manual-mask blocks for Diffusers 0.41.0.
 
 Prepare/after-step integration adapted from Hugging Face Diffusers (Apache-2.0):
 Copyright 2026 The HuggingFace Team. All rights reserved.
@@ -8,6 +8,33 @@ Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/L
 Distributed on an AS IS BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND.
 No ComfyUI implementation or sampler-equivalence claim.
 """
+import os
+from pathlib import Path
+import tempfile
+import time
+
+
+def save_png(image, path):
+    """Atomically save lossless PNG; retry default compression above 32 MiB."""
+    started = time.perf_counter()
+    output = Path(path).expanduser().resolve()
+    output.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=output.parent, suffix=".png", delete=False) as file:
+            temporary = Path(file.name)
+        image.save(temporary, format="PNG", compress_level=4)
+        size = temporary.stat().st_size
+        if size > 32 * 1024 * 1024:
+            # Level 4 can be larger than the previous Pillow default. Retry that
+            # default before the host applies its unchanged output-size bound.
+            image.save(temporary, format="PNG", compress_level=6)
+            size = temporary.stat().st_size
+        os.replace(temporary, output)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+    return dict(outputSaveSeconds=time.perf_counter() - started, outputBytes=size)
 
 
 def prepare_images(image, mask_path, size, grow):
@@ -22,7 +49,7 @@ def prepare_images(image, mask_path, size, grow):
             source = ImageOps.exif_transpose(source)
             if source.size != image.size:
                 raise ValueError("Mask dimensions must match the oriented input image")
-            rgba = source.convert("RGBA")
+            rgba = source if source.mode == "RGBA" else source.convert("RGBA")
             # Transparent paint/erased pixels preserve even when RGB remains white.
             mask = ImageChops.multiply(rgba.convert("L"), rgba.getchannel("A"))
     except (OSError, Image.DecompressionBombError) as exc:
@@ -32,20 +59,65 @@ def prepare_images(image, mask_path, size, grow):
 
 def prepare_mask(image, mask, size, grow):
     """Shared effective mask for manual and locally segmented inputs."""
+    from PIL import Image
+    mask = _prepare_effective_mask(mask, size, grow)
+    return image.resize(size, Image.Resampling.LANCZOS), mask
+
+
+def _block_maximum(values, radius, axis):
+    """Exact uint8 box maximum from each window's block suffix and prefix."""
+    import numpy as np
+    rows = values if axis == 1 else values.T
+    count, length = rows.shape
+    window = 2 * radius + 1
+    padded_length = ((length + 2 * radius + window - 1) // window) * window
+    # C-order work storage avoids copying the transposed input before padding.
+    backward = np.empty((count, padded_length), dtype=np.uint8)
+    backward[:, radius:radius + length] = rows
+    backward[:, :radius] = rows[:, :1]
+    backward[:, radius + length:] = rows[:, -1:]
+    blocks = backward.reshape(count, -1, window)
+    forward = np.maximum.accumulate(blocks, axis=-1).reshape(count, padded_length)
+    reverse = blocks[..., ::-1]
+    np.maximum.accumulate(reverse, axis=-1, out=reverse)
+    result = np.maximum(backward[:, :length], forward[:, window - 1:window - 1 + length])
+    return result if axis == 1 else result.T
+
+
+def _prepare_effective_mask(mask, size, grow):
+    """Keep mask copy/growth semantics when the caller already owns its resized RGB."""
     from PIL import Image, ImageFilter
     mask = mask.resize(size, Image.Resampling.NEAREST)
-    if grow:
+    # Radius 1 regressed with NumPy conversion/two passes in the CPU probe.
+    if grow >= 2 and mask.mode == "L":
+        import numpy as np
+        # A square max is exactly separable, including all 8-bit soft-mask values.
+        values, window = np.asarray(mask), 2 * grow + 1
+        if grow >= 8:
+            horizontal = _block_maximum(values, grow, 1)
+            vertical = _block_maximum(horizontal, grow, 0)
+        else:
+            horizontal = np.lib.stride_tricks.sliding_window_view(
+                np.pad(values, ((0, 0), (grow, grow)), mode="edge"), window, axis=1).max(axis=-1)
+            vertical = np.lib.stride_tricks.sliding_window_view(
+                np.pad(horizontal, ((grow, grow), (0, 0)), mode="edge"), window, axis=0).max(axis=-1)
+        del horizontal  # Release scratch before the transposed result's PIL conversion.
+        mask = Image.fromarray(vertical)
+        del values, vertical
+    elif grow:
         mask = mask.filter(ImageFilter.MaxFilter(2 * grow + 1))
     if mask.getbbox() is None:
         raise ValueError("Mask has no editable pixels")
-    return image.resize(size, Image.Resampling.LANCZOS), mask
+    return mask
 
 
 def composite(generated, original, mask):
     from PIL import Image
     if generated.size != original.size or mask.size != original.size:
         raise ValueError("Generated image and effective mask dimensions differ")
-    return Image.composite(generated.convert("RGB"), original.convert("RGB"), mask)
+    generated = generated if generated.mode == "RGB" else generated.convert("RGB")
+    original = original if original.mode == "RGB" else original.convert("RGB")
+    return Image.composite(generated, original, mask)
 
 
 def blend_latents(scheduler, latents, image_latents, noise, mask, timesteps, index):
@@ -86,7 +158,9 @@ def masked_blocks():
             block.mask_noise = (randn_tensor(image_latents.shape, generator=block.generator,
                 device=components._execution_device, dtype=torch.float32) if block.latents is None
                 else block.latents.to(device=components._execution_device, dtype=torch.float32))
-            mask = torch.from_numpy(np.array(block.mask_image, dtype=np.float32) / 255).unsqueeze(0).unsqueeze(0)
+            mask = np.array(block.mask_image, dtype=np.float32)
+            mask /= 255
+            mask = torch.from_numpy(mask).unsqueeze(0).unsqueeze(0)
             mask = torch.nn.functional.interpolate(mask, size=image_latents.shape[-2:], mode="nearest")
             block.latent_mask = mask.unsqueeze(2).to(device=image_latents.device, dtype=torch.float32)
             timestep = block.timesteps[:1].repeat(image_latents.shape[0])

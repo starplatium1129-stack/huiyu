@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>独立后端性能续报 · 2026-10-11</title>
+<style>
+:root{color-scheme:light dark;--bg:#fafbff;--fg:#172236;--line:#b9c3d3;--link:#164e9b;--sub:#465469}
+@media(prefers-color-scheme:dark){:root{--bg:#141923;--fg:#edf1fa;--line:#526078;--link:#96c4ff;--sub:#bec9dc}}
+body{margin:36px auto;padding:0 22px;max-width:1080px;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,sans-serif}
+h1,h2{line-height:1.3}h2{margin-top:34px}a{color:var(--link)}small,figcaption{color:var(--sub)}code{overflow-wrap:anywhere}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}th,td{text-align:left;border-bottom:1px solid var(--line);padding:10px 9px;vertical-align:top}.scroll{overflow:auto}.images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}figure{margin:0}img{width:100%;height:auto;display:block}li{margin:7px 0}.lead{border-left:4px solid var(--link);padding-left:18px}@media(max-width:620px){.images{grid-template-columns:1fr}body{margin:20px auto;padding:0 14px}}
+</style>
+<h1>两种尺寸的独立 Worker 热任务已超过 ComfyUI + TeaCache</h1>
+<p>本页是无 LoRA 的阶段记录。宁宁/夏目 LoRA + Tea 校准及双方完整产品 API 的后续对照见<a href="native-backend-lora-tea.html">角色性能报告</a>。</p>
+<p class="lead">本机直接 Worker 测量耗时分别减少 <strong>9.0%</strong> 和 <strong>7.7%</strong>。832×1216 完整绘遇 API 热任务中位数为 <strong>6.28 秒</strong>；其与 Comfy 直接 API 的 6.40 秒仅相差约 0.12 秒，入口不同且样本少，不据此宣称稳定的产品端到端优势。两个现有角色 LoRA 的强度、换组和卸载恢复已实测通过。</p>
+<p>采用你确认的验收标准：<strong>主体、清晰度和风格保持，允许局部细节变化</strong>。留出样张可见建筑细节、构图局部和明暗变化，不能称像素无损或同 seed 完全一致。</p>
+<p><small>2026-10-11 · Windows · RTX 4070 Ti SUPER 16 GB / Ada SM89 · i5-12600KF · 32 GB RAM · NVIDIA 596.97。基于 PR #71 的 <code>8e915b8f</code>，已包含此前要求同步的两个提交。代码位于隔离工作区，未推送、合并或桌面部署；默认引擎与 Tea 开关未改。</small></p>
+
+<h2>同一台设备的速度对照</h2>
+<p>MiaoMiao Anima 1.6，24 步，CFG 4，无 LoRA、高清修复或锐化，固定正负提示词、逐次换 seed。双方独立暖机后测量；Comfy 内部基线/Tea 按 AB/BA 交替。原始结果全部保留，没有删除慢样本。</p>
+<div class="scroll"><table>
+<thead><tr><th>路径</th><th>768×1024</th><th>832×1216</th><th>计时边界</th></tr></thead>
+<tbody>
+<tr><td>独立 Worker，compiled-sage + Tea</td><td>4.445 秒<br>4.429–4.467，n=5</td><td>5.910 秒<br>5.895–5.920，n=3</td><td>单任务调用至写出 PNG；含身份检查、编码、去噪、解码、写图；文本缓存开启</td></tr>
+<tr><td>ComfyUI + Sage + Tea 0.08</td><td>4.883 秒<br>4.781–4.919，n=5</td><td>6.402 秒<br>6.393–6.491，n=3</td><td>Comfy 直接 API 提交至取得图像的客户端耗时</td></tr>
+<tr><td>Comfy 同任务图执行</td><td>4.698 秒</td><td>6.305 秒</td><td>服务端执行事件，排除部分客户端开销</td></tr>
+<tr><td>独立 Worker 相对 Comfy 客户端耗时</td><td>减少 9.0%</td><td>减少 7.7%</td><td>相对 Comfy 图执行仍分别减少约 5.4% / 6.3%</td></tr>
+<tr><td>绘遇 native 完整 API</td><td>本轮未测</td><td>6.280 秒<br>6.172–6.283，n=3</td><td>提交、轮询、结果下载、PNG 验证、哈希与保存全部计入</td></tr>
+</tbody></table></div>
+<p>完整 API 测量中，Worker 自身中位数 6.106 秒、指纹检查约 2.6 毫秒，24 次调度器更新全部执行；每个任务实际跳过 22/48 个 CFG 分支计算，即 616 个 block。原始峰值为 PyTorch 已分配约 9.37 GiB，不代表设备总显存。</p>
+<p>不同计时边界不能混作同一指标。Native 使用 Torch 2.8.0+cu128、Diffusers 0.41.0、SageAttention 2.2.0 Windows cu128/torch2.8 维护者版本和 Triton 3.4.0.post21；ComfyUI 0.39.0 使用 Torch 2.13+cu130 与其现有 Sage 2.2 环境。模型来自同一源权重，但 RNG（CUDA/CPU）、噪声和 sigma 离散化不同；同名 Euler/simple 不证明数学等价。Tea 阈值 0.15 与 0.08 也不能直接比较强弱。</p>
+<p>这是热驻留、重复提示词的小样本结论。直接 Worker 首次请求实测 15.48 / 17.11 秒，已有磁盘编译缓存，不能当作新机首次编译耗时。新形状或 LoRA 强度/组变化可能重新编译；超出 Torch 编译次数预算可回落 eager，仍正确但可能变慢。</p>
+<p>证据：<a href="../../../runtime/backend-perf2-20261011/product-polynomial/report.json">768 native</a> · <a href="../../../runtime/backend-perf2-20261011/comfy-tea/report.json">768 Comfy</a> · <a href="../../../runtime/backend-perf2-20261011/product-ui/report.json">832 native</a> · <a href="../../../runtime/backend-perf2-20261011/comfy-ui/report.json">832 Comfy</a> · <a href="../../../runtime/backend-perf2-20261011/gateway-fast-fixed/review.html">完整 API 三张样图与记录</a>。</p>
+
+<h2>本次解决的瓶颈</h2>
+<ol>
+<li><strong>权重校验。</strong>Windows CNG 完整 SHA256 保持摘要一致；1.993 GB 实际权重分片的 ABBA 测量从 hashlib 中位 4.125 秒降至 1.280 秒。驻留时，以禁止所选权重写入/删除的文件句柄、NTFS 文件 ID 和持续目录通知保护已有摘要，热任务不再扫描数 GB。临时改动后恢复原状也会失效；保护不可用时仍完整哈希。</li>
+<li><strong>Transformer 执行。</strong>真实 CUDA 分析显示矩阵乘法约占 53.6%、attention 约占 21%。只为 Cosmos 启用 Sage，省去 repeat factor=1 的 K/V 拷贝，并编译原 block.forward。保留原始 PEFT 投影和强度，不融合基座或 LoRA；conditioner 和 VAE 保持原路径。</li>
+<li><strong>Tea 校准。</strong>复用现有 polynomial 策略，在本机训练轨迹拟合，再用独立提示词/seed 留出评估。首尾步全算、连续最多跳一次；24 步不变。已安装的档仅覆盖 compiled-sage、832×1216、24 步、CFG 4、无 LoRA。</li>
+<li><strong>真实集成修复。</strong>首轮完整 API 测到 7.688 秒，发现 Rust 的 <code>\\?\E:\...</code> 路径被误判为网络路径，触发逐任务全量哈希。新增真实 Windows 回归后修复，完整 API 中位数降至 6.280 秒；UNC、Volume GUID 和设备路径继续不使用身份缓存。</li>
+</ol>
+<p>身份租约还修复了两处实际验证发现的问题：目录保护曾阻止原子 PNG 保存；临时增删文件可能绕过仅比较最终清单的检查。现在目录允许子项写入而仍禁止目录删除/改名，并保留不重置的成员和属性事件；加载后的事件即使摘要相同也拒绝接受。</p>
+<p>未采用的实验：VAE 编译增加约 41 秒首次开销且输出偏差明显；CUDA graph 先遇 Windows 启动问题，修正实验后仍出现巨大数值误差；cuBLASLt 与交叉注意力 K/V 额外缓存收益不足。产品代码未启用这些路径。</p>
+
+<h2>画质与现有 LoRA</h2>
+<p>以下是 832×1216 的同 seed 留出对照。左为相同 compiled-sage 执行模式的完整计算，右为 Tea 候选。两例的主体和绘画风格保留，局部清晰；木屋形态、灯光和装饰有所改变，按本次标准接受。PSNR 为 18.98 / 18.61 dB，仅描述像素差异，不是语义画质评分。</p>
+<div class="images">
+<figure><a href="../../../runtime/backend-perf2-20261011/ui-calibration/heldout-0-baseline/output.png"><img loading="lazy" src="../../../runtime/backend-perf2-20261011/ui-calibration/heldout-0-baseline/output.png" alt="湖畔木屋，完整计算"></a><figcaption>木屋 · 完整计算 · seed 4242</figcaption></figure>
+<figure><a href="../../../runtime/backend-perf2-20261011/ui-calibration/heldout-0-cached/output.png"><img loading="lazy" src="../../../runtime/backend-perf2-20261011/ui-calibration/heldout-0-cached/output.png" alt="湖畔木屋，TeaCache"></a><figcaption>木屋 · TeaCache · seed 4242</figcaption></figure>
+<figure><a href="../../../runtime/backend-perf2-20261011/ui-calibration/heldout-1-baseline/output.png"><img loading="lazy" src="../../../runtime/backend-perf2-20261011/ui-calibration/heldout-1-baseline/output.png" alt="雨夜街道，完整计算"></a><figcaption>雨街 · 完整计算 · seed 9100</figcaption></figure>
+<figure><a href="../../../runtime/backend-perf2-20261011/ui-calibration/heldout-1-cached/output.png"><img loading="lazy" src="../../../runtime/backend-perf2-20261011/ui-calibration/heldout-1-cached/output.png" alt="雨夜街道，TeaCache"></a><figcaption>雨街 · TeaCache · seed 9100</figcaption></figure>
+</div>
+<p>两个原有 Kohya Anima 角色 LoRA 在 compiled-sage 下实际生成：宁宁强度 0.8 → 0.4、换夏目 0.8、卸载恢复基座。相同请求重复出图像素一致，卸载后基座像素恢复一致，强度切换确实改变像素。图生图与手绘蒙版同时完成验证，黑色保护区域像素保持、白色编辑区域改变。共 9 个真实任务，原始 LoRA 文件未修改。</p>
+<div class="images">
+<figure><a href="../../../runtime/backend-gpu-20261011/native-compat-perf2/5.png"><img loading="lazy" src="../../../runtime/backend-gpu-20261011/native-compat-perf2/5.png" alt="宁宁 LoRA 强度0.8样张"></a><figcaption>ayachi_nene_v21_anima · 0.8</figcaption></figure>
+<figure><a href="../../../runtime/backend-gpu-20261011/native-compat-perf2/7.png"><img loading="lazy" src="../../../runtime/backend-gpu-20261011/native-compat-perf2/7.png" alt="夏目 LoRA 强度0.8样张"></a><figcaption>shiki_natsume_v21_anima · 0.8</figcaption></figure>
+</div>
+<p><strong>LoRA + Tea 的组合尚未单独校准验收。</strong>上述 LoRA 功能检查关闭 Tea；不能把无 LoRA 的速度优势推广给全部角色。未知 Kohya 格式、DoRA 与不支持的权重形状仍明确拒绝；已测的两份权重不能代表整个 LoRA 生态。</p>
+<p>证据：<a href="../../../runtime/backend-perf2-20261011/ui-calibration/review.html">完整留出对照</a> · <a href="../../../runtime/backend-perf2-20261011/profile-acceptance.log">校准档安装回执</a> · <a href="../../../runtime/backend-gpu-20261011/native-compat-perf2/report.json">LoRA/编辑任务</a> · <a href="../../../runtime/backend-gpu-20261011/native-compat-perf2/pixel-checks.json">像素行为检查</a>。原始实验报告保留生成时的 awaiting/unreviewed 状态，本次评估与安装结果由本报告及独立回执记录，不改写原始观测。</p>
+
+<h2>必要验证与剩余边界</h2>
+<div class="scroll"><table>
+<thead><tr><th>状态</th><th>范围</th><th>证据 / 限制</th></tr></thead>
+<tbody>
+<tr><td>通过</td><td>真实 API 三次热任务、取消、恢复</td><td>Tea 真实执行；取消 0.195 秒，所属 Python 进程消失，旧结果 SHA 不变，恢复任务成功。<a href="../../../runtime/backend-perf2-20261011/gateway-cancel/report.json">记录</a></td></tr>
+<tr><td>通过</td><td>11 项实际 Windows 身份租约检查</td><td>文件/映射写保护、关闭释放、临时成员和属性变化、原子保存、扩展本地路径及非本地命名空间。<a href="../../../runtime/backend-perf2-20261011/extended-path-tests.log">日志</a></td></tr>
+<tr><td>通过</td><td>加速处理器与 loader 定向验证</td><td>CPU self/cross attention 去冗余拷贝前后逐位相等；模式/版本拒绝、原生/raw/Kohya loader 与受保护加载定向通过。Sage/compile 本身不宣称逐位等价。<a href="../../../runtime/backend-perf2-20261011/acceleration-loader-tests.log">日志（含已纠正的命令拼写失败）</a> · <a href="../../../runtime/backend-perf2-20261011/kohya-loader-recheck.log">纠正后的单项</a></td></tr>
+<tr><td>通过</td><td>构建生成入口与打包定向 4 项</td><td><code>npm run build:runtime</code>；新增 helper 随桌面资源打包。<a href="../../../runtime/backend-perf2-20261011/staging-tests.log">定向日志</a>。Rust 源未变，复用已构建并验真的当前二进制。</td></tr>
+<tr><td>已修复</td><td>API 指纹回退、原子保存、瞬时目录变化</td><td>保留失败与修复证据；首个 API 请求早于网关 ready 导致连接失败，未创建任务。</td></tr>
+<tr><td>未运行</td><td>本轮全仓回归、发布、桌面安装、全模型矩阵</td><td>只执行受影响检查；不是全量 PASS。未覆盖 CLIPSeg 真模型、RCAS/高清修复、低显存 offload、任意扩展节点或跨后端同噪声数学等价。</td></tr>
+<tr><td>仍需设备覆盖</td><td>其他尺寸/提示词族/LoRA + Tea、冷编译与多模型切换</td><td>需各自校准和对照；本轮不承诺所有场景都超过 ComfyUI。</td></tr>
+</tbody></table></div>
+<p>使用方式：准备清单锁定的可选依赖后，以 <code>HUIYU_INFERENCE_ACCELERATION=compiled-sage</code> 启动独立 Worker；默认模式仍为 native。更换正在驻留的模型/LoRA 文件前先停止 Worker 或等待 120 秒空闲释放。已安装校准档只在匹配身份与参数时启用，不会自动打开 Tea 开关。详见<a href="../../guides/independent-inference.md">接入指南</a>及<a href="../../../tools/inference/README.md">运行库说明</a>。</p>
+<p><small>原始 JSON、日志和图片位于被忽略的 runtime/，以上证据链接供本机查看。历史第一轮结果见<a href="native-backend-gpu.html">初轮报告</a>；本次结论以此续报为准。Sage Windows 轮子为维护者二进制，版本、来源、许可证及 SHA256 已登记 runtime-manifest.json；未借用 ComfyUI Python 环境，未复制其 GPL 实现。</small></p>
+</html>

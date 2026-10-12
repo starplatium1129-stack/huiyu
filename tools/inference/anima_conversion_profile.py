@@ -1,13 +1,25 @@
-"""One explicit raw Anima architecture; mappings adapted from Diffusers 0.41.0.
+"""Explicit raw Anima architectures; mappings adapted from Diffusers 0.41.0.
 
 Upstream: huggingface/diffusers scripts/convert_{anima,cosmos}_to_diffusers.py.
 Apache-2.0: https://github.com/huggingface/diffusers/blob/v0.41.0/LICENSE
-Changes: fixed profile, collision errors, no dropped keys or arbitrary config/code.
+Changes: explicit 28/40-layer profiles and complete source prefixes; collision
+errors, no dropped trainable/unknown keys or arbitrary config/code. The separate
+Yume profile validates three derived RoPE caches before upstream regeneration.
 Model/checkpoint licenses are separate; this module grants no rights to weights.
 """
 from __future__ import annotations
 
+import copy
+import re
+
 PROFILE = "anima-cosmos2b-v041"
+EXPANDED_PROFILE = "anima-cosmos29b-v041"
+YUME_PROFILE = "anima-yume2b-rope-v041"
+PROFILES = {PROFILE: 28, EXPANDED_PROFILE: 40, YUME_PROFILE: 28}
+CHECKPOINT_PREFIXES = ("net.", "model.diffusion_model.")
+YUME_ROPE_BUFFERS = {"net.pos_embedder.dim_spatial_range": [21],
+                     "net.pos_embedder.dim_temporal_range": [22],
+                     "net.pos_embedder.seq": [256]}
 SOURCES = ["https://github.com/huggingface/diffusers/blob/v0.41.0/scripts/" + name
            for name in ("convert_anima_to_diffusers.py", "convert_cosmos_to_diffusers.py")]
 SOURCE_BLOBS = {"convert_anima_to_diffusers.py": "bf8e006ad266fa33f5395a5d8ffb8e0ba69d175f",
@@ -35,9 +47,35 @@ VAE = dict(base_dim=96, z_dim=16, dim_mult=[1, 2, 4, 4], num_res_blocks=2,
            latents_std=[2.8184, 1.4541, 2.3275, 2.6558, 1.2196, 1.7708, 2.6052, 2.0743,
                         3.2687, 2.1526, 2.8652, 1.5579, 1.6382, 1.1253, 2.8251, 1.9160])
 
+
+def transformer_config(profile_name=PROFILE):
+    if profile_name not in PROFILES:
+        raise ValueError(f"Unknown explicit Anima profile: {profile_name}")
+    return {**copy.deepcopy(TRANSFORMER), "num_layers": PROFILES[profile_name]}
+
+
+def checkpoint_prefix(tensors):
+    """One whole-file namespace; mixed names never get normalized together."""
+    for prefix in CHECKPOINT_PREFIXES:
+        if tensors and all(key.startswith(prefix) for key in tensors):
+            return prefix
+    raise ValueError("Expected one complete checkpoint prefix: net. or model.diffusion_model.; mixed/unknown prefixes are unsupported")
+
+
+def derived_rope_buffers(headers, profile_name=PROFILE):
+    if profile_name != YUME_PROFILE:
+        return {}
+    if checkpoint_prefix(headers["checkpoint"]) != "net.":
+        raise ValueError("Yume derived-cache profile requires the observed net. prefix")
+    for key, shape in YUME_ROPE_BUFFERS.items():
+        if headers["checkpoint"].get(key) != {"shape": shape, "dtype": "BF16"}:
+            raise ValueError(f"Yume requires exact derived buffer {key}: BF16 {shape}")
+    return copy.deepcopy(YUME_ROPE_BUFFERS)
+
 # Order follows the Apache-licensed Cosmos 2.0 converter. These are name-only
 # rewrites, not reshape/transposition guesses. Exact meta-model schemas below
-# are the authority; training counters/position buffers are deliberately rejected.
+# are the authority. Only the separately validated Yume caches are regenerated;
+# training counters, learned positional weights and unknown buffers still fail.
 TRANSFORMER_RENAMES = {
     "t_embedder.1": "time_embed.t_embedder", "t_embedding_norm": "time_embed.norm",
     "blocks": "transformer_blocks",
@@ -81,9 +119,11 @@ def vae_key(key):
                          ".residual.6.": ".conv2.", ".shortcut.": ".conv_shortcut."})
 
 
-def map_headers(headers):
-    """Return destination -> original names. Every tensor has exactly one owner."""
+def map_headers(headers, profile_name=PROFILE):
+    """Return destination -> original weight names; derived caches have separate verification."""
     result = {name: {} for name in ("transformer", "text_conditioner", "text_encoder", "vae")}
+    prefix = checkpoint_prefix(headers["checkpoint"])
+    derived = derived_rope_buffers(headers, profile_name)
     encoder = headers["text_encoder"]
     prefixed = [key.startswith("model.") for key in encoder]
     if any(prefixed) and not all(prefixed):
@@ -93,11 +133,12 @@ def map_headers(headers):
             if tensor["dtype"] not in {"F16", "BF16", "F32"}:
                 raise ValueError(f"Unsupported weight dtype {tensor['dtype']}: {old}; no quantized conversion")
             if source == "checkpoint":
-                if not old.startswith("net."):
-                    raise ValueError(f"Expected uniform raw net. prefix: {old}")
-                component = "text_conditioner" if old.startswith("net.llm_adapter.") else "transformer"
-                new = (old.removeprefix("net.llm_adapter.") if component == "text_conditioner" else
-                       replace(old.removeprefix("net."), TRANSFORMER_RENAMES))
+                if old in derived:
+                    continue  # Shape-only planning; --check/--apply must verify exact values.
+                raw = old.removeprefix(prefix)
+                component = "text_conditioner" if raw.startswith("llm_adapter.") else "transformer"
+                new = (raw.removeprefix("llm_adapter.") if component == "text_conditioner" else
+                       replace(raw, TRANSFORMER_RENAMES))
             else:
                 component = source
                 new = old.removeprefix("model.") if source == "text_encoder" else vae_key(old)
@@ -107,29 +148,35 @@ def map_headers(headers):
     return result
 
 
-def validate_config(config):
-    allowed = {**TRANSFORMER, **TRANSFORMER_DEFAULTS}
+def validate_config(config, profile_name=PROFILE):
+    transformer = transformer_config(profile_name)
+    allowed = {**transformer, **TRANSFORMER_DEFAULTS}
     metadata = {"_class_name", "_diffusers_version", "_name_or_path"}
     if set(config) - set(allowed) - metadata:
         raise ValueError("Unknown/unsafe transformer config fields: " + ", ".join(sorted(set(config) - set(allowed) - metadata)))
     if config.get("_class_name", "CosmosTransformer3DModel") != "CosmosTransformer3DModel":
         raise ValueError("Transformer config must describe CosmosTransformer3DModel")
     for name, expected in allowed.items():
-        if name not in config and name in TRANSFORMER:
+        if name not in config and name in transformer:
             raise ValueError(f"Transformer config requires explicit {name}={expected!r}")
         actual = config.get(name, expected)
         if actual != expected or isinstance(actual, bool) != isinstance(expected, bool):
             raise ValueError(f"Unsupported transformer config {name}={actual!r}; profile requires {expected!r}")
 
 
-def validate_anchors(headers):
+def validate_anchors(headers, profile_name=PROFILE):
+    layers = transformer_config(profile_name)["num_layers"]
+    prefix = checkpoint_prefix(headers["checkpoint"])
+    if any(int(match.group(1)) >= layers for key in headers["checkpoint"]
+           if (match := re.match(r"blocks\.(\d+)\.", key.removeprefix(prefix)))):
+        raise ValueError(f"Checkpoint layers exceed selected {profile_name}; expected {layers} transformer layers")
     anchors = {
-        "checkpoint": {"net.x_embedder.proj.1.weight": [2048, 68],
-                       "net.final_layer.linear.weight": [64, 2048],
-                       "net.blocks.0.self_attn.q_norm.weight": [128],
-                       "net.blocks.27.mlp.layer1.weight": [8192, 2048],
-                       "net.llm_adapter.embed.weight": [32128, 1024],
-                       "net.llm_adapter.blocks.5.self_attn.q_norm.weight": [64]},
+        "checkpoint": {"x_embedder.proj.1.weight": [2048, 68],
+                       "final_layer.linear.weight": [64, 2048],
+                       "blocks.0.self_attn.q_norm.weight": [128],
+                       f"blocks.{layers - 1}.mlp.layer1.weight": [8192, 2048],
+                       "llm_adapter.embed.weight": [32128, 1024],
+                       "llm_adapter.blocks.5.self_attn.q_norm.weight": [64]},
         "text_encoder": {"embed_tokens.weight": [151936, 1024],
                          "layers.27.mlp.gate_proj.weight": [3072, 1024],
                          "layers.0.self_attn.q_proj.weight": [2048, 1024],
@@ -139,8 +186,10 @@ def validate_anchors(headers):
     }
     for component, expected in anchors.items():
         actual = headers[component]
-        if component == "text_encoder":
+        if component == "checkpoint":
+            actual = {name.removeprefix(prefix): value for name, value in actual.items()}
+        elif component == "text_encoder":
             actual = {name.removeprefix("model."): value for name, value in actual.items()}
         for name, shape in expected.items():
             if actual.get(name, {}).get("shape") != shape:
-                raise ValueError(f"Unsupported {PROFILE} shape: {component}.{name}; expected {shape}")
+                raise ValueError(f"Unsupported {profile_name} shape: {component}.{name}; expected {shape}")

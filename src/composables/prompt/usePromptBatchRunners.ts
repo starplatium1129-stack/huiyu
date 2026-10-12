@@ -273,7 +273,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       height: dimensions ? Number(dimensions[2]) : animaState.value.height,
       steps: animaState.value.steps,
       cfg: animaState.value.cfg,
-      teaCache: animaState.value.provider === 'native' ? animaState.value.teaCache === true : animaState.value.teaCache !== false,
+      teaCache: animaState.value.provider === 'native' ? animaState.value.teaCache : animaState.value.teaCache !== false,
       teaCacheThresh: animaState.value.teaCacheThresh,
       ...(input.seed >= 0 ? { seed: input.seed } : {}),
       adultEnabled: isLocalStudioHost() && pb.showMatureScenes,
@@ -283,6 +283,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       hiresFix: Boolean(animaState.value.hiresFix),
       hiresScale: animaState.value.hiresScale,
       hiresDenoise: animaState.value.hiresDenoise,
+      hiresUpscaler: animaState.value.hiresUpscaler,
     }
     const history = {
         ...historyGenerationFields(),

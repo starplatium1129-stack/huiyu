@@ -64,7 +64,7 @@ function tree(root: any) {
 }
 
 // Synthetic PNG with real chunks, checksums and compressed pixel bytes; no generated art.
-function png() {
+function png(red = 80) {
   function crc(bytes: any) {
     let c = -1;
     for (const b of bytes) { c ^= b; for (let i = 0; i < 8; i++) c = (c >>> 1) ^ (0xedb88320 & -(c & 1)); }
@@ -79,7 +79,7 @@ function png() {
   const header = Buffer.alloc(13);
   header.writeUInt32BE(1, 0); header.writeUInt32BE(1, 4); header[8] = 8; header[9] = 2;
   return Buffer.concat([Buffer.from('89504e470d0a1a0a', 'hex'), chunk('IHDR', header),
-    chunk('IDAT', zlib.deflateSync(Buffer.from([0, 80, 100, 120]))), chunk('IEND', Buffer.alloc(0))]);
+    chunk('IDAT', zlib.deflateSync(Buffer.from([0, red, 100, 120]))), chunk('IEND', Buffer.alloc(0))]);
 }
 
 async function mockGateway(t: any) {
