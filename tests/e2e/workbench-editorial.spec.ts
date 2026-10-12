@@ -1,17 +1,24 @@
 import { expect, test, type Page } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
 
+// Existing-workflow checks start after the separately covered first-visit tour.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('aics_guest_guide_dismissed', '1'))
+})
+
 async function prepare(page: Page, theme: string, online = false) {
   await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json: { ok: true, online: false, models: [], loras: [], styleLoras: [] } }))
-  await page.route('**/api/generation/status', route => route.fulfill({ json: {
-    ok: true, online, provider: online ? 'webui' : null, webuiOnline: online, comfyFallbackOnline: false,
-    models: [], loras: [], pending: 0, maxPending: 4, checkpoint: 'fixture.safetensors', samplers: ['Euler a'], schedulers: ['Normal'],
-    capabilities: { basic: online, hires: false, faceDetailer: false, hiresUpscalers: [] },
+  await page.route('**/api/creative/status', route => route.fulfill({ json: {
+    ok: true, online, provider: 'comfy', styleLoras: [],
+    models: [{ id: 'anima-miaomiao-v1.6', family: 'anima', available: true, sizes: ['832x1216'],
+      defaults: { steps: 28, cfg: 5.5 }, capabilities: { noLora: true } }],
+    loras: [{ id: 'L_NENE_V21_ANIMA', character: 'nene', available: true },
+      { id: 'L_NAT_V21_ANIMA', character: 'natsume', available: true }],
   } }))
   await page.addInitScript(theme => {
     localStorage.setItem('aics_theme', theme)
     localStorage.setItem('aics_pb_director_mode', 'basic')
-    localStorage.setItem('aics_draw_engine', 'sd')
+    localStorage.setItem('aics_draw_engine', 'anima')
     // Algebraic contrast checks require an opaque surface; glass is reviewed visually.
     localStorage.setItem('atelier-desktop-appearance-v1', JSON.stringify({ theme, reducedGlass:true }))
   }, theme)
@@ -29,14 +36,17 @@ for (const theme of ['light', 'dark']) {
     await page.getByRole('button',{name:'专家模式',exact:true}).click()
     await page.locator('.engine-switch button').first().click()
     let fail = false, submissions = 0
+    await page.route('**/api/interrogate/status', route => route.fulfill({ json: { ok: true, local: true, defaultEngine: 'pixai', pixai: {
+      engine: 'pixai', model: 'pixai-tagger-v1.0', available: true, modelPresent: true, dependencyPresent: true, reason: null,
+    } } }))
     await page.route('**/api/interrogate', route => fail
       ? route.fulfill({status:500,json:{error:'隔离反推错误'}})
       : route.fulfill({json:{ok:true,engine:'pixai',model:'pixai-tagger-v1.0',mode:'tag',threshold:.17,
         tags:['sitting','park','blue_hair'],scores:{sitting:.9,park:.9,blue_hair:.9},caption:'',characterTags:[],
         rating:{general:1,sensitive:0,questionable:0,explicit:0}}}))
-    await page.route('**/api/generation/jobs**', route => {
+    await page.route('**/api/anima/jobs**', route => {
       if(route.request().method()==='POST')submissions++
-      return route.fulfill({json:{ok:true,job:{id:'feedback-fixture',status:'running',provider:'webui',seed:42,progress:.2,resultAvailable:false,metadata:{seed:42}}}})
+      return route.fulfill({json:{ok:true,job:{id:'feedback-fixture',status:'running',provider:'comfy',seed:42,progress:.2,resultAvailable:false}}})
     })
     const upload=page.locator('input[type=file][accept="image/*"]').first()
     for(const viewport of [{width:1440,height:960},{width:1024,height:640}]) {
@@ -89,7 +99,7 @@ for (const theme of ['light', 'dark']) {
     await page.getByRole('button', { name: '专家模式', exact: true }).click()
     await page.getByRole('tab', { name: '提示词', exact: true }).click()
     await expect(page.locator('#promptMonitor')).toBeVisible()
-    await page.getByRole('tab', { name: '生成', exact: true }).click()
+    await page.getByRole('tab', { name: '绘制', exact: true }).click()
     await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-expert.png`) })
     await page.getByRole('button', { name: '进入专注成片模式' }).click()
     await expect(page.locator('.director-inspector')).toBeHidden()
@@ -122,8 +132,8 @@ for (const theme of ['light', 'dark']) {
     }
     if (theme === 'dark') {
       await page.setViewportSize({ width:900, height:720 })
-      await expect(page.locator('#drawing-canvas .gen-bar')).toBeVisible()
-      await expect(page.locator('#drawing-inspector .gen-bar')).toHaveCount(0)
+      await expect(page.getByRole('group', { name: '出图尺寸与生成', exact: true })).toHaveCount(1)
+      await expect(page.getByRole('button', { name: '生成图片', exact: true })).toBeInViewport({ ratio: 1 })
     }
   })
 }
@@ -132,34 +142,34 @@ test(`atelier mocked generation states and saving dark`, async ({ page }, testIn
   const theme = 'dark'
   let state = 'running', submissions = 0, cancellations = 0
   await prepare(page, theme, true)
-  await page.route('**/api/generation/jobs**', route => {
+  await page.route('**/api/anima/jobs**', route => {
     if (route.request().method() === 'POST') submissions++
     if (route.request().method() === 'DELETE') { cancellations++; state = 'cancelled' }
     return route.fulfill({ json: { ok: true, job: {
-      id: 'atelier-fixture', status: state, provider: 'webui', seed: 42, progress: state === 'running' ? .45 : 1,
+      id: 'atelier-fixture', status: state, provider: 'comfy', seed: 42, progress: state === 'running' ? .45 : 1,
       error: state === 'failed' ? '隔离测试：生成暂时失败' : null,
-      resultUrl: state === 'succeeded' ? '/atelier-fixture.jpg' : null, resultAvailable: state === 'succeeded', metadata: { seed: 42 },
+      resultUrl: state === 'succeeded' ? '/atelier-fixture.jpg' : null, resultAvailable: state === 'succeeded',
     } } })
   })
   await page.route('**/atelier-fixture.jpg', route => route.fulfill({ path: 'assets/characters/natsume-home-cg.jpg', contentType: 'image/jpeg' }))
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await expect(page.locator('.engine-switch button').first()).toBeVisible()
   await page.locator('.engine-switch button').first().click()
-  await page.getByTestId('sd-generate').click()
-  await expect(page.locator('.stage-generating-title')).toBeVisible()
+  await page.getByTestId('anima-generate').click()
+  await expect(page.getByTestId('anima-generate')).toHaveAttribute('data-state', 'loading')
   await expect(page.locator('.gen-bar-size .studio-select-trigger')).toBeDisabled()
   await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-running.png`) })
   await page.getByRole('button', { name: '停止绘制', exact: true }).click()
   await expect.poll(() => cancellations).toBe(1)
   await expect(page.locator('.stage-placeholder')).toHaveClass(/is-paused/)
   state = 'failed'
-  await page.getByTestId('sd-generate').click()
-  await expect(page.locator('.stage-error-detail')).toContainText('隔离测试')
+  await page.getByTestId('anima-generate').click()
+  await expect(page.getByTestId('anima-generate')).toHaveAttribute('data-state', 'error')
   await page.getByRole('button', { name: '查看恢复选项', exact: true }).click()
-  await expect(page.locator('#inspector-tab-delivery')).toBeFocused()
+  await expect(page.locator('#inspector-tab-render')).toBeFocused()
   await expect(page.locator('.director-inspector')).toBeVisible()
   state = 'succeeded'
-  await page.getByRole('button', { name: '生成图片', exact: true }).click()
+  await page.getByRole('button', { name: '重试生成', exact: true }).click()
   await expect(page.locator('.result-image')).toBeVisible()
   await expect(page.locator('.result-image')).toHaveJSProperty('complete', true)
   await expect(page.locator('.result-image')).not.toHaveJSProperty('naturalWidth', 0)
@@ -175,9 +185,10 @@ test(`atelier mocked generation states and saving dark`, async ({ page }, testIn
   const overlap = Math.min(actionsBox.x + actionsBox.width, imageBox.x + imageBox.width) - Math.max(actionsBox.x, imageBox.x) > 1
     && Math.min(actionsBox.y + actionsBox.height, imageBox.y + imageBox.height) - Math.max(actionsBox.y, imageBox.y) > 1
   expect(overlap, 'result controls must not cover the artwork').toBe(false)
+  await page.getByRole('tab', { name: '图像', exact: true }).click()
   await page.locator('.image-continuation > summary').click()
   await expect(page.getByRole('button', { name: '加入分镜', exact: true })).toBeVisible()
-  await page.getByRole('tab', { name:'生成', exact:true }).click()
+  await page.getByRole('tab', { name:'绘制', exact:true }).click()
   await page.getByRole('button', { name: '存入作品册', exact: true }).click()
   await expect(page.getByRole('link', { name: '查看作品册', exact: true })).toBeVisible()
   const notices = page.locator('.toast-close')

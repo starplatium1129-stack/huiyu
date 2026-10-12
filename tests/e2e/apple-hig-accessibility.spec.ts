@@ -3,6 +3,11 @@ import { textContrast } from './helpers/contrast'
 
 const appearanceKey = 'atelier-desktop-appearance-v1'
 
+// These cases exercise existing surfaces, not the separately covered first-visit tour.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('aics_guest_guide_dismissed', '1'))
+})
+
 async function openAppearance(page: Page) {
   const toggle = page.locator('.nav-menu-toggle')
   if (await toggle.isVisible() && await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click()
@@ -15,14 +20,15 @@ async function openAppearance(page: Page) {
 }
 
 for (const theme of ['dark', 'light'] as const) {
-  if (theme === 'dark') test(`native modal keeps keyboard control above an existing story drawer ${theme}`, async ({ page }) => {
+  if (theme === 'dark') test(`native modal keeps keyboard control above an existing scene viewer ${theme}`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' })
     await page.goto('/scene-explorer')
     const trigger = page.getByRole('button', { name: '故事', exact: true }).first()
+    const drawer = page.getByRole('dialog', { name: '场景观赏模式', exact: true })
+    const close = drawer.getByRole('button', { name: '关闭', exact: true })
     await trigger.focus()
+    await expect(trigger).toBeFocused()
     await page.keyboard.press('Enter')
-    const drawer = page.getByRole('dialog', { name: '场景故事', exact: true })
-    const close = drawer.getByRole('button', { name: '关闭故事', exact: true })
     await expect(close).toBeFocused()
     // Exercise the browser's real top layer, both outside and inside the custom trap.
     for (const nested of [false, true]) {
@@ -31,7 +37,7 @@ for (const theme of ['dark', 'light'] as const) {
         native.id = 'native-focus-regression'
         native.setAttribute('aria-label', '原生弹窗验证')
         native.innerHTML = '<button>第一项</button><button>第二项</button>'
-        ;(nested ? document.querySelector('.story-card')! : document.body).append(native)
+        ;(nested ? document.querySelector('.scene-artwork-viewer')! : document.body).append(native)
         native.showModal()
       }, nested)
       const native = page.locator('#native-focus-regression')
@@ -57,7 +63,7 @@ for (const theme of ['dark', 'light'] as const) {
     ])))
     await page.goto('/gallery')
     await page.getByRole('button', { name: '选择', exact: true }).click()
-    await page.getByRole('button', { name: /全选/ }).click()
+    await page.getByRole('checkbox', { name: '全选当前作品', exact: true }).check()
     const trigger = page.getByRole('button', { name: '移入回收站（2）', exact: true })
     await trigger.click()
     const dialog = page.getByRole('alertdialog')
@@ -68,10 +74,14 @@ for (const theme of ['dark', 'light'] as const) {
     await page.keyboard.press('Enter')
     await expect(dialog).toBeHidden()
     await expect(trigger).toBeFocused()
-    await expect(page.locator('.gallery-bulk-count')).toContainText('已选 2 / 2')
+    await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*2\s*\/\s*2\s*$/)
     await trigger.click()
     await page.keyboard.press('Shift+Tab')
+    await expect(dialog.locator('.confirm-message')).toBeFocused()
+    await page.keyboard.press('Shift+Tab')
     await expect(dialog.getByRole('button', { name: '移入回收站', exact: true })).toBeFocused()
+    await page.keyboard.press('Tab')
+    await expect(dialog.locator('.confirm-message')).toBeFocused()
     await page.keyboard.press('Tab')
     await expect(cancel).toBeFocused()
     await page.keyboard.press('Tab')

@@ -117,3 +117,31 @@ it('updates a completed image without rendering unchanged sibling cards', async 
     expect(updated[1]).not.toHaveBeenCalled()
   } finally { wrapper.unmount() }
 })
+
+it('uses one native selection control for the whole card without opening the viewer', async () => {
+  const wrapper = mountCard('/original.jpg')
+  try {
+    await wrapper.setProps({ selectionMode: true })
+    const input = wrapper.get('input[type="checkbox"]').element as HTMLInputElement
+    expect(input.checked).toBe(false)
+    expect(input.getAttribute('aria-label')).toBe('选择作品：午后，和你')
+    expect(wrapper.find('button.artwork-button').exists()).toBe(false)
+    expect(wrapper.find('label button, button input').exists()).toBe(false)
+    expect(wrapper.findAll('button, a, input, [tabindex="0"]')).toHaveLength(1)
+    ;(wrapper.get('label').element as HTMLLabelElement).click()
+    expect(wrapper.emitted('select')).toHaveLength(1)
+    expect(wrapper.emitted('open')).toBeUndefined()
+    await wrapper.setProps({ selected: true })
+    expect(input.checked).toBe(true)
+    // A failed image retains its separate retry action and returns focus to selection.
+    await wrapper.get('.artwork-image-hd').trigger('error')
+    await wrapper.get('.artwork-retry').trigger('click')
+    await nextTick()
+    expect(document.activeElement).toBe(input)
+    expect(wrapper.emitted('select')).toHaveLength(1)
+    await wrapper.setProps({ selectionMode: false })
+    expect(wrapper.find('input[type="checkbox"]').exists()).toBe(false)
+    await wrapper.get('button.artwork-button').trigger('click')
+    expect(wrapper.emitted('open')).toHaveLength(1)
+  } finally { wrapper.unmount() }
+})

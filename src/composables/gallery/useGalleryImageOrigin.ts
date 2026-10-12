@@ -38,6 +38,10 @@ export function useGalleryImageOrigin(options: {
     if (performance.now() - capturedAt >= 180) { opening = false; return }
     const host = options.viewerEl.value, image = host?.querySelector<HTMLImageElement>(PREVIEW_IMAGE)
     if (!host || !image || options.viewerIndex.value < 0) return
+    // The viewer mounts before a cached thumbnail's load event. Do not consume
+    // the capture yet: the bounded flight needs warm pixels and can retry on
+    // that first load, still within the original 180ms handoff window.
+    if (!image.complete || !image.naturalWidth) return
     opening = false
     void motion.enter(image, host)
   }
@@ -49,7 +53,7 @@ export function useGalleryImageOrigin(options: {
     cancel()
   }, { flush: 'sync' })
   function loaded(event: Event) {
-    if (event.target instanceof HTMLImageElement) void enter()
+    if (event.target instanceof HTMLImageElement && event.target.matches(PREVIEW_IMAGE)) void enter()
   }
   function leave() {
     opening = false

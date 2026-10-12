@@ -42,10 +42,13 @@
   .pb .generation-track.is-indeterminate i { width:28%; animation:generation-traverse 1100ms linear infinite; }
   .pb .generation-percent { font:600 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
   .pb .gen-bar-actions .is-drawing { color:var(--accent); }
+  .pb .generation-action[data-state="success"]:not(:disabled) { color:var(--success-text); }
+  .pb .generation-action[data-state="error"]:not(:disabled) { color:var(--danger-text); }
+  .pb .generation-action:is([data-state="success"],[data-state="error"]) .generation-action-surface { background:var(--bg-surface); border-color:currentColor; }
   .pb .is-drawing .generation-action-surface { background:var(--accent-soft); }
   @keyframes generation-traverse { from { transform:translateX(-110%); } to { transform:translateX(370%); } }
-  @media (prefers-reduced-motion:reduce) { .pb .generation-track.is-indeterminate i { animation:none; } }
-  :root:is([data-motion="reduce"],[data-motion="reduced"]) .pb .generation-track.is-indeterminate i { animation:none; }
+  @media (prefers-reduced-motion:reduce) { .pb .generation-track i { animation:none; transition:none; } }
+  :root:is([data-motion="reduce"],[data-motion="reduced"]) .pb .generation-track i { animation:none; transition:none; }
   /* 有原因时按钮组不再抢 auto 外边距，让原因与按钮各占一端 */
   .pb .gen-bar-blocked + .gen-bar-actions { @apply tw:ml-0; }
   .pb.journal-workspace .gen-bar-actions .btn { min-height:var(--control-height); min-width:104px; @apply tw:text-label; padding:var(--s-2) var(--s-3); border-radius:var(--r-md); }

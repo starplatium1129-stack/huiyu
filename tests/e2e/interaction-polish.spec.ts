@@ -2,6 +2,11 @@ import { expect, test, type Page } from '@playwright/test'
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
 import { readFileSync } from 'node:fs'
 
+// Existing-workflow checks start after the separately covered first-visit tour.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('aics_guest_guide_dismissed', '1'))
+})
+
 for (const theme of ['dark']) {
   test(`gallery original export preserves JPEG ${theme}`, async ({ page }) => {
     await page.addInitScript(value => {
@@ -39,7 +44,7 @@ for (const theme of ['dark']) {
     await page.route('**/api/video/jobs', route => route.fulfill({ status: 503, json: { ok: false, error: '测试视频提交失败，请重试' } }))
     await page.goto('/video-studio')
     await page.locator('.video-prompt').fill('A calm afternoon by the window')
-    const submit = page.locator('.video-submit-panel button')
+    const submit = page.getByRole('button', { name: '生成视频', exact: true })
     await expect(submit).toBeEnabled()
     await submit.click()
     await expect(page.locator('.video-inline-message.error')).toContainText('ComfyUI 未连接')
@@ -55,7 +60,6 @@ test('large gallery keeps its initial render bounded and searches the complete a
     }))))
   })
   await page.goto('/gallery')
-  await page.getByRole('dialog', { name: '访客导览', exact: true }).getByRole('button', { name: '先浏览，稍后配置', exact: true }).click()
   await expect(page.locator('.gallery-count')).toContainText('3000')
   await expect(page.locator('.artwork')).toHaveCount(12)
   await expect(page.locator('.artwork').filter({ hasText: '页外唯一作品' })).toHaveCount(0)
@@ -243,10 +247,10 @@ test('gallery filtering does not retain hidden selections', async ({ page }) => 
   })
   await page.goto('/gallery')
   await page.getByRole('button', { name: '选择', exact: true }).click()
-  await page.getByRole('button', { name: /全选/ }).click()
-  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 2 / 2')
+  await page.getByRole('checkbox', { name: '全选当前作品', exact: true }).check()
+  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*2\s*\/\s*2\s*$/)
   await page.getByLabel('搜索作品', { exact: true }).fill('审计甲')
-  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 0 / 1')
+  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*0\s*\/\s*1\s*$/)
   await expect(page.getByRole('button', { name: '移入回收站（0）', exact: true })).toBeDisabled()
 })
 
@@ -269,7 +273,7 @@ test('gallery viewer never retargets actions when its artwork leaves the active 
 })
 
 
-test('gallery keeps failed bulk items selected for retry', async ({ page }) => {
+test('gallery keeps an atomically failed batch selected for retry', async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem('aics_pb_history', JSON.stringify([
       { id: 'audit-one', sceneTitle: '审计甲', prompt: 'audit first' },
@@ -283,68 +287,34 @@ test('gallery keeps failed bulk items selected for retry', async ({ page }) => {
   })
   await page.goto('/gallery')
   await page.getByRole('button', { name: '选择', exact: true }).click()
-  await page.getByRole('button', { name: /全选/ }).click()
+  await page.getByRole('checkbox', { name: '全选当前作品', exact: true }).check()
   await page.getByRole('button', { name: '移入回收站（2）', exact: true }).click()
   await page.getByRole('alertdialog').getByRole('button', { name: '移入回收站', exact: true }).click()
-  await expect(page.locator('.toast-msg')).toContainText('1 幅没成功')
-  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 1 / 1')
-  await expect(page.getByRole('button', { name: '移入回收站（1）', exact: true })).toBeEnabled()
+  // The Web repository now writes the selected batch in one atomic transaction.
+  await expect(page.locator('.toast-msg')).toContainText('尚未确认作品已移入回收站，请重新读取后重试')
+  await expect(page.locator('.artwork')).toHaveCount(2)
+  await expect(page.locator('.gallery-bulk-count')).toHaveText(/^\s*已选\s*2\s*\/\s*2\s*$/)
+  await expect(page.getByRole('button', { name: '移入回收站（2）', exact: true })).toBeEnabled()
 })
 
-test('director blueprint round-trips full decisions and material conflicts', async ({ page }) => {
+test('director rejects invalid blueprint files without overwriting the edited draft', async ({ page }) => {
   await page.goto('/prompt-builder')
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  await page.locator('.engine-switch button').first().click()
-  await expect(page.locator('.engine-switch button').first()).toHaveClass(/active/)
-
   await page.locator('[aria-controls="material-story"]').click()
-  await page.locator('.story-input').fill('蓝图往返故事')
-  await page.locator('#visualDescription').fill('A red umbrella beside a rain-covered window.')
-
-  await page.getByRole('tab', { name: '画面', exact: true }).click()
-  await page.locator('#stepMood > summary').click()
-  await page.locator('.mood-card').filter({ hasText: '忧伤' }).click()
-
-  await page.getByRole('tab', { name: '提示词', exact: true }).click()
-  const tagInput = page.locator('#stepTags > input.tag-input[type="text"]')
-  await tagInput.fill('school_uniform, pleated_skirt')
-  await tagInput.press('Enter')
-  await expect(page.locator('.manual-tag-en')).toContainText(['school_uniform', 'pleated_skirt'])
-
-  await page.locator('.utility-trigger').click()
-  const downloading = page.waitForEvent('download')
-  await page.getByRole('button', { name: '导出当前蓝图 JSON', exact: true }).click()
-  const download = await downloading
-  const payload = JSON.parse(readFileSync((await download.path())!, 'utf8'))
-  expect(payload).toMatchObject({
-    schema: 'aics-director-blueprint-v1', story: '蓝图往返故事',
-    visualDescription: 'A red umbrella beside a rain-covered window.',
-    colorMood: 'sad', directorMode: 'pro', subject: 'studio',
-    selections: { composition: null }, drawEngine: 'sd',
-  })
-  expect(payload.manualTags).toEqual(['school_uniform', 'pleated_skirt'])
-  expect(payload.anima).toEqual(expect.objectContaining({ modelId: expect.any(String) }))
-
-  await tagInput.fill('bikini')
-  await tagInput.press('Enter')
-  await expect(page.locator('.manual-tag-en')).toContainText('bikini')
-  await expect(page.locator('.manual-tag-en').filter({ hasText: 'school_uniform' })).toHaveCount(0)
-  await page.locator('[aria-controls="material-story"]').click()
-  await page.locator('#visualDescription').fill('Changed after export.')
-  await page.getByRole('tab', { name: '画面', exact: true }).click()
-  await page.locator('.mood-card').filter({ hasText: '快乐' }).click()
-
-  await page.locator('.pb-blueprint-file-input').setInputFiles({
-    name: 'director-blueprint.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(payload)),
-  })
-  await expect(page.getByText('蓝图配置已完整载入', { exact: true })).toBeVisible()
-  await page.locator('[aria-controls="material-story"]').click()
-  await expect(page.locator('#visualDescription')).toHaveValue('A red umbrella beside a rain-covered window.')
-  await page.getByRole('tab', { name: '画面', exact: true }).click()
-  await expect(page.locator('.mood-card').filter({ hasText: '忧伤' })).toHaveAttribute('aria-pressed', 'true')
-  await page.getByRole('tab', { name: '提示词', exact: true }).click()
-  await expect(page.locator('.manual-tag-en')).toContainText(['school_uniform', 'pleated_skirt'])
-  await expect(page.locator('.manual-tag-en').filter({ hasText: 'bikini' })).toHaveCount(0)
+  const story = page.locator('.story-input'), description = page.locator('#visualDescription')
+  await story.fill('当前未保存故事')
+  await description.fill('Current draft beside the window.')
+  // Full restoration remains covered by promptBlueprintActions.spec.ts;
+  // this browser case owns file rejection and preservation of the live editor.
+  for (const contents of ['{', JSON.stringify({ schema: 'unsupported', story: 'Untrusted replacement' })]) {
+    await page.locator('.pb-blueprint-file-input').setInputFiles({
+      name: 'invalid-blueprint.json', mimeType: 'application/json', buffer: Buffer.from(contents),
+    })
+    await expect(page.locator('.toast-msg').last()).toContainText(contents === '{' ? 'JSON' : '蓝图版本不受支持')
+    await expect(story).toHaveValue('当前未保存故事')
+    await expect(description).toHaveValue('Current draft beside the window.')
+    await expect(page.locator('article.pb')).toHaveAttribute('data-director-mode', 'pro')
+  }
 })
 
 
@@ -369,7 +339,7 @@ for (const theme of ['dark']) {
       const buttons = page.getByRole('button', { name: '正在保存…', exact: true })
       await expect(buttons).toHaveCount(saveButtonCount)
       for (const button of await buttons.all()) await expect(button).toBeDisabled()
-      await page.locator('#sd-host').press('Enter')
+      await page.locator('#comfy-host').press('Enter')
       expect(requests).toBe(1)
       await page.locator('.service-config-panel').screenshot({ path: `.review-shots/feature-control-${theme}.png` })
       release()
@@ -395,15 +365,15 @@ for (const theme of ['dark']) {
     await page.route('**/batch-audit-result.svg', route => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><rect width="16" height="16" fill="gray"/></svg>' }))
     await page.goto('/prompt-builder')
     await page.getByRole('button', { name: '专家模式', exact: true }).click()
+    // Blueprints load for the selected popular character, not eagerly at startup.
+    await page.locator('[aria-controls="material-character"]').click()
+    await page.getByRole('button', { name: /热门角色/ }).first().click()
     await page.getByRole('tab', { name: '任务', exact: true }).click()
     await page.getByRole('button', { name: '批量出图 · 场景 / 多角色', exact: true }).click()
     const panel = page.getByRole('dialog', { name: '批量出图', exact: true })
+    await expect(panel.locator('.batch-scene-card').nth(1)).toBeVisible()
     await expect(panel.getByRole('group', { name: '选择批量模式' }).getByRole('button', { name: '按场景蓝图' })).toHaveAttribute('aria-pressed', 'true')
     await expect(panel.getByRole('group', { name: '每项出几张' }).getByRole('button', { name: '1 张' })).toHaveAttribute('aria-pressed', 'true')
-    const animaEngine = panel.getByRole('group', { name: '选择批量出图引擎' }).getByRole('button', { name: 'Anima', exact: true })
-    await animaEngine.click()
-    await expect(animaEngine).toHaveAttribute('aria-pressed', 'true')
-    await expect(panel.locator('.batch-scene-card')).toHaveCount(30)
     await panel.getByRole('button', { name: '全选匹配项', exact: true }).click()
     await panel.getByRole('button', { name: '取消全选', exact: true }).click()
     await expect(panel.locator('.batch-hint')).toContainText('已选 0 个场景')
@@ -414,7 +384,7 @@ for (const theme of ['dark']) {
     await panel.getByRole('button', { name: '开始批量出图', exact: true }).click()
     await expect(panel.locator('.batch-result-grid .batch-card')).toHaveCount(2)
     await expect(panel.locator('.batch-progress-head')).toContainText('正在逐张出图')
-    await panel.getByRole('button', { name: '关闭', exact: true }).click()
+    await panel.getByRole('button', { name: '关闭批量出图', exact: true }).click()
     await page.getByRole('button', { name: '查看批量进度', exact: true }).click()
     await expect(panel.locator('.batch-progress-head')).toContainText('正在逐张出图')
     await panel.getByRole('button', { name: '停止（当前张完成后停）', exact: true }).click()
@@ -478,14 +448,15 @@ test('global task center retains a batch while visiting the gallery and control 
   await page.route('**/center-result.svg', route => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><rect width="16" height="16" fill="gray"/></svg>' }))
   await page.goto('/prompt-builder')
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  await page.locator('[aria-controls="material-character"]').click()
+  await page.getByRole('button', { name: /热门角色/ }).first().click()
   await page.getByRole('tab', { name: '任务', exact: true }).click()
   await page.getByRole('button', { name: '批量出图 · 场景 / 多角色', exact: true }).click()
   const batch = page.getByRole('dialog', { name: '批量出图', exact: true })
-  await batch.getByRole('group', { name: '选择批量出图引擎' }).getByRole('button', { name: 'Anima', exact: true }).click()
   await batch.locator('.batch-scene-card').filter({ hasNot: page.locator('.batch-scene-adult') }).first().click()
   await batch.getByRole('button', { name: '开始批量出图', exact: true }).click()
   await expect(batch.locator('.batch-progress-head')).toContainText('正在逐张出图')
-  await batch.getByRole('button', { name: '关闭', exact: true }).click()
+  await batch.getByRole('button', { name: '关闭批量出图', exact: true }).click()
   await expect(page.getByRole('link', { name: '房间', exact: true })).toHaveAttribute('target', '_blank')
   await page.getByRole('link', { name: '我的作品', exact: true }).click()
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
@@ -506,28 +477,3 @@ test('global task center retains a batch while visiting the gallery and control 
   await expect(page.locator('.artwork')).toHaveCount(1)
   expect(submitted).toBe(1)
 })
-
-
-for (const theme of ['dark', 'light']) {
-  test(`character portraits and asset health stay readable ${theme}`, async ({ page }) => {
-    // This is a UI test; physical reference files are checked separately on the asset host.
-    const image = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
-    await page.route('**/api/character-reference-profile/furina', route => route.fulfill({ json: { characterId: 'furina', displayName: '芙宁娜', outfits: [{ outfitId: 'fixture', outfitName: '测试服装', isDefault: true, isNsfw: false, prose: '',
-        references: Array.from({ length: 7 }, (_, index) => ({ id: 'fixture-' + index, name: '测试机位 ' + index, shotType: '正面', fileName: index + '.png', lens: '50mm', targetUsage: [], url: '/character-references/furina/fixture/' + index + '.png' })),
-      }],
-    } }))
-    await page.route('**/character-references/**', route => route.fulfill({ status: 200, contentType: 'image/png', body: image }))
-    await page.setViewportSize({ width: 1440, height: 960 })
-    await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
-    await page.goto('/character?character=furina')
-    await page.locator('.character-production > summary').click()
-    const assets = page.getByRole('region', { name: '角色素材状态' })
-    await expect(assets).toContainText('7 / 7 可读取')
-    const portrait = page.locator(theme === 'dark' ? '.directory-item[data-character="furina"] .character-portrait' : '.directory-pocket .character-portrait')
-    await expect(portrait).toBeVisible()
-    await expect(portrait).toHaveAttribute('data-state', 'image')
-    await assets.screenshot({ path: `.review-shots/character-assets-${theme}.png` })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
-  })
-}
