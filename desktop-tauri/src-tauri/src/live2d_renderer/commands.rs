@@ -174,18 +174,9 @@ fn handle_model_command(
         OverlayCommand::SetGaze(x, y) => {
             ctx.gaze = (x.clamp(-1.0, 1.0), y.clamp(-1.0, 1.0));
         }
-        OverlayCommand::HitTestAsync { x, y } => {
-            let rect = *state.rect.lock().unwrap();
-            let areas = ctx.hit_test(rect, *state.framing.lock().unwrap(), x, y);
-            *state.hit_test_result.lock().unwrap() = Some(areas.clone());
-            if let Some(app) = app {
-                let _ = app.emit("aics:live2d:hit-test", areas);
-            }
-        }
         OverlayCommand::HitTest { x, y, reply } => {
             let rect = *state.rect.lock().unwrap();
             let areas = ctx.hit_test(rect, *state.framing.lock().unwrap(), x, y);
-            *state.hit_test_result.lock().unwrap() = Some(areas.clone());
             let _ = reply.send(Ok(areas));
         }
         OverlayCommand::Snapshot { path, reply } => {

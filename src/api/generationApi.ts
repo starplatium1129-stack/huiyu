@@ -1,4 +1,4 @@
-import { apiClient, type ApiClient, type ApiResponseObject } from './client.ts'
+import { apiClient, type ApiResponseObject } from './client.ts'
 
 /**
  * /api/generation/* 统一客户端 —— 出图引擎网关（Comfy / WebUI 任务路由）。
@@ -14,30 +14,6 @@ export const GENERATION_API_TIMEOUTS = {
 import type { GenerationStatus, GenerationJobEnvelope } from '../types/generation.ts'
 export type { GenerationJob, GenerationStatus, GenerationJobEnvelope } from '../types/generation.ts'
 import { decodeGenerationJobEnvelope, isGenerationStatus } from './generationResponse.ts'
-/** 服务端白名单字段（routes/generation.js ALLOWED） */
-export interface GenerationJobPayload {
-  prompt: string
-  negative?: string
-  profile?: string
-  modelId?: string
-  character?: string
-  loras?: Array<{ id: string; strength: number }>
-  width?: number
-  height?: number
-  steps?: number
-  cfg?: number
-  seed?: number
-  sampler?: string
-  scheduler?: string
-  hiresFix?: boolean
-  hiresScale?: number
-  hiresUpscaler?: string
-  hiresSteps?: number
-  denoisingStrength?: number
-  faceDetailer?: boolean
-  adultEnabled?: boolean
-}
-
 export interface GenerationCallOptions {
   signal?: AbortSignal
 }
@@ -48,29 +24,25 @@ export interface GenerationApi {
   deleteJob(id: string, options?: GenerationCallOptions): Promise<GenerationJobEnvelope>
 }
 
-export function createGenerationApi(client: ApiClient = apiClient): GenerationApi {
-  return {
-    getStatus(options = {}) {
-      return client.request<GenerationStatus>('/api/generation/status', {
-        cache: 'no-store',
-        signal: options.signal,
-        timeoutMs: GENERATION_API_TIMEOUTS.status,
-        validate: isGenerationStatus,
-      })
-    },
-    getJob(id, options = {}) {
-      return client.request<ApiResponseObject>(
-        `/api/generation/jobs/${encodeURIComponent(id)}`,
-        { cache: 'no-store', signal: options.signal, timeoutMs: GENERATION_API_TIMEOUTS.job },
-      ).then(decodeGenerationJobEnvelope)
-    },
-    deleteJob(id, options = {}) {
-      return client.request<ApiResponseObject>(
-        `/api/generation/jobs/${encodeURIComponent(id)}`,
-        { method: 'DELETE', cache: 'no-store', signal: options.signal, timeoutMs: GENERATION_API_TIMEOUTS.delete },
-      ).then(decodeGenerationJobEnvelope)
-    },
-  }
+export const generationApi: GenerationApi = {
+  getStatus(options = {}) {
+    return apiClient.request<GenerationStatus>('/api/generation/status', {
+      cache: 'no-store',
+      signal: options.signal,
+      timeoutMs: GENERATION_API_TIMEOUTS.status,
+      validate: isGenerationStatus,
+    })
+  },
+  getJob(id, options = {}) {
+    return apiClient.request<ApiResponseObject>(
+      `/api/generation/jobs/${encodeURIComponent(id)}`,
+      { cache: 'no-store', signal: options.signal, timeoutMs: GENERATION_API_TIMEOUTS.job },
+    ).then(decodeGenerationJobEnvelope)
+  },
+  deleteJob(id, options = {}) {
+    return apiClient.request<ApiResponseObject>(
+      `/api/generation/jobs/${encodeURIComponent(id)}`,
+      { method: 'DELETE', cache: 'no-store', signal: options.signal, timeoutMs: GENERATION_API_TIMEOUTS.delete },
+    ).then(decodeGenerationJobEnvelope)
+  },
 }
-
-export const generationApi = createGenerationApi()

@@ -40,26 +40,18 @@ impl TaskRuntime {
                 }
                 Preparation::Image(prepared) => {
                     self.images
-                        .as_ref()
-                        .ok_or_else(|| {
-                            ApiError::new(
-                                501,
-                                "TASK_PROVIDER_NOT_MIGRATED",
-                                "Image task provider unavailable",
-                            )
-                        })?
                         .clone()
                         .submit(prepared, principal.clone(), Some(hooks))
                         .await?
                 }
                 Preparation::Video(prepared) => {
-                    self.video()?
+                    self.video
                         .clone()
                         .submit(prepared, principal.clone(), Some(hooks))
                         .await?
                 }
                 Preparation::Batch(prepared) => {
-                    self.video()?
+                    self.video
                         .clone()
                         .submit_batch(prepared, principal.clone(), Some(hooks))
                         .await?

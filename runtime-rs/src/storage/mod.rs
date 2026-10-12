@@ -31,7 +31,7 @@ use std::{
         atomic::{AtomicBool, Ordering},
     },
 };
-use tokio::sync::{mpsc, oneshot};
+use tokio::sync::{OwnedSemaphorePermit, mpsc, oneshot};
 
 pub use canonical::fingerprint;
 pub(crate) use canonical::stringify;
@@ -63,13 +63,13 @@ pub struct Storage {
     search_warming: Arc<AtomicBool>,
 }
 enum Work {
-    AdmittedResult(Box<Work>, tokio::sync::OwnedSemaphorePermit),
     ResultVerified(String, Result<result_commit::Verified>),
     TaskMediaChunk(
         TaskMediaChunk,
         String,
         Arc<AtomicBool>,
         oneshot::Sender<Result<u64>>,
+        OwnedSemaphorePermit,
     ),
     Task(
         crate::task_contract::TaskCommand,
@@ -88,6 +88,7 @@ enum Work {
         String,
         Arc<AtomicBool>,
         oneshot::Sender<Result<Value>>,
+        Option<OwnedSemaphorePermit>,
     ),
     ArtworkRead(
         Value,

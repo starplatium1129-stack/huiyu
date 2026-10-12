@@ -44,14 +44,3 @@ pub(crate) async fn super_res(config: &Config, requested: Option<&str>) -> Optio
     }
     None
 }
-pub(super) async fn usable(config: &Config, input: &Input) -> bool {
-    if !available(config, "checkpoints", constants::CHECKPOINT).await {
-        return false;
-    }
-    for lora in &input.loras {
-        if !available(config, "loras", &lora.file).await {
-            return false;
-        }
-    }
-    true
-}

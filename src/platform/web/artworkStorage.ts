@@ -10,24 +10,15 @@ export const ARTWORK_TRASH_RETENTION_DAYS = 30
 export interface ArtworkKvAdapter {
   get(key: string): Promise<unknown | null>
   set(key: string, value: unknown): Promise<void>
-  setMany?(entries: Array<{ key: string; value: unknown }>): Promise<void>
-  remove?(key: string): Promise<void>
+  setMany(entries: Array<{ key: string; value: unknown }>): Promise<void>
+  remove(key: string): Promise<void>
 }
 
 export interface ArtworkImageAdapter {
   get(id: string): Promise<StoredImageRecord | null>
-  put?(blob: Blob): Promise<string>
-  count?(): Promise<number>
   putRecord(record: ImageRecordInput): Promise<string>
   deleteMany(ids: string[]): Promise<void>
 }
-
-export interface WebArtworkRepositoryDependencies {
-  kv?: Partial<ArtworkKvAdapter>
-  images?: Partial<ArtworkImageAdapter>
-  localStorage?: Pick<Storage, 'getItem' | 'removeItem'>
-}
-
 
 export class ArtworkDeletionError extends Error {
   readonly originalError: unknown

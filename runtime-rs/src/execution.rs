@@ -41,7 +41,7 @@ pub trait ExecutionHooks: Send + Sync {
     /// Hint only: authoritative observation, not this notification, settles the ledger.
     fn observation_changed(&self) {}
     fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>>;
-    fn submitting(&self, provider: String, fingerprint: String) -> BoxFuture<'_, Result<()>>;
+    fn submitting(&self, provider: String) -> BoxFuture<'_, Result<()>>;
     fn observed(&self, id: String, metadata: Value) -> BoxFuture<'_, Result<()>>;
     fn collect(&self, outputs: Vec<Output>) -> BoxFuture<'_, Result<()>>;
     fn collect_indexed(&self, outputs: Vec<(usize, Output)>) -> BoxFuture<'_, Result<()>> {

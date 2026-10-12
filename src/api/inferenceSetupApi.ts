@@ -1,4 +1,4 @@
-import { apiClient, type ApiClient, type ApiResponseObject } from './client'
+import { apiClient, type ApiResponseObject } from './client'
 import type { InferenceSettings } from './inferenceSettingsApi'
 import type { ControlOperationView } from '@/types/api'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
@@ -51,37 +51,34 @@ export function isInferenceSetupOperation(value: unknown): value is InferenceSet
     && typeof value.startedAt === 'number' && Number.isFinite(value.startedAt)
     && (value.preparedPaths === undefined || isPreparedInferencePaths(value.preparedPaths))
 }
-export function createInferenceSetupApi(client: ApiClient = apiClient): InferenceSetupApi {
-  function localOnly() { if (!isLocalStudioHost()) throw new Error('独立引擎准备仅限本机访问') }
-  function knownModel(modelId: string) { if (!modelIds.has(modelId)) throw new Error('请选择已登记的 Anima 模型') }
-  return {
-    async prepareRuntime(body) {
-      localOnly()
-      if (body.reviewed !== true) throw new Error('请先确认可信 Python 与离线依赖来源')
-      return client.request<InferenceSetupResult>('/api/inference/runtime/prepare', {
-        method: 'POST', body, timeoutMs: 15_000,
-        validate: value => value.ok === true && isInferenceSetupOperation(value.operation)
-          && value.operation.kind === 'prepare-inference-runtime' && isPreparedInferencePaths(value.preparedPaths),
-      })
-    },
-    async inspectModel(body, signal) {
-      localOnly(); knownModel(body.modelId)
-      return client.request<InferenceModelInspection>('/api/inference/models/inspect', {
-        method: 'POST', body, signal, timeoutMs: 125_000,
-        validate: value => value.ok === true && value.planOnly === true && nonempty(value.sourceDir) && nonempty(value.targetDir)
-          && value.scope === 'layout-only' && value.readyForInference === false
-          && Number.isSafeInteger(value.fileCount) && Number(value.fileCount) > 0
-          && Number.isSafeInteger(value.totalBytes) && Number(value.totalBytes) >= 0,
-      })
-    },
-    async importModel(body) {
-      localOnly(); knownModel(body.modelId)
-      if (body.reviewed !== true) throw new Error('请先检查并确认模型复制计划')
-      return client.request<InferenceSetupResult>('/api/inference/models/import', {
-        method: 'POST', body, timeoutMs: 15_000,
-        validate: value => value.ok === true && isInferenceSetupOperation(value.operation) && value.operation.kind === 'import-inference-model',
-      })
-    },
-  }
+function localOnly() { if (!isLocalStudioHost()) throw new Error('独立引擎准备仅限本机访问') }
+function knownModel(modelId: string) { if (!modelIds.has(modelId)) throw new Error('请选择已登记的 Anima 模型') }
+export const inferenceSetupApi: InferenceSetupApi = {
+  async prepareRuntime(body) {
+    localOnly()
+    if (body.reviewed !== true) throw new Error('请先确认可信 Python 与离线依赖来源')
+    return apiClient.request<InferenceSetupResult>('/api/inference/runtime/prepare', {
+      method: 'POST', body, timeoutMs: 15_000,
+      validate: value => value.ok === true && isInferenceSetupOperation(value.operation)
+        && value.operation.kind === 'prepare-inference-runtime' && isPreparedInferencePaths(value.preparedPaths),
+    })
+  },
+  async inspectModel(body, signal) {
+    localOnly(); knownModel(body.modelId)
+    return apiClient.request<InferenceModelInspection>('/api/inference/models/inspect', {
+      method: 'POST', body, signal, timeoutMs: 125_000,
+      validate: value => value.ok === true && value.planOnly === true && nonempty(value.sourceDir) && nonempty(value.targetDir)
+        && value.scope === 'layout-only' && value.readyForInference === false
+        && Number.isSafeInteger(value.fileCount) && Number(value.fileCount) > 0
+        && Number.isSafeInteger(value.totalBytes) && Number(value.totalBytes) >= 0,
+    })
+  },
+  async importModel(body) {
+    localOnly(); knownModel(body.modelId)
+    if (body.reviewed !== true) throw new Error('请先检查并确认模型复制计划')
+    return apiClient.request<InferenceSetupResult>('/api/inference/models/import', {
+      method: 'POST', body, timeoutMs: 15_000,
+      validate: value => value.ok === true && isInferenceSetupOperation(value.operation) && value.operation.kind === 'import-inference-model',
+    })
+  },
 }
-export const inferenceSetupApi = createInferenceSetupApi()

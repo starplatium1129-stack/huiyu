@@ -327,24 +327,23 @@ fn main() {
                 state.paths.gateway_executable.display(),
                 state.paths.gateway_cwd.display()
             ));
-            let supervisor = gateway::GatewaySupervisorBuilder::new(
+            let supervisor = gateway::GatewaySupervisor::new(
                 state.paths.gateway_executable.clone(),
                 state.paths.gateway_cwd.clone(),
-            )
-            .port(configured_port)
-            .env({
-                let mut env = main_shared::gateway_env(&state.paths, is_packaged, Some(&state.workspace_root.lock().unwrap()));
-                // Retain the exact workspace passed to this gateway, including the default/env fallback.
-                if let Some((_, root)) = env.iter().find(|(key, _)| key == "AI_WORKSPACE_ROOT") {
-                    *state.workspace_root.lock().unwrap() = root.clone();
-                }
-                if ui_entry::bundled(app.handle()) { env.push(("AICS_DESKTOP_BUNDLED_UI".into(), "1".into())); }
-                env
-            })
-            .on_output(move |stream, text| {
-                gateway_log.debug(&format!("[gateway:{stream}] {}", text.trim()));
-            })
-            .build();
+                configured_port,
+                {
+                    let mut env = main_shared::gateway_env(&state.paths, is_packaged, Some(&state.workspace_root.lock().unwrap()));
+                    // Retain the exact workspace passed to this gateway, including the default/env fallback.
+                    if let Some((_, root)) = env.iter().find(|(key, _)| key == "AI_WORKSPACE_ROOT") {
+                        *state.workspace_root.lock().unwrap() = root.clone();
+                    }
+                    if ui_entry::bundled(app.handle()) { env.push(("AICS_DESKTOP_BUNDLED_UI".into(), "1".into())); }
+                    env
+                },
+                move |stream, text| {
+                    gateway_log.debug(&format!("[gateway:{stream}] {}", text.trim()));
+                },
+            );
             app.manage(supervisor);
 
             // 网关启动（与窗口并行）

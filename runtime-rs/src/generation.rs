@@ -233,14 +233,6 @@ impl Service {
             _life: Arc::new(Life { cancel }),
         })
     }
-    pub async fn prepare(
-        &self,
-        raw: Value,
-        direct_local: bool,
-        cancel: CancellationToken,
-    ) -> Result<Prepared> {
-        service::prepare(self.inner.clone(), raw, direct_local, cancel).await
-    }
     pub async fn submit(
         self: Arc<Self>,
         prepared: Prepared,

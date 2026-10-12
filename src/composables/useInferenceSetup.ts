@@ -1,6 +1,6 @@
 import { computed, onScopeDispose, ref, watch, type Ref } from 'vue'
 import { ApiClientError } from '@/api/client'
-import { inferenceSetupApi, isInferenceSetupOperation, isPreparedInferencePaths, type InferenceSetupApi, type InferenceSetupOperation, type InferenceSetupResult, type InferenceModelInspection, type ModelImportInput, type RuntimePreparationInput, type PreparedInferencePaths } from '@/api/inferenceSetupApi'
+import { inferenceSetupApi, isInferenceSetupOperation, isPreparedInferencePaths, type InferenceSetupOperation, type InferenceSetupResult, type InferenceModelInspection, type ModelImportInput, type RuntimePreparationInput, type PreparedInferencePaths } from '@/api/inferenceSetupApi'
 import type { InferenceSettings } from '@/api/inferenceSettingsApi'
 import { localSetupApi } from '@/api/localSetupApi'
 import { waitLocalSetupOperation } from '@/api/localSetupOperation'
@@ -8,7 +8,7 @@ import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 type Submission = { kind: 'prepare-inference-runtime'; input: RuntimePreparationInput } | { kind: 'import-inference-model'; input: ModelImportInput }
 
-export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: Ref<boolean>, api: InferenceSetupApi = inferenceSetupApi) {
+export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: Ref<boolean>) {
   const basePython = ref(''), wheelhouse = ref(''), workspacePath = ref(''), runtimeReviewed = ref(false)
   const modelId = ref('anima-miaomiao-v1.6'), sourceDir = ref(''), importReviewed = ref(false)
   const inspection = ref<InferenceModelInspection | null>(null), inspecting = ref(false)
@@ -114,7 +114,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       previousOperationId = before.operation?.id ?? null
       submission = next
       posted = true
-      const result = next.kind === 'prepare-inference-runtime' ? await api.prepareRuntime(next.input) : await api.importModel(next.input)
+      const result = next.kind === 'prepare-inference-runtime' ? await inferenceSetupApi.prepareRuntime(next.input) : await inferenceSetupApi.importModel(next.input)
       if (!disposed) await observe(result)
     } catch (cause) {
       if (disposed) return
@@ -136,7 +136,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     inspecting.value = true; error.value = ''; message.value = ''
     inspectionController = new AbortController()
     try {
-      const result = await api.inspectModel({ modelId: modelId.value, sourceDir: sourceDir.value.trim() }, inspectionController.signal)
+      const result = await inferenceSetupApi.inspectModel({ modelId: modelId.value, sourceDir: sourceDir.value.trim() }, inspectionController.signal)
       if (!disposed && version === inspectionVersion) inspection.value = { ...result }
     } catch (cause) { if (!disposed && version === inspectionVersion) error.value = causeText(cause) }
     finally { if (!disposed) inspecting.value = false }

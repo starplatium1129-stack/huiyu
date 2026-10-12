@@ -22,7 +22,6 @@ const native: Live2DNativeBridge = {
   },
   onMotionStarted: listener => on('aics:live2d:motion-started', listener),
   onMotionFailed: listener => on('aics:live2d:motion-failed', listener),
-  onHitTest: listener => on('aics:live2d:hit-test', listener),
   onEntranceFinished: listener => on('aics:live2d:entrance-finished', listener),
   onStopped: listener => on('aics:live2d:stopped', listener), off,
 }

@@ -7,7 +7,7 @@ mod frame_pacing;
 pub(crate) mod live2d_adapter;
 #[path = "../live2d_assets.rs"]
 pub(crate) mod live2d_assets;
-use live2d_adapter::{apply_overlay_defaults, Live2DAdapterConfig, MouthBinding, OverlaySettler};
+use live2d_adapter::{apply_overlay_defaults, Live2DAdapterConfig, OverlaySettler};
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::{Duration, Instant};
@@ -96,8 +96,6 @@ pub struct Live2DOverlayState {
     pub character: Mutex<Option<String>>,
     /// 已渲染帧数（诊断用）。
     pub frame_count: AtomicU64,
-    /// 最近一次 hit-test 结果（诊断用；app=None 时无事件可发）。
-    pub hit_test_result: Mutex<Option<Vec<String>>>,
     /// 模型可见内容的大致屏幕矩形，仅用于诊断。
     pub model_bounds: Mutex<Option<OverlayRect>>,
     /// 原生渲染循环目标帧率。
@@ -132,7 +130,6 @@ impl Default for Live2DOverlayState {
             cmd_tx: Mutex::new(None),
             character: Mutex::new(None),
             frame_count: AtomicU64::new(0),
-            hit_test_result: Mutex::new(None),
             model_bounds: Mutex::new(None),
             target_fps: AtomicU32::new(165),
             model_ready: AtomicBool::new(false),
@@ -161,7 +158,6 @@ fn clear_model_state(state: &Live2DOverlayState) {
     state.model_ready.store(false, Ordering::SeqCst);
     *state.character.lock().unwrap() = None;
     *state.model_bounds.lock().unwrap() = None;
-    *state.hit_test_result.lock().unwrap() = None;
     reset_mouth_diagnostics(state);
 }
 
@@ -213,8 +209,7 @@ fn followed_overlay_rect(
     }
 }
 
-/// 意图命令：IPC → 渲染线程。带 reply 的等待同步结果；Async 变体由
-/// WndProc 发出（点击命中），渲染线程算完直接 emit 事件。
+/// 意图命令：IPC → 渲染线程，带 reply 的命令返回处理结果。
 pub enum OverlayCommand {
     Shutdown,
     SetCharacter {
@@ -240,10 +235,6 @@ pub enum OverlayCommand {
     },
     SetGaze(f32, f32),
     SetMaxFps(u32),
-    HitTestAsync {
-        x: f32,
-        y: f32,
-    },
     HitTest {
         x: f32,
         y: f32,

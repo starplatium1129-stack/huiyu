@@ -9,8 +9,6 @@ pub const DEV_PROJECT_ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../..")
 pub struct DesktopPaths {
     pub is_packaged: bool,
     pub app_root: PathBuf,
-    #[allow(dead_code)]
-    pub resource_root: PathBuf,
     pub gateway_executable: PathBuf,
     pub gateway_cwd: PathBuf,
     pub assets_root: PathBuf,
@@ -105,7 +103,6 @@ pub fn resolve_paths(app: &tauri::AppHandle) -> DesktopPaths {
     DesktopPaths {
         is_packaged,
         app_root,
-        resource_root,
         gateway_executable,
         gateway_cwd,
         assets_root,

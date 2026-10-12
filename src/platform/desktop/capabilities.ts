@@ -43,10 +43,8 @@ const capabilities: CompanionDesktopBridge = {
   closeWindow: () => invoke('window_close'), getWindowState: () => invoke('get_window_state'),
   onMaximizedChanged: listener => on('aics:maximized', listener), offMaximizedChanged: off,
 }
-const cssDragCapabilities: CompanionDesktopBridge = { ...capabilities, startDragging: undefined }
 export function getDesktopCapabilities(): CompanionDesktopBridge | undefined {
-  const host = hostApi()
-  return host ? host.nativeDragRegions ? cssDragCapabilities : capabilities : undefined
+  return hostApi() ? capabilities : undefined
 }
 export function onDesktopNavigate(listener: (path: string) => void): () => void {
   const id = on<string>('aics:navigate', path => { if (getDesktopWindowRole() === 'atelier' && /^\/(?:[a-zA-Z0-9-]+)?$/.test(path)) listener(path) })

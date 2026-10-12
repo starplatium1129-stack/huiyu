@@ -30,8 +30,8 @@ use tokio_util::{sync::CancellationToken, task::TaskTracker};
 
 pub struct TaskRuntime {
     provider: Arc<GenerationService>,
-    images: Option<Arc<crate::images::ImageService>>,
-    video: Option<Arc<crate::video::VideoService>>,
+    images: Arc<crate::images::ImageService>,
+    video: Arc<crate::video::VideoService>,
     recoveries: Mutex<HashMap<String, Arc<recovery::Initialization>>>,
     fingerprint: Fingerprint,
     unbound_epoch: String,
@@ -67,8 +67,8 @@ impl JobBinding {
 impl TaskRuntime {
     pub fn new(
         provider: Arc<GenerationService>,
-        images: Option<Arc<crate::images::ImageService>>,
-        video: Option<Arc<crate::video::VideoService>>,
+        images: Arc<crate::images::ImageService>,
+        video: Arc<crate::video::VideoService>,
         shutdown: CancellationToken,
     ) -> Result<Self> {
         Ok(Self {
@@ -162,13 +162,6 @@ impl TaskRuntime {
                 ));
             }
             return Ok(serde_json::to_value(existing)?);
-        }
-        if request["kind"] == "generation" {
-            return Err(ApiError::new(
-                410,
-                "SD_RETIRED",
-                "SD 新生成已退役；原任务可继续查询、收集或取消",
-            ));
         }
         let prepared = self.prepare(kind, frozen["input"].take()).await?;
         self.check_running()?;
@@ -331,12 +324,8 @@ impl TaskRuntime {
             return;
         }
         self.provider.close().await;
-        if let Some(images) = &self.images {
-            images.close().await;
-        }
-        if let Some(video) = &self.video {
-            video.close().await;
-        }
+        self.images.close().await;
+        self.video.close().await;
         {
             // Serialize closure with read-triggered recovery registration.
             let _recoveries = self.recoveries.lock().unwrap();
@@ -345,18 +334,12 @@ impl TaskRuntime {
         self.tracker.wait().await;
     }
     fn binding_for(&self, kind: TaskKind) -> String {
-        if matches!(kind, TaskKind::Anima | TaskKind::Creative)
-            && let Some(images) = &self.images
-        {
-            return self
-                .fingerprint
-                .hash(&images.provider_identity(&self.unbound_epoch));
-        }
-        self.binding()
-    }
-    fn binding(&self) -> String {
-        self.fingerprint
-            .hash(&self.provider.provider_identity(&self.unbound_epoch))
+        let provider = if matches!(kind, TaskKind::Anima | TaskKind::Creative) {
+            self.images.provider_identity(&self.unbound_epoch)
+        } else {
+            self.provider.provider_identity(&self.unbound_epoch)
+        };
+        self.fingerprint.hash(&provider)
     }
     fn job(&self, storage: &Storage, id: &str) -> Option<String> {
         self.jobs
@@ -372,14 +355,6 @@ impl TaskRuntime {
             .or_insert_with(|| JobBinding::new(job_id));
     }
 }
-fn image_family(kind: TaskKind) -> Option<&'static str> {
-    match kind {
-        TaskKind::Anima => Some("anima"),
-        TaskKind::Creative => Some("krea2"),
-        _ => None,
-    }
-}
-
 pub(super) async fn patch(
     storage: &Storage,
     principal: &str,

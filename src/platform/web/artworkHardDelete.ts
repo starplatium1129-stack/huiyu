@@ -60,7 +60,7 @@ export function createArtworkHardDelete(kv: ArtworkKvAdapter, images: ArtworkIma
       }
       if (removedThumbnailIds.length) {
         thumbnailDeleteAttempted = true
-        for (const image of removedThumbnailIds) await kv.remove?.(thumbKey(image))
+        for (const image of removedThumbnailIds) await kv.remove(thumbKey(image))
       }
       return {
         deleted: historyChanged,
@@ -79,7 +79,7 @@ export function createArtworkHardDelete(kv: ArtworkKvAdapter, images: ArtworkIma
       if (thumbnailDeleteAttempted) {
         for (const [image, snapshot] of thumbnailSnapshot) {
           await callSafely(async () => {
-            if (snapshot == null) await kv.remove?.(thumbKey(image))
+            if (snapshot == null) await kv.remove(thumbKey(image))
             else await kv.set(thumbKey(image), snapshot)
           }, rollbackErrors)
         }

@@ -26,12 +26,7 @@ pub(super) fn run(
     let mut closing = Vec::new();
 
     while let Some(work) = receiver.blocking_recv() {
-        let (work, permit) = match work {
-            Work::AdmittedResult(work, permit) => (*work, Some(permit)),
-            work => (work, None),
-        };
         match work {
-            Work::AdmittedResult(..) => unreachable!("result admission cannot be nested"),
             Work::ResultVerified(id, verified) => {
                 result_commit::finish(&mut context, id, verified, &sender);
                 if !closing.is_empty()
@@ -42,17 +37,14 @@ pub(super) fn run(
                     break;
                 }
             }
-            Work::TaskMediaChunk(chunk, principal, cancel, reply) => {
+            Work::TaskMediaChunk(chunk, principal, cancel, reply, _permit) => {
+                // The message owns writer admission through the actor write.
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
                     continue;
                 }
                 context.cancel = cancel;
                 if !reply.is_closed() {
-                    if context.result_commit.is_some() {
-                        let _ = reply.send(Err(result_busy()));
-                        continue;
-                    }
                     let result = tasks::upload_chunk(&mut context, &principal, chunk);
                     let _ = reply.send(result);
                 }
@@ -123,17 +115,13 @@ pub(super) fn run(
                 }
                 let _ = reply.send(result);
             }
-            Work::Request(command, principal, cancel, reply) => {
+            Work::Request(command, principal, cancel, reply, permit) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
                     continue;
                 }
                 context.cancel = cancel;
                 if reply.is_closed() {
-                    continue;
-                }
-                if result_commit::is_write(&command) && context.result_commit.is_some() {
-                    let _ = reply.send(Err(result_busy()));
                     continue;
                 }
                 if matches!(
@@ -321,12 +309,4 @@ pub(super) fn run(
     if let Err(error) = result {
         eprintln!("workspace shutdown: {error}");
     }
-}
-
-fn result_busy() -> ApiError {
-    ApiError::new(
-        429,
-        "WORKSPACE_BUSY",
-        "A task result verification is already running",
-    )
 }

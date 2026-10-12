@@ -5,14 +5,13 @@ import { ARTWORK_ORGANIZATION_RECEIPT_LIMIT, COLLECTION_TAG_LIMIT, collectionTag
 
 interface Dependencies {
   kv: ArtworkKvAdapter
-  commit: (entries: Array<{ key: string; value: unknown }>, operation: string) => Promise<void>
   enqueue: <T>(work: () => Promise<T>) => Promise<T>
 }
 const field = (source: Record<string, unknown>, name: string) => ({ present: Object.hasOwn(source, name),
   ...(Object.hasOwn(source, name) ? { value: structuredClone(source[name]) } : {}) })
 const equal = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b)
 
-export function createArtworkOrganization({ kv, commit, enqueue }: Dependencies) {
+export function createArtworkOrganization({ kv, enqueue }: Dependencies) {
   // Receipts contain only metadata. A detached copy keeps callers from changing the undo authority.
   const receipts = new Map<string, ArtworkOrganizationReceipt>()
   async function read() {
@@ -20,8 +19,8 @@ export function createArtworkOrganization({ kv, commit, enqueue }: Dependencies)
     return { history: structuredClone(Array.isArray(history) ? history : []) as unknown[],
       projects: structuredClone(Array.isArray(projects) ? projects : []) as unknown[] }
   }
-  async function commitChecked(entries: Array<{ key: string; value: unknown }>, operation: string) {
-    try { await commit(entries, operation) }
+  async function commitChecked(entries: Array<{ key: string; value: unknown }>) {
+    try { await kv.setMany(entries) }
     catch (error) {
       // A transport/storage rejection can follow a committed transaction. Read
       // the same authority while its lock is held before declaring failure.
@@ -83,7 +82,7 @@ export function createArtworkOrganization({ kv, commit, enqueue }: Dependencies)
       }
       if (receipt.changes.length) {
         await commitChecked([{ key: ARTWORK_HISTORY_KEY, value: history },
-          ...(request.projectId !== undefined ? [{ key: ARTWORK_PROJECTS_KEY, value: projects }] : [])], '作品整理')
+          ...(request.projectId !== undefined ? [{ key: ARTWORK_PROJECTS_KEY, value: projects }] : [])])
         // This web-only cache is undo authority, not the desktop idempotency ledger.
         // No-op retries must not evict the last actual changes.
         receipts.set(receipt.operationId, structuredClone(receipt))
@@ -121,7 +120,7 @@ export function createArtworkOrganization({ kv, commit, enqueue }: Dependencies)
         restored++
       }
       if (restored) await commitChecked([{ key: ARTWORK_HISTORY_KEY, value: history },
-        ...(projectsChanged ? [{ key: ARTWORK_PROJECTS_KEY, value: projects }] : [])], '撤销作品整理')
+        ...(projectsChanged ? [{ key: ARTWORK_PROJECTS_KEY, value: projects }] : [])])
       receipts.delete(operationId)
       return { restored, skipped }
     })

@@ -16,6 +16,7 @@ pub use host::profile_id;
 pub const DESKTOP_GATEWAY_PROTOCOL: i64 = 1;
 pub const GATEWAY_HOST: &str = "127.0.0.1";
 const MAX_HEALTH_RESPONSE_BYTES: usize = 16 * 1024;
+const STARTUP_TIMEOUT: Duration = Duration::from_secs(20);
 
 #[derive(Debug, Clone)]
 pub struct GatewayHealth {
@@ -26,7 +27,6 @@ pub struct GatewayHealth {
 }
 
 fn http_get(base_url: &str, path: &str, timeout: Duration, challenge: Option<&str>) -> Option<String> {
-    let _url = format!("{base_url}{path}");
     let host_port = base_url
         .trim_start_matches("http://")
         .trim_start_matches("https://")
@@ -95,18 +95,12 @@ pub fn find_available_port(host: &str, start_port: u16, attempts: u16) -> Option
     None
 }
 
-/// 网关进程管理（预留字段：端口持久化/退出回调在后续版本启用）
-#[allow(dead_code)]
+/// 自有网关进程的启动、认证、停止与日志转发。
 pub struct GatewaySupervisor {
-    host: String,
-    port: u16,
     cwd: std::path::PathBuf,
     runtime_path: std::path::PathBuf,
-
     env: Vec<(String, String)>,
-    wait_ms: u64,
-    on_exit: Option<Arc<dyn Fn(i32) + Send + Sync>>,
-    on_output: Option<Arc<dyn Fn(&str, &str) + Send + Sync>>,
+    on_output: Arc<dyn Fn(&str, &str) + Send + Sync>,
     child: Mutex<Option<Child>>,
     start_lock: tokio::sync::Mutex<()>,
     owned: AtomicBool,
@@ -118,72 +112,19 @@ pub struct GatewaySupervisor {
     active_port: Mutex<u16>,
 }
 
-#[allow(dead_code)]
-pub struct GatewaySupervisorBuilder {
-    host: String,
-    port: u16,
-    cwd: std::path::PathBuf,
-    runtime_path: std::path::PathBuf,
-
-    env: Vec<(String, String)>,
-    wait_ms: u64,
-    on_exit: Option<Arc<dyn Fn(i32) + Send + Sync>>,
-    on_output: Option<Arc<dyn Fn(&str, &str) + Send + Sync>>,
-}
-
-impl GatewaySupervisorBuilder {
-    pub fn new(runtime_path: std::path::PathBuf, cwd: std::path::PathBuf) -> Self {
+impl GatewaySupervisor {
+    pub fn new(
+        runtime_path: std::path::PathBuf,
+        cwd: std::path::PathBuf,
+        port: u16,
+        env: Vec<(String, String)>,
+        on_output: impl Fn(&str, &str) + Send + Sync + 'static,
+    ) -> Self {
         Self {
-            host: GATEWAY_HOST.to_string(),
-            port: 3000,
             cwd,
             runtime_path,
-
-            env: Vec::new(),
-            wait_ms: 20_000,
-            on_exit: None,
-            on_output: None,
-        }
-    }
-
-    pub fn port(mut self, port: u16) -> Self {
-        self.port = port;
-        self
-    }
-
-    pub fn env(mut self, env: Vec<(String, String)>) -> Self {
-        self.env = env;
-        self
-    }
-
-    #[allow(dead_code)]
-    pub fn wait_ms(mut self, wait_ms: u64) -> Self {
-        self.wait_ms = wait_ms;
-        self
-    }
-
-    #[allow(dead_code)]
-    pub fn on_exit(mut self, cb: impl Fn(i32) + Send + Sync + 'static) -> Self {
-        self.on_exit = Some(Arc::new(cb));
-        self
-    }
-
-    pub fn on_output(mut self, cb: impl Fn(&str, &str) + Send + Sync + 'static) -> Self {
-        self.on_output = Some(Arc::new(cb));
-        self
-    }
-
-    pub fn build(self) -> GatewaySupervisor {
-        GatewaySupervisor {
-            host: self.host,
-            port: self.port,
-            cwd: self.cwd,
-            runtime_path: self.runtime_path,
-
-            env: self.env,
-            wait_ms: self.wait_ms,
-            on_exit: self.on_exit,
-            on_output: self.on_output,
+            env,
+            on_output: Arc::new(on_output),
             child: Mutex::new(None),
             start_lock: tokio::sync::Mutex::new(()),
             owned: AtomicBool::new(false),
@@ -192,15 +133,12 @@ impl GatewaySupervisorBuilder {
             authenticated_port: Mutex::new(None),
             authenticated: AtomicBool::new(false),
             identity_token: Mutex::new(if cfg!(debug_assertions) { std::env::var("AICS_DESKTOP_ATTACH_TOKEN").ok() } else { None }),
-            active_port: Mutex::new(self.port),
+            active_port: Mutex::new(port),
         }
     }
-}
-
-impl GatewaySupervisor {
     pub fn base_url(&self) -> String {
         let port = *self.active_port.lock().unwrap();
-        format!("http://{}:{}", self.host, port)
+        format!("http://{GATEWAY_HOST}:{port}")
     }
 
     pub fn port(&self) -> u16 {
@@ -277,13 +215,13 @@ impl GatewaySupervisor {
             self.reap_child();
         }
         let current = *self.active_port.lock().unwrap();
-        if !is_port_available(&self.host, current) {
+        if !is_port_available(GATEWAY_HOST, current) {
             let bundled = self.env.iter().any(|(key, value)| key == "AICS_DESKTOP_BUNDLED_UI" && value == "1");
             let preserve = self.env.iter().any(|(key, value)| key == "AICS_DESKTOP_PRESERVE_ORIGIN" && value == "1");
             if !bundled && (self.authenticated_port.lock().unwrap().is_some() || preserve) {
                 return Err("Legacy profile origin is occupied; close the conflicting service before migration".into());
             }
-            let next = find_available_port(&self.host, current.saturating_add(1), 32)
+            let next = find_available_port(GATEWAY_HOST, current.saturating_add(1), 32)
                 .ok_or("No available desktop gateway port")?;
             *self.active_port.lock().unwrap() = next;
         }
@@ -297,9 +235,9 @@ impl GatewaySupervisor {
 
         command
             .arg("--app-root").arg(&self.cwd)
-            .arg("--bind").arg(format!("{}:{}", self.host, port))
+            .arg("--bind").arg(format!("{GATEWAY_HOST}:{port}"))
             .current_dir(&self.cwd)
-            .env("HOST", &self.host)
+            .env("HOST", GATEWAY_HOST)
             .env("PORT", port.to_string())
             .env("DISABLE_TUNNEL", "1")
             .stdin(Stdio::null())
@@ -319,13 +257,11 @@ impl GatewaySupervisor {
         let mut child = command.spawn().map_err(|e| format!("spawn gateway: {e}"))?;
         self.owned.store(true, Ordering::Relaxed);
 
-        if let Some(on_output) = self.on_output.clone() {
-            if let Some(stdout) = child.stdout.take() {
-                pipe_output(stdout, "stdout", on_output.clone());
-            }
-            if let Some(stderr) = child.stderr.take() {
-                pipe_output(stderr, "stderr", on_output);
-            }
+        if let Some(stdout) = child.stdout.take() {
+            pipe_output(stdout, "stdout", self.on_output.clone());
+        }
+        if let Some(stderr) = child.stderr.take() {
+            pipe_output(stderr, "stderr", self.on_output.clone());
         }
 
         let started_at = Instant::now();
@@ -352,7 +288,7 @@ impl GatewaySupervisor {
                 *self.authenticated_port.lock().unwrap() = Some(port);
                 return Ok(self.base_url());
             }
-            if started_at.elapsed() > Duration::from_millis(self.wait_ms) {
+            if started_at.elapsed() > STARTUP_TIMEOUT {
                 terminate_child(&mut child);
                 let _ = self.stop().await;
                 return Err(format!("Gateway did not become healthy at {}", self.base_url()));
@@ -411,12 +347,6 @@ impl GatewaySupervisor {
     pub fn stop_sync(&self) {
         self.stop_generation.fetch_add(1, Ordering::SeqCst);
         self.reap_child();
-    }
-
-    /// 健康检查失败/退出时的重启入口：指数退避由调用方（main）调度
-    #[allow(dead_code)]
-    pub fn was_owned(&self) -> bool {
-        self.owned.load(Ordering::Relaxed)
     }
 }
 

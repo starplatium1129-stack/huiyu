@@ -8,17 +8,16 @@
 import { ref, computed, nextTick, watch, getCurrentScope, onScopeDispose, type Ref } from 'vue'
 import { usePolling } from './usePolling.ts'
 import { ApiClientError } from '../api/client.ts'
-import { controlApi, type ControlApi } from '../api/controlApi.ts'
+import { controlApi } from '../api/controlApi.ts'
 import type {
   ControlStatus, ControlLogs, ControlOperationView,
 } from '@/types/api'
 
 interface StatusHooks {
   showToast: (msg: string, isError?: boolean) => void
-  api?: ControlApi
 }
 
-export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
+export function useControlStatus({ showToast }: StatusHooks) {
   const tunnelActive = ref(false)
   const sdOnline = ref(false)
   const comfyOnline = ref(false)
@@ -256,7 +255,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     const controller = new AbortController()
     shareRequest = controller
     try {
-      const data = await api.getShareLink({ signal: controller.signal })
+      const data = await controlApi.getShareLink({ signal: controller.signal })
       if (shareRequest !== controller || controller.signal.aborted) return
       shareLink.value = data.shareLink
     } catch {
@@ -273,7 +272,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     const controller = new AbortController()
     statusRequest = controller
     try {
-      const data = await api.getStatus({ fresh: force, signal: controller.signal })
+      const data = await controlApi.getStatus({ fresh: force, signal: controller.signal })
       if (statusRequest !== controller || controller.signal.aborted) return
       renderStatus(data)
       // 探测失败现在是 200 + ok:false + degraded（与三个同族 *-status 一致）。
@@ -297,7 +296,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     logsRequest = controller
     const revision = statusRevision
     try {
-      const data: ControlLogs = await api.getLogs(logIndex.value, { signal: controller.signal })
+      const data: ControlLogs = await controlApi.getLogs(logIndex.value, { signal: controller.signal })
       if (logsRequest !== controller || controller.signal.aborted) return
       if (data.operation && revision === statusRevision && !operationSubmitting.value) {
         operation.value = data.operation

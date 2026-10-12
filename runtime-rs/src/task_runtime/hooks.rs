@@ -35,7 +35,7 @@ impl ExecutionHooks for Hooks {
             Ok(())
         })
     }
-    fn submitting(&self, provider: String, _fingerprint: String) -> BoxFuture<'_, Result<()>> {
+    fn submitting(&self, provider: String) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
             let runtime = self.runtime.upgrade().ok_or_else(|| {
                 ApiError::new(503, "TASK_RUNTIME_CLOSED", "Task runtime unavailable")

@@ -281,13 +281,13 @@ impl TaskRuntime {
                     .as_ref()
                     .and_then(|value| value["gatewayJobId"].as_str())
             });
-            if let (Some(images), Some(id)) = (&self.images, gateway) {
+            if let Some(id) = gateway {
                 let family = if task.kind == TaskKind::Creative {
                     "krea2"
                 } else {
                     "anima"
                 };
-                match images.query(id, principal, family).await {
+                match self.images.query(id, principal, family).await {
                     Ok(observation) => return Ok(observation),
                     Err(error) if matches!(error.code.as_str(), "JOB_NOT_FOUND" | "JOB_LOST") => {}
                     Err(error) => return Err(error),
@@ -308,7 +308,7 @@ impl TaskRuntime {
             id: id.into(),
         });
         let (observation, checkpoint) = self
-            .video()?
+            .video
             .recover_batch(&serde_json::to_value(task)?, hooks, &mut cancellation.batch)
             .await?;
         patch(

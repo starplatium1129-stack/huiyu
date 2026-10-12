@@ -138,10 +138,6 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       }
 
       const subscriptions: number[] = []
-      subscriptions.push(bridge.onHitTest((areas) => {
-        if (destroyed) return
-        for (const listener of hitTestListeners) listener(areas)
-      }))
       subscriptions.push(bridge.onMotionStarted(() => {
         if (destroyed) return
         for (const listener of motionStartedListeners) listener()

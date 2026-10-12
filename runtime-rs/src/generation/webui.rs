@@ -38,7 +38,7 @@ pub(super) async fn run_queue(inner: Arc<Inner>) {
             continue;
         }
         if let Some(hooks) = &job.hooks
-            && let Err(error) = hooks.submitting("webui".into(), String::new()).await
+            && let Err(error) = hooks.submitting("webui".into()).await
         {
             jobs::fail(&job, error, false).await;
             jobs::release(&job).await;

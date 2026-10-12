@@ -7,8 +7,7 @@ const loading = ref(false)
 const pendingPath = computed(() => target.value?.path ?? '')
 const intentPath = shallowRef('')
 const intentRoutePath = computed(() => intentPath.value.split(/[?#]/, 1)[0] || '')
-const navigationId = ref<number | null>(null)
-const navigationPhase = ref<'idle' | 'intent' | 'pending' | 'loading' | 'completed' | 'cancelled' | 'failed'>('idle')
+let navigationId: number | null = null
 
 let nextNavigationId = 0
 let intentToken: number | null = null
@@ -23,36 +22,27 @@ function clearIntent(path?: string) {
 }
 
 /** Record the activation before the router starts lazy resolution/re-rendering. */
-export function announceNavigationIntent(path: string): number | null {
-  if (!path) return null
-  if (intentPath.value === path && intentToken !== null) return intentToken
+export function announceNavigationIntent(path: string): void {
+  if (!path || (intentPath.value === path && intentToken !== null)) return
   const id = ++nextNavigationId
   intentPath.value = path
   intentToken = id
-  navigationId.value = id
-  navigationPhase.value = 'intent'
+  navigationId = id
   clearTimeout(intentTimer)
   intentTimer = setTimeout(() => {
     // A real navigation clears this timer in beforeEach. An older pending
-    // route may meanwhile change the phase to loading; it does not own this intent.
+    // route may still be loading; it does not own this intent.
     if (intentToken !== id) return
     clearIntent(path)
-    if (navigationId.value === id) {
-      navigationId.value = null
-      navigationPhase.value = 'idle'
-    }
+    if (navigationId === id) navigationId = null
   }, 1000)
-  return id
 }
 
 export function useNavigationFeedback() {
   return {
     pendingPath,
-    intentPath: readonly(intentPath),
     intentRoutePath,
     loading: readonly(loading),
-    navigationId: readonly(navigationId),
-    navigationPhase: readonly(navigationPhase),
   }
 }
 
@@ -62,34 +52,31 @@ export function installNavigationFeedback(router: Router) {
   let measurementNavigationId: number | null = null
   let activeNavigationId: number | null = null
   let activeRoutePath = ''
-  function finish(outcome: 'completed' | 'cancelled' | 'failed' = 'completed') {
+  function finish() {
     clearTimeout(timer)
     target.value = null
     loading.value = false
-    if (activeNavigationId !== null && navigationId.value === activeNavigationId) {
+    if (activeNavigationId !== null && navigationId === activeNavigationId) {
       clearIntent(activeRoutePath)
-      navigationPhase.value = outcome
     }
     activeNavigationId = null
     activeRoutePath = ''
     measurementNavigationId = null
   }
   const before = router.beforeEach((to, from) => {
-    finish('cancelled')
+    finish()
     if (!from.matched.length) return
     activeNavigationId = intentPath.value === to.fullPath && intentToken !== null
       ? intentToken
       : ++nextNavigationId
     activeRoutePath = to.fullPath
     clearTimeout(intentTimer)
-    navigationId.value = activeNavigationId
-    navigationPhase.value = 'pending'
+    navigationId = activeNavigationId
     measurementNavigationId = beginUiFluidityNavigation(to.fullPath)
     target.value = to
     timer = setTimeout(() => {
       if (target.value === to) {
         loading.value = true
-        navigationPhase.value = 'loading'
         markUiFluidityNavigation(measurementNavigationId, 'feedback-committed', to.fullPath)
       }
     }, 180)
@@ -97,13 +84,13 @@ export function installNavigationFeedback(router: Router) {
   const after = router.afterEach((to, _from, failure) => {
     if (target.value === to || isNavigationFailure(failure, NavigationFailureType.duplicated)) {
       if (failure) markUiFluidityNavigation(measurementNavigationId, 'cancelled', to.fullPath)
-      finish(failure ? 'cancelled' : 'completed')
+      finish()
     }
   })
   const error = router.onError((_error, to) => {
     if (target.value === to) {
       markUiFluidityNavigation(measurementNavigationId, 'cancelled', to.fullPath)
-      finish('failed')
+      finish()
     }
   })
   return () => { finish(); before(); after(); error() }

@@ -1,5 +1,5 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import {
   COMPANION_AFFECTION_KEY,
 } from '@/utils/storageKeys'
@@ -62,28 +62,19 @@ if (typeof window !== 'undefined') window.addEventListener('storage', event => {
 
 export function useCompanionAffection() {
   function getScore(character: string): number {
-    const charState = state.value[character]
-    if (charState && typeof charState.score === 'number') {
-      return Math.max(0, Math.min(100, charState.score))
-    }
-    return DEFAULT_SCORES[character] ?? 10
+    return state.value[character]?.score ?? DEFAULT_SCORES[character] ?? 10
   }
 
   function getLevelInfo(character: string): AffectionLevelInfo {
     return getAffectionLevel(getScore(character))
   }
 
-  function addScore(character: string, delta: number, _reason?: string): { oldScore: number; newScore: number; levelUp: boolean } {
-    try { state.value = loadInitialState(true) } catch {
-      const score = getScore(character)
-      return { oldScore: score, newScore: score, levelUp: false }
-    }
+  function addScore(character: string, delta: number): number {
+    try { state.value = loadInitialState(true) } catch { return 0 }
     const current = getScore(character)
-    if (!Number.isFinite(delta)) return { oldScore: current, newScore: current, levelUp: false }
+    if (!Number.isFinite(delta)) return 0
     const previous = state.value
     const next = Math.max(0, Math.min(100, current + delta))
-    const oldLevel = getAffectionLevel(current).level
-    const newLevel = getAffectionLevel(next).level
 
     state.value = {
       ...state.value,
@@ -94,34 +85,10 @@ export function useCompanionAffection() {
     }
     if (!saveState()) {
       state.value = previous
-      return { oldScore: current, newScore: current, levelUp: false }
+      return 0
     }
 
-    return {
-      oldScore: current,
-      newScore: next,
-      levelUp: newLevel > oldLevel,
-    }
-  }
-
-  function setScore(character: string, score: number) {
-    if (!Number.isFinite(score)) return
-    try { state.value = loadInitialState(true) } catch { return }
-    const previous = state.value
-    const valid = Math.max(0, Math.min(100, Math.round(score)))
-    state.value = {
-      ...state.value,
-      [character]: {
-        score: valid,
-        lastInteractedAt: Date.now(),
-      },
-    }
-    if (!saveState()) state.value = previous
-  }
-
-  function resetScore(character: string) {
-    const defaultScore = DEFAULT_SCORES[character] ?? 10
-    setScore(character, defaultScore)
+    return next - current
   }
 
   /**
@@ -141,8 +108,7 @@ export function useCompanionAffection() {
 
     let bonusAwarded: number | undefined
     if (picked.entry.bonus && picked.entry.bonus > 0) {
-      const change = addScore(character, picked.entry.bonus, `互动动作 ${picked.entry.name}`)
-      bonusAwarded = change.newScore - change.oldScore
+      bonusAwarded = addScore(character, picked.entry.bonus)
     }
 
     return {
@@ -155,10 +121,6 @@ export function useCompanionAffection() {
   return {
     getScore,
     getLevelInfo,
-    addScore,
-    setScore,
-    resetScore,
     dispatchInteractiveMotion,
-    allScores: computed(() => state.value),
   }
 }

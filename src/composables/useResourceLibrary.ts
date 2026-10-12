@@ -1,10 +1,11 @@
 import { computed, ref } from 'vue'
-import { resourceApi, type ResourceApi } from '../api/resourceApi'
+import { resourceApi } from '../api/resourceApi'
 import { ApiClientError } from '../api/client'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment'
 import type { ResourceAction, ResourceStatus } from '../../types/resources'
 
-export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isLocalStudioHost()) {
+export function useResourceLibrary() {
+  const isLocal = isLocalStudioHost()
   const status = ref<ResourceStatus | null>(null)
   const error = ref('')
   const loading = ref(false)
@@ -73,7 +74,7 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
     request = new AbortController()
     loading.value = true
     try {
-      const result = await api.status(fresh, request.signal)
+      const result = await resourceApi.status(fresh, request.signal)
       if (ticket !== generation || stopped) return
       status.value = result
       if (fresh) rejectedStart = ''
@@ -94,7 +95,7 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
     command = new AbortController()
     submitting.value = true
     try {
-      const result = await api.start(action, selectedId.value || undefined, command.signal)
+      const result = await resourceApi.start(action, selectedId.value || undefined, command.signal)
       if (stopped) return
       if (status.value) status.value = { ...status.value, busy: true, mounted: false, task: result.task }
       error.value = ''
@@ -119,7 +120,7 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
     submitting.value = true
     command = new AbortController()
     try {
-      const result = await api.cancel(task.id, command.signal)
+      const result = await resourceApi.cancel(task.id, command.signal)
       if (!stopped && status.value) {
         status.value = { ...status.value, task: result.task }
         error.value = cancellationNotice(result.task) || rejectedStart

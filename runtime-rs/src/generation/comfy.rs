@@ -65,7 +65,7 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
         return Ok(());
     }
     if let Some(hooks) = &job.hooks
-        && let Err(error) = hooks.submitting("comfy".into(), String::new()).await
+        && let Err(error) = hooks.submitting("comfy".into()).await
     {
         jobs::remove(&inner, &job).await;
         return Err(error);

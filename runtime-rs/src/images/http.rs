@@ -139,7 +139,7 @@ impl ExecutionHooks for LegacyObservation {
             self.check()
         })
     }
-    fn submitting(&self, _: String, _: String) -> BoxFuture<'_, Result<()>> {
+    fn submitting(&self, _: String) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move { self.check() })
     }
     fn observed(&self, _: String, _: Value) -> BoxFuture<'_, Result<()>> {

@@ -67,13 +67,12 @@ impl Storage {
         let mutation = !is_read(command["kind"].as_str().unwrap_or(""));
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();
-        let work = Work::Request(command, principal.into(), cancel.0.clone(), reply);
-        let work = if matches!(&work, Work::Request(command, ..) if result_commit::is_write(command))
-        {
-            self.admit_result(work).await?
+        let permit = if result_commit::is_write(&command) {
+            Some(self.result_permit().await?)
         } else {
-            work
+            None
         };
+        let work = Work::Request(command, principal.into(), cancel.0.clone(), reply, permit);
         self.sender.send(work).await.map_err(|_| unavailable())?;
         result.await.map_err(|_| {
             if mutation {
@@ -133,8 +132,8 @@ impl Storage {
     ) -> Result<u64> {
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();
-        let work = Work::TaskMediaChunk(chunk, principal.into(), cancel.0.clone(), reply);
-        let work = self.admit_result(work).await?;
+        let permit = self.result_permit().await?;
+        let work = Work::TaskMediaChunk(chunk, principal.into(), cancel.0.clone(), reply, permit);
         self.sender.send(work).await.map_err(|_| unavailable())?;
         result.await.map_err(|_| commit_unknown())?
     }
@@ -161,13 +160,11 @@ impl Storage {
         }
         result.await.unwrap_or(Ok(()))
     }
-    async fn admit_result(&self, work: Work) -> Result<Work> {
-        let permit = self
-            .result_writes
+    async fn result_permit(&self) -> Result<OwnedSemaphorePermit> {
+        self.result_writes
             .clone()
             .acquire_owned()
             .await
-            .map_err(|_| unavailable())?;
-        Ok(Work::AdmittedResult(Box::new(work), permit))
+            .map_err(|_| unavailable())
     }
 }

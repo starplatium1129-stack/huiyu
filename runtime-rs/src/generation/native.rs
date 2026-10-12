@@ -188,7 +188,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         unreachable!()
     };
     if let Some(hooks) = &job.hooks {
-        tokio::select! { biased; _=token.cancelled()=>return Err(closed()), result=hooks.submitting("native".into(), String::new())=>result? }
+        tokio::select! { biased; _=token.cancelled()=>return Err(closed()), result=hooks.submitting("native".into())=>result? }
     }
     if token.is_cancelled() || job.state.lock().await.status == "cancelling" {
         return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));

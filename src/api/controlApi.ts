@@ -1,4 +1,4 @@
-import { ApiClientError, apiClient, type ApiClient, type ApiResponseObject } from './client.ts'
+import { ApiClientError, apiClient, type ApiResponseObject } from './client.ts'
 import type {
   ControlActionResult,
   ControlConfigPayload,
@@ -121,89 +121,85 @@ function isDiagnostics(value: ApiResponseObject): boolean {
     && typeof value.platform === 'string'
 }
 
-export function createControlApi(client: ApiClient = apiClient): ControlApi {
-  function post<T extends object>(path: string, body: unknown, options: ControlCallOptions): Promise<T> {
-    return client.request<T>(path, {
-      method: 'POST', cache: 'no-store', body, signal: options.signal,
-      timeoutMs: CONTROL_API_TIMEOUTS.action, validate: isSuccess,
+function post<T extends object>(path: string, body: unknown, options: ControlCallOptions): Promise<T> {
+  return apiClient.request<T>(path, {
+    method: 'POST', cache: 'no-store', body, signal: options.signal,
+    timeoutMs: CONTROL_API_TIMEOUTS.action, validate: isSuccess,
+  })
+}
+
+async function getStatus(options: ControlStatusOptions = {}): Promise<ControlStatus> {
+  try {
+    return await apiClient.request<ControlStatus>(`/api/status${options.fresh ? '?fresh=1' : ''}`, {
+      cache: 'no-store',
+      signal: options.signal,
+      timeoutMs: CONTROL_API_TIMEOUTS.quick,
+      validate: isControlStatus,
     })
-  }
-
-  async function getStatus(options: ControlStatusOptions = {}): Promise<ControlStatus> {
-    try {
-      return await client.request<ControlStatus>(`/api/status${options.fresh ? '?fresh=1' : ''}`, {
-        cache: 'no-store',
-        signal: options.signal,
-        timeoutMs: CONTROL_API_TIMEOUTS.quick,
-        validate: isControlStatus,
-      })
-    } catch (error) {
-      const body = error instanceof ApiClientError ? error.responseBody : null
-      if (error instanceof ApiClientError && error.status === 200 && body && isDegradedControlStatus(body)) {
-        return body as unknown as ControlStatus
-      }
-      throw error
+  } catch (error) {
+    const body = error instanceof ApiClientError ? error.responseBody : null
+    if (error instanceof ApiClientError && error.status === 200 && body && isDegradedControlStatus(body)) {
+      return body as unknown as ControlStatus
     }
-  }
-
-  return {
-    getStatus,
-
-    getShareLink(options: ControlCallOptions = {}) {
-      return client.request<ControlShareLinkResult>('/api/share-link', {
-        cache: 'no-store',
-        signal: options.signal,
-        timeoutMs: CONTROL_API_TIMEOUTS.quick,
-        validate: isShareLink,
-      })
-    },
-
-    getLogs(since: number, options: ControlCallOptions = {}) {
-      return client.request<ControlLogs>(`/api/logs?since=${encodeURIComponent(String(since))}`, {
-        cache: 'no-store',
-        signal: options.signal,
-        timeoutMs: CONTROL_API_TIMEOUTS.quick,
-        validate: isLogs,
-      })
-    },
-
-    saveConfig(payload, options = {}) {
-      return post('/api/config', payload, options)
-    },
-
-    savePreference(autoStartVoice: boolean, options: ControlCallOptions = {}) {
-      return post('/api/preference', { autoStartVoice }, options)
-    },
-
-    serviceAction(
-      service: ControlService,
-      action: ControlServiceAction,
-      options: ControlCallOptions = {},
-    ) {
-      return post(`/api/service/${service}`, { action }, options)
-    },
-
-    switchMode(mode: 'draw' | 'chat', options: ControlCallOptions = {}) {
-      return post('/api/mode', { mode }, options)
-    },
-
-    start(enableTunnel, options = {}) {
-      return post('/api/start', { enableTunnel }, options)
-    },
-
-    stop(options: ControlCallOptions = {}) {
-      return post('/api/stop', {}, options)
-    },
-
-    getDiagnostics(options: ControlCallOptions = {}) {
-      return client.request<ControlDiagnostics>('/api/diagnostics', {
-        cache: 'no-store',
-        signal: options.signal,
-        timeoutMs: CONTROL_API_TIMEOUTS.action,
-        validate: isDiagnostics,
-      })
-    },
+    throw error
   }
 }
 
-export const controlApi = createControlApi()
+export const controlApi: ControlApi = {
+  getStatus,
+
+  getShareLink(options: ControlCallOptions = {}) {
+    return apiClient.request<ControlShareLinkResult>('/api/share-link', {
+      cache: 'no-store',
+      signal: options.signal,
+      timeoutMs: CONTROL_API_TIMEOUTS.quick,
+      validate: isShareLink,
+    })
+  },
+
+  getLogs(since: number, options: ControlCallOptions = {}) {
+    return apiClient.request<ControlLogs>(`/api/logs?since=${encodeURIComponent(String(since))}`, {
+      cache: 'no-store',
+      signal: options.signal,
+      timeoutMs: CONTROL_API_TIMEOUTS.quick,
+      validate: isLogs,
+    })
+  },
+
+  saveConfig(payload, options = {}) {
+    return post('/api/config', payload, options)
+  },
+
+  savePreference(autoStartVoice: boolean, options: ControlCallOptions = {}) {
+    return post('/api/preference', { autoStartVoice }, options)
+  },
+
+  serviceAction(
+    service: ControlService,
+    action: ControlServiceAction,
+    options: ControlCallOptions = {},
+  ) {
+    return post(`/api/service/${service}`, { action }, options)
+  },
+
+  switchMode(mode: 'draw' | 'chat', options: ControlCallOptions = {}) {
+    return post('/api/mode', { mode }, options)
+  },
+
+  start(enableTunnel, options = {}) {
+    return post('/api/start', { enableTunnel }, options)
+  },
+
+  stop(options: ControlCallOptions = {}) {
+    return post('/api/stop', {}, options)
+  },
+
+  getDiagnostics(options: ControlCallOptions = {}) {
+    return apiClient.request<ControlDiagnostics>('/api/diagnostics', {
+      cache: 'no-store',
+      signal: options.signal,
+      timeoutMs: CONTROL_API_TIMEOUTS.action,
+      validate: isDiagnostics,
+    })
+  },
+}

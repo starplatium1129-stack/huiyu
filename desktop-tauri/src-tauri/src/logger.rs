@@ -46,21 +46,6 @@ impl FileLogger {
         }
     }
 
-    #[allow(dead_code)]
-    pub fn info(&self, message: &str) {
-        self.write("info", message);
-    }
-
-    #[allow(dead_code)]
-    pub fn warn(&self, message: &str) {
-        self.write("warn", message);
-    }
-
-    #[allow(dead_code)]
-    pub fn error(&self, message: &str) {
-        self.write("error", message);
-    }
-
     pub fn debug(&self, message: &str) {
         self.write("debug", message);
     }
