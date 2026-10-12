@@ -63,6 +63,8 @@
 
 私人 workspace API 只接受桌面专属会话，不能仅凭当前共享网关 token 授权。纯 Web 模式继续使用自己的 IndexedDB；它不是桌面库的离线副本，也不会自动合并进桌面。以后增加浏览器访问私人库需独立配对，不在本轮默认开放。
 
+回收站使用 `GET /api/workspace/artworks?deletedOnly=true`，只读取 `artworks.deleted_at IS NOT NULL` 的完整作品行，不改读 `trash.snapshot`。`deletedOnly` 只接受 `true` / `false`；为 true 时优先于 `includeDeleted`，未指定或为 false 时保留旧 `includeDeleted=true` 的全量语义及默认活跃作品语义。每页 1–200 条、`id_key` / limit+1 游标、workspace revision / artworkRevision 和原 TrashEntry 映射保持不变。v3 打开时补建 `artworks_deleted_id` 删除部分索引，与活跃索引对称，不改变数据格式或业务修订号；新查询参数须随对应 Rust 后端和前端一起交付。
+
 ### 作品读取派生索引
 
 `artwork_read_index` 保存搜索文本、展示摘要和时间排序数据，`artwork_read_dirty` 标记待更新 ID；`artworks` 仍是唯一作品权威。作品表触发器在原事务中标脏并递增 `meta.artworkRevision`，覆盖保存、编辑、迁移和回收站操作；任务、设置与草稿只影响原工作区 revision。首读按 128 条事务分批补齐索引，取消保留已完成批次，未完成时不发布结果。索引属于 v3 的可重建派生数据，不改业务 revision、备份版本或作品字段；旧 v3/旧恢复库首次打开会登记现有记录，已建立索引随 SQLite 备份恢复。

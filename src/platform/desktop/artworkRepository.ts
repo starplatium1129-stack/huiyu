@@ -58,14 +58,14 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (session !== searchSession()) throw new Error('工作区在读取期间发生变更，请重新读取')
   }
 
-  async function list(includeDeleted = false, projection?: 'preference', signal?: AbortSignal): Promise<{ rows: Row[]; artworkRevision: number }> {
+  async function list(selection: 'live' | 'deleted' = 'live', projection?: 'preference', signal?: AbortSignal): Promise<{ rows: Row[]; artworkRevision: number }> {
     const rows: Row[] = []
     let cursor: string | null = null
     let revision: number | undefined
     let artworkRevision: number | undefined
     do {
       signal?.throwIfAborted()
-      const page: Page = await workspaceRequest({ kind: 'listArtworks', limit: 200, includeDeleted, ...(projection ? { projection } : {}), ...(cursor ? { cursor } : {}) }, signal)
+      const page: Page = await workspaceRequest({ kind: 'listArtworks', limit: 200, ...(selection === 'deleted' ? { deletedOnly: true } : {}), ...(projection ? { projection } : {}), ...(cursor ? { cursor } : {}) }, signal)
       signal?.throwIfAborted()
       if (!Number.isSafeInteger(page.revision) || page.revision < 0 || !Number.isSafeInteger(page.artworkRevision) || page.artworkRevision < 0) throw new Error('作品库修订号无效')
       if (revision !== undefined && (revision !== page.revision || artworkRevision !== page.artworkRevision)) throw new Error('作品库在读取期间发生变更，请重新读取')
@@ -87,7 +87,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       // snapshot can skip bulk transfer; it never masks a failed status request.
       if (historyLoaded && version === mutationVersion && status.artworkRevision === historyArtworkRevision) return structuredClone(loadedHistory)
     }
-    const { rows, artworkRevision } = await list(false, undefined, signal)
+    const { rows, artworkRevision } = await list('live', undefined, signal)
     checkReadSession(session)
     const history = parseArtworkRecords(rows.map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
     // Gallery may overlay confirmed edits onto this response, but an older read
@@ -173,7 +173,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   async function readPreferenceHistory() {
     const session = readSession(), version = mutationVersion
     if (getDesktopRuntime().connection !== 'ready' && (loadedPreferences || historyLoaded)) return preferenceHistoryRows(loadedPreferences ?? loadedHistory)
-    const { rows } = await list(false, 'preference')
+    const { rows } = await list('live', 'preference')
     checkReadSession(session)
     const preferences = preferenceHistoryRows(rows.map(row => row.body))
     if (version === mutationVersion) loadedPreferences = preferences
@@ -328,7 +328,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       }
       return { purged }
     },
-    async listTrash() { return (await list(true)).rows.filter(item => item.deletedAt !== null).map(item => ({ id: String(item.id), deletedAt: item.deletedAt!, historyEntries: [item.body], projectRefs: [], imageIds: item.body.image_id ? [item.body.image_id] : [] })) },
+    async listTrash() { return (await list('deleted')).rows.filter(item => item.deletedAt !== null).map(item => ({ id: String(item.id), deletedAt: item.deletedAt!, historyEntries: [item.body], projectRefs: [], imageIds: item.body.image_id ? [item.body.image_id] : [] })) },
   }
   return { ...repository,
     withStaging: work => trackMaintenanceWrite(work),
