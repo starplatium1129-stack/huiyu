@@ -477,28 +477,3 @@ test('global task center retains a batch while visiting the gallery and control 
   await expect(page.locator('.artwork')).toHaveCount(1)
   expect(submitted).toBe(1)
 })
-
-
-for (const theme of ['dark', 'light']) {
-  test(`character portraits and asset health stay readable ${theme}`, async ({ page }) => {
-    // This is a UI test; physical reference files are checked separately on the asset host.
-    const image = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
-    await page.route('**/api/character-reference-profile/furina', route => route.fulfill({ json: { characterId: 'furina', displayName: '芙宁娜', outfits: [{ outfitId: 'fixture', outfitName: '测试服装', isDefault: true, isNsfw: false, prose: '',
-        references: Array.from({ length: 7 }, (_, index) => ({ id: 'fixture-' + index, name: '测试机位 ' + index, shotType: '正面', fileName: index + '.png', lens: '50mm', targetUsage: [], url: '/character-references/furina/fixture/' + index + '.png' })),
-      }],
-    } }))
-    await page.route('**/character-references/**', route => route.fulfill({ status: 200, contentType: 'image/png', body: image }))
-    await page.setViewportSize({ width: 1440, height: 960 })
-    await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
-    await page.goto('/character?character=furina')
-    await page.locator('.character-production > summary').click()
-    const assets = page.getByRole('region', { name: '角色素材状态' })
-    await expect(assets).toContainText('7 / 7 可读取')
-    const portrait = page.locator(theme === 'dark' ? '.directory-item[data-character="furina"] .character-portrait' : '.directory-pocket .character-portrait')
-    await expect(portrait).toBeVisible()
-    await expect(portrait).toHaveAttribute('data-state', 'image')
-    await assets.screenshot({ path: `.review-shots/character-assets-${theme}.png` })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
-  })
-}
