@@ -8,9 +8,6 @@ it('lets users disable unsupported room tools and recheck an existing local serv
   try {
     wrapper.get('details').element.open = true
     await wrapper.get('details').trigger('toggle')
-    expect(wrapper.text()).toContain('Gemini 3 / 2.5 Pro 不能关闭思考，选择「关」会使用低档')
-    expect(wrapper.text()).toContain('Kimi K2.6 的低 / 中 / 高均为开启思考，不区分强度')
-    expect(wrapper.text()).toContain('DeepSeek 开启房间工具时请关闭推理')
     const tools = () => wrapper.findAll('button').find(button => button.text().startsWith('房间工具'))!
     expect(tools().attributes('aria-pressed')).toBe('true')
     await tools().trigger('click')

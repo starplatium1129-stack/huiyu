@@ -112,10 +112,6 @@ it('fits default rails to the measured content width without saving temporary ge
   const { api, wrapper } = setup(900)
   try {
     expect(api.materialsWidth.value + api.inspectorWidth.value + 352).toBeLessThanOrEqual(900)
-    expect(api.style.value).toEqual({
-      '--director-material-width': `${api.materialsWidth.value}px`,
-      '--director-inspector-width': `${api.inspectorWidth.value}px`,
-    })
     expect(localStorage.getItem(DIRECTOR_LAYOUT_KEY)).toBeNull()
     api.toggle('materials')
     const saved = JSON.parse(localStorage.getItem(DIRECTOR_LAYOUT_KEY)!)

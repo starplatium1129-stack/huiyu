@@ -134,7 +134,7 @@
   :root[data-theme-style='terraria'] .page-root:has(.pb)::before { height:var(--app-navigation-height); background-size:auto 72px; }
   :root[data-theme-style='terraria'] .page-root:has(.pb)::after { display:none; }
   :root[data-theme-style='terraria'] .page-root > .page-main > .pb {
-    --drawing-viewport-height:calc(100dvh - var(--desktop-chrome-height,0px) - 12px);
+    --drawing-viewport-height:calc(100dvh - var(--desktop-chrome-height,0px) - var(--app-navigation-height) - 12px);
     max-width:none; width:100%;
   }
 }
