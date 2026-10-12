@@ -339,7 +339,7 @@ for (const theme of ['dark']) {
       const buttons = page.getByRole('button', { name: '正在保存…', exact: true })
       await expect(buttons).toHaveCount(saveButtonCount)
       for (const button of await buttons.all()) await expect(button).toBeDisabled()
-      await page.locator('#sd-host').press('Enter')
+      await page.locator('#comfy-host').press('Enter')
       expect(requests).toBe(1)
       await page.locator('.service-config-panel').screenshot({ path: `.review-shots/feature-control-${theme}.png` })
       release()
