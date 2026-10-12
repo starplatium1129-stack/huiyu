@@ -80,7 +80,7 @@ pub(super) fn read(c: &Context, principal: &str, query: TaskListQuery) -> Result
         let mut task = if query.summary {
             serde_json::to_value(serde_json::from_str::<TaskSummary>(body)?)?
         } else {
-            serde_json::to_value(serde_json::from_str::<TaskRecord>(body)?)?
+            serde_json::from_str::<TaskRecord>(body)?.into_value()?
         };
         task["runtimeEpoch"] = json!(c.epoch);
         items.push(task);

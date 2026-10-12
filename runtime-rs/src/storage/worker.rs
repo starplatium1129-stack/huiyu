@@ -37,6 +37,24 @@ pub(super) fn run(
                     break;
                 }
             }
+            Work::TaskMediaFile(command, file, principal, cancel, reply, permit) => {
+                if !closing.is_empty() {
+                    let _ = reply.send(Err(unavailable()));
+                    continue;
+                }
+                context.cancel = cancel;
+                if !reply.is_closed() {
+                    result_commit::start_file(
+                        &mut context,
+                        &command,
+                        file,
+                        &principal,
+                        reply,
+                        permit,
+                        &sender,
+                    );
+                }
+            }
             Work::TaskMediaChunk(chunk, principal, cancel, reply, _permit) => {
                 // The message owns writer admission through the actor write.
                 if !closing.is_empty() {
@@ -68,6 +86,17 @@ pub(super) fn run(
                 context.cancel = cancel;
                 if !reply.is_closed() {
                     let result = tasks::read_record(&context, &principal, &id);
+                    let _ = reply.send(result);
+                }
+            }
+            Work::TaskRevision(id, principal, cancel, reply) => {
+                if !closing.is_empty() {
+                    let _ = reply.send(Err(unavailable()));
+                    continue;
+                }
+                context.cancel = cancel;
+                if !reply.is_closed() {
+                    let result = tasks::read_revision(&context, &principal, &id);
                     let _ = reply.send(result);
                 }
             }

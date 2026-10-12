@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>后端热点优化续报 · 2026-10-13</title>
+<style>
+:root{color-scheme:light dark}body{font:16px/1.7 system-ui,sans-serif;color:CanvasText;background:Canvas;max-width:960px;margin:36px auto;padding:0 20px}h1{font-size:26px}h2{font-size:20px}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:12px 10px;border-bottom:1px solid GrayText}code{overflow-wrap:anywhere}a{color:LinkText}footer{margin-top:24px}
+</style>
+<h1>后端热点优化续报</h1>
+<p>2026-10-13。本轮继续落实四组热点优化，减少整图临时分配、目录遍历、重复基线解析和任务大 JSON 深拷贝。没有新增依赖或持久化格式迁移。收益为源码操作量推导，尚无本轮真实耗时或 RSS 对照。</p>
+<table aria-label="本轮改动与边界">
+<thead><tr><th>范围</th><th>实际改动</th><th>边界</th></tr></thead>
+<tbody>
+<tr><td>手动蒙版扩张</td><td>按原中心 / 上 / 下 / 左 / 右顺序，用 np.maximum(out=) 复用独立 FP32 输出，每轮只保留输出与当前 edge padding。删除五图临时 stack 及新结果分配。4096² 时仅五图 stack 为 320 MiB；grow=32 原本累计构造 10 GiB stack，新路径去掉这部分分配。</td><td>这是缓冲大小推导，不是实际 RSS 或速度。保留菱形增长、软 alpha、resize、空蒙版拒绝；自动遮罩沿用自身方形增长。没有改采样数值或执行身份，旧设备结果仍不作为本轮验收。</td></tr>
+<tr><td>暖模型身份检查</td><td>相同精确模型路径与有序 LoRA 路径、原连续保护有效时，直接复用独立 SHA 身份副本，strength 取当前值。每暖身份检查递归 inventory 由三次降为零，不再重开全组文件、祖先目录和通知句柄。</td><td>保留文件写入 / 删除拒绝、父目录与子树通知及加载后复核；另核对实际驱动器映射、精确路径大小写，大小写碰撞与不支持路径保守回退完整哈希。只支持能证明连续保护的直接固定本地 NTFS；首次、映射 / 目录变化或失效仍用原完整取得路径。映射复核为边界快照，不能保证抵御管理员强制瞬时重映射。未延长 120 秒驻留，未更改模型数学或 Tea 档位。</td></tr>
+<tr><td>内容批量写入</td><td>经过既有场景定稿校验的批次，共用一次解析的基线，提交 / 预览返回前再完整读字节核对；普通 N 个已有场景批次由 N 次读取 / 解析降至两次读取、一次解析。依赖变更用首项索引，减少不断增长的线性查找，省去修改前的整份 JSON 比较拷贝；策展只读场景 ID，退役只解码相关文档。</td><td>逐记录保护字段及校验位置保持；快照终检发现基线变化则拒绝整批，数据库后备基线经 seed 更新后失效。专用定稿文档导入、未触发场景定稿校验的批次沿用原校验，不纳入新增字节终检保证；最后读文件与提交之间仍有原文件系统竞态。引用顺序、重复项、缺键 Null 插入、修订与 history 保留。相关文档继续完整解析；无关文档的 JSON 损坏不再阻断定向退役。没有修改真实内容、保护基线或提示词。</td></tr>
+<tr><td>任务 JSON / CAS</td><td>消费 TaskRecord 时直接转移 input、metadata、checkpoint 的所有权，省去序列化这些大树的深拷贝；接受回执也直接移动 task，初始插入直接序列化。CAS 前读 revision 只让标量跨越 SQLite actor，不再为此构建完整 Rust TaskRecord；失败修订读取回退旧完整读法。</td><td>HTTP JSON 形状、nullable 字段、schema v3、最终 canonical 持久化及原子接受不变。实际 patch 事务仍完整校验 TaskRecord、身份、CAS、取消、writer epoch 和状态单调性；坏修订保留原错误分类。SQLite json_extract 仍解析大 JSON，持久化仍写完整 record_json；本轮没有把存储改成轻状态表。</td></tr>
+</tbody></table>
+<h2>必要验证</h2>
+<table aria-label="验证状态">
+<thead><tr><th>状态</th><th>范围与证据</th></tr></thead>
+<tbody>
+<tr><td>通过</td><td>最终 Rust 源码执行 <code>cargo check --manifest-path runtime-rs/Cargo.toml --locked --offline</code>，退出 0，6.94 秒；源码 / 差异审查、定向 rustfmt、git diff --check。</td></tr>
+<tr><td>已纠正</td><td>首次定向格式检查误传 <code>--edition 2021</code>，与 Cargo.toml 的 2024 不符而退出 1；确认配置后改用 <code>--edition 2024 --config skip_children=true</code>，最终退出 0。未修改源码规避检查。</td></tr>
+<tr id="python-check"><td>通过</td><td>产品 CPython 3.11.9 对 <code>masked_anima.py</code>、<code>locked_identity.py</code>、<code>resident_anima.py</code> 执行 <code>py_compile</code>，退出 0；仅语法编译，不执行模型或 Win32 API。</td></tr>
+<tr id="release-build"><td>通过</td><td>锁定依赖、离线 <code>npm run wf -- rust:build</code>，退出 0，Rust release 4 分 06 秒；仅有 MSVC 创建 import library 的 linker warning。构建回执已保存；Python helper 此后完成复制和单独语法编译。</td></tr>
+<tr><td>未运行</td><td>按仓库禁令，未编写或运行测试、夹具、临时行为脚本或断言。未调用真实模型、运行内容写入、测量实际 RSS / 耗时、部署、提交或推送。</td></tr>
+<tr><td>需设备 / 产品验收</td><td>大蒙版峰值 RAM、暖模型路径及映射失效行为、真实内容批量预览 / 提交与任务持久化、长运行耗时和 RSS。本轮编译与源码审查不代表这些行为通过。</td></tr>
+</tbody></table>
+<p>平台依据：目录通知覆盖目录 / 子树内变化，但不直接覆盖被监视目录自身，因此保留父目录属性监视。驱动器路径另有 DOS 映射边界，不能仅靠 NTFS 子树通知证明。分别核对 <a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstchangenotificationw">Microsoft 目录通知</a> 与 <a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-querydosdevicew">QueryDosDevice</a> 文档；实际 Win32 路径尚未设备验收。</p>
+<footer>原始日志、源码哈希与构建回执保存在被忽略的 <code>runtime/backend-performance-20261013/round2/</code>。此前优化保留；本报告只列本轮新增改动与必要验证。当前未部署。</footer>
+</html>

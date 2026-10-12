@@ -137,7 +137,7 @@ pub(in crate::storage) fn prepare(
         media::cleanup(c, &key, &media);
         return Ok(Prepared::Complete(match target {
             Target::Input(_) => media,
-            Target::Result(_) => serde_json::to_value(task)?,
+            Target::Result(_) => task.into_value()?,
         }));
     }
     let lease_created = lease(c, &key, &media, &target)?;

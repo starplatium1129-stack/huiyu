@@ -133,11 +133,18 @@ impl Identity {
         self.cancelled()?;
         c.writer()?;
         c.owner.check()?;
+        if self.root != c.root || self.workspace_id != c.workspace_id || self.epoch != c.epoch {
+            return Err(conflict(
+                "WORKSPACE_IDENTITY",
+                "Workspace changed during result verification",
+            ));
+        }
+        self.check_paths()
+    }
+    fn check_paths(&self) -> Result<()> {
+        self.cancelled()?;
         let root = file_identity::path(&schema::safe(&self.root, "")?, true)?;
-        if self.root != c.root
-            || self.workspace_id != c.workspace_id
-            || self.epoch != c.epoch
-            || root.dev != self.root_id.dev
+        if root.dev != self.root_id.dev
             || root.ino != self.root_id.ino
             || file_identity::path(&schema::safe(&self.root, "huiyu.sqlite3")?, false)?
                 != self.database_id
@@ -160,6 +167,45 @@ pub(super) fn start(
     reply: oneshot::Sender<Result<Value>>,
     permit: Option<OwnedSemaphorePermit>,
     sender: &mpsc::WeakSender<Work>,
+) {
+    start_inner(c, command, principal, reply, permit, sender, None);
+}
+
+pub(super) fn start_file(
+    c: &mut Context,
+    command: &Value,
+    source: std::fs::File,
+    principal: &str,
+    reply: oneshot::Sender<Result<Value>>,
+    permit: OwnedSemaphorePermit,
+    sender: &mpsc::WeakSender<Work>,
+) {
+    if !matches!(
+        command["kind"].as_str(),
+        Some("task.result.commit" | "task.input.commit")
+    ) {
+        let _ = reply.send(Err(invalid("Invalid internal task file command")));
+        return;
+    }
+    start_inner(
+        c,
+        command,
+        principal,
+        reply,
+        Some(permit),
+        sender,
+        Some(source),
+    );
+}
+
+fn start_inner(
+    c: &mut Context,
+    command: &Value,
+    principal: &str,
+    reply: oneshot::Sender<Result<Value>>,
+    permit: Option<OwnedSemaphorePermit>,
+    sender: &mpsc::WeakSender<Work>,
+    source: Option<std::fs::File>,
 ) {
     let prepared = if matches!(
         command["kind"].as_str(),
@@ -221,7 +267,7 @@ pub(super) fn start(
         finish(c, id, Ok(verified), sender);
         return;
     }
-    let result = spawn(&pending, path, sender);
+    let result = spawn(&pending, path, sender, source);
     if let Err(error) = result {
         let _ = pending.reply.send(Err(error));
     } else {
@@ -229,7 +275,12 @@ pub(super) fn start(
     }
 }
 
-fn spawn(pending: &Pending, path: PathBuf, sender: &mpsc::WeakSender<Work>) -> Result<()> {
+fn spawn(
+    pending: &Pending,
+    path: PathBuf,
+    sender: &mpsc::WeakSender<Work>,
+    source: Option<std::fs::File>,
+) -> Result<()> {
     let sender = sender.upgrade().ok_or_else(unavailable)?;
     let id = pending.id.clone();
     let identity = pending.identity.clone();
@@ -239,6 +290,9 @@ fn spawn(pending: &Pending, path: PathBuf, sender: &mpsc::WeakSender<Work>) -> R
         .name("workspace-result-verify".into())
         .spawn(move || {
             let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                if let Some(source) = source {
+                    file::copy(&identity, &path, &media, source)?;
+                }
                 file::verify(&identity, &path, &media)
             }))
             .unwrap_or_else(|_| Err(unavailable()));
@@ -285,7 +339,7 @@ pub(super) fn finish(
             // hard_link changes native links and ChangeTime. Neither may be
             // ignored: a concurrent writer can also restore mtime. Hash the
             // final object again off-actor, including an AlreadyExists race.
-            spawn(&pending, destination, sender)?;
+            spawn(&pending, destination, sender, None)?;
             return Ok(None);
         }
         let value = pending.output.commit(c, |c| {

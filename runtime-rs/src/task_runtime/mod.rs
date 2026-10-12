@@ -163,7 +163,7 @@ impl TaskRuntime {
                     "Request key already belongs to different input",
                 ));
             }
-            return Ok(serde_json::to_value(existing)?);
+            return Ok(existing.into_value()?);
         }
         let prepared = self.prepare(kind, frozen["input"].take()).await?;
         self.check_running()?;
@@ -244,7 +244,7 @@ impl TaskRuntime {
                         dispatcher.dispatch(storage, principal, id, prepared).await;
                     });
                 }
-                Ok(serde_json::to_value(task)?)
+                Ok(task.into_value()?)
             }
             .await;
             let _ = reply.send(accepted);
@@ -287,7 +287,7 @@ impl TaskRuntime {
                     binding.changed.notify_one();
                 }
                 if task.upstream_settled {
-                    return Ok(serde_json::to_value(task)?);
+                    return Ok(task.into_value()?);
                 }
                 let id = task.task_id.clone();
                 if let Some(job) = runtime.job(&storage, &id).filter(|job| !job.is_empty()) {
@@ -316,18 +316,17 @@ impl TaskRuntime {
     ) -> Result<Value> {
         let state: DeliveryState = serde_json::from_value(json!(state))
             .map_err(|_| ApiError::invalid("Invalid delivery state"))?;
-        Ok(serde_json::to_value(
-            patch(
-                storage,
-                principal,
-                id,
-                TaskPatch {
-                    delivery_state: Some(state),
-                    ..Default::default()
-                },
-            )
-            .await?,
-        )?)
+        Ok(patch(
+            storage,
+            principal,
+            id,
+            TaskPatch {
+                delivery_state: Some(state),
+                ..Default::default()
+            },
+        )
+        .await?
+        .into_value()?)
     }
     pub async fn close(&self) {
         if self.closed.swap(true, Ordering::AcqRel) {
@@ -371,8 +370,8 @@ pub(super) async fn patch(
     id: &str,
     value: TaskPatch,
 ) -> Result<TaskRecord> {
-    let current = TaskRuntime::get(storage, principal, id).await?;
-    patch_at(storage, principal, id, current.revision, value).await
+    let current = revision(storage, principal, id).await?;
+    patch_at(storage, principal, id, current, value).await
 }
 pub(super) async fn patch_at(
     storage: &Storage,
@@ -394,12 +393,18 @@ pub(super) async fn patch_at(
             .await;
         match result {
             Err(error) if error.code == "REVISION_CONFLICT" && attempt < 4 => {
-                revision = TaskRuntime::get(storage, principal, id).await?.revision;
+                revision = self::revision(storage, principal, id).await?;
             }
             result => return Ok(serde_json::from_value(result?)?),
         }
     }
     unreachable!()
+}
+async fn revision(storage: &Storage, principal: &str, id: &str) -> Result<i64> {
+    storage
+        .task_revision(id, principal)
+        .await?
+        .ok_or_else(|| ApiError::new(404, "TASK_NOT_FOUND", "Task does not exist"))
 }
 fn identity(storage: &Storage, id: &str) -> String {
     format!("{}:{id}", storage.runtime_epoch())

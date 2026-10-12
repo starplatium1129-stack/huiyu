@@ -1,8 +1,9 @@
 mod streaming;
+mod wave;
 
 use super::{
     config::{Engine, Settings},
-    payload::{Validated, fix_wav},
+    payload::Validated,
     queue::{Permit, Queue, Reservation, cancelled},
 };
 use crate::{
@@ -23,6 +24,7 @@ use tokio_util::sync::CancellationToken;
 
 type SharedResult = std::result::Result<Bytes, (u16, String, String)>;
 type Flight = watch::Receiver<Option<SharedResult>>;
+const AUDIO_LIMIT: usize = 128 * 1024 * 1024;
 #[derive(Default)]
 struct Active {
     gpt: String,
@@ -266,7 +268,11 @@ impl Speech {
         Ok((response, permit, deadline))
     }
     pub async fn stream(&self, value: Validated) -> Result<Response> {
-        self.stream_inner(value, None).await
+        let key = self.cache_key(&value);
+        if let Some(response) = self.cached_response(&key, false) {
+            return Ok(response);
+        }
+        self.stream_inner(value, key, false).await
     }
     pub async fn buffered(self: &Arc<Self>, value: Validated) -> Result<(Bytes, bool)> {
         let key = self.cache_key(&value);
@@ -284,10 +290,7 @@ impl Speech {
                 let speech = self.clone();
                 // Legacy whole-clip GET retains its replay/in-flight contract.
                 tokio::spawn(async move {
-                    let result = speech.collect(value, reservation).await;
-                    if let Ok(bytes) = &result {
-                        speech.remember(key.clone(), bytes.clone());
-                    }
+                    let result = speech.collect(value, reservation, &key).await;
                     let result =
                         result.map_err(|error| (error.status.as_u16(), error.code, error.message));
                     let _ = send.send(Some(result));
@@ -318,8 +321,25 @@ impl Speech {
             .unwrap(),
         ))
     }
-    async fn collect(&self, value: Validated, reservation: Reservation) -> Result<Bytes> {
+    fn cached_wave(&self, key: &str) -> Option<Bytes> {
+        self.cache
+            .lock()
+            .unwrap()
+            .entries
+            .iter()
+            .find(|(id, _)| id == key)
+            .map(|(_, bytes)| bytes.clone())
+    }
+    async fn collect(
+        &self,
+        value: Validated,
+        reservation: Reservation,
+        key: &str,
+    ) -> Result<Bytes> {
         let permit = self.queue.enter(reservation, &self.cancel).await?;
+        if let Some(bytes) = self.cached_wave(key) {
+            return Ok(bytes);
+        }
         let (response, _permit, deadline) = self.upstream(&value, permit).await?;
         let mut stream = response.bytes_stream();
         let mut bytes = Vec::new();
@@ -330,7 +350,7 @@ impl Speech {
                 break;
             };
             let chunk = chunk.map_err(|_| ApiError::new(502, "TTS_FAILED", "语音音频传输失败"))?;
-            if bytes.len().saturating_add(chunk.len()) > 128 * 1024 * 1024 {
+            if bytes.len().saturating_add(chunk.len()) > AUDIO_LIMIT {
                 return Err(ApiError::new(
                     502,
                     "TTS_AUDIO_TOO_LARGE",
@@ -342,21 +362,41 @@ impl Speech {
         if bytes.len() < 64 {
             return Err(ApiError::new(502, "TTS_EMPTY_AUDIO", "语音服务返回空音频"));
         }
-        fix_wav(&mut bytes);
+        // Only repair complete WAVs; an oversized declared data chunk must not
+        // turn a truncated provider response into a reusable full sentence.
+        let cacheable = wave::finish(&mut bytes);
         // Match the PCM path: retained allocation must fit the cache's byte budget.
-        Ok(Bytes::from(bytes.into_boxed_slice()))
+        let bytes = Bytes::from(bytes.into_boxed_slice());
+        if cacheable {
+            // Commit before releasing the permit so queued POST callers can replay.
+            self.remember(key.to_owned(), bytes.clone());
+        }
+        Ok(bytes)
     }
     fn remember(&self, key: String, bytes: Bytes) {
-        if self.cancel.is_cancelled() {
+        Self::remember_into(&self.cache, key, bytes, &self.cancel);
+    }
+    fn remember_into(
+        store: &Mutex<AudioCache>,
+        key: String,
+        bytes: Bytes,
+        cancel: &CancellationToken,
+    ) {
+        if bytes.len() > AUDIO_LIMIT || wave::inspect(&bytes).is_none() {
             return;
         }
-        Self::remember_into(&self.cache, key, bytes);
-    }
-    fn remember_into(store: &Mutex<AudioCache>, key: String, bytes: Bytes) {
         let mut cache = store.lock().unwrap();
+        // close() clears under this same lock after cancellation. A late EOF
+        // cannot repopulate the cache after shutdown has already cleared it.
+        if cancel.is_cancelled() {
+            return;
+        }
+        if let Some(index) = cache.entries.iter().position(|(id, _)| id == &key) {
+            cache.bytes -= cache.entries.remove(index).unwrap().1.len();
+        }
         cache.bytes += bytes.len();
         cache.entries.push_back((key, bytes));
-        while cache.entries.len() > 60 || cache.bytes > 128 * 1024 * 1024 {
+        while cache.entries.len() > 60 || cache.bytes > AUDIO_LIMIT {
             if let Some((_, old)) = cache.entries.pop_front() {
                 cache.bytes -= old.len();
             }

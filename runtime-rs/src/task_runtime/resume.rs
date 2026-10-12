@@ -27,7 +27,7 @@ impl TaskRuntime {
                 .entry(identity(&storage, &id))
                 .or_insert_with(|| JobBinding::new(String::new()));
             if binding.dispatching || binding.watching {
-                return Ok(serde_json::to_value(task)?);
+                return Ok(task.into_value()?);
             }
             binding.dispatching = true;
         }
@@ -80,7 +80,7 @@ impl TaskRuntime {
             };
             match preparation {
                 Ok(prepared) => {
-                    let _ = reply.send(serde_json::to_value(task).map_err(ApiError::from));
+                    let _ = reply.send(task.into_value().map_err(ApiError::from));
                     runtime.dispatch(storage, principal, id, prepared).await;
                 }
                 Err(error) => {

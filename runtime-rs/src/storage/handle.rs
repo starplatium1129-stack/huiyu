@@ -137,6 +137,46 @@ impl Storage {
         self.sender.send(work).await.map_err(|_| unavailable())?;
         result.await.map_err(|_| commit_unknown())?
     }
+    pub(crate) async fn task_revision(
+        &self,
+        task_id: &str,
+        principal: &str,
+    ) -> Result<Option<i64>> {
+        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+        let (reply, result) = oneshot::channel();
+        self.sender
+            .send(Work::TaskRevision(
+                task_id.into(),
+                principal.into(),
+                cancel.0.clone(),
+                reply,
+            ))
+            .await
+            .map_err(|_| unavailable())?;
+        result.await.map_err(|_| unavailable())?
+    }
+    pub(crate) async fn task_media_file(
+        &self,
+        command: Value,
+        file: std::fs::File,
+        principal: &str,
+    ) -> Result<Value> {
+        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+        let (reply, result) = oneshot::channel();
+        let permit = self.result_permit().await?;
+        self.sender
+            .send(Work::TaskMediaFile(
+                command,
+                file,
+                principal.into(),
+                cancel.0.clone(),
+                reply,
+                permit,
+            ))
+            .await
+            .map_err(|_| unavailable())?;
+        result.await.map_err(|_| commit_unknown())?
+    }
     pub async fn media(&self, alias: &str) -> Result<Media> {
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();

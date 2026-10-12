@@ -64,6 +64,14 @@ pub struct Storage {
 }
 enum Work {
     ResultVerified(String, Result<result_commit::Verified>),
+    TaskMediaFile(
+        Value,
+        std::fs::File,
+        String,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<Value>>,
+        OwnedSemaphorePermit,
+    ),
     TaskMediaChunk(
         TaskMediaChunk,
         String,
@@ -82,6 +90,12 @@ enum Work {
         String,
         Arc<AtomicBool>,
         oneshot::Sender<Result<Option<crate::task_contract::TaskRecord>>>,
+    ),
+    TaskRevision(
+        String,
+        String,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<Option<i64>>>,
     ),
     Request(
         Value,

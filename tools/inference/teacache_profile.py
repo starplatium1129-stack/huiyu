@@ -20,7 +20,8 @@ EXECUTION = os.environ.get("HUIYU_INFERENCE_ACCELERATION", "native")
 RUNTIME = {"diffusers": "0.41.0", "torch": "2.8.0", "huiyuInference": "anima-workflow-effects-v3",
            "memoryPolicy": os.environ.get("HUIYU_INFERENCE_MEMORY", "resident"),
            "execution": EXECUTION,
-           "executionRevision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21" +
+           "executionRevision": "cosmos-v3-native-no-kv-repeat-v1" if EXECUTION == "native" else
+               "cosmos-v2-sage220-cu128torch280-post3-triton340post21" +
                ("-fusion-cpu-base-v1" if EXECUTION == "compiled-fused-sage" else "")}
 COMPONENTS = ("text_encoder", "text_conditioner", "transformer", "vae", "tokenizer", "t5_tokenizer", "scheduler")
 PROFILE_SET_KIND = "huiyu-teacache-profile-set"
@@ -51,6 +52,14 @@ def file_sha256(path):
 @lru_cache(maxsize=1)
 def _prompt_module():
     spec = importlib.util.spec_from_file_location("huiyu_anima_prompt_weights", Path(__file__).with_name("anima_prompt_weights.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@lru_cache(maxsize=1)
+def _mask_module():
+    spec = importlib.util.spec_from_file_location("huiyu_clipseg_scope", Path(__file__).with_name("clipseg_mask.py"))
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -124,6 +133,8 @@ def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir
             **({"hires": {key: data.get(key) for key in ("hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel")},
                 "refinementRevision": "fp32-vae-full-oom-feather-remacri512-kjrcas-v3"} if data.get("hiresFix") else {}),
             "maskSource": ("clipseg" if data.get("maskPrompt") else "manual") if mode == "masked" else None,
+            **({"maskExecutionRevision": _mask_module().EXECUTION_REVISION}
+                if mode == "masked" and data.get("maskPrompt") else {}),
             "growMaskBy": data.get("growMaskBy", 0) if mode == "masked" else None,
             "maskThreshold": data.get("maskThreshold") if mode == "masked" else None,
             "maskPrompt": data.get("maskPrompt") if mode == "masked" else None},

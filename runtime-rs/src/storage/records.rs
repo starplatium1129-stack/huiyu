@@ -149,9 +149,19 @@ pub(super) fn update_membership(
     set_membership(c, key, keys)?;
     refresh_membership(c, key, revision)
 }
-// Membership rows are authoritative inside the transaction. Bulk organization
-// updates them in order, then rebuilds each affected album body once.
-pub(super) fn set_membership(c: &Context, key: &str, keys: &[String]) -> Result<()> {
+pub(super) const MEMBERSHIP_INSERT: &str = "INSERT INTO project_artworks SELECT ?,id_key,? FROM artworks WHERE id_key=? AND deleted_at IS NULL";
+pub(super) fn truncate_membership(c: &Context, key: &str, prefix: usize) -> Result<()> {
+    if prefix == 0 {
+        c.db.execute("DELETE FROM project_artworks WHERE project_key=?", [key])?;
+    } else {
+        c.db.execute(
+            "DELETE FROM project_artworks WHERE project_key=? AND position>=?",
+            params![key, prefix as i64],
+        )?;
+    }
+    Ok(())
+}
+fn set_membership(c: &Context, key: &str, keys: &[String]) -> Result<()> {
     if !c.db.query_row(
         "SELECT EXISTS(SELECT 1 FROM projects WHERE id_key=?)",
         [key],
@@ -179,17 +189,8 @@ pub(super) fn set_membership(c: &Context, key: &str, keys: &[String]) -> Result<
         }
         prefix
     };
-    if prefix == 0 {
-        c.db.execute("DELETE FROM project_artworks WHERE project_key=?", [key])?;
-    } else {
-        c.db.execute(
-            "DELETE FROM project_artworks WHERE project_key=? AND position>=?",
-            params![key, prefix as i64],
-        )?;
-    }
-    let mut insert = c.db.prepare_cached(
-        "INSERT INTO project_artworks SELECT ?,id_key,? FROM artworks WHERE id_key=? AND deleted_at IS NULL",
-    )?;
+    truncate_membership(c, key, prefix)?;
+    let mut insert = c.db.prepare_cached(MEMBERSHIP_INSERT)?;
     for (position, artwork_key) in keys.iter().enumerate().skip(prefix) {
         if insert.execute(params![key, position as i64, artwork_key])? != 1 {
             return Err(ApiError::new(

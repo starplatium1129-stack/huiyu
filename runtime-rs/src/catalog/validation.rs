@@ -176,24 +176,83 @@ pub(super) fn data(kind: &str, id: &str, value: &Value) -> Result<()> {
     }
     Ok(())
 }
+enum PinSnapshot {
+    File { bytes: Vec<u8>, value: Value },
+    Database(Option<Value>),
+}
+#[derive(Default)]
+pub(super) struct PinPolicy(Option<PinSnapshot>);
+fn valid_pins(value: &Value) -> Result<()> {
+    if !value["scenes"].is_object() {
+        return Err(ApiError::invalid("定稿保护基线无效"));
+    }
+    Ok(())
+}
+impl PinPolicy {
+    fn select(&mut self, connection: &Connection, source: &Path) -> Result<&Value> {
+        if self.0.is_none() {
+            let policy = source.join("data/prompt-pinned-scenes.json");
+            self.0 = Some(if policy.is_file() {
+                let bytes = std::fs::read(policy)?;
+                let value: Value = serde_json::from_slice(&bytes)?;
+                valid_pins(&value)?;
+                PinSnapshot::File { bytes, value }
+            } else {
+                PinSnapshot::Database(None)
+            });
+        }
+        match self.0.as_mut().unwrap() {
+            PinSnapshot::File { value, .. } => Ok(value),
+            PinSnapshot::Database(cached) => {
+                if cached.is_none() {
+                    let value: Value = serde_json::from_str(&connection.query_row::<String, _, _>(
+                        "SELECT payload FROM content_records WHERE kind='document' AND id='prompt-pinned-scenes' AND deleted=0",
+                        [], |row| row.get(0),
+                    )?)?;
+                    valid_pins(&value)?;
+                    *cached = Some(value);
+                }
+                Ok(cached.as_ref().unwrap())
+            }
+        }
+    }
+    pub(super) fn database_changed(&mut self) {
+        if let Some(PinSnapshot::Database(cached)) = self.0.as_mut() {
+            *cached = None;
+        }
+    }
+    pub(super) fn check(&self, source: &Path) -> Result<()> {
+        let policy = source.join("data/prompt-pinned-scenes.json");
+        let changed = match &self.0 {
+            Some(PinSnapshot::File { bytes, .. }) => {
+                !policy.is_file() || std::fs::read(policy)? != *bytes
+            }
+            Some(PinSnapshot::Database(_)) => policy.is_file(),
+            None => false,
+        };
+        if changed {
+            return Err(ApiError::new(
+                409,
+                "CATALOG_CONFLICT",
+                "定稿保护基线在变更期间改变，请重新预览后保存",
+            ));
+        }
+        Ok(())
+    }
+}
 pub(super) fn pins(
     connection: &Connection,
     source: &Path,
+    policy: &mut PinPolicy,
     before: &Record,
     after: Option<&Value>,
 ) -> Result<()> {
     if before.kind != "scene" {
         return Ok(());
     }
-    let policy = source.join("data/prompt-pinned-scenes.json");
-    let pins: Value = if policy.is_file() {
-        serde_json::from_slice(&std::fs::read(policy)?)?
-    } else {
-        serde_json::from_str(&connection.query_row::<String,_,_>("SELECT payload FROM content_records WHERE kind='document' AND id='prompt-pinned-scenes' AND deleted=0",[],|r|r.get(0))?)?
-    };
-    if !pins["scenes"].is_object() {
-        return Err(ApiError::invalid("定稿保护基线无效"));
-    }
+    // Lazy decoding keeps the original per-record validation point. Publication
+    // re-reads the source bytes, so a changed file cannot authorize this batch.
+    let pins = policy.select(connection, source)?;
     if pins["scenes"].get(&before.id).is_none() {
         return Ok(());
     }

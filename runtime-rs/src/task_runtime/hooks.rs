@@ -23,9 +23,7 @@ impl ExecutionHooks for Hooks {
         Box::pin(async move {
             let job = value["gatewayJobId"].as_str().map(str::to_owned);
             let input = value["effectiveInput"].as_object().cloned();
-            let revision = TaskRuntime::get(&self.storage, &self.principal, &self.id)
-                .await?
-                .revision;
+            let revision = revision(&self.storage, &self.principal, &self.id).await?;
             let change = TaskPatch {
                 checkpoint: Some(Some(value)),
                 input,

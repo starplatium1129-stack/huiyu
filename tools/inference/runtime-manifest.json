@@ -6,7 +6,7 @@
   "protocol": "serial-job-jsonl-v2",
   "residency": {
     "mode": "one-exact-base-and-active-lora-group",
-    "identity": "complete SHA256 and per-component SHA256 at acquisition; fixed local NTFS retains read-only file leases, stable file IDs and membership/attribute notifications before reuse and after load; otherwise repeat full bytes. Base changes reload adapted transformer/conditioner; byte-identical unadapted Qwen/VAE/tokenizers may be reused after exact class/dtype checks",
+    "identity": "complete SHA256 and per-component SHA256 at acquisition; direct fixed local NTFS retains read-only file leases, stable file IDs and latched membership/attribute notifications before reuse and after load. Same exact base/ordered adapter paths reuse detached SHA identities without inventories/new handles; drive mappings and notifications are checked before/after reuse. SUBST/UNC aliases, case-distinct collisions or unsupported protection repeat full bytes. Mapping checks are boundary snapshots, not privileged-remapping protection. Base changes reload adapted transformer/conditioner; byte-identical unadapted Qwen/VAE/tokenizers may be reused after exact class/dtype checks",
     "isolation": "fresh pipeline blocks, scheduler, guider and TeaCache controller per job",
     "initialization": "first dependency imports overlap full-byte identity on the resident caller thread. Resident loads and uploads one checked component at a time, then releases its CPU sources before loading the next; per-component/dtype CUDA flats use two <=32MiB pinned byte staging slabs, Event-gated reuse and copy-stream completion before view publication. Staging allocation failure uses direct copies; DMA failures propagate. Active staging <=64MiB excludes the host allocator cache. Offload remains CPU-loaded whole-component forward migration. Source/compilation reviewed; no current CUDA loading performance or image evidence",
     "loraStrengthChanges": "reuse unchanged base/adapter bytes; update active adapter weights without reloading",
@@ -27,7 +27,10 @@
       "maxModels": 1,
       "maxLogitMaps": 1,
       "logitBytes": 495616,
-      "identity": "all local model asset bytes, image mode/size/pixel SHA-256 and normalized phrases; threshold/growth applied each job",
+      "maxVisionMaps": 1,
+      "maxVisionBytes": 16777216,
+      "maxConditioningBytes": 65536,
+      "identity": "all local model asset bytes plus clipseg-single-image-vision-v1; vision layers keyed by image mode/size/pixel SHA-256, logits also by ordered stripped phrases including repeats; threshold/growth applied each job",
       "invalidation": "model bytes change, failure or worker retirement",
       "benchmark": "disabled on both sides of TeaCache comparison"
     }
@@ -51,6 +54,8 @@
     "modes": ["native", "sage", "compiled-sage", "compiled-fused-sage"],
     "validatedPlatform": "Windows CPython 3.11, Torch 2.8.0+cu128, NVIDIA Ada SM89",
     "revision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21",
+    "nativeRevision": "cosmos-v3-native-no-kv-repeat-v1",
+    "nativeAttention": "Exact stock Cosmos processor types use the existing bundled processor to skip K/V repeat_interleave copies only when repeats=1; native dispatch, projections, normalization, rotary and non-unit repeats remain. K/V layout changes; source/API and compilation reviewed, no current CUDA timing or image acceptance. Only native Tea scopes require fresh calibration for this change",
     "scope": "Cosmos attention only; conditioner and VAE attention retain their original paths. compiled-sage keeps PEFT projections; compiled-fused-sage explicitly merges supported Linear LoRAs into resident weights",
     "fusion": "Opt-in compiled-fused-sage: protected base-preserving adapters restore exact safetensors bytes through a temporary <=32 MiB readinto buffer; no persistent CPU base snapshot. CPU snapshot fallback remains when no continuously valid source lease exists. Pinned CUDA copies are blocking; Torch 2.8 host buffer cache is released afterward. Safe merge retains packed CUDA storage. Strength/group/unload restores before PEFT mutation, never rounded delta subtraction",
     "fusionRevision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21-fusion-cpu-base-v1",
@@ -117,7 +122,7 @@
     "maxLoras": 16,
     "maskMode": "manual-or-clipseg-denoised-mask",
     "autoMasks": true,
-    "maskGrowth": "manual red-channel contain/pad, repeated five-neighbour max gives tapered diamond; automatic masks separately use square dilation then float feather",
+    "maskGrowth": "manual red-channel contain/pad, ordered five-neighbour max writes into the independent FP32 resized output from per-round edge padding without a five-image stack; same tapered diamond and manual v3 identity. Automatic masks separately use square dilation then float feather; current allocation benefit is source-derived, not measured RSS/speed",
     "automaticMask": {
       "postprocessSource": "AP ClipSEG Light af83f91335822be272b23e29040e34d82622601c, MIT; retained MASK_PROCESSING_LICENSE.txt; local loading remains native, no upstream automatic download or TensorFlow stub",
       "model": "local clipseg-rd64-refined",
@@ -128,6 +133,8 @@
       "maxPromptCharacters": 4096,
       "maxTokensPerPhrase": 77,
       "phraseBatchSize": 4,
+      "executionRevision": "clipseg-single-image-vision-v1",
+      "visionEncoding": "one CPU FP32 query image per job; selected hidden_states[extract_layer+1] reused through read-only batch expand for each decoder batch. Same image may reuse one <=16MiB owned selected-layer snapshot across prompt edits",
       "thresholdRange": [
         0.05,
         0.95
@@ -187,7 +194,7 @@
         "anima_text_cache.py"
       ],
       "licenseNotice": "TEACACHE_LICENSE.txt",
-      "realDeviceValidation": "All prior accepted scopes belong to earlier runtimes; none authorize anima-workflow-effects-v3. Current auto mode performs full computation until an exact current profile is accepted"
+      "realDeviceValidation": "All prior accepted scopes belong to earlier runtimes; none authorize anima-workflow-effects-v3. Automatic masks additionally require sampling.maskExecutionRevision=clipseg-single-image-vision-v1; old automatic-mask scopes do not authorize the new vision path. Current auto mode performs full computation until an exact current profile is accepted"
     }
   },
   "security": {
@@ -291,7 +298,7 @@
     "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/guiders/classifier_free_guidance.py"
   ],
   "validation": {
-    "currentRevision": "2026-10-12 anima-workflow-effects-v3: masked input/denoised constraints, KJ functional RCAS, Remacri CPU feather/8bit Lanczos, single-frame VAE kernels/FP32 boundaries/full-then-OOM; source/API and compilation review only, no tests/model calls. Earlier image/timing/Tea acceptance does not validate this revision",
+    "currentRevision": "2026-10-13: anima-workflow-effects-v3 plus automatic-mask clipseg-single-image-vision-v1 (single query-image encode, bounded selected-layer reuse) and native-only cosmos-v3-native-no-kv-repeat-v1 (skip unit K/V repeats). Source/API and compilation review only, no tests/model calls. Earlier masks, image/timing/Tea acceptance do not validate these changed execution paths; Sage revisions are unchanged by the native processor installation",
     "realGeneration": "2026-10-11: six registered Anima models generated 11 GPU samples, plus one Endfield/Laevatain public-API sample. Nene/Natsume normal/RCAS LoRA+Tea: 12 matched warm API jobs per backend on RTX 4070 Ti SUPER, native median 4.419s vs Comfy+Tea 5.686s, all 12 pairs faster. Latent 2x Nene: two warm API jobs per backend, native 26.610s vs Comfy 23.671s; cold loading also remains slower. Protected-source restore removed 3.28 GiB CPU snapshots and preserved four diagnostic PNG hashes. Not mathematical or pixel parity. See docs/audits/2026-10-11/native-anima-replacement.html",
     "environmentInstall": "2026-10-11: all 11 exact direct pins resolved, installed offline in dedicated Windows CPython 3.11 venv, and imports/CUDA diagnosis passed; torch and torchvision use cu128 wheels. No inference-time installation or ComfyUI environment reuse",
     "validateCommand": "python worker.py --validate /absolute/path/to/anima-diffusers",

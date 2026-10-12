@@ -382,7 +382,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         blocks = mask_tools.masked_blocks()
     elif image is not None:
         image = load_mask_tools().resize_image(image, (data["width"], data["height"]))
-    metrics.image_prepared(mask_started, tea_report, resident, cache_mask, bool(data.get("maskPrompt")))
+    metrics.image_prepared(mask_started, tea_report, resident, cache_mask, auto_tools.EXECUTION_REVISION if data.get("maskPrompt") else None)
     if blocks is None and (tea is not None or (resident is not None and cache_text)):
         from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
         blocks = AnimaAutoBlocks()

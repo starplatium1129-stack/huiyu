@@ -101,6 +101,21 @@ pub struct TaskRecord {
     pub step_index: Option<u64>,
 }
 
+impl TaskRecord {
+    pub(crate) fn into_value(mut self) -> serde_json::Result<Value> {
+        // Serialize the small typed fields, then transfer the owned JSON trees.
+        // serde_json::to_value otherwise recursively copies recipes/checkpoints.
+        let input = std::mem::take(&mut self.input);
+        let metadata = std::mem::take(&mut self.metadata);
+        let checkpoint = self.checkpoint.take();
+        let mut value = serde_json::to_value(self)?;
+        value["input"] = Value::Object(input);
+        value["metadata"] = Value::Object(metadata);
+        value["checkpoint"] = checkpoint.unwrap_or(Value::Null);
+        Ok(value)
+    }
+}
+
 /// Validated list projection. Recipes and checkpoints are available only in task detail reads.
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]

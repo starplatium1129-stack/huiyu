@@ -82,8 +82,13 @@ def _prepare_effective_mask(mask, size, grow):
     values = resize_mask(mask, size)
     for _ in range(grow):
         padded = np.pad(values, 1, mode="edge")
-        values = np.maximum.reduce((padded[1:-1, 1:-1], padded[:-2, 1:-1],
-            padded[2:, 1:-1], padded[1:-1, :-2], padded[1:-1, 2:]))
+        # All neighbours read the previous round from padded. Reuse our owned
+        # resized output in the same reduction order, without a five-image stack.
+        np.maximum(padded[1:-1, 1:-1], padded[:-2, 1:-1], out=values)
+        np.maximum(values, padded[2:, 1:-1], out=values)
+        np.maximum(values, padded[1:-1, :-2], out=values)
+        np.maximum(values, padded[1:-1, 2:], out=values)
+        del padded
     if not np.any(values > 0):
         raise ValueError("Mask has no editable pixels")
     return values

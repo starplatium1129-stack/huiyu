@@ -79,7 +79,7 @@ fn fields(record: &Record) -> (String, String, String, String, String) {
 }
 pub(super) fn put(connection: &Connection, record: &Record, removed: bool) -> Result<()> {
     let (title, character, category, rating, search) = fields(record);
-    connection.execute("INSERT INTO content_records(kind,id,revision,sort_order,created_at,updated_at,payload,title,character_id,category,rating,search_text,deleted) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13) ON CONFLICT(kind,id) DO UPDATE SET revision=excluded.revision,sort_order=excluded.sort_order,created_at=excluded.created_at,updated_at=excluded.updated_at,payload=excluded.payload,title=excluded.title,character_id=excluded.character_id,category=excluded.category,rating=excluded.rating,search_text=excluded.search_text,deleted=excluded.deleted",params![record.kind,record.id,record.revision,record.sort_order,record.created_at,record.updated_at,serde_json::to_string(&record.data)?,title,character,category,rating,search,removed])?;
+    connection.prepare_cached("INSERT INTO content_records(kind,id,revision,sort_order,created_at,updated_at,payload,title,character_id,category,rating,search_text,deleted) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13) ON CONFLICT(kind,id) DO UPDATE SET revision=excluded.revision,sort_order=excluded.sort_order,created_at=excluded.created_at,updated_at=excluded.updated_at,payload=excluded.payload,title=excluded.title,character_id=excluded.character_id,category=excluded.category,rating=excluded.rating,search_text=excluded.search_text,deleted=excluded.deleted")?.execute(params![record.kind,record.id,record.revision,record.sort_order,record.created_at,record.updated_at,serde_json::to_string(&record.data)?,title,character,category,rating,search,removed])?;
     Ok(())
 }
 pub(super) fn history(
@@ -89,7 +89,7 @@ pub(super) fn history(
     batch: &str,
     at: &str,
 ) -> Result<()> {
-    connection.execute("INSERT INTO content_history(batch,kind,id,revision,at,record,deleted) VALUES(?1,?2,?3,?4,?5,?6,?7)",params![batch,record.kind,record.id,record.revision,at,serde_json::to_string(record)?,removed])?;
+    connection.prepare_cached("INSERT INTO content_history(batch,kind,id,revision,at,record,deleted) VALUES(?1,?2,?3,?4,?5,?6,?7)")?.execute(params![batch,record.kind,record.id,record.revision,at,serde_json::to_string(record)?,removed])?;
     Ok(())
 }
 impl Catalog {
@@ -128,19 +128,19 @@ impl Catalog {
         let mut seen = HashSet::new();
         let mut result = Vec::new();
         let mut diffs = Vec::new();
+        let mut pin_policy = validation::PinPolicy::default();
+        let mut current_query = transaction.prepare_cached(&format!(
+            "SELECT {COLUMNS},deleted FROM content_records WHERE kind=?1 AND id=?2"
+        ))?;
         for change in &changes {
             validation::key(&change.kind, &change.id)?;
             if !seen.insert((&change.kind, &change.id)) {
                 return Err(ApiError::invalid("变更集中有重复记录"));
             }
-            let current = transaction
-                .query_row(
-                    &format!(
-                        "SELECT {COLUMNS},deleted FROM content_records WHERE kind=?1 AND id=?2"
-                    ),
-                    params![change.kind, change.id],
-                    |r| Ok((row(r)?, r.get::<_, bool>(7)?)),
-                )
+            let current = current_query
+                .query_row(params![change.kind, change.id], |r| {
+                    Ok((row(r)?, r.get::<_, bool>(7)?))
+                })
                 .optional()?;
             if current.as_ref().map_or(0, |(r, _)| r.revision) != change.expected_revision
                 || current.as_ref().is_some_and(|(_, removed)| *removed)
@@ -163,7 +163,11 @@ impl Catalog {
             if change.patch.is_some() && change.data.is_some() {
                 return Err(ApiError::invalid("不能同时提交完整内容和字段补丁"));
             }
-            let mut patched = current.as_ref().map(|(r, _)| r.data.clone());
+            let mut patched = if change.data.is_none() {
+                current.as_ref().map(|(r, _)| r.data.clone())
+            } else {
+                None
+            };
             if let Some(patch) = &change.patch {
                 merge(
                     patched
@@ -203,6 +207,7 @@ impl Catalog {
                 validation::pins(
                     &transaction,
                     &self.options.source,
+                    &mut pin_policy,
                     before,
                     (!change.remove).then_some(value),
                 )?;
@@ -272,10 +277,14 @@ impl Catalog {
                 continue;
             }
             put(&transaction, &record, change.remove)?;
+            if record.kind == "document" && record.id == "prompt-pinned-scenes" {
+                pin_policy.database_changed();
+            }
             history(&transaction, &record, change.remove, &batch, &at)?;
             diffs.push(json!({"kind":change.kind,"id":change.id,"before":current.as_ref().map(|(r,_)|r),"after":if change.remove{None}else{Some(&record)}}));
             result.push(json!({"kind":record.kind,"id":record.id,"revision":record.revision,"removed":change.remove}));
         }
+        drop(current_query);
         validation::relations(&transaction)?;
         if changes.iter().any(|c| {
             c.kind == "document" && ["tags", "tag-dictionary-policy"].contains(&c.id.as_str())
@@ -293,10 +302,12 @@ impl Catalog {
             .iter()
             .any(|c| c.kind == "document" && c.id == "curation")
         {
-            let ids = super::dependencies::rows(&transaction, "scene")?
-                .into_iter()
-                .map(|r| r.id)
-                .collect::<Vec<_>>();
+            let mut statement = transaction.prepare(
+                "SELECT id FROM content_records WHERE kind='scene' AND deleted=0 ORDER BY sort_order,id",
+            )?;
+            let ids = statement
+                .query_map([], |r| r.get::<_, String>(0))?
+                .collect::<rusqlite::Result<Vec<_>>>()?;
             let active = ids.iter().map(String::as_str).collect();
             let value = super::dependencies::document(&transaction, "curation")?;
             let clean = crate::maintenance::validation::curation(&value, &active, &Value::Null)
@@ -326,7 +337,7 @@ impl Catalog {
             }
         }
         for (record, removed) in seeds {
-            transaction.execute("INSERT INTO content_seed(kind,id,record,deleted) VALUES(?1,?2,?3,?4) ON CONFLICT(kind,id) DO UPDATE SET record=excluded.record,deleted=excluded.deleted",params![record.kind,record.id,serde_json::to_string(record)?,removed])?;
+            transaction.prepare_cached("INSERT INTO content_seed(kind,id,record,deleted) VALUES(?1,?2,?3,?4) ON CONFLICT(kind,id) DO UPDATE SET record=excluded.record,deleted=excluded.deleted")?.execute(params![record.kind,record.id,serde_json::to_string(record)?,removed])?;
         }
         if !result.is_empty() {
             transaction.execute(
@@ -340,6 +351,7 @@ impl Catalog {
             |r| r.get(0),
         )?;
         let value = json!({"ok":true,"preview":preview,"batch":batch,"version":version.parse::<i64>().unwrap(),"items":result,"diffs":diffs});
+        pin_policy.check(&self.options.source)?;
         if preview {
             transaction.rollback()?;
         } else {

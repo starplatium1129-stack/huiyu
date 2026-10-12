@@ -105,51 +105,73 @@ class LoraFusionState:
             raise ValueError("Fusion source must stay inside the leased model root")
         return resolved
 
-    def _describe(self, component, module_name, weight):
-        from safetensors import safe_open
+    def _describe_sources(self, targets):
+        """Resolve new records once per component, then validate each shard once."""
         self._require_source()
-        folder = self._binding[0] / component
-        key = module_name + ".weight"
-        index = folder / "diffusion_pytorch_model.safetensors.index.json"
-        if index.is_file():
-            mapping = json.loads(self._inside_root(index).read_text(encoding="utf-8"))["weight_map"]
-            filename = mapping.get(key)
+        mappings, records = {}, []
+        for component, module_name, weight in targets:
+            previous = self._sources.get(id(weight))
+            if previous is not None:
+                # Keep published restoration metadata untouched until the full
+                # new fusion set has passed the live-lease validation below.
+                records.append(dict(previous))
+                continue
+            folder = self._binding[0] / component
+            key = module_name + ".weight"
+            if component not in mappings:
+                self._require_source()
+                index = folder / "diffusion_pytorch_model.safetensors.index.json"
+                if index.is_file():
+                    mapping = json.loads(self._inside_root(index).read_text(encoding="utf-8"))["weight_map"]
+                    if not isinstance(mapping, dict):
+                        raise ValueError(f"Invalid fusion source shard index for {component}")
+                    mappings[component] = mapping
+                else:
+                    mappings[component] = None
+                self._require_source()
+            mapping = mappings[component]
+            filename = mapping.get(key) if mapping is not None else "diffusion_pytorch_model.safetensors"
             if (not isinstance(filename, str) or Path(filename).name != filename
                     or not filename.endswith(".safetensors")):
                 raise ValueError(f"Missing or unsafe fusion source shard for {component}.{key}")
-        else:
-            filename = "diffusion_pytorch_model.safetensors"
-        path = self._inside_root(folder / filename)
-        with safe_open(str(path), framework="pt", device="cpu", backend="pread") as source:
-            view = source.get_slice(key)
-            shape, dtype = tuple(view.get_shape()), view.get_dtype()
-        self._require_source()
-        if shape != tuple(weight.shape):
-            raise ValueError(f"Fusion source shape differs from loaded {component}.{key}")
-        sizes = {"F16": 2, "BF16": 2, "F32": 4}
-        if dtype not in sizes or str(weight.dtype) not in ("torch.float16", "torch.bfloat16", "torch.float32"):
-            raise ValueError(f"Unsupported fusion source dtype for {component}.{key}")
-        row_bytes = shape[1] * sizes[dtype]
-        cast = {"F16": "torch.float16", "BF16": "torch.bfloat16", "F32": "torch.float32"}[dtype] != str(weight.dtype)
-        live_row_bytes = row_bytes + (shape[1] * weight.element_size() if cast else 0)
-        if live_row_bytes > MAX_BUFFER_BYTES:
-            raise ValueError("A fusion source row exceeds the bounded restore buffer")
-        return dict(weight=weight, path=path, key=key, shape=shape, dtype=dtype, target_dtype=weight.dtype,
-                    rows=max(1, MAX_BUFFER_BYTES // live_row_bytes), row_bytes=row_bytes,
-                    bytes=shape[0] * row_bytes, sha256=self._binding[1])
+            records.append(dict(weight=weight, path=self._inside_root(folder / filename),
+                                key=key, sha256=self._binding[1]))
+        # Shared weights can have several source keys. Validate every target
+        # before selecting the same final restoration record as the old loop.
+        self._validate_sources(records, describe=True)
+        return {id(record["weight"]): record for record in records}
 
-    def _validate_sources(self, records):
+    def _validate_sources(self, records, *, describe=False):
         from safetensors import safe_open
         self._require_source()
-        for path in sorted({record["path"] for record in records}):
+        groups = {}
+        for record in records:
+            groups.setdefault(record["path"], []).append(record)
+        for path in sorted(groups):
             self._require_source()
             self._inside_root(path)
-            selected = [record for record in records if record["path"] == path]
+            selected = groups[path]
             with safe_open(str(path), framework="pt", device="cpu", backend="pread") as source:
                 for record in selected:
                     view = source.get_slice(record["key"])
+                    shape, dtype = tuple(view.get_shape()), view.get_dtype()
+                    if describe and "shape" not in record:
+                        weight = record["weight"]
+                        if shape != tuple(weight.shape):
+                            raise ValueError(f"Fusion source shape differs from loaded {record['key']}")
+                        sizes = {"F16": 2, "BF16": 2, "F32": 4}
+                        if dtype not in sizes or str(weight.dtype) not in ("torch.float16", "torch.bfloat16", "torch.float32"):
+                            raise ValueError(f"Unsupported fusion source dtype for {record['key']}")
+                        row_bytes = shape[1] * sizes[dtype]
+                        cast = {"F16": "torch.float16", "BF16": "torch.bfloat16", "F32": "torch.float32"}[dtype] != str(weight.dtype)
+                        live_row_bytes = row_bytes + (shape[1] * weight.element_size() if cast else 0)
+                        if live_row_bytes > MAX_BUFFER_BYTES:
+                            raise ValueError("A fusion source row exceeds the bounded restore buffer")
+                        record.update(shape=shape, dtype=dtype, target_dtype=weight.dtype,
+                                      rows=max(1, MAX_BUFFER_BYTES // live_row_bytes), row_bytes=row_bytes,
+                                      bytes=shape[0] * row_bytes)
                     if (record["sha256"] != self._binding[1]
-                            or tuple(view.get_shape()) != record["shape"] or view.get_dtype() != record["dtype"]
+                            or shape != record["shape"] or dtype != record["dtype"]
                             or tuple(record["weight"].shape) != record["shape"]
                             or record["weight"].dtype != record["target_dtype"]):
                         raise ValueError("Fusion source tensor description changed; discard this resident")
@@ -245,15 +267,14 @@ class LoraFusionState:
             # Capture all originals before any layer is merged. Strength changes
             # reuse snapshots; group changes retire them before loading because
             # PEFT initializers can themselves change the underlying base.
-            originals, sources = {}, {}
+            originals, source_targets = {}, []
             for layer, _, component, module_name, source_eligible in targets:
                 weight = layer.get_base_layer().weight
                 if source_eligible:
-                    sources[id(weight)] = self._sources.get(id(weight)) or self._describe(component, module_name, weight)
+                    source_targets.append((component, module_name, weight))
                 else:
                     originals[id(weight)] = self._originals.get(id(weight)) or (weight, weight.detach().to(device="cpu", copy=True))
-            if sources:
-                self._validate_sources(list(sources.values()))
+            sources = self._describe_sources(source_targets) if source_targets else {}
             self._originals, self._sources = originals, sources
             self.bytes = sum(value.numel() * value.element_size() for _, value in originals.values())
             self.source_bytes = sum(record["bytes"] for record in sources.values())

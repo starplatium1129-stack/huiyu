@@ -110,10 +110,10 @@ impl TaskRuntime {
         principal: &str,
         id: &str,
     ) -> Result<Value> {
-        Ok(serde_json::to_value(
-            self.reconcile_inner(storage, principal, id, ReconcileMode::Explicit, None)
-                .await?,
-        )?)
+        Ok(self
+            .reconcile_inner(storage, principal, id, ReconcileMode::Explicit, None)
+            .await?
+            .into_value()?)
     }
     pub(super) async fn reconcile_inner(
         self: &Arc<Self>,

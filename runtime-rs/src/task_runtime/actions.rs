@@ -139,9 +139,7 @@ impl TaskRuntime {
                     )
                     .await?;
                 }
-                Ok::<Value, ApiError>(serde_json::to_value(
-                    Self::get(&storage, &principal, &id).await?,
-                )?)
+                Ok::<Value, ApiError>(Self::get(&storage, &principal, &id).await?.into_value()?)
             }
             .await;
             drop(guard);

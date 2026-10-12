@@ -97,17 +97,23 @@ impl ControlService {
             }
         }
     }
+    fn cached_health(&self) -> Option<Value> {
+        let state = self.state.lock().unwrap();
+        state
+            .health_at
+            .filter(|at| at.elapsed() < Duration::from_secs(2))
+            .map(|_| state.health.clone())
+    }
     pub(super) async fn health(&self, fresh: bool) -> Value {
+        // A forced probe may be waiting on offline services. Ordinary polls can
+        // still use a valid snapshot without joining that network wait.
+        if !fresh && let Some(value) = self.cached_health() {
+            return value;
+        }
         let _guard = self.probe_lock.lock().await;
-        {
-            let state = self.state.lock().unwrap();
-            if !fresh
-                && state
-                    .health_at
-                    .is_some_and(|at| at.elapsed() < Duration::from_secs(2))
-            {
-                return state.health.clone();
-            }
+        // Another caller may have published a snapshot while we waited.
+        if !fresh && let Some(value) = self.cached_health() {
+            return value;
         }
         let settings = self.settings();
         let (sd, comfy, tts, mut result, llama) = tokio::join!(

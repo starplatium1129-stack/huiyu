@@ -126,33 +126,24 @@ pub async fn overlay(
         return next.run(request).await;
     }
     let collect = !head && !fresh;
-    let result = if group
-        .is_some_and(|(group, _)| crate::resources::group_reads::size(&snapshot, group).is_some())
-    {
-        let (group, file) = group.unwrap();
-        service
-            .group_reads
-            .get(&service, snapshot.clone(), group, file, collect)
-            .await
-            .map(|bytes| collect.then_some(bytes))
-    } else {
-        let (owner, snapshot, relative) = (service.clone(), snapshot.clone(), relative.clone());
+    let result = async {
+        if let Some((group, file)) = group {
+            let collect_group =
+                collect && crate::resources::group_reads::size(&snapshot, group).is_some();
+            // Large models share a concurrent hash-only flight without retaining
+            // their whole dependency group. Each body still verifies its own
+            // bytes after that flight; no completed verification is cached.
+            let bytes = service
+                .group_reads
+                .get(&service, snapshot.clone(), group, file, collect_group)
+                .await?;
+            if collect_group || !collect {
+                return Ok(collect.then_some(bytes));
+            }
+        }
+        let (owner, snapshot) = (service.clone(), snapshot.clone());
         let entry = entry.clone();
         crate::resources::blocking(move || {
-            if relative.starts_with("assets/live2d/") {
-                let (group, _) = group.unwrap();
-                for name in &snapshot.groups[group].paths {
-                    if name != &relative
-                        && !fs::file_matches(
-                            &fs::child(&snapshot.root, name)?,
-                            &snapshot.entries[name],
-                            &owner.read_cancel,
-                        )?
-                    {
-                        return Err(Error::new("CONTENT_INVALID", "Live2D dependency changed"));
-                    }
-                }
-            }
             let file = fs::child(&snapshot.root, &entry.path)?;
             if collect {
                 fs::verified_bytes(&file, &entry, &owner.read_cancel)
@@ -164,7 +155,8 @@ pub async fn overlay(
             }
         })
         .await
-    };
+    }
+    .await;
     let bytes = match result {
         Ok(bytes) => bytes,
         Err(error) if error.code == "RESOURCE_BUSY" => return super::failure(error, 503),

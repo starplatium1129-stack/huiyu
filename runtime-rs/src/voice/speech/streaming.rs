@@ -1,5 +1,5 @@
 use super::super::config::Engine;
-use super::{Speech, Validated};
+use super::{AUDIO_LIMIT, Speech, Validated, wave};
 use crate::error::{ApiError, Result};
 use axum::{
     body::{Body, Bytes},
@@ -22,17 +22,18 @@ impl Speech {
             ));
         }
         let key = self.cache_key(&value);
-        if let Some(response) = self.cached_pcm(&key) {
+        if let Some(response) = self.cached_response(&key, true) {
             return Ok(response);
         }
         value.payload["streaming_mode"] = true.into();
         value.payload["media_type"] = "raw".into();
-        self.stream_inner(value, Some(key)).await
+        self.stream_inner(value, key, true).await
     }
     pub(super) async fn stream_inner(
         &self,
         value: Validated,
-        cache_key: Option<String>,
+        cache_key: String,
+        raw_pcm: bool,
     ) -> Result<Response> {
         let permit = self
             .queue
@@ -40,9 +41,7 @@ impl Speech {
             .await?;
         // A queued duplicate can replay audio completed while it waited, before
         // switching voice weights or requesting another synthesis.
-        if let Some(key) = &cache_key
-            && let Some(mut response) = self.cached_pcm(key)
-        {
+        if let Some(mut response) = self.cached_response(&cache_key, raw_pcm) {
             response.headers_mut().insert(
                 "x-voice-queue-wait",
                 permit.wait_ms.to_string().parse().unwrap(),
@@ -58,7 +57,7 @@ impl Speech {
             .get("content-type")
             .cloned()
             .unwrap_or(HeaderValue::from_static("audio/wav"));
-        if cache_key.is_some()
+        if raw_pcm
             && (mime.to_str().ok() != Some("audio/pcm")
                 || response
                     .headers()
@@ -88,8 +87,18 @@ impl Speech {
         let (send, receive) = tokio::sync::mpsc::channel(4);
         let complete = Arc::new(AtomicBool::new(false));
         let producer_complete = complete.clone();
-        let raw_pcm = cache_key.is_some();
         let cache = self.cache.clone();
+        let capture_wave = raw_pcm
+            || mime.to_str().ok().is_some_and(|value| {
+                matches!(
+                    value.split(';').next().unwrap_or("").trim(),
+                    "audio/wav"
+                        | "audio/x-wav"
+                        | "audio/wave"
+                        | "audio/vnd.wave"
+                        | "application/octet-stream"
+                )
+            });
         // A stalled listener must not keep the GPU queue forever: the bounded
         // producer enforces the same deadline while blocked on downstream flow.
         tokio::spawn(async move {
@@ -97,9 +106,11 @@ impl Speech {
             let mut upstream = response.bytes_stream();
             // Reserve the WAV header up front, then keep each PCM sample only once.
             let mut captured = if raw_pcm {
-                super::super::payload::pcm_wave_header(48000)
+                Some(super::super::payload::pcm_wave_header(48000))
+            } else if capture_wave {
+                Some(Vec::new())
             } else {
-                Vec::new()
+                None
             };
             loop {
                 let chunk = tokio::select! {
@@ -112,25 +123,39 @@ impl Speech {
                     chunk = upstream.next() => chunk,
                 };
                 let Some(chunk) = chunk else {
-                    if raw_pcm && (captured.len() == 44 || captured.len() % 2 != 0) {
+                    let valid = captured.as_mut().is_some_and(|bytes| wave::finish(bytes));
+                    if raw_pcm && !valid {
                         break;
                     }
-                    if let Some(key) = cache_key {
-                        super::super::payload::fix_wav(&mut captured);
-                        // Discard spare capacity so the cache's byte budget still counts
-                        // the retained allocation, without building a second WAV buffer.
-                        Self::remember_into(&cache, key, Bytes::from(captured.into_boxed_slice()));
+                    if valid && !send.is_closed() {
+                        // A body drop cancels this child token. The cache lock also
+                        // checks it so shutdown cannot be followed by a late refill.
+                        Self::remember_into(
+                            &cache,
+                            cache_key,
+                            Bytes::from(captured.take().unwrap().into_boxed_slice()),
+                            &cancel,
+                        );
                     }
                     producer_complete.store(true, Ordering::Release);
                     break;
                 };
                 let chunk = chunk.map_err(std::io::Error::other);
                 let failed = chunk.is_err();
-                if raw_pcm && let Ok(bytes) = &chunk {
-                    if (captured.len() - 44).saturating_add(bytes.len()) > 128 * 1024 * 1024 {
-                        break;
+                if let Ok(bytes) = &chunk {
+                    if captured
+                        .as_ref()
+                        .is_some_and(|audio| audio.len().saturating_add(bytes.len()) > AUDIO_LIMIT)
+                    {
+                        if raw_pcm {
+                            break;
+                        }
+                        // Preserve full-audio forwarding above the cache limit.
+                        // Retention stops without growing another unbounded buffer.
+                        captured = None;
+                    } else if let Some(captured) = &mut captured {
+                        captured.extend_from_slice(bytes);
                     }
-                    captured.extend_from_slice(bytes);
                 }
                 let sent = tokio::select! {
                     biased;
@@ -182,16 +207,13 @@ impl Speech {
             .insert("x-accel-buffering", HeaderValue::from_static("no"));
         Ok(response)
     }
-    fn cached_pcm(&self, key: &str) -> Option<Response> {
-        let wave = self
-            .cache
-            .lock()
-            .unwrap()
-            .entries
-            .iter()
-            .find(|(id, _)| id == key)
-            .map(|(_, bytes)| bytes.clone())?;
-        Some(
+    pub(super) fn cached_response(&self, key: &str, raw_pcm: bool) -> Option<Response> {
+        let wave = self.cached_wave(key)?;
+        let mut response = if raw_pcm {
+            let (data, pcm) = wave::inspect(&wave)?;
+            if !pcm {
+                return None;
+            }
             (
                 [
                     ("content-type", "audio/pcm"),
@@ -200,9 +222,22 @@ impl Speech {
                     ("x-audio-format", "pcm_s16le"),
                     ("x-tts-cache", "hit"),
                 ],
-                wave.slice(44..),
+                wave.slice(data),
             )
-                .into_response(),
-        )
+                .into_response()
+        } else {
+            (
+                [("content-type", "audio/wav"), ("x-tts-cache", "hit")],
+                wave,
+            )
+                .into_response()
+        };
+        response
+            .headers_mut()
+            .insert("x-voice-queue-wait", HeaderValue::from_static("0"));
+        response
+            .headers_mut()
+            .insert("x-accel-buffering", HeaderValue::from_static("no"));
+        Some(response)
     }
 }

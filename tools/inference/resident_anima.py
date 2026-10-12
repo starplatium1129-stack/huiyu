@@ -67,9 +67,8 @@ class PipelineCache:
             return identify()
         try:
             with ThreadPoolExecutor(max_workers=1) as pool:
-                # Keep Windows directory notifications on the resident caller
-                # thread: notifications created by a retiring pool thread are
-                # cancelled when it exits. Only dependency imports run there.
+                # Keep identity handles and notifications on the single resident
+                # caller that owns them. Only dependency imports run in the pool.
                 future = pool.submit(self.prepare, check)
                 result = identify()
                 future.result()

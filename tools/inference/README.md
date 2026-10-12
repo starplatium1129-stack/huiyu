@@ -92,6 +92,15 @@ Place a complete local Anima Diffusers export in `modelDir`:
 
 `HUIYU_INFERENCE_ACCELERATION=compiled-sage` selects the measured SM89 candidate;
 `sage` provides the eager-kernel control, and `native` remains the default.
+Native now also installs the existing bundled Cosmos processor when the exact
+stock processor type matches. It omits `repeat_interleave(1)` K/V copies while
+keeping native attention dispatch and the original projection, normalization,
+rotary and non-unit repetition operations. K/V storage layout changes; current
+CUDA timing, peak memory and image consistency have not been measured. Native
+Tea scopes use `cosmos-v3-native-no-kv-repeat-v1`: old native profiles fall back
+to full computation in auto mode and are rejected in strict mode. Sage modes
+retain their existing execution revisions. No optional dependency is needed
+for this native path.
 The host now persists `inference.acceleration` in its local settings and passes
 the selected mode to both the worker and dependency diagnosis. Existing settings
 without this field resolve to `native`; the environment variable remains an
@@ -132,7 +141,7 @@ jobs per backend, and slower native cold/adapter-switch warmups for that revisio
 Its numbers do not measure the newer loading, hotswap, scheduling or hires changes
 below, or establish mathematical equivalence or arbitrary LoRA/shape coverage.
 
-On fixed local NTFS, resident identity checks hold read-only file handles and
+On direct fixed local NTFS, resident identity checks hold read-only file handles and
 deny writes/deletes while the weights are resident. File IDs and persistent
 directory name/attribute notifications guard reuse, including temporary changes
 that disappear before the next request. Directory handles still allow atomic
@@ -144,12 +153,21 @@ paths or unavailable sharing protection use complete SHA256 each time; Windows
 CNG accelerates that full-byte operation without changing the digest. No mtime
 or size-only cache is used. See the [continued device report](../../docs/audits/2026-10-11/native-backend-performance.html).
 
+With the same exact base path and ordered adapter paths, valid continuous leases
+now return detached SHA identities without recursive inventories or reopening
+file, directory and notification handles. Current strengths still enter each
+identity. Drive-letter mappings and latched notifications are checked before and
+after reuse. SUBST/UNC aliases, case-distinct path collisions and unsupported
+protection fall back to full-byte hashing. Mapping checks are boundary snapshots,
+not protection against privileged transient remapping. This revision has source
+review and syntax compilation only; device timing and invalidation remain unverified.
+
 Base and adapter identities have independent leases. Switching LoRAs retains a
 valid base lease and hashes newly selected adapter bytes; changed base members or
 attributes still invalidate reuse. Source restoration checks that same uninterrupted
 base protection. On the first resident request, dependency imports run concurrently
 with full identity hashing. Directory notifications remain on the long-lived caller
-thread, and failure joins the import task before releasing resources. This overlaps
+thread that owns their lifecycle, and failure joins the import task before releasing resources. This overlaps
 real cold-request work without moving it outside the request timer.
 
 The worker explicitly loads trusted package component classes from these local folders; index references to other repositories or custom classes are never followed. Quantization/custom-code configs are rejected. Missing assets fail with a preparation error; they are never fetched automatically. Raw model conversion requires the correct architecture config and separately available encoder, VAE and tokenizer assets; renaming a checkpoint or placing it beside these folders is insufficient.
@@ -338,6 +356,14 @@ require separately recorded device acceptance within the user's authorization.
 
 The host sends trusted maskImagePath alongside inputImagePath. Input and oriented mask dimensions must match. Both share contain/Lanczos/center-black resize; the workflow reads the resized RGB red channel, not alpha multiplied by luminance. Repeated five-neighbour maxima implement growMaskBy's tapered diamond. Empty masks fail before Anima loads.
 
+Manual growth now reads each round from edge padding and writes the ordered
+five-neighbour maxima into its independent FP32 resized output. It no longer
+constructs a five-image stack or allocates a new output per round. At 4096² the
+removed stack is 320 MiB per round (10 GiB of cumulative stack construction at
+grow=32), a source-derived allocation count rather than measured RSS or speed.
+Soft masks and the manual v3/Tea identity remain unchanged; this revision has
+syntax and source review only.
+
 The bundled masked_anima.py replaces prepare/before/after denoiser leaves. Effective float masks are trilinear at single-frame latent resolution and nearest-exact for hires. With clean latent z, original noise epsilon, state x and white-edit mask m, model input is m*x+(1-m)*((1-sigma)*z+sigma*epsilon). Predicted denoised is blended with clean z before the scheduler integrates original x; RES therefore retains masked denoised history. Final pixel composite uses the same unquantized effective mask.
 
 The integration uses the public Apache-2.0 Diffusers block/scheduler APIs, with independently implemented workflow mathematics. No Comfy runtime or GPL code is copied. Source agreement does not establish CUDA mask boundaries, clothing quality or PNG equality; all current v3 device behavior remains unverified.
@@ -358,13 +384,15 @@ A raw original CLIPSeg `.pth`, pickle `.bin`, renamed file, partial export or mi
 
 The trusted host sends top-level `maskModelDir` plus `inputImagePath`, with `input.maskPrompt`, optional `input.maskThreshold` (finite 0.05–0.95, default 0.45), and `input.growMaskBy` (integer 0–32, standalone worker default 8; host-normalized values take precedence). Automatic and uploaded manual masks are mutually exclusive. `maskModelDir` and `maskThreshold` require an automatic-mask request.
 
-`maskPrompt` is a `|`-separated union of 1–32 distinct nonempty phrases, at most 4096 characters total. Empty parts are discarded and duplicates removed. Each phrase must fit the 77-token CLIP context; overlong phrases fail rather than being silently truncated. Existing clothing synonyms are processed as separate queries, never one long caption.
+`maskPrompt` is a `|`-separated list of 1–32 nonempty phrases, at most 4096 characters total. Empty parts are discarded; phrase order and duplicates are preserved in the mean. Each phrase must fit the 77-token CLIP context; overlong phrases fail rather than being silently truncated. Existing clothing synonyms are processed as separate queries, never one long caption.
 
-The oriented RGB source uses the same contain/Lanczos/center-black geometry as manual editing. Explicit local CLIPTokenizer, ViTImageProcessorPil and CLIPSegForImageSegmentation preserve the existing dependency pins. CPU FP32 phrase inference remains batched at four, with one bounded model/mean-logit map and at most 64 KiB conditioning snapshots. Model assets are fully hashed and rechecked after loading; pixel/size/ordered phrase identity governs logits reuse, while threshold/growth/feather are applied every job. Failures and worker retirement clear the cache. This is not a total-process RAM guarantee.
+The oriented RGB source uses the same contain/Lanczos/center-black geometry as manual editing. Explicit local CLIPTokenizer, ViTImageProcessorPil and CLIPSegForImageSegmentation preserve the existing dependency pins. `clipseg-single-image-vision-v1` encodes one query image, selects the pinned forward's `hidden_states[extract_layer+1]`, then expands these read-only activations for each decoder batch of four phrases. The vision tower no longer evaluates the same image once per phrase. Text conditioning and ordered mean logits retain their original batching and weighting.
+
+The CPU cache retains one model, one mean-logit map, at most 64 KiB conditioning and one owned selected-layer snapshot capped at 16 MiB. Complete model asset bytes are hashed every job and rechecked after loading. Image mode/size/pixel SHA-256 plus execution revision govern vision reuse across prompt edits; ordered stripped phrases additionally govern logits reuse. Threshold/growth/feather are applied every job. Only successful masks update snapshots; failures and worker retirement clear them. Oversized activations still generate masks but are not retained. These are retained tensor payload limits, not a total-process RAM guarantee.
 
 Per-phrase 352x352 FP32 logits are averaged with duplicate phrases preserved, then Torch bilinear resized. AP postprocessing applies three 5x5 reflect box smooths, sigmoid >= threshold, square max-pool growth, then three 25x25 reflect box blurs. Uniform boxes use separable horizontal/vertical convolutions to reduce full-image work; the mathematical filter matches, FP32 accumulation may differ. Float masks go directly to sampling/compositing without uint8 or a second growth pass. Retain MASK_PROCESSING_LICENSE.txt; real boundary quality and CPU cost are unverified.
 
-The initial focused tests used explicit fake model/tensor classes and real Pillow/NumPy transformations. Current evidence additionally includes actual CPU CLIPSeg segmentation and a GPU automatic-mask Remacri 2x result with exact final black-pixel protection. This validates those local assets and examples, not arbitrary clothing segmentation or model redistribution rights. Raw evidence remains under ignored `runtime/`.
+Earlier evidence includes CPU CLIPSeg segmentation and a GPU automatic-mask Remacri 2x result, tied to their recorded older source. It does not validate `clipseg-single-image-vision-v1`: changing the vision batch shape can change FP32 results near threshold boundaries. This revision has source/API and compilation review only, with no tests or model calls. Actual masks, CPU cost and cache RAM need device acceptance. Raw historical evidence remains under ignored `runtime/`.
 
 
 ## Experimental calibrated TeaCache
@@ -381,7 +409,7 @@ The bundled `teacache_anima.py` retains the original Diffusers 0.41.0 transforme
 - Txt2img, img2img and masked editing share the cache denoiser. V3 masked input/denoised constraints and the final float pixel composite remain active during cached inference; cache reuse never replaces the mask algorithm.
 - All temporary instance forwards and scheduler progress wrappers are restored in `finally`; no class monkey-patch or model-global cache survives a job. Normal progress and atomic PNG output remain. Host process termination still owns cancellation.
 
-`teacache_profile.py` validates the version-1 polynomial, version-2 phase envelope and maintenance-only version-3 `huiyu-anima-local-guard-v1`; product profile selection excludes version 3. Runtime pins are Diffusers 0.41.0 and Torch 2.8.0. The exact compatibility object identifies SHA-256 content of all local pipeline component assets and ordered LoRA bytes/strengths, width, height, steps, CFG, mode, denoising strength, sampler/scheduler, dtype and GPU device name. Masked scope also binds manual/CLIPSeg source kind, growth, threshold and mask prompt; automatic masking binds all local CLIPSeg asset bytes. The accepted or collected mask digest is checked against the assets actually used before cache reuse/loading and again after a new load, including calibration with mask caching disabled; a changed checkpoint aborts instead of attributing a new mask to the old scope. Prompt/seed and source/mask image content may vary within the independently tested calibration set. This is not a guarantee for unseen content.
+`teacache_profile.py` validates the version-1 polynomial, version-2 phase envelope and maintenance-only version-3 `huiyu-anima-local-guard-v1`; product profile selection excludes version 3. Runtime pins are Diffusers 0.41.0 and Torch 2.8.0. The exact compatibility object identifies SHA-256 content of all local pipeline component assets and ordered LoRA bytes/strengths, width, height, steps, CFG, mode, denoising strength, sampler/scheduler, dtype and GPU device name. Masked scope also binds manual/CLIPSeg source kind, growth, threshold and mask prompt; automatic masking binds all local CLIPSeg asset bytes and `sampling.maskExecutionRevision: clipseg-single-image-vision-v1`. Only automatic-mask scopes gain this field; plain generation and manual-mask v3 scopes retain their existing identity. Old automatic-mask profiles fall back to full computation in auto mode and are rejected for strict enablement or acceptance; profiles are never rewritten automatically. The accepted or collected mask digest is checked against assets actually used before reuse/loading and after a new load, including calibration with mask caching disabled. Prompt/seed and source/mask image content may vary within the independently accepted calibration set. This is not a guarantee for unseen content.
 
 The version-1 profile carries 1–6 finite polynomial `coefficients` in ascending power order, `proxyRange`, `defaultThreshold`, `maxThreshold`, `maxConsecutiveSkips`, and `calibration` containing `source: local-full-compute`, a valid-pair `sampleCount` and `traceSha256`. Product generation additionally requires `acceptance.status: accepted` and `acceptance.reportSha256`, set only by the explicit local acceptance workflow after reviewing held-out results. These are local evidence links, not cryptographic certification of quality. Changing weights, adapters/scales, sampling/edit scope, dtype, GPU or execution mode/revision requires a compatible new calibration. Identity comes from full content hashes or a still-protected lease to those exact bytes, never file names or mtimes alone. First acquisition and fallback hashing add I/O.
 

@@ -112,16 +112,21 @@ pub(super) fn build(
     if width < 5 || height < 5 || grid.width() < 5 || grid.height() < 5 {
         return Err(invalid("图片尺寸过小或宽高比过于极端，无法生成粒子头像"));
     }
-    let transparent = image.to_rgba8().pixels().any(|p| p[3] < 255);
+    let transparent = if !image.color().has_alpha() {
+        false
+    } else if let Some(rgba) = image.as_rgba8() {
+        rgba.pixels().any(|p| p[3] < 255)
+    } else {
+        image.to_rgba8().pixels().any(|p| p[3] < 255)
+    };
     check(cancel, started)?;
     let portrait = png(&image)?;
     let revision = hash(&portrait);
-    let thumb = if width > 560 || height > 560 {
-        image.resize(560, 560, image::imageops::FilterType::Lanczos3)
+    let thumbnail = if width > 560 || height > 560 {
+        png(&image.resize(560, 560, image::imageops::FilterType::Lanczos3))?
     } else {
-        image.clone()
+        portrait.clone()
     };
-    let thumbnail = png(&thumb)?;
     check(cancel, started)?;
     // Fixed 4-bit bins followed by nearest top-32 colors are deterministic,
     // bounded and retain transparent holes without guessing a background.

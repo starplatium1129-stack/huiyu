@@ -25,6 +25,11 @@ def validate():
 
 def configure(transformer):
     mode = validate()
+    from diffusers.models.transformers.transformer_cosmos import CosmosAttnProcessor2_0
+    for block in transformer.transformer_blocks:
+        for attn in (block.attn1, block.attn2):
+            if type(attn.processor) is CosmosAttnProcessor2_0:
+                attn.set_processor(_CosmosProcessor())
     if mode == "native":
         return
     import torch
@@ -39,11 +44,6 @@ def configure(transformer):
             return original(*args, **kwargs)
 
     transformer.forward = forward
-    for block in transformer.transformer_blocks:
-        for attn in (block.attn1, block.attn2):
-            from diffusers.models.transformers.transformer_cosmos import CosmosAttnProcessor2_0
-            if type(attn.processor) is CosmosAttnProcessor2_0:
-                attn.set_processor(_CosmosProcessor())
     if mode == "compiled-fused-sage":
         # -I workers load only a bundled sibling. The resident applies fusion
         # after LoRA loading and restores it before changing adapters/scales.

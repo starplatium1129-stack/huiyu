@@ -77,47 +77,45 @@ pub(super) async fn persist(
         .ok_or_else(|| {
             ApiError::new(503, "TASK_MEDIA_INVALID", "Invalid persisted media offset")
         })?;
-    if let Some(file) = file.as_mut() {
-        file.seek(std::io::SeekFrom::Start(offset)).await?;
-    }
-    let shared = match &output {
-        Output::Bytes { bytes, .. } => Some(Bytes::from_owner(SharedOutput(bytes.clone()))),
-        Output::File { .. } => None,
-    };
-    while offset < output.len() {
-        let length = (output.len() - offset).min(1024 * 1024) as usize;
-        let data = match &output {
-            Output::Bytes { .. } => shared
-                .as_ref()
-                .unwrap()
-                .slice(offset as usize..offset as usize + length),
-            Output::File { .. } => {
-                let mut buffer = vec![0; length];
-                file.as_mut().unwrap().read_exact(&mut buffer).await?;
-                Bytes::from(buffer)
-            }
-        };
-        // This process already owns the bytes. Keep the JSON/base64 codec at
-        // the HTTP boundary and transfer shared slices or owned file buffers.
-        let result = storage
-            .task_media_chunk(
-                TaskMediaChunk {
-                    task_id: id.into(),
-                    target: match &target {
-                        Target::Input(name) => TaskMediaTarget::Input(name.clone()),
-                        Target::Result(index) => TaskMediaTarget::Result(*index as u64),
-                    },
-                    offset,
-                    bytes: data,
-                },
+    if let Some(file) = file {
+        // An internal file handle needs one admitted copy, not a SQLite request
+        // and durable flush for every MiB. HTTP chunk uploads keep their path.
+        storage
+            .task_media_file(
+                target.command(id, "commit"),
+                file.into_std().await,
                 principal,
             )
             .await?;
-        offset = Some(result)
-            .filter(|next| *next > offset && *next <= output.len())
-            .ok_or_else(|| {
-                ApiError::new(503, "TASK_MEDIA_INVALID", "Media upload did not advance")
-            })?;
+        return Ok(());
+    }
+    if let Output::Bytes { bytes, .. } = &output {
+        let shared = Bytes::from_owner(SharedOutput(bytes.clone()));
+        while offset < output.len() {
+            let length = (output.len() - offset).min(1024 * 1024) as usize;
+            let data = shared.slice(offset as usize..offset as usize + length);
+            // This process already owns the bytes. Keep the JSON/base64 codec at
+            // the HTTP boundary and transfer shared slices.
+            let result = storage
+                .task_media_chunk(
+                    TaskMediaChunk {
+                        task_id: id.into(),
+                        target: match &target {
+                            Target::Input(name) => TaskMediaTarget::Input(name.clone()),
+                            Target::Result(index) => TaskMediaTarget::Result(*index as u64),
+                        },
+                        offset,
+                        bytes: data,
+                    },
+                    principal,
+                )
+                .await?;
+            offset = Some(result)
+                .filter(|next| *next > offset && *next <= output.len())
+                .ok_or_else(|| {
+                    ApiError::new(503, "TASK_MEDIA_INVALID", "Media upload did not advance")
+                })?;
+        }
     }
     storage
         .request(target.command(id, "commit"), principal)

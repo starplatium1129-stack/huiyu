@@ -33,6 +33,12 @@ pub(super) fn capture(value: &Value) -> Value {
             }
             result["samplingRevision"] = revision.clone();
         }
+        if let Some(revision) = value.get("maskExecutionRevision") {
+            if revision.as_str()? != "clipseg-single-image-vision-v1" {
+                return None;
+            }
+            result["maskExecutionRevision"] = revision.clone();
+        }
         if let Some(components) = value.get("componentReuse") {
             let components = components.as_array()?;
             let mut names = std::collections::HashSet::new();
@@ -123,8 +129,8 @@ pub(super) fn capture(value: &Value) -> Value {
             ),
             (
                 "maskCache",
-                &["used", "modelReused", "resultReused"],
-                &["resultBytes"],
+                &["used", "modelReused", "resultReused", "visionReused"],
+                &["resultBytes", "visionBytes", "visionEncodes"],
             ),
             (
                 "teaCache",

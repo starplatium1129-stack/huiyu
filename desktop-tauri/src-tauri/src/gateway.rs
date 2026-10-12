@@ -26,6 +26,13 @@ pub struct GatewayHealth {
     pub desktop_proof: String,
 }
 
+pub struct GatewayHostResponse {
+    pub payload: serde_json::Value,
+    pub origin: String,
+    pub runtime_epoch: String,
+    pub owned: bool,
+}
+
 fn http_get(base_url: &str, path: &str, timeout: Duration, challenge: Option<&str>) -> Option<String> {
     let host_port = base_url
         .trim_start_matches("http://")
@@ -149,14 +156,33 @@ impl GatewaySupervisor {
         self.owned.load(Ordering::Relaxed)
     }
 
-    pub fn runtime_epoch(&self) -> String {
-        self.identity_token.lock().unwrap().as_ref().map(|secret| host::epoch(secret)).unwrap_or_default()
-    }
-
-    pub fn host_request(&self, payload: serde_json::Value) -> Result<serde_json::Value, String> {
-        if !self.is_healthy() { return Err("HOST_IDENTITY_UNAVAILABLE".into()); }
-        let secret = self.identity_token.lock().unwrap().clone().ok_or("HOST_IDENTITY_UNAVAILABLE")?;
-        host::request(&self.base_url(), &secret, payload)
+    pub fn host_request(&self, payload: serde_json::Value) -> Result<Option<GatewayHostResponse>, String> {
+        let generation = self.stop_generation.load(Ordering::SeqCst);
+        let Some(secret) = self.identity_token.lock().unwrap().clone() else { return Ok(None); };
+        let origin = self.base_url();
+        let owned = self.owns_gateway();
+        let is_current = || {
+            !self.stopping.load(Ordering::SeqCst)
+                && self.stop_generation.load(Ordering::SeqCst) == generation
+                && self.base_url() == origin
+                && self.identity_token.lock().unwrap().as_ref() == Some(&secret)
+                && self.owns_gateway() == owned
+        };
+        if !is_current() { return Ok(None); }
+        // Each bootstrap proves this snapshot with a fresh challenge. A cached
+        // authenticated flag cannot authorize a private host action.
+        let healthy = authenticated_health(&origin, &secret);
+        if !is_current() { return Ok(None); }
+        self.authenticated.store(healthy, Ordering::SeqCst);
+        if !healthy { return Ok(None); }
+        let payload = host::request(&origin, &secret, payload)?;
+        if !is_current() { return Err("HOST_IDENTITY_UNAVAILABLE".into()); }
+        Ok(Some(GatewayHostResponse {
+            payload,
+            runtime_epoch: host::epoch(&secret),
+            origin,
+            owned,
+        }))
     }
 
     pub fn is_healthy(&self) -> bool {
