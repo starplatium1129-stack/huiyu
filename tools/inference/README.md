@@ -368,6 +368,15 @@ with small and 16-megapixel decoded RGB inputs are recorded in the
 They exclude decoding, Torch, model work and device acceptance; no image behavior
 tests were run. Manual v3/Tea identity is retained on the pinned source reasoning.
 
+The manual mask owns its decoded ImageFile inside `with`; EXIF transpose now
+runs in place there and the source is released before image resize/Torch growth.
+Non-RGB input images also transpose their owned decoder in place, then retain
+the original final RGB conversion and independent result. RGB input handling,
+including the necessary post-transpose EXIF normalization copy, is unchanged.
+This removes transient whole-image copies without adding a cache or sharing
+pixels across jobs. The same report records real repository image loader and
+mask-PIL-prefix CPU observations; EXIF/image behavior still needs device acceptance.
+
 Manual growth now reads each round from edge padding and writes the ordered
 five-neighbour maxima into its independent FP32 resized output. It no longer
 constructs a five-image stack or allocates a new output per round. At 4096² the

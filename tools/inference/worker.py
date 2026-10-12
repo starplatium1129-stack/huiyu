@@ -286,6 +286,9 @@ def load_input_image(path):
                 raise WorkerError("INVALID_INPUT", "Input image must be PNG, JPEG or WebP")
             if image.width * image.height > 4096 * 4096 or getattr(image, "n_frames", 1) != 1:
                 raise WorkerError("INVALID_INPUT", "Input must be one still image of at most 16 megapixels")
+            if image.mode != "RGB":
+                ImageOps.exif_transpose(image, in_place=True)
+                return image.convert("RGB")
             oriented = ImageOps.exif_transpose(image)
             # Transposed EXIF needs convert's copy to normalize nested IFD offsets.
             untransposed = image.getexif().get(274) not in range(2, 9)

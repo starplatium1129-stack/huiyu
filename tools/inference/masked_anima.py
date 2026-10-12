@@ -76,12 +76,13 @@ def prepare_images(image, mask_path, size, grow):
                 raise ValueError("Mask must be one PNG, JPEG or WebP image")
             if source.width * source.height > 4096 * 4096:
                 raise ValueError("Mask must be at most 16 megapixels")
-            source = ImageOps.exif_transpose(source)
+            ImageOps.exif_transpose(source, in_place=True)
             if source.size != image.size:
                 raise ValueError("Mask dimensions must match the oriented input image")
             red = np.array(resize_image(source, size, red_only=True), dtype=np.float32) / 255
     except (OSError, Image.DecompressionBombError) as exc:
         raise ValueError(f"Cannot decode mask image: {exc}") from exc
+    del source  # Retire decoded pixels and any ImageFile decoder before Torch/growth.
     return resize_image(image, size), _prepare_effective_mask(red, size, grow)
 
 
