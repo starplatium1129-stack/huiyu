@@ -25,46 +25,35 @@ impl Preparation {
     }
 }
 impl TaskRuntime {
-    pub(super) fn video(&self) -> Result<&Arc<crate::video::VideoService>> {
-        self.video.as_ref().ok_or_else(|| {
-            ApiError::new(
-                501,
-                "TASK_PROVIDER_NOT_MIGRATED",
-                "Video task provider unavailable",
-            )
-        })
-    }
     pub(super) async fn prepare(&self, kind: TaskKind, input: Value) -> Result<Preparation> {
         let cancel = self.shutdown.child_token();
-        if let Some(family) = image_family(kind) {
-            let images = self.images.as_ref().ok_or_else(|| {
-                ApiError::new(
-                    501,
-                    "TASK_PROVIDER_NOT_MIGRATED",
-                    "Image task provider unavailable",
-                )
-            })?;
-            return images
-                .prepare(input, family, true, cancel)
-                .await
-                .map(Preparation::Image);
-        }
         match kind {
+            TaskKind::Generation => Err(ApiError::new(
+                410,
+                "SD_RETIRED",
+                "SD 新生成已退役；原任务可继续查询、收集或取消",
+            )),
+            TaskKind::Anima | TaskKind::Creative => {
+                let family = if kind == TaskKind::Anima {
+                    "anima"
+                } else {
+                    "krea2"
+                };
+                self.images
+                    .prepare(input, family, true, cancel)
+                    .await
+                    .map(Preparation::Image)
+            }
             TaskKind::Video => self
-                .video()?
+                .video
                 .prepare(input, true, cancel)
                 .await
                 .map(Preparation::Video),
             TaskKind::Batch => self
-                .video()?
+                .video
                 .prepare_batch(input, true, cancel)
                 .await
                 .map(Preparation::Batch),
-            _ => self
-                .provider
-                .prepare(input, true, cancel)
-                .await
-                .map(Preparation::Generation),
         }
     }
     pub(super) async fn query_provider(
@@ -73,29 +62,12 @@ impl TaskRuntime {
         job: &str,
         principal: &str,
     ) -> Result<crate::execution::Observation> {
-        if let Some(family) = image_family(kind) {
-            return self
-                .images
-                .as_ref()
-                .ok_or_else(|| {
-                    ApiError::new(
-                        501,
-                        "TASK_PROVIDER_NOT_MIGRATED",
-                        "Image task provider unavailable",
-                    )
-                })?
-                .query(job, principal, family)
-                .await;
-        }
         match kind {
             TaskKind::Generation => self.provider.query(job, principal).await,
-            TaskKind::Video => self.video()?.query(job, principal).await,
-            TaskKind::Batch => self.video()?.query_batch(job, principal).await,
-            _ => Err(ApiError::new(
-                501,
-                "TASK_PROVIDER_NOT_MIGRATED",
-                "Task provider unavailable",
-            )),
+            TaskKind::Anima => self.images.query(job, principal, "anima").await,
+            TaskKind::Creative => self.images.query(job, principal, "krea2").await,
+            TaskKind::Video => self.video.query(job, principal).await,
+            TaskKind::Batch => self.video.query_batch(job, principal).await,
         }
     }
     pub(super) async fn cancel_provider(
@@ -104,29 +76,12 @@ impl TaskRuntime {
         job: &str,
         principal: &str,
     ) -> Result<Value> {
-        if let Some(family) = image_family(kind) {
-            return self
-                .images
-                .as_ref()
-                .ok_or_else(|| {
-                    ApiError::new(
-                        501,
-                        "TASK_PROVIDER_NOT_MIGRATED",
-                        "Image task provider unavailable",
-                    )
-                })?
-                .cancel(job, principal, family)
-                .await;
-        }
         match kind {
             TaskKind::Generation => self.provider.cancel(job, principal).await,
-            TaskKind::Video => self.video()?.cancel(job, principal).await,
-            TaskKind::Batch => self.video()?.cancel_batch(job, principal).await,
-            _ => Err(ApiError::new(
-                501,
-                "TASK_PROVIDER_NOT_MIGRATED",
-                "Task provider unavailable",
-            )),
+            TaskKind::Anima => self.images.cancel(job, principal, "anima").await,
+            TaskKind::Creative => self.images.cancel(job, principal, "krea2").await,
+            TaskKind::Video => self.video.cancel(job, principal).await,
+            TaskKind::Batch => self.video.cancel_batch(job, principal).await,
         }
     }
 }

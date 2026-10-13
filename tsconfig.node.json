@@ -27,16 +27,12 @@
   "include": [
     "scripts/**/*.ts",
     "scripts/**/*.mts",
-    "poc/**/*.mts",
-    "poc/**/*.cts",
-    "poc/**/*.ts",
     "eslint.config.mts",
     "types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules",
     "scripts/archive",
-    "scripts/tests",
     "scripts/maintenance/ui-shots",
     "scripts/**/*.d.ts"
   ]

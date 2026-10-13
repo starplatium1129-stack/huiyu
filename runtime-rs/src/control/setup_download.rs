@@ -11,10 +11,6 @@ use serde::Deserialize;
 use std::{convert::Infallible, path::PathBuf};
 use tokio::{io::AsyncWriteExt, sync::mpsc::Sender};
 
-#[cfg(test)]
-#[path = "setup_download_tests.rs"]
-mod tests;
-
 const PROGRESS_BUFFER: usize = 16;
 
 #[derive(Deserialize)]

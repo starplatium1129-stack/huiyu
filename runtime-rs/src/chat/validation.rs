@@ -27,13 +27,43 @@ pub(super) struct Input {
 }
 
 pub(super) fn api(input: &Value) -> Result<Api> {
+    parse_api(input, true)
+}
+
+// GET /models does not need a selected model. Saving and chatting still do.
+pub(super) fn inspect_api(input: &Value) -> Result<Api> {
+    parse_api(input, false)
+}
+
+pub(super) fn vendor(target: &Url) -> String {
+    let host = target.host_str().unwrap_or("");
+    match host {
+        "api.deepseek.com" => "deepseek",
+        "api.openai.com" => "openai",
+        "generativelanguage.googleapis.com" if target.path().starts_with("/v1beta/openai/") => {
+            "gemini"
+        }
+        "api.moonshot.cn" | "api.moonshot.ai" => "kimi",
+        "dashscope.aliyuncs.com" | "dashscope-intl.aliyuncs.com" => "qwen",
+        "opencode.ai" if target.path().starts_with("/zen/") => "opencode",
+        _ if host.ends_with(".maas.aliyuncs.com")
+            && target.path().starts_with("/compatible-mode/") =>
+        {
+            "qwen"
+        }
+        _ => "custom",
+    }
+    .into()
+}
+
+fn parse_api(input: &Value, require_model: bool) -> Result<Api> {
     let base = string(&input["baseUrl"]).trim().to_owned();
     let model = string(&input["model"]).trim().to_owned();
     let key = string(&input["apiKey"]).trim().to_owned();
     if base.is_empty() || length(&base) > 500 {
         return Err(Error::invalid("API 地址不能为空或过长"));
     }
-    if model.is_empty() || length(&model) > 200 {
+    if (require_model && model.is_empty()) || length(&model) > 200 {
         return Err(Error::invalid("API 模型名不能为空或过长"));
     }
     if length(&key) > 1000 {
@@ -54,7 +84,13 @@ pub(super) fn api(input: &Value) -> Result<Api> {
     {
         return Err(Error::invalid("API 地址不能包含账号、查询参数或锚点"));
     }
-    parsed.set_path(&(parsed.path().trim_end_matches('/').to_owned() + "/"));
+    let path = parsed.path().trim_end_matches('/');
+    // Accept a copied chat endpoint without appending it a second time.
+    let path = path
+        .strip_suffix("/chat/completions")
+        .unwrap_or(path)
+        .to_owned();
+    parsed.set_path(&(path + "/"));
     let target = parsed
         .join("chat/completions")
         .map_err(|_| Error::invalid("API 地址格式无效"))?;
@@ -63,14 +99,7 @@ pub(super) fn api(input: &Value) -> Result<Api> {
         pathname: target.path().into(),
         model,
         key,
-        vendor: if host == "api.deepseek.com" {
-            "deepseek"
-        } else if host == "opencode.ai" && target.path().starts_with("/zen/") {
-            "opencode"
-        } else {
-            "custom"
-        }
-        .into(),
+        vendor: vendor(&target),
     })
 }
 
@@ -113,7 +142,15 @@ fn tool_message(raw: &Value) -> Result<Value> {
         if length(&args) > 4000 {
             return Err(Error::invalid("工具调用参数过长"));
         }
-        output.push(json!({"id":id,"type":"function","function":{"name":name,"arguments":args}}));
+        let mut item = json!({"id":id,"type":"function","function":{"name":name,"arguments":args}});
+        if let Some(signature) = call["extra_content"]["google"].get("thought_signature") {
+            let signature = signature
+                .as_str()
+                .filter(|value| !value.is_empty() && value.len() <= 64 * 1024)
+                .ok_or_else(|| Error::invalid("工具思考签名格式无效"))?;
+            item["extra_content"] = json!({"google":{"thought_signature":signature}});
+        }
+        output.push(item);
     }
     let mut result = json!({"role":"assistant","content":content,"tool_calls":output});
     if !reasoning.is_empty() {

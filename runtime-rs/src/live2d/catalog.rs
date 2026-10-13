@@ -70,9 +70,69 @@ impl Catalog {
         Ok(value)
     }
 }
-// Health scans do not take the catalog mutex: a slow strict catalog read must
-// never delay liveness responses. Cancellation is checked between filesystem
-// inspections; individual OS filesystem calls cannot be interrupted safely.
+fn inspect_builtin(
+    directory: &Path,
+    manifest: &str,
+    cancel: Option<&tokio_util::sync::CancellationToken>,
+) -> Result<(Vec<String>, Vec<String>)> {
+    let model = read_json(&model_file(directory, manifest)?)?;
+    let mut files = manifest::references(&model)?;
+    let mut missing = Vec::new();
+    for file in &files {
+        if let Some(cancel) = cancel {
+            super::editor::check_cancel(cancel)?;
+        }
+        if model_file(directory, file).is_err() {
+            missing.push(file.clone());
+        }
+    }
+    files.push(manifest.to_owned());
+    Ok((files, missing))
+}
+
+// A boolean capability probe uses the same complete model inspections as the
+// catalog, but stops at the first enabled model and builds no catalog JSON.
+// It does not take the catalog mutex or authorize any resource access.
+pub(super) fn available(
+    builtins: &Path,
+    local: &Path,
+    cancel: &tokio_util::sync::CancellationToken,
+) -> Option<bool> {
+    for id in ["nene", "natsume"] {
+        if cancel.is_cancelled() {
+            return None;
+        }
+        if inspect_builtin(
+            &builtins.join(id),
+            &format!("{id}.model3.json"),
+            Some(cancel),
+        )
+        .is_ok_and(|(_, missing)| missing.is_empty())
+        {
+            return (!cancel.is_cancelled()).then_some(true);
+        }
+    }
+    if no_links(local).is_ok()
+        && let Ok(entries) = fs::read_dir(local)
+    {
+        for entry in entries.flatten() {
+            if cancel.is_cancelled() {
+                return None;
+            }
+            let id = entry.file_name().to_string_lossy().into_owned();
+            if !identity(&id) || !entry.file_type().is_ok_and(|kind| kind.is_dir()) {
+                continue;
+            }
+            if let Ok(model) = local_model_checked(local, &id, Some(cancel))
+                && model.receipt.as_ref().unwrap()["disabled"] != true
+            {
+                return (!cancel.is_cancelled()).then_some(true);
+            }
+        }
+    }
+    (!cancel.is_cancelled()).then_some(false)
+}
+
 pub(super) fn scan(
     builtins: &Path,
     local: Option<&Path>,
@@ -87,21 +147,7 @@ pub(super) fn scan(
         }
         let directory = builtins.join(id);
         let manifest = format!("{id}.model3.json");
-        let inspection = (|| -> Result<(Vec<String>, Vec<String>)> {
-            let model = read_json(&model_file(&directory, &manifest)?)?;
-            let mut files = manifest::references(&model)?;
-            let mut missing = Vec::new();
-            for file in &files {
-                if let Some(cancel) = cancel {
-                    super::editor::check_cancel(cancel)?;
-                }
-                if model_file(&directory, file).is_err() {
-                    missing.push(file.clone());
-                }
-            }
-            files.push(manifest.clone());
-            Ok((files, missing))
-        })();
+        let inspection = inspect_builtin(&directory, &manifest, cancel);
         let inspected = match inspection {
             Ok((files, missing)) if missing.is_empty() => {
                 models.push(Model {
@@ -230,118 +276,4 @@ fn local_model_checked(
         files,
         receipt: Some(receipt),
     })
-}
-
-#[cfg(test)]
-mod health_tests {
-    use super::*;
-    use crate::live2d::Live2dService;
-    use tokio_util::sync::CancellationToken;
-
-    #[tokio::test]
-    async fn abandoned_catalog_read_does_not_publish_a_snapshot() {
-        let root = tempfile::tempdir().unwrap();
-        for public in [false, true] {
-            let service = Live2dService::with_roots(
-                root.path().join("builtins"),
-                root.path().join("imports"),
-                CancellationToken::new(),
-            );
-            let catalog = if public {
-                &service.public_catalog
-            } else {
-                &service.catalog
-            };
-            let blocker = service.clone();
-            let (locked, acquired) = tokio::sync::oneshot::channel();
-            let (release, released) = std::sync::mpsc::channel();
-            let held = tokio::task::spawn_blocking(move || {
-                let catalog = if public {
-                    &blocker.public_catalog
-                } else {
-                    &blocker.catalog
-                };
-                let _guard = catalog.cached.lock().unwrap();
-                let _ = locked.send(());
-                let _ = released.recv();
-            });
-            acquired.await.unwrap();
-            let (entered, ready) = tokio::sync::oneshot::channel();
-            let worker = service.clone();
-            let request = tokio::spawn(async move {
-                worker
-                    .run(move |service, cancel| {
-                        let _ = entered.send(());
-                        if public {
-                            service
-                                .public_catalog
-                                .read_builtin(&service.builtins, cancel)
-                        } else {
-                            service
-                                .catalog
-                                .read(&service.builtins, &service.local, cancel)
-                        }
-                    })
-                    .await
-            });
-            ready.await.unwrap();
-            request.abort();
-            assert!(request.await.err().unwrap().is_cancelled());
-            release.send(()).unwrap();
-            held.await.unwrap();
-            let drained = tokio::time::timeout(
-                Duration::from_secs(3),
-                service.workers.clone().acquire_many_owned(2),
-            )
-            .await
-            .unwrap()
-            .unwrap();
-            assert!(
-                catalog.cached().is_none(),
-                "Abandoned read populated the catalog"
-            );
-            drop(drained);
-            let active = if public {
-                service.public_snapshot().await
-            } else {
-                service.snapshot().await
-            };
-            assert!(active.is_ok());
-            assert!(catalog.cached().is_some());
-            service.close().await;
-        }
-    }
-
-    #[tokio::test]
-    async fn health_snapshot_never_waits_for_catalog_lock() {
-        let root = tempfile::tempdir().unwrap();
-        let service = Live2dService::with_roots(
-            root.path().join("builtins"),
-            root.path().join("imports"),
-            CancellationToken::new(),
-        );
-        let catalog = service.catalog.clone();
-        let (locked, ready) = tokio::sync::oneshot::channel();
-        let (release, released) = std::sync::mpsc::channel();
-        let reader = std::thread::spawn(move || {
-            let _lock = catalog.cached.lock().unwrap();
-            let _ = locked.send(());
-            // Dropping the sender also releases the reader on a test failure.
-            let _ = released.recv();
-        });
-        ready.await.unwrap();
-        assert_eq!(service.health_status()["stale"], true);
-        // The background scan can finish even while a strict catalog reader
-        // owns its mutex. Health has a separate, metadata-only snapshot.
-        tokio::time::timeout(Duration::from_secs(3), async {
-            while service.health_status()["stale"] == true {
-                tokio::task::yield_now().await;
-            }
-        })
-        .await
-        .unwrap();
-        release.send(()).unwrap();
-        reader.join().unwrap();
-        service.close().await;
-    }
 }

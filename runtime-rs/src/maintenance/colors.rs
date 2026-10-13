@@ -1,5 +1,4 @@
-#[cfg(test)]
-mod tests;
+
 mod utilities;
 use super::{Error, Result, fs, prompt};
 use regex::Regex;

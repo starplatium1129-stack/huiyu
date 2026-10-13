@@ -129,7 +129,7 @@ def plan(args):
         "mode": "plan", "modelCalls": len(training) + len(heldout) * args.repeats * 2,
         "trainingJobs": len(training), "heldoutJobs": len(heldout), "repeats": args.repeats,
         "outputDir": str(target), "threshold": args.threshold, "strategy": args.strategy,
-        "maxConsecutiveSkips": args.max_consecutive_skips,
+        "maxConsecutiveSkips": args.max_consecutive_skips, "localThreshold": args.local_threshold,
         "executionMode": "resident" if args.resident else "cold", "polynomialDegree": args.degree,
         "scopeStatus": "Exact model/config hashes, dtype and device will be established by real worker traces",
         "installsProfile": False, "limitations": DISCLAIMER,
@@ -179,19 +179,20 @@ def child(request_path):
     report = load("worker").generate(request["job"], sys.stdout,
                                     cache_mask=False,
                                     collect_teacache=request["collect"],
+                                    collect_cache_strategy=request.get("cacheStrategy", "phase-envelope"),
                                     teacache_profile=request.get("profile"),
                                     measure_teacache=not request["collect"] and request.get("profile") is None)
     write(Path(request_path).with_name("worker-report.json"), report or {})
 
 
-def execute(job, folder, collect, profile, timeout):
+def execute(job, folder, collect, profile, timeout, *, cache_strategy="phase-envelope"):
     folder.mkdir()
     job = json.loads(json.dumps(job))
     job["outputPath"] = str(folder / "output.png")
     job["input"].pop("teacache", None)
     job["input"]["teaCache"] = profile is not None
     request = folder / "request.json"
-    write(request, {"job": job, "collect": collect, "profile": profile})
+    write(request, {"job": job, "collect": collect, "profile": profile, "cacheStrategy": cache_strategy})
     kwargs = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == "nt" else {"start_new_session": True}
     start = time.perf_counter()
     with (folder / "stdout.jsonl").open("x") as out, (folder / "stderr.log").open("x") as err:
@@ -219,12 +220,15 @@ def fit(traces, args):
     compatibility = traces[0].get("compatibility")
     if not isinstance(compatibility, dict) or not compatibility:
         raise ValueError("Trace lacks an established compatibility scope")
-    points, phase_points = [], [[], [], []]
+    local_tools = load("anima_local_cache")
+    points, phase_points, local_points = [], [[], [], []], [[], [], []]
     for trace in traces:
         stats = trace.get("stats", {})
         if (trace.get("schemaVersion") != 1 or trace.get("runtime") != helper.RUNTIME or trace.get("compatibility") != compatibility or
                 not positive(stats.get("fullComputes")) or stats.get("skippedComputes") != 0 or stats.get("nonfinite") != 0):
             raise ValueError("Require compatible runtime, finite, full-compute worker traces; recollect and recalibrate")
+        if args.strategy == "local-guard" and trace.get("collectionMetric") != local_tools.METRIC:
+            raise ValueError("Local calibration requires traces from the exact local metric collector")
         for sample in trace.get("samples", []):
             x, y = sample.get("proxyRelativeL1"), sample.get("residualRelativeL1")
             if x is None or y is None:
@@ -232,36 +236,31 @@ def fit(traces, args):
             if not all(type(v) in (int, float) and math.isfinite(v) and v >= 0 for v in (x, y)):
                 raise ValueError("Trace has invalid relative-L1 samples")
             points.append((x, y))
-            if args.strategy == "phase-envelope":
+            if args.strategy in ("phase-envelope", "local-guard"):
                 step, total = sample.get("step"), sample.get("total")
                 if type(step) is not int or type(total) is not int or not 0 <= step < total or total < 2:
                     raise ValueError("Phase calibration requires actual step/total trace identity")
-                phase_points[min(2, 3 * step // (total - 1))].append((x, y))
-    if args.strategy == "phase-envelope":
-        envelopes = []
-        for samples in phase_points:
-            observed = {}
-            for x, y in samples:
-                observed[x] = max(y, observed.get(x, 0))
-            if len(samples) < 3 or len(observed) < 2:
-                raise ValueError("Each phase needs >=3 paired observations and >=2 distinct proxies")
-            ordered = sorted(observed.items())
-            size = max(1, math.ceil(len(ordered) / 31))
-            points_in_phase = []
-            for start in range(0, len(ordered), size):
-                group = ordered[start:start + size]
-                upper = max(y for _, y in group)
-                if not points_in_phase:
-                    points_in_phase.append([group[0][0], upper])
-                if group[-1][0] != points_in_phase[-1][0]:
-                    points_in_phase.append([group[-1][0], upper])
-            envelopes.append(points_in_phase)
-        return {"schemaVersion": 2, "algorithm": helper.PHASE_ALGORITHM, "runtime": helper.RUNTIME,
-                "compatibility": compatibility, "phaseEnvelopes": envelopes,
+                phase = min(2, 3 * step // (total - 1))
+                phase_points[phase].append((x, y))
+                if args.strategy == "local-guard":
+                    local_pair = (sample.get("localProxyRelativeL1"), sample.get("localResidualRelativeL1"))
+                    if not all(type(v) in (int, float) and math.isfinite(v) and v >= 0 for v in local_pair):
+                        raise ValueError("Local calibration requires paired finite proxy/residual local observations")
+                    local_points[phase].append(local_pair)
+    if args.strategy in ("phase-envelope", "local-guard"):
+        profile = {"schemaVersion": 2, "algorithm": helper.PHASE_ALGORITHM, "runtime": helper.RUNTIME,
+                "compatibility": compatibility, "phaseEnvelopes": local_tools.envelopes(phase_points),
                 "defaultThreshold": args.threshold, "maxThreshold": args.threshold, "maxConsecutiveSkips": args.max_consecutive_skips,
                 "calibration": {"source": "local-full-compute", "sampleCount": len(points), "traceSha256": canonical(traces)},
                 "fitDiagnostics": {"method": "phase-local observed upper envelope; not a semantic error bound",
                                    "phaseSampleCounts": [len(group) for group in phase_points]}}
+        if args.strategy == "local-guard":
+            profile.update(schemaVersion=3, algorithm=helper.LOCAL_ALGORITHM,
+                localMetric=local_tools.METRIC, maxGroups=local_tools.MAX_GROUPS,
+                localThreshold=args.local_threshold or args.threshold, localPhaseEnvelopes=local_tools.envelopes(local_points))
+            profile["fitDiagnostics"].update(method="dual global/local empirical phase envelopes; not a semantic bound",
+                localPhaseSampleCounts=[len(group) for group in local_points])
+        return profile
     if len(points) < max(8, 2 * (args.degree + 1)):
         raise ValueError("Insufficient paired trace samples for a fresh polynomial")
     x, y = np.asarray(points, dtype=float).T
@@ -331,7 +330,7 @@ def measured_run(args, training, heldout, target, session):
         verify_inputs(sources)
         if expected is not None and profile is None and job_scope(job, expected) != expected["compatibility"]:
             raise ValueError("Baseline model/LoRA scope changed before generation")
-        result = (session.execute if session is not None else execute)(job, folder, collect, profile, args.timeout)
+        result = (session.execute if session is not None else execute)(job, folder, collect, profile, args.timeout, cache_strategy=args.strategy)
         verify_inputs(sources)
         if expected is not None and profile is None:
             result["identityScope"] = job_scope(job, expected)
@@ -356,6 +355,7 @@ def measured_run(args, training, heldout, target, session):
             result["output"] = Path(result["output"]).relative_to(target).as_posix()
             pair[name] = result
         cached = pair["cached"]["report"]
+        load("anima_local_cache").verify_execution(cached, profile)
         if any(pair[name]["report"].get("runtime") != profile["runtime"] for name in ("baseline", "cached")):
             raise ValueError("Held-out runtime mismatch; recollect and recalibrate")
         if session is not None and any(pair[name]["report"].get("modelReused") is not True for name in ("baseline", "cached")):
@@ -407,6 +407,7 @@ def accept(args):
         raise ValueError("Trace runtime mismatch; recollect and recalibrate")
     for pair in report["pairs"]:
         cached_report = pair["cached"].get("report", {})
+        load("anima_local_cache").verify_execution(cached_report, profile)
         if any(pair[name].get("report", {}).get("runtime") != helper.RUNTIME for name in ("baseline", "cached")):
             raise ValueError("Held-out runtime mismatch; recollect and recalibrate")
         if report.get("executionMode") == "resident" and any(pair[name].get("report", {}).get("modelReused") is not True for name in ("baseline", "cached")):
@@ -454,8 +455,9 @@ def main(argv=None):
     parser.add_argument("--degree", type=int, choices=range(1, 6), default=2)
     parser.add_argument("--max-consecutive-skips", type=int, choices=(1, 2, 3), default=1,
                         help="Candidate skip limit; default 1. Larger limits still require held-out quality acceptance")
-    parser.add_argument("--strategy", choices=("phase-envelope", "polynomial"), default="phase-envelope",
-                        help="Phase-specific observed error envelopes (default) or original polynomial baseline")
+    parser.add_argument("--strategy", choices=("phase-envelope", "polynomial", "local-guard"), default="phase-envelope",
+                        help="Phase envelopes (default), polynomial baseline or experimental global/local guard")
+    parser.add_argument("--local-threshold", type=float, help="Local-guard only; omitted uses the requested global threshold")
     parser.add_argument("--resident", action=argparse.BooleanOptionalAction, default=True,
                         help="Compare warm jobs using one resident weight set (default); --no-resident measures cold jobs")
     parser.add_argument("--repeats", type=int, default=1, help="Held-out repetitions; use >=2 to alternate pair order")
@@ -479,6 +481,8 @@ def main(argv=None):
         if args.accept_run:
             result = accept(args)
         else:
+            if args.local_threshold is not None and (args.strategy != "local-guard" or not math.isfinite(args.local_threshold) or not 0.01 <= args.local_threshold <= 1):
+                raise ValueError("--local-threshold requires local-guard and a finite value in 0.01..1")
             if args.accept_quality or args.accept_performance or args.replace_profile_sha256:
                 raise ValueError("Acceptance options require --accept-run")
             if not math.isfinite(args.threshold) or not 0.01 <= args.threshold <= 1 or not 1 <= args.repeats <= 10 or not positive(args.timeout):

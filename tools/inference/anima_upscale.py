@@ -6,8 +6,10 @@ Only the checked 23-block, nf64/gc32 RGB model is accepted; no pickle, model
 discovery, download, guessed configuration or package installation occurs.
 """
 from pathlib import Path
+import time
 
 WEIGHT_NAME = "4x_foolhardy_Remacri.safetensors"
+EXECUTION_REVISION = "remacri-no-single-cat-packed-v1"
 
 
 def _network():
@@ -24,8 +26,9 @@ def _network():
             self.activation = nn.LeakyReLU(.2, inplace=True)
 
         def forward(self, value):
-            features = [value]
-            for index in range(1, 5):
+            # A singleton cat only copies this 64-channel feature map.
+            features = [value, self.activation(self.conv1(value))]
+            for index in range(2, 5):
                 features.append(self.activation(getattr(self, f"conv{index}")(torch.cat(features, dim=1))))
             return value + self.conv5(torch.cat(features, dim=1)) * .2
 
@@ -69,11 +72,12 @@ def _key_mapping():
     return {f"{source}.{part}": f"{target}.{part}" for source, target in modules.items() for part in ("weight", "bias")}
 
 
-def load_remacri(path, device="cpu"):
+def load_remacri(path, device="cpu", *, upload, report):
     """Load only the host-selected fixed local filename, strictly as FP32."""
     import torch
     from safetensors import safe_open
 
+    started = time.perf_counter()
     path = Path(path)
     if not path.is_absolute() or path.name != WEIGHT_NAME or not path.is_file():
         raise ValueError(f"Remacri requires an existing absolute local {WEIGHT_NAME}")
@@ -100,50 +104,53 @@ def load_remacri(path, device="cpu"):
                 raise ValueError(f"Nonfinite Remacri weights: {original}")
             state[target] = value
     model.load_state_dict(state, strict=True, assign=True)
-    return model.eval().requires_grad_(False).to(device=device, dtype=torch.float32)
+    model.eval().requires_grad_(False)
+    report["readWallSeconds"] = time.perf_counter() - started
+    started = time.perf_counter()
+    observation = {}
+    if device.type != "cuda" or not upload([model], target_device=device, observation=observation):
+        model.to(device=device, dtype=torch.float32)
+        observation["strategy"] = "module-to"
+    report.update(uploadWallSeconds=time.perf_counter() - started, upload=observation)
+    return model
 
 
-def upscale_4x(model, images, *, tile_size=192, overlap=32):
-    """Tiled FP32 RGB [N,3,H,W] -> [N,3,4H,4W], retained on the input device.
+def run(images, path, device, *, tools, expected, error):
+    """Own one checked upscaler only for this pass; keep profile byte fences."""
+    if expected is not None and tools("native_hash").file_sha256(path) != expected:
+        raise error("MODEL_CHANGED", "Upscaler bytes changed after profile validation")
+    report = {"executionRevision": EXECUTION_REVISION, "loading": {}}
+    model = load_remacri(path, device=device, upload=tools("native_upload").try_packed_upload,
+                        report=report["loading"])
+    if expected is not None and tools("native_hash").file_sha256(path) != expected:
+        raise error("MODEL_CHANGED", "Upscaler bytes changed while loading")
+    return upscale_4x(model, images, tiling=tools("anima_tiling"), report=report), report
 
-    The input is finite display RGB in [0,1]; the caller owns that pixel contract.
-    Model and image must share CPU/CUDA device. Each batch item runs separately;
-    tile core is 1..256 input pixels, halo is 0..64 and smaller than the core.
-    Context is cropped, never blended into protected adjacent output regions.
-    A finite halo can produce seams/differ from whole-frame RRDB inference.
 
-    Only intermediate tile activations are bounded. The complete FP32 output
-    still requires N*3*(4H)*(4W)*4 bytes; GPU fit and large-image quality require
-    device validation. No OOM retry, implicit model offload or precision change.
-    """
+def upscale_4x(model, images, *, tile_size=512, overlap=32, tiling=None, report=None):
+    """FP32 RRDB tiles with CPU feather assembly; CUDA OOM retries 256/128."""
     import torch
     if (not isinstance(images, torch.Tensor) or images.ndim != 4 or images.shape[1] != 3
             or any(size <= 0 for size in images.shape)
             or images.dtype not in (torch.float16, torch.bfloat16, torch.float32)
             or images.device.type not in ("cpu", "cuda")):
         raise ValueError("Remacri requires a nonempty CPU/CUDA floating RGB [N,3,H,W] tensor")
-    if (type(tile_size) is not int or not 1 <= tile_size <= 256 or type(overlap) is not int
-            or not 0 <= overlap <= 64 or overlap >= tile_size):
-        raise ValueError("Remacri tile core must be 1..256 and overlap 0..64, smaller than the core")
+    if tile_size not in (128, 256, 512) or overlap != 32 or tiling is None:
+        raise ValueError("Remacri requires 512/256/128 tiles, overlap 32 and the bundled tiling helper")
     parameter = next(model.parameters())
-    if parameter.dtype != torch.float32 or parameter.device != images.device:
-        raise ValueError("Remacri model must be FP32 on the input image device")
-    batch, _, height, width = images.shape
-    with torch.no_grad(), torch.autocast(device_type=images.device.type, enabled=False):
-        output = torch.empty((batch, 3, height * 4, width * 4), device=images.device, dtype=torch.float32)
-        for index in range(batch):
-            for top in range(0, height, tile_size):
-                bottom = min(top + tile_size, height)
-                start_y, end_y = max(0, top - overlap), min(height, bottom + overlap)
-                for left in range(0, width, tile_size):
-                    right = min(left + tile_size, width)
-                    start_x, end_x = max(0, left - overlap), min(width, right + overlap)
-                    patch = images[index:index + 1, :, start_y:end_y, start_x:end_x].float()
-                    tile = model(patch)
-                    if tile.shape != (1, 3, (end_y - start_y) * 4, (end_x - start_x) * 4):
-                        raise ValueError("Remacri returned an invalid 4x RGB tile")
-                    y, x = (top - start_y) * 4, (left - start_x) * 4
-                    output[index:index + 1, :, top * 4:bottom * 4, left * 4:right * 4] = (
-                        tile[:, :, y:y + (bottom - top) * 4, x:x + (right - left) * 4].clamp(0, 1))
-                    del tile, patch
-        return output
+    if parameter.dtype != torch.float32 or parameter.device.type not in ("cpu", "cuda"):
+        raise ValueError("Remacri model must be FP32 on CPU/CUDA")
+    report = {} if report is None else report
+    with torch.no_grad(), torch.autocast(device_type=parameter.device.type, enabled=False):
+        while True:
+            try:
+                output = tiling.stitch(images, lambda patch: model(patch.to(device=parameter.device, dtype=torch.float32)),
+                    tile=tile_size, overlap=overlap, scale=4, channels=3, report=report)
+                return output.clamp_(0, 1)
+            except torch.cuda.OutOfMemoryError:
+                if parameter.device.type != "cuda" or tile_size <= 128:
+                    raise
+            # Leave the exception scope before releasing the allocator: the
+            # failed stitch's traceback must not retain tile activations.
+            torch.cuda.empty_cache()
+            tile_size //= 2

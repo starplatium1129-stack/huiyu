@@ -97,17 +97,23 @@ impl ControlService {
             }
         }
     }
+    fn cached_health(&self) -> Option<Value> {
+        let state = self.state.lock().unwrap();
+        state
+            .health_at
+            .filter(|at| at.elapsed() < Duration::from_secs(2))
+            .map(|_| state.health.clone())
+    }
     pub(super) async fn health(&self, fresh: bool) -> Value {
+        // A forced probe may be waiting on offline services. Ordinary polls can
+        // still use a valid snapshot without joining that network wait.
+        if !fresh && let Some(value) = self.cached_health() {
+            return value;
+        }
         let _guard = self.probe_lock.lock().await;
-        {
-            let state = self.state.lock().unwrap();
-            if !fresh
-                && state
-                    .health_at
-                    .is_some_and(|at| at.elapsed() < Duration::from_secs(2))
-            {
-                return state.health.clone();
-            }
+        // Another caller may have published a snapshot while we waited.
+        if !fresh && let Some(value) = self.cached_health() {
+            return value;
         }
         let settings = self.settings();
         let (sd, comfy, tts, mut result, llama) = tokio::join!(
@@ -121,9 +127,17 @@ impl ControlService {
         result["comfyOnline"] = json!(comfy);
         result["ttsOnline"] = json!(tts);
         result["llama"] = llama;
+        let inference = self.active_inference().ok();
+        result["imageProvider"] = json!(inference.as_ref().map(|settings| &settings.engine));
+        result["nativeRuntimeFilesReady"] = json!(match inference {
+            Some(settings) if settings.engine == "native" =>
+                settings.validate_files().await.is_ok(),
+            _ => false,
+        });
+        let comfy_owned = self.comfy_owned().await;
         let mut state = self.state.lock().unwrap();
         result["webuiManaged"] = json!(state.managed[0].owned);
-        result["comfyManaged"] = json!(state.managed[1].owned);
+        result["comfyManaged"] = json!(comfy_owned);
         state.health = result.clone();
         state.health_at = Some(Instant::now());
         result

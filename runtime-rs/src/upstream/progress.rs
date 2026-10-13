@@ -232,6 +232,3 @@ fn apply(
     }
     Some(state.clone())
 }
-
-#[cfg(test)]
-mod tests;

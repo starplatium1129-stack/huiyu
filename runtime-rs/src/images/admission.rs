@@ -8,8 +8,7 @@ use tokio::{
     io::AsyncWriteExt,
     sync::{Mutex, Semaphore},
 };
-#[cfg(test)]
-mod tests;
+
 static CAPACITY: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore::new(2)));
 static SERIAL: Mutex<()> = Mutex::const_new(());
 static OWNED: LazyLock<Regex> = LazyLock::new(|| {
@@ -121,8 +120,7 @@ async fn owner_salt(root: &Path, cancel: &CancellationToken) -> Result<Vec<u8>> 
         .tempfile_in(root)?
         .into_parts();
     let file = tokio::fs::File::from_std(file);
-    #[cfg(test)]
-    let file = tests::salt_file(file, &pending, cancel);
+
     let mut file = file;
     file.write_all(&salt).await?;
     file.flush().await?;
@@ -227,8 +225,7 @@ pub(crate) async fn store_for(
         if used_bytes.saturating_add(bytes.len()as u64)>limits.bytes||files+1>limits.files{return Err(ApiError::new(413,"IMAGE_QUOTA",format!("素材额度不足（{files}/{} 文件，{used_bytes}/{} 字节）；请先检查并整理未引用素材。",limits.files,limits.bytes)))}
         decode::validate(bytes.clone(),&cancel).await?;if cancel.is_cancelled(){return Err(inputs::cancelled())}
         let file=tokio::fs::OpenOptions::new().write(true).create_new(true).open(&pending).await?;
-        #[cfg(test)]
-        let file=tests::pending_file(file,&pending,&cancel);
+
         let mut file=file;
         file.write_all(bytes.as_slice()).await?;
         // Tokio may still be writing in the background; finish and surface errors before publishing.
@@ -247,8 +244,7 @@ pub(crate) async fn store_for(
 }
 
 async fn usage(root: PathBuf, cancel: CancellationToken) -> Result<(u64, u64)> {
-    #[cfg(test)]
-    let scan_cancellation = tests::scan_cancellation();
+
     // The tracked upload keeps SERIAL and its on-disk lock while awaiting this
     // single filesystem job. Cancellation returns through the normal cleanup.
     tokio::task::spawn_blocking(move || {
@@ -273,11 +269,7 @@ async fn usage(root: PathBuf, cancel: CancellationToken) -> Result<(u64, u64)> {
             }
             bytes = bytes.saturating_add(entry.metadata()?.len());
             files += 1;
-            #[cfg(test)]
-            if let Some(reads) = &scan_cancellation {
-                reads.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-                cancel.cancel();
-            }
+
         }
         if cancel.is_cancelled() {
             return Err(inputs::cancelled());

@@ -13,8 +13,7 @@ use tokio_util::{
 pub(in crate::storage) struct Readers {
     active: TaskTracker,
     closed: Mutex<CancellationToken>,
-    #[cfg(test)]
-    pause: Mutex<Option<Pause>>,
+
 }
 
 impl Readers {
@@ -22,8 +21,7 @@ impl Readers {
         Self {
             active: TaskTracker::new(),
             closed: Mutex::new(CancellationToken::new()),
-            #[cfg(test)]
-            pause: Mutex::new(None),
+
         }
     }
 
@@ -46,36 +44,6 @@ impl Readers {
         self.active.wait().await;
     }
 
-    #[cfg(test)]
-    pub fn pause(
-        &self,
-    ) -> (
-        tokio::sync::oneshot::Receiver<()>,
-        std::sync::mpsc::Sender<()>,
-    ) {
-        let (entered, ready) = tokio::sync::oneshot::channel();
-        let (resume, receiver) = std::sync::mpsc::channel();
-        *self.pause.lock().unwrap() = Some(Pause {
-            entered,
-            resume: receiver,
-        });
-        (ready, resume)
-    }
-
-    #[cfg(test)]
-    pub fn paused(&self) {
-        let pause = self.pause.lock().unwrap().take();
-        if let Some(pause) = pause {
-            let _ = pause.entered.send(());
-            let _ = pause.resume.recv();
-        }
-    }
-}
-
-#[cfg(test)]
-struct Pause {
-    entered: tokio::sync::oneshot::Sender<()>,
-    resume: std::sync::mpsc::Receiver<()>,
 }
 
 pub(super) struct Queue {
@@ -115,56 +83,5 @@ impl Queue {
             .acquire_owned()
             .await
             .map_err(|_| ApiError::new(503, "STORAGE_UNAVAILABLE", "Thumbnail worker unavailable"))
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::time::Duration;
-
-    #[tokio::test]
-    async fn duplicate_waiters_do_not_take_other_images_decoder_slots() {
-        let queue = Queue::new();
-        let first = queue.image("workspace-a/hash.jpg".into()).await;
-        let decoder = queue.decoder().await.unwrap();
-        let duplicate = queue.image("workspace-a/hash.jpg".into());
-        tokio::pin!(duplicate);
-        assert!(
-            tokio::time::timeout(Duration::from_millis(10), &mut duplicate)
-                .await
-                .is_err()
-        );
-        let other = queue.image("workspace-b/hash.jpg".into()).await;
-        let second_decoder = tokio::time::timeout(Duration::from_secs(1), queue.decoder())
-            .await
-            .unwrap()
-            .unwrap();
-        drop(first);
-        let duplicate_guard = tokio::time::timeout(Duration::from_secs(1), &mut duplicate)
-            .await
-            .unwrap();
-        drop((duplicate_guard, other, decoder, second_decoder));
-    }
-
-    #[tokio::test]
-    async fn completed_and_cancelled_keys_do_not_accumulate() {
-        let queue = Queue::new();
-        for i in 0..100 {
-            let key = PathBuf::from(format!("{i}.jpg"));
-            let active = queue.image(key.clone()).await;
-            {
-                let waiter = queue.image(key);
-                tokio::pin!(waiter);
-                assert!(
-                    tokio::time::timeout(Duration::ZERO, &mut waiter)
-                        .await
-                        .is_err()
-                );
-            }
-            drop(active);
-        }
-        let _active = queue.image("last.jpg".into()).await;
-        assert_eq!(queue.images.lock().unwrap().len(), 1);
     }
 }

@@ -151,11 +151,7 @@ pub(super) fn bytes(path: &Path, max: u64, hardlinks: bool) -> Result<Vec<u8>> {
     if bytes.len() as u64 > max {
         return Err(Error::new("METADATA_INVALID", "File exceeds limit"));
     }
-    #[cfg(test)]
-    {
-        super::tests::overlay::observe(path, bytes.len() as u64, true);
-        super::tests::overlay::checkpoint(path, bytes.len() as u64);
-    }
+
     Ok(bytes)
 }
 pub(super) fn json(path: &Path, optional: bool, hardlinks: bool) -> Result<Option<Value>> {
@@ -297,11 +293,9 @@ fn read_verified(
         if let Some(bytes) = &mut output {
             bytes.extend_from_slice(&buffer[..count]);
         }
-        #[cfg(test)]
-        super::tests::overlay::checkpoint(path, total);
+
     }
     super::config::cancelled(cancel)?;
-    #[cfg(test)]
-    super::tests::overlay::observe(path, total, output.is_some());
+
     Ok(total == entry.bytes && hex::encode(hash.finalize()) == entry.sha256)
 }

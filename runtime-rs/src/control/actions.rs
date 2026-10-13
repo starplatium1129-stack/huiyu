@@ -186,6 +186,11 @@ impl ControlService {
             self.save_managed().await?;
         }
         if start && self.online(index, &settings).await {
+            if index == 1 {
+                let owned = self.comfy_owned().await;
+                self.state.lock().unwrap().managed[1].owned = owned;
+                self.comfy_cancel.lock().unwrap().take();
+            }
             if !op["kind"]
                 .as_str()
                 .is_some_and(|kind| kind.starts_with("mode-"))
@@ -211,6 +216,9 @@ impl ControlService {
             )
             .await
         };
+        if index == 1 {
+            self.comfy_cancel.lock().unwrap().take();
+        }
         if self.shutdown.is_cancelled() {
             return Err(ApiError::new(499, "ABORTED", "服务操作已取消"));
         }
@@ -249,7 +257,7 @@ impl ControlService {
     async fn save_managed(&self) -> Result<()> {
         let managed = {
             let state = self.state.lock().unwrap();
-            json!({"webui":state.managed[0].desired,"comfy":state.managed[1].desired})
+            json!({"webui":state.managed[0].desired,"comfy":state.managed[1].desired, "comfyHost":self.config.comfy_host, "comfyRoot":self.comfy_root()})
         };
         self.patch(json!({"managedServices":managed})).await?;
         Ok(())
@@ -298,19 +306,35 @@ impl ControlService {
         Ok(())
     }
     pub(super) fn launch(self: &Arc<Self>, kind: String) -> Result<Value> {
+        let native_drawing = kind == "mode-draw" && self.active_inference()?.engine == "native";
         let stages = if kind == "mode-draw" {
             vec![
                 "正在停止语音服务",
                 "正在卸载聊天模型",
-                "正在启动绘图服务",
-                "正在验证绘图环境",
+                if native_drawing {
+                    "正在准备独立绘图"
+                } else {
+                    "正在启动绘图服务"
+                },
+                if native_drawing {
+                    "入口文件就绪，模型按需加载"
+                } else {
+                    "正在验证绘图环境"
+                },
             ]
         } else if kind == "mode-chat" {
-            vec!["正在释放受管 WebUI", "正在启动语音服务", "正在验证聊天环境"]
+            vec![
+                "正在释放空闲绘图模型",
+                "正在启动语音服务",
+                "正在验证聊天环境",
+            ]
         } else {
             vec!["正在操作服务", "正在验证服务状态"]
         };
         let op = self.begin(&kind, &stages)?;
+        if kind == "comfy-start" || (kind == "mode-draw" && !native_drawing) {
+            *self.comfy_cancel.lock().unwrap() = Some(self.shutdown.child_token());
+        }
         let response = json!({"ok":true,"pending":true,"operation":op,"message":"操作已开始"});
         let service = self.clone();
         self.tasks.spawn(async move {
@@ -319,6 +343,9 @@ impl ControlService {
                     "llama-stop" => service.stop_llama().await,
                     "ollama-unload" => service.unload().await,
                     "mode-draw" => {
+                        if native_drawing {
+                            service.active_inference()?.validate_files().await?;
+                        }
                         service.service_action(2, false, &op).await?;
                         service.stage(&op, 1);
                         service.stop_llama().await?;
@@ -328,11 +355,17 @@ impl ControlService {
                             service.unload().await?;
                         }
                         service.stage(&op, 2);
-                        service.service_action(1, true, &op).await?;
+                        if native_drawing {
+                            service.release_comfy_models().await?;
+                            service.log("独立绘图入口文件就绪，首次生成时按需加载模型；依赖与 CUDA 需另行检查");
+                        } else {
+                            service.service_action(1, true, &op).await?;
+                        }
                         service.stage(&op, 3);
                         Ok(())
                     }
                     "mode-chat" => {
+                        let _handoff = service.native_chat_handoff().await?;
                         service.release_comfy_models().await?;
                         service.stage(&op, 1);
                         service.service_action(2, true, &op).await?;

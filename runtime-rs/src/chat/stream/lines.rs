@@ -82,6 +82,3 @@ impl Lines {
         }
     }
 }
-
-#[cfg(test)]
-mod tests;

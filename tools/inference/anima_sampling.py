@@ -26,11 +26,14 @@ def _res_scheduler_class():
 def call_options(scheduler_name, steps, scheduler):
     """Return pipeline options for a caller-validated positive step count.
 
-    simple deliberately leaves the existing Anima pipeline defaults unchanged.
+    simple uniformly subsamples the 1000-entry training grid for both samplers.
     normal supplies N pre-shift values, never the N+1 final sigma sequence.
     """
     if scheduler_name == "simple":
-        return {}
+        validate_flow_config(scheduler, scheduler_name)
+        import torch
+        ticks = [1000 - int(i * (1000 / steps)) for i in range(steps)]
+        return {"sigmas": (torch.tensor(ticks, dtype=torch.float32, device="cpu") / 1000).tolist()}
     if scheduler_name not in ("normal", "sgm_uniform"):
         raise ValueError(f"Unsupported Anima scheduler: {scheduler_name}")
     validate_flow_config(scheduler, scheduler_name)
@@ -58,15 +61,10 @@ def validate_flow_config(scheduler, name):
 
 
 def res_call_options(scheduler_name, steps, scheduler):
-    """RES simple uses the 1000-entry training grid, preserving Euler simple."""
-    if scheduler_name != "simple":
-        return call_options(scheduler_name, steps, scheduler)
-    validate_flow_config(scheduler, "res_multistep/simple")
-    import torch
-
-    # Uniform subsampling of descending training indices, before static shift.
-    ticks = [1000 - int(i * (1000 / steps)) for i in range(steps)]
-    return {"sigmas": (torch.tensor(ticks, dtype=torch.float32, device="cpu") / 1000).tolist()}
+    """RES cannot evaluate repeated sigmas from an oversampled training grid."""
+    if scheduler_name == "simple" and steps > 1000:
+        raise ValueError("RES/simple requires at most 1000 full-grid entries")
+    return call_options(scheduler_name, steps, scheduler)
 
 
 def new_scheduler(sampler_name, scheduler_config):
@@ -97,9 +95,4 @@ def refinement_options(name, steps, strength, scheduler, *, sampler="euler"):
         raise ValueError("Anima refinement needs positive integer steps and 0 < strength <= 1")
     full = max(steps, int(steps / strength))
     options = sampling_options(sampler, name, full, scheduler)
-    if not options:
-        # Preserve the official Anima pipeline's Euler/simple default exactly.
-        import numpy as np
-
-        options = {"sigmas": np.linspace(1.0, 1 / full, full).tolist()}
     return {"sigmas": options["sigmas"][-steps:], "num_inference_steps": steps, "strength": 1.0}

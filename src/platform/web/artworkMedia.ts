@@ -1,8 +1,8 @@
 import { imgPut, imgGet, imgCount } from '../../composables/useImageStore.ts'
 import { blobThumbDataUrl, thumbKey } from '../../utils/imageThumb.ts'
-import type { ArtworkKvAdapter, ArtworkImageAdapter, WebArtworkRepositoryDependencies } from './artworkStorage.ts'
+import type { ArtworkKvAdapter, ArtworkImageAdapter } from './artworkStorage.ts'
 
-export function createArtworkMedia(kv: ArtworkKvAdapter, images: ArtworkImageAdapter, dependencies: WebArtworkRepositoryDependencies) {
+export function createArtworkMedia(kv: ArtworkKvAdapter, images: ArtworkImageAdapter) {
   async function getThumbnail(id: string): Promise<string | null> {
     const value = await kv.get(thumbKey(id))
     return typeof value === 'string' ? value : null
@@ -21,13 +21,13 @@ export function createArtworkMedia(kv: ArtworkKvAdapter, images: ArtworkImageAda
     getImage: async (id: string, signal?: AbortSignal) => {
       // IndexedDB adapter reads are not abortable; suppress obsolete publication.
       signal?.throwIfAborted()
-      const blob = dependencies.images ? (await images.get(id))?.blob ?? null : await imgGet(id)
+      const blob = await imgGet(id)
       signal?.throwIfAborted()
       return blob
     },
-    putImage: (blob: Blob) => dependencies.images?.put ? dependencies.images.put(blob) : imgPut(blob),
+    putImage: imgPut,
     deleteImage: (id: string) => images.deleteMany([id]),
-    countImages: () => dependencies.images?.count ? dependencies.images.count() : imgCount(),
+    countImages: imgCount,
     getThumbnail, setThumbnail, cacheThumbnail,
   }
 }

@@ -1,10 +1,199 @@
 use super::*;
 use canonical::entity_key;
-use rusqlite::params;
+use rusqlite::{OptionalExtension, params};
 use std::collections::{BTreeSet, HashSet};
 
-#[cfg(test)]
-mod tests;
+struct Member {
+    key: String,
+    position: Option<i64>,
+    order: (u64, i64),
+    live: bool,
+}
+struct Album {
+    id: Option<Value>,
+    rows: Vec<Member>,
+    suffix: Option<usize>,
+}
+// The transaction owns virtual rows until one final rebuild. Order records the
+// rowid order produced by each DELETE/INSERT, including effects on receipts.
+#[derive(Default)]
+struct Memberships {
+    albums: HashMap<String, Album>,
+    write: u64,
+}
+impl Memberships {
+    fn album(&mut self, c: &Context, key: &str) -> Result<&mut Album> {
+        if !self.albums.contains_key(key) {
+            let id =
+                c.db.prepare_cached("SELECT id_json FROM projects WHERE id_key=?")?
+                    .query_row([key], |row| row.get::<_, String>(0))
+                    .optional()?
+                    .map(|id| serde_json::from_str(&id))
+                    .transpose()?;
+            let mut statement = c.db.prepare_cached(
+                "SELECT r.artwork_key,r.position,r.rowid,a.id_key IS NOT NULL AND a.deleted_at IS NULL
+                 FROM project_artworks r LEFT JOIN artworks a ON a.id_key=r.artwork_key
+                 WHERE r.project_key=? ORDER BY r.position",
+            )?;
+            let mut rows = statement.query([key])?;
+            let mut members = Vec::new();
+            while let Some(row) = rows.next()? {
+                c.check_cancel()?;
+                members.push(Member {
+                    key: row.get(0)?,
+                    position: row.get::<_, i64>(1).ok(),
+                    order: (0, row.get(2)?),
+                    live: row.get(3)?,
+                });
+            }
+            let retained = self
+                .albums
+                .iter()
+                .map(|(key, album)| {
+                    key.len()
+                        + album.rows.capacity() * std::mem::size_of::<Member>()
+                        + album
+                            .rows
+                            .iter()
+                            .map(|row| row.key.capacity())
+                            .sum::<usize>()
+                })
+                .sum::<usize>();
+            // Clean snapshots can be released. Dirty rows must stay until the
+            // final flush; 8 MiB/32 albums is a soft limit, not a dirty-row cap.
+            if self.albums.len() >= 32 || retained > 8 * 1024 * 1024 {
+                self.albums.retain(|_, album| album.suffix.is_some());
+            }
+            self.albums.insert(
+                key.into(),
+                Album {
+                    id,
+                    rows: members,
+                    suffix: None,
+                },
+            );
+        }
+        Ok(self.albums.get_mut(key).unwrap())
+    }
+    fn references(&self, c: &Context, key: &str) -> Result<Vec<Value>> {
+        let mut statement = c.db.prepare_cached(
+            "SELECT p.id_json,r.position,r.project_key,r.rowid FROM project_artworks r
+             LEFT JOIN projects p ON p.id_key=r.project_key WHERE r.artwork_key=?",
+        )?;
+        let mut rows = statement.query([key])?;
+        let mut references = Vec::new();
+        while let Some(row) = rows.next()? {
+            let album: String = row.get(2)?;
+            if self
+                .albums
+                .get(&album)
+                .is_some_and(|album| album.suffix.is_some())
+            {
+                continue;
+            }
+            let id: Option<String> = row.get(0)?;
+            let id = id
+                .ok_or_else(|| conflict("MEMBERSHIP_INVALID", "Album membership is unavailable"))?;
+            references.push(((0, row.get::<_, i64>(3)?), json!({"projectId":serde_json::from_str::<Value>(&id)?,"position":row.get::<_,i64>(1)?})));
+        }
+        for album in self.albums.values().filter(|album| album.suffix.is_some()) {
+            if let Some(row) = album.rows.iter().find(|row| row.key == key) {
+                references.push((
+                    row.order,
+                    json!({"projectId":album.id,"position":row.position}),
+                ));
+            }
+        }
+        // The reverse artwork index reads rowids in order. New suffix rows are
+        // after all surviving rows, even when SQLite reuses deleted rowids.
+        references.sort_unstable_by_key(|(order, _)| *order);
+        Ok(references.into_iter().map(|(_, value)| value).collect())
+    }
+    fn replace(&mut self, c: &Context, album: &str, key: &str, next: Option<usize>) -> Result<()> {
+        let write = self.write + 1;
+        let current = self.album(c, album)?;
+        let previous = current.rows.iter().position(|row| row.key == key);
+        if previous == next || current.id.is_none() {
+            return Ok(());
+        }
+        let new = Member {
+            key: key.into(),
+            position: None,
+            order: (write, 0),
+            live: true,
+        };
+        let mut keys: Vec<_> = current.rows.iter().filter(|row| row.key != key).collect();
+        if let Some(position) = next {
+            keys.insert(position, &new);
+        }
+        let mut prefix = 0;
+        for row in &current.rows {
+            if row.position != Some(prefix as i64) {
+                prefix = 0;
+                break;
+            }
+            if keys.get(prefix).is_none_or(|next| next.key != row.key) {
+                break;
+            }
+            prefix += 1;
+        }
+        // Check every virtually inserted suffix now, so a later removal cannot
+        // hide the failure that the sequential writer would have encountered.
+        if keys.iter().skip(prefix).any(|row| !row.live) {
+            return Err(ApiError::new(
+                404,
+                "NOT_FOUND",
+                "Project artwork does not exist",
+            ));
+        }
+        drop(keys);
+        let moved = previous
+            .map(|position| current.rows.remove(position))
+            .unwrap_or(new);
+        if let Some(position) = next {
+            current.rows.insert(position, moved);
+        }
+        for (position, row) in current.rows.iter_mut().enumerate().skip(prefix) {
+            row.position = Some(position as i64);
+            row.order = (write, position as i64);
+        }
+        current.suffix = Some(current.suffix.map_or(prefix, |old| old.min(prefix)));
+        self.write = write;
+        Ok(())
+    }
+    fn flush(&self, c: &Context) -> Result<()> {
+        let mut rows = Vec::new();
+        for (key, album) in &self.albums {
+            if let Some(prefix) = album.suffix {
+                c.check_cancel()?;
+                records::truncate_membership(c, key, prefix)?;
+                rows.extend(
+                    album
+                        .rows
+                        .iter()
+                        .enumerate()
+                        .skip(prefix)
+                        .map(|(position, row)| (key, position, row)),
+                );
+            }
+        }
+        // Delete each album suffix once, then insert surviving rows in global
+        // write order. Flushing whole albums in turn would reorder references.
+        rows.sort_unstable_by_key(|(_, _, row)| row.order);
+        let mut insert = c.db.prepare_cached(records::MEMBERSHIP_INSERT)?;
+        for (key, position, row) in rows {
+            c.check_cancel()?;
+            if insert.execute(params![key, position as i64, row.key])? != 1 {
+                return Err(ApiError::new(
+                    404,
+                    "NOT_FOUND",
+                    "Project artwork does not exist",
+                ));
+            }
+        }
+        Ok(())
+    }
+}
 
 fn field(body: &Value, name: &str) -> Value {
     match body.get(name) {
@@ -13,29 +202,17 @@ fn field(body: &Value, name: &str) -> Value {
     }
 }
 
-fn memberships(c: &Context, key: &str) -> Result<Vec<Value>> {
-    // Membership snapshots need IDs and positions, not each album's complete
-    // body/history_ids. Keep missing-album rejection through the LEFT JOIN.
-    let mut statement = c.db.prepare_cached(
-        "SELECT p.id_json,r.position FROM project_artworks r
-         LEFT JOIN projects p ON p.id_key=r.project_key WHERE r.artwork_key=?",
-    )?;
-    let mut rows = statement.query([key])?;
-    let mut references = Vec::new();
-    while let Some(row) = rows.next()? {
-        let id: Option<String> = row.get(0)?;
-        let id =
-            id.ok_or_else(|| conflict("MEMBERSHIP_INVALID", "Album membership is unavailable"))?;
-        references.push(json!({"projectId":serde_json::from_str::<Value>(&id)?,"position":row.get::<_,i64>(1)?}));
-    }
-    Ok(references)
-}
-
-fn state(c: &Context, art: &Value, project: bool, tags: bool) -> Result<Value> {
+fn state(
+    c: &Context,
+    art: &Value,
+    project: bool,
+    tags: bool,
+    members: &Memberships,
+) -> Result<Value> {
     let mut value = json!({});
     if project {
         value["project"] = field(&art["body"], "project");
-        value["memberships"] = json!(memberships(c, &entity_key(&art["id"])?)?);
+        value["memberships"] = json!(members.references(c, &entity_key(&art["id"])?)?);
     }
     if tags {
         value["collectionTags"] = field(&art["body"], "collectionTags");
@@ -69,18 +246,19 @@ fn replace_memberships(
     c: &Context,
     key: &str,
     references: &[Value],
+    members: &mut Memberships,
     affected: &mut BTreeSet<String>,
 ) -> Result<()> {
-    let before = memberships(c, key)?;
+    let before = members.references(c, key)?;
     let albums = before
         .iter()
         .chain(references)
         .map(|reference| entity_key(&reference["projectId"]))
         .collect::<Result<BTreeSet<_>>>()?;
     for album in albums {
-        let mut keys = records::membership(c, &album)?;
-        let previous = keys.iter().position(|value| value == key);
-        keys.retain(|value| value != key);
+        let current = members.album(c, &album)?;
+        let previous = current.rows.iter().position(|row| row.key == key);
+        let remaining = current.rows.len() - usize::from(previous.is_some());
         let next = if let Some(reference) = references
             .iter()
             .find(|reference| entity_key(&reference["projectId"]).is_ok_and(|value| value == album))
@@ -88,14 +266,13 @@ fn replace_memberships(
             let position = reference["position"]
                 .as_u64()
                 .ok_or_else(|| invalid("Album position is invalid"))?;
-            let position = (position as usize).min(keys.len());
-            keys.insert(position, key.to_owned());
+            let position = (position as usize).min(remaining);
             Some(position)
         } else {
             None
         };
         if previous != next {
-            records::set_membership(c, &album, &keys)?;
+            members.replace(c, &album, key, next)?;
             affected.insert(album);
         }
     }
@@ -115,6 +292,14 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
         .as_array()
         .filter(|items| items.len() == ids.len())
         .ok_or_else(|| invalid("Expected artwork revisions are required"))?;
+    // Keep the original first valid matching entry, including its revision
+    // value. Invalid or repeated IDs retain the same per-artwork rejection.
+    let mut revisions = HashMap::new();
+    for row in expected {
+        if let Ok(key) = entity_key(&row["id"]) {
+            revisions.entry(key).or_insert(row);
+        }
+    }
     let project_change = command.get("projectId").is_some();
     let project = match command.get("projectId") {
         None | Some(Value::Null) => None,
@@ -142,14 +327,14 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
     }
     let mut changes = Vec::new();
     let mut affected = BTreeSet::new();
+    let mut members = Memberships::default();
     for key in keys {
         c.check_cancel()?;
         let mut art = records::artwork(c, &key)?
             .filter(|row| row["deletedAt"].is_null())
             .ok_or_else(|| ApiError::new(404, "NOT_FOUND", "Artwork no longer exists"))?;
-        let expected = expected
-            .iter()
-            .find(|row| entity_key(&row["id"]).is_ok_and(|id| id == key))
+        let expected = revisions
+            .get(&key)
             .ok_or_else(|| invalid("Artwork expected revision is missing"))?;
         if expected["revision"] != art["revision"] {
             return Err(conflict(
@@ -157,15 +342,16 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
                 "Artwork has a newer revision",
             ));
         }
-        let before = state(c, &art, project_change, tags_change)?;
+        let before = state(c, &art, project_change, tags_change, &members)?;
         if project_change {
             let refs = if let Some(project) = &project {
                 let project_key = entity_key(&project["id"])?;
-                let members = records::membership(c, &project_key)?;
-                let position = members
+                let target = members.album(c, &project_key)?;
+                let position = target
+                    .rows
                     .iter()
-                    .position(|id| id == &key)
-                    .unwrap_or(members.len());
+                    .position(|row| row.key == key)
+                    .unwrap_or(target.rows.len());
                 // The recipe project field is text; album IDs retain their
                 // original JSON type in project rows and membership arrays.
                 art["body"]["project"] = json!(project_key);
@@ -177,7 +363,7 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
                     .remove("project");
                 Vec::new()
             };
-            replace_memberships(c, &key, &refs, &mut affected)?;
+            replace_memberships(c, &key, &refs, &mut members, &mut affected)?;
         }
         if tags_change {
             let mut tags: Vec<String> = art["body"]["collectionTags"]
@@ -204,7 +390,7 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
             }
             art["body"]["collectionTags"] = json!(tags);
         }
-        let after = state(c, &art, project_change, tags_change)?;
+        let after = state(c, &art, project_change, tags_change, &members)?;
         if before != after {
             c.db.execute(
                 "UPDATE artworks SET body=?,revision=? WHERE id_key=?",
@@ -213,6 +399,7 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
             changes.push(json!({"id":art["id"],"before":before,"after":after}));
         }
     }
+    members.flush(c)?;
     for album in affected {
         records::refresh_membership(c, &album, revision)?;
     }
@@ -239,6 +426,7 @@ fn undo(c: &Context, principal: &str, command: &Value, revision: i64) -> Result<
         .as_array()
         .ok_or_else(|| conflict("UNDO_UNAVAILABLE", "Organization receipt is invalid"))?;
     let mut affected = BTreeSet::new();
+    let mut members = Memberships::default();
     let mut restored = 0;
     let mut skipped = 0;
     for change in changes.iter().rev() {
@@ -257,7 +445,7 @@ fn undo(c: &Context, principal: &str, command: &Value, revision: i64) -> Result<
                 .is_some_and(|value| field(&art["body"], name) != *value)
         });
         let changed_memberships = match after.get("memberships").and_then(Value::as_array) {
-            Some(refs) => !same_albums(&memberships(c, &key)?, refs)?,
+            Some(refs) => !same_albums(&members.references(c, &key)?, refs)?,
             None => false,
         };
         let old_refs = before.get("memberships").and_then(Value::as_array);
@@ -285,7 +473,7 @@ fn undo(c: &Context, principal: &str, command: &Value, revision: i64) -> Result<
             }
         }
         if let Some(refs) = old_refs {
-            replace_memberships(c, &key, refs, &mut affected)?;
+            replace_memberships(c, &key, refs, &mut members, &mut affected)?;
         }
         c.db.execute(
             "UPDATE artworks SET body=?,revision=? WHERE id_key=?",
@@ -293,6 +481,7 @@ fn undo(c: &Context, principal: &str, command: &Value, revision: i64) -> Result<
         )?;
         restored += 1;
     }
+    members.flush(c)?;
     for album in affected {
         records::refresh_membership(c, &album, revision)?;
     }

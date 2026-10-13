@@ -1,6 +1,6 @@
 # 项目状态
 
-整理日期：2026-10-09。此页维护当前身份、能力与限制；旧过程已归入 Git 历史，不在工作目录保留日期副本。今天的性能交付见[执行报告](audits/2026-10-09/fullstack-performance.html)。
+整理日期：2026-10-12。此页维护当前身份、能力与限制；旧过程已归入 Git 历史，不在工作目录保留日期副本。今天的性能交付见[执行报告](audits/2026-10-09/fullstack-performance.html)。
 
 ## 源码与本机安装
 
@@ -20,7 +20,8 @@
 | --- | --- | --- |
 | 持久化与任务 | Web 保留 IndexedDB；桌面激活后由 Rust/SQLite 持有权威；已接受任务独立于页面生命周期，失联不降级双写 | 历史来源、其他机器、大规模数据及真实故障场景按 [Workspace](architecture/WORKSPACE-MIGRATION-DESIGN.md) 与[任务契约](architecture/TASK-RUNTIME-DESIGN.md)分别验收 |
 | 创作 | Anima/Krea 2 新生成、换装、蓝图、入册与视频分镜；SD 新生成已退出，旧任务查询/取消/收集及历史作品保留 | 聊天绘画工具仍只准备草稿；真实模型、视频效果与成本按 [roadmap](roadmap.md) 验收 |
-| 独立推理源码候选 | Anima 串行 Worker 驻留、初始化复用、同 LoRA 强度回切和 4 项／16 MiB CPU 文本缓存；每任务重建采样状态，空闲／取消退出释放；分阶段 TeaCache 校准及公平留出对照。办公机同版本真实 CPU 随机小组件的编码、适配器和完整管线验证通过 | 默认 ComfyUI，TeaCache 仍关闭；小组件不代表真实权重或画质。RTX 4070 Ti SUPER 的真实权重、GPU 耗时／显存／释放和画质待验，未同步桌面安装，见[独立推理指南](guides/independent-inference.md) |
+| 首次配置与受管绘图 | 沿用 Portable、固定模型下载/校验和标准目录；显式受管意愿跨重开保留，首次生成按需唤醒；输入目录与 Portable 安装位置对齐；未知运行包与节点差异明确失败并保留已有文件 | 进程/HTTP、下载小夹具和界面逻辑可在 CPU 验证；真实 Windows/CUDA、节点加载、LoRA＋高清出图仍需主力机验收，见[配置指南](guides/setup-and-models.md) |
+| 独立 Anima 推理 | v3现有数学路径与resident逐组件/双缓冲加载已接入；另实现local-guard全局/局部双预算缓存维护候选，产品排除该候选、默认策略不变 | 无当前CUDA成图/加载/高清或局部缓存性能证据；旧Tea档仍失配，auto完整计算，默认ComfyUI。局部候选待真实对照后由用户选择，见[缓存候选](audits/2026-10-12/native-anima-local-cache.html)、[加载优化](audits/2026-10-12/native-anima-loading.html)与[高清补齐](audits/2026-10-12/native-anima-effects.html) |
 | 内容维护 | 记录 API、修订历史、字段补丁、批量预览/导入与项目快照导出；立绘/样张走图片事务 | 工作库与项目快照独立；pending、记录登记和结构校验不计为图片交付，见[维护手册](maintenance.md) |
 | 界面与陪伴 | Vue/Pinia、双主题、Reka 控件、路由按需加载、角色身份/Profile、独立聊天窗与浏览器/原生 Live2D | WebView2、DPI/多屏/休眠、真实语音与长期资源趋势保留设备验收范围 |
 | 资源生命周期 | 隐藏桌宠释放模型与原生 GPU context；桌面缩略缓存限 96 项/8 MiB；图库停用释放高清 URL | 既有短样本不推广为全部 GPU、大图库或长时间运行结论 |

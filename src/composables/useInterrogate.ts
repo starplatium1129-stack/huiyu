@@ -1,3 +1,4 @@
+import { useInterrogateReadiness } from './useInterrogateReadiness'
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { useTrackedTask } from './useTaskCenter.ts'
 import { getCurrentScope, getCurrentInstance, onActivated, onDeactivated, onScopeDispose, ref } from 'vue'
@@ -51,6 +52,7 @@ function interrogateFailure(status: number, backendMessage: string): string {
 }
 
 export function useInterrogate() {
+  const readiness = useInterrogateReadiness()
   const appContext = getCurrentInstance()?.appContext
   const busy = ref(false)
   const error = ref<string | null>(null)
@@ -86,6 +88,16 @@ export function useInterrogate() {
     if (appContext) activeRequests.set(appContext, cancel)
     const timeout = setTimeout(() => controller.abort(), 120_000)
     try {
+      // Start user-activated clipboard reads before the first await. Consume
+      // rejection immediately while readiness is pending; nothing is uploaded
+      // until both this source and the latest local status have succeeded.
+      const requestedSource = typeof source === 'function'
+        ? source().then(file => ({ file }), failure => ({ failure })) : null
+      if (!(await readiness.refresh(controller.signal))) {
+        controller.signal.throwIfAborted()
+        throw new Error(readiness.status.value.message)
+      }
+      if (activeController !== controller) return null
       let file: File
       // Clipboard permission/loading belongs to the same busy/cancel owner as
       // current-image loading, before any image can reach the POST.
@@ -95,7 +107,7 @@ export function useInterrogate() {
           file = await new Promise<File>((resolve, reject) => {
             abortLoading = () => reject(new DOMException('Aborted', 'AbortError'))
             controller.signal.addEventListener('abort', abortLoading, { once: true })
-            source().then(resolve, reject)
+            requestedSource!.then(outcome => { if ('failure' in outcome) reject(outcome.failure); else resolve(outcome.file) })
           })
         } finally { controller.signal.removeEventListener('abort', abortLoading) }
       } else if (typeof source === 'string') {

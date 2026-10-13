@@ -43,7 +43,9 @@ impl ControlService {
             ],
             _ => return Err(ApiError::invalid("未知受管环境")),
         };
-        if environment.starts_with("comfy-") && self.comfy_root().join("main.py").is_file() {
+        if environment.starts_with("comfy-")
+            && reuse_comfy_environment(&self.comfy_root(), &environment)?
+        {
             files.remove(0);
         }
         let permit = self
@@ -98,6 +100,42 @@ impl ControlService {
         Ok(json!({"ok":true}))
     }
 
+    #[cfg(windows)]
+    pub(super) async fn require_stopped_comfy_for_preparation(&self) -> Result<()> {
+        let running = || {
+            ApiError::new(
+                409,
+                "COMFY_STOP_REQUIRED",
+                "绘图服务仍在运行。请先结束生成，并在控制室或原启动入口停止 ComfyUI，再重试准备；准备后重新启动并检查节点。",
+            )
+        };
+        // Never restart a live process after a non-atomic queue check. Stopping
+        // is an explicit user action; package changes require a stopped host.
+        if self.comfy_owned().await {
+            return Err(running());
+        }
+        let endpoint = crate::upstream::local_url(&self.config.comfy_host)?;
+        let host = endpoint
+            .host_str()
+            .unwrap_or("127.0.0.1")
+            .trim_matches(&['[', ']'][..]);
+        let port = endpoint.port_or_known_default().unwrap_or(8188);
+        match tokio::time::timeout(
+            Duration::from_secs(2),
+            tokio::net::TcpStream::connect((host, port)),
+        )
+        .await
+        {
+            Ok(Ok(_)) => Err(running()),
+            Ok(Err(error)) if error.kind() == std::io::ErrorKind::ConnectionRefused => Ok(()),
+            _ => Err(ApiError::new(
+                503,
+                "COMFY_STOP_UNCONFIRMED",
+                "无法确认绘图服务已经停止，尚未修改环境；请核对配置地址与当前任务后重试。",
+            )),
+        }
+    }
+
     async fn install_environment(
         &self,
         environment: &str,
@@ -116,6 +154,9 @@ impl ControlService {
         }
         #[cfg(windows)]
         {
+            if environment.starts_with("comfy-") {
+                self.require_stopped_comfy_for_preparation().await?;
+            }
             let path_for = |id: &str| -> Result<std::path::PathBuf> {
                 Ok(model_root(&self.config.ai_workspace_root, id)?.join(model_file(id)?.path))
             };
@@ -176,7 +217,9 @@ impl ControlService {
                     .arg("-KjArchive")
                     .arg(path_for("runtime-kjnodes")?)
                     .arg("-TeaArchive")
-                    .arg(path_for("runtime-anima-teacache")?);
+                    .arg(path_for("runtime-anima-teacache")?)
+                    .arg("-ArchiveSha256")
+                    .arg(model_file(&format!("runtime-{environment}"))?.sha256);
             }
             let process = self.processes.spawn(&mut command)?;
             let (stdout, stderr) = process.take_output();
@@ -232,4 +275,66 @@ impl ControlService {
             Ok(())
         }
     }
+}
+
+// Existing venvs retain their Python/CUDA and only prepare nodes. Portable
+// environments must have a matching publisher receipt before skipping a bundle.
+fn reuse_comfy_environment(root: &std::path::Path, environment: &str) -> Result<bool> {
+    if !root.join("main.py").is_file() {
+        return Ok(false);
+    }
+    let portable = root.parent().unwrap_or(root);
+    if !portable.join("python_embeded/python.exe").is_file() {
+        if root.join("venv/Scripts/python.exe").is_file() {
+            return Ok(true);
+        }
+        return Err(ApiError::new(
+            409,
+            "COMFY_EXTERNAL_ENVIRONMENT",
+            "现有 ComfyUI 的 Python 由外部环境管理；请使用原入口启动并连接，文件未修改",
+        ));
+    }
+    let installed = managed_comfy_environment(root);
+    if installed["state"] == "unknown" {
+        return Err(ApiError::new(
+            409,
+            "COMFY_ENVIRONMENT_UNVERIFIED",
+            "现有 Portable 缺少可确认的绘遇运行包记录，无法确认 CUDA 版本；请使用原入口启动，或选择新的 AI 工作区重新准备。原文件保留",
+        ));
+    }
+    if installed["state"] != "verified" || installed["environment"] != environment {
+        return Err(ApiError::new(
+            409,
+            "COMFY_ENVIRONMENT_MISMATCH",
+            "现有 Portable 与所选 CUDA 变体或固定运行包版本不同，本次未切换；请沿用原版本，或选择新的 AI 工作区准备。原文件保留",
+        ));
+    }
+    Ok(true)
+}
+
+// Receipt identity, not a claim that Python/CUDA or model loading was tested.
+// Used by both the setup snapshot and preparation so their variant agrees.
+pub(super) fn managed_comfy_environment(root: &std::path::Path) -> Value {
+    let unknown = || json!({"state":"unknown","environment":null});
+    let portable = root.parent().unwrap_or(root);
+    if !root.join("main.py").is_file() || !portable.join("python_embeded/python.exe").is_file() {
+        return unknown();
+    }
+    let receipt = std::fs::read(portable.join("huiyu-environment.json"))
+        .ok()
+        .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok());
+    let Some(receipt) = receipt.filter(|value| value["schemaVersion"] == 1) else {
+        return unknown();
+    };
+    let Some(environment @ ("comfy-nvidia" | "comfy-cu126")) = receipt["environment"].as_str()
+    else {
+        return unknown();
+    };
+    let Ok(spec) = setup_verify::model_file(&format!("runtime-{environment}")) else {
+        return unknown();
+    };
+    if receipt["archiveSha256"] != spec.sha256 {
+        return json!({"state":"mismatch","environment":null});
+    }
+    json!({"state":"verified","environment":environment})
 }

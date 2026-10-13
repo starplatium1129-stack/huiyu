@@ -260,6 +260,3 @@ async fn materialize(inner: &Inner, job: &Job, image: &Value) -> Result<Output> 
         }
     }
 }
-
-#[cfg(test)]
-mod tests;

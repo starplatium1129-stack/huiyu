@@ -30,7 +30,7 @@
 - **单一持久权威**：每个领域在每个数据域只有一个可写权威。Web adapter 是长期合法的平台实现，继续拥有独立浏览器数据；桌面 workspace 激活后，旧作品库仅作受控迁移来源或只读保留，不得因 runtime 不可用自动回落写入旧库，不得双写两份主库。Pinia 保留编辑和展示状态，缓存不构成第二份持久事实。
 - **旧 SD 等待队列**：新生成已经退役，已接收的旧任务保持查询、取消与结果收集；旧记录仍按窗口角色保存稳定请求身份，不再新增 SD 意图；重建窗口默认暂停，未知接收只查询原 key。已接受项的执行与结果仍由 runtime 持有；删除未知提交须先确认取消意图，取消回执丢失保留待确认标记。清空等待不取消在途任务，旧浏览器队列不回灌为桌面权威，多窗口共享编辑不在此契约内。
 - **迁移适配的窄例外**：允许读取旧数据格式和旧来源的 importer，但须记录支持的来源/版本、用途和退出条件；其保留期由支持的升级跨度决定。此例外不允许新增无限期 deprecated shim、任意错误 fallback 或双主写入，也不要求删除仍在使用的真实 Web adapter。
-- **依赖护栏**：既有违规边按 source、target、依赖种类、规则和退出批次精确登记，只减不增；不以整个目录豁免。类型边与运行时边分开处理，runtime 反向依赖前端连纯类型也受约束；既有纯领域根的更严格可达依赖规则继续有效。静态依赖检查不禁止所有 `AbortController` / `onUnmounted`，也不把正常 unsubscribe 误报为任务取消；任务所有权由 R6 行为测试证明。规则与旧边清单见 [依赖护栏配置](../scripts/lib/refactor-boundaries.ts)，任务所有权另以行为回归验证。
+- **依赖方向**：runtime 不反向依赖前端，包括纯类型；纯领域类型不引用 Store、展示层或 Vue。保留现行 [ESLint 规则](../scripts/lib/module-boundaries.mts)，审查实际调用与所有权，不维护已无消费者的扫描器、历史豁免清单或测试门禁。正常 unsubscribe 不视为任务取消。
 
 ## 普通图片资源
 
@@ -59,7 +59,7 @@ destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capabili
 3. **全量场景蓝图（SFW/NSFW 姿势解剖防崩）**：每位角色配齐 10~11 套场景蓝图（6~7 SFW 唯美日常 + 4~5 R18 成人专属）；成人蓝图严格遵守**「后入/俯身 $\rightarrow$ 强制 `1536x1152` 横画幅 + POV扶腰受力」**与**「仰卧/POV $\rightarrow$ 强制 `1152x1536` 竖画幅 + 揉胸/分腿层级」**黄金法则，杜绝悬浮器官与断腰；
 4. **立绘原图与 WebP 紧凑头像缩略图**：在发布样张原图（`assets/characters/popular-<id>.png`）后，**必须同步执行 `python scripts/maintenance/build-character-thumbs.py`** 编译生成 `assets/characters/thumbs/popular-<id>.webp`，确保生图左侧选择器、首页横条卡片不掉头像；
 5. **可选参考素材**：新增角色和服装无需登记或补齐固定机位图库；档案不展示图库与完整度，分镜的身份/服装文字从内容目录读取，图片按项目需求手动上传。只有确有需要且已授权制作参考素材时，才使用以下旧参考库工具。先用 `reference:register --dry-run` 预览，再显式登记 pending（写源）；`reference:render`/`reference:design` 调用模型，仅写隔离候选。经 `reference:inspect` 只读核验、人工查看图片、`reference:review` 写入绑定当前候选的审核决定，再 `reference:publish` 预览，显式 `--apply` 发布到新版本目录。缺审核保持 pending，发布不自动激活或安装。参数以[候选审核与版本发布](workflow.md#参考库候选审核与版本发布)为准。旧 `sync-multi-outfit-standards` 与 URL 修复仅用于已核验旧库维护，不能代替新候选发布；
-6. **门禁、质检与桌面端同步**：必须跑通 `node scripts/tests/test-popular-content.js`、`npm run typecheck:app` 与 `npm run build`，并执行 `deploy-desktop.bat -SkipBuild` 完成桌面端闭环同步与 Git 推送。
+6. **门禁、质检与桌面端同步**：按任务授权执行 `npm run typecheck:app` 与 `npm run build`，并通过 `deploy-desktop.bat -SkipBuild` 完成桌面端闭环同步与 Git 推送。
 
 自动化辅助入口见 [接入工作流](guides/characters/character-onboarding-workflow.md)。脚本执行成功不等于主题、头像、按需制作的参考图和真实样张全部验收通过；必须逐层核对。场景数量是接入目标，不能为凑数覆盖已定稿内容；现存更多场景无需删减。
 

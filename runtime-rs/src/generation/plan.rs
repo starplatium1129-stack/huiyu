@@ -1,5 +1,6 @@
 use super::*;
 use std::path::PathBuf;
+mod optional_nodes;
 
 /// The two real Comfy image providers share execution, while each compiler owns
 /// its complete normalized input, exact graph, resource list and output scope.
@@ -110,8 +111,15 @@ impl Service {
                     ));
                 }
             }
-            if !probe::comfy_status(&self.inner, &cancel).await {
+            let control = self.inner.control.read().unwrap().upgrade();
+            if let Some(control) = control {
+                control.ensure_comfy(&cancel).await?;
+            } else if !probe::comfy_status(&self.inner, &cancel).await {
                 return Err(ApiError::new(503, "COMFY_UNAVAILABLE", "ComfyUI 不可用"));
+            }
+            if optional_nodes::requested(&plan.workflow) {
+                let nodes = self.comfy_optional_status_for(&cancel).await;
+                optional_nodes::validate(&plan.workflow, &nodes)?;
             }
             Ok(Prepared {
                 input: plan.input.clone(),
@@ -122,6 +130,12 @@ impl Service {
             })
         };
         tokio::select! {result=work=>result,_=cancel.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","生成请求已取消")),_=self.inner.cancel.cancelled()=>Err(closed())}
+    }
+    pub(crate) async fn comfy_optional_status(&self) -> Value {
+        self.comfy_optional_status_for(&self.inner.cancel).await
+    }
+    async fn comfy_optional_status_for(&self, cancel: &CancellationToken) -> Value {
+        optional_nodes::status(&self.inner, cancel).await
     }
     pub(crate) async fn comfy_online(&self) -> bool {
         probe::comfy_status(&self.inner, &self.inner.cancel).await

@@ -49,7 +49,11 @@ async fn status(
     Extension(s): Extension<Arc<ControlService>>,
     Query(query): Query<HashMap<String, String>>,
 ) -> Json<Value> {
-    let mut value = s.health(query.get("fresh").is_some_and(|v| v == "1")).await;
+    let (mut value, (tunnel_available, scripts), build) = tokio::join!(
+        s.health(query.get("fresh").is_some_and(|v| v == "1")),
+        file_status(&s),
+        web_build(&s),
+    );
     let settings = s.config_view();
     let tunnel = s.remote.tunnel_url();
     for (key, item) in settings.as_object().unwrap() {
@@ -59,11 +63,22 @@ async fn status(
     let mode_busy = operation.as_ref().is_some_and(|op| {
         op["status"] == "running" && op["kind"].as_str().is_some_and(|s| s.starts_with("mode-"))
     });
-    for (key,item) in json!({"ok":true,"running":!s.shutdown.is_cancelled(),"modeBusy":mode_busy,"operation":operation,"localLink":format!("http://127.0.0.1:{}/",s.config.bind.port()),"shareLinkAvailable":!tunnel.is_empty(),"tunnelStatus":if !tunnel.is_empty(){"active"}else if s.tunnel_disabled(){"disabled"}else{"waiting"},"tunnelAvailable":!s.tunnel_disabled()&&s.tunnel_path().is_file(),"uptime":s.started.elapsed().as_secs(),"scripts":script_status(&s),"selfHealing":s.watchdog_status(),"webBuild":web_build(&s).await}).as_object().unwrap(){value[key]=item.clone();}
+    for (key,item) in json!({"ok":true,"running":!s.shutdown.is_cancelled(),"modeBusy":mode_busy,"operation":operation,"localLink":format!("http://127.0.0.1:{}/",s.config.bind.port()),"shareLinkAvailable":!tunnel.is_empty(),"tunnelStatus":if !tunnel.is_empty(){"active"}else if s.tunnel_disabled(){"disabled"}else{"waiting"},"tunnelAvailable":tunnel_available,"uptime":s.started.elapsed().as_secs(),"scripts":scripts,"selfHealing":s.watchdog_status(),"webBuild":build}).as_object().unwrap(){value[key]=item.clone();}
     Json(value)
 }
-fn script_status(s: &ControlService) -> Value {
-    json!({"voiceStart":s.script(2,true).is_file(),"voiceStop":s.script(2,false).is_file(),"webui":s.script(0,true).is_file(),"comfy":s.script(1,true).is_file()})
+async fn file_status(s: &ControlService) -> (bool, Value) {
+    let tunnel_enabled = !s.tunnel_disabled();
+    let tunnel = s.tunnel_path();
+    let scripts = [s.script(0, true), s.script(1, true), s.script(2, true)];
+    tokio::task::spawn_blocking(move || {
+        let voice = scripts[2].is_file();
+        (
+            tunnel_enabled && tunnel.is_file(),
+            json!({"voiceStart":voice,"voiceStop":voice,"webui":scripts[0].is_file(),"comfy":scripts[1].is_file()}),
+        )
+    })
+    .await
+    .unwrap_or_else(|_| (false, json!({"voiceStart":false,"voiceStop":false,"webui":false,"comfy":false})))
 }
 async fn share(Extension(s): Extension<Arc<ControlService>>) -> Json<Value> {
     let tunnel = s.remote.tunnel_url();

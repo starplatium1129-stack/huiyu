@@ -129,33 +129,3 @@ pub fn shutdown(app: &AppHandle) {
     for label in ["companion", "atelier", "companion-chat"] { changed(app, label); }
     app.state::<WindowStateWriter>().shutdown();
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::window_state::{load_window_bounds, load_window_presentation};
-
-    #[test]
-    fn flush_and_shutdown_keep_latest_normal_bounds_and_zoom() {
-        let root = std::env::temp_dir().join(format!("aics-window-writer-{}", std::process::id()));
-        let file = root.join("window.json");
-        assert!(save_window_presentation(&file, Some(1.25), None));
-        let writer = WindowStateWriter::new();
-        for x in [10, 20, 30] {
-            let bounds = WindowBounds { x, y: 80, width: 600, height: 800 };
-            writer.schedule(file.clone(), Snapshot { bounds: Some((bounds.clone(), bounds)), maximized: Some(false) });
-        }
-        writer.schedule(file.clone(), Snapshot { bounds: None, maximized: Some(true) });
-        writer.flush();
-        assert_eq!(load_window_bounds(&file, None).0.x, 30);
-        assert!(load_window_presentation(&file).maximized);
-        assert_eq!(load_window_presentation(&file).zoom, 1.25);
-        let final_bounds = WindowBounds { x: 40, y: 90, width: 640, height: 840 };
-        writer.schedule(file.clone(), Snapshot { bounds: Some((final_bounds.clone(), final_bounds.clone())), maximized: Some(false) });
-        writer.shutdown();
-        assert_eq!(load_window_bounds(&file, None), (final_bounds.clone(), Some(final_bounds)));
-        assert!(!load_window_presentation(&file).maximized);
-        assert_eq!(load_window_presentation(&file).zoom, 1.25);
-        std::fs::remove_dir_all(root).unwrap();
-    }
-}

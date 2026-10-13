@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>锐化、蒙版合成与 Comfy 节点查询优化 · 2026-10-13</title>
+<style>
+:root{color-scheme:light dark}body{font:16px/1.7 system-ui,sans-serif;color:CanvasText;background:Canvas;max-width:960px;margin:36px auto;padding:0 20px}h1{font-size:26px}h2{font-size:20px}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:12px 10px;border-bottom:1px solid GrayText}code{overflow-wrap:anywhere}a{color:LinkText}footer{margin-top:24px}
+</style>
+<h1>锐化、蒙版合成与 Comfy 节点查询优化</h1>
+<p>2026-10-13。本轮优先处理普通出图／Latent 高清的锐化内存、蒙版大图合成，以及默认 ComfyUI 后端的重复全目录查询。改动 4 个 Python 与 3 个 Rust 源文件，无新增依赖。下面的内存数字均为源码与尺寸推导，没有本轮设备性能实测。</p>
+<table aria-label="本轮改动与预期收益依据">
+<thead><tr><th>范围</th><th>优化</th><th>收益及边界</th></tr></thead>
+<tbody>
+<tr><td>RCAS 锐化</td><td>按 128 行加上下真实邻接像素计算，只在整图边缘 reflect。保留五点极值、RGB 最小 lobe、FP32 表达式顺序、clamp 和最后的 dtype 转换。强度零仍直接返回输入。</td><td>4608² RGB 的每份全图 FP32 中间值为 243 MiB；核心行带约 6.75 MiB，边缘及 pad 另占少量空间。多份中间值均变为行带，但输入、最终输出和分配器缓存仍存在。更多内核启动与逐带写回可能抵消部分收益，不能宣称已提速。</td></tr>
+<tr><td>蒙版合成</td><td>复用私有转换参考图和新结果，仍分别执行乘、减、乘、加；不改成融合运算，不覆写调用方图片、PIL 原图或蒙版。</td><td>4608² 时，表达式的活跃张量理论峰值约从 1296 MiB 降至 891 MiB，少约 405 MiB。此估算仅计算相关张量，不含模型、PIL、分配器缓存或整个进程。</td></tr>
+<tr><td>PIL 转 FP32</td><td>新建的私有 NumPy FP32 数组原位除以 255，随后按原方式转张量；Lanczos／uint8 量化边界不变。</td><td>4608² 参考图或 resize 后目标图的归一化阶段少一份 243 MiB 全图浮点临时数组。这与合成峰值属于不同阶段，不能直接相加为任务峰值降幅。</td></tr>
+<tr><td>Comfy 可选节点检查</td><td>状态刷新和可选节点生成准入只并行查询 AP_CLIPSeg_TextMask、ConditioningKrea2Rebalance、ComfyUI-Krea2T-Enhancer 三个节点。继续每次读取新状态。</td><td>由一次全节点目录请求变为三个定向请求，避免枚举、传输和解析不相关节点及其模型下拉目录。没有本机响应大小或延迟数据；服务不支持定向端点时保持 unknown。</td></tr>
+</tbody></table>
+<h2>边界与执行身份</h2>
+<p>RCAS 多 batch、非连续输入、FP16／BF16／FP32 的契约保留；正强度下高度或宽度为 1 仍由 reflect 拒绝。内部行带接缝读取真实相邻行，不把接缝误当作图像边缘。源码保持逐像素算式，不等于已证明 GPU 输出逐位相同。</p>
+<p>正 <code>rcasStrength</code> 的 TeaCache 档位新增 <code>sampling.rcasExecutionRevision=rcas-fp32-rows128-v1</code>；旧正强度档位 auto 回退完整计算，严格启用／验收拒绝失配。零强度档位不新增该字段，不自动改写既有档位。实际执行锐化成功后，<code>nativeRuntime.refinement.rcasExecutionRevision</code> 记录新标识；旧 worker 缺字段仍兼容，坏字段继续标为未验证。</p>
+<p>Comfy 定向响应只有成功状态下的空对象判为 missing；仅一个指定节点且 input 为对象才判为 ready。网络／HTTP 错误、错名、额外键和坏结构判为 unknown。Krea 任一节点不确定则该组不确定；自动蒙版与 Krea 独立判定，不再受无关节点坏结构连带影响。生成前仍要求所选组 ready。</p>
+<p>三个查询复用现有共享客户端、每响应 2 MiB 上限、网络读取 5 秒超时、取消及解码跟踪；不创建后台任务，不加缓存，不退回全目录。定向端点与缺失节点空对象行为见 <a href="https://github.com/Comfy-Org/ComfyUI/blob/master/server.py#L784-L802">ComfyUI 官方 server.py</a>（2026-10-13 查阅）；仓内视频模块也已使用该端点。这些是源码依据，不代表当前用户服务已验收。</p>
+<h2>本轮验证</h2>
+<table aria-label="本轮验证状态">
+<thead><tr><th>状态</th><th>范围与证据</th></tr></thead>
+<tbody>
+<tr><td>通过</td><td><code>cargo check --manifest-path runtime-rs/Cargo.toml --locked --offline</code>，退出 0，3.91 秒；当前 Rust 工作树编译检查。</td></tr>
+<tr><td>通过</td><td>CPython 3.11.9 对本轮 4 个 Python 模块执行隔离 py_compile，退出 0；仅语法编译。runtime-manifest.json 解析、定向 rustfmt 与 git diff --check 通过。</td></tr>
+<tr><td>通过</td><td>主会话及两项独立只读源码审查，覆盖行带边缘、私有内存所有权、执行身份、节点状态与取消边界。7 个产品源码文件非空非纯注释行均不超过 500，worker 为 500 行（包含模块说明）。</td></tr>
+<tr><td>未运行</td><td>遵守仓库禁令，未编写或运行测试、夹具、断言或临时行为脚本。未调用真实模型或本机 Comfy 服务，未做性能复测、release 构建、安装、部署、提交或推送。未重跑已知含缺失旧夹具链接的全仓 docs:check。</td></tr>
+<tr><td>需设备验收</td><td>RCAS 实际输出、峰值 RAM／VRAM 和端到端耗时；蒙版边缘与输入保持；Comfy 定向端点兼容性、缺失／失败回执和并发状态读取。编译与源码结论不替代这些结果。</td></tr>
+</tbody></table>
+<h2>仍保留的较大开销</h2>
+<p>可选 compiled-fused-sage 模式在更换 LoRA 强度／组或卸载时，仍从受 lease 保护的源文件串行恢复基础权重。历史角色记录的恢复体量为 3.28125 GiB，并非当前设备实测。本轮优先覆盖更常见路径，未修改该双缓冲候选的设备同步和异常清理逻辑；主模型完整校验和反序列化也继续保留。</p>
+<footer>本轮日志与源码摘要位于被忽略的 <code>runtime/backend-performance-20261013/rcas-comfy/</code>。改动留在工作区，桌面安装未更新；上一轮 Remacri 加载与媒体优化不计入本轮新增收益。</footer>
+</html>

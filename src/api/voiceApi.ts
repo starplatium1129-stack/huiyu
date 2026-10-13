@@ -1,5 +1,5 @@
 import type { TranslateRequest, TtsRequest, VoicePrepareRequest } from '../../types/voice.ts'
-import { ApiClientError, apiClient, type ApiClient, type ApiResponseObject, type FetchImplementation } from './client.ts'
+import { ApiClientError, apiClient, type ApiResponseObject } from './client.ts'
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import type { TranslateResult, TtsStatus, VoicePrepareResult } from '../types/api.ts'
 
@@ -16,7 +16,7 @@ export type VoiceSynthesisPayload = Required<TtsRequest> & { consistency: 'locke
 export interface VoiceAudioResult { blob: Blob; queueWaitMs: number }
 
 /** TTS returns audio, while the shared JSON client handles status and translation. */
-async function synthesizeVoice(fetchAudio: FetchImplementation, payload: VoiceSynthesisPayload, options: VoiceCallOptions): Promise<VoiceAudioResult> {
+async function synthesizeVoice(payload: VoiceSynthesisPayload, options: VoiceCallOptions): Promise<VoiceAudioResult> {
   const controller = new AbortController()
   const abort = () => controller.abort()
   if (options.signal?.aborted) throw new ApiClientError('请求已取消', { kind: 'aborted' })
@@ -24,7 +24,7 @@ async function synthesizeVoice(fetchAudio: FetchImplementation, payload: VoiceSy
   let timedOut = false
   const timer = setTimeout(() => { timedOut = true; controller.abort() }, VOICE_API_TIMEOUTS.synthesize)
   try {
-    const response = await fetchAudio('/api/tts', {
+    const response = await runtimeFetch('/api/tts', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload), signal: controller.signal,
     })
@@ -76,31 +76,27 @@ export interface VoiceApi {
   synthesize(payload: VoiceSynthesisPayload, options?: VoiceCallOptions): Promise<VoiceAudioResult>
 }
 
-export function createVoiceApi(client: ApiClient = apiClient, fetchAudio: FetchImplementation = runtimeFetch): VoiceApi {
-  return {
-    getStatus(options = {}) {
-      return client.request<TtsStatus>('/api/tts-status', {
-        cache: 'no-store', signal: options.signal, timeoutMs: VOICE_API_TIMEOUTS.status,
-        validate: isTtsStatus,
-      })
-    },
-    prepare(payload, options = {}) {
-      return client.request<VoicePrepareResult>('/api/voice/prepare', {
-        method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
-        timeoutMs: VOICE_API_TIMEOUTS.prepare, validate: isPrepare,
-      })
-    },
-    translate(text, options = {}) {
-      const body: TranslateRequest = { text }
-      return client.request<TranslateResult>('/api/translate', {
-        method: 'POST', cache: 'no-store', body, signal: options.signal,
-        timeoutMs: VOICE_API_TIMEOUTS.translate, validate: isTranslation,
-      })
-    },
-    synthesize(payload, options = {}) {
-      return synthesizeVoice(fetchAudio, payload, options)
-    },
-  }
+export const voiceApi: VoiceApi = {
+  getStatus(options = {}) {
+    return apiClient.request<TtsStatus>('/api/tts-status', {
+      cache: 'no-store', signal: options.signal, timeoutMs: VOICE_API_TIMEOUTS.status,
+      validate: isTtsStatus,
+    })
+  },
+  prepare(payload, options = {}) {
+    return apiClient.request<VoicePrepareResult>('/api/voice/prepare', {
+      method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
+      timeoutMs: VOICE_API_TIMEOUTS.prepare, validate: isPrepare,
+    })
+  },
+  translate(text, options = {}) {
+    const body: TranslateRequest = { text }
+    return apiClient.request<TranslateResult>('/api/translate', {
+      method: 'POST', cache: 'no-store', body, signal: options.signal,
+      timeoutMs: VOICE_API_TIMEOUTS.translate, validate: isTranslation,
+    })
+  },
+  synthesize(payload, options = {}) {
+    return synthesizeVoice(payload, options)
+  },
 }
-
-export const voiceApi = createVoiceApi()

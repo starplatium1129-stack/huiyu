@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import math
 import re
+import time
 
 
 def _targets(pipeline):
@@ -183,6 +184,7 @@ def _activate(pipeline, adapters):
 def load_loras(pipeline, adapters):
     if not adapters:
         return
+    started = time.perf_counter()
     for index, adapter in enumerate(adapters):
         path, name = Path(adapter["path"]), f"huiyu_{index}"
         converted_weights, targets, _ = _inspect(pipeline, path)
@@ -191,9 +193,33 @@ def load_loras(pipeline, adapters):
                                    adapter_name=name, local_files_only=True, use_safetensors=True)
         _check_loaded(pipeline, name, targets)
     _activate(pipeline, adapters)
+    pipeline._huiyu_lora_loading = dict(mode="load", adapterCount=len(adapters),
+        wallSeconds=time.perf_counter() - started, uploads=[])
 
 
-def try_hotswap(pipeline, adapters):
+def _upload_adapter(state, destinations, upload):
+    """Stage one preflighted adapter; original PEFT code still owns swapping."""
+    import torch
+    groups = {}
+    for key, device in destinations.items():
+        if device.type == "cuda":
+            if device not in groups:
+                groups[device] = torch.nn.Module()
+            module = groups[device]
+            module.register_buffer(f"weight_{len(module._buffers)}", state[key])
+    observations = []
+    for device, module in groups.items():
+        started, observation = time.perf_counter(), {}
+        if not upload([module], target_device=device, observation=observation):
+            # Applicability fallback leaves this private state on CPU. PEFT
+            # retains its original tensor.to path; real transfer errors raise.
+            continue
+        observations.append(dict(deviceIndex=device.index, upload=observation,
+                                 wallSeconds=time.perf_counter() - started))
+    return observations
+
+
+def try_hotswap(pipeline, adapters, *, upload):
     """Replace a same-structure ordinary group in place, or return False untouched.
 
     The caller restores any fusion first. Every file/component is preflighted
@@ -203,6 +229,7 @@ def try_hotswap(pipeline, adapters):
     """
     if not adapters:
         return False
+    started = time.perf_counter()
     import torch
     from peft import get_peft_model_state_dict
     from peft.tuners.lora.layer import Linear
@@ -215,15 +242,15 @@ def try_hotswap(pipeline, adapters):
         if isinstance(strength, bool) or not isinstance(strength, (int, float)) or not math.isfinite(strength):
             raise UnsupportedLora("LoRA strength must be finite")
         state, targets, metadata_override = _inspect(pipeline, Path(adapter["path"]), tensors=True)
-        prepared.append((f"huiyu_{index}", state, targets, metadata_override))
+        prepared.append((f"huiyu_{index}", state, targets, metadata_override, {}))
     components = {name: getattr(pipeline, name) for name in ("transformer", "text_conditioner")}
     for component, model in components.items():
-        expected_names = {name for name, _, targets, _ in prepared if component in targets}
+        expected_names = {name for name, _, targets, _, _ in prepared if component in targets}
         if set(getattr(model, "peft_config", {})) != expected_names:
             return False
     # Do not supply path-based loaders after this point: the prepared tensors
     # are precisely the bytes inspected below, not another read of a changed file.
-    for name, state, targets, metadata_override in prepared:
+    for name, state, targets, metadata_override, destinations in prepared:
         if metadata_override:
             return False
         for component, expected in targets.items():
@@ -244,6 +271,7 @@ def try_hotswap(pipeline, adapters):
                 if type(layer) is not Linear or layer.merged:
                     return False
                 parameter = getattr(layer, "lora_" + side[0])[name].weight
+                destinations[f"{component}.{key}"] = parameter.device
                 # PEFT swaps tensor storage without retaining the destination
                 # dtype. In particular Kohya's alpha-folded FP32 B must not
                 # turn an existing BF16 adapter into a mixed-dtype projection.
@@ -253,8 +281,7 @@ def try_hotswap(pipeline, adapters):
                 state[f"{component}.{key}"] = normalized
                 if side == "B.weight":
                     ranks[f"^{key}"] = tensor.shape[1]
-            candidate = _create_lora_config(incoming, None, None, ranks,
-                model_state_dict=model.state_dict(), adapter_name=name)
+            candidate = _create_lora_config(incoming, None, None, ranks, adapter_name=name)
             current_config = model.peft_config[name]
             current_options, candidate_options = current_config.to_dict(), candidate.to_dict()
             # PEFT 0.19 condenses >=20 target paths into equivalent suffixes at
@@ -269,9 +296,18 @@ def try_hotswap(pipeline, adapters):
             if current_options != candidate_options:
                 return False
             check_hotswap_configs_compatible(current_config, candidate)
-    for name, state, targets, _ in prepared:
+    # Drop preflight tensor aliases before PEFT swaps old storage back into the
+    # incoming tensors. Retire each consumed dictionary before staging the next.
+    del current, incoming, tensor, normalized, parameter
+    uploads = []
+    for index, (name, state, targets, _, destinations) in enumerate(prepared):
+        for observation in _upload_adapter(state, destinations, upload):
+            uploads.append(dict(adapterIndex=index, **observation))
         pipeline.load_lora_weights(state, adapter_name=name, hotswap=True,
                                    local_files_only=True, use_safetensors=True)
         _check_loaded(pipeline, name, targets)
+        state.clear()
     _activate(pipeline, adapters)
+    pipeline._huiyu_lora_loading = dict(mode="hotswap", adapterCount=len(adapters),
+        wallSeconds=time.perf_counter() - started, uploads=uploads)
     return True

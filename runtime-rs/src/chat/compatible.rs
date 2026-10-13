@@ -32,6 +32,38 @@ pub(super) async fn prepare(
     {
         api.key = key.clone();
     }
+    if api.vendor == "openai"
+        && input.tools
+        && ["gpt-6-astra", "gpt-6.1-sol"]
+            .iter()
+            .any(|model| api.model == *model || api.model.starts_with(&format!("{model}-")))
+    {
+        return Err(Error::new(
+            400,
+            "UNSUPPORTED_TOOL_MODEL",
+            "此模型的工具调用需要 Responses 协议；请关闭房间工具或改用 GPT-6 Luna",
+        ));
+    }
+    if api.vendor == "kimi"
+        && (api.model.starts_with("kimi-k3") || api.model.starts_with("kimi-k2.7-code"))
+    {
+        return Err(Error::new(
+            400,
+            "UNSUPPORTED_CHAT_MODEL",
+            "此 Kimi 模型需要跨轮完整思考上下文，当前房间尚未接入；请改用 Kimi K2.6",
+        ));
+    }
+    if api.vendor == "deepseek"
+        && input.tools
+        && !input.reasoning.is_empty()
+        && input.reasoning != "off"
+    {
+        return Err(Error::new(
+            400,
+            "UNSUPPORTED_TOOL_REASONING",
+            "DeepSeek 思考工具模式需要跨轮完整思考上下文；请在对话设置关闭思考或关闭房间工具",
+        ));
+    }
     let body = payload(input, &api);
     let response = client
         .send(
@@ -62,15 +94,41 @@ pub(super) async fn prepare(
 }
 pub(super) fn payload(input: &Input, api: &Api) -> Value {
     let mut value = json!({"model":api.model,"messages":input.messages,"stream":true});
+    let thinking = !input.reasoning.is_empty() && input.reasoning != "off";
     if api.vendor == "deepseek" {
-        value["thinking"] = json!({"type":if input.reasoning=="off"{"disabled"}else{"enabled"}});
-        if input.reasoning != "off" {
-            value["reasoning_effort"] = json!(if input.reasoning == "low" {
-                "high"
-            } else {
-                "max"
+        value["thinking"] = json!({"type":if thinking{"enabled"}else{"disabled"}});
+        if thinking {
+            value["reasoning_effort"] = json!(match input.reasoning.as_str() {
+                "low" => "low",
+                "medium" => "high",
+                _ => "max",
             });
         }
+    } else if api.vendor == "openai"
+        && (api.model.starts_with("gpt-6-luna") || api.model.starts_with("gpt-6-sol"))
+    {
+        // Chat Completions only supports Luna tool calls without reasoning.
+        value["reasoning_effort"] = json!(if input.tools || !thinking {
+            "none"
+        } else {
+            &input.reasoning
+        });
+    } else if api.vendor == "gemini" && api.model.starts_with("gemini-") {
+        // Gemini 3 and 2.5 Pro cannot disable thinking. The UI explains that
+        // "off" selects their lowest supported effort, never a false "none".
+        let cannot_disable =
+            api.model.starts_with("gemini-3") || api.model.starts_with("gemini-2.5-pro");
+        if thinking {
+            value["reasoning_effort"] = json!(input.reasoning);
+        } else if cannot_disable {
+            value["reasoning_effort"] = json!("low");
+        } else if api.model.starts_with("gemini-2.5-") {
+            value["reasoning_effort"] = json!("none");
+        }
+    } else if api.vendor == "qwen" && api.model.starts_with("qwen") {
+        value["enable_thinking"] = json!(thinking);
+    } else if api.vendor == "kimi" && api.model.starts_with("kimi-k2.6") {
+        value["thinking"] = json!({"type":if thinking {"enabled"} else {"disabled"}});
     } else if api.vendor == "opencode" && !input.reasoning.is_empty() && input.reasoning != "off" {
         value["reasoning_effort"] = json!(input.reasoning);
     }
@@ -105,29 +163,34 @@ pub(super) async fn inspect(client: &Transport, api: &Api) -> Result<Value> {
             },
         )
         .await?;
-    let response = transport::success(response, 512 * 1024, "API 连接测试返回").await?;
-    let data: Value = serde_json::from_slice(&transport::bounded(response, 512 * 1024).await?)
-        .map_err(|_| Error::stream("INVALID_JSON", "模型列表不是有效 JSON"))?;
-    let models = data["data"]
+    let response = transport::success(response, 2 * 1024 * 1024, "API 连接测试返回").await?;
+    let data: Value = serde_json::from_slice(&transport::bounded(response, 2 * 1024 * 1024).await?)
+        .map_err(|_| Error::stream("INVALID_MODEL_LIST", "模型列表不是有效 JSON"))?;
+    let items = data["data"]
         .as_array()
         .or_else(|| data["models"].as_array())
-        .map(|items| {
-            items
-                .iter()
-                .map(|item| {
-                    persona::string(
-                        item.get("id")
-                            .filter(|v| v.as_str().is_some_and(|v| !v.is_empty()))
-                            .unwrap_or(&item["name"]),
-                    )
-                    .trim()
-                    .to_owned()
-                })
-                .filter(|s| !s.is_empty())
-                .take(200)
-                .collect::<Vec<_>>()
-        })
-        .unwrap_or_default();
+        .ok_or_else(|| Error::stream("INVALID_MODEL_LIST", "接口没有返回模型列表"))?;
+    let mut models = Vec::new();
+    for item in items {
+        let id = item
+            .as_str()
+            .or_else(|| item["id"].as_str())
+            .or_else(|| item["name"].as_str())
+            .unwrap_or("")
+            .trim();
+        if id.is_empty()
+            || persona::length(id) > 200
+            || id.chars().any(char::is_control)
+            || (!api.key.is_empty() && id.contains(&api.key))
+            || models.iter().any(|model| model == id)
+        {
+            continue;
+        }
+        models.push(id.to_owned());
+        if models.len() >= 1000 {
+            break;
+        }
+    }
     Ok(
         json!({"ok":true,"online":true,"vendor":api.vendor,"modelCount":models.len(),"models":models}),
     )
@@ -143,6 +206,7 @@ struct Tool {
     id: String,
     name: String,
     args: String,
+    thought_signature: Option<String>,
 }
 #[derive(Default)]
 pub(super) struct Decoder {
@@ -179,6 +243,13 @@ impl Decoder {
                     return Err(Error::stream("STREAM_BUDGET", "工具数量或索引无效"));
                 }
                 let call = self.calls.entry(index).or_default();
+                if let Some(signature) = delta["extra_content"]["google"].get("thought_signature") {
+                    let signature = signature
+                        .as_str()
+                        .filter(|value| !value.is_empty() && value.len() <= 64 * 1024)
+                        .ok_or_else(|| Error::stream("INVALID_SSE", "工具思考签名格式无效"))?;
+                    call.thought_signature = Some(signature.into());
+                }
                 if let Some(id) = delta["id"].as_str() {
                     if persona::length(id) > 128 {
                         return Err(Error::stream("STREAM_BUDGET", "工具 ID 超限"));
@@ -245,7 +316,11 @@ impl Decoder {
                 return Err(Error::stream("INVALID_SSE", "工具参数不完整"));
             }
         }
-        let mut events=self.calls.iter().map(|(index,call)|json!({"type":"tool-call","index":index,"id":call.id,"name":call.name,"arguments":call.args,"reasoning":self.reasoning})).collect::<Vec<_>>();
+        let mut events = self.calls.iter().map(|(index, call)| {
+            let mut event = json!({"type":"tool-call","index":index,"id":call.id,"name":call.name,"arguments":call.args,"reasoning":self.reasoning});
+            if let Some(signature) = &call.thought_signature { event["thoughtSignature"] = json!(signature); }
+            event
+        }).collect::<Vec<_>>();
         events.push(json!({"type":"done"}));
         Ok(events)
     }

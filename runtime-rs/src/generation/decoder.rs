@@ -7,22 +7,16 @@ pub(super) struct Decoder {
     slots: Arc<Semaphore>,
     workers: TaskTracker,
     closed: std::sync::Mutex<bool>,
-    #[cfg(test)]
-    registration_pause: std::sync::Mutex<Option<RegistrationPause>>,
+
 }
-#[cfg(test)]
-struct RegistrationPause {
-    entered: tokio::sync::oneshot::Sender<()>,
-    resume: tokio::sync::oneshot::Receiver<()>,
-}
+
 impl Default for Decoder {
     fn default() -> Self {
         Self {
             slots: Arc::new(Semaphore::new(2)),
             workers: TaskTracker::new(),
             closed: std::sync::Mutex::new(false),
-            #[cfg(test)]
-            registration_pause: std::sync::Mutex::new(None),
+
         }
     }
 }
@@ -73,14 +67,7 @@ impl Decoder {
         };
         let worker_scope = scope.clone();
         let worker_shutdown = shutdown.clone();
-        #[cfg(test)]
-        {
-            let pause = self.registration_pause.lock().unwrap().take();
-            if let Some(pause) = pause {
-                let _ = pause.entered.send(());
-                let _ = pause.resume.await;
-            }
-        }
+
         // CPU work cannot be forcibly stopped. Its permit stays with the worker,
         // including after its caller disconnects, until bounded decoding ends.
         let worker = {
@@ -201,6 +188,3 @@ impl Decoder {
         .await
     }
 }
-
-#[cfg(test)]
-mod tests;

@@ -73,7 +73,6 @@ impl TaskRuntime {
                 "Task action unavailable",
             ));
         }
-        self.video()?;
         let operation = self
             .jobs
             .lock()
@@ -104,7 +103,7 @@ impl TaskRuntime {
                     .and_then(|checkpoint| checkpoint["gatewayJobId"].as_str())
                     .or_else(|| task.metadata.get("gatewayJobId").and_then(Value::as_str));
                 let exists = if let Some(job) = job {
-                    runtime.video()?.get_batch(job, &principal).await.is_ok()
+                    runtime.video.get_batch(job, &principal).await.is_ok()
                 } else {
                     false
                 };
@@ -122,7 +121,7 @@ impl TaskRuntime {
                         ApiError::new(409, "TASK_ACTION_INVALID", "Batch identity unavailable")
                     })?;
                 runtime
-                    .video()?
+                    .video
                     .clone()
                     .batch_action(job, &principal, &action, runtime.shutdown.child_token())
                     .await?;
@@ -140,9 +139,7 @@ impl TaskRuntime {
                     )
                     .await?;
                 }
-                Ok::<Value, ApiError>(serde_json::to_value(
-                    Self::get(&storage, &principal, &id).await?,
-                )?)
+                Ok::<Value, ApiError>(Self::get(&storage, &principal, &id).await?.into_value()?)
             }
             .await;
             drop(guard);

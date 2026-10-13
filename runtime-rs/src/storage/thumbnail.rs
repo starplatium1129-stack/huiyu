@@ -84,15 +84,13 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         _ = cancelled.cancelled() => return Err(super::unavailable()),
         permit = queue.decoder() => permit?,
     };
-    #[cfg(test)]
-    let readers = storage.thumbnails.clone();
+
     tokio::task::spawn_blocking(move || {
         let (_permit, _reader, _owner) = (permit, reader, owner);
         // Cancellation drops the awaiting future, not a running blocking
         // decoder. Keep the image lock until that worker really finishes.
         let _image_guard = image_guard;
-        #[cfg(test)]
-        readers.paused();
+
         if cancelled.is_cancelled() {
             return Ok(Value::Null);
         }

@@ -11,6 +11,14 @@ pub(super) struct Release {
     marker: Vec<u8>,
     manifest: Value,
     view: Value,
+    files: HashMap<String, (u64, String)>,
+}
+
+#[derive(Debug)]
+pub(super) struct Image {
+    pub(super) bytes: Option<Vec<u8>>,
+    pub(super) length: u64,
+    pub(super) hash: String,
 }
 
 fn hash_matches(bytes: &[u8], expected: &Value) -> bool {
@@ -154,6 +162,7 @@ impl Release {
         scan(root, root, &mut actual)?;
         let mut case_keys = HashSet::new();
         let mut paths = HashSet::new();
+        let mut files = HashMap::new();
         for entry in entries {
             let relative = entry["path"].as_str().ok_or_else(invalid_release)?;
             if !relative_image(relative) || !case_keys.insert(relative.to_ascii_lowercase()) {
@@ -164,6 +173,7 @@ impl Release {
                 return Err(invalid_release());
             }
             paths.insert(relative);
+            files.insert(relative.to_owned(), (size, hash));
         }
         if !actual.is_empty() {
             return Err(invalid_release());
@@ -187,6 +197,7 @@ impl Release {
             marker,
             manifest,
             view,
+            files,
         }))
     }
 
@@ -226,27 +237,35 @@ impl Release {
         &self,
         app_root: &Path,
         relative: &str,
-    ) -> Result<Option<(Vec<u8>, String)>> {
+        collect: impl FnOnce(&str) -> bool,
+    ) -> Result<Option<Image>> {
         self.controls(app_root)?;
         if !relative_image(relative) {
             return Ok(None);
         }
-        let Some(entry) = self.manifest["files"]
-            .as_array()
-            .and_then(|files| files.iter().find(|entry| entry["path"] == relative))
-        else {
+        let Some((expected_length, expected_hash)) = self.files.get(relative) else {
             return Ok(None);
         };
-        let bytes = io::bytes(&self.root.join(relative))?;
-        if entry["bytes"].as_u64() != Some(bytes.len() as u64)
-            || !hash_matches(&bytes, &entry["sha256"])
-        {
+        let path = self.root.join(relative);
+        // HEAD and conditional hits still verify all image bytes, but do not
+        // retain an image-sized allocation for a response with no body.
+        let (bytes, length, hash) = if collect(expected_hash) {
+            let bytes = io::bytes(&path)?;
+            let length = bytes.len() as u64;
+            let hash = io::digest(&bytes);
+            (Some(bytes), length, hash)
+        } else {
+            let (length, hash) = io::file_digest(&path)?;
+            (None, length, hash)
+        };
+        if length != *expected_length || hash != *expected_hash {
             return Err(invalid_release());
         }
         self.controls(app_root)?;
-        Ok(Some((
+        Ok(Some(Image {
             bytes,
-            entry["sha256"].as_str().ok_or_else(invalid_release)?.into(),
-        )))
+            length,
+            hash,
+        }))
     }
 }

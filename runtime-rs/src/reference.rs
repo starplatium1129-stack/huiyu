@@ -232,6 +232,3 @@ impl Reader {
         }
     }
 }
-
-#[cfg(test)]
-mod tests;

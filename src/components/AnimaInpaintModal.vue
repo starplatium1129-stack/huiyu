@@ -7,6 +7,9 @@ import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { computed, ref, watch } from 'vue'
+import { RouterLink } from 'vue-router'
+import type { ComfyNodeReadiness } from '@/types/anima'
+import { automaticMaskBlocker } from '@/composables/generation/animaBackendReadiness'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
@@ -37,6 +40,8 @@ export interface InpaintSubmitPayload {
 const props = defineProps<{
   provider?: 'comfy' | 'native'
   automaticMaskAvailable?: boolean
+  automaticMaskStatus?: ComfyNodeReadiness
+  managedStartAvailable?: boolean
   open: boolean
   imageSource: InpaintSource
   currentPrompt?: string
@@ -61,7 +66,8 @@ const modalEl = ref<HTMLElement | null>(null)
 useFocusTrap(modalEl, () => props.open, { onEscape: () => emit('close') })
 
 const native = computed(() => props.provider === 'native')
-const automaticMaskAllowed = computed(() => !native.value || props.automaticMaskAvailable === true)
+const maskUnavailable = computed(() => automaticMaskBlocker(props))
+const automaticMaskAllowed = computed(() => !maskUnavailable.value)
 const editMode = ref<'masked' | 'whole'>('masked')
 const wholeImage = computed(() => editMode.value === 'whole')
 
@@ -91,6 +97,7 @@ const {
   resolution: () => native.value ? null : detectedResolution.value,
 })
 
+if (props.automaticMaskAvailable !== true) maskMode.value = 'paint'
 watch(native, value => { if (value) maskMode.value = 'paint'; syncMaskCanvas() }, { immediate: true })
 
 // ── 图片源（上传/拖拽/blob 直通/URL 兜底）与画幅探测已下沉
@@ -140,8 +147,8 @@ const {
 const toast = useToast()
 
 function captureDraft() {
-  if (native.value && !wholeImage.value && maskMode.value !== 'paint' && !automaticMaskAllowed.value) {
-    toast.error('本地 CLIPSeg 模型文件未就绪，请准备模型后重试或选择手绘遮罩')
+  if (!wholeImage.value && maskMode.value !== 'paint' && maskUnavailable.value) {
+    toast.error(maskUnavailable.value)
     return null
   }
   const selectedPreset = presets.find(preset => preset.id === selectedPresetId.value)
@@ -226,7 +233,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
       <p v-if="native && !wholeImage" class="modal-intro">局部重绘（实验性）：手绘或本地自动识别区域参与采样，遮罩外按原图合成保留；不保证与 ComfyUI 效果一致。TeaCache 沿用生成参数中的明确选择，需要匹配本次重绘的本地校准档，速度与画质尚未验收。</p>
       <p v-if="wholeImage" class="modal-intro">整图重绘会重新生成整张图片，人物、面部和背景均可能变化，不保留遮罩外区域。</p>
       <p v-else-if="!native" class="modal-intro">
-        默认<b>自动识别</b>服装区域（输入服装词即可，如 uniform / dress）；<b>手绘精确遮罩</b>可随时切回做局部微调。
+        <b>手绘精确遮罩</b>可指定要修改的衣物。<b>自动识别</b>（如 uniform / dress）需要额外文字蒙版节点，提交前会检查所用服务。
         热门角色换装已自动锁定角色身份，不会误绑桌宠 LoRA。
       </p>
 
@@ -325,6 +332,8 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
               </span>
             </label>
             <p v-if="native" class="field-hint">{{ automaticMaskAllowed ? '本地 CLIPSeg 文件已就绪；首次使用时加载并校验模型，不会联网下载。' : '自动识别未就绪：请在配置的模型根目录下准备 clipseg-rd64-refined，包含配置、分词器及 model.safetensors；不会自动下载。手绘遮罩仍可使用。' }}</p>
+            <p v-else class="field-hint" role="status">{{ maskUnavailable || (automaticMaskAvailable ? '文字自动蒙版节点已注册；不代表其模型文件、加载或识别效果已验证。' : '自动识别节点尚未确认。明确选择自动识别后，提交时会启动受管服务并检查节点；未通过不会提交生成。') }}</p>
+            <RouterLink v-if="!native && maskUnavailable" class="btn btn-ghost" :to="{ path: '/control', query: { engine: 'anima' } }" @click="emit('close')">查看控制面板与准备范围</RouterLink>
             <button v-if="native || wholeImage" type="button" class="btn btn-ghost" :aria-pressed="wholeImage" @click="editMode = 'whole'">选择整图重绘（人物与背景均可能变化）</button>
             <button v-if="wholeImage" type="button" class="btn btn-ghost" @click="editMode = 'masked'">返回局部遮罩换装</button>
             <div v-if="!wholeImage" class="mask-mode-switch studio-segments studio-segments--compact" role="group" aria-label="遮罩模式">

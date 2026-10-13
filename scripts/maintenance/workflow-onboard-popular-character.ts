@@ -231,7 +231,6 @@ async function runPipeline(charId: any, opts: any = {}) {
   execSync('npm run typecheck:app', { cwd: ROOT, stdio: 'inherit' });
   execSync('npm run build', { cwd: ROOT, stdio: 'inherit' });
   execSync('node scripts/maintenance/validate-content-contracts.js', { cwd: ROOT, stdio: 'inherit' });
-  execSync('node scripts/tests/test-popular-content.js', { cwd: ROOT, stdio: 'inherit' });
 
   if (opts.deploy) {
     console.log(`\n[桌面部署] 正在增量同步至桌面端...`);

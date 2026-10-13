@@ -15,6 +15,7 @@ import os
 import re
 import sys
 import threading
+from collections import OrderedDict
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -28,11 +29,16 @@ DEFAULT_MODEL = AI_ROOT / "Voice" / "models" / "translation" / "m2m100_418m"
 MODEL_PATH = Path(os.environ.get("AICS_TRANSLATION_MODEL", DEFAULT_MODEL))
 MAX_INPUT_CHARS = 2000
 TRANSLATION_BEAMS = max(1, min(4, int(os.environ.get("AICS_TRANSLATION_BEAMS", "1"))))
+SEGMENT_CACHE_LIMIT = 512
+SEGMENT_CACHE_BYTES_LIMIT = 2 * 1024 * 1024
 
 # Resident model state (serve mode)
 _TOKENIZER = None
 _MODEL = None
 _MODEL_LOCK = threading.Lock()
+_SEGMENT_CACHE: OrderedDict[str, tuple[str, int]] = OrderedDict()
+_SEGMENT_CACHE_BYTES = 0
+_SEGMENT_CACHE_IDENTITY = None
 
 
 def fail(message: str, code: int = 1) -> int:
@@ -80,9 +86,19 @@ def load_model():
     return tokenizer, model
 
 
-def translate_segments(text: str) -> list[dict[str, str]]:
-    tokenizer, model = load_model()
-    parts = segments(text)
+def bind_segment_cache(tokenizer, model) -> None:
+    """A resident model/tokenizer and generation policy own one bounded cache."""
+    global _SEGMENT_CACHE_IDENTITY, _SEGMENT_CACHE_BYTES
+    identity = _SEGMENT_CACHE_IDENTITY
+    if (identity is not None and identity[0] is tokenizer and identity[1] is model
+            and identity[2] == TRANSLATION_BEAMS and identity[3] is normalize_japanese):
+        return
+    _SEGMENT_CACHE.clear()
+    _SEGMENT_CACHE_BYTES = 0
+    _SEGMENT_CACHE_IDENTITY = (tokenizer, model, TRANSLATION_BEAMS, normalize_japanese)
+
+
+def generate_segments(parts: list[str], tokenizer, model) -> list[str]:
     with torch.inference_mode():
         encoded = tokenizer(
             parts,
@@ -98,10 +114,52 @@ def translate_segments(text: str) -> list[dict[str, str]]:
             options["forced_bos_token_id"] = tokenizer.get_lang_id("ja")
         generated = model.generate(**encoded, **options)
         translations = tokenizer.batch_decode(generated, skip_special_tokens=True)
-    return [
-        {"source": part, "translation": normalize_japanese(translation)}
+    if len(translations) != len(parts):
+        raise RuntimeError("中日翻译返回的分句数量不完整。")
+    translations = [normalize_japanese(translation) for translation in translations]
+    if any(not translation for translation in translations):
+        raise RuntimeError("中日翻译返回了空白分句。")
+    return translations
+
+
+def remember_segments(parts: list[str], translations: list[str]) -> None:
+    global _SEGMENT_CACHE_BYTES
+    # Prepare every entry before writing: a failed/partial batch adds nothing.
+    entries = [
+        (part, translation, len(part.encode("utf-8")) + len(translation.encode("utf-8")))
         for part, translation in zip(parts, translations)
     ]
+    for part, translation, size in entries:
+        if size > SEGMENT_CACHE_BYTES_LIMIT:
+            continue
+        _SEGMENT_CACHE[part] = (translation, size)
+        _SEGMENT_CACHE_BYTES += size
+        while (len(_SEGMENT_CACHE) > SEGMENT_CACHE_LIMIT
+               or _SEGMENT_CACHE_BYTES > SEGMENT_CACHE_BYTES_LIMIT):
+            _, (_, removed_size) = _SEGMENT_CACHE.popitem(last=False)
+            _SEGMENT_CACHE_BYTES -= removed_size
+
+
+def translate_segments(text: str) -> list[dict[str, str]]:
+    # Serialize model access and its cache together for both HTTP and stdin.
+    with _MODEL_LOCK:
+        tokenizer, model = load_model()
+        bind_segment_cache(tokenizer, model)
+        parts = segments(text)
+        resolved: dict[str, str] = {}
+        missing: list[str] = []
+        for part in dict.fromkeys(parts):
+            cached = _SEGMENT_CACHE.get(part)
+            if cached is None:
+                missing.append(part)
+            else:
+                _SEGMENT_CACHE.move_to_end(part)
+                resolved[part] = cached[0]
+        if missing:
+            translations = generate_segments(missing, tokenizer, model)
+            remember_segments(missing, translations)
+            resolved.update(zip(missing, translations))
+        return [{"source": part, "translation": resolved[part]} for part in parts]
 
 
 def translate_payload(text: str) -> dict:
@@ -178,8 +236,7 @@ class TranslateHandler(BaseHTTPRequestHandler):
             self._send_json(400, {"error": "待翻译中文需在 1—2000 字之间。"})
             return
         try:
-            with _MODEL_LOCK:  # 翻译是 CPU 密集任务，串行执行避免争抢
-                payload = translate_payload(text)
+            payload = translate_payload(text)
             self._send_json(200, payload)
         except Exception as error:  # noqa: BLE001 - 把异常细节回传给网关
             self._send_json(500, {"error": str(error)})

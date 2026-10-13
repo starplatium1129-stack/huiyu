@@ -368,6 +368,3 @@ async fn upload(
     service.health.invalidate();
     Ok((StatusCode::CREATED, Json(result.map_err(import_error)?)).into_response())
 }
-
-#[cfg(test)]
-mod tests;

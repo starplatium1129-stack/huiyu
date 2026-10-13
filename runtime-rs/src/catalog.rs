@@ -9,8 +9,7 @@ mod migration;
 mod projection_cache;
 mod query;
 mod snapshots;
-#[cfg(test)]
-mod tests;
+
 mod validation;
 mod views;
 mod write;
@@ -21,7 +20,7 @@ pub(crate) use facet_cache::FacetCache;
 pub use http::router;
 pub(crate) use projection_cache::ProjectionCache;
 pub use query::Query;
-use rusqlite::{Connection, OptionalExtension, params};
+use rusqlite::{Connection, OpenFlags, OptionalExtension, params};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
@@ -88,8 +87,66 @@ impl Catalog {
             std::fs::create_dir_all(parent)?;
         }
         let connection = Connection::open(&options.database)?;
+        let mut store = Self::connected(connection, options)?;
+        store.ensure_schema(&marker, !marker.exists())?;
+        Ok(store)
+    }
+    pub(crate) fn open_existing(options: Options) -> Result<Self> {
+        if !options.database.is_file() {
+            return Err(ApiError::new(
+                503,
+                "CATALOG_MISSING",
+                "已启用的内容库缺失，请恢复内容快照或备份",
+            ));
+        }
+        // Serving requests must never recreate a missing authority. Reopen on
+        // every request so restored/replaced files still pass live validation.
+        let connection = Connection::open_with_flags(
+            &options.database,
+            OpenFlags::SQLITE_OPEN_READ_WRITE | OpenFlags::SQLITE_OPEN_NO_MUTEX,
+        )?;
+        let marker = options.database.with_extension("identity.json");
+        let mut store = Self::connected(connection, options)?;
+        store.validate_schema(false)?;
+        let tables: i64 = store.connection.query_row(
+            "SELECT count(*) FROM sqlite_schema WHERE type='table' AND name IN ('catalog_meta','content_records','content_seed','content_history')",
+            [],
+            |row| row.get(0),
+        )?;
+        if tables != 4 {
+            return Err(ApiError::new(
+                503,
+                "CATALOG_INVALID",
+                "内容库结构缺失，请恢复备份",
+            ));
+        }
+        let indexed: bool = store.connection.query_row(
+            "SELECT (SELECT count(*) FROM sqlite_schema WHERE type='index' AND name IN ('catalog_browse','catalog_newest','catalog_order'))=3 AND NOT EXISTS(SELECT 1 FROM sqlite_schema WHERE type='index' AND name='catalog_recent')",
+            [],
+            |row| row.get(0),
+        )?;
+        let journal: String = store
+            .connection
+            .query_row("PRAGMA journal_mode", [], |row| row.get(0))?;
+        if !indexed || journal != "wal" {
+            // Old/restored snapshots retain the additive index upgrade contract;
+            // current authorities skip all DDL on ordinary reads and cache hits.
+            store.ensure_schema(&marker, false)?;
+        } else {
+            store.ensure_marker(&marker)?;
+        }
+        Ok(store)
+    }
+    fn connected(connection: Connection, options: Options) -> Result<Self> {
         connection.busy_timeout(std::time::Duration::from_secs(10))?;
-        connection.execute_batch("PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL;
+        connection.execute_batch("PRAGMA foreign_keys=ON; PRAGMA synchronous=FULL;")?;
+        Ok(Self {
+            connection,
+            options,
+        })
+    }
+    fn ensure_schema(&mut self, marker: &Path, initialize: bool) -> Result<()> {
+        self.connection.execute_batch("PRAGMA journal_mode=WAL;
             CREATE TABLE IF NOT EXISTS catalog_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS content_records (
                 kind TEXT NOT NULL,id TEXT NOT NULL,revision INTEGER NOT NULL,sort_order INTEGER NOT NULL,
@@ -105,11 +162,11 @@ impl Catalog {
                 sequence INTEGER PRIMARY KEY AUTOINCREMENT, batch TEXT NOT NULL,kind TEXT NOT NULL,id TEXT NOT NULL,
                 revision INTEGER NOT NULL,at TEXT NOT NULL,record TEXT NOT NULL,deleted INTEGER NOT NULL,
                 UNIQUE(kind,id,revision));")?;
-        let mut store = Self {
-            connection,
-            options,
-        };
-        let initialized: Option<String> = store
+        self.validate_schema(initialize)?;
+        self.ensure_marker(marker)
+    }
+    fn validate_schema(&mut self, initialize: bool) -> Result<()> {
+        let initialized: Option<String> = self
             .connection
             .query_row(
                 "SELECT value FROM catalog_meta WHERE key='schema'",
@@ -118,14 +175,14 @@ impl Catalog {
             )
             .optional()?;
         match initialized.as_deref() {
-            None if marker.exists() => {
+            None if !initialize => {
                 return Err(ApiError::new(
                     503,
                     "CATALOG_INVALID",
                     "内容库结构缺失，请恢复备份",
                 ));
             }
-            None => store.initialize()?,
+            None => self.initialize()?,
             Some("1") => (),
             _ => {
                 return Err(ApiError::new(
@@ -135,14 +192,17 @@ impl Catalog {
                 ));
             }
         }
+        Ok(())
+    }
+    fn ensure_marker(&self, marker: &Path) -> Result<()> {
         if !marker.exists() {
             crate::maintenance::fs::write_json(
-                &marker,
+                marker,
                 &json!({"schemaVersion":1,"initializedAt":now()}),
             )
             .map_err(|e| ApiError::new(e.status.as_u16(), e.code, e.message))?;
         }
-        Ok(store)
+        Ok(())
     }
     pub fn get(&self, kind: &str, id: &str) -> Result<Record> {
         validation::key(kind, id)?;

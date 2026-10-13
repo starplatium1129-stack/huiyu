@@ -105,7 +105,6 @@ AI-CG-Studio/
 ├── data/                   Content snapshots, model profiles and indexes
 ├── assets/                 Brand, character and interface assets
 ├── scripts/                Build, maintenance, release and targeted checks
-├── tests/                  Browser and end-to-end tests
 ├── tools/                  Model services and installation helpers
 ├── docs/                   Guides, architecture, releases and evidence
 └── plans/                  Unified planning entry

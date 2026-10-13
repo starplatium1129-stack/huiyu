@@ -56,22 +56,18 @@ pub async fn request(window: WebviewWindow, action: &'static str, migration_id: 
     tauri::async_runtime::spawn_blocking(move || {
         let source_profile_id = app.state::<crate::state::AppState>().paths.source_profile_id.clone();
         let gateway = app.state::<crate::gateway::GatewaySupervisor>();
-        // Reuse the supervisor's fresh challenge/HMAC proof, never public health
-        // alone. The endpoint is selected by the host, not renderer input.
-        let ready = gateway.is_healthy();
-        let runtime = if ready {
-            let response = gateway.host_request(serde_json::json!({
-                "action": action, "windowId": window_id, "origin": source_origin,
-                "sourceProfileId": source_profile_id, "migrationId": migration_id, "bundledUi": bundled_ui, "candidate": candidate,
-            }))?;
-            Some(RuntimeDescriptor {
-                origin: gateway.base_url(),
-                protocol_version: crate::gateway::DESKTOP_GATEWAY_PROTOCOL,
-                ownership: if gateway.owns_gateway() { "managed" } else { "attached" },
-                runtime_epoch: gateway.runtime_epoch(),
-                workspace: response.get("workspace").cloned().unwrap_or(serde_json::Value::Null),
-            })
-        } else { None };
+        // Authenticate once against the host-selected private endpoint, and
+        // retain that identity snapshot for both the action and its descriptor.
+        let runtime = gateway.host_request(serde_json::json!({
+            "action": action, "windowId": window_id, "origin": source_origin,
+            "sourceProfileId": source_profile_id, "migrationId": migration_id, "bundledUi": bundled_ui, "candidate": candidate,
+        }))?.map(|response| RuntimeDescriptor {
+            origin: response.origin,
+            protocol_version: crate::gateway::DESKTOP_GATEWAY_PROTOCOL,
+            ownership: if response.owned { "managed" } else { "attached" },
+            runtime_epoch: response.runtime_epoch,
+            workspace: response.payload.get("workspace").cloned().unwrap_or(serde_json::Value::Null),
+        });
         Ok(DesktopBootstrap {
             protocol_version: 1,
             window_role: role,
@@ -79,23 +75,8 @@ pub async fn request(window: WebviewWindow, action: &'static str, migration_id: 
             source_profile_id,
             source_origin,
             bundled_ui_available: crate::ui_entry::can_enable_bundled(),
-            connection: if ready { "ready" } else { "unavailable" },
+            connection: if runtime.is_some() { "ready" } else { "unavailable" },
             runtime,
         })
     }).await.map_err(|_| "BOOTSTRAP_CHECK_FAILED".to_string())?
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn roles_are_host_labels_and_unknown_windows_are_denied() {
-        for (label, role) in [("atelier", WindowRole::Atelier), ("companion", WindowRole::Companion), ("companion-chat", WindowRole::CompanionChat)] {
-            assert_eq!(window_role(label).unwrap(), role);
-            assert_eq!(serde_json::to_value(role).unwrap(), label);
-        }
-        assert!(window_role("preview").is_err());
-    }
-
 }

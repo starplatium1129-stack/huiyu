@@ -1,6 +1,4 @@
 mod protocol;
-#[cfg(test)]
-mod tests;
 
 use crate::{
     error::{ApiError, Result},

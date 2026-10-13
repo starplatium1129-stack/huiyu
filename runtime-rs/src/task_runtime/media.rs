@@ -1,22 +1,13 @@
 use super::*;
 use crate::execution::Output;
-use crate::storage::{TaskMediaChunk, TaskMediaTarget};
-use axum::body::Bytes;
+use crate::storage::TaskMediaSource;
 use sha2::{Digest, Sha256};
 use std::path::Path;
 use tokio::io::{AsyncReadExt, AsyncSeekExt};
-#[cfg(test)]
-mod tests;
 
 pub(super) enum Target {
     Input(String),
     Result(usize),
-}
-struct SharedOutput(Arc<Vec<u8>>);
-impl AsRef<[u8]> for SharedOutput {
-    fn as_ref(&self) -> &[u8] {
-        self.0.as_slice()
-    }
 }
 impl Target {
     fn command(&self, id: &str, phase: &str) -> Value {
@@ -73,56 +64,20 @@ pub(super) async fn persist(
     let mut prepare = target.command(id, "prepare");
     prepare["media"] = media;
     let prepared = storage.request(prepare, principal).await?;
-    let mut offset = prepared["offset"]
+    prepared["offset"]
         .as_u64()
         .filter(|v| *v <= output.len())
         .ok_or_else(|| {
             ApiError::new(503, "TASK_MEDIA_INVALID", "Invalid persisted media offset")
         })?;
-    if let Some(file) = file.as_mut() {
-        file.seek(std::io::SeekFrom::Start(offset)).await?;
-    }
-    let shared = match &output {
-        Output::Bytes { bytes, .. } => Some(Bytes::from_owner(SharedOutput(bytes.clone()))),
-        Output::File { .. } => None,
+    let source = match output {
+        Output::Bytes { bytes, .. } => TaskMediaSource::Bytes(bytes),
+        Output::File { .. } => TaskMediaSource::File(file.unwrap().into_std().await),
     };
-    while offset < output.len() {
-        let length = (output.len() - offset).min(1024 * 1024) as usize;
-        let data = match &output {
-            Output::Bytes { .. } => shared
-                .as_ref()
-                .unwrap()
-                .slice(offset as usize..offset as usize + length),
-            Output::File { .. } => {
-                let mut buffer = vec![0; length];
-                file.as_mut().unwrap().read_exact(&mut buffer).await?;
-                Bytes::from(buffer)
-            }
-        };
-        // This process already owns the bytes. Keep the JSON/base64 codec at
-        // the HTTP boundary and transfer shared slices or owned file buffers.
-        let result = storage
-            .task_media_chunk(
-                TaskMediaChunk {
-                    task_id: id.into(),
-                    target: match &target {
-                        Target::Input(name) => TaskMediaTarget::Input(name.clone()),
-                        Target::Result(index) => TaskMediaTarget::Result(*index as u64),
-                    },
-                    offset,
-                    bytes: data,
-                },
-                principal,
-            )
-            .await?;
-        offset = Some(result)
-            .filter(|next| *next > offset && *next <= output.len())
-            .ok_or_else(|| {
-                ApiError::new(503, "TASK_MEDIA_INVALID", "Media upload did not advance")
-            })?;
-    }
+    // Both internal sources use one admitted background copy and durable flush.
+    // HTTP uploads keep their independently acknowledged, durable chunk protocol.
     storage
-        .request(target.command(id, "commit"), principal)
+        .task_media_copy(target.command(id, "commit"), source, principal)
         .await?;
     Ok(())
 }

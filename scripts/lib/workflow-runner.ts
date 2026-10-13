@@ -20,7 +20,6 @@ const EFFECTS = Object.freeze([
   'writes-source',      // 写语义源（data/ 分片、standards/view、DATA_VERSION、版本文件）
   'writes-product',     // 写生成产物（聚合、dist、图片、候选、报告）
   'writes-release',     // 写发布/安装产物（showcase 版本目录、安装包、更新产物）
-  'writes-baseline',    // 重写门禁基线文件
   'delete',             // 删除文件/目录
   'external-model',     // 调用本地网关/ComfyUI/视觉模型
   'network-download',   // 从外网下载
@@ -30,7 +29,7 @@ const EFFECTS = Object.freeze([
 ]);
 const MACHINES = Object.freeze([
   'node', 'windows', 'windows-toolchain', 'python', 'python-pillow', 'gateway',
-  'comfyui', 'vision-api', 'network', 'playwright-browser', 'build-present',
+  'comfyui', 'vision-api', 'network', 'build-present',
 ]);
 const RESUME_MODES = Object.freeze(['idempotent', 'checkpoint', 'na']);
 /** 描述性标签无需在复合项中逐个重复；有副作用的子项必须被完整声明。 */

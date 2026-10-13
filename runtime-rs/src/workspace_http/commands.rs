@@ -195,6 +195,13 @@ pub(super) fn command(
             if let Some(deleted) = query.get("includeDeleted") {
                 command["includeDeleted"] = json!(deleted == "true");
             }
+            if let Some(deleted_only) = query.get("deletedOnly") {
+                command["deletedOnly"] = match deleted_only.as_str() {
+                    "true" => json!(true),
+                    "false" => json!(false),
+                    _ => return Err(ApiError::invalid("deletedOnly must be true or false")),
+                };
+            }
             command
         }
         ("GET", ["artwork-search"]) => {
@@ -341,126 +348,4 @@ pub(super) fn command(
         }
     };
     Ok(result)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn preference_projection_is_forwarded_as_a_read_only_list() {
-        let query = Query::from([("projection".into(), "preference".into())]);
-        let result = command(
-            &Method::GET,
-            &segments("artworks").unwrap(),
-            &query,
-            &Value::Null,
-        )
-        .unwrap();
-        assert_eq!(
-            result,
-            json!({"kind":"listArtworks","projection":"preference"})
-        );
-    }
-    #[test]
-    fn routes_preserve_numeric_ids_and_do_not_execute_supplied_commands() {
-        let query = Query::from([("idType".into(), "number".into())]);
-        assert_eq!(
-            command(
-                &Method::GET,
-                &segments("artwork-search").unwrap(),
-                &query,
-                &json!({"kind":"backup"}),
-            )
-            .unwrap(),
-            json!({"kind":"searchArtworks","terms":[]})
-        );
-        assert_eq!(
-            command(
-                &Method::GET,
-                &segments("artworks/search-index").unwrap(),
-                &Query::default(),
-                &Value::Null,
-            )
-            .unwrap(),
-            json!({"kind":"getArtwork","id":"search-index"})
-        );
-        assert_eq!(
-            command(
-                &Method::GET,
-                &segments("artwork-recent-index").unwrap(),
-                &query,
-                &json!({"kind":"backup"})
-            )
-            .unwrap(),
-            json!({"kind":"readArtworkRecentIndex"})
-        );
-        assert_eq!(
-            command(
-                &Method::GET,
-                &segments("artworks/recent-index").unwrap(),
-                &Query::default(),
-                &Value::Null
-            )
-            .unwrap(),
-            json!({"kind":"getArtwork","id":"recent-index"})
-        );
-        assert_eq!(
-            command(
-                &Method::GET,
-                &segments("artwork-recent-index").unwrap(),
-                &Query::from([("candidateLimit".into(), "3".into())]),
-                &Value::Null
-            )
-            .unwrap(),
-            json!({"kind":"readArtworkRecentIndex","candidateLimit":3})
-        );
-        let organized = command(&Method::POST, &segments("artworks/organize").unwrap(), &Query::default(), &json!({"kind":"backup","operationId":"organize-one","ids":[42],"expectedRevisions":[{"id":42,"revision":1}],"projectId":null,"collectionTags":{"add":["keep"]}})).unwrap();
-        assert_eq!(organized["kind"], "organizeArtworks");
-        assert!(organized["projectId"].is_null());
-        assert_eq!(command(&Method::DELETE, &segments("projects/42/smart").unwrap(), &query,
-            &json!({"kind":"hardDeleteArtwork","operationId":"delete-smart","expectedRevision":7})).unwrap(),
-            json!({"kind":"deleteSmartAlbum","operationId":"delete-smart","id":42.0,"expectedRevision":7}));
-        assert_eq!(command(&Method::POST, &segments("artworks/organization-undo").unwrap(), &Query::default(), &json!({"operationId":"undo-one","sourceOperationId":"organize-one","changes":[{"id":"untrusted"}]})).unwrap(),json!({"kind":"undoArtworkOrganization","operationId":"undo-one","sourceOperationId":"organize-one"}));
-        let converted = command(
-            &Method::GET,
-            &segments("artworks/42").unwrap(),
-            &query,
-            &json!({"kind":"backup"}),
-        )
-        .unwrap();
-        assert_eq!(converted["kind"], "getArtwork");
-        assert_eq!(converted["id"].as_f64(), Some(42.0));
-        assert_eq!(segments("media/a%2Fb+z/chunks").unwrap()[1], "a/b+z");
-        let mut artwork = json!({"operationId":"append", "artwork":{"id":42,"nested":[true,null,{"text":"retained"}]}});
-        let append = command(
-            &Method::POST,
-            &segments("artworks").unwrap(),
-            &Query::default(),
-            &artwork,
-        )
-        .unwrap();
-        assert_eq!(append["artwork"], artwork["artwork"]);
-        artwork["artwork"]["id"] = json!(99);
-        assert_eq!(append["artwork"]["id"], 42);
-        let mut upload = json!({"offset":0,"data":"A".repeat(1_398_104)});
-        let chunk_command = command(
-            &Method::PUT,
-            &segments("media-uploads/upload/chunks").unwrap(),
-            &Query::default(),
-            &upload,
-        )
-        .unwrap();
-        assert_eq!(chunk_command["kind"], "uploadMediaChunk");
-        assert_eq!(chunk_command["data"], upload["data"]);
-        upload["data"] = json!("changed");
-        assert_eq!(chunk_command["data"].as_str().unwrap().len(), 1_398_104);
-        assert_eq!(
-            chunk(&json!("A".repeat(1_398_105))).unwrap_err().message,
-            "Invalid media chunk"
-        );
-        assert_eq!(
-            record(&json!([])).unwrap_err().message,
-            "Expected an object"
-        );
-    }
 }

@@ -5,6 +5,8 @@ use std::{collections::HashSet, time::Duration};
 const RECOVERY_PARALLELISM: usize = 2;
 const RECOVERY_TIMEOUT: Duration = Duration::from_secs(60);
 const RECOVERY_CLEANUP_TIMEOUT: Duration = Duration::from_secs(5);
+const FOLLOW_INTERVAL: Duration = Duration::from_millis(1500);
+const STABLE_FOLLOW_INTERVAL: Duration = Duration::from_secs(5);
 
 #[derive(Default)]
 pub(super) struct Initialization {
@@ -148,7 +150,7 @@ impl TaskRuntime {
         tokio::select! {
             biased;
             _ = self.shutdown.cancelled() => Err(recovery_closed()),
-            result = tokio::time::timeout(RECOVERY_TIMEOUT, self.reconcile_inner(storage, principal, id, execution::ReconcileMode::Startup)) => {
+            result = tokio::time::timeout(RECOVERY_TIMEOUT, self.reconcile_inner(storage, principal, id, execution::ReconcileMode::Startup, None)) => {
                 match result {
                     Ok(result) => result.map(|_| ()),
                     Err(_) => {
@@ -209,32 +211,93 @@ impl TaskRuntime {
         principal: String,
         id: String,
     ) -> bool {
+        self.schedule_monitor(storage, principal, id, false)
+    }
+    pub(super) fn monitor_changed(
+        self: &Arc<Self>,
+        storage: Storage,
+        principal: String,
+        id: String,
+    ) -> bool {
+        self.schedule_monitor(storage, principal, id, true)
+    }
+    fn schedule_monitor(
+        self: &Arc<Self>,
+        storage: Storage,
+        principal: String,
+        id: String,
+        changed: bool,
+    ) -> bool {
         if self.check_running().is_err() {
             return false;
         }
-        {
+        let notification = {
             let mut jobs = self.jobs.lock().unwrap();
             let binding = jobs
                 .entry(identity(&storage, &id))
                 .or_insert_with(|| JobBinding::new(String::new()));
+            if changed && binding.watching {
+                binding.changed.notify_one();
+            }
             if binding.dispatching || binding.watching {
                 binding.watch_requested = true;
                 return true;
             }
             binding.watching = true;
             binding.watch_requested = false;
-        }
+            binding.changed.clone()
+        };
         let runtime = self.clone();
         self.tracker.spawn(async move {
-            runtime.follow(&storage, &principal, &id).await;
+            runtime
+                .follow(&storage, &principal, &id, notification)
+                .await;
         });
         true
     }
-    async fn follow(self: &Arc<Self>, storage: &Storage, principal: &str, id: &str) {
+    async fn follow(
+        self: &Arc<Self>,
+        storage: &Storage,
+        principal: &str,
+        id: &str,
+        notification: Arc<tokio::sync::Notify>,
+    ) {
+        let mut last_revision = None;
         loop {
+            // Register before observation so a transition during an awaited
+            // provider/storage call cannot disappear before the next wait.
+            let notified = notification.notified();
+            tokio::pin!(notified);
+            notified.as_mut().enable();
+            let live = {
+                let jobs = self.jobs.lock().unwrap();
+                let Some(binding) = jobs.get(&identity(storage, id)) else {
+                    return;
+                };
+                // A removed/recreated binding belongs to its own watcher.
+                if !Arc::ptr_eq(&binding.changed, &notification) {
+                    return;
+                }
+                !binding.id.is_empty()
+            };
             let observed = self
-                .reconcile_inner(storage, principal, id, execution::ReconcileMode::Follow)
+                .reconcile_inner(
+                    storage,
+                    principal,
+                    id,
+                    execution::ReconcileMode::Follow,
+                    Some(&notification),
+                )
                 .await;
+            if !self
+                .jobs
+                .lock()
+                .unwrap()
+                .get(&identity(storage, id))
+                .is_some_and(|job| Arc::ptr_eq(&job.changed, &notification))
+            {
+                return;
+            }
             let settled = observed.as_ref().is_ok_and(|task| task.upstream_settled);
             let stop = observed.as_ref().map_or(true, |task| {
                 settled || task.recovery_state == TaskRecoveryState::Unknown
@@ -243,6 +306,9 @@ impl TaskRuntime {
                 let again = {
                     let mut jobs = self.jobs.lock().unwrap();
                     jobs.get_mut(&identity(storage, id)).is_some_and(|job| {
+                        if !Arc::ptr_eq(&job.changed, &notification) {
+                            return false;
+                        }
                         let again = !settled && job.watch_requested && self.check_running().is_ok();
                         job.watch_requested = false;
                         if !again {
@@ -256,13 +322,32 @@ impl TaskRuntime {
                 }
                 return;
             }
+            // Durable observations do not carry step progress. Completion and
+            // checkpoint hooks wake changes; polling remains a finite fallback.
+            // Only an unchanged live running task uses the longer cadence.
+            let delay = if live
+                && observed.as_ref().is_ok_and(|task| {
+                    last_revision == Some(task.revision)
+                        && task.status == TaskStatus::Running
+                        && task.recovery_state == TaskRecoveryState::Normal
+                        && task.cancel_requested_at.is_none()
+                        && task.error_code.is_none()
+                }) {
+                STABLE_FOLLOW_INTERVAL
+            } else {
+                FOLLOW_INTERVAL
+            };
+            last_revision = observed.as_ref().ok().map(|task| task.revision);
             tokio::select! {
+                biased;
                 _=self.shutdown.cancelled()=>{
                     let _=patch(storage,principal,id,TaskPatch { recovery_state: Some(TaskRecoveryState::Unknown), error_code: Some(Some("TASK_RUNTIME_INTERRUPTED".into())), ..Default::default() }).await;
-                    if let Some(job)=self.jobs.lock().unwrap().get_mut(&identity(storage,id)){job.watching=false;}
+                    if let Some(job)=self.jobs.lock().unwrap().get_mut(&identity(storage,id))
+                        && Arc::ptr_eq(&job.changed, &notification) {job.watching=false;}
                     return;
                 },
-                _=tokio::time::sleep(Duration::from_millis(1500))=>{},
+                _=notified=>{},
+                _=tokio::time::sleep(delay)=>{},
             }
         }
     }
@@ -281,13 +366,13 @@ impl TaskRuntime {
                     .as_ref()
                     .and_then(|value| value["gatewayJobId"].as_str())
             });
-            if let (Some(images), Some(id)) = (&self.images, gateway) {
+            if let Some(id) = gateway {
                 let family = if task.kind == TaskKind::Creative {
                     "krea2"
                 } else {
                     "anima"
                 };
-                match images.query(id, principal, family).await {
+                match self.images.query(id, principal, family).await {
                     Ok(observation) => return Ok(observation),
                     Err(error) if matches!(error.code.as_str(), "JOB_NOT_FOUND" | "JOB_LOST") => {}
                     Err(error) => return Err(error),
@@ -308,7 +393,7 @@ impl TaskRuntime {
             id: id.into(),
         });
         let (observation, checkpoint) = self
-            .video()?
+            .video
             .recover_batch(&serde_json::to_value(task)?, hooks, &mut cancellation.batch)
             .await?;
         patch(

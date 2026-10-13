@@ -5,7 +5,7 @@ import { readLocalImageReferences, readSessionImageReferences } from '../../util
 import { imgDeleteMany, imgGetRecord, imgPutRecord } from '../../composables/useImageStore.ts'
 import { type ArtworkRecord } from '../../types/artwork.ts'
 import { ARTWORK_DELETE_BATCH_SIZE, type ArtworkRepository, type ArtworkDeleteResult, type ArtworkSoftDeleteResult, type TrashEntry, type ArtworkTrashSelection } from '../../application/artwork/artworkRepository.ts'
-import { type ArtworkKvAdapter, type ArtworkImageAdapter, type WebArtworkRepositoryDependencies, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, record, comparableId, recordId, imageId, unique, arrayValue, callSafely, ArtworkDeletionError } from './artworkStorage.ts'
+import { type ArtworkKvAdapter, type ArtworkImageAdapter, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, record, comparableId, recordId, imageId, unique, arrayValue, callSafely } from './artworkStorage.ts'
 import { createArtworkHardDelete } from './artworkHardDelete.ts'
 import { createArtworkReads } from './artworkReads.ts'
 import { createArtworkMedia } from './artworkMedia.ts'
@@ -14,46 +14,25 @@ import { createArtworkProjects } from './artworkProjects.ts'
 import { purgeWebTrash } from './artworkTrashPurge.ts'
 export { ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, ArtworkDeletionError } from './artworkStorage.ts'
 
-export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDependencies = {}): ArtworkRepository {
+export function createWebArtworkRepository(): ArtworkRepository {
   const kv: ArtworkKvAdapter = {
-    get: dependencies.kv?.get ?? (key => kvGet(key)),
-    set: dependencies.kv?.set ?? ((key, value) => kvSet(key, value)),
-    setMany: dependencies.kv ? dependencies.kv.setMany : entries => kvSetMany(entries),
-    remove: dependencies.kv?.remove ?? (key => (dependencies.kv?.set ?? kvSet)(key, null)),
+    get: kvGet,
+    set: kvSet,
+    setMany: kvSetMany,
+    remove: key => kvSet(key, null),
   }
   const images: ArtworkImageAdapter = {
-    get: dependencies.images?.get ?? (id => imgGetRecord(id)),
-    putRecord: dependencies.images?.putRecord ?? (value => imgPutRecord(value)),
-    deleteMany: dependencies.images?.deleteMany ?? (ids => imgDeleteMany(ids)),
+    get: imgGetRecord,
+    putRecord: imgPutRecord,
+    deleteMany: imgDeleteMany,
   }
 
   // Adapters own their storage isolation; the browser library also serializes across tabs.
   let mutationTail: Promise<void> = Promise.resolve()
   function enqueue<T>(work: () => Promise<T>, cleanup = false): Promise<T> {
-    const operation = mutationTail.then(() => dependencies.kv ? work() : cleanup ? withArtworkCleanup(work) : withArtworkMutation(work))
+    const operation = mutationTail.then(() => cleanup ? withArtworkCleanup(work) : withArtworkMutation(work))
     mutationTail = operation.then(() => undefined, () => undefined)
     return operation
-  }
-
-  /** History, project references and trash form one recoverable operation. */
-  async function commitRelatedRecords(entries: Array<{ key: string; value: unknown }>, operation: string): Promise<void> {
-    if (kv.setMany) return kv.setMany(entries)
-    // Custom adapters without transactions retain the same compensation contract.
-    const snapshots = await Promise.all(entries.map(entry => kv.get(entry.key)))
-    let attempted = 0
-    try {
-      for (const entry of entries) { attempted += 1; await kv.set(entry.key, entry.value) }
-    } catch (error) {
-      const rollbackErrors: unknown[] = []
-      for (let index = attempted - 1; index >= 0; index -= 1) {
-        const { key } = entries[index]
-        await callSafely(async () => {
-          if (snapshots[index] == null) await (kv.remove ? kv.remove(key) : kv.set(key, null))
-          else await kv.set(key, snapshots[index])
-        }, rollbackErrors)
-      }
-      throw new ArtworkDeletionError(error, rollbackErrors, operation)
-    }
   }
 
   const deleteArtworkNow = createArtworkHardDelete(kv, images)
@@ -121,11 +100,11 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
       id, deletedAt, historyEntries, projectRefs: projectRefs.get(id) ?? [],
       imageIds: unique(historyEntries.map(imageId)).filter(image => !remainingImageIds.has(image)),
     })
-    await commitRelatedRecords([
+    await kv.setMany([
       { key: ARTWORK_HISTORY_KEY, value: nextHistory },
       ...(projectsChanged ? [{ key: ARTWORK_PROJECTS_KEY, value: nextProjects }] : []),
       { key: ARTWORK_TRASH_KEY, value: nextTrash },
-    ], '作品删除')
+    ])
     return results
   }
 
@@ -147,10 +126,8 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
       ...(Array.isArray(entry.historyEntries) ? entry.historyEntries.map(imageId) : []),
     ])
     const missingImageIds: string[] = []
-    if (images.get) {
-      for (const image of requiredImageIds) {
-        if (!(await images.get(image))) missingImageIds.push(image)
-      }
+    for (const image of requiredImageIds) {
+      if (!(await images.get(image))) missingImageIds.push(image)
     }
     if (missingImageIds.length) return { restored: false, missingImageIds }
     // 同 id 已存在（恢复过一次的重复点击）：幂等成功
@@ -169,16 +146,16 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
       refsRestored += 1
       return { ...source, history_ids: [...source.history_ids, targetId] }
     })
-    await commitRelatedRecords([
+    await kv.setMany([
       ...(!exists ? [{ key: ARTWORK_HISTORY_KEY, value: [...entry.historyEntries, ...history] }] : []),
       ...(refsRestored > 0 ? [{ key: ARTWORK_PROJECTS_KEY, value: nextProjects }] : []),
       { key: ARTWORK_TRASH_KEY, value: trash.filter(item => item.id !== targetId) },
-    ], '作品恢复')
+    ])
     return { restored: true }
   }
 
   function trashDrafts(): unknown[] {
-    return dependencies.kv ? [] : [...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage)]
+    return [...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage)]
   }
   async function purgeExpiredTrashNow(): Promise<{ purged: number }> {
     const trash = await readTrash()
@@ -289,9 +266,9 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
     })
   }
 
-  const reads = createArtworkReads(kv, dependencies, work => dependencies.kv ? work() : withArtworkMutation(work))
-  const media = createArtworkMedia(kv, images, dependencies)
-  const organization = createArtworkOrganization({ kv, commit: commitRelatedRecords, enqueue })
+  const reads = createArtworkReads(kv, withArtworkMutation)
+  const media = createArtworkMedia(kv, images)
+  const organization = createArtworkOrganization({ kv, enqueue })
   const projects = createArtworkProjects(kv, enqueue)
   return { ...reads, ...media, ...organization, ...projects, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, purgeExpiredTrash, purgeTrash, listTrash: listTrashNow }
 }

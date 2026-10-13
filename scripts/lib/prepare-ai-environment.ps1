@@ -5,7 +5,8 @@ param(
   [Parameter(Mandatory=$true)][string]$Archive,
   [string]$CudaArchive='',
   [string]$KjArchive='',
-  [string]$TeaArchive=''
+  [string]$TeaArchive='',
+  [string]$ArchiveSha256=''
 )
 $ErrorActionPreference='Stop'
 [Console]::OutputEncoding=[Text.UTF8Encoding]::new($false)
@@ -15,7 +16,6 @@ $stageRoot=Join-Path $setupRoot 'staging'
 $stagePath=Join-Path $stageRoot 'environment'
 if (-not (Test-Path -LiteralPath $workspacePath -PathType Container)) { throw 'AI 工作区尚未建立' }
 $resolvedWorkspace=(Get-Item -LiteralPath $workspacePath).FullName
-New-Item -ItemType Directory -Force -Path $stageRoot | Out-Null
 function Assert-InWorkspace([string]$path) {
   $resolved=[IO.Path]::GetFullPath($path)
   if (-not $resolved.StartsWith($resolvedWorkspace.TrimEnd('\')+'\',[StringComparison]::OrdinalIgnoreCase)) { throw '环境目录越出 AI 工作区' }
@@ -29,6 +29,7 @@ function Assert-InWorkspace([string]$path) {
   }
 }
 Assert-InWorkspace $stagePath
+New-Item -ItemType Directory -Force -Path $stageRoot | Out-Null
 if (Test-Path -LiteralPath $stagePath) { Remove-Item -LiteralPath $stagePath -Recurse -Force }
 New-Item -ItemType Directory -Path $stagePath | Out-Null
 function Expand-Package([string]$source,[string]$destination) {
@@ -45,21 +46,39 @@ function Find-Directory([string]$root,[string]$file) {
 function Install-Node([string]$source,[string]$name,[string]$comfy,[string]$python) {
   $target=Join-Path (Join-Path $comfy 'custom_nodes') $name
   Assert-InWorkspace $target
-  if (Test-Path -LiteralPath $target) { return }
+  $existing=Test-Path -LiteralPath $target
   $nodeStage=Join-Path $stagePath $name
   Expand-Package $source $nodeStage
   $folders=@(Get-ChildItem -LiteralPath $nodeStage -Directory)
   if ($folders.Count -ne 1) { throw '节点包目录布局无效' }
   $nodeRoot=$folders[0].FullName
+  if (-not (Test-Path -LiteralPath (Join-Path $nodeRoot '__init__.py') -PathType Leaf)) { throw ('固定节点包缺少入口：'+$name) }
+  if ($existing) {
+    if (-not (Test-Path -LiteralPath $target -PathType Container)) { throw ('已有节点路径不是目录：'+$name+'。请自行核对并移走冲突文件后重试；未覆盖。') }
+    # Never replace user nodes. Only repair dependencies when the installed
+    # Python sources and dependency declarations match the verified archive.
+    $sources=@(Get-ChildItem -LiteralPath $nodeRoot -Recurse -File | Where-Object { $_.Extension -eq '.py' -or $_.Name -in @('requirements.txt','pyproject.toml') })
+    foreach ($sourceFile in $sources) {
+      $relative=$sourceFile.FullName.Substring($nodeRoot.Length).TrimStart('\')
+      $installed=Join-Path $target $relative
+      Assert-InWorkspace $installed
+      if (-not (Test-Path -LiteralPath $installed -PathType Leaf) -or
+          (Get-FileHash -LiteralPath $installed -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $sourceFile.FullName -Algorithm SHA256).Hash) {
+        throw ('已有节点不完整或与固定版本不同：'+$name+' / '+$relative+' 缺失或内容不匹配。请使用原环境管理方式修复，或自行备份并移走该节点目录后重试；未覆盖。')
+      }
+    }
+  }
   $requirements=Join-Path $nodeRoot 'requirements.txt'
   if (Test-Path -LiteralPath $requirements) {
-    & $python -s -m pip install --disable-pip-version-check --cache-dir (Join-Path $setupRoot 'pip-cache') -r $requirements
+    $pipCache=Join-Path $setupRoot 'pip-cache'
+    Assert-InWorkspace $pipCache
+    & $python -s -m pip install --disable-pip-version-check --cache-dir $pipCache -r $requirements
     if ($LASTEXITCODE -ne 0) { throw ('节点依赖安装失败：'+$name) }
   }
   New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
   Assert-InWorkspace $nodeRoot
   Assert-InWorkspace $target
-  Move-Item -LiteralPath $nodeRoot -Destination $target
+  if (-not $existing) { Move-Item -LiteralPath $nodeRoot -Destination $target }
 }
 try {
   if ($Environment.StartsWith('llama-')) {
@@ -96,6 +115,7 @@ try {
     if (-not (Test-Path -LiteralPath (Join-Path $comfy 'main.py'))) {
       Assert-InWorkspace $managedRoot
       if (Test-Path -LiteralPath $managedRoot) { throw '受管运行目录已有不完整环境，请先核对；自动准备不会覆盖未知文件' }
+      if ($ArchiveSha256 -notmatch '^[0-9a-f]{64}$') { throw '缺少固定运行包校验身份，请从绘遇控制室重新准备' }
       Expand-Package $Archive (Join-Path $stagePath 'comfy')
       $comfyPayload=Find-Directory (Join-Path $stagePath 'comfy') 'main.py'
       # main.py is at the ComfyUI root; embedded Python is beside it.
@@ -127,6 +147,10 @@ huiyu_models:
 "@
       [IO.File]::WriteAllText((Join-Path $comfy 'extra_model_paths.yaml'),$modelConfig,[Text.UTF8Encoding]::new($false))
       New-Item -ItemType Directory -Force -Path (Split-Path -Parent $managedRoot) | Out-Null
+      # The caller verified this fixed archive. Persist its identity before the
+      # atomic publish so retries can distinguish CUDA variants and revisions.
+      $receipt=[ordered]@{ schemaVersion=1; environment=$Environment; archiveSha256=$ArchiveSha256 }
+      [IO.File]::WriteAllText((Join-Path $portableRoot 'huiyu-environment.json'),($receipt | ConvertTo-Json -Compress),[Text.UTF8Encoding]::new($false))
       # Publish the complete Python + ComfyUI environment together on the same disk.
       Assert-InWorkspace $portableRoot
       Assert-InWorkspace $managedRoot

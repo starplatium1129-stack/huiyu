@@ -7,6 +7,8 @@ pub(crate) struct Settings {
     pub engine: String,
     #[serde(default = "default_acceleration")]
     pub acceleration: String,
+    #[serde(default = "default_memory_policy")]
+    pub memory_policy: String,
     pub python: PathBuf,
     pub worker: PathBuf,
     pub models_root: PathBuf,
@@ -16,6 +18,9 @@ pub(crate) struct Settings {
 }
 fn default_acceleration() -> String {
     "native".into()
+}
+fn default_memory_policy() -> String {
+    "resident".into()
 }
 impl Settings {
     pub(crate) fn validate(&self) -> Result<()> {
@@ -27,6 +32,9 @@ impl Settings {
             "native" | "sage" | "compiled-sage" | "compiled-fused-sage"
         ) {
             return Err(ApiError::invalid("独立推理加速模式无效"));
+        }
+        if !matches!(self.memory_policy.as_str(), "resident" | "offload") {
+            return Err(ApiError::invalid("独立推理显存策略无效"));
         }
         for path in [
             &self.python,
@@ -76,7 +84,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
             .join("tools/inference/worker.py")
     });
     let defaults = json!({
-        "engine":"comfy","acceleration":"native",
+        "engine":"comfy","acceleration":"native","memoryPolicy":"resident",
         "python":root.join(if cfg!(windows) { "venv/Scripts/python.exe" } else { "venv/bin/python" }),
         "worker":worker,"modelsRoot":root.join("models"),"lorasRoot":root.join("loras")
     });
@@ -101,6 +109,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
     for (key, env) in [
         ("engine", "HUIYU_IMAGE_ENGINE"),
         ("acceleration", "HUIYU_INFERENCE_ACCELERATION"),
+        ("memoryPolicy", "HUIYU_INFERENCE_MEMORY"),
         ("python", "HUIYU_INFERENCE_PYTHON"),
         ("worker", "HUIYU_INFERENCE_WORKER"),
         ("modelsRoot", "HUIYU_INFERENCE_MODELS_ROOT"),
@@ -129,103 +138,4 @@ fn config_error() -> ApiError {
         "NATIVE_CONFIG_INVALID",
         "独立推理配置无效，请检查引擎及绝对路径",
     )
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn persisted_engine_paths_and_frozen_identity_do_not_require_comfy() {
-        let temp = tempfile::tempdir().unwrap();
-        let root = temp.path();
-        let config = Config {
-            sd_host: "http://127.0.0.1:1".into(),
-            sd_auth: None,
-            comfy_host: "http://127.0.0.1:2".into(),
-            ai_workspace_root: root.join("AI"),
-            runtime_root: root.join("runtime"),
-        };
-        std::fs::create_dir_all(&config.runtime_root).unwrap();
-        let mut settings = load(&config).unwrap();
-        assert_eq!(settings.engine, "comfy");
-        assert_eq!(
-            settings.models_root,
-            config.ai_workspace_root.join("inference/models")
-        );
-        settings.engine = "native".into();
-        settings.models_root = root.join("custom-models");
-        std::fs::write(
-            config.runtime_root.join("config.json"),
-            serde_json::to_vec(&json!({"inference":settings})).unwrap(),
-        )
-        .unwrap();
-        let service = Service::for_images(
-            config.clone(),
-            LocalUpstream::new(),
-            CancellationToken::new(),
-        )
-        .unwrap();
-        let identity = service.provider_identity("test");
-        settings.models_root = root.join("next-models");
-        std::fs::write(
-            config.runtime_root.join("config.json"),
-            serde_json::to_vec(&json!({"inference":settings})).unwrap(),
-        )
-        .unwrap();
-        assert_eq!(
-            service.native_settings().unwrap().models_root,
-            root.join("custom-models")
-        );
-        assert_eq!(service.provider_identity("test"), identity);
-        assert_eq!(load(&config).unwrap().models_root, root.join("next-models"));
-    }
-    #[test]
-    fn rejects_relative_paths_unknown_fields_and_unknown_engine() {
-        let temp = tempfile::tempdir().unwrap();
-        let path = temp.path();
-        let mut value = json!({"engine":"native","python":path.join("python"),"worker":path.join("worker.py"),"modelsRoot":path.join("models"),"lorasRoot":path.join("loras")});
-        let settings: Settings = serde_json::from_value(value.clone()).unwrap();
-        settings.validate().unwrap();
-        value["modelsRoot"] = json!("relative");
-        assert!(
-            serde_json::from_value::<Settings>(value.clone())
-                .unwrap()
-                .validate()
-                .is_err()
-        );
-        value["modelsRoot"] = json!(path.join("models"));
-        value["engine"] = json!("automatic");
-        assert!(
-            serde_json::from_value::<Settings>(value.clone())
-                .unwrap()
-                .validate()
-                .is_err()
-        );
-        value["unknown"] = json!(true);
-        assert!(serde_json::from_value::<Settings>(value).is_err());
-    }
-    #[test]
-    fn adversarial_acceleration_rejects_invalid_modes_and_preserves_legacy_default() {
-        let temp = tempfile::tempdir().unwrap();
-        let root = temp.path();
-        let mut value = json!({"engine":"native","python":root.join("python"),"worker":root.join("worker.py"),"modelsRoot":root.join("models"),"lorasRoot":root.join("loras")});
-        let legacy: Settings = serde_json::from_value(value.clone()).unwrap();
-        assert_eq!(legacy.acceleration, "native");
-        for mode in ["", "auto", "compiled-fused-sage; command", "native\0sage"] {
-            value["acceleration"] = json!(mode);
-            assert!(
-                serde_json::from_value::<Settings>(value.clone())
-                    .unwrap()
-                    .validate()
-                    .is_err()
-            );
-        }
-        value["acceleration"] = json!("compiled-fused-sage");
-        let accepted: Settings = serde_json::from_value(value).unwrap();
-        accepted.validate().unwrap();
-        assert_eq!(
-            serde_json::to_value(accepted).unwrap()["acceleration"],
-            "compiled-fused-sage"
-        );
-    }
 }

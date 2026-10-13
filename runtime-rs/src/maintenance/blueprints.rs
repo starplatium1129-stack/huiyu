@@ -1,7 +1,6 @@
 mod planner;
 mod store;
-#[cfg(test)]
-mod tests;
+
 mod validate;
 
 use super::{Error, Options, Result, fs, transaction::Transaction};

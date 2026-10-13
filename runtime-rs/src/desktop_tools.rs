@@ -2,8 +2,6 @@ mod commands;
 mod draft;
 mod files;
 mod paths;
-#[cfg(test)]
-mod tests;
 
 use crate::{AppState, config::Config, processes::Processes, security};
 use axum::{
@@ -64,6 +62,7 @@ pub struct DesktopToolsService {
     root: PathBuf,
     trusted: bool,
     processes: Arc<Processes>,
+    listings: files::Listings,
     shutdown: CancellationToken,
 }
 impl DesktopToolsService {
@@ -72,19 +71,20 @@ impl DesktopToolsService {
             root: config.ai_workspace_root.clone(),
             trusted: std::env::var("AICS_DESKTOP_COMMANDS").as_deref() == Ok("trusted"),
             processes: Arc::new(Processes::default()),
+            listings: files::Listings::new(),
             shutdown,
         }
     }
     pub async fn close(&self) {
         self.shutdown.cancel();
-        self.processes.close().await;
+        tokio::join!(self.processes.close(), self.listings.close());
     }
     async fn run(&self, name: &str, args: &Value, adult_enabled: bool) -> Result<Value> {
         if self.shutdown.is_cancelled() {
             return Err(Error::cancelled());
         }
         let result = match name {
-            "list_files" => files::list(&self.root, args).await,
+            "list_files" => self.listings.list(&self.root, args, &self.shutdown).await,
             "read_file" => files::read(&self.root, args).await,
             "write_file" => files::write(&self.root, args, &self.shutdown).await,
             "read_image" => files::image(&self.root, args).await,

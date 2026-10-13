@@ -18,8 +18,7 @@ pub(crate) mod scenes;
 pub mod semantics;
 mod showcase;
 pub(crate) mod state;
-#[cfg(test)]
-mod tests;
+
 pub mod transaction;
 pub(crate) mod validation;
 

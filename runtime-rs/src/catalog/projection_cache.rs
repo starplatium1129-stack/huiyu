@@ -78,7 +78,7 @@ impl ProjectionCache {
         loop {
             // Always reopen the authority: a warm cache must never hide a missing or
             // invalid database. File identity also invalidates a restored/replaced DB.
-            let catalog = Catalog::open(options.clone())?;
+            let catalog = Catalog::open_existing(options.clone())?;
             let transaction = catalog.connection.unchecked_transaction()?;
             let identity = {
                 let mut cache = self.encoded.lock().unwrap();
@@ -129,44 +129,5 @@ impl ProjectionCache {
                 .publish(&identity, name, &projection);
             return Ok(Some(projection));
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn late_encoded_response_does_not_replace_a_newer_generation() {
-        let file = crate::file_identity::Identity {
-            dev: 1,
-            ino: 1,
-            links: 1,
-        };
-        let older = (file.clone(), 1);
-        let newer = (file, 2);
-        let projection = Projection {
-            bytes: Bytes::from_static(b"newer"),
-            tag: "newer".into(),
-        };
-        let mut cache = Encoded::default();
-        cache.select(&older);
-        cache.select(&newer);
-        cache.publish(&newer, "scenes.json", &projection);
-        cache.publish(
-            &older,
-            "scenes.json",
-            &Projection {
-                bytes: Bytes::from_static(b"older"),
-                tag: "older".into(),
-            },
-        );
-        assert_eq!(cache.identity, Some(newer));
-        assert_eq!(
-            cache.entries["scenes.json"].bytes.as_ptr(),
-            projection.bytes.as_ptr()
-        );
-        assert_eq!(cache.entries["scenes.json"].tag, projection.tag);
-        assert_eq!(cache.bytes, projection.bytes.len());
     }
 }

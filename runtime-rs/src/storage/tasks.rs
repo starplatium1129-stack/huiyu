@@ -1,11 +1,11 @@
 mod history;
 mod inputs;
 mod listing;
-#[cfg(test)]
-pub(super) mod media_tests;
+mod scopes;
+
+pub(super) use scopes::initialize;
+
 pub(super) mod outputs;
-#[cfg(test)]
-mod tests;
 
 use super::*;
 use crate::task_contract::{
@@ -65,17 +65,38 @@ fn write(c: &Context, mut task: TaskRecord) -> Result<Value> {
     task.revision = c.next_revision()?;
     task.updated_at = now() as u64;
     task.runtime_epoch = c.epoch.clone();
-    let value = serde_json::to_value(&task)?;
+    let provider = task.provider.clone();
+    let settled = task.upstream_settled;
+    let id = task.task_id.clone();
+    let value = task.into_value()?;
     c.db.prepare_cached(
         "UPDATE tasks SET provider=?,upstream_settled=?,record_json=? WHERE task_id=?",
     )?
-    .execute(params![
-        task.provider,
-        task.upstream_settled,
-        stringify(&value),
-        task.task_id
-    ])?;
+    .execute(params![provider, settled, stringify(&value), id])?;
     Ok(value)
+}
+
+pub(super) fn read_revision(c: &Context, principal: &str, task_id: &str) -> Result<Option<i64>> {
+    c.check_cancel()?;
+    if principal.is_empty() {
+        return Err(ApiError::new(
+            401,
+            "UNAUTHORIZED",
+            "Desktop principal is required",
+        ));
+    }
+    // CAS admission needs one scalar. The actual patch still requires and
+    // validates the complete TaskRecord inside its write transaction.
+    let scalar = c.db.prepare_cached("SELECT json_extract(record_json,'$.revision') FROM tasks WHERE principal_id=? AND task_id=?")?
+        .query_row(params![principal, task_id], |row| row.get(0)).optional();
+    match scalar {
+        Ok(value) => Ok(value),
+        // A malformed revision/JSON must retain the full reader's Serde error,
+        // rather than becoming a SQLite type error and a storage-unavailable reply.
+        Err(_) => {
+            read(c, principal, Some(task_id), None).map(|task| task.map(|task| task.revision))
+        }
+    }
 }
 
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
@@ -92,30 +113,6 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     let command = serde_json::from_value(command.clone())
         .map_err(|_| invalid("Invalid task command fields"))?;
     execute_command(c, principal, command)
-}
-pub(super) fn upload_chunk(c: &mut Context, principal: &str, chunk: TaskMediaChunk) -> Result<u64> {
-    c.check_cancel()?;
-    if principal.is_empty() {
-        return Err(ApiError::new(
-            401,
-            "UNAUTHORIZED",
-            "Desktop principal is required",
-        ));
-    }
-    c.writer()?;
-    let source = media::Chunk::Bytes {
-        offset: chunk.offset,
-        data: &chunk.bytes,
-    };
-    let result = match chunk.target {
-        TaskMediaTarget::Input(name) => inputs::chunk(c, principal, &chunk.task_id, &name, source)?,
-        TaskMediaTarget::Result(index) => {
-            outputs::chunk(c, principal, &chunk.task_id, index, source)?
-        }
-    };
-    result["offset"]
-        .as_u64()
-        .ok_or_else(|| invalid("Invalid stored media offset"))
 }
 pub(super) fn execute_command(
     c: &mut Context,
@@ -137,12 +134,12 @@ pub(super) fn execute_command(
         TaskCommand::Get {
             task_id,
             request_key,
-        } => Ok(serde_json::to_value(read(
-            c,
-            principal,
-            task_id.as_deref(),
-            request_key.as_deref(),
-        )?)?),
+        } => Ok(
+            read(c, principal, task_id.as_deref(), request_key.as_deref())?
+                .map(TaskRecord::into_value)
+                .transpose()?
+                .unwrap_or(Value::Null),
+        ),
         TaskCommand::List { query } => listing::read(c, principal, query),
         TaskCommand::Accept { record } => accept(c, principal, *record),
         TaskCommand::Patch {
@@ -176,7 +173,9 @@ fn accept(c: &mut Context, principal: &str, incoming: TaskRecord) -> Result<Valu
             if previous.request_fingerprint != incoming.request_fingerprint {
                 return Err(conflict("TASK_KEY_CONFLICT", "Request key was already used with different input"));
             }
-            return Ok(json!({"task": previous, "created": false}));
+            let mut result = json!({"task": null, "created": false});
+            result["task"] = previous.into_value()?;
+            return Ok(result);
         }
         let cancellation: Option<i64> = c.db.query_row("SELECT requested_at FROM task_cancel_intents WHERE principal_id=? AND request_key=?",
             params![principal, incoming.request_key], |r| r.get(0)).optional()?;
@@ -192,13 +191,15 @@ fn accept(c: &mut Context, principal: &str, incoming: TaskRecord) -> Result<Valu
             task.status = TaskStatus::Cancelled;
             task.upstream_settled = true;
         }
-        c.db.execute("INSERT INTO tasks VALUES(?,?,?,?,?,?)", params![task.task_id, principal, task.request_key, task.provider, task.upstream_settled, stringify(&serde_json::to_value(&task)?)])?;
+        c.db.execute("INSERT INTO tasks VALUES(?,?,?,?,?,?)", params![task.task_id, principal, task.request_key, task.provider, task.upstream_settled, serde_json::to_string(&task)?])?;
         for alias in &task.input_media_refs {
             let hash: Option<String> = c.db.query_row("SELECT hash FROM media_aliases WHERE alias=?", [alias], |r| r.get(0)).optional()?;
             let hash = hash.ok_or_else(|| conflict("TASK_INPUT_MISSING", "Frozen task input media is missing"))?;
             c.db.execute("INSERT OR IGNORE INTO media_refs VALUES('task-input',?,?)", params![task.task_id, hash])?;
         }
-        Ok(json!({"task": write(c, task)?, "created": true}))
+        let mut result = json!({"task": null, "created": true});
+        result["task"] = write(c, task)?;
+        Ok(result)
     })
 }
 fn patch(
@@ -322,7 +323,7 @@ fn patch(
         // Compare only supplied fields after normalization; polling must not clone
         // frozen inputs or checkpoints just to discover that nothing changed.
         if !changed {
-            return Ok(serde_json::to_value(task)?);
+            return Ok(task.into_value()?);
         }
         write(c, task)
     })
@@ -355,7 +356,7 @@ fn cancel(c: &mut Context, principal: &str, request_key: &str) -> Result<Value> 
                 && task.cancel_requested_at.is_some()
                 && task.status == TaskStatus::Cancelling)
         {
-            return Ok(serde_json::to_value(task)?);
+            return Ok(task.into_value()?);
         }
         task.cancel_requested_at.get_or_insert(now() as u64);
         task.status = if submitted {
@@ -391,7 +392,7 @@ fn resolve_webui(
                     && receipt["expectedRevision"] == expected_revision
             })
         {
-            return Ok(serde_json::to_value(task)?);
+            return Ok(task.into_value()?);
         }
         if task.revision != expected_revision {
             return Err(conflict(

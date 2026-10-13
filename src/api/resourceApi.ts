@@ -1,4 +1,4 @@
-import { apiClient, type ApiClient, type ApiResponseObject } from './client'
+import { apiClient, type ApiResponseObject } from './client'
 import type { ResourceAction, ResourceStatus, ResourceTaskResult } from '../../types/resources'
 
 export interface ResourceApi {
@@ -34,22 +34,19 @@ function status(value: ApiResponseObject): boolean {
       && ['full', 'delta'].includes(String(item.kind)) && ['offline', 'http'].includes(String(item.source))
       && /^[a-f\d]{64}$/.test(String(item.identity)) && typeof item.downloaded === 'boolean')
 }
-export function createResourceApi(client: ApiClient = apiClient): ResourceApi {
-  const common = { cache: 'no-store', cachePolicy: 'bypass', timeoutMs: 30_000 } as const
-  return {
-    status(fresh = false, signal) {
-      return client.request<ResourceStatus>('/api/resources/status' + (fresh ? '?refresh=1' : ''), { ...common, signal, validate: status })
-    },
-    start(action, releaseId, signal) {
-      return client.request<ResourceTaskResult>('/api/resources/tasks', { ...common, method: 'POST', signal,
-        body: { action, ...(['import', 'download'].includes(action) ? { releaseId } : {}) },
-        validate: value => value.ok === true && task(value.task) })
-    },
-    cancel(taskId, signal) {
-      return client.request<ResourceTaskResult>(`/api/resources/tasks/${encodeURIComponent(taskId)}/cancel`, {
-        ...common, method: 'POST', body: {}, signal, validate: value => value.ok === true && task(value.task),
-      })
-    },
-  }
+const common = { cache: 'no-store', cachePolicy: 'bypass', timeoutMs: 30_000 } as const
+export const resourceApi: ResourceApi = {
+  status(fresh = false, signal) {
+    return apiClient.request<ResourceStatus>('/api/resources/status' + (fresh ? '?refresh=1' : ''), { ...common, signal, validate: status })
+  },
+  start(action, releaseId, signal) {
+    return apiClient.request<ResourceTaskResult>('/api/resources/tasks', { ...common, method: 'POST', signal,
+      body: { action, ...(['import', 'download'].includes(action) ? { releaseId } : {}) },
+      validate: value => value.ok === true && task(value.task) })
+  },
+  cancel(taskId, signal) {
+    return apiClient.request<ResourceTaskResult>(`/api/resources/tasks/${encodeURIComponent(taskId)}/cancel`, {
+      ...common, method: 'POST', body: {}, signal, validate: value => value.ok === true && task(value.task),
+    })
+  },
 }
-export const resourceApi = createResourceApi()

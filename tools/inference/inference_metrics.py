@@ -18,6 +18,9 @@ class RuntimeMetrics:
     def __init__(self, torch, started):
         self.torch, self.started = torch, started
         self.timings, self.mask_cache = {}, None
+        self.mask_execution_revision = None
+        self.loading = None
+        self.lora_loading = self.fusion_restore = None
         self.tracking = False
         self.memory = dict(status="unverified", reason="not-started", deviceIndex=0,
             scope="image-preparation-through-pipeline", peakAllocatedBytes=None, peakReservedBytes=None)
@@ -50,9 +53,10 @@ class RuntimeMetrics:
         except Exception:
             self.memory["reason"] = "allocator-observation-error"
 
-    def image_prepared(self, started, report, resident, cache_mask, automatic):
+    def image_prepared(self, started, report, resident, cache_mask, mask_execution_revision):
         self.timings["imagePreparationWallSeconds"] = time.perf_counter() - started
-        if resident is not None and cache_mask and automatic:
+        self.mask_execution_revision = mask_execution_revision
+        if resident is not None and cache_mask and mask_execution_revision is not None:
             self.mask_cache = resident.mask_cache.stats()
         if report is not None:
             report["imagePreparationSeconds"] = self.timings["imagePreparationWallSeconds"]
@@ -60,7 +64,10 @@ class RuntimeMetrics:
             if self.mask_cache is not None:
                 report["maskCache"] = self.mask_cache
 
-    def model_acquired(self, started, report, reused, fingerprint, post_load_fingerprint):
+    def model_acquired(self, started, report, reused, fingerprint, post_load_fingerprint, pipeline):
+        self.loading = getattr(pipeline, "_huiyu_loading", None)
+        self.lora_loading = getattr(pipeline, "_huiyu_lora_loading", None)
+        self.fusion_restore = getattr(pipeline, "_huiyu_fusion_restore", None)
         if report is not None:
             self.torch.cuda.synchronize()  # Existing TeaCache report boundary, never added for product observations.
         self.timings["modelAcquireWallSeconds"] = time.perf_counter() - started
@@ -81,7 +88,7 @@ class RuntimeMetrics:
                 samples=tea.samples if tea is not None else [], stats=dict(tea.stats) if tea is not None else None,
                 peakAllocatedBytes=self.memory["peakAllocatedBytes"], textCacheEnabled=cache_text)
 
-    def result(self, output, reused, resident, cache_text, cache_mask, tea, report, completed_steps):
+    def result(self, output, reused, resident, cache_text, cache_mask, tea, report, completed_steps, *, memory_policy, component_reuse):
         self.timings.update(workerWallSeconds=time.perf_counter() - self.started,
                             outputSaveSeconds=output["outputSaveSeconds"])
         text = dict(enabled=resident is not None and cache_text)
@@ -89,9 +96,9 @@ class RuntimeMetrics:
             text.update(_counts(resident.text_cache.stats(), ("hits", "misses", "partialNegativeHits", "entries", "cpuBytes")))
         mask = dict(enabled=resident is not None and cache_mask, used=self.mask_cache is not None)
         if self.mask_cache is not None:
-            mask.update({name: self.mask_cache[name] for name in ("modelReused", "resultReused")
+            mask.update({name: self.mask_cache[name] for name in ("modelReused", "resultReused", "visionReused")
                          if type(self.mask_cache.get(name)) is bool})
-            mask.update(_counts(self.mask_cache, ("resultBytes",)))
+            mask.update(_counts(self.mask_cache, ("resultBytes", "visionBytes", "visionEncodes")))
             value = self.mask_cache.get("fingerprintSeconds")
             if type(value) in (float, int) and math.isfinite(value) and value >= 0:
                 mask["fingerprintSeconds"] = value
@@ -101,4 +108,9 @@ class RuntimeMetrics:
             cached.update(_counts(tea.stats, ("fullComputes", "skippedComputes", "skippedBlocks", "resets", "nonfinite")))
         return dict(schemaVersion=1, timingMode="cpu-wall-no-extra-sync", timingsAreAdditive=False,
             existingReportSynchronization=report is not None, timings=self.timings, baseReused=reused, completedSteps=completed_steps,
-            textCache=text, maskCache=mask, teaCache=cached, memory=self.memory)
+            textCache=text, maskCache=mask, teaCache=cached, memory=self.memory,
+            memoryPolicy=memory_policy, componentReuse=list(component_reuse), samplingRevision="anima-workflow-effects-v3",
+            **({"maskExecutionRevision": self.mask_execution_revision} if self.mask_execution_revision is not None else {}),
+            **({"loraLoading": self.lora_loading} if self.lora_loading is not None else {}),
+            **({"fusionRestore": self.fusion_restore} if self.fusion_restore is not None else {}),
+            refinement=self.refinement, loading=self.loading)

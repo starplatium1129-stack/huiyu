@@ -2,8 +2,7 @@
 
 /**
  * scripts/maintenance/install-git-hooks.js —— postinstall 挂钩。
- * 2026-08-29 经用户决策移除 pre-push 本地门禁：秒推回归，推送后由
- * CI quality.yml 全量拦截。只清理指向已移除目录的旧配置，保留用户自设钩子。
+ * 清理指向已移除目录的旧配置，保留用户自设钩子。
  */
 
 const { execFileSync }: typeof import('child_process') = require('child_process');

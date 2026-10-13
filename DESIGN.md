@@ -170,7 +170,7 @@ The atelier supports dark and light themes, with dark as the default. Dark
 surfaces use warm graphite; light surfaces use warm paper and readable rose-ink
 accents. Both themes preserve the same layout, action hierarchy, and character identity.
 
-界面风格与明暗模式独立：外观设置中的「绘遇画室」为默认风格；「泰拉瑞亚」采用像素木纹、纸张面板、森林地景、灯具藤蔓和主题插画，同样支持浅色、深色和跟随系统。宽度达到 1100 CSS px 时使用木质侧栏，并支持上下方向键导航；更窄窗口沿用折叠菜单。风格通过 `data-theme-style` 应用，保存在既有外观偏好的 `style` 字段；首帧脚本同步恢复。像素主题使用不透明材质，切回画室后恢复原有玻璃偏好。原作、参考图和聊天壁纸保持原始画面；仅主题装饰通过 `useThemeIllustration` 切换，不得改变内容或分级。独立桌宠保持透明，系统高对比度颜色优先。
+界面风格与明暗模式独立：外观设置中的「绘遇画室」为默认风格；「泰拉瑞亚」采用像素木纹、纸张面板、森林地景、灯具藤蔓和主题插画，同样支持浅色、深色和跟随系统。宽度达到 1440 CSS px 时使用 8.5rem（默认 136px）木质侧栏，并支持上下方向键导航；较窄窗口恢复顶部导航，1000px 以下沿用折叠菜单。绘图工作台按扣除导航和边框后的实际内容宽度约束左右栏，桌面视口高度不再重复计入主题装饰。风格通过 `data-theme-style` 应用，保存在既有外观偏好的 `style` 字段；首帧脚本同步恢复。像素主题使用不透明材质，切回画室后恢复原有玻璃偏好。原作、参考图和聊天壁纸保持原始画面；仅主题装饰通过 `useThemeIllustration` 切换，不得改变内容或分级。独立桌宠保持透明，系统高对比度颜色优先。
 
 > **2026-09-08 · 当前双主题契约**
 > 浅色已恢复，入口为 AppThemeToggle/useTheme，覆盖在 light-theme.css。
@@ -293,10 +293,9 @@ Glass surfaces are allowed for navigation, floating utilities, and the director
 stage chrome. They must have an opaque fallback and must not be stacked until
 text becomes hazy. Prefer one clear surface boundary over several nested glowing
 cards. Motion uses the existing `150ms` and `240ms` timings; page and character
-transitions may be slightly slower, but never delay an action. Transform-only
-surfaces may opt into the pre-baked Spring-to-linear tokens from
-`src/utils/springCompiler.ts`; unsupported browsers use the existing Bézier
-fallbacks, and reduced-motion keeps the short state-feedback transition.
+transitions may be slightly slower, but never delay an action. Use the existing
+CSS easing tokens, and keep the short state-feedback transition under
+reduced-motion.
 
 Honor `prefers-reduced-motion` and `prefers-reduced-transparency`.
 System transparency, increased contrast, and forced colors must update material
@@ -551,7 +550,7 @@ belong inside installation details, not in the default creative composition.
 
 ## 2026-09-07 · 绘制区素材抽屉
 
-绘制区沿用夜色手帐风格：左侧创作素材按角色、场景、描述分类，专家模式额外提供历史；分类通过 v-show 保持组件实例，避免切换丢失草稿或搜索状态。中央保留画布、尺寸与生成条、输出设置；专家模式在宽屏提供独立右侧调校栏。工作台表面与响应式规则统一由 director/workspace.css 持有，角色强调色与生成状态继续复用原有令牌和状态机。
+绘制区沿用夜色手帐风格：左侧创作素材按角色、场景、描述分类，专家模式额外提供历史；分类通过 v-show 保持组件实例，避免切换丢失草稿或搜索状态。中央保留画布，右侧承载生成设置与生成条；两种模式共享三栏布局。画面描述只在左侧「描述」分类编辑，右侧提供跳转并直接聚焦输入；窄窗口、任一侧栏隐藏或专注模式由顶栏提供恢复入口，切换不清空草稿或重置栏宽偏好。工作台表面与响应式规则统一由 director/workspace.css 持有，角色强调色与生成状态继续复用原有令牌和状态机。
 
 1200px 以下右侧调校移到中央下方，900px 以下单列排列并提供素材、画布、输出锚点导航。吸附顶部留出 90px 避让导航，专注模式恢复单画布。背景粒子不覆盖绘制工作区，动效只使用合成属性。
 

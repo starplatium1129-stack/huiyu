@@ -1,4 +1,5 @@
 mod config;
+mod observations;
 mod worker;
 use super::*;
 pub(crate) use config::{Settings, load};
@@ -48,7 +49,10 @@ impl Service {
         plan: Plan,
         cancel: CancellationToken,
     ) -> Result<Prepared> {
-        if self.inner.cancel.is_cancelled() || cancel.is_cancelled() {
+        if self.inner.closed.load(Ordering::Relaxed)
+            || self.inner.cancel.is_cancelled()
+            || cancel.is_cancelled()
+        {
             return Err(closed());
         }
         let permit = self
@@ -56,7 +60,17 @@ impl Service {
             .admission
             .clone()
             .try_acquire_owned()
-            .map_err(|_| ApiError::new(429, "ANIMA_QUEUE_FULL", "图像生成队列已满"))?;
+            .map_err(|_| {
+                if self.inner.admission.is_closed() {
+                    worker::release_error()
+                } else {
+                    ApiError::new(
+                        429,
+                        "ANIMA_QUEUE_FULL",
+                        "图像生成队列已满或正在交接显存，请稍后重试",
+                    )
+                }
+            })?;
         Ok(Prepared {
             input: plan.input.clone(),
             provider: "native".into(),
@@ -83,7 +97,9 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
         let slot = tokio::select! {
             biased;
             _ = token.cancelled() => Err(closed()),
-            slot = worker.native.slot.acquire() => slot.map_err(|_| closed()),
+            slot = worker.native.slot.acquire() => slot.map_err(|_| {
+                if token.is_cancelled() { closed() } else { worker::release_error() }
+            }),
         };
         match slot {
             Ok(slot) => {
@@ -91,11 +107,13 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
                 // Hold the GPU slot through publication/cancel settlement. A
                 // cancelling completed job must not retire the next job's model.
                 if settle(&worker, &job, outcome, token.is_cancelled()).await {
+                    worker.native.slot.close();
+                    worker.admission.close();
                     slot.forget();
                 }
             }
             Err(error) => {
-                settle(&worker, &job, Err(error), true).await;
+                settle(&worker, &job, Err(error), token.is_cancelled()).await;
             }
         }
         worker.native.tokens.lock().await.remove(&job.id);
@@ -187,8 +205,12 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     let Execution::Native(plan) = &job.execution else {
         unreachable!()
     };
+    let control = inner.control.read().unwrap().upgrade();
+    if let Some(control) = control {
+        control.ensure_native_drawing(token).await?;
+    }
     if let Some(hooks) = &job.hooks {
-        tokio::select! { biased; _=token.cancelled()=>return Err(closed()), result=hooks.submitting("native".into(), String::new())=>result? }
+        tokio::select! { biased; _=token.cancelled()=>return Err(closed()), result=hooks.submitting("native".into())=>result? }
     }
     if token.is_cancelled() || job.state.lock().await.status == "cancelling" {
         return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
@@ -306,7 +328,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                         if event["outputPath"].as_str() != output.to_str() {
                             return Err(protocol_error());
                         }
-                        runtime_observation = native_runtime(&event["nativeRuntime"]);
+                        runtime_observation = observations::capture(&event["nativeRuntime"]);
                         produced = true;
                     }
                     Some("ready") if produced => return Ok(()),
@@ -360,128 +382,3 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
 fn protocol_error() -> ApiError {
     ApiError::new(502, "NATIVE_PROTOCOL_ERROR", "独立推理协议或结果无效")
 }
-
-// Optional evidence must neither break legacy workers nor forward arbitrary worker data.
-// Missing/malformed evidence stays visibly unverified; image/protocol checks are unchanged.
-fn native_runtime(value: &Value) -> Value {
-    fn finite(value: &Value) -> Option<f64> {
-        value.as_f64().filter(|n| n.is_finite() && *n >= 0.)
-    }
-    let parsed = (|| -> Option<Value> {
-        if value["schemaVersion"] != 1
-            || value["timingMode"] != "cpu-wall-no-extra-sync"
-            || value["timingsAreAdditive"] != false
-        {
-            return None;
-        }
-        let mut result = json!({"schemaVersion":1,"timingMode":"cpu-wall-no-extra-sync",
-            "timingsAreAdditive":false,"baseReused":value["baseReused"].as_bool()?,
-            "existingReportSynchronization":value["existingReportSynchronization"].as_bool()?,
-            "completedSteps":value["completedSteps"].as_u64()?,"timings":{}});
-        for key in [
-            "workerWallSeconds",
-            "imagePreparationWallSeconds",
-            "modelAcquireWallSeconds",
-            "pipelineWallSeconds",
-            "compositeWallSeconds",
-            "outputSaveSeconds",
-            "residentFingerprintSeconds",
-        ] {
-            result["timings"][key] = json!(finite(&value["timings"][key])?);
-        }
-        let groups: [(&str, &[&str], &[&str]); 3] = [
-            (
-                "textCache",
-                &[],
-                &[
-                    "hits",
-                    "misses",
-                    "partialNegativeHits",
-                    "entries",
-                    "cpuBytes",
-                ],
-            ),
-            (
-                "maskCache",
-                &["used", "modelReused", "resultReused"],
-                &["resultBytes"],
-            ),
-            (
-                "teaCache",
-                &[],
-                &[
-                    "fullComputes",
-                    "skippedComputes",
-                    "skippedBlocks",
-                    "resets",
-                    "nonfinite",
-                ],
-            ),
-        ];
-        for (group, flags, counters) in groups {
-            let source = value[group].as_object()?;
-            result[group] = json!({"enabled":source.get("enabled")?.as_bool()?});
-            for &key in flags {
-                if let Some(v) = source.get(key) {
-                    result[group][key] = json!(v.as_bool()?);
-                }
-            }
-            for &key in counters {
-                if let Some(v) = source.get(key) {
-                    result[group][key] = json!(v.as_u64()?);
-                }
-            }
-        }
-        if let Some(v) = value["maskCache"].get("fingerprintSeconds") {
-            result["maskCache"]["fingerprintSeconds"] = json!(finite(v)?);
-        }
-        if let Some(reason) = value["teaCache"].get("reason") {
-            let reason = reason.as_str()?;
-            if !matches!(
-                reason,
-                "matched-profile" | "request-disabled" | "no-matching-profile"
-            ) {
-                return None;
-            }
-            result["teaCache"]["reason"] = json!(reason);
-        }
-        let memory = &value["memory"];
-        if memory["deviceIndex"] != 0 || memory["scope"] != "image-preparation-through-pipeline" {
-            return None;
-        }
-        let mut captured = json!({"deviceIndex":0,"scope":"image-preparation-through-pipeline"});
-        match memory["status"].as_str()? {
-            "per-job-allocator" => {
-                captured["status"] = json!("per-job-allocator");
-                captured["reason"] = Value::Null;
-                for key in ["peakAllocatedBytes", "peakReservedBytes"] {
-                    captured[key] = json!(memory[key].as_u64()?);
-                }
-            }
-            "unverified" => {
-                let reason = memory["reason"].as_str()?;
-                if !matches!(
-                    reason,
-                    "cuda-uninitialized-at-window-start"
-                        | "unsupported-allocator"
-                        | "allocator-observation-error"
-                ) || !memory["peakAllocatedBytes"].is_null()
-                    || !memory["peakReservedBytes"].is_null()
-                {
-                    return None;
-                }
-                captured["status"] = json!("unverified");
-                captured["reason"] = json!(reason);
-                captured["peakAllocatedBytes"] = Value::Null;
-                captured["peakReservedBytes"] = Value::Null;
-            }
-            _ => return None,
-        }
-        result["memory"] = captured;
-        Some(result)
-    })();
-    parsed.unwrap_or_else(|| json!({"status":"unverified","reason":if value.is_null(){"worker-metrics-missing"}else{"invalid-worker-metrics"}}))
-}
-
-#[cfg(test)]
-mod tests;

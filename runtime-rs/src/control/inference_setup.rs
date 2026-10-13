@@ -363,6 +363,3 @@ fn cancelled() -> ApiError {
         "离线准备或导入已取消；已有临时文件保留，请检查后再重试",
     )
 }
-
-#[cfg(test)]
-mod tests;

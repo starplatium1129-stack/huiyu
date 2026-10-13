@@ -1,7 +1,7 @@
 <template>
   <section id="control-setup" class="panel-card local-setup" aria-labelledby="local-setup-title">
     <div class="setup-heading">
-      <div><span class="panel-kicker">本机起步</span><h2 id="local-setup-title" class="panel-heading">ComfyUI 首次配置</h2></div>
+      <div><span class="panel-kicker">本机起步</span><h2 id="local-setup-title" class="panel-heading">绘图首次配置</h2></div>
       <div v-if="isLocal" class="setup-actions">
         <button class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="refresh">
           <ArchiveIcon name="refresh" />{{ loading ? '检查中…' : '重新检查' }}
@@ -11,7 +11,7 @@
     </div>
     <p v-if="!isLocal" class="setup-note">请在运行绘遇的本机打开控制室；远程访问不会读取工作区或设备信息。</p>
     <template v-else>
-      <p class="setup-scope">此处准备并启动 ComfyUI 绘图环境：选择 AI 工作区，核对模型、连接与节点。默认使用 MiaoMiao 1.6；聊天可以稍后按需配置。独立引擎请使用上方“绘图引擎设置”中的离线准备入口。</p>
+      <p class="setup-scope">选择保存模型的 AI 工作区和绘图模型，绘遇会下载、校验并识别对应目录，再启动绘图服务。自动准备面向 Windows + NVIDIA，无需另开 ComfyUI 界面；聊天可以稍后配置。</p>
       <div class="setup-result" :data-state="basicComplete ? 'checked' : 'pending'" role="status" aria-live="polite">
         <ArchiveIcon :name="basicComplete ? 'success' : 'info'" /><strong>{{ summary }}</strong>
       </div>
@@ -19,22 +19,23 @@
       <ol v-if="snapshot" class="setup-overview" aria-label="绘图准备进度">
         <li v-for="step in checklist" :key="step.id" :data-ready="step.ready">
           <ArchiveIcon :name="step.ready ? 'success' : 'info'" aria-hidden="true" />
-          <span>{{ step.label }}</span><strong>{{ step.ready ? '已确认' : '待确认' }}</strong>
+          <span>{{ step.label }}</span><strong>{{ step.ready ? '已确认' : '待确认' }}</strong><small>{{ step.detail }}</small>
         </li>
       </ol>
-      <p class="setup-next"><strong>下一步</strong> {{ nextStep }}</p>
+      <p class="setup-next" role="status"><strong>下一步</strong> {{ nextStep }}</p>
       <div class="setup-actions">
         <button v-if="desktop" ref="workspaceButton" class="btn btn-ghost btn-sm" type="button" :disabled="workspaceLoading || workspaceSaving" @click="openWorkspace">
           <ArchiveIcon name="gear" />{{ workspaceLoading ? '读取目录中…' : '选择 AI 工作区' }}
         </button>
         <RouterLink class="btn btn-ghost btn-sm" to="/prompt-builder"><ArchiveIcon name="spark" />{{ basicComplete ? '前往绘图画室' : '先准备创作草稿' }}</RouterLink>
       </div>
+      <p v-if="snapshot" class="setup-location">当前 AI 工作区：<code>{{ snapshot.workspace.path }}</code> · 文件检查与下载以此目录为准；外部服务实际读取的模型目录需另行核对。</p>
       <p v-if="!basicComplete" class="setup-note">模型尚未就绪时，也可以先选择角色、场景并编排提示词；生成时再连接绘图服务。</p>
       <p v-if="workspaceNotice" class="setup-note" role="status">{{ workspaceNotice }}</p>
       <button v-if="workspacePending && desktop?.restartForSetup" class="btn btn-primary btn-sm" type="button" @click="restartForSetup">重启绘遇并继续配置</button>
       <p v-if="downloadNotice" class="setup-note" role="status">{{ downloadNotice }}</p>
       <p v-if="workspaceError && !workspaceOpen" class="setup-error" role="alert">{{ workspaceError }}</p>
-      <LocalSetupAutomation v-if="snapshot" :snapshot="snapshot" :workspace-blocked="workspacePending || workspaceUnconfirmed" @refresh="refresh" @download-result="recordDownload" @model-selected="selectSetupModel" />
+      <LocalSetupAutomation v-if="snapshot" :snapshot="snapshot" :status-confirmed="currentCheck" :workspace-blocked="workspacePending || workspaceUnconfirmed" @refresh="refresh" @download-result="recordDownload" @model-selected="selectSetupModel" />
       <LocalSetupPreparation v-if="snapshot" :snapshot="snapshot" :desktop="!!desktop" :workspace-pending="workspacePending" :workspace-unconfirmed="workspaceUnconfirmed" @workspace="openWorkspace" @refresh="refresh" @verification-result="recordVerification" @download-result="recordDownload" />
       <details class="setup-details">
         <StudioDisclosureSummary>查看路径与详细检查<span v-if="snapshot">{{ checkedAtLabel }}</span></StudioDisclosureSummary>
@@ -105,7 +106,7 @@ import CompanionWorkspaceSettings from './CompanionWorkspaceSettings.vue'
 import { formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'
 import { useLocalSetup } from '../composables/useLocalSetup'
 
-const { isLocal, desktop, snapshot, loading, error, summary, nextStep, basicComplete,
+const { isLocal, desktop, snapshot, loading, error, summary, nextStep, basicComplete, currentCheck,
   recommendedModels, otherModels, nodeLabel, checkedAtLabel, checklist, fileLabel,
   workspaceButton, workspaceOpen, workspaceDraft, workspaceLoading, workspaceSaving,
   workspaceNotice, workspaceError, workspacePending, workspaceUnconfirmed, downloadNotice,
@@ -123,10 +124,14 @@ const { isLocal, desktop, snapshot, loading, error, summary, nextStep, basicComp
 .setup-result { display:flex; align-items:center; gap:var(--s-2); font-size:var(--fs-label); margin-top:var(--s-4); }
 .setup-result[data-state="checked"] { color:var(--success-text); }
 .setup-overview { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-2) var(--s-4); margin:var(--s-3) 0; padding:0; list-style:none; color:var(--text-secondary); font-size:var(--fs-label); }
-.setup-overview li { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); }
+.setup-overview li { display:flex; flex-wrap:wrap; align-items:center; align-content:start; gap:var(--s-2); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
+.setup-overview small { flex-basis:100%; font-size:var(--fs-label-xs); line-height:var(--lh-body); }
+.setup-location { color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
+.setup-location code { color:var(--text-primary); }
 .setup-overview strong { font-size:var(--fs-label-xs); font-weight:500; }
 .setup-overview li[data-ready="true"] strong { color:var(--success-text); }
 @media(max-width:1100px) { .setup-overview { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .setup-overview { grid-template-columns:1fr; } }
 .setup-next strong { color:var(--text-primary); margin-right:var(--s-2); }
 .setup-error { color:var(--danger-text); font-size:var(--fs-label); overflow-wrap:anywhere; }
 .setup-detail .setup-warning { color:var(--warning-text); }

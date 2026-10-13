@@ -37,96 +37,73 @@ def save_png(image, path):
     return dict(outputSaveSeconds=time.perf_counter() - started, outputBytes=size)
 
 
+def resize_image(image, size, *, red_only=False):
+    """Shared geometry; manual masks resize only the converted RGB red channel."""
+    from PIL import Image
+    ratio = min(size[0] / image.width, size[1] / image.height)
+    fitted = (max(1, int(image.width * ratio)), max(1, int(image.height * ratio)))
+    # Borrow already-normalized RGB pixels read-only; the returned canvas owns
+    # its pixels and deliberately does not inherit input EXIF/info metadata.
+    # Straight RGBA to RGB only drops alpha; red-only may read the same R.
+    converted = (image if image.mode == "RGB" or (red_only and image.mode == "RGBA")
+        else image.convert("RGB"))
+    if red_only:
+        # Keep palette/CMYK and premultiplied modes on the original RGB conversion.
+        # Pillow 11.3 Lanczos resamples each 8-bit RGB/L band independently.
+        converted = converted.getchannel("R")
+    resized = (converted if converted.size == fitted else
+        converted.resize(fitted, Image.Resampling.LANCZOS))
+    del converted
+    canvas = Image.new("L" if red_only else "RGB", size, "black")
+    canvas.paste(resized, ((size[0] - fitted[0]) // 2, (size[1] - fitted[1]) // 2))
+    return canvas
+
+
+def resize_mask(mask, size):
+    """Hires mask uses nearest-exact; retain fractional alpha without uint8."""
+    import numpy as np
+    import torch
+    values = torch.as_tensor(np.asarray(mask, dtype=np.float32))[None, None]
+    return torch.nn.functional.interpolate(values, size=(size[1], size[0]),
+        mode="nearest-exact")[0, 0].numpy()
+
+
 def prepare_images(image, mask_path, size, grow):
-    """One effective mask for both denoising and pixel preservation; white edits."""
-    from PIL import Image, ImageChops, ImageOps
+    """The workflow reads resized mask RGB red; alpha is a separate LoadImage output."""
+    import numpy as np
+    from PIL import Image, ImageOps
     try:
         with Image.open(mask_path) as source:
             if source.format not in {"PNG", "JPEG", "WEBP"} or getattr(source, "n_frames", 1) != 1:
                 raise ValueError("Mask must be one PNG, JPEG or WebP image")
             if source.width * source.height > 4096 * 4096:
                 raise ValueError("Mask must be at most 16 megapixels")
-            source = ImageOps.exif_transpose(source)
+            ImageOps.exif_transpose(source, in_place=True)
             if source.size != image.size:
                 raise ValueError("Mask dimensions must match the oriented input image")
-            rgba = source if source.mode == "RGBA" else source.convert("RGBA")
-            # Transparent paint/erased pixels preserve even when RGB remains white.
-            mask = ImageChops.multiply(rgba.convert("L"), rgba.getchannel("A"))
+            red = np.array(resize_image(source, size, red_only=True), dtype=np.float32) / 255
     except (OSError, Image.DecompressionBombError) as exc:
         raise ValueError(f"Cannot decode mask image: {exc}") from exc
-    return prepare_mask(image, mask, size, grow)
-
-
-def prepare_mask(image, mask, size, grow):
-    """Shared effective mask for manual and locally segmented inputs."""
-    from PIL import Image
-    mask = _prepare_effective_mask(mask, size, grow)
-    return image.resize(size, Image.Resampling.LANCZOS), mask
-
-
-def _block_maximum(values, radius, axis):
-    """Exact uint8 box maximum from each window's block suffix and prefix."""
-    import numpy as np
-    rows = values if axis == 1 else values.T
-    count, length = rows.shape
-    window = 2 * radius + 1
-    padded_length = ((length + 2 * radius + window - 1) // window) * window
-    # C-order work storage avoids copying the transposed input before padding.
-    backward = np.empty((count, padded_length), dtype=np.uint8)
-    backward[:, radius:radius + length] = rows
-    backward[:, :radius] = rows[:, :1]
-    backward[:, radius + length:] = rows[:, -1:]
-    blocks = backward.reshape(count, -1, window)
-    forward = np.maximum.accumulate(blocks, axis=-1).reshape(count, padded_length)
-    reverse = blocks[..., ::-1]
-    np.maximum.accumulate(reverse, axis=-1, out=reverse)
-    result = np.maximum(backward[:, :length], forward[:, window - 1:window - 1 + length])
-    return result if axis == 1 else result.T
+    del source  # Retire decoded pixels and any ImageFile decoder before Torch/growth.
+    return resize_image(image, size), _prepare_effective_mask(red, size, grow)
 
 
 def _prepare_effective_mask(mask, size, grow):
-    """Keep mask copy/growth semantics when the caller already owns its resized RGB."""
-    from PIL import Image, ImageFilter
-    mask = mask.resize(size, Image.Resampling.NEAREST)
-    # Radius 1 regressed with NumPy conversion/two passes in the CPU probe.
-    if grow >= 2 and mask.mode == "L":
-        import numpy as np
-        # A square max is exactly separable, including all 8-bit soft-mask values.
-        values, window = np.asarray(mask), 2 * grow + 1
-        if grow >= 8:
-            horizontal = _block_maximum(values, grow, 1)
-            vertical = _block_maximum(horizontal, grow, 0)
-        else:
-            horizontal = np.lib.stride_tricks.sliding_window_view(
-                np.pad(values, ((0, 0), (grow, grow)), mode="edge"), window, axis=1).max(axis=-1)
-            vertical = np.lib.stride_tricks.sliding_window_view(
-                np.pad(horizontal, ((grow, grow), (0, 0)), mode="edge"), window, axis=0).max(axis=-1)
-        del horizontal  # Release scratch before the transposed result's PIL conversion.
-        mask = Image.fromarray(vertical)
-        del values, vertical
-    elif grow:
-        mask = mask.filter(ImageFilter.MaxFilter(2 * grow + 1))
-    if mask.getbbox() is None:
+    """Repeated five-neighbour dilation gives tapered/diamond corners."""
+    import numpy as np
+    values = resize_mask(mask, size)
+    for _ in range(grow):
+        padded = np.pad(values, 1, mode="edge")
+        # All neighbours read the previous round from padded. Reuse our owned
+        # resized output in the same reduction order, without a five-image stack.
+        np.maximum(padded[1:-1, 1:-1], padded[:-2, 1:-1], out=values)
+        np.maximum(values, padded[2:, 1:-1], out=values)
+        np.maximum(values, padded[1:-1, :-2], out=values)
+        np.maximum(values, padded[1:-1, 2:], out=values)
+        del padded
+    if not np.any(values > 0):
         raise ValueError("Mask has no editable pixels")
-    return mask
-
-
-def composite(generated, original, mask):
-    from PIL import Image
-    if generated.size != original.size or mask.size != original.size:
-        raise ValueError("Generated image and effective mask dimensions differ")
-    generated = generated if generated.mode == "RGB" else generated.convert("RGB")
-    original = original if original.mode == "RGB" else original.convert("RGB")
-    return Image.composite(generated, original, mask)
-
-
-def blend_latents(scheduler, latents, image_latents, noise, mask, timesteps, index):
-    """Restore protected latents at next sigma, clean reference on the last step."""
-    reference = image_latents.to(device=latents.device, dtype=latents.dtype)
-    if index + 1 < len(timesteps):
-        timestep = timesteps[index + 1:index + 2].repeat(reference.shape[0])
-        reference = scheduler.scale_noise(reference, timestep, noise)
-    return (1 - mask) * reference + mask * latents
+    return values
 
 
 def masked_blocks():
@@ -136,7 +113,7 @@ def masked_blocks():
     from diffusers.utils.torch_utils import randn_tensor
     from diffusers.modular_pipelines.modular_pipeline_utils import InputParam, OutputParam
     from diffusers.modular_pipelines.anima.before_denoise import AnimaImg2ImgPrepareLatentsStep
-    from diffusers.modular_pipelines.anima.denoise import AnimaLoopAfterDenoiser
+    from diffusers.modular_pipelines.anima.denoise import AnimaLoopBeforeDenoiser, AnimaLoopAfterDenoiser
     from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
 
     class MaskedPrepare(AnimaImg2ImgPrepareLatentsStep):
@@ -158,32 +135,54 @@ def masked_blocks():
             block.mask_noise = (randn_tensor(image_latents.shape, generator=block.generator,
                 device=components._execution_device, dtype=torch.float32) if block.latents is None
                 else block.latents.to(device=components._execution_device, dtype=torch.float32))
-            mask = np.array(block.mask_image, dtype=np.float32)
-            mask /= 255
-            mask = torch.from_numpy(mask).unsqueeze(0).unsqueeze(0)
-            mask = torch.nn.functional.interpolate(mask, size=image_latents.shape[-2:], mode="nearest")
-            block.latent_mask = mask.unsqueeze(2).to(device=image_latents.device, dtype=torch.float32)
+            mask = torch.from_numpy(np.asarray(block.mask_image, dtype=np.float32))[None, None, None]
+            block.latent_mask = torch.nn.functional.interpolate(mask, size=image_latents.shape[-3:],
+                mode="trilinear", align_corners=False).to(device=image_latents.device)
             timestep = block.timesteps[:1].repeat(image_latents.shape[0])
             block.latents = components.scheduler.scale_noise(image_latents, timestep, block.mask_noise)
             block.padding_mask = block.latents.new_zeros(1, 1, block.height, block.width, dtype=block.dtype)
             self.set_block_state(state, block)
             return components, state
 
-    class MaskedAfter(AnimaLoopAfterDenoiser):
+    class MaskedBefore(AnimaLoopBeforeDenoiser):
         @property
         def inputs(self):
             return super().inputs + [InputParam(name, required=True) for name in
-                ("image_latents", "mask_noise", "latent_mask", "timesteps")]
+                ("image_latents", "mask_noise", "latent_mask")]
+
+        @property
+        def intermediate_outputs(self):
+            return super().intermediate_outputs + [OutputParam("masked_input")]
 
         @torch.no_grad()
         def __call__(self, components, block, i, t):
             components, block = super().__call__(components, block, i, t)
-            block.latents = blend_latents(components.scheduler, block.latents, block.image_latents,
-                block.mask_noise, block.latent_mask, block.timesteps, i)
+            sigma = components.scheduler.sigmas[i].to(block.latents.device)
+            reference = block.image_latents.float().to(block.latents.device)
+            noisy_reference = (1 - sigma) * reference + sigma * block.mask_noise
+            block.masked_input = block.latent_mask * block.latents + (1 - block.latent_mask) * noisy_reference
+            block.latent_model_input = block.masked_input.to(block.dtype)
             return components, block
+
+    class MaskedAfter(AnimaLoopAfterDenoiser):
+        @property
+        def inputs(self):
+            return super().inputs + [InputParam(name, required=True) for name in
+                ("image_latents", "masked_input", "latent_mask")]
+
+        @torch.no_grad()
+        def __call__(self, components, block, i, t):
+            sigma = components.scheduler.sigmas[i].to(block.latents.device)
+            denoised = block.masked_input - sigma * block.noise_pred.float()
+            denoised = block.latent_mask * denoised + (1 - block.latent_mask) * block.image_latents.to(block.latents.device).float()
+            # The scheduler integrates the original state, while its prediction
+            # includes the clean protected reference. RES history sees this D.
+            block.noise_pred = (block.latents.float() - denoised) / sigma
+            return super().__call__(components, block, i, t)
 
     blocks = AnimaAutoBlocks()
     core = blocks.sub_blocks["denoise"].sub_blocks["img2img"]
     core.sub_blocks["prepare_latents"] = MaskedPrepare()
+    core.sub_blocks["denoise"].sub_blocks["before_denoiser"] = MaskedBefore()
     core.sub_blocks["denoise"].sub_blocks["after_denoiser"] = MaskedAfter()
     return blocks

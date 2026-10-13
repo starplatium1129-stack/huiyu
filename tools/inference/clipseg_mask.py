@@ -2,6 +2,7 @@
 
 No ComfyUI code, remote model code, weight conversion, or implicit downloads.
 The checkpoint and its license are separate from the Transformers implementation.
+Postprocessing follows AP ClipSEG Light's MIT workflow; retain MASK_PROCESSING_LICENSE.txt.
 """
 import hashlib
 import importlib.util
@@ -17,12 +18,14 @@ FILES = ("config.json", "preprocessor_config.json", "tokenizer_config.json",
 MAX_PHRASES = 32
 MAX_PROMPT_LENGTH = 4096
 MAX_CONDITIONING_BYTES = 64 * 1024
+MAX_VISION_BYTES = 16 * 1024 * 1024
+EXECUTION_REVISION = "clipseg-single-image-vision-v1"
 
 
 def phrases(prompt):
     if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > MAX_PROMPT_LENGTH:
         raise ValueError("maskPrompt must contain 1..4096 characters")
-    result = list(dict.fromkeys(part.strip() for part in prompt.split("|") if part.strip()))
+    result = [part.strip() for part in prompt.split("|") if part.strip()]
     if not result or len(result) > MAX_PHRASES:
         raise ValueError("maskPrompt must contain 1..32 nonempty phrases separated by |")
     return result
@@ -92,37 +95,74 @@ def validate_model(value):
     return root
 
 
-def logits_mask(logits, size, threshold):
-    """Max-phrase logits, bilinear resize, sigmoid, then a binary edit mask."""
+def logits_mask(logits, size, threshold, grow=8):
+    """Mean logits, bilinear resize, AP-style smooth/threshold/grow/feather."""
     import numpy as np
-    from PIL import Image
+    import torch
+    from torch.nn import functional as functional
     logits = np.asarray(logits, dtype=np.float32)
     if logits.shape != (352, 352) or not np.isfinite(logits).all():
         raise ValueError("CLIPSeg returned invalid/nonfinite mask logits")
-    resized = np.asarray(Image.fromarray(logits).resize(size, Image.Resampling.BILINEAR))
-    probabilities = 1 / (1 + np.exp(-np.clip(resized, -80, 80)))
-    mask = Image.fromarray(np.where(probabilities >= threshold, np.uint8(255), np.uint8(0)))
-    if mask.getbbox() is None:
+    resized = functional.interpolate(torch.from_numpy(logits)[None, None],
+        size=(size[1], size[0]), mode="bilinear", align_corners=False)
+    def blur(values, radius):
+        width = 2 * radius + 1
+        # A uniform 2D box is separable. Keep the same reflected three-pass
+        # filter while avoiding a width*width convolution on the full image.
+        horizontal = values.new_full((1, 1, 1, width), 1 / width)
+        vertical = horizontal.transpose(-1, -2)
+        for _ in range(3):
+            values = functional.conv2d(functional.pad(values, (radius, radius, 0, 0), mode="reflect"), horizontal)
+            values = functional.conv2d(functional.pad(values, (0, 0, radius, radius), mode="reflect"), vertical)
+        return values
+    mask = (blur(resized, 2).sigmoid() >= threshold).float()
+    if grow:
+        # This private CPU mask contains only 0/1. Prefix presence selects the
+        # same clipped square maximum without per-pixel window scans.
+        values = mask[0, 0].numpy()
+        height, width = values.shape
+        # Each axis sums at most its length; accumulator and output must match.
+        dtype = np.min_scalar_type(max(height, width))
+        columns = np.arange(width, dtype=np.intp)
+        prefix = np.zeros((height, width + 1), dtype=dtype)
+        np.cumsum(values, axis=1, dtype=dtype, out=prefix[:, 1:])
+        horizontal = prefix[:, np.minimum(columns + grow + 1, width)] > prefix[:, np.maximum(columns - grow, 0)]
+        del values, prefix
+        rows = np.arange(height, dtype=np.intp)
+        prefix = np.zeros((height + 1, width), dtype=dtype, order="F")
+        np.cumsum(horizontal, axis=0, dtype=dtype, out=prefix[1:])
+        expanded = prefix[np.minimum(rows + grow + 1, height)] > prefix[np.maximum(rows - grow, 0)]
+        # Own FP32 storage with the threshold mask's canonical layout before
+        # the unchanged feather convolution; do not expose NumPy storage.
+        mask = torch.empty_like(mask).copy_(torch.from_numpy(expanded)[None, None])
+        del prefix, horizontal, expanded
+    mask = blur(mask, 12).clamp(0, 1)[0, 0].numpy()
+    if not np.any(mask > 0):
         raise ValueError("Automatic mask has no editable pixels; adjust maskPrompt/threshold or use a manual mask")
     return mask
 
 
 class MaskCache:
-    """One CPU checkpoint/logit map and at most 64 KiB of text conditioning."""
+    """One CPU checkpoint/logit map, 16 MiB vision and 64 KiB conditioning."""
     def __init__(self):
         self.clear()
 
     def clear(self):
         self.identity = self.components = self.result_key = self.logits = None
         self.conditioning_key = self.conditioning = None
+        self.vision_key = self.vision = None
         self.begin_job()
 
     def begin_job(self):
         self.model_reused = self.result_reused = False
+        self.vision_reused = False
+        self.vision_encodes = 0
         self.fingerprint_seconds = 0.0
 
     def stats(self):
         return dict(modelReused=self.model_reused, resultReused=self.result_reused,
+                    visionReused=self.vision_reused, visionEncodes=self.vision_encodes,
+                    visionBytes=0 if self.vision is None else sum(t.numel() * t.element_size() for t in self.vision),
                     fingerprintSeconds=self.fingerprint_seconds,
                     resultBytes=0 if self.logits is None else self.logits.nbytes)
 
@@ -152,19 +192,19 @@ def model_identity(root):
     return str(root), tuple(rows)
 
 
-def generate_mask(root, image, prompt, threshold, *, cache=None, expected_mask_sha256=None):
+def generate_mask(root, image, prompt, threshold, *, grow=8, cache=None, expected_mask_sha256=None):
     """Segment on CPU; bind a supplied profile scope before cache reuse or loading."""
     try:
         if cache is not None:
             cache.begin_job()
-        return _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256)
+        return _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sha256)
     except BaseException:
         if cache is not None:
             cache.clear()
         raise
 
 
-def _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256):
+def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sha256):
     import numpy as np
     import torch
     from transformers import CLIPSegForImageSegmentation, CLIPTokenizer, ViTImageProcessorPil
@@ -176,18 +216,19 @@ def _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256):
         digest = hashlib.sha256(json.dumps(identity[1], sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
         if digest != expected_mask_sha256:
             raise ValueError("CLIPSeg model bytes changed since TeaCache profile scope validation")
-    result_key = None
+    image_key = result_key = None
     if cache is not None:
         if cache.identity != identity:
             cache.clear()
         cache.fingerprint_seconds = fingerprint_seconds
         cache.model_reused = cache.components is not None
-        # The image already has the final oriented, resized RGB pixels. Store only
-        # their digest and the small logits; threshold/growth remain per-request.
-        result_key = (image.mode, image.size, hashlib.sha256(image.tobytes()).digest(), tuple(texts))
+        # The image already has the final oriented, resized RGB pixels. Its
+        # exact digest scopes both selected vision layers and phrase logits.
+        image_key = (EXECUTION_REVISION, image.mode, image.size, hashlib.sha256(image.tobytes()).digest())
+        result_key = (image_key, tuple(texts))
         if cache.result_key == result_key and cache.logits is not None:
             cache.result_reused = True
-            return logits_mask(cache.logits, image.size, threshold)
+            return logits_mask(cache.logits, image.size, threshold, grow)
     components = cache.components if cache is not None else None
     if components is None:
         root = validate_model(str(root))
@@ -199,7 +240,6 @@ def _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256):
     tokens = tokenizer(texts, padding=True, truncation=False, return_tensors="pt")
     if tokens["input_ids"].shape[-1] > 77:
         raise ValueError("Each maskPrompt phrase must fit CLIPSeg's 77-token context; shorten the phrase")
-    pixels = processor(images=image, return_tensors="pt")["pixel_values"].to(device="cpu", dtype=torch.float32)
     if components is None:
         model, info = CLIPSegForImageSegmentation.from_pretrained(str(root), local_files_only=True,
             trust_remote_code=False, use_safetensors=True, dtype=torch.float32, output_loading_info=True)
@@ -220,29 +260,55 @@ def _generate_mask(root, image, prompt, threshold, cache, expected_mask_sha256):
     pending_bytes = 0
     combined = None
     with torch.inference_mode():
+        activations = cache.vision if cache is not None and cache.vision_key == image_key else None
+        if activations is None:
+            pixels = processor(images=image, return_tensors="pt")["pixel_values"].to(device="cpu", dtype=torch.float32)
+            # Match the pinned forward's layer selection, but encode the query
+            # image once. The decoder never uses the projected pooled output.
+            vision = model.clip.get_image_features(pixel_values=pixels, output_hidden_states=True,
+                interpolate_pos_encoding=True, return_dict=True)
+            activations = tuple(vision.hidden_states[layer + 1] for layer in model.extract_layers)
+            del vision, pixels
+            if cache is not None:
+                cache.vision_encodes = 1
+        elif cache is not None:
+            cache.vision_reused = True
         for start in range(0, len(texts), 4):
             count = min(4, len(texts) - start)
             inputs = {name: value[start:start + count].to("cpu") for name, value in tokens.items()
                       if name in ("input_ids", "attention_mask")}
             if conditioning is not None:
-                inputs["conditional_embeddings"] = conditioning[start // 4].to(device="cpu", copy=True)
-            output = model(pixel_values=pixels.repeat(count, 1, 1, 1), return_dict=True, **inputs)
+                embedding = conditioning[start // 4].to(device="cpu", copy=True)
+            else:
+                embedding = model.get_conditional_embeddings(batch_size=count, **inputs)
+            output = model.decoder(tuple(value.expand(count, -1, -1) for value in activations),
+                embedding, return_dict=True)
             logits = output.logits.detach().to(device="cpu", dtype=torch.float32).numpy()
             if logits.shape != (count, 352, 352) or not np.isfinite(logits).all():
                 raise ValueError("CLIPSeg returned invalid/nonfinite mask logits")
             if pending is not None:
-                embedding = output.conditional_embeddings
                 pending_bytes += embedding.numel() * embedding.element_size()
                 if pending_bytes <= MAX_CONDITIONING_BYTES:
                     pending.append(embedding.detach().to(device="cpu", copy=True))
                 else:
                     pending = None  # Oversized conditioning still produces an ordinary mask.
-                del embedding
-            batch = logits.max(axis=0)
-            combined = batch if combined is None else np.maximum(combined, batch)
-    mask = logits_mask(combined, image.size, threshold)
+            del embedding, output
+            # Preserve phrase order, duplicates and a short final batch's weight.
+            for phrase_logits in logits:
+                combined = phrase_logits.copy() if combined is None else combined + phrase_logits
+    combined /= len(texts)
+    mask = logits_mask(combined, image.size, threshold, grow)
     if cache is not None:
         cache.result_key, cache.logits = result_key, combined.copy()
+        if not cache.vision_reused:
+            vision_bytes = sum(value.numel() * value.element_size() for value in activations)
+            if vision_bytes <= MAX_VISION_BYTES:
+                # Own only the selected layers, never the full hidden-state
+                # collection or a larger backing tensor supplied by the model.
+                cache.vision = tuple(value.detach().to(device="cpu", copy=True).contiguous() for value in activations)
+                cache.vision_key = image_key
+            else:
+                cache.vision_key = cache.vision = None
         if conditioning is None:
             cache.conditioning_key, cache.conditioning = (tuple(texts), tuple(pending)) if pending is not None else (None, None)
     return mask

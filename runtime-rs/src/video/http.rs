@@ -137,7 +137,7 @@ impl ExecutionHooks for Legacy {
             }
         })
     }
-    fn submitting(&self, _: String, _: String) -> BoxFuture<'_, Result<()>> {
+    fn submitting(&self, _: String) -> BoxFuture<'_, Result<()>> {
         Box::pin(async {
             if self.cancel.is_cancelled() {
                 Err(error(499, "VIDEO_CANCELLED", "视频请求已取消"))

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>内存图片入库与 PixAI 启动优化 · 2026-10-13</title>
+<style>
+:root{color-scheme:light dark}body{font:16px/1.7 system-ui,sans-serif;color:CanvasText;background:Canvas;max-width:960px;margin:36px auto;padding:0 20px}h1{font-size:26px}h2{font-size:20px}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:12px 10px;border-bottom:1px solid GrayText}code{overflow-wrap:anywhere}a{color:LinkText}footer{margin-top:24px}
+</style>
+<h1>内存图片入库与 PixAI 启动优化</h1>
+<p>2026-10-13。优先移除普通出图入库时占用 SQLite 工作线程的逐块刷盘，再复用现有系统哈希实现降低 PixAI 冷启动校验成本。11 个产品源文件变更，无新增依赖、数据库迁移、提示词或生产内容修改。以下刷盘次数为源码推导，未测量当前实际耗时。</p>
+<table aria-label="本轮改动与性能边界">
+<thead><tr><th>范围</th><th>改动及收益依据</th><th>边界</th></tr></thead>
+<tbody>
+<tr><td>Native Anima、旧 WebUI 结果及受保护输入图</td><td>内存图片与文件输入共用已有后台复制和提交链路。首次写入 32 MiB 图片，原 32 次内部分块请求及暂存文件刷盘，变为一次内部复制提交请求、一次暂存文件刷盘；prepare 请求、目录同步和完整文件校验仍存在。大块写入不再运行在 SQLite 工作线程上。</td><td>沿用单写许可；其他媒体写入仍等待当前复制提交结束。普通 ComfyUI 输出已走文件路径，不计作本轮新增收益。没有端到端速度或并发延迟实测。</td></tr>
+<tr><td>内存及旧接口清理</td><td>直接转移图片的 Arc 所有权，后台 Cursor 借用其字节，复用 1 MiB 复制缓冲，不克隆整张图片或增加中转文件。删除失去消费者的内部 chunk 类型、工作消息和适配。</td><td>外部 HTTP base64 分块仍保持原字段解析、重试冲突检查和每块落盘确认；没有改上传协议。</td></tr>
+<tr><td>PixAI 冷启动完整性校验</td><td>约 1.95 GB 的固定权重及其余模型文件改用项目已有 native_hash.py。Windows 使用系统 CNG SHA-256，非 Windows 保留 hashlib。现有资源白名单已包含 helper，无额外打包配置。</td><td>每次启动仍读取所有文件的全部字节，保留存在性、长度和固定 SHA 校验；失败继续拒绝加载。没有摘要缓存、GPU 驻留或模型算法变化。本轮没有新的 PixAI 启动耗时数字。</td></tr>
+</tbody></table>
+<h2>持久化与恢复边界</h2>
+<p>复用的后台工作者继续持有源数据、工作区所有者和单写许可；Pending 保护垃圾回收中的目标 hash 与暂存 key，关闭等待工作者退出。暂存及最终对象仍分别完整核对 SHA、长度和类型；提交前再次检查路径身份、工作区、任务和租约。调用生命周期取消继续生效，任务取消请求本身不额外禁止结果回收。</p>
+<p>内部内存图片现与文件来源一样，恢复时比较已有暂存前缀，不一致则从源重写；这是本轮有意采用的恢复行为变化。完整结果确认前才刷盘，不再承诺内部每 MiB 的独立持久化。HTTP 分块的已有确认语义保持。</p>
+<h2>必要验证</h2>
+<table aria-label="本轮验证状态">
+<thead><tr><th>状态</th><th>证据与范围</th></tr></thead>
+<tbody>
+<tr><td>通过</td><td><code>cargo check --manifest-path runtime-rs/Cargo.toml --locked --offline</code>，退出 0，7.81 秒；本轮 Rust 源码编译检查。</td></tr>
+<tr><td>通过</td><td>CPython 3.11.9 对改动的 pixai_worker.py 执行隔离 <code>py_compile</code>，退出 0；仅语法编译，未导入 helper、模型或 CUDA。</td></tr>
+<tr><td>通过</td><td>主会话及两项独立源码／差异审查，覆盖 HTTP 上传、后台复制生命周期和完整校验、PixAI 路径及打包依赖。定向 edition 2024 rustfmt、git diff --check 通过；11 个产品源文件均低于 500 有效行。</td></tr>
+<tr><td>未运行</td><td>遵守仓库禁令，未编写或运行任何测试、夹具、临时断言或行为脚本。未调用模型、做性能复测、生成 release EXE、安装、部署、提交或推送。未重跑已知含缺失旧夹具链接的全仓 docs:check；本轮新增报告与索引通过源码审查。</td></tr>
+<tr><td>需设备验收</td><td>实际大图入库与同时读取的延迟、取消／关闭／恢复、PixAI 启动耗时及错误回执。源码审查和编译通过不等于这些行为已通过，不引用旧成绩冒充当前提速。</td></tr>
+</tbody></table>
+<footer>本轮日志与逐文件源码绑定保存在被忽略的 <code>runtime/backend-performance-20261013/media-pixai/</code>。改动仅在源码工作区，当前桌面安装未更新。</footer>
+</html>

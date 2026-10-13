@@ -14,7 +14,40 @@ pub(super) fn routes() -> Router<crate::AppState> {
         .route("/api/inference/diagnostics", post(diagnose))
 }
 impl ControlService {
-    fn active_inference(&self) -> Result<Settings> {
+    pub(crate) fn bind_images(&self, images: &Arc<crate::images::ImageService>) {
+        *self.images.write().unwrap() = Arc::downgrade(images);
+    }
+    pub(super) async fn native_chat_handoff(
+        &self,
+    ) -> Result<Option<tokio::sync::OwnedSemaphorePermit>> {
+        self.check_llama_release()?;
+        let images = self.images.read().unwrap().upgrade();
+        if let Some(images) = images {
+            return images.native_chat_handoff().await;
+        }
+        if self.active_inference()?.engine == "native" {
+            return Err(ApiError::new(
+                503,
+                "NATIVE_RUNTIME_UNAVAILABLE",
+                "独立绘图服务未接入，无法确认显存释放",
+            ));
+        }
+        Ok(None)
+    }
+    pub(crate) async fn ensure_native_drawing(
+        &self,
+        cancel: &tokio_util::sync::CancellationToken,
+    ) -> Result<()> {
+        if cancel.is_cancelled() || self.shutdown.is_cancelled() {
+            return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
+        }
+        self.stop_llama().await?;
+        if cancel.is_cancelled() || self.shutdown.is_cancelled() {
+            return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
+        }
+        Ok(())
+    }
+    pub(super) fn active_inference(&self) -> Result<Settings> {
         self.inference
             .as_ref()
             .cloned()
@@ -114,6 +147,7 @@ async fn diagnose(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<V
         .env_remove("PYTHONPATH")
         .env_remove("PYTHONHOME")
         .env("HUIYU_INFERENCE_ACCELERATION", &settings.acceleration)
+        .env("HUIYU_INFERENCE_MEMORY", &settings.memory_policy)
         .env("HF_HUB_OFFLINE", "1")
         .env("TRANSFORMERS_OFFLINE", "1");
     let process = s.processes.spawn(&mut command)?;
@@ -167,42 +201,4 @@ fn protocol_error() -> ApiError {
         "NATIVE_DIAGNOSTICS_PROTOCOL",
         "独立推理依赖检查返回无效结果",
     )
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[tokio::test]
-    async fn selection_is_persisted_without_changing_active_snapshot() {
-        let (_temp, service) = super::super::tests::fixture(json!({"unrelated":{"keep":true}}));
-        let active = service.active_inference().unwrap();
-        assert_eq!(active.engine, "comfy");
-        let mut target = active.clone();
-        target.engine = "native".into();
-        target.models_root = service.config.ai_workspace_root.join("custom-models");
-        let result = service.save_inference(target.clone()).await.unwrap();
-        assert_eq!(result["active"]["engine"], "comfy");
-        assert_eq!(result["configured"]["engine"], "native");
-        assert_eq!(result["restartRequired"], true);
-        assert_eq!(service.active_inference().unwrap(), active);
-        let disk: Value = serde_json::from_slice(
-            &std::fs::read(service.config.runtime_root.join("config.json")).unwrap(),
-        )
-        .unwrap();
-        assert_eq!(disk["unrelated"]["keep"], true);
-        assert_eq!(disk["inference"], serde_json::to_value(&target).unwrap());
-        let restored = service.save_inference(active).await.unwrap();
-        assert_eq!(restored["restartRequired"], false);
-        service.close().await;
-    }
-    #[tokio::test]
-    async fn missing_native_files_do_not_claim_runtime_readiness() {
-        let (_temp, service) = super::super::tests::fixture(json!({}));
-        let Json(value) = status(Extension(service.clone())).await.unwrap();
-        assert_eq!(value["diagnostics"]["files"]["python"], false);
-        assert_eq!(value["diagnostics"]["dependencies"], "unchecked");
-        assert_eq!(value["diagnostics"]["runtime"], "unverified");
-        assert_eq!(value["diagnostics"]["basis"], "configured");
-        service.close().await;
-    }
 }

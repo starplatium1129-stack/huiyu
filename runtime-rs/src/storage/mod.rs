@@ -31,23 +31,15 @@ use std::{
         atomic::{AtomicBool, Ordering},
     },
 };
-use tokio::sync::{mpsc, oneshot};
+use tokio::sync::{OwnedSemaphorePermit, mpsc, oneshot};
 
 pub use canonical::fingerprint;
 pub(crate) use canonical::stringify;
 pub use media::Media;
 
-#[derive(Clone)]
-pub(crate) enum TaskMediaTarget {
-    Input(String),
-    Result(u64),
-}
-
-pub(crate) struct TaskMediaChunk {
-    pub task_id: String,
-    pub target: TaskMediaTarget,
-    pub offset: u64,
-    pub bytes: axum::body::Bytes,
+pub(crate) enum TaskMediaSource {
+    File(std::fs::File),
+    Bytes(Arc<Vec<u8>>),
 }
 
 #[derive(Clone)]
@@ -63,13 +55,14 @@ pub struct Storage {
     search_warming: Arc<AtomicBool>,
 }
 enum Work {
-    AdmittedResult(Box<Work>, tokio::sync::OwnedSemaphorePermit),
     ResultVerified(String, Result<result_commit::Verified>),
-    TaskMediaChunk(
-        TaskMediaChunk,
+    TaskMediaCopy(
+        Value,
+        TaskMediaSource,
         String,
         Arc<AtomicBool>,
-        oneshot::Sender<Result<u64>>,
+        oneshot::Sender<Result<Value>>,
+        OwnedSemaphorePermit,
     ),
     Task(
         crate::task_contract::TaskCommand,
@@ -83,11 +76,18 @@ enum Work {
         Arc<AtomicBool>,
         oneshot::Sender<Result<Option<crate::task_contract::TaskRecord>>>,
     ),
+    TaskRevision(
+        String,
+        String,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<Option<i64>>>,
+    ),
     Request(
         Value,
         String,
         Arc<AtomicBool>,
         oneshot::Sender<Result<Value>>,
+        Option<OwnedSemaphorePermit>,
     ),
     ArtworkRead(
         Value,
@@ -112,10 +112,6 @@ enum Work {
         oneshot::Sender<Result<Value>>,
     ),
     Close(oneshot::Sender<Result<()>>),
-    #[cfg(test)]
-    PauseCopy(worker::CopyPause),
-    #[cfg(test)]
-    PauseGarbage(worker::GarbagePause),
 }
 struct CancelOnDrop(Arc<AtomicBool>);
 impl Drop for CancelOnDrop {
@@ -132,6 +128,7 @@ pub(super) struct Context {
     owner: schema::Owner,
     cancel: Arc<AtomicBool>,
     result_commit: Option<result_commit::Pending>,
+    media_verified: Option<result_commit::Verified>,
 }
 impl Context {
     fn execute(&mut self, command: &Value, principal: &str) -> Result<Value> {
@@ -243,9 +240,8 @@ impl Context {
             "organizeArtworks" | "undoArtworkOrganization" => {
                 organization::execute(self, principal, command)
             }
-            "prepareSave" | "uploadChunk" | "commitSave" | "abortSave" | "prepareMedia"
-            | "uploadMediaChunk" | "commitMedia" | "releaseMedia" | "appendArtwork"
-            | "countMedia" => saves::execute(self, principal, command),
+            "prepareSave" | "uploadChunk" | "abortSave" | "prepareMedia" | "uploadMediaChunk"
+            | "releaseMedia" | "countMedia" => saves::execute(self, principal, command),
             kind if kind.starts_with("profile.") => profile::execute(self, principal, command),
             _ => Err(ApiError::new(
                 501,

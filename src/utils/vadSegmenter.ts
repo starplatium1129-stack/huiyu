@@ -6,7 +6,7 @@
  *
  * 实现：按固定帧（默认 10ms）计算 RMS 能量，与自适应噪声底阈值比较；
  * 进入语音需连续 minSpeechMs，退出需连续 minSilenceMs 静音。
- * 全程确定性（除调用方输入的波形外无随机源），便于 node:test 直测。
+ * 全程确定性（除调用方输入的波形外无随机源）。
  */
 
 export interface VadSegmenterConfig {

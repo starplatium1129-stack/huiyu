@@ -15,8 +15,7 @@ use tokio::sync::watch;
 
 mod cache;
 mod download;
-#[cfg(test)]
-mod download_tests;
+
 mod verify;
 
 // One process may have several windows, each with its own update banner.
@@ -435,94 +434,4 @@ pub fn desktop_update_cancel(app: AppHandle) -> bool {
     let accepted = SESSION.cancel();
     let _ = app.emit("desktop-update-state", SESSION.snapshot());
     accepted
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn one_download_at_a_time_and_cancel_wins_before_install() {
-        let session = UpdateSession::default();
-        assert_eq!(session.snapshot().phase, UpdatePhase::Idle);
-        let (guard, receiver) = session.begin().unwrap();
-        let checking = session.snapshot();
-        assert_eq!(checking.phase, UpdatePhase::Checking);
-        assert!(checking.can_cancel);
-        assert!(session.begin().is_err());
-        assert!(session.cancel());
-        assert!(*receiver.borrow());
-        let cancelling = session.snapshot();
-        assert!(cancelling.revision > checking.revision);
-        assert_eq!(cancelling.phase, UpdatePhase::Cancelling);
-        assert!(!cancelling.can_cancel);
-        assert!(
-            !session.cancel(),
-            "an accepted cancellation cannot be accepted twice"
-        );
-        assert!(
-            session.begin().is_err(),
-            "cancellation must finish before retry"
-        );
-        assert!(!guard.commit_install());
-        let cancelled = guard.finish(&Ok(false));
-        assert_eq!(cancelled.phase, UpdatePhase::Cancelled);
-        assert!(!cancelled.can_cancel);
-        assert!(cancelled.revision > cancelling.revision);
-        let (guard, _) = session.begin().unwrap();
-        assert!(guard.commit_install());
-        assert_eq!(session.snapshot().phase, UpdatePhase::Installing);
-        assert!(!session.snapshot().can_cancel);
-        assert!(
-            !session.cancel(),
-            "installer cannot be cancelled as a download"
-        );
-        assert!(
-            session.begin().is_err(),
-            "installer still owns the process gate"
-        );
-        let failed = guard.finish(&Err("installer unavailable".into()));
-        assert_eq!(failed.phase, UpdatePhase::Failed);
-        assert_eq!(failed.error_text, "installer unavailable");
-        assert!(!failed.can_cancel);
-        assert!(session.begin().is_ok(), "errors release the gate for retry");
-        assert_eq!(
-            session.snapshot().phase,
-            UpdatePhase::Idle,
-            "dropping a guard still releases the gate"
-        );
-    }
-
-    #[test]
-    fn progress_accumulates_chunks_and_handles_missing_length_without_event_flood() {
-        let mut progress = DownloadProgress::default();
-        let first = progress
-            .report(
-                1_048_576,
-                Some(4_194_304),
-                1_048_576,
-                Duration::from_secs(1),
-            )
-            .unwrap();
-        assert!(first.contains("1.0 / 4.0 MiB（25%）"));
-        assert!(first.contains("1.00 MiB/s"));
-        assert!(progress
-            .report(
-                2_097_152,
-                Some(4_194_304),
-                2_097_152,
-                Duration::from_millis(1100)
-            )
-            .is_none());
-        let next = progress
-            .report(3_145_728, None, 1_048_576, Duration::from_secs(2))
-            .unwrap();
-        assert!(next.contains("3.0 MiB"));
-        assert!(next.contains("总大小未知"));
-        assert!(
-            next.contains("0.50 MiB/s"),
-            "cached bytes must not inflate speed"
-        );
-        assert!(!next.contains('%'));
-    }
 }

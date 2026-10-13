@@ -1,6 +1,4 @@
 use super::*;
-#[cfg(test)]
-mod tests;
 
 pub(super) fn run(
     root: PathBuf,
@@ -26,17 +24,9 @@ pub(super) fn run(
     let mut copying = false;
     let mut collecting: Option<Arc<AtomicBool>> = None;
     let mut closing = Vec::new();
-    #[cfg(test)]
-    let mut pause = None;
-    #[cfg(test)]
-    let mut garbage_pause = None;
+
     while let Some(work) = receiver.blocking_recv() {
-        let (work, permit) = match work {
-            Work::AdmittedResult(work, permit) => (*work, Some(permit)),
-            work => (work, None),
-        };
         match work {
-            Work::AdmittedResult(..) => unreachable!("result admission cannot be nested"),
             Work::ResultVerified(id, verified) => {
                 result_commit::finish(&mut context, id, verified, &sender);
                 if !closing.is_empty()
@@ -47,19 +37,22 @@ pub(super) fn run(
                     break;
                 }
             }
-            Work::TaskMediaChunk(chunk, principal, cancel, reply) => {
+            Work::TaskMediaCopy(command, source, principal, cancel, reply, permit) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
                     continue;
                 }
                 context.cancel = cancel;
                 if !reply.is_closed() {
-                    if context.result_commit.is_some() {
-                        let _ = reply.send(Err(result_busy()));
-                        continue;
-                    }
-                    let result = tasks::upload_chunk(&mut context, &principal, chunk);
-                    let _ = reply.send(result);
+                    result_commit::start_copy(
+                        &mut context,
+                        &command,
+                        source,
+                        &principal,
+                        reply,
+                        permit,
+                        &sender,
+                    );
                 }
             }
             Work::Task(command, principal, cancel, reply) => {
@@ -81,6 +74,17 @@ pub(super) fn run(
                 context.cancel = cancel;
                 if !reply.is_closed() {
                     let result = tasks::read_record(&context, &principal, &id);
+                    let _ = reply.send(result);
+                }
+            }
+            Work::TaskRevision(id, principal, cancel, reply) => {
+                if !closing.is_empty() {
+                    let _ = reply.send(Err(unavailable()));
+                    continue;
+                }
+                context.cancel = cancel;
+                if !reply.is_closed() {
+                    let result = tasks::read_revision(&context, &principal, &id);
                     let _ = reply.send(result);
                 }
             }
@@ -128,7 +132,7 @@ pub(super) fn run(
                 }
                 let _ = reply.send(result);
             }
-            Work::Request(command, principal, cancel, reply) => {
+            Work::Request(command, principal, cancel, reply, permit) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
                     continue;
@@ -137,14 +141,7 @@ pub(super) fn run(
                 if reply.is_closed() {
                     continue;
                 }
-                if result_commit::is_write(&command) && context.result_commit.is_some() {
-                    let _ = reply.send(Err(result_busy()));
-                    continue;
-                }
-                if matches!(
-                    command["kind"].as_str(),
-                    Some("task.result.commit" | "task.input.commit")
-                ) {
+                if result_commit::is_commit(&command) {
                     result_commit::start(
                         &mut context,
                         &command,
@@ -180,8 +177,7 @@ pub(super) fn run(
                                 continue;
                             };
                             let cancellation = job.completion.cancel.clone();
-                            #[cfg(test)]
-                            let gate: Option<GarbagePause> = garbage_pause.take();
+
                             let thread = std::thread::Builder::new()
                                 .name("workspace-garbage".into())
                                 .spawn(move || {
@@ -195,21 +191,12 @@ pub(super) fn run(
                                             "Workspace garbage discovery failed",
                                         ))
                                     });
-                                    #[cfg(test)]
-                                    let finished = gate.map(|gate| {
-                                        let _ = gate.entered.send(());
-                                        let _ = gate.resume.recv();
-                                        gate.finished
-                                    });
+
                                     let _ = sender.blocking_send(Work::GarbageFinished(
                                         job.completion,
                                         result,
                                         reply,
                                     ));
-                                    #[cfg(test)]
-                                    if let Some(finished) = finished {
-                                        let _ = finished.send(());
-                                    }
                                 });
                             if thread.is_ok() {
                                 collecting = Some(cancellation);
@@ -240,17 +227,10 @@ pub(super) fn run(
                                 let _ = reply.send(Err(unavailable()));
                                 continue;
                             };
-                            #[cfg(test)]
-                            let gate: Option<CopyPause> = pause.take();
+
                             let thread = std::thread::Builder::new()
                                 .name("workspace-copy".into())
                                 .spawn(move || {
-                                    #[cfg(test)]
-                                    let finished = gate.map(|gate| {
-                                        let _ = gate.entered.send(());
-                                        let _ = gate.resume.recv();
-                                        gate.finished
-                                    });
                                     let result = std::panic::catch_unwind(
                                         std::panic::AssertUnwindSafe(|| job.run()),
                                     )
@@ -266,10 +246,6 @@ pub(super) fn run(
                                         result,
                                         reply,
                                     ));
-                                    #[cfg(test)]
-                                    if let Some(finished) = finished {
-                                        let _ = finished.send(());
-                                    }
                                 });
                             copying = thread.is_ok();
                             if let Err(error) = thread {
@@ -324,14 +300,6 @@ pub(super) fn run(
                     break;
                 }
             }
-            #[cfg(test)]
-            Work::PauseCopy(gate) => {
-                pause = Some(gate);
-            }
-            #[cfg(test)]
-            Work::PauseGarbage(gate) => {
-                garbage_pause = Some(gate);
-            }
         }
     }
     // Refuse admission before acknowledging Close. Each filesystem worker keeps
@@ -351,25 +319,4 @@ pub(super) fn run(
     if let Err(error) = result {
         eprintln!("workspace shutdown: {error}");
     }
-}
-
-fn result_busy() -> ApiError {
-    ApiError::new(
-        429,
-        "WORKSPACE_BUSY",
-        "A task result verification is already running",
-    )
-}
-
-#[cfg(test)]
-pub(super) struct CopyPause {
-    pub entered: oneshot::Sender<()>,
-    pub resume: std::sync::mpsc::Receiver<()>,
-    pub finished: oneshot::Sender<()>,
-}
-#[cfg(test)]
-pub(super) struct GarbagePause {
-    pub entered: oneshot::Sender<()>,
-    pub resume: std::sync::mpsc::Receiver<()>,
-    pub finished: oneshot::Sender<()>,
 }

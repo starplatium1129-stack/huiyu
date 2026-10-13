@@ -6,11 +6,15 @@ import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import { readImageDataUrl } from '@/utils/backupExport'
 import type { AnimaInpaintDeps } from './useAnimaInpaint'
 import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
+import { automaticMaskBlocker } from './animaBackendReadiness'
+import type { ComfyNodeReadiness } from '@/types/anima'
 import { nativeAnimaRequestBlocker } from './nativeAnimaCapabilities'
 
 export type InpaintSubmissionSnapshot = {
   provider?: 'comfy' | 'native'
   automaticMaskAvailable?: boolean
+  automaticMaskStatus?: ComfyNodeReadiness
+  managedStartAvailable?: boolean
   payload: InpaintSubmitPayload
   effectiveChar: Exclude<InpaintSubmitPayload['characterOverride'], undefined>
   isPopular: boolean
@@ -38,7 +42,8 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
   signal.throwIfAborted()
   const wholeImage = snapshot.payload.editMode === 'whole'
   if (wholeImage && snapshot.payload.maskBlob) throw new Error('整图重绘不能同时提交遮罩，请重新确认重绘区域')
-  if (snapshot.provider === 'native' && !wholeImage && !snapshot.payload.maskBlob && !snapshot.automaticMaskAvailable) throw new Error('自动识别需要完整的本地 CLIPSeg 模型文件，请先准备模型或使用手绘遮罩')
+  const maskBlocker = !wholeImage && !snapshot.payload.maskBlob && automaticMaskBlocker(snapshot)
+  if (maskBlocker) throw new Error(maskBlocker)
   flash(wholeImage ? '正在上传原图并准备整图重绘…' : '正在上传原图并准备智能换装…')
   const base64Data = await readImageDataUrl(snapshot.payload.imageBlob, signal)
   signal.throwIfAborted()
@@ -116,7 +121,7 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
   signal.throwIfAborted()
   if (!context.current()) return
   context.begin(URL.createObjectURL(snapshot.payload.imageBlob))
-  flash(wholeImage ? '正在执行整图重绘，人物与背景均可能变化…' : snapshot.provider === 'native' ? (maskImage ? '正在执行手绘局部重绘（实验性）…' : '正在执行本地自动识别与局部重绘（实验性）…') : '正在执行 AI 智能识别与局部换装 (~6秒)…')
+  flash(wholeImage ? '正在执行整图重绘，人物与背景均可能变化…' : snapshot.provider === 'native' ? (maskImage ? '正在执行手绘局部重绘（实验性）…' : '正在执行本地自动识别与局部重绘（实验性）…') : maskImage ? '正在执行手绘局部换装…' : '正在执行自动识别与局部换装，节点的模型加载仍需验证…')
   let pending: Promise<void>
   try { pending = context.generate({
     prompt: promptText,

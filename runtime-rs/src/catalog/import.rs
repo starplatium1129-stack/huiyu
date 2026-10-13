@@ -14,33 +14,33 @@ impl Catalog {
             return Err(ApiError::invalid("快照不能为空"));
         }
         let mut changes = Vec::new();
-        let mut seeds = Vec::new();
+        let seeds = records
+            .into_iter()
+            .map(|r| (r, false))
+            .chain(retired.into_iter().map(|r| (r, true)))
+            .collect::<Vec<_>>();
         let mut seen = std::collections::HashSet::new();
         let read = self.connection.unchecked_transaction()?;
-        for (incoming, removed) in records
-            .iter()
-            .map(|r| (r, false))
-            .chain(retired.iter().map(|r| (r, true)))
-        {
+        let mut current_query = read.prepare_cached(&format!(
+            "SELECT {COLUMNS},deleted FROM content_records WHERE kind=?1 AND id=?2"
+        ))?;
+        let mut seed_query =
+            read.prepare_cached("SELECT record,deleted FROM content_seed WHERE kind=?1 AND id=?2")?;
+        for (incoming, removed) in &seeds {
+            let removed = *removed;
             validation::key(&incoming.kind, &incoming.id)?;
             if !seen.insert((&incoming.kind, &incoming.id)) {
                 return Err(ApiError::invalid("快照记录重复"));
             }
-            let current = read
-                .query_row(
-                    &format!(
-                        "SELECT {COLUMNS},deleted FROM content_records WHERE kind=?1 AND id=?2"
-                    ),
-                    params![incoming.kind, incoming.id],
-                    |r| Ok((row(r)?, r.get::<_, bool>(7)?)),
-                )
+            let current = current_query
+                .query_row(params![incoming.kind, incoming.id], |r| {
+                    Ok((row(r)?, r.get::<_, bool>(7)?))
+                })
                 .optional()?;
-            let base = read
-                .query_row(
-                    "SELECT record,deleted FROM content_seed WHERE kind=?1 AND id=?2",
-                    params![incoming.kind, incoming.id],
-                    |r| Ok((r.get::<_, String>(0)?, r.get::<_, bool>(1)?)),
-                )
+            let base = seed_query
+                .query_row(params![incoming.kind, incoming.id], |r| {
+                    Ok((r.get::<_, String>(0)?, r.get::<_, bool>(1)?))
+                })
                 .optional()?
                 .map(|(text, removed)| -> Result<_> {
                     Ok((serde_json::from_str::<Record>(&text)?, removed))
@@ -97,8 +97,9 @@ impl Catalog {
                     remove: false,
                 });
             }
-            seeds.push((incoming.clone(), removed));
         }
+        drop(current_query);
+        drop(seed_query);
         read.commit()?;
         self.apply_with_seeds(&changes, preview, &seeds)
     }

@@ -1,10 +1,10 @@
 import { computed, onScopeDispose, reactive, ref } from 'vue'
-import { inferenceSettingsApi, inferenceSettingKeys, type InferenceSettings, type InferenceSettingsApi, type InferenceSettingsResponse, type InferenceDiagnostics, type InferenceProbeResponse } from '@/api/inferenceSettingsApi'
+import { inferenceSettingsApi, inferenceSettingKeys, type InferenceSettings, type InferenceSettingsResponse, type InferenceDiagnostics, type InferenceProbeResponse } from '@/api/inferenceSettingsApi'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
-export function useInferenceSettings(api: InferenceSettingsApi = inferenceSettingsApi) {
+export function useInferenceSettings() {
   const isLocal = isLocalStudioHost()
-  const draft = reactive<InferenceSettings>({ engine: 'comfy', acceleration: 'native', modelsRoot: '', lorasRoot: '', python: '', worker: '' })
+  const draft = reactive<InferenceSettings>({ engine: 'comfy', acceleration: 'native', memoryPolicy: 'resident', modelsRoot: '', lorasRoot: '', python: '', worker: '' })
   const snapshot = ref<InferenceSettingsResponse | null>(null)
   const diagnostics = ref<InferenceDiagnostics | null>(null)
   const probe = ref<InferenceProbeResponse | null>(null)
@@ -23,6 +23,7 @@ export function useInferenceSettings(api: InferenceSettingsApi = inferenceSettin
       if (!snapshot.value || draft[key] === previous[key]) {
         if (key === 'engine') draft.engine = result.configured.engine
         else if (key === 'acceleration') draft.acceleration = result.configured.acceleration
+        else if (key === 'memoryPolicy') draft.memoryPolicy = result.configured.memoryPolicy
         else draft[key] = result.configured[key]
       }
     }
@@ -35,7 +36,7 @@ export function useInferenceSettings(api: InferenceSettingsApi = inferenceSettin
     controller = new AbortController()
     const previous = { ...(snapshot.value?.configured ?? draft) }
     try {
-      const result = await api.getStatus(controller.signal)
+      const result = await inferenceSettingsApi.getStatus(controller.signal)
       if (disposed) return
       apply(result, previous)
       diagnostics.value = { ...result.diagnostics, files: { ...result.diagnostics.files } }
@@ -51,7 +52,7 @@ export function useInferenceSettings(api: InferenceSettingsApi = inferenceSettin
     controller = new AbortController()
     const submitted = { ...draft }
     try {
-      const result = await api.save(submitted, controller.signal)
+      const result = await inferenceSettingsApi.save(submitted, controller.signal)
       if (disposed) return
       apply(result, submitted)
       diagnostics.value = null
@@ -67,7 +68,7 @@ export function useInferenceSettings(api: InferenceSettingsApi = inferenceSettin
     probe.value = null
     probeController = new AbortController()
     try {
-      const result = await api.diagnose(probeController.signal)
+      const result = await inferenceSettingsApi.diagnose(probeController.signal)
       if (!disposed) probe.value = { ...result, probe: { ...result.probe, dependencies: { ...result.probe.dependencies } } }
     } catch (cause) {
       if (!disposed) probeError.value = cause instanceof Error ? cause.message : '依赖检查失败'

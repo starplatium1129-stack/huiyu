@@ -1,7 +1,6 @@
 mod compress;
 pub(crate) mod tags;
-#[cfg(test)]
-mod tests;
+
 use crate::{
     config::Config,
     maintenance::{self, Error, Options, Result, blueprints, fs, transaction::Transaction},

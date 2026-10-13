@@ -1,26 +1,80 @@
 """Optional packed transfer of already validated, privately owned CPU modules.
 
 This helper does not validate checkpoint provenance/keys/finite values. The
-existing loader must finish those checks before calling it. It changes no
+existing loader must finish its upstream loading checks before calling it. It changes no
 dtype, shape or values, and retains each Parameter/Buffer object. It has no
 model loading, installation, device fallback or numerical kernel dependency.
 """
+from contextlib import nullcontext
 
 
-def try_packed_upload(modules, target_device="cuda"):
-    """Pack tensors per component and dtype; return success.
+STAGING_BYTES = 32 * 1024 * 1024
 
-    Pass an iterable of the fully loaded nn.Modules (the four Anima weight
-    components). Unsupported CPU layouts, subclasses, dtypes, gradients and
+
+def _pinned_slabs(torch, largest):
+    if largest < 1024 * 1024:
+        return []
+    try:
+        size = min(STAGING_BYTES, largest)
+        return [torch.empty(size, dtype=torch.uint8, device="cpu", pin_memory=True) for _ in range(2)]
+    except (MemoryError, RuntimeError):
+        # Only staging allocation may fall back. DMA/Event failures propagate.
+        return []
+
+
+def _copy_pinned(torch, destination, group, slabs, events, stream):
+    """Merge byte-exact tensor spans into bounded, reusable DMA windows."""
+    rows = [(source.view(-1).view(torch.uint8), offset * source.element_size())
+            for _, source, offset in group]
+    target = destination.view(torch.uint8)
+    index, copies = 0, 0
+    for start in range(0, target.numel(), slabs[0].numel()):
+        slot = copies % len(slabs)
+        if events[slot] is not None:
+            events[slot].synchronize()  # CPU must not overwrite an in-flight pinned source.
+        stop = min(start + slabs[slot].numel(), target.numel())
+        staged = slabs[slot].narrow(0, 0, stop - start)
+        cursor = start
+        while index < len(rows):
+            source, offset = rows[index]
+            end = offset + source.numel()
+            if end <= start:
+                index += 1
+                continue
+            if offset >= stop:
+                break
+            left, right = max(start, offset), min(stop, end)
+            if left > cursor:
+                staged.narrow(0, cursor - start, left - cursor).zero_()
+            staged.narrow(0, left - start, right - left).copy_(source.narrow(0, left - offset, right - left))
+            cursor = right
+            if end > stop:
+                break
+            index += 1
+        if cursor < stop:
+            staged.narrow(0, cursor - start, stop - cursor).zero_()
+        target.narrow(0, start, stop - start).copy_(staged, non_blocking=True)
+        if events[slot] is None:
+            events[slot] = torch.cuda.Event()
+        events[slot].record(stream)
+        copies += 1
+    return copies
+
+
+def try_packed_upload(modules, target_device="cuda", *, observation=None):
+    """Pack registered tensors into target storage per component/dtype.
+
+    Pass fully loaded nn.Modules (Anima weight components or fixed Remacri).
+    Unsupported CPU layouts, subclasses, dtypes, gradients and
     different tensor objects sharing storage/overlapping memory return False
     without mutations, so the caller can use its existing pipeline.to path.
     Repeated references to the SAME Parameter/Buffer object are supported.
 
-    Components without shared tensors must remain independently releasable. Allocate only
-    target-device flat storage per component/dtype; each original CPU view
-    copies directly into its target slice with non_blocking=True. There is no
-    CPU concatenation, pinned staging allocation or complete host-weight copy.
-    CPU detach references remain live through the last CUDA synchronization.
+    CUDA transfers coalesce tensors through at most two 32-MiB pinned byte slabs
+    on a dedicated stream. CPU filling overlaps the prior DMA; an Event gates
+    each slab's reuse. Small/unsupported pin allocations use the direct path.
+    The limit bounds active staging, not allocator cache or process RAM. CPU
+    detach references and slabs remain live through the last synchronization.
     Only after successful copies/synchronization are original objects rebound
     to packed views, then those source references are released.
     Allocation/copy/publication errors propagate; they are not an applicability
@@ -30,7 +84,7 @@ def try_packed_upload(modules, target_device="cuda"):
     _huiyu_packed_storage=True. Consumers replacing Parameter.data (e.g. PEFT
     merge) must restore its packed view by copying the new values back, otherwise
     the original shared allocation remains live alongside new allocations.
-    CPU target exists for isolated semantic tests; this is not GPU speed proof.
+    This layout alone is not evidence of GPU transfer speed.
     """
     import torch
 
@@ -41,7 +95,7 @@ def try_packed_upload(modules, target_device="cuda"):
     supported = {torch.float16, torch.bfloat16, torch.float32, torch.float64,
                  torch.int8, torch.uint8, torch.int16, torch.int32, torch.int64, torch.bool}
     seen, storages, intervals, groups = set(), set(), [], {}
-    for root_index, root in enumerate(roots):
+    for component_index, root in enumerate(roots):
         for module in root.modules():
             # named_parameters removes duplicate names, but direct registrations
             # also include shared buffers and nonpersistent rotary/mask buffers.
@@ -64,7 +118,7 @@ def try_packed_upload(modules, target_device="cuda"):
                 if source.numel():
                     start = source.data_ptr()
                     intervals.append((start, start + source.numel() * source.element_size()))
-                group = groups.setdefault((root_index, source.dtype), [])
+                group = groups.setdefault((component_index, source.dtype), [])
                 alignment = 256 // source.element_size()
                 previous_end = group[-1][2] + group[-1][1].numel() if group else 0
                 offset = (previous_end + alignment - 1) // alignment * alignment
@@ -77,21 +131,35 @@ def try_packed_upload(modules, target_device="cuda"):
             return False
         end = stop
 
-    target_flats = {}
+    sizes = {key: (group[-1][2] + group[-1][1].numel()) * group[-1][1].element_size()
+             for key, group in groups.items()}
+    slabs = _pinned_slabs(torch, max(sizes.values())) if target.type == "cuda" else []
+    stream = torch.cuda.Stream(device=target) if slabs else None
+    consumer = torch.cuda.current_stream(target) if stream is not None else None
+    if stream is not None:
+        stream.wait_stream(consumer)
+    target_flats, events, copies = {}, [None] * len(slabs), 0
     with torch.no_grad():
-        try:
-            for key, group in groups.items():
-                _, dtype = key
-                total = group[-1][2] + group[-1][1].numel()
-                destination = torch.empty(total, dtype=dtype, device=target)
-                target_flats[key] = destination
-                for _, source, offset in group:
-                    destination.narrow(0, offset, source.numel()).copy_(source.view(-1), non_blocking=True)
-        finally:
-            # Also finish earlier queued copies if a later allocation/copy
-            # failed. Original modules have not been changed at this point.
-            if target.type == "cuda" and target_flats:
-                torch.cuda.synchronize(target)
+        with torch.cuda.stream(stream) if stream is not None else nullcontext():
+            try:
+                for key, group in groups.items():
+                    total = group[-1][2] + group[-1][1].numel()
+                    destination = torch.empty(total, dtype=key[1], device=target)
+                    target_flats[key] = destination
+                    if slabs:
+                        copies += _copy_pinned(torch, destination, group, slabs, events, stream)
+                    else:
+                        for _, source, offset in group:
+                            destination.narrow(0, offset, source.numel()).copy_(source.view(-1), non_blocking=True)
+                            copies += bool(source.numel())
+            finally:
+                # Drain queued copies on failure too, before releasing CPU sources
+                # or publishing any views. Pinned mode avoids a device-wide wait.
+                if target.type == "cuda" and target_flats:
+                    stream.synchronize() if stream is not None else torch.cuda.synchronize(target)
+        if consumer is not None:
+            for destination in target_flats.values():
+                destination.record_stream(consumer)
         for key, group in groups.items():
             for tensor, source, offset in group:
                 tensor.data = target_flats[key].narrow(0, offset, source.numel()).view(source.shape)
@@ -99,77 +167,11 @@ def try_packed_upload(modules, target_device="cuda"):
                     tensor._huiyu_packed_storage = True
     # The views now own target storage. Drop CPU detaches after the final
     # sync; no source Tensor is retained on the modules or in a global cache.
+    if observation is not None:
+        tensor_bytes = sum(source.numel() * source.element_size()
+            for group in groups.values() for _, source, _ in group)
+        observation.update(strategy="packed-pinned" if slabs else "packed-direct",
+            tensorBytes=tensor_bytes, transferBytes=sum(sizes.values()) if slabs else tensor_bytes,
+            copyCalls=copies, stagingBytes=sum(slab.numel() for slab in slabs))
     groups.clear()
     return True
-
-
-def _offload_hook(component):
-    """Onload only when the component is actually called; retain its objects.
-
-    A ModelHook advertises the actual execution device to ModularPipeline.
-    It deliberately isn't Accelerate's CpuOffload: Diffusers' LoRA loader
-    reinstalls that hook using an API the modular Anima pipeline lacks.
-    Custom hooks survive Anima adapter changes without a pipeline-wide reset.
-    """
-    import torch
-    from accelerate.hooks import ModelHook, add_hook_to_module
-
-    class ComponentHook(ModelHook):
-        execution_device = torch.device("cuda", 0)
-
-        def onload(self, module):
-            if module.device != self.execution_device:
-                if not try_packed_upload([module], self.execution_device):
-                    module.to(self.execution_device)
-
-        def pre_forward(self, module, *args, **kwargs):
-            self.onload(module)
-            return args, kwargs
-
-        def offload(self, module):
-            if module.device.type == "cuda":
-                module.to("cpu")
-                # Return the now-unused allocation before the next stage,
-                # rather than leaving Windows to spill it into shared memory.
-                torch.cuda.empty_cache()
-
-    hook = ComponentHook()
-    add_hook_to_module(component, hook)
-    return hook
-
-
-def configure_staged_upload(pipeline):
-    """Keep Qwen out of denoising and the denoiser out of VAE encode/decode.
-
-    The denoiser is loaded once per sampling pass, never once per layer/step.
-    VAE encode/decode math and tiling stay unchanged. Qwen's hook also pins the
-    modular pipeline's execution device while its parameters reside on CPU.
-    """
-    _offload_hook(pipeline.text_encoder)
-    transformer = pipeline.transformer
-    hook = _offload_hook(transformer)
-    def without_denoiser(method):
-        def invoke(*args, **kwargs):
-            hook.offload(transformer)
-            return method(*args, **kwargs)
-        return invoke
-
-    pipeline.vae.encode = without_denoiser(pipeline.vae.encode)
-    pipeline.vae.decode = without_denoiser(pipeline.vae.decode)
-
-
-def offload_after_encoding(blocks):
-    """Wrap the complete positive/negative encoding, outside weighting/cache."""
-    original = blocks.sub_blocks["text_encoder"]
-
-    class OffloadedEncoder(type(original)):
-        def __call__(self, components, state):
-            try:
-                return original(components, state)
-            finally:
-                hook = getattr(components.text_encoder, "_hf_hook", None)
-                if hook is not None:
-                    hook.offload(components.text_encoder)
-
-    blocks.sub_blocks["text_encoder"] = OffloadedEncoder()
-    return blocks

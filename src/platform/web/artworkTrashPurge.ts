@@ -28,7 +28,7 @@ export async function purgeWebTrash(kv: ArtworkKvAdapter, images: ArtworkImageAd
       imagesAttempted = true
       await images.deleteMany(removable)
       thumbnailsAttempted = true
-      for (const id of removable) await kv.remove?.(thumbKey(id))
+      for (const id of removable) await kv.remove(thumbKey(id))
     }
     assertArtworkCleanupCurrent()
     recordsAttempted = true
@@ -40,7 +40,7 @@ export async function purgeWebTrash(kv: ArtworkKvAdapter, images: ArtworkImageAd
       if (original) await callSafely(() => images.putRecord(imageRecordInput(original)).then(() => {}), failures)
     }
     if (thumbnailsAttempted) for (const [id, thumbnail] of thumbnails) {
-      await callSafely(() => thumbnail == null ? kv.remove?.(thumbKey(id)) ?? Promise.resolve() : kv.set(thumbKey(id), thumbnail), failures)
+      await callSafely(() => thumbnail == null ? kv.remove(thumbKey(id)) : kv.set(thumbKey(id), thumbnail), failures)
     }
     if (recordsAttempted) await callSafely(() => kv.set(ARTWORK_TRASH_KEY, trash), failures)
     throw new ArtworkDeletionError(error, failures, '回收站清理')

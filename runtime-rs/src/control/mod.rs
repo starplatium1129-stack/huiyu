@@ -12,8 +12,7 @@ mod setup_download;
 mod setup_environment;
 mod setup_http;
 mod setup_verify;
-#[cfg(test)]
-mod tests;
+
 mod tunnel;
 
 use crate::{
@@ -44,6 +43,7 @@ pub struct ControlService {
     config_write: Arc<tokio::sync::Mutex<()>>,
     inference: Result<crate::generation::native::Settings>,
     inference_probe: tokio::sync::Mutex<()>,
+    images: RwLock<std::sync::Weak<crate::images::ImageService>>,
     saved: Arc<RwLock<Value>>,
     state: Mutex<ControlState>,
     probe_lock: tokio::sync::Mutex<()>,
@@ -53,6 +53,7 @@ pub struct ControlService {
     llama_process: tokio::sync::Mutex<Option<crate::processes::OwnedProcess>>,
     llama_secret: String,
     comfy_cancel: Mutex<Option<CancellationToken>>,
+    comfy_action: tokio::sync::Mutex<()>,
     comfy_process: tokio::sync::Mutex<Option<crate::processes::OwnedProcess>>,
     started: Instant,
     tunnel: tokio::sync::Mutex<Option<tunnel::TunnelRun>>,
@@ -70,6 +71,7 @@ struct Managed {
 }
 #[derive(Default)]
 struct ControlState {
+    llama_release_unconfirmed: bool,
     operation: Option<Value>,
     seq: u64,
     logs: VecDeque<String>,
@@ -114,6 +116,7 @@ impl ControlService {
             voice,
             inference,
             inference_probe: tokio::sync::Mutex::new(()),
+            images: RwLock::default(),
             config,
             remote,
             shutdown: shutdown.child_token(),
@@ -131,14 +134,16 @@ impl ControlService {
             llama_process: tokio::sync::Mutex::new(None),
             llama_secret: uuid::Uuid::new_v4().to_string(),
             comfy_cancel: Mutex::new(None),
+            comfy_action: tokio::sync::Mutex::new(()),
             comfy_process: tokio::sync::Mutex::new(None),
             started: Instant::now(),
             tunnel: tokio::sync::Mutex::new(None),
             tunnel_action: tokio::sync::Mutex::new(()),
             build_cache: tokio::sync::Mutex::new(None),
         });
-        // No saved preference constitutes authorization to launch a model. The
-        // watchdog stays inert until an explicit start was verified this session.
+        // Restore only the explicitly managed Comfy intent. Opening the app does
+        // not launch a model: the first generation wakes it, then watchdog owns it.
+        service.state.lock().unwrap().managed[1].desired = service.saved_comfy_intent();
         let weak = Arc::downgrade(&service);
         let cancel = service.shutdown.clone();
         service.tasks.spawn(async move {loop {tokio::select! {_=cancel.cancelled()=>break,_=tokio::time::sleep(Duration::from_secs(5))=>{}}

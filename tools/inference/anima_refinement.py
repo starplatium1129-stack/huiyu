@@ -2,9 +2,9 @@
 
 Only the Latent/Remacri product routes are supported. Intermediate pixels stay
 display RGB float tensors [1,3,H,W]; normalized diffusion latents stay
-[1,C,1,H/8,W/8]. PIL conversion happens only at delivery, except the deliberately
-unchanged non-hires/no-RCAS path. No Comfy implementation is imported or copied.
-VAE encoding delegates to Apache-2.0 Diffusers 0.41's Anima encoder helper.
+[1,C,1,H/8,W/8]. PNG and Lanczos boundaries use RGB uint8 truncation.
+No Comfy implementation is imported or copied. Single-frame VAE operations
+delegate to the pinned Apache-2.0 Diffusers modules through anima_vae.py.
 """
 from contextlib import contextmanager
 import math
@@ -44,62 +44,113 @@ def _rgb(images):
 def _pil_tensor(image, device):
     import numpy as np
     import torch
-    return torch.from_numpy(np.array(image.convert("RGB"), dtype=np.float32) / 255).permute(2, 0, 1).unsqueeze(0).to(device)
+    values = np.array(image.convert("RGB"), dtype=np.float32)
+    values /= 255
+    return torch.from_numpy(values).permute(2, 0, 1).unsqueeze(0).to(device)
 
 
 def _pil(images):
     import numpy as np
     from PIL import Image
     values = _rgb(images)[0].detach().cpu().permute(1, 2, 0).numpy()
-    if not np.isfinite(values).all():
-        raise ValueError("Decoded image contains nonfinite pixels; refusing to publish a black/corrupted result")
-    return Image.fromarray((values.clip(0, 1) * 255).round().astype(np.uint8))
+    pixels = np.empty(values.shape, dtype=np.uint8)
+    # Keep FP32 multiply/clip/truncation, with at most 128 rows of scratch
+    # instead of two complete float canvases for a Remacri 4x intermediate.
+    for top in range(0, values.shape[0], 128):
+        band = values[top:top + 128]
+        if not np.isfinite(band).all():
+            raise ValueError("Decoded image contains nonfinite pixels; refusing to publish a black/corrupted result")
+        scaled = band * 255
+        np.clip(scaled, 0, 255, out=scaled)
+        pixels[top:top + 128] = scaled
+        del scaled
+    return Image.fromarray(pixels)
 
 
-def _lanczos(images, size):
-    """Pillow float-channel Lanczos, avoiding an intermediate 8-bit RGB image."""
-    import numpy as np
-    import torch
+def _lanczos(images, size, *, cpu_output=False):
+    """Workflow Lanczos: truncate display RGB to uint8 before Pillow resize."""
     from PIL import Image
     images = _rgb(images)
-    if images.shape[-2:] == (size[1], size[0]):
-        return images
-    source = images[0].detach().cpu().numpy()
-    channels = [np.asarray(Image.fromarray(channel).resize(size, Image.Resampling.LANCZOS)) for channel in source]
-    return torch.from_numpy(np.stack(channels).copy()).unsqueeze(0).to(images.device).clamp(0, 1)
+    source = _pil(images).resize(size, Image.Resampling.LANCZOS)
+    return _pil_tensor(source, "cpu" if cpu_output else images.device)
 
 
 def _composite(images, original, mask):
     import numpy as np
     import torch
-    from PIL import Image
     images = _rgb(images)
     size = (images.shape[-1], images.shape[-2])
     # The protected reference is explicitly the resized original PIL image.
-    reference = _pil_tensor(original.resize(size, Image.Resampling.LANCZOS), images.device)
-    effective = mask.resize(size, Image.Resampling.NEAREST)
-    alpha = torch.from_numpy(np.array(effective, dtype=np.float32) / 255).to(images.device)[None, None]
-    return torch.where(alpha == 0, reference, images * alpha + reference * (1 - alpha))
+    reference = _pil_tensor(original, "cpu")
+    if original.size != size:
+        reference = _lanczos(reference, size, cpu_output=True)
+    reference = reference.to(images.device)
+    alpha = torch.from_numpy(np.asarray(mask, dtype=np.float32))[None, None].to(images.device)
+    if alpha.shape[-2:] != images.shape[-2:]:
+        alpha = torch.nn.functional.interpolate(alpha, size=images.shape[-2:], mode="nearest-exact")
+    # Reference owns its converted pixels. Reuse only that private allocation
+    # and the new result, retaining separate multiply/subtract/multiply/add.
+    result = images * alpha
+    reference.mul_(1 - alpha)
+    return result.add_(reference)
 
 
-def _upscale_latents(latents, size):
+def _upscale_latents(pipeline, latents, size, vae_tools):
     import torch
     if not isinstance(latents, torch.Tensor) or latents.ndim != 5 or latents.shape[0] != 1 or latents.shape[2] != 1:
         raise ValueError("HiRes requires one normalized [1,C,1,H,W] latent")
-    return torch.nn.functional.interpolate(latents[:, :, 0].float(), size=(size[1] // 8, size[0] // 8),
-                                          mode="bicubic", align_corners=False).unsqueeze(2)
+    if not bool(torch.isfinite(latents).all()):
+        raise ValueError("HiRes latents contain nonfinite values; refusing to publish a corrupted result")
+    return vae_tools.upscale_latents(pipeline.vae, latents, size)
 
 
-def _encode(pipeline, pixels):
-    import torch
-    from diffusers.modular_pipelines.anima.encoders import encode_vae_image
+def _encode(pipeline, pixels, vae_tools, tiling):
     pixels = _rgb(pixels)
-    prepared = pipeline.image_processor.preprocess(pixels, height=pixels.shape[-2], width=pixels.shape[-1])
-    # Argmax encoding consumes no random numbers; pass two owns a fresh seed+1 RNG.
-    with torch.no_grad():
-        return encode_vae_image(prepared, pipeline.vae, generator=None, sample_mode="argmax",
-                                device=pipeline._execution_device, dtype=pipeline.vae.dtype,
-                                latent_channels=pipeline.num_channels_latents)
+    return vae_tools.encode(pipeline, pixels, tiling, height=pixels.shape[-2], width=pixels.shape[-1])
+
+
+@contextmanager
+def _finite_decode(vae, before_decode=None):
+    """Check before display clamping while retaining upstream PIL conversion."""
+    import torch
+    original, owned = vae.decode, "decode" in vae.__dict__
+    raw_finite = None
+
+    def check_raw_decoder(module, inputs, output):
+        nonlocal raw_finite
+        finite = torch.isfinite(output).all()
+        raw_finite = finite if raw_finite is None else raw_finite & finite
+
+    # Ordinary upstream _decode clamps before returning; observe the decoder
+    # output itself so Inf cannot become a finite display value. Tiles only
+    # accumulate device scalars; there is no per-tile host synchronization.
+    handle = vae.decoder.register_forward_hook(check_raw_decoder)
+
+    def decode(latents, *args, **kwargs):
+        nonlocal raw_finite
+        raw_finite = None
+        if before_decode is not None:
+            before_decode()
+        latent_finite = torch.isfinite(latents).all()
+        result = original(latents, *args, **kwargs)
+        pixels = result[0] if isinstance(result, tuple) else result.sample
+        # One scalar readback per decode boundary, not per denoising step.
+        finite = latent_finite & torch.isfinite(pixels).all().to(latent_finite.device)
+        if raw_finite is not None:
+            finite &= raw_finite
+        if not bool(finite):
+            raise ValueError("VAE latents or decoded pixels contain nonfinite values; refusing to publish a corrupted result")
+        return result
+
+    vae.decode = decode
+    try:
+        yield
+    finally:
+        handle.remove()
+        if owned:
+            vae.decode = original
+        else:
+            del vae.decode
 
 
 @contextmanager
@@ -152,21 +203,9 @@ def _patch_grid(transformer):
             del transformer.forward
 
 
-@contextmanager
-def _tiled_vae(vae):
-    names = ("use_tiling", "tile_sample_min_height", "tile_sample_min_width",
-             "tile_sample_stride_height", "tile_sample_stride_width")
-    previous = {name: getattr(vae, name) for name in names}
-    vae.enable_tiling(tile_sample_min_height=512, tile_sample_min_width=512,
-                      tile_sample_stride_height=384, tile_sample_stride_width=384)
-    try:
-        yield
-    finally:
-        for name, value in previous.items():
-            setattr(vae, name, value)
 
 
-def _second_pipeline(pipeline, data, spec, sampling, mask_tools, prepare_second_blocks=None):
+def _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tiling, prepare_second_blocks=None):
     from diffusers import AnimaModularPipeline, ClassifierFreeGuidance
     from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
     blocks = mask_tools.masked_blocks() if spec["masked"] else AnimaAutoBlocks()
@@ -175,6 +214,7 @@ def _second_pipeline(pipeline, data, spec, sampling, mask_tools, prepare_second_
     blocks.sub_blocks.pop("text_encoder")
     for name in ("text2image", "img2img"):
         blocks.sub_blocks["denoise"].sub_blocks[name].sub_blocks.pop("text_conditioning")
+    blocks = vae_tools.apply_blocks(blocks, tiling)
     if prepare_second_blocks is not None:
         # The owner validates a whole-hires profile, clears per-pass Tea lanes,
         # and wraps only these fresh blocks. Samples/statistics may stay pooled.
@@ -191,7 +231,7 @@ def _second_pipeline(pipeline, data, spec, sampling, mask_tools, prepare_second_
 
 def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None,
         postprocess=None, upscale=None, progress=None, prepare_second_blocks=None,
-        observe_schedule=None):
+        observe_schedule=None, before_decode=None, vae_tools=None, tiling=None):
     """Return (single PIL image, actual scheduler steps, stage observations).
 
     pipeline is the caller's configured first-pass pipeline. sampling supplies
@@ -204,7 +244,8 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
     first/second and steps are that pass's actual scheduler calls, never the sum.
 
     Stage timings are CPU wall spans without extra CUDA synchronization; queued
-    GPU work can finish in a later stage. No retries or precision fallback occur.
+    GPU work can finish in a later stage. Only real CUDA OOM permits the bounded
+    VAE/Remacri tile fallback; no precision or inference-device fallback occurs.
     """
     import torch
     from PIL import Image
@@ -221,7 +262,7 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
     report = dict(pipelineWallSeconds=0., postprocessWallSeconds=0., compositeWallSeconds=0.,
                   firstPassSteps=0, secondPassSteps=0, width=spec["width"], height=spec["height"],
                   secondPassSeed=spec["secondSeed"] if spec["second"] else None,
-                  vaeTiling={"pixels": 512, "stride": 384} if spec["second"] else None)
+                  vaeOperations=pipeline.vae._huiyu_vae_events)
 
     def timed(field, function):
         before = time.perf_counter()
@@ -230,8 +271,7 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
         finally:
             report[field] += time.perf_counter() - before
 
-    first_steps = (data["steps"] if image is None else
-                   data["steps"] - int(data["steps"] - data["steps"] * data["denoisingStrength"]))
+    first_steps = data["steps"]
     total = first_steps + spec["secondSteps"]
 
     def execute(current, phase, kwargs):
@@ -246,7 +286,8 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
 
         current.scheduler.step = step
         try:
-            result = timed("pipelineWallSeconds", lambda: current(**kwargs))
+            with _finite_decode(current.vae, before_decode):
+                result = timed("pipelineWallSeconds", lambda: current(**kwargs))
             if observe_schedule is not None:
                 name = "first" if phase == "firstPassSteps" else "second"
                 report.setdefault("schedules", {})[name] = observe_schedule(name, current.scheduler, report[phase])
@@ -256,12 +297,12 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
 
     options = (sampling.sampling_options(data.get("sampler", "euler"), data.get("scheduler", "simple"),
                                         data["steps"], pipeline.scheduler) if sampling is not None else {})
-    legacy = not spec["enabled"] and not spec["rcasStrength"]
     kwargs = dict(prompt=data["prompt"], negative_prompt=data.get("negativePrompt", ""), width=data["width"],
                   height=data["height"], num_inference_steps=data["steps"],
-                  generator=torch.Generator(device=pipeline._execution_device).manual_seed(data["seed"]), **options)
+                  generator=torch.Generator(device="cpu").manual_seed(data["seed"]), **options)
     if image is not None:
-        kwargs.update(image=image, strength=data["denoisingStrength"])
+        kwargs.update(image=image, **sampling.refinement_options(data.get("scheduler", "simple"),
+            data["steps"], data["denoisingStrength"], pipeline.scheduler, sampler=data.get("sampler", "euler")))
     if mask is not None:
         kwargs["mask_image"] = mask
     if spec["enabled"]:
@@ -270,42 +311,46 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
         if not spec["firstLatents"]:
             kwargs["output_type"] = "pt"
     else:
-        kwargs.update(output="images", output_type="pil" if legacy else "pt")
+        kwargs.update(output="images", output_type="pt")
     with _without_decode(pipeline, spec["firstLatents"]):
         first = execute(pipeline, "firstPassSteps", kwargs)
-    if legacy:
-        if not first or len(first) != 1:
-            raise ValueError("Pipeline returned no single image")
-        result = timed("compositeWallSeconds", lambda: mask_tools.composite(first[0], image, mask)) if mask is not None else first[0]
-        report["wallSeconds"] = time.perf_counter() - started
-        return result, report["firstPassSteps"], report
+    del kwargs
 
     pixels = None if spec["firstLatents"] else _rgb(first["images"] if spec["enabled"] else first)
+    conditioning = ({name: first[name] for name in ("prompt_embeds", "negative_prompt_embeds")}
+                    if spec["second"] else {})
+    first_latents = first["latents"] if spec["firstLatents"] else None
+    del first
     if mask is not None:
         pixels = timed("compositeWallSeconds", lambda: _composite(pixels, image, mask))
     size = (spec["width"], spec["height"])
     if spec["enabled"] and spec["kind"] == "Remacri":
-        pixels = timed("postprocessWallSeconds", lambda: _lanczos(upscale(pixels), size))
+        pixels = timed("postprocessWallSeconds", lambda: _lanczos(upscale(pixels), size,
+            cpu_output=not spec["second"] and not spec["rcasStrength"]))
     if spec["second"]:
-        with _tiled_vae(pipeline.vae):
-            latents = (first["latents"] if spec["firstLatents"] else
-                       timed("pipelineWallSeconds", lambda: _encode(pipeline, pixels)))
-            if spec["kind"] == "Latent":
-                latents = timed("postprocessWallSeconds", lambda: _upscale_latents(latents, size))
-            second = _second_pipeline(pipeline, data, spec, sampling, mask_tools, prepare_second_blocks)
-            options = sampling.refinement_options(spec["scheduler"], spec["secondSteps"], data["hiresDenoise"],
-                                                  second.scheduler, sampler=spec["sampler"])
-            kwargs = dict(image_latents=latents, width=size[0], height=size[1], output_type="pt", output="images",
-                          prompt_embeds=first["prompt_embeds"], negative_prompt_embeds=first["negative_prompt_embeds"],
-                          generator=torch.Generator(device=pipeline._execution_device).manual_seed(spec["secondSeed"]), **options)
-            if mask is not None:
-                kwargs["mask_image"] = mask.resize(size, Image.Resampling.NEAREST)
-            with _patch_grid(pipeline.transformer):
-                pixels = _rgb(execute(second, "secondPassSteps", kwargs))
-            if report["secondPassSteps"] != spec["secondSteps"]:
-                raise ValueError("HiRes second pass did not execute its planned denoising steps")
+        latents = (first_latents if spec["firstLatents"] else
+                   timed("pipelineWallSeconds", lambda: _encode(pipeline, pixels, vae_tools, tiling)))
+        first_latents = None
+        pixels = None
+        if spec["kind"] == "Latent":
+            latents = timed("postprocessWallSeconds", lambda: _upscale_latents(pipeline, latents, size, vae_tools))
+        second = _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tiling, prepare_second_blocks)
+        options = sampling.refinement_options(spec["scheduler"], spec["secondSteps"], data["hiresDenoise"],
+                                              second.scheduler, sampler=spec["sampler"])
+        kwargs = dict(image_latents=latents, width=size[0], height=size[1], output_type="pt", output="images",
+                      **conditioning,
+                      generator=torch.Generator(device="cpu").manual_seed(spec["secondSeed"]), **options)
+        del latents, conditioning
+        if mask is not None:
+            kwargs["mask_image"] = mask_tools.resize_mask(mask, size)
+        with _patch_grid(pipeline.transformer):
+            pixels = _rgb(execute(second, "secondPassSteps", kwargs))
+        del kwargs, second
+        if report["secondPassSteps"] != spec["secondSteps"]:
+            raise ValueError("HiRes second pass did not execute its planned denoising steps")
     if spec["rcasStrength"]:
         pixels = timed("postprocessWallSeconds", lambda: postprocess.rcas(pixels, spec["rcasStrength"]))
+        report["rcasExecutionRevision"] = postprocess.EXECUTION_REVISION
     if mask is not None and spec["enabled"]:
         pixels = timed("compositeWallSeconds", lambda: _composite(pixels, image, mask))
     result = timed("postprocessWallSeconds", lambda: _pil(pixels))

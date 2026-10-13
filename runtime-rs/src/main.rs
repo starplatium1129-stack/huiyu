@@ -107,8 +107,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     )?);
     let tasks = Arc::new(huiyu_runtime::task_runtime::TaskRuntime::new(
         generation.clone(),
-        Some(images.clone()),
-        Some(video.clone()),
+        images.clone(),
+        video.clone(),
         shutdown.clone(),
     )?);
     let mut state = AppState::new(Arc::new(config), host, shutdown.clone());

@@ -1,6 +1,5 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
-import type { FetchImplementation } from './client.ts'
 import type { LocalSetupDownloadProgress, LocalSetupDownloadResult } from '../../types/local-setup.ts'
 import { readLocalSetupStream } from './localSetupStream.ts'
 import { localSetupModelIds } from './localSetupCatalog'
@@ -12,11 +11,11 @@ export interface DownloadOptions {
 }
 const integer = (value: unknown): value is number => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
 const object = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value)
-export async function downloadLocalSetupModel(modelId: string, options: DownloadOptions, fetch: FetchImplementation = runtimeFetch): Promise<LocalSetupDownloadResult> {
+export async function downloadLocalSetupModel(modelId: string, options: DownloadOptions): Promise<LocalSetupDownloadResult> {
   if (!isLocalStudioHost()) throw new Error('模型下载仅限本机使用')
   if (!localSetupModelIds.has(modelId)) throw new Error('模型不在已登记的下载清单中')
   options.signal.throwIfAborted()
-  const response = await fetch(`/api/local-setup/download/${encodeURIComponent(modelId)}`, {
+  const response = await runtimeFetch(`/api/local-setup/download/${encodeURIComponent(modelId)}`, {
     method: 'POST', cache: 'no-store', signal: options.signal, headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ workspacePath: options.workspacePath, reviewed: true }),
   })

@@ -18,10 +18,10 @@ impl ExecutionHooks for ShotHooks {
             self.batch.save().await
         })
     }
-    fn submitting(&self, _: String, _: String) -> BoxFuture<'_, Result<()>> {
+    fn submitting(&self, _: String) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
             if let Some(h) = &self.batch.hooks {
-                h.submitting("comfy".into(), String::new()).await?;
+                h.submitting("comfy".into()).await?;
             }
             let mut state = self.batch.state.lock().await;
             if state.cancel.is_cancelled() {

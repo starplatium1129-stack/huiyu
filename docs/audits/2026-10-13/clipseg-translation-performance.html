@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CLIPSeg 与分句翻译性能优化 · 2026-10-13</title>
+<style>
+:root{color-scheme:light dark}body{font:16px/1.7 system-ui,sans-serif;color:CanvasText;background:Canvas;max-width:960px;margin:36px auto;padding:0 20px}h1{font-size:26px}h2{font-size:20px}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:12px 10px;border-bottom:1px solid GrayText}code{overflow-wrap:anywhere}a{color:LinkText}footer{margin-top:24px}
+</style>
+<h1>CLIPSeg 与分句翻译性能优化</h1>
+<p>2026-10-13。两项已完成源码实现和集成，无新增依赖。本轮收益为源码操作量推导，尚未调用模型测量实际耗时、RSS 或结果质量，不承诺端到端提速倍数。</p>
+<table aria-label="本轮改动">
+<thead><tr><th>范围</th><th>实际实现与收益</th><th>保留边界</th></tr></thead>
+<tbody>
+<tr><td>CLIPSeg 单图视觉编码</td><td>查询图像只执行一次 CPU FP32 视觉编码，按已安装 Transformers 5.10.1 原 forward 选取 hidden_states[extract_layer+1]，每批四个短语的 decoder 使用只读 expand。32 个短语由处理 32 份相同图像降为 1 份；视觉塔调用由 8 批降为 1 批。decoder 与文本条件仍保留原分批。</td><td>保留短语顺序、重复权重、短尾批平均、77-token 拒绝、完整加载 / 模型字节校验、finite logits、阈值、增长及羽化。没有跳过 decoder 或后处理，也不代表总生成耗时降为 1/32。</td></tr>
+<tr><td>同图修改遮罩提示词</td><td>最多保留一张图的选定视觉层 CPU 副本，张量 payload 上限 16 MiB。完整模型字节、执行版本、图像 mode / size / 像素 SHA-256 相同时，改短语可跳过视觉塔和图像预处理；原 mean-logit 与 64 KiB 条件缓存继续工作。</td><td>仅成功生成遮罩后写入，超限不保留视觉层；模型变化、异常与 worker 退出清空。缓存独立拥有选定层，不持有完整 hidden-state 集合。上限不包括模型、临时张量或整个进程 RSS。</td></tr>
+<tr><td>中日翻译分句 LRU</td><td>在常驻模型锁内，仅把去重后的未命中片段送入 generate，最终按原顺序恢复全部分句及重复段。只改一段时，已缓存的其余段落不再生成；全命中不调用 generate。最多 512 段，源文与译文 UTF-8 payload 合计不超过 2 MiB。</td><td>保留分句规则、源文本、规范化、换行拼接与 HTTP / stdin 响应协议。缓存绑定实际已加载 tokenizer / model 对象、beams 和规范化函数；新实例 / 策略变化时清空。磁盘替换不热重载已加载权重。批次数量完整、译文全非空后才入缓存；异常或不完整输出不新增记录。对象数量也有上限，2 MiB 不等于进程 RAM 上限。</td></tr>
+</tbody></table>
+<h2>执行身份与可观察数据</h2>
+<p>自动遮罩的产品、采集、评估和接受路径共用 compatibility，新增 <code>sampling.maskExecutionRevision = clipseg-single-image-vision-v1</code>。旧自动遮罩 TeaCache 档位在 auto 模式退回完整计算，严格启用或旧候选接受时拒绝；不自动改写档位。普通生成与手动遮罩保留已有 v3 scope。</p>
+<p>产品记录实际 <code>maskExecutionRevision</code>，即使视觉缓存关闭也保留。缓存启用时，Python 与 Rust 同步记录 <code>visionReused / visionBytes / visionEncodes</code>，不增加 CUDA 同步。README 和 runtime manifest 已更新；旧 CPU / GPU 遮罩和 Tea 验收不能验证新执行路径。</p>
+<h2>必要验证</h2>
+<table aria-label="验证结果">
+<thead><tr><th>状态</th><th>本轮证据</th></tr></thead>
+<tbody>
+<tr><td>通过</td><td>Python 3.12.14 及产品专用 CPython 3.11.9 对五个变更 Python 文件执行 <code>py_compile</code>，退出 0；只编译语法，不导入模型、不运行推理。</td></tr>
+<tr><td>通过</td><td><code>cargo check --manifest-path runtime-rs/Cargo.toml --locked --offline</code>，退出 0，2.21 秒；覆盖新增观测字段的后端编译。</td></tr>
+<tr><td>通过</td><td>主会话与独立源码 / 差异复核，核对本地固定版本的视觉 forward、decoder 和装饰器；JSON 配置读取、定向 rustfmt、git diff --check。变更源码有效行：clipseg 260、profile 278、metrics 97、worker 500、translation 228、observations 245。</td></tr>
+<tr id="release-build"><td>通过</td><td>锁定依赖、离线 <code>npm run wf -- rust:build</code>，退出 0，耗时 3 分 36 秒；仅有既有 MSVC 导入库创建信息警告。最终 Rust 源码与 EXE 绑定回执保存在 <code>runtime/backend-performance-20261013/rust-build.json</code>，Python / 配置源码哈希另存 <code>source-bindings.json</code>。</td></tr>
+<tr><td>未运行</td><td>遵守仓库要求，未编写或运行任何测试、夹具、临时行为脚本或断言。未调用真实 CLIPSeg / 翻译 / Anima 模型，未压测、安装、部署、提交或推送。</td></tr>
+<tr><td>需设备验收</td><td>视觉批次由多图变为单图，翻译 miss 批次的 padding / 形状也会变化，可能影响浮点边界附近的遮罩或译文；不宣称像素 / 译文一致。实际遮罩边缘、译文质量、冷 / 热耗时和 RSS 尚未验收。</td></tr>
+</tbody></table>
+<footer>本轮原始日志、源码哈希和构建回执保存在被忽略的 <code>runtime/backend-performance-20261013/</code>。此前改动保留；本报告只汇报本轮两项优化及必要联动。当前未部署。</footer>
+</html>

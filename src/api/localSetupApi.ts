@@ -1,6 +1,6 @@
-import { apiClient, type ApiClient, type ApiResponseObject, type FetchImplementation } from './client.ts'
-import { verifyLocalSetupModel, type VerificationOptions } from './localSetupVerification.ts'
-import { downloadLocalSetupModel, type DownloadOptions } from './localSetupDownload.ts'
+import { apiClient, type ApiResponseObject } from './client.ts'
+import { verifyLocalSetupModel } from './localSetupVerification.ts'
+import { downloadLocalSetupModel } from './localSetupDownload.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 import type { LocalSetupResponse } from '../../types/local-setup.ts'
 import type { ControlActionResult } from '../types/api.ts'
@@ -22,11 +22,15 @@ const preparation = (value: unknown) => value === null || (object(value)
   && typeof value.expectedBytes === 'number' && Number.isSafeInteger(value.expectedBytes) && value.expectedBytes > 0)
 const strings = (value: unknown): value is string[] => Array.isArray(value) && value.every(item => typeof item === 'string')
 
+const managedEnvironment = (value: unknown) => value === undefined || (object(value)
+  && (value.state === 'verified' ? value.environment === 'comfy-nvidia' || value.environment === 'comfy-cu126'
+    : (value.state === 'unknown' || value.state === 'mismatch') && value.environment === null))
+
 function validSetup(value: ApiResponseObject): boolean {
   const { workspace, comfy, models, nodes, hardware } = value
   return value.ok === true && typeof value.checkedAt === 'number' && Number.isFinite(value.checkedAt) && value.checkedAt >= 0
     && object(workspace) && typeof workspace.path === 'string' && fileState(workspace.state)
-    && object(comfy) && typeof comfy.path === 'string' && fileState(comfy.installation)
+    && object(comfy) && managedEnvironment(comfy.managedEnvironment) && typeof comfy.path === 'string' && fileState(comfy.installation)
     && (comfy.layout === 'venv' || comfy.layout === 'external-venv' || comfy.layout === 'portable' || comfy.layout === 'unrecognized')
     && typeof comfy.host === 'string' && (comfy.connection === 'online' || comfy.connection === 'offline' || comfy.connection === 'unknown')
     && Array.isArray(models) && models.every(model => object(model) && typeof model.id === 'string'
@@ -43,28 +47,24 @@ function validSetup(value: ApiResponseObject): boolean {
       && typeof device.name === 'string' && typeof device.type === 'string' && bytes(device.vramBytes))
 }
 
-export function createLocalSetupApi(client: ApiClient = apiClient, fetch?: FetchImplementation) {
-  return {
-    getOperation: (signal?:AbortSignal) => client.request<ControlActionResult>('/api/local-setup/operation',{signal,cache:'no-store',cachePolicy:'bypass',timeoutMs:10_000,validate:value=>value.ok===true&&(value.operation===null||object(value.operation))}),
-    ensureLlama: (baseUrl:string,signal?:AbortSignal) => client.request<ControlActionResult & {ready?:boolean}>('/api/local-setup/llama-ensure',{method:'POST',body:{baseUrl},signal,timeoutMs:10_000,validate:value=>value.ok===true&&(value.ready===true||object(value.operation))}),
-    prepareEnvironment: (environment: string, workspacePath: string, signal?: AbortSignal) => client.request<ControlActionResult>(`/api/local-setup/environment/${encodeURIComponent(environment)}`, {
-      method:'POST', body:{workspacePath,reviewed:true}, signal, timeoutMs:15_000, validate:value=>value.ok===true&&object(value.operation),
-    }),
-    cancelEnvironment: (operationId?:string) => client.request('/api/local-setup/environment-cancel', {method:'POST',body:{operationId},validate:value=>value.ok===true}),
-    startLlama: (modelId: string, workspacePath: string) => client.request<ControlActionResult & {baseUrl:string;model:string}>('/api/local-setup/llama', {
-      method:'POST',body:{modelId,workspacePath},timeoutMs:15_000,validate:value=>value.ok===true&&object(value.operation)&&typeof value.baseUrl==='string'&&typeof value.model==='string',
-    }),
-    stopLlama: () => client.request('/api/local-setup/llama', {method:'DELETE',validate:value=>value.ok===true}),
-    downloadModel: (modelId: string, options: DownloadOptions) => downloadLocalSetupModel(modelId, options, fetch),
-    verifyModel: (modelId: string, options: VerificationOptions) => verifyLocalSetupModel(modelId, options, fetch),
-    async getStatus(options: { signal?: AbortSignal; modelId?:string } = {}): Promise<LocalSetupResponse> {
-      if (!isLocalStudioHost()) throw new Error('首次配置检查仅限本机使用')
-      return client.request<LocalSetupResponse>(`/api/local-setup${options.modelId?'?model='+encodeURIComponent(options.modelId):''}`, {
-        method: 'GET', cache: 'no-store', cachePolicy: 'bypass', signal: options.signal,
-        timeoutMs: 15_000, validate: validSetup,
-      })
-    },
-  }
+export const localSetupApi = {
+  getOperation: (signal?:AbortSignal) => apiClient.request<ControlActionResult>('/api/local-setup/operation',{signal,cache:'no-store',cachePolicy:'bypass',timeoutMs:10_000,validate:value=>value.ok===true&&(value.operation===null||object(value.operation))}),
+  ensureLlama: (baseUrl:string,signal?:AbortSignal) => apiClient.request<ControlActionResult & {ready?:boolean}>('/api/local-setup/llama-ensure',{method:'POST',body:{baseUrl},signal,timeoutMs:10_000,validate:value=>value.ok===true&&(value.ready===true||object(value.operation))}),
+  prepareEnvironment: (environment: string, workspacePath: string, signal?: AbortSignal) => apiClient.request<ControlActionResult>(`/api/local-setup/environment/${encodeURIComponent(environment)}`, {
+    method:'POST', body:{workspacePath,reviewed:true}, signal, timeoutMs:15_000, validate:value=>value.ok===true&&object(value.operation),
+  }),
+  cancelEnvironment: (operationId?:string) => apiClient.request('/api/local-setup/environment-cancel', {method:'POST',body:{operationId},validate:value=>value.ok===true}),
+  startLlama: (modelId: string, workspacePath: string) => apiClient.request<ControlActionResult & {baseUrl:string;model:string}>('/api/local-setup/llama', {
+    method:'POST',body:{modelId,workspacePath},timeoutMs:15_000,validate:value=>value.ok===true&&object(value.operation)&&typeof value.baseUrl==='string'&&typeof value.model==='string',
+  }),
+  stopLlama: () => apiClient.request('/api/local-setup/llama', {method:'DELETE',validate:value=>value.ok===true}),
+  downloadModel: downloadLocalSetupModel,
+  verifyModel: verifyLocalSetupModel,
+  async getStatus(options: { signal?: AbortSignal; modelId?:string } = {}): Promise<LocalSetupResponse> {
+    if (!isLocalStudioHost()) throw new Error('首次配置检查仅限本机使用')
+    return apiClient.request<LocalSetupResponse>(`/api/local-setup${options.modelId?'?model='+encodeURIComponent(options.modelId):''}`, {
+      method: 'GET', cache: 'no-store', cachePolicy: 'bypass', signal: options.signal,
+      timeoutMs: 15_000, validate: validSetup,
+    })
+  },
 }
-
-export const localSetupApi = createLocalSetupApi()

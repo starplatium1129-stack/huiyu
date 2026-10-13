@@ -28,21 +28,6 @@ pub(super) fn read(c: &Context, principal: &str, query: TaskListQuery) -> Result
     } else {
         ""
     };
-    let scope = match query.scope {
-        TaskListScope::All => "",
-        TaskListScope::Overview => {
-            " AND (upstream_settled=0 OR json_extract(record_json,'$.recoveryState')!='normal' OR task_id IN (SELECT task_id FROM tasks WHERE principal_id=?1 AND json_extract(record_json,'$.revision')<=?3 ORDER BY json_extract(record_json,'$.revision') DESC LIMIT 60))"
-        }
-        TaskListScope::Open => {
-            " AND (upstream_settled=0 OR json_extract(record_json,'$.recoveryState')!='normal')"
-        }
-        TaskListScope::Attention => {
-            " AND (json_extract(record_json,'$.recoveryState')!='normal' OR json_extract(record_json,'$.status')='failed')"
-        }
-        TaskListScope::Inbox => {
-            " AND json_array_length(record_json,'$.resultRefs')>0 AND json_extract(record_json,'$.deliveryState') NOT IN ('saved','discarded')"
-        }
-    };
     // Project in SQLite: large recipes and checkpoints never cross the worker boundary.
     let body = if query.summary {
         "json_set(json_remove(record_json,'$.input','$.inputMediaRefs','$.metadata','$.checkpoint','$.requestFingerprint','$.requestFingerprintLocale','$.providerFingerprint'),
@@ -58,9 +43,7 @@ pub(super) fn read(c: &Context, principal: &str, query: TaskListQuery) -> Result
     } else {
         "json_extract(record_json,'$.revision')"
     };
-    let sql = format!(
-        "SELECT {cursor},{body} FROM tasks WHERE principal_id=?1 AND {cursor}>?2 AND {cursor}<=?3 AND {cursor}<?4{recovery}{scope} ORDER BY {cursor} DESC LIMIT ?5"
-    );
+    let sql = scopes::sql(query.scope, cursor, body, recovery);
     let mut statement = c.db.prepare_cached(&sql)?;
     let mut rows = statement.query(params![principal, after, through, before, limit + 1])?;
     let mut items = Vec::new();
@@ -80,7 +63,7 @@ pub(super) fn read(c: &Context, principal: &str, query: TaskListQuery) -> Result
         let mut task = if query.summary {
             serde_json::to_value(serde_json::from_str::<TaskSummary>(body)?)?
         } else {
-            serde_json::to_value(serde_json::from_str::<TaskRecord>(body)?)?
+            serde_json::from_str::<TaskRecord>(body)?.into_value()?
         };
         task["runtimeEpoch"] = json!(c.epoch);
         items.push(task);

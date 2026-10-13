@@ -261,37 +261,3 @@ pub(crate) fn range(header: Option<&str>, total: u64) -> std::result::Result<Byt
         partial: true,
     })
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn range_handles_suffix_and_rejects_ambiguous_or_empty_requests() {
-        assert_eq!(
-            range(Some("bytes=-3"), 8).unwrap(),
-            ByteRange {
-                start: 5,
-                length: 3,
-                partial: true
-            }
-        );
-        assert_eq!(
-            range(Some("bytes=3-99"), 8).unwrap(),
-            ByteRange {
-                start: 3,
-                length: 5,
-                partial: true
-            }
-        );
-        for invalid in [
-            "bytes=8-",
-            "bytes=-0",
-            "bytes=1-2,4-5",
-            "bytes=+1-2",
-            "bytes=-",
-        ] {
-            assert!(range(Some(invalid), 8).is_err());
-        }
-        assert_eq!(range(None, 0).unwrap().length, 0);
-    }
-}

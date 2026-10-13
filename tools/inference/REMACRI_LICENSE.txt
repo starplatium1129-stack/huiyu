@@ -8,9 +8,11 @@ Additional topology reference: https://github.com/xinntao/ESRGAN/blob/73e9b634cf
 
 Changes: only RGB 4x, nf=64/gc=32/23 RRDBs; no scale-1/2 modes, registry,
 training initializer or BasicSR dependency. Exact local legacy sequential
-safetensors keys map to the fixed network. Float32 inference, bounded tile
-cores with context halo cropped before assembly, and final display-range clamp.
-Finite halo tiles may differ from whole-frame inference; no equality claim.
+safetensors keys map to the fixed network. Float32 inference with 512 input
+tiles and 32 overlap, CPU FP32 feathered weighted sums and normalization, then
+final display clamp; bounded real CUDA OOM shrink to 256/128. Spatial partitions
+are independently implemented in anima_tiling.py. No whole-frame equality or
+Comfy floating-point/pixel equality is established by source review alone.
 No ComfyUI/KJ code, model download, pickle loading or new package dependency.
 Model weights have their own license and are not supplied by this helper.
 

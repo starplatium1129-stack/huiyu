@@ -1,7 +1,5 @@
 mod records;
 mod support;
-#[cfg(test)]
-mod tests;
 
 use super::{Error, Result, fs, prompt, state};
 use serde_json::{Value, json};

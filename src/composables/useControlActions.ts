@@ -11,11 +11,10 @@ import { copyText } from '../utils/clipboard.ts'
 import { ref } from 'vue'
 import {
   controlApi,
-  type ControlApi,
   type ControlService,
   type ControlServiceAction,
 } from '../api/controlApi.ts'
-import { maintenanceApi, type MaintenanceApi } from '../api/maintenanceApi.ts'
+import { maintenanceApi } from '../api/maintenanceApi.ts'
 import type { useControlStatus } from './useControlStatus.ts'
 import { settingsRepository, TUNNEL_ENABLED_SETTING } from '../storage/settingsRepository.ts'
 
@@ -23,13 +22,11 @@ type StatusApi = ReturnType<typeof useControlStatus>
 
 interface ActionHooks {
   showToast: (msg: string, isError?: boolean) => void
-  control?: ControlApi
-  maintenance?: MaintenanceApi
 }
 
 export function useControlActions(
   status: StatusApi,
-  { showToast, control = controlApi, maintenance = maintenanceApi }: ActionHooks,
+  { showToast }: ActionHooks,
 ) {
   const tunnelEnabled = ref(settingsRepository.get(TUNNEL_ENABLED_SETTING) ?? true)
 
@@ -75,7 +72,7 @@ export function useControlActions(
     savingConfig.value = true
     status.feedbackText.value = '正在保存并重新检测…'
     try {
-      const result = await control.saveConfig(buildConfigPayload())
+      const result = await controlApi.saveConfig(buildConfigPayload())
       showToast(result?.restartRequired ? (result.message || '配置已保存，重新启动应用后生效') : '生成服务配置已保存')
       status.pollStatus(true)
     } catch (e) { showToast(errorMessage(e, '保存失败'), true); status.pollStatus() }
@@ -87,7 +84,7 @@ export function useControlActions(
     const requested = status.autoStartVoice.value
     status.savingAutoStartVoice.value = true
     try {
-      const result = await control.savePreference(requested)
+      const result = await controlApi.savePreference(requested)
       const acknowledged = typeof result.autoStartVoice === 'boolean' ? result.autoStartVoice : requested
       status.autoStartVoice.value = acknowledged
       showToast(acknowledged ? '已开启：下次自动启动语音' : '已关闭：语音改为按需启动')
@@ -118,7 +115,7 @@ export function useControlActions(
     status.operationSubmitting.value = true
     showToast((action === 'start' ? '正在启动' : action === 'stop' ? '正在停止' : '正在处理') + '…')
     try {
-      const data = await control.serviceAction(service, action)
+      const data = await controlApi.serviceAction(service, action)
       if (data.operation) status.operation.value = data.operation
       showToast(data.message || '已提交')
       status.pollStatus(true); status.pollLogs()
@@ -131,7 +128,7 @@ export function useControlActions(
     status.operationSubmitting.value = true
     showToast(mode === 'draw' ? '切换到绘图优先…' : '切换到聊天优先…')
     try {
-      const data = await control.switchMode(mode)
+      const data = await controlApi.switchMode(mode)
       if (data.operation) status.operation.value = data.operation
       status.modeBusy.value = true
       showToast(data.message || '模式切换已开始')
@@ -149,10 +146,10 @@ export function useControlActions(
     status.mainBtnLabel.value = '正在启用公网分享…'
     status.feedbackText.value = '正在保存并重新检测…'
     try {
-      const result = await control.saveConfig(buildConfigPayload())
+      const result = await controlApi.saveConfig(buildConfigPayload())
       if (result?.restartRequired) { showToast(result.message || '配置已保存，请重新启动应用后再启用公网分享'); return }
       showToast('生成服务配置已保存')
-      await control.start(tunnelEnabled.value)
+      await controlApi.start(tunnelEnabled.value)
       showToast('公网分享已启用')
       status.startPolling()
     } catch (e) { showToast('启动失败：' + errorMessage(e, '未知原因'), true) }
@@ -165,7 +162,7 @@ export function useControlActions(
     status.actionBusy.value = true
     status.mainBtnLabel.value = '正在停止公网分享…'
     try {
-      await control.stop()
+      await controlApi.stop()
       showToast('公网分享已停止；网站与各生成服务不受影响')
       status.shareLink.value = ''
       status.tunnelStatus.value = 'disabled'
@@ -180,7 +177,7 @@ export function useControlActions(
     exportingDiag.value = true
     showToast('正在整理诊断包…')
     try {
-      const data = await control.getDiagnostics()
+      const data = await controlApi.getDiagnostics()
       const [{ buildDiagnosticExport }, { version }, { DATA_VERSION }] = await Promise.all([
         import('../utils/diagnosticExport.ts'), import('../../package.json'), import('../stores/sceneStore'),
       ])
@@ -209,7 +206,7 @@ export function useControlActions(
     }
     showToast('正在构建前端，约需 10-30 秒…')
     try {
-      const data = await maintenance.buildWeb()
+      const data = await maintenanceApi.buildWeb()
       showToast(`前端已重建（${Math.round(data.durationMs / 1000)} 秒），分享内容已更新`)
     } catch (e) {
       showToast('构建失败：' + errorMessage(e, '未知原因'), true)

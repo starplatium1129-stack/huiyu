@@ -1,4 +1,4 @@
-import { apiClient, type ApiClient, type ApiResponseObject } from './client.ts'
+import { apiClient, type ApiResponseObject } from './client.ts'
 import type { Live2DStatusResponse, SDStatusResponse } from '../types/api.ts'
 import { parseSDStatus } from '../utils/sdStatus.ts'
 
@@ -24,22 +24,19 @@ export interface MediaStatusApi {
   getSDStatus(options?: MediaStatusCallOptions): Promise<SDStatusResponse>
 }
 
-export function createMediaStatusApi(client: ApiClient = apiClient): MediaStatusApi {
-  return {
-    getLive2DStatus(options = {}) {
-      return client.request<Live2DStatusResponse>('/api/live2d-status', {
-        cache: 'no-store', signal: options.signal, timeoutMs: MEDIA_STATUS_API_TIMEOUT,
-        validate: isLive2DStatus,
-      })
-    },
-    getSDStatus(options = {}) {
-      return client.request<SDStatusResponse>('/api/sd-status', {
-        cache: 'no-store', signal: options.signal, timeoutMs: MEDIA_STATUS_API_TIMEOUT,
-        validate: isSDStatus,
-      })
-    },
-  }
+export const mediaStatusApi: MediaStatusApi = {
+  getLive2DStatus(options = {}) {
+    return apiClient.request<Live2DStatusResponse>('/api/live2d-status', {
+      cache: 'no-store', signal: options.signal, timeoutMs: MEDIA_STATUS_API_TIMEOUT,
+      validate: isLive2DStatus,
+    })
+  },
+  getSDStatus(options = {}) {
+    return apiClient.request<SDStatusResponse>('/api/sd-status', {
+      cache: 'no-store', signal: options.signal, timeoutMs: MEDIA_STATUS_API_TIMEOUT,
+      validate: isSDStatus,
+    })
+  },
 }
 
-export const mediaStatusApi = createMediaStatusApi()
 export { parseSDStatus }

@@ -69,8 +69,6 @@ export interface Live2DNativeEvents {
   onMotionStarted(listener: (info: { group: string; index?: number }) => void): number
   /** 动作被拒绝（前端显示"动作进行中/重试"） */
   onMotionFailed(listener: (info: { group: string; index?: number; reason: string }) => void): number
-  /** overlay 捕获到点击并经 Cubism HitArea 命中（作者分区优先于 DOM 分区） */
-  onHitTest(listener: (areas: Live2DHitArea[]) => void): number
   /** 入场动作结束（前端恢复常规状态提示） */
   onEntranceFinished(listener: () => void): number
   /** 渲染线程停止（异常退出/通道断开/窗口销毁；前端显示错误并允许重试） */

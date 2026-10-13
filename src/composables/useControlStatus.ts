@@ -8,20 +8,20 @@
 import { ref, computed, nextTick, watch, getCurrentScope, onScopeDispose, type Ref } from 'vue'
 import { usePolling } from './usePolling.ts'
 import { ApiClientError } from '../api/client.ts'
-import { controlApi, type ControlApi } from '../api/controlApi.ts'
+import { controlApi } from '../api/controlApi.ts'
 import type {
   ControlStatus, ControlLogs, ControlOperationView,
 } from '@/types/api'
 
 interface StatusHooks {
   showToast: (msg: string, isError?: boolean) => void
-  api?: ControlApi
 }
 
-export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
+export function useControlStatus({ showToast }: StatusHooks) {
   const tunnelActive = ref(false)
   const sdOnline = ref(false)
   const comfyOnline = ref(false)
+  const imageProvider = ref<ControlStatus['imageProvider']>(null)
   const ttsOnline = ref(false)
   const ollamaOnline = ref(false)
   const llamaOnline=ref(false),llamaManaged=ref(false),llamaLabel=ref('')
@@ -227,7 +227,16 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     mainBtnLabel.value = tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
 
     const imageOnline = data.sdOnline || data.comfyOnline
-    if (imageOnline && data.ttsOnline && (data.llama?.online || data.ollamaOnline)) {
+    imageProvider.value = data.imageProvider === undefined ? 'comfy' : data.imageProvider
+    if (imageProvider.value === 'native') {
+      feedbackText.value = data.nativeRuntimeFilesReady ? '独立绘图入口已准备' : '独立绘图入口待准备'
+      actionNote.value = data.nativeRuntimeFilesReady
+        ? '首次生成时按需加载独立模型；请在下方检查依赖与 CUDA，并核对所选模型。切换到聊天会释放空闲绘图显存。'
+        : '请在下方独立引擎设置中准备 Python 与 worker，再检查依赖和模型文件。'
+    } else if (imageProvider.value === null) {
+      feedbackText.value = '绘图引擎配置待确认'
+      actionNote.value = '请检查下方独立引擎设置，修正配置后重新启动应用。'
+    } else if (imageOnline && data.ttsOnline && (data.llama?.online || data.ollamaOnline)) {
       feedbackText.value = '画面、语音与聊天均已就绪'
       actionNote.value = '可以完整使用绘制台、角色房间与配音。'
     } else if (imageOnline && data.ttsOnline) {
@@ -256,7 +265,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     const controller = new AbortController()
     shareRequest = controller
     try {
-      const data = await api.getShareLink({ signal: controller.signal })
+      const data = await controlApi.getShareLink({ signal: controller.signal })
       if (shareRequest !== controller || controller.signal.aborted) return
       shareLink.value = data.shareLink
     } catch {
@@ -273,7 +282,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     const controller = new AbortController()
     statusRequest = controller
     try {
-      const data = await api.getStatus({ fresh: force, signal: controller.signal })
+      const data = await controlApi.getStatus({ fresh: force, signal: controller.signal })
       if (statusRequest !== controller || controller.signal.aborted) return
       renderStatus(data)
       // 探测失败现在是 200 + ok:false + degraded（与三个同族 *-status 一致）。
@@ -297,7 +306,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     logsRequest = controller
     const revision = statusRevision
     try {
-      const data: ControlLogs = await api.getLogs(logIndex.value, { signal: controller.signal })
+      const data: ControlLogs = await controlApi.getLogs(logIndex.value, { signal: controller.signal })
       if (logsRequest !== controller || controller.signal.aborted) return
       if (data.operation && revision === statusRevision && !operationSubmitting.value) {
         operation.value = data.operation
@@ -374,7 +383,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     modeBusy, operation, operationSubmitting, serviceChecking, statusLoaded, statusError, scripts,
     sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
-    feedbackText, actionNote, logs, logBoxEl, logIndex,
+    feedbackText, actionNote, imageProvider, logs, logBoxEl, logIndex,
     opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
     readyLabel,
     lastStatus: () => lastStatus,

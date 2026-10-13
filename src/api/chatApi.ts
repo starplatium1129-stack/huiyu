@@ -1,4 +1,4 @@
-import { apiClient, type ApiClient, type ApiResponseObject } from './client.ts'
+import { apiClient, type ApiResponseObject } from './client.ts'
 import type { ChatStatus, ConfiguredHostConfig, HostConfig, ProviderTestResult } from '../types/api.ts'
 import { parseChatStatus } from '../utils/chatStatus.ts'
 
@@ -48,48 +48,44 @@ export interface ChatApi {
   testProvider(payload: HostConfigPayload, options?: ChatCallOptions): Promise<ProviderTestResult>
 }
 
-export function createChatApi(client: ApiClient = apiClient): ChatApi {
-  return {
-    getStatus(options = {}) {
-      return client.request<ChatStatus>('/api/chat-status', {
-        cache: 'no-store', signal: options.signal, timeoutMs: CHAT_API_TIMEOUTS.status,
-        validate: value => typeof value.online === 'boolean'
-          && typeof value.model === 'string'
-          && Array.isArray(value.models)
-          && value.models.every(model => isObject(model) && typeof model.name === 'string'),
-      })
-    },
-    getHostConfig(options = {}) {
-      return client.request<HostConfig>('/api/chat-provider/host-config', {
-        cache: 'no-store', signal: options.signal, timeoutMs: CHAT_API_TIMEOUTS.host,
-        // 准静态配置：30s 内存 TTL 去抖（2026-08-28 审计 P1-8）。
-        // saveHostConfig/clearHostConfig 成功后由 client 失效同 URL 缓存。
-        cacheTtlMs: 30_000,
-        validate: isHostConfig,
-      })
-    },
-    saveHostConfig(payload, options = {}) {
-      return client.request<ConfiguredHostConfig>('/api/chat-provider/host-config', {
-        method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
-        timeoutMs: CHAT_API_TIMEOUTS.hostAction, validate: value => value.ok === true && isConfiguredHostConfig(value),
-      })
-    },
-    clearHostConfig(options = {}) {
-      return client.request<{ ok: true; configured: false }>('/api/chat-provider/host-config', {
-        method: 'DELETE', cache: 'no-store', signal: options.signal,
-        timeoutMs: CHAT_API_TIMEOUTS.hostAction,
-        validate: value => value.ok === true && isHostConfig(value) && value.configured === false,
-      })
-    },
-    testProvider(payload, options = {}) {
-      return client.request<ProviderTestResult>('/api/chat-provider/test', {
-        method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
-        timeoutMs: CHAT_API_TIMEOUTS.providerTest, validate: isProviderTest,
-      })
-    },
-  }
+export const chatApi: ChatApi = {
+  getStatus(options = {}) {
+    return apiClient.request<ChatStatus>('/api/chat-status', {
+      cache: 'no-store', signal: options.signal, timeoutMs: CHAT_API_TIMEOUTS.status,
+      validate: value => typeof value.online === 'boolean'
+        && typeof value.model === 'string'
+        && Array.isArray(value.models)
+        && value.models.every(model => isObject(model) && typeof model.name === 'string'),
+    })
+  },
+  getHostConfig(options = {}) {
+    return apiClient.request<HostConfig>('/api/chat-provider/host-config', {
+      cache: 'no-store', signal: options.signal, timeoutMs: CHAT_API_TIMEOUTS.host,
+      // 准静态配置：30s 内存 TTL 去抖（2026-08-28 审计 P1-8）。
+      // saveHostConfig/clearHostConfig 成功后由 client 失效同 URL 缓存。
+      cacheTtlMs: 30_000,
+      validate: isHostConfig,
+    })
+  },
+  saveHostConfig(payload, options = {}) {
+    return apiClient.request<ConfiguredHostConfig>('/api/chat-provider/host-config', {
+      method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
+      timeoutMs: CHAT_API_TIMEOUTS.hostAction, validate: value => value.ok === true && isConfiguredHostConfig(value),
+    })
+  },
+  clearHostConfig(options = {}) {
+    return apiClient.request<{ ok: true; configured: false }>('/api/chat-provider/host-config', {
+      method: 'DELETE', cache: 'no-store', signal: options.signal,
+      timeoutMs: CHAT_API_TIMEOUTS.hostAction,
+      validate: value => value.ok === true && isHostConfig(value) && value.configured === false,
+    })
+  },
+  testProvider(payload, options = {}) {
+    return apiClient.request<ProviderTestResult>('/api/chat-provider/test', {
+      method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
+      timeoutMs: CHAT_API_TIMEOUTS.providerTest, validate: isProviderTest,
+    })
+  },
 }
-
-export const chatApi = createChatApi()
 
 export { parseChatStatus }

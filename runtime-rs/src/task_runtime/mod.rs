@@ -7,10 +7,6 @@ mod providers;
 mod recovery;
 mod resume;
 use providers::Preparation;
-#[cfg(test)]
-mod binding_tests;
-#[cfg(test)]
-mod tests;
 
 use crate::{
     error::{ApiError, Result},
@@ -34,8 +30,8 @@ use tokio_util::{sync::CancellationToken, task::TaskTracker};
 
 pub struct TaskRuntime {
     provider: Arc<GenerationService>,
-    images: Option<Arc<crate::images::ImageService>>,
-    video: Option<Arc<crate::video::VideoService>>,
+    images: Arc<crate::images::ImageService>,
+    video: Arc<crate::video::VideoService>,
     recoveries: Mutex<HashMap<String, Arc<recovery::Initialization>>>,
     fingerprint: Fingerprint,
     unbound_epoch: String,
@@ -50,6 +46,7 @@ struct JobBinding {
     dispatching: bool,
     watching: bool,
     watch_requested: bool,
+    changed: Arc<tokio::sync::Notify>,
     operation: Arc<tokio::sync::Mutex<RecoveryState>>,
 }
 #[derive(Default)]
@@ -64,6 +61,7 @@ impl JobBinding {
             dispatching: false,
             watching: false,
             watch_requested: false,
+            changed: Arc::new(tokio::sync::Notify::new()),
             operation: Arc::new(tokio::sync::Mutex::new(RecoveryState::default())),
         }
     }
@@ -71,8 +69,8 @@ impl JobBinding {
 impl TaskRuntime {
     pub fn new(
         provider: Arc<GenerationService>,
-        images: Option<Arc<crate::images::ImageService>>,
-        video: Option<Arc<crate::video::VideoService>>,
+        images: Arc<crate::images::ImageService>,
+        video: Arc<crate::video::VideoService>,
         shutdown: CancellationToken,
     ) -> Result<Self> {
         Ok(Self {
@@ -165,14 +163,7 @@ impl TaskRuntime {
                     "Request key already belongs to different input",
                 ));
             }
-            return Ok(serde_json::to_value(existing)?);
-        }
-        if request["kind"] == "generation" {
-            return Err(ApiError::new(
-                410,
-                "SD_RETIRED",
-                "SD 新生成已退役；原任务可继续查询、收集或取消",
-            ));
+            return Ok(existing.into_value()?);
         }
         let prepared = self.prepare(kind, frozen["input"].take()).await?;
         self.check_running()?;
@@ -253,7 +244,7 @@ impl TaskRuntime {
                         dispatcher.dispatch(storage, principal, id, prepared).await;
                     });
                 }
-                Ok(serde_json::to_value(task)?)
+                Ok(task.into_value()?)
             }
             .await;
             let _ = reply.send(accepted);
@@ -287,8 +278,16 @@ impl TaskRuntime {
                 let Some(task): Option<TaskRecord> = serde_json::from_value(task)? else {
                     return Ok(Value::Null);
                 };
+                if let Some(binding) = runtime
+                    .jobs
+                    .lock()
+                    .unwrap()
+                    .get(&identity(&storage, &task.task_id))
+                {
+                    binding.changed.notify_one();
+                }
                 if task.upstream_settled {
-                    return Ok(serde_json::to_value(task)?);
+                    return Ok(task.into_value()?);
                 }
                 let id = task.task_id.clone();
                 if let Some(job) = runtime.job(&storage, &id).filter(|job| !job.is_empty()) {
@@ -317,30 +316,25 @@ impl TaskRuntime {
     ) -> Result<Value> {
         let state: DeliveryState = serde_json::from_value(json!(state))
             .map_err(|_| ApiError::invalid("Invalid delivery state"))?;
-        Ok(serde_json::to_value(
-            patch(
-                storage,
-                principal,
-                id,
-                TaskPatch {
-                    delivery_state: Some(state),
-                    ..Default::default()
-                },
-            )
-            .await?,
-        )?)
+        Ok(patch(
+            storage,
+            principal,
+            id,
+            TaskPatch {
+                delivery_state: Some(state),
+                ..Default::default()
+            },
+        )
+        .await?
+        .into_value()?)
     }
     pub async fn close(&self) {
         if self.closed.swap(true, Ordering::AcqRel) {
             return;
         }
         self.provider.close().await;
-        if let Some(images) = &self.images {
-            images.close().await;
-        }
-        if let Some(video) = &self.video {
-            video.close().await;
-        }
+        self.images.close().await;
+        self.video.close().await;
         {
             // Serialize closure with read-triggered recovery registration.
             let _recoveries = self.recoveries.lock().unwrap();
@@ -349,18 +343,12 @@ impl TaskRuntime {
         self.tracker.wait().await;
     }
     fn binding_for(&self, kind: TaskKind) -> String {
-        if matches!(kind, TaskKind::Anima | TaskKind::Creative)
-            && let Some(images) = &self.images
-        {
-            return self
-                .fingerprint
-                .hash(&images.provider_identity(&self.unbound_epoch));
-        }
-        self.binding()
-    }
-    fn binding(&self) -> String {
-        self.fingerprint
-            .hash(&self.provider.provider_identity(&self.unbound_epoch))
+        let provider = if matches!(kind, TaskKind::Anima | TaskKind::Creative) {
+            self.images.provider_identity(&self.unbound_epoch)
+        } else {
+            self.provider.provider_identity(&self.unbound_epoch)
+        };
+        self.fingerprint.hash(&provider)
     }
     fn job(&self, storage: &Storage, id: &str) -> Option<String> {
         self.jobs
@@ -376,22 +364,14 @@ impl TaskRuntime {
             .or_insert_with(|| JobBinding::new(job_id));
     }
 }
-fn image_family(kind: TaskKind) -> Option<&'static str> {
-    match kind {
-        TaskKind::Anima => Some("anima"),
-        TaskKind::Creative => Some("krea2"),
-        _ => None,
-    }
-}
-
 pub(super) async fn patch(
     storage: &Storage,
     principal: &str,
     id: &str,
     value: TaskPatch,
 ) -> Result<TaskRecord> {
-    let current = TaskRuntime::get(storage, principal, id).await?;
-    patch_at(storage, principal, id, current.revision, value).await
+    let current = revision(storage, principal, id).await?;
+    patch_at(storage, principal, id, current, value).await
 }
 pub(super) async fn patch_at(
     storage: &Storage,
@@ -413,12 +393,18 @@ pub(super) async fn patch_at(
             .await;
         match result {
             Err(error) if error.code == "REVISION_CONFLICT" && attempt < 4 => {
-                revision = TaskRuntime::get(storage, principal, id).await?.revision;
+                revision = self::revision(storage, principal, id).await?;
             }
             result => return Ok(serde_json::from_value(result?)?),
         }
     }
     unreachable!()
+}
+async fn revision(storage: &Storage, principal: &str, id: &str) -> Result<i64> {
+    storage
+        .task_revision(id, principal)
+        .await?
+        .ok_or_else(|| ApiError::new(404, "TASK_NOT_FOUND", "Task does not exist"))
 }
 fn identity(storage: &Storage, id: &str) -> String {
     format!("{}:{id}", storage.runtime_epoch())

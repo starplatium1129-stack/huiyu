@@ -30,6 +30,21 @@
 009、010、013 的剩余范围和 004 的暂停决定统一维护在[未来规划](roadmap.md)，不再并行维护专项进度副本。
 
 - [独立 Anima 推理接入](guides/independent-inference.md)：现有 Anima 主流程、独立运行库与使用范围。
+- [Native 独立接入续报](audits/2026-10-12/native-backend-independence.html)：按引擎切换绘图、聊天显存交接、异常退出阻断与非有限结果拦截；本轮构建及设备验收边界。
+- [Native Anima 参数与性能对齐](audits/2026-10-12/native-anima-alignment.html)：分阶段显存、共享组件冷切、高清资源清理与采样对齐；旧 Tea 档失配和逐项算法差异。
+- [Native Anima 高清与蒙版补齐](audits/2026-10-12/native-anima-effects.html)：单帧 VAE 普通优先/OOM 羽化、Remacri CPU 拼接、KJ RCAS 功能参数与浮点蒙版；v3 源码/构建及设备验收边界。
+- [Native Anima 加载优化](audits/2026-10-12/native-anima-loading.html)：逐组件CPU加载/上传、64 MiB有界双缓冲合并传输和真实加载观测；源码/编译证据与CUDA验收边界。
+- [Native Anima 局部风险缓存候选](audits/2026-10-12/native-anima-local-cache.html)：全局/局部双预算、独立采集与校准、维护候选隔离；尚无真实画质/性能或选择结论。
+- [后端性能优化续报](audits/2026-10-12/backend-performance.html)：相册最终批量写入、内部文件入库、完整语音缓存及角色立绘内存优化；本轮源码、构建与设备验收边界。
+- [回收站读取与 Live2D 健康探测优化](audits/2026-10-12/trash-live2d-performance.html)：删除专用完整记录查询、对称部分索引与健康布尔短路；真实内置模型文件调用观测及未测数据库 / 设备边界。
+- [目录列表调度优化](audits/2026-10-12/directory-listing-performance.html)：集中枚举、ICU 排序和 metadata，四个工作者及关闭等待；正常 API 真实目录壁钟观测与未验并发 / 设备边界。
+- [CLIPSeg 与分句翻译性能优化](audits/2026-10-13/clipseg-translation-performance.html)：单图视觉层复用、分句 LRU、自动遮罩执行身份与本轮编译 / 设备验收边界。
+- [后端热点优化续报](audits/2026-10-13/backend-hotpaths.html)：蒙版分配、暖模型身份、内容批量写与任务 JSON / CAS；任务列表索引、手动遮罩／RGB 准备 CPU 对照，以及 PR #74 本机合并审查、Windows 构建与设备验收边界。
+- [后端注意力、Live2D 与内容导入优化](audits/2026-10-13/backend-attention-catalog.html)：默认注意力去冗余拷贝、大依赖组并发校验、SQL 复用与导入所有权；本轮编译及设备验收边界。
+- [内存图片入库与 PixAI 启动优化](audits/2026-10-13/backend-media-pixai.html)：内存图复用后台批量复制、移除逐 MiB 数据库线程刷盘、PixAI 完整系统哈希；本轮编译及设备验收边界。
+- [Remacri 加载与高清放大优化](audits/2026-10-13/remacri-loading-performance.html)：移除单张量拼接、分行像素转换、有界打包上传与独立执行身份；本轮编译及设备验收边界。
+- [锐化、蒙版合成与 Comfy 节点查询优化](audits/2026-10-13/rcas-comfy-performance.html)：RCAS 分行计算、私有参考图内存复用与三个节点定向探测；本轮编译及设备验收边界。
+- [LoRA 切换优化与冷加载定位](audits/2026-10-13/lora-loading-performance.html)：融合底模恢复双缓冲、热切换打包上传、独立装载与恢复观测；显存代价及本轮验证边界。
 - [Anima 独立后端交付](audits/2026-10-11/native-anima-replacement.html)：六模型、三 LoRA 样例、高清/遮罩/权重接入、完整 API 热任务减少 22.3% 及剩余限制。
 - [独立后端主力机 GPU 实测](audits/2026-10-11/native-backend-gpu.html)：PR #71 最新提交、真实 Anima/LoRA/TeaCache、ComfyUI 对照、修复与剩余限制。
 - [独立后端性能优化续测](audits/2026-10-11/native-backend-performance.html)：Windows 读取保护、原生 SHA-256、Sage/编译候选、画质与 LoRA 检查及 ComfyUI + TeaCache 新对照。

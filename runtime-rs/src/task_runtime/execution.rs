@@ -40,26 +40,18 @@ impl TaskRuntime {
                 }
                 Preparation::Image(prepared) => {
                     self.images
-                        .as_ref()
-                        .ok_or_else(|| {
-                            ApiError::new(
-                                501,
-                                "TASK_PROVIDER_NOT_MIGRATED",
-                                "Image task provider unavailable",
-                            )
-                        })?
                         .clone()
                         .submit(prepared, principal.clone(), Some(hooks))
                         .await?
                 }
                 Preparation::Video(prepared) => {
-                    self.video()?
+                    self.video
                         .clone()
                         .submit(prepared, principal.clone(), Some(hooks))
                         .await?
                 }
                 Preparation::Batch(prepared) => {
-                    self.video()?
+                    self.video
                         .clone()
                         .submit_batch(prepared, principal.clone(), Some(hooks))
                         .await?
@@ -118,10 +110,10 @@ impl TaskRuntime {
         principal: &str,
         id: &str,
     ) -> Result<Value> {
-        Ok(serde_json::to_value(
-            self.reconcile_inner(storage, principal, id, ReconcileMode::Explicit)
-                .await?,
-        )?)
+        Ok(self
+            .reconcile_inner(storage, principal, id, ReconcileMode::Explicit, None)
+            .await?
+            .into_value()?)
     }
     pub(super) async fn reconcile_inner(
         self: &Arc<Self>,
@@ -129,20 +121,30 @@ impl TaskRuntime {
         principal: &str,
         id: &str,
         mode: ReconcileMode,
+        notification: Option<&Arc<tokio::sync::Notify>>,
     ) -> Result<TaskRecord> {
         self.check_running()?;
         let observe_after = mode != ReconcileMode::Follow;
         // A rejected task identity must not allocate a persistent operation
         // binding, or wait on another principal's in-flight task operation.
-        Self::get(storage, principal, id).await?;
-        let operation = self
-            .jobs
-            .lock()
-            .unwrap()
-            .entry(identity(storage, id))
-            .or_insert_with(|| JobBinding::new(String::new()))
-            .operation
-            .clone();
+        let task = Self::get(storage, principal, id).await?;
+        let operation = {
+            let mut jobs = self.jobs.lock().unwrap();
+            // Follow owns this exact binding. An awaited identity read must not
+            // let an old watcher allocate or observe a replacement binding.
+            if let Some(notification) = notification
+                && !jobs
+                    .get(&identity(storage, id))
+                    .is_some_and(|job| Arc::ptr_eq(&job.changed, notification))
+            {
+                return Ok(task);
+            }
+            jobs.entry(identity(storage, id))
+                .or_insert_with(|| JobBinding::new(String::new()))
+                .operation
+                .clone()
+        };
+        drop(task);
         let mut cancellation = if mode == ReconcileMode::Explicit {
             match operation.try_lock_owned() {
                 Ok(guard) => guard,
@@ -155,6 +157,18 @@ impl TaskRuntime {
             }
         };
         let current = Self::get(storage, principal, id).await?;
+        // Another operation may have retired the old binding while we awaited
+        // its lock. Release that guard without touching the replacement.
+        if let Some(notification) = notification
+            && !self
+                .jobs
+                .lock()
+                .unwrap()
+                .get(&identity(storage, id))
+                .is_some_and(|job| Arc::ptr_eq(&job.changed, notification))
+        {
+            return Ok(current);
+        }
         // Input protection and initial submit belong to the actual dispatcher.
         // A read cannot relinquish that ownership or start a second dispatcher.
         if self

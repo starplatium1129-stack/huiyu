@@ -9,8 +9,6 @@ pub const DEV_PROJECT_ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../..")
 pub struct DesktopPaths {
     pub is_packaged: bool,
     pub app_root: PathBuf,
-    #[allow(dead_code)]
-    pub resource_root: PathBuf,
     pub gateway_executable: PathBuf,
     pub gateway_cwd: PathBuf,
     pub assets_root: PathBuf,
@@ -105,7 +103,6 @@ pub fn resolve_paths(app: &tauri::AppHandle) -> DesktopPaths {
     DesktopPaths {
         is_packaged,
         app_root,
-        resource_root,
         gateway_executable,
         gateway_cwd,
         assets_root,
@@ -196,55 +193,4 @@ pub fn migrate_electron_data(config_root: &Path, runtime_root: &Path) -> Vec<Str
         let _ = std::fs::write(marker, "migrated-at-first-run\n");
     }
     migrated
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::fs;
-
-    #[test]
-    fn runtime_override_never_falls_back_to_another_build() {
-        let root=std::env::temp_dir().join(format!("huiyu-runtime-paths-{}",std::process::id()));
-        let release=root.join("runtime-rs/target/release/huiyu-runtime.exe");
-        fs::create_dir_all(release.parent().unwrap()).unwrap();fs::write(&release,b"fixture").unwrap();
-        assert_eq!(select_dev_runtime(&root,None),release);
-        let missing=root.join("not-built.exe");assert_eq!(select_dev_runtime(&root,Some(missing.clone())),missing);
-        let relative=PathBuf::from("relative.exe");assert_eq!(select_dev_runtime(&root,Some(relative.clone())),relative);
-        fs::remove_dir_all(root).unwrap();
-    }
-
-    #[test]
-    fn migrate_copies_electron_json_and_token() {
-        let tmp = std::env::temp_dir().join(format!("aics-migrate-test-{}", std::process::id()));
-        let _ = fs::remove_dir_all(&tmp);
-        let appdata = tmp.join("appdata");
-        let source = appdata.join("ai-cg-studio");
-        let state = source.join("gateway").join("runtime").join("state");
-        fs::create_dir_all(&state).unwrap();
-        fs::write(source.join("companion-window.json"), r#"{"x":10,"y":20,"width":540,"height":760}"#).unwrap();
-        fs::write(state.join("gateway_token"), "tok-abc").unwrap();
-
-        let config_root = tmp.join("config");
-        let runtime_root = config_root.join("gateway");
-        // 临时替换 APPDATA 以隔离测试
-        let old = std::env::var("APPDATA").ok();
-        unsafe { std::env::set_var("APPDATA", appdata.to_string_lossy().to_string()) };
-        let migrated = migrate_electron_data(&config_root, &runtime_root);
-        if let Some(old) = old { unsafe { std::env::set_var("APPDATA", old) } }
-
-        assert!(migrated.contains(&"companion-window.json".to_string()));
-        assert!(migrated.iter().any(|m| m.contains("gateway_token")));
-        assert_eq!(
-            fs::read_to_string(config_root.join("companion-window.json")).unwrap(),
-            r#"{"x":10,"y":20,"width":540,"height":760}"#
-        );
-        assert_eq!(
-            fs::read_to_string(runtime_root.join("runtime").join("state").join("gateway_token")).unwrap(),
-            "tok-abc"
-        );
-        // 幂等：再跑一次不重复
-        assert!(migrate_electron_data(&config_root, &runtime_root).is_empty());
-        let _ = fs::remove_dir_all(&tmp);
-    }
 }

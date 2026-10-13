@@ -1,6 +1,5 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { ref, onBeforeUnmount, onDeactivated, type Ref } from 'vue'
-// 带 .ts 扩展（allowImportingTsExtensions）：让本模块可被 scripts/tests 以 node --test 直跑
 import { useFocusTrap } from './useFocusTrap.ts'
 
 /**

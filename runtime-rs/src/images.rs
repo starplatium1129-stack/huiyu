@@ -26,6 +26,9 @@ use tokio_util::{sync::CancellationToken, task::TaskTracker};
 pub use validation::validate;
 pub use workflow::build as build_workflow;
 
+// Independent unit fixtures must not consume each other's process-wide upload
+// admission budget. Each fixture still exercises the real two-slot limiter.
+
 pub struct Prepared {
     pub input: Value,
     pub provider: String,
@@ -47,6 +50,14 @@ impl Drop for Service {
     }
 }
 impl Service {
+    pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
+        self.backend.bind_control(control);
+    }
+    pub(crate) async fn native_chat_handoff(
+        &self,
+    ) -> Result<Option<tokio::sync::OwnedSemaphorePermit>> {
+        self.backend.native_chat_handoff().await
+    }
     pub(crate) fn provider_identity(&self, unbound_epoch: &str) -> Value {
         self.backend.provider_identity(unbound_epoch)
     }

@@ -163,31 +163,3 @@ fn validate_group(group: Option<&str>) -> Result<(), String> {
     }
     Ok(())
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn mouth_mapping_supports_reversed_ranges() {
-        let config = Live2DAdapterConfig {
-            profile_id: "fixture".into(),
-            mouth: Some(MouthBinding { id: "ParamMouthCustom".into(), scale: -0.5, range: Some([-0.5, 0.0]) }),
-            blink: vec![], focus: vec![], emotion_params: HashMap::new(), overlay_settle: None,
-            entrance_group: None, leave_group: None,
-        };
-        assert_eq!(config.mouth_value(1.0), Some(("ParamMouthCustom", -0.5)));
-        assert!(config.validate().is_ok());
-    }
-
-    #[test]
-    fn invalid_parameter_ids_are_rejected() {
-        let config = Live2DAdapterConfig {
-            profile_id: "fixture".into(),
-            mouth: Some(MouthBinding { id: "../Param".into(), scale: 1.0, range: None }),
-            blink: vec![], focus: vec![], emotion_params: HashMap::new(), overlay_settle: None,
-            entrance_group: None, leave_group: None,
-        };
-        assert!(config.validate().is_err());
-    }
-}

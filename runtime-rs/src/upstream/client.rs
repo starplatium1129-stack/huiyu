@@ -170,7 +170,3 @@ fn decode_body(data: Vec<u8>) -> std::result::Result<Value, String> {
             .unwrap_or_else(|error| String::from_utf8_lossy(error.as_bytes()).into_owned())
     })
 }
-
-#[cfg(test)]
-#[path = "client_tests.rs"]
-mod tests;

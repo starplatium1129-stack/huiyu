@@ -1,4 +1,4 @@
-import { ApiClientError, apiClient, type ApiClient, type ApiResponseObject } from './client.ts'
+import { ApiClientError, apiClient, type ApiResponseObject } from './client.ts'
 import type {
   MaintenanceBuildWebResult,
   HomeHeroCharacter,
@@ -73,62 +73,58 @@ export function maintenanceFailure(error: unknown): MaintenanceFailure | null {
   return error.responseBody as unknown as MaintenanceFailure
 }
 
-export function createMaintenanceApi(client: ApiClient = apiClient): MaintenanceApi {
-  return {
-    buildWeb(options: MaintenanceCallOptions = {}) {
-      return client.request<MaintenanceBuildWebResult>('/api/maintenance/build-web', { method: 'POST', cache: 'no-store', signal: options.signal, timeoutMs: MAINTENANCE_API_TIMEOUTS.buildWeb, validate: isSuccess })
-    },
-    saveShowcase(payload: SaveShowcasePayload, options: MaintenanceCallOptions = {}) {
-      return client.request<ShowcaseSaveResult>('/api/maintenance/showcase', {
-        method: 'POST',
-        cache: 'no-store',
-        body: payload,
-        signal: options.signal,
-        timeoutMs: MAINTENANCE_API_TIMEOUTS.upload,
-        validate: isSuccess,
-      })
-    },
+export const maintenanceApi: MaintenanceApi = {
+  buildWeb(options: MaintenanceCallOptions = {}) {
+    return apiClient.request<MaintenanceBuildWebResult>('/api/maintenance/build-web', { method: 'POST', cache: 'no-store', signal: options.signal, timeoutMs: MAINTENANCE_API_TIMEOUTS.buildWeb, validate: isSuccess })
+  },
+  saveShowcase(payload: SaveShowcasePayload, options: MaintenanceCallOptions = {}) {
+    return apiClient.request<ShowcaseSaveResult>('/api/maintenance/showcase', {
+      method: 'POST',
+      cache: 'no-store',
+      body: payload,
+      signal: options.signal,
+      timeoutMs: MAINTENANCE_API_TIMEOUTS.upload,
+      validate: isSuccess,
+    })
+  },
 
-    getHomeHero(options: MaintenanceCallOptions = {}) {
-      return client.request<HomeHeroManifestResult>('/api/maintenance/home-hero', {
-        cache: 'no-store',
-        signal: options.signal,
-        timeoutMs: MAINTENANCE_API_TIMEOUTS.query,
-        validate: isHomeHeroManifest,
-      })
-    },
+  getHomeHero(options: MaintenanceCallOptions = {}) {
+    return apiClient.request<HomeHeroManifestResult>('/api/maintenance/home-hero', {
+      cache: 'no-store',
+      signal: options.signal,
+      timeoutMs: MAINTENANCE_API_TIMEOUTS.query,
+      validate: isHomeHeroManifest,
+    })
+  },
 
-    resetHomeHero(character: HomeHeroCharacter, options: MaintenanceCallOptions = {}) {
-      return client.request<HomeHeroSaveResult>('/api/maintenance/home-hero', {
-        method: 'POST',
-        cache: 'no-store',
-        body: { character, action: 'reset' },
-        signal: options.signal,
-        timeoutMs: MAINTENANCE_API_TIMEOUTS.upload,
-        validate: isSuccess,
-      })
-    },
+  resetHomeHero(character: HomeHeroCharacter, options: MaintenanceCallOptions = {}) {
+    return apiClient.request<HomeHeroSaveResult>('/api/maintenance/home-hero', {
+      method: 'POST',
+      cache: 'no-store',
+      body: { character, action: 'reset' },
+      signal: options.signal,
+      timeoutMs: MAINTENANCE_API_TIMEOUTS.upload,
+      validate: isSuccess,
+    })
+  },
 
-    saveHomeHero(character: HomeHeroCharacter, image: string, options: MaintenanceCallOptions = {}) {
-      return client.request<HomeHeroSaveResult>('/api/maintenance/home-hero', {
-        method: 'POST',
-        cache: 'no-store',
-        body: { character, image },
-        signal: options.signal,
-        timeoutMs: MAINTENANCE_API_TIMEOUTS.upload,
-        validate: isSuccess,
-      })
-    },
+  saveHomeHero(character: HomeHeroCharacter, image: string, options: MaintenanceCallOptions = {}) {
+    return apiClient.request<HomeHeroSaveResult>('/api/maintenance/home-hero', {
+      method: 'POST',
+      cache: 'no-store',
+      body: { character, image },
+      signal: options.signal,
+      timeoutMs: MAINTENANCE_API_TIMEOUTS.upload,
+      validate: isSuccess,
+    })
+  },
 
-    listBackups(options: MaintenanceCallOptions = {}) {
-      return client.request<BackupListResult>('/api/maintenance/backups', {
-        cache: 'no-store',
-        signal: options.signal,
-        timeoutMs: MAINTENANCE_API_TIMEOUTS.query,
-        validate: isBackupList,
-      })
-    },
-  }
+  listBackups(options: MaintenanceCallOptions = {}) {
+    return apiClient.request<BackupListResult>('/api/maintenance/backups', {
+      cache: 'no-store',
+      signal: options.signal,
+      timeoutMs: MAINTENANCE_API_TIMEOUTS.query,
+      validate: isBackupList,
+    })
+  },
 }
-
-export const maintenanceApi = createMaintenanceApi()

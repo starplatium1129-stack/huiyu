@@ -4,6 +4,12 @@ export type { AnimaPhase, AnimaJobMetadata } from './generation'
 
 import type { SDErrorReport } from '@/utils/sdError'
 
+export interface ComfyNodeReadiness {
+  state: 'ready' | 'missing' | 'unknown'
+  required: string[]
+  missing: string[]
+}
+
 export interface AnimaOption {
   id: string
   label?: string
@@ -14,6 +20,7 @@ export interface AnimaOption {
   preview?: boolean
   validation?: string
   available?: boolean
+  nodeReadiness?: ComfyNodeReadiness
   family?: 'anima' | 'krea2'
   profileId?: string
   defaults?: Record<string, unknown>
@@ -66,6 +73,9 @@ export interface AnimaGenerationState {
   phase: AnimaPhase
   provider?: 'comfy' | 'native'
   automaticMaskAvailable?: boolean
+  automaticMaskStatus?: ComfyNodeReadiness
+  /** Undefined is unconfirmed; null confirms that Auto will use Latent. */
+  autoHiresModel?: string | null
   backendStatus?: string
   /** ComfyUI 当前只通过轮询提供阶段；未知采样步数时保持 null，禁止伪造百分比。 */
   progress: number | null
@@ -73,6 +83,7 @@ export interface AnimaGenerationState {
   progressText: string
   currentNode: string | null
   online: boolean
+  managedStartAvailable?: boolean
   checkMsg: string
   models: AnimaOption[]
   loras: AnimaOption[]

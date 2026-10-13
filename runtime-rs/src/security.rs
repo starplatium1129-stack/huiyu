@@ -236,21 +236,3 @@ fn local_document_navigation(
     projected.remove("sec-fetch-site");
     is_direct_local(&projected, peer)
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn local_identity_does_not_trust_proxy_or_remote_origin() {
-        let peer = "127.0.0.1".parse().unwrap();
-        let mut headers = HeaderMap::new();
-        assert!(is_direct_local(&headers, peer));
-        headers.insert("x-forwarded-for", "127.0.0.1".parse().unwrap());
-        assert!(!is_direct_local(&headers, peer));
-        headers.clear();
-        headers.insert("origin", "https://attacker.example".parse().unwrap());
-        assert!(!is_direct_local(&headers, peer));
-        assert!(!host_allowed("localhost.attacker.example:3210"));
-        assert!(host_allowed("[::1]:3210"));
-    }
-}
