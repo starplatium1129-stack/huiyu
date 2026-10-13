@@ -12,18 +12,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     if kind != "task.result.chunk" {
         return Err(invalid("Unknown task result command"));
     }
-    prepared(c, task, index, media::Chunk::Encoded(command))
-}
-
-pub(super) fn chunk(
-    c: &mut Context,
-    principal: &str,
-    id: &str,
-    index: u64,
-    source: media::Chunk<'_>,
-) -> Result<Value> {
-    let task = result_task(c, principal, id)?;
-    prepared(c, task, output_index(Some(index))?, source)
+    prepared(c, task, index, command)
 }
 
 fn result_task(c: &Context, principal: &str, id: &str) -> Result<TaskRecord> {
@@ -44,12 +33,7 @@ fn output_index(index: Option<u64>) -> Result<i64> {
         .ok_or_else(|| invalid("Invalid output index"))
 }
 
-fn prepared(
-    c: &mut Context,
-    task: TaskRecord,
-    index: i64,
-    chunk: media::Chunk<'_>,
-) -> Result<Value> {
+fn prepared(c: &mut Context, task: TaskRecord, index: i64, chunk: &Value) -> Result<Value> {
     let id = task.task_id.as_str();
     let (body, committed): (String, bool) =
         c.db.prepare_cached(
@@ -61,7 +45,7 @@ fn prepared(
     let media: Value = serde_json::from_str(&body)?;
     let key = canonical::digest(format!("task:{id}:{index}"));
     Ok(
-        json!({"offset": if committed { media["bytes"].as_u64().unwrap() } else { media::upload_chunk(c, &key, &media, chunk, false)? }}),
+        json!({"offset": if committed { media["bytes"].as_u64().unwrap() } else { media::upload(c, &key, &media, chunk, false)? }}),
     )
 }
 

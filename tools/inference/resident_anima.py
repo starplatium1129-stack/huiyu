@@ -152,7 +152,7 @@ class PipelineCache:
                 pipeline.set_progress_bar_config(disable=True)
             if reused and identity != self.identity and self.fusion is not None:
                 # Restore before set_adapters/unload can replace scales/modules.
-                self.fusion.restore()
+                pipeline._huiyu_fusion_restore = self.fusion.restore()
             if reused and adapters_changed:
                 # Anima's official mixin unloads BOTH transformer and conditioner,
                 # removing PEFT wrappers/configs without merging into base weights.

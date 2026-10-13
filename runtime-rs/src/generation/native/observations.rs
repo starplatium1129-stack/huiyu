@@ -1,5 +1,31 @@
 use super::*;
 
+fn upload_observation(source: &Value) -> Option<Value> {
+    let strategy = source["strategy"].as_str()?;
+    if !matches!(
+        strategy,
+        "packed-pinned" | "packed-direct" | "module-to" | "deferred"
+    ) {
+        return None;
+    }
+    let mut captured = json!({"strategy":strategy});
+    for (key, maximum) in [
+        ("tensorBytes", 1_u64 << 40),
+        ("transferBytes", 1 << 40),
+        ("copyCalls", 1_000_000),
+        ("stagingBytes", 64 * 1024 * 1024),
+    ] {
+        if let Some(value) = source.get(key) {
+            let count = value.as_u64()?;
+            if count > maximum {
+                return None;
+            }
+            captured[key] = json!(count);
+        }
+    }
+    Some(captured)
+}
+
 // Optional evidence must neither break legacy workers nor forward arbitrary worker data.
 // Missing/malformed evidence stays visibly unverified; image/protocol checks are unchanged.
 pub(super) fn capture(value: &Value) -> Value {
@@ -85,35 +111,54 @@ pub(super) fn capture(value: &Value) -> Value {
                 {
                     return None;
                 }
-                let strategy = component["upload"]["strategy"].as_str()?;
-                if !matches!(
-                    strategy,
-                    "packed-pinned" | "packed-direct" | "module-to" | "deferred"
-                ) {
-                    return None;
-                }
-                let mut captured = json!({"name":name,
+                let captured = json!({"name":name,
                     "readWallSeconds":finite(&component["readWallSeconds"])?,
                     "uploadWallSeconds":finite(&component["uploadWallSeconds"])?,
-                    "upload":{"strategy":strategy}});
-                for (key, maximum) in [
-                    ("tensorBytes", 1_u64 << 40),
-                    ("transferBytes", 1 << 40),
-                    ("copyCalls", 1_000_000),
-                    ("stagingBytes", 64 * 1024 * 1024),
-                ] {
-                    if let Some(value) = component["upload"].get(key) {
-                        let count = value.as_u64()?;
-                        if count > maximum {
-                            return None;
-                        }
-                        captured["upload"][key] = json!(count);
-                    }
-                }
+                    "upload":upload_observation(&component["upload"])?});
                 captured_components.push(captured);
             }
             result["loading"] =
                 json!({"strategy":"component-sequential-v1","components":captured_components});
+        }
+        if let Some(loading) = value.get("loraLoading") {
+            let mode = loading["mode"].as_str()?;
+            let count = loading["adapterCount"].as_u64()?;
+            let uploads = loading["uploads"].as_array()?;
+            if !matches!(mode, "load" | "hotswap") || count == 0 || count > 16 || uploads.len() > 32
+            {
+                return None;
+            }
+            let mut captured_uploads = Vec::new();
+            for transfer in uploads {
+                let index = transfer["adapterIndex"].as_u64()?;
+                let device = transfer["deviceIndex"].as_u64()?;
+                if index >= count || device > 255 {
+                    return None;
+                }
+                captured_uploads.push(json!({"adapterIndex":index,"deviceIndex":device,
+                    "wallSeconds":finite(&transfer["wallSeconds"])?,
+                    "upload":upload_observation(&transfer["upload"])?}));
+            }
+            result["loraLoading"] = json!({"mode":mode,"adapterCount":count,
+                "wallSeconds":finite(&loading["wallSeconds"])?,"uploads":captured_uploads});
+        }
+        if let Some(restore) = value.get("fusionRestore") {
+            let mut captured = json!({"wallSeconds":finite(&restore["wallSeconds"])?});
+            for (key, maximum) in [
+                ("sourceBytes", 1_u64 << 40),
+                ("snapshotBytes", 1 << 40),
+                ("bufferPeakBytes", 32 * 1024 * 1024),
+                ("copyCalls", 1_000_000),
+                ("pipelinedGroups", 1_000_000),
+                ("serialGroups", 1_000_000),
+            ] {
+                let count = restore[key].as_u64()?;
+                if count > maximum {
+                    return None;
+                }
+                captured[key] = json!(count);
+            }
+            result["fusionRestore"] = captured;
         }
         let groups: [(&str, &[&str], &[&str]); 3] = [
             (
@@ -238,8 +283,28 @@ pub(super) fn capture(value: &Value) -> Value {
                 parsed_operations.push(captured);
             }
             result["refinement"] = json!({"vaeOperations":parsed_operations,"upscale":null});
+            if let Some(revision) = refinement.get("rcasExecutionRevision") {
+                if revision.as_str()? != "rcas-fp32-rows128-v1" {
+                    return None;
+                }
+                result["refinement"]["rcasExecutionRevision"] = revision.clone();
+            }
             if !refinement["upscale"].is_null() {
-                result["refinement"]["upscale"] = tile(&refinement["upscale"])?;
+                let source = &refinement["upscale"];
+                let mut captured = tile(source)?;
+                if let Some(revision) = source.get("executionRevision") {
+                    if revision.as_str()? != "remacri-no-single-cat-packed-v1" {
+                        return None;
+                    }
+                    captured["executionRevision"] = revision.clone();
+                }
+                if let Some(loading) = source.get("loading") {
+                    captured["loading"] = json!({
+                        "readWallSeconds":finite(&loading["readWallSeconds"])?,
+                        "uploadWallSeconds":finite(&loading["uploadWallSeconds"])?,
+                        "upload":upload_observation(&loading["upload"])?});
+                }
+                result["refinement"]["upscale"] = captured;
             }
         }
         Some(result)

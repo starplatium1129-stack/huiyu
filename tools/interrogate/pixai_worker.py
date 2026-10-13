@@ -1,7 +1,6 @@
 """Offline, serial JSONL PixAI worker. Rust owns cancellation and process lifetime."""
 import argparse
 import contextlib
-import hashlib
 import importlib.util
 import json
 import math
@@ -41,6 +40,11 @@ def threshold_value(value=0.17):
 def verify_model(model_dir, manifest=None):
     manifest = manifest or json.loads(MANIFEST.read_text(encoding='utf-8'))
     model_dir = Path(model_dir)
+    # Reuse the shipped full-byte CNG reader, never code from the model directory.
+    spec = importlib.util.spec_from_file_location(
+        'huiyu_native_hash', Path(__file__).resolve().parents[1] / 'inference' / 'native_hash.py')
+    hasher = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(hasher)
     for entry in manifest['files']:
         file = model_dir / entry['path']
         try:
@@ -48,8 +52,7 @@ def verify_model(model_dir, manifest=None):
                 raise PixaiError('PIXAI_MODEL_MISSING', f"PixAI 模型文件缺失：{entry['path']}")
             if file.stat().st_size != entry['bytes']:
                 raise PixaiError('PIXAI_MODEL_INTEGRITY', f"PixAI 模型文件体积不匹配：{entry['path']}")
-            with file.open('rb') as source:
-                digest = hashlib.file_digest(source, 'sha256').hexdigest()
+            digest = hasher.file_sha256(file)
             if digest != entry['sha256']:
                 raise PixaiError('PIXAI_MODEL_INTEGRITY', f"PixAI 模型文件校验失败：{entry['path']}")
         except OSError as error:

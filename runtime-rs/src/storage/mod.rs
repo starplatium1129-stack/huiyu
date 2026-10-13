@@ -37,17 +37,9 @@ pub use canonical::fingerprint;
 pub(crate) use canonical::stringify;
 pub use media::Media;
 
-#[derive(Clone)]
-pub(crate) enum TaskMediaTarget {
-    Input(String),
-    Result(u64),
-}
-
-pub(crate) struct TaskMediaChunk {
-    pub task_id: String,
-    pub target: TaskMediaTarget,
-    pub offset: u64,
-    pub bytes: axum::body::Bytes,
+pub(crate) enum TaskMediaSource {
+    File(std::fs::File),
+    Bytes(Arc<Vec<u8>>),
 }
 
 #[derive(Clone)]
@@ -64,19 +56,12 @@ pub struct Storage {
 }
 enum Work {
     ResultVerified(String, Result<result_commit::Verified>),
-    TaskMediaFile(
+    TaskMediaCopy(
         Value,
-        std::fs::File,
+        TaskMediaSource,
         String,
         Arc<AtomicBool>,
         oneshot::Sender<Result<Value>>,
-        OwnedSemaphorePermit,
-    ),
-    TaskMediaChunk(
-        TaskMediaChunk,
-        String,
-        Arc<AtomicBool>,
-        oneshot::Sender<Result<u64>>,
         OwnedSemaphorePermit,
     ),
     Task(

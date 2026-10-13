@@ -310,7 +310,7 @@ def load_loras(pipeline, adapters):
 def try_hotswap_loras(pipeline, adapters):
     helper = load_mask_tools("anima_lora")
     try:
-        return helper.try_hotswap(pipeline, adapters)
+        return helper.try_hotswap(pipeline, adapters, upload=load_mask_tools("native_upload").try_packed_upload)
     except helper.UnsupportedLora as exc:
         raise WorkerError("UNSUPPORTED_LORA", str(exc)) from exc
 
@@ -422,8 +422,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             if loaded_identity != identity or (protected_load and not resident.file_identity.reused):
                 resident.clear()
                 raise WorkerError("MODEL_CHANGED", "Model or LoRA bytes changed while loading; retry after preparation completes")
-    metrics.model_acquired(started, tea_report, reused, resident_fingerprint, post_load_fingerprint)
-    metrics.loading = getattr(pipeline, "_huiyu_loading", None)
+    metrics.model_acquired(started, tea_report, reused, resident_fingerprint, post_load_fingerprint, pipeline)
     pipeline.vae._huiyu_vae_events = []
     sampling = load_mask_tools("anima_sampling")
     if data.get("sampler", "euler") != "euler":
@@ -434,13 +433,9 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         helper = load_mask_tools("anima_upscale")
         pipeline._huiyu_memory.offload_all()
         expected = tea_report["compatibility"].get("upscaleModelSha256") if tea is not None else None
-        if expected is not None and load_mask_tools("native_hash").file_sha256(job["upscaleModelPath"]) != expected:
-            raise WorkerError("MODEL_CHANGED", "Upscaler bytes changed after profile validation")
-        model = helper.load_remacri(job["upscaleModelPath"], device=pipeline._execution_device)
-        if expected is not None and load_mask_tools("native_hash").file_sha256(job["upscaleModelPath"]) != expected:
-            raise WorkerError("MODEL_CHANGED", "Upscaler bytes changed while loading")
-        pipeline._huiyu_upscale_report = {}
-        return helper.upscale_4x(model, images, tiling=load_mask_tools("anima_tiling"), report=pipeline._huiyu_upscale_report)
+        result, pipeline._huiyu_upscale_report = helper.run(images, job["upscaleModelPath"], pipeline._execution_device,
+            tools=load_mask_tools, expected=expected, error=WorkerError)
+        return result
     def prepare_second(blocks):
         if tea is not None:
             if tea.stats["nonfinite"]:
@@ -477,7 +472,8 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         tea_report["schedule"] = ({"schemaVersion": 2, "passes": refinement["schedules"]} if data.get("hiresFix") else
             load_mask_tools("resident_benchmark").capture_schedule(pipeline.scheduler, step))
     metrics.timings.update({key: refinement[key] for key in ("compositeWallSeconds", "postprocessWallSeconds")})
-    metrics.refinement = {"vaeOperations": refinement["vaeOperations"], "upscale": getattr(pipeline, "_huiyu_upscale_report", None)}
+    metrics.refinement = {key: refinement[key] for key in ("vaeOperations", "rcasExecutionRevision") if key in refinement}
+    metrics.refinement["upscale"] = getattr(pipeline, "_huiyu_upscale_report", None)
     output_report = load_mask_tools().save_png(result, job["outputPath"])
     if tea_report is not None:
         tea_report.update(output_report)

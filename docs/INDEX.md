@@ -41,6 +41,10 @@
 - [CLIPSeg 与分句翻译性能优化](audits/2026-10-13/clipseg-translation-performance.html)：单图视觉层复用、分句 LRU、自动遮罩执行身份与本轮编译 / 设备验收边界。
 - [后端热点优化续报](audits/2026-10-13/backend-hotpaths.html)：蒙版分配、暖模型身份、内容批量写与任务 JSON / CAS；任务列表索引、手动遮罩／RGB 准备 CPU 对照，以及 PR #74 本机合并审查、Windows 构建与设备验收边界。
 - [后端注意力、Live2D 与内容导入优化](audits/2026-10-13/backend-attention-catalog.html)：默认注意力去冗余拷贝、大依赖组并发校验、SQL 复用与导入所有权；本轮编译及设备验收边界。
+- [内存图片入库与 PixAI 启动优化](audits/2026-10-13/backend-media-pixai.html)：内存图复用后台批量复制、移除逐 MiB 数据库线程刷盘、PixAI 完整系统哈希；本轮编译及设备验收边界。
+- [Remacri 加载与高清放大优化](audits/2026-10-13/remacri-loading-performance.html)：移除单张量拼接、分行像素转换、有界打包上传与独立执行身份；本轮编译及设备验收边界。
+- [锐化、蒙版合成与 Comfy 节点查询优化](audits/2026-10-13/rcas-comfy-performance.html)：RCAS 分行计算、私有参考图内存复用与三个节点定向探测；本轮编译及设备验收边界。
+- [LoRA 切换优化与冷加载定位](audits/2026-10-13/lora-loading-performance.html)：融合底模恢复双缓冲、热切换打包上传、独立装载与恢复观测；显存代价及本轮验证边界。
 - [Anima 独立后端交付](audits/2026-10-11/native-anima-replacement.html)：六模型、三 LoRA 样例、高清/遮罩/权重接入、完整 API 热任务减少 22.3% 及剩余限制。
 - [独立后端主力机 GPU 实测](audits/2026-10-11/native-backend-gpu.html)：PR #71 最新提交、真实 Anima/LoRA/TeaCache、ComfyUI 对照、修复与剩余限制。
 - [独立后端性能优化续测](audits/2026-10-11/native-backend-performance.html)：Windows 读取保护、原生 SHA-256、Sage/编译候选、画质与 LoRA 检查及 ComfyUI + TeaCache 新对照。

@@ -64,8 +64,8 @@ def _copy_pinned(torch, destination, group, slabs, events, stream):
 def try_packed_upload(modules, target_device="cuda", *, observation=None):
     """Pack registered tensors into target storage per component/dtype.
 
-    Pass an iterable of the fully loaded nn.Modules (the four Anima weight
-    components). Unsupported CPU layouts, subclasses, dtypes, gradients and
+    Pass fully loaded nn.Modules (Anima weight components or fixed Remacri).
+    Unsupported CPU layouts, subclasses, dtypes, gradients and
     different tensor objects sharing storage/overlapping memory return False
     without mutations, so the caller can use its existing pipeline.to path.
     Repeated references to the SAME Parameter/Buffer object are supported.
@@ -73,7 +73,7 @@ def try_packed_upload(modules, target_device="cuda", *, observation=None):
     CUDA transfers coalesce tensors through at most two 32-MiB pinned byte slabs
     on a dedicated stream. CPU filling overlaps the prior DMA; an Event gates
     each slab's reuse. Small/unsupported pin allocations use the direct path.
-    This is bounded staging, never a complete pinned host-weight copy. CPU
+    The limit bounds active staging, not allocator cache or process RAM. CPU
     detach references and slabs remain live through the last synchronization.
     Only after successful copies/synchronization are original objects rebound
     to packed views, then those source references are released.

@@ -11,6 +11,29 @@ shader reference; no Comfy/KJ source code or runtime is included.
 """
 import math
 
+EXECUTION_REVISION = "rcas-fp32-rows128-v1"
+
+
+def _rcas_rows(images, strength, top, bottom):
+    """Keep the five-point expression and release scratch after each row band."""
+    import torch
+    from torch.nn import functional as functional
+
+    height = images.shape[-2]
+    source = images[:, :, max(0, top - 1):min(height, bottom + 1)].float()
+    # Interior halos are real neighbouring pixels; reflect only image borders.
+    padded = functional.pad(source, (1, 1, int(top == 0), int(bottom == height)), mode="reflect")
+    center = padded[:, :, 1:-1, 1:-1]
+    north, south = padded[:, :, :-2, 1:-1], padded[:, :, 2:, 1:-1]
+    west, east = padded[:, :, 1:-1, :-2], padded[:, :, 1:-1, 2:]
+    minimum = torch.minimum(torch.minimum(torch.minimum(torch.minimum(north, south), west), east), center)
+    maximum = torch.maximum(torch.maximum(torch.maximum(torch.maximum(north, south), west), east), center)
+    lower_limit = -minimum / (4 * maximum + 1e-6)
+    upper_limit = -(1 - maximum) / (4 * (1 - minimum) + 1e-6)
+    lobe = (torch.maximum(lower_limit, upper_limit).amin(dim=1, keepdim=True) * strength).clamp(-.1875, 0)
+    result = (center + ((north + south) + east + west) * lobe) * (1 + 4 * lobe).reciprocal()
+    return result.clamp(0, 1).to(dtype=images.dtype)
+
 
 def rcas(images, strength=0.75):
     """Sharpen finite display-referred RGB [N,3,H,W] tensors already in [0,1].
@@ -23,10 +46,10 @@ def rcas(images, strength=0.75):
     Pixel range/finite checks belong to the decoder boundary; this function
     performs metadata-only validation, without GPU readbacks or implicit sync.
     Positive-strength calculations use float32 and do not build autograd state.
+    Scratch covers at most 128 output rows plus a one-pixel source halo; the
+    original image and final output remain complete tensors on their device.
     """
     import torch
-    from torch.nn import functional as functional
-
     if (isinstance(strength, bool) or not isinstance(strength, (int, float))
             or not math.isfinite(strength) or not 0 <= strength <= 1):
         raise ValueError("RCAS strength must be a finite number in [0,1]")
@@ -38,14 +61,11 @@ def rcas(images, strength=0.75):
     if strength == 0:
         return images
     with torch.no_grad():
-        center = images.float()
-        padded = functional.pad(center, (1, 1, 1, 1), mode="reflect")
-        north, south = padded[:, :, :-2, 1:-1], padded[:, :, 2:, 1:-1]
-        west, east = padded[:, :, 1:-1, :-2], padded[:, :, 1:-1, 2:]
-        minimum = torch.minimum(torch.minimum(torch.minimum(torch.minimum(north, south), west), east), center)
-        maximum = torch.maximum(torch.maximum(torch.maximum(torch.maximum(north, south), west), east), center)
-        lower_limit = -minimum / (4 * maximum + 1e-6)
-        upper_limit = -(1 - maximum) / (4 * (1 - minimum) + 1e-6)
-        lobe = (torch.maximum(lower_limit, upper_limit).amin(dim=1, keepdim=True) * strength).clamp(-.1875, 0)
-        result = (center + ((north + south) + east + west) * lobe) * (1 + 4 * lobe).reciprocal()
-        return result.clamp(0, 1).to(dtype=images.dtype)
+        height = images.shape[-2]
+        if height <= 128:
+            return _rcas_rows(images, strength, 0, height)
+        output = torch.empty_like(images)
+        for top in range(0, height, 128):
+            bottom = min(height, top + 128)
+            output[:, :, top:bottom].copy_(_rcas_rows(images, strength, top, bottom))
+        return output

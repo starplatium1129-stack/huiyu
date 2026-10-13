@@ -63,7 +63,8 @@ implicit spatial padding; RMS uses original-dtype normalization. FP32 mean/std,
 raw-latent bicubic and display boundaries follow the workflow. Remacri uses
 512/32 overlapping tiles, CPU FP32 weighted assembly and CUDA OOM 256/128 retry.
 Both Lanczos and PNG use RGB uint8 truncation. Task metadata records actual VAE
-mode and VAE/Remacri tile count/size/output device, plus postprocess wall time.
+mode and VAE/Remacri tile count/size/output device, plus postprocess wall time
+and the RCAS execution revision when sharpening actually ran.
 The desktop allowlist includes new helpers and the AP mask license notice.
 
 Source review and compilation do not establish output or performance parity.
@@ -133,6 +134,16 @@ Callers without valid source protection retain exact CPU snapshots. Strength/gro
 changes restore original values before changing PEFT state; unloading restores
 the unadapted base. The lease is checked around source reads and copies; failure
 discards the resident. BF16 delta subtraction is never used for restoration.
+Same-dtype CUDA source groups larger than 16 MiB now use two reusable slots of
+at most 16 MiB each when every tensor row fits a slot. CPU reads overlap the
+preceding asynchronous copy on the target's current stream; an Event gates
+each slot's reuse. Exact CUDA-device grouping preserves stream ownership.
+Success and exceptions drain that stream before CPU buffers and the pinned
+allocator cache are released, including a failure after copy enqueue but before
+Event recording. CPU, dtype conversion, small groups and oversized rows retain
+serial restoration. The 32 MiB bound still covers active read/conversion tensor
+payload only. Halving a large chunk can increase copy/lease-check counts; actual
+switch latency and restoration correctness remain device acceptance items.
 Fusion changes floating-point evaluation order and requires separate Tea calibration
 and visual acceptance. Original model/LoRA files stay unchanged.
 The [LoRA + Tea full API report](../../docs/audits/2026-10-11/native-backend-lora-tea.html)
@@ -257,6 +268,32 @@ base. Strength-only changes update active scales, including zero and negative va
 with prior restoration in fused mode. Base-modifying initializers and unverified
 variants retain conservative whole-base reload behavior.
 
+After the complete hotswap preflight, each adapter's normalized tensors now use
+the existing packed uploader grouped by their actual destination device. CPU
+targets stay on the original path. A temporary registered-buffer module owns
+only that adapter during upload; original Diffusers/PEFT hotswap still performs
+the swap or compiled copy and the complete loaded-key check. Unsupported upload
+layouts keep PEFT tensor.to; real CUDA failures propagate and discard the
+resident. Consumed state dictionaries and preflight aliases are released so the
+old weights exchanged back by PEFT do not accumulate across adapters. This can
+temporarily add about one adapter of GPU storage, plus alignment, and at most
+64 MiB active pinned upload staging; it is not a low-VRAM guarantee. Initial
+LoRA loading retains its metadata, initializer and dtype/device conversion path.
+
+Fresh `nativeRuntime.loraLoading` distinguishes ordinary load from hotswap,
+records adapter count, total CPU wall time and hotswap upload strategy/counters
+per adapter/device for completed packed uploads. CPU targets and unsupported
+upload layouts emit no per-device upload entry; their original PEFT transfer
+is included only in the enclosing LoRA wall interval.
+`nativeRuntime.fusionRestore` records restore wall time, completed source bytes,
+source copy calls, pipelined/serial source groups and peak read/conversion buffer
+payload. Its `snapshotBytes` is the retained independent CPU snapshot payload;
+copy/group counters exclude snapshot copies. Unchanged jobs emit no old records.
+These timings overlap model acquisition and are not additive. No synchronization
+is added just for timing, and byte-preserving loading changes do not alter Tea
+scope. Current speed, memory and image acceptance are unverified; see the
+[LoRA delivery report](../../docs/audits/2026-10-13/lora-loading-performance.html).
+
 `modelReused` reports base reuse, including supported adapter-group switches.
 Fresh pipeline blocks, scheduler, CFG guider and TeaCache controller wrap the weights
 for each job. Seed, steps and editing state are not retained. The bounded CPU text
@@ -300,9 +337,36 @@ Limits: Anima requires CUDA; one image; initial dimensions divisible by 16, 64â€
 Earlier RCAS and Latent/fixed Remacri revisions have historical GPU evidence.
 `anima_postprocess.py` independently implements the product's KJ functional
 RCAS parameters in FP32; strength=0 preserves input, the workflow uses 0.75.
+Execution `rcas-fp32-rows128-v1` keeps the five-point expression and RGB lobe
+reduction in 128-row bands, using real neighbouring rows at interior seams and
+reflect padding only at image borders. FP16/BF16 conversion occurs per band;
+the original and final images remain complete tensors. More kernel launches
+and the output-band copy trade against full-image scratch, so this establishes
+bounded intermediate size, not a measured speedup. Mask compositing reuses its
+private converted reference and new result with separate multiply/subtract/add
+operations; PIL-to-FP32 normalization divides its private NumPy array in place.
+No caller input is overwritten, and Lanczos/uint8 boundaries are unchanged.
+Current output, latency and peak-memory evidence still needs device acceptance;
+see the [delivery report](../../docs/audits/2026-10-13/rcas-comfy-performance.html).
 `anima_upscale.py` accepts only the fixed local
 `4x_foolhardy_Remacri.safetensors` with the checked 23-block RRDB architecture,
 using Apache-2.0 BasicSR components and separately licensed supplied weights.
+The current Remacri execution is `remacri-no-single-cat-packed-v1`: each dense
+block sends its input directly to conv1 instead of concatenating one tensor.
+All convolutions, FP32 arithmetic, residuals and 512/32 tiling remain. After
+complete key/shape/dtype/finite checks, the 702 parameters use the existing
+bounded packed uploader on CUDA; unsupported layouts retain module.to and CUDA
+errors propagate. The upscaler lives only for this pass, with no new resident
+weight cache. Existing profile SHA checks still surround loading.
+`nativeRuntime.refinement.upscale` records the execution revision and fresh
+`loading.readWallSeconds`, `loading.uploadWallSeconds`, and upload strategy,
+payload/transfer bytes, copy calls and staging bytes. Timings are CPU wall spans,
+not extra synchronized GPU measurements; pinned staging is at most 64 MiB and
+does not bound allocator cache or total process RAM. RGB quantization for
+Lanczos/PNG uses 128-row scratch, retaining FP32 multiply, clip and uint8
+truncation without two full-size float temporaries. These changes have source
+and compilation review only; current speed, peak memory and images need device
+acceptance, see the [delivery report](../../docs/audits/2026-10-13/remacri-loading-performance.html).
 The trusted host resolves Auto to Latent or an available fixed Remacri file at
 `models_root/upscale_models/4x_foolhardy_Remacri.safetensors`; an explicit missing
 Remacri selection fails. Latent always refines; unmasked Remacri is pixel-only,
@@ -491,6 +555,13 @@ Hires is calibrated as one complete operation, including both denoising passes
 where applicable. Its scope also binds hires scale/denoise, resolved upscaler,
 second-pass sampler/scheduler, refinement revision and the Remacri weight SHA256;
 positive RCAS strength and prompt weighting mode also participate when active.
+Positive `rcasStrength` scopes additionally bind `sampling.rcasExecutionRevision`
+to `rcas-fp32-rows128-v1`; old positive-strength profiles fall back in auto mode
+or reject strict enablement/acceptance. Zero-strength scopes gain no RCAS field.
+Remacri scopes additionally bind `sampling.upscaleExecutionRevision` to
+`remacri-no-single-cat-packed-v1`. Older Remacri profiles fall back to complete
+computation in auto mode and are rejected when strictly enabled or accepted.
+Profiles are not rewritten. Latent and non-hires scopes retain their identity.
 The same controller is cleared at the pass boundary and attached to fresh second
 pass blocks, so residuals never cross resolutions. Actual GPU evidence captured
 24+14 updates. Nene/Natsume Latent 2x profiles at threshold 0.25 and skip limit 2 are accepted.

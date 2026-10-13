@@ -135,19 +135,7 @@ impl Service {
         self.comfy_optional_status_for(&self.inner.cancel).await
     }
     async fn comfy_optional_status_for(&self, cancel: &CancellationToken) -> Value {
-        let info = self
-            .inner
-            .json(
-                "comfy",
-                reqwest::Method::GET,
-                "/object_info",
-                None,
-                Duration::from_secs(5),
-                cancel,
-            )
-            .await
-            .ok();
-        optional_nodes::status(info.as_ref())
+        optional_nodes::status(&self.inner, cancel).await
     }
     pub(crate) async fn comfy_online(&self) -> bool {
         probe::comfy_status(&self.inner, &self.inner.cancel).await

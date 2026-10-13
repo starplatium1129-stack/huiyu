@@ -125,18 +125,6 @@ impl Storage {
             .map_err(|_| unavailable())?;
         result.await.map_err(|_| unavailable())?
     }
-    pub(crate) async fn task_media_chunk(
-        &self,
-        chunk: TaskMediaChunk,
-        principal: &str,
-    ) -> Result<u64> {
-        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-        let (reply, result) = oneshot::channel();
-        let permit = self.result_permit().await?;
-        let work = Work::TaskMediaChunk(chunk, principal.into(), cancel.0.clone(), reply, permit);
-        self.sender.send(work).await.map_err(|_| unavailable())?;
-        result.await.map_err(|_| commit_unknown())?
-    }
     pub(crate) async fn task_revision(
         &self,
         task_id: &str,
@@ -155,19 +143,19 @@ impl Storage {
             .map_err(|_| unavailable())?;
         result.await.map_err(|_| unavailable())?
     }
-    pub(crate) async fn task_media_file(
+    pub(crate) async fn task_media_copy(
         &self,
         command: Value,
-        file: std::fs::File,
+        source: TaskMediaSource,
         principal: &str,
     ) -> Result<Value> {
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();
         let permit = self.result_permit().await?;
         self.sender
-            .send(Work::TaskMediaFile(
+            .send(Work::TaskMediaCopy(
                 command,
-                file,
+                source,
                 principal.into(),
                 cancel.0.clone(),
                 reply,

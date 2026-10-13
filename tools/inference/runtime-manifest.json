@@ -57,7 +57,7 @@
     "nativeRevision": "cosmos-v3-native-no-kv-repeat-v1",
     "nativeAttention": "Exact stock Cosmos processor types use the existing bundled processor to skip K/V repeat_interleave copies only when repeats=1; native dispatch, projections, normalization, rotary and non-unit repeats remain. K/V layout changes; source/API and compilation reviewed, no current CUDA timing or image acceptance. Only native Tea scopes require fresh calibration for this change",
     "scope": "Cosmos attention only; conditioner and VAE attention retain their original paths. compiled-sage keeps PEFT projections; compiled-fused-sage explicitly merges supported Linear LoRAs into resident weights",
-    "fusion": "Opt-in compiled-fused-sage: protected base-preserving adapters restore exact safetensors bytes through a temporary <=32 MiB readinto buffer; no persistent CPU base snapshot. CPU snapshot fallback remains when no continuously valid source lease exists. Pinned CUDA copies are blocking; Torch 2.8 host buffer cache is released afterward. Safe merge retains packed CUDA storage. Strength/group/unload restores before PEFT mutation, never rounded delta subtraction",
+    "fusion": "Opt-in compiled-fused-sage: protected base-preserving adapters restore exact safetensors bytes within <=32 MiB active read/conversion buffers. Same-dtype CUDA groups larger than 16 MiB with rows <=16 MiB use two slots <=16 MiB each, overlapping reads with current-stream copies; Events gate reuse and success/failure drains before releasing buffers/host cache. Exact-device grouping; CPU/cast/small/large-row groups remain serial. Independent CPU snapshot fallback remains without a source lease. Safe merge retains packed CUDA storage; restore precedes PEFT mutation, never rounded delta subtraction. Current device performance/restoration evidence unverified",
     "fusionRevision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21-fusion-cpu-base-v1",
     "compile": "original block.forward, fullgraph=false, mode=default; no CUDA graphs, no VAE compile; first-use/shape/LoRA changes may compile and have extra latency",
     "calibration": "execution mode and revision bind the Tea profile; earlier profiles require fresh calibration",
@@ -69,6 +69,8 @@
   "observations": {
     "helper": "inference_metrics.py",
     "metadata": "nativeRuntime",
+    "loraLoading": "Fresh load/hotswap adapter count and CPU wall interval; successful packed hotswap entries report actual device, strategy/bytes/calls/staging and upload wall. CPU targets and unsupported layouts emit no per-device entry; total LoRA wall includes original PEFT transfers. Not emitted for unchanged adapters",
+    "fusionRestore": "Fresh restore wall, completed sourceBytes, retained CPU snapshotBytes, <=32 MiB bufferPeakBytes and source-only copyCalls/pipelinedGroups/serialGroups. Counters exclude snapshot copies; not reused across jobs. Intervals overlap modelAcquire and must not be summed",
     "timing": "CPU wall intervals with no additional GPU synchronization; existing TeaCache report synchronization is explicitly marked",
     "boundaries": "workerWall includes validation/imports through PNG save; pipelineWall includes encoding, denoising and decoding; outputSave includes compression and atomic write; composite is CPU pixel compositing",
     "notAdditive": "workerWall includes the other intervals; residentFingerprint includes initial identity and post-load verification that can overlap modelAcquire; do not sum these fields",
@@ -97,12 +99,16 @@
       "simple", "normal", "sgm_uniform"
     ],
     "scheduleMeaning": "Euler/simple and RES/simple sample the 1000-entry training grid; normal/sgm_uniform use explicit Anima shift-3 grids. Img2img and hires take N updates from the tail of a full int(N/denoise) schedule. CPU FP32 job generators replace CUDA generators in both passes. Independent deterministic RES uses FP32 history, eta=0, no CFG++",
-    "rcas": "independent FP32 workflow cross filter: reflect, five-point extrema, RGB minimum lobe, epsilon 1e-6, strength before lobe limiting and reciprocal normalization; functional specification matches fixed KJ d3cfe216 rcas",
+    "rcas": "independent FP32 workflow cross filter: reflect, five-point extrema, RGB minimum lobe, epsilon 1e-6, strength before lobe limiting and reciprocal normalization; 128-row scratch with real interior halo and reflected image borders, full input/output retained; functional specification matches fixed KJ d3cfe216 rcas; current device output/latency/peak memory unverified",
+    "rcasExecutionRevision": "rcas-fp32-rows128-v1",
+    "rgbCompositing": "PIL-to-FP32 normalization divides its private NumPy array in place; masked composite overwrites only the private reference and new result, preserving separate multiply/subtract/multiply/add and existing Lanczos/uint8 boundaries",
     "hiresFix": "Latent bicubic plus a fresh tail-schedule pass, or fixed FP32 Remacri 4x then target resize; masked paths preserve the resized reference outside the effective mask",
     "vae": "single-frame exact Qwen modules with no temporal feature cache; eligible CausalConv uses last time slice and implicit spatial padding; RMS normalizes in original dtype; FP32 latent statistics, raw-latent bicubic and display boundaries; whole frame first, CUDA OOM only encode256/64 or budgeted decode tile with quarter overlap, CPU FP32 feather; no precision/device fallback",
     "remacriTiling": "512 input pixels/32 overlap, CPU FP32 symmetric-ramp numerator/divisor, clamp after normalization; real CUDA OOM retries entire 256 then128; only each source tile transfers to model execution device",
-    "imageQuantization": "Lanczos and final PNG convert display RGB to uint8 by clipping/truncation; soft masks never quantized",
-    "hiresTeaCache": "requires a separately accepted whole-operation scope; clear lanes and wrap fresh second-pass blocks; first/last steps of each pass fully compute",
+    "remacriExecutionRevision": "remacri-no-single-cat-packed-v1",
+    "remacriLoading": "Complete key/shape/F32/finite checks precede existing packed CUDA upload with at most 64 MiB active pinned staging; unsupported layouts retain module.to and CUDA failures propagate. Single-pass lifetime, no new model cache; existing profile SHA checks before/after load remain. refinement.upscale records execution revision, loading read/upload CPU wall and actual upload counters. No current CUDA performance or image evidence",
+    "imageQuantization": "Lanczos and final PNG convert display RGB with FP32 multiply, clip and uint8 truncation using 128-row scratch instead of full-size float temporaries; soft masks never quantized",
+    "hiresTeaCache": "requires a separately accepted whole-operation scope; clear lanes and wrap fresh second-pass blocks; first/last steps of each pass fully compute. Remacri alone adds sampling.upscaleExecutionRevision=remacri-no-single-cat-packed-v1; positive rcasStrength scopes also bind sampling.rcasExecutionRevision=rcas-fp32-rows128-v1. Older changed scopes fall back in auto mode or reject strict enable/acceptance, without rewriting profiles",
     "weightSyntax": "Anima round-bracket and explicit nested weights; Qwen fragments unweighted, T5 conditioner output weighted once. Square brackets and BREAK remain literal. Both tokenizer streams are bounded to 512 tokens with explicit rejection before truncation",
     "upscaler": "models_root/upscale_models/4x_foolhardy_Remacri.safetensors, strict 23-block RRDB only",
     "outputs": [
@@ -111,6 +117,7 @@
     "masks": true,
     "composite": true,
     "loraFormat": "Native Diffusers or officially mapped diffusion_model-prefixed Anima A/B; strict original-Anima lora_unet linear down/up/alpha triples with exact loaded-target shapes and alpha/rank scaling. Other Kohya variants and DoRA unsupported",
+    "loraHotswapUpload": "Only after complete group preflight: each adapter uses existing packed upload by actual CUDA target device, then original Diffusers/PEFT swap/compiled copy and loaded-key checks; CPU and unsupported layouts retain upstream tensor.to. Release consumed states/aliases before next adapter. At most 64 MiB active pinned staging, but temporary GPU storage may increase by one adapter plus alignment. Initial LoRA metadata/initializer/dtype path and Tea identity unchanged; device speed/memory/output unverified",
     "loraComponents": [
       "transformer",
       "text_conditioner"
@@ -194,7 +201,7 @@
         "anima_text_cache.py"
       ],
       "licenseNotice": "TEACACHE_LICENSE.txt",
-      "realDeviceValidation": "All prior accepted scopes belong to earlier runtimes; none authorize anima-workflow-effects-v3. Automatic masks additionally require sampling.maskExecutionRevision=clipseg-single-image-vision-v1; old automatic-mask scopes do not authorize the new vision path. Current auto mode performs full computation until an exact current profile is accepted"
+      "realDeviceValidation": "All prior accepted scopes belong to earlier runtimes; none authorize anima-workflow-effects-v3. Automatic masks additionally require sampling.maskExecutionRevision=clipseg-single-image-vision-v1; Remacri and positive rcasStrength scopes bind their current execution revisions. Current auto mode performs full computation until an exact current profile is accepted"
     }
   },
   "security": {
@@ -298,7 +305,7 @@
     "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/guiders/classifier_free_guidance.py"
   ],
   "validation": {
-    "currentRevision": "2026-10-13: anima-workflow-effects-v3 plus automatic-mask clipseg-single-image-vision-v1 (single query-image encode, bounded selected-layer reuse) and native-only cosmos-v3-native-no-kv-repeat-v1 (skip unit K/V repeats). Source/API and compilation review; binary square growth also has neutral-logit CPU postprocessing timing, with no tests/model calls. Earlier masks, image/timing/Tea acceptance do not validate these changed execution paths; Sage revisions are unchanged by the native processor installation",
+    "currentRevision": "2026-10-13: anima-workflow-effects-v3 plus automatic-mask clipseg-single-image-vision-v1, native-only cosmos-v3-native-no-kv-repeat-v1, Remacri remacri-no-single-cat-packed-v1 and positive-strength RCAS rcas-fp32-rows128-v1. Source/API and compilation review; no current model or GPU performance/image evidence for these execution changes. Binary square growth has separate earlier neutral-logit CPU postprocessing timing. Earlier images/timings/Tea acceptance do not validate changed execution paths; Sage attention revisions are unchanged",
     "realGeneration": "2026-10-11: six registered Anima models generated 11 GPU samples, plus one Endfield/Laevatain public-API sample. Nene/Natsume normal/RCAS LoRA+Tea: 12 matched warm API jobs per backend on RTX 4070 Ti SUPER, native median 4.419s vs Comfy+Tea 5.686s, all 12 pairs faster. Latent 2x Nene: two warm API jobs per backend, native 26.610s vs Comfy 23.671s; cold loading also remains slower. Protected-source restore removed 3.28 GiB CPU snapshots and preserved four diagnostic PNG hashes. Not mathematical or pixel parity. See docs/audits/2026-10-11/native-anima-replacement.html",
     "environmentInstall": "2026-10-11: all 11 exact direct pins resolved, installed offline in dedicated Windows CPython 3.11 venv, and imports/CUDA diagnosis passed; torch and torchvision use cu128 wheels. No inference-time installation or ComfyUI environment reuse",
     "validateCommand": "python worker.py --validate /absolute/path/to/anima-diffusers",

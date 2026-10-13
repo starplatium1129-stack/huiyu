@@ -65,6 +65,22 @@ def _mask_module():
     return module
 
 
+@lru_cache(maxsize=1)
+def _upscale_module():
+    spec = importlib.util.spec_from_file_location("huiyu_upscale_scope", Path(__file__).with_name("anima_upscale.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@lru_cache(maxsize=1)
+def _postprocess_module():
+    spec = importlib.util.spec_from_file_location("huiyu_rcas_scope", Path(__file__).with_name("anima_postprocess.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def adapter_identity(loras):
     """Hash every supplied adapter byte, preserving request order and strength."""
     if not loras:
@@ -128,10 +144,12 @@ def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir
         "sampling": {"width": data["width"], "height": data["height"], "steps": data["steps"],
             "cfg": data["cfg"], "mode": mode, "denoisingStrength": data.get("denoisingStrength"),
             "sampler": data.get("sampler", "euler"), "scheduler": data.get("scheduler", "simple"),
-            **({"rcasStrength": data["rcasStrength"]} if data.get("rcasStrength", 0) else {}),
+            **({"rcasStrength": data["rcasStrength"], "rcasExecutionRevision": _postprocess_module().EXECUTION_REVISION}
+                if data.get("rcasStrength", 0) else {}),
             **({"promptWeighting": weighting} if weighting else {}),
             **({"hires": {key: data.get(key) for key in ("hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel")},
                 "refinementRevision": "fp32-vae-full-oom-feather-remacri512-kjrcas-v3"} if data.get("hiresFix") else {}),
+            **({"upscaleExecutionRevision": _upscale_module().EXECUTION_REVISION} if upscale else {}),
             "maskSource": ("clipseg" if data.get("maskPrompt") else "manual") if mode == "masked" else None,
             **({"maskExecutionRevision": _mask_module().EXECUTION_REVISION}
                 if mode == "masked" and data.get("maskPrompt") else {}),

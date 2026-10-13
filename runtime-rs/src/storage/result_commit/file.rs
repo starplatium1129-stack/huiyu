@@ -1,5 +1,5 @@
 use super::*;
-use std::io::{Read, Seek, Write};
+use std::io::{Cursor, Read, Seek, Write};
 use std::{fs::File, path::Path};
 
 pub(in crate::storage) struct Verified {
@@ -90,24 +90,44 @@ pub(super) fn verify(identity: &Identity, path: &Path, media: &Value) -> Result<
     Ok(verified)
 }
 
-// Only the in-process task runtime can supply this already-opened source. The
+// Only the in-process task runtime can supply this owned file or byte source. The
 // admitted Pending keeps ownership, writer admission and GC protection until
 // copy and the existing staged/final verification have both exited.
 pub(super) fn copy(
     identity: &Identity,
     path: &Path,
     media: &Value,
-    mut source: File,
+    source: TaskMediaSource,
 ) -> Result<()> {
     identity.check_paths()?;
     if path == media::object_path(&identity.root, string(media, "sha256")?)? {
         return Ok(());
     }
     let total = media["bytes"].as_u64().unwrap();
-    let stat = source.metadata()?;
-    if !stat.is_file() || stat.len() != total {
-        return Err(conflict("MEDIA_INVALID", "Task file length changed"));
+    match source {
+        TaskMediaSource::File(file) => {
+            let stat = file.metadata()?;
+            if !stat.is_file() || stat.len() != total {
+                return Err(conflict("MEDIA_INVALID", "Task file length changed"));
+            }
+            copy_from(identity, path, total, file)
+        }
+        TaskMediaSource::Bytes(bytes) => {
+            if bytes.len() as u64 != total {
+                return Err(conflict("MEDIA_INVALID", "Task byte length changed"));
+            }
+            // Borrow the owned Arc payload; no full-image copy or temporary file.
+            copy_from(identity, path, total, Cursor::new(bytes.as_slice()))
+        }
     }
+}
+
+fn copy_from(
+    identity: &Identity,
+    path: &Path,
+    total: u64,
+    mut source: impl Read + Seek,
+) -> Result<()> {
     let relative = path
         .strip_prefix(&identity.root)
         .map_err(|_| invalid("Media path escapes workspace"))?;

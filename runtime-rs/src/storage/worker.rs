@@ -37,34 +37,22 @@ pub(super) fn run(
                     break;
                 }
             }
-            Work::TaskMediaFile(command, file, principal, cancel, reply, permit) => {
+            Work::TaskMediaCopy(command, source, principal, cancel, reply, permit) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
                     continue;
                 }
                 context.cancel = cancel;
                 if !reply.is_closed() {
-                    result_commit::start_file(
+                    result_commit::start_copy(
                         &mut context,
                         &command,
-                        file,
+                        source,
                         &principal,
                         reply,
                         permit,
                         &sender,
                     );
-                }
-            }
-            Work::TaskMediaChunk(chunk, principal, cancel, reply, _permit) => {
-                // The message owns writer admission through the actor write.
-                if !closing.is_empty() {
-                    let _ = reply.send(Err(unavailable()));
-                    continue;
-                }
-                context.cancel = cancel;
-                if !reply.is_closed() {
-                    let result = tasks::upload_chunk(&mut context, &principal, chunk);
-                    let _ = reply.send(result);
                 }
             }
             Work::Task(command, principal, cancel, reply) => {

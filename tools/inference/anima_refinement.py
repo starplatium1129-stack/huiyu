@@ -44,16 +44,27 @@ def _rgb(images):
 def _pil_tensor(image, device):
     import numpy as np
     import torch
-    return torch.from_numpy(np.array(image.convert("RGB"), dtype=np.float32) / 255).permute(2, 0, 1).unsqueeze(0).to(device)
+    values = np.array(image.convert("RGB"), dtype=np.float32)
+    values /= 255
+    return torch.from_numpy(values).permute(2, 0, 1).unsqueeze(0).to(device)
 
 
 def _pil(images):
     import numpy as np
     from PIL import Image
     values = _rgb(images)[0].detach().cpu().permute(1, 2, 0).numpy()
-    if not np.isfinite(values).all():
-        raise ValueError("Decoded image contains nonfinite pixels; refusing to publish a black/corrupted result")
-    return Image.fromarray(np.clip(values * 255, 0, 255).astype(np.uint8))
+    pixels = np.empty(values.shape, dtype=np.uint8)
+    # Keep FP32 multiply/clip/truncation, with at most 128 rows of scratch
+    # instead of two complete float canvases for a Remacri 4x intermediate.
+    for top in range(0, values.shape[0], 128):
+        band = values[top:top + 128]
+        if not np.isfinite(band).all():
+            raise ValueError("Decoded image contains nonfinite pixels; refusing to publish a black/corrupted result")
+        scaled = band * 255
+        np.clip(scaled, 0, 255, out=scaled)
+        pixels[top:top + 128] = scaled
+        del scaled
+    return Image.fromarray(pixels)
 
 
 def _lanczos(images, size, *, cpu_output=False):
@@ -77,7 +88,11 @@ def _composite(images, original, mask):
     alpha = torch.from_numpy(np.asarray(mask, dtype=np.float32))[None, None].to(images.device)
     if alpha.shape[-2:] != images.shape[-2:]:
         alpha = torch.nn.functional.interpolate(alpha, size=images.shape[-2:], mode="nearest-exact")
-    return images * alpha + reference * (1 - alpha)
+    # Reference owns its converted pixels. Reuse only that private allocation
+    # and the new result, retaining separate multiply/subtract/multiply/add.
+    result = images * alpha
+    reference.mul_(1 - alpha)
+    return result.add_(reference)
 
 
 def _upscale_latents(pipeline, latents, size, vae_tools):
@@ -335,6 +350,7 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
             raise ValueError("HiRes second pass did not execute its planned denoising steps")
     if spec["rcasStrength"]:
         pixels = timed("postprocessWallSeconds", lambda: postprocess.rcas(pixels, spec["rcasStrength"]))
+        report["rcasExecutionRevision"] = postprocess.EXECUTION_REVISION
     if mask is not None and spec["enabled"]:
         pixels = timed("compositeWallSeconds", lambda: _composite(pixels, image, mask))
     result = timed("postprocessWallSeconds", lambda: _pil(pixels))

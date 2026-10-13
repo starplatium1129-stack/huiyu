@@ -3,7 +3,7 @@ use super::*;
 enum InputCommand<'a> {
     Get,
     Prepare(&'a Value),
-    Chunk(media::Chunk<'a>),
+    Chunk(&'a Value),
 }
 
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
@@ -12,20 +12,10 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     let command = match string(command, "kind")? {
         "task.input.get" => InputCommand::Get,
         "task.input.prepare" => InputCommand::Prepare(&command["media"]),
-        "task.input.chunk" => InputCommand::Chunk(media::Chunk::Encoded(command)),
+        "task.input.chunk" => InputCommand::Chunk(command),
         _ => return Err(invalid("Unknown task input command")),
     };
     apply(c, principal, id, name, command)
-}
-
-pub(super) fn chunk(
-    c: &mut Context,
-    principal: &str,
-    id: &str,
-    name: &str,
-    source: media::Chunk<'_>,
-) -> Result<Value> {
-    apply(c, principal, id, name, InputCommand::Chunk(source))
 }
 
 fn apply(
@@ -94,10 +84,11 @@ fn apply(
             })
         }
         InputCommand::Chunk(chunk) => {
-            let stored = stored.ok_or_else(|| {
-                conflict("TASK_INPUT_MISSING", "Protected task input is missing")
-            })?;
-            Ok(json!({"offset": if committed { stored["bytes"].as_u64().unwrap() } else { media::upload_chunk(c, &key, &stored, chunk, false)? }}))
+            let stored = stored
+                .ok_or_else(|| conflict("TASK_INPUT_MISSING", "Protected task input is missing"))?;
+            Ok(
+                json!({"offset": if committed { stored["bytes"].as_u64().unwrap() } else { media::upload(c, &key, &stored, chunk, false)? }}),
+            )
         }
     }
 }

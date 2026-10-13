@@ -11,6 +11,8 @@ import json
 import os
 from pathlib import Path
 import struct
+import time
+from contextlib import nullcontext
 
 
 MAX_BUFFER_BYTES = 32 * 1024 * 1024
@@ -186,7 +188,7 @@ class LoraFusionState:
         self._require_source()
 
     def _restore_source_group(self, records):
-        """One writable buffer, reused only after each synchronous destination copy."""
+        """Overlap protected reads and same-dtype CUDA copies within 32 MiB."""
         import torch
         first = records[0]
         source_dtype = {"F16": torch.float16, "BF16": torch.bfloat16, "F32": torch.float32}[first["dtype"]]
@@ -196,50 +198,77 @@ class LoraFusionState:
         # has a second live CPU tensor, so reserve room for it before allocation.
         capacity = min(MAX_BUFFER_BYTES * source_size // (source_size + cast_size),
                        max(min(record["rows"], record["shape"][0]) * record["row_bytes"] for record in records))
-        # A CPU dtype conversion creates a pageable result anyway. Pin only the
-        # direct-copy path; its power-of-two host allocation stays within 32 MiB.
+        # CPU/cast/large-row copies retain the original serial conversion budget.
         pinned = first["weight"].device.type == "cuda" and cast_size == 0
-        buffer = torch.empty(capacity, dtype=torch.uint8, device="cpu", pin_memory=pinned)
-        writable = memoryview(buffer.numpy())
-        block = converted = None
+        pipelined = (pinned and max(record["row_bytes"] for record in records) <= MAX_BUFFER_BYTES // 2
+                     and sum(record["bytes"] for record in records) > MAX_BUFFER_BYTES // 2)
+        if pipelined:
+            capacity = min(capacity, MAX_BUFFER_BYTES // 2)
+        stream = torch.cuda.current_stream(first["weight"].device) if pipelined else None
+        buffers, views, events = [], [], []
+        block = converted = writable = buffer = None
+        copied = calls = 0
         try:
-            for path in sorted({record["path"] for record in records}):
-                self._require_source()
-                with path.open("rb", buffering=0) as raw:
-                    for record in records:
-                        if record["path"] != path:
-                            continue
-                        rows = capacity // record["row_bytes"]
-                        for start in range(0, record["shape"][0], rows):
-                            self._require_source()
-                            stop = min(start + rows, record["shape"][0])
-                            byte_count = (stop - start) * record["row_bytes"]
-                            raw.seek(record["offset"] + start * record["row_bytes"])
-                            received = 0
-                            while received < byte_count:
+            # Allocation belongs to cleanup too: a second-slot failure must not
+            # retain the first pinned allocation or its host-cache entry.
+            for _ in range(2 if pipelined else 1):
+                buffers.append(torch.empty(capacity, dtype=torch.uint8, device="cpu", pin_memory=pinned))
+                views.append(memoryview(buffers[-1].numpy()))
+                events.append(None)
+            with torch.cuda.stream(stream) if stream is not None else nullcontext():
+                for path in sorted({record["path"] for record in records}):
+                    self._require_source()
+                    with path.open("rb", buffering=0) as raw:
+                        for record in records:
+                            if record["path"] != path:
+                                continue
+                            rows = capacity // record["row_bytes"]
+                            for start in range(0, record["shape"][0], rows):
                                 self._require_source()
-                                count = raw.readinto(writable[received:byte_count])
-                                if not count:
-                                    raise ValueError("Truncated protected fusion source tensor")
-                                received += count
-                            self._require_source()
-                            block = buffer[:byte_count].view(source_dtype).reshape(stop - start, record["shape"][1])
-                            converted = block.to(dtype=record["target_dtype"])
-                            live_bytes = capacity + (converted.numel() * converted.element_size() if converted is not block else 0)
-                            self.buffer_peak_bytes = max(self.buffer_peak_bytes, live_bytes)
-                            self._require_source()
-                            record["weight"][start:stop].copy_(converted, non_blocking=False)
-                            self.restored_source_bytes += byte_count
-                            block = converted = None
+                                slot = calls % len(buffers)
+                                if events[slot] is not None:
+                                    events[slot].synchronize()
+                                buffer, writable = buffers[slot], views[slot]
+                                stop = min(start + rows, record["shape"][0])
+                                byte_count = (stop - start) * record["row_bytes"]
+                                raw.seek(record["offset"] + start * record["row_bytes"])
+                                received = 0
+                                while received < byte_count:
+                                    self._require_source()
+                                    count = raw.readinto(writable[received:byte_count])
+                                    if not count:
+                                        raise ValueError("Truncated protected fusion source tensor")
+                                    received += count
+                                self._require_source()
+                                block = buffer[:byte_count].view(source_dtype).reshape(stop - start, record["shape"][1])
+                                converted = block.to(dtype=record["target_dtype"])
+                                live_bytes = capacity * len(buffers) + (converted.numel() * converted.element_size() if converted is not block else 0)
+                                self.buffer_peak_bytes = max(self.buffer_peak_bytes, live_bytes)
+                                self._require_source()
+                                record["weight"][start:stop].copy_(converted, non_blocking=pipelined)
+                                if pipelined:
+                                    if events[slot] is None:
+                                        events[slot] = torch.cuda.Event()
+                                    events[slot].record(stream)
+                                copied += byte_count
+                                calls += 1
+                                block = converted = None
         finally:
-            block = converted = None
-            writable.release()
-            writable = buffer = None
-            if pinned:
-                # Pinned Torch 2.8 exposes host-cache release only here. All H2D
-                # copies above are blocking; do not retain a 32 MiB host cache
-                # after this serial worker's restore operation has completed.
-                torch._C._host_emptyCache()
+            try:
+                # A copy may be queued even if Event creation/recording failed.
+                # Drain the actual copy stream before retiring any CPU source.
+                if stream is not None:
+                    stream.synchronize()
+            finally:
+                block = converted = writable = buffer = None
+                for view in views:
+                    view.release()
+                views.clear()
+                buffers.clear()
+                if pinned:
+                    torch._C._host_emptyCache()
+        self.restored_source_bytes += copied
+        return dict(strategy="pinned-pipeline" if pipelined else "serial", copyCalls=calls)
 
     def fuse(self, components, *, stage_device=None):
         import torch
@@ -306,19 +335,21 @@ class LoraFusionState:
 
     def restore(self):
         import torch
+        started = time.perf_counter()
         records = [self._sources[id(layer.get_base_layer().weight)] for layer in self._merged
                    if id(layer.get_base_layer().weight) in self._sources]
         self.buffer_peak_bytes = self.restored_source_bytes = 0
         if records:
             # Validate the complete source set before modifying any target.
             self._validate_sources(records)
+        transfers = []
         with torch.no_grad():
             groups = {}
             for record in records:
-                group = (record["dtype"], record["target_dtype"], record["weight"].device.type)
+                group = (record["dtype"], record["target_dtype"], record["weight"].device)
                 groups.setdefault(group, []).append(record)
             for selected in groups.values():
-                self._restore_source_group(selected)
+                transfers.append(self._restore_source_group(selected))
             for layer in self._merged:
                 weight = layer.get_base_layer().weight
                 if id(weight) in self._originals:
@@ -330,6 +361,11 @@ class LoraFusionState:
                 # Never invoke unmerge(): it subtracts a rounded/current delta.
                 layer.merged_adapters.clear()
         self._merged.clear()
+        return dict(wallSeconds=time.perf_counter() - started, sourceBytes=self.restored_source_bytes,
+                    snapshotBytes=self.bytes, bufferPeakBytes=self.buffer_peak_bytes,
+                    copyCalls=sum(row["copyCalls"] for row in transfers),
+                    pipelinedGroups=sum(row["strategy"] == "pinned-pipeline" for row in transfers),
+                    serialGroups=sum(row["strategy"] == "serial" for row in transfers))
 
     def clear(self):
         """Release CPU snapshots when the resident base itself is discarded."""

@@ -3,24 +3,48 @@ use super::*;
 const AUTOMATIC_MASK: &[&str] = &["AP_CLIPSeg_TextMask"];
 const KREA: &[&str] = &["ConditioningKrea2Rebalance", "ComfyUI-Krea2T-Enhancer"];
 
-fn readiness(info: Option<&serde_json::Map<String, Value>>, required: &[&str]) -> Value {
-    let missing: Vec<_> = info
-        .map(|info| {
-            required
-                .iter()
-                .filter(|name| !info.contains_key(**name))
-                .copied()
-                .collect()
-        })
-        .unwrap_or_default();
-    json!({"state":if info.is_none(){"unknown"}else if missing.is_empty(){"ready"}else{"missing"},"required":required,"missing":missing})
+async fn available(inner: &Inner, name: &str, cancel: &CancellationToken) -> Option<bool> {
+    let info = inner
+        .json(
+            "comfy",
+            reqwest::Method::GET,
+            &format!("/object_info/{name}"),
+            None,
+            Duration::from_secs(5),
+            cancel,
+        )
+        .await
+        .ok()?;
+    let nodes = info.as_object()?;
+    // Comfy returns {} for an absent class; HTTP/shape failures stay unknown.
+    if nodes.is_empty() {
+        Some(false)
+    } else if nodes.len() == 1 && nodes.get(name)?["input"].is_object() {
+        Some(true)
+    } else {
+        None
+    }
 }
 
-pub(super) fn status(info: Option<&Value>) -> Value {
-    let info = info
-        .and_then(Value::as_object)
-        .filter(|info| !info.is_empty() && info.values().all(|node| node["input"].is_object()));
-    json!({"automaticMask":readiness(info,AUTOMATIC_MASK),"krea2":readiness(info,KREA)})
+fn readiness(required: &[&str], states: &[Option<bool>]) -> Value {
+    let known = states.iter().all(Option::is_some);
+    let missing: Vec<_> = required
+        .iter()
+        .zip(states)
+        .filter_map(|(name, state)| (known && *state == Some(false)).then_some(*name))
+        .collect();
+    json!({"state":if !known{"unknown"}else if missing.is_empty(){"ready"}else{"missing"},"required":required,"missing":missing})
+}
+
+pub(super) async fn status(inner: &Inner, cancel: &CancellationToken) -> Value {
+    // Only these three classes affect image admission. Query them fresh without
+    // making Comfy enumerate every installed node and its model dropdowns.
+    let (mask, rebalance, enhancer) = tokio::join!(
+        available(inner, AUTOMATIC_MASK[0], cancel),
+        available(inner, KREA[0], cancel),
+        available(inner, KREA[1], cancel),
+    );
+    json!({"automaticMask":readiness(AUTOMATIC_MASK,&[mask]),"krea2":readiness(KREA,&[rebalance,enhancer])})
 }
 
 pub(super) fn requested(workflow: &Value) -> bool {

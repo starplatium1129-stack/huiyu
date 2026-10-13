@@ -171,10 +171,10 @@ pub(super) fn start(
     start_inner(c, command, principal, reply, permit, sender, None);
 }
 
-pub(super) fn start_file(
+pub(super) fn start_copy(
     c: &mut Context,
     command: &Value,
-    source: std::fs::File,
+    source: TaskMediaSource,
     principal: &str,
     reply: oneshot::Sender<Result<Value>>,
     permit: OwnedSemaphorePermit,
@@ -184,7 +184,7 @@ pub(super) fn start_file(
         command["kind"].as_str(),
         Some("task.result.commit" | "task.input.commit")
     ) {
-        let _ = reply.send(Err(invalid("Invalid internal task file command")));
+        let _ = reply.send(Err(invalid("Invalid internal task media command")));
         return;
     }
     start_inner(
@@ -205,7 +205,7 @@ fn start_inner(
     reply: oneshot::Sender<Result<Value>>,
     permit: Option<OwnedSemaphorePermit>,
     sender: &mpsc::WeakSender<Work>,
-    source: Option<std::fs::File>,
+    source: Option<TaskMediaSource>,
 ) {
     let prepared = if matches!(
         command["kind"].as_str(),
@@ -279,7 +279,7 @@ fn spawn(
     pending: &Pending,
     path: PathBuf,
     sender: &mpsc::WeakSender<Work>,
-    source: Option<std::fs::File>,
+    source: Option<TaskMediaSource>,
 ) -> Result<()> {
     let sender = sender.upgrade().ok_or_else(unavailable)?;
     let id = pending.id.clone();

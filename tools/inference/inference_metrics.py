@@ -20,6 +20,7 @@ class RuntimeMetrics:
         self.timings, self.mask_cache = {}, None
         self.mask_execution_revision = None
         self.loading = None
+        self.lora_loading = self.fusion_restore = None
         self.tracking = False
         self.memory = dict(status="unverified", reason="not-started", deviceIndex=0,
             scope="image-preparation-through-pipeline", peakAllocatedBytes=None, peakReservedBytes=None)
@@ -63,7 +64,10 @@ class RuntimeMetrics:
             if self.mask_cache is not None:
                 report["maskCache"] = self.mask_cache
 
-    def model_acquired(self, started, report, reused, fingerprint, post_load_fingerprint):
+    def model_acquired(self, started, report, reused, fingerprint, post_load_fingerprint, pipeline):
+        self.loading = getattr(pipeline, "_huiyu_loading", None)
+        self.lora_loading = getattr(pipeline, "_huiyu_lora_loading", None)
+        self.fusion_restore = getattr(pipeline, "_huiyu_fusion_restore", None)
         if report is not None:
             self.torch.cuda.synchronize()  # Existing TeaCache report boundary, never added for product observations.
         self.timings["modelAcquireWallSeconds"] = time.perf_counter() - started
@@ -107,4 +111,6 @@ class RuntimeMetrics:
             textCache=text, maskCache=mask, teaCache=cached, memory=self.memory,
             memoryPolicy=memory_policy, componentReuse=list(component_reuse), samplingRevision="anima-workflow-effects-v3",
             **({"maskExecutionRevision": self.mask_execution_revision} if self.mask_execution_revision is not None else {}),
+            **({"loraLoading": self.lora_loading} if self.lora_loading is not None else {}),
+            **({"fusionRestore": self.fusion_restore} if self.fusion_restore is not None else {}),
             refinement=self.refinement, loading=self.loading)

@@ -6,8 +6,10 @@ Only the checked 23-block, nf64/gc32 RGB model is accepted; no pickle, model
 discovery, download, guessed configuration or package installation occurs.
 """
 from pathlib import Path
+import time
 
 WEIGHT_NAME = "4x_foolhardy_Remacri.safetensors"
+EXECUTION_REVISION = "remacri-no-single-cat-packed-v1"
 
 
 def _network():
@@ -24,8 +26,9 @@ def _network():
             self.activation = nn.LeakyReLU(.2, inplace=True)
 
         def forward(self, value):
-            features = [value]
-            for index in range(1, 5):
+            # A singleton cat only copies this 64-channel feature map.
+            features = [value, self.activation(self.conv1(value))]
+            for index in range(2, 5):
                 features.append(self.activation(getattr(self, f"conv{index}")(torch.cat(features, dim=1))))
             return value + self.conv5(torch.cat(features, dim=1)) * .2
 
@@ -69,11 +72,12 @@ def _key_mapping():
     return {f"{source}.{part}": f"{target}.{part}" for source, target in modules.items() for part in ("weight", "bias")}
 
 
-def load_remacri(path, device="cpu"):
+def load_remacri(path, device="cpu", *, upload, report):
     """Load only the host-selected fixed local filename, strictly as FP32."""
     import torch
     from safetensors import safe_open
 
+    started = time.perf_counter()
     path = Path(path)
     if not path.is_absolute() or path.name != WEIGHT_NAME or not path.is_file():
         raise ValueError(f"Remacri requires an existing absolute local {WEIGHT_NAME}")
@@ -100,7 +104,27 @@ def load_remacri(path, device="cpu"):
                 raise ValueError(f"Nonfinite Remacri weights: {original}")
             state[target] = value
     model.load_state_dict(state, strict=True, assign=True)
-    return model.eval().requires_grad_(False).to(device=device, dtype=torch.float32)
+    model.eval().requires_grad_(False)
+    report["readWallSeconds"] = time.perf_counter() - started
+    started = time.perf_counter()
+    observation = {}
+    if device.type != "cuda" or not upload([model], target_device=device, observation=observation):
+        model.to(device=device, dtype=torch.float32)
+        observation["strategy"] = "module-to"
+    report.update(uploadWallSeconds=time.perf_counter() - started, upload=observation)
+    return model
+
+
+def run(images, path, device, *, tools, expected, error):
+    """Own one checked upscaler only for this pass; keep profile byte fences."""
+    if expected is not None and tools("native_hash").file_sha256(path) != expected:
+        raise error("MODEL_CHANGED", "Upscaler bytes changed after profile validation")
+    report = {"executionRevision": EXECUTION_REVISION, "loading": {}}
+    model = load_remacri(path, device=device, upload=tools("native_upload").try_packed_upload,
+                        report=report["loading"])
+    if expected is not None and tools("native_hash").file_sha256(path) != expected:
+        raise error("MODEL_CHANGED", "Upscaler bytes changed while loading")
+    return upscale_4x(model, images, tiling=tools("anima_tiling"), report=report), report
 
 
 def upscale_4x(model, images, *, tile_size=512, overlap=32, tiling=None, report=None):
