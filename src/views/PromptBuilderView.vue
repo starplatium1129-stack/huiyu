@@ -76,7 +76,7 @@
           :online="engineOnline"
           :size="genBarSize"
           :anima-sizes="animaBarSizes"
-          :show-size="!actionBarDocked"
+          :show-size="!actionBarDocked" :docked="actionBarDocked"
           :blocked-reason="generateBlockReason"
           :has-result="Boolean(displayResultUrl)"
           :completed="drawEngine !== 'sd' && animaState.phase === 'succeeded'"
@@ -151,9 +151,9 @@
         <template #scenes>
           <PromptMaterialScenes :bindings="materialBindings" />
         </template>
-        <template #history>
+        <template #history="{ active }">
         <HistoryPanel class="advanced-decision"
-          :history="pb.history"
+          :history="pb.history" :active="active"
           @resume="resumeHistory"
           @duplicate="duplicateHistory"
           @delete="deleteHistory"

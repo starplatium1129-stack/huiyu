@@ -1,15 +1,16 @@
 <template>
   <!-- 桌面常驻侧栏；窄窗口独立吸附于整个编辑区，保留尺寸、生成与停止。 -->
-  <div class="gen-bar" :class="{ 'is-generating': busy }" role="group" aria-label="出图尺寸与生成">
+  <div class="gen-bar" :data-docked="docked || undefined" role="group" aria-label="出图尺寸与生成">
     <GenerationSizePicker v-if="showSize" class="gen-bar-size" compact v-bind="{ engine, size, animaSizes, busy }" @update:size="$emit('update:size', $event)" />
-    <div class="gen-bar-meta" role="status"><span><ArchiveIcon :name="busy ? 'spark' : error || !online ? 'warning' : 'success'" />{{ busy ? '正在绘制' : error ? '绘制未完成' : stopped ? '已停止' : !online ? '绘图服务未连接' : '准备就绪' }}</span><small>{{ size.replace('x', ' × ') }}</small></div>
-    <!--
-      提交前校验（2026-08-30 UX 审计 P1）：原先点下去才在 2.5 秒的闪示里被告知
-      「请先选择场景或填写故事」，用户根本来不及读。原因改成常驻在按钮旁，
-      同时禁用按钮——既要看得见，也不要让人点了才发现不行。
-    -->
-    <RouterLink v-if="!online && !busy" class="gen-bar-recovery" :to="{ path: '/control', query: { engine } }">{{ unavailableReason }}</RouterLink>
-    <span v-else-if="blockedReason && !busy" class="gen-bar-blocked" role="status">{{ blockedReason }}</span>
+    <div class="gen-bar-meta">
+      <div class="gen-bar-status">
+        <span role="status"><ArchiveIcon :name="busy ? 'spark' : error || !online ? 'warning' : 'success'" />{{ statusSummary }}</span>
+        <RouterLink v-if="!online && !busy" class="gen-bar-recovery" :to="{ path: '/control', query: { engine } }" aria-label="打开控制面板，启动并检查绘图服务">打开控制面板</RouterLink>
+      </div>
+      <small v-if="!showSize">{{ size.replace('x', ' × ') }}</small>
+    </div>
+    <!-- 输入校验原因仍常显；离线原因已与恢复入口合并，不重复占一行。 -->
+    <span v-if="online && blockedReason && !busy" class="gen-bar-blocked" role="status">{{ blockedReason }}</span>
     <div class="gen-bar-actions">
       <StudioTooltip anchor :content="busy ? '停止当前绘制' : unavailableReason || '生成当前画面'">
         <button
@@ -46,8 +47,7 @@ import GenerationSizePicker from './GenerationSizePicker.vue'
 import { RouterLink } from 'vue-router'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
-// 出图条承载主行动（生成按钮），同步导入保证首屏即位，不进异步分片；
-// 体量 ~2KB，路由 CSS 预算余量充足。
+// 主行动同步加载；组件统一管理停靠与独立两种内部布局。
 import '@/assets/css/director/components/GenerationActionBar.css'
 
 const props = defineProps<{
@@ -60,6 +60,7 @@ const props = defineProps<{
   /** Anima/Krea2 候选尺寸（当前底模白名单，含当前值兜底）。 */
   animaSizes: string[]
   showSize: boolean
+  docked: boolean
   hasResult: boolean
   /** Completion comes from the task phase, never the presence of an older image. */
   completed?: boolean
@@ -83,9 +84,11 @@ const status = computed(() => props.busy ? 'loading' : props.error ? 'error'
 const actionText = computed(() => ({ idle: '生成图片', loading: '停止绘制', success: '完成 · 再生成', error: '重试生成' })[status.value])
 const actionLabel = computed(() => status.value === 'success' ? '生成完成，再生成图片' : actionText.value)
 const actionIcon = computed(() => ({ idle: 'spark', loading: 'close', success: 'success', error: 'refresh' } as const)[status.value])
+const statusSummary = computed(() => props.busy ? '正在绘制' : !props.online ? '服务未连接'
+  : props.error ? '绘制未完成' : props.stopped ? '已停止' : props.blockedReason ? '待补充设置' : '准备就绪')
 const announcement = computed(() => props.busy ? '正在绘制，可随时停止。' : props.stopped ? '绘制已停止。'
   : status.value === 'error' ? `生成失败：${props.error}` : status.value === 'success' ? '生成完成，可以查看画布或再次生成。' : '')
-const unavailableReason = computed(() => props.blockedReason || (!props.online ? '绘图服务未连接，请先在控制面板启动并检查连接。' : ''))
+const unavailableReason = computed(() => !props.online ? '绘图服务未连接，请先在控制面板启动并检查连接。' : props.blockedReason || '')
 const progressValue = computed(() => typeof props.progress === 'number' && Number.isFinite(props.progress)
   ? Math.round(Math.max(0, Math.min(1, props.progress)) * 100) : null)
 const generationAction = ref<HTMLButtonElement | null>(null)

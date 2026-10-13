@@ -1,7 +1,7 @@
 import { apiClient, ApiClientError } from './client'
 import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../platform/desktop/runtime.ts'
 import type { TaskRecord, TaskSubmission, TaskSummary, TaskListScope, TaskPage } from '../../types/tasks'
-import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
+import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
 import { hasRuntimeTasks } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
@@ -76,8 +76,13 @@ export async function readRuntimeTaskPage(scope: TaskListScope, options: { befor
 }
 export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<string, unknown>, key = runtimeRequestKey(kind, input), context?: Record<string, unknown>,
   observation: { signal?: AbortSignal; onSubmitting?: () => void } = {}): Promise<TaskRecord> {
-  try { return remember(await request<TaskRecord>('', 'POST', { kind, input, requestKey: key, context } satisfies TaskSubmission, observation.signal, observation.onSubmitting)) }
+  let submitting = false
+  try { return remember(await request<TaskRecord>('', 'POST', { kind, input, requestKey: key, context } satisfies TaskSubmission, observation.signal, () => {
+    observation.onSubmitting?.()
+    markTaskRequestSubmitting(key); submitting = true
+  })) }
   catch (error) {
+    if (!submitting) { releaseUnsubmittedTaskRequest(key); throw error }
     if (observation.signal?.aborted) throw error
     // Losing the acceptance response only permits lookup by the original key.
     // It never causes a second POST or a replacement key.

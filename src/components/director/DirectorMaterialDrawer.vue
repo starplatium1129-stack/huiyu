@@ -10,7 +10,7 @@
     <!-- 首次选中才加载，之后保留输入、搜索与选中状态。 -->
     <TabsContent v-for="item in sections" :key="item.id" :value="item.id" force-mount as-child><div v-show="active === item.id" :id="`material-${item.id}`"
       class="material-content" :aria-labelledby="`material-tab-${item.id}`">
-      <DeferredPanel :active="active === item.id"><slot :name="item.id" /></DeferredPanel>
+      <DeferredPanel :active="active === item.id"><slot :name="item.id" :active="active === item.id" /></DeferredPanel>
     </div></TabsContent>
     <div class="material-footer"><slot name="footer" /></div>
   </section></TabsRoot>

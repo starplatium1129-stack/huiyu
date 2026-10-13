@@ -454,19 +454,19 @@ html.companion-mode body {
 }
 
 
-/*   ============================================================
-   输入区：文本输入 / 停止按钮 / 视觉输入 / 发送（新旧两套并存）
-  ============================================================ */
-
-/*   ============================================================
-   输入区：文本输入 / 停止按钮 / 视觉输入 / 发送（新旧两套并存）
-  ============================================================ */
+/* 输入区：布局与基础材质在此定义，后续主题层只处理外观。 */
 .companion-page .companion-composer {
   @apply tw:relative tw:grid;
   /* textarea | 看屏幕 | 停止(条件) | 发送 | 语音簇 —— 新增看屏幕按钮后
      列数必须跟上，否则语音簇被挤进隐式行与发送键坐标重叠 */
   grid-template-columns: minmax(0, 1fr) auto auto auto auto;
-  @apply tw:gap-s-2;
+  gap: 7px;
+  @apply tw:p-s-3 tw:rounded-lg;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-surface);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: var(--shadow-md);
 }
 
 .companion-page .companion-composer > .companion-setup-inline {
@@ -524,7 +524,7 @@ html.companion-mode body {
 
 .companion-page .speech-settings {
   @apply tw:absolute;
-  z-index: var(--z-raised);
+  z-index: var(--z-popover);
   @apply tw:right-0 tw:bottom-[100%];
   width: min(100%, 520px);
   @apply tw:mb-s-2;
@@ -631,10 +631,6 @@ html.companion-mode body {
   accent-color: var(--character-accent);
 }
 
-.companion-page .companion-error {
-  @apply tw:min-h-[18px] tw:text-danger-text tw:text-label-xs;
-}
-
 @media (max-width: 600px) {
   .companion-page {
     min-height: min(480px, 100dvh);
@@ -673,8 +669,13 @@ html.companion-mode body {
   }
 
   .companion-page .companion-composer {
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    display: flex;
+    flex-wrap: wrap;
   }
+  .companion-page .companion-input,
+  .companion-page .companion-setup-inline,
+  .companion-page .companion-composer-meta { flex: 1 0 100%; }
+  .companion-page .companion-speech-cluster { margin-left: auto; }
 
   .companion-page .companion-speech-state {
     @apply tw:max-w-[92px];
@@ -1131,16 +1132,6 @@ html.companion-mode:not(.companion-desktop) body {
   color: var(--companion-ink);
 }
 
-.companion-page .companion-composer {
-  grid-template-columns: minmax(0, 1fr) auto auto auto auto;
-  @apply tw:gap-[7px] tw:p-[7px];
-  border: 1px solid var(--companion-edge);
-  @apply tw:rounded-xl;
-  background: color-mix(in srgb, var(--art-scrim) 68%, transparent);
-  box-shadow: var(--shadow-lg), inset 0 1px 0 var(--companion-highlight);
-  backdrop-filter: blur(18px) saturate(130%);
-}
-
 .companion-page .companion-input {
   @apply tw:min-h-[46px] tw:max-h-[84px];
   padding: 8px 10px;
@@ -1201,13 +1192,6 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-page .companion-status input {
   accent-color: var(--character-accent);
-}
-
-.companion-page .companion-error {
-  @apply tw:min-h-0;
-  padding: 0 4px;
-  @apply tw:text-accent-hover;
-  text-shadow: var(--companion-text-shadow);
 }
 
 @media (max-width: 600px) {
@@ -1620,7 +1604,7 @@ html.companion-immersive .companion-reminders,
 html.companion-immersive .companion-setup,
 html.companion-immersive .companion-setup-inline,
 html.companion-immersive .companion-tool-indicator,
-html.companion-immersive .companion-error {
+html.companion-immersive .companion-errors {
   @apply tw:hidden;
 }
 
@@ -1749,16 +1733,7 @@ html.companion-immersive .companion-page {
   @apply tw:text-danger-text;
 }
 
-/* —— 底部输入面板：单一毛玻璃面板 —— */
-.companion-page .companion-composer {
-  @apply tw:p-s-3;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-lg;
-  background: var(--bg-surface);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  backdrop-filter: blur(14px) saturate(1.2);
-  box-shadow: var(--shadow-md);
-}
+/* —— 输入文字与控件状态 —— */
 .companion-page .companion-composer .companion-input { @apply tw:text-primary; background: var(--bg-deep); @apply tw:border-soft; }
 .companion-page .companion-composer .companion-input::placeholder { @apply tw:text-muted; }
 .companion-page .companion-composer .companion-input:focus { background: var(--bg-elevated); @apply tw:border-accent; }
@@ -1817,12 +1792,18 @@ html.companion-immersive .companion-page {
   @apply tw:text-muted tw:text-label-xs;
 }
 
-/* —— 错误信息：浮动小 toast，不再占布局 —— */
-.companion-page .companion-error {
+/* 两种独立错误共用一个定位容器，内容自然排列。 */
+.companion-page .companion-errors {
   @apply tw:absolute;
   z-index: var(--z-raised);
   @apply tw:left-s-3 tw:right-s-3;
   bottom: calc(100% + var(--s-2));
+  display: grid;
+  gap: 6px;
+  max-height: min(30dvh, 220px);
+  overflow: auto;
+}
+.companion-page .companion-error {
   @apply tw:min-h-0;
   padding: 6px 10px;
   border: 1px solid color-mix(in srgb, var(--danger-text) 45%, var(--border-soft));
@@ -1832,7 +1813,7 @@ html.companion-immersive .companion-page {
   backdrop-filter: blur(10px);
   @apply tw:text-danger-text tw:text-label-xs;
   box-shadow: var(--shadow-md);
-  @apply tw:pointer-events-none;
+  overflow-wrap: anywhere;
 }
 
 /* —— 状态胶囊移到角色头顶上方（原 top:118px 遮挡领口/面部，调研修正） —— */

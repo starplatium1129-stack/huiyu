@@ -63,7 +63,6 @@ export function useGalleryWorkspace() {
     // ── 回收站视图（2026-08-31）：软删条目列表 + 逐条恢复 ────────────────────
     const trashMode = ref(false);
     const trashItems = ref<TrashEntry[]>([]);
-    const trashThumbs = reactive<Record<string, string>>({});
     const trashBusy = ref<string | number | null>(null);
     function toggleTrashMode() {
         trashMode.value = !trashMode.value;
@@ -522,7 +521,7 @@ export function useGalleryWorkspace() {
     const actions = useGalleryExports({ current, stamp, sceneTitle, characterName, showToast });
     const { copiedPrompt, copyPrompt } = actions;
     function downloadCurrent(): Promise<void> { return actions.downloadCurrent(); }
-    const trashActions = useGalleryTrash({ trashMode, trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage });
+    const trashActions = useGalleryTrash({ trashMode, trashItems, trashBusy, showToast, loadGalleryStorage });
     const { clearTrash, trashClearing, trashLoading, trashError } = trashActions;
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
@@ -539,7 +538,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
-        compareOpen, compareItems, loadGalleryStorage, trashBusy, trashThumbs, trashPrompt,
+        compareOpen, compareItems, loadGalleryStorage, trashBusy, trashPrompt,
         formatTrashTime, restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryError, history, resetGalleryFilters,
         masonryGroups, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,

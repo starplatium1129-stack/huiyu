@@ -324,6 +324,7 @@ import { useToast } from '@/composables/useToast'
 import { useControlStatus } from '@/composables/useControlStatus'
 import { confirmAction } from '@/composables/useConfirm'
 import { useControlActions } from '@/composables/useControlActions'
+import type { ControlService, ControlServiceAction } from '@/api/controlApi'
 
 /**
  * 全站唯一那套 toast（App.vue 里的 AppToast + useToast）。
@@ -383,7 +384,7 @@ const SERVICE_STOP_LABELS: Record<string, string> = {
   voice: '角色语音服务',
 }
 
-async function confirmServiceAction(service: string, action: string): Promise<void> {
+async function confirmServiceAction(service: ControlService, action: ControlServiceAction): Promise<void> {
   if (action !== 'stop') { serviceAction(service, action); return }
   const label = SERVICE_STOP_LABELS[service] || service
   const confirmed = await confirmAction({
@@ -413,7 +414,7 @@ const route = useRoute()
 const requestedService = computed(() => route.query.engine === 'sd' ? 'webui'
   : ['anima', 'krea2', 'video'].includes(String(route.query.engine)) ? 'comfy' : '')
 const requestedEngineLabel = computed(() => ({ sd: 'SD 绘图', anima: 'Anima 绘图', krea2: 'Krea 2 绘图', video: '故事短片' } as Record<string, string>)[String(route.query.engine)] || '当前创作')
-const serviceCards = computed<Array<{ key: string; name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
+const serviceCards = computed<Array<{ key: ControlService; name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
   { key: 'llama', name: 'llama.cpp 本地聊天', icon: 'chat', online: llamaOnline.value, detail: llamaLabel.value || '按需加载；显存较少可使用 API' },
   { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `Anima · Krea 2 · 视频${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
   { key: 'voice', name: `${activeVoiceEngine.value} 语音`, icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `${voiceConfiguredCount.value} / 2 角色声线已配置` },

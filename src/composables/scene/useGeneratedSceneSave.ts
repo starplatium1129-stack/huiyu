@@ -9,6 +9,7 @@ import { buildGeneratedSceneDraft } from '@/utils/generatedSceneDraft'
 import { useSceneStore } from '@/stores/sceneStore'
 import { blobThumbDataUrl } from '@/utils/imageThumb'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { catalogShowcaseId } from '@/utils/showcaseManifest'
 
 export function useGeneratedSceneSave(source: GeneratedSceneCapture) {
   const store = useSceneStore()
@@ -74,7 +75,8 @@ export function useGeneratedSceneSave(source: GeneratedSceneCapture) {
       const image = await blobThumbDataUrl(source.image, 4096, 0.94), thumbnail = await blobThumbDataUrl(source.image, 560, 0.84)
       if (!alive) return
       if (!image || !thumbnail) throw new Error('图片转换失败')
-      await maintenanceApi.saveShowcase({ id: savedId.value, image, thumbnail }, { signal: abort.signal })
+      const id = catalogShowcaseId({ kind: popular ? 'blueprint' : 'scene', id: savedId.value, characterId: source.recipe.characterId || '' })
+      await maintenanceApi.saveShowcase({ id, image, thumbnail }, { signal: abort.signal })
     } catch (cause) { if (alive) imageError.value = '场景已保存，样张尚未保存：' + (cause instanceof Error ? cause.message : '请重试') }
     finally { saving.value = false }
   }

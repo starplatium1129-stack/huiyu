@@ -83,7 +83,6 @@
         v-if="trashMode"
         :column-count="columnCount"
         :trash-items="trashItems"
-        :trash-thumbs="trashThumbs"
         :trash-busy="trashBusy"
         :trash-clearing="trashClearing"
         :trash-loading="trashLoading" :trash-error="trashError" @reload="loadTrash"
@@ -345,7 +344,6 @@ compareOpen,
 compareItems,
 loadGalleryStorage,
 trashBusy,
-trashThumbs,
 trashPrompt,
 formatTrashTime,
 restoreTrashItem,

@@ -98,20 +98,8 @@ export function useControlActions(
     }
   }
 
-  function isControlService(value: string): value is ControlService {
-    return value === 'voice' || value === 'webui' || value === 'comfy' || value === 'ollama'
-  }
-
-  function isControlServiceAction(value: string): value is ControlServiceAction {
-    return value === 'start' || value === 'stop' || value === 'unload'
-  }
-
-  async function serviceAction(service: string, action: string) {
+  async function serviceAction(service: ControlService, action: ControlServiceAction) {
     if (status.opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
-    if (!isControlService(service) || !isControlServiceAction(action)) {
-      showToast('不支持的服务操作', true)
-      return
-    }
     status.operationSubmitting.value = true
     showToast((action === 'start' ? '正在启动' : action === 'stop' ? '正在停止' : '正在处理') + '…')
     try {

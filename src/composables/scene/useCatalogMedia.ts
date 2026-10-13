@@ -2,10 +2,11 @@ import { computed, onScopeDispose, ref, watch } from 'vue'
 import { catalogApi, type CatalogPage, type CatalogSummary } from '@/api/catalogApi'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import type { ShowcaseSceneItem } from './useSceneShowcaseUpload'
+import { catalogShowcaseId } from '@/utils/showcaseManifest'
 
 export function showcaseItem(record: Pick<CatalogSummary, 'kind' | 'id' | 'characterId' | 'title' | 'rating'>): ShowcaseSceneItem {
   return {
-    id: record.kind === 'blueprint' ? `pc_${record.characterId}_${record.id}` : record.id,
+    id: catalogShowcaseId(record),
     title: record.title, char: record.characterId, rating: record.rating,
     type: record.kind === 'blueprint' ? 'popular' : 'scene',
   }

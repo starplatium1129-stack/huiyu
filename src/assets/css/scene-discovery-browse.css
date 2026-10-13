@@ -2,8 +2,8 @@
 .page.scene-discovery { --page-max:1680px; padding:var(--workspace-pad-top,var(--s-5)) var(--workspace-gutter,var(--s-5)) var(--s-7); }
 .scene-atlas { display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-areas:'copy choices' 'moods moods' 'filters filters'; align-items:center; gap:var(--s-4); margin-bottom:var(--s-4); }
 .scene-atlas-copy { grid-area:copy; min-width:0; }
-.scene-atlas .title { margin:0; color:var(--text-primary); font:600 clamp(28px,2vw,34px)/1.2 var(--font-display); letter-spacing:-.04em; }
-.scene-atlas-note { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-label-sm); }
+.scene-atlas .title { margin:0; color:var(--text-primary); font:600 var(--fs-title)/var(--lh-tight) var(--font-sans); letter-spacing:-.03em; }
+.scene-atlas-note { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-body-sm); }
 .curation-intro { grid-area:choices; display:flex; align-items:center; gap:var(--s-3); min-width:0; }
 .scene-atlas-portrait { flex:0 0 auto; position:relative; width:clamp(128px,10vw,156px); aspect-ratio:1; margin:0; }
 .scene-atlas-portrait img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
@@ -20,7 +20,7 @@
 .companion-pill:hover,.companion-pill.active { color:var(--text-primary); }
 .companion-switch :deep(.animated-selection) { background:var(--accent-soft); border-color:var(--border-soft); }
 
-.page.scene-discovery .scene-toolbar { grid-area:filters; display:grid; grid-template-columns:auto minmax(240px,1fr); align-items:center; gap:var(--s-2) var(--s-4); padding:var(--s-3); border:0; border-top:1px solid var(--border-soft); border-radius:var(--r-lg); background:transparent; box-shadow:none; }
+.scene-toolbar { grid-area:filters; display:grid; grid-template-columns:auto minmax(240px,1fr); align-items:center; gap:var(--s-2) var(--s-4); }
 .toolbar-primary { grid-column:2; grid-row:1; display:flex; align-items:center; justify-content:flex-end; gap:var(--s-2); min-width:0; }
 .scene-search-wrap { position:relative; flex:1 1 240px; max-width:360px; min-width:0; }
 .scene-personal-nav { grid-column:1; grid-row:1; width:fit-content; max-width:100%; flex-wrap:wrap; }

@@ -36,13 +36,13 @@ async function image(kind: 'anima' | 'creative', input: Record<string, unknown>,
 export async function runRuntimeAnima(options: {
   input: Record<string, unknown>; key: string; signal: AbortSignal; family: 'anima' | 'krea2';
   context: AnimaResultContext | null; state: Ref<AnimaGenerationState>; isCurrent(): boolean;
-  onAccepted(): void;
+  onSubmitting(): void; onAccepted(): void;
   discardStashed(): void; onResult(result: AnimaResult): void;
 }) {
   const { task, blob } = await image(options.family === 'krea2' ? 'creative' : 'anima', options.input, options.key, options.signal, value => {
     options.state.value = { ...options.state.value, phase: value.status === 'cancelling' ? 'cancelling' : 'running', backendStatus: value.recoveryState === 'normal' ? value.status : value.recoveryState,
       progress: null, progressText: taskMessage(value), statusText: taskMessage(value) }
-  }, options.context as Record<string, unknown> | undefined, options.onAccepted)
+  }, options.context as Record<string, unknown> | undefined, options.onAccepted, options.onSubmitting)
   const { runtimeImageMetadata, runtimeTaskResultContext } = await import('@/utils/runtimeTaskResult')
   if (!options.isCurrent()) return
   const metadata = runtimeImageMetadata(task)

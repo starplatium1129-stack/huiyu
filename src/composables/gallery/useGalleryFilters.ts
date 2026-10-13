@@ -161,6 +161,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   /* ---------- 筛选状态进 URL（2026-08-30 UX 审计 P1）---------- */
   let queryRestorePending = false;
   function restoreFiltersFromQuery() {
+    if (route.path !== '/gallery') { cleanupFilterSync(); return; }
     if (deferQueryRestore?.()) { queryRestorePending = true; return; }
     queryRestorePending = false;
     const q = route.query;
@@ -180,7 +181,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   let syncTimer: ReturnType<typeof setTimeout> | null = null;
 
   function syncFiltersToQuery() {
-    if (isViewActive && !isViewActive()) return;
+    if (route.path !== '/gallery' || (isViewActive && !isViewActive())) return;
     const q = route.query;
     const fav = q.fav === '1';
     const project = typeof q.project === 'string' ? q.project : '';
@@ -196,7 +197,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
       clearTimeout(syncTimer);
     syncTimer = setTimeout(() => {
       syncTimer = null;
-      if (isViewActive && !isViewActive()) return;
+      if (route.path !== '/gallery' || (isViewActive && !isViewActive())) return;
       const query: LocationQueryRaw = { ...route.query };
       for (const field of GENERATION_FILTER_FIELDS) {
         if (generationConditions.value[field]) query[generationQueryKeys[field]] = generationConditions.value[field];
@@ -264,7 +265,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     syncFiltersToQuery();
   }, { deep: true });
   // Back/forward and cleared URL fields replace the complete filter snapshot.
-  watch(() => JSON.stringify([route.query.fav, route.query.project, route.query.character, route.query.q, route.query.tag,
+  watch(() => JSON.stringify([route.path, route.query.fav, route.query.project, route.query.character, route.query.q, route.query.tag,
     ...GENERATION_FILTER_FIELDS.map(field => route.query[generationQueryKeys[field]])]), restoreFiltersFromQuery);
 
   return {

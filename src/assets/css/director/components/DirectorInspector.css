@@ -27,22 +27,8 @@
 .pb .inspector-workbench .artist-summary-right strong { text-align:right; }
 .pb .inspector-workbench .generation-settings .toggle-row { grid-column:auto; flex-wrap:wrap; gap:var(--s-1); }
 .pb .inspector-actions { flex-shrink:0; border-top:1px solid var(--border-soft); }
-.pb.journal-workspace.atelier-workspace .inspector-actions .gen-bar { display:flex; flex-direction:column; align-items:stretch; position:static; padding:20px; border:0; border-radius:0; gap:12px; }
-.pb .inspector-actions .gen-bar-size { flex:0 0 auto; min-width:0; }
-.pb .inspector-actions .gen-bar-size .studio-select-wrapper { flex:1; min-width:0; max-width:none; }
-.pb .inspector-actions .gen-bar-blocked { flex:0 0 auto; font-size:var(--fs-label); }
-.pb.atelier-workspace .inspector-actions .gen-bar-actions { flex:0 0 auto; margin:0; display:flex; flex-wrap:wrap; width:100%; min-width:0; }
-/* Tooltip anchors own flex sizing; the nested button cannot size its sibling. */
-.pb .inspector-actions .gen-bar-actions > .studio-tooltip-anchor:first-child { flex:1 1 0; min-width:0; }
-
-.pb.journal-workspace .inspector-actions .gen-bar-actions .generation-action,
-.pb.journal-workspace .inspector-actions .gen-bar-actions .generation-action.is-drawing { min-width:0; width:100%; max-width:none; }
-.pb.journal-workspace .inspector-actions .gen-bar-actions .generation-action.is-drawing { min-height:46px; }
-.pb.journal-workspace .inspector-actions .gen-bar-actions :is(.btn-ghost,.btn-quiet) { min-width:0; }
 
 .pb .inspector-workbench .inspector-tabs button[data-state=active] { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
 .pb .inspector-workbench .inspector-tabs button:hover { background:var(--accent-soft); }
-.pb .inspector-actions .gen-bar-meta { width:100%; }
-.pb.journal-workspace .inspector-actions .gen-bar-actions .generation-action { min-height:46px; font-size:14px; }
 @media (min-width:1024px) and (max-width:1440px) { .pb[data-director-mode] .inspector-workbench .inspector-scroll { padding:16px 20px; } }
 @media (forced-colors:active) { .pb .inspector-workbench .inspector-tabs button[data-state="active"] { border-color:Highlight; color:Highlight; } }

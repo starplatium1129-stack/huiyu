@@ -5,13 +5,12 @@
  * 2026-08-18：全量支持经典场景（302 个）与热门角色蓝图（347 个）样张在线预览与无感替换。
  */
 
-import { ref, computed, watch, onScopeDispose } from 'vue'
+import { ref, computed, onScopeDispose } from 'vue'
 import { maintenanceApi, maintenanceFailure } from '@/api/maintenanceApi'
 import type { HomeHeroCharacter } from '@/types/api'
 import { confirmAction } from '@/composables/useConfirm'
 import { useHomeHeroes, type HeroEntry } from '@/composables/useHomeHeroes'
-import { runtimeFetch, runtimeResourceIdentity } from '@/platform/runtimeUrl'
-import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
+import { useShowcaseAssets } from './useShowcaseAssets'
 
 export interface ShowcaseSceneItem {
   id: string
@@ -57,9 +56,8 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
   const selectedImageTitle = ref('')
   const showcaseFeedback = ref('')
   const showcaseError = ref(false)
-  const showcaseVersion = ref(Date.now())
-  const assetVersions = ref<Record<string, number>>({})
-  const manifestLoading = ref(false), manifestError = ref('')
+  const { loading: manifestLoading, error: manifestError, reload: loadShowcaseManifest,
+    thumbUrl, imageUrl, hasShowcase, invalidateAsset } = useShowcaseAssets(errorMessage)
   const uploadBusy = ref(false)
   const showcaseFileEl = ref<HTMLInputElement | null>(null)
   const heroFileEl = ref<HTMLInputElement | null>(null)
@@ -67,61 +65,19 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
   const selectedHeroTitle = ref('')
   const { heroes, reload: loadHomeHeroes } = useHomeHeroes()
   const homeHeroes = computed(() => Object.values(heroes.value))
-  const showcaseEntries = ref(new Map<string, ShowcaseEntry>())
   let alive = true
   let heroRequest: AbortController | undefined
-  let showcaseRequest: AbortController | undefined
   let uploadRequest: AbortController | undefined
   onScopeDispose(() => {
     alive = false
     heroRequest?.abort()
-    showcaseRequest?.abort()
     uploadRequest?.abort()
   })
-
-  async function loadShowcaseManifest() {
-    showcaseRequest?.abort()
-    const controller = new AbortController()
-    showcaseRequest = controller
-    manifestLoading.value = true; manifestError.value = ''
-    const timeout = setTimeout(() => controller.abort(), 10_000)
-    try {
-      const response = await runtimeFetch('/scene-showcase/manifest.json', { signal: controller.signal, cache: 'no-cache' })
-      if (!response.ok) throw new Error('无法读取当前样张清单')
-      const raw = await response.json() as { entries?: Array<{ id?: unknown } | null> }
-      const counts = new Map<unknown, number>()
-      for (const item of raw.entries ?? []) counts.set(item?.id, (counts.get(item?.id) ?? 0) + 1)
-      const entries = parseShowcaseManifest(raw).entries.filter(item => counts.get(item.id) === 1)
-      if (alive && !controller.signal.aborted) showcaseEntries.value = new Map(entries.map(item => [item.id, item]))
-    } catch (error) {
-      if (alive && !controller.signal.aborted) manifestError.value = errorMessage(error, '样张清单暂时无法读取')
-      throw error
-    } finally {
-      clearTimeout(timeout)
-      if (showcaseRequest === controller) { showcaseRequest = undefined; manifestLoading.value = false }
-    }
-  }
-  watch(runtimeResourceIdentity, () => {
-    showcaseEntries.value = new Map()
-    assetVersions.value = {}; showcaseVersion.value = Date.now()
-    void loadShowcaseManifest().catch(() => {})
-  }, { immediate: true })
 
   const showcaseUrl = computed(() => imageUrl(selectedImageId.value))
   const heroUrl = computed(() => selectedHeroId.value
     ? heroes.value[selectedHeroId.value].image
     : '')
-
-  function showcaseAssetUrl(id: string, kind: 'image' | 'thumb'): string {
-    const entry = showcaseEntries.value.get(id)
-    if (!entry) return ''
-    const path = entry[kind] || `${kind === 'image' ? 'images' : 'thumbs'}/${id}.jpg`
-    return /^(?:images|thumbs)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(path)
-      ? `/scene-showcase/${path}?v=${assetVersions.value[id] ?? showcaseVersion.value}` : ''
-  }
-  const thumbUrl = (id: string) => showcaseAssetUrl(id, 'thumb')
-  const imageUrl = (id: string) => showcaseAssetUrl(id, 'image')
-  const hasShowcase = (id: string) => showcaseEntries.value.has(id)
 
   function previewImage(s: ShowcaseSceneItem) {
     selectedImageId.value = s.id
@@ -211,7 +167,7 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
       if (!alive) return
       const message = data.message || '样张已保存'
       if (selectedImageId.value === id) showcaseFeedback.value = message
-      assetVersions.value = { ...assetVersions.value, [id]: Date.now() }
+      invalidateAsset(id)
       try { await loadShowcaseManifest() } catch (error) {
         if (!alive || selectedImageId.value !== id) return
         showcaseError.value = true
@@ -254,7 +210,7 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
 
   return {
     selectedImageId, selectedImageTitle,
-    showcaseFeedback, showcaseError, showcaseVersion, uploadBusy,
+    showcaseFeedback, showcaseError, uploadBusy,
     showcaseFileEl, heroFileEl, selectedHeroId, selectedHeroTitle, homeHeroes,
     showcaseUrl, heroUrl, manifestLoading, manifestError,
     thumbUrl, imageUrl, hasShowcase, loadShowcaseManifest,

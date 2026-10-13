@@ -27,7 +27,7 @@
           <StudioPopover label="更多整理操作">
             <template #trigger><button class="btn btn-ghost catalog-more-trigger" type="button" aria-label="更多整理操作"><ArchiveIcon name="chevron-down" /></button></template>
             <div class="catalog-more-menu">
-              <button type="button" :disabled="busy" @click="load"><ArchiveIcon name="refresh" />刷新内容</button>
+              <button type="button" :disabled="busy" @click="refreshContent"><ArchiveIcon name="refresh" />刷新内容</button>
               <button type="button" @click="exportDraft"><ArchiveIcon name="download" />备份未保存的修改</button>
               <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" />导出全部内容</button>
             </div>
@@ -101,7 +101,7 @@
   </article>
 </template>
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
@@ -118,8 +118,12 @@ import type { CatalogChange, CatalogKind, CatalogSummary } from '@/api/catalogAp
 import { catalogApi } from '@/api/catalogApi'
 import { maintenanceApi, type BackupEntry } from '@/api/maintenanceApi'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
+import { catalogShowcaseId } from '@/utils/showcaseManifest'
+import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 import '@/assets/css/catalog-maintenance.css'
 const section = ref('records'), route = useRoute(), editorPane = ref<HTMLElement | null>(null)
+const { thumbUrl, reload: reloadAssets } = useShowcaseAssets()
+watch(section, value => { if (value === 'records') void reloadAssets().catch(() => {}) })
 const CharacterArtManager = defineAsyncComponent(() => import('@/components/maintenance/CharacterArtManager.vue'))
 const artManager = ref<InstanceType<typeof CharacterArtManager> | null>(null)
 const switchingSection = ref(false)
@@ -136,11 +140,11 @@ const searchPlaceholder = computed(() => '找一份' + ({ character: '角色资�
 const hasFilters = computed(() => !!(character.value || category.value || rating.value))
 const sortOptions = [{ value: 'order', label: '按整理顺序' }, { value: 'title', label: '按名称' }, { value: 'newest', label: '最近加入' }, { value: 'updated', label: '最近编辑' }]
 function kindIcon(value: CatalogKind): ArchiveIconName { return kinds.find(entry => entry.value === value)!.icon }
+function refreshContent() { void load(); void reloadAssets().catch(() => {}) }
 function rowImage(item: CatalogSummary) {
   if (item.kind === 'character') return popularPortraitSrc(item.id)
   if (item.kind === 'outfit') return popularPortraitSrc(item.characterId)
-  if (item.kind === 'scene') return '/scene-showcase/thumbs/' + encodeURIComponent(item.id) + '.jpg'
-  if (item.kind === 'blueprint') return '/scene-showcase/thumbs/pc_' + encodeURIComponent(item.characterId) + '_' + encodeURIComponent(item.id) + '.jpg'
+  if (item.kind === 'scene' || item.kind === 'blueprint') return thumbUrl(catalogShowcaseId(item))
   return ''
 }
 function rowSubtitle(item: CatalogSummary) {

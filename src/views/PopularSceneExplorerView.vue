@@ -56,6 +56,9 @@
         <button v-if="pool.length" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
       </ArchiveStatePanel>
 
+      <ArchiveStatePanel v-if="assetsError" compact kind="error" title="样张清单暂不可用" :message="assetsError">
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="assetsLoading" @click="reloadAssets().catch(() => {})">重新读取样张</button>
+      </ArchiveStatePanel>
       <!-- 场景卡片网格 -->
       <div data-route-arrive v-content-motion:up="`${selectedId}:${category}:${ratingFilter}`" class="pop-grid" :style="{ '--scene-columns': columnCount }">
         <div v-for="(column, columnIndex) in masonryGroups[0]?.columns" :key="columnIndex" class="pop-column">
@@ -80,7 +83,7 @@
             <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
           </button>
           </RuntimeImage>
-          <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张待补充</strong><span>场景设定已就绪，可以直接绘制</span></span></div>
+          <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>{{ assetsLoading ? '正在读取样张' : assetsError ? '样张暂不可用' : '样张待补充' }}</strong><span>场景设定已就绪，可以直接绘制</span></span></div>
           <div class="pop-card-body">
             <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="sampleRatingOf(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + sampleRatingOf(blueprint)">{{ sampleRatingOf(blueprint) }}</span></div>
             <header class="pop-card-head"><h3>{{ blueprint.title }}</h3></header>
@@ -160,10 +163,13 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { catalogShowcaseId } from '@/utils/showcaseManifest'
+import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 
 const route = useRoute()
 const router = useRouter()
 const sceneStore = useSceneStore()
+const { thumbUrl, imageUrl, loading: assetsLoading, error: assetsError, reload: reloadAssets } = useShowcaseAssets()
 
 const loading = ref(true)
 const loadError = ref('')
@@ -271,7 +277,7 @@ watch(previewId, id => { if (id) previewBlueprint.value = filtered.value.find(it
 const previewItems = computed(() => filtered.value.map(blueprint => {
   const [width, height] = blueprint.recommendedSize.split('x').map(Number)
   return { id: blueprint.id, title: blueprint.title, width, height,
-    src: thumbSrc(blueprint).replace('/thumbs/', '/images/'), previewSrc: thumbSrc(blueprint), restricted: sampleRatingOf(blueprint) === 'R18' }
+    src: imageUrl(showcaseId(blueprint)), previewSrc: thumbSrc(blueprint), restricted: sampleRatingOf(blueprint) === 'R18' }
 }))
 function openPreview(blueprint: SceneBlueprint, event: MouseEvent) {
   const image = (event.currentTarget as HTMLElement).querySelector<HTMLImageElement>('img')
@@ -316,12 +322,11 @@ function resetFilters() {
   ratingFilter.value = 'all'
 }
 
-/** 样张缩略图：与灵感场景一致，路径为展示库样张 `pc_<角色>_<蓝图>`；通用成人蓝图无样张。 */
-const thumbVersion = ref(Date.now())
-function thumbSrc(blueprint: SceneBlueprint): string {
-  if (!blueprint.characterId || !selectedId.value) return ''
-  return `/scene-showcase/thumbs/pc_${selectedId.value}_${blueprint.id}.jpg?v=${thumbVersion.value}`
+/** The manifest retains real paths for both current and older saved blueprints. */
+function showcaseId(blueprint: SceneBlueprint): string {
+  return blueprint.characterId ? catalogShowcaseId({ kind: 'blueprint', id: blueprint.id, characterId: blueprint.characterId }) : ''
 }
+const thumbSrc = (blueprint: SceneBlueprint) => thumbUrl(showcaseId(blueprint))
 
 async function init() {
   loading.value = true

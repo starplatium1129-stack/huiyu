@@ -372,7 +372,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     // F2：提交不再销毁上一张成片——移入 stash，失败/取消可找回（见 stashedResult）。
     stashCurrentResult()
     patchState({ phase: 'submitting', job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: state.value.provider === 'native' ? '正在连接原生推理…' : state.value.online ? '正在连接 ComfyUI…' : '正在启动受管绘图服务…', statusText: '提交任务…', errorMsg: '', errorReport: null })
-    let accepted = false
+    let accepted = false, submitting = false
     const releaseLocalChat = async () => {
       if(isLocalStudioHost()) {
         await client.request('/api/local-setup/llama',{method:'DELETE',signal:controller.signal,timeoutMs:15_000,validate:value=>value.ok===true})
@@ -383,12 +383,13 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       if (durableAttempt) {
         const kind = family === 'krea2' ? 'creative' : 'anima'
         const input = animaRequestPayload(request)
-        durableKey = runtimeRequestKey(kind, input)
         const { runRuntimeAnima } = await import('./runtimeImageSession')
         await releaseLocalChat()
+        controller.signal.throwIfAborted()
+        durableKey = runtimeRequestKey(kind, input)
         await runRuntimeAnima({ input, key: durableKey, signal: controller.signal, family, context: pendingContext, state,
           isCurrent: () => !controller.signal.aborted && serial === requestSerial,
-          onAccepted: () => { accepted = true }, discardStashed: discardStashedResult, onResult })
+          onSubmitting: () => { submitting = true }, onAccepted: () => { accepted = true }, discardStashed: discardStashedResult, onResult })
         return
       }
       // Load the complete direct transport before creating an upstream job.
@@ -401,6 +402,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     } catch (error) {
       if (serial !== requestSerial) return
       if (durableAttempt) {
+        if (!submitting) { patchState({ phase: 'failed', statusText: '准备未完成，尚未提交生成', errorMsg: error instanceof Error ? error.message : String(error), errorReport: null }); return }
         const { runtimeAnimaFailure } = await import('./runtimeImageSession')
         if (serial === requestSerial) patchState(runtimeAnimaFailure(error, controller.signal.aborted, accepted))
         return

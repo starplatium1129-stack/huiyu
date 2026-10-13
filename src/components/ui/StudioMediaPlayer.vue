@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onDeactivated, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { useTaskMediaSource } from '@/composables/tasks/useTaskMediaSource'
@@ -35,6 +35,7 @@ const mediaError = taskMedia.error
 let resumeAt = 0, resumePlaying = false
 let playRevision = 0
 let reloadRevision = 0, automaticRecoveryAttempted = false
+let viewActive = true
 const reloading = ref(false)
 // Capture a URL renewal before the logical-source watcher clears old playback.
 // A deferred snapshot would restore the previous clip after switching sources.
@@ -121,7 +122,7 @@ function onEnded() { playing.value = false }
 
 async function reloadMedia() {
   const element = media.value
-  if (!element || reloading.value) return
+  if (!viewActive || !element || reloading.value) return
   const source = props.src, previousUrl = mediaSource.value, revision = ++reloadRevision
   reloading.value = true
   playRevision++
@@ -139,6 +140,7 @@ async function reloadMedia() {
 }
 
 function onMediaError() {
+  if (!viewActive) return
   failed.value = true
   // Broken media can emit metadata before failing again; only changing clips
   // resets automatic recovery, not a new capability URL or playback event.
@@ -164,7 +166,8 @@ function pause() {
   playing.value = false
   media.value?.pause()
 }
-onDeactivated(pause)
+onActivated(() => { viewActive = true })
+onDeactivated(() => { viewActive = false; reloadRevision++; reloading.value = false; pause() })
 defineExpose({ pause })
 onBeforeUnmount(() => {
   playRevision++

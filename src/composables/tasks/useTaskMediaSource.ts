@@ -1,4 +1,4 @@
-import { onUnmounted, ref, watch } from 'vue'
+import { onActivated, onDeactivated, onUnmounted, ref, watch } from 'vue'
 import { desktopRuntimeFetch, onDesktopRuntime } from '@/platform/desktop/runtime'
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 import { getRuntimeTask, isRuntimeResultPath } from '@/api/runtimeTasks'
@@ -7,10 +7,10 @@ import { getRuntimeTask, isRuntimeResultPath } from '@/api/runtimeTasks'
 export function useTaskMediaSource(source: () => string) {
   const url = ref(''), error = ref('')
   let controller: AbortController | undefined, timer: ReturnType<typeof setTimeout> | undefined
-  let revision = 0, disposed = false
+  let revision = 0, disposed = false, active = true
   function stopRenewal() { revision++; controller?.abort(); clearTimeout(timer); timer = undefined }
   async function refresh() {
-    if (disposed) return
+    if (disposed || !active) return
     const path = source(); const current = ++revision
     controller?.abort(); const request = new AbortController(); controller = request; clearTimeout(timer)
     if (!isRuntimeResultPath(path)) { url.value = resolveRuntimeUrl(path); error.value = ''; return }
@@ -37,6 +37,9 @@ export function useTaskMediaSource(source: () => string) {
     runtimeIdentity = identity
     if (previous !== undefined && identity !== previous && state.connection === 'ready' && isRuntimeResultPath(source())) void refresh()
   })
+  // KeepAlive preserves the clip and playback position, not background renewal.
+  onDeactivated(() => { active = false; stopRenewal() })
+  onActivated(() => { if (!active) { active = true; void refresh() } })
   onUnmounted(() => { disposed = true; stopRenewal(); unsubscribe() })
   return { url, error, refresh, stopRenewal }
 }

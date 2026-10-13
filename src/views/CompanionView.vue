@@ -292,9 +292,9 @@
           @close="speechSettingsOpen = false"
         />
 
-        <div v-if="speechState === 'error'" class="companion-error" role="status" aria-live="polite">{{ speechError }}</div>
-        <div v-show="chatError" class="companion-error" role="status" aria-live="polite" :data-kind="chatErrorKind">
-          {{ chatError }}
+        <div v-if="(speechState === 'error' && speechError) || chatError" class="companion-errors">
+          <div v-if="speechState === 'error' && speechError && speechError !== chatError" class="companion-error" role="status">{{ speechError }}</div>
+          <div v-if="chatError" class="companion-error" role="status" :data-kind="chatErrorKind">{{ chatError }}</div>
         </div>
         <p class="sr-only" role="status" aria-live="polite">{{ replyAnnouncement }}</p>
       </section>

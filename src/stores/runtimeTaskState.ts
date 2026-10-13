@@ -13,8 +13,11 @@ export const runtimeTasks = computed(() => taskRecords.value.map(task => {
 export const runtimeTasksEnabled = ref(false)
 export const runtimeTaskError = ref('')
 export const runtimeTaskActiveCount = computed(() => taskRecords.value.filter(task => !task.upstreamSettled).length)
-export const unresolvedTaskRequests = new Map<string, { key: string; kind: TaskRecord['kind'] }>()
+const unresolvedTaskRequests = new Map<string, { key: string; kind: TaskRecord['kind']; submitting: boolean }>()
 export const pendingTaskRequests = ref<Array<{ key: string; kind: TaskRecord['kind'] }>>([])
+const publishPendingRequests = () => {
+  pendingTaskRequests.value = [...unresolvedTaskRequests.values()].filter(request => request.submitting).map(({ key, kind }) => ({ key, kind }))
+}
 
 export function mergeTasks(incoming: readonly (TaskRecord | TaskSummary)[], expected: string, replace = false): void {
   if (incoming.length === 0 && !replace) return
@@ -39,7 +42,7 @@ export function mergeTasks(incoming: readonly (TaskRecord | TaskSummary)[], expe
   const received = new Set(incoming.map(task => task.requestKey))
   let resolved = false
   for (const [input, pending] of unresolvedTaskRequests) if (received.has(pending.key)) { unresolvedTaskRequests.delete(input); resolved = true }
-  if (resolved) pendingTaskRequests.value = [...unresolvedTaskRequests.values()]
+  if (resolved) publishPendingRequests()
 }
 export function rememberTask(task: TaskRecord, expected: string): TaskRecord {
   mergeTasks([task], expected)
@@ -52,13 +55,22 @@ export function runtimeRequestKey(kind: TaskRecord['kind'], input: Record<string
   const fingerprint = JSON.stringify({ kind, input }), previous = unresolvedTaskRequests.get(fingerprint)
   if (previous) return previous.key
   const key = crypto.randomUUID()
-  unresolvedTaskRequests.set(fingerprint, { key, kind }); pendingTaskRequests.value = [...unresolvedTaskRequests.values()]
+  // Reserve a stable identity without claiming that any request has been sent.
+  unresolvedTaskRequests.set(fingerprint, { key, kind, submitting: false })
   return key
 }
 
+export function markTaskRequestSubmitting(key: string): void {
+  for (const request of unresolvedTaskRequests.values()) if (request.key === key) request.submitting = true
+  publishPendingRequests()
+}
+export function releaseUnsubmittedTaskRequest(key: string): void {
+  // A retry may reuse an earlier unknown submission. Never erase that identity.
+  for (const [input, request] of unresolvedTaskRequests) if (request.key === key && !request.submitting) unresolvedTaskRequests.delete(input)
+}
 export function forgetTaskRequest(key: string): void {
   for (const [input, pending] of unresolvedTaskRequests) if (pending.key === key) unresolvedTaskRequests.delete(input)
-  pendingTaskRequests.value = [...unresolvedTaskRequests.values()]
+  publishPendingRequests()
 }
 export function clearRuntimeTasks(): void { taskRecords.value = [] }
 export function resetRuntimeTaskWorkspace(): void {

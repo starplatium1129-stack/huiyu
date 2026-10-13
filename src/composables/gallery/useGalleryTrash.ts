@@ -2,14 +2,13 @@ import { onActivated, onDeactivated, onUnmounted, ref, watch, type Ref } from 'v
 import { artworkRepository } from '@/storage/artworkRepository'
 import { confirmAction } from '@/composables/useConfirm'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
-type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "trashMode" | "trashItems" | "trashThumbs" | "trashBusy" | "showToast" | "loadGalleryStorage">
-export function useGalleryTrash({ trashMode, trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage }: Context): { loadTrash: () => Promise<void>; restoreTrashItem: (id: string | number) => Promise<void>; clearTrash: () => Promise<void>; trashClearing: Ref<boolean>; trashLoading: Ref<boolean>; trashError: Ref<string> } {
+type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "trashMode" | "trashItems" | "trashBusy" | "showToast" | "loadGalleryStorage">
+export function useGalleryTrash({ trashMode, trashItems, trashBusy, showToast, loadGalleryStorage }: Context): { loadTrash: () => Promise<void>; restoreTrashItem: (id: string | number) => Promise<void>; clearTrash: () => Promise<void>; trashClearing: Ref<boolean>; trashLoading: Ref<boolean>; trashError: Ref<string> } {
 const trashClearing = ref(false)
 const trashLoading = ref(false), trashError = ref('')
 let loadVersion = 0
 let restoreVersion = 0
 let viewRevision = 0
-let publishedIds = new Set<string | number>()
 let active = true
 let disposed = false
 function invalidateLoads() { loadVersion++; trashLoading.value = false }
@@ -35,22 +34,6 @@ async function loadTrash() {
     entries.sort((a, b) => Number(b.deletedAt) - Number(a.deletedAt))
     trashItems.value = entries
     trashLoading.value = false
-    const ids = publishedIds = new Set<string | number>(entries.map(entry => entry.id))
-    const keys = new Set(entries.map(entry => String(entry.id)))
-    for (const key of Object.keys(trashThumbs)) if (!keys.has(key)) delete trashThumbs[key]
-    for (const entry of entries) {
-      if (version !== loadVersion) return
-      if (!ids.has(entry.id)) continue
-      const imageId = entry.imageIds?.[0]
-      if (!imageId || trashThumbs[entry.id]) continue
-      try {
-        const thumb = await artworkRepository.getThumbnail(imageId)
-        if (version !== loadVersion) return
-        if (thumb && ids.has(entry.id)) trashThumbs[entry.id] = thumb
-      } catch (error) {
-        console.warn('[gallery] load trash thumbnail failed', error)
-      }
-    }
   } catch (e) {
     if (version === loadVersion && restoration === restoreVersion) trashError.value = '暂时无法读取回收站，请重新读取；已有作品不会因此被删除。'
     console.warn('[gallery] load trash failed', e)
@@ -65,12 +48,10 @@ async function restoreTrashItem(id: string | number) {
   try {
     const result = await artworkRepository.restoreArtwork(id)
     if (result.restored) {
-      // Reject pre-restore lists, but let published lists hydrate remaining items.
+      // A list started before this restore must not republish the removed entry.
       restoreVersion++
-      publishedIds.delete(id)
       showToast('已恢复，放回展墙', 'success')
       trashItems.value = trashItems.value.filter(entry => entry.id !== id)
-      delete trashThumbs[id]
       await loadGalleryStorage()
     } else {
       showToast(result.missingImageIds?.length

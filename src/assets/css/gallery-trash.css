@@ -4,6 +4,7 @@
 .trash-toolbar { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3 tw:text-secondary; }
 .trash-hint { @apply tw:text-body-sm; }
 .trash-actions { @apply tw:flex tw:items-center tw:gap-s-3; }
+.trash-pagination { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:var(--s-3); color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .trash-count { @apply tw:font-medium tw:text-primary tw:text-body-sm; white-space:nowrap; }
 .trash-card { @apply tw:relative tw:m-0 tw:min-w-0 tw:rounded-lg tw:overflow-hidden; border:1px solid var(--border-soft); background:var(--bg-surface); }
 .artwork-media { @apply tw:relative tw:w-full tw:overflow-hidden; aspect-ratio:1; background:var(--art-mat); }

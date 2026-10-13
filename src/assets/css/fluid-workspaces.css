@@ -10,6 +10,12 @@
 }
 
 /* Browse: shared rounded surfaces; page styles own layout, not the material. */
+html :is(.gallery-page, .scene-discovery) {
+  font-size: var(--fs-body-sm);
+  --fs-body: var(--fs-body-sm);
+  --fs-label: var(--fs-label-xs);
+  --fs-label-sm: var(--fs-label-xs);
+}
 html .gallery-page .gallery-toolbar,
 html .showcase-page .toolbar-shell,
 html .scene-discovery .scene-toolbar,
@@ -21,6 +27,21 @@ html .library-page .pop-toolbar {
   box-shadow: var(--workspace-inset);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+}
+html .gallery-page .gallery-toolbar,
+html .scene-discovery .scene-toolbar { border-radius:var(--r-xl); }
+/* Fields are painted controls; only their teleported menus use floating glass. */
+html :is(.gallery-toolbar, .scene-toolbar) :is(.studio-search, .studio-select-trigger, .studio-segments[role]) {
+  border-radius:var(--r-md);
+  background:var(--bg-surface);
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+html :is(.gallery-toolbar, .scene-toolbar) :is(.studio-search, .studio-select-trigger) {
+  border:1px solid var(--border-soft);
+}
+html :is(.gallery-toolbar, .scene-toolbar) .studio-search[data-size='md'] .studio-search-input {
+  min-height:calc(var(--control-height) - 2px);
 }
 html .scene-discovery .scene-toolbar::before { @apply tw:hidden; }
 html .gallery-page .gallery-search,
@@ -136,15 +157,6 @@ html .scenario-page .prompt-code { background: var(--bg-base); border: 1px solid
 /* Drawing: small chrome receives depth, large prompts and preview stay stable. */
 html .pb.journal-workspace :is(.panel, .result-frame) { box-shadow: var(--workspace-inset); }
 html .pb.journal-workspace .panel-title { @apply tw:leading-label; }
-html .pb.journal-workspace .gen-bar {
-  border-color: var(--workspace-edge);
-  @apply tw:rounded-xl;
-  background: linear-gradient(120deg, var(--glass-highlight), transparent 54%), var(--workspace-chrome);
-  box-shadow: var(--workspace-lift);
-  -webkit-backdrop-filter: blur(24px) saturate(135%);
-  backdrop-filter: blur(24px) saturate(135%);
-}
-html .pb.journal-workspace .gen-bar-actions .btn-primary:not(:disabled) { box-shadow: var(--shadow-glass-sm); }
 
 /* Video: mode selection as one control group, not four competing raised cards. */
 html .video-studio .video-mode-strip {

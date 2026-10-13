@@ -1,6 +1,10 @@
 export type ShowcaseRating = 'All' | 'R15' | 'R18'
 export type ShowcaseEntryType = 'scene' | 'artist' | 'popular' | 'lora'
 
+export function catalogShowcaseId(record: { kind: string; id: string; characterId: string }): string {
+  return record.kind === 'blueprint' ? `pc_${record.characterId}_${record.id}` : record.id
+}
+
 /**
  * 生成版本元数据：字段全部可选，旧样张缺省即视为「未记录」。
  * engine/model/checkpoint 指生成引擎、模型名与 checkpoint 文件；

@@ -59,8 +59,8 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
-import { artworkRepository } from '@/storage/artworkRepository'
+import { computed, ref } from 'vue'
+import { useHistoryThumbnails } from '@/composables/prompt/useHistoryThumbnails'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { artworkTimestamp } from '@/types/artwork'
@@ -68,11 +68,11 @@ import type { ArtworkRecord } from '@/types/artwork'
 import { useSceneStore } from '@/stores/sceneStore'
 import '@/assets/css/director/components/HistoryPanel.css'
 
-// 与 config/characters.ts 共用 Express 服务的同一份立绘 URL，避免 Vite 打包副本
+// 与角色配置共用运行时立绘 URL，避免 Vite 打包副本。
 const placeholderUrl = '/assets/characters/nene-official.webp'
 const sceneStore = useSceneStore()
 
-const props = defineProps<{ history: ArtworkRecord[] }>()
+const props = defineProps<{ history: ArtworkRecord[]; active: boolean }>()
 defineEmits<{
   resume: [entry: ArtworkRecord]
   duplicate: [entry: ArtworkRecord]
@@ -88,10 +88,8 @@ const selectedSet = ref(new Set<string | number>())
 const selectedEntries = computed(() =>
   props.history.filter(entry => selectedSet.value.has(entry.id)))
 
-const thumbs = reactive<Record<string | number, string>>({})
-const thumbnailRequests = new Map<string | number, { imageId: string }>()
-let disposed = false
 const items = computed(() => props.history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 12))
+const thumbs = useHistoryThumbnails(() => items.value, () => props.active)
 
 function engineSummary(item: ArtworkRecord): string {
   const engineName = item.engine === 'krea2' ? 'Krea 2' : 'Anima'
@@ -102,44 +100,6 @@ function engineSummary(item: ArtworkRecord): string {
   const charLabel = item.character === 'natsume' ? '夏目' : item.character === 'triad' ? '宁宁与夏目' : '宁宁'
   return `${engineName} · ${charLabel}`
 }
-
-function releaseThumb(id: string | number) {
-  if (thumbs[id]) URL.revokeObjectURL(thumbs[id])
-  delete thumbs[id]
-  thumbnailRequests.delete(id)
-}
-
-async function ensureThumb(id: string | number, request: { imageId: string }) {
-  try {
-    const blob = await artworkRepository.getImage(request.imageId)
-    if (disposed || thumbnailRequests.get(id) !== request) return
-    if (blob) thumbs[id] = URL.createObjectURL(blob)
-    else thumbnailRequests.delete(id)
-  } catch (e) {
-    if (!disposed && thumbnailRequests.get(id) === request) {
-      thumbnailRequests.delete(id)
-      console.warn('history thumb load failed', e)
-    }
-  }
-}
-
-watch(() => items.value.map(item => [item.id, item.image_id] as const), next => {
-  const visible = new Map(next)
-  for (const [id, request] of thumbnailRequests) {
-    if (visible.get(id) !== request.imageId) releaseThumb(id)
-  }
-  for (const [id, imageId] of next) {
-    if (!imageId || thumbnailRequests.has(id)) continue
-    const request = { imageId }
-    thumbnailRequests.set(id, request)
-    void ensureThumb(id, request)
-  }
-}, { immediate: true })
-
-onBeforeUnmount(() => {
-  disposed = true
-  for (const id of thumbnailRequests.keys()) releaseThumb(id)
-})
 
 </script>
 

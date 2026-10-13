@@ -49,9 +49,6 @@ body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
 .pb.journal-workspace .stage-quick-actions .btn { @apply tw:text-label; }
 .pb.journal-workspace .stage-quick-actions .btn-ghost { background: var(--bg-surface); }
 .pb.journal-workspace .result-image-wrap { @apply tw:border-soft tw:rounded-xl; box-shadow: none; }
-.pb.journal-workspace .gen-bar { padding: var(--s-3) var(--s-4); background: var(--bg-surface); @apply tw:border-soft tw:rounded-lg; box-shadow: none; backdrop-filter: none; transition: none; }
-.pb.journal-workspace .gen-bar-actions .btn { @apply tw:rounded-md tw:min-h-[44px]; }
-.pb.journal-workspace .gen-bar-actions .btn-primary:not(:disabled) { box-shadow: none; }
 .pb.journal-workspace .drawing-jump-links { @apply tw:hidden; }
 @media (max-width: 1100px) {
   .pb.journal-workspace .pb-topline { @apply tw:flex-col tw:gap-s-3; }
@@ -83,6 +80,5 @@ body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
   .pb.journal-workspace .api-status .badge { @apply tw:max-w-full tw:whitespace-normal tw:text-left; }
   .pb.journal-workspace .stage-placeholder { @apply tw:min-h-[360px]; }
   .pb.journal-workspace .stage-quick-actions { @apply tw:flex-col; }
-  .pb.journal-workspace .gen-bar { @apply tw:p-s-3; }
 }
 .pb.journal-workspace.focus-mode .pb-managed-route-banner, .pb.journal-workspace.focus-mode .drawing-jump-links { @apply tw:hidden; }

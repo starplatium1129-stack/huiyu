@@ -1,70 +1,63 @@
-@reference "../../tailwind.css";
-  /* ============================================================
-   GenerationActionBar 吸附式出图条 —— 尺寸 + 生成/停止
-   （2026-08-28 审计：紧跟画布、滚动吸附于导航下沿，
-    出图尺寸不再埋在栏底面板；主行动同步加载保证首屏即位）
-   ============================================================ */
-  .pb .gen-bar {
-    @apply tw:sticky tw:top-[54px]; z-index: var(--z-sticky);
-    @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap;
-    padding: var(--s-2) var(--s-4);
-    border: 1px solid var(--glass-edge);
-    @apply tw:rounded-2xl;
-    background:
-      linear-gradient(135deg,var(--glass-specular),transparent 34%,transparent 68%,color-mix(in srgb,var(--accent) 10%,transparent)),
-      var(--glass-fill);
-    box-shadow: inset 0 1px 0 var(--glass-highlight), 0 12px 36px -6px rgba(4, 3, 16, 0.38);
-    transition: border-color var(--motion-hover), box-shadow var(--motion-hover);
-  }
-  .pb .gen-bar-size { @apply tw:flex tw:items-center tw:gap-s-2 tw:text-muted tw:text-body; }
-  .pb .gen-bar-size .studio-select-wrapper {
-    @apply tw:max-w-[220px] tw:min-w-[140px];
-  }
-  /* 校验未通过的原因：贴在按钮左侧常驻，比 title 悬停提示可靠 */
-  .pb .gen-bar-blocked {
-    flex: 1 1 16rem; @apply tw:min-w-0 tw:ml-auto tw:text-danger-text tw:text-body tw:leading-body;
-  }
-  .pb .gen-bar-actions { @apply tw:flex tw:flex-wrap tw:justify-end tw:items-center tw:gap-s-2 tw:ml-auto; }
-  .pb .generation-action { position:relative; isolation:isolate; }
-  .pb .generation-action-surface { position:absolute; inset:0; z-index:-1; border:1px solid var(--accent); border-radius:inherit; background:var(--accent); transform-origin:top left; }
-  .pb .generation-action-content { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--s-2); }
-  .pb .generation-action-label { display:flex; align-items:center; justify-content:center; gap:var(--s-2); white-space:nowrap; }
-  .pb .generation-track { grid-column:1 / -1; display:block; height:5px; overflow:hidden; border-radius:var(--r-pill); background:var(--border-strong); }
-  .pb .generation-track i { display:block; width:100%; height:100%; transform-origin:left; background:currentColor; border-radius:inherit; transition:transform var(--motion-surface) var(--ease-out); }
-  .pb .generation-track.is-indeterminate i { width:28%; animation:generation-traverse 1100ms linear infinite; }
-  .pb .generation-percent { font:600 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
-  .pb .gen-bar-actions .is-drawing { color:var(--accent); }
-  .pb .generation-action[data-state="success"]:not(:disabled) { color:var(--success-text); }
-  .pb .generation-action[data-state="error"]:not(:disabled) { color:var(--danger-text); }
-  .pb .generation-action:is([data-state="success"],[data-state="error"]) .generation-action-surface { background:var(--bg-surface); border-color:currentColor; }
-  .pb .is-drawing .generation-action-surface { background:var(--accent-soft); }
-  @keyframes generation-traverse { from { transform:translateX(-110%); } to { transform:translateX(370%); } }
-  @media (prefers-reduced-motion:reduce) { .pb .generation-track i { animation:none; transition:none; } }
-  :root:is([data-motion="reduce"],[data-motion="reduced"]) .pb .generation-track i { animation:none; transition:none; }
-  /* 有原因时按钮组不再抢 auto 外边距，让原因与按钮各占一端 */
-  .pb .gen-bar-blocked + .gen-bar-actions { @apply tw:ml-0; }
-  .pb.journal-workspace .gen-bar-actions .btn { min-height:var(--control-height); min-width:104px; @apply tw:text-label; padding:var(--s-2) var(--s-3); border-radius:var(--r-md); }
-  .pb.journal-workspace .gen-bar-actions .generation-action { min-width:156px; width:156px; min-height:var(--control-height); border:0; border-radius:var(--r-md); background:transparent; }
-  .pb.journal-workspace .gen-bar-actions .generation-action.is-drawing { min-height:64px; border-radius:var(--r-md); }
-  .pb .is-drawing .generation-action-label { justify-content:flex-start; }
-  .pb .generation-action:disabled .generation-action-surface { border-color:var(--border-soft); background:var(--bg-elevated); }
-  .pb.atelier-workspace .generation-action.btn-primary:not(:disabled) { box-shadow:none; }
-  .pb .gen-bar-actions .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .pb .gen-bar-actions .btn-primary:not(:disabled) {
-    box-shadow: 0 0 16px -2px var(--character-glow, var(--accent-glow));
-  }
-
-  @media (max-width: 768px) {
-    /* 移动端导航换行后实测高 ~63px（z-nav 高于本条），吸附点须让过导航，
-       沿用站内 sticky 工具条的硬编码惯例（54/58px 同源） */
-    .pb .gen-bar { @apply tw:top-[66px] tw:rounded-md; }
-    .pb .gen-bar-size { flex: 1; @apply tw:min-w-0; }
-    .pb .gen-bar-size .studio-select-wrapper { flex: 1; @apply tw:min-w-0; max-width: none; }
-    .pb .gen-bar-size .studio-select-trigger { @apply tw:min-h-[44px]; }
-    .pb .gen-bar-actions { @apply tw:ml-0; }
-    .pb.journal-workspace .gen-bar-actions .btn { min-height:var(--control-height); }
-  }
-  @media (max-width: 600px) {
-    /* 尺寸独占一行，避免离线原因和生成按钮把所选尺寸挤成两位数字。 */
-    .pb .gen-bar-size { flex: 1 1 100%; }
-  }
+/* The component owns internal spacing and both placements. Parent layouts only
+   allocate the actions slot and its sticky/grid position. No glass backdrop. */
+.pb .gen-bar {
+  position:sticky; z-index:var(--z-sticky); min-width:0;
+  display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2) var(--s-4);
+  padding:var(--s-3) 20px; border:1px solid var(--border-soft);
+  border-radius:var(--r-lg); background:var(--bg-surface);
+}
+.pb .gen-bar-size { flex:1 1 200px; min-width:0; }
+.pb .gen-bar-size .studio-select-wrapper { flex:1; min-width:0; max-width:100%; }
+.pb .gen-bar-meta {
+  flex:1 1 240px; display:flex; flex-wrap:wrap; align-items:center;
+  justify-content:space-between; gap:4px var(--s-2); min-width:0;
+  color:var(--text-secondary); font:12px/1.7 var(--font-sans);
+}
+.pb .gen-bar-status { display:flex; flex-wrap:wrap; align-items:center; gap:4px var(--s-2); min-width:0; }
+.pb .gen-bar-status>span { display:inline-flex; align-items:center; gap:6px; }
+.pb .gen-bar-meta .archive-icon { width:14px; height:14px; flex-shrink:0; }
+.pb .gen-bar-meta small { font-size:11px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.pb .gen-bar-recovery { display:inline-flex; align-items:center; min-height:24px; color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
+.pb .gen-bar-recovery:hover { color:var(--text-primary); }
+.pb .gen-bar-blocked { flex:1 1 100%; min-width:0; color:var(--danger-text); font:13px/1.7 var(--font-sans); overflow-wrap:anywhere; }
+.pb .gen-bar-actions { display:flex; flex:0 1 180px; min-width:0; margin-left:auto; }
+/* The tooltip wrapper, not its nested button, participates in flex layout. */
+.pb .gen-bar-actions>.studio-tooltip-anchor { flex:1; min-width:0; }
+.pb .gen-bar .generation-action {
+  position:relative; isolation:isolate; width:100%; min-width:0; min-height:44px;
+  padding:var(--s-2) var(--s-3); border:0; border-radius:var(--r-md);
+  background:transparent; box-shadow:none; font-size:14px; line-height:1.2;
+}
+.pb .generation-action-surface { position:absolute; inset:0; z-index:-1; border:1px solid var(--accent); border-radius:inherit; background:var(--accent); transform-origin:top left; }
+.pb .generation-action-content { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--s-2); }
+.pb .generation-action-label { display:flex; align-items:center; justify-content:center; gap:var(--s-2); white-space:nowrap; }
+.pb .generation-action[data-state="idle"]:hover:not(:disabled) .generation-action-surface { background:color-mix(in srgb,var(--accent) 90%,var(--text-primary)); }
+.pb .generation-action[data-state="success"]:not(:disabled) { color:var(--success-text); }
+.pb .generation-action[data-state="error"]:not(:disabled) { color:var(--danger-text); }
+.pb .generation-action:is([data-state="success"],[data-state="error"]) .generation-action-surface { background:var(--bg-surface); border-color:currentColor; }
+.pb .generation-action.is-drawing { color:var(--accent); }
+.pb .is-drawing .generation-action-surface { background:var(--accent-soft); }
+.pb .is-drawing .generation-action-content { padding-bottom:5px; }
+.pb .is-drawing .generation-action-label { justify-content:flex-start; }
+/* Progress lives inside the same 44px action; starting/stopping does not grow it. */
+.pb .generation-track { position:absolute; inset:auto 12px 5px; display:block; height:3px; overflow:hidden; border-radius:var(--r-pill); background:var(--border-strong); }
+.pb .generation-track i { display:block; width:100%; height:100%; transform-origin:left; background:currentColor; border-radius:inherit; transition:transform var(--motion-surface) var(--ease-out); }
+.pb .generation-track.is-indeterminate i { width:28%; animation:generation-traverse 1100ms linear infinite; }
+.pb .generation-percent { font:600 12px/1.2 var(--font-mono); font-variant-numeric:tabular-nums; }
+.pb .generation-action:disabled { color:var(--text-disabled); }
+.pb .generation-action:disabled .generation-action-surface { border-color:var(--border-soft); background:var(--bg-elevated); }
+.pb :is(.gen-bar-recovery,.generation-action):focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.pb .gen-bar[data-docked] { flex-direction:column; align-items:stretch; border:0; border-radius:0; }
+.pb .gen-bar[data-docked] :is(.gen-bar-meta,.gen-bar-blocked,.gen-bar-actions) { flex:0 0 auto; width:100%; margin:0; }
+@keyframes generation-traverse { from { transform:translateX(-110%); } to { transform:translateX(370%); } }
+@media (prefers-reduced-motion:reduce) { .pb .generation-track i { animation:none; transition:none; } }
+:root:is([data-motion="reduce"],[data-motion="reduced"]) .pb .generation-track i { animation:none; transition:none; }
+@media (max-width:600px) {
+  .pb .gen-bar { padding:var(--s-3); }
+  .pb .gen-bar-size { flex-basis:100%; }
+  .pb .gen-bar-actions { flex:1 1 180px; }
+}
+@media (forced-colors:active) {
+  .pb .gen-bar { background:Canvas; color:CanvasText; }
+  .pb .generation-action-surface { background:ButtonFace; border-color:ButtonText; }
+}
