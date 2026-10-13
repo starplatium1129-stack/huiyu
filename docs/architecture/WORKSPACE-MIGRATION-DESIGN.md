@@ -63,7 +63,7 @@
 
 私人 workspace API 只接受桌面专属会话，不能仅凭当前共享网关 token 授权。纯 Web 模式继续使用自己的 IndexedDB；它不是桌面库的离线副本，也不会自动合并进桌面。以后增加浏览器访问私人库需独立配对，不在本轮默认开放。
 
-回收站使用 `GET /api/workspace/artworks?deletedOnly=true`，只读取 `artworks.deleted_at IS NOT NULL` 的完整作品行，不改读 `trash.snapshot`。`deletedOnly` 只接受 `true` / `false`；为 true 时优先于 `includeDeleted`，未指定或为 false 时保留旧 `includeDeleted=true` 的全量语义及默认活跃作品语义。每页 1–200 条、`id_key` / limit+1 游标、workspace revision / artworkRevision 和原 TrashEntry 映射保持不变。v3 打开时补建 `artworks_deleted_id` 删除部分索引，与活跃索引对称，不改变数据格式或业务修订号；新查询参数须随对应 Rust 后端和前端一起交付。
+回收站使用 `GET /api/workspace/artworks?deletedOnly=true`，只读取 `artworks.deleted_at IS NOT NULL` 的完整作品行，不改读 `trash.snapshot`。`deletedOnly` 只接受 `true` / `false`；为 true 时优先于 `includeDeleted`，未指定或为 false 时保留旧 `includeDeleted=true` 的全量语义及默认活跃作品语义。每页 1–200 条、`id_key` / limit+1 游标、workspace revision / artworkRevision 和原 TrashEntry 映射保持不变。v3 打开时补建 `artworks_deleted_id` 删除部分索引，与活跃索引对称，不改变数据格式或业务修订号；新查询参数须随对应 Rust 后端和前端一起交付。 桌面 `listTrash` 在开始时取得既有会话快照，分页完成后复核 origin、运行时 epoch、workspace ID/epoch/generation；结束身份不一致则拒绝整次结果。逐页双修订检查仍保留，token 续期不属于身份变化；该检查不提前终止后续读取，不新增离线缓存。
 
 ### 作品读取派生索引
 

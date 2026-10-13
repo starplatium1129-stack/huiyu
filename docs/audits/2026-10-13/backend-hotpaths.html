@@ -67,7 +67,7 @@
 </section>
 <section id="cloud-integration">
 <h2>回收站与 Live2D 整合 · 云端续测 2026-10-12 UTC</h2>
-<p>源码审查并 cherry-pick 独立分支 <code>perf/trash-live2d-20261012</code> 的 <code>0657f9a5d1aa8b6dd54733515b2122084f7c238b</code>，整合提交 <code>58944ea69004376a154a4e1e60f7907d31f67b0c</code>。完整审查六个产品文件、API 参数和客户端序列化：deletedOnly=true 优先筛选删除行，旧 includeDeleted=true 全量与默认活跃语义不变，正文／游标／双修订／取消／原 TrashEntry 映射保留。schema 同时保留所有任务索引与新删除作品索引。新参数须前后端一起交付；跨页 session／epoch 未固定为既有问题，本轮未扩大修复，也未复现或宣称已解决。</p>
+<p>源码审查并 cherry-pick 独立分支 <code>perf/trash-live2d-20261012</code> 的 <code>0657f9a5d1aa8b6dd54733515b2122084f7c238b</code>，整合提交 <code>58944ea69004376a154a4e1e60f7907d31f67b0c</code>。完整审查六个产品文件、API 参数和客户端序列化：deletedOnly=true 优先筛选删除行，旧 includeDeleted=true 全量与默认活跃语义不变，正文／游标／双修订／取消／原 TrashEntry 映射保留。schema 同时保留所有任务索引与新删除作品索引。新参数须前后端一起交付；跨页 session／epoch 未固定为既有问题，当时未扩大修复；后续源码一致性修正见<a href="#cloud-trash-session">会话边界章节</a>，未执行切换场景。</p>
 <p>Live2D 健康 worker 只求布尔可用性，在第一个经过完整内置或导入模型检查且启用的候选后停止；catalog／资源授权仍走完整路径。共享原检查，未放宽 manifest、依赖、receipt、目录和链接边界；仍由实际 blocking worker 持有许可与 refreshing 标志，保留 4 秒 TTL、60 秒期限、取消后等待、revision 失效及 shutdown。主会话与另一独立审查未发现新增阻塞项。</p>
 <p>并行作者的 <a href="../2026-10-12/trash-live2d-performance.html">原 HTML 与环境记录</a> 报告：Linux Xeon 8573C／Rust 1.99 debug、仓库两套真实内置模型，无导入模型，带模型路径文件调用 382→93；重复刷新调用区间中位数 19.33→5.19 ms。它含 strace 跟踪开销，不能当作实际请求时延／完整 worker 时间；本主环境没有重跑该观测。原包 <a href="oai-library://libfile_4feeb13313948191b1deb07bcb5b60de/huiyu-trash-live2d-20261012.zip">huiyu-trash-live2d-20261012.zip</a>，v0、732,392 字节，作者提供 SHA-256 <code>e5bb0a831d43bea00f862f8c80773599399647051326d9499cafedc9dd270c33</code>。本环境通过当前 Library 支持流程准备后下载失败，尚未重新核验其中原始日志；保留独立来源，不声称日志已装入本主证据包或已本地复测。</p>
 <h3>回收站读取的补充纯观测</h3>
@@ -217,5 +217,9 @@
 <h3>对应Python3.11 CPU进程高水位</h3>
 <p>同源／输入／参数，每次全新Python3.11进程只做一次实际完整后处理，3轮顺序ABBA每侧n6。导入／源码与input hash在操作前，Linux ru_maxrss在输出身份／序列化之前采集，输出仍存活；OS缓存未清，不代表磁盘冷或暖驻留模型。操作前进程高水位median206.578→206.371 MiB；操作后median311.178→310.002 MiB，范围309.289–313.484→309.711–316.816 MiB，差约−1.176MiB且范围重叠，不宣称稳定内存下降。操作后即时VmRSS median244.137→230.471 MiB受allocator影响，不能推广为长驻留RAM。首次操作median533.311→275.595 ms，范围518.345–832.502→232.896–293.787，与热n20组分开。高水位包含启动/导入及全方法，非精确增长阶段、PSS、模型或显存峰值。</p>
 <p>完整子进程source/input/环境/前后RSS/耗时/自身PID和stderr保存于 <code>auto-mask-default-memory-perf-20261013/python311</code>；全部正常退出，不是行为验收。既有1536²grow6／Python3.12 n6成本组保留原参数与身份，不改标到本组。Windows生产Python3.11、真实CLIPSeg模型／mask边界、完整任务、缓存驻留和VRAM仍需设备验收。</p></section>
+<section id="cloud-trash-session"><h2>回收站分页会话边界 · 源码一致性修正</h2>
+<p>调用链useGalleryTrash.loadTrash→artworkRepository.listTrash→分页list→workspaceRequest→desktopRuntimeFetch。既有repository固定workspace ID，单请求检查响应workspace ID／epoch并在运行时变化时取消在途请求，分页检查workspace revision／artworkRevision；调用者也拒绝关闭／新加载／恢复前的迟到结果。因此不能声称能混入任意工作区或跨principal私有作品，作品属于workspace共享库。但页已完成、下一页未发出时切到相同workspace ID的新epoch，且双revision恰好相同，整次读取缺少固定会话键，源码上可合并跨代际结果。deletedOnly没有扩大这个既有缺口，未通过竞态复现证明。</p>
+<p>最小修正仅listTrash：开始readSession()，等待原list('deleted')，返回前checkReadSession(session)，与现有readHistory/readPreferenceHistory一致。身份包含origin、runtime epoch、workspace ID／epoch／generation，token续期不入键；身份变化时清理既有读取缓存，同身份不额外失效。原filter／TrashEntry映射、正文、分页／修订、请求取消和UI设计均保持。没有新增网络请求、抽象、缓存或模型调用。此为正确性修正，不标为性能提升，不把旧HTTP／Storage数据标成客户端性能或会话行为验收。</p>
+<p>最新实际应用typecheck退出0（<code>runtime/trash-session-integration-typecheck.log</code>），单文件diff与独立只读复核通过；TS文件357总行／低于500有效行上限。Rust／Python产品源未变，复用匹配的source6ada／binaryd43官方Rust构建与Python语法证据。未编写／运行测试、错误注入、输出比较或切换脚本。检查发生在整次分页完成后，不提前中止已开始的跨代际后续读取；请求已完成后才断连且身份保留时，可返回已取得快照，与既有历史读取实践一致。实际Windows重连、恢复、调用者错误提示及并发切换仍需设备验收。</p></section>
 <footer>原始日志、源码哈希与构建回执保存在被忽略的 <code>runtime/backend-performance-20261013/round2/</code>。此前优化保留；本报告只列本轮新增改动与必要验证。当前未部署。</footer>
 </html>

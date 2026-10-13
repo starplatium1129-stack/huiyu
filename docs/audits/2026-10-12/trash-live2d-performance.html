@@ -12,7 +12,7 @@
 <table aria-label="改动及保留契约">
 <thead><tr><th>范围</th><th>改动</th><th>保留的契约</th></tr></thead>
 <tbody>
-<tr><td>桌面回收站</td><td><code>listTrash()</code> 请求 <code>deletedOnly=true</code>，SQL 直接筛选 <code>deleted_at IS NOT NULL</code>。新增与活跃索引对称的 <code>artworks_deleted_id</code>，v3 打开及旧备份恢复后按原入口补建。</td><td>旧 <code>includeDeleted=true</code> 仍读全量；新增参数只接受 true / false，为 true 时优先。完整 body、ID、revision、deletedAt、每页上限 200、id_key / limit+1 游标、workspace revision / artworkRevision、取消和 TrashEntry 原映射保持不变；不改读 trash.snapshot。前后端须一并交付。</td></tr>
+<tr><td>桌面回收站</td><td><code>listTrash()</code> 请求 <code>deletedOnly=true</code>，SQL 直接筛选 <code>deleted_at IS NOT NULL</code>。新增与活跃索引对称的 <code>artworks_deleted_id</code>，v3 与旧备份候选实际打开 Storage 时按原入口补建。</td><td>旧 <code>includeDeleted=true</code> 仍读全量；新增参数只接受 true / false，为 true 时优先。完整 body、ID、revision、deletedAt、每页上限 200、id_key / limit+1 游标、workspace revision / artworkRevision、取消和 TrashEntry 原映射保持不变；不改读 trash.snapshot。前后端须一并交付。</td></tr>
 <tr><td>Live2D 健康探测</td><td>健康 worker 改用布尔可用性扫描，首个完整可用模型后停止，不构建完整 catalog JSON。提取原内置模型检查供两个入口共用，导入模型继续调用原完整检查。</td><td>内置清单格式、每个依赖文件与目录边界检查不变；导入根 no_links、身份、receipt、完整文件与依赖清单及 disabled 判断不变。没有可用模型时遍历全部候选。完整 catalog 与实际资源访问仍走原检查；4 秒 TTL、60 秒期限、工作许可、取消、refreshing 去重、revision 失效及 shutdown 等待不变。</td></tr>
 </tbody></table>
 <h2>真实性能观测</h2>
@@ -42,4 +42,5 @@
 <h2>整合交接</h2>
 <p>独立分支 <code>perf/trash-live2d-20261012</code> 基于 f06a51e3。受控源码为 <code>src/platform/desktop/artworkRepository.ts</code>、<code>runtime-rs/src/workspace_http/commands.rs</code>、<code>storage/records.rs</code>、<code>storage/schema.rs</code>、<code>live2d/catalog.rs</code>、<code>live2d/health.rs</code>；文档为本 HTML、workspace 契约段落和 docs/INDEX.md。schema.rs 只改 open() 中索引说明并在 artworks_live_id 紧后新增 artworks_deleted_id，约 330–338 行，整合时保留 PR #74 的全部任务索引 hunk。docs/INDEX.md 若其他分支也追加报告，保留双方入口。</p>
 <p>交付包提供相对 f06a51e3 的补丁、增量 Git bundle、HTML 和全部选定原始观测 / 编译日志，不含运行配置、凭据、模型副本、数据库、工具链或 370 MB debug 可执行文件。可以在已有 f06a51e3 的仓库导入 bundle，再 cherry-pick 独立提交；远端 commit、文件清单及恢复入口在交付包的 handoff.html 记录。</p>
+<section><h2>后续客户端一致性修正</h2><p>后续云端审查为桌面listTrash沿用readHistory已有readSession／checkReadSession：开始固定origin、runtime epoch及workspace ID/epoch/generation，整次分页完成后拒绝结束身份不一致的结果，原deletedOnly筛选、双修订和TrashEntry映射保留。token续期不入身份键；身份变化时清理既有读取缓存，同行为与历史读取一致。此为源码确认的既有页间缺口修正，不标为性能收益；此前normal API／Storage数据排除该客户端检查，保留原绑定。当前应用typecheck退出0，源码/diff复核无阻塞；未测试或复现切换场景。后续读取不提前中止，已完成请求后断连但身份仍保留时可返回取得的快照；运行时重连/恢复仍需设备验收。</p></section>
 </html>

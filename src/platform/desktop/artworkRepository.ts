@@ -328,7 +328,12 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       }
       return { purged }
     },
-    async listTrash() { return (await list('deleted')).rows.filter(item => item.deletedAt !== null).map(item => ({ id: String(item.id), deletedAt: item.deletedAt!, historyEntries: [item.body], projectRefs: [], imageIds: item.body.image_id ? [item.body.image_id] : [] })) },
+    async listTrash() {
+      const session = readSession()
+      const { rows } = await list('deleted')
+      checkReadSession(session)
+      return rows.filter(item => item.deletedAt !== null).map(item => ({ id: String(item.id), deletedAt: item.deletedAt!, historyEntries: [item.body], projectRefs: [], imageIds: item.body.image_id ? [item.body.image_id] : [] }))
+    },
   }
   return { ...repository,
     withStaging: work => trackMaintenanceWrite(work),
