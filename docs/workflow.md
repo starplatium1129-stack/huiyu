@@ -51,7 +51,7 @@
 | 只读严格检查 TypeScript | `npm run wf -- check:typescript`（服务、网关、工具与独立浏览器脚本） |
 | 检查本机桌面打包能力 | `npm run wf -- desktop:doctor --json`（只检测，不安装） |
 | 检查安装包网关资源完整性 | `npm run wf -- desktop:verify-gateway`（需要已暂存资源；隔离目录真实启动，打包前自动执行） |
-| 生成本机候选安装包 | `npm run wf -- desktop:package-local`（跳过压缩，不安装） |
+| 生成本机升级包 | `npm run wf -- desktop:package-local --install-dir "C:\Program Files\AI-CG-Studio"`（直接构建升级包，不压缩、不安装） |
 
 所有执行固定在项目根目录。Node/npm 参数保留空格，npm 自动补转发分隔符。复合步骤失败即停止；reference:full 由专用候选入口处理公共参数和人工审核待验状态。只读审计覆盖注册文件、npm 入口、文档存在性、复合依赖循环和 run 元数据合法性，不代表模型、账户、外部服务或桌面安装已经验收。
 
@@ -331,7 +331,7 @@ rust:build 需要已有 Rust/MSVC 工具链，首次可能下载锁定 crate，�
 
 已下载的 LPK 可复用夏目使用的 [LpkUnpacker](https://github.com/ihopenot/LpkUnpacker) 命令行工具：`LpkUnpacker.py <包.lpk> <隔离输出目录> -c <同包config.json>`。本轮工具源码版本为 `906d4cdd5597403ebf46dde8fb47d9c81a352d19`，仅需 CLI 的 filetype 依赖；不需要 GUI/Live2D Python 运行库。芙宁娜与雷电将军输出到 `runtime/live2d-unpacked/<角色>`，由配方的 `unpackedEntry` 接入。原 LPK、config 与作者说明保持原样。
 
-个人桌面同步：`npm run wf -- live2d:sync-local --source <导入根> --target <用户模型根>` 默认只预览，`--apply` 核验完整源哈希后复制，保留目标旧版本。正常桌面部署使用 `deploy-desktop.bat -SyncLocalModels`，将模型写入 `%APPDATA%/com.aics.studio/gateway/live2d-imports`；安装包与公开资源清单仍不包含这些私有模型。修改 Rust 后使用 `-UseInstaller -QuietInstall -SyncLocalModels` 完整安装，UAC 仍由用户处理。
+个人桌面同步：`npm run wf -- live2d:sync-local --source <导入根> --target <用户模型根>` 默认只预览，`--apply` 核验完整源哈希后复制，保留目标旧版本。正常桌面部署使用 `deploy-desktop.bat -SyncLocalModels`，将模型写入 `%APPDATA%/com.aics.studio/gateway/live2d-imports`；安装包与公开资源清单仍不包含这些私有模型。修改 Rust 后使用 `deploy-desktop.bat -QuietInstall -SyncLocalModels` 构建并安装升级包，UAC 仍由用户处理。
 
 需要更新已导入模型的配方或校准时，可使用 `--apply --refresh`：先核对旧版本文件哈希，将旧目录保留为 `runtime/live2d-imports/.previous-<角色>-<唯一标识>`，再切换完整新副本；失败恢复旧目录。不带 `--apply` 的 `--refresh` 仍仅预览。不要手动覆盖作者模型或删除旧版本来绕过损坏检查。
 
@@ -365,18 +365,18 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 
 程序发行使用 `npm run release:desktop`：同一份应用构建生成 `*-full-setup.exe` 与 `*-upgrade-setup.exe`，分别绑定和签名，自动更新清单指向升级包。完整包面向新装/修复并带 WebView2 与基础素材；升级包携带角色图片、缩略图和粒子素材，复用字节一致的 Live2D、chibi 和双人姿势素材，缺失或变化时要求完整包。样张继续独立发布。`--skip-build` 仍须匹配完整回执；新增的 NSIS 输入绑定缺失时不能复用旧回执。两种包均核对原生发行材料完整性；审批状态仅作记录，不替代用户明确发布授权，也不代表设备验收。
 
-本机已有匹配的 NSIS 构建，只封装轻量包使用 `npm run wf -- desktop:upgrade-local --install-dir "C:\Program Files\AI-CG-Studio"`，对应 `release-desktop-update --manual --skip-build --upgrade-only --install-dir <目录>`。复用安装器检查器在升级包压缩前检查已有安装和素材；失败不安装、不停止应用，成功只生成升级包，不重包 full、不改 latest.json 或发布。该入口仍依赖首次 NSIS 构建。桌面构建回执排除无关历史包；部署保留三个检查点并消除检查点内的重复扫描。构建与部署的 `[desktop:timing]` 日志用于观察实际阶段耗时，不代替完整性验证。
+日常开发使用 `desktop:package-local --install-dir <已有安装目录>`：构建原生程序和资源后，在独立目录直接生成无压缩升级包，不先生成完整 NSIS 包。已有匹配原生构建时，`desktop:upgrade-local --install-dir <目录>` 等价于加 `--skip-build`。两者均通过 npm 的工具生成入口启动；复用安装器检查器核对已有安装和保留素材，失败不安装、不停止应用、不回退完整打包。输出 `AI-CG-Studio_<版本>_x64-local-upgrade-setup.exe`；跳过 WebView2 和可复用素材，保留完整卸载清单，不覆盖发行包、不改 latest.json、不发布。发行路径明确要求带 WebView2 的 LZMA 完整包，不能复用本机无压缩包。
 
 底层游戏式安装器：`installer:build` 生成模板与素材，`installer:preview --capture --page=welcome` 安全预览；详情见 [安装界面维护](guides/desktop/game-installer.md)。`package:tauri` 已自动接入，无需手工修改生成的 NSIS 脚本。
 仅更改安装界面且已有同版本程序时，`installer:bundle` 重新打包并签名；它不编译应用源码。
 
 参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口，只支持 AI 工作区下 `ComfyUI/main.py` 与 `ComfyUI/venv/Scripts/python.exe` 的 Windows venv 布局。两条启动入口在已安装 SageAttention 且 CUDA 可用时默认启用，缺依赖仍用 PyTorch，不自动安装；启动进程可设 `AICS_COMFY_USE_SAGE_ATTENTION=0` 关闭，也保留显式 `-UseSageAttention` 开关。已经运行的服务不被自动重启，默认值在下次启动时生效。其他布局需自行启动并配置服务地址，不自动迁移或安装依赖。
 
-桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认复用匹配当前源码的桌面构建回执和暂存资源，不在安装目录重建数据；`deploy:desktop:full` 先执行完整桌面构建，再校验能否同步静态资源。只有宿主 EXE、Rust EXE 和 libvips DLL 均与安装版本一致时才允许增量，否则须完整安装。ORT 已从新包载荷退役，旧安装中的残留文件不会由此次源码清理自动删除。默认同步会清 WebView2 缓存并重启桌面端。
+桌面唯一入口是 `deploy-desktop.bat`，`deploy:desktop` 调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。默认构建并安装本机无压缩升级包，适用于前端、宿主、Rust 后端和 DLL 改动；`-SkipBuild` 复用匹配原生构建，仍封装升级包。原先含义模糊的 `deploy:desktop:full` 已移除。纯资源同步显式 `-ResourcesOnly`，要求宿主 EXE、Rust EXE、libvips DLL 与安装版本一致。保留三个绑定检查点、受控退出、安装后校验、清缓存与启动确认。
 
 该入口只写安装目录，不覆盖个人 `content/catalog.sqlite`。人物/服装/蓝图/场景须通过内容维护或 `content:catalog` 预览并导入快照；参考索引等仍按文件维护的数据可用 `desktop:content-sync --apply --clear-webview-cache` 后重启。文件同步跳过已归记录库的目录和聚合，不读取、复制或删除它们，也不将旧目标记录分片列为多余。旧安装目录中的场景单文件等残留仍按 bat 默认 `-Cleanup` 的 `$STALE_ASSETS` 处理。装机后 [5/6][6/6]（清缓存、启动确认）在 NSIS 安装后可能不再回写，需自行核对。详见 [部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
 
-可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已验收EXE>` 需直接运行 bat）：`-UseInstaller` 使用完整安装包，默认先选择 `runtime/desktop-updates` 最新 `*-setup.exe`，也可显式指定 `-InstallerPath`；选择结果在 UAC 前固定并透传，避免提升权限期间换成另一份包。缺包退出 1，隐含跳过本地构建；`-QuietInstall` 仅随 `-UseInstaller` 静默安装，`-NoRestart` 结束后不启动，`-StartupRepair` 只同步当前绑定版本的文档、图标与快捷方式，与 `-UseInstaller` 互斥。非管理员时脚本经 UAC 重启，需用户确认。依赖/exe 变化的完整安装与 UAC 见[部署指南](desktop-deployment.md)。
+可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已绑定EXE>` 需直接运行 bat）：`-UseInstaller` 跳过构建/封装，只选择当前版本升级包；完整发行包必须显式 `-UseInstaller -InstallerPath <完整包>`。既有包选择结果在 UAC 前固定并透传。`-QuietInstall` 用于默认升级或复用安装包，不适用于纯资源同步；`-NoRestart` 保持退出；`-StartupRepair` 仅同步文档、图标与快捷方式，与 `-UseInstaller` 互斥。UAC 由用户操作，升级条件不满足时不自动改做完整构建，见[部署指南](desktop-deployment.md)。
 
 批处理入口和显式 `powershell/pwsh -File <脚本.ps1>` 入口的单杠字母参数可以登记于 run.switches，help/plan/audit 共用；Node 等其他入口仍要求双杠元数据键，参数名中的空格、运算符及赋值文本仍拒绝。该识别只影响描述性元数据校验，执行路径与授权边界不变。`--plan` 显示所传开关的行为标签而不启动执行器；具体互斥及跳过行为以部署实现为准。
 

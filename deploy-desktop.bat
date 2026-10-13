@@ -2,17 +2,19 @@
 chcp 65001 >nul
 echo === HUIYU desktop deployment ===
 echo.
-echo Default: incremental resource sync, cache refresh and restart.
+echo Default: build and install a local upgrade package, then restart.
 echo.
 echo Options:
-echo   -SkipBuild Skip build    -Cleanup Remove obsolete resources
-echo   -UseInstaller Full installation    -NoRestart Leave app closed
+echo   -SkipBuild Reuse native build    -Cleanup Remove obsolete resources
+echo   -UseInstaller Reuse existing upgrade    -NoRestart Leave app closed
+echo   -ResourcesOnly Sync static resources with matching EXE/DLL only
 echo   -QuietInstall Silent installer after Windows UAC consent
 echo   -StartupRepair Repair startup resources and shortcuts
 echo   -InstallDir Select the installed application directory
-echo   -InstallerPath Select an exact verified setup EXE with -UseInstaller
+echo   -InstallerPath Select an exact bound EXE with -UseInstaller
+echo                  Required for a full release installer / fresh install
 echo.
-echo Example: deploy-desktop.bat -UseInstaller -NoRestart
+echo Example: deploy-desktop.bat -QuietInstall -NoRestart
 echo.
 echo Confirm the Windows UAC prompt when requested.
 echo.

@@ -188,16 +188,31 @@ function publishRelease(version: any, head: any, files: any, options: any = {}) 
 
 async function main() {
   if (process.argv.includes('--help')) {
-    console.log('Usage: node scripts/maintenance/release-desktop-update.js [--manual] [--skip-build | --bundle-only] [--bump patch|minor|major] [--publish]\nLocal upgrade only: --manual --skip-build --upgrade-only --install-dir <existing installation> (checks prerequisites before packaging; no install or publish)');
+    console.log('Usage: node scripts/maintenance/release-desktop-update.js [--manual] [--skip-build | --bundle-only] [--bump patch|minor|major] [--publish]\nLocal development: --manual --upgrade-only --install-dir <existing installation> [--skip-build] (builds only an uncompressed upgrade; no full package, install or publish)');
     return;
   }
   if (MANUAL && COMPLETE_MANUAL) fail('--manual 与 --complete-manual 不能同时使用');
   if (PUBLISH && BUMP_KIND) fail('--publish 不能与 --bump 同时使用，请先构建、提交并推送版本');
-  if (UPGRADE_ONLY && (!MANUAL || !SKIP_BUILD || BUNDLE_ONLY || BUMP_KIND || PUBLISH || COMPLETE_MANUAL)) {
-    fail('--upgrade-only 仅用于 --manual --skip-build 本机升级封装，不可改版本、补签或发布');
+  if (UPGRADE_ONLY && (!MANUAL || BUNDLE_ONLY || BUMP_KIND || PUBLISH || COMPLETE_MANUAL)) {
+    fail('--upgrade-only 仅用于 --manual 本机升级构建，不可改版本、补签或发布');
   }
   if ((UPGRADE_ONLY && !INSTALL_DIR) || (INSTALL_DIR_INDEX >= 0 && (!INSTALL_DIR || INSTALL_DIR.startsWith('--')))) fail('本机升级必须用 --install-dir 明确已有安装位置');
   if (INSTALL_DIR_INDEX >= 0 && !UPGRADE_ONLY) fail('--install-dir 仅用于 --upgrade-only 本机升级封装');
+  if (UPGRADE_ONLY) {
+    if (!SKIP_BUILD) {
+      const status = await (require('./run-tauri') as typeof import('./run-tauri')).runTauri(['build', '--no-bundle', '--ci', '--no-sign']);
+      if (status !== 0) throw Error('Local desktop build failed');
+    }
+    const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT, { installDir: INSTALL_DIR, local: true });
+    const version = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
+    const executable = path.join(OUT_DIR, `AI-CG-Studio_${version}_x64-local-upgrade-setup.exe`);
+    const modern = require('./build-modern-installer') as typeof import('./build-modern-installer');
+    await timeDesktopBuild('local upgrade wrapper', () => modern.buildModernInstaller({ payload: upgrade.payload, output: executable, upgradeVerifier: upgrade.verifier, nsisFile: upgrade.nsisFile }));
+    fs.writeFileSync(`${executable}.sha256`, `${hashInstallerFile(executable, 'sha256').toString('hex').toUpperCase()}  ${path.basename(executable)}\n`);
+    binding.verifyDistribution(ROOT, executable);
+    console.log(`[release-desktop-update] 本机升级包：${executable}；复用 ${(upgrade.retainedBytes / 1024 / 1024).toFixed(1)} MiB 基础素材，未构建完整包、修改 latest.json 或发布`);
+    return;
+  }
   if (!MANUAL && !fs.existsSync(KEY_FILE)) {
     fail(`缺少原更新签名私钥 ${KEY_FILE}。请在持有原私钥的主机签名；手动安装版必须显式使用 --manual，不能生成替代私钥。`);
   }
@@ -243,12 +258,16 @@ async function main() {
   if (!artifacts.length) fail(`${BUNDLE_DIR} 下没有 updater 安装包（*-setup.exe + .sig）`);
   const artifact = artifacts[artifacts.length - 1];
   binding.verifyBuild(ROOT, path.join(BUNDLE_DIR, artifact.exe));
+  const installerScript = fs.readFileSync(path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi'), 'utf8');
+  if (!installerScript.includes('SetCompressor /SOLID "lzma"') || !installerScript.includes('!define INSTALLWEBVIEW2MODE "offlineInstaller"') || installerScript.includes('Function GameCheckUpgradeResources')) {
+    fail('发行需要带 WebView2 的 LZMA 完整包；本机升级包或旧无压缩包不可复用，请重新运行 release:desktop');
+  }
   if (PUBLISH) assertNativeReleaseIntegrity(path.join(ROOT, 'desktop-tauri/src-tauri/resources/gateway'));
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
-  const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT, { installDir:INSTALL_DIR });
+  const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT);
   const variants = [
-    ...(!UPGRADE_ONLY ? [{ kind:'full', payload:path.join(BUNDLE_DIR, artifact.exe), verifier:undefined }] : []),
+    { kind:'full', payload:path.join(BUNDLE_DIR, artifact.exe), verifier:undefined },
     { kind:'upgrade', payload:upgrade.payload, verifier:upgrade.verifier },
   ];
   const files: string[] = [];
@@ -279,7 +298,7 @@ async function main() {
   console.log(`[release-desktop-update] 升级包复用 ${upgrade.retainedFiles} 个基础素材文件（${(upgrade.retainedBytes / 1024 / 1024).toFixed(1)} MiB），完整包保留素材与 WebView2`);
   if (MANUAL) {
     if (PUBLISH) publishRelease(version, assertPublishReady(version), files);
-    console.log(`[release-desktop-update] ${version} ${UPGRADE_ONLY ? '本机轻量升级包' : '两种手动安装包'}已生成，自动更新清单未修改`);
+    console.log(`[release-desktop-update] ${version} 两种手动安装包已生成，自动更新清单未修改`);
     return;
   }
 

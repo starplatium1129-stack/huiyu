@@ -48,6 +48,10 @@ export function upgradeScript(source: string, assets: Asset[], verifier: string,
   // The derived host has a temporary basename; install it under the product name.
   text = once(text, '  File "${MAINBINARYSRCPATH}"', '  File "/oname=${MAINBINARYNAME}.exe" "${MAINBINARYSRCPATH}"');
   text = once(text, destination[0], `OutFile "${nsisPath(output)}"`);
+  return upgradeChecks(text, verifier);
+}
+
+function upgradeChecks(text: string, verifier: string) {
   const check = `Function GameCheckUpgradeResources
   InitPluginsDir
   File "/oname=$PLUGINSDIR\\HuiyuUpgradeCheck.exe" "${nsisPath(verifier)}"
@@ -85,22 +89,52 @@ export function nsisHost(bytes: Buffer) {
   return result;
 }
 
-function command(executable: string, args: string[], cwd: string) {
-  const result = spawnSync(executable, args, { cwd, encoding: 'utf8', windowsHide: true, timeout: 300_000 });
+function command(executable: string, args: string[], cwd: string, env = process.env) {
+  const result = spawnSync(executable, args, { cwd, env, encoding: 'utf8', windowsHide: true, timeout: 300_000 });
   if (result.error || result.status !== 0) throw Error(`Upgrade package build failed: ${result.error?.message || result.stderr || result.stdout || result.status}`);
 }
 
-export async function buildUpgradeInstaller(root: string, options: { installDir?: string } = {}) {
+// Tauri still renders the complete uninstaller inventory. Only the install File
+// loop is reduced, so a later uninstall also removes the retained old resources.
+function localUpgradeTemplate(root: string, receipt: ReturnType<typeof binding.verifyBuild>, assets: Asset[], verifier: string) {
+  const base = 'desktop-tauri/src-tauri';
+  const config = JSON.parse(fs.readFileSync(path.join(root, base, 'tauri.conf.json'), 'utf8'));
+  const retained = new Set(assets.map(asset => asset.path));
+  const omitted = new Set<string>();
+  const files: string[] = [];
+  for (const [source, destination] of Object.entries(config.bundle.resources as Record<string, string>)) {
+    const relative = safe.relative(`${base}/${source}`);
+    const sourcePath = safe.resolveSafe(root, relative);
+    const directory = fs.statSync(sourcePath).isDirectory();
+    const inputs: string[] = directory
+      ? receipt.build.entries.filter((entry: { status: string; path: string }) => entry.status === 'file' && entry.path.startsWith(`${relative}/`)).map((entry: Asset) => entry.path)
+      : [relative];
+    if (!inputs.length) throw Error(`No bound local upgrade resources: ${source}`);
+    for (const input of inputs) {
+      const target = safe.relative(directory ? `${destination}/${input.slice(relative.length + 1)}` : destination);
+      if (retained.has(target)) { omitted.add(target); continue; }
+      const name = target.replaceAll('$', () => '$$').replaceAll('/', '\\');
+      files.push(`    File /a "/oname=${name}" "${nsisPath(safe.resolveSafe(root, input))}"`);
+    }
+  }
+  if (omitted.size !== retained.size) throw Error('Retained assets differ from the Tauri resource mapping');
+  const template = fs.readFileSync(path.join(root, base, 'installer/generated/installer.nsi'), 'utf8').replace(/\r\n/g, '\n');
+  return upgradeChecks(once(template, '  {{#each resources}}\n    File /a "/oname={{this.[1]}}" "{{no-escape @key}}"\n  {{/each}}', files.join('\n')), verifier);
+}
+
+export async function buildUpgradeInstaller(root: string, options: { installDir?: string; local?: boolean } = {}) {
   return lock.withDesktopBuildLock({ workspaceRoot: root }, async () => {
+    if (options.local && !options.installDir) throw Error('Local upgrades require an existing installation directory');
     const receipt = await timeDesktopBuild('upgrade source verification', () => binding.verifyBuild(root));
     const renderedPath = 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi';
-    if (!receipt.build.entries.some((entry: { path: string; status: string }) => entry.path === renderedPath && entry.status === 'file'))
+    if (!options.local && !receipt.build.entries.some((entry: { path: string; status: string }) => entry.path === renderedPath && entry.status === 'file'))
       throw Error('Rendered NSIS inputs are not bound; perform a fresh desktop build');
     const assets: Asset[] = receipt.build.entries.filter((entry: { path: string; status: string }) => entry.status === 'file' &&
       RETAIN.test(entry.path.replace(/^desktop-tauri\/src-tauri\/resources\//, '')))
       .map((entry: Asset) => ({ path: entry.path.replace(/^desktop-tauri\/src-tauri\/resources\//, ''), bytes: entry.bytes, sha256: entry.sha256 }));
+    if (!assets.length) throw Error('Upgrade requires a nonempty retained asset inventory');
     const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
-    const directory = safe.resolveSafe(root, `runtime/desktop-updates/payloads/${version}`, true);
+    const directory = safe.resolveSafe(root, `runtime/desktop-updates/payloads/${version}${options.local ? '/local' : ''}`, true);
     fs.mkdirSync(directory, { recursive: true });
     const manifest = path.join(directory, 'UpgradeRequirements.json');
     fs.writeFileSync(manifest, JSON.stringify({ schemaVersion: 1, version, assets }));
@@ -115,14 +149,31 @@ export async function buildUpgradeInstaller(root: string, options: { installDir?
     if (options.installDir) {
       await timeDesktopBuild('installed upgrade prerequisites', () => command(verifier, [path.resolve(options.installDir!)], directory));
     }
-    const host = path.join(directory, 'nsis-host.exe');
-    fs.writeFileSync(host, nsisHost(fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'))));
     const output = path.join(directory, `AI-CG-Studio_${version}_x64-upgrade.exe`);
     const script = path.join(directory, 'upgrade.nsi');
-    fs.writeFileSync(script, upgradeScript(fs.readFileSync(path.join(root, renderedPath), 'utf8'), assets, verifier, host, output));
-    await timeDesktopBuild('upgrade NSIS compression', () => command(path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe'), ['/NOCD', '/INPUTCHARSET', 'UTF8', '/V2', script], path.dirname(path.join(root, renderedPath))));
+    let nsisFile = path.join(root, renderedPath);
+    if (options.local) {
+      fs.writeFileSync(script, localUpgradeTemplate(root, receipt, assets, verifier));
+      // Bundle a copy in an isolated Cargo target directory. Neither an existing
+      // full installer nor the bound host/NSIS inputs are overwritten.
+      const target = path.join(directory, 'target');
+      fs.mkdirSync(path.join(target, 'release'), { recursive: true });
+      fs.copyFileSync(path.join(root, 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'), path.join(target, 'release/ai-cg-studio-desktop.exe'));
+      const env: NodeJS.ProcessEnv = { ...(require('../maintenance/run-tauri') as typeof import('../maintenance/run-tauri')).tauriEnvironment(root), CARGO_TARGET_DIR: target };
+      delete env.TAURI_SIGNING_PRIVATE_KEY; delete env.TAURI_SIGNING_PRIVATE_KEY_PATH; delete env.TAURI_SIGNING_PRIVATE_KEY_PASSWORD;
+      await timeDesktopBuild('local upgrade NSIS bundle', () => command(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), 'bundle', '--bundles', 'nsis', '--ci', '--no-sign',
+        '--config', path.join(root, 'desktop-tauri/tauri.local.json'), '--config', JSON.stringify({ bundle: { windows: { nsis: { template: script } } } })], path.join(root, 'desktop-tauri'), env));
+      const config = JSON.parse(fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/tauri.conf.json'), 'utf8'));
+      fs.renameSync(path.join(target, 'release/bundle/nsis', `${config.productName}_${version}_x64-setup.exe`), output);
+      nsisFile = path.join(target, 'release/nsis/x64/installer.nsi');
+    } else {
+      const host = path.join(directory, 'nsis-host.exe');
+      fs.writeFileSync(host, nsisHost(fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'))));
+      fs.writeFileSync(script, upgradeScript(fs.readFileSync(nsisFile, 'utf8'), assets, verifier, host, output));
+      await timeDesktopBuild('upgrade NSIS compression', () => command(path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe'), ['/NOCD', '/INPUTCHARSET', 'UTF8', '/V2', script], path.dirname(nsisFile)));
+    }
     await timeDesktopBuild('upgrade payload binding', () => binding.bindDerivedPayloads(root, [output, verifier]));
-    return { payload: output, verifier, retainedFiles: assets.length, retainedBytes: assets.reduce((sum, file) => sum + file.bytes, 0),
+    return { payload: output, verifier, nsisFile, retainedFiles: assets.length, retainedBytes: assets.reduce((sum, file) => sum + file.bytes, 0),
       requirementsSha256: crypto.createHash('sha256').update(fs.readFileSync(manifest)).digest('hex') };
   });
 }

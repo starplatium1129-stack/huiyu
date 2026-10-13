@@ -20,7 +20,7 @@ function run(command: string, args: readonly string[], options: any = {}) {
   if (result.error || result.status !== 0) throw new Error(`Modern installer command failed: ${result.error?.message || result.status}`);
 }
 
-function buildModernInstaller({ payload, output, upgradeVerifier, upgrade = Boolean(upgradeVerifier), preview = false, capture = false, theme = 'dark', state = 'ready', dpi = 96 }: any = {}) {
+function buildModernInstaller({ payload, output, upgradeVerifier, nsisFile = path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi'), upgrade = Boolean(upgradeVerifier), preview = false, capture = false, theme = 'dark', state = 'ready', dpi = 96 }: any = {}) {
   if (!preview) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding')).verifyBuild(ROOT, payload);
   if (!preview && upgrade) {
     if (!upgradeVerifier) throw Error('An upgrade requires its bound resource verifier');
@@ -34,7 +34,6 @@ function buildModernInstaller({ payload, output, upgradeVerifier, upgrade = Bool
   const payloadHash = preview ? '' : hashInstallerFile(payload, 'sha256').toString('hex');
   const payloadLength = preview ? 0 : fs.statSync(payload).size;
   const verifierHash = !preview && upgrade ? hashInstallerFile(upgradeVerifier, 'sha256').toString('hex') : '';
-  const nsisFile = path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi');
   const estimated = fs.existsSync(nsisFile) ? /!define ESTIMATEDSIZE "(\d+)"/.exec(fs.readFileSync(nsisFile, 'utf8')) : null;
   const required = Number(estimated?.[1] || 520000) * 1024;
   const metadata = `using System.Reflection;

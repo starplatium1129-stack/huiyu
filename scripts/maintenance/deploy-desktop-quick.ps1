@@ -1,27 +1,27 @@
 ﻿# AI-CG-Studio 桌面端部署 —— 唯一入口
 #
-# 两种模式（二选一，默认增量）：
-#   增量部署（默认）  把新鲜的 已绑定的 data/dist/assets/docs/tools 复制到已安装网关，秒级生效。
-#                    仅限 EXE/DLL 完全相同的静态资源；Rust 与打包 UI 改动必须完整安装。
-#   -UseInstaller    运行 runtime\desktop-updates 下最新的完整安装包（用户在向导里点几下）。
-#                    适用于 Rust runtime、DLL、宿主或打包 UI 变化及全新安装。
+# 默认构建并安装本机轻量升级包；不先构建完整包，不携带 WebView2/保留素材。
+# -ResourcesOnly 仅同步已绑定静态资源，要求安装 EXE/DLL 与候选一致。
+# -UseInstaller 复用已绑定升级包；首次安装/修复须显式 -InstallerPath 指向发行完整包。
 #
 # 常用组合：
-#   双击 deploy-desktop.bat                 增量部署（含清理历史残留 + 验证）
-#   deploy-desktop.bat -SkipBuild           已手动 build 过，跳过构建
-#   deploy-desktop.bat -UseInstaller        用完整安装包安装（本次要更新的依赖在包里）
+#   双击 deploy-desktop.bat                 构建并安装本机升级包
+#   deploy-desktop.bat -SkipBuild           复用绑定构建，只封装并安装升级包
+#   deploy-desktop.bat -UseInstaller        安装已有升级包
 #   deploy-desktop.bat -NoRestart           部署后不自动启动
 #
 # 参数说明：
 #   -SkipBuild     复用匹配当前源码的桌面构建绑定
 #   -Cleanup       删除「源端已删除」的历史残留目录（见下 $STALE_ASSETS）
-#   -UseInstaller  跑完整安装包，不做增量复制
+#   -UseInstaller  跑已有安装包，不重新构建或封装
+#   -ResourcesOnly 只同步静态资源
 #   -NoRestart     结束后不启动桌面端
 param(
   [switch]$SyncLocalModels,
   [switch]$SkipBuild,
   [switch]$Cleanup,
   [switch]$UseInstaller,
+  [switch]$ResourcesOnly,
   [switch]$QuietInstall,
   [switch]$NoRestart,
   [switch]$StartupRepair,
@@ -43,15 +43,19 @@ if (-not $InstallDir) {
 $installDir = [IO.Path]::GetFullPath($InstallDir)
 $gatewayDir = Join-Path $installDir 'gateway'
 if ($StartupRepair -and $UseInstaller) { throw '-StartupRepair 与 -UseInstaller 不能同时使用' }
-if ($QuietInstall -and -not $UseInstaller) { throw '-QuietInstall 仅可与 -UseInstaller 一起使用' }
+if ($ResourcesOnly -and $UseInstaller) { throw '-ResourcesOnly 与 -UseInstaller 不能同时使用' }
+$buildUpgrade = -not ($UseInstaller -or $ResourcesOnly -or $StartupRepair)
+$installWithPackage = $UseInstaller -or $buildUpgrade
+if ($QuietInstall -and -not $installWithPackage) { throw '-QuietInstall 仅用于安装包部署' }
 if ($InstallerPath -and -not $UseInstaller) { throw '-InstallerPath 仅可与 -UseInstaller 一起使用' }
 $setup = $null
 if ($UseInstaller) {
   $setup = if ($InstallerPath) { Get-Item -LiteralPath $InstallerPath -ErrorAction Stop } else {
-    Get-ChildItem -Path (Join-Path $root 'runtime\desktop-updates') -Filter '*-setup.exe' -ErrorAction SilentlyContinue | Where-Object { $_.Name -notlike '*-upgrade-setup.exe' } |
+    $version = (Get-Content -LiteralPath (Join-Path $root 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
+    Get-ChildItem -Path (Join-Path $root 'runtime\desktop-updates') -Filter "*_${version}_x64*-upgrade-setup.exe" -ErrorAction SilentlyContinue |
       Sort-Object LastWriteTime -Descending | Select-Object -First 1
   }
-  if (-not $setup) { throw 'runtime\desktop-updates 下没有找到安装包，请先 npm run package:tauri' }
+  if (-not $setup) { throw '没有当前版本的升级包；去掉 -UseInstaller 先构建升级包。首次安装/修复请用 -InstallerPath 明确选择发行完整包。' }
   if ($setup.PSIsContainer -or $setup.Extension -ine '.exe') { throw 'InstallerPath 必须指向已验收的 EXE 安装包' }
   # Keep the exact candidate across UAC, even if another build finishes meanwhile.
   $InstallerPath = $setup.FullName
@@ -87,6 +91,7 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   if ($SkipBuild)    { $argList += '-SkipBuild' }
   if ($Cleanup)      { $argList += '-Cleanup' }
   if ($UseInstaller) { $argList += '-UseInstaller' }
+  if ($ResourcesOnly) { $argList += '-ResourcesOnly' }
   if ($InstallerPath) { $argList += @('-InstallerPath', "`"$InstallerPath`"") }
   if ($QuietInstall) { $argList += '-QuietInstall' }
   if ($NoRestart)    { $argList += '-NoRestart' }
@@ -111,20 +116,32 @@ function Assert-CurrentBuildBinding {
   & node (Join-Path $root 'scripts\lib\desktop-build-binding.js') $root $InstallerPath
   if ($LASTEXITCODE -ne 0) { throw 'DESKTOP_BUILD_BINDING: 源码/资源/安装包与构建回执不匹配；请重新完整构建。' }
 }
-if (-not $UseInstaller -and -not $SkipBuild) {
+if ($buildUpgrade) {
+  Write-Host '[1/6] 准备本机轻量升级包（不构建完整包） ...' -ForegroundColor Cyan
+  Push-Location $root
+  try {
+    $upgradeArgs = @('run', 'release:desktop', '--', '--manual', '--upgrade-only', '--install-dir', $installDir)
+    if ($SkipBuild) { $upgradeArgs += '--skip-build' }
+    & npm @upgradeArgs
+    if ($LASTEXITCODE -ne 0) { throw '本机升级包准备失败；未关闭应用，不自动回退完整打包。' }
+    $version = (Get-Content -LiteralPath (Join-Path $root 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
+    $setup = Get-Item -LiteralPath (Join-Path $root "runtime\desktop-updates\AI-CG-Studio_${version}_x64-local-upgrade-setup.exe")
+    $InstallerPath = $setup.FullName
+  } finally { Pop-Location }
+} elseif (-not $installWithPackage -and -not $SkipBuild) {
   Write-Host '[1/6] 构建并绑定 Rust 桌面候选 ...' -ForegroundColor Cyan
   Push-Location $root
   try { npm run build:tauri; if ($LASTEXITCODE -ne 0) { throw 'Desktop candidate build failed' } }
   finally { Pop-Location }
 } else { Write-Host '[1/6] 复用当前已绑定构建' -ForegroundColor DarkGray }
 Assert-CurrentBuildBinding
-if (-not $UseInstaller) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
+if (-not $installWithPackage) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
 Write-DesktopDuration '构建准备与首次校验'
 Stop-DesktopForDeployment -InstallDir $installDir -ConfigRoot $configRoot
 Write-DesktopDuration '应用维护退出'
 Write-Host '[2/6] 宿主与自有 Rust 网关已退出，工作区锁已释放' -ForegroundColor DarkGray
 Assert-CurrentBuildBinding
-if (-not $UseInstaller) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
+if (-not $installWithPackage) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
 Write-DesktopDuration '写入前校验'
 if ($Cleanup) {
   foreach ($relative in $STALE_ASSETS) {
@@ -133,8 +150,8 @@ if ($Cleanup) {
   }
 }
 Write-Host '[3/6] 安装边界核验完成' -ForegroundColor DarkGray
-if ($UseInstaller) {
-  Write-Host '[4/6] 运行已绑定的完整安装包 ...' -ForegroundColor Cyan
+if ($installWithPackage) {
+  Write-Host '[4/6] 运行本次已绑定的安装包 ...' -ForegroundColor Cyan
   $setupProcess = if ($QuietInstall) {
     Start-Process -FilePath $setup.FullName -ArgumentList "/S /D=$installDir" -WindowStyle Hidden -Wait -PassThru
   } else { Start-Process -FilePath $setup.FullName -Wait -PassThru }

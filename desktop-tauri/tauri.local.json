@@ -1,6 +1,10 @@
 {
   "bundle": {
+    "createUpdaterArtifacts": false,
     "windows": {
+      "webviewInstallMode": {
+        "type": "skip"
+      },
       "nsis": {
         "compression": "none"
       }

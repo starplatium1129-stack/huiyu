@@ -33,6 +33,7 @@
         "type": "offlineInstaller"
       },
       "nsis": {
+        "compression": "lzma",
         "template": "installer/generated/installer.nsi",
         "installMode": "perMachine",
         "headerImage": "installer/header.bmp",
