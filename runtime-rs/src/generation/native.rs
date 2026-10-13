@@ -1,8 +1,10 @@
 mod config;
 mod observations;
+mod results;
 mod worker;
 use super::*;
 pub(crate) use config::{Settings, load};
+pub(super) use results::prune;
 use std::{path::PathBuf, process::Stdio};
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader};
 
@@ -362,16 +364,15 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         // Fully decode bounded PNG output; a signature alone is not an image.
         let bytes = Arc::new(bytes);
         crate::image_decode::validate(bytes.clone(), token).await?;
+        let length = bytes.len() as u64;
+        drop(bytes);
         {
             let mut state = job.state.lock().await;
             if state.status == "running" {
                 state.metadata["nativeRuntime"] = runtime_observation;
             }
         }
-        Ok(Output::Bytes {
-            bytes,
-            mime: "image/png".into(),
-        })
+        results::publish(inner, job, &output, length, token).await
     };
     let value = tokio::select! { biased; _=token.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","独立推理已取消")), value=tokio::time::timeout(Duration::from_secs(600),result)=>value.unwrap_or_else(|_| Err(ApiError::new(504,"NATIVE_TIMEOUT","独立推理超时"))) };
     let cancelling = value.as_ref().err().is_some_and(|error| {
