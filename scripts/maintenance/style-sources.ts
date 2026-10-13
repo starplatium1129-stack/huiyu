@@ -114,7 +114,6 @@ const STANDALONE_REPORTS = new Set([
   // 合并 followup 后 27 处报告内字面量把应用预算撑爆（54/36），2026-08-31 补录。
   'docs/archive/audits/ux-audit-2026-08-30.html',
   'docs/archive/audits/seven-dimension-audit-2026-08-31.html',
-  'docs/research/prompts/arknights-artists-research-2026-08-31.html',
   'docs/archive/audits/workflow-audit-2026-08-31.html',
   // 2026-09-05 完成度复审报告（同族、自带设计系统）
   'docs/archive/audits/completion-audit-2026-09-05.html',

@@ -10,13 +10,13 @@
 
 默认引擎仍为 ComfyUI，原生范围是已支持的 Anima 模型与 LoRA、图生图、手绘/CLIPSeg 局部重绘、Latent/固定 Remacri 高清和 RCAS。独立运行库与 Diffusers 模型转换仍是首次准备需求；当前不盲用 ComfyUI Python、不安装依赖、不下载模型。新机打包运行库、Krea/SDXL/视频和任意 Comfy 节点不属于本次交付。
 
-本次真实验收与桌面同步见[原生出图体验修复](../audits/2026-10-13/native-generation-experience.html)。用户授权后完成 36 张产品 API 成片、5 次取消，并完成安装版取消/恢复；2026-10-13 已完整安装到 `C:/Program Files/AI-CG-Studio`，用户确认实际体验良好。本机 RTX 4070 Ti SUPER 的 MiaoMiao 1.6、宁宁 LoRA 0.8、832×1216、24 步、CFG 4 三张热任务中位数为原生 5.05 秒、ComfyUI 5.54 秒；Latent 高清速度接近，局部手部细节仍有差异。分阶段模式较慢但显存峰值更低。本轮不推广为全模型、自动换装语义或全部硬件验收。
+用户授权后完成 36 张产品 API 成片、5 次取消，并完成安装版取消/恢复；2026-10-13 已完整安装到 `C:/Program Files/AI-CG-Studio`，用户确认实际体验良好。本机 RTX 4070 Ti SUPER 的 MiaoMiao 1.6、宁宁 LoRA 0.8、832×1216、24 步、CFG 4 三张热任务中位数为原生 5.05 秒、ComfyUI 5.54 秒；Latent 高清速度接近，局部手部细节仍有差异。分阶段模式较慢但显存峰值更低。本轮不推广为全模型、自动换装语义或全部硬件验收。
 
 首次依赖初始化在取消读取线程继续等待下一行之前完成，修复 Windows NumPy 原生扩展的初始化阻塞。完整 API 计时包括这段初始化及结果后的资源清理；首次 CUDA 设备准备先于分配器峰值重置。每张完成后归还闲置显存，保留模型权重；高清结束常驻模式整卡约 6557 MiB，分阶段模式约 1421 MiB。
 
 2026-10-13 冷启动研究发现，上述初始化保护让产品入口先导入依赖、再完整核验权重，原有并行分支没有实际生效。源码现改为主线程持有文件保护并初始化依赖，后台只计算完整字节摘要；首任务直接接收核验结果，加载后仍复核。依赖初始化结束即恢复取消读取，不等待慢盘摘要结束；异常先等后台退出再释放文件保护。依赖与指纹分别计时且有重叠，不能相加。
 
-随后按用户授权在本机 RTX 4070 Ti SUPER 进行真实前后对照。各三个新进程样本的“进程启动至首图”中位数从 17.24 秒降到 16.35 秒，约缩短 0.89 秒（5.2%）；保留 OS 文件与编译磁盘缓存，不代表冷盘或首次安装。普通热图中位数旧版 5.37 秒、最终版 5.46 秒，本轮未证明连续出图提速。普通、关闭 TeaCache、2× Latent 高清及取消恢复的七张对应 PNG 字节完全一致，取消约 0.52 秒，下一张 baseReused=true。详见[主力机实测与最终取舍](../audits/2026-10-13/native-coldstart-research.html)。
+随后按用户授权在本机 RTX 4070 Ti SUPER 进行真实前后对照。各三个新进程样本的“进程启动至首图”中位数从 17.24 秒降到 16.35 秒，约缩短 0.89 秒（5.2%）；保留 OS 文件与编译磁盘缓存，不代表冷盘或首次安装。普通热图中位数旧版 5.37 秒、最终版 5.46 秒，本轮未证明连续出图提速。普通、关闭 TeaCache、2× Latent 高清及取消恢复的七张对应 PNG 字节完全一致，取消约 0.52 秒，下一张 baseReused=true。
 
 128 MiB 文本 K/V 缓存候选同条件仅改善约 0.01 秒，且普通图输出字节变化，已完整撤回实现、指标和执行版本后缀。大图解码前额外 empty_cache 候选也未显示稳定优势，未纳入最终版本；注意力、采样、VAE 和高清数值路径均恢复为本轮旧版基线。实验曾出现一次 241 秒高清解码并观察到共享 GPU 内存；最终同图约 24 秒且与旧版字节相同，但不能据此宣称任意显存压力下均无 WDDM 分页停顿。桌面部署身份以实际构建及安装回执为准。
 
@@ -28,11 +28,11 @@
 
 GPU packed storage 按组件与 dtype 分开；切底模仅复用字节摘要、精确类型及 dtype 都一致的 Qwen、VAE 和两个 tokenizer。Qwen＋两个 tokenizer 真正复用才保留原始文本缓存；已适配 transformer/conditioner 不跨底模复用。身份摘要使用已有全字节读取，不靠文件名/mtime。完全冷首张仍有哈希和加载成本，当前没有测得冷加载提速。
 
-Resident 加载现在每组件检查完即上传，避免四组件一起持有 CPU 权重；上传按连续目标窗口合并张量，用最多两块32 MiB锁页缓冲与专用CUDA stream交错填充/传输。Event确认传输完成后才复用缓冲，全部传输完成后才发布GPU视图；锁页分配失败使用原直接拷贝，真实CUDA错误仍失败。64 MiB仅是活跃staging上限，PyTorch锁页缓存和进程RSS另计。Offload加载方式不变。`nativeRuntime.loading`记录本次实际组件加载/上传耗时、策略、字节和copy次数，热复用不带旧冷加载耗时。本轮只改变搬运，配方、精度和Tea身份保持；无当前GPU提速/画质证据，见[加载优化](../audits/2026-10-12/native-anima-loading.html)。
+Resident 加载现在每组件检查完即上传，避免四组件一起持有 CPU 权重；上传按连续目标窗口合并张量，用最多两块32 MiB锁页缓冲与专用CUDA stream交错填充/传输。Event确认传输完成后才复用缓冲，全部传输完成后才发布GPU视图；锁页分配失败使用原直接拷贝，真实CUDA错误仍失败。64 MiB仅是活跃staging上限，PyTorch锁页缓存和进程RSS另计。Offload加载方式不变。`nativeRuntime.loading`记录本次实际组件加载/上传耗时、策略、字节和copy次数，热复用不带旧冷加载耗时。本轮只改变搬运，配方、精度和Tea身份保持；无当前GPU提速/画质证据。
 
 高清保留过期张量清理与解码前释放 Tea 残差。VAE 普通整图先行，单帧禁用跨帧 feature clone；严格 CausalConv 单帧/无 cache 条件截取最后时间核并用隐式空间 padding，RMS 按原 dtype 归一化，latent 统计、raw-latent bicubic 与显示边界用 FP32。仅实际 CUDA OOM 回退：encode256/overlap64；decode 从32 latent 按当前可用显存预算倍增，overlap为tile/4。CPU FP32双侧羽化、累加/权重和归一；不回退精度或 CPU 推理。
 
-Remacri 从512/32网格开始，不再使用192 core＋halo硬裁；只有真实 CUDA OOM 才整次256/128重算。RRDB按CUDA模型设备逐块上传，完整4×结果与Lanczos留CPU；VAE回退CPU像素不会使RRDB误走CPU。Lanczos与PNG均RGB uint8截断。`nativeRuntime.refinement`记录实际VAE整图/分块、tile/overlap/count、输出设备和Remacri块信息。该记录的AMD 880M环境无可用NVIDIA CUDA，当轮无真实模型/测试/部署；数学路径已接入，但kernel/浮点舍入、画面与性能仍须设备验收，见[高清与蒙版补齐](../audits/2026-10-12/native-anima-effects.html)。
+Remacri 从512/32网格开始，不再使用192 core＋halo硬裁；只有真实 CUDA OOM 才整次256/128重算。RRDB按CUDA模型设备逐块上传，完整4×结果与Lanczos留CPU；VAE回退CPU像素不会使RRDB误走CPU。Lanczos与PNG均RGB uint8截断。`nativeRuntime.refinement`记录实际VAE整图/分块、tile/overlap/count、输出设备和Remacri块信息。该记录的AMD 880M环境无可用NVIDIA CUDA，当轮无真实模型/测试/部署；数学路径已接入，但kernel/浮点舍入、画面与性能仍须设备验收。
 
 ## 控制室切换与结果保护
 
@@ -42,7 +42,7 @@ Native 完成图仍先检查 PNG 格式、32 MiB 上限并完整解码，再将 
 
 “聊天与语音优先”及 llama.cpp 加载先独占全部 native 任务准入，检查 GPU 槽并停止空闲 Worker；权限保持到服务启动/健康检查结束。已有 prepared、排队、运行或尚在结算的生图返回忙碌，不自动取消。进程退出未确认时阻止新任务与本地聊天继续占用 GPU，排队项保留失败原因，须完全退出并重启应用。应用不停止外部管理的聊天进程。
 
-结果保护继续在原始decoder/tile输出的显示clamp前观察非有限值，并检查VAE输入、Latent放大前状态与Remacri raw tile。v3统一pt输出及最终truncate量化，移除了原PIL分支；采样、蒙版和VAE数值路径按本轮工作流对齐更新，不能沿用初次guard接入时的“数值保持”结论。设备开销/有限样本成图仍待验，见[高清与蒙版补齐](../audits/2026-10-12/native-anima-effects.html)。
+结果保护继续在原始decoder/tile输出的显示clamp前观察非有限值，并检查VAE输入、Latent放大前状态与Remacri raw tile。v3统一pt输出及最终truncate量化，移除了原PIL分支；采样、蒙版和VAE数值路径按本轮工作流对齐更新，不能沿用初次guard接入时的“数值保持”结论。设备开销/有限样本成图仍待验。
 
 ## 第一里程碑与边界
 
@@ -169,7 +169,7 @@ Transformers 实现许可证为 Apache-2.0；CLIPSeg 权重许可独立于代码
 
 本轮另实现维护候选 `local-guard`（schema3 / `huiyu-anima-local-guard-v1`）：按每批最多16个连续raster token组的相对L1峰值，与全局均值分别校准三阶段关系；两套累计预算都允许才复用。它是粗粒度特征风险筛选，不识别脸/手部，不构成画质误差界。生成两指标合并一次读回，局部残差指标仅全算校准时采集。原phase/poly路径不执行此额外计算。
 
-后续在授权CUDA设备用同一维护入口的 `--strategy local-guard` 生成新候选目录，`--local-threshold` 可单独给局部门槛，不提供时使用本次 `--threshold`；都需在0.01–1范围内。默认strategy仍phase-envelope，不加 `--run` 只有计划。本轮没有实际采集、拟合、接受或安装任何档案。schema3独立成族，产品选择明确排除它，即使将来存入集合也不会覆盖或自动取代原算法；后续实际使用时再选择与接入。详见[局部风险缓存候选](../audits/2026-10-12/native-anima-local-cache.html)。
+后续在授权CUDA设备用同一维护入口的 `--strategy local-guard` 生成新候选目录，`--local-threshold` 可单独给局部门槛，不提供时使用本次 `--threshold`；都需在0.01–1范围内。默认strategy仍phase-envelope，不加 `--run` 只有计划。本轮没有实际采集、拟合、接受或安装任何档案。schema3独立成族，产品选择明确排除它，即使将来存入集合也不会覆盖或自动取代原算法；后续实际使用时再选择与接入。
 
 独立 Anima/Cosmos 路径已实现首层 norm1 代理与整个 transformer block 栈残差复用，实际跳过 attention/MLP；模型外层预处理与输出层仍运行。按 CFG 分支独立缓存，每任务新建缓存控制器；受控 Worker 串行复用已加载权重，实际首尾采样步全算，连续跳步有上限，条件、形状、设备或时间序列变化清理缓存，异常恢复原调用。图生图及手绘/CLIPSeg 遮罩继续执行原逐步约束与最终合成，不把缓存当换装算法。
 

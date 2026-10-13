@@ -1,6 +1,6 @@
 # 项目状态
 
-整理日期：2026-10-13。此页维护当前身份、能力与限制；旧过程已归入 Git 历史，不在工作目录保留日期副本。今天的性能交付见[执行报告](audits/2026-10-09/fullstack-performance.html)。
+整理日期：2026-10-13。此页维护当前身份、能力与限制；旧过程已归入 Git 历史，不在工作目录保留日期副本。
 
 ## 源码与本机安装
 
@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | 当前源码 | `package.json` 版本 1.9.2，包含发行后的修复；当前工作区改动以 Git 为准 | [工程契约](engineering-contracts.md)、[工作流](workflow.md)；源码变更不等于已安装或发布 |
 | 公开发行 | 2026-10-07 记录 1.9.2 已发布并设为 latest，发行源码 `f221bd4c`，含 full/upgrade 两种包 | [1.9.2 说明](releases/v1.9.2.md)；发行记录保留在 Git 历史；本次整理未重新查询远端状态 |
-| 最近本机安装记录 | 2026-10-13 19:11（Asia/Shanghai）完整安装 1.9.2 本机候选 `b2d82438` 至 `C:/Program Files/AI-CG-Studio`；保留冷启动并行，撤回实测无明显净收益的 K/V 候选 | 唯一部署入口退出 0，源码/EXE/DLL/安装包绑定及认证启动通过，安装 Worker 与候选一致；内容变更 0、保留 190 条个人记录。安装版启动取消约 3.69 秒、采样取消约 0.51 秒，恢复模型复用且同进程同 seed 重复稳定；跨运行历史恢复图有细节差异，未称像素一致。见[主力机验收](audits/2026-10-13/native-coldstart-research.html)，未公开发布 |
+| 最近本机安装记录 | 2026-10-13 19:11（Asia/Shanghai）完整安装 1.9.2 本机候选 `b2d82438` 至 `C:/Program Files/AI-CG-Studio`；保留冷启动并行，撤回实测无明显净收益的 K/V 候选 | 唯一部署入口退出 0，源码/EXE/DLL/安装包绑定及认证启动通过，安装 Worker 与候选一致；内容变更 0、保留 190 条个人记录。安装版启动取消约 3.69 秒、采样取消约 0.51 秒，恢复模型复用且同进程同 seed 重复稳定；跨运行历史恢复图有细节差异，未称像素一致。未公开发布 |
 | 资料迁移记录 | 2026-09-26 曾登记旧来源迁入 SQLite；10 月 1 日对应机器未发现 active pointer，仍使用旧来源 IndexedDB | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)；按具体机器核对，不合并两次记录为已迁移结论 |
 | 桌面实现 | Tauri 宿主、Rust 网关、原生 Live2D 线程渲染；独立渲染进程仍为显式实验 | [桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)、[原生运行时](guides/desktop/live2d-native-runtime.md) |
 
@@ -21,7 +21,7 @@
 | 持久化与任务 | Web 保留 IndexedDB；桌面激活后由 Rust/SQLite 持有权威；已接受任务独立于页面生命周期，失联不降级双写 | 历史来源、其他机器、大规模数据及真实故障场景按 [Workspace](architecture/WORKSPACE-MIGRATION-DESIGN.md) 与[任务契约](architecture/TASK-RUNTIME-DESIGN.md)分别验收 |
 | 创作 | Anima/Krea 2 新生成、换装、蓝图、入册与视频分镜；SD 新生成已退出，旧任务查询/取消/收集及历史作品保留 | 聊天绘画工具仍只准备草稿；真实模型、视频效果与成本按 [roadmap](roadmap.md) 验收 |
 | 首次配置与受管绘图 | 沿用 Portable、固定模型下载/校验和标准目录；显式受管意愿跨重开保留，首次生成按需唤醒；输入目录与 Portable 安装位置对齐；未知运行包与节点差异明确失败并保留已有文件 | 进程/HTTP、下载小夹具和界面逻辑可在 CPU 验证；真实 Windows/CUDA、节点加载、LoRA＋高清出图仍需主力机验收，见[配置指南](guides/setup-and-models.md) |
-| 独立 Anima 推理 | 内置 Anima TeaCache 无需逐组合校准；复用现成资源，合作取消保留模型，完成后释放闲置显存；支持 resident/offload | 本机 MiaoMiao 1.6＋宁宁 LoRA 的普通图、Latent/Remacri 高清、取消恢复与显存对照已实测；其他模型、自动换装语义与更广硬件未由本轮覆盖，见[当前验收](audits/2026-10-13/native-generation-experience.html) |
+| 独立 Anima 推理 | 内置 Anima TeaCache 无需逐组合校准；复用现成资源，合作取消保留模型，完成后释放闲置显存；支持 resident/offload | 本机 MiaoMiao 1.6＋宁宁 LoRA 的普通图、Latent/Remacri 高清、取消恢复与显存对照已实测；其他模型、自动换装语义与更广硬件未由本轮覆盖 |
 | 内容维护 | 记录 API、修订历史、字段补丁、批量预览/导入与项目快照导出；立绘/样张走图片事务 | 工作库与项目快照独立；pending、记录登记和结构校验不计为图片交付，见[维护手册](maintenance.md) |
 | 界面与陪伴 | Vue/Pinia、双主题、Reka 控件、路由按需加载、角色身份/Profile、独立聊天窗与浏览器/原生 Live2D | WebView2、DPI/多屏/休眠、真实语音与长期资源趋势保留设备验收范围 |
 | 资源生命周期 | 隐藏桌宠释放模型与原生 GPU context；桌面缩略缓存限 96 项/8 MiB；图库停用释放高清 URL | 既有短样本不推广为全部 GPU、大图库或长时间运行结论 |
@@ -39,7 +39,7 @@
 - 完整 Rust 检查在未改动的 desktop_tools/files.rs、desktop_tools/tests.rs 格式检查上失败，后续 Clippy／全套测试未运行；本次两个语义文件的格式与一项定向 Rust 行为回归通过。
 - 图库冷进入仍出现 56–72 ms 长任务样本；真实模型、原生安装/WebView2、物理 DPI 和长期 RSS/GPU 未验收。
 - Windows 符号链接拒绝用例因权限错误 1314 保留未验证；参考图验证已被该任务明确免除，不能记为通过。
-- 旧报告中的 ChatView 包体、来源指纹和 Python 夹具问题已在今日收口，不再列为当前未解决项。全部验证边界见[今日报告](audits/2026-10-09/fullstack-performance.html#completion-audit)。
+- 历史记录中的 ChatView 包体、来源指纹和 Python 夹具问题已在今日收口，不再列为当前未解决项。
 
 ## 当前数据
 
@@ -56,4 +56,4 @@
 - [工作流分层规则](workflow.md#门禁与构建)：按实际影响选验证，复用同一源码/配置/产物/环境的有效证据。
 - [未来规划](roadmap.md)：待开发、待验收、暂停和待决策事项。
 - [计划索引](../plans/README.md)：专项执行与剩余范围。
-- [文档索引](INDEX.md)：现行规范、今日报告与研究来源。
+- [文档索引](INDEX.md)：现行规范与研究来源。

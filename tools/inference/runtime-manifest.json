@@ -20,7 +20,7 @@
     },
     "idleReleaseSeconds": 600,
     "cancelErrorTimeout": "Cooperative cancellation at stage/step boundaries; cleanup and ready before reuse. Complete jobs also release unused allocator reserves while retaining live weights. Cancellation checks only initialized CUDA; unacknowledged cancellation after 10 seconds, errors and timeouts terminate the owned worker.",
-    "realDeviceValidation": "2026-10-11: RTX 4070 Ti SUPER, converted MiaoMiao 1.6, real text/image/manual-mask and two Kohya character adapters; bounded sample only, see docs/audits/2026-10-11/native-backend-gpu.html",
+    "realDeviceValidation": "2026-10-11: RTX 4070 Ti SUPER, converted MiaoMiao 1.6, real text/image/manual-mask and two Kohya character adapters; bounded sample only",
     "loraGroupChanges": "independent base/adapter leases; same exact topology/config uses preflighted PEFT hotswap after base restoration. Other safe groups unload/load; unknown or base-mutating initialization reloads the base",
     "maskCache": {
       "location": "CPU only; complete model overlaps Anima residency",
@@ -223,7 +223,7 @@
         "anima_text_cache.py"
       ],
       "licenseNotice": "TEACACHE_LICENSE.txt",
-      "realDeviceValidation": "2026-10-13 authorized RTX 4070 Ti SUPER product-API acceptance: MiaoMiao 1.6 / Nene 0.8, ordinary/Latent/Remacri generation, cancellation/recovery, resident/offload and idle release. Warm median native 5.05s vs Comfy+Tea 5.54s (three samples). Overall images close with local hires finger differences. Not every model/prompt/device; see docs/audits/2026-10-13/native-generation-experience.html.",
+      "realDeviceValidation": "2026-10-13 authorized RTX 4070 Ti SUPER product-API acceptance: MiaoMiao 1.6 / Nene 0.8, ordinary/Latent/Remacri generation, cancellation/recovery, resident/offload and idle release. Warm median native 5.05s vs Comfy+Tea 5.54s (three samples). Overall images close with local hires finger differences. Not every model/prompt/device.",
       "calibratedAlgorithm": "huiyu-anima-first-norm-residual-v1",
       "calibratedMaxConsecutiveSkips": [
         1,
@@ -333,8 +333,8 @@
     "https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/guiders/classifier_free_guidance.py"
   ],
   "validation": {
-    "currentRevision": "2026-10-13: builtin Anima cache, first-request initialization gate, cooperative cancellation and per-job reserve release exercised on local CUDA; final desktop installed and user accepted. Source/build/actual API scopes and remaining limits: docs/audits/2026-10-13/native-generation-experience.html.",
-    "realGeneration": "2026-10-11: six registered Anima models generated 11 GPU samples, plus one Endfield/Laevatain public-API sample. Nene/Natsume normal/RCAS LoRA+Tea: 12 matched warm API jobs per backend on RTX 4070 Ti SUPER, native median 4.419s vs Comfy+Tea 5.686s, all 12 pairs faster. Latent 2x Nene: two warm API jobs per backend, native 26.610s vs Comfy 23.671s; cold loading also remains slower. Protected-source restore removed 3.28 GiB CPU snapshots and preserved four diagnostic PNG hashes. Not mathematical or pixel parity. See docs/audits/2026-10-11/native-anima-replacement.html",
+    "currentRevision": "2026-10-13: builtin Anima cache, first-request initialization gate, cooperative cancellation and per-job reserve release exercised on local CUDA; final desktop installed and user accepted. Current capability and device limits: docs/project-status.md.",
+    "realGeneration": "2026-10-11: six registered Anima models generated 11 GPU samples, plus one Endfield/Laevatain public-API sample. Nene/Natsume normal/RCAS LoRA+Tea: 12 matched warm API jobs per backend on RTX 4070 Ti SUPER, native median 4.419s vs Comfy+Tea 5.686s, all 12 pairs faster. Latent 2x Nene: two warm API jobs per backend, native 26.610s vs Comfy 23.671s; cold loading also remains slower. Protected-source restore removed 3.28 GiB CPU snapshots and preserved four diagnostic PNG hashes. Not mathematical or pixel parity.",
     "environmentInstall": "2026-10-11: all 11 exact direct pins resolved, installed offline in dedicated Windows CPython 3.11 venv, and imports/CUDA diagnosis passed; torch and torchvision use cu128 wheels. No inference-time installation or ComfyUI environment reuse",
     "validateCommand": "python worker.py --validate /absolute/path/to/anima-diffusers",
     "validateScope": "Checks layout, safetensors shard presence, exact installed dependency versions and imports. Does not load weights, verify model semantics, test GPU memory, or generate.",

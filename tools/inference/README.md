@@ -22,8 +22,8 @@ all execution/protocol faults and timeouts. Stage events identify dependency
 preparation, fingerprinting, component loading/upload, encoding, decoding,
 upscaling and saving; no artificial loading percentage is reported.
 
-See the [current delivery](../../docs/audits/2026-10-13/native-generation-experience.html)
-for current evidence and limits. The authorized 2026-10-13 local acceptance
+See the [inference guide](../../docs/guides/independent-inference.md)
+for current capabilities and limits. The authorized 2026-10-13 local acceptance
 completed 36 product-API images and 5 cancellations, plus installed-desktop
 cancel/recovery and user acceptance. On RTX 4070 Ti SUPER, MiaoMiao 1.6 /
 Nene 0.8 / 832x1216 / 24 steps / CFG 4, native warm median was 5.05 seconds
@@ -53,7 +53,7 @@ its raw tiles before clamping, accumulating a device flag and reading it
 after assembly. V3 updates sampling, pixel conversion and compositing to the
 workflow math described below. These checks add finite scans and boundary synchronization;
 GPU overhead, finite-image PNG equivalence and real control-room handoff have not
-been measured in this revision. See the [source delivery report](../../docs/audits/2026-10-12/native-backend-independence.html).
+been measured in this revision.
 
 ## 2026-10-12 Comfy workflow alignment
 
@@ -102,12 +102,11 @@ history, mean-logit automatic smoothing/square growth/float feather, and the
 fixed KJ RCAS functional variant. FP32 accumulation order, device kernels and
 batching still prevent a source-only pixel-equivalence claim. The current host
 has AMD 880M and no usable NVIDIA CUDA. No model calls, tests, installs or
-deployment were performed. See the
-[effects delivery](../../docs/audits/2026-10-12/native-anima-effects.html).
+deployment were performed.
 
 ## Explicit preparation
 
-Use a dedicated Python 3.11 environment and the eleven exact direct pins in `requirements.txt`. Installation must be initiated by the user/preparation workflow; generation never installs anything. Torch and torchvision must use compatible builds (local `+cu...` suffixes are accepted). Cosmos uses torchvision resize during its first actual forward, so import-only Diffusers checks are insufficient: diagnosis now imports that operation explicitly. Transformers 5.10.1 retains Qwen2Tokenizer and T5TokenizerFast; SentencePiece assets require sentencepiece and protobuf. The pinned Windows CUDA 12.8 environment was installed offline and real MiaoMiao 1.6 generation was exercised on an RTX 4070 Ti SUPER on 2026-10-11; see the [device report](../../docs/audits/2026-10-11/native-backend-gpu.html) for the measured scope and remaining limits.
+Use a dedicated Python 3.11 environment and the eleven exact direct pins in `requirements.txt`. Installation must be initiated by the user/preparation workflow; generation never installs anything. Torch and torchvision must use compatible builds (local `+cu...` suffixes are accepted). Cosmos uses torchvision resize during its first actual forward, so import-only Diffusers checks are insufficient: diagnosis now imports that operation explicitly. Transformers 5.10.1 retains Qwen2Tokenizer and T5TokenizerFast; SentencePiece assets require sentencepiece and protobuf. The pinned Windows CUDA 12.8 environment was installed offline and real MiaoMiao 1.6 generation was exercised on an RTX 4070 Ti SUPER on 2026-10-11; this does not establish compatibility with every model or device.
 
 Place a complete local Anima Diffusers export in `modelDir`:
 
@@ -174,10 +173,9 @@ payload only. Halving a large chunk can increase copy/lease-check counts; actual
 switch latency and restoration correctness remain device acceptance items.
 Fusion changes floating-point evaluation order and requires separate Tea calibration
 and visual acceptance. Original model/LoRA files stay unchanged.
-The [LoRA + Tea full API report](../../docs/audits/2026-10-11/native-backend-lora-tea.html)
-records the accepted Nene/Natsume v21 strength-0.8 scopes, the 12 matched hot API
+The 2026-10-11 device observations cover the accepted Nene/Natsume v21 strength-0.8 scopes, the 12 matched hot API
 jobs per backend, and slower native cold/adapter-switch warmups for that revision.
-Its numbers do not measure the newer loading, hotswap, scheduling or hires changes
+These numbers do not measure the newer loading, hotswap, scheduling or hires changes
 below, or establish mathematical equivalence or arbitrary LoRA/shape coverage.
 
 On direct fixed local NTFS, resident identity checks hold read-only file handles and
@@ -190,7 +188,7 @@ happens to match. Stop/restart the worker or allow its 600-second idle release
 before replacing a selected model/LoRA file. Unsupported filesystems, reparse
 paths or unavailable sharing protection use complete SHA256 each time; Windows
 CNG accelerates that full-byte operation without changing the digest. No mtime
-or size-only cache is used. See the [continued device report](../../docs/audits/2026-10-11/native-backend-performance.html).
+or size-only cache is used.
 
 With the same exact base path and ordered adapter paths, valid continuous leases
 now return detached SHA identities without recursive inventories or reopening
@@ -229,8 +227,7 @@ is unchanged. This changes neither the recipe nor Tea calibration identity.
 strategy, tensor/transfer bytes, copy calls and active staging bytes. Warm base
 reuse reports no prior loading record. First-request hashing, OS file cache and
 GPU inference still have their original costs. There is no current CUDA timing
-or image evidence for this loading revision; see the
-[loading delivery](../../docs/audits/2026-10-12/native-anima-loading.html).
+or image evidence for this loading revision.
 
 LoRA fusion keeps packed views attached when PEFT replaces weight storage.
 Historical evidence below belongs to the earlier direct-copy path. The four-job diagnostic
@@ -319,8 +316,7 @@ payload. Its `snapshotBytes` is the retained independent CPU snapshot payload;
 copy/group counters exclude snapshot copies. Unchanged jobs emit no old records.
 These timings overlap model acquisition and are not additive. No synchronization
 is added just for timing, and byte-preserving loading changes do not alter Tea
-scope. Current speed, memory and image acceptance are unverified; see the
-[LoRA delivery report](../../docs/audits/2026-10-13/lora-loading-performance.html).
+scope. Current speed, memory and image acceptance are unverified.
 
 `modelReused` reports base reuse, including supported adapter-group switches.
 Fresh pipeline blocks, scheduler, CFG guider and TeaCache controller wrap the weights
@@ -374,8 +370,7 @@ bounded intermediate size, not a measured speedup. Mask compositing reuses its
 private converted reference and new result with separate multiply/subtract/add
 operations; PIL-to-FP32 normalization divides its private NumPy array in place.
 No caller input is overwritten, and Lanczos/uint8 boundaries are unchanged.
-Current output, latency and peak-memory evidence still needs device acceptance;
-see the [delivery report](../../docs/audits/2026-10-13/rcas-comfy-performance.html).
+Current output, latency and peak-memory evidence still needs device acceptance.
 `anima_upscale.py` accepts only the fixed local
 `4x_foolhardy_Remacri.safetensors` with the checked 23-block RRDB architecture,
 using Apache-2.0 BasicSR components and separately licensed supplied weights.
@@ -394,7 +389,7 @@ does not bound allocator cache or total process RAM. RGB quantization for
 Lanczos/PNG uses 128-row scratch, retaining FP32 multiply, clip and uint8
 truncation without two full-size float temporaries. These changes have source
 and compilation review only; current speed, peak memory and images need device
-acceptance, see the [delivery report](../../docs/audits/2026-10-13/remacri-loading-performance.html).
+acceptance.
 The trusted host resolves Auto to Latent or an available fixed Remacri file at
 `models_root/upscale_models/4x_foolhardy_Remacri.safetensors`; an explicit missing
 Remacri selection fails. Latent always refines; unmasked Remacri is pixel-only,
@@ -458,9 +453,8 @@ the same per-band Lanczos coefficients, rounding and clipping for RGB and L.
 The helper skips same-size intermediate copies and returns an independent new
 canvas without inherited EXIF/info. EXIF normalization, checks, contain geometry,
 black padding, FP32 division and downstream mask processing are retained.
-The [backend report](../../docs/audits/2026-10-13/backend-hotpaths.html) separately
-binds historical stage timings, complete actual CPU preparation and fresh-process
-high-water RSS observations to their source snapshots. Process maxRSS includes
+Historical stage timings, complete actual CPU preparation and fresh-process
+high-water RSS observations apply only to their source snapshots. Process maxRSS includes
 startup/imports and does not establish production residency, model or VRAM peaks.
 No behavior tests or pixel comparisons were run; image/EXIF behavior still needs
 device acceptance. Manual v3/Tea identity is retained on pinned source reasoning.
@@ -586,8 +580,7 @@ neither threshold is a recommendation or semantic error bound. The CLI still
 defaults to phase-envelope, no-run is only a plan, and schema3 is never selected
 by the product even if stored. Future selection remains a separate user decision.
 No model calls/calibration were performed for this candidate. It may skip less
-or cost more than ordinary TeaCache; see the
-[candidate delivery](../../docs/audits/2026-10-12/native-anima-local-cache.html).
+or cost more than ordinary TeaCache.
 
 Hires is calibrated as one complete operation, including both denoising passes
 where applicable. Its scope also binds hires scale/denoise, resolved upscaler,

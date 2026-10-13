@@ -11,7 +11,6 @@
 - [Anima 作者模型](https://huggingface.co/circlestone-labs/Anima)。不同 Base/Aesthetic/Turbo/微调 profile 不互套参数，普通标签与精确触发词分别处理；现行 MiaoMiao 作者规则查[项目 skill](../../.agents/skills/studio-prompt-craft/SKILL.md)。
 - [Krea 2 源码](https://github.com/krea-ai/krea-2)、[提示词说明](https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md)、[扩写定义](https://raw.githubusercontent.com/krea-ai/krea-2/main/docs/expansion.txt)、[技术报告](https://www.krea.ai/blog/krea-2-technical-report)、[Diffusers](https://huggingface.co/docs/diffusers/api/pipelines/krea2)。RAW/Turbo、本地工作流和托管功能分别核对；自然语言建议不等于最低字数要求，也不自动赋予本地风格参考/扩写能力。
 - [Getty 构图原则](https://www.getty.edu/education/teachers/building_lessons/formal_analysis2.html)与[形式分析](https://www.getty.edu/education/teachers/building_lessons/formal_analysis.html)；[组合生成评测研究](https://papers.neurips.cc/paper_files/paper/2023/hash/f8ad010cdd9143dbb0e9308c093aff24-Abstract-Datasets_and_Benchmarks.html)。接触、空间、光照建议需本地画面验证，不是成功率承诺。
-- [画师与明日方舟参考](prompts/arknights-artists-research-2026-08-31.html)保留稳定阅读地址，只作风格来源参考，既有画师词不自动注入生成。
 
 最终请求和节点配置优先于展示默认值。负向、guidance 和增强能力限定具体实现；创作细节只在[专题指南](../guides/README.md#prompts)维护。
 

@@ -1,6 +1,6 @@
 # 项目文档索引
 
-整理日期：2026-10-09。保留现行文档与今日交付记录；历史版本、过程报告和旧原始证据由 Git 历史保存。整理日期不表示重新执行模型、设备或全仓验收。
+整理日期：2026-10-14。只保留现行文档，不保留报告或报告索引；已提交的历史资料可从 Git 历史读取。整理日期不表示重新执行模型、设备或全仓验收。
 
 ## 日常入口
 
@@ -30,29 +30,6 @@
 009、010、013 的剩余范围和 004 的暂停决定统一维护在[未来规划](roadmap.md)，不再并行维护专项进度副本。
 
 - [独立 Anima 推理接入](guides/independent-inference.md)：现有 Anima 主流程、独立运行库与使用范围。
-- [原生出图体验修复](audits/2026-10-13/native-generation-experience.html)：内置 Anima TeaCache、资源复用与显存管理；真实速度/画质/高清/取消对照，sc009 保留导入修复与桌面安装。
-- [原生冷启动主力机实测](audits/2026-10-13/native-coldstart-research.html)：三个冷进程样本中位数缩短约 0.89 秒；七张 PNG 与旧版字节相同、取消恢复通过，撤回无明显净收益的 K/V 缓存及解码清理候选。
-- [Native 独立接入续报](audits/2026-10-12/native-backend-independence.html)：按引擎切换绘图、聊天显存交接、异常退出阻断与非有限结果拦截；本轮构建及设备验收边界。
-- [Native Anima 参数与性能对齐](audits/2026-10-12/native-anima-alignment.html)：分阶段显存、共享组件冷切、高清资源清理与采样对齐；旧 Tea 档失配和逐项算法差异。
-- [Native Anima 高清与蒙版补齐](audits/2026-10-12/native-anima-effects.html)：单帧 VAE 普通优先/OOM 羽化、Remacri CPU 拼接、KJ RCAS 功能参数与浮点蒙版；v3 源码/构建及设备验收边界。
-- [Native Anima 加载优化](audits/2026-10-12/native-anima-loading.html)：逐组件CPU加载/上传、64 MiB有界双缓冲合并传输和真实加载观测；源码/编译证据与CUDA验收边界。
-- [Native Anima 局部风险缓存候选](audits/2026-10-12/native-anima-local-cache.html)：全局/局部双预算、独立采集与校准、维护候选隔离；尚无真实画质/性能或选择结论。
-- [后端性能优化续报](audits/2026-10-12/backend-performance.html)：相册最终批量写入、内部文件入库、完整语音缓存及角色立绘内存优化；本轮源码、构建与设备验收边界。
-- [回收站读取与 Live2D 健康探测优化](audits/2026-10-12/trash-live2d-performance.html)：删除专用完整记录查询、对称部分索引与健康布尔短路；真实内置模型文件调用观测及未测数据库 / 设备边界。
-- [目录列表调度优化](audits/2026-10-12/directory-listing-performance.html)：集中枚举、ICU 排序和 metadata，四个工作者及关闭等待；正常 API 真实目录壁钟观测与未验并发 / 设备边界。
-- [CLIPSeg 与分句翻译性能优化](audits/2026-10-13/clipseg-translation-performance.html)：单图视觉层复用、分句 LRU、自动遮罩执行身份与本轮编译 / 设备验收边界。
-- [后端热点优化续报](audits/2026-10-13/backend-hotpaths.html)：蒙版分配、暖模型身份、内容批量写与任务 JSON / CAS；任务列表索引、手动遮罩／RGB 准备 CPU 对照，以及 PR #74 本机合并审查、Windows 构建与设备验收边界。
-- [后端注意力、Live2D 与内容导入优化](audits/2026-10-13/backend-attention-catalog.html)：默认注意力去冗余拷贝、大依赖组并发校验、SQL 复用与导入所有权；本轮编译及设备验收边界。
-- [内存图片入库与 PixAI 启动优化](audits/2026-10-13/backend-media-pixai.html)：内存图复用后台批量复制、移除逐 MiB 数据库线程刷盘、PixAI 完整系统哈希；本轮编译及设备验收边界。
-- [办公机后端批量优化与修复](audits/2026-10-14/backend-office-batch.html)：任务输入释放、恢复写入去重、下载缓冲、指纹与重试内存、上游后台解码及统计一致性，共 7 项改动；本轮构建与设备验收边界。
-- [办公机后端第二轮排查与修复](audits/2026-10-14/backend-office-round-two.html)：媒体哈希与四路写缓冲、资源下载调度、转码回退、翻译状态、图片／视频恢复清理和 Live2D 取消；新增 7 项改动及第二遍复核范围。
-- [Remacri 加载与高清放大优化](audits/2026-10-13/remacri-loading-performance.html)：移除单张量拼接、分行像素转换、有界打包上传与独立执行身份；本轮编译及设备验收边界。
-- [锐化、蒙版合成与 Comfy 节点查询优化](audits/2026-10-13/rcas-comfy-performance.html)：RCAS 分行计算、私有参考图内存复用与三个节点定向探测；本轮编译及设备验收边界。
-- [LoRA 切换优化与冷加载定位](audits/2026-10-13/lora-loading-performance.html)：融合底模恢复双缓冲、热切换打包上传、独立装载与恢复观测；显存代价及本轮验证边界。
-- [Anima 独立后端交付](audits/2026-10-11/native-anima-replacement.html)：六模型、三 LoRA 样例、高清/遮罩/权重接入、完整 API 热任务减少 22.3% 及剩余限制。
-- [独立后端主力机 GPU 实测](audits/2026-10-11/native-backend-gpu.html)：PR #71 最新提交、真实 Anima/LoRA/TeaCache、ComfyUI 对照、修复与剩余限制。
-- [独立后端性能优化续测](audits/2026-10-11/native-backend-performance.html)：Windows 读取保护、原生 SHA-256、Sage/编译候选、画质与 LoRA 检查及 ComfyUI + TeaCache 新对照。
-- [角色 LoRA + TeaCache 完整 API 对照](audits/2026-10-11/native-backend-lora-tea.html)：宁宁/夏目独立校准、可精确恢复的融合、校准集合及双方各 12 个热任务对照。
 
 ## 专题指南
 
@@ -64,28 +41,8 @@
 - 提示词：[项目 skill](../.agents/skills/studio-prompt-craft/SKILL.md)及其作者规则、Anima/Krea 编译和交付参考；本次不修改提示词或生产内容。
 - [研究来源与采用边界](research/README.md)：只保留必要来源和未采纳条件，候选不等于实施承诺。
 
-## 今日记录
-
-- [绘图画室 UI 设计参考](../design-preview/generation/report.html)：独立 Vue 原型、参考依据与三种桌面视口对比；原型完整保留。
-- [绘图画室本地实施](../design-preview/generation/implementation.html)：确认方案的正式组件接入、真实截图、验证结果与设备验收限制；提交状态以 Git 记录为准，未部署发布。
-
-- [独立推理当前候选汇总](audits/2026-10-09/independent-inference-current.html)：自动/手绘局部重绘、严格离线单文件转换、实际验证与发行缺口。
-
-- [独立推理手绘局部重绘](audits/2026-10-09/independent-inference-phase3.html)：逐步蒙版采样、输入保护与应用交互；真实设备验收待完成。
-
-- [独立推理第二阶段](audits/2026-10-09/independent-inference-phase2.html)：LoRA、图生图、应用配置与诊断；编译和实机验收仍待完成。
-
-- [独立推理候选切片](audits/2026-10-09/independent-inference.html)：本次实现、定向验证与尚未完成的替代范围。
-
-- [前后端持续优化](audits/2026-10-09/fullstack-performance.html)：九轮改进、舍弃方案、内容门禁剩余失败和未验范围。
-- [文档归纳与清理](audits/2026-10-09/documentation-cleanup.html)：本次合并、清理数量、链接检查和范围。
-
-- [独立推理 TeaCache 候选](audits/2026-10-10/independent-inference-teacache.html)：默认关闭的缓存执行、本机校准/验收与设备阻塞。
-
-- [独立推理编译与离线初装](audits/2026-10-10/independent-inference-setup.html)：Rust 编译、应用离线准备、完整目录导入及设备验收限制。
-
 ## 维护方式
 
-同一事实只在一处维护：状态在 project-status，待办在 roadmap，命令在 workflow，长期规则在契约或指南。更新现有页优先于新建日期副本；原始 JSON、截图、日志写入被忽略的 runtime/，仓库文档只注明其本机路径，不生成干净检出不可用的链接或图片。第三方许可证、运行数据、测试夹具和正式阅读页资源不属于过期文档。
+同一事实只在一处维护：状态在 project-status，待办在 roadmap，命令在 workflow，长期规则在契约或指南。更新现有页优先于新建日期副本；原始 JSON、截图、日志写入被忽略的 runtime/，必要时在现行文档注明其本机路径，不另写报告，不生成干净检出不可用的链接或图片。第三方许可证、运行数据、测试夹具和正式阅读页资源不属于过期文档。
 
 增删文档同步本索引、分类索引、脚本引用和[旧地址映射](redirects.json)，运行 npm run wf -- docs:check。查旧过程使用 git log -- <路径> 与 git show <提交>:<路径>，不把历史文件重新复制到现行目录。
