@@ -127,6 +127,7 @@ impl Config {
                         })?)
                 }
                 "--create-workspace" => create_workspace = true,
+                "--desktop-owned" => {} // Startup ownership handshake is consumed by main.
                 _ => return Err(ApiError::invalid(format!("Unknown argument: {arg}"))),
             }
         }

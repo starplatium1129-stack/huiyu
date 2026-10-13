@@ -18,7 +18,7 @@
       "invalidation": "release/failure or changed encoder/tokenizer bytes; raw text cache may survive base change only when Qwen and both tokenizers are actually reused",
       "benchmark": "disabled on both sides of TeaCache comparison"
     },
-    "idleReleaseSeconds": 120,
+    "idleReleaseSeconds": 600,
     "cancelErrorTimeout": "Cooperative cancellation at stage/step boundaries; cleanup and ready before reuse. Complete jobs also release unused allocator reserves while retaining live weights. Cancellation checks only initialized CUDA; unacknowledged cancellation after 10 seconds, errors and timeouts terminate the owned worker.",
     "realDeviceValidation": "2026-10-11: RTX 4070 Ti SUPER, converted MiaoMiao 1.6, real text/image/manual-mask and two Kohya character adapters; bounded sample only, see docs/audits/2026-10-11/native-backend-gpu.html",
     "loraGroupChanges": "independent base/adapter leases; same exact topology/config uses preflighted PEFT hotswap after base restoration. Other safe groups unload/load; unknown or base-mutating initialization reloads the base",

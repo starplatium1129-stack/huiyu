@@ -11,7 +11,7 @@ use serde_json::{json, Value};
 use tauri::{AppHandle, Emitter, Manager};
 use tokio::sync::oneshot;
 use crate::live2d_process_protocol::{ChildMessage, Command, Request, CHILD_ARGUMENT, MAX_MESSAGE_BYTES};
-#[path = "live2d_process_job.rs"]
+#[path = "process_job.rs"]
 mod job;
 
 pub type EventSink = Arc<dyn Fn(&str, Value) + Send + Sync>;
@@ -36,7 +36,7 @@ pub struct RendererProcess {
     generation: u64,
     pid: u32,
     child: Mutex<Child>,
-    _job: job::RendererJob,
+    _job: job::ProcessJob,
     writer: mpsc::SyncSender<Vec<u8>>,
     pending: Mutex<HashMap<u64, oneshot::Sender<Reply>>>,
     next_id: AtomicU64,
@@ -140,7 +140,7 @@ fn spawn(emit: EventSink) -> Result<Starting, String> {
         .spawn().map_err(|e| format!("start renderer: {e}"))?;
     // Child may only read stdin until Initialize. EOF exits if the host dies in
     // the short spawn/assign interval; after assignment the kernel owns cleanup.
-    let job = match job::RendererJob::attach(&child) {
+    let job = match job::ProcessJob::attach(&child) {
         Ok(job) => job,
         Err(error) => { let _ = child.kill(); let _ = child.wait(); return Err(format!("attach renderer job: {error}")); }
     };

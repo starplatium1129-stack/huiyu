@@ -20,6 +20,7 @@ use tokio::{
 use tokio_util::{sync::CancellationToken, task::TaskTracker};
 
 const REQUEST_TIMEOUT: Duration = Duration::from_secs(110);
+const IDLE_TIMEOUT: Duration = Duration::from_secs(600);
 const STDERR_LIMIT: usize = 64 * 1024;
 
 #[derive(Clone)]
@@ -45,6 +46,7 @@ struct Worker {
     input: ChildStdin,
     output: BufReader<ChildStdout>,
     stderr: JoinHandle<Vec<u8>>,
+    idle: CancellationToken,
 }
 
 pub(super) struct Client {
@@ -113,6 +115,7 @@ impl Client {
                 return Err(closed());
             }
             self.jobs.spawn(async move {
+                let mut idle = None;
                 let result = async {
                     check(&cancel, &shutdown)?;
                     tokio::fs::create_dir_all(&settings.temp_root).await?;
@@ -147,6 +150,9 @@ impl Client {
                             result
                         }
                     } else {
+                        let timer = CancellationToken::new();
+                        worker.as_mut().unwrap().idle = timer.clone();
+                        idle = Some(timer);
                         result
                     };
                     // The private image stays alive until completion or process exit.
@@ -155,7 +161,40 @@ impl Client {
                 }
                 .await;
                 drop(admission);
+                drop(image);
                 let _ = send.send(result);
+                let Some(idle) = idle else { return };
+                tokio::select! {
+                    _ = idle.cancelled() => return,
+                    _ = shutdown.cancelled() => return,
+                    _ = tokio::time::sleep(IDLE_TIMEOUT) => {}
+                }
+                // Hold admission through retirement. If another request is
+                // preparing, wait for it; reuse cancels this worker's timer.
+                let _permit = tokio::select! {
+                    biased;
+                    _ = idle.cancelled() => return,
+                    _ = shutdown.cancelled() => return,
+                    permit = gate.clone().acquire_owned() => match permit {
+                        Ok(permit) => permit,
+                        Err(_) => return,
+                    },
+                };
+                let mut resident = worker.lock().await;
+                if idle.is_cancelled() || shutdown.is_cancelled() {
+                    return;
+                }
+                if let Some(worker) = resident.take() {
+                    let stopped = worker.stop().await;
+                    let mut status = snapshot.lock().unwrap();
+                    status.cached = false;
+                    status.loading = false;
+                    if let Err(error) = stopped {
+                        gate.close();
+                        status.reason = Some(error.message.clone());
+                        eprintln!("pixai idle release: {error}");
+                    }
+                }
             });
         }
         receive
@@ -256,6 +295,7 @@ async fn infer(
         status.reason = None;
     }
     let worker = worker.as_mut().unwrap();
+    worker.idle.cancel();
     let id = uuid::Uuid::new_v4().simple().to_string();
     let mut request = serde_json::to_vec(&json!({
         "requestId":id, "imagePath":image, "threshold":threshold
@@ -320,10 +360,12 @@ impl Worker {
             input,
             output: BufReader::new(output),
             stderr,
+            idle: CancellationToken::new(),
         })
     }
 
     async fn stop(self) -> Result<()> {
+        self.idle.cancel();
         let stopped = self.process.stop().await;
         let mut stderr = self.stderr;
         if stopped.is_err() {

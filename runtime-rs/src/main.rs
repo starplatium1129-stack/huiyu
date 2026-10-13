@@ -6,6 +6,16 @@ use tokio_util::sync::CancellationToken;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
+    if args.iter().any(|arg| arg == "--desktop-owned") {
+        use std::io::Read;
+        // Do not initialize services before the desktop attaches its Windows
+        // Job Object. If the desktop exits during spawn/attach, stdin is EOF.
+        let mut ready = [0; 6];
+        std::io::stdin().read_exact(&mut ready)?;
+        if &ready != b"owned\n" {
+            return Err(std::io::Error::other("Desktop process ownership was not established").into());
+        }
+    }
     if let Some(result) = huiyu_runtime::catalog::cli(&args)? {
         println!("{}", serde_json::to_string_pretty(&result)?);
         return Ok(());

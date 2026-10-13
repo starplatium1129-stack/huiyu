@@ -1,4 +1,4 @@
-//! The renderer belongs to the host lifetime, including forced host termination.
+//! Owned children belong to the host lifetime, including forced host termination.
 use std::os::windows::io::AsRawHandle;
 use std::process::Child;
 use windows_sys::Win32::Foundation::{CloseHandle, HANDLE};
@@ -7,12 +7,12 @@ use windows_sys::Win32::System::JobObjects::{
     SetInformationJobObject, JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE,
 };
 
-pub struct RendererJob(HANDLE);
+pub struct ProcessJob(HANDLE);
 // The opaque kernel handle is only configured before publication and closed on drop.
-unsafe impl Send for RendererJob {}
-unsafe impl Sync for RendererJob {}
+unsafe impl Send for ProcessJob {}
+unsafe impl Sync for ProcessJob {}
 
-impl RendererJob {
+impl ProcessJob {
     pub fn attach(child: &Child) -> Result<Self, String> {
         unsafe {
             // Null security attributes keep the job handle non-inheritable.
@@ -32,6 +32,6 @@ impl RendererJob {
     }
 }
 
-impl Drop for RendererJob {
+impl Drop for ProcessJob {
     fn drop(&mut self) { unsafe { CloseHandle(self.0); } }
 }

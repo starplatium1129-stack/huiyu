@@ -186,7 +186,7 @@ directory name/attribute notifications guard reuse, including temporary changes
 that disappear before the next request. Directory handles still allow atomic
 child-file saves; data files remain protected. Loading keeps its lease and
 rejects any intervening membership/attribute event, even if a rehashed digest
-happens to match. Stop/restart the worker or allow its 120-second idle release
+happens to match. Stop/restart the worker or allow its 600-second idle release
 before replacing a selected model/LoRA file. Unsupported filesystems, reparse
 paths or unavailable sharing protection use complete SHA256 each time; Windows
 CNG accelerates that full-byte operation without changing the digest. No mtime
@@ -280,7 +280,7 @@ Start one process per job; write one newline-terminated JSON object to stdin:
 {"id":"job-1","op":"generate","modelDir":"/models/anima-diffusers","outputPath":"/outputs/job-1.png","input":{"prompt":"a landscape","negativePrompt":"","width":1024,"height":1024,"steps":28,"cfg":4,"seed":42,"family":"anima","sampler":"euler","scheduler":"simple"}}
 ```
 
-Stdout contains only `{id,event:"progress",step,total}`, `{id,event:"result",outputPath,modelReused}` or `{id,event:"error",code,message}` objects. With `--serve`, a successful job ends with `{id,event:"ready"}` and the worker waits for the next serial job. Diagnostic output goes to stderr. Progress follows actual scheduler updates; model loading/text encoding can take time before the first update. Output is atomically renamed after PNG encoding. A nonzero exit means failure. The host owns cancellation/timeout by terminating its worker, and releases an idle worker after 120 seconds.
+Stdout contains only `{id,event:"progress",step,total}`, `{id,event:"result",outputPath,modelReused}` or `{id,event:"error",code,message}` objects. With `--serve`, a successful job ends with `{id,event:"ready"}` and the worker waits for the next serial job. Diagnostic output goes to stderr. Progress follows actual scheduler updates; model loading/text encoding can take time before the first update. Output is atomically renamed after PNG encoding. A nonzero exit means failure. The host owns cancellation/timeout by terminating its worker, and releases a worker after 600 seconds of continuous idle time; reuse cancels the previous timer and completion starts a fresh one.
 
 PNG output uses lossless compression level 4, with a level-6 retry if the encoded file exceeds the existing 32 MiB host limit. This changes file bytes and encoding cost, not decoded pixels; compression gains depend on image content. Atomic replacement preserves an existing destination on encoding failure. Result metrics include `outputSaveSeconds` and `outputBytes`. CPU fixtures are not evidence of generation speed.
 

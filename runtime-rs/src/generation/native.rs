@@ -31,7 +31,7 @@ impl Default for Engine {
             tokens: Mutex::default(),
             slot: Semaphore::new(1),
             worker: Mutex::new(None),
-            idle_timeout: Duration::from_secs(120),
+            idle_timeout: Duration::from_secs(600),
         }
     }
 }
