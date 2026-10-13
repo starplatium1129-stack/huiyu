@@ -322,7 +322,7 @@ def load_pipeline(root, cfg, blocks=None, reusable=None, stage=None):
         blocks, reusable, load_mask_tools, WorkerError, stage=stage)
 
 
-def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True, collect_cache_strategy="phase-envelope", control=None):
+def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True, collect_cache_strategy="phase-envelope", control=None, prepared=None):
     job_started = control.started if control is not None else time.perf_counter()
     def stage(name, component=None):
         if control is not None:
@@ -330,12 +330,12 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     stage("dependencies")
     data = validate_job(job)
     root = validate_model(job.get("modelDir"))
-    identity, resident_fingerprint = None, 0
+    identity, resident_fingerprint, dependency_seconds = None, 0.0, 0.0
     if resident is None:
         dependencies()
     else:
         stage("fingerprint")
-        identity, resident_fingerprint = resident.prepare_and_fingerprint(
+        identity, resident_fingerprint, dependency_seconds = prepared if prepared is not None else resident.prepare_and_fingerprint(
             dependencies, root, job.get("loras", []), load_mask_tools)
     import torch
     if not torch.cuda.is_available():
@@ -344,7 +344,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     # observation window so the first job has real peaks instead of an error.
     torch.cuda.get_device_properties(0)
     metrics = load_mask_tools("inference_metrics").RuntimeMetrics(torch, job_started)
-    metrics.timings["dependencySetupWallSeconds"] = control.initialization_seconds if control is not None else 0.0
+    metrics.timings["dependencySetupWallSeconds"] = dependency_seconds
     tea, tea_report = load_mask_tools("anima_cache").select(
         job, data, root, identity, load_mask_tools, WorkerError,
         collect=collect_teacache, profile=teacache_profile, measure=measure_teacache,
@@ -433,6 +433,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             tools=load_mask_tools, expected=expected, error=WorkerError)
         return result
     def prepare_second(blocks):
+        text_kv.clear()
         stage("encoding")
         if tea is not None:
             if tea.stats["nonfinite"]:
@@ -441,6 +442,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             return load_mask_tools("teacache_anima").apply_blocks(blocks, tea)
         return blocks
     def before_decode():
+        text_kv.clear()
         stage("decoding")
         if tea is not None:
             if tea.stats["nonfinite"]:
@@ -449,16 +451,17 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     capture = tea_report is not None and (collect_teacache or measure_teacache or teacache_profile is not None)
     started = time.perf_counter()
     try:
-        stage("encoding")
-        result, step, refinement = load_mask_tools("anima_refinement").run(pipeline, data,
-            image=image, mask=mask if mask_tools is not None else None, mask_tools=mask_tools,
-            sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
-            upscale=upscale if job.get("upscaleModelPath") else None,
-            prepare_second_blocks=prepare_second,
-            before_decode=before_decode,
-            vae_tools=load_mask_tools("anima_vae"), tiling=load_mask_tools("anima_tiling"),
-            observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
-            progress=control.progress if control is not None else lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
+        with load_mask_tools("anima_acceleration").text_kv_session(pipeline, data) as text_kv:
+            stage("encoding")
+            result, step, refinement = load_mask_tools("anima_refinement").run(pipeline, data,
+                image=image, mask=mask if mask_tools is not None else None, mask_tools=mask_tools,
+                sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
+                upscale=upscale if job.get("upscaleModelPath") else None,
+                prepare_second_blocks=prepare_second,
+                before_decode=before_decode,
+                vae_tools=load_mask_tools("anima_vae"), tiling=load_mask_tools("anima_tiling"),
+                observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
+                progress=control.progress if control is not None else lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
     finally:
         if tea is not None:
             tea.clear()
@@ -515,9 +518,9 @@ def main(argv=None):
                 try:
                     if args.serve:
                         return load_mask_tools("worker_lifecycle").serve(
-                            lambda job, control: generate(job, stream, resident=resident, control=control),
+                            lambda job, control, prepared: generate(job, stream, resident=resident, control=control, prepared=prepared),
                             input_stream=sys.stdin, stream=stream, emit=emit, error=WorkerError,
-                            initialize=lambda: resident.prepare(dependencies))
+                            initialize=lambda job, ready: resident.prepare_job(job, validate_job, validate_model, dependencies, load_mask_tools, ready))
                     line = sys.stdin.readline(2 * 1024 * 1024 + 1)
                     if len(line) > 2 * 1024 * 1024:
                         raise WorkerError("INVALID_REQUEST", "JSONL request exceeds 2 MiB")

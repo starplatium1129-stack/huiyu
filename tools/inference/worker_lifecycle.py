@@ -20,7 +20,6 @@ class JobControl:
         self.id, self.stream, self.emit = job_id, stream, emit
         self.cancelled = threading.Event()
         self.started = time.perf_counter()
-        self.initialization_seconds = 0.0
 
     def check(self):
         if self.cancelled.is_set():
@@ -114,8 +113,11 @@ def settle_resources(cancelled):
 
 
 def serve(generate, *, input_stream, stream, emit, error, initialize):
-    """Run generate(job, control); return a process exit code.
+    """Run generate(job, control, prepared); return a process exit code.
 
+    initialize(job, imports_ready) releases the reader after imports and returns
+    first-job preparation directly to generate, avoiding
+    duplicate full-byte reads on filesystems without a reusable identity lease.
     generate owns its existing finally cleanup (TeaCache and temporary model
     wrappers). It must use control at load/inference boundaries and for each
     sampling step, and must never check cancellation after emitting result.
@@ -134,19 +136,18 @@ def serve(generate, *, input_stream, stream, emit, error, initialize):
                 raise item
             job, control = item
             job_id = control.id
+            prepared = None
             if not initialized:
                 try:
                     control.stage("dependencies")
-                    started = time.perf_counter()
-                    initialize()
-                    control.initialization_seconds = time.perf_counter() - started
+                    prepared = initialize(job, requests.imports_ready.set)
                     initialized = True
                 finally:
                     requests.imports_ready.set()
             was_cancelled = False
             try:
                 control.check()
-                generate(job, control)
+                generate(job, control, prepared)
             except GenerationCancelled:
                 was_cancelled = True
             settle_resources(was_cancelled)

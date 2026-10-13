@@ -67,6 +67,7 @@ class RuntimeMetrics:
                 report["maskCache"] = self.mask_cache
 
     def model_acquired(self, started, report, reused, fingerprint, post_load_fingerprint, pipeline):
+        self.pipeline = pipeline
         self.loading = getattr(pipeline, "_huiyu_loading", None)
         self.lora_loading = getattr(pipeline, "_huiyu_lora_loading", None)
         self.fusion_restore = getattr(pipeline, "_huiyu_fusion_restore", None)
@@ -116,4 +117,5 @@ class RuntimeMetrics:
             **({"maskExecutionRevision": self.mask_execution_revision} if self.mask_execution_revision is not None else {}),
             **({"loraLoading": self.lora_loading} if self.lora_loading is not None else {}),
             **({"fusionRestore": self.fusion_restore} if self.fusion_restore is not None else {}),
+            textKVCache=self.pipeline._huiyu_text_kv_report,
             refinement=self.refinement, loading=self.loading)

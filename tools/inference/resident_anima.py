@@ -46,37 +46,68 @@ class PipelineCache:
 
     def prepare(self, check):
         if not self.runtime_ready:
+            started = time.perf_counter()
             check()
             self.runtime_ready = True
+            return time.perf_counter() - started
+        return 0.0
 
-    def fingerprint(self, root, loras, tools):
+    def fingerprint(self, root, loras, tools, *, compute_identity=None):
         if self.file_identity is None:
             self.file_identity = tools("locked_identity").IdentityLease()
         profile = tools("teacache_profile")
-        return self.file_identity.acquire(root, loras, profile.model_identity, profile.adapter_identity)
+        return self.file_identity.acquire(root, loras, compute_identity or profile.model_identity, profile.adapter_identity)
 
     def prepare_and_fingerprint(self, check, root, loras, tools):
         # Capture the stdlib-only hash helpers before dependencies refreshes its
-        # module cache. This work and ML imports are independent within the job.
+        # module cache. Lease ownership and DLL imports stay on the caller.
         helpers = {name: tools(name) for name in ("locked_identity", "teacache_profile")}
-        def identify():
+        dependency_seconds = hash_seconds = callback_seconds = 0.0
+
+        def identify_bytes(root, loras):
             started = time.perf_counter()
-            identity = self.fingerprint(root, loras, helpers.__getitem__)
+            identity = helpers["teacache_profile"].model_identity(root, loras)
             return identity, time.perf_counter() - started
-        if self.runtime_ready:
-            return identify()
-        try:
+
+        def identify_while_preparing(root, loras):
+            nonlocal dependency_seconds, hash_seconds, callback_seconds
+            started = time.perf_counter()
             with ThreadPoolExecutor(max_workers=1) as pool:
-                # Keep identity handles and notifications on the single resident
-                # caller that owns them. Only dependency imports run in the pool.
-                future = pool.submit(self.prepare, check)
-                result = identify()
-                future.result()
-                return result
+                # acquire() already holds the lease, when supported. Only the
+                # full-byte digest runs in the pool; never move lease handles.
+                future = pool.submit(identify_bytes, root, loras)
+                dependency_seconds = self.prepare(check)
+                identity, hash_seconds = future.result()
+            callback_seconds = time.perf_counter() - started
+            return identity
+
+        started = time.perf_counter()
+        if self.runtime_ready:
+            identity = self.fingerprint(root, loras, helpers.__getitem__)
+            return identity, time.perf_counter() - started, 0.0
+        try:
+            identity = self.fingerprint(root, loras, helpers.__getitem__, compute_identity=identify_while_preparing)
+            fingerprint_seconds = time.perf_counter() - started - callback_seconds + hash_seconds
+            # A previously acquired lease can avoid the callback altogether.
+            dependency_seconds += self.prepare(check)
+            return identity, fingerprint_seconds, dependency_seconds
         except BaseException:
             # The executor has joined before handles can be retired.
             self.clear()
             raise
+
+    def prepare_job(self, job, validate_job, validate_model, check, tools, imports_ready):
+        """Validate before overlapping first-job imports and protected hashing."""
+        validate_job(job)
+        root = validate_model(job.get("modelDir"))
+        def initialize():
+            try:
+                check()
+            finally:
+                # Resume cancellation reads as soon as DLL initialization ends,
+                # including when a slow disk is still finishing its digest.
+                imports_ready()
+        return self.prepare_and_fingerprint(initialize, root, job.get("loras", []), tools)
 
     def clear(self, *, keep_mask=False, keep_fingerprint=False, keep_text=False):
         if not keep_fingerprint and self.file_identity is not None:
