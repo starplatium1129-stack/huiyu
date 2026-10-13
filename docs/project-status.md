@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | 当前源码 | `package.json` 版本 1.9.2，包含发行后的修复；当前工作区改动以 Git 为准 | [工程契约](engineering-contracts.md)、[工作流](workflow.md)；源码变更不等于已安装或发布 |
 | 公开发行 | 2026-10-07 记录 1.9.2 已发布并设为 latest，发行源码 `f221bd4c`，含 full/upgrade 两种包 | [1.9.2 说明](releases/v1.9.2.md)；发行记录保留在 Git 历史；本次整理未重新查询远端状态 |
-| 最近本机安装记录 | 2026-10-13 15:58（Asia/Shanghai）完整安装 1.9.2 本机候选至 `C:/Program Files/AI-CG-Studio`；原生默认缓存、资源复用、取消保留模型与闲置显存释放已接入 | 唯一部署入口退出 0，宿主/网关/DLL 与包核对并认证启动；1132 条随包记录同步、190 条个人记录（含 sc009）原样保留。真实 Anima 与安装版取消恢复完成，用户确认体验良好。范围见[验收报告](audits/2026-10-13/native-generation-experience.html)，未公开发布 |
+| 最近本机安装记录 | 2026-10-13 19:11（Asia/Shanghai）完整安装 1.9.2 本机候选 `b2d82438` 至 `C:/Program Files/AI-CG-Studio`；保留冷启动并行，撤回实测无明显净收益的 K/V 候选 | 唯一部署入口退出 0，源码/EXE/DLL/安装包绑定及认证启动通过，安装 Worker 与候选一致；内容变更 0、保留 190 条个人记录。安装版启动取消约 3.69 秒、采样取消约 0.51 秒，恢复模型复用且同进程同 seed 重复稳定；跨运行历史恢复图有细节差异，未称像素一致。见[主力机验收](audits/2026-10-13/native-coldstart-research.html)，未公开发布 |
 | 资料迁移记录 | 2026-09-26 曾登记旧来源迁入 SQLite；10 月 1 日对应机器未发现 active pointer，仍使用旧来源 IndexedDB | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)；按具体机器核对，不合并两次记录为已迁移结论 |
 | 桌面实现 | Tauri 宿主、Rust 网关、原生 Live2D 线程渲染；独立渲染进程仍为显式实验 | [桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)、[原生运行时](guides/desktop/live2d-native-runtime.md) |
 
