@@ -94,12 +94,11 @@ impl Live2dService {
             // Hold the deduplication flag and permit until the actual blocking
             // work exits, including after timeout or service cancellation.
             let (_guard, _permit) = (guard, permit);
-            if let Some(snapshot) =
-                catalog::scan(&self.builtins, Some(&self.local), Some(&work_cancel))
+            if let Some(available) = catalog::available(&self.builtins, &self.local, &work_cancel)
                 && !work_cancel.is_cancelled()
             {
                 *self.health.observation.lock().unwrap() = Some(Observation {
-                    available: snapshot.status["available"] == true,
+                    available,
                     checked_at: SystemTime::now()
                         .duration_since(UNIX_EPOCH)
                         .unwrap_or_default()

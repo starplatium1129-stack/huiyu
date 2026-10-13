@@ -117,7 +117,25 @@ def logits_mask(logits, size, threshold, grow=8):
         return values
     mask = (blur(resized, 2).sigmoid() >= threshold).float()
     if grow:
-        mask = functional.max_pool2d(mask, 2 * grow + 1, stride=1, padding=grow)
+        # This private CPU mask contains only 0/1. Prefix presence selects the
+        # same clipped square maximum without per-pixel window scans.
+        values = mask[0, 0].numpy()
+        height, width = values.shape
+        # Each axis sums at most its length; accumulator and output must match.
+        dtype = np.min_scalar_type(max(height, width))
+        columns = np.arange(width, dtype=np.intp)
+        prefix = np.zeros((height, width + 1), dtype=dtype)
+        np.cumsum(values, axis=1, dtype=dtype, out=prefix[:, 1:])
+        horizontal = prefix[:, np.minimum(columns + grow + 1, width)] > prefix[:, np.maximum(columns - grow, 0)]
+        del values, prefix
+        rows = np.arange(height, dtype=np.intp)
+        prefix = np.zeros((height + 1, width), dtype=dtype, order="F")
+        np.cumsum(horizontal, axis=0, dtype=dtype, out=prefix[1:])
+        expanded = prefix[np.minimum(rows + grow + 1, height)] > prefix[np.maximum(rows - grow, 0)]
+        # Own FP32 storage with the threshold mask's canonical layout before
+        # the unchanged feather convolution; do not expose NumPy storage.
+        mask = torch.empty_like(mask).copy_(torch.from_numpy(expanded)[None, None])
+        del prefix, horizontal, expanded
     mask = blur(mask, 12).clamp(0, 1)[0, 0].numpy()
     if not np.any(mask > 0):
         raise ValueError("Automatic mask has no editable pixels; adjust maskPrompt/threshold or use a manual mask")

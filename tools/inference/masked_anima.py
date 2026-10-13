@@ -37,13 +37,24 @@ def save_png(image, path):
     return dict(outputSaveSeconds=time.perf_counter() - started, outputBytes=size)
 
 
-def resize_image(image, size):
-    """Shared contain/Lanczos/center-black geometry for input and mask RGB."""
+def resize_image(image, size, *, red_only=False):
+    """Shared geometry; manual masks resize only the converted RGB red channel."""
     from PIL import Image
     ratio = min(size[0] / image.width, size[1] / image.height)
     fitted = (max(1, int(image.width * ratio)), max(1, int(image.height * ratio)))
-    resized = image.convert("RGB").resize(fitted, Image.Resampling.LANCZOS)
-    canvas = Image.new("RGB", size, "black")
+    # Borrow already-normalized RGB pixels read-only; the returned canvas owns
+    # its pixels and deliberately does not inherit input EXIF/info metadata.
+    # Straight RGBA to RGB only drops alpha; red-only may read the same R.
+    converted = (image if image.mode == "RGB" or (red_only and image.mode == "RGBA")
+        else image.convert("RGB"))
+    if red_only:
+        # Keep palette/CMYK and premultiplied modes on the original RGB conversion.
+        # Pillow 11.3 Lanczos resamples each 8-bit RGB/L band independently.
+        converted = converted.getchannel("R")
+    resized = (converted if converted.size == fitted else
+        converted.resize(fitted, Image.Resampling.LANCZOS))
+    del converted
+    canvas = Image.new("L" if red_only else "RGB", size, "black")
     canvas.paste(resized, ((size[0] - fitted[0]) // 2, (size[1] - fitted[1]) // 2))
     return canvas
 
@@ -67,12 +78,13 @@ def prepare_images(image, mask_path, size, grow):
                 raise ValueError("Mask must be one PNG, JPEG or WebP image")
             if source.width * source.height > 4096 * 4096:
                 raise ValueError("Mask must be at most 16 megapixels")
-            source = ImageOps.exif_transpose(source)
+            ImageOps.exif_transpose(source, in_place=True)
             if source.size != image.size:
                 raise ValueError("Mask dimensions must match the oriented input image")
-            red = np.array(resize_image(source, size).getchannel("R"), dtype=np.float32) / 255
+            red = np.array(resize_image(source, size, red_only=True), dtype=np.float32) / 255
     except (OSError, Image.DecompressionBombError) as exc:
         raise ValueError(f"Cannot decode mask image: {exc}") from exc
+    del source  # Retire decoded pixels and any ImageFile decoder before Torch/growth.
     return resize_image(image, size), _prepare_effective_mask(red, size, grow)
 
 

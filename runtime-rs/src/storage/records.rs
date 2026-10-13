@@ -75,7 +75,8 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
         }
         "listArtworks" => {
             // Project in SQLite before deserializing large prompt/legacy image
-            // bodies. Pagination, revisions and deletion policy stay identical.
+            // bodies. deletedOnly narrows this query without changing the old
+            // includeDeleted contract, pagination or revision checks.
             let body = match command.get("projection") {
                 None | Some(Value::Null) => "body",
                 Some(Value::String(value)) if value == "preference" => {
@@ -91,7 +92,9 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 .ok_or_else(|| invalid("List limit must be 1–200"))?;
             let sql = format!(
                 "SELECT id_json,{body},revision,deleted_at,id_key FROM artworks WHERE id_key>? {} ORDER BY id_key LIMIT ?",
-                if command["includeDeleted"] == true {
+                if command["deletedOnly"] == true {
+                    "AND deleted_at IS NOT NULL"
+                } else if command["includeDeleted"] == true {
                     ""
                 } else {
                     "AND deleted_at IS NULL"

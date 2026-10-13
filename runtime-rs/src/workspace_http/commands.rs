@@ -195,6 +195,13 @@ pub(super) fn command(
             if let Some(deleted) = query.get("includeDeleted") {
                 command["includeDeleted"] = json!(deleted == "true");
             }
+            if let Some(deleted_only) = query.get("deletedOnly") {
+                command["deletedOnly"] = match deleted_only.as_str() {
+                    "true" => json!(true),
+                    "false" => json!(false),
+                    _ => return Err(ApiError::invalid("deletedOnly must be true or false")),
+                };
+            }
             command
         }
         ("GET", ["artwork-search"]) => {

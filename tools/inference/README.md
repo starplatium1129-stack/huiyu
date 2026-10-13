@@ -356,6 +356,32 @@ require separately recorded device acceptance within the user's authorization.
 
 The host sends trusted maskImagePath alongside inputImagePath. Input and oriented mask dimensions must match. Both share contain/Lanczos/center-black resize; the workflow reads the resized RGB red channel, not alpha multiplied by luminance. Repeated five-neighbour maxima implement growMaskBy's tapered diamond. Empty masks fail before Anima loads.
 
+Manual preparation resizes only the 8-bit band equivalent to RGB R. With
+straight RGBA and red-only masking, pinned Pillow 11.3.0's RGBA-to-RGB conversion
+only copies RGB and drops alpha, so the helper takes the same R directly and
+avoids a full RGB temporary. RGB is borrowed read-only; palette, grayscale,
+CMYK, premultiplied RGBa and other modes retain the original RGB conversion.
+Ordinary image resizing still converts non-RGB inputs. Pinned Pillow applies
+the same per-band Lanczos coefficients, rounding and clipping for RGB and L.
+The helper skips same-size intermediate copies and returns an independent new
+canvas without inherited EXIF/info. EXIF normalization, checks, contain geometry,
+black padding, FP32 division and downstream mask processing are retained.
+The [backend report](../../docs/audits/2026-10-13/backend-hotpaths.html) separately
+binds historical stage timings, complete actual CPU preparation and fresh-process
+high-water RSS observations to their source snapshots. Process maxRSS includes
+startup/imports and does not establish production residency, model or VRAM peaks.
+No behavior tests or pixel comparisons were run; image/EXIF behavior still needs
+device acceptance. Manual v3/Tea identity is retained on pinned source reasoning.
+
+The manual mask owns its decoded ImageFile inside `with`; EXIF transpose now
+runs in place there and the source is released before image resize/Torch growth.
+Non-RGB input images also transpose their owned decoder in place, then retain
+the original final RGB conversion and independent result. RGB input handling,
+including the necessary post-transpose EXIF normalization copy, is unchanged.
+This removes transient whole-image copies without adding a cache or sharing
+pixels across jobs. The same report records real repository image loader and
+mask-PIL-prefix CPU observations; EXIF/image behavior still needs device acceptance.
+
 Manual growth now reads each round from edge padding and writes the ordered
 five-neighbour maxima into its independent FP32 resized output. It no longer
 constructs a five-image stack or allocates a new output per round. At 4096² the
@@ -390,9 +416,23 @@ The oriented RGB source uses the same contain/Lanczos/center-black geometry as m
 
 The CPU cache retains one model, one mean-logit map, at most 64 KiB conditioning and one owned selected-layer snapshot capped at 16 MiB. Complete model asset bytes are hashed every job and rechecked after loading. Image mode/size/pixel SHA-256 plus execution revision govern vision reuse across prompt edits; ordered stripped phrases additionally govern logits reuse. Threshold/growth/feather are applied every job. Only successful masks update snapshots; failures and worker retirement clear them. Oversized activations still generate masks but are not retained. These are retained tensor payload limits, not a total-process RAM guarantee.
 
-Per-phrase 352x352 FP32 logits are averaged with duplicate phrases preserved, then Torch bilinear resized. AP postprocessing applies three 5x5 reflect box smooths, sigmoid >= threshold, square max-pool growth, then three 25x25 reflect box blurs. Uniform boxes use separable horizontal/vertical convolutions to reduce full-image work; the mathematical filter matches, FP32 accumulation may differ. Float masks go directly to sampling/compositing without uint8 or a second growth pass. Retain MASK_PROCESSING_LICENSE.txt; real boundary quality and CPU cost are unverified.
+Per-phrase 352x352 FP32 logits are averaged with duplicate phrases preserved, then Torch bilinear resized. AP postprocessing applies three 5x5 reflect box smooths, sigmoid >= threshold, square maximum growth, then three 25x25 reflect box blurs. Uniform boxes use separable horizontal/vertical convolutions to reduce full-image work; the mathematical filter matches, FP32 accumulation may differ. Float masks go directly to sampling/compositing without uint8 or a second growth pass. Retain MASK_PROCESSING_LICENSE.txt; real boundary quality and complete model-mask CPU cost are unverified.
 
-Earlier evidence includes CPU CLIPSeg segmentation and a GPU automatic-mask Remacri 2x result, tied to their recorded older source. It does not validate `clipseg-single-image-vision-v1`: changing the vision batch shape can change FP32 results near threshold boundaries. This revision has source/API and compilation review only, with no tests or model calls. Actual masks, CPU cost and cache RAM need device acceptance. Raw historical evidence remains under ignored `runtime/`.
+Square growth uses row and column prefix presence on the thresholded CPU FP32
+0/1 mask. Counts are exact integers bounded by each axis length; accumulator and
+output use the same sufficiently wide dtype. Clipped signed coordinates preserve
+the original Cartesian square window, including boundaries. The result owns FP32
+storage with the current threshold mask's canonical layout before the unchanged
+feather convolution. This private binary selector is not used for fractional
+manual masks. Smooth/feather convolutions, parameters, execution revision and cache
+scope are unchanged. Fixed Torch 2.8.0+cpu normal postprocessing observations,
+including the full helper and the preceding two-axis implementation, are recorded
+in the existing backend HTML report, including separate Linux Python 3.11/3.12
+timing, explicit 1536²/grow6 process-RSS, and separate 1024²/grow8 CPU
+observations (the standalone worker defaults) with Python 3.11 process high water. Real CLIPSeg outputs,
+Windows, model/cache residency, GPU speed and VRAM still need device acceptance.
+
+Earlier evidence includes CPU CLIPSeg segmentation and a GPU automatic-mask Remacri 2x result, tied to their recorded older source. It does not validate `clipseg-single-image-vision-v1`: changing the vision batch shape can change FP32 results near threshold boundaries. This revision has source/API and compilation review plus neutral-logit CPU postprocessing timing observations, with no tests or model calls. Actual masks, complete model-mask CPU cost and cache RAM need device acceptance. Raw historical evidence remains under ignored `runtime/`.
 
 
 ## Experimental calibrated TeaCache
