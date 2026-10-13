@@ -95,42 +95,6 @@ pub(super) fn capture(value: &Value) -> Value {
         if let Some(seconds) = value["timings"].get("dependencySetupWallSeconds") {
             result["timings"]["dependencySetupWallSeconds"] = json!(finite(seconds)?);
         }
-        if let Some(cache) = value.get("textKVCache") {
-            if cache["executionRevision"] != "cosmos-text-kv128-v1" {
-                return None;
-            }
-            let reason = cache["reason"].as_str()?;
-            if !matches!(
-                reason,
-                "eligible"
-                    | "hires"
-                    | "large-image"
-                    | "offload"
-                    | "unsupported-transformer"
-                    | "unsupported-input"
-                    | "untracked-input"
-                    | "conditioning-changed"
-                    | "allocation-failed"
-            ) {
-                return None;
-            }
-            let mut captured = json!({"executionRevision":"cosmos-text-kv128-v1","reason":reason});
-            for (key, maximum) in [
-                ("maxBytes", 128_u64 * 1024 * 1024),
-                ("peakBytes", 128 * 1024 * 1024),
-                ("retainedBytes", 0),
-                ("selectedBlocks", 1024),
-                ("projectionPairs", 2048),
-                ("hits", 1_000_000),
-            ] {
-                let count = cache[key].as_u64()?;
-                if count > maximum {
-                    return None;
-                }
-                captured[key] = json!(count);
-            }
-            result["textKVCache"] = captured;
-        }
         if let Some(loading) = value.get("loading").filter(|v| !v.is_null()) {
             if loading["strategy"] != "component-sequential-v1" {
                 return None;

@@ -23,7 +23,6 @@ RUNTIME = {"diffusers": "0.41.0", "torch": "2.8.0", "huiyuInference": "anima-wor
            "executionRevision": "cosmos-v3-native-no-kv-repeat-v1" if EXECUTION == "native" else
                "cosmos-v2-sage220-cu128torch280-post3-triton340post21" +
                ("-fusion-cpu-base-v1" if EXECUTION == "compiled-fused-sage" else "")}
-RUNTIME["executionRevision"] += "-text-kv128-v1"
 COMPONENTS = ("text_encoder", "text_conditioner", "transformer", "vae", "tokenizer", "t5_tokenizer", "scheduler")
 PROFILE_SET_KIND = "huiyu-teacache-profile-set"
 PROFILE_LIMIT = 65536

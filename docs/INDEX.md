@@ -31,7 +31,7 @@
 
 - [独立 Anima 推理接入](guides/independent-inference.md)：现有 Anima 主流程、独立运行库与使用范围。
 - [原生出图体验修复](audits/2026-10-13/native-generation-experience.html)：内置 Anima TeaCache、资源复用与显存管理；真实速度/画质/高清/取消对照，sc009 保留导入修复与桌面安装。
-- [原生冷启动与 K/V 缓存实现](audits/2026-10-13/native-coldstart-research.html)：首任务依赖与完整摘要重叠，128 MiB 单任务文本注意力缓存及 OOM 退回；编译与独立审查结果、保留既有编译配置及未验性能范围。
+- [原生冷启动主力机实测](audits/2026-10-13/native-coldstart-research.html)：三个冷进程样本中位数缩短约 0.89 秒；七张 PNG 与旧版字节相同、取消恢复通过，撤回无明显净收益的 K/V 缓存及解码清理候选。
 - [Native 独立接入续报](audits/2026-10-12/native-backend-independence.html)：按引擎切换绘图、聊天显存交接、异常退出阻断与非有限结果拦截；本轮构建及设备验收边界。
 - [Native Anima 参数与性能对齐](audits/2026-10-12/native-anima-alignment.html)：分阶段显存、共享组件冷切、高清资源清理与采样对齐；旧 Tea 档失配和逐项算法差异。
 - [Native Anima 高清与蒙版补齐](audits/2026-10-12/native-anima-effects.html)：单帧 VAE 普通优先/OOM 羽化、Remacri CPU 拼接、KJ RCAS 功能参数与浮点蒙版；v3 源码/构建及设备验收边界。

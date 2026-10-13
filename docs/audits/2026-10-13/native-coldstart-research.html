@@ -1,77 +1,30 @@
 <!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>原生出图：冷启动与 K/V 缓存实现</title>
-<style>
-:root{color-scheme:light dark;--bg:#f5f7fa;--card:#fff;--text:#202936;--muted:#536274;--line:#c8d2de;--accent:#245cb0;--soft:#eaf1fc}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.75 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1080px;margin:auto;padding:38px 24px 64px}h1{font-size:32px;line-height:1.3;letter-spacing:-.5px}h2{font-size:22px;margin:30px 0 12px}p{margin:12px 0}a{color:var(--accent);text-underline-offset:3px}a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}.muted,small{color:var(--muted)}.lead{font-size:19px}.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin:18px 0}.decision{border-left:5px solid var(--accent)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.metric{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}.metric strong{display:block;font-size:30px;line-height:1.4}.metric span{color:var(--muted)}.scroll{overflow:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:12px 10px;border-bottom:1px solid var(--line)}th{background:var(--soft)}code{font-size:.92em;overflow-wrap:anywhere}.sequence{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.sequence span{padding:8px 14px;background:var(--soft);border:1px solid var(--line);border-radius:8px}li{margin:7px 0}footer{margin-top:30px;padding-top:16px;border-top:1px solid var(--line)}@media(prefers-color-scheme:dark){:root{--bg:#141a23;--card:#1e2835;--text:#e7eef7;--muted:#b1c0d2;--line:#465971;--accent:#9dc5ff;--soft:#253952}}@media(max-width:680px){main{padding:24px 16px}h1{font-size:27px}.metrics{grid-template-columns:1fr}.panel{padding:16px}table{min-width:660px}}
-</style>
-</head>
-<body><main>
-<p class="muted">AI-CG-STUDIO · 2026-10-13 · RTX 4070 Ti SUPER 16 GB</p>
-<h1>冷启动并行与文本 K/V 缓存已落地</h1>
-<div class="panel decision">
-<p class="lead"><strong>已实现两项改动：</strong>首任务的依赖导入与完整权重摘要重叠执行；普通常驻任务复用本张图的文本注意力 K/V，持有载荷上限 128 MiB。</p>
-<p>区域编译、磁盘编译缓存与尺寸自适应已经存在，继续复用。TaylorSeer 仍按研究结论暂缓，不替换默认 TeaCache。</p>
-<p><strong>交付状态：</strong>源码、Python 语法编译、Rust check 和独立源码审查完成，按用户授权提交推送。尚无本次提速、画面或实际显存验收，未部署到安装版。</p>
-</div>
-
-<h2>既有主力机记录说明了什么</h2>
-<p>以下均取自此前的真实记录，作为本次研究线索，<strong>不是修改后的成绩</strong>。配方为 MiaoMiao 1.6、宁宁 LoRA 0.8、832×1216、24 步、CFG 4、TeaCache 0.10。</p>
-<div class="metrics">
-<div class="metric"><strong>16.93 秒</strong><span>进程启动到首张成片</span></div>
-<div class="metric"><strong>16.25 秒</strong><span>首次请求到成片</span></div>
-<div class="metric"><strong>5.05 秒</strong><span>三张热任务中位数</span></div>
-</div>
-<div class="scroll"><table aria-label="已有冷任务分阶段记录">
-<thead><tr><th>阶段</th><th>已有耗时</th><th>判断</th></tr></thead><tbody>
-<tr><td>依赖初始化</td><td>3.213 秒</td><td>主线程导入；此前产品入口在它完成后才开始摘要。</td></tr>
-<tr><td>完整文件指纹</td><td>1.269 秒</td><td>可以与导入重叠，仍读取全部字节。</td></tr>
-<tr><td>模型获取</td><td>3.945 秒</td><td>包含四组件读取约 0.253 秒、上传约 1.254 秒、LoRA 装载约 0.746 秒；剩余部分不能直接归因于磁盘。</td></tr>
-<tr><td>首次管线执行</td><td>7.394 秒</td><td>热任务约 4.75–4.79 秒；差额包含首次文本编码及内核/编译等初始化，尚未拆分归因。</td></tr>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>原生冷启动主力机实测</title><style>:root{color-scheme:light dark}body{max-width:1020px;margin:35px auto;padding:0 24px;font:16px/1.75 system-ui,"Microsoft YaHei",sans-serif;background:Canvas;color:CanvasText}h1{font-size:29px}h2{font-size:21px;margin-top:28px}a{color:LinkText}.panel{padding:18px 22px;margin:20px 0;border:1px solid GrayText;border-radius:12px}.scroll{overflow:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px 8px;border-bottom:1px solid GrayText;vertical-align:top}code{overflow-wrap:anywhere}li{margin:8px 0}footer{border-top:1px solid GrayText;margin-top:28px;padding-top:15px}</style></head><body>
+<p>2026-10-13 · RTX 4070 Ti SUPER 16 GB · 用户授权真实设备验收</p>
+<h1>冷启动约快 0.89 秒，连续出图基本持平</h1>
+<div class="panel"><p>最终保留<strong>依赖初始化与完整权重摘要并行</strong>。三个新进程样本的启动至首图中位数从 <strong>17.24 秒降至 16.35 秒</strong>，约缩短 <strong>5.2%</strong>。</p><p>最终七张对应 PNG 与旧版字节完全相同，取消后继续复用模型。K/V 缓存候选收益不足，已完整撤回；本轮没有证明普通热出图更快。</p></div>
+<h2>同机、同输入、同一产品 API</h2>
+<p>旧 Worker 来自 <code>5d62c349</code>，最终候选相对它仅改变冷启动准备及计时传递。两者使用同一 Rust 网关、独立工作区、同一 Python 3.11 / Torch 2.8.0+cu128 / Diffusers 0.41.0；MiaoMiao 1.6、宁宁 LoRA 0.8、832×1216、24 步、CFG 4、Euler/normal、compiled-fused-sage、resident，默认 TeaCache 0.10。</p>
+<div class="scroll"><table><thead><tr><th>项目</th><th>旧版</th><th>最终版</th><th>口径</th></tr></thead><tbody>
+<tr><td>进程启动至首图</td><td>17.24 秒</td><td>16.35 秒</td><td>各 3 次中位数，减少 0.89 秒／5.2%</td></tr>
+<tr><td>首次请求至成片</td><td>16.66 秒</td><td>15.83 秒</td><td>同 3 次中位数，减少 0.84 秒／5.0%</td></tr>
+<tr><td>连续普通图</td><td>5.37 秒</td><td>5.46 秒</td><td>各 3 张中位数；本组最终版慢约 0.09 秒，不宣称热图提速</td></tr>
+<tr><td>关闭 TeaCache</td><td>10.86 秒</td><td>10.73 秒</td><td>各 1 张，不推广速度差异</td></tr>
+<tr><td>2× Latent 高清</td><td>23.94 秒</td><td>24.05 秒</td><td>各 1 张，1664×2432，24+14 步</td></tr>
+<tr><td>取消发出至终态</td><td>0.51 秒</td><td>0.52 秒</td><td>等待 API cancelled；后端先确认 Worker ready</td></tr>
+<tr><td>取消后的下一张</td><td>5.39 秒</td><td>5.39 秒</td><td>两者 baseReused=true，无底模重载</td></tr>
 </tbody></table></div>
-<p class="muted">这是保留操作系统文件缓存和编译磁盘缓存的进程冷启动，未覆盖重启系统后的冷盘、首次安装或首次编译。各计时存在包含关系，不能把整表直接相加。历史口径见<a href="native-generation-experience.html">主力机真实出图记录</a>；原始摘要位于本机 <code>runtime/native-final-20261013/native-resident-final/summary.json</code>。</p>
-
-<h2>本次落地：恢复初始化与摘要并行</h2>
-<div class="panel">
-<p><strong>原先：</strong>产品入口先 <code>prepare(dependencies)</code>，随后才调用 <code>prepare_and_fingerprint</code>；此时 runtime_ready 已为真，并行分支不会进入。旧报告中“产品已并行”的表述不适用于这个入口。</p>
-<div class="sequence" aria-label="新的初始化顺序"><span>验证请求、取得文件保护</span><b aria-hidden="true">→</b><span>主线程导入 ∥ 后台完整摘要</span><b aria-hidden="true">→</b><span>加载、原有身份复核、生成</span></div>
-<p>依赖仍在主线程初始化，Windows 文件保护也由主线程创建、核验和释放。后台只做完整字节摘要；异常先等待后台结束，再释放保护。首任务直接接收准备结果，无租约文件系统也不会新增一轮加载前的重复读取。</p>
-<p>依赖初始化结束即恢复取消读取，慢盘摘要不会继续挡住读取线程。取消仍在原有安全边界生效；没有给文件读取增加即时中断。加载后的身份复核、热任务复用和现有进程退出保护保留。</p>
-<p>依赖计时与“实际摘要＋租约管理”计时分别记录，摘要计时扣除了等待导入的区间；两者存在重叠，继续使用不可相加的观测口径。</p>
-</div>
-<p><strong>收益边界：</strong>若阶段耗时保持旧记录水平，最多可重叠约 1.27 秒；这只是调度机会的估算，实际 I/O、CPU 争用和线程开销可能缩小收益。没有测得新的冷首张秒数，也没有据此宣称画质或性能通过。</p>
-
-<h2>本次落地：有界文本注意力复用</h2>
-<div class="panel">
-<p><strong>适用范围：</strong>resident 常驻模式、未开启高清且不超过 1,048,576 像素的普通任务自动使用。832×1216 和 1024×1024 在范围内；高清、大图和 offload 保持原计算。像素边界属于保守内存策略，未由本轮设备实测得出。</p>
-<p>每张图最多保存两个文本 Tensor 的强引用及修改版本，正负 CFG 各取自己的结果。第三个独立输入、输入修改或无法追踪版本时停止复用。缓存只在模型与 LoRA 已就绪后建立，任务之间不保留。</p>
-<p>首次实际使用时先为选中的完整层预留两个 CFG 槽，再逐层计算。常用 512 token、BF16、2048 通道配置可缓存 16 层，两个分支各 64 MiB；其余层按原方式计算。新分支先核对尺寸再分配。128 MiB 是持有的 K/V 数据上限，不包含输入引用、投影临时量和 CUDA 分配器预留。</p>
-<p>查找、版本读取和计数器位于编译图外，图内只接收 Tensor 或已投影的 K/V tuple。TeaCache 跳过的步骤不会额外构建 K/V。解码前、二次采样准备和 session finally 都释放缓存，覆盖取消与异常。</p>
-<p>可选投影 OOM 会释放缓存并走原计算；后续块计算若因有缓存而 OOM，则丢弃缓存、退出异常作用域后用原文本输入重算该块一次。第二次 OOM 及其他错误传播，不降精度、不换 CPU。此局部重试限于已核对不修改输入且推理时没有随机操作的普通 Cosmos 块。</p>
-<p><strong>数值与启动边界：</strong>K/V 仍计算原来的投影及归一化表达式，但移出完整编译块可能改变算子融合和浮点舍入。新 tuple 图首次使用需要编译，可能抵消这次冷加载节省的时间。因此不承诺首张或热图已更快，也不承诺像素一致。显式 TeaCache 执行身份追加 <code>text-kv128-v1</code>，旧档不会沿用；日常内置策略不变。</p>
-<p><code>nativeRuntime.textKVCache</code> 记录本次执行版本、停用原因、所选层数、投影次数、命中次数、峰值持有字节与结束后持有字节；Rust 按白名单及上限接收，并要求任务结束后的持有量为零。观测不增加 GPU 同步或读回。</p>
-</div>
-
-<h2>算法取舍与采用依据</h2>
-<div class="scroll"><table aria-label="算法研究与采用判断">
-<thead><tr><th>方向</th><th>研究结论</th><th>代价与采用条件</th></tr></thead><tbody>
-<tr><td><strong>文本注意力 K/V 缓存</strong><br>已实现有界版本</td><td>Cosmos 交叉注意力反复计算固定文本条件的 K、V 及 K 归一化，具备单任务内复用的条件；不减少采样步数。依据<a href="https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/models/transformers/transformer_cosmos.py">固定版本 Cosmos 源码</a>。</td><td>全层缓存按双 CFG、512 token、2048 hidden、BF16 估算，28 层约 224 MiB，40 层约 320 MiB；本次选择固定层子集，将持有量限制为 128 MiB。默认 TeaCache 已跳过部分计算，收益不能相乘。官方 <a href="https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/hooks/text_kv_cache.py">TextKVCache</a> 仅适配 NucleusMoE，本次定向接入 Cosmos，没有直接套用。</td></tr>
-<tr><td><strong>编译缓存与尺寸切换</strong><br>核对现状，复用既有机制</td><td>现有代码已经逐 block 编译，属于<a href="https://docs.pytorch.org/tutorials/recipes/regional_compilation.html">区域编译</a>。本机 Torch 2.8 默认开启 FX graph 磁盘缓存，默认 dynamic=None 会在尺寸变化后尝试动态化。</td><td>本机 Inductor 的 fxgraph、aotautograd、triton 及独立 Triton 缓存目录存在且近期更新；Worker 没有主动清除。依据<a href="https://docs.pytorch.org/tutorials/recipes/torch_compile_caching_tutorial.html">缓存说明</a>与固定本地源码，不新增目录、不强制 dynamic=True。目录存在不证明每次命中；当前 stderr 丢弃也限制了重编译归因。</td></tr>
-<tr><td><strong>TaylorSeer 特征预测</strong><br>暂缓作为默认</td><td><a href="https://arxiv.org/abs/2503.06923">论文</a>提供从复用转向预测的思路，但改善的是去噪计算，不是权重加载。</td><td>当前 Cosmos 缺少对应 CacheMixin 接线；<a href="https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/hooks/taylorseer_cache.py">0.41 实现</a>默认 attention 匹配规则也不覆盖 attn1/attn2。Anima 的正负 CFG 历史必须分开，不能同时套现有 TeaCache。24 步的预热占比和画质变化需独立比较，当前不移植未知阈值。</td></tr>
-<tr><td><strong>继续重写加载器</strong><br>当前收益依据不足</td><td>固定 Diffusers 已使用低内存装载和默认 mmap；现有上传有界双缓冲，旧记录中纯组件读取只约 0.25 秒。参考<a href="https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/models/modeling_utils.py">固定版本加载器</a>。</td><td>四组件并行初始化会增加 CPU 权重共存，并涉及上游全局初始化状态。尚无冷盘证据支持进一步提高并行度。也不引入仅凭 mtime 的哈希缓存来跳过完整身份核验。</td></tr>
-</tbody></table></div>
-<p>主力机已有 Latent 高清峰值接近 16 GB，因此本次 K/V 缓存明确跳过高清流程。预加载可以把等待提前，却不能当作端到端提速；本轮没有后台自动占用显卡，也没有调整驻留超时、精度或 TeaCache 阈值。</p>
-
-<h2>验证与交付范围</h2>
-<ul>
-<li><strong>通过：</strong>独立运行库 CPython 对六个修改模块执行 <code>py_compile</code>，后续改动的 acceleration 再次编译成功；<code>cargo check --locked --offline</code> 退出 0（2.12 秒），定向 rustfmt 检查通过。主会话及独立源码复核覆盖线程、文件保护、CFG 身份、预算、图边界、OOM 与取消释放。worker 有效行数保守统计 499，其余受影响单体也低于 500。</li>
-<li><strong>已解决的检查失败：</strong>首次 Rust 命令因 PATH 中没有 cargo 未启动；定位到已有工具链，使用其绝对路径后成功，没有安装工具或重复盲跑。</li>
-<li><strong>未运行：</strong>遵守仓库禁令，没有编写或运行测试、行为断言、基准或真实模型调用；未安装依赖、构建 release/桌面包或部署。Python 直接执行文件不需要生成 TypeScript 工具，前端未改。</li>
-<li><strong>需设备验收：</strong>修改后的冷首张、首次 tuple 编译及连续出图耗时，K/V 命中与整卡峰值、首次取消/恢复、LoRA 切换后的输出及画面差异。TaylorSeer 仍未实现。旧出图记录不证明本次代码通过。</li>
-<li><strong>变更范围：</strong>六个推理 Python 模块、运行清单、Rust 原生观测边界，以及本报告、接入指南与索引；工作区其他会话的 UI 改动保留，不纳入本次提交。</li>
-</ul>
-<footer>本轮证据回执位于本机被忽略的 <code>runtime/native-coldstart-20261013/</code>。按本次用户授权提交推送，提交身份与远端核对结果在会话交付中提供。安装版仍是此前版本；源码提交不代表桌面部署或设备验收。参见<a href="../../guides/independent-inference.md">独立推理接入说明</a>。</footer>
-</main></body></html>
+<p>这是保留 OS 文件和编译磁盘缓存的进程冷启动，不代表冷盘或首次安装。请求计时含 100 ms 轮询、下载与保存 PNG。三次启动至首图旧版为 17.24／17.34／17.12 秒，最终版为 17.17／16.35／16.06 秒；完整套件之后按旧、新、新、旧顺序补充冷样本。未清缓存或并行构建干扰计时，桌面背景 GPU 占用仍有波动。</p>
+<h2>画质与取消恢复</h2>
+<p>冷图、三张热图、无 TeaCache、高清、取消恢复共七对使用相同种子；对应 PNG 的完整 SHA-256 均一致，因此本组没有像素差异。取消在实际采样进度出现后发出，终态之后才提交恢复图；恢复图成功、模型复用且输出与旧版相同。范围不推广到所有模型、硬件、故障或长时批量。</p>
+<p>已目视普通、无 TeaCache 和高清成片，没有新增黑图、拼缝或整体结构异常。高清仍有基线中既存的刷痕感与尖细手指，本次没有改进这些细节，也没有引入新差异。</p>
+<h2>实验结果决定了哪些改动不交付</h2>
+<p><strong>K/V 缓存：</strong>默认 TeaCache 实际命中 320 次，关闭 TeaCache 后 736 次，持有峰值 128 MiB、结束归零。同背景热图中位数 5.360 对 5.370 秒，仅约 0.19%；无 TeaCache 为 10.812 对 10.856 秒，仅约 0.41%。六张普通 PNG 与旧版不同，禁用该候选的高清相同。不同本身不证明画质变差，但未获得足够收益来抵偿显存、额外编译图与数值变化，故完整删除实现、消费者、指标及执行版本后缀。</p>
+<p>运行前曾发现私有 NamedTuple 在隔离动态模块下存在 Dynamo 导入风险，使用普通 tuple 完成了候选实跑；候选撤回后该修正也不再需要。首次候选编译请求 17.55 秒单列，不混入最终冷样本。</p>
+<p><strong>解码前清理：</strong>首次实验高清耗时 241 秒，解码期间观察到约 274 MiB 系统共享 GPU 内存。添加解码前 empty_cache 后一次为 24.16 秒，但旧版与最终原路径同样约 24 秒，未证明稳定净收益或因果关系，一并撤回。<a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5490/~/system-memory-fallback-for-stable-diffusion">NVIDIA 说明</a>共享显存回退可能显著拖慢生成；本次没有修改驱动设置，也不宣称已解决全部显存压力停顿。</p>
+<p>既有区域编译、磁盘缓存和尺寸自适应继续使用。TaylorSeer 仍需专门适配，未纳入本轮。</p>
+<h2>最终代码与验收边界</h2>
+<p>文件保护与 ML 依赖初始化仍在主线程，后台计算完整摘要；首任务直接接收准备结果，加载后复核。依赖完成即恢复取消读取；异常先等待后台结束再释放保护。依赖与摘要计时有重叠，不能相加。最终注意力、采样、VAE、分块、精修及 Rust 指标转换均与旧版基线零差异。</p>
+<ul><li><strong>真实通过：</strong>最终普通／无 Tea／高清成片、七对 PNG 字节核对、采样取消与模型复用恢复，三对冷进程计时。</li><li><strong>源码审查：</strong>独立复核确认 K/V 消费者与版本后缀全部移除，冷并行与取消保护保留；实验异常记录保留。</li><li><strong>构建与安装：</strong>桌面构建、安装、重启及安装版 API 验收另见实际交付回执，不能由本页推断通过。</li><li><strong>范围：</strong>本轮研究及最终对照共 32 张成片、4 次脚本取消，安装版另计。仅按本次明确授权调用真实产品 API；未新增测试框架、未执行全仓测试、不下载模型或推理依赖、不改个人内容库。</li></ul>
+<footer>本机原始材料位于被忽略的 <code>runtime/native-kv-acceptance-20261013/</code>，最终哈希比较为 <code>final-image-comparison.json</code>。本页替代此前未上机的候选报告；桌面安装与远端提交以交付回执为准。参见<a href="../../guides/independent-inference.md">独立推理接入</a>。</footer>
+</body></html>

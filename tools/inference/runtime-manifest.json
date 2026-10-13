@@ -8,7 +8,7 @@
     "mode": "one-exact-base-and-active-lora-group",
     "identity": "complete SHA256 and per-component SHA256 at acquisition; direct fixed local NTFS retains read-only file leases, stable file IDs and latched membership/attribute notifications before reuse and after load. Same exact base/ordered adapter paths reuse detached SHA identities without inventories/new handles; drive mappings and notifications are checked before/after reuse. SUBST/UNC aliases, case-distinct collisions or unsupported protection repeat full bytes. Mapping checks are boundary snapshots, not privileged-remapping protection. Base changes reload adapted transformer/conditioner; byte-identical unadapted Qwen/VAE/tokenizers may be reused after exact class/dtype checks",
     "isolation": "fresh pipeline blocks, scheduler, guider and TeaCache controller per job",
-    "initialization": "First serve request validates input and acquires the identity lease on the owner thread, then overlaps background full-byte hashing with dependency imports on that same owner thread. The reader resumes as soon as imports end, even if hashing continues. Prepared identity/timings pass directly into generation; errors join hashing before lease release and post-load identity verification remains. No DLL imports or lease ownership move to the hash thread. Components still load/upload sequentially with bounded staging.",
+    "initialization": "First serve request validates input and acquires the identity lease on the owner thread, then overlaps background full-byte hashing with dependency imports on that same owner thread. The reader resumes as soon as imports end, even if hashing continues. Prepared identity/timings pass directly into generation; errors join hashing before lease release and post-load identity verification remains. No ML dependency imports or lease ownership move to the hash thread. Components still load/upload sequentially with bounded staging.",
     "loraStrengthChanges": "reuse unchanged base/adapter bytes; update active adapter weights without reloading",
     "textEncodingCache": {
       "location": "CPU only",
@@ -61,26 +61,14 @@
       "compiled-fused-sage"
     ],
     "validatedPlatform": "Windows CPython 3.11, Torch 2.8.0+cu128, NVIDIA Ada SM89",
-    "revision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21-text-kv128-v1",
-    "nativeRevision": "cosmos-v3-native-no-kv-repeat-v1-text-kv128-v1",
+    "revision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21",
+    "nativeRevision": "cosmos-v3-native-no-kv-repeat-v1",
     "nativeAttention": "Exact stock Cosmos processor types use the existing bundled processor to skip K/V repeat_interleave copies only when repeats=1; native dispatch, projections, normalization, rotary and non-unit repeats remain. K/V layout changes; source/API and compilation reviewed, no current CUDA timing or image acceptance. Only native Tea scopes require fresh calibration for this change",
     "scope": "Cosmos attention only; conditioner and VAE attention retain their original paths. compiled-sage keeps PEFT projections; compiled-fused-sage explicitly merges supported Linear LoRAs into resident weights",
     "fusion": "Opt-in compiled-fused-sage: protected base-preserving adapters restore exact safetensors bytes within <=32 MiB active read/conversion buffers. Same-dtype CUDA groups larger than 16 MiB with rows <=16 MiB use two slots <=16 MiB each, overlapping reads with current-stream copies; Events gate reuse and success/failure drains before releasing buffers/host cache. Exact-device grouping; CPU/cast/small/large-row groups remain serial. Independent CPU snapshot fallback remains without a source lease. Safe merge retains packed CUDA storage; restore precedes PEFT mutation, never rounded delta subtraction. Current device performance/restoration evidence unverified",
-    "fusionRevision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21-fusion-cpu-base-v1-text-kv128-v1",
+    "fusionRevision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21-fusion-cpu-base-v1",
     "compile": "original block.forward, fullgraph=false, mode=default; no CUDA graphs, no VAE compile; first-use/shape/LoRA changes may compile and have extra latency",
     "calibration": "execution mode and revision bind the Tea profile; earlier profiles require fresh calibration",
-    "textKVCache": {
-      "executionRevision": "cosmos-text-kv128-v1",
-      "maxRetainedBytes": 134217728,
-      "maxPixels": 1048576,
-      "scope": "Resident ordinary jobs only; any hires request and offload use the original calculation. Ordinary Cosmos cross-attention without crossattn projection, image context or ControlNet projections.",
-      "identity": "At most two strong encoder references plus mutation versions per job; changed version, a third distinct input or missing mutation tracking disables reuse. Model and LoRA parameters are fixed for the serial job.",
-      "budget": "Select complete blocks with both CFG slots reserved before filling the first branch; for 512 tokens, BF16 and 2048 channels, 16 blocks fit. Check each branch size before allocating. Limit covers retained K/V payload, not projection scratch, allocator reserves or full-device memory.",
-      "compile": "Cache lookup and counters stay outside original compiled block.forward; only Tensor or projected K/V namedtuple enters the graph. New tuple graphs incur initial compilation; eager K/V projection preserves the mathematical expression but may change floating-point fusion/rounding.",
-      "release": "Before VAE decode, second-pass preparation, and unconditional session finally. Optional K/V allocation OOM drops the cache; block OOM with live cache drops all cache and retries that pure inference block once with original conditioning. Repeated OOM and other errors propagate.",
-      "observations": "nativeRuntime.textKVCache records revision, reason, selectedBlocks, projectionPairs, hits, maxBytes, peakBytes and retainedBytes; Rust requires bounded values and zero retainedBytes at completion. No extra GPU readback or synchronization for observations.",
-      "validation": "Source review and Python/Rust compilation only; no current CUDA output, performance or memory acceptance. Previous device reports do not validate this revision."
-    },
     "dependencies": [
       {
         "name": "sageattention",

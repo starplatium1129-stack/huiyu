@@ -433,7 +433,6 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             tools=load_mask_tools, expected=expected, error=WorkerError)
         return result
     def prepare_second(blocks):
-        text_kv.clear()
         stage("encoding")
         if tea is not None:
             if tea.stats["nonfinite"]:
@@ -442,7 +441,6 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             return load_mask_tools("teacache_anima").apply_blocks(blocks, tea)
         return blocks
     def before_decode():
-        text_kv.clear()
         stage("decoding")
         if tea is not None:
             if tea.stats["nonfinite"]:
@@ -451,17 +449,16 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     capture = tea_report is not None and (collect_teacache or measure_teacache or teacache_profile is not None)
     started = time.perf_counter()
     try:
-        with load_mask_tools("anima_acceleration").text_kv_session(pipeline, data) as text_kv:
-            stage("encoding")
-            result, step, refinement = load_mask_tools("anima_refinement").run(pipeline, data,
-                image=image, mask=mask if mask_tools is not None else None, mask_tools=mask_tools,
-                sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
-                upscale=upscale if job.get("upscaleModelPath") else None,
-                prepare_second_blocks=prepare_second,
-                before_decode=before_decode,
-                vae_tools=load_mask_tools("anima_vae"), tiling=load_mask_tools("anima_tiling"),
-                observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
-                progress=control.progress if control is not None else lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
+        stage("encoding")
+        result, step, refinement = load_mask_tools("anima_refinement").run(pipeline, data,
+            image=image, mask=mask if mask_tools is not None else None, mask_tools=mask_tools,
+            sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
+            upscale=upscale if job.get("upscaleModelPath") else None,
+            prepare_second_blocks=prepare_second,
+            before_decode=before_decode,
+            vae_tools=load_mask_tools("anima_vae"), tiling=load_mask_tools("anima_tiling"),
+            observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
+            progress=control.progress if control is not None else lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
     finally:
         if tea is not None:
             tea.clear()
