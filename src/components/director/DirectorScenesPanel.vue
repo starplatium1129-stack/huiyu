@@ -20,7 +20,6 @@
       />
     </template>
     <template v-else>
-      <div class="panel-title">Scene · <span class="scene-count-badge">{{ availableScenes.length }}</span></div>
       <div class="scene-scope studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="场景库范围">
       <AnimatedSelection />
         <button type="button" :class="{ active: sceneCollection === 'core' }"
@@ -40,14 +39,16 @@
         </span>
         <button class="scene-filter-reset" type="button" @click="pb.sceneSearch = ''; pb.sceneTheme = 'all'">重置筛选</button>
       </div>
-      <div class="scene-filter-label advanced-decision">主题</div>
-      <div class="scene-cats advanced-decision" role="group" aria-label="场景主题">
-        <button v-for="t in SCENE_THEMES" :key="t.id"
-          class="scene-cat-btn" type="button"
-          :aria-pressed="pb.sceneTheme === t.id"
-          :class="{ active: pb.sceneTheme === t.id }"
-          @click="pb.sceneTheme = t.id"><ArchiveIcon :name="t.iconName" /> {{ t.label }}</button>
-      </div>
+      <details class="scene-theme-filter">
+        <summary>主题 · {{ currentThemeLabel }}<span class="scene-theme-expand">展开</span><span class="scene-theme-collapse">收起</span></summary>
+        <div class="scene-cats" role="group" aria-label="场景主题">
+          <button v-for="t in SCENE_THEMES" :key="t.id"
+            class="scene-cat-btn" type="button"
+            :aria-pressed="pb.sceneTheme === t.id"
+            :class="{ active: pb.sceneTheme === t.id }"
+            @click="pb.sceneTheme = t.id"><ArchiveIcon :name="t.iconName" /> {{ t.label }}</button>
+        </div>
+      </details>
       <div v-content-motion:right="pb.dataReady ? `${sceneCollection}:${pb.sceneTheme}` : false" class="scene-list">
         <div v-if="!pb.dataReady" class="scene-loading">正在加载场景库…</div>
         <div v-else-if="!availableScenes.length" class="scene-empty">未找到匹配场景</div>
@@ -78,6 +79,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
@@ -90,6 +92,7 @@ import '@/assets/css/director/components/DirectorSceneLibrary.css'
 import '@/assets/css/director/components/DirectorScenesPanel.css'
 
 const pb = usePromptBuilderStore()
+const currentThemeLabel = computed(() => SCENE_THEMES.find(theme => theme.id === pb.sceneTheme)?.label ?? '全部')
 
 defineProps<{
   popularBlueprintPool: SceneBlueprint[]

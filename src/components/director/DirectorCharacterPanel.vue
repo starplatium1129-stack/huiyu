@@ -6,12 +6,12 @@
       <button type="button" class="char-source-btn" :class="{ active: !pb.isPopular }"
         :aria-pressed="!pb.isPopular" @click="$emit('selectSource', 'studio')">
         <ArchiveIcon name="character" class="char-source-icon" />
-        <span>工作室角色</span>
+        <span class="char-source-label">工作室角色</span>
       </button>
       <button type="button" class="char-source-btn" :class="{ active: pb.isPopular }"
         :aria-pressed="pb.isPopular" @click="$emit('selectSource', 'popular')">
         <ArchiveIcon name="spark" class="char-source-icon" />
-        <span>热门角色<span class="char-source-note"> · 无需 LoRA</span></span>
+        <span><span class="char-source-label">热门角色</span><span class="char-source-note">无需 LoRA</span></span>
       </button>
     </div>
 

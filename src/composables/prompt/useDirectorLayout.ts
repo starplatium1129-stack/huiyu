@@ -22,7 +22,9 @@ function readPreferences() { return parseDirectorLayout(profileLocalStorage.getI
 export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   const preferences = ref(readPreferences())
   const width = ref(960), viewport = ref(typeof innerWidth === 'number' ? innerWidth : 1280), dragging = ref<Side | null>(null)
-  const compact = computed(() => viewport.value >= 1024 && viewport.value <= 1440)
+  // Collapse only when the measured workspace cannot fit both rails and a useful canvas.
+  // Hiding the inspector leaves enough space for materials beside the canvas.
+  const compact = computed(() => viewport.value >= 1024 && width.value < 1120 && !preferences.value.hideInspector)
   const compactMaterialsOpen = ref(false)
   watch(compact, () => { compactMaterialsOpen.value = false })
   let observer: ResizeObserver | null = null
@@ -38,10 +40,10 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     }
   }, { capture: true })
   let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number } | null = null
-  const baseMaterials = computed(() => 336)
-  const baseInspector = computed(() => compact.value ? 320 : 368)
+  const baseMaterials = computed(() => viewport.value <= 1440 ? 300 : 336)
+  const baseInspector = computed(() => viewport.value <= 1440 ? 320 : 368)
   // Resizing may use spare canvas width, including a compact portrait workspace.
-  const available = computed(() => Math.max(0, width.value - 320 - 48))
+  const available = computed(() => Math.max(0, width.value - 440 - 48))
   const materialsWidth = computed(() => Math.max(240, Math.min(preferences.value.materials ?? baseMaterials.value,
     available.value - (preferences.value.hideInspector ? 0 : Math.min(preferences.value.inspector ?? baseInspector.value, Math.max(280, available.value - 240))))))
   const inspectorWidth = computed(() => compact.value ? 320 : Math.max(280, Math.min(preferences.value.inspector ?? baseInspector.value,

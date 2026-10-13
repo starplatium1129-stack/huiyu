@@ -38,7 +38,8 @@
     @apply tw:whitespace-normal tw:text-center tw:cursor-pointer;
     transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out), box-shadow var(--motion-hover) var(--ease-out);
   }
-  .pb .char-source-btn:first-child { @apply tw:whitespace-nowrap; }
+  .pb .char-source-label { @apply tw:whitespace-nowrap; }
+  .pb .char-source-note::before { content:' · '; }
   .pb .char-source-btn > span { @apply tw:min-w-0; }
   .pb .char-source-btn:hover { @apply tw:border-accent tw:text-accent; background: var(--accent-soft); }
   .pb .char-source-icon {
@@ -60,18 +61,19 @@
     box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 40%,transparent);
   }
   /* Narrow expert rails keep complete labels instead of a column of characters. */
-  @container (max-width: 280px) {
+  @container (max-width: 360px) {
     .pb .char-source { @apply tw:w-full; }
     .pb .char-source-btn { flex: 1 1 0; padding-inline: var(--s-2); }
     .pb .char-source-icon { @apply tw:hidden; }
     .pb .char-source-note { @apply tw:block tw:whitespace-nowrap tw:text-label-sm; }
+    .pb .char-source-note::before { content:none; }
   }
 
 /* 肖像下方留出独立的名字页签，双人选项在同一行保留两位角色。 */
-.pb .studio-character-gallery { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-2; }
+.pb .studio-character-gallery { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,192px)); @apply tw:gap-s-2; }
 .pb .char-btn.studio-character-choice { @apply tw:relative tw:flex tw:flex-col tw:items-stretch tw:p-0 tw:gap-0 tw:overflow-hidden tw:whitespace-normal tw:text-left; box-shadow:none; }
 .pb .studio-character-art { @apply tw:flex tw:min-w-0; }
-.pb .studio-character-art .character-portrait { @apply tw:w-full tw:h-auto; aspect-ratio:1 / 1; border:0; border-radius:0; }
+.pb .studio-character-art .character-portrait { @apply tw:w-full tw:h-auto; max-height:176px; aspect-ratio:1 / 1; border:0; border-radius:0; }
 .pb .studio-character-art .character-portrait img { transform:none; object-position:center 25%; }
 .pb .studio-character-natsume .character-portrait img { transform:scale(1.35); transform-origin:center 45%; object-position:center 45%; }
 .pb .studio-character-copy { @apply tw:flex tw:flex-col tw:gap-s-1; padding:var(--s-2) var(--s-3); }

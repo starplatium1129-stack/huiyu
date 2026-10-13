@@ -129,10 +129,11 @@
 }
 @media (min-width:1024px) and (max-width:1440px) {
   .pb.journal-workspace.atelier-workspace { padding:20px 24px; }
-  .pb.journal-workspace.atelier-workspace[data-director-mode] .director-workspace { gap:16px; grid-template-columns:minmax(0,1fr) 320px; grid-template-areas:"stage inspector"; }
+  .pb.journal-workspace.atelier-workspace[data-director-mode] .director-workspace { gap:16px; }
+}
+@media (min-width:1024px) {
+  .pb.journal-workspace.atelier-workspace[data-compact-workspace] .director-workspace { grid-template-columns:minmax(0,1fr) 320px; grid-template-areas:"stage inspector"; }
   .pb.journal-workspace.atelier-workspace[data-compact-workspace]:not([data-materials-collapsed]):not(.focus-mode) .director-workspace { grid-template-areas:"story inspector"; }
   .pb.atelier-workspace[data-compact-workspace]:not([data-materials-collapsed]):not(.focus-mode) .col-center { display:none; }
-  .pb.journal-workspace.atelier-workspace[data-compact-workspace][data-inspector-collapsed] .director-workspace { grid-template-columns:minmax(0,1fr); grid-template-areas:"actions" "stage"; grid-template-rows:auto minmax(0,1fr); }
-  .pb.journal-workspace.atelier-workspace[data-compact-workspace][data-inspector-collapsed]:not([data-materials-collapsed]):not(.focus-mode) .director-workspace { grid-template-areas:"actions" "story"; }
   .pb.journal-workspace.atelier-workspace.focus-mode .director-workspace { grid-template-columns:minmax(0,1fr); grid-template-areas:"actions" "stage"; }
 }
