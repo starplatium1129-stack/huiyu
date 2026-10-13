@@ -29,6 +29,7 @@ pub(super) fn sql(scope: TaskListScope, cursor: &str, body: &str, recovery: &str
         // recent tasks that are also open; rowids stay internal to this query.
         // Each sorted branch needs at most k keys to supply the union's top k.
         // Limit OPEN before merging; fetch JSON only after final page selection.
+        // Recent membership is fixed before excluding NULL task_id, as with IN.
         return format!(
             "WITH selected AS (
                 SELECT rowid,revision FROM (
@@ -39,10 +40,10 @@ pub(super) fn sql(scope: TaskListScope, cursor: &str, body: &str, recovery: &str
                     ORDER BY json_extract(record_json,'$.revision') DESC LIMIT ?5
                 )
                 UNION SELECT rowid,revision FROM (
-                    SELECT rowid,json_extract(record_json,'$.revision') AS revision FROM tasks
+                    SELECT rowid,json_extract(record_json,'$.revision') AS revision,task_id FROM tasks
                     WHERE principal_id=?1 AND json_extract(record_json,'$.revision')<=?3
                     ORDER BY json_extract(record_json,'$.revision') DESC LIMIT 60
-                )
+                ) WHERE task_id IS NOT NULL
             ), page AS MATERIALIZED (
                 SELECT rowid,revision FROM selected
                 WHERE revision>?2 AND revision<=?3 AND revision<?4

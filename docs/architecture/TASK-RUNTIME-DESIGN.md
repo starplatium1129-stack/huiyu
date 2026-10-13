@@ -41,7 +41,7 @@ principalId 从服务端认证产生，不信任 body 自报 owner。桌面稳�
 
 任务列表支持 `summary=true` 和 `scope=all|overview|open|attention|inbox`，沿用 principal 隔离、revision 游标与 runtime epoch。SQLite 先投影、再校验摘要，不把 input、metadata、checkpoint 和输入媒体引用带进列表；单任务详情保留完整记录。`overview` 保留全部活动／待确认任务及最近 60 条记录，初次读取完成后再发布并推进增量游标，后续增量读取不限制为 overview，避免漏掉旧任务的变化。前端仅保留 60 条普通终态摘要；活动与未确认记录不截断。历史面板独立按 30 条翻页，不推进订阅游标；展开结果才读取详情，关闭面板释放预览、不取消任务。空画布恢复通过收件箱分页查找，不能只在最近 60 条缓存中找结果。
 
-过滤范围 `open/attention/inbox` 共用查询与部分索引的精确条件，索引按 principal 和 revision 排序，并随原任务写事务维护成员。`overview` 先合并活动／待确认索引中的任务与上界内最近 60 条的内部 rowid，活动分支先按原上下界取至多 limit+1 个键，合并集合最多 limit+1+60 个键，再分页并读取校验本页 JSON；内部 rowid 不进入 API 或替代 revision 游标。已有 v3 工作库和恢复后的旧备份在打开时补建缺少的索引，不改记录、schemaVersion 或备份协议。首次建索引需要扫描历史记录，后续写入也要评估成员条件；云端读写实测与设备限制见[后端热点报告](../audits/2026-10-13/backend-hotpaths.html#cloud-task-lists)。
+过滤范围 `open/attention/inbox` 共用查询与部分索引的精确条件，索引按 principal 和 revision 排序，并随原任务写事务维护成员。`overview` 先合并活动／待确认索引中的任务与上界内最近 60 条的内部 rowid，活动分支先按原上下界取至多 limit+1 个键，合并集合最多 limit+1+60 个键，再分页并读取校验本页 JSON；内部 rowid 不进入 API 或替代 revision 游标。最近分支先按 principal 与上界固定 60 条成员，再排除 SQL NULL task_id，保留原 task_id IN 的成员语义；正常接受任务始终写入已校验的字符串 taskId。已有 v3 工作库及旧备份候选在实际 Storage.open 时同步补建缺少的索引；恢复 API 只建立候选，不立即替换现有连接，也不在恢复调用中补建。索引初始化早于存储请求处理，首次扫描不支持请求取消；不改记录、schemaVersion 或备份协议。首次建索引需要扫描历史记录，后续写入也要评估成员条件；云端读写实测与设备限制见[后端热点报告](../audits/2026-10-13/backend-hotpaths.html#cloud-task-lists)。
 
 1. 客户端在提交动作开始生成 requestKey；页面组件销毁后，应用级提交句柄仍能查询这个 key。一次用户重试原请求使用同 key；用户明确“重新生成”才创建新 key。
 2. 服务端校验权限、参数和准入，在短事务中建立唯一 `(principalId, requestKey)` 与 taskId，保存参数指纹、冻结输入及 queued 状态。
