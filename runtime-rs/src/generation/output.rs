@@ -3,7 +3,7 @@ use futures_util::StreamExt;
 use regex::Regex;
 use reqwest::Method;
 use std::sync::LazyLock;
-use tokio::io::AsyncWriteExt;
+use tokio::io::{AsyncWriteExt, BufWriter};
 static FILENAME: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^[A-Za-z0-9][A-Za-z0-9._-]{0,180}\.(?:png|jpe?g|webp)$").unwrap()
 });
@@ -151,7 +151,7 @@ pub(super) async fn materialize_scoped(
                 .suffix(".tmp")
                 .tempfile_in(&directory)?
                 .into_parts();
-            let mut file = tokio::fs::File::from_std(file);
+            let mut file = BufWriter::with_capacity(256 * 1024, tokio::fs::File::from_std(file));
             file.write_all(&header).await?;
             if let Some(bytes) = remainder {
                 file.write_all(&bytes).await?;

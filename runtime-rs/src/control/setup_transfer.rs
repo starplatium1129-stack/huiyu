@@ -6,11 +6,11 @@ pub(super) async fn write(
     client: &reqwest::Client,
     send: &Sender<Value>,
     cancel: &CancellationToken,
-    output: &mut tokio::fs::File,
+    output: &mut tokio::io::BufWriter<tokio::fs::File>,
 ) -> Result<u64> {
-    let mut count = output.metadata().await.map_err(io_error)?.len();
+    let mut count = output.get_ref().metadata().await.map_err(io_error)?.len();
     if count > plan.spec.bytes {
-        output.set_len(0).await.map_err(io_error)?;
+        output.get_ref().set_len(0).await.map_err(io_error)?;
         count = 0;
     }
     output
@@ -44,7 +44,7 @@ pub(super) async fn write(
             }
         } else if response.status() == reqwest::StatusCode::OK {
             if count > 0 {
-                output.set_len(0).await.map_err(io_error)?;
+                output.get_ref().set_len(0).await.map_err(io_error)?;
                 output
                     .seek(std::io::SeekFrom::Start(0))
                     .await

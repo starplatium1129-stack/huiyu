@@ -125,25 +125,22 @@ pub(super) async fn protect_and_restore(
                 false
             };
             if !restored {
-                let pending = file.with_extension(format!("{}.tmp", uuid::Uuid::new_v4()));
-                let mut output = tokio::fs::OpenOptions::new()
-                    .create_new(true)
-                    .write(true)
-                    .open(&pending)
-                    .await?;
-                let result = async {
-                    output.write_all(original.bytes.as_slice()).await?;
-                    output.flush().await?;
-                    output.sync_all().await?;
-                    drop(output);
-                    tokio::fs::hard_link(&pending, &file).await
+                // Own cleanup before the first await, including caller timeout
+                // or cancellation. Publication must not overwrite another input.
+                let (output, pending) =
+                    tempfile::NamedTempFile::new_in(file.parent().unwrap())?.into_parts();
+                let mut output = tokio::fs::File::from_std(output);
+                output.write_all(original.bytes.as_slice()).await?;
+                output.flush().await?;
+                output.sync_all().await?;
+                drop(output);
+                if cancel.is_cancelled() {
+                    return Err(cancelled());
                 }
-                .await;
-                let _ = tokio::fs::remove_file(pending).await;
-                if let Err(error) = result
-                    && error.kind() != std::io::ErrorKind::AlreadyExists
+                if let Err(error) = pending.persist_noclobber(&file)
+                    && error.error.kind() != std::io::ErrorKind::AlreadyExists
                 {
-                    return Err(error.into());
+                    return Err(error.error.into());
                 }
             }
         }

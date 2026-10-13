@@ -1,5 +1,6 @@
 use super::*;
 use sha2::{Digest, Sha256};
+use std::io::{self, BufWriter, Write};
 
 pub(super) fn digest(bytes: impl AsRef<[u8]>) -> String {
     hex::encode(Sha256::digest(bytes.as_ref()))
@@ -11,20 +12,22 @@ fn index(key: &str) -> Option<u32> {
     let number: u32 = key.parse().ok()?;
     (number != u32::MAX && number.to_string() == key).then_some(number)
 }
-fn write(value: &Value, canonical: bool, output: &mut Vec<u8>) {
+fn write(value: &Value, canonical: bool, output: &mut impl Write) {
     match value {
         Value::Number(n) => {
-            output.extend_from_slice(ryu_js::Buffer::new().format(n.as_f64().unwrap()).as_bytes());
+            output
+                .write_all(ryu_js::Buffer::new().format(n.as_f64().unwrap()).as_bytes())
+                .unwrap();
         }
         Value::Array(items) => {
-            output.push(b'[');
+            output.write_all(b"[").unwrap();
             for (i, item) in items.iter().enumerate() {
                 if i > 0 {
-                    output.push(b',');
+                    output.write_all(b",").unwrap();
                 }
                 write(item, canonical, output);
             }
-            output.push(b']');
+            output.write_all(b"]").unwrap();
         }
         Value::Object(object) => {
             let mut keys: Vec<_> = object.keys().collect();
@@ -35,16 +38,16 @@ fn write(value: &Value, canonical: bool, output: &mut Vec<u8>) {
                 _ if canonical => a.encode_utf16().cmp(b.encode_utf16()),
                 _ => std::cmp::Ordering::Equal,
             });
-            output.push(b'{');
+            output.write_all(b"{").unwrap();
             for (i, key) in keys.into_iter().enumerate() {
                 if i > 0 {
-                    output.push(b',');
+                    output.write_all(b",").unwrap();
                 }
                 serde_json::to_writer(&mut *output, key).unwrap();
-                output.push(b':');
+                output.write_all(b":").unwrap();
                 write(&object[key], canonical, output);
             }
-            output.push(b'}');
+            output.write_all(b"}").unwrap();
         }
         _ => serde_json::to_writer(output, value).unwrap(),
     }
@@ -55,9 +58,23 @@ pub(crate) fn stringify(value: &Value) -> String {
     String::from_utf8(out).expect("JSON writer only emits UTF-8")
 }
 pub fn fingerprint(value: &Value) -> String {
-    let mut out = Vec::new();
+    // Preserve the exact canonical byte stream without retaining a second
+    // encoded copy of large drafts, chat histories or artwork recipes.
+    let mut out = BufWriter::with_capacity(8 * 1024, HashWriter(Sha256::new()));
     write(value, true, &mut out);
-    digest(out)
+    out.flush().expect("Hash writer is infallible");
+    hex::encode(out.into_inner().unwrap().0.finalize())
+}
+#[derive(Debug)]
+struct HashWriter(Sha256);
+impl Write for HashWriter {
+    fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
+        self.0.update(bytes);
+        Ok(bytes.len())
+    }
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
 }
 pub(super) fn entity_key(id: &Value) -> Result<String> {
     match id {

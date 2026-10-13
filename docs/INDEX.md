@@ -44,6 +44,8 @@
 - [后端热点优化续报](audits/2026-10-13/backend-hotpaths.html)：蒙版分配、暖模型身份、内容批量写与任务 JSON / CAS；任务列表索引、手动遮罩／RGB 准备 CPU 对照，以及 PR #74 本机合并审查、Windows 构建与设备验收边界。
 - [后端注意力、Live2D 与内容导入优化](audits/2026-10-13/backend-attention-catalog.html)：默认注意力去冗余拷贝、大依赖组并发校验、SQL 复用与导入所有权；本轮编译及设备验收边界。
 - [内存图片入库与 PixAI 启动优化](audits/2026-10-13/backend-media-pixai.html)：内存图复用后台批量复制、移除逐 MiB 数据库线程刷盘、PixAI 完整系统哈希；本轮编译及设备验收边界。
+- [办公机后端批量优化与修复](audits/2026-10-14/backend-office-batch.html)：任务输入释放、恢复写入去重、下载缓冲、指纹与重试内存、上游后台解码及统计一致性，共 7 项改动；本轮构建与设备验收边界。
+- [办公机后端第二轮排查与修复](audits/2026-10-14/backend-office-round-two.html)：媒体哈希与四路写缓冲、资源下载调度、转码回退、翻译状态、图片／视频恢复清理和 Live2D 取消；新增 7 项改动及第二遍复核范围。
 - [Remacri 加载与高清放大优化](audits/2026-10-13/remacri-loading-performance.html)：移除单张量拼接、分行像素转换、有界打包上传与独立执行身份；本轮编译及设备验收边界。
 - [锐化、蒙版合成与 Comfy 节点查询优化](audits/2026-10-13/rcas-comfy-performance.html)：RCAS 分行计算、私有参考图内存复用与三个节点定向探测；本轮编译及设备验收边界。
 - [LoRA 切换优化与冷加载定位](audits/2026-10-13/lora-loading-performance.html)：融合底模恢复双缓冲、热切换打包上传、独立装载与恢复观测；显存代价及本轮验证边界。

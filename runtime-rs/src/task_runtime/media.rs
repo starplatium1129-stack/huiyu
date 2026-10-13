@@ -2,8 +2,14 @@ use super::*;
 use crate::execution::Output;
 use crate::storage::TaskMediaSource;
 use sha2::{Digest, Sha256};
-use std::path::Path;
-use tokio::io::{AsyncReadExt, AsyncSeekExt};
+use std::{
+    io::{Read, Seek},
+    path::Path,
+    sync::LazyLock,
+};
+use tokio::sync::Semaphore;
+
+static HASHERS: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore::new(2)));
 
 pub(super) enum Target {
     Input(String),
@@ -31,6 +37,56 @@ impl Target {
     }
 }
 
+async fn hashed_source(output: Output) -> Result<(TaskMediaSource, String)> {
+    let permit =
+        HASHERS.clone().acquire_owned().await.map_err(|_| {
+            ApiError::new(503, "TASK_MEDIA_UNAVAILABLE", "Media worker unavailable")
+        })?;
+    let cancel = CancellationToken::new();
+    let _cancel = cancel.clone().drop_guard();
+    tokio::task::spawn_blocking(move || {
+        // Keep hashing off async workers without copying byte sources. A dropped
+        // caller cancels between chunks; the worker retains its permit until exit.
+        let _permit = permit;
+        let check = || {
+            if cancel.is_cancelled() {
+                Err(ApiError::new(499, "CANCELLED", "Media hashing cancelled"))
+            } else {
+                Ok(())
+            }
+        };
+        check()?;
+        let mut hash = Sha256::new();
+        let source = match output {
+            Output::Bytes { bytes, .. } => {
+                for chunk in bytes.chunks(1024 * 1024) {
+                    check()?;
+                    hash.update(chunk);
+                }
+                TaskMediaSource::Bytes(bytes)
+            }
+            Output::File { path, .. } => {
+                let mut file = std::fs::File::open(path)?;
+                let mut buffer = vec![0; 1024 * 1024];
+                loop {
+                    check()?;
+                    let read = file.read(&mut buffer)?;
+                    if read == 0 {
+                        break;
+                    }
+                    hash.update(&buffer[..read]);
+                }
+                file.rewind()?;
+                TaskMediaSource::File(file)
+            }
+        };
+        check()?;
+        Ok((source, hex::encode(hash.finalize())))
+    })
+    .await
+    .map_err(|_| ApiError::new(503, "TASK_MEDIA_UNAVAILABLE", "Media worker stopped"))?
+}
+
 pub(super) async fn persist(
     storage: &Storage,
     principal: &str,
@@ -38,26 +94,10 @@ pub(super) async fn persist(
     target: Target,
     output: Output,
 ) -> Result<()> {
-    let mut hash = Sha256::new();
-    let mut file = if let Output::File { path, .. } = &output {
-        Some(tokio::fs::File::open(path).await?)
-    } else {
-        None
-    };
-    if let Output::Bytes { bytes, .. } = &output {
-        hash.update(bytes.as_slice());
-    } else if let Some(file) = file.as_mut() {
-        let mut buffer = vec![0; 1024 * 1024];
-        loop {
-            let read = file.read(&mut buffer).await?;
-            if read == 0 {
-                break;
-            }
-            hash.update(&buffer[..read]);
-        }
-        file.rewind().await?;
-    }
-    let mut media = json!({"alias":target.alias(id),"sha256":hex::encode(hash.finalize()),"bytes":output.len(),"mime":output.mime()});
+    let bytes = output.len();
+    let mime = output.mime().to_owned();
+    let (source, hash) = hashed_source(output).await?;
+    let mut media = json!({"alias":target.alias(id),"sha256":hash,"bytes":bytes,"mime":mime});
     if let Target::Result(index) = &target {
         media["index"] = json!(index);
     }
@@ -66,14 +106,10 @@ pub(super) async fn persist(
     let prepared = storage.request(prepare, principal).await?;
     prepared["offset"]
         .as_u64()
-        .filter(|v| *v <= output.len())
+        .filter(|v| *v <= bytes)
         .ok_or_else(|| {
             ApiError::new(503, "TASK_MEDIA_INVALID", "Invalid persisted media offset")
         })?;
-    let source = match output {
-        Output::Bytes { bytes, .. } => TaskMediaSource::Bytes(bytes),
-        Output::File { .. } => TaskMediaSource::File(file.unwrap().into_std().await),
-    };
     // Both internal sources use one admitted background copy and durable flush.
     // HTTP uploads keep their independently acknowledged, durable chunk protocol.
     storage

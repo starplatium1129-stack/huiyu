@@ -116,16 +116,18 @@ impl ControlService {
             return value;
         }
         let settings = self.settings();
-        let (sd, comfy, tts, mut result, llama) = tokio::join!(
+        let (sd, comfy, tts, translation, mut result, llama) = tokio::join!(
             self.online(0, &settings),
             self.online(1, &settings),
             self.online(2, &settings),
+            self.online(3, &settings),
             self.ollama(&settings),
             self.llama_status()
         );
         result["sdOnline"] = json!(sd);
         result["comfyOnline"] = json!(comfy);
         result["ttsOnline"] = json!(tts);
+        result["translationOnline"] = json!(translation);
         result["llama"] = llama;
         let inference = self.active_inference().ok();
         result["imageProvider"] = json!(inference.as_ref().map(|settings| &settings.engine));

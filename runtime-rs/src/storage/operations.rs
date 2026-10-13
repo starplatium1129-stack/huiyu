@@ -13,19 +13,7 @@ pub(super) struct Operation {
 }
 impl Operation {
     pub fn check(&self, kind: &str, input: &Value) -> Result<()> {
-        if self.kind != kind || self.fingerprint != canonical::fingerprint(input) {
-            return Err(conflict(
-                "OPERATION_CONFLICT",
-                "Operation ID was already used with different input",
-            ));
-        }
-        if self.state == "aborted" {
-            return Err(conflict(
-                "OPERATION_CONFLICT",
-                "Operation was explicitly aborted",
-            ));
-        }
-        Ok(())
+        check_input(&self.kind, &self.fingerprint, &self.state, kind, input)
     }
     pub fn state(&self) -> Value {
         let mut value = json!({"operationId":self.id,"kind":self.kind,"state":self.state,"revision":self.revision});
@@ -34,6 +22,27 @@ impl Operation {
         }
         value
     }
+}
+fn check_input(
+    stored_kind: &str,
+    fingerprint: &str,
+    state: &str,
+    kind: &str,
+    input: &Value,
+) -> Result<()> {
+    if stored_kind != kind || fingerprint != canonical::fingerprint(input) {
+        return Err(conflict(
+            "OPERATION_CONFLICT",
+            "Operation ID was already used with different input",
+        ));
+    }
+    if state == "aborted" {
+        return Err(conflict(
+            "OPERATION_CONFLICT",
+            "Operation was explicitly aborted",
+        ));
+    }
+    Ok(())
 }
 impl Context {
     pub(super) fn operation(&self, principal: &str, id: &str) -> Result<Option<Operation>> {
@@ -84,10 +93,29 @@ impl Context {
     ) -> Result<(String, Option<Value>)> {
         let id = string(command, "operationId")?;
         let kind = string(command, "kind")?;
-        if let Some(row) = self.operation(principal, id)? {
-            row.check(kind, command)?;
-            return Ok((row.key, row.receipt));
+        let mut statement = self.db.prepare_cached(
+            "SELECT op_key,kind,fingerprint,state,receipt_json FROM operations WHERE principal_id=? AND operation_id=?",
+        )?;
+        let mut rows = statement.query(params![principal, id])?;
+        if let Some(row) = rows.next()? {
+            // Replay needs the fingerprint and receipt, never a second decoded
+            // copy of the original draft/chat/organization command.
+            check_input(
+                text_column(row, 1)?,
+                text_column(row, 2)?,
+                text_column(row, 3)?,
+                kind,
+                command,
+            )?;
+            let receipt = if matches!(row.get_ref(4)?, rusqlite::types::ValueRef::Null) {
+                None
+            } else {
+                Some(serde_json::from_str(text_column(row, 4)?)?)
+            };
+            return Ok((row.get(0)?, receipt));
         }
+        drop(rows);
+        drop(statement);
         Ok((self.insert_operation(principal, id, kind, command)?, None))
     }
 }

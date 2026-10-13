@@ -108,16 +108,19 @@ pub(super) async fn concat(
 ) -> Result<Output> {
     let root = service.config.runtime_root.join("outputs/video");
     tokio::fs::create_dir_all(&root).await?;
+    let canonical_root = tokio::fs::canonicalize(&root).await?;
     let operation = uuid::Uuid::new_v4().simple().to_string();
     let list = root.join(format!("batch_{id}_{operation}.txt"));
     let pending = root.join(format!(".batch_{id}_{operation}.part.mp4"));
     let target = root.join(format!("batch_{id}_{operation}.mp4"));
     let result=async{
-        let mut lines=String::new();for output in outputs{let Output::File{path,..}=output else{return Err(error(500,"VIDEO_RESULT_INVALID","视频结果缺少文件"))};let canonical=tokio::fs::canonicalize(path).await?;if !canonical.starts_with(tokio::fs::canonicalize(&root).await?){return Err(error(403,"VIDEO_RESULT_INVALID","视频结果超出授权目录"))}lines.push_str(&format!("file '{}'\n",path.to_string_lossy().replace('\'',"'\\''")));}tokio::fs::write(&list,lines).await?;
+        let mut lines=String::new();for output in outputs{let Output::File{path,..}=output else{return Err(error(500,"VIDEO_RESULT_INVALID","视频结果缺少文件"))};let canonical=tokio::fs::canonicalize(path).await?;if !canonical.starts_with(&canonical_root){return Err(error(403,"VIDEO_RESULT_INVALID","视频结果超出授权目录"))}lines.push_str(&format!("file '{}'\n",path.to_string_lossy().replace('\'',"'\\''")));}tokio::fs::write(&list,lines).await?;
         let filter=format!("scale={}:{}:force_original_aspect_ratio=decrease,pad={}:{}:(ow-iw)/2:(oh-ih)/2,setsar=1",canvas["width"],canvas["height"],canvas["width"],canvas["height"]);
         let mut common=vec!["-y".into(),"-f".into(),"concat".into(),"-safe".into(),"0".into(),"-i".into(),list.to_string_lossy().into_owned(),"-vf".into(),filter];common.extend(["-c:v","libx264","-preset","medium","-crf","19","-pix_fmt","yuv420p"].map(str::to_owned));
         let mut audio=common.clone();audio.extend(["-c:a","aac","-b:a","192k"].map(str::to_owned));audio.push(pending.to_string_lossy().into_owned());
-        if let Err(e)=service.transcode.run(audio,cancel.clone()).await{if cancel.is_cancelled(){return Err(e)}let _=tokio::fs::remove_file(&pending).await;common.push("-an".into());common.push(pending.to_string_lossy().into_owned());service.transcode.run(common,cancel.clone()).await?;}
+        // Only a completed ffmpeg failure can benefit from dropping audio.
+        // Timeouts, queue rejection and unconfirmed termination must propagate.
+        if let Err(e)=service.transcode.run(audio,cancel.clone()).await{if cancel.is_cancelled()||e.code!="FFMPEG_FAILED"{return Err(e)}let _=tokio::fs::remove_file(&pending).await;common.push("-an".into());common.push(pending.to_string_lossy().into_owned());service.transcode.run(common,cancel.clone()).await?;}
         if cancel.is_cancelled(){return Err(error(499,"VIDEO_BATCH_CANCELLED","视频拼接已取消"))}let bytes=tokio::fs::metadata(&pending).await?.len();if bytes==0{return Err(error(500,"BATCH_CONCAT_FAILED","视频拼接失败"))}tokio::fs::rename(&pending,&target).await?;Ok(Output::File{path:target.clone(),mime:"video/mp4".into(),bytes})
     }.await;
     let _ = tokio::fs::remove_file(list).await;

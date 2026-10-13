@@ -3,31 +3,30 @@ version: "alpha"
 name: "绘遇 · HUIYU"
 description: "绘遇 HUIYU：温暖、细腻的角色创作与故事画室。让想象成形，让故事相遇。"
 colors:
-  primary: "#EDABC1"
+  primary: "#F2A8BE"
   on-primary: "#111923"
-  primary-hover: "#F6C1D2"
+  primary-hover: "#FFC4D8"
   secondary: "#B784F6"
-  tertiary: "#7FE7FF"
-  neutral: "#1D1B21"
-  neutral-deep: "#17161B"
-  surface: "#26232A"
-  surface-elevated: "#302C34"
-  text-primary: "#F5EFE9"
-  text-secondary: "#CFC2CC"
-  success: "#81C784"
-  warning: "#FFA726"
-  danger: "#FF9B8F"
-  info: "#90CAF9"
-  # 2026-09-08: 此元数据表描述深色基线；浅色覆盖见 src/assets/css/light-theme.css。
-  # 暖石墨作为深色结构底色，玫粉与角色专属色承载强调。
+  neutral: "#151C24"
+  neutral-deep: "#10161D"
+  surface: "#1E2935"
+  surface-elevated: "#25313D"
+  text-primary: "#EDF3FA"
+  text-secondary: "#BDCBD8"
+  success: "#4ADE80"
+  warning: "#FBBF24"
+  danger: "#F87171"
+  info: "#60A5FA"
+  # 此元数据表描述画室深色基线；浅色覆盖见 src/assets/css/light-theme.css。
+  # 蓝灰夜幕作为深色结构底色，樱粉与角色专属色承载强调。
   # 应用支持深浅主题；两种主题都需要视觉验收。
   # frontmatter 是语义色板，CSS 实现用另一套名字，映射如下——
   #   primary→--accent, primary-hover→--accent-hover, secondary→--accent-violet,
   #   on-primary→--text-inverse, neutral→--bg-base, surface→--bg-surface,
   #   surface-elevated→--bg-elevated, disabled-text→--text-disabled,
-  #   nene→--nene-violet, natsume→--natsume-amber。tertiary 为历史语义色无直接对应。
+  #   nene→--nene-violet, natsume→--natsume-amber。
   # disabled-text 为禁用态专用：不得用 opacity 压字（压后低于 AA 4.5:1）。
-  disabled-text: "#B9ACB6"
+  disabled-text: "#A6B3C0"
   nene: "#B784F6"
   natsume: "#FBB040"
 typography:
@@ -67,7 +66,7 @@ spacing:
   3xl: "48px"
   4xl: "64px"
 rounded:
-  # 2026-09-01: 甜系升级，与 design-system.css --r-* 对齐（大圆角萌系贴纸感）。
+  # 与 design-system.css --r-* 对齐：紧凑控件与较柔和的面板边界。
   sm: "8px"
   md: "10px"
   lg: "16px"
@@ -97,6 +96,9 @@ components:
   button-primary-hover:
     backgroundColor: "{colors.primary-hover}"
     textColor: "{colors.on-primary}"
+  button-disabled:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.disabled-text}"
   text-secondary-dark:
     backgroundColor: "{colors.neutral}"
     textColor: "{colors.text-secondary}"
@@ -121,9 +123,6 @@ components:
   accent-secondary:
     backgroundColor: "{colors.secondary}"
     textColor: "{colors.on-primary}"
-  accent-tertiary:
-    backgroundColor: "{colors.tertiary}"
-    textColor: "{colors.on-primary}"
 ---
 
 ## Overview
@@ -147,9 +146,14 @@ artwork, not website UI.
 ## Product character
 
 Anime and Galgame establish the identity: characters, intimate dialogue, artwork,
-and the feeling of entering a story. Apple supplies the discipline: a predictable
-layout, optical spacing, readable typography, quiet materials, and immediate
-feedback. Every surface belongs to this same atelier.
+and the feeling of entering a story. The selected reference is VoltAgent's
+[Linear DESIGN.md](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/linear.app/DESIGN.md),
+an independent analysis of Linear's marketing site, not its application specification.
+Borrow its surface hierarchy, consistent control geometry, measured spacing and
+restrained emphasis. Apply these principles to the existing creation workspace;
+retain HUIYU's character colors, artwork, Chinese typography and both themes.
+Its near-black palette, lavender brand color, proprietary fonts, large promotional
+headlines and landing-page section spacing are outside this adaptation.
 
 The home opening and character archive retain the installed desktop layout from
 `faddab4a`. The opening pairs one character artwork with a calm reading plane,
@@ -167,16 +171,27 @@ or voice feedback—not to periodic transforms on a still portrait.
 ## Colors
 
 The atelier supports dark and light themes, with dark as the default. Dark
-surfaces use warm graphite; light surfaces use warm paper and readable rose-ink
+surfaces use blue-gray night tones; light surfaces use warm paper and readable rose-ink
 accents. Both themes preserve the same layout, action hierarchy, and character identity.
+
+The default atelier maps these shared roles to both themes. Preserve per-character
+overrides and body aura mappings in `src/assets/css/director/tokens.css`.
+Light-mode elevation uses boundaries and shadow, not ever-brighter surfaces.
+
+| Role / CSS token | Dark | Light |
+| --- | --- | --- |
+| Workspace / `--bg-base` | `#151C24` | `#F5EFE7` |
+| Panel / `--bg-surface` | `#1E2935` | `#FFFCF6` |
+| Raised control / `--bg-elevated` | `#25313D` | `#EEE7E0` |
+| Main text / `--text-primary` | `#EDF3FA` | `#29242A` |
+| Supporting text / `--text-secondary` | `#BDCBD8` | `#585059` |
+| Disabled text / `--text-disabled` | `#A6B3C0` | `#6D6069` |
+| Primary action / `--accent` | `#F2A8BE` | `#9B3E61` |
 
 界面风格与明暗模式独立：外观设置中的「绘遇画室」为默认风格；「泰拉瑞亚」采用像素木纹、纸张面板、森林地景、灯具藤蔓和主题插画，同样支持浅色、深色和跟随系统。宽度达到 1440 CSS px 时使用 8.5rem（默认 136px）木质侧栏，并支持上下方向键导航；较窄窗口恢复顶部导航，1000px 以下沿用折叠菜单。绘图工作台按扣除导航和边框后的实际内容宽度约束左右栏，桌面视口高度不再重复计入主题装饰。风格通过 `data-theme-style` 应用，保存在既有外观偏好的 `style` 字段；首帧脚本同步恢复。像素主题使用不透明材质，切回画室后恢复原有玻璃偏好。原作、参考图和聊天壁纸保持原始画面；仅主题装饰通过 `useThemeIllustration` 切换，不得改变内容或分级。独立桌宠保持透明，系统高对比度颜色优先。
 
-> **2026-09-08 · 当前双主题契约**
-> 浅色已恢复，入口为 AppThemeToggle/useTheme，覆盖在 light-theme.css。
-> 本文色板为深色基线；新增颜色需适配两个主题，角色强调色与图片上文字分别验收。
-> check-contrast.js 核算两种界面风格的明暗配色及角色强调色；浏览器计算样式和视觉审查仍须覆盖动态组件、纹理背景与图片叠字。
-> ui-layout.spec.ts 的实际文字检查逐层合成文字 alpha、背景与祖先 opacity；图片和渐变背景继续用实际像素与深浅主题截图验收，不能把令牌通过视作页面整体 AA 通过。
+新增颜色须适配两个主题。源码与令牌审查不能代替动态组件、纹理背景、
+角色强调色和图片叠字的实际画面验收；遵守 AGENTS.md 的验证范围与测试禁令。
 
 - Use `primary` only for the current selection, the main call to action, focus,
   or a small piece of emphasis. A page must not look uniformly pink.
@@ -205,6 +220,8 @@ harder to understand.
 
 - Use the system sans stack for controls and reading. The home opening and short
   character dialogue may use the serif stack for visual-novel intimacy.
+- Keep the existing local Chinese fonts; do not load Linear's brand fonts or apply
+  its tightly tracked display typography to Chinese controls.
 - Use the mono stack only for prompts, seeds, model names, ports, paths, and
   machine-readable state.
 - Headings are compact and confident, not oversized landing-page slogans.
@@ -225,8 +242,7 @@ control radii and 16px panel radii. Keep headers short and actions in stable
 slots. Selected artwork uses a rose border, a check or existing selection
 indicator, and `--selection-shadow`; it must not change the wall geometry.
 
-The light paper is `#F7F2EC`, the paper surface is `#FFFCF8` and the rose ink
-is `#9B3E61`. The drawing workspace follows the active theme: empty canvas
+The drawing workspace follows the active theme: empty canvas
 uses `--bg-surface`, result and working surfaces use `--bg-base`, and text
 uses `--text-*`. Reserve fixed `--art-stage` and `--on-art-*` for image mats
 and image overlays that need them, never the whole empty canvas. Display real SFW images at their original proportions;
@@ -253,17 +269,18 @@ The director workspace follows an image-first hierarchy:
 4. Prompt internals, model details, backup, and diagnostics are utilities, not
    the default visual focus.
 
-Home, the character archive and drawing retain the original studio surfaces
-through the scoped `--studio-*` palette. Drawing follows the `v1.8.1` release
-layout: resizable material, canvas and parameter columns on desktop, horizontal
-category controls, and generation and artwork actions below the canvas. Keep
-the current generation, reveal and clear animations. Segmented choices share
+Home, the character archive and drawing retain their scoped `--studio-*` surfaces.
+Drawing keeps resizable material, canvas and parameter columns, horizontal category
+controls and stable action locations as specified in “绘制工作台 · 素材与参数” below.
+Keep the current generation, reveal and clear animations. Segmented choices share
 `AnimatedSelection` and its continuous spring, with a softly lit raised surface
 and a shallow contact shadow; navigation and ordinary buttons keep their own
 forms. After an image exists, do not shrink it merely to
 show every control without scrolling. Empty space must either frame the artwork,
 clarify grouping, or improve touch/click accuracy. Large blank zones with no
 communicative purpose are a layout defect.
+Align labels, fields and actions to shared column edges. Use the existing spacing
+scale to separate groups; keep dense settings compact without reducing hit areas.
 
 Desktop is the primary creation environment. Responsive order is stage first,
 then story/scene, then detailed decisions. On small screens, controls become a
@@ -286,17 +303,19 @@ empty space beneath it.
 
 Depth is restrained and functional:
 
-- Level 1: static information, soft border, little or no shadow.
-- Level 2: selectable cards and controls, modest hover lift.
-- Level 3: the primary action, active modal, or artwork viewer.
+- Base and panels: shared background roles and soft 1px borders establish grouping.
+- Interactive controls: a surface or border change signals hover; selection adds
+  an explicit indicator, and keyboard focus retains the shared visible ring.
+- Floating surfaces: popovers, dialogs and viewers use existing elevation tokens;
+  primary actions gain emphasis from their action color, not an extra shadow tier.
 
 Glass surfaces are allowed for navigation, floating utilities, and the director
 stage chrome. They must have an opaque fallback and must not be stacked until
 text becomes hazy. Prefer one clear surface boundary over several nested glowing
-cards. Motion uses the existing `150ms` and `240ms` timings; page and character
-transitions may be slightly slower, but never delay an action. Use the existing
-CSS easing tokens, and keep the short state-feedback transition under
-reduced-motion.
+cards. Motion uses `--motion-press` (120ms), `--motion-hover` (160ms),
+`--motion-control` (200ms) and `--motion-surface` (260ms). Route and character
+transitions use their existing tokens and never delay an action. Keep the shared
+easing and reduced-motion fallbacks; do not add continuous decorative animation.
 
 Honor `prefers-reduced-motion` and `prefers-reduced-transparency`.
 System transparency, increased contrast, and forced colors must update material
@@ -343,7 +362,7 @@ reload a workspace that could have an active generation task.
 Business views supply values and content; the wrappers own theme styling and
 keyboard behavior. Do not add a second focus trap or manual viewport positioning
 around these primitives. Existing modal dialogs keep their current focus stack
-until migrated and tested as a complete flow; portalled content inside legacy
+until migrated and manually reviewed as a complete flow; portalled content inside legacy
 trapped dialogs needs an explicit integration check.
 
 ### Native browser chrome
@@ -352,7 +371,6 @@ The system skin never ships: a native `<select>`, a `<audio>`/`<video>` with the
 `controls` attribute, a `title` tooltip, or a
 `window.confirm`/`alert`/`prompt` call is a defect, not a shortcut, because none
 of them can follow the theme, the character accent, or the project's focus flow.
-`scripts/tests/test-native-controls.js` enforces this across `src/`.
 The native `title` attribute is retired across all native HTML elements.
 Vue component props such as `ArchiveStatePanel.title` and
 `ModelCalibrationFields.title` are distinct from native tooltips.
@@ -367,9 +385,8 @@ keep trigger buttons bare with `aria-label` rather than wrapping them in
 `anchor` employs a MutationObserver to observe subtree `disabled` and
 `aria-disabled` attributes, dynamically synchronizing focus proxies and
 tabindex across runtime reactive state transitions.
-Native checkboxes and radios remain allowed while
-`native-controls.css` gives them themed appearance, but any container that
-`apple-hig-accessibility` or `companion-focus` asserts on must contain none.
+Native checkboxes and radios retain their existing themed uses through
+`native-controls.css`; selection menus continue to use `StudioSelect`.
 `native-controls.css` covers the remaining browser surfaces the theme cannot
 reach through components: autofill fills, tap highlights, caret color, search
 field decorations, file-selector buttons, spinners, range thumbs, progress bars,
@@ -382,15 +399,6 @@ The identity comes from authored character artwork, emotional scene choices,
 short dialogue, and restrained character color. Controls are flat, precise,
 and consistently spaced. Glowing surfaces and stickers are not a substitute
 for character presence.
-
-### Theme semantics
-
-- Dark graphite-violet and light paper surfaces share the same semantic tokens.
-- Preserve all per-character director tokens and body aura mappings in
-  src/assets/css/director/tokens.css.
-- Accent colors identify selections, focus, and primary actions. Neutral text
-  remains readable across every character palette.
-- Disabled controls use the text-disabled token directly.
 
 ### Decor layers
 
@@ -413,8 +421,7 @@ for character presence.
 ### Gradient text
 
 - `background-clip: text` is allowed only on `.hero-title`, headings within
-  `.page-header` (including `.page-header h1`), and `.title-gradient`
-  (enforced by test-style-debt.js).
+  `.page-header` (including `.page-header h1`), and `.title-gradient`.
 - Everywhere else, color stays flat and token-based.
 
 ### Q-version assets
@@ -522,14 +529,15 @@ belong inside installation details, not in the default creative composition.
 - Reuse variables and shared components from `src/assets/css/design-system.css`.
 - Use progressive disclosure for expert controls.
 - Keep current selection, progress, empty, error, and success states explicit.
-- Test desktop, narrow desktop, and mobile layouts after structural UI changes.
+- Manually review affected desktop and narrow-window layouts in both themes;
+  include mobile only when requested, following AGENTS.md.
 - Preserve keyboard focus, readable contrast, reduced-motion support, and
   minimum target sizes.
 - Prefer one calm hierarchy over many equally loud cards and buttons.
 
 ### Don't
 
-- Do not imitate Apple, Figma, Notion, or a generic anime site as an end goal.
+- Do not imitate Linear or another brand as an end goal.
   Borrow useful interaction principles while preserving this project's identity.
 - Do not add decorative whitespace, glow, blur, gradients, or floating shapes
   without a hierarchy or storytelling purpose.

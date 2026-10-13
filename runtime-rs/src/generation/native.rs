@@ -15,8 +15,8 @@ pub(crate) struct Plan {
     pub mask_model_dir: Option<PathBuf>,
     pub tea_cache_profile_path: Option<PathBuf>,
     pub upscale_model_path: Option<PathBuf>,
-    pub init_image: Option<Arc<Vec<u8>>>,
-    pub mask_image: Option<Arc<Vec<u8>>>,
+    pub init_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
+    pub mask_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
     pub loras: Vec<Value>,
 }
 pub(super) struct Engine {
@@ -127,6 +127,12 @@ async fn settle(
     outcome: Result<Output>,
     token_cancelled: bool,
 ) -> bool {
+    // Queued cancellation and early failures never reach the private-file copy.
+    // Historical jobs retain recipes/results, not their admitted image buffers.
+    if let Execution::Native(plan) = &job.execution {
+        plan.init_image.lock().unwrap().take();
+        plan.mask_image.lock().unwrap().take();
+    }
     let error = match outcome {
         Ok(output) => {
             jobs::succeed(inner, job, output).await;
@@ -243,7 +249,8 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     }
     // Pass only accepted original bytes, never a mutable upload path. Each job
     // owns this temporary copy until its child process has been reaped.
-    let input_image_path = if let Some(bytes) = &plan.init_image {
+    let init_image = plan.init_image.lock().unwrap().take();
+    let input_image_path = if let Some(bytes) = init_image {
         input["denoisingStrength"] = plan.input["denoisingStrength"].clone();
         let path = temp.path().join("input-image");
         tokio::fs::write(&path, bytes.as_slice()).await?;
@@ -256,7 +263,8 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
             input[key] = plan.input[key].clone();
         }
     }
-    let mask_image_path = if let Some(bytes) = &plan.mask_image {
+    let mask_image = plan.mask_image.lock().unwrap().take();
+    let mask_image_path = if let Some(bytes) = mask_image {
         input["growMaskBy"] = plan.input["growMaskBy"].clone();
         let path = temp.path().join("mask-image");
         tokio::fs::write(&path, bytes.as_slice()).await?;

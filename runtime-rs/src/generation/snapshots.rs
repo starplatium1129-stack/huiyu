@@ -127,8 +127,12 @@ async fn drain(inner: &Inner) -> HashMap<String, Lost> {
                 let _ = tokio::fs::remove_file(entry.path()).await;
                 continue;
             }
-            value["lostAt"] = json!(lost_at);
-            let _ = write(&entry.path(), &value).await;
+            // Record loss once. Reopening an unchanged recovery ledger must not
+            // rewrite and sync every entry before the first status request.
+            if value["lostAt"].as_i64() != Some(lost_at) {
+                value["lostAt"] = json!(lost_at);
+                let _ = write(&entry.path(), &value).await;
+            }
             // Completed WebUI images are recoverable, unlike ordinary lost
             // jobs. Keep them ahead of metadata-only records within the same
             // 256-record startup budget; their separate TTL remains two hours.

@@ -308,8 +308,8 @@ pub(super) async fn plan(
         tea_cache_profile_path: None,
         upscale_model_path,
         settings: settings.clone(),
-        init_image,
-        mask_image,
+        init_image: std::sync::Mutex::new(init_image),
+        mask_image: std::sync::Mutex::new(mask_image),
         loras,
     })
 }

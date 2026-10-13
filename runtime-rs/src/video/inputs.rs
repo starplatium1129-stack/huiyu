@@ -7,6 +7,8 @@ static INPUT: LazyLock<Regex> = LazyLock::new(|| {
 static REFERENCE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^aics_video_ref_[a-f0-9]{16,40}\.(?:png|jpg|jpeg|webp)$").unwrap()
 });
+static HASHERS: LazyLock<Arc<tokio::sync::Semaphore>> =
+    LazyLock::new(|| Arc::new(tokio::sync::Semaphore::new(2)));
 pub(super) fn valid_name(name: &str, reference: bool) -> bool {
     if reference {
         REFERENCE.is_match(name)
@@ -15,7 +17,7 @@ pub(super) fn valid_name(name: &str, reference: bool) -> bool {
     }
 }
 use sha2::{Digest, Sha256};
-use tokio::io::AsyncReadExt;
+use tokio::io::{AsyncReadExt, AsyncWriteExt, BufReader};
 #[derive(Clone)]
 pub(super) struct Original {
     pub name: String,
@@ -88,6 +90,32 @@ async fn read(config: &Config, name: &str) -> Result<Vec<u8>> {
         ));
     }
     Ok(bytes)
+}
+async fn fingerprint(bytes: Vec<u8>, cancel: &CancellationToken) -> Result<(Vec<u8>, String)> {
+    let scope = cancel.child_token();
+    let _guard = scope.clone().drop_guard();
+    let cancelled = || error(499, "CANCELLED", "输入保护已取消");
+    let permit = tokio::select! {
+        permit = HASHERS.clone().acquire_owned() => permit.map_err(|_| cancelled())?,
+        _ = cancel.cancelled() => return Err(cancelled()),
+    };
+    tokio::task::spawn_blocking(move || {
+        let _permit = permit;
+        let mut hash = Sha256::new();
+        for chunk in bytes.chunks(1024 * 1024) {
+            if scope.is_cancelled() {
+                return Err(cancelled());
+            }
+            hash.update(chunk);
+        }
+        if scope.is_cancelled() {
+            return Err(cancelled());
+        }
+        // Return the same allocation for capture's write; never clone a frame.
+        Ok((bytes, hex::encode(hash.finalize())))
+    })
+    .await
+    .map_err(|_| error(503, "TASK_INPUT_UNAVAILABLE", "输入校验未完成"))?
 }
 pub(super) async fn size(config: &Config, name: &str) -> Result<(u32, u32)> {
     let path = safe(config, name).await?;
@@ -173,7 +201,7 @@ pub(super) async fn capture(
             }
         }
         let file = directory.path().join(name);
-        let hash = hex::encode(Sha256::digest(&bytes));
+        let (bytes, hash) = fingerprint(bytes, cancel).await?;
         tokio::fs::write(&file, &bytes).await?;
         originals.push(Original {
             name: name.into(),
@@ -218,18 +246,40 @@ pub(super) async fn protect_restore(
                 false
             };
             if !restored {
-                let pending = target.with_extension(format!("{}.tmp", uuid::Uuid::new_v4()));
-                tokio::fs::copy(&original.file, &pending).await?;
-                let publish = tokio::fs::hard_link(&pending, &target).await;
-                let _ = tokio::fs::remove_file(pending).await;
-                if let Err(e) = publish
-                    && e.kind() != std::io::ErrorKind::AlreadyExists
+                let mut source = BufReader::with_capacity(
+                    256 * 1024,
+                    tokio::fs::File::open(&original.file).await?,
+                );
+                // Stream through an owned handle so dropping the copy cannot
+                // recreate a pending path after its cleanup guard has run.
+                let (output, pending) =
+                    tempfile::NamedTempFile::new_in(target.parent().unwrap())?.into_parts();
+                let mut output = tokio::fs::File::from_std(output);
+                let copied = tokio::select! {
+                    result = tokio::io::copy_buf(&mut source, &mut output) => result?,
+                    _ = cancel.cancelled() => return Err(error(499, "CANCELLED", "输入保护已取消")),
+                };
+                if copied != original.bytes {
+                    return Err(error(409, "TASK_INPUT_CHANGED", "受保护输入的长度已改变"));
+                }
+                output.flush().await?;
+                output.sync_all().await?;
+                drop(output);
+                if cancel.is_cancelled() {
+                    return Err(error(499, "CANCELLED", "输入保护已取消"));
+                }
+                if let Err(e) = pending.persist_noclobber(&target)
+                    && e.error.kind() != std::io::ErrorKind::AlreadyExists
                 {
-                    return Err(e.into());
+                    return Err(e.error.into());
                 }
             }
         }
-        if hex::encode(Sha256::digest(read(config, &original.name).await?)) != original.hash {
+        if fingerprint(read(config, &original.name).await?, cancel)
+            .await?
+            .1
+            != original.hash
+        {
             return Err(error(
                 409,
                 "TASK_INPUT_CHANGED",

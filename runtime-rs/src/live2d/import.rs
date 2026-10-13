@@ -12,7 +12,7 @@ use std::{
     io::Write,
     path::{Path, PathBuf},
 };
-use tokio::io::AsyncWriteExt;
+use tokio::io::{AsyncWriteExt, BufWriter};
 use tokio_util::sync::CancellationToken;
 
 struct UploadDirectory(Option<tempfile::TempDir>);
@@ -73,11 +73,12 @@ pub(super) async fn receive(
             if count >= 512 || field.file_name().is_none() {
                 return Err(invalid("Invalid model file"));
             }
-            let mut output = tokio::fs::OpenOptions::new()
+            let output = tokio::fs::OpenOptions::new()
                 .create_new(true)
                 .write(true)
                 .open(directory.join(format!(".upload-{count}")))
                 .await?;
+            let mut output = BufWriter::with_capacity(256 * 1024, output);
             let mut length = 0usize;
             while let Some(chunk) = tokio::select! { chunk = field.chunk() => chunk.map_err(|_| invalid("Invalid model upload"))?, _ = cancel.cancelled() => return Err(ApiError::new(499,"CANCELLED","Model import cancelled")) }
             {
@@ -96,14 +97,11 @@ pub(super) async fn receive(
                 return Err(invalid("Empty model file"));
             }
             output.flush().await?;
-            output.sync_all().await?;
+            output.get_ref().sync_all().await?;
             count += 1;
         } else if name == "metadata" || name == "paths" {
             let mut bytes = Vec::new();
-            while let Some(chunk) = field
-                .chunk()
-                .await
-                .map_err(|_| invalid("Invalid upload metadata"))?
+            while let Some(chunk) = tokio::select! { chunk = field.chunk() => chunk.map_err(|_| invalid("Invalid upload metadata"))?, _ = cancel.cancelled() => return Err(ApiError::new(499,"CANCELLED","Model import cancelled")) }
             {
                 if bytes.len() + chunk.len() > 512 * 1024 {
                     return Err(invalid("Upload metadata exceeds limit"));

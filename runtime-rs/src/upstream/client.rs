@@ -3,13 +3,16 @@ use futures_util::StreamExt;
 use serde_json::Value;
 use std::{
     net::{IpAddr, Ipv4Addr},
+    sync::{Arc, LazyLock},
     time::Duration,
 };
+use tokio::sync::Semaphore;
 use tokio_util::sync::CancellationToken;
 use url::{Host, Url};
 
 pub(crate) const CONNECT_TIMEOUT: Duration = Duration::from_secs(15);
 pub(crate) const GENERATION_TIMEOUT: Duration = Duration::from_secs(20 * 60);
+static JSON_DECODERS: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore::new(2)));
 
 /// Keep the provider's actionable explanation, never serialize its complete
 /// response (which may include request parameters or diagnostics).
@@ -140,9 +143,14 @@ impl LocalUpstream {
                 }
                 data.extend_from_slice(&chunk);
             }
-            Ok((status, decode_body(data)))
+            Ok((status, decode_body(data, cancel).await?))
         };
-        tokio::select! { result = future => result, _ = cancel.cancelled() => Err(ApiError::new(499, "ABORTED", "上游请求已取消")) }
+        tokio::select! {
+            biased;
+            _ = cancel.cancelled() => Err(cancelled()),
+            result = tokio::time::timeout(timeout, future) => result
+                .map_err(|_| ApiError::new(502, "UPSTREAM_TIMEOUT", "上游服务请求未完成"))?,
+        }
     }
 }
 
@@ -164,7 +172,40 @@ fn upstream_error(error: reqwest::Error) -> ApiError {
 // Catalog JSON and plain-text tagger replies are mutually exclusive. Avoid
 // retaining a duplicate UTF-8 body alongside parsed JSON; reuse the byte buffer
 // for plain text. Invalid UTF-8 retains the provider fallback's lossy semantics.
-fn decode_body(data: Vec<u8>) -> std::result::Result<Value, String> {
+async fn decode_body(
+    data: Vec<u8>,
+    cancel: &CancellationToken,
+) -> Result<std::result::Result<Value, String>> {
+    if data.len() < 512 * 1024 {
+        return Ok(parse_body(data));
+    }
+    let scope = cancel.child_token();
+    let _guard = scope.clone().drop_guard();
+    let permit = JSON_DECODERS
+        .clone()
+        .acquire_owned()
+        .await
+        .map_err(|_| cancelled())?;
+    // Pure CPU work owns both the bytes and permit after a timeout/disconnect.
+    // No unbounded set of detached parsers can occupy blocking worker threads.
+    tokio::task::spawn_blocking(move || {
+        let _permit = permit;
+        if scope.is_cancelled() {
+            return Err(cancelled());
+        }
+        let result = parse_body(data);
+        if scope.is_cancelled() {
+            return Err(cancelled());
+        }
+        Ok(result)
+    })
+    .await
+    .map_err(|_| ApiError::new(502, "UPSTREAM_DECODE_FAILED", "上游解码未完成"))?
+}
+fn cancelled() -> ApiError {
+    ApiError::new(499, "ABORTED", "上游请求已取消")
+}
+fn parse_body(data: Vec<u8>) -> std::result::Result<Value, String> {
     serde_json::from_slice(&data).map_err(|_| {
         String::from_utf8(data)
             .unwrap_or_else(|error| String::from_utf8_lossy(error.as_bytes()).into_owned())

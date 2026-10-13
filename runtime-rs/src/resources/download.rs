@@ -5,7 +5,7 @@ use super::{
 };
 use futures_util::StreamExt;
 use std::path::{Path, PathBuf};
-use tokio::io::AsyncWriteExt;
+use tokio::io::{AsyncWriteExt, BufWriter};
 use tokio_util::sync::CancellationToken;
 fn strong(value: Option<&str>) -> Option<String> {
     value
@@ -145,7 +145,7 @@ async fn entry(
     if crate::file_identity::opened(&opened)? != crate::file_identity::path(&partial, false)? {
         return Err(Error::new("FILE_CHANGED", "Partial changed while opening"));
     }
-    let mut output = tokio::fs::File::from_std(opened);
+    let mut output = BufWriter::with_capacity(256 * 1024, tokio::fs::File::from_std(opened));
     let mut received = start;
     let mut stream = response.bytes_stream();
     let copied=async{loop{let next=tokio::select!{_ = op.cancel.cancelled()=>return Err(Error::new("CANCELLED","Download cancelled")),value=tokio::time::timeout(std::time::Duration::from_secs(30),stream.next())=>value.map_err(|_|Error::new("HTTP_TIMEOUT","Resource source timed out"))?};let Some(chunk)=next else{break;};let chunk=chunk.map_err(|_|Error::new("HTTP_FAILED","Resource response interrupted"))?;op.check()?;if received+chunk.len()as u64>entry.bytes{return Err(Error::new("HTTP_SIZE","Response exceeds approved length"));}fs::safe(&partial,false,false)?;output.write_all(&chunk).await?;received+=chunk.len()as u64;op.event("download-progress",json!({"path":entry.path,"bytes":received,"total":entry.bytes,"resumedFrom":start}))?;}if received!=entry.bytes{return Err(Error::new("HTTP_SIZE","Resource response incomplete"));}Ok(())}.await;
@@ -153,7 +153,7 @@ async fn entry(
     // error before hashing, while retaining a resumable partial on disk errors.
     let synced = async {
         output.flush().await?;
-        output.sync_all().await
+        output.get_ref().sync_all().await
     }
     .await;
     drop(output);

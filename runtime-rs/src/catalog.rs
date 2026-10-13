@@ -237,21 +237,35 @@ impl Catalog {
         Ok(self.get("document", id)?.data)
     }
     pub fn stats(&self) -> Result<Value> {
-        let mut counts = serde_json::Map::new();
-        for kind in KINDS {
-            counts.insert(
-                (*kind).into(),
-                self.connection
-                    .query_row(
-                        "SELECT count(*) FROM content_records WHERE kind=?1 AND deleted=0",
-                        [kind],
-                        |r| r.get::<_, i64>(0),
-                    )?
-                    .into(),
-            );
+        // Counts, revision and the next ID must describe one committed catalog,
+        // even while another connection imports or edits content.
+        // check() already owns a read transaction; reuse its snapshot.
+        let transaction = self
+            .connection
+            .is_autocommit()
+            .then(|| self.connection.unchecked_transaction())
+            .transpose()?;
+        let mut counts: serde_json::Map<String, Value> = KINDS
+            .iter()
+            .map(|kind| ((*kind).into(), 0.into()))
+            .collect();
+        {
+            let mut statement = self.connection.prepare(&format!(
+                "SELECT kind,count(*) FROM content_records WHERE kind IN ({}) AND deleted=0 GROUP BY kind",
+                vec!["?"; KINDS.len()].join(","),
+            ))?;
+            let mut rows = statement.query(rusqlite::params_from_iter(KINDS.iter().copied()))?;
+            while let Some(row) = rows.next()? {
+                let kind: String = row.get(0)?;
+                if let Some(count) = counts.get_mut(&kind) {
+                    *count = row.get::<_, i64>(1)?.into();
+                }
+            }
         }
-        Ok(
-            json!({"ok":true,"version":self.version()?,"counts":counts,"nextSceneId":self.next_scene_id()?,"authority":"sqlite","schemaVersion":1}),
-        )
+        let value = json!({"ok":true,"version":self.version()?,"counts":counts,"nextSceneId":self.next_scene_id()?,"authority":"sqlite","schemaVersion":1});
+        if let Some(transaction) = transaction {
+            transaction.commit()?;
+        }
+        Ok(value)
     }
 }

@@ -3,7 +3,7 @@ use futures_util::StreamExt;
 use regex::Regex;
 use std::path::Path;
 use std::sync::LazyLock;
-use tokio::io::AsyncWriteExt;
+use tokio::io::{AsyncWriteExt, BufWriter};
 const MAX_BYTES: u64 = 256 * 1024 * 1024;
 static NAME: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^[A-Za-z0-9][A-Za-z0-9._-]{0,180}\.(?:mp4|webm|mov)$").unwrap()
@@ -144,7 +144,7 @@ pub(crate) async fn materialize(
             .tempfile_in(root)
             .map_err(save_error)?
             .into_parts();
-        let mut file = tokio::fs::File::from_std(file);
+        let mut file = BufWriter::with_capacity(256 * 1024, tokio::fs::File::from_std(file));
         file.write_all(&header).await.map_err(save_error)?;
         let mut length = header.len() as u64;
         drop(header);
@@ -166,7 +166,7 @@ pub(crate) async fn materialize(
             file.write_all(&chunk).await.map_err(save_error)?;
         }
         file.flush().await.map_err(save_error)?;
-        file.sync_all().await.map_err(save_error)?;
+        file.get_ref().sync_all().await.map_err(save_error)?;
         drop(file);
         if cancel.is_cancelled() {
             return Err(ApiError::new(499, "CANCELLED", "视频读取已取消"));

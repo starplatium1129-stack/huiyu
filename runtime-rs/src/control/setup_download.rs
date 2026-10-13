@@ -344,8 +344,12 @@ async fn download(
     );
     let outcome = async {
         let pending = temporary.as_ref().unwrap();
-        let mut output =
-            tokio::fs::File::from_std(pending.as_file().try_clone().map_err(io_error)?);
+        // Network frames can be only a few KiB. Batch them before Tokio's
+        // blocking file worker; all exit paths below flush retained bytes.
+        let mut output = tokio::io::BufWriter::with_capacity(
+            1024 * 1024,
+            tokio::fs::File::from_std(pending.as_file().try_clone().map_err(io_error)?),
+        );
         let transferred = transfer::write(plan, client, send, cancel, &mut output).await;
         // Tokio may have accepted bytes while its blocking write is still queued.
         // Drain that write before cancellation/error cleanup inspects and retains the file.
@@ -359,7 +363,7 @@ async fn download(
                 "下载不完整，未发布模型文件；请重试",
             ));
         }
-        output.sync_all().await.map_err(io_error)?;
+        output.get_ref().sync_all().await.map_err(io_error)?;
         drop(output);
         let temp_spec = ModelFile {
             path: temporary

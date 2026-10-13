@@ -87,7 +87,7 @@
     </div>
 
     <!-- Result image -->
-    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
+    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :class="{ 'is-error': failedResultUrl === displayResultUrl }">
       <div class="result-artwork" :style="{ '--result-aspect': resultAspect }">
         <ImageSplitCompare
           v-if="inpaintCompareActive && inpaintOriginalUrl"

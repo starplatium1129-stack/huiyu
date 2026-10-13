@@ -186,7 +186,13 @@ pub(super) fn start(
     service.workers.spawn(async move {
         let _admission = admission;
         let outcome = if action == "download" {
-            download::run(op, owner.client.clone(), release).await
+            let runtime = tokio::runtime::Handle::current();
+            let client = owner.client.clone();
+            // One admitted download owns this blocking worker. Its synchronous
+            // policy/path checks stay off async workers without weakening the
+            // per-chunk authorization checks or releasing the close barrier.
+            crate::resources::blocking(move || runtime.block_on(download::run(op, client, release)))
+                .await
         } else {
             crate::resources::blocking(move || lifecycle::run(&op, &action, &release)).await
         };
