@@ -36,8 +36,8 @@
 .room-surface .conversation-card::before { @apply tw:hidden; }
 .room-surface .conversation-card:has(.api-settings) { @apply tw:overflow-y-auto; }
 .room-surface .conversation-card:has(.api-settings) > * { @apply tw:shrink-0; }
-.room-surface .conversation-head { @apply tw:shrink-0 tw:items-center; padding:var(--s-4) var(--s-5); background:var(--bg-surface); border-bottom:1px solid var(--border-soft); }
-.room-conversation-title { @apply tw:grid tw:gap-s-1; }
+.room-surface .conversation-head { @apply tw:shrink-0 tw:items-center tw:flex-wrap; padding:var(--s-4) var(--s-5); background:var(--bg-surface); border-bottom:1px solid var(--border-soft); }
+.room-conversation-title { @apply tw:grid tw:gap-s-1 tw:shrink-0; }
 .room-conversation-title > span { @apply tw:text-secondary tw:text-label-sm; }
 .room-volume { @apply tw:flex tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label; }
 .room-volume span { @apply tw:inline-flex tw:items-baseline tw:gap-s-1; }

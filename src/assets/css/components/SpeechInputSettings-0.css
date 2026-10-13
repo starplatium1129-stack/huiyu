@@ -20,10 +20,6 @@
   color: var(--character-accent);
   @apply tw:rounded-md tw:text-body;
 }
-.speech-title-lockup small {
-  @apply tw:block tw:text-mono-xs; letter-spacing: .14em;
-  @apply tw:text-muted tw:mb-[2px];
-}
 .speech-title-lockup strong { @apply tw:block tw:text-label-sm tw:text-primary; }
 .speech-title-lockup > div > span {
   @apply tw:block tw:text-label-xs tw:text-muted tw:mt-[4px];
@@ -53,15 +49,6 @@
 }
 .speech-field { @apply tw:block tw:min-w-0; }
 .speech-field > span { @apply tw:block tw:text-label-sm tw:text-primary tw:mb-[6px]; }
-.speech-field > span i {
-  @apply tw:not-italic tw:text-mono-xs tw:text-muted tw:mr-[4px];
-}
-.speech-field > small { @apply tw:block tw:text-label-xs tw:text-muted tw:mt-[5px]; }
-.speech-field code {
-  @apply tw:font-mono tw:text-mono-xs;
-  overflow-wrap:anywhere;
-  background: var(--border-soft); padding: 1px 5px; @apply tw:rounded-xs;
-}
 .speech-field input {
   @apply tw:w-full tw:min-w-0 tw:min-h-[40px]; padding: var(--s-2) var(--s-3);
   background: var(--bg-deep);
@@ -91,7 +78,6 @@
 .speech-http-hint {
   @apply tw:mt-s-3 tw:text-label-xs tw:text-muted tw:leading-body;
 }
-.speech-http-hint .archive-icon { @apply tw:w-[15px] tw:h-[15px] tw:mr-s-1; }
 
 @media (max-width: 600px) {
   .speech-settings-grid { grid-template-columns: 1fr; }

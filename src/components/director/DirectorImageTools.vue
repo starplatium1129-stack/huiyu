@@ -5,11 +5,9 @@
       <details class="reference-interrogate inspector-route" @toggle="onReferenceToggle">
         <summary><span><ArchiveIcon name="search" />图片反推</span><small>{{ interrogateMode === 'caption' ? '画面描述' : '图片词条' }}</small><ArchiveIcon name="chevron-down" /></summary>
         <div data-disclosure-content class="reference-interrogate-body">
-          <p class="reference-interrogate-status" role="status">{{ readiness.status.value.message }}</p>
-          <button class="btn btn-ghost" type="button" :disabled="interrogateBusy || readiness.checking.value" @click="readiness.refresh()">重新检查反推条件</button>
-          <RouterLink class="btn btn-ghost" :to="{ path: '/control', hash: '#control-interrogate' }">查看反推状态与准备方法</RouterLink>
+          <p v-if="interrogateBusy || !readiness.available.value" class="reference-interrogate-status" role="status">{{ interrogateBusy ? '正在反推…' : readiness.status.value.message }}</p>
           <div class="image-tool-buttons">
-            <StudioTooltip anchor content="上传图片，用 PixAI 本地反推；首次需要加载模型">
+            <StudioTooltip anchor content="上传图片并提取词条">
               <button class="btn btn-ghost" type="button" :disabled="interrogateBusy || !readiness.available.value" @click="$emit('interrogateUpload')">
                 <ArchiveIcon name="upload" /><span>上传反推</span>
               </button>
@@ -20,14 +18,13 @@
               </button>
             </StudioTooltip>
             <StudioTooltip anchor content="点击读取剪贴板图片并反推，也可按 Ctrl+V 粘贴">
-              <button class="btn btn-ghost reference-paste" type="button" :disabled="interrogateBusy || !readiness.available.value" @click="$emit('interrogateClipboard')" @paste="readiness.available.value && $emit('interrogatePaste', $event)">
-                <ArchiveIcon name="copy" /><span>粘贴反推</span><small>Ctrl+V</small>
+              <button class="btn btn-ghost" type="button" :disabled="interrogateBusy || !readiness.available.value" @click="$emit('interrogateClipboard')" @paste="readiness.available.value && $emit('interrogatePaste', $event)">
+                <ArchiveIcon name="copy" /><span>粘贴反推</span>
               </button>
             </StudioTooltip>
             <button v-if="interrogateBusy" class="btn btn-ghost" type="button" @click="$emit('interrogateCancel')"><ArchiveIcon name="close" />取消反推</button>
           </div>
-          <p v-if="interrogateBusy" class="reference-interrogate-status" role="status">正在提取参考词条…</p>
-          <p class="reference-interrogate-note">本地 PixAI · 人物身份跟随当前角色，保留手写描述。反推只提取词条；局部换装需在换装窗口导入原图。<template v-if="interrogateMode === 'caption'">画面描述由词条派生。</template></p>
+          <button v-if="readiness.status.value.state === 'missing' || readiness.status.value.state === 'unknown'" class="btn btn-ghost btn-sm" type="button" :disabled="interrogateBusy" @click="readiness.refresh()">重新检查</button>
         </div>
       </details>
       <div class="image-tool-buttons reference-outfit-actions">
@@ -65,7 +62,6 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
 import { useInterrogateReadiness } from '@/composables/useInterrogateReadiness'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'

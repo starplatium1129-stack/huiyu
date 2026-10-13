@@ -479,12 +479,13 @@ body:has(.chat-page) .sakura-fall {
   letter-spacing: .025em;
 }
 
-.chat-page .room-model-settings { @apply tw:min-w-0; }
+.chat-page .room-model-settings { @apply tw:min-w-0 tw:max-w-full; }
+.chat-page .room-model-settings[open] { flex:1 0 100%; }
 .chat-page .room-model-settings > summary { @apply tw:cursor-pointer; padding: var(--s-2) var(--s-3); @apply tw:text-secondary tw:text-label; border: 1px solid var(--border-soft); @apply tw:rounded-md; }
 .chat-page .room-model-settings[open] .model-controls { @apply tw:mt-s-3 tw:flex-wrap; }
 .chat-page .room-model-settings > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .chat-page .model-controls {
-  @apply tw:flex tw:items-center tw:justify-end tw:gap-s-2 tw:min-w-0;
+  @apply tw:flex tw:items-center tw:justify-start tw:gap-s-2 tw:min-w-0;
 }
 
 .chat-page .provider-switch {
@@ -577,12 +578,6 @@ body:has(.chat-page) .sakura-fall {
   font: 650 var(--fs-body) var(--font-serif);
 }
 
-.chat-page .api-title-lockup > div > small {
-  color: var(--character-ink, var(--character-accent));
-  font: 700 var(--fs-mono-xs) var(--font-mono);
-  letter-spacing: .13em;
-}
-
 .chat-page .api-settings-head span,
 .chat-page .api-settings-actions span {
   @apply tw:text-muted tw:text-label-xs tw:leading-body;
@@ -647,54 +642,6 @@ body:has(.chat-page) .sakura-fall {
 /*   ============================================================
    API 与引擎设置：提供商切换 / 密钥字段 / 测试状态
   ============================================================ */
-.chat-page .api-vendor-picker {
-  @apply tw:grid tw:min-w-0;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%,108px),1fr));
-  @apply tw:gap-[4px] tw:m-0 tw:p-[4px];
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-terminal);
-  background: color-mix(in srgb, var(--bg-deep) 82%, transparent);
-}
-
-.chat-page .api-vendor-picker legend {
-  @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:overflow-hidden;
-  clip-path: inset(50%);
-}
-
-.chat-page .api-vendor-picker button {
-  @apply tw:grid tw:gap-[1px] tw:min-w-0 tw:min-h-[44px];
-  padding: 6px 9px;
-  border: 1px solid transparent;
-  border-radius: var(--r-terminal);
-  background: transparent;
-  @apply tw:text-muted tw:cursor-pointer tw:text-left;
-}
-
-.chat-page .api-vendor-picker button span {
-  @apply tw:overflow-hidden tw:text-secondary;
-  font: 650 var(--fs-label-sm) var(--font-sans);
-  @apply tw:text-ellipsis tw:whitespace-nowrap;
-}
-
-.chat-page .api-vendor-picker button small {
-  @apply tw:text-muted;
-  font: var(--fs-mono-xs) var(--font-mono);
-}
-
-.chat-page .api-vendor-picker button:hover {
-  background: color-mix(in srgb, var(--character-accent) 7%, transparent);
-}
-
-.chat-page .api-vendor-picker button.active {
-  border-color: color-mix(in srgb, var(--character-accent) 34%, var(--border-soft));
-  background: color-mix(in srgb, var(--character-accent) 13%, var(--bg-surface));
-  box-shadow: var(--shadow-sm);
-}
-
-.chat-page .api-vendor-picker button.active span {
-  color: var(--character-ink, var(--character-accent));
-}
-
 .chat-page .api-settings-grid {
   @apply tw:grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -706,7 +653,6 @@ body:has(.chat-page) .sakura-fall {
 }
 .chat-page .api-discovered-models { align-content:start; }
 
-.chat-page .api-field-wide,
 .chat-page .api-model-note {
   grid-column: 1 / -1;
 }
@@ -714,11 +660,6 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .api-field > span {
   @apply tw:flex tw:items-center tw:gap-[6px] tw:text-secondary;
   font-weight: 650;
-}
-
-.chat-page .api-field > span i {
-  color: var(--character-ink, var(--character-accent));
-  font: 700 var(--fs-mono-xs) var(--font-mono);
 }
 
 .chat-page .api-field input {
@@ -1563,14 +1504,6 @@ body:has(.chat-page) .sakura-fall {
 
   .chat-page .api-settings-grid {
     grid-template-columns: 1fr;
-  }
-
-  .chat-page .api-vendor-picker {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .chat-page .api-field-wide {
-    grid-column: auto;
   }
 
   .chat-page .api-settings-head,

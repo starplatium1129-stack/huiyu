@@ -61,8 +61,10 @@
             :api-settings-open="apiSettingsOpen"
             :use-host-config="useHostConfig"
             :host-api-model="hostApiModel"
+            :host-api-base-url="hostApiBaseUrl"
             :api-configured="apiConfigured"
             :api-model="apiModel"
+            :api-base-url="apiBaseUrl"
             @set-provider="setChatProvider" @refresh-local="refreshChatStatus"
             @update:current-model="currentModel = $event"
             @reasoning-change="onReasoningChange" @update:companion-tools="companionTools = $event"
@@ -343,6 +345,7 @@ const {
   currentModel,
   chatProvider,
   apiBaseUrl,
+  hostApiBaseUrl,
   apiModel,
   apiKey,
   apiVendor,

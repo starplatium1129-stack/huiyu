@@ -231,7 +231,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     if (imageProvider.value === 'native') {
       feedbackText.value = data.nativeRuntimeFilesReady ? '独立绘图入口已准备' : '独立绘图入口待准备'
       actionNote.value = data.nativeRuntimeFilesReady
-        ? '首次生成时按需加载独立模型；请在下方检查依赖与 CUDA，并核对所选模型。切换到聊天会释放空闲绘图显存。'
+        ? '模型会在生成时按需加载。'
         : '请在下方独立引擎设置中准备 Python 与 worker，再检查依赖和模型文件。'
     } else if (imageProvider.value === null) {
       feedbackText.value = '绘图引擎配置待确认'

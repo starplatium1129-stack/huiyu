@@ -4,55 +4,40 @@
       <div class="api-title-lockup">
         <span class="api-mark" aria-hidden="true"><ArchiveIcon name="chat" /></span>
         <div>
-          <small>MODEL GATEWAY</small>
           <strong>连接对话模型</strong>
-          <span>选服务商 → 获取密钥 → 测试并选模型 → 保存。</span>
         </div>
       </div>
       <span class="api-storage-note"><i aria-hidden="true"></i>{{ desktopCredentials ? '密钥由 Windows 安全保存' : '密钥仅用于当前页面会话' }}</span>
     </div>
 
-    <fieldset class="api-vendor-picker">
-      <legend>服务商</legend>
-      <button
-        v-for="option in CHAT_API_PRESETS"
-        :key="option.value"
-        type="button"
-        :data-vendor="option.value"
-        :class="{ active: vendorProxy === option.value }"
-        :aria-pressed="vendorProxy === option.value"
-        :disabled="credentialsLoading"
-        @click="selectVendor(option.value)"
-      >
-        <span>{{ option.label }}</span>
-        <small>{{ option.note }}</small>
-      </button>
-    </fieldset>
+    <label class="api-field">
+      <span>服务商</span>
+      <StudioSelect :model-value="vendor" label="服务商" :options="CHAT_API_PRESETS"
+        :disabled="credentialsLoading" @update:model-value="selectVendor($event as ApiVendor)" />
+    </label>
 
-    <div class="api-provider-help">
-      <p>{{ preset.help }}</p>
-      <p v-if="preset.local">本机地址指运行绘遇后端的电脑；在另一台电脑打开网页，不会连接那台电脑上的模型。绘遇受管 llama.cpp 请在控制室准备，无需手填密钥。</p>
+    <div v-if="preset.local || preset.keyUrl || preset.docsUrl" class="api-provider-help">
+      <p v-if="preset.local">本机地址连接运行绘遇的电脑。</p>
       <div class="api-help-links">
-        <a v-if="preset.keyUrl" :href="preset.keyUrl" target="_blank" rel="noopener noreferrer">获取 {{ preset.label }} API Key（新窗口）</a>
-        <a v-if="preset.docsUrl" :href="preset.docsUrl" target="_blank" rel="noopener noreferrer">官方接入说明（新窗口）</a>
+        <a v-if="preset.keyUrl" :href="preset.keyUrl" target="_blank" rel="noopener noreferrer">获取密钥（新窗口）</a>
+        <a v-if="preset.docsUrl" :href="preset.docsUrl" target="_blank" rel="noopener noreferrer">官方说明（新窗口）</a>
       </div>
     </div>
 
     <div class="api-settings-grid">
       <label class="api-field">
-        <span><i aria-hidden="true">01</i> API 地址</span>
+        <span>API 地址（OpenAI 兼容）</span>
         <input v-model.trim="baseUrlProxy" type="url" maxlength="500"
           placeholder="https://api.example.com/v1" autocomplete="url" required :aria-invalid="Boolean(addressError)" aria-describedby="api-address-help" />
-        <small id="api-address-help">{{ addressError || '填写 Base URL；绘遇会补上 /chat/completions。修改地址前请确认密钥属于该服务。' }}</small>
+        <small id="api-address-help">{{ addressError || '请确认地址与密钥属于同一服务商。' }}</small>
       </label>
       <label class="api-field">
-        <span><i aria-hidden="true">02</i> 模型</span>
+        <span>模型 ID</span>
         <input v-model.trim="modelProxy" maxlength="200" aria-label="模型名"
-          placeholder="可先测试连接，再从列表选择模型" autocomplete="off" required />
-        <small>填写准确模型 ID；可手填新模型，已有配置会保留。</small>
+          placeholder="输入或从模型列表选择" autocomplete="off" required />
       </label>
       <label class="api-field">
-        <span><i aria-hidden="true">03</i> API Key{{ preset.keyRequired ? '' : '（未设认证时可留空）' }}</span>
+        <span>API Key{{ preset.keyRequired ? '' : '（未设认证可留空）' }}</span>
         <div class="api-key-field">
           <input v-model.trim="apiKeyProxy" :type="showApiKey ? 'text' : 'password'"
             maxlength="1000" placeholder="sk-…" autocomplete="off"
@@ -61,33 +46,32 @@
         </div>
       </label>
       <div v-if="modelOptions.length" class="api-field api-discovered-models">
-        <span>{{ discoveredModels.length ? '服务返回的模型列表' : '官方参考模型' }}</span>
+        <span>{{ discoveredModels.length ? '可选模型' : '参考模型' }}</span>
         <StudioSelect :model-value="modelProxy" label="选择模型 ID" :options="modelOptions"
-          placeholder="选择模型以填入上方" @update:model-value="modelProxy = String($event)" />
+          placeholder="选择模型" @update:model-value="modelProxy = String($event)" />
       </div>
-      <p class="api-model-note">{{ modelNote }}</p>
-      <p class="api-model-note">测试只请求模型目录，不发送对话，不产生文本生成费用；不验证余额、生成权限或每个模型的工具兼容性。实际发送消息按服务商规则计费。</p>
+      <p class="api-model-note">{{ vendor === 'openai' ? 'API 单独计费，不使用 ChatGPT 订阅额度。' : '使用云端模型时，按服务商规则计费。' }}</p>
     </div>
 
     <div class="api-settings-actions">
-      <span class="api-test-status" :data-state="testState" role="status">{{ statusText }}</span>
+      <span v-if="statusText" class="api-test-status" :data-state="testState" role="status">{{ statusText }}</span>
       <div class="api-settings-buttons">
         <button class="btn btn-ghost btn-sm" type="button" :disabled="clearingKey" @click="clearPersonalKey">
           {{ clearingKey ? '清除中…' : '清除个人密钥' }}
         </button>
         <button class="btn btn-ghost btn-sm" type="button"
           :disabled="testing || !canTest" @click="testConnection">
-          {{ testing ? '测试中…' : '测试连接' }}
+          {{ testing ? '获取中…' : '获取模型列表' }}
         </button>
         <button class="btn btn-primary btn-sm" type="submit" :disabled="!canSaveHost || testing">保存并使用</button>
       </div>
     </div>
     <details v-if="isLocalHost" class="api-host-advanced">
-      <summary>进阶：向访客共享站主 API 配置</summary>
-      <p>访客会使用站主的模型和额度，密钥保留在后端。仅在确认要分享额度时保存。</p>
+      <summary>共享给访客</summary>
+      <p>访客将使用你的模型与额度，密钥保留在后端。</p>
       <div class="api-host-row">
       <button class="btn btn-ghost btn-sm" type="button" :disabled="!canSaveHost" @click="emit('save-host')">
-        <ArchiveIcon name="upload" /> 保存为站主配置（访客可直接使用）
+        <ArchiveIcon name="upload" /> 共享当前配置
       </button>
       <button v-if="hostConfigured" class="btn btn-ghost btn-sm" type="button" @click="emit('clear-host')">
         <ArchiveIcon name="close" /> 清除站主配置
@@ -178,10 +162,6 @@ async function clearPersonalKey() {
   } finally { clearingKey.value = false }
 }
 
-const vendorProxy = computed({
-  get: () => props.vendor,
-  set: value => emit('update:vendor', value),
-})
 const baseUrlProxy = computed({
   get: () => props.baseUrl,
   set: value => { invalidateTest(); emit('update:baseUrl', value) },
@@ -202,23 +182,20 @@ const canSaveHost = computed(() => canTest.value && Boolean(props.model.trim()))
 const modelOptions = computed(() => discoveredModels.value.length
   ? discoveredModels.value.map(value => ({ value, label: value }))
   : preset.value.models)
-const modelNote = computed(() => discoveredModels.value.length
-  ? '列表由当前服务返回，可能包含非聊天模型；选择前核对模型的 Chat Completions 支持与价格。'
-  : '参考模型核对于 2026-10-11；账号可用范围会变化，以服务商控制台和测试返回为准。')
-const statusText = computed(() => props.credentialsLoading ? '正在读取已保存的 API 密钥，请稍候…' : testMessage.value || props.hint || '填好地址和密钥即可测试，无需先填模型。')
+const statusText = computed(() => props.credentialsLoading ? '正在读取密钥…' : testMessage.value || props.hint || '')
 
 function connectionError(error: unknown): string {
   if (!(error instanceof ApiClientError)) return '连接测试失败，请检查地址、服务是否启动和网络后重试。'
   if (error.code === 'LOCAL_ONLY') return '连接测试仅限绘遇所在电脑直连；远程访客请联系站主配置。'
   if (error.kind === 'timeout' || error.code === 'UPSTREAM_TIMEOUT') return '连接测试超时，请检查网络或服务是否正在启动，然后重试。'
   if (error.code === 'UPSTREAM_UNAVAILABLE' || error.kind === 'network') return preset.value.local
-    ? '无法连接本机服务。请先启动上方说明中的程序，确认 API 服务已开启且端口与地址一致。'
+    ? '无法连接本机服务，请启动服务并核对地址。'
     : '无法连接服务，请检查 API 地址、网络和代理设置。'
-  if (error.status === 401) return '密钥校验失败（HTTP 401），请重新复制当前服务商的 API Key。'
-  if (error.status === 403) return '访问被拒绝（HTTP 403），请检查账号、地域及 API 权限。'
-  if (error.status === 402) return '额度不足或需要开通 API 计费（HTTP 402），请到服务商控制台检查。'
+  if (error.status === 401) return '密钥无效，请重新填写当前服务商的密钥。'
+  if (error.status === 403) return '访问被拒绝，请检查账号和 API 权限。'
+  if (error.status === 402) return '额度不足或尚未开通 API 计费，请到服务商控制台检查。'
   if (error.status === 404 || error.status === 405) return '模型目录不可用，请核对 Base URL；部分兼容服务不提供 /models，可手填官方模型 ID 后保存。'
-  if (error.status === 429) return '请求过于频繁或额度受限（HTTP 429），请稍后重试并检查配额。'
+  if (error.status === 429) return '请求过于频繁或额度受限，请稍后重试。'
   if (error.code === 'INVALID_MODEL_LIST' || error.kind === 'invalid-response') return '服务返回的内容不是模型目录，请检查地址是否填成了网页或不兼容的接口。'
   if (error.status === 400) return '配置格式无效，请核对地址和模型 ID；地址中不要携带密钥或查询参数。'
   return '连接测试失败，服务可能暂时不可用；请核对官方接入说明后重试。'
@@ -265,7 +242,7 @@ async function testConnection() {
   testController = controller
   testing.value = true
   testState.value = 'testing'
-  testMessage.value = '正在连接服务并获取模型列表…'
+  testMessage.value = '正在获取模型列表…'
   try {
     const data = await chatApi.testProvider({
         baseUrl: props.baseUrl,
@@ -279,10 +256,10 @@ async function testConnection() {
     const missing = props.model.trim() && !discoveredModels.value.includes(props.model.trim())
     testState.value = discoveredModels.value.length && !missing ? 'success' : 'warning'
     testMessage.value = !discoveredModels.value.length
-      ? '服务已响应，但模型列表为空。请先下载/加载本地聊天模型，或在服务商控制台检查可用模型。'
+      ? '未找到可选模型，可手填模型 ID。'
       : missing
-        ? `目录连接成功，返回 ${discoveredModels.value.length} 个模型；当前模型不在返回列表中，请重新选择或核对自定义 ID。`
-        : `目录连接成功，返回 ${discoveredModels.value.length} 个模型。请选择聊天模型并保存，尚未发送生成请求。`
+        ? `找到 ${discoveredModels.value.length} 个模型，当前模型未列出，请核对模型 ID。`
+        : `找到 ${discoveredModels.value.length} 个模型，请选择聊天模型并保存。`
   } catch (error) {
     if (testController !== controller || controller.signal.aborted) return
     testState.value = 'error'
@@ -295,7 +272,6 @@ async function testConnection() {
 </script>
 
 <style scoped>
-.api-settings .api-vendor-picker button:disabled, .api-settings .api-vendor-picker button:disabled :is(span, small) { color:var(--text-disabled); cursor:wait; }
 .api-provider-help, .api-host-advanced { color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.6; }
 .api-provider-help p, .api-host-advanced p { margin:0 0 var(--s-2); }
 .api-help-links { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-4); }

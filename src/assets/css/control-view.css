@@ -56,8 +56,8 @@
 .status-tile.service-required { border-color:var(--accent); box-shadow:inset 0 3px var(--accent); }
 .service-row-name { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:text-label tw:min-w-0; }
 .service-row-name { margin:0; font-weight:600; }
-.service-row-actions { @apply tw:flex tw:shrink-0 tw:gap-s-2; }
-.service-row-actions .btn { @apply tw:min-h-[36px]; }
+.service-row-actions { @apply tw:flex tw:flex-wrap tw:shrink-0 tw:gap-s-2; }
+.service-row-actions .btn { @apply tw:min-h-[36px] tw:shrink-0 tw:whitespace-nowrap; }
 .service-row-actions .btn-danger { background: transparent; @apply tw:border-soft tw:text-danger-text; }
 .service-row-actions .btn:disabled { @apply tw:text-disabled; }
 .autostart-row { @apply tw:flex tw:items-center tw:gap-s-2; border-top: 1px solid var(--border-soft); @apply tw:pt-s-4 tw:mt-s-2 tw:text-label tw:text-secondary; }
@@ -129,7 +129,7 @@
 .control-page :is(a,button,summary):focus-visible:active { transform:none; transition:none; }
 .control-shell :deep(.control-count) { display:inline-flex; }
 @media (min-width: 1600px) { .control-shell { padding-inline: var(--s-7); } }
-@media (max-width: 1200px) { .control-layout { grid-template-columns: 184px minmax(0, 1fr); } .control-shell { @apply tw:p-s-5; } .voice-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1200px) { .control-shell { @apply tw:p-s-5; } .voice-grid { grid-template-columns: 1fr; } }
 @media (max-width: 900px) { .control-mobile-nav { @apply tw:block; } .nav-local { @apply tw:flex tw:justify-between tw:p-s-3; } .nav-local-actions { @apply tw:flex tw:items-center tw:gap-s-2; } .nav-local-brand { @apply tw:text-primary; } .control-rail { @apply tw:hidden; } .control-layout { @apply tw:block; } .status-wall { grid-template-columns: repeat(2,minmax(0,1fr)); } .control-work-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .control-shell { @apply tw:p-s-4; } .mode-grid { grid-template-columns: 1fr; } .overview-heading { @apply tw:flex-col; } .log-panel > summary { @apply tw:flex-wrap; } }
 @media (max-width: 480px) { .status-wall { grid-template-columns: 1fr; } }

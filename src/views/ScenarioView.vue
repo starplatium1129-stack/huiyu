@@ -21,7 +21,7 @@
         </button>
       </div>
       <section v-if="activeScenario" class="viewer show" aria-label="分幕手帖">
-        <header class="viewer-header-row"><div><span class="scenario-kicker">分幕手帖 / {{ activeScenario.acts.length }} 幕</span><h2 class="viewer-h2"><ArchiveIcon :name="activeScenario.iconName" />{{ activeScenario.name }}</h2><p class="viewer-desc">{{ activeScenario.desc }}</p></div><button class="btn btn-primary scenario-to-video" type="button" @click="sendToVideoStudio"><ArchiveIcon name="clap" />送入分镜短片（{{ activeScenario.acts.length }} 幕 → {{ activeScenario.acts.length }} 镜）</button></header>
+        <header class="viewer-header-row"><div><span class="scenario-kicker">分幕手帖 / {{ activeScenario.acts.length }} 幕</span><h2 class="viewer-h2"><ArchiveIcon :name="activeScenario.iconName" />{{ activeScenario.name }}</h2><p class="viewer-desc">{{ activeScenario.desc }}</p></div><button class="btn btn-primary scenario-to-video" type="button" @click="sendToVideoStudio"><ArchiveIcon name="clap" />制作分镜短片</button></header>
         <div class="acts" data-route-arrive v-content-motion:up="`${activeScenario.id}:${currentChar}`" :style="{ '--act-count': activeScenario.acts.length }">
           <article v-for="a in activeScenario.acts" :key="activeScenario.id + a.n" class="act" :data-act="a.n">
             <div class="act-heading tw:flex tw:items-center tw:gap-s-3"><span class="act-num">{{ a.n }}</span><div><h3 class="act-title">{{ a.title }}</h3><span class="act-en">{{ a.en }}</span></div></div>

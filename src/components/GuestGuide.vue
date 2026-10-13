@@ -18,38 +18,32 @@
         <!-- 本机主人：讲的是「怎么上手」，不是「这是谁的电脑」 -->
         <template v-if="isLocalHost">
           <p id="guest-guide-description">
-            先让绘遇准备好模型与环境，再留下你的第一张作品。
+            可以先配置模型，也可以从喜欢的角色与场景开始逛。
           </p>
           <ul>
-            <li><strong>首次配置</strong>：选择 AI 数据磁盘，按电脑配置一键准备 Anima 绘图与本地聊天；显存较少可使用 API。</li>
-            <li><strong>灵感</strong>：挑一个场景，或去「热门角色场景」找你推的那位。</li>
-            <li><strong>绘制</strong>：场景带过去，调词条与参数，点「生成图片」。</li>
-            <li><strong>我的作品</strong>：出图会自动收进来，可收藏、批量清理，误删有 30 天回收站。</li>
-            <li><strong>找东西</strong>：顶栏的搜索（或 <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd>）
-              能一次搜到页面、场景和旧作。</li>
+            <li><strong>选场景</strong>：找到喜欢的角色与故事。</li>
+            <li><strong>去绘制</strong>：调整画面，生成第一张作品。</li>
+            <li><strong>回看作品</strong>：收藏、整理或继续创作。</li>
           </ul>
         </template>
 
         <!-- 远程访客：原有的访客视角文案 -->
         <template v-else>
           <p id="guest-guide-description">
-            这里是你朋友的本地创作间：浏览场景图鉴、带着场景去工作台出图、或去角色房间
-            和 <strong>宁宁 / 夏目</strong> 聊天。
+            欢迎来逛朋友的创作间，看看场景与作品，或去角色房间聊聊天。
           </p>
           <ul>
-            <li><strong>角色是谁</strong>：宁宁是银发紫瞳的魔女系女孩，夏目是琥珀色眼睛的可靠同伴。</li>
-            <li><strong>能做什么</strong>：查看场景样张、直接生成图片；生成在你朋友的电脑上完成。</li>
-            <li><strong>聊天配音</strong>：角色房间右上角打开「对话归档」旁的新对话即可开聊；
-              语音默认跟随回复自动播放，也可在房间内单独开关。</li>
+            <li>生成任务在分享者的电脑上执行。</li>
+            <li>聊天配音可在角色房间随时关闭。</li>
           </ul>
         </template>
       </div>
       <div class="guest-guide-actions tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:flex-wrap">
         <!-- docs/ 由网关静态托管（server.js /docs），42 份文档此前在应用内零入口 -->
         <a class="guest-guide-doc tw:text-secondary tw:text-label-sm" href="/docs/getting-started.html" target="_blank" rel="noopener">翻开使用指南</a>
-        <button v-if="isLocalHost" ref="setupButton" class="btn btn-primary" type="button" @click="beginSetup">开始首次配置</button>
-        <button ref="dismissButton" class="btn btn-primary" type="button" @click="dismiss">
-          {{ isLocalHost ? '先浏览，稍后配置' : '知道了，开始浏览' }}
+        <button v-if="isLocalHost" ref="setupButton" class="btn btn-primary" type="button" @click="beginSetup">开始配置</button>
+        <button ref="dismissButton" class="btn" :class="isLocalHost ? 'btn-ghost' : 'btn-primary'" type="button" @click="dismiss">
+          {{ isLocalHost ? '先浏览' : '开始浏览' }}
         </button>
       </div>
     </div>
@@ -125,13 +119,6 @@ function dismiss() {
 .guest-guide-body p { margin: 0 0 var(--s-3); @apply tw:text-secondary tw:leading-loose; }
 .guest-guide-body ul { @apply tw:m-0 tw:pl-s-4 tw:grid tw:gap-s-2 tw:text-secondary; }
 .guest-guide-body strong { @apply tw:text-primary; }
-.guest-guide-body kbd {
-  padding: 1px 5px;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-sm;
-  background: var(--bg-deep);
-  font: 650 var(--fs-mono-xs) var(--font-mono);
-}
 .guest-guide-doc {
   text-decoration: underline; text-underline-offset: 3px;
 }

@@ -23,7 +23,7 @@
         </div>
 
         <div class="video-choice-group">
-          <span class="field-label">画幅（整批统一，拼接成片需要）</span>
+          <span class="field-label">统一画幅</span>
           <div class="video-segmented studio-segments studio-segments--compact" role="group" aria-label="选择分镜画幅">
             <AnimatedSelection />
             <button
@@ -51,7 +51,6 @@
               @click="quality = item.id"
             >
               <strong>{{ item.label }}</strong>
-              <small>{{ item.summary }}</small>
               <em>{{ item.sizes[aspectRatio] }}</em>
             </button>
           </div>
@@ -66,7 +65,7 @@
         >
           <span>
             <strong>自动衔接上一镜尾帧</strong>
-            <small>本镜有首帧时作为尾帧（FL2VA 桥接），无首帧时续接为开头（I2VA 续接），跨镜动作与空间更连续。</small>
+            <small>用上一镜的尾帧连接下一镜。</small>
           </span>
         </ToggleSwitch>
 
@@ -79,12 +78,12 @@
         >
           <span>
             <strong>极速 4 步（整批）</strong>
-            <small>采用 Turbo 蒸馏采样，耗时减少约 40%，画质微降，适合快速试镜与连贯长片。</small>
+            <small>更快生成预览，画面细节会略有减少。</small>
           </span>
         </ToggleSwitch>
 
         <label class="field shot-identity-field">
-          <span class="field-label">角色身份锚点（逐镜注入提示词开头，跨镜一致性关键）</span>
+          <span class="field-label">各镜头共用的角色描述</span>
           <textarea
             v-model="identityCard"
             :disabled="batchActive || submitting"
@@ -112,7 +111,7 @@
               type="button"
               :disabled="batchActive || submitting"
               @click="addReferenceCard"
-            ><ArchiveIcon name="gallery" />添加出场角色（最多 4 位）</button>
+            ><ArchiveIcon name="gallery" />添加角色</button>
           </div>
           <div class="shot-reference-grid">
             <div v-for="(card, cardIndex) in referenceCards" :key="cardIndex" class="shot-reference-card">

@@ -34,31 +34,30 @@
           @update:model-value="emit('update:currentModel', String($event))"
         />
         <button class="btn btn-ghost btn-sm" type="button" :disabled="busy || checkingLocal" @click="emit('refresh-local')">{{ checkingLocal ? '检测中…' : '重新检测' }}</button>
-        <p class="local-model-help" role="status">{{ localStatusText }}<br>连接的是绘遇后端电脑上的 Ollama。请先启动 Ollama 并下载聊天模型；首次使用可到控制室准备绘遇受管 llama.cpp。</p>
+        <p v-if="localStatusText" class="local-model-help" role="status">{{ localStatusText }}</p>
       </div>
       <div v-else v-content-motion:right="chatProvider" class="provider-model-controls">
-        <StudioTooltip content="允许模型请求房间工具（例如准备绘画草稿）；仅本机可用。不支持工具的模型请关闭。">
+        <StudioTooltip content="允许模型准备绘画草稿等操作，仅本机可用">
           <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="companionTools" :disabled="busy" @click="emit('update:companion-tools', !companionTools)">房间工具：{{ companionTools ? '开' : '关' }}</button>
         </StudioTooltip>
-        <StudioTooltip content="推理强度依服务商支持；部分模型不能关闭。Luna 启用房间工具时固定不思考。">
-          <div class="thinking-group">
-            <span class="thinking-title">推理</span>
-            <div class="thinking-segments studio-segments studio-segments--compact" role="radiogroup" aria-label="模型推理强度">
-              <AnimatedSelection />
-              <button
-                v-for="opt in reasoningOptions"
-                :key="opt.value"
-                type="button"
-                role="radio"
-                :aria-checked="reasoning === opt.value"
-                :class="{ active: reasoning === opt.value }"
-                :disabled="busy"
-                @click="emit('reasoning-change', opt.value)"
-              >{{ opt.label }}</button>
-            </div>
+        <StudioTooltip :content="reasoningHint">
+        <div class="thinking-group" :tabindex="reasoningHint ? 0 : undefined" :aria-label="reasoningHint ? '推理档位说明' : undefined">
+          <span class="thinking-title">推理</span>
+          <div class="thinking-segments studio-segments studio-segments--compact" role="radiogroup" aria-label="模型推理强度">
+            <AnimatedSelection />
+            <button
+              v-for="opt in reasoningOptions"
+              :key="opt.value"
+              type="button"
+              role="radio"
+              :aria-checked="reasoning === opt.value"
+              :class="{ active: reasoning === opt.value }"
+              :disabled="busy"
+              @click="emit('reasoning-change', opt.value)"
+            >{{ opt.label }}</button>
           </div>
+        </div>
         </StudioTooltip>
-        <p class="local-model-help">DeepSeek 开启房间工具时请关闭推理。Gemini 3 / 2.5 Pro 不能关闭思考，选择「关」会使用低档；其他 Gemini 2.5 使用 none 关闭。Kimi K2.6 的低 / 中 / 高均为开启思考，不区分强度。</p>
         <button
           class="api-settings-toggle"
           type="button"
@@ -77,7 +76,8 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import { defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
+import { chatApiVendorFor } from '@/config/chatApi'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 
@@ -92,7 +92,7 @@ const reasoningOptions = [
   { value: 'high', label: '高' },
 ] as const
 
-defineProps<{
+const props = defineProps<{
   chatProvider: string
   busy: boolean
   ollamaOnline: boolean
@@ -105,9 +105,21 @@ defineProps<{
   apiSettingsOpen: boolean
   useHostConfig: boolean
   hostApiModel: string
+  hostApiBaseUrl?: string
   apiConfigured: boolean
   apiModel: string
+  apiBaseUrl?: string
 }>()
+
+const reasoningHint = computed(() => {
+  const vendor = chatApiVendorFor((props.useHostConfig ? props.hostApiBaseUrl : props.apiBaseUrl) || '')
+  const model = props.useHostConfig ? props.hostApiModel : props.apiModel
+  if (vendor === 'deepseek' && props.companionTools) return '使用房间工具时请关闭推理。'
+  if (vendor === 'gemini' && (model.startsWith('gemini-3') || model.startsWith('gemini-2.5-pro'))) return '此模型不能关闭推理；“关”使用最低档。'
+  if ((vendor === 'kimi' && model.startsWith('kimi-k2.6')) || (vendor === 'qwen' && model.startsWith('qwen'))) return '低、中、高均为开启推理。'
+  if (vendor === 'openai' && props.companionTools && (model.startsWith('gpt-6-luna') || model.startsWith('gpt-6-sol'))) return '启用房间工具时不使用推理。'
+  return undefined
+})
 
 const emit = defineEmits<{
   (e: 'set-provider', provider: 'local' | 'api'): void

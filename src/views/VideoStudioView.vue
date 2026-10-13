@@ -39,7 +39,7 @@
       v-model:aspect-ratio="aspectRatio" v-model:duration="duration" v-model:quality="quality"
       :aspect-options="aspectOptions.map(item => ({ value: item.id, label: `${item.label}${aspectSize(item.id) ? ' · ' + aspectSize(item.id) : ''}` }))"
       :duration-options="durationOptions.map(seconds => ({ value: seconds, label: `${seconds} 秒` }))"
-      :quality-options="(status?.qualities || []).map(item => ({ value: item.id, label: `${item.label} · ${item.summary}` }))"
+      :quality-options="(status?.qualities || []).map(item => ({ value: item.id, label: item.label }))"
       :can-generate="canGenerate" :submitting="submitting" :submit-title="submitTitle" :submit-description="submitDescription"
       @generate="submitVideo" />
     <div class="video-workspace" data-route-arrive :class="{ 'video-workspace--shots': selectedMode === 'shots' }" v-content-motion:up="selectedMode">
@@ -162,7 +162,7 @@
               >
                 <span>
                   <strong>极速 4 步</strong>
-                  <small>Turbo 蒸馏 4 步采样，约快一倍（实测 fast 5s 130s → 80s），质量略降，适合试镜与长片。</small>
+                  <small>更快生成预览，画面细节会略有减少。</small>
                 </span>
               </ToggleSwitch>
               <label class="field">
@@ -178,7 +178,7 @@
               <label class="field">
                 <span class="field-label">固定 Seed</span>
                 <input v-model="seedText" class="input input-mono" inputmode="numeric" placeholder="留空则随机" />
-                <span class="field-hint">复现同一构思时再填写，不建议为找偶然好片反复抽 seed。</span>
+                <span class="field-hint">填写相同数值可复用随机种子。</span>
               </label>
             </div>
           </details>
@@ -284,7 +284,7 @@
               ComfyUI 节点已支持；安装所列资源后即可启用生成按钮。
             </p>
             <p v-else-if="activeModel.missing.length" class="video-install-note">
-              所列资源是该路线的最小模型组合；应用配方与真实 GPU 验证完成前保持不可生成。
+              此模型暂不支持生成，可选择其他模型。
             </p>
             <div v-if="activeModel.id === 'minimax-h3'" class="video-route-note">
               <strong>推荐用法</strong>

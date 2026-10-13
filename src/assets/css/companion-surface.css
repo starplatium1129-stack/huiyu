@@ -105,6 +105,7 @@ html.companion-desktop .companion-redesign .companion-chat-chip { @apply tw:min-
 .companion-chat-redesign .companion-chat-composer { margin-inline: calc(var(--s-4) * -1); padding: var(--s-3) var(--s-4); background: var(--bg-surface); }
 .companion-chat-redesign .companion-chat-input { @apply tw:rounded-md; background:var(--bg-base); @apply tw:text-primary; }
 .companion-chat-redesign .companion-chat-actions { @apply tw:gap-s-2 tw:mt-s-2; }
+.studio-popover.companion-chat-speech-popover { width:min(520px,calc(100vw - 32px)); padding:0; }
 .companion-chat-redesign .companion-chat-meta { @apply tw:text-secondary; }
 .companion-back-latest { @apply tw:self-center tw:shrink-0; }
 .companion-chat-drag { flex:0 0 auto; @apply tw:p-s-2 tw:text-secondary tw:text-label-xs tw:cursor-grab tw:select-none; }

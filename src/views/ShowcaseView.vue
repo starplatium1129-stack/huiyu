@@ -101,7 +101,6 @@
             <header class="viewer-info-header"><span class="viewer-kicker">参考画册</span><button class="viewer-info-close" type="button" @click="closeViewerInfo"><ArchiveIcon name="close" />关闭信息</button></header>
             <h2 id="showcase-viewer-title" class="viewer-title">{{ currentEntry.title }}</h2>
             <div class="viewer-meta">
-              <span>{{ currentEntry.id }}</span>
               <span>{{ charLabel(currentEntry.char) }}</span>
               <span>{{ ratingLabel(currentEntry.rating) }}</span>
               <span>{{ currentEntry.category }}</span>

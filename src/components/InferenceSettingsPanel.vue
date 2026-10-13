@@ -2,32 +2,28 @@
   <section id="control-inference" class="panel-card inference-settings" aria-labelledby="inference-settings-title">
     <div class="inference-heading">
       <div><span class="panel-kicker">本机推理</span><h2 id="inference-settings-title" class="panel-heading">绘图引擎设置</h2></div>
-      <button v-if="isLocal" class="btn btn-ghost btn-sm" type="button" :disabled="loading || saving || setupBusy" @click="refresh">{{ loading ? '检查中…' : '检查配置与文件' }}</button>
+      <button v-if="isLocal" class="btn btn-ghost btn-sm" type="button" :disabled="loading || saving || setupBusy" @click="refresh">{{ loading ? '检查中…' : '重新检查' }}</button>
     </div>
-    <p v-if="!isLocal">请在运行绘遇的本机打开此页，查看和修改推理路径。</p>
+    <p v-if="!isLocal">请在运行绘遇的电脑上修改引擎设置。</p>
     <template v-else>
-      <p>已有的运行库、Anima 模型和角色 LoRA 可以直接复用。选择引擎后保存，重启绘遇生效。</p>
-      <p v-if="error" role="alert" class="inference-error">{{ error }}。输入仍保留，可修改后重试。</p>
+      <p v-if="error" role="alert" class="inference-error">{{ error }}</p>
       <p v-if="notice" role="status">{{ notice }}</p>
       <template v-if="snapshot">
-        <p class="inference-active">当前运行：{{ engineLabel(snapshot.active.engine) }}<span v-if="snapshot.restartRequired"> · 已保存的设置需重启运行时生效</span></p>
-        <p v-if="snapshot.environmentOverrides.length">启动环境变量覆盖：{{ snapshot.environmentOverrides.join('、') }}。冲突设置无法保存，请先修改启动配置。</p>
+        <p class="inference-active">当前运行：{{ engineLabel(snapshot.active.engine) }}<span v-if="snapshot.restartRequired"> · 重启绘遇后应用新设置</span></p>
+        <p v-if="snapshot.environmentOverrides.length">{{ snapshot.environmentOverrides.join('、') }} 由启动配置指定，请在启动配置中修改。</p>
         <div v-if="discovery" class="inference-reuse" aria-labelledby="inference-reuse-title">
           <h3 id="inference-reuse-title">复用本机资源</h3>
-          <p>发现 {{ discovery.modelCount }} 个已转换的 Anima 底模、{{ discovery.loraCount }} 个角色 LoRA。</p>
-          <p v-if="discovery.missing.length">尚缺：{{ discovery.missing.join('、') }}。可展开下方高级路径或离线准备入口补齐。</p>
-          <p v-else>现有文件可以直接采用，无需重新安装或复制模型。</p>
+          <p>{{ discovery.modelCount }} 个 Anima 底模 · {{ discovery.loraCount }} 个角色 LoRA</p>
+          <p v-if="discovery.missing.length">尚缺：{{ discovery.missing.join('、') }}</p>
           <div class="inference-actions">
-            <button class="btn btn-primary btn-sm" type="button" :disabled="loading || saving || setupBusy || dirty || !discovery.canAdopt || !adoptionChanges" @click="adopt">{{ saving ? '保存中…' : !discovery.canAdopt ? '等待资源就绪' : adoptionChanges ? '复用并启用独立引擎' : '已采用当前资源' }}</button>
-            <span v-if="dirty">请先保存手动修改，再采用资源。</span>
+            <button class="btn btn-primary btn-sm" type="button" :disabled="loading || saving || setupBusy || dirty || !discovery.canAdopt || !adoptionChanges" @click="adopt">{{ saving ? '保存中…' : !discovery.canAdopt ? '资源待补齐' : adoptionChanges ? '采用并启用' : '已采用' }}</button>
+            <span v-if="dirty">请先保存当前修改</span>
           </div>
           <details class="inference-selected-paths">
-            <summary>查看将采用的路径</summary>
+            <summary>资源路径</summary>
             <dl><template v-for="field in pathFields" :key="field.key"><dt>{{ field.label }}</dt><dd>{{ discovery.suggested[field.key] }}</dd></template></dl>
             <p v-if="discovery.runtimeReceipt">运行库安装记录：{{ discovery.runtimeReceipt }}</p>
-            <p v-if="discovery.preservesSavedSettings">保留已保存的路径与性能选项；需要更换时可在高级设置中修改。</p>
           </details>
-          <p class="inference-discovery-note">此处检查本地文件与安装记录；当前依赖和设备可在下方检查。</p>
         </div>
         <form class="inference-form" @submit.prevent="save">
           <div class="inference-field">
@@ -37,16 +33,16 @@
           <div class="inference-field">
             <label for="inference-acceleration">独立引擎加速模式</label>
             <StudioSelect id="inference-acceleration" v-model="draft.acceleration" label="独立引擎加速模式" :options="accelerationOptions" :disabled="saving || loading || setupBusy" />
-            <small>Sage 模式需匹配本机运行库与显卡；连续生成可使用编译与 LoRA 融合。</small>
+            <small v-if="draft.acceleration !== 'native'">需要 SageAttention 运行库。</small>
           </div>
           <div class="inference-field">
             <label for="inference-memory">独立引擎显存策略</label>
             <StudioSelect id="inference-memory" v-model="draft.memoryPolicy" label="独立引擎显存策略" :options="memoryOptions" :disabled="saving || loading || setupBusy" />
-            <small>分阶段将暂不用的模型移到内存，减少同时占用的显存；会增加传输时间，也不保证任意尺寸均能运行。保存后重启生效。</small>
+            <small>{{ draft.memoryPolicy === 'offload' ? '减少显存占用，生成时需要在内存与显卡间传输模型。' : '模型保留在显卡中，适合连续生成。' }}</small>
           </div>
           <details class="inference-paths" :open="advancedPathsOpen">
-            <summary>高级设置：手动指定路径</summary>
-            <p>填写运行绘遇的电脑上的绝对路径；已有配置和启动环境覆盖始终优先。</p>
+            <summary>高级路径设置</summary>
+            <p>填写运行绘遇的电脑上的绝对路径。</p>
             <div class="inference-path-grid">
               <div v-for="field in pathFields" :key="field.key" class="inference-field">
                 <label :for="`inference-${field.key}`">{{ field.label }}</label>
@@ -56,35 +52,31 @@
             </div>
           </details>
           <div class="inference-actions">
-            <button class="btn btn-primary btn-sm" type="submit" :disabled="saving || loading || setupBusy || !dirty">{{ saving ? '保存中…' : '保存引擎设置' }}</button>
-            <span v-if="dirty">有未保存的修改</span>
+            <button class="btn btn-primary btn-sm" type="submit" :disabled="saving || loading || setupBusy || !dirty">{{ saving ? '保存中…' : '保存设置' }}</button>
+            <span v-if="dirty">保存后重启绘遇生效</span>
           </div>
         </form>
         <InferenceSetupPanel :configured="snapshot.configured" :blocked="loading || saving" @prepared="fillPreparedPaths" @busy="setupBusy = $event" />
-        <div class="inference-diagnostics" aria-label="独立引擎诊断">
-          <h3>准备状态</h3>
+        <details class="inference-diagnostics" :open="diagnostics?.configuration === 'invalid' || !!probeError">
+          <summary>检查结果</summary>
           <template v-if="diagnostics">
-            <p>检查对象：已保存、下次启动使用的路径{{ dirty ? '（不含未保存修改）' : '' }}。</p>
-            <p>配置：{{ diagnostics.configuration === 'valid' ? '格式有效' : '无效，请修正' }}。{{ diagnostics.message }}</p>
-            <ul><li v-for="field in pathFields" :key="field.key">{{ field.label }}：{{ diagnostics.files[field.key] ? '文件或目录存在' : '未找到' }}</li></ul>
+            <p>已保存的路径{{ dirty ? '（不含未保存修改）' : '' }}</p>
+            <p v-if="diagnostics.configuration !== 'valid'" role="alert">{{ diagnostics.message }}</p>
+            <ul><li v-for="field in pathFields" :key="field.key">{{ field.label }}：{{ diagnostics.files[field.key] ? '已找到' : '未找到' }}</li></ul>
           </template>
-          <p v-else>设置已更新，请点击“检查配置与文件”刷新路径证据。</p>
-          <p>文件存在不代表依赖可用、模型完整或能够生成。</p>
-          <button class="btn btn-ghost btn-sm" type="button" :disabled="probing" @click="diagnose">{{ probing ? '检查依赖中…' : '检查当前运行时依赖与设备' }}</button>
-          <p>使用当前运行时的 Python 和 Worker，仅导入依赖与检查 CUDA；不加载模型、不生成图片。</p>
+          <p v-else>设置已更新，请重新检查。</p>
+          <button class="btn btn-ghost btn-sm" type="button" :disabled="probing" @click="diagnose">{{ probing ? '检查中…' : '检查依赖与设备' }}</button>
           <p v-if="probeError" role="alert">{{ probeError }}</p>
           <div v-if="probe" role="status">
-            <p>依赖检查通过 · {{ probe.probe.cudaAvailable ? `CUDA 可用：${probe.probe.deviceName || '设备名称未知'}` : 'CUDA 不可用' }} · 真实出图未验证</p>
+            <p>当前运行环境 · {{ probe.probe.cudaAvailable ? `CUDA 可用：${probe.probe.deviceName || '设备名称未知'}` : 'CUDA 不可用' }}</p>
             <ul><li v-for="(version, name) in probe.probe.dependencies" :key="name">{{ name }}：{{ version }}</li></ul>
           </div>
-          <p v-else>依赖{{ probing ? '检查中' : '尚未确认' }} · GPU 与真实出图未验证。</p>
-        </div>
+        </details>
         <details class="inference-capabilities">
-          <summary>独立引擎支持范围与限制</summary>
+          <summary>支持范围</summary>
           <div>
-            <p>已实现：Anima 文生图、图生图、本地兼容 LoRA、手绘或 CLIPSeg 蒙版重绘、高清修复、Remacri 放大与 RCAS。原始权重需转换为完整 Diffusers 模型目录。</p>
-            <p>TeaCache 默认使用内置 Anima 策略（阈值 0.1），无需为每个模型或角色另行准备校准档；可在生成参数中关闭。速度与画面仍以实际生成结果为准。</p>
-            <p>暂不支持：Krea、SDXL、DoRA 及不兼容的 LoRA 格式。请为这些功能使用对应的其他后端。</p>
+            <p>支持 Anima 绘图、图生图、蒙版重绘、高清修复与放大。模型需使用完整 Diffusers 目录。</p>
+            <p>Krea、SDXL 与 DoRA 请使用对应的其他后端。</p>
           </div>
         </details>
       </template>
@@ -137,7 +129,8 @@ onMounted(refresh)
 summary { cursor: pointer; min-height: 44px; align-content: center; color: var(--text-primary); }
 .inference-reuse { border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: var(--s-4); margin: var(--s-4) 0; }
 .inference-reuse h3 { margin: 0; }
-.inference-reuse .inference-discovery-note { font-size: var(--fs-body-sm); }
+.inference-heading > div { min-width: 0; }
+.inference-settings .btn { flex-shrink: 0; white-space: nowrap; }
 .inference-selected-paths dd { margin: 0 0 var(--s-3); overflow-wrap: anywhere; color: var(--text-secondary); }
 .inference-selected-paths dt { color: var(--text-primary); }
 .inference-settings .inference-error { color: var(--text-primary); padding: var(--s-3); border: 1px solid var(--border-soft); }

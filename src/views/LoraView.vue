@@ -27,7 +27,6 @@
       <StudioSearch ref="searchInput" v-model="modelQuery" class="model-search-field" label="搜索模型" placeholder="按模型、角色或触发词查找…" />
       <span class="model-result-count" role="status">{{ visibleLoras.length }} / {{ loras.length }} 份资料</span>
     </div>
-    <p class="model-catalog-note">资料收录与历史评测通过，均不代表本机已安装。可用性请在工作台检测。</p>
     <ArchiveStatePanel v-if="!visibleLoras.length" compact kind="filtered" title="没有匹配的模型。" message="试试角色名、模型名或触发词，或清除搜索重新查看全部资料。">
       <button class="btn btn-ghost btn-sm" type="button" @click="clearSearch">清除搜索</button>
     </ArchiveStatePanel>
@@ -43,7 +42,7 @@
           <RouterLink v-if="modelCharacter(l.id)" class="btn btn-primary" :to="{ path: '/prompt-builder', query: { char: modelCharacter(l.id) } }"><ArchiveIcon name="spark" />用此角色绘制</RouterLink>
           <button v-if="l.triggerWords.length" class="btn btn-ghost" type="button" @click="copyWithFeedback(l.triggerWords.join(', '), '已复制触发词')"><ArchiveIcon name="copy" />复制触发词</button>
         </div>
-        <p class="model-availability">本机可用性尚未检测。<template v-if="modelCharacter(l.id)">入口只选择角色，不强制加载此历史版本；引擎与模型由工作台现有规则决定。</template><template v-else>仅供资料参考，未配置直接使用入口。</template></p>
+        <p v-if="!modelCharacter(l.id)" class="model-availability">旧版模型资料</p>
         <details class="model-details">
           <summary><span>触发词与模型资料</span><ArchiveIcon name="chevron-down" /></summary>
           <div class="model-details-body" data-disclosure-content>
@@ -60,10 +59,10 @@
           </div>
         </details>
         <section v-if="l.evaluation" class="evaluation-panel" aria-label="模型评测结果">
-          <p class="evaluation-summary">历史评测 · {{ l.evaluation.status === 'passed' ? '已通过' : l.evaluation.status || '已记录' }}<span v-if="l.evaluation.evaluatedAt"> · {{ l.evaluation.evaluatedAt }}</span></p>
           <details>
-            <summary><span>查看指标、方法与证据</span><ArchiveIcon name="chevron-down" /></summary>
+            <summary><span>历史评测</span><ArchiveIcon name="chevron-down" /></summary>
             <div data-disclosure-content>
+            <p class="evaluation-summary">{{ l.evaluation.status === 'passed' ? '已通过' : l.evaluation.status || '已记录' }}<span v-if="l.evaluation.evaluatedAt"> · {{ l.evaluation.evaluatedAt }}</span></p>
             <div class="evaluation-metrics">
               <div v-for="metric in l.evaluation.metrics" :key="metric[0]">
                 <span>{{ metric[0] }}</span>
@@ -157,10 +156,9 @@ onMounted(() => { void loadCatalog() })
 .model-facts { @apply tw:grid tw:gap-s-3 tw:m-0 tw:mb-s-3; }
 .model-facts dt { @apply tw:mb-s-1 tw:text-muted tw:text-label-xs; }
 .model-facts dd { @apply tw:m-0 tw:text-secondary; overflow-wrap:anywhere; }
-.model-search-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); }
+.model-search-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); margin-bottom:var(--s-4); }
 .model-search-field { flex:1 1 320px; max-width:560px; min-width:0; }
 .model-result-count { color:var(--text-secondary); font-size:var(--fs-label); font-variant-numeric:tabular-nums; }
-.model-catalog-note { margin:var(--s-3) 0 var(--s-5); @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
 .model-identity { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2; }
 .model-identity > div { @apply tw:flex tw:items-center tw:gap-s-2; }
 .model-identity .archive-icon { @apply tw:text-accent tw:w-[24px] tw:h-[24px]; }
@@ -168,6 +166,7 @@ onMounted(() => { void loadCatalog() })
 .model-purpose { margin:var(--s-2) 0; @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
 .model-file { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:text-muted tw:text-mono-sm; margin:0 0 var(--s-4); overflow-wrap:anywhere; }
 .model-file code { font:inherit; }
+.lora-card .model-actions { margin-bottom:var(--s-3); }
 .lora-tag { @apply tw:max-w-full; overflow-wrap:anywhere; }
 .lora-grid { @apply tw:grid tw:gap-s-4; grid-template-columns:repeat(auto-fit,minmax(min(360px, 100%),1fr)); align-items:start; }
 .lora-card {

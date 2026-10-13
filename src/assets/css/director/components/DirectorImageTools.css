@@ -2,16 +2,17 @@
 .pb .image-tools { @apply tw:grid tw:min-w-0 tw:gap-s-3; }
 .pb .image-tools-group { @apply tw:grid tw:min-w-0 tw:gap-s-2; }
 .pb .image-tools-group h4 { @apply tw:flex tw:items-center tw:gap-s-2 tw:m-0 tw:text-secondary tw:text-label; font-weight:600; }
-.pb .image-tool-buttons { @apply tw:grid tw:gap-s-2 tw:min-w-0; grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr)); }
-.pb .image-tool-buttons > *, .pb .image-tool-buttons .btn { @apply tw:w-full tw:min-w-0; }
-.pb .image-tool-buttons .btn { @apply tw:min-h-[40px] tw:justify-start tw:text-left tw:whitespace-normal tw:text-label; }
+/* Wrap whole actions at their content width instead of squeezing their labels. */
+.pb .image-tool-buttons { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:min-w-0; }
+.pb .image-tool-buttons > * { flex:1 1 max-content; @apply tw:w-auto tw:min-w-0 tw:max-w-full; }
+.pb .image-tool-buttons > .studio-tooltip-anchor { @apply tw:flex tw:items-stretch; }
+.pb .image-tool-buttons .btn { @apply tw:w-full tw:min-h-[40px] tw:justify-start tw:text-left tw:whitespace-nowrap tw:text-label; }
 .pb .image-tools-error { @apply tw:m-0 tw:text-danger-text tw:text-label; overflow-wrap:anywhere; }
 .pb .reference-interrogate summary > span { @apply tw:flex tw:items-center tw:gap-s-2; }
 .pb .reference-interrogate summary small,.pb .image-continuation summary small { @apply tw:ml-auto tw:text-secondary tw:text-label-xs; }
 .pb .reference-interrogate-body,.pb .image-continuation-body { @apply tw:pt-s-3; }
-.pb .reference-interrogate-note { @apply tw:mt-s-2 tw:mb-0 tw:text-secondary tw:text-label-xs tw:leading-body; }
-.pb .reference-interrogate-status { @apply tw:m-0 tw:text-accent tw:text-label; }
-.pb .reference-paste small { @apply tw:ml-auto tw:text-secondary tw:text-label-xs; }
+.pb .reference-interrogate-body { @apply tw:grid tw:gap-s-2; }
+.pb .reference-interrogate-status { @apply tw:m-0 tw:text-secondary tw:text-label; }
 .pb .reference-outfit-actions:empty { display:none; }
 .pb .btn-compare-inpaint[aria-pressed='true'] { color:var(--accent); border-color:var(--accent); }
 

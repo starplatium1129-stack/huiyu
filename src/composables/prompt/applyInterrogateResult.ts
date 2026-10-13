@@ -9,7 +9,7 @@ import { sceneStyleBaseline } from '@/utils/randomVariationContext'
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true) {
   if (!current() || !result || typeof result !== 'object') return
   if ((result as { engine?: string }).engine === 'heuristic') {
-    pb.flash('本地反推模型不可用，演示标签未写入工作台，请检查 WD14 模型后重试')
+    pb.flash('反推暂不可用，请稍后重试')
     return
   }
   const { characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } = await import('@/utils/interrogateMerge')

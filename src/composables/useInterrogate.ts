@@ -28,27 +28,14 @@ function fileToDataUrl(file: File, signal: AbortSignal): Promise<string> {
   })
 }
 
-/**
- * 反推失败的可读文案（2026-08-30 UX 审计）。
- *
- * 此前非 2xx 一律 `throw new Error('反推失败：' + res.status)`——用户看到的是
- * 一个 HTTP 状态码，既不知道为什么，也不知道该怎么办。后端已经在信封里带了
- * 中文的 error 文案，这里把它保留下来，再按状态码补一句可操作的下一步。
- *
- * 刻意不复用 sdError 的分类器：那一套是出图语义（WebUI/Comfy、采样器、LoRA），
- * 用在反推上会给出「关闭高清修复」这类驴唇不对马嘴的建议。
- */
-function interrogateFailure(status: number, backendMessage: string): string {
-  const hint =
-    status === 413 ? '图片体积超出网关上限，换一张小一些的图重试。'
-    : status === 429 ? '反推请求太频繁，稍等几秒再试。'
-    : status === 400 ? '请求被网关拒绝，通常是图片格式或体积不合要求。'
-    : status === 404 ? '反推接口不可用，请确认网关已启动到最新版本。'
-    : status >= 500 ? '请检查 PixAI 模型、GPU 显存与本地推理依赖后重试。'
-    : status === 0 ? '无法连接网关，请确认服务已启动。'
-    : '请稍后重试；若持续失败，检查网关与 PixAI 反推模型。'
-  // 后端给的中文文案优先，状态码提示作为补充，不重复拼接。
-  return backendMessage ? `${backendMessage}（${hint}）` : `反推失败：${hint}`
+function interrogateFailure(status: number): string {
+  return status === 413 ? '图片过大，请换一张较小的图片'
+    : status === 429 ? '操作太频繁，请稍后再试'
+    : status === 400 ? '无法读取这张图片，请换一张重试'
+    : status === 403 ? '请在本机使用图片反推'
+    : status === 404 || status >= 500 ? '反推服务暂不可用，请稍后重试'
+    : status === 0 ? '无法连接反推服务，请重试'
+    : '反推失败，请重试'
 }
 
 export function useInterrogate() {
@@ -138,7 +125,8 @@ export function useInterrogate() {
       if (!res.ok || !envelope || envelope.ok !== true) {
         const backendMessage = typeof envelope?.error === 'string' ? envelope.error
           : typeof envelope?.message === 'string' ? envelope.message : ''
-        throw new Error(interrogateFailure(res.status, backendMessage))
+        console.warn('[interrogate] Request failed', { status: res.status, message: backendMessage })
+        throw new Error(interrogateFailure(res.status))
       }
       const data = decodeInterrogateResult(envelope, mode)
       lastResult.value = data
@@ -149,9 +137,9 @@ export function useInterrogate() {
       // "Failed to fetch"，同样属于「看不懂」，在这里一并换成可读文案。
       const isNetwork = e instanceof TypeError
       const message = controller.signal.aborted
-        ? '反推超时，请检查本地模型状态后重试'
+        ? '反推超时，请重试'
         : isNetwork
-        ? interrogateFailure(0, '')
+        ? interrogateFailure(0)
         : (e instanceof Error ? e.message : String(e))
       error.value = message || '反推失败'
       throw new Error(error.value)
@@ -165,6 +153,6 @@ export function useInterrogate() {
     }
   }
 
-  useTrackedTask(() => ({ kind: 'interrogate', title: '图片反推', route: '/prompt-builder', status: busy.value ? 'running' : cancelled.value ? 'cancelled' : error.value ? 'failed' : lastResult.value ? 'succeeded' : 'idle', message: error.value || (busy.value ? 'PixAI 正在反推；首次需加载模型，后续复用 GPU 常驻模型' : cancelled.value ? '图片反推已取消' : '反推结果已送回工作台') }), { cancel })
+  useTrackedTask(() => ({ kind: 'interrogate', title: '图片反推', route: '/prompt-builder', status: busy.value ? 'running' : cancelled.value ? 'cancelled' : error.value ? 'failed' : lastResult.value ? 'succeeded' : 'idle', message: error.value || (busy.value ? '正在反推图片…' : cancelled.value ? '图片反推已取消' : '反推结果已送回工作台') }), { cancel })
   return { busy, error, lastResult, interrogate, cancel }
 }

@@ -4,9 +4,8 @@
       <div class="speech-title-lockup">
         <span class="speech-mark" aria-hidden="true"><ArchiveIcon name="sound" /></span>
         <div>
-          <small>SPEECH INPUT</small>
-          <strong>语音输入（按住说话）</strong>
-          <span>连接 OpenAI 兼容的语音识别服务（whisper.cpp、faster-whisper 等）。</span>
+          <strong>语音输入</strong>
+          <span>按住说话，松开后识别。</span>
         </div>
       </div>
       <span class="speech-storage-note"><i aria-hidden="true"></i>配置保存在本机浏览器</span>
@@ -33,18 +32,17 @@
 
     <div class="speech-settings-grid">
       <label class="speech-field">
-        <span><i aria-hidden="true">01</i> 服务地址</span>
+        <span>服务地址</span>
         <input v-model.trim="draft.endpoint" type="url" maxlength="500"
           placeholder="http://127.0.0.1:8000/v1" autocomplete="url" />
-        <small>识别接口为 <code>{地址}/audio/transcriptions</code></small>
       </label>
       <label class="speech-field">
-        <span><i aria-hidden="true">02</i> 模型</span>
+        <span>模型</span>
         <input v-model.trim="draft.model" maxlength="200" aria-label="识别模型"
           placeholder="whisper-1" autocomplete="off" />
       </label>
       <label class="speech-field">
-        <span><i aria-hidden="true">03</i> API Key（本地服务可留空）</span>
+        <span>API Key（本地服务可留空）</span>
         <div class="speech-key-field">
           <input v-model.trim="draft.apiKey" :type="showApiKey ? 'text' : 'password'"
             maxlength="1000" placeholder="sk-…" autocomplete="off" />
@@ -52,7 +50,7 @@
         </div>
       </label>
       <label class="speech-field">
-        <span><i aria-hidden="true">04</i> 语种提示（可留空）</span>
+        <span>语种提示（可留空）</span>
         <input v-model.trim="draft.language" maxlength="20" aria-label="识别语种"
           placeholder="ja / zh / 留空自动判断" autocomplete="off" />
       </label>
@@ -74,12 +72,12 @@
 
     <div v-if="draft.wakeEnabled" class="speech-settings-grid speech-settings-grid-words">
       <label class="speech-field">
-        <span><i aria-hidden="true">05</i> 唤醒词（逗号分隔）</span>
+        <span>唤醒词（逗号分隔）</span>
         <input v-model="wakeWordsInput" maxlength="200" aria-label="唤醒词（逗号分隔）"
           placeholder="宁宁（留空按角色名）" autocomplete="off" @blur="commitWakeWords" />
       </label>
       <label class="speech-field">
-        <span><i aria-hidden="true">06</i> 结束词（逗号分隔）</span>
+        <span>结束词（逗号分隔）</span>
         <input v-model="endWordsInput" maxlength="200" aria-label="结束词（逗号分隔）"
           placeholder="结束对话" autocomplete="off" @blur="commitEndWords" />
       </label>
@@ -95,14 +93,11 @@
         <button class="btn btn-ghost btn-sm" type="button" @click="close">关闭</button>
       </div>
     </div>
-    <div class="speech-http-hint">
+    <div v-if="saving || saveMessage || testMessage" class="speech-http-hint">
       <p v-if="saving || saveMessage" class="speech-test-status" :data-state="saving ? 'idle' : 'fail'"
         role="status" aria-label="配置保存状态">{{ saving ? '正在保存配置…' : saveMessage }}</p>
-      <p class="speech-test-status" :data-state="testState" role="status" aria-label="地址检测状态">{{ testMessage }}</p>
+      <p v-if="testMessage" class="speech-test-status" :data-state="testState" role="status" aria-label="地址检测状态">{{ testMessage }}</p>
     </div>
-    <p class="speech-http-hint">
-      <ArchiveIcon name="info" /> 仅检测地址的 HTTP 响应，未验证语音转写、模型或密钥。若检测失败，请检查地址、服务及跨域（CORS）设置。
-    </p>
     </template>
   </form>
 </template>
@@ -131,7 +126,7 @@ const showApiKey = ref(false)
 const saving = ref(false)
 const saveMessage = ref('')
 const testState = ref<'idle' | 'testing' | 'ok' | 'fail'>('idle')
-const testMessage = ref('可直接保存配置，或先检测地址。')
+const testMessage = ref('')
 const testing = computed(() => testState.value === 'testing')
 let probeGeneration = 0
 let probeController: AbortController | null = null
@@ -172,7 +167,7 @@ function invalidateProbe(): void {
   clearTimeout(probeTimer)
   probeTimer = undefined
   testState.value = 'idle'
-  testMessage.value = '可直接保存配置，或先检测地址。'
+  testMessage.value = ''
 }
 
 function close(): void {
@@ -200,15 +195,15 @@ async function testConnection(): Promise<void> {
     if (generation !== probeGeneration || disposed) return
     if (response.type === 'opaque' || response.status === 0) {
       testState.value = 'idle'
-      testMessage.value = '响应不可读，无法确认 HTTP 状态。'
+      testMessage.value = '无法读取地址响应，请重试。'
     } else {
       testState.value = response.ok ? 'ok' : 'fail'
-      testMessage.value = `地址返回 HTTP ${response.status}。`
+      testMessage.value = response.ok ? '地址已响应。' : '地址检测未通过，请核对服务地址。'
     }
   } catch {
     if (generation !== probeGeneration || disposed) return
     testState.value = 'fail'
-    testMessage.value = '未能读取地址响应，请检查地址、服务或跨域设置后重试。'
+    testMessage.value = '无法连接语音服务，请检查地址和网络。'
   } finally {
     controller.abort()
     if (generation === probeGeneration) {

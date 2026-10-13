@@ -113,13 +113,18 @@
               @blur="onSpeechCancel"
             ><ArchiveIcon name="sound" /><span>{{ speechButtonText }}</span></button>
           </StudioTooltip>
-          <StudioTooltip v-else content="配置语音输入">
+          <StudioPopover v-else v-model:open="speechSettingsOpen" label="语音输入设置" content-class="companion-chat-speech-popover">
+            <template #trigger>
             <button
               class="btn btn-ghost btn-sm companion-chat-speech companion-chat-speech-config"
               type="button"
-              @click="speechSettingsOpen = true"
             ><ArchiveIcon name="sound" /><span>语音设置</span></button>
-          </StudioTooltip>
+            </template>
+            <Suspense>
+              <SpeechInputSettings :data-character="activeChar" @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
+              <template #fallback><p role="status">正在读取语音设置…</p></template>
+            </Suspense>
+          </StudioPopover>
           <button
             v-if="liveState.busy || liveState.speaking"
             class="btn btn-danger btn-sm companion-chat-stop"
@@ -145,11 +150,6 @@
       </div>
     </main>
 
-    <SpeechInputSettings
-      v-if="speechSettingsOpen"
-      @save="onSpeechSettingsSaved"
-      @close="speechSettingsOpen = false"
-    />
   </article>
 </template>
 
@@ -157,6 +157,7 @@
 import AppearanceButton from '@/components/AppearanceButton.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioPopover from '@/components/ui/StudioPopover.vue'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import { defineAsyncComponent } from 'vue'
 const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))

@@ -25,7 +25,6 @@
 }
 .video-quality-grid button.active { @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent; }
 .video-quality-grid strong { @apply tw:text-body-sm; }
-.video-quality-grid small { @apply tw:text-muted tw:text-label-xs tw:leading-label; }
 .video-quality-grid em { @apply tw:text-accent; font: 600 var(--fs-mono-xs) var(--font-mono); @apply tw:not-italic; }
 .video-segmented { @apply tw:inline-flex tw:flex-wrap tw:p-s-1; border:0; @apply tw:rounded-md; background:var(--bg-base); }
 .video-segmented button { @apply tw:min-h-[32px]; padding: 0 var(--s-3); border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:text-muted tw:cursor-pointer; }

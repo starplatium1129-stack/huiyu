@@ -66,8 +66,8 @@
             <p class="status-tile-detail">{{ !statusUsable ? (statusError ? '重新检测后确认连接状态' : '正在确认本机连接') : serviceChecking ? '正在刷新连接状态' : service.detail }}</p>
             <div class="service-row-actions">
               <template v-if="service.key === 'llama'">
-                <a href="#control-setup" class="btn btn-ghost btn-sm">选择与准备模型</a>
-                <button class="btn btn-danger btn-sm" type="button" :disabled="!llamaManaged || opBusy" @click="serviceAction('llama','stop')">释放聊天显存</button>
+                <a href="#control-setup" class="btn btn-ghost btn-sm">准备模型</a>
+                <button class="btn btn-danger btn-sm" type="button" :disabled="!llamaManaged || opBusy" @click="serviceAction('llama','stop')">释放显存</button>
               </template>
               <template v-else-if="service.key !== 'ollama'">
                 <StudioTooltip anchor :content="service.online ? '已在运行' : '启动受控服务'">
@@ -80,7 +80,7 @@
                 </StudioTooltip>
               </template>
               <button v-else class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ollamaModels.length"
-                @click="serviceAction('ollama', 'unload')">卸载模型释放显存</button>
+                @click="serviceAction('ollama', 'unload')">释放显存</button>
             </div>
           </article>
         </div>

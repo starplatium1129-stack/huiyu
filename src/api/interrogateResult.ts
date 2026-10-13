@@ -32,7 +32,7 @@ function tags(value: unknown, limit = Infinity): value is string[] {
 export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): InterrogateResult {
   const data = record(value)
   if (data?.engine === 'heuristic') {
-    throw new Error('PixAI 本地反推模型不可用，演示标签未写入工作台，请检查模型后重试')
+    throw new Error('反推暂不可用，请稍后重试')
   }
   const scores = record(data?.scores)
   const rating = record(data?.rating)
@@ -47,7 +47,7 @@ export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): 
     || !probability(rating.questionable) || !probability(rating.explicit)
     || (data.captionDerived !== undefined && data.captionDerived !== 'pixai-tags')
     || (data.warning !== undefined && typeof data.warning !== 'string')) {
-    throw new Error('反推服务返回了无效 PixAI 结果，请更新本地反推服务后重试')
+    throw new Error('反推结果异常，请重试')
   }
   return {
     engine: 'pixai', model: 'pixai-tagger-v1.0', mode, threshold: data.threshold,
