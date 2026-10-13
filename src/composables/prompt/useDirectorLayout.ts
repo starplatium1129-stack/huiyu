@@ -21,7 +21,10 @@ function readPreferences() { return parseDirectorLayout(profileLocalStorage.getI
 /** Remember rail preferences; actual widths always fit the current CSS viewport. */
 export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   const preferences = ref(readPreferences())
-  const width = ref(960), viewport = ref(1280), rootFont = ref(16), dragging = ref<Side | null>(null)
+  const width = ref(960), viewport = ref(typeof innerWidth === 'number' ? innerWidth : 1280), dragging = ref<Side | null>(null)
+  const compact = computed(() => viewport.value >= 1024 && viewport.value <= 1440)
+  const compactMaterialsOpen = ref(false)
+  watch(compact, () => { compactMaterialsOpen.value = false })
   let observer: ResizeObserver | null = null
   let observing = false
   const scrollPositions = new Map<HTMLElement, { left: number; top: number }>()
@@ -35,25 +38,24 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     }
   }, { capture: true })
   let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number } | null = null
-  const baseMaterials = computed(() => Math.max(260, Math.min(21 * rootFont.value, viewport.value * .18)))
-  const baseInspector = computed(() => Math.max(300, Math.min(26 * rootFont.value, viewport.value * .24)))
+  const baseMaterials = computed(() => 336)
+  const baseInspector = computed(() => compact.value ? 320 : 368)
   // Resizing may use spare canvas width, including a compact portrait workspace.
-  const available = computed(() => Math.max(0, width.value - 320 - 32))
+  const available = computed(() => Math.max(0, width.value - 320 - 48))
   const materialsWidth = computed(() => Math.max(240, Math.min(preferences.value.materials ?? baseMaterials.value,
     available.value - (preferences.value.hideInspector ? 0 : Math.min(preferences.value.inspector ?? baseInspector.value, Math.max(280, available.value - 240))))))
-  const inspectorWidth = computed(() => Math.max(280, Math.min(preferences.value.inspector ?? baseInspector.value,
+  const inspectorWidth = computed(() => compact.value ? 320 : Math.max(280, Math.min(preferences.value.inspector ?? baseInspector.value,
     available.value - (preferences.value.hideMaterials ? 0 : materialsWidth.value))))
   // Theme navigation and page framing reduce the actual workspace even before
   // a user resizes either rail. Clamp defaults too, without rewriting preferences.
   const style = computed(() => ({ '--director-material-width': `${materialsWidth.value}px`, '--director-inspector-width': `${inspectorWidth.value}px` }))
-  const collapsed = computed(() => ({ materials: preferences.value.hideMaterials, inspector: preferences.value.hideInspector }))
+  const collapsed = computed(() => ({ materials: compact.value ? !compactMaterialsOpen.value : preferences.value.hideMaterials, inspector: preferences.value.hideInspector }))
   function save() {
     try { profileLocalStorage.setItem(DIRECTOR_LAYOUT_KEY, JSON.stringify(preferences.value)) } catch { /* The current layout remains usable if storage is unavailable. */ }
   }
   function measure() {
     if (!observing || !root.value?.isConnected) return
     width.value = root.value?.clientWidth || 960; viewport.value = typeof innerWidth === 'number' ? innerWidth : 1280
-    rootFont.value = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
   }
   function setWidth(side: Side, value: number) {
     const otherSide = side === 'materials' ? 'inspector' : 'materials'
@@ -93,10 +95,12 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   }
   function toggle(side: Side) {
     finish()
+    if (compact.value && side === 'materials') { compactMaterialsOpen.value = !compactMaterialsOpen.value; return }
     const key = side === 'materials' ? 'hideMaterials' : 'hideInspector'
     preferences.value[key] = !preferences.value[key]; save()
   }
-  function reset() { finish(); preferences.value = defaults(); save() }
+  function show(side: Side) { if (collapsed.value[side]) toggle(side) }
+  function reset() { finish(); compactMaterialsOpen.value = false; preferences.value = defaults(); save() }
   function changed(event: StorageEvent) { if (event.key === DIRECTOR_LAYOUT_KEY && !activePointer) preferences.value = readPreferences() }
   function observe() {
     if (observing) return
@@ -132,5 +136,5 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   })
   onDeactivated(stopObserving)
   onBeforeUnmount(() => { stopObserving(); scrollPositions.clear() })
-  return { style, collapsed, dragging, desktop: computed(() => viewport.value >= 1024), materialsWidth, inspectorWidth, start, move, finish, key, toggle, reset }
+  return { style, collapsed, compact, dragging, desktop: computed(() => viewport.value >= 1024), materialsWidth, inspectorWidth, start, move, finish, key, toggle, show, reset }
 }

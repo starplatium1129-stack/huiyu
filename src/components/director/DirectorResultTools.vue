@@ -6,13 +6,14 @@
       <span>{{ savingResult ? '正在入册…' : resultArchived ? '已入册' : resultTemporary ? '未入册 · 已暂存' : '未入册' }}</span>
     </span>
     <RouterLink v-if="hasResult && resultArchived" class="btn btn-quiet result-archive-action" to="/gallery"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon name="gallery" /><span>查看作品册</span></span></RouterLink>
-    <button v-else-if="hasResult" class="btn btn-primary result-archive-action" type="button" :disabled="savingResult" :aria-busy="savingResult" @click="requestSave"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon :name="savingResult ? 'refresh' : 'gallery'" /><span>{{ savingResult ? '正在入册…' : '存入作品册' }}</span></span></button>
-    <StudioTooltip v-if="hasResult" anchor content="将当前成片保存为场景">
-      <button class="btn btn-quiet canvas-secondary-action" type="button" :aria-label="capturingScene ? '正在读取成片…' : '保存为场景'" :disabled="generationBusy || capturingScene" @click="$emit('saveScene')"><ArchiveIcon name="scene" /><span>{{ capturingScene ? '正在读取成片…' : '保存为场景' }}</span></button>
+    <button v-else class="btn btn-ghost result-archive-action" type="button" :disabled="savingResult || !hasResult" :aria-busy="savingResult" @click="requestSave"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon :name="savingResult ? 'refresh' : 'gallery'" /><span>{{ savingResult ? '正在入册…' : '存入作品册' }}</span></span></button>
+    <StudioTooltip anchor content="将当前成片保存为场景">
+      <button class="btn btn-quiet canvas-secondary-action" type="button" :aria-label="capturingScene ? '正在读取成片…' : '保存为场景'" :disabled="!hasResult || generationBusy || capturingScene" @click="$emit('saveScene')"><ArchiveIcon name="scene" /><span>{{ capturingScene ? '正在读取成片…' : '保存为场景' }}</span></button>
     </StudioTooltip>
-    <StudioTooltip v-if="hasResult" anchor content="与上一张对比">
-      <button class="btn btn-quiet canvas-secondary-action" type="button" aria-label="与上一张对比" :disabled="!hasPrevResult" @click="$emit('openCompare')"><ArchiveIcon name="compare" /><span>与上一张对比</span></button>
+    <StudioTooltip anchor :content="hasPrevResult ? '与上一张对比' : '尚无上一张成片可供对比'">
+      <button class="btn btn-quiet canvas-secondary-action" type="button" aria-label="与上一张对比" :disabled="!hasResult || !hasPrevResult" @click="$emit('openCompare')"><ArchiveIcon name="compare" /><span>与上一张对比</span></button>
     </StudioTooltip>
+    <button class="btn btn-quiet canvas-clear-action" type="button" :disabled="!hasResult" @click="$emit('clearResult')"><ArchiveIcon name="close" />清除图片</button>
   </div>
 </template>
 
@@ -53,6 +54,7 @@ const emit = defineEmits<{
   saveScene: []
   saveResult: []
   openCompare: []
+  clearResult: []
 }>()
 </script>
 

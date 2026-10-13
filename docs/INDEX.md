@@ -64,6 +64,9 @@
 
 ## 今日记录
 
+- [绘图画室 UI 设计参考](../design-preview/generation/report.html)：独立 Vue 原型、参考依据与三种桌面视口对比；原型完整保留。
+- [绘图画室本地实施](../design-preview/generation/implementation.html)：确认方案的正式组件接入、真实截图、验证结果与设备验收限制；提交状态以 Git 记录为准，未部署发布。
+
 - [独立推理当前候选汇总](audits/2026-10-09/independent-inference-current.html)：自动/手绘局部重绘、严格离线单文件转换、实际验证与发行缺口。
 
 - [独立推理手绘局部重绘](audits/2026-10-09/independent-inference-phase3.html)：逐步蒙版采样、输入保护与应用交互；真实设备验收待完成。

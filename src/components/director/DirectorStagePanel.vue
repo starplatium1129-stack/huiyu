@@ -1,6 +1,7 @@
 <template>
   <!-- stage-slot：col-center 的画布槽位锚点（layout.css 以它固定中栏排序首位） -->
   <div class="stage-slot">
+    <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>{{ displayResultUrl ? '当前成片' : sceneTitle || '画布预览' }}</strong><span>{{ displayResultUrl ? '生成结果' : sceneTitle ? '场景参考 · 非本次生成' : '等待创作' }}</span></div><button class="btn btn-quiet btn-sm" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" />挑选场景</button></div>
     <Transition name="stage-beam">
       <BorderBeam v-if="generationBusy || waitingForResult" class="canvas-generation-beam"
         :duration="8.8" :border-width="1.1" color-variant="dual" :glow="true" border-radius="var(--r-xl)" />
@@ -115,6 +116,7 @@
       v-bind="{ generationBusy, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
       :has-result="Boolean(displayResultUrl)"
       @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')"
+      @clearResult="$emit('clearResult')"
     />
     <!-- 供两态共用的上传入口 -->
     <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
@@ -141,6 +143,7 @@ import type { InterrogateResult } from '@/composables/useInterrogate'
 import '@/assets/css/director/components/DirectorStagePanel.css'
 
 const props = defineProps<{
+  sceneTitle?: string
   displayResultUrl: string
   resultRevealUrl?: string
   canvasSize?: string
@@ -221,6 +224,7 @@ const emit = defineEmits<{
   exploreScenes: []
   saveScene: []
   saveResult: []
+  clearResult: []
   openCompare: []
   restoreStashed: []
   interrogateResult: [result: InterrogateResult]

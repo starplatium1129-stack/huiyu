@@ -1,26 +1,15 @@
 <template>
   <!-- 桌面常驻侧栏；窄窗口独立吸附于整个编辑区，保留尺寸、生成与停止。 -->
   <div class="gen-bar" :class="{ 'is-generating': busy }" role="group" aria-label="出图尺寸与生成">
-    <label class="gen-bar-size">
-      <ArchiveIcon name="centercomp" class="gen-bar-aspect-icon" aria-hidden="true" />
-      <span class="gen-bar-label">画幅</span>
-      <StudioSelect
-        size="sm"
-        label="画幅比例"
-        :model-value="size"
-        :disabled="busy"
-        :groups="engine === 'sd' ? sizeGroups : undefined"
-        :options="engine === 'sd' ? undefined : sizeOptions"
-        @update:model-value="onSizeChange"
-      />
-    </label>
-    <span v-if="presetSummary" class="gen-bar-preset">{{ presetSummary }}</span>
+    <GenerationSizePicker v-if="showSize" class="gen-bar-size" compact v-bind="{ engine, size, animaSizes, busy }" @update:size="$emit('update:size', $event)" />
+    <div class="gen-bar-meta" role="status"><span><ArchiveIcon :name="busy ? 'spark' : error || !online ? 'warning' : 'success'" />{{ busy ? '正在绘制' : error ? '绘制未完成' : stopped ? '已停止' : !online ? '绘图服务未连接' : '准备就绪' }}</span><small>{{ size.replace('x', ' × ') }}</small></div>
     <!--
       提交前校验（2026-08-30 UX 审计 P1）：原先点下去才在 2.5 秒的闪示里被告知
       「请先选择场景或填写故事」，用户根本来不及读。原因改成常驻在按钮旁，
       同时禁用按钮——既要看得见，也不要让人点了才发现不行。
     -->
-    <span v-if="unavailableReason && !busy" class="gen-bar-blocked" role="status">{{ unavailableReason }}</span>
+    <RouterLink v-if="!online && !busy" class="gen-bar-recovery" :to="{ path: '/control', query: { engine } }">{{ unavailableReason }}</RouterLink>
+    <span v-else-if="blockedReason && !busy" class="gen-bar-blocked" role="status">{{ blockedReason }}</span>
     <div class="gen-bar-actions">
       <StudioTooltip anchor :content="busy ? '停止当前绘制' : unavailableReason || '生成当前画面'">
         <button
@@ -42,9 +31,7 @@
           </span>
         </button>
       </StudioTooltip>
-      <StudioTooltip anchor content="清除当前画布图片，已入册的作品不受影响">
-        <button class="btn btn-quiet" type="button" :disabled="!hasResult" @click="$emit('clearResult')">清除图片</button>
-      </StudioTooltip>
+
     </div>
     <span class="sr-only" role="status" aria-live="polite" aria-atomic="true">{{ announcement }}</span>
   </div>
@@ -55,9 +42,9 @@ import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import StudioSelect from '@/components/ui/StudioSelect.vue'
+import GenerationSizePicker from './GenerationSizePicker.vue'
+import { RouterLink } from 'vue-router'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import type { StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
 // 出图条承载主行动（生成按钮），同步导入保证首屏即位，不进异步分片；
 // 体量 ~2KB，路由 CSS 预算余量充足。
@@ -72,7 +59,7 @@ const props = defineProps<{
   size: string
   /** Anima/Krea2 候选尺寸（当前底模白名单，含当前值兜底）。 */
   animaSizes: string[]
-  presetSummary: string
+  showSize: boolean
   hasResult: boolean
   /** Completion comes from the task phase, never the presence of an older image. */
   completed?: boolean
@@ -112,44 +99,12 @@ useEventListener(window, 'atelier:motion-preference', settleMorph)
 useEventListener(window.matchMedia('(prefers-reduced-motion: reduce)'), 'change', settleMorph)
 onBeforeUnmount(settleMorph)
 
-const emit = defineEmits<{
+defineEmits<{
   'update:size': [value: string]
   generate: []
   cancel: []
-  clearResult: []
 }>()
 
-// SD 引擎按竖/方/横/官方 CG 分组；Anima/Krea2 取平铺候选尺寸。
-const sizeGroups: StudioSelectGroup[] = [
-  { label: '竖图 Portrait', options: [
-    { value: '768x1344', label: '768×1344' },
-    { value: '832x1216', label: '832×1216' },
-    { value: '896x1344', label: '896×1344' },
-    { value: '1024x1344', label: '1024×1344 · WAI 推荐' },
-    { value: '1024x1536', label: '1024×1536' },
-    { value: '1152x1536', label: '1152×1536' },
-  ] },
-  { label: '方图 Square', options: [
-    { value: '896x896', label: '896×896' },
-    { value: '1024x1024', label: '1024×1024' },
-    { value: '1280x1280', label: '1280×1280' },
-  ] },
-  { label: '横图 Landscape', options: [
-    { value: '1216x832', label: '1216×832' },
-    { value: '1344x896', label: '1344×896' },
-    { value: '1536x1024', label: '1536×1024' },
-  ] },
-  { label: '16:9 官方 CG', options: [
-    { value: '1344x768', label: '1344×768' },
-  ] },
-]
-const sizeOptions = computed(() =>
-  props.animaSizes.map(item => ({ value: item, label: item.replace('x', '×') })),
-)
-
-function onSizeChange(value: string | number) {
-  if (value !== '' && value != null) emit('update:size', String(value))
-}
 </script>
 
 <style scoped>

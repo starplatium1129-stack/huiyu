@@ -1,0 +1,1 @@
+{"extends":"../../tsconfig.app.json","compilerOptions":{"incremental":false,"resolveJsonModule":true},"include":["./*.ts","./*.vue","../../src/**/*.d.ts"]}

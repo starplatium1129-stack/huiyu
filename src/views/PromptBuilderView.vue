@@ -8,6 +8,7 @@
     :data-resizing="directorLayout.dragging.value || undefined"
     :data-subject="pb.subject.kind"
     :data-director-mode="pb.directorMode"
+    :data-compact-workspace="directorLayout.compact.value || undefined"
     :class="{
       'focus-mode': pb.focusMode,
       'has-result': Boolean(displayResultUrl),
@@ -31,6 +32,7 @@
             <RouterLink v-if="!engineOnline" class="api-recovery-link" :to="{ path: '/control', query: { engine: drawEngine } }">控制面板</RouterLink>
           </div>
         </div>
+        <div class="pb-header-meta"><p class="pb-sub">让想象成形，让故事相遇。</p><PromptDraftNotice :blueprint="currentBlueprintData" /></div>
       </div>
       <div class="pb-top-actions">
         <div class="pb-mode-actions">
@@ -39,6 +41,7 @@
             <ArchiveIcon name="spark" />编辑画面描述
           </button>
           <DirectorModeSwitch :model-value="pb.directorMode" @update:model-value="setDirectorMode" />
+          <DirectorLayoutControls v-if="!pb.focusMode" :collapsed="directorLayout.collapsed.value" @toggle="toggleLayout" />
           <button class="focus-mode-btn" type="button"
             :aria-label="pb.focusMode ? '退出专注成片模式' : '进入专注成片模式'"
             :aria-pressed="pb.focusMode"
@@ -49,9 +52,9 @@
         </div>
         <div class="pb-utility-actions">
           <HistoryRestoreNotice v-if="pb.historyRestoreReport" :context="workspace.recipePreviewContext" :mode="pb.directorMode" @expert="setDirectorMode('pro')" />
-          <DirectorLayoutControls v-if="!pb.focusMode" :collapsed="directorLayout.collapsed.value" @toggle="directorLayout.toggle" @reset="directorLayout.reset" />
-          <RandomInspirationButton />
+          <RandomInspirationButton compact />
           <PromptDataTools
+            launcher-label="数据工具"
             :blueprint-data="currentBlueprintData"
             @flash="pb.flash"
             @load-blueprint="handleLoadBlueprint"
@@ -60,13 +63,12 @@
       </div>
     </div>
 
-    <PromptDraftNotice :blueprint="currentBlueprintData" />
     <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links tw:w-fit tw:rounded-pill tw:p-s-1" data-fluid-glass aria-label="绘制区快捷导航">
       <a href="#drawing-materials">创作素材</a><a href="#drawing-canvas">画布预览</a><a href="#stepResult">输出设置</a>
     </nav>
     <div ref="layoutRoot" class="director-workspace">
       <!-- One action bar: inspector on wide screens, workspace-wide sticky row on narrow screens. -->
-      <Teleport :to="inspectorActions" :disabled="!inspectorActions || !directorLayout.desktop.value || pb.focusMode || directorLayout.collapsed.value.inspector">
+      <Teleport :to="inspectorActions" :disabled="!actionBarDocked">
         <GenerationActionBar
           :engine="drawEngine"
           :busy="generationBusy"
@@ -74,7 +76,7 @@
           :online="engineOnline"
           :size="genBarSize"
           :anima-sizes="animaBarSizes"
-          :preset-summary="generationPresetSummary"
+          :show-size="!actionBarDocked"
           :blocked-reason="generateBlockReason"
           :has-result="Boolean(displayResultUrl)"
           :completed="drawEngine !== 'sd' && animaState.phase === 'succeeded'"
@@ -84,12 +86,11 @@
           @update:size="genBarSize = $event"
           @generate="callGenerate()"
           @cancel="cancelGeneration"
-          @clearResult="clearCanvasResult"
         />
       </Teleport>
-      <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.collapsed.value.materials" side="materials" :width="directorLayout.materialsWidth.value"
+      <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.compact.value && !directorLayout.collapsed.value.materials" side="materials" :width="directorLayout.materialsWidth.value"
         @start="directorLayout.start('materials', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @key="directorLayout.key('materials', $event)" @reset="directorLayout.reset" />
-      <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.collapsed.value.inspector" side="inspector" :width="directorLayout.inspectorWidth.value"
+      <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.compact.value && !directorLayout.collapsed.value.inspector" side="inspector" :width="directorLayout.inspectorWidth.value"
         @start="directorLayout.start('inspector', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @key="directorLayout.key('inspector', $event)" @reset="directorLayout.reset" />
 
       <!-- ─── 中栏：监视器 ────────────────────────────────── -->
@@ -99,6 +100,7 @@
           ref="stagePanel"
           :canvas-size="genBarSize"
           :display-result-url="displayResultUrl"
+          :scene-title="currentSceneTitle"
           :result-reveal-url="resultRevealUrl"
           :generation-busy="generationBusy"
           :generation-error="generationError"
@@ -117,8 +119,9 @@
           :has-stashed-result="hasStashedResult"
           @generate="callGenerate()"
           @openRecovery="inspector?.selectSection(drawEngine === 'sd' ? 'delivery' : 'render', true)"
-          @exploreScenes="materialDrawer?.selectSection('scenes')"
+          @exploreScenes="openMaterials('scenes')"
           @saveResult="saveResult"
+          @clearResult="clearCanvasResult"
           @saveScene="captureScene"
           @openCompare="compareOpen = true"
           @restoreStashed="onRestoreStashed"
@@ -128,7 +131,7 @@
 
       </div>
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
-      <div v-content-motion:fade="pb.directorMode" class="director-col col-left" id="drawing-materials">
+      <div class="director-col col-left" id="drawing-materials" @keydown.esc="closeCompactMaterials">
         <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :scene-context="String(route.query.scene || route.query.blueprint || '')">
         <template #story>
 
@@ -137,6 +140,12 @@
         </template>
         <template #character>
         <DirectorCharacterPanel :current-traits="currentTraits" @selectSource="selectPopularSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" />
+        <section class="material-current-scene">
+          <div><h3>这一幕</h3><button class="btn btn-quiet btn-sm" type="button" @click="openMaterials('scenes')">更换场景<ArchiveIcon name="chevron-down" /></button></div>
+          <strong>{{ currentSceneTitle || '当前构想' }}</strong>
+          <p>{{ pb.story || '选择场景，或写下这一幕的故事。' }}</p>
+          <button class="btn btn-ghost btn-sm" type="button" @click="editDescription"><ArchiveIcon name="spark" />编辑画面描述</button>
+        </section>
 
         </template>
         <template #scenes>
@@ -152,12 +161,14 @@
           @to-shots-batch="handleHistoryToShotsBatch"
         />
         </template>
+        <template #footer><button class="btn btn-quiet btn-sm" type="button" @click="resetLayout"><ArchiveIcon name="refresh" />恢复默认布局</button></template>
         </DirectorMaterialDrawer>
       </div>
 
       <DirectorInspector ref="inspector" v-content-motion:fade="pb.directorMode" :queue-count="sdQueue.total.value" :busy="generationBusy">
         <template #render>
-          <PromptInspectorRender :bindings="renderBindings" :description-in-header="descriptionInHeader" @edit-description="editDescription">
+          <PromptInspectorRender :bindings="renderBindings">
+            <template #size><GenerationSizePicker :engine="drawEngine" :size="genBarSize" :anima-sizes="animaBarSizes" :busy="generationBusy" @update:size="genBarSize = $event" /></template>
             <template #style><PromptInspectorStyle :bindings="styleBindings" /></template>
           </PromptInspectorRender>
           <OutfitOverrideNotice v-if="outfitOverridden" />
@@ -239,6 +250,7 @@ const DirectorImageTools = defineAsyncComponent(() => import('@/components/direc
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const StudioTooltip = defineAsyncComponent(() => import('@/components/ui/StudioTooltip.vue'))
 const GenerationActionBar = defineAsyncComponent(() => import('@/components/director/GenerationActionBar.vue'))
+const GenerationSizePicker = defineAsyncComponent(() => import('@/components/director/GenerationSizePicker.vue'))
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 const workspace = usePromptWorkspace()
 const { reuseRequest, reuseBusy, applyReuse, cancelReuse } = workspace.historyReuse
@@ -303,7 +315,6 @@ handleInterrogateResult,
 handleInterrogateError,
 genBarSize,
 animaBarSizes,
-generationPresetSummary,
 generateBlockReason,
 cancelGeneration,
 outfitOverridden,
@@ -315,13 +326,42 @@ healthBindings,
 deliveryBindings,
 dialogBindings
 } = workspace
-const descriptionInHeader = computed(() => pb.focusMode || !directorLayout.desktop.value
-  || directorLayout.collapsed.value.materials || directorLayout.collapsed.value.inspector)
-async function editDescription() {
+const actionBarDocked = computed(() => !!inspectorActions.value && directorLayout.desktop.value && !pb.focusMode && !directorLayout.collapsed.value.inspector)
+const descriptionInHeader = computed(() => pb.focusMode)
+const currentSceneTitle = computed(() => {
+  const subject = pb.subject
+  return subject.kind === 'popular'
+    ? pb.sceneBlueprints.find(scene => scene.id === subject.blueprintId && scene.characterId === subject.characterId)?.title
+    : pb.activeScene?.title
+})
+async function openMaterials(section: string) {
   pb.focusMode = false
-  if (directorLayout.collapsed.value.materials) directorLayout.toggle('materials')
+  directorLayout.show('materials')
   await nextTick()
-  await materialDrawer.value?.selectSection('story')
+  await materialDrawer.value?.selectSection(section)
+}
+async function toggleLayout(side: 'materials' | 'inspector') {
+  directorLayout.toggle(side)
+  await nextTick()
+  if (directorLayout.compact.value && side === 'materials' && !directorLayout.collapsed.value.materials)
+    layoutRoot.value?.querySelector<HTMLButtonElement>('.material-switch button[aria-selected="true"]')?.focus({ preventScroll: true })
+}
+async function closeCompactMaterials(event: KeyboardEvent) {
+  if (!directorLayout.compact.value || event.defaultPrevented) return
+  event.preventDefault()
+  directorLayout.toggle('materials')
+  await nextTick()
+  document.getElementById('director-materials-toggle')?.focus()
+}
+async function resetLayout() {
+  directorLayout.reset()
+  if (directorLayout.compact.value) {
+    await nextTick()
+    document.getElementById('director-materials-toggle')?.focus()
+  }
+}
+async function editDescription() {
+  await openMaterials('story')
   const input = layoutRoot.value?.querySelector<HTMLTextAreaElement>('#visualDescription')
   input?.focus({ preventScroll: true })
   input?.scrollIntoView({ block: 'nearest', behavior: 'instant' })

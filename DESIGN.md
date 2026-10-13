@@ -226,9 +226,10 @@ slots. Selected artwork uses a rose border, a check or existing selection
 indicator, and `--selection-shadow`; it must not change the wall geometry.
 
 The light paper is `#F7F2EC`, the paper surface is `#FFFCF8` and the rose ink
-is `#9B3E61`. Both themes use `--art-stage` (`#1B191E`) for the main artwork
-stage and framed card mats, with `--art-frame-line` and `--art-frame-shadow`
-providing quiet depth. Display real SFW images at their original proportions;
+is `#9B3E61`. The drawing workspace follows the active theme: empty canvas
+uses `--bg-surface`, result and working surfaces use `--bg-base`, and text
+uses `--text-*`. Reserve fixed `--art-stage` and `--on-art-*` for image mats
+and image overlays that need them, never the whole empty canvas. Display real SFW images at their original proportions;
 the main canvas always contains the complete work. Character colors remain
 available for context. Normal controls respond in 120–200ms. A newly decoded
 result may reveal once in 450–700ms using the same image; waiting states must
@@ -237,7 +238,7 @@ reduced motion, visibility cleanup and anchored-viewer fallbacks.
 
 Shared page chrome uses `1000 / 768 / 480px` as its default responsive scale.
 Content-driven layouts can use their own thresholds: the director workspace
-uses `1200 / 900px` for its inspector and material rails; the character directory
+uses `1440 / 1024 / 900px` for its material switch and stacked rails; the character directory
 uses `900px` for its rail and `540px` for its dialog cards. These are local
 layout decisions, not additional global device categories. Prefer the shared
 scale unless actual content needs another threshold, document the reason near
@@ -548,11 +549,13 @@ belong inside installation details, not in the default creative composition.
 
 通用页面框架在 1000 / 768 / 480px 分级适配；绘制区、目录和弹窗按上文 Layout 的内容断点补充。卡片只使用 transform 进行位移动效，遵循 reduced-motion。图标复用 ArchiveIcon；文案不展示 LoRA 契约等内部实现细节。
 
-## 2026-09-07 · 绘制区素材抽屉
+## 绘制工作台 · 素材与参数
 
-绘制区沿用夜色手帐风格：左侧创作素材按角色、场景、描述分类，专家模式额外提供历史；分类通过 v-show 保持组件实例，避免切换丢失草稿或搜索状态。中央保留画布，右侧承载生成设置与生成条；两种模式共享三栏布局。画面描述只在左侧「描述」分类编辑，右侧提供跳转并直接聚焦输入；窄窗口、任一侧栏隐藏或专注模式由顶栏提供恢复入口，切换不清空草稿或重置栏宽偏好。工作台表面与响应式规则统一由 director/workspace.css 持有，角色强调色与生成状态继续复用原有令牌和状态机。
+绘制区以作品为中心：左侧创作素材按角色、场景、描述分类，专家模式额外提供历史。一级分类使用可键盘切换的下划线标签，首次加载后通过 v-show 保留组件实例。宽桌面默认素材栏 336px、参数栏 368px、栏间距 24px，仍可拖动或用方向键调整；宽度由 useDirectorLayout 按实际内容区收敛，几何规则集中在 director/layout.css，表面与文字分别由 workspace.css、atelier.css 及组件样式负责。
 
-1200px 以下右侧调校移到中央下方，900px 以下单列排列并提供素材、画布、输出锚点导航。吸附顶部留出 90px 避让导航，专注模式恢复单画布。背景粒子不覆盖绘制工作区，动效只使用合成属性。
+参数区先选择引擎、模型和画幅，再选择风格；高级调整收起时保留当前配方摘要。真实生成与停止共用原状态机，动作条固定在参数栏底部；隐藏参数或专注时回到画布上方，画幅仍可操作。图片入册、存为场景、对比和清除在画布下方常驻，无可用结果时禁用。画面描述只在素材区编辑，“这一幕”提供定位入口，专注模式在顶栏提供入口。
+
+1024–1440 CSS px 默认显示画布与 320px 参数栏；“素材”切换同一主区域，Escape 返回画布并返焦入口，不改写宽屏栏宽和隐藏偏好。低于 1024px 将参数放在画布下方，900px 以下单列并提供锚点导航。专注模式保留单画布与动作条。画布使用跟随主题的 --bg-surface / --bg-base，提示文字用 --text-*；图片上的分级遮罩继续使用 --art-scrim / --on-art-*。角色强调色、实际样张来源及动效清理沿用现有实现，支持减少动态效果。
 
 
 ## Iconography

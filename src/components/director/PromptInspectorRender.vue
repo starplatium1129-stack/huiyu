@@ -13,10 +13,8 @@
         <p v-if="animaState.currentNode">当前节点：{{ animaState.currentNode }}</p>
       </div>
     </details>
-    <button v-if="!descriptionInHeader" class="btn btn-ghost btn-sm inspector-description-link" type="button" @click="emit('editDescription')">
-      <ArchiveIcon name="spark" />编辑画面描述
-    </button>
     <div class="inspector-engine-settings" role="group" aria-label="模型与引擎">
+    <span class="inspector-field-label">出图引擎</span>
     <div class="engine-switch studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="出图引擎">
       <AnimatedSelection />
       <StudioTooltip anchor :content="engineTitle('anima')">
@@ -37,9 +35,10 @@
         :options="animaModelOptions" @update:model-value="onAnimaModelSelected" />
     </div>
     </div>
-    <slot name="style" />
+    <section class="inspector-size-section"><slot name="size" /></section>
+    <section class="inspector-style-section"><slot name="style" /></section>
     <details class="inspector-route inspector-advanced">
-      <summary><span><ArchiveIcon name="gear" />{{ pb.directorMode === 'pro' ? '采样与细节' : '高级调整' }}</span><ArchiveIcon name="chevron-down" /></summary>
+      <summary><span class="inspector-detail-label"><span><ArchiveIcon name="gear" />{{ pb.directorMode === 'pro' ? '采样与细节' : '高级调整' }}</span><small>{{ generationPresetSummary || `${animaState.steps} 步 · CFG ${animaState.cfg}` }}</small></span><ArchiveIcon name="chevron-down" /></summary>
       <div data-disclosure-content class="inspector-advanced-body">
         <CasualCreativeSliders v-if="pb.directorMode !== 'pro'" :draw-engine="drawEngine" :disabled="generationBusy"
           v-model:sd-params="pb.sdParams" :anima-state="animaState" @touch-sd="pb.markParamTouched" @patch-anima="patchAnimaState" />
@@ -70,8 +69,7 @@ import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindi
 const CasualCreativeSliders = defineAsyncComponent(() => import('@/components/director/CasualCreativeSliders.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
-const props = defineProps<{ bindings: PromptRenderBindings; descriptionInHeader?: boolean }>()
-const emit = defineEmits<{ editDescription: [] }>()
+const props = defineProps<{ bindings: PromptRenderBindings }>()
 const { pb, generationBusy, animaState, drawEngine, generationPresetSummary, managedRoute, applyManagedRoute,
   reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
   animaNoLoraMode, patchAnimaState, retryAnima } = props.bindings

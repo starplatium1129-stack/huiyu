@@ -1,6 +1,6 @@
 <template>
   <div class="random-inspiration tw:relative tw:inline-flex tw:items-center tw:gap-s-2" :class="{ open: menuOpen }">
-    <StudioTooltip anchor :content="disabled ? '数据准备中…' : '夏目：“不知道画什么？那就让我随便给你摇一组词条……顺手而已，别想多。”'">
+    <StudioTooltip v-if="!compact" anchor :content="disabled ? '数据准备中…' : '夏目：“不知道画什么？那就让我随便给你摇一组词条……顺手而已，别想多。”'">
       <button
         class="random-dice"
         type="button"
@@ -13,11 +13,13 @@
     </StudioTooltip>
     <StudioPopover v-model:open="menuOpen" label="夏目的调色笔记" content-class="random-popover">
       <template #trigger>
-        <button class="random-menu-trigger" type="button" :disabled="disabled" aria-label="夏目的调色笔记">
+        <button :class="compact ? 'btn btn-ghost btn-sm' : 'random-menu-trigger'" type="button" :disabled="disabled" :aria-label="compact ? '灵感工具' : '夏目的调色笔记'">
           <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
+          <span v-if="compact">灵感工具</span>
         </button>
       </template>
         <div class="random-label tw:sticky tw:top-0 tw:flex tw:items-center tw:justify-between tw:text-primary">夏目的调色笔记 <button type="button" class="btn btn-ghost btn-icon" aria-label="关闭调色笔记" @click="menuOpen = false"><ArchiveIcon name="close" /></button></div>
+        <button v-if="compact" class="btn btn-ghost" type="button" :disabled="disabled" @click="onRoll"><ArchiveIcon name="dice" class="random-dice-icon" />夏目的灵感骰子</button>
         <ToggleSwitch v-model="includeArtists" class="random-toggle" label="混入知名画师特调笔触">
           <span class="random-toggle-copy tw:flex tw:gap-[2px] tw:text-left">
             <strong class="random-toggle-text tw:text-primary">混入知名画师特调笔触</strong>
@@ -53,6 +55,7 @@ import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useRandomInspiration } from '@/composables/useRandomInspiration'
 
 const pb = usePromptBuilderStore()
+defineProps<{ compact?: boolean }>()
 const { includeArtists, roll, undo, hasUndo, candidates, lastRecipe, prepareCandidates, applyCandidate, exportRecipe } = useRandomInspiration()
 
 const menuOpen = ref(false)

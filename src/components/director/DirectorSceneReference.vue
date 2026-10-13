@@ -82,24 +82,19 @@ const lighting = computed(() => LIGHTING.find(item => item.id === pb.selections.
 </script>
 
 <style scoped>
-@reference "../../assets/css/tailwind.css";
-.scene-reference { --reference-max-height:clamp(180px,calc(var(--drawing-viewport-height, 100vh) - 390px),560px); @apply tw:grid; grid-template-columns:minmax(0,min(45%,calc(var(--reference-max-height) * var(--reference-image-ratio,1.333333)))) minmax(0,1fr); @apply tw:gap-s-4; margin:0 0 var(--s-4); @apply tw:text-left tw:items-center; }
-.scene-reference-picture { width:min(100%,calc(var(--reference-max-height) * var(--reference-image-ratio,1.333333))); max-height:var(--reference-max-height); justify-self:center; place-items:center; aspect-ratio:var(--reference-image-ratio,4/3); background:var(--bg-base); }
-.scene-reference-picture img { @apply tw:absolute; inset:0; @apply tw:block tw:w-full tw:h-full tw:object-contain; }
-.scene-reference.is-unconnected .scene-reference-picture { aspect-ratio:auto; @apply tw:min-h-[104px]; }
+.scene-reference { display:flex; flex-direction:column; align-items:center; gap:20px; margin:0; min-height:0; width:100%; text-align:center; }
+.scene-reference-picture { position:relative; width:100%; flex:1; min-height:0; overflow:hidden; display:grid; place-items:center; background:transparent; }
+.scene-reference-picture img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
 .scene-reference-picture.is-restricted img { filter:blur(24px); transform:scale(1.15); }
-.scene-reference-mask { inset:0; place-items:center; background:color-mix(in srgb,var(--bg-surface) 85%,transparent); }
-.scene-reference-empty { justify-items:center; }
-.scene-reference-empty .archive-icon { @apply tw:w-[32px] tw:h-[32px]; }
-figcaption strong { @apply tw:text-primary tw:text-body tw:leading-label; }
-figcaption p { margin:var(--s-2) 0 var(--s-3); @apply tw:text-secondary tw:text-label tw:leading-loose; }
-.scene-reference-settings { gap:var(--s-2) var(--s-4); }
-.scene-reference-settings dt { @apply tw:text-secondary; }
-.scene-reference-settings dd { margin:var(--s-1) 0 0; @apply tw:text-primary; }
-@container canvas-column (max-width:440px) {
-  .scene-reference { --reference-max-height:160px; grid-template-columns:minmax(0,34%) minmax(0,1fr); gap:var(--s-3); }
-  figcaption p { display:none; }
-  .scene-reference-settings { gap:var(--s-2); }
-}
-@media (min-width:901px) and (max-height:760px) { .scene-reference { --reference-max-height:180px; } }
+.scene-reference-mask { inset:0; place-items:center; background:var(--art-scrim); color:var(--on-art-primary); }
+.scene-reference-empty { display:grid; justify-items:center; align-content:center; gap:20px; height:100%; font-size:14px; line-height:1.7; color:var(--text-primary); }
+.scene-reference-empty .archive-icon { width:32px; height:32px; }
+figcaption { flex:none; max-width:100%; }
+figcaption strong { display:none; }
+.scene-reference-label { color:var(--text-secondary); font-size:11px; }
+figcaption p { margin:8px 0 12px; color:var(--text-secondary); font-size:12px; line-height:1.7; }
+.scene-reference-settings { display:flex; flex-wrap:wrap; justify-content:center; gap:12px 24px; margin:0; font-size:12px; }
+.scene-reference-settings dt { color:var(--text-secondary); }
+.scene-reference-settings dd { color:var(--text-primary); margin:4px 0 0; }
+@container canvas-column (max-width:440px) { .scene-reference-settings { gap:8px; } }
 </style>

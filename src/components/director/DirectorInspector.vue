@@ -2,8 +2,7 @@
   <TabsRoot v-model="active" as="aside" :unmount-on-hide="false" id="drawing-inspector"
     class="director-inspector inspector-workbench" aria-label="创作参数">
     <div class="inspector-heading"><strong>绘制工具</strong><span>{{ busy ? '正在绘制' : '调整这一幕' }}</span></div>
-    <TabsList class="inspector-tabs studio-segments studio-segments--compact" data-fluid-glass aria-label="参数分类">
-      <AnimatedSelection />
+    <TabsList class="inspector-tabs" aria-label="参数分类">
       <TabsTrigger v-for="tab in tabs" :key="tab.id" :value="tab.id" as-child>
         <button :id="`inspector-tab-${tab.id}`" type="button" :aria-controls="`inspector-${tab.id}`">
           {{ tab.label }}<span v-if="tab.id === 'delivery' && queueCount" class="inspector-count">{{ queueCount }}</span>
@@ -22,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { nextTick, ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
