@@ -1,7 +1,11 @@
 """Calibrated TeaCache for pinned Anima/Cosmos, using per-call instance wrappers.
 
 TeaCache algorithm: https://github.com/ali-vilab/TeaCache (Apache-2.0).
-No upstream model-specific polynomial or ComfyUI implementation is copied.
+The built-in polynomial and accumulation policy are adapted from CocyNoric's
+ComfyUI-Anima-TeaCache, Apache-2.0, revision e7a73823c057b4884ca6b70778da803c1f60d557.
+https://github.com/CocyNoric/ComfyUI-Anima-TeaCache/blob/e7a73823c057b4884ca6b70778da803c1f60d557/nodes.py
+Modifications: Diffusers instance wrappers, separate CFG residuals and finite guards.
+See TEACACHE_LICENSE.txt. No ComfyUI runtime is imported.
 Modular denoiser integration adapted from Diffusers 0.41.0 (Apache-2.0):
 Copyright 2026 The HuggingFace Team. All rights reserved.
 https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/modular_pipelines/anima/denoise.py
@@ -12,6 +16,25 @@ from __future__ import annotations
 
 import math
 from bisect import bisect_left
+
+BUILTIN_ALGORITHM = "anima-teacache-e7a7382-v1"
+ANIMA_COEFFICIENTS = (16.440769544691957, -21.14123745515793,
+                     13.006701290921894, -1.6731977662609427, 0.08632681059623949)
+
+
+def builtin_change(current, previous):
+    import torch
+    # Match the node's original-dtype reduction, then transfer one scalar.
+    denominator = previous.abs().mean()
+    ratio = (current - previous).abs().mean() / denominator
+    return torch.where(denominator > 0, ratio, float("inf")).float()
+
+
+def builtin_estimate(change):
+    estimate = 0.0
+    for coefficient in ANIMA_COEFFICIENTS:
+        estimate = estimate * change + coefficient
+    return estimate if math.isfinite(estimate) else None
 
 
 def snapshot(tensor):
@@ -75,9 +98,10 @@ def same_inputs(conditioning, padding, lane):
 
 class TeaCacheController:
     """One job only; distinct CFG lanes and no class/global model patching."""
-    def __init__(self, profile=None, threshold=None, collect=False, *, collect_local=False, local_tools=None):
-        if not collect and (profile is None or threshold is None):
+    def __init__(self, profile=None, threshold=None, collect=False, *, collect_local=False, local_tools=None, builtin=False):
+        if not collect and (threshold is None or (profile is None and not builtin)):
             raise ValueError("TeaCache needs a validated local profile and threshold")
+        self.builtin = builtin
         self.profile, self.threshold, self.collect = profile, threshold, collect
         self.local_guard = (collect and collect_local) or (profile is not None and profile["schemaVersion"] == 3)
         self.local_tools = local_tools
@@ -143,24 +167,28 @@ class TeaCacheController:
                             safe, change, local_change = torch.cat((safe.float().reshape(1), changes)).cpu().tolist()
                             self.stats["localChecks"] += 1
                         else:
-                            safe, change = torch.stack((safe.float(), _relative_l1_tensor(proxy, lane["proxy"]))).cpu().tolist()
+                            metric = builtin_change if self.builtin else _relative_l1_tensor
+                            safe, change = torch.stack((safe.float(), metric(proxy, lane["proxy"]))).cpu().tolist()
                     safe = bool(safe) and math.isfinite(float(timestep_value))
                     change = change if safe and change is not None and math.isfinite(change) else None
                     local_change = local_change if safe and local_change is not None and math.isfinite(local_change) else None
                     execution.update(proxy=snapshot(proxy) if safe else None, change=change, local_change=local_change)
                     if not safe or (lane["proxy"] is not None and (change is None or (self.local_guard and local_change is None))):
-                        self.stats["nonfinite"] += 1
+                        # A zero/overflowed metric forces full computation; only
+                        # nonfinite activations invalidate a built-in-cache job.
+                        self.stats["nonfinite"] += int(not self.builtin or not safe)
                         lane.update(proxy=None, residual=None, accumulated=0.0, local_accumulated=0.0, skips=0)
                     estimate = None
                     if change is not None and not self.collect:
-                        estimate = estimate_change(self.profile, change, step, total)
+                        estimate = builtin_estimate(change) if self.builtin else estimate_change(self.profile, change, step, total)
                     phase = phase_index(step, total)
                     phase_changed = self.profile is not None and self.profile["schemaVersion"] in (2, 3) and lane.get("phase") != phase
                     lane["phase"] = phase
                     accumulated = lane["accumulated"] + estimate if estimate is not None else math.inf
                     execution["skip"] = (not self.collect and 0 < step < total - 1
                         and not phase_changed and lane["residual"] is not None and estimate is not None
-                        and accumulated < self.threshold and lane["skips"] < self.profile["maxConsecutiveSkips"])
+                        and accumulated < self.threshold
+                        and (self.builtin or lane["skips"] < self.profile["maxConsecutiveSkips"]))
                     local_accumulated = math.inf
                     if self.local_guard and not self.collect:
                         local_estimate = (estimate_change(self.profile, local_change, step, total, "localPhaseEnvelopes")

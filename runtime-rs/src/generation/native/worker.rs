@@ -7,6 +7,7 @@ pub(super) struct Worker {
     pub process: OwnedProcess,
     pub input: ChildStdin,
     pub output: BufReader<ChildStdout>,
+    event_line: Vec<u8>,
     stderr: JoinHandle<()>,
     pub idle: CancellationToken,
 }
@@ -39,9 +40,72 @@ impl Worker {
             process,
             input,
             output,
+            event_line: Vec::new(),
             stderr,
             idle: CancellationToken::new(),
         })
+    }
+    pub async fn event(&mut self, id: &str) -> Result<Value> {
+        // read_until is cancellation-safe only while its destination survives.
+        // Keep a partial JSONL event when cancellation takes over the read loop.
+        let remaining = 65537 - self.event_line.len();
+        let count = (&mut self.output)
+            .take(remaining as u64)
+            .read_until(b'\n', &mut self.event_line)
+            .await?;
+        if count == 0 || self.event_line.len() > 65536 || self.event_line.last() != Some(&b'\n') {
+            return Err(protocol_error());
+        }
+        let event: Value =
+            serde_json::from_slice(&self.event_line).map_err(|_| protocol_error())?;
+        self.event_line.clear();
+        if event["id"] != id {
+            return Err(protocol_error());
+        }
+        Ok(event)
+    }
+    pub async fn cancel_and_wait(
+        &mut self,
+        id: &str,
+        mut produced: bool,
+        output: &std::path::Path,
+    ) -> Result<()> {
+        let settle = async {
+            self.input
+                .write_all(format!("{}\n", json!({"id": id, "op": "cancel"})).as_bytes())
+                .await?;
+            self.input.flush().await?;
+            let mut cancelled = false;
+            loop {
+                let event = self.event(id).await?;
+                match event["event"].as_str() {
+                    Some("stage") if !produced && !cancelled => {
+                        stage_text(&event)?;
+                    }
+                    Some("progress") if !produced && !cancelled => {
+                        let step = event["step"].as_u64().ok_or_else(protocol_error)?;
+                        event["total"]
+                            .as_u64()
+                            .filter(|total| *total > 0 && step <= *total)
+                            .ok_or_else(protocol_error)?;
+                    }
+                    Some("result") if !produced && !cancelled => {
+                        if event["outputPath"].as_str() != output.to_str() {
+                            return Err(protocol_error());
+                        }
+                        produced = true;
+                    }
+                    Some("cancelled") if !produced && !cancelled => cancelled = true,
+                    // Generation can finish before the reader receives cancel.
+                    // Either terminal event must be followed by cleanup's ready.
+                    Some("ready") if produced || cancelled => return Ok(()),
+                    _ => return Err(protocol_error()),
+                }
+            }
+        };
+        tokio::time::timeout(Duration::from_secs(10), settle)
+            .await
+            .map_err(|_| ApiError::new(504, "NATIVE_CANCEL_TIMEOUT", "独立推理取消等待超时"))?
     }
     pub async fn stop(&mut self) -> Result<()> {
         self.idle.cancel();

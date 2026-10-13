@@ -3,7 +3,6 @@ import { computed, useId } from 'vue'
 import { RouterLink } from 'vue-router'
 import type { AnimaGenerationState } from '@/types/anima'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
-import { nativeTeaCacheReady } from '@/composables/generation/nativeAnimaCapabilities'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -38,7 +37,7 @@ const seed = computed({ get: () => props.state.seed ?? '', set: value => patch({
 const steps = computed({ get: () => props.state.steps, set: value => patch({ steps: value }) })
 const cfg = computed({ get: () => props.state.cfg, set: value => patch({ cfg: value }) })
 const teaCache = computed({ get: () => props.state.teaCache !== false,
-  set: value => patch({ teaCache: native.value && value ? undefined : value, ...(native.value ? { teaCacheThresh: undefined } : {}) }) })
+  set: value => patch({ teaCache: value }) })
 const hiresFix = computed({ get: () => Boolean(props.state.hiresFix), set: value => patch({ hiresFix: value }) })
 const hiresScale = computed({ get: () => props.state.hiresScale || 2.0, set: value => patch({ hiresScale: value }) })
 const hiresDenoise = computed({ get: () => props.state.hiresDenoise || 0.35, set: value => patch({ hiresDenoise: value }) })
@@ -59,7 +58,6 @@ const outputSize = computed(() => {
   return `${Math.round(props.state.width * scale / 8) * 8} × ${Math.round(props.state.height * scale / 8) * 8}`
 })
 const selectedModel = computed(() => props.state.models.find(model => model.id === props.state.modelId) ?? null)
-const nativeTeaCacheAvailable = computed(() => nativeTeaCacheReady(selectedModel.value))
 const selectedLora = computed(() => props.state.loras.find(lora => lora.id === props.state.loraId) ?? null)
 /** 当前底模能力表：引擎默认值 + 后端模型能力合并（UI 不再按 family 散落判断）。 */
 const capabilities = computed(() => resolveDrawCapabilities(props.state.family, null, selectedModel.value?.capabilities ?? null))
@@ -150,13 +148,14 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         <template v-else>按当前资源，普通出图采用 Latent 二次重绘，幅度控制这一次采样。最终文件在提交时重新核对。</template>
         局部蒙版高清另有二次采样与合成，仍使用保存的幅度；切换放大方式不会清除该值。
       </p>
-      <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-warning-text tw:m-0">高清组合会单独匹配 TeaCache 校准档，自动模式未匹配时照常生成。放大方式 Auto 优先选择本地 Remacri，否则使用 Latent；局部重绘保留遮罩合成。</p>
-      <p v-if="native" class="anima-hint tw:text-label-xs tw:text-warning-text tw:m-0">
-        TeaCache 默认自动开启：匹配已验收校准档时加速，未匹配时照常生成。{{ nativeTeaCacheAvailable ? '模型、LoRA 与采样参数将在加载时核验。' : '当前未发现本地校准档，将使用完整计算。' }}{{ state.teaCache === true ? '当前保存的配置要求严格开启，未匹配时会报错；关闭后重新开启可恢复自动模式。' : '' }}可手动关闭以使用完整计算。
+      <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">高清采样沿用特征缓存设置，无需额外配置。Auto 优先使用本地 Remacri，否则使用 Latent；局部重绘保留遮罩合成。</p>
+      <p v-if="native" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">
+        已内置 Anima TeaCache，换角色、尺寸或高清倍率无需校准。缓存会改变部分采样结果，可关闭以使用完整计算。
       </p>
-      <div v-if="native && state.teaCacheThresh !== undefined" class="anima-row">
-        <span class="tw:text-label-xs tw:text-warning-text">已保存的阈值 {{ state.teaCacheThresh }} 不能直接用于原生推理。</span>
-        <button type="button" class="anima-btn tw:rounded-sm tw:text-label-xs tw:cursor-pointer" :disabled="busy" @click="patch({ teaCacheThresh: undefined })">使用本地校准档阈值</button>
+      <div v-if="native && teaCache" class="anima-row">
+        <label :for="idOf('cache-threshold')">缓存阈值</label>
+        <input :id="idOf('cache-threshold')" type="number" min="0" max="1" step="0.01" :value="state.teaCacheThresh ?? 0.10" class="anima-num" :disabled="busy" @change="patch({ teaCacheThresh: Number(($event.target as HTMLInputElement).value) })" />
+        <span class="tw:text-label-xs tw:text-secondary">默认 0.10 · 数值越低越保守，0 为完整计算</span>
       </div>
 
       <details class="anima-prompt-details"><StudioDisclosureSummary>查看引擎接收的提示词</StudioDisclosureSummary><div data-disclosure-content>

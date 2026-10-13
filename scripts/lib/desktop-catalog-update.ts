@@ -23,15 +23,19 @@ export function updateCatalog(app: string, runtime: string) {
     if (result.ok !== true) throw Error(`内容库${command}失败：${JSON.stringify(result)}`);
     return result;
   };
-  const preview = run('import', ['--file', incoming]);
-  fs.writeFileSync(path.join(evidence, 'preview.json'), JSON.stringify(preview));
-  // The native three-way merge rejects conflicts before any record is changed.
+  // Application upgrades preserve personal creative overrides. Native import
+  // retains their exact records and advances only the incoming seed baseline;
+  // interactive/manual imports keep their existing strict conflict policy.
   run('export', ['--out', path.join(evidence, 'before')]);
-  const applied = run('import', ['--file', incoming, '--apply']);
+  const args = ['--file', incoming, '--preserve-local'];
+  const preview = run('import', args);
+  fs.writeFileSync(path.join(evidence, 'preview.json'), JSON.stringify(preview));
+  const applied = run('import', [...args, '--apply']);
   fs.writeFileSync(path.join(evidence, 'applied.json'), JSON.stringify(applied));
-  const remaining = run('import', ['--file', incoming]);
+  const remaining = run('import', args);
+  fs.writeFileSync(path.join(evidence, 'verified.json'), JSON.stringify(remaining));
   if (remaining.items.length) throw Error('CATALOG_UPDATE_INCOMPLETE: 导入后仍有内容差异，部署未完成。');
-  return { changed: applied.items.length, evidence };
+  return { changed: applied.items.length, preservedLocal: applied.preservedLocal, evidence };
 }
 
 if (require.main === module) {

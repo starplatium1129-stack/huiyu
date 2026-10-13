@@ -1,6 +1,6 @@
 # 项目状态
 
-整理日期：2026-10-12。此页维护当前身份、能力与限制；旧过程已归入 Git 历史，不在工作目录保留日期副本。今天的性能交付见[执行报告](audits/2026-10-09/fullstack-performance.html)。
+整理日期：2026-10-13。此页维护当前身份、能力与限制；旧过程已归入 Git 历史，不在工作目录保留日期副本。今天的性能交付见[执行报告](audits/2026-10-09/fullstack-performance.html)。
 
 ## 源码与本机安装
 
@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | 当前源码 | `package.json` 版本 1.9.2，包含发行后的修复；当前工作区改动以 Git 为准 | [工程契约](engineering-contracts.md)、[工作流](workflow.md)；源码变更不等于已安装或发布 |
 | 公开发行 | 2026-10-07 记录 1.9.2 已发布并设为 latest，发行源码 `f221bd4c`，含 full/upgrade 两种包 | [1.9.2 说明](releases/v1.9.2.md)；发行记录保留在 Git 历史；本次整理未重新查询远端状态 |
-| 最近本机安装记录 | 2026-10-09 23:06（Asia/Shanghai）将源码 `8e9fd0f4` 的 1.9.2 本机无压缩构建完整安装至 `D:/AI-CG-Studio`；宿主、Rust EXE、libvips DLL 字节核对及认证启动 ready 通过，内容快照变更为 0 | 经 `deploy-desktop.bat -UseInstaller -QuietInstall` 安装；本机回执 `runtime/install-latest-20261009/installation.json`、构建日志和 `runtime/desktop-deploy-last.log`，原始记录不入 Git。未公开发布；真实模型与原生画面/设备验收未运行 |
+| 最近本机安装记录 | 2026-10-13 15:58（Asia/Shanghai）完整安装 1.9.2 本机候选至 `C:/Program Files/AI-CG-Studio`；原生默认缓存、资源复用、取消保留模型与闲置显存释放已接入 | 唯一部署入口退出 0，宿主/网关/DLL 与包核对并认证启动；1132 条随包记录同步、190 条个人记录（含 sc009）原样保留。真实 Anima 与安装版取消恢复完成，用户确认体验良好。范围见[验收报告](audits/2026-10-13/native-generation-experience.html)，未公开发布 |
 | 资料迁移记录 | 2026-09-26 曾登记旧来源迁入 SQLite；10 月 1 日对应机器未发现 active pointer，仍使用旧来源 IndexedDB | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)；按具体机器核对，不合并两次记录为已迁移结论 |
 | 桌面实现 | Tauri 宿主、Rust 网关、原生 Live2D 线程渲染；独立渲染进程仍为显式实验 | [桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)、[原生运行时](guides/desktop/live2d-native-runtime.md) |
 
@@ -21,7 +21,7 @@
 | 持久化与任务 | Web 保留 IndexedDB；桌面激活后由 Rust/SQLite 持有权威；已接受任务独立于页面生命周期，失联不降级双写 | 历史来源、其他机器、大规模数据及真实故障场景按 [Workspace](architecture/WORKSPACE-MIGRATION-DESIGN.md) 与[任务契约](architecture/TASK-RUNTIME-DESIGN.md)分别验收 |
 | 创作 | Anima/Krea 2 新生成、换装、蓝图、入册与视频分镜；SD 新生成已退出，旧任务查询/取消/收集及历史作品保留 | 聊天绘画工具仍只准备草稿；真实模型、视频效果与成本按 [roadmap](roadmap.md) 验收 |
 | 首次配置与受管绘图 | 沿用 Portable、固定模型下载/校验和标准目录；显式受管意愿跨重开保留，首次生成按需唤醒；输入目录与 Portable 安装位置对齐；未知运行包与节点差异明确失败并保留已有文件 | 进程/HTTP、下载小夹具和界面逻辑可在 CPU 验证；真实 Windows/CUDA、节点加载、LoRA＋高清出图仍需主力机验收，见[配置指南](guides/setup-and-models.md) |
-| 独立 Anima 推理 | v3现有数学路径与resident逐组件/双缓冲加载已接入；另实现local-guard全局/局部双预算缓存维护候选，产品排除该候选、默认策略不变 | 无当前CUDA成图/加载/高清或局部缓存性能证据；旧Tea档仍失配，auto完整计算，默认ComfyUI。局部候选待真实对照后由用户选择，见[缓存候选](audits/2026-10-12/native-anima-local-cache.html)、[加载优化](audits/2026-10-12/native-anima-loading.html)与[高清补齐](audits/2026-10-12/native-anima-effects.html) |
+| 独立 Anima 推理 | 内置 Anima TeaCache 无需逐组合校准；复用现成资源，合作取消保留模型，完成后释放闲置显存；支持 resident/offload | 本机 MiaoMiao 1.6＋宁宁 LoRA 的普通图、Latent/Remacri 高清、取消恢复与显存对照已实测；其他模型、自动换装语义与更广硬件未由本轮覆盖，见[当前验收](audits/2026-10-13/native-generation-experience.html) |
 | 内容维护 | 记录 API、修订历史、字段补丁、批量预览/导入与项目快照导出；立绘/样张走图片事务 | 工作库与项目快照独立；pending、记录登记和结构校验不计为图片交付，见[维护手册](maintenance.md) |
 | 界面与陪伴 | Vue/Pinia、双主题、Reka 控件、路由按需加载、角色身份/Profile、独立聊天窗与浏览器/原生 Live2D | WebView2、DPI/多屏/休眠、真实语音与长期资源趋势保留设备验收范围 |
 | 资源生命周期 | 隐藏桌宠释放模型与原生 GPU context；桌面缩略缓存限 96 项/8 MiB；图库停用释放高清 URL | 既有短样本不推广为全部 GPU、大图库或长时间运行结论 |

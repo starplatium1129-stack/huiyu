@@ -92,7 +92,7 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 `deploy-desktop.bat` 在安装后、重启前读取安装目录的 `data/catalog`，通过原生接口预览、备份并导入个人库，导入后再次核对差异。备份与回执保存在个人 `gateway/content-update-backups/<ID>/`；缺少快照、合并冲突或核对失败会中止部署，不能仅凭素材或 EXE 更新成功宣布内容已更新。`-StartupRepair` 不导入内容。
 
 直接运行安装器不会合并已有个人库。配套新版程序与包含 `catalog.json` 的新素材包由资源助手一并导入人物内容，无需开发部署命令；旧素材包仍只含图片。新旧包的区别及发行状态见[新机器离线资源安装](guides/offline-resources.md#人物内容随包更新源码修复待配套发行)，素材版本不单独代表人物内容版本。
-导入比较原始种子、本地修改和新快照，冲突拒绝写入，缺失记录不隐式删除。
+部署导入比较原始种子、本地修改和新快照，并显式使用 `--preserve-local`：保留已修改的个人记录，更新原始随包基线，回执列出保留清单；缺失记录不隐式删除。导出备份先于预览，应用后保存再次核对的回执。关联变更若会触碰保留记录仍拒绝写入。页面和普通 CLI 导入保持默认冲突拒绝，不自动选择内容版本。
 维护入口为 `npm run wf -- content:catalog --help`，操作见[维护手册](maintenance.md#批量修改与快照)。
 不要通过复制分片或替换 SQLite 文件来绕过个人修改与修订校验。
 

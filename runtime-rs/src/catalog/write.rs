@@ -94,13 +94,14 @@ pub(super) fn history(
 }
 impl Catalog {
     pub fn apply(&mut self, changes: &[Change], preview: bool) -> Result<Value> {
-        self.apply_with_seeds(changes, preview, &[])
+        self.apply_with_seeds(changes, preview, &[], &[])
     }
     pub(super) fn apply_with_seeds(
         &mut self,
         changes: &[Change],
         preview: bool,
         seeds: &[(Record, bool)],
+        preserved: &[(Record, bool)],
     ) -> Result<Value> {
         if (changes.is_empty() && seeds.is_empty()) || changes.len() > 10000 {
             return Err(ApiError::invalid("变更集不能为空且不能超过 10000 条"));
@@ -123,6 +124,23 @@ impl Catalog {
             }
         }
         let changes = super::dependencies::expand(&transaction, changes)?;
+        let preserved_keys: HashSet<_> = preserved
+            .iter()
+            .map(|(record, _)| (record.kind.as_str(), record.id.as_str()))
+            .collect();
+        if let Some(change) = changes
+            .iter()
+            .find(|change| preserved_keys.contains(&(change.kind.as_str(), change.id.as_str())))
+        {
+            return Err(ApiError::new(
+                409,
+                "CATALOG_PRESERVED_LOCAL_DEPENDENCY",
+                format!(
+                    "关联变更会修改已保留的本地记录 {}:{}；导入未写入，请先合并关联内容",
+                    change.kind, change.id
+                ),
+            ));
+        }
         let batch = uuid::Uuid::new_v4().to_string();
         let at = now();
         let mut seen = HashSet::new();
@@ -132,6 +150,32 @@ impl Catalog {
         let mut current_query = transaction.prepare_cached(&format!(
             "SELECT {COLUMNS},deleted FROM content_records WHERE kind=?1 AND id=?2"
         ))?;
+        // The planning read and this write transaction are separate. Protect
+        // preserved rows with the same optimistic concurrency boundary as edits.
+        for (expected, expected_removed) in preserved {
+            let current = current_query
+                .query_row(params![expected.kind, expected.id], |row_| {
+                    Ok((row(row_)?, row_.get::<_, bool>(7)?))
+                })
+                .optional()?;
+            if !current.as_ref().is_some_and(|(record, removed)| {
+                record.revision == expected.revision
+                    && record.data == expected.data
+                    && record.sort_order == expected.sort_order
+                    && record.created_at == expected.created_at
+                    && record.updated_at == expected.updated_at
+                    && removed == expected_removed
+            }) {
+                return Err(ApiError::new(
+                    409,
+                    "CATALOG_CONFLICT",
+                    format!(
+                        "已保留的本地记录 {}:{} 在导入前已变化；请重新预览",
+                        expected.kind, expected.id
+                    ),
+                ));
+            }
+        }
         for change in &changes {
             validation::key(&change.kind, &change.id)?;
             if !seen.insert((&change.kind, &change.id)) {
@@ -350,7 +394,13 @@ impl Catalog {
             [],
             |r| r.get(0),
         )?;
-        let value = json!({"ok":true,"preview":preview,"batch":batch,"version":version.parse::<i64>().unwrap(),"items":result,"diffs":diffs});
+        let preserved_local: Vec<_> = preserved
+            .iter()
+            .map(
+                |(record, _)| json!({"kind":record.kind,"id":record.id,"revision":record.revision}),
+            )
+            .collect();
+        let value = json!({"ok":true,"preview":preview,"batch":batch,"version":version.parse::<i64>().unwrap(),"items":result,"diffs":diffs,"preservedLocal":preserved_local});
         pin_policy.check(&self.options.source)?;
         if preview {
             transaction.rollback()?;

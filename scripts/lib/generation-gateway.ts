@@ -147,7 +147,7 @@ async function generate(record: any, save: any, options: any = {}) {
         return { buffer, ...validatePng(buffer) };
       } catch (error) { throw definitive(runtimeErrorMessage(error)); }
     }
-    if (!['queued', 'pending', 'running', 'processing', 'submitted'].includes(job.status)) {
+    if (!['queued', 'pending', 'running', 'processing', 'submitted', 'cancelling'].includes(job.status)) {
       throw new Error('unknown gateway job status');
     }
     await delay(pollMs, undefined, { signal });

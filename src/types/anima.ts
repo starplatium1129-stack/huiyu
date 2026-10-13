@@ -25,8 +25,8 @@ export interface AnimaOption {
   profileId?: string
   defaults?: Record<string, unknown>
   teaCacheProfile?: {
-    support: 'experimental-candidate'
-    readiness: 'profile-files-only' | 'missing'
+    support: 'experimental-candidate' | 'builtin-anima'
+    readiness: 'profile-files-only' | 'missing' | 'builtin'
     validation: 'on-load'
     performanceVerified: boolean
     qualityVerified: boolean

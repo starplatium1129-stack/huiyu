@@ -5,7 +5,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
     }
     if args.iter().any(|v| v == "--help") {
         println!(
-            "huiyu-runtime catalog <stats|query|record|history|character|export|patch|import|check|colors> [--root <project>] --runtime-root <runtime>\nrecord/history: --kind <kind> --id <id> [--revision <number>]\ncharacter: --character <id> (complete revision-bearing record snapshot)\nexport: --out <directory> [--character <id> ...] [--record <kind:id> ...]; selected exports merge into existing snapshots\nquery: --kind <kind> [--character <id>] [--sort newest|updated|title|id|order] [--created-from <RFC3339>] [--created-to <RFC3339>] [--page <number>] [--page-size <number>]\npatch/import: --file <json> [--apply]; preview by default. patch JSON: {{changes:[{{kind,id,expectedRevision,patch|data,createdAt,sortOrder,remove}}]}}"
+            "huiyu-runtime catalog <stats|query|record|history|character|export|patch|import|check|colors> [--root <project>] --runtime-root <runtime>\nrecord/history: --kind <kind> --id <id> [--revision <number>]\ncharacter: --character <id> (complete revision-bearing record snapshot)\nexport: --out <directory> [--character <id> ...] [--record <kind:id> ...]; selected exports merge into existing snapshots\nquery: --kind <kind> [--character <id>] [--sort newest|updated|title|id|order] [--created-from <RFC3339>] [--created-to <RFC3339>] [--page <number>] [--page-size <number>]\npatch/import: --file <json> [--apply]; preview by default. patch JSON: {{changes:[{{kind,id,expectedRevision,patch|data,createdAt,sortOrder,remove}}]}}\nimport only: --preserve-local keeps complete locally modified records and accepts incoming seeds; reports preservedLocal. Default import rejects conflicts. Dependent changes to preserved records still reject the import."
         );
         return Ok(Some(json!({"ok":true})));
     }
@@ -13,8 +13,19 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
     let mut flags = std::collections::HashMap::new();
     let mut scope = snapshots::Scope::default();
     let mut apply = false;
+    let mut preserve_local = false;
     let mut at = 2;
     while at < args.len() {
+        if args[at] == "--preserve-local" {
+            if action != "import" || preserve_local {
+                return Err(ApiError::invalid(
+                    "--preserve-local 仅用于 import，且不能重复",
+                ));
+            }
+            preserve_local = true;
+            at += 1;
+            continue;
+        }
         if args[at] == "--apply" {
             apply = true;
             at += 1;
@@ -134,9 +145,10 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
             let changes: Vec<Change> = serde_json::from_value(value["changes"].clone())?;
             catalog.apply(&changes, !apply)?
         }
-        "import" => catalog.import(
+        "import" => catalog.import_with_policy(
             &serde_json::from_slice(&std::fs::read(absolute("--file")?)?)?,
             !apply,
+            preserve_local,
         )?,
         _ => {
             return Err(ApiError::invalid(

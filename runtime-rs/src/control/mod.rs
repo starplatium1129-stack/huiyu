@@ -3,6 +3,7 @@ mod comfy;
 mod hardware;
 mod http;
 mod inference;
+mod inference_discovery;
 mod inference_setup;
 mod llama;
 mod probe;

@@ -30,6 +30,7 @@
 009、010、013 的剩余范围和 004 的暂停决定统一维护在[未来规划](roadmap.md)，不再并行维护专项进度副本。
 
 - [独立 Anima 推理接入](guides/independent-inference.md)：现有 Anima 主流程、独立运行库与使用范围。
+- [原生出图体验修复](audits/2026-10-13/native-generation-experience.html)：内置 Anima TeaCache、资源复用与显存管理；真实速度/画质/高清/取消对照，sc009 保留导入修复与桌面安装。
 - [Native 独立接入续报](audits/2026-10-12/native-backend-independence.html)：按引擎切换绘图、聊天显存交接、异常退出阻断与非有限结果拦截；本轮构建及设备验收边界。
 - [Native Anima 参数与性能对齐](audits/2026-10-12/native-anima-alignment.html)：分阶段显存、共享组件冷切、高清资源清理与采样对齐；旧 Tea 档失配和逐项算法差异。
 - [Native Anima 高清与蒙版补齐](audits/2026-10-12/native-anima-effects.html)：单帧 VAE 普通优先/OOM 羽化、Remacri CPU 拼接、KJ RCAS 功能参数与浮点蒙版；v3 源码/构建及设备验收边界。

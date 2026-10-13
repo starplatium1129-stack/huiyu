@@ -204,4 +204,10 @@
 
 TeaCache algorithm reference: https://github.com/ali-vilab/TeaCache
 Diffusers Anima modular denoiser integration: Copyright 2026 The HuggingFace Team. All rights reserved.
-Huiyu additions implement instance-scoped calibrated residual reuse; no upstream fitted coefficients or ComfyUI code are included.
+Anima polynomial and accumulation policy: CocyNoric / ComfyUI-Anima-TeaCache,
+revision e7a73823c057b4884ca6b70778da803c1f60d557 (Apache-2.0).
+Source: https://github.com/CocyNoric/ComfyUI-Anima-TeaCache/blob/e7a73823c057b4884ca6b70778da803c1f60d557/nodes.py
+License: https://github.com/CocyNoric/ComfyUI-Anima-TeaCache/blob/e7a73823c057b4884ca6b70778da803c1f60d557/LICENSE
+Huiyu modifications: Diffusers instance-scoped integration, separate CFG residuals,
+finite activation guards, and optional explicitly selected local calibration.
+The ComfyUI model forward/runtime is not included or imported.

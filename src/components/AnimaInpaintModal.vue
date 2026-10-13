@@ -230,7 +230,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
         </button>
       </header>
 
-      <p v-if="native && !wholeImage" class="modal-intro">局部重绘（实验性）：手绘或本地自动识别区域参与采样，遮罩外按原图合成保留；不保证与 ComfyUI 效果一致。TeaCache 沿用生成参数中的明确选择，需要匹配本次重绘的本地校准档，速度与画质尚未验收。</p>
+      <p v-if="native && !wholeImage" class="modal-intro">局部重绘（实验性）：手绘或本地自动识别区域参与采样，遮罩外按原图合成保留。TeaCache 沿用生成参数，无需单独校准；具体换装效果仍取决于选区与重绘幅度。</p>
       <p v-if="wholeImage" class="modal-intro">整图重绘会重新生成整张图片，人物、面部和背景均可能变化，不保留遮罩外区域。</p>
       <p v-else-if="!native" class="modal-intro">
         <b>手绘精确遮罩</b>可指定要修改的衣物。<b>自动识别</b>（如 uniform / dress）需要额外文字蒙版节点，提交前会检查所用服务。

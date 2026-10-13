@@ -1,8 +1,36 @@
 # Independent Anima inference worker
 
-This milestone implements local Anima text-to-image, image-to-image, experimental manual/CLIPSeg masked editing, local Anima LoRA, RCAS, Latent/fixed Remacri hires and round-bracket prompt weighting with Diffusers 0.41.0. It has no ComfyUI runtime, imports, server or path dependency. Three explicit conversion profiles cover the six locally registered Anima models. All six now have actual GPU generation evidence: 11 images, with Nene/Natsume on each of the five 28-layer models and no LoRA on the 40-layer MiaoMiao 2.9B. This is not every model/effect combination. Arbitrary checkpoints, non-Anima families and video remain outside this scope; no model weights are supplied.
+The product uses local Diffusers 0.41.0 Anima components without importing or
+starting ComfyUI. Existing compatible runtime receipts, converted models and
+LoRAs are discovered by the host; explicit settings remain authoritative.
 
-The [2026-10-11 replacement report](../../docs/audits/2026-10-11/native-anima-replacement.html) records historical GPU samples and timings for its source revision. Those accepted Tea profiles and performance figures do not validate the current `anima-workflow-effects-v3` revision; all old Tea scopes now mismatch. Current auto mode performs full computation until a new exact scope is accepted. The default engine remains ComfyUI, and this revision has not been deployed or exercised on CUDA. Finite-result guards remain in place.
+Ordinary TeaCache now uses the bundled Apache-2.0 Anima polynomial and policy
+from CocyNoric/ComfyUI-Anima-TeaCache@e7a7382, threshold 0.10 by default.
+Explicit false or threshold 0 disables it. Model/LoRA/resolution/hires changes
+need no calibration files; old files cannot silently disable the built-in cache.
+The Diffusers wrapper keeps separate CFG residuals, resets between passes,
+computes first/last steps fully and retains finite-result checks. Retain
+TEACACHE_LICENSE.txt. Explicit profile paths and calibration Python APIs remain
+maintenance options with exact scope checks, not everyday prerequisites.
+
+The serial JSONL v3 worker accepts {"id":"active-id","op":"cancel"} while
+loading or sampling. It checks cancellation at safe stage/step boundaries,
+cleans temporary resources and emits cancelled then ready; completed jobs emit
+result then ready. Only a confirmed ready worker is reused. The host retires
+unresponsive workers after a 10-second cancellation grace period, and retires
+all execution/protocol faults and timeouts. Stage events identify dependency
+preparation, fingerprinting, component loading/upload, encoding, decoding,
+upscaling and saving; no artificial loading percentage is reported.
+
+See the [current delivery](../../docs/audits/2026-10-13/native-generation-experience.html)
+for current evidence and limits. The authorized 2026-10-13 local acceptance
+completed 36 product-API images and 5 cancellations, plus installed-desktop
+cancel/recovery and user acceptance. On RTX 4070 Ti SUPER, MiaoMiao 1.6 /
+Nene 0.8 / 832x1216 / 24 steps / CFG 4, native warm median was 5.05 seconds
+versus ComfyUI 5.54 seconds. These bounded samples do not validate every model,
+shape, prompt or device. The worker completes dependency initialization before
+the request reader blocks again; completed jobs release idle allocator reserves
+while retaining model weights. API wall time includes result-to-ready cleanup.
 
 ## Native desktop handoff and finite output boundaries
 
@@ -34,7 +62,7 @@ uses the training-table grid, both passes draw FP32 noise with CPU generators,
 and ordinary img2img preserves N actual updates using the tail of a full
 `int(N/denoise)` schedule. CFG below one is accepted down to 0.5. These change
 results and cost; all previous Tea profiles are incompatible with this revision.
-Automatic selection uses full computation until a current profile is accepted;
+Explicit local profiles require current matching acceptance; everyday built-in caching does not read them;
 explicit Tea enablement rejects an unmatched profile. Previous GPU timings and
 image acceptance apply only to their recorded source, not these changes.
 
@@ -332,7 +360,7 @@ TeaCache scope.
 
 The local scheduler must not enable `stochastic_sampling`: pinned Anima's after-denoiser does not forward the job generator to the scheduler's optional random-update branch. Such a configuration is explicitly rejected before runtime loading instead of silently disabling it or using global RNG. The upstream default and the project converter use the supported non-stochastic path; their sampling behavior is unchanged. This does not promise bitwise deterministic CUDA kernels or cross-backend noise equality.
 
-Limits: Anima requires CUDA; one image; initial dimensions divisible by 16, 64–4096; worker steps 1–200 and CFG 0.5–30, while the public host applies narrower product ranges; nonnegative 63-bit seed; PNG output. Default resident holds all weight components on GPU; explicit offload moves whole components at stage boundaries. Neither offers CPU inference or an arbitrary low-VRAM guarantee. Optional CLIPSeg runs on CPU in float32. TeaCache auto mode uses an accepted exact current profile or full computation; explicit enablement stays strict. Hires/weighted prompts have distinct scopes. Other super-resolution weights and non-Anima families remain unsupported.
+Limits: Anima requires CUDA; one image; initial dimensions divisible by 16, 64–4096; worker steps 1–200 and CFG 0.5–30, while the public host applies narrower product ranges; nonnegative 63-bit seed; PNG output. Default resident holds all weight components on GPU; explicit offload moves whole components at stage boundaries. Neither offers CPU inference or an arbitrary low-VRAM guarantee. Optional CLIPSeg runs on CPU in float32. Ordinary TeaCache uses the bundled Anima strategy without profile files. Only explicitly selected maintenance profiles retain exact scopes and strict acceptance. Other super-resolution weights and non-Anima families remain unsupported.
 
 Earlier RCAS and Latent/fixed Remacri revisions have historical GPU evidence.
 `anima_postprocess.py` independently implements the product's KJ functional
@@ -501,9 +529,19 @@ Earlier evidence includes CPU CLIPSeg segmentation and a GPU automatic-mask Rema
 
 ## Experimental calibrated TeaCache
 
+This section describes explicit maintenance profiles only. Ordinary product jobs use the built-in policy described above. No calibration or comparison commands may run while repository instructions prohibit tests.
+
 Profiles, collection traces and held-out reports must record `runtime.huiyuInference: "lora-eval-v1"` for post-injection LoRA evaluation mode; all older artifacts are rejected and require fresh collection/calibration and acceptance, including scopes without LoRAs, while installed files are never automatically rewritten.
 
-TeaCache is now an actual transformer-stack residual cache for the pinned Anima/Cosmos runtime. The public API defaults to auto when `teaCache` is omitted; `false` explicitly disables caching and `true` strictly requires a matching accepted profile. The trusted host sends boolean `input.teaCache` plus its own boolean `input.teaCacheAuto`. Standalone worker omission retains its existing disabled behavior. The trusted host resolves `teaCacheProfilePath` to the selected model directory's `teacache-profile.json`; the worker accepts only a nonempty, at-most-64-KiB local profile contained by that model directory. Auto mode continues without TeaCache for a missing profile path or a valid document without a matching accepted scope. Malformed, duplicate or escaping profiles still fail. Explicit `teaCache: true` preserves strict rejection of missing, unaccepted or incompatible profiles. An explicit threshold requires strict enablement. `nativeRuntime.teaCache.enabled` records actual use, with a bounded reason: `matched-profile`, `request-disabled` or `no-matching-profile`. `input.teaCacheThresh` is optional: omission uses that profile's calibrated default. An explicit value must be finite, at least 0.01, at most 1 and no larger than the profile's accepted maximum. A threshold/profile with TeaCache disabled is rejected rather than carrying a stale ComfyUI setting. No universal coefficient or threshold is supplied.
+The public API uses the bundled strategy with threshold 0.10 unless disabled.
+The trusted host no longer resolves local profile paths. A standalone worker or
+maintenance caller can explicitly pass teaCacheProfilePath; that selection must
+match an accepted exact profile and is never silently replaced by the built-in
+policy. The file remains nonempty, at most 64 KiB and contained by the selected
+model directory. Explicit calibrated thresholds remain 0.01..maxThreshold.
+Product nativeRuntime.teaCache reports actual enabled state, builtin-anima /
+threshold-zero / request-disabled reason, algorithm, threshold and full/skip
+counters; file presence no longer masquerades as acceleration readiness.
 
 The bundled `teacache_anima.py` retains the original Diffusers 0.41.0 transformer forward. Per-call instance wrappers measure the first block's time-modulated norm1 output, including its extra positional embedding. Full computation stores the last block output minus the raw first block input. When the fitted, accumulated relative-L1 estimate is below the accepted threshold, the first wrapper adds that residual once and all remaining wrappers bypass their actual attention/feed-forward forwards. Current positional preparation, timestep conditioning, output normalization and projection still run. This really skips the expensive stack; it does not merely change a UI flag or lower the requested sampling steps.
 
@@ -515,7 +553,7 @@ The bundled `teacache_anima.py` retains the original Diffusers 0.41.0 transforme
 
 `teacache_profile.py` validates the version-1 polynomial, version-2 phase envelope and maintenance-only version-3 `huiyu-anima-local-guard-v1`; product profile selection excludes version 3. Runtime pins are Diffusers 0.41.0 and Torch 2.8.0. The exact compatibility object identifies SHA-256 content of all local pipeline component assets and ordered LoRA bytes/strengths, width, height, steps, CFG, mode, denoising strength, sampler/scheduler, dtype and GPU device name. Masked scope also binds manual/CLIPSeg source kind, growth, threshold and mask prompt; automatic masking binds all local CLIPSeg asset bytes and `sampling.maskExecutionRevision: clipseg-single-image-vision-v1`. Only automatic-mask scopes gain this field; plain generation and manual-mask v3 scopes retain their existing identity. Old automatic-mask profiles fall back to full computation in auto mode and are rejected for strict enablement or acceptance; profiles are never rewritten automatically. The accepted or collected mask digest is checked against assets actually used before reuse/loading and after a new load, including calibration with mask caching disabled. Prompt/seed and source/mask image content may vary within the independently accepted calibration set. This is not a guarantee for unseen content.
 
-The version-1 profile carries 1–6 finite polynomial `coefficients` in ascending power order, `proxyRange`, `defaultThreshold`, `maxThreshold`, `maxConsecutiveSkips`, and `calibration` containing `source: local-full-compute`, a valid-pair `sampleCount` and `traceSha256`. Product generation additionally requires `acceptance.status: accepted` and `acceptance.reportSha256`, set only by the explicit local acceptance workflow after reviewing held-out results. These are local evidence links, not cryptographic certification of quality. Changing weights, adapters/scales, sampling/edit scope, dtype, GPU or execution mode/revision requires a compatible new calibration. Identity comes from full content hashes or a still-protected lease to those exact bytes, never file names or mtimes alone. First acquisition and fallback hashing add I/O.
+The version-1 profile carries 1–6 finite polynomial `coefficients` in ascending power order, `proxyRange`, `defaultThreshold`, `maxThreshold`, `maxConsecutiveSkips`, and `calibration` containing `source: local-full-compute`, a valid-pair `sampleCount` and `traceSha256`. Explicit profile generation additionally requires `acceptance.status: accepted` and `acceptance.reportSha256`, set only by the explicit local acceptance workflow after reviewing held-out results. These are local evidence links, not cryptographic certification of quality. Changing weights, adapters/scales, sampling/edit scope, dtype, GPU or execution mode/revision requires a compatible new calibration. Identity comes from full content hashes or a still-protected lease to those exact bytes, never file names or mtimes alone. First acquisition and fallback hashing add I/O.
 
 The fixed `teacache-profile.json` can also hold a `huiyu-teacache-profile-set`
 collection (schemaVersion 1, profiles array): at most 16 entries and 64 KiB total.
@@ -577,11 +615,11 @@ required. It does not reduce the requested scheduler step count.
 
 Maintenance-only Python APIs are separate from the product JSONL protocol: `worker.generate(..., collect_teacache=True)` always fully computes and returns paired `proxyRelativeL1`/`residualRelativeL1` samples for fitting. `teacache_profile=<candidate dict>` can evaluate an unaccepted candidate but still enforces exact compatibility and calibration. `measure_teacache=True` on a disabled held-out baseline returns timing/memory without TeaCache hooks, proxy collection or TeaCache scope hashing (`compatibility: null`, `fingerprintSeconds: 0`); resident jobs still verify their weight identity; the calibration runner binds independently checked identity outside the run timer. Cached/collection reports include compatibility, samples, full/skip/block/reset/nonfinite counts, fingerprint time, synchronized model-load time including LoRAs, whole-pipeline time including encoding/denoising/decoding, and peak allocated CUDA bytes. `generationSeconds` is an alias of `pipelineSeconds`, never pure sampler time. The outer process wall clock remains necessary to judge actual end-to-end benefit; accepted caching can still be slower on a device because of hashing, synchronization or memory pressure. Cache tensors increase VRAM use.
 
-No model-specific Cosmos polynomial or community Anima fit has been adopted. The algorithm is based on the public Apache-2.0 TeaCache idea; modular integration follows Apache-2.0 Diffusers (not ComfyUI code). Retain `TEACACHE_LICENSE.txt`. No dependency pins change. CPU tests use explicitly fake tensor/modules to verify actual block skip counts, branch isolation, reset rules, endpoint guarantees, restoration, profile identity/acceptance, baseline measurement and worker output/progress. The 2026-10-11 device report records actual CUDA generation, one held-out calibration scope and measured cache overhead/acceleration; wider prompt and model quality remains unverified. A profile must be produced and accepted on authorized local hardware before this opt-in feature is usable.
+The product now includes the community Anima polynomial; this section concerns the separate local-fit candidate. The algorithm is based on the public Apache-2.0 TeaCache idea; modular integration follows Apache-2.0 Diffusers (not ComfyUI code). Retain `TEACACHE_LICENSE.txt`. No dependency pins change. Historical device reports apply only to their recorded source; current built-in caching has no new device acceptance.
 
 ## Phase-specific Anima cache candidate and warm comparison
 
-The default calibration strategy is `--strategy phase-envelope`; `--strategy polynomial` preserves the original comparison baseline. Version 2 stores three ordered `phaseEnvelopes` of observed proxy/residual changes. Each phase needs at least three paired observations and two distinct proxies. Up to 32 conservative boundaries retain the maximum observed error in adjoining intervals instead of smoothing away spikes with one global polynomial. Unobserved proxy ranges compute fully. Actual sliced sampling steps determine the phase, and transitions, first/last steps and bounded consecutive reuse trigger full refresh. These are empirical observations, not a semantic error guarantee. No unaccepted profile can enable product caching.
+The default calibration strategy is `--strategy phase-envelope`; `--strategy polynomial` preserves the original comparison baseline. Version 2 stores three ordered `phaseEnvelopes` of observed proxy/residual changes. Each phase needs at least three paired observations and two distinct proxies. Up to 32 conservative boundaries retain the maximum observed error in adjoining intervals instead of smoothing away spikes with one global polynomial. Unobserved proxy ranges compute fully. Actual sliced sampling steps determine the phase, and transitions, first/last steps and bounded consecutive reuse trigger full refresh. These are empirical observations, not a semantic error guarantee. Unaccepted local profiles cannot enable the explicit maintenance-profile path; built-in caching is independent.
 
 Calibration now defaults to one resident weight set for training and held-out baseline/cache pairs. Both sides must report `modelReused: true`; each job gets new blocks, scheduler, guider and cache controller. `--no-resident` separately measures cold jobs. Process creation is recorded separately; runtime imports and first model load are charged to the first training job; warm job wall times include fingerprinting, encoding, sampling, decoding and output. `residentFingerprintSeconds` includes both the initial byte-identity check and any post-load verification; `modelLoadSeconds` excludes that post-load hashing time. `fingerprintSeconds` records additional TeaCache scope work. Per-job CUDA allocation peaks are reset before generation. Review actual images, edited regions and boundaries as well as timings before accepting. Warm code/protocol fixtures alone do not establish device performance; see the 2026-10-11 report for the measured RTX 4070 Ti SUPER scope.
 

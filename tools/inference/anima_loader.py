@@ -2,7 +2,7 @@
 import time
 
 
-def load(root, cfg, blocks, reusable, tools, error):
+def load(root, cfg, blocks, reusable, tools, error, stage=None):
     import torch
     from diffusers import AnimaModularPipeline, AnimaTextConditioner, AutoencoderKLQwenImage, CosmosTransformer3DModel, FlowMatchEulerDiscreteScheduler, ClassifierFreeGuidance
     from transformers import Qwen3Model, Qwen2Tokenizer, T5Tokenizer, T5TokenizerFast
@@ -18,6 +18,8 @@ def load(root, cfg, blocks, reusable, tools, error):
     memory = tools("anima_memory")
     memory.validate()
     for name, cls in classes.items():
+        if stage is not None:
+            stage("loading", component=name)
         previous = (reusable or {}).get(name)
         if (previous is not None and type(previous) is cls
                 and (name not in tools("anima_memory").WEIGHTS or previous.dtype == dtype)):
@@ -33,6 +35,8 @@ def load(root, cfg, blocks, reusable, tools, error):
             components[name] = tools("resident_anima").load_weights(name, cls, str(root / name), **kwargs)
             read_wall = time.perf_counter() - started
             started = time.perf_counter()
+            if stage is not None:
+                stage("uploading", component=name)
             upload = memory.upload_component(components[name], tools)
             loading.append(dict(name=name, readWallSeconds=read_wall,
                 uploadWallSeconds=time.perf_counter() - started, upload=upload))

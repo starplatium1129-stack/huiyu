@@ -126,6 +126,7 @@ async fn status(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Val
     value["diagnostics"] = json!({"basis":"configured","configuration":"valid","files":files,
         "dependencies":"unchecked","runtime":"unverified",
         "message":"文件检查不代表依赖、CUDA 或模型推理可用；依赖检查需手动执行，真实出图尚未验证"});
+    value["discovery"] = s.inference_discovery().await?;
     Ok(Json(value))
 }
 async fn diagnose(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {

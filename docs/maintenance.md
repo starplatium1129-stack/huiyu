@@ -31,6 +31,8 @@
 
 批量页面可导入带修订号的变更文件，也可预览和导入完整内容快照。导入比较原始种子、本地修改和新内容；冲突拒绝写入，缺失记录不隐式删除。
 
+桌面升级使用显式 `catalog import --preserve-local`：完整保留已修改的本地记录（含修订与元数据），仅以原始随包记录更新对比基线，回执列出 `preservedLocal`；同包再次导入仍保留本地内容。默认 CLI 与页面手动导入继续严格拒绝冲突。保留记录会在写入事务内复核；若关联变更会修改它们，整次导入拒绝并回滚，不静默覆盖。部署先完整导出备份，再预览、应用并核对剩余差异；不要把本地记录伪装成随包基线。
+
 开发维护入口：
 
     npm run wf -- content:catalog query --root E:/code/2/lora/AI-CG-Studio --runtime-root E:/code/2/lora/AI-CG-Studio/runtime --kind blueprint --character typhon_arknights

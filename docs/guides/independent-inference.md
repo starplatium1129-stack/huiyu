@@ -1,28 +1,22 @@
 # 独立 Anima 图像推理接入
 
-绘遇现有 Anima 主流程已接入独立后端并完成本机实测，可在控制室显式选择 native 使用。默认引擎仍为既有 ComfyUI；选择 native 后不自动回退。其他模型家族、视频及任意 Comfy 节点不在本轮范围，桌面安装包尚未部署。
+## 当前使用方式（2026-10-13）
 
-本轮已完成六个登记 Anima 模型的真实 GPU 加载与 11 张出图：五个 28 层模型各验证宁宁、夏目，40 层 MiaoMiao 2.9B 验证无 LoRA。Latent 2×、手绘蒙版 Latent 2×、Remacri 2×、自动蒙版 Remacri 2× 均产出 1664×2432，已测遮罩黑区与最终尺寸的原图完全一致。Endfield 第三个 LoRA 另完成 Laevatain 一张完整 API 出图。证据范围、完整 API 对照及限制见[本轮 Anima 替代报告](../audits/2026-10-11/native-anima-replacement.html)。这不表示每个模型都已跑遍每种编辑组合或全部 Endfield 角色。
+在控制室选择“复用并启用独立引擎”，保存后重启运行时。程序从当前 AI 工作区的 inference 根及一层子目录发现兼容运行库安装记录，复用 inference/models 内已转换模型；独立 LoRA 目录没有已登记文件时可直接使用 ComfyUI/models/loras。无需重复复制权重或填写四条路径。显式保存的配置与环境覆盖仍优先，手动路径集中在高级设置。发现只检查本地文件，不代表依赖或设备出图验收。
 
-圆括号权重与高清 TeaCache 的独立校准契约已接入。普通提示词 PNG 与权重 helper 接入前的对照 SHA256 完全一致；加权提示词已真实 GPU 出图。普通单轮校准档不能用于高清或加权范围。宁宁/夏目 normal + RCAS 0.75、阈值 0.25、连续跳步上限 3 的角色档已接受：双方各 12 个完整 API 热任务中位数为 native 4.419 秒、ComfyUI + TeaCache 5.686 秒，耗时减少 22.3%，12 对均更快。范围限于 MiaoMiao 1.6、832×1216、24 步、CFG 4、LoRA 0.8 与本机配置。TeaCache 默认自动开启，精确匹配已接受档案才使用缓存，缺档或无匹配时完整计算；宁宁一例出现双雨伞而无缓存对照为单雨伞，不能承诺物件数量、姿态或逐像素一致。
+日常 TeaCache 已内置 CocyNoric 的 Apache-2.0 Anima 策略，默认阈值 0.10，允许沿用保存的数值阈值；关闭或阈值 0 使用完整计算。切换模型、LoRA、尺寸和高清倍率不再要求校准，也不读取旧 teacache-profile.json。主采样与高清二次采样使用独立残差，首末步完整计算。内置缓存会改变部分采样结果，不承诺跨后端像素一致。显式本地校准仅保留为维护研究路径。
 
-[角色 LoRA + TeaCache 完整 API 报告](../audits/2026-10-11/native-backend-lora-tea.html)记录了宁宁/夏目 v21 强度 0.8、832×1216、24 步、CFG 4：双方各 12 个热任务，独立后端中位 4.819 秒，对照 Comfy + Tea 为 5.741 秒，该轮所有 native 热样本均更快。报告中的冷启动与换组暖机较慢，两引擎调度与锐化不同；这些历史数字不代表下述新调度、加载与精修实现的性能，也不推广至任意参数或数学等价。fused 模式的无 LoRA 与两角色档已共存，该历史轮次未更改默认开关；当前已改为自动匹配开启。
+加载阶段显示环境、模型核验、各组件加载与上传、编码、解码及保存进度。取消在安全阶段或采样步边界生效，清理后确认 ready 才保留模型；10 秒内没有确认或发生故障时仍结束进程，避免后续任务与未退出工作重叠。已完成任务的取消竞争不再无条件销毁模型。
 
-2026-10-11 主力机已用独立 Python/CUDA 运行 MiaoMiao 1.6 真实文生图、图生图、手绘蒙版和两个现有角色 LoRA，初轮结果见[本机 GPU 报告](../audits/2026-10-11/native-backend-gpu.html)。后续优化与完整 API 验证见[性能续报](../audits/2026-10-11/native-backend-performance.html)：显式启用 compiled-sage，结合受保护文件身份复用和本机多项式 TeaCache 校准，在本机两个已测尺寸的连续同提示词换 seed 任务中超过 ComfyUI + TeaCache。该结论限于报告中的配置与热任务，不代表全模型、全 LoRA 或冷启动领先。
+默认引擎仍为 ComfyUI，原生范围是已支持的 Anima 模型与 LoRA、图生图、手绘/CLIPSeg 局部重绘、Latent/固定 Remacri 高清和 RCAS。独立运行库与 Diffusers 模型转换仍是首次准备需求；当前不盲用 ComfyUI Python、不安装依赖、不下载模型。新机打包运行库、Krea/SDXL/视频和任意 Comfy 节点不属于本次交付。
 
-可选模式通过 `HUIYU_INFERENCE_ACCELERATION=compiled-sage` 启用，默认为 `native`。仅支持已锁定的 Windows Torch 2.8.0+cu128、SageAttention 与 Triton 版本及 Ada SM89，安装来源与 SHA256 见 `tools/inference/runtime-manifest.json`。首次编译、尺寸或 LoRA 设置改变会增加耗时；组件权重与 PEFT 强度保持原调用，不融合适配器。按用户确认的“主体、清晰度和风格保持，允许局部细节变化”检查留出样张后，已安装本机 MiaoMiao 1.6、832×1216、24 步、CFG 4、无 LoRA 的校准档；其他尺寸/适配器组合需单独校准，当前 TeaCache 默认自动匹配已接受档案；执行模式也必须与档案一致。
+本次真实验收与桌面同步见[原生出图体验修复](../audits/2026-10-13/native-generation-experience.html)。用户授权后完成 36 张产品 API 成片、5 次取消，并完成安装版取消/恢复；2026-10-13 已完整安装到 `C:/Program Files/AI-CG-Studio`，用户确认实际体验良好。本机 RTX 4070 Ti SUPER 的 MiaoMiao 1.6、宁宁 LoRA 0.8、832×1216、24 步、CFG 4 三张热任务中位数为原生 5.05 秒、ComfyUI 5.54 秒；Latent 高清速度接近，局部手部细节仍有差异。分阶段模式较慢但显存峰值更低。本轮不推广为全模型、自动换装语义或全部硬件验收。
 
-角色 LoRA 的进一步加速模式为 `compiled-fused-sage`。控制室的独立推理设置可持久化执行模式，重启后由 Worker 使用；`HUIYU_INFERENCE_ACCELERATION` 仍可显式覆盖，但普通桌面启动不再需要临时终端环境。旧配置缺少执行模式时按 `native` 读取，尚未准备可选依赖的机器不会自动开启 Sage。普通、保持基座的线性 LoRA 在有效源文件租约下，从原始 safetensors 的已核对位置通过 `readinto` 恢复基座；可复用 CPU 读取及转换缓冲合计最多 32 MiB，恢复前后持续检查基座身份，替代此前两角色各约 3.28 GiB 的完整 CPU 快照。这个上限不含操作系统文件缓存、模型与其他进程内存；源保护不可用的调用仍保留 CPU 快照路径。改强度、换组和卸载前先恢复原值，不通过 BF16 相减恢复，不改写文件。融合仍改变浮点运算顺序，使用单独校准身份，不能沿用未融合档。
+首次依赖初始化在取消读取线程继续等待下一行之前完成，修复 Windows NumPy 原生扩展的初始化阻塞。完整 API 计时包括这段初始化及结果后的资源清理；首次 CUDA 设备准备先于分配器峰值重置。每张完成后归还闲置显存，保留模型权重；高清结束常驻模式整卡约 6557 MiB，分阶段模式约 1421 MiB。
 
-独立引擎下 MiaoMiao 1.6 使用已实测的 24 步、CFG 4 默认配方，宁宁/夏目默认 LoRA 强度 0.8；后续明确修改的参数与历史恢复值保留。原 ComfyUI 配方及 Endfield 强度不因此改变。TeaCache 自动模式仍核对完整范围，改变尺寸、参数或执行模式后未匹配时完整计算。
+## 既有参数对齐与显存策略（2026-10-12 记录）
 
-模型身份首次读取完整 SHA256；固定本地 NTFS 通过文件句柄禁止所选权重写入/删除，结合文件 ID、目录成员和属性通知复用身份。基座与 LoRA 独立持有保护：换组保留有效基座租约，仅为新适配器读取完整字节；基座成员或属性事件仍使复用失效，加载期间发生变化后又恢复原状也会拒绝。支持 Rust 传入的 Windows 扩展本地路径，网络、重解析或保护不可用的路径仍全量哈希。首次任务将依赖导入与完整身份读取并行，但目录通知留在驻留主线程，全部初始化成本仍计入冷请求。更换所选模型或 LoRA 文件前需先停止 Worker 或等待 120 秒空闲释放。后文的办公机记录只说明当时的验证范围。
-
-四个组件完成严格加载核验后，新增按 dtype 打包的 GPU 上传：保留 Parameter/Buffer 对象、形状、dtype 与数值，只将底层存储切成目标 GPU 分配的视图，不额外拼接一份完整 CPU 权重。不适用的布局在修改前返回原上传路径，复制或发布失败则明确失败。普通同拓扑 LoRA 在完整键、shape、rank、配置与 dtype 核验后可原位 hotswap；不匹配则使用既有卸载/加载路径，发生部分修改后失败会丢弃驻留模型。四任务诊断对照中，4 张 PNG 字节完全一致，额外完整 CPU 原权重快照从约 3.28 GiB 降为 0，临时缓冲最多 32 MiB，进程工作集从约 5.63 GiB 降至 1.80 GiB。private bytes 含 GPU 驱动相关记账，不等于物理 RAM；这些诊断样本不代替最终 API 性能对照。原始记录在 `runtime/backend-cost-20261011/startup-comparison.json`。
-
-## 当前参数对齐与显存策略（2026-10-12）
-
-当前采样身份为 `anima-workflow-effects-v3`，并绑定 `memoryPolicy`。延续 Euler/simple、尾部 N 步、CPU 噪声及 CFG 0.5 对齐，本轮补齐蒙版、KJ RCAS 功能参数、Remacri 羽化/量化及单帧 VAE 路径；所有旧 Tea 档失配，自动模式完整计算，显式开启严格拒绝。10 月 11 日的样张/耗时/档案只属于原版本。
+当前采样身份为 `anima-workflow-effects-v3`，并绑定 `memoryPolicy`。延续 Euler/simple、尾部 N 步、CPU 噪声及 CFG 0.5 对齐，本轮补齐蒙版、KJ RCAS 功能参数、Remacri 羽化/量化及单帧 VAE 路径；该版本曾因旧 Tea 档失配而回退完整计算；本页开头的内置策略已取代日常档案匹配。10 月 11 日的样张/耗时/档案只属于原版本。
 
 本机控制室可选“模型常驻显卡”或“分阶段加载”，持久字段为 `inference.memoryPolicy`，环境覆盖为 `HUIYU_INFERENCE_MEMORY=resident|offload`，保存后重启。默认 resident 保留热吞吐；offload 使用 Diffusers 0.41 的 ComponentsManager，在 Qwen、conditioner、transformer、VAE 实际 forward 之间切换，去噪循环内不来回卸载 transformer，Remacri 前卸载 Anima。LoRA 融合逐组件在 CUDA 完成后回 CPU，不偷换 CPU 融合数值。尚无 transformer 块级流式卸载；去噪器和激活仍须能放入显存，不保证任意 4/8 GB 设备。
 
@@ -32,7 +26,7 @@ Resident 加载现在每组件检查完即上传，避免四组件一起持有 C
 
 高清保留过期张量清理与解码前释放 Tea 残差。VAE 普通整图先行，单帧禁用跨帧 feature clone；严格 CausalConv 单帧/无 cache 条件截取最后时间核并用隐式空间 padding，RMS 按原 dtype 归一化，latent 统计、raw-latent bicubic 与显示边界用 FP32。仅实际 CUDA OOM 回退：encode256/overlap64；decode 从32 latent 按当前可用显存预算倍增，overlap为tile/4。CPU FP32双侧羽化、累加/权重和归一；不回退精度或 CPU 推理。
 
-Remacri 从512/32网格开始，不再使用192 core＋halo硬裁；只有真实 CUDA OOM 才整次256/128重算。RRDB按CUDA模型设备逐块上传，完整4×结果与Lanczos留CPU；VAE回退CPU像素不会使RRDB误走CPU。Lanczos与PNG均RGB uint8截断。`nativeRuntime.refinement`记录实际VAE整图/分块、tile/overlap/count、输出设备和Remacri块信息。当前AMD 880M无可用NVIDIA CUDA，本轮无真实模型/测试/部署；数学路径已接入，但kernel/浮点舍入、画面与性能仍须设备验收，见[高清与蒙版补齐](../audits/2026-10-12/native-anima-effects.html)。
+Remacri 从512/32网格开始，不再使用192 core＋halo硬裁；只有真实 CUDA OOM 才整次256/128重算。RRDB按CUDA模型设备逐块上传，完整4×结果与Lanczos留CPU；VAE回退CPU像素不会使RRDB误走CPU。Lanczos与PNG均RGB uint8截断。`nativeRuntime.refinement`记录实际VAE整图/分块、tile/overlap/count、输出设备和Remacri块信息。该记录的AMD 880M环境无可用NVIDIA CUDA，当轮无真实模型/测试/部署；数学路径已接入，但kernel/浮点舍入、画面与性能仍须设备验收，见[高清与蒙版补齐](../audits/2026-10-12/native-anima-effects.html)。
 
 ## 控制室切换与结果保护
 
@@ -68,11 +62,11 @@ python scripts/maintenance/prepare-inference.py --target-dir <AI工作区>/infer
 
 `--preflight` 使用当前受信 Python 自带的 pip 做离线 `--dry-run --ignore-installed`：解析全部依赖而不借用当前已装包，缺轮子/平台不兼容会在创建 venv 前报错。它需要支持 `--dry-run` 的已有 pip，不自动升级。`--apply` 总会先执行同样预检。工具仅读本地 wheel 元数据并拒绝 URL 依赖，只把已检查的 `.whl` 文件交给 `--no-index --only-binary=:all: --no-cache-dir`，不跟随目录内 HTML 或使用源码安装包。预检通过不证明真实包可导入或 GPU 可运行。pip 行为参见[官方 install 文档](https://pip.pypa.io/en/stable/cli/pip_install/)。
 
-`runtime-config.json` 保存解释器、worker 路径及依赖回执。移动安装根后应重新准备新目录或显式设置 worker 路径；旧回执不被默默改写。构建/测试不会调用安装步骤。桌面包带 worker、依赖清单与准备器；控制室提供显式离线准备入口，但仍需已有可信 Python 与配套 wheelhouse，尚未提供完整的签名 Python/CUDA wheel 发行材料。不能称“新机安装后放一个权重即可生成”。
+`runtime-config.json` 保存解释器及依赖回执。发现兼容记录时仅复用 Python，默认 Worker 取当前应用；不采用记录中的历史源码路径，也不改写旧记录。显式已存 Worker 和环境覆盖仍优先。构建不会调用安装步骤。桌面包带 worker、依赖清单与准备器；控制室提供显式离线准备入口，但仍需已有可信 Python 与配套 wheelhouse，尚未提供完整的签名 Python/CUDA wheel 发行材料。不能称“新机安装后放一个权重即可生成”。
 
 ## 应用内离线准备与完整目录导入
 
-控制室独立引擎区域提供两个明确操作：
+已有资源优先使用“复用并启用独立引擎”；仅缺资源时使用以下准备入口：
 
 - 离线准备：填写当前 AI 工作区、已有可信 Python 可执行文件和本地 wheelhouse，确认后调用固定随包准备器。目标固定为该工作区的 inference 目录；既有或部分 venv 拒绝覆盖。沿用操作状态、互斥与取消，不把请求超时当作后台任务已停止。完成不会切换引擎；通过“填入设置”后再保存并重启。
 - 完整模型目录：选择既有 Anima catalog 的模型 ID，指定完整 Diffusers 来源目录，先只读检查并显示复制目标，再明确导入至已保存模型根目录/modelId。只复制，不移动源、不覆盖目标。布局证据不证明权重架构、实际加载或出图。原始 safetensors 单文件仍需下节严格转换。
@@ -121,7 +115,7 @@ python -I scripts/maintenance/convert-anima-checkpoint.py --profile anima-cosmos
 
 独立路径支持 Euler 与标准确定性 `res_multistep`，不把后者替换为 Euler。`normal` 与 `sgm_uniform` 使用固定 shift=3、训练表 1000 的数学网格，由官方 Diffusers scheduler 施加一次移位并追加零终点；旧版 24、30 步 CPU sigma 有隔离参考核对记录。`sgm_uniform` 排除末端，`normal` 保留两端。本次 Euler/simple 与 RES/simple 统一抽取 1000 点训练表；图生图与精修都从 `int(N/denoise)` 完整网格取尾部 N 步，并传 strength=1，避免上游再次截短。两阶段改用 CPU FP32 generator；同种子不承诺跨后端逐像素一致。
 
-RES 根据公开指数积分数学独立实现二阶多步更新，flow velocity 先转为 denoised，首步与零终点使用 Euler；每个任务及精修阶段新建状态，图生图 begin_index 清空历史。支持范围为 eta=0、无 CFG++；动态移位、其他 sigma 变换、随机变体和重复 sigma 拒绝。CPU 小 ODE、向量、BF16 输出转换及隔离 `python -I` 加载已验证，不等于真实 transformer、CFG、噪声或成图逐位一致。改变 sampler/scheduler 必须使用对应 TeaCache 校准范围。
+RES 根据公开指数积分数学独立实现二阶多步更新，flow velocity 先转为 denoised，首步与零终点使用 Euler；每个任务及精修阶段新建状态，图生图 begin_index 清空历史。支持范围为 eta=0、无 CFG++；动态移位、其他 sigma 变换、随机变体和重复 sigma 拒绝。CPU 小 ODE、向量、BF16 输出转换及隔离 `python -I` 加载已验证，不等于真实 transformer、CFG、噪声或成图逐位一致。显式本地校准路径改变 sampler/scheduler 后仍须使用对应范围；日常内置缓存无需重校准。
 
 RCAS 为独立实现的工作流变体：reflect边界、中心＋四邻极值、RGB最负lobe、epsilon1e-6，先乘strength再限幅、reciprocal归一化；沿用KJ固定版本d3cfe216的0.75功能参数。Remacri仍仅接受严格BasicSR RRDB固定权重；Auto解析、Latent二轮/Remacri蒙版二轮条件保持现有工作流。浮点/kernel不同仍不能按源码声称像素完全相等。
 
@@ -163,13 +157,15 @@ Transformers 实现许可证为 Apache-2.0；CLIPSeg 权重许可独立于代码
 
 ## TeaCache 本机校准与验收
 
+本节仅为显式维护研究路径，日常出图使用内置策略，不需要执行这些步骤；禁止测试期间不得运行采集、比较或验收命令。
+
 本轮另实现维护候选 `local-guard`（schema3 / `huiyu-anima-local-guard-v1`）：按每批最多16个连续raster token组的相对L1峰值，与全局均值分别校准三阶段关系；两套累计预算都允许才复用。它是粗粒度特征风险筛选，不识别脸/手部，不构成画质误差界。生成两指标合并一次读回，局部残差指标仅全算校准时采集。原phase/poly路径不执行此额外计算。
 
 后续在授权CUDA设备用同一维护入口的 `--strategy local-guard` 生成新候选目录，`--local-threshold` 可单独给局部门槛，不提供时使用本次 `--threshold`；都需在0.01–1范围内。默认strategy仍phase-envelope，不加 `--run` 只有计划。本轮没有实际采集、拟合、接受或安装任何档案。schema3独立成族，产品选择明确排除它，即使将来存入集合也不会覆盖或自动取代原算法；后续实际使用时再选择与接入。详见[局部风险缓存候选](../audits/2026-10-12/native-anima-local-cache.html)。
 
 独立 Anima/Cosmos 路径已实现首层 norm1 代理与整个 transformer block 栈残差复用，实际跳过 attention/MLP；模型外层预处理与输出层仍运行。按 CFG 分支独立缓存，每任务新建缓存控制器；受控 Worker 串行复用已加载权重，实际首尾采样步全算，连续跳步有上限，条件、形状、设备或时间序列变化清理缓存，异常恢复原调用。图生图及手绘/CLIPSeg 遮罩继续执行原逐步约束与最终合成，不把缓存当换装算法。
 
-实现针对固定 Diffusers 0.41.0 的标准 Anima/Cosmos 结构；不能推及所有 MiaoMiao 版本。没有内置借用的拟合系数，本机系数与留出速度/画质证据见续报。官方 TeaCache 的 Apache-2.0 许可随包保留；其 Cosmos 示例不是 Anima 校准证据，权重许可另计。
+实现针对固定 Diffusers 0.41.0 的标准 Anima/Cosmos 结构；不能推及所有 MiaoMiao 版本。本节维护路径使用本机拟合系数，日常引擎使用上文的内置 Anima 策略。官方 TeaCache 的 Apache-2.0 许可随包保留；其 Cosmos 示例不是 Anima 校准证据，权重许可另计。
 
 使用已经准备好的独立运行库 Python。准备至少一份校准任务 JSON 与一份验证任务 JSON，结构与 worker 任务相同（modelDir、outputPath、input 等见 tools/inference/README.md），均关闭 TeaCache。验证提示词与种子必须未用于校准；模型、LoRA、尺寸、步数、CFG、编辑模式/强度和遮罩参数必须一致。允许不同原图与手绘遮罩。工具会把输出重定位到全新的结果目录，不覆盖任务原输出。
 
@@ -187,7 +183,7 @@ python -I scripts/maintenance/calibrate-anima-teacache.py --calibration-job trai
 python -I scripts/maintenance/calibrate-anima-teacache.py --accept-run <结果目录> --accept-quality --accept-performance
 ```
 
-验收入口再次核对资产、源图片/遮罩和报告输出，要求每个留出缓存任务确有有限数值跳步，重新计算端到端中位数比且确实快于基线，才写入所选模型目录 teacache-profile.json。已有档不会自动覆盖；明确替换需提供其 `--replace-profile-sha256`。默认自动模式会在下一次兼容请求中使用已接受档；显式关闭不会被验收或模型切换覆盖。
+验收入口再次核对资产、源图片/遮罩和报告输出，要求每个留出缓存任务确有有限数值跳步，重新计算端到端中位数比且确实快于基线，才写入所选模型目录 teacache-profile.json。已有档不会自动覆盖；明确替换需提供其 `--replace-profile-sha256`。仅显式指定校准档的维护请求使用已接受档；显式关闭不会被验收或模型切换覆盖。
 
 同一固定文件现在可存最多 16 份、合计不超过 64 KiB 的校准集合。不同 runtime、角色 LoRA、强度、尺寸等范围分别保存；worker 只选择精确匹配的一份，无匹配或重复范围明确拒绝。接受新范围会保留旧范围；追加或替换均需提供旧整文件 SHA256，并通过独占接受锁和原子写入发布。异常中断留下的 `.teacache-profile.lock` 需先人工核对，不自动抢锁。
 
@@ -199,7 +195,7 @@ python -I scripts/maintenance/calibrate-anima-teacache.py --accept-run <结果�
 
 独立引擎以 `--serve` 串行执行任务，复用一份模型／LoRA 权重，连续任务无需重新启动 Python 或重新搬入同一份权重。每任务核对完整字节身份或仍有效的受保护租约，新加载后继续核验；基座变化会重载。普通 LoRA 换组先恢复融合基座，再尝试严格同拓扑 hotswap；不适用时完整卸载 transformer 和 text_conditioner 的适配器再加载，空组恢复无适配器基座。可能改写基座的初始化或未核实变体仍整组重载；同组仅变强度更新权重，融合模式同样先恢复。每次创建新的管线块、调度器、CFG 与 TeaCache 状态，不保留 seed 或中间潜变量；文本编码使用下述有界 CPU 缓存。成功任务的 `result` 后必须收到同身份 `ready`，才允许接收下一任务；取消、错误、超时和退出终止所属 Worker，确认停止前不放行 GPU 队列。空闲 120 秒释放进程与模型。
 
-校准默认采用 `phase-envelope`：按实际采样进度分为三个阶段，保留各阶段观测到的变化峰值；超出观测范围或跨阶段时全算刷新。每阶段至少三个有效配对样本及两种代理变化；最多 32 个保守边界压缩数据，避免一个全局多项式平滑掉局部峰值。它仍是经验性误差估计，不能保证人物、纹理或换装边缘的画质。原 `--strategy polynomial` 可作算法对照，已有 v1 档仍按原策略执行。两种策略均要求人工验收；默认自动模式只选择已接受的精确匹配档。
+校准默认采用 `phase-envelope`：按实际采样进度分为三个阶段，保留各阶段观测到的变化峰值；超出观测范围或跨阶段时全算刷新。每阶段至少三个有效配对样本及两种代理变化；最多 32 个保守边界压缩数据，避免一个全局多项式平滑掉局部峰值。它仍是经验性误差估计，不能保证人物、纹理或换装边缘的画质。原 `--strategy polynomial` 可作算法对照，已有 v1 档仍按原策略执行。两种策略均要求人工验收；显式维护路径只选择已接受的精确匹配档。
 
 校准与留出对照默认复用同一份已加载权重，双方须有 `modelReused=true` 证据；`--no-resident` 可另测冷任务。进程创建开销单列，Python 导入与首次模型加载计入首个训练任务；暖任务总耗时包含指纹、编码、采样、解码和写图；每任务重置 CUDA 分配峰值。两种模式不能混为同一速度结论。RTX 4070 Ti SUPER 的实际配置和原始证据见性能续报。
 

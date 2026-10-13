@@ -49,7 +49,9 @@ class RuntimeMetrics:
             if any(type(value) is not int or value < 0 for value in (allocated, reserved)):
                 raise ValueError("Invalid allocator counters")
             self.memory.update(status="per-job-allocator", reason=None,
-                peakAllocatedBytes=allocated, peakReservedBytes=reserved)
+                peakAllocatedBytes=allocated, peakReservedBytes=reserved,
+                currentAllocatedBytes=values["allocated_bytes.all.current"],
+                currentReservedBytes=values["reserved_bytes.all.current"])
         except Exception:
             self.memory["reason"] = "allocator-observation-error"
 
@@ -106,6 +108,7 @@ class RuntimeMetrics:
             reason=report.get("selectionReason", "request-disabled") if report is not None else "request-disabled")
         if tea is not None:
             cached.update(_counts(tea.stats, ("fullComputes", "skippedComputes", "skippedBlocks", "resets", "nonfinite")))
+            cached.update(algorithm=report.get("algorithm", "calibrated-local"), threshold=tea.threshold)
         return dict(schemaVersion=1, timingMode="cpu-wall-no-extra-sync", timingsAreAdditive=False,
             existingReportSynchronization=report is not None, timings=self.timings, baseReused=reused, completedSteps=completed_steps,
             textCache=text, maskCache=mask, teaCache=cached, memory=self.memory,

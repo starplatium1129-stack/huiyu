@@ -92,6 +92,9 @@ pub(super) fn capture(value: &Value) -> Value {
         if let Some(seconds) = value["timings"].get("postprocessWallSeconds") {
             result["timings"]["postprocessWallSeconds"] = json!(finite(seconds)?);
         }
+        if let Some(seconds) = value["timings"].get("dependencySetupWallSeconds") {
+            result["timings"]["dependencySetupWallSeconds"] = json!(finite(seconds)?);
+        }
         if let Some(loading) = value.get("loading").filter(|v| !v.is_null()) {
             if loading["strategy"] != "component-sequential-v1" {
                 return None;
@@ -210,11 +213,30 @@ pub(super) fn capture(value: &Value) -> Value {
             let reason = reason.as_str()?;
             if !matches!(
                 reason,
-                "matched-profile" | "request-disabled" | "no-matching-profile"
+                "matched-profile"
+                    | "request-disabled"
+                    | "no-matching-profile"
+                    | "builtin-anima"
+                    | "threshold-zero"
+                    | "calibration"
             ) {
                 return None;
             }
             result["teaCache"]["reason"] = json!(reason);
+        }
+        if let Some(algorithm) = value["teaCache"].get("algorithm") {
+            if !matches!(
+                algorithm.as_str()?,
+                "anima-teacache-e7a7382-v1" | "calibrated-local"
+            ) {
+                return None;
+            }
+            result["teaCache"]["algorithm"] = algorithm.clone();
+            let threshold = finite(&value["teaCache"]["threshold"])?;
+            if threshold > 1. {
+                return None;
+            }
+            result["teaCache"]["threshold"] = json!(threshold);
         }
         let memory = &value["memory"];
         if memory["deviceIndex"] != 0 || memory["scope"] != "image-preparation-through-pipeline" {
@@ -227,6 +249,11 @@ pub(super) fn capture(value: &Value) -> Value {
                 captured["reason"] = Value::Null;
                 for key in ["peakAllocatedBytes", "peakReservedBytes"] {
                     captured[key] = json!(memory[key].as_u64()?);
+                }
+                for key in ["currentAllocatedBytes", "currentReservedBytes"] {
+                    if let Some(value) = memory.get(key) {
+                        captured[key] = json!(value.as_u64()?);
+                    }
                 }
             }
             "unverified" => {

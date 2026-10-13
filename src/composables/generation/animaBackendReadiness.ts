@@ -32,7 +32,7 @@ export function backendReadiness(data: AnimaStatusResponse, model: AnimaOption |
   const superRes = data.hires?.superResModel
   const autoHiresModel = superRes === null ? null : typeof superRes === 'string' && superRes.trim() ? superRes : undefined
   const checkMsg = kreaNodeMessage(nodes, managedStartAvailable) ?? (online
-    ? `${familyLabel} 在线 · ${modelCount} 个底模 · ${loraCount} 个 LoRA${provider === 'native' ? ` · 原生局部重绘（实验性）${data.capabilities?.automaticMask === true ? ' · 本地自动识别文件就绪' : ' · 自动识别缺少本地 CLIPSeg 文件'} · TeaCache ${nativeTeaCacheReady(model) ? '校准档文件就绪（待加载核验）' : '缺少本地校准档'} · ${model?.capabilities?.hires ? '支持高清放大（TeaCache 高清组合需单独校准）' : '不支持高清修复'}` : ''}`
+    ? `${familyLabel} 在线 · ${modelCount} 个底模 · ${loraCount} 个 LoRA${provider === 'native' ? ` · 原生局部重绘（实验性）${data.capabilities?.automaticMask === true ? ' · 本地自动识别文件就绪' : ' · 自动识别缺少本地 CLIPSeg 文件'} · TeaCache ${nativeTeaCacheReady(model) ? '内置策略就绪' : '当前运行时未提供内置策略'} · ${model?.capabilities?.hires ? '支持高清放大' : '不支持高清修复'}` : ''}`
     : managedStartAvailable ? `${familyLabel} 已准备 · 生成时自动启动受管 ComfyUI` : `${familyLabel} 不可用（请检查${provider === 'native' ? '原生推理服务' : 'ComfyUI'}与当前模型文件）`)
   return { online, managedStartAvailable, provider, automaticMaskAvailable: data.capabilities?.automaticMask === true, automaticMaskStatus, autoHiresModel, checkMsg }
 }

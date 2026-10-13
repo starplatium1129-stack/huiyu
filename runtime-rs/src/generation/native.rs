@@ -104,8 +104,8 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
         match slot {
             Ok(slot) => {
                 let outcome = run(&worker, &job, &token).await;
-                // Hold the GPU slot through publication/cancel settlement. A
-                // cancelling completed job must not retire the next job's model.
+                // Hold the GPU slot through the cancellation acknowledgement
+                // and publication. No next job may run before worker cleanup.
                 if settle(&worker, &job, outcome, token.is_cancelled()).await {
                     worker.native.slot.close();
                     worker.admission.close();
@@ -131,21 +131,11 @@ async fn settle(
             // Cancellation can win between worker completion and publication.
             // succeed intentionally refuses publication in cancelling state.
             if job.state.lock().await.status == "cancelling" {
-                let resident = inner.native.worker.lock().await.take();
-                if let Some(mut resident) = resident {
-                    if let Err(error) = resident.stop().await {
-                        error
-                    } else {
-                        cancelled(job).await;
-                        return false;
-                    }
-                } else {
-                    cancelled(job).await;
-                    return false;
-                }
-            } else {
-                return false;
+                // run already received ready; publication cancellation cannot
+                // make its clean resident model unsafe for the next request.
+                cancelled(job).await;
             }
+            return false;
         }
         Err(error) => error,
     };
@@ -274,11 +264,29 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     };
     let request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"teaCacheProfilePath":plan.tea_cache_profile_path,"upscaleModelPath":plan.upscale_model_path,"outputPath":output,"input":input,"inputImagePath":input_image_path,"maskImagePath":mask_image_path,"loras":plan.loras});
     let mut worker = inner.native.take_worker(&plan.settings).await?;
-    let result = async {
+    // Do not interrupt a partially written JSONL request with another command.
+    // The stdin reader operates independently of loading and CUDA execution.
+    let sent = tokio::time::timeout(Duration::from_secs(10), async {
         worker
             .input
             .write_all(format!("{}\n", request).as_bytes())
             .await?;
+        worker.input.flush().await
+    })
+    .await;
+    match sent {
+        Ok(Ok(())) => {}
+        value => {
+            worker.stop().await?;
+            return match value {
+                Ok(Err(error)) => Err(error.into()),
+                _ => Err(ApiError::new(504, "NATIVE_TIMEOUT", "独立推理请求发送超时")),
+            };
+        }
+    }
+    let mut produced = false;
+    let mut ready = false;
+    let result = async {
         let mut runtime_observation = Value::Null;
         let events = async {
             {
@@ -298,22 +306,14 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                     )
                     .await?;
             }
-            let mut line = Vec::new();
-            let mut produced = false;
             loop {
-                line.clear();
-                let count = (&mut worker.output)
-                    .take(65537)
-                    .read_until(b'\n', &mut line)
-                    .await?;
-                if count == 0 || count > 65536 {
-                    return Err(protocol_error());
-                }
-                let event: Value = serde_json::from_slice(&line).map_err(|_| protocol_error())?;
-                if event["id"] != job.id {
-                    return Err(protocol_error());
-                }
+                let event = worker.event(&job.id).await?;
                 match event["event"].as_str() {
+                    Some("stage") if !produced => {
+                        let text = stage_text(&event)?;
+                        let mut state = job.state.lock().await;
+                        state.progress_text = text;
+                    }
                     Some("progress") if !produced => {
                         let step = event["step"].as_u64().ok_or_else(protocol_error)?;
                         let total = event["total"]
@@ -331,7 +331,10 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                         runtime_observation = observations::capture(&event["nativeRuntime"]);
                         produced = true;
                     }
-                    Some("ready") if produced => return Ok(()),
+                    Some("ready") if produced => {
+                        ready = true;
+                        return Ok(());
+                    }
                     Some("error") => {
                         return Err(ApiError::new(
                             502,
@@ -370,14 +373,58 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
             mime: "image/png".into(),
         })
     };
-    // Cancel/error/timeout retires the resident process before another GPU job.
     let value = tokio::select! { biased; _=token.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","独立推理已取消")), value=tokio::time::timeout(Duration::from_secs(600),result)=>value.unwrap_or_else(|_| Err(ApiError::new(504,"NATIVE_TIMEOUT","独立推理超时"))) };
-    if value.is_ok() && !token.is_cancelled() {
+    let cancelling = value.as_ref().err().is_some_and(|error| {
+        token.is_cancelled() && matches!(error.code.as_str(), "ABORT_ERR" | "CANCELLED")
+    });
+    let retain = if value.is_ok() || (cancelling && ready) {
+        true
+    } else if cancelling {
+        match worker.cancel_and_wait(&job.id, produced, &output).await {
+            Ok(()) => true,
+            Err(error) => {
+                eprintln!("native cooperative cancellation: {}", error.code);
+                false
+            }
+        }
+    } else {
+        false
+    };
+    if retain {
         Engine::retain_worker(inner.clone(), worker).await;
         return value;
     }
+    // Unacknowledged cancellation, faults and timeouts still retire the process
+    // while its GPU slot and temporary inputs are held by this request.
     worker.stop().await?;
     value
+}
+fn stage_text(event: &Value) -> Result<String> {
+    let label = match event["stage"].as_str() {
+        Some("dependencies") => "准备推理环境",
+        Some("fingerprint") => "确认模型与 LoRA",
+        Some("preparing_image") => "处理输入图像",
+        Some("loading") => "加载模型",
+        Some("uploading") => "传输模型到显卡",
+        Some("adapters") => "应用 LoRA",
+        Some("encoding") => "编码提示词",
+        Some("sampling") => "采样",
+        Some("decoding") => "解码图像",
+        Some("upscaling") => "放大图像",
+        Some("saving") => "保存图像",
+        _ => return Err(protocol_error()),
+    };
+    let component = match event.get("component").and_then(Value::as_str) {
+        None => "",
+        Some("text_encoder") => " · 文本编码器",
+        Some("text_conditioner") => " · 文本条件模型",
+        Some("transformer") => " · 扩散模型",
+        Some("vae") => " · VAE",
+        Some("tokenizer" | "t5_tokenizer") => " · 分词器",
+        Some("scheduler") => " · 调度器",
+        Some(_) => return Err(protocol_error()),
+    };
+    Ok(format!("独立推理{label}{component}"))
 }
 fn protocol_error() -> ApiError {
     ApiError::new(502, "NATIVE_PROTOCOL_ERROR", "独立推理协议或结果无效")

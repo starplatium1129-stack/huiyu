@@ -11,7 +11,6 @@ const CLIPSEG_FILES: [&str; 7] = [
     "merges.txt",
     "model.safetensors",
 ];
-const TEACACHE_PROFILE: &str = "teacache-profile.json";
 const REMACRI_FILE: &str = "4x_foolhardy_Remacri.safetensors";
 
 fn supported_sampling(input: &Value) -> bool {
@@ -104,8 +103,8 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
         Some(_) => return Err(error("INVALID_PARAMETER", "独立推理 teaCache 必须为布尔值")),
     };
     input["teaCache"] = json!(tea_cache);
-    // This marker is host-owned. The frozen input preserves auto on resume;
-    // explicit booleans always select strict enablement or disablement.
+    // Retain the host marker for saved task recipes. Both modes now use the
+    // bundled Anima strategy; neither requires a per-recipe calibration file.
     input["teaCacheAuto"] = json!(raw.get("teaCache").is_none());
     if input["hiresFix"] == true {
         validation::number(&input["hiresScale"], "hiresScale", 1.1, 3., false)?;
@@ -123,23 +122,15 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
             ));
         }
     }
-    // Shared validation supplies Comfy defaults. Native calibration owns its
-    // threshold instead, unless this request explicitly chose a numeric value.
+    // Share the Comfy workflow threshold, including restored numeric settings.
     input.as_object_mut().unwrap().remove("teaCacheThresh");
     if let Some(threshold) = raw.get("teaCacheThresh") {
-        if input["teaCacheAuto"] == true {
-            return Err(error(
-                "INVALID_PARAMETER",
-                "指定 teaCacheThresh 时必须明确设置 teaCache=true",
-            ));
+        let threshold = validation::number(threshold, "teaCacheThresh", 0., 1., false)?;
+        if tea_cache {
+            input["teaCacheThresh"] = threshold;
         }
-        if !tea_cache {
-            return Err(error(
-                "INVALID_PARAMETER",
-                "TeaCache 已关闭，请移除原生请求中的 teaCacheThresh",
-            ));
-        }
-        input["teaCacheThresh"] = validation::number(threshold, "teaCacheThresh", 0.01, 1., false)?;
+    } else if tea_cache {
+        input["teaCacheThresh"] = json!(0.10);
     }
     input["inferenceEngine"] = json!("native");
     Ok(input)
@@ -249,15 +240,6 @@ pub(super) async fn plan(
         input["hiresSampler"] = Value::Null;
         input["hiresScheduler"] = Value::Null;
     }
-    let tea_cache_profile_path = if input["teaCache"] == true {
-        let profile = tea_cache_profile(&model_dir).await?;
-        if profile.is_none() && input["teaCacheAuto"] != true {
-            return Err(tea_cache_profile_error());
-        }
-        profile
-    } else {
-        None
-    };
     let mask_model_dir = if input["maskPrompt"]
         .as_str()
         .is_some_and(|prompt| !prompt.is_empty())
@@ -323,7 +305,7 @@ pub(super) async fn plan(
         input,
         model_dir,
         mask_model_dir,
-        tea_cache_profile_path,
+        tea_cache_profile_path: None,
         upscale_model_path,
         settings: settings.clone(),
         init_image,
@@ -354,30 +336,6 @@ async fn model_available(path: &std::path::Path) -> bool {
         }
     }
     false
-}
-fn tea_cache_profile_error() -> ApiError {
-    ApiError::new(
-        503,
-        "NATIVE_TEACACHE_PROFILE_UNAVAILABLE",
-        "TeaCache 校准档不可用；自动模式仅允许缺档回退，空文件、异常文件或越界路径仍会拒绝",
-    )
-}
-async fn tea_cache_profile(model_dir: &std::path::Path) -> Result<Option<PathBuf>> {
-    match tokio::fs::symlink_metadata(model_dir.join(TEACACHE_PROFILE)).await {
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
-        Err(_) => return Err(tea_cache_profile_error()),
-        Ok(_) => {}
-    }
-    let path = contained(model_dir, TEACACHE_PROFILE)
-        .await
-        .ok_or_else(tea_cache_profile_error)?;
-    let metadata = tokio::fs::metadata(&path)
-        .await
-        .map_err(|_| tea_cache_profile_error())?;
-    if !metadata.is_file() || metadata.len() == 0 || metadata.len() > 65536 {
-        return Err(tea_cache_profile_error());
-    }
-    Ok(Some(path))
 }
 async fn remacri_path(settings: &Settings) -> Option<PathBuf> {
     let path = contained(
@@ -424,17 +382,13 @@ pub(super) async fn status(backend: &generation::Service, family: &str) -> Resul
                 Some(path) => model_available(path).await,
                 None => false,
             };
-        let profile_present = match &model_dir {
-            Some(path) => tea_cache_profile(path).await.ok().flatten().is_some(),
-            None => false,
-        };
-        let mut defaults = json!({"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCache":true,"teaCachePolicy":"auto"});
+        let mut defaults = json!({"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCache":true,"teaCachePolicy":"builtin-anima","teaCacheThresh":0.10});
         if id == "anima-miaomiao-v1.6" {
             defaults["steps"] = json!(24);
             defaults["cfg"] = json!(4.);
             defaults["loraStrength"] = json!(0.8);
         }
-        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"sizes":model["sizes"],"defaults":defaults,"teaCacheProfile":{"support":"experimental-candidate","readiness":if profile_present {"profile-files-only"} else {"missing"},"policy":"matching-accepted-profile","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
+        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"sizes":model["sizes"],"defaults":defaults,"teaCacheProfile":{"support":"builtin-anima","readiness":"builtin","policy":"builtin-anima","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
     }
     let mut loras = Vec::new();
     {
@@ -444,6 +398,6 @@ pub(super) async fn status(backend: &generation::Service, family: &str) -> Resul
     }
     let online = models.iter().any(|model| model["available"] == true);
     Ok(
-        json!({"provider":"native","engine":"native","online":online,"readiness":"files-only","runtimeError":runtime_error,"models":models,"loras":loras,"styleLoras":[],"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":if remacri {Some(REMACRI_FILE)} else {None}},"capabilities":{"txt2img":true,"img2img":true,"mask":true,"manualMask":true,"automaticMask":automatic_mask,"experimental":true,"lora":true,"teaCache":true,"teaCacheReadiness":"per-model-profile-files-only","rcas":true,"hires":true,"hiresTeaCache":true,"upscalers":remacri,"hiresUpscalers":hires_upscalers,"weightSyntax":true},"pending":backend.pending(),"maxPending":4}),
+        json!({"provider":"native","engine":"native","online":online,"readiness":"files-only","runtimeError":runtime_error,"models":models,"loras":loras,"styleLoras":[],"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":if remacri {Some(REMACRI_FILE)} else {None}},"capabilities":{"txt2img":true,"img2img":true,"mask":true,"manualMask":true,"automaticMask":automatic_mask,"experimental":true,"lora":true,"teaCache":true,"teaCacheReadiness":"builtin","rcas":true,"hires":true,"hiresTeaCache":true,"upscalers":remacri,"hiresUpscalers":hires_upscalers,"weightSyntax":true},"pending":backend.pending(),"maxPending":4}),
     )
 }

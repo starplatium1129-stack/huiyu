@@ -27,6 +27,17 @@ export interface InferenceDiagnostics {
 }
 export interface InferenceStatusResponse extends InferenceSettingsResponse {
   diagnostics: InferenceDiagnostics
+  discovery: InferenceDiscovery
+}
+export interface InferenceDiscovery {
+  suggested: InferenceSettings
+  canAdopt: boolean
+  modelCount: number
+  loraCount: number
+  missing: string[]
+  runtimeReceipt: string | null
+  preservesSavedSettings: boolean
+  scope: 'local-files-only'
 }
 export interface InferenceProbeResponse {
   ok: true
@@ -53,10 +64,17 @@ function response(value: ApiResponseObject): boolean {
 }
 function status(value: ApiResponseObject): boolean {
   const diagnostics = value.diagnostics
+  const discovery = value.discovery
   return response(value) && object(diagnostics) && diagnostics.basis === 'configured'
     && ['valid', 'invalid'].includes(String(diagnostics.configuration))
     && object(diagnostics.files) && ['modelsRoot', 'lorasRoot', 'python', 'worker'].every(key => typeof (diagnostics.files as ApiResponseObject)[key] === 'boolean')
     && diagnostics.dependencies === 'unchecked' && diagnostics.runtime === 'unverified' && typeof diagnostics.message === 'string'
+    && object(discovery) && settings(discovery.suggested) && typeof discovery.canAdopt === 'boolean'
+    && Number.isSafeInteger(discovery.modelCount) && Number(discovery.modelCount) >= 0
+    && Number.isSafeInteger(discovery.loraCount) && Number(discovery.loraCount) >= 0
+    && Array.isArray(discovery.missing) && discovery.missing.every(item => typeof item === 'string')
+    && (discovery.runtimeReceipt === null || typeof discovery.runtimeReceipt === 'string')
+    && typeof discovery.preservesSavedSettings === 'boolean' && discovery.scope === 'local-files-only'
 }
 function localOnly() { if (!isLocalStudioHost()) throw new Error('推理引擎设置仅限本机访问') }
 export const inferenceSettingsApi: InferenceSettingsApi = {

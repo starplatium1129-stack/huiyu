@@ -4,6 +4,14 @@ fn same(left: &Record, right: &Record) -> bool {
 }
 impl Catalog {
     pub fn import(&mut self, snapshot: &Value, preview: bool) -> Result<Value> {
+        self.import_with_policy(snapshot, preview, false)
+    }
+    pub(super) fn import_with_policy(
+        &mut self,
+        snapshot: &Value,
+        preview: bool,
+        preserve_local: bool,
+    ) -> Result<Value> {
         if snapshot["version"] != 1 {
             return Err(ApiError::invalid("快照版本无效"));
         }
@@ -14,6 +22,7 @@ impl Catalog {
             return Err(ApiError::invalid("快照不能为空"));
         }
         let mut changes = Vec::new();
+        let mut preserved = Vec::new();
         let seeds = records
             .into_iter()
             .map(|r| (r, false))
@@ -55,6 +64,17 @@ impl Catalog {
             let incoming_unchanged = base
                 .as_ref()
                 .is_some_and(|(b, base_removed)| same(b, incoming) && *base_removed == removed);
+            // Preserve the complete local record, including metadata, on repeat
+            // imports too. The original incoming record remains the new seed;
+            // a local record must never be mistaken for the upstream baseline.
+            if preserve_local
+                && !equal
+                && !untouched
+                && let Some(current) = &current
+            {
+                preserved.push(current.clone());
+                continue;
+            }
             let created_at = current
                 .as_ref()
                 .filter(|(r, _)| r.created_at.is_none())
@@ -101,6 +121,6 @@ impl Catalog {
         drop(current_query);
         drop(seed_query);
         read.commit()?;
-        self.apply_with_seeds(&changes, preview, &seeds)
+        self.apply_with_seeds(&changes, preview, &seeds, &preserved)
     }
 }

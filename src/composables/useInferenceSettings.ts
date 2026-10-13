@@ -1,5 +1,5 @@
 import { computed, onScopeDispose, reactive, ref } from 'vue'
-import { inferenceSettingsApi, inferenceSettingKeys, type InferenceSettings, type InferenceSettingsResponse, type InferenceDiagnostics, type InferenceProbeResponse } from '@/api/inferenceSettingsApi'
+import { inferenceSettingsApi, inferenceSettingKeys, type InferenceSettings, type InferenceSettingsResponse, type InferenceDiagnostics, type InferenceProbeResponse, type InferenceDiscovery } from '@/api/inferenceSettingsApi'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 export function useInferenceSettings() {
@@ -7,6 +7,7 @@ export function useInferenceSettings() {
   const draft = reactive<InferenceSettings>({ engine: 'comfy', acceleration: 'native', memoryPolicy: 'resident', modelsRoot: '', lorasRoot: '', python: '', worker: '' })
   const snapshot = ref<InferenceSettingsResponse | null>(null)
   const diagnostics = ref<InferenceDiagnostics | null>(null)
+  const discovery = ref<InferenceDiscovery | null>(null)
   const probe = ref<InferenceProbeResponse | null>(null)
   const probing = ref(false)
   const probeError = ref('')
@@ -16,6 +17,7 @@ export function useInferenceSettings() {
   const error = ref('')
   const notice = ref('')
   const dirty = computed(() => !!snapshot.value && inferenceSettingKeys.some(key => draft[key] !== snapshot.value!.configured[key]))
+  const adoptionChanges = computed(() => !!snapshot.value && !!discovery.value && inferenceSettingKeys.some(key => discovery.value!.suggested[key] !== snapshot.value!.configured[key]))
   let disposed = false
   let controller: AbortController | null = null
   function apply(result: InferenceSettingsResponse, previous: InferenceSettings) {
@@ -40,6 +42,7 @@ export function useInferenceSettings() {
       if (disposed) return
       apply(result, previous)
       diagnostics.value = { ...result.diagnostics, files: { ...result.diagnostics.files } }
+      discovery.value = { ...result.discovery, suggested: { ...result.discovery.suggested }, missing: [...result.discovery.missing] }
     } catch (cause) {
       if (!disposed) error.value = cause instanceof Error ? cause.message : '读取推理设置失败'
     } finally { if (!disposed) loading.value = false }
@@ -51,15 +54,19 @@ export function useInferenceSettings() {
     notice.value = ''
     controller = new AbortController()
     const submitted = { ...draft }
+    let saved = false
     try {
       const result = await inferenceSettingsApi.save(submitted, controller.signal)
       if (disposed) return
       apply(result, submitted)
       diagnostics.value = null
+      discovery.value = null
+      saved = true
       notice.value = result.restartRequired ? '已保存。请重启绘遇运行时后生效；当前任务继续使用原设置。' : '已保存，配置与当前运行时一致。'
     } catch (cause) {
       if (!disposed) error.value = cause instanceof Error ? cause.message : '保存失败，请重试；已保留输入'
     } finally { if (!disposed) saving.value = false }
+    if (saved && !disposed) await refresh()
   }
   async function diagnose() {
     if (!isLocal || probing.value || disposed) return
@@ -74,6 +81,11 @@ export function useInferenceSettings() {
       if (!disposed) probeError.value = cause instanceof Error ? cause.message : '依赖检查失败'
     } finally { if (!disposed) probing.value = false }
   }
+  async function adopt() {
+    if (!discovery.value?.canAdopt || !adoptionChanges.value || dirty.value || loading.value || saving.value || disposed) return
+    Object.assign(draft, discovery.value.suggested)
+    await save()
+  }
   onScopeDispose(() => { disposed = true; controller?.abort(); probeController?.abort() })
-  return { isLocal, draft, snapshot, diagnostics, loading, saving, error, notice, dirty, refresh, save, probe, probing, probeError, diagnose }
+  return { isLocal, draft, snapshot, diagnostics, discovery, adoptionChanges, adopt, loading, saving, error, notice, dirty, refresh, save, probe, probing, probeError, diagnose }
 }

@@ -319,6 +319,8 @@ npm run wf -- voice:service -AIWorkspaceRoot <AI目录> -RuntimeRoot <运行目�
 
 ### Rust 运行时
 
+`content:catalog import --file <快照> --preserve-local` 是升级时保留个人内容的显式策略，默认仍为只读预览，追加 `--apply` 才写入。完整保留本地修改记录、保存原始新快照基线，回执含 `preservedLocal`；关联变更触碰保留项时整次拒绝。普通导入仍拒绝冲突，具体边界见[维护手册](maintenance.md#批量修改与快照)。
+
 产品后端为 runtime-rs，Node 用于前端、维护工具及构建编排。源码服务使用 npm start / npm run start:run；直接入口为 runtime-rs/target/release/huiyu-runtime.exe --app-root <项目目录> --bind 127.0.0.1:3210。工作区须显式私有路径/身份或受控桌面激活。
 
 rust:build 需要已有 Rust/MSVC 工具链，首次可能下载锁定 crate，不替换桌面安装。rust:licenses:collect 按 components.json 的固定配方下载公开源码并提取许可材料，不安装或执行源码；材料变化后更新摘要绑定，见[原生材料说明](../runtime-rs/native-licenses/README.md)。

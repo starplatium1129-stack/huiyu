@@ -34,7 +34,7 @@ const ROOT = path.resolve(__dirname, '..');
 const { LEGACY_WORKFLOWS } = require('./lib/workflow-legacy') as typeof import('./lib/workflow-legacy');
 const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   ...LEGACY_WORKFLOWS,
-  'content:catalog': { desc: '记录式内容库：整位角色、记录/历史读取、局部快照合并导出与字段补丁；patch/import 默认预览', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'catalog'], opts: '<stats|query|record|history|character|export|patch|import|check|colors> [--root <项目目录>] --runtime-root <运行目录> [--kind <类型> --id <ID> --revision <修订>] [--character <ID> ...] [--record <kind:id> ...] [--created-from <RFC3339> --created-to <RFC3339>] [--sort <排序> --page <页> --page-size <数量>] [--file <JSON>] [--out <导出目录>] [--apply]', docs: 'docs/maintenance.md',
+  'content:catalog': { desc: '记录式内容库：整位角色、记录/历史读取、局部快照合并导出与字段补丁；patch/import 默认预览', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'catalog'], opts: '<stats|query|record|history|character|export|patch|import|check|colors> [--root <项目目录>] --runtime-root <运行目录> [--kind <类型> --id <ID> --revision <修订>] [--character <ID> ...] [--record <kind:id> ...] [--created-from <RFC3339> --created-to <RFC3339>] [--sort <排序> --page <页> --page-size <数量>] [--file <JSON>] [--out <导出目录>] [--apply] [import: --preserve-local]', docs: 'docs/maintenance.md',
     run: { nature: ['preview', 'self-heal-missing'], machine: ['node'], switches: { '--apply': ['writes-product'] }, resume: 'na', evidence: 'runtime-rs/src/catalog/cli.rs', notes: ['需要 Rust/Cargo；首次使用会初始化工作内容库；export 会显式写出 --out 指定的快照目录。'], unknown: ['不执行模型调用或安装；快照不恢复跨机器的本机修订历史'] } },
   'live2d:sync-local': {
     desc: '个人桌面同步已核验本机模型，保留目标旧版本；不进入安装包',

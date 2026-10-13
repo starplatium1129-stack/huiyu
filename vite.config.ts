@@ -193,11 +193,6 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
           // boundaries when shared helpers also appear in another route.
           // Initial modules always travel together. Shared visual primitives also
           // share one stylesheet instead of one request per consumer subset.
-          experimentalInlineCommonChunks: {
-            maxSize: 8192,
-            // Vite must retain a single owner for each component stylesheet.
-            exclude: /\.(css|scss|sass|less|styl|stylus|pcss|postcss|sss)(\?|$)/,
-          },
           groups: [
             { name: 'bootstrap', tags: ['$initial'], priority: 100 },
             { name: 'ui-base', priority: 95,

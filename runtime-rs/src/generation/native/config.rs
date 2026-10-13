@@ -1,5 +1,7 @@
 use super::*;
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
+use std::{io::Read, path::Path};
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -23,6 +25,52 @@ fn default_memory_policy() -> String {
     "resident".into()
 }
 impl Settings {
+    /// Installation receipts are hints only. Discover bounded local resources,
+    /// without executing Python or changing a user's selected engine/settings.
+    pub(crate) fn discovered(workspace: &Path) -> (Self, Option<PathBuf>) {
+        let root = workspace.join("inference");
+        let worker = bundled_worker();
+        let receipt = installed_runtime(&root, &worker);
+        let mut models_root = root.join("models");
+        if model_count(&models_root) == 0
+            && let Some((_, document)) = &receipt
+            && let Some(path) = document["modelRoot"].as_str().map(PathBuf::from)
+            && within(&root, &path).is_some()
+            && model_count(&path) > 0
+        {
+            models_root = path;
+        }
+        let native_loras = root.join("loras");
+        let shared_loras = workspace.join("ComfyUI/models/loras");
+        let loras_root = if lora_count(&native_loras) == 0
+            && within(workspace, &shared_loras).is_some()
+            && lora_count(&shared_loras) > 0
+        {
+            shared_loras
+        } else {
+            native_loras
+        };
+        let python = receipt
+            .as_ref()
+            .and_then(|(_, value)| value["python"].as_str())
+            .map(PathBuf::from)
+            .unwrap_or_else(|| root.join(python_relative()));
+        let receipt_path = receipt.map(|(path, _)| path);
+        (
+            Self {
+                engine: "comfy".into(),
+                acceleration: default_acceleration(),
+                memory_policy: default_memory_policy(),
+                python,
+                worker,
+                models_root,
+                loras_root,
+                environment_overrides: Vec::new(),
+            },
+            receipt_path,
+        )
+    }
+
     pub(crate) fn validate(&self) -> Result<()> {
         if !matches!(self.engine.as_str(), "comfy" | "native") {
             return Err(ApiError::invalid("推理引擎仅支持 comfy 或 native"));
@@ -66,40 +114,7 @@ impl Settings {
 /// that snapshot, never reread a configuration saved pending application restart.
 pub(crate) fn load(config: &Config) -> Result<Settings> {
     let saved = read_optional(&config.runtime_root.join("config.json"))?;
-    let root = config.ai_workspace_root.join("inference");
-    // Preparation receipts are optional installation hints, not application
-    // configuration. A stale receipt must not disable the default Comfy engine.
-    let receipt = read_optional(&root.join("runtime-config.json")).unwrap_or(Value::Null);
-    let packaged_worker = std::env::current_exe()
-        .ok()
-        .and_then(|path| {
-            path.parent()
-                .map(|root| root.join("tools/inference/worker.py"))
-        })
-        .filter(|path| path.is_file());
-    let worker = packaged_worker.unwrap_or_else(|| {
-        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .parent()
-            .unwrap()
-            .join("tools/inference/worker.py")
-    });
-    let defaults = json!({
-        "engine":"comfy","acceleration":"native","memoryPolicy":"resident",
-        "python":root.join(if cfg!(windows) { "venv/Scripts/python.exe" } else { "venv/bin/python" }),
-        "worker":worker,"modelsRoot":root.join("models"),"lorasRoot":root.join("loras")
-    });
-    let mut value = defaults;
-    // The preparation receipt supplies paths, never switches the selected engine.
-    for key in ["python", "worker"] {
-        if receipt["schemaVersion"] == 1
-            && receipt["engine"] == "native"
-            && let Some(path) = receipt[key]
-                .as_str()
-                .filter(|p| std::path::Path::new(p).is_absolute() && !p.contains('\0'))
-        {
-            value[key] = json!(path);
-        }
-    }
+    let mut value = serde_json::to_value(Settings::discovered(&config.ai_workspace_root).0)?;
     if let Some(inference) = saved.get("inference") {
         let settings: Settings =
             serde_json::from_value(inference.clone()).map_err(|_| config_error())?;
@@ -124,6 +139,135 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
     settings.validate().map_err(|_| config_error())?;
     settings.environment_overrides = overrides;
     Ok(settings)
+}
+
+fn bundled_worker() -> PathBuf {
+    std::env::current_exe()
+        .ok()
+        .and_then(|path| {
+            path.parent()
+                .map(|root| root.join("tools/inference/worker.py"))
+        })
+        .filter(|path| path.is_file())
+        .unwrap_or_else(|| {
+            PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                .parent()
+                .unwrap()
+                .join("tools/inference/worker.py")
+        })
+}
+fn python_relative() -> &'static str {
+    if cfg!(windows) {
+        "venv/Scripts/python.exe"
+    } else {
+        "venv/bin/python"
+    }
+}
+fn within(root: &Path, path: &Path) -> Option<PathBuf> {
+    let root = root.canonicalize().ok()?;
+    let path = path.canonicalize().ok()?;
+    (path.starts_with(&root) && path != root).then_some(path)
+}
+impl Settings {
+    pub(crate) fn model_count(&self) -> usize {
+        model_count(&self.models_root)
+    }
+    pub(crate) fn lora_count(&self) -> usize {
+        lora_count(&self.loras_root)
+    }
+}
+fn model_count(root: &Path) -> usize {
+    crate::images::catalog()["MODELS"]
+        .as_object()
+        .unwrap()
+        .iter()
+        .filter(|(id, model)| {
+            model["family"] == "anima"
+                && ["model_index.json", "modular_model_index.json"]
+                    .iter()
+                    .any(|name| {
+                        within(root, &root.join(id.as_str()).join(name))
+                            .is_some_and(|path| path.is_file())
+                    })
+        })
+        .count()
+}
+fn lora_count(root: &Path) -> usize {
+    crate::images::catalog()["LORAS"]
+        .as_object()
+        .unwrap()
+        .values()
+        .filter_map(|lora| lora["file"].as_str())
+        .filter(|name| within(root, &root.join(name)).is_some_and(|path| path.is_file()))
+        .count()
+}
+fn installed_runtime(root: &Path, worker: &Path) -> Option<(PathBuf, Value)> {
+    if std::fs::symlink_metadata(root)
+        .ok()?
+        .file_type()
+        .is_symlink()
+    {
+        return None;
+    }
+    let requirements = std::fs::read(worker.parent()?.join("requirements.txt")).ok()?;
+    let expected_hash = format!("{:x}", Sha256::digest(requirements));
+    let mut candidates = vec![root.to_owned()];
+    // Never recurse into virtual environments, model trees or arbitrary disks.
+    // An oversized directory falls back to its own receipt, not an arbitrary subset.
+    if let Ok(entries) = std::fs::read_dir(root) {
+        let entries: Vec<_> = entries.take(129).collect();
+        if entries.len() <= 128 {
+            let mut folders: Vec<_> = entries
+                .into_iter()
+                .flatten()
+                .filter(|entry| entry.file_type().is_ok_and(|kind| kind.is_dir()))
+                .map(|entry| entry.path())
+                .collect();
+            folders.sort();
+            candidates.extend(folders);
+        }
+    }
+    for folder in candidates {
+        let path = folder.join("runtime-config.json");
+        if within(root, &path).is_none() {
+            continue;
+        }
+        let Some(document) = read_receipt(&path) else {
+            continue;
+        };
+        let Some(python) = document["python"].as_str().map(PathBuf::from) else {
+            continue;
+        };
+        if document["schemaVersion"] != 1
+            || document["engine"] != "native"
+            || document["requirementsSha256"] != expected_hash
+            || document["environment"]["cudaAvailable"] != true
+            || !python.is_absolute()
+            || !python.is_file()
+            || within(&folder, &python).is_none()
+            || python.canonicalize().ok() != folder.join(python_relative()).canonicalize().ok()
+            || document["root"]
+                .as_str()
+                .and_then(|root| Path::new(root).canonicalize().ok())
+                != folder.canonicalize().ok()
+        {
+            continue;
+        }
+        return Some((path, document));
+    }
+    None
+}
+fn read_receipt(path: &Path) -> Option<Value> {
+    let mut bytes = Vec::new();
+    std::fs::File::open(path)
+        .ok()?
+        .take(65537)
+        .read_to_end(&mut bytes)
+        .ok()?;
+    if bytes.len() > 65536 {
+        return None;
+    }
+    serde_json::from_slice(&bytes).ok()
 }
 fn read_optional(path: &std::path::Path) -> Result<Value> {
     match std::fs::read(path) {

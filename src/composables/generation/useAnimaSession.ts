@@ -141,8 +141,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       scheduler: String(defaults?.scheduler || state.value.scheduler),
       ...(!state.value.provider && !loraStrengthTouched && provider === 'native' && !options.isPopular() && ['nene', 'natsume'].includes(options.getCharacter()) && typeof defaults?.loraStrength === 'number'
         ? { loraStrength: defaults.loraStrength } : {}),
-      teaCache: provider === 'native' ? (state.value.provider === 'native' || teaCacheSettingsTouched ? state.value.teaCache : undefined) : typeof defaults?.teaCache === 'boolean' ? defaults.teaCache : state.value.provider === 'native' ? INITIAL_STATE.teaCache : state.value.teaCache,
-      teaCacheThresh: provider === 'native' ? undefined : typeof defaults?.teaCacheThresh === 'number' ? defaults.teaCacheThresh : state.value.provider === 'native' ? INITIAL_STATE.teaCacheThresh : state.value.teaCacheThresh,
+      teaCache: teaCacheSettingsTouched ? state.value.teaCache : typeof defaults?.teaCache === 'boolean' ? defaults.teaCache : state.value.teaCache,
+      teaCacheThresh: teaCacheSettingsTouched ? state.value.teaCacheThresh : typeof defaults?.teaCacheThresh === 'number' ? defaults.teaCacheThresh : state.value.teaCacheThresh,
     }
   }
 
@@ -227,7 +227,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
        * 才套用默认值，其余心跳只更新在线状态与候选列表。
        */
       const provider = data.provider === 'native' ? 'native' : 'comfy'
-      const nativeCacheDefaults = provider === 'native' && state.value.provider !== 'native' && !teaCacheSettingsTouched
       const shouldApplyDefaults = (defaultsAppliedFor !== modelIdCurrent || (state.value.provider && state.value.provider !== provider)) && settingsRevision === initialSettingsRevision
       // 风格 LoRA 只在候选里已经不存在时才清空，而不是每 15 秒清一次
       const styleLoraId = styleLoras.some(lora => lora.id === state.value.styleLoraId)
@@ -241,7 +240,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
           ...(endfield && loraId === endfield.loraId && state.value.loraId !== loraId ? { loraStrength: endfield.loraStrength } : {}),
           family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
           ...(shouldApplyDefaults ? modelDefaults(selectedModel, provider) : {}),
-          ...(nativeCacheDefaults ? { teaCache: undefined, teaCacheThresh: undefined } : {}),
         })
         // An edit during discovery owns these defaults for this model, including later polls.
         defaultsAppliedFor = modelIdCurrent

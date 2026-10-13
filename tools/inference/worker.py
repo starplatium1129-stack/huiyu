@@ -110,6 +110,8 @@ def dependencies():
     load_mask_tools()
     load_mask_tools("clipseg_mask")
     load_mask_tools("teacache_anima")
+    load_mask_tools("anima_cache")
+    load_mask_tools("worker_lifecycle")
     load_mask_tools("anima_local_cache")
     load_mask_tools("teacache_profile")
     load_mask_tools("resident_anima")
@@ -189,8 +191,8 @@ def validate_job(job):
     if type(data.get("teaCache", False)) is not bool:
         raise WorkerError("INVALID_INPUT", "teaCache must be a boolean")
     result["teaCache"] = data.get("teaCache", False)
-    if type(data.get("teaCacheAuto", False)) is not bool or (data.get("teaCacheAuto") and (not result["teaCache"] or "teaCacheThresh" in data)):
-        raise WorkerError("INVALID_INPUT", "teaCacheAuto requires teaCache enabled without an explicit threshold")
+    if type(data.get("teaCacheAuto", False)) is not bool or (data.get("teaCacheAuto") and not result["teaCache"]):
+        raise WorkerError("INVALID_INPUT", "teaCacheAuto requires teaCache enabled")
     if type(data.get("hiresFix", False)) is not bool:
         raise WorkerError("INVALID_INPUT", "hiresFix must be a boolean")
     result["rcasStrength"] = number(data, "rcasStrength", 0, 0, 1)
@@ -211,7 +213,7 @@ def validate_job(job):
     elif job.get("upscaleModelPath") is not None:
         raise WorkerError("INVALID_INPUT", "upscaleModelPath requires a Remacri hires operation")
     if "teaCacheThresh" in data:
-        result["teaCacheThresh"] = number(data, "teaCacheThresh", None, 0.01, 1)
+        result["teaCacheThresh"] = number(data, "teaCacheThresh", None, 0, 1)
         if not result["teaCache"]:
             raise WorkerError("INVALID_INPUT", "teaCacheThresh requires teaCache=true")
     if job.get("teaCacheProfilePath") is not None and not result["teaCache"]:
@@ -315,52 +317,41 @@ def try_hotswap_loras(pipeline, adapters):
         raise WorkerError("UNSUPPORTED_LORA", str(exc)) from exc
 
 
-def load_pipeline(root, cfg, blocks=None, reusable=None):
+def load_pipeline(root, cfg, blocks=None, reusable=None, stage=None):
     return load_mask_tools("anima_loader").load(validate_model(str(root)), cfg,
-        blocks, reusable, load_mask_tools, WorkerError)
+        blocks, reusable, load_mask_tools, WorkerError, stage=stage)
 
 
-def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True, collect_cache_strategy="phase-envelope"):
-    job_started = time.perf_counter()
+def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True, collect_cache_strategy="phase-envelope", control=None):
+    job_started = control.started if control is not None else time.perf_counter()
+    def stage(name, component=None):
+        if control is not None:
+            control.stage(name, component=component)
+    stage("dependencies")
     data = validate_job(job)
     root = validate_model(job.get("modelDir"))
     identity, resident_fingerprint = None, 0
     if resident is None:
         dependencies()
     else:
+        stage("fingerprint")
         identity, resident_fingerprint = resident.prepare_and_fingerprint(
             dependencies, root, job.get("loras", []), load_mask_tools)
     import torch
+    if not torch.cuda.is_available():
+        raise WorkerError("DEVICE_UNAVAILABLE", "A CUDA-capable PyTorch installation and NVIDIA GPU are required")
+    # Device setup is required by inference; initialize before the allocator
+    # observation window so the first job has real peaks instead of an error.
+    torch.cuda.get_device_properties(0)
     metrics = load_mask_tools("inference_metrics").RuntimeMetrics(torch, job_started)
-    tea, tea_report, blocks = None, None, None
-    if data["teaCache"] or collect_teacache:
-        profile_tools = load_mask_tools("teacache_profile")
-        if collect_teacache and data["teaCache"]:
-            raise WorkerError("INVALID_INPUT", "Calibration collection requires TeaCache disabled")
-        try:
-            if not torch.cuda.is_available():
-                raise WorkerError("DEVICE_UNAVAILABLE", "TeaCache requires the selected CUDA inference device")
-            dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
-            mode = "masked" if job.get("maskImagePath") or data.get("maskPrompt") else ("img2img" if job.get("inputImagePath") else "txt2img")
-            started = time.perf_counter()
-            scope = profile_tools.compatibility(root, job.get("loras", []), data, mode, dtype, torch.cuda.get_device_name(0),
-                mask_model_dir=job.get("maskModelDir"), upscale_model_path=job.get("upscaleModelPath"), identity=identity)
-            profile = (teacache_profile if teacache_profile is not None else
-                profile_tools.read_profile(job.get("teaCacheProfilePath"), root, expected=scope, auto=data.get("teaCacheAuto", False))) if data["teaCache"] else None
-            tea_report = dict(schemaVersion=1, runtime=profile_tools.RUNTIME, teaCacheEnabled=profile is not None, compatibility=scope,
-                selectionReason="matched-profile" if profile is not None else "no-matching-profile",
-                fingerprintSeconds=time.perf_counter() - started)
-            threshold = profile_tools.validate_profile(profile, scope, data.get("teaCacheThresh"),
-                require_accepted=teacache_profile is None) if profile is not None else None
-            if profile is not None or collect_teacache:
-                local_tools = load_mask_tools("anima_local_cache")
-                tea = load_mask_tools("teacache_anima").TeaCacheController(profile, threshold, collect_teacache, collect_local=collect_cache_strategy == "local-guard", local_tools=local_tools)
-                tea_report.update(cacheProfile=local_tools.execution_identity(profile) if profile is not None else None, collectionMetric=local_tools.METRIC if tea.local_guard else None)
-        except profile_tools.TeaCacheError as exc:
-            raise WorkerError(exc.code, str(exc)) from exc
-    elif measure_teacache:
-        tea_report = dict(schemaVersion=1, runtime=load_mask_tools("teacache_profile").RUNTIME, teaCacheEnabled=False, compatibility=None, fingerprintSeconds=0)
+    metrics.timings["dependencySetupWallSeconds"] = control.initialization_seconds if control is not None else 0.0
+    tea, tea_report = load_mask_tools("anima_cache").select(
+        job, data, root, identity, load_mask_tools, WorkerError,
+        collect=collect_teacache, profile=teacache_profile, measure=measure_teacache,
+        strategy=collect_cache_strategy)
+    blocks = None
     metrics.begin_memory(tea_report is not None)
+    stage("preparing_image")
     mask_started = time.perf_counter()
     image = load_input_image(job["inputImagePath"]) if job.get("inputImagePath") else None
     mask_tools = None
@@ -401,8 +392,11 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     blocks = load_mask_tools("anima_vae").apply_blocks(blocks, load_mask_tools("anima_tiling"))
     started = time.perf_counter()
     post_load_fingerprint, reused = 0, False
+    from functools import partial
+    loader = partial(load_pipeline, stage=stage)
     if resident is None:
-        pipeline = load_pipeline(root, data["cfg"], blocks=blocks) if blocks is not None else load_pipeline(root, data["cfg"])
+        pipeline = loader(root, data["cfg"], blocks=blocks)
+        stage("adapters")
         load_loras(pipeline, job.get("loras", []))
         if load_mask_tools("anima_acceleration").MODE == "compiled-fused-sage":
             pipeline.transformer._huiyu_lora_fusion.fuse(pipeline.components,
@@ -411,7 +405,8 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         memory.bind(pipeline)
     else:
         key = {"root": str(root), **identity}
-        pipeline, reused = resident.acquire(key, root, data["cfg"], blocks, job.get("loras", []), load_pipeline, load_loras, try_hotswap_loras,
+        stage("adapters")
+        pipeline, reused = resident.acquire(key, root, data["cfg"], blocks, job.get("loras", []), loader, load_loras, try_hotswap_loras,
             memory_tools=load_mask_tools("anima_memory"))
         if resident.weights_loaded:
             protected_load = resident.file_identity.cached
@@ -430,13 +425,15 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     if resident is not None and resident.text_cache is not None:
         resident.text_cache.begin_job()
     def upscale(images):
+        stage("upscaling")
         helper = load_mask_tools("anima_upscale")
         pipeline._huiyu_memory.offload_all()
-        expected = tea_report["compatibility"].get("upscaleModelSha256") if tea is not None else None
+        expected = (tea_report.get("compatibility") or {}).get("upscaleModelSha256") if tea_report else None
         result, pipeline._huiyu_upscale_report = helper.run(images, job["upscaleModelPath"], pipeline._execution_device,
             tools=load_mask_tools, expected=expected, error=WorkerError)
         return result
     def prepare_second(blocks):
+        stage("encoding")
         if tea is not None:
             if tea.stats["nonfinite"]:
                 raise WorkerError("NONFINITE_INFERENCE", "The first pass left the finite calibration scope; no result is published")
@@ -444,6 +441,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             return load_mask_tools("teacache_anima").apply_blocks(blocks, tea)
         return blocks
     def before_decode():
+        stage("decoding")
         if tea is not None:
             if tea.stats["nonfinite"]:
                 raise WorkerError("NONFINITE_INFERENCE", "Denoising left the finite calibration scope; no result is published")
@@ -451,6 +449,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     capture = tea_report is not None and (collect_teacache or measure_teacache or teacache_profile is not None)
     started = time.perf_counter()
     try:
+        stage("encoding")
         result, step, refinement = load_mask_tools("anima_refinement").run(pipeline, data,
             image=image, mask=mask if mask_tools is not None else None, mask_tools=mask_tools,
             sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
@@ -459,7 +458,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             before_decode=before_decode,
             vae_tools=load_mask_tools("anima_vae"), tiling=load_mask_tools("anima_tiling"),
             observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
-            progress=lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
+            progress=control.progress if control is not None else lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
     finally:
         if tea is not None:
             tea.clear()
@@ -474,6 +473,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     metrics.timings.update({key: refinement[key] for key in ("compositeWallSeconds", "postprocessWallSeconds")})
     metrics.refinement = {key: refinement[key] for key in ("vaeOperations", "rcasExecutionRevision") if key in refinement}
     metrics.refinement["upscale"] = getattr(pipeline, "_huiyu_upscale_report", None)
+    stage("saving")
     output_report = load_mask_tools().save_png(result, job["outputPath"])
     if tea_report is not None:
         tea_report.update(output_report)
@@ -513,21 +513,20 @@ def main(argv=None):
             else:
                 resident = load_mask_tools("resident_anima").PipelineCache() if args.serve else None
                 try:
-                    while True:
-                        line = sys.stdin.readline(2 * 1024 * 1024 + 1)
-                        if not line and args.serve:
-                            break
-                        if len(line) > 2 * 1024 * 1024:
-                            raise WorkerError("INVALID_REQUEST", "JSONL request exceeds 2 MiB")
-                        try:
-                            job = json.loads(line)
-                        except ValueError as exc:
-                            raise WorkerError("INVALID_REQUEST", "Expected a JSONL generation request") from exc
-                        job_id = job.get("id") if isinstance(job, dict) else None
-                        generate(job, stream, resident=resident)
-                        if not args.serve:
-                            break
-                        emit(stream, job_id, "ready")
+                    if args.serve:
+                        return load_mask_tools("worker_lifecycle").serve(
+                            lambda job, control: generate(job, stream, resident=resident, control=control),
+                            input_stream=sys.stdin, stream=stream, emit=emit, error=WorkerError,
+                            initialize=lambda: resident.prepare(dependencies))
+                    line = sys.stdin.readline(2 * 1024 * 1024 + 1)
+                    if len(line) > 2 * 1024 * 1024:
+                        raise WorkerError("INVALID_REQUEST", "JSONL request exceeds 2 MiB")
+                    try:
+                        job = json.loads(line)
+                    except ValueError as exc:
+                        raise WorkerError("INVALID_REQUEST", "Expected a JSONL generation request") from exc
+                    job_id = job.get("id") if isinstance(job, dict) else None
+                    generate(job, stream)
                 finally:
                     if resident is not None:
                         resident.clear()
