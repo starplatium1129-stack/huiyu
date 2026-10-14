@@ -89,18 +89,21 @@ export function useGalleryProjectAlbums(options: {
   }
   function decorate(album: AlbumMembership): GalleryProjectAlbum {
     const { items, ...metadata } = album
-    const covers: GalleryProjectAlbum['covers'] = []
-    for (const item of items) {
-      const cached = options.thumbUrls[item.id] || options.cardUrls[item.id] || ''
-      const src = /^(blob:|data:image\/)/.test(cached) ? cached : safeImageUrl(cached)
-      if (src) covers.push({ id: item.id, src })
-      if (covers.length === 3) break
-    }
-    return { ...metadata, count: items.length, covers }
+    // Counts and character options do not need covers. Defer cache reads (and
+    // their reactive subscriptions) until an album actually renders its covers.
+    const covers = computed(() => {
+      const result: GalleryProjectAlbum['covers'] = []
+      for (const item of items) {
+        const cached = options.thumbUrls[item.id] || options.cardUrls[item.id] || ''
+        const src = /^(blob:|data:image\/)/.test(cached) ? cached : safeImageUrl(cached)
+        if (src) result.push({ id: item.id, src })
+        if (result.length === 3) break
+      }
+      return result
+    })
+    return { ...metadata, count: items.length, get covers() { return covers.value } }
   }
-  const projectCovers = computed(() => projectMembers.value.map(album => computed(() => decorate(album))))
-  const characterCovers = computed(() => characterMembers.value.map(album => computed(() => decorate(album))))
-  const albums = computed(() => projectCovers.value.map(album => album.value))
-  const characterAlbums = computed(() => characterCovers.value.map(album => album.value))
+  const albums = computed(() => projectMembers.value.map(decorate))
+  const characterAlbums = computed(() => characterMembers.value.map(decorate))
   return { albums, characterAlbums, resolvePreviewItems }
 }
