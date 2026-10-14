@@ -1,6 +1,9 @@
 use super::*;
 use futures_util::{StreamExt, TryStreamExt, stream};
-use std::{collections::HashSet, time::Duration};
+use std::{
+    collections::{HashSet, VecDeque},
+    time::Duration,
+};
 
 const RECOVERY_PARALLELISM: usize = 2;
 const RECOVERY_TIMEOUT: Duration = Duration::from_secs(60);
@@ -12,6 +15,44 @@ const STABLE_FOLLOW_INTERVAL: Duration = Duration::from_secs(5);
 pub(super) struct Initialization {
     complete: tokio::sync::OnceCell<()>,
     running: AtomicBool,
+    scan: Mutex<ScanProgress>,
+}
+struct ScanProgress {
+    query: crate::task_contract::TaskListQuery,
+    pending: VecDeque<String>,
+    retry: VecDeque<String>,
+    exhausted: bool,
+}
+impl Default for ScanProgress {
+    fn default() -> Self {
+        Self {
+            query: crate::task_contract::TaskListQuery {
+                recoverable: true,
+                ..Default::default()
+            },
+            pending: VecDeque::new(),
+            retry: VecDeque::new(),
+            exhausted: false,
+        }
+    }
+}
+struct Probe<'a> {
+    progress: &'a Mutex<ScanProgress>,
+    id: String,
+    complete: bool,
+}
+impl Drop for Probe<'_> {
+    fn drop(&mut self) {
+        if !self.complete {
+            // Cancellation can drop a buffered probe before it is polled.
+            // Preserve it behind unvisited candidates, including later pages.
+            self.progress
+                .lock()
+                .unwrap()
+                .retry
+                .push_back(std::mem::take(&mut self.id));
+        }
+    }
 }
 struct Scheduled(Arc<Initialization>);
 impl Drop for Scheduled {
@@ -55,35 +96,58 @@ impl TaskRuntime {
         let initialize = once.complete.get_or_try_init(|| async {
             let unfinished = Arc::new(Mutex::new(HashSet::new()));
             let scan = async {
-                let mut query = crate::task_contract::TaskListQuery {
-                    recoverable: true,
-                    ..Default::default()
-                };
                 loop {
-                    let mut list = storage
-                        .task(
-                            TaskCommand::List {
-                                query: query.clone(),
-                            },
-                            principal,
-                        )
-                        .await?;
-                    let tasks = list
-                        .get_mut("items")
-                        .and_then(Value::as_array_mut)
-                        .map(std::mem::take)
-                        .ok_or_else(|| ApiError::invalid("Invalid task list"))?;
+                    let query = {
+                        let mut progress = once.scan.lock().unwrap();
+                        if progress.pending.is_empty() && progress.exhausted {
+                            progress.pending = std::mem::take(&mut progress.retry);
+                            if progress.pending.is_empty() {
+                                break;
+                            }
+                        }
+                        progress.pending.is_empty().then(|| progress.query.clone())
+                    };
+                    if let Some(query) = query {
+                        let mut list = storage.task(TaskCommand::List { query }, principal).await?;
+                        let tasks = list
+                            .get_mut("items")
+                            .and_then(Value::as_array_mut)
+                            .map(std::mem::take)
+                            .ok_or_else(|| ApiError::invalid("Invalid task list"))?;
+                        let pending = tasks
+                            .into_iter()
+                            .map(|value| {
+                                serde_json::from_value::<TaskRecord>(value).map(|task| task.task_id)
+                            })
+                            .collect::<serde_json::Result<VecDeque<_>>>()?;
+                        let mut progress = once.scan.lock().unwrap();
+                        // The cursor advances only with ownership of the whole
+                        // page. Unstarted and dropped probes survive timeouts.
+                        progress.pending = pending;
+                        progress.query.through_revision = list["throughRevision"].as_i64();
+                        progress.query.before = list["nextCursor"].as_i64();
+                        progress.exhausted = progress.query.before.is_none();
+                        continue;
+                    }
                     // Independent task probes may overlap; each reconciliation
                     // still owns its task operation lock and never resubmits.
+                    let probes = std::iter::from_fn(|| {
+                        let id = once.scan.lock().unwrap().pending.pop_front()?;
+                        Some(Probe {
+                            progress: &once.scan,
+                            id,
+                            complete: false,
+                        })
+                    });
                     let unfinished = unfinished.clone();
-                    stream::iter(tasks.into_iter().map(move |task| {
+                    stream::iter(probes.map(move |mut probe| {
                         let unfinished = unfinished.clone();
                         async move {
-                            let task: TaskRecord = serde_json::from_value(task)?;
-                            unfinished.lock().unwrap().insert(task.task_id.clone());
-                            let result = self.recover_one(storage, principal, &task.task_id).await;
+                            unfinished.lock().unwrap().insert(probe.id.clone());
+                            let result = self.recover_one(storage, principal, &probe.id).await;
                             if result.is_ok() {
-                                unfinished.lock().unwrap().remove(&task.task_id);
+                                probe.complete = true;
+                                unfinished.lock().unwrap().remove(&probe.id);
                             }
                             result
                         }
@@ -91,16 +155,11 @@ impl TaskRuntime {
                     .buffer_unordered(RECOVERY_PARALLELISM)
                     .try_for_each(|()| std::future::ready(Ok(())))
                     .await?;
-                    query.through_revision = list["throughRevision"].as_i64();
-                    query.before = list["nextCursor"].as_i64();
-                    if query.before.is_none() {
-                        break;
-                    }
                 }
                 Ok::<(), ApiError>(())
             };
-            // Bound the complete scan, including storage waits and all pages.
-            // Err leaves OnceCell empty so a later request can retry observation.
+            // Bound each attempt, including storage waits. The epoch-scoped
+            // progress survives failure; OnceCell completes only after all probes.
             let result = tokio::select! {
                 biased;
                 _ = self.shutdown.cancelled() => Err(recovery_closed()),

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { conditionText, normalizeGalleryFilterSnapshot, recordedCondition, recordedSeed, UNRECORDED_CONDITION, type GalleryFilterSnapshot, type GalleryGenerationConditions, type GenerationFilterField } from '@/composables/gallery/galleryGenerationConditions'
@@ -12,11 +12,9 @@ const props = defineProps<{
   filterCount: number
   snapshot: GalleryFilterSnapshot
   hasActive: boolean
-  projectUnavailable: boolean
 }>()
-const emit = defineEmits<{ apply: [filters: GalleryFilterSnapshot]; reset: []; clear: [] }>()
-const expanded = ref(props.filterCount > 0), presetName = ref('')
-watch(() => props.filterCount, count => { if (count) expanded.value = true })
+const emit = defineEmits<{ apply: [filters: GalleryFilterSnapshot]; clear: [] }>()
+const presetName = ref('')
 const fields: { key: Exclude<GenerationFilterField, 'seed'>; label: string; all: string }[] = [
   { key: 'engine', label: '引擎', all: '全部引擎' }, { key: 'model', label: '模型 / Checkpoint', all: '全部模型' },
   { key: 'outfit', label: '角色 · 服装', all: '全部服装' }, { key: 'size', label: '生成尺寸', all: '全部尺寸' },
@@ -30,7 +28,6 @@ function updateCondition(field: GenerationFilterField, value: string | number) {
   conditions.value = { ...conditions.value, [field]: String(value) }
 }
 function toggleMissingSeed() { updateCondition('seed', conditions.value.seed === UNRECORDED_CONDITION ? '' : UNRECORDED_CONDITION) }
-function toggled(event: Event) { expanded.value = (event.target as HTMLDetailsElement).open }
 const { presets, matchedPresetId, busy, error, message, savePreset, applyPreset, removePreset } = useGallerySavedFilters({
   snapshot: () => normalizeGalleryFilterSnapshot(props.snapshot), apply: filters => emit('apply', filters),
 })
@@ -40,9 +37,7 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
 
 <template>
   <section class="gallery-generation-filters" aria-label="生成条件与常用组合">
-    <details :open="expanded" @toggle="toggled">
-      <summary><ArchiveIcon name="pin" /><span>生成条件与常用组合</span><span v-if="filterCount">{{ filterCount }} 项条件</span><ArchiveIcon name="chevron-down" /></summary>
-      <div data-disclosure-content>
+    <div class="generation-heading"><h3>生成条件</h3><button class="btn btn-quiet btn-sm" type="button" :disabled="!filterCount" @click="emit('clear')">清除生成条件</button></div>
       <div class="generation-fields">
         <label v-for="field in fields" :key="field.key" class="generation-field"><span>{{ field.label }}</span>
           <StudioSelect :model-value="conditions[field.key]" :label="`按${field.label}筛选`" :options="[{ value: '', label: field.all }, ...options[field.key]]" @update:model-value="updateCondition(field.key, $event)" />
@@ -54,17 +49,17 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
           </div>
         </div>
       </div>
-      <p v-if="projectUnavailable" class="generation-error" role="status">当前画册已不存在，当前条件下无结果；可选择全部项目或重置筛选。</p>
+    <details class="generation-presets">
+      <summary><ArchiveIcon name="book" /><span>常用筛选组合</span><span v-if="presets.length">{{ presets.length }}</span><ArchiveIcon name="chevron-down" /></summary>
+      <div data-disclosure-content>
       <div class="generation-actions">
-        <button v-if="filterCount" class="btn btn-ghost btn-sm" type="button" @click="emit('clear')">清除生成条件</button>
-        <button v-if="hasActive" class="btn btn-ghost btn-sm" type="button" @click="emit('reset')">重置全部筛选</button>
         <StudioSelect v-if="presets.length" :model-value="matchedPresetId" label="沿用常用筛选组合" :options="presetOptions" :disabled="busy" @update:model-value="applyPreset(String($event))" />
         <button v-if="matchedPresetId" class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="removePreset(matchedPresetId)">移除此组合</button>
       </div>
       <form class="generation-save" @submit.prevent="save">
         <label for="gallery-filter-name">组合名称</label>
         <input id="gallery-filter-name" v-model="presetName" :maxlength="GALLERY_FILTER_NAME_LIMIT" :disabled="busy" autocomplete="off" placeholder="例如：Anima 收藏竖图" required />
-        <button class="btn btn-primary btn-sm" type="submit" :disabled="busy || !hasActive || !presetName.trim()">{{ busy ? '正在保存…' : '保存当前组合' }}</button>
+        <button class="btn btn-ghost btn-sm" type="submit" :disabled="busy || !hasActive || !presetName.trim()">{{ busy ? '正在保存…' : '保存当前组合' }}</button>
       </form>
       <p v-if="message" class="generation-note" role="status">{{ message }}</p>
       <p v-if="error" class="generation-error" role="alert">{{ error }}</p>
@@ -76,8 +71,9 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .gallery-generation-filters { @apply tw:min-w-0 tw:text-primary tw:text-label-sm; }
-details { border:0; border-radius:var(--r-md); background:transparent; }
-details[open] { padding:var(--s-3); background:var(--bg-base); }
+.generation-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); min-height:var(--control-height-sm); }
+.generation-heading h3 { margin:0; font:600 var(--fs-label-sm)/var(--lh-label) var(--font-sans); }
+details { margin-top:var(--s-4); border:0; border-top:1px solid var(--border-soft); background:transparent; }
 summary { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px]; padding-inline:var(--s-2); cursor:pointer; list-style:none; }
 summary .archive-icon { width:16px; height:16px; flex-shrink:0; }
 details[open] summary > :last-child { transform:rotate(180deg); }
@@ -85,7 +81,7 @@ summary::-webkit-details-marker { display:none; }
 summary > :last-child { margin-left:auto; }
 summary:focus-visible,input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .generation-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr)); gap:var(--s-3); margin-top:var(--s-3); }
-.generation-field { @apply tw:grid tw:min-w-0 tw:gap-s-1; align-content:start; }
+.generation-field { @apply tw:grid tw:min-w-0 tw:gap-s-1; align-content:start; color:var(--text-secondary); }
 .generation-seed,.generation-actions,.generation-save { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2; }
 .generation-seed input { flex:1; min-width:0; width:0; }
 .generation-actions { margin-top:var(--s-3); }

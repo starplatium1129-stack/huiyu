@@ -1,18 +1,20 @@
 <template>
   <div v-if="images?.length" ref="root" class="companion-chat-images" aria-label="对话图片">
     <figure v-for="item in displayedImages" :key="identity(item)">
-      <button v-if="sources[identity(item)]" class="companion-chat-image-open" type="button" :aria-label="`查看图片：${item.name}`" @click="openImage(item)">
-        <img :src="sources[identity(item)]" :alt="item.name" loading="lazy" decoding="async" />
+      <button class="companion-chat-image-open" type="button" :aria-label="`查看原图：${item.name}`" @click="openImage(item)">
+        <img v-if="sources[identity(item)]" :key="sources[identity(item)]" :src="sources[identity(item)]" :alt="item.name" loading="lazy" decoding="async" @error="thumbnailFailed(item, $event)" />
+        <span v-else class="companion-chat-image-placeholder"><ArchiveIcon name="image" />{{ failures[identity(item)] ? '暂无缩略图 · 查看原图' : thumbnailsLoading ? '正在读取预览…' : '查看原图' }}</span>
       </button>
-      <p v-else role="status">{{ failures[identity(item)] ? '图片暂时无法读取' : '正在读取图片…' }}</p>
       <figcaption>{{ item.name }}</figcaption>
-      <button v-if="failures[identity(item)]" class="companion-chat-image-retry" type="button" @click="loadImages">重新读取</button>
+      <button v-if="failures[identity(item)]" class="companion-chat-image-retry" type="button" :disabled="thumbnailsLoading" @click="loadImages">重读缩略图</button>
     </figure>
     <Teleport to="body">
-      <dialog ref="dialog" class="companion-chat-image-dialog" aria-label="对话图片预览" @close="opened = null" @click="onBackdropClick" @keydown.esc.prevent.stop="dialog?.close()">
+      <dialog ref="dialog" class="companion-chat-image-dialog" aria-label="对话图片预览" @close="onDialogClose" @click="onBackdropClick" @keydown.esc="onEscape">
         <template v-if="opened">
-          <header><span>{{ opened.name }}</span><button type="button" aria-label="关闭图片预览" @click="dialog?.close()"><ArchiveIcon name="close" /></button></header>
-          <ZoomableImageViewer :src="sources[identity(opened)] || ''" :alt="opened.name" />
+          <header><span>{{ opened.name }}</span><button type="button" aria-label="关闭图片预览" @click="closePreview"><ArchiveIcon name="close" /></button></header>
+          <p v-if="originalLoading" role="status">正在读取原图…</p>
+          <div v-if="originalError" class="companion-chat-image-error"><p role="alert">{{ originalError }}</p><button class="btn btn-ghost btn-sm" type="button" @click="loadOriginal(opened)">重新读取原图</button></div>
+          <ZoomableImageViewer v-if="originalUrl || sources[identity(opened)]" :key="identity(opened)" :src="originalUrl || sources[identity(opened)]" :preview-src="sources[identity(opened)]" :alt="opened.name" @error="originalFailed" />
         </template>
       </dialog>
     </Teleport>
@@ -20,73 +22,71 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onActivated, onDeactivated, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
+import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, shallowRef, watch } from 'vue'
 import type { CompanionChatImage } from '@/types/companionDrawing'
-import { artworkRepository } from '@/storage/artworkRepository'
-import { fetchRuntimeResult, isRuntimeResultPath } from '@/api/runtimeTasks'
+import { companionImageKey as identity, useCompanionImageMedia } from '@/composables/chat/useCompanionImageMedia'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { prepareNativeModal } from '@/composables/useFocusTrap'
 
 const props = defineProps<{ images?: CompanionChatImage[] }>()
 const root = ref<HTMLElement>(), dialog = ref<HTMLDialogElement>()
-const sources = shallowRef<Record<string, string>>({}), failures = shallowRef<Record<string, boolean>>({})
 const opened = shallowRef<CompanionChatImage | null>(null)
-const identity = (image: CompanionChatImage) => image.imageId || image.path
 const displayedImages = computed(() => [...new Map((props.images || []).map(item => [identity(item), item])).values()])
-let controller: AbortController | null = null, observer: IntersectionObserver | undefined, visible = false, activeView = true
+let observer: IntersectionObserver | undefined, visible = false, activeView = true
+const { sources, failures, thumbnailsLoading, originalUrl, originalLoading, originalError,
+  loadThumbnails, rejectThumbnail, loadOriginal, releaseOriginal, originalFailed, release } = useCompanionImageMedia(() => activeView, onSessionChange)
 
-function releaseImages() {
-  controller?.abort(); controller = null
-  dialog.value?.close(); opened.value = null
-  Object.values(sources.value).forEach(url => URL.revokeObjectURL(url))
-  sources.value = {}; failures.value = {}
+function closePreview() {
+  opened.value = null; releaseOriginal()
+  if (dialog.value?.open) dialog.value.close()
 }
-async function loadImages() {
-  releaseImages()
-  if (!visible || !activeView) return
-  const active = new AbortController(); controller = active
-  const images = displayedImages.value.slice()
-  await Promise.all(images.map(async item => {
-    const key = identity(item)
-    try {
-      let blob = item.imageId || /^(?:image-|img_)/.test(item.path)
-        ? await artworkRepository.getImage(item.imageId || item.path, active.signal)
-        : isRuntimeResultPath(item.path) ? await fetchRuntimeResult(item.path, active.signal) : null
-      if (!blob && item.imageId && isRuntimeResultPath(item.path)) blob = await fetchRuntimeResult(item.path, active.signal)
-      if (active.signal.aborted) return
-      if (!blob?.size || !blob.type.startsWith('image/')) throw new Error('图片无法读取')
-      sources.value = { ...sources.value, [key]: URL.createObjectURL(blob) }
-    } catch {
-      if (!active.signal.aborted) failures.value = { ...failures.value, [key]: true }
-    }
-  }))
+function onDialogClose() {
+  // Native close events are queued; an earlier close must not cancel a reopened image.
+  if (!dialog.value?.open) closePreview()
+}
+function onEscape(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229) return
+  event.preventDefault(); event.stopPropagation(); closePreview()
+}
+function loadImages() { if (visible && activeView && !thumbnailsLoading.value) void loadThumbnails(displayedImages.value) }
+function onSessionChange(ready: boolean) {
+  closePreview()
+  if (ready) loadImages()
+}
+function thumbnailFailed(image: CompanionChatImage, event: Event) {
+  if (!(event.target instanceof HTMLImageElement) || !root.value?.contains(event.target) || event.target.getAttribute('src') !== sources.value[identity(image)]) return
+  rejectThumbnail(image)
 }
 async function openImage(image: CompanionChatImage) {
-  opened.value = image
+  if (!activeView || (opened.value && identity(opened.value) === identity(image) && (originalLoading.value || originalUrl.value))) return
+  releaseOriginal()
+  const selection = { ...image }; opened.value = selection
   await nextTick()
-  if (opened.value === image && dialog.value && !dialog.value.open) {
+  if (!activeView || opened.value !== selection || !dialog.value) return
+  if (!dialog.value.open) {
     prepareNativeModal(dialog.value)
     dialog.value.showModal()
   }
+  void loadOriginal(selection)
 }
 function onBackdropClick(event: MouseEvent) {
   if (event.target !== dialog.value) return
   const bounds = dialog.value.getBoundingClientRect()
-  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.value.close()
+  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) closePreview()
 }
-watch(() => props.images, () => { void loadImages() }, { deep: true })
+watch(() => props.images, () => { closePreview(); release(); loadImages() }, { deep: true })
 watch(root, element => { if (element && !visible) observer?.observe(element) })
 onMounted(() => {
   observer = new IntersectionObserver(entries => {
     if (!activeView || !entries.some(entry => entry.isIntersecting)) return
-    visible = true; observer?.disconnect(); void loadImages()
+    visible = true; observer?.disconnect(); loadImages()
   }, { rootMargin: '120px' })
   if (root.value) observer.observe(root.value)
 })
-onDeactivated(() => { activeView = false; visible = false; observer?.disconnect(); releaseImages() })
+onDeactivated(() => { activeView = false; visible = false; observer?.disconnect(); closePreview(); release() })
 onActivated(() => { activeView = true; if (root.value && !visible) observer?.observe(root.value) })
-onUnmounted(() => { observer?.disconnect(); visible = false; releaseImages() })
+onBeforeUnmount(() => { activeView = false; observer?.disconnect(); visible = false; closePreview(); release() })
 </script>
 
 <style scoped>
@@ -94,9 +94,13 @@ onUnmounted(() => { observer?.disconnect(); visible = false; releaseImages() })
 .companion-chat-images figure { flex:1; min-width:140px; max-width:300px; margin:0; padding:8px; border:1px solid var(--border-soft); border-radius:12px; background:var(--bg-elevated); }
 .companion-chat-image-open { display:block; width:100%; padding:0; overflow:hidden; border:0; border-radius:8px; background:transparent; cursor:zoom-in; }
 .companion-chat-image-open img { display:block; width:100%; max-height:220px; object-fit:contain; }
+.companion-chat-image-placeholder { display:flex; align-items:center; justify-content:center; gap:var(--s-2); min-height:var(--control-height); padding:var(--s-4) var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); }
+.companion-chat-image-placeholder .archive-icon { flex-shrink:0; width:20px; height:20px; }
+.companion-chat-image-error { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); }
 .companion-chat-images p { margin:0; padding:24px 8px; color:var(--text-secondary); font-size:12px; }
 .companion-chat-images figcaption { overflow:hidden; margin-top:6px; color:var(--text-secondary); font-size:11px; line-height:1.5; text-overflow:ellipsis; white-space:nowrap; }
 .companion-chat-image-retry { min-height:28px; margin-top:5px; padding:3px 6px; border:1px solid var(--border-soft); border-radius:6px; background:var(--bg-surface); color:var(--text-primary); }
+.companion-chat-image-retry:disabled { color:var(--text-disabled); cursor:default; }
 .companion-chat-image-open:focus-visible,.companion-chat-image-retry:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .companion-chat-image-dialog { box-sizing:border-box; width:min(860px,calc(100vw - 24px)); max-height:calc(100vh - 24px); overflow:auto; padding:12px; border:1px solid var(--border-soft); border-radius:16px; background:var(--bg-surface); color:var(--text-primary); }
 .companion-chat-image-dialog::backdrop { background:var(--art-scrim); }

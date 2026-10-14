@@ -86,7 +86,7 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
     }
     let mut inventory = manifest["media"].as_array().unwrap().clone();
     inventory.sort_by(|a, b| a["hash"].as_str().cmp(&b["hash"].as_str()));
-    if media_rows(&db)? != inventory {
+    if media_rows(c, &db)? != inventory {
         return Err(invalid_backup(
             "Backup media inventory differs from database",
         ));
