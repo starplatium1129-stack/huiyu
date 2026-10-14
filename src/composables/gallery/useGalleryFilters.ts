@@ -1,7 +1,7 @@
-import { computed, nextTick, onScopeDispose, ref, watch, type Ref } from 'vue';
+import { computed, nextTick, onActivated, onDeactivated, onMounted, onScopeDispose, ref, watch, type Ref } from 'vue';
 import type { LocationQueryRaw, RouteLocationNormalizedLoaded, Router } from 'vue-router';
 import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork';
-import { dayGroup, searchHaystack } from './galleryHelpers';
+import { artworkIdKey, dayGroup, searchHaystack } from './galleryHelpers';
 import { buildMasonryGroups, type MasonryGroup } from './useMasonryWall';
 import type { GalleryProject } from './galleryStorage';
 import { artworkTags } from './artworkTags';
@@ -83,7 +83,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   watch(searching, active => { if (!active) void searchIndex.value; }, { flush: 'sync' });
   const projectIds = computed(() => {
     const project = projects.value.find(item => item.id === projectFilter.value);
-    return project && !project.smartRule ? new Set(Array.isArray(project.history_ids) ? project.history_ids : []) : null;
+    return project && !project.smartRule ? new Set(project.history_ids.map(artworkIdKey)) : null;
   });
   const visible = computed(() => {
     const favorites = favoriteOnly.value, tag = tagFilter.value;
@@ -100,7 +100,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
         if (characterFilter.value === UNASSIGNED_CHARACTER_ID ? ids.length > 0 : !ids.includes(characterFilter.value)) return false;
       }
       if (favorites && !item.favorite) return false;
-      if (ids && !ids.has(item.id)) return false;
+      if (ids && !ids.has(artworkIdKey(item.id))) return false;
       if (tag && !artworkTags(item).includes(tag)) return false;
       if (generation && !matchesGenerationConditions(generation.get(item)!, generationConditions.value)) return false;
       return !index || terms.every(term => index.get(item)!.includes(term));
@@ -265,6 +265,20 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     syncFiltersToQuery();
   }, { deep: true });
   // Back/forward and cleared URL fields replace the complete filter snapshot.
+  const sentinelEl = ref<HTMLElement | null>(null);
+  let moreObserver: IntersectionObserver | null = null;
+  function observeSentinel() { if ((!isViewActive || isViewActive()) && moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }
+  onMounted(() => {
+    moreObserver = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) loadMoreIfNeeded(sentinelEl.value);
+    }, { rootMargin: '800px 0px' });
+    observeSentinel();
+  });
+  watch(sentinelEl, () => { moreObserver?.disconnect(); observeSentinel(); });
+  onActivated(() => { void nextTick(observeSentinel); });
+  onDeactivated(() => { moreObserver?.disconnect(); });
+  onScopeDispose(() => { moreObserver?.disconnect(); moreObserver = null; });
+
   watch(() => JSON.stringify([route.path, route.query.fav, route.query.project, route.query.character, route.query.q, route.query.tag,
     ...GENERATION_FILTER_FIELDS.map(field => route.query[generationQueryKeys[field]])]), restoreFiltersFromQuery);
 
@@ -288,6 +302,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     restoreDeferredFiltersFromQuery,
     syncFiltersToQuery,
     cleanupFilterSync,
+    sentinelEl,
     loadMoreIfNeeded,
   };
 }

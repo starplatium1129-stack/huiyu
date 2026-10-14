@@ -6,7 +6,7 @@
         <div class="voice-sub">中文字幕可单独保留；日文配音稿用于角色声线合成。</div>
       </div>
       <div class="voice-head-actions">
-        <span class="voice-state" :class="voiceStateKind">{{ voiceStateLabel }}</span>
+        <span class="voice-state" :class="voiceStateKind" aria-live="polite">{{ voiceStateLabel }}</span>
         <StudioTooltip :content="collapsed ? '展开配音面板' : '收起配音面板'">
           <button class="voice-collapse" type="button"
             :aria-expanded="!collapsed"
@@ -51,7 +51,7 @@
           </button>
           <button v-if="!voiceOnline" class="btn btn-ghost" type="button" :disabled="voiceBusy" @click="refreshVoiceStatus">重新检测</button>
         </div>
-        <div class="voice-status">{{ voiceStatus }}</div>
+        <div class="voice-status" role="status">{{ voiceStatus }}</div>
         <RouterLink v-if="!voiceOnline" class="voice-recovery" to="/control">→ 到控制面板启动语音服务</RouterLink>
         <StudioMediaPlayer v-if="voiceAudioUrl" ref="voicePlayer" @play="stopOwnedSpeech" class="voice-audio show" kind="audio" :src="resolveRuntimeUrl(voiceAudioUrl)" label="AI 声线试听" :transcript="voiceAudioTranscript" />
         <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download show" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>

@@ -1,4 +1,5 @@
 use super::*;
+use crate::images::upload_body::UploadBody;
 use crate::{AppState, security};
 use axum::{
     Extension, Json, Router,
@@ -35,6 +36,10 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
         )
         .route("/api/video/batches/{id}/result", get(batch_result))
         .route("/api/video/batches/{id}/concat", post(concat))
+        .route(
+            "/api/video/batches/{id}/retry",
+            post(retry_many).layer(DefaultBodyLimit::max(4096)),
+        )
         .route("/api/video/batches/{id}/shots/{index}/retry", post(retry))
         .layer(Extension(Arc::new(Http { service })))
         .layer(axum::middleware::from_fn_with_state(
@@ -71,7 +76,7 @@ async fn upload(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
-    Json(mut body): Json<Value>,
+    UploadBody(mut body): UploadBody,
 ) -> Response {
     if let Err(e) = state.host.check_running() {
         return e.into_response();
@@ -83,14 +88,11 @@ async fn upload(
                 Some(Value::String(data)) if !data.is_empty() => data,
                 _ => return Err(error(400, "INVALID_IMAGE", "缺少图片数据")),
             };
+            let reference = body["kind"] == "reference";
+            drop(body);
             let name = http
                 .service
-                .upload(
-                    data,
-                    owner,
-                    body["kind"] == "reference",
-                    http.service.shutdown.child_token(),
-                )
+                .upload(data, owner, reference, http.service.shutdown.child_token())
                 .await?;
             let bytes = tokio::fs::metadata(inputs::path(&http.service.config, &name)?)
                 .await?
@@ -258,6 +260,27 @@ async fn retry(
     headers: HeaderMap,
 ) -> Response {
     response(async{state.host.check_running()?;let index=index.checked_sub(1).ok_or_else(||error(400,"SHOT_INDEX_INVALID","分镜序号无效"))?;Ok(json!({"batch":http.service.clone().retry_shot(&id,&generation::request_owner(&headers,peer,&query),index).await?}))}.await,StatusCode::ACCEPTED)
+}
+#[derive(serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RetrySelection {
+    indices: Vec<usize>,
+}
+async fn retry_many(
+    State(state): State<AppState>,
+    Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    Path(id): Path<String>,
+    Query(query): Query<HashMap<String, String>>,
+    headers: HeaderMap,
+    Json(selection): Json<RetrySelection>,
+) -> Response {
+    response(async {
+        state.host.check_running()?;
+        let indices = selection.indices.into_iter().map(|index| index.checked_sub(1)
+            .ok_or_else(||error(400,"SHOT_INDEX_INVALID","分镜序号无效"))).collect::<Result<Vec<_>>>()?;
+        Ok(json!({"batch":http.service.clone().retry_shots(&id,&generation::request_owner(&headers,peer,&query),indices).await?}))
+    }.await,StatusCode::ACCEPTED)
 }
 async fn stream(
     state: &AppState,

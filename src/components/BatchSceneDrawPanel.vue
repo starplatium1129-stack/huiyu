@@ -161,8 +161,8 @@
           <p v-if="batchDraw.restored.value" class="batch-hint">已恢复上次计划与原参数；本次尚未自动生成。接收状态不明的项只查询原请求编号。</p>
 
           <div class="batch-result-grid">
-            <figure v-for="job in jobs" :key="job.id" class="batch-card" :data-state="job.status">
-              <StudioTooltip v-if="job.resultUrl" :content="`查看大图：${job.sceneTitle}`">
+            <figure v-for="job in jobs" :key="job.id" :ref="element => batchMedia.bindCard(job.id, element as Element | null)" class="batch-card" :data-state="job.status" :data-preview-id="job.id">
+              <StudioTooltip v-if="hasBatchArtwork(job)" :content="`查看大图：${job.sceneTitle}`">
                 <button
                   type="button"
                   class="batch-thumb-btn"
@@ -171,8 +171,9 @@
                   :aria-label="`查看大图：${job.sceneTitle}`"
                   @click="previewSource = ($event.currentTarget as HTMLElement).querySelector('img'); previewJob = job"
                 >
-                  <img :crossorigin="runtimeResourceCors()" class="batch-thumb" :src="resolveRuntimeUrl(job.resultUrl)" :alt="job.sceneTitle" loading="lazy" decoding="async" />
-                  <SensitivePreviewVeil v-if="job.snapshot?.adult" :src="resolveRuntimeUrl(job.resultUrl)" :crossorigin="runtimeResourceCors()" />
+                  <img v-if="batchMedia.urls[job.id]" :crossorigin="runtimeResourceCors()" class="batch-thumb" :src="batchMedia.urls[job.id]" :alt="job.sceneTitle" loading="lazy" decoding="async" />
+                  <SensitivePreviewVeil v-if="job.snapshot?.adult && batchMedia.urls[job.id]" :src="batchMedia.urls[job.id]" :crossorigin="runtimeResourceCors()" />
+                  <span v-if="!batchMedia.urls[job.id]" class="batch-thumb batch-thumb-placeholder"><ArchiveIcon name="image" /><span>查看作品</span></span>
                 </button>
               </StudioTooltip>
               <div v-else class="batch-thumb batch-thumb-placeholder" :data-state="job.status">
@@ -215,7 +216,8 @@
         </template>
 
         <!-- 大图预览 -->
-        <BatchArtworkPreview v-if="previewJob?.resultUrl" :jobs="jobs" :selected-id="previewJob.id" :source="previewSource" @close="previewJob = null" />
+        <BatchArtworkPreview v-if="previewJob && hasBatchArtwork(previewJob)" :jobs="previewJobs" :selected-id="previewJob.id" :source="previewSource"
+          :thumb-urls="batchMedia.urls" :pending-image="pendingImage" @select="previewJob = jobs.find(job => job.id === $event) || null" @close="previewJob = null" />
       </section>
     </div>
     </FluidTransition>
@@ -232,13 +234,14 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
-import { computed, reactive, ref, watch, onUnmounted } from 'vue'
+import { computed, reactive, ref, watch, onDeactivated, onUnmounted } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { usePromptBatchRunners, type PromptBatchRunnersDeps } from '@/composables/prompt/usePromptBatchRunners'
 import type { BatchDrawJob } from '@/composables/generation/useBatchDraw'
+import { hasBatchArtwork, useBatchArtworkThumbnails } from '@/composables/generation/useBatchArtworkMedia'
+import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import type { SceneBlueprint } from '@/utils/popularContent'
 
 /**
@@ -276,7 +279,7 @@ const charFilter = ref('')
 const franchiseFilter = ref('')
 const selectedCharSet = reactive(new Set<string>())
 
-const { batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed } = usePromptBatchRunners(props.deps)
+const { batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed, pendingImage } = usePromptBatchRunners(props.deps)
 
 const currentPromptPreview = computed(() => {
   return props.deps.currentLivePrompt?.() || props.deps.currentBasePrompt?.() || props.deps.pb.story || props.deps.pb.visualDescription || ''
@@ -285,6 +288,9 @@ const currentPromptPreview = computed(() => {
 const engineReady = computed(() => props.animaAvailable)
 const isRunning = computed(() => batchDraw.running.value)
 const jobs = computed(() => batchDraw.jobs.value)
+const previewJobs = jobs
+const batchMedia = useBatchArtworkThumbnails({ jobs: previewJobs, active: computed(() => props.open),
+  selectedId: computed(() => previewJob.value?.id || ''), pendingImage })
 const comparisonIds = computed(() => jobs.value.filter(job => job.historyId != null).slice(0, 4).map(job => encodeURIComponent(String(job.historyId))))
 const progress = computed(() => batchDraw.progress.value)
 const retryableCount = computed(() =>
@@ -431,8 +437,10 @@ function placeholderText(job: BatchDrawJob): string {
 
 watch([filter, categoryFilter], () => { sceneLimit.value = 30 })
 watch([charFilter, franchiseFilter], () => { charLimit.value = 30 })
+watch(() => props.open, open => { if (!open) { previewJob.value = null; previewSource.value = null } })
 watch(isRunning, running => { if (running) phase.value = 'results'; emit('running-change', running) }, { immediate: true })
 if (jobs.value.length) { phase.value = 'results'; batchMode.value = jobs.value[0].kind === 'character' ? 'character' : 'scene' }
+onDeactivated(() => { previewJob.value = null; previewSource.value = null })
 onUnmounted(() => batchDraw.dispose())
 </script>
 

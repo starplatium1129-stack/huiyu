@@ -59,53 +59,56 @@ pub(super) fn build(
     cancel: &CancellationToken,
     started: Instant,
 ) -> Result<Art> {
-    let (head, encoded) = data
-        .split_once(',')
-        .ok_or_else(|| invalid("请上传 PNG、JPEG 或 WebP 图片"))?;
-    let format = match head {
-        "data:image/png;base64" => ImageFormat::Png,
-        "data:image/jpeg;base64" => ImageFormat::Jpeg,
-        "data:image/webp;base64" => ImageFormat::WebP,
-        _ => return Err(invalid("请上传 PNG、JPEG 或 WebP 图片")),
+    let (mut image, orientation) = {
+        let (head, encoded) = data
+            .split_once(',')
+            .ok_or_else(|| invalid("请上传 PNG、JPEG 或 WebP 图片"))?;
+        let format = match head {
+            "data:image/png;base64" => ImageFormat::Png,
+            "data:image/jpeg;base64" => ImageFormat::Jpeg,
+            "data:image/webp;base64" => ImageFormat::WebP,
+            _ => return Err(invalid("请上传 PNG、JPEG 或 WebP 图片")),
+        };
+        if encoded.len() > 20 * 1024 * 1024 {
+            return Err(invalid("图片超过 15 MiB"));
+        }
+        let bytes = STANDARD
+            .decode(encoded)
+            .map_err(|_| invalid("图片编码无效"))?;
+        if bytes.len() > 15 * 1024 * 1024 || image::guess_format(&bytes).ok() != Some(format) {
+            return Err(invalid("图片格式或大小无效"));
+        }
+        let bytes = if format == ImageFormat::WebP {
+            webp_container(&bytes)?
+        } else {
+            &bytes
+        };
+        let (width, height) = ImageReader::with_format(Cursor::new(bytes), format)
+            .into_dimensions()
+            .map_err(|_| invalid("无法读取图片尺寸"))?;
+        if width == 0
+            || height == 0
+            || width > 8192
+            || height > 8192
+            || u64::from(width) * u64::from(height) > 32_000_000
+        {
+            return Err(invalid("图片尺寸超过 8192 边长或 3200 万像素"));
+        }
+        check(cancel, started)?;
+        let mut reader = ImageReader::with_format(Cursor::new(bytes), format);
+        let mut limits = image::Limits::default();
+        limits.max_image_width = Some(8192);
+        limits.max_image_height = Some(8192);
+        limits.max_alloc = Some(256 * 1024 * 1024);
+        reader.limits(limits);
+        let mut decoder = reader.into_decoder().map_err(|_| invalid("图片解码失败"))?;
+        let orientation = decoder
+            .orientation()
+            .map_err(|_| invalid("图片方向信息无效"))?;
+        let image =
+            image::DynamicImage::from_decoder(decoder).map_err(|_| invalid("图片解码失败"))?;
+        (image, orientation)
     };
-    if encoded.len() > 20 * 1024 * 1024 {
-        return Err(invalid("图片超过 15 MiB"));
-    }
-    let bytes = STANDARD
-        .decode(encoded)
-        .map_err(|_| invalid("图片编码无效"))?;
-    if bytes.len() > 15 * 1024 * 1024 || image::guess_format(&bytes).ok() != Some(format) {
-        return Err(invalid("图片格式或大小无效"));
-    }
-    let bytes = if format == ImageFormat::WebP {
-        webp_container(&bytes)?
-    } else {
-        &bytes
-    };
-    let (width, height) = ImageReader::with_format(Cursor::new(bytes), format)
-        .into_dimensions()
-        .map_err(|_| invalid("无法读取图片尺寸"))?;
-    if width == 0
-        || height == 0
-        || width > 8192
-        || height > 8192
-        || u64::from(width) * u64::from(height) > 32_000_000
-    {
-        return Err(invalid("图片尺寸超过 8192 边长或 3200 万像素"));
-    }
-    check(cancel, started)?;
-    let mut reader = ImageReader::with_format(Cursor::new(bytes), format);
-    let mut limits = image::Limits::default();
-    limits.max_image_width = Some(8192);
-    limits.max_image_height = Some(8192);
-    limits.max_alloc = Some(256 * 1024 * 1024);
-    reader.limits(limits);
-    let mut decoder = reader.into_decoder().map_err(|_| invalid("图片解码失败"))?;
-    let orientation = decoder
-        .orientation()
-        .map_err(|_| invalid("图片方向信息无效"))?;
-    let mut image =
-        image::DynamicImage::from_decoder(decoder).map_err(|_| invalid("图片解码失败"))?;
     image.apply_orientation(orientation);
     let (width, height) = (image.width(), image.height());
     let grid = image.thumbnail(128, 192).to_rgba8();

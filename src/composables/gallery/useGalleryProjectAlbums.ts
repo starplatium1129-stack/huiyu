@@ -2,7 +2,7 @@ import { computed, type Ref } from 'vue'
 import { parseSmartAlbumRule, type SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork'
 import type { GalleryProject } from './galleryStorage'
-import { characterName as artworkCharacterName, safeImageUrl, searchHaystack } from './galleryHelpers'
+import { artworkIdKey, characterName as artworkCharacterName, safeImageUrl, searchHaystack } from './galleryHelpers'
 import { artworkCharacterIds, createSmartAlbumMatcher, smartAlbumSummary, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules'
 
 export interface GalleryProjectAlbum {
@@ -27,7 +27,7 @@ export function useGalleryProjectAlbums(options: {
   cardUrls: Readonly<Record<string, string>>
   characterName?: (id: string) => string
 }) {
-  const records = computed(() => new Map(options.history.value.map(item => [item.id, item])))
+  const records = computed(() => new Map(options.history.value.map(item => [artworkIdKey(item.id), item])))
   const sortedHistory = computed(() => [...records.value.values()]
     .sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)))
   const smartRules = computed(() => {
@@ -57,7 +57,7 @@ export function useGalleryProjectAlbums(options: {
           items: sortedHistory.value.filter(item => matches(item, index?.get(item))) }]
       }
       // Match the existing project filter's ID semantics, excluding deleted/stale references.
-      const items = [...new Set(project.history_ids)]
+      const items = [...new Set(project.history_ids.map(artworkIdKey))]
         .map(id => records.value.get(id))
         .filter((item): item is ArtworkRecord => Boolean(item))
         .sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))

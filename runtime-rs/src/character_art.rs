@@ -77,7 +77,7 @@ async fn save(
     Extension(service): Extension<Arc<Service>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     headers: HeaderMap,
-    body: Bytes,
+    upload_bytes: Bytes,
 ) -> Result<Response> {
     authorize(&app, &headers, peer)?;
     let permit = service
@@ -91,8 +91,10 @@ async fn save(
     let value = blocking(move || {
         let _guards = (permit, admission);
         // Upload bodies can reach 21 MiB; parsing belongs with the image work.
-        let body: Value = serde_json::from_slice(&body).map_err(|_| invalid("无效 JSON"))?;
-        store::save(&app.config, &body, &cancel)
+        let input: Value =
+            serde_json::from_slice(&upload_bytes).map_err(|_| invalid("无效 JSON"))?;
+        drop(upload_bytes);
+        store::save(&app.config, &input, &cancel)
     })
     .await?;
     Ok(([("cache-control", "no-store")], Json(value)).into_response())

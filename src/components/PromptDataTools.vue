@@ -3,7 +3,7 @@
   <StudioPopover v-model:open="utilityOpen" :label="launcherLabel || '数据工具'" content-class="studio-data-tools"
     @close-auto-focus="onMenuCloseAutoFocus">
     <template #trigger>
-      <button type="button" @focus="utilityTrigger = $event.currentTarget as HTMLButtonElement"
+      <button type="button" data-migration-control @focus="utilityTrigger = $event.currentTarget as HTMLButtonElement"
         :class="launcherLabel ? 'btn btn-ghost btn-sm' : 'utility-trigger'"
         :aria-label="launcherLabel || (backupStale ? `数据工具（${backupReminder}）` : '数据工具')"
       >
@@ -12,7 +12,7 @@
         <span v-if="backupStale && !launcherLabel" class="utility-dot tw:absolute tw:top-[3px] tw:right-[3px] tw:w-[6px] tw:h-[6px]" aria-hidden="true"></span>
       </button>
     </template>
-    <div class="utility-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-3 tw:text-primary tw:font-semibold">{{ launcherLabel || '数据工具' }}<button type="button" class="btn btn-ghost btn-icon" :aria-label="`关闭${launcherLabel || '数据工具'}`" @click="utilityOpen = false"><ArchiveIcon name="close" /></button></div>
+    <div class="utility-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-3 tw:text-primary tw:font-semibold">{{ launcherLabel || '数据工具' }}<button type="button" data-migration-control class="btn btn-ghost btn-icon" :aria-label="`关闭${launcherLabel || '数据工具'}`" @click="utilityOpen = false"><ArchiveIcon name="close" /></button></div>
       <div v-if="backupStale" class="utility-note" role="status">
         <ArchiveIcon name="health" /> {{ backupReminder }}
       </div>
@@ -61,7 +61,7 @@
       <div class="utility-actions tw:grid tw:gap-s-1">
         <template v-if="migration.recoveryPending.value">
           <p class="utility-note wide" role="status">迁移激活结果尚未确认，原资料保持只读。核对只读取本机身份，不会重新迁移。若仍无匹配的激活记录，请保留独立备份并联系维护人员，不要删除资料或反复提交迁移。</p>
-          <button class="btn btn-ghost wide" type="button" :disabled="migration.busy.value" @click="migration.reconcile()">只读核对激活结果</button>
+          <button class="btn btn-ghost wide" type="button" data-migration-control :disabled="migration.busy.value" @click="migration.reconcile()">只读核对激活结果</button>
         </template>
         <button v-if="migration.available.value" class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value" @click="migration.migrate()"><ArchiveIcon name="upload" /> 迁移至本机工作区</button>
         <button v-if="migration.available.value" class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value" @click="migration.migrate(true)"><ArchiveIcon name="refresh" /> 继续已备份的迁移</button>
@@ -69,7 +69,7 @@
           <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value || !migration.bundledVerified.value" @click="migration.enableBundled()"><ArchiveIcon name="spark" /> 启用独立启动界面</button>
         </StudioTooltip>
         <div v-if="migration.progress.value" class="utility-note wide" role="status" aria-live="polite">{{ migration.progress.value }}</div>
-        <button v-if="migration.busy.value" class="btn btn-ghost wide" type="button" :disabled="!migration.canCancel.value" @click="migration.cancel()">取消迁移</button>
+        <button v-if="migration.busy.value" class="btn btn-ghost wide" type="button" data-migration-control :disabled="!migration.canCancel.value" @click="migration.cancel()">取消迁移</button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()"><ArchiveIcon name="health" /> 存储体检</button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="cleanOrphanImages"><ArchiveIcon name="broom" /> 清理未引用图片</button>
       </div>

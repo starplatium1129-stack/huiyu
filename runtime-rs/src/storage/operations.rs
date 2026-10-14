@@ -86,11 +86,11 @@ impl Context {
         )?;
         Ok(())
     }
-    pub(super) fn start_operation(
+    pub(super) fn operation_receipt(
         &self,
         principal: &str,
         command: &Value,
-    ) -> Result<(String, Option<Value>)> {
+    ) -> Result<Option<(String, Option<Value>)>> {
         let id = string(command, "operationId")?;
         let kind = string(command, "kind")?;
         let mut statement = self.db.prepare_cached(
@@ -112,10 +112,20 @@ impl Context {
             } else {
                 Some(serde_json::from_str(text_column(row, 4)?)?)
             };
-            return Ok((row.get(0)?, receipt));
+            return Ok(Some((row.get(0)?, receipt)));
         }
-        drop(rows);
-        drop(statement);
+        Ok(None)
+    }
+    pub(super) fn start_operation(
+        &self,
+        principal: &str,
+        command: &Value,
+    ) -> Result<(String, Option<Value>)> {
+        let id = string(command, "operationId")?;
+        let kind = string(command, "kind")?;
+        if let Some(previous) = self.operation_receipt(principal, command)? {
+            return Ok(previous);
+        }
         Ok((self.insert_operation(principal, id, kind, command)?, None))
     }
 }

@@ -1,4 +1,5 @@
 mod commands;
+mod json;
 mod media;
 pub(crate) use media::range as media_range;
 pub(crate) use media::stream as stream_media;
@@ -37,7 +38,7 @@ async fn handle(
     let allowed = state
         .host
         .allows_origin(&state, &headers, peer.ip(), &method);
-    let mut response = perform(&state, peer, &uri, &method, &headers, &body)
+    let mut response = perform(&state, peer, &uri, &method, &headers, body)
         .await
         .unwrap_or_else(IntoResponse::into_response);
     let output = response.headers_mut();
@@ -58,7 +59,7 @@ async fn perform(
     uri: &Uri,
     method: &Method,
     headers: &HeaderMap,
-    body: &[u8],
+    body: Bytes,
 ) -> Result<Response> {
     state.host.check_available()?;
     let storage = state.host.storage().ok_or_else(|| {
@@ -130,37 +131,27 @@ async fn perform(
             "Workspace session no longer matches this workspace",
         ));
     }
-    let input: Value = if body.is_empty() {
-        json!({})
-    } else {
-        serde_json::from_slice(body)?
-    };
-    if capability {
-        return media::grant(state, &storage, session, &input).await;
-    }
     let writing = !matches!(*method, Method::GET | Method::HEAD);
-    let _admitted = if writing {
+    let _admitted = if writing && !capability {
         Some(state.host.admit()?)
     } else {
         None
     };
-    if writing {
-        if input["protocolVersion"] != 1 {
-            return Err(ApiError::new(
-                409,
-                "PROTOCOL_VERSION",
-                "Workspace protocol version does not match",
-            ));
+    let command = match json::prepare(
+        body,
+        method.clone(),
+        path,
+        query,
+        capability,
+        session.workspace_id.clone(),
+    )
+    .await?
+    {
+        json::Request::Capability(input) => {
+            return media::grant(state, &storage, session, &input).await;
         }
-        if input["workspaceId"].as_str() != Some(session.workspace_id.as_str()) {
-            return Err(ApiError::new(
-                409,
-                "WORKSPACE_IDENTITY",
-                "Workspace identity does not match",
-            ));
-        }
-    }
-    let command = command(method, &path, &query, &input)?;
+        json::Request::Command(command) => command,
+    };
     if command["kind"] == "readMedia" {
         return media::chunk(state, &storage, method, &command).await;
     }
@@ -191,13 +182,15 @@ async fn perform(
     // Profile archives and bulk workspace reads can contain megabytes of JSON.
     // Storage runs on its own worker; keep response encoding off the async
     // request worker as well, without occupying the serialized storage queue.
-    tokio::task::spawn_blocking(move || Json(envelope).into_response())
-        .await
-        .map_err(|_| {
+    json::encode(envelope).await.map_err(|error| {
+        if error.code == "WORKSPACE_TIMEOUT" && operation_id.is_some() {
             ApiError::new(
-                503,
-                "WORKSPACE_UNAVAILABLE",
-                "Workspace response unavailable",
+                504,
+                "COMMIT_UNKNOWN",
+                "Commit is unconfirmed; query the original operation ID before retrying",
             )
-        })
+        } else {
+            error
+        }
+    })
 }

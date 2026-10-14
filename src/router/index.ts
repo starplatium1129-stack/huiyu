@@ -1,4 +1,5 @@
 import { useTaskCenter, approveTaskReload } from '@/composables/useTaskCenter'
+import { hasPendingArtworkSource } from '@/platform/web/migrationBarrier'
 import { confirmAction } from '@/composables/useConfirm'
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { prefersReducedMotion } from '@/utils/motionPreference'
@@ -150,7 +151,11 @@ router.beforeEach(async (to, from) => {
 
   // 进 Live2D 页面换到带 unsafe-eval 的文档；离开时换回严格文档，
   // 顺带彻底释放 WebGL 上下文与 Pixi ticker
-  if (useTaskCenter().activeCount.value && !(await confirmAction({ title: '这个页面需要重新载入应用', message: '为保持页面安全隔离，打开房间会重载应用。页面内批量与反推将中断，已保存的图片不受影响。可取消并等任务完成。', confirmLabel: '仍要打开' }))) return false
+  const pendingArtwork = hasPendingArtworkSource()
+  if ((useTaskCenter().activeCount.value || pendingArtwork) && !(await confirmAction({ title: '这个页面需要重新载入应用',
+    message: pendingArtwork ? '生成或原图保存尚未完成。重载会中断页面请求，未落稳的成片可能丢失；请先入册、下载原图或显式清除，再打开房间。'
+      : '为保持页面安全隔离，打开房间会重载应用。页面内批量与反推将中断，已保存的图片不受影响。可取消并等任务完成。',
+    confirmLabel: '仍要打开' }))) return false
   approveTaskReload()
   window.location.assign(to.fullPath)
   return false

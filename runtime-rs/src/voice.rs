@@ -20,7 +20,13 @@ use axum::{
 };
 use config::Settings;
 use serde_json::{Value, json};
-use std::{collections::HashMap, net::SocketAddr, sync::Arc, time::Instant};
+use std::{
+    collections::HashMap,
+    net::SocketAddr,
+    sync::Arc,
+    time::{Duration, Instant},
+};
+use tokio::time::Instant as Deadline;
 use tokio_util::sync::CancellationToken;
 
 pub struct VoiceService {
@@ -52,7 +58,9 @@ impl VoiceService {
         self.translation.status().await
     }
     pub(crate) async fn prepare_translation(&self) -> Result<()> {
-        self.translation.prepare().await
+        self.translation
+            .prepare(Deadline::now() + Duration::from_secs(200))
+            .await
     }
     pub async fn close(&self) {
         self.shutdown.cancel();
@@ -87,6 +95,7 @@ async fn translate(
     Extension(service): Extension<Arc<VoiceService>>,
     Json(input): Json<Value>,
 ) -> Result<Json<Value>> {
+    let deadline = Deadline::now() + Duration::from_secs(200);
     service.running(&state)?;
     let text = input["text"].as_str().unwrap_or("").trim();
     if text.is_empty() || text.encode_utf16().count() > 2000 {
@@ -96,7 +105,7 @@ async fn translate(
             "待翻译中文需在 1—2000 字之间",
         ));
     }
-    let result = service.translation.translate(text.into()).await?;
+    let result = service.translation.translate(text.into(), deadline).await?;
     Ok(Json(
         json!({"ok": true, "sourceLanguage": "zh", "targetLanguage": "ja", "translation": result["translation"], "segments": result.get("segments").cloned().unwrap_or(json!([]))}),
     ))
@@ -116,6 +125,7 @@ async fn prepare(
     Extension(service): Extension<Arc<VoiceService>>,
     Json(input): Json<Value>,
 ) -> Result<Json<Value>> {
+    let deadline = Deadline::now() + Duration::from_secs(200);
     service.running(&state)?;
     let voice = input["voice"].as_str().unwrap_or("");
     let value = payload::validate(
@@ -126,11 +136,11 @@ async fn prepare(
     let started = Instant::now();
     let translation = async {
         if needs_translation {
-            service.translation.prepare().await?;
+            service.translation.prepare(deadline).await?;
         }
         Ok::<_, ApiError>(())
     };
-    tokio::try_join!(service.speech.prepare(&value), translation)?;
+    tokio::try_join!(service.speech.prepare(&value, deadline), translation)?;
     Ok(Json(
         json!({"ok": true, "voice": voice, "translation": needs_translation, "prepareMs": started.elapsed().as_millis()}),
     ))
@@ -142,11 +152,12 @@ async fn post_audio(
     headers: HeaderMap,
     Json(input): Json<Value>,
 ) -> Result<Response> {
+    let deadline = Deadline::now() + Duration::from_secs(240);
     service.running(&state)?;
     let value = payload::validate(&input, &service.speech.settings)?;
     let mut response = service
         .speech
-        .stream(value)
+        .stream(value, deadline)
         .await
         .map_err(|error| tts_error(error, &headers, peer))?;
     response
@@ -161,6 +172,7 @@ async fn get_audio(
     headers: HeaderMap,
     Query(query): Query<HashMap<String, String>>,
 ) -> Result<Response> {
+    let deadline = Deadline::now() + Duration::from_secs(240);
     service.running(&state)?;
     if query
         .get("text")
@@ -176,7 +188,7 @@ async fn get_audio(
     let value = payload::validate(&input, &service.speech.settings)?;
     let (bytes, cached) = service
         .speech
-        .buffered(value)
+        .buffered(value, deadline)
         .await
         .map_err(|error| tts_error(error, &headers, peer))?;
     Ok((
@@ -197,12 +209,13 @@ async fn get_pcm(
     headers: HeaderMap,
     Query(query): Query<HashMap<String, String>>,
 ) -> Result<Response> {
+    let deadline = Deadline::now() + Duration::from_secs(180);
     service.running(&state)?;
     let input = serde_json::to_value(query).expect("String query serializes");
     let value = payload::validate(&input, &service.speech.settings)?;
     let mut response = service
         .speech
-        .stream_pcm(value)
+        .stream_pcm(value, deadline)
         .await
         .map_err(|error| tts_error(error, &headers, peer))?;
     response

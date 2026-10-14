@@ -131,7 +131,10 @@ export function createWebArtworkRepository(): ArtworkRepository {
     }
     if (missingImageIds.length) return { restored: false, missingImageIds }
     // 同 id 已存在（恢复过一次的重复点击）：幂等成功
-    const exists = history.some(item => recordId(item) === targetId)
+    const existing = history.find(item => recordId(item) === targetId)
+    const restoredId = record(existing
+      ?? entry.historyEntries.find(item => recordId(item) === targetId))?.id
+    if (typeof restoredId !== 'string' && typeof restoredId !== 'number') throw new Error('回收站快照缺少有效作品编号，无法恢复')
 
     // 项目引用增量补回：只把「快照里有引用、现在没有」的 project 加回该 id，
     // 不整体回写旧快照——恢复期间新建/修改过的 project 不受影响。
@@ -144,10 +147,10 @@ export function createWebArtworkRepository(): ArtworkRepository {
       if (!Array.isArray(source.history_ids)) return project
       if (source.history_ids.some(x => comparableId(x) === targetId)) return project
       refsRestored += 1
-      return { ...source, history_ids: [...source.history_ids, targetId] }
+      return { ...source, history_ids: [...source.history_ids, restoredId] }
     })
     await kv.setMany([
-      ...(!exists ? [{ key: ARTWORK_HISTORY_KEY, value: [...entry.historyEntries, ...history] }] : []),
+      ...(!existing ? [{ key: ARTWORK_HISTORY_KEY, value: [...entry.historyEntries, ...history] }] : []),
       ...(refsRestored > 0 ? [{ key: ARTWORK_PROJECTS_KEY, value: nextProjects }] : []),
       { key: ARTWORK_TRASH_KEY, value: trash.filter(item => item.id !== targetId) },
     ])

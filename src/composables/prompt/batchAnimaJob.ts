@@ -4,6 +4,8 @@ import { runtimeFetch } from '@/platform/runtimeUrl'
 import { hasRuntimeTasks } from '../../api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import { animaRequestPayload, type AnimaPublicJob, type AnimaRequest } from '@/composables/generation/useAnimaSession'
+import { metadataFromJob } from '../generation/animaJobMetadata'
+import type { AnimaJobMetadata } from '@/types/anima'
 
 interface BatchAnimaOptions {
   requestKey?: string
@@ -28,7 +30,7 @@ export function createBatchAnimaTransport(family: () => string) {
   let observer: AbortController | null = null, disposed = false
   const accepted = new Map<string, string>()
   async function run(request: AnimaRequest, context: Record<string, unknown>, cancelled: () => boolean,
-    report?: (message: string) => void, options: BatchAnimaOptions = {}): Promise<{ blob: Blob; seed?: number; taskId?: string }> {
+    report?: (message: string) => void, options: BatchAnimaOptions = {}): Promise<{ blob: Blob; seed?: number; taskId?: string; metadata?: AnimaJobMetadata }> {
     if (disposed) throw new DOMException('工作台已关闭', 'AbortError')
     observer = new AbortController()
     const signal = AbortSignal.any([observer.signal, ...(options.signal ? [options.signal] : [])])
@@ -95,8 +97,9 @@ export function createBatchAnimaTransport(family: () => string) {
       const blob = await response.blob()
       signal.throwIfAborted()
       if (!blob.size) throw new Error('生成结果为空')
+      const metadata = metadataFromJob(job, request, selected === 'krea2' ? 'krea2' : 'anima')
       accepted.delete(signature)
-      return { blob, seed: job.seed }
+      return { blob, seed: metadata.seed, metadata }
     } finally { observer = null }
   }
   return { run, dispose() { disposed = true; observer?.abort(); accepted.clear() } }

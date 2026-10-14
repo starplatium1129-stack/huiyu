@@ -1,7 +1,11 @@
 use crate::error::{ApiError, Result};
 use serde_json::{Value, json};
-use std::{sync::Arc, time::Instant};
+use std::{
+    sync::Arc,
+    time::{Duration, Instant},
+};
 use tokio::sync::{OwnedSemaphorePermit, Semaphore};
+use tokio::time::Instant as Deadline;
 use tokio_util::sync::CancellationToken;
 
 pub(super) struct Queue {
@@ -40,10 +44,18 @@ impl Queue {
         &self,
         reservation: Reservation,
         cancel: &CancellationToken,
+        deadline: Deadline,
+        timeout: fn() -> ApiError,
     ) -> Result<Permit> {
+        if cancel.is_cancelled() {
+            return Err(cancelled());
+        }
+        remaining(deadline, Duration::MAX, timeout)?;
         let serial = tokio::select! {
-            result = self.serial.clone().acquire_owned() => result.map_err(|_| cancelled())?,
+            biased;
             _ = cancel.cancelled() => return Err(cancelled()),
+            _ = tokio::time::sleep_until(deadline) => return Err(timeout()),
+            result = self.serial.clone().acquire_owned() => result.map_err(|_| cancelled())?,
         };
         Ok(Permit {
             wait_ms: reservation.entered.elapsed().as_millis(),
@@ -58,4 +70,21 @@ impl Queue {
 }
 pub(super) fn cancelled() -> ApiError {
     ApiError::new(503, "ABORTED", "语音服务已关闭")
+}
+pub(super) fn remaining(
+    deadline: Deadline,
+    limit: Duration,
+    timeout: fn() -> ApiError,
+) -> Result<Duration> {
+    deadline
+        .checked_duration_since(Deadline::now())
+        .filter(|duration| !duration.is_zero())
+        .map(|duration| duration.min(limit))
+        .ok_or_else(timeout)
+}
+pub(super) fn speech_timeout() -> ApiError {
+    ApiError::new(504, "TTS_TIMEOUT", "语音请求超时")
+}
+pub(super) fn translation_timeout() -> ApiError {
+    ApiError::new(503, "TRANSLATION_TIMEOUT", "本地日语翻译超时")
 }

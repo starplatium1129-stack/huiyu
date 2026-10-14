@@ -66,7 +66,7 @@ export function isPng(buffer: ArrayBuffer): boolean {
 }
 
 /** 在 PNG 文件中注入 tEXt parameters 数据段并返回新的 Uint8Array */
-export function injectPngMetadata(pngBuffer: ArrayBuffer, parametersText: string): Uint8Array {
+export function injectPngMetadata(pngBuffer: ArrayBuffer, parametersText: string): Uint8Array<ArrayBuffer> {
   if (!isPng(pngBuffer)) return new Uint8Array(pngBuffer)
 
   const encoder = new TextEncoder()

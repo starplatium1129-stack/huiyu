@@ -1,8 +1,9 @@
 mod records;
+pub(super) mod verification;
 use super::*;
 use canonical::{digest, fingerprint, stringify};
 use rusqlite::{OptionalExtension, params};
-use std::{collections::HashSet, fs};
+use std::collections::HashSet;
 
 struct Session {
     envelope: Value,
@@ -121,8 +122,70 @@ fn validate(envelope: &Value) -> Result<()> {
     }
     Ok(())
 }
-fn key(id: &str, alias: &str) -> String {
+pub(super) fn key(id: &str, alias: &str) -> String {
     digest(stringify(&json!(["migration", id, alias])))
+}
+pub(super) fn prepare_chunk(
+    c: &Context,
+    principal: &str,
+    command: &Value,
+) -> Result<upload::Prepared> {
+    let id = string(command, "migrationId")?;
+    let session = session(c, id, principal)?;
+    let record = command["kind"] == "migration.recordChunk";
+    let (name, media, receipt) = if record {
+        let item = string(command, "itemId")?;
+        let expected = session.envelope["records"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|entry| entry["id"] == item)
+            .ok_or_else(|| format_error("Record chunk is outside an importing manifest"))?;
+        if expected["bytes"].as_u64().is_none_or(|bytes| bytes == 0) || session.state != "importing"
+        {
+            return Err(format_error(
+                "Record chunk is outside an importing manifest",
+            ));
+        }
+        (
+            format!("record:{item}"),
+            json!({"alias":item,"bytes":expected["bytes"],
+            "sha256":expected["sha256"],"mime":"application/json"}),
+            json!({"itemId":item}),
+        )
+    } else {
+        if session.state != "importing" {
+            return Err(conflict(
+                "MIGRATION_CONFLICT",
+                "Verified migration is immutable",
+            ));
+        }
+        let alias = string(command, "alias")?;
+        let media = session.envelope["media"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|media| media["alias"] == alias)
+            .ok_or_else(|| format_error("Media is not in the manifest"))?;
+        (alias.to_owned(), media.clone(), json!({"alias":alias}))
+    };
+    Ok(upload::Prepared::Write(upload::Chunk {
+        key: key(id, &name),
+        media,
+        committed: false,
+        record,
+        receipt,
+    }))
+}
+pub(super) fn complete_record_chunk(
+    c: &mut Context,
+    principal: &str,
+    command: &Value,
+    record: Value,
+) -> Result<()> {
+    let id = string(command, "migrationId")?;
+    let session = session(c, id, principal)?;
+    import_record(c, id, &session, string(command, "itemId")?, &record).map(|_| ())
 }
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let kind = string(command, "kind")?;
@@ -146,6 +209,8 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
                 ));
             }
             c.transaction(|c| {
+                profile::media_refs::refresh_all(c)?;
+                release_protection(c, id, envelope)?;
                 c.db.execute(
                     "UPDATE migration_sessions SET state='activated' WHERE migration_id=?",
                     [id],
@@ -154,47 +219,13 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
             })?;
             status(c, id, principal)
         }
-        "migration.record" => import_record(c, id, &session, command),
-        "migration.recordChunk" => {
-            let item = string(command, "itemId")?;
-            let expected = envelope["records"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .find(|r| r["id"] == item)
-                .ok_or_else(|| format_error("Record chunk is outside an importing manifest"))?;
-            if expected["bytes"].as_u64().is_none_or(|v| v == 0) || session.state != "importing" {
-                return Err(format_error(
-                    "Record chunk is outside an importing manifest",
-                ));
-            }
-            let key = key(id, &format!("record:{item}"));
-            let media = json!({"alias":item,"bytes":expected["bytes"],"sha256":expected["sha256"],"mime":"application/json"});
-            let offset = media::upload(c, &key, &media, command, false)?;
-            if json!(offset) == expected["bytes"] {
-                let record: Value =
-                    serde_json::from_slice(&fs::read(media::staging_path(&c.root, &key, item)?)?)?;
-                import_record(c, id, &session, &json!({"itemId":item,"record":record}))?;
-            }
-            Ok(json!({"itemId":item,"offset":offset}))
-        }
-        "migration.media" => {
-            if session.state != "importing" {
-                return Err(conflict(
-                    "MIGRATION_CONFLICT",
-                    "Verified migration is immutable",
-                ));
-            }
-            let alias = string(command, "alias")?;
-            let media = envelope["media"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .find(|m| m["alias"] == alias)
-                .ok_or_else(|| format_error("Media is not in the manifest"))?;
-            Ok(json!({"alias":alias,"offset":media::upload(c,&key(id,alias),media,command,false)?}))
-        }
-        "migration.verify" => verify(c, principal, id, &session),
+        "migration.record" => import_record(
+            c,
+            id,
+            &session,
+            string(command, "itemId")?,
+            &command["record"],
+        ),
         _ => Err(invalid("Unknown migration command")),
     }
 }
@@ -222,9 +253,13 @@ fn begin(c: &mut Context, principal: &str, envelope: &Value) -> Result<Value> {
     })?;
     status(c, id, principal)
 }
-fn import_record(c: &mut Context, id: &str, session: &Session, command: &Value) -> Result<Value> {
-    let item = string(command, "itemId")?;
-    let record = &command["record"];
+fn import_record(
+    c: &mut Context,
+    id: &str,
+    session: &Session,
+    item: &str,
+    record: &Value,
+) -> Result<Value> {
     let expected = session.envelope["records"]
         .as_array()
         .unwrap()
@@ -240,11 +275,15 @@ fn import_record(c: &mut Context, id: &str, session: &Session, command: &Value) 
     for field in ["id", "sha256", "bytes"] {
         expected_fields.as_object_mut().unwrap().remove(field);
     }
-    let mut actual = record.clone();
-    actual
-        .as_object_mut()
-        .ok_or_else(|| format_error("Invalid source record"))?
-        .remove("value");
+    let actual = Value::Object(
+        record
+            .as_object()
+            .ok_or_else(|| format_error("Invalid source record"))?
+            .iter()
+            .filter(|(field, _)| field.as_str() != "value")
+            .map(|(field, value)| (field.clone(), value.clone()))
+            .collect(),
+    );
     if fingerprint(&expected_fields) != fingerprint(&actual) {
         return Err(format_error(
             "Record does not match its classified manifest entry",
@@ -271,74 +310,39 @@ fn import_record(c: &mut Context, id: &str, session: &Session, command: &Value) 
     })?;
     Ok(json!({"itemId":item,"imported":true}))
 }
-fn verify(c: &mut Context, principal: &str, id: &str, session: &Session) -> Result<Value> {
-    if session.state != "importing" {
-        return status(c, id, principal);
-    }
-    let envelope = &session.envelope;
-    let mut blockers = Vec::new();
-    if status(c, id, principal)?["importedRecords"]
-        .as_u64()
-        .unwrap()
-        != envelope["records"].as_array().unwrap().len() as u64
-    {
-        blockers.push("incomplete-records".into());
-    }
+
+fn release_protection(c: &Context, id: &str, envelope: &Value) -> Result<()> {
+    c.db.execute(
+        "DELETE FROM media_refs WHERE owner_kind='migration' AND owner_id=?",
+        [id],
+    )?;
     for media in envelope["media"].as_array().unwrap() {
         c.check_cancel()?;
-        let alias = string(media, "alias")?;
-        let result = media::publish(c, &key(id, alias), media).and_then(|_| {
-            media::verify(
-                c,
-                &media::object_path(&c.root, string(media, "sha256")?)?,
-                string(media, "sha256")?,
-                media["bytes"].as_u64().unwrap(),
-                string(media, "mime")?,
-            )
-        });
-        match result {
-            Ok(()) => c.transaction(|c| {
-                c.db.execute(
-                    "UPDATE migration_media SET complete=1 WHERE migration_id=? AND alias=?",
-                    params![id, alias],
-                )?;
-                Ok(())
-            })?,
-            Err(error) if error.code == "CANCELLED" => return Err(error),
-            Err(_) => blockers.push(format!("media:{alias}")),
-        }
+        c.db.execute(
+            "DELETE FROM leases WHERE kind='migration' AND id=?",
+            [key(id, string(media, "alias")?)],
+        )?;
     }
-    blockers.extend(records::validate(c, envelope)?);
+    Ok(())
+}
+
+// Retire the old permanent migration pins only after live profile references
+// have been rebuilt. New activations do this atomically; restored older v3
+// workspaces receive the same repair before admitting requests.
+pub(super) fn repair_activated(c: &mut Context) -> Result<()> {
+    let sessions = c.db.prepare_cached(
+        "SELECT migration_id,envelope FROM migration_sessions s WHERE state='activated'
+         AND EXISTS(SELECT 1 FROM media_refs WHERE owner_kind='migration' AND owner_id=s.migration_id)",
+    )?.query_map([], |row| Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?)))?
+        .collect::<rusqlite::Result<Vec<_>>>()?;
+    if sessions.is_empty() {
+        return Ok(());
+    }
     c.transaction(|c| {
-        c.db.execute(
-            "UPDATE migration_sessions SET report=? WHERE migration_id=?",
-            params![stringify(&json!(blockers)), id],
-        )?;
-        if !blockers.is_empty() {
-            return Ok(());
+        profile::media_refs::refresh_all(c)?;
+        for (id, envelope) in &sessions {
+            release_protection(c, id, &serde_json::from_str(envelope)?)?;
         }
-        let revision = c.next_revision()?;
-        for media in envelope["media"].as_array().unwrap() {
-            let hash = string(media, "sha256")?;
-            c.db.execute(
-                "INSERT OR IGNORE INTO media_objects VALUES(?,?,?)",
-                params![hash, media["bytes"].as_i64(), string(media, "mime")?],
-            )?;
-            c.db.execute(
-                "INSERT INTO media_aliases VALUES(?,?)",
-                params![string(media, "alias")?, hash],
-            )?;
-            c.db.execute(
-                "INSERT OR IGNORE INTO media_refs VALUES('migration',?,?)",
-                params![id, hash],
-            )?;
-        }
-        records::publish(c, envelope, revision)?;
-        c.db.execute(
-            "UPDATE migration_sessions SET state='verified',revision=? WHERE migration_id=?",
-            params![revision, id],
-        )?;
         Ok(())
-    })?;
-    status(c, id, principal)
+    })
 }

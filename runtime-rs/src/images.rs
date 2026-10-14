@@ -5,6 +5,7 @@ mod inputs;
 mod native;
 mod resources;
 mod resume;
+pub(crate) mod upload_body;
 mod validation;
 mod workflow;
 

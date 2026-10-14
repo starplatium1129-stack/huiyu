@@ -3,6 +3,7 @@ mod completion;
 mod local_persona;
 mod ollama;
 mod persona;
+mod request_body;
 mod settings;
 mod stream;
 
@@ -126,25 +127,51 @@ async fn chat(
     headers: HeaderMap,
     body: std::result::Result<Bytes, axum::extract::rejection::BytesRejection>,
 ) -> Response {
+    let scope = app.shutdown.child_token();
+    let _guard = scope.clone().drop_guard();
     let result = async {
         running(&app)?;
         let body = body.map_err(body_error)?;
-        let body: Value = serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?;
-        let direct = security::is_direct_local(&headers,peer.ip());
+        let body = request_body::parse(body, &scope).await?;
+        let direct = security::is_direct_local(&headers, peer.ip());
         let settings = chat.settings(&app).await;
-        let persona = if direct { local_persona::read(settings,&app.config.app_root,body["character"].as_str().unwrap_or("nene")).await } else { None };
-        let mut input = validation::chat(&body,persona.as_deref())?;
-        input.tools &= direct;
-        let managed_auth=app.control.as_ref().map(|control|control.llama_auth());
-        let prepared = tokio::select! {
-            result = async {
-                if input.api.is_some() { compatible::prepare(&chat.transport,settings,&input,!direct,managed_auth.as_ref()).await }
-                else { chat.ollama.prepare(&chat.transport,settings,&input).await }
-            } => result?,
-            _ = app.shutdown.cancelled() => return Err(Error::new(503,"DESKTOP_DRAINING","桌面正在维护")),
+        let persona = if direct {
+            local_persona::read(
+                settings,
+                &app.config.app_root,
+                body["character"].as_str().unwrap_or("nene"),
+            )
+            .await
+        } else {
+            None
         };
-        Ok(stream::response(prepared,app.shutdown))
-    }.await;
+        let input = request_body::validate(body, persona, direct, &scope).await?;
+        let managed_auth = app.control.as_ref().map(|control| control.llama_auth());
+        let prepared = if input.api.is_some() {
+            compatible::prepare(
+                &chat.transport,
+                settings,
+                input,
+                !direct,
+                managed_auth.as_ref(),
+                &scope,
+            )
+            .await?
+        } else {
+            chat.ollama
+                .prepare(&chat.transport, settings, input, &scope)
+                .await?
+        };
+        Ok(stream::response(prepared, app.shutdown.clone()))
+    };
+    // Match the client's first-event budget across CPU admission, persona I/O,
+    // queueing, DNS and upstream headers; streaming has its own existing budget.
+    let result = tokio::select! {
+        biased;
+        _ = app.shutdown.cancelled() => Err(Error::new(503,"DESKTOP_DRAINING","桌面正在维护")),
+        result = tokio::time::timeout(Duration::from_secs(180), result) => result
+            .unwrap_or_else(|_| Err(Error::stream("CHAT_PREPARE_TIMEOUT", "聊天准备超时，请稍后重试"))),
+    };
     result.unwrap_or_else(IntoResponse::into_response)
 }
 

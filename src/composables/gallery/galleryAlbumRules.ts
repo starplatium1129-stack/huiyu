@@ -2,7 +2,7 @@ import type { SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { GalleryProject } from './galleryStorage'
 import { artworkTags } from './artworkTags'
-import { characterName as artworkCharacterName, searchHaystack } from './galleryHelpers'
+import { artworkIdKey, characterName as artworkCharacterName, searchHaystack } from './galleryHelpers'
 
 export const UNASSIGNED_CHARACTER_ID = '__unassigned__'
 
@@ -26,7 +26,7 @@ export function createSmartAlbumMatcher(rule: SmartAlbumRule, projects: readonly
   const { characterId, favoriteOnly, projectId, tagMatch } = rule
   const tags = [...rule.tags]
   const project = projectId ? projects.find(candidate => candidate.id === projectId && !Object.hasOwn(candidate, 'smartRule')) : null
-  const projectIds = projectId ? new Set(project?.history_ids || []) : null
+  const projectIds = projectId ? new Set(project?.history_ids.map(artworkIdKey) || []) : null
   const terms = rule.search.trim().toLowerCase().split(/\s+/).filter(Boolean)
   return (item: ArtworkRecord, preparedSearchText?: string): boolean => {
     if (characterId) {
@@ -34,7 +34,7 @@ export function createSmartAlbumMatcher(rule: SmartAlbumRule, projects: readonly
       if (characterId === UNASSIGNED_CHARACTER_ID ? identities.length > 0 : !identities.includes(characterId)) return false
     }
     if (favoriteOnly && !item.favorite) return false
-    if (projectIds && !projectIds.has(item.id)) return false
+    if (projectIds && !projectIds.has(artworkIdKey(item.id))) return false
     if (tags.length) {
       const itemTags = artworkTags(item)
       const matchesTag = (tag: string) => itemTags.includes(tag)

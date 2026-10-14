@@ -24,6 +24,9 @@ export interface AnimaJobMetadata {
   hiresFix?: boolean
   hiresScale?: number
   hiresDenoise?: number
+  hiresUpscaler?: string | null
+  hiresSteps?: number
+  faceDetailer?: boolean
   teaCache?: boolean
   teaCacheThresh?: number
   initImage?: string | null

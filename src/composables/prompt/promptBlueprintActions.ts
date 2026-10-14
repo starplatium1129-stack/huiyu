@@ -1,9 +1,13 @@
 import type { Ref } from 'vue'
+import type { PromptDraftState } from './usePromptDraft'
+import { hasEditedSceneStyle } from '@/utils/randomVariationContext'
+import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
+import { normalizeArtistStyleIds } from '@/config/artistStyles'
 import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '@/config/promptConstants'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { usePromptBuilderStore, Scene } from '@/stores/promptBuilderStore'
-import { isSDParamKey, parsePromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
+import { isSDParamKey, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit, type SceneBlueprint } from '@/utils/popularContent'
 import type { DrawEngine } from '@/storage/settingsRepository'
 
@@ -217,4 +221,198 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
   }
 
   return { applied: true, message: '蓝图配置已完整载入', warnings }
+}
+
+// Draft compatibility keeps its original permissive string/list rules. Blueprint
+// imports above use a stricter boundary and must not normalize old draft fields.
+function draftRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+function draftText(value: unknown): string | undefined {
+  return typeof value === 'string' ? value : undefined
+}
+function draftNullableText(value: unknown): string | null | undefined {
+  return value === null ? null : draftText(value)
+}
+
+function draftNumber(value: unknown): number | undefined {
+  const number = typeof value === 'number' ? value : Number(value)
+  return Number.isFinite(number) ? number : undefined
+}
+
+function draftStrings(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
+}
+
+function parseOutfitOverride(value: unknown): DraftOutfitOverride | null {
+  if (!draftRecord(value)) return null
+  const tokens = [...new Set(draftStrings(value.tokens).map(token => token.trim()).filter(Boolean))]
+  return tokens.length ? { tokens, replaced: draftNullableText(value.replaced) ?? null } : null
+}
+
+function parseReferenceInput(value: unknown): DraftReferenceInput | null {
+  if (!draftRecord(value)) return null
+  const tags = [...new Set(draftStrings(value.tags).map(tag => tag.trim()).filter(Boolean))]
+  return tags.length ? { tags } : null
+}
+
+function parseRandomVariation(value: unknown): DraftRandomVariation | null {
+  if (!draftRecord(value) || typeof value.prompt !== 'string' || typeof value.prose !== 'string' || typeof value.source !== 'string' || typeof value.context !== 'string') return null
+  return { context: value.context, source: value.source, prompt: value.prompt, prose: value.prose, tags: draftStrings(value.tags), outfit: draftStrings(value.outfit) }
+}
+
+function parseSDParams(value: unknown): Partial<SDParams> {
+  if (!draftRecord(value)) return {}
+  const result: Partial<SDParams> = {}
+  const cfg = draftNumber(value.cfg)
+  const steps = draftNumber(value.steps)
+  const hiresScale = draftNumber(value.hiresScale)
+  const hiresSteps = draftNumber(value.hiresSteps)
+  const hiresDenoise = draftNumber(value.hiresDenoise)
+  const seed = draftNumber(value.seed)
+  if (cfg !== undefined) result.cfg = cfg
+  if (steps !== undefined) result.steps = steps
+  if (hiresScale !== undefined) result.hiresScale = hiresScale
+  if (hiresSteps !== undefined) result.hiresSteps = hiresSteps
+  if (hiresDenoise !== undefined) result.hiresDenoise = hiresDenoise
+  if (seed !== undefined) result.seed = seed
+  for (const key of ['sampler', 'scheduler', 'size', 'hiresUpscaler', 'negativeCustom'] as const) {
+    const text = draftText(value[key])
+    if (text !== undefined) result[key] = text
+  }
+  for (const key of ['hiresFix', 'faceDetailer', 'seedLock', 'quality', 'tail', 'negative'] as const) {
+    if (typeof value[key] === 'boolean') result[key] = value[key]
+  }
+  return result
+}
+
+function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | null {
+  if (!draftRecord(value)) return null
+  const updatedAt = draftNumber(value.updatedAt)
+  const story = draftText(value.story)
+  const visualDescription = draftText(value.visualDescription) || ''
+  const sceneId = draftNullableText(value.sceneId)
+  // 画面描述/手动词条本身就是可生成输入；不能因没有故事或场景而丢弃这类草稿。
+  const hasStandaloneInput = Boolean(visualDescription || draftStrings(value.manualTags).length)
+  // 热门角色无 LoRA 草稿没有 sceneId/story（蓝图驱动场景），单独放行。
+  if (!updatedAt || ((!sceneId && !story && !hasStandaloneInput) && value.subject !== 'popular' && value.char !== 'none')) return null
+
+  const rawSelections = draftRecord(value.selections) ? value.selections : null
+  const selections = rawSelections
+    ? {
+        emotion: draftStrings(rawSelections.emotion),
+        shot: draftNullableText(rawSelections.shot) ?? null,
+        lighting: draftNullableText(rawSelections.lighting) ?? null,
+        composition: draftNullableText(rawSelections.composition) ?? null,
+      }
+    : undefined
+  const char = value.char === 'nene' || value.char === 'natsume' || value.char === 'triad' || value.char === 'none'
+    ? value.char
+    : undefined
+  const directorMode = value.directorMode === 'basic' || value.directorMode === 'pro'
+    ? value.directorMode
+    : undefined
+
+  return {
+    updatedAt,
+    randomVariation: parseRandomVariation(value.randomVariation),
+    sceneStyleBaseline: draftRecord(value.sceneStyleBaseline) ? {
+      shot: draftNullableText(value.sceneStyleBaseline.shot) ?? null,
+      lighting: draftNullableText(value.sceneStyleBaseline.lighting) ?? null,
+      composition: draftNullableText(value.sceneStyleBaseline.composition) ?? null,
+      colorMood: draftNullableText(value.sceneStyleBaseline.colorMood) ?? null,
+    } : undefined,
+    story,
+    visualDescription,
+    char,
+    sceneId,
+    sceneTitle: draftNullableText(value.sceneTitle),
+    selections,
+    colorMood: draftNullableText(value.colorMood),
+    manualTags: draftStrings(value.manualTags),
+    outfitOverride: value.subject === 'popular' ? parseOutfitOverride(value.outfitOverride) : null,
+    referenceInput: parseReferenceInput(value.referenceInput),
+    artistStyleIds: normalizeArtistStyleIds(value.artistStyleIds),
+    sceneBaseStory: draftText(value.sceneBaseStory),
+    directorMode,
+    sdParams: parseSDParams(value.sdParams),
+    // 只保留已知参数键，避免脏键污染 touched 集合。
+    sdParamsTouched: draftStrings(value.sdParamsTouched).filter(key => isSDParamKey(key)),
+    projectId: draftText(value.projectId),
+    subject: value.subject === 'popular' ? 'popular' : 'studio',
+    characterId: draftText(value.characterId),
+    outfitId: draftText(value.outfitId),
+    blueprintId: draftNullableText(value.blueprintId),
+    noLora: typeof value.noLora === 'boolean' ? value.noLora : undefined,
+  }
+}
+
+/** Called synchronously only after the mounted owner checks the original pointer. */
+export function restorePromptDraft(state: PromptDraftState, raw: string): boolean {
+  const draft = parsePromptBuilderDraft(JSON.parse(raw))
+  if (!draft) return false
+  const { subject, story, visualDescription, char, sceneId, selections, colorMood, manualTags,
+    outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode,
+    sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize } = state
+  function applyDraft(d: PromptBuilderDraft) {
+    // Context watchers must not retire the previous overlay against restored tags.
+    // The saved overlay is adopted last, after all subject/outfit changes.
+    randomVariation.value = null
+    if (typeof d.story === 'string') story.value = d.story
+    if (typeof d.visualDescription === 'string') visualDescription.value = d.visualDescription
+    if (d.char) char.value = d.char
+    if (d.sceneId !== undefined) {
+      sceneId.value = d.sceneId
+      const currentScene = scenes.value.find(s => s.id === d.sceneId)
+      if (currentScene) {
+        lastRecommendedSize.value = sceneRecommendedSize(currentScene)
+        // 场景未被用户魔改时，镜头与推荐配置自动跟随最新场景定义更新，避免旧草稿锁死过时机位
+        const isUnmodifiedScene = (!d.story || d.story === currentScene.story) && (d.sceneBaseStory === currentScene.story || !d.sceneBaseStory)
+        if (isUnmodifiedScene && !hasEditedSceneStyle(d)) {
+          sceneBaseStory.value = currentScene.story ?? ''
+          story.value = currentScene.story ?? story.value
+          selections.shot = sceneShot(currentScene)
+          selections.lighting = sceneLighting(currentScene)
+          selections.composition = sceneComposition(currentScene)
+          colorMood.value = sceneColorMood(currentScene)
+          applySharedDraft(d)
+          return
+        }
+      }
+    }
+    if (d.sceneBaseStory !== undefined) sceneBaseStory.value = d.sceneBaseStory
+    if (d.selections) {
+      selections.emotion = d.selections.emotion ?? []
+      selections.shot = d.selections.shot ?? null
+      selections.lighting = d.selections.lighting ?? null
+      selections.composition = d.selections.composition ?? null
+    }
+    if (typeof d.colorMood === 'string' || d.colorMood === null) colorMood.value = d.colorMood
+    applySharedDraft(d)
+  }
+
+  function applySharedDraft(d: PromptBuilderDraft) {
+    if (d.manualTags) manualTags.value = new Set(d.manualTags)
+    referenceInput.value = d.referenceInput ? { tags: [...d.referenceInput.tags] } : null
+    artistStyleIds.value = normalizeArtistStyleIds(d.artistStyleIds)
+    if (d.directorMode) directorMode.value = d.directorMode
+    if (d.sdParams) Object.assign(sdParams, d.sdParams)
+    // 2026-08-16 审计：恢复草稿时同步重建 touched 集合——否则恢复的用户参数会被
+    // 后续 applyModelProfile（切底模/引擎等）当默认值静默覆盖。缺省（旧草稿）
+    // 保持原行为：不标记任何键。
+    sdParamsTouched.value = new Set((d.sdParamsTouched ?? []).filter(isSDParamKey))
+    if (typeof d.projectId === 'string') projectId.value = d.projectId
+    if (d.subject === 'popular' && d.characterId && d.outfitId) {
+      subject.value = { kind: 'popular', characterId: d.characterId, outfitId: d.outfitId, blueprintId: d.blueprintId ?? null }
+    } else {
+      subject.value = { kind: 'studio' }
+    }
+    outfitOverride.value = subject.value.kind === 'popular' && d.outfitOverride
+      ? { tokens: [...d.outfitOverride.tokens], replaced: d.outfitOverride.replaced }
+      : null
+    randomVariation.value = d.randomVariation ? JSON.parse(JSON.stringify(d.randomVariation)) : null
+  }
+
+  applyDraft(draft)
+  return true
 }

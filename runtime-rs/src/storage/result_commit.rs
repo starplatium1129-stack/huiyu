@@ -21,6 +21,9 @@ pub(super) fn is_write(command: &Value) -> bool {
                 | "commitMedia"
                 | "appendArtwork"
                 | "restoreArtwork"
+                | "migration.media"
+                | "migration.recordChunk"
+                | "migration.verify"
         )
     )
 }
@@ -230,6 +233,11 @@ fn spawn(
             let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                 if let Some(source) = source {
                     file::copy(&identity, &path, &media, source)?;
+                } else {
+                    // A lost/failed chunk sync can still leave the full byte
+                    // length visible, including an old publication whose SQL
+                    // commit did not finish. Sync before authorizing a receipt.
+                    media::sync_checked(&identity.root, &path, || identity.cancelled())?;
                 }
                 verify(&identity, &path, &media)
             }))

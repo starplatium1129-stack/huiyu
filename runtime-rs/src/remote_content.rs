@@ -235,7 +235,7 @@ impl RemoteContent {
                 let current = if options.database.is_file()
                     || options.database.with_extension("identity.json").exists()
                 {
-                    crate::catalog::Catalog::open(options)
+                    crate::catalog::Catalog::open_existing(options)
                         .and_then(|catalog| catalog.projection(&name))
                         .map_err(|_| unpublished())?
                 } else {
@@ -243,7 +243,7 @@ impl RemoteContent {
                 };
                 if current
                     .as_ref()
-                    .is_some_and(|value| normalize_catalog(value) != normalize_catalog(&approved))
+                    .is_some_and(|value| !catalog_equal(value, &approved))
                 {
                     return Err(unpublished());
                 }
@@ -286,23 +286,47 @@ impl RemoteContent {
         None
     }
 }
-fn normalize_catalog(value: &Value) -> Value {
-    if let Some(values) = value.as_array() {
-        let mut values = values.iter().map(normalize_catalog).collect::<Vec<_>>();
-        if values.iter().all(|v| v["id"].is_string()) {
-            values.sort_by(|a, b| a["id"].as_str().cmp(&b["id"].as_str()));
+fn catalog_equal(left: &Value, right: &Value) -> bool {
+    match (left, right) {
+        (Value::Array(left), Value::Array(right)) => {
+            if left.len() != right.len() {
+                return false;
+            }
+            let left_order = catalog_id_order(left);
+            let right_order = catalog_id_order(right);
+            (0..left.len()).all(|index| {
+                let left = left_order
+                    .as_ref()
+                    .map_or(&left[index], |values| values[index]);
+                let right = right_order
+                    .as_ref()
+                    .map_or(&right[index], |values| values[index]);
+                catalog_equal(left, right)
+            })
         }
-        return values.into();
+        (Value::Object(left), Value::Object(right)) => {
+            left.iter().all(|(key, value)| {
+                ignored_catalog_field(key)
+                    || right
+                        .get(key)
+                        .is_some_and(|other| catalog_equal(value, other))
+            }) && right
+                .keys()
+                .all(|key| ignored_catalog_field(key) || left.contains_key(key))
+        }
+        _ => left == right,
     }
-    if let Some(fields) = value.as_object() {
-        return fields
-            .iter()
-            .filter(|(k, _)| !["sortOrder", "createdAt", "updatedAt"].contains(&k.as_str()))
-            .map(|(k, v)| (k.clone(), normalize_catalog(v)))
-            .collect::<serde_json::Map<_, _>>()
-            .into();
-    }
-    value.clone()
+}
+fn ignored_catalog_field(key: &str) -> bool {
+    matches!(key, "sortOrder" | "createdAt" | "updatedAt")
+}
+fn catalog_id_order(values: &[Value]) -> Option<Vec<&Value>> {
+    values.iter().all(|value| value["id"].is_string()).then(|| {
+        let mut values = values.iter().collect::<Vec<_>>();
+        // Stable sorting preserves duplicate-ID order; each side qualifies separately.
+        values.sort_by(|left, right| left["id"].as_str().cmp(&right["id"].as_str()));
+        values
+    })
 }
 fn reviewed_date(value: &str) -> bool {
     chrono::DateTime::parse_from_rfc3339(value).is_ok()

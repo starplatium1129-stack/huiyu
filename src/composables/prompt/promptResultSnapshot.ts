@@ -1,4 +1,5 @@
 import type { PromptSdQueueDeps } from './usePromptSdQueue'
+import type { Ref } from 'vue'
 export interface ResultSnapshot {
   url: string
   seed: number | null
@@ -10,7 +11,9 @@ export interface ResultSnapshot {
   hires: string
   at: string
 }
-export function snapshotResult(ctx: Pick<PromptSdQueueDeps, 'animaState' | 'drawEngine' | 'displayResultSeed' | 'pb' | 'sdSize' | 'sd'>, persistentUrl: string): ResultSnapshot {
+export function snapshotResult(ctx: Pick<PromptSdQueueDeps, 'animaState' | 'drawEngine' | 'pb' | 'sdSize' | 'sd'> & {
+  displayResultSeed: Readonly<Ref<number | null>>
+}, persistentUrl: string): ResultSnapshot {
   const { animaState, drawEngine, displayResultSeed, pb, sdSize, sd } = ctx
   const metadata = animaState.value.result?.metadata
   const isComfy = drawEngine.value !== 'sd'

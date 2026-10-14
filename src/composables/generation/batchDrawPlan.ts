@@ -33,6 +33,8 @@ export function parseBatchDrawPlan(value: unknown): BatchDrawPlan | null {
     && typeof job.sceneId === 'string' && targetIds.has(job.sceneId) && typeof job.sceneTitle === 'string'
     && typeof job.seed === 'number' && Number.isFinite(job.seed) && Number.isInteger(job.variant) && Number(job.variant) >= 0
     && statuses.has(String(job.status)) && (job.taskId === undefined || typeof job.taskId === 'string')
+    && (job.imageId === undefined || typeof job.imageId === 'string')
+    && (job.historyId === undefined || typeof job.historyId === 'string' || typeof job.historyId === 'number' && Number.isFinite(job.historyId))
     && (job.snapshot === undefined || record(job.snapshot)))
   if (jobs.length !== value.jobs.length || new Set(jobs.map(job => job.id)).size !== jobs.length
     || new Set(jobs.map(job => job.requestKey)).size !== jobs.length) return null
@@ -40,7 +42,7 @@ export function parseBatchDrawPlan(value: unknown): BatchDrawPlan | null {
     version: 1, createdAt: value.createdAt, engine: value.engine as BatchDrawPlan['engine'], runtimeOwned: value.runtimeOwned,
     targets: JSON.parse(JSON.stringify(targets)) as BatchTargetItem[],
     jobs: jobs.map(job => {
-      const { resultUrl: _url, message: _message, ...saved } = job
+      const { resultUrl: _url, message: _message, pendingImage: _pending, ...saved } = job as BatchDrawJob & { resultUrl?: unknown }
       return { ...JSON.parse(JSON.stringify(saved)) as BatchDrawJob, status: ['running', 'accepted'].includes(job.status) ? 'unknown' : job.status }
     }),
   }
@@ -56,7 +58,7 @@ export function createBatchDrawPlanStorage(): BatchDrawPlanStorage {
       return plan
     },
     async write(plan) {
-      const jobs = plan.jobs.map(({ resultUrl: _url, message: _message, ...job }) => job)
+      const jobs = plan.jobs.map(({ pendingImage: _pending, message: _message, ...job }) => job)
       profileDraftStorage.setItem(BATCH_DRAW_PLAN_KEY, JSON.stringify({ ...plan, jobs }))
       // The stable identity must be durable before admitting a model request.
       await flushProfileWrites()

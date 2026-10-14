@@ -2,8 +2,9 @@ use super::*;
 impl Service {
     pub async fn cancel_batch(&self, id: &str, owner: &str) -> Result<Value> {
         let batch = self.batch(id, owner).await?;
-        let ids = {
+        let (ids, generation) = {
             let mut s = batch.state.lock().await;
+            s.cancel_generation = s.cancel_generation.wrapping_add(1);
             s.cancel.cancel();
             if s.status == "done" {
                 return Ok(batch_public_after_unlock(s, &batch).await);
@@ -19,7 +20,7 @@ impl Service {
                     ids.push(id.clone());
                 }
             }
-            ids
+            (ids, s.cancel_generation)
         };
         for id in ids {
             let _ = self.cancel(&id, owner).await;
@@ -27,6 +28,9 @@ impl Service {
         let settled = self.reconcile_live(&batch).await?;
         {
             let mut s = batch.state.lock().await;
+            if s.cancel_generation != generation {
+                return Ok(batch_public_after_unlock(s, &batch).await);
+            }
             s.status = if settled { "cancelled" } else { "paused" }.into();
             s.unknown = !settled;
             s.error_code = (!settled).then(|| "BATCH_UPSTREAM_UNKNOWN".into());
@@ -55,10 +59,18 @@ impl Service {
             };
             if observation.settled && !observation.unknown {
                 let mut s = batch.state.lock().await;
-                s.shots[index].status = observation.status;
-                s.shots[index].code = observation.error_code;
+                let Some(current) = s.shots.get_mut(index).filter(|current| {
+                    current.gateway == shot.gateway && current.intent == shot.intent
+                }) else {
+                    // A late observation belongs to its original submission,
+                    // never a new retry of the same displayed shot position.
+                    settled = false;
+                    continue;
+                };
+                current.status = observation.status;
+                current.code = observation.error_code;
                 if let Some(o) = observation.outputs.into_iter().next() {
-                    s.shots[index].result = Some(o);
+                    current.result = Some(o);
                 }
             } else {
                 settled = false;
@@ -182,6 +194,14 @@ impl Service {
         Ok(batch.public().await)
     }
     pub async fn retry_shot(self: Arc<Self>, id: &str, owner: &str, index: usize) -> Result<Value> {
+        self.retry_shots(id, owner, vec![index]).await
+    }
+    pub async fn retry_shots(
+        self: Arc<Self>,
+        id: &str,
+        owner: &str,
+        indices: Vec<usize>,
+    ) -> Result<Value> {
         let batch = self.batch(id, owner).await?;
         if batch.hooks.is_some() {
             return Err(error(
@@ -190,66 +210,100 @@ impl Service {
                 "持久任务重抽需创建新的任务键",
             ));
         }
-        let _gate = batch.serial.lock().await;
+        let _gate = batch
+            .serial
+            .try_lock()
+            .map_err(|_| error(409, "BATCH_RETRY_RUNNING", "请先完成或取消当前分镜批次"))?;
         let _concat = batch
             .concat_serial
             .try_lock()
             .map_err(|_| error(409, "BATCH_CONCAT_RUNNING", "请先完成或取消当前拼接"))?;
-        let shot = batch
-            .state
-            .lock()
-            .await
-            .shots
-            .get(index)
-            .cloned()
-            .ok_or_else(|| error(404, "SHOT_NOT_FOUND", "分镜不存在"))?;
-        if shot.intent.is_some() {
-            let id = shot.gateway.as_deref().ok_or_else(|| {
-                error(
-                    409,
-                    "BATCH_RECOVERY_REVIEW",
-                    "分镜已有提交意图但任务身份未知",
-                )
-            })?;
-            let observation = self.query(id, owner).await?;
-            if !observation.settled || observation.unknown {
+        let cancel_generation = {
+            let state = batch.state.lock().await;
+            if matches!(state.status.as_str(), "running" | "cancelling") {
                 return Err(error(
                     409,
-                    "BATCH_RECOVERY_REVIEW",
-                    "分镜上游尚未确认终止，不能重抽",
+                    "BATCH_RETRY_RUNNING",
+                    "请先完成或取消当前分镜批次",
                 ));
             }
+            let mut seen = std::collections::HashSet::new();
+            if indices.is_empty()
+                || indices.len() > 30
+                || indices.iter().any(|index| !seen.insert(*index))
+            {
+                return Err(error(400, "SHOT_INDEX_INVALID", "重抽分镜序号无效或重复"));
+            }
+            for index in &indices {
+                let shot = state
+                    .shots
+                    .get(*index)
+                    .ok_or_else(|| error(404, "SHOT_NOT_FOUND", "分镜不存在"))?;
+                if !["failed", "cancelled"].contains(&shot.status.as_str()) {
+                    return Err(error(
+                        409,
+                        "BATCH_SHOT_NOT_RETRYABLE",
+                        "只有失败或取消的分镜可以重抽",
+                    ));
+                }
+            }
+            state.cancel_generation
+        };
+        // Confirm the entire selection before changing any shot. One accepted
+        // operation marks all selected shots pending and starts the runner once.
+        if !self.reconcile_live(&batch).await? {
+            return Err(error(
+                409,
+                "BATCH_RECOVERY_REVIEW",
+                "分镜上游尚未确认终止，不能重抽",
+            ));
         }
-        {
+        let concat = {
             let mut s = batch.state.lock().await;
-            let shot = s
-                .shots
-                .get_mut(index)
-                .ok_or_else(|| error(404, "SHOT_NOT_FOUND", "分镜不存在"))?;
-            if !["failed", "cancelled"].contains(&shot.status.as_str()) {
+            if s.cancel_generation != cancel_generation || self.shutdown.is_cancelled() {
+                return Err(error(499, "VIDEO_BATCH_CANCELLED", "重抽操作已取消"));
+            }
+            // Reconciliation may have discovered a successful old shot. Never
+            // replace it or clear unknown state before the full batch is settled.
+            if indices
+                .iter()
+                .any(|index| !["failed", "cancelled"].contains(&s.shots[*index].status.as_str()))
+            {
                 return Err(error(
                     409,
                     "BATCH_SHOT_NOT_RETRYABLE",
                     "只有失败或取消的分镜可以重抽",
                 ));
             }
-            shot.status = "pending".into();
-            shot.intent = None;
-            shot.gateway = None;
-            shot.upstream = None;
-            shot.error = None;
-            shot.code = None;
-            shot.result = None;
-            if let Some(Output::File { path, .. }) = s.concat.take() {
-                let _ = tokio::fs::remove_file(path).await;
+            for index in indices {
+                let shot = &mut s.shots[index];
+                shot.status = "pending".into();
+                shot.intent = None;
+                shot.gateway = None;
+                shot.upstream = None;
+                shot.error = None;
+                shot.code = None;
+                shot.result = None;
+                shot.tail = None;
             }
+            let concat = s.concat.take();
             s.concat_stage = "none";
             s.cancel = self.shutdown.child_token();
             s.status = "running".into();
-        }
+            s.unknown = false;
+            s.error_code = None;
+            concat
+        };
         drop(_gate);
         drop(_concat);
         self.kick(batch.clone(), None);
+        // Accepted work owns its runner before any filesystem await. Removing
+        // an obsolete concat cannot strand pending shots if HTTP disconnects.
+        if let Some(Output::File { path, .. }) = concat {
+            self.tasks.spawn(async move {
+                let _ = tokio::fs::remove_file(path).await;
+            });
+        }
         Ok(batch.public().await)
     }
     async fn concat_batch(&self, batch: Arc<Batch>, cancel: CancellationToken) -> Result<()> {

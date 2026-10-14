@@ -4,6 +4,7 @@ import { parseSmartAlbumRule, type SmartAlbumRule } from '@/application/artwork/
 import { toRaw } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { ArtworkProjectRecord } from '@/application/artwork/artworkRepository'
+import { artworkIdKey } from './galleryHelpers'
 
 export interface GalleryProject {
   id: string
@@ -26,12 +27,13 @@ export function galleryProjects(records: ArtworkProjectRecord[]): GalleryProject
 
 const loadVersions = new WeakMap<object, number>()
 
-const pendingMutations = new WeakMap<object, Map<string | number, Pick<ArtworkRecord, 'favorite'> | null>>()
+const pendingMutations = new WeakMap<object, Map<string, Pick<ArtworkRecord, 'favorite'> | null>>()
 
 /** Overlay confirmed changes onto an outstanding snapshot; null means deleted. */
 export function recordGalleryMutation(history: object, id: string | number, patch: Pick<ArtworkRecord, 'favorite'> | null): void {
   const pending = pendingMutations.get(history)
-  if (pending && pending.get(id) !== null) pending.set(id, patch)
+  const key = artworkIdKey(id)
+  if (pending && pending.get(key) !== null) pending.set(key, patch)
 }
 
 function unchangedRecords(current: object[], incoming: object[]): boolean {
@@ -51,7 +53,7 @@ function unchangedRecords(current: object[], incoming: object[]): boolean {
 export async function loadGalleryStorageAction({ galleryLoading, galleryError, history, projects }: Pick<ReturnType<typeof useGalleryWorkspace>, 'galleryLoading' | 'galleryError' | 'history' | 'projects'>): Promise<void> {
   const version = (loadVersions.get(history) || 0) + 1
   loadVersions.set(history, version)
-  const mutations = new Map<string | number, Pick<ArtworkRecord, 'favorite'> | null>()
+  const mutations = new Map<string, Pick<ArtworkRecord, 'favorite'> | null>()
   pendingMutations.set(history, mutations)
   const isCurrent = () => loadVersions.get(history) === version
   // Only an empty workspace needs a blocking placeholder. Refreshes retain the
@@ -67,12 +69,12 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryError, h
     // A refresh still reads the authority, but unchanged metadata must not
     // invalidate every filter, album and keyed image card on a cached return.
     const nextHistory = snapshot.history.flatMap(item => {
-      const patch = mutations.get(item.id)
+      const patch = mutations.get(artworkIdKey(item.id))
       return patch === null ? [] : [patch ? { ...item, ...patch } : item]
     })
     if (!unchangedRecords(history.value, nextHistory)) history.value = nextHistory
     const nextProjects = galleryProjects(snapshot.projects).map(project => ({
-      ...project, history_ids: project.history_ids.filter(id => mutations.get(id) !== null),
+      ...project, history_ids: project.history_ids.filter(id => mutations.get(artworkIdKey(id)) !== null),
     }))
     if (!unchangedRecords(projects.value, nextProjects)) projects.value = nextProjects
   } catch (error) {

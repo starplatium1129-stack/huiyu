@@ -29,7 +29,7 @@ pub(super) fn copy(
 ) -> Result<()> {
     identity.check_paths()?;
     if path == media::object_path(&identity.root, string(media, "sha256")?)? {
-        return Ok(());
+        return media::sync_checked(&identity.root, path, || identity.cancelled());
     }
     let total = media["bytes"].as_u64().unwrap();
     match source {

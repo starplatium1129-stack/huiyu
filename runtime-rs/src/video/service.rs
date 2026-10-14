@@ -173,13 +173,6 @@ impl Service {
             job[key] = job["metadata"][key].clone();
         }
         job["prompt"] = job["metadata"]["originalPrompt"].clone();
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap_or_default()
-            .as_millis() as i64;
-        job["elapsedSeconds"] = json!(
-            ((now - job["createdAt"].as_i64().unwrap_or(now)).max(0) as f64 / 1000.).round() as u64
-        );
         if job["status"] == "running" {
             job["progress"] = json!(
                 (job["elapsedSeconds"].as_f64().unwrap_or(0.)

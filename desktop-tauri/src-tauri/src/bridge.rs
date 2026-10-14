@@ -405,25 +405,3 @@ pub async fn pick_files(app: AppHandle) -> Vec<serde_json::Value> {
         })
         .collect()
 }
-
-/// 对话框：保存图片（saveImage）
-#[tauri::command]
-pub async fn save_image(app: AppHandle, data: Vec<u8>, name: Option<String>) -> serde_json::Value {
-    use tauri_plugin_dialog::DialogExt;
-    let default_name = name.unwrap_or_else(|| "image.png".into());
-    let file_path = app
-        .dialog()
-        .file()
-        .set_file_name(&default_name)
-        .blocking_save_file();
-    match file_path {
-        Some(path) => match path.into_path() {
-            Ok(path) => match std::fs::write(&path, data) {
-                Ok(_) => serde_json::json!({ "saved": true, "filePath": path.to_string_lossy() }),
-                Err(e) => serde_json::json!({ "saved": false, "error": e.to_string() }),
-            },
-            Err(e) => serde_json::json!({ "saved": false, "error": e.to_string() }),
-        },
-        None => serde_json::json!({ "saved": false }),
-    }
-}

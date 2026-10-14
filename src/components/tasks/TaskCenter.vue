@@ -25,7 +25,7 @@ import { useTaskRecovery } from '@/composables/tasks/useTaskRecovery'
 import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
 const recovery = useTaskRecovery()
 const { refreshing, error: recoveryError, refresh } = recovery
-const { tasks, opened, activeCount, controls, storageError, clearCompleted } = useTaskCenter()
+const { tasks, opened, activeCount, pageActiveCount, controls, storageError, clearCompleted } = useTaskCenter()
 // Keep recovery/polling active from startup; load the inbox UI on first inspection
 // and retain its filters and pagination when the dialog is closed again.
 const inspected = ref(opened.value)
@@ -46,7 +46,7 @@ watch(opened, async value => {
   if (value) motion.open(source)
   else if (el.open) motion.close()
 })
-const beforeUnload = (event: BeforeUnloadEvent) => { if (!runtimeTasksEnabled.value && activeCount.value && !consumeTaskReloadApproval()) { event.preventDefault(); event.returnValue = '' } }
+const beforeUnload = (event: BeforeUnloadEvent) => { if (pageActiveCount.value && !consumeTaskReloadApproval(event)) { event.preventDefault(); event.returnValue = '' } }
 let stopRuntime = () => {}
 onMounted(() => { stopRuntime = startRuntimeTaskPolling(); if (runtimeTasksEnabled.value) void hydrateTasks().catch(() => {}); else void refresh(); window.addEventListener('beforeunload', beforeUnload) })
 onUnmounted(() => { stopRuntime(); window.removeEventListener('beforeunload', beforeUnload) })

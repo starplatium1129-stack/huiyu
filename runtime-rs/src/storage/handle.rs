@@ -125,6 +125,20 @@ impl Storage {
             .map_err(|_| unavailable())?;
         result.await.map_err(|_| unavailable())?
     }
+    pub(crate) async fn task_result_reference(
+        &self,
+        task_id: &str,
+        index: u64,
+        principal: &str,
+    ) -> Result<tasks::ResultReference> {
+        let value = self
+            .request(
+                json!({"kind":"task.result.reference","taskId":task_id,"index":index}),
+                principal,
+            )
+            .await?;
+        serde_json::from_value(value).map_err(Into::into)
+    }
     pub(crate) async fn task_revision(
         &self,
         task_id: &str,

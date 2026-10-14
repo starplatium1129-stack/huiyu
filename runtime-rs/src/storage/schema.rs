@@ -337,13 +337,14 @@ pub(super) fn open(
          CREATE INDEX IF NOT EXISTS project_artworks_artwork ON project_artworks(artwork_key);
          CREATE INDEX IF NOT EXISTS media_aliases_hash ON media_aliases(hash);
          CREATE INDEX IF NOT EXISTS media_refs_hash ON media_refs(hash);
+         CREATE INDEX IF NOT EXISTS leases_operation_key ON leases(operation_key);
          CREATE INDEX IF NOT EXISTS tasks_unsettled ON tasks(task_id) WHERE upstream_settled=0;
          CREATE INDEX IF NOT EXISTS tasks_revision ON tasks(principal_id,json_extract(record_json,'$.revision'));
          CREATE INDEX IF NOT EXISTS tasks_recovery_scan ON tasks(principal_id) WHERE json_extract(record_json,'$.deliveryState') != 'discarded' AND (upstream_settled=0 OR (json_extract(record_json,'$.status')='succeeded' AND json_extract(record_json,'$.resultState')!='available'));",
     )?;
     super::tasks::initialize(&db)?;
     super::artwork_index::initialize(&db)?;
-    Ok(Context {
+    let mut context = Context {
         db,
         root,
         workspace_id,
@@ -351,9 +352,13 @@ pub(super) fn open(
         owner,
         cancel: Arc::new(AtomicBool::new(false)),
         result_commit: None,
+        upload: None,
+        migration_verification: None,
         restore_commit: None,
         media_verified: None,
-    })
+    };
+    migration::repair_activated(&mut context)?;
+    Ok(context)
 }
 fn normalize_root(root: PathBuf) -> Result<PathBuf> {
     if !root.is_absolute() {

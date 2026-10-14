@@ -1,19 +1,19 @@
 import type { DesktopWorkspaceSession } from '../../types/desktop-bootstrap'
 import { bindMigrationCandidate } from '../platform/web/migrationAuthority'
-import { markMigrationActivation, migrationRecoveryPending, watchMigrationRecovery, reconcileMigrationAuthority, recoverMigrationAuthority } from '../platform/web/migrationBarrier'
+import { assertMigrationArtworkSourcesReady, markMigrationActivation, migrationRecoveryPending, watchMigrationRecovery, reconcileMigrationAuthority, recoverMigrationAuthority } from '../platform/web/migrationBarrier'
 import { computed, ref, onScopeDispose } from 'vue'
 import { getDesktopRuntime, onDesktopRuntime, refreshDesktopRuntime } from '../platform/desktop/runtime'
 import { prepareDesktopWorkspace, activateDesktopWorkspace, enableDesktopBundledUi } from '../platform/desktop/bootstrap'
 import { getDesktopCapabilities } from '../platform/desktop/capabilities'
 import { workspaceRequest } from '../api/workspace'
-import { migrateProfileToCandidate } from '../platform/web/migrationCoordinator'
 import { useTaskCenter } from './useTaskCenter'
 import { flushProfileWrites } from '../platform/web/profileStorage'
 import { registerMaintenanceParticipant } from '../platform/maintenanceParticipants'
 
 export function useWorkspaceMigration(onMessage: (message: string) => void) {
   const busy = ref(false), available = ref(false), progress = ref('')
-  onScopeDispose(registerMaintenanceParticipant(() => { if (busy.value) throw new Error('MIGRATION_BUSY') }))
+  let migratingSource = false
+  onScopeDispose(registerMaintenanceParticipant(reason => { if (busy.value && !(reason === 'migration' && migratingSource)) throw new Error('MIGRATION_BUSY') }))
   const recoveryPending = ref(migrationRecoveryPending())
   onScopeDispose(watchMigrationRecovery(() => { recoveryPending.value = migrationRecoveryPending() }))
   const bundledAvailable = ref(false), bundledVerified = ref(false)
@@ -37,6 +37,8 @@ export function useWorkspaceMigration(onMessage: (message: string) => void) {
     const initial = getDesktopRuntime()
     const bootstrap = initial.bootstrap
     if (!bootstrap || initial.connection !== 'ready' || bootstrap.windowRole !== 'atelier' || tasks.activeCount.value) { onMessage('请等待进行中的任务结束后再迁移。'); return }
+    try { assertMigrationArtworkSourcesReady() }
+    catch (error) { onMessage(error instanceof Error ? error.message : '仍有未落稳的批量成片，请先恢复入册或下载原图，再迁移。'); return }
     const choose = (window as Window & { showDirectoryPicker?: (options: { mode: string; id: string }) => Promise<FileSystemDirectoryHandle> }).showDirectoryPicker
     if (!choose) { onMessage('当前窗口不支持选择独立备份目录，请更新桌面 WebView2 后重试。'); return }
     const request = new AbortController()
@@ -56,10 +58,14 @@ export function useWorkspaceMigration(onMessage: (message: string) => void) {
       let directory: FileSystemDirectoryHandle
       try { directory = await choose.call(window, { mode: resume ? 'read' : 'readwrite', id: 'huiyu-migration-backup' }) } catch { return }
       assertCurrent()
+      // Backup/export/import code is needed only after an explicit migration.
+      const { migrateProfileToCandidate } = await import('../platform/web/migrationCoordinator')
+      assertCurrent()
       if (targetIdentity() !== initialTarget) throw new Error('迁移目标已变化，请重新选择备份目录。')
       progress.value = '正在准备独立备份与来源盘点…'
       let candidate: DesktopWorkspaceSession | null | undefined
       const bridge = getDesktopCapabilities()
+      migratingSource = true
       const result = await migrateProfileToCandidate({ sourceProfileId: bootstrap.sourceProfileId, expectedOrigin: bootstrap.sourceOrigin,
         backupDirectory: directory, signal: request.signal,
         prepareCandidate: async selection => {
@@ -105,7 +111,7 @@ export function useWorkspaceMigration(onMessage: (message: string) => void) {
         available.value = false
       }
     } catch (error) { if (!disposed) onMessage(request.signal.aborted && !activating.value ? '迁移已取消，原始资料与已导出的备份已保留。' : error instanceof Error ? error.message : '迁移未完成，原始资料与已导出的备份已保留。') }
-    finally { if (controller === request) { busy.value = false; controller = null; activating.value = false; progress.value = '' } }
+    finally { migratingSource = false; if (controller === request) { busy.value = false; controller = null; activating.value = false; progress.value = '' } }
   }
   async function reconcile() {
     if (disposed || busy.value) return

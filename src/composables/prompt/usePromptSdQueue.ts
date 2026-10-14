@@ -1,9 +1,9 @@
-import { getCurrentScope, onScopeDispose, nextTick, ref, watch, type ComputedRef, type Ref } from 'vue'
+import { getCurrentScope, onScopeDispose, nextTick, ref, watch, type Ref } from 'vue'
 import { usePromptBuilderStore, type HistoryEntry } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { SdResultSnapshot } from './sdResultActions'
 import { SD_QUEUE_SNAPSHOT_KEY } from '@/utils/storageKeys'
-import { classifySDError, type SDErrorReport } from '@/utils/sdError'
+import type { SDErrorReport } from '@/utils/sdError'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks'
 import type { LegacySdObserveOptions } from '@/composables/generation/useLegacySdTasks'
@@ -27,7 +27,6 @@ export interface PromptSdQueueDeps {
   drawEngine: Ref<DrawEngine>
   modelProfile: PromptAssembly['modelProfile']
   animaState: AnimaSession['state']
-  displayResultSeed: ComputedRef<number | null>
   /**
    * 旧任务结果写入冻结上下文；使用保存记录，跨页交接不读当前表单。
    */
@@ -44,6 +43,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
   const durable = hasRuntimeTasks()
   const queueStorage = durable ? createPendingSdQueueStorage() : null
   let disposed = false, queueReadError: unknown = null
+  let diagnosticRevision = 0
   if (getCurrentScope()) onScopeDispose(() => { disposed = true })
 
   /**
@@ -201,7 +201,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
 
   const sdQueue: ReturnType<typeof useSDQueue> = useSDQueue({
     isBusy: () => sd.generating.value,
-    onFlash: (m) => pb.flash(m),
+    onFlash: (m) => { if (!disposed) pb.flash(m) },
     ...(durable ? {
       persist: async (jobs: readonly SDQueueJob[]) => {
         if (queueReadError) throw queueReadError
@@ -213,6 +213,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       },
     } : {}),
     run: async (job) => {
+      const diagnostic = ++diagnosticRevision
       let attempt: RuntimeSdAttempt | undefined
       if (durable) {
         const { preparePendingSdAttempt } = await import('./sdQueueActions')
@@ -236,7 +237,11 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       }
       const err = sd.errorMsg.value
       if (!err) return { status: 'cancelled' as const }
-      sdErrorReport.value = classifySDError({ message: err })
+      // Classification must not delay failure delivery while its chunk loads.
+      void import('@/utils/sdError').then(({ classifySDError }) => {
+        if (!disposed && diagnostic === diagnosticRevision && sd.errorMsg.value === err)
+          sdErrorReport.value = classifySDError({ message: err })
+      }).catch(() => { /* Keep the original failure when optional feedback is unavailable. */ })
       return { status: 'failure' as const, error: err }
     },
   })
@@ -290,7 +295,6 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
 
     historyGenerationFields,
     runJob,
-    commitJobResult,
     sdQueue,
     restoredCount,
 

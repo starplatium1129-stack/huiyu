@@ -20,6 +20,10 @@ export interface ShotDraft {
    * blob URL（imageUrl）随页面卸载失效，只有它能跨页/刷新找回原图。
    */
   imageId?: string
+  /** Durable import receipt; remains unchanged when the first frame is edited. */
+  importSourceImageId?: string
+  /** Stable acknowledgement of a pending scenario act, independent of edits. */
+  importSourceActId?: string
   /** 出场角色：'' 无 / '1' 角色1 / '2' 角色2 / '12' 角色1+2 / 'all' 全部角色（对应参考卡）。 */
   cast: '' | '1' | '2' | '3' | '4' | '12' | 'all' | string
   /** 剧本引擎派生的首帧出图提示词（蓝图散文+景别构图句）；「一键首帧」消费。 */

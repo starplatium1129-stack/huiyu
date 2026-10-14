@@ -91,7 +91,10 @@ async fn read(config: &Config, name: &str) -> Result<Vec<u8>> {
     }
     Ok(bytes)
 }
-async fn fingerprint(bytes: Vec<u8>, cancel: &CancellationToken) -> Result<(Vec<u8>, String)> {
+async fn fingerprint(
+    bytes: Arc<Vec<u8>>,
+    cancel: &CancellationToken,
+) -> Result<(Arc<Vec<u8>>, String)> {
     let scope = cancel.child_token();
     let _guard = scope.clone().drop_guard();
     let cancelled = || error(499, "CANCELLED", "输入保护已取消");
@@ -166,7 +169,9 @@ pub(super) async fn capture(
     let mut originals = Vec::new();
     let mut captured_bytes = 0u64;
     for name in names {
-        let bytes = tokio::select! {bytes=read(config,name)=>bytes?,_=cancel.cancelled()=>return Err(error(499,"CANCELLED","输入保护已取消"))};
+        let bytes = Arc::new(
+            tokio::select! {bytes=read(config,name)=>bytes?,_=cancel.cancelled()=>return Err(error(499,"CANCELLED","输入保护已取消"))},
+        );
         captured_bytes = captured_bytes.saturating_add(bytes.len() as u64);
         if captured_bytes > maximum {
             return Err(error(
@@ -183,13 +188,14 @@ pub(super) async fn capture(
             if !crate::images::owner_matches_for(
                 &config.ai_workspace_root.join("ComfyUI/input"),
                 name,
-                &bytes,
+                bytes.clone(),
                 owner,
                 if valid_name(name, true) {
                     crate::images::ImageKind::VideoReference
                 } else {
                     crate::images::ImageKind::VideoInput
                 },
+                cancel,
             )
             .await?
             {
@@ -202,7 +208,7 @@ pub(super) async fn capture(
         }
         let file = directory.path().join(name);
         let (bytes, hash) = fingerprint(bytes, cancel).await?;
-        tokio::fs::write(&file, &bytes).await?;
+        tokio::fs::write(&file, bytes.as_slice()).await?;
         originals.push(Original {
             name: name.into(),
             file,
@@ -275,7 +281,7 @@ pub(super) async fn protect_restore(
                 }
             }
         }
-        if fingerprint(read(config, &original.name).await?, cancel)
+        if fingerprint(Arc::new(read(config, &original.name).await?), cancel)
             .await?
             .1
             != original.hash

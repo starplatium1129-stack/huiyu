@@ -8,11 +8,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     if kind == "task.result.prepare" {
         return prepare(c, task, &command["media"]);
     }
-    let index = output_index(command["index"].as_u64())?;
-    if kind != "task.result.chunk" {
-        return Err(invalid("Unknown task result command"));
-    }
-    prepared(c, task, index, command)
+    Err(invalid("Unknown task result command"))
 }
 
 fn result_task(c: &Context, principal: &str, id: &str) -> Result<TaskRecord> {
@@ -33,7 +29,13 @@ fn output_index(index: Option<u64>) -> Result<i64> {
         .ok_or_else(|| invalid("Invalid output index"))
 }
 
-fn prepared(c: &mut Context, task: TaskRecord, index: i64, chunk: &Value) -> Result<Value> {
+pub(in crate::storage) fn prepare_chunk(
+    c: &Context,
+    principal: &str,
+    command: &Value,
+) -> Result<upload::Prepared> {
+    let task = result_task(c, principal, string(command, "taskId")?)?;
+    let index = output_index(command["index"].as_u64())?;
     let id = task.task_id.as_str();
     let (body, committed): (String, bool) =
         c.db.prepare_cached(
@@ -44,9 +46,10 @@ fn prepared(c: &mut Context, task: TaskRecord, index: i64, chunk: &Value) -> Res
         .ok_or_else(|| conflict("TASK_RESULT_MISSING", "Result was not prepared"))?;
     let media: Value = serde_json::from_str(&body)?;
     let key = canonical::digest(format!("task:{id}:{index}"));
-    Ok(
-        json!({"offset": if committed { media["bytes"].as_u64().unwrap() } else { media::upload(c, &key, &media, chunk, false)? }}),
-    )
+    if committed {
+        return Ok(upload::Prepared::Complete(json!({"offset":media["bytes"]})));
+    }
+    Ok(upload::Chunk::new(key, media, false, json!({})))
 }
 
 pub(super) fn discard(c: &Context, id: &str) -> Result<()> {

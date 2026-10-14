@@ -75,6 +75,19 @@ pub(super) struct Verified {
     mime: Option<String>,
 }
 impl Verified {
+    pub(super) fn hash(&self) -> &str {
+        &self.hash
+    }
+    pub(super) fn into_stamp(self) -> Stamp {
+        Stamp {
+            path: self.path,
+            native: self.native,
+            version: self.version,
+            bytes: self.bytes,
+            hash: self.hash,
+            mime: self.mime,
+        }
+    }
     pub(super) fn matches(&self, path: &Path, media: &Value) -> bool {
         self.path == path
             && Some(self.bytes) == media["bytes"].as_u64()
@@ -96,6 +109,45 @@ impl Verified {
             return Err(conflict(
                 "MEDIA_INVALID",
                 "Media identity or content version changed during verification",
+            ));
+        }
+        Ok(())
+    }
+}
+
+// Bulk migration keeps final object identities without holding one file handle
+// per library item. The workspace writer permit and migration leases exclude
+// application mutations; native identity/ChangeTime are rechecked at commit.
+pub(super) struct Stamp {
+    path: PathBuf,
+    native: file_identity::Identity,
+    version: media::FileIdentity,
+    bytes: u64,
+    hash: String,
+    mime: Option<String>,
+}
+impl Stamp {
+    pub(super) fn matches(&self, path: &Path, media: &Value) -> bool {
+        self.path == path
+            && Some(self.bytes) == media["bytes"].as_u64()
+            && Some(self.hash.as_str()) == media["sha256"].as_str()
+            && self.mime.as_deref() == media["mime"].as_str()
+    }
+    pub(super) fn check(&self, root: &Path) -> Result<()> {
+        schema::safe(
+            root,
+            self.path
+                .strip_prefix(root)
+                .map_err(|_| invalid("Media path escapes workspace"))?,
+        )?;
+        let current = File::open(&self.path)?;
+        if file_identity::opened(&current)? != self.native
+            || media::FileIdentity::of(&current)? != self.version
+            || file_identity::path(&self.path, false)? != self.native
+        {
+            return Err(conflict(
+                "MEDIA_INVALID",
+                "Media object changed during migration verification",
             ));
         }
         Ok(())

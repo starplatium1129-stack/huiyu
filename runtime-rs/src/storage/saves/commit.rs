@@ -21,6 +21,39 @@ enum Target {
     Append(Value),
 }
 
+fn check_append_replay(c: &Context, command: &Value) -> Result<()> {
+    let artwork = &command["artwork"];
+    let key = entity_key(&artwork["id"])?;
+    let alias = string(artwork, "image_id")?;
+    // The immutable receipt proves the old append, not the current visibility.
+    // Read only the indexed row's deletion state and media identity.
+    let current: Option<(Option<i64>, Option<String>)> =
+        c.db.prepare_cached(
+            "SELECT deleted_at,json_extract(body,'$.image_id') FROM artworks WHERE id_key=?",
+        )?
+        .query_row([key], |row| Ok((row.get(0)?, row.get(1)?)))
+        .optional()?;
+    let Some((deleted_at, current_alias)) = current else {
+        return Err(conflict(
+            "ARTWORK_NOT_LIVE",
+            "Previously committed artwork no longer exists",
+        ));
+    };
+    if deleted_at.is_some() {
+        return Err(conflict(
+            "ARTWORK_NOT_LIVE",
+            "Previously committed artwork is in trash; restore it before saving",
+        ));
+    }
+    if current_alias.as_deref() != Some(alias) {
+        return Err(conflict(
+            "OPERATION_CONFLICT",
+            "Previously committed artwork identifies different media",
+        ));
+    }
+    Ok(())
+}
+
 fn lease(c: &Context, key: &str, hash: &str) -> Result<i64> {
     let row: Option<(String, Option<String>, Option<String>, i64)> =
         c.db.query_row(
@@ -67,9 +100,9 @@ pub(in crate::storage) fn prepare(
         return Err(invalid("A stable operation ID is required"));
     }
     if command["kind"] == "appendArtwork" {
-        if let Some(row) = c.operation(principal, id)? {
-            row.check("appendArtwork", command)?;
-            if let Some(receipt) = row.receipt {
+        if let Some((_, receipt)) = c.operation_receipt(principal, command)? {
+            if let Some(receipt) = receipt {
+                check_append_replay(c, command)?;
                 return Ok(Prepared::Complete(receipt));
             }
         }
@@ -145,9 +178,8 @@ impl Publication {
                 }
             }
             Target::Append(command) => {
-                if let Some(row) = c.operation(&self.principal, string(command, "operationId")?)? {
-                    row.check("appendArtwork", command)?;
-                    if row.receipt.is_some() {
+                if let Some((_, receipt)) = c.operation_receipt(&self.principal, command)? {
+                    if receipt.is_some() {
                         return Err(conflict(
                             "OPERATION_CONFLICT",
                             "Artwork append changed during verification",
@@ -213,7 +245,10 @@ impl Publication {
                 }
                 Target::Append(command) => {
                     let (key, previous) = c.start_operation(&self.principal, command)?;
-                    if let Some(receipt) = previous { return Ok(receipt); }
+                    if let Some(receipt) = previous {
+                        check_append_replay(c, command)?;
+                        return Ok(receipt);
+                    }
                     let art = &command["artwork"];
                     let artwork_key = entity_key(&art["id"])?;
                     if records::artwork(c, &artwork_key)?.is_some() {

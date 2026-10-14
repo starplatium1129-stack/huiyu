@@ -20,7 +20,6 @@ const toast = useToast()
 
 import {
   isSDParamKey,
-  parsePresetCatalog,
   type PromptPreset,
   type DraftOutfitOverride,
   type DraftReferenceInput,
@@ -342,11 +341,11 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     await sceneStore.load()
     // Browsing only waits for required scene data; do not snapshot a pending catalog.
     await sceneStore.loadPresetCatalog()
+    const { parsePresetCatalog, fillMissingModelProfiles } = await import('@/utils/modelProfileDefaults')
     const catalog = parsePresetCatalog(sceneStore.presets)
     presets.value = catalog.presets
     // Upgrades preserve personal content. Fill only missing software model
     // profiles in memory; never replace a user's existing model or preset.
-    const { fillMissingModelProfiles } = await import('@/utils/modelProfileDefaults')
     modelProfiles.value = fillMissingModelProfiles(catalog.modelProfiles)
     applyModelProfile()
     dataReady.value = true

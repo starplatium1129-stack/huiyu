@@ -1,6 +1,5 @@
 use super::{Duration, Error, Result};
 use futures_util::StreamExt;
-use serde_json::Value;
 use std::{
     env,
     net::{IpAddr, Ipv6Addr, SocketAddr},
@@ -11,7 +10,7 @@ pub(super) struct Transport {
     trusted: reqwest::Client,
 }
 pub(super) struct Request<'a> {
-    pub body: Option<&'a Value>,
+    pub body: Option<Vec<u8>>,
     pub key: &'a str,
     pub public_only: bool,
     pub idle: Duration,
@@ -59,7 +58,10 @@ impl Transport {
             &self.trusted
         };
         let mut request = if let Some(body) = options.body {
-            client.post(target).json(body)
+            client
+                .post(target)
+                .header("content-type", "application/json")
+                .body(body)
         } else {
             client.get(target)
         };

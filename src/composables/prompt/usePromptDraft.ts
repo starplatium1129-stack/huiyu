@@ -1,9 +1,8 @@
-import { hasEditedSceneStyle, sceneStyleBaseline } from '@/utils/randomVariationContext'
+import { sceneStyleBaseline } from '@/utils/randomVariationContext'
 import { profileLocalStorage as localStorage, profileRuntimeActive } from '../../platform/web/profileStorage.ts'
 import { onScopeDispose, ref, watch, type Ref, type ComputedRef } from 'vue'
-import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { isSDParamKey, parsePromptBuilderDraft, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
-import { normalizeArtistStyleIds } from '@/config/artistStyles'
+import type { DraftOutfitOverride, DraftReferenceInput, DraftRandomVariation, PromptBuilderDraft, SDParams } from '@/utils/promptBuilderPersistence'
+import { tempResultOwner, sameTempResultOwner } from '@/utils/tempResult'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import type { DrawSubject } from '@/utils/popularContent'
@@ -37,16 +36,20 @@ export interface PromptDraftState {
 
 /** Owns the draft persistence timer; never owns generation or artwork storage. */
 export function usePromptDraft(state: PromptDraftState) {
-  const { subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash } = state
+  const { subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, dataReady, flash } = state
   // ── Draft persistence ────────────────────────────────────────────────────
   const DRAFT_KEY = 'aics_pb_last_draft'
   let draftTimer: ReturnType<typeof setTimeout> | null = null
+  let restoreRevision = 0, disposed = false
+  let restoreFailed = false
+  const restoreParticipants = new Set<() => void>()
   const draftSaveState = ref<'idle' | 'pending' | 'saved' | 'failed'>('idle')
   const draftSaveError = ref('')
   function persistDraft() {
     if (draftTimer) clearTimeout(draftTimer)
     draftTimer = null
     try {
+      if (restoreFailed) throw new Error('原草稿尚未恢复，请先重新打开页面，或明确重试保存当前输入')
       localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshotDraft()))
       draftSaveState.value = 'saved'; draftSaveError.value = ''
     } catch (error) {
@@ -57,12 +60,13 @@ export function usePromptDraft(state: PromptDraftState) {
   const releaseMaintenance = registerMaintenanceParticipant(() => { if (draftTimer || draftSaveState.value === 'failed') persistDraft() })
   function retryDraftSave() {
     if (!dataReady.value) return false
+    restoreFailed = false
     try { persistDraft(); return true } catch { return false }
   }
   function beforeUnload(event: BeforeUnloadEvent) {
     // Desktop profiles own asynchronous write/close protection.
     if (profileRuntimeActive() || (!draftTimer && draftSaveState.value !== 'failed')) return
-    if (!retryDraftSave()) { event.preventDefault(); event.returnValue = '' }
+    if (restoreFailed || !retryDraftSave()) { event.preventDefault(); event.returnValue = '' }
   }
   window.addEventListener('beforeunload', beforeUnload)
 
@@ -103,67 +107,8 @@ export function usePromptDraft(state: PromptDraftState) {
     }
   }
 
-  function applyDraft(d: PromptBuilderDraft) {
-    // Context watchers must not retire the previous overlay against restored tags.
-    // The saved overlay is adopted last, after all subject/outfit changes.
-    randomVariation.value = null
-    if (typeof d.story === 'string') story.value = d.story
-    if (typeof d.visualDescription === 'string') visualDescription.value = d.visualDescription
-    if (d.char) char.value = d.char
-    if (d.sceneId !== undefined) {
-      sceneId.value = d.sceneId
-      const currentScene = scenes.value.find(s => s.id === d.sceneId)
-      if (currentScene) {
-        lastRecommendedSize.value = sceneRecommendedSize(currentScene)
-        // 场景未被用户魔改时，镜头与推荐配置自动跟随最新场景定义更新，避免旧草稿锁死过时机位
-        const isUnmodifiedScene = (!d.story || d.story === currentScene.story) && (d.sceneBaseStory === currentScene.story || !d.sceneBaseStory)
-        if (isUnmodifiedScene && !hasEditedSceneStyle(d)) {
-          sceneBaseStory.value = currentScene.story ?? ''
-          story.value = currentScene.story ?? story.value
-          selections.shot = sceneShot(currentScene)
-          selections.lighting = sceneLighting(currentScene)
-          selections.composition = sceneComposition(currentScene)
-          colorMood.value = sceneColorMood(currentScene)
-          applySharedDraft(d)
-          return
-        }
-      }
-    }
-    if (d.sceneBaseStory !== undefined) sceneBaseStory.value = d.sceneBaseStory
-    if (d.selections) {
-      selections.emotion = d.selections.emotion ?? []
-      selections.shot = d.selections.shot ?? null
-      selections.lighting = d.selections.lighting ?? null
-      selections.composition = d.selections.composition ?? null
-    }
-    if (typeof d.colorMood === 'string' || d.colorMood === null) colorMood.value = d.colorMood
-    applySharedDraft(d)
-  }
-
-  function applySharedDraft(d: PromptBuilderDraft) {
-    if (d.manualTags) manualTags.value = new Set(d.manualTags)
-    referenceInput.value = d.referenceInput ? { tags: [...d.referenceInput.tags] } : null
-    artistStyleIds.value = normalizeArtistStyleIds(d.artistStyleIds)
-    if (d.directorMode) directorMode.value = d.directorMode
-    if (d.sdParams) Object.assign(sdParams, d.sdParams)
-    // 2026-08-16 审计：恢复草稿时同步重建 touched 集合——否则恢复的用户参数会被
-    // 后续 applyModelProfile（切底模/引擎等）当默认值静默覆盖。缺省（旧草稿）
-    // 保持原行为：不标记任何键。
-    sdParamsTouched.value = new Set((d.sdParamsTouched ?? []).filter(isSDParamKey))
-    if (typeof d.projectId === 'string') projectId.value = d.projectId
-    if (d.subject === 'popular' && d.characterId && d.outfitId) {
-      subject.value = { kind: 'popular', characterId: d.characterId, outfitId: d.outfitId, blueprintId: d.blueprintId ?? null }
-    } else {
-      subject.value = { kind: 'studio' }
-    }
-    outfitOverride.value = subject.value.kind === 'popular' && d.outfitOverride
-      ? { tokens: [...d.outfitOverride.tokens], replaced: d.outfitOverride.replaced }
-      : null
-    randomVariation.value = d.randomVariation ? JSON.parse(JSON.stringify(d.randomVariation)) : null
-  }
-
   function saveDraft() {
-    if (!dataReady.value) return
+    if (!dataReady.value || restoreFailed) return
     if (draftSaveState.value !== 'failed') draftSaveState.value = 'pending'
     if (draftTimer) clearTimeout(draftTimer)
     draftTimer = setTimeout(() => {
@@ -178,20 +123,49 @@ export function usePromptDraft(state: PromptDraftState) {
     }, 280)
   }
 
-  function restoreDraft(): boolean {
+  async function restoreDraft(isCurrent = () => true): Promise<boolean> {
+    const revision = ++restoreRevision
+    let release: (() => void) | undefined
+    let raw: string | null = null
     try {
-      const raw = localStorage.getItem(DRAFT_KEY)
-      if (!raw) return false
-      const d = parsePromptBuilderDraft(JSON.parse(raw))
-      if (!d) return false
-      applyDraft(d)
+      if (disposed || !isCurrent()) return false
+      raw = localStorage.getItem(DRAFT_KEY)
+      if (!raw) { restoreFailed = false; return false }
+      const owner = tempResultOwner()
+      const fingerprint = () => {
+        const { updatedAt: _updatedAt, ...draft } = snapshotDraft()
+        return JSON.stringify({ ...draft, lastRecommendedSize: state.lastRecommendedSize.value })
+      }
+      // Freeze the pointer and editable inputs before loading the recovery action.
+      const before = fingerprint()
+      release = registerMaintenanceParticipant(() => { throw new Error('DRAFT_RESTORE_BUSY') })
+      restoreParticipants.add(release)
+      const { restorePromptDraft } = await import('./promptBlueprintActions')
+      if (disposed || revision !== restoreRevision || !isCurrent() || !sameTempResultOwner(owner)
+        || localStorage.getItem(DRAFT_KEY) !== raw || fingerprint() !== before) return false
+      const restored = restorePromptDraft(state, raw)
+      if (!restored) throw new Error('已有草稿的结构无法恢复')
+      restoreFailed = false; draftSaveState.value = 'idle'; draftSaveError.value = ''
       return true
-    } catch { return false }
+    } catch {
+      if (raw && !disposed && revision === restoreRevision && isCurrent()) {
+        restoreFailed = true; draftSaveState.value = 'failed'
+        draftSaveError.value = '草稿恢复未成功，原记录已保留。请重新打开页面；重试保存会用当前输入替换旧草稿。'
+      }
+      return false
+    }
+    finally { if (release) { release(); restoreParticipants.delete(release) } }
   }
 
   // Clearing or editing only the reference outfit does not touch manualTags.
   watch([outfitOverride, referenceInput], saveDraft, { deep: true })
 
-  onScopeDispose(() => { releaseMaintenance(); if (draftTimer) clearTimeout(draftTimer); window.removeEventListener('beforeunload', beforeUnload) })
+  onScopeDispose(() => {
+    disposed = true; restoreRevision++; releaseMaintenance()
+    for (const release of restoreParticipants) release()
+    restoreParticipants.clear()
+    if (draftTimer) clearTimeout(draftTimer)
+    window.removeEventListener('beforeunload', beforeUnload)
+  })
   return { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave }
 }

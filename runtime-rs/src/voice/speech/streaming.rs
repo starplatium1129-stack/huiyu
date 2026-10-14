@@ -1,5 +1,6 @@
 use super::super::config::Engine;
-use super::{AUDIO_LIMIT, Speech, Validated, wave};
+use super::super::queue::speech_timeout;
+use super::{AUDIO_LIMIT, AudioCache, Speech, Validated, wave};
 use crate::error::{ApiError, Result};
 use axum::{
     body::{Body, Bytes},
@@ -8,12 +9,46 @@ use axum::{
 };
 use futures_util::StreamExt;
 use std::sync::{
-    Arc,
+    Arc, Mutex,
     atomic::{AtomicBool, Ordering},
 };
+use tokio::time::Instant as Deadline;
+use tokio_util::sync::CancellationToken;
 
 impl Speech {
-    pub async fn stream_pcm(self: &Arc<Self>, mut value: Validated) -> Result<Response> {
+    pub(super) fn remember_into(
+        store: &Mutex<AudioCache>,
+        key: String,
+        bytes: Bytes,
+        cancel: &CancellationToken,
+        deadline: Deadline,
+    ) {
+        if bytes.len() > AUDIO_LIMIT || wave::inspect(&bytes).is_none() {
+            return;
+        }
+        let mut cache = store.lock().unwrap();
+        // close() clears under this same lock after cancellation. A late EOF
+        // cannot repopulate the cache after shutdown has already cleared it.
+        if cancel.is_cancelled() || deadline <= Deadline::now() {
+            return;
+        }
+        if let Some(index) = cache.entries.iter().position(|(id, _)| id == &key) {
+            cache.bytes -= cache.entries.remove(index).unwrap().1.len();
+        }
+        cache.bytes += bytes.len();
+        cache.entries.push_back((key, bytes));
+        while cache.entries.len() > 60 || cache.bytes > AUDIO_LIMIT {
+            if let Some((_, old)) = cache.entries.pop_front() {
+                cache.bytes -= old.len();
+            }
+        }
+    }
+
+    pub async fn stream_pcm(
+        self: &Arc<Self>,
+        mut value: Validated,
+        deadline: Deadline,
+    ) -> Result<Response> {
         if self.settings.engine != Engine::VoxCpm2 {
             return Err(ApiError::new(
                 409,
@@ -27,17 +62,23 @@ impl Speech {
         }
         value.payload["streaming_mode"] = true.into();
         value.payload["media_type"] = "raw".into();
-        self.stream_inner(value, key, true).await
+        self.stream_inner(value, key, true, deadline).await
     }
     pub(super) async fn stream_inner(
         &self,
         value: Validated,
         cache_key: String,
         raw_pcm: bool,
+        deadline: Deadline,
     ) -> Result<Response> {
         let permit = self
             .queue
-            .enter(self.queue.reserve()?, &self.cancel)
+            .enter(
+                self.queue.reserve()?,
+                &self.cancel,
+                deadline,
+                speech_timeout,
+            )
             .await?;
         // A queued duplicate can replay audio completed while it waited, before
         // switching voice weights or requesting another synthesis.
@@ -51,7 +92,7 @@ impl Speech {
                 .insert("x-accel-buffering", HeaderValue::from_static("no"));
             return Ok(response);
         }
-        let (response, permit, deadline) = self.upstream(&value, permit).await?;
+        let (response, permit, deadline) = self.upstream(&value, permit, deadline).await?;
         let mime = response
             .headers()
             .get("content-type")
@@ -124,6 +165,9 @@ impl Speech {
                 };
                 let Some(chunk) = chunk else {
                     let valid = captured.as_mut().is_some_and(|bytes| wave::finish(bytes));
+                    if Deadline::now() >= deadline {
+                        break;
+                    }
                     if raw_pcm && !valid {
                         break;
                     }
@@ -135,7 +179,11 @@ impl Speech {
                             cache_key,
                             Bytes::from(captured.take().unwrap().into_boxed_slice()),
                             &cancel,
+                            deadline,
                         );
+                    }
+                    if Deadline::now() >= deadline {
+                        break;
                     }
                     producer_complete.store(true, Ordering::Release);
                     break;

@@ -325,10 +325,15 @@ async fn update(
     action: &'static str,
 ) -> Result<Json<Value>> {
     let result = service
-        .run(move |service, cancel| editor::edit(&service.local, &id, &input, action, cancel))
+        .run(move |service, cancel| {
+            let result = editor::edit(&service.local, &id, &input, action, cancel);
+            // Invalidation waits for the catalog's filesystem scan lock. Keep it
+            // with the real edit completion, even after the HTTP waiter leaves.
+            service.catalog.clear();
+            service.health.invalidate();
+            result
+        })
         .await;
-    service.catalog.clear();
-    service.health.invalidate();
     result.map(Json).map_err(import_error)
 }
 async fn save_profile(
@@ -362,9 +367,12 @@ async fn upload(
         .await
         .map_err(import_error)?;
     let result = service
-        .run(move |service, cancel| import::publish(&service.local, upload, cancel))
+        .run(move |service, cancel| {
+            let result = import::publish(&service.local, upload, cancel);
+            service.catalog.clear();
+            service.health.invalidate();
+            result
+        })
         .await;
-    service.catalog.clear();
-    service.health.invalidate();
     Ok((StatusCode::CREATED, Json(result.map_err(import_error)?)).into_response())
 }

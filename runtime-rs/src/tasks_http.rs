@@ -240,10 +240,9 @@ async fn perform(
                 ));
             }
         };
-        return Ok(
-            Json(json!({"ok":true,"result":result,"runtimeEpoch":storage.runtime_epoch()}))
-                .into_response(),
-        );
+        let mut envelope = json!({"ok":true,"result":null,"runtimeEpoch":storage.runtime_epoch()});
+        envelope["result"] = result;
+        return encode_response(envelope).await;
     }
     if let [id, result, index] = path.as_slice()
         && result == "results"
@@ -327,6 +326,10 @@ async fn perform(
     }
     let mut envelope = json!({"ok":true,"result":null,"runtimeEpoch":storage.runtime_epoch(),"executionAvailable":state.tasks.is_some()});
     envelope["result"] = result;
+    encode_response(envelope).await
+}
+
+async fn encode_response(envelope: Value) -> Result<Response> {
     // Idle delta polls are tiny and do not need an extra thread-pool hop.
     if envelope["result"]["items"]
         .as_array()
@@ -334,8 +337,8 @@ async fn perform(
     {
         return Ok(Json(envelope).into_response());
     }
-    // A task page includes immutable input/context records. Even with bounded
-    // paging, encoding those records must not occupy an async request worker.
+    // Both reads and actions return immutable inputs/checkpoints. Move the
+    // response tree into the encoder rather than copying it on a request worker.
     tokio::task::spawn_blocking(move || Json(envelope).into_response())
         .await
         .map_err(|_| ApiError::new(503, "TASK_UNAVAILABLE", "Task response unavailable"))

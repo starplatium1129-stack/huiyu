@@ -1,20 +1,23 @@
 use super::{
-    Duration, Error, Result, persona,
+    Duration, Error, Result, persona, request_body,
     settings::Settings,
     stream::{Prepared, Protocol},
     transport::{self, Request, Transport},
     validation::{Api, ApiSource, Input},
 };
 use serde_json::{Value, json};
+use tokio_util::sync::CancellationToken;
 
 pub(super) async fn prepare(
     client: &Transport,
     settings: &Settings,
-    input: &Input,
+    mut input: Input,
     remote: bool,
     managed_auth: Option<&(String, String)>,
+    cancel: &CancellationToken,
 ) -> Result<Prepared> {
-    let source = input.api.as_ref().unwrap();
+    let source = input.api.take().unwrap();
+    let public_only = remote && matches!(&source, ApiSource::Personal(_));
     let mut api = match source {
         ApiSource::Host => settings.read_host().await.ok_or_else(|| {
             Error::new(
@@ -23,7 +26,7 @@ pub(super) async fn prepare(
                 "站主尚未配置 API，请在控制面板的聊天设置中保存",
             )
         })?,
-        ApiSource::Personal(api) => api.clone(),
+        ApiSource::Personal(api) => api,
     };
     if let Some((origin, key)) = managed_auth
         && api.model == "huiyu-local"
@@ -64,14 +67,14 @@ pub(super) async fn prepare(
             "DeepSeek 思考工具模式需要跨轮完整思考上下文；请在对话设置关闭思考或关闭房间工具",
         ));
     }
-    let body = payload(input, &api);
+    let body = request_body::encode(payload(input, &api), cancel).await?;
     let response = client
         .send(
             target(&api, &api.pathname)?,
             Request {
-                body: Some(&body),
+                body: Some(body),
                 key: &api.key,
-                public_only: remote && matches!(source, ApiSource::Personal(_)),
+                public_only,
                 idle: Duration::from_secs(120),
                 total: Duration::from_secs(600),
                 accept: "text/event-stream, application/json",
@@ -92,8 +95,9 @@ pub(super) async fn prepare(
         permit: None,
     })
 }
-pub(super) fn payload(input: &Input, api: &Api) -> Value {
-    let mut value = json!({"model":api.model,"messages":input.messages,"stream":true});
+pub(super) fn payload(input: Input, api: &Api) -> Value {
+    let mut value = json!({"model":api.model,"stream":true});
+    value["messages"] = Value::Array(input.messages);
     let thinking = !input.reasoning.is_empty() && input.reasoning != "off";
     if api.vendor == "deepseek" {
         value["thinking"] = json!({"type":if thinking{"enabled"}else{"disabled"}});

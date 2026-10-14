@@ -1,8 +1,8 @@
 # 换机离线体验与本地模型配置
 
-新机器先安装桌面程序和完整素材包，随后按需要准备本地 AI 服务。**素材包提供角色、场景样张和浏览所需图片；生图、视频、对话、反推和 AI 配音需要各自的模型及运行环境。** 文件存在或下载校验通过，不能代替真实功能验收。
+新机器先安装桌面程序和完整素材包，随后按需要准备本地 AI 服务。**素材包提供角色、场景样张和浏览所需图片；生图、视频、对话、反推和 AI 配音需要各自的模型及运行环境。** 当前 Anima 生图从控制室的“原生生图”一键准备开始，支持设备、完整模型与许可见[独立推理指南](independent-inference.md)。文件存在或下载校验通过，不能代替真实功能验收。
 
-> 整理日期：2026-10-11。当前自动准备能力见 [1.9.2](../releases/v1.9.2.md)，源码与安装身份分别核对。宁宁、夏目 Anima v21 绘图 LoRA 仍使用 [1.9.0 独立附件](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0)；声线与参考库是独立资源。安装见[离线资源指南](offline-resources.md)，启动见[STARTUP](../../STARTUP.md)。
+> 整理日期：2026-10-14。公开 1.9.2 的能力以[发行说明](../releases/v1.9.2.md)为准；当前源码与实际安装身份分别核对。宁宁、夏目 Anima v21 绘图 LoRA 仍使用 [1.9.0 独立附件](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0)；声线与参考库是独立资源。安装见[离线资源指南](offline-resources.md)，启动见[STARTUP](../../STARTUP.md)。
 
 ## 1. 一台新机器需要哪些交付物
 
@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | 完整素材浏览 | 匹配版本的桌面安装包、完整资源 ZIP、发布处的 SHA-256、离线导入脚本；桌面运行前提按离线安装指南准备 | 首次打开角色、场景、热门蓝图、画师、LoRA 样张及原图；检查 Live2D 和深浅主题 |
 | PixAI 图片反推 | 固定 PixAI v1.0 权重与配置、CUDA 可用的 Python/PyTorch 环境及独立 timm；按 [准备入口](../workflow.md#pixai-本机反推准备) 生成 runtime-config.json | `/api/interrogate/status` 的 pixai 就绪后对本机图片反推；连续使用复用模型，连续空闲 10 分钟后回收 |
-| Anima 生图 | ComfyUI、匹配的 Python/PyTorch 环境、底模＋文本编码器＋VAE；工作流需要的节点/采样器 | 控制室检查服务，`/api/anima/status`，再生成一张所选模型的图 |
+| Anima 生图 | 原生引擎：受管独立运行库与完整 Diffusers 模型；ComfyUI 引擎：其环境、底模＋文本编码器＋VAE及工作流节点 | 控制室确认当前引擎与资源，`/api/anima/status`，再生成一张所选模型的图 |
 | Krea 2 生图 | ComfyUI、下述 Krea 2 三件套；选择风格时另需相应 LoRA | `/api/creative/status`，再生成一张图 |
 | 旧 SD/WAI 作品 | 新生成已在源码退役，保留旧作品、配方原值、原任务查询／取消 | 不跨引擎冒充恢复原生成参数；可选择沿用文本、画风与构图 |
 | 本地视频 | ComfyUI、Wan 或 H3 的完整权重与节点、可用 FFmpeg | `/api/video/status`，生成并播放短片，H3 另验音频 |
@@ -53,7 +53,12 @@ $env:TRANSLATION_PYTHON = 'D:\HuiyuAI\GPT-SoVITS-env\python.exe'
 
 ```text
 D:\HuiyuAI\
-├─ ComfyUI\                    # 可运行环境、custom_nodes、input、output
+├─ inference\                  # 原生 Anima 运行库与完整模型
+│  ├─ <runtimeId>\             # 独立 Python 与固定依赖
+│  ├─ models\                  # 完整 Diffusers 模型目录
+│  ├─ .downloads\              # 受管下载缓存
+│  └─ .staging\                # 未发布候选
+├─ ComfyUI\                    # ComfyUI 引擎环境、custom_nodes、input、output
 │  └─ models\
 │     ├─ diffusion_models\     # Anima / Krea 2 / Wan / H3 的所选底模
 │     ├─ text_encoders\        # 各模型专用编码器
@@ -68,9 +73,9 @@ D:\HuiyuAI\
 └─ Voice\                     # GPT-SoVITS、声线、参考音频、翻译模型
 ```
 
-Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/models`，源码服务缺省为应用同级 `AI/ComfyUI/models`，桌面使用选定的 AI 工作区。PixAI 的配置查找顺序见下方准备说明；旧 `AICS_WD14_MODEL_DIR` 不配置现行反推。独立 ComfyUI 若放在其他目录，可通过受控目录链接/上游模型配置使双方引用同一批真实文件；仅修改 `COMFY_HOST` 不会改变本机权重检查目录。`COMFYUI_MODELS_ROOT` **只改变体检扫描**，体检会报告它是否与网关目录一致。
+原生 Anima 从 `AI_WORKSPACE_ROOT/inference/` 发现受管运行库，完整模型位于 `inference/models/`；已有资源和显式路径覆盖见[独立推理指南](independent-inference.md)。ComfyUI 引擎的图像/视频权重检查根是 `AI_WORKSPACE_ROOT/ComfyUI/models`，源码服务缺省为应用同级 `AI/ComfyUI/models`，桌面使用选定的 AI 工作区。PixAI 的配置查找顺序见下方准备说明；旧 `AICS_WD14_MODEL_DIR` 不配置现行反推。外部 ComfyUI 若放在其他目录，可通过受控目录链接/上游模型配置使双方引用同一批真实文件；仅修改 `COMFY_HOST` 不会改变本机权重检查目录。`COMFYUI_MODELS_ROOT` **只改变体检扫描**，体检会报告它是否与网关目录一致。
 
-新 Portable 的可执行环境放在 `AI_WORKSPACE_ROOT/.runtimes/comfy/ComfyUI`，模型仍使用上述 `ComfyUI/models`。绘遇受管启动显式指定 `ComfyUI/input`，图生图、蒙版与视频输入不随 Portable 安装位置漂移；外部服务需自行对齐模型及输入目录，仅改连接地址不会搬运这些文件。
+选择 ComfyUI 引擎时，新 Portable 的可执行环境放在 `AI_WORKSPACE_ROOT/.runtimes/comfy/ComfyUI`，模型仍使用上述 `ComfyUI/models`。绘遇受管启动显式指定 `ComfyUI/input`，图生图、蒙版与视频输入不随 Portable 安装位置漂移；外部服务需自行对齐模型及输入目录，仅改连接地址不会搬运这些文件。
 
 只有在控制室明确启动且由绘遇持有的 ComfyUI 才保存托管意愿，并绑定当前地址与安装目录。重开应用只恢复地址和安装目录均匹配的意愿，不立即占用 GPU；旧配置只有布尔标志时，先用“启动现有环境并重新检查”确认一次。Anima/Krea 2 显示“生成时自动启动”后，提交会先检查本地资源，再复用现有管理器唤醒服务。手动停止会关闭这一意愿；已在线的外部服务不会因此被接管。取消一张图停止该提交的等待，不中断其他请求共用的服务启动；控制室可取消启动，退出绘遇会清理自有进程。
 
@@ -78,9 +83,15 @@ Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/m
 
 ### 首次配置与一键准备
 
-初次打开本机会显示欢迎入口，进入控制室首次配置。先选择 AI 数据目录；保存的新目录在重启后生效，桌面可点击“重启绘遇并继续配置”，先确认个人配置写入再重启。浏览器连接已准备的本机服务，目录选择仍由桌面宿主完成。
+初次打开本机会显示欢迎入口，进入控制室的“原生生图”区。先选择 AI 工作区；保存的新目录在重启后生效，桌面可点击“重启并继续”，先确认个人配置写入再重启。浏览器连接已准备的本机服务，目录选择仍由桌面宿主完成。
 
-首次配置按“准备环境 → 配置模型 → 启动服务 → 开始生成”显示进度，同时说明每步证据：目录识别不等于依赖或 GPU 可运行，模型大小相符不等于 SHA-256 校验，节点注册不等于真实出图。新目录尚未生效或当前目录未确认时，不沿用旧检查结果显示完成。模型未准备的办公机也可以通过“先准备创作草稿”进入绘图画室，选择角色、场景并检查提示词与参数，实际生成留到模型就绪的机器。
+原生首次配置按“选择位置 → 自动准备 → 开始创作”显示进度。核对设备、空间与许可后点击“一键准备”，同一后台操作安装独立运行库、下载并校验完整模型、保存原生引擎设置；按页面提示重启后确认当前引擎与资源，再开始创作。当前受管模型为官方 Anima Base v1.0 的完整 Diffusers 目录，使用前须接受其非商业许可。运行库与模型固定清单分别见[受管运行库](../../tools/inference/managed-runtime.windows-x64.json)和[受管模型](../../tools/inference/managed-models.json)，设备支持与离线入口见[独立推理指南](independent-inference.md)。
+
+已有完整原生资源可在“已有资源与高级设置”中“采用并启用”，手动绝对路径仅用于高级配置。目录发现、依赖检查和下载校验不等于真实出图。新目录尚未生效或当前目录未确认时，不沿用旧检查结果显示完成。模型未准备的机器仍可进入画室选择角色、场景并准备草稿，实际生成留到模型与设备就绪后。
+
+#### ComfyUI 绘图与可选本地聊天
+
+选择 ComfyUI 绘图或本地聊天时，在控制室展开“ComfyUI 与本地聊天”，按所选能力准备下述环境和模型。Portable、KJNodes、ComfyUI TeaCache 与单文件底模清单适用于 ComfyUI 引擎；原生 Anima 使用上面的独立运行库与完整模型流程。
 
 绘图首选 **MiaoMiao Harem Anima 1.6**，其次 **Base v1.0**；选择不同底模后，检查与下载清单跟随该底模，不要求全部候选同时存在。共享 Qwen 编码器和 VAE 复用，宁宁／夏目角色 LoRA 可随组合下载。 不准备这两份 LoRA 时，请使用支持无专用 LoRA 的热门角色与底模组合；宁宁／夏目创作仍需对应权重，扩层 2.9B 的兼容限制见下方清单。模型卡展示用途、来源与使用条件；只有用户确认当前目录与组合并点击准备后才下载或运行环境代码。
 
@@ -110,7 +121,7 @@ llama.cpp 固定 b10516，提供 CUDA 和进阶 Vulkan 运行包。默认纯文�
 | 16 GB | Qwen3.8 27B IQ3_S，约 12.04 GB；余量紧张选 9B |
 | 24 GB 及以上 | Qwen3.8 27B Q4_K_M，约 16.46 GB |
 
-这是待设备验证的产品分档，不是测出的最低运行要求。显示设备总量，启动按实际余量处理；上下文、投影、并发与系统内存都会影响峰值。模型来源、revision、字节与摘要统一在 `runtime-rs/src/control/setup-models.json`，不跟随上游“最新”自动替换。
+这是待设备验证的产品分档，不是测出的最低运行要求。显示设备总量，启动按实际余量处理；上下文、投影、并发与系统内存都会影响峰值。ComfyUI 与本地聊天准备清单的来源、revision、字节与摘要统一在 `runtime-rs/src/control/setup-models.json`，不跟随上游“最新”自动替换。
 
 每个下载只接受已登记 ID 与当前工作区，先检查磁盘；同名文件经过大小和 SHA-256 相符后复用，异内容保留并报冲突。取消／网络中断保留已接收部分；支持 Range 的来源按精确 Content-Range 续传，不支持时重新下载，最终完整摘要相符才原子发布。前端下载与校验使用同一清单，不接受任意 URL 或输出路径。
 
@@ -118,7 +129,7 @@ llama.cpp 固定 b10516，提供 CUDA 和进阶 Vulkan 运行包。默认纯文�
 
 ## 3. 公共模型下载清单
 
-容量按 2026-09-30 发布者文件元数据计算，GB 为十进制，GiB/MiB 为二进制。下面列的是**当前绘遇工作流支持的指定版本**，发布页的最新版本不自动成为兼容版本。下载后按清单放置，不以改名替代不同架构/量化。
+原生 Anima 的完整模型清单与准备入口见[独立推理指南](independent-inference.md)。下述图像、视频单文件目录适用于 ComfyUI 引擎；反推、翻译与语音按各自服务配置。容量按 2026-09-30 发布者文件元数据计算，GB 为十进制，GiB/MiB 为二进制。下面列的是**当前绘遇工作流支持的指定版本**，发布页的最新版本不自动成为兼容版本。下载后按清单放置，不以改名替代不同架构/量化。
 
 ### PixAI 默认图片反推
 
@@ -143,7 +154,7 @@ npm run wf -- models:download-wd14 --target-dir 'D:\HuiyuAI\Interrogate'
 
 显式 `--modelscope` 使用第三方 ModelScope 副本，`--mirror` 使用 HF-Mirror；速度和可达性依网络决定，各来源均须匹配固定 SHA-256。旧维护工具使用外部可写目录，并通过 `AICS_WD14_MODEL_DIR` 选择；该变量不改变现行桌面反推引擎。安装器本身不自动下载 WD14。
 
-### Anima：新机先选能无角色 LoRA 使用的底模
+### Anima：ComfyUI 引擎的底模
 
 [CircleStone Labs 发布页](https://huggingface.co/circlestone-labs/Anima)列出以下三类目录。公共起步首选 **MiaoMiao Harem Anima 1.6**，其次 **Anima Base v1.0**；两者底模均约 4.18 GB，共用编码器与 VAE。选一个底模加两份角色 LoRA 时，权重共约 **5.81 GB**，运行环境与聊天模型另计。Aesthetic v1.1 作为统一默认画风候选保留。
 

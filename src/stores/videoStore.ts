@@ -1,7 +1,7 @@
 import { profileDraftStorage as sessionStorage } from '../platform/web/profileStorage.ts'
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { artworkRepository } from '@/storage/artworkRepository'
+import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
 import {
   VIDEO_CONTEXT_KEY,
   VIDEO_DRAFT_KEY,
@@ -56,6 +56,8 @@ export interface VideoBridgeTarget {
 
 /** 剧本模式一幕 → 分镜镜头（无图纯文本；首帧走分镜的「一键首帧」或手动上传）。 */
 export interface StagedScenarioAct {
+  /** Stable receipt for this pending act; legacy lists are upgraded on import. */
+  importId?: string
   prompt: string
   dialogue: string
   shotSize: 'wide' | 'medium' | 'closeup'
@@ -85,6 +87,8 @@ export interface VideoDraftPayload {
   seedText: string
   /** 首帧 IndexedDB 图片 id（空串=未带图）。 */
   videoImageId: string
+  /** Acknowledged drawing import; remains stable when the draft is edited. */
+  importSourceImageId?: string
   /** 尾帧 IndexedDB 图片 id（空串=未带图）。 */
   lastFrameImageId: string
   updatedAt: number
@@ -125,10 +129,15 @@ export interface ShotsDraftShot {
   firstFramePrompt?: string
   /** 首帧 IndexedDB 图片 id（空串=无首帧；恢复时重上传换新受控名）。 */
   imageId: string
+  /** Stable source of an acknowledged drawing-to-shot import. */
+  importSourceImageId?: string
+  importSourceActId?: string
 }
 
 /** 分镜短片整页编辑草稿。 */
 export interface ShotsDraftPayload {
+  /** Pending acts already saved, retained even after their editable rows are deleted. */
+  scenarioImportReceipts?: string[]
   aspectRatio: string
   quality: string
   steps: number
@@ -231,11 +240,8 @@ export const useVideoStore = defineStore('videoStudio', () => {
 
   // ── 单图出视频交接 ──
   function stageImageCtx(ctx: VideoCtxPayload): boolean {
+    if (!writeJson(IMAGE_CTX_KEY, ctx)) return false
     pendingImageCtx.value = ctx
-    if (!writeJson(IMAGE_CTX_KEY, ctx)) {
-      pendingImageCtx.value = null
-      return false
-    }
     return true
   }
 
@@ -243,8 +249,8 @@ export const useVideoStore = defineStore('videoStudio', () => {
   function consumeImageCtx(): VideoCtxPayload | null {
     const ctx = pendingImageCtx.value
     if (!ctx) return null
+    try { sessionStorage.removeItem(IMAGE_CTX_KEY) } catch { return null }
     pendingImageCtx.value = null
-    removeKey(IMAGE_CTX_KEY)
     return ctx
   }
 
@@ -264,42 +270,18 @@ export const useVideoStore = defineStore('videoStudio', () => {
   }
 
   function stageShotCtxs(list: VideoCtxPayload[]): boolean {
+    if (!writeJson(SHOTS_CTX_KEY, list)) return false
     pendingShotCtxs.value = list
-    if (!writeJson(SHOTS_CTX_KEY, list)) {
-      pendingShotCtxs.value = []
-      removeKey(SHOTS_CTX_KEY)
-      return false
-    }
     return true
-  }
-
-  /** 视频页分镜模式一次性消费：取走全部并清除。 */
-  function consumeShotCtxs(): VideoCtxPayload[] {
-    const list = pendingShotCtxs.value
-    if (!list.length) return []
-    pendingShotCtxs.value = []
-    removeKey(SHOTS_CTX_KEY)
-    return list
   }
 
   // ── 剧本模式分幕交接（2026-08-23 激活：剧本页整本送入分镜短片） ──────────
   function stageScenarioActs(list: StagedScenarioAct[]): boolean {
-    pendingScenarioActs.value = list
-    if (!writeJson(SCENARIO_CTX_KEY, list)) {
-      pendingScenarioActs.value = []
-      removeKey(SCENARIO_CTX_KEY)
-      return false
-    }
+    const pending = list.map(act => ({ ...act,
+      importId: typeof act.importId === 'string' && act.importId ? act.importId : crypto.randomUUID() }))
+    if (!writeJson(SCENARIO_CTX_KEY, pending)) return false
+    pendingScenarioActs.value = pending
     return true
-  }
-
-  /** 视频页分镜模式一次性消费：取走并清除。 */
-  function consumeScenarioActs(): StagedScenarioAct[] {
-    const list = pendingScenarioActs.value
-    if (!list.length) return []
-    pendingScenarioActs.value = []
-    removeKey(SCENARIO_CTX_KEY)
-    return list
   }
 
   // ── 创作草稿与任务记录（F1：切页/刷新不丢创作上下文）─────────────────────
@@ -361,9 +343,8 @@ export const useVideoStore = defineStore('videoStudio', () => {
     consumeImageCtx,
     appendShotCtx,
     stageShotCtxs,
-    consumeShotCtxs,
+    pendingScenarioActs,
     stageScenarioActs,
-    consumeScenarioActs,
     videoDraft,
     videoTask,
     shotsDraft,
@@ -382,7 +363,7 @@ export const useVideoStore = defineStore('videoStudio', () => {
 // ── IndexedDB 相关桥接（blob 处理不属于 store，保留在组合层） ──────────────
 
 /** 图片入 IndexedDB + 组装跨页上下文（不导航；单图/多图共用）。 */
-export async function prepareVideoCtx(target: VideoBridgeTarget): Promise<VideoCtxPayload | null> {
+export async function prepareVideoCtx(target: VideoBridgeTarget, repository: ArtworkRepository = artworkRepository): Promise<VideoCtxPayload | null> {
   try {
     let blob: Blob
     if (target.animaBlob) {
@@ -400,7 +381,7 @@ export async function prepareVideoCtx(target: VideoBridgeTarget): Promise<VideoC
       target.flash('成片数据已失效，请重新生成')
       return null
     }
-    const imageId = await artworkRepository.putImage(blob)
+    const imageId = await repository.putImage(blob)
     return {
       imageId,
       prompt: target.prompt,

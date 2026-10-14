@@ -2,15 +2,23 @@ import { prepareGeneratedArtwork, type GeneratedArtworkInput, type LegacyArtwork
 import { usePromptHistoryStore } from '@/stores/promptHistoryStore'
 import { storeToRefs } from 'pinia'
 import type { HistoryEntry } from '@/types/promptHistory'
+import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
+import { getDesktopRuntime } from '@/platform/desktop/runtime'
+import type { ArtworkSaveSnapshot } from '@/application/artwork/artworkSaveInput'
 
 /** Storage adapter: the use case owns saving, historyStore owns publication. */
 export function usePromptArtworkHistory(resolveLegacyArtworkDefaults: (entry: GeneratedArtworkInput) => LegacyArtworkDefaults) {
   const historyStore = usePromptHistoryStore()
   const { history, projects } = storeToRefs(historyStore)
-  async function commitHistoryEntry(entry: GeneratedArtworkInput): Promise<HistoryEntry | null> {
+  const owners = new WeakMap<ArtworkSaveSnapshot, { repository: ArtworkRepository; authority: string }>()
+  async function commitHistoryEntry(entry: GeneratedArtworkInput, repository: ArtworkRepository = artworkRepository): Promise<HistoryEntry | null> {
+    const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
+    const authority = JSON.stringify([workspace?.workspaceId, workspace?.principalId])
     const snapshot = prepareGeneratedArtwork(entry, resolveLegacyArtworkDefaults)
+    const owner = owners.get(snapshot) ?? { repository, authority }
+    owners.set(snapshot, owner)
     const { persistPromptArtwork } = await import('./persistPromptArtwork')
-    return persistPromptArtwork(snapshot, historyStore)
+    return persistPromptArtwork(snapshot, historyStore, owner.repository, owner.authority)
   }
 
   async function removeHistoryEntry(id: string | number) {

@@ -1,6 +1,6 @@
 use super::{
     config::Settings,
-    queue::{Queue, cancelled},
+    queue::{Queue, cancelled, remaining, translation_timeout},
 };
 use crate::{
     error::{ApiError, Result},
@@ -21,6 +21,7 @@ use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     process::Command,
     sync::watch,
+    time::Instant as Deadline,
 };
 use tokio_util::sync::CancellationToken;
 
@@ -88,10 +89,11 @@ impl Translation {
     pub fn owned(&self) -> bool {
         self.managed.lock().unwrap().is_some()
     }
-    pub async fn prepare(self: &Arc<Self>) -> Result<()> {
+    pub async fn prepare(self: &Arc<Self>, deadline: Deadline) -> Result<()> {
         if self.cancel.is_cancelled() {
             return Err(cancelled());
         }
+        remaining(deadline, Duration::MAX, translation_timeout)?;
         if self.ready.load(Ordering::Relaxed) {
             return Ok(());
         }
@@ -104,7 +106,10 @@ impl Translation {
                 *starting = Some(receiver.clone());
                 let service = self.clone();
                 tokio::spawn(async move {
-                    let result = service.ensure_server().await;
+                    // This shared startup has its own original 120-second cap;
+                    // timing out one prepare caller must not abort other callers.
+                    let deadline = Deadline::now() + Duration::from_secs(120);
+                    let result = service.ensure_server(deadline).await;
                     service.ready.store(result.is_ok(), Ordering::Relaxed);
                     let _ = send.send(Some(result.map_err(|error| error.message)));
                     service.starting.lock().unwrap().take();
@@ -113,16 +118,25 @@ impl Translation {
             }
         };
         loop {
+            remaining(deadline, Duration::MAX, translation_timeout)?;
             let result = receiver.borrow().clone();
             if let Some(result) = result {
                 return result
                     .map_err(|message| ApiError::new(503, "TRANSLATION_UNAVAILABLE", message));
             }
-            tokio::select! { result = receiver.changed() => result.map_err(|_| cancelled())?, _ = self.cancel.cancelled() => return Err(cancelled()) }
+            tokio::select! {
+                biased;
+                _ = self.cancel.cancelled() => return Err(cancelled()),
+                _ = tokio::time::sleep_until(deadline) => return Err(translation_timeout()),
+                result = receiver.changed() => result.map_err(|_| cancelled())?,
+            }
         }
     }
-    async fn ensure_server(&self) -> Result<()> {
-        if self.ping().await {
+    async fn ensure_server(&self, deadline: Deadline) -> Result<()> {
+        if tokio::time::timeout_at(deadline, self.ping())
+            .await
+            .map_err(|_| translation_timeout())?
+        {
             return Ok(());
         }
         if self.cancel.is_cancelled() {
@@ -163,6 +177,7 @@ impl Translation {
         } else {
             command.stdout(Stdio::null()).stderr(Stdio::null());
         }
+        remaining(deadline, Duration::MAX, translation_timeout)?;
         *self.managed.lock().unwrap() = Some(
             self.processes
                 .spawn(&mut command)
@@ -189,33 +204,46 @@ impl Translation {
                 tokio::time::sleep(Duration::from_secs(1)).await;
             }
         };
-        let result = tokio::select! { result = tokio::time::timeout(Duration::from_secs(120), wait) => result.unwrap_or_else(|_| Err(ApiError::new(503, "TRANSLATION_TIMEOUT", "翻译常驻服务启动超时"))), _ = self.cancel.cancelled() => Err(cancelled()) };
+        let result = tokio::select! { result = tokio::time::timeout_at(deadline, wait) => result.unwrap_or_else(|_| Err(ApiError::new(503, "TRANSLATION_TIMEOUT", "翻译常驻服务启动超时"))), _ = self.cancel.cancelled() => Err(cancelled()) };
         if result.is_err() {
             self.managed.lock().unwrap().take();
         }
         result
     }
-    pub async fn translate(self: &Arc<Self>, text: String) -> Result<Value> {
+    pub async fn translate(self: &Arc<Self>, text: String, deadline: Deadline) -> Result<Value> {
+        tokio::select! {
+            biased;
+            _ = self.cancel.cancelled() => Err(cancelled()),
+            result = tokio::time::timeout_at(deadline, self.translate_inner(text, deadline)) => result.map_err(|_| translation_timeout())?,
+        }
+    }
+    async fn translate_inner(self: &Arc<Self>, text: String, deadline: Deadline) -> Result<Value> {
+        remaining(deadline, Duration::MAX, translation_timeout)?;
         if let Some(value) = self.cached(&text) {
             return Ok(value);
         }
         let _permit = self
             .queue
-            .enter(self.queue.reserve()?, &self.cancel)
+            .enter(
+                self.queue.reserve()?,
+                &self.cancel,
+                deadline,
+                translation_timeout,
+            )
             .await?;
         // A queued duplicate can use work completed while it waited.
         if let Some(value) = self.cached(&text) {
             return Ok(value);
         }
         let current = async {
-            self.prepare().await?;
+            self.prepare(deadline).await?;
             let (status, value) = self
                 .transport
                 .json(
                     &self.settings.translation_url,
                     "/translate",
                     Some(&json!({"text": text})),
-                    Duration::from_secs(120),
+                    remaining(deadline, Duration::from_secs(120), translation_timeout)?,
                     64 * 1024,
                     &self.cancel,
                 )
@@ -242,10 +270,20 @@ impl Translation {
                 if self.cancel.is_cancelled() {
                     return Err(cancelled());
                 }
-                self.legacy(&text).await.map_err(|_| error)?
+                self.legacy(&text, deadline).await.map_err(|_| {
+                    if deadline <= Deadline::now() {
+                        translation_timeout()
+                    } else {
+                        error
+                    }
+                })?
             }
         };
         let mut cache = self.cache.lock().unwrap();
+        if self.cancel.is_cancelled() {
+            return Err(cancelled());
+        }
+        remaining(deadline, Duration::MAX, translation_timeout)?;
         cache.push_back((text, result.clone()));
         if cache.len() > 100 {
             cache.pop_front();
@@ -260,7 +298,9 @@ impl Translation {
             .find(|(key, _)| key == text)
             .map(|(_, value)| value.clone())
     }
-    async fn legacy(&self, text: &str) -> Result<Value> {
+    async fn legacy(&self, text: &str, deadline: Deadline) -> Result<Value> {
+        let deadline =
+            Deadline::now() + remaining(deadline, Duration::from_secs(180), translation_timeout)?;
         let mut command = Command::new(&self.settings.python);
         command
             .arg(&self.settings.script)
@@ -323,7 +363,11 @@ impl Translation {
             }
             Ok(result)
         };
-        tokio::select! { result = tokio::time::timeout(Duration::from_secs(180), work) => result.map_err(|_| ApiError::new(503, "TRANSLATION_TIMEOUT", "本地日语翻译超时"))?, _ = self.cancel.cancelled() => Err(cancelled()) }
+        tokio::select! {
+            biased;
+            _ = self.cancel.cancelled() => Err(cancelled()),
+            result = tokio::time::timeout_at(deadline, work) => result.map_err(|_| translation_timeout())?,
+        }
     }
     pub async fn close(&self) {
         self.cancel.cancel();

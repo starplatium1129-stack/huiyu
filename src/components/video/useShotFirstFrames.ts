@@ -135,7 +135,8 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
           if (!current()) continue
           const frameSignal = AbortSignal.any([signal, owner.signal])
           firstFrameProgress.value = `${i + 1}/${pending.length}`
-          let runtimeSettled = false
+          const repository = artworkRepository
+          let runtimeSettled = false, ownedImageId = ''
           try {
             const size = KREA2_SIZE_BY_ASPECT[aspect]
             const payload = { prompt: shot.firstFramePrompt, modelId: 'krea2-turbo-fp8', ...size }
@@ -171,13 +172,16 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
             if (!current()) continue
             const upload = await uploadVideoImage(base64, undefined, frameSignal)
             if (!current()) continue
-            const imageId = resultAlias || await artworkRepository.putImage(blob).catch(() => '')
+            // Runtime aliases belong to the task; only a new fallback upload is ours.
+            const imageId = resultAlias || (ownedImageId = await repository.putImage(blob).catch(() => ''))
             if (!current()) continue
+            const imageUrl = URL.createObjectURL(blob)
             if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
             shot.imageName = upload.name
-            shot.imageUrl = URL.createObjectURL(blob)
+            shot.imageUrl = imageUrl
             // IndexedDB 耐久凭据：草稿恢复与失败重试用（F1/F4）；失败不阻断主链路。
             shot.imageId = imageId
+            ownedImageId = ''
             completed += 1
           } catch (error) {
             if (durableAttempt) {
@@ -197,6 +201,7 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
             if (signal.aborted) throw signal.reason
             if (current()) failed += 1
           } finally {
+            if (ownedImageId) await repository.deleteImage(ownedImageId).catch(error => console.warn('[shots] unattached first frame cleanup failed', ownedImageId, error))
             if (options.frameRequests.get(shot) === owner) options.frameRequests.delete(shot)
             activeJob = ''; activeRuntimeKey = ''
           }

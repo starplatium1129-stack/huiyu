@@ -2,7 +2,7 @@ mod platform;
 use super::{Error, Result};
 use crate::file_identity;
 use crate::file_paths::{absolute, key};
-pub(super) use platform::{hostname, space};
+pub(super) use platform::{hostname, space, available_space};
 use serde_json::Value;
 use std::{
     fs::{self, File, Metadata, OpenOptions},

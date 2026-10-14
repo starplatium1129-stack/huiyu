@@ -3,6 +3,7 @@ import { ApiClientError, type ApiClient } from '@/api/client'
 import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaResultContext } from '@/types/anima'
 import { jobPath, animaRequestPayload, type AnimaRequest, type AnimaPublicJob } from './animaSessionContract'
 import { fetchResultImage } from './fetchResultImage'
+import { metadataFromJob } from './animaJobMetadata'
 
 /** Direct transport loads before POST; the session retains request and result ownership. */
 interface DirectOwner {
@@ -10,40 +11,6 @@ interface DirectOwner {
   current(): boolean; state: Readonly<Ref<AnimaGenerationState>>; context: AnimaResultContext | null
   patch(patch: Partial<AnimaGenerationState>): void
   discardStashed(): void; onResult(result: AnimaResult): void
-}
-
-function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest, family: 'anima' | 'krea2'): AnimaJobMetadata {
-  const supplied = job.metadata
-  if (supplied && supplied.id !== job.id) throw new Error('成片元数据与当前任务编号不一致，请核对任务')
-  const metadata = supplied
-    ? supplied
-    : {
-        engine: family,
-        id: job.id,
-        prompt: request.prompt,
-        negative: request.negative,
-        profileId: request.profileId,
-        modelId: request.modelId,
-        loraId: request.loraId,
-        loraStrength: request.loraStrength,
-        styleLoraId: request.styleLoraId ?? null,
-        width: request.width,
-        height: request.height,
-        steps: request.steps,
-        cfg: request.cfg,
-        sampler: '',
-        scheduler: '',
-        seed: job.seed,
-        character: request.character,
-        preview: false,
-        hiresFix: Boolean(request.hiresFix),
-        hiresScale: request.hiresScale,
-        hiresDenoise: request.hiresDenoise,
-        createdAt: Date.now(),
-        resultUrl: job.resultUrl,
-      }
-  const provider = job.provider === 'comfy' || job.provider === 'native' ? job.provider : undefined
-  return Object.freeze({ ...JSON.parse(JSON.stringify(metadata)), provider, resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
 }
 
 export async function runDirectAnima(options: DirectOwner & { request: AnimaRequest }): Promise<void> {

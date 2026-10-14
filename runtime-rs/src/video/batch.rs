@@ -30,6 +30,7 @@ pub(super) struct State {
     unknown: bool,
     error_code: Option<String>,
     cancel: CancellationToken,
+    cancel_generation: u64,
 }
 #[derive(Clone)]
 struct Shot {
@@ -197,6 +198,7 @@ impl Service {
                 unknown: false,
                 error_code: None,
                 cancel: self.shutdown.child_token(),
+                cancel_generation: 0,
             }),
             serial: Mutex::new(()),
             checkpoint_serial: Mutex::new(()),

@@ -13,6 +13,7 @@ import { useShotBatchMachine } from './useShotBatchMachine';
 import { useShotDraft } from './useShotDraft';
 import { useShotFirstFrames } from './useShotFirstFrames';
 import { inferShotParams,useShotImport } from './useShotImport';
+import { useScenarioShotImport } from './useScenarioShotImport';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useShotWorkspace(props: {
     status: VideoStatusResponse | null;
@@ -151,6 +152,8 @@ export function useShotWorkspace(props: {
         shots, frameRequests,
         referenceCards,
         selectCardCharacter,
+        onError: (message) => { batchError.value = message; },
+        persistShotsDraft: () => persistShotsDraft(),
     });
     /** 单镜首帧重试（F4）：导入失败/草稿恢复图失效的镜头可单独补救。 */
     async function retryShotFrame(index: number) {
@@ -298,7 +301,13 @@ export function useShotWorkspace(props: {
             if (!controller.signal.aborted && routeCharacter() === id && routeOutfit() === outfit) batchError.value = error instanceof Error ? error.message : '角色资料载入失败，请重试';
         } finally { if (routeLoad === controller) routeLoad = null; }
     });
-    onActivated(() => { routeActive.value = true; });
+    onActivated(() => {
+        routeActive.value = true;
+        if (routeReady.value) void (async () => {
+            await runImportFromDrawing();
+            importScenarioActs();
+        })();
+    });
     onDeactivated(() => { routeActive.value = false; if (routeLoad) consumedIntent = ''; routeLoad?.abort(); });
     // 场景蓝图 → 填入所有空镜头（用户已写的不覆盖），并顺带推断景别/镜头/运动。
     watch(sceneFillId, (id) => {
@@ -347,13 +356,21 @@ export function useShotWorkspace(props: {
                 if (comma < 0) throw new Error('图片编码失败');
                 const upload = await uploadVideoImage(dataUrl.slice(comma + 1), undefined, controller.signal);
                 if (!current()) return;
-                const imageId = await artworkRepository.putImage(file);
-                if (!current()) return;
-                if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl);
-                shot.imageName = upload.name;
-                shot.imageUrl = URL.createObjectURL(file);
-                shot.imageId = imageId;
-                batchError.value = '';
+                const repository = artworkRepository;
+                const imageId = await repository.putImage(file);
+                let attached = false;
+                try {
+                    if (!current()) return;
+                    const imageUrl = URL.createObjectURL(file);
+                    if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl);
+                    shot.imageName = upload.name;
+                    shot.imageUrl = imageUrl;
+                    shot.imageId = imageId;
+                    attached = true;
+                    batchError.value = '';
+                } finally {
+                    if (!attached) await repository.deleteImage(imageId).catch(error => console.warn('[shots] unattached frame cleanup failed', imageId, error));
+                }
             });
         } catch (error) {
             if (current()) batchError.value = error instanceof Error ? error.message : '首帧上传失败';
@@ -394,34 +411,14 @@ export function useShotWorkspace(props: {
         batchError.value = parts.join('，') + '。';
         aiFlowStep.value = 0;
     }
-    // ── 剧本模式分幕带入（2026-08-23 激活）：剧本页「送入分镜短片」一次性消费 ──
-    // 仅在镜头列表为空时导入（不覆盖绘图页带入或用户草稿）；工作室角色不在热门
-    // 角色库，参考卡与身份卡由用户手动挂载（Ref2VA 锁身份）。
-    function importScenarioActs() {
-        const acts = videoStore.consumeScenarioActs();
-        if (!acts.length || shots.value.length)
-            return;
-        shots.value = acts.map((act) => ({
-            prompt: act.prompt,
-            dialogue: act.dialogue,
-            shotSize: act.shotSize,
-            camera: act.camera,
-            motion: act.motion,
-            duration: (act.duration === 5 || act.duration === 10 || act.duration === 15 ? act.duration : 3) as ShotDraft['duration'],
-            seedText: '',
-            imageName: '',
-            imageUrl: '',
-            cast: '',
-        }));
-        batchError.value = `已载入剧本 ${acts.length} 幕。可选择角色并按需上传参考图，再点「一键首帧」或批量生成。`;
-    }
     // ── 分镜草稿持久化（2026-09-06 体验报告 F1）────────────────────────────────
     // 切模式（v-if 卸载）/切页/刷新后恢复：镜头文本 + 身份锚点 + 参考卡元信息。
     // 首帧图只存 IndexedDB 图片 id，恢复时重挂载（服务端受控文件名会被清理）。
-    const { restoreShotsDraft, beginShotSubmission, finishShotSubmission } = useShotDraft({
+    const { restoreShotsDraft, persistShotsDraft, beginShotSubmission, finishShotSubmission } = useShotDraft({
         aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
         batchError, selectCardCharacter, retryPendingFrames, getShotSubmission, restoreShotSubmission,
     });
+    const { importScenarioActs } = useScenarioShotImport({ shots, active: routeActive, batchError, persistShotsDraft });
     /** 整批任务重连（F1）：离页不中断服务端批次，回来按 batchId 接回真实进度。 */
     async function reconnectShotsBatch() {
         const requestedBatch = typeof route.query.batch === 'string' ? route.query.batch : '';

@@ -1,7 +1,7 @@
-import { getCurrentScope, onScopeDispose, type Ref } from 'vue'
+import { getCurrentScope, onActivated, onDeactivated, onScopeDispose, type Ref } from 'vue'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
-import { useVideoStore } from '@/stores/videoStore'
+import { useVideoStore, type VideoCtxPayload } from '@/stores/videoStore'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { uploadVideoImage } from '@/api/videoApi'
 
@@ -13,7 +13,7 @@ import { uploadVideoImage } from '@/api/videoApi'
  * 2. 图片失败走空 catch 仍计入 imported，用户不知道缺了什么；
  * 3. 角色参考卡装配不带服装参数，图是角色 A 的特典服装，参考卡却是默认服装（F3）。
  *
- * 现在：先窥视待办 → 逐镜建草稿并单独确认首帧 → 全部处理完才消费待办；
+ * 现在：逐镜保存草稿及来源标记 → 消费该待办；刷新恢复时只补消费已保存项；
  * 首帧失败的镜头保留 sourceImageId（= 草稿 imageId）可单独重试；
  * 参考卡按「角色 + 服装」对装配，同一角色多服装各占一卡槽；图片按需手动上传。
  */
@@ -24,6 +24,8 @@ export interface ShotImportDeps {
   referenceCards: Ref<ReferenceCard[]>
   /** 选择指定卡槽的角色与服装（返回文字资料是否就绪）。 */
   selectCardCharacter: (charId: string, cardIndex?: number, outfitId?: string) => Promise<boolean>
+  onError: (message: string) => void
+  persistShotsDraft: () => boolean
 }
 
 export interface ShotImportOutcome {
@@ -71,16 +73,21 @@ function readBlobAsDataURL(blob: Blob): Promise<string> {
 export function useShotImport(deps: ShotImportDeps) {
   const { shots, referenceCards, frameRequests } = deps
   const videoStore = useVideoStore()
-  let disposed = false
-  if (getCurrentScope()) onScopeDispose(() => { disposed = true })
+  let disposed = false, active = true, viewVersion = 0
+  if (getCurrentScope()) {
+    onScopeDispose(() => { disposed = true })
+    onActivated(() => { active = true })
+    onDeactivated(() => { active = false; viewVersion++ })
+  }
 
   /** Only this module's unpublished import drafts may bypass live membership. */
   async function mountFrame(shot: ShotDraft, imageId: string, unpublished = false): Promise<boolean | undefined> {
-    if (disposed || (!unpublished && !shots.value.includes(shot)) || frameRequests.has(shot)) return
+    if (disposed || !active || (!unpublished && !shots.value.includes(shot)) || frameRequests.has(shot)) return
     const controller = new AbortController()
     frameRequests.set(shot, controller)
+    const version = viewVersion
     const previous = [shot.imageId, shot.imageName, shot.imageUrl]
-    const current = () => !disposed && !controller.signal.aborted && frameRequests.get(shot) === controller
+    const current = () => !disposed && active && version === viewVersion && !controller.signal.aborted && frameRequests.get(shot) === controller
       && (unpublished || shots.value.includes(shot))
       && [shot.imageId, shot.imageName, shot.imageUrl].every((value, index) => value === previous[index])
     try {
@@ -93,9 +100,10 @@ export function useShotImport(deps: ShotImportDeps) {
       if (comma < 0) return false
       const upload = await uploadVideoImage(dataUrl.slice(comma + 1), undefined, controller.signal)
       if (!current()) return
+      const imageUrl = URL.createObjectURL(blob)
       if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
       shot.imageName = upload.name
-      shot.imageUrl = URL.createObjectURL(blob)
+      shot.imageUrl = imageUrl
       return true
     } catch {
       return current() ? false : undefined
@@ -123,9 +131,29 @@ export function useShotImport(deps: ShotImportDeps) {
     return { fixed, remaining }
   }
 
+  function consumePendingShot(ctx: VideoCtxPayload): boolean {
+    const pending = [...videoStore.pendingShotCtxs]
+    const index = pending.indexOf(ctx)
+    if (index < 0) return true
+    pending.splice(index, 1)
+    if (videoStore.stageShotCtxs(pending)) return true
+    deps.onError('镜头草稿已保存，导入待办更新失败；剩余待办已保留，请重新进入分镜继续处理。')
+    return false
+  }
+
+  const alreadyImported = (ctx: VideoCtxPayload) => Boolean(ctx.imageId)
+    && shots.value.some(shot => shot.importSourceImageId === ctx.imageId)
+
   async function importShotsFromDrawing(): Promise<ShotImportOutcome | null> {
-    // 先窥视不消费：全部处理完才一次性取走，中途离开/异常不丢待办（F4）。
-    const list = [...videoStore.pendingShotCtxs]
+    if (disposed || !active) return null
+    const version = viewVersion
+    const current = () => !disposed && active && version === viewVersion
+    // A saved marker survives a lost pending-consumption write and frame edits.
+    const list: VideoCtxPayload[] = []
+    for (const ctx of [...videoStore.pendingShotCtxs]) {
+      if (alreadyImported(ctx)) { if (!consumePendingShot(ctx)) return null }
+      else list.push(ctx)
+    }
     if (!list.length) return null
 
     // 1. 参考卡按「角色 + 服装」对去重保序（同一角色多服装各占一卡槽，F3）；
@@ -168,13 +196,16 @@ export function useShotImport(deps: ShotImportDeps) {
     }))
     const charactersReady = assembled.filter(Boolean).length
     const charactersFailed = assembled.length - charactersReady
-    if (disposed) return null
+    if (!current()) return null
 
     // 4. 逐镜建草稿并单独确认首帧：失败的镜头照常带入（文本不丢），
     //    imageId 留在草稿上，供「重试首帧」精确补救。
-    let framesReady = 0
+    let imported = 0, framesReady = 0
     let framesPending = 0
     for (const ctx of list) {
+      if (!current()) return null
+      if (!videoStore.pendingShotCtxs.includes(ctx)) continue
+      if (alreadyImported(ctx)) { if (!consumePendingShot(ctx)) return null; continue }
       const inferred = inferShotParams(ctx.prompt || '')
       const key = ctx.characterId ? pairKey(ctx.characterId, ctx.outfitId ?? '') : ''
       const cardIndex = key ? pairCardIndex.get(key) : undefined
@@ -190,18 +221,33 @@ export function useShotImport(deps: ShotImportDeps) {
         imageUrl: '',
         cast: (cardIndex !== undefined ? String(cardIndex + 1) : '') as ShotDraft['cast'],
         imageId: ctx.imageId,
+        importSourceImageId: ctx.imageId,
       }
       const result = await mountFrame(draft, ctx.imageId, true)
-      if (result === undefined) return null
+      if (result === undefined || !current()) {
+        if (draft.imageUrl) URL.revokeObjectURL(draft.imageUrl)
+        return null
+      }
+      if (!videoStore.pendingShotCtxs.includes(ctx)) {
+        if (draft.imageUrl) URL.revokeObjectURL(draft.imageUrl)
+        continue
+      }
+      // Persist the marker before consuming the pending entry. Both native
+      // session writes and the desktop profile outbox preserve this order.
+      shots.value.push(draft)
+      if (!deps.persistShotsDraft()) {
+        shots.value.pop()
+        if (draft.imageUrl) URL.revokeObjectURL(draft.imageUrl)
+        deps.onError('分镜草稿保存失败，当前镜头未导入，待办已保留，请重新进入分镜重试。')
+        return null
+      }
+      if (!consumePendingShot(ctx)) return null
+      imported += 1
       if (result === true) framesReady += 1
       else if (result === false) framesPending += 1
-      if (disposed) return null
-      shots.value.push(draft)
     }
 
-    // 5. 全部落位后才消费待办（一次性语义保持不变，但不再有「先清后败」）。
-    videoStore.stageShotCtxs(videoStore.pendingShotCtxs.filter(ctx => !list.includes(ctx)))
-    return { imported: list.length, framesReady, framesPending, charactersReady, charactersFailed }
+    return { imported, framesReady, framesPending, charactersReady, charactersFailed }
   }
 
   return { importShotsFromDrawing, retryPendingFrames, mountShotFrame }

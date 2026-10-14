@@ -21,6 +21,7 @@ import { useGalleryComparison } from './useGalleryComparison';
 import { useGallerySelection } from './useGallerySelection';
 import { useGalleryViewer } from './useGalleryViewer';
 import { useGalleryListMotion } from './useGalleryListMotion';
+import { useGalleryThumbnails } from './useGalleryThumbnails';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useGalleryWorkspace() {
     const sceneStore = useSceneStore();
@@ -37,9 +38,9 @@ export function useGalleryWorkspace() {
     const narrowViewer = ref(narrowViewerMedia?.matches ?? false);
     const infoDrawerHidden = computed(() => narrowViewer.value && !infoOpen.value);
     const cardUrls = reactive<Record<string, string>>({});
-    /** 缩略图缓存（KV dataURL），比 HD blob 快读先显示 */
-    const thumbUrls = reactive<Record<string, string>>({});
     const collectionPreviewItems = ref<ArtworkRecord[] | null>(null);
+    const { urls: thumbUrls, remember: rememberThumbnail, forget: forgetThumbnail, trim: trimThumbnails, retain: retainThumbnails, clear: clearThumbnails } = useGalleryThumbnails(() =>
+        collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds);
     const missingImageIds = ref(new Set<string | number>());
     /** 缩略图生成去重：HD 管线与解码回填共用，同一张图并发只生成一次 */
     const thumbPending = new Set<string>();
@@ -49,7 +50,7 @@ export function useGalleryWorkspace() {
         saveThumb: async (item, dataUrl, imageId) => {
             const epoch = imageEpoch;
             await artworkRepository.setThumbnail(imageId, dataUrl);
-            if (!unmounted && viewActive && epoch === imageEpoch && isMediaCurrent(item)) thumbUrls[item.id] = dataUrl;
+            if (!unmounted && viewActive && epoch === imageEpoch && isMediaCurrent(item)) rememberThumbnail(item.id, dataUrl);
         },
     });
     /** The card owns decoded visibility; measurement must not delay its first paint. */
@@ -97,7 +98,7 @@ export function useGalleryWorkspace() {
         restoreFiltersFromQuery,
         restoreDeferredFiltersFromQuery,
         cleanupFilterSync,
-        loadMoreIfNeeded: triggerLoadMore,
+        sentinelEl,
     } = useGalleryFilters({
         history,
         projects,
@@ -165,7 +166,7 @@ export function useGalleryWorkspace() {
     }
     /* ---------- 图片加载 ---------- */
     /**
-     * 缩略图（KV 小 dataURL）便宜：整墙全量补齐，先让每张卡有图。
+     * 缩略图（KV 小 dataURL）按可见卡片与画册预览读取，保留有界后台缓存。
      * HD blob 贵且占内存（KeepAlive 后几百张大图数百 MB），改为可见性驱动：
      * IntersectionObserver 只对进入视口 ±600px 的卡片发起 HD 读取，配合
      * LRU 上限滚动淘汰。旧实现是「全量读出 → 丢掉超出 40 张的」，几百张
@@ -212,7 +213,9 @@ export function useGalleryWorkspace() {
                 thumbsDirty = false;
                 // Watchers and mounting share one batch; a changed page reschedules
                 // its remaining reads without fetching the same missing preview twice.
-                const pending = (trashMode.value ? [] : collectionPreviewItems.value ?? pagedVisible.value).filter(item => item.image_id && !sameArtworkMedia(visited.get(item.id), item) && !cardUrls[item.id] && !thumbUrls[item.id]).map(item => ({ ...item }));
+                const demanded = trashMode.value ? [] : collectionPreviewItems.value ?? (returnThumbIds.size
+                    ? pagedVisible.value.filter(item => returnThumbIds.has(String(item.id))) : pagedVisible.value.slice(0, 12));
+                const pending = demanded.filter(item => item.image_id && !sameArtworkMedia(visited.get(item.id), item) && !cardUrls[item.id] && !thumbUrls[item.id]).map(item => ({ ...item }));
                 let index = 0;
                 async function worker() {
                     while (index < pending.length) {
@@ -222,7 +225,7 @@ export function useGalleryWorkspace() {
                         try {
                             const thumb = await artworkRepository.getThumbnail(item.image_id!);
                             if (unmounted || !viewActive || epoch !== imageEpoch) return;
-                            if (isMediaCurrent(item) && typeof thumb === 'string' && thumb.startsWith('data:image/')) thumbUrls[item.id] = thumb;
+                            if (isMediaCurrent(item) && typeof thumb === 'string' && thumb.startsWith('data:image/')) rememberThumbnail(item.id, thumb);
                         }
                         catch { /* 缩略图缺失正常，直接走 HD */ }
                     }
@@ -254,7 +257,7 @@ export function useGalleryWorkspace() {
                     thumbPending.add(imageId);
                     blobThumbDataUrl(blob).then(dataUrl => {
                         if (dataUrl && !signal.aborted && !unmounted && viewActive && epoch === imageEpoch && isMediaCurrent(item)) {
-                            thumbUrls[item.id] = dataUrl;
+                            rememberThumbnail(item.id, dataUrl);
                             return artworkRepository.setThumbnail(imageId, dataUrl);
                         }
                     }).catch(() => { }).finally(() => thumbPending.delete(imageId));
@@ -346,6 +349,7 @@ export function useGalleryWorkspace() {
                     if (entry.isIntersecting) { returnThumbIds.add(String(item.id)); requestCardHydration(item); }
                     else { returnThumbIds.delete(String(item.id)); cancelCardHydration(item.id); }
                 }
+                trimThumbnails(); void hydrateThumbs();
             }, { rootMargin: '600px 0px' });
         }
         const byId = new Map(visible.value.map(item => [String(item.id), item]));
@@ -400,7 +404,7 @@ export function useGalleryWorkspace() {
      */
     function releaseCardResources(id: string | number) {
         releaseCardImage(id);
-        delete thumbUrls[id];
+        forgetThumbnail(id);
         if (missingImageIds.value.delete(id))
             missingImageIds.value = new Set(missingImageIds.value);
         forgetRatio(id);
@@ -445,7 +449,7 @@ export function useGalleryWorkspace() {
     // Keep an original only where the return viewport has no thumbnail fallback;
     // it still shares the bounded LRU and is released on eviction or unmount.
     let activatedOnce = false;
-    onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void hydrateThumbs(); scheduleWallScan(); void nextTick(() => { if (moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
+    onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void hydrateThumbs(); scheduleWallScan(); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
     onDeactivated(() => {
         viewActive = false; cleanupFilterSync();
         const keep = collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds;
@@ -455,9 +459,9 @@ export function useGalleryWorkspace() {
             const thumb = shellEl.value?.querySelector<HTMLImageElement>(`[data-card-id="${CSS.escape(id)}"] img.artwork-image:not(.artwork-image-hd)`);
             return !thumb?.complete || !thumb.naturalWidth;
         })));
-        for (const id of Object.keys(thumbUrls)) if (!keep.has(id)) delete thumbUrls[id];
+        retainThumbnails(keep);
         document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear();
-        cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear(); returnThumbIds.clear();
+        cardObserver?.disconnect(); observedCards.clear(); returnThumbIds.clear();
     });
     onUnmounted(() => {
         unmounted = true;
@@ -465,13 +469,13 @@ export function useGalleryWorkspace() {
         cardObserver?.disconnect();
         cardObserver = null;
         observedCards.clear(); returnThumbIds.clear();
-        moreObserver?.disconnect();
-        moreObserver = null; narrowViewerMedia?.removeEventListener('change', syncNarrowViewer);
+        narrowViewerMedia?.removeEventListener('change', syncNarrowViewer);
         document.removeEventListener('keydown', onKeydown);
         releaseImages();
+        clearThumbnails();
     });
     const isMediaCurrent = watchArtworkMedia(history, id => {
-        releaseCardImage(id); delete thumbUrls[id]; forgetRatio(id);
+        releaseCardImage(id); forgetThumbnail(id); forgetRatio(id);
         cancelCardHydration(id);
         if (missingImageIds.value.has(id)) missingImageIds.value = new Set([...missingImageIds.value].filter(value => value !== id));
         void hydrateThumbs(); scheduleWallScan();
@@ -487,31 +491,10 @@ export function useGalleryWorkspace() {
         // Clearing ownership lets a returning card retry before an old read settles;
         // pumpCardQueue's controller check keeps its late cleanup from owning the retry.
         for (const id of new Set([...cardQueue.map(item => item.id), ...cardReads.keys()])) if (!ids.has(id)) cancelCardHydration(id);
-        void hydrateThumbs();
+        trimThumbnails(); void hydrateThumbs();
         scheduleWallScan();
     });
     watch(masonryGroups, scheduleWallScan);
-    /* ---------- 分页：哨兵进入视口即追加下一页 ---------- */
-    const sentinelEl = ref<HTMLElement | null>(null);
-    let moreObserver: IntersectionObserver | null = null;
-    function loadMoreIfNeeded() {
-        triggerLoadMore(sentinelEl.value);
-    }
-    onMounted(() => {
-        moreObserver = new IntersectionObserver(entries => {
-            if (entries.some(entry => entry.isIntersecting))
-                loadMoreIfNeeded();
-        }, { rootMargin: '800px 0px' });
-        if (sentinelEl.value)
-            moreObserver.observe(sentinelEl.value);
-    });
-    watch(sentinelEl, el => {
-        if (!moreObserver)
-            return;
-        moreObserver.disconnect();
-        if (el)
-            moreObserver.observe(el);
-    });
     // Filter URL sync replaces query too. Watch the two values independently so
     // it cannot reload/remount the wall and detach an open viewer's focus target.
     watch([() => route.query.compare, () => route.query.batch], () => {

@@ -1,5 +1,5 @@
 import bundledPresetCatalog from '../../data/presets.json'
-import { parsePresetCatalog } from './promptBuilderPersistence'
+import type { PromptPreset } from './promptBuilderPersistence'
 import type { ModelProfile } from './promptPolicy'
 
 /** Read-only upgrade defaults, loaded with the catalog rather than the route. */
@@ -9,4 +9,91 @@ export function fillMissingModelProfiles(personal: ModelProfile[]): ModelProfile
   const missing = parsePresetCatalog(bundledPresetCatalog).modelProfiles.filter(profile =>
     !ids.has(profile.id) && (!profile.model_id || !models.has(profile.model_id)))
   return [...personal, ...missing].map(profile => JSON.parse(JSON.stringify(profile)))
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function stringValue(value: unknown): string | undefined {
+  return typeof value === 'string' ? value : undefined
+}
+
+function finiteNumber(value: unknown): number | undefined {
+  const number = typeof value === 'number' ? value : Number(value)
+  return Number.isFinite(number) ? number : undefined
+}
+
+function stringList(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
+}
+
+function parseModelProfile(value: unknown): ModelProfile | null {
+  if (!isRecord(value)) return null
+  const engine = value.engine === 'sd' || value.engine === 'anima' || value.engine === 'krea2' ? value.engine : undefined
+  const tagStyle = value.tag_style === 'underscore' || value.tag_style === 'space' ? value.tag_style : undefined
+  const negativeMode = value.negative_mode === 'merge' || value.negative_mode === 'replace'
+    ? value.negative_mode
+    : undefined
+  const replaceScope = value.negative_replace_scope === 'boilerplate' || value.negative_replace_scope === 'all'
+    ? value.negative_replace_scope
+    : undefined
+  return {
+    ...value,
+    id: stringValue(value.id),
+    name: stringValue(value.name),
+    engine,
+    model_id: stringValue(value.model_id),
+    tag_style: tagStyle,
+    lora_in_prompt: typeof value.lora_in_prompt === 'boolean' ? value.lora_in_prompt : undefined,
+    lora_id: stringValue(value.lora_id),
+    lora_name: stringValue(value.lora_name),
+    lora_strength: finiteNumber(value.lora_strength),
+    exact_tokens: stringList(value.exact_tokens),
+    exact_prefixes: stringList(value.exact_prefixes),
+    match: stringList(value.match),
+    quality_prefix: stringValue(value.quality_prefix),
+    negative_prefix: stringValue(value.negative_prefix),
+    negative_mode: negativeMode,
+    negative_replace_scope: replaceScope,
+    rating_all: stringValue(value.rating_all),
+    rating_r15: stringValue(value.rating_r15),
+    rating_r18: stringValue(value.rating_r18),
+    sampler: stringValue(value.sampler),
+    scheduler: stringValue(value.scheduler),
+    steps: finiteNumber(value.steps),
+    cfg: finiteNumber(value.cfg),
+    size: stringValue(value.size),
+    hires_fix: typeof value.hires_fix === 'boolean' ? value.hires_fix : undefined,
+    hires_steps: finiteNumber(value.hires_steps),
+    hires_scale: finiteNumber(value.hires_scale),
+    hires_upscaler: stringValue(value.hires_upscaler),
+    hires_denoising_strength: finiteNumber(value.hires_denoising_strength),
+  }
+}
+
+function parsePreset(value: unknown): PromptPreset | null {
+  if (!isRecord(value)) return null
+  const id = stringValue(value.id)
+  if (!id) return null
+  const name = stringValue(value.name) || stringValue(value.label) || id
+  return { ...value, id, name, label: stringValue(value.label) || name }
+}
+
+export function parsePresetCatalog(value: unknown): {
+  presets: PromptPreset[]
+  modelProfiles: ModelProfile[]
+} {
+  const presetValues = Array.isArray(value)
+    ? value
+    : isRecord(value) && Array.isArray(value.presets)
+      ? value.presets
+      : []
+  const profileValues = isRecord(value) && Array.isArray(value.model_profiles)
+    ? value.model_profiles
+    : []
+  return {
+    presets: presetValues.map(parsePreset).filter((item): item is PromptPreset => item !== null),
+    modelProfiles: profileValues.map(parseModelProfile).filter((item): item is ModelProfile => item !== null),
+  }
 }

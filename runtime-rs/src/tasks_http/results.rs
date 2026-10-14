@@ -12,25 +12,28 @@ pub(super) async fn read(
     let index: u64 = index
         .parse()
         .map_err(|_| ApiError::new(404, "TASK_RESULT_MISSING", "Result is unavailable"))?;
-    let task = get(state, storage, session, id).await?;
-    let reference = task["resultRefs"]
-        .as_array()
-        .and_then(|refs| {
-            refs.iter()
-                .find(|item| item["index"].as_u64() == Some(index))
-        })
+    let result = tokio::select! {
+        result = tokio::time::timeout(Duration::from_secs(30),
+            storage.task_result_reference(id, index, &session.principal_id)) =>
+            result.map_err(|_| ApiError::new(504, "TASK_TIMEOUT", "Task read timed out"))??,
+        _ = state.shutdown.cancelled() => return Err(ApiError::new(503, "DESKTOP_DRAINING", "Desktop is draining")),
+    };
+    if result.principal_id != session.principal_id || result.workspace_id != session.workspace_id {
+        return Err(invalid_record());
+    }
+    let reference = result
+        .reference
         .ok_or_else(|| ApiError::new(404, "TASK_RESULT_MISSING", "Result is unavailable"))?;
-    let alias = reference["alias"].as_str().ok_or_else(invalid_record)?;
     // The alias is obtained exclusively from this principal's task, never from
     // an HTTP media parameter. Storage verifies the immutable object's bytes.
     let media = tokio::select! {
-        result = tokio::time::timeout(Duration::from_secs(30), storage.media(alias)) =>
+        result = tokio::time::timeout(Duration::from_secs(30), storage.media(&reference.alias)) =>
             result.map_err(|_| ApiError::new(504, "TASK_TIMEOUT", "Task media verification timed out"))??,
         _ = state.shutdown.cancelled() => return Err(ApiError::new(503, "DESKTOP_DRAINING", "Desktop is draining")),
     };
-    if reference["sha256"].as_str() != Some(&media.sha256)
-        || reference["bytes"].as_u64() != Some(media.total_bytes)
-        || reference["mime"].as_str() != Some(&media.mime)
+    if reference.sha256 != media.sha256
+        || reference.bytes != media.total_bytes
+        || reference.mime != media.mime
     {
         return Err(invalid_record());
     }

@@ -139,17 +139,17 @@ impl Service {
                 shots.push(shot);
                 continue;
             }
-            let mut single = task.clone();
-            single["kind"] = json!("video");
-            single["provider"] = json!("comfy");
-            single["taskId"] = json!(format!(
-                "{}-{}",
-                task["taskId"].as_str().unwrap_or(id),
-                index + 1
-            ));
-            single["upstreamId"] = json!(shot.upstream);
-            single["input"] = shot.input.clone();
-            single["resultState"] = json!("none");
+            // Comfy recovery observes this shot's upstream identity and recorded
+            // status/cancellation/metadata. The batch input, checkpoint and
+            // other result references have no consumer in recover_task.
+            let single = json!({
+                "kind":"video", "provider":"comfy", "resultState":"none",
+                "taskId":format!("{}-{}", task["taskId"].as_str().unwrap_or(id), index + 1),
+                "upstreamId":shot.upstream,
+                "status":task["status"],
+                "cancelRequestedAt":task["cancelRequestedAt"],
+                "metadata":task["metadata"],
+            });
             let observation = self
                 .backend
                 .recover_task(&single, cancellations.entry(index).or_default())
@@ -234,6 +234,7 @@ impl Service {
                 created: task["createdAt"].as_i64().unwrap_or_else(now),
                 hooks: Some(hooks),
                 state: Mutex::new(State {
+                    cancel_generation: 0,
                     status: status.into(),
                     shots,
                     concat_stage: if concat.is_some() {

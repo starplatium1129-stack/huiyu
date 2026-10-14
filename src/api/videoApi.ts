@@ -320,6 +320,14 @@ export function retryVideoShot(id: string, index: number, signal?: AbortSignal):
   )
 }
 
+/** Existing gateway batches retry a selection in one accepted operation. */
+export function retryGatewayVideoShots(id: string, indices: number[], signal?: AbortSignal): Promise<VideoBatchResponse> {
+  return apiClient.request<VideoBatchResponse>(`/api/video/batches/${encodeURIComponent(id)}/retry`, {
+    method: 'POST', body: { indices }, signal, timeoutMs: 15_000,
+    validate: isVideoBatchResponse,
+  })
+}
+
 export function concatVideoBatch(id: string, signal?: AbortSignal): Promise<VideoBatchResponse> {
   if (isRuntimeTaskId(id)) return actOnRuntimeTask(id, 'concat').then(task => ({ ok: true, batch: taskVideoBatch(task) }))
   return apiClient.request<VideoBatchResponse>(

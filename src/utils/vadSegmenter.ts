@@ -177,6 +177,7 @@ export function createVadSegmenter(rawConfig?: Partial<VadSegmenterConfig>): Vad
       } else {
         // 静音帧中断语音起点的连续计数；缓冲只保留最近 backfillSamples。
         speechFramesSinceStart = 0
+        speechSamples = []
         backfill.push(...frame)
         if (backfill.length > backfillSamples) {
           backfill.splice(0, backfill.length - backfillSamples)

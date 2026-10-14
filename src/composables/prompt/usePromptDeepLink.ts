@@ -11,6 +11,7 @@ type AnimaSession = ReturnType<typeof useAnimaSession>
 
 export interface PromptDeepLinkDeps {
   pb: PromptBuilderStore
+  generationBusy: Readonly<Ref<boolean>>
   /** Host setter synchronizes engine dimensions through the existing supported-size policy. */
   sdSize: Ref<string>
   patchAnimaState: AnimaSession['patchState']

@@ -211,8 +211,16 @@ impl Textures {
                 let result=async{
                     let permit=tokio::select!{permit=owned.decode.clone().acquire_owned()=>permit.map_err(|_|"Texture decoder closed")?,_=work.cancel.cancelled()=>return Err("Texture request cancelled".into())};
                     let path=key.path.clone();let cancel=work.cancel.clone();let scale=key.scale;
-                    tokio::task::spawn_blocking(move||{let _permit=permit;crate::native_images::atlas(&path,&library,scale,&cancel)})
-                        .await.map_err(|_|"Texture decoder failed".to_owned())?.map(|bytes|Entry{etag:format!("\"{:x}\"",Sha256::digest(&bytes)),bytes:Bytes::from(bytes)})
+                    tokio::task::spawn_blocking(move || {
+                        let _permit = permit;
+                        crate::native_images::atlas(&path, &library, scale, &cancel)
+                            .map(|bytes| Entry {
+                                etag: format!("\"{:x}\"", Sha256::digest(&bytes)),
+                                bytes: Bytes::from(bytes),
+                            })
+                    })
+                    .await
+                    .map_err(|_| "Texture decoder failed".to_owned())?
                 }.await;
                 let mut cache = owned.cache.lock().unwrap();
                 if let Ok(entry) = &result

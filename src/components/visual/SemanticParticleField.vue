@@ -356,6 +356,9 @@ function simulateParticles(now: number): boolean {
   return moving
 }
 
+/* compositor-exempt: DESIGN.md 要求交互粒子形象，Canvas/WebGL 须重绘点阵。
+ * 现有基线：点数上限 48000、DPR 上限 2，低效果 20fps；隐藏、停用或减弱动效时停止循环。
+ * 常规模式保留原生刷新率、GPU/局部快照路径；真实设备的帧耗与显存仍需对应环境验收。 */
 function draw() {
   if (!context || !canvas.value || !performance.active.value) return
   const ctx = context

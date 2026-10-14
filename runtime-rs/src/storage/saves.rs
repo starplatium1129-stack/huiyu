@@ -47,6 +47,38 @@ fn prepared(c: &Context, principal: &str, id: &str, kind: &str) -> Result<Operat
     }
     Ok(row)
 }
+pub(super) fn prepare_chunk(
+    c: &Context,
+    principal: &str,
+    command: &Value,
+) -> Result<upload::Prepared> {
+    let id = string(command, "operationId")?;
+    let library = command["kind"] == "uploadMediaChunk";
+    let row = prepared(
+        c,
+        principal,
+        id,
+        if library {
+            "prepareMedia"
+        } else {
+            "saveArtwork"
+        },
+    )?;
+    if row.state == "aborted" {
+        return Err(conflict("OPERATION_CONFLICT", "Save operation was aborted"));
+    }
+    if library && row.state == "committed" {
+        return Ok(upload::Prepared::Complete(
+            json!({"operationId":id,"offset":row.input["media"]["bytes"]}),
+        ));
+    }
+    Ok(upload::Chunk::new(
+        row.key,
+        row.input["media"].clone(),
+        row.state == "committed",
+        json!({"operationId":id}),
+    ))
+}
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let kind = string(command, "kind")?;
     if kind == "countMedia" {
@@ -60,47 +92,19 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     if matches!(kind, "prepareSave" | "prepareMedia") {
         return prepare(c, principal, command);
     }
-    if matches!(kind, "uploadChunk" | "abortSave" | "uploadMediaChunk") {
-        let library = kind == "uploadMediaChunk";
-        let row = prepared(
-            c,
-            principal,
-            id,
-            if library {
-                "prepareMedia"
-            } else {
-                "saveArtwork"
-            },
-        )?;
-        if kind == "abortSave" {
-            if row.state != "committed" {
-                c.transaction(|c| {
-                    c.db.execute(
-                        "UPDATE operations SET state='aborted' WHERE op_key=?",
-                        [&row.key],
-                    )?;
-                    c.db.execute("DELETE FROM leases WHERE operation_key=?", [&row.key])?;
-                    Ok(())
-                })?;
-            }
-            return state(c, &prepared(c, principal, id, "saveArtwork")?, false);
+    if kind == "abortSave" {
+        let row = prepared(c, principal, id, "saveArtwork")?;
+        if row.state != "committed" {
+            c.transaction(|c| {
+                c.db.execute(
+                    "UPDATE operations SET state='aborted' WHERE op_key=?",
+                    [&row.key],
+                )?;
+                c.db.execute("DELETE FROM leases WHERE operation_key=?", [&row.key])?;
+                Ok(())
+            })?;
         }
-        if row.state == "aborted" {
-            return Err(conflict("OPERATION_CONFLICT", "Save operation was aborted"));
-        }
-        // Keep the library-media retry behavior, while save chunks verify exact bytes.
-        let offset = if library && row.state == "committed" {
-            row.input["media"]["bytes"].as_u64().unwrap()
-        } else {
-            media::upload(
-                c,
-                &row.key,
-                &row.input["media"],
-                command,
-                row.state == "committed",
-            )?
-        };
-        return Ok(json!({"operationId":id,"offset":offset}));
+        return state(c, &prepared(c, principal, id, "saveArtwork")?, false);
     }
     c.transaction(|c| {
         let (key, previous) = c.start_operation(principal, command)?;

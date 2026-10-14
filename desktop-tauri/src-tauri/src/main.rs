@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod bridge;
+mod save_image;
 mod bootstrap;
 mod ui_entry;
 mod credentials;
@@ -229,7 +230,7 @@ fn main() {
             bridge::open_runtime,
             bridge::open_log,
             bridge::pick_files,
-            bridge::save_image,
+            save_image::save_image,
             updater_cmd::desktop_update_check,
             updater_cmd::desktop_update_state,
             updater_cmd::desktop_update_install,

@@ -1,5 +1,6 @@
 import { withArtworkStaging } from '@/storage/artworkSession'
 import { useVideoStore, prepareVideoCtx } from '@/stores/videoStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import type { VideoBridgeTarget, VideoCtxPayload } from '@/stores/videoStore'
 
 export type { VideoBridgeTarget, VideoCtxPayload } from '@/stores/videoStore'
@@ -25,11 +26,21 @@ export function readShotsCtx(): VideoCtxPayload[] {
 export async function bridgeToVideo(target: VideoBridgeTarget): Promise<boolean> {
   return withArtworkStaging(async () => {
     const store = useVideoStore()
-    const ctx = await prepareVideoCtx(target)
+    const repository = artworkRepository
+    const ctx = await prepareVideoCtx(target, repository)
     if (!ctx) return false
-    if (!store.stageImageCtx(ctx)) {
+    let published = false
+    try {
+      published = store.stageImageCtx(ctx)
+      if (!published) { target.flash('跨页上下文写入失败'); return false }
+    } catch (error) {
       target.flash('跨页上下文写入失败')
+      console.warn(error)
       return false
+    } finally {
+      // Only this newly staged, unpublished alias belongs to the failed transfer.
+      if (!published) await repository.deleteImage(ctx.imageId)
+        .catch(error => console.warn('[video-bridge] unpublished image cleanup failed', error))
     }
     await target.push('/video-studio')
     return true

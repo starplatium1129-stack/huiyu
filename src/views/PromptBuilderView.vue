@@ -16,7 +16,6 @@
     }"
   >
 
-    <DrawingTaskObserver :sd="sd" :anima="animaSession" />
     <div class="pb-topline">
       <div class="pb-header">
         <div class="pb-heading-row">
@@ -240,7 +239,6 @@ const PromptDraftNotice = defineAsyncComponent(() => import('@/components/direct
 const RandomInspirationButton = defineAsyncComponent(() => import('@/components/RandomInspirationButton.vue'))
 const HistoryRestoreNotice = defineAsyncComponent(() => import('@/components/director/HistoryRestoreNotice.vue'))
 const HistoryReuseDialog = defineAsyncComponent(() => import('@/components/director/HistoryReuseDialog.vue'))
-const DrawingTaskObserver = defineAsyncComponent(() => import('@/components/tasks/DrawingTaskObserver.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 import DirectorStoryPanel from '@/components/director/DirectorStoryPanel.vue'
 const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/director/DirectorCharacterPanel.vue'))
@@ -265,8 +263,6 @@ displayResultUrl,
 resultRevealUrl,
 characterShifting,
 currentCharacterThemeStyle,
-sd,
-animaSession,
 setDirectorMode,
 engineOnline,
 engineStatusText,

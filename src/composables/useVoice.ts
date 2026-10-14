@@ -7,6 +7,7 @@ import { voiceApi } from '../api/voiceApi.ts'
 import { ApiClientError } from '../api/client.ts'
 import { VoicePcmStream } from './voicePcmStream.ts'
 import { VoiceReplayCache } from './voiceReplayCache.ts'
+import { playVoiceAudio, removeAudioSource, type AudioWithSource, type AudioEndReason } from './voiceAudioPlayback.ts'
 
 export interface VoiceAvailability {
   online: boolean
@@ -47,10 +48,6 @@ interface QueuedClip extends SynthesizedClip {
   observed?: boolean
 }
 
-interface AudioWithSource extends HTMLAudioElement {
-  __sourceNode?: MediaElementAudioSourceNode | null
-}
-
 interface StatusError extends Error {
   status?: number
   detail?: unknown
@@ -89,9 +86,13 @@ function readVoiceAvailability(value: unknown): VoiceAvailability {
   }
 }
 
-function removeAudioSource(audio: AudioWithSource) {
-  try { audio.__sourceNode?.disconnect() } catch {}
-  if (audio) audio.__sourceNode = null
+function playbackError(reason: AudioEndReason): string {
+  if (reason === 'load-timeout') return '语音生成超时，请点击重播再试。'
+  if (reason === 'play-timeout') return '语音播放超时，请点击重播再试。'
+  if (reason === 'blocked') return '浏览器阻止了声音播放，请点击消息下方的重播。'
+  if (reason === 'load-error') return '语音加载失败，请点击重播再试。'
+  if (reason === 'play-error') return '语音播放中断，请点击重播再试。'
+  return ''
 }
 
 export function useVoice(options: {
@@ -189,9 +190,16 @@ export function useVoice(options: {
         analyser = ac.createAnalyser(); analyser.fftSize = 512; analyser.smoothingTimeConstant = 0.5
         gainNode = ac.createGain(); gainNode.gain.value = volume
         analyser.connect(gainNode); gainNode.connect(ac.destination)
-      } catch { audioContext = null; analyser = null }
+      } catch { releaseAudioContext() }
     }
     if (audioContext?.state === 'suspended') audioContext.resume().catch(() => {})
+  }
+
+  function releaseAudioContext() {
+    try { analyser?.disconnect() } catch {}
+    try { gainNode?.disconnect() } catch {}
+    if (audioContext) void audioContext.close().catch(() => {})
+    audioContext = null; analyser = null; gainNode = null
   }
 
   function isActive() { return Boolean(pending > 0 || playing || queue.length || replayAudio) }
@@ -414,65 +422,28 @@ export function useVoice(options: {
     audio.src = resolveRuntimeUrl(item.url)
     currentAudio = audio; attachAnalyser(audio)
     onExpression(item.emotion); onSpeaking(true, item.mid); onStatus('播放中…'); notifyActivity()
-    let finished = false, started = false
-    let waitExtensions = 0, loadTimer = 0
-    // 公网分享下生成排队可能超过 90 秒。请求还活着（NETWORK_LOADING）时不判死：
-    // 判死会触发重试，未命中缓存时等于把整句重新生成一遍，等待翻倍。
-    // 只有连接已死（error 事件）或拖过总上限才放弃，放弃时也不再重试。
-    const scheduleTimeout = () => {
-      loadTimer = window.setTimeout(() => {
-        if (finished || started || sess !== session) return
-        if (audio.readyState < 2 && audio.networkState === 2 && waitExtensions < 2) {
-          waitExtensions++
-          onStatus(waitExtensions === 1 ? '语音生成较慢，继续等待…' : '语音生成很慢，还在排队…')
-          scheduleTimeout()
-          return
-        }
-        finish(false, 'timeout')
-      }, 90_000)
-    }
-    const finish = (succeeded: boolean, reason?: 'timeout' | 'error') => {
-      if (finished) return; finished = true
-      clearTimeout(loadTimer)
-      audio.removeEventListener('playing', onPlaying)
-      audio.removeEventListener('ended', done); audio.removeEventListener('error', onErrorEvent)
-      // 必须清掉旧元素：公网慢速下旧请求可能仍在下载，play() 已调用，
-      // 数据一到浏览器会自动开播，与重试的新元素同时响（"反复说一个词"）。
-      audio.pause()
-      audio.removeAttribute('src')
-      audio.load()
-      removeAudioSource(audio)
-      if (sess !== session) return
+    const playback = playVoiceAudio(audio, {
+      onStarted: () => { if (sess === session && currentAudio === audio) { onStatus('播放中…'); startLipSync() } },
+      onSlow: extension => onStatus(extension === 1 ? '语音生成较慢，继续等待…' : '语音生成很慢，还在排队…'),
+    })
+    cancelPlayback = playback.cancel
+    void playback.result.then(reason => {
+      if (sess !== session || currentAudio !== audio) return
       cancelPlayback = null
-      if (currentAudio === audio) currentAudio = null; playing = false
-      if (succeeded) {
-        if (!queue.length) { onSpeaking(false, item.mid); onExpression('neutral'); onStatus(pending > 0 ? '语音合成中…' : '') }
-        pump(sess); notifyActivity()
+      currentAudio = null; playing = false; stopLipSync()
+      // Only a loading/network failure gets one retry. An interrupted sentence
+      // that already started must never be synthesized and spoken from the top.
+      if (reason === 'load-error' && item.retryLeft !== 0) {
+        onStatus('语音加载失败，重试…')
+        queue.unshift({ ...item, retryLeft: (item.retryLeft ?? 1) - 1 })
       } else {
-        // 只有"加载阶段失败"（HTTP/网络错误，还没出声）给一次重试机会；
-        // 已开始播放后断流或超时一律不重试，避免整句从头重复播报。
-        const retryable = !started && reason !== 'timeout' && item.retryLeft !== 0 && sess === session
-        if (retryable) {
-          onStatus('语音加载失败，重试…')
-          queue.unshift({ ...item, retryLeft: (item.retryLeft ?? 1) - 1 })
-        } else {
-          onSpeaking(false, item.mid); onExpression('neutral'); onStatus('')
-          if (reason === 'timeout') onError('语音生成超时，请点击"重播"再试。')
-          else if (!started) onError('语音播放失败，请点击"重播"再试。')
+        const message = playbackError(reason)
+        if (message) onError(message)
+        if (!queue.length || reason !== 'ended') {
+          onSpeaking(false, item.mid); onExpression('neutral'); onStatus(pending ? '语音合成中…' : '')
         }
-        pump(sess); notifyActivity()
       }
-    }
-    function onPlaying() { started = true; clearTimeout(loadTimer) }
-    function done() { finish(true) }
-    function onErrorEvent() { finish(false, 'error') }
-    audio.addEventListener('playing', onPlaying)
-    audio.addEventListener('ended', done); audio.addEventListener('error', onErrorEvent)
-    cancelPlayback = () => finish(false)
-    scheduleTimeout()
-    audio.play().then(() => { if (!finished && sess === session) startLipSync() }).catch(() => {
-      if (finished || sess !== session) return
-      onError('浏览器阻止了自动播放，请点击消息下方的"重播"。'); done()
+      pump(sess); prefetch(); notifyActivity()
     })
   }
 
@@ -480,7 +451,8 @@ export function useVoice(options: {
     const clips = (messageAudio.get(mid) || []).filter(clip => clip.url)
     if (!clips.length) return false
     stop({ preserveMessageAudio: true, silent: true }); ensureAudioContext()
-    const rs = session; onSpeaking(true, mid); onStatus('重播中…'); notifyActivity()
+    const rs = session; let succeeded = true
+    onSpeaking(true, mid); onStatus('重播中…'); notifyActivity()
     for (const clip of clips) {
       if (rs !== session) return false
       const audio = new Audio() as AudioWithSource
@@ -489,27 +461,18 @@ export function useVoice(options: {
       const release = replayCache.pin(clip)
       replayAudio = audio; attachAnalyser(audio); onExpression(clip.emotion || 'neutral')
       notifyActivity()
-      await new Promise<void>(res => {
-        let finished = false
-        const timeout = window.setTimeout(() => done(), 270_000)
-        const done = () => {
-          if (finished) return
-          finished = true
-          clearTimeout(timeout)
-          audio.removeEventListener('ended', done); audio.removeEventListener('error', done)
-          audio.pause()
-          audio.removeAttribute('src')
-          audio.load()
-          if (replayAudio === audio) { replayAudio = null; cancelReplay = null }
-          removeAudioSource(audio); release(); res()
-        }
-        cancelReplay = done
-        audio.addEventListener('ended', done); audio.addEventListener('error', done)
-        audio.play().then(() => { if (!finished && rs === session) startLipSync() }).catch(done)
+      const playback = playVoiceAudio(audio, {
+        onStarted: () => { if (rs === session && replayAudio === audio) startLipSync() },
+        onCleanup: release,
       })
+      cancelReplay = playback.cancel
+      const reason = await playback.result
+      if (rs !== session) return false
+      if (replayAudio === audio) { replayAudio = null; cancelReplay = null }
+      if (reason !== 'ended') { succeeded = false; const message = playbackError(reason); if (message) onError(message); break }
     }
     if (rs === session) { replayAudio = null; onSpeaking(false, mid); onExpression('neutral'); onStatus(''); stopLipSync(); notifyActivity() }
-    return rs === session
+    return succeeded && rs === session
   }
 
   function hasAudio(mid: string) { return Boolean(messageAudio.get(mid)?.some(clip => clip.url)) }
@@ -542,8 +505,7 @@ export function useVoice(options: {
     destroyed = true; availabilityRevision++
     document.removeEventListener('visibilitychange', onVisibilityChange)
     stop({ preserveMessageAudio: false, silent: true })
-    if (gainNode) { try { gainNode.disconnect() } catch {}; gainNode = null }
-    if (audioContext) audioContext.close().catch(() => {}); audioContext = null; analyser = null
+    releaseAudioContext()
   }
 
   return { availability, refreshAvailability, readyFor, prepare, ensureAudioContext, isActive, ownsTurn, startTurn, append, finishTurn, stop, destroy, playMessage, hasAudio, clearMessages, setVolume }

@@ -99,8 +99,10 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     return resolveDrawCapabilities(engine).dualCharacter
   }
 
-  function setDrawEngine(v: DrawEngine, options: { silent?: boolean } = {}) {
+  function setDrawEngine(v: DrawEngine, options: { silent?: boolean; restoreExistingResult?: boolean } = {}) {
     if (v === 'sd') {
+      // Restore an already loaded result without selecting SD for new work.
+      if (options.restoreExistingResult && sd.resultUrl.value) { drawEngine.value = 'sd'; return }
       flash('SD 新生成已退役，旧作品与配方仍可查看；请选择 Anima 或 Krea 2')
       return
     }

@@ -199,15 +199,14 @@ export function usePromptWorkspace() {
      * 临时缓冲（F2）已一并下沉 useTempResult；displayedResultHistoryId 来自其返回。
      */
     // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
-    // 一条 runJob 路径三处消费：直出 callGenerate / 队列串行 / 批量 runners 注入。
-    const { sdErrorReport, historyGenerationFields, runJob, commitJobResult, sdQueue, restoredCount } = usePromptSdQueue({
+    // 已接收的 SD 任务由队列与历史批次共用观察路径，不再发起新生成。
+    const { sdErrorReport, historyGenerationFields, runJob, sdQueue, restoredCount } = usePromptSdQueue({
         pb,
         sd,
         sdSize,
         drawEngine,
         modelProfile,
         animaState,
-        displayResultSeed,
         setResultContext: (ctx) => { resultContext.value = ctx; },
         onGenerated: url => { resultRevealUrl.value = url; },
     });
@@ -224,7 +223,6 @@ export function usePromptWorkspace() {
         livePrompt,
         negativePrompt,
         historyGenerationFields,
-        commitJobResult,
         resultContext,
         autoSaveToGallery,
         setDrawEngine,
@@ -247,7 +245,6 @@ export function usePromptWorkspace() {
         modelProfile,
         animaState,
         runJob,
-        historyGenerationFields,
         sceneBlueprints: () => sceneStore.sceneBlueprints,
         popularCharacters: () => sceneStore.popularCharacters,
         currentLivePrompt: () => livePrompt.value,
@@ -297,10 +294,10 @@ export function usePromptWorkspace() {
         return undefined;
     }
     const generateBlockReason = computed(() => {
+        if (drawEngine.value === 'sd')
+            return '当前仅查看旧 SD 成片；新生成请切到 Anima 或 Krea 2';
         if (!livePrompt.value)
             return '先选择场景或填写故事';
-        if (pb.isPopular && drawEngine.value === 'sd')
-            return '热门角色请切到 Anima 或 Krea 2';
         if (!engineOnline.value)
             return '绘图服务未连接，请先在控制面板启动并检查连接。';
         return '';
@@ -427,6 +424,7 @@ export function usePromptWorkspace() {
     // 「点场景卡片后提示词跟随新场景」。八类参数全部走视图注入的同一路径动作。
     const { applyDeepLink, deepLinkNeeded } = usePromptDeepLink({
         pb,
+        generationBusy,
         sdSize: computed({ get: () => sdSize.value, set: applyRecommendedSize }),
         patchAnimaState,
         showAllBlueprints,

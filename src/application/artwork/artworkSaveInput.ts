@@ -13,6 +13,8 @@ export type GeneratedArtworkInput = Partial<HistoryEntry> & {
   parentId?: string | number | null
   taskId?: string
   resultIndex?: number
+  pendingCommit?: ArtworkCommitIdentity
+  beforeAppend?: (pending: ArtworkCommitIdentity) => Promise<void>
 }
 
 /** Compatibility defaults are captured once at save invocation, before any asynchronous work. */
@@ -42,22 +44,32 @@ export interface SaveGeneratedArtworkDependencies {
 
 export type SaveGeneratedArtworkResult =
   | { ok: true; entry: HistoryEntry }
-  | { ok: false; error: unknown; operationId: string; cleanup: { status: 'not-needed' | 'completed' | 'failed' | 'commit-unknown' | 'upload-pending'; imageId?: string; error?: unknown; upload?: PendingMediaUpload } }
+  | { ok: false; error: unknown; operationId: string; cleanup: { status: 'not-needed' | 'completed' | 'failed' | 'commit-unknown' | 'identity-pending' | 'upload-pending'; imageId?: string; error?: unknown; upload?: PendingMediaUpload } }
 
 
 export interface ArtworkSaveSnapshot { entry: GeneratedArtworkInput; defaults: LegacyArtworkDefaults }
+export interface ArtworkCommitIdentity { operationId: string; entry: HistoryEntry }
+export class ArtworkSaveSupersededError extends Error {
+  constructor(readonly releaseImage: boolean) { super('当前画面已变化，已停止尚未提交的入册'); this.name = 'AbortError' }
+}
+const snapshots = new WeakMap<GeneratedArtworkInput, ArtworkSaveSnapshot>()
 
 /** Capture before loading the persistence implementation or awaiting any storage lease. */
 export function prepareGeneratedArtwork(input: GeneratedArtworkInput, resolveDefaults: (entry: GeneratedArtworkInput) => LegacyArtworkDefaults): ArtworkSaveSnapshot {
+  const previous = snapshots.get(input)
+  if (previous) return previous
   const merged = { ...input, ...historyFromResultContext(input.context) }
   const entry: GeneratedArtworkInput = { ...merged,
     emotion: merged.emotion ? [...merged.emotion] : merged.emotion,
     manual_tags: merged.manual_tags ? [...merged.manual_tags] : merged.manual_tags,
     artistStyleIds: merged.artistStyleIds ? [...merged.artistStyleIds] : merged.artistStyleIds,
     loras: merged.loras?.map(lora => ({ ...lora })),
+    pendingCommit: merged.pendingCommit ? JSON.parse(JSON.stringify(merged.pendingCommit)) as ArtworkCommitIdentity : undefined,
   }
   const resolved = resolveDefaults(entry)
   const defaults: LegacyArtworkDefaults = { ...resolved, subject: { ...resolved.subject },
     emotion: [...resolved.emotion], manual_tags: [...resolved.manual_tags], artistStyleIds: [...resolved.artistStyleIds] }
-  return { entry, defaults }
+  const snapshot = { entry, defaults }
+  snapshots.set(input, snapshot)
+  return snapshot
 }

@@ -1,4 +1,3 @@
-
 use super::{
     Error, Options, Result, blueprints, codec, fs, prompt, save as transaction_save, showcase,
     transaction::Transaction,
@@ -8,13 +7,16 @@ use base64::{
     engine::{DecodePaddingMode, GeneralPurpose, GeneralPurposeConfig},
 };
 use serde_json::{Value, json};
-use std::time::Instant;
+use std::{borrow::Cow, time::Instant};
 use tokio_util::sync::CancellationToken;
 
 /// Client-side rendering already produced both JPEGs. Preserve those exact
 /// bytes; this route never re-encodes the image or changes generation metadata.
 fn jpeg(value: &Value, label: &str) -> Result<Vec<u8>> {
-    let text = prompt::text(value);
+    let text = value
+        .as_str()
+        .map(Cow::Borrowed)
+        .unwrap_or_else(|| Cow::Owned(prompt::text(value)));
     let data = text
         .strip_prefix("data:image/jpeg;base64,")
         .filter(|s| {
@@ -30,11 +32,17 @@ fn jpeg(value: &Value, label: &str) -> Result<Vec<u8>> {
             "图片超过请求大小上限",
         ));
     }
-    let raw = data
-        .bytes()
-        .filter(|b| !b.is_ascii_whitespace())
-        .take_while(|b| *b != b'=')
-        .collect::<Vec<_>>();
+    let unpadded = data.split('=').next().unwrap_or_default();
+    let raw: Cow<'_, [u8]> = if unpadded.bytes().any(|b| b.is_ascii_whitespace()) {
+        Cow::Owned(
+            unpadded
+                .bytes()
+                .filter(|b| !b.is_ascii_whitespace())
+                .collect(),
+        )
+    } else {
+        Cow::Borrowed(unpadded.as_bytes())
+    };
     let decoder = GeneralPurpose::new(
         &alphabet::STANDARD,
         GeneralPurposeConfig::new()
@@ -42,19 +50,12 @@ fn jpeg(value: &Value, label: &str) -> Result<Vec<u8>> {
             .with_decode_padding_mode(DecodePaddingMode::Indifferent),
     );
     let bytes = decoder
-        .decode(raw)
+        .decode(raw.as_ref())
         .map_err(|_| Error::invalid(format!("{label}不是有效的 JPEG 文件")))?;
     if bytes.len() < 4 || !bytes.starts_with(b"\xff\xd8\xff") {
         return Err(Error::invalid(format!("{label}不是有效的 JPEG 文件")));
     }
     Ok(bytes)
-}
-fn list<'a>(value: &'a Value, key: &str) -> &'a [Value] {
-    value
-        .as_array()
-        .or_else(|| value[key].as_array())
-        .map(Vec::as_slice)
-        .unwrap_or(&[])
 }
 fn source_string(value: Option<&Value>) -> String {
     match value {
@@ -65,18 +66,25 @@ fn source_string(value: Option<&Value>) -> String {
     }
 }
 fn entry(options: &Options, id: &str) -> Result<Value> {
-    let catalog = crate::catalog::Catalog::open(crate::catalog::Options {
+    let catalog = crate::catalog::Catalog::open_existing(crate::catalog::Options {
         source: options.root.clone(),
         database: options.runtime.join("content/catalog.sqlite"),
     })
     .map_err(|e| Error::new(e.status.as_u16(), &e.code, e.message))?;
-    let scenes = catalog
-        .records("scene")
-        .map_err(|e| Error::new(e.status.as_u16(), &e.code, e.message))?
-        .into_iter()
-        .map(|r| r.data)
-        .collect::<Vec<_>>();
-    if let Some(scene) = scenes.iter().find(|s| s["id"] == id) {
+    let source = catalog
+        .showcase_source(id, |source_id, character_id| {
+            source_id.is_some_and(|value| value == id)
+                || format!(
+                    "pc_{}_{}",
+                    source_string(character_id),
+                    source_string(source_id)
+                ) == id
+        })
+        .map_err(|e| Error::new(e.status.as_u16(), &e.code, e.message))?;
+    if let Some((record, _)) = source.as_ref()
+        && record.kind == "scene"
+    {
+        let scene = &record.data;
         let mut entry = json!({});
         for key in ["id", "title", "category", "story", "char", "rating"] {
             if let Some(value) = scene.get(key) {
@@ -86,24 +94,21 @@ fn entry(options: &Options, id: &str) -> Result<Value> {
         entry["attempt"] = json!(1);
         return Ok(entry);
     }
-    if let (Some(blueprints), Some(popular)) = (
-        catalog
-            .projection("scene-blueprints.json")
-            .map_err(|e| Error::new(e.status.as_u16(), &e.code, e.message))?,
-        catalog
-            .projection("popular-characters.json")
-            .map_err(|e| Error::new(e.status.as_u16(), &e.code, e.message))?,
-    ) && let Some(blueprint) = list(&blueprints, "blueprints").iter().find(|b| {
-        b["id"] == id
-            || format!(
-                "pc_{}_{}",
-                source_string(b.get("characterId")),
-                source_string(b.get("id"))
-            ) == id
-    }) {
-        let character = list(&popular, "characters")
-            .iter()
-            .find(|c| c["id"] == blueprint["characterId"]);
+    if let Some((record, character)) = source {
+        let blueprint = &record.data;
+        let character = character
+            .as_ref()
+            .and_then(|record| record.data.get("popular"))
+            .filter(|popular| popular["id"] == blueprint["characterId"]);
+        if character.is_some_and(|popular| !popular.is_object()) {
+            // The old projection could not attach outfits to a scalar popular
+            // value. A selected malformed seed must still fail, not gain defaults.
+            return Err(Error::new(
+                503,
+                "MAINTENANCE_UNAVAILABLE",
+                "维护读取暂不可用",
+            ));
+        }
         let display = character.and_then(|c| c.get("displayName")).or_else(|| {
             character
                 .is_none()

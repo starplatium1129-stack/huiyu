@@ -25,8 +25,9 @@ export interface BatchDrawJob {
   status: 'pending' | 'running' | 'accepted' | 'unknown' | 'succeeded' | 'failed' | 'cancelled'
   error?: string
   message?: string
-  resultUrl?: string
   historyId?: string | number
+  imageId?: string
+  pendingImage?: boolean
   snapshot?: Record<string, unknown>
 }
 export interface BatchDrawRunnerInput {
@@ -47,8 +48,9 @@ export interface BatchDrawRunnerResult {
   cancelled?: boolean
   unresolved?: boolean
   error?: string
-  resultUrl?: string
   historyId?: string | number
+  imageId?: string
+  pendingImage?: boolean
 }
 export interface BatchDrawRunOptions {
   run: (input: BatchDrawRunnerInput) => Promise<BatchDrawRunnerResult>
@@ -132,15 +134,13 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
         let result: BatchDrawRunnerResult
         try { result = await run(runnerInput(job, reconnect)) }
         catch (error) { result = { ok: false, unresolved: runtimeOwned, error: error instanceof Error ? error.message : String(error) } }
-        if (disposed) { if (result.resultUrl) URL.revokeObjectURL(result.resultUrl); break }
+        if (disposed && result.historyId == null) break
         if (result.historyId != null) job.historyId = result.historyId
+        if (result.imageId) job.imageId = result.imageId
+        job.pendingImage = result.pendingImage === true
         job.status = result.unresolved ? 'unknown' : result.cancelled ? 'cancelled' : result.ok ? 'succeeded' : 'failed'
         job.error = result.ok || result.cancelled ? undefined : result.error || '生成失败'
-        if (result.resultUrl) {
-          if (job.resultUrl) URL.revokeObjectURL(job.resultUrl)
-          job.resultUrl = result.resultUrl
-        }
-        if (!await persist() || result.unresolved) break
+        if (!await persist() || result.unresolved || disposed) break
       }
       if (cancelRequested.value && !disposed) {
         jobs.value.filter(job => job.status === 'pending').forEach(job => { job.status = 'cancelled' })
@@ -159,7 +159,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     if (running.value || resetting.value || disposed || !items.length) return
     if (planOptions.engine && planOptions.engine !== 'anima') { onFlash('SD 新生成已退役，请使用当前 Anima/Krea 2 配方'); return }
     if (progress.value.unresolved) { onFlash('请先核对本批已接收任务，再开启新计划。'); return }
-    releaseResultUrls(); targets = new Map(items.map(item => [item.id, { ...item }]))
+    targets = new Map(items.map(item => [item.id, { ...item }]))
     createdAt = Date.now(); engine.value = planOptions.engine || 'anima'; runtimeOwned = planOptions.runtimeOwned === true; restored.value = false
     const amount = Number.isFinite(count) ? Math.max(1, Math.min(3, Math.floor(count))) : 1
     jobs.value = [...targets.values()].flatMap(item => Array.from({ length: amount }, (_, variant) => ({
@@ -188,13 +188,11 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     if (progress.value.unresolved) { onFlash('请先核对本批已接收任务，再重试失败项。'); return }
     const list = jobs.value.filter(job => job.status === 'failed' || job.status === 'cancelled')
     list.forEach(job => {
+      if (job.pendingImage) { job.status = 'unknown'; job.error = undefined; return }
       if (job.taskId) { job.requestKey = crypto.randomUUID(); job.taskId = undefined }
       job.status = 'pending'; job.error = undefined
     })
     await execute(list, `重跑 ${list.length} 张失败 / 未执行任务`)
-  }
-  function releaseResultUrls() {
-    jobs.value.forEach(job => { if (job.resultUrl) { URL.revokeObjectURL(job.resultUrl); job.resultUrl = undefined } })
   }
   function cancel() {
     if (!running.value) return
@@ -208,7 +206,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
       if (storage) { await persistenceTail; await storage.clear() }
       if (disposed) return
       storageError.value = ''
-      releaseResultUrls(); targets.clear(); jobs.value = []; restored.value = false; cancelRequested.value = false
+      targets.clear(); jobs.value = []; restored.value = false; cancelRequested.value = false
     }
     catch (error) { storageError.value = error instanceof Error ? error.message : '旧批次计划暂时无法清除'; return }
     finally { resetting.value = false }
@@ -218,7 +216,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     jobs.value.filter(job => job.status === 'running' || job.status === 'accepted').forEach(job => {
       job.status = job.status === 'running' && job.id === activeJobId && !submissionStarted ? 'pending' : 'unknown'
     })
-    disposed = true; observer?.abort(); releaseResultUrls()
+    disposed = true; observer?.abort()
     if (jobs.value.length && !resetting.value) void persist()
   }
   return { jobs: readonly(jobs), running: readonly(running), progress, engine: readonly(engine), runtimeOwned: () => runtimeOwned,

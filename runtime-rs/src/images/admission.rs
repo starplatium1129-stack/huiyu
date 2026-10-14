@@ -10,6 +10,7 @@ use tokio::{
 };
 
 static CAPACITY: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore::new(2)));
+static HASHERS: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore::new(2)));
 static SERIAL: Mutex<()> = Mutex::const_new(());
 static OWNED: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^aics_(?:video_(?:ref|input)|anima_input)_[a-f0-9]+\.(?:png|jpe?g|webp)$")
@@ -66,32 +67,64 @@ impl Kind {
         }
     }
 }
-fn name(salt: &[u8], owner: &str, bytes: &[u8], extension: &str, kind: Kind) -> String {
-    let mut hmac = Hmac::<Sha256>::new_from_slice(salt).expect("HMAC accepts owner salt");
-    hmac.update(owner.as_bytes());
-    hmac.update(&[0]);
-    hmac.update(bytes);
-    format!(
-        "{}_{}.{}",
-        kind.prefix(),
-        &hex::encode(hmac.finalize().into_bytes())[..40],
-        extension
-    )
+async fn name(
+    salt: Vec<u8>,
+    owner: String,
+    bytes: Arc<Vec<u8>>,
+    extension: &'static str,
+    kind: Kind,
+    cancel: &CancellationToken,
+) -> Result<String> {
+    let scope = cancel.child_token();
+    let _guard = scope.clone().drop_guard();
+    let permit = tokio::select! {
+        biased;
+        _ = scope.cancelled() => return Err(inputs::cancelled()),
+        permit = HASHERS.clone().acquire_owned() => permit.map_err(|_| inputs::cancelled())?,
+    };
+    tokio::task::spawn_blocking(move || {
+        let _permit = permit;
+        if scope.is_cancelled() {
+            return Err(inputs::cancelled());
+        }
+        let mut hmac = Hmac::<Sha256>::new_from_slice(&salt).expect("HMAC accepts owner salt");
+        hmac.update(owner.as_bytes());
+        hmac.update(&[0]);
+        for chunk in bytes.chunks(1024 * 1024) {
+            if scope.is_cancelled() {
+                return Err(inputs::cancelled());
+            }
+            hmac.update(chunk);
+        }
+        if scope.is_cancelled() {
+            return Err(inputs::cancelled());
+        }
+        Ok(format!(
+            "{}_{}.{}",
+            kind.prefix(),
+            &hex::encode(hmac.finalize().into_bytes())[..40],
+            extension
+        ))
+    })
+    .await
+    .map_err(|_| ApiError::new(503, "IMAGE_OWNER_UNAVAILABLE", "素材身份校验未完成"))?
 }
 pub(super) async fn owner_matches(
     root: &Path,
     filename: &str,
-    bytes: &[u8],
+    bytes: Arc<Vec<u8>>,
     owner: &str,
+    cancel: &CancellationToken,
 ) -> Result<bool> {
-    owner_matches_for(root, filename, bytes, owner, Kind::Anima).await
+    owner_matches_for(root, filename, bytes, owner, Kind::Anima, cancel).await
 }
 pub(crate) async fn owner_matches_for(
     root: &Path,
     filename: &str,
-    bytes: &[u8],
+    bytes: Arc<Vec<u8>>,
     owner: &str,
     kind: Kind,
+    cancel: &CancellationToken,
 ) -> Result<bool> {
     let salt = tokio::fs::read(root.join(".aics-image-owner-salt")).await?;
     if salt.len() != 32 {
@@ -101,8 +134,10 @@ pub(crate) async fn owner_matches_for(
             "素材身份文件损坏，请检查后重试。",
         ));
     }
-    Ok(decode::sniff(bytes)
-        .is_some_and(|(_, extension)| filename == name(&salt, owner, bytes, extension, kind)))
+    let Some((_, extension)) = decode::sniff(&bytes) else {
+        return Ok(false);
+    };
+    Ok(filename == name(salt, owner.into(), bytes, extension, kind, cancel).await?)
 }
 async fn owner_salt(root: &Path, cancel: &CancellationToken) -> Result<Vec<u8>> {
     let target = root.join(".aics-image-owner-salt");
@@ -219,7 +254,7 @@ pub(crate) async fn store_for(
     let pending = lock.join(format!("{}_{}.tmp", kind.prefix(), uuid::Uuid::new_v4()));
     let result=async{
         let salt = owner_salt(&root, &cancel).await?;
-        if salt.len()!=32{return Err(ApiError::new(409,"IMAGE_STORAGE_INVALID","素材身份文件损坏，请检查后重试。"))}let filename=name(&salt,&owner,&bytes,extension,kind);let target=root.join(&filename);
+        if salt.len()!=32{return Err(ApiError::new(409,"IMAGE_STORAGE_INVALID","素材身份文件损坏，请检查后重试。"))}let filename=name(salt,owner,bytes.clone(),extension,kind,&cancel).await?;let target=root.join(&filename);
         match tokio::fs::read(&target).await{Ok(existing)if existing.as_slice()==bytes.as_slice()=>return Ok(filename),Ok(_)=>{},Err(error)if error.kind()==std::io::ErrorKind::NotFound=>{},Err(error)=>return Err(error.into())}
         let (used_bytes, files) = usage(root.clone(), cancel.clone()).await?;
         if used_bytes.saturating_add(bytes.len()as u64)>limits.bytes||files+1>limits.files{return Err(ApiError::new(413,"IMAGE_QUOTA",format!("素材额度不足（{files}/{} 文件，{used_bytes}/{} 字节）；请先检查并整理未引用素材。",limits.files,limits.bytes)))}
@@ -244,7 +279,6 @@ pub(crate) async fn store_for(
 }
 
 async fn usage(root: PathBuf, cancel: CancellationToken) -> Result<(u64, u64)> {
-
     // The tracked upload keeps SERIAL and its on-disk lock while awaiting this
     // single filesystem job. Cancellation returns through the normal cleanup.
     tokio::task::spawn_blocking(move || {
@@ -269,7 +303,6 @@ async fn usage(root: PathBuf, cancel: CancellationToken) -> Result<(u64, u64)> {
             }
             bytes = bytes.saturating_add(entry.metadata()?.len());
             files += 1;
-
         }
         if cancel.is_cancelled() {
             return Err(inputs::cancelled());

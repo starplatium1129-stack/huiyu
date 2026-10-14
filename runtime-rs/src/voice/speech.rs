@@ -4,7 +4,7 @@ mod wave;
 use super::{
     config::{Engine, Settings},
     payload::Validated,
-    queue::{Permit, Queue, Reservation, cancelled},
+    queue::{Permit, Queue, Reservation, cancelled, remaining, speech_timeout},
 };
 use crate::{
     error::{ApiError, Result},
@@ -20,10 +20,35 @@ use std::{
     time::Duration,
 };
 use tokio::sync::watch;
+use tokio::time::Instant as Deadline;
 use tokio_util::sync::CancellationToken;
 
 type SharedResult = std::result::Result<Bytes, (u16, String, String)>;
-type Flight = watch::Receiver<Option<SharedResult>>;
+// Only request-owned receivers count as consumers. The cache retains a sender,
+// so an abandoned whole-clip request can release its queue slot.
+type Flight = Arc<watch::Sender<Option<SharedResult>>>;
+struct Subscriber {
+    receiver: Option<watch::Receiver<Option<SharedResult>>>,
+    flight: Flight,
+    cache: Arc<Mutex<AudioCache>>,
+    key: String,
+}
+impl Drop for Subscriber {
+    fn drop(&mut self) {
+        // Serialize the last receiver's drop with new subscriptions. Otherwise
+        // a caller could join between closed() firing and flight removal.
+        let mut cache = self.cache.lock().unwrap();
+        drop(self.receiver.take());
+        if self.flight.is_closed()
+            && cache
+                .flights
+                .get(&self.key)
+                .is_some_and(|current| Arc::ptr_eq(current, &self.flight))
+        {
+            cache.flights.remove(&self.key);
+        }
+    }
+}
 const AUDIO_LIMIT: usize = 128 * 1024 * 1024;
 #[derive(Default)]
 struct Active {
@@ -107,7 +132,7 @@ impl Speech {
         json!({"online": online, "engine": self.settings.engine.label(), "streamingPcm": self.settings.engine == Engine::VoxCpm2,
             "voices": {"nene": configured("nene"), "natsume": configured("natsume")}, "activeVoice": voice, "queue": self.queue.status()})
     }
-    async fn activate(&self, value: &Validated) -> Result<()> {
+    async fn activate(&self, value: &Validated, deadline: Deadline) -> Result<()> {
         if self.settings.engine == Engine::VoxCpm2 {
             let same = {
                 let active = self.active.lock().unwrap();
@@ -121,7 +146,7 @@ impl Speech {
                         &self.settings.tts_host,
                         "/prepare",
                         Some(&value.payload),
-                        Duration::from_secs(60),
+                        remaining(deadline, Duration::from_secs(60), speech_timeout)?,
                         1024 * 1024,
                         &self.cancel,
                     )
@@ -167,7 +192,7 @@ impl Speech {
                     &self.settings.tts_host,
                     &format!("/{endpoint}?{query}"),
                     None,
-                    Duration::from_secs(30),
+                    remaining(deadline, Duration::from_secs(30), speech_timeout)?,
                     1024 * 1024,
                     &self.cancel,
                 )
@@ -192,35 +217,60 @@ impl Speech {
         };
         Ok(())
     }
-    pub async fn prepare(&self, value: &Validated) -> Result<()> {
-        let _permit = self
-            .queue
-            .enter(self.queue.reserve()?, &self.cancel)
-            .await?;
-        // A profile without weight paths still needs a real reachability check.
-        if self.status().await["online"] != true {
-            return Err(ApiError::new(
-                503,
-                "TTS_UNAVAILABLE",
-                "当前语音引擎尚未运行",
-            ));
-        }
-        self.activate(value).await
+    pub async fn prepare(&self, value: &Validated, deadline: Deadline) -> Result<()> {
+        let work = async {
+            let _permit = self
+                .queue
+                .enter(
+                    self.queue.reserve()?,
+                    &self.cancel,
+                    deadline,
+                    speech_timeout,
+                )
+                .await?;
+            // A profile without weight paths still needs a real reachability check.
+            if self.status().await["online"] != true {
+                return Err(ApiError::new(
+                    503,
+                    "TTS_UNAVAILABLE",
+                    "当前语音引擎尚未运行",
+                ));
+            }
+            self.activate(value, deadline).await
+        };
+        let result = tokio::time::timeout_at(deadline, work)
+            .await
+            .map_err(|_| speech_timeout())?;
+        remaining(deadline, Duration::MAX, speech_timeout)?;
+        result
     }
     async fn upstream(
         &self,
         value: &Validated,
         permit: Permit,
+        deadline: Deadline,
     ) -> Result<(reqwest::Response, Permit, tokio::time::Instant)> {
-        self.activate(value).await?;
+        let prepared = tokio::time::timeout_at(deadline, self.activate(value, deadline))
+            .await
+            .map_err(|_| speech_timeout())?;
+        remaining(deadline, Duration::MAX, speech_timeout)?;
+        prepared?;
         let request = self
             .transport
             .client
             .post(format!("{}/tts", self.settings.tts_host))
             .json(&value.payload)
-            .timeout(Duration::from_secs(180));
-        let deadline = tokio::time::Instant::now() + Duration::from_secs(180);
-        let response = tokio::select! { response = request.send() => response.map_err(|_| ApiError::new(502, "TTS_FAILED", "语音生成请求失败或超时"))?, _ = self.cancel.cancelled() => return Err(cancelled()) };
+            .timeout(remaining(
+                deadline,
+                Duration::from_secs(180),
+                speech_timeout,
+            )?);
+        let response = tokio::select! {
+            biased;
+            _ = self.cancel.cancelled() => return Err(cancelled()),
+            _ = tokio::time::sleep_until(deadline) => return Err(speech_timeout()),
+            response = request.send() => response.map_err(|_| ApiError::new(502, "TTS_FAILED", "语音生成请求失败或超时"))?,
+        };
         if !response.status().is_success() {
             let status = if response.status().is_client_error() {
                 response.status().as_u16()
@@ -244,7 +294,7 @@ impl Speech {
                 }))
             };
             let detail = tokio::select! {
-                result = tokio::time::timeout_at(deadline, read) => result.ok().flatten().unwrap_or(Value::Null),
+                result = tokio::time::timeout_at(deadline, read) => result.map_err(|_| speech_timeout())?.unwrap_or(Value::Null),
                 _ = self.cancel.cancelled() => return Err(cancelled()),
             };
             return Err(ApiError::new(
@@ -267,46 +317,88 @@ impl Speech {
         }
         Ok((response, permit, deadline))
     }
-    pub async fn stream(&self, value: Validated) -> Result<Response> {
+    pub async fn stream(&self, value: Validated, deadline: Deadline) -> Result<Response> {
         let key = self.cache_key(&value);
         if let Some(response) = self.cached_response(&key, false) {
             return Ok(response);
         }
-        self.stream_inner(value, key, false).await
+        self.stream_inner(value, key, false, deadline).await
     }
-    pub async fn buffered(self: &Arc<Self>, value: Validated) -> Result<(Bytes, bool)> {
+    pub async fn buffered(
+        self: &Arc<Self>,
+        value: Validated,
+        deadline: Deadline,
+    ) -> Result<(Bytes, bool)> {
         let key = self.cache_key(&value);
-        let (mut receiver, hit) = {
+        let (mut subscriber, hit) = {
             let mut cache = self.cache.lock().unwrap();
             if let Some((_, bytes)) = cache.entries.iter().find(|(cached, _)| *cached == key) {
                 return Ok((bytes.clone(), true));
             }
-            if let Some(flight) = cache.flights.get(&key) {
-                (flight.clone(), true)
+            let (receiver, flight, hit) = if let Some(flight) = cache.flights.get(&key) {
+                (flight.subscribe(), flight.clone(), true)
             } else {
                 let reservation = self.queue.reserve()?;
                 let (send, receiver) = watch::channel(None);
-                cache.flights.insert(key.clone(), receiver.clone());
+                let send = Arc::new(send);
+                cache.flights.insert(key.clone(), send.clone());
                 let speech = self.clone();
-                // Legacy whole-clip GET retains its replay/in-flight contract.
+                let task_key = key.clone();
+                let task_send = send.clone();
+                // Cancel only after every real caller leaves. One caller's
+                // cancellation must not stop a shared synthesis or its cache.
                 tokio::spawn(async move {
-                    let result = speech.collect(value, reservation, &key).await;
-                    let result =
-                        result.map_err(|error| (error.status.as_u16(), error.code, error.message));
-                    let _ = send.send(Some(result));
-                    speech.cache.lock().unwrap().flights.remove(&key);
+                    // Shared work gets one budget from its real entry. A later
+                    // listener cannot extend it or cancel another listener's work.
+                    let deadline = Deadline::now() + Duration::from_secs(240);
+                    let result = tokio::select! {
+                        biased;
+                        _ = task_send.closed() => None,
+                        result = speech.collect(value, reservation, &task_key, deadline) => Some(result),
+                    };
+                    if let Some(result) = result {
+                        let result = result
+                            .map_err(|error| (error.status.as_u16(), error.code, error.message));
+                        let _ = task_send.send(Some(result));
+                    }
+                    let mut cache = speech.cache.lock().unwrap();
+                    // A new caller may already have replaced an abandoned
+                    // same-key flight; an older worker cannot remove that one.
+                    if cache
+                        .flights
+                        .get(&task_key)
+                        .is_some_and(|current| Arc::ptr_eq(current, &task_send))
+                    {
+                        cache.flights.remove(&task_key);
+                    }
                 });
-                (receiver, false)
-            }
+                (receiver, send, false)
+            };
+            (
+                Subscriber {
+                    receiver: Some(receiver),
+                    flight,
+                    cache: self.cache.clone(),
+                    key,
+                },
+                hit,
+            )
         };
         loop {
+            remaining(deadline, Duration::MAX, speech_timeout)?;
+            let receiver = subscriber.receiver.as_mut().unwrap();
             let result = receiver.borrow().clone();
             if let Some(result) = result {
                 return result
                     .map(|bytes| (bytes, hit))
                     .map_err(|(status, code, message)| ApiError::new(status, code, message));
             }
-            receiver.changed().await.map_err(|_| cancelled())?;
+            tokio::select! {
+                biased;
+                _ = self.cancel.cancelled() => return Err(cancelled()),
+                _ = tokio::time::sleep_until(deadline) => return Err(speech_timeout()),
+                result = receiver.changed() => result.map_err(|_| cancelled())?,
+            }
         }
     }
     fn cache_key(&self, value: &Validated) -> String {
@@ -335,17 +427,25 @@ impl Speech {
         value: Validated,
         reservation: Reservation,
         key: &str,
+        deadline: Deadline,
     ) -> Result<Bytes> {
-        let permit = self.queue.enter(reservation, &self.cancel).await?;
+        let permit = self
+            .queue
+            .enter(reservation, &self.cancel, deadline, speech_timeout)
+            .await?;
         if let Some(bytes) = self.cached_wave(key) {
             return Ok(bytes);
         }
-        let (response, _permit, deadline) = self.upstream(&value, permit).await?;
+        let (response, _permit, deadline) = self.upstream(&value, permit, deadline).await?;
         let mut stream = response.bytes_stream();
         let mut bytes = Vec::new();
         loop {
-            let chunk = tokio::select! { chunk = stream.next() => chunk, _ = self.cancel.cancelled() => return Err(cancelled()),
-            _ = tokio::time::sleep_until(deadline) => return Err(ApiError::new(504, "TTS_TIMEOUT", "语音音频传输超时")) };
+            let chunk = tokio::select! {
+                biased;
+                _ = self.cancel.cancelled() => return Err(cancelled()),
+                _ = tokio::time::sleep_until(deadline) => return Err(speech_timeout()),
+                chunk = stream.next() => chunk,
+            };
             let Some(chunk) = chunk else {
                 break;
             };
@@ -367,40 +467,16 @@ impl Speech {
         let cacheable = wave::finish(&mut bytes);
         // Match the PCM path: retained allocation must fit the cache's byte budget.
         let bytes = Bytes::from(bytes.into_boxed_slice());
+        remaining(deadline, Duration::MAX, speech_timeout)?;
         if cacheable {
             // Commit before releasing the permit so queued POST callers can replay.
-            self.remember(key.to_owned(), bytes.clone());
+            self.remember(key.to_owned(), bytes.clone(), deadline);
         }
+        remaining(deadline, Duration::MAX, speech_timeout)?;
         Ok(bytes)
     }
-    fn remember(&self, key: String, bytes: Bytes) {
-        Self::remember_into(&self.cache, key, bytes, &self.cancel);
-    }
-    fn remember_into(
-        store: &Mutex<AudioCache>,
-        key: String,
-        bytes: Bytes,
-        cancel: &CancellationToken,
-    ) {
-        if bytes.len() > AUDIO_LIMIT || wave::inspect(&bytes).is_none() {
-            return;
-        }
-        let mut cache = store.lock().unwrap();
-        // close() clears under this same lock after cancellation. A late EOF
-        // cannot repopulate the cache after shutdown has already cleared it.
-        if cancel.is_cancelled() {
-            return;
-        }
-        if let Some(index) = cache.entries.iter().position(|(id, _)| id == &key) {
-            cache.bytes -= cache.entries.remove(index).unwrap().1.len();
-        }
-        cache.bytes += bytes.len();
-        cache.entries.push_back((key, bytes));
-        while cache.entries.len() > 60 || cache.bytes > AUDIO_LIMIT {
-            if let Some((_, old)) = cache.entries.pop_front() {
-                cache.bytes -= old.len();
-            }
-        }
+    fn remember(&self, key: String, bytes: Bytes, deadline: Deadline) {
+        Self::remember_into(&self.cache, key, bytes, &self.cancel, deadline);
     }
     pub fn close(&self) {
         let mut cache = self.cache.lock().unwrap();

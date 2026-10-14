@@ -396,6 +396,7 @@ const {
   videoImageId, videoImageUrl, firstFrameName,
   lastFrameImageId, lastFrameUrl, lastFrameName,
   uploadingImage, status, statusError,
+  persistImportedCtx: imageId => videoDraftTools.persistDraft(imageId),
 })
 
 

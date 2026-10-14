@@ -33,6 +33,7 @@ export interface VideoFramesDeps {
   uploadingImage: Ref<boolean>
   status: Ref<VideoStatusResponse | null>
   statusError: Ref<string>
+  persistImportedCtx: (sourceImageId: string) => boolean
 }
 
 function blobToBase64(blob: Blob): Promise<string> {
@@ -108,8 +109,9 @@ export function useVideoFrames(deps: VideoFramesDeps) {
       const blob = await artworkRepository.getImage(ctx.imageId)
       if (version !== firstVersion) return
       if (blob) {
+        const preview = URL.createObjectURL(blob)
         if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
-        videoImageUrl.value = URL.createObjectURL(blob)
+        videoImageUrl.value = preview
       } else {
         videoImageId.value = ''
         statusError.value = '带入的首帧原图已失效，请重新选择图片'
@@ -119,9 +121,16 @@ export function useVideoFrames(deps: VideoFramesDeps) {
 
   /** 绘图页「出视频」跨页上下文（一次性消费，videoStore 承载）。 */
   function consumeVideoCtx() {
-    const ctx = videoStore.consumeImageCtx()
+    const ctx = videoStore.pendingImageCtx
     if (!ctx || !ctx.imageId) return
-    void applyVideoCtx(ctx)
+    if (videoStore.videoDraft?.importSourceImageId !== ctx.imageId) {
+      void applyVideoCtx(ctx)
+      if (!deps.persistImportedCtx(ctx.imageId)) {
+        statusError.value = '视频草稿保存失败，绘图导入待办已保留；请保持页面打开并恢复存储后重试'
+        return
+      }
+    }
+    if (!videoStore.consumeImageCtx()) statusError.value = '视频草稿已保存，导入待办更新失败；请重新进入页面重试'
   }
 
   function clearFirstFrame() {
@@ -158,9 +167,12 @@ export function useVideoFrames(deps: VideoFramesDeps) {
       }
       const version = slot === 'first' ? ++firstVersion : ++lastVersion
       const controller = new AbortController()
+      const repository = artworkRepository
+      let imageId = '', published = false
       if (slot === 'first') { firstUpload?.abort(); firstUpload = controller }
       else { lastUpload?.abort(); lastUpload = controller }
-      const isCurrent = () => !disposed && !controller.signal.aborted && version === (slot === 'first' ? firstVersion : lastVersion)
+      const isCurrent = () => !disposed && !controller.signal.aborted && artworkRepository === repository
+        && version === (slot === 'first' ? firstVersion : lastVersion)
       pendingUploads++
       uploadingImage.value = true
       statusError.value = ''
@@ -169,8 +181,8 @@ export function useVideoFrames(deps: VideoFramesDeps) {
         if (!isCurrent()) return
         const upload = await uploadVideoImage(data, undefined, controller.signal)
         if (!isCurrent()) return
-        const imageId = await artworkRepository.putImage(file).catch(() => '')
-        if (!isCurrent()) { if (imageId) await artworkRepository.deleteImage(imageId).catch(() => {}); return }
+        imageId = await repository.putImage(file).catch(() => '')
+        if (!isCurrent()) return
         const preview = URL.createObjectURL(file)
         if (!imageId) statusError.value = '图片可用于本次生成，但本地保存失败，刷新或再次生成前需重新选择图片'
         if (slot === 'first') {
@@ -184,9 +196,11 @@ export function useVideoFrames(deps: VideoFramesDeps) {
           lastFrameName.value = upload.name
           lastFrameImageId.value = imageId
         }
+        published = true
       } catch (error) {
         if (isCurrent()) statusError.value = error instanceof Error ? error.message : '图片上传失败'
       } finally {
+        if (imageId && !published) await repository.deleteImage(imageId).catch(() => {})
         if (firstUpload === controller) firstUpload = null
         if (lastUpload === controller) lastUpload = null
         pendingUploads--
@@ -203,12 +217,13 @@ export function useVideoFrames(deps: VideoFramesDeps) {
     if (mode !== 'image' && mode !== 'first-last-frame') return {}
     const first = { id: videoImageId.value, name: firstFrameName.value, version: firstVersion }
     const last = { id: lastFrameImageId.value, name: lastFrameName.value, version: lastVersion }
+    const repository = artworkRepository
     // 服务端会清理已提交的输入文件；有本地原图时每次重传，没有耐久副本时旧名只使用一次。
     firstFrameName.value = ''
     if (mode === 'first-last-frame') lastFrameName.value = ''
     async function resolve(frame: { id: string; name: string }, label: string) {
       if (frame.id) {
-        const blob = await artworkRepository.getImage(frame.id)
+        const blob = await repository.getImage(frame.id)
         if (!blob) throw new Error(`${label}图片读取失败，请重新选择`)
         return (await uploadVideoImage(await blobToBase64(blob))).name
       }
@@ -220,6 +235,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
     try {
       const image = await resolve(first, '首帧')
       const lastFrame = mode === 'first-last-frame' ? await resolve(last, '尾帧') : undefined
+      if (repository !== artworkRepository) throw new Error('图片存储连接已更新，请确认后重新生成')
       if (first.version !== firstVersion || (mode === 'first-last-frame' && last.version !== lastVersion)) {
         throw new Error('准备期间帧图已更换，请确认后重新生成')
       }

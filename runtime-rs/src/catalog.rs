@@ -8,6 +8,7 @@ mod import;
 mod migration;
 mod projection_cache;
 mod query;
+mod showcase;
 mod snapshots;
 
 mod validation;

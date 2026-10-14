@@ -70,14 +70,18 @@ pub(super) async fn capture(
         if cancel.is_cancelled() {
             return Err(cancelled());
         }
-        let bytes = tokio::select! {bytes=read(config,name,native)=>bytes?,_=cancel.cancelled()=>return Err(cancelled())};
+        let bytes = Arc::new(
+            tokio::select! {bytes=read(config,name,native)=>bytes?,_=cancel.cancelled()=>return Err(cancelled())},
+        );
         let (mime, _) = decode::sniff(&bytes)
             .ok_or_else(|| error("TASK_INPUT_INVALID", "任务输入不是受支持的图像"))?;
         if !local {
             let owner = owner.ok_or_else(|| {
                 ApiError::new(403, "TASK_INPUT_FORBIDDEN", "图像素材需要所有者授权")
             })?;
-            if !admission::owner_matches(&root(config, native), name, &bytes, owner).await? {
+            if !admission::owner_matches(&root(config, native), name, bytes.clone(), owner, cancel)
+                .await?
+            {
                 return Err(ApiError::new(
                     403,
                     "TASK_INPUT_FORBIDDEN",
@@ -88,7 +92,7 @@ pub(super) async fn capture(
         originals.push(Original {
             name: name.into(),
             native,
-            bytes: Arc::new(bytes),
+            bytes,
             mime: mime.into(),
         });
     }

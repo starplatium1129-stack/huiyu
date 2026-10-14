@@ -104,11 +104,21 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
         await pb.loadHistory();
         if (disposed) return;
         // 深链参数恢复（?scene / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick / ?variant / ?generate）
-        if (typeof route.query.remix === 'string' || typeof route.query.variant === 'string') pb.restoreDraft();
+        // KeepAlive may finish hydrating an unchanged draft while hidden. A new
+        // generation owns its inputs and still needs normal draft persistence.
+        const restoreCurrent = () => !disposed && !generationBusy.value;
+        if (typeof route.query.remix === 'string' || typeof route.query.variant === 'string') {
+            await pb.restoreDraft(restoreCurrent);
+            if (disposed) return;
+            if (generationBusy.value) { draftInitialized = true; saveWorkspaceDraft(); return; }
+        }
         const handledDeepLink = await applyDeepLink(route.query);
         if (disposed) return;
-        if (!handledDeepLink)
-            pb.restoreDraft();
+        if (!handledDeepLink) {
+            await pb.restoreDraft(restoreCurrent);
+            if (disposed) return;
+            if (generationBusy.value) { draftInitialized = true; saveWorkspaceDraft(); return; }
+        }
         if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
         if (disposed) return;
         // F2：画布为空时找回上次未入册的临时成片（深链出图优先，不抢新任务）。

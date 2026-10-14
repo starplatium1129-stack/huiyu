@@ -8,8 +8,10 @@ const number = (value: unknown, fallback = 0) => typeof value === 'number' && Nu
 const record = (value: unknown): Record<string, unknown> => value && typeof value === 'object' ? value as Record<string, unknown> : {}
 export function taskVideoJob(task: TaskRecord): VideoJob {
   const input = task.input, metadata = task.metadata
+  const terminal = ['succeeded', 'failed', 'cancelled'].includes(task.status)
+  const elapsed = Math.max(0, Math.floor(((terminal ? task.updatedAt : Date.now()) - task.createdAt) / 1000))
   return { id: task.taskId, status: task.status === 'submitting' ? 'queued' : task.status, provider: 'comfy',
-    progress: task.status === 'succeeded' ? 1 : 0, estimatedSeconds: number(metadata.estimatedSeconds), elapsedSeconds: Math.max(0, Math.floor((Date.now() - task.createdAt) / 1000)),
+    progress: task.status === 'succeeded' ? 1 : 0, estimatedSeconds: number(metadata.estimatedSeconds), elapsedSeconds: terminal ? Math.max(0, number(metadata.elapsedSeconds, elapsed)) : elapsed,
     modelId: text(input.modelId), prompt: text(input.originalPrompt || input.prompt), width: number(input.width), height: number(input.height), duration: number(input.duration), fps: number(input.fps), seed: number(input.seed),
     createdAt: task.createdAt, resultAvailable: task.resultRefs.some(ref => ref.index === 0),
     resultUrl: task.resultRefs.some(ref => ref.index === 0) ? runtimeResultPath(task) : null,

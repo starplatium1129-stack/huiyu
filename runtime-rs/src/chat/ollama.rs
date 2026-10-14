@@ -1,5 +1,5 @@
 use super::{
-    Duration, Error, Result,
+    Duration, Error, Result, request_body,
     settings::Settings,
     stream::{Prepared, Protocol},
     transport::{self, Request, Transport},
@@ -11,6 +11,7 @@ use std::{
     time::Instant,
 };
 use tokio::sync::{OwnedSemaphorePermit, Semaphore};
+use tokio_util::sync::CancellationToken;
 
 pub(super) struct Ollama {
     slots: Arc<Semaphore>,
@@ -93,7 +94,8 @@ impl Ollama {
         &self,
         client: &Transport,
         settings: &Settings,
-        input: &Input,
+        input: Input,
+        cancel: &CancellationToken,
     ) -> Result<Prepared> {
         let started = Instant::now();
         let slot = self.slots.clone().try_acquire_owned().map_err(|_| {
@@ -103,12 +105,16 @@ impl Ollama {
                 "队列已满（ollama-chat，上限 16），请稍后再试",
             )
         })?;
-        let active = self
-            .active
-            .clone()
-            .acquire_owned()
-            .await
-            .map_err(|_| Error::stream("ABORTED", "聊天已停止"))?;
+        let active = tokio::select! {
+            biased;
+            _ = cancel.cancelled() => return Err(Error::stream("ABORTED", "聊天已停止")),
+            result = tokio::time::timeout(
+                Duration::from_secs(180),
+                self.active.clone().acquire_owned(),
+            ) => result
+                .map_err(|_| Error::stream("QUEUE_TIMEOUT", "聊天排队超时，请稍后重试"))?
+                .map_err(|_| Error::stream("ABORTED", "聊天已停止"))?,
+        };
         let permit = Permit {
             _slot: slot,
             _active: active,
@@ -128,12 +134,16 @@ impl Ollama {
         }
         let previous = self.model.lock().unwrap().clone();
         if !previous.is_empty() && previous != selected {
-            let unload = json!({"model":previous,"keep_alive":0,"stream":false});
+            let unload = request_body::encode(
+                json!({"model":previous,"keep_alive":0,"stream":false}),
+                cancel,
+            )
+            .await?;
             if let Ok(response) = client
                 .send(
                     target(settings, "/api/generate")?,
                     Request {
-                        body: Some(&unload),
+                        body: Some(unload),
                         key: "",
                         public_only: false,
                         idle: Duration::from_secs(8),
@@ -147,13 +157,15 @@ impl Ollama {
             }
         }
         *self.model.lock().unwrap() = selected.clone();
-        let body = json!({"model":selected,"messages":input.messages,"stream":true,"think":false,"keep_alive":settings.keep_alive,
+        let mut body = json!({"model":selected,"stream":true,"think":false,"keep_alive":settings.keep_alive,
             "options":{"temperature":0.72,"top_p":0.88,"repeat_penalty":1.1,"num_predict":settings.num_predict,"num_ctx":settings.num_context}});
+        body["messages"] = Value::Array(input.messages);
+        let body = request_body::encode(body, cancel).await?;
         let response = client
             .send(
                 target(settings, "/api/chat")?,
                 Request {
-                    body: Some(&body),
+                    body: Some(body),
                     key: "",
                     public_only: false,
                     idle: Duration::from_secs(180),

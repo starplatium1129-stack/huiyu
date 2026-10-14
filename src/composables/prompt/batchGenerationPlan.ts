@@ -5,6 +5,7 @@ import type { AnimaRequest } from '../generation/useAnimaSession'
 import type { SDQueueJob } from '../generation/useSDQueue'
 import type { BatchDrawRunnerInput, BatchDrawRunnerResult } from '../generation/useBatchDraw'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
+import type { AnimaJobMetadata } from '@/types/anima'
 
 type HistoryInput = Parameters<ReturnType<typeof usePromptBuilderStore>['commitHistoryEntry']>[0]
 type HistorySnapshot = Omit<HistoryInput, 'blob'>
@@ -13,6 +14,26 @@ export type PreparedBatchImage = { adult: boolean; history: HistorySnapshot } & 
   | { engine: 'anima' | 'krea2'; request: AnimaRequest; context: Record<string, unknown> }
 )
 const record = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+
+/** Direct jobs supply their own recipe; creative fields remain in the prepared plan. */
+export function batchHistoryFromMetadata(plan: Exclude<PreparedBatchImage, { engine: 'sd' }>, metadata: AnimaJobMetadata): HistorySnapshot {
+  return {
+    ...plan.history,
+    engine: metadata.engine, provider: metadata.provider,
+    prompt: metadata.prompt, negative: metadata.negative, seed: metadata.seed,
+    profile: metadata.profileId, model: metadata.modelId,
+    lora: metadata.loraId, loraId: metadata.loraId, loraStrength: metadata.loraStrength,
+    loras: metadata.loras?.map(lora => ({ ...lora })), noLora: !metadata.loraId,
+    styleLoraId: metadata.styleLoraId ?? null, preview: metadata.preview === true,
+    cfg: metadata.cfg, steps: metadata.steps, sampler: metadata.sampler, scheduler: metadata.scheduler,
+    size: `${metadata.width}x${metadata.height}`,
+    hiresFix: metadata.hiresFix ?? Boolean(plan.request.hiresFix),
+    hiresScale: metadata.hiresScale ?? plan.request.hiresScale,
+    hiresDenoise: metadata.hiresDenoise ?? plan.request.hiresDenoise,
+    hiresUpscaler: metadata.hiresUpscaler !== undefined ? metadata.hiresUpscaler ?? '' : plan.request.hiresUpscaler,
+    hiresSteps: metadata.hiresSteps, faceDetailer: metadata.faceDetailer ?? false,
+  }
+}
 
 export function readPreparedBatch(value: unknown): PreparedBatchImage | null {
   if (!record(value) || typeof value.adult !== 'boolean' || !record(value.history) || typeof value.history.prompt !== 'string') return null

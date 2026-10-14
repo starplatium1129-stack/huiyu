@@ -27,6 +27,14 @@ pub(in crate::resources) fn hostname() -> Result<String> {
     }
 }
 pub(in crate::resources) fn space(path: &Path, needed: u64) -> Result<()> {
+    let available = available_space(path)?;
+    if available < needed {
+        Err(Error::new("ENOSPC", "Not enough free space; previous installation retained"))
+    } else {
+        Ok(())
+    }
+}
+pub(in crate::resources) fn available_space(path: &Path) -> Result<u64> {
     #[cfg(windows)]
     let available = {
         use std::os::windows::ffi::OsStrExt;
@@ -64,12 +72,5 @@ pub(in crate::resources) fn space(path: &Path, needed: u64) -> Result<()> {
         let bytes = u128::from(stat.f_bavail) * u128::from(stat.f_frsize);
         bytes.min(u128::from(u64::MAX)) as u64
     };
-    if available < needed {
-        Err(Error::new(
-            "ENOSPC",
-            "Not enough free space; previous installation retained",
-        ))
-    } else {
-        Ok(())
-    }
+    Ok(available)
 }

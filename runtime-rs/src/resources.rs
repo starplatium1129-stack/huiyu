@@ -19,6 +19,9 @@ pub use manager::Service;
 pub(crate) fn check_available_space(path: &std::path::Path, needed: u64) -> Result<()> {
     fs::space(path, needed)
 }
+pub(crate) fn available_space(path: &std::path::Path) -> Result<u64> {
+    fs::available_space(path)
+}
 
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};

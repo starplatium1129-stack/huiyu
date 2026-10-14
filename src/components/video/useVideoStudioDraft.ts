@@ -51,10 +51,12 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
   let disposed = false
   let restoreRequest: AbortController | null = null
   let reconnectRequest: AbortController | null = null
+  let importSourceImageId = ''
   onScopeDispose(() => { disposed = true; restoreRequest?.abort(); reconnectRequest?.abort() }, true)
 
-  function persistDraft() {
-    if (restoring) return
+  function persistDraft(sourceImageId?: string): boolean {
+    if (restoring) return false
+    if (sourceImageId) importSourceImageId = sourceImageId
     window.clearTimeout(draftTimer); draftTimer = 0
     const draft: VideoDraftPayload = {
       mode: deps.selectedMode.value,
@@ -69,6 +71,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
       motion: deps.motion.value,
       seedText: deps.seedText.value,
       videoImageId: deps.videoImageId.value,
+      ...(importSourceImageId ? { importSourceImageId } : {}),
       lastFrameImageId: deps.lastFrameImageId.value,
       updatedAt: Date.now(),
     }
@@ -76,6 +79,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     if (saveFailed) {
       deps.onPersistError('视频草稿保存失败（存储空间不足）：内容仍在页面中，但刷新后可能丢失')
     }
+    return !saveFailed
   }
 
   /** 监听草稿字段（防抖 350ms）；返回停止函数由调用方挂到卸载钩子。 */
@@ -106,8 +110,9 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
       const blob = await artworkRepository.getImage(imageId, signal)
       if (!current()) return true
       if (!blob || !blob.size) { idRef.value = ''; return false }
+      const preview = URL.createObjectURL(blob)
       if (previousUrl) URL.revokeObjectURL(previousUrl)
-      urlRef.value = URL.createObjectURL(blob)
+      urlRef.value = preview
       return true
     } catch {
       if (!current()) return true
@@ -128,6 +133,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     const controller = new AbortController(); restoreRequest = controller
     restoring = true
     try {
+      importSourceImageId = typeof draft.importSourceImageId === 'string' ? draft.importSourceImageId : ''
       if (['text', 'image', 'first-last-frame'].includes(draft.mode)) {
         deps.selectedMode.value = draft.mode as VideoMode
       }

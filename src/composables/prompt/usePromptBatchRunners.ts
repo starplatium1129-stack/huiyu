@@ -1,7 +1,7 @@
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { hasRuntimeTasks } from '../../api/runtimeTaskAuthority'
 import { createBatchDrawPlanStorage } from '../generation/batchDrawPlan'
-import { readPreparedBatch, recoverBatchTask, batchFailure, type PreparedBatchImage } from './batchGenerationPlan'
+import { readPreparedBatch, recoverBatchTask, batchFailure, batchHistoryFromMetadata, type PreparedBatchImage } from './batchGenerationPlan'
 import { useTrackedTask } from '../useTaskCenter.ts'
 import { ref, shallowRef, type Ref } from 'vue'
 import { endfieldAnimaBinding } from '../../utils/loraCatalog.ts'
@@ -31,10 +31,29 @@ import type { useLegacySdTasks, LegacySdObserveOptions } from '../generation/use
 import type { usePromptAssembly } from './usePromptAssembly.ts'
 import { useBatchDraw, type BatchDrawRunnerInput, type BatchDrawRunnerResult, type BatchEngine, type BatchTargetItem } from '../generation/useBatchDraw.ts'
 import type { SDQueueJob } from '../generation/useSDQueue.ts'
+import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
+import { getDesktopRuntime } from '@/platform/desktop/runtime'
+import { registerMigrationArtworkSource } from '@/platform/web/migrationBarrier'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
 type PromptAssembly = ReturnType<typeof usePromptAssembly>
+type HistoryInput = Parameters<PromptBuilderStore['commitHistoryEntry']>[0]
+// Route disposal stops observation. Unarchived bytes keep their original
+// request identity until this application session can finish saving them.
+type PendingBatchSave = { entry: HistoryInput; repository: ArtworkRepository; authority: string; runtimeOwned: boolean; saved?: HistoryEntry }
+const pendingBatchSaves = new Map<string, PendingBatchSave>()
+let releaseArtworkSource: (() => void) | undefined
+const hasUndurableBatchSource = () => [...pendingBatchSaves.values()].some(pending => !pending.saved && !(pending.runtimeOwned && pending.entry.taskId))
+function updateArtworkSource() {
+  if (hasUndurableBatchSource()) releaseArtworkSource ??= registerMigrationArtworkSource(hasUndurableBatchSource)
+  else { releaseArtworkSource?.(); releaseArtworkSource = undefined }
+}
+function batchSaveAuthority() {
+  const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
+  return JSON.stringify([workspace?.workspaceId, workspace?.principalId])
+}
+const ownsPendingSave = (pending: Pick<PendingBatchSave, 'repository' | 'authority'>) => pending.repository === artworkRepository && pending.authority === batchSaveAuthority()
 
 export interface PromptBatchRunnersDeps {
   pb: PromptBuilderStore
@@ -46,8 +65,6 @@ export interface PromptBatchRunnersDeps {
   animaState: AnimaSession['state']
   /** 历史 SD 批次仅通过原任务查询与收集结果。 */
   runJob: (job: Omit<SDQueueJob, 'id'>, opts?: LegacySdObserveOptions & { disableLora?: boolean }) => Promise<string | null>
-  /** 历史入册的引擎字段快照（Anima 读 result/job metadata，SD 读面板状态）。 */
-  historyGenerationFields: () => Partial<HistoryEntry>
   sceneBlueprints: () => SceneBlueprint[]
   popularCharacters?: () => PopularCharacter[]
   currentBasePrompt?: () => string
@@ -70,11 +87,10 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   const animaTransport = createBatchAnimaTransport(() => animaState.value.family)
   let characters: PopularCharacter[] | null = null
   let blueprints: SceneBlueprint[] | null = null
-  let fields: Partial<HistoryEntry> = {}
   let runEngine: Exclude<BatchEngine, 'sd'> = 'anima'
-  const plans = new Map<string, { negative: string; outfitId?: string; size?: string; colorMood?: string | null }>()
+  type StyleSnapshot = Pick<HistoryEntry, 'emotion' | 'shot' | 'lighting' | 'composition' | 'colorMood'>
+  const plans = new Map<string, { negative?: string; outfitId?: string; size?: string; style: StyleSnapshot }>()
   const clone = <T,>(value: T): T => value == null ? value : JSON.parse(JSON.stringify(value)) as T
-  const historyGenerationFields = () => fields
   function captureBatch() {
     const live = deps.pb
     pb = { ...live, subject: clone(live.subject), selections: clone(live.selections), sdParams: clone(live.sdParams),
@@ -83,8 +99,8 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     blueprints = clone(deps.sceneBlueprints())
     negativePrompt.value = deps.negativePrompt.value
     modelProfile.value = clone(deps.modelProfile.value)
-    animaState.value = clone(deps.animaState.value); fields = clone(deps.historyGenerationFields())
-    runEngine = batchEngine.value; plans.clear(); pendingSaves.clear()
+    animaState.value = clone(deps.animaState.value)
+    runEngine = batchEngine.value; plans.clear()
   }
   const blueprintList = () => blueprints || deps.sceneBlueprints()
 
@@ -218,10 +234,16 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         matureTokens: new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => normalizeKey(tag.en))),
         artistTags: artistTagsForEngine(pb.artistStyleIds, engine), artistProse: artistStyleProse(pb.artistStyleIds, engine),
       })
-      plans.set(target.id, { negative: planResult.negative, outfitId: outfit.id, size: blueprint?.recommendedSize, colorMood: mood?.id ?? null })
+      plans.set(target.id, { negative: planResult.negative, outfitId: outfit.id, size: blueprint?.recommendedSize,
+        style: { emotion: pb.emotionPrompt ? [...pb.selections.emotion] : [], shot: shot ?? decisions?.shot ?? null,
+          lighting: lighting ?? decisions?.lighting ?? null, composition: composition ?? decisions?.composition ?? null, colorMood: mood?.id ?? null } })
       return planResult.prompt
     }
     if (charInfo?.kind === 'studio') {
+      // 角色漫游继承已捕获的完整词条；独立蓝图只使用自己的描述。
+      plans.set(target.id, { style: target.kind === 'character'
+        ? { ...pb.selections, emotion: [...pb.selections.emotion], colorMood: pb.colorMood }
+        : { emotion: [], shot: null, lighting: null, composition: null, colorMood: null } })
       return [CHAR_PROMPT[charInfo.charKey], detectOutfitOverrideFromContext()?.join(', '), baseText].filter(Boolean).join(', ')
     }
     if (target.kind === 'character') throw new Error('目标角色已不可用')
@@ -281,19 +303,18 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       hiresDenoise: animaState.value.hiresDenoise,
       hiresUpscaler: animaState.value.hiresUpscaler,
     }
-    const history = {
-        ...historyGenerationFields(),
+    const history: PreparedBatchImage['history'] = {
+        ...plans.get(target.id)!.style,
         seed: request.seed, negative: request.negative, prompt,
         size: `${request.width}x${request.height}`, engine: animaState.value.family === 'krea2' ? 'krea2' as const : 'anima' as const,
         model: request.modelId, profile: request.profileId, loraId: request.loraId, loraStrength: request.loraStrength,
-        noLora: !request.loraId,
+        lora: request.loraId, noLora: !request.loraId, styleLoraId: request.styleLoraId ?? null,
         cfg: request.cfg, steps: request.steps, sampler: animaState.value.sampler, scheduler: animaState.value.scheduler,
-        visualDescription: pb.visualDescription, manual_tags: [...pb.manualTags], artistStyleIds: [...pb.artistStyleIds],
+        visualDescription: pb.visualDescription, manual_tags: [...pb.manualTags], artistStyleIds: [...pb.artistStyleIds], project: pb.projectId,
         // 精准覆盖角色元数据
         ...(isTargetPopular ? {
           subject: 'popular' as const,
           characterId: charInfo.char.id,
-          colorMood: plans.get(target.id)?.colorMood ?? null,
           outfitId: plans.get(target.id)?.outfitId || defaultOutfit(charInfo.char)?.id,
           blueprintId: target.kind === 'scene' ? target.id : null,
         } : charInfo?.kind === 'studio' ? {
@@ -307,39 +328,60 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         hiresFix: Boolean(animaState.value.hiresFix),
         hiresScale: animaState.value.hiresScale,
         hiresDenoise: animaState.value.hiresDenoise,
+        hiresUpscaler: request.hiresUpscaler,
     }
     return { engine: animaState.value.family === 'krea2' ? 'krea2' : 'anima', request, history,
       adult: blueprintList().find(item => item.id === target.id)?.adult === true,
-      context: { history, char: history.character, characterId: history.characterId,
+      context: { history, char: history.character, characterId: history.characterId, sceneId: history.scene,
         outfitId: history.outfitId, blueprintId: history.blueprintId, story: history.story } }
   }
 
-  type HistoryInput = Parameters<PromptBuilderStore['commitHistoryEntry']>[0]
-  const pendingSaves = new Map<string, HistoryInput>()
-  const saveKey = (input: BatchDrawRunnerInput) => `${input.scene.id}:${input.seed}:${input.variant}`
-  async function persist(input: BatchDrawRunnerInput, entry: HistoryInput): Promise<BatchDrawRunnerResult> {
-    const key = saveKey(input)
-    pendingSaves.set(key, entry)
-    const saved = await pb.commitHistoryEntry(entry)
-    if (!saved) return { ok: false, unresolved: true, error: '图片已生成，入册失败；继续会重新保存，不重复出图', resultUrl: URL.createObjectURL(entry.blob) }
+  const pendingSaves = pendingBatchSaves
+  async function persist(input: BatchDrawRunnerInput, pending: PendingBatchSave): Promise<BatchDrawRunnerResult> {
+    const key = input.requestKey
+    pendingSaves.set(key, pending)
+    updateArtworkSource()
+    const changed = () => ({ ok: false, unresolved: true, pendingImage: true,
+      error: '作品库身份已变化，原图和请求编号已保留；请回到原工作区继续入册' })
+    if (!ownsPendingSave(pending)) return changed()
+    let saved: HistoryEntry | null = pending.saved ?? null
+    if (!saved) {
+      try { saved = await pb.commitHistoryEntry(pending.entry, pending.repository) }
+      catch { /* Keep the original bytes and request identity for save-only recovery. */ }
+      if (saved) { pending.saved = saved; updateArtworkSource() }
+    }
+    if (!ownsPendingSave(pending)) return changed()
+    if (!saved) return { ok: false, unresolved: true, pendingImage: true, error: '图片已生成，入册失败；继续会重新保存，不重复出图' }
     pendingSaves.delete(key)
-    return { ok: true, resultUrl: URL.createObjectURL(entry.blob), historyId: saved.id }
+    updateArtworkSource()
+    return { ok: true, historyId: saved.id, imageId: saved.image_id }
   }
 
+  let planOwner = { repository: artworkRepository, authority: batchSaveAuthority() }
+  const checkPlanOwner = () => { if (!ownsPendingSave(planOwner)) throw new Error('批次所属作品库已变化，请回到原工作区继续；原计划未写入其他资料库') }
+  const batchStorage = createBatchDrawPlanStorage()
   const batchDraw = useBatchDraw({
-    storage: createBatchDrawPlanStorage(),
+    storage: { async write(plan) { checkPlanOwner(); await batchStorage.write(plan) },
+      async clear() { checkPlanOwner(); await batchStorage.clear() }, read() {
+      checkPlanOwner()
+      const plan = batchStorage.read()
+      plan?.jobs.forEach(job => { if (pendingSaves.has(job.requestKey)) { job.pendingImage = true; job.status = 'unknown' } })
+      return plan
+    } },
     prepare: input => clone(prepareBatchAnima(input)) as unknown as Record<string, unknown>,
     onFlash: (message) => pb.flash(message),
     run: async (input) => {
       const plan = readPreparedBatch(input.snapshot)
       if (!plan) return { ok: false, unresolved: input.reconnect, error: '原批次参数快照不可用；请核对任务中心中的原任务。' }
       if (hasRuntimeTasks() !== batchDraw.runtimeOwned()) return { ok: false, unresolved: true, error: '原批次生成环境已改变，请恢复原工作区后核对任务。' }
-      const saved = pendingSaves.get(saveKey(input))
+      const saved = pendingSaves.get(input.requestKey)
       if (saved) return persist(input, saved)
+      const owner = { repository: artworkRepository, authority: batchSaveAuthority(), runtimeOwned: batchDraw.runtimeOwned() }
+      const save = (entry: HistoryInput) => persist(input, { ...owner, entry })
       try {
         if (input.reconnect && batchDraw.runtimeOwned()) {
           const result = await recoverBatchTask(input)
-          return persist(input, { ...plan.history, ...result })
+          return save({ ...plan.history, ...result })
         }
         if (plan.engine === 'sd') {
           if (!input.reconnect) return { ok: false, error: 'SD 新生成已退役；仅核对原批次中已接收的任务。' }
@@ -354,7 +396,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
           const response = await runtimeFetch(url, { cache: 'no-store', signal: input.signal })
           if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error('成片响应不是图片')
           const blob = await response.blob()
-          return persist(input, { ...plan.history, blob, seed: input.seed >= 0 ? input.seed : sd.resultSeed.value ?? undefined,
+          return save({ ...plan.history, blob, seed: input.seed >= 0 ? input.seed : sd.resultSeed.value ?? undefined,
             ...(input.taskId && batchDraw.runtimeOwned() ? { taskId: input.taskId } : sd.resultTaskId?.value ? { taskId: sd.resultTaskId.value } : {}) })
         }
         const nativeBlocker = !input.reconnect && deps.animaState.value.provider === 'native' && nativeAnimaRequestBlocker(deps.animaState.value.models, plan.request)
@@ -363,7 +405,8 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
           { requestKey: input.requestKey, onAccepted: input.accepted, signal: input.signal, resumeId: input.reconnect ? input.taskId : undefined,
             onSubmitting: input.submitting,
             reconnect: input.reconnect, family: plan.engine })
-        return persist(input, { ...plan.history, ...result })
+        return save({ ...(result.metadata ? batchHistoryFromMetadata(plan, result.metadata) : plan.history),
+          blob: result.blob, seed: result.seed, taskId: result.taskId })
       } catch (error) {
         if (!input.taskId && !input.reconnect && batchDraw.cancelRequested.value && error instanceof Error && error.name === 'AbortError') return { ok: false, cancelled: true }
         return batchFailure(input, error, batchDraw.runtimeOwned())
@@ -374,6 +417,12 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
 
   const disposeBatch = batchDraw.dispose
   batchDraw.dispose = () => { animaTransport.dispose(); disposeBatch() }
+  const resetBatch = batchDraw.reset
+  batchDraw.reset = async () => {
+    const keys = batchDraw.jobs.value.map(job => job.requestKey)
+    await resetBatch()
+    if (!batchDraw.jobs.value.length) { keys.forEach(key => pendingSaves.delete(key)); updateArtworkSource() }
+  }
 
   function selectedSeed() {
     const seed = animaState.value.seed
@@ -383,6 +432,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   /** 按场景蓝图启动批量出图 */
   async function onBatchStart(payload: { sceneIds: string[]; count: number }) {
     if (batchDraw.running.value || batchDraw.resetting.value) return
+    if (batchDraw.progress.value.unresolved) { pb.flash('请先核对本批已接收任务，再开启新计划。'); return }
     captureBatch()
     const scenes: BatchTargetItem[] = payload.sceneIds.map(id => {
       const blueprint = blueprintList().find(item => item.id === id)
@@ -396,12 +446,14 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     }).filter(item => item.prose)
     if (!scenes.length) { pb.flash('所选场景没有可用的描述'); return }
     const baseSeed = selectedSeed()
+    planOwner = { repository: artworkRepository, authority: batchSaveAuthority() }
     await batchDraw.start(scenes, payload.count, baseSeed, '个场景', { engine: runEngine, runtimeOwned: hasRuntimeTasks() })
   }
 
   /** 按多角色启动批量漫游出图（相同词条，不同角色） */
   async function onBatchStartCharacters(payload: { characterIds: string[]; count: number; basePrompt?: string }) {
     if (batchDraw.running.value || batchDraw.resetting.value) return
+    if (batchDraw.progress.value.unresolved) { pb.flash('请先核对本批已接收任务，再开启新计划。'); return }
     captureBatch()
     // 优先读取当前绘图台完整编译的实时提示词，若无再回退故事/描述
     const liveRaw = deps.currentLivePrompt?.() || ''
@@ -439,6 +491,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
 
     if (!targets.length) { pb.flash('所选角色无效'); return }
     const baseSeed = selectedSeed()
+    planOwner = { repository: artworkRepository, authority: batchSaveAuthority() }
     await batchDraw.start(targets, payload.count, baseSeed, '位角色', { engine: runEngine, runtimeOwned: hasRuntimeTasks() })
   }
 
@@ -453,5 +506,9 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   }
 
   useTrackedTask(() => ({ kind: 'batch', title: `批量出图 · ${batchDraw.progress.value.total} 张`, route: '/prompt-builder?taskCenter=batch', resultRoute: batchDraw.progress.value.succeeded ? '/gallery?batch=' + encodeURIComponent(String(batchDraw.jobs.value.filter(job => job.historyId != null).at(-1)?.historyId || '')) : undefined, status: batchDraw.running.value ? 'running' : !batchDraw.jobs.value.length ? 'idle' : batchDraw.progress.value.unresolved || batchDraw.progress.value.remaining ? 'interrupted' : batchDraw.progress.value.failed ? 'failed' : batchDraw.progress.value.cancelled ? 'cancelled' : 'succeeded', progress: batchDraw.progress.value.total ? batchDraw.progress.value.done / batchDraw.progress.value.total * 100 : null, message: `${batchDraw.jobs.value.find(job => job.status === 'running' || job.status === 'accepted')?.message || ''} ${batchDraw.progress.value.succeeded} 张成功 · ${batchDraw.progress.value.failed} 张失败 · ${batchDraw.progress.value.remaining} 张未执行 · ${batchDraw.progress.value.unresolved} 张待核对` }), { cancel: batchDraw.cancel, retry: () => batchDraw.progress.value.unresolved || batchDraw.progress.value.remaining ? batchDraw.resume() : onRetryFailed() })
-  return { batchEngine, batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed }
+  return { batchEngine, batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed,
+    pendingImage: (requestKey: string) => {
+      const pending = pendingSaves.get(requestKey)
+      return pending && ownsPendingSave(pending) ? pending.entry.blob : null
+    } }
 }

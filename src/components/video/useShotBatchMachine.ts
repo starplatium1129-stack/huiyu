@@ -6,10 +6,12 @@ import {
   createVideoBatch,
   fetchVideoBatch,
   retryVideoShot,
+  retryGatewayVideoShots,
   type VideoBatch,
   type VideoQuality,
 } from '@/api/videoApi'
 import { ApiClientError } from '@/api/client'
+import { isRuntimeTaskId } from '@/api/runtimeTasks'
 import type { ShotDraft } from './shotListTypes'
 import type { ShotSubmissionRecord } from '@/stores/videoStore'
 import type { ShotCastRef } from './useReferenceCards'
@@ -225,7 +227,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
 
   async function retryShotAt(index: number) {
     const sourceIndex = submittedIndex(index)
-    if (!batch.value || retrying.value || cancelling.value || concating.value || batchRecoveryPending.value || sourceIndex < 0 || !batch.value.shots[sourceIndex]) return
+    if (!batch.value || batchActive.value || retrying.value || cancelling.value || concating.value || batchRecoveryPending.value || sourceIndex < 0 || !batch.value.shots[sourceIndex]) return
     const id = batch.value.id
     const serial = beginOperation()
     retrying.value = true
@@ -242,25 +244,27 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   }
 
   async function retryAllFailed() {
-    if (!batch.value || retrying.value || cancelling.value || concating.value || batchRecoveryPending.value) return
+    if (!batch.value || batchActive.value || retrying.value || cancelling.value || concating.value || batchRecoveryPending.value) return
     const id = batch.value.id
     const serial = beginOperation()
     const indices = batch.value.shots.flatMap((shot, index) => shot.status === 'failed' || shot.status === 'cancelled' ? [index] : [])
+    if (!indices.length) return
     retrying.value = true
     batchError.value = ''
     try {
+      if (!isRuntimeTaskId(id)) {
+        const response = await retryGatewayVideoShots(id, indices.map(index => index + 1))
+        if (!disposed && batch.value?.id === id && serial === operationSerial) acceptRetry(response.batch, id)
+        return
+      }
       for (const index of indices) {
         if (disposed || batch.value?.id !== id || serial !== operationSerial) return
-        try {
-          const response = await retryVideoShot(id, index + 1)
-          if (disposed || batch.value?.id !== id || serial !== operationSerial) return
-          acceptRetry(response.batch, id)
-        } catch (error) {
-          if (disposed || batch.value?.id !== id || serial !== operationSerial) return
-          batchError.value = error instanceof Error ? error.message : '重抽失败'
-          return
-        }
+        const response = await retryVideoShot(id, index + 1)
+        if (disposed || batch.value?.id !== id || serial !== operationSerial) return
+        acceptRetry(response.batch, id)
       }
+    } catch (error) {
+      if (!disposed && batch.value?.id === id && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '重抽失败'
     } finally {
       retrying.value = false
       schedulePoll()

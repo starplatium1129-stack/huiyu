@@ -13,6 +13,7 @@ pub mod journal;
 mod prompt;
 pub mod recovery;
 mod recovery_claim;
+mod request_body;
 mod save;
 pub(crate) mod scenes;
 pub mod semantics;
@@ -198,8 +199,6 @@ async fn save_content(
             "请求体无效或超过上限",
         )
     })?;
-    let body: Value =
-        serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?;
     let slot = service
         .write_slots
         .clone()
@@ -207,6 +206,7 @@ async fn save_content(
         .map_err(|_| Error::new(429, "MAINTENANCE_QUEUE_FULL", "维护保存队列已满"))?;
     let cancel = app.shutdown.child_token();
     let _cancel_on_drop = cancel.clone().drop_guard();
+    let prepared = request_body::parse(body, slot, &cancel).await?;
     let lock = tokio::select! {_ = cancel.cancelled()=>return Err(Error::new(499,"ABORT_ERR","维护保存已取消")),lock=service.write_lock.clone().lock_owned()=>lock};
     // The blocking transaction owns admission until it commits or completes
     // rollback, including when the HTTP future is dropped during disconnect.
@@ -215,14 +215,17 @@ async fn save_content(
         .admit_owned()
         .map_err(|error| Error::new(error.status.as_u16(), &error.code, error.message))?;
     let value = blocking(move || {
-        let _guards = (slot, lock, admission);
+        let _guards = (lock, admission);
         let result = content_products::save(
             &service.options,
-            &body,
+            &prepared.0,
             uri.path() == "/api/maintenance/home-hero",
             &cancel,
         );
         *service.hero.lock().unwrap() = None;
+        // Tuple field order keeps admission until the parsed body is destroyed,
+        // including cancellation while queued or a detached blocking transaction.
+        drop(prepared);
         result
     })
     .await?;

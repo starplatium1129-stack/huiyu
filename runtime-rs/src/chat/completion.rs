@@ -43,7 +43,7 @@ impl ChatService {
                 .get_or_init(|| settings::Settings::read(config))
                 .await;
             if let Some(api) = settings.read_host().await {
-                return complete_api(&self.transport, &api, messages).await;
+                return complete_api(&self.transport, &api, messages, &cancel).await;
             }
             let input = validation::Input {
                 model: String::new(),
@@ -55,7 +55,7 @@ impl ChatService {
             };
             let prepared = self
                 .ollama
-                .prepare(&self.transport, settings, &input)
+                .prepare(&self.transport, settings, input, &cancel)
                 .await?;
             stream::collect_text(prepared, cancel.clone()).await
         };
@@ -74,6 +74,7 @@ pub(super) async fn complete_api(
     client: &transport::Transport,
     api: &validation::Api,
     messages: Vec<Value>,
+    cancel: &CancellationToken,
 ) -> Result<String> {
     let target = url::Url::parse(&api.base_url)
         .and_then(|base| base.join(&api.pathname))
@@ -86,13 +87,14 @@ pub(super) async fn complete_api(
         reasoning: "off".into(),
         messages,
     };
-    let mut body = compatible::payload(&input, api);
+    let mut body = compatible::payload(input, api);
     body["stream"] = json!(false);
+    let body = request_body::encode(body, cancel).await?;
     let response = client
         .send(
             target,
             transport::Request {
-                body: Some(&body),
+                body: Some(body),
                 key: &api.key,
                 public_only: false,
                 idle: Duration::from_secs(120),

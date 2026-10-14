@@ -1,9 +1,11 @@
 mod history;
-mod inputs;
+pub(super) mod inputs;
 mod listing;
+mod result_reference;
 mod scopes;
 
 pub(super) use scopes::initialize;
+pub(super) use result_reference::ResultReference;
 
 pub(super) mod outputs;
 
@@ -101,6 +103,9 @@ pub(super) fn read_revision(c: &Context, principal: &str, task_id: &str) -> Resu
 
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let kind = string(command, "kind")?;
+    if kind == "task.result.reference" {
+        return result_reference::read(c, principal, command);
+    }
     if kind.starts_with("task.input.") {
         return inputs::execute(c, principal, command);
     }

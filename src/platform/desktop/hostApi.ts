@@ -1,5 +1,5 @@
 interface DesktopHostApi {
-  core: { invoke<T>(command: string, args?: Record<string, unknown>): Promise<T> }
+  core: { invoke<T>(command: string, args?: Record<string, unknown> | Uint8Array, options?: { headers?: HeadersInit }): Promise<T> }
   event: { listen<T>(name: string, listener: (event: { payload: T }) => void): Promise<() => void> }
   window: { getCurrentWindow(): { startDragging(): Promise<void> } }
 }

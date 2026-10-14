@@ -1,13 +1,14 @@
 import { configureArtworkRepository } from '@/storage/artworkRepository'
 import { createWebArtworkRepository } from './web/artworkRepository'
 import { assertMigrationAuthority } from './web/migrationAuthority'
-import { initializeMigrationParticipant, retireWebArtworkWrites } from './web/migrationBarrier'
+import { hasPendingArtworkSource, initializeMigrationParticipant, retireWebArtworkWrites } from './web/migrationBarrier'
 import { activateProfileStorage, flushProfileWrites, hasPendingProfileWrites, hasProfileRecoveryData, profileRuntimeActive, refreshProfileStorage, setProfileConnectionBlocked } from './web/profileStorage'
 import { createProfilePort } from './web/profilePort'
 import { workspaceRequest } from '@/api/workspace'
 import { createDesktopArtworkRepository } from './desktop/artworkRepository'
 import { getDesktopRuntime, initializeDesktopRuntime, onDesktopRuntime, refreshDesktopRuntime } from './desktop/runtime'
 import { hostApi } from './desktop/hostApi'
+import { consumeTaskReloadApproval } from '@/composables/useTaskCenter'
 import { isNativeDesktopOrigin } from './desktopOrigins.ts'
 import { artworkCleanupFrozen, maintenanceFrozen } from './maintenanceParticipants'
 
@@ -31,7 +32,7 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
     // Register the window lease before the final startup authority read, so a
     // concurrent migration either awaits this window or precedes its handshake.
     await refreshDesktopRuntime()
-    let selected = '', syncing = Promise.resolve(), syncedAuthority = '', syncQueued = false
+    let selected = '', webSelected = false, syncing = Promise.resolve(), syncedAuthority = '', syncQueued = false
     const authorityKey = () => {
       const bootstrap = getDesktopRuntime().bootstrap, session = bootstrap?.runtime?.workspace
       return JSON.stringify([bootstrap?.sourceProfileId, bootstrap?.sourceOrigin, session?.workspaceId, session?.generation, session?.activeMigrationId, session?.domains])
@@ -43,8 +44,9 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
       if (session?.domains.includes('artwork')) {
         if (!selected) { configureArtworkRepository(createDesktopArtworkRepository()); retireWebArtworkWrites() }
         selected = session.workspaceId
-      } else if (!selected && !isNativeDesktopOrigin(location.origin)) {
+      } else if (!selected && !webSelected && !isNativeDesktopOrigin(location.origin)) {
         configureArtworkRepository(createWebArtworkRepository())
+        webSelected = true
       }
       if (session && ['settings', 'chat', 'draft'].every(domain => session.domains.includes(domain as 'settings' | 'chat' | 'draft'))) {
         if (!profileRuntimeActive()) await activateProfileStorage(createProfilePort(workspaceRequest), state.bootstrap!.windowId)
@@ -85,7 +87,8 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
     stopArtworkCleanup = await installDesktopArtworkCleanup({ isBusy, waitForSync: () => syncing })
   }
   const preventLoss = (event: BeforeUnloadEvent) => {
-    if (hasPendingProfileWrites() || hasProfileRecoveryData()) { event.preventDefault(); event.returnValue = '' }
+    const approved = consumeTaskReloadApproval(event)
+    if (hasPendingProfileWrites() || hasProfileRecoveryData() || hasPendingArtworkSource() && !approved) { event.preventDefault(); event.returnValue = '' }
   }
   window.addEventListener('beforeunload', preventLoss)
   return () => { alive = false; stopArtworkCleanup(); stopMaintenance(); stopConnection(); stopRuntime(); window.removeEventListener('beforeunload', preventLoss) }

@@ -1,7 +1,8 @@
 use super::*;
 use canonical::entity_key;
+use std::borrow::Cow;
 
-fn read(c: &Context, id: &str) -> Result<Vec<Value>> {
+pub(super) fn read(c: &Context, id: &str) -> Result<Vec<Value>> {
     c.db.prepare("SELECT body FROM migration_items WHERE migration_id=? ORDER BY item_id")?
         .query_map([id], |r| r.get::<_, String>(0))?
         .collect::<rusqlite::Result<Vec<_>>>()?
@@ -9,7 +10,7 @@ fn read(c: &Context, id: &str) -> Result<Vec<Value>> {
         .map(|body| serde_json::from_str(&body).map_err(Into::into))
         .collect()
 }
-fn collection(records: &[Value], key: &str) -> Result<Vec<Value>> {
+fn collection<'a>(records: &'a [Value], key: &str) -> Result<Vec<Cow<'a, Value>>> {
     let mut entries = records
         .iter()
         .filter(|r| r["source"] == "kv" && r["key"] == key)
@@ -21,16 +22,16 @@ fn collection(records: &[Value], key: &str) -> Result<Vec<Value>> {
             .total_cmp(&b["index"].as_f64().unwrap_or(-1.))
     });
     if !entries.is_empty() {
-        return Ok(entries
-            .into_iter()
-            .flat_map(|r| {
-                if r.get("index").is_none() && r["value"].is_array() {
-                    r["value"].as_array().unwrap().clone()
-                } else {
-                    vec![r["value"].clone()]
-                }
-            })
-            .collect());
+        let mut values = Vec::new();
+        for record in entries {
+            let value = &record["value"];
+            if record.get("index").is_none() && value.is_array() {
+                values.extend(value.as_array().unwrap().iter().map(Cow::Borrowed));
+            } else {
+                values.push(Cow::Borrowed(value));
+            }
+        }
+        return Ok(values);
     }
     let Some(legacy) = records
         .iter()
@@ -38,14 +39,15 @@ fn collection(records: &[Value], key: &str) -> Result<Vec<Value>> {
     else {
         return Ok(Vec::new());
     };
-    let value = if let Some(s) = legacy["value"].as_str() {
-        serde_json::from_str::<Value>(s)?
-    } else {
-        legacy["value"].clone()
-    };
-    value
+    if let Some(text) = legacy["value"].as_str() {
+        return match serde_json::from_str::<Value>(text)? {
+            Value::Array(values) => Ok(values.into_iter().map(Cow::Owned).collect()),
+            _ => Err(format_error("Legacy artwork collection is not an array")),
+        };
+    }
+    legacy["value"]
         .as_array()
-        .cloned()
+        .map(|values| values.iter().map(Cow::Borrowed).collect())
         .ok_or_else(|| format_error("Legacy artwork collection is not an array"))
 }
 fn body(value: &Value) -> Result<()> {
@@ -55,10 +57,10 @@ fn body(value: &Value) -> Result<()> {
     entity_key(&value["id"])?;
     Ok(())
 }
-pub(super) fn validate(c: &Context, envelope: &Value) -> Result<Vec<String>> {
-    let records = read(c, string(envelope, "migrationId")?)?;
+pub(super) fn validate(records: &[Value], envelope: &Value) -> Result<Vec<String>> {
+    string(envelope, "migrationId")?;
     let mut blockers = Vec::new();
-    if validate_records(&records, envelope, &mut blockers).is_err() {
+    if validate_records(records, envelope, &mut blockers).is_err() {
         blockers.push("unreadable-domain-record".into());
     }
     let mut seen = HashSet::new();
@@ -75,15 +77,18 @@ fn validate_records(records: &[Value], envelope: &Value, blockers: &mut Vec<Stri
     let history = collection(records, "aics_pb_history")?;
     let projects = collection(records, "aics_pb_projects")?;
     let trash = collection(records, "aics_pb_trash")?;
-    let mut all = history.clone();
-    for entry in trash {
+    let mut all = history
+        .iter()
+        .map(|value| value.as_ref())
+        .collect::<Vec<&Value>>();
+    for entry in &trash {
         if entry["deletedAt"].as_f64().is_none()
             || !entry["historyEntries"].is_array()
             || !entry["projectRefs"].is_array()
         {
             return Err(format_error("Invalid trash entry"));
         }
-        all.extend(entry["historyEntries"].as_array().unwrap().clone());
+        all.extend(entry["historyEntries"].as_array().unwrap().iter());
     }
     let mut artwork_ids = HashSet::new();
     let mut project_ids = HashSet::new();
@@ -123,11 +128,14 @@ fn validate_records(records: &[Value], envelope: &Value, blockers: &mut Vec<Stri
         }
     }
     for record in records {
-        let value = record["value"]
+        if let Some(value) = record["value"]
             .as_str()
             .and_then(|s| serde_json::from_str::<Value>(s).ok())
-            .unwrap_or_else(|| record["value"].clone());
-        check_refs(&value, &media, blockers);
+        {
+            check_refs(&value, &media, blockers);
+        } else {
+            check_refs(&record["value"], &media, blockers);
+        }
     }
     Ok(())
 }
@@ -140,16 +148,10 @@ fn check_refs(value: &Value, media: &HashSet<&str>, blockers: &mut Vec<String>) 
         }
         Value::Object(object) => {
             for (key, value) in object {
-                if matches!(
-                    key.as_str(),
-                    "image_id"
-                        | "imageId"
-                        | "firstFrameImageId"
-                        | "lastFrameImageId"
-                        | "sourceImageId"
-                ) && value
-                    .as_str()
-                    .is_some_and(|s| !s.is_empty() && !media.contains(s))
+                if profile::media_refs::ALIAS_FIELDS.contains(&key.as_str())
+                    && value
+                        .as_str()
+                        .is_some_and(|s| !s.is_empty() && !media.contains(s))
                 {
                     blockers.push(format!("missing-reference:{}", value.as_str().unwrap()));
                 } else {
@@ -192,11 +194,16 @@ fn insert_artwork(c: &Context, item: &Value, deleted: Option<i64>, revision: i64
     )?;
     Ok(())
 }
-pub(super) fn publish(c: &Context, envelope: &Value, revision: i64) -> Result<()> {
-    let records = read(c, string(envelope, "migrationId")?)?;
-    let history = collection(&records, "aics_pb_history")?;
-    let projects = collection(&records, "aics_pb_projects")?;
-    let trash = collection(&records, "aics_pb_trash")?;
+pub(super) fn publish(
+    c: &Context,
+    records: &[Value],
+    envelope: &Value,
+    revision: i64,
+) -> Result<()> {
+    string(envelope, "migrationId")?;
+    let history = collection(records, "aics_pb_history")?;
+    let projects = collection(records, "aics_pb_projects")?;
+    let trash = collection(records, "aics_pb_trash")?;
     for artwork in &history {
         c.check_cancel()?;
         insert_artwork(c, artwork, None, revision)?;
@@ -258,7 +265,7 @@ pub(super) fn publish(c: &Context, envelope: &Value, revision: i64) -> Result<()
             )?;
         }
     }
-    for record in &records {
+    for record in records {
         let domain = record["domain"].as_str().unwrap_or("");
         if !matches!(domain, "settings" | "chat" | "draft") {
             continue;
@@ -283,6 +290,7 @@ pub(super) fn publish(c: &Context, envelope: &Value, revision: i64) -> Result<()
             "INSERT INTO profile_records VALUES(?,?,?,?)",
             params![domain, key, stringify(&record["value"]), revision],
         )?;
+        profile::media_refs::replace(c, domain, &key, &record["value"])?;
     }
     Ok(())
 }

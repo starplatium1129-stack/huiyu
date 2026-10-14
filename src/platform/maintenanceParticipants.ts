@@ -1,4 +1,4 @@
-type Participant = () => void | Promise<unknown>
+type Participant = (reason?: 'migration') => void | Promise<unknown>
 type Phase = 'idle' | 'preparing' | 'sealed'
 const participants = new Set<Participant>()
 let phase: Phase = 'idle'

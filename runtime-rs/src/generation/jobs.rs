@@ -167,6 +167,11 @@ pub(super) async fn observe(inner: &Arc<Inner>, id: &str, owner: &str) -> Result
     let state = job.state.lock().await;
     let mut metadata = state.metadata.clone();
     metadata["gatewayJobId"] = json!(job.id);
+    if let Some(finished) = state.finished {
+        // Durable task adapters also need the frozen engine duration. Do not
+        // persist a ticking duration and rewrite SQLite on every live poll.
+        metadata["elapsedSeconds"] = json!((finished - job.created).max(0) / 1000);
+    }
     Ok(Observation {
         status: if state.collection_pending && state.status == "succeeded" {
             "running".into()

@@ -384,7 +384,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     try {
       if (desktopActive.value) {
         const removed = await collectWorkspaceGarbage()
-        if (!disposed && viewActive && !controller.signal.aborted) onFlash(`已清理 ${removed} 个过期且无引用的媒体对象。`)
+        if (!disposed && viewActive && !controller.signal.aborted) onFlash(`本次已清理 ${removed} 个过期且无引用的媒体对象；工作区分批处理，可再次清理。`)
         return removed
       }
       const snapshot = await readCleanupState()

@@ -18,6 +18,7 @@ mod saves;
 mod schema;
 mod tasks;
 mod thumbnail;
+mod upload;
 mod verification;
 mod verified_media;
 mod worker;
@@ -59,6 +60,8 @@ pub struct Storage {
 enum Work {
     ResultVerified(String, Result<result_commit::Verified>),
     RestoreVerified(String, Result<Vec<verified_media::Verified>>),
+    UploadFinished(String, Result<upload::file::Written>),
+    MigrationVerified(String, Result<migration::verification::Outcome>),
     TaskMediaCopy(
         Value,
         TaskMediaSource,
@@ -132,6 +135,8 @@ pub(super) struct Context {
     cancel: Arc<AtomicBool>,
     result_commit: Option<result_commit::Pending>,
     restore_commit: Option<restore::Pending>,
+    upload: Option<upload::Pending>,
+    migration_verification: Option<migration::verification::Pending>,
     media_verified: Option<result_commit::Verified>,
 }
 impl Context {
@@ -148,7 +153,11 @@ impl Context {
         if kind.starts_with("task.") {
             if !matches!(
                 kind,
-                "task.list" | "task.get" | "task.legacy-history" | "task.input.get"
+                "task.list"
+                    | "task.get"
+                    | "task.legacy-history"
+                    | "task.input.get"
+                    | "task.result.reference"
             ) {
                 self.writer()?;
             }
@@ -244,8 +253,9 @@ impl Context {
             "organizeArtworks" | "undoArtworkOrganization" => {
                 organization::execute(self, principal, command)
             }
-            "prepareSave" | "uploadChunk" | "abortSave" | "prepareMedia" | "uploadMediaChunk"
-            | "releaseMedia" | "countMedia" => saves::execute(self, principal, command),
+            "prepareSave" | "abortSave" | "prepareMedia" | "releaseMedia" | "countMedia" => {
+                saves::execute(self, principal, command)
+            }
             kind if kind.starts_with("profile.") => profile::execute(self, principal, command),
             _ => Err(ApiError::new(
                 501,
@@ -345,6 +355,7 @@ fn is_read(kind: &str) -> bool {
             | "task.get"
             | "task.legacy-history"
             | "task.input.get"
+            | "task.result.reference"
             | "migration.status"
     )
 }

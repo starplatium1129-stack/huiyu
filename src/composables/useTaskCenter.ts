@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance, onUnmounted, ref, watch } from 'vue'
+import { computed, getCurrentInstance, onUnmounted, ref, shallowReactive, watch } from 'vue'
 import { readTaskHistory, updateTaskHistory } from '@/platform/web/taskHistory'
 import { recordDiagnosticTask } from '../utils/localDiagnostics.ts'
 import type { GenerationStage } from '@/utils/generationTask'
@@ -22,10 +22,16 @@ export interface TaskControls { cancel?: () => unknown; retry?: () => unknown }
 const tasks = ref<TaskRecord[]>([])
 const opened = ref(false)
 const storageError = ref('')
-const actions = new Map<string, TaskControls>()
+const actions = shallowReactive(new Map<string, TaskControls>())
 let reloadApproved = false
+const approvedReloadEvents = new WeakSet<Event>()
 export function approveTaskReload() { reloadApproved = true }
-export function consumeTaskReloadApproval() { const approved = reloadApproved; reloadApproved = false; return approved }
+export function consumeTaskReloadApproval(event: Event) {
+  if (approvedReloadEvents.has(event)) return true
+  const approved = reloadApproved; reloadApproved = false
+  if (approved) approvedReloadEvents.add(event)
+  return approved
+}
 let loading: Promise<void> | undefined
 let writeTail = Promise.resolve()
 const deletedTasks = new Map<string, number>()
@@ -158,7 +164,10 @@ function findBackendTask(summary: TaskSummary) {
   return summary.backend && tasks.value.find(task => task.backend?.kind === summary.backend?.kind && task.backend?.id === summary.backend?.id)
 }
 export function useTaskCenter() {
-  return { tasks, opened, storageError, activeCount: computed(() => hasRuntimeTasks() ? runtimeTaskActiveCount.value : tasks.value.filter(task => task.status === 'running').length),
+  // Runtime tasks survive page disposal; image interrogation is still page-owned.
+  const pageActiveCount = computed(() => tasks.value.filter(task => task.status === 'running' && actions.has(task.id)).length)
+  return { tasks, opened, storageError, pageActiveCount,
+    activeCount: computed(() => (hasRuntimeTasks() ? runtimeTaskActiveCount.value : 0) + pageActiveCount.value),
     controls: (id: string) => actions.get(id),
     clearCompleted() {
       const keep = tasks.value.filter(task => task.status === 'running' || task.status === 'failed' || task.status === 'interrupted')

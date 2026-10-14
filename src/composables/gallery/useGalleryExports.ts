@@ -84,7 +84,7 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
       let data = new Uint8Array(buffer)
       let metadataWritten = false
       if (format.ext === 'png' && metaText) {
-        try { data = new Uint8Array(injectPngMetadata(buffer, metaText)); metadataWritten = true } catch { /* 原始字节仍可保存 */ }
+        try { data = injectPngMetadata(buffer, metaText); metadataWritten = true } catch { /* 原始字节仍可保存 */ }
       }
       const detail = metadataWritten ? '（已嵌入生成参数）' : '（保留原始格式）'
       if (getDesktopCapabilities()) {

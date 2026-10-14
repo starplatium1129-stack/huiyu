@@ -1,6 +1,7 @@
 use super::*;
 use canonical::stringify;
 use rusqlite::{OptionalExtension, params};
+pub(super) mod media_refs;
 const CHAT: &[&str] = &[
     "aics_chat_v1",
     "aics_chat_archive_v1",
@@ -124,9 +125,11 @@ fn clear_chat(c: &Context) -> Result<()> {
     for key in keys {
         c.check_cancel()?;
         if draft_record_key(&key).is_some_and(|key| key.starts_with("aics_chat_draft_v1:")) {
+            media_refs::remove(c, "draft", &key)?;
             remove.execute([key])?;
         }
     }
+    media_refs::clear_domain(c, "chat")?;
     c.db.execute("DELETE FROM profile_records WHERE domain='chat'", [])?;
     Ok(())
 }
@@ -202,7 +205,10 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
                 Some(stringify(&json!(stringify(&record))))
             } else {None};
             clear_chat(c)?;
-            if let Some(retained)=retained {c.db.execute("INSERT INTO profile_records VALUES('chat','aics_chat_v1',?,?)",params![retained,revision])?;}
+            if let Some(retained)=retained {
+                c.db.execute("INSERT INTO profile_records VALUES('chat','aics_chat_v1',?,?)",params![retained,revision])?;
+                media_refs::replace(c,"chat","aics_chat_v1",&serde_json::from_str(&retained)?)?;
+            }
             c.db.execute("INSERT INTO profile_records VALUES('chat','aics_chat_reset_v1',?,?)",params![stringify(&command["operationId"]),revision])?;
             snapshot(c,"chat",None)?
         } else {
@@ -213,6 +219,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
             let existing:Option<i64>=c.db.query_row("SELECT revision FROM profile_records WHERE domain=? AND record_key=?",params![selected,record_key],|r|r.get(0)).optional()?;
             if json!(existing)!=command["expectedRevision"] {return Err(conflict("REVISION_CONFLICT","Profile record has a newer revision"))}
             c.db.execute("INSERT INTO profile_records VALUES(?,?,?,?) ON CONFLICT(domain,record_key) DO UPDATE SET body=excluded.body,revision=excluded.revision",params![selected,record_key,stringify(&command["value"]),revision])?;
+            media_refs::replace(c,selected,&record_key,&command["value"])?;
             json!({"key":key,"value":command["value"],"revision":revision})
         };
         c.commit_operation(&op,&json!({"operationId":command["operationId"],"kind":kind,"revision":revision,"profile":result}))?;Ok(result)

@@ -1,10 +1,9 @@
 use super::*;
-use base64::{Engine, engine::general_purpose::STANDARD};
 use rusqlite::OptionalExtension;
 use sha2::{Digest, Sha256};
 use std::{
     fs::{self, File, OpenOptions},
-    io::{Read, Seek, SeekFrom, Write},
+    io::Read,
     path::Path,
 };
 pub(super) const CHUNK: usize = 1024 * 1024;
@@ -173,9 +172,6 @@ pub(super) fn hash_opened(
     }
     Ok((bytes, hex::encode(hash.finalize()), mime))
 }
-pub(super) fn verify(c: &Context, file: &Path, hash: &str, bytes: u64, mime: &str) -> Result<()> {
-    verify_checked(&c.root, file, hash, bytes, mime, || c.check_cancel())
-}
 pub(super) fn verify_checked(
     root: &Path,
     file: &Path,
@@ -252,105 +248,30 @@ pub(super) fn uploaded(c: &Context, key: &str, media: &Value) -> Result<u64> {
         _ => Err(conflict("MEDIA_INVALID", "Media is not a regular file")),
     }
 }
-pub(super) fn upload(
-    c: &Context,
-    key: &str,
-    media: &Value,
-    command: &Value,
-    committed: bool,
-) -> Result<u64> {
-    let encoded = string(command, "data")?;
-    if encoded.len() > CHUNK.div_ceil(3) * 4 {
-        return Err(conflict("MEDIA_INVALID", "Invalid media chunk"));
-    }
-    let bytes = STANDARD
-        .decode(encoded)
-        .map_err(|_| conflict("MEDIA_INVALID", "Invalid media chunk encoding"))?;
-    let offset = command["offset"]
-        .as_u64()
-        .ok_or_else(|| conflict("MEDIA_INVALID", "Invalid media chunk"))?;
-    let total = media["bytes"].as_u64().unwrap();
-    if bytes.is_empty()
-        || bytes.len() > CHUNK
-        || offset
-            .checked_add(bytes.len() as u64)
-            .is_none_or(|v| v > total)
-    {
-        return Err(conflict("MEDIA_INVALID", "Invalid media chunk"));
-    }
-    let file = if committed {
-        object_path(&c.root, string(media, "sha256")?)?
-    } else {
-        staging_path(&c.root, key, string(media, "alias")?)?
-    };
-    if !committed {
-        fs::create_dir_all(file.parent().unwrap())?;
-    }
-    let mut input = if committed {
-        OpenOptions::new().read(true).open(&file)?
-    } else {
-        OpenOptions::new()
-            .read(true)
-            .write(true)
-            .create(true)
-            .truncate(false)
-            .open(&file)?
-    };
-    let stat = input.metadata()?;
-    if !stat.is_file() {
+pub(super) fn sync_checked(
+    root: &Path,
+    path: &Path,
+    mut check_cancel: impl FnMut() -> Result<()>,
+) -> Result<()> {
+    check_cancel()?;
+    let relative = path
+        .strip_prefix(root)
+        .map_err(|_| invalid("Media path escapes workspace"))?;
+    schema::safe(root, relative)?;
+    let input = OpenOptions::new().read(true).write(true).open(path)?;
+    if !input.metadata()?.is_file() {
         return Err(conflict("MEDIA_INVALID", "Media is not a regular file"));
     }
-    let length = stat.len();
-    if committed || offset < length {
-        if offset + bytes.len() as u64 > length {
-            return Err(conflict(
-                "OPERATION_CONFLICT",
-                "Chunk overlaps an incomplete boundary",
-            ));
-        }
-        let mut existing = vec![0; bytes.len()];
-        input.seek(SeekFrom::Start(offset))?;
-        input.read_exact(&mut existing)?;
-        if bytes != existing {
-            return Err(conflict(
-                "OPERATION_CONFLICT",
-                "Retried chunk differs from stored bytes",
-            ));
-        }
-        return Ok(length);
+    let native = crate::file_identity::opened(&input)?;
+    if crate::file_identity::path(path, false)? != native {
+        return Err(conflict("MEDIA_INVALID", "Media file changed before sync"));
     }
-    if offset != length {
-        return Err(conflict(
-            "OPERATION_CONFLICT",
-            "Chunk offset does not match uploaded length",
-        ));
-    }
-    c.check_cancel()?;
-    input.seek(SeekFrom::Start(offset))?;
-    input.write_all(&bytes)?;
     input.sync_all()?;
-    Ok(offset + bytes.len() as u64)
-}
-pub(super) fn publish(c: &Context, key: &str, media: &Value) -> Result<()> {
-    let hash = string(media, "sha256")?;
-    let bytes = media["bytes"].as_u64().unwrap();
-    let mime = string(media, "mime")?;
-    let destination = object_path(&c.root, hash)?;
-    if destination.exists() {
-        return verify(c, &destination, hash, bytes, mime);
+    schema::safe(root, relative)?;
+    if crate::file_identity::path(path, false)? != native {
+        return Err(conflict("MEDIA_INVALID", "Media file changed during sync"));
     }
-    let staged = staging_path(&c.root, key, string(media, "alias")?)?;
-    verify(c, &staged, hash, bytes, mime)?;
-    fs::create_dir_all(destination.parent().unwrap())?;
-    c.check_cancel()?;
-    match fs::hard_link(&staged, &destination) {
-        Ok(()) => {}
-        Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {
-            verify(c, &destination, hash, bytes, mime)?
-        }
-        Err(e) => return Err(e.into()),
-    }
-    schema::sync_dir(destination.parent().unwrap())
+    check_cancel()
 }
 pub(super) fn cleanup(c: &Context, key: &str, media: &Value) {
     if let Ok(file) = staging_path(&c.root, key, media["alias"].as_str().unwrap_or("")) {

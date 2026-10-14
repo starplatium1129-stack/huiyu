@@ -27,6 +27,32 @@ pub(super) fn run(
 
     while let Some(work) = receiver.blocking_recv() {
         match work {
+            Work::MigrationVerified(id, result) => {
+                migration::verification::finish(&mut context, id, result);
+                if !closing.is_empty()
+                    && !copying
+                    && collecting.is_none()
+                    && context.result_commit.is_none()
+                    && context.restore_commit.is_none()
+                    && context.upload.is_none()
+                    && context.migration_verification.is_none()
+                {
+                    break;
+                }
+            }
+            Work::UploadFinished(id, result) => {
+                upload::finish(&mut context, id, result);
+                if !closing.is_empty()
+                    && !copying
+                    && collecting.is_none()
+                    && context.result_commit.is_none()
+                    && context.restore_commit.is_none()
+                    && context.upload.is_none()
+                    && context.migration_verification.is_none()
+                {
+                    break;
+                }
+            }
             Work::ResultVerified(id, verified) => {
                 result_commit::finish(&mut context, id, verified, &sender);
                 if !closing.is_empty()
@@ -34,6 +60,8 @@ pub(super) fn run(
                     && collecting.is_none()
                     && context.result_commit.is_none()
                     && context.restore_commit.is_none()
+                    && context.upload.is_none()
+                    && context.migration_verification.is_none()
                 {
                     break;
                 }
@@ -45,6 +73,8 @@ pub(super) fn run(
                     && collecting.is_none()
                     && context.result_commit.is_none()
                     && context.restore_commit.is_none()
+                    && context.upload.is_none()
+                    && context.migration_verification.is_none()
                 {
                     break;
                 }
@@ -151,6 +181,29 @@ pub(super) fn run(
                 }
                 context.cancel = cancel;
                 if reply.is_closed() {
+                    continue;
+                }
+                if upload::is_chunk(&command) {
+                    if let Some(permit) = permit {
+                        upload::start(&mut context, command, principal, reply, permit, &sender);
+                    } else {
+                        let _ = reply.send(Err(unavailable()));
+                    }
+                    continue;
+                }
+                if command["kind"] == "migration.verify" {
+                    if let Some(permit) = permit {
+                        migration::verification::start(
+                            &mut context,
+                            &command,
+                            &principal,
+                            reply,
+                            permit,
+                            &sender,
+                        );
+                    } else {
+                        let _ = reply.send(Err(unavailable()));
+                    }
                     continue;
                 }
                 if command["kind"] == "restoreArtwork" {
@@ -300,6 +353,8 @@ pub(super) fn run(
                     && collecting.is_none()
                     && context.result_commit.is_none()
                     && context.restore_commit.is_none()
+                    && context.upload.is_none()
+                    && context.migration_verification.is_none()
                 {
                     break;
                 }
@@ -312,6 +367,8 @@ pub(super) fn run(
                     && !copying
                     && context.result_commit.is_none()
                     && context.restore_commit.is_none()
+                    && context.upload.is_none()
+                    && context.migration_verification.is_none()
                 {
                     break;
                 }
@@ -327,10 +384,18 @@ pub(super) fn run(
                 if let Some(pending) = &context.restore_commit {
                     pending.cancel();
                 }
+                if let Some(pending) = &context.upload {
+                    pending.cancel();
+                }
+                if let Some(pending) = &context.migration_verification {
+                    pending.cancel();
+                }
                 if !copying
                     && collecting.is_none()
                     && context.result_commit.is_none()
                     && context.restore_commit.is_none()
+                    && context.upload.is_none()
+                    && context.migration_verification.is_none()
                 {
                     break;
                 }

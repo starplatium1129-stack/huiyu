@@ -367,8 +367,8 @@
 
           <p v-if="serverShot(index)?.error" class="shot-error">{{ serverShot(index)?.error }}</p>
           <StudioMediaPlayer v-if="serverShot(index)?.resultUrl" class="shot-result" kind="video" :src="serverShot(index)?.resultUrl ?? ''" label="本镜生成结果" :transcript="(shot.dialogue || '').trim()" />
-          <div v-if="serverShot(index)?.status === 'failed'" class="shot-retry">
-            <button class="btn btn-primary" type="button" :disabled="batchRecoveryPending || retrying || cancelling || concating || submitting" @click="retryShotAt(index)">{{ retrying ? '正在重试…' : '重抽本镜（同 Seed）' }}</button>
+          <div v-if="serverShot(index)?.status === 'failed' || serverShot(index)?.status === 'cancelled'" class="shot-retry">
+            <button class="btn btn-primary" type="button" :disabled="batchActive || batchRecoveryPending || retrying || cancelling || concating || submitting" @click="retryShotAt(index)">{{ retrying ? '正在重试…' : '重抽本镜（同 Seed）' }}</button>
           </div>
         </article>
 
@@ -404,7 +404,7 @@
           </button>
           <template v-else>
             <button
-              v-if="batch && batch.shots.some((shot) => shot.status === 'failed')"
+              v-if="batch && batch.shots.some((shot) => shot.status === 'failed' || shot.status === 'cancelled')"
               class="btn btn-primary"
               type="button"
               :disabled="batchRecoveryPending || retrying || concating || cancelling || submitting"

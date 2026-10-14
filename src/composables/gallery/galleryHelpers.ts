@@ -4,11 +4,14 @@ import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import type { PopularCharacter } from '@/utils/popularContent'
 import { artworkSearchText } from '@/application/artwork/searchIndex'
 
+/** Legacy numeric IDs and their serialized references identify the same artwork. */
+export const artworkIdKey = (id: string | number): string => String(id).trim()
+
 /** Viewer actions bind to a stable artwork identity, never to a mutable list position. */
 export function artworkIndexById(items: readonly ArtworkRecord[], id: string | number | null): number {
   if (id === null) return -1
-  const key = String(id)
-  return items.findIndex(item => String(item.id) === key)
+  const key = artworkIdKey(id)
+  return items.findIndex(item => artworkIdKey(item.id) === key)
 }
 
 export function characterName(value: string | undefined, item: ArtworkRecord | undefined, characters: PopularCharacter[]): string {

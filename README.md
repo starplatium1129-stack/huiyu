@@ -59,7 +59,7 @@ A separate character room provides text chat, Live2D display and voice playback;
 
 ## <img src="docs/images/icons/manager.svg" width="24" height="24" alt=""> Run from source
 
-Windows is the primary development and desktop environment. Source builds require Node.js ≥22.18, npm and the Rust MSVC toolchain. Local drawing also needs ComfyUI.
+Windows is the primary development and desktop environment. Source builds require Node.js ≥22.18, npm and the Rust MSVC toolchain. For local Anima drawing, start with the control room's managed native runtime and complete model setup. ComfyUI remains an engine option for Anima and is required for Krea 2 and video. See the [independent inference guide](docs/guides/independent-inference.md) for supported devices and setup boundaries.
 
 ```powershell
 git clone https://github.com/starplatium1129-stack/huiyu.git
@@ -81,7 +81,7 @@ HUIYU has three main parts: the **Vue studio, Tauri desktop shell and local Rust
 | Desktop shell | Tauri 2 and Rust; windows, tray, desktop companion, native Live2D and owned gateway management |
 | Local gateway | Rust, Axum and Tokio; HTTP / streaming APIs, task admission, queries, cancellation, media and resources |
 | Data and content | Desktop SQLite for workspace metadata and the content catalog, IndexedDB on the web; media stored separately |
-| AI services | ComfyUI for images and video; llama.cpp / Ollama / compatible APIs for chat; separate interrogation, translation and voice services |
+| AI services | Managed native runtime or ComfyUI for Anima; ComfyUI for Krea 2 and video; llama.cpp / Ollama / compatible APIs for chat; separate interrogation, translation and voice services |
 | Build and maintenance | Node.js, npm and project scripts for frontend builds, resource preparation, release packaging and maintenance checks |
 
 The runtime's `content/catalog.sqlite` is the working authority for characters, outfits, scenes and blueprints. `data/catalog/` contains explicitly exported project snapshots. Models and personal artwork live in the selected local directories. See the [engineering contracts](docs/engineering-contracts.md) and [documentation index](docs/INDEX.md) for detailed boundaries and storage designs.

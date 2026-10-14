@@ -20,7 +20,13 @@ const capabilities: CompanionDesktopBridge = {
   getState: () => invoke('get_state'), toggleAlwaysOnTop: () => invoke('toggle_always_on_top'),
   getSettings: () => invoke('get_settings'), isPackaged: () => invoke('is_packaged'),
   setAutostart: enabled => invoke('set_autostart', { enabled }), pickFiles: () => invoke('pick_files'),
-  saveImage: payload => invoke('save_image', { data: Array.from(payload.data), name: payload.name }),
+  saveImage: payload => {
+    const host = hostApi()
+    if (!host) return Promise.reject(new Error('桌面能力不可用'))
+    const headers: Record<string, string> = {}
+    if (payload.name !== undefined) headers['x-aics-image-name'] = btoa(String.fromCharCode(...new TextEncoder().encode(payload.name)))
+    return host.core.invoke('save_image', payload.data, { headers })
+  },
   openWorkspace: () => invoke('open_workspace'), openRuntime: () => invoke('open_runtime'), openLog: () => invoke('open_log'),
   pickWorkspace: root => invoke('pick_workspace', { root }),
   getWorkspace: () => invoke('get_workspace'), setWorkspace: async root => {

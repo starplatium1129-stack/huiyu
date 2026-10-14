@@ -29,12 +29,15 @@ let shotsDraftTimer = 0
 let saveFailed = false
 let disposed = false
 const submissionTokens = new WeakMap<ShotDraft, string>()
+let scenarioImportReceipts: string[] = []
 
-function persistShotsDraft() {
-  if (restoringDraft) return
-  if (disposed) return
+function persistShotsDraft(sourceActIds: readonly string[] = []): boolean {
+  if (restoringDraft || disposed) return false
   window.clearTimeout(shotsDraftTimer); shotsDraftTimer = 0
+  const pendingIds = new Set(videoStore.pendingScenarioActs.map(act => act.importId))
+  const receipts = [...new Set([...scenarioImportReceipts, ...sourceActIds])].filter(id => pendingIds.has(id))
   const ok = videoStore.saveShotsDraft({
+    ...(receipts.length ? { scenarioImportReceipts: receipts } : {}),
     aspectRatio: aspectRatio.value,
     quality: quality.value,
     steps: steps.value,
@@ -58,11 +61,15 @@ function persistShotsDraft() {
       cast: shot.cast,
       firstFramePrompt: shot.firstFramePrompt,
       imageId: shot.imageId || '',
+      importSourceImageId: shot.importSourceImageId,
+      importSourceActId: shot.importSourceActId,
     })),
     updatedAt: Date.now(),
   })
   if (!ok) batchError.value = '分镜草稿保存失败（存储空间不足）：内容仍在页面中，但刷新后可能丢失'
   saveFailed = !ok
+  if (ok) scenarioImportReceipts = receipts
+  return ok
 }
 // Tokens belong to submitted row objects, not editable fields; clones never inherit them.
 function beginShotSubmission(targets: ShotDraft[]) {
@@ -114,6 +121,8 @@ watch(
 /** 草稿水合：角色与服装资料恢复→ 首帧重挂载 → 身份锚点以草稿为准。 */
 async function restoreShotsDraft() {
   const draft = videoStore.shotsDraft
+  scenarioImportReceipts = Array.isArray(draft?.scenarioImportReceipts)
+    ? draft.scenarioImportReceipts.filter(id => typeof id === 'string' && id) : []
   if (!draft || (!draft.shots.length && !draft.identityCard && !draft.cards.length)) return
   restoringDraft = true
   try {
@@ -142,6 +151,10 @@ async function restoreShotsDraft() {
       cast: (shot.cast || '') as ShotDraft['cast'],
       firstFramePrompt: shot.firstFramePrompt,
       imageId: shot.imageId || '',
+      importSourceImageId: typeof shot.importSourceImageId === 'string' && shot.importSourceImageId
+        ? shot.importSourceImageId : undefined,
+      importSourceActId: typeof shot.importSourceActId === 'string' && shot.importSourceActId
+        ? shot.importSourceActId : undefined,
     }))
     shots.value.forEach((shot, index) => {
       const saved = draft.shots[index]
