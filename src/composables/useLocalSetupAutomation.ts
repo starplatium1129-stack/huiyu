@@ -3,6 +3,7 @@ import type { LocalSetupModel, LocalSetupResponse, LocalSetupDownloadResult } fr
 import type { ControlActionResult } from '../types/api'
 import { localSetupApi } from '../api/localSetupApi'
 import { controlApi } from '../api/controlApi'
+import { inferenceSettingsApi } from '../api/inferenceSettingsApi'
 import { waitLocalSetupOperation } from '../api/localSetupOperation'
 import { useLocalSetupDownload } from './useLocalSetupDownload'
 import { LOCAL_SETUP_DRAFT_SETTING, clearSetupOperation, readSetupDraft, setupOperationKind, type SetupDraft } from '../utils/localSetupDraft'
@@ -20,6 +21,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const environment=ref(installed?.state==='verified'?installed.environment:draft?.environment??(snapshot.value.comfy.installation==='missing'?'comfy-nvidia':'')),llamaEnvironment=ref(draft?.llamaEnvironment??'llama-cuda')
   const recoveryPending=ref(!!draft?.operation)
   const busy=ref(!!draft?.operation),message=ref(''),error=ref(''),completed=ref(false)
+  const engineRestartRequired=ref(false)
   const cancelState=ref<'idle'|'pending'|'accepted'|'failed'>('idle'),operationUncertain=ref(false)
   const recommendation=computed(()=>localChatRecommendation(snapshot.value.hardware))
   const imageModels=computed(()=>snapshot.value.models.filter(model=>model.id.startsWith('anima-')&&model.preparation))
@@ -36,8 +38,8 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   let recoveryRequest=false
   let cancelRequest:Promise<void>|null=null
   // Hardware may be unknown until the service is started; absence of a report is not a negative GPU check.
-  const externalEnvironment=computed(()=>hasComfy.value&&!['portable','venv'].includes(snapshot.value.comfy.layout))
-  const canStartExisting=computed(()=>drawing.value&&hasComfy.value&&!externalEnvironment.value)
+  const unmanagedPortable=computed(()=>hasComfy.value&&snapshot.value.comfy.layout==='portable'&&snapshot.value.comfy.managedEnvironment?.state!=='verified')
+  const externalEnvironment=computed(()=>hasComfy.value&&(!['portable','venv'].includes(snapshot.value.comfy.layout)||unmanagedPortable.value))
   const stage=ref<'environment'|'models'|'service'|'validation'|null>(null)
   let restoringDraft=false
   function saveDraft(operation=readSetupDraft(workspace.value)?.operation) {
@@ -56,6 +58,8 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     llamaEnvironment.value=saved?.llamaEnvironment??'llama-cuda';restoringDraft=false
   },{flush:'sync'})
   const needsComfyPreparation=computed(()=>!externalEnvironment.value&&(!hasComfy.value||snapshot.value.nodes.state!=='checked'||snapshot.value.nodes.missing.length>0))
+  const serviceMustStop=computed(()=>drawing.value&&needsComfyPreparation.value&&snapshot.value.comfy.connection==='online')
+  const canStartExisting=computed(()=>drawing.value&&!chatId.value&&hasComfy.value&&!externalEnvironment.value&&!serviceMustStop.value)
   const environmentRequired=computed(()=>drawing.value&&needsComfyPreparation.value&&snapshot.value.comfy.layout!=='venv'&&!environment.value)
   function requireModel(id:string):LocalSetupModel {
     const model=snapshot.value.models.find(model=>model.id===id&&model.preparation)
@@ -135,11 +139,17 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     if(externalDrawing&&checked.comfy.connection!=='online')throw new Error('模型文件已保留。此环境由外部管理，请从原入口启动，再回到绘遇重新检查；不会另装或接管该环境。')
     const readiness=drawingSetupReadiness(checked,selectedModel)
     if(!readiness.complete)throw new Error('绘图准备尚未完成：'+readiness.nextStep)
+    const engine=await inferenceSettingsApi.getStatus()
+    checkpoint()
+    if(engine.environmentOverrides.includes('engine')&&engine.active.engine!=='comfy')throw new Error('启动配置锁定了原生引擎，请在「其他绘图引擎」中核对启动配置，再启用 ComfyUI。模型文件已保留。')
+    const activated=engine.configured.engine==='comfy'?engine:await inferenceSettingsApi.save({...engine.configured,engine:'comfy'})
+    checkpoint()
+    engineRestartRequired.value=activated.active.engine!=='comfy'||activated.restartRequired
     settingsRepository.set(DRAW_ENGINE_SETTING,'anima')
     settingsRepository.set(STARTER_MODEL_SETTING,selectedModel)
   }
   function beginRun(){
-    busy.value=true;cancelled=false;cancelState.value='idle';operationUncertain.value=false;completed.value=false;error.value=''
+    busy.value=true;cancelled=false;cancelState.value='idle';operationUncertain.value=false;completed.value=false;engineRestartRequired.value=false;error.value=''
   }
   async function startExisting(){
     if(busy.value||!statusConfirmed.value||blocked.value||!canStartExisting.value)return
@@ -154,7 +164,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     finally{if(!disposed){busy.value=!!activeOperation;if(!activeOperation&&!cancelled)refresh()}}
   }
   async function run(){
-    if(busy.value||!statusConfirmed.value||environmentRequired.value||!ready.value||(!drawing.value&&!chatId.value))return
+    if(busy.value||!statusConfirmed.value||environmentRequired.value||serviceMustStop.value||!ready.value||(!drawing.value&&!chatId.value))return
     beginRun()
     const runtime=[...runtimeIds.value],weights=[...weightIds.value],prepareComfy=drawing.value&&needsComfyPreparation.value
     const prepareLlama=!!chatId.value&&!snapshot.value.chat?.runtimePresent,selectedChat=chatId.value,confirmedWorkspace=workspace.value
@@ -185,6 +195,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
         checkpoint()
         chatStorage.setProvider('api')
       }
+      stage.value='validation'
       checkpoint()
       completed.value=true
       message.value=prepareDrawing
@@ -251,5 +262,5 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   function recoverLateOperation(){if(!busy.value)void recoverOperation()}
   onMounted(()=>{window.addEventListener('huiyu:setup-operation',recoverLateOperation);void recoverOperation()})
   onUnmounted(()=>{disposed=true;download.cancel();window.removeEventListener('huiyu:setup-operation',recoverLateOperation)})
-  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,busy,message,error,completed,recommendation,imageModels,chatModels,plan,downloadBytes,download,hasSelection,externalEnvironment,canStartExisting,environmentRequired,stage,startExisting,run,cancel,cancelState,operationUncertain,recoveryPending,retryOperation}
+  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,busy,message,error,completed,engineRestartRequired,recommendation,imageModels,chatModels,plan,downloadBytes,download,hasSelection,externalEnvironment,canStartExisting,environmentRequired,serviceMustStop,stage,startExisting,run,cancel,cancelState,operationUncertain,recoveryPending,retryOperation}
 }

@@ -53,6 +53,8 @@
         </template>
       </ControlIntro>
 
+      <section id="control-setup" class="panel-card"><LocalSetupPanel /></section>
+
       <section id="control-overview" class="control-overview tw:mb-s-5" aria-label="连接状态">
         <div class="overview-heading"><div><span class="panel-kicker">运行概览</span><h2>{{ feedbackText }}</h2><p>{{ actionNote || '正在读取本机服务状态。' }}</p></div><span class="overview-local"><ArchiveIcon name="eye" /> 本机工作台</span></div>
         <div v-if="statusError" class="control-alert" role="alert"><ArchiveIcon name="warning" /><span>{{ statusError }}，服务状态待确认，请重新检测。</span><button class="btn btn-ghost btn-sm" @click="pollStatus(true)">重试检测</button></div>
@@ -86,7 +88,6 @@
       </section>
 
       <InferenceSettingsPanel />
-      <details id="control-setup" class="panel-card"><StudioDisclosureSummary><ArchiveIcon name="gear" />ComfyUI 与本地聊天</StudioDisclosureSummary><LocalSetupPanel /></details>
       <div id="control-interrogate" tabindex="-1" aria-label="PixAI 图片反推配置"><InterrogateSetupPanel /></div>
 
       <!-- 操作进度 -->
@@ -392,9 +393,9 @@ async function confirmServiceAction(service: ControlService, action: ControlServ
 }
 
 const sections: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
+  { id: 'control-setup', label: '首次配置', icon: 'download' },
   { id: 'control-overview', label: '运行概览', icon: 'eye' },
-  { id: 'control-inference', label: '原生首次配置', icon: 'model' },
-  { id: 'control-setup', label: 'ComfyUI 与聊天', icon: 'gear' },
+  { id: 'control-inference', label: '其他绘图引擎', icon: 'model' },
   { id: 'control-interrogate', label: '图片反推', icon: 'search' },
   { id: 'control-resources', label: '服务与显存', icon: 'model' },
   { id: 'control-library', label: '离线资源库', icon: 'image' },

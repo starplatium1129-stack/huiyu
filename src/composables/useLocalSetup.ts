@@ -128,21 +128,39 @@ export function useLocalSetup() {
     } finally { if (!disposed) workspaceLoading.value = false }
   }
   function closeWorkspace() { if (!workspaceSaving.value) workspaceOpen.value = false }
+  async function chooseWorkspace() {
+    if (!desktop || workspaceLoading.value || workspaceSaving.value || disposed) return
+    workspaceLoading.value = true; workspaceError.value = ''
+    ++workspaceRead
+    try {
+      const binding = await desktop.getWorkspace()
+      if (disposed) return
+      const root = await desktop.pickWorkspace(binding.root)
+      if (disposed || root === null) return
+      workspaceSaving.value = true
+      await applyWorkspace(root)
+    } catch (cause) {
+      if (!disposed) workspaceError.value = cause instanceof Error ? cause.message : '选择文件夹失败，请重试。'
+    } finally { if (!disposed) { workspaceLoading.value = false; workspaceSaving.value = false } }
+  }
+  async function applyWorkspace(root: string) {
+    ++workspaceRead
+    const result = await desktop!.setWorkspace(root.trim())
+    if (disposed) return
+    workspaceDraft.value = result.root
+    workspacePending.value = result.restartRequired
+    workspaceActiveRoot.value = result.activeRoot
+    workspaceOpen.value = false
+    workspaceNotice.value = result.restartRequired
+      ? 'AI 工作区已保存，完全退出并重启绘遇后生效。当前检查仍基于本次运行时目录。'
+      : 'AI 工作区已保存，当前运行时目录未改变。'
+  }
   async function saveWorkspace() {
     if (!desktop || workspaceSaving.value || !workspaceOpen.value || disposed) return
     workspaceSaving.value = true; workspaceError.value = ''; workspaceNotice.value = ''
     ++workspaceRead
     try {
-      const result = await desktop.setWorkspace(workspaceDraft.value.trim())
-      if (!disposed) {
-        workspaceDraft.value = result.root
-        workspacePending.value = result.restartRequired
-        workspaceActiveRoot.value = result.activeRoot
-        workspaceOpen.value = false
-        workspaceNotice.value = result.restartRequired
-          ? 'AI 工作区已保存，完全退出并重启绘遇后生效。当前检查仍基于本次运行时目录。'
-          : 'AI 工作区已保存，当前运行时目录未改变。'
-      }
+      await applyWorkspace(workspaceDraft.value)
     } catch (cause) {
       if (!disposed) workspaceError.value = cause instanceof Error ? cause.message : '保存失败，工作区尚未确认变更。'
     } finally { if (!disposed) workspaceSaving.value = false }
@@ -155,5 +173,5 @@ export function useLocalSetup() {
     workspaceButton, workspaceOpen, workspaceDraft, workspaceLoading, workspaceSaving,
     workspaceNotice, workspaceError, workspacePending, workspaceUnconfirmed, downloadNotice,
     refresh, cancelCheck, selectSetupModel, recordDownload, recordVerification,
-    openWorkspace, closeWorkspace, saveWorkspace, restartForSetup }
+    openWorkspace, chooseWorkspace, closeWorkspace, saveWorkspace, restartForSetup }
 }

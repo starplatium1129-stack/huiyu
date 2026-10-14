@@ -1,9 +1,9 @@
 <template>
-  <section id="control-inference" class="panel-card inference-settings" aria-labelledby="inference-settings-title">
-    <div class="inference-heading">
-      <div><span class="panel-kicker">本机绘图</span><h2 id="inference-settings-title" class="panel-heading">原生生图</h2></div>
+  <details id="control-inference" class="panel-card inference-settings">
+    <StudioDisclosureSummary><span id="inference-settings-title">其他绘图引擎 · 原生 Anima</span>
       <span v-if="snapshot" class="inference-active">当前引擎 · {{ engineLabel(snapshot.active.engine) }}</span>
-    </div>
+    </StudioDisclosureSummary>
+    <div data-disclosure-content>
     <p v-if="!isLocal">请在运行绘遇的电脑上修改引擎设置。</p>
     <template v-else>
       <p v-if="error" role="alert" class="inference-error">{{ error }}</p>
@@ -87,7 +87,8 @@
       </template>
       <p v-else-if="loading" role="status">正在读取已保存的推理设置…</p>
     </template>
-  </section>
+    </div>
+  </details>
 </template>
 
 <script setup lang="ts">
@@ -122,7 +123,7 @@ onMounted(refresh)
 .inference-settings { margin-bottom: var(--s-5); color: var(--text-primary); }
 .inference-active { font-size: var(--fs-label-sm); color: var(--text-secondary); }
 .inference-advanced { margin-top: var(--s-4); border-top: 1px solid var(--border-soft); padding-top: var(--s-2); }
-.inference-heading, .inference-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
+.inference-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .inference-settings p, .inference-settings li { color: var(--text-secondary); line-height: var(--lh-loose); overflow-wrap: anywhere; }
 .inference-form, .inference-path-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
 .inference-field { display: grid; align-content: start; gap: var(--s-2); min-width: 0; }
@@ -137,7 +138,6 @@ onMounted(refresh)
 summary { cursor: pointer; min-height: 44px; align-content: center; color: var(--text-primary); }
 .inference-reuse { border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: var(--s-4); margin: var(--s-4) 0; }
 .inference-reuse h3 { margin: 0; }
-.inference-heading > div { min-width: 0; }
 .inference-settings .btn { flex-shrink: 0; white-space: nowrap; }
 .inference-selected-paths dd { margin: 0 0 var(--s-3); overflow-wrap: anywhere; color: var(--text-secondary); }
 .inference-selected-paths dt { color: var(--text-primary); }
