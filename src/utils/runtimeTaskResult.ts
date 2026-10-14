@@ -17,6 +17,7 @@ export function runtimeImageMetadata(task: TaskRecord): AnimaJobMetadata {
   const metadata: Record<string, unknown> = {}
   for (const key of metadataKeys) if (source[key] !== undefined) metadata[key] = structuredClone(source[key])
   return { ...metadata, engine: task.kind === 'creative' ? 'krea2' : 'anima',
+    provider: task.provider === 'comfy' || task.provider === 'native' ? task.provider : undefined,
     id: task.taskId, createdAt: task.createdAt, resultUrl: `/api/tasks/v1/${encodeURIComponent(task.taskId)}/results/0`,
   } as unknown as AnimaJobMetadata
 }
@@ -37,7 +38,7 @@ export function runtimeTaskRecipe(task: TaskRecord): Partial<HistoryEntry> {
   const denoise = source.hiresDenoise ?? source.denoisingStrength
   if (typeof denoise === 'number' && Number.isFinite(denoise)) recipe.hiresDenoise = denoise
   if (typeof source.width === 'number' && source.width > 0 && typeof source.height === 'number' && source.height > 0) recipe.size = `${source.width}x${source.height}`
-  if (task.provider === 'webui' || task.provider === 'comfy') recipe.provider = task.provider
+  if (task.provider === 'webui' || task.provider === 'comfy' || task.provider === 'native') recipe.provider = task.provider
   for (const key of ['loraId', 'styleLoraId']) if (source[key] === null || typeof source[key] === 'string') recipe[key] = source[key]
   if (source.loraStrength === null || typeof source.loraStrength === 'number' && Number.isFinite(source.loraStrength)) recipe.loraStrength = source.loraStrength
   if (Array.isArray(source.loras) && source.loras.every(lora => lora && typeof lora.id === 'string' && typeof lora.strength === 'number' && Number.isFinite(lora.strength))) {

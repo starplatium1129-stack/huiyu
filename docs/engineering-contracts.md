@@ -8,7 +8,7 @@
 - **组件与逻辑分层**：
   - 复杂业务逻辑与状态机下沉至专属 composable（如 `usePromptSdQueue`、`useAnimaInpaint`、`usePopularPromptAssembly`），保持 View 纯粹。
   - `src/application/` 编排用例与端口，不依赖具体存储、API、Pinia、Vue 或 Node 平台实现；`src/platform/web/` 与 `src/platform/desktop/` 提供适配，`src/api/` 处理传输和响应解码。跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块；runtime 不反向依赖 `src/`，包括纯类型与间接导入。
-- **网关服务**：产品后端为 `runtime-rs/` 的独立 Rust 进程，桌面与独立服务共用 HTTP/流式协议；依赖锁定于 `runtime-rs/Cargo.lock`。SPA fallback 排除 `/api`，网页优先使用已构建的 `dist/`。旧 `server.ts`、`server/`、`routes/`、`services/` 已删除，不能恢复为产品回退路径。仍有维护用途的纯工具归 `scripts/lib/`；Node/npm 用于前端、开发维护、假上游与构建编排。旧协议、任务指纹和存储格式由标注来源的固定夹具、独立 SQLite 检查及现行 Rust 行为测试验证，不以被测实现重写期望。
+- **网关服务**：产品后端为 `runtime-rs/` 的独立 Rust 进程，桌面与独立服务共用 HTTP/流式协议；依赖锁定于 `runtime-rs/Cargo.lock`。SPA fallback 排除 `/api`，网页优先使用已构建的 `dist/`。旧 `server.ts`、`server/`、`routes/`、`services/` 已删除，不能恢复为产品回退路径。仍有维护用途的纯工具归 `scripts/lib/`；Node/npm 用于前端、开发维护与构建编排。旧协议、任务指纹和存储格式按实际来源、边界转换与当前消费者审查，结合已有日志和必要维护校验；不恢复夹具、假上游或行为测试入口。
 - **Rust 任务契约**：`task_contract` 定义持久任务记录、状态与可变字段命令；runtime 和 SQLite worker 在内部使用强类型，HTTP/provider 与持久化边界负责 JSON 转换。更新中的缺省字段保持原值，显式 null 只可清空可空字段；任务命令继续经过身份、取消和 writer epoch 检查。`execution` 持有跨引擎的输出、观察结果与执行 hooks，不依赖具体引擎或存储。前端任务快照与待确认请求由 `src/stores/runtimeTaskState.ts` 持有，API 不再转导出展示状态。
 - **原生与交付边界**：libvips DLL 按 `runtime-rs/native-dependencies.windows-x64.json` 的真实字节/哈希暂存；已无产品调用的 ORT 不进入新包。构建回执绑定 Rust 源码、EXE、DLL 与许可证清单，缺失或字节漂移仍拒绝。`releaseReady` 和审批待项如实记录，不阻断经用户明确授权的发布，也不代表材料、真实权重、安装/UAC与设备效果已验收。新运行时的回退不能启动另一后端同时写同一 workspace。
 - **运行时维护**：人物、服装、场景和蓝图以运行目录 content/catalog.sqlite 为唯一工作权威，通过 Rust 记录 API、事务和修订历史维护；data/catalog/ 仅作逐条初始化/发布快照，旧个人分片仅作升级导入来源。已有数据库不被升级包覆盖，启用后的缺库状态拒绝静默重建。静态 JSON 消费者读取数据库生成视图，构建读取显式导出的项目快照。资源事务、pin、参考审核发布及未知状态拒绝保留原契约；内置图片从安装资源根读取，自定义立绘仍在用户 character-art 中原子发布，不覆盖参考库或 Live2D。见[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
@@ -55,11 +55,11 @@ destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capabili
 角色接入必须同步完成以下六层：
 
 1. **数据层与大盘**：人物记录保存 profile/popular，服装和蓝图通过稳定 ID 关联；通过内容维护或 content:catalog 保存，显式 export 到 data/catalog/ 后进入项目构建。参考权威源仍为 data/references/<人物ID>.json 与 manifest，两个旧参考 JSON 仅为兼容聚合产物；资源登记、渲染和发布继续走各自入口；
-2. **UI 主题与强调色系统（必做项）**：在 `data/characters.json` 提供有效十六进制 `accent_color`，由 `src/utils/characterTheme.ts` 和 `src/assets/css/director/tokens.css` 的通用令牌派生主题。既有 `CHARACTER_THEME_OVERRIDES` 调校优先，缺失或非法颜色回退默认强调色；普通新角色无需新增 CSS 选择器，特殊调校才加入例外。核对角色切换、默认/缺失/非法颜色及两主题实际效果，保留 WCAG AA 与图片叠字视觉验收；
+2. **UI 主题与强调色系统（必做项）**：通过人物记录的 `profile.accent_color` 维护有效十六进制颜色，保存到工作库，项目构建前显式导出 `data/catalog/` 快照；`data/characters.json` 为消费视图。由 `src/utils/characterTheme.ts` 和 `src/assets/css/director/tokens.css` 的通用令牌派生主题。既有 `CHARACTER_THEME_OVERRIDES` 调校优先，缺失或非法颜色回退默认强调色；普通新角色无需新增 CSS 选择器，特殊调校才加入例外。核对角色切换、默认/缺失/非法颜色及两主题实际效果，保留 WCAG AA 与图片叠字视觉验收；
 3. **全量场景蓝图（SFW/NSFW 姿势解剖防崩）**：每位角色配齐 10~11 套场景蓝图（6~7 SFW 唯美日常 + 4~5 R18 成人专属）；成人蓝图严格遵守**「后入/俯身 $\rightarrow$ 强制 `1536x1152` 横画幅 + POV扶腰受力」**与**「仰卧/POV $\rightarrow$ 强制 `1152x1536` 竖画幅 + 揉胸/分腿层级」**黄金法则，杜绝悬浮器官与断腰；
 4. **立绘原图与 WebP 紧凑头像缩略图**：在发布样张原图（`assets/characters/popular-<id>.png`）后，**必须同步执行 `python scripts/maintenance/build-character-thumbs.py`** 编译生成 `assets/characters/thumbs/popular-<id>.webp`，确保生图左侧选择器、首页横条卡片不掉头像；
 5. **可选参考素材**：新增角色和服装无需登记或补齐固定机位图库；档案不展示图库与完整度，分镜的身份/服装文字从内容目录读取，图片按项目需求手动上传。只有确有需要且已授权制作参考素材时，才使用以下旧参考库工具。先用 `reference:register --dry-run` 预览，再显式登记 pending（写源）；`reference:render`/`reference:design` 调用模型，仅写隔离候选。经 `reference:inspect` 只读核验、人工查看图片、`reference:review` 写入绑定当前候选的审核决定，再 `reference:publish` 预览，显式 `--apply` 发布到新版本目录。缺审核保持 pending，发布不自动激活或安装。参数以[候选审核与版本发布](workflow.md#参考库候选审核与版本发布)为准。旧 `sync-multi-outfit-standards` 与 URL 修复仅用于已核验旧库维护，不能代替新候选发布；
-6. **门禁、质检与桌面端同步**：按任务授权执行 `npm run typecheck:app` 与 `npm run build`，并通过 `deploy-desktop.bat -SkipBuild` 完成桌面端闭环同步与 Git 推送。
+6. **审查与桌面端同步**：按实际影响选择类型检查、产品构建与人工验收。安装获授权后使用唯一入口 `deploy-desktop.bat`；只有匹配构建才加 `-SkipBuild`，纯资源同步显式加 `-ResourcesOnly`。Git 提交、推送与发布分别按本次授权执行。
 
 自动化辅助入口见 [接入工作流](guides/characters/character-onboarding-workflow.md)。脚本执行成功不等于主题、头像、按需制作的参考图和真实样张全部验收通过；必须逐层核对。场景数量是接入目标，不能为凑数覆盖已定稿内容；现存更多场景无需删减。
 

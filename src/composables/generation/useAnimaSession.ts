@@ -356,6 +356,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     if (!submission) return
     if (frozen && submission.family !== options.getFamily()) { options.flash('创作引擎已更换，请重新确认后提交'); return }
     const { request, family } = submission
+    const provider = state.value.provider === 'native' ? 'native' : 'comfy'
     if (!state.value.online && !state.value.managedStartAvailable) { options.flash(`${family === 'krea2' ? 'Krea 2' : 'Anima'} 当前未连接或尚未就绪。${state.value.checkMsg}`); return }
     const nativeBlocker = state.value.provider === 'native' && nativeAnimaRequestBlocker(state.value.models, request)
     if (nativeBlocker) { options.flash(nativeBlocker); return }
@@ -404,7 +405,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       if (durableAttempt) {
         if (!submitting) { patchState({ phase: 'failed', statusText: '准备未完成，尚未提交生成', errorMsg: error instanceof Error ? error.message : String(error), errorReport: null }); return }
         const { runtimeAnimaFailure } = await import('./runtimeImageSession')
-        if (serial === requestSerial) patchState(runtimeAnimaFailure(error, controller.signal.aborted, accepted))
+        if (serial === requestSerial) patchState(runtimeAnimaFailure(error, controller.signal.aborted, accepted, provider))
         return
       }
       if (controller.signal.aborted) {
@@ -413,7 +414,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       }
       if (error instanceof ApiClientError && error.kind === 'aborted') return
       const { imageFailurePatch } = await import('./runtimeImageSession')
-      if (serial === requestSerial) patchState(imageFailurePatch(error, '生成失败'))
+      if (serial === requestSerial) patchState(imageFailurePatch(error, '生成失败', provider))
     } finally {
       if (jobRequest === controller) jobRequest = null
     }

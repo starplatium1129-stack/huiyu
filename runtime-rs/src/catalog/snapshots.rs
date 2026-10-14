@@ -105,7 +105,7 @@ impl Catalog {
                 records.push(record);
             }
         }
-        let value = json!({"version":1,"records":records,"retired":retired});
+        let value = snapshot_value(records, retired)?;
         transaction.commit()?;
         Ok(value)
     }
@@ -136,8 +136,7 @@ impl Catalog {
                 merged.insert((record.kind.clone(), record.id.clone()), (record, removed));
             }
             for (field, removed) in [("records", false), ("retired", true)] {
-                for value in snapshot[field].as_array().unwrap() {
-                    let record: Record = serde_json::from_value(value.clone())?;
+                for record in serde_json::from_value::<Vec<Record>>(snapshot[field].take())? {
                     merged.insert((record.kind.clone(), record.id.clone()), (record, removed));
                 }
             }
@@ -150,12 +149,11 @@ impl Catalog {
                     records.push(record);
                 }
             }
-            snapshot = json!({"version":1,"records":records,"retired":retired});
+            snapshot = snapshot_value(records, retired)?;
         }
         std::fs::create_dir(&staging)?;
         let mut files = Vec::new();
-        for value in snapshot["records"].as_array().unwrap() {
-            let record: Record = serde_json::from_value(value.clone())?;
+        for record in serde_json::from_value::<Vec<Record>>(snapshot["records"].take())? {
             let digest = hex::encode(Sha256::digest(record.id.as_bytes()));
             // Readable stable names, including Windows-safe outfit keys. Hash
             // suffix prevents sanitization/case collisions on Windows.
@@ -180,14 +178,11 @@ impl Catalog {
             files.push(name);
         }
         files.sort();
+        let mut manifest = json!({"version":1,"files":files,"retired":null});
+        manifest["retired"] = snapshot["retired"].take();
         std::fs::write(
             staging.join("manifest.json"),
-            format!(
-                "{}\n",
-                serde_json::to_string_pretty(
-                    &json!({"version":1,"files":files,"retired":snapshot["retired"]})
-                )?
-            ),
+            format!("{}\n", serde_json::to_string_pretty(&manifest)?),
         )?;
         let backup = parent.join(format!(".catalog-export-backup-{}", uuid::Uuid::new_v4()));
         if directory.exists() {
@@ -206,4 +201,16 @@ impl Catalog {
             json!({"ok":true,"count":count,"total":files.len(),"partial":scope.partial(),"directory":directory,"version":self.version()?}),
         )
     }
+}
+fn snapshot_value(records: Vec<Record>, retired: Vec<Record>) -> Result<Value> {
+    let mut value = json!({"version":1,"records":null,"retired":null});
+    for (field, records) in [("records", records), ("retired", retired)] {
+        value[field] = Value::Array(
+            records
+                .into_iter()
+                .map(Record::into_value)
+                .collect::<serde_json::Result<Vec<_>>>()?,
+        );
+    }
+    Ok(value)
 }

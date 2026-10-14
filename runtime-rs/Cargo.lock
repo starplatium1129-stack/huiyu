@@ -724,6 +724,7 @@ dependencies = [
  "image",
  "libc",
  "libloading",
+ "mime",
  "percent-encoding",
  "regex",
  "reqwest",

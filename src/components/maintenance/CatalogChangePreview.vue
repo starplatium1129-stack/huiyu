@@ -9,13 +9,18 @@
       <p v-if="diff.before && diff.after && diff.before.sortOrder !== diff.after.sortOrder" class="catalog-note">展示位置已调整。</p>
       <details class="catalog-advanced"><StudioDisclosureSummary>查看完整变化</StudioDisclosureSummary><div data-disclosure-content class="catalog-diff"><pre>{{ JSON.stringify(diff.before?.data ?? null, null, 2) }}</pre><pre>{{ JSON.stringify(diff.after?.data ?? null, null, 2) }}</pre></div></details>
     </details>
+    <details v-for="record in preview.retiredImports ?? []" :key="record.kind + ':' + record.id" open>
+      <StudioDisclosureSummary>{{ recordTitle(record) }} <small>登记归档身份</small></StudioDisclosureSummary>
+      <p class="catalog-note">{{ CATALOG_LABELS[record.kind] }} · <code>{{ record.id }}</code></p>
+      <p class="catalog-note">保留归档身份，后续新增内容将继续避开该编号。</p>
+    </details>
   </section>
 </template>
 <script setup lang="ts">
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import type { CatalogReceipt, CatalogRecord } from '@/api/catalogApi'
 import { CATALOG_FIELDS, fieldValue } from '@/composables/scene/catalogFields'
-import { recordTitle } from '@/composables/scene/catalogPresentation'
+import { CATALOG_LABELS, recordTitle } from '@/composables/scene/catalogPresentation'
 defineProps<{ preview: CatalogReceipt }>()
 function changedFields(before: CatalogRecord | null, after: CatalogRecord | null) {
   const kind = (after || before)!.kind

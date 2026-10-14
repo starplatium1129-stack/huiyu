@@ -33,6 +33,18 @@ pub(super) fn run(
                     && !copying
                     && collecting.is_none()
                     && context.result_commit.is_none()
+                    && context.restore_commit.is_none()
+                {
+                    break;
+                }
+            }
+            Work::RestoreVerified(id, verified) => {
+                restore::finish(&mut context, id, verified);
+                if !closing.is_empty()
+                    && !copying
+                    && collecting.is_none()
+                    && context.result_commit.is_none()
+                    && context.restore_commit.is_none()
                 {
                     break;
                 }
@@ -141,6 +153,14 @@ pub(super) fn run(
                 if reply.is_closed() {
                     continue;
                 }
+                if command["kind"] == "restoreArtwork" {
+                    if let Some(permit) = permit {
+                        restore::start(&mut context, &command, &principal, reply, permit, &sender);
+                    } else {
+                        let _ = reply.send(Err(unavailable()));
+                    }
+                    continue;
+                }
                 if result_commit::is_commit(&command) {
                     result_commit::start(
                         &mut context,
@@ -222,7 +242,7 @@ pub(super) fn run(
                         Ok(backup::Prepared::Complete(value)) => {
                             let _ = reply.send(Ok(value));
                         }
-                        Ok(backup::Prepared::Copy(job)) => {
+                        Ok(backup::Prepared::Copy(mut job)) => {
                             let Some(sender) = sender.upgrade() else {
                                 let _ = reply.send(Err(unavailable()));
                                 continue;
@@ -276,7 +296,11 @@ pub(super) fn run(
                 let result = backup::finish(&mut context, completion, result);
                 let _ = reply.send(result);
                 copying = false;
-                if !closing.is_empty() && collecting.is_none() && context.result_commit.is_none() {
+                if !closing.is_empty()
+                    && collecting.is_none()
+                    && context.result_commit.is_none()
+                    && context.restore_commit.is_none()
+                {
                     break;
                 }
             }
@@ -284,7 +308,11 @@ pub(super) fn run(
                 let result = garbage::finish(&mut context, completion, result);
                 let _ = reply.send(result);
                 collecting = None;
-                if !closing.is_empty() && !copying && context.result_commit.is_none() {
+                if !closing.is_empty()
+                    && !copying
+                    && context.result_commit.is_none()
+                    && context.restore_commit.is_none()
+                {
                     break;
                 }
             }
@@ -296,7 +324,14 @@ pub(super) fn run(
                 if let Some(pending) = &context.result_commit {
                     pending.cancel();
                 }
-                if !copying && collecting.is_none() && context.result_commit.is_none() {
+                if let Some(pending) = &context.restore_commit {
+                    pending.cancel();
+                }
+                if !copying
+                    && collecting.is_none()
+                    && context.result_commit.is_none()
+                    && context.restore_commit.is_none()
+                {
                     break;
                 }
             }

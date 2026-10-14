@@ -42,7 +42,8 @@ function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest, family: 'an
         createdAt: Date.now(),
         resultUrl: job.resultUrl,
       }
-  return Object.freeze({ ...JSON.parse(JSON.stringify(metadata)), resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
+  const provider = job.provider === 'comfy' || job.provider === 'native' ? job.provider : undefined
+  return Object.freeze({ ...JSON.parse(JSON.stringify(metadata)), provider, resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
 }
 
 export async function runDirectAnima(options: DirectOwner & { request: AnimaRequest }): Promise<void> {

@@ -1,7 +1,8 @@
 import path from 'node:path'
+import { isBuiltin } from 'node:module'
 import type { Rule } from 'eslint'
 
-/** Small pilot: type-only edges are allowed; runtime imports are checked after path normalization. */
+/** Normalize direct edges; pure domain modules also constrain type-only imports. */
 export function boundaryViolation(filename: string, specifier: string, typeOnly = false): string | null {
   const normalized = filename.replaceAll('\\', '/')
   const marker = normalized.lastIndexOf('/src/')
@@ -14,6 +15,15 @@ export function boundaryViolation(filename: string, specifier: string, typeOnly 
   if (/^photoswipe(?:\/|$)/.test(target) && source !== 'src/components/gallery/PhotoSwipeStage.vue') {
     return 'PhotoSwipe is private to PhotoSwipeStage; business code uses artwork identities and adapter events.'
   }
+  const application = source.startsWith('src/application/')
+  const pure = application || source.startsWith('src/types/') || [
+    'src/utils/historyRecipe.ts', 'src/utils/generationTask.ts', 'src/utils/promptPolicy.ts', 'src/utils/promptCatalog.ts', 'src/utils/resultContext.ts',
+  ].includes(source)
+  if (pure && (/^src\/(?:views|components|stores|composables|storage|api)\//.test(target)
+    || /^(?:vue|pinia)(?:\/|$)/.test(target)
+    || application && (/^src\/platform\//.test(target) || target.startsWith('node:') || isBuiltin(target)))) {
+    return 'Pure domain modules use data contracts and ports, never UI, state or platform implementations.'
+  }
   if (typeOnly) return null
   if (source === 'src/stores/promptBuilderStore.ts' && (/^src\/(?:storage|api|application)\//.test(target)
     || /^src\/composables\/(?:useImageStore|useKVStore)(?:\.|$)/.test(target))) {
@@ -22,12 +32,6 @@ export function boundaryViolation(filename: string, specifier: string, typeOnly 
   if (/^src\/composables\/prompt\/usePrompt(?:Draft|SceneFilters)\.ts$/.test(source)
     && /^src\/(?:stores|storage|api|application)\//.test(target)) {
     return 'Drafts and scene filters receive explicit state; they cannot load the workbench or artwork services.'
-  }
-  const pure = source.startsWith('src/types/') || [
-    'src/utils/historyRecipe.ts', 'src/utils/generationTask.ts', 'src/utils/promptPolicy.ts', 'src/utils/promptCatalog.ts',
-  ].includes(source)
-  if (pure && (/^src\/(?:views|components|stores|composables|storage|api)\//.test(target) || /^(?:vue|pinia)(?:\/|$)/.test(target))) {
-    return 'Pure history/prompt modules must not load UI, state instances or browser services.'
   }
   if (source.startsWith('src/storage/') && /^src\/(?:views|components|stores)\//.test(target)) {
     return 'Storage must not depend on pages or Pinia stores.'
@@ -42,10 +46,10 @@ export const moduleBoundaries: Rule.RuleModule = {
     const check = (node: Rule.Node, value: unknown, typeOnly = false) => {
       if (typeof value !== 'string') {
         const filename = context.filename.replaceAll('\\', '/')
-        if (/\/src\/(?:types|storage)\//.test(filename) || /\/src\/utils\/(?:historyRecipe|generationTask|promptPolicy|promptCatalog)\.ts$/.test(filename)
+        if (/\/src\/(?:types|storage|application)\//.test(filename) || /\/src\/utils\/(?:historyRecipe|generationTask|promptPolicy|promptCatalog|resultContext)\.ts$/.test(filename)
           || /\/src\/stores\/promptBuilderStore\.ts$/.test(filename)
           || /\/src\/composables\/prompt\/usePrompt(?:Draft|SceneFilters)\.ts$/.test(filename)) {
-          context.report({ node, messageId: 'boundary', data: { reason: 'Pilot boundary imports must use a literal path.' } })
+          context.report({ node, messageId: 'boundary', data: { reason: 'Boundary imports must use a literal path.' } })
         }
         return
       }
@@ -70,6 +74,10 @@ export const moduleBoundaries: Rule.RuleModule = {
       TSImportEqualsDeclaration(node: Rule.Node) {
         const edge = node as Rule.Node & { importKind?: string; moduleReference?: { expression?: { value?: unknown } } }
         check(node, edge.moduleReference?.expression?.value, edge.importKind === 'type')
+      },
+      TSImportType(node: Rule.Node) {
+        const edge = node as Rule.Node & { source?: { value?: unknown } }
+        check(node, edge.source?.value, true)
       },
     }
   },

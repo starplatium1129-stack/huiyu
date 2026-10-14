@@ -2,6 +2,7 @@ export type AnimaPhase = 'idle' | 'submitting' | 'running' | 'cancelling' | 'suc
 
 export interface AnimaJobMetadata {
   engine: 'anima' | 'krea2'
+  provider?: 'comfy' | 'native'
   id: string
   prompt: string
   negative: string

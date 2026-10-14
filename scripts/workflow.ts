@@ -240,11 +240,11 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/validate-content-contracts.js:15', unknown: [] },
   },
   'content:sync': {
-    desc: '统一校验人物/服装/场景，修正清单计数并构建聚合（默认只读预览）',
+    desc: '旧分片专用：校验人物/服装/场景，修正清单计数并构建聚合（已迁移项目拒绝；默认只读预览）',
     cmd: ['node', 'scripts/maintenance/sync-content.js'],
     docs: 'docs/guides/characters/character-onboarding-workflow.md',
     opts: '[--apply] [--root=目录]；不登记或补齐角色参考图',
-    run: { nature: ['read-only'], machine: ['node'], switches: { '--apply': ['writes-source', 'writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/sync-content.ts', unknown: [], notes: ['不调用模型、不安装、不发布；不读取或写入参考库'] },
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: { '--apply': ['writes-source', 'writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/sync-content.ts', unknown: [], notes: ['有 catalog 快照或迁移身份时，预览和 apply 均拒绝；当前内容维护使用 content:catalog', '不调用模型、不安装、不发布；不读取或写入参考库'] },
   },
   'reference:build': {
     desc: '从每人物参考分片构建兼容 standards/view 聚合',

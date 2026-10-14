@@ -99,7 +99,16 @@ async fn perform(
         && path.len() == 2
         && matches!(*method, Method::GET | Method::HEAD)
     {
-        return media::serve(state, headers, peer.ip(), method, &path[1], &query).await;
+        return media::serve(
+            state,
+            &storage,
+            headers,
+            peer.ip(),
+            method,
+            &path[1],
+            &query,
+        )
+        .await;
     }
     let capability = path == ["media-capabilities"] && method == Method::POST;
     let scope = if path.first().map(String::as_str) == Some("backups") {
@@ -112,13 +121,22 @@ async fn perform(
     let session = state
         .host
         .authenticate(state, headers, peer.ip(), method, scope)?;
+    if session.workspace_id != storage.workspace_id()
+        || session.runtime_epoch != storage.runtime_epoch()
+    {
+        return Err(ApiError::new(
+            401,
+            "WORKSPACE_AUTH",
+            "Workspace session no longer matches this workspace",
+        ));
+    }
     let input: Value = if body.is_empty() {
         json!({})
     } else {
         serde_json::from_slice(body)?
     };
     if capability {
-        return media::grant(state, session, &input).await;
+        return media::grant(state, &storage, session, &input).await;
     }
     let writing = !matches!(*method, Method::GET | Method::HEAD);
     let _admitted = if writing {
@@ -144,7 +162,7 @@ async fn perform(
     }
     let command = command(method, &path, &query, &input)?;
     if command["kind"] == "readMedia" {
-        return media::chunk(state, method, &command).await;
+        return media::chunk(state, &storage, method, &command).await;
     }
     let backup = matches!(command["kind"].as_str(), Some("backup" | "restoreBackup"));
     let operation_id = command.get("operationId").cloned();

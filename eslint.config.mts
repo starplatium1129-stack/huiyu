@@ -217,7 +217,7 @@ export default tseslint.config(
     rules: { 'no-restricted-globals': ['error', 'process', 'require', '__dirname', 'Buffer'] },
   },
   {
-    files: ['src/types/**/*.ts', 'src/utils/historyRecipe.ts', 'src/utils/generationTask.ts', 'src/utils/promptPolicy.ts'],
+    files: ['src/types/**/*.ts', 'src/application/**/*.ts', 'src/utils/historyRecipe.ts', 'src/utils/generationTask.ts', 'src/utils/promptPolicy.ts', 'src/utils/resultContext.ts'],
     rules: { 'no-restricted-globals': ['error', 'process', 'require', '__dirname', 'Buffer', 'window', 'document', 'localStorage', 'sessionStorage', 'indexedDB', 'navigator'] },
   },
   {

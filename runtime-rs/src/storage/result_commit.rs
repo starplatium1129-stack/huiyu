@@ -1,9 +1,9 @@
+use super::verified_media::{Identity, verify};
 use super::*;
-use crate::file_identity;
 use tasks::outputs::commit::{self, Output};
 use tokio::sync::OwnedSemaphorePermit;
 mod file;
-pub(super) use file::Verified;
+pub(super) use super::verified_media::Verified;
 
 pub(super) fn is_write(command: &Value) -> bool {
     matches!(
@@ -20,6 +20,7 @@ pub(super) fn is_write(command: &Value) -> bool {
                 | "commitSave"
                 | "commitMedia"
                 | "appendArtwork"
+                | "restoreArtwork"
         )
     )
 }
@@ -94,69 +95,6 @@ impl Pending {
     }
     pub fn cancel(&self) {
         self.identity.cancel.store(true, Ordering::Relaxed);
-    }
-}
-
-#[derive(Clone)]
-struct Identity {
-    root: PathBuf,
-    workspace_id: String,
-    epoch: String,
-    root_id: file_identity::Identity,
-    database_id: file_identity::Identity,
-    owner_id: file_identity::Identity,
-    cancel: Arc<AtomicBool>,
-}
-impl Identity {
-    fn new(c: &Context) -> Result<Self> {
-        Ok(Self {
-            root: c.root.clone(),
-            workspace_id: c.workspace_id.clone(),
-            epoch: c.epoch.clone(),
-            root_id: file_identity::path(&schema::safe(&c.root, "")?, true)?,
-            database_id: file_identity::path(&schema::safe(&c.root, "huiyu.sqlite3")?, false)?,
-            owner_id: file_identity::path(&schema::safe(&c.root, ".workspace-owner.json")?, false)?,
-            cancel: c.cancel.clone(),
-        })
-    }
-    fn cancelled(&self) -> Result<()> {
-        if self.cancel.load(Ordering::Relaxed) {
-            return Err(ApiError::new(
-                499,
-                "CANCELLED",
-                "Result verification was cancelled",
-            ));
-        }
-        Ok(())
-    }
-    fn check(&self, c: &Context) -> Result<()> {
-        self.cancelled()?;
-        c.writer()?;
-        c.owner.check()?;
-        if self.root != c.root || self.workspace_id != c.workspace_id || self.epoch != c.epoch {
-            return Err(conflict(
-                "WORKSPACE_IDENTITY",
-                "Workspace changed during result verification",
-            ));
-        }
-        self.check_paths()
-    }
-    fn check_paths(&self) -> Result<()> {
-        self.cancelled()?;
-        let root = file_identity::path(&schema::safe(&self.root, "")?, true)?;
-        if root.dev != self.root_id.dev
-            || root.ino != self.root_id.ino
-            || file_identity::path(&schema::safe(&self.root, "huiyu.sqlite3")?, false)?
-                != self.database_id
-            || file_identity::path(&schema::safe(&self.root, ".workspace-owner.json")?, false)?
-                != self.owner_id
-        {
-            return Err(conflict(
-                "WORKSPACE_IDENTITY",
-                "Workspace changed during result verification",
-            ));
-        }
-        Ok(())
     }
 }
 
@@ -293,7 +231,7 @@ fn spawn(
                 if let Some(source) = source {
                     file::copy(&identity, &path, &media, source)?;
                 }
-                file::verify(&identity, &path, &media)
+                verify(&identity, &path, &media)
             }))
             .unwrap_or_else(|_| Err(unavailable()));
             // The sender keeps the actor/owner alive until the blocking read has

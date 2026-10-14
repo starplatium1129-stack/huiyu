@@ -197,12 +197,19 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
     cancelled: boolean
   }
   const inflight = new Map<string, InflightEntry>()
-  /** 每个 URL 的写入代际（2026-09-10 复核 R1）：写请求成功即自增。
+  /** 仅在同 URL 的缓存读取仍有消费者时保留写入代际，最后消费者退出即清理。
    * 写前发起的 GET 属于旧代，不得回填缓存；写后发起的 GET 属于新代，不得搭乘旧代 inflight。 */
   const generations = new Map<string, number>()
   // Explicit refreshes supersede older reads even without a successful write.
   const readVersions = new Map<string, { version: number; pending: number }>()
   const generationOf = (url: string): number => generations.get(url) ?? 0
+
+  function releaseRead(url: string, state: { version: number; pending: number } | undefined) {
+    if (state && --state.pending === 0 && readVersions.get(url) === state) {
+      readVersions.delete(url)
+      generations.delete(url)
+    }
+  }
 
   function releaseSharedConsumer(key: string, entry: InflightEntry) {
     if (entry.consumers > 0) entry.consumers -= 1
@@ -314,6 +321,8 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
         // 写后读取不得搭乘写前 inflight：仅同代请求共享传输
         const pending = inflight.get(key)
         if (pending && !pending.controller.signal.aborted && pending.generation === generation) {
+          const readState = readVersions.get(url)
+          if (readState) readState.pending++
           pending.consumers += 1
           const release = trackSharedConsumer(key, pending, callerSignal)
           try {
@@ -328,6 +337,7 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
               validate,
             )
           } finally {
+            releaseRead(url, readState)
             release()
           }
         }
@@ -456,7 +466,7 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
           }
         } else if (!isCacheableGet) {
           // 写请求成功即推进代际并失效同 URL 缓存，防止 saveHostConfig 之后再读到旧配置
-          generations.set(url, generationOf(url) + 1)
+          if (readVersions.has(url)) generations.set(url, generationOf(url) + 1)
           responseCache.delete(url)
         }
         // 参与内存缓存／共享的 GET 结果必须隔离后再交给消费者；其余请求结果仅本调用持有
@@ -478,9 +488,7 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
           detail: errorDetail(error),
         })
       } finally {
-        if (readState && --readState.pending === 0 && readVersions.get(url) === readState) {
-          readVersions.delete(url)
-        }
+        releaseRead(url, readState)
         if (timeoutId !== undefined) clearTimeout(timeoutId)
         if (callerSignal && abortFromCaller) callerSignal.removeEventListener('abort', abortFromCaller)
         release?.()

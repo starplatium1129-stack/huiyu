@@ -82,7 +82,7 @@ HUIYU has three main parts: the **Vue studio, Tauri desktop shell and local Rust
 | Local gateway | Rust, Axum and Tokio; HTTP / streaming APIs, task admission, queries, cancellation, media and resources |
 | Data and content | Desktop SQLite for workspace metadata and the content catalog, IndexedDB on the web; media stored separately |
 | AI services | ComfyUI for images and video; llama.cpp / Ollama / compatible APIs for chat; separate interrogation, translation and voice services |
-| Build and maintenance | Node.js, npm and project scripts for frontend builds, resource preparation, release packaging and isolated tests |
+| Build and maintenance | Node.js, npm and project scripts for frontend builds, resource preparation, release packaging and maintenance checks |
 
 The runtime's `content/catalog.sqlite` is the working authority for characters, outfits, scenes and blueprints. `data/catalog/` contains explicitly exported project snapshots. Models and personal artwork live in the selected local directories. See the [engineering contracts](docs/engineering-contracts.md) and [documentation index](docs/INDEX.md) for detailed boundaries and storage designs.
 

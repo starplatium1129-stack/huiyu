@@ -4,6 +4,7 @@ import type { CharKey } from '@/stores/promptBuilderStore'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 export interface AnimaPublicJob {
+  provider?: 'comfy' | 'native'
   id: string
   status: 'queued' | AnimaGenerationState['phase']
   progress?: number | null

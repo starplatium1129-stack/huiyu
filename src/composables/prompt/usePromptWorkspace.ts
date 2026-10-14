@@ -172,7 +172,7 @@ export function usePromptWorkspace() {
     });
     // 模板沿用原名绑定
     const { prevResult, lastResult, compareOpen, compareEl, close: closeCompare } = compare;
-    /** 快照业务字段：URL 已由 composable 克隆保活，这里只读引擎状态组装元数据。 */
+    /** 克隆 URL 前冻结当前成片元数据，异步期间的表单变化不影响快照。 */
     function buildResultSnapshot(persistentUrl: string): ResultSnapshot { return snapshotResult({ animaState, drawEngine, displayResultSeed, pb, sdSize, sd }, persistentUrl); }
     // ── Actions ───────────────────────────────────────────────────────────────
     async function handleInterrogateResult(result: unknown) {

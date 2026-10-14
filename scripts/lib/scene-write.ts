@@ -38,11 +38,6 @@ function readRetiredSceneIds(dataDir?: string) {
   return new Set(data.records.map((record: any) => record.id));
 }
 
-/** 写入侧确认稳定 ID：活跃及退役身份都参与分配，不复用旧身份。 */
-function allocateSceneId(activeIds: any, retiredIds: any) {
-  return (require('./scene-id') as typeof import('./scene-id')).nextSceneId(activeIds || [], retiredIds || []);
-}
-
 // ── 源分片完整性（manifest ↔ 目录 ↔ 内容） ──────────────────────────────
 
 function groupPrefix(baseFile: string) {
@@ -308,120 +303,8 @@ function applySceneChanges(incoming: any, previous: any, options?: any) {
   return changes;
 }
 
-// ── 维护工具的保存后引用清理 ────────────
-
-/**
- * 保存后清理 characters/loras/curation 中指向已不存在场景的引用。
- * io 由调用方注入（readJson/writeJson/sanitizeCuration），
- * 保持与原实现完全相同的落盘格式。
- */
-function cleanOrphanedSceneRefs(options: any) {
-  const { rootDir, io } = options;
-  const activeIds = new Set(store.loadSceneShards().scenes.map((scene) => scene.id));
-  const dataDir = path.join(rootDir, 'data');
-
-  const charactersPath = path.join(dataDir, 'characters.json');
-  const characters = io.readJson(charactersPath);
-  let changed = false;
-  characters.forEach((character: { lora: { recommended_scene: any[]; }; }) => {
-    const recommended = character.lora && character.lora.recommended_scene;
-    if (Array.isArray(recommended)) {
-      const filtered = recommended.filter((id) => activeIds.has(id));
-      if (filtered.length !== recommended.length) {
-        character.lora.recommended_scene = filtered;
-        changed = true;
-      }
-    }
-  });
-  if (changed) io.writeJson(charactersPath, characters);
-
-  const lorasPath = path.join(dataDir, 'loras.json');
-  const loras = io.readJson(lorasPath);
-  changed = false;
-  loras.forEach((lora: { related_scenes: any[]; scenes: any[]; }) => {
-    const related = lora.related_scenes || lora.scenes;
-    if (Array.isArray(related)) {
-      const filtered = related.filter((id) => activeIds.has(id));
-      if (filtered.length !== related.length) {
-        if (lora.related_scenes) lora.related_scenes = filtered;
-        if (lora.scenes) lora.scenes = filtered;
-        changed = true;
-      }
-    }
-  });
-  if (changed) io.writeJson(lorasPath, loras);
-
-  const curationPath = path.join(dataDir, 'curation.json');
-  const curation = io.sanitizeCuration(io.readJson(curationPath), activeIds);
-  io.writeJson(curationPath, curation);
-}
-
-/**
- * 把本次保存中消失的场景登记进 retired-scenes.json（退役 ID 永不复用），
- * 并删除对应样张图与 showcase manifest 条目。
- */
-function retireRemovedScenes(options: any) {
-  const { incomingScenes, previousScenes, rootDir, showcaseDir, io, log } = options;
-  const incomingIds = new Set(incomingScenes.map((scene: any) => scene.id));
-  const retiredPath = path.join(rootDir, 'data', 'retired-scenes.json');
-  const data = io.readJson(retiredPath);
-  const retiredRecords = data.records || [];
-  const retiredIds = new Set(retiredRecords.map((record: any) => record.id));
-  const added: any[] = [];
-
-  previousScenes.forEach((scene: any) => {
-    if (!incomingIds.has(scene.id) && !retiredIds.has(scene.id)) {
-      retiredRecords.push({ id: scene.id, retiredAt: new Date().toISOString().split('T')[0], reason: '在场景管理中下架' });
-      added.push(scene.id);
-    }
-  });
-
-  if (added.length) {
-    data.records = retiredRecords;
-    io.writeJson(retiredPath, data);
-    if (log) log('  🗑 已登记 ' + added.length + ' 个下架场景: ' + added.join(', '));
-  }
-
-  if (added.length && showcaseDir) {
-    added.forEach((sceneId) => {
-      ['jpg', 'png', 'webp'].forEach((ext) => {
-        const imagePath = path.join(showcaseDir, 'images', sceneId + '.' + ext);
-        const thumbPath = path.join(showcaseDir, 'thumbs', sceneId + '.' + ext);
-        if (fs.existsSync(imagePath)) { fs.unlinkSync(imagePath); if (log) log('  🖼 已删除样张: images/' + sceneId + '.' + ext); }
-        if (fs.existsSync(thumbPath)) { fs.unlinkSync(thumbPath); if (log) log('  🖼 已删除缩略图: thumbs/' + sceneId + '.' + ext); }
-      });
-      const manifestPath = path.join(showcaseDir, 'manifest.json');
-      if (fs.existsSync(manifestPath)) {
-        const manifest = io.readJson(manifestPath);
-        if (manifest && Array.isArray(manifest.entries)) {
-          manifest.entries = manifest.entries.filter((entry: any) => entry.id !== sceneId);
-          manifest.entryCount = manifest.entries.length;
-          manifest.sceneCount = manifest.entries.length;
-          io.writeJson(manifestPath, manifest);
-        }
-      }
-    });
-  }
-  return added;
-}
-
-// ── 保存事务锁 ──────────────────────────────────────────────────────────
-
-/** 单进程内串行化场景保存：两个并发 POST 不再交错写分片。
- *  前一个任务失败不阻塞后一个（队列吞掉 rejection，结果由调用方自己处理）。 */
-let sceneWriteQueue = Promise.resolve();
-function withSceneWriteLock<T>(task: () => T | PromiseLike<T>): Promise<T> {
-  const run = sceneWriteQueue.then(task, task);
-  sceneWriteQueue = run.then(() => {}, () => {});
-  return run;
-}
-
 export = {
-  allocateSceneId,
   applySceneChanges,
-  cleanOrphanedSceneRefs,
   readRetiredSceneIds,
-  retireRemovedScenes,
   verifyShardIntegrity,
-  withSceneWriteLock,
 };

@@ -26,6 +26,7 @@ ryu-js = "1"
 thiserror = "2"
 futures-util = "0.3"
 http-body = "1"
+mime = "0.3"
 percent-encoding = "2"
 image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp"] }
 reqwest = { version = "0.13", default-features = false, features = ["stream", "json", "rustls"] }

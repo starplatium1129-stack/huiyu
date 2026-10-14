@@ -14,11 +14,11 @@ AI 权重不在素材 ZIP 中。提前在联网准备机上取得所选能力的
 
 ## 源码开发或构建机启动
 
-1. 先联机准备符合 `package.json` 的 Node.js（最低 22.18，CI 版本见 `.github/workflows/quality.yml`）、Rust/Cargo 与 Windows 对应构建工具；在项目根目录执行 `npm ci`。完全离线的源码构建还需预先准备 npm/Cargo 依赖缓存与原生构建材料，Git 源码不包含这些环境。
+1. 先联机准备符合 `package.json` 的 Node.js（最低 22.18）、Rust/Cargo 与 Windows 对应构建工具；在项目根目录执行 `npm ci`。完全离线的源码构建还需预先准备 npm/Cargo 依赖缓存与原生构建材料，Git 源码不包含这些环境。
 2. 执行 `npm run build` 生成网页和维护命令，再执行 `npm start`。当前产品入口经 `run-rust-runtime` 编译/启动 `runtime-rs`，默认访问 `http://127.0.0.1:3000`；旧 Node 网关已退出产品路径。
 3. 开发网页时另外执行 `npm run wf -- dev:web`，访问 `http://localhost:5173`；保留网关进程，它提供 `/api`、`/data` 与素材。页面能打开但素材一直加载时，先检查网关是否在线。
 4. 人物、服装、场景和蓝图的工作权威为运行目录 content/catalog.sqlite；data/catalog/ 是显式项目快照。生成工具 .js 与聚合 JSON 不直接编辑；build:runtime 只在工具源/配置变化或所需入口缺失时准备，见[统一工作流](docs/workflow.md)。
-5. 按 [工作流分层规则](docs/workflow.md#门禁与构建)选择代码、数据契约和构建检查；跨领域整合需要时执行 `npm run wf -- gate:full`，不在每次启动或小改后重复。参考媒体不入 Git：未配置素材根（`AI_WORKSPACE_ROOT` 或 `AICS_CHARACTER_REF_ROOT`）的机器上，`npm run check` 与 `gate:full` 的 `content-contracts`、`ref-urls` 两步会因参考图缺失而失败——这是预期防线，先按下文恢复素材，不要改写索引迁就缺图。只做索引结构核对的办公机可设 `AICS_REFERENCE_AUDIT_MODE=structure`；它只验证索引结构，不能算作图片交付。
+5. 按 [工作流分层规则](docs/workflow.md#门禁与构建)选择源码、差异与日志审查，以及必要的类型检查、产品构建和维护校验；不运行测试。参考媒体不入 Git，需要核对既有参考库时先配置素材根（`AI_WORKSPACE_ROOT` 或 `AICS_CHARACTER_REF_ROOT`），再显式运行 `npm run wf -- check:ref-urls`。缺图时恢复素材，不改写索引迁就缺图；结构核对不能算作图片交付。
 
 ## 本机 AI 服务与模型
 
@@ -144,7 +144,7 @@ $env:COMFY_HOST = 'http://127.0.0.1:8188'
 npm run start:run
 ```
 
-`npm ci` 的 postinstall 构建 TypeScript 维护命令，`npm run build` 构建网页；这些产物不入 Git。`npm run start:run` / `npm start` 使用 Rust/Cargo 产品入口，需要前述构建工具与原生库。`build:runtime` 构建的是维护、测试和浏览器工具，不能把它的成功当作 Rust 二进制已经构建或启动。持续开发可使用 `npm run dev:server`。
+`npm ci` 的 postinstall 构建 TypeScript 维护命令，`npm run build` 构建网页；这些产物不入 Git。`npm run start:run` / `npm start` 使用 Rust/Cargo 产品入口，需要前述构建工具与原生库。`build:runtime` 构建的是维护和独立浏览器工具，不能把它的成功当作 Rust 二进制已经构建或启动。持续开发可使用 `npm run dev:server`。
 
 网关默认不开公网分享；`AUTO_TUNNEL=1` 或已保存的自动分享偏好才会在启动时打开。需要明确禁止隧道时：
 

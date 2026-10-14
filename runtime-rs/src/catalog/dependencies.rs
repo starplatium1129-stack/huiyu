@@ -135,17 +135,11 @@ pub(super) fn expand(connection: &Connection, input: &[Change]) -> Result<Vec<Ch
     if !retired.is_empty() {
         for record in rows(connection, "character")? {
             update(&mut changes, &mut index, record, |data| {
-                // Preserve the existing mutable-index insertion semantics too;
-                // a missing path adds null fields even without a removed ID.
-                let mut changed = data
-                    .get("profile")
-                    .and_then(|profile| profile.get("lora"))
-                    .and_then(|lora| lora.get("recommended_scene"))
-                    .is_none();
-                if let Some(ids) = data["profile"]["lora"]["recommended_scene"].as_array_mut() {
-                    changed |= retain_ids(ids, &retired);
-                }
-                changed
+                data.get_mut("profile")
+                    .and_then(|profile| profile.get_mut("lora"))
+                    .and_then(|lora| lora.get_mut("recommended_scene"))
+                    .and_then(Value::as_array_mut)
+                    .is_some_and(|ids| retain_ids(ids, &retired))
             })?;
         }
         let mut statement = connection.prepare(&format!(
@@ -165,14 +159,12 @@ pub(super) fn expand(connection: &Connection, input: &[Change]) -> Result<Vec<Ch
                         "curatedSceneIds",
                         "reviewSceneIds",
                     ] {
-                        changed |= data.get(field).is_none();
-                        if let Some(ids) = data[field].as_array_mut() {
+                        if let Some(ids) = data.get_mut(field).and_then(Value::as_array_mut) {
                             changed |= retain_ids(ids, &retired);
                         }
                     }
                     for field in ["recommendationReasons", "personaCoreReasons"] {
-                        changed |= data.get(field).is_none();
-                        if let Some(map) = data[field].as_object_mut() {
+                        if let Some(map) = data.get_mut(field).and_then(Value::as_object_mut) {
                             let count = map.len();
                             map.retain(|id, _| !retired.contains(id.as_str()));
                             changed |= count != map.len();
@@ -186,8 +178,8 @@ pub(super) fn expand(connection: &Connection, input: &[Change]) -> Result<Vec<Ch
                     if let Some(loras) = data.as_array_mut() {
                         for lora in loras {
                             for field in ["related_scenes", "scenes"] {
-                                changed |= lora.get(field).is_none();
-                                if let Some(ids) = lora[field].as_array_mut() {
+                                if let Some(ids) = lora.get_mut(field).and_then(Value::as_array_mut)
+                                {
                                     changed |= retain_ids(ids, &retired);
                                 }
                             }

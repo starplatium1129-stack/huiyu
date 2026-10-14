@@ -82,7 +82,7 @@ npm run start:run
 | 本地网关 | Rust、Axum、Tokio；HTTP／流式接口、任务准入、查询取消、媒体与资源管理 |
 | 数据与内容 | 桌面 SQLite 管理工作区元数据与内容目录，Web 使用 IndexedDB；图片等媒体单独存放 |
 | AI 服务 | ComfyUI 绘图与视频；llama.cpp／Ollama／兼容 API 聊天；独立反推、翻译和语音服务 |
-| 构建与维护 | Node.js、npm 与项目脚本；前端构建、资源准备、发行封装与隔离测试 |
+| 构建与维护 | Node.js、npm 与项目脚本；前端构建、资源准备、发行封装与维护校验 |
 
 角色、服装、场景和蓝图以运行目录的 `content/catalog.sqlite` 为工作权威，`data/catalog/` 是显式导出的项目快照。模型与用户作品保存在本机选择的目录。工程边界见[工程契约](docs/engineering-contracts.md)，工作区与内容设计见[文档索引](docs/INDEX.md)。
 
@@ -105,7 +105,6 @@ AI-CG-Studio/
 ├── data/                   内容快照、模型配方与资源索引
 ├── assets/                 品牌、人物与界面静态资源
 ├── scripts/                构建、维护、发行与定向检查入口
-├── tests/                  浏览器与端到端用例
 ├── tools/                  独立模型服务与安装助手
 ├── docs/                   指南、架构、版本说明与证据
 └── plans/                  统一规划入口

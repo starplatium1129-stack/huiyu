@@ -85,9 +85,9 @@ export function createArtworkReads(kv: ArtworkKvAdapter,
     signal?.throwIfAborted()
     return withMutation(async () => {
       signal?.throwIfAborted()
-      const current = parseArtworkRecords(await kv.get(ARTWORK_HISTORY_KEY))
+      const raw = await kv.get(ARTWORK_HISTORY_KEY)
       signal?.throwIfAborted()
-      if (current.length) return structuredClone(current)
+      if (raw !== null) return structuredClone(parseArtworkRecords(raw))
       const legacy = parseArtworkRecords(readLocal(ARTWORK_HISTORY_KEY))
       if (legacy.length) {
         await kv.set(ARTWORK_HISTORY_KEY, legacy)

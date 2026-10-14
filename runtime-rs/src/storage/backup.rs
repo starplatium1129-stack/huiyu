@@ -8,7 +8,8 @@ use rusqlite::params;
 use std::{fs, fs::OpenOptions, path::Path};
 use verify::*;
 
-// This value owns filesystem state only. The live Connection stays on the writer.
+// The live writer stays on its actor. Copy jobs own filesystem state and may
+// carry one pinned, read-only SQLite snapshot into the copy worker.
 struct Files {
     root: PathBuf,
     workspace_id: String,
@@ -56,6 +57,7 @@ enum CopyKind {
         directory: PathBuf,
         manifest: Value,
         existing: bool,
+        source: Option<Connection>,
     },
     Restore {
         backup_id: String,
@@ -63,8 +65,30 @@ enum CopyKind {
     },
 }
 impl CopyJob {
-    pub(super) fn run(&self) -> Result<Value> {
+    pub(super) fn run(&mut self) -> Result<Value> {
+        // Own the reader locally before any early return. Even a pre-cancelled
+        // copy must release its read transaction before queuing completion.
+        let source = match &mut self.kind {
+            CopyKind::Backup { source, .. } => source.take(),
+            CopyKind::Restore { .. } => None,
+        };
         self.files.check_cancel()?;
+        if let (
+            Some(source),
+            CopyKind::Backup {
+                directory,
+                manifest,
+                ..
+            },
+        ) = (source, &self.kind)
+        {
+            copy_database(
+                &self.files,
+                source,
+                directory,
+                string(manifest, "backupId")?,
+            )?;
+        }
         copy_job::run(&self.files, &self.kind)
     }
 }
@@ -150,6 +174,7 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
             directory,
             manifest,
             existing: true,
+            source: None,
         });
     }
     let directory = prepare_directory(files, &format!("backups/{id}"), id)?;
@@ -167,12 +192,43 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
         }
         c.revision()
     })?;
-    let database = directory.join("huiyu.sqlite3");
+    let source = Connection::open_with_flags(
+        schema::safe(&c.root, "huiyu.sqlite3")?,
+        rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY | rusqlite::OpenFlags::SQLITE_OPEN_NO_MUTEX,
+    )?;
+    source.busy_timeout(std::time::Duration::from_secs(10))?;
+    source.execute_batch("BEGIN DEFERRED")?;
+    // Pin the read revision before returning to the actor queue. New writes can
+    // proceed in WAL mode; leases protect exactly this snapshot's media objects.
+    let (source_revision, workspace, epoch): (i64, String, String) = source.query_row(
+        "SELECT (SELECT CAST(value AS INTEGER) FROM meta WHERE key='revision'),
+                (SELECT value FROM meta WHERE key='workspaceId'),
+                (SELECT value FROM meta WHERE key='writerEpoch')",
+        [],
+        |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
+    )?;
+    if source_revision != revision || workspace != c.workspace_id || epoch != c.epoch {
+        return Err(conflict(
+            "WORKSPACE_IDENTITY",
+            "Backup source no longer matches the workspace",
+        ));
+    }
+    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":3,"revision":revision,"media":media});
+    Ok(CopyKind::Backup {
+        directory,
+        manifest,
+        existing: false,
+        source: Some(source),
+    })
+}
+
+fn copy_database(files: &Files, source: Connection, directory: &Path, id: &str) -> Result<()> {
+    let database = schema::safe(directory, "huiyu.sqlite3")?;
     let mut snapshot = Connection::open(&database)?;
     {
-        let backup = rusqlite::backup::Backup::new(&c.db, &mut snapshot)?;
+        let backup = rusqlite::backup::Backup::new(&source, &mut snapshot)?;
         loop {
-            c.check_cancel()?;
+            files.check_cancel()?;
             match backup.step(256)? {
                 rusqlite::backup::StepResult::Done => break,
                 rusqlite::backup::StepResult::Busy | rusqlite::backup::StepResult::Locked => {
@@ -197,12 +253,7 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
         .write(true)
         .open(&database)?
         .sync_all()?;
-    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":3,"revision":revision,"media":media});
-    Ok(CopyKind::Backup {
-        directory,
-        manifest,
-        existing: false,
-    })
+    Ok(())
 }
 
 pub(super) fn finish(

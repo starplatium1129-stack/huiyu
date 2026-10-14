@@ -94,6 +94,12 @@ fn protected(c: &Context, hash: &str) -> Result<bool> {
     {
         return Ok(true);
     }
+    if c.restore_commit
+        .as_ref()
+        .is_some_and(|pending| pending.protects(hash))
+    {
+        return Ok(true);
+    }
     Ok(c.db.prepare_cached("SELECT EXISTS(SELECT 1 FROM media_refs WHERE hash=?1) OR EXISTS(SELECT 1 FROM leases WHERE hash=?1)")?
         .query_row([hash], |row| row.get(0))?)
 }

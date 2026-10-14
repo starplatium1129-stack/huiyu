@@ -12,12 +12,14 @@ mod profile;
 mod project_commands;
 mod recent;
 mod records;
+mod restore;
 mod result_commit;
 mod saves;
 mod schema;
 mod tasks;
 mod thumbnail;
 mod verification;
+mod verified_media;
 mod worker;
 
 use crate::error::{ApiError, Result};
@@ -56,6 +58,7 @@ pub struct Storage {
 }
 enum Work {
     ResultVerified(String, Result<result_commit::Verified>),
+    RestoreVerified(String, Result<Vec<verified_media::Verified>>),
     TaskMediaCopy(
         Value,
         TaskMediaSource,
@@ -128,6 +131,7 @@ pub(super) struct Context {
     owner: schema::Owner,
     cancel: Arc<AtomicBool>,
     result_commit: Option<result_commit::Pending>,
+    restore_commit: Option<restore::Pending>,
     media_verified: Option<result_commit::Verified>,
 }
 impl Context {
@@ -174,7 +178,6 @@ impl Context {
                 | "softDeleteArtwork"
                 | "softDeleteArtworks"
                 | "hardDeleteArtwork"
-                | "restoreArtwork"
                 | "saveProject"
                 | "deleteSmartAlbum"
                 | "purgeExpiredTrash"
@@ -235,8 +238,9 @@ impl Context {
                 .transpose()
                 .map(|value| value.unwrap_or(Value::Null)),
             "patchArtwork" | "softDeleteArtwork" | "softDeleteArtworks" | "hardDeleteArtwork"
-            | "restoreArtwork" | "saveProject" | "deleteSmartAlbum" | "purgeExpiredTrash"
-            | "purgeTrash" => records::mutate(self, principal, command),
+            | "saveProject" | "deleteSmartAlbum" | "purgeExpiredTrash" | "purgeTrash" => {
+                records::mutate(self, principal, command)
+            }
             "organizeArtworks" | "undoArtworkOrganization" => {
                 organization::execute(self, principal, command)
             }

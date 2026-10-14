@@ -351,6 +351,7 @@ pub(super) fn open(
         owner,
         cancel: Arc::new(AtomicBool::new(false)),
         result_commit: None,
+        restore_commit: None,
         media_verified: None,
     })
 }

@@ -26,6 +26,7 @@ function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDef
     sampler: entry.sampler ?? defaults.sampler, scheduler: entry.scheduler ?? defaults.scheduler,
     checkpoint: entry.model ?? defaults.model, size: entry.size ?? defaults.size,
     engine: entry.engine ?? 'sd', profile: entry.profile ?? '', model: entry.model ?? defaults.model,
+    provider: entry.provider,
     loraId: isPopular ? null : (entry.loraId ?? null), loraStrength: isPopular ? null : (entry.loraStrength ?? null),
     loras: isPopular ? [] : Object.freeze((entry.loras ?? []).map(lora => Object.freeze({ id: lora.id, strength: lora.strength }))),
     hiresFix: entry.hiresFix ?? defaults.hiresFix, hiresScale: entry.hiresScale ?? defaults.hiresScale,

@@ -18,7 +18,7 @@
 
 `types/promptHistory`、`types/artwork`、`types/generation`、`types/anima` 和 `utils/resultContext` 的可达依赖连类型边也不引用 Store、展示层或 Vue。按源码调用关系审查；已无调用方的独立扫描器和豁免清单已移除。
 
-现行 [ESLint 规则](../../../scripts/lib/module-boundaries.mts) 保留：types 与 historyRecipe/generationTask/promptPolicy 不得运行时加载页面、状态或浏览器服务；storage 不反向加载页面、组件或 Store；PhotoSwipe 依赖（含类型）只从 PhotoSwipeStage 引用。规则解析普通导入、再导出、动态 import、require 和 TS import-equals；不声称覆盖全仓间接依赖。仓库禁止编写和运行测试，见 [AGENTS.md](../../../AGENTS.md)。
+现行 [ESLint 规则](../../../scripts/lib/module-boundaries.mts) 约束 application、types、resultContext 与 historyRecipe/generationTask/promptPolicy/promptCatalog：包括纯类型在内的直接依赖不得指向页面、状态或浏览器服务；application 另不得加载平台适配或 Node 模块。storage 不反向加载页面、组件或 Store；PhotoSwipe 依赖（含类型）只从 PhotoSwipeStage 引用。规则解析普通导入、再导出、动态 import、require 和 TS import-equals；间接依赖仍按源码调用关系审查。仓库禁止编写和运行测试，见 [AGENTS.md](../../../AGENTS.md)。
 
 ## 资源所有权
 
@@ -34,28 +34,24 @@ WAI HTTP、参数校验和任务执行位于 `runtime-rs/src/generation/`；图�
 | KeepAlive 可见性、激活、停用、卸载 | 各页面既有生命周期 owner | 暂停可见性任务不清草稿，不取消真实生成任务 |
 | Live2D 双后端 | 现有 destroyRuntime | 唯一销毁入口、Pixi-first 顺序与 capability 分支不变 |
 
-PhotoSwipeStage.spec 覆盖迟到解码、A→B→A 的迟到读取、失败、部分初始化与准确释放次数；useVoice.spec 保留取消播放 Promise、旧轮次错误和预热代际的行为回归。未提取通用生命周期框架。
+资源审查核对迟到解码、A→B→A 的读取代际、失败与部分初始化清理，以及播放取消后的 Promise 收束；不恢复旧 spec，不提取通用生命周期框架。
 
 ## PhotoSwipe 适配契约与退出
 
 默认仍是 ZoomableImageViewer，PhotoSwipe 5.4.4 由用户显式开启。PhotoSwipeStage 的 props 仅为作品列表与 index，事件为 change/error；依赖类型和实例不得进入作品仓储、配方、收藏或任务中心。
 
-升级先执行适配组件模拟故障测试，再运行 github-reference.spec 的真实库浏览器流程（双主题缩放、切图、焦点、滚动锁、20 次开关、DOM/Blob URL 趋势）。模拟测试不代替真实库集成；浏览器 CDP 双指不代替实体触屏或 Tauri/GPU 验收。缺少这些目标设备证据时不得默认替换查看器。
+升级先审查适配器的初始化、身份和释放路径，再按影响人工核对双主题缩放、切图、焦点、滚动锁与资源趋势。浏览器操作不能代替实体触屏或 Tauri/GPU 验收。缺少目标设备证据时不得默认替换查看器。
 
-若出现无法修复的焦点/键盘冲突、稳定身份错配、资源增长或目标设备手势倒退，保持原查看器并撤回试验接线：Gallery 的开关、异步组件及事件绑定，PhotoSwipeStage 及专属测试，package/lock 中的 photoswipe 与对应独占规则。许可证继续使用现有 [第三方声明](../../../public/licenses/PhotoSwipe.txt)，不另建账本。
+若出现无法修复的焦点/键盘冲突、稳定身份错配、资源增长或目标设备手势倒退，保持原查看器并撤回试验接线：Gallery 的开关、异步组件及事件绑定、PhotoSwipeStage、package/lock 中的 photoswipe 与对应独占规则。许可证继续使用现有 [第三方声明](../../../public/licenses/PhotoSwipe.txt)，不另建账本。
 
-## 测试职责与报告
+## 审查与验证职责
 
-路由 import 关系改为 TypeScript AST 检查，局部重命名、注释和提取加载 helper 不影响断言；页面标题由 a11y-device.spec 的实际可访问一级标题检查，覆盖原静态测试的所有页面。ManagedDrawingRouteCard 的旧事件签名字串断言由组件点击测试替代，验证数字/字符串 ID 原样发出且忙碌时禁用。CSP、定稿字节基线和动画策略静态门禁保留。删除的标题源码断言由这条浏览器测试承接，不再维护 ControlIntro 的专例。
+源码和差异审查负责依赖方向、数据转换、任务身份与资源所有权；按需运行类型检查、产品构建和现有维护校验。页面标题、控件状态、键鼠与弹层可达性按受影响页面人工核对，源码规则不代替实际画面。CSP、定稿字节基线和动画约束继续保留，不恢复已删除的测试入口。
 
-质量元数据附在既有 quality-test-inventory：试点记录域、环境、并行安全、资源和可选单文件超时，未审查项明确 unreviewed，不能据此并行；已审核契约的资源与并行声明直接复用 contract-test-policy，避免与同期 main 合入的进程池规则重复。保留同期 main 已合入的有限并行进程池，本轮接入逐文件超时与报告，不另建调度框架，不统一提高超时，也不共享 CI 构建产物。
+复用相同源码、配置、产物与环境的有效证据，聊天中明确未运行、失败和设备待验范围。不编写报告文件，不以历史成功记录覆盖当前失败或未运行项。
 
-设置 AICS_TEST_REPORT_DIR 后，现有质量执行器保存逐文件 JSON 和原始日志；fail-fast 后的项目标记 not-run，退出失败区分 assertion/typecheck/build/timeout/environment/signal/process。Node 输出中的 skipped/cancelled 数量保留在 counts；定向重跑只代表本轮选择范围。unit 仍是现有 Node 并发聚合，报告如实标为 aggregate，不伪造逐文件耗时。
-
-这些文件是 [capture:delivery / audit:delivery](../../workflow.md#办公机工程阶段入口2026-09-15) 的输入日志：执行前捕获源/构建身份，执行后在原有结果 JSON 的对应门禁字段填实际 status 与 log/transcript/report 路径，并携带 baselineSha256，再绑定 baseline/record。suite JSON 本身不是交付认证，不自动覆盖先前失败或未运行状态。
-
-失败分类是诊断提示，原始退出码和日志仍须保留。各 CI job 继续独立构建，并上传质量诊断。先保留本次耗时、缓存命中/重建输出和产物尺寸；CI 跨机上传/下载体积、缓存命中率与墙钟收益仍需同口径实测，当前不承诺提速或启用跨 job 缓存复用。
+首次失败读取原始日志，区分本次缺陷、环境问题和尚未定位的原因；没有相关修复或新证据不重复命令。构建和安装身份独立核对，类型检查或构建成功不代表实际设备行为已经验收。
 
 ## 回退
 
-文档校准可独立回退；历史类型/解析改动不迁移数据；API 解码可独立撤回，不回退统一客户端；静态规则/测试报告及最低 Node CI 单独回退不影响运行时；PhotoSwipe 始终有原查看器可用。回退资源清理改动前先保留本次迟到回调回归，避免重新引入重复释放。
+文档校准可独立回退；历史类型/解析改动不迁移数据；API 解码可独立撤回，不回退统一客户端；静态规则可单独撤回，PhotoSwipe 始终有原查看器可用。回退资源清理改动前复核迟到回调和释放所有权，避免重新引入重复释放。

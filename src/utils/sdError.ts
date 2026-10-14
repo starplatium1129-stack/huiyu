@@ -28,20 +28,21 @@ export interface SDErrorReport {
  * 出图后端（2026-08-30 UX 审计）。
  *
  * 本分类器原先只在 SD/WebUI 路径被调用，文案里写死了「WebUI」。Anima / Krea 2
- * 走的是 ComfyUI——同一条错误（比如 OOM）却让用户去检查一个他根本没在用的后
- * 端，比不给提示更糟。这里把后端变成入参，一套规则服务两条链路；恢复动作是
- * 否适用仍由 UI 判断（Comfy 侧没有「切回 WebUI 当前模型」这类动作）。
+ * 可使用 ComfyUI 或独立推理。分类使用任务提交时冻结的实际后端，恢复动作
+ * 是否适用仍由 UI 判断。
  */
-export type SDBackend = 'webui' | 'comfy'
+export type SDBackend = 'webui' | 'comfy' | 'native'
 
 const BACKEND_LABEL: Record<SDBackend, string> = {
   webui: 'SD WebUI',
   comfy: 'ComfyUI',
+  native: '独立推理引擎',
 }
 
 const BACKEND_OFFLINE_HINT: Record<SDBackend, string> = {
   webui: '请确认 SD 后端已启动并启用 --api；恢复后可重新检测，不会静默提交新任务。',
   comfy: '请确认 ComfyUI 已启动、地址配置正确且模型已放置到位；恢复后可重新检测，不会静默提交新任务。',
+  native: '请在控制室检查独立推理运行库、模型路径与设备状态；恢复后可重新检测，不会静默提交新任务。',
 }
 
 function clean(value: unknown): string {
@@ -109,7 +110,7 @@ export function classifySDError(error: unknown, backend: SDBackend = 'webui'): S
       { id: 'retry_light', label: '降低负载后重试' }, text, backend)
   }
   if (status === 404) {
-    return report('gateway', 'SD 网关不可用',
+    return report('gateway', '绘图网关不可用',
       '当前页面未检测到可用的绘图网关。请检查出图参数中的服务地址，或前往控制面板启动服务。',
       { id: 'open_settings', label: '查看出图参数' }, text, backend)
   }

@@ -275,25 +275,6 @@ fn soft_delete(
 }
 pub(super) fn mutate(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let kind = string(command, "kind")?;
-    if kind == "restoreArtwork"
-        && c.operation(principal, string(command, "operationId")?)?
-            .is_none_or(|r| r.receipt.is_none())
-    {
-        let key = entity_key(&command["id"])?;
-        // Owner IDs are shared across namespaces; unrelated task/temporary media
-        // must not block artwork restoration or add work to its integrity check.
-        let refs=c.db.prepare("SELECT m.hash,m.bytes,m.mime FROM media_refs r JOIN media_objects m ON m.hash=r.hash WHERE r.owner_kind IN ('artwork','trash') AND r.owner_id=?")?.query_map([key],|r|Ok((r.get::<_,String>(0)?,r.get::<_,i64>(1)?,r.get::<_,String>(2)?)))?.collect::<rusqlite::Result<Vec<_>>>()?;
-        for (hash, bytes, mime) in refs {
-            media::verify(
-                c,
-                &media::object_path(&c.root, &hash)?,
-                &hash,
-                u64::try_from(bytes)
-                    .map_err(|_| conflict("MEDIA_INVALID", "Invalid media byte count"))?,
-                &mime,
-            )?;
-        }
-    }
     c.transaction(|c| {
         let (op,previous)=c.start_operation(principal,command)?; if let Some(receipt)=previous {return Ok(receipt)}
         let revision=c.next_revision()?;
@@ -331,7 +312,6 @@ pub(super) fn mutate(c: &mut Context, principal: &str, command: &Value) -> Resul
                         let refs=project_refs(c,&key)?; soft_delete(c,&key,&art,revision,now(),&refs)?;
                         for r in &refs {let p=string(r,"project_key")?; update_membership(c,p,&membership(c,p)?.into_iter().filter(|k|k!=&key).collect::<Vec<_>>(),revision)?;}
                     }
-                    "restoreArtwork" if !art["deletedAt"].is_null() => restore(c,&key,revision)?,
                     _=>{},
                 }
                 if let Some(updated)=artwork(c,&key)? {receipt["changed"]=json!(updated["revision"]==revision); receipt["artwork"]=updated;}
@@ -373,7 +353,7 @@ fn purge_selected(c: &Context, command: &Value, receipt: &mut Value) -> Result<(
     receipt["purged"] = json!(purged);
     Ok(())
 }
-fn restore(c: &Context, key: &str, revision: i64) -> Result<()> {
+pub(super) fn restore(c: &Context, key: &str, revision: i64) -> Result<()> {
     let (snapshot, refs) =
         c.db.query_row(
             "SELECT snapshot,project_refs FROM trash WHERE artwork_key=?",

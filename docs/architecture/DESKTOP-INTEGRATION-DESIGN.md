@@ -58,7 +58,7 @@ bootstrap 不能接受 renderer 提供任意端口、文件路径或目标 URL�
 - 保留 Host/DNS rebinding、转发头、远程分级等现有防线。纯 Web 仍用自己的 IndexedDB；共享网关链接默认无法读取桌面作品、草稿、备份或私人任务。
 - 外部附着 gateway 只有在单独验证支持相同协议、实例和 workspace 绑定后才可提供私人库；否则仅提供原有生成能力或进入不兼容状态，不能自动导入私人数据。
 
-现有 `runtimeEnvironment.ts` 和 `server/security.ts` 已支持 Tauri 来源，不需要扩大“本机”定义。伪造 `window.companionDesktop` 或域名包含 tauri 不授予权限。
+现有 `runtimeEnvironment.ts` 与 `runtime-rs/src/security.rs`、HostAuthority 的会话校验支持 Tauri 来源，不扩大“本机”定义。伪造 `window.companionDesktop` 或域名包含 tauri 不授予权限。
 
 ## 4. 类型化能力
 

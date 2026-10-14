@@ -51,6 +51,14 @@ pub struct Record {
     pub updated_at: Option<String>,
     pub data: Value,
 }
+impl Record {
+    pub(crate) fn into_value(mut self) -> serde_json::Result<Value> {
+        let data = self.data.take();
+        let mut value = serde_json::to_value(self)?;
+        value["data"] = data;
+        Ok(value)
+    }
+}
 pub struct Catalog {
     connection: Connection,
     options: Options,

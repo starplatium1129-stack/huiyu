@@ -113,6 +113,11 @@ impl Catalog {
             .iter()
             .map(|(r, _)| ((r.kind.as_str(), r.id.as_str()), r))
             .collect::<std::collections::HashMap<_, _>>();
+        let retired_seeds = seeds
+            .iter()
+            .filter(|(_, removed)| *removed)
+            .map(|(record, _)| ((record.kind.as_str(), record.id.as_str()), record))
+            .collect::<std::collections::HashMap<_, _>>();
         for change in changes {
             if change.kind == "document"
                 && !["tags", "curation", "tag-dictionary-policy"].contains(&change.id.as_str())
@@ -146,6 +151,7 @@ impl Catalog {
         let mut seen = HashSet::new();
         let mut result = Vec::new();
         let mut diffs = Vec::new();
+        let mut retired_imports = Vec::new();
         let mut pin_policy = validation::PinPolicy::default();
         let mut current_query = transaction.prepare_cached(&format!(
             "SELECT {COLUMNS},deleted FROM content_records WHERE kind=?1 AND id=?2"
@@ -201,7 +207,20 @@ impl Catalog {
                     ),
                 ));
             }
-            if change.remove && (current.is_none() || change.kind == "document") {
+            let imported_retirement = change.remove
+                && current.is_none()
+                && change.expected_revision == 0
+                && change.patch.is_none()
+                && retired_seeds
+                    .get(&(change.kind.as_str(), change.id.as_str()))
+                    .is_some_and(|record| {
+                        change.data.as_ref() == Some(&record.data)
+                            && change.sort_order == Some(record.sort_order)
+                            && (record.data.is_object() || record.data.is_array())
+                    });
+            if change.remove
+                && (change.kind == "document" || current.is_none() && !imported_retirement)
+            {
                 return Err(ApiError::invalid("不能删除不存在的记录或系统文档"));
             }
             if change.patch.is_some() && change.data.is_some() {
@@ -256,7 +275,7 @@ impl Catalog {
                     (!change.remove).then_some(value),
                 )?;
             }
-            if change.kind == "scene" && current.is_none() {
+            if change.kind == "scene" && current.is_none() && !change.remove {
                 let retired: String = transaction.query_row("SELECT payload FROM content_records WHERE kind='document' AND id='retired-scenes'",[],|r|r.get(0))?;
                 let retired: Value = serde_json::from_str(&retired)?;
                 if retired["records"]
@@ -325,8 +344,23 @@ impl Catalog {
                 pin_policy.database_changed();
             }
             history(&transaction, &record, change.remove, &batch, &at)?;
-            diffs.push(json!({"kind":change.kind,"id":change.id,"before":current.as_ref().map(|(r,_)|r),"after":if change.remove{None}else{Some(&record)}}));
             result.push(json!({"kind":record.kind,"id":record.id,"revision":record.revision,"removed":change.remove}));
+            if imported_retirement {
+                // A newly imported tombstone has no active before/after record.
+                // Expose its real archived identity separately from edit diffs.
+                retired_imports.push(record.into_value()?);
+            } else {
+                let mut diff =
+                    json!({"kind":change.kind,"id":change.id,"before":null,"after":null});
+                diff["before"] = current
+                    .map(|(record, _)| record.into_value())
+                    .transpose()?
+                    .unwrap_or(Value::Null);
+                if !change.remove {
+                    diff["after"] = record.into_value()?;
+                }
+                diffs.push(diff);
+            }
         }
         drop(current_query);
         validation::relations(&transaction)?;
@@ -400,7 +434,9 @@ impl Catalog {
                 |(record, _)| json!({"kind":record.kind,"id":record.id,"revision":record.revision}),
             )
             .collect();
-        let value = json!({"ok":true,"preview":preview,"batch":batch,"version":version.parse::<i64>().unwrap(),"items":result,"diffs":diffs,"preservedLocal":preserved_local});
+        let mut value = json!({"ok":true,"preview":preview,"batch":batch,"version":version.parse::<i64>().unwrap(),"items":result,"diffs":null,"retiredImports":null,"preservedLocal":preserved_local});
+        value["diffs"] = Value::Array(diffs);
+        value["retiredImports"] = Value::Array(retired_imports);
         pin_policy.check(&self.options.source)?;
         if preview {
             transaction.rollback()?;

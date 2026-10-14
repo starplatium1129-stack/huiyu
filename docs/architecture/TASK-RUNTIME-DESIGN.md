@@ -128,4 +128,4 @@ R7 才切 Task Center 与结果收件箱的权威来源，并清理被替换的�
 - 过期页面响应不能覆盖新代际；远程用户不能查询桌面私人任务。
 - 空间不足/worker 故障时先拒绝新副作用，不接受无法可靠记录的新任务。
 
-复用 `server/generation/service.ts` 的准入/取消屏障、`useSDGenerate-results.spec.ts` 的迟到结果测试、现有 videoStore 和 005 恢复原型边界。新增测试须登记现有测试清单；历史通过次数不能充当本轮结果。
+准入、执行与取消以 `runtime-rs/src/task_runtime/` 和 `runtime-rs/src/generation/` 的现行实现为准；前端经 runtimeTasks 与 videoStore 观察任务。按源码、差异和已有日志核对接受应答丢失、迟到结果与恢复边界，必要时做类型检查和产品构建；不恢复旧 Node 服务或测试入口。真实模型和设备范围单独验收，历史通过次数不充当当前结果。

@@ -22,7 +22,9 @@ export function snapshotResult(ctx: Pick<PromptSdQueueDeps, 'animaState' | 'draw
     sampler: isComfy ? (metadata?.sampler ?? animaState.value.sampler) : (pb.sdParams.sampler || sd.samplers.value[0] || '—'),
     cfg: isComfy ? (metadata?.cfg ?? animaState.value.cfg) : pb.sdParams.cfg,
     steps: isComfy ? (metadata?.steps ?? animaState.value.steps) : pb.sdParams.steps,
-    hires: isComfy ? '关' : (pb.sdParams.hiresFix ? `×${pb.sdParams.hiresScale ?? 1.5}` : '关'),
+    hires: isComfy ? (metadata?.hiresFix === true
+      ? (typeof metadata.hiresScale === 'number' ? `×${metadata.hiresScale}` : '开')
+      : metadata?.hiresFix === false ? '关' : '—') : (pb.sdParams.hiresFix ? `×${pb.sdParams.hiresScale ?? 1.5}` : '关'),
     at: new Date().toLocaleTimeString(),
   }
 }

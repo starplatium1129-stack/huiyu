@@ -339,6 +339,18 @@ impl HostAuthority {
         if state.draining {
             return Err(draining());
         }
+        if session.expires_at <= now
+            || state.storage.as_ref().is_none_or(|storage| {
+                session.workspace_id != storage.workspace_id()
+                    || session.runtime_epoch != storage.runtime_epoch()
+            })
+        {
+            return Err(ApiError::new(
+                401,
+                "WORKSPACE_AUTH",
+                "Media session no longer matches this workspace",
+            ));
+        }
         state.media.retain(|_, grant| grant.expires_at > now);
         if state.media.len() >= 256 {
             return Err(ApiError::new(

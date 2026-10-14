@@ -4,7 +4,7 @@ use crate::{
     error::{ApiError, Result},
     host::Session,
     security::{host_allowed, is_direct_local},
-    storage::Media,
+    storage::{Media, Storage},
 };
 use axum::{
     Json,
@@ -22,9 +22,14 @@ use tokio::{
 use tokio_util::io::ReaderStream;
 use url::Url;
 
-pub(super) async fn grant(state: &AppState, session: Session, input: &Value) -> Result<Response> {
+pub(super) async fn grant(
+    state: &AppState,
+    storage: &Storage,
+    session: Session,
+    input: &Value,
+) -> Result<Response> {
     let alias = text(&input["alias"])?;
-    resolve(state, alias)
+    resolve(storage, alias)
         .await
         .map_err(|_| ApiError::new(404, "MEDIA_UNAVAILABLE", "Media is unavailable"))?;
     let (cap, expires) = state.host.grant_media(alias.into(), session)?;
@@ -40,6 +45,7 @@ fn header<'a>(headers: &'a HeaderMap, name: &str) -> Option<&'a str> {
 
 pub(super) async fn serve(
     state: &AppState,
+    storage: &Storage,
     headers: &HeaderMap,
     peer: IpAddr,
     method: &Method,
@@ -57,10 +63,6 @@ pub(super) async fn serve(
         .get("cap")
         .and_then(|key| state.host.media_grant(key))
         .ok_or_else(denied)?;
-    let storage = state
-        .host
-        .storage()
-        .expect("Storage was checked by workspace router");
     let origin = if headers.contains_key("origin") {
         header(headers, "origin").map(str::to_owned)
     } else {
@@ -91,7 +93,7 @@ pub(super) async fn serve(
     {
         return Err(denied());
     }
-    let media = resolve(state, alias).await?;
+    let media = resolve(storage, alias).await?;
     let range = match range(header(headers, "range"), media.total_bytes) {
         Ok(range) => range,
         Err(_) => {
@@ -138,8 +140,13 @@ pub(super) async fn serve(
     Ok(response)
 }
 
-pub(super) async fn chunk(state: &AppState, method: &Method, command: &Value) -> Result<Response> {
-    let media = resolve(state, command["alias"].as_str().unwrap()).await?;
+pub(super) async fn chunk(
+    state: &AppState,
+    storage: &Storage,
+    method: &Method,
+    command: &Value,
+) -> Result<Response> {
+    let media = resolve(storage, command["alias"].as_str().unwrap()).await?;
     let offset = command["offset"].as_u64().unwrap();
     if offset > media.total_bytes {
         return Err(ApiError::invalid("Invalid media read range"));
@@ -173,11 +180,7 @@ pub(super) async fn chunk(state: &AppState, method: &Method, command: &Value) ->
     Ok(response)
 }
 
-async fn resolve(state: &AppState, alias: &str) -> Result<Media> {
-    let storage = state
-        .host
-        .storage()
-        .expect("Storage was checked by workspace router");
+async fn resolve(storage: &Storage, alias: &str) -> Result<Media> {
     tokio::time::timeout(Duration::from_secs(30), storage.media(alias))
         .await
         .map_err(|_| ApiError::new(504, "WORKSPACE_TIMEOUT", "Media verification timed out"))?

@@ -9,6 +9,7 @@ pub(super) fn run(c: &Files, kind: &CopyKind) -> Result<Value> {
             directory,
             manifest,
             existing,
+            ..
         } => {
             let mut manifest = manifest.clone();
             if !existing {

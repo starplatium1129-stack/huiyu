@@ -8,7 +8,7 @@ export interface CatalogSummary extends Omit<CatalogRecord, 'data'> { title: str
 export interface CatalogQuery { kind: CatalogKind | 'media'; search?: string; character?: string; category?: string; rating?: string; sort?: string; page?: number; pageSize?: number; createdFrom?: string; createdTo?: string }
 export interface CatalogPage { ok: true; version: number; items: CatalogSummary[]; total: number; page: number; pageSize: number; facets: { characters: string[]; categories: string[]; ratings: string[] } }
 export interface CatalogChange { kind: CatalogKind; id: string; expectedRevision: number; data?: CatalogRecord['data']; patch?: Record<string, unknown>; sortOrder?: number; createdAt?: string; remove?: boolean }
-export interface CatalogReceipt { ok: true; preview: boolean; version: number; batch: string; items: Array<{ kind: CatalogKind; id: string; revision: number; removed: boolean }>; diffs: Array<{ kind: CatalogKind; id: string; before: CatalogRecord | null; after: CatalogRecord | null }> }
+export interface CatalogReceipt { ok: true; preview: boolean; version: number; batch: string; items: Array<{ kind: CatalogKind; id: string; revision: number; removed: boolean }>; diffs: Array<{ kind: CatalogKind; id: string; before: CatalogRecord | null; after: CatalogRecord | null }>; retiredImports?: CatalogRecord[] }
 export interface CatalogSnapshot { version: 1; records: CatalogRecord[]; retired: CatalogRecord[] }
 const kinds: CatalogKind[] = ['character', 'outfit', 'scene', 'blueprint', 'document']
 const object = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v)
@@ -35,6 +35,7 @@ function isCatalogReceipt(v: ApiResponseObject): boolean {
       && (diff.before !== null || diff.after !== null)
       && (diff.before === null || isCatalogRecord(diff.before))
       && (diff.after === null || isCatalogRecord(diff.after)))
+    && (v.retiredImports === undefined || Array.isArray(v.retiredImports) && v.retiredImports.every(isCatalogRecord))
 }
 const success = (v: ApiResponseObject) => v.ok === true
 const options = (signal?: AbortSignal) => ({ cache: 'no-store' as const, cachePolicy: 'bypass' as const, timeoutMs: 15_000, signal })

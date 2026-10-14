@@ -3,21 +3,21 @@ import { submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResul
 import type { AnimaGenerationState, AnimaResult, AnimaResultContext } from '@/types/anima'
 import { ApiClientError } from '@/api/client'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
-import { classifySDError } from '@/utils/sdError'
+import { classifySDError, type SDBackend } from '@/utils/sdError'
 
-export function imageFailurePatch(error: unknown, statusText: string) {
-  const report = classifySDError(error, 'comfy')
+export function imageFailurePatch(error: unknown, statusText: string, provider: SDBackend) {
+  const report = classifySDError(error, provider)
   return { phase: 'failed' as const, statusText,
     errorMsg: report.kind === 'cancelled' ? report.message : `${report.title}：${report.message}`, errorReport: report }
 }
 
-export function runtimeAnimaFailure(error: unknown, stopped: boolean, accepted: boolean): Partial<AnimaGenerationState> {
+export function runtimeAnimaFailure(error: unknown, stopped: boolean, accepted: boolean, provider: SDBackend): Partial<AnimaGenerationState> {
   if (error instanceof AcceptedTaskTerminalError && error.status === 'cancelled') return { phase: 'cancelled', statusText: '任务已取消', errorMsg: '', errorReport: null }
   if (stopped) return { phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null }
   // Epoch changes stop observation, not the runtime-owned task or the creator's next action.
   if (error instanceof ApiClientError && error.kind === 'aborted' && error.code !== 'RUNTIME_EPOCH_CHANGED') return {}
   const definitive = error instanceof AcceptedTaskTerminalError || !accepted && error instanceof ApiClientError && error.kind === 'http' && error.status < 500
-  return { ...imageFailurePatch(error, definitive ? '生成失败' : '任务状态尚未确认，请到任务中心核对'),
+  return { ...imageFailurePatch(error, definitive ? '生成失败' : '任务状态尚未确认，请到任务中心核对', provider),
     ...(!definitive ? { backendStatus: 'unknown' } : {}) }
 }
 

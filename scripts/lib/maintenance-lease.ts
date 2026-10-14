@@ -4,7 +4,6 @@ import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } fr
 const io: typeof import('./maintenance-recovery-fs') = require('./maintenance-recovery-fs');
 const backups: typeof import('./maintenance-recovery-backup') = require('./maintenance-recovery-backup');
 const { fs, path, crypto, failure } = io;
-const handles = new WeakMap();
 const phases = new Set(['preparing', 'writing', 'rolling-back', 'committed', 'rolled-back', 'recovering', 'recovery-failed', 'recovered', 'INCONSISTENT']);
 const validPid = (pid: any) => Number.isSafeInteger(pid) && pid > 0;
 const validNonce = (nonce: any) => typeof nonce === 'string' && /^[0-9a-f-]{36}$/.test(nonce);
@@ -65,24 +64,6 @@ function blocked(state: any) {
   return Object.assign(failure(code, state.status === 'active' ? '维护事务仍在运行，请稍后重试' : '维护事务尚未完整结束，请先预览并执行恢复'), {
     transactionId: state.journal?.nonce, phase: state.journal?.phase, leaseStatus: state.status,
   });
-}
-function assertMaintenanceReadable(options: any, lease?: any) {
-  if (lease && handles.has(lease)) { lease.assertOwned(); return; }
-  const state = inspectMaintenanceLease(options);
-  if (state.status !== 'free') throw blocked(state);
-}
-function maintenanceReadToken(options: any, lease?: any) {
-  assertMaintenanceReadable(options, lease);
-  const ctx = io.context(options);
-  const file = path.join(ctx.stateDir, 'epoch.json');
-  if (!io.safePath(file)) return null;
-  const value = io.unseal(io.readJson(file), io.readKey(ctx));
-  if (!validNonce(value.nonce) || !io.equal(value.root, ctx.root)) throw failure('MAINTENANCE_INVALID_JOURNAL', '维护读取代次无效');
-  assertMaintenanceReadable(options, lease);
-  return value.nonce;
-}
-function assertMaintenanceReadToken(options: any, token: any, lease?: any) {
-  if (maintenanceReadToken(options, lease) !== token) throw failure('MAINTENANCE_CONFLICT', '读取期间维护事务已变化，请重新读取');
 }
 function publishDirectory(ctx: any, destination: any, fileName: any, value: any) {
   const staging = path.join(ctx.stateDir, '.claim-' + crypto.randomUUID());
@@ -180,7 +161,6 @@ function acquireMaintenanceLease(options: any) {
       released = true;
     },
   };
-  handles.set(handle, { options, ctx });
   return handle;
 }
 
@@ -229,4 +209,4 @@ function claimRecovery(options: any, expectedHash: any) {
   };
 }
 
-export = { acquireMaintenanceLease, assertMaintenanceReadable, inspectMaintenanceLease, maintenanceReadToken, assertMaintenanceReadToken, claimRecovery, pidStatus };
+export = { acquireMaintenanceLease, inspectMaintenanceLease, claimRecovery };

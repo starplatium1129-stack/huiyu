@@ -1,17 +1,19 @@
 import { writeTextAtomic } from '../lib/atomic-files';
-/** Validate canonical content first; explicitly apply metadata repairs and derived builds. */
+import catalogSnapshot = require('../lib/catalog-snapshot');
+/** Validate legacy shards first; explicitly apply metadata repairs and derived builds. */
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 
 function main() {
   const args = process.argv.slice(2);
   if (args.includes('--help')) {
-    console.log('content:sync [--apply] [--root=directory]\nDefault: validate and preview without writing. Content is validated and rebuilt without reference registration.');
+    console.log('content:sync [--apply] [--root=directory]\nLegacy shards only; migrated catalog roots are rejected. Default: validate and preview without writing. Content is validated and rebuilt without reference registration.');
     return;
   }
   for (const arg of args) if (!['--apply', '--dry-run'].includes(arg) && !arg.startsWith('--root=')) throw new Error(`Unknown option: ${arg}`);
   if (args.includes('--apply') && args.includes('--dry-run')) throw new Error('--apply and --dry-run cannot be combined');
   const root = path.resolve(args.find(a => a.startsWith('--root='))?.slice(7) || process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.resolve(__dirname, '../..'));
+  catalogSnapshot.assertLegacyWrite(root);
   process.env.AICS_DATA_ROOT = root;
   const data = path.join(root, 'data');
   const read = (file: string) => JSON.parse(fs.readFileSync(file, 'utf8'));

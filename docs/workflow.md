@@ -28,7 +28,7 @@
 
 四个旧 `diagnostics:companion-*` CDP 探针已退出注册表。其源文件原样保留在 [历史探针归档](../scripts/archive/companion-cdp-20260930/README.md)，没有删除测试；旧选择器、固定截图目标与按 URL 子串选择最后一个页面的做法不构成当前有效的公共诊断 CLI，也不应直接运行。不能把归档探针输出作为现行桌宠功能或设备验收证据。
 
-人工诊断的当次截图与日志归入被忽略的 `runtime/`，避免覆盖已有证据。常规隔离浏览器回归继续使用下方的Playwright入口，不以人工脚本代替。本次只核对注册和归档内容，未连接真实浏览器或执行探针。
+人工诊断的当次截图与日志归入被忽略的 `runtime/`，避免覆盖已有证据。浏览器行为按实际影响人工验收，不恢复 Playwright 或其他测试入口；本节只说明工具边界，不代表连接或设备验收已完成。
 
 ## 日常快捷操作
 
@@ -86,7 +86,7 @@
 | 操作 | 入口 | 注意事项 |
 | --- | --- | --- |
 | 场景快照构建 | data:build | data/catalog → scenes.json；旧项目才读取分片 |
-| 人物／服装／场景统一同步 | content:sync | 默认只读校验与登记预览；--apply 修清单 count、补参考分片并构建聚合；--ids=a,b 仅限制参考登记 |
+| 旧分片人物／服装／场景同步 | content:sync | 已有 catalog 快照或迁移身份时拒绝预览和写入，改用 content:catalog；旧来源默认只读，--apply 修清单 count 并构建派生产物，不读写参考库；参数支持 --apply / --dry-run / --root= |
 | 每人物参考分片聚合 | reference:build | data/references → standards/view 兼容聚合；--check 检查一致性（产物缺失会自愈）；聚合不入 Git |
 | 热门角色快照构建 | popular:build | data/catalog → popular-characters.json |
 | 蓝图快照构建 | blueprints:build | data/catalog → scene-blueprints.json |
@@ -99,7 +99,7 @@
 
 详细文件职责见 [维护手册](maintenance.md#文件职责)。三个聚合构建脚本默认计算 DATA_VERSION，客户端由 Vite 的 `virtual:data-version` 在构建时注入，不再改写 `src/stores/sceneStore.ts`；`--check` 不写版本——产物缺失时自愈重建（fresh clone），齐全但与源不一致时报错退出 1。校验失败需定位来源，不能只改版本掩盖数据漂移。
 
-核心精选 `personaCoreSceneIds`：保存时对显式数组稳定去重并剔除非活跃引用，显式非数组报错；旧请求漏字段时，保存链在基线核对后的锁内保留现存核心精选，显式 `[]` 才清空。纯清洗函数没有旧快照时保留缺省；不合并其他策展字段。主校验检查该字段的数组、非空字符串、重复及活跃引用，空数组/缺省兼容；既有首屏预算仍由分片测试负责，不新增核心精选必须属于 curated 的限制。`validate-scenes.js` 的分片和 data 元数据统一采用 `AICS_DATA_ROOT`、`AICS_APP_ROOT`、仓库根的优先级，隔离夹具不再混读生产元数据。
+核心精选 `personaCoreSceneIds`：保存时对显式数组稳定去重并剔除非活跃引用，显式非数组报错；旧请求漏字段时，保存链在基线核对后的锁内保留现存核心精选，显式 `[]` 才清空。纯清洗函数没有旧快照时保留缺省；不合并其他策展字段。主校验检查该字段的数组、非空字符串、重复及活跃引用，空数组/缺省兼容；首屏读取与包体预算按实际消费者和产品构建审查，不新增核心精选必须属于 curated 的限制。`validate-scenes.js` 的旧格式分片和 data 元数据统一采用 `AICS_DATA_ROOT`、`AICS_APP_ROOT`、仓库根的优先级，不混读其他运行目录。
 
 场景语义门禁复用工作台的镜头过滤和负向组装（scripts/lib/scene-render-contract.js），检索 tags 不冒充发送给模型的词条。提示词不设置最低字符数、词数或句号数配额；门禁保留非空、身份/服装绑定、占位符、分级、构图冲突与编译消费检查。画面完整度与模型写法按 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md) 审查，不能以静态长度代替真实画面；接口输入大小上限仍按对应协议执行。`optimize-scenes --check` 检查持久化数据的实际编译结果；changed 表示可选的格式改写建议，不要求机械改写提示词。分级脚本只维护分级/使用元数据，不再改写 negative；任何提示词改写仍须独立真实出图和定稿保护验收。
 
@@ -223,7 +223,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 ## 离线资源候选包暂存导出
 
-本地 ZIP 图形安装可双击 `tools/Install-OfflineResources.cmd`；维护入口为 `offline:assistant`。助手从内置官方独立审批清单识别包，流式校验全部文件，用户确认退出绘遇后才调用原生 `offline-import`。支持进度、安全取消及同包恢复；不下载、不自动关闭应用、不改互斥或用户修改保护。图形助手需要本次支持 `--cancel-stdin` 的原生程序；尚未发布或安装，旧 1.8.0 安装程序不能视为已具备此能力。
+本地 ZIP 图形安装可双击 `tools/Install-OfflineResources.cmd`；维护入口为 `offline:assistant`。助手从内置官方独立审批清单识别包，流式校验全部文件，用户确认退出绘遇后才调用原生 `offline-import`。支持进度、安全取消及同包恢复；不下载、不自动关闭应用、不改互斥或用户修改保护。图形助手随 [1.9.2](releases/v1.9.2.md) 交付，需要支持 `--cancel-stdin` 的配套原生程序；旧 1.8.0 安装程序不能视为已具备此能力，当前安装身份见[项目状态](project-status.md)。
 
 面向新机器的完整发行使用 `offline:pack --showcase-root <已发布样张目录> --release <安全版本ID> --out <新输出父目录> [--root <项目根>] [--apply]`。已有资源的机器可增加 `--base-release <旧release.json>` 生成增量 ZIP，仅携带新增/变化的 assets 与画册图片、完整目标清单及基线身份；旧包只读元数据，可以上一增量继续制作。默认只读规划并核对真实来源字节；Windows `--apply` 生成 ZIP、两种 SHA-256 及独立 PowerShell 安装入口。导入不依赖 Node 或源码，外部审批指纹绑定 release.json 原始字节；增量要求配套原生 `offlineDelta` 能力（正式 1.9.1 不支持），匹配基础发行后从本机复用未变化文件，保留用户修改、旧版及事务恢复。导入前需退出桌面。完整步骤和发行边界见[离线资源安装与发行](guides/offline-resources.md)。此入口只导出已有素材，不安装模型、上传或生成/审核图片。
 
@@ -261,13 +261,13 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 本阶段衔接后端、场景管理界面、资源服务及维护工具；工程验证在办公机隔离环境执行，真实模型、资产质量和主力机安装/设备验收分别留存。
 
-场景维护使用 `/api/maintenance/scenes/preview`、`/changes` 与独立 `/import`；旧 `/scenes` 全量请求保持兼容。预览与变更集接收 `{baseVersion, changeSet:{version:1, scenes:{upsert:[],remove:[]}, blueprints?, tags?, curation?}}`。upsert 是完整记录，未知字段保留，remove 只能列现有 ID，旧基线返回 409。普通界面保存仅提交实际变更，完整导入单独确认；读取和保存使用同一完整快照及基线，冲突保留草稿，在途编辑不被旧回执覆盖。预览显示新增、修改、退役、相关引用及未知检查范围，不冒充真实画面验收。前后端均支持 sc1000+ 规范安全整数，已退役 ID 不复用。桌面安装版与 Web 共用快照、预览、变更集和备份接口；安装版首次启动从包内 data 原子初始化到 `AICS_RUNTIME_ROOT/content/data`，后续以该用户副本为权威，保存不修改安装包。重启及升级不覆盖已有副本；包内新增内容不会自动合并，可通过维护页显式导入。损坏或不完整副本不回退写入安装包，须检查备份恢复；原生恢复 CLI 的 `--root` 应指向 `AICS_RUNTIME_ROOT/content`，`--runtime-root` 仍指向运行目录。保存后会作废场景与元数据缓存。源码构建操作仍不属于安装版能力。
+内容维护使用 `/api/catalog` 查询、`/record` 和 `/history` 读取记录与修订，`/changes` 接收 `{changes, preview}`，`/import` 接收 `{snapshot, preview}`。每条变更带 `kind`、`id` 和 `expectedRevision`，提交完整 `data` 或字段 `patch`；普通删除只允许已有记录，系统文档不能删除，旧修订返回 409。普通保存仅提交实际变更，完整导入单独确认；冲突保留草稿，在途编辑不被旧回执覆盖。预览显示记录差异与相关引用，不冒充真实画面验收。前后端支持 sc1000+ 规范安全整数，已退役 ID 不复用。桌面安装版与源码服务均以运行目录 `content/catalog.sqlite` 为唯一工作权威；首次初始化读取项目快照，后续升级不覆盖个人工作库，新快照须显式预览并导入。`data/catalog/` 只由显式 export 更新，保存不双写 JSON 或安装包；已启用库缺失时拒绝静默重建，须恢复备份。保存后会作废场景与元数据缓存。旧文件事务恢复入口只处理其支持的文件事务，不能代替记录库恢复；源码构建操作仍不属于安装版能力。
 
 成片下的「保存为场景」读取该图提交时冻结的角色、服装、提示词与参数；只需填写名称、画面说明并明确选择分级，再检查并保存。工作室角色进入场景库，热门角色进入对应蓝图库，可同时保存样张；图片上传失败单独重试，不重复新增记录。`generatedRecipe` 保留原始生成来源，使用独立白名单校验，不要求补写日文或长故事，也不执行旧提示词自动补全。分级只升不降，pin/本机权限/冲突/事务仍生效。维护页中来源提示词与角色只读，名称和说明可编辑；重新选择会恢复已记录的引擎/参数，提示词仍按当前规则重编译，不保证与原图完全相同。反推词参与了该次生成时会包含在来源提示词中；直接上传图片反推后保存尚未接入。
 
 角色档案「更换立绘」进入维护页的「角色图片」。`GET/POST /api/maintenance/character-art` 使用 `{baseVersion,id,image}` 上传 PNG/JPEG/WebP data URL，或 `{baseVersion,id,reset:true}` 恢复内置；仅本机可访问。Rust 在用户运行目录 `character-art` 保存不可变版本，校正方向并生成透明 PNG、最长边 560 的缩略图及 128×192 以内粒子点阵，整组发布后原子切换清单，安装资源不变。图片最大 15 MiB、边长 8192、3200 万像素；极小/极细或全透明素材拒绝，旧形象保留。粒子使用实际图片色彩与透明度，不调用自动抠图模型。角色图片、缩略头像及粒子按同一 revision 刷新，其他窗口经消息/聚焦重新读取，远程继续使用内置资源。独立首页背景、场景样张、参考审核和 Live2D 模型保持各自入口。恢复内置撤销清单覆盖，旧版本文件保留；跨进程 OS 锁随退出释放。
 
-保存同步场景/蓝图源分片、聚合、现有压缩伴生文件并重新计算 DATA_VERSION；客户端版本由 `virtual:data-version` 注入，不写回 `sceneStore.ts`。进程内队列结合持久化跨进程 lease/journal 和精确文件备份；活进程或未能证明已退出的进程不被抢锁。保存中或存在未恢复事务时，受保护内容读取拒绝返回半写状态。`/api/maintenance/recovery-status` 是本机只读状态入口；损坏元数据不会被自动清除。实际断电和文件系统持久性仍需设备验收。
+内容记录保存通过 SQLite 事务更新记录、修订历史和版本，不回写旧分片、聚合或压缩文件；本机静态数据接口由数据库生成视图。项目构建从显式导出的快照生成派生产物，客户端版本由 `virtual:data-version` 注入，不写回 `sceneStore.ts`。样张、角色图片与仍支持的旧格式维护使用各自的跨进程 lease/journal 和文件备份；活进程或未能证明已退出的进程不被抢锁。`/api/maintenance/recovery-status` 只检查其支持的文件事务，损坏元数据不会自动清除，不代表内容库健康或恢复完成。实际断电和文件系统持久性仍需设备验收。
 
 `maintenance:recover --root <绝对项目根> --runtime-root <绝对运行目录> [--showcase-root <绝对样张根>] [--backup-id <ID>] [--out <新计划文件>]` 现调用原生 Rust 恢复 CLI，默认只读预览并输出 JSON；`--out` 不覆盖已有文件。审核后用相同根参数和 `--apply-plan <保存的签名JSON>` 显式应用，不能同时带 `--out` 或 `--backup-id`。重新核对签名、根身份、备份/当前字节、PID 与 nonce；活进程、未知锁、损坏 journal 或漂移拒绝恢复。需先 `rust:build`，也可直接运行 EXE 的 `maintenance-recovery` 子命令，无需启动网关。旧 Node 恢复工具不覆盖新启动聚合的词条备份范围。工作流 `--plan` 仍是零执行命令预览；退出 0 为可用预览/成功，1 为阻塞/失败，2 为参数错误。
 
@@ -374,7 +374,7 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 
 桌面唯一入口是 `deploy-desktop.bat`，`deploy:desktop` 调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。默认构建并安装本机无压缩升级包，适用于前端、宿主、Rust 后端和 DLL 改动；`-SkipBuild` 复用匹配原生构建，仍封装升级包。原先含义模糊的 `deploy:desktop:full` 已移除。纯资源同步显式 `-ResourcesOnly`，要求宿主 EXE、Rust EXE、libvips DLL 与安装版本一致。保留三个绑定检查点、受控退出、安装后校验、清缓存与启动确认。
 
-该入口只写安装目录，不覆盖个人 `content/catalog.sqlite`。人物/服装/蓝图/场景须通过内容维护或 `content:catalog` 预览并导入快照；参考索引等仍按文件维护的数据可用 `desktop:content-sync --apply --clear-webview-cache` 后重启。文件同步跳过已归记录库的目录和聚合，不读取、复制或删除它们，也不将旧目标记录分片列为多余。旧安装目录中的场景单文件等残留仍按 bat 默认 `-Cleanup` 的 `$STALE_ASSETS` 处理。装机后 [5/6][6/6]（清缓存、启动确认）在 NSIS 安装后可能不再回写，需自行核对。详见 [部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
+安装器本身不替换个人 `content/catalog.sqlite`；部署入口在安装后先导出备份、预览项目快照，再以 `--preserve-local` 合并导入并复核，保留个人修改及修订冲突约束。手动内容修改仍通过内容维护或 `content:catalog`。参考索引等按文件维护的数据可用 `desktop:content-sync --apply --clear-webview-cache` 后重启；文件同步跳过已归记录库的目录和聚合，不读写或删除它们。旧安装目录中的场景单文件等残留按 bat 默认 `-Cleanup` 的 `$STALE_ASSETS` 处理。装机后 [5/6][6/6]（清缓存、启动确认）在 NSIS 安装后可能不再回写，需自行核对。详见 [部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
 
 可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已绑定EXE>` 需直接运行 bat）：`-UseInstaller` 跳过构建/封装，只选择当前版本升级包；完整发行包必须显式 `-UseInstaller -InstallerPath <完整包>`。既有包选择结果在 UAC 前固定并透传。`-QuietInstall` 用于默认升级或复用安装包，不适用于纯资源同步；`-NoRestart` 保持退出；`-StartupRepair` 仅同步文档、图标与快捷方式，与 `-UseInstaller` 互斥。UAC 由用户操作，升级条件不满足时不自动改做完整构建，见[部署指南](desktop-deployment.md)。
 
@@ -400,7 +400,7 @@ Windows 上已授权的单窗口截图可用 `powershell -NoProfile -File script
 
 ### 011 发行输入绑定（2026-09-21）
 
-桌面 `build:tauri` / `package:tauri` 在锁内先从已显式导出的 `data/catalog/` 快照刷新人物、服装、场景、蓝图的数据聚合，再捕获源码身份及构建两份 UI；该写入准备不改变只读维护检查的 `onlyIfMissing` 守卫行为。已存在的个人 `content/catalog.sqlite` 不会被安装覆盖，记录式内容通过内容维护或 `content:catalog` 预览并导入快照；参考索引等仍按文件维护的数据才使用 `desktop:content-sync`。交付范围见[部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
+桌面 `build:tauri` / `package:tauri` 在锁内先从已显式导出的 `data/catalog/` 快照刷新人物、服装、场景、蓝图的数据聚合，再捕获源码身份及构建两份 UI；该写入准备不改变只读维护检查的 `onlyIfMissing` 守卫行为。安装器不覆盖个人 `content/catalog.sqlite`，配套部署入口另按备份、预览、保留个人修改的导入及复核更新内容；手动导入通过内容维护或 `content:catalog`。参考索引等按文件维护的数据才使用 `desktop:content-sync`。交付范围见[部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
 
 完整桌面构建在锁内捕获受 Git 管理及未忽略源码（排除 docs、plans 和一般 Markdown；原生许可目录中的 Markdown 仍纳入），复用 delivery-identity 的路径/字节哈希。`runtime/delivery-evidence/desktop-build-binding.json` 绑定 dist、桌面内嵌 web、暂存 Rust gateway/原生 DLL/清单及桌面 EXE，打包构建另绑定 NSIS；`runtime/rust-evidence/build.json` 绑定后端源码和 release EXE。Cubism 的 Core 头文件、Framework 源码与 Core 静态库也以实际字节摘要进入桌面构建环境和回执；构建前后及复用时核对，保留旧时间戳的同路径替换也会使候选失效。直接运行 Cargo 仍使用文件变化监听，常规桌面构建请走既有入口。仅原生构建不把旧 NSIS 纳入新身份。
 
@@ -432,7 +432,7 @@ skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同�
 
 `npm run wf -- models:prepare-inference --target-dir <AI工作区/inference>` 默认只读预览；`--preflight --wheelhouse <目录>` 在任何 venv 写入前离线解析完整 wheel 依赖；`--check` 通过完整 worker 诊断核验本地回执、依赖与 helper；只有 `--apply --wheelhouse <可信离线wheel目录>` 创建全新独立 venv。任何模式均不下载模型或依赖，不复用/修改 ComfyUI。需已有受信 Python，平台发行材料与真实 GPU 推理另验。详见[独立推理候选接入](guides/independent-inference.md)。
 
-`npm run wf -- models:calibrate-anima-teacache ...` 默认只读计划；`--run` 明确执行本地 CUDA 全计算采样、拟合与留出对照，可用 `--max-consecutive-skips 1..3` 设置候选上限（默认 1）。`--accept-run ... --accept-quality --accept-performance` 在画质/性能验收和实际提速核对后写入模型校准档；不同 runtime/LoRA/参数范围可保存于同一有界集合，追加或替换均按旧整文件 SHA-256 显式核验。无下载/安装，未验收档拒绝用于产品；见[TeaCache 校准与验收](guides/independent-inference.md#teacache-本机校准与验收)。
+`npm run wf -- models:calibrate-anima-teacache ...` 为显式维护研究路径，默认只读计划；`--run` 执行本地 CUDA 全计算采样、拟合与留出对照，可用 `--max-consecutive-skips 1..3` 设置候选上限（默认 1）。`--accept-run ... --accept-quality --accept-performance` 在画质/性能验收和实际提速核对后写入模型校准档；不同 runtime/LoRA/参数范围可保存于同一有界集合，追加或替换按旧整文件 SHA-256 核验。显式加载档案的维护路径仍核对接受状态与适用范围；日常产品使用内置策略，不读取这些档案。无下载或安装，见[TeaCache 校准与验收](guides/independent-inference.md#teacache-本机校准与验收)。
 
 `--strategy phase-envelope|polynomial|local-guard` 选择维护候选，默认phase-envelope。local-guard增加独立局部风险预算，`--local-threshold` 只适用于该策略；schema3档独立保存，产品不选择。当前仅完成源码/编译，不执行真实对照，不替用户选择算法。
 

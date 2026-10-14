@@ -17,8 +17,8 @@ import { useFocusTrap } from './useFocusTrap.ts'
  * 本模块只拥有「URL 保活 + 双快照轮转 + 弹层状态」这一层。
  */
 export function useCompareSnapshots<T extends { url: string }>(options: {
-  /** 在 URL 已完成克隆保活之后，组装业务元数据并返回完整快照 */
-  build: (persistentUrl: string) => T | Promise<T>
+  /** 同步冻结当前结果的业务元数据；轮转时再替换为保活 URL。 */
+  build: (sourceUrl: string) => T
 }) {
   const prevResult = ref<T | null>(null)
   const lastResult = ref<T | null>(null)
@@ -75,12 +75,18 @@ export function useCompareSnapshots<T extends { url: string }>(options: {
   /**
    * 新快照构建成功后才轮转，等待期间保留上一对有效快照。
    * sourceUrl 先经 persistUrl 克隆保活（引擎稍后会 revoke 原 blob），
-   * build 拿到的是克隆后的持久 URL。token 保证连续触发时只有最后一次
+   * build 在异步克隆前冻结元数据。token 保证连续触发时只有最后一次
    * 写入生效，过期结果立即释放。
    */
   function rotate(sourceUrl: string) {
     if (disposed) return
     const token = ++rotateToken
+    let snapshot: T
+    try {
+      snapshot = options.build(sourceUrl)
+    } catch {
+      return
+    }
     void (async () => {
       const persistentUrl = await persistUrl(sourceUrl)
       if (!persistentUrl) return
@@ -89,14 +95,9 @@ export function useCompareSnapshots<T extends { url: string }>(options: {
         return
       }
       try {
-        const snap = await options.build(persistentUrl)
-        if (disposed || token !== rotateToken) {
-          discardUrl(persistentUrl)
-          return
-        }
         release(prevResult.value)
         prevResult.value = lastResult.value
-        lastResult.value = snap
+        lastResult.value = { ...snapshot, url: persistentUrl }
       } catch {
         // 元数据构建失败时保留现有快照，并释放尚未展示的克隆。
         discardUrl(persistentUrl)

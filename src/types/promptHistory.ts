@@ -15,7 +15,7 @@ export type HistoryEntry = {
   cfg: number | string; steps: number | string; sampler: string
   scheduler: string; checkpoint: string; size: string
   engine?: DrawEngine; profile?: string; model?: string
-  provider?: 'comfy' | 'webui'
+  provider?: 'comfy' | 'webui' | 'native'
   loraId?: string | null; loraStrength?: number | null
   loras?: ReadonlyArray<{ id: string; strength: number }>
   preview?: boolean

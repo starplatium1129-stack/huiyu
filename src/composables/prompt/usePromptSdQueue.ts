@@ -86,6 +86,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       if (!meta) return {}
       return {
         engine: meta.engine,
+        provider: meta.provider,
         profile: meta.profileId,
         model: meta.modelId,
         lora: meta.loraId,
