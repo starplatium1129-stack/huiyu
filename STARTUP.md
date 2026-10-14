@@ -144,7 +144,7 @@ $env:COMFY_HOST = 'http://127.0.0.1:8188'
 npm run start:run
 ```
 
-`npm ci` 的 postinstall 构建 TypeScript 维护命令，`npm run build` 构建网页；这些产物不入 Git。`npm run start:run` / `npm start` 使用 Rust/Cargo 产品入口，需要前述构建工具与原生库。`build:runtime` 构建的是维护和独立浏览器工具，不能把它的成功当作 Rust 二进制已经构建或启动。持续开发可使用 `npm run dev:server`。
+`npm ci` 的 postinstall 构建 TypeScript 维护命令，`npm run build` 构建网页；这些产物不入 Git。`npm run start:run` / `npm start` 使用 Rust/Cargo release 产品入口，需要前述构建工具与原生库。`build:runtime` 构建的是维护和独立浏览器工具，不能把它的成功当作 Rust 二进制已经构建或启动。持续开发使用 `npm run dev:server`，单次开发构建/启动使用 `npm run rust:build:dev` / `npm run start:dev`；桌面开发使用 `npm run dev:tauri`，UI/内容变更加 `-- --refresh-ui`。开发缓存、调试信息代价及回退方法见[快速开发](docs/workflow.md#rust-快速开发)。
 
 网关默认不开公网分享；`AUTO_TUNNEL=1` 或已保存的自动分享偏好才会在启动时打开。需要明确禁止隧道时：
 

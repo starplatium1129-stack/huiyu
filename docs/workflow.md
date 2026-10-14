@@ -304,6 +304,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | npm run typecheck | 应用、Node 维护工具与独立浏览器工具类型检查 |
 | npm run build | 前端构建、包体预算与预压缩 |
 | npm run wf -- rust:build | 按锁文件构建 Rust release 及源码/EXE 绑定回执 |
+| npm run wf -- rust:build:dev | 独立缓存构建快速 dev 后端，不生成发行回执 |
 | npm run build:tauri / package:tauri | 原生桌面构建 / 安装包制作 |
 
 仅工具源或配置变化、所需生成入口缺失时准备 build:runtime；不手改生成的 JS。未运行构建或产品验收时如实记录，不把源码审查视为行为通过。
@@ -323,6 +324,20 @@ npm run wf -- voice:service -AIWorkspaceRoot <AI目录> -RuntimeRoot <运行目�
 产品后端为 runtime-rs，Node 用于前端、维护工具及构建编排。源码服务使用 npm start / npm run start:run；直接入口为 runtime-rs/target/release/huiyu-runtime.exe --app-root <项目目录> --bind 127.0.0.1:3210。工作区须显式私有路径/身份或受控桌面激活。
 
 rust:build 需要已有 Rust/MSVC 工具链，首次可能下载锁定 crate，不替换桌面安装。rust:licenses:collect 按 components.json 的固定配方下载公开源码并提取许可材料，不安装或执行源码；材料变化后更新摘要绑定，见[原生材料说明](../runtime-rs/native-licenses/README.md)。
+
+### Rust 快速开发
+
+日常后端修改使用 `npm run dev:server`：构建成功后先认证关闭旧网关，再运行新 EXE 的副本；构建失败保留旧服务，关闭未确认时不启动第二个写入者。单次构建使用 `npm run rust:build:dev`（工作流 `rust:build:dev`），单次启动使用 `npm run start:dev -- <服务参数>`（工作流 `rust:start:dev`）。服务参数、私有工作区路径与身份规则和正式启动相同。
+
+这些入口只向开发子进程设置 `CARGO_PROFILE_DEV_DEBUG=1`，沿用 Cargo dev 的优化等级、增量编译、安全检查和 panic 行为。保留源文件/行号及调用栈定位，但不保留完整变量和类型信息；需要查看局部变量、参数或复杂类型时，在当前 PowerShell 设置 `$env:AICS_RUST_DEV_MODE='standard'`，回到原始 dev 默认值和普通 target。断点和单步的实际调试器体验另行确认。恢复快速模式用 `Remove-Item Env:AICS_RUST_DEV_MODE`。已有 `CARGO_PROFILE_DEV_DEBUG` 等显式覆盖始终优先，因此 standard 不保证覆盖环境下的完整符号。
+
+Windows x64 MSVC 后端保留原链接器；桌面 dev 默认使用当前活动 Rust 工具链自带的 `rust-lld.exe`，不安装工具、不改全局配置。它只设置对应 target 的子进程 linker 环境变量，会覆盖 Cargo 配置文件的同 target linker；设置 `$env:AICS_RUST_DEV_LINKER='default'` 可保留 Cargo 原选择，移除此变量恢复入口默认。已设置的 target linker、`RUSTFLAGS` 或 `CARGO_ENCODED_RUSTFLAGS` 不会被改写。其他平台不自动切换链接器，Linux 尚未实测。
+
+默认缓存为各 Cargo.toml 所在目录下的 `target/development/<链接器选择>`；首次需单独预热。回退 standard 使用普通 target，不清理已有缓存。显式 `CARGO_TARGET_DIR` / `CARGO_BUILD_TARGET_DIR` 优先；改变调试信息、链接器、feature、flags 或 toolchain 可能使缓存失效，日常保持参数稳定。EXE 位置读取 Cargo 产物消息，兼容 target 子目录覆盖。
+
+`npm run dev:tauri` 构建开发后端，宿主显式使用本次 Cargo 返回的 EXE 和开发原生 DLL 环境；跳过 release 后端、安装器、资源暂存与预压缩。默认复用 `dist` 和 `desktop-tauri/web`，缺失时准备两种路由入口；修改 UI 或内容后运行 `npm run dev:tauri -- --refresh-ui`。CLI 只监视桌面 Rust，后端改动需退出并重新执行桌面开发命令；后端持续开发使用 `dev:server`。开发窗口沿用认证网关或 native bundled 来源，不引入新的可信来源。
+
+`npm start` / `start:run`、`rust:build`、`prepare:tauri`、桌面 build/package、部署及 `maintenance:recover` 保持 release 流程和回执绑定。`dev:tauri -- --release` 也保留原发行准备。开发提速不优化依赖运行等级，不替换发布工具链；Cranelift 在 Windows 上缺少所需 panic unwinding，当前不提供该入口。
 
 ## 服务与桌面部署
 

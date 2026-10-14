@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import { spawn, type ChildProcess } from 'node:child_process';
 import { createHmac, randomBytes } from 'node:crypto';
@@ -7,6 +6,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 const require=createRequire(import.meta.url);
 const {developmentNativeEnvironment}:typeof import('./maintenance/desktop-rust-inputs.js')=require('./maintenance/desktop-rust-inputs.js');
+const {developmentCargo,buildDevelopmentRuntime}:typeof import('./lib/rust-development.js')=require('./lib/rust-development.js');
 const defaultRoot=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const ROOT_INPUTS=new Set(['runtime-rs/Cargo.toml','runtime-rs/Cargo.lock','runtime-rs/build.rs','runtime-rs/native-dependencies.windows-x64.json']);
 const SOURCE_DIRECTORIES=['runtime-rs/src','runtime-rs/native-data','data','native'];
@@ -54,13 +54,10 @@ export async function startDevelopment(root=defaultRoot,options:DevelopmentOptio
   const bind=`${host.includes(':')?`[${host}]`:host}:${port}`,origin=`http://${bind}`;
   const profile=`profile-${randomBytes(32).toString('hex')}`;
   function discardCandidate(){if(candidate){fs.rmSync(candidate.directory,{recursive:true,force:true});candidate=undefined;}}
+  const cargo=options.build?undefined:developmentCargo(path.join(root,'runtime-rs/Cargo.toml'),root);
   const build=options.build||async function(){
-    const cargoHome=process.env.CARGO_HOME||path.join(os.homedir(),'.cargo'),cargoPath=path.join(cargoHome,'bin',process.platform==='win32'?'cargo.exe':'cargo');
-    const env={...process.env,CARGO_TARGET_DIR:path.join(root,'runtime-rs/target')};
-    const compiling=spawn(fs.existsSync(cargoPath)?cargoPath:'cargo',['build','--locked','--manifest-path',path.join(root,'runtime-rs/Cargo.toml')],{cwd:root,env,stdio:'inherit',windowsHide:true});
-    await new Promise<void>((resolve,reject)=>{compiling.once('error',reject);compiling.once('close',code=>code===0?resolve():reject(Error(`Rust build failed (${code}); keeping the last gateway`)));});
-    const native=developmentNativeEnvironment(root,env);
-    const executable=path.join(root,'runtime-rs/target/debug',process.platform==='win32'?'huiyu-runtime.exe':'huiyu-runtime');
+    const built=await buildDevelopmentRuntime(root,cargo);
+    const native=developmentNativeEnvironment(root,built.env),executable=built.executable;
     fs.mkdirSync(path.join(root,'runtime'),{recursive:true});const directory=fs.mkdtempSync(path.join(root,'runtime/dev-server-build-'));
     const versioned=path.join(directory,path.basename(executable));
     try{fs.copyFileSync(executable,versioned);if(process.platform!=='win32')fs.chmodSync(versioned,0o755);}

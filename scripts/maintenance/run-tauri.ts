@@ -1,5 +1,8 @@
 'use strict';
 import { timeDesktopBuild } from '../lib/desktop-build-timing';
+import fs = require('node:fs');
+import development = require('../lib/rust-development');
+import nativeInputs = require('./desktop-rust-inputs');
 
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const path: typeof import('node:path') = require('node:path');
@@ -61,6 +64,19 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
   }
 
   const workspaceRoot = options.root || ROOT;
+  const separator = args.indexOf('--');
+  const cliArgs = separator < 0 ? args : args.slice(0, separator);
+  if (cliArgs.some(arg => arg === '--help' || arg === '-h')) {
+    if (mode === 'dev') console.log('[tauri dev] --refresh-ui rebuilds both UI entries; Rust-only development reuses them.');
+    return (options.spawnTauri || runCommand)(process.execPath, [options.tauriCli || require.resolve('@tauri-apps/cli/tauri.js'), mode, ...args], { cwd: path.join(workspaceRoot, 'desktop-tauri') });
+  }
+  const forwarded = separator < 0 ? [] : args.slice(separator + 1);
+  const applicationSeparator = forwarded.indexOf('--');
+  const cargoArgs = applicationSeparator < 0 ? forwarded : forwarded.slice(0, applicationSeparator);
+  const customProfile = cargoArgs.some(arg => arg === '--release' || arg === '--profile' || arg.startsWith('--profile='));
+  const fastDevelopment = mode === 'dev' && !cliArgs.includes('--release') && !customProfile;
+  const refreshUi = fastDevelopment && cliArgs.includes('--refresh-ui');
+  if (refreshUi) args.splice(args.indexOf('--refresh-ui'), 1);
   const lock = options.withLock || withDesktopBuildLock;
   return lock({ workspaceRoot }, async () => {
     (options.checkEnvironment || assertDesktopBuildEnvironment)(workspaceRoot);
@@ -74,21 +90,54 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
       if (dataStatus !== 0) return dataStatus;
     }
     const source = mode === 'build' ? await timeDesktopBuild('source identity', () => buildBinding.sourceIdentity(workspaceRoot)) : null;
-    const env = { ...(options.env || tauriEnvironment(workspaceRoot)) };
+    let env = { ...(options.env || tauriEnvironment(workspaceRoot)) };
     const sdk = mode === 'build' ? buildBinding.sdkIdentity(workspaceRoot, env) : null;
     if (sdk) { env.LIVE2D_CUBISM_SDK_DIR = sdk.root; env.LIVE2D_CUBISM_SDK_SHA256 = sdk.inputs.sha256; }
-    const npm = options.npmCommand
-      ? { command: options.npmCommand, args: options.npmArgs || [] }
-      : resolveNpmInvocation();
-    const status = await timeDesktopBuild('web build and precompression', () => run(npm.command, [...npm.args, 'run', 'build'], { cwd: workspaceRoot }));
-    if (status !== 0) return status;
+    if (fastDevelopment) {
+      const flags = [env.RUSTFLAGS, env.CARGO_ENCODED_RUSTFLAGS, env.CARGO_BUILD_RUSTFLAGS,
+        ...Object.entries(env).filter(([key]) => /^CARGO_TARGET_.+_RUSTFLAGS$/.test(key)).map(([, value]) => value)].join(' ');
+      if (env.CARGO_PROFILE_DEV_DEBUG_ASSERTIONS === 'false' || /debug-assertions(?:=|\s+)(?:no|off|false|0)\b/.test(flags)) {
+        throw Error('Tauri development requires dev debug_assertions to select the explicit runtime EXE; remove the disabling override.');
+      }
+      // Source-mode legacy windows use dist; activated native windows use the
+      // desktop hash-router bundle. Rust-only iteration reuses both products.
+      const outputs = [['dist', []], ['desktop-tauri/web', ['--mode', 'desktop']]] as const;
+      const missingUi = outputs.some(([directory]) => !fs.existsSync(path.join(workspaceRoot, directory, 'index.html')));
+      if (refreshUi || missingUi) {
+        const dataStatus = run(process.execPath, ['-e', 'require(process.argv[1]).ensureAll()', path.join(workspaceRoot, 'scripts/lib/ensure-data-build.js')], {
+          cwd: workspaceRoot, env: { ...env, AICS_DATA_ROOT: workspaceRoot, AICS_APP_ROOT: workspaceRoot },
+        });
+        if (dataStatus !== 0) return dataStatus;
+        const vite = path.join(path.dirname(require.resolve('vite/package.json')), 'bin/vite.js');
+        for (const [directory, flags] of outputs) {
+          const status = await timeDesktopBuild(`development UI ${directory}`, () => run(process.execPath, [vite, 'build', ...flags, '--outDir', directory], { cwd: workspaceRoot, env }));
+          if (status !== 0) return status;
+        }
+      } else console.log('[tauri dev] Reusing dist and desktop-tauri/web; use --refresh-ui after UI/content changes.');
+      const native = nativeInputs.developmentNativeEnvironment(workspaceRoot, env);
+      const runtime = await timeDesktopBuild('development Rust runtime', () => development.buildDevelopmentRuntime(workspaceRoot,
+        development.developmentCargo(path.join(workspaceRoot, 'runtime-rs/Cargo.toml'), workspaceRoot, native)));
+      const desktop = path.join(workspaceRoot, 'desktop-tauri/src-tauri');
+      env = development.developmentCargo(path.join(desktop, 'Cargo.toml'), desktop, native, 'lld').env;
+      // Cargo interprets relative target directories from its actual cwd.
+      env.CARGO_TARGET_DIR = path.resolve(desktop, env.CARGO_TARGET_DIR ?? env.CARGO_BUILD_TARGET_DIR!);
+      env.AICS_DESKTOP_RUNTIME_EXE = runtime.executable;
+      const split = args.indexOf('--');
+      args.splice(split < 0 ? args.length : split, 0, '--no-dev-server', '--config', JSON.stringify({ build: { devUrl: null }, bundle: { resources: [] } }));
+    } else {
+      const npm = options.npmCommand
+        ? { command: options.npmCommand, args: options.npmArgs || [] }
+        : resolveNpmInvocation();
+      const status = await timeDesktopBuild('web build and precompression', () => run(npm.command, [...npm.args, 'run', 'build'], { cwd: workspaceRoot }));
+      if (status !== 0) return status;
 
-    const prepare = options.prepareTauri || prepareTauri;
-    await prepare({ root: workspaceRoot });
+      const prepare = options.prepareTauri || prepareTauri;
+      await prepare({ root: workspaceRoot });
+    }
 
     const cli = options.tauriCli || require.resolve('@tauri-apps/cli/tauri.js');
     const spawnTauri = options.spawnTauri || runCommand;
-    const result = await timeDesktopBuild('Tauri native build and bundle', () => spawnTauri(process.execPath, [cli, mode, ...args], {
+    const result = await timeDesktopBuild(fastDevelopment ? 'Tauri development session' : 'Tauri native build and bundle', () => spawnTauri(process.execPath, [cli, mode, ...args], {
       cwd: path.join(workspaceRoot, 'desktop-tauri'),
       stdio: 'inherit',
       env,

@@ -21,6 +21,8 @@
     "build:all": "npm run build",
     "prod": "npm run build && npm run start:run",
     "dev:server": "node scripts/dev-server.mts",
+    "rust:build:dev": "node scripts/maintenance/run-rust-runtime.js build-dev",
+    "start:dev": "node scripts/maintenance/run-rust-runtime.js start-dev",
     "typecheck:app": "vue-tsc -p tsconfig.app.json --noEmit",
     "typecheck:node": "tsc -p tsconfig.node.json --noEmit",
     "typecheck:browser-tools": "node scripts/build-node.mts --project browser --check",
