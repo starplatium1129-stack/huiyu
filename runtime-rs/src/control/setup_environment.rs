@@ -75,7 +75,8 @@ impl ControlService {
     pub(super) fn cancel_environment(&self, operation_id: Option<&str>) -> Result<Value> {
         let state = self.state.lock().unwrap();
         if let Some(id) = operation_id
-            && state.operation
+            && state
+                .operation
                 .as_ref()
                 .is_none_or(|operation| operation["id"] != id)
         {
@@ -85,8 +86,25 @@ impl ControlService {
                 "原准备操作已结束或改变",
             ));
         }
-        if state.operation.as_ref().is_some_and(|operation| operation["status"] == "running" && operation["cancelAllowed"] == false) {
-            return Err(ApiError::new(409, "WINDOWS_INSTALLER_BUSY", "Windows 正在安装 VC++ 共享组件，请在安装器中取消或等待结束；绘遇不会强停系统安装事务"));
+        if state.operation.as_ref().is_some_and(|operation| {
+            operation["status"] == "running"
+                && operation["cancelAllowed"] == false
+                && operation["phase"] == "activating"
+        }) {
+            return Err(ApiError::new(
+                409,
+                "SETUP_COMMIT_BUSY",
+                "正在保存并启用反推配置，请等待此步骤完成",
+            ));
+        }
+        if state.operation.as_ref().is_some_and(|operation| {
+            operation["status"] == "running" && operation["cancelAllowed"] == false
+        }) {
+            return Err(ApiError::new(
+                409,
+                "WINDOWS_INSTALLER_BUSY",
+                "Windows 正在安装 VC++ 共享组件，请在安装器中取消或等待结束；绘遇不会强停系统安装事务",
+            ));
         }
         if let Some(cancel) = self.environment_cancel.lock().unwrap().as_ref() {
             cancel.cancel();

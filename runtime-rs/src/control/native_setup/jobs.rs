@@ -342,7 +342,10 @@ impl ControlService {
     }
 
     pub(super) fn native_progress(&self, operation: &Value, mut update: Value) {
-        if operation["kind"] == "prepare-native-engine" {
+        if matches!(
+            operation["kind"].as_str(),
+            Some("prepare-native-engine" | "prepare-pixai")
+        ) {
             if update.get("flowStep").is_none() {
                 update["flowStep"] = operation["flowStep"].clone();
             }
@@ -363,7 +366,7 @@ impl ControlService {
                 .extend(update.as_object().unwrap().clone());
         }
     }
-    async fn download_native_files(
+    pub(super) async fn download_native_files(
         &self,
         root: &Path,
         files: &[Artifact],

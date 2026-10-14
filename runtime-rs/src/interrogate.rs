@@ -26,7 +26,7 @@ const MAX_BYTES: usize = 20 * 1024 * 1024;
 // data URL prefix and JSON fields as well.
 const MAX_BODY_BYTES: usize = MAX_BYTES.div_ceil(3) * 4 + 64 * 1024;
 pub struct InterrogateService {
-    client: pixai::Client,
+    client: tokio::sync::RwLock<pixai::Client>,
     shutdown: CancellationToken,
     validation: Arc<tokio::sync::Semaphore>,
 }
@@ -36,7 +36,7 @@ impl InterrogateService {
     }
     fn with_settings(settings: pixai::Settings, shutdown: CancellationToken) -> Self {
         Self {
-            client: pixai::Client::new(settings),
+            client: tokio::sync::RwLock::new(pixai::Client::new(settings)),
             shutdown,
             validation: Arc::new(tokio::sync::Semaphore::new(1)),
         }
@@ -44,7 +44,21 @@ impl InterrogateService {
     pub async fn close(&self) {
         self.shutdown.cancel();
         // Detached validation retains its slot until its bounded CPU work ends.
-        let _drained = tokio::join!(self.client.close(), self.validation.acquire());
+        let client = self.client.write().await;
+        let _drained = tokio::join!(client.close(), self.validation.acquire());
+    }
+    pub(crate) async fn reload(&self, config: &Config) -> Result<Value> {
+        let mut client = self.client.write().await;
+        if self.shutdown.is_cancelled() {
+            return Err(closed());
+        }
+        // Retire and drain the old worker before a new client can start GPU work.
+        client.close().await?;
+        if self.shutdown.is_cancelled() {
+            return Err(closed());
+        }
+        *client = pixai::Client::new(settings::load(config));
+        Ok(client.probe().await)
     }
     async fn interrogate(&self, input: Value) -> Result<Value> {
         if self.shutdown.is_cancelled() {
@@ -68,6 +82,8 @@ impl InterrogateService {
         .map_err(|_| ApiError::new(503, "INTERROGATE_UNAVAILABLE", "图片校验未完成"))??;
         let result = self
             .client
+            .read()
+            .await
             .run(input.image, input.threshold, cancel)
             .await?;
         Ok(results::finish(
@@ -178,6 +194,6 @@ async fn interrogate(
 }
 async fn status(Extension(service): Extension<Arc<InterrogateService>>) -> Result<Json<Value>> {
     Ok(Json(
-        json!({"ok":true,"local":true,"defaultEngine":"pixai","engines":["pixai"],"pixai":service.client.probe().await,"thresholdDefault":0.17,"maxBytes":MAX_BYTES}),
+        json!({"ok":true,"local":true,"defaultEngine":"pixai","engines":["pixai"],"pixai":service.client.read().await.probe().await,"thresholdDefault":0.17,"maxBytes":MAX_BYTES}),
     ))
 }

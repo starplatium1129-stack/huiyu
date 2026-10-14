@@ -241,22 +241,32 @@ impl Client {
         })
     }
 
-    pub async fn close(&self) {
+    pub async fn close(&self) -> Result<()> {
         {
             *self.closed.lock().unwrap() = true;
             self.shutdown.cancel();
             self.jobs.close();
         }
         self.jobs.wait().await;
-        if let Some(worker) = self.worker.lock().await.take()
-            && let Err(error) = worker.stop().await
-        {
-            eprintln!("pixai: {error}");
+        let retired = match self.worker.lock().await.take() {
+            Some(worker) => worker.stop().await,
+            None => Ok(()),
+        };
+        if retired.is_err() {
+            self.gate.close();
         }
         self.processes.close().await;
         let mut status = self.snapshot.lock().unwrap();
         status.cached = false;
         status.loading = false;
+        // A previous request/idle cleanup with an unconfirmed stop closes this
+        // gate. Refuse hot activation until application restart in that case.
+        if self.gate.is_closed() {
+            return Err(unavailable(
+                "旧 PixAI 进程停止未确认，请重启绘遇后再启用反推",
+            ));
+        }
+        retired
     }
 }
 

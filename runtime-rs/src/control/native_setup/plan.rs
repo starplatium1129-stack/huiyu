@@ -54,6 +54,24 @@ pub(super) fn safe_directory(path: &Path) -> Result<()> {
     Ok(())
 }
 pub(super) fn support(hardware: &Value, runtime: &RuntimeBundle) -> Vec<String> {
+    let mut reasons = runtime_support(hardware, runtime, 12, "12 GB 或更多显存");
+    if hardware["ramBytes"]
+        .as_u64()
+        .is_none_or(|bytes| bytes < 24 * 1024 * 1024 * 1024)
+    {
+        reasons.push(
+            "分阶段加载至少需要 24 GiB 系统内存，建议 32 GiB；显存和复杂画面的实际效果仍需设备验收"
+                .into(),
+        );
+    }
+    reasons
+}
+pub(super) fn runtime_support(
+    hardware: &Value,
+    runtime: &RuntimeBundle,
+    vram_gib: u64,
+    vram_label: &str,
+) -> Vec<String> {
     let mut reasons = Vec::new();
     if !cfg!(all(windows, target_arch = "x86_64")) {
         reasons.push("应用管理运行库目前支持 Windows x64；ARM、Linux、macOS 未提供此运行包".into());
@@ -94,7 +112,7 @@ pub(super) fn support(hardware: &Value, runtime: &RuntimeBundle) -> Vec<String> 
             && capability.is_some_and(|n| (8.0..=12.0).contains(&n))
             && device["vramBytes"]
                 .as_u64()
-                .is_some_and(|bytes| bytes >= 12 * 1024 * 1024 * 1024 - 256 * 1024 * 1024)
+                .is_some_and(|bytes| bytes >= vram_gib * 1024 * 1024 * 1024 - 256 * 1024 * 1024)
     });
     let other_names = hardware["otherDevices"]
         .as_array()
@@ -113,16 +131,7 @@ pub(super) fn support(hardware: &Value, runtime: &RuntimeBundle) -> Vec<String> 
     {
         reasons.push(format!("已检测到 {}。此原生运行库支持 NVIDIA CUDA，尚未提供 AMD、Intel 或 CPU 推理；当前显卡不能运行此包",other_names.join("、")));
     } else if !compatible {
-        reasons.push(format!("需要 NVIDIA Ampere 至 Blackwell（计算能力 8.0–12.0）、12 GB 或更多显存及 Windows 驱动 {} 或更新；请从 NVIDIA 更新驱动，绘遇不会安装或修改驱动。未检测到设备时也请检查驱动中的 nvidia-smi。AMD、Intel、旧架构及较小显存尚不支持此运行包",runtime.minimum_nvidia_driver));
-    }
-    if hardware["ramBytes"]
-        .as_u64()
-        .is_none_or(|bytes| bytes < 24 * 1024 * 1024 * 1024)
-    {
-        reasons.push(
-            "分阶段加载至少需要 24 GiB 系统内存，建议 32 GiB；显存和复杂画面的实际效果仍需设备验收"
-                .into(),
-        );
+        reasons.push(format!("需要 NVIDIA Ampere 至 Blackwell（计算能力 8.0–12.0）、{vram_label}及 Windows 驱动 {} 或更新；请从 NVIDIA 更新驱动。未检测到设备时也请检查驱动中的 nvidia-smi。AMD、Intel、旧架构及较小显存尚不支持此运行包",runtime.minimum_nvidia_driver));
     }
     reasons
 }
@@ -216,7 +225,7 @@ impl ControlService {
         )
     }
 }
-fn recoverable_runtime(root: &Path, runtime: &RuntimeBundle) -> u64 {
+pub(super) fn recoverable_runtime(root: &Path, runtime: &RuntimeBundle) -> u64 {
     let candidate = root.join(".staging").join(&runtime.runtime_id);
     if safe_directory(&candidate).is_err()
         || candidate.join("runtime-config.json").exists() && !candidate_ready(root, runtime)
@@ -285,7 +294,7 @@ fn recoverable_runtime(root: &Path, runtime: &RuntimeBundle) -> u64 {
     }
     bytes
 }
-fn candidate_ready(root: &Path, runtime: &RuntimeBundle) -> bool {
+pub(super) fn candidate_ready(root: &Path, runtime: &RuntimeBundle) -> bool {
     let candidate = root.join(".staging").join(&runtime.runtime_id);
     let value = std::fs::read(candidate.join("runtime-config.json"))
         .ok()
@@ -306,7 +315,7 @@ fn candidate_ready(root: &Path, runtime: &RuntimeBundle) -> bool {
             && candidate.join("venv/Scripts/python.exe").is_file()
     })
 }
-fn retained(root: &Path, files: &[Artifact]) -> u64 {
+pub(super) fn retained(root: &Path, files: &[Artifact]) -> u64 {
     files
         .iter()
         .map(|file| {

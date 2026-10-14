@@ -1,6 +1,7 @@
 mod flow;
 mod installer;
 mod jobs;
+mod pixai;
 mod plan;
 
 use super::*;
@@ -58,19 +59,27 @@ pub(super) fn routes() -> Router<crate::AppState> {
         .route("/api/inference/runtime/install", post(install))
         .route("/api/inference/models/download", post(download))
         .route("/api/inference/setup/activate", post(activate))
+        .merge(pixai::routes())
 }
 fn bundles() -> Result<(RuntimeBundle, Vec<ModelBundle>)> {
-    let runtime: RuntimeBundle = serde_json::from_str(include_str!(
-        "../../../tools/inference/managed-runtime.windows-x64.json"
-    ))?;
+    let runtime = runtime_bundle()?;
     let models: Value =
         serde_json::from_str(include_str!("../../../tools/inference/managed-models.json"))?;
     let models: Vec<ModelBundle> = serde_json::from_value(models["models"].clone())?;
-    for file in runtime
-        .files
-        .iter()
-        .chain(models.iter().flat_map(|m| &m.files))
-    {
+    for model in &models {
+        validate_artifacts(&model.files)?;
+    }
+    Ok((runtime, models))
+}
+fn runtime_bundle() -> Result<RuntimeBundle> {
+    let runtime: RuntimeBundle = serde_json::from_str(include_str!(
+        "../../../tools/inference/managed-runtime.windows-x64.json"
+    ))?;
+    validate_artifacts(&runtime.files)?;
+    Ok(runtime)
+}
+fn validate_artifacts(files: &[Artifact]) -> Result<()> {
+    for file in files {
         let path = Path::new(&file.path);
         if path.is_absolute()
             || path
@@ -85,7 +94,7 @@ fn bundles() -> Result<(RuntimeBundle, Vec<ModelBundle>)> {
             return Err(ApiError::invalid("随包下载清单无效，请修复绘遇安装"));
         }
     }
-    Ok((runtime, models))
+    Ok(())
 }
 fn plan_id(workspace: &Path) -> String {
     let mut hash = Sha256::new();

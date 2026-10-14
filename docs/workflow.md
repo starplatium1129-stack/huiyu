@@ -350,6 +350,10 @@ rust:build 需要已有 Rust/MSVC 工具链，首次可能下载锁定 crate，�
 
 ### PixAI 本机反推准备
 
+新机在「控制室 → 图片反推」点击「一键准备」：按随包固定清单自动下载独立 CPython 3.11、PyTorch CUDA 12.8 及其依赖、PixAI v1.0 模型与 timm，无需 ComfyUI、系统 Python、pip 或单独安装 CUDA Toolkit。运行库复用 AI 工作区内 `inference/<固定运行库版本>/`，仅准备环境，不下载生图模型；PixAI 模型在 `PixAI/model/`，timm 在按 wheel 版本与 SHA 命名的 `PixAI/deps/` 子目录。来源、空间、路径、进度和取消在同一面板显示，下载支持续传并核对完整 SHA-256；Windows VC++ 共享组件如需提权由系统 UAC 处理，系统安装阶段须等待结束或在 Windows 安装器中取消。
+
+准备成功后原子写入运行目录 `pixai/runtime-config.json` 并刷新反推服务，无需重启；失败保留既有环境和下载缓存，重新准备可继续。关闭页面仅停止进度观察。显式 `AICS_PIXAI_*` 路径覆盖须先移除并重启后才能一键准备，避免下载完成却仍使用旧环境。受管包支持 Windows x64、单张兼容 NVIDIA CUDA/BF16 显卡与清单规定驱动；反推时需要约 4 GiB **空闲**显存。准备只核验文件、依赖导入和设备能力，不执行真实模型反推。以下 CLI 为复用已有环境的高级维护入口。
+
 `npm run wf -- models:prepare-pixai [--target-dir <独立可写runtime根>] [--python <已有Python或venv>] [--torch-site-packages <已有torch包目录>] [--reuse-from <已下载候选根>]` 准备固定 PixAI v1.0：官方 revision 为 `9fe10addf9326e292da8a85a98ea74cd91b41771`，FP32 safetensors 为 1,945,425,796 字节，模型、代码、配置逐项核对固定大小与 SHA-256。默认根为运行目录下的 `pixai/`；模型在 `model/`，固定 timm 1.0.30 仅装入独立 `deps/`，现有 Comfy/Python 包和生图模型不修改。已匹配文件直接复用；`--reuse-from` 核验既有候选，优先硬链权重、复制代码/配置，避免重复下载。
 
 `--plan` 不联网、不写入、不读取目标回执、不启动 Python；`--check` 只读核验本机文件与依赖，不安装或推理。复查时按「显式参数 → 对应环境变量 → 指定目标的有效 `runtime-config.json` → 原默认」选择 Python/Torch 路径，不必重复已保存参数；已有回执损坏或路径不合法时在启动 Python 前失败，不默默改查 Comfy。模型、wheel 和独立依赖仍只检查指定目标目录，不跨库搜索，也不改写回执。

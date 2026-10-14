@@ -5,8 +5,8 @@ mod http;
 mod inference;
 mod inference_discovery;
 mod inference_setup;
-mod native_setup;
 mod llama;
+mod native_setup;
 mod probe;
 mod settings;
 mod setup;
@@ -158,6 +158,9 @@ impl ControlService {
         let _ = self.stop_llama().await;
         let _ = self.run_comfy(false).await;
         self.stop_tunnel().await;
+        // Cancellation must drain the setup owner before closing its process
+        // pool: a VC++ installer may be in its protected Windows/UAC phase.
+        let _setup_drained = self.setup_verify_lock.acquire().await;
         self.processes.close().await;
         self.tasks.close();
         self.tasks.wait().await;
