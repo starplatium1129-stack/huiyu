@@ -14,6 +14,8 @@ const props = withDefaults(defineProps<{
 }>(), { placeholder: '搜索并选择模型', disabled: false, allowCustom: false })
 const value = defineModel<string>({ required: true })
 const open = ref(false)
+const root = ref<HTMLElement>()
+const portalTarget = computed(() => root.value?.closest('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') as HTMLElement || undefined)
 const customValue = computed(() => props.allowCustom && value.value.trim()
   && !props.options.some(option => option.value === value.value.trim()) ? value.value.trim() : '')
 function displayValue(selected: unknown) {
@@ -27,7 +29,7 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
 </script>
 
 <template>
-  <div class="chat-model-picker">
+  <div ref="root" class="chat-model-picker">
     <ComboboxRoot v-model="value" v-model:open="open" :disabled="disabled" :open-on-click="true">
       <ComboboxAnchor class="studio-select-trigger chat-model-picker-anchor" :data-disabled="disabled ? '' : undefined" data-fluid-glass>
         <ComboboxInput class="chat-model-picker-input" :display-value="displayValue" :aria-label="label"
@@ -36,7 +38,7 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
           <ArchiveIcon name="chevron-down" class="studio-select-icon" />
         </ComboboxTrigger>
       </ComboboxAnchor>
-      <ComboboxPortal>
+      <ComboboxPortal :to="portalTarget">
         <ComboboxContent class="studio-select-content chat-model-picker-content" position="popper" align="start" :side-offset="6" :collision-padding="12" data-fluid-glass>
           <ComboboxViewport class="studio-select-viewport">
             <ComboboxEmpty class="chat-model-picker-empty">{{ allowCustom ? '可直接输入模型名' : '没有匹配的模型' }}</ComboboxEmpty>

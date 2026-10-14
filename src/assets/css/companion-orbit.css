@@ -2,11 +2,6 @@
 /* An explicit control layer: the open centre never changes the model's framing. */
 .companion-orbit { @apply tw:absolute; inset: 0; z-index: var(--z-overlay); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-[8px] tw:pointer-events-none tw:text-primary; }
 :root:has(.companion-preferences[open], .character-settings-dialog[open]) .companion-orbit { visibility: hidden; }
-.orbit-heading { @apply tw:absolute tw:top-[12px] tw:left-[12px] tw:flex tw:items-center tw:gap-[20px]; padding: 8px 10px 8px 18px; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-elevated); box-shadow: var(--shadow-glass-sm); @apply tw:pointer-events-auto; }
-.orbit-heading > div { @apply tw:flex tw:flex-col tw:gap-[2px]; }
-.orbit-kicker { @apply tw:text-secondary tw:text-label-xs; letter-spacing: .15em; }
-.orbit-heading strong { @apply tw:text-body-sm; }
-.orbit-close { @apply tw:grid; place-items: center; @apply tw:w-[36px] tw:h-[36px] tw:p-0; border: 0; border-radius: 50%; background: var(--bg-surface); @apply tw:text-primary tw:cursor-pointer; }
 .orbit-wheel { @apply tw:relative; flex: 0 0 auto; width: var(--orbit-size); height: var(--orbit-size); }
 .orbit-segment > svg { @apply tw:absolute; inset: 0; @apply tw:w-full tw:h-full tw:overflow-visible tw:pointer-events-none; }
 .orbit-segment > svg > path { fill: var(--bg-elevated); stroke: var(--border-strong); stroke-width: .75; @apply tw:pointer-events-auto tw:cursor-pointer; }
@@ -37,19 +32,18 @@
 .orbit-pagination { @apply tw:flex tw:items-center tw:justify-between tw:gap-[8px] tw:text-secondary tw:text-label-sm; }
 .orbit-pagination button, .orbit-manage { @apply tw:min-h-[36px]; padding: 6px 10px; border: 1px solid var(--border-soft); @apply tw:rounded-md tw:text-primary; background: var(--bg-surface); @apply tw:cursor-pointer; }
 .orbit-manage { @apply tw:flex tw:justify-center tw:items-center tw:gap-[6px] tw:w-full tw:mt-[8px] tw:text-label-sm; }
-.orbit-guide, .orbit-feedback { @apply tw:m-0; max-width: calc(100% - 24px); padding: 8px 14px; background: var(--bg-elevated); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:text-secondary tw:text-label-xs; line-height: 1.5; @apply tw:text-center tw:pointer-events-auto; }
-.orbit-guide span { margin-inline: 8px; }
+.orbit-feedback { @apply tw:m-0; max-width: calc(100% - 24px); padding: 8px 14px; background: var(--bg-elevated); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:text-secondary tw:text-label-xs; line-height: 1.5; @apply tw:text-center tw:pointer-events-auto; }
 .orbit-feedback { @apply tw:max-h-[60px] tw:overflow-auto; }
 .companion-orbit button:disabled { @apply tw:text-disabled tw:cursor-default; }
 .companion-orbit button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .companion-orbit .orbit-action:focus-visible { outline: none; }
 .companion-orbit.has-category:not(.is-compact) { --orbit-size: min(440px, calc(100dvh - 240px), calc(100vw - 24px)) !important; }
 .companion-orbit.is-compact { @apply tw:gap-[4px]; }
-.companion-orbit.is-compact.has-category { @apply tw:box-border tw:pt-[80px] tw:pb-[12px]; }
+.companion-orbit.is-compact.has-category { @apply tw:box-border tw:pt-[12px] tw:pb-[12px]; }
 .companion-orbit.is-compact .orbit-wheel { width: var(--orbit-size); height: var(--orbit-size); }
 .companion-orbit.is-compact .orbit-action { @apply tw:w-[44px] tw:h-[44px] tw:gap-[2px] tw:text-label-xs; }
 .companion-orbit.is-compact .orbit-action .archive-icon { @apply tw:w-[18px] tw:h-[18px]; }
-.orbit-selection-compact { max-height: calc(100dvh - 110px); }
+.orbit-selection-compact { max-height: calc(100dvh - 24px); }
 .pet-orbit-enter-active, .pet-orbit-leave-active { transition: opacity 160ms ease, transform 220ms var(--ease-out); }
 .pet-orbit-enter-from, .pet-orbit-leave-to { opacity: 0; transform: scale(.96); }
 @media (prefers-reduced-motion: reduce) { .pet-orbit-enter-active, .pet-orbit-leave-active { transition: none; } .pet-orbit-enter-from, .pet-orbit-leave-to { transform: none; } }

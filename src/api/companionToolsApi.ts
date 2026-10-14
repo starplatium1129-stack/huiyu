@@ -9,7 +9,7 @@ export interface CompanionToolResult {
 }
 
 export async function executeCompanionTool(name: string, args: Record<string, unknown>, signal?: AbortSignal): Promise<CompanionToolResult> {
-  const response = await runtimeFetch('/api/desktop-tools', {
+  const response = await runtimeFetch(name === 'search_web' ? '/api/chat/search' : '/api/desktop-tools', {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
     body: JSON.stringify({ name, args }),
   })

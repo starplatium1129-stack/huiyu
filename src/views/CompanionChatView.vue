@@ -1,13 +1,13 @@
 <template>
-  <article ref="surfaceRef" class="companion-dialogue-window" :data-character="activeChar"
+  <article ref="surfaceRef" class="companion-dialogue-window" :data-character="activeChar" :data-desktop="Boolean(bridge) || undefined"
     :data-dock-side="docked ? dockSide : undefined" @keydown.esc="onEscape"
     @dragover.prevent @drop="attachments.onImageDrop" @paste="attachments.onImagePaste">
     <section class="companion-dialogue" aria-label="角色对白">
       <header class="companion-dialogue-heading" @mousedown="startWindowDrag">
         <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
         <div class="companion-dialogue-controls">
-          <StudioTooltip :content="historyOpen ? '回到当前对白' : '回看对话'">
-            <button type="button" :aria-label="historyOpen ? '回到当前对白' : '回看对话'"
+          <StudioTooltip :content="historyOpen ? '回到最近消息' : '回看对话'">
+            <button type="button" :aria-label="historyOpen ? '回到最近消息' : '回看对话'"
               :aria-expanded="historyOpen" aria-controls="companion-dialogue-history"
               @click="historyOpen = !historyOpen; speechSettingsOpen = false"><ArchiveIcon name="chat" /></button>
           </StudioTooltip>
@@ -36,51 +36,45 @@
         </Suspense>
       </section>
 
-      <section v-else-if="historyOpen" id="companion-dialogue-history" class="companion-dialogue-history" aria-label="最近对话">
-        <div ref="listRef" class="companion-dialogue-history-list" role="log" tabindex="0" aria-label="对话记录">
-          <p v-if="!visibleMessages.length" class="companion-dialogue-history-empty">还没有对话。想说什么，直接告诉她吧。</p>
-          <div v-for="msg in visibleMessages" :key="msg.mid" class="companion-dialogue-history-message" :data-role="msg.role">
-            <div class="companion-dialogue-history-speaker">
-              <span>{{ msg.role === 'user' ? '你' : currentCharacter.name }}</span>
-              <button v-if="msg.content" type="button" aria-label="复制这条消息" @click="copyMessage(msg.content)"><ArchiveIcon name="copy" /></button>
+      <section v-else id="companion-dialogue-history" class="companion-dialogue-history" aria-label="最近对话">
+        <div ref="listRef" class="companion-dialogue-history-list" :aria-busy="replyPending" role="log" tabindex="0" aria-label="对话记录" aria-live="off">
+          <div v-if="!displayedMessages.length" class="companion-dialogue-message" data-role="assistant">
+            <div class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
+            <div class="companion-dialogue-bubble"><p class="companion-dialogue-line">{{ currentCharacter.greeting }}</p></div>
+          </div>
+          <div v-for="msg in displayedMessages" :key="msg.mid" class="companion-dialogue-message" :data-role="msg.role">
+            <div v-if="msg.role === 'assistant'" class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
+            <div class="companion-dialogue-bubble">
+              <div class="companion-dialogue-speaker">
+                <span>{{ msg.role === 'user' ? '你' : currentCharacter.name }}</span>
+                <button v-if="msg.content" type="button" aria-label="复制这条消息" @click="copyMessage(msg.content)"><ArchiveIcon name="copy" /></button>
+              </div>
+              <p v-if="msg.content" class="companion-dialogue-line" :class="{ 'is-streaming': liveState.busy && msg.mid === latestReply?.mid }"><ChatMessageText :text="msg.content" /></p>
+              <CompanionChatImages v-if="msg.images?.length" :images="msg.images" />
+              <CompanionDrawingDraftCard v-for="drawing in msg.drawingDrafts || []" :key="drawing.path" :draft="drawing" />
+              <div v-if="!msg.content && msg.mid === latestReply?.mid && replyPending" class="companion-dialogue-waiting" role="status">
+                <span class="companion-dialogue-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span>{{ liveState.toolActivity || (liveState.thinking ? '想一想…' : '正在回应你…') }}</span>
+              </div>
+              <small v-if="msg.stopped">回复已停止</small>
             </div>
-            <p>{{ msg.content || (msg.stopped ? '回复已停止' : '等待回复…') }}</p>
-            <CompanionChatImages v-if="msg.images?.length" :images="msg.images" />
-            <small v-if="msg.stopped && msg.content">回复已停止</small>
           </div>
         </div>
         <button v-if="hasNew" class="companion-dialogue-latest" type="button" @click="latest">回到最新消息<ArchiveIcon name="chevron-down" /></button>
-      </section>
-
-      <div v-else class="companion-dialogue-current" :aria-busy="replyPending" role="log" aria-label="当前对白" aria-live="off">
-        <div v-if="latestUser" class="companion-dialogue-your-line"><span>你</span><p>{{ latestUser.content }}</p></div>
-        <CompanionChatImages v-if="latestUser?.images?.length" :key="`${latestUser.mid}-images`" :images="latestUser.images" />
-        <p v-if="currentLine" ref="lineRef" class="companion-dialogue-line" :class="{ 'is-streaming': liveState.busy && latestReply }">{{ currentLine }}</p>
-        <div v-else-if="replyPending" class="companion-dialogue-waiting" role="status">
-          <span class="companion-dialogue-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span>{{ liveState.toolActivity || (liveState.thinking ? '想一想…' : '正在回应你…') }}</span>
-        </div>
-        <p v-else class="companion-dialogue-unanswered" role="status">{{ latestReply?.stopped ? '回复已停止。' : '这句还没有收到回复。' }}</p>
-        <CompanionChatImages v-if="latestReply?.images?.length" :key="`${latestReply.mid}-images`" :images="latestReply.images" />
-        <button v-if="hasMoreLine" class="companion-dialogue-latest" type="button" @click="followLine">继续读<ArchiveIcon name="chevron-down" /></button>
-        <div v-if="liveState.speaking || latestReply?.stopped || speechSessionActive || quietHint" class="companion-dialogue-presence" role="status">
+        <div v-if="liveState.speaking || speechSessionActive || quietHint" class="companion-dialogue-presence" role="status">
           <span v-if="liveState.speaking"><ArchiveIcon name="sound" />正在说话</span>
-          <span v-else-if="latestReply?.stopped && currentLine">回复已停止</span>
           <span v-if="quietHint"><ArchiveIcon name="moon" />安静时段</span>
           <button v-if="speechSessionActive" type="button" @click="onSpeechSessionEnd">结束连续对话<ArchiveIcon name="close" /></button>
         </div>
-        <button v-if="latestReply?.content && !replyPending" class="companion-dialogue-copy" type="button"
-          aria-label="复制当前对白" @click="copyMessage(latestReply.content)"><ArchiveIcon name="copy" /></button>
-      </div>
+      </section>
     </section>
 
     <div v-if="!liveState.chatReady" class="companion-dialogue-connection" role="status">
       <span>聊天还未连接</span><button type="button" @click="openFullRoom">连接设置<ArchiveIcon name="chevron-down" /></button>
     </div>
-    <CompanionDrawingDraftCard v-if="drawingDraft" :draft="drawingDraft" />
     <section v-if="selectedImage" class="companion-dialogue-attachment" aria-label="待发送的图片">
       <img :src="selectedImage.previewUrl" :alt="`待发送：${selectedImage.name}`" />
-      <div><strong>{{ selectedImage.name }}</strong><small>发送后可在作品册找回</small></div>
+      <div><strong>{{ selectedImage.name }}</strong></div>
       <button type="button" aria-label="移除待发送的图片" @click="attachments.cancelImageInput"><ArchiveIcon name="close" /></button>
       <button class="companion-dialogue-image-generate" type="button" :disabled="!attachments.canGenerateImage.value"
         @click="attachments.sendPendingImage('generate-from-image')"><ArchiveIcon name="palette" />反推并生成</button>
@@ -123,15 +117,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
 import AppearanceButton from '@/components/AppearanceButton.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
+import ChatMessageText from '@/components/ChatMessageText.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import { useCompanionDialogueSurface } from '@/composables/chat/useCompanionDialogueSurface'
-import { useConversationReading } from '@/composables/chat/useConversationReading'
+import { characterArtEntry } from '@/platform/characterArtState'
+import { resolveCompanionAvatar } from '@/utils/companionRegistry'
+import { companionChatAvatars as chibiAvatars } from '@/config/companionChatAvatars'
 import '@/assets/css/companion-dialogue.css'
 
 const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
@@ -151,17 +149,19 @@ function sendChat() {
   else onSend()
 }
 const historyOpen = ref(false)
-const drawingDraft = computed(() => visibleMessages.value.flatMap(message => message.drawingDrafts || []).at(-1))
 const { surfaceRef, dockSide } = useCompanionDialogueSurface(Boolean(bridge))
-const latestUser = computed(() => [...visibleMessages.value].reverse().find(msg => msg.role === 'user'))
+const displayedMessages = computed(() => historyOpen.value ? visibleMessages.value : visibleMessages.value.slice(-12))
+const avatar = computed(() => chibiAvatars[activeChar.value] || characterArtEntry(activeChar.value)?.thumbnailUrl || resolveCompanionAvatar(activeChar.value)?.avatar.thumbnailUrl || currentCharacter.value.image)
 const latestReply = computed(() => {
   const last = visibleMessages.value.at(-1)
   return last?.role === 'assistant' ? last : undefined
 })
 const replyPending = computed(() => sending.value || liveState.busy || liveState.thinking)
-const currentLine = computed(() => latestReply.value?.content || (!visibleMessages.value.length ? currentCharacter.value.greeting : ''))
-const lineRef = ref<HTMLElement>()
-const { hasNew: hasMoreLine, latest: followLine } = useConversationReading(lineRef, () => currentLine.value, activeChar)
+watch(historyOpen, async open => {
+  await nextTick()
+  if (open && listRef.value) listRef.value.scrollTop = 0
+  else void latest()
+})
 watch(activeChar, () => { historyOpen.value = false; speechSettingsOpen.value = false })
 function onEscape(event: KeyboardEvent) {
   if (event.defaultPrevented || document.querySelector('dialog[open]')) return

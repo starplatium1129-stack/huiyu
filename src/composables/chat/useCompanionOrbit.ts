@@ -5,7 +5,7 @@ import { useWindowSize } from '@vueuse/core'
 export function useCompanionOrbit(open: () => boolean, root: Ref<HTMLElement | null>, close: () => void) {
   const { width, height } = useWindowSize()
   const compact = computed(() => width.value < 460 || height.value < 580)
-  const size = computed(() => Math.max(180, Math.min(width.value - 24, height.value - 112, 440)))
+  const size = computed(() => Math.max(180, Math.min(width.value - 24, height.value - 24, 440)))
   const category = ref<'characters' | 'motions' | 'expressions' | null>(null)
   const page = ref(0)
   let returnFocus: HTMLElement | null = null

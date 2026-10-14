@@ -36,7 +36,7 @@ pub(super) async fn prepare(
         api.key = key.clone();
     }
     if api.vendor == "openai"
-        && input.tools
+        && (input.tools || input.web_search)
         && ["gpt-6-astra", "gpt-6.1-sol"]
             .iter()
             .any(|model| api.model == *model || api.model.starts_with(&format!("{model}-")))
@@ -44,7 +44,7 @@ pub(super) async fn prepare(
         return Err(Error::new(
             400,
             "UNSUPPORTED_TOOL_MODEL",
-            "此模型的工具调用需要 Responses 协议；请关闭房间工具或改用 GPT-6 Luna",
+            "此模型的工具调用需要 Responses 协议；请关闭房间工具和联网检索，或改用 GPT-6 Luna",
         ));
     }
     if api.vendor == "kimi"
@@ -57,14 +57,14 @@ pub(super) async fn prepare(
         ));
     }
     if api.vendor == "deepseek"
-        && input.tools
+        && (input.tools || input.web_search)
         && !input.reasoning.is_empty()
         && input.reasoning != "off"
     {
         return Err(Error::new(
             400,
             "UNSUPPORTED_TOOL_REASONING",
-            "DeepSeek 思考工具模式需要跨轮完整思考上下文；请在对话设置关闭思考或关闭房间工具",
+            "DeepSeek 思考工具模式需要跨轮完整思考上下文；请关闭思考，或关闭房间工具和联网检索",
         ));
     }
     let body = request_body::encode(payload(input, &api), cancel).await?;
@@ -112,7 +112,7 @@ pub(super) fn payload(input: Input, api: &Api) -> Value {
         && (api.model.starts_with("gpt-6-luna") || api.model.starts_with("gpt-6-sol"))
     {
         // Chat Completions only supports Luna tool calls without reasoning.
-        value["reasoning_effort"] = json!(if input.tools || !thinking {
+        value["reasoning_effort"] = json!(if input.tools || input.web_search || !thinking {
             "none"
         } else {
             &input.reasoning
@@ -136,15 +136,9 @@ pub(super) fn payload(input: Input, api: &Api) -> Value {
     } else if api.vendor == "opencode" && !input.reasoning.is_empty() && input.reasoning != "off" {
         value["reasoning_effort"] = json!(input.reasoning);
     }
-    if input.web_search {
-        if api.model.to_lowercase().starts_with("gemini-") {
-            value["tools"] = json!([{"google_search":{}}]);
-        } else if ["deepseek", "opencode"].contains(&api.vendor.as_str()) {
-            value["web_search"] = json!(true);
-        }
-    }
-    if input.tools {
-        value["tools"] = persona::TOOLS.clone();
+    let tools = persona::tools(input.tools, input.web_search);
+    if !tools.is_empty() {
+        value["tools"] = json!(tools);
     }
     value
 }

@@ -7,7 +7,7 @@ use tokio_util::sync::CancellationToken;
 
 static WORKERS: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore::new(2)));
 
-async fn acquire(cancel: &CancellationToken) -> Result<OwnedSemaphorePermit> {
+pub(super) async fn acquire(cancel: &CancellationToken) -> Result<OwnedSemaphorePermit> {
     tokio::select! {
         biased;
         _ = cancel.cancelled() => Err(cancelled()),
@@ -39,7 +39,7 @@ pub(super) async fn parse(bytes: Bytes, cancel: &CancellationToken) -> Result<Va
 }
 
 pub(super) async fn validate(
-    body: Value,
+    mut body: Value,
     persona: Option<String>,
     direct: bool,
     cancel: &CancellationToken,
@@ -52,12 +52,15 @@ pub(super) async fn validate(
         if scope.is_cancelled() {
             return Err(cancelled());
         }
-        let mut input = validation::chat(&body, persona.as_deref())?;
+        if !direct && let Some(fields) = body.as_object_mut() {
+            fields.insert("companionTools".into(), Value::Bool(false));
+            fields.insert("webSearch".into(), Value::Bool(false));
+        }
+        let input = validation::chat(&body, persona.as_deref())?;
         drop(body);
         if scope.is_cancelled() {
             return Err(cancelled());
         }
-        input.tools &= direct;
         Ok(input)
     })
     .await

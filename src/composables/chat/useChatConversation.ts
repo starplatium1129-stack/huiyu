@@ -244,12 +244,6 @@ export function useChatConversation(options: ChatConversationOptions) {
     }
   }
 
-  // ── Pipeline 步骤④：单个工具执行（fallible，异常由调用方转译为失败结果）──
-  async function executeToolCall(call: PendingToolCall, context: CompanionToolContext, completedDrawings: Map<string, ToolCallResult>): Promise<ToolCallResult> {
-    const { executeSerializedCompanionChatTool } = await import('./companionChatTools')
-    return executeSerializedCompanionChatTool(call, context, completedDrawings)
-  }
-
   function captureConnection() {
     return { provider: options.chatProvider.value, currentModel: options.currentModel.value,
       baseUrl: options.apiBaseUrl.value, apiModel: options.apiModel.value, apiKey: options.apiKey.value,
@@ -309,7 +303,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       model: hostMode ? '' : connection.currentModel,
       api: !hostMode && connection.provider === 'api' ? userApi : undefined,
       hostConfig: hostMode || undefined,
-      webSearch: connection.provider === 'api' && connection.webSearch,
+      webSearch: connection.provider === 'api' && connection.webSearch && isLocalStudioHost(),
       companionTools: toolsEnabled || undefined,
       reasoning: connection.reasoning,
       userProfile: hasChatUserProfile(options.userProfile.value) ? options.userProfile.value : undefined,
@@ -369,7 +363,8 @@ export function useChatConversation(options: ChatConversationOptions) {
           await waitLocalSetupOperation(result,{signal:controller.signal,onMessage:message=>{watchdog.touch();options.onToolActivity?.(message)}})
         }
       }
-      const toolsEnabled = connection.tools && connection.provider === 'api'
+      const toolsEnabled = connection.tools && connection.provider === 'api' && isLocalStudioHost()
+      const searchEnabled = connection.webSearch && connection.provider === 'api' && isLocalStudioHost()
       // 工具循环的临时消息（assistant tool_calls / role:tool）只存内存，
       // 不进持久化历史：它们是同一轮对话的中间过程，不应污染聊天记录。
       const roundMessages: Array<Record<string, unknown>> = []
@@ -433,7 +428,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         })
 
         if (!toolCalls.length) break
-        if (!toolsEnabled) throw new Error('当前未启用桌宠工具，已停止执行。')
+        if (toolCalls.some(call => call.name === 'search_web' ? !searchEnabled : !toolsEnabled)) throw new Error('请求的工具当前未启用，已停止执行。')
         toolRounds += 1
         if (toolRounds > MAX_TOOL_ROUNDS) throw new Error('本次工具调用已达到上限，已停止。请缩小任务范围后继续。')
         roundMessages.push({
@@ -447,13 +442,13 @@ export function useChatConversation(options: ChatConversationOptions) {
             ...(call.thoughtSignature ? { extra_content: { google: { thought_signature: call.thoughtSignature } } } : {}),
           })),
         })
+        const { executeSerializedCompanionChatTool } = await import('./companionChatTools')
         for (const call of toolCalls) {
           controller.signal.throwIfAborted()
-          watchdog.touch()
-          options.onToolActivity?.(`正在执行 ${call.name}…`)
+          report(call.name === 'search_web' ? '正在联网检索…' : call.name.startsWith('generate_') ? '正在准备图片…' : '正在处理你的请求…')
           let result: ToolCallResult
           try {
-            result = await executeToolCall(call, toolContext, drawingResults)
+            result = await executeSerializedCompanionChatTool(call, toolContext, drawingResults)
           } catch (error) {
             if (controller.signal.aborted) throw error
             result = { ok: false, output: error instanceof Error ? error.message : String(error) }
@@ -468,8 +463,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             options.storage.save()
           }
           roundMessages.push({ role: 'tool', tool_call_id: call.id, content: result.output.slice(0, 60000) })
-          // read_image 成功时把图片作为多模态 user 消息附加，供视觉模型理解；
-          // 下一轮自动切到本地 Gemini 视觉轮，看完成回到原聊天模型
+          // 图片结果继续使用本次选定的 API 进行视觉理解。
           if (['read_image', 'capture_screen'].includes(call.name) && result.ok && result.imageDataUrl) {
             roundMessages.push({
               role: 'user',

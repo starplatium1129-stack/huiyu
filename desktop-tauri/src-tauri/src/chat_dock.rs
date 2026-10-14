@@ -49,7 +49,8 @@ pub fn resize_companion_dialogue(app: AppHandle, window: tauri::WebviewWindow, w
         .ok_or("No monitor is available for the dialogue")?;
     let area = monitor.work_area();
     let width = (width.clamp(320.0, 520.0) * zoom).min(area.size.width as f64 / scale);
-    let height = (height.clamp(120.0, 680.0) * zoom).min(area.size.height as f64 / scale);
+    let max_height = 680.0_f64.min(area.size.height as f64 / scale / zoom);
+    let height = height.clamp(120.0, 680.0).min(max_height) * zoom;
     let size = tauri::LogicalSize::new(width, height);
     let current = window.inner_size().map_err(|error| error.to_string())?.to_logical::<f64>(scale);
     if (current.width - width).abs() >= 1.0 || (current.height - height).abs() >= 1.0 {
@@ -67,7 +68,7 @@ pub fn resize_companion_dialogue(app: AppHandle, window: tauri::WebviewWindow, w
             window.set_position(PhysicalPosition::new(x, y)).map_err(|error| error.to_string())?;
         }
     }
-    Ok(area.size.height as f64 / scale / zoom)
+    Ok(max_height)
 }
 
 #[tauri::command]

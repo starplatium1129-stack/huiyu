@@ -38,8 +38,8 @@ function closeAutoFocus(event: Event) {
 <template>
   <DropdownMenuRoot v-model:open="moreOpen" :modal="false">
     <DropdownMenuTrigger ref="trigger" as-child @pointerdown="pointerOpened = true" @keydown="pointerOpened = false">
-      <button class="btn btn-ghost chat-more-trigger" type="button">
-        更多<ArchiveIcon name="chevron-down" class="chat-more-caret" />
+      <button class="btn btn-ghost chat-more-trigger" type="button" aria-label="更多聊天操作">
+        <ArchiveIcon name="menu" />
       </button>
     </DropdownMenuTrigger>
     <DropdownMenuPortal>
@@ -68,8 +68,6 @@ function closeAutoFocus(event: Event) {
 <!-- The menu is portalled so its surface must not depend on the chat page ancestor. -->
 <style>
 @reference "../assets/css/tailwind.css";
-.chat-more-trigger .chat-more-caret { @apply tw:ml-s-1 tw:w-[14px] tw:h-[14px] tw:text-muted; }
-.chat-more-trigger[data-state='open'] .chat-more-caret { transform:rotate(180deg); }
 .chat-more-menu {
   @apply tw:flex tw:flex-col tw:p-s-2 tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-surface tw:text-primary tw:shadow-(--shadow-lg);
   z-index:var(--z-popover);

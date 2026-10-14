@@ -2,10 +2,6 @@
   <Transition name="pet-orbit">
     <section v-if="open" ref="root" class="companion-orbit" :class="{ 'is-compact': compact, 'has-category': category }"
       :style="{ '--orbit-size': size + 'px' }" aria-label="桌宠环形菜单" @keydown="key" @contextmenu.prevent.stop="emit('close')">
-      <header class="orbit-heading">
-        <div><span class="orbit-kicker">陪伴菜单</span><strong>{{ characterName }}</strong></div>
-        <button class="orbit-close" type="button" aria-label="收起桌宠菜单" @click="emit('close')"><ArchiveIcon name="close" /></button>
-      </header>
       <div v-if="!compact || !category" class="orbit-wheel" role="group" aria-label="常用操作">
         <div v-for="(action, index) in actions" :key="action.id" class="orbit-segment"
           :data-active="active(action) || undefined" :data-tone="action.id" @click="activate(action)">
@@ -54,7 +50,6 @@
         <button v-if="category === 'characters'" class="orbit-manage" type="button" @click="emit('appearance')"><ArchiveIcon name="model" />导入与角色外观</button>
       </section>
       <p v-if="feedback || category === 'motions' && controls?.hint" class="orbit-feedback" role="status">{{ feedback || controls?.hint }}</p>
-      <footer v-if="!category" class="orbit-guide">右键 / Esc 收起<span>·</span>拖动角色移动</footer>
     </section>
   </Transition>
 </template>
@@ -71,7 +66,7 @@ import { orbitAngle, orbitPoint, orbitSector, useCompanionOrbit } from '@/compos
 import '@/assets/css/companion-orbit.css'
 
 const props = defineProps<{
-  open: boolean; characterId: string; characterName: string; pinned: boolean; passThrough: boolean
+  open: boolean; characterId: string; pinned: boolean; passThrough: boolean
   controls?: { ready: boolean; motions: { id: string; label: string }[]; expressions: { id: string; label: string }[]; hint: string }
   setExpression?: (id: string) => Promise<boolean>
 }>()

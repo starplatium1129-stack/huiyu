@@ -4,6 +4,7 @@ mod local_persona;
 mod ollama;
 mod persona;
 mod request_body;
+mod search;
 mod settings;
 mod stream;
 
@@ -87,6 +88,10 @@ pub fn router(service: Arc<ChatService>) -> Router<AppState> {
         .route(
             "/api/chat",
             post(chat).layer(DefaultBodyLimit::max(14 * 1024 * 1024)),
+        )
+        .route(
+            "/api/chat/search",
+            post(search_web).layer(DefaultBodyLimit::max(8 * 1024)),
         )
         .route(
             "/api/chat-provider/test",
@@ -180,6 +185,28 @@ fn local(headers: &HeaderMap, peer: SocketAddr) -> Result<()> {
         Ok(())
     } else {
         Err(Error::new(403, "LOCAL_ONLY", "此操作仅允许在本机执行"))
+    }
+}
+
+async fn search_web(
+    State(app): State<AppState>, Extension(chat): Extension<Arc<ChatService>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>, headers: HeaderMap,
+    body: std::result::Result<Bytes, axum::extract::rejection::BytesRejection>,
+) -> Response {
+    let scope = app.shutdown.child_token();
+    let _guard = scope.clone().drop_guard();
+    let result = async {
+        local(&headers, peer)?;
+        running(&app)?;
+        let body = body.map_err(body_error)?;
+        let body = serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?;
+        Ok::<Response, Error>(Json(search::run(&chat.transport, &body, &scope).await?).into_response())
+    };
+    tokio::select! {
+        _ = app.shutdown.cancelled() => Error::new(503,"DESKTOP_DRAINING","桌面正在维护").into_response(),
+        result = tokio::time::timeout(Duration::from_secs(30), result) => result
+            .unwrap_or_else(|_| Err(Error::stream("SEARCH_TIMEOUT", "联网检索超时，请稍后重试。")))
+            .unwrap_or_else(IntoResponse::into_response),
     }
 }
 

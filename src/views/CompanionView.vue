@@ -327,7 +327,7 @@
         @dismiss-reminder="dismissReminder"
       />
       <CompanionOrbitMenu v-if="desktopBridge" :open="petGestures.controlsOpen.value" :character-id="activeChar"
-        :character-name="currentCharacter.name" :pinned="alwaysOnTop" :pass-through="ignoreMouseEvents"
+        :pinned="alwaysOnTop" :pass-through="ignoreMouseEvents"
         :controls="characterStageRef?.petControls" :set-expression="characterStageRef?.setPetExpression"
         @close="petGestures.controlsOpen.value = false" @settings="settingsOpen = true" @appearance="openAppearance"
         @chat="openChatWindow" @pin="togglePin" @pass="toggleMouseEvents" @hide="desktopBridge.hide"

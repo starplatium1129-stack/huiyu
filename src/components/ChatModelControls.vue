@@ -1,7 +1,7 @@
 <template>
-  <details class="room-model-settings" @toggle="onToggle">
+  <details class="room-model-settings" open>
     <StudioDisclosureSummary>聊天模型</StudioDisclosureSummary>
-    <div v-if="visited" data-disclosure-content class="model-controls">
+    <div data-disclosure-content class="model-controls">
       <div class="provider-switch studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="对话模型来源">
         <AnimatedSelection />
         <button
@@ -79,14 +79,12 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { chatApiVendorFor } from '@/config/chatApi'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 const ChatModelPicker = defineAsyncComponent(() => import('@/components/ChatModelPicker.vue'))
 
-const visited = ref(false)
-function onToggle(event: Event) { if ((event.currentTarget as HTMLDetailsElement).open) visited.value = true }
 
 const reasoningOptions = [
   { value: 'off', label: '关闭' },
@@ -105,6 +103,7 @@ const props = defineProps<{
   currentModel: string
   reasoning: string
   companionTools?: boolean
+  webSearchEnabled?: boolean
   apiSettingsOpen: boolean
   useHostConfig: boolean
   hostApiModel: string
@@ -117,10 +116,11 @@ const props = defineProps<{
 const reasoningHint = computed(() => {
   const vendor = chatApiVendorFor((props.useHostConfig ? props.hostApiBaseUrl : props.apiBaseUrl) || '')
   const model = props.useHostConfig ? props.hostApiModel : props.apiModel
-  if (vendor === 'deepseek' && props.companionTools) return '使用房间工具时请关闭推理。'
+  const tools = props.companionTools || props.webSearchEnabled
+  if (vendor === 'deepseek' && tools) return '使用房间工具或联网检索时请关闭推理。'
   if (vendor === 'gemini' && (model.startsWith('gemini-3') || model.startsWith('gemini-2.5-pro'))) return '此模型不能关闭思考；“关闭”使用最低档。'
   if ((vendor === 'kimi' && model.startsWith('kimi-k2.6')) || (vendor === 'qwen' && model.startsWith('qwen'))) return '轻量、适中、深入均为开启思考。'
-  if (vendor === 'openai' && props.companionTools && (model.startsWith('gpt-6-luna') || model.startsWith('gpt-6-sol'))) return '启用房间工具时不使用推理。'
+  if (vendor === 'openai' && tools && (model.startsWith('gpt-6-luna') || model.startsWith('gpt-6-sol'))) return '启用房间工具或联网检索时不使用推理。'
   return undefined
 })
 

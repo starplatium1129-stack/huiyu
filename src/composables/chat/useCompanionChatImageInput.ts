@@ -2,14 +2,12 @@ import { computed, onMounted, onUnmounted, ref, shallowRef, watch, type Ref } fr
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import type { CompanionChatImage } from '@/types/companionDrawing'
 import { artworkRepository } from '@/storage/artworkRepository'
-import { buildImportedRecord } from '@/utils/desktopImportCore'
 import { imageFormat, withImageMime } from '@/utils/imageFormat'
 import { imageForInspection } from '@/utils/companionVision'
 import { relayChatTurn } from '@/utils/chatRelayReceipt'
 
 interface SelectedImage {
   blob: Blob; name: string; previewUrl: string; image?: CompanionChatImage
-  pendingRecord?: ReturnType<typeof buildImportedRecord>; published?: boolean
 }
 interface Options {
   bridge?: CompanionDesktopBridge; activeChar: Ref<string>; visible: Ref<boolean>
@@ -69,30 +67,14 @@ export function useCompanionChatImageInput(options: Options) {
   }
 
   async function persistImage(selected: SelectedImage): Promise<CompanionChatImage> {
-    if (selected.image && selected.published) return selected.image
-    const repository = artworkRepository
-    return repository.withStaging(async () => {
-      if (!selected.image) {
-        const format = imageFormat(await selected.blob.slice(0, 12).arrayBuffer())
-        if (!['image/png', 'image/jpeg', 'image/webp'].includes(format.mime)) throw new Error('请选择真实的 PNG、JPG 或 WebP 图片。')
-        const blob = await withImageMime(selected.blob, format.mime)
-        const bitmap = await createImageBitmap(blob)
-        const measured = { width: bitmap.width, height: bitmap.height }; bitmap.close()
-        const imageId = await repository.putImage(blob)
-        selected.pendingRecord = buildImportedRecord({ blob, name: selected.name, size: blob.size, type: blob.type }, imageId, measured)
-        selected.image = { path: imageId, imageId, name: selected.name, artworkId: String(selected.pendingRecord.id) }
-      }
-      // A lost publication response retries the same artwork identity, never a second upload.
-      const record = selected.pendingRecord!, image = selected.image
-      try { await repository.appendArtwork(record) }
-      catch (error) {
-        const saved = await repository.readArtwork(record.id).catch(() => null)
-        if (saved?.image_id !== image.imageId) throw error
-      }
-      selected.published = true
-      void repository.cacheThumbnail(image.imageId!, selected.blob).catch(() => {})
-      return image
-    })
+    if (selected.image) return selected.image
+    const format = imageFormat(await selected.blob.slice(0, 12).arrayBuffer())
+    if (!['image/png', 'image/jpeg', 'image/webp'].includes(format.mime)) throw new Error('请选择真实的 PNG、JPG 或 WebP 图片。')
+    const blob = await withImageMime(selected.blob, format.mime)
+    // Chat owns the original for previews and reverse prompting; sending creates no gallery record.
+    const imageId = await artworkRepository.putImage(blob)
+    selected.image = { path: imageId, imageId, name: selected.name }
+    return selected.image
   }
   async function sendPendingImage(action?: 'generate-from-image') {
     const selected = selectedImage.value, bridge = options.bridge
@@ -111,7 +93,7 @@ export function useCompanionChatImageInput(options: Options) {
       if (!current()) return
       if (selectedImage.value === selected) removeSelectedImage()
       if (options.inputText.value === input) { options.inputText.value = ''; options.persistDraft('') }
-      options.notice(action ? '图片已送给桌宠，正在反推并生成。' : '图片已发送，并保存在作品册。')
+      options.notice(action ? '图片已送给桌宠，正在反推并生成。' : '图片已发送给桌宠。')
     } catch (error) {
       if (current()) options.error(error instanceof Error && error.message !== 'chat turn not accepted'
         ? error.message : '桌宠尚未接收图片，附件已保留。请等当前操作完成后重试。')
