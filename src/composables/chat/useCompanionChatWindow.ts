@@ -66,7 +66,6 @@ const pageHidden = ref(document.hidden)
 const windowFocused = ref(document.hasFocus())
 let alive = true
 let liveInitialized = false
-const composerFocused = ref(false)
 const listRef = ref<HTMLDivElement>()
 const inputRef = ref<HTMLTextAreaElement>()
 const { config: speechConfig, loadError } = useSpeechInputConfig()
@@ -82,7 +81,7 @@ const quietClock = usePolling({ intervalMs: 30_000, immediate: false, tick: () =
 } })
 
 const visibleMessages = computed(() => storage.messages(activeChar.value).slice(-40))
-const canSend = computed(() => Boolean(inputText.value.trim()) && !sending.value && !liveState.busy && liveState.chatReady)
+const canSend = computed(() => Boolean(bridge && inputText.value.trim()) && !sending.value && !liveState.busy && liveState.chatReady && !storage.writeBlocked.value)
 
 const {
   state: speechState,
@@ -114,24 +113,6 @@ const speechButtonText = computed(() => {
   if (speechState.value === 'recognizing') return '识别中…'
   if (speechState.value === 'error') return '重试'
   return '按住说话'
-})
-
-const statusDotState = computed(() => {
-  if (liveState.speaking) return 'speaking'
-  if (liveState.busy || liveState.thinking) return 'busy'
-  return 'idle'
-})
-const statusText = computed(() => {
-  if (liveState.speaking) return `${currentCharacter.value.name}正在配音`
-  if (liveState.busy) return `${currentCharacter.value.name}正在回复…`
-  if (liveState.thinking) return '思考中…'
-  return `与${currentCharacter.value.name}的对话`
-})
-const metaText = computed(() => {
-  if (!liveState.chatReady) return '聊天环境未就绪'
-  if (quietHint.value) return '安静时段内不主动打扰'
-  const hint = speechReady.value ? '按住说话 / Space' : '语音输入未配置'
-  return hint
 })
 
 function readBehaviorConfig() {
@@ -362,7 +343,7 @@ function resizeComposer() {
   const input = inputRef.value
   if (!input) return
   input.style.height = 'auto'
-  input.style.height = `${Math.min(input.scrollHeight, Math.max(64, Math.min(144, innerHeight * .24)))}px`
+  input.style.height = `${Math.min(input.scrollHeight, 108)}px`
 }
 watch(inputText, () => { void nextTick(resizeComposer) })
 
@@ -370,7 +351,7 @@ const { hasNew, latest } = useConversationReading(listRef, () => visibleMessages
 const docked = ref(true), docking = ref(false)
 let dockRevision = 0
 async function startWindowDrag(event: MouseEvent) {
-  if (!alive || docking.value || event.button !== 0 || !bridge?.startDragging || event.target instanceof Element && event.target.closest('button, input, select, textarea, a')) return
+  if (!alive || docking.value || event.button !== 0 || !bridge?.startDragging || event.target instanceof Element && event.target.closest('button, input, select, textarea, a, summary')) return
   event.preventDefault(); event.stopPropagation()
   dockRevision++; docking.value = true
   try {
@@ -488,5 +469,5 @@ watch(activeChar, () => {
   reconcileAutoListen()
 })
 
-return { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock }
+return { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock }
 }

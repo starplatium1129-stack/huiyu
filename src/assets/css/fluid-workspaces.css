@@ -195,8 +195,7 @@ html .companion-page .companion-toolbar {
   @apply tw:rounded-xl;
   box-shadow: var(--workspace-lift);
 }
-html .companion-page .companion-composer,
-html .companion-chat-window .companion-chat-composer {
+html .companion-page .companion-composer {
   border-color: var(--workspace-edge);
   @apply tw:rounded-xl;
   background: var(--bg-surface);
@@ -204,14 +203,7 @@ html .companion-chat-window .companion-chat-composer {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
-html .companion-page .companion-composer .companion-input,
-html .companion-chat-window .companion-chat-input { @apply tw:rounded-md tw:leading-loose; }
-html .companion-chat-window .companion-chat-titlebar {
-  background: var(--bg-surface);
-  border-bottom-color: var(--workspace-edge);
-  box-shadow: var(--workspace-inset);
-}
-html .companion-chat-window .companion-chat-bubble { @apply tw:rounded-lg; }
+html .companion-page .companion-composer .companion-input { @apply tw:rounded-md tw:leading-loose; }
 
 /* Operational workspaces: structure via tone, never obscure logs or statuses. */
 html .control-page .control-rail { box-shadow: inset -1px 0 var(--glass-highlight); }

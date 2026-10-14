@@ -1,0 +1,8 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "companion-dialogue",
+  "description": "Only the local companion dialogue may adjust its own content bounds.",
+  "windows": ["companion-chat"],
+  "permissions": ["allow-resize-companion-dialogue"],
+  "local": true
+}

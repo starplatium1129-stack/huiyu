@@ -35,18 +35,18 @@ pub fn atelier_bounds(app: &AppHandle, state: &AppState) -> WindowPlacement {
     restore_window_placement(&saved, physical.as_ref(), &display_work_areas(app), Some((1024, 720)))
 }
 
-/// 聊天窗默认位于角色窗右侧（560×720），超出工作区时左移收进屏幕。
+/// 悬浮对白默认位于角色窗右侧；内容载入后按实际绘制尺寸收缩。
 /// 首次/坏文件时以该位置为兜底；之后记忆到 companion-chat-window.json。
 pub fn companion_chat_bounds(app: &AppHandle, state: &AppState) -> WindowPlacement {
     let companion = companion_bounds(app, state).logical;
     let fallback = WindowBounds {
         x: companion.x + companion.width + 12,
         y: companion.y.saturating_sub(20),
-        width: 560,
-        height: 720,
+        width: 420,
+        height: 300,
     };
     let (saved, physical) = load_window_bounds(&state.paths.companion_chat_window_file, Some(&fallback));
-    restore_window_placement(&saved, physical.as_ref(), &display_work_areas(app), Some((380, 460)))
+    restore_window_placement(&saved, physical.as_ref(), &display_work_areas(app), Some((320, 120)))
 }
 
 pub fn display_work_areas(app: &AppHandle) -> Vec<DisplayWorkArea> {
@@ -107,6 +107,8 @@ pub fn hide_companion(app: &AppHandle) {
     let was_visible = w.is_visible().unwrap_or(false);
     if was_visible { crate::window_persistence::closing(app, "companion"); }
     let _ = w.hide();
+    let chat_docked = app.state::<AppState>().preferences.lock().unwrap().chat_docked;
+    if chat_docked { hide_companion_chat(app); }
     if was_visible {
         let _ = w.emit("aics:visibility", false);
     }
@@ -216,7 +218,7 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, show_on_start
     Ok(())
 }
 
-/// 聊天窗（/companion-chat）：懒创建、轻量无 Live2D（严格 CSP）、独立普通小窗。
+/// 悬浮对白（/companion-chat）：懒创建、透明背景，无 Live2D（严格 CSP）。
 /// 与 atelier 一样不能在主线程 IPC 回调内同步创建（WebView2 需要消息泵），
 /// 放 tokio 线程执行。
 pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
@@ -225,6 +227,7 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
         if !crate::ui_entry::isolated_hidden() { let _ = w.unminimize(); let _ = w.show(); }
         crate::chat_dock::follow(app);
         if !crate::ui_entry::isolated_hidden() { let _ = w.set_focus(); }
+        let _ = app.emit("aics:chat-visibility", w.is_visible().unwrap_or(false));
         // Hiding preserves the WebView, its draft, and the reader's scroll position.
         return;
     }
@@ -236,19 +239,23 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
     tauri::async_runtime::spawn_blocking(move || {
         let state = app.state::<AppState>();
         let bounds = &placement.logical;
-        let presentation = load_window_presentation(&state.paths.companion_chat_window_file);
+        let always_on_top = state.preferences.lock().unwrap().always_on_top;
         save_window_bounds(&state.paths.companion_chat_window_file, bounds, Some(&placement.physical));
         let mut builder = WebviewWindowBuilder::new(&app, "companion-chat", source);
         if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
         match builder
-            .title("绘遇聊天")
+            .title("绘遇对白")
             .zoom_hotkeys_enabled(false)
             .inner_size(bounds.width as f64, bounds.height as f64)
             .position(bounds.x as f64, bounds.y as f64)
-            .min_inner_size(380.0_f64.min(bounds.width as f64), 460.0_f64.min(bounds.height as f64))
+            .min_inner_size(320.0_f64.min(bounds.width as f64), 120.0_f64.min(bounds.height as f64))
+            .transparent(true)
             .decorations(false)
+            .resizable(false)
+            .maximizable(false)
+            .always_on_top(always_on_top)
             .skip_taskbar(true)
-            .shadow(true)
+            .shadow(false)
             .visible(false)
             .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
             .build()
@@ -258,11 +265,11 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
                 if let Err(error) = apply_window_placement(&win, &placement) { state.warn(&format!("restore companion-chat bounds failed: {error}")); }
                 #[cfg(windows)]
                 if let Err(error) = crate::window_icon::set_window_icons(&win) { state.warn(&format!("set companion-chat icons failed: {error}")); }
-                if presentation.maximized { let _ = win.maximize(); }
                 crate::window_presentation::restore_zoom(&win);
                 if !crate::ui_entry::isolated_hidden() { let _ = win.show(); }
                 crate::chat_dock::follow(&app);
                 if !crate::ui_entry::isolated_hidden() { let _ = win.set_focus(); }
+                let _ = app.emit("aics:chat-visibility", win.is_visible().unwrap_or(false));
             }
             Err(e) => state.error(&format!("open companion-chat: window build failed: {e}")),
         }
@@ -288,6 +295,7 @@ pub fn hide_companion_chat(app: &AppHandle) {
         if w.is_visible().unwrap_or(false) {
             crate::window_persistence::closing(app, "companion-chat");
             let _ = w.hide();
+            let _ = app.emit("aics:chat-visibility", w.is_visible().unwrap_or(false));
         }
     }
 }
@@ -359,7 +367,11 @@ pub fn authorize_gateway_origin(app: &AppHandle, url: &str) -> Result<(), String
         if same_gateway_origin(&current, &parsed) { return Ok(()); }
         if !crate::ui_entry::bundled(app) { return Err("Gateway origin changed; restart the desktop before granting privileges".into()); }
     }
-    for template in [include_str!("../capabilities/default.json"), include_str!("../capabilities/companion-live2d.json")] {
+    for template in [
+        include_str!("../capabilities/default.json"),
+        include_str!("../capabilities/companion-live2d.json"),
+        include_str!("../capabilities/companion-dialogue.json"),
+    ] {
         let mut capability: serde_json::Value = serde_json::from_str(template).map_err(|e| e.to_string())?;
         capability["identifier"] = serde_json::json!(format!("{}-{}", capability["identifier"].as_str().unwrap(), parsed.port_or_known_default().unwrap()));
         capability["remote"] = serde_json::json!({ "urls": [format!("{}/*", parsed.origin().ascii_serialization())] });

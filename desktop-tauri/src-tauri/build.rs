@@ -30,6 +30,7 @@ fn main() {
                 "hide_companion_chat",
                 "set_chat_docked",
                 "get_chat_docked",
+                "resize_companion_dialogue",
                 "chat_relay",
                 "window_minimize",
                 "window_maximize_toggle",

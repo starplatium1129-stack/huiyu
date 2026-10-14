@@ -216,6 +216,7 @@ fn main() {
             bridge::hide_companion_chat,
             chat_dock::set_chat_docked,
             chat_dock::get_chat_docked,
+            chat_dock::resize_companion_dialogue,
             bridge::chat_relay,
             bridge::window_minimize,
             bridge::window_maximize_toggle,

@@ -52,6 +52,7 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
                         let _ = w.set_always_on_top(next);
                         state.preferences.lock().unwrap().always_on_top = next;
                         state.save_preferences();
+                        crate::chat_dock::follow(app);
                         refresh_tray_menu(app);
                     }
                 }

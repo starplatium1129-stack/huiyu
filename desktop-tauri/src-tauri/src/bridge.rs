@@ -35,6 +35,7 @@ pub struct DesktopState {
     pub always_on_top: bool,
     pub ignore_mouse_events: bool,
     pub visible: bool,
+    pub chat_visible: bool,
     pub on_battery_power: bool,
     pub live2d_enabled: Option<bool>,
     pub bounds: Option<crate::window_state::WindowBounds>,
@@ -68,6 +69,8 @@ pub fn get_state(app: AppHandle, state: State<AppState>) -> DesktopState {
         visible: companion(&app)
             .map(|w| w.is_visible().unwrap_or(false))
             .unwrap_or(false),
+        chat_visible: app.get_webview_window("companion-chat")
+            .is_some_and(|w| w.is_visible().unwrap_or(false)),
         on_battery_power: crate::watchers::on_battery_power(),
         live2d_enabled: *state.live2d_enabled.lock().unwrap(),
         bounds: crate::main_shared::companion_window_bounds(&app),
@@ -106,6 +109,7 @@ pub fn toggle_always_on_top(app: AppHandle, state: State<AppState>) -> bool {
     let _ = w.set_always_on_top(next);
     state.preferences.lock().unwrap().always_on_top = next;
     state.save_preferences();
+    crate::chat_dock::follow(&app);
     crate::tray::refresh_tray_menu(&app);
     next
 }

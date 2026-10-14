@@ -34,6 +34,7 @@ export interface CompanionDesktopBridge {
     alwaysOnTop: boolean
     ignoreMouseEvents: boolean
     visible: boolean
+    chatVisible: boolean
     onBatteryPower: boolean
     live2dEnabled: boolean | null
     bounds?: { x: number; y: number; width: number; height: number }

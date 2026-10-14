@@ -90,36 +90,12 @@ html.companion-desktop .companion-redesign .companion-toolbar-actions { @apply t
 .companion-hide-btn:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 html.companion-desktop .companion-redesign .companion-chat-chip { @apply tw:min-h-[32px]; box-shadow:none; }
 
-.companion-chat-window.companion-chat-redesign { background: var(--bg-surface); @apply tw:text-primary; }
-.companion-chat-redesign .companion-chat-titlebar { @apply tw:p-s-3 tw:gap-s-2 tw:min-h-[64px]; background: var(--bg-surface); }
-.companion-chat-redesign .companion-chat-identity { flex: 1; @apply tw:min-w-0; }
-.companion-chat-redesign .companion-chat-brand-icon { @apply tw:hidden; }
-.companion-chat-redesign .titlebar-controls { @apply tw:shrink-0 tw:gap-s-1; }
-.companion-chat-redesign .companion-picker { @apply tw:max-w-full; }
-.companion-chat-redesign .companion-picker-trigger { @apply tw:max-w-[190px]; }
-.companion-chat-redesign .companion-chat-body { padding: 0 var(--s-4); }
-.companion-chat-redesign .companion-chat-statusline { @apply tw:min-h-[30px] tw:text-secondary; }
-.companion-chat-redesign .companion-chat-bubbles { padding-block: var(--s-4); scrollbar-gutter: stable; }
-.companion-chat-redesign .companion-chat-bubble { @apply tw:max-w-[94%]; padding:var(--s-3) var(--s-4); @apply tw:rounded-md; background:var(--bg-base); @apply tw:text-primary tw:border-soft; box-shadow:none; }
-.companion-chat-redesign .companion-chat-bubble.user { background: color-mix(in srgb, var(--accent) 9%, var(--bg-surface)); }
-.companion-chat-redesign .companion-chat-bubble p { @apply tw:text-body; line-height: 1.8; }
-.companion-message-copy { @apply tw:block tw:mt-s-2 tw:p-0; background: none; border: 0; @apply tw:text-label-sm tw:text-secondary tw:cursor-pointer; }
-.companion-chat-redesign .companion-chat-composer { margin-inline: calc(var(--s-4) * -1); padding: var(--s-3) var(--s-4); background: var(--bg-surface); }
-.companion-chat-redesign .companion-chat-input { @apply tw:rounded-md; background:var(--bg-base); @apply tw:text-primary; }
-.companion-chat-redesign .companion-chat-actions { @apply tw:gap-s-2 tw:mt-s-2; }
-.studio-popover.companion-chat-speech-popover { width:min(520px,calc(100vw - 32px)); padding:0; }
-.companion-chat-redesign .companion-chat-meta { @apply tw:text-secondary; }
-.companion-back-latest { @apply tw:self-center tw:shrink-0; }
-.companion-chat-drag { flex:0 0 auto; @apply tw:p-s-2 tw:text-secondary tw:text-label-xs tw:cursor-grab tw:select-none; }
 /* Pure-pet default. Hover and a previously focused picker must not pin chrome open. */
 html.companion-desktop .companion-page.companion-redesign:not([data-controls-open]) .companion-toolbar,
 html.companion-desktop .companion-page.companion-redesign:not([data-controls-open]) .companion-chat-chip { @apply tw:hidden; }
 html.companion-desktop .companion-page.companion-redesign[data-controls-open] .companion-toolbar { @apply tw:flex; opacity:1; visibility:visible; transform:none; @apply tw:pointer-events-auto; }
 @media (max-width: 400px) {
   .companion-drag-handle span { @apply tw:hidden; }
-  .companion-chat-redesign .companion-chat-titlebar { @apply tw:p-s-2; }
-  .companion-chat-redesign .companion-picker-mark { @apply tw:hidden; }
-  .companion-chat-redesign .companion-chat-mini { @apply tw:w-[30px] tw:h-[36px]; }
   html.companion-desktop .companion-redesign .companion-settings-popover { @apply tw:fixed; top:calc(var(--s-7) + var(--s-2)); @apply tw:right-s-2 tw:left-s-2 tw:w-auto; }
 }
 
