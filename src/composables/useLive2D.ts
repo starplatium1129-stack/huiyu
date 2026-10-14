@@ -1,6 +1,7 @@
 import type { EmotionRuntime } from '@/utils/emotionRuntime'
 import { resolveCompanionAvatar } from '@/utils/companionRegistry'
-import { createLive2DCtx, type Live2DStatus } from '@/composables/live2d/context'
+import { profileExpressionOptions } from '@/live2d/companionEmotion'
+import { createLive2DCtx, prefersReducedMotion, type Live2DStatus } from '@/composables/live2d/context'
 import { createPointerGazeController } from '@/composables/live2d/pointerGaze'
 import { createInteractionController } from '@/composables/live2d/interactions'
 import { createNativeEmotionClock } from '@/composables/live2d/emotionClock'
@@ -19,6 +20,7 @@ export type { Live2DStatus }
  */
 export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const ctx = createLive2DCtx()
+  let expressionRequest = 0
   const pointerGaze = createPointerGazeController(ctx)
   const emotionClock = createNativeEmotionClock(ctx)
   const layoutFit = createLayoutFitController(ctx, {
@@ -76,19 +78,45 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   async function setExpression(name: string): Promise<boolean> {
-    if (!ctx.ready.value || ctx.loadedCharacter.value !== ctx.character.value) return false
-    const options = resolveCompanionAvatar(ctx.character.value)?.avatar.expressions || []
-    if (name && !options.some(option => option.id === name)) return false
+    const request = ++expressionRequest
+    if (!ctx.ready.value || ctx.loadedCharacter.value !== ctx.character.value) {
+      ctx.interactionHint.value = '动态立绘尚未就绪，加载完成后再试'
+      return false
+    }
+    if (prefersReducedMotion()) {
+      ctx.interactionHint.value = '已启用减少动态效果；在设置中恢复动态效果后可切换表情'
+      return false
+    }
+    const config = resolveCompanionAvatar(ctx.character.value)
+    const options = config?.avatar.expressions || []
+    const parameterExpression = profileExpressionOptions(config?.profile).some(option => option.id === name)
+    if (name && !parameterExpression && !options.some(option => option.id === name)) return false
+    if (parameterExpression && !ctx.emotionRuntime) { ctx.interactionHint.value = '当前角色的情绪参数尚未就绪，请重新加载立绘'; return false }
     const model = ctx.model, session = ctx.session, character = ctx.character.value
     try {
-      const result = await model?.expression(name)
-      if (model !== ctx.model || session !== ctx.session || character !== ctx.character.value || !ctx.ready.value || ctx.destroyed.value) return false
+      // Clearing a face must retain the selected outfit, whose exp3 can share
+      // the same SDK expression manager with an imported facial expression.
+      const resetExpression = config?.avatar.outfits?.find(option => option.id === ctx.outfit.value)?.expression || ''
+      const result = parameterExpression || !name
+        ? options.length ? await model?.expression(resetExpression) : true
+        : await model?.expression(name)
+      if (request !== expressionRequest || model !== ctx.model || session !== ctx.session || character !== ctx.character.value || !ctx.ready.value || ctx.destroyed.value) return false
       if (result) {
         ctx.expressionParamIds = new Set(options.find(option => option.id === name)?.parameterIds || [])
+        if (parameterExpression) ctx.emotionRuntime?.pushEmotion(name.slice('emotion:'.length), { holdSeconds: 30 })
+        else {
+          ctx.emotionRuntime?.reset()
+          ctx.emotionRuntime?.setSpeaking(ctx.speaking)
+        }
         lifecycle.resumeRendering()
+        emotionClock.syncIntent()
       }
+      else ctx.interactionHint.value = '模型没有接受这次表情切换，请重新加载立绘后再试'
       return result === true
-    } catch { return false }
+    } catch {
+      if (request === expressionRequest && model === ctx.model) ctx.interactionHint.value = '表情暂时不可用，请重新加载立绘后再试'
+      return false
+    }
   }
 
   // 换装和口型都依赖 Pixi ticker。某些 Cubism 模型在切换 Expression 后会停掉 idle

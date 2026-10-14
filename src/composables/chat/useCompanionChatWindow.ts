@@ -27,6 +27,7 @@ export function useCompanionChatWindow() {
 interface ChatLiveState {
   busy: boolean
   thinking: boolean
+  toolActivity: string
   speaking: boolean
   voiceActive: boolean
   activeChar: string
@@ -45,6 +46,7 @@ const router = useRouter()
 const liveState = reactive<ChatLiveState>({
   busy: false,
   thinking: false,
+  toolActivity: '',
   speaking: false,
   voiceActive: false,
   activeChar: storage.state.active,
@@ -87,6 +89,7 @@ const visibleMessages = computed(() => storage.messages(activeChar.value).slice(
 const attachments = useCompanionChatAttachments({
   bridge, activeChar, inputText, busy: computed(() => sending.value || liveState.busy),
   chatReady: computed(() => liveState.chatReady), visible: computed(() => bridge ? windowVisible.value : !pageHidden.value),
+  writeBlocked: storage.writeBlocked,
   characterName: () => currentCharacter.value.name, persistDraft: text => storage.setDraft(activeChar.value, text),
   notice: listenerNotice, error: listenerError,
 })
@@ -139,6 +142,7 @@ function readLive() {
     if (!raw || typeof raw !== 'object') return
     liveState.busy = Boolean(raw.busy)
     liveState.thinking = Boolean(raw.thinking)
+    liveState.toolActivity = typeof raw.toolActivity === 'string' ? raw.toolActivity.slice(0, 400) : ''
     liveState.speaking = Boolean(raw.speaking)
     liveState.voiceActive = Boolean(raw.voiceActive)
     if (getCompanionCharacterConfig(raw.activeChar)) {

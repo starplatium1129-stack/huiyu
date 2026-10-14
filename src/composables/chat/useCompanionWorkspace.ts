@@ -4,6 +4,7 @@ import { profileLocalStorage as localStorage } from '../../platform/web/profileS
 import { useCharacterRoomSession } from './useCharacterRoomSession.ts';
 import { useConversationReading } from './useConversationReading.ts';
 import { publishChatReceipt } from '../../utils/chatRelayReceipt.ts';
+import { parseCompanionChatImage, type CompanionChatImage } from '@/types/companionDrawing';
 import { useRoomPresentation } from './useRoomPresentation.ts';
 import { useWorkspaceDirectorySettings } from './useWorkspaceDirectorySettings.ts';
 import { useCompanionAffection } from '../useCompanionAffection.ts';
@@ -144,6 +145,7 @@ export function useCompanionWorkspace() {
             localStorage.setItem(COMPANION_CHAT_LIVE_KEY, JSON.stringify({
                 busy: busy.value,
                 thinking: Boolean(thinkingActivity.value || toolActivity.value),
+                toolActivity: toolActivity.value,
                 speaking: isSpeaking.value,
                 voiceActive: voiceActive.value,
                 activeChar: activeChar.value,
@@ -162,6 +164,8 @@ export function useCompanionWorkspace() {
         command?: string;
         text?: string;
         imageUrl?: string;
+        image?: CompanionChatImage;
+        action?: 'generate-from-image';
         character?: string;
         requestId?: string;
     }) {
@@ -169,7 +173,9 @@ export function useCompanionWorkspace() {
             return;
         if (payload.command === 'send' && typeof payload.text === 'string' && payload.text.trim()) {
             if (payload.character && payload.character !== activeChar.value) { publishChatReceipt(payload.requestId, false); return; }
-            handleSend(payload.text, payload.imageUrl, accepted => publishChatReceipt(payload.requestId, accepted));
+            const image = parseCompanionChatImage(payload.image);
+            if (payload.image && !image || payload.action && (payload.action !== 'generate-from-image' || !image)) { publishChatReceipt(payload.requestId, false); return; }
+            handleSend(payload.text, payload.imageUrl, accepted => publishChatReceipt(payload.requestId, accepted), { ...(image ? { image } : {}), ...(payload.action ? { action: payload.action } : {}) });
         }
         else if (payload.command === 'switch-character' && payload.character) {
             switchCharacter(payload.character);

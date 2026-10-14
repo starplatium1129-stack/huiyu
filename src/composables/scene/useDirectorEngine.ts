@@ -1,8 +1,6 @@
 import { computed, type Ref } from 'vue'
 import {
   closestSupportedSize,
-  ANIMA_LORA_BY_CHARACTER,
-  ANIMA_CHARACTER_BY_CHARACTER,
   type AnimaRequest,
 } from '@/composables/generation/useAnimaSession'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
@@ -12,8 +10,8 @@ import type { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAss
 import type { AnimaResult } from '@/types/anima'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
-import type { ModelProfile } from '@/utils/promptPolicy'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
+import { buildAnimaRequest as buildBoundAnimaRequest } from '@/composables/generation/buildAnimaRequest'
 import {
   DRAW_ENGINE_SETTING,
   settingsRepository,
@@ -212,68 +210,16 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     })
   }
 
-  // Both studio and popular requests sample the same current settings; their
-  // character/LoRA identities remain separate below.
-  function requestSettings(profileId: string): Omit<AnimaRequest, 'loraId' | 'loraStrength' | 'character'> {
-    const state = animaState.value
-    return {
-      prompt: livePrompt.value, negative: effectiveNegative.value, profileId, modelId: state.modelId,
-      width: state.width, height: state.height, steps: state.steps, cfg: state.cfg,
-      ...(state.seed == null ? {} : { seed: state.seed }),
-      hiresFix: Boolean(state.hiresFix), hiresScale: state.hiresScale, hiresDenoise: state.hiresDenoise, hiresUpscaler: state.hiresUpscaler,
-      teaCache: state.provider === 'native' ? state.teaCache : state.teaCache !== false, teaCacheThresh: state.teaCacheThresh, adultEnabled: pb.showMatureScenes,
-    }
-  }
-
   function buildAnimaRequest(preview = false): AnimaRequest | null {
-    const isPopular = pb.isPopular
-    const profile = isPopular ? popularProfile.value : modelProfile.value
-    if (!isPopular && pb.char === 'triad' && !currentCapabilities.value.dualCharacter) {
-      if (!preview) flash('当前绘图路径暂不支持旧双角色配置，请重新选择单个角色')
+    try {
+      const request = buildBoundAnimaRequest({ subject: pb.subject, char: pb.char, state: animaState.value,
+        profile: pb.isPopular ? popularProfile.value : modelProfile.value,
+        prompt: livePrompt.value, negative: effectiveNegative.value })
+      if (!preview) updateAnimaPromptState()
+      return request
+    } catch (error) {
+      if (!preview) flash(error instanceof Error ? error.message : '当前绘图配置无法生成')
       return null
-    }
-    if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
-      if (!preview) flash('当前底模没有匹配的模型 profile，已拒绝生成')
-      return null
-    }
-    if (isPopular) return buildPopularRequest(profile, preview)
-    const charKey = pb.char === 'triad' ? null : pb.char
-    const expectedLoraId = charKey ? ANIMA_LORA_BY_CHARACTER[charKey] : ''
-    if (currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && charKey && (animaState.value.loraId !== expectedLoraId || !animaState.value.loras.some(lora => lora.id === expectedLoraId && lora.available !== false))) {
-      if (!preview) flash('Anima 底模尚未从服务端白名单发现')
-      return null
-    }
-    if (!preview) updateAnimaPromptState()
-    return {
-      ...requestSettings(profile.id || ''),
-      loraId: currentCapabilities.value.lora ? animaState.value.loraId : null,
-      loraStrength: currentCapabilities.value.lora ? animaState.value.loraStrength : null,
-      character: currentCapabilities.value.characterIdentity && charKey ? ANIMA_CHARACTER_BY_CHARACTER[charKey] : null,
-    }
-  }
-
-  /** 热门角色沿用其独立提示词；终末地在 Anima 上使用角色限定的合集。 */
-  function buildPopularRequest(profile: ModelProfile, preview = false): AnimaRequest | null {
-    if (!currentCapabilities.value.noLora) {
-      if (!preview) flash('当前底模不支持无 LoRA 热门角色创作')
-      return null
-    }
-    const binding = endfieldAnimaBinding(pb.subject.kind === 'popular' ? pb.subject.characterId : null,
-      animaState.value.family, animaState.value.modelId)
-    if (!binding && endfieldAnimaBinding(pb.subject.kind === 'popular' ? pb.subject.characterId : null, animaState.value.family)) {
-      if (!preview) flash('当前底模不兼容终末地角色 LoRA，请选择标准 Anima 底模')
-      return null
-    }
-    if (binding && !animaState.value.loras.some(lora => lora.id === binding.loraId && lora.available !== false)) {
-      if (!preview) flash('终末地角色 LoRA 尚未安装，请先准备模型文件')
-      return null
-    }
-    if (!preview) updateAnimaPromptState()
-    return {
-      ...requestSettings(profile.id || ''),
-      loraId: binding?.loraId ?? null,
-      loraStrength: binding ? animaState.value.loraStrength : null,
-      character: binding?.character ?? null,
     }
   }
 

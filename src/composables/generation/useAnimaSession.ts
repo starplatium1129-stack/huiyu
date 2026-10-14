@@ -7,6 +7,7 @@ import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import { usePolling } from '@/composables/usePolling'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
+import { readDrawingSettings, saveDrawingSettings } from '@/storage/drawingSettings'
 import { nativeAnimaRequestBlocker } from './nativeAnimaCapabilities'
 import { automaticMaskBlocker, backendReadiness } from './animaBackendReadiness'
 import {
@@ -41,16 +42,25 @@ const INITIAL_STATE: AnimaGenerationState = {
   job: null, result: null, resultContext: null, statusText: '', errorMsg: '', errorReport: null,
 }
 
+export function initialAnimaState(family: 'anima' | 'krea2'): AnimaGenerationState {
+  return { ...INITIAL_STATE, ...readDrawingSettings(family), family, models: [], loras: [], styleLoras: [] }
+}
+
 export function useAnimaSession(options: AnimaSessionOptions) {
   const client = options.client ?? apiClient
-  const state = ref<AnimaGenerationState>({ ...INITIAL_STATE })
-  let settingsRevision = 0, reconcilingSettings = false, teaCacheSettingsTouched = false, loraStrengthTouched = false
+  const savedSettings = readDrawingSettings(options.getFamily())
+  const state = ref<AnimaGenerationState>(initialAnimaState(options.getFamily()))
+  let settingsRevision = 0, reconcilingSettings = false, teaCacheSettingsTouched = Boolean(savedSettings), loraStrengthTouched = Boolean(savedSettings)
+  function persistSettings() {
+    try { saveDrawingSettings(state.value) }
+    catch { options.flash('绘图参数尚未保存，桌宠暂时无法同步这次设置，请检查本机资料连接') }
+  }
   const editableKeys = ['family', 'modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height',
     'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
   // Observe direct v-model writes as well as patchState, excluding only our
   // synchronous backend reconciliation, never the time spent awaiting status.
   const stopSettingsWatch = watch(editableKeys.map(key => () => state.value[key]), () => {
-    if (!reconcilingSettings) settingsRevision++
+    if (!reconcilingSettings) { settingsRevision++; persistSettings() }
   }, { flush: 'sync' })
   const stopTeaCacheWatch = watch([() => state.value.teaCache, () => state.value.teaCacheThresh, () => state.value.loraStrength], (next, previous) => {
     if (!reconcilingSettings) {
@@ -124,7 +134,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
    * （applyModel）。15s 状态轮询**不再**重施默认值，否则用户刚调好的 CFG
    * 会在下一次心跳被静默改回。
    */
-  let defaultsAppliedFor: string | null = null
+  let defaultsAppliedFor: string | null = savedSettings?.modelId ?? null
 
   function restoreSettings(patch: Partial<AnimaGenerationState>) {
     if ('teaCache' in patch || 'teaCacheThresh' in patch) teaCacheSettingsTouched = true
@@ -168,6 +178,16 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   // Awaiters follow a superseding refresh; false means the view cancelled discovery.
   function refreshBackend(checkedStatus?: AnimaStatusResponse): Promise<boolean> {
     if (disposed) return Promise.resolve(false)
+    const family = options.getFamily()
+    if (family !== state.value.family) {
+      const stored = readDrawingSettings(family)
+      reconcilingSettings = true
+      try {
+        patchState({ ...stored, family })
+        defaultsAppliedFor = stored?.modelId ?? null
+        teaCacheSettingsTouched = Boolean(stored); loraStrengthTouched = Boolean(stored)
+      } finally { reconcilingSettings = false }
+    }
     // Superseding discovery still belongs to the pending read's edit baseline.
     if (!statusRequest) refreshSettingsRevision = settingsRevision
     statusRequest?.abort()
@@ -245,6 +265,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         defaultsAppliedFor = modelIdCurrent
         syncCharacter(options.getCharacter())
       } finally { reconcilingSettings = false }
+      persistSettings()
       return true
     } catch (error) {
       if (statusRequest !== controller || controller.signal.aborted) return latest()

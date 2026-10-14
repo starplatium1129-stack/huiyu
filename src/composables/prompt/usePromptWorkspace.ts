@@ -3,6 +3,7 @@ import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
 
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
 import { useAnimaSession } from '@/composables/generation/useAnimaSession';
+import { readDrawingSettings } from '@/storage/drawingSettings';
 import { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks';
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue';
@@ -73,7 +74,7 @@ export function usePromptWorkspace() {
     });
     const { state: animaState, patchState: patchAnimaState, modelId: animaModelId, refreshBackend: refreshAnimaBackend, syncCharacter: syncAnimaCharacter, applyModel, generate: generateAnima, cancel: cancelAnimaJob, clearResult: clearAnimaResult } = animaSession;
     const starterModel = settingsRepository.get(STARTER_MODEL_SETTING);
-    if (starterModel && drawEngine.value === 'anima') patchAnimaState({ modelId: starterModel });
+    if (starterModel && drawEngine.value === 'anima' && !readDrawingSettings('anima')) patchAnimaState({ modelId: starterModel });
     // Anima 会话先于引擎协调层创建：请求装配与结果协调经桥接函数转发到
     // useDirectorEngine（生成/结果事件均在 setup 完成后才触发，沿用提升函数模式）。
     function buildAnimaRequest() {

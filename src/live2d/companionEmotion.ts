@@ -1,6 +1,20 @@
 import type { EmotionRuntimeConfig } from '../utils/emotionRuntime'
 import type { Live2DAdapterProfile } from './adapterProfile'
 
+const MANUAL_EMOTIONS = { happy: '开心', gentle: '温柔', shy: '害羞', sad: '难过', serious: '认真' } as const
+
+/** Parameter expressions stay separate from authored exp3 files used for outfits. */
+export function profileExpressionOptions(profile?: Live2DAdapterProfile): { id: string; label: string }[] {
+  const params = profile?.emotionParams
+  const neutral = params?.neutral
+  // Arbitrary imported parameters can be neutral at 1 or -1. A manual face
+  // needs an explicitly calibrated baseline for every owned parameter.
+  if (!params || !neutral || Object.values(params).some(values => Object.keys(values).some(id => !(id in neutral)))) return []
+  return Object.entries(MANUAL_EMOTIONS)
+    .filter(([name]) => Object.entries(params[name] || {}).some(([id, value]) => value !== neutral[id]))
+    .map(([name, label]) => ({ id: `emotion:${name}`, label }))
+}
+
 /** Generic affect timing with only the selected model's authored parameter map. */
 export function profileEmotionConfig(profile?: Live2DAdapterProfile): EmotionRuntimeConfig | undefined {
   if (!profile?.emotionParams) return undefined

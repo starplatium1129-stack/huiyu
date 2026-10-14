@@ -26,6 +26,7 @@ export interface CompanionClipboardImportDeps {
   busy: Ref<boolean>
   chatReady: Ref<boolean>
   listenClipboard?: boolean
+  importOnDrop?: boolean
   isActive?: () => boolean
   onError?: (message: string) => void
 }
@@ -220,8 +221,10 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   }
 
   onMounted(() => {
-    window.addEventListener('dragover', onWindowDragOver, { passive: false })
-    window.addEventListener('drop', onWindowDrop, { passive: false })
+    if (deps.importOnDrop !== false) {
+      window.addEventListener('dragover', onWindowDragOver, { passive: false })
+      window.addEventListener('drop', onWindowDrop, { passive: false })
+    }
     if (deps.listenClipboard !== false) window.addEventListener('paste', onPaste)
     if (desktopBridge && deps.listenClipboard !== false) {
       clipboardImageSubscription = desktopBridge.onClipboardImage(onClipboardImage)

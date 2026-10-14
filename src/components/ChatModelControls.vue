@@ -54,7 +54,7 @@
         <StudioDisclosureSummary>更多选项</StudioDisclosureSummary>
         <div class="model-more-body" data-disclosure-content>
           <template v-if="chatProvider === 'api'">
-            <StudioTooltip content="允许模型准备绘画草稿等操作，仅本机可用">
+            <StudioTooltip content="允许模型直接绘图、反推已发送图片和使用本地文件工具，仅本机可用">
               <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="companionTools" :disabled="busy" @click="emit('update:companion-tools', !companionTools)">房间工具：{{ companionTools ? '开' : '关' }}</button>
             </StudioTooltip>
             <StudioTooltip :content="reasoningHint">
@@ -79,11 +79,11 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import { computed, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { chatApiVendorFor } from '@/config/chatApi'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-import ChatModelPicker from '@/components/ChatModelPicker.vue'
+const ChatModelPicker = defineAsyncComponent(() => import('@/components/ChatModelPicker.vue'))
 
 const visited = ref(false)
 function onToggle(event: Event) { if ((event.currentTarget as HTMLDetailsElement).open) visited.value = true }

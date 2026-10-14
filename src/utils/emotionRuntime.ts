@@ -148,7 +148,14 @@ export const NENE_RUNTIME_CONFIG: EmotionRuntimeConfig = {
     gentle:   { valence: 0.35, arousal: -0.35, dominance: 0.1 },
   },
   emotionParams: {
-    neutral: {},
+    // Authored nene.moc3 defaults: ParamCheek1 is eye highlight (default 1),
+    // whereas these other face controls are neutral at 0.
+    neutral: {
+      ParamCheek: 0, ParamCheek1: 1, ParamCheek5: 0, ParamCheek7: 0,
+      ParamEyeLSmile: 0, ParamEyeRSmile: 0, ParamBrowLY: 0, ParamBrowRY: 0,
+      ParamBrowLAngle: 0, ParamBrowRAngle: 0, ParamBrowLForm: 0, ParamBrowRForm: 0,
+      ParamMouthForm: 0,
+    },
     shy: {
       ParamCheek: 0.95,
       ParamCheek5: 1,
@@ -211,7 +218,11 @@ export const NATSUME_RUNTIME_CONFIG: EmotionRuntimeConfig = {
     gentle:   { valence: 0.35, arousal: -0.35, dominance: 0.1 },
   },
   emotionParams: {
-    neutral: {},
+    // Authored natsume.moc3 defaults for the face controls below.
+    neutral: {
+      ParamCheek: 0, ParamBrowLY: 0, ParamBrowRY: 0, ParamBrowLAngle: 0,
+      ParamBrowRAngle: 0, ParamBrowLForm: 0, ParamBrowRForm: 0,
+    },
     shy: {
       ParamCheek: 0.7,
       ParamBrowLY: 0.15,
@@ -342,6 +353,8 @@ export function createEmotionRuntime(config: EmotionRuntimeConfig): EmotionRunti
     },
     pushEmotion(emotion: string, options?: PushEmotionOptions) {
       if (emotion === 'neutral') {
+        last = 'neutral'
+        presentIntensity = 0
         nudge('neutral')
         pushSoullinkEmotion('neutral')
         holdSeconds = 0
@@ -399,9 +412,17 @@ export function createEmotionRuntime(config: EmotionRuntimeConfig): EmotionRunti
        // Speech should keep the semantic emotion visible. The measured audio
        // layer adds small accents; it must not flatten the face into neutral.
        const emotionWeight = speaking ? 0.82 : 1
-      for (const [id, value] of Object.entries(base)) {
-        const scaled = clamp(value * presentIntensity * emotionWeight, -1, 1)
-        if (scaled !== 0) params[id] = scaled
+      if (presentIntensity > 0) {
+        for (const id of new Set([...Object.keys(emotionParams.neutral), ...Object.keys(base)])) {
+          const neutral = emotionParams.neutral[id]
+          const value = base[id] ?? neutral
+          // An imported Profile without calibration retains its existing
+          // authored value. No zero baseline is invented for arbitrary IDs.
+          const scaled = typeof neutral === 'number'
+            ? neutral + (value - neutral) * presentIntensity * emotionWeight
+            : value
+          if (scaled !== 0) params[id] = scaled
+        }
       }
       if (reactionActive) {
         const pulse = Math.sin(Math.min(1, reactionElapsed / reactionDuration) * Math.PI)

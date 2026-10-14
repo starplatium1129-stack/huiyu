@@ -249,6 +249,8 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
         if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
         match builder
             .title("绘遇对白")
+            // Let Windows WebView2 deliver file drops to the chat attachment UI.
+            .disable_drag_drop_handler()
             .zoom_hotkeys_enabled(false)
             .inner_size(bounds.width as f64, bounds.height as f64)
             .position(bounds.x as f64, bounds.y as f64)

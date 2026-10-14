@@ -95,9 +95,25 @@ impl Live2DAdapterConfig {
 
     pub fn apply_emotion(&self, model: &mut Model, name: &str, intensity: f32) {
         let intensity = intensity.clamp(0.0, 1.0);
-        for (id, value) in self.emotion_params.get(name).into_iter().flatten() {
+        let neutral = self.emotion_params.get("neutral");
+        let target = self.emotion_params.get(name);
+        // Sparse presets release only explicitly calibrated face parameters.
+        // Nonzero defaults (for example eye highlight) remain neutral when
+        // intensity fades or the caller clears the selected expression.
+        for (id, value) in neutral.into_iter().flatten() {
             if model.parameter_index(id).is_some() {
-                model.set_parameter(id, value * intensity, 1.0);
+                let desired = target.and_then(|params| params.get(id)).unwrap_or(value);
+                model.set_parameter(id, value + (desired - value) * intensity, 1.0);
+            }
+        }
+        for (id, value) in target.into_iter().flatten() {
+            if neutral.is_some_and(|params| params.contains_key(id)) {
+                continue;
+            }
+            if model.parameter_index(id).is_some() && intensity > 0.0 {
+                // Uncalibrated imported parameters keep their authored value;
+                // do not infer a zero baseline or offer manual expressions.
+                model.set_parameter(id, *value, 1.0);
             }
         }
     }

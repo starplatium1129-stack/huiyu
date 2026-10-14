@@ -1,5 +1,6 @@
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { CHAT_RELAY_RECEIPT_KEY as CHAT_RELAY_RECEIPT } from '@/utils/storageKeys'
+import type { CompanionChatSendOptions } from '@/types/companionDrawing'
 export { CHAT_RELAY_RECEIPT }
 
 export function publishChatReceipt(requestId: string | undefined, accepted: boolean) {
@@ -9,7 +10,7 @@ export function publishChatReceipt(requestId: string | undefined, accepted: bool
 }
 
 /** IPC delivery alone is not acceptance: keep the draft until the runtime owns the turn. */
-export function relayChatTurn(bridge: CompanionDesktopBridge, text: string, character: string, imageUrl?: string, signal?: AbortSignal): Promise<void> {
+export function relayChatTurn(bridge: CompanionDesktopBridge, text: string, character: string, imageUrl?: string, signal?: AbortSignal, options: CompanionChatSendOptions = {}): Promise<void> {
   if (signal?.aborted) return Promise.reject(signal.reason)
   const requestId = crypto.randomUUID()
   return new Promise((resolve, reject) => {
@@ -30,6 +31,6 @@ export function relayChatTurn(bridge: CompanionDesktopBridge, text: string, char
     const timer = window.setTimeout(() => finish(false), 8000)
     window.addEventListener('storage', receive)
     signal?.addEventListener('abort', abort, { once: true })
-    void bridge.chatRelay({ command: 'send', text, character, requestId, ...(imageUrl ? { imageUrl } : {}) }).then(result => { if (result === false) finish(false) }).catch(() => finish(false))
+    void bridge.chatRelay({ command: 'send', text, character, requestId, ...(imageUrl ? { imageUrl } : {}), ...options }).then(result => { if (result === false) finish(false) }).catch(() => finish(false))
   })
 }

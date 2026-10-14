@@ -15,6 +15,9 @@ import { hasChatUserProfile, type ChatUserProfile } from '../../utils/chatUserPr
 import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { createChatDraftPersistence } from './chatDraftPersistence'
+import type { ChatMessage } from './chatStorageTypes'
+import { parseCompanionChatImage, type CompanionChatSendOptions } from '@/types/companionDrawing'
+import type { CompanionToolContext } from './companionChatTools'
 
 // 2026-08-16 审计：流式对话的两级超时兜底（此前无任何超时，上游挂起=无限 spinner）。
 // 首事件超时覆盖排队/连接期；事件间静默覆盖出流后的断流。两者都远大于正常节奏，
@@ -122,19 +125,20 @@ export function useChatConversation(options: ChatConversationOptions) {
   // ── Pipeline 步骤①：持久化本回合 ─────────────────────────────────────
   // 用户消息入库 + 记忆召回 + 助手占位，随后进入流式就绪状态。
   // 返回的 messages 是存储层的活引用：catch 分支据此移除失败占位。
-  function beginUserTurn(text: string, imageUrl: string | undefined, customText?: string) {
+  function beginUserTurn(text: string, imageUrl: string | undefined, customText?: string, sendOptions: CompanionChatSendOptions = {}) {
     const characterId = options.activeChar.value
     const messages = options.storage.messages(characterId)
     replyAnnouncement.value = ''
     messages.push({
       role: 'user',
-      content: imageUrl ? `${text || '（发送了图片）'} [图片]` : text,
+      content: imageUrl || sendOptions.image ? `${text || '（发送了图片）'} [图片]` : text,
       mid: createMessageId(),
       stopped: false,
+      ...(sendOptions.image ? { images: [{ ...sendOptions.image }] } : {}),
     })
     options.storage.trim(characterId)
     const recalledList = options.recallMemories(characterId, text)
-    const assistant = reactive({
+    const assistant = reactive<ChatMessage>({
       role: 'assistant' as const,
       content: '',
       mid: createMessageId(),
@@ -241,20 +245,9 @@ export function useChatConversation(options: ChatConversationOptions) {
   }
 
   // ── Pipeline 步骤④：单个工具执行（fallible，异常由调用方转译为失败结果）──
-  async function executeToolCall(call: PendingToolCall, signal: AbortSignal): Promise<ToolCallResult> {
-    signal.throwIfAborted()
-    let parsedArgs: Record<string, unknown> = {}
-    try {
-      parsedArgs = JSON.parse(call.arguments || '{}')
-    } catch {
-      return { ok: false, output: '工具参数不是有效 JSON，请修正后重试。' }
-    }
-    if (!parsedArgs || typeof parsedArgs !== 'object' || Array.isArray(parsedArgs)) {
-      return { ok: false, output: '工具参数必须是 JSON 对象。' }
-    }
-    const { executeCompanionTool } = await import('@/api/companionToolsApi')
-    signal.throwIfAborted()
-    return executeCompanionTool(call.name, parsedArgs, signal)
+  async function executeToolCall(call: PendingToolCall, context: CompanionToolContext, completedDrawings: Map<string, ToolCallResult>): Promise<ToolCallResult> {
+    const { executeSerializedCompanionChatTool } = await import('./companionChatTools')
+    return executeSerializedCompanionChatTool(call, context, completedDrawings)
   }
 
   function captureConnection() {
@@ -331,14 +324,14 @@ export function useChatConversation(options: ChatConversationOptions) {
     })
   }
 
-  async function sendMessage(customText?: string, imageUrl?: string) {
+  async function sendMessage(customText?: string, imageUrl?: string, sendOptions: CompanionChatSendOptions = {}) {
     const text = (customText !== undefined ? customText : inputText.value).trim()
-    if ((!text && !imageUrl) || options.busy.value || !options.chatReady.value) return
+    if ((!text && !imageUrl && !sendOptions.image) || options.busy.value || (!options.chatReady.value && sendOptions.action !== 'generate-from-image')) return
     options.onError('')
     options.voice.ensureAudioContext()
 
     const connection = captureConnection()
-    const turn = beginUserTurn(text, imageUrl, customText)
+    const turn = beginUserTurn(text, imageUrl, customText, sendOptions)
 
     const controller = new AbortController()
     activeRequest = controller
@@ -349,8 +342,24 @@ export function useChatConversation(options: ChatConversationOptions) {
       character: turn.characterId,
     })
     const tracker = createTurnEmotionTracker(turn.characterId)
+    const report = (message: string) => { watchdog.touch(); options.onToolActivity?.(message) }
+    const sourceImage = parseCompanionChatImage(sendOptions.image) || [...turn.messages].reverse().flatMap(message => message.images || [])[0]
+    const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, image: sourceImage, imageUrl }
+    const drawingResults = new Map<string, ToolCallResult>()
 
     try {
+      if (sendOptions.action === 'generate-from-image') {
+        const { executeCompanionChatTool } = await import('./companionChatTools')
+        controller.signal.throwIfAborted()
+        const result = await executeCompanionChatTool('generate_image_from_reference', { character: turn.characterId, description: text }, toolContext)
+        controller.signal.throwIfAborted()
+        turn.assistant.content = result.output
+        if (result.image) turn.assistant.images = [{ ...result.image }]
+        replyAnnouncement.value = result.output
+        options.voice.append(result.output)
+        options.voice.finishTurn()
+        return
+      }
       if(connection.provider==='api'&&connection.apiModel==='huiyu-local'&&!connection.hostConfig&&isLocalStudioHost()){
         if(imageUrl)throw new Error('这套起步本地模型尚未准备视觉投影，请先用文字聊天，或选择支持图片的 API')
         const {localSetupApi}=await import('@/api/localSetupApi')
@@ -444,15 +453,18 @@ export function useChatConversation(options: ChatConversationOptions) {
           options.onToolActivity?.(`正在执行 ${call.name}…`)
           let result: ToolCallResult
           try {
-            result = await executeToolCall(call, controller.signal)
+            result = await executeToolCall(call, toolContext, drawingResults)
           } catch (error) {
             if (controller.signal.aborted) throw error
             result = { ok: false, output: error instanceof Error ? error.message : String(error) }
           }
           controller.signal.throwIfAborted()
-          if (result.draft) {
-            const user = [...turn.messages].reverse().find(message => message.role === 'user')
-            if (user) user.drawingDrafts = [...(user.drawingDrafts || []), result.draft].slice(-4)
+          if (result.image) {
+            const image = parseCompanionChatImage(result.image)
+            if (image && !turn.assistant.images?.some(existing => existing.taskId === image.taskId && existing.path === image.path)) {
+              turn.assistant.images = [...(turn.assistant.images || []), image].slice(-4)
+              if (!turn.assistant.content.trim()) turn.assistant.content = result.output
+            }
             options.storage.save()
           }
           roundMessages.push({ role: 'tool', tool_call_id: call.id, content: result.output.slice(0, 60000) })
@@ -478,6 +490,9 @@ export function useChatConversation(options: ChatConversationOptions) {
       replyAnnouncement.value = `${options.currentCharacter.value.name}说：${turn.assistant.content}`
       options.voice.finishTurn()
     } catch (error) {
+      if (sendOptions.action === 'generate-from-image' && !isAbortError(error) && !turn.assistant.content) {
+        turn.assistant.content = `这次未能生成图片：${error instanceof Error ? error.message : '请检查绘图和反推服务后重试。'}`
+      }
       // 中断时保留已收到的内容，避免读到一半的回复突然消失。
       turn.assistant.content = turn.assistant.content.trim()
       turn.assistant.stopped = Boolean(turn.assistant.content)

@@ -3,7 +3,6 @@ import { useCompanionAffection } from '../useCompanionAffection.ts'
 import type { Live2DInteraction } from './constants.ts'
 import type { Live2DCtx, Live2DStatus } from './context.ts'
 import { prefersReducedMotion } from './context.ts'
-import { isRecord } from './catalog.ts'
 import { resolveCompanionAvatar } from '../../utils/companionRegistry.ts'
 import { hasAffectionMotionRules } from '../../utils/companionAffection.ts'
 
@@ -50,6 +49,7 @@ export function createInteractionController(
     resumeRendering: () => void
   },
 ) {
+  let pendingMotion: { model: Live2DCtx['model']; session: Live2DCtx['session'] } | null = null
   function worldPoint(event: MouseEvent) {
     const canvas = ctx.session?.canvasElement?.() as HTMLCanvasElement | null
     const rect = canvas?.getBoundingClientRect() ?? ctx.stageEl?.getBoundingClientRect()
@@ -130,7 +130,7 @@ export function createInteractionController(
         ctx.activeInteraction = ''
       }
     }, interaction.duration + 600)
-    ctx.interactionHint.value = customText || interaction.hint
+    ctx.interactionHint.value = `正在播放：${customText || interaction.hint}`
     hooks.setState('ready', 'Live2D 已连接')
     ctx.stageEl?.classList.remove('live2d-reacting')
     void ctx.stageEl?.offsetWidth
@@ -180,7 +180,7 @@ export function createInteractionController(
   }
 
   function interactionFailed(interaction: Live2DInteraction) {
-    if (ctx.activeInteraction === interaction.group) {
+    if (ctx.activeInteraction === interaction.group || ctx.interactionHint.value === '这个动作正在进行中') {
       ctx.interactionHint.value = '这个动作正在进行中'
       return
     }
@@ -188,8 +188,16 @@ export function createInteractionController(
     hooks.setState('degraded', 'Live2D 动作未启动', `未能启动 ${interaction.group}`, true)
   }
 
-  function playInteraction(interaction: Live2DInteraction) {
-    if (!ctx.ready.value || !ctx.model?.visible || prefersReducedMotion() || ctx.mouthValue.value > 0) return
+  async function playInteraction(interaction: Live2DInteraction) {
+    if (!ctx.ready.value || ctx.loadedCharacter.value !== ctx.character.value) {
+      ctx.interactionHint.value = ctx.enabled.value ? '动态立绘尚未加载完成，请稍后再试' : '先加载动态立绘，再试试互动动作'
+      return
+    }
+    if (!ctx.model?.visible) { ctx.interactionHint.value = '角色当前已暂停显示，恢复显示后再试'; return }
+    if (prefersReducedMotion()) { ctx.interactionHint.value = '已启用减少动态效果；在设置中恢复动态效果后可播放动作'; return }
+    if (ctx.speaking || ctx.mouthValue.value > 0) { ctx.interactionHint.value = '角色正在说话，等语音结束后再试'; return }
+    if (pendingMotion?.model === ctx.model && pendingMotion.session === ctx.session) { ctx.interactionHint.value = '动作正在启动，请稍等'; return }
+    if (ctx.activeInteraction === interaction.group) { ctx.interactionHint.value = '这个动作正在进行中'; return }
     // pixi-live2d-display uses the third argument as motion priority. Passing
     // null is treated as MotionPriority.NONE, which silently rejects the
     // motion while still letting the click hint update. FORCE interrupts idle
@@ -217,21 +225,26 @@ export function createInteractionController(
     const targetIndex = typeof motionIndex === 'number' ? motionIndex : undefined
     const model = ctx.model, session = ctx.session, character = ctx.character.value
     const current = () => ctx.model === model && ctx.session === session && ctx.character.value === character && ctx.ready.value && !ctx.destroyed.value
-    const result = model.motion(interaction.group, targetIndex, 3)
-    if (isCatchable(result)) {
-      result.then((started: unknown) => {
-        if (!current()) return
-        if (started === true) markInteractionStarted(interaction, customText, soundUrl)
-        else interactionFailed(interaction)
-      }).catch((error: unknown) => {
-        if (!current()) return
-        ctx.interactionHint.value = '动作暂时不可用，请重试'
-        hooks.setState('degraded', 'Live2D 动作暂不可用', errorMessage(error), true)
-      })
-      return
+    const request = { model, session }
+    pendingMotion = request
+    ctx.interactionHint.value = '正在启动动作…'
+    let timeout = 0
+    try {
+      const started = await Promise.race([
+        Promise.resolve(model.motion(interaction.group, targetIndex, 3)),
+        new Promise<never>((_, reject) => { timeout = window.setTimeout(() => reject(new Error('动作启动超时')), 10_000) }),
+      ])
+      if (!current()) return
+      if (started === true) markInteractionStarted(interaction, customText, soundUrl)
+      else interactionFailed(interaction)
+    } catch (error) {
+      if (!current()) return
+      ctx.interactionHint.value = errorMessage(error) === '动作启动超时' ? '动作启动超时，可在设置中重新加载动态立绘' : '动作暂时不可用，请重试'
+      hooks.setState('degraded', 'Live2D 动作暂不可用', errorMessage(error), true)
+    } finally {
+      clearTimeout(timeout)
+      if (pendingMotion === request) pendingMotion = null
     }
-    if (result === true) markInteractionStarted(interaction, customText, soundUrl)
-    else interactionFailed(interaction)
   }
 
   function bind() {
@@ -260,6 +273,9 @@ export function createInteractionController(
       ctx.nativeMotionFailedUnsubscribe = ctx.session.onMotionFailed?.((info) => {
         if (/already playing/.test(info.reason)) {
           ctx.interactionHint.value = '这个动作正在进行中'
+        } else {
+          ctx.interactionHint.value = '动作暂时不可用，请重试'
+          hooks.setState('degraded', 'Live2D 动作暂不可用', info.reason, true)
         }
       }) ?? null
       ctx.pointerClickHandler = (event) => {
@@ -285,9 +301,13 @@ export function createInteractionController(
   }
 
   function playById(id: string) {
-    if (ctx.loadedCharacter.value !== ctx.character.value) return
+    if (!ctx.ready.value || ctx.loadedCharacter.value !== ctx.character.value) {
+      ctx.interactionHint.value = ctx.enabled.value ? '动态立绘尚未加载完成，请稍后再试' : '先加载动态立绘，再试试互动动作'
+      return
+    }
     const interaction = ctx.adapter?.interactions[id]
-    if (interaction) playInteraction(interaction)
+    if (interaction) void playInteraction(interaction)
+    else ctx.interactionHint.value = '当前角色没有这个动作，请选择菜单中的可用动作'
   }
 
   return { bind, stopAudio, beginOverlaySettle, playById }
@@ -295,8 +315,4 @@ export function createInteractionController(
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
-}
-
-function isCatchable(value: unknown): value is { catch(handler: (error: unknown) => void): unknown } {
-  return isRecord(value) && typeof value.catch === 'function'
 }

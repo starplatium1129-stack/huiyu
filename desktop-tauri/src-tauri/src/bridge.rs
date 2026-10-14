@@ -249,10 +249,22 @@ pub fn hide_companion_chat(app: AppHandle) {
 /// 转发给 companion 窗口的 CompanionView 执行（后者是唯一会话写者）。
 #[derive(serde::Deserialize, Serialize, Clone)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct ChatImageRef {
+    path: String,
+    name: String,
+    image_id: Option<String>,
+    task_id: Option<String>,
+    artwork_id: Option<String>,
+}
+
+#[derive(serde::Deserialize, Serialize, Clone)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct ChatRelay {
     command: String,
     text: Option<String>,
     image_url: Option<String>,
+    image: Option<ChatImageRef>,
+    action: Option<String>,
     character: Option<String>,
     request_id: Option<String>,
 }
@@ -265,6 +277,13 @@ pub fn chat_relay(window: tauri::WebviewWindow, app: AppHandle, payload: ChatRel
         || payload.image_url.as_ref().is_some_and(|value| value.len() > 16 * 1024 * 1024)
         || payload.character.as_ref().is_some_and(|value| value.len() > 256)
         || payload.request_id.as_ref().is_some_and(|value| value.len() > 128) { return false; }
+    if payload.action.as_ref().is_some_and(|value| value != "generate-from-image")
+        || payload.action.is_some() && payload.image.is_none()
+        || payload.image.as_ref().is_some_and(|image| {
+            image.path.len() > 512 || image.name.len() > 960 || image.name.trim().is_empty()
+                || [&image.image_id, &image.task_id, &image.artwork_id]
+                    .iter().any(|value| value.as_ref().is_some_and(|value| value.len() > 640))
+        }) { return false; }
     if payload.command == "send" && (payload.request_id.as_ref().is_none_or(|value| value.is_empty())
         || payload.text.as_ref().is_none_or(|value| value.trim().is_empty())) { return false; }
     let Some(w) = app.get_webview_window("companion") else { return false };

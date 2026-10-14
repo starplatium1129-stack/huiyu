@@ -25,6 +25,9 @@ import { COLOR_MOODS } from '@/config/promptConstants.ts'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles.ts'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
+export type PopularPromptAssemblyState = Pick<PromptBuilderStore, 'artistStyleIds' | 'colorMood' | 'directorMode' | 'emotionPrompt'
+  | 'manualTags' | 'modelProfiles' | 'outfitOverride' | 'popularCharacters' | 'randomVariation' | 'sceneBlueprints' | 'selections'
+  | 'showMatureScenes' | 'subject' | 'tags' | 'visualDescription' | 'char' | 'sceneId'>
 
 /**
  * 热门角色无 LoRA 模式的 Prompt 组装。
@@ -35,7 +38,7 @@ type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
  * 模型渲染层。
  */
 export function usePopularPromptAssembly(
-  pb: PromptBuilderStore,
+  pb: PopularPromptAssemblyState,
   engine: Readonly<Ref<PromptEngine>>,
   modelName: Readonly<Ref<string>>,
 ) {

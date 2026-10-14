@@ -1,6 +1,6 @@
 import { assertChatVersion } from './chatVersion.ts'
 import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '../config/chatApi.ts'
-import { parseCompanionDrawingDraft, type CompanionDrawingDraft } from '@/types/companionDrawing'
+import { parseCompanionChatImages, parseCompanionDrawingDraft, type CompanionChatImage, type CompanionDrawingDraft } from '@/types/companionDrawing'
 
 export interface ChatStorageOptions {
   characterIds: string[]
@@ -17,6 +17,7 @@ export interface PersistedChatMessage {
   stopped: boolean
   recalledMemories?: string[]
   drawingDrafts?: CompanionDrawingDraft[]
+  images?: CompanionChatImage[]
 }
 
 export interface PersistedChatState {
@@ -88,6 +89,7 @@ function normalizeMessages(
         : undefined
       const drawingDrafts = Array.isArray(message.drawingDrafts)
         ? message.drawingDrafts.map(parseCompanionDrawingDraft).filter((item): item is CompanionDrawingDraft => Boolean(item)).slice(-4) : []
+      const images = parseCompanionChatImages(message.images)
       return {
         role: message.role as 'user' | 'assistant',
         content: text(message.content, 1200),
@@ -95,6 +97,7 @@ function normalizeMessages(
         stopped: message.stopped === true,
         ...(recalled && recalled.length > 0 ? { recalledMemories: recalled } : {}),
         ...(drawingDrafts.length ? { drawingDrafts } : {}),
+        ...(images.length ? { images } : {}),
       }
     })
     .filter(message => message.content)

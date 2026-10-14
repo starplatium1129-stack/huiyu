@@ -1,6 +1,7 @@
 <template>
   <article ref="surfaceRef" class="companion-dialogue-window" :data-character="activeChar"
-    :data-dock-side="docked ? dockSide : undefined" @keydown.esc="onEscape">
+    :data-dock-side="docked ? dockSide : undefined" @keydown.esc="onEscape"
+    @dragover.prevent @drop="attachments.onImageDrop" @paste="attachments.onImagePaste">
     <section class="companion-dialogue" aria-label="角色对白">
       <header class="companion-dialogue-heading" @mousedown="startWindowDrag">
         <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
@@ -44,6 +45,7 @@
               <button v-if="msg.content" type="button" aria-label="复制这条消息" @click="copyMessage(msg.content)"><ArchiveIcon name="copy" /></button>
             </div>
             <p>{{ msg.content || (msg.stopped ? '回复已停止' : '等待回复…') }}</p>
+            <CompanionChatImages v-if="msg.images?.length" :images="msg.images" />
             <small v-if="msg.stopped && msg.content">回复已停止</small>
           </div>
         </div>
@@ -52,12 +54,14 @@
 
       <div v-else class="companion-dialogue-current" :aria-busy="replyPending" role="log" aria-label="当前对白" aria-live="off">
         <div v-if="latestUser" class="companion-dialogue-your-line"><span>你</span><p>{{ latestUser.content }}</p></div>
+        <CompanionChatImages v-if="latestUser?.images?.length" :key="`${latestUser.mid}-images`" :images="latestUser.images" />
         <p v-if="currentLine" ref="lineRef" class="companion-dialogue-line" :class="{ 'is-streaming': liveState.busy && latestReply }">{{ currentLine }}</p>
         <div v-else-if="replyPending" class="companion-dialogue-waiting" role="status">
           <span class="companion-dialogue-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span>{{ liveState.thinking ? '想一想…' : '正在回应你…' }}</span>
+          <span>{{ liveState.toolActivity || (liveState.thinking ? '想一想…' : '正在回应你…') }}</span>
         </div>
         <p v-else class="companion-dialogue-unanswered" role="status">{{ latestReply?.stopped ? '回复已停止。' : '这句还没有收到回复。' }}</p>
+        <CompanionChatImages v-if="latestReply?.images?.length" :key="`${latestReply.mid}-images`" :images="latestReply.images" />
         <button v-if="hasMoreLine" class="companion-dialogue-latest" type="button" @click="followLine">继续读<ArchiveIcon name="chevron-down" /></button>
         <div v-if="liveState.speaking || latestReply?.stopped || speechSessionActive || quietHint" class="companion-dialogue-presence" role="status">
           <span v-if="liveState.speaking"><ArchiveIcon name="sound" />正在说话</span>
@@ -73,13 +77,23 @@
     <div v-if="!liveState.chatReady" class="companion-dialogue-connection" role="status">
       <span>聊天还未连接</span><button type="button" @click="openFullRoom">连接设置<ArchiveIcon name="chevron-down" /></button>
     </div>
-    <CompanionClipboardCard :card="attachments.clipboardCard.value" :character-name="currentCharacter.name"
-      @inspect="attachments.inspectClipboardImage" @accept="attachments.acceptClipboardCard" @dismiss="attachments.dismissClipboardCard" />
     <CompanionDrawingDraftCard v-if="drawingDraft" :draft="drawingDraft" />
+    <section v-if="selectedImage" class="companion-dialogue-attachment" aria-label="待发送的图片">
+      <img :src="selectedImage.previewUrl" :alt="`待发送：${selectedImage.name}`" />
+      <div><strong>{{ selectedImage.name }}</strong><small>发送后可在作品册找回</small></div>
+      <button type="button" aria-label="移除待发送的图片" @click="attachments.cancelImageInput"><ArchiveIcon name="close" /></button>
+      <button class="companion-dialogue-image-generate" type="button" :disabled="!attachments.canGenerateImage.value"
+        @click="attachments.sendPendingImage('generate-from-image')"><ArchiveIcon name="palette" />反推并生成</button>
+    </section>
+    <input ref="imageInputRef" class="sr-only" type="file" tabindex="-1" aria-hidden="true" accept="image/png,image/jpeg,image/webp" @change="attachments.onImageInputChange" />
     <div class="companion-dialogue-composer">
+      <StudioTooltip v-if="bridge" content="发送图片，也可粘贴或拖入图片">
+        <button class="companion-dialogue-microphone" type="button" aria-label="添加图片" :disabled="attachments.preparingImage.value"
+          @click="attachments.pickImage"><ArchiveIcon name="image" /></button>
+      </StudioTooltip>
       <StudioTooltip v-if="bridge" content="让角色看当前屏幕（需支持图片的聊天模型）">
         <button class="companion-dialogue-microphone" type="button" aria-label="看屏幕"
-          :disabled="!liveState.chatReady || replyPending || attachments.capturingScreen.value" @click="attachments.onCaptureAndInspectScreen"><ArchiveIcon name="eye" /></button>
+          :disabled="!liveState.chatReady || replyPending || attachments.sendingImage.value" @click="attachments.onCaptureAndInspectScreen"><ArchiveIcon name="eye" /></button>
       </StudioTooltip>
       <StudioTooltip v-if="speechReady" :content="speechError || '按住说话，松开识别'">
         <button class="companion-dialogue-microphone" type="button" :data-state="speechState"
@@ -90,18 +104,20 @@
       </StudioTooltip>
       <textarea ref="inputRef" v-model="inputText" rows="1" maxlength="1200" class="companion-dialogue-input"
         :placeholder="`对${currentCharacter.name}说…`" aria-label="桌宠聊天输入"
-        @input="onInput" @keydown.enter.exact="submitChatOnEnter($event, onSend)"></textarea>
-      <StudioTooltip v-if="replyPending || liveState.speaking || liveState.voiceActive || attachments.capturingScreen.value" content="停止回复或语音">
+        @input="onInput" @keydown.enter.exact="submitChatOnEnter($event, sendChat)"></textarea>
+      <StudioTooltip v-if="replyPending || liveState.speaking || liveState.voiceActive || attachments.sendingImage.value" content="停止回复或语音">
         <button class="companion-dialogue-send" type="button" aria-label="停止回复或语音" @click="onStop"><ArchiveIcon name="stop" /></button>
       </StudioTooltip>
       <StudioTooltip v-else content="发送 · Enter（Shift+Enter 换行）">
-        <button class="companion-dialogue-send" type="button" aria-label="发送" :disabled="!canSend" @click="onSend"><ArchiveIcon name="send" /></button>
+        <button class="companion-dialogue-send" type="button" aria-label="发送" :disabled="selectedImage ? !attachments.canSendImage.value : !canSend" @click="sendChat"><ArchiveIcon name="send" /></button>
       </StudioTooltip>
     </div>
+    <p v-if="liveState.toolActivity" class="companion-dialogue-feedback" role="status">{{ liveState.toolActivity }}</p>
     <p v-if="errorText || liveState.chatError || speechState === 'error' && speechError || noticeText" class="companion-dialogue-feedback"
       :data-error="Boolean(errorText || liveState.chatError || speechState === 'error' && speechError)" role="status">{{ errorText || liveState.chatError || (speechState === 'error' ? speechError : '') || noticeText }}</p>
     <p v-else-if="speechState === 'acquiring' || speechState === 'capturing' || speechState === 'recognizing'"
       class="companion-dialogue-feedback" role="status">{{ speechButtonText }}</p>
+    <p v-else-if="attachments.preparingImage.value" class="companion-dialogue-feedback" role="status">正在准备图片…</p>
     <p class="sr-only" role="status" aria-live="polite">{{ !replyPending ? latestReply?.content : '' }}</p>
   </article>
 </template>
@@ -112,7 +128,6 @@ import AppearanceButton from '@/components/AppearanceButton.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
-import CompanionClipboardCard from '@/components/CompanionClipboardCard.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import { useCompanionDialogueSurface } from '@/composables/chat/useCompanionDialogueSurface'
@@ -120,6 +135,7 @@ import { useConversationReading } from '@/composables/chat/useConversationReadin
 import '@/assets/css/companion-dialogue.css'
 
 const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
+const CompanionChatImages = defineAsyncComponent(() => import('@/components/CompanionChatImages.vue'))
 const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
 const {
   attachments, activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag,
@@ -129,6 +145,11 @@ const {
   onStop, canSend, sending, errorText, speechSessionActive, onSpeechSessionEnd, onSpeechSettingsSaved,
   hasNew, latest, copyMessage, docked, docking, toggleDock,
 } = useCompanionChatWindow()
+const selectedImage = attachments.selectedImage, imageInputRef = attachments.imageInputRef
+function sendChat() {
+  if (selectedImage.value) void attachments.sendPendingImage()
+  else onSend()
+}
 const historyOpen = ref(false)
 const drawingDraft = computed(() => visibleMessages.value.flatMap(message => message.drawingDrafts || []).at(-1))
 const { surfaceRef, dockSide } = useCompanionDialogueSurface(Boolean(bridge))

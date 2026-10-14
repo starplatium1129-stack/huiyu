@@ -24,6 +24,7 @@ export function createParameterFrame(
     beginOverlaySettle: () => void
   },
 ) {
+  let parameterDefaults: Record<string, number> = {}
   function apply() {
     if (!ctx.model?.visible) return
     const now = performance.now()
@@ -118,6 +119,15 @@ export function createParameterFrame(
         void ctx.nativeAnimationAdapter.apply(frame.nativeAnimation, ctx.model, ctx.character.value)
       }
       const targets = { ...frame.live2dParams, ...ctx.emotionRuntime.targets() }
+      const releasing = new Set<string>()
+      // Read real Core defaults once when the model loads. Imported eye-open
+      // or custom face parameters must not be guessed neutral at zero.
+      for (const id of Object.keys(ctx.emotionCurrent)) if (!(id in targets)) {
+        const neutral = ctx.adapter?.emotionParams.neutral?.[id] ?? parameterDefaults[id]
+        if (typeof neutral !== 'number') { delete ctx.emotionCurrent[id]; continue }
+        targets[id] = neutral
+        releasing.add(id)
+      }
       for (const id of ctx.expressionParamIds) { delete targets[id]; delete ctx.emotionCurrent[id] }
       for (const id of ctx.nativeAnimationAdapter.activeSuppressedParamIds()) {
         delete targets[id]
@@ -140,14 +150,15 @@ export function createParameterFrame(
         }
       }
       for (const [id, target] of Object.entries(targets)) {
-        const current = ctx.emotionCurrent[id] ?? 0
+        const current = ctx.emotionCurrent[id] ?? parameterDefaults[id] ?? target
         const next = current + (target - current) * Math.min(1, dt * 6)
         ctx.emotionCurrent[id] = next
         ctx.model.setParameterValueById(id, next, 1)
       }
-      // 归零的参数交还给 idle 动作，避免表情参数常驻覆写把待机动画压死
-      for (const id of Object.keys(ctx.emotionCurrent)) {
-        if (targets[id] === 0 && Math.abs(ctx.emotionCurrent[id]) < 0.004) {
+      // 已回到作者中性值的参数交还给 idle 动作，不要求默认值为零。
+      for (const id of releasing) {
+        if (id in ctx.emotionCurrent && Math.abs(ctx.emotionCurrent[id] - targets[id]) < 0.004) {
+          ctx.model.setParameterValueById(id, targets[id], 1)
           delete ctx.emotionCurrent[id]
         }
       }
@@ -158,6 +169,8 @@ export function createParameterFrame(
     if (!ctx.model || ctx.mouthHooked) return
     // 原生后端：参数由作者工程执行，不需要 beforeModelUpdate 钩子
     if (ctx.session?.capability.parameterOverride === false) return
+    const snapshot = ctx.model.enumerateParameters?.()
+    parameterDefaults = snapshot?.supported ? Object.fromEntries(snapshot.parameters.map(param => [param.id, param.defaultValue])) : {}
     ctx.mouthHooked = true
     ctx.model.onBeforeModelUpdate(apply)
   }

@@ -43,8 +43,9 @@
             <ArchiveIcon v-if="category === 'characters' && option.id === characterId" name="success" />
           </button>
         </div>
-        <p v-if="category !== 'characters' && !controls?.ready">先在设置中加载动态立绘，再试试{{ categoryLabel }}。</p>
+        <p v-if="category !== 'characters' && !controls?.ready" role="status">{{ controls?.hint || '先在设置中加载动态立绘，再试试表情和动作。' }}</p>
         <p v-else-if="!options.length">这个角色还没有配置{{ categoryLabel }}。</p>
+        <p v-else-if="category === 'expressions' && options.some(option => option.id.startsWith('emotion:'))">情绪表情保持约 30 秒；聊天时会跟随对话变化。</p>
         <footer v-if="pages > 1" class="orbit-pagination">
           <button class="btn btn-ghost btn-sm" type="button" aria-label="上一页" :disabled="page === 0" @click="page--">上一页</button>
           <span>{{ page + 1 }} / {{ pages }}</span>
@@ -124,13 +125,13 @@ function activate(action: Action) {
 async function choose(option: Option) {
   if (category.value === 'characters') { emit('character', option.id); return }
   if (!props.controls?.ready) return
-  if (category.value === 'motions') { emit('motion', option.id); return }
+  if (category.value === 'motions') { feedback.value = ''; emit('motion', option.id); return }
   if (!props.setExpression || expressionBusy.value) return
   expressionBusy.value = true
   const turn = ++expressionTurn
   try {
     const applied = await props.setExpression(option.id)
-    if (turn === expressionTurn) feedback.value = applied ? `已切换：${option.label}` : '表情暂时没有切换成功，请重试。'
+    if (turn === expressionTurn) feedback.value = applied ? `已切换：${option.label}` : props.controls?.hint || '表情暂时没有切换成功，请重试。'
   } catch { if (turn === expressionTurn) feedback.value = '表情暂时不可用，请重试。' }
   finally { if (turn === expressionTurn) expressionBusy.value = false }
 }

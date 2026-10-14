@@ -18,6 +18,7 @@ import { CHAT_TURN_KEY } from '@/utils/storageKeys'
 import { useRoomMemory } from '@/composables/chat/useRoomMemory'
 import { useRoomSetup } from '@/composables/chat/useRoomSetup'
 import type { CharacterPetControls } from '@/composables/chat/useCharacterPetControls'
+import type { CompanionChatSendOptions } from '@/types/companionDrawing'
 
 interface CharacterStageHandle {
   petControls?: CharacterPetControls
@@ -302,16 +303,16 @@ export function useCharacterRoomSession() {
     scrollBottom,
   })
 
-  function handleSend(customText?: string | Event, imageUrl?: string, accepted?: (value: boolean) => boolean | void) {
+  function handleSend(customText?: string | Event, imageUrl?: string, accepted?: (value: boolean) => boolean | void, sendOptions: CompanionChatSendOptions = {}) {
     if (disposed || !storage.canWrite()) { accepted?.(false); return }
     characterStageRef.value?.setUserMessage()
     const text = typeof customText === 'string' ? customText : undefined
     const character = activeChar.value
     void withChatTurn(async () => {
-      if (disposed || activeChar.value !== character || busy.value || !chatReady.value || !(text ?? inputText.value).trim()) { accepted?.(false); return }
+      if (disposed || activeChar.value !== character || busy.value || (!chatReady.value && sendOptions.action !== 'generate-from-image') || !(text ?? inputText.value).trim()) { accepted?.(false); return }
       if (accepted?.(true) === false) { setError('跨窗口状态暂不可用，请在完整房间继续聊天。'); return }
       try { localStorage.setItem(CHAT_TURN_KEY, String(Date.now())) } catch { /* optional playback coordination */ }
-      await sendMessage(text, imageUrl)
+      await sendMessage(text, imageUrl, sendOptions)
     }, () => { accepted?.(false); if (!disposed) setError('另一个聊天窗口正在回复，草稿已保留。请等回复结束，或在那个窗口停止。', 'info') })
   }
 

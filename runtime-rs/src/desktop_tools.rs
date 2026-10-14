@@ -1,5 +1,4 @@
 mod commands;
-mod draft;
 mod files;
 mod paths;
 
@@ -79,7 +78,7 @@ impl DesktopToolsService {
         self.shutdown.cancel();
         tokio::join!(self.processes.close(), self.listings.close());
     }
-    async fn run(&self, name: &str, args: &Value, adult_enabled: bool) -> Result<Value> {
+    async fn run(&self, name: &str, args: &Value) -> Result<Value> {
         if self.shutdown.is_cancelled() {
             return Err(Error::cancelled());
         }
@@ -102,9 +101,6 @@ impl DesktopToolsService {
             "get_workspace_info" => Ok(
                 json!({"ok":true,"output":crate::storage::stringify(&json!({"workspaceRoot":paths::display(&self.root),"exists":self.root.exists(),"os":if cfg!(windows){"win32"}else{std::env::consts::OS},"commandMode":if self.trusted{"trusted-system-account"}else{"disabled"}}))}),
             ),
-            "generate_character_image" => {
-                draft::prepare(&self.root, args, adult_enabled, &self.shutdown).await
-            }
             _ => Err(Error::plain(format!("未知工具：{name}"))),
         };
         if self.shutdown.is_cancelled() {
@@ -179,9 +175,7 @@ async fn execute(
     };
     // File I/O and commands stay owned by the request future. A disconnected
     // caller drops that future, invoking temporary-file/process cleanup guards.
-    let result = service
-        .run(name, args, payload["adultEnabled"] == true)
-        .await;
+    let result = service.run(name, args).await;
     Json(result.unwrap_or_else(Error::value)).into_response()
 }
 fn text(value: &Value) -> String {

@@ -36,6 +36,9 @@ import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { studioDualSubject } from '@/utils/studioDualSubject'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
+export type PromptAssemblyState = Pick<PromptBuilderStore, 'activeScene' | 'artistStyleIds' | 'char' | 'characters' | 'charPrompt'
+  | 'colorMood' | 'concise' | 'directorMode' | 'emotionPrompt' | 'loraMeta' | 'manualTags' | 'modelProfiles' | 'randomVariation'
+  | 'sdModelName' | 'sdParams' | 'selections' | 'tags' | 'visualDescription' | 'sceneId' | 'subject'>
 
 function studioSubjectProse(character: string): string {
   if (character === 'nene') {
@@ -76,7 +79,7 @@ function sceneContext(scene: PromptBuilderStore['activeScene']) {
  * token 契约从视图传入的服务端 LoRA id（宁宁当前稳定版 V20B / 夏目 V20）解析。
  */
 export function usePromptAssembly(
-  pb: PromptBuilderStore,
+  pb: PromptAssemblyState,
   checkpoint: Readonly<Ref<string>>,
   engine: Readonly<Ref<PromptEngine>>,
   modelName: Readonly<Ref<string>>,

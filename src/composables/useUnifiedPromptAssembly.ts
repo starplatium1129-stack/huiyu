@@ -1,10 +1,8 @@
 import { computed, type Ref } from 'vue'
-import { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
-import { usePopularPromptAssembly } from '@/composables/prompt/usePopularPromptAssembly'
+import { usePromptAssembly, type PromptAssemblyState } from '@/composables/prompt/usePromptAssembly'
+import { usePopularPromptAssembly, type PopularPromptAssemblyState } from '@/composables/prompt/usePopularPromptAssembly'
 import type { PromptEngine } from '@/utils/promptPolicy'
-import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-
-type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
+export type UnifiedPromptAssemblyState = PromptAssemblyState & PopularPromptAssemblyState & { readonly isPopular: boolean }
 
 /**
  * 统一 Prompt 组装出口（P1 重构）
@@ -12,7 +10,7 @@ type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
  * `positivePrompt/negativePrompt/previewPrompt/report`，内部按 subject 择流。
  */
 export function useUnifiedPromptAssembly(
-  pb: PromptBuilderStore,
+  pb: UnifiedPromptAssemblyState,
   checkpoint: Readonly<Ref<string>>,
   engine: Readonly<Ref<PromptEngine>>,
   modelName: Readonly<Ref<string>>,
