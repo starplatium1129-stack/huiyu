@@ -46,7 +46,8 @@
 .pb .generation-percent { font:600 12px/1.2 var(--font-mono); font-variant-numeric:tabular-nums; }
 .pb .generation-action:disabled { color:var(--text-disabled); }
 .pb .generation-action:disabled .generation-action-surface { border-color:var(--border-soft); background:var(--bg-elevated); }
-.pb :is(.gen-bar-recovery,.generation-action):focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.pb :is(.gen-bar-recovery,.generation-action):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.pb .generation-action[data-state="idle"]:focus-visible { --focus-shadow:inset 0 -2px 0 currentColor; }
 .pb .gen-bar[data-docked] { flex-direction:column; align-items:stretch; border:0; border-radius:0; }
 .pb .gen-bar[data-docked] :is(.gen-bar-meta,.gen-bar-blocked,.gen-bar-actions) { flex:0 0 auto; width:100%; margin:0; }
 @keyframes generation-traverse { from { transform:translateX(-110%); } to { transform:translateX(370%); } }

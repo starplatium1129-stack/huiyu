@@ -57,7 +57,7 @@ watch(() => props.expert, value => {
 .material-switch button { display:flex; flex:1; min-width:0; min-height:42px; align-items:center; justify-content:center; gap:6px; padding:8px 4px; border:0; border-bottom:2px solid transparent; border-radius:0; background:transparent; color:var(--text-secondary); font:500 13px var(--font-sans); cursor:pointer; }
 .material-switch button[data-state=active] { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
 .material-switch button:hover { background:var(--accent-soft); }
-.material-switch button:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+.material-switch button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .material-switch .archive-icon { width:16px; height:16px; }
 .material-content { padding:20px; }
 .material-content :deep(.panel) { border:0; box-shadow:none; background:transparent; padding:0; margin:0; }

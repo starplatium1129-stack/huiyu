@@ -107,7 +107,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-card { --card-focus-lift:0px; --card-focus-scale:1; display:grid; grid-template-rows:minmax(0,1fr) auto; height:var(--inspiration-height); min-width:0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); transform:translateY(var(--card-focus-lift)); transition:transform var(--motion-surface) var(--ease-out); }
 .inspiration-deck-card.only-card { grid-column:1/-1; }
 .inspiration-deck-card.front { transform:translate3d(var(--deck-x),var(--card-focus-lift),0); opacity:var(--deck-opacity); transition:transform 240ms var(--ease-out),opacity 240ms var(--ease-out); }
-.inspiration-deck-stage:not(.dragging):not(.still) .inspiration-deck-card:has(:focus-visible) { --card-focus-lift:-6px; --card-focus-scale:1.06; border-color:var(--accent); box-shadow:var(--shadow-md); }
+.inspiration-deck-stage:not(.dragging):not(.still) .inspiration-deck-card:has(:focus-visible) { --card-focus-lift:-6px; --card-focus-scale:1.06; border-color:var(--border-strong); box-shadow:var(--shadow-md); }
 .inspiration-deck-card:has(:focus-visible) :deep(.inspiration-artwork.ready::after) { opacity:1; }
 .inspiration-deck-card :deep(.inspiration-artwork.ready > img) { transform:scale(var(--card-focus-scale)); }
 @media (hover:hover) and (pointer:fine) {
@@ -125,7 +125,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-copy .inspiration-deck-open { grid-column:2; grid-row:1; }
 .inspiration-deck-open { display:inline-flex; align-items:center; gap:var(--s-1); min-height:var(--control-height-sm); padding:0; border:0; background:transparent; color:var(--accent); font:500 var(--fs-label-sm)/var(--lh-body) var(--font-sans); cursor:pointer; }
 .inspiration-deck-open:hover { text-decoration:underline; text-underline-offset:3px; }
-.inspiration-deck-stage:focus-visible, .inspiration-deck :is(button,a):focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.inspiration-deck-stage:focus-visible, .inspiration-deck :is(button,a):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .inspiration-feature { grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-template-rows:minmax(0,1fr); align-items:stretch; gap:var(--s-3); padding:var(--s-4); }
 .inspiration-feature-copy { display:flex; flex-direction:column; align-items:flex-start; align-self:center; gap:var(--s-2); min-width:0; }
 .inspiration-feature-label { color:var(--accent); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing:.04em; }

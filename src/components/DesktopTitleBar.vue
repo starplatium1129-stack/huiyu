@@ -138,8 +138,8 @@ onUnmounted(() => {
   background: var(--desktop-titlebar-press-bg);
 }
 .tb-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 .tb-close:hover {
   background: color-mix(in srgb, var(--danger) 12%, var(--bg-surface));

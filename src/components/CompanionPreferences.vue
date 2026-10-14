@@ -65,7 +65,7 @@ h2 { @apply tw:m-0 tw:text-body; font-weight: 650; }
 .preferences-heading svg { @apply tw:w-[18px] tw:h-[18px]; }
 .preferences-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); flex: 0 0 auto; margin: 0 var(--s-4) var(--s-3); border: 1px solid var(--border-soft); background: var(--bg-surface); }
 .preferences-tabs button { @apply tw:flex tw:items-center tw:justify-center tw:gap-[6px] tw:min-h-[40px] tw:p-[4px]; border: 1px solid transparent; @apply tw:rounded-md; background: transparent; @apply tw:text-secondary tw:text-label-sm tw:cursor-pointer; }
-.preferences-tabs button[aria-selected="true"] { @apply tw:text-primary; background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated)); @apply tw:border-accent; }
+.preferences-tabs button[aria-selected="true"] { @apply tw:text-primary; background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated)); @apply tw:border-strong; }
 .preferences-tabs svg { @apply tw:w-[17px] tw:h-[17px]; }
 .companion-preferences-body { overscroll-behavior: contain; padding: 0 var(--s-4) var(--s-4); scrollbar-width: thin; }
 .companion-preferences-body :deep(.companion-pop-group) { @apply tw:hidden tw:gap-[4px] tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-surface); }
@@ -84,7 +84,7 @@ h2 { @apply tw:m-0 tw:text-body; font-weight: 650; }
 .companion-preferences-body :deep(.companion-pop-volume input::-moz-range-thumb) { @apply tw:w-[12px] tw:h-[12px]; border: 3px solid var(--bg-elevated); border-radius: 50%; background: var(--accent); @apply tw:cursor-grab; }
 .companion-preferences-body :deep(.live2d-quality-control) { @apply tw:mt-s-3; }
 .companion-preferences-body :deep(.live2d-quality-options) { @apply tw:rounded-md; background: var(--bg-elevated); }
-.companion-preferences-body :deep(.live2d-quality-option[aria-checked="true"]) { @apply tw:border-accent; background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface)); }
+.companion-preferences-body :deep(.live2d-quality-option[aria-checked="true"]) { @apply tw:border-strong; background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface)); }
 .companion-preferences-body :deep(.live2d-quality-option[aria-checked="true"] small) { @apply tw:text-secondary; }
-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 </style>

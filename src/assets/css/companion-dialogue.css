@@ -62,7 +62,7 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-controls button[aria-pressed='true'],
 .companion-dialogue-speaker button:hover { background:var(--bg-hover); color:var(--text-primary); }
 .companion-dialogue-window .archive-icon { width:15px; height:15px; flex-shrink:0; }
-.companion-dialogue-window :is(button,textarea,[tabindex]):focus-visible { outline:2px solid var(--character-accent); outline-offset:2px; }
+.companion-dialogue-window :is(button,textarea,[tabindex]):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .companion-dialogue-window button:disabled { color:var(--text-disabled); cursor:not-allowed; }
 .companion-dialogue-window:not([data-desktop]) { max-height:100dvh; }
 .companion-dialogue-history { position:relative; display:flex; flex-direction:column; flex:1 1 auto; min-height:0; background:transparent; }
@@ -94,7 +94,7 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-presence .archive-icon { width:12px; height:12px; }
 .companion-dialogue-presence > button { min-height:24px; border:0; padding:2px 4px; background:transparent; color:var(--text-secondary); }
 .companion-dialogue-composer { display:flex; align-items:flex-end; gap:6px; margin-top:10px; padding:5px 6px 5px 12px; border:1px solid var(--border-soft); border-radius:18px; background:var(--dialogue-control-surface); box-shadow:var(--shadow-sm); }
-.companion-dialogue-composer:focus-within { border-color:var(--character-accent); }
+.companion-dialogue-composer:focus-within { border-color:var(--border-strong); }
 .companion-dialogue-attachment { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:10px; padding:10px; border:1px solid var(--border-soft); border-radius:14px; background:var(--dialogue-control-surface); }
 .companion-dialogue-attachment > img { width:56px; height:56px; object-fit:contain; border-radius:8px; background:var(--bg-elevated); }
 .companion-dialogue-attachment > div { flex:1; min-width:0; }
@@ -104,7 +104,7 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-image-generate { flex-shrink:0; }
 .companion-dialogue-attachment button:disabled,
 .companion-dialogue-microphone:disabled { color:var(--text-disabled); cursor:default; }
-.companion-dialogue-attachment button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.companion-dialogue-attachment button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .companion-dialogue-window .companion-dialogue-bubble .companion-chat-images { margin-top:6px; }
 .companion-dialogue-window .companion-dialogue-bubble .companion-chat-images figure { min-width:0; max-width:100%; padding:0; border:0; background:transparent; }
 .companion-dialogue-window .companion-dialogue-bubble .companion-chat-image-open img { max-height:300px; }

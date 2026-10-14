@@ -5,11 +5,11 @@
 .cb-search-wrap { @apply tw:relative tw:mb-s-3; }
 .cb-search-icon { @apply tw:absolute tw:left-[12px] tw:top-[50%] tw:w-[15px] tw:h-[15px]; transform: translateY(-50%); @apply tw:text-muted tw:pointer-events-none; }
 .cb-search { @apply tw:w-full; padding: var(--s-3) var(--s-4) var(--s-3) 38px; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body; outline: none; }
-.cb-search:focus { @apply tw:border-accent; }
+.cb-search:focus { @apply tw:border-strong; }
 .cb-franchises { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:mb-s-4 tw:p-s-3; border: 1px solid color-mix(in srgb, var(--archive-blue) 22%, var(--border-soft)); border-radius: var(--r-dossier); background: color-mix(in srgb, var(--bg-surface) 62%, transparent); }
 .cb-franchise { @apply tw:inline-flex tw:items-center tw:gap-[6px]; padding: 5px 12px; border: 1px solid var(--border-soft); @apply tw:rounded-pill; background: var(--bg-surface); @apply tw:text-secondary tw:text-label-sm tw:font-semibold tw:cursor-pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover); }
 .cb-franchise:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
-.cb-franchise.active { @apply tw:border-accent tw:text-accent; background: var(--accent-soft); }
+.cb-franchise.active { @apply tw:border-strong tw:text-accent; background: var(--accent-soft); }
 /* 单角色作品折叠项与「更多」开关：弱化层级，不与高频作品抢注意力 */
 .cb-franchise-minor { border-style: dashed; opacity: .88; }
 .cb-franchise-toggle { @apply tw:text-muted; background: transparent; @apply tw:border-soft; }
@@ -34,9 +34,9 @@
 @media (hover: hover) and (pointer: fine) {
   .cb-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); transform: translateY(-1px); }
 }
-.cb-card.active { @apply tw:border-accent; background: color-mix(in srgb, var(--accent) 10%, var(--bg-surface)); }
+.cb-card.active { @apply tw:border-strong; background: color-mix(in srgb, var(--accent) 10%, var(--bg-surface)); }
 .cb-avatar { @apply tw:relative tw:w-[64px] tw:h-[64px]; border-radius: 50%; @apply tw:overflow-hidden; border: 1px solid var(--border-soft); background: var(--bg-deep); @apply tw:grid; place-items: center; }
-.cb-card.active .cb-avatar { @apply tw:border-accent; }
+.cb-card.active .cb-avatar { @apply tw:border-strong; }
 .cb-avatar img { @apply tw:w-full tw:h-full tw:object-cover; }
 .cb-avatar-fallback {
   @apply tw:w-full tw:h-full tw:grid; place-items: center;
@@ -187,7 +187,7 @@
 .recommendation-story-head h2 { margin:var(--s-2) 0 0; @apply tw:text-title-sm tw:leading-body; overflow-wrap:anywhere; }
 .recommendation-story-head .btn { @apply tw:shrink-0; }
 .recommendation-story-body { @apply tw:min-h-0 tw:m-0 tw:p-s-4 tw:overflow-auto tw:text-secondary tw:text-body tw:leading-loose tw:whitespace-pre-line; overscroll-behavior:contain; overflow-wrap:anywhere; }
-.recommendation-story-body:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+.recommendation-story-body:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .recommendation-story-actions { @apply tw:p-s-4 tw:shrink-0; border-top:1px solid var(--border-soft); }
 .recommendation-story-actions .btn { @apply tw:w-full tw:justify-center; }
 

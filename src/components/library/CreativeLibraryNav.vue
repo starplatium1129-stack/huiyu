@@ -25,6 +25,6 @@ html body .creative-library-nav.studio-segments[role] { display:grid; width:min(
 .creative-library-nav .archive-icon { width:18px; height:18px; flex-shrink:0; }
 .creative-library-nav a:hover { background:var(--bg-hover); @apply tw:text-primary; }
 .creative-library-nav a[aria-current="page"] { background:transparent; @apply tw:text-accent tw:font-semibold; }
-.creative-library-nav a:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+.creative-library-nav a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (max-width:600px) { html body .creative-library-nav.studio-segments[role] { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 </style>

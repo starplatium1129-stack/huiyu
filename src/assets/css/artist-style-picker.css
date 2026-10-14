@@ -93,7 +93,7 @@
   @apply tw:text-primary;
 }
 .artist-combo-btn.active {
-  @apply tw:border-accent;
+  @apply tw:border-strong;
   background: var(--accent-soft);
   @apply tw:text-accent;
   box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 25%, transparent);
@@ -148,7 +148,7 @@
   @apply tw:text-primary tw:border-accent;
 }
 .artist-cat-btn.active {
-  @apply tw:border-accent;
+  @apply tw:border-strong;
   background: var(--accent-soft);
   @apply tw:text-accent;
 }
@@ -173,7 +173,7 @@
 }
 .artist-style-grid button:hover:not(:disabled),
 .artist-style-grid button.selected {
-  @apply tw:border-accent tw:text-primary;
+  @apply tw:border-strong tw:text-primary;
 }
 .artist-style-grid button.selected {
   background: color-mix(in srgb, var(--accent) 12%, var(--bg-deep));

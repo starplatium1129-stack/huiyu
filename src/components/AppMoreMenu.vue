@@ -66,14 +66,14 @@ function focusFirstPage(event: Event) {
 .nav-more-menu a { @apply tw:min-w-0 tw:min-h-[44px] tw:text-secondary; font:500 var(--fs-label)/var(--lh-body) var(--font-sans); text-decoration:none; white-space:normal; }
 .nav-more-menu a > span { min-width:0; overflow-wrap:anywhere; }
 .nav-more-menu a:hover,.nav-more-menu a.active { @apply tw:text-accent; background:var(--accent-soft); }
-.nav-more-menu a[data-pending='true'],.nav-more-menu a[data-intent='true'] { outline:1px solid var(--border-strong); outline-offset:-1px; background:var(--accent-soft); @apply tw:text-primary; }
+.nav-more-menu a[data-pending='true'],.nav-more-menu a[data-intent='true'] { outline:none; box-shadow:var(--focus-shadow); background:var(--accent-soft); @apply tw:text-primary; }
 .nav-more-menu .archive-icon { @apply tw:shrink-0 tw:w-[16px] tw:h-[16px]; }
 .nav-more-trigger .nav-more-chevron { transition:none; }
 .nav-more-heading { grid-column:1 / -1; @apply tw:flex tw:justify-between tw:items-center tw:gap-s-3 tw:text-primary tw:text-body-sm tw:pb-s-2; border-bottom:1px solid var(--border-soft); }
 .nav-more-heading button { @apply tw:grid; place-items:center; @apply tw:min-w-[40px] tw:min-h-[40px]; border:0; @apply tw:rounded-md; background:var(--bg-base); @apply tw:text-secondary tw:cursor-pointer; }
 .nav-more-heading button:hover { background:var(--accent-soft); color:var(--accent); }
 .nav-more-menu .nav-current-label { @apply tw:ml-auto tw:shrink-0 tw:text-accent tw:text-label-xs; }
-.nav-more-menu :is(a,button):focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+.nav-more-menu :is(a,button):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .nav-more-utilities { grid-column:1 / -1; @apply tw:grid tw:gap-s-1 tw:pt-s-2; border-top:1px solid var(--border-soft); }
 .nav-more-menu .nav-help { @apply tw:min-h-[44px] tw:p-s-3; border:0; @apply tw:rounded-md; background:transparent; @apply tw:text-secondary tw:text-left; font:500 var(--fs-label)/var(--lh-body) var(--font-sans); @apply tw:cursor-pointer; }
 .nav-more-utilities .appearance-entry { @apply tw:min-w-0 tw:min-h-[44px]; font:500 var(--fs-label)/var(--lh-body) var(--font-sans); }

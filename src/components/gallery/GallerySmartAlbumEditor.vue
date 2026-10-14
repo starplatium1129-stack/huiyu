@@ -79,7 +79,7 @@ const tagChoice = computed({ get: () => '', set: (value: string | number) => {
 .smart-album-tag .archive-icon { @apply tw:w-[14px] tw:h-[14px] tw:shrink-0; }
 .smart-album-note { @apply tw:m-0 tw:text-secondary tw:text-label-sm tw:leading-body; }
 .smart-album-favorite { @apply tw:flex tw:items-center tw:gap-s-2 tw:rounded-md tw:text-secondary tw:text-label-sm tw:cursor-pointer; min-height:40px; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); background:var(--bg-base); }
-.smart-album-favorite.active { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
+.smart-album-favorite.active { color:var(--accent); border-color:var(--border-strong); background:var(--accent-soft); }
 .smart-album-favorite .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }
 .smart-album-preview { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:rounded-md; padding:var(--s-3); border:1px solid var(--border-soft); background:var(--bg-base); }
 .smart-album-preview strong { @apply tw:block tw:mb-s-1 tw:text-primary tw:text-body-sm; }
@@ -88,7 +88,7 @@ const tagChoice = computed({ get: () => '', set: (value: string | number) => {
 .smart-album-preview-images img { @apply tw:w-full tw:h-full tw:object-cover; }
 .smart-album-actions { @apply tw:flex tw:justify-end tw:gap-s-2; }
 .smart-album-error { @apply tw:m-0 tw:text-warning-text tw:text-label-sm; }
-.smart-album-editor button:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.smart-album-editor button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .smart-album-editor button:disabled,.smart-album-editor input:disabled { color:var(--text-disabled); }
 /* StudioSelect portals to body; its popup belongs above this editor's overlay. */
 :global(body:has(.smart-album-editor) .studio-select-content) { z-index:calc(var(--z-overlay) + 1); }

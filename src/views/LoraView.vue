@@ -203,6 +203,6 @@ onMounted(() => { void loadCatalog() })
 .evaluation-panel dd { @apply tw:m-0 tw:leading-body; overflow-wrap:anywhere; }
 .evaluation-panel code { @apply tw:whitespace-normal; }
 
-.model-details summary:focus-visible, .evaluation-panel summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.model-details summary:focus-visible, .evaluation-panel summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (prefers-reduced-motion:reduce) { .model-details summary .archive-icon, .evaluation-panel summary .archive-icon { transition:none; } }
 </style>

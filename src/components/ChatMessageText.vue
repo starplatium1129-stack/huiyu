@@ -33,5 +33,5 @@ const parts = computed(() => {
 <style scoped>
 .chat-message-text { white-space:pre-wrap; overflow-wrap:anywhere; }
 .chat-message-text a { color:inherit; text-decoration:underline; text-underline-offset:3px; }
-.chat-message-text a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:2px; }
+.chat-message-text a:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:2px; }
 </style>

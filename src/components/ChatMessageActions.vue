@@ -51,8 +51,8 @@ function closeAutoFocus(event: Event) {
 .message-actions-trigger { display:grid; place-items:center; flex:none; width:28px; height:28px; padding:0; border:0; border-radius:8px; background:transparent; color:var(--text-secondary); cursor:pointer; }
 .message-actions-trigger .archive-icon { width:14px; height:14px; }
 .message-actions-trigger:is(:hover,[data-state='open']) { background:var(--bg-hover); color:var(--text-primary); }
-.message-actions-trigger:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.message-actions-trigger:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .message-actions-menu .chat-more-item[data-disabled] { color:var(--text-disabled); cursor:default; }
-.message-actions-menu .chat-more-item[data-highlighted] { outline:2px solid var(--accent); outline-offset:-2px; }
+.message-actions-menu .chat-more-item[data-highlighted] { outline:none; box-shadow:var(--focus-shadow); }
 .message-action-memory { margin:4px 12px; color:var(--text-secondary); font:400 13px/1.6 var(--font-sans); overflow-wrap:anywhere; }
 </style>

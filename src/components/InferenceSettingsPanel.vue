@@ -129,7 +129,7 @@ onMounted(refresh)
 .inference-field { display: grid; align-content: start; gap: var(--s-2); min-width: 0; }
 .inference-field label { color: var(--text-primary); }
 .inference-field input { width: 100%; min-width: 0; box-sizing: border-box; border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: var(--s-3); background: var(--bg-surface); color: var(--text-primary); font: inherit; }
-.inference-field input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.inference-field input:focus-visible, summary:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .inference-field input:disabled { color: var(--text-disabled); }
 .inference-field small { color: var(--text-secondary); line-height: var(--lh-body); }
 .inference-paths, .inference-actions { grid-column: 1 / -1; }

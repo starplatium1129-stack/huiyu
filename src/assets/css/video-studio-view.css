@@ -54,6 +54,7 @@
 }
 .video-mode-card:active:not(:disabled) { transform:scale(.98); }
 .video-mode-card:focus-visible:active { transform:none; transition:none; }
+html .video-studio .video-mode-card:focus-visible { box-shadow:var(--focus-shadow); }
 .video-mode-card.active { background:transparent; @apply tw:text-accent; }
 /* 审计修复: 不用 opacity 压字 */
 .video-mode-card:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed; }
@@ -94,7 +95,7 @@
   transition:transform var(--motion-press) var(--ease-out);
 }
 .video-upload-drop:hover { @apply tw:border-accent tw:text-secondary; }
-.video-upload-drop:focus-within { outline:2px solid var(--accent); outline-offset:4px; transform:none; transition:none; }
+.video-upload-drop:focus-within { outline:none; box-shadow:var(--focus-shadow); transform:none; transition:none; }
 .video-upload-drop--single { @apply tw:min-h-[220px]; align-content:center; @apply tw:gap-s-3; }
 .video-upload-drop--single strong { @apply tw:text-primary tw:text-title-xs; }
 .video-upload-drop--single span { max-width:38ch; }
@@ -120,7 +121,7 @@
 .video-disclosure-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); min-height:var(--control-height-sm); padding:var(--s-2); margin-inline:calc(-1 * var(--s-2)); border-radius:var(--r-sm); }
 .video-disclosure-heading > span { min-width:0; }
 .video-disclosure-heading:hover { background:var(--bg-hover); }
-.video-disclosure-heading:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.video-disclosure-heading:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .video-advanced-grid { @apply tw:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); @apply tw:gap-s-3 tw:mt-s-3; }
 .video-steps-toggle { @apply tw:flex tw:items-start tw:gap-s-3; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-deep); @apply tw:cursor-pointer tw:text-left; }
 .video-steps-toggle > span { flex:1; }
@@ -147,7 +148,7 @@
   @apply tw:grid; grid-template-columns:minmax(0,1fr) auto; @apply tw:items-center tw:gap-s-3 tw:w-full tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-md;
   background:var(--bg-deep); @apply tw:text-secondary tw:text-left tw:cursor-pointer;
 }
-.video-model-row.active { @apply tw:border-accent; background:var(--accent-soft); }
+.video-model-row.active { @apply tw:border-strong; background:var(--accent-soft); }
 .video-model-row:not(:disabled):hover { border-color:var(--accent); }
 .video-model-row strong,.video-model-row small { @apply tw:block; overflow-wrap:anywhere; }
 .video-model-row small { @apply tw:mt-[3px] tw:text-muted tw:text-body-sm tw:leading-label; }

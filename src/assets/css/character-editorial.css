@@ -36,7 +36,7 @@
 .profile-story { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; @apply tw:overflow-hidden tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-loose tw:whitespace-pre-line; overflow-wrap:anywhere; }
 .profile-story.expanded { @apply tw:block; }
 .profile-story-toggle { padding:var(--s-2) 0; border:0; background:transparent; @apply tw:text-accent; font:500 var(--fs-label-sm) var(--font-sans); @apply tw:cursor-pointer; }
-.profile-story-toggle:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.profile-story-toggle:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .character-editorial .detail-grid { @apply tw:gap-s-4 tw:mt-s-4 tw:pt-s-4; border-top:1px solid var(--border-soft); }
 .character-editorial .detail-section { @apply tw:p-0; background:transparent; @apply tw:min-w-0; }
 .character-editorial .lab { margin:0 0 var(--s-2); @apply tw:text-primary; font:600 var(--fs-label-sm) var(--font-sans); letter-spacing:0; }

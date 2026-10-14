@@ -94,6 +94,6 @@ onUnmounted(library.stop)
 .resource-footnote { margin:var(--s-3) 0 0; font-size:var(--fs-label-xs); }
 .resource-actions button:disabled { @apply tw:text-disabled; opacity: 1; @apply tw:cursor-not-allowed; }
 .resource-selection :deep(.studio-select-trigger):disabled { @apply tw:text-disabled; opacity: 1; @apply tw:cursor-not-allowed; }
-.resource-actions button:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 3px; }
-.resource-selection :deep(.studio-select-trigger):focus-visible { outline: 2px solid var(--text-primary); outline-offset: 3px; }
+.resource-actions button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+.resource-selection :deep(.studio-select-trigger):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 </style>

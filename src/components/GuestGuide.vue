@@ -100,14 +100,14 @@ function dismiss() {
 .guest-guide-destinations { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); margin-block:var(--s-4); }
 .guest-guide-destinations a { display:grid; justify-items:center; gap:var(--s-3); padding:var(--s-4) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--accent); background:var(--bg-elevated); text-decoration:none; }
 .guest-guide-destinations a:hover { border-color:var(--accent); }
-.guest-guide-destinations a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.guest-guide-destinations a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .guest-guide-destinations .archive-icon { width:28px; height:28px; }
 .guest-guide-destinations strong { font-size:var(--fs-body-sm); }
 .guest-guide-doc {
   text-decoration: underline; text-underline-offset: 3px;
 }
 .guest-guide-doc:hover { @apply tw:text-accent; }
-.guest-guide-doc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.guest-guide-doc:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 @media (prefers-reduced-motion: reduce) {
   .guest-guide { backdrop-filter: none; animation: none; }
   .guest-guide-card { animation: none; }

@@ -211,7 +211,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-output-note svg { @apply tw:w-[16px] tw:h-[16px] tw:text-accent tw:shrink-0; }
 .anima-output-note span { flex-basis: 100%; @apply tw:text-secondary; }
 .anima-quick-panel input:disabled { opacity: 1; @apply tw:text-disabled; -webkit-text-fill-color: var(--text-disabled); @apply tw:cursor-not-allowed; }
-.anima-quick-panel :is(input, textarea, button, summary):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.anima-quick-panel :is(input, textarea, button, summary):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .anima-quick-panel :is(button):active:not(:disabled) { transform: scale(.97); }
 .anima-status { @apply tw:whitespace-nowrap; }
 .anima-heading > span:first-child { @apply tw:min-w-0; overflow-wrap: anywhere; }

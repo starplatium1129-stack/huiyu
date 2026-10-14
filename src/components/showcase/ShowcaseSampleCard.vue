@@ -57,13 +57,14 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample { @apply tw:overflow-hidden tw:relative tw:min-w-0; flex:var(--sample-grow) 1 calc(var(--showcase-row-height,320px) * var(--sample-grow)); max-width:100%; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
 :root body .showcase-page .sample { border-radius:var(--r-sm); box-shadow:none; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-surface) var(--ease-out); }
 :root body .showcase-page .sample { --card-focus-lift:-6px; --card-focus-scale:1.06; }
-:root body .showcase-page .sample:has(:focus-visible) { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
+:root body .showcase-page .sample:has(:focus-visible) { transform:translateY(var(--card-focus-lift)); border-color:var(--border-strong); box-shadow:var(--shadow-md); }
 .sample:not(.sample-r18):has(:focus-visible) .sample-image { transform:scale(var(--card-focus-scale)); }
 .sample:not(.sample-r18):has(:focus-visible) .sample-visual::after { opacity:1; }
 .sample:has(:focus-visible) .sample-title { color:var(--accent); }
 /* 自然尺寸校正缺失或过时的目录尺寸；按原始比例分配行宽，完整展示原画。 */
 .sample-visual { aspect-ratio:var(--sample-ratio, 3 / 4); border:0; background:var(--art-mat); color:var(--on-art-primary); cursor:zoom-in; }
-.sample-visual:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
+.sample-visual:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.sample:has(.sample-visual:focus-visible) .sample-caption { box-shadow:var(--focus-shadow); }
 /* Card reveal starts after decoding; the image itself never fades back to black. */
 .sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); transition:transform var(--motion-route) var(--ease-out); }
 /* Keep the highlight below captions and leave restricted preview layers unchanged. */

@@ -21,7 +21,7 @@
   .pb .voice-controls { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-2 tw:mb-s-3; }
   .pb .voice-field { @apply tw:grid tw:gap-[4px] tw:min-w-0 tw:text-muted tw:text-mono-sm; }
   /* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；宽度继承组件默认 100%。 */
-  .pb .voice-text:focus { @apply tw:border-accent; box-shadow:0 0 0 2px var(--accent-glow); }
+  .pb .voice-text:focus { @apply tw:border-strong; box-shadow:var(--focus-shadow); }
   .pb .voice-text { @apply tw:w-full tw:min-h-[130px] tw:resize-y tw:box-border tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:text-primary; font: var(--fs-body-sm)/1.7 var(--font-sans); outline:none; }
   .pb .voice-copy { @apply tw:p-s-3; border:1px solid color-mix(in srgb,var(--accent) 24%,var(--border-soft)); @apply tw:rounded-md; background:color-mix(in srgb,var(--accent) 5%,var(--bg-surface)); }
   .pb .voice-copy-head { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:mb-s-2; }

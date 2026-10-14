@@ -7,7 +7,7 @@
 .char-btn { @apply tw:flex tw:items-center tw:gap-s-2; font:inherit; }
 .scenario-page .scenario-list { @apply tw:grid; grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-s-4 tw:p-0; border:0; background:transparent; box-shadow:none; }
 .scenario-card { @apply tw:min-w-0 tw:w-full tw:overflow-hidden tw:p-0; border:1px solid var(--border-soft); @apply tw:rounded-xl tw:text-left; background:var(--bg-surface); @apply tw:text-primary; font:inherit; @apply tw:cursor-pointer; }
-.scenario-card.active { @apply tw:border-accent; box-shadow:inset 0 -3px var(--accent); }
+.scenario-card.active { @apply tw:border-strong; box-shadow:inset 0 -3px var(--accent); }
 .scenario-cover { @apply tw:block; aspect-ratio:16 / 9; @apply tw:overflow-hidden; background:var(--bg-elevated); }
 .scenario-cover.is-unconnected { aspect-ratio:auto; @apply tw:h-[88px]; }
 .scenario-cover img { @apply tw:block tw:w-full tw:h-full tw:object-cover; object-position:center 30%; transition:transform var(--motion-surface) var(--ease-out); }
@@ -53,7 +53,7 @@
 .art-warn { @apply tw:mb-s-3 tw:text-warning-text tw:text-body-sm; }
 .act-actions .btn { @apply tw:w-full tw:min-h-[44px] tw:text-body-sm; }
 .scenario-handoff { @apply tw:flex tw:justify-between tw:items-center tw:flex-wrap tw:gap-s-3 tw:mt-s-5 tw:pt-s-4; border-top:1px solid var(--border-soft); @apply tw:text-secondary tw:text-body-sm; }
-.scenario-card:focus-visible, .char-btn:focus-visible, .act-details > summary:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.scenario-card:focus-visible, .char-btn:focus-visible, .act-details > summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media(hover:hover) { .scenario-card:hover .scenario-cover img { transform:scale(1.025); } }
 @media(max-width:1200px) { .acts { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:768px) { .scenario-page .scenario-list { @apply tw:flex tw:overflow-x-auto; padding:var(--s-1) var(--s-1) var(--s-3); scroll-snap-type:x proximity; } .scenario-card { flex:0 0 min(82vw,340px); scroll-snap-align:start; } .scenario-library-heading, .viewer-header-row { @apply tw:flex-wrap; } .viewer { @apply tw:mt-s-5; } }

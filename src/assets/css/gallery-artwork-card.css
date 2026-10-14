@@ -8,23 +8,23 @@
 :root body .gallery-page .artwork { border-radius:var(--r-sm); transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-surface) var(--ease-out); }
 :root body .gallery-page .artwork:not(.artwork-selected) { box-shadow:none; }
 :root body .gallery-page .artwork { --card-focus-lift:-6px; --card-focus-scale:1.06; }
-:root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
+:root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) { transform:translateY(var(--card-focus-lift)); border-color:var(--border-strong); box-shadow:var(--shadow-md); }
 .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) .artwork-image { transform:scale(var(--card-focus-scale)); }
 .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) .artwork-media::after { opacity:1; }
 .artwork:has(:focus-visible) .artwork-name { color:var(--accent); }
 .artwork-button { @apply tw:block tw:w-full; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
 .artwork-selectable .artwork-button { cursor:pointer; }
 .artwork-selectable { scroll-margin-bottom:calc(50vh + var(--s-4)); }
-.artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
+.artwork-button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .artwork-tools { @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:flex tw:items-center tw:gap-[3px] tw:p-[3px]; opacity:0; transform:translateY(-4px); @apply tw:pointer-events-none; border:1px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover),transform var(--motion-hover); }
 .artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; @apply tw:pointer-events-auto; }
-/* 多选选中态：描边与题注底色保持原有画框尺寸。 */
-.artwork-selected,.artwork-selected:hover { @apply tw:border-accent; box-shadow:var(--selection-shadow); }
+/* 多选选中态沿用勾选标记和题注底色，画框保持中性。 */
+.artwork-selected,.artwork-selected:hover { @apply tw:border-strong; box-shadow:var(--shadow-sm); }
 .artwork-selected .artwork-caption { background:var(--accent-soft); }
 /* The native checkbox is the sole selection tab stop; its label covers the card. */
 .artwork-check { position:absolute; inset:0; z-index:var(--z-raised); padding:0; }
 .artwork-check :deep(.studio-checkbox-box) { position:absolute; top:var(--s-3); right:var(--s-3); width:28px; height:28px; border-radius:var(--r-pill); }
-.artwork-selectable:has(input:focus-visible) { outline:3px solid var(--accent); outline-offset:2px; }
+.artwork-selectable:has(input:focus-visible) .artwork-caption { box-shadow:var(--focus-shadow); }
 .artwork-selectable .artwork-recovery { z-index:var(--z-raised); }
 .artwork-tool { @apply tw:inline-flex tw:items-center tw:gap-[5px] tw:min-h-[32px] tw:min-w-[32px] tw:justify-center; padding:0 var(--s-2); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); @apply tw:cursor-pointer; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover); }
 .artwork-tool:hover:not(:disabled) { border-color:var(--on-art-sheen); background:var(--on-art-fill); }
@@ -33,7 +33,7 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 /* 危险操作也在深色画膜上：白字沿用 on-art 语义，红色只染边框/底色，hover 不翻转文字。 */
 .artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 28%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 12%,transparent); color:var(--on-art-primary); }
 .artwork-tool.danger:hover:not(:disabled) { background:color-mix(in srgb,var(--danger) 22%,var(--art-scrim)); @apply tw:border-danger; }
-.artwork-tool:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
+.artwork-tool:focus-visible { --focus-shadow:inset 0 -2px 0 var(--on-art-primary); outline:none; box-shadow:var(--focus-shadow); }
 /* 审计修复: 处理中态也要读得清 */
 .artwork-tool:disabled { cursor:wait; @apply tw:text-disabled tw:border-soft; background: transparent; }
 /* 收藏激活态：画膜上要够亮才看得见，用 on-art 令牌而非全局强调色（后者在深色膜上偏暗） */
@@ -44,6 +44,7 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-stage); transition:transform var(--motion-route) var(--ease-out); }
 /* A fixed, image-only focus glow; no pointer loop, grid blur or extra texture copy. */
 .artwork-media::after { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
+.artwork:has(.artwork-button:focus-visible) .artwork-caption { box-shadow:var(--focus-shadow); }
 /* No dark interval when HD is the first available image. Cross-fade only over
    an already decoded thumbnail, never over an empty stage. */
 .artwork-image-hd { @apply tw:absolute; inset:0; opacity:0; }
@@ -53,7 +54,7 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-recovery > .archive-icon { width:24px; height:24px; }
 .artwork-retry { min-height:var(--control-height-sm); padding:var(--s-1) var(--s-3); border:1px solid var(--on-art-line); border-radius:var(--r-sm); background:var(--art-scrim); color:var(--on-art-primary); font:600 var(--fs-label-sm)/var(--lh-label) var(--font-sans); cursor:pointer; pointer-events:auto; }
 .artwork-retry:hover { background:var(--on-art-fill); border-color:var(--on-art-primary); }
-.artwork-retry:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:3px; }
+.artwork-retry:focus-visible { --focus-shadow:inset 0 -2px 0 var(--on-art-primary); outline:none; box-shadow:var(--focus-shadow); }
 /* Reserve the frame quietly; no repeating shimmer competing with scroll motion. */
 .artwork-skeleton { @apply tw:absolute; inset:0; background:var(--bg-elevated); }
 .artwork-caption { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; padding:var(--s-3); color:var(--text-primary); background:var(--bg-surface); text-align:left; border-top:1px solid var(--border-soft); }

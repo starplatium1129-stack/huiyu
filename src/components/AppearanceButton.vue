@@ -14,5 +14,5 @@ function open() { window.dispatchEvent(new CustomEvent('atelier:appearance-open'
 @reference "../assets/css/tailwind.css";
 .appearance-button { border: 1px solid var(--border-soft); background: var(--bg-surface); }
 .appearance-button:hover { @apply tw:text-accent; background: var(--accent-soft); }
-.appearance-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.appearance-button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 </style>

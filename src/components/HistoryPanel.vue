@@ -143,12 +143,13 @@ function engineSummary(item: ArtworkRecord): string {
   box-shadow: 0 0 10px -1px var(--accent-glow);
 }
 .history-pick-input:focus-visible + .history-pick-box {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
+.history-pick-input:checked:focus-visible + .history-pick-box { --focus-shadow:inset 0 -2px 0 var(--text-inverse); }
 .history-pick-check {
   @apply tw:w-[13px] tw:h-[13px];
 }
-.history-item[data-selected="true"] { outline: 1px solid var(--accent); outline-offset: -1px; @apply tw:rounded-md; }
+.history-item[data-selected="true"] { outline: none; box-shadow: var(--selection-shadow); @apply tw:rounded-md; }
 .history-thumb { @apply tw:relative; }
 </style>

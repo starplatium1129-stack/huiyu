@@ -178,5 +178,5 @@ async function copyPlan() {
 .preparation p[data-verification="sha256-match"] { color:var(--success-text); }
 .preparation p[data-verification="hash-mismatch"], .preparation p[data-verification="changed"] { color:var(--warning-text); }
 .preparation button:disabled { color:var(--text-disabled); opacity:1; cursor:not-allowed; }
-.preparation :is(a, button, summary, select, input):focus-visible { outline:2px solid var(--text-primary); outline-offset:3px; }
+.preparation :is(a, button, summary, select, input):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 </style>

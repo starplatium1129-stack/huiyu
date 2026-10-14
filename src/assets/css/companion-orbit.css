@@ -6,7 +6,7 @@
 .orbit-segment > svg { @apply tw:absolute; inset: 0; @apply tw:w-full tw:h-full tw:overflow-visible tw:pointer-events-none; }
 .orbit-segment > svg > path { fill: var(--bg-elevated); stroke: var(--border-strong); stroke-width: .75; @apply tw:pointer-events-auto tw:cursor-pointer; }
 .orbit-segment:has(button:hover) > svg > path, .orbit-segment:has(> svg > path:hover) > svg > path, .orbit-segment[data-active] > svg > path { fill: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); stroke: var(--accent); }
-.orbit-segment:has(button:focus-visible) > svg > path { stroke: var(--accent); stroke-width: 3; }
+.orbit-segment:has(button:focus-visible) > svg > path { fill:var(--bg-hover); stroke:var(--border-strong); stroke-width:.75; }
 .companion-orbit .orbit-action { @apply tw:absolute; left: var(--orbit-x); top: var(--orbit-y); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-[4px] tw:w-[54px] tw:h-[50px] tw:p-0; transform: translate(-50%, -50%); border: 0; border-radius: 0; background: transparent; @apply tw:text-primary; box-shadow: none; @apply tw:cursor-pointer tw:pointer-events-auto tw:text-label-sm; line-height: 1.2; }
 .orbit-action .archive-icon { @apply tw:w-[22px] tw:h-[22px] tw:text-accent; }
 .companion-orbit .orbit-action:is(:hover, :focus-visible, :active), .companion-orbit .orbit-segment[data-active] .orbit-action { background: transparent; box-shadow: none; }
@@ -15,7 +15,7 @@
 .orbit-option img { flex: 0 0 30px; @apply tw:w-[30px] tw:h-[30px] tw:object-cover; object-position: top; @apply tw:rounded-sm; }
 .orbit-option > .archive-icon { @apply tw:w-[22px] tw:h-[22px]; }
 .orbit-option span { @apply tw:block; flex: 0 0 auto; @apply tw:max-w-full tw:min-h-[1.5em] tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-label-xs; line-height: 1.5; }
-.orbit-option[aria-pressed="true"], .orbit-option:hover { @apply tw:border-accent; background: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); }
+.orbit-option[aria-pressed="true"], .orbit-option:hover { @apply tw:border-strong; background: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); }
 .orbit-selection { max-width: calc(100% - 24px); @apply tw:w-[320px]; flex: 0 1 auto; @apply tw:min-h-0; padding: 10px 12px; @apply tw:rounded-lg; border: 1px solid var(--border-soft); background: var(--bg-elevated); @apply tw:pointer-events-auto tw:overflow-auto; overscroll-behavior: contain; }
 .orbit-selection > header { @apply tw:flex tw:items-center tw:gap-[8px]; }
 .orbit-selection > header strong { flex: 1; @apply tw:text-label; }
@@ -25,7 +25,7 @@
 .orbit-selection p { @apply tw:text-secondary tw:text-label-sm; line-height: 1.7; margin: 8px 0; }
 .orbit-option-list { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-[8px]; margin-block: 12px; }
 .orbit-option-list button { @apply tw:flex tw:items-center tw:gap-[8px] tw:min-h-[52px] tw:p-[8px]; border: 1px solid var(--border-soft); @apply tw:rounded-md tw:text-primary; background: var(--bg-surface); @apply tw:text-left tw:cursor-pointer; }
-.orbit-option-list button[aria-pressed="true"] { @apply tw:border-accent; background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface)); }
+.orbit-option-list button[aria-pressed="true"] { @apply tw:border-strong; background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface)); }
 .orbit-option-list span { @apply tw:text-label-sm; overflow-wrap: anywhere; }
 .orbit-option-list img { @apply tw:w-[32px] tw:h-[40px] tw:object-cover; object-position: top; @apply tw:rounded-sm; }
 .orbit-option-list .archive-icon { @apply tw:shrink-0 tw:w-[18px] tw:h-[18px]; }
@@ -35,8 +35,8 @@
 .orbit-feedback { @apply tw:m-0; max-width: calc(100% - 24px); padding: 8px 14px; background: var(--bg-elevated); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:text-secondary tw:text-label-xs; line-height: 1.5; @apply tw:text-center tw:pointer-events-auto; }
 .orbit-feedback { @apply tw:max-h-[60px] tw:overflow-auto; }
 .companion-orbit button:disabled { @apply tw:text-disabled tw:cursor-default; }
-.companion-orbit button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.companion-orbit .orbit-action:focus-visible { outline: none; }
+.companion-orbit button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+.companion-orbit .orbit-action:focus-visible { outline:none; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:.25em; }
 .companion-orbit.has-category:not(.is-compact) { --orbit-size: min(440px, calc(100dvh - 240px), calc(100vw - 24px)) !important; }
 .companion-orbit.is-compact { @apply tw:gap-[4px]; }
 .companion-orbit.is-compact.has-category { @apply tw:box-border tw:pt-[12px] tw:pb-[12px]; }

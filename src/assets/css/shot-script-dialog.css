@@ -9,6 +9,6 @@
 .shot-script-hint { @apply tw:text-muted tw:text-label-xs; }
 .shot-script-help { padding-top:var(--s-3); border-top:1px solid var(--border-soft); font-size:var(--fs-label-sm); color:var(--text-secondary); }
 .shot-script-help summary { min-height:32px; cursor:pointer; }
-.shot-script-help summary:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.shot-script-help summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .shot-script-help p { margin:var(--s-2) 0 0; line-height:var(--lh-body); }
 @media (max-width: 768px) { .shot-script-row { grid-template-columns: 1fr; } }

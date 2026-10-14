@@ -165,8 +165,8 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
   background: color-mix(in srgb, var(--bg-elevated) 88%, var(--companion-option-accent) 12%);
 }
 .companion-picker-trigger:focus-visible {
-  outline: 2px solid var(--companion-option-accent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 
 .companion-picker-mark,
@@ -264,7 +264,7 @@ html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-
 .companion-picker-option:is(:hover, .is-active) { background: var(--bg-hover); }
 .companion-picker-option[aria-selected='true'] {
   background: color-mix(in srgb, var(--companion-option-accent) 12%, var(--bg-surface));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--companion-option-accent) 36%, var(--border-soft));
+  box-shadow: var(--selection-shadow);
 }
 .companion-picker-option.is-active .companion-picker-option-mark {
   border-color: color-mix(in srgb, var(--companion-option-accent) 72%, var(--border-soft));

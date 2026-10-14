@@ -14,7 +14,7 @@
 .pb .reference-interrogate-body { @apply tw:grid tw:gap-s-2; }
 .pb .reference-interrogate-status { @apply tw:m-0 tw:text-secondary tw:text-label; }
 .pb .reference-outfit-actions:empty { display:none; }
-.pb .btn-compare-inpaint[aria-pressed='true'] { color:var(--accent); border-color:var(--accent); }
+.pb .btn-compare-inpaint[aria-pressed='true'] { color:var(--accent); border-color:var(--border-strong); }
 
 /* Native disclosure keeps focus, search drafts and button actions synchronous.
    Older engines retain the native instant toggle rather than a JS height shim. */

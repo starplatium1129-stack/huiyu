@@ -27,7 +27,8 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 .studio-checkbox-box { display:inline-flex; align-items:center; justify-content:center; flex:0 0 22px; width:22px; height:22px; border:1.5px solid var(--text-muted); border-radius:var(--r-xs); background:var(--bg-surface); color:var(--text-primary); pointer-events:none; }
 .studio-checkbox-input:checked + .studio-checkbox-box,
 .studio-checkbox-input:indeterminate + .studio-checkbox-box { border-color:var(--accent); background:var(--accent); color:var(--text-inverse); }
-.studio-checkbox-input:focus-visible + .studio-checkbox-box { outline:2px solid var(--accent); outline-offset:3px; }
+.studio-checkbox-input:focus-visible + .studio-checkbox-box { outline:none; box-shadow:var(--focus-shadow); }
+.studio-checkbox-input:is(:checked,:indeterminate):focus-visible + .studio-checkbox-box { --focus-shadow:inset 0 -2px 0 var(--text-inverse); }
 .studio-checkbox-box :deep(.archive-icon) { width:20px; height:20px; }
 /* compositor-exempt: A one-shot 160ms stroke redraw in the 20px checkmark only;
    transform/opacity cannot draw its line. No loop or card-scale animation. */
@@ -44,7 +45,7 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 @media (forced-colors:active) {
   .studio-checkbox-box { forced-color-adjust:none; color:CanvasText; background:Canvas; border-color:CanvasText; }
   .studio-checkbox-input:checked + .studio-checkbox-box,.studio-checkbox-input:indeterminate + .studio-checkbox-box { color:HighlightText; background:Highlight; border-color:Highlight; }
-  .studio-checkbox-input:focus-visible + .studio-checkbox-box { outline-color:Highlight; }
+  .studio-checkbox-input:focus-visible + .studio-checkbox-box { outline:2px solid Highlight; outline-offset:2px; }
   .studio-checkbox-input:disabled + .studio-checkbox-box { color:GrayText; background:Canvas; border-color:GrayText; }
 }
 </style>

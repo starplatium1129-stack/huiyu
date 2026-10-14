@@ -57,8 +57,8 @@ function change(value: string | number) { if (value !== '') emit('update:size', 
 .size-picker-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .size-picker-grid button { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:0; min-height:72px; padding:8px 4px; border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-secondary); background:transparent; font:12px var(--font-sans); cursor:pointer; }
 .size-picker-grid button:hover:not(:disabled) { border-color:var(--border-strong); background:var(--bg-hover); }
-.size-picker-grid button[aria-pressed=true] { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
-.size-picker-grid button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.size-picker-grid button[aria-pressed=true] { color:var(--accent); border-color:var(--border-strong); background:var(--accent-soft); }
+.size-picker-grid button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .size-picker-grid button:disabled { color:var(--text-disabled); cursor:not-allowed; }
 .size-picker-grid i { height:21px; max-width:28px; border:1.4px solid currentColor; border-radius:2px; }
 .size-picker-grid small { font-size:11px; font-variant-numeric:tabular-nums; }

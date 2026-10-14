@@ -141,7 +141,7 @@ html.companion-mode body {
 
 .companion-page .companion-window-actions button:hover,
 .companion-page .companion-window-actions button:focus-visible {
-  border-color: var(--character-accent);
+  border-color: var(--border-strong);
   @apply tw:text-primary;
 }
 
@@ -184,8 +184,8 @@ html.companion-mode body {
 }
 
 .companion-page .companion-voice-toggle input:focus-visible + span {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 
 .companion-page .companion-room-link {
@@ -199,7 +199,7 @@ html.companion-mode body {
 
 .companion-page .companion-room-link:hover,
 .companion-page .companion-room-link:focus-visible {
-  border-color: var(--character-accent);
+  border-color: var(--border-strong);
   @apply tw:text-primary;
 }
 
@@ -241,7 +241,7 @@ html.companion-mode body {
 }
 
 .companion-page .character-tab.active {
-  border-color: var(--character-accent);
+  border-color: var(--border-strong);
   color: var(--character-accent);
 }
 
@@ -552,7 +552,7 @@ html.companion-mode body {
 }
 
 .companion-page .companion-input:focus {
-  border-color: var(--character-accent);
+  border-color: var(--border-strong);
   outline: none;
 }
 
@@ -853,7 +853,7 @@ html.companion-mode:not(.companion-desktop) body {
 .companion-page .companion-window-actions button:focus-visible,
 .companion-page .companion-room-link:hover,
 .companion-page .companion-room-link:focus-visible {
-  border-color: color-mix(in srgb, var(--character-accent) 70%, var(--companion-ink));
+  border-color: var(--border-strong);
   background: color-mix(in srgb, var(--character-accent) 24%, var(--companion-wash));
   color: var(--companion-ink);
 }
@@ -889,7 +889,7 @@ html.companion-mode:not(.companion-desktop) body {
 }
 
 .companion-page .character-tab.active {
-  border-color: color-mix(in srgb, var(--character-accent) 74%, var(--companion-ink));
+  border-color: var(--border-strong);
   background: color-mix(in srgb, var(--character-accent) 32%, var(--art-scrim));
   color: var(--companion-ink);
   box-shadow: 0 8px 22px color-mix(in srgb, var(--character-accent) 20%, transparent), inset 0 1px 0 var(--companion-highlight);
@@ -1146,7 +1146,7 @@ html.companion-mode:not(.companion-desktop) body {
 }
 
 .companion-page .companion-input:focus {
-  border-color: color-mix(in srgb, var(--character-accent) 66%, var(--companion-ink));
+  border-color: var(--border-strong);
   background: var(--companion-fill);
 }
 
@@ -1288,12 +1288,12 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-page .companion-dnd-toggle:hover,
 .companion-page .companion-dnd-toggle:focus-visible {
-  border-color: var(--character-accent);
+  border-color: var(--border-strong);
   @apply tw:text-primary;
 }
 
 .companion-page .companion-dnd-toggle[aria-pressed="true"] {
-  border-color: var(--character-accent);
+  border-color: var(--border-strong);
   color: var(--character-accent);
 }
 
@@ -1375,7 +1375,7 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-reminder-action:hover,
 .companion-reminder-action:focus-visible {
-  border-color: var(--character-accent);
+  border-color: var(--border-strong);
   background: color-mix(in srgb, var(--character-accent) 20%, var(--bg-elevated));
 }
 
@@ -1417,7 +1417,7 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-page .companion-import-btn:hover,
 .companion-page .companion-import-btn:focus-visible {
-  border-color: var(--character-accent);
+  border-color: var(--border-strong);
   @apply tw:text-primary;
 }
 
@@ -1571,7 +1571,7 @@ html.companion-desktop.companion-ui-hidden .companion-stage::after {
 
 .companion-page .companion-immersive-btn:hover,
 .companion-page .companion-immersive-btn:focus-visible {
-  border-color: var(--character-accent);
+  border-color: var(--border-strong);
   @apply tw:text-primary;
 }
 
@@ -1658,7 +1658,7 @@ html.companion-immersive .companion-page {
 .companion-page .companion-settings-btn:hover,
 .companion-page .companion-settings-btn:focus-visible,
 .companion-page .companion-settings-btn[aria-expanded="true"] {
-  @apply tw:border-accent tw:text-accent;
+  @apply tw:border-strong tw:text-accent;
 }
 
 /* —— 设置弹层（毛玻璃，悬于顶栏下方右侧） —— */
@@ -1728,7 +1728,7 @@ html.companion-immersive .companion-page {
 }
 .companion-page .companion-pop-item input[type="range"]::-webkit-slider-thumb { @apply tw:w-[16px] tw:h-[16px]; border:3px solid var(--bg-surface); border-radius:50%; background:var(--character-accent); box-shadow:var(--shadow-sm); -webkit-appearance:none; }
 .companion-page .companion-pop-item input[type="range"]::-moz-range-thumb { @apply tw:w-[10px] tw:h-[10px]; border:3px solid var(--bg-surface); border-radius:50%; background:var(--character-accent); box-shadow:var(--shadow-sm); }
-.companion-page .companion-pop-item input[type="range"]:focus-visible { outline:2px solid var(--character-accent); outline-offset:2px; }
+.companion-page .companion-pop-item input[type="range"]:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .companion-page .companion-pop-item[data-state="missing"] {
   @apply tw:text-danger-text;
 }
@@ -1736,7 +1736,7 @@ html.companion-immersive .companion-page {
 /* —— 输入文字与控件状态 —— */
 .companion-page .companion-composer .companion-input { @apply tw:text-primary; background: var(--bg-deep); @apply tw:border-soft; }
 .companion-page .companion-composer .companion-input::placeholder { @apply tw:text-muted; }
-.companion-page .companion-composer .companion-input:focus { background: var(--bg-elevated); @apply tw:border-accent; }
+.companion-page .companion-composer .companion-input:focus { background: var(--bg-elevated); @apply tw:border-strong; }
 .companion-page .companion-send { background: var(--accent); @apply tw:text-inverse tw:border-accent; }
 .companion-page .companion-send:disabled { opacity: 1; background: var(--bg-elevated); @apply tw:text-disabled tw:border-soft; }
 
@@ -1780,7 +1780,7 @@ html.companion-immersive .companion-page {
 }
 .companion-page .companion-setup-action:hover,
 .companion-page .companion-setup-action:focus-visible {
-  border-color: var(--character-accent);
+  border-color: var(--border-strong);
   color: var(--character-accent);
 }
 
@@ -2039,7 +2039,7 @@ html.companion-desktop.companion-immersive .companion-desktop-float {
 }
 .companion-chat-chip:hover,
 .companion-chat-chip:focus-visible {
-  border-color: color-mix(in srgb, var(--character-accent) 62%, var(--companion-ink));
+  border-color: var(--border-strong);
   background: color-mix(in srgb, var(--character-accent) 26%, var(--art-scrim));
   transform: translateY(-2px);
 }

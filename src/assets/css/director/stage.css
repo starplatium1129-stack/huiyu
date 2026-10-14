@@ -142,10 +142,10 @@
    .pb #stepResult > .voice-studio { order:4; @apply tw:w-full; max-width:none; @apply tw:overflow-hidden tw:static; }
   /* Scene 卡片色带(按分类着色,直观区分场景类型) */
   .pb .scene-card { @apply tw:relative tw:p-0; background:var(--bg-surface); border:1px solid var(--border-soft); @apply tw:rounded-md; transition:border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out); @apply tw:overflow-hidden tw:shrink-0 tw:min-h-0; }
-  .pb .scene-card:hover, .pb .scene-card:focus-within { @apply tw:border-accent; }
+  .pb .scene-card:hover, .pb .scene-card:focus-within { @apply tw:border-strong; }
   .pb .scene-card::before { content:''; @apply tw:absolute tw:left-0 tw:top-0 tw:bottom-0 tw:w-[4px]; border-radius:var(--r-md) 0 0 var(--r-md); }
   .pb .scene-card-main { @apply tw:flex tw:items-start tw:gap-s-3 tw:w-full tw:min-h-full; padding:var(--s-3) var(--s-3) calc(var(--s-3) + 28px); border:0; background:transparent; color:inherit; @apply tw:text-left; font:inherit; @apply tw:cursor-pointer; }
-  .pb .scene-card-main:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
+  .pb .scene-card-main:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
   /* 左栏场景紧凑缩略图(审核样张,404 时自动移除) */
   .pb .scene-thumb { @apply tw:w-[64px] tw:h-[64px]; flex:0 0 64px; @apply tw:rounded-md tw:object-cover; object-position:center 22%; background:var(--bg-deep); border:1px solid var(--border-soft); transition:filter var(--motion-surface); }
   .pb .scene-thumb.r18 { filter:blur(12px) saturate(.85); }
@@ -154,8 +154,8 @@
   .pb .scene-card .scene-direct-btn { @apply tw:absolute tw:right-s-2 tw:bottom-s-2 tw:inline-flex; z-index:var(--z-raised); padding:var(--s-1) var(--s-3); @apply tw:text-label-sm tw:font-semibold; background:var(--accent); @apply tw:text-inverse tw:rounded-pill; box-shadow:var(--shadow-md); @apply tw:cursor-pointer; border:none; opacity:0; visibility:hidden; @apply tw:pointer-events-none; transform:translateY(4px); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out),visibility var(--motion-hover); }
   .pb .scene-card:hover .scene-direct-btn, .pb .scene-card:focus-within .scene-direct-btn { opacity:1; visibility:visible; @apply tw:pointer-events-auto; transform:translateY(0); }
   .pb .scene-card .scene-direct-btn:hover { transform:none; }
-  .pb .scene-card[data-recommended="1"], .pb .scene-card[data-char-match="1"] { @apply tw:border-accent; box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md); }
-  .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { content:''; @apply tw:absolute; inset:0; border-radius:inherit; @apply tw:pointer-events-none; box-shadow:inset 0 0 0 3px var(--accent-glow); opacity:0; animation:obScenePulse .9s ease 1; }
+  .pb .scene-card[data-recommended="1"], .pb .scene-card[data-char-match="1"] { @apply tw:border-accent; box-shadow:var(--selection-shadow); }
+  .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { content:''; @apply tw:absolute; inset:0; border-radius:inherit; @apply tw:pointer-events-none; box-shadow:var(--selection-shadow); opacity:0; animation:obScenePulse .9s ease 1; }
   .pb .scene-card[data-char-match="0"] { opacity:0.45; }
   @keyframes obScenePulse { 0%,100%{opacity:0;transform:scale(.985);} 50%{opacity:1;transform:scale(1);} }
   @media (prefers-reduced-motion: reduce) { .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { animation:none; } }
@@ -177,7 +177,7 @@
   .pb .scene-tag.rating.r15 { background:color-mix(in srgb, var(--warning) 24%, var(--bg-deep)); color:color-mix(in srgb, var(--warning) 74%, #fff); }
   .pb .scene-card[data-rating="R18"]::before { background:linear-gradient(180deg,#e85d75,#8d1732); }
   .pb .scene-card[data-rating="R15"]::before { background:linear-gradient(180deg,#d6a039,#7a5210); }
-  .pb .scene-card.is-current { @apply tw:border-accent; box-shadow:0 0 0 2px var(--accent-soft); }
+  .pb .scene-card.is-current { @apply tw:border-strong; box-shadow:var(--selection-shadow); }
   /* 故事联想 tag 高亮 */
   .pb .tag-chip[data-suggested="1"] { outline:1px dashed var(--accent); opacity:1; }
   .pb .tag-chip[data-suggested="1"]::after { content:' · 联想'; font-size:0.6em; }

@@ -38,7 +38,7 @@ h2 { margin: var(--s-2) 0 0; font: 500 var(--fs-title-sm)/var(--lh-label) var(--
 .guide-steps a { @apply tw:grid tw:gap-s-3 tw:h-full tw:p-s-4; grid-template-columns:40px minmax(0,1fr); grid-template-rows:auto 1fr; border: 1px solid transparent; @apply tw:rounded-xl; background: transparent; @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
 .step-art { grid-column:1/-1; display:block; width:100%; height:clamp(112px,12vw,164px); object-fit:contain; }
 .guide-steps a:hover strong { text-decoration:underline; text-underline-offset:.25em; }
-.guide-steps a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.guide-steps a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (hover: hover) and (pointer: fine) {
   .guide-steps a:hover { transform: translateY(-2px); }
 }

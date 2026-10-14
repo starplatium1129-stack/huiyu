@@ -27,5 +27,5 @@ defineProps<{
 .character-context-nav a { position:relative; z-index:var(--z-raised); @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:rounded-md tw:text-secondary tw:text-label; padding:var(--s-2) var(--s-3); text-decoration:none; }
 .character-context-nav a[aria-current='page'] { background:transparent; @apply tw:text-accent tw:font-semibold; }
 .character-context-nav a:hover { background:var(--bg-hover); }
-.character-context-nav a:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+.character-context-nav a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 </style>

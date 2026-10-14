@@ -66,7 +66,7 @@ async function submit() {
 .organization-field { @apply tw:grid tw:gap-s-1 tw:min-w-0 tw:text-primary tw:text-label-sm; }
 .organization-field input { @apply tw:w-full tw:min-w-0 tw:rounded-md tw:text-primary; min-height:40px; border:1px solid var(--border-soft); background:var(--bg-surface); padding:var(--s-2) var(--s-3); font:inherit; }
 .organization-field input::placeholder { color:var(--text-secondary); }
-.organization-field input:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.organization-field input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .organization-field input:disabled { color:var(--text-disabled); }
 .organization-note { grid-column:1 / -1; line-height:var(--lh-body); }
 .organization-error { @apply tw:text-warning-text tw:text-label-sm; margin:var(--s-2) 0 0; }

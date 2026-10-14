@@ -23,7 +23,7 @@
   border:1px solid transparent; @apply tw:rounded-md;
   background:var(--bg-base); @apply tw:text-secondary tw:text-left tw:cursor-pointer;
 }
-.video-quality-grid button.active { @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent; }
+.video-quality-grid button.active { @apply tw:border-strong; background:var(--accent-soft); @apply tw:text-accent; }
 .video-quality-grid strong { @apply tw:text-body-sm; }
 .video-quality-grid em { @apply tw:text-accent; font: 600 var(--fs-mono-xs) var(--font-mono); @apply tw:not-italic; }
 .video-segmented { @apply tw:inline-flex tw:flex-wrap tw:p-s-1; border:0; @apply tw:rounded-md; background:var(--bg-base); }
@@ -65,7 +65,7 @@
 .shot-card-outfit-pill.active { @apply tw:border-accent; background: var(--accent); @apply tw:text-inverse tw:font-semibold; }
 .shot-reference-images { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center; }
 .shot-reference-remove { @apply tw:inline-flex tw:p-0; border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:cursor-pointer; }
-.shot-reference-remove:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.shot-reference-remove:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .shot-reference-remove:disabled { @apply tw:cursor-not-allowed; }
 .shot-reference-thumb { @apply tw:w-[64px] tw:h-[80px] tw:object-contain tw:rounded-sm; border:1px solid var(--border-soft); background:var(--bg-surface); @apply tw:cursor-pointer; }
 .shot-reference-hint { @apply tw:m-0 tw:text-muted tw:text-label-xs; }
@@ -86,7 +86,7 @@
 .shot-identity-row { @apply tw:grid; grid-template-columns: minmax(0, 1fr) 220px; @apply tw:gap-s-2; align-items: start; }
 .shot-identity-row .studio-select-wrapper { align-self: start; }
 .shot-row { @apply tw:grid tw:gap-s-3; padding:var(--s-5) 0; border-top:1px solid var(--border-soft); scroll-margin-top:calc(var(--app-navigation-height,80px) + var(--s-4)); }
-.shot-row:focus-visible { outline:2px solid var(--accent); outline-offset:4px; @apply tw:rounded-md; }
+.shot-row:focus-visible { outline:none; box-shadow:var(--focus-shadow); @apply tw:rounded-md; }
 .shot-row:first-of-type { border-top: 0; @apply tw:pt-0; }
 .shot-row-head { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-3; }
 .shot-index { font: 800 var(--fs-title-xs) var(--font-mono); @apply tw:text-accent; }

@@ -1,5 +1,15 @@
 @reference "./tailwind.css";
 
+:root {
+  --focus-color:var(--text-secondary);
+  --focus-shadow:inset 0 -2px 0 var(--focus-color);
+}
+/* Text links keep the reading layout; filled actions use their contrasting ink. */
+:root body :where(a:not(:has(img,svg,canvas))):focus-visible:focus-visible {
+  box-shadow:none; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:.25em;
+}
+.btn-primary:focus-visible { --focus-shadow:inset 0 -2px 0 var(--text-inverse); box-shadow:var(--focus-shadow); }
+
 /* Native editing fields share Studio geometry; existing component rules own
    compact editors, transparent search inputs and artwork controls. */
 :where(input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not([type='color']):not([type='hidden']):not([type='button']):not([type='submit']), textarea) {
@@ -16,7 +26,12 @@
   background:var(--bg-surface); color:var(--text-primary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer;
 }
 :where(button):disabled { color:var(--text-disabled); cursor:not-allowed; }
-:where(button, input, textarea):focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+:where(button, input, textarea):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+/* Image layers paint above inset shadows, so their keyboard marker is an overlay. */
+:where(.zoomable-image-viewer,.image-compare-slider,.image-split-compare,.candidate-viewport,.gallery-orbit):focus-visible::after {
+  content:""; position:absolute; inset:auto 0 0; height:2px; z-index:var(--z-raised);
+  background:var(--on-art-primary); box-shadow:0 -1px 0 var(--art-scrim); pointer-events:none;
+}
 
 /* Unified browser-control chrome. Component-specific controls keep precedence.
    2026-09-22 去原生化收尾：全站原生 <select> 已由 src/components/ui/StudioSelect.vue
@@ -88,7 +103,8 @@ html { -webkit-tap-highlight-color: transparent; }
 :where(input[type="checkbox"], input[type="radio"]):checked { @apply tw:border-accent; background: var(--accent); }
 :where(input[type="checkbox"]):checked::before { transform: rotate(45deg) scale(1); }
 :where(input[type="radio"]):checked::before { transform: scale(1); }
-:where(input[type="checkbox"], input[type="radio"]):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+:where(input[type="checkbox"], input[type="radio"]):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+:where(input[type="checkbox"],input[type="radio"]):checked:focus-visible { --focus-shadow:inset 0 -2px 0 var(--text-inverse); }
 :where(input[type="checkbox"], input[type="radio"]):disabled { @apply tw:border-soft; background: var(--bg-base); @apply tw:text-disabled tw:cursor-not-allowed; }
 
 :where(input[type="range"]) {
@@ -117,7 +133,7 @@ html { -webkit-tap-highlight-color: transparent; }
   box-shadow: var(--shadow-sm);
   cursor: inherit;
 }
-:where(input[type="range"]):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+:where(input[type="range"]):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 :where(input[type="range"]):disabled { @apply tw:cursor-not-allowed; }
 
 :where(input[type="number"]) { -moz-appearance: textfield; appearance: textfield; }

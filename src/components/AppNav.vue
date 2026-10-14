@@ -275,14 +275,14 @@ onUnmounted(() => {
 
 .nav-links a[data-pending="true"], .nav-links a[data-intent="true"],
 .nav-more[data-pending="true"] .nav-more-trigger, .nav-more[data-intent="true"] .nav-more-trigger {
-  outline: 1px solid var(--border-strong);
-  outline-offset: -1px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
   background: var(--accent-soft);
   @apply tw:text-primary;
 }
 .nav-links a:focus-visible, .nav-more .nav-more-trigger:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 
 /* logo.svg 是 132×48 的完整字标（图形 + 绘遇），
@@ -293,7 +293,7 @@ onUnmounted(() => {
 .nav-brand { @apply tw:gap-s-3 tw:shrink-0; }
 .nav-brand-note { display: none; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 400; padding-left: var(--s-3); border-left: 1px solid var(--border-soft); }
 .nav-links { --selection-radius: var(--r-md); --selection-shadow: none; border-color:transparent; background:transparent; box-shadow:none; }
-.nav-links :deep(.animated-selection) { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
+.nav-links :deep(.animated-selection) { background:var(--accent-soft); border-color:transparent; }
 .nav-more-chevron { transition:none; }
 .nav-links > a { white-space:nowrap; }
 @media (min-width:1600px) { .nav-brand-note { display: block; } }
@@ -335,7 +335,7 @@ onUnmounted(() => {
   border-color: var(--border-soft);
   @apply tw:text-accent;
 }
-.nav-utilities :deep(button:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: none; transition: none; }
+.nav-utilities :deep(button:focus-visible) { outline: none; box-shadow: var(--focus-shadow); transition: none; }
 .nav-utility-divider { width: 1px; height: 16px; margin: 0 var(--s-1); background: var(--border-soft); }
 
 @media (max-width: 1000px) {

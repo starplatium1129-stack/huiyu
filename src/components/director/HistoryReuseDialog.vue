@@ -77,7 +77,7 @@ legend { font-size:var(--fs-label); font-weight:600; padding-inline:var(--s-1); 
 label { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); min-height:40px; font-size:var(--fs-label); cursor:pointer; }
 small { color:var(--text-secondary); font-size:var(--fs-label-xs); }
 input { accent-color:var(--accent); }
-input:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 input:disabled, button:disabled { color:var(--text-disabled); }
 footer { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:var(--s-2); }
 </style>

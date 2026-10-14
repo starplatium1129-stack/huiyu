@@ -66,12 +66,12 @@ const sliderStyle = computed(() => ({
 
 <style scoped>
 .image-compare-slider:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 .image-compare-slider:hover .compare-handle {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 .image-compare-slider.is-dragging .compare-handle {
   transform: translate(-50%, -50%) scale(1.15);
@@ -95,6 +95,6 @@ const sliderStyle = computed(() => ({
   transform: translate(-50%, -50%);
 }
 @media (forced-colors: active) {
-  .image-compare-slider:focus-visible, .image-compare-slider:hover .compare-handle { outline-color: Highlight; }
+  .image-compare-slider:focus-visible, .image-compare-slider:hover .compare-handle { outline: 2px solid Highlight; outline-offset: 2px; }
 }
 </style>

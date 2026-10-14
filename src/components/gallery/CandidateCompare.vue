@@ -81,7 +81,7 @@ onUnmounted(() => { version++; release() })
 .candidate-meta { overflow-wrap: anywhere; }
 .candidate-controls { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-2; }
 .candidate-controls > span { @apply tw:text-secondary tw:text-label-sm; }
-.candidate-controls [aria-pressed="true"] { @apply tw:text-accent tw:border-accent; }
+.candidate-controls [aria-pressed="true"] { @apply tw:text-accent tw:border-strong; }
 .candidate-parameters { @apply tw:grid tw:gap-s-1 tw:text-label-sm; margin:var(--s-3) 0; }
 .candidate-parameters > div { display:grid; grid-template-columns:5.5rem minmax(0,1fr); gap:var(--s-2); }
 .candidate-parameters dt { @apply tw:text-secondary; }

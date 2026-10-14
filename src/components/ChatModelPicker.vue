@@ -60,13 +60,13 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
 <style scoped>
 .chat-model-picker { width:100%; min-width:0; }
 .chat-model-picker-anchor { padding:0 var(--s-2) 0 var(--s-3); min-height:44px; cursor:text; }
-.chat-model-picker-anchor:focus-within { border-color:var(--accent); outline:2px solid var(--accent); outline-offset:2px; }
+.chat-model-picker-anchor:focus-within { border-color:var(--border-strong); outline:none; box-shadow:var(--focus-shadow); }
 .chat-model-picker .chat-model-picker-input { flex:1; width:100%; min-width:0; height:40px; padding:0; border:0; border-radius:0; background:transparent; color:var(--text-primary); font:inherit; }
 .chat-model-picker .chat-model-picker-input:focus { outline:none; box-shadow:none; }
 .chat-model-picker .chat-model-picker-input:disabled { color:var(--text-disabled); }
 .chat-model-picker-input::placeholder { color:var(--text-secondary); }
 .chat-model-picker-trigger { display:grid; place-items:center; flex:0 0 32px; width:32px; min-height:32px; padding:0; border:0; background:transparent; color:var(--text-secondary); cursor:pointer; }
-.chat-model-picker-trigger:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:var(--r-sm); }
+.chat-model-picker-trigger:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-sm); }
 .chat-model-picker-trigger:disabled { color:var(--text-disabled); cursor:not-allowed; }
 </style>
 

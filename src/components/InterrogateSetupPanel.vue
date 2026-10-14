@@ -14,6 +14,6 @@ onMounted(() => { void readiness.refresh() })
 <style scoped>
 .interrogate-setup { margin-bottom: var(--s-5); color: var(--text-primary); }
 .interrogate-setup p { color: var(--text-secondary); line-height: var(--lh-loose); overflow-wrap: anywhere; }
-.interrogate-setup button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.interrogate-setup button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .interrogate-setup button:disabled { color: var(--text-disabled); opacity: 1; }
 </style>

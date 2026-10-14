@@ -101,7 +101,7 @@ onUnmounted(() => {
   @apply tw:text-primary;
 }
 .confirm-close { @apply tw:absolute tw:top-s-3 tw:right-s-3 tw:grid; place-items:center; @apply tw:w-[40px] tw:h-[40px]; border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-base); @apply tw:text-secondary tw:cursor-pointer; }
-.confirm-close:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.confirm-close:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (hover:hover) and (pointer:fine) {
   .confirm-close:hover { background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
 }
@@ -125,7 +125,7 @@ onUnmounted(() => {
   font-size: var(--fs-body-sm, var(--fs-body));
   @apply tw:text-secondary tw:leading-body;
 }
-.confirm-message:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.confirm-message:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .confirm-actions {
   @apply tw:flex tw:flex-wrap tw:justify-end tw:gap-s-2;
 }

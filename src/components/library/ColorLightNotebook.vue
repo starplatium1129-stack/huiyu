@@ -77,7 +77,7 @@ const failed = ref(new Set<string>())
 .notebook-heading > p { @apply tw:max-w-[280px] tw:text-secondary tw:text-body-sm tw:leading-body; }
 .comparison-choices button { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[44px]; padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); @apply tw:rounded-pill tw:text-secondary; background:var(--bg-surface); @apply tw:text-body-sm tw:cursor-pointer; }
 .comparison-choices button span { @apply tw:text-muted tw:font-mono; }
-.comparison-choices button[aria-pressed="true"] { @apply tw:text-accent tw:border-accent; background:var(--accent-soft); @apply tw:font-semibold; }
+.comparison-choices button[aria-pressed="true"] { @apply tw:text-accent tw:border-strong; background:var(--accent-soft); @apply tw:font-semibold; }
 .comparison-question { margin:var(--s-4) 0; }
 .comparison-spread { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .light-study { border:1px solid var(--border-soft); background:var(--bg-surface); }
@@ -95,7 +95,7 @@ dd { @apply tw:m-0 tw:text-secondary; }
 .study-mood { margin-top:var(--s-2); }
 .reference-note { align-items:start; background:var(--bg-base); }
 .reference-note .archive-icon { @apply tw:shrink-0 tw:mt-[3px]; }
-button:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
+button:focus-visible, a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media(max-width:768px) { .notebook-heading { @apply tw:flex-col; align-items:start; @apply tw:gap-s-3; } .notebook-heading > p { max-width:none; } .comparison-spread { @apply tw:gap-s-3; } figcaption { @apply tw:p-s-4; } dl > div { grid-template-columns:1fr; @apply tw:gap-s-1; } .study-image { @apply tw:h-[280px]; } }
 @media(max-width:480px) { .comparison-spread { grid-template-columns:1fr; } .study-image { @apply tw:h-[340px]; } .notebook-heading h2 { @apply tw:text-title-sm; } }
 </style>

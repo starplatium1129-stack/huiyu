@@ -18,5 +18,5 @@ const label = computed(() => theme.value === 'light' ? '切换为深色模式' :
 .app-theme-toggle { border: 1px solid var(--border-soft); background: var(--bg-surface); transition: transform var(--motion-control) var(--ease-out); }
 .app-theme-toggle:hover { @apply tw:text-accent; }
 .app-theme-toggle:active { transform: scale(.94); }
-.app-theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.app-theme-toggle:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 </style>

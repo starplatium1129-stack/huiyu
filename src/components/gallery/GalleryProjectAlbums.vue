@@ -81,5 +81,5 @@ function markCoverError(id: string | number, event: Event) {
 .gallery-album-actions button { @apply tw:text-secondary tw:text-label-sm tw:cursor-pointer; min-height:32px; padding:var(--s-1) var(--s-2); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); }
 .gallery-album-actions button:hover { color:var(--accent); border-color:var(--accent); }
 .gallery-album-actions button:disabled { color:var(--text-disabled); }
-.gallery-albums button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.gallery-albums button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 </style>

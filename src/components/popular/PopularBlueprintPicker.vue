@@ -96,9 +96,9 @@ const categoryChips = computed(() => {
 .blueprint-cat-btn:active { transform: translateY(1px) scale(.96); }
 .blueprint-cat-btn em { @apply tw:not-italic; font: 700 var(--fs-mono-xs) var(--font-mono); @apply tw:text-muted; }
 .blueprint-cat-btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); @apply tw:text-primary; }
-.blueprint-cat-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.blueprint-cat-btn:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .blueprint-cat-btn.active {
-  border-color: var(--pb-active, var(--accent));
+  border-color: var(--border-strong);
   background: color-mix(in srgb, var(--mood-love) 18%, var(--bg-elevated));
   @apply tw:text-accent;
 }
@@ -116,7 +116,7 @@ const categoryChips = computed(() => {
   transition: border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
 .blueprint-reco-btn:hover { @apply tw:border-accent tw:text-accent; }
-.blueprint-reco-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.blueprint-reco-btn:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .blueprint-reco-btn:active { transform: translateY(1px) scale(.96); }
 .blueprint-card {
   border: 1px solid var(--border-soft);
@@ -124,13 +124,13 @@ const categoryChips = computed(() => {
   color: inherit;
   transition: transform var(--motion-hover) var(--ease-out);
 }
-.blueprint-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-@media (hover:hover) and (pointer:fine) { .blueprint-card:hover { transform:translateY(-2px); @apply tw:border-accent; box-shadow:var(--shadow-sm); } }
+.blueprint-card:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+@media (hover:hover) and (pointer:fine) { .blueprint-card:hover:not(:focus-visible) { transform:translateY(-2px); @apply tw:border-accent; box-shadow:var(--shadow-sm); } }
 .blueprint-card.active {
-  border-color: var(--pb-active, var(--accent));
+  border-color: var(--border-strong);
   border-left-color: var(--pb-active, var(--accent));
   background: var(--accent-soft);
-  box-shadow: inset 0 0 0 1px var(--accent);
+  box-shadow: var(--selection-shadow);
 }
 .blueprint-card[data-adult="true"] { border-left-color: color-mix(in srgb, var(--danger-text) 55%, transparent); }
 .blueprint-card[data-adult="true"].active { border-left-color: var(--danger-text); }

@@ -11,7 +11,6 @@
         type="button" class="mood-card"
         :class="{ active: selected?.id === m.id }"
         :aria-pressed="selected?.id === m.id"
-        :style="{ '--mood-color': m.color }"
         @click="select(m)"
       >
         <div class="mood-strip">
@@ -201,13 +200,13 @@ function exportTxt() {
 .color-reading > summary > .archive-icon:first-child { @apply tw:text-accent tw:w-[24px] tw:h-[24px]; }
 .color-reading > summary > .archive-icon:last-child { @apply tw:ml-auto tw:text-muted; }
 .color-reading[open] > summary > .archive-icon:last-child { transform:rotate(180deg); }
-.color-reading > summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.color-reading > summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .color-reading-body { @apply tw:pb-s-5; }
 .color-reading-body :deep(.light-notebook) { margin-top:var(--s-4); }
 .section-title { @apply tw:text-title-sm tw:font-bold tw:mb-s-2; }
 .section-title.spaced { @apply tw:mt-s-6; }
 
-.result-panel { @apply tw:p-s-5; border:1px solid var(--accent); @apply tw:rounded-xl; background:var(--bg-surface); @apply tw:mt-s-5; }
+.result-panel { @apply tw:p-s-5; border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); @apply tw:mt-s-5; }
 /* 色号使用稳定阅读底色，不受任意深浅的样本色影响。 */
 .palette-swatch { flex:1 1 76px; @apply tw:w-[76px] tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); }
 .palette-color { @apply tw:block tw:h-[48px]; background:var(--swatch); }

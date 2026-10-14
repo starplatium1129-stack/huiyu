@@ -60,7 +60,7 @@ watch(() => portraitCloudIdentity(props.characterId), async (_identity, _old, on
 .portrait-stage-modes button { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px]; padding:var(--s-2) var(--s-3); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary; font:500 var(--fs-label) var(--font-sans); @apply tw:cursor-pointer; }
 .portrait-stage-modes button[aria-pressed='true'] { @apply tw:text-primary tw:border-strong; background:var(--bg-surface); box-shadow:var(--shadow-sm); }
 .portrait-stage-modes button:disabled { @apply tw:text-disabled tw:cursor-default; }
-.portrait-stage-modes button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.portrait-stage-modes button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .portrait-stage-canvas { height:clamp(400px,55dvh,660px); }
 .particle-theatre { height:100%; background:var(--bg-base); }
 .particle-theatre :deep(.semantic-particle-field) { @apply tw:w-full tw:h-full tw:min-h-0; }

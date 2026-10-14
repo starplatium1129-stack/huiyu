@@ -65,6 +65,6 @@ tr[data-status='changed'] { background:var(--accent-soft); }
 pre { margin:0; max-height:180px; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; font:inherit; color:var(--text-primary); }
 .recipe-diff-note { color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); margin-bottom:0; }
 input { accent-color:var(--accent); }
-input:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 footer { display:flex; justify-content:flex-end; gap:var(--s-2); flex-shrink:0; }
 </style>

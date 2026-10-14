@@ -93,13 +93,13 @@ onUnmounted(() => { observer?.disconnect(); visible = false; releaseImages() })
 .companion-chat-images p { margin:0; padding:24px 8px; color:var(--text-secondary); font-size:12px; }
 .companion-chat-images figcaption { overflow:hidden; margin-top:6px; color:var(--text-secondary); font-size:11px; line-height:1.5; text-overflow:ellipsis; white-space:nowrap; }
 .companion-chat-image-retry { min-height:28px; margin-top:5px; padding:3px 6px; border:1px solid var(--border-soft); border-radius:6px; background:var(--bg-surface); color:var(--text-primary); }
-.companion-chat-image-open:focus-visible,.companion-chat-image-retry:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.companion-chat-image-open:focus-visible,.companion-chat-image-retry:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .companion-chat-image-dialog { box-sizing:border-box; width:min(860px,calc(100vw - 24px)); max-height:calc(100vh - 24px); overflow:auto; padding:12px; border:1px solid var(--border-soft); border-radius:16px; background:var(--bg-surface); color:var(--text-primary); }
 .companion-chat-image-dialog::backdrop { background:var(--art-scrim); }
 .companion-chat-image-dialog header { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; font-size:13px; }
 .companion-chat-image-dialog header span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .companion-chat-image-dialog header button { display:grid; place-items:center; flex-shrink:0; width:32px; height:32px; padding:0; border:1px solid var(--border-soft); border-radius:8px; background:var(--bg-elevated); color:var(--text-primary); cursor:pointer; }
-.companion-chat-image-dialog header button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.companion-chat-image-dialog header button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .companion-chat-image-dialog :deep(.zoomable-image-viewer) { min-height:min(280px,55vh); height:min(680px,calc(100vh - 100px)); }
 .companion-chat-image-dialog :deep(.zoomable-img) { max-height:calc(100vh - 116px); }
 </style>

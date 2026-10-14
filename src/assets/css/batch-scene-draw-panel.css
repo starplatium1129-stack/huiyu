@@ -55,7 +55,7 @@
 }
 .batch-scene-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .batch-scene-card.selected {
-  @apply tw:border-accent;
+  @apply tw:border-strong;
   background: color-mix(in srgb, var(--accent) 9%, var(--bg-surface));
 }
 .batch-scene-check {
@@ -93,7 +93,7 @@
 }
 .batch-char-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .batch-char-card.selected {
-  @apply tw:border-accent;
+  @apply tw:border-strong;
   background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface));
 }
 .batch-char-avatar-wrap {

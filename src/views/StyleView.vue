@@ -71,7 +71,7 @@ useScrollReveal()
 .style-sample-caption { margin:var(--s-2) 0 var(--s-4); @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
 .style-card-body .mood-strip { @apply tw:h-[12px] tw:rounded-xs tw:overflow-hidden; }
 .style-card-foot > span { @apply tw:text-muted tw:text-body-sm; }
-.style-sample:focus-visible, .mood-go:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; @apply tw:rounded-sm; }
+.style-sample:focus-visible, .mood-go:focus-visible { outline:none; box-shadow:var(--focus-shadow); @apply tw:rounded-sm; }
 .style-notes { @apply tw:flex tw:items-center tw:gap-s-4 tw:mt-s-7 tw:pt-s-5; border-top:1px solid var(--border-soft); }
 .style-notes .btn { @apply tw:shrink-0; }
 @media (hover:hover) { .style-sample:hover img { transform:scale(1.035); } }

@@ -19,13 +19,12 @@
 }
 .toggle-knob[data-state='checked'] { transform: translateX(14px); background: var(--text-inverse); }
 .toggle-switch:hover:not([data-disabled]) .toggle-slider {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
-.toggle-switch:active:not([data-disabled]) .toggle-slider { outline-offset: 0; }
 .toggle-switch:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 .toggle-switch:focus-visible .toggle-knob { transition: none; }
 .toggle-switch[data-disabled] {

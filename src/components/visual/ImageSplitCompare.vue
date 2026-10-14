@@ -85,8 +85,8 @@ const dividerStyle = computed(() => ({
   --compare-divider-glow: rgba(56, 189, 248, 0.6);
 }
 .image-split-compare:focus-visible {
-  outline: 2px solid var(--archive-blue);
-  outline-offset: -2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 
 .layer-after {
@@ -105,8 +105,8 @@ const dividerStyle = computed(() => ({
   transform: translate(-50%, -50%);
 }
 .image-split-compare:hover .divider-handle {
-  outline: 2px solid var(--archive-blue);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 
 .is-dragging .divider-handle {
@@ -115,6 +115,6 @@ const dividerStyle = computed(() => ({
   color: var(--bg-deep);
 }
 @media (forced-colors: active) {
-  .image-split-compare:focus-visible, .image-split-compare:hover .divider-handle { outline-color: Highlight; }
+  .image-split-compare:focus-visible, .image-split-compare:hover .divider-handle { outline: 2px solid Highlight; outline-offset: 2px; }
 }
 </style>

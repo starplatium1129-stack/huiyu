@@ -83,7 +83,7 @@ function closeAutoFocus(event: Event) {
 .chat-more-item > span { min-width:0; overflow-wrap:anywhere; }
 .chat-more-item .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }
 .chat-more-item[data-highlighted] { background:var(--accent-soft); color:var(--text-primary); }
-.chat-more-menu[data-pointer-open='false'] .chat-more-item[data-highlighted] { outline:2px solid var(--accent); outline-offset:-2px; }
+.chat-more-menu[data-pointer-open='false'] .chat-more-item[data-highlighted] { outline:none; box-shadow:var(--focus-shadow); }
 .chat-more-item.is-danger { color:var(--danger-text); }
 .chat-more-item.is-danger[data-highlighted] { background:color-mix(in srgb,var(--danger) 12%,var(--bg-surface)); }
 .chat-more-separator { height:1px; margin:var(--s-2) var(--s-1); background:var(--border-soft); flex-shrink:0; }

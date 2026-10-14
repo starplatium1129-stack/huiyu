@@ -33,7 +33,7 @@
   position:absolute;
   inset:0;
   border-radius:inherit;
-  box-shadow:inset 0 0 0 2px var(--accent),inset 0 0 24px var(--accent-soft);
+  box-shadow:var(--focus-shadow);
   pointer-events:none;
   opacity:0;
   transition:opacity 260ms var(--ease-out);
@@ -48,10 +48,10 @@
 .artwork-album-caption strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:600 var(--fs-title-xs) var(--font-sans); }
 .artwork-album-caption small { display:block; margin-top:var(--s-1); color:var(--text-secondary); font:400 var(--fs-label-xs) var(--font-sans); }
 .artwork-album-caption > .archive-icon { width:18px; height:18px; flex-shrink:0; color:var(--text-secondary); transform:rotate(-90deg); }
-.artwork-album[aria-pressed="true"] .artwork-album-cover { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft); }
+.artwork-album[aria-pressed="true"] .artwork-album-cover { border-color:var(--border-strong); box-shadow:var(--selection-shadow); }
 .artwork-album[aria-pressed="true"] .artwork-album-caption > .archive-icon { color:var(--accent); transform:none; }
 .artwork-album:is(:focus-visible,[aria-pressed="true"]) .artwork-album-caption strong { color:var(--accent); }
-.artwork-album:focus-visible { outline:2px solid var(--accent); outline-offset:3px; transform:translateY(-5px) scale(1.012); }
+.artwork-album:focus-visible { outline:none; box-shadow:var(--focus-shadow); transform:translateY(-5px) scale(1.012); }
 .artwork-album:focus-visible .artwork-album-cover::after { opacity:1; }
 @media (hover:hover) and (pointer:fine) {
   .artwork-album:hover { transform:translateY(-5px) scale(1.012); }

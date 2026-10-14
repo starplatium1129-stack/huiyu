@@ -53,7 +53,7 @@
     border-color: color-mix(in srgb, var(--mood-love) 25%, var(--border-soft));
   }
   .pb .universal-outfit-btn:hover, .pb .universal-outfit-btn.selected {
-    border-color: var(--mood-love);
+    border-color: var(--border-strong);
     background: color-mix(in srgb, var(--mood-love) 15%, var(--bg-deep));
     color: var(--mood-love);
   }
@@ -68,7 +68,7 @@
   .pb .universal-wardrobe-section { display:block; }
   .pb .wardrobe-summary { @apply tw:items-center tw:min-h-[36px] tw:cursor-pointer; list-style:none; }
   .pb .wardrobe-summary::-webkit-details-marker { display:none; }
-  .pb .wardrobe-summary:focus-visible { outline:2px solid var(--accent); outline-offset:4px; @apply tw:rounded-sm; }
+  .pb .wardrobe-summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); @apply tw:rounded-sm; }
   .pb .wardrobe-summary strong { @apply tw:flex tw:items-center tw:gap-s-1 tw:min-w-0; flex:1; }
   .pb .wardrobe-toggle { @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:flex-none; }
   .pb .wardrobe-summary .wardrobe-toggle,
@@ -89,7 +89,7 @@
     background:var(--bg-deep); @apply tw:text-secondary tw:cursor-pointer tw:text-left;
   }
   .pb .outfit-preset:hover, .pb .outfit-preset.selected {
-    @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent;
+    @apply tw:border-strong; background:var(--accent-soft); @apply tw:text-accent;
   }
   .pb .outfit-preset strong, .pb .outfit-preset small { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
   .pb .outfit-preset strong { @apply tw:text-label-sm; }
@@ -122,7 +122,7 @@
     border:1px solid var(--border-soft); @apply tw:rounded-md;
     background:var(--bg-deep); @apply tw:text-primary; font:400 var(--fs-label) var(--font-sans); outline:none;
   }
-  .pb .tag-input:focus { @apply tw:border-accent; box-shadow:var(--ring); }
+  .pb .tag-input:focus { @apply tw:border-strong; box-shadow:var(--ring); }
   .pb .tag-browser { @apply tw:grid tw:gap-s-2 tw:mb-s-3; }
   .pb .tag-categories { @apply tw:flex tw:gap-[4px] tw:overflow-x-auto tw:pb-[2px]; scrollbar-width:thin; }
   .pb .tag-categories button {
@@ -148,6 +148,6 @@
     background:var(--bg-deep); @apply tw:text-secondary tw:cursor-pointer tw:text-left;
   }
   .pb .tag-results button:hover,
-  .pb .tag-results button.selected { @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent; }
+  .pb .tag-results button.selected { @apply tw:border-strong; background:var(--accent-soft); @apply tw:text-accent; }
   .pb .tag-results strong { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-label-sm; }
   .pb .tag-results small { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-muted; font:var(--fs-mono-xs) var(--font-mono); }

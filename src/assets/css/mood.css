@@ -16,23 +16,18 @@
 }
 .mood-card {
   @apply tw:overflow-hidden tw:w-full tw:p-0;
-  border: 2px solid var(--border-soft);
+  border: 1px solid var(--border-soft);
   @apply tw:rounded-lg;
   background: var(--bg-surface);
-  /* --mood-color 只用来喂 currentColor(选中态描边),不要让它继承成文字色 ——
-     六种 mood 都是高亮度色,当文字最差只有 1.38:1。文字色见 .mood-name。
-     曾经这里是 color: var(--mood-color),只因 director.css 全局泄漏出一条
-     未作用域限定的 .mood-card .mood-name 覆盖才看起来正常;那条泄漏一旦
-     收敛(director.css 移入路由块),标题就会当场掉到 1.38:1。 */
+  /* 情绪色由色条展示，正文保留共享文字色。 */
   font: inherit;
   @apply tw:text-left tw:cursor-pointer;
   transition: border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out), box-shadow var(--motion-surface);
 }
-.mood-card:hover { @apply tw:border-accent; }
-/* 选中态用自身情绪色描边。border-color 属于非文字图形(3:1),
-   直接用 --mood-color 没问题;文字则一律走 --text-primary。 */
-.mood-card.active { border-color: var(--mood-color, var(--accent)); box-shadow: var(--glow-md); }
-.mood-card.selected { @apply tw:border-accent; box-shadow: var(--glow-sm); }
+.mood-card:hover { @apply tw:border-strong; }
+.mood-card:is(.active,.selected) { @apply tw:border-strong; box-shadow:var(--shadow-sm); }
+.mood-card:is(.active,.selected) .mood-body { background:var(--accent-soft); box-shadow:var(--selection-shadow); }
+.mood-card:focus-visible .mood-body { box-shadow:var(--focus-shadow); }
 .mood-strip { @apply tw:flex; height: var(--mood-strip-h, 36px); }
 .mood-swatch { flex: 1; background: var(--swatch, transparent); }
 .mood-body { padding: var(--s-2) var(--s-3); }

@@ -278,9 +278,9 @@ function onToastLeave(el: Element, done: () => void) {
   .toast-action:hover { background:color-mix(in srgb, var(--accent) 18%, var(--bg-surface)); }
   .toast-close:hover { color:var(--text-primary); background:var(--bg-elevated); }
 }
-.toast-action:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toast-action:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .toast-close { @apply tw:grid; place-items:center; @apply tw:min-w-[32px] tw:min-h-[32px] tw:rounded-md tw:shrink-0; background:none; border:none; @apply tw:text-secondary tw:cursor-pointer tw:p-s-1; font-size:.9em; @apply tw:leading-flush; }
-.toast-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; @apply tw:rounded-sm; }
+.toast-close:focus-visible { outline: none; box-shadow: var(--focus-shadow); @apply tw:rounded-sm; }
 
 /* 图标是这四种提示唯一的颜色信号,按设计系统契约必须走 --*-text
    (原 token 是给色块/描边调的,浅色主题下当图标只有 1.9–2.6:1) */

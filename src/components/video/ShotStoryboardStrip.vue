@@ -44,7 +44,7 @@ function markFailed(event: Event) {
 .storyboard-caption { padding:var(--s-3) var(--s-3) var(--s-1); }
 .storyboard-caption > span { @apply tw:text-secondary tw:text-label-xs; }
 .storyboard-description { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; margin:0 var(--s-3) var(--s-3); }
-.storyboard-frame:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.storyboard-frame:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media(hover:hover) and (pointer:fine) { .storyboard-frame:hover { @apply tw:border-accent; } }
 @media(max-width:540px) { .shot-storyboard { @apply tw:p-s-3; } .storyboard-frame { flex-basis:176px; } }
 </style>

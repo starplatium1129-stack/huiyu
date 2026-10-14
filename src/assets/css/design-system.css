@@ -213,11 +213,10 @@
   /* accent 光晕: 恋爱感柔光弥散 (Bloom) */
   --glow-sm: 0 0 14px var(--accent-glow);
   --glow-md: 0 0 28px var(--accent-glow), 0 0 10px rgba(183, 132, 246, 0.25);
-  /* 焦点/选中环:统一 3px,状态色由 --ring-color 决定 */
-  --ring-color: var(--accent);
-  --ring: 0 0 0 3px color-mix(in srgb, var(--ring-color) 34%, transparent);
-  --ring-strong: 0 0 0 3px color-mix(in srgb, var(--ring-color) 55%, transparent);
-  --selection-shadow: 0 0 0 1px var(--accent), var(--shadow-sm);
+  /* 焦点用主题墨色底线，选中用单侧标记，不向控件外扩描边。 */
+  --ring-color: var(--focus-color);
+  --ring: inset 0 -2px 0 var(--ring-color);
+  --selection-shadow: inset 0 -2px 0 var(--accent), var(--shadow-sm);
 
   /* ---- Motion -----------------------------------------------------------
      语义 token 按交互目的命名，避免同一个 "fast" 同时承担按压、浮层和路由。
@@ -327,21 +326,12 @@ body {
 a { @apply tw:text-accent; text-decoration: none; transition: color var(--motion-hover); }
 a:hover { @apply tw:text-accent-hover; }
 
-/* 焦点可见性兜底（2026-08-28 审计修复）
-   原实现有两个问题：
-   1. :where() 贡献 0 特异性，整条只有 :focus-visible 的 (0,1,0)，
-      任何单类选择器（组件里的 .x:focus-visible { outline: none }）都能盖掉它 ——
-      这是 16 个 director 组件中 14 个看不到焦点环的根因；
-   2. 只枚举了原生控件，卡片/轨道项这类用 div + role 造的自定义交互元素漏在外。
-   这里把 :focus-visible 重复一次把特异性抬到 (0,2,0)，并补上 role 型控件；
-   仍低于组件自定义的 (0,2,0) 同分规则（后者在后面加载、会胜出），
-   所以不会抢走 SceneCard 那种精心设计的焦点环。 */
+/* 原生与 role 控件共用底线；重复伪类保留兜底特异性，组件可在边界定制。 */
 :where(a, button, input, select, textarea, summary, [tabindex],
        [role="button"], [role="tab"], [role="option"], [role="menuitem"],
        [role="switch"], [role="checkbox"], [role="radio"]):focus-visible:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  /* 焦点环沿用控件形状，不在键盘聚焦时重设按钮与输入框的圆角。 */
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 
 img { @apply tw:max-w-full tw:block; }
@@ -633,7 +623,7 @@ body > *:has(+ .footer),
 }
 .filter-pill:hover,
 .filter-pill.active {
-  border-color: color-mix(in srgb, var(--accent) 34%, var(--border-soft));
+  border-color: var(--border-strong);
   background: var(--accent-soft);
   @apply tw:text-accent;
 }
@@ -812,7 +802,7 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
 .card-create::after, .card-direct::before {
   content: ''; @apply tw:absolute tw:inset-0 tw:pointer-events-none;
   border-radius: inherit; z-index: var(--z-raised);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 48%, transparent), inset 0 1px 0 var(--glass-highlight);
+  box-shadow: var(--focus-shadow);
   opacity: 0; transition: opacity var(--motion-hover);
 }
 .card-create:is(:hover, :focus-visible)::after,
@@ -891,7 +881,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
 .btn-block { @apply tw:w-full; }
 /* 主入口的光晕:只在 .btn-lg.btn-primary 上出现一次,避免每页自定义阴影 */
 .btn-lg.btn-primary { box-shadow: var(--shadow-sm); }
-.btn-lg.btn-primary:hover { box-shadow: var(--shadow-sm); }
+.btn-lg.btn-primary:hover:not(:focus-visible) { box-shadow: var(--shadow-sm); }
 
 @media (hover: hover) and (pointer: fine) {
   .card-create:hover { transform: translateY(-2px); }
@@ -924,8 +914,8 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
 .input:hover, .textarea:hover { @apply tw:border-strong; }
 .input:focus, .textarea:focus {
   outline: none;
-  @apply tw:border-accent;
-  box-shadow: var(--ring);
+  @apply tw:border-strong;
+  box-shadow: inset 0 -2px 0 var(--ring-color);
 }
 /* 同 .btn:disabled —— 不用 opacity 压字（实测浅色底 3.01:1 不达 AA），
    改为显式文字色 + 压暗底。 */
@@ -1094,8 +1084,8 @@ body.overlay-open { @apply tw:overflow-hidden; margin-right:var(--overlay-scroll
 }
 .chip.active {
   background: linear-gradient(135deg, var(--accent-soft), color-mix(in srgb, var(--accent-violet) 18%, transparent));
-  @apply tw:border-accent tw:text-accent;
-  box-shadow: 0 0 12px var(--accent-glow), inset 0 1px 0 var(--hl-inset-22);
+  @apply tw:border-strong tw:text-accent;
+  box-shadow: var(--shadow-sm);
 }
 
 /* ---- Prompt code block(统一 4 套语法高亮:scenario / color-script / prompt-spec / art-direction)
@@ -1238,8 +1228,8 @@ body:has(.pb) .route-atmosphere .route-index {
 .skip-link:focus,
 .skip-link:focus-visible {
   transform: translateY(0);
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 /* ---- Prose tones(替代散落各页的 color+font-size 内联组合) ---- */
 .lede      { @apply tw:text-secondary tw:text-body-lg tw:leading-loose; }
@@ -1746,9 +1736,11 @@ kbd,
   /* 焦点环：项目里大量焦点样式用 box-shadow 实现，强制颜色下会消失。
      统一补 outline 兜底，并让显式 :focus-visible 走系统高亮色。 */
   :where(a, button, input, select, textarea, summary, [tabindex],
-         [role="button"], [role="tab"], [role="option"]):focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+         [role="button"], [role="tab"], [role="option"], [role="menuitem"],
+         [role="switch"], [role="checkbox"], [role="radio"]):focus-visible {
+    /* 系统高对比度会移除阴影；此处须优先于组件的普通主题样式。 */
+    outline: 2px solid Highlight !important;
+    outline-offset: 2px !important;
   }
 
   /* 卡片/面板：玻璃半透明在强制颜色下变平，用实边框重建层级边界 */

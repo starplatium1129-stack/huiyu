@@ -21,14 +21,14 @@
 .pop-rating-pill.rating-R18.active,
 .pop-cat.adult.active { @apply tw:border-danger-text tw:text-danger-text; background: var(--bg-surface); }
 .pop-rating-pill:focus-visible,
-.pop-cat:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pop-cat:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .pop-cats { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
 .pop-cat em { @apply tw:text-muted tw:text-label-xs tw:not-italic; font-variant-numeric: tabular-nums; }
 .pop-results-bar { @apply tw:flex tw:flex-wrap tw:justify-between tw:items-center tw:gap-s-2; margin: var(--s-4) 0; }
 .pop-count { @apply tw:text-secondary tw:text-label-sm; }
 .pop-count strong { @apply tw:text-primary tw:font-semibold; font-variant-numeric: tabular-nums; }
 .pop-filter-reset { margin-left:auto; min-height:32px; padding:var(--s-1) var(--s-2); border:0; border-radius:var(--r-sm); background:transparent; color:var(--accent); font:500 var(--fs-label-sm) var(--font-sans); cursor:pointer; }
-.pop-filter-reset:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.pop-filter-reset:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .mature-hint { @apply tw:text-label-xs; }
 
 .pop-grid { @apply tw:grid; align-items: start; @apply tw:gap-s-5; }
@@ -41,7 +41,7 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 470px;
 }
-.pop-card:focus-within { @apply tw:border-accent; }
+.pop-card:focus-within { @apply tw:border-strong; }
 /* Reserve the planned frame while loading; contain keeps the whole thumbnail visible. */
 .pop-thumb {
   @apply tw:relative tw:block;
@@ -52,7 +52,7 @@
   background:transparent;
   text-decoration: none;
 }
-.pop-thumb:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pop-thumb:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .pop-thumb img {
   @apply tw:absolute;
   inset: 0;
@@ -99,7 +99,7 @@
 .pop-scene-details { @apply tw:mt-s-2; border-top: 1px solid var(--border-soft); }
 .pop-scene-details summary { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:text-secondary tw:text-label-sm; list-style: none; @apply tw:cursor-pointer; }
 .pop-scene-details summary::-webkit-details-marker { @apply tw:hidden; }
-.pop-scene-details summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; @apply tw:rounded-sm; }
+.pop-scene-details summary:focus-visible { outline: none; box-shadow: var(--focus-shadow); @apply tw:rounded-sm; }
 .pop-scene-details[open] summary > .archive-icon { transform: rotate(180deg); }
 .pop-decision { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3; margin: var(--s-1) 0 var(--s-4); @apply tw:text-label-xs; }
 .pop-decision > div { @apply tw:grid tw:gap-s-1; }
@@ -108,7 +108,8 @@
 .pop-card-actions { @apply tw:mt-auto; }
 .pop-draw-action { @apply tw:w-full tw:min-h-[42px] tw:justify-center tw:border-soft tw:rounded-md; background: var(--bg-elevated); @apply tw:text-primary; box-shadow: none; }
 .pop-draw-action:hover,
-.pop-draw-action:focus-visible { @apply tw:border-accent; background: var(--accent-soft); @apply tw:text-accent; box-shadow: none; }
+.pop-draw-action:focus-visible { @apply tw:border-strong; background: var(--accent-soft); @apply tw:text-accent; }
+.pop-draw-action:focus-visible { box-shadow:var(--focus-shadow); }
 
 /* The same bounded image focus used by the artwork and reference libraries. */
 .popular-scene-library .pop-grid .pop-card { --card-focus-lift:-6px; --card-focus-scale:1.06; transition:transform var(--motion-surface) var(--ease-out); }

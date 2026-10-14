@@ -50,7 +50,7 @@
   transition: border-color var(--motion-hover) var(--ease-out);
 }
 .profile-grid select:is(:hover, :focus-visible) {
-  @apply tw:border-accent;
+  @apply tw:border-strong;
 }
 .profile-note { grid-column: 1 / -1; }
 .profile-note small { justify-self: end; @apply tw:text-muted tw:text-mono-sm; }

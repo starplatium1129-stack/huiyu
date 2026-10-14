@@ -27,13 +27,13 @@
   transition-duration: var(--motion-press);
 }
 .sc[role="button"]:focus-visible:active { transform:none; transition:none; }
-.sc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sc:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .sc-static { @apply tw:cursor-default; }
 /* Prepaint the rim; hovering changes only opacity rather than shadow blur. */
 .sc::after {
   content: ''; position: absolute; inset: 0; border-radius: inherit;
   z-index: var(--z-sc-accent); pointer-events: none;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 48%, transparent), inset 0 1px 0 var(--glass-highlight);
+  box-shadow: var(--focus-shadow);
   opacity: 0; transition: opacity var(--motion-hover);
 }
 .sc:focus-within::after { opacity: 1; transition:none; }

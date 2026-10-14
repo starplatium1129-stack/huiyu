@@ -57,5 +57,5 @@ onUnmounted(stopPan)
 .candidate-viewport[data-zoomed="true"] { cursor:grab; }
 .candidate-viewport[data-zoomed="true"]:active { cursor:grabbing; }
 .candidate-viewport img { @apply tw:block tw:w-full tw:h-full tw:object-contain; transform:var(--candidate-transform); }
-.candidate-viewport:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+.candidate-viewport:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 </style>

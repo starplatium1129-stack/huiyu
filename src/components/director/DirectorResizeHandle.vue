@@ -17,6 +17,6 @@ const emit = defineEmits<{ start: [event: PointerEvent]; move: [event: PointerEv
   .director-resize-handle.inspector { right: var(--director-inspector-width,clamp(300px,24vw,26rem)); }
   .director-resize-handle::after { content: ''; position: absolute; inset: 20% 6px; border-radius: var(--r-pill); background: transparent; transition: background var(--motion-hover); }
   .director-resize-handle:hover::after, .director-resize-handle:focus-visible::after { background: var(--accent); }
-  .director-resize-handle:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; border-radius: var(--r-sm); }
+  .director-resize-handle:focus-visible { outline: none; box-shadow: var(--focus-shadow); border-radius: var(--r-sm); }
 }
 </style>

@@ -32,7 +32,7 @@
 .popular-scene-library .pop-card-head h3 { font-size:var(--fs-body); line-height:1.35; }
 .popular-scene-library .pop-card-actions { margin:var(--s-1) 0 0; }
 .popular-scene-library .pop-draw-action { min-height:var(--control-height-sm); background:var(--accent-soft); border-color:color-mix(in srgb,var(--accent) 25%,var(--border-soft)); color:var(--accent); font-size:var(--fs-label-sm); }
-.popular-scene-library .pop-draw-action:hover,.popular-scene-library .pop-draw-action:focus-visible { background:var(--accent); border-color:var(--accent); color:var(--text-inverse); }
+.popular-scene-library .pop-draw-action:hover,.popular-scene-library .pop-draw-action:focus-visible { background:var(--accent); border-color:var(--border-strong); color:var(--text-inverse); }
 .popular-scene-library .pop-scene-details { margin-top:0; }
 .popular-scene-library .pop-scene-details summary { min-height:28px; font-size:var(--fs-label-xs); }
 .pop-full-description { margin:0 0 var(--s-3); color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); white-space:pre-line; overflow-wrap:anywhere; }

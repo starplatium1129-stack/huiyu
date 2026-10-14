@@ -191,14 +191,14 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-character-copy { padding: var(--s-3) var(--s-1) var(--s-1); overflow-wrap: anywhere; }
 .bookshelf-character-copy strong { @apply tw:text-body-sm tw:font-semibold tw:leading-label; }
 .bookshelf-character-copy small { @apply tw:text-secondary tw:text-label-xs tw:leading-body; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
-.bookshelf-character[aria-pressed="true"] { @apply tw:border-accent; background: var(--accent-soft); }
+.bookshelf-character[aria-pressed="true"] { @apply tw:border-strong; background: var(--accent-soft); }
 .bookshelf-selected { place-items: center; border: 1px solid var(--accent); background: var(--bg-surface); }
 .bookshelf-empty { padding: var(--s-8) var(--s-4); }
 .bookshelf-empty > .archive-icon { @apply tw:text-title; }
 .bookshelf-empty p { margin-block: var(--s-3); }
 .bookshelf-pagination button { @apply tw:min-h-[40px]; padding: var(--s-2) var(--s-4); border: 1px solid var(--border-soft); @apply tw:rounded-pill; background: var(--bg-base); @apply tw:text-secondary; font: inherit; @apply tw:cursor-pointer; }
 .bookshelf-pagination button:disabled { @apply tw:text-disabled tw:cursor-default; }
-.character-bookshelf button:focus-visible, .bookshelf-results-heading h2:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.character-bookshelf button:focus-visible, .bookshelf-results-heading h2:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .sr-only { @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden; clip-path: inset(50%); @apply tw:whitespace-nowrap; border: 0; }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="0"] { transform: translateY(-6%); }
@@ -212,7 +212,6 @@ defineExpose({ focusSelected, snapshot })
 @media (hover: hover) and (pointer: fine) {
   .bookshelf-character:hover::before { opacity: 1; }
 }
-.bookshelf-character[aria-pressed="true"]::before { border-color: var(--accent); }
 .is-keyboard-input .bookshelf-cover { transition:none; }
 @media (max-width: 1200px) {
   .bookshelf-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

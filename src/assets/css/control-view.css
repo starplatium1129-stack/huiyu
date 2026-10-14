@@ -118,7 +118,7 @@
 .log-box .err { @apply tw:text-danger-text; }
 .log-box .info { @apply tw:text-info-text; }
 .log-empty, .log-box .time { @apply tw:text-muted; }
-.control-page :is(a,button,input,select,summary):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.control-page :is(a,button,input,select,summary):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .control-page :is(a,button,summary):focus-visible:active { transform:none; transition:none; }
 .control-shell :deep(.control-count) { display:inline-flex; }
 @media (min-width: 1600px) { .control-shell { padding-inline: var(--s-7); } }
@@ -136,5 +136,5 @@
   .control-section-jump a { flex:0 0 auto; display:flex; align-items:center; min-height:40px; padding:var(--s-2) var(--s-3); border-radius:var(--r-md); color:var(--text-secondary); font-size:var(--fs-label); }
   .control-section-jump a[aria-current] { color:var(--accent); background:var(--accent-soft); }
   .control-section-jump a:hover { background:var(--bg-surface); }
-  .control-section-jump a:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+  .control-section-jump a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 }

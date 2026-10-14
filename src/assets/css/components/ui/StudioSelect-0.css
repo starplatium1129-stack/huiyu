@@ -15,8 +15,11 @@
 .studio-select-wrapper > .studio-tooltip-anchor[data-anchor] { width: 100%; }
 
 .studio-select-trigger {
+  position:relative;
   transition: border-color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out);
 }
+.studio-select-trigger::after { content:""; position:absolute; inset:auto var(--s-3) 0; height:2px; background:var(--focus-color); opacity:0; pointer-events:none; }
+.studio-select-trigger:is(:focus-visible,:focus-within)::after { opacity:1; }
 .studio-select-wrapper[data-size='sm'] .studio-select-trigger {
   gap: var(--s-1);
   min-height: var(--control-height-sm);
@@ -28,9 +31,9 @@
   background-color: var(--bg-surface);
 }
 .studio-select-trigger:focus-visible {
-  border-color: var(--accent);
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  border-color: var(--border-strong);
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 .studio-select-trigger[data-disabled] {
   color: var(--text-disabled);
@@ -55,10 +58,9 @@
 }
 .studio-select-item:where(:not([data-disabled])):is(:hover, [data-highlighted]) {
   background: var(--bg-hover);
-  /* Keep pointer/keyboard location visible on the already-selected fill too. */
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
 }
+.studio-select-content[data-pointer-open='false'] .studio-select-item[data-highlighted] { box-shadow:var(--focus-shadow); }
+.chat-model-picker-content .studio-select-item[data-highlighted] { box-shadow:var(--focus-shadow); }
 .studio-select-item[data-state='checked'] {
   background: var(--accent-soft);
   color: var(--accent);

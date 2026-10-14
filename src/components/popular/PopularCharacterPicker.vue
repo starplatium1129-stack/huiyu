@@ -99,7 +99,7 @@ const sourceLabel = computed(() => {
   color: inherit;
   font: inherit;
 }
-.character-browse-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; @apply tw:rounded-lg; }
+.character-browse-button:focus-visible { outline: none; box-shadow: var(--focus-shadow); @apply tw:rounded-lg; }
 .character-browse-trigger {
   background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface) 70%);
   transition: background var(--motion-hover) var(--ease-out);
@@ -126,7 +126,7 @@ const sourceLabel = computed(() => {
 .character-browser-heading h2 { @apply tw:m-0 tw:text-title-xs tw:leading-body; }
 .character-browser-heading p { margin: var(--s-1) 0; @apply tw:text-label tw:text-muted tw:leading-body; }
 .character-browser-heading button { @apply tw:grid; place-items: center; @apply tw:shrink-0 tw:w-[40px] tw:h-[40px]; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-deep); @apply tw:text-primary tw:cursor-pointer; }
-.character-browser-heading button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.character-browser-heading button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .outfits-head-icon {
   @apply tw:w-[14px] tw:h-[14px];
   color: var(--pb-active);
@@ -143,9 +143,9 @@ const sourceLabel = computed(() => {
   @apply tw:text-secondary tw:text-label-sm tw:cursor-pointer;
 }
 .outfit-chip:hover { @apply tw:border-accent tw:text-accent; }
-.outfit-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.outfit-chip:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .outfit-chip.active {
-  @apply tw:border-accent;
+  @apply tw:border-strong;
   background: var(--bg-surface);
   @apply tw:text-accent;
   box-shadow: inset 3px 0 var(--accent);

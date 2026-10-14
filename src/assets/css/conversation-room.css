@@ -51,7 +51,7 @@
   background: var(--accent);
   box-shadow: var(--shadow-sm);
 }
-.room-volume input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.room-volume input[type="range"]:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .room-surface .chat-list { @apply tw:p-s-4; gap:var(--s-4); scrollbar-gutter:stable; @apply tw:min-h-0; overscroll-behavior:contain; background:var(--bg-surface); }
 .room-surface .chat-empty { flex-shrink:0; margin:auto; padding:var(--s-4); color:var(--text-primary); font:400 14px/1.7 var(--font-sans); }
 .room-surface .message { max-width:min(86%,720px); align-items:flex-end; flex-shrink:0; gap:6px; }
@@ -61,7 +61,7 @@
 .chat-page.room-surface .message.speaking .message-bubble { border-color:var(--border-soft); box-shadow:none; }
 .room-surface .chat-composer { flex-shrink:0; padding:var(--s-3) var(--s-4); border-top:1px solid var(--border-soft); background:var(--bg-surface); }
 .room-surface .composer-row { align-items:flex-end; flex-wrap:nowrap; gap:var(--s-2); padding:4px; border:1px solid var(--border-soft); border-radius:18px; background:var(--bg-base); }
-.room-surface .composer-row:focus-within { border-color:var(--accent); }
+.room-surface .composer-row:focus-within { border-color:var(--border-strong); box-shadow:var(--focus-shadow); }
 .chat-page.room-surface .chat-input { flex:1 1 auto; min-width:0; min-height:40px; max-height:120px; padding:9px 8px; resize:none; border:0; border-radius:0; background:transparent; color:var(--text-primary); font:400 14px/22px var(--font-sans); box-shadow:none; }
 .chat-page.room-surface .chat-input:focus { outline:none; box-shadow:none; }
 .chat-page.room-surface :is(.send-btn,.stop-btn,.hold-talk-btn) { display:grid; place-items:center; flex:none; width:40px; height:40px; min-height:40px; padding:0; border:0; border-radius:14px; }
@@ -75,7 +75,7 @@
 .room-tools-dialog::backdrop { background:var(--art-scrim); }
 .room-tools-dialog[open] > .room-panel-content > :is(.chat-archive-panel,.chat-user-profile,.chat-memory-panel) { margin:0; border:0; border-radius:0; background:var(--bg-surface); box-shadow:none; }
 .room-tools-dialog :is(.archive-panel-head,.chat-user-profile > header,.chat-memory-panel > header) { position:sticky; top:0; z-index:var(--z-raised); padding-bottom:var(--s-3); background:var(--bg-surface); }
-.room-tools-dialog :is(button,input,textarea):focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.room-tools-dialog :is(button,input,textarea):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .room-surface .room-setup { margin:var(--s-3); padding:var(--s-3); font:400 13px/1.6 var(--font-sans); }
 .room-latest { @apply tw:self-center tw:shrink-0 tw:mb-s-2; }
 .room-current-line { @apply tw:overflow-auto tw:max-h-[160px]; padding: 0 var(--s-5); @apply tw:text-primary; line-height: 1.85; }

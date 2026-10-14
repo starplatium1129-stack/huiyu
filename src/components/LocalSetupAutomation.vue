@@ -114,7 +114,6 @@ function packageName(model: LocalSetupModel) { return model.id === 'qwen-encoder
 .setup-choice-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:var(--s-5); align-items:start; }
 .setup-choices { display:grid; gap:var(--s-3); }
 .setup-choice { border:1px solid var(--border-strong); border-radius:var(--r-lg); background:var(--bg-deep); overflow:hidden; }
-.setup-choice[data-selected="true"] { border-color:var(--accent); }
 .setup-choice-toggle { display:flex; align-items:center; gap:var(--s-3); padding:var(--s-4); cursor:pointer; min-height:48px; }
 .setup-choice[data-selected="true"] .setup-choice-toggle { background:var(--accent-soft); }
 .setup-choice-toggle > .archive-icon { width:22px; height:22px; color:var(--accent); }
@@ -177,6 +176,6 @@ function packageName(model: LocalSetupModel) { return model.id === 'qwen-encoder
 .setup-finished-items span { display:flex; align-items:center; justify-content:center; gap:var(--s-2); }
 .setup-finished small { color:var(--text-secondary); }
 .setup-automation button:disabled { color:var(--text-disabled); opacity:1; cursor:not-allowed; }
-.setup-automation :is(button,input,a,summary):focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.setup-automation :is(button,input,a,summary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media(max-width:1050px) { .setup-choice-grid { grid-template-columns:minmax(0,1fr); } }
 </style>

@@ -173,7 +173,7 @@ code { color:var(--text-primary); font-size:var(--fs-label-sm); overflow-wrap:an
 .setup-field input { box-sizing:border-box; width:100%; min-width:0; min-height:var(--control-height); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font:inherit; }
 .inference-setup .setup-error { color:var(--danger-text); }
 .inference-setup :is(input,button):disabled { color:var(--text-disabled); }
-.inference-setup :is(input,button,summary,a):focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.inference-setup :is(input,button,summary,a):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .inference-setup a:not(.btn) { color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
 @media(max-width:768px) { .setup-fields, .setup-paths { grid-template-columns:minmax(0,1fr); } .setup-status { flex-wrap:wrap; } .setup-location { align-items:flex-start; flex-wrap:wrap; } .setup-budget { width:100%; } }
 </style>

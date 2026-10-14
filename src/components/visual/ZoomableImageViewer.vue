@@ -268,8 +268,8 @@ function releasePan() {
 
 <style scoped>
 .zoomable-image-viewer:focus-visible {
-  outline: 2px solid var(--archive-blue);
-  outline-offset: -2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 
 .zoomable-image-viewer.is-zoomed {
@@ -312,8 +312,8 @@ function releasePan() {
 }
 
 .zoom-control:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 
 .zoom-control :deep(.archive-icon) {

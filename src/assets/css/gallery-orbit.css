@@ -1,7 +1,7 @@
 @reference "./tailwind.css";
 /* Shared by the artwork and reference viewers; the image stage owns its own styles. */
 :is(.art-viewer,.showcase-viewer) .gallery-orbit { position:relative; display:grid; grid-template-rows:minmax(0,1fr) auto; gap:var(--s-2); width:100%; height:100%; min-width:0; min-height:0; outline:none; }
-:is(.art-viewer,.showcase-viewer) .gallery-orbit:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; border-radius:var(--r-md); }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-md); }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-surface { position:relative; min-height:0; container-type:size; perspective:1400px; transform-style:preserve-3d; touch-action:pan-y; pointer-events:none; }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-card { --orbit-transform:none; --orbit-shade:0; --orbit-visibility:visible; position:absolute; inset:0; display:grid; grid-template-rows:minmax(0,1fr); justify-items:center; min-height:0; max-height:100%; transform-style:preserve-3d; transform:var(--orbit-transform); visibility:var(--orbit-visibility); backface-visibility:hidden; pointer-events:none; }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-card > :is(.zoomable-image-viewer,.gallery-orbit-neighbor) { width:56%; height:100%; max-height:100%; min-width:0; min-height:0; }
@@ -20,7 +20,7 @@
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation { display:flex; align-items:center; gap:var(--s-3); width:min(100%,480px); box-sizing:border-box; padding:var(--s-1) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation span { flex:0 0 auto; font:500 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation input { flex:1; min-width:0; height:28px; accent-color:var(--accent); cursor:pointer; }
-:is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation input:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-caption small { font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit.is-reduced .gallery-orbit-surface { perspective:none; }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit.is-reduced .gallery-orbit-card > .zoomable-image-viewer { width:100%; }

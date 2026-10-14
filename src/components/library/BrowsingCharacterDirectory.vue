@@ -65,7 +65,7 @@ onUnmounted(() => media.removeEventListener('change', resizeDirectory))
 @reference "../../assets/css/tailwind.css";
 .browsing-directory :deep(.character-directory) { @apply tw:static; }
 .directory-pocket { @apply tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[80px] tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:text-primary tw:text-left tw:cursor-pointer; }
-.directory-pocket:not(:disabled):not(:focus-visible):hover { outline:1px solid var(--accent); outline-offset:-1px; }
+.directory-pocket:not(:disabled):not(:focus-visible):hover { outline:none; box-shadow:var(--focus-shadow); }
 .pocket-copy small { @apply tw:text-secondary tw:text-body-sm; }
 .pocket-copy strong { font:600 var(--fs-body)/var(--lh-label) var(--font-sans); overflow-wrap:anywhere; }
 .pocket-action { font:500 var(--fs-body-sm) var(--font-sans); }
@@ -77,7 +77,7 @@ onUnmounted(() => media.removeEventListener('change', resizeDirectory))
 .directory-sheet-heading button { @apply tw:w-[44px] tw:h-[44px] tw:shrink-0; }
 .directory-sheet-content { flex:1; }
 .directory-sheet-content :deep(.character-directory) { @apply tw:w-full; }
-.directory-pocket:focus-visible, .directory-sheet-heading button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.directory-pocket:focus-visible, .directory-sheet-heading button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (max-width:900px) { .browsing-directory { @apply tw:static; } }
 @media (max-width:540px) { .directory-sheet { @apply tw:p-s-3; } }
 </style>

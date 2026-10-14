@@ -118,8 +118,8 @@ function onUndo() {
 }
 .random-dice:focus-visible,
 .random-menu-trigger:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 .random-dice:active,
 .random-menu-trigger:active {

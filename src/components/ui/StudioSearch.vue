@@ -21,15 +21,17 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
   </div>
 </template>
 <style scoped>
+.studio-search { position:relative; }
 .studio-search-input { min-height:var(--control-height); }
 .studio-search[data-size='sm'] { gap:var(--s-1); padding-inline:var(--s-2); }
 .studio-search[data-size='sm'] .studio-search-input { min-height:var(--control-height-sm); padding-block:var(--s-1); font-size:var(--fs-label-sm); }
-/* Glass materials own shadows; the focused control owns its outline. */
-.studio-search:has(.studio-search-input:focus) { outline:2px solid var(--accent); outline-offset:-2px; }
+/* Paint the focus line above the glass fill without replacing material shadows. */
+.studio-search::after { content:""; position:absolute; inset:auto var(--s-3) 0; height:2px; background:var(--focus-color); opacity:0; pointer-events:none; }
+.studio-search:has(.studio-search-input:focus)::after { opacity:1; }
 .studio-search input:focus-visible { outline:0; box-shadow:none; }
 .studio-search input::-webkit-search-cancel-button { display:none; }
 .studio-search input::placeholder { color:var(--text-muted); }
 .studio-search button:hover { background:var(--accent-soft); color:var(--accent); }
-.studio-search button:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
-@media(forced-colors:active) { .studio-search:has(.studio-search-input:focus) { outline-color:Highlight; } }
+.studio-search button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+@media(forced-colors:active) { .studio-search:has(.studio-search-input:focus) { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

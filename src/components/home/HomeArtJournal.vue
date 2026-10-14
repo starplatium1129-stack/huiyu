@@ -37,7 +37,7 @@ function excerpt(story?: string) { return (story || '一些想留下的光影，
 .journal-caption h3 { margin-block: var(--s-2); font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .lead h3 { @apply tw:text-title; }
 .journal-caption p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; @apply tw:overflow-hidden tw:text-label tw:leading-body tw:text-secondary; }
-.journal-entry:focus-visible, .journal-more:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:var(--r-md); }
+.journal-entry:focus-visible, .journal-more:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-md); }
 @media (hover: hover) and (pointer: fine) { .journal-entry:hover .journal-read { text-decoration:underline; text-underline-offset:.25em; } }
 @media (max-width: 900px) { .journal-spread { @apply tw:gap-s-5; } .journal-entry { grid-template-columns: minmax(0, 1fr); @apply tw:gap-s-3; } .journal-caption p { -webkit-line-clamp: 2; } }
 @media (max-width: 600px) { .art-journal { margin-block: var(--s-7); } .journal-heading { align-items: start; @apply tw:flex-col tw:gap-s-3; } .journal-spread { grid-template-columns: minmax(0, 1fr); } .journal-entry:not(.lead) { grid-template-columns: 112px minmax(0, 1fr); @apply tw:pt-s-5; border-top: 1px solid var(--border-soft); } }

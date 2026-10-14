@@ -118,7 +118,7 @@ function onPhase(phase: 'selection' | 'preparing' | 'ready') {
 .setup-paths dd { margin:0 0 var(--s-2); }
 .local-setup .btn { flex-shrink:0; }
 .local-setup button:disabled { color:var(--text-disabled); opacity:1; cursor:not-allowed; }
-.local-setup :is(button,a,summary):focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.local-setup :is(button,a,summary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media(max-width:1050px) { .setup-location-card { flex-wrap:wrap; } .setup-location-card > .btn { margin-left:72px; } }
 @media(max-width:650px) { .setup-steps li { padding:var(--s-3) var(--s-2); gap:var(--s-2); } .setup-step-arrow { display:none; } .setup-step-number { width:26px; height:26px; } }
 </style>

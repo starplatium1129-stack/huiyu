@@ -22,7 +22,7 @@
 .hero-particle-link { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-accent; font:500 var(--fs-body-sm)/var(--lh-label) var(--font-sans); text-decoration:none; }
 .hero-reference-link { @apply tw:text-secondary; }
 .hero-particle-link:hover { @apply tw:text-accent; text-decoration:underline; text-underline-offset:4px; }
-.hero-particle-link:focus-visible { outline:2px solid var(--accent); outline-offset:4px; @apply tw:rounded-sm; }
+.hero-particle-link:focus-visible { outline:none; box-shadow:var(--focus-shadow); @apply tw:rounded-sm; }
 .hero-particle-link .archive-icon { @apply tw:w-[16px] tw:h-[16px]; }
 .hero-particle-link .particle-link-arrow { transform:rotate(-90deg); }
 .hero-orbit { @apply tw:relative tw:min-w-0 tw:self-stretch tw:overflow-hidden; }
@@ -46,7 +46,7 @@
 .hero-muses { @apply tw:relative tw:isolate tw:flex; width: fit-content; @apply tw:flex-wrap tw:gap-s-2 tw:mt-s-3; }
 .hero-muses button { @apply tw:relative; z-index: var(--z-raised); @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px]; padding: var(--s-2) var(--s-3); border: 1px solid transparent; @apply tw:rounded-pill tw:text-secondary; background: transparent; font: 500 var(--fs-label)/var(--lh-label) var(--font-sans); @apply tw:cursor-pointer; }
 .hero-muses button[aria-pressed="true"] { background: transparent; @apply tw:text-primary; border-color: transparent; }
-.home-hero .hero-muses .animated-selection { background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface)); border-color: color-mix(in srgb, var(--accent) 32%, var(--border-soft)); }
+.home-hero .hero-muses .animated-selection { background:color-mix(in srgb,var(--accent) 12%,var(--bg-surface)); border-color:var(--border-strong); }
 .home-hero[data-immediate="true"] :is(.hero-character, .hero-fallback) { transition:none; }
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.hero-character, .hero-fallback, .hero-muses button, .tool-card, .pop-card-mini, .recent-card) { transition:none; }
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.tool-card, .pop-card-mini, .recent-card):hover { transform:none; }
@@ -79,7 +79,7 @@
 .atelier-entry-lead .atelier-entry-art { height:auto; aspect-ratio:3 / 2; }
 .atelier-entry-lead .atelier-entry-copy { flex:0; padding-inline:var(--s-4); padding-top:var(--s-5); }
 .atelier-entry-lead .atelier-entry-title { font-size:var(--fs-title); }
-.atelier-entry:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.atelier-entry:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (hover:hover) and (pointer:fine) {
   .atelier-entry:hover .atelier-entry-art img { transform:translateY(-4px); }
   .atelier-entry:hover .atelier-entry-action { text-decoration:underline; text-underline-offset:.25em; }
@@ -128,7 +128,7 @@
 .recent-scenes-row > * { flex: 0 0 min(300px, 82vw); }
 .recent-grid .recent-empty-state { grid-column: 1 / -1; @apply tw:m-0; max-width: none; @apply tw:w-full; }
 .recent-empty-art { display:block; width:clamp(160px,16vw,220px); height:auto; margin:auto; }
-.tool-card:focus-visible, .pop-card-mini:focus-visible, .sc-link:focus-visible, .recent-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.tool-card:focus-visible, .pop-card-mini:focus-visible, .sc-link:focus-visible, .recent-card:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 @media (hover: hover) and (pointer: fine) {
   .tool-card:hover { transform: translateY(-3px); }
   .tool-card:hover .t { text-decoration:underline; text-underline-offset:.25em; }

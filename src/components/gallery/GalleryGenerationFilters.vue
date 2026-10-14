@@ -83,7 +83,7 @@ summary .archive-icon { width:16px; height:16px; flex-shrink:0; }
 details[open] summary > :last-child { transform:rotate(180deg); }
 summary::-webkit-details-marker { display:none; }
 summary > :last-child { margin-left:auto; }
-summary:focus-visible,input:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+summary:focus-visible,input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .generation-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr)); gap:var(--s-3); margin-top:var(--s-3); }
 .generation-field { @apply tw:grid tw:min-w-0 tw:gap-s-1; align-content:start; }
 .generation-seed,.generation-actions,.generation-save { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2; }

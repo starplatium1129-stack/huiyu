@@ -58,9 +58,10 @@ const currentYear = new Date().getFullYear()
 .route-view[inert] { position: absolute; inset: 0 0 auto; }
 /* 用 skip-link 跳进来时要有可见落点，但鼠标点击不该出现描边 */
 .page-main:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
+  outline: none;
+  box-shadow: none;
 }
+.page-main:focus-visible::before { content:""; position:absolute; inset:0 0 auto; height:2px; background:var(--focus-color); z-index:var(--z-raised); pointer-events:none; }
 .site-footer {
   @apply tw:flex tw:items-center tw:justify-center tw:gap-s-3 tw:shrink-0;
   padding: var(--s-3) var(--workspace-gutter);
@@ -72,5 +73,5 @@ const currentYear = new Date().getFullYear()
 .site-footer-sep { margin: 0 var(--s-2); }
 .site-footer-link { text-decoration: underline; }
 .site-footer-link:hover { @apply tw:text-accent; }
-.site-footer-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; @apply tw:rounded-sm; }
+.site-footer-link:focus-visible { outline: none; box-shadow: var(--focus-shadow); @apply tw:rounded-sm; }
 </style>

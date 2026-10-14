@@ -114,7 +114,7 @@
 
 .chat-page .character-tab:hover,
 .chat-page .character-tab:focus-visible {
-  @apply tw:border-accent;
+  @apply tw:border-strong;
 }
 
 .chat-page .character-tab[data-character="nene"]:hover,
@@ -483,7 +483,7 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .room-model-settings[open] { flex:1 0 100%; }
 .chat-page .room-model-settings > summary { @apply tw:cursor-pointer; padding: var(--s-2) var(--s-3); @apply tw:text-secondary tw:text-label; border: 1px solid var(--border-soft); @apply tw:rounded-md; }
 .chat-page .room-model-settings[open] .model-controls { @apply tw:mt-s-3 tw:flex-wrap; }
-.chat-page .room-model-settings > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chat-page .room-model-settings > summary:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .chat-page .model-controls {
   @apply tw:flex tw:items-center tw:justify-start tw:gap-s-2 tw:min-w-0;
 }
@@ -652,15 +652,14 @@ body:has(.chat-page) .sakura-fall {
 /* 原生 select 已迁至 StudioSelect（2026-09-22 去原生化）：外观由触发器提供，
    焦点色保留本页的角色强调色，改挂触发器。 */
 .chat-page .api-field .studio-select-trigger:focus-visible {
-  border-color: var(--character-ink, var(--character-accent));
-  outline-color: var(--character-ink, var(--character-accent));
+  border-color: var(--border-strong);
 }
 
 
 
 .chat-page .api-field input:focus {
-  border-color: var(--character-ink, var(--character-accent));
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--character-accent) 16%, transparent);
+  border-color: var(--border-strong);
+  box-shadow: var(--focus-shadow);
 }
 
 .chat-page .api-field small {
@@ -719,8 +718,7 @@ body:has(.chat-page) .sakura-fall {
   border-color: var(--character-ink, var(--character-accent));
 }
 .chat-page .model-select .studio-select-trigger:focus-visible {
-  border-color: var(--character-ink, var(--character-accent));
-  outline-color: var(--character-ink, var(--character-accent));
+  border-color: var(--border-strong);
 }
 .chat-page .model-select .studio-select-trigger[data-disabled] {
   @apply tw:text-disabled tw:cursor-not-allowed;
@@ -892,8 +890,8 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .chat-input:focus {
-  @apply tw:border-accent;
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  @apply tw:border-strong;
+  box-shadow: var(--focus-shadow);
 }
 
 .chat-page .send-btn,
@@ -961,7 +959,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .thinking-segments button.active {
-  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft));
+  border-color: var(--border-strong);
   background: var(--accent-soft);
   @apply tw:text-accent;
   box-shadow: var(--shadow-sm);
@@ -1017,7 +1015,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .voice-toggle input:focus-visible + .voice-switch {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--character-accent) 24%, transparent);
+  box-shadow: var(--focus-shadow);
 }
 
 .chat-page .voice-toggle-copy {
@@ -1267,8 +1265,8 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .volume-slider input[type="range"]:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline: none;
+  box-shadow: var(--focus-shadow);
 }
 
 .chat-page .chat-error {

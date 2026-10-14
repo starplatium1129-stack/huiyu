@@ -11,7 +11,7 @@
 .catalog-media-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); max-height:clamp(280px,calc(100dvh - 560px),680px); overflow:auto; padding-right:var(--s-1); }
 .catalog-media-sensitive-switch { display:flex; align-items:center; gap:var(--s-2); color:var(--text-secondary); font-size:var(--fs-body-sm); margin:0 0 var(--s-4); }
 .catalog-sample-card { min-width:0; overflow:hidden; padding:0; text-align:left; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-deep); color:var(--text-primary); font:inherit; cursor:pointer; }
-.catalog-sample-card[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-soft); }
+.catalog-sample-card[aria-pressed="true"] { border-color:var(--border-strong); background:var(--accent-soft); }
 .catalog-sample-image { display:flex; aspect-ratio:4/3; background:var(--bg-hover); overflow:hidden; }
 .catalog-sample-image img { display:block; width:100%; height:100%; object-fit:cover; }
 .catalog-sample-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); width:100%; color:var(--text-secondary); font-size:var(--fs-label-xs); }
@@ -33,7 +33,7 @@
 .catalog-media-feedback.catalog-error { color:var(--danger); }
 .catalog-hero-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-4); max-width:800px; margin-bottom:var(--s-6); }
 .catalog-hero-card { display:flex; padding:0; overflow:hidden; min-width:0; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-deep); color:var(--text-primary); text-align:left; font:inherit; cursor:pointer; }
-.catalog-hero-card[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-soft); }
+.catalog-hero-card[aria-pressed="true"] { border-color:var(--border-strong); background:var(--accent-soft); }
 .catalog-hero-card>img { width:42%; height:130px; object-fit:cover; }
 .catalog-hero-card>span { display:flex; flex-direction:column; justify-content:center; gap:var(--s-2); padding:var(--s-4); }
 .catalog-hero-card strong { font-size:var(--fs-body); font-weight:500; }
