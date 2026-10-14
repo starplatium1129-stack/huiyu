@@ -9,13 +9,17 @@ use crate::window_state::{
     WindowBounds, WindowPlacement,
 };
 
-/// 规范化 Atelier 目标路径（与 deepLink.ts normalizeAtelierPath 同规则，容忍尾斜杠）
+/// 只接受应用内的单段路径与编码后的查询参数，保留绘画草稿等深链。
 pub fn normalize_atelier_path(value: Option<&str>) -> String {
     match value {
         Some(v) => {
-            let v = v.trim_end_matches('/');
-            if v.starts_with('/') && v.len() > 1 && v[1..].chars().all(|c| c.is_ascii_alphanumeric() || c == '-') {
-                v.to_string()
+            let (path, query) = v.split_once('?').map_or((v, None), |(path, query)| (path, Some(query)));
+            let path = path.trim_end_matches('/');
+            let valid_query = query.is_none_or(|query| !query.is_empty() && query.len() <= 4096
+                && query.chars().all(|c| c.is_ascii_alphanumeric() || "_.%=&+~-".contains(c)));
+            if path.starts_with('/') && path.len() > 1 && valid_query
+                && path[1..].chars().all(|c| c.is_ascii_alphanumeric() || c == '-') {
+                match query { Some(query) => format!("{path}?{query}"), None => path.to_string() }
             } else {
                 "/".to_string()
             }

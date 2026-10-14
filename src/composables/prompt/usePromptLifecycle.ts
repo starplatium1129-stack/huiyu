@@ -129,12 +129,12 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
             await refreshManagedRoute();
         if (disposed) return;
         // 热门角色草稿恢复（底模/蓝图尺寸/导演决策/后端白名单收敛）已下沉 useDirectorPopular
-        if (!restoredRecipe) restorePopularDraft();
+        if (!restoredRecipe && typeof route.query.companionDraft !== 'string') restorePopularDraft();
         await applyPreparedLink();
         if (disposed) return;
         draftInitialized = true;
         saveWorkspaceDraft();
-        if (route.query.quick === '1') {
+        if (route.query.quick === '1' && typeof route.query.companionDraft !== 'string') {
             const [{ quickCreateSummary, readQuickCreate }, { useQuickCreateApply }] = await Promise.all([import('@/utils/quickCreate'), import('./useQuickCreateApply')]);
             if (disposed) return;
             const { applyQuickCreateSettings } = useQuickCreateApply({ pb, sd, sdSize });
@@ -162,7 +162,7 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
                 await callGenerate();
             }
         }
-        else if (route.query.generate === '1') {
+        else if (route.query.generate === '1' && typeof route.query.companionDraft !== 'string') {
             // 样张/场景抽屉的「调整后生成」：场景与词条已在上面载入，这里直接出图
             await nextTick();
             if (disposed) return;

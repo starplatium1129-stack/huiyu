@@ -20,6 +20,7 @@ import { CHAT_RESET_KEY, COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from 
 
 import { useConversationReading } from './useConversationReading.ts'
 import { relayChatTurn } from '../../utils/chatRelayReceipt.ts'
+import { useCompanionChatAttachments } from './useCompanionChatAttachments'
 
 export function useCompanionChatWindow() {
 
@@ -30,6 +31,7 @@ interface ChatLiveState {
   voiceActive: boolean
   activeChar: string
   chatReady: boolean
+  chatError: string
   ts: number
 }
 
@@ -47,6 +49,7 @@ const liveState = reactive<ChatLiveState>({
   voiceActive: false,
   activeChar: storage.state.active,
   chatReady: false,
+  chatError: '',
   ts: 0,
 })
 const activeChar = computed<string>(() =>
@@ -81,7 +84,13 @@ const quietClock = usePolling({ intervalMs: 30_000, immediate: false, tick: () =
 } })
 
 const visibleMessages = computed(() => storage.messages(activeChar.value).slice(-40))
-const canSend = computed(() => Boolean(bridge && inputText.value.trim()) && !sending.value && !liveState.busy && liveState.chatReady && !storage.writeBlocked.value)
+const attachments = useCompanionChatAttachments({
+  bridge, activeChar, inputText, busy: computed(() => sending.value || liveState.busy),
+  chatReady: computed(() => liveState.chatReady), visible: computed(() => bridge ? windowVisible.value : !pageHidden.value),
+  characterName: () => currentCharacter.value.name, persistDraft: text => storage.setDraft(activeChar.value, text),
+  notice: listenerNotice, error: listenerError,
+})
+const canSend = computed(() => Boolean(bridge && inputText.value.trim()) && !sending.value && !liveState.busy && liveState.chatReady && !storage.writeBlocked.value && !attachments.sendingImage.value)
 
 const {
   state: speechState,
@@ -100,9 +109,9 @@ const {
 const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
 const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
 const replyActive = computed(() => sending.value || liveState.busy || liveState.thinking || liveState.speaking || liveState.voiceActive)
-const canCapture = computed(() => speechReady.value && liveState.chatReady && !replyActive.value
+const canCapture = computed(() => speechReady.value && !replyActive.value && !speechSettingsOpen.value && !attachments.sendingImage.value
   && windowVisible.value && !pageHidden.value && windowFocused.value)
-const speechButtonDisabled = computed(() => !liveState.chatReady || replyActive.value || speechState.value === 'recognizing')
+const speechButtonDisabled = computed(() => !canCapture.value || speechState.value === 'recognizing')
 const speechSessionActive = computed(() => {
   void speechSessionState.value
   return speechSession.isSessionActive()
@@ -136,6 +145,7 @@ function readLive() {
       liveState.activeChar = raw.activeChar
     }
     if (typeof raw.chatReady === 'boolean') liveState.chatReady = raw.chatReady
+    liveState.chatError = typeof raw.chatError === 'string' ? raw.chatError.slice(0, 1200) : ''
     liveState.ts = Number(raw.ts) || 0
     if (liveInitialized && previousCharacter !== activeChar.value) {
       draft.clear()
@@ -168,6 +178,7 @@ async function onSend() {
 }
 
 function onStop() {
+  attachments.cancelAttachments()
   if (bridge) void bridge.chatRelay({ command: 'stop' }).catch(() => listenerError('停止失败，请重试。'))
 }
 
@@ -184,6 +195,7 @@ function switchCharacter(id: string) {
 }
 
 function openFullRoom() {
+  attachments.cancelAttachments()
   draft.clear()
   storage.setDraft(activeChar.value, inputText.value)
   speechCancel(); speechSession.endSession()
@@ -194,6 +206,7 @@ function openFullRoom() {
 }
 
 function closeWindow() {
+  attachments.cancelAttachments()
   draft.clear()
   storage.setDraft(activeChar.value, inputText.value)
   speechCancel(); speechSession.endSession()
@@ -224,6 +237,10 @@ let speechHeldByKeyboard = false
 
 function onSpeechText(text: string, source: string) {
   if (!alive || !canCapture.value) return
+  if (source === 'manual') {
+    commitSpeechText(text)
+    return
+  }
   if (source === 'auto' && !speechSession.isSessionActive()) {
     if (speechSession.onWakeText(text)) listenerNotice(`已唤醒${currentCharacter.value.name}，直接对话吧`)
     return
@@ -235,9 +252,17 @@ function onSpeechText(text: string, source: string) {
     return
   }
   if (action === 'submit') {
-    inputText.value = text
-    if (speechConfig.value.autoSend && canSend.value) void onSend()
-    else speechSession.markReplyIdle()
+    commitSpeechText(text)
+  }
+}
+
+function commitSpeechText(text: string) {
+  inputText.value = inputText.value.trim() ? `${inputText.value.trimEnd()}\n${text}` : text
+  onInput()
+  if (speechConfig.value.autoSend && canSend.value) void onSend()
+  else {
+    speechSession.markReplyIdle()
+    listenerNotice(liveState.chatReady ? '识别文字已填入输入框。' : '识别文字已保存，连接聊天后可发送。')
   }
 }
 
@@ -261,6 +286,7 @@ function reconcileAutoListen() {
     && !liveState.busy
     && !behavior.config().dnd
     && !behavior.inQuietHours()
+    && !inputText.value.trim()
     && speechState.value !== 'error'
     && speechSession.shouldAutoListen()
   if (shouldListen && !speechAutoListening.value && !speechBusy.value) {
@@ -273,7 +299,7 @@ function reconcileAutoListen() {
 function cancelSpeechActivity() {
   speechHeldByPointer = false
   speechHeldByKeyboard = false
-  speechCancel()
+  if (speechBusy.value || speechAutoListening.value) speechCancel()
 }
 
 watch(replyActive, active => {
@@ -281,10 +307,18 @@ watch(replyActive, active => {
   else speechSession.markReplyIdle()
   reconcileAutoListen()
 })
-watch([speechState, speechConfig, canCapture, speechSessionState], reconcileAutoListen)
+watch(speechConfig, () => {
+  speechCancel()
+  speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
+  reconcileAutoListen()
+})
+watch([speechState, canCapture, speechSessionState, inputText], reconcileAutoListen)
 
-function onSpeechPress() {
-  if (speechBusy.value || !canCapture.value) return
+function onSpeechPress(event?: PointerEvent) {
+  if (!canCapture.value) return
+  if (speechAutoListening.value) speechCancel()
+  if (speechBusy.value) return
+  if (event?.currentTarget instanceof Element) event.currentTarget.setPointerCapture(event.pointerId)
   speechHeldByPointer = true
   void speechStart('manual')
 }
@@ -300,7 +334,7 @@ function onSpeechCancel() {
   speechCancel()
 }
 function onSpeechLeave(event: PointerEvent) {
-  if (speechHeldByPointer && event.buttons > 0) onSpeechCancel()
+  if (speechHeldByPointer && event.buttons > 0 && !(event.target instanceof Element && event.target.hasPointerCapture(event.pointerId))) onSpeechCancel()
 }
 function onSpeechSessionEnd() {
   speechSession.endSession()
@@ -320,7 +354,9 @@ function onWindowKeydown(event: KeyboardEvent) {
   if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement
     || target instanceof HTMLSelectElement || (target instanceof HTMLElement && target.isContentEditable)
     || (target instanceof HTMLElement && Boolean(target.closest('button, a, [role="button"]')))) return
-  if (speechBusy.value || !canCapture.value) return
+  if (!canCapture.value) return
+  if (speechAutoListening.value) speechCancel()
+  if (speechBusy.value) return
   speechHeldByKeyboard = true
   event.preventDefault()
   void speechStart('manual')
@@ -416,6 +452,7 @@ onMounted(() => {
 
 function onStorageChange(event: StorageEvent) {
   if (event.key === CHAT_RESET_KEY) {
+    cancelSpeechActivity(); speechSession.endSession()
     draft.clear()
     inputText.value = ''
     storage.canWrite()
@@ -436,6 +473,7 @@ function onDocFocus() {
 
 onUnmounted(() => {
   alive = false
+  attachments.cancelAttachments()
   quietClock.stop()
   storage.setDraft(activeChar.value, inputText.value)
   window.removeEventListener('resize', resizeComposer)
@@ -469,5 +507,5 @@ watch(activeChar, () => {
   reconcileAutoListen()
 })
 
-return { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock }
+return { attachments, activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock }
 }

@@ -51,6 +51,6 @@ export function getDesktopCapabilities(): CompanionDesktopBridge | undefined {
   return hostApi() ? capabilities : undefined
 }
 export function onDesktopNavigate(listener: (path: string) => void): () => void {
-  const id = on<string>('aics:navigate', path => { if (getDesktopWindowRole() === 'atelier' && /^\/(?:[a-zA-Z0-9-]+)?$/.test(path)) listener(path) })
+  const id = on<string>('aics:navigate', path => { if (getDesktopWindowRole() === 'atelier' && /^\/(?:[a-zA-Z0-9-]+(?:\?[a-zA-Z0-9_.%=&+~-]{1,4096})?)?$/.test(path)) listener(path) })
   return () => off(id)
 }

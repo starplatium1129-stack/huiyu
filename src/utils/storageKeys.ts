@@ -20,6 +20,7 @@ export const CHAT_ARCHIVE_CHANGED_KEY = 'aics_chat_archive_changed'
 export const CHAT_ARCHIVE_KV_KEY = 'chat_archive_v1'
 export const CHAT_TURN_KEY = 'aics_chat_turn_v1'
 export const CHAT_RELAY_RECEIPT_KEY = 'aics_chat_relay_receipt_v1'
+export const COMPANION_IMAGE_IMPORT_KEY = 'aics_companion_image_imported'
 export const ROOM_PRESENTATION_KEY = 'aics_room_presentation_v1'
 /** Per-character, per-surface presentation preferences, safe to restore. */
 export const STAGE_FRAMING_KEY = 'aics_stage_framing_v1'

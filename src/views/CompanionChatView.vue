@@ -73,7 +73,14 @@
     <div v-if="!liveState.chatReady" class="companion-dialogue-connection" role="status">
       <span>聊天还未连接</span><button type="button" @click="openFullRoom">连接设置<ArchiveIcon name="chevron-down" /></button>
     </div>
+    <CompanionClipboardCard :card="attachments.clipboardCard.value" :character-name="currentCharacter.name"
+      @inspect="attachments.inspectClipboardImage" @accept="attachments.acceptClipboardCard" @dismiss="attachments.dismissClipboardCard" />
+    <CompanionDrawingDraftCard v-if="drawingDraft" :draft="drawingDraft" />
     <div class="companion-dialogue-composer">
+      <StudioTooltip v-if="bridge" content="让角色看当前屏幕（需支持图片的聊天模型）">
+        <button class="companion-dialogue-microphone" type="button" aria-label="看屏幕"
+          :disabled="!liveState.chatReady || replyPending || attachments.capturingScreen.value" @click="attachments.onCaptureAndInspectScreen"><ArchiveIcon name="eye" /></button>
+      </StudioTooltip>
       <StudioTooltip v-if="speechReady" :content="speechError || '按住说话，松开识别'">
         <button class="companion-dialogue-microphone" type="button" :data-state="speechState"
           :aria-label="speechButtonText" :disabled="speechButtonDisabled"
@@ -84,15 +91,15 @@
       <textarea ref="inputRef" v-model="inputText" rows="1" maxlength="1200" class="companion-dialogue-input"
         :placeholder="`对${currentCharacter.name}说…`" aria-label="桌宠聊天输入"
         @input="onInput" @keydown.enter.exact="submitChatOnEnter($event, onSend)"></textarea>
-      <StudioTooltip v-if="replyPending || liveState.speaking || liveState.voiceActive" content="停止回复或语音">
+      <StudioTooltip v-if="replyPending || liveState.speaking || liveState.voiceActive || attachments.capturingScreen.value" content="停止回复或语音">
         <button class="companion-dialogue-send" type="button" aria-label="停止回复或语音" @click="onStop"><ArchiveIcon name="stop" /></button>
       </StudioTooltip>
       <StudioTooltip v-else content="发送 · Enter（Shift+Enter 换行）">
         <button class="companion-dialogue-send" type="button" aria-label="发送" :disabled="!canSend" @click="onSend"><ArchiveIcon name="send" /></button>
       </StudioTooltip>
     </div>
-    <p v-if="errorText || speechState === 'error' && speechError || noticeText" class="companion-dialogue-feedback"
-      :data-error="Boolean(errorText || speechState === 'error' && speechError)" role="status">{{ errorText || (speechState === 'error' ? speechError : '') || noticeText }}</p>
+    <p v-if="errorText || liveState.chatError || speechState === 'error' && speechError || noticeText" class="companion-dialogue-feedback"
+      :data-error="Boolean(errorText || liveState.chatError || speechState === 'error' && speechError)" role="status">{{ errorText || liveState.chatError || (speechState === 'error' ? speechError : '') || noticeText }}</p>
     <p v-else-if="speechState === 'acquiring' || speechState === 'capturing' || speechState === 'recognizing'"
       class="companion-dialogue-feedback" role="status">{{ speechButtonText }}</p>
     <p class="sr-only" role="status" aria-live="polite">{{ !replyPending ? latestReply?.content : '' }}</p>
@@ -105,6 +112,7 @@ import AppearanceButton from '@/components/AppearanceButton.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
+import CompanionClipboardCard from '@/components/CompanionClipboardCard.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import { useCompanionDialogueSurface } from '@/composables/chat/useCompanionDialogueSurface'
@@ -112,8 +120,9 @@ import { useConversationReading } from '@/composables/chat/useConversationReadin
 import '@/assets/css/companion-dialogue.css'
 
 const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
+const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
 const {
-  activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag,
+  attachments, activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag,
   noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText,
   onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled,
   onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen,
@@ -121,6 +130,7 @@ const {
   hasNew, latest, copyMessage, docked, docking, toggleDock,
 } = useCompanionChatWindow()
 const historyOpen = ref(false)
+const drawingDraft = computed(() => visibleMessages.value.flatMap(message => message.drawingDrafts || []).at(-1))
 const { surfaceRef, dockSide } = useCompanionDialogueSurface(Boolean(bridge))
 const latestUser = computed(() => [...visibleMessages.value].reverse().find(msg => msg.role === 'user'))
 const latestReply = computed(() => {

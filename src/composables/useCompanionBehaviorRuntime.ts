@@ -12,7 +12,7 @@ import {
   EVENT_ROUTE,
   type CompanionDetectedEvent,
 } from '@/utils/companionEvents'
-import { COMPANION_BEHAVIOR_KEY } from '@/utils/storageKeys'
+import { COMPANION_BEHAVIOR_KEY, COMPANION_IMAGE_IMPORT_KEY } from '@/utils/storageKeys'
 
 export interface CompanionBehaviorRuntimeDeps {
   activeChar: Ref<string>
@@ -157,6 +157,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     if (eventPolling || !alive) return
     if (!desktopWindowVisible() || !behaviorEnabled.value || dnd.value || behavior.inQuietHours()) { eventDetector.reset(); return }
     const character = activeChar.value
+    const revision = importRevision
     eventPolling = true
     const controller = new AbortController()
     eventPollController = controller
@@ -165,7 +166,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
         controlApi.getStatus({ signal: controller.signal }).catch(() => null),
         import('@/storage/artworkRepository').then(({ artworkRepository }) => artworkRepository.countImages()).catch(() => -1),
       ])
-      if (!alive || controller.signal.aborted || !status || status.ok === false || character !== activeChar.value || !desktopWindowVisible()) return
+      if (!alive || controller.signal.aborted || revision !== importRevision || !status || status.ok === false || character !== activeChar.value || !desktopWindowVisible()) return
       const events = eventDetector.ingest({
         imageCount: imageCount >= 0 ? imageCount : null,
         services: {
@@ -202,11 +203,14 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   }
 
   /** 导入/剪贴板入册后图片计数增加：重置检测器基线避免误报 sd-done。 */
+  let importRevision = 0
   function resetEventDetector() {
+    importRevision++
     eventDetector.reset()
   }
 
   function onBehaviorStorage(event: StorageEvent) {
+    if (event.key === COMPANION_IMAGE_IMPORT_KEY && event.newValue) { resetEventDetector(); return }
     if (event.key !== null && event.key !== COMPANION_BEHAVIOR_KEY) return
     config.value = readBehaviorConfig()
     behavior.setConfig(config.value)

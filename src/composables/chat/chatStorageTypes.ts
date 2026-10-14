@@ -1,9 +1,12 @@
+import type { CompanionDrawingDraft } from '@/types/companionDrawing'
+
 export interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
   mid: string
   stopped: boolean
   recalledMemories?: string[]
+  drawingDrafts?: CompanionDrawingDraft[]
 }
 
 export interface ChatState {

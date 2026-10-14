@@ -8,7 +8,7 @@
           <span>按住说话，松开后识别。</span>
         </div>
       </div>
-      <span class="speech-storage-note"><i aria-hidden="true"></i>配置保存在本机浏览器</span>
+      <span class="speech-storage-note"><i aria-hidden="true"></i>配置保存在本机</span>
     </div>
 
     <template v-if="loadError">
@@ -33,7 +33,7 @@
     <div class="speech-settings-grid">
       <label class="speech-field">
         <span>服务地址</span>
-        <input v-model.trim="draft.endpoint" type="url" maxlength="500"
+        <input v-model.trim="draft.endpoint" type="url" maxlength="500" :required="draft.enabled"
           placeholder="http://127.0.0.1:8000/v1" autocomplete="url" />
       </label>
       <label class="speech-field">
@@ -111,21 +111,23 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
 import {
   isSpeechInputReady,
+  speechInputEndpointError,
   loadSpeechInputConfig,
   saveSpeechInputConfig,
   type SpeechInputConfig,
 } from '@/utils/speechInputConfig'
+import { probeSpeechService } from '@/utils/voiceApi'
 
 const emit = defineEmits<{ save: [config: SpeechInputConfig]; close: [] }>()
 let disposed = false
 onUnmounted(registerMaintenanceParticipant(() => { throw new Error('OPEN_SPEECH_SETTINGS') }))
 onUnmounted(() => { disposed = true; invalidateProbe() })
 
-const { config: draft, loadError, reload } = useSpeechInputConfig()
+const { config: draft, loadError, reload } = useSpeechInputConfig(false)
 const showApiKey = ref(false)
 const saving = ref(false)
 const saveMessage = ref('')
-const testState = ref<'idle' | 'testing' | 'ok' | 'fail'>('idle')
+const testState = ref<'idle' | 'testing' | 'ok' | 'unknown' | 'fail'>('idle')
 const testMessage = ref('')
 const testing = computed(() => testState.value === 'testing')
 let probeGeneration = 0
@@ -183,7 +185,6 @@ async function testConnection(): Promise<void> {
   probeController = controller
   testState.value = 'testing'
   testMessage.value = '正在检测地址响应…'
-  const endpoint = draft.value.endpoint.replace(/\/+$/, '')
   probeTimer = setTimeout(() => {
     if (generation !== probeGeneration) return
     invalidateProbe()
@@ -191,19 +192,14 @@ async function testConnection(): Promise<void> {
     testMessage.value = '地址检测超时（10 秒），请重试。'
   }, 10_000)
   try {
-    const response = await fetch(endpoint, { method: 'GET', mode: 'cors', signal: controller.signal })
+    const result = await probeSpeechService(draft.value, controller.signal)
     if (generation !== probeGeneration || disposed) return
-    if (response.type === 'opaque' || response.status === 0) {
-      testState.value = 'idle'
-      testMessage.value = '无法读取地址响应，请重试。'
-    } else {
-      testState.value = response.ok ? 'ok' : 'fail'
-      testMessage.value = response.ok ? '地址已响应。' : '地址检测未通过，请核对服务地址。'
-    }
-  } catch {
+    testState.value = result.state
+    testMessage.value = result.message
+  } catch (error) {
     if (generation !== probeGeneration || disposed) return
     testState.value = 'fail'
-    testMessage.value = '无法连接语音服务，请检查地址和网络。'
+    testMessage.value = error instanceof Error ? error.message : '无法连接语音服务，请检查地址和网络。'
   } finally {
     controller.abort()
     if (generation === probeGeneration) {
@@ -216,6 +212,10 @@ async function testConnection(): Promise<void> {
 
 async function save(): Promise<void> {
   if (loadError.value || saving.value || disposed) return
+  if (draft.value.enabled && speechInputEndpointError(draft.value.endpoint)) {
+    saveMessage.value = speechInputEndpointError(draft.value.endpoint)
+    return
+  }
   invalidateProbe()
   saveMessage.value = ''
   saving.value = true

@@ -28,6 +28,7 @@ export function useChatSpeechInteraction({
     speechSessionState.value = speechSession.state()
   })
   const speechNotice = ref('')
+  let manualSpeechHeld = false
 
   const {
     state: speechState,
@@ -57,7 +58,7 @@ export function useChatSpeechInteraction({
       speechState.value === 'recognizing',
   )
   // 已按住录音时保留松开/取消入口；回复期间不允许开始下一次录音。
-  const speechButtonDisabled = computed(() => speechState.value === 'recognizing' || (busy.value && !speechBusy.value))
+  const speechButtonDisabled = computed(() => speechState.value === 'recognizing' || busy.value || speechSettingsOpen.value)
 
   const speechButtonText = computed(() => {
     switch (speechState.value) {
@@ -93,13 +94,14 @@ export function useChatSpeechInteraction({
   })
 
   function commitSpeechText(text: string): void {
-    inputText.value = text
+    inputText.value = inputText.value.trim() ? `${inputText.value.trimEnd()}\n${text}` : text
     if (speechConfig.value.autoSend && chatReady.value && !busy.value) handleSend()
     else speechSession.markReplyIdle()
   }
 
   function onSpeechText(text: string, source: VoiceTextSource): void {
     if (document.hidden || !document.hasFocus()) return
+    if (source === 'manual') { speechNotice.value = '识别文字已填入输入框。'; commitSpeechText(text); return }
     // 自动监听：未进会话时先做唤醒词匹配；未命中不打扰。
     if (source === 'auto' && !speechSession.isSessionActive()) {
       if (speechSession.onWakeText(text)) {
@@ -126,6 +128,7 @@ export function useChatSpeechInteraction({
       speechReady.value &&
       !document.hidden && document.hasFocus() &&
       speechConfig.value.wakeEnabled &&
+      chatReady.value && !speechSettingsOpen.value && !inputText.value.trim() &&
       !busy.value &&
       speechState.value !== 'error' && // 权限被拒后不自动重试，等用户手动
       speechSession.shouldAutoListen()
@@ -139,15 +142,18 @@ export function useChatSpeechInteraction({
   watch(
     busy,
     value => {
-      if (!value) speechSession.markReplyIdle()
+      if (value) { manualSpeechHeld = false; speechCancel() }
+      else speechSession.markReplyIdle()
       reconcileAutoListen()
     },
     { immediate: true },
   )
 
-  watch([speechState, speechConfig], () => {
+  watch(speechConfig, () => { manualSpeechHeld = false; speechCancel(); applySpeechSession(); reconcileAutoListen() })
+  watch([speechState, chatReady, inputText], () => {
     reconcileAutoListen()
   })
+  watch(speechSettingsOpen, open => { if (open) { manualSpeechHeld = false; speechCancel() }; reconcileAutoListen() })
 
   watch(currentCharacter, () => {
     manualSpeechHeld = false
@@ -157,9 +163,11 @@ export function useChatSpeechInteraction({
     reconcileAutoListen()
   })
 
-  let manualSpeechHeld = false
-  function onSpeechPress(): void {
-    if (!speechReady.value || busy.value || speechBusy.value) return
+  function onSpeechPress(event?: PointerEvent): void {
+    if (!speechReady.value || busy.value || speechSettingsOpen.value) return
+    if (speechAutoListening.value) speechCancel()
+    if (speechBusy.value) return
+    if (event?.currentTarget instanceof Element) event.currentTarget.setPointerCapture(event.pointerId)
     manualSpeechHeld = true
     void speechStart('manual')
   }
@@ -182,7 +190,7 @@ export function useChatSpeechInteraction({
   }
 
   function onSpeechLeave(event: PointerEvent): void {
-    if (event.buttons > 0) onSpeechCancel()
+    if (event.buttons > 0 && !(event.target instanceof Element && event.target.hasPointerCapture(event.pointerId))) onSpeechCancel()
   }
 
   function onSpeechSettingsSaved(config: SpeechInputConfig): void {

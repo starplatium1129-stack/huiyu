@@ -15,9 +15,34 @@ pub(super) async fn prepare(
     let raw = text(&args["character"]);
     let raw = if raw.is_empty() { "natsume" } else { &raw }.to_lowercase();
     let raw = raw.trim();
+    if args["outfit"].as_str().is_some_and(|value| {
+        value.len() > 100
+            || value
+                .chars()
+                .any(|c| !c.is_ascii_alphanumeric() && !" _.-".contains(c))
+    }) {
+        return Err(Error::plain(
+            "服装请使用已有服装 ID 或英文服装名称，不要加入 LoRA 控制词、权重或提示词脚本。",
+        ));
+    }
     let description = text(&args["description"]).trim().to_owned();
     if description.is_empty() {
         return Err(Error::plain("缺少画面描述（description）"));
+    }
+    if description.encode_utf16().count() > 1200 || raw.encode_utf16().count() > 80 {
+        return Err(Error::plain("角色 ID 或画面描述超过长度限制"));
+    }
+    let visual = text(&args["visualDescription"]).trim().to_owned();
+    let visual = if visual.is_empty() {
+        description.clone()
+    } else {
+        visual
+    };
+    if !visual.is_ascii() || !visual.chars().any(|c| c.is_ascii_alphabetic()) || visual.len() > 8000
+    {
+        return Err(Error::plain(
+            "请在 visualDescription 中提供与原意一致的英文画面描述，保留角色、服装和动作；中文说明可继续放在 description 中。当前 Anima 编译不能直接采用中文画面描述。",
+        ));
     }
     let character = if raw.contains("natsume") || raw.contains("夏目") {
         "natsume"
@@ -76,11 +101,12 @@ pub(super) async fn prepare(
     } else {
         args["outfit"].clone()
     };
-    let payload = json!({"character":character,"characterName":name,"description":description,"promptTokens":tokens,"loras":loras,"outfit":outfit,"mature":mature,"createdAt":timestamp,"status":"draft"});
+    let payload = json!({"character":character,"characterName":name,"description":description,"visualDescription":visual,"promptTokens":tokens,"loras":loras,"outfit":outfit,"mature":mature,"createdAt":timestamp,"status":"draft"});
     let bytes = serde_json::to_vec_pretty(&payload).map_err(|_| Error::plain("草稿序列化失败"))?;
     files::atomic(root, &relative, &target, &bytes, cancel).await?;
     Ok(
-        json!({"ok":true,"status":"draft","output":format!("已为角色【{name}】保存绘画草稿：“{description}”。尚未提交生成任务，也未生成图片；请在工作台确认后出图。"),"character":character,"draftRelativePath":relative}),
+        json!({"ok":true,"status":"draft","output":format!("已为角色【{name}】保存绘画草稿：“{description}”。聊天中可打开草稿到工作台，确认后生成；当前尚未生成图片。"),"character":character,"draftRelativePath":relative,
+          "draft":{"path":relative,"character":character,"description":description}}),
     )
 }
 fn encode_character(value: &str) -> String {

@@ -6,6 +6,11 @@ import type { PromptDeepLinkDeps } from './usePromptDeepLink'
 
 /** Applies explicit URL actions; the mounted owner retains request and disposal state. */
 export async function applyPromptDeepLink(q: Record<string, unknown>, deps: PromptDeepLinkDeps, isCurrent: () => boolean) {
+  if (typeof q.companionDraft === 'string') {
+    const { applyCompanionDraft } = await import('./companionDraftActions')
+    if (isCurrent()) await applyCompanionDraft(q.companionDraft, deps, isCurrent)
+    return { handled: true, historyApplied: false }
+  }
   const { pb, sdSize, patchAnimaState, showAllBlueprints } = deps
   const historyLink = ['remix', 'regen', 'variant'].some(key => typeof q[key] === 'string')
   let handled = false, historyApplied = false

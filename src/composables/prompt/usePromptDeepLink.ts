@@ -44,7 +44,7 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     return mode ? mode + ':' + q[mode] : ''
   }
   function contextKey(q: Record<string, unknown>) {
-    const fields = ['scenario', 'popular', 'blueprint', 'scene', 'char', 'mood', 'resume', 'quick']
+    const fields = ['scenario', 'popular', 'blueprint', 'scene', 'char', 'mood', 'resume', 'quick', 'companionDraft', 'draftOpen']
       .flatMap(key => typeof q[key] === 'string' ? [[key, q[key]]] : [])
     return fields.length ? JSON.stringify(fields) : ''
   }

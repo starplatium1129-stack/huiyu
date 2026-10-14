@@ -64,7 +64,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     return speechSession.isSessionActive()
   })
   const pageVisible = computed(() => !documentHidden.value && desktopWindowVisible.value)
-  const speechButtonDisabled = computed(() => !speechReady.value || busy.value || !chatReady.value || !pageVisible.value
+  const speechButtonDisabled = computed(() => !speechReady.value || busy.value || !pageVisible.value || speechSettingsOpen.value
     || speechState.value === 'recognizing')
   const speechButtonText = computed(() => {
     if (speechState.value === 'acquiring') return '启动中…'
@@ -88,12 +88,13 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   }
 
   function commitSpeechText(text: string) {
-    inputText.value = text
+    inputText.value = inputText.value.trim() ? `${inputText.value.trimEnd()}\n${text}` : text
     if (speechConfig.value.autoSend && chatReady.value && !busy.value) void deps.handleSend()
     else speechSession.markReplyIdle()
   }
 
   function onSpeechText(text: string, source: VoiceTextSource) {
+    if (source === 'manual') { speechNotice.value = '识别文字已填入输入框。'; commitSpeechText(text); return }
     if (source === 'auto' && !speechSession.isSessionActive()) {
       if (speechSession.onWakeText(text)) speechNotice.value = `已唤醒${deps.currentCharacterName()}，可以直接对话了`
       return
@@ -120,6 +121,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
       && !dnd.value
       && !inQuietHours.value
       && pageVisible.value
+      && !speechSettingsOpen.value && !inputText.value.trim()
       && speechState.value !== 'error'
       && speechSession.shouldAutoListen()
     if (shouldListen && !speechAutoListening.value && !speechBusy.value) {
@@ -140,7 +142,9 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   function handleSpaceKeyDown(event: KeyboardEvent) {
     if (event.key !== ' ' || event.repeat || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return
     if (deps.isEditableTarget(event.target)) return
-    if (speechButtonDisabled.value || speechBusy.value || speechHeldByKeyboard) return
+    if (speechButtonDisabled.value || speechHeldByKeyboard) return
+    if (speechAutoListening.value) speechCancel()
+    if (speechBusy.value) return
     speechHeldByKeyboard = true
     event.preventDefault()
     void speechStart('manual')
@@ -154,8 +158,11 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     else speechStop()
   }
 
-  function onSpeechPress() {
-    if (speechButtonDisabled.value || speechBusy.value) return
+  function onSpeechPress(event?: PointerEvent) {
+    if (speechButtonDisabled.value) return
+    if (speechAutoListening.value) speechCancel()
+    if (speechBusy.value) return
+    if (event?.currentTarget instanceof Element) event.currentTarget.setPointerCapture(event.pointerId)
     speechHeldByPointer = true
     void speechStart('manual')
   }
@@ -174,7 +181,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   }
 
   function onSpeechLeave(event: PointerEvent) {
-    if (speechHeldByPointer && event.buttons > 0) onSpeechCancel()
+    if (speechHeldByPointer && event.buttons > 0 && !(event.target instanceof Element && event.target.hasPointerCapture(event.pointerId))) onSpeechCancel()
   }
 
   function onSpeechSettingsSaved(config: SpeechInputConfig) {
@@ -209,7 +216,9 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     reconcileAutoListen()
   }, { immediate: true })
 
-  watch([speechState, speechConfig, dnd, inQuietHours, desktopWindowVisible, documentHidden, chatReady], reconcileAutoListen)
+  watch(speechConfig, () => { cancelSpeechActivity(); applySpeechSession(); reconcileAutoListen() })
+  watch([speechState, dnd, inQuietHours, desktopWindowVisible, documentHidden, chatReady, inputText], reconcileAutoListen)
+  watch(speechSettingsOpen, open => { if (open) cancelSpeechActivity(); else reconcileAutoListen() })
 
   watch(deps.currentCharacter, () => {
     cancelSpeechActivity()

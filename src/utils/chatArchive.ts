@@ -8,6 +8,7 @@
  */
 import type { PersistedChatMessage } from './chatStorageCore'
 import { assertChatVersion } from './chatVersion.ts'
+import { parseCompanionDrawingDraft, type CompanionDrawingDraft } from '@/types/companionDrawing'
 
 export const CHAT_ARCHIVE_KEY = 'aics_chat_archive_v1'
 export const CHAT_ARCHIVE_VERSION = 1
@@ -33,11 +34,14 @@ function normalizeMessage(value: unknown): PersistedChatMessage | null {
   if (!role) return null
   const content = text(value.content, 1200)
   if (!content) return null
+  const drawingDrafts = Array.isArray(value.drawingDrafts) ? value.drawingDrafts.map(parseCompanionDrawingDraft)
+    .filter((item): item is CompanionDrawingDraft => Boolean(item)).slice(-4) : []
   return {
     role,
     content,
     mid: text(value.mid, 160) || text(value.id, 160) || '',
     stopped: value.stopped === true,
+    ...(drawingDrafts.length ? { drawingDrafts } : {}),
   }
 }
 

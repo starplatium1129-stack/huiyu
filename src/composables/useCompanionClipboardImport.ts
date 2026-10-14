@@ -4,7 +4,7 @@ import { importLocalImages } from '@/utils/desktopImport'
 import type { ImportSourceFile } from '@/utils/desktopImportCore'
 import {
   captureScreenFrame,
-  blobToDataUrl,
+  imageForInspection,
   getCharacterInspectionPrompt,
 } from '@/utils/companionVision'
 
@@ -25,11 +25,14 @@ export interface CompanionClipboardImportDeps {
   handleSend: (text?: string, imageUrl?: string) => unknown
   busy: Ref<boolean>
   chatReady: Ref<boolean>
+  listenClipboard?: boolean
+  isActive?: () => boolean
+  onError?: (message: string) => void
 }
 
 interface ClipboardCard {
   kind: 'image' | 'text'
-  png?: Uint8Array | number[]
+  imageBlob?: Blob
   previewUrl?: string
   text?: string
   saving?: boolean
@@ -56,7 +59,9 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   let importBusy = false
   let alive = true
   let characterRevision = 0
-  watch(activeChar, () => { characterRevision += 1 }, { flush: 'sync' })
+  let captureController: AbortController | null = null
+  const active = () => alive && (deps.isActive?.() ?? true)
+  watch(activeChar, () => { characterRevision += 1; cancelCapture(); dismissClipboardCard() }, { flush: 'sync' })
 
   function showClipboardCard(card: ClipboardCard) {
     dismissClipboardCard()
@@ -66,6 +71,7 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   }
 
   function clipboardPngBlob(png: Uint8Array | number[]): Blob | null {
+    if (!png.length || png.length > 15 * 1024 * 1024) { deps.onError?.('剪贴板图片超过 15 MB，请缩小图片后重试。'); return null }
     try {
       const copy = png instanceof Uint8Array ? new Uint8Array(png) : new Uint8Array(png)
       return new Blob([copy.buffer as ArrayBuffer], { type: 'image/png' })
@@ -75,18 +81,18 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   }
 
   function onClipboardImage(png: Uint8Array | number[]) {
-    if (!alive) return
+    if (!active()) return
     const blob = clipboardPngBlob(png)
     if (!blob) return
     try {
       const previewUrl = URL.createObjectURL(blob)
-      showClipboardCard({ kind: 'image', png, previewUrl })
+      showClipboardCard({ kind: 'image', imageBlob: blob, previewUrl })
     } catch { /* 大图/内存异常时忽略 */ }
   }
 
   function onClipboardText(text: string) {
-    if (!alive) return
-    showClipboardCard({ kind: 'text', text: text.slice(0, 400) })
+    if (!active() || !text.trim()) return
+    showClipboardCard({ kind: 'text', text: text.slice(0, 1200), ...(text.length > 1200 ? { error: '仅填入前 1200 字，较长内容请分段发送。' } : {}) })
   }
 
   function dismissClipboardCard() {
@@ -98,13 +104,14 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   async function acceptClipboardCard() {
     const card = clipboardCard.value
     if (!alive || !card || card.saving) return
-    if (card.kind === 'image' && card.png) {
-      const blob = clipboardPngBlob(card.png)
+    if (card.kind === 'image' && card.imageBlob) {
+      const blob = card.imageBlob
       clearTimeout(clipboardCardTimer)
       if (!blob) { card.error = '图片暂时无法读取，请重新复制后重试。'; return }
       card.saving = true; card.error = ''
       try {
-        const { imported } = await importLocalImages([{ name: `剪贴板-${Date.now()}.png`, size: blob.size, type: 'image/png', blob }])
+        const extension = blob.type === 'image/jpeg' ? 'jpg' : blob.type === 'image/webp' ? 'webp' : 'png'
+        const { imported } = await importLocalImages([{ name: `剪贴板-${Date.now()}.${extension}`, size: blob.size, type: blob.type, blob }])
         if (!alive) return
         if (imported > 0) {
           if (clipboardCard.value === card) dismissClipboardCard()
@@ -117,9 +124,11 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
       } finally { if (clipboardCard.value === card) card.saving = false }
     } else if (card.kind === 'text' && card.text) {
       const text = card.text
+      const combined = deps.inputText.value.trim() ? `${deps.inputText.value.trimEnd()}\n${text}` : text
+      if (combined.length > 1200) { clearTimeout(clipboardCardTimer); card.error = '输入框剩余空间不足，请先发送或清理现有草稿，再填入剪贴板内容。'; return }
       dismissClipboardCard()
-      deps.inputText.value = text
-      deps.persistDraft(text)
+      deps.inputText.value = combined
+      deps.persistDraft(deps.inputText.value)
       deps.scrollChatToBottom()
     }
   }
@@ -165,45 +174,56 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   }
 
   async function onCaptureAndInspectScreen() {
-    if (!alive || capturingScreen.value || deps.busy.value || !deps.chatReady.value) return
+    if (!active() || capturingScreen.value || clipboardCard.value?.saving || deps.busy.value || !deps.chatReady.value) return
     const revision = characterRevision
     const character = activeChar.value
     capturingScreen.value = true
+    const controller = new AbortController(); captureController = controller
     try {
-      const dataUrl = await captureScreenFrame()
-      if (!dataUrl || !alive || revision !== characterRevision || deps.busy.value || !deps.chatReady.value) return
+      const dataUrl = await captureScreenFrame(controller.signal)
+      if (!dataUrl || !active() || controller.signal.aborted || revision !== characterRevision || deps.busy.value || !deps.chatReady.value) return
       const prompt = getCharacterInspectionPrompt(character)
-      deps.handleSend(prompt, dataUrl)
-    } catch {
-      // 捕获异常忽略
+      await deps.handleSend(prompt, dataUrl)
+    } catch (error) {
+      if (!controller.signal.aborted && alive) deps.onError?.(error instanceof DOMException && error.name === 'NotAllowedError'
+        ? '分享屏幕已取消或未获允许。' : error instanceof Error ? error.message : '看屏幕失败，请重试。')
     } finally {
-      capturingScreen.value = false
+      if (captureController === controller) { capturingScreen.value = false; captureController = null }
     }
   }
 
   async function inspectClipboardImage() {
-    if (!alive || deps.busy.value || !deps.chatReady.value) return
+    if (!active() || capturingScreen.value || deps.busy.value || !deps.chatReady.value) { deps.onError?.('请先连接支持图片的聊天模型，并等待当前操作完成。'); return }
     const revision = characterRevision
     const character = activeChar.value
     const card = clipboardCard.value
-    if (!card || card.saving || card.kind !== 'image' || !card.png) return
-    const blob = clipboardPngBlob(card.png)
-    dismissClipboardCard()
+    if (!card || card.saving || card.kind !== 'image' || !card.imageBlob) return
+    const blob = card.imageBlob
     if (!blob) return
+    clearTimeout(clipboardCardTimer); card.saving = true; card.error = ''
     try {
-      const dataUrl = await blobToDataUrl(blob)
-      if (!alive || revision !== characterRevision || deps.busy.value || !deps.chatReady.value) return
-      const prompt = getCharacterInspectionPrompt(character)
-      deps.handleSend(prompt, dataUrl)
-    } catch {
-      // 转换异常忽略
-    }
+      const dataUrl = await imageForInspection(blob)
+      if (!active() || revision !== characterRevision || deps.busy.value || !deps.chatReady.value) return
+      await deps.handleSend('（这是我复制的图片）请结合画面回答。', dataUrl)
+      if (alive && clipboardCard.value === card) dismissClipboardCard()
+    } catch (error) { if (alive && clipboardCard.value === card) card.error = error instanceof Error ? error.message : '图片发送失败，请重试。' }
+    finally { if (clipboardCard.value === card) card.saving = false }
+  }
+
+  function cancelCapture() { captureController?.abort(); captureController = null; capturingScreen.value = false }
+  function onPaste(event: ClipboardEvent) {
+    if (!active()) return
+    const file = Array.from(event.clipboardData?.files || []).find(file => ['image/png', 'image/jpeg', 'image/webp'].includes(file.type))
+    if (!file || file.size > 15 * 1024 * 1024) return
+    event.preventDefault()
+    showClipboardCard({ kind: 'image', imageBlob: file, previewUrl: URL.createObjectURL(file) })
   }
 
   onMounted(() => {
     window.addEventListener('dragover', onWindowDragOver, { passive: false })
     window.addEventListener('drop', onWindowDrop, { passive: false })
-    if (desktopBridge) {
+    if (deps.listenClipboard !== false) window.addEventListener('paste', onPaste)
+    if (desktopBridge && deps.listenClipboard !== false) {
       clipboardImageSubscription = desktopBridge.onClipboardImage(onClipboardImage)
       clipboardTextSubscription = desktopBridge.onClipboardText(onClipboardText)
     }
@@ -211,10 +231,12 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
 
   onUnmounted(() => {
     alive = false
+    cancelCapture()
     clearTimeout(clipboardCardTimer)
     if (clipboardCard.value?.previewUrl) URL.revokeObjectURL(clipboardCard.value.previewUrl)
     window.removeEventListener('dragover', onWindowDragOver)
     window.removeEventListener('drop', onWindowDrop)
+    window.removeEventListener('paste', onPaste)
     if (desktopBridge && clipboardImageSubscription != null) desktopBridge.offClipboardImage(clipboardImageSubscription)
     if (desktopBridge && clipboardTextSubscription != null) desktopBridge.offClipboardText(clipboardTextSubscription)
   })
@@ -228,5 +250,6 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
     acceptClipboardCard,
     onCaptureAndInspectScreen,
     inspectClipboardImage,
+    cancelCapture,
   }
 }

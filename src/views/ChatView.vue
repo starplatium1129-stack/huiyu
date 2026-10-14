@@ -137,6 +137,7 @@
                     </StudioTooltip>
                   </div>
                 </div>
+                <CompanionDrawingDraftCard v-for="drawing in msg.drawingDrafts || []" :key="drawing.path" :draft="drawing" />
                 <div class="message-meta">
                   <button class="msg-memory-btn" type="button" @click="copyMessage(msg.content)">复制</button>
                   <span v-if="msg.stopped" class="message-note">已停止</span>
@@ -317,6 +318,7 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
 const ChatApiSettings = defineAsyncComponent(() => import('@/components/ChatApiSettings.vue'))
 const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
+const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
 // These panels mount only after a menu action; load their component CSS then too.
 const ChatArchivePanel = defineAsyncComponent(() => import('@/components/ChatArchivePanel.vue'))
 const ChatUserProfilePanel = defineAsyncComponent(() => import('@/components/ChatUserProfilePanel.vue'))

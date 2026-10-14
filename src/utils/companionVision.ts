@@ -1,4 +1,5 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 /**
  * 桌宠屏幕感知与多模态视觉工具集
  *
@@ -19,45 +20,41 @@ export function getCharacterInspectionPrompt(character: string): string {
   return '（这是我当前的屏幕截图）帮我看看我现在的屏幕画面，并给出你的评价与互动～'
 }
 
-/** 将 Blob / File 转换为 Base64 DataURL */
-export function blobToDataUrl(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = reject
-    reader.readAsDataURL(blob)
-  })
-}
-
 /**
  * 抓取当前屏幕的一帧画面并转为压缩后的 DataURL (1080p 紧凑格式，防传输超限)
  */
-export async function captureScreenFrame(): Promise<string | null> {
-  // 1. 优先尝试本地桌面网关的原生截屏（在桌面客户端及本机环境下免授权弹窗、毫秒级截取）
-  try {
+export async function captureScreenFrame(signal?: AbortSignal): Promise<string | null> {
+  signal?.throwIfAborted()
+  if (getDesktopCapabilities()) {
     const res = await runtimeFetch('/api/desktop-tools', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'capture_screen', args: {} }),
+      signal: AbortSignal.any([AbortSignal.timeout(15_000), ...(signal ? [signal] : [])]),
     })
-    if (res.ok) {
-      const data = await res.json()
-      if (data.ok && data.imageDataUrl) {
-        return data.imageDataUrl
-      }
+    const data = await res.json()
+    if (!res.ok || !data.ok || typeof data.imageDataUrl !== 'string' || !/^data:image\/jpeg;base64,/.test(data.imageDataUrl)) {
+      throw new Error(typeof data.output === 'string' ? data.output : '没有截取到屏幕，请重试。')
     }
-  } catch {
-    // 原生截屏失败时降级到浏览器标准 getDisplayMedia
+    signal?.throwIfAborted()
+    const frame = await fetch(data.imageDataUrl).then(response => response.blob())
+    return imageForInspection(frame, signal)
   }
-
-  // 2. 浏览器标准 getDisplayMedia 兜底
+  // Browser sharing starts in the original click, before any network await.
   if (typeof navigator === 'undefined' || !navigator.mediaDevices?.getDisplayMedia) {
-    return null
+    throw new Error('当前浏览器不支持分享屏幕，请使用桌面客户端或支持分享的浏览器。')
   }
-
   let stream: MediaStream | null = null
+  const deadline = AbortSignal.any([AbortSignal.timeout(45_000), ...(signal ? [signal] : [])])
+  const stopTracks = () => stream?.getTracks().forEach(track => track.stop())
+  let rejectInterrupted = () => {}
+  const interrupted = new Promise<never>((_, reject) => {
+    rejectInterrupted = () => reject(deadline.reason)
+    deadline.addEventListener('abort', rejectInterrupted, { once: true })
+  })
+  let video: HTMLVideoElement | null = null
   try {
-    stream = await navigator.mediaDevices.getDisplayMedia({
+    const acquisition = navigator.mediaDevices.getDisplayMedia({
       video: {
         width: { ideal: 1920, max: 1920 },
         height: { ideal: 1080, max: 1080 },
@@ -65,32 +62,51 @@ export async function captureScreenFrame(): Promise<string | null> {
       },
       audio: false,
     })
-
+    void acquisition.then(value => { if (deadline.aborted) value.getTracks().forEach(track => track.stop()) }, () => {})
+    stream = await Promise.race([acquisition, interrupted])
+    deadline.throwIfAborted()
+    deadline.addEventListener('abort', stopTracks, { once: true })
     const videoTrack = stream.getVideoTracks()[0]
-    if (!videoTrack) return null
+    if (!videoTrack) throw new Error('没有获取到屏幕画面。')
 
-    const video = document.createElement('video')
+    video = document.createElement('video')
     video.srcObject = stream
     video.muted = true
-    await video.play()
+    await Promise.race([video.play(), interrupted])
+    deadline.throwIfAborted()
 
     const canvas = document.createElement('canvas')
     canvas.width = video.videoWidth || 1280
     canvas.height = video.videoHeight || 720
     const ctx = canvas.getContext('2d')
-    if (!ctx) return null
+    if (!ctx) throw new Error('无法读取屏幕画面，请重试。')
 
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
     const dataUrl = canvas.toDataURL('image/jpeg', 0.82)
 
     return dataUrl
-  } catch (err) {
-    // 用户取消分享屏幕或权限拒绝
-    return null
   } finally {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop())
-    }
+    deadline.removeEventListener('abort', stopTracks)
+    deadline.removeEventListener('abort', rejectInterrupted)
+    stopTracks()
+    if (video) { video.pause(); video.srcObject = null }
   }
+}
+
+/** Bound the vision payload while leaving clipboard/gallery originals intact. */
+export async function imageForInspection(blob: Blob, signal?: AbortSignal): Promise<string> {
+  signal?.throwIfAborted()
+  const bitmap = await createImageBitmap(blob)
+  try {
+    signal?.throwIfAborted()
+    const scale = Math.min(1, 1920 / Math.max(bitmap.width, bitmap.height))
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale)); canvas.height = Math.max(1, Math.round(bitmap.height * scale))
+    const context = canvas.getContext('2d')
+    if (!context) throw new Error('无法读取图片，请重新复制后重试。')
+    context.fillStyle = '#ffffff'; context.fillRect(0, 0, canvas.width, canvas.height)
+    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+    return canvas.toDataURL('image/jpeg', .85)
+  } finally { bitmap.close() }
 }
 

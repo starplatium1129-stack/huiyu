@@ -1,13 +1,13 @@
 /**
- * ASR 请求抽象：WAV 编码 + OpenAI 兼容 /audio/transcriptions 请求构造。
- *
- * 纯函数部分（encodeWav16k / buildAsrRequestParts）可直测；
- * recognizeWithAsr 是薄 fetch 封装，错误统一抛出带原因的消息。
+ * 16kHz WAV 编码与本机网关识别。网关转发 OpenAI 兼容转写请求，
+ * 页面只连接应用自己的运行时，不直接连接服务商。
  */
 
-import type { SpeechInputConfig } from './speechInputConfig'
+import { speechInputEndpointError, type SpeechInputConfig } from './speechInputConfig'
+import { runtimeFetch } from '@/platform/runtimeUrl'
+import { apiClient } from '@/api/client'
 
-/** 将 16kHz 单声道 Float32 采样编码为标准 WAV（PCM16），可测纯函数。 */
+/** 将单声道 Float32 采样编码为标准 WAV（PCM16）。 */
 export function encodeWav16k(samples: Float32Array, sampleRate: number): Uint8Array {
   const bytesPerSample = 2
   const dataSize = samples.length * bytesPerSample
@@ -41,7 +41,7 @@ export function encodeWav16k(samples: Float32Array, sampleRate: number): Uint8Ar
   return new Uint8Array(buffer)
 }
 
-/** 线性插值重采样到 16kHz（目标采样率），可测纯函数。 */
+/** 线性插值重采样到 16kHz。 */
 export function resampleTo16k(input: Float32Array, srcRate: number): Float32Array {
   if (srcRate === 16_000) return input
   if (srcRate <= 0 || !Number.isFinite(srcRate)) return input
@@ -57,26 +57,12 @@ export function resampleTo16k(input: Float32Array, srcRate: number): Float32Arra
   return out
 }
 
-export interface AsrRequestParts {
-  method: 'POST'
-  url: string
-  filename: string
-  mime: string
-  formFields: { name: string; value: string }[]
-}
-
-/** 构造 OpenAI 兼容转写请求的元信息（不含文件体），可测纯函数。 */
-export function buildAsrRequestParts(config: SpeechInputConfig, mime = 'audio/wav'): AsrRequestParts {
-  const base = config.endpoint.replace(/\/+$/, '')
-  const fields: { name: string; value: string }[] = [{ name: 'model', value: config.model || 'whisper-1' }]
-  if (config.language) fields.push({ name: 'language', value: config.language })
-  return {
-    method: 'POST',
-    url: `${base}/audio/transcriptions`,
-    filename: `speech.${mime === 'audio/webm' ? 'webm' : 'wav'}`,
-    mime,
-    formFields: fields,
-  }
+export async function probeSpeechService(config: SpeechInputConfig, signal?: AbortSignal): Promise<{ state: 'ok' | 'unknown'; message: string }> {
+  return apiClient.request('/api/speech-input/probe', {
+    method: 'POST', timeoutMs: 12_000, signal,
+    body: { endpoint: config.endpoint, model: config.model, apiKey: config.apiKey, language: config.language },
+    validate: value => value.ok === true && ['ok', 'unknown'].includes(String(value.state)) && typeof value.message === 'string',
+  })
 }
 
 export interface AsrResult {
@@ -107,11 +93,12 @@ export async function recognizeWithAsr(
   signal?: AbortSignal,
 ): Promise<AsrResult> {
   if (signal?.aborted) throw asrError('canceled', '语音识别已取消')
+  const configError = speechInputEndpointError(config.endpoint)
+  if (configError) throw asrError('payload', configError)
   const started = Date.now()
-  const parts = buildAsrRequestParts(config)
   const form = new FormData()
-  form.append('file', new Blob([wavBytes as BlobPart], { type: parts.mime }), parts.filename)
-  for (const field of parts.formFields) form.append(field.name, field.value)
+  form.append('file', new Blob([wavBytes as BlobPart], { type: 'audio/wav' }), 'speech.wav')
+  for (const key of ['endpoint', 'model', 'apiKey', 'language'] as const) form.append(key, config[key])
   const controller = new AbortController()
   const abort = () => controller.abort()
   signal?.addEventListener('abort', abort, { once: true })
@@ -120,18 +107,13 @@ export async function recognizeWithAsr(
   try {
     let response: Response
     try {
-      response = await fetch(parts.url, {
-        method: parts.method,
-        headers: config.apiKey ? { Authorization: `Bearer ${config.apiKey}` } : undefined,
+      response = await runtimeFetch('/api/speech-input/transcribe', {
+        method: 'POST',
         body: form,
         signal: controller.signal,
       })
     } catch (error) {
       throw asrError('network', `无法连接语音识别服务：${error instanceof Error ? error.message : String(error)}`)
-    }
-
-    if (!response.ok) {
-      throw asrError('http', `语音识别服务返回 ${response.status}`, response.status)
     }
 
     let payload: unknown
@@ -141,11 +123,16 @@ export async function recognizeWithAsr(
       throw asrError('payload', '语音识别服务返回了无法解析的内容')
     }
 
+    const value = payload && typeof payload === 'object' ? payload as Record<string, unknown> : null
+    if (!response.ok || value?.ok === false) {
+      const message = typeof value?.error === 'string' ? value.error : `语音识别服务返回 ${response.status}`
+      throw asrError(value?.code === 'SPEECH_TIMEOUT' ? 'timeout' : 'http', message, response.status)
+    }
     const text = (payload && typeof payload === 'object' && 'text' in payload
       ? (payload as { text?: unknown }).text
       : null) as string | null
     if (typeof text !== 'string' || !text.trim()) {
-      throw asrError('payload', '语音识别服务未返回识别文本')
+      throw asrError('payload', '没有识别到文字，请靠近麦克风说话后重试。')
     }
     return { text: text.trim(), latencyMs: Date.now() - started }
   } catch (error) {

@@ -5,12 +5,10 @@ import { profileLocalStorage as localStorage } from '../platform/web/profileStor
  * 端点协议目前支持 OpenAI 兼容 /audio/transcriptions（whisper.cpp、
  * faster-whisper、OpenAI 等均兼容）；端点未配置时语音输入入口隐藏。
  *
- * 注意：SPEECH_INPUT_KEY 与 src/utils/storageKeys.ts 双源登记，
- * 由 test-vad-segmenter.js 断言两者一致；storageKeys 保持零依赖供
- * 不得反向 import 本模块。
+ * SPEECH_INPUT_KEY 与 storageKeys.ts 同步登记；持久化由 profile adapter 负责。
  */
 
-/** localStorage 键（storageKeys.ts 同步登记，测试校验一致性）。 */
+/** profile 存储键（storageKeys.ts 同步登记）。 */
 export const SPEECH_INPUT_KEY = 'aics_speech_input_v1'
 
 export type SpeechInputKind = 'openai'
@@ -80,7 +78,17 @@ export function normalizeSpeechInputConfig(raw: unknown): SpeechInputConfig {
 
 /** 判断端点是否已配置且可用（决定语音按钮显隐）。 */
 export function isSpeechInputReady(config: SpeechInputConfig): boolean {
-  return config.enabled && /^https?:\/\//i.test(config.endpoint)
+  return config.enabled && !speechInputEndpointError(config.endpoint)
+}
+
+export function speechInputEndpointError(endpoint: string): string {
+  try {
+    const url = new URL(endpoint)
+    if (!['http:', 'https:'].includes(url.protocol) || !url.hostname || url.username || url.password || url.search || url.hash) {
+      return '请填写 HTTP(S) 服务地址，不要在地址中填写密钥、查询参数或片段。'
+    }
+    return ''
+  } catch { return '请填写有效的语音识别服务地址，例如 http://127.0.0.1:8000/v1。' }
 }
 
 export interface KeyedStorage {

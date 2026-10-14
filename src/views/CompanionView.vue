@@ -176,6 +176,7 @@
             >
               <span>{{ msg.role === 'user' ? '你' : currentCharacter.name }}</span>
               <p>{{ msg.content }}</p>
+              <CompanionDrawingDraftCard v-for="drawing in msg.drawingDrafts || []" :key="drawing.path" :draft="drawing" />
             </div>
           </template>
         </div>
@@ -354,6 +355,7 @@ import { usePetGestures } from '@/composables/chat/usePetGestures'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
+const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"

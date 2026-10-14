@@ -1,5 +1,5 @@
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
-import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import type { CompanionToolResult as ToolCallResult } from '@/api/companionToolsApi'
 import { reactive, ref, type ComputedRef, type Ref } from 'vue'
 import { createMessageId, type CharacterConfig } from '../../config/characters.ts'
 import { useChatStorage } from './useChatStorage.ts'
@@ -13,7 +13,6 @@ import {
 import { createMoodTagStream } from '../../utils/moodTag.ts'
 import { hasChatUserProfile, type ChatUserProfile } from '../../utils/chatUserProfile.ts'
 import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
-import { abortableTask } from '../../utils/abortableTask.ts'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { createChatDraftPersistence } from './chatDraftPersistence'
 
@@ -85,13 +84,6 @@ interface TurnWatchdog {
   stop(): void
   readonly sawFirstEvent: boolean
   readonly idleTimedOut: boolean
-}
-
-/** 工具执行结果（桌面桥与网关端点共用的最小契约）。 */
-interface ToolCallResult {
-  ok: boolean
-  output: string
-  imageDataUrl?: string
 }
 
 /** 判断一条临时消息是否为多模态图片消息（视觉轮专用）。 */
@@ -260,24 +252,9 @@ export function useChatConversation(options: ChatConversationOptions) {
     if (!parsedArgs || typeof parsedArgs !== 'object' || Array.isArray(parsedArgs)) {
       return { ok: false, output: '工具参数必须是 JSON 对象。' }
     }
-    let result: ToolCallResult
-    if (getDesktopCapabilities()) {
-      result = await abortableTask(() => getDesktopCapabilities()!.runTool(call.name, parsedArgs, { signal }), signal)
-    } else {
-      const res = await runtimeFetch('/api/desktop-tools', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal,
-        // adultEnabled 是传输层授权信号（网关 fail-closed 双门的第二道）：
-        // 仅本机直连视为已授权，与模型可控的 args 隔离。
-        body: JSON.stringify({ name: call.name, args: parsedArgs, adultEnabled: isLocalStudioHost() }),
-      })
-      result = await res.json()
-      if (!res.ok) return { ok: false, output: String((result as unknown as { error?: string }).error || `工具请求失败（${res.status}）`) }
-    }
+    const { executeCompanionTool } = await import('@/api/companionToolsApi')
     signal.throwIfAborted()
-    result.output = typeof result.output === 'string' ? result.output : (result.ok ? '工具已完成。' : '工具执行失败，未返回详情。')
-    return result
+    return executeCompanionTool(call.name, parsedArgs, signal)
   }
 
   function captureConnection() {
@@ -402,7 +379,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       while (true) {
         controller.signal.throwIfAborted()
         const hostMode = connection.provider === 'api' && connection.hostConfig
-        const useVision = visionRound && connection.provider === 'api' && !hostMode
+        const useVision = visionRound
         visionRound = false
         // DeepSeek V4：思考轮带 tool_calls 时必须回传 reasoning_content
         let roundReasoning = ''
@@ -473,6 +450,11 @@ export function useChatConversation(options: ChatConversationOptions) {
             result = { ok: false, output: error instanceof Error ? error.message : String(error) }
           }
           controller.signal.throwIfAborted()
+          if (result.draft) {
+            const user = [...turn.messages].reverse().find(message => message.role === 'user')
+            if (user) user.drawingDrafts = [...(user.drawingDrafts || []), result.draft].slice(-4)
+            options.storage.save()
+          }
           roundMessages.push({ role: 'tool', tool_call_id: call.id, content: result.output.slice(0, 60000) })
           // read_image 成功时把图片作为多模态 user 消息附加，供视觉模型理解；
           // 下一轮自动切到本地 Gemini 视觉轮，看完成回到原聊天模型

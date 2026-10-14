@@ -81,6 +81,8 @@ export function useCompanionWorkspace() {
     const { importInputRef, clipboardCard, capturingScreen, onImportInputChange, dismissClipboardCard, acceptClipboardCard, onCaptureAndInspectScreen, inspectClipboardImage } = useCompanionClipboardImport({
         activeChar,
         desktopBridge,
+        listenClipboard: !desktopBridge,
+        onError: message => { chatError.value = message; chatErrorKind.value = 'warning' },
         currentCharacterName: () => currentCharacter.value.name,
         noteReturn,
         noteReturnPlain,
@@ -146,12 +148,13 @@ export function useCompanionWorkspace() {
                 voiceActive: voiceActive.value,
                 activeChar: activeChar.value,
                 chatReady: chatReady.value,
+                chatError: chatError.value,
                 ts: Date.now(),
             }));
         }
         catch { /* 隐私模式忽略 */ }
     }
-    watch([busy, thinkingActivity, toolActivity, isSpeaking, voiceActive, activeChar, chatReady], publishLiveState, { flush: 'sync' });
+    watch([busy, thinkingActivity, toolActivity, isSpeaking, voiceActive, activeChar, chatReady, chatError], publishLiveState, { flush: 'sync' });
     function openChatWindow() {
         desktopBridge?.openChat?.();
     }

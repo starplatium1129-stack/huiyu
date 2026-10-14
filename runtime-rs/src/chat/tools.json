@@ -145,9 +145,13 @@
             "type": "string",
             "description": "画面场景、动作、光影或剧情氛围的自然语言描述（如 \"在海边喝汽水，微风吹拂，夏日清凉\"）。"
           },
+          "visualDescription": {
+            "type": "string",
+            "description": "与 description 原意一致的英文画面描述，交给工作台的实际图像编译通道。保留主体数量、身份、服装、动作与空间关系，不添加用户未请求的题材或质量模板。使用 ASCII 英文；不要把英文句子连成下划线标签。"
+          },
           "outfit": {
             "type": "string",
-            "description": "服装类型（可选，如 \"default\"、\"maid\"、\"swimsuit\"、\"casual\"）。注意：\"nsfw_nude\" 仅在本机成人内容授权开启且角色在成人白名单时可用，未授权会被拒绝。"
+            "description": "已有服装 ID 或英文服装名称（可选，如 \"default\"、\"maid\"、\"swimsuit\"、\"casual\"）。服装也应在 visualDescription 中准确表达。不要加入 LoRA、权重或控制语法。注意：\"nsfw_nude\" 仅在本机成人内容授权开启且角色在成人白名单时可用，未授权会被拒绝。"
           },
           "mature": {
             "type": "boolean",
@@ -156,7 +160,8 @@
         },
         "required": [
           "character",
-          "description"
+          "description",
+          "visualDescription"
         ]
       }
     }

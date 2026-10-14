@@ -24,6 +24,7 @@ pub mod reference;
 pub mod remote_content;
 pub mod resources;
 pub mod security;
+mod speech_input;
 pub mod static_files;
 pub mod storage;
 pub mod task_contract;
@@ -117,6 +118,7 @@ pub fn router(state: AppState) -> Router {
         .merge(character_art::router())
         .merge(catalog::router())
         .merge(upstream::router(&state.config))
+        .merge(speech_input::router())
         .merge(tasks_http::router());
     if let Some(service) = &state.chat {
         router = router.merge(chat::router(service.clone()));
