@@ -4,7 +4,10 @@ use super::{
     policy,
 };
 use futures_util::StreamExt;
-use std::path::{Path, PathBuf};
+use std::{
+    path::{Path, PathBuf},
+    time::{Duration, Instant},
+};
 use tokio::io::{AsyncWriteExt, BufWriter};
 use tokio_util::sync::CancellationToken;
 fn strong(value: Option<&str>) -> Option<String> {
@@ -148,7 +151,47 @@ async fn entry(
     let mut output = BufWriter::with_capacity(256 * 1024, tokio::fs::File::from_std(opened));
     let mut received = start;
     let mut stream = response.bytes_stream();
-    let copied=async{loop{let next=tokio::select!{_ = op.cancel.cancelled()=>return Err(Error::new("CANCELLED","Download cancelled")),value=tokio::time::timeout(std::time::Duration::from_secs(30),stream.next())=>value.map_err(|_|Error::new("HTTP_TIMEOUT","Resource source timed out"))?};let Some(chunk)=next else{break;};let chunk=chunk.map_err(|_|Error::new("HTTP_FAILED","Resource response interrupted"))?;op.check()?;if received+chunk.len()as u64>entry.bytes{return Err(Error::new("HTTP_SIZE","Response exceeds approved length"));}fs::safe(&partial,false,false)?;output.write_all(&chunk).await?;received+=chunk.len()as u64;op.event("download-progress",json!({"path":entry.path,"bytes":received,"total":entry.bytes,"resumedFrom":start}))?;}if received!=entry.bytes{return Err(Error::new("HTTP_SIZE","Resource response incomplete"));}Ok(())}.await;
+    let mut last_progress: Option<Instant> = None;
+    let copied = async {
+        loop {
+            let next = tokio::select! {
+                _ = op.cancel.cancelled() => return Err(Error::new("CANCELLED", "Download cancelled")),
+                value = tokio::time::timeout(Duration::from_secs(30), stream.next()) =>
+                    value.map_err(|_| Error::new("HTTP_TIMEOUT", "Resource source timed out"))?,
+            };
+            let Some(chunk) = next else {
+                break;
+            };
+            let chunk = chunk
+                .map_err(|_| Error::new("HTTP_FAILED", "Resource response interrupted"))?;
+            op.check()?;
+            if received + chunk.len() as u64 > entry.bytes {
+                return Err(Error::new("HTTP_SIZE", "Response exceeds approved length"));
+            }
+            fs::safe(&partial, false, false)?;
+            output.write_all(&chunk).await?;
+            received += chunk.len() as u64;
+            if last_progress.is_none_or(|last| last.elapsed() >= Duration::from_millis(250))
+                || received == entry.bytes
+            {
+                op.event(
+                    "download-progress",
+                    json!({"path":entry.path,"bytes":received,"total":entry.bytes,"resumedFrom":start}),
+                )?;
+                last_progress = Some(Instant::now());
+            } else {
+                // Throttle observer updates, not the post-write authorization
+                // and cancellation checks performed by event on reported chunks.
+                op.check()?;
+                cancelled(&op.cancel)?;
+            }
+        }
+        if received != entry.bytes {
+            return Err(Error::new("HTTP_SIZE", "Resource response incomplete"));
+        }
+        Ok(())
+    }
+    .await;
     // Tokio file writes can finish in the background. Surface the final write
     // error before hashing, while retaining a resumable partial on disk errors.
     let synced = async {
