@@ -10,7 +10,6 @@ fn baseline_workflow(model_id: &str) -> Result<Value> {
         &json!({"modelId":model_id,"prompt":"landscape","width":1024,
             "height":1024,"seed":0,"teaCache":true,"hiresFix":false}),
         "anima",
-        true,
     )?;
     crate::images::build_workflow(&input)
 }

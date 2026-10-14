@@ -204,15 +204,7 @@ function validatePopularContent() {
     });
     if (blueprints.length < 20) errors.push('scene-blueprints.json must contain at least 20 blueprints');
     let adultBlueprints = blueprints.filter(function (blueprint: any) { return blueprint.adult; });
-    if (adultBlueprints.length < 1) errors.push('scene-blueprints.json should keep at least one adult-only blueprint gated by adultEligibility');
-    let nonAdult = characters.filter(function (character: any) { return character.adultEligibility !== 'adult'; });
-    nonAdult.forEach(function (character: any) {
-      adultBlueprints.forEach(function (blueprint: any) {
-        if (popular.blueprintEligible(blueprint, character, { adultEnabled: true })) {
-          errors.push(character.id + ' must never reach adult blueprint ' + blueprint.id + ' (fail closed)');
-        }
-      });
-    });
+    if (adultBlueprints.length < 1) errors.push('scene-blueprints.json should keep at least one R18 blueprint');
     (blueprints || []).forEach(function (blueprint: any) {
       let text = JSON.stringify(blueprint);
       if (popularPrompt.scanStudioTokenLeaks(text).length) {
@@ -222,7 +214,7 @@ function validatePopularContent() {
         errors.push('blueprint ' + blueprint.id + ' must not leak retrieval metadata');
       }
       // kreaStyleHint / animaStyleHint：命中配方时，成人配方只允许挂在成人蓝图上
-      // （成人蓝图对非 adult 角色 fail closed，hint 随蓝图一起被拦下）。
+      // 保持配方与蓝图分级一致，分级不参与访问控制。
       ['kreaStyleHint', 'animaStyleHint'].forEach(function (key: any) {
         let hint = blueprint[key];
         if (typeof hint !== 'string' || !hint.trim()) return;
@@ -244,13 +236,6 @@ function validatePopularContent() {
       if (/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(recipe.lead + ' ' + (recipe.medium || ''))) {
         errors.push('kreaStyleRecipes.' + recipe.id + ' must not reference studio LoRA tokens');
       }
-    });
-    nonAdult.forEach(function (character: any) {
-      adultRecipes.forEach(function (recipe: any) {
-        if (recipes.recipeEligible(recipe, character, { adultEnabled: true })) {
-          errors.push(character.id + ' must never reach adult style recipe ' + recipe.id + ' (fail closed)');
-        }
-      });
     });
   } catch (error) {
     errors.push('popular/scene-blueprints data failed to parse: ' + runtimeErrorMessage(error));

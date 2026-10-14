@@ -10,7 +10,6 @@ import { plainEnglish } from '@/utils/promptCompiler'
 import { collectInterrogateContext, mergeInterrogatedTags } from '@/utils/interrogateMerge'
 import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { splitReferenceTags } from '@/utils/interrogateReference'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 export interface CompanionImageArgs {
   character: string; description: string; visualDescription?: string; outfit?: string; mature?: boolean
@@ -45,7 +44,6 @@ export function companionPromptDraft(pb: ReturnType<typeof usePromptBuilderStore
   const mature = args.mature === true || requestedOutfit === 'nsfw_nude'
     || isManualR18Tags([requestedOutfit, ...visual.split(/[\s,;.]+/), ...(inferred?.tags ?? [])], matureTokens)
     || Boolean(inferred && Math.max(inferred.rating.questionable, inferred.rating.explicit) > Math.max(inferred.rating.general, inferred.rating.sensitive))
-  if (mature && (!isLocalStudioHost() || !pb.showMatureScenes || character && character.adultEligibility !== 'adult')) throw new Error('当前角色、题材开关或本机环境未获得成人题材授权')
   const char = studio ? args.character as 'nene' | 'natsume' : pb.char
   const manual = new Set<string>()
   if (studio && requestedOutfit !== 'default') {
@@ -62,7 +60,7 @@ export function companionPromptDraft(pb: ReturnType<typeof usePromptBuilderStore
     manualTags: manual, randomVariation: null, selections: { emotion: [], shot: null, lighting: null, composition: null },
     characters: copy(pb.characters), loraMeta: copy(pb.loraMeta), modelProfiles: copy(pb.modelProfiles), tags: copy(pb.tags),
     popularCharacters: copy(pb.popularCharacters), sceneBlueprints: [], outfitOverride: null,
-    sdModelName: pb.sdModelName, sdParams: copy(pb.sdParams), projectId: pb.projectId, showMatureScenes: mature,
+    sdModelName: pb.sdModelName, sdParams: copy(pb.sdParams), projectId: pb.projectId,
   }
   if (!inferred) return draft
   const reference = splitReferenceTags(inferred.tags, {

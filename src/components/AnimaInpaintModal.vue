@@ -47,7 +47,6 @@ const props = defineProps<{
   currentPrompt?: string
   currentNegative?: string
   character?: 'nene' | 'natsume' | 'triad' | null
-  adultEnabled?: boolean
   seed?: number | null
   submitting?: boolean
   preparing?: boolean
@@ -125,11 +124,10 @@ const {
   syncMaskCanvas,
 })
 
-// ── 服装预设（NSFW fail-closed）与 CLIPSeg/换装参数已下沉
+// ── 服装预设与 CLIPSeg/换装参数已下沉
 //    useInpaintOutfitPresets。──
 const {
   presets,
-  visiblePresets,
   currentPreset,
   selectedPresetId,
   customPrompt,
@@ -140,7 +138,6 @@ const {
   preserveSeed,
   characterMode,
 } = useInpaintOutfitPresets({
-  adultEnabled: () => props.adultEnabled,
   open: () => props.open,
 })
 
@@ -151,12 +148,6 @@ function captureDraft() {
     toast.error(maskUnavailable.value)
     return null
   }
-  const selectedPreset = presets.find(preset => preset.id === selectedPresetId.value)
-  if (selectedPreset?.isNsfw && !props.adultEnabled) {
-    toast.error('请先在工作台开启分级内容，才能使用该服装预设')
-    return null
-  }
-
   const newPrompt = customPrompt.value.trim()
   if (!newPrompt) {
     toast.error('请输入或选择目标服装描述')
@@ -176,7 +167,6 @@ function captureDraft() {
     editMode: editMode.value,
     painted: !wholeImage.value && maskMode.value === 'paint',
     sourceHistoryId: sourceHistoryId.value,
-    requiresAdult: Boolean(selectedPreset?.isNsfw),
     maskPrompt: maskPrompt.value.trim() || 'clothing | clothes | outfit',
     maskThreshold: maskThreshold.value,
     newOutfitPrompt: newPrompt,
@@ -193,7 +183,6 @@ function captureDraft() {
 const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
   open: () => props.open, sourceRevision: () => sourceRevision.value,
   ready: () => imageReady.value, busy: () => Boolean(props.submitting),
-  adultEnabled: () => Boolean(props.adultEnabled),
   capture: captureDraft, getBlob, maskBlob,
   submit: payload => emit('submit', payload), error: message => toast.error(message),
 })
@@ -401,7 +390,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
 
             <div class="preset-grid" role="group" aria-label="目标服装形态">
               <button
-                v-for="p in visiblePresets"
+                v-for="p in presets"
                 :key="p.id"
                 type="button"
                 :aria-pressed="selectedPresetId === p.id"

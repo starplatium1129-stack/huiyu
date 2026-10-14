@@ -107,8 +107,6 @@ export interface CreateVideoJobInput {
   quality?: VideoQuality
   /** 采样步数（H3 专属）：8 标准（默认）/ 4 极速（约快一倍，质量略降）。 */
   steps?: 4 | 8
-  /** 成人内容传输层授权信号：本机直连默认 true（与出图侧同源），远程/隧道由服务端 fail-closed。 */
-  adultEnabled?: boolean
 }
 
 export interface VideoImageUploadResponse {
@@ -235,8 +233,6 @@ export interface CreateVideoBatchInput {
   steps?: 4 | 8
   /** 自动用上一镜尾帧衔接下一镜（FL2VA / I2VA 续接），默认开启。 */
   linkLastFrame?: boolean
-  /** 成人内容传输层授权信号：本机直连默认 true（与出图侧同源），远程/隧道由服务端 fail-closed。 */
-  adultEnabled?: boolean
   shots: CreateVideoBatchShotInput[]
 }
 

@@ -1,7 +1,7 @@
 import type { SDGenerateParams, Txt2ImgPayload } from './sdRequest'
 
 /** The gateway projection used by both desktop and Web SD submission. */
-export function buildRuntimeSdInput(params: SDGenerateParams, payload: Txt2ImgPayload, local: boolean) {
+export function buildRuntimeSdInput(params: SDGenerateParams, payload: Txt2ImgPayload) {
   const names = params.lora ? (Array.isArray(params.lora) ? params.lora : String(params.lora).split(',')) : []
   const loras = names.map(raw => {
     const match = String(raw).replace(/^<lora:/i, '').replace(/>$/, '').split(':')
@@ -17,5 +17,5 @@ export function buildRuntimeSdInput(params: SDGenerateParams, payload: Txt2ImgPa
     sampler: payload.sampler_name, scheduler: String(payload.scheduler || params.scheduler || ''),
     hiresFix: Boolean(params.hr_fix), hiresScale: params.hr_scale, hiresUpscaler: params.hr_upscaler,
     hiresSteps: params.hr_second_pass_steps, denoisingStrength: params.denoising_strength,
-    faceDetailer: Boolean(params.alwayson_scripts?.ADetailer), ...(local ? { adultEnabled: true } : {}) }
+    faceDetailer: Boolean(params.alwayson_scripts?.ADetailer) }
 }

@@ -58,7 +58,7 @@ const props = withDefaults(defineProps<{ rails: MoodRail[]; scenes?: ExplorerSce
 const emit = defineEmits<{ select: [rail: MoodRail]; open: [scene: ExplorerScene] }>()
 const hintId = useId()
 const host = ref<HTMLElement | null>(null)
-// Visible recommendations share the loaded catalog, with one distinct All-rated
+// Visible recommendations share the loaded catalog, with one distinct
 // scene per rail. Missing matches keep their usable exploration link.
 const entries = computed(() => {
   const used = new Set<string>()
@@ -67,7 +67,7 @@ const entries = computed(() => {
     const analysis = analyzeQuery(rail.query, null)
     let scene: ExplorerScene | undefined, bestScore = -Infinity
     for (const candidate of props.scenes) {
-      if (used.has(candidate.id) || candidate.rating !== 'All' || candidate.mature === true
+      if (used.has(candidate.id)
         || (rail.character !== 'shared' && candidate.char !== rail.character)) continue
       let document = documents.get(candidate)
       if (!document) { document = prepareSceneSearch(candidate); documents.set(candidate, document) }
@@ -109,7 +109,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-card.front { transform:translate3d(var(--deck-x),var(--card-focus-lift),0); opacity:var(--deck-opacity); transition:transform 240ms var(--ease-out),opacity 240ms var(--ease-out); }
 .inspiration-deck-stage:not(.dragging):not(.still) .inspiration-deck-card:has(:focus-visible) { --card-focus-lift:-6px; --card-focus-scale:1.06; border-color:var(--accent); box-shadow:var(--shadow-md); }
 .inspiration-deck-card:has(:focus-visible) :deep(.inspiration-artwork.ready::after) { opacity:1; }
-.inspiration-deck-card :deep(.inspiration-artwork.ready img) { transform:scale(var(--card-focus-scale)); }
+.inspiration-deck-card :deep(.inspiration-artwork.ready > img) { transform:scale(var(--card-focus-scale)); }
 @media (hover:hover) and (pointer:fine) {
   .inspiration-deck-stage:not(.dragging):not(.still) .inspiration-deck-card:hover { --card-focus-lift:-6px; --card-focus-scale:1.06; border-color:var(--accent); box-shadow:var(--shadow-md); }
   .inspiration-deck-card:hover :deep(.inspiration-artwork.ready::after) { opacity:1; }

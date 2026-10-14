@@ -1,7 +1,6 @@
 import { executeCompanionTool } from '@/api/companionToolsApi'
 import { isCompanionDrawingPath, parseCompanionDrawingDraft } from '@/types/companionDrawing'
 import { defaultOutfit, findCharacter, findOutfit } from '@/utils/popularContent'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import type { PromptDeepLinkDeps } from './usePromptDeepLink'
 
 /** Read the saved source before changing the editor; the normal compiler owns
@@ -24,7 +23,6 @@ export async function applyCompanionDraft(path: string, deps: PromptDeepLinkDeps
     const outfit = typeof draft.outfit === 'string' ? draft.outfit.trim() : 'default'
     if (outfit.length > 100) throw new Error('草稿服装字段无效。')
     const mature = draft.mature === true || outfit === 'nsfw_nude'
-    if (mature && (!isLocalStudioHost() || !['nene', 'natsume'].includes(reference.character))) throw new Error('此草稿未获得当前角色与本机分级授权。')
     const studio = reference.character === 'nene' || reference.character === 'natsume'
     if (!studio) await pb.loadPopularCharacter(reference.character)
     if (!isCurrent()) return

@@ -96,7 +96,7 @@
           <label class="scene-filter-field">排序<StudioSelect v-model="sortBy" label="排序" :options="SCENE_FILTER_OPTIONS.sort" /></label>
         </div>
         <div class="scene-filter-meta">
-          <span class="mature-hint"><template v-if="adultEnabled">成人 <em>{{ matureCount }}</em> · 已展示</template><template v-else>成人场景 · 仅限本机</template></span>
+          <span class="mature-hint">成人 <em>{{ matureCount }}</em> · R18 图片默认模糊</span>
           <ToggleSwitch v-model="showHidden" class="mature-toggle"><span>管理已隐藏 <em>({{ hiddenCount }})</em></span></ToggleSwitch>
           <button class="scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
         </div>
@@ -217,7 +217,7 @@ const {
   searchQuery, visible, filtered, tierLabel, filtersOpen, activeFacetCount, fTier, showHidden,
   showPersonalScenes, showRecommendedScenes, usedCount, sortBy, showFavoriteScenes, favoriteCount,
   hiddenCount, showAllScenes, availableCount, THEME_DEFS, activeTheme, themeCount,
-  searchIntent, fChar, fSeason, fTime, fSeries, fRating, matureCount, adultEnabled, resetFilters,
+  searchIntent, fChar, fSeason, fTime, fSeries, fRating, matureCount, resetFilters,
   loading, loadError, init, paged, flashId, usageFor, isCore, tier, charName, seasonLabel, timeLabel,
   personalReason, drawerScene, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav, PAGE_SIZE,
 } = useSceneExplorerWorkspace()

@@ -13,7 +13,7 @@ description: 依据 MiaoMiao Harem Anima 1.6 的作者版本说明，编写或�
 - Krea 2 提示词或编辑描述：读 [Krea 规则](references/krea.md)。
 - 叙事 CG 或单人物立绘／特写壁纸的构图与完成度：再读 [构图参考](references/narrative-composition.md)，按目标进入叙事或壁纸规范。
 - 手机竖屏壁纸：读 [手机规范](../../../docs/guides/prompts/mobile-wallpaper-prompt-standard.md)；成年角色非露骨题材或中性一致性排查：读 [研究来源与采用边界](../../../docs/research/README.md)。
-- 成年角色成人向／NSFW 场景与蓝图规范：读 [NSFW 规范](../../../docs/guides/prompts/nsfw-cg-prompt-standard.md)（严格遵循 adult 资格与本地宿主放行）。
+- 成年角色成人向／NSFW 场景与蓝图规范：读 [NSFW 规范](../../../docs/guides/prompts/nsfw-cg-prompt-standard.md)（项目内角色按成年创作设定，仅列表缩略图保留 R18 默认模糊遮罩）。
 - 写入仓库、批量重写、换装/生成验收或定稿：再读 [字段与交付](references/delivery.md)。纯草稿不要求启动仓库工作流或出图。
 - 仅在解释其他引擎能力或历史规范冲突时查 [研究来源与采用边界](../../../docs/research/README.md)。其中 MiaoMiao 作者页未核验的历史限制由本 skill 的 1.6 版本参考补充，不覆盖其他 checkpoint；无需默认加载所有历史指南。
 

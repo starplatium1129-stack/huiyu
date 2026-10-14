@@ -62,8 +62,8 @@ function characterSafeBlueprint(
   character: import('../../src/types/character').PopularCharacter,
 ) {
   const outfit = popularContent.defaultOutfit(character);
-  const safe = popularContent.eligibleBlueprints(blueprints, character, { adultEnabled: false })
-    .filter(blueprint => blueprint.sampleRating !== 'R18');
+  const safe = popularContent.eligibleBlueprints(blueprints, character)
+    .filter(blueprint => !blueprint.adult && blueprint.sampleRating !== 'R18');
   const match = safe.find(blueprint => (blueprint.outfitId || outfit.id) === outfit.id) || safe[0];
   if (!match) throw new Error(`no safe character blueprint for ${character.id}`);
   return match;
@@ -274,7 +274,7 @@ function popularGridBatch(seedBase: any) {
   const records: any[] = [];
   for (const character of characters) {
     // 角色感知：只枚举该角色的专属原型场景 + 通用成人蓝图（fail-closed）。
-    const eligible = popularContent.eligibleBlueprints(blueprints, character, { adultEnabled: true });
+    const eligible = popularContent.eligibleBlueprints(blueprints, character);
     for (const blueprint of eligible) {
       for (const engine of ['anima', 'krea2'] as const) {
         const profile = engine === 'anima' ? animaProfile : krea;
@@ -284,8 +284,6 @@ function popularGridBatch(seedBase: any) {
           engine,
           blueprint,
           null,
-          character.adultEligibility === 'adult' ? { adultEligibility: 'adult' } : null,
-          { adultEnabled: true },
         );
         const result = popularPrompt.buildPopularPromptPlan({
           character,
@@ -293,7 +291,6 @@ function popularGridBatch(seedBase: any) {
           blueprint,
           engine,
           profile,
-          adultEnabled: true,
           shot: decisions.shot,
           lighting: decisions.lighting,
           composition: decisions.composition,

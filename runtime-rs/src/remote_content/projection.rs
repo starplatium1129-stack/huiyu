@@ -6,17 +6,17 @@ fn directory(value: &Value) -> Option<Value> {
     }
     let row = value.as_object()?;
     let id = row.get("id")?.as_str()?;
-    if value["rating"] != "All"
+    if !matches!(value["rating"].as_str(), Some("All" | "R15" | "R18"))
         || id
             .trim_matches(|ch: char| ch.is_whitespace() || ch == '\u{feff}')
             .is_empty()
-        || ["mature", "isNsfw", "nsfw"]
-            .iter()
-            .any(|key| row.get(*key).is_some_and(|value| value != false))
     {
         return None;
     }
-    let mut output = json!({"id":id,"rating":"All"});
+    let mut output = json!({"id":id,"rating":value["rating"]});
+    for key in ["mature", "isNsfw", "nsfw"] {
+        if value[key].is_boolean() { output[key] = value[key].clone(); }
+    }
     for key in [
         "name",
         "nameZh",

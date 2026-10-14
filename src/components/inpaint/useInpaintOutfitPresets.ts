@@ -89,8 +89,6 @@ export const OUTFIT_PRESETS: OutfitPreset[] = [
 ]
 
 export interface InpaintOutfitPresetsDeps {
-  /** 成人内容开关（关闭时隐藏 NSFW 预设并回退默认）。 */
-  adultEnabled: () => boolean | undefined
   /** 弹窗开关（每次打开重置角色 LoRA 选择为 auto）。 */
   open: () => boolean
 }
@@ -100,8 +98,7 @@ export interface InpaintOutfitPresetsDeps {
  *
  * 九套服装预设（含 LoRA 正/负词与 NSFW 标记）+ 自定义描述、CLIPSeg
  * 语义遮罩 prompt 与灵敏度、denoise/扩边等提交参数。预设切换联动
- * 参数（纯粹形态 = 高 denoise 大扩边）；成人开关关闭时自动回退安全
- * 预设（fail-closed 契约）。
+ * 参数（纯粹形态 = 高 denoise 大扩边）；所有预设均可选择。
  */
 export function useInpaintOutfitPresets(deps: InpaintOutfitPresetsDeps) {
   const selectedPresetId = ref<string>('bikini_white')
@@ -115,14 +112,7 @@ export function useInpaintOutfitPresets(deps: InpaintOutfitPresetsDeps) {
   const preserveSeed = ref<boolean>(true)
   const characterMode = ref<'auto' | 'nene' | 'natsume' | 'none'>('auto')
 
-  const visiblePresets = computed(() => OUTFIT_PRESETS.filter(preset => deps.adultEnabled() || !preset.isNsfw))
-  const currentPreset = computed(() => visiblePresets.value.find(p => p.id === selectedPresetId.value))
-
-  watch(() => deps.adultEnabled(), (adultEnabled) => {
-    if (!adultEnabled && OUTFIT_PRESETS.find(preset => preset.id === selectedPresetId.value)?.isNsfw) {
-      selectedPresetId.value = 'bikini_white'
-    }
-  }, { immediate: true })
+  const currentPreset = computed(() => OUTFIT_PRESETS.find(p => p.id === selectedPresetId.value))
 
   watch(selectedPresetId, (newId) => {
     if (newId !== 'custom') {
@@ -146,7 +136,6 @@ export function useInpaintOutfitPresets(deps: InpaintOutfitPresetsDeps) {
 
   return {
     presets: OUTFIT_PRESETS,
-    visiblePresets,
     currentPreset,
     selectedPresetId,
     customPrompt,

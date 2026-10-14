@@ -148,7 +148,7 @@ export function useRandomInspiration() {
           tags: pb.tags,
         }
       : {
-          ...shared, char: pb.char,
+          ...shared, ...(pb.char === 'none' ? { identityExclude: new Set<string>() } : { char: pb.char }),
           includeArtists: includeArtists.value,
           keepArtists: pb.artistStyleIds.filter(id => !generatedArtists.has(id)),
           tags: pb.tags,

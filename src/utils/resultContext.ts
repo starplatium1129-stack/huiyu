@@ -58,7 +58,7 @@ export function historyFromResultContext(ctx?: AnimaResultContext | null): Parti
   const history = ctx.history ? JSON.parse(JSON.stringify(ctx.history)) as Partial<HistoryEntry> : {}
   return {
     ...history,
-    subject: popular ? 'popular' : 'studio', noLora: popular,
+    subject: popular ? 'popular' : 'studio', noLora: popular || ctx.char === 'none',
     character: (popular ? ctx.characterId : ctx.char) as HistoryEntry['character'],
     characterId: popular ? ctx.characterId : undefined,
     outfitId: popular ? ctx.outfitId ?? undefined : undefined,

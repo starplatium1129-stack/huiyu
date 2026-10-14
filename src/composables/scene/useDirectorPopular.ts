@@ -82,16 +82,15 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     return route
   }
   const popularBlueprintPool = computed(() =>
-    eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value, { adultEnabled: pb.showMatureScenes }),
+    eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value),
   )
   const filteredPopularBlueprints = computed(() =>
     eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value, {
-      adultEnabled: pb.showMatureScenes,
       category: popularCategory.value,
     }),
   )
   const blueprintCategories = computed(() =>
-    collectBlueprintCategories(popularBlueprintPool.value.filter(blueprint => !blueprint.adult || (popularCharacter.value?.adultEligibility === 'adult' && pb.showMatureScenes))),
+    collectBlueprintCategories(popularBlueprintPool.value),
   )
   const recommendedBlueprints = computed(() => {
     const pool = popularBlueprintPool.value
@@ -114,11 +113,19 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     if (drawEngine.value !== target) setDrawEngine(target)
   }
 
-  function selectPopularSource(source: 'studio' | 'popular') {
-    if (source === 'studio' && pb.isPopular) {
+  function selectPopularSource(source: 'studio' | 'popular' | 'none') {
+    if (source === 'none') {
+      pb.setUnboundSubject()
+      patchAnimaState({ loraId: '', styleLoraId: '' })
+      void refreshAnimaBackend()
+      syncManagedRoute()
+      return
+    }
+    if (source === 'studio' && (pb.isPopular || pb.isUnbound)) {
       patchAnimaState({ online: false, checkMsg: '正在恢复工作室模型与 LoRA…' })
       pb.clearScene({ keepStory: true })
       pb.setStudioSubject()
+      if (pb.char === 'none') pb.setChar('nene')
       // 立即恢复 nene/natsume 的 model/lora 白名单，不等 15s 状态轮询。
       void refreshAnimaBackend()
       syncManagedRoute()
@@ -231,7 +238,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
   // recommendations until the user
   // changes the engine, model or subject family. Character LoRAs still follow the route.
   const modelSelection = () => JSON.stringify([drawEngine.value, animaState.value.modelId,
-    pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char === 'triad' ? 'studio-dual' : 'studio-single'])
+    pb.subject.kind === 'popular' ? pb.subject.characterId : pb.isUnbound ? 'unbound' : pb.char === 'triad' ? 'studio-dual' : 'studio-single'])
   let preparedSelection = drawEngine.value === 'anima' && animaState.value.modelId === input.preparedModelId ? modelSelection() : ''
   watch(modelSelection, value => { if (value !== preparedSelection) preparedSelection = '' }, { flush: 'sync' })
   async function applyPreparedModel(modelId: string, isCurrent: () => boolean) {
@@ -257,7 +264,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     const model = Array.isArray(status.models)
       ? status.models.find(model => model.id === modelId && model.family === 'anima' && model.available === true) : undefined
     const popularId = pb.subject.kind === 'popular' ? pb.subject.characterId : null
-    if (!model || (popularId && (model.capabilities?.noLora !== true
+    if (!model || pb.isUnbound && model.capabilities?.noLora !== true || (popularId && (model.capabilities?.noLora !== true
       || (endfieldAnimaBinding(popularId, 'anima') && !endfieldAnimaBinding(popularId, 'anima', modelId))))) {
       flash('准备的底模当前不可用或不适用于当前角色，请回到控制室重新检查')
       return

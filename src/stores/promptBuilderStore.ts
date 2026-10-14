@@ -56,6 +56,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   /** 热门角色无 LoRA 创作模式与工作室角色互斥；studio 路径继续用 char。 */
   const subject   = ref<DrawSubject>({ kind: 'studio' })
   const isPopular = computed(() => subject.value.kind === 'popular')
+  const isUnbound = computed(() => !isPopular.value && char.value === 'none')
   const colorMood = ref<string | null>(null)
   const concise   = ref(false)
   const sceneId   = ref<string | null>(null)
@@ -100,6 +101,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const popularCharacters = computed(() => sceneStore.popularCharacters)
   /** 当前主体对应的画师专属推荐（2026-09-05 从 PromptBuilderView 迁入：纯 store 派生）。 */
   const currentCuratedArtistStyles = computed<string[]>(() => {
+    if (isUnbound.value) return []
     if (isPopular.value) {
       const charId = subject.value.kind === 'popular' ? subject.value.characterId : ''
       const current = popularCharacters.value.find(c => c.id === charId)
@@ -142,7 +144,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // 配音状态（online/mode/caption/custom）由 VoiceStudio.vue 与 useVoice 拥有，
   // 这里不再重复存放，避免两份状态漂移。
 
-  const { focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode, currentStep, showMatureScenes, activeTab, filteredScenes } = usePromptSceneFilters(scenes, char)
+  const { focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode, currentStep, activeTab, filteredScenes } = usePromptSceneFilters(scenes, char)
   const lastRecommendedSize = ref('832x1216')
 
   // ── Derived ─────────────────────────────────────────────────────────────
@@ -153,7 +155,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const charPrompt = computed(() => CHAR_PROMPT[char.value] ?? '')
 
   const loraLine = computed(() => {
-    if (!characters.value.length) return ''
+    if (isUnbound.value || !characters.value.length) return ''
     const match = characters.value.find(c =>
       char.value === 'triad'
         ? c.lora?.name?.includes('ayachi') || c.lora?.name?.includes('shiki')
@@ -206,6 +208,17 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     subject.value = { kind: 'studio' }
     clearReferenceInput()
     outfitOverride.value = null
+  }
+  function setUnboundSubject() {
+    clearInheritedStory()
+    clearRandomVariation()
+    for (const token of outfitOverride.value?.tokens ?? []) manualTags.value.add(token)
+    subject.value = { kind: 'studio' }
+    char.value = 'none'
+    sceneId.value = null; sceneBaseStory.value = ''
+    outfitOverride.value = null
+    selections.emotion = []; selections.shot = null; selections.lighting = null; selections.composition = null
+    colorMood.value = null; artistStyleIds.value = []
   }
   function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null,
     options: { preserveReference?: boolean; preserveOutfitOverride?: boolean } = {}) {
@@ -388,19 +401,19 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   return {
     story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
     selections, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
-    subject, isPopular, outfitOverride, referenceInput, randomVariation,
+    subject, isPopular, isUnbound, outfitOverride, referenceInput, randomVariation,
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady, loadPopularCharacter,
     history, projects,
     sdModelName, lastSeed, sdParams,
     focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode,
-    currentStep, showMatureScenes, activeTab, lastRecommendedSize,
+    currentStep, activeTab, lastRecommendedSize,
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes, currentCuratedArtistStyles,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, addManualTag, setArtistStyleIds, loadScene, clearScene, flash,
     setOutfitOverride, clearOutfitOverride, clearReferenceInput, clearRandomVariation,
     snapshotStyleLayers, restoreStyleLayers,
-    setStudioSubject, setPopularSubject, setPopularBlueprint,
+    setStudioSubject, setUnboundSubject, setPopularSubject, setPopularBlueprint,
     loadData, loadHistory, loadProjects,
     saveDraft, restoreDraft, snapshotDraft, draftSaveState, draftSaveError, retryDraftSave,
     commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry,

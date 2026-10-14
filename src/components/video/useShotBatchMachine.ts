@@ -9,7 +9,6 @@ import {
   type VideoBatch,
   type VideoQuality,
 } from '@/api/videoApi'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { ApiClientError } from '@/api/client'
 import type { ShotDraft } from './shotListTypes'
 import type { ShotSubmissionRecord } from '@/stores/videoStore'
@@ -150,8 +149,6 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
         quality: quality.value,
         steps: steps.value,
         linkLastFrame: linkLastFrame.value,
-        // 成人内容传输层授权：本机直连默认 true，远程/隧道由服务端 fail-closed。
-        adultEnabled: isLocalStudioHost(),
         shots: targets.map((shot) => {
           const prompt = [identityCard.value.trim(), shot.prompt.trim()].filter(Boolean).join('\n')
           return {

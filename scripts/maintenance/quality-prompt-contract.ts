@@ -212,10 +212,6 @@ function inspectCandidatePrompt(candidate: any) {
   }
   if (candidate && (candidate.batch === 'popular' || candidate.batch === 'popular-grid')) {
     if (!tokens.length) warnings.push('热门角色候选 prompt 为空');
-    if (candidate.adultEligibility !== 'adult'
-      && normalized.some((token: any) => EXPLICIT_ADULT_TOKENS.has(token))) {
-      warnings.push('非成人热门角色含显式成人词');
-    }
   }
   return {
     ok: warnings.length === 0,

@@ -111,7 +111,7 @@ impl Service {
         if self.shutdown.is_cancelled() {
             return Err(closed());
         }
-        let input = validate(&raw, family, direct_local)?;
+        let input = validate(&raw, family)?;
         if family == "krea2"
             && ["initImage", "maskImage", "maskPrompt"]
                 .iter()

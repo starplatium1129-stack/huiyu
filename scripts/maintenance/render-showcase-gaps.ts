@@ -87,8 +87,7 @@ function collectTasks(opts: any, input: any) {
       shot: d.shot,
       lighting: d.lighting,
       composition: d.composition,
-      adultEnabled: true,
-      style: resolveStyleRecipe(KREA_STYLE_RECIPES, 'anima', bp, null, character, { adultEnabled: true }),
+      style: resolveStyleRecipe(KREA_STYLE_RECIPES, 'anima', bp, null),
       artist: 'rella',
     } as any);
   }

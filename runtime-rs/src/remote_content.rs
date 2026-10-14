@@ -183,7 +183,7 @@ impl RemoteContent {
                 .as_u64()
                 .filter(|n| *n > 0 && *n <= MAX_IMAGE as u64)
                 .ok_or_else(unpublished)? as usize;
-            if entry["rating"] != "All" || !entry["reviewedAt"].as_str().is_some_and(reviewed_date)
+            if !matches!(entry["rating"].as_str(), Some("All" | "R15" | "R18")) || !entry["reviewedAt"].as_str().is_some_and(reviewed_date)
             {
                 return Err(unpublished());
             }

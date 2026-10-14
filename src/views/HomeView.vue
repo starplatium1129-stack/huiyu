@@ -383,7 +383,7 @@ function initContinueDraft() {
 function pickFeatured(ids: string[], scenes: HomeScene[], count: number): HomeScene[] {
   const pool = ids
     .map(id => scenes.find(scene => scene.id === id))
-    .filter((scene): scene is HomeScene => Boolean(scene && !scene.mature && scene.rating !== 'R18'))
+    .filter((scene): scene is HomeScene => Boolean(scene))
   if (!pool.length) return []
   const dayKey = new Date().toISOString().slice(0, 10)
   let seed = 0

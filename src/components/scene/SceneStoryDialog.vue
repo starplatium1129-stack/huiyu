@@ -34,12 +34,12 @@ const selectedId = computed({
 const previews = computed(() => available.value.map(item => {
   const id = item.id.toLowerCase().replace(/[^a-z0-9_-]/g, '')
   return { id: item.id, title: item.title || '未命名场景', src: `/scene-showcase/images/${id}.jpg`,
-    previewSrc: `/scene-showcase/thumbs/${id}.jpg`, restricted: (item.rating || (item.mature ? 'R18' : 'All')) === 'R18' }
+    previewSrc: `/scene-showcase/thumbs/${id}.jpg` }
 }))
 function releaseStory() { if (!scene.value) displayedScene.value = null }
 function capture(event: MouseEvent) {
   const card = (event.target as HTMLElement).closest<HTMLElement>('.sc, .inspiration-deck-image')
-  viewer.value?.capture(card?.dataset.rating === 'R18' ? null : card?.querySelector<HTMLImageElement>('img') ?? null)
+  viewer.value?.capture(card?.querySelector<HTMLImageElement>('img') ?? null)
 }
 defineExpose({ capture })
 </script>

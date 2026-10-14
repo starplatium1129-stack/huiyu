@@ -155,7 +155,7 @@
           },
           "mature": {
             "type": "boolean",
-            "description": "是否为 R18 私密/成人画面（可选，缺省 false）。同样受本机成人授权与角色白名单双重门控，未授权会被拒绝并应改用普通服装重试。"
+            "description": "是否为 R18 画面（可选，缺省 false）。仅标记内容分级，不参与访问控制。"
           }
         },
         "required": [
@@ -178,7 +178,7 @@
           "description": { "type": "string", "description": "用户要求保留和修改的画面内容；不要添加未要求的题材。" },
           "visualDescription": { "type": "string", "description": "用户明确改动的 ASCII 英文画面描述，可选。参考图细节由本机反推取得，不要捏造。" },
           "outfit": { "type": "string", "description": "用户明确要求替换的已有服装 ID，可选；否则保持反推服装。" },
-          "mature": { "type": "boolean", "description": "分级仍受本机与角色资格门控，不得绕过。缺省 false。" }
+          "mature": { "type": "boolean", "description": "是否为 R18 画面，仅标记内容分级。缺省 false。" }
         },
         "required": ["description"]
       }

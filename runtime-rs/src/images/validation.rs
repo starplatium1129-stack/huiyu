@@ -1,5 +1,5 @@
 use super::*;
-use crate::generation::{adult_intent, truthy};
+use crate::generation::truthy;
 pub(super) fn number(
     value: &Value,
     name: &str,
@@ -20,7 +20,7 @@ pub(super) fn num(value: f64) -> Value {
         json!(value)
     }
 }
-pub fn validate(body: &Value, family: &str, direct_local: bool) -> Result<Value> {
+pub fn validate(body: &Value, family: &str) -> Result<Value> {
     let object = body
         .as_object()
         .ok_or_else(|| error("INVALID_BODY", "请求体必须是 JSON 对象"))?;
@@ -50,13 +50,6 @@ pub fn validate(body: &Value, family: &str, direct_local: bool) -> Result<Value>
             ));
         }
     };
-    if !direct_local && adult_intent(prompt) {
-        return Err(ApiError::new(
-            403,
-            "ADULT_REMOTE_NOT_ALLOWED",
-            "成人内容仅限本机直连使用",
-        ));
-    }
     let model_id = body["modelId"]
         .as_str()
         .ok_or_else(|| error("UNKNOWN_MODEL", "未知生成模型"))?;

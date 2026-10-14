@@ -26,7 +26,7 @@ export async function applyPromptDeepLink(q: Record<string, unknown>, deps: Prom
     if (act) {
       if (pb.isPopular) deps.selectPopularSource('studio')
       pb.clearScene()
-      const char = isCharKey(q.char) ? (q.char as ScenarioCharacter) : 'nene'
+      const char: ScenarioCharacter = q.char === 'nene' || q.char === 'natsume' ? q.char : 'nene'
       pb.setChar(char)
       pb.setStory(`${scenario.name} · ${act.title}：${act.desc}`)
       const semanticTokens = substituteScenarioPrompt(act.prompt, char)

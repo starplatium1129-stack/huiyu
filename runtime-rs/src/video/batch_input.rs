@@ -1,5 +1,5 @@
 use super::*;
-pub fn validate_batch(body: &Value, local: bool) -> Result<Value> {
+pub fn validate_batch(body: &Value) -> Result<Value> {
     let object = body
         .as_object()
         .ok_or_else(|| error(400, "INVALID_BODY", "请求体必须是 JSON 对象"))?;
@@ -11,7 +11,7 @@ pub fn validate_batch(body: &Value, local: bool) -> Result<Value> {
             "linkLastFrame",
             "steps",
             "shots",
-            "adultEnabled",
+            "adultEnabled", // Old saved batch inputs retain this field; it is ignored.
         ]
         .contains(&key.as_str())
         {
@@ -113,16 +113,13 @@ pub fn validate_batch(body: &Value, local: bool) -> Result<Value> {
         raw["modelId"] = model["id"].clone();
         raw["aspectRatio"] = json!(aspect);
         raw["quality"] = json!(quality);
-        if body["adultEnabled"] == true {
-            raw["adultEnabled"] = json!(true);
-        }
         if model["family"] == "minimax-h3" {
             raw["steps"] = json!(steps);
         }
-        normalized.push(json!({"input":validation::validate(&raw,local,None)?}));
+        normalized.push(json!({"input":validation::validate(&raw,None)?}));
     }
     Ok(
-        json!({"modelId":model["id"],"aspectRatio":aspect,"quality":quality,"linkLastFrame":linked,"steps":steps,"adultEnabled":body["adultEnabled"]==true,"accessContext":{"isLocal":local},"shots":normalized}),
+        json!({"modelId":model["id"],"aspectRatio":aspect,"quality":quality,"linkLastFrame":linked,"steps":steps,"shots":normalized}),
     )
 }
 pub(super) fn recompose(input: &Value, batch: &Value) -> Result<Value> {
@@ -143,8 +140,5 @@ pub(super) fn recompose(input: &Value, batch: &Value) -> Result<Value> {
     if batch["modelId"] == "minimax-h3" && generation::truthy(&input["steps"]) {
         raw["steps"] = input["steps"].clone();
     }
-    if batch["adultEnabled"] == true {
-        raw["adultEnabled"] = json!(true);
-    }
-    validation::validate(&raw, batch["accessContext"]["isLocal"] == true, None)
+    validation::validate(&raw, None)
 }

@@ -12,12 +12,31 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     pb.flash('反推暂不可用，请稍后重试')
     return
   }
-  const { characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } = await import('@/utils/interrogateMerge')
-  const { splitReferenceTags } = await import('@/utils/interrogateReference')
-  if (!current()) return
-  const payload = result as { mode?: string; caption?: string; tags?: unknown; characterTags?: unknown; warning?: string }
+  const payload = result as { mode?: string; caption?: string; captionDerived?: string; tags?: unknown; characterTags?: unknown; warning?: string }
   const rawTags = Array.isArray(payload.tags) ? payload.tags.filter((tag): tag is string => typeof tag === 'string') : []
   const characterTags = Array.isArray(payload.characterTags) ? payload.characterTags.filter((tag): tag is string => typeof tag === 'string') : []
+  const { isCensorTag, characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } = await import('@/utils/interrogateMerge')
+  if (!current()) return
+  if (pb.isUnbound) {
+    const source = [...new Set([...rawTags, ...characterTags].map(tag => tag.trim()).filter(Boolean))]
+    const tags = source.filter(tag => !isCensorTag(tag))
+    const caption = payload.mode === 'caption' && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
+    if (!tags.length && !caption) { pb.flash('未找到可采用的反推内容，请调整阈值后重试'); return }
+    // A new source picture owns the whole visual input; retire earlier scene and style choices.
+    pb.clearScene({ keepStory: true })
+    pb.setArtistStyleIds([])
+    pb.sdParams.negativeCustom = ''
+    pb.manualTags = new Set(tags)
+    pb.referenceInput = tags.length ? { tags: [...tags] } : null
+    pb.visualDescription = caption
+    pb.concise = false
+    const filtered = source.length - tags.length
+    pb.flash(`已采用 ${tags.length} 个原图词条，保留人物、服装、人数与背景${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}`)
+    if (payload.warning) setTimeout(() => { if (current()) pb.flash(payload.warning!) }, 2600)
+    return
+  }
+  const { splitReferenceTags } = await import('@/utils/interrogateReference')
+  if (!current()) return
   const reference = splitReferenceTags(rawTags, {
     knownCharacterTags: [...characterTags, ...pb.popularCharacters.flatMap(character => [...character.exactTokens, ...character.aliases])],
     catalog: pb.tags,

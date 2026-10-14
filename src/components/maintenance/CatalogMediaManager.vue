@@ -15,7 +15,7 @@
         <StudioSelect v-model="character" label="样张所属角色" :options="[{ value: '', label: '全部角色' }, ...(result?.facets.characters ?? []).map(id => ({ value: id, label: characterNames[id] || id }))]" />
         <StudioSelect v-model="rating" label="样张适用范围" :options="[{ value: '', label: '全部内容' }, { value: 'All', label: '全年龄' }, { value: 'R15', label: '十五岁以上' }, { value: 'R18', label: '成人内容' }]" />
       </div>
-      <label v-if="adultEnabled" class="catalog-media-sensitive-switch"><input v-model="showAdultImages" type="checkbox" />查看成人样张</label>
+      <label class="catalog-media-sensitive-switch"><input v-model="showAdultImages" type="checkbox" />揭示 R18 缩略图遮罩</label>
       <div class="catalog-media-workspace">
         <section v-content-motion:up="loading ? false : page" class="catalog-media-library" aria-label="样张列表" :aria-busy="loading || manifestLoading">
           <p class="catalog-media-count" role="status">{{ loading ? '正在读取内容…' : (result?.total ?? 0) + ' 个场景与蓝图' }}</p>
@@ -23,7 +23,7 @@
           <div v-else-if="!loading" class="catalog-media-grid">
             <button v-for="item in result?.items ?? []" :key="item.kind + ':' + item.id" class="catalog-sample-card" type="button" :aria-pressed="selectedImageId === showcaseItem(item).id" :aria-label="'查看样张：' + item.title" @click="selectSample(item)">
               <span class="catalog-sample-image">
-                <RuntimeImage v-if="thumbUrl(showcaseItem(item).id)" :src="thumbUrl(showcaseItem(item).id)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': item.rating === 'R18' && !(adultEnabled && showAdultImages) }" /><span v-else class="catalog-sample-empty"><ArchiveIcon name="image" />图片暂不可用</span></RuntimeImage>
+                <RuntimeImage v-if="thumbUrl(showcaseItem(item).id)" :src="thumbUrl(showcaseItem(item).id)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': item.rating === 'R18' && !showAdultImages }" /><span v-else class="catalog-sample-empty"><ArchiveIcon name="image" />图片暂不可用</span></RuntimeImage>
                 <span v-else class="catalog-sample-empty"><ArchiveIcon name="image" />{{ manifestLoading ? '读取图片…' : '待补样张' }}</span>
               </span>
               <span class="catalog-sample-copy"><strong>{{ item.title }}</strong><small>{{ characterNames[item.characterId] || '未命名角色' }} · {{ item.kind === 'blueprint' ? '蓝图' : '故事' }}</small></span>
@@ -37,7 +37,7 @@
             <p class="catalog-media-eyebrow">{{ selectedSample?.type === 'popular' ? '角色蓝图' : '场景故事' }} · {{ characterNames[selectedSample?.char ?? ''] || '未命名角色' }}</p>
             <h3>{{ selectedImageTitle }}</h3>
             <div class="catalog-actions"><button class="btn btn-primary" type="button" :disabled="uploadBusy || manifestLoading || !!manifestError" @click="pickShowcase"><ArchiveIcon name="upload" />{{ uploadBusy ? '正在保存图片…' : hasShowcase(selectedImageId) ? '替换这张样张' : '上传第一张样张' }}</button></div>
-            <div class="catalog-media-canvas"><RuntimeImage v-if="showcaseUrl" :src="showcaseUrl" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="selectedImageTitle" :class="{ 'is-mature': selectedSample?.rating === 'R18' && !(adultEnabled && showAdultImages) }" @error="onShowcaseMissing" /><span v-else>图片暂不可用，可以重新上传</span></RuntimeImage><span v-else>{{ manifestLoading ? '正在读取样张…' : '还没有样张，选一张图为它补上。' }}</span></div>
+            <div class="catalog-media-canvas"><RuntimeImage v-if="showcaseUrl" :src="showcaseUrl" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="selectedImageTitle" @error="onShowcaseMissing" /><span v-else>图片暂不可用，可以重新上传</span></RuntimeImage><span v-else>{{ manifestLoading ? '正在读取样张…' : '还没有样张，选一张图为它补上。' }}</span></div>
             <p class="catalog-note">选择图片后自动保存，支持 PNG、JPEG、WebP，最大 15 MB。原图和缩略图一起更新，旧图自动备份。</p>
           </template>
           <div v-else class="catalog-media-empty"><ArchiveIcon name="gallery" /><h3>选一张样张，看看它的故事</h3><p>从左边选择内容，就能预览或补上图片。</p></div>
@@ -67,11 +67,10 @@ import { useSceneShowcaseUpload, type ShowcaseSceneItem } from '@/composables/sc
 import { useCatalogMedia, showcaseItem } from '@/composables/scene/useCatalogMedia'
 import type { CatalogRecord, CatalogSummary } from '@/api/catalogApi'
 import { recordTitle } from '@/composables/scene/catalogPresentation'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import '@/assets/css/catalog-media.css'
 const props = defineProps<{ record: CatalogRecord | null; characterNames: Record<string, string> }>()
 const mode = ref<'samples' | 'covers'>('samples'), previewPane = ref<HTMLElement | null>(null), selectedSample = ref<ShowcaseSceneItem | null>(null)
-const adultEnabled = isLocalStudioHost(), showAdultImages = ref(false)
+const showAdultImages = ref(false)
 const { kind, search, character, rating, page, result, loading, error, totalPages, load } = useCatalogMedia()
 const { showcaseUrl, onShowcaseMissing, uploadBusy, pickShowcase, showcaseFileEl, onShowcasePicked, homeHeroes, selectedHeroId, selectedHeroTitle, previewHero, heroUrl, pickHero, resetHero, heroFileEl, onHeroPicked, showcaseFeedback, showcaseError, previewImage, selectedImageId, selectedImageTitle, thumbUrl, hasShowcase, manifestLoading, manifestError, loadShowcaseManifest } = useSceneShowcaseUpload({ errorMessage: (e, fallback) => e instanceof Error ? e.message : fallback })
 function selectSample(item: CatalogSummary) { selectedSample.value = showcaseItem(item); previewImage(selectedSample.value); if (window.innerWidth < 1100) previewPane.value?.scrollIntoView({ block: 'nearest' }) }

@@ -15,5 +15,5 @@ export const charOptions: Array<{ id: CharKey; iconName: ArchiveIconName; label:
 ]
 
 export function isCharKey(value: unknown): value is CharKey {
-  return value === 'nene' || value === 'natsume' || value === 'triad'
+  return value === 'nene' || value === 'natsume' || value === 'triad' || value === 'none'
 }

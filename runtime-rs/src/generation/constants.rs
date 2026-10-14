@@ -38,7 +38,7 @@ pub const ALLOWED: &[&str] = &[
     "hiresSteps",
     "denoisingStrength",
     "faceDetailer",
-    "adultEnabled",
+    "adultEnabled", // Legacy saved requests may include this ignored field.
 ];
 pub const LORAS: &[(&str, &str, &str)] = &[
     (

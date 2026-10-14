@@ -1,5 +1,4 @@
 import { runtimeFetch } from '@/platform/runtimeUrl'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import type { CompanionChatImage } from '@/types/companionDrawing'
 
 export interface CompanionToolResult {
@@ -12,7 +11,7 @@ export interface CompanionToolResult {
 export async function executeCompanionTool(name: string, args: Record<string, unknown>, signal?: AbortSignal): Promise<CompanionToolResult> {
   const response = await runtimeFetch('/api/desktop-tools', {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-    body: JSON.stringify({ name, args, adultEnabled: isLocalStudioHost() }),
+    body: JSON.stringify({ name, args }),
   })
   const raw: unknown = await response.json()
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('本机工具返回了无效响应。')

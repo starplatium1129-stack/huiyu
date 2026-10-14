@@ -1,7 +1,6 @@
 import type { ApiClient } from '@/api/client'
 import type { AnimaGenerationState, AnimaJobMetadata, AnimaOption, ComfyNodeReadiness, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 export interface AnimaPublicJob {
   provider?: 'comfy' | 'native'
@@ -59,7 +58,6 @@ export interface AnimaRequest {
   maskThreshold?: number
   denoisingStrength?: number
   growMaskBy?: number
-  adultEnabled?: boolean
 }
 
 export interface AnimaSessionOptions {
@@ -136,8 +134,7 @@ export function resolveInpaintRequestBinding(
 /** Request payloads are constrained to the server whitelist; empty fields are omitted. */
 export function animaRequestPayload(
   request: AnimaRequest,
-): Omit<AnimaRequest, 'profileId' | 'loraId' | 'loraStrength'> & Partial<Pick<AnimaRequest, 'loraId' | 'loraStrength'>> & { adultEnabled?: boolean } {
-  const adultEnabled = request.adultEnabled !== undefined ? request.adultEnabled : isLocalStudioHost()
+): Omit<AnimaRequest, 'profileId' | 'loraId' | 'loraStrength'> & Partial<Pick<AnimaRequest, 'loraId' | 'loraStrength'>> {
   return {
     prompt: request.prompt,
     negative: request.negative,
@@ -164,7 +161,6 @@ export function animaRequestPayload(
     ...(request.maskPrompt && request.maskThreshold !== undefined ? { maskThreshold: request.maskThreshold } : {}),
     ...(request.denoisingStrength !== undefined ? { denoisingStrength: request.denoisingStrength } : {}),
     ...(request.growMaskBy !== undefined ? { growMaskBy: request.growMaskBy } : {}),
-    ...(adultEnabled ? { adultEnabled: true } : {}),
   }
 }
 

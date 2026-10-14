@@ -4,9 +4,6 @@ use regex::Regex;
 use serde_json::{Value, json};
 use std::sync::LazyLock;
 
-static ADULT: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)(?-u:\b)(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)(?-u:\b)").unwrap()
-});
 static TAGS: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?i)<lora:([^:>]+):([^>]+)>").unwrap());
 static STRIP: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?i)<lora:[^>]+>").unwrap());
@@ -30,13 +27,10 @@ pub(crate) fn truthy(value: &Value) -> bool {
         _ => true,
     }
 }
-pub(crate) fn adult_intent(prompt: &str) -> bool {
-    ADULT.is_match(prompt)
-}
 pub(super) fn strip_loras(value: &str) -> String {
     STRIP.replace_all(value, "").trim().into()
 }
-pub fn validate(body: &Value, direct_local: bool) -> Result<Input> {
+pub fn validate(body: &Value) -> Result<Input> {
     let object = body
         .as_object()
         .ok_or_else(|| error("INVALID_BODY", "请求体必须是 JSON 对象"))?;
@@ -44,13 +38,6 @@ pub fn validate(body: &Value, direct_local: bool) -> Result<Input> {
         if !ALLOWED.contains(&key.as_str()) {
             return Err(error("UNKNOWN_PARAMETER", format!("不支持的参数：{key}")));
         }
-    }
-    if !direct_local && body["prompt"].as_str().is_some_and(|p| ADULT.is_match(p)) {
-        return Err(ApiError::new(
-            403,
-            "ADULT_REMOTE_NOT_ALLOWED",
-            "成人内容仅限本机直连使用",
-        ));
     }
     let prompt = body["prompt"]
         .as_str()

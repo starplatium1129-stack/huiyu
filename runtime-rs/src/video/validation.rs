@@ -16,7 +16,7 @@ const KEYS: &[&str] = &[
     "shotSize",
     "steps",
     "references",
-    "adultEnabled",
+    "adultEnabled", // Accepted only for old saved requests; no longer controls access.
 ];
 pub(super) fn present(value: &Value) -> bool {
     !value.is_null() && value != ""
@@ -30,7 +30,7 @@ pub(super) fn integer(value: &Value) -> Option<u64> {
         .filter(|n| n.is_finite() && *n >= 0. && *n <= 9_007_199_254_740_991. && n.fract() == 0.)
         .map(|n| n as u64)
 }
-pub fn validate(body: &Value, local: bool, original_size: Option<(u32, u32)>) -> Result<Value> {
+pub fn validate(body: &Value, original_size: Option<(u32, u32)>) -> Result<Value> {
     let object = body
         .as_object()
         .ok_or_else(|| error(400, "INVALID_BODY", "请求体必须是 JSON 对象"))?;
@@ -40,25 +40,6 @@ pub fn validate(body: &Value, local: bool, original_size: Option<(u32, u32)>) ->
                 400,
                 "UNKNOWN_PARAMETER",
                 format!("不支持的参数：{key}"),
-            ));
-        }
-    }
-    if body["prompt"]
-        .as_str()
-        .is_some_and(generation::adult_intent)
-    {
-        if !local {
-            return Err(error(
-                403,
-                "ADULT_REMOTE_NOT_ALLOWED",
-                "成人内容仅限本机直连使用",
-            ));
-        }
-        if body["adultEnabled"] != true {
-            return Err(error(
-                403,
-                "ADULT_NOT_ENABLED",
-                "成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。",
             ));
         }
     }

@@ -1,6 +1,6 @@
 export type ManagedDrawEngine = 'sd' | 'anima' | 'krea2'
 export type ManagedPromptFormat = 'danbooru' | 'anima-tags' | 'natural-language'
-export type StudioCharacter = 'nene' | 'natsume' | 'triad'
+export type StudioCharacter = 'nene' | 'natsume' | 'triad' | 'none'
 
 export interface DrawingRouteInput {
   subjectKind: 'studio' | 'popular'
@@ -9,7 +9,7 @@ export interface DrawingRouteInput {
 }
 
 export interface DrawingRouteRecommendation {
-  id: 'studio-single' | 'studio-dual' | 'popular-anima' | 'popular-krea-detail'
+  id: 'studio-single' | 'studio-dual' | 'popular-anima' | 'popular-krea-detail' | 'unbound-anima'
   engine: ManagedDrawEngine
   modelId: string
   loraId: string
@@ -77,6 +77,15 @@ export function recommendDrawingRoute(input: DrawingRouteInput): DrawingRouteRec
     }
   }
 
+  if (input.character === 'none') {
+    return {
+      id: 'unbound-anima', engine: 'anima', modelId: 'anima-miaomiao-v1.6', loraId: '',
+      generationCharacter: null, promptFormat: 'anima-tags', title: '自由画面',
+      summary: '不绑定角色 · 保留参考图内容',
+      reasons: ['不加载角色 LoRA，不添加角色与服装设定', '反推词条保留人物、人数、服装和背景'],
+      experimental: false,
+    }
+  }
   if (input.character === 'triad') {
     return {
       id: 'studio-dual',

@@ -75,7 +75,7 @@ export function usePromptDraft(state: PromptDraftState) {
           blueprintId: subject.value.blueprintId,
           noLora: true,
         }
-      : { subject: 'studio' as const, noLora: false }
+      : { subject: 'studio' as const, noLora: char.value === 'none' }
     return {
       updatedAt: Date.now(),
       randomVariation: randomVariation.value ? JSON.parse(JSON.stringify(randomVariation.value)) : null,

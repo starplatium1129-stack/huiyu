@@ -1,7 +1,7 @@
 import type { ModelProfile } from './promptPolicy'
 import { normalizeArtistStyleIds } from '../config/artistStyles.ts'
 
-export type DraftCharKey = 'nene' | 'natsume' | 'triad'
+export type DraftCharKey = 'nene' | 'natsume' | 'triad' | 'none'
 
 export interface SDParams {
   cfg: number
@@ -179,7 +179,7 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
   // 画面描述/手动词条本身就是可生成输入；不能因没有故事或场景而丢弃这类草稿。
   const hasStandaloneInput = Boolean(visualDescription || stringList(value.manualTags).length)
   // 热门角色无 LoRA 草稿没有 sceneId/story（蓝图驱动场景），单独放行。
-  if (!updatedAt || ((!sceneId && !story && !hasStandaloneInput) && value.subject !== 'popular')) return null
+  if (!updatedAt || ((!sceneId && !story && !hasStandaloneInput) && value.subject !== 'popular' && value.char !== 'none')) return null
 
   const rawSelections = isRecord(value.selections) ? value.selections : null
   const selections = rawSelections
@@ -190,7 +190,7 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
         composition: nullableString(rawSelections.composition) ?? null,
       }
     : undefined
-  const char = value.char === 'nene' || value.char === 'natsume' || value.char === 'triad'
+  const char = value.char === 'nene' || value.char === 'natsume' || value.char === 'triad' || value.char === 'none'
     ? value.char
     : undefined
   const directorMode = value.directorMode === 'basic' || value.directorMode === 'pro'

@@ -32,7 +32,7 @@ const capabilities: CompanionDesktopBridge = {
   notify: (title, body) => { void invoke('notify', { title, body }) },
   setProgress: progress => { void invoke('set_progress', { progress }) },
   runTool: (name, args, options = {}) => apiClient.request('/api/desktop-tools', {
-    method: 'POST', body: { name, args, adultEnabled: true }, signal: options.signal,
+    method: 'POST', body: { name, args }, signal: options.signal,
   }),
   onResume: listener => on('aics:resume', listener), offResume: off,
   onShown: listener => on('aics:shown', listener), offShown: off,

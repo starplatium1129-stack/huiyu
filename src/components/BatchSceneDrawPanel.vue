@@ -166,11 +166,13 @@
                 <button
                   type="button"
                   class="batch-thumb-btn"
+                  :class="{ 'is-mature': job.snapshot?.adult === true }"
                   :data-preview-id="job.id"
                   :aria-label="`查看大图：${job.sceneTitle}`"
                   @click="previewSource = ($event.currentTarget as HTMLElement).querySelector('img'); previewJob = job"
                 >
                   <img :crossorigin="runtimeResourceCors()" class="batch-thumb" :src="resolveRuntimeUrl(job.resultUrl)" :alt="job.sceneTitle" loading="lazy" decoding="async" />
+                  <SensitivePreviewVeil v-if="job.snapshot?.adult" :src="resolveRuntimeUrl(job.resultUrl)" :crossorigin="runtimeResourceCors()" />
                 </button>
               </StudioTooltip>
               <div v-else class="batch-thumb batch-thumb-placeholder" :data-state="job.status">
@@ -233,6 +235,7 @@ import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import { computed, reactive, ref, watch, onUnmounted } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { usePromptBatchRunners, type PromptBatchRunnersDeps } from '@/composables/prompt/usePromptBatchRunners'
 import type { BatchDrawJob } from '@/composables/generation/useBatchDraw'
@@ -297,7 +300,6 @@ const categories = computed(() =>
 const filteredScenes = computed(() => {
   const keyword = filter.value.trim().toLowerCase()
   return props.scenes.filter(scene => {
-    if (scene.adult && !props.deps.pb.showMatureScenes) return false
     if (categoryFilter.value && scene.category !== categoryFilter.value) return false
     if (!keyword) return true
     const owner = props.deps.pb.popularCharacters.find(character => character.id === scene.characterId)

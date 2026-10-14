@@ -93,7 +93,7 @@ export function usePromptAssembly(
       engine.value,
     )
     if (!base || engine.value !== 'anima') return base
-    const selected = pb.char === 'triad' ? '' : String(selectedLoraId.value || '')
+    const selected = pb.char === 'triad' || pb.char === 'none' ? '' : String(selectedLoraId.value || '')
     const contract = selected ? pb.loraMeta.flatMap(meta => {
       const name = String(meta.name || '')
       const metaId = String(meta.id || '')
@@ -146,6 +146,7 @@ export function usePromptAssembly(
   })
 
   const currentTraits = computed(() => {
+    if (pb.char === 'none') return []
     const charDef = pb.characters.find(character =>
       character.id.includes(pb.char) || (character.lora?.name ?? '').toLowerCase().includes(pb.char),
     )
@@ -171,7 +172,7 @@ export function usePromptAssembly(
 
   /** Anima 只认视图传入的服务端 LoRA id；SD 用 characters.json 的正式模型名；无 LoRA 能力引擎为空。 */
   const controlLoraIds = computed<Record<string, string>>(() => {
-    if (!capabilities.value.lora || !capabilities.value.characterIdentity) return {}
+    if (pb.char === 'none' || !capabilities.value.lora || !capabilities.value.characterIdentity) return {}
     if (engine.value !== 'anima') return loraIdByChar.value
     const selected = String(selectedLoraId.value || '')
     if (pb.char === 'triad' || !selected) return {}
@@ -180,7 +181,7 @@ export function usePromptAssembly(
 
   /** SD LoRA 按场景显式 <lora:name:weight> 解析；Anima 的 LoRA 由固定工作流加载，不进 Prompt；无 LoRA 能力引擎为空。 */
   const loraSpecs = computed(() => {
-    if (!capabilities.value.lora) return []
+    if (pb.char === 'none' || !capabilities.value.lora) return []
     if (engine.value === 'anima') {
       return pb.char !== 'triad' && controlLoraIds.value[pb.char]
         ? [{ name: controlLoraIds.value[pb.char], weight: Number(pb.loraMeta.find(meta => meta.id === controlLoraIds.value[pb.char] || meta.name === controlLoraIds.value[pb.char])?.strength?.default) || 0.85 }]

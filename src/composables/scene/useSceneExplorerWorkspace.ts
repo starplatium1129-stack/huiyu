@@ -5,7 +5,6 @@ import { artworkRepository } from '@/storage/artworkRepository';
 import { useSceneStore,type CurationData,type SceneBrowseTarget } from '@/stores/sceneStore';
 import { scrollBehavior } from '@/utils/motionPreference';
 import { quickCreateUrl } from '@/utils/quickCreate';
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment';
 import { buildPreferenceProfile,readHiddenScenes,readSceneUsage,analyzeQuery as uxAnalyze,isPersonalFavorite as uxIsFav,matchesSearch as uxMatchesSearch,personalReason as uxPersonalReason,prepareSceneSearch,searchScore as uxSearchScore,tier as uxTier,writeHiddenScenes,type PreferenceProfile,type SceneUsageRecord,type SceneUXConfig } from '@/utils/sceneUX';
 import { captureScrollAnchor,restoreScrollAnchor,watchForUserScroll,type ScrollAnchor } from '@/utils/scrollAnchor';
 import {
@@ -61,8 +60,6 @@ export function useSceneExplorerWorkspace() {
     const favs = ref(readFavorites());
     const hiddenIds = ref(readHiddenScenes());
     const localUsage = ref(readSceneUsage());
-    const adultEnabled = isLocalStudioHost();
-    const showMature = ref(adultEnabled);
     const defaultTier = Object.keys(localUsage.value).length || favs.value.size ? 'personal' : 'core';
     const filters = useSceneExplorerFilters(defaultTier);
     const { searchQuery, debouncedQuery, activeTheme, fChar, fSeason, fTime, fSeries,
@@ -129,7 +126,7 @@ export function useSceneExplorerWorkspace() {
     const hiddenCount = computed(() => hiddenIds.value.size);
     const usedCount = computed(() => Object.keys(localUsage.value).length);
     const favoriteCount = computed(() => scenes.value.filter(s => favs.value.has(s.id) || uxIsFav(s, profile.value)).length);
-    const availableCount = computed(() => scenes.value.filter(s => !hiddenIds.value.has(s.id) && (showMature.value || !s.mature)).length);
+    const availableCount = computed(() => scenes.value.filter(s => !hiddenIds.value.has(s.id)).length);
     const tierLabel = computed(() => {
         if (showHidden.value)
             return '已隐藏';
@@ -167,7 +164,7 @@ export function useSceneExplorerWorkspace() {
         return days === 0 ? '今天' : days === 1 ? '昨天' : days < 30 ? `${days} 天前` : '较早';
     }
     const themeCounts = computed<Record<string, number>>(() => Object.fromEntries(THEME_DEFS.map(({ id }) => [id,
-        scenes.value.filter(s => (showMature.value || !s.mature) && !hiddenIds.value.has(s.id) && matchesTheme(s, id)).length])));
+        scenes.value.filter(s => !hiddenIds.value.has(s.id) && matchesTheme(s, id)).length])));
     function themeCount(id: string) { return themeCounts.value[id] || 0; }
     const searching = computed(() => !!debouncedQuery.value.trim());
     const searchDocuments = computed(() => searching.value
@@ -183,8 +180,6 @@ export function useSceneExplorerWorkspace() {
         const needsTier = !hidden && ((!q && collection === 'featured') || !['all', 'personal', 'featured', 'core'].includes(collection));
         let r = scenes.value.filter(s => {
             if (hidden ? !hiddenIds.value.has(s.id) : hiddenIds.value.has(s.id))
-                return false;
-            if (!showMature.value && s.mature)
                 return false;
             if (!matchesTheme(s, activeTheme.value))
                 return false;
@@ -318,7 +313,7 @@ export function useSceneExplorerWorkspace() {
         ...filters,
         companionId, scenes, manualCompanion, moodRails, applyMoodRail,
         visible, filtered, tierLabel, usedCount, favoriteCount, hiddenCount, availableCount,
-        THEME_DEFS, themeCount, searchIntent, matureCount, adultEnabled, loading,
+        THEME_DEFS, themeCount, searchIntent, matureCount, loading,
         loadError, init, paged, flashId, usageFor, isCore,
         tier, charName, seasonLabel, timeLabel, personalReason, drawerScene,
         dv: sceneVisualLabels, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,

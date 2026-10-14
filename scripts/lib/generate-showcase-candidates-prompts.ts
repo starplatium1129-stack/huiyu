@@ -171,7 +171,6 @@ function buildPopularPrompt(
     blueprint,
     engine: 'anima',
     profile,
-    adultEnabled: false,
     shot: decisions.shot,
     lighting: decisions.lighting,
     composition: decisions.composition,
@@ -187,8 +186,7 @@ function buildPopularPrompt(
 }
 
 // ── 双引擎全矩阵批次（2026-08-13）───────────────────────────────────────────
-// 热门角色：18 角色 × 24 蓝图 × {anima, krea2}，adultEnabled=true（3 成人角色 ×
-// 3 成人蓝图 = 每引擎 9 张 R18）。fail-closed 过滤后每引擎 387 组合，双引擎 774。
+// 热门角色：按角色、蓝图与引擎组合生成，R18 分级仅联动提示词与缩略图遮罩。
 // 画师：12 画师 + no-artist baseline × {anima, krea2}。
 
 function kreaProfile() {

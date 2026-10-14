@@ -91,7 +91,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         pb.flash(note, 9000, 'warning')
         return false
       }
-    } else if (entry.character && !['nene', 'natsume', 'triad'].includes(entry.character)
+    } else if (entry.character && !['nene', 'natsume', 'triad', 'none'].includes(entry.character)
       || (entry.character || pb.char) === 'triad' && entry.engine && entry.engine !== 'sd') {
       const note = '原角色不可用，配方未载入；当前草稿已保留'
       pb.historyRestoreReport = { title: '配方未载入', notes: [note], original: snapshotHistoricalRecipe(record) }
@@ -177,17 +177,18 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       }
     } else {
       pb.setStudioSubject()
-      if (entry.character === 'nene' || entry.character === 'natsume' || entry.character === 'triad') pb.setChar(entry.character)
+      if (entry.character === 'none') pb.setUnboundSubject()
+      else if (entry.character === 'nene' || entry.character === 'natsume' || entry.character === 'triad') pb.setChar(entry.character)
       else if (entry.character) restoreNotes.push('原角色不可用，保留当前角色')
       const character = entry.character || pb.char
-      if ((entry.engine === 'anima' || entry.engine === 'krea2') && (character === 'nene' || character === 'natsume')) {
+      if ((entry.engine === 'anima' || entry.engine === 'krea2') && (character === 'nene' || character === 'natsume' || character === 'none')) {
         const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
         clearAnimaResult()
         setDrawEngine(entry.engine)
         patchAnimaState({
           phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, statusText: '', errorMsg: '',
           modelId: animaModelPatch(animaState.value.modelId),
-           loraId: entryEngine === 'krea2' ? '' : entry.loraId === ANIMA_LORA_BY_CHARACTER[character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[character],
+           loraId: entryEngine === 'krea2' || character === 'none' ? '' : entry.loraId === ANIMA_LORA_BY_CHARACTER[character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[character],
            loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
            ...animaHistoryPatch(),
            width: Number.isInteger(width) && width > 0 ? width : animaState.value.width,
@@ -205,7 +206,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     if (!popularEntry) {
       const restoredContext = restoreHistorySceneStory(entry, pb.scenes)
       const scene = restoredContext.scene
-      if (scene && (!scene.char || scene.char === 'both' || scene.char === pb.char)) pb.loadScene(scene)
+      if (scene && !pb.isUnbound && (!scene.char || scene.char === 'both' || scene.char === pb.char)) pb.loadScene(scene)
       else {
         if (scene) restoreNotes.push('原场景的角色绑定已变化，未恢复场景')
         pb.clearScene({ keepStory: true })
@@ -232,8 +233,8 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     pb.setColorMood(entry.colorMood ?? null)
     pb.projectId = entry.project || ''
     pb.setArtistStyleIds(entry.artistStyleIds || [])
-    pb.sdParams.negativeCustom = ''
-    // 历史成片负面是"当时场景+当时 profile"的快照，不得写回 negativeCustom ——
+    pb.sdParams.negativeCustom = pb.isUnbound ? entry.negative || '' : ''
+    // 角色历史的负面包含场景与 profile，不写回 negativeCustom；无角色负面只有用户输入。
     // 否则会作为自定义负面跨场景/跨 profile 泄漏。恢复时由当前场景+profile
     // 重新生成模型原生负面。
     if (!popularEntry || pb.isPopular) {

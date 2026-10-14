@@ -24,7 +24,6 @@ type VideoMode,
 type VideoStatusResponse,
 } from '@/api/videoApi'
 
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 import { classifySDError } from '@/utils/sdError'
 
@@ -431,8 +430,6 @@ async function submitVideo() {
       seed: typeof parsedSeed.value === 'number' ? parsedSeed.value : undefined,
       quality: quality.value,
       steps: steps.value,
-      // 成人内容传输层授权：本机直连默认 true，远程/隧道由服务端 fail-closed。
-      adultEnabled: isLocalStudioHost(),
     }
     const frames = await resolveSubmitFrames(mode)
     if (disposed || selection !== selectionVersion) return

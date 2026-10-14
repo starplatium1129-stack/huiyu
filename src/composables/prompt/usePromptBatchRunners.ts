@@ -4,7 +4,6 @@ import { createBatchDrawPlanStorage } from '../generation/batchDrawPlan'
 import { readPreparedBatch, recoverBatchTask, batchFailure, type PreparedBatchImage } from './batchGenerationPlan'
 import { useTrackedTask } from '../useTaskCenter.ts'
 import { ref, shallowRef, type Ref } from 'vue'
-import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
 import { endfieldAnimaBinding } from '../../utils/loraCatalog.ts'
 import { identityDomainOf } from '../../utils/interrogateMerge.ts'
 import { sceneStyleBaseline } from '../../utils/randomVariationContext.ts'
@@ -216,11 +215,9 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         palette: mood ? tokenize(mood.prompt) : [],
         visualDescription: target.kind === 'character' ? baseText : pb.visualDescription,
         outfitOverride: detectOutfitOverrideFromContext(),
-        adultEnabled: isLocalStudioHost() && pb.showMatureScenes,
         matureTokens: new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => normalizeKey(tag.en))),
         artistTags: artistTagsForEngine(pb.artistStyleIds, engine), artistProse: artistStyleProse(pb.artistStyleIds, engine),
       })
-      if (!planResult) throw new Error('该蓝图未获当前环境或角色分级授权')
       plans.set(target.id, { negative: planResult.negative, outfitId: outfit.id, size: blueprint?.recommendedSize, colorMood: mood?.id ?? null })
       return planResult.prompt
     }
@@ -276,7 +273,6 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       teaCache: animaState.value.provider === 'native' ? animaState.value.teaCache : animaState.value.teaCache !== false,
       teaCacheThresh: animaState.value.teaCacheThresh,
       ...(input.seed >= 0 ? { seed: input.seed } : {}),
-      adultEnabled: isLocalStudioHost() && pb.showMatureScenes,
       character: (animaState.value.family === 'krea2' || !animaCharKey || animaCharKey === 'triad')
         ? endfield?.character ?? null
         : ANIMA_CHARACTER_BY_CHARACTER[animaCharKey as 'nene' | 'natsume'] || null,
@@ -338,7 +334,6 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       const plan = readPreparedBatch(input.snapshot)
       if (!plan) return { ok: false, unresolved: input.reconnect, error: '原批次参数快照不可用；请核对任务中心中的原任务。' }
       if (hasRuntimeTasks() !== batchDraw.runtimeOwned()) return { ok: false, unresolved: true, error: '原批次生成环境已改变，请恢复原工作区后核对任务。' }
-      if (plan.adult && (!isLocalStudioHost() || !deps.pb.showMatureScenes)) return { ok: false, unresolved: input.reconnect, error: '该蓝图未获当前环境或角色分级授权' }
       const saved = pendingSaves.get(saveKey(input))
       if (saved) return persist(input, saved)
       try {

@@ -85,9 +85,9 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     )
   })
 
-  /** 热门角色 Anima 无 LoRA：仅 popular subject + 选中底模的 noLora capability 时成立。 */
+  /** 自由画面或热门角色在支持 noLora 的底模上不加载角色 LoRA。 */
   const animaNoLoraMode = computed(() => {
-    if (!pb.isPopular) return false
+    if (!pb.isPopular && !pb.isUnbound) return false
     if (!currentCapabilities.value.noLora) return false
     const selected = animaState.value.models.find(model => model.id === animaState.value.modelId)
     return selected?.capabilities?.noLora === true && !(pb.subject.kind === 'popular'
@@ -122,7 +122,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     syncAnimaCharacter(pb.char)
     void refreshAnimaBackend()
     if (!options.silent) flash(v === 'anima'
-      ? (pb.isPopular ? '已切换到 Anima（按角色配置加载 LoRA）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
+      ? (pb.isUnbound ? '已切换到 Anima（无角色 LoRA）' : pb.isPopular ? '已切换到 Anima（按角色配置加载 LoRA）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
       : '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）')
   }
 
@@ -153,7 +153,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   const engineOnline = computed(() => {
     const ready = animaState.value.online || animaState.value.managedStartAvailable === true
     if (drawEngine.value === 'anima') {
-      if (pb.isPopular) return ready && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false)
+      if (pb.isPopular || pb.isUnbound) return ready && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false && (!pb.isUnbound || m.capabilities?.noLora === true))
       return (currentCapabilities.value.dualCharacter || pb.char !== 'triad') && Boolean(animaState.value.loraId) && ready
     }
     if (drawEngine.value === 'krea2') return ready

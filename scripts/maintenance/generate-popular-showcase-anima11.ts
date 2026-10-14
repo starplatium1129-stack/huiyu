@@ -11,7 +11,7 @@ import { writeJsonAtomic } from '../lib/atomic-files';
  *   - prompt : buildPopularPromptPlan (identity + outfit + blueprint scene +
  *              inferred shot/lighting/composition) with artist tag @rella
  *   - params : 30 steps / CFG 4.5 (global Anima default since 2026-08-14)
- *   - R18 blueprints: adultEnabled=true, fail-closed on adultEligibility.
+ *   - R18 blueprints retain their rating; there is no adult access gate.
  *
  * Output goes to AI/Reviews/ShowcaseRefresh/<round>/ (never the public dir).
  */
@@ -100,7 +100,6 @@ function buildCandidate(character: any, blueprint: any, profile: any, attempt: a
     blueprint,
     engine: 'anima',
     profile,
-    adultEnabled: true,
     shot: decisions.shot,
     lighting: decisions.lighting,
     composition: decisions.composition,

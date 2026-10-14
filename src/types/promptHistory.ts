@@ -1,4 +1,4 @@
-export type CharKey = 'nene' | 'natsume' | 'triad'
+export type CharKey = 'nene' | 'natsume' | 'triad' | 'none'
 export type DrawEngine = 'sd' | 'anima' | 'krea2'
 
 /** 历史字段为可序列化数据；快照不依赖 Vue 的响应式类型。 */

@@ -3,8 +3,7 @@
 // 依据 Krea 2 官方配方（docs.krea.ai Turbo / github krea-2 prompting.md）：
 //   1. 风格语言放最前（"Add style language early"）；
 //   2. 每配方 = 前置风格短语 lead + 可选后置媒介词 medium；
-//   3. R18 配方独立、显式声明，只有 adultEligibility === 'adult' 且成熟内容
-//      开关同时开启时才可达，unknown / underage 永远不可达（fail closed）。
+//   3. R18 配方保留分级标记，图片默认模糊；分级不限制配方使用。
 //
 // 当前 Krea 规则见 .agents/skills/studio-prompt-craft/references/krea.md：
 //   - 动漫向配方 lead 统一补「平涂词族」：Krea 2 默认偏厚涂/半写实，
@@ -28,13 +27,8 @@ export interface KreaStyleRecipe {
   medium?: string
   /** Concise model-native fragments. Legacy lead remains the Krea prose source. */
   sd?: string
-  /** 成人配方：仅 adult 角色 + 成熟内容开关同时放行。 */
+  /** 成人配方分级标记，不参与访问控制。 */
   adult: boolean
-}
-
-/** 资格判定只依赖角色的成人资格形状，避免与 popularContent 循环依赖。 */
-export interface StyleEligibility {
-  adultEligibility: 'adult' | 'unknown' | 'underage'
 }
 
 /** 蓝图 hint 只做结构性声明，交给本模块解析。 */
@@ -99,26 +93,6 @@ export function findStyleRecipe(
   return recipes.find(recipe => recipe.id === id) ?? null
 }
 
-/** 成人配方 fail closed：必须 adult 角色 + 成熟内容开关同时满足。 */
-export function recipeEligible(
-  recipe: KreaStyleRecipe,
-  character: StyleEligibility | null,
-  opts: { adultEnabled?: boolean } = {},
-): boolean {
-  if (!recipe.adult) return true
-  if (opts.adultEnabled !== true) return false
-  return character?.adultEligibility === 'adult'
-}
-
-/** 对指定角色可见的配方（unknown / underage 永远看不到成人配方）。 */
-export function eligibleStyleRecipes(
-  recipes: readonly KreaStyleRecipe[],
-  character: StyleEligibility | null,
-  opts: { adultEnabled?: boolean } = {},
-): KreaStyleRecipe[] {
-  return recipes.filter(recipe => recipeEligible(recipe, character, opts))
-}
-
 /** 按引擎取蓝图 hint（缺省字段可选，未声明返回 undefined）。 */
 export function styleHintForEngine(
   blueprint: StyleBlueprintHint | null,
@@ -129,7 +103,6 @@ export function styleHintForEngine(
 
 /**
  * 解析最终风格：手选配方 > 蓝图 hint > 引擎缺省。
- * - 手选 / hint 命中配方且资格不满足 → 返回 null（fail closed，绝不降级成成人词）。
  * - 手选 id 无效 → 回落到引擎缺省（Anima 为空）。
  * - hint 是自由风格短语（未命中配方）→ 直接作为前置短语，无媒介词、非成人。
  * - Anima 无 hint / 手选时不强制平涂、线稿或饱和度；显式配方照常保留。
@@ -139,19 +112,16 @@ export function resolveStyleRecipe(
   engine: RecipeEngine,
   blueprint: StyleBlueprintHint | null,
   selection: string | null,
-  character: StyleEligibility | null,
-  opts: { adultEnabled?: boolean } = {},
 ): ResolvedStyle | null {
   const hint = styleHintForEngine(blueprint, engine)
   const requested = selection || hint || ENGINE_DEFAULT[engine]
   const recipe = findStyleRecipe(recipes, requested)
   if (recipe) {
-    if (!recipeEligible(recipe, character, opts)) return null
     return { lead: recipe.lead, medium: recipe.medium, sd: recipe.sd, adult: recipe.adult || undefined }
   }
   if (selection) {
     // Unknown selections cannot become arbitrary style prose.
-    return resolveStyleRecipe(recipes, engine, null, null, character, opts)
+    return resolveStyleRecipe(recipes, engine, null, null)
   }
   if (hint) {
     if (String(hint).trim()) return { lead: String(hint).trim(), adult: false }

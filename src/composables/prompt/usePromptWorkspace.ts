@@ -512,7 +512,7 @@ export function usePromptWorkspace() {
     };
     const dialogBindings: PromptDialogBindings = {
         inpaintProvider: computed(() => animaState.value.provider), inpaintManagedStartAvailable: computed(() => animaState.value.managedStartAvailable === true), inpaintAutomaticMaskAvailable: computed(() => animaState.value.automaticMaskAvailable === true), inpaintAutomaticMaskStatus: computed(() => animaState.value.automaticMaskStatus),
-        compareEl, adultEnabled: toRef(pb, 'showMatureScenes'),
+        compareEl,
         inpaintImageSource: computed(() => ({ url: displayResultUrl.value, blob: animaState.value.result?.blob, historyId: displayedResultHistoryId.value })),
         displayResultUrl, generationBusy, inpaintPreparing, prevResult, inpaintOpen, compareOpen, displayResultSeed,
         lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit,

@@ -20,7 +20,6 @@
         :current-prompt="livePrompt"
         :current-negative="negativePrompt"
         :character="inpaintCharacter"
-        :adult-enabled="adultEnabled"
         :seed="displayResultSeed"
         :submitting="generationBusy"
         :preparing="inpaintPreparing"
@@ -39,5 +38,5 @@ import DeferredPanel from './DeferredPanel.vue'
 const PromptComparePanel = defineAsyncComponent(() => import('./PromptComparePanel.vue'))
 const AnimaInpaintModal = defineAsyncComponent(() => import('@/components/AnimaInpaintModal.vue'))
 const props = defineProps<{ bindings: PromptDialogBindings }>()
-const { inpaintManagedStartAvailable, inpaintProvider, inpaintAutomaticMaskAvailable, inpaintAutomaticMaskStatus, compareEl, adultEnabled, generationBusy, inpaintPreparing, inpaintImageSource, prevResult, inpaintOpen, compareOpen, displayResultSeed, lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit } = props.bindings
+const { inpaintManagedStartAvailable, inpaintProvider, inpaintAutomaticMaskAvailable, inpaintAutomaticMaskStatus, compareEl, generationBusy, inpaintPreparing, inpaintImageSource, prevResult, inpaintOpen, compareOpen, displayResultSeed, lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit } = props.bindings
 </script>

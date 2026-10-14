@@ -3,8 +3,8 @@
     <div class="panel-title">角色 · Character</div>
     <div class="char-source studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="角色来源">
       <AnimatedSelection />
-      <button type="button" class="char-source-btn" :class="{ active: !pb.isPopular }"
-        :aria-pressed="!pb.isPopular" @click="$emit('selectSource', 'studio')">
+      <button type="button" class="char-source-btn" :class="{ active: !pb.isPopular && !pb.isUnbound }"
+        :aria-pressed="!pb.isPopular && !pb.isUnbound" @click="$emit('selectSource', 'studio')">
         <ArchiveIcon name="character" class="char-source-icon" />
         <span class="char-source-label">工作室角色</span>
       </button>
@@ -13,9 +13,17 @@
         <ArchiveIcon name="spark" class="char-source-icon" />
         <span><span class="char-source-label">热门角色</span><span class="char-source-note">无需 LoRA</span></span>
       </button>
+      <button type="button" class="char-source-btn" :class="{ active: pb.isUnbound }"
+        :aria-pressed="pb.isUnbound" @click="$emit('selectSource', 'none')">
+        <ArchiveIcon name="image" class="char-source-icon" />
+        <span class="char-source-label">无角色</span>
+      </button>
     </div>
 
-    <div v-if="!pb.isPopular" v-content-motion:right="!pb.isPopular" class="character-source-content">
+    <div v-if="pb.isUnbound" class="character-source-content">
+      <p class="tw:text-secondary tw:text-body-sm">不绑定角色设定。图片反推保留原图的人物、服装、人数与背景，去除马赛克、遮挡和噪点词；不自动加入角色、画风或负面词。</p>
+    </div>
+    <div v-else-if="!pb.isPopular" v-content-motion:right="!pb.isPopular" class="character-source-content">
       <div class="char-row studio-character-gallery" role="group" aria-label="工作室角色">
         <button v-for="c in charOptions" :key="c.id"
           class="char-btn studio-character-choice" type="button"
@@ -72,7 +80,7 @@ defineProps<{
 }>()
 
 defineEmits<{
-  selectSource: [source: 'studio' | 'popular']
+  selectSource: [source: 'studio' | 'popular' | 'none']
   selectCharacter: [character: PopularCharacter]
   selectOutfit: [outfitId: string]
 }>()

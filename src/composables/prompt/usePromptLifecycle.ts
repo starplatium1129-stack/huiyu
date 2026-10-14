@@ -191,9 +191,9 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
         }
         syncManagedRoute();
     });
-    // 角色变化 / 成熟内容开关变化后，若当前 category 已无合格蓝图（如"成人"），
+    // 角色变化后，若当前 category 已无合格蓝图（如"成人"），
     // 自动回到"全部"并触发推荐重算，避免空面板。
-    watch([popularBlueprintPool, () => pb.showMatureScenes, () => pb.isPopular], () => {
+    watch([popularBlueprintPool, () => pb.isPopular], () => {
         const categories = blueprintCategories.value;
         if (popularCategory.value !== 'all' && !categories.includes(popularCategory.value)) {
             popularCategory.value = 'all';

@@ -2,7 +2,7 @@
   <Teleport to="body">
     <FluidTransition @before-leave="leave" @after-leave="finishClose">
       <div v-show="selectedId" ref="viewerEl" class="art-viewer scene-artwork-viewer"
-        :class="{ 'info-open': infoOpen, 'is-restricted': restrictedPreview }" data-image-transition
+        :class="{ 'info-open': infoOpen }" data-image-transition
         role="dialog" aria-modal="true" :aria-hidden="!selectedId" aria-label="场景观赏模式"
         @keydown="navigate" @load.capture="enter">
         <template v-if="current">
@@ -11,16 +11,6 @@
             :title="item => item.title" @close="selectedId = null" @select="select"
             @close-button="closeButton = $event" @toggle-original="original = !original"
             @dismiss-info="infoOpen = false" @interact="cancelFlight">
-            <template v-if="restrictedPreview" #image>
-              <RuntimeImage :src="current.previewSrc" v-slot="{ image, failed }">
-                <div class="scene-sensitive-art" aria-label="R18 样张，仅限本机预览">
-                  <img v-if="image.src && !failed" v-bind="image" :alt="current.title" decoding="async" />
-                  <SensitivePreviewVeil v-if="image.src && !failed" :src="image.src" :crossorigin="image.crossorigin" />
-                  <div v-if="failed || !image.src" class="viewer-fallback"><ArchiveIcon name="image" /><span>样张暂时无法读取</span></div>
-                  <span v-else class="scene-sensitive-hint">R18 · 仅限本机预览</span>
-                </div>
-              </RuntimeImage>
-            </template>
             <template #tools>
               <button ref="infoToggle" class="viewer-info-toggle" data-fluid-glass type="button" aria-label="场景信息"
                 :aria-controls="infoId" :aria-expanded="infoOpen" @click="infoOpen = !infoOpen"><ArchiveIcon name="info" /></button>
@@ -47,7 +37,6 @@ export interface SceneArtworkPreview {
   title: string
   src: string
   previewSrc: string
-  restricted: boolean
   width?: number
   height?: number
 }
@@ -59,11 +48,8 @@ import { useMediaQuery, useEventListener } from '@vueuse/core'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
-import RuntimeImage from '@/components/visual/RuntimeImage.vue'
-import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 const props = defineProps<{ items: SceneArtworkPreview[] }>()
 const selectedId = defineModel<string | null>({ required: true })
@@ -74,10 +60,7 @@ const infoId = useId(), titleId = useId(), compact = useMediaQuery('(max-width: 
 const infoOpen = ref(false), original = ref(false)
 const displayedItems = ref<SceneArtworkPreview[]>([]), displayedIndex = ref(0)
 const current = computed(() => displayedItems.value[displayedIndex.value] ?? null)
-const adultEnabled = isLocalStudioHost()
-const restrictedPreview = computed(() => !!current.value?.restricted && !adultEnabled)
-// Restricted images never enter the orbit's unfiltered neighboring frames.
-const previews = computed(() => Object.fromEntries(displayedItems.value.filter(item => !item.restricted).map(item => [item.id, item.previewSrc])))
+const previews = computed(() => Object.fromEntries(displayedItems.value.map(item => [item.id, item.previewSrc])))
 const motion = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
 const openingPreview = ref('')
 let sourceImage: HTMLImageElement | null = null, opening = false, capturedAt = 0
@@ -89,7 +72,7 @@ function capture(image: HTMLImageElement | null) {
   capturedAt = performance.now()
 }
 async function enter() {
-  if (!opening || !selectedId.value || current.value?.restricted) return
+  if (!opening || !selectedId.value) return
   await nextTick()
   if (!opening || !selectedId.value || performance.now() - capturedAt >= 180) { opening = false; return }
   const target = viewerEl.value?.querySelector<HTMLImageElement>('.zoomable-img')
@@ -101,7 +84,7 @@ function cancelFlight() { opening = false; motion.cancel(); openingPreview.value
 function leave() {
   opening = false
   const target = viewerEl.value?.querySelector<HTMLImageElement>('.zoomable-img')
-  if (!current.value?.restricted && target && viewerEl.value) void motion.leave(target, viewerEl.value, sourceImage)
+  if (target && viewerEl.value) void motion.leave(target, viewerEl.value, sourceImage)
   else motion.cancel()
 }
 function finishClose() {
@@ -141,10 +124,3 @@ onDeactivated(() => { selectedId.value = null; cancelFlight() })
 onUnmounted(cancelFlight)
 defineExpose({ capture })
 </script>
-
-<style scoped>
-.scene-sensitive-art { position:relative; display:grid; place-items:center; width:100%; height:100%; max-width:900px; min-height:0; overflow:hidden; border-radius:var(--r-md); background:var(--art-stage); --sensitive-preview-fit:contain; --sensitive-preview-position:center; }
-.scene-sensitive-art > img { display:block; width:100%; height:100%; object-fit:contain; }
-.scene-sensitive-hint { position:absolute; z-index:var(--z-raised); padding:var(--s-2) var(--s-3); border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); font-size:var(--fs-label-sm); pointer-events:none; }
-.scene-artwork-viewer.is-restricted :deep(.viewer-mode-switch) { display:none; }
-</style>

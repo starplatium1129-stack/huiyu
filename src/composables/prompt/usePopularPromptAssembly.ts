@@ -27,7 +27,7 @@ import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles.ts'
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PopularPromptAssemblyState = Pick<PromptBuilderStore, 'artistStyleIds' | 'colorMood' | 'directorMode' | 'emotionPrompt'
   | 'manualTags' | 'modelProfiles' | 'outfitOverride' | 'popularCharacters' | 'randomVariation' | 'sceneBlueprints' | 'selections'
-  | 'showMatureScenes' | 'subject' | 'tags' | 'visualDescription' | 'char' | 'sceneId'>
+  | 'subject' | 'tags' | 'visualDescription' | 'char' | 'sceneId'>
 
 /**
  * 热门角色无 LoRA 模式的 Prompt 组装。
@@ -76,7 +76,6 @@ export function usePopularPromptAssembly(
     return original && randomVariation.value ? variedPopularScene(original, randomVariation.value, pb) : original
   })
 
-  const adultEnabled = computed(() => pb.showMatureScenes)
   const activeArtistStyleIds = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
   const colorMoodTokens = computed(() => {
     const mood = pb.colorMood ? COLOR_MOODS.find(option => option.id === pb.colorMood) : null
@@ -97,8 +96,6 @@ export function usePopularPromptAssembly(
       targetEngine,
       blueprint.value,
       null,
-      character.value,
-      { adultEnabled: adultEnabled.value },
     )
   })
 
@@ -118,7 +115,6 @@ export function usePopularPromptAssembly(
       lighting: pb.selections.lighting,
       palette: colorMoodTokens.value,
       composition: pb.selections.composition,
-      adultEnabled: adultEnabled.value,
       matureTokens: matureTokenSet.value,
       visualDescription: pb.visualDescription,
       style: resolvedStyle.value,

@@ -110,21 +110,6 @@ fn build(blueprint: &Value, intent: &Value) -> Value {
     }).collect();
     json!({"title":text(&blueprint["title"],&text(&blueprint["id"],"undefined")),"blueprintId":text(&blueprint["id"],"undefined"),"characterId":text(&blueprint["characterId"],""),"beats":BEATS.iter().map(|b|b.0).collect::<Vec<_>>(),"shots":shots})
 }
-pub(super) fn resolve_blueprint(blueprint: &Value, intent: &Value) -> Result<Value> {
-    // Explicit rating fields cannot bypass the video lane through a benign category.
-    if blueprint["adult"] == true
-        || blueprint["mature"] == true
-        || blueprint["rating"] == "R18"
-        || matches!(blueprint["category"].as_str(), Some("成人" | "私密写真"))
-    {
-        return Err(ApiError::new(
-            400,
-            "ADULT_BLUEPRINT_UNSUPPORTED",
-            "成人蓝图暂不支持自动剧本（视频链路成人门控未接入）",
-        ));
-    }
-    Ok(build(blueprint, intent))
-}
 pub(super) fn router() -> Router<AppState> {
     Router::new().route(
         "/api/video/storyboard",
@@ -146,12 +131,14 @@ async fn handle(
     }
     app.host.check_available()?;
     let options = crate::catalog::Options::from_config(&app.config);
-    let value = tokio::task::spawn_blocking(move || {
+    let value = tokio::task::spawn_blocking(move || -> Result<Value> {
         let id = body["blueprintId"]
             .as_str()
             .ok_or_else(|| ApiError::invalid("blueprintId 需为字符串"))?;
-        let record = crate::catalog::Catalog::open(options)?.get("blueprint", id)?;
-        resolve_blueprint(&record.data, &body["intent"])
+        let catalog = crate::catalog::Catalog::open(options)?;
+        let record = catalog.get("blueprint", id)?;
+        let blueprint = &record.data;
+        Ok(build(blueprint, &body["intent"]))
     })
     .await
     .map_err(|_| ApiError::new(503, "STORYBOARD_UNAVAILABLE", "剧本读取失败"))??;

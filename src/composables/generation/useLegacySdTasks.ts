@@ -120,11 +120,11 @@ export function useLegacySdTasks() {
       if (!options.resumeId) throw new Error('旧浏览器任务没有接收编号，请在任务中心核对；不会重新提交。')
       activeJobId = options.resumeId
       // Frozen legacy parameters supply result facts, never a new request.
-      const [{ buildTxt2ImgRequest }, { buildRuntimeSdInput }, { isLocalStudioHost }] = await Promise.all([
-        import('@/utils/sdRequest'), import('@/utils/sdRuntimeRequest'), import('@/utils/runtimeEnvironment'),
+      const [{ buildTxt2ImgRequest }, { buildRuntimeSdInput }] = await Promise.all([
+        import('@/utils/sdRequest'), import('@/utils/sdRuntimeRequest'),
       ])
       const { payload } = buildTxt2ImgRequest(params)
-      const loras = buildRuntimeSdInput(params, payload, isLocalStudioHost()).loras
+      const loras = buildRuntimeSdInput(params, payload).loras
       const { observeWebGeneration } = await import('@/platform/web/generationSession')
       const { blob, seed } = await observeWebGeneration(options.resumeId, {
         signal: controller.signal, steps: params.steps, hires: params.hr_fix, hiresSteps: params.hr_second_pass_steps,

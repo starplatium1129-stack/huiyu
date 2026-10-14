@@ -1,6 +1,7 @@
 import { computed, type Ref } from 'vue'
 import { usePromptAssembly, type PromptAssemblyState } from '@/composables/prompt/usePromptAssembly'
 import { usePopularPromptAssembly, type PopularPromptAssemblyState } from '@/composables/prompt/usePopularPromptAssembly'
+import { useUnboundPromptAssembly } from '@/composables/prompt/useUnboundPromptAssembly'
 import type { PromptEngine } from '@/utils/promptPolicy'
 export type UnifiedPromptAssemblyState = PromptAssemblyState & PopularPromptAssemblyState & { readonly isPopular: boolean }
 
@@ -18,12 +19,14 @@ export function useUnifiedPromptAssembly(
 ) {
   const studio = usePromptAssembly(pb, checkpoint, engine, modelName, selectedLoraId)
   const popular = usePopularPromptAssembly(pb, engine, modelName)
+  const unbound = useUnboundPromptAssembly(pb, engine, studio.modelProfile)
+  const active = computed(() => pb.isPopular ? popular : pb.char === 'none' ? unbound : studio)
 
-  const positivePrompt = computed(() => pb.isPopular ? popular.positivePrompt.value : studio.positivePrompt.value)
-  const negativePrompt = computed(() => pb.isPopular ? popular.negativePrompt.value : studio.negativePrompt.value)
-  const previewPrompt = computed(() => pb.isPopular ? popular.previewPrompt.value : studio.previewPrompt.value)
-  const promptReport = computed(() => pb.isPopular ? popular.promptReport.value : studio.promptReport.value)
-  const artViolations = computed(() => pb.isPopular ? popular.artViolations.value : studio.artViolations.value)
+  const positivePrompt = computed(() => active.value.positivePrompt.value)
+  const negativePrompt = computed(() => active.value.negativePrompt.value)
+  const previewPrompt = computed(() => active.value.previewPrompt.value)
+  const promptReport = computed(() => active.value.promptReport.value)
+  const artViolations = computed(() => active.value.artViolations.value)
   const modelProfile = computed(() => pb.isPopular ? popular.profile.value : studio.modelProfile.value)
 
   return {

@@ -119,7 +119,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         ...(available && state.value.loraId !== binding.loraId ? { loraStrength: binding.loraStrength } : {}) })
       return
     }
-    if (character === 'triad') {
+    if (character === 'triad' || character === 'none') {
       patchState({ loraId: '' })
       return
     }
@@ -209,13 +209,13 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       const loras = (Array.isArray(data.loras) ? data.loras : [])
         .filter(lora => options.isPopular()
           ? lora.characters?.includes(options.getPopularCharacterId?.() || '')
-          : lora.character === options.getCharacter())
+          : options.getCharacter() !== 'none' && lora.character === options.getCharacter())
       const family = options.getFamily()
       const styleLoras = family === 'krea2' ? (data.styleLoras || []) : []
       const familyModels = models.filter(model => model.family === family)
-      const visibleModels = options.isPopular()
+      const visibleModels = options.isPopular() || options.getCharacter() === 'none'
         ? familyModels.filter(model => model.capabilities?.noLora === true
-          && (!endfieldAnimaBinding(options.getPopularCharacterId?.(), family)
+          && (!options.isPopular() || !endfieldAnimaBinding(options.getPopularCharacterId?.(), family)
             || endfieldAnimaBinding(options.getPopularCharacterId?.(), family, model.id)))
         : familyModels
       const modelIdCurrent = visibleModels.some(model => model.id === state.value.modelId)

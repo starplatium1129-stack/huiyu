@@ -33,7 +33,7 @@ export const THEME_KEY = 'aics_theme'
 export const DESKTOP_START_PAGE_KEY = 'aics_desktop_start_page'
 export const DESKTOP_LAST_PAGE_KEY = 'aics_desktop_last_page'
 export const INTERFACE_SOUND_KEY = 'aics_interface_sound_v1'
-/** 成人内容展示开关（灵感场景页/热门场景页共用语义：本机默认开）。 */
+/** 历史备份键，仅保留旧设置，不再参与内容访问控制。 */
 export const MATURE_SETTING_KEY = 'aics_show_mature'
 export const TUNNEL_OFF_KEY = 'aics_tunnel_off'
 export const CHAT_THINKING_KEY = 'aics_chat_thinking_v1'

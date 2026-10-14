@@ -91,7 +91,6 @@ export interface PromptDeliveryBindings extends Pick<Engine, 'generationBusy' | 
 export interface PromptDialogBindings extends Pick<Engine, 'displayResultUrl' | 'displayResultSeed' | 'generationBusy'>,
   Pick<Inpaint, 'inpaintOpen' | 'inpaintCharacter' | 'handleInpaintSubmit'>,
   Pick<Compare, 'compareEl' | 'prevResult' | 'lastResult' | 'compareOpen'> {
-  adultEnabled: Readonly<Ref<boolean>>
   inpaintProvider: Readonly<Ref<'comfy' | 'native' | undefined>>
   inpaintManagedStartAvailable: Readonly<Ref<boolean>>
   inpaintAutomaticMaskAvailable: Readonly<Ref<boolean>>

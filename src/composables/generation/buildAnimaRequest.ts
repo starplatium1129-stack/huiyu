@@ -4,7 +4,6 @@ import type { DrawSubject } from '@/utils/popularContent'
 import type { ModelProfile } from '@/utils/promptPolicy'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, type AnimaRequest } from './animaSessionContract'
 
 export interface BuildAnimaRequestInput {
@@ -27,7 +26,10 @@ export function buildAnimaRequest(input: BuildAnimaRequestInput): AnimaRequest {
     ...(state.family === 'krea2' && state.styleLoraId ? { styleLoraId: state.styleLoraId } : {}),
     hiresFix: Boolean(state.hiresFix), hiresScale: state.hiresScale, hiresDenoise: state.hiresDenoise, hiresUpscaler: state.hiresUpscaler,
     teaCache: state.provider === 'native' ? state.teaCache : state.teaCache !== false, teaCacheThresh: state.teaCacheThresh,
-    adultEnabled: isLocalStudioHost(),
+  }
+  if (!popular && char === 'none') {
+    if (!capabilities.noLora) throw new Error('当前底模不支持无角色创作，请选择支持无 LoRA 的底模')
+    return { ...settings, loraId: null, loraStrength: null, character: null }
   }
   if (popular) {
     if (!capabilities.noLora) throw new Error('当前底模不支持无 LoRA 热门角色创作')
@@ -36,7 +38,7 @@ export function buildAnimaRequest(input: BuildAnimaRequestInput): AnimaRequest {
     if (binding && !state.loras.some(lora => lora.id === binding.loraId && lora.available !== false)) throw new Error('终末地角色 LoRA 尚未安装，请先准备模型文件')
     return { ...settings, loraId: binding?.loraId ?? null, loraStrength: binding ? state.loraStrength : null, character: binding?.character ?? null }
   }
-  const charKey = char === 'triad' ? null : char
+  const charKey = char === 'nene' || char === 'natsume' ? char : null
   const expected = charKey ? ANIMA_LORA_BY_CHARACTER[charKey] : ''
   if (capabilities.lora && capabilities.characterIdentity && charKey
     && (state.loraId !== expected || !state.loras.some(lora => lora.id === expected && lora.available !== false))) throw new Error('角色 LoRA 尚未从服务端白名单发现，请先准备模型文件')

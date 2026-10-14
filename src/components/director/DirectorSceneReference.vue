@@ -28,7 +28,6 @@ import { computed, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { COMPOSITION, LIGHTING, SHOT } from '@/config/promptConstants'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
 
 defineProps<{ size?: string }>()
@@ -58,15 +57,14 @@ const scene = computed(() => {
   }
   return pb.activeScene ? { title: pb.activeScene.title, id: pb.activeScene.id, rating: pb.activeScene.mature ? 'R18' : pb.activeScene.rating } : null
 })
-// Unknown ratings remain closed; the reference never changes the generation subject or draft.
 const entry = computed(() => entries.value.find(item => item.id === scene.value?.id && (item.type === 'scene' || item.type === 'popular')))
-const restricted = computed(() => entry.value?.rating !== 'All' || ['R15', 'R18'].includes(scene.value?.rating ?? ''))
+const restricted = computed(() => entry.value?.rating === 'R18' || scene.value?.rating === 'R18')
 const imageUrl = computed(() => {
   if (!entry.value) return ''
   const path = entry.value.thumb || `thumbs/${entry.value.id}.jpg`
   return /^(?:thumbs|images)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(path) ? `/scene-showcase/${path}` : ''
 })
-const canLoad = computed(() => !!imageUrl.value && (!restricted.value || isLocalStudioHost()))
+const canLoad = computed(() => !!imageUrl.value)
 const { image: runtimeImage, src, failed } = useRuntimeImage(() => canLoad.value ? imageUrl.value : '')
 const imageRatio = ref<number | null>(null)
 watch([src, runtimeResourceIdentity], () => { imageRatio.value = null }, { flush: 'sync' })

@@ -322,8 +322,7 @@ const filtered = computed(() => {
 const paged = computed(() => filtered.value.slice(0, visibleCount.value))
 const currentIdx = computed(() => filtered.value.findIndex(e => e.id === currentId.value))
 const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
-// Neighbor previews must not bypass the restricted cards' deliberate veil.
-const viewerThumbs = computed(() => Object.fromEntries(filtered.value.filter(entry => entry.rating !== 'R18').map(entry => [entry.id, thumbSrc(entry)])))
+const viewerThumbs = computed(() => Object.fromEntries(filtered.value.map(entry => [entry.id, thumbSrc(entry)])))
 const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
 
 function openViewer(id: string) {
@@ -354,7 +353,7 @@ function toggleOriginalViewer() {
 function openLinkedScene() {
   if (!viewActive || route.path !== '/showcase') return
   const id = route.query.scene
-  if (typeof id === 'string' && entries.value.some(entry => entry.id === id && entry.rating !== 'R18')) openViewer(id)
+  if (typeof id === 'string' && entries.value.some(entry => entry.id === id)) openViewer(id)
 }
 watch(() => route.query.scene, openLinkedScene)
 function clearLinkedScene() {
@@ -390,7 +389,7 @@ function move(step: number) {
   openViewer(arr[next].id)
 }
 function openRandom() {
-  const safe = (ratingFilter.value === 'R18' ? filtered.value : filtered.value.filter(e => e.rating !== 'R18'))
+  const safe = filtered.value
   const src = safe.length ? safe : filtered.value
   if (!src.length) return
   openViewer(src[Math.floor(Math.random() * src.length)].id)

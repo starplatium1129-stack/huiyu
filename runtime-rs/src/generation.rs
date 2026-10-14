@@ -42,7 +42,7 @@ use tokio::sync::{Mutex, Notify, OnceCell, OwnedSemaphorePermit, Semaphore};
 use tokio_util::{sync::CancellationToken, task::TaskTracker};
 pub use types::{Config, Input};
 pub use validation::validate;
-pub(crate) use validation::{adult_intent, truthy};
+pub(crate) use validation::truthy;
 pub use workflow::build as build_workflow;
 
 /// Prepared owns admission capacity and the validated execution input. Its public

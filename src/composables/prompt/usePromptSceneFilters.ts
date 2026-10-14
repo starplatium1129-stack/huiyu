@@ -11,13 +11,10 @@ export function usePromptSceneFilters(scenes: Readonly<Ref<Scene[]>>, char: Read
   const sceneTheme    = ref('all')
   const sceneLibMode  = ref<'grid' | 'list'>('grid')
   const currentStep   = ref(1)
-  // 本项目主要在本机自用，成人向场景默认参与检索；带图的场景卡仍由 SceneCard 做模糊揭示。
-  const showMatureScenes = ref(true)
   const activeTab     = ref('tags')
 
   const filteredScenes = computed(() => {
     let list = scenes.value
-    if (!showMatureScenes.value) list = list.filter(s => !s.mature)
     if (char.value !== 'triad') {
       list = list.filter(s => !s.char || s.char === char.value || s.char === 'both')
     }
@@ -36,5 +33,5 @@ export function usePromptSceneFilters(scenes: Readonly<Ref<Scene[]>>, char: Read
   })
 
 
-  return { focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode, currentStep, showMatureScenes, activeTab, filteredScenes }
+  return { focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode, currentStep, activeTab, filteredScenes }
 }

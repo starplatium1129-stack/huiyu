@@ -61,7 +61,6 @@ function collectAllSceneTasks(opts: any, input: any) {
         blueprint: bp,
         engine: 'anima',
         profile,
-        adultEnabled: true,
         shot: decisions.shot,
         lighting: decisions.lighting,
         composition: decisions.composition,

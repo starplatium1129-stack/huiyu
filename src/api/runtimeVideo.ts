@@ -54,7 +54,7 @@ export async function retryRuntimeVideoShot(id: string, index: number) {
     ...(input.dialogue ? { dialogue: text(input.dialogue) } : {}), ...(input.shotSize ? { shotSize: input.shotSize as VideoBatchShot['shotSize'] } : {}),
     ...(input.image ? { image: text(input.image) } : {}), ...(Array.isArray(input.references) ? { references: input.references as string[] } : {}) }
   const next = { modelId: text(task.input.modelId), aspectRatio: task.input.aspectRatio, quality: task.input.quality,
-    steps: task.input.steps, adultEnabled: task.input.adultEnabled, linkLastFrame: false, shots: [shot] } as CreateVideoBatchInput
+    steps: task.input.steps, linkLastFrame: false, shots: [shot] } as CreateVideoBatchInput
   const context = { retriedTaskId: id, stepIndex: index - 1 }
   const key = runtimeRequestKey('batch', { input: next, ...context })
   return taskVideoBatch(await submitRuntimeTask('batch', next as unknown as Record<string, unknown>, key, context))

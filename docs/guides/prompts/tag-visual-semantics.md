@@ -84,7 +84,7 @@
 ```
 promptTokens ──► Anima: renderPromptPlan(strip_quality_tokens 后) → 空格形 tag 流 + visual direction 行
             └─► Krea:  不消费（Krea 只吃 promptProse/identityProse/outfitProse 散文）
-nsfwTokens  ──► 仅 adult 角色 + adultEnabled 双门禁通过后注入 Anima caption
+nsfwTokens  ──► 按蓝图 R18 分级注入 Anima caption，不参与访问控制
 promptProse ──► Krea 散文织入；Anima visual direction（按画面关系组织，不固定句数）
 kreaStyleHint / animaStyleHint ► 可选的对应引擎配方 id 或风格短语；未指定时遵循引擎默认
 recommendedSize► 视图层 closestSupportedSize(activeModel) 收敛

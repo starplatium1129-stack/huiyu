@@ -197,27 +197,13 @@ export function findBlueprint(blueprints: SceneBlueprint[], id: string): SceneBl
   return blueprints.find(blueprint => blueprint.id === id) ?? null
 }
 
-// ── 成人资格门控（fail closed） ────────────────────────────────────────────
-
-/** 蓝图是否对指定角色可见：成人蓝图只能被 adult 角色 + 成熟内容开关同时放行。 */
-export function blueprintEligible(
-  blueprint: SceneBlueprint,
-  character: PopularCharacter | null,
-  opts: { adultEnabled?: boolean } = {},
-): boolean {
-  if (!blueprint.adult) return true
-  if (opts.adultEnabled !== true) return false
-  return character?.adultEligibility === 'adult'
-}
-
 export function eligibleBlueprints(
   blueprints: SceneBlueprint[],
   character: PopularCharacter | null,
-  opts: { adultEnabled?: boolean; category?: string } = {},
+  opts: { category?: string } = {},
 ): SceneBlueprint[] {
   return blueprints.filter(blueprint =>
-    blueprintEligible(blueprint, character, opts)
-    && (character == null || blueprint.characterId === character.id)
+    (character == null || blueprint.characterId === character.id)
     && (!opts.category || opts.category === 'all' || blueprint.category === opts.category),
   )
 }

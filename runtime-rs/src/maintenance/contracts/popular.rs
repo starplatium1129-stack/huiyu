@@ -108,7 +108,7 @@ fn run(root: &DataRoot, issues: &mut Vec<String>) -> std::result::Result<(), Str
         issues.push("scene-blueprints.json must contain at least 20 blueprints".into());
     }
     if !blueprints.iter().any(|b| b["adult"] == true) {
-        issues.push("scene-blueprints.json should keep at least one adult-only blueprint gated by adultEligibility".into());
+        issues.push("scene-blueprints.json should keep at least one R18 blueprint".into());
     }
     let recipes: Value =
         serde_json::from_str(include_str!("recipes.json")).expect("checked recipe snapshot");

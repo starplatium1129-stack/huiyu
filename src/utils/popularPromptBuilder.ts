@@ -28,7 +28,6 @@ export interface PopularPromptOptions {
   lighting?: string | null
   palette?: string[]
   composition?: string | null
-  adultEnabled?: boolean
   /** 用户补充的画面描述；只追加，不得替换角色服装。 */
   visualDescription?: string
   /** Krea 风格配方（已按资格解析）；成人配方在此再 fail-closed 一次。 */
@@ -141,7 +140,7 @@ function identityWithoutOutfit(prose: string): string {
 
 /**
  * 成人蓝图必须把「成年版本」落实到最终提示词，而不能只依赖 UI 门禁字段。
- * 角色库仍需保留原作身份供 SFW 使用，因此仅在 adultGranted 分支转换容易把
+ * 角色库仍需保留原作身份供 SFW 使用，因此仅在 adult 分支转换容易把
  * 模型拉回学生/少女形态的称谓，并在 Krea/Anima caption 中加入明确年龄锚点。
  */
 function adultIdentityProse(prose: string): string {
@@ -195,13 +194,10 @@ function proseWithoutOutfit(prose: string): string {
   return out.trim()
 }
 
-export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPromptResult | null {
+export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPromptResult {
   const { character, outfit, blueprint, engine } = options
   const profile = options.profile ?? null
-  const adult = Boolean(blueprint?.adult)
-  const adultGranted = adult && character.adultEligibility === 'adult' && options.adultEnabled === true
-  // 成人蓝图 fail closed：资格不满足直接拒绝构建，不让任何显式词进入 Prompt。
-  if (adult && !adultGranted) return null
+  const adult = Boolean(blueprint?.adult || options.style?.adult)
 
   const manual = sanitizePopularManual(options.manual || [])
   // 反推顶替的服装（非空即整体替换 outfit.tokens 与 outfit.prose）
@@ -212,15 +208,11 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   //   3) 用户显式挑了某套服装 → 注入（尊重明确选择）
   //   4) 否则（无场景 + 仍是默认服装）→ 不注入，只留人物基本特征
   const outfitActive = Boolean(overridden) || Boolean(blueprint) || options.outfitExplicit === true
-  // 手动 Mature 词条评级联动（单一契约 isManualR18Tags）：命中即升 R18 解除负面
-  // 压制，但仅对成年角色生效（underage 资格仍 fail-closed，数据层契约不动）。
-  const manualR18 = character.adultEligibility === 'adult'
-    && isManualR18Tags(manual, options.matureTokens)
-  const hasIdentityOverride = Boolean(blueprint?.identityTokensOverride?.length || blueprint?.identityProseOverride)
-  if (hasIdentityOverride && (adult || manualR18)) return null
+  // 手动 Mature 词条仅联动分级与负向，不参与访问控制。
+  const manualR18 = isManualR18Tags(manual, options.matureTokens)
   const identitySource = blueprint?.identityTokensOverride?.length ? blueprint.identityTokensOverride : character.identityTokens
   const identityProse = blueprint?.identityProseOverride || character.identityProse
-  const ratingLevel = (adultGranted || manualR18) ? 'R18' : 'ALL'
+  const ratingLevel = (adult || manualR18) ? 'R18' : 'ALL'
   const shotToken = SHOT.find(item => item.id === options.shot)?.prompt || ''
   const lightingToken = LIGHTING.find(item => item.id === options.lighting)?.prompt || ''
   const lightingTokens = lightingToken ? [lightingToken] : []
@@ -228,15 +220,12 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // Character DNA 锁 avoid（v2）：从常驻身份锚定流过滤易失真元素（如 C.C. 印记、
   // 花火面具、式和服类死绑回归）。只过滤 identity 标签流；场景蓝图按需使用不受限。
   const dnaAvoid = new Set((character.dnaLock?.avoid || []).map(key => normalizeProseKey(key)))
-  // 成人配方与成人蓝图同一把 fail-closed 锁：资格不满足绝不进入渲染层。
   const style = options.style
-  if (style?.adult && !adultGranted) return null
 
   // 用户描述是额外画面指令，服装由独立字段稳定保留。
   const userVisual = String(options.visualDescription || '').trim()
-  // 成人内容只在 fail-closed 放行时注入：Anima 标签进 controls，散文拼接场景。
-  const nsfwTokens = adultGranted ? (blueprint?.nsfwTokens || []) : []
-  const nsfwProse = adultGranted ? String(blueprint?.nsfwProse || '').trim() : ''
+  const nsfwTokens = adult ? (blueprint?.nsfwTokens || []) : []
+  const nsfwProse = adult ? String(blueprint?.nsfwProse || '').trim() : ''
   const sceneProse = [
     // 成人场景：裸体叙述前置，避免被服装散文压过（Krea 2 自然语言模型对句首描述权重最高）。
     ...(nsfwProse ? [nsfwProse] : []),
@@ -246,7 +235,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const emotionTokens = options.emotion || []
   const subjectProse = !blueprint
     ? standaloneIdentityProse(character)
-    : adultGranted
+    : adult
       ? adultIdentityProse(identityProse)
       : (outfitActive
           ? (overridden ? proseWithoutOutfit(identityProse) : identityWithoutOutfit(identityProse))
@@ -256,7 +245,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
     // 穿衣服描述会压过显式词导致拒绝出裸）；脱衣叙述由 nsfwProse 前置承载。
     // 反推顶替：Krea 只有散文流，必须换成参考图服装，否则 "wearing 校服..." 压制参考图。
-    const outfitProse = (adultGranted || !outfitActive)
+    const outfitProse = (adult || !outfitActive)
       ? ''
       : (overridden ? outfitOverrideProse(overridden) : outfitProseForRender(outfit.prose))
     // Krea 是自然语言模型：手动画师散文由 artistStyleProse 负责还原空格/去括号
@@ -288,20 +277,20 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 不选场景时，身份词里混入的服装一并去掉（数据遗留：不少角色把 pleated_skirt /
   // qipao / green_clothes / coat 等写进了 identityTokens，而它是无条件注入的，
   // 不过滤则瘦身对它们无效）。双保险：互斥族判定 + 普通衣物名单。
-  const referenceIdentity = Boolean(overridden) && !adultGranted
+  const referenceIdentity = Boolean(overridden) && !adult
   const identityTokens = (!blueprint ? standaloneIdentityTokens(identitySource) : outfitActive && !referenceIdentity
     ? identitySource
     : identitySource.filter(token =>
         mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
     .filter(token => !dnaAvoid.has(normalizeProseKey(token)))
-    .filter(token => !adultGranted || (!isGarmentToken(token)
+    .filter(token => !adult || (!isGarmentToken(token)
       && !ADULT_IDENTITY_EXCLUDE_RE.test(String(token || '').trim().toLowerCase())))
   const exactIdentity = (!blueprint ? standaloneIdentityTokens(character.exactTokens) : character.exactTokens).filter(token => !referenceIdentity
     || (mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
   const exactControls = [...new Set([
-    ...((adultGranted || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
+    ...((adult || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
     ...exactIdentity,
-    ...(adultGranted ? ['adult'] : []),
+    ...(adult ? ['adult'] : []),
     ...nsfwTokens,
   ])]
   // 2026-08-29 需求变更：画师仅来自用户手动选择（artistTags），
@@ -317,7 +306,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     ? character.outfits.find(item => item.id === blueprint.outfitId)
     : character.outfits.find(item => item.default) ?? character.outfits[0]
   const stableIdentity = new Set([...identitySource, ...character.exactTokens].map(normalizeProseKey))
-  const replacedOutfit = !adultGranted && sourceOutfit && (overridden || sourceOutfit.id !== outfit.id)
+  const replacedOutfit = !adult && sourceOutfit && (overridden || sourceOutfit.id !== outfit.id)
     ? new Set(sourceOutfit.tokens.map(normalizeProseKey).filter(key => !stableIdentity.has(key)))
     : new Set<string>()
   const sceneTokensFiltered = (blueprint?.promptTokens || []).filter(token => {
@@ -350,7 +339,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 服装词会与成人 nsfwProse 的裸体词打架、压过显式词。与 Krea 三铁律「outfitProse 置空」对齐。
     // 2026-08-29：反推顶替同理——那句 "She wears 校服..." 是热门角色还原不了参考图
     // 服装的主因，必须连同 controls 一起换成参考图服装。
-    outfitProse: (adultGranted || !outfitActive)
+    outfitProse: (adult || !outfitActive)
       ? ''
       : (overridden ? outfitOverrideProse(overridden) : outfitProseForRender(outfit.prose)),
     sceneProse,

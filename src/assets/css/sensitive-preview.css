@@ -22,8 +22,8 @@
   filter:blur(16px) saturate(.85);
   transform:scale(1.08);
 }
-:where(.sc,.pop-card,.sample-r18):hover .sensitive-preview-veil,
-:where(.sc,.pop-card,.sample-r18):focus-within .sensitive-preview-veil { opacity:0; }
+:where(.sc,.pop-card,.sample-r18,.batch-thumb-btn.is-mature):hover .sensitive-preview-veil,
+:where(.sc,.pop-card,.sample-r18,.batch-thumb-btn.is-mature):focus-within .sensitive-preview-veil { opacity:0; }
 .sc-complete-preview .sensitive-preview-veil {
   inset:0;
   padding:var(--s-2);

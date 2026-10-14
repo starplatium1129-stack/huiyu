@@ -97,7 +97,7 @@ impl Service {
         owner: Option<&str>,
         cancel: CancellationToken,
     ) -> Result<BatchPrepared> {
-        let input = batch_input::validate_batch(&raw, local)?;
+        let input = batch_input::validate_batch(&raw)?;
         self.prepare_batch_validated(input, local, owner, cancel)
             .await
     }

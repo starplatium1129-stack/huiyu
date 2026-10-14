@@ -114,7 +114,7 @@ impl Service {
         } else {
             None
         };
-        let input = validation::validate(&raw, local, size)?;
+        let input = validation::validate(&raw, size)?;
         self.prepare_input(input, local, owner, false, cancel).await
     }
     pub(super) async fn prepare_input(

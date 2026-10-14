@@ -45,8 +45,8 @@
       <div class="pop-results-bar">
         <span class="pop-count" role="status">已显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 幕</span>
         <button v-if="query.trim() || category !== 'all' || ratingFilter !== 'all'" class="pop-filter-reset" type="button" @click="resetFilters">清除筛选</button>
-        <StudioTooltip :content="showMature ? '本机成人场景可浏览，R18 样张保留模糊遮罩' : '成人场景仅限本机访问'">
-          <span class="pop-count mature-hint">{{ showMature ? `成人 ${adultCount} · 已展示` : '成人场景 · 仅限本机' }}</span>
+        <StudioTooltip content="成人场景可浏览，R18 样张保留模糊遮罩">
+          <span class="pop-count mature-hint">成人 {{ adultCount }} · 已展示</span>
         </StudioTooltip>
       </div>
 
@@ -162,7 +162,6 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { catalogShowcaseId } from '@/utils/showcaseManifest'
 import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 
@@ -200,8 +199,6 @@ watch([query, category, ratingFilter], () => {
     if (pendingRouteWrite === filters) pendingRouteWrite = null
   })
 })
-/** 成人场景仅限本机，远程和未知来源默认拒绝。 */
-const showMature = isLocalStudioHost()
 
 const characters = computed<PopularCharacter[]>(() => sceneStore.popularCharacters)
 const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprints)
@@ -216,7 +213,7 @@ const directoryItems = computed(() => characters.value.map(character => ({
   image: popularPortraitSrc(character.id),
 })))
 
-/** 当前角色的全部蓝图（资格按成熟开关收敛）。 */
+/** 当前角色的全部蓝图。 */
 const selectedCharacter = computed(() =>
   characters.value.find(item => item.id === selectedId.value) ?? null,
 )
@@ -224,8 +221,7 @@ const selectedCharacter = computed(() =>
 const portraitPalette = computed(() => characterParticleTheme(selectedId.value, selectedCharacter.value?.franchise))
 const pool = computed<SceneBlueprint[]>(() =>
   allBlueprints.value.filter(bp =>
-    bp.characterId === selectedId.value
-    && (!(bp.adult || bp.sampleRating === 'R18') || (showMature && selectedCharacter.value?.adultEligibility === 'adult')),
+    bp.characterId === selectedId.value,
   ),
 )
 
@@ -277,11 +273,11 @@ watch(previewId, id => { if (id) previewBlueprint.value = filtered.value.find(it
 const previewItems = computed(() => filtered.value.map(blueprint => {
   const [width, height] = blueprint.recommendedSize.split('x').map(Number)
   return { id: blueprint.id, title: blueprint.title, width, height,
-    src: imageUrl(showcaseId(blueprint)), previewSrc: thumbSrc(blueprint), restricted: sampleRatingOf(blueprint) === 'R18' }
+    src: imageUrl(showcaseId(blueprint)), previewSrc: thumbSrc(blueprint) }
 }))
 function openPreview(blueprint: SceneBlueprint, event: MouseEvent) {
   const image = (event.currentTarget as HTMLElement).querySelector<HTMLImageElement>('img')
-  previewViewer.value?.capture(sampleRatingOf(blueprint) === 'R18' ? null : image)
+  previewViewer.value?.capture(image)
   previewId.value = blueprint.id
 }
 const loadSentinel = ref<HTMLElement | null>(null)
