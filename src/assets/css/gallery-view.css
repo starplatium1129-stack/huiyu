@@ -17,10 +17,10 @@
 .gallery-empty-art { display:block; width:100%; height:auto; margin:auto; pointer-events:none; }
 
 /* Layout belongs to the artbook; fluid-workspaces owns the opaque toolbar surface. */
-.gallery-toolbar { margin:0 auto; display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; }
+.gallery-toolbar { --gallery-toolbar-top:calc(var(--app-navigation-height,80px) + var(--s-2)); top:var(--gallery-toolbar-top); margin:0 auto; display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; }
 .gallery-toolbar::before { @apply tw:hidden; }
 /* Keep the toolbar reachable at its sticky position; short windows scroll its content. */
-.gallery-toolbar:has(.gallery-refine-toggle[aria-expanded='true']) { max-height:calc(100svh - var(--app-navigation-height,80px) - var(--s-4)); overflow-y:auto; overscroll-behavior:contain; }
+.gallery-toolbar:has(.gallery-refine-toggle[aria-expanded='true']) { max-height:calc(100svh - var(--gallery-toolbar-top) - var(--s-4)); overflow-y:auto; overscroll-behavior:contain; }
 .gallery-browse-controls,.gallery-manage-controls { @apply tw:flex tw:items-center tw:gap-s-1 tw:flex-wrap; }
 .gallery-browse-controls { @apply tw:relative tw:isolate; --selection-radius:var(--r-sm); @apply tw:mr-auto tw:p-s-1; border:0; background:transparent; }
 .gallery-browse-controls .gallery-filter > span { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); margin-left:var(--s-1); }
