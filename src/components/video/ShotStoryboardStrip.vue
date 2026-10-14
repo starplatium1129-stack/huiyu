@@ -11,7 +11,6 @@
         <span class="storyboard-description tw:overflow-hidden tw:text-secondary tw:text-body-sm tw:leading-body">{{ shot.prompt.trim() || '还没有画面描述' }}</span>
       </button>
     </div>
-    <p>点击卡片，前往对应镜头。首帧会按原画幅完整展示。</p>
   </nav>
 </template>
 
@@ -45,7 +44,6 @@ function markFailed(event: Event) {
 .storyboard-caption { padding:var(--s-3) var(--s-3) var(--s-1); }
 .storyboard-caption > span { @apply tw:text-secondary tw:text-label-xs; }
 .storyboard-description { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; margin:0 var(--s-3) var(--s-3); }
-.shot-storyboard > p { @apply tw:mt-s-2 tw:text-secondary tw:text-body-sm; }
 .storyboard-frame:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 @media(hover:hover) and (pointer:fine) { .storyboard-frame:hover { @apply tw:border-accent; } }
 @media(max-width:540px) { .shot-storyboard { @apply tw:p-s-3; } .storyboard-frame { flex-basis:176px; } }

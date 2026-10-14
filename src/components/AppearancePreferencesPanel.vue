@@ -2,7 +2,7 @@
   <Teleport to="body">
     <dialog ref="dialog" class="appearance-dialog" aria-labelledby="appearance-title" @close="restoreFocus" @cancel.prevent="fluidDialog.close()" @click="backdropClose">
       <div class="appearance-heading" data-fluid-glass>
-        <div><p class="appearance-eyebrow">让画室适合你</p><h2 id="appearance-title">{{ section === 'keyboard' ? '键盘快捷键' : '外观与动态效果' }}</h2><p v-if="section === 'appearance'" class="appearance-save-note">选择后自动保存在此设备。</p></div>
+        <div><h2 id="appearance-title">{{ section === 'keyboard' ? '键盘快捷键' : '外观与动态效果' }}</h2><p v-if="section === 'appearance'" class="appearance-save-note">自动保存</p></div>
         <button class="appearance-close" type="button" aria-label="关闭" @click="fluidDialog.close()"><ArchiveIcon name="close" /></button>
       </div>
       <div v-if="section === 'appearance'" v-content-motion:up="section" class="appearance-fields">
@@ -12,7 +12,7 @@
             <RadioGroupItem v-for="choice in styleChoices" :key="choice.value" :value="choice.value" :data-value="choice.value"
               @focus="selectedStyle = choice.value">
               <span class="appearance-style-preview" :class="choice.value" aria-hidden="true"><i></i><i></i><i></i></span>
-              <strong>{{ choice.label }}</strong><small>{{ choice.description }}</small>
+              <strong>{{ choice.label }}</strong>
             </RadioGroupItem>
           </RadioGroupRoot>
         </fieldset>
@@ -33,11 +33,10 @@
           </RadioGroupRoot>
         </fieldset>
         <GlassMaterialChoice v-if="materialControlsReady && themeStyle === 'atelier'" />
-        <p v-if="themeStyle === 'terraria'" class="appearance-note">像素主题使用实色面板与方块边框，浅色与深色分别呈现白昼和夜晚。</p>
         <label v-if="zoomAvailable" class="appearance-range">界面缩放 · {{ Math.round(zoom * 100) }}%<input type="range" min="75" max="200" step="5" :value="zoom * 100" aria-label="界面缩放" @input="setZoom(Number(($event.target as HTMLInputElement).value) / 100)"><button class="btn btn-ghost" type="button" @click="setZoom(1)">恢复 100%</button></label>
         <p v-if="zoomError" role="status">{{ zoomError }}</p>
         <ToggleSwitch v-if="themeStyle === 'atelier'" class="appearance-check" :model-value="reducedGlass" label="降低玻璃效果" @update:model-value="setReducedGlass">
-          <span>降低玻璃效果<small>使用更稳定的底色，减少透光与背景干扰。</small></span>
+          <span>降低玻璃效果</span>
         </ToggleSwitch>
         <p v-if="themeStyle === 'atelier'" class="appearance-note">系统开启减少透明度或高对比度时，会自动降低玻璃效果。</p>
       </div>
@@ -106,8 +105,8 @@ const themeChoices = [
   { value: 'dark', label: '深色' },
 ] as const
 const styleChoices = [
-  { value: 'atelier', label: '绘遇画室', description: '柔和手绘 · 纸页留白' },
-  { value: 'terraria', label: '泰拉瑞亚', description: '像素森林 · 方块边框' },
+  { value: 'atelier', label: '绘遇画室' },
+  { value: 'terraria', label: '泰拉瑞亚' },
 ] as const
 const motionChoices = [
   { value: 'system', label: '跟随系统' },

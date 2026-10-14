@@ -12,7 +12,7 @@
       :options="[...desktopPages, { value: 'last', label: '回到上次工作页' }]"
       @update:model-value="saveStartPageValue"
     />
-    <p class="desktop-preferences-note" role="status">{{ feedback || '仅记住页面位置；从作品或场景打开时仍进入对应内容。' }}</p>
+    <p v-if="feedback" class="desktop-preferences-note" role="status">{{ feedback }}</p>
     <button v-if="saveFailed" type="button" class="btn btn-ghost btn-sm" @click="saveStartPageValue(startPage)">重试保存</button>
   </section>
 </template>

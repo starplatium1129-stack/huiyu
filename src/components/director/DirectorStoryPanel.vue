@@ -8,7 +8,6 @@
     <label class="visual-description-label" for="visualDescription">画面描述 · Visual description</label>
     <textarea id="visualDescription" class="visual-description-input" v-model="pb.visualDescription"
       placeholder="描述角色的动作、表情、服装，以及周围的光线…"></textarea>
-    <p class="visual-description-hint">故事记录这一刻的情绪；画面描述写清希望在图中看到的细节。</p>
     <div v-if="pb.activeScene" class="scene-context">
       <span class="scene-context-title">{{ pb.activeScene.title }}</span>
       <button class="btn btn-ghost btn-sm scene-context-detach" type="button" @click="detachScene()"><ArchiveIcon name="close" />解除场景绑定</button>

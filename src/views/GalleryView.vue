@@ -95,7 +95,6 @@
         class="gallery-loading-wall"
         kind="loading"
         title="正在读取本地作品档案"
-        message="先建立展墙结构，再逐张解码原图。"
       />
       <ArchiveStatePanel
         v-if="galleryError"
@@ -110,7 +109,6 @@
         v-if="!galleryLoading && !galleryError && !history.length"
         kind="empty"
         title="展墙还在等你的第一幅作品"
-        message="每幅画作都会以属于它的原画比例，静静珍藏在这本私属画册里。"
       >
         <template #illustration><img class="gallery-empty-art" :src="galleryEmptyArt" width="1774" height="887" alt="" aria-hidden="true" draggable="false" /></template>
         <RouterLink class="btn btn-primary" to="/prompt-builder">开始绘制</RouterLink>
@@ -119,7 +117,6 @@
         v-else-if="!galleryLoading && history.length && !visible.length"
         kind="filtered"
         title="当前筛选下没有作品"
-        message="所有心动画作仍在本地画册中，重置或放宽筛选即可重新翻阅。"
       >
         <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>

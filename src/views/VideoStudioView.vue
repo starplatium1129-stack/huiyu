@@ -4,7 +4,6 @@
       <div>
         <div class="page-kicker">画室 / 影像创作</div>
         <h1 class="page-title">故事短片</h1>
-        <p class="page-subtitle">让这一幕，继续发生。</p>
       </div>
       <div class="video-header-actions">
       <span class="video-connection" :data-state="archiveState" role="status">{{ archiveStatus }}</span>
@@ -32,7 +31,7 @@
       </StudioTooltip>
     </section>
     <div class="video-mode-context">
-      <p id="video-mode-description"><span>{{ modes.find(mode => mode.id === selectedMode)?.description }}</span><strong>{{ modeBadge(selectedMode) }}</strong></p>
+      <p id="video-mode-description"><strong>{{ modeBadge(selectedMode) }}</strong></p>
       <nav v-if="selectedMode !== 'shots'" class="video-jump-nav tw:p-s-1 tw:rounded-pill" data-fluid-glass aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">镜头描述</a><a href="#video-settings">画幅与时长</a><a href="#video-queue">查看成片</a></nav>
     </div>
     <VideoGenerationBar v-if="selectedMode !== 'shots'" id="video-settings"
@@ -59,12 +58,8 @@
           <label v-else class="video-upload-drop video-upload-drop--single" :data-busy="uploadingImage || undefined">
             <input type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
             <ArchiveIcon name="image" />
-            <strong>{{ uploadingImage ? '正在准备首帧…' : '选一幅画，让故事继续' }}</strong>
-            <span>上传首帧，或从画室一键带入。</span>
+            <strong>{{ uploadingImage ? '正在准备首帧…' : '上传首帧' }}</strong>
           </label>
-          <p v-if="videoImageUrl" class="video-install-note">
-            输入首帧 · 故事的起点，生成的短片将在「当前成片」中展示。选择「跟随原图」保留比例。
-          </p>
         </section>
 
         <section v-else-if="selectedMode === 'first-last-frame'" id="video-frames" class="video-panel video-first-frame-panel">
@@ -82,7 +77,7 @@
               <label v-else class="video-upload-drop" :data-busy="uploadingImage || undefined">
                 <input type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
                 <ArchiveIcon name="image" />
-                <span>上传首帧，或从工作台「生成短片」带入</span>
+                <span>上传首帧</span>
               </label>
               <button v-if="videoImageUrl" class="btn btn-ghost btn-block" type="button" @click="clearFirstFrame">移除首帧</button>
             </div>
@@ -97,9 +92,6 @@
               <button v-if="lastFrameUrl" class="btn btn-ghost btn-block" type="button" @click="clearLastFrame">移除尾帧</button>
             </div>
           </div>
-          <p class="video-install-note">
-            两张图都是输入画面。在镜头描述中写下它们之间发生的动作，生成后再检查实际过渡；选择「跟随原图」可沿用首帧比例。
-          </p>
         </section>
 
         <section id="video-brief" class="video-panel video-brief-panel">
@@ -112,7 +104,6 @@
               {{ prompt.length }} / 4000
             </span>
           </div>
-          <p class="video-brief-note">{{ selectedMode === 'text' ? '先写人物与地点，再写一个动作。短镜头更适合一件清楚的小事。' : selectedMode === 'image' ? '画面已经交代人物与场景，重点写动作、风与光的变化，以及镜头如何移动。' : '写清两幅画面之间的动作与镜头变化，首尾画面相近时更容易保持连贯。' }}</p>
           <textarea
             v-model="prompt"
             aria-label="镜头描述"
@@ -178,7 +169,6 @@
               <label class="field">
                 <span class="field-label">固定 Seed</span>
                 <input v-model="seedText" class="input input-mono" inputmode="numeric" placeholder="留空则随机" />
-                <span class="field-hint">填写相同数值可复用随机种子。</span>
               </label>
             </div>
           </details>
@@ -201,7 +191,7 @@
           </div>
           <div v-if="!job" class="video-queue-empty">
             <ArchiveIcon name="play" />
-            <span><strong>短片会在这里与你见面</strong>准备镜头与画面后开始生成。这里会显示进度、失败原因和完成的短片。</span>
+            <strong>暂无成片</strong>
           </div>
           <template v-else>
             <div class="video-job-head">

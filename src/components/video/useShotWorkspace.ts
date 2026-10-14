@@ -189,7 +189,7 @@ export function useShotWorkspace(props: {
             return '逐镜串行排队，可离开页面；失败镜头可单独重抽。';
         if (!props.status?.online)
             return '控制面板启动 ComfyUI 后，回到这里重新检测即可。';
-        return '服务端按官方三段式组装提示词；开启衔接时自动抽取上一镜尾帧。';
+        return '';
     });
     const batchStatusLabel = computed(() => ({
         running: '正在逐镜生成…',

@@ -1,9 +1,9 @@
 <template>
   <article class="page color-script-page creative-library-page">
-    <CreativeLibraryHeader title="色彩情绪" description="选一种心情，把这一幕的色彩与光照带入工作台。" />
+    <CreativeLibraryHeader title="色彩情绪" />
 
     <section class="color-selection" data-route-arrive aria-labelledby="mood-palette-title">
-    <header class="color-section-heading"><h2 id="mood-palette-title">今日心境色板</h2><p>六种情绪，从你想讲述的片刻开始。</p></header>
+    <header class="color-section-heading"><h2 id="mood-palette-title">心境色板</h2></header>
     <div ref="moodGrid" class="mood-grid color-mood-grid">
       <button
         v-for="m in MOODS" :key="m.id"
@@ -55,14 +55,12 @@
           <button class="btn btn-ghost" type="button" @click="resetMood"><ArchiveIcon name="refresh" /> 换一个情绪</button>
         </div>
       </section>
-    <p v-if="!selected" class="color-selection-hint"><ArchiveIcon name="palette" />选中一种情绪后，在这里查看色板与光照，再带入工作台。</p>
 
     <details class="color-reading">
-      <summary><ArchiveIcon name="book" /><span><strong>光色手帖</strong><small>光源对照、氛围观察与提示词用法</small></span><ArchiveIcon name="chevron-down" /></summary>
+      <summary><ArchiveIcon name="book" /><strong>光色手帖</strong><ArchiveIcon name="chevron-down" /></summary>
       <div class="color-reading-body" data-disclosure-content>
     <ColorLightNotebook @choose="chooseMood" />
     <h2 class="section-title">美术指导 · 色彩语言</h2>
-    <p class="note tw:mb-s-3 tw:text-body-sm tw:text-muted">写下提示词前，先问自己：“这段文字是否准确勾勒出了心中的氛围与情绪？”</p>
     <div class="art-ref">
       <div class="art-ref-card good">
         <div class="art-ref-title"><ArchiveIcon name="success" /> 推荐使用</div>
@@ -79,7 +77,6 @@
     </div>
 
     <h2 class="section-title spaced">光影指导 · 让光芒诉说故事</h2>
-    <p class="note tw:mb-s-3 tw:text-body-sm tw:text-muted">每一束光线都有出现的理由，它服务于此刻的空气、时间与叙事。</p>
     <div class="lighting-ref">
       <div v-for="l in LIGHTINGS" :key="l.name" class="lighting-mini">
         <div class="lighting-icon"><ArchiveIcon :name="l.iconName" /></div>
@@ -192,20 +189,15 @@ function exportTxt() {
 <style scoped>@reference "../assets/css/tailwind.css";
 .color-section-heading, .palette-result-heading { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-4; }
 .color-section-heading h2, .palette-result-heading h2 { @apply tw:m-0; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
-.color-section-heading p { @apply tw:m-0 tw:text-secondary tw:text-body-sm; }
 .color-mood-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr)); }
 .palette-result-heading > div > p { @apply tw:m-0 tw:mb-s-2 tw:text-accent tw:text-label-xs; }
 .palette-result-heading h2 { @apply tw:flex tw:items-center tw:gap-s-2; }
 .palette-result-heading h2 .archive-icon { @apply tw:text-accent; }
 .palette-content { @apply tw:grid tw:gap-s-5 tw:mb-s-4; grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr)); align-items:start; }
-.color-selection-hint { @apply tw:flex tw:items-center tw:gap-s-2 tw:text-secondary tw:text-body-sm tw:leading-body; padding-block:var(--s-4); }
-.color-selection-hint .archive-icon { @apply tw:text-accent; }
 .color-reading { @apply tw:mt-s-6; border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); }
 .color-reading > summary { @apply tw:flex tw:items-center tw:gap-s-3 tw:min-h-[72px] tw:cursor-pointer; list-style:none; padding-block:var(--s-3); }
 .color-reading > summary::-webkit-details-marker { display:none; }
-.color-reading > summary > span { @apply tw:grid tw:gap-s-1; }
 .color-reading > summary strong { @apply tw:text-primary tw:text-body tw:font-semibold; }
-.color-reading > summary small { @apply tw:text-secondary tw:text-body-sm; }
 .color-reading > summary > .archive-icon:first-child { @apply tw:text-accent tw:w-[24px] tw:h-[24px]; }
 .color-reading > summary > .archive-icon:last-child { @apply tw:ml-auto tw:text-muted; }
 .color-reading[open] > summary > .archive-icon:last-child { transform:rotate(180deg); }

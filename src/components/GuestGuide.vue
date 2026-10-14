@@ -6,37 +6,19 @@
     class="guest-guide tw:fixed tw:grid tw:p-s-5"
     role="dialog"
     aria-modal="true"
-    aria-describedby="guest-guide-description"
+    :aria-describedby="isLocalHost ? undefined : 'guest-guide-description'"
     aria-label="访客导览"
     @click.self="dismiss"
   >
     <div class="guest-guide-card">
       <div class="guest-guide-body">
-        <span class="guest-guide-kicker tw:text-accent">初次见面 · {{ isLocalHost ? '一次导览' : '访客导览' }}</span>
         <h2 id="guest-guide-title">欢迎来到 绘遇</h2>
-
-        <!-- 本机主人：讲的是「怎么上手」，不是「这是谁的电脑」 -->
-        <template v-if="isLocalHost">
-          <p id="guest-guide-description">
-            可以先配置模型，也可以从喜欢的角色与场景开始逛。
-          </p>
-          <ul>
-            <li><strong>选场景</strong>：找到喜欢的角色与故事。</li>
-            <li><strong>去绘制</strong>：调整画面，生成第一张作品。</li>
-            <li><strong>回看作品</strong>：收藏、整理或继续创作。</li>
-          </ul>
-        </template>
-
-        <!-- 远程访客：原有的访客视角文案 -->
-        <template v-else>
-          <p id="guest-guide-description">
-            欢迎来逛朋友的创作间，看看场景与作品，或去角色房间聊聊天。
-          </p>
-          <ul>
-            <li>生成任务在分享者的电脑上执行。</li>
-            <li>聊天配音可在角色房间随时关闭。</li>
-          </ul>
-        </template>
+        <nav class="guest-guide-destinations" aria-label="开始创作">
+          <RouterLink to="/scene-explorer" @click="dismiss"><ArchiveIcon name="scene" /><strong>选场景</strong></RouterLink>
+          <RouterLink to="/prompt-builder" @click="dismiss"><ArchiveIcon name="palette" /><strong>绘制</strong></RouterLink>
+          <RouterLink to="/gallery" @click="dismiss"><ArchiveIcon name="gallery" /><strong>我的作品</strong></RouterLink>
+        </nav>
+        <p v-if="!isLocalHost" id="guest-guide-description">生成任务在分享者的电脑上执行。</p>
       </div>
       <div class="guest-guide-actions tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:flex-wrap">
         <!-- docs/ 由网关静态托管（server.js /docs），42 份文档此前在应用内零入口 -->
@@ -53,6 +35,7 @@
 
 <script setup lang="ts">
 import FluidTransition from '@/components/visual/FluidTransition.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { settingsRepository, GUEST_GUIDE_DISMISSED_SETTING } from '@/storage/settingsRepository.ts'
@@ -111,14 +94,15 @@ function dismiss() {
   background: var(--bg-surface);
   box-shadow: var(--shadow-lg);
 }
-.guest-guide-kicker {
-  font: 700 var(--fs-mono-xs) var(--font-mono);
-  letter-spacing: .14em;
-}
 .guest-guide-body h2 { margin: var(--s-1) 0 var(--s-2); }
 .guest-guide-body p { margin: 0 0 var(--s-3); @apply tw:text-secondary tw:leading-loose; }
-.guest-guide-body ul { @apply tw:m-0 tw:pl-s-4 tw:grid tw:gap-s-2 tw:text-secondary; }
 .guest-guide-body strong { @apply tw:text-primary; }
+.guest-guide-destinations { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); margin-block:var(--s-4); }
+.guest-guide-destinations a { display:grid; justify-items:center; gap:var(--s-3); padding:var(--s-4) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--accent); background:var(--bg-elevated); text-decoration:none; }
+.guest-guide-destinations a:hover { border-color:var(--accent); }
+.guest-guide-destinations a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.guest-guide-destinations .archive-icon { width:28px; height:28px; }
+.guest-guide-destinations strong { font-size:var(--fs-body-sm); }
 .guest-guide-doc {
   text-decoration: underline; text-underline-offset: 3px;
 }

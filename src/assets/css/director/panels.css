@@ -290,7 +290,6 @@
   .pb .sd-budget-hint.danger { @apply tw:text-danger-text; font-weight:650; }
   @media (max-width: 768px) {
     .pb-topline { @apply tw:items-stretch tw:flex-col tw:gap-s-2 tw:mb-s-2; }
-    .pb-sub { @apply tw:hidden; }
     .pb-top-actions { @apply tw:justify-between tw:w-full; }
     .pb .api-status { border-left:0; @apply tw:pl-0 tw:ml-0; }
     .pb .focus-mode-label { @apply tw:hidden; }

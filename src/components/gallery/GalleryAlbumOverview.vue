@@ -1,15 +1,14 @@
 <template>
   <div>
-    <div v-if="!loading && !error" class="album-overview-actions">
-      <p>{{ characters ? '同一位角色，不同的故事。' : '把喜欢的作品，整理成册。' }}</p>
-      <template v-if="!characters"><button class="btn btn-ghost" type="button" @click="emit('smart')"><ArchiveIcon name="pin" />新建智能画册</button><button v-if="albums.length" class="btn btn-primary" type="button" @click="emit('manual')"><ArchiveIcon name="book" />新建画册</button></template>
+    <div v-if="!characters && !loading && !error" class="album-overview-actions">
+      <button class="btn btn-ghost" type="button" @click="emit('smart')"><ArchiveIcon name="pin" />新建智能画册</button><button v-if="albums.length" class="btn btn-primary" type="button" @click="emit('manual')"><ArchiveIcon name="book" />新建画册</button>
     </div>
     <GalleryProjectAlbums v-if="!loading && (!error || albums.length)" :albums="albums" :selected-id="selectedId" :characters="characters" :busy="busy || !!error" @select="emit('select',$event)" @edit="emit('edit',$event)" @remove="emit('remove',$event)" @visible="emit('visible',$event)" />
-    <ArchiveStatePanel v-if="!loading && !error && !albums.length" class="album-empty-state" compact kind="empty" :title="characters ? '还没有角色作品' : '还没有成册的作品'" :message="characters ? '保存作品后，会根据角色信息自动显示在这里。' : '选择作品手动成册，或保存角色与标签条件，让画册持续自动更新。'">
+    <ArchiveStatePanel v-if="!loading && !error && !albums.length" class="album-empty-state" compact kind="empty" :title="characters ? '还没有角色作品' : '还没有成册的作品'">
       <template #illustration><img class="album-empty-art" :src="characters ? characterArt : collectionArt" width="512" height="512" alt="" decoding="async" draggable="false" /></template>
       <button v-if="!characters" class="btn btn-primary" type="button" :disabled="!hasHistory" @click="emit('manual')">选择作品成册</button><button class="btn btn-ghost" type="button" @click="emit('images')">查看作品展墙</button>
     </ArchiveStatePanel>
-    <ArchiveStatePanel v-if="loading || error" :kind="error ? 'error' : 'loading'" :title="error ? '画册读取失败' : '正在整理画册'" :message="error || '正在读取角色与作品目录。'">
+    <ArchiveStatePanel v-if="loading || error" :kind="error ? 'error' : 'loading'" :title="error ? '画册读取失败' : '正在整理画册'" :message="error">
       <button v-if="error" class="btn btn-primary" type="button" @click="emit('retry')">重新读取</button>
     </ArchiveStatePanel>
   </div>
@@ -30,7 +29,6 @@ const emit = defineEmits<{ select: [id: string]; edit: [id: string]; remove: [id
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .album-overview-actions { @apply tw:flex tw:items-center tw:justify-end tw:flex-wrap tw:gap-s-2 tw:mb-s-4; }
-.album-overview-actions p { @apply tw:m-0 tw:text-secondary tw:text-label-sm tw:leading-body; margin-right:auto; flex:1 1 260px; }
 .album-empty-state { width:100%; max-width:none; }
 .album-empty-art { display:block; width:clamp(180px,20vw,260px); height:auto; margin:auto; }
 </style>

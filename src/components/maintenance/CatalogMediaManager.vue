@@ -29,7 +29,7 @@
               <span class="catalog-sample-copy"><strong>{{ item.title }}</strong><small>{{ characterNames[item.characterId] || '未命名角色' }} · {{ item.kind === 'blueprint' ? '蓝图' : '故事' }}</small></span>
             </button>
           </div>
-          <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="没有找到匹配的内容" message="换一个关键词或清除筛选试试。" />
+          <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="没有匹配的内容" />
           <nav class="catalog-pagination" aria-label="样张分页"><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page <= 1" @click="page--">上一页</button><span role="status">{{ result?.page ?? page }} / {{ totalPages }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page >= totalPages" @click="page++">下一页</button></nav>
         </section>
         <section ref="previewPane" v-content-motion:fade="selectedImageId" class="catalog-media-detail" aria-label="当前样张">
@@ -38,17 +38,17 @@
             <h3>{{ selectedImageTitle }}</h3>
             <div class="catalog-actions"><button class="btn btn-primary" type="button" :disabled="uploadBusy || manifestLoading || !!manifestError" @click="pickShowcase"><ArchiveIcon name="upload" />{{ uploadBusy ? '正在保存图片…' : hasShowcase(selectedImageId) ? '替换这张样张' : '上传第一张样张' }}</button></div>
             <div class="catalog-media-canvas"><RuntimeImage v-if="showcaseUrl" :src="showcaseUrl" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="selectedImageTitle" @error="onShowcaseMissing" /><span v-else>图片暂不可用，可以重新上传</span></RuntimeImage><span v-else>{{ manifestLoading ? '正在读取样张…' : '还没有样张，选一张图为它补上。' }}</span></div>
-            <p class="catalog-note">选择图片后自动保存，支持 PNG、JPEG、WebP，最大 15 MB。原图和缩略图一起更新，旧图自动备份。</p>
+            <p class="catalog-note">PNG / JPEG / WebP · ≤15 MB · 自动保存 · 旧图备份</p>
           </template>
-          <div v-else class="catalog-media-empty"><ArchiveIcon name="gallery" /><h3>选一张样张，看看它的故事</h3><p>从左边选择内容，就能预览或补上图片。</p></div>
+          <div v-else class="catalog-media-empty"><ArchiveIcon name="gallery" /><h3>选择样张</h3></div>
           <input ref="showcaseFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onShowcasePicked" />
         </section>
       </div>
     </template>
     <template v-else>
-      <header class="catalog-media-intro"><div><h2>首页的第一眼</h2><p>宁宁和夏目的首页封面可以分别更换，随时恢复内置图。</p></div></header>
+      <header class="catalog-media-intro"><h2>首页封面</h2></header>
       <div class="catalog-hero-grid"><button v-for="hero in homeHeroes" :key="hero.id" class="catalog-hero-card" type="button" :aria-pressed="selectedHeroId === hero.id" @click="previewHero(hero)"><RuntimeImage :src="hero.image" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="hero.title + '的首页封面'" /><ArchiveIcon v-else name="image" /></RuntimeImage><span><strong>{{ hero.title }}</strong><small>{{ hero.updatedAt ? '自定义封面 · ' + hero.updatedAt : '使用内置封面' }}</small></span></button></div>
-      <section v-if="selectedHeroId" v-content-motion:fade="selectedHeroId" class="catalog-hero-editor"><div class="catalog-media-canvas"><RuntimeImage :src="heroUrl" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="selectedHeroTitle + '的首页封面预览'" /></RuntimeImage></div><div><h3>{{ selectedHeroTitle }}的首页封面</h3><p class="catalog-note">更换后首页即可使用这张图，角色立绘和场景样张分别维护。</p><div class="catalog-actions"><button class="btn btn-primary" type="button" :disabled="uploadBusy" @click="pickHero">{{ uploadBusy ? '正在保存图片…' : '替换封面' }}</button><button class="btn btn-ghost" type="button" :disabled="uploadBusy" @click="resetHero">恢复内置图</button></div></div></section>
+      <section v-if="selectedHeroId" v-content-motion:fade="selectedHeroId" class="catalog-hero-editor"><div class="catalog-media-canvas"><RuntimeImage :src="heroUrl" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="selectedHeroTitle + '的首页封面预览'" /></RuntimeImage></div><div><h3>{{ selectedHeroTitle }}的首页封面</h3><div class="catalog-actions"><button class="btn btn-primary" type="button" :disabled="uploadBusy" @click="pickHero">{{ uploadBusy ? '正在保存图片…' : '替换封面' }}</button><button class="btn btn-ghost" type="button" :disabled="uploadBusy" @click="resetHero">恢复内置图</button></div></div></section>
       <input ref="heroFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onHeroPicked" />
     </template>
     </div>

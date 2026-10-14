@@ -54,7 +54,6 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
           </div>
         </div>
       </div>
-      <p class="generation-note">条件与文本、标签、收藏及画册同时生效。只检索作品保存的记录；“未记录”不会补成默认生成参数。</p>
       <p v-if="projectUnavailable" class="generation-error" role="status">当前画册已不存在，当前条件下无结果；可选择全部项目或重置筛选。</p>
       <div class="generation-actions">
         <button v-if="filterCount" class="btn btn-ghost btn-sm" type="button" @click="emit('clear')">清除生成条件</button>

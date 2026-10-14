@@ -21,9 +21,6 @@
   @apply tw:rounded-md tw:text-body;
 }
 .speech-title-lockup strong { @apply tw:block tw:text-label-sm tw:text-primary; }
-.speech-title-lockup > div > span {
-  @apply tw:block tw:text-label-xs tw:text-muted tw:mt-[4px];
-}
 .speech-storage-note {
   @apply tw:text-mono-xs tw:text-muted;
 }

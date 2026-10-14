@@ -3,7 +3,6 @@
     <section class="scene-atlas" :data-companion="companionId" aria-labelledby="sceneAtlasTitle">
       <div class="scene-atlas-copy">
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
-        <p class="scene-atlas-note">挑一幕心动，让故事从这里开始。</p>
       </div>
       <div class="curation-intro">
         <figure class="scene-atlas-portrait" aria-label="陪伴角色">
@@ -80,8 +79,8 @@
         <button v-for="filter in activeFilters" :key="filter.key" type="button" :aria-label="'移除筛选：' + filter.label" @click="filter.clear()">{{ filter.label }}<ArchiveIcon name="close" /></button>
       </div>
 
-      <div v-if="searchQuery" class="search-intent" aria-live="polite">
-        {{ searchIntent.expansion }}<template v-if="searchIntent.intents.length">已理解为：<strong>{{ searchIntent.intents.join(' · ') }}</strong>。</template><template v-else>{{ searchIntent.description }}</template>{{ searchIntent.personal }}
+      <div v-if="searchQuery && searchIntent.intents.length" class="search-intent" aria-live="polite">
+        匹配：<strong>{{ searchIntent.intents.join(' · ') }}</strong>
       </div>
 
       <!-- 精细筛选默认收起 -->
@@ -116,7 +115,6 @@
       v-if="loading && !scenes.length"
       kind="loading"
       title="正在读取场景档案"
-      message="正在载入角色场景、策展层级和本机偏好。"
     />
     <ArchiveStatePanel
       v-else-if="loadError"
@@ -130,13 +128,11 @@
       v-else-if="scenes.length === 0"
       kind="empty"
       title="场景档案目前为空"
-      message="本地场景数据已读取，但还没有可浏览的场景记录。"
     />
     <ArchiveStatePanel
       v-else-if="!loading && paged.length === 0"
       kind="filtered"
       title="没有符合当前条件的场景"
-      message="可尝试更换关键词或重置筛选，浏览完整场景档案。"
     >
       <button class="btn btn-primary" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>

@@ -1,6 +1,6 @@
 <template>
   <section class="catalog-editor" aria-label="编写内容">
-    <header class="catalog-editor-head"><span class="catalog-editor-kind"><ArchiveIcon :name="icon" /></span><div><p>{{ CATALOG_LABELS[record.kind] }}</p><h2>{{ title }}</h2><span>{{ instruction }}</span></div><small v-if="!record.revision" class="catalog-new-badge">新内容</small></header>
+    <header class="catalog-editor-head"><span class="catalog-editor-kind"><ArchiveIcon :name="icon" /></span><div><p>{{ CATALOG_LABELS[record.kind] }}</p><h2>{{ title }}</h2></div><small v-if="!record.revision" class="catalog-new-badge">新内容</small></header>
     <template v-if="record.kind !== 'document'">
       <details v-for="section in sections" :key="section" class="catalog-writing-section" :open="defaultOpen(section)">
         <summary><span>{{ sectionLabel(section) }}</span><ArchiveIcon name="chevron-down" /></summary>
@@ -11,7 +11,7 @@
             <StudioSelect v-else-if="selectionOptions(field).length" :model-value="String(fieldValue(record.data, field.path) ?? '')" :label="field.label" :disabled="disabled || locked(field.path)" :options="selectionOptions(field)" @update:model-value="update(field, String($event))" />
             <textarea v-else-if="field.type === 'long' || field.type === 'list'" class="input" :value="text(field)" :rows="field.path === 'story' || field.path === 'profile.bg_story' ? 7 : 4" :disabled="disabled || locked(field.path)" :placeholder="placeholder(field)" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea>
             <input v-else class="input" :value="text(field)" :disabled="disabled || locked(field.path)" :placeholder="placeholder(field)" @input="update(field, ($event.target as HTMLInputElement).value)" />
-            <span v-if="field.type === 'list'" class="catalog-field-note">每行写一项就好</span>
+            <span v-if="field.type === 'list'" class="catalog-field-note">每行一项</span>
           </label>
         </div>
       </details>
@@ -20,21 +20,20 @@
     <details class="catalog-advanced catalog-management-info" :open="!record.revision">
       <StudioDisclosureSummary>管理信息</StudioDisclosureSummary>
       <div data-disclosure-content class="form-grid">
-        <label class="form-group"><span class="field-label">内部编号</span><input v-model="record.id" class="input" :disabled="!!record.revision || disabled || record.kind === 'outfit'" /><span class="catalog-field-note">用于关联资料，已有编号保持不变</span></label>
-        <label class="form-group"><span class="field-label">展示位置</span><input v-model.number="record.sortOrder" class="input" type="number" step="1" :disabled="disabled" /><span class="catalog-field-note">数字越小，在列表中越靠前</span></label>
+        <label class="form-group"><span class="field-label">内部编号</span><input v-model="record.id" class="input" :disabled="!!record.revision || disabled || record.kind === 'outfit'" /></label>
+        <label class="form-group"><span class="field-label">排序（小值优先）</span><input v-model.number="record.sortOrder" class="input" type="number" step="1" :disabled="disabled" /></label>
         <label v-for="field in fields.filter(f => technicalPaths.has(f.path))" :key="field.path" class="form-group"><span class="field-label">{{ field.label }}</span><textarea v-if="field.type === 'list'" class="input" rows="2" :value="text(field)" :disabled="disabled || locked(field.path)" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea><input v-else class="input" :value="text(field)" :disabled="disabled || locked(field.path)" @input="update(field, ($event.target as HTMLInputElement).value)" /></label>
       </div>
     </details>
     <details v-if="!systemDocument" class="catalog-advanced">
       <StudioDisclosureSummary>完整数据与扩展设置</StudioDisclosureSummary><div data-disclosure-content>
-      <p class="catalog-note">只在需要调整表单之外的信息时使用。</p>
       <textarea v-model="advanced" class="input" rows="12" aria-label="完整内容数据" :disabled="disabled"></textarea>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="disabled" @click="applyAdvanced">应用这些设置</button></div>
     </details>
     <p v-if="error" role="alert" class="catalog-error">{{ error }}</p>
     <p v-if="generated" class="catalog-note">这份内容来自已有画面。名称和说明可以修改，原来的生成描述会保留。</p>
     <footer class="catalog-editor-footer">
-      <span>{{ systemDocument ? '这份资料由专门流程维护，可在这里查看' : '暂存后，可以继续整理其他内容' }}</span>
+      <span v-if="systemDocument">系统资料 · 只读</span>
       <div class="catalog-actions">
         <button v-if="record.revision && record.kind !== 'document'" class="catalog-text-button" type="button" :disabled="disabled" @click="$emit('remove')">归档</button>
         <button v-if="record.kind !== 'document'" class="btn btn-ghost" type="button" :disabled="disabled" @click="$emit('duplicate')">复制一份</button>
@@ -59,7 +58,6 @@ defineEmits<{ stage: []; duplicate: []; remove: [] }>()
 const fields = computed(() => CATALOG_FIELDS[record.value.kind]), sections = computed(() => [...new Set(fields.value.map(f => f.section))])
 const title = computed(() => recordTitle(record.value) === '未命名内容' ? '从这里开始写' : recordTitle(record.value))
 const icon = computed<ArchiveIconName>(() => ({ character: 'character', outfit: 'image', scene: 'scene', blueprint: 'spark', document: 'manager' } as const)[record.value.kind])
-const instruction = computed(() => ({ character: '写下人物的来历、性格与外观。', outfit: '留住这套服装的样子，之后就容易找到了。', scene: '故事从一个瞬间开始，画面细节也可以慢慢补全。', blueprint: '把脑海中的画面整理成一份创作方案。', document: '整理常用资料，让创作更容易继续。' } as const)[record.value.kind])
 const technicalPaths = new Set(['outfit.id', 'popular.exactTokens', 'popular.exactPrefixes', 'popular.supportedEngines', 'profile.portrait', 'compositionIntent', 'coverageTags'])
 const advanced = ref(''), error = ref('')
 const generated = computed(() => !!fieldValue(record.value.data, 'generatedRecipe'))

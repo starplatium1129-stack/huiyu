@@ -1,6 +1,6 @@
 <template>
   <article class="page scenario-page creative-library-page">
-    <CreativeLibraryHeader title="剧本模式" description="选一本故事手帖，从一幕心动，翻到故事的结尾。" />
+    <CreativeLibraryHeader title="剧本模式" />
     <header class="scenario-library-heading">
       <div><h2>选一本故事手帖</h2><p>{{ SCENARIOS.length }} 本故事 · 封面为氛围参考</p></div>
       <div class="char-toggle studio-segments" data-fluid-glass role="group" aria-label="剧本角色">
@@ -40,7 +40,7 @@
             <div class="act-actions"><button class="btn btn-ghost" type="button" @click="copyPrompt(a)"><ArchiveIcon name="copy" />复制本幕 Prompt</button></div>
           </article>
         </div>
-        <footer class="scenario-handoff"><p>把这些片刻连成故事，或从第一幕开始绘制。</p><RouterLink :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, char: currentChar } }" class="btn btn-ghost"><ArchiveIcon name="scene" />前往工作台绘制</RouterLink></footer>
+        <footer class="scenario-handoff"><RouterLink :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, char: currentChar } }" class="btn btn-ghost"><ArchiveIcon name="scene" />前往工作台绘制</RouterLink></footer>
       </section>
     </div>
   </article>

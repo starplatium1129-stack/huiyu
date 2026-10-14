@@ -1,12 +1,11 @@
 <template>
   <article ref="archiveRoot" class="page character-page library-page character-editorial" style="--page-max:1600px">
-    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1><p>{{ showShelf ? '翻开画卷，与下一位心动主角相遇。' : '读懂她的心事，让相遇成为故事。' }}</p></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
+    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
 
     <ArchiveStatePanel
       v-if="loading"
       kind="loading"
       title="正在读取角色档案"
-      message="主角资料与立绘正在轻声载入…"
     />
     <ArchiveStatePanel
       v-else-if="loadError"
@@ -20,7 +19,6 @@
       v-else-if="!characters.length"
       kind="empty"
       title="角色档案暂未收录"
-      message="本地角色资料已就绪，当前暂无可浏览的角色记录。"
     />
     <template v-else>
         <CharacterBookshelf v-show="showShelf" v-content-motion:up="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" :initial-state="initialShelf" @select="selectCharacter" />
@@ -94,7 +92,7 @@
             <h3 class="lab">绑定 LoRA</h3>
             <div v-if="current.lora.name" class="char-lora">档案登记：<code>{{ current.lora.name }}</code></div>
             <div v-if="current.lora.trigger_words?.length" class="char-lora">触发词：<code>{{ current.lora.trigger_words.join(', ') }}</code></div>
-            <div v-else class="char-lora">当前模型与触发词请在绘图工作台查看。</div>
+            <RouterLink v-else to="/prompt-builder" class="char-lora link">绘图工作台<ArchiveIcon name="chevron-down" /></RouterLink>
           </section>
         </div>
       </details>
@@ -104,7 +102,6 @@
           <div>
             <div class="page-kicker">Persona core</div>
             <h2 class="recommend-title">人设核心场景</h2>
-            <p>先从最像她的瞬间开始；其他换装、AU 与成人向变体仍可在完整场景库中找到。</p>
           </div>
           <a v-if="officialProfileUrl" class="official-link" :href="officialProfileUrl" target="_blank" rel="noreferrer">查看官方人设依据 ↗</a>
         </div>

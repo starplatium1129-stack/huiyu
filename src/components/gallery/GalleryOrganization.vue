@@ -15,7 +15,7 @@
       <label class="organization-field"><span>移除整理标签</span><input v-model="removeText" placeholder="标签用逗号分隔" :disabled="busy" autocomplete="off" /></label>
       <button class="btn btn-primary" type="submit" :disabled="busy || !ids.length || !hasChange || overLimit">{{ busy ? '正在保存…' : albumChoice === 'new' ? `创建画册并加入 ${ids.length} 幅作品` : `整理 ${ids.length} 幅作品` }}</button>
       <p v-if="overLimit" class="organization-error organization-note" role="alert">一次最多整理 {{ ARTWORK_ORGANIZATION_SELECTION_LIMIT.toLocaleString('zh-CN') }} 幅作品，请分批选择以保留完整撤销记录。</p>
-      <p class="organization-note">整理标签用于找图；角色画册与智能画册会随数据更新。加入一本手动画册会移出其他手动画册。</p>
+      <p class="organization-note">加入新手动画册会移出原手动画册。</p>
     </form>
   </section>
 </template>

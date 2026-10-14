@@ -6,11 +6,10 @@
         <button class="btn btn-ghost" type="button" aria-label="关闭模型工作室" @click="close"><ArchiveIcon name="close" /></button>
       </header>
       <div class="model-studio-scroll">
-        <p class="model-studio-note">模型保存在本机。新角色使用独立设定和记忆；语音需另行配置。</p>
         <div class="model-studio-grid">
           <section class="model-preview-panel" aria-label="模型预览">
             <div :id="hostId" class="model-preview-host"></div>
-            <p v-if="!studio.ready.value">{{ studio.busy.value ? '正在处理模型…' : '加载预览后，可观察口型、眨眼和作者动作。' }}</p>
+            <p v-if="!studio.ready.value">{{ studio.busy.value ? '正在处理模型…' : '暂无模型预览' }}</p>
             <div class="model-actions">
               <button class="btn btn-primary" type="button" :disabled="studio.busy.value || studio.saved.value?.disabled || (!studio.inspection.value?.valid && !studio.saved.value)" @click="studio.preview">加载预览</button>
               <button class="btn btn-ghost" type="button" :disabled="!studio.ready.value" @click="studio.stopTest">停止测试并复位</button>
@@ -46,7 +45,6 @@
             </fieldset>
             <details :open="studio.ready.value">
               <StudioDisclosureSummary>口型与眨眼</StudioDisclosureSummary><div data-disclosure-content>
-              <p>先选择参数，再调整闭合与张开值。可以反向；未选择的通道保持作者动画。</p>
               <ModelCalibrationFields title="口型" :binding="studio.mouth" :parameters="studio.parameters.value" :disabled="studio.busy.value" @update="(value, select) => updateBinding(studio.mouth, value, select)" />
               <label>模拟语音电平<input v-model.number="studio.level.value" type="range" min="0" max="1" step="0.02" :disabled="!studio.ready.value" @input="studio.test('mouth')" /></label>
               <ModelCalibrationFields title="左眼" :binding="studio.leftEye" :parameters="studio.parameters.value" :disabled="studio.busy.value" @update="(value, select) => updateBinding(studio.leftEye, value, select)" />
@@ -55,7 +53,6 @@
             </div></details>
             <details v-if="studio.ready.value">
               <StudioDisclosureSummary>作者动作、表情与视线</StudioDisclosureSummary><div data-disclosure-content>
-              <p>名称仅用于识别文件；请逐项观察实际表现。</p>
               <div class="model-actions">
                 <button v-for="name in studio.expressions.value" :key="name" type="button" class="btn btn-ghost" @click="studio.play('expression', name)">{{ name }}</button>
                 <button v-for="motion in studio.motions.value" :key="`${motion.group}-${motion.index}`" type="button" class="btn btn-ghost" @click="studio.play('motion', motion.group, motion.index)">{{ motion.group }} {{ motion.index + 1 }}</button>
@@ -86,7 +83,6 @@
         </div>
       </div>
       <footer class="model-studio-footer">
-        <span>新校准配置使用浏览器渲染；语音需另行配置。</span>
         <button class="btn btn-primary" type="button" :disabled="studio.busy.value || !studio.ready.value || studio.needsReload.value" @click="studio.save">{{ studio.saved.value ? '保存校准配置' : '保存并加入角色列表' }}</button>
       </footer>
     </dialog>

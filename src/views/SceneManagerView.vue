@@ -1,7 +1,7 @@
 <template>
   <article class="page catalog-studio" style="--page-max:1660px">
     <aside class="catalog-sidebar" data-fluid-glass="sidebar" aria-label="内容分类">
-      <div class="catalog-brand"><ArchiveIcon name="manager" /><div><strong>内容工作室</strong><span>让设定与故事慢慢成形</span></div></div>
+      <div class="catalog-brand"><ArchiveIcon name="manager" /><strong>内容工作室</strong></div>
       <div class="catalog-nav-group">
         <span class="catalog-nav-caption">创作资料</span>
         <button v-for="entry in kinds" :key="entry.value" type="button" :aria-current="section === 'records' && kind === entry.value ? 'page' : undefined" :disabled="busy || switchingSection" @click="switchKind(entry.value)">
@@ -15,11 +15,10 @@
         <button type="button" :aria-current="section === 'bulk' ? 'page' : undefined" :disabled="busy || switchingSection" @click="switchSection('bulk')"><ArchiveIcon name="upload" /><span>批量整理</span></button>
         <button type="button" :aria-current="section === 'tools' ? 'page' : undefined" :disabled="busy || switchingSection" @click="switchSection('tools')"><ArchiveIcon name="download" /><span>文件与备份</span></button>
       </div>
-      <p class="catalog-sidebar-note">先选一份内容，补充它的细节。<br />写好以后，记得保存更改。</p>
     </aside>
     <div class="catalog-main" data-route-arrive>
       <header class="catalog-page-head">
-        <div><p class="catalog-breadcrumb">内容工作室 <span>/</span> {{ sectionTitle }}</p><h1>{{ sectionTitle }}</h1><p class="catalog-intro">{{ sectionDescription }}</p></div>
+        <div><p class="catalog-breadcrumb">内容工作室 <span>/</span> {{ sectionTitle }}</p><h1>{{ sectionTitle }}</h1></div>
         <div v-if="section === 'records' || dirty" class="catalog-head-actions">
           <span class="catalog-save-status" :class="{ 'has-changes': dirty }" role="status" aria-live="polite"><i></i>{{ busy ? '正在保存' : dirtyEditor ? '正在编辑' : pending.length ? pending.length + ' 项待保存' : '内容已保存' }}</span>
           <button v-if="pending.length || dirtyEditor" class="btn btn-ghost" type="button" :disabled="busy" @click="reviewEdits">查看修改</button>
@@ -38,18 +37,18 @@
       <div v-if="section === 'portraits'" v-content-motion="section" class="catalog-support-surface"><CharacterArtManager ref="artManager" :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" /></div>
       <div v-else-if="section === 'media'" v-content-motion="section" class="catalog-support-surface"><CatalogMediaManager :record="selected" :character-names="characterNames" /></div>
       <section v-else-if="section === 'tools'" v-content-motion="section" class="catalog-support-surface">
-        <h2>给内容留一份备份</h2><p class="catalog-note">导出完整资料，或者看看之前的图片备份。每份内容的旧版本也可以在编辑区找回。</p>
+        <h2>文件与备份</h2>
         <div class="catalog-tool-options">
-          <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" /><strong>导出全部内容</strong><span>留存当前的角色、服装与故事资料</span></button>
-          <button type="button" :disabled="checking" @click="listBackups"><ArchiveIcon name="image" /><strong>查看图片备份</strong><span>查看样张和封面的历史备份</span></button>
-          <button type="button" :disabled="checking" @click="checkContent"><ArchiveIcon name="manager" /><strong>检查资料关联</strong><span>确认角色、服装和场景的引用是否完整</span></button>
+          <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" /><strong>导出全部内容</strong></button>
+          <button type="button" :disabled="checking" @click="listBackups"><ArchiveIcon name="image" /><strong>查看图片备份</strong></button>
+          <button type="button" :disabled="checking" @click="checkContent"><ArchiveIcon name="manager" /><strong>检查资料关联</strong></button>
         </div>
         <p class="catalog-feedback" role="status" aria-live="polite">{{ toolHint }}</p>
         <div v-for="entry in backups" :key="entry.id" class="catalog-history-row"><span>{{ entry.label }} · {{ catalogDate(entry.createdAt) }}</span><small>{{ entry.fileCount }} 个文件</small></div>
       </section>
       <section v-else-if="section === 'bulk'" v-content-motion="section" class="catalog-support-surface">
-        <h2>把准备好的修改带进来</h2><p class="catalog-note">选择修改文件或完整备份，先看看哪些内容会变化，再决定保存。</p>
-        <label class="catalog-file-picker"><ArchiveIcon name="upload" /><strong>选择整理文件</strong><span>支持修改文件和完整内容备份</span><input type="file" accept="application/json,.json" aria-label="选择整理文件" @change="readBulkFile" /></label>
+        <h2>批量整理</h2>
+        <label class="catalog-file-picker"><ArchiveIcon name="upload" /><strong>选择整理文件</strong><span>JSON · 修改文件 / 完整备份</span><input type="file" accept="application/json,.json" aria-label="选择整理文件" @change="readBulkFile" /></label>
         <details class="catalog-advanced"><StudioDisclosureSummary>直接填写修改数据</StudioDisclosureSummary><div data-disclosure-content><textarea v-model="bulkInput" class="input catalog-bulk-input" rows="10" aria-label="修改数据"></textarea><button class="btn btn-ghost" type="button" :disabled="busy" @click="loadBulk">读取这些修改</button></div></details>
         <p v-if="bulkError" role="alert" class="catalog-error">{{ bulkError }}</p>
         <button v-if="selected && dirtyEditor" class="btn btn-ghost" type="button" @click="section = 'records'">继续编辑草稿</button>
@@ -78,7 +77,7 @@
                 <span class="catalog-row-art"><RuntimeImage v-if="rowImage(item)" :src="rowImage(item)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': item.rating === 'R18' }" /><ArchiveIcon v-else :name="kindIcon(item.kind)" /></RuntimeImage><ArchiveIcon v-else :name="kindIcon(item.kind)" /></span>
                 <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small></span><span v-if="isPending(item)" class="catalog-pending-dot" aria-label="有暂存修改"></span>
               </button>
-              <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="这里还没有匹配的内容" message="换个关键词，或者从一份新内容开始。" />
+              <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="没有匹配的内容" />
             </div>
             <nav class="catalog-pagination" aria-label="内容分页"><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page <= 1" @click="page--" aria-label="上一页">上一页</button><span role="status">{{ page }} / {{ totalPages }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page >= totalPages" @click="page++" aria-label="下一页">下一页</button></nav>
           </section>
@@ -89,7 +88,7 @@
               <details v-if="selected.revision" class="catalog-history"><StudioDisclosureSummary>之前写过的版本</StudioDisclosureSummary><div v-for="entry in history" :key="entry.revision" class="catalog-history-row"><span>{{ catalogDate(entry.at) }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="restore(entry.revision)">找回这一版</button></div><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="compareCurrent">看看最新保存的内容</button></details>
               <section v-if="currentServer" class="catalog-conflict"><h3>这份内容有了新修改</h3><p>你的草稿还在上面。对照最新内容，合并好以后再保存。</p><details><StudioDisclosureSummary>查看最新内容</StudioDisclosureSummary><pre>{{ JSON.stringify(currentServer.data, null, 2) }}</pre></details><button class="btn btn-ghost" type="button" :disabled="busy" @click="adoptRevision">已核对，继续编辑</button></section>
             </template>
-            <div v-else class="catalog-editor-empty"><span class="catalog-empty-illustration"><ArchiveIcon :name="kindIcon(kind)" /></span><p>{{ sectionTitle }}</p><h2>挑一份内容，接着写</h2><span>从左侧选中它，补上设定、故事和画面细节。</span><button v-if="kind !== 'document'" class="btn btn-ghost" type="button" :disabled="busy" @click="add()">也可以从新内容开始</button></div>
+            <div v-else class="catalog-editor-empty"><span class="catalog-empty-illustration"><ArchiveIcon :name="kindIcon(kind)" /></span><h2>选择{{ sectionTitle }}</h2><button v-if="kind !== 'document'" class="btn btn-ghost" type="button" :disabled="busy" @click="add()">新建内容</button></div>
           </section>
         </div>
       </template>
@@ -135,7 +134,6 @@ const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }>
 ]
 const { kind, search, character, category, rating, sort, page, result, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])
-const sectionDescription = computed(() => section.value === 'media' ? '找到场景、替换样张，或者为首页换一张封面。' : section.value !== 'records' ? '把创作资料整理好，留给下一次灵感。' : ({ character: '补充人物的来历与外观，让角色的样子更清晰。', outfit: '整理服装的样子与细节，为角色留住不同的形态。', scene: '写下故事与画面细节，让下一次创作更有依据。', blueprint: '把动作、氛围和镜头整理成一份可用的画面方案。', document: '整理常用词与推荐顺序，让内容更容易被找到。' } as Record<CatalogKind, string>)[kind.value])
 const searchPlaceholder = computed(() => '找一份' + ({ character: '角色资料', outfit: '服装', scene: '故事', blueprint: '画面方案', document: '词库或推荐资料' } as Record<CatalogKind, string>)[kind.value] + '…')
 const hasFilters = computed(() => !!(character.value || category.value || rating.value))
 const sortOptions = [{ value: 'order', label: '按整理顺序' }, { value: 'title', label: '按名称' }, { value: 'newest', label: '最近加入' }, { value: 'updated', label: '最近编辑' }]

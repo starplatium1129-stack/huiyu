@@ -40,11 +40,11 @@ export function useVideoWorkspace() {
 type StudioMode = VideoMode | 'shots'
 
 
-const modes: Array<{ id: StudioMode; label: string; description: string; ready: boolean; icon: ArchiveIconName }> = [
-  { id: 'text', label: '文字成片', description: '一句镜头描述直接生成短片', ready: true, icon: 'play' },
-  { id: 'image', label: '图片动起来', description: '从工作台「生成短片」自动带入首帧，锁定角色与场景', ready: true, icon: 'image' },
-  { id: 'first-last-frame', label: '首尾帧过渡', description: '锁定开始与结束画面', ready: false, icon: 'gallery' },
-  { id: 'shots', label: '分镜短片', description: '多镜头批量生成 · 自动尾帧衔接 · 整片拼接', ready: false, icon: 'gallery' },
+const modes: Array<{ id: StudioMode; label: string; ready: boolean; icon: ArchiveIconName }> = [
+  { id: 'text', label: '文字成片', ready: true, icon: 'play' },
+  { id: 'image', label: '图片动起来', ready: true, icon: 'image' },
+  { id: 'first-last-frame', label: '首尾帧过渡', ready: false, icon: 'gallery' },
+  { id: 'shots', label: '分镜短片', ready: false, icon: 'gallery' },
 ]
 
 
@@ -327,12 +327,11 @@ const submitTitle = computed(() => {
 })
 
 const submitDescription = computed(() => {
-  if (jobActive.value) return '视频任务耗时较长，为避免显存争抢，当前只允许一个页面任务。'
-  if (statusReadError.value) return '上次检测未能确认服务状态；草稿和上次目录已保留，请重新检测。'
-  if (!status.value?.online) return '控制面板启动 ComfyUI 后，回到这里重新检测即可。'
-  if (!activeModel.value?.available) return '页面与原生节点已经就绪，缺失文件会在右侧明确列出。'
-  if (selectedMode.value === 'first-last-frame') return '工作室会锁定首尾两帧画面，中间过渡由模型按描述自由发挥。'
-  return '工作室会自动补全稳定性约束、帧数、采样器与 MP4 输出设置。'
+  if (jobActive.value) return '请等待当前任务完成，或取消任务。'
+  if (statusReadError.value) return '请重新检测服务状态。'
+  if (!status.value?.online) return '在控制面板启动 ComfyUI 后重新检测。'
+  if (!activeModel.value?.available) return '请补齐右侧列出的模型文件。'
+  return ''
 })
 
 const jobStatusLabel = computed(() => ({

@@ -3,6 +3,7 @@
 .model-studio[open] { @apply tw:flex tw:flex-col; }
 .model-studio::backdrop { background: var(--art-backdrop); }
 .model-studio-heading, .model-studio-footer { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:p-s-4; flex: 0 0 auto; }
+.model-studio-footer { justify-content:flex-end; }
 .model-studio-heading { border-bottom: 1px solid var(--border-soft); }
 .model-studio-heading h2 { @apply tw:m-0 tw:text-title-sm; }
 .model-studio-heading small { @apply tw:text-secondary; }
@@ -23,7 +24,7 @@
 .model-studio :disabled { @apply tw:text-disabled; opacity: 1; @apply tw:cursor-not-allowed; }
 .model-studio fieldset { @apply tw:min-w-0; margin: 0 0 var(--s-3); @apply tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; }
 .model-studio legend { padding: 0 var(--s-2); @apply tw:text-body; }
-.model-studio p, .model-studio li, .model-studio-footer span { @apply tw:text-secondary tw:leading-body tw:text-body; overflow-wrap: anywhere; }
+.model-studio p, .model-studio li { @apply tw:text-secondary tw:leading-body tw:text-body; overflow-wrap: anywhere; }
 .model-studio details { padding: var(--s-3) 0; border-bottom: 1px solid var(--border-soft); }
 .model-studio summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); min-height:var(--control-height-sm); padding:var(--s-2); margin-inline:calc(-1 * var(--s-2)); border-radius:var(--r-sm); @apply tw:cursor-pointer tw:text-body tw:text-primary; }
 .model-studio summary:hover { background:var(--bg-hover); }

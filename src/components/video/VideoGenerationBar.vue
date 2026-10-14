@@ -34,7 +34,7 @@ defineEmits<{ generate: [] }>()
           @update:model-value="quality = $event as VideoDefaults['quality']" />
       </label>
     </div>
-    <div id="video-generation-summary" class="video-generation-summary"><strong>{{ submitTitle }}</strong><p>{{ submitDescription }}</p></div>
+    <div id="video-generation-summary" class="video-generation-summary"><strong>{{ submitTitle }}</strong><p v-if="submitDescription">{{ submitDescription }}</p></div>
     <button class="btn btn-primary btn-lg" type="button" aria-describedby="video-generation-summary" :disabled="!canGenerate" @click="$emit('generate')">
       <ArchiveIcon name="play" />{{ submitting ? '正在提交…' : '生成视频' }}
     </button>

@@ -5,7 +5,6 @@
         <span class="speech-mark" aria-hidden="true"><ArchiveIcon name="sound" /></span>
         <div>
           <strong>语音输入</strong>
-          <span>按住说话，松开后识别。</span>
         </div>
       </div>
       <span class="speech-storage-note"><i aria-hidden="true"></i>配置保存在本机</span>
@@ -26,7 +25,6 @@
     <ToggleSwitch v-model="draft.enabled" class="speech-toggle-row" label="启用语音输入">
       <span class="speech-toggle-copy">
         <strong>启用语音输入</strong>
-        <small>聊天输入框旁显示“按住说话”按钮</small>
       </span>
     </ToggleSwitch>
 
@@ -59,14 +57,13 @@
     <ToggleSwitch v-model="draft.autoSend" class="speech-toggle-row speech-toggle-row-sub" label="识别后直接发送">
       <span class="speech-toggle-copy">
         <strong>识别后直接发送</strong>
-        <small>不勾选时先填入输入框，确认后再发送</small>
       </span>
     </ToggleSwitch>
 
-    <ToggleSwitch v-model="draft.wakeEnabled" class="speech-toggle-row speech-toggle-row-sub" label="唤醒词连续对话">
+    <ToggleSwitch v-model="draft.wakeEnabled" class="speech-toggle-row speech-toggle-row-sub" label="自动监听唤醒词">
       <span class="speech-toggle-copy">
-        <strong>唤醒词连续对话</strong>
-        <small>空闲时自动监听，说出唤醒词即可对话，说结束词退出</small>
+        <strong>自动监听唤醒词</strong>
+        <small>唤醒词开始对话 · 结束词退出</small>
       </span>
     </ToggleSwitch>
 

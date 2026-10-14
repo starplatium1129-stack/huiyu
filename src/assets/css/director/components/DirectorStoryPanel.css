@@ -20,4 +20,3 @@
   .pb .visual-description-input { @apply tw:w-full tw:min-h-[88px] tw:p-s-3; background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body tw:leading-loose; outline:none; transition:border-color var(--motion-hover),box-shadow var(--motion-hover); @apply tw:resize-y tw:font-sans tw:box-border; }
   .pb .visual-description-input:focus { @apply tw:border-accent; box-shadow:0 0 0 3px var(--accent-soft); }
   .pb .visual-description-input::placeholder { @apply tw:text-muted; }
-  .pb .visual-description-hint { margin:var(--s-2) 0 0; @apply tw:text-muted tw:text-mono-sm tw:leading-body; }

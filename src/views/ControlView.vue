@@ -36,7 +36,6 @@
             <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
           </a>
         </nav>
-        <div class="control-rail-note"><ArchiveIcon name="coffee" /><p>让工具准备好，<br />把时间留给创作。</p></div>
         <div class="control-rail-foot">
           <RouterLink class="nav-local-home tw:inline-flex tw:items-center tw:gap-s-2" to="/"><ArchiveIcon name="chevron-down" class="tw:rotate-90" />回绘遇</RouterLink>
           <AppThemeToggle /><AppSoundToggle />
@@ -114,7 +113,6 @@
       <section id="control-resources" class="panel-card resource-panel">
         <div class="panel-kicker">常用操作</div>
         <h2 class="panel-heading">显存与运行偏好</h2>
-        <p class="panel-desc">绘图、语音、聊天同时加载容易占满显存。按需切换：先释放，再加载。</p>
         <div class="mode-grid">
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('draw')">
             <span class="mode-title"><ArchiveIcon name="spark" /> Anima 绘图优先<span class="mode-arrow">→</span></span>
@@ -128,7 +126,6 @@
         <ToggleSwitch v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
           <span>打开控制室时自动启动语音<span class="autostart-hint">显存紧张时建议关闭</span></span>
         </ToggleSwitch>
-        <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖角色语音服务。</p>
         <p v-if="(imageProvider !== 'native' && !scripts.comfy) || !scripts.voiceStart" class="script-hint">
           未检测到部分快捷启停脚本（仅影响一键启动，若服务已手动运行仍可正常连接）：
           <span v-if="imageProvider !== 'native' && !scripts.comfy">ComfyUI 脚本 </span>
@@ -147,7 +144,6 @@
       <section id="control-services" class="panel-card service-config-panel">
         <div class="panel-kicker">连接设置</div>
         <h2 class="panel-heading">服务地址与声线</h2>
-        <p class="panel-desc">修改本机地址与角色声线后，统一保存并检测。</p>
 
 
         <label class="field-label" for="comfy-host">ComfyUI 地址</label>
@@ -197,14 +193,13 @@
             </div>
           </div>
         </details>
-        <div class="config-save-row" :aria-busy="savingConfig"><p>自动检测保留未保存的输入。</p><button class="btn btn-primary" type="button" :disabled="savingConfig || opBusy || !statusLoaded" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button></div>
+        <div class="config-save-row" :aria-busy="savingConfig"><button class="btn btn-primary" type="button" :disabled="savingConfig || opBusy || !statusLoaded" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button></div>
       </section>
 
       <!-- 公网分享 -->
       <details id="control-share" class="panel-card share-panel">
         <summary class="panel-summary"><span><span class="panel-kicker">低频管理</span><span class="panel-heading" role="heading" aria-level="2">分享与访问</span></span><span class="summary-state">{{ !statusLoaded || statusError ? '状态待确认' : tunnelActive ? '分享中' : '仅本机' }}<ArchiveIcon name="chevron-down" /></span></summary>
         <div data-disclosure-content class="share-content">
-        <p class="panel-desc">本机访问不需要 Token；公网分享会使用临时 Token。</p>
 
         <div class="tunnel-toggle-row">
           <div class="tunnel-toggle-label">
@@ -225,7 +220,6 @@
           :disabled="actionBusy || opBusy || (!tunnelActive && savingConfig)"
           @click="tunnelActive ? doStop() : doStart()"
         >{{ mainBtnLabel }}</button>
-        <p class="action-note">{{ tunnelActive ? '分享通道运行中；停止只关公网，不影响本机绘图与聊天。' : '启动后生成本地与分享入口。' }}</p>
 
         <div class="access-grid tw:grid tw:gap-s-3">
           <div class="access-card">

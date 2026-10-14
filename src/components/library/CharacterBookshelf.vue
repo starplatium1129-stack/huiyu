@@ -11,7 +11,6 @@
 
     <div class="bookshelf-search-row tw:flex tw:items-center tw:gap-s-4 tw:mt-s-4 tw:pb-s-4">
       <StudioSearch :id="searchId" ref="searchInput" v-model="query" class="bookshelf-search" label="搜索角色、别名或作品" placeholder="搜索角色、别名或作品…" @keydown="onSearchKeydown" />
-      <p class="bookshelf-hint tw:m-0 tw:text-muted tw:text-label tw:leading-body">{{ showingShelf ? '挑一本作品，翻开角色的故事' : '选择角色，查看完整档案' }}</p>
     </div>
 
     <div v-content-motion:up="`${showingShelf}:${series}:${page}`">
@@ -51,7 +50,7 @@
         </button>
       </div>
       <div v-if="!results.length" class="bookshelf-empty tw:text-center tw:text-secondary" role="status">
-        <ArchiveIcon name="search" /><p>没有找到匹配的角色</p><p class="bookshelf-hint tw:m-0 tw:text-muted tw:text-label tw:leading-body">试试角色别名，或换一部作品。</p>
+        <ArchiveIcon name="search" /><p>没有找到匹配的角色</p>
         <button type="button" class="bookshelf-text-button" @click="clearQuery">清除搜索</button>
       </div>
       <nav v-if="pageCount > 1" class="bookshelf-pagination tw:flex tw:items-center tw:justify-center tw:gap-s-5 tw:mt-s-6 tw:text-secondary tw:text-label" aria-label="角色分页">

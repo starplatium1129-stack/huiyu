@@ -14,7 +14,7 @@
     <Teleport to="body">
       <dialog ref="dialog" class="directory-sheet tw:m-auto tw:p-s-5 tw:rounded-xl tw:text-primary tw:overflow-hidden" :aria-labelledby="headingId" @cancel.prevent="motion.close()"
         @click="isBackdropClick($event, dialog) && motion.close()">
-        <header class="directory-sheet-heading tw:flex tw:justify-between tw:gap-s-3 tw:shrink-0"><div><h2 :id="headingId">翻开角色画集</h2><p>按作品寻找，或输入她的名字。</p></div><button class="btn btn-ghost btn-icon" data-fluid-glass type="button" aria-label="关闭角色画集" @click="motion.close()"><ArchiveIcon name="close" /></button></header>
+        <header class="directory-sheet-heading tw:flex tw:justify-between tw:gap-s-3 tw:shrink-0"><h2 :id="headingId">角色画集</h2><button class="btn btn-ghost btn-icon" data-fluid-glass type="button" aria-label="关闭角色画集" @click="motion.close()"><ArchiveIcon name="close" /></button></header>
         <div ref="dialogHost" class="directory-sheet-content tw:flex tw:min-h-0 tw:overflow-hidden"></div>
       </dialog>
     </Teleport>
@@ -74,7 +74,6 @@ onUnmounted(() => media.removeEventListener('change', resizeDirectory))
 .directory-sheet::backdrop { background:var(--art-backdrop); }
 .directory-sheet-heading { align-items:start; }
 .directory-sheet-heading h2 { margin:0 0 var(--s-1); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
-.directory-sheet-heading p { @apply tw:m-0 tw:text-secondary tw:text-body-sm; }
 .directory-sheet-heading button { @apply tw:w-[44px] tw:h-[44px] tw:shrink-0; }
 .directory-sheet-content { flex:1; }
 .directory-sheet-content :deep(.character-directory) { @apply tw:w-full; }

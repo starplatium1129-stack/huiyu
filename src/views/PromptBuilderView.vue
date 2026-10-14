@@ -31,7 +31,7 @@
             <RouterLink v-if="!engineOnline" class="api-recovery-link" :to="{ path: '/control', query: { engine: drawEngine } }">控制面板</RouterLink>
           </div>
         </div>
-        <div class="pb-header-meta"><p class="pb-sub">让想象成形，让故事相遇。</p><PromptDraftNotice :blueprint="currentBlueprintData" /></div>
+        <div class="pb-header-meta"><PromptDraftNotice :blueprint="currentBlueprintData" /></div>
       </div>
       <div class="pb-top-actions">
         <div class="pb-mode-actions">

@@ -17,7 +17,7 @@
       <p class="pop-hero-stat" aria-label="场景统计"><strong>{{ totalScenes }}</strong> 幕可选场景</p>
     </section>
 
-    <ArchiveStatePanel v-if="loading" kind="loading" title="正在读取角色场景" message="正在载入热门角色档案与场景蓝图。" />
+    <ArchiveStatePanel v-if="loading" kind="loading" title="正在读取角色场景" />
     <ArchiveStatePanel v-else-if="loadError" kind="error" title="角色场景读取失败" :message="loadError">
       <button class="btn btn-primary" type="button" @click="init">重新读取</button>
     </ArchiveStatePanel>
@@ -46,13 +46,12 @@
         <span class="pop-count" role="status">已显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 幕</span>
         <button v-if="query.trim() || category !== 'all' || ratingFilter !== 'all'" class="pop-filter-reset" type="button" @click="resetFilters">清除筛选</button>
         <StudioTooltip content="成人场景可浏览，R18 样张保留模糊遮罩">
-          <span class="pop-count mature-hint">成人 {{ adultCount }} · 已展示</span>
+          <span class="pop-count mature-hint">成人 {{ adultCount }}</span>
         </StudioTooltip>
       </div>
 
       <ArchiveStatePanel v-if="filtered.length === 0" compact :kind="pool.length ? 'filtered' : 'empty'"
-        :title="pool.length ? '没有符合当前条件的场景' : '这个角色暂未收录场景'"
-        :message="pool.length ? '换个关键词或分类，也可以清除筛选继续翻阅。' : '可先翻阅其他角色的场景，找到想要绘制的下一幕。'">
+        :title="pool.length ? '没有符合当前条件的场景' : '这个角色暂未收录场景'">
         <button v-if="pool.length" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
       </ArchiveStatePanel>
 
@@ -79,11 +78,11 @@
               @load="measurePreview(blueprint, $event)" />
             <SensitivePreviewVeil v-if="sampleRatingOf(blueprint) === 'R18' && image.src && !failed"
               :src="image.src" :crossorigin="image.crossorigin" />
-            <span v-if="failed" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong><span>场景设定已就绪，可以直接绘制</span></span>
+            <span v-if="failed" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong></span>
             <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
           </button>
           </RuntimeImage>
-          <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>{{ assetsLoading ? '正在读取样张' : assetsError ? '样张暂不可用' : '样张待补充' }}</strong><span>场景设定已就绪，可以直接绘制</span></span></div>
+          <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>{{ assetsLoading ? '正在读取样张' : assetsError ? '样张暂不可用' : '样张待补充' }}</strong></span></div>
           <div class="pop-card-body">
             <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="sampleRatingOf(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + sampleRatingOf(blueprint)">{{ sampleRatingOf(blueprint) }}</span></div>
             <header class="pop-card-head"><h3>{{ blueprint.title }}</h3></header>

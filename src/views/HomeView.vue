@@ -5,7 +5,6 @@
         <div class="hero-copy" data-route-arrive>
           <span class="hero-register">绘遇 HUIYU · AI 角色创作画室</span>
           <h1 class="hero-title">把喜欢的角色，<br /><span class="hero-title-accent">画进你的故事。</span></h1>
-          <p class="hero-sub">选一位心动主角，开启专属日常。<br />无论是随心点缀的灵感，还是亲手编排的光影。</p>
           <div class="ctas tw:flex tw:flex-wrap tw:gap-s-3">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /> {{ continueLink.label }}</RouterLink>
             <RouterLink to="/prompt-builder" class="btn btn-lg btn-ghost"><ArchiveIcon name="image" />直接去绘制台</RouterLink>
@@ -117,9 +116,7 @@
     <section ref="atelierSection" class="container home-section home-atelier" aria-labelledby="home-atelier-title" data-reveal>
       <div class="home-section-head">
         <div>
-          <span class="eyebrow">灵感，在指尖悄然发生</span>
-          <h2 id="home-atelier-title">今天，想写下怎样的相遇？</h2>
-          <p class="hint">定格一帧心动，留住一段温柔。让想象都有去处。</p>
+          <h2 id="home-atelier-title">创作入口</h2>
         </div>
       </div>
       <div class="atelier-entries">
@@ -128,7 +125,6 @@
           <span class="atelier-entry-copy">
             <span class="atelier-entry-label" aria-hidden="true">{{ entry.label }}</span>
             <span class="atelier-entry-title">{{ entry.title }}</span>
-            <span class="atelier-entry-description">{{ entry.description }}</span>
             <span class="atelier-entry-action">{{ entry.action }}<ArchiveIcon name="chevron-down" /></span>
           </span>
         </RouterLink>
@@ -139,31 +135,25 @@
     <section ref="toolsSection" class="container home-section home-section-quiet" data-reveal>
       <div class="home-section-head">
         <div>
-          <span class="eyebrow">资料与回顾</span>
-          <h2>画室里的小抽屉</h2>
-          <p class="hint">角色、画风、模型和旧作，都收在这里。</p>
+          <h2>资料与作品</h2>
         </div>
       </div>
       <div class="tools-grid">
         <RouterLink to="/character" class="tool-card">
           <img v-if="artworkReady.tools" class="tool-art" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="character" />角色档案</span>
-          <span class="d">读懂她的性格与过往，认识下一位主角。</span>
         </RouterLink>
         <RouterLink to="/style" class="tool-card">
           <img v-if="artworkReady.tools" class="tool-art" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="palette" />画风</span>
-          <span class="d">调配色彩情绪与光影色阶。</span>
         </RouterLink>
         <RouterLink to="/lora" class="tool-card">
           <img v-if="artworkReady.tools" class="tool-art" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="model" />模型</span>
-          <span class="d">挑选契合这次笔触的底模与特征。</span>
         </RouterLink>
         <RouterLink to="/gallery" class="tool-card">
           <img v-if="artworkReady.tools" class="tool-art" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
           <span class="t"><ArchiveIcon name="gallery" />我的作品</span>
-          <span class="d">安静珍藏属于你的每一幅心动创作。</span>
         </RouterLink>
       </div>
     </section>
@@ -175,8 +165,7 @@
           class="recent-empty-state"
           compact
           kind="empty"
-          title="画板还在等第一抹色彩"
-          message="画好之后，属于你的心动画页会静静收录在这里。"
+          title="暂无作品"
         >
           <template #illustration><img v-if="artworkReady.tools" class="recent-empty-art" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template>
           <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
@@ -267,7 +256,7 @@ const DRAFT_KEY = 'aics_pb_last_draft'
 
 const continueIconName = ref<ArchiveIconName>('spark')
 const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创作' })
-const continueHint = ref('先选喜欢的画面；确认参数后再生成。')
+const continueHint = ref('')
 type HomeScene = Scene & { title?: string; mature?: boolean }
 
 const { recentWorks, coverUrl, load: loadRecentWorks } = useHomeRecentWorks()
@@ -280,9 +269,6 @@ const featuredIds = computed(() => {
   const curated = Array.isArray(curatedSceneIds) ? curatedSceneIds : []
   return [...signatures, ...curated.filter(id => !signatures.includes(id))]
 })
-const sceneLibraryCopy = computed(() => homeScenes.value
-  ? `${featuredIds.value.length} 个招牌与精选，完整库共 ${homeScenes.value.length} 个。`
-  : '定格心动瞬间，备好镜头与专属光影。')
 const featuredScenes = computed(() => pickFeatured(featuredIds.value, homeScenes.value || [], 6))
 const homeMuse = ref<'nene' | 'natsume'>('nene')
 const entryPreviews = new Map([[studioOriginal, studioPreview], [sceneOriginal, scenePreview],
@@ -292,11 +278,11 @@ function entrySrcset(source: string) {
   return preview ? `${preview} 768w, ${source} 1536w` : undefined
 }
 const creationEntries = computed(() => [
-  { id: 'make', label: '01 / MAKE', title: '开始绘制', description: '选一位主角与场景，把心动的模样画下来。', action: '走进绘制台', to: '/prompt-builder', art: studioArt.value },
-  { id: 'scene', label: '02 / SCENE', title: '灵感场景', description: sceneLibraryCopy.value, action: '寻找灵感', to: '/scene-explorer', art: sceneArt.value },
-  { id: 'motion', label: '03 / MOTION', title: '故事短片', description: '让静止的画面，成为一段会呼吸的故事。', action: '开始创作', to: '/video-studio', art: motionArt.value },
-  { id: 'room', label: '04 / ROOM', title: '角色房间', description: '专属轻语时刻，静静聊聊今天的心情。', action: '进入房间', to: `/chat?character=${homeMuse.value}`, art: roomArt.value },
-  { id: 'archive', label: '05 / ARCHIVE', title: '参考画册', description: '翻阅心动样张，遇见下一幕的灵感。', action: '翻开画册', to: '/showcase', art: archiveArt.value },
+  { id: 'make', label: '01 / MAKE', title: '开始绘制', action: '走进绘制台', to: '/prompt-builder', art: studioArt.value },
+  { id: 'scene', label: '02 / SCENE', title: '灵感场景', action: '寻找灵感', to: '/scene-explorer', art: sceneArt.value },
+  { id: 'motion', label: '03 / MOTION', title: '故事短片', action: '开始创作', to: '/video-studio', art: motionArt.value },
+  { id: 'room', label: '04 / ROOM', title: '角色房间', action: '进入房间', to: `/chat?character=${homeMuse.value}`, art: roomArt.value },
+  { id: 'archive', label: '05 / ARCHIVE', title: '参考画册', action: '翻开画册', to: '/showcase', art: archiveArt.value },
 ])
 const heroImmediate = ref(false)
 const heroName = computed(() => homeMuse.value === 'nene' ? '绫地宁宁' : '四季夏目')

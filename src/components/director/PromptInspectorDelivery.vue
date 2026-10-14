@@ -35,7 +35,6 @@
           <div class="auto-save-gallery-row" role="group" aria-label="出图自动入册">
             <ToggleSwitch v-model="autoSaveToGallery" label="出图自动存入作品册" />
             <span class="auto-save-gallery-label">出图自动存入作品册</span>
-            <span class="auto-save-gallery-hint">{{ autoSaveToGallery ? '画面生成后自动存入作品册' : '生成后，点「存入作品册」保存喜欢的画面' }}</span>
           </div>
 
           <details class="inspector-voice">

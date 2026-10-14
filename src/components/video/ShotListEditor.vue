@@ -65,7 +65,6 @@
         >
           <span>
             <strong>自动衔接上一镜尾帧</strong>
-            <small>用上一镜的尾帧连接下一镜。</small>
           </span>
         </ToggleSwitch>
 
@@ -176,8 +175,7 @@
                   @click="pickReference(cardIndex)"
                 ><ArchiveIcon name="upload" />本地上传</button>
               </div>
-              <p v-if="!card.images.length" class="shot-reference-hint">参考图可选，需要时再上传。</p>
-              <p v-if="card.images.length" class="shot-reference-hint">已上传 {{ card.images.length }} 张参考图（最多 4 张）· 点击缩略图可移除</p>
+              <p class="shot-reference-hint">参考图 {{ card.images.length }} / 4</p>
               <input
                 :ref="(el) => setReferenceInput(el, cardIndex)"
                 type="file"
@@ -195,7 +193,6 @@
           <div>
             <span class="video-step">02 · 分镜清单</span>
             <h2>{{ shots.length }} 个镜头</h2>
-            <p class="video-install-note">建议 1–2 分钟片拆 8–15 镜</p>
           </div>
         </div>
         <div class="shot-toolbar tw:p-s-2 tw:rounded-lg" data-fluid-glass>
@@ -373,7 +370,7 @@
         </article>
 
         <p v-if="shots.length === 0" class="shot-empty">
-          还没有镜头。添加镜头后用「场景蓝图」快速填充，或直接逐镜写描述。
+          暂无镜头
         </p>
       </section>
 
@@ -396,7 +393,7 @@
       <section class="video-panel shot-submit-panel" :data-ready="canSubmit || undefined">
         <div>
           <strong>{{ submitTitle }}</strong>
-          <p>{{ submitDescription }}</p>
+          <p v-if="submitDescription">{{ submitDescription }}</p>
         </div>
         <div class="shot-submit-actions">
           <button v-if="batchActive" class="btn btn-danger" type="button" :disabled="batchSelectionPending || cancelling" @click="cancelBatch">

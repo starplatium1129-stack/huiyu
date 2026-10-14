@@ -11,7 +11,6 @@
   .pb-kicker { @apply tw:flex tw:items-center tw:gap-[6px] tw:mb-[2px] tw:text-muted; font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; @apply tw:uppercase; }
   .pb-kicker::before { content:''; @apply tw:w-[16px] tw:h-[1px]; background:linear-gradient(90deg,var(--accent),var(--natsume-amber)); }
   .pb-title { font-size:1.35rem; font-weight:750; letter-spacing:-.02em; @apply tw:text-primary tw:m-0 tw:leading-tight; }
-  .pb-sub { @apply tw:text-muted tw:text-label-sm tw:mt-[2px]; }
   .pb-top-actions { @apply tw:flex tw:items-center tw:justify-end tw:gap-s-2 tw:flex-wrap; }
   .pb .aic-icon { @apply tw:w-[1em] tw:h-[1em] tw:inline-grid; place-items:center; flex:0 0 auto; }
   .pb .aic-icon svg { @apply tw:w-full tw:h-full tw:block; }

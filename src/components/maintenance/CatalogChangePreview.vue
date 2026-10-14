@@ -1,6 +1,6 @@
 <template>
   <section v-content-motion:up="preview" class="catalog-change-preview" aria-label="修改预览">
-    <header><h2>这次改了什么</h2><p>核对好这些变化，再保存或导入。</p></header>
+    <header><h2>修改预览</h2></header>
     <details v-for="diff in preview.diffs" :key="diff.kind + ':' + diff.id" open>
       <StudioDisclosureSummary>{{ diff.after ? recordTitle(diff.after) : diff.before ? recordTitle(diff.before) : '待整理的内容' }} <small>{{ !diff.before ? '新加入' : !diff.after ? '将归档' : '已编辑' }}</small></StudioDisclosureSummary>
       <div v-for="field in changedFields(diff.before, diff.after)" :key="field.path" class="catalog-change-row">

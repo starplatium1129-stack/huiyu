@@ -1,11 +1,10 @@
 <template>
   <article class="page lora-page creative-library-page">
-    <CreativeLibraryHeader title="模型资料 (LoRA)" description="按角色与引擎查阅资料，选择角色后在工作台继续创作。" />
+    <CreativeLibraryHeader title="模型资料 (LoRA)" />
     <ArchiveStatePanel
       v-if="loading"
       kind="loading"
       title="正在读取模型目录"
-      message="正在读取收录的 LoRA 资料与推荐权重。"
     />
     <ArchiveStatePanel
       v-else-if="loadError"
@@ -19,7 +18,6 @@
       v-else-if="!loras.length"
       kind="empty"
       title="模型目录暂未收录"
-      message="当前没有收录模型资料。仍可前往工作台选择已有角色，或在控制面板查看资源。"
     >
     </ArchiveStatePanel>
     <template v-else>
@@ -27,7 +25,7 @@
       <StudioSearch ref="searchInput" v-model="modelQuery" class="model-search-field" label="搜索模型" placeholder="按模型、角色或触发词查找…" />
       <span class="model-result-count" role="status">{{ visibleLoras.length }} / {{ loras.length }} 份资料</span>
     </div>
-    <ArchiveStatePanel v-if="!visibleLoras.length" compact kind="filtered" title="没有匹配的模型。" message="试试角色名、模型名或触发词，或清除搜索重新查看全部资料。">
+    <ArchiveStatePanel v-if="!visibleLoras.length" compact kind="filtered" title="没有匹配的模型">
       <button class="btn btn-ghost btn-sm" type="button" @click="clearSearch">清除搜索</button>
     </ArchiveStatePanel>
     <div class="lora-grid" data-route-arrive>

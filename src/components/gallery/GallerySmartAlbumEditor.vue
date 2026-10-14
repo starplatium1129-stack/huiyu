@@ -19,14 +19,13 @@
             <div v-if="rule.tags.length" class="smart-album-tag-list" aria-label="已选画册标签">
               <button v-for="tag in rule.tags" :key="tag" class="smart-album-tag" type="button" :disabled="busy" :aria-label="`移除标签：${tag}`" @click="rule.tags = rule.tags.filter(value => value !== tag)">{{ tag }}<ArchiveIcon name="close" /></button>
             </div>
-            <p v-else class="smart-album-note">不选标签时，收录符合其他条件的全部作品。</p>
           </div>
           <div class="smart-album-fields">
             <label class="smart-album-field"><span>搜索关键词</span><input v-model="rule.search" class="input" maxlength="500" :disabled="busy" placeholder="可沿用作品搜索条件" /></label>
             <button class="smart-album-favorite" :class="{ active: rule.favoriteOnly }" type="button" :disabled="busy" :aria-pressed="rule.favoriteOnly" @click="rule.favoriteOnly = !rule.favoriteOnly"><ArchiveIcon name="love" />仅收录收藏的作品<ArchiveIcon v-if="rule.favoriteOnly" name="success" /></button>
           </div>
           <section class="smart-album-preview" aria-label="符合条件的作品预览">
-            <div class="smart-album-preview-copy"><strong role="status">当前匹配 {{ count }} 幅作品</strong><p class="smart-album-note">{{ count ? '修改条件时预览同步更新。' : '画册可以先保存，之后符合条件的作品会自动加入。' }}</p></div>
+            <div class="smart-album-preview-copy"><strong role="status">当前匹配 {{ count }} 幅作品</strong><p v-if="!count" class="smart-album-note">后续匹配作品自动加入</p></div>
             <div v-if="covers.length" class="smart-album-preview-images" aria-hidden="true"><span v-for="cover in covers" :key="cover.id"><img v-if="resolveRuntimeUrl(cover.src)" :src="resolveRuntimeUrl(cover.src)" :crossorigin="runtimeResourceCors()" alt="" /><ArchiveIcon v-else name="image" /></span></div>
           </section>
           <p v-if="error" class="smart-album-error" role="alert">{{ error }}</p>

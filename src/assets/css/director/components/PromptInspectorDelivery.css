@@ -13,8 +13,6 @@
   @apply tw:text-primary;
 }
 .pb .auto-save-gallery-label { @apply tw:text-body-sm tw:text-primary; }
-.pb .auto-save-gallery-hint { @apply tw:text-body-sm tw:text-secondary; }
 .pb .auto-save-gallery-row { @apply tw:grid; grid-template-columns:auto minmax(0,1fr); }
-.pb .auto-save-gallery-hint { grid-column:2; @apply tw:leading-body; }
 .pb .inspector-voice { border-top:1px solid var(--border-soft); @apply tw:mt-s-3 tw:pt-s-2; }
 .pb .inspector-voice > summary { padding:var(--s-2) 0; @apply tw:text-secondary tw:text-body-sm tw:cursor-pointer; }
