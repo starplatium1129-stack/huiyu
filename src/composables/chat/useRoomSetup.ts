@@ -37,7 +37,7 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
 
   const setupTitle = computed(() => {
     if (preparingRoom.value) return '正在准备角色房间'
-    if (chatProvider.value === 'api' && !apiConfigured.value) return '还没有配置自定义 API'
+    if (chatProvider.value === 'api' && !apiConfigured.value) return '先选一个聊天模型'
     if (chatProvider.value === 'local' && !ollamaOnline.value) return '本地聊天模型还没有就绪'
     return '角色语音还没有就绪'
   })
@@ -45,7 +45,7 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
   const setupDescription = computed(() => {
     if (preparingRoom.value) return roomSetupText.value
     if (chatProvider.value === 'api' && !apiConfigured.value) {
-      return '填写兼容 OpenAI 格式的地址、模型名和密钥后即可对话。'
+      return '选择服务商和模型，按需填写密钥。'
     }
     if (chatProvider.value === 'api') return 'API 对话已经可用；准备本地语音后可以继续使用逐句配音。'
     return roomSetupText.value

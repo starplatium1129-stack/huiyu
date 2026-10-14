@@ -15,7 +15,7 @@
         <p><strong>生成条件：</strong>浏览场景后，可在绘制台确认所选引擎的连接状态。生成需要对应的绘图服务可用；未连接时先完成服务配置。</p>
         <p><strong>作品保存：</strong>本地作品档案与当前浏览器或桌面应用的数据有关。重要作品请及时下载备份，清理浏览器数据前先确认已保存。</p>
         <p><strong>参考样张：</strong>用于了解构图与风格；模型、参数和随机种子会影响结果，每次生成不保证与样张一致。</p>
-        <a href="/docs/getting-started.html" target="_blank" rel="noopener">阅读完整使用指南（新窗口）</a>
+        <a href="/docs/getting-started.html" target="_blank" rel="noopener" aria-label="使用指南，在新窗口打开">使用指南</a>
       </div>
     </details>
   </section>

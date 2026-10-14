@@ -79,7 +79,7 @@
           :base-url="apiBaseUrl"
           :model="apiModel"
           :api-key="apiKey"
-          :credentials-loading="storage.credentialsLoading.value"
+          :credentials-loading="storage.credentialsLoading.value" :busy="busy"
           :hint="apiConfigHint"
           :is-local-host="isLocalHost"
           :host-configured="hostApiConfigured"
@@ -106,7 +106,7 @@
             {{ preparingRoom ? '准备中…' : '准备聊天环境' }}
           </button>
           <button v-else class="btn btn-primary" type="button" @click="apiSettingsOpen = true">
-            配置 API
+            选择聊天模型
           </button>
         </div>
 

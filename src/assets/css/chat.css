@@ -544,11 +544,7 @@ body:has(.chat-page) .sakura-fall {
   @apply tw:p-s-4 tw:overflow-hidden;
   border: 1px solid color-mix(in srgb, var(--character-accent) 24%, var(--border-soft));
   border-radius: var(--r-dossier);
-  background:
-    linear-gradient(90deg, var(--archive-grid) 1px, transparent 1px) 0 0 / 24px 24px,
-    linear-gradient(var(--archive-grid) 1px, transparent 1px) 0 0 / 24px 24px,
-    radial-gradient(circle at 4% 0%, color-mix(in srgb, var(--character-accent) 12%, transparent), transparent 32%),
-    linear-gradient(145deg, color-mix(in srgb, var(--bg-elevated) 45%, var(--bg-surface)), var(--bg-surface));
+  background:var(--bg-surface);
   box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
 }
 
@@ -559,14 +555,14 @@ body:has(.chat-page) .sakura-fall {
   content: "";
 }
 
-.chat-page .api-settings-head,
-.chat-page .api-settings-actions {
+.chat-page .api-settings-head {
   @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3;
 }
+.chat-page .api-settings-actions { @apply tw:grid tw:gap-s-2; }
 
 .chat-page .api-title-lockup {
   @apply tw:flex tw:items-center tw:gap-s-3 tw:min-w-0;
-  flex:1 1 280px;
+  flex:1 1 auto;
 }
 
 .chat-page .api-title-lockup > div {
@@ -578,8 +574,7 @@ body:has(.chat-page) .sakura-fall {
   font: 650 var(--fs-body) var(--font-serif);
 }
 
-.chat-page .api-settings-head span,
-.chat-page .api-settings-actions span {
+.chat-page .api-settings-head span {
   @apply tw:text-muted tw:text-label-xs tw:leading-body;
 }
 
@@ -596,7 +591,7 @@ body:has(.chat-page) .sakura-fall {
 }
 .chat-page .api-mark .archive-icon { @apply tw:w-[20px] tw:h-[20px]; }
 
-.chat-page .api-test-status[data-state="testing"] {
+.chat-page .api-test-status[data-state="loading"] {
   @apply tw:text-warning-text;
 }
 
@@ -609,17 +604,13 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .api-test-status {
-  @apply tw:inline-flex tw:items-center tw:min-h-[30px];
-  padding: 0 var(--s-2);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-terminal);
-  background: color-mix(in srgb, var(--bg-deep) 72%, transparent);
-  @apply tw:font-mono;
+  margin:0;
+  @apply tw:text-secondary tw:text-label-xs tw:leading-body;
+  overflow-wrap:anywhere;
 }
 
 .chat-page .api-settings-buttons {
-  @apply tw:flex tw:flex-wrap tw:justify-end tw:max-w-full tw:gap-s-2;
-  margin-left:auto;
+  @apply tw:flex tw:flex-wrap tw:justify-end tw:w-full tw:max-w-full tw:gap-s-2;
 }
 
 .chat-page .api-storage-note {
@@ -631,30 +622,14 @@ body:has(.chat-page) .sakura-fall {
   background: color-mix(in srgb, var(--bg-deep) 72%, transparent);
 }
 
-.chat-page .api-storage-note i {
-  @apply tw:w-[6px] tw:h-[6px];
-  border-radius: 50%;
-  background: var(--success);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--success) 48%, transparent);
-}
+.chat-page .api-storage-note .archive-icon { @apply tw:w-[14px] tw:h-[14px]; }
 
 
 /*   ============================================================
    API 与引擎设置：提供商切换 / 密钥字段 / 测试状态
   ============================================================ */
-.chat-page .api-settings-grid {
-  @apply tw:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  @apply tw:gap-s-2;
-}
-
 .chat-page .api-field {
-  @apply tw:grid tw:gap-[4px] tw:min-w-0 tw:text-muted tw:text-label-xs;
-}
-.chat-page .api-discovered-models { align-content:start; }
-
-.chat-page .api-model-note {
-  grid-column: 1 / -1;
+  @apply tw:grid tw:content-start tw:gap-[4px] tw:min-w-0 tw:text-muted tw:text-label-xs;
 }
 
 .chat-page .api-field > span {
@@ -663,7 +638,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .api-field input {
-  @apply tw:w-full tw:min-w-0 tw:min-h-[42px];
+  @apply tw:box-border tw:w-full tw:min-w-0 tw:h-[44px];
   padding: 8px 11px;
   border: 1px solid var(--border-soft);
   border-radius: var(--r-terminal);
@@ -672,6 +647,7 @@ body:has(.chat-page) .sakura-fall {
   font: var(--fs-label-sm) var(--font-sans);
   outline: none;
 }
+.chat-page .api-field .studio-select-trigger { min-height:44px; }
 
 /* 原生 select 已迁至 StudioSelect（2026-09-22 去原生化）：外观由触发器提供，
    焦点色保留本页的角色强调色，改挂触发器。 */
@@ -1500,15 +1476,6 @@ body:has(.chat-page) .sakura-fall {
   .chat-page .api-settings-toggle {
     @apply tw:w-full;
     max-width: none;
-  }
-
-  .chat-page .api-settings-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .chat-page .api-settings-head,
-  .chat-page .api-settings-actions {
-    @apply tw:items-stretch tw:flex-col;
   }
 
   .chat-page .message {
