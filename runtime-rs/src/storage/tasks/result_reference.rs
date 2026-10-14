@@ -67,3 +67,53 @@ pub(super) fn read(c: &Context, principal: &str, command: &Value) -> Result<Valu
     c.check_cancel()?;
     Ok(serde_json::to_value(reference)?)
 }
+
+pub(super) fn import(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
+    let lease = canonical::digest(stringify(&json!([
+        c.epoch,
+        principal,
+        string(command, "leaseId")?
+    ])));
+    if command["kind"] == "task.result.import.end" {
+        c.db.execute(
+            "DELETE FROM leases WHERE id=? AND kind='video-import'",
+            [&lease],
+        )?;
+        return Ok(Value::Null);
+    }
+    if command["kind"] != "task.result.import.begin" {
+        return Err(invalid("Unknown task media import command"));
+    }
+    c.transaction(|c| {
+        let value = read(c, principal, command)?;
+        let result: ResultReference = serde_json::from_value(value.clone())?;
+        let reference = result
+            .reference
+            .as_ref()
+            .filter(|reference| command["alias"].as_str() == Some(reference.alias.as_str()))
+            .ok_or_else(|| conflict("TASK_RESULT_MISSING", "Task result alias does not match"))?;
+        if result.principal_id != principal || result.workspace_id != c.workspace_id {
+            return Err(conflict(
+                "TASK_RECORD_INVALID",
+                "Task result authority does not match",
+            ));
+        }
+        let media = c.lookup_media(&reference.alias)?;
+        if reference.sha256 != media.sha256
+            || reference.bytes != media.total_bytes
+            || reference.mime != media.mime
+        {
+            return Err(conflict(
+                "MEDIA_INVALID",
+                "Task result metadata does not match",
+            ));
+        }
+        // Hold this source through verification, copying and controlled publication,
+        // including when another window discards the originating task meanwhile.
+        c.db.execute(
+            "INSERT INTO leases(id,kind,hash,created_at) VALUES(?,'video-import',?,?)",
+            params![lease, reference.sha256, now()],
+        )?;
+        Ok(value)
+    })
+}

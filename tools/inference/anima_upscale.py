@@ -10,6 +10,23 @@ import time
 
 WEIGHT_NAME = "4x_foolhardy_Remacri.safetensors"
 EXECUTION_REVISION = "remacri-no-single-cat-packed-v1"
+MAX_CPU_CACHE_BYTES = 128 * 1024 * 1024
+
+
+class CpuCache:
+    """One validated CPU weight set; pass-local modules alone own CUDA weights."""
+    def __init__(self):
+        self.clear()
+
+    def clear(self):
+        self.identity, self.weights = None, None
+
+
+def _file_identity(path):
+    info = path.stat()
+    # Metadata detects replacement during reads; cache reuse ALSO requires SHA256.
+    return (str(path.resolve(strict=True)), info.st_dev, info.st_ino, info.st_size,
+            info.st_mtime_ns, info.st_ctime_ns)
 
 
 def _network():
@@ -72,7 +89,7 @@ def _key_mapping():
     return {f"{source}.{part}": f"{target}.{part}" for source, target in modules.items() for part in ("weight", "bias")}
 
 
-def load_remacri(path, device="cpu", *, upload, report):
+def load_remacri(path, device="cpu", *, upload, report, cache=None, identity=None, check=None):
     """Load only the host-selected fixed local filename, strictly as FP32."""
     import torch
     from safetensors import safe_open
@@ -86,26 +103,43 @@ def load_remacri(path, device="cpu", *, upload, report):
         raise ValueError("Remacri supports only CPU or CUDA")
     with torch.device("meta"):
         model = _network()
-    expected, mapping = model.state_dict(), _key_mapping()
-    with safe_open(str(path), framework="pt", device="cpu") as source:
-        keys = set(source.keys())
-        if keys != set(mapping):
-            missing, extra = sorted(set(mapping) - keys), sorted(keys - set(mapping))
-            raise ValueError(f"Unsupported Remacri keys; missing={missing[:3]}, unexpected={extra[:3]}")
-        # Validate the complete header before reading any tensor payload.
-        for original, target in mapping.items():
-            value = source.get_slice(original)
-            if value.get_dtype() != "F32" or tuple(value.get_shape()) != tuple(expected[target].shape):
-                raise ValueError(f"Remacri requires the exact FP32 tensor shape: {original}")
-        state = {}
-        for original, target in mapping.items():
-            value = source.get_tensor(original)
-            if not bool(torch.isfinite(value).all()):
-                raise ValueError(f"Nonfinite Remacri weights: {original}")
-            state[target] = value
+    hit = cache is not None and identity is not None and cache.identity == identity
+    if hit:
+        state = cache.weights
+    else:
+        if cache is not None:
+            cache.clear()
+        expected, mapping = model.state_dict(), _key_mapping()
+        # Checkpoint tensors are strictly F32, regardless of the default meta dtype.
+        weight_bytes = sum(value.numel() for value in expected.values()) * 4
+        if cache is not None and weight_bytes > MAX_CPU_CACHE_BYTES:
+            raise ValueError("Remacri CPU weights exceed the 128 MiB cache limit")
+        with safe_open(str(path), framework="pt", device="cpu") as source:
+            keys = set(source.keys())
+            if keys != set(mapping):
+                missing, extra = sorted(set(mapping) - keys), sorted(keys - set(mapping))
+                raise ValueError(f"Unsupported Remacri keys; missing={missing[:3]}, unexpected={extra[:3]}")
+            # Validate the complete header before reading any tensor payload.
+            for original, target in mapping.items():
+                value = source.get_slice(original)
+                if value.get_dtype() != "F32" or tuple(value.get_shape()) != tuple(expected[target].shape):
+                    raise ValueError(f"Remacri requires the exact FP32 tensor shape: {original}")
+            state = {}
+            for original, target in mapping.items():
+                if check is not None:
+                    check()
+                value = source.get_tensor(original)
+                if not bool(torch.isfinite(value).all()):
+                    raise ValueError(f"Nonfinite Remacri weights: {original}")
+                # Cache owns bounded CPU allocations, never an open checkpoint mapping.
+                state[target] = value.clone() if cache is not None else value
+        if cache is not None and identity is not None:
+            cache.identity, cache.weights = identity, state
     model.load_state_dict(state, strict=True, assign=True)
     model.eval().requires_grad_(False)
-    report["readWallSeconds"] = time.perf_counter() - started
+    report.update(readWallSeconds=time.perf_counter() - started, cacheHit=hit)
+    if check is not None:
+        check()
     started = time.perf_counter()
     observation = {}
     if device.type != "cuda" or not upload([model], target_device=device, observation=observation):
@@ -115,19 +149,44 @@ def load_remacri(path, device="cpu", *, upload, report):
     return model
 
 
-def run(images, path, device, *, tools, expected, error):
+def run(images, path, device, *, tools, expected, error, cache=None, check=None):
     """Own one checked upscaler only for this pass; keep profile byte fences."""
-    if expected is not None and tools("native_hash").file_sha256(path) != expected:
-        raise error("MODEL_CHANGED", "Upscaler bytes changed after profile validation")
-    report = {"executionRevision": EXECUTION_REVISION, "loading": {}}
-    model = load_remacri(path, device=device, upload=tools("native_upload").try_packed_upload,
-                        report=report["loading"])
-    if expected is not None and tools("native_hash").file_sha256(path) != expected:
-        raise error("MODEL_CHANGED", "Upscaler bytes changed while loading")
-    return upscale_4x(model, images, tiling=tools("anima_tiling"), report=report), report
+    model = None
+    try:
+        if check is not None:
+            check()
+        path = Path(path)
+        started = time.perf_counter()
+        before = _file_identity(path)
+        fingerprint = tools("native_hash").file_sha256 if cache is not None or expected is not None else None
+        digest = fingerprint(path) if fingerprint is not None else None
+        if before != _file_identity(path) or (expected is not None and digest != expected):
+            raise error("MODEL_CHANGED", "Upscaler bytes changed after profile validation")
+        report = {"executionRevision": EXECUTION_REVISION,
+                  "loading": {"fingerprintWallSeconds": time.perf_counter() - started}}
+        model = load_remacri(path, device=device, upload=tools("native_upload").try_packed_upload,
+                            report=report["loading"], cache=cache, identity=(*before, digest), check=check)
+        started = time.perf_counter()
+        after = fingerprint(path) if fingerprint is not None else None
+        if before != _file_identity(path) or after != digest:
+            raise error("MODEL_CHANGED", "Upscaler bytes changed while loading")
+        report["loading"]["fingerprintWallSeconds"] += time.perf_counter() - started
+        if check is not None:
+            check()
+        result = upscale_4x(model, images, tiling=tools("anima_tiling"), report=report, check=check)
+        if check is not None:
+            check()
+        return result, report
+    except BaseException:
+        if cache is not None:
+            cache.clear()
+        raise
+    finally:
+        # No CUDA module is retained between passes, including failed/cancelled ones.
+        model = None
 
 
-def upscale_4x(model, images, *, tile_size=512, overlap=32, tiling=None, report=None):
+def upscale_4x(model, images, *, tile_size=512, overlap=32, tiling=None, report=None, check=None):
     """FP32 RRDB tiles with CPU feather assembly; CUDA OOM retries 256/128."""
     import torch
     if (not isinstance(images, torch.Tensor) or images.ndim != 4 or images.shape[1] != 3
@@ -141,10 +200,14 @@ def upscale_4x(model, images, *, tile_size=512, overlap=32, tiling=None, report=
     if parameter.dtype != torch.float32 or parameter.device.type not in ("cpu", "cuda"):
         raise ValueError("Remacri model must be FP32 on CPU/CUDA")
     report = {} if report is None else report
+    def predict(patch):
+        if check is not None:
+            check()
+        return model(patch.to(device=parameter.device, dtype=torch.float32))
     with torch.no_grad(), torch.autocast(device_type=parameter.device.type, enabled=False):
         while True:
             try:
-                output = tiling.stitch(images, lambda patch: model(patch.to(device=parameter.device, dtype=torch.float32)),
+                output = tiling.stitch(images, predict,
                     tile=tile_size, overlap=overlap, scale=4, channels=3, report=report)
                 return output.clamp_(0, 1)
             except torch.cuda.OutOfMemoryError:

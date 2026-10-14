@@ -38,6 +38,7 @@ class PipelineCache:
         self.runtime_ready = False
         self.text_cache = None
         self.mask_cache = None
+        self.upscale_cache = None
         self.weights_loaded = False
         self.file_identity = None
         self.fusion = None
@@ -110,6 +111,7 @@ class PipelineCache:
         return self.prepare_and_fingerprint(initialize, root, job.get("loras", []), tools)
 
     def clear(self, *, keep_mask=False, keep_fingerprint=False, keep_text=False):
+        self.clear_upscaler()
         if not keep_fingerprint and self.file_identity is not None:
             self.file_identity.close()
         had_resources = (self.components is not None or
@@ -134,6 +136,11 @@ class PipelineCache:
         cuda = getattr(sys.modules.get("torch"), "cuda", None)
         if cuda is not None and cuda.is_available():
             cuda.empty_cache()
+
+    def clear_upscaler(self):
+        if self.upscale_cache is not None:
+            self.upscale_cache.clear()
+            self.upscale_cache = None
 
     def acquire(self, identity, root, cfg, blocks, loras, load, load_loras, try_hotswap=None, *, memory_tools):
         from diffusers import AnimaModularPipeline, FlowMatchEulerDiscreteScheduler, ClassifierFreeGuidance

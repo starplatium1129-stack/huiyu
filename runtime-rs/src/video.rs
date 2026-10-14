@@ -22,6 +22,7 @@ use crate::{
 pub use batch::BatchPrepared;
 pub use generation::Config;
 use serde_json::{Value, json};
+pub(crate) use service::MediaImport;
 pub use service::{Prepared, Service};
 use std::{path::PathBuf, sync::Arc, time::Duration};
 use tokio_util::sync::CancellationToken;

@@ -330,6 +330,12 @@ pub(super) fn capture(value: &Value) -> Value {
                         "readWallSeconds":finite(&loading["readWallSeconds"])?,
                         "uploadWallSeconds":finite(&loading["uploadWallSeconds"])?,
                         "upload":upload_observation(&loading["upload"])?});
+                    if let Some(hit) = loading.get("cacheHit") {
+                        captured["loading"]["cacheHit"] = json!(hit.as_bool()?);
+                    }
+                    if let Some(seconds) = loading.get("fingerprintWallSeconds") {
+                        captured["loading"]["fingerprintWallSeconds"] = json!(finite(seconds)?);
+                    }
                 }
                 result["refinement"]["upscale"] = captured;
             }

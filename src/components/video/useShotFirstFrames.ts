@@ -3,7 +3,7 @@ import { withArtworkStaging } from '../../storage/artworkSession.ts'
 import { ref, onScopeDispose, type Ref } from 'vue'
 import { useTrackedTask } from '../../composables/useTaskCenter.ts'
 import { apiClient } from '../../api/client.ts'
-import { uploadVideoImage } from '../../api/videoApi.ts'
+import { importVideoImage, uploadVideoImage, type VideoImageUploadResponse } from '../../api/videoApi.ts'
 import { artworkRepository } from '../../storage/artworkRepository.ts'
 import { hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, cancelRuntimeTaskKey, type TaskRecord } from '../../api/runtimeTasks.ts'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
@@ -13,7 +13,7 @@ import type { ShotDraft } from './shotListTypes.ts'
  * useShotFirstFrames —— 分镜「一键首帧」：逐镜走 Krea2 增强链路出图（2026-08-23）。
  *
  * 剧本引擎在每镜带 firstFramePrompt（蓝图英文散文 + 景别构图句）；本组合式逐镜
- * 提交 /api/creative/jobs → 轮询 → 取结果图 → base64 上传为视频首帧受控文件 →
+ * 提交生成 → 轮询 → 取结果图预览；耐久结果直接导入视频首帧受控文件 →
  * 回填 imageName/imageUrl。身份一致性不靠首帧（同蓝图四镜本就同场景），由分镜
  * Ref2VA 参考卡锁定。单镜失败不打断整批（与批量出片一致），重按只补缺。
  */
@@ -140,7 +140,7 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
           try {
             const size = KREA2_SIZE_BY_ASPECT[aspect]
             const payload = { prompt: shot.firstFramePrompt, modelId: 'krea2-turbo-fp8', ...size }
-            let blob: Blob, resultAlias = ''
+            let blob: Blob, upload: VideoImageUploadResponse, resultAlias = ''
             if (durableAttempt) {
               const previous = acceptedFrames.get(shot)
               activeRuntimeKey = previous?.requestKey || runtimeRequestKey('creative', payload)
@@ -152,6 +152,9 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
               if (!current()) continue
               blob = await fetchRuntimeResult(runtimeResultPath(task), frameSignal)
               resultAlias = task.resultRefs.find(value => value.index === 0)?.alias || ''
+              if (!resultAlias) throw new Error('首帧任务缺少图片凭据')
+              if (!current()) continue
+              upload = await importVideoImage(task.taskId, resultAlias, 0, frameSignal)
               activeRuntimeKey = ''
             } else {
               const submit = await apiClient.request<CreativeJobBody>('/api/creative/jobs', {
@@ -166,11 +169,11 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
               const response = await runtimeFetch(resultUrl, { signal: frameSignal })
               if (!response.ok) throw new Error('首帧图片读取失败')
               blob = await response.blob()
+              if (!current()) continue
+              const base64 = await blobToBase64(blob)
+              if (!current()) continue
+              upload = await uploadVideoImage(base64, undefined, frameSignal)
             }
-            if (!current()) continue
-            const base64 = await blobToBase64(blob)
-            if (!current()) continue
-            const upload = await uploadVideoImage(base64, undefined, frameSignal)
             if (!current()) continue
             // Runtime aliases belong to the task; only a new fallback upload is ours.
             const imageId = resultAlias || (ownedImageId = await repository.putImage(blob).catch(() => ''))

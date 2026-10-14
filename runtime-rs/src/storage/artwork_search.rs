@@ -2,6 +2,9 @@ use super::*;
 use rusqlite::{OptionalExtension, params};
 use std::{collections::BTreeSet, fmt::Write};
 
+mod read;
+pub(super) use read::{Search, Step};
+
 pub(super) fn initialize(db: &Connection) -> Result<()> {
     db.execute_batch(include_str!("artwork-search.sql"))?;
     let version = db
@@ -187,134 +190,4 @@ pub(super) fn refresh_chunk(c: &Context) -> Result<bool> {
     drop(source);
     transaction.commit()?;
     Ok(true)
-}
-
-fn selective(c: &Context, pattern: &(&'static str, String)) -> Result<bool> {
-    let table = pattern.0;
-    let matched: i64 =
-        c.db.prepare_cached(&format!(
-            "SELECT count(*) FROM {table} WHERE {table} MATCH ?"
-        ))?
-        .query_row([&pattern.1], |row| row.get(0))?;
-    if matched == 0 {
-        return Ok(true);
-    }
-    let total: i64 =
-        c.db.prepare_cached("SELECT count(*) FROM artwork_read_index")?
-            .query_row([], |row| row.get(0))?;
-    // A broad candidate set only adds work. Continue the already-open ordered
-    // scan instead of rescanning its prefix or materializing most row IDs.
-    Ok(matched <= total / 2)
-}
-
-// None requests the indexed pass after a small latest/legacy prefix misses.
-// Keep numeric order supplied by its index so common anchors cannot sort and
-// materialize the full text corpus. Final matching still uses Rust substring rules.
-fn rows(
-    c: &Context,
-    terms: &[&str],
-    pattern: Option<&(&'static str, String)>,
-    numeric: bool,
-    cursor: &str,
-    indexed: bool,
-) -> Result<Option<(Vec<Value>, Value)>> {
-    let (index, filter, order, limit) = if numeric {
-        (
-            "artwork_read_numeric",
-            "numeric_time IS NOT NULL",
-            "numeric_time DESC,id_key",
-            5,
-        )
-    } else {
-        ("artwork_read_legacy", "numeric_time IS NULL", "id_key", 200)
-    };
-    let restrict = if indexed {
-        let table = pattern.unwrap().0;
-        format!("AND rowid IN(SELECT rowid FROM {table} WHERE {table} MATCH ?2)")
-    } else {
-        String::new()
-    };
-    let sql = format!(
-        "SELECT search_text,summary,id_key FROM artwork_read_index INDEXED BY {index} WHERE {filter} AND id_key>?1 {restrict} ORDER BY {order}"
-    );
-    let mut statement = c.db.prepare_cached(&sql)?;
-    let mut rows = if indexed {
-        statement.query(params![cursor, pattern.unwrap().1])?
-    } else {
-        statement.query([cursor])?
-    };
-    let mut items = Vec::new();
-    let mut last = String::new();
-    let mut checked = 0;
-    while let Some(row) = rows.next()? {
-        c.check_cancel()?;
-        checked += 1;
-        let text = text_column(row, 0)?;
-        if terms.iter().all(|term| text.contains(term)) {
-            if items.len() == limit {
-                return Ok(Some((items, last.into())));
-            }
-            items.push(serde_json::from_str::<Value>(text_column(row, 1)?)?);
-            last = row.get(2)?;
-            if numeric && items.len() == limit {
-                return Ok(Some((items, Value::Null)));
-            }
-        }
-        if !indexed
-            && checked == 32
-            && let Some(pattern) = pattern
-            && selective(c, pattern)?
-        {
-            return Ok(None);
-        }
-    }
-    Ok(Some((items, Value::Null)))
-}
-
-pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
-    let terms = command["terms"]
-        .as_array()
-        .ok_or_else(|| invalid("Search terms must be an array"))?;
-    let terms = terms
-        .iter()
-        .map(|v| {
-            v.as_str()
-                .ok_or_else(|| invalid("Search terms must be strings"))
-        })
-        .collect::<Result<Vec<_>>>()?;
-    let cursor = command
-        .get("cursor")
-        .map(|v| v.as_str().ok_or_else(|| invalid("Invalid search cursor")))
-        .transpose()?;
-    if terms.is_empty() || terms.iter().any(|term| term.is_empty()) {
-        return Err(invalid("Search terms must not be empty"));
-    }
-    artwork_index::refresh(c)?;
-    // First search uses the exact linear path immediately. The caller warms
-    // the optional trigram cache in bounded FIFO work after publishing it.
-    let pattern = if ready(c)? {
-        Some(anchor(&terms))
-    } else {
-        None
-    };
-    let transaction = c.db.unchecked_transaction()?;
-    let version = artwork_index::revision(c)?;
-    let select = |numeric, cursor| -> Result<(Vec<Value>, Value)> {
-        match rows(c, &terms, pattern.as_ref(), numeric, cursor, false)? {
-            Some(result) => Ok(result),
-            None => Ok(rows(c, &terms, pattern.as_ref(), numeric, cursor, true)?.unwrap()),
-        }
-    };
-    let mut items = if cursor.is_none() {
-        select(true, "")?.0
-    } else {
-        Vec::new()
-    };
-    let (legacy, next) = select(false, cursor.unwrap_or(""))?;
-    items.extend(legacy);
-    c.check_cancel()?;
-    transaction.commit()?;
-    let mut result = json!({"items":null,"artworkRevision":version,"nextCursor":next});
-    result["items"] = items.into();
-    Ok(result)
 }

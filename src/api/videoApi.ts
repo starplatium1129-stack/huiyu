@@ -150,6 +150,18 @@ export function uploadVideoImage(data: string, kind?: 'reference', signal?: Abor
   })
 }
 
+/** Reuse an owned durable task result without sending its image bytes back. */
+export function importVideoImage(taskId: string, alias: string, index = 0, signal?: AbortSignal): Promise<VideoImageUploadResponse> {
+  return apiClient.request<VideoImageUploadResponse>('/api/workspace/video-images', {
+    method: 'POST',
+    body: { taskId, alias, index },
+    signal,
+    timeoutMs: 60_000,
+    validate: (value: Record<string, unknown>) =>
+      value.ok === true && typeof value.name === 'string' && typeof value.bytes === 'number',
+  })
+}
+
 export function fetchVideoJob(id: string, signal?: AbortSignal): Promise<VideoJobResponse> {
   if (isRuntimeTaskId(id)) return getRuntimeTask(id, signal).then(task => ({ ok: true, job: taskVideoJob(task) }))
   return apiClient.request<VideoJobResponse>(`/api/video/jobs/${encodeURIComponent(id)}`, {

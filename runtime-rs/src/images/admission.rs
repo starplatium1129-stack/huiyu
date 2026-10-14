@@ -2,10 +2,10 @@ use super::*;
 use base64::{Engine, engine::general_purpose::STANDARD};
 use hmac::{Hmac, Mac};
 use regex::Regex;
-use sha2::Sha256;
+use sha2::{Digest, Sha256};
 use std::{path::Path, sync::LazyLock, time::Duration};
 use tokio::{
-    io::AsyncWriteExt,
+    io::{AsyncReadExt, AsyncWriteExt},
     sync::{Mutex, Semaphore},
 };
 
@@ -192,29 +192,61 @@ pub(crate) async fn store_for(
     cancel: CancellationToken,
     kind: Kind,
 ) -> Result<String> {
+    store_source_for(root, Source::Encoded(image), owner, limits, cancel, kind).await
+}
+
+pub(crate) async fn store_media_for(
+    root: PathBuf,
+    media: crate::storage::Media,
+    owner: String,
+    limits: Limits,
+    cancel: CancellationToken,
+    kind: Kind,
+) -> Result<String> {
+    store_source_for(root, Source::Stored(media), owner, limits, cancel, kind).await
+}
+
+enum Source {
+    Encoded(String),
+    Stored(crate::storage::Media),
+}
+
+async fn store_source_for(
+    root: PathBuf,
+    source: Source,
+    owner: String,
+    limits: Limits,
+    cancel: CancellationToken,
+    kind: Kind,
+) -> Result<String> {
     let permit = CAPACITY
         .clone()
         .try_acquire_owned()
         .map_err(|_| ApiError::new(503, "QUEUE_FULL", "素材写入队列已满，请稍后再试"))?;
     let _serial = tokio::select! {guard=SERIAL.lock()=>guard,_=cancel.cancelled()=>return Err(inputs::cancelled())};
-    if image.len() > 28 * 1024 * 1024 {
-        return Err(error("INVALID_IMAGE", "图片数据超出大小限制"));
-    }
-    let bytes = tokio::task::spawn_blocking(move || {
-        let data = if image.starts_with("data:image/") {
-            image
-                .split_once(";base64,")
-                .map(|(_, data)| data)
-                .unwrap_or(&image)
-        } else {
-            &image
-        };
-        STANDARD
-            .decode(data)
-            .map_err(|_| error("INVALID_IMAGE", "图片编码无效"))
-    })
-    .await
-    .map_err(|_| error("INVALID_IMAGE", "图片解码失败"))??;
+    let bytes = match source {
+        Source::Encoded(image) => {
+            if image.len() > 28 * 1024 * 1024 {
+                return Err(error("INVALID_IMAGE", "图片数据超出大小限制"));
+            }
+            tokio::task::spawn_blocking(move || {
+                let data = if image.starts_with("data:image/") {
+                    image
+                        .split_once(";base64,")
+                        .map(|(_, data)| data)
+                        .unwrap_or(&image)
+                } else {
+                    &image
+                };
+                STANDARD
+                    .decode(data)
+                    .map_err(|_| error("INVALID_IMAGE", "图片编码无效"))
+            })
+            .await
+            .map_err(|_| error("INVALID_IMAGE", "图片解码失败"))??
+        }
+        Source::Stored(media) => read_media(media, kind.maximum(), &cancel).await?,
+    };
     if bytes.is_empty() || bytes.len() > kind.maximum() {
         return Err(error("INVALID_IMAGE", "图片数据超出大小限制"));
     }
@@ -276,6 +308,47 @@ pub(crate) async fn store_for(
         cleanup?;
     }
     result
+}
+
+async fn read_media(
+    media: crate::storage::Media,
+    maximum: usize,
+    cancel: &CancellationToken,
+) -> Result<Vec<u8>> {
+    if cancel.is_cancelled() {
+        return Err(inputs::cancelled());
+    }
+    if media.total_bytes == 0 || media.total_bytes > maximum as u64 {
+        return Err(error("INVALID_IMAGE", "图片数据超出大小限制"));
+    }
+    let file = tokio::fs::File::open(&media.path).await?;
+    let metadata = file.metadata().await?;
+    if !metadata.is_file() || metadata.len() != media.total_bytes {
+        return Err(error("MEDIA_INVALID", "任务图片已改变"));
+    }
+    let mut bytes = Vec::with_capacity(media.total_bytes as usize + 1);
+    file.take(media.total_bytes + 1)
+        .read_to_end(&mut bytes)
+        .await?;
+    let scope = cancel.clone();
+    tokio::task::spawn_blocking(move || {
+        let mut hash = Sha256::new();
+        for chunk in bytes.chunks(1024 * 1024) {
+            if scope.is_cancelled() {
+                return Err(inputs::cancelled());
+            }
+            hash.update(chunk);
+        }
+        if bytes.len() as u64 != media.total_bytes
+            || hex::encode(hash.finalize()) != media.sha256
+            || decode::sniff(&bytes).map(|(mime, _)| mime) != Some(media.mime.as_str())
+        {
+            return Err(error("MEDIA_INVALID", "任务图片校验失败"));
+        }
+        Ok(bytes)
+    })
+    .await
+    .map_err(|_| error("MEDIA_INVALID", "任务图片校验未完成"))?
 }
 
 async fn usage(root: PathBuf, cancel: CancellationToken) -> Result<(u64, u64)> {

@@ -427,10 +427,13 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     def upscale(images):
         stage("upscaling")
         helper = load_mask_tools("anima_upscale")
+        if resident is not None and resident.upscale_cache is None:
+            resident.upscale_cache = helper.CpuCache()
         pipeline._huiyu_memory.offload_all()
         expected = (tea_report.get("compatibility") or {}).get("upscaleModelSha256") if tea_report else None
         result, pipeline._huiyu_upscale_report = helper.run(images, job["upscaleModelPath"], pipeline._execution_device,
-            tools=load_mask_tools, expected=expected, error=WorkerError)
+            tools=load_mask_tools, expected=expected, error=WorkerError,
+            cache=resident.upscale_cache if resident is not None else None, check=control.check if control is not None else None)
         return result
     def prepare_second(blocks):
         stage("encoding")
@@ -517,6 +520,7 @@ def main(argv=None):
                         return load_mask_tools("worker_lifecycle").serve(
                             lambda job, control, prepared: generate(job, stream, resident=resident, control=control, prepared=prepared),
                             input_stream=sys.stdin, stream=stream, emit=emit, error=WorkerError,
+                            cancel_cleanup=resident.clear_upscaler,
                             initialize=lambda job, ready: resident.prepare_job(job, validate_job, validate_model, dependencies, load_mask_tools, ready))
                     line = sys.stdin.readline(2 * 1024 * 1024 + 1)
                     if len(line) > 2 * 1024 * 1024:

@@ -157,6 +157,35 @@ impl Storage {
             .map_err(|_| unavailable())?;
         result.await.map_err(|_| unavailable())?
     }
+    pub(crate) async fn begin_task_result_import(
+        &self,
+        task_id: &str,
+        index: u64,
+        alias: &str,
+        lease_id: &str,
+        principal: &str,
+    ) -> Result<tasks::ResultReference> {
+        let value = self
+            .request(
+                json!({"kind":"task.result.import.begin",
+            "taskId":task_id,"index":index,"alias":alias,"leaseId":lease_id}),
+                principal,
+            )
+            .await?;
+        serde_json::from_value(value).map_err(Into::into)
+    }
+    pub(crate) async fn end_task_result_import(
+        &self,
+        lease_id: &str,
+        principal: &str,
+    ) -> Result<()> {
+        self.request(
+            json!({"kind":"task.result.import.end","leaseId":lease_id}),
+            principal,
+        )
+        .await?;
+        Ok(())
+    }
     pub(crate) async fn task_media_copy(
         &self,
         command: Value,

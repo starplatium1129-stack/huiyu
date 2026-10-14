@@ -8,6 +8,9 @@ const ATTENTION: &str = "(json_extract(record_json,'$.recoveryState')!='normal' 
 const INBOX: &str = "json_array_length(record_json,'$.resultRefs')>0 AND json_extract(record_json,'$.deliveryState') NOT IN ('saved','discarded')";
 
 pub(in crate::storage) fn initialize(db: &Connection) -> Result<()> {
+    // Imports are process-local tracked jobs. A reopened owner cannot retain
+    // an import from a previous process or a restored backup.
+    db.execute("DELETE FROM leases WHERE kind='video-import'", [])?;
     // Reapply on open for existing v3 workspaces and restored older backups.
     // SQLite maintains membership in the same transaction as every task write.
     for (name, predicate) in [

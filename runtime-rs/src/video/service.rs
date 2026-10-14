@@ -7,6 +7,13 @@ pub struct Prepared {
     pub(super) backend: generation::Prepared,
     pub(super) originals: inputs::Captured,
 }
+#[derive(serde::Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub(crate) struct MediaImport {
+    pub task_id: String,
+    pub index: u64,
+    pub alias: String,
+}
 pub struct Service {
     pub(super) backend: Arc<generation::Service>,
     pub(super) config: Config,
@@ -222,6 +229,87 @@ impl Service {
             let _ = reply.send(value);
         });
         tokio::select! {result=result=>result.map_err(|_|error(503,"IMAGE_WRITE_FAILED","图片写入结果未知"))?,_=cancel.cancelled()=>Err(error(499,"CANCELLED","图片上传已取消"))}
+    }
+    pub(crate) async fn import_result(
+        &self,
+        storage: crate::storage::Storage,
+        principal: String,
+        source: MediaImport,
+        owner: String,
+        admission: crate::host::OwnedWriteGuard,
+    ) -> Result<Value> {
+        let scope = self.shutdown.child_token();
+        let _guard = scope.clone().drop_guard();
+        let root = self.config.ai_workspace_root.join("ComfyUI/input");
+        let (reply, result) = tokio::sync::oneshot::channel();
+        self.tasks.spawn(async move {
+            let _admission = admission;
+            let lease = uuid::Uuid::new_v4().to_string();
+            let imported = async {
+                let result = storage
+                    .begin_task_result_import(
+                        &source.task_id,
+                        source.index,
+                        &source.alias,
+                        &lease,
+                        &principal,
+                    )
+                    .await?;
+                if scope.is_cancelled() {
+                    return Err(error(499, "CANCELLED", "图片导入已取消"));
+                }
+                let reference = result
+                    .reference
+                    .ok_or_else(|| error(404, "TASK_RESULT_MISSING", "任务图片不存在"))?;
+                if !matches!(
+                    reference.mime.as_str(),
+                    "image/png" | "image/jpeg" | "image/webp"
+                ) || reference.bytes == 0
+                    || reference.bytes > 20 * 1024 * 1024
+                {
+                    return Err(error(400, "INVALID_IMAGE", "任务结果不是支持的首帧图片"));
+                }
+                let media = storage.media(&reference.alias).await?;
+                if reference.sha256 != media.sha256
+                    || reference.bytes != media.total_bytes
+                    || reference.mime != media.mime
+                {
+                    return Err(error(409, "MEDIA_INVALID", "任务图片元数据已改变"));
+                }
+                if scope.is_cancelled() {
+                    return Err(error(499, "CANCELLED", "图片导入已取消"));
+                }
+                let bytes = media.total_bytes;
+                let name = crate::images::store_media_for(
+                    root,
+                    media,
+                    owner,
+                    crate::images::Limits::from_environment(),
+                    scope,
+                    crate::images::ImageKind::VideoInput,
+                )
+                .await?;
+                Ok(json!({"ok":true,"name":name,"bytes":bytes}))
+            }
+            .await;
+            // The tracked worker always closes only its own lease, even after
+            // caller cancellation or an uncertain begin reply. Task refs remain.
+            let cleanup = storage.end_task_result_import(&lease, &principal).await;
+            let value = match (imported, cleanup) {
+                (Ok(value), Ok(())) => Ok(value),
+                (Ok(_), Err(error)) => Err(error),
+                (Err(error), cleanup) => {
+                    if let Err(cleanup) = cleanup {
+                        eprintln!("video import lease cleanup: {cleanup}");
+                    }
+                    Err(error)
+                }
+            };
+            let _ = reply.send(value);
+        });
+        result
+            .await
+            .map_err(|_| error(503, "IMAGE_WRITE_FAILED", "图片导入结果未知"))?
     }
     pub async fn get_status(&self) -> Result<Value> {
         let mut models = Vec::new();

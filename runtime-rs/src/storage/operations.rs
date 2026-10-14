@@ -72,7 +72,22 @@ impl Context {
         input: &Value,
     ) -> Result<String> {
         let key = canonical::digest(canonical::stringify(&json!([principal, kind, id])));
-        self.db.execute("INSERT INTO operations(op_key,principal_id,kind,operation_id,fingerprint,state,input_json) VALUES(?,?,?,?,?,'prepared',?)",params![key,principal,kind,id,canonical::fingerprint(input),canonical::stringify(input)])?;
+        // Profile writes and their receipts commit in one transaction; recovery
+        // never consumes their prepared input. Keep the fingerprint and exact
+        // historical receipt, without serializing/storing the whole value twice.
+        // Media/artwork operations still need their original input for recovery.
+        let stored_input = if matches!(
+            kind,
+            "profile.saveSetting"
+                | "profile.saveChatRecord"
+                | "profile.saveDraft"
+                | "profile.resetChat"
+        ) {
+            "null".into()
+        } else {
+            canonical::stringify(input)
+        };
+        self.db.execute("INSERT INTO operations(op_key,principal_id,kind,operation_id,fingerprint,state,input_json) VALUES(?,?,?,?,?,'prepared',?)",params![key,principal,kind,id,canonical::fingerprint(input),stored_input])?;
         Ok(key)
     }
     pub(super) fn commit_operation(&self, key: &str, receipt: &Value) -> Result<()> {

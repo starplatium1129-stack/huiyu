@@ -131,6 +131,22 @@ async fn perform(
             "Workspace session no longer matches this workspace",
         ));
     }
+    if path == ["video-images"] && method == Method::POST {
+        if body.len() > 4096 {
+            return Err(ApiError::new(413, "INVALID_IMAGE", "图片导入请求过大"));
+        }
+        let input: crate::video::MediaImport = serde_json::from_slice(&body)?;
+        let service = state
+            .video
+            .as_ref()
+            .ok_or_else(|| ApiError::new(503, "VIDEO_UNAVAILABLE", "视频服务暂不可用"))?;
+        let owner = crate::generation::request_owner(headers, peer, &query);
+        let admission = state.host.admit_owned()?;
+        return service
+            .import_result(storage, session.principal_id, input, owner, admission)
+            .await
+            .map(|value| Json(value).into_response());
+    }
     let writing = !matches!(*method, Method::GET | Method::HEAD);
     let _admitted = if writing && !capability {
         Some(state.host.admit()?)

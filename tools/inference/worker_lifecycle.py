@@ -112,7 +112,7 @@ def settle_resources(cancelled):
         torch.cuda.empty_cache()
 
 
-def serve(generate, *, input_stream, stream, emit, error, initialize):
+def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cleanup=None):
     """Run generate(job, control, prepared); return a process exit code.
 
     initialize(job, imports_ready) releases the reader after imports and returns
@@ -150,6 +150,8 @@ def serve(generate, *, input_stream, stream, emit, error, initialize):
                 generate(job, control, prepared)
             except GenerationCancelled:
                 was_cancelled = True
+                if cancel_cleanup is not None:
+                    cancel_cleanup()
             settle_resources(was_cancelled)
             requests.finish(control)
             if was_cancelled:

@@ -17,7 +17,7 @@ use crate::{
     upstream::LocalUpstream,
 };
 pub use admission::Limits;
-pub(crate) use admission::{Kind as ImageKind, owner_matches_for, store_for};
+pub(crate) use admission::{Kind as ImageKind, owner_matches_for, store_for, store_media_for};
 pub use catalog::catalog;
 pub(crate) use decode::sniff;
 pub use generation::Config;

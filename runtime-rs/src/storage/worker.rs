@@ -130,29 +130,43 @@ pub(super) fn run(
                     let _ = reply.send(result);
                 }
             }
-            Work::ArtworkRead(command, principal, cancel, reply) => {
+            Work::ArtworkRead(command, principal, cancel, search, reply) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
                     continue;
                 }
                 context.cancel = cancel;
                 if !reply.is_closed() {
-                    // A cold read yields after one durable index chunk. Its caller
-                    // rejoins the FIFO queue, allowing status/tasks/writes to run.
+                    // Index preparation and search scans each yield within one
+                    // bounded chunk. The caller owns progress and rejoins FIFO.
                     let result = artwork_index::refresh_chunk(&context).and_then(|worked| {
                         let worked = worked
                             || (command["kind"] == "searchArtworks"
                                 && artwork_search::needs_index(&command)
                                 && artwork_search::refresh_small(&context)?);
                         if worked {
-                            Ok(None)
+                            Ok(artwork_index::ReadOutcome::Continue(search))
+                        } else if let Some(search) = search {
+                            if principal.is_empty() {
+                                return Err(ApiError::new(
+                                    401,
+                                    "UNAUTHORIZED",
+                                    "Desktop principal is required",
+                                ));
+                            }
+                            match search.step(&context)? {
+                                artwork_search::Step::Continue(search) => {
+                                    Ok(artwork_index::ReadOutcome::Continue(Some(search)))
+                                }
+                                artwork_search::Step::Complete(value) => {
+                                    let warm = !artwork_search::ready(&context)?;
+                                    Ok(artwork_index::ReadOutcome::Complete(value, warm))
+                                }
+                            }
                         } else {
-                            let warm = command["kind"] == "searchArtworks"
-                                && artwork_search::needs_index(&command)
-                                && !artwork_search::ready(&context)?;
                             context
                                 .execute(&command, &principal)
-                                .map(|value| Some((value, warm)))
+                                .map(|value| artwork_index::ReadOutcome::Complete(value, false))
                         }
                     });
                     let _ = reply.send(result);

@@ -29,8 +29,18 @@ pub(super) fn revision(c: &Context) -> Result<i64> {
     )?)
 }
 
+pub(super) enum ReadOutcome {
+    Continue(Option<artwork_search::Search>),
+    Complete(Value, bool),
+}
+
 pub(super) async fn request(storage: &Storage, command: Value, principal: &str) -> Result<Value> {
     let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+    let mut search = if command["kind"] == "searchArtworks" {
+        Some(artwork_search::Search::new(&command)?)
+    } else {
+        None
+    };
     loop {
         let (reply, result) = oneshot::channel();
         storage
@@ -39,15 +49,19 @@ pub(super) async fn request(storage: &Storage, command: Value, principal: &str) 
                 command.clone(),
                 principal.into(),
                 cancel.0.clone(),
+                search,
                 reply,
             ))
             .await
             .map_err(|_| unavailable())?;
-        if let Some((value, warm_search)) = result.await.map_err(|_| unavailable())?? {
-            if warm_search {
-                artwork_search::warm(storage);
+        match result.await.map_err(|_| unavailable())?? {
+            ReadOutcome::Continue(next) => search = next,
+            ReadOutcome::Complete(value, warm_search) => {
+                if warm_search {
+                    artwork_search::warm(storage);
+                }
+                return Ok(value);
             }
-            return Ok(value);
         }
     }
 }

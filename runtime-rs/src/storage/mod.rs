@@ -99,7 +99,8 @@ enum Work {
         Value,
         String,
         Arc<AtomicBool>,
-        oneshot::Sender<Result<Option<(Value, bool)>>>,
+        Option<artwork_search::Search>,
+        oneshot::Sender<Result<artwork_index::ReadOutcome>>,
     ),
     WarmArtworkSearch(
         Arc<AtomicBool>,
@@ -236,7 +237,6 @@ impl Context {
                 json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":3,"writerEpoch":self.epoch,"revision":self.revision()?,"artworkRevision":artwork_index::revision(self)?,"sqliteVersion":rusqlite::version()}),
             ),
             "listArtworks"
-            | "searchArtworks"
             | "readArtworkRecentIndex"
             | "getArtwork"
             | "getArtworks"

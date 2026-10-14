@@ -4,8 +4,8 @@ mod listing;
 mod result_reference;
 mod scopes;
 
-pub(super) use scopes::initialize;
 pub(super) use result_reference::ResultReference;
+pub(super) use scopes::initialize;
 
 pub(super) mod outputs;
 
@@ -105,6 +105,9 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     let kind = string(command, "kind")?;
     if kind == "task.result.reference" {
         return result_reference::read(c, principal, command);
+    }
+    if kind.starts_with("task.result.import.") {
+        return result_reference::import(c, principal, command);
     }
     if kind.starts_with("task.input.") {
         return inputs::execute(c, principal, command);
