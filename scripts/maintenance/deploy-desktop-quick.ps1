@@ -26,7 +26,8 @@ param(
   [switch]$NoRestart,
   [switch]$StartupRepair,
   [string]$InstallDir,
-  [string]$InstallerPath
+  [string]$InstallerPath,
+  [string]$InstallerManifestSha256
 )
 
 $ErrorActionPreference = 'Stop'
@@ -62,6 +63,34 @@ if ($UseInstaller) {
 }
 
 . (Join-Path $root 'scripts\lib\desktop-deploy-guard.ps1')
+function Assert-FixedInstaller {
+  param([switch]$Installed)
+  $bindingArgs = @((Join-Path $root 'scripts\lib\desktop-installer-binding.js'), 'verify', $InstallerPath, $InstallerManifestSha256)
+  if ($Installed) { $bindingArgs += $installDir }
+  & node @bindingArgs
+  if ($LASTEXITCODE -ne 0) { throw 'DESKTOP_INSTALLER_BINDING: 固定安装包、校验清单或已安装文件不匹配。' }
+}
+function Freeze-FixedInstaller {
+  param([string]$Candidate)
+    # Older packages gain a portable manifest from their original verified build
+    # record and host bytes, without reading current application source or SDK.
+    $preparedInstaller = & node (Join-Path $root 'scripts\lib\desktop-installer-binding.js') prepare $Candidate $root
+    if ($LASTEXITCODE -ne 0) { throw '指定安装包的固定身份无法确认；未关闭应用。' }
+    $manifestHash = ($preparedInstaller | ConvertFrom-Json).manifestSha256
+    $deploymentCopy = Resolve-DesktopChildPath -Root $root -Relative ('runtime\desktop-deploy-packages\' + [Guid]::NewGuid().ToString('N'))
+    $frozenInstaller = & node (Join-Path $root 'scripts\lib\desktop-installer-binding.js') freeze $Candidate $deploymentCopy $manifestHash
+    if ($LASTEXITCODE -ne 0) { throw '本次安装包副本无法确认；未关闭应用。' }
+    return ($frozenInstaller | ConvertFrom-Json)
+}
+if ($UseInstaller) {
+  if (-not $InstallerManifestSha256) {
+    $selectedInstaller = Freeze-FixedInstaller -Candidate $InstallerPath
+    $InstallerPath = $selectedInstaller.installer
+    $InstallerManifestSha256 = $selectedInstaller.manifestSha256
+    $setup = Get-Item -LiteralPath $InstallerPath
+  }
+  Assert-FixedInstaller
+}
 $configRoot = Join-Path $env:APPDATA 'com.aics.studio'
 # Read-only preflight: UAC denial, missing payload or build failure must leave
 # the user's running application untouched. Actual drain occurs before writes.
@@ -93,6 +122,7 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   if ($UseInstaller) { $argList += '-UseInstaller' }
   if ($ResourcesOnly) { $argList += '-ResourcesOnly' }
   if ($InstallerPath) { $argList += @('-InstallerPath', "`"$InstallerPath`"") }
+  if ($InstallerManifestSha256) { $argList += @('-InstallerManifestSha256', $InstallerManifestSha256) }
   if ($QuietInstall) { $argList += '-QuietInstall' }
   if ($NoRestart)    { $argList += '-NoRestart' }
   if ($StartupRepair) { $argList += '-StartupRepair' }
@@ -113,6 +143,7 @@ $stageGateway = Join-Path $root 'desktop-tauri\src-tauri\resources\gateway'
 $hostExecutable = Join-Path $root 'desktop-tauri\src-tauri\target\release\ai-cg-studio-desktop.exe'
 # Validate selected source/build/distribution before drain and before restart.
 function Assert-CurrentBuildBinding {
+  if ($installWithPackage) { Assert-FixedInstaller; return }
   & node (Join-Path $root 'scripts\lib\desktop-build-binding.js') $root $InstallerPath
   if ($LASTEXITCODE -ne 0) { throw 'DESKTOP_BUILD_BINDING: 源码/资源/安装包与构建回执不匹配；请重新完整构建。' }
 }
@@ -127,13 +158,17 @@ if ($buildUpgrade) {
     $version = (Get-Content -LiteralPath (Join-Path $root 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
     $setup = Get-Item -LiteralPath (Join-Path $root "runtime\desktop-updates\AI-CG-Studio_${version}_x64-local-upgrade-setup.exe")
     $InstallerPath = $setup.FullName
+    $selectedInstaller = Freeze-FixedInstaller -Candidate $InstallerPath
+    $InstallerPath = $selectedInstaller.installer
+    $InstallerManifestSha256 = $selectedInstaller.manifestSha256
+    $setup = Get-Item -LiteralPath $InstallerPath
   } finally { Pop-Location }
 } elseif (-not $installWithPackage -and -not $SkipBuild) {
   Write-Host '[1/6] 构建并绑定 Rust 桌面候选 ...' -ForegroundColor Cyan
   Push-Location $root
   try { npm run build:tauri; if ($LASTEXITCODE -ne 0) { throw 'Desktop candidate build failed' } }
   finally { Pop-Location }
-} else { Write-Host '[1/6] 复用当前已绑定构建' -ForegroundColor DarkGray }
+} else { Write-Host $(if ($UseInstaller) { '[1/6] 复用本次固定安装包' } else { '[1/6] 复用当前已绑定构建' }) -ForegroundColor DarkGray }
 Assert-CurrentBuildBinding
 if (-not $installWithPackage) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
 Write-DesktopDuration '构建准备与首次校验'
@@ -196,7 +231,8 @@ if ($SyncLocalModels) {
 }
 Write-DesktopDuration '安装与资源同步'
 Assert-CurrentBuildBinding
-Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable
+if ($installWithPackage) { Assert-FixedInstaller -Installed }
+else { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
 Write-DesktopDuration '安装后校验'
 if (-not $StartupRepair) {
   & node (Join-Path $root 'scripts\lib\desktop-catalog-update.js') $gatewayDir (Join-Path $configRoot 'gateway')

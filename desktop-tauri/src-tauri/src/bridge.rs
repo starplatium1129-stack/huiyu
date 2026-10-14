@@ -161,11 +161,24 @@ pub async fn set_workspace(
     if root.trim().is_empty() { return Err("工作区路径不能为空".into()); }
     let resolved = std::path::absolute(root.trim()).map_err(|e| e.to_string())?;
     if !resolved.is_dir() { return Err("工作区目录不存在或不是文件夹".into()); }
-    if !crate::window_state::save_ai_workspace(&state.paths.ai_workspace_file, root.trim()) {
+    let resolved = resolved.canonicalize().map_err(|e| format!("工作区目录无法读取：{e}"))?;
+    let install_root = if state.paths.is_packaged { state.paths.app_root.parent().unwrap_or(&state.paths.app_root) } else { &state.paths.app_root };
+    if resolved.starts_with(install_root.canonicalize().map_err(|e| e.to_string())?) {
+        return Err("请在绘遇安装目录外选择 AI 工作区，避免大型资源写入程序目录".into());
+    }
+    let probe = resolved.join(format!(".huiyu-write-probe-{}-{}", std::process::id(), std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map_err(|e| e.to_string())?.as_nanos()));
+    let writable = std::fs::OpenOptions::new().write(true).create_new(true).open(&probe)
+        .map_err(|e| format!("AI 工作区不可写，请选择有写入权限的文件夹：{e}"))?;
+    drop(writable);
+    std::fs::remove_file(&probe).map_err(|e| format!("AI 工作区无法清理临时文件，请检查权限：{e}"))?;
+    let text = resolved.to_string_lossy();
+    let resolved = text.strip_prefix(r"\\?\UNC\").map(|unc| format!(r"\\{unc}"))
+        .unwrap_or_else(|| text.strip_prefix(r"\\?\").unwrap_or(&text).to_owned());
+    if !crate::window_state::save_ai_workspace(&state.paths.ai_workspace_file, &resolved) {
         return Err("工作区配置未能保存，请检查配置目录的写入权限".into());
     }
     // The running gateway keeps its startup environment until the application exits.
-    state.info(&format!("AI workspace saved for next application start: {}", resolved.display()));
+    state.info(&format!("AI workspace saved for next application start: {resolved}"));
     Ok(get_workspace(state))
 }
 

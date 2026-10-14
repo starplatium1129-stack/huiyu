@@ -1,16 +1,21 @@
 <template>
   <section id="control-inference" class="panel-card inference-settings" aria-labelledby="inference-settings-title">
     <div class="inference-heading">
-      <div><span class="panel-kicker">本机推理</span><h2 id="inference-settings-title" class="panel-heading">绘图引擎设置</h2></div>
-      <button v-if="isLocal" class="btn btn-ghost btn-sm" type="button" :disabled="loading || saving || setupBusy" @click="refresh">{{ loading ? '检查中…' : '重新检查' }}</button>
+      <div><span class="panel-kicker">本机绘图</span><h2 id="inference-settings-title" class="panel-heading">原生生图</h2></div>
+      <span v-if="snapshot" class="inference-active">当前引擎 · {{ engineLabel(snapshot.active.engine) }}</span>
     </div>
     <p v-if="!isLocal">请在运行绘遇的电脑上修改引擎设置。</p>
     <template v-else>
       <p v-if="error" role="alert" class="inference-error">{{ error }}</p>
       <p v-if="notice" role="status">{{ notice }}</p>
       <template v-if="snapshot">
-        <p class="inference-active">当前运行：{{ engineLabel(snapshot.active.engine) }}<span v-if="snapshot.restartRequired"> · 重启绘遇后应用新设置</span></p>
+        <p v-if="snapshot.restartRequired" role="status">新设置将在重启后生效。</p>
         <p v-if="snapshot.environmentOverrides.length">{{ snapshot.environmentOverrides.join('、') }} 由启动配置指定，请在启动配置中修改。</p>
+        <p v-if="dirty">请先保存引擎设置的修改，再继续原生准备。</p>
+        <InferenceSetupPanel :configured="snapshot.configured" :blocked="loading || saving || dirty" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @activated="refresh" />
+        <details class="inference-advanced" :open="dirty || advancedPathsOpen">
+          <StudioDisclosureSummary>已有资源与高级设置</StudioDisclosureSummary>
+          <button class="btn btn-quiet btn-sm" type="button" :disabled="loading || saving || setupBusy" @click="refresh">重新检查已有资源</button>
         <div v-if="discovery" class="inference-reuse" aria-labelledby="inference-reuse-title">
           <h3 id="inference-reuse-title">复用本机资源</h3>
           <p>{{ discovery.modelCount }} 个 Anima 底模 · {{ discovery.loraCount }} 个角色 LoRA</p>
@@ -56,7 +61,6 @@
             <span v-if="dirty">保存后重启绘遇生效</span>
           </div>
         </form>
-        <InferenceSetupPanel :configured="snapshot.configured" :blocked="loading || saving" @prepared="fillPreparedPaths" @busy="setupBusy = $event" />
         <details class="inference-diagnostics" :open="diagnostics?.configuration === 'invalid' || !!probeError">
           <summary>检查结果</summary>
           <template v-if="diagnostics">
@@ -79,6 +83,7 @@
             <p>Krea、SDXL 与 DoRA 请使用对应的其他后端。</p>
           </div>
         </details>
+        </details>
       </template>
       <p v-else-if="loading" role="status">正在读取已保存的推理设置…</p>
     </template>
@@ -86,9 +91,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref } from 'vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
-import InferenceSetupPanel from './InferenceSetupPanel.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+const InferenceSetupPanel = defineAsyncComponent(() => import('./InferenceSetupPanel.vue'))
 import type { PreparedInferencePaths } from '@/api/inferenceSetupApi'
 import { useInferenceSettings } from '@/composables/useInferenceSettings'
 const { isLocal, draft, snapshot, diagnostics, discovery, adoptionChanges, adopt, loading, saving, error, notice, dirty, refresh, save, probe, probing, probeError, diagnose } = useInferenceSettings()
@@ -102,10 +108,10 @@ function fillPreparedPaths(paths: PreparedInferencePaths) {
 const engineOptions = [{ value: 'comfy', label: 'ComfyUI' }, { value: 'native', label: '独立引擎（Native Anima）' }]
 const accelerationOptions = [{ value: 'native', label: '原生计算' }, { value: 'sage', label: 'SageAttention' }, { value: 'compiled-sage', label: '编译 + SageAttention' }, { value: 'compiled-fused-sage', label: '编译 + SageAttention + LoRA 融合' }]
 const memoryOptions = [{ value: 'resident', label: '模型常驻显卡（连续生成优先）' }, { value: 'offload', label: '分阶段加载（减少显存占用）' }]
-const engineLabel = (engine: string) => engine === 'native' ? '独立引擎（Native Anima）' : 'ComfyUI'
+const engineLabel = (engine: string) => engine === 'native' ? '原生' : 'ComfyUI'
 const pathFields = [
-  { key: 'modelsRoot', label: '模型根目录', hint: '目录格式：模型根目录 / 模型 ID / 完整 Diffusers 组件；不是 ComfyUI 的原始权重目录。' },
-  { key: 'lorasRoot', label: 'LoRA 目录', hint: '可以直接使用现有 ComfyUI 的 LoRA 目录，无需复制；兼容性由实际加载校验。' },
+  { key: 'modelsRoot', label: '模型根目录', hint: '可以沿用已有模型根目录，不搬移文件。目录格式：模型根目录 / 模型 ID / 完整 Diffusers 组件；不是原始单文件权重目录。' },
+  { key: 'lorasRoot', label: 'LoRA 目录', hint: '可以直接使用现有 LoRA 目录（包括 ComfyUI），不复制或搬移；兼容性由实际加载校验。' },
   { key: 'python', label: 'Python 可执行文件', hint: '已准备推理依赖的 Python 绝对路径。' },
   { key: 'worker', label: '推理 Worker 文件', hint: '绘遇独立推理 Worker 脚本的绝对路径。' },
 ] as const
@@ -114,6 +120,8 @@ onMounted(refresh)
 
 <style scoped>
 .inference-settings { margin-bottom: var(--s-5); color: var(--text-primary); }
+.inference-active { font-size: var(--fs-label-sm); color: var(--text-secondary); }
+.inference-advanced { margin-top: var(--s-4); border-top: 1px solid var(--border-soft); padding-top: var(--s-2); }
 .inference-heading, .inference-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .inference-settings p, .inference-settings li { color: var(--text-secondary); line-height: var(--lh-loose); overflow-wrap: anywhere; }
 .inference-form, .inference-path-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }

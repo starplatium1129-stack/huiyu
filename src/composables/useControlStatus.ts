@@ -229,13 +229,13 @@ export function useControlStatus({ showToast }: StatusHooks) {
     const imageOnline = data.sdOnline || data.comfyOnline
     imageProvider.value = data.imageProvider === undefined ? 'comfy' : data.imageProvider
     if (imageProvider.value === 'native') {
-      feedbackText.value = data.nativeRuntimeFilesReady ? '独立绘图入口已准备' : '独立绘图入口待准备'
+      feedbackText.value = data.nativeRuntimeFilesReady ? '原生绘图入口已准备' : '原生绘图入口待准备'
       actionNote.value = data.nativeRuntimeFilesReady
         ? '模型会在生成时按需加载。'
-        : '请在下方独立引擎设置中准备 Python 与 worker，再检查依赖和模型文件。'
+        : '在原生首次配置中检查设备，一键准备运行库和模型。'
     } else if (imageProvider.value === null) {
       feedbackText.value = '绘图引擎配置待确认'
-      actionNote.value = '请检查下方独立引擎设置，修正配置后重新启动应用。'
+      actionNote.value = '请在原生首次配置中检查引擎设置。'
     } else if (imageOnline && data.ttsOnline && (data.llama?.online || data.ollamaOnline)) {
       feedbackText.value = '画面、语音与聊天均已就绪'
       actionNote.value = '可以完整使用绘制台、角色房间与配音。'

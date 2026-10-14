@@ -5,6 +5,7 @@ mod http;
 mod inference;
 mod inference_discovery;
 mod inference_setup;
+mod native_setup;
 mod llama;
 mod probe;
 mod settings;

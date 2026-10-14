@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
 import identity = require('./delivery-identity');
 import deliveryPaths = require('./delivery-paths');
+import installerBinding = require('./desktop-installer-binding');
 
 const receiptPath = 'runtime/delivery-evidence/desktop-build-binding.json';
 const exe = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe';
@@ -181,7 +182,9 @@ function bindDerivedPayloads(root: string, outputs: string[]) {
 function bindDistribution(root: string, payload: string, output: string) {
   const receipt = verifyBuild(root, payload);
   const distribution = addBoundFiles(root, receipt.distribution, [output]);
-  writeReceipt(root, { ...receipt, distribution, releaseCommit:identity.repository(root).commit }, '发行封装绑定');
+  const bound = { ...receipt, distribution, releaseCommit:identity.repository(root).commit };
+  writeReceipt(root, bound, '发行封装绑定');
+  installerBinding.writeInstallerManifest(root, bound, output);
 }
 function verifyBoundDistribution(root: string, receipt: ReturnType<typeof verifyBuild>, output: string) {
   try { identity.validateSnapshot(receipt.distribution); }

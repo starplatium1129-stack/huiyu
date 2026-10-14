@@ -68,7 +68,7 @@ def validate_model(value):
             config = read_json(folder / "config.json")
             if config.get("quantization_config") or config.get("auto_map"):
                 raise WorkerError("UNSUPPORTED_MODEL", f"Quantized/custom-code component is unsupported: {name}")
-            files = list(folder.glob("*.safetensors"))
+            files = [file for file in folder.glob("*.safetensors") if file.stat().st_size > 0]
             if not files:
                 raise WorkerError("MODEL_INCOMPLETE", f"Missing safetensors weights: {folder}")
             for shard_index in folder.glob("*.safetensors.index.json"):
@@ -76,7 +76,7 @@ def validate_model(value):
                 if not isinstance(mapping, dict) or not mapping:
                     raise WorkerError("MODEL_INVALID", f"Invalid shard index: {shard_index}")
                 for shard in set(mapping.values()):
-                    if not isinstance(shard, str) or Path(shard).name != shard or not shard.endswith(".safetensors") or not (folder / shard).is_file():
+                    if not isinstance(shard, str) or Path(shard).name != shard or not shard.endswith(".safetensors") or not (folder / shard).is_file() or not (folder / shard).stat().st_size:
                         raise WorkerError("MODEL_INCOMPLETE", f"Missing/unsafe safetensors shard in {shard_index}: {shard}")
         elif name == "scheduler":
             config = read_json(folder / "scheduler_config.json")
@@ -84,9 +84,9 @@ def validate_model(value):
                 raise WorkerError("UNSUPPORTED_MODEL", "Only deterministic FlowMatchEulerDiscreteScheduler (stochastic_sampling=false) is supported")
         else:
             read_json(folder / "tokenizer_config.json")
-            required = ("vocab.json", "merges.txt") if name == "tokenizer" else (() if (folder / "spiece.model").is_file() else ("tokenizer.json",))
-            if any(not (folder / file).is_file() for file in required):
-                raise WorkerError("MODEL_INCOMPLETE", f"Missing tokenizer assets in {folder}: {', '.join(required)}")
+            groups = (("tokenizer.json",), ("vocab.json", "merges.txt")) if name == "tokenizer" else (("spiece.model",), ("tokenizer.json",))
+            if not any(all((folder / file).is_file() and (folder / file).stat().st_size > 0 for file in group) for group in groups):
+                raise WorkerError("MODEL_INCOMPLETE", f"Missing nonempty tokenizer assets in {folder}: {groups}")
     return root
 
 

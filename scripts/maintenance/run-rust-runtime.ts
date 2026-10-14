@@ -25,7 +25,7 @@ if (process.argv.includes('--help')) {
   if(action==='recover') console.log('run-rust-runtime recover --root <absolute project> --runtime-root <absolute runtime> [--showcase-root <absolute root>] [--backup-id <id>] [--out <new plan>] | --apply-plan <signed plan>');
   else console.log('run-rust-runtime <build|start|recover>\nbuild: locked release runtime; no install\nstart: run the Rust service from source\nrecover: explicit native maintenance recovery; default is preview');
 } else if (action === 'build' && process.argv.length === 3) {
-  const selected = [{ kind: 'tree', path: 'runtime-rs/src' }, { kind: 'file', path: 'runtime-rs/Cargo.toml' }, { kind: 'file', path: 'runtime-rs/Cargo.lock' }];
+  const selected = nativeInputs.SOURCES;
   const before = identity.snapshot(root, selected);
   if (before.status !== 'complete') throw new Error('Rust source identity is incomplete');
   run(['build', '--manifest-path', manifest, '--locked', '--release']);

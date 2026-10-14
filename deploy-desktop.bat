@@ -18,7 +18,7 @@ echo Example: deploy-desktop.bat -QuietInstall -NoRestart
 echo.
 echo Confirm the Windows UAC prompt when requested.
 echo.
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\maintenance\deploy-desktop-quick.ps1" -Cleanup %*
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\maintenance\deploy-desktop-quick.ps1" %*
 set "DEPLOY_EXIT=%ERRORLEVEL%"
 echo.
 echo === Finished - exit=%DEPLOY_EXIT% ===

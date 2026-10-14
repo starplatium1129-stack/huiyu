@@ -71,7 +71,7 @@ async fn import(
 }
 
 impl ControlService {
-    fn setup_permit(&self) -> Result<tokio::sync::OwnedSemaphorePermit> {
+    pub(super) fn setup_permit(&self) -> Result<tokio::sync::OwnedSemaphorePermit> {
         self.setup_verify_lock
             .clone()
             .try_acquire_owned()
@@ -211,7 +211,7 @@ impl ControlService {
         });
         Ok(operation)
     }
-    async fn run_setup_helper(
+    pub(super) async fn run_setup_helper(
         &self,
         command: &mut Command,
         cancel: &CancellationToken,
@@ -238,7 +238,7 @@ impl ControlService {
                 let detail = value
                     .as_ref()
                     .ok()
-                    .and_then(|v| v["error"]["message"].as_str())
+                    .and_then(|v| v["error"]["message"].as_str().or_else(||v["message"].as_str()))
                     .map(str::to_owned)
                     .unwrap_or_else(|| String::from_utf8_lossy(&err).into_owned());
                 return Err(ApiError::new(
@@ -252,7 +252,7 @@ impl ControlService {
                 ));
             }
             let value = value.map_err(|_| protocol_error())?;
-            if value["ok"] != true {
+            if value["ok"] != true && !(matches!(value["event"].as_str(), Some("validation" | "diagnostic")) && value["valid"] == true) {
                 return Err(protocol_error());
             }
             Ok(value)
@@ -283,7 +283,7 @@ fn existing(path: &Path, directory: bool) -> Result<()> {
 fn python_command(python: &Path, script: &Path) -> Command {
     let mut command = Command::new(python);
     command
-        .args(["-I", "-B", "-u"])
+        .args(["-I", "-B", "-u", "-X", "utf8"])
         .arg(script)
         .stdin(Stdio::null())
         .stdout(Stdio::piped())

@@ -164,11 +164,11 @@ pub(super) async fn plan(
             "独立推理需要完整本地 Diffusers 模型目录",
         )
     })?;
-    if !model_available(&model_dir).await {
+    if let Some(reason) = model_problem(&model_dir).await {
         return Err(ApiError::new(
             503,
             "NATIVE_MODEL_UNAVAILABLE",
-            "独立推理需要完整本地 Diffusers 模型目录",
+            format!("原生模型尚未就绪：{reason}"),
         ));
     }
     let upscale_model_path = if input["hiresFix"] == true {
@@ -326,16 +326,11 @@ async fn lora_path(settings: &Settings, lora: &Value) -> Option<PathBuf> {
         .is_file()
         .then_some(path)
 }
-async fn model_available(path: &std::path::Path) -> bool {
-    for name in ["model_index.json", "modular_model_index.json"] {
-        if tokio::fs::metadata(path.join(name))
-            .await
-            .is_ok_and(|m| m.is_file())
-        {
-            return true;
-        }
-    }
-    false
+async fn model_problem(path: &std::path::Path) -> Option<String> {
+    let path = path.to_owned();
+    tokio::task::spawn_blocking(move || generation::native::model_issue(&path))
+        .await
+        .unwrap_or_else(|_| Some("模型组件读取未完成，请重试".into()))
 }
 async fn remacri_path(settings: &Settings) -> Option<PathBuf> {
     let path = contained(
@@ -376,19 +371,23 @@ pub(super) async fn status(backend: &generation::Service, family: &str) -> Resul
             continue;
         }
         let model_dir = contained(&runtime.models_root, id).await;
-        let available = model["family"] == "anima"
-            && runtime_error.is_none()
-            && match &model_dir {
-                Some(path) => model_available(path).await,
-                None => false,
-            };
+        let issue = if model["family"] != "anima" {
+            Some("原生引擎当前仅支持 Anima".to_owned())
+        } else if runtime_error.is_some() {
+            Some("独立推理运行库不可用".to_owned())
+        } else if let Some(path) = &model_dir {
+            model_problem(path).await
+        } else {
+            Some("当前模型根目录内尚未安装此模型".to_owned())
+        };
+        let available = issue.is_none();
         let mut defaults = json!({"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCache":true,"teaCachePolicy":"builtin-anima","teaCacheThresh":0.10});
         if id == "anima-miaomiao-v1.6" {
             defaults["steps"] = json!(24);
             defaults["cfg"] = json!(4.);
             defaults["loraStrength"] = json!(0.8);
         }
-        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"sizes":model["sizes"],"defaults":defaults,"teaCacheProfile":{"support":"builtin-anima","readiness":"builtin","policy":"builtin-anima","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
+        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"readiness":if available {"files-ready"} else {"unavailable"},"unavailableReason":issue,"sizes":model["sizes"],"defaults":defaults,"teaCacheProfile":{"support":"builtin-anima","readiness":"builtin","policy":"builtin-anima","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
     }
     let mut loras = Vec::new();
     {

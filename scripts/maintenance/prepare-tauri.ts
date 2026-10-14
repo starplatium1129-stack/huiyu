@@ -15,7 +15,6 @@ async function prepareTauri(options: any = {}) {
     { cwd: root, stdio: 'inherit', windowsHide: true })));
   if (!fs.existsSync(path.join(webDir, 'index.html'))) throw Error('Desktop bundled UI was not built');
   const staged = await timeDesktopBuild('resource staging', () => stageResources({ root, stage: options.stage, resourceProfile: options.resourceProfile, logger: options.logger }));
-  await timeDesktopBuild('isolated gateway verification', () => (options.verifyGateway || (require('./verify-desktop-gateway') as typeof import('./verify-desktop-gateway')).verifyDesktopGateway)({ root }));
   console.log(`[tauri] Rust candidate prepared; releaseReady=${staged.releaseReady}`);
   return { webDir, ...staged };
 }

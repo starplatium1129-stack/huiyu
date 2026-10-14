@@ -17,6 +17,7 @@ impl Worker {
         command
             .arg("-I")
             .arg("-u")
+            .args(["-X", "utf8"])
             .arg(&settings.worker)
             .arg("--serve")
             .stdin(Stdio::piped())

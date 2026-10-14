@@ -59,6 +59,14 @@ impl ControlService {
         let Some(value) = saved.get("inference") else {
             return Ok(active);
         };
+        if saved["inferenceWorkspacePath"].as_str().is_some_and(|path| std::path::Path::new(path) != self.config.ai_workspace_root) {
+            // Saved paths belong to the previous workspace. Keep those user files
+            // and saved data, but do not advertise them as resources of this one.
+            let mut current = Settings::discovered(&self.config.ai_workspace_root).0;
+            current.engine = value["engine"].as_str().unwrap_or("comfy").into();
+            current.environment_overrides = active.environment_overrides.clone();
+            return Ok(current);
+        }
         let mut configured: Settings = serde_json::from_value(value.clone())
             .map_err(|_| ApiError::invalid("已保存的推理配置无效"))?;
         let active_json = serde_json::to_value(&active)?;
@@ -70,7 +78,7 @@ impl ControlService {
         configured.validate()?;
         Ok(configured)
     }
-    fn inference_view(&self) -> Result<Value> {
+    pub(super) fn inference_view(&self) -> Result<Value> {
         let active = self.active_inference()?;
         let configured = self.configured_inference()?;
         let current = serde_json::to_value(&active)?;
@@ -94,7 +102,7 @@ impl ControlService {
                 ));
             }
         }
-        self.patch(json!({"inference":target})).await?;
+        self.patch(json!({"inference":target,"inferenceWorkspacePath":self.config.ai_workspace_root})).await?;
         self.inference_view()
     }
 }
@@ -140,6 +148,7 @@ async fn diagnose(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<V
     command
         .arg("-I")
         .arg("-u")
+        .args(["-X", "utf8"])
         .arg(&settings.worker)
         .arg("--diagnose")
         .stdin(Stdio::null())

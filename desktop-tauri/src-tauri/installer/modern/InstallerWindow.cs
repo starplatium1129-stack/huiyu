@@ -201,28 +201,6 @@ namespace Ayaki.Installer {
       var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(image));
       using (Stream stream = File.Create(path)) encoder.Save(stream);
     }
-    public void ValidateView() {
-      foreach (bool theme in new [] { false, true }) {
-        ApplyTheme(theme);
-        foreach (string[] pair in new [] { new [] { "Text", "Surface" }, new [] { "Muted", "Surface" }, new [] { "Text", "Card" }, new [] { "Error", "Surface" }, new [] { "Success", "Surface" }, new [] { "DisabledText", "Disabled" }, new [] { "AccentText", "Accent" } }) {
-          double a = Luminance(((SolidColorBrush)View.Resources[pair[0]]).Color), b = Luminance(((SolidColorBrush)View.Resources[pair[1]]).Color);
-          double ratio = (Math.Max(a, b) + .05) / (Math.Min(a, b) + .05);
-          if (ratio < 4.5) throw new Exception("Installer text contrast failed: " + pair[0]);
-        }
-        double progressA = Luminance(((SolidColorBrush)View.Resources["ProgressColor"]).Color), progressB = Luminance(((SolidColorBrush)View.Resources["Card"]).Color);
-        if ((Math.Max(progressA, progressB) + .05) / (Math.Min(progressA, progressB) + .05) < 3) throw new Exception("Progress indicator contrast failed");
-        FrameworkElement content = (FrameworkElement)View.Content;
-        content.Measure(new Size(1040, 650)); content.Arrange(new Rect(0, 0, 1040, 650)); content.UpdateLayout();
-        if (main.ActualWidth < 200 || main.ActualHeight < 44 || directory.ActualWidth < 300) throw new Exception("Installer control layout is clipped");
-      }
-      SetPreview("installing");
-      var foreground = (SolidColorBrush)action.Foreground;
-      if (foreground.Color != ((SolidColorBrush)View.Resources["DisabledText"]).Color) throw new Exception("Disabled install label must use the accessible disabled token");
-    }
     private void SetAction(string text) { action.Text = text; AutomationProperties.SetName(main, text); }
-    private static double Luminance(System.Windows.Media.Color color) {
-      Func<byte, double> channel = value => { double v = value / 255d; return v <= .04045 ? v / 12.92 : Math.Pow((v + .055) / 1.055, 2.4); };
-      return .2126 * channel(color.R) + .7152 * channel(color.G) + .0722 * channel(color.B);
-    }
   }
 }

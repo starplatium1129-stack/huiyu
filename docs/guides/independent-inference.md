@@ -1,14 +1,22 @@
 # 独立 Anima 图像推理接入
 
-## 当前使用方式（2026-10-13）
+## 当前使用方式（2026-10-14）
 
-在控制室选择“复用并启用独立引擎”，保存后重启运行时。程序从当前 AI 工作区的 inference 根及一层子目录发现兼容运行库安装记录，复用 inference/models 内已转换模型；独立 LoRA 目录没有已登记文件时可直接使用 ComfyUI/models/loras。无需重复复制权重或填写四条路径。显式保存的配置与环境覆盖仍优先，手动路径集中在高级设置。发现只检查本地文件，不代表依赖或设备出图验收。
+首次使用在控制室打开“原生首次配置”：选择 AI 工作区，检查设备、空间与许可后点击“一键准备”。同一后台操作连续完成运行库、完整模型、校验与原生配置保存；离开页面仍继续，回到页面可查看进度或取消。来源、版本和路径明细收在“设备与下载详情”，分项准备和离线导入保留在折叠入口。受管流程支持 Windows 10 22H2 / Windows 11 x64、单张支持 BF16 的 NVIDIA Ampere 至 Blackwell 显卡、12 GB 或更多显存、驱动至少 572.61、系统内存至少 24 GiB（建议 32 GiB）；具体设备兼容性会在安装后由固定 PyTorch 运行库再次诊断。AMD、Intel 与 CPU 推理尚未接入，设备不满足条件时禁用受管下载，不要求用户下载无法使用的 CUDA 包。
+
+运行库从 Python.org、PyTorch、PyPI 和 Microsoft 固定源获取，包含独立 Python 3.11.9、PyTorch 2.8.0 CUDA 12.8、固定依赖及所需 VC++ 共享组件；下载约 3.32 GiB，首次准备预算约 14.32 GiB。Python 与依赖在所选工作区的 `inference/<runtimeId>`，不修改系统 Python，不需要完整 CUDA Toolkit 或 ComfyUI。缺少 VC++ 时打开微软安装器，由用户处理 UAC；此系统安装阶段只能在微软窗口取消或等待结束。下载缓存位于 `inference/.downloads`，候选暂存在 `inference/.staging`；续传和重试复用匹配文件，只有完成依赖与设备检查的版本才登记。
+
+首个受管模型为官方 [Anima Base v1.0 Diffusers](https://huggingface.co/circlestone-labs/Anima-Base-v1.0-Diffusers)，固定 revision `073c3a9db359c31ad0e8aa268d15775473c2176c`，完整 17 文件约 5.25 GiB，含 transformer、编码器、VAE、tokenizer、配置、索引和许可；逐项核对大小与 SHA-256 后发布到 `inference/models/anima-base-v1.0`，无需转换。下载前须阅读并接受该版本非商业许可。MiaoMiao 等单文件权重尚未接入应用内自动转换，不将任意 `.safetensors` 标为原生兼容。已有完整模型可以在高级路径设置直接复用，已有 LoRA 继续使用原目录，软件不搬移用户模型。
+
+一键流程明确保存原生引擎，按页面提示重启绘遇；只有当前引擎确认为原生、设备与资源就绪才显示“开始创作”。工作区变更会撤销旧目录的就绪显示，保存新目录后须重启；应用不静默回退 ComfyUI。源码、构建和组件检查不等于干净 Windows 安装或真实出图验收；断网续传、磁盘不足、不可写目录、缺组件、重启发现及最终原生成图仍须在对应设备人工验收。
+
+在控制室展开“已有资源与高级设置”，选择“采用并启用”，保存后重启运行时。程序从当前 AI 工作区的 inference 根及一层子目录发现兼容运行库安装记录，复用 inference/models 内完整原生模型；独立 LoRA 目录没有已登记文件时可直接使用 ComfyUI/models/loras。无需重复复制权重或填写四条路径。显式保存的配置与环境覆盖仍优先，手动路径集中在高级设置。发现只检查本地文件，不代表依赖或设备出图验收。
 
 日常 TeaCache 已内置 CocyNoric 的 Apache-2.0 Anima 策略，默认阈值 0.10，允许沿用保存的数值阈值；关闭或阈值 0 使用完整计算。切换模型、LoRA、尺寸和高清倍率不再要求校准，也不读取旧 teacache-profile.json。主采样与高清二次采样使用独立残差，首末步完整计算。内置缓存会改变部分采样结果，不承诺跨后端像素一致。显式本地校准仅保留为维护研究路径。
 
 加载阶段显示环境、模型核验、各组件加载与上传、编码、解码及保存进度。取消在安全阶段或采样步边界生效，清理后确认 ready 才保留模型；10 秒内没有确认或发生故障时仍结束进程，避免后续任务与未退出工作重叠。已完成任务的取消竞争不再无条件销毁模型。
 
-默认引擎仍为 ComfyUI，原生范围是已支持的 Anima 模型与 LoRA、图生图、手绘/CLIPSeg 局部重绘、Latent/固定 Remacri 高清和 RCAS。独立运行库与 Diffusers 模型转换仍是首次准备需求；当前不盲用 ComfyUI Python、不安装依赖、不下载模型。新机打包运行库、Krea/SDXL/视频和任意 Comfy 节点不属于本次交付。
+默认引擎仍为 ComfyUI，原生范围是已支持的 Anima 模型与 LoRA、图生图、手绘/CLIPSeg 局部重绘、Latent/固定 Remacri 高清和 RCAS。首次准备可使用上述受管下载；已有 Python 与本地 wheelhouse 的离线准备、完整 Diffusers 目录导入保留为高级入口。应用不盲用 ComfyUI Python；Krea/SDXL/视频和任意 Comfy 节点尚不属于原生支持范围。
 
 用户授权后完成 36 张产品 API 成片、5 次取消，并完成安装版取消/恢复；2026-10-13 已完整安装到 `C:/Program Files/AI-CG-Studio`，用户确认实际体验良好。本机 RTX 4070 Ti SUPER 的 MiaoMiao 1.6、宁宁 LoRA 0.8、832×1216、24 步、CFG 4 三张热任务中位数为原生 5.05 秒、ComfyUI 5.54 秒；Latent 高清速度接近，局部手部细节仍有差异。分阶段模式较慢但显存峰值更低。本轮不推广为全模型、自动换装语义或全部硬件验收。
 
@@ -53,9 +61,9 @@ Native 完成图仍先检查 PNG 格式、32 MiB 上限并完整解码，再将 
 - TeaCache 日常使用内置 Anima 策略，默认开启，`teaCache: false` 明确关闭；普通图、LoRA、提示词权重与高清无需逐组合校准，不读取旧校准档。RCAS、Latent / 固定 Remacri 高清与圆括号提示词权重已有指定组合的真实 GPU 证据，其他组合与设备效果仍须实际验收。显式校准档仅供维护研究路径，不构成产品启用条件。任意 RealESRGAN 权重、非 Anima 家族与视频仍不支持，不能静默忽略或改采样器完成请求。Krea 2、SDXL 等属于后续范围。
 - 已支持的 LoRA 格式为原生 Diffusers/PEFT A/B 及官方识别的 `diffusion_model.*` A/B（含 llm_adapter）；另支持经原始模块名及实际 Linear 形状严格核验的 Anima Kohya `lora_unet_*` down/up/alpha 三元组（含 llm_adapter），按 alpha/rank 缩放 B；通用 Kohya 家族、卷积适配器、DoRA、残缺/非有限权重及未知格式明确拒绝。已测角色与模型组合见本轮报告，未知权重仍须实际加载验收。
 
-## 独立运行库准备
+## 高级：离线运行库准备
 
-准备器不会下载依赖或模型。需要一个已有受信 Python 和针对目标操作系统、Python 版本、CUDA/驱动选择准备好的本地 wheelhouse。运行库由绘遇的独立目录持有，不复用 ComfyUI 环境。
+以下是高级离线准备器 `prepare-inference.py` 的用法。它不会下载依赖或模型，需要已有受信 Python 和针对目标操作系统、Python 版本、CUDA/驱动准备好的本地 wheelhouse。新电脑优先使用本页开头的应用内受管下载流程。两种流程均由绘遇的独立目录持有运行库，不复用 ComfyUI 环境。
 
 源码目录或安装包 gateway 目录中执行：
 
@@ -70,7 +78,7 @@ python scripts/maintenance/prepare-inference.py --target-dir <AI工作区>/infer
 
 `--preflight` 使用当前受信 Python 自带的 pip 做离线 `--dry-run --ignore-installed`：解析全部依赖而不借用当前已装包，缺轮子/平台不兼容会在创建 venv 前报错。它需要支持 `--dry-run` 的已有 pip，不自动升级。`--apply` 总会先执行同样预检。工具仅读本地 wheel 元数据并拒绝 URL 依赖，只把已检查的 `.whl` 文件交给 `--no-index --only-binary=:all: --no-cache-dir`，不跟随目录内 HTML 或使用源码安装包。预检通过不证明真实包可导入或 GPU 可运行。pip 行为参见[官方 install 文档](https://pip.pypa.io/en/stable/cli/pip_install/)。
 
-`runtime-config.json` 保存解释器及依赖回执。发现兼容记录时仅复用 Python，默认 Worker 取当前应用；不采用记录中的历史源码路径，也不改写旧记录。显式已存 Worker 和环境覆盖仍优先。构建不会调用安装步骤。桌面包带 worker、依赖清单与准备器；控制室提供显式离线准备入口，但仍需已有可信 Python 与配套 wheelhouse，尚未提供完整的签名 Python/CUDA wheel 发行材料。不能称“新机安装后放一个权重即可生成”。
+`runtime-config.json` 保存解释器及依赖回执。发现兼容记录时仅复用 Python，默认 Worker 取当前应用；不采用记录中的历史源码路径，也不改写旧记录。显式已存 Worker 和环境覆盖仍优先。构建不会调用安装步骤。桌面包带 worker、固定下载清单、受管准备器与离线准备器；正常首次配置通过应用从官方源下载并核对大小与 SHA-256，VC++ 安装器另核对微软签名。只有上述高级离线入口需要已有 Python 与 wheelhouse；运行库和完整模型就绪之前不视为可生成。
 
 ## 应用内离线准备与完整目录导入
 

@@ -3,13 +3,12 @@ use serde_json::{Value, json};
 use std::time::Duration;
 
 pub(super) async fn local_hardware() -> Value {
-
     #[cfg(windows)]
     {
         let mut command = tokio::process::Command::new("nvidia-smi.exe");
         command
             .args([
-                "--query-gpu=name,memory.total,memory.free,driver_version",
+                "--query-gpu=name,memory.total,memory.free,driver_version,compute_cap",
                 "--format=csv,noheader,nounits",
             ])
             .creation_flags(0x08000000)
@@ -21,7 +20,12 @@ pub(super) async fn local_hardware() -> Value {
             .filter(|o| o.status.success())
             .map(|o| parse_nvidia(&String::from_utf8_lossy(&o.stdout)))
             .unwrap_or_default();
-        json!({"ramBytes":system_ram(),"devices":devices})
+        let other_devices = if devices.is_empty() {
+            display_adapters().await
+        } else {
+            Vec::new()
+        };
+        json!({"ramBytes":system_ram(),"devices":devices,"otherDevices":other_devices,"windowsBuild":windows_build()})
     }
     #[cfg(not(windows))]
     {
@@ -30,12 +34,82 @@ pub(super) async fn local_hardware() -> Value {
 }
 
 #[cfg(windows)]
+async fn display_adapters() -> Vec<Value> {
+    use std::process::Stdio;
+    use tokio::io::AsyncReadExt;
+    let mut command = tokio::process::Command::new("powershell.exe");
+    command.args(["-NoProfile", "-NonInteractive", "-Command",
+        "[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); $huiyuAdapters=@(Get-CimInstance Win32_VideoController | Where-Object { $_.PNPDeviceID -like 'PCI*' } | Select-Object Name,DriverVersion); ConvertTo-Json -InputObject $huiyuAdapters -Compress"])
+        .stdin(Stdio::null()).stdout(Stdio::piped()).stderr(Stdio::null())
+        .creation_flags(0x08000000).kill_on_drop(true);
+    let query = async {
+        let mut child = command.spawn().ok()?;
+        let mut bytes = Vec::new();
+        child
+            .stdout
+            .take()?
+            .take(65537)
+            .read_to_end(&mut bytes)
+            .await
+            .ok()?;
+        if bytes.len() > 65536 || !child.wait().await.ok()?.success() {
+            return None;
+        }
+        let value: Value = serde_json::from_slice(&bytes).ok()?;
+        Some(
+            value
+                .as_array()?
+                .iter()
+                .filter_map(|device| {
+                    let name = device["Name"].as_str()?.trim();
+                    if name.is_empty() {
+                        return None;
+                    }
+                    Some(json!({"name":name,"driverVersion":device["DriverVersion"].as_str()}))
+                })
+                .collect::<Vec<_>>(),
+        )
+    };
+    tokio::time::timeout(Duration::from_secs(4), query)
+        .await
+        .ok()
+        .flatten()
+        .unwrap_or_default()
+}
+
+#[cfg(windows)]
+fn windows_build() -> Option<u32> {
+    #[repr(C)]
+    struct Version {
+        size: u32,
+        major: u32,
+        minor: u32,
+        build: u32,
+        platform: u32,
+        service: [u16; 128],
+    }
+    #[link(name = "ntdll")]
+    unsafe extern "system" {
+        fn RtlGetVersion(version: *mut Version) -> i32;
+    }
+    let mut version = Version {
+        size: std::mem::size_of::<Version>() as u32,
+        major: 0,
+        minor: 0,
+        build: 0,
+        platform: 0,
+        service: [0; 128],
+    };
+    (unsafe { RtlGetVersion(&mut version) } == 0).then_some(version.build)
+}
+
+#[cfg(windows)]
 fn parse_nvidia(text: &str) -> Vec<Value> {
     text.lines().filter_map(|line| {
         let values: Vec<_> = line.split(',').map(str::trim).collect();
-        if values.len() != 4 { return None; }
+        if values.len() != 5 { return None; }
         let mib = |value: &str| value.parse::<u64>().ok().and_then(|n| n.checked_mul(1024 * 1024));
-        Some(json!({"name":values[0],"type":"cuda","vramBytes":mib(values[1]),"freeVramBytes":mib(values[2]),"driverVersion":values[3]}))
+        Some(json!({"name":values[0],"type":"cuda","vramBytes":mib(values[1]),"freeVramBytes":mib(values[2]),"driverVersion":values[3],"computeCapability":values[4]}))
     }).collect()
 }
 

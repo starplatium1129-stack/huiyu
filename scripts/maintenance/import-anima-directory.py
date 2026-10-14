@@ -32,7 +32,7 @@ CLASSES = {"transformer": ("diffusers", {"CosmosTransformer3DModel"}),
            "t5_tokenizer": ("transformers", {"T5Tokenizer", "T5TokenizerFast"}),
            "scheduler": ("diffusers", {"FlowMatchEulerDiscreteScheduler"})}
 WEIGHTS = {"transformer", "text_conditioner", "text_encoder", "vae"}
-ROOT_FILES = INDEXES | {"README.md", "LICENSE", "LICENSE.txt", "LICENSE.md", "NOTICE", ".gitattributes", "conversion.json"}
+ROOT_FILES = INDEXES | {"README.md", "LICENSE", "LICENSE.txt", "LICENSE.md", "NOTICE", ".gitattributes", "conversion.json", "huiyu-model.json"}
 TOKENIZER_FILES = {"tokenizer_config.json", "tokenizer.json", "special_tokens_map.json", "added_tokens.json",
                    "vocab.json", "merges.txt", "spiece.model", "config.json", "chat_template.jinja"}
 
@@ -202,8 +202,15 @@ def validate_layout(root, files):
             for key, value in config.items():
                 if key in CLASSES:
                     library, classes = CLASSES[key]
-                    if not isinstance(value, list) or len(value) != 2 or value[0] != library or not isinstance(value[1], str) or value[1] not in classes:
+                    if not isinstance(value, list) or len(value) not in (2, 3) or value[0] != library or not isinstance(value[1], str) or value[1] not in classes:
                         reject("UNSUPPORTED_MODEL", f"Unsupported model-index component: {key}")
+                    # Official modular indexes retain Hub origin metadata. The
+                    # worker ignores it and loads only these local subfolders.
+                    if len(value) == 3:
+                        metadata = value[2]
+                        if (not isinstance(metadata, dict) or set(metadata) - {"pretrained_model_name_or_path", "revision", "subfolder", "type_hint", "variant"}
+                                or metadata.get("subfolder") != key or metadata.get("type_hint") != value[:2]):
+                            reject("UNSUPPORTED_MODEL", f"Unsupported model-index metadata: {key}")
                 elif key not in {"_class_name", "_blocks_class_name", "_diffusers_version", "_name_or_path"}:
                     reject("UNSUPPORTED_MODEL", f"Unsupported model-index field: {key}")
         elif path.name == "tokenizer_config.json":

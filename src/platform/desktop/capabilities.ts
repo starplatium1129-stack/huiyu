@@ -23,7 +23,11 @@ const capabilities: CompanionDesktopBridge = {
   saveImage: payload => invoke('save_image', { data: Array.from(payload.data), name: payload.name }),
   openWorkspace: () => invoke('open_workspace'), openRuntime: () => invoke('open_runtime'), openLog: () => invoke('open_log'),
   pickWorkspace: root => invoke('pick_workspace', { root }),
-  getWorkspace: () => invoke('get_workspace'), setWorkspace: root => invoke('set_workspace', { root }),
+  getWorkspace: () => invoke('get_workspace'), setWorkspace: async root => {
+    const result = await invoke<Awaited<ReturnType<CompanionDesktopBridge['setWorkspace']>>>('set_workspace', { root })
+    window.dispatchEvent(new Event('huiyu:ai-workspace-changed'))
+    return result
+  },
   restartForSetup: () => invoke('restart_for_setup'),
   notify: (title, body) => { void invoke('notify', { title, body }) },
   setProgress: progress => { void invoke('set_progress', { progress }) },

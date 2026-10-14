@@ -1,4 +1,6 @@
 mod config;
+mod model_layout;
+pub(crate) use model_layout::model_issue;
 mod observations;
 mod results;
 mod worker;

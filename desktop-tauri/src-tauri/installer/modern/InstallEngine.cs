@@ -10,7 +10,7 @@ using Microsoft.Win32;
 
 namespace Ayaki.Installer {
   internal sealed class InstallOptions {
-    public bool Preview, Silent, Passive, SelfTest, Launch, Update, NoNativeShortcuts, Shortcut = true;
+    public bool Preview, Silent, Passive, Launch, Update, NoNativeShortcuts, Shortcut = true;
     public string Theme = "dark", State = "ready", Capture = "", Directory = "";
     public int Dpi = 96;
     public static InstallOptions Parse(string[] args) {
@@ -23,7 +23,6 @@ namespace Ayaki.Installer {
         else if (a.Equals("/R", StringComparison.OrdinalIgnoreCase)) o.Launch = true;
         else if (a.Equals("/NS", StringComparison.OrdinalIgnoreCase)) { o.Shortcut = false; o.NoNativeShortcuts = true; }
         else if (a == "--preview") o.Preview = true;
-        else if (a == "--self-test") o.SelfTest = true;
         else if (a.StartsWith("--theme=")) o.Theme = a.Substring(8);
         else if (a.StartsWith("--state=")) o.State = a.Substring(8);
         else if (a.StartsWith("--capture=")) { o.Capture = a.Substring(10); o.Preview = true; }
@@ -88,12 +87,6 @@ namespace Ayaki.Installer {
     }
     public static string Hash(Stream stream) {
       using (SHA256 sha = SHA256.Create()) return BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
-    }
-    public static string VerifyPayload() {
-      using (Stream source = Assembly.GetExecutingAssembly().GetManifestResourceStream("Payload.exe")) {
-        if (source == null || source.Length != PayloadInfo.Length || Hash(source) != PayloadInfo.Sha256) throw new IOException("安装包校验失败，请重新下载。");
-      }
-      return PayloadInfo.Sha256;
     }
     public static Task<int> Run(InstallOptions options, IProgress<InstallProgress> progress, CancellationToken cancellation) {
       return Task.Run(() => {

@@ -19,9 +19,9 @@ Windows 桌面自有网关及它新建的模型进程纳入宿主持有的 Job O
 
 旧安装版没有维护能力描述时，仍须先从托盘“退出 Companion”再执行首次升级；脚本不会试探未知 CLI、强杀进程或按 PID 猜测删锁。维护在封闭写入前取消会恢复界面；进入排空后失败则保持冻结，用户可从托盘正常退出后检查，不能把该退出当作升级成功。active/candidate 的未知残留锁始终要求维修。提权父进程等待并返回真实退出码，UAC 取消或安装失败不会显示成功；UAC、缺包或构建失败也不会提前关掉用户应用。
 
-`npm run wf -- check:desktop-deploy` 使用临时安装目录、独立 owner 记录及真实进程夹具，验证受控退出、旧版本拒绝、进程身份变化与未知残留锁保留；不操作当前安装或触发 UAC。安装后重启会核对新宿主实例及其认证网关就绪，页面/图片显示另做实际界面验收。`-NoRestart` 不执行启动确认，不能据此记录启动成功。
+不运行临时安装目录、进程夹具或安装器自测。部署保留针对实际安装的前置资源核验、受控维护退出和启动确认；页面、图片和安装弹窗由用户在目标设备人工验收。`-NoRestart` 不执行启动确认，不能据此记录启动成功。
 
-`package:tauri` 暂存实际 Rust EXE、原生 DLL、清单与资源，并按 `bundle.resources` 在仓库外隔离布局启动该 EXE；验证器拒绝旧 `server.js`、服务端 `node_modules` 等误入载荷。可用 `npm run wf -- desktop:verify-gateway` 或 `desktop:rust-bundle` 复验。开发机旧 Node 网关或 Live2D 自测不能代替实际包布局验证；最终结果见[统一规划](roadmap.md)。
+`package:tauri` 暂存实际 Rust EXE、原生 DLL、清单与资源，并保留源码、产物及许可证材料的完整性绑定。构建不启动隔离网关或运行行为测试；实际安装布局、首次启动和页面显示通过目标设备的人工验收确认，开发机已有环境不代替新机验收。
 
 旧 1.6.0 的缺失 `docs/redirects.json` 修复属于历史 Node 版本，应使用对应版本的发行流程。当前 `-StartupRepair` 仅为已匹配 Rust 构建的安装同步文档、图标和快捷方式，不能升级旧 Node 安装。部署入口从卸载登记读取实际安装位置，多个安装需用 `-InstallDir` 明确选择。
 
@@ -57,9 +57,9 @@ Tauri 2.12 在 NSIS 内把宿主唯一的 `__TAURI_BUNDLE_TYPE_VAR_UNK` 标记�
 npm run wf -- desktop:upgrade-local --install-dir "C:\Program Files\AI-CG-Studio"
 ```
 
-它等价于 `desktop:package-local --skip-build`，先用安装器内同一个只读检查器核对安装登记、宿主版本、WebView2 与保留素材，再封装无压缩升级包；不修改自动更新清单、不安装或发布。前置不匹配直接停止，保持应用运行，不自动回退完整打包。安装使用 `deploy-desktop.bat -UseInstaller -InstallerPath "<本次绑定的升级包>" -QuietInstall`；新装或修复显式选用发行完整包。
+它等价于 `desktop:package-local --skip-build`，先用安装器内同一个只读检查器核对安装登记、宿主版本、WebView2 与保留素材，再封装无压缩升级包；不修改自动更新清单、不安装或发布。前置不匹配直接停止，保持应用运行，不自动回退完整打包。安装使用 `deploy-desktop.bat -UseInstaller -InstallerPath "<本次绑定的升级包>" -QuietInstall`；新装或修复显式选用发行完整包。每份封装包生成相邻的 `.deployment.json`，固定包 SHA-256 和安装后文件身份；已有包部署只依赖包与此清单，不读取当前源码、构建 SDK 或暂存目录。旧包首次使用可从其原构建回执和已绑定宿主字节准备清单，不重新编译或改写原回执。
 
-构建绑定现在只选择当前产品/版本的 x64 安装包、存在的签名及 NSIS 输入，历史版本包可以保留在输出目录，不参与本次校验。部署的三个检查点均保留，每个检查点只扫描一次完整构建。旧回执不会被自动改写，工具源码变化后须正常重建一次才能复用新规则。构建日志新增 `[desktop:timing]`，分别记录前端/预压、Rust 后端、桌面 UI、资源暂存、隔离网关验证、Tauri 原生/打包及绑定；部署日志记录校验、维护退出、安装/同步和启动耗时，实际收益以同机下一次更新为准。
+构建绑定现在只选择当前产品/版本的 x64 安装包、存在的签名及 NSIS 输入，历史版本包可以保留在输出目录，不参与本次校验。部署的三个检查点均保留，每个检查点只扫描一次完整构建。旧回执不会被自动改写，工具源码变化后须正常重建一次才能复用新规则。构建日志新增 `[desktop:timing]`，分别记录前端/预压、Rust 后端、桌面 UI、资源暂存、Tauri 原生/打包及绑定；部署日志记录校验、维护退出、安装/同步和启动耗时，实际收益以同机下一次更新为准。
 
 2026-10-06 本机 b19574dc 升级部署日志共 204.35 秒，三个校验检查点共 193.58 秒，安装器实际执行 7.14 秒。当前源码将逐个路径前缀的重复 realpath 改为逐段链接检查后的一次 Windows 原生 realpath；保留真实路径边界、硬链接、并发修改及完整字节摘要校验，没有跳过检查点或复用未经检查的摘要。对同一批 13,719 个已安装静态文件（576,039,345 字节），扫描从 22.11 秒降到 7.39 秒，前后完整 SHA-256 相同，17 项现有定向用例通过。该收益不等同于整轮部署的新耗时；下一次部署以日志为准。
 
@@ -80,8 +80,8 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 
 `-SyncLocalModels` 仅用于个人部署：核验并复制 `runtime/live2d-imports` 已登记文件至用户数据目录，保留旧模型版本；不会把候选 LPK/ZIP 或模型塞进可分发安装包。增量复制也排除 `assets/live2d-candidates`。
 `-QuietInstall` 用于默认升级或 `-UseInstaller` 包部署，仍需要用户确认 UAC；不适用于 `-ResourcesOnly` / `-StartupRepair`。部署日志追加到 `runtime/desktop-deploy-last.log`。
-`-InstallerPath` 随 `-UseInstaller` 显式选择包；未指定时仅在当前版本升级包中选最新一份。既有包的路径会固定并透传 UAC；默认构建模式在构建成功后固定本次产物。三个构建绑定检查点仍保留，避免同版本旧包或并发替换被误安装。
-`-Cleanup` 默认已带（清理源端已删除的历史残留）。
+`-InstallerPath` 随 `-UseInstaller` 显式选择包；未指定时仅在当前版本升级包中选最新一份。既有包的路径与安装清单摘要在 UAC 前固定并透传；默认构建模式在构建成功后固定本次产物。安装前后重核同一固定包与清单，安装后逐项核对声明文件，不删除额外用户文件。源码构建和纯资源同步仍要求源码、SDK、暂存产物一致。
+`-Cleanup` 仅在显式指定时清理登记的历史应用残留，默认保留。
 
 ---
 
@@ -182,7 +182,7 @@ npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 We
 `runtime-rs/native-dependencies.windows-x64.json` 固定 libvips DLL 字节/哈希及发行材料状态，`desktop-rust-inputs.ts` 核验后暂存。PixAI 接替 WD14 后，源码已退役 ORT 的 Rust/npm 依赖与新包载荷；`sharp` 继续用于图像维护工具。依赖变化需重建后端和桌面载荷；开发机能加载不证明安装包完整。此次退役不修改已发布 1.9.1 的字节，也不清除旧安装目录中的 ORT 文件。
 
 ### 2. 依赖变了，顺序必须是「先打包，再安装」
-先经受控构建产出并核验当前包，再使用 `-UseInstaller`；不向已安装目录手工补 DLL或 Node 依赖。构建成功和隔离 bundle 通过仍不等于完成许可材料、UAC与实际安装验收。
+先经受控构建产出并核验当前包，再使用 `-UseInstaller`；不向已安装目录手工补 DLL或 Node 依赖。构建成功仍不等于完成许可材料、UAC与实际安装验收。
 
 ### 3. 源端删除的资源不会自动消失
 `Copy-Item -Recurse -Force` **只合并不删除**。源里删掉的目录，安装目录里那份会永久堆积。

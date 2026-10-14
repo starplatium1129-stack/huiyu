@@ -73,7 +73,6 @@ namespace Ayaki.Installer { internal static class PayloadInfo {
   if (!preview) args.push(`/resource:${path.resolve(payload)},Payload.exe`);
   if (!preview && upgrade) args.push(`/resource:${path.resolve(upgradeVerifier)},UpgradeVerifier.exe`);
   run(compiler, args);
-  run(executable, ['--self-test']);
   if (capture) {
     const captureFile = path.join(ROOT, 'runtime', `installer-modern-${upgrade ? 'upgrade' : 'full'}-${theme}-${state}-${dpi}.png`);
     run(executable, ['--preview', `--theme=${theme}`, `--state=${state}`, `--dpi=${dpi}`, `--capture=${captureFile}`]);

@@ -11,7 +11,7 @@
     >
       <div>
         <strong>AI 工作区</strong>
-        <span id="companion-workspace-description">存放 ComfyUI、训练数据与配音资源的目录（例如 E:\AI）。保存后需完全退出并重启绘遇才生效，不会移动已有文件。</span>
+        <span id="companion-workspace-description">存放运行库、模型、训练与配音资源。重启后生效，已有文件保留。</span>
       </div>
       <input
         ref="inputEl"

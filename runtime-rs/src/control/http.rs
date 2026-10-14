@@ -14,6 +14,7 @@ pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
         .route("/api/status", get(status))
         .merge(inference::routes())
         .merge(inference_setup::routes())
+        .merge(native_setup::routes())
         .merge(setup_http::routes())
         .route("/api/share-link", get(share))
         .route("/api/logs", get(logs))

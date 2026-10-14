@@ -1,7 +1,7 @@
 <template>
-  <section id="control-setup" class="panel-card local-setup" aria-labelledby="local-setup-title">
+  <section class="local-setup" aria-labelledby="local-setup-title">
     <div class="setup-heading">
-      <div><span class="panel-kicker">本机起步</span><h2 id="local-setup-title" class="panel-heading">绘图首次配置</h2></div>
+      <div><span class="panel-kicker">本机起步</span><h2 id="local-setup-title" class="panel-heading">ComfyUI 与本地聊天配置</h2></div>
       <div v-if="isLocal" class="setup-actions">
         <button class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="refresh">
           <ArchiveIcon name="refresh" />{{ loading ? '检查中…' : '重新检查' }}
@@ -11,6 +11,7 @@
     </div>
     <p v-if="!isLocal" class="setup-note">请在运行绘遇的电脑上完成配置。</p>
     <template v-else>
+      <p class="setup-note">此处准备 ComfyUI 绘图环境与可选聊天模型；使用原生引擎请先完成上方的「原生引擎首次配置」。</p>
       <div class="setup-result" :data-state="basicComplete ? 'checked' : 'pending'" role="status" aria-live="polite">
         <ArchiveIcon :name="basicComplete ? 'success' : 'info'" /><strong>{{ basicComplete ? '基础配置已就绪' : summary }}</strong>
       </div>
@@ -109,7 +110,7 @@ const { isLocal, desktop, snapshot, loading, error, summary, nextStep, basicComp
 
 <style scoped>
 @reference "../assets/css/tailwind.css";
-.local-setup { border:1px solid var(--border-soft); background:var(--bg-surface); overflow-wrap:anywhere; }
+.local-setup { padding-top:var(--s-4); overflow-wrap:anywhere; }
 .setup-heading, .setup-actions { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); }
 .setup-heading { justify-content:space-between; gap:var(--s-3); }
 .panel-heading { margin:0; font-size:var(--fs-title-sm); }

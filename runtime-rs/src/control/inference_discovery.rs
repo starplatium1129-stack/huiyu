@@ -6,7 +6,12 @@ impl ControlService {
         let config = self.config.clone();
         let configured = self.configured_inference()?;
         let active = self.active_inference()?;
-        let explicit = self.saved.read().unwrap().get("inference").cloned();
+        let explicit = {
+            let saved = self.saved.read().unwrap();
+            let workspace_matches = saved["inferenceWorkspacePath"].as_str()
+                .is_none_or(|path| std::path::Path::new(path) == self.config.ai_workspace_root);
+            saved.get("inference").filter(|_|workspace_matches).cloned()
+        };
         // Bounded local filesystem discovery stays off the async request thread.
         tokio::task::spawn_blocking(move || {
             let (mut suggested, receipt) = Settings::discovered(&config.ai_workspace_root);

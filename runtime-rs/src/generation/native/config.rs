@@ -118,7 +118,20 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
     if let Some(inference) = saved.get("inference") {
         let settings: Settings =
             serde_json::from_value(inference.clone()).map_err(|_| config_error())?;
-        value = serde_json::to_value(settings)?;
+        // Managed setup records its workspace independently of user-selected
+        // external paths. A changed workspace must not retain old readiness.
+        // Legacy explicit settings have no marker and remain user-owned.
+        let moved = saved["inferenceWorkspacePath"].as_str().is_some_and(|workspace| {
+            let path = Path::new(workspace);
+            path != config.ai_workspace_root.as_path()
+                && path.canonicalize().ok().zip(config.ai_workspace_root.canonicalize().ok())
+                    .is_none_or(|(saved, current)| saved != current)
+        });
+        if moved {
+            value["engine"] = json!(settings.engine);
+        } else {
+            value = serde_json::to_value(settings)?;
+        }
     }
     let mut overrides = Vec::new();
     for (key, env) in [
@@ -142,13 +155,18 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
 }
 
 fn bundled_worker() -> PathBuf {
-    std::env::current_exe()
+    let installed = std::env::current_exe()
         .ok()
         .and_then(|path| {
             path.parent()
                 .map(|root| root.join("tools/inference/worker.py"))
-        })
-        .filter(|path| path.is_file())
+        });
+    // Packaged machines use only the installed worker. The compile-time source
+    // path is a developer convenience, never an installation fallback.
+    if std::env::var("AICS_DESKTOP_PACKAGED").as_deref() == Ok("1") {
+        return installed.unwrap_or_default();
+    }
+    installed.filter(|path| path.is_file())
         .unwrap_or_else(|| {
             PathBuf::from(env!("CARGO_MANIFEST_DIR"))
                 .parent()
@@ -183,12 +201,8 @@ fn model_count(root: &Path) -> usize {
         .iter()
         .filter(|(id, model)| {
             model["family"] == "anima"
-                && ["model_index.json", "modular_model_index.json"]
-                    .iter()
-                    .any(|name| {
-                        within(root, &root.join(id.as_str()).join(name))
-                            .is_some_and(|path| path.is_file())
-                    })
+                && within(root, &root.join(id.as_str()))
+                    .is_some_and(|path| super::model_layout::model_issue(&path).is_none())
         })
         .count()
 }

@@ -28,6 +28,26 @@ struct DownloadPlan {
     id: String,
 }
 
+// Both installation flows use the same resumable transport, fixed digest check
+// and atomic no-clobber publication. Native setup owns the receiver separately
+// from the UI so closing a panel only detaches its observer.
+pub(super) async fn managed_file(
+    workspace: PathBuf,
+    root: PathBuf,
+    spec: ModelFile,
+    url: String,
+    send: &Sender<Value>,
+    cancel: &CancellationToken,
+) -> Result<Value> {
+    let plan = DownloadPlan { workspace, root, spec, url, id: "native-setup".into() };
+    let client = reqwest::Client::builder()
+        .https_only(true)
+        .connect_timeout(Duration::from_secs(30))
+        .build()
+        .map_err(|_| ApiError::new(502, "DOWNLOAD_FAILED", "无法连接下载源，请检查网络后重试"))?;
+    download(&plan, &client, send, cancel).await
+}
+
 impl ControlService {
     pub(super) fn download_setup_model(
         self: &Arc<Self>,
@@ -359,7 +379,7 @@ async fn download(
         if count != plan.spec.bytes {
             return Err(ApiError::new(
                 502,
-                "SIZE_MISMATCH",
+                "DOWNLOAD_FAILED",
                 "下载不完整，未发布模型文件；请重试",
             ));
         }
@@ -440,7 +460,7 @@ async fn download(
     if outcome.as_ref().is_err_and(|error| {
         matches!(
             error.code.as_str(),
-            "CANCELLED" | "DOWNLOAD_TIMEOUT" | "DOWNLOAD_FAILED"
+            "CANCELLED" | "DOWNLOAD_TIMEOUT" | "DOWNLOAD_FAILED" | "ENOSPC" | "MODEL_IO"
         )
     }) && let Some(pending) = temporary.take()
         && pending

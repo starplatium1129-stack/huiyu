@@ -66,7 +66,7 @@
             <p class="status-tile-detail">{{ !statusUsable ? (statusError ? '重新检测后确认连接状态' : '正在确认本机连接') : serviceChecking ? '正在刷新连接状态' : service.detail }}</p>
             <div class="service-row-actions">
               <template v-if="service.key === 'llama'">
-                <a href="#control-setup" class="btn btn-ghost btn-sm">准备模型</a>
+                <a href="#control-setup" class="btn btn-ghost btn-sm" @click="openSection('control-setup')">准备模型</a>
                 <button class="btn btn-danger btn-sm" type="button" :disabled="!llamaManaged || opBusy" @click="serviceAction('llama','stop')">释放显存</button>
               </template>
               <template v-else-if="service.key !== 'ollama'">
@@ -87,7 +87,7 @@
       </section>
 
       <InferenceSettingsPanel />
-      <LocalSetupPanel />
+      <details id="control-setup" class="panel-card"><StudioDisclosureSummary><ArchiveIcon name="gear" />ComfyUI 与本地聊天</StudioDisclosureSummary><LocalSetupPanel /></details>
       <div id="control-interrogate" tabindex="-1" aria-label="PixAI 图片反推配置"><InterrogateSetupPanel /></div>
 
       <!-- 操作进度 -->
@@ -399,8 +399,8 @@ async function confirmServiceAction(service: ControlService, action: ControlServ
 
 const sections: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
   { id: 'control-overview', label: '运行概览', icon: 'eye' },
-  { id: 'control-inference', label: '绘图引擎', icon: 'model' },
-  { id: 'control-setup', label: '首次配置', icon: 'gear' },
+  { id: 'control-inference', label: '原生首次配置', icon: 'model' },
+  { id: 'control-setup', label: 'ComfyUI 与聊天', icon: 'gear' },
   { id: 'control-interrogate', label: '图片反推', icon: 'search' },
   { id: 'control-resources', label: '服务与显存', icon: 'model' },
   { id: 'control-library', label: '离线资源库', icon: 'image' },
