@@ -31,7 +31,7 @@ const { tasks, opened, activeCount, pageActiveCount, controls, storageError, cle
 const inspected = ref(opened.value)
 const dialog = ref<HTMLDialogElement | null>(null), selected = ref('all'), busy = ref(''), feedback = ref('')
 // Frequent inspection responds immediately; native focus and scroll ownership stay intact.
-const motion = useFluidDialog(dialog, { enter: (_el, done) => done(), leave: (_el, done) => done(), dispose: () => {} })
+const motion = useFluidDialog(dialog, { enter: (_el, done) => done(), dispose: () => {} })
 const filters = [{ id: 'all', label: '全部' }, { id: 'running', label: '进行中' }, { id: 'attention', label: '待处理' }, { id: 'succeeded', label: '已完成' }]
 const labels: Record<TaskStatus, string> = { idle: '待开始', running: '进行中', succeeded: '已完成', failed: '失败', cancelled: '已停止', interrupted: '待检查' }
 const visible = computed(() => tasks.value.filter(task => selected.value === 'all' || (selected.value === 'attention' ? ['failed', 'interrupted'].includes(task.status) : task.status === selected.value)))
@@ -99,5 +99,5 @@ async function act(id: string, action: 'cancel' | 'retry') { if (busy.value) ret
   background: linear-gradient(90deg, var(--archive-cyan, var(--accent)), var(--accent));
   box-shadow: 0 0 8px -1px var(--accent-glow);
 }
-@media (prefers-reduced-motion: reduce) { .task-center[open] { animation: none; } }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .task-center[open] { animation: none; } }
 </style>

@@ -76,8 +76,8 @@
   </StudioPopover>
   </div>
   <!-- File pickers stay mounted when the anchored panel closes during native selection. -->
-  <input ref="backupFileEl" class="sr-only pb-backup-file-input" type="file" accept="application/json" tabindex="-1" @change="onBackupFilePicked" />
-  <input ref="blueprintFileEl" class="sr-only pb-blueprint-file-input" type="file" accept="application/json" tabindex="-1" @change="onBlueprintFilePicked" />
+  <input ref="backupFileEl" class="pb-backup-file-input" hidden type="file" accept="application/json" @change="onBackupFilePicked" />
+  <input ref="blueprintFileEl" class="pb-blueprint-file-input" hidden type="file" accept="application/json" @change="onBlueprintFilePicked" />
 
   <Teleport to="body">
     <FluidTransition>

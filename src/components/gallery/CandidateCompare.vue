@@ -88,5 +88,5 @@ onUnmounted(() => { version++; release() })
 .candidate-parameters dd { @apply tw:m-0 tw:text-primary; overflow-wrap:anywhere; max-height:5lh; overflow:auto; }
 .candidate-compare .candidate-error { @apply tw:text-warning-text; }
 @media (max-width: 600px) { .candidate-compare { @apply tw:p-s-3; } .candidate-grid { grid-auto-columns: minmax(260px, 85vw); } }
-@media (prefers-reduced-motion: reduce) { .candidate-compare[open] { animation: none; } }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .candidate-compare[open] { animation: none; } }
 </style>

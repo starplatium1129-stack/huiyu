@@ -123,6 +123,6 @@
   .scene-personal-nav { flex-wrap:wrap; }
   .scene-grid { grid-template-columns:minmax(0,1fr); }
 }
-@media (prefers-reduced-motion:reduce) { .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; } }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; }
 .scene-atlas:has(.companion-pill:focus-visible) .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; }

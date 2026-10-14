@@ -68,6 +68,7 @@ function dismissNotice(id: number, event: MouseEvent) {
 }
 
 function runAction(t: ToastItem, event: MouseEvent) {
+  if (!toasts.value.some(item => item.id === t.id)) return
   dismissNotice(t.id, event)
   t.action?.onClick()
 }
@@ -203,6 +204,8 @@ function onPointerCancel(e: PointerEvent) {
 // Entry sets the initial pose once. Interruptions retain WAAPI's live values.
 function onToastEnter(el: Element, done: () => void) {
   const element = el as HTMLElement
+  element.inert = false
+  element.removeAttribute('aria-hidden')
   const interrupted = motions.has(element)
   stopMotion(element)
   const reduced = prefersReducedMotion()
@@ -213,6 +216,8 @@ function onToastEnter(el: Element, done: () => void) {
 
 function onToastLeave(el: Element, done: () => void) {
   const element = el as HTMLElement
+  element.inert = true
+  element.setAttribute('aria-hidden', 'true')
   if (activeDrag?.el === element) releaseDrag()
   stopMotion(element)
   const reduced = prefersReducedMotion()

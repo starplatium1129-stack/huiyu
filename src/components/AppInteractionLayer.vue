@@ -95,5 +95,5 @@ onUnmounted(() => {
 .route-loader i { @apply tw:block tw:w-[35%] tw:h-full; background: var(--accent); transform: translateX(-110%); }
 .route-loader.active i { animation: route-progress 1.2s ease-in-out infinite; }
 @keyframes route-progress { to { transform: translateX(390%); } }
-@media (prefers-reduced-motion: reduce) { .route-loader { @apply tw:hidden; } }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .route-loader { @apply tw:hidden; } }
 </style>

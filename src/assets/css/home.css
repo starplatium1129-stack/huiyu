@@ -97,7 +97,7 @@
   .atelier-entry-copy, .atelier-entry-lead .atelier-entry-copy { padding:0; }
   .atelier-entry-lead .atelier-entry-title { font-size:var(--fs-title-xs); }
 }
-@media (prefers-reduced-motion:reduce) { .atelier-entry-art img { transition:none; } .atelier-entry:hover .atelier-entry-art img { transform:none; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .atelier-entry-art img { transition:none; } :root:not([data-motion='full']) .atelier-entry:hover .atelier-entry-art img { transform:none; } }
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .atelier-entry-art img { transition:none; transform:none; }
 .home-inspiration { @apply tw:grid tw:gap-s-3 tw:mt-s-6 tw:mb-s-8; }
 .pop-strip { @apply tw:min-w-0; padding: var(--s-5) 0; border-bottom: 1px solid var(--border-soft); }
@@ -163,6 +163,6 @@
   .recent-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-character, .hero-fallback, .hero-muses button, .tool-card, .pop-card-mini, .recent-card { transition: none; }
-  :root .home-page :is(.tool-card, .pop-card-mini, .recent-card):hover { transform: none; }
+  :root:not([data-motion='full']) .hero-character, :root:not([data-motion='full']) .hero-fallback, :root:not([data-motion='full']) .hero-muses button, :root:not([data-motion='full']) .tool-card, :root:not([data-motion='full']) .pop-card-mini, :root:not([data-motion='full']) .recent-card { transition: none; }
+  :root:not([data-motion='full']) .home-page :is(.tool-card, .pop-card-mini, .recent-card):hover { transform: none; }
 }

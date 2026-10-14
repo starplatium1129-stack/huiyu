@@ -55,6 +55,7 @@
             ref="importInputRef"
             class="sr-only"
             type="file"
+            hidden
             accept="image/*"
             multiple
             aria-label="导入本地图片到作品册"
@@ -162,7 +163,7 @@
         </TransitionGroup>
         <CompanionClipboardCard :card="clipboardCard" :character-name="currentCharacter.name"
           @inspect="inspectClipboardImage" @accept="acceptClipboardCard" @dismiss="dismissClipboardCard" />
-        <div ref="chatListRef" class="companion-bubbles" role="log" aria-label="最近对话">
+        <div ref="chatListRef" class="companion-bubbles" role="log" aria-live="off" aria-label="最近对话">
           <div v-if="!companionMessages.length" class="companion-empty">
             <span>{{ currentCharacter.name }}</span>
             <p>{{ currentCharacter.greeting }}</p>

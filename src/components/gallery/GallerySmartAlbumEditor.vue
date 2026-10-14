@@ -2,7 +2,7 @@
   <DialogRoot :open="open" @update:open="!busy && emit('update:open', $event)">
     <DialogPortal>
       <DialogOverlay class="smart-album-overlay" />
-      <DialogContent class="smart-album-editor" :aria-busy="busy" @escape-key-down="busy && $event.preventDefault()" @pointer-down-outside="busy && $event.preventDefault()">
+      <DialogContent class="smart-album-editor" aria-modal="true" :aria-busy="busy" @escape-key-down="busy && $event.preventDefault()" @pointer-down-outside="busy && $event.preventDefault()">
         <header class="smart-album-heading">
           <div><DialogTitle>{{ editing ? '编辑智能画册' : '新建智能画册' }}</DialogTitle><DialogDescription>按角色和标签持续收集作品，符合条件的新作品会自动出现。</DialogDescription></div>
           <DialogClose class="btn btn-ghost btn-sm" :disabled="busy" aria-label="关闭智能画册窗口"><ArchiveIcon name="close" /></DialogClose>
@@ -90,6 +90,4 @@ const tagChoice = computed({ get: () => '', set: (value: string | number) => {
 .smart-album-error { @apply tw:m-0 tw:text-warning-text tw:text-label-sm; }
 .smart-album-editor button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .smart-album-editor button:disabled,.smart-album-editor input:disabled { color:var(--text-disabled); }
-/* StudioSelect portals to body; its popup belongs above this editor's overlay. */
-:global(body:has(.smart-album-editor) .studio-select-content) { z-index:calc(var(--z-overlay) + 1); }
 </style>

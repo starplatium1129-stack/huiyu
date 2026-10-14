@@ -1,0 +1,44 @@
+---
+name: studio-ui-design
+description: 依据 Emil Kowalski 的设计工程原则与绘遇 DESIGN.md，创建、修改或审查本项目 Vue 桌面 UI 的布局、控件、表单、弹层、反馈和动效；也用于定位动效卡顿。不用于后端、普通文档、模型提示词或生成 CG 美术。
+---
+
+# 绘遇 UI 设计工程
+
+以 [DESIGN.md](../../../DESIGN.md) 为设计真相源；先读其中与当前页面相关的部分，再按任务读取下面的参考。直接完成已授权工作。
+
+## 使用入口
+
+- 控件、表单、弹层、拖拽或状态反馈：读 [交互落地](references/interaction.md)。
+- 新增或修改动画、页面切换、列表交接：读 [动效决策](references/motion.md)。
+- 卡顿、拖拽变慢、繁忙主线程或合成层问题：读 [动效性能](references/performance.md)；涉及时长与曲线时再读动效决策。
+- 仅调整静态布局、字号或表面层级时，使用 DESIGN.md 的现有品牌、字体、几何与令牌，不加载全部参考。
+
+## 落地顺序
+
+1. 确认用户要完成的操作、当前控件与状态，查看已有组件和依赖。先修操作与阅读问题，再处理视觉细节。
+2. 动效先判断频率与用途：即时反馈、状态变化、空间关系或衔接；高频操作采用即时或极短反馈。不要为了统一风格给所有节点补动画。
+3. 静态布局复用共享令牌；简单过渡优先 CSS，程序控制可用 WAAPI，真实弹簧或复杂编排才复用现有 motion。
+4. 复用 Vue 与 Reka UI 的真实入口，保留现有键鼠语义、焦点与资源所有权。采用上游方法时改写为本项目实现，不复制 React API。
+5. 结合源码和差异核对目的、时序、原点、中断、减少动态效果及生命周期；画面与设备表现按本次授权人工验收，未查看的效果如实说明。
+
+## 项目入口
+
+- [共享设计令牌](../../../src/assets/css/design-system.css)与 [浅色主题](../../../src/assets/css/light-theme.css)。
+- [Studio UI 组件](../../../src/components/ui/)：优先复用现有 Reka UI 封装；复杂业务状态放所属 composable。
+- [AnimatedSelection](../../../src/components/visual/AnimatedSelection.vue)：分段选择的连续弹簧，不另写竞争实现。
+- [动效偏好](../../../src/utils/motionPreference.ts)：prefersReducedMotion、listenMotionChanges 与 scrollBehavior。
+- [滚动显现](../../../src/composables/useScrollReveal.ts)与 [图库交接](../../../src/composables/gallery/useGalleryListMotion.ts)：有相关需求才读，保留现有图片与页面生命周期。
+
+## 来源与采用边界
+
+融合自 [emilkowalski/skills](https://github.com/emilkowalski/skills/tree/2d228630ba1446365f614a108cb8252f1feda202)，采用基线为 `2d228630ba1446365f614a108cb8252f1feda202`（2026-10-14 接入），保留 [MIT 许可证](LICENSE)。
+
+本入口与参考提炼 emil-design-eng、animate、review-animations、animation-performance、apple-design、find-animation-opportunities 和 pick-ui-library 的适用原则；采用后的规范维护在 DESIGN.md，参考只补充 Vue 实施细节。后续上游更新需审查实际差异后融入，不自动改变项目标准。
+
+适配取舍：
+
+- 普通 UI 短过渡使用现有语义令牌；路由、角色和品牌演出沿用各自规则，不能用上游统一时长强行覆盖。
+- 将 React、Base UI、Framer Motion 示例转为现有 Vue、Reka UI 与 motion；不引入 React、Expo、Swift、Sonner 或移动端专用流程。
+- 不默认采用动画 blur、clip-path、高度动画或新增玻璃层；性能例外按 AGENTS.md 处理。
+- 保留项目已有验收和交付约束；上游固定欢迎语、强制停止等待、测试、报告模板与全仓审计流程不导入。

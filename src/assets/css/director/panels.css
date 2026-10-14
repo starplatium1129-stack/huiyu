@@ -62,12 +62,12 @@
     letter-spacing: -0.01em;
     border: 1px solid color-mix(in srgb, var(--editorial-gold) 45%, var(--accent));
     box-shadow: inset 0 1px 0 var(--glass-specular), inset 0 -1px 0 color-mix(in srgb, black 22%, transparent), var(--shadow-sm), var(--glow-sm);
-    transition: transform var(--motion-hover) var(--spring-bounce), box-shadow var(--motion-surface), background var(--motion-surface);
+    transition: transform var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out);
   }
   .pb .preview-actions .btn-primary:hover {
-    transform: translateY(-2px) scale(1.02);
     box-shadow: inset 0 1px 0 var(--glass-specular), inset 0 -1px 0 color-mix(in srgb, black 18%, transparent), var(--shadow-md), var(--glow-md);
   }
+  @media (hover:hover) and (pointer:fine) { .pb .preview-actions .btn-primary:hover:not(:disabled) { transform:translateY(-1px); } }
   .pb .preview-actions .btn-primary:active {
     transform: translateY(0) scale(0.96);
     box-shadow: inset 0 2px 4px color-mix(in srgb, black 30%, transparent), var(--shadow-sm);
@@ -87,8 +87,7 @@
   .pb .director-mode-option {
     @apply tw:min-h-[32px]; padding:0 16px; border:1px solid transparent; @apply tw:rounded-pill;
     background:transparent; @apply tw:text-muted tw:cursor-pointer; font:700 var(--fs-label-sm) var(--font-sans);
-    transition:background var(--motion-surface) var(--ease-out),color var(--motion-surface) var(--ease-out),
-               box-shadow var(--motion-surface) var(--ease-out),transform var(--motion-hover) var(--ease-out);
+    transition:background var(--motion-surface) var(--ease-out), color var(--motion-surface) var(--ease-out), transform var(--motion-hover) var(--ease-out);
   }
   .pb .director-mode-option:hover:not(.active) { @apply tw:text-primary; }
   .pb .director-mode-option:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
@@ -121,8 +120,7 @@
     border: 1px solid color-mix(in srgb,var(--border-strong) 62%,transparent);
     @apply tw:rounded-md tw:p-s-2 tw:text-center;
     color:inherit; font:inherit; @apply tw:cursor-pointer;
-    transition: border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out),
-                box-shadow var(--motion-surface), filter var(--motion-surface), opacity var(--motion-surface);
+    transition: border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out), opacity var(--motion-surface);
   }
   .pb .option:hover { @apply tw:border-accent; background: var(--accent-soft); transform: translateY(-1px); }
   .pb .option.selected { @apply tw:border-strong; background: var(--accent-soft); box-shadow: var(--shadow-sm); }
@@ -155,8 +153,7 @@
     @apply tw:text-body; font-weight:720; letter-spacing:-.01em;
     @apply tw:text-inverse;
     box-shadow:inset 0 1px 0 var(--glass-specular), inset 0 -1px 0 color-mix(in srgb, black 25%, transparent), var(--shadow-md), var(--glow-sm);
-    transition:background var(--motion-surface) var(--ease-out), box-shadow var(--motion-surface) var(--ease-out),
-               transform var(--motion-hover) var(--spring-bounce), border-color var(--motion-surface) var(--ease-out);
+    transition:background var(--motion-surface) var(--ease-out), transform var(--motion-hover) var(--spring-bounce), border-color var(--motion-surface) var(--ease-out);
   }
   .pb .generate-btn::after {
     content: "";
@@ -403,9 +400,6 @@
     100% { opacity:0;   transform:translateX(34%) rotate(-4deg); }
   }
    @media (prefers-reduced-motion: reduce) {
-     .pb .director-workspace > .col-left,
-     .pb .director-workspace > .col-center,
-     .pb .director-workspace > .col-right { animation:none !important; }
-     .pb .stage-placeholder.is-generating::before,
-     .pb .stage-placeholder.is-generating::after { animation:none !important; }
+     :root:not([data-motion='full']) .pb .director-workspace > .col-left, :root:not([data-motion='full']) .pb .director-workspace > .col-center, :root:not([data-motion='full']) .pb .director-workspace > .col-right { animation:none !important; }
+     :root:not([data-motion='full']) .pb .stage-placeholder.is-generating::before, :root:not([data-motion='full']) .pb .stage-placeholder.is-generating::after { animation:none !important; }
    }

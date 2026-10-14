@@ -19,6 +19,7 @@ export function useCharacterArchiveNavigation(
   let cancelRestore = () => {}
   let stopUserScroll = () => {}
   let revision = 0
+  let enteringFromShelf = false
   function cancel() { revision++; cancelRestore(); stopUserScroll() }
   onDeactivated(cancel)
   onScopeDispose(cancel)
@@ -49,6 +50,7 @@ export function useCharacterArchiveNavigation(
     }
     const anchor = profileAnchor.value
     if (!anchor) return
+    if (enteringFromShelf) { enteringFromShelf = false; anchor.focus({ preventScroll: true }) }
     const rect = anchor.getBoundingClientRect()
     if (rect.top < 70 || rect.top >= window.innerHeight * 0.9) {
       // The section itself supplies entry motion. Scrolling the whole document
@@ -59,7 +61,7 @@ export function useCharacterArchiveNavigation(
 
   function selectCharacter(id: string) {
     if (id === requestedId.value || !characters.value.some(character => character.id === id)) return
-    if (showShelf.value) shelfAnchor = captureScrollAnchor()
+    if (showShelf.value) { shelfAnchor = captureScrollAnchor(); enteringFromShelf = true }
     const target = { query: { ...route.query, character: id } }
     // Returning from a profile should restore the shelf, not step through every
     // character visited with the existing detail sidebar.

@@ -79,6 +79,9 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-speaker { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:3px; color:var(--text-primary); font-size:11px; font-weight:600; }
 .companion-dialogue-speaker button { width:24px; height:24px; min-height:24px; margin:-3px -5px -2px 0; opacity:0; transition:opacity var(--motion-hover); }
 .companion-dialogue-bubble:is(:hover,:focus-within) .companion-dialogue-speaker button { opacity:1; }
+@media (hover:none), (pointer:coarse), (pointer:none) {
+  .companion-dialogue-heading,.companion-dialogue-speaker button { transition:none; }
+}
 .companion-dialogue-bubble > small { display:block; margin-top:5px; color:var(--text-secondary); font-size:11px; }
 .companion-dialogue-line { margin:0; color:var(--text-primary); font:400 14px/1.75 var(--font-sans); white-space:pre-wrap; overflow-wrap:anywhere; }
 .companion-dialogue-line.is-streaming::after { content:''; display:inline-block; width:3px; height:14px; margin-left:4px; border-radius:2px; vertical-align:baseline; background:var(--character-accent); animation:companion-dialogue-pulse 1.2s ease-in-out infinite; }
@@ -148,8 +151,6 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
   .companion-dialogue-bubble { padding-inline:10px; }
 }
 @media (prefers-reduced-motion:reduce) {
-  .companion-dialogue-dots i,
-  .companion-dialogue-line.is-streaming::after { animation:none; }
-  .companion-dialogue-speaker button,
-  .companion-dialogue-heading { transition:none; }
+  :root:not([data-motion='full']) .companion-dialogue-dots i, :root:not([data-motion='full']) .companion-dialogue-line.is-streaming::after { animation:none; }
+  :root:not([data-motion='full']) .companion-dialogue-speaker button, :root:not([data-motion='full']) .companion-dialogue-heading { transition:none; }
 }

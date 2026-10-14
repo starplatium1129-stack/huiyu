@@ -75,7 +75,7 @@
   .filter-summary { @apply tw:text-label-xs; }
 }
 @media (max-width:480px) { .hero-actions { @apply tw:gap-s-1; } .hero-actions .btn { padding-inline:var(--s-2); } .filter-pill { padding-inline:var(--s-3); } }
-@media (prefers-reduced-motion:reduce) { .showcase-filters > summary > .archive-icon { transition:none; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .showcase-filters > summary > .archive-icon { transition:none; } }
 @media (prefers-contrast:more) { .showcase-page .toolbar-shell { @apply tw:border-muted; } }
 @media (forced-colors:active) { .showcase-page .toolbar-shell { background:Canvas; border-color:CanvasText; } }
 

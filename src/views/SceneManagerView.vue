@@ -20,9 +20,9 @@
       <header class="catalog-page-head">
         <div><p class="catalog-breadcrumb">内容工作室 <span>/</span> {{ sectionTitle }}</p><h1>{{ sectionTitle }}</h1></div>
         <div v-if="section === 'records' || dirty" class="catalog-head-actions">
-          <span class="catalog-save-status" :class="{ 'has-changes': dirty }" role="status" aria-live="polite"><i></i>{{ busy ? '正在保存' : dirtyEditor ? '正在编辑' : pending.length ? pending.length + ' 项待保存' : '内容已保存' }}</span>
+          <span class="catalog-save-status" :class="{ 'has-changes': dirty }" role="status" aria-live="polite"><i></i>{{ busy ? '正在处理…' : dirtyEditor ? '正在编辑' : pending.length ? pending.length + ' 项待保存' : '内容已保存' }}</span>
           <button v-if="pending.length || dirtyEditor" class="btn btn-ghost" type="button" :disabled="busy" @click="reviewEdits">查看修改</button>
-          <button class="btn btn-primary" type="button" :disabled="busy || (!pending.length && !dirtyEditor)" @click="saveEdits">{{ busy ? '正在保存…' : '保存更改' }}</button>
+          <button class="btn btn-primary" type="button" :disabled="busy || (!pending.length && !dirtyEditor)" @click="saveEdits">{{ busy ? '正在处理…' : '保存更改' }}</button>
           <StudioPopover label="更多整理操作">
             <template #trigger><button class="btn btn-ghost catalog-more-trigger" type="button" aria-label="更多整理操作"><ArchiveIcon name="chevron-down" /></button></template>
             <div class="catalog-more-menu">

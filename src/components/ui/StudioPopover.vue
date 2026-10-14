@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui'
-import { computed, onActivated, onDeactivated, ref } from 'vue'
+import { computed, onActivated, onDeactivated, onMounted, onUpdated, ref, watch } from 'vue'
 
 withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end' }>(), { align:'end', contentClass:'' })
 const open = defineModel<boolean>('open', { default:false })
 const pointerOpened = ref(false)
 const trigger = ref<{ $el: HTMLElement } | null>(null)
 // Native top layers and custom focus traps both require content inside their modal.
-const portalTarget = computed(() => trigger.value?.$el?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? undefined)
+const portalTarget = ref<HTMLElement>()
+function syncPortalHost() {
+  portalTarget.value = trigger.value?.$el?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? undefined
+}
+onMounted(syncPortalHost)
+onUpdated(syncPortalHost)
+watch(open, value => { if (value) syncPortalHost() }, { flush: 'sync' })
 const collisionBoundary = computed(() => portalTarget.value?.tagName === 'DIALOG' ? undefined : portalTarget.value)
 const emit = defineEmits<{ openAutoFocus: [event: Event]; closeAutoFocus: [event: Event] }>()
 let viewActive = true
-onActivated(() => { viewActive = true })
+onActivated(() => { viewActive = true; syncPortalHost() })
 onDeactivated(() => {
   viewActive = false
   open.value = false
@@ -49,6 +55,7 @@ function onEscape(event: KeyboardEvent) {
 .studio-popover { transform-origin:var(--reka-popover-content-transform-origin,top right); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); }
 @starting-style { .studio-popover[data-state='open'][data-pointer-open='true'] { opacity:0; transform:scale(.97); } }
 .studio-popover[data-pointer-open='false'] { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .studio-popover { transition:none; }
 @media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .studio-popover { transition:none; } }
 @media(forced-colors:active) { .studio-popover { background:Canvas; border-color:CanvasText; } }
 </style>

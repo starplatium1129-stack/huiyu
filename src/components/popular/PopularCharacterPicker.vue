@@ -114,7 +114,7 @@ const sourceLabel = computed(() => {
   font: 600 var(--fs-label) var(--font-sans);
   transition: background var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
 }
-.character-browse-button:hover .character-portrait { transform: rotate(0deg) translateY(-2px); }
+@media (hover:hover) and (pointer:fine) { .character-browse-button:hover .character-portrait { transform:rotate(0deg) translateY(-2px); } }
 .character-browse-button:hover .character-browse-all { background: var(--bg-hover); }
 .character-browse-button:active .character-browse-all { transform: scale(.98); }
 
@@ -151,13 +151,13 @@ const sourceLabel = computed(() => {
   box-shadow: inset 3px 0 var(--accent);
 }
 @media (prefers-reduced-motion: reduce) {
-  .character-browse-button:active .character-browse-all { transform: none; }
-  .character-browser-dialog[open] { animation: none; }
+  :root:not([data-motion='full']) .character-browse-button:active .character-browse-all { transform: none; }
+  :root:not([data-motion='full']) .character-browser-dialog[open] { animation: none; }
 }
 @media (max-width: 540px) { .character-browser-dialog { @apply tw:p-s-3; } }
 .character-browse-trigger :deep(.character-portrait) { @apply tw:w-[86px] tw:h-[116px] tw:rounded-md; border: 1px solid var(--glass-edge); box-shadow: var(--shadow-sm); transform: rotate(-3deg); transition: transform var(--motion-hover) var(--ease-out); }
 .character-current-text .character-current-kicker { @apply tw:text-accent; letter-spacing: .08em; }
 .outfit-chip .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }
 .outfit-chip span { overflow-wrap: anywhere; }
-@media (prefers-reduced-motion: reduce) { .character-browse-trigger :deep(.character-portrait) { transition: none; } .character-browse-button:hover .character-portrait { transform: none; } }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .character-browse-trigger :deep(.character-portrait) { transition: none; } :root:not([data-motion='full']) .character-browse-button:hover .character-portrait { transform: none; } }
 </style>

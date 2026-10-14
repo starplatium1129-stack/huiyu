@@ -61,7 +61,7 @@
 .pb.character-shifting .col-left,
 .pb.character-shifting .col-right,
 .pb.character-shifting .generation-settings {
-  transition: border-color var(--motion-route-cut) ease, box-shadow var(--motion-route-cut) ease;
+  transition: border-color var(--motion-route-cut) ease;
 }
 
 /* The active workspace supplies document-level colors to RouteAtmosphere;

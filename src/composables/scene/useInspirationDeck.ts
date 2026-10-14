@@ -37,10 +37,15 @@ export function useInspirationDeck(host: Ref<HTMLElement | null>, keys: () => st
       frame = requestAnimationFrame(() => { resetting.value = false; frame = 0 })
     })
   }
-  function step(direction: 1 | -1) {
-    if (count.value < 2 || turning.value || !canPresent.value) return
+  function step(direction: 1 | -1, instant = false) {
+    if (count.value < 2 || !canPresent.value) return
+    if (turning.value) finish()
     releasePointer()
-    if (!canAnimate.value) { index.value = wrap(index.value + direction); return }
+    if (instant || !canAnimate.value) {
+      resetting.value = true
+      index.value = wrap(index.value + direction)
+      return
+    }
     resetting.value = false
     turning.value = direction
     timer = setTimeout(finish, 240)
@@ -81,7 +86,7 @@ export function useInspirationDeck(host: Ref<HTMLElement | null>, keys: () => st
     if (event.target !== host.value || event.altKey || event.ctrlKey || event.metaKey) return
     if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
       event.preventDefault()
-      step(event.key === 'ArrowRight' ? 1 : -1)
+      step(event.key === 'ArrowRight' ? 1 : -1, true)
     }
   }
   // Catalog reloads clone the same rails after a search; preserve the page being read.

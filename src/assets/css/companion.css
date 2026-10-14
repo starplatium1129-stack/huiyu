@@ -729,11 +729,9 @@ html.companion-desktop .companion-picker-content * {
   /* plans/003：只停位移/滤镜类过渡，保留颜色与透明度状态反馈（≤ --motion-control）。
      曾用通配 transition-duration:.01ms 把颜色/边框反馈一并抹掉，用户分不清
      悬停与按压 —— 与 design-system.css 全局策略（1397 起）对齐。 */
-  .companion-page *,
-  .companion-page *::before,
-  .companion-page *::after {
+  :root:not([data-motion='full']) .companion-page *, :root:not([data-motion='full']) .companion-page *::before, :root:not([data-motion='full']) .companion-page *::after {
     scroll-behavior: auto !important;
-    transition-property: opacity, color, background-color, border-color, box-shadow, visibility !important;
+    transition-property: opacity, color, background-color, border-color, visibility !important;
     transition-duration: var(--motion-control) !important;
   }
 }
@@ -909,7 +907,7 @@ html.companion-mode:not(.companion-desktop) body {
   opacity: .72;
   transform: scale(.98);
   transform-origin: 50% 82%;
-  transition: opacity var(--motion-surface) var(--ease-out), transform var(--motion-surface) var(--ease-out), filter var(--motion-surface) var(--ease-out);
+  transition: opacity var(--motion-surface) var(--ease-out), transform var(--motion-surface) var(--ease-out);
 }
 
 .companion-page[data-presence="attentive"] .portrait-stage::before,
@@ -966,7 +964,7 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-page .live2d-host,
 .companion-page .portrait-main {
-  transition: opacity var(--motion-surface), filter var(--motion-surface) var(--ease-out);
+  transition: opacity var(--motion-surface);
 }
 
 
@@ -1046,8 +1044,8 @@ html.companion-mode:not(.companion-desktop) body {
 .companion-page .live2d-enable-cta:hover,
 .companion-page .live2d-enable-cta:focus-visible {
   background: var(--bg-elevated);
-  transform: translateY(-2px);
 }
+@media (hover:hover) and (pointer:fine) { .companion-page .live2d-enable-cta:hover { transform:translateY(-2px); } }
 
 .companion-page .live2d-enable-cta-kicker,
 .companion-page .live2d-enable-cta small {
@@ -1249,14 +1247,11 @@ html.companion-mode:not(.companion-desktop) body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .companion-ambience i {
+  :root:not([data-motion='full']) .companion-ambience i {
     animation: none !important;
   }
 
-  .companion-page .portrait-stage::before,
-  .companion-page .live2d-host,
-  .companion-page .portrait-main,
-  .companion-page .companion-presence-cue {
+  :root:not([data-motion='full']) .companion-page .portrait-stage::before, :root:not([data-motion='full']) .companion-page .live2d-host, :root:not([data-motion='full']) .companion-page .portrait-main, :root:not([data-motion='full']) .companion-page .companion-presence-cue {
     transition: opacity var(--motion-hover) ease, border-color var(--motion-hover) ease;
   }
 }
@@ -1553,8 +1548,7 @@ html.companion-desktop.companion-ui-hidden .companion-stage::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.companion-desktop .companion-toolbar,
-  html.companion-desktop .companion-conversation {
+  html:not([data-motion='full']).companion-desktop .companion-toolbar, html:not([data-motion='full']).companion-desktop .companion-conversation {
     transition: none;
   }
 }
@@ -1582,17 +1576,8 @@ html.companion-desktop.companion-ui-hidden .companion-stage::after {
   padding: 4px 12px;
   border: 1px solid color-mix(in srgb, var(--character-accent) 50%, var(--border-soft));
   @apply tw:rounded-pill;
-  background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  background: var(--bg-surface);
   @apply tw:text-primary tw:cursor-pointer tw:text-label-xs;
-  opacity: .55;
-  transition: opacity var(--motion-hover);
-}
-
-.companion-page .companion-exit-immersive:hover,
-.companion-page .companion-exit-immersive:focus-visible {
-  opacity: 1;
 }
 
 /* Immersive mode hides everything except the character and the dialog */

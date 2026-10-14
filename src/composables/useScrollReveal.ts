@@ -14,7 +14,9 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
   // Masonry moves and cached returns must not replay an already viewed card.
   const revealedKeys = new Set<string>()
   function reveal(el: Element) {
-    el.classList.add('revealed')
+    // Vue replaces dynamic classes when card actions change. Keep visibility
+    // in a separate DOM attribute so those updates cannot hide revealed content.
+    el.setAttribute('data-revealed', '')
     const key = el.getAttribute('data-reveal-key')
     if (key) revealedKeys.add(key)
     observer?.unobserve(el)
@@ -30,7 +32,7 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
     if (root.matches(selector)) elements.unshift(root)
     elements.forEach(el => {
       if (prefersReducedMotion() || !observer || revealedKeys.has(el.getAttribute('data-reveal-key') || '')) { reveal(el); return }
-      if (el.getAttribute('data-reveal-ready') === 'false' || seen.has(el) || el.classList.contains('revealed')) return
+      if (el.getAttribute('data-reveal-ready') === 'false' || seen.has(el) || el.hasAttribute('data-revealed')) return
       seen.add(el)
       observer.observe(el)
     })

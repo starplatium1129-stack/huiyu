@@ -1,5 +1,6 @@
 import { onDeactivated, onUnmounted, type Ref } from 'vue'
 import { useFluidSurface } from './useFluidSurface'
+import { prepareNativeModal } from './useFocusTrap'
 import '@/assets/css/fluid-dialog.css'
 
 /**
@@ -58,10 +59,9 @@ function unlockPageScroll() {
   return restore
 }
 
-/** Keep native focus containment until exit ends; reopening preserves current motion. */
-export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotion?: ReturnType<typeof useFluidSurface>) {
+/** Native close releases focus and business state immediately; opening retains source motion. */
+export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotion?: Pick<ReturnType<typeof useFluidSurface>, 'enter' | 'dispose'>) {
   const surface = imageMotion ?? useFluidSurface(':scope > .viewer-layout, :scope > .ref-modal-layout')
-  let intention = 0
   let locked = false
   let listenerTarget: HTMLDialogElement | null = null
   let returnFocus: HTMLElement | null = null
@@ -97,7 +97,6 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
   function open(source: HTMLElement | null = document.activeElement as HTMLElement | null) {
     const el = dialog.value
     if (!el) return
-    intention++
     restoreAfterClose = null
     el.setAttribute('data-fluid-dialog', '')
     if (!el.open) {
@@ -106,6 +105,7 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
       surface.dispose(el); el.style.transform = ''; el.style.opacity = ''
       // Native showModal can move focus and scroll; capture the reading position first.
       if (!locked) { locked = true; lockPageScroll() }
+      prepareNativeModal(el)
       try { el.showModal() } catch (error) { releaseScrollLock(); throw error }
       // Native autofocus can queue smooth scrolling without changing the current
       // coordinates yet. Always cancel that trip before the first fade frame.
@@ -120,19 +120,14 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
     surface.enter(el, () => {})
   }
   function close(after?: () => void) {
-    const el = dialog.value, version = ++intention
+    const el = dialog.value
     if (!el?.open) { releaseScrollLock(); after?.(); return }
-    surface.leave(el, () => {
-      if (version !== intention) return
-      // Native focus/scroll restoration happens inside close(), but its close
-      // event can arrive after a paint. Settle reading position in this task.
-      el.close(); surface.dispose(el); el.style.transform = ''; el.style.opacity = ''
-      onNativeClose()
-      after?.()
-    })
+    // Stop surface and image proxies before native close. A decorative exit
+    // must not keep the modal active or postpone the caller's next action.
+    surface.dispose(el); el.style.transform = ''; el.style.opacity = ''
+    el.close(); onNativeClose(); after?.()
   }
   function dispose() {
-    intention++
     returnFocus = null
     restoreAfterClose = null
     // 卸载时 Vue 会先把模板 ref 置空，这里回退到实际打开过的那个元素，

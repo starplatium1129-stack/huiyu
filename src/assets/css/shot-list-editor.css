@@ -61,8 +61,10 @@
   @apply tw:rounded-pill; background: var(--bg-surface);
   @apply tw:text-label-xs tw:text-secondary tw:cursor-pointer;
 }
-.shot-card-outfit-pill:hover { @apply tw:border-accent tw:text-primary; }
+.shot-card-outfit-pill:hover:not(:disabled) { @apply tw:border-accent tw:text-primary; }
 .shot-card-outfit-pill.active { @apply tw:border-accent; background: var(--accent); @apply tw:text-inverse tw:font-semibold; }
+.video-quality-grid button:disabled,.video-segmented button:disabled,.shot-card-outfit-pill:disabled { color:var(--text-disabled); background:var(--bg-elevated); border-color:var(--border-soft); cursor:not-allowed; }
+.video-quality-grid button:disabled em,.shot-toggle[data-disabled] small { color:var(--text-disabled); }
 .shot-reference-images { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center; }
 .shot-reference-remove { @apply tw:inline-flex tw:p-0; border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:cursor-pointer; }
 .shot-reference-remove:focus-visible { outline: none; box-shadow: var(--focus-shadow); }

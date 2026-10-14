@@ -39,9 +39,9 @@
 .toggle-switch[data-disabled] .toggle-knob {
   background: var(--text-disabled);
 }
-:global(:root:is([data-motion='reduce'], [data-motion='reduced'])) .toggle-knob { transition: none; }
+:root:is([data-motion='reduce'], [data-motion='reduced']) .toggle-knob { transition: none; }
 @media (prefers-reduced-motion: reduce) {
-  :global(:root:not([data-motion='full'])) .toggle-knob { transition: none; }
+  :root:not([data-motion='full']) .toggle-knob { transition: none; }
 }
 @media (forced-colors: active) {
   .toggle-slider { background: Canvas; outline: 1px solid ButtonText; }

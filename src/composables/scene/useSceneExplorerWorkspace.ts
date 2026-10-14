@@ -239,11 +239,13 @@ export function useSceneExplorerWorkspace() {
         } catch { toast.error('收藏未保存，原有状态已保留，请稍后重试'); }
     }
     function toggleHidden(id: string) {
+        const previousFocus = document.activeElement;
         const next = new Set(hiddenIds.value);
         if (next.has(id)) next.delete(id); else next.add(id);
         try {
             writeHiddenScenes(next);
             hiddenIds.value = next;
+            nextTick(() => { if (previousFocus && !previousFocus.isConnected) document.getElementById('sceneSearch')?.focus(); });
         } catch { toast.error('隐藏设置未保存，原有状态已保留，请稍后重试'); }
     }
     function applyMoodRail(rail: {

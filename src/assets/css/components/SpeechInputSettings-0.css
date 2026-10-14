@@ -57,7 +57,7 @@
 .speech-key-field input { flex: 1; min-width:0; }
 .speech-key-field button {
   padding: 0 var(--s-3); @apply tw:text-label-xs;
-  background: var(--border-soft); @apply tw:text-muted;
+  background: var(--bg-surface); @apply tw:text-secondary;
   border: 1px solid var(--border-soft);
   @apply tw:rounded-md tw:cursor-pointer tw:whitespace-nowrap;
 }

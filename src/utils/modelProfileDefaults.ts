@@ -1,9 +1,9 @@
-import bundledPresetCatalog from '../../data/presets.json'
 import type { PromptPreset } from './promptBuilderPersistence'
 import type { ModelProfile } from './promptPolicy'
 
 /** Read-only upgrade defaults, loaded with the catalog rather than the route. */
-export function fillMissingModelProfiles(personal: ModelProfile[]): ModelProfile[] {
+export async function fillMissingModelProfiles(personal: ModelProfile[]): Promise<ModelProfile[]> {
+  const { default: bundledPresetCatalog } = await import('../../data/presets.json')
   const ids = new Set(personal.map(profile => profile.id))
   const models = new Set(personal.map(profile => profile.model_id))
   const missing = parsePresetCatalog(bundledPresetCatalog).modelProfiles.filter(profile =>

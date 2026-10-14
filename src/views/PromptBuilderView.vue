@@ -134,7 +134,7 @@
         <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :scene-context="String(route.query.scene || route.query.blueprint || '')">
         <template #story>
 
-        <DirectorStoryPanel />
+        <DirectorStoryPanel @ready="focusDescription" />
 
         </template>
         <template #character>
@@ -240,7 +240,7 @@ const RandomInspirationButton = defineAsyncComponent(() => import('@/components/
 const HistoryRestoreNotice = defineAsyncComponent(() => import('@/components/director/HistoryRestoreNotice.vue'))
 const HistoryReuseDialog = defineAsyncComponent(() => import('@/components/director/HistoryReuseDialog.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
-import DirectorStoryPanel from '@/components/director/DirectorStoryPanel.vue'
+const DirectorStoryPanel = defineAsyncComponent(() => import('@/components/director/DirectorStoryPanel.vue'))
 const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/director/DirectorCharacterPanel.vue'))
 const PromptMaterialScenes = defineAsyncComponent(() => import('@/components/director/PromptMaterialScenes.vue'))
 const DirectorStagePanel = defineAsyncComponent(() => import('@/components/director/DirectorStagePanel.vue'))
@@ -357,8 +357,17 @@ async function resetLayout() {
   }
 }
 async function editDescription() {
+  descriptionFocusPending = true
   await openMaterials('story')
+  focusDescription()
+}
+let descriptionFocusPending = false
+function focusDescription() {
+  if (!descriptionFocusPending) return
   const input = layoutRoot.value?.querySelector<HTMLTextAreaElement>('#visualDescription')
+  if (!input) return
+  descriptionFocusPending = false
+  if (!input.getClientRects().length) return
   input?.focus({ preventScroll: true })
   input?.scrollIntoView({ block: 'nearest', behavior: 'instant' })
 }

@@ -23,7 +23,7 @@
           <ArchiveStatePanel v-else compact kind="empty" title="尚未选择图片" />
           <p class="character-art-note">PNG / JPEG / WebP · ≤15 MB · 边长 ≤8192 px · ≤3200 万像素</p>
           <p class="character-art-note">建议透明背景 · 仅替换展示立绘</p>
-          <input ref="fileInput" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onFile" />
+          <input ref="fileInput" hidden type="file" accept="image/png,image/jpeg,image/webp" @change="onFile" />
           <div class="character-art-actions">
             <button class="btn btn-ghost" type="button" :disabled="!ready || saving || reading || !local" @click="fileInput?.click()"><ArchiveIcon name="image" />{{ reading ? '正在检查图片…' : '选择图片' }}</button>
             <button v-if="file" class="btn btn-ghost" type="button" :disabled="saving" @click="discard">取消替换</button>

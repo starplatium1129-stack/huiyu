@@ -98,6 +98,13 @@ export function usableFocus(element: HTMLElement | null): element is HTMLElement
     && getComputedStyle(element).visibility !== 'hidden'
 }
 
+/** A menu entry may unmount while the appearance panel loads or closes. */
+export function appearanceFocusOrigin(trigger: HTMLElement | null) {
+  return usableFocus(trigger) ? trigger : [...document.querySelectorAll<HTMLElement>(
+    '.nav-more-trigger, .nav-menu-toggle, .companion-settings-btn, .orbit-settings-trigger, .appearance-button',
+  )].find(usableFocus) ?? null
+}
+
 export function desktopShortcutAllowed(event: KeyboardEvent) {
   return !event.defaultPrevented && !event.isComposing && event.keyCode !== 229 && !event.altKey && !event.metaKey
 }

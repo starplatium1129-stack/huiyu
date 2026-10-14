@@ -44,6 +44,6 @@ defineProps<{
 .video-install-note { margin:0; color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
 .shot-concat-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--s-3); }
 .shot-concat-player { --media-max-height:min(68vh,700px); width:100%; }
-@media (prefers-reduced-motion:reduce) { .video-progress i { transition:none; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .video-progress i { transition:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .video-progress i { transition:none; }
 </style>

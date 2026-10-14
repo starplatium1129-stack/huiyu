@@ -8,6 +8,7 @@
 
 - 开工明确目标、受影响文件、完成标准与必要验证；仅在缺少关键决策或授权时询问。复杂或跨会话任务按需维护计划与交接，复用已有记录，不强制创建 `PLAN.md`。补充消息或上下文压缩后继续原目标，保留约束与有效证据。
 - 只读影响当前决策的资料。图像提示词创作/编译才读 [studio-prompt-craft](.agents/skills/studio-prompt-craft/SKILL.md)，普通 UI/代码不加载；不为可选 skill 安装工具或扩展任务。
+- UI 布局、控件、交互和动效开发或审查先读 [DESIGN.md](DESIGN.md) 与 [studio-ui-design](.agents/skills/studio-ui-design/SKILL.md)，按任务加载参考。后续以其中融合的 Emil Kowalski 设计工程原则为规范，保留绘遇品牌、Vue 实现和本指南约束；普通后端、文档和 CG 美术不加载 UI skill。
 - 写入前核对 `git status`、`git diff`，保留其他会话改动。禁止 `git add .`、`git reset --hard`；仅暂存本次受控文件，同一工作区仅一个会话执行 Git 写操作。
 - 并行仅用于可独立拆分且有明确收益的任务；明确职责、文件归属与完成标准，独立写入用 worktree，不同时修改同一文件。有依赖的调查、编辑、审查按顺序推进，主会话复核关键证据；不按文件数量固定分配子代理。
 

@@ -23,6 +23,7 @@
               <legend>选择模型</legend>
               <label v-if="existing.length">已导入角色
                 <StudioSelect v-model="selected" placeholder="选择本机角色" label="已导入角色"
+                  :disabled="studio.busy.value"
                   :options="existing.map(character => ({ value: character.id, label: character.name }))"
                   @update:model-value="(value) => studio.openExisting(String(value))" />
               </label>

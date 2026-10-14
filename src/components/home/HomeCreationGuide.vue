@@ -43,8 +43,8 @@ h2 { margin: var(--s-2) 0 0; font: 500 var(--fs-title-sm)/var(--lh-label) var(--
   .guide-steps a:hover { transform: translateY(-2px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .guide-steps a { transition: none; }
-  .guide-steps a:hover { transform: none; }
+  :root:not([data-motion='full']) .guide-steps a { transition: none; }
+  :root:not([data-motion='full']) .guide-steps a:hover { transform: none; }
 }
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .creation-guide .guide-steps a { transition:none; transform:none; }
 .step-number { place-items:center; flex:0 0 40px; font:500 var(--fs-body)/var(--lh-label) var(--font-sans); }

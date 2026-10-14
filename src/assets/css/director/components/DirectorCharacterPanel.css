@@ -7,7 +7,7 @@
   /* Character */
   .pb .char-row { @apply tw:flex tw:gap-s-3; }
   .pb .traits-row { @apply tw:flex tw:gap-s-2 tw:flex-wrap tw:mt-s-3; }
-  .pb .trait-chip { padding: 3px var(--s-3); background: color-mix(in srgb, var(--bg-elevated) 88%, var(--accent-soft)); border: 1px solid color-mix(in srgb, var(--border-soft) 80%, var(--accent-soft)); @apply tw:rounded-pill; font:inherit; @apply tw:text-label-sm tw:text-primary tw:cursor-pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), box-shadow var(--motion-hover); }
+  .pb .trait-chip { padding: 3px var(--s-3); background: color-mix(in srgb, var(--bg-elevated) 88%, var(--accent-soft)); border: 1px solid color-mix(in srgb, var(--border-soft) 80%, var(--accent-soft)); @apply tw:rounded-pill; font:inherit; @apply tw:text-label-sm tw:text-primary tw:cursor-pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover); }
   .pb .trait-chip:hover:not(:focus-visible) { @apply tw:border-accent tw:text-accent; background: var(--accent-soft); box-shadow: 0 0 10px var(--accent-glow); }
   .pb .traits-row:empty { @apply tw:mt-0; }
   /* 角色来源：胶囊外框 + 胶囊选中块的分段切换。
@@ -36,7 +36,7 @@
     font-weight: 650;
     /* 标签超出容器时换行成可读的两行，不压成竖排文字、也不靠减小字号塞入。 */
     @apply tw:whitespace-normal tw:text-center tw:cursor-pointer;
-    transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out), box-shadow var(--motion-hover) var(--ease-out);
+    transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
   }
   .pb .char-source-label { @apply tw:whitespace-nowrap; }
   .pb .char-source-note::before { content:' · '; }
@@ -88,7 +88,7 @@
   .pb .char-btn.studio-character-choice:hover:not(:focus-visible) { transform:translateY(-2px); box-shadow:var(--shadow-sm); }
 }
 @media (prefers-reduced-motion:reduce) {
-  .pb .char-btn.studio-character-choice { transition:none; transform:none; }
+  :root:not([data-motion='full']) .pb .char-btn.studio-character-choice { transition:none; transform:none; }
 }
 .pb .studio-traits-label { margin:var(--s-4) 0 0; @apply tw:text-secondary tw:text-body-sm; }
 .pb .studio-traits-label + .traits-row { @apply tw:mt-s-2; }

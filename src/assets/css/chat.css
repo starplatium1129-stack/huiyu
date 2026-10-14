@@ -262,7 +262,7 @@ body:has(.chat-page) .sakura-fall {
   object-position: center bottom;
   filter: drop-shadow(0 22px 26px color-mix(in srgb, var(--bg-deep) 16%, transparent));
   transform: translateX(-50%);
-  transition: filter var(--motion-route) ease, opacity var(--motion-surface) ease;
+  transition: opacity var(--motion-surface) ease;
 }
 
 .chat-page .live2d-host {
@@ -777,8 +777,8 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .chat-starters button:hover {
   border-color: var(--character-ink, var(--character-accent));
   @apply tw:text-primary;
-  transform: translateX(2px);
 }
+@media (hover:hover) and (pointer:fine) { .chat-page .chat-starters button:hover { transform:translateX(2px); } }
 
 
 /*   ============================================================
@@ -1300,9 +1300,7 @@ body:has(.chat-page) .sakura-fall {
    reduced-motion 短路 / 三档断点（1100 / 820 / 560）/ 高度受限兜底
   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .chat-page *,
-  .chat-page *::before,
-  .chat-page *::after {
+  :root:not([data-motion='full']) .chat-page *, :root:not([data-motion='full']) .chat-page *::before, :root:not([data-motion='full']) .chat-page *::after {
     animation-duration: .001ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;

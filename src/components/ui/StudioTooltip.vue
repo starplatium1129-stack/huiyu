@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineComponent, onActivated, onDeactivated, onMounted, onUpdated, onBeforeUnmount, ref, watch } from "vue"
-import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRoot, TooltipTrigger, injectTooltipRootContext } from "reka-ui"
+import { TooltipArrow, TooltipContent, TooltipPortal, TooltipRoot, TooltipTrigger, injectTooltipRootContext } from "reka-ui"
 
 /**
  * 原生 title 属性的替身。
@@ -18,13 +18,11 @@ import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRo
  * 控件可能被禁用时补 `anchor`：额外包一层能接住 hover 的外壳（并让其禁用子元素让出
  * 命中区域），否则禁用状态下提示依然出不来。
  *
- * 每个实例自带 TooltipProvider：Reka 的 TooltipRoot 强制要求 provider 祖先，缺了会直接
- * 抛 `Injection "Symbol(TooltipProviderContext)" not found`。放在组件内，调用方就不需要
- * 记得在 App 层挂 provider，组件在单测里也能独立跑。代价是跨提示的 skip-delay 合并
- * 用不上（换到另一个控件要重新等 delay）——这个延迟很短，换来的是没有隐式全局依赖。
+ * App 共用 TooltipProvider，让相邻说明跳过重复延迟；空提示保留同一触发节点，
+ * 仅禁用提示行为，避免动态文案改变时重新挂载真实控件。
  */
 const props = withDefaults(defineProps<{
-  /** 提示正文；为空时组件退化为只渲染子元素，不做任何包装 */
+  /** 提示正文；为空时保留触发节点并禁用提示行为 */
   content?: string | null
   side?: "top" | "right" | "bottom" | "left"
   /** hover 多久后出现（毫秒）；键盘聚焦不受此延迟约束 */
@@ -33,10 +31,13 @@ const props = withDefaults(defineProps<{
   anchor?: boolean
 }>(), { content: null, side: "top", delay: 400, anchor: false })
 
+const descriptionId = ref<string>()
 // Close Reka itself so pending hover timers are cancelled without replacing the slot DOM.
 const TooltipLifecycle = defineComponent({
   setup() {
     const context = injectTooltipRootContext()
+    watch(context.open, open => { if (open) syncPortalHost(); descriptionId.value = open ? context.contentId : undefined }, { flush: 'sync' })
+    watch(() => props.content, content => { if (!content) context.onClose() })
     onDeactivated(context.onClose)
     return () => null
   },
@@ -135,15 +136,19 @@ function setupObserver() {
   }
 }
 
-onActivated(() => { syncDisabled(); setupObserver() })
+function syncPortalHost() {
+  portalTarget.value = anchorEl.value?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? undefined
+  inDialog.value = !!portalTarget.value
+}
+onActivated(() => { syncPortalHost(); syncDisabled(); setupObserver() })
 onDeactivated(() => { observer?.disconnect(); observer = null })
 onMounted(() => {
   syncDisabled()
-  const dialog = anchorEl.value?.closest("dialog")
-  if (dialog) { portalTarget.value = dialog; inDialog.value = true }
+  syncPortalHost()
   setupObserver()
 })
 onUpdated(() => {
+  syncPortalHost()
   syncDisabled()
 })
 onBeforeUnmount(() => {
@@ -163,32 +168,30 @@ watch(() => props.anchor, () => {
     :data-anchor="anchor && content ? '' : undefined"
     :tabindex="anchor && hasDisabledChild ? 0 : undefined"
     :aria-disabled="anchor && hasDisabledChild ? 'true' : undefined"
+    :aria-describedby="anchor && hasDisabledChild ? descriptionId : undefined"
     @pointermove="onAnchorPointerMove"
     @pointerleave="onAnchorPointerLeave"
     @pointerdown="onAnchorPointerDown"
     @focus="onAnchorFocus"
     @blur="onAnchorBlur"
   >
-    <TooltipProvider v-if="content" :delay-duration="delay">
-      <TooltipRoot>
-        <TooltipLifecycle />
-        <TooltipTrigger as-child><slot /></TooltipTrigger>
-        <TooltipPortal :to="portalTarget">
-          <TooltipContent
-            :data-fluid-glass="inDialog ? undefined : ''"
-            :side="side"
-            :side-offset="6"
-            :collision-padding="12"
-            class="studio-tooltip"
-            :data-in-dialog="inDialog ? '' : undefined"
-          >
-            {{ content }}
-            <TooltipArrow class="studio-tooltip-arrow" :width="10" :height="5" />
-          </TooltipContent>
-        </TooltipPortal>
-      </TooltipRoot>
-    </TooltipProvider>
-    <slot v-else />
+    <TooltipRoot :disabled="!content" :delay-duration="delay">
+      <TooltipLifecycle />
+      <TooltipTrigger as-child><slot /></TooltipTrigger>
+      <TooltipPortal v-if="content" :to="portalTarget">
+        <TooltipContent
+          :data-fluid-glass="inDialog ? undefined : ''"
+          :side="side"
+          :side-offset="6"
+          :collision-padding="12"
+          class="studio-tooltip"
+          :data-in-dialog="inDialog ? '' : undefined"
+        >
+          {{ content }}
+          <TooltipArrow class="studio-tooltip-arrow" :width="10" :height="5" />
+        </TooltipContent>
+      </TooltipPortal>
+    </TooltipRoot>
   </span>
 </template>
 

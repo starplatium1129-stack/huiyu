@@ -121,7 +121,7 @@ export function useGalleryListMotion(
     for (const animation of moves.values()) animation.cancel()
     moves.clear(); surface?.cancel(); surface = null
     // Remounted survivors keep their already visible state; the wall owns this change.
-    for (const card of visible) card.classList.add('revealed')
+    for (const card of visible) card.setAttribute('data-revealed', '')
     // A replacement or dense change gets one quiet handoff instead of many entries.
     if (listChanged && (!targets.length || previousIds.size > MAX_MOVING_CARDS)) {
       if (wall && typeof wall.animate === 'function') {
@@ -160,9 +160,7 @@ export function useGalleryListMotion(
   }, { flush: 'post' })
   watch([canAnimate, lowEffects], () => { if (!canAnimate.value || lowEffects.value) stop() }, { flush: 'sync' })
   useEventListener(root, 'pointerdown', () => {
-    keyboardInput = false; revision++
-    for (const id of dust.keys()) stopDust(id)
-    positions.clear(); clearTimeout(positionTimer)
+    keyboardInput = false; stop()
   }, { passive: true })
   useEventListener(root, 'keydown', () => { keyboardInput = true; stop() })
   // Album navigation restores scroll/focus in the same frame as its arrival.

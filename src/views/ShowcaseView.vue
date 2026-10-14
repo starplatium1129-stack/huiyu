@@ -219,13 +219,6 @@ const viewerMotion = useFluidDialog(dialogEl, {
     viewerSurface.enter(el, done)
     if (image) void viewerHero.enter(image, el as HTMLElement)
   },
-  leave(el, done) {
-    const image = el.querySelector<HTMLImageElement>('.zoomable-img')
-    void Promise.all([
-      new Promise<void>(resolve => viewerSurface.leave(el, resolve)),
-      image ? viewerHero.leave(image, el as HTMLElement, sourceImage()) : Promise.resolve(),
-    ]).then(done)
-  },
   dispose(el) { viewerHero.cancel(); viewerSurface.dispose(el) },
 })
 const viewerImageFailed = ref(false)
@@ -364,8 +357,7 @@ function clearLinkedScene() {
 function closeViewer() {
   if (viewerClosing.value || !dialogEl.value?.open) return
   // Clear only the tooltip portal before native close (Reka's Teleport anchor
-  // otherwise becomes stale). Keep the image/layout until the exit finishes:
-  // removing them here exposes an empty modal backdrop during the whole fade.
+  // otherwise becomes stale), then release native focus and media together.
   viewerClosing.value = true
   void nextTick(() => {
     if (!viewerClosing.value || !viewActive || unmounted) return

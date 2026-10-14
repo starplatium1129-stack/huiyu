@@ -72,13 +72,15 @@ assets/live2d-candidates/
 # 场景审计一次性导出（scripts/maintenance 审计脚本产物，不入库）
 /_audit_scenes.jsonl
 
-# AI agent skills：默认忽略本机/第三方安装，只显式放行项目自有 skill。
+# AI agent skills：默认忽略本机/第三方安装，只显式放行项目维护的 skill。
 # 新增共享 skill 时在此加入对应白名单，避免误提交个人设计工具和缓存。
 .agents/*
 !.agents/skills/
 .agents/skills/*
 !.agents/skills/studio-prompt-craft/
 !.agents/skills/studio-prompt-craft/**
+!.agents/skills/studio-ui-design/
+!.agents/skills/studio-ui-design/**
 skills-lock.json
 
 # 临时 UI 截图（Gemini 视觉复核用，不入库）

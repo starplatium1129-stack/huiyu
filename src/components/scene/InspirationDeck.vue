@@ -4,12 +4,12 @@
       <span class="inspiration-deck-kicker"><ArchiveIcon name="spark" /> 灵感手帖</span>
       <p :id="hintId" class="sr-only">左右方向键切换主推，也可拖动画面旁的文字区域。按 Tab 预览或探索任一场景。</p>
       <div class="inspiration-deck-controls" data-fluid-glass>
-        <button type="button" aria-label="上一张灵感" :disabled="rails.length < 2" @click="step(-1)"><ArchiveIcon name="chevron-down" class="previous-icon" /></button>
+        <button type="button" aria-label="上一张灵感" :disabled="rails.length < 2" @click="step(-1, $event.detail === 0)"><ArchiveIcon name="chevron-down" class="previous-icon" /></button>
         <span class="inspiration-deck-count" role="status" aria-live="polite" aria-atomic="true">
           <span aria-hidden="true">{{ String(index + 1).padStart(2, '0') }} / {{ String(rails.length).padStart(2, '0') }}</span>
           <span class="sr-only">第 {{ index + 1 }} 张，共 {{ rails.length }} 张：{{ entries[index]?.title }}</span>
         </span>
-        <button type="button" aria-label="下一张灵感" :disabled="rails.length < 2" @click="step(1)"><ArchiveIcon name="chevron-down" class="next-icon" /></button>
+        <button type="button" aria-label="下一张灵感" :disabled="rails.length < 2" @click="step(1, $event.detail === 0)"><ArchiveIcon name="chevron-down" class="next-icon" /></button>
       </div>
     </div>
     <div ref="host" class="inspiration-deck-stage" tabindex="0" role="group" aria-label="灵感卡片，左右方向键翻页"
@@ -145,6 +145,6 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
   .inspiration-feature { gap:var(--s-2); padding:var(--s-3); }
   .inspiration-deck-card:not(.front) { height:140px; }
 }
-@media (prefers-reduced-motion:reduce) { .inspiration-deck-card.front { transition:none; } }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .inspiration-deck-card.front { transition:none; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .inspiration-deck-card.front { transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .inspiration-deck-card.front { transition:none; }
 </style>

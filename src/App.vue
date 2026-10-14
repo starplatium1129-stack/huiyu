@@ -1,21 +1,23 @@
 <template>
-  <DesktopTitleBar />
-  <RuntimeConnectionNotice />
-  <RouteRecoveryBanner />
-  <DesktopUpdateBanner v-if="!isCompanion" />
-  <div class="route-stage tw:relative tw:grid tw:[align-items:start] tw:min-w-0">
-    <RouterView v-slot="{ Component }">
-      <Transition appear :css="false" @before-enter="beforeEnterLayout" @enter="enterLayout" @leave="layoutMotion.onLeave" @enter-cancelled="layoutMotion.onEnterCancelled" @leave-cancelled="layoutMotion.onLeaveCancelled">
-        <KeepAlive include="AppLayout"><component :is="Component" :data-route-path="route.fullPath" /></KeepAlive>
-      </Transition>
-    </RouterView>
-  </div>
-  <AppInteractionLayer v-if="!isCompanion" />
-  <AppToast v-if="!isCompanion" :placement="route.path === '/prompt-builder' ? 'bottom-left' : 'bottom-right'" />
-  <ConfirmDialog />
-  <AppearancePreferences hide-triggers />
-  <TaskCenter v-if="!isCompanion" />
-  <GlobalSearch v-if="!isCompanion" />
+  <TooltipProvider :delay-duration="400">
+    <DesktopTitleBar />
+    <RuntimeConnectionNotice />
+    <RouteRecoveryBanner />
+    <DesktopUpdateBanner v-if="!isCompanion" />
+    <div class="route-stage tw:relative tw:grid tw:[align-items:start] tw:min-w-0">
+      <RouterView v-slot="{ Component }">
+        <Transition appear :css="false" @before-enter="beforeEnterLayout" @enter="enterLayout" @leave="layoutMotion.onLeave" @enter-cancelled="layoutMotion.onEnterCancelled" @leave-cancelled="layoutMotion.onLeaveCancelled">
+          <KeepAlive include="AppLayout"><component :is="Component" :data-route-path="route.fullPath" /></KeepAlive>
+        </Transition>
+      </RouterView>
+    </div>
+    <AppInteractionLayer v-if="!isCompanion" />
+    <AppToast v-if="!isCompanion" :placement="route.path === '/prompt-builder' ? 'bottom-left' : 'bottom-right'" />
+    <ConfirmDialog />
+    <AppearancePreferences hide-triggers />
+    <TaskCenter v-if="!isCompanion" />
+    <GlobalSearch v-if="!isCompanion" />
+  </TooltipProvider>
 </template>
 
 <script setup lang="ts">
@@ -24,6 +26,7 @@ import { getDesktopWindowRole } from '@/platform/desktop/runtime'
 
 import { computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { TooltipProvider } from 'reka-ui'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'

@@ -70,7 +70,7 @@
           <button v-if="chatProvider === 'local'" class="btn btn-primary btn-sm" type="button" :disabled="preparingRoom" @click="prepareRoom">{{ preparingRoom ? '准备中…' : '连接模型' }}</button>
           <button v-else class="btn btn-primary btn-sm" type="button" @click="apiSettingsOpen = true; openRoomPanel('settings')">选择模型</button>
         </div>
-        <div v-show="!immersive" class="chat-list" ref="chatListRef" role="log" aria-label="对话记录">
+        <div v-show="!immersive" class="chat-list" ref="chatListRef" role="log" aria-live="off" aria-label="对话记录">
           <div v-if="!currentMessages.length" class="chat-empty">
             <RuntimeImage class="room-empty-avatar" :src="avatar" alt="" />
             <div class="chat-empty-greeting">{{ personalizedGreeting }}</div>
@@ -97,7 +97,7 @@
           </div>
         </div>
         <button v-if="!immersive && hasNew" class="room-latest btn btn-ghost" type="button" @click="latest">回到最新消息</button>
-        <div v-if="immersive" class="room-current-line" role="log" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
+        <div v-if="immersive" class="room-current-line" role="log" aria-live="off" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
         <div v-if="activityText" class="room-chat-activity" role="status"><span>{{ activityText }}</span><button v-if="speechSessionActive" class="btn btn-ghost btn-sm" type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button></div>
         <div class="chat-composer">
           <div class="composer-row">

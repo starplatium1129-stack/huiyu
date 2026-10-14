@@ -40,18 +40,11 @@ const dialog = ref<HTMLDialogElement | null>(null), narrow = useMediaQuery('(max
 const origin = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
 const surface = useFluidSurface('.art-viewer')
 const preview = ref(origin.capture(props.source))
-function sourceImage() {
-  return props.source?.closest('.batch-result-grid')?.querySelector<HTMLImageElement>(`.batch-thumb-btn[data-preview-id="${CSS.escape(current.value?.id || '')}"] img`) ?? null
-}
 const motion = useFluidDialog(dialog, {
   enter(el, done) {
     surface.enter(el, done)
     const image = el.querySelector<HTMLImageElement>('.zoomable-img')
     if (image) void origin.enter(image, el as HTMLElement)
-  },
-  leave(el, done) {
-    const image = el.querySelector<HTMLImageElement>('.zoomable-img')
-    void Promise.all([new Promise<void>(resolve => surface.leave(el, resolve)), image ? origin.leave(image, el as HTMLElement, sourceImage()) : Promise.resolve()]).then(done)
   },
   dispose(el) { origin.cancel(); surface.dispose(el) },
 })

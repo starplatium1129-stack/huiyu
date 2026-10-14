@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onActivated, onDeactivated, onMounted, ref, useAttrs } from 'vue'
+import { computed, onActivated, onDeactivated, onMounted, onUpdated, ref, useAttrs, watch } from 'vue'
 import {
   SelectRoot,
   SelectTrigger,
@@ -33,9 +33,7 @@ export interface StudioSelectGroup {
   options: readonly StudioSelectOption[]
 }
 
-// 组件不渲染任何原生 <select>：仓库 e2e 明确要求外观对话框、桌宠设置等容器内
-// 原生控件数量为 0（apple-hig-accessibility / companion-focus），因此 id 直接落在
-// 可见 trigger 上，原生外观全部由 Reka + 本组件的样式接管。
+// 可见 trigger 承载 id 与可访问名称；外观及键鼠语义由 Reka 和共享样式接管。
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<{
@@ -81,7 +79,9 @@ const currentKey = computed(() => keyOf(modelValue.value))
 const selectedLabel = computed(() => optionByKey.value.get(currentKey.value)?.label ?? '')
 
 function applyKey(key: string) {
+  if (props.disabled) return
   const option = optionByKey.value.get(key)
+  if (option?.disabled) return
   if (option) modelValue.value = option.value
   else modelValue.value = key === EMPTY_KEY ? '' : key
 }
@@ -90,7 +90,7 @@ const attrs = useAttrs()
 const open = ref(false)
 const pointerOpened = ref(false)
 let viewActive = true
-onActivated(() => { viewActive = true })
+onActivated(() => { viewActive = true; syncPortalHost() })
 onDeactivated(() => {
   viewActive = false
   open.value = false
@@ -126,11 +126,17 @@ const triggerAttrs = computed(() => {
  * integration check」说的就是这件事。
  */
 const wrapperEl = ref<HTMLElement | null>(null)
+// Tooltip provides a separate Popper context; select positioning uses its own trigger.
+const selectTrigger = ref<{ $el: HTMLElement } | null>(null)
 const portalTarget = ref<HTMLElement | undefined>(undefined)
 const collisionBoundary = computed(() => portalTarget.value?.tagName === 'DIALOG' ? undefined : portalTarget.value)
-onMounted(() => {
+function syncPortalHost() {
   portalTarget.value = wrapperEl.value?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? undefined
-})
+}
+onMounted(syncPortalHost)
+onUpdated(syncPortalHost)
+watch(open, value => { if (value) syncPortalHost() }, { flush: 'sync' })
+watch(() => props.disabled, value => { if (value) open.value = false }, { flush: 'sync' })
 </script>
 
 <template>
@@ -138,6 +144,7 @@ onMounted(() => {
     <SelectRoot v-model:open="open" :model-value="currentKey" :disabled="disabled" @update:model-value="applyKey">
       <StudioTooltip :content="effectiveHint" :anchor="disabled">
         <SelectTrigger
+          ref="selectTrigger"
           data-fluid-glass
           v-bind="triggerAttrs"
           :id="id"
@@ -156,7 +163,7 @@ onMounted(() => {
       </StudioTooltip>
 
       <SelectPortal v-if="open" :to="portalTarget">
-        <SelectContent data-fluid-glass position="popper" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @close-auto-focus="onCloseAutoFocus">
+        <SelectContent data-fluid-glass position="popper" :reference="selectTrigger?.$el" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @close-auto-focus="onCloseAutoFocus">
           <SelectViewport class="studio-select-viewport">
             <template v-if="groups">
               <SelectGroup v-for="group in groups" :key="group.label" class="studio-select-group">

@@ -13,7 +13,7 @@
 | [统一工作流](workflow.md) | 现有命令、权限与定向验证 |
 | [内容维护](maintenance.md) | 工作库、记录修改、快照与保护 |
 | [工程契约](engineering-contracts.md) | 模块、数据、任务与资源生命周期 |
-| [设计规范](../DESIGN.md) | 品牌、双主题与交互原则 |
+| [设计规范](../DESIGN.md) | 品牌、双主题与融合 Emil Kowalski 原则的交互和动效标准 |
 | [桌面部署](desktop-deployment.md) | 构建、安装、同步及 UAC |
 
 协作规则见 [AGENTS.md](../AGENTS.md)。普通用户从[浏览入口](index.html)、[上手教程](getting-started.html)、[模型配置](guides/setup-and-models.md)和[离线资源](guides/offline-resources.md)开始。当前保留的发行说明为 [1.9.2](releases/v1.9.2.md)，公开发行与本机安装分别核对。
@@ -39,6 +39,7 @@
 - 桌面：[Live2D](guides/desktop/live2d-native-runtime.md)、[安装界面](guides/desktop/game-installer.md)、[陪伴配置](guides/desktop/companion-dsh-agent-architecture.md)。
 - 内容：[角色接入](guides/characters/character-onboarding-workflow.md)、[粒子管线](guides/characters/particle-portrait-pipeline.md)、[视频工作流](guides/video/video-ai-storyboard.md)。
 - 提示词：[项目 skill](../.agents/skills/studio-prompt-craft/SKILL.md)及其作者规则、Anima/Krea 编译和交付参考；本次不修改提示词或生产内容。
+- UI：[studio-ui-design](../.agents/skills/studio-ui-design/SKILL.md) 是项目设计工程入口，按需读取交互、动效和性能参考；采用规则统一维护在 DESIGN.md，来源版本与 MIT 许可证随 skill 保留。
 - [研究来源与采用边界](research/README.md)：只保留必要来源和未采纳条件，候选不等于实施承诺。
 
 ## 维护方式

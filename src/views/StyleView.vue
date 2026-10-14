@@ -74,8 +74,8 @@ useScrollReveal()
 .style-sample:focus-visible, .mood-go:focus-visible { outline:none; box-shadow:var(--focus-shadow); @apply tw:rounded-sm; }
 .style-notes { @apply tw:flex tw:items-center tw:gap-s-4 tw:mt-s-7 tw:pt-s-5; border-top:1px solid var(--border-soft); }
 .style-notes .btn { @apply tw:shrink-0; }
-@media (hover:hover) { .style-sample:hover img { transform:scale(1.035); } }
+@media (hover:hover) and (pointer:fine) { .style-sample:hover img { transform:scale(1.035); } }
 @media (max-width:900px) { .style-mood-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .style-chapter { align-items:start; @apply tw:flex-col tw:gap-s-3; } .style-notes { @apply tw:flex-wrap; } }
 @media (max-width:540px) { .style-mood-grid { grid-template-columns:minmax(0,1fr); } .style-chapter h2 { @apply tw:text-title-sm; } }
-@media (prefers-reduced-motion:reduce) { .style-sample img { transition:none; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .style-sample img { transition:none; } }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useId } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, useId } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { listCompanionUiCharacters } from '@/utils/companionRegistry'
 
@@ -18,6 +18,12 @@ function showPicker(index = characters.findIndex(character => character.id === p
   if (!characters.length) return
   open.value = true
   activeIndex.value = (index + characters.length) % characters.length
+  void nextTick(revealActiveOption)
+}
+
+function revealActiveOption() {
+  if (open.value && activeOptionId.value)
+    document.getElementById(activeOptionId.value)?.scrollIntoView({ block: 'nearest', behavior: 'instant' })
 }
 
 function closePicker() {
@@ -47,6 +53,7 @@ function onTriggerKeydown(event: KeyboardEvent) {
   } else if (open.value && (event.key === 'Home' || event.key === 'End')) {
     event.preventDefault()
     activeIndex.value = event.key === 'Home' ? 0 : characters.length - 1
+    void nextTick(revealActiveOption)
   } else if (event.key === 'Escape' && open.value) {
     event.preventDefault()
     closePicker()
@@ -57,12 +64,6 @@ function onTriggerKeydown(event: KeyboardEvent) {
 
 function onDocumentPointerDown(event: PointerEvent) {
   if (open.value && !pickerEl.value?.contains(event.target as Node)) closePicker()
-}
-
-function onViewportWheel(event: WheelEvent) {
-  const el = event.currentTarget as HTMLElement | null
-  if (!el) return
-  el.scrollTop += event.deltaY
 }
 
 onMounted(() => document.addEventListener('pointerdown', onDocumentPointerDown, true))
@@ -94,7 +95,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
       <ArchiveIcon name="chevron-down" class="companion-picker-chevron" aria-hidden="true" />
     </button>
 
-    <Transition name="companion-picker-menu">
+    <Transition name="companion-picker-menu" @before-leave="($event as HTMLElement).inert = true" @before-enter="($event as HTMLElement).inert = false" @leave-cancelled="($event as HTMLElement).inert = false">
       <div
         v-if="open"
         :id="listboxId"
@@ -107,7 +108,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
           <span><ArchiveIcon name="character" />陪伴角色</span>
           <small>{{ characters.length }} 位可选</small>
         </div>
-        <div class="companion-picker-viewport" @pointerdown.stop @wheel.passive="onViewportWheel">
+        <div class="companion-picker-viewport" @pointerdown.stop>
           <button
             v-for="(character, index) in characters"
             :key="character.id"
@@ -157,7 +158,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
   @apply tw:text-primary;
   box-shadow: inset 0 1px 0 var(--glass-highlight);
   @apply tw:cursor-pointer tw:text-left;
-  transition: border-color var(--motion-hover), background-color var(--motion-hover), box-shadow var(--motion-hover);
+  transition: border-color var(--motion-hover), background-color var(--motion-hover);
 }
 .companion-picker-trigger:hover,
 .companion-picker-trigger[data-state='open'] {
@@ -285,9 +286,7 @@ html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-
   .companion-picker-mark { @apply tw:w-[25px] tw:h-[25px]; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .companion-picker-chevron,
-  .companion-picker-menu-enter-active,
-  .companion-picker-menu-leave-active { transition: none; }
+  :root:not([data-motion='full']) .companion-picker-chevron, :root:not([data-motion='full']) .companion-picker-menu-enter-active, :root:not([data-motion='full']) .companion-picker-menu-leave-active { transition: none; }
 }
 @media (forced-colors: active) {
   .companion-picker-trigger,

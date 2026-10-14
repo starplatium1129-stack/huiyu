@@ -27,7 +27,7 @@ function scheduleReveal(el: HTMLElement, direction?: string, deferred = false) {
 }
 
 function reveal(el: HTMLElement, direction = 'up', holdFirstFrame = false) {
-  if (document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function'
+  if (keyboardInput || document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function'
     || direction && el.matches('input, textarea') && document.activeElement === el) {
     cancel(el)
     return
@@ -41,17 +41,19 @@ function reveal(el: HTMLElement, direction = 'up', holdFirstFrame = false) {
     if (surface !== el && el.contains(surface)) cancel(surface)
   }
   // A rapid reversal continues from the visible value rather than flashing back.
-  const previous = active.has(el) ? getComputedStyle(el) : null
+  const style = getComputedStyle(el)
+  const previous = active.has(el) ? style : null
   const start: Keyframe = { opacity: previous?.opacity ?? '.35' }
   const end: Keyframe = { opacity: 1 }
   const offsets: Record<string, string> = { left: 'translateX(-12px)', right: 'translateX(12px)', up: 'translateY(12px)', down: 'translateY(-12px)' }
-  if (!keyboardInput && direction && offsets[direction]) {
+  if (direction && offsets[direction]) {
     start.transform = previous?.transform ?? offsets[direction]
     end.transform = 'none'
   }
   cancel(el)
   const animation = el.animate([start, end], {
-    duration:keyboardInput ? 160 : 320, easing:'cubic-bezier(.22, 1, .36, 1)',
+    duration:parseFloat(style.getPropertyValue('--motion-surface')),
+    easing:style.getPropertyValue('--ease-out').trim(),
     ...(holdFirstFrame ? { fill:'both' as const } : {}),
   })
   active.set(el, animation)
@@ -89,7 +91,7 @@ export function installContentMotion() {
     if (!(event.target instanceof Node)) return
     // A chosen child panel owns the next frame. Otherwise the active ancestor
     // below suppresses its reveal, making a quick second selection look inert.
-    for (const el of active.keys()) if (el.contains(event.target)) cancel(el)
+    for (const el of new Set([...active.keys(), ...pending.keys()])) if (el.contains(event.target)) cancel(el)
   }
   function toggle(event: Event) {
     if (!(event.target instanceof HTMLDetailsElement)) return

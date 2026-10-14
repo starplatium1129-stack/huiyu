@@ -111,7 +111,8 @@ function onUndo() {
   transform: translateY(100%);
   transition: transform var(--motion-control) var(--ease-out), opacity var(--motion-hover) var(--ease-out);
 }
-.random-dice:is(:hover, :focus-visible):not(:disabled)::before { opacity: 1; transform: translateY(0); }
+@media (hover:hover) and (pointer:fine) { .random-dice:hover:not(:disabled)::before { opacity:1; transform:translateY(0); } }
+.random-dice:focus-visible::before { opacity:1; transform:none; transition:none; }
 .random-dice:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft));
   @apply tw:text-accent;
@@ -207,8 +208,7 @@ function onUndo() {
   transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .random-dice::before,
-  :root:not([data-motion='full']) .random-menu-icon { transition: none; }
+  :root:not([data-motion='full']) .random-dice::before, :root:not([data-motion='full']) .random-menu-icon { transition: none; }
 }
 :root:is([data-motion='reduce'], [data-motion='reduced']) .random-dice::before,
 :root:is([data-motion='reduce'], [data-motion='reduced']) .random-menu-icon { transition: none; }

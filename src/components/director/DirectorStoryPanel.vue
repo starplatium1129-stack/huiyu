@@ -21,11 +21,14 @@
 
 <script setup lang="ts">
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
+import { onMounted } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { storyChips } from '@/composables/scene/directorOptions'
 import '@/assets/css/director/components/DirectorStoryPanel.css'
 
 const pb = usePromptBuilderStore()
+const emit = defineEmits<{ ready: [] }>()
+onMounted(() => emit('ready'))
 
 function detachScene() {
   if (!pb.sceneId) return

@@ -5,7 +5,7 @@
     保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
 /* Story */
-  .pb .story-input { @apply tw:w-full tw:min-h-[70px] tw:p-s-3; background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body tw:leading-loose; outline:none; transition:border-color var(--motion-hover),box-shadow var(--motion-hover); @apply tw:resize-y tw:font-sans tw:box-border; }
+  .pb .story-input { @apply tw:w-full tw:min-h-[70px] tw:p-s-3; background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body tw:leading-loose; outline:none; transition:border-color var(--motion-hover); @apply tw:resize-y tw:font-sans tw:box-border; }
   .pb .story-input:focus { @apply tw:border-strong; box-shadow:var(--focus-shadow); }
   .pb .story-input::placeholder { @apply tw:text-muted; }
   .pb .scene-context, .pb .story-prompt-hint { @apply tw:flex tw:items-center tw:gap-s-2 tw:mt-s-2; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); @apply tw:rounded-sm; background:color-mix(in srgb,var(--accent-soft) 48%,transparent); @apply tw:text-muted tw:text-mono-sm tw:leading-label; }
@@ -17,6 +17,6 @@
   .pb .story-chip:hover { @apply tw:border-accent tw:text-accent; }
   /* Visual description */
   .pb .visual-description-label { @apply tw:block tw:mt-s-4 tw:mb-s-2 tw:text-label-sm tw:text-secondary; }
-  .pb .visual-description-input { @apply tw:w-full tw:min-h-[88px] tw:p-s-3; background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body tw:leading-loose; outline:none; transition:border-color var(--motion-hover),box-shadow var(--motion-hover); @apply tw:resize-y tw:font-sans tw:box-border; }
+  .pb .visual-description-input { @apply tw:w-full tw:min-h-[88px] tw:p-s-3; background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body tw:leading-loose; outline:none; transition:border-color var(--motion-hover); @apply tw:resize-y tw:font-sans tw:box-border; }
   .pb .visual-description-input:focus { @apply tw:border-strong; box-shadow:var(--focus-shadow); }
   .pb .visual-description-input::placeholder { @apply tw:text-muted; }

@@ -1,5 +1,5 @@
 <template>
-  <Transition name="pet-orbit">
+  <Transition name="pet-orbit" @before-leave="($event as HTMLElement).inert = true" @before-enter="($event as HTMLElement).inert = false" @leave-cancelled="($event as HTMLElement).inert = false">
     <section v-if="open" ref="root" class="companion-orbit" :class="{ 'is-compact': compact, 'has-category': category }"
       :style="{ '--orbit-size': size + 'px' }" aria-label="桌宠环形菜单" @keydown="key" @contextmenu.prevent.stop="emit('close')">
       <div v-if="!compact || !category" class="orbit-wheel" role="group" aria-label="常用操作">

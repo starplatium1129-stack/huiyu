@@ -200,7 +200,7 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-pagination button:disabled { @apply tw:text-disabled tw:cursor-default; }
 .character-bookshelf button:focus-visible, .bookshelf-results-heading h2:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .sr-only { @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden; clip-path: inset(50%); @apply tw:whitespace-nowrap; border: 0; }
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+@media (hover: hover) and (pointer: fine) {
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="0"] { transform: translateY(-6%); }
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="1"] { transform: translate(-16%, 2%) rotate(-8deg); }
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="2"] { transform: translate(16%, 3%) rotate(8deg); }
@@ -236,5 +236,5 @@ defineExpose({ focusSelected, snapshot })
   .bookshelf-results-heading { @apply tw:gap-s-2; }
   .bookshelf-pagination { @apply tw:gap-s-3; }
 }
-@media (prefers-reduced-motion: reduce) { .bookshelf-cover, .bookshelf-character { transition: none; } }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .bookshelf-cover, :root:not([data-motion='full']) .bookshelf-character { transition: none; } }
 </style>

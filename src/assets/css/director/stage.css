@@ -12,7 +12,7 @@
       radial-gradient(circle at 28% 18%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 35%),
       linear-gradient(145deg,color-mix(in srgb,var(--bg-elevated) 86%,transparent),var(--bg-deep));
     box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent),var(--shadow-lg);
-    transition:background var(--motion-atmosphere) ease,border-color var(--motion-atmosphere) ease,box-shadow var(--motion-atmosphere) ease;
+    transition:background var(--motion-atmosphere) ease, border-color var(--motion-atmosphere) ease;
   }
   .pb .stage-placeholder::before { content:''; @apply tw:absolute; inset:0; z-index:var(--z-stage-backdrop); background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 32%),radial-gradient(circle at 14% 88%,color-mix(in srgb,var(--character-accent) 8%,transparent),transparent 26%); @apply tw:pointer-events-none; }
 
@@ -86,7 +86,7 @@
   .pb .stage-placeholder.is-error .stage-ready::before { background:var(--danger); box-shadow:0 0 10px color-mix(in srgb,var(--danger) 50%,transparent); }
   .pb .stage-placeholder.is-paused .stage-ready { @apply tw:text-warning-text; }
   .pb .stage-placeholder.is-paused .stage-ready::before { background:var(--warning); box-shadow:0 0 10px color-mix(in srgb,var(--warning) 50%,transparent); }
-  .pb .stage-muse { @apply tw:absolute; z-index:var(--z-base); @apply tw:right-[-12%] tw:bottom-[-3%] tw:w-[52%] tw:h-[92%] tw:object-contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); @apply tw:pointer-events-none; transition:opacity var(--motion-atmosphere) ease,filter var(--motion-atmosphere) ease,transform var(--motion-atmosphere) var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
+  .pb .stage-muse { @apply tw:absolute; z-index:var(--z-base); @apply tw:right-[-12%] tw:bottom-[-3%] tw:w-[52%] tw:h-[92%] tw:object-contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); @apply tw:pointer-events-none; transition:opacity var(--motion-atmosphere) ease, transform var(--motion-atmosphere) var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
   /* 审计修复：呼吸动画原为逐帧补间 filter（6s 无限循环 · 大图离屏合成 = 常驻每帧开销）。
      .stage-muse 是 <img>，无法挂伪元素承载滤镜层；而 saturate .76→.88 / contrast .96→1.02
      的差值本就几乎不可感，故去掉 filter 补间、只保留 transform 呼吸（合成器属性，零重绘）。 */
@@ -147,7 +147,7 @@
   .pb .scene-card-main { @apply tw:flex tw:items-start tw:gap-s-3 tw:w-full tw:min-h-full; padding:var(--s-3) var(--s-3) calc(var(--s-3) + 28px); border:0; background:transparent; color:inherit; @apply tw:text-left; font:inherit; @apply tw:cursor-pointer; }
   .pb .scene-card-main:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
   /* 左栏场景紧凑缩略图(审核样张,404 时自动移除) */
-  .pb .scene-thumb { @apply tw:w-[64px] tw:h-[64px]; flex:0 0 64px; @apply tw:rounded-md tw:object-cover; object-position:center 22%; background:var(--bg-deep); border:1px solid var(--border-soft); transition:filter var(--motion-surface); }
+  .pb .scene-thumb { @apply tw:w-[64px] tw:h-[64px]; flex:0 0 64px; @apply tw:rounded-md tw:object-cover; object-position:center 22%; background:var(--bg-deep); border:1px solid var(--border-soft); transition:none; }
   .pb .scene-thumb.r18 { filter:blur(12px) saturate(.85); }
   .pb .scene-card:hover .scene-thumb.r18, .pb .scene-card:focus-within .scene-thumb.r18 { filter:none; }
   .pb .scene-text { flex:1; @apply tw:min-w-0 tw:flex tw:flex-col; }
@@ -158,7 +158,7 @@
   .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { content:''; @apply tw:absolute; inset:0; border-radius:inherit; @apply tw:pointer-events-none; box-shadow:var(--selection-shadow); opacity:0; animation:obScenePulse .9s ease 1; }
   .pb .scene-card[data-char-match="0"] { opacity:0.45; }
   @keyframes obScenePulse { 0%,100%{opacity:0;transform:scale(.985);} 50%{opacity:1;transform:scale(1);} }
-  @media (prefers-reduced-motion: reduce) { .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { animation:none; } }
+  @media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { animation:none; } }
   .pb .scene-card[data-category="校园"]::before { background:linear-gradient(180deg,#81C784,#388E3C); }
   .pb .scene-card[data-category="祭典・节日"]::before { background:linear-gradient(180deg,#FF8A65,#D84315); }
   .pb .scene-card[data-category="日常"]::before { background:linear-gradient(180deg,#4FC3F7,#0288D1); }

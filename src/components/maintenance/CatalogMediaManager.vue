@@ -41,7 +41,7 @@
             <p class="catalog-note">PNG / JPEG / WebP · ≤15 MB · 自动保存 · 旧图备份</p>
           </template>
           <div v-else class="catalog-media-empty"><ArchiveIcon name="gallery" /><h3>选择样张</h3></div>
-          <input ref="showcaseFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onShowcasePicked" />
+          <input ref="showcaseFileEl" hidden type="file" accept="image/png,image/jpeg,image/webp" @change="onShowcasePicked" />
         </section>
       </div>
     </template>
@@ -49,7 +49,7 @@
       <header class="catalog-media-intro"><h2>首页封面</h2></header>
       <div class="catalog-hero-grid"><button v-for="hero in homeHeroes" :key="hero.id" class="catalog-hero-card" type="button" :aria-pressed="selectedHeroId === hero.id" @click="previewHero(hero)"><RuntimeImage :src="hero.image" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="hero.title + '的首页封面'" /><ArchiveIcon v-else name="image" /></RuntimeImage><span><strong>{{ hero.title }}</strong><small>{{ hero.updatedAt ? '自定义封面 · ' + hero.updatedAt : '使用内置封面' }}</small></span></button></div>
       <section v-if="selectedHeroId" v-content-motion:fade="selectedHeroId" class="catalog-hero-editor"><div class="catalog-media-canvas"><RuntimeImage :src="heroUrl" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" :alt="selectedHeroTitle + '的首页封面预览'" /></RuntimeImage></div><div><h3>{{ selectedHeroTitle }}的首页封面</h3><div class="catalog-actions"><button class="btn btn-primary" type="button" :disabled="uploadBusy" @click="pickHero">{{ uploadBusy ? '正在保存图片…' : '替换封面' }}</button><button class="btn btn-ghost" type="button" :disabled="uploadBusy" @click="resetHero">恢复内置图</button></div></div></section>
-      <input ref="heroFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onHeroPicked" />
+      <input ref="heroFileEl" hidden type="file" accept="image/png,image/jpeg,image/webp" @change="onHeroPicked" />
     </template>
     </div>
     <p class="catalog-media-feedback" role="status" aria-live="polite" :class="{ 'catalog-error': showcaseError }">{{ showcaseFeedback }}</p>

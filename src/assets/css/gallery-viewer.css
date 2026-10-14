@@ -103,5 +103,5 @@ dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-bac
   .art-viewer .viewer-prev { @apply tw:left-s-2; }
   .art-viewer .viewer-next { @apply tw:right-s-2; }
 }
-@media (prefers-reduced-motion:reduce) { .art-viewer,.art-viewer .viewer-info { transition:none !important; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .art-viewer, :root:not([data-motion='full']) .art-viewer .viewer-info { transition:none !important; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .art-viewer .viewer-info { transition:none !important; }

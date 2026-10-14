@@ -39,7 +39,7 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 .studio-checkbox-input:disabled + .studio-checkbox-box { border-color:var(--text-disabled); background:var(--bg-elevated); color:var(--text-disabled); }
 @keyframes checkbox-draw { from { stroke-dashoffset:24; } to { stroke-dashoffset:0; } }
 @keyframes checkbox-mixed { from { transform:scaleX(0); } to { transform:scaleX(1); } }
-@media (prefers-reduced-motion:reduce) { .studio-checkbox-box :deep(path),.studio-checkbox-mixed { animation:none; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .studio-checkbox-box :deep(path), :root:not([data-motion='full']) .studio-checkbox-mixed { animation:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .studio-checkbox-box :deep(path),
 :root:is([data-motion='reduce'],[data-motion='reduced']) .studio-checkbox-mixed { animation:none; }
 @media (forced-colors:active) {

@@ -468,5 +468,5 @@ onUnmounted(() => {
 .gs-sr-status { clip: rect(0 0 0 0); clip-path: inset(50%); border: 0; }
 @media (max-width: 600px) { .global-search { @apply tw:pt-s-5; } .gs-input { @apply tw:text-body; } .gs-results { @apply tw:max-h-[60dvh]; } }
 .gs-empty { padding: var(--s-6) var(--s-4); }
-@media (prefers-reduced-motion: reduce) { .gs-panel { animation: none; } }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .gs-panel { animation: none; } }
 </style>

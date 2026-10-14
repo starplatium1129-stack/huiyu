@@ -119,7 +119,7 @@
       @clearResult="$emit('clearResult')"
     />
     <!-- 供两态共用的上传入口 -->
-    <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
+    <input ref="interrogateInputRef" hidden type="file" accept="image/*" @change="onInterrogateFile" />
   </div>
 </template>
 

@@ -38,4 +38,4 @@
 @media (min-width:1024px) and (max-width:1440px) {
   .pb.atelier-workspace .material-heading,.pb.atelier-workspace .inspector-heading { min-height:56px; padding:16px 20px 12px; }
 }
-@media (prefers-reduced-motion:reduce) { .pb.atelier-workspace .studio-character-choice { transition:none; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .pb.atelier-workspace .studio-character-choice { transition:none; } }

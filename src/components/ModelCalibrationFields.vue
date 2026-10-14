@@ -2,7 +2,7 @@
   <fieldset class="model-calibration-fields" :disabled="disabled || !parameters.length">
     <legend>{{ title }}</legend>
     <label>{{ title }}参数
-      <StudioSelect :model-value="binding.id" :disabled="!parameters.length" :label="`${title}参数`"
+      <StudioSelect :model-value="binding.id" :disabled="disabled || !parameters.length" :label="`${title}参数`"
         :options="[{ value: '', label: '不覆写，保留作者动画' }, ...parameters.map(parameter => ({ value: parameter.id, label: parameter.id }))]"
         @update:model-value="(value) => $emit('update', { ...binding, id: String(value) }, true)" />
     </label>

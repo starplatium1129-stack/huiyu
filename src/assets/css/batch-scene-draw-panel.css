@@ -179,7 +179,7 @@
 .batch-thumb-placeholder[data-state="running"] .archive-icon { animation: batchPulse 1.4s ease-in-out infinite; }
 .batch-thumb-placeholder[data-state="failed"] { border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft)); @apply tw:text-danger-text; }
 @keyframes batchPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.88); } }
-@media (prefers-reduced-motion: reduce) { .batch-thumb-placeholder[data-state="running"] .archive-icon { animation:none; } }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .batch-thumb-placeholder[data-state="running"] .archive-icon { animation:none; } }
 
 .batch-card-caption { @apply tw:grid tw:gap-[1px] tw:min-w-0; }
 .batch-card-header-line { @apply tw:flex tw:items-center tw:gap-[6px] tw:min-w-0; }

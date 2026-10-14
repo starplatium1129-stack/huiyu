@@ -170,7 +170,7 @@ html { -webkit-tap-highlight-color: transparent; }
 :where(progress)::-moz-progress-bar { @apply tw:rounded-pill; background: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) {
-  :where(input[type="checkbox"], input[type="radio"])::before { transition: none; }
+  :root:not([data-motion='full']) :where(input[type="checkbox"], input[type="radio"])::before { transition: none; }
 }
 
 @media (forced-colors: active) {

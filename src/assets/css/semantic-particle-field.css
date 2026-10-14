@@ -55,5 +55,5 @@ canvas { @apply tw:hidden tw:absolute; inset:0; @apply tw:w-full tw:h-full; z-in
   .particle-caption { @apply tw:right-s-3; }
 }
 @media (prefers-reduced-motion:reduce) {
-  .semantic-particle-field { background-image:radial-gradient(circle at 50% 48%,color-mix(in srgb,var(--particle-accent) 12%,transparent),transparent 55%); }
+  :root:not([data-motion='full']) .semantic-particle-field { background-image:radial-gradient(circle at 50% 48%,color-mix(in srgb,var(--particle-accent) 12%,transparent),transparent 55%); }
 }

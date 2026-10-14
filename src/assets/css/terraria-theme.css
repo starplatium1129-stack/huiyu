@@ -17,6 +17,9 @@
   --text-secondary:#d4dfce;
   --text-muted:#c0d0c3;
   --text-disabled:#bbc9bc;
+  --terraria-paper-text-primary:var(--text-primary);
+  --terraria-paper-text-secondary:var(--text-secondary);
+  --terraria-paper-text-muted:var(--text-muted);
   --text-inverse:#122619;
   --accent:#b9df7d;
   --accent-hover:#d5efa7;

@@ -270,19 +270,9 @@ html .notfound-page .notfound-actions {
   html .notfound-page .notfound-actions { @apply tw:w-full; }
 }
 @media (prefers-reduced-motion: reduce) {
-  html .gallery-page .artwork,
-  html .showcase-page .sample,
-  html .library-page .pop-card,
-  html .page:has(> .model-search-row) .lora-card,
-  html .style-page .style-mood-card,
-  html .home-page .tool-card { transition: none; }
-  html .gallery-page .artwork:hover,
-  html .showcase-page .sample:hover,
-  html .library-page .pop-card:hover,
-  html .page:has(> .model-search-row) .lora-card:hover,
-  html .style-page .style-mood-card:hover,
-  html .home-page .tool-card:hover { transform: none; }
-  html .gallery-page .artwork:hover .artwork-image { transform: none; }
+  html:not([data-motion='full']) .gallery-page .artwork, html:not([data-motion='full']) .showcase-page .sample, html:not([data-motion='full']) .library-page .pop-card, html:not([data-motion='full']) .page:has(> .model-search-row) .lora-card, html:not([data-motion='full']) .style-page .style-mood-card, html:not([data-motion='full']) .home-page .tool-card { transition: none; }
+  html:not([data-motion='full']) .gallery-page .artwork:hover, html:not([data-motion='full']) .showcase-page .sample:hover, html:not([data-motion='full']) .library-page .pop-card:hover, html:not([data-motion='full']) .page:has(> .model-search-row) .lora-card:hover, html:not([data-motion='full']) .style-page .style-mood-card:hover, html:not([data-motion='full']) .home-page .tool-card:hover { transform: none; }
+  html:not([data-motion='full']) .gallery-page .artwork:hover .artwork-image { transform: none; }
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
   html .gallery-page .gallery-toolbar,

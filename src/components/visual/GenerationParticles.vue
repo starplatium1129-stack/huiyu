@@ -189,8 +189,8 @@ onBeforeUnmount(() => {
 .generation-particles { position:relative; isolation:isolate; display:grid; place-items:center; width:100%; height:100%; margin-inline:auto; pointer-events:none; }
 .generation-particle-surface { position:relative; width:min(100%,480px); max-height:100%; aspect-ratio:1.38; animation:generation-line-arrival 420ms ease-out both; }
 @keyframes generation-line-arrival { from { opacity:0; } to { opacity:1; } }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .generation-particle-surface { animation:none; }
-@media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full'])) .generation-particle-surface { animation:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .generation-particle-surface { animation:none; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .generation-particle-surface { animation:none; } }
 /* compositor-exempt: A bounded Canvas renders particle depth; cached glow sprites avoid per-frame blur. */
 .generation-particle-surface > canvas:not(.generation-bloom) { position:relative; display:block; width:100%; height:100%; }
 .generation-particle-palette { position:absolute; width:0; height:0; overflow:hidden; visibility:hidden; }

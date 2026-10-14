@@ -67,7 +67,7 @@
 .pop-thumb img.pop-thumb-missing { @apply tw:hidden; }
 .pop-thumb-skeleton { @apply tw:absolute; inset: 0; opacity: 0; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-deep)); }
 .pop-thumb-skeleton.visible { opacity: 1; }
-.pop-preview-missing { @apply tw:absolute; inset: var(--s-3); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-3; @apply tw:rounded-sm tw:text-secondary tw:text-center tw:text-label-xs tw:leading-body; }
+.pop-preview-missing { @apply tw:absolute; inset: var(--s-3); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-3; @apply tw:rounded-sm tw:text-center tw:text-label-xs tw:leading-body; color:var(--on-art-secondary); }
 .pop-preview-missing > .archive-icon { @apply tw:text-title tw:mb-s-1; }
 .pop-preview-missing strong { @apply tw:text-body-sm tw:font-medium; }
 /* The local-only reveal fades the static blurred veil rather than its filter. */
@@ -83,10 +83,11 @@
   color: var(--on-art-primary);
   font: 600 var(--fs-label-xs) var(--font-sans);
   @apply tw:whitespace-nowrap tw:pointer-events-none;
-  transition: opacity 340ms var(--ease-out);
+  transition: opacity var(--motion-hover) var(--ease-out);
 }
 .pop-card:hover .pop-thumb-hint,
 .pop-card:focus-within .pop-thumb-hint { opacity: 0; }
+@media (hover:none), (pointer:coarse), (pointer:none) { .pop-thumb-hint { transition:none; } }
 .pop-card-body { @apply tw:flex tw:flex-col tw:gap-s-2; padding:var(--s-3) 0; }
 .pop-card-category { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:min-h-[20px] tw:text-secondary tw:text-label-xs; }
 .pop-card-head h3 { @apply tw:m-0 tw:text-primary; font: 600 var(--fs-title-xs)/var(--lh-tight) var(--font-display); overflow-wrap: anywhere; }
@@ -126,12 +127,8 @@
   .pop-card:hover .pop-card-head h3 { color:var(--accent); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pop-card,
-  .pop-thumb img,
-  .pop-thumb-hint,
-  .pop-scene-details summary > .archive-icon { transition: none; }
-  .pop-card:hover,
-  .pop-card:hover .pop-thumb img:not(.pop-thumb-r18) { transform: none; }
+  :root:not([data-motion='full']) .pop-card, :root:not([data-motion='full']) .pop-thumb img, :root:not([data-motion='full']) .pop-thumb-hint, :root:not([data-motion='full']) .pop-scene-details summary > .archive-icon { transition: none; }
+  :root:not([data-motion='full']) .pop-card:hover, :root:not([data-motion='full']) .pop-card:hover .pop-thumb img:not(.pop-thumb-r18) { transform: none; }
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .pop-thumb img,
 :root:is([data-motion='reduce'],[data-motion='reduced']) .pop-thumb-hint { transition:opacity var(--motion-press) var(--ease-out); }

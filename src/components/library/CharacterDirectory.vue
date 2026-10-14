@@ -15,19 +15,19 @@
         <label class="directory-heading" :for="inputId">选择角色 <span v-if="!catalog">{{ items.length }}</span></label>
         <StudioSearch :id="inputId" v-model="query" class="directory-search" label="搜索角色或作品" placeholder="角色名、作品或别名…" :autofocus="catalog" :clear-on-escape="false" @keydown="onSearchKeydown" />
         <StudioSelect v-if="!catalog" v-model="series" label="筛选角色系列" :options="[{ value: '', label: '全部系列' }, ...groups.map(group => ({ value: group.key, label: `${group.label} · ${group.count}` }))]" />
-        <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="query = ''; series = ''">清除筛选</button></div>
+        <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="clearFilters">清除筛选</button></div>
       </div>
       <div ref="list" v-content-motion:up="`${series}:${page}`" class="directory-list tw:min-h-[120px] tw:overflow-y-auto" role="group" aria-label="角色列表" @keydown="onListKeys">
-        <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :tabindex="tabStopId === item.id ? 0 : -1" @focus="focusedId = item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
+        <StudioTooltip v-for="item in visibleResults" :key="item.id" :content="franchiseLabel(franchiseKey(item.source))">
+        <button type="button" class="directory-item" :data-character="item.id" :tabindex="tabStopId === item.id ? 0 : -1" @focus="focusedId = item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
           <CharacterPortrait :src="resolveRuntimeUrl(item.image)" :name="item.name" />
           <span class="directory-label">
             <strong>{{ item.name }}</strong>
-            <StudioTooltip :content="franchiseLabel(franchiseKey(item.source))">
               <small>{{ franchiseLabel(franchiseKey(item.source)) }}</small>
-            </StudioTooltip>
           </span>
           <span v-if="selectedId === item.id" class="directory-selected tw:ml-auto tw:text-accent" aria-hidden="true"><ArchiveIcon name="success" /></span>
         </button>
+        </StudioTooltip>
         <div v-if="!results.length" class="directory-empty tw:text-muted tw:text-label">没有匹配的角色。<br />试试其他名字，或清除筛选。</div>
       </div>
       <nav v-if="pageCount > 1" class="directory-pagination tw:text-secondary tw:text-label tw:shrink-0" aria-label="角色分页">
@@ -61,6 +61,11 @@ const page = ref(1)
 const list = ref<HTMLElement | null>(null)
 const rail = ref<HTMLElement | null>(null)
 const focusedId = ref(props.selectedId)
+function clearFilters() {
+  const previousFocus = document.activeElement
+  query.value = ''; series.value = ''
+  void nextTick(() => { if (previousFocus && !previousFocus.isConnected && document.activeElement === document.body) document.getElementById(inputId)?.focus() })
+}
 const selected = computed(() => props.items.find(item => item.id === props.selectedId))
 let locateFrame = 0
 onUnmounted(() => cancelAnimationFrame(locateFrame))
@@ -122,7 +127,7 @@ function moveIn(container: HTMLElement | null, step: number) {
 }
 function onListKeys(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229 || event.altKey || event.ctrlKey || event.metaKey
-    || !(event.target instanceof HTMLButtonElement) || event.target.parentElement !== list.value) return
+    || !(event.target instanceof HTMLButtonElement) || !event.target.matches('.directory-item') || !list.value?.contains(event.target)) return
   const step = event.key === 'ArrowDown' ? 1 : event.key === 'ArrowUp' ? -1 : 0
   if (step) { event.preventDefault(); moveIn(list.value, step) }
   else if (event.key === 'Home' || event.key === 'End') {
@@ -198,7 +203,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-current { padding: var(--s-3) var(--s-4); border-top: 1px solid var(--border-soft); }
 .directory-empty { padding: var(--s-5) var(--s-3); }
 @media (max-width: 900px) { .character-directory { @apply tw:static tw:max-h-[360px]; } }
-@media (prefers-reduced-motion: reduce) { .directory-item { transition: none; } }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .directory-item { transition: none; } }
 
 /* catalog：作品筛选侧栏 + 角色结果区，滚动职责分别归属筛选栏与结果列表。 */
 .directory-catalog { @apply tw:static; max-height: none; @apply tw:min-h-0; flex: 1 1 auto; @apply tw:grid; grid-template-columns: minmax(0, 208px) minmax(0, 1fr); @apply tw:gap-s-4; border: 0; background: transparent; }
@@ -207,7 +212,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-series { overscroll-behavior: contain; padding: var(--s-1) var(--s-1) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-1); }
 .directory-series button { border: 1px solid transparent; @apply tw:rounded-md; padding: var(--s-2) var(--s-3); @apply tw:min-h-[36px] tw:text-secondary; background: var(--bg-deep); font: inherit; @apply tw:text-label tw:cursor-pointer; }
 .directory-pagination .studio-select-wrapper { @apply tw:min-h-[36px]; }
-.directory-series button { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:w-full tw:min-w-0 tw:text-left tw:leading-body; overflow-wrap: anywhere; }
+.directory-series button { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:w-full tw:min-w-0 tw:shrink-0 tw:text-left tw:leading-body; overflow-wrap: anywhere; }
 .directory-series button[aria-pressed="false"]:not(:disabled):hover { background:var(--bg-hover); color:var(--text-primary); }
 .directory-series button[aria-pressed="true"] { background: var(--accent-soft); @apply tw:text-accent tw:border-strong; }
 .directory-series button span { @apply tw:text-muted tw:shrink-0; }

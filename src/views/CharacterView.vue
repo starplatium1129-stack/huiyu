@@ -25,7 +25,7 @@
       <div v-if="!showShelf" v-content-motion:up="current?.id" class="library-layout">
         <BrowsingCharacterDirectory v-model:search="directorySearch" :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail" data-route-arrive>
-      <section v-if="current" ref="profileAnchor" class="character-hero card-direct card-level-3">
+      <section v-if="current" ref="profileAnchor" tabindex="-1" :aria-label="current.name + '的角色档案'" class="character-hero card-direct card-level-3">
         <CharacterParticleStage :character-id="current.id" :name="current.name" :initial-original="preferOriginal">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">
           <img :crossorigin="runtimeResourceCors()" v-if="portraitView.state !== 'missing'" :key="portraitView.token" class="portrait-image"
@@ -43,7 +43,7 @@
             <span class="portrait-badge"><ArchiveIcon name="image" /> {{ characterArtEntry(current.id) ? '自定义立绘' : isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
             <span v-if="showFallbackNote" class="portrait-fallback-note">原图无法读取，已显示现有缩略图</span>
             <StudioTooltip :content="current.source">
-              <span class="portrait-source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
+              <span class="portrait-source" tabindex="0">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
             </StudioTooltip>
           </div>
         </div>

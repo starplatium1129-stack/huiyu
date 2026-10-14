@@ -15,7 +15,7 @@ export interface AppearanceRequest {
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, onUnmounted, shallowRef } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
-import { desktopShortcutAllowed, usableFocus } from '@/composables/useDesktopInteraction'
+import { appearanceFocusOrigin, desktopShortcutAllowed } from '@/composables/useDesktopInteraction'
 const AppearancePreferencesPanel = defineAsyncComponent(() => import('./AppearancePreferencesPanel.vue'))
 const props = withDefaults(defineProps<{ launcherOnly?: boolean; hideTriggers?: boolean }>(), { launcherOnly: false, hideTriggers: false })
 const emit = defineEmits<{ open: [] }>()
@@ -39,8 +39,7 @@ function keyboard(event: KeyboardEvent) {
   const trigger = request.value.trigger
   request.value = undefined
   event.preventDefault()
-  const fallback = document.querySelector<HTMLElement>('.nav-more-trigger')
-  ;(usableFocus(trigger) ? trigger : usableFocus(fallback) ? fallback : document.querySelector<HTMLElement>('.nav-menu-toggle'))?.focus({ preventScroll: true })
+  appearanceFocusOrigin(trigger)?.focus({ preventScroll: true })
 }
 function pointer() { keyboardInput = false }
 onMounted(() => {

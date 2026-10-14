@@ -109,8 +109,8 @@ function dismiss() {
 .guest-guide-doc:hover { @apply tw:text-accent; }
 .guest-guide-doc:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 @media (prefers-reduced-motion: reduce) {
-  .guest-guide { backdrop-filter: none; animation: none; }
-  .guest-guide-card { animation: none; }
+  :root:not([data-motion='full']) .guest-guide { backdrop-filter: none; animation: none; }
+  :root:not([data-motion='full']) .guest-guide-card { animation: none; }
 }
 @media (max-width: 600px) {
   .guest-guide-card { @apply tw:p-s-4; }

@@ -143,6 +143,14 @@ disagree, update the CSS to follow this document. `docs/guides/art/art-direction
 intentionally separate: it specifies the visual direction of generated CG
 artwork, not website UI.
 
+Design engineering and motion follow the project adaptation of
+[Emil Kowalski's skills](https://github.com/emilkowalski/skills/tree/2d228630ba1446365f614a108cb8252f1feda202).
+The adopted rules live here; [studio-ui-design](.agents/skills/studio-ui-design/SKILL.md)
+provides conditional Vue implementation guidance and retains the source version
+and MIT license. These principles guide future UI work alongside HUIYU's brand,
+desktop scope and AGENTS.md constraints. Review upstream changes before adopting
+them; a newer upstream version does not silently replace this standard.
+
 ## Product character
 
 Anime and Galgame establish the identity: characters, intimate dialogue, artwork,
@@ -321,6 +329,53 @@ Honor `prefers-reduced-motion` and `prefers-reduced-transparency`.
 System transparency, increased contrast, and forced colors must update material
 fallbacks live, including native dialog backdrops, without changing the saved
 manual preference. Restoring the system setting restores the user's own choice.
+
+## Interaction & motion
+
+Choose motion by frequency and purpose before choosing an effect. Frequent
+navigation, filtering, typing and keyboard actions respond immediately, with
+instant or very short feedback. Occasional surfaces may show their origin,
+destination or state change. Reading content and dense settings stay stable;
+do not replay a whole-page entrance on every filter or add motion to every node.
+Keep existing character and artwork signatures within their own scope.
+
+Use the shared semantic durations: press, hover, control and surface feedback
+normally finish below 300ms. Existing route, character and atmosphere tokens
+may be longer for their specific purpose; they never gate an action. Entering,
+exiting and immediate feedback prefer --ease-out; on-screen movement uses
+--ease-in-out, drawers use --ease-drawer, and genuinely constant progress uses
+linear. Avoid slow-starting ease-in for immediate UI responses. Reuse current
+curves and spring configuration instead of adding page-local timing systems.
+
+Simple motion uses CSS transitions with explicit properties; never transition:
+all. Programmatic predetermined motion may use WAAPI. Complex interruptible
+gestures and shared selection reuse existing motion and AnimatedSelection.
+Retarget from the current displayed value; do not reset to the start or replay
+keyframes on every rapid toggle. Ordinary controls have no pronounced bounce.
+Actions, cancellation and focus restoration proceed without waiting for visual
+completion, and an animation ending never proves a request succeeded.
+
+Press feedback is subtle and does not move the hit target or trigger an action
+early. Avoid scale(0) entrances; a near-full scale with opacity or a short fade
+is sufficient. Anchored popovers use their Reka primitive's transform origin;
+centered modals may remain centered. Enter and exit paths preserve the spatial
+relationship. After the first tooltip opens, adjacent tooltips in the same
+group skip repeated delay and motion while retaining keyboard access.
+
+High-frequency motion uses transform/opacity. Blur, clip-path, shadow and layout
+animation are not presumed compositor-safe; necessary exceptions follow the
+compositor-exempt rule in AGENTS.md. Avoid per-frame reactive tree updates and
+inherited CSS-variable changes on large containers. Use will-change only for
+an observed issue, on the affected element, and release unnecessary layers.
+Visual scaling cannot replace real layout or focus semantics.
+
+Hover motion requires (hover: hover) and (pointer: fine). Respect both system
+reduced-motion and the app's motion preference, including live changes and
+explicit overrides. Reduced motion may use instant state changes or short
+fades; content, progress and actions remain visible and usable. Interruptions,
+unmount and KeepAlive deactivation release owned animation resources and reject
+stale callbacks. Review actual desktop behavior in both themes when affected;
+source review alone does not establish frame rate or device feel.
 
 ## Shapes
 

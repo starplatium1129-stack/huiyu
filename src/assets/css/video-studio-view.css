@@ -208,8 +208,8 @@ html .video-studio .video-mode-card:focus-visible { box-shadow:var(--focus-shado
   .video-review-checklist { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media (prefers-reduced-motion:reduce) {
-  .video-progress i { transition:none; }
-  .video-mode-card:active,.video-upload-drop:active { transform:none; transition:none; }
+  :root:not([data-motion='full']) .video-progress i { transition:none; }
+  :root:not([data-motion='full']) .video-mode-card:active, :root:not([data-motion='full']) .video-upload-drop:active { transform:none; transition:none; }
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .video-progress i { transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .video-mode-card:active,

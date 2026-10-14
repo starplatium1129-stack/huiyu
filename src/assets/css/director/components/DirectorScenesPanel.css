@@ -22,7 +22,7 @@
   .pb .scene-selection-check { @apply tw:text-accent tw:mt-[3px]; }
   .pb #stepScene button.scene-card:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
   @media (hover:hover) and (pointer:fine) { .pb #stepScene button.scene-card:hover:not(:focus-visible) { transform:translateY(-2px); box-shadow:var(--shadow-sm); } }
-  @media (prefers-reduced-motion:reduce) { .pb #stepScene button.scene-card { transition:none; transform:none; } }
+  @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .pb #stepScene button.scene-card { transition:none; transform:none; } }
   /* 与全局滚动条同一套渐变语言：细版但同色系，避免暗色下灰线突兀 */
   .pb .scene-list::-webkit-scrollbar { @apply tw:w-[6px]; }
   .pb .scene-list::-webkit-scrollbar-thumb {
@@ -35,7 +35,6 @@
     background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 70%, transparent), color-mix(in srgb, var(--accent) 62%, transparent));
     background-clip: padding-box;
   }
-  .pb .scene-list:hover { max-height: var(--scene-list-max-height, min(54vh, 640px)); }
   .pb .scene-scope {
     @apply tw:grid; grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-[2px] tw:mb-s-2 tw:p-[3px];
     border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-deep);
@@ -45,8 +44,7 @@
     @apply tw:min-h-[32px]; padding:0 var(--s-2); border:1px solid transparent; @apply tw:rounded-pill;
     background:transparent; @apply tw:text-muted tw:cursor-pointer;
     font:650 var(--fs-mono-xs) var(--font-sans);
-    transition:background var(--motion-surface) var(--ease-out),color var(--motion-surface) var(--ease-out),
-               border-color var(--motion-surface) var(--ease-out),box-shadow var(--motion-surface) var(--ease-out);
+    transition:background var(--motion-surface) var(--ease-out), color var(--motion-surface) var(--ease-out), border-color var(--motion-surface) var(--ease-out);
   }
   .pb .scene-scope button:hover:not(.active) { @apply tw:text-primary; background:var(--bg-hover); }
   .pb .scene-scope button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }

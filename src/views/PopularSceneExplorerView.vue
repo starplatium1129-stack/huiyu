@@ -46,7 +46,7 @@
         <span class="pop-count" role="status">已显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 幕</span>
         <button v-if="query.trim() || category !== 'all' || ratingFilter !== 'all'" class="pop-filter-reset" type="button" @click="resetFilters">清除筛选</button>
         <StudioTooltip content="成人场景可浏览，R18 样张保留模糊遮罩">
-          <span class="pop-count mature-hint">成人 {{ adultCount }}</span>
+          <span class="pop-count mature-hint" tabindex="0">成人 {{ adultCount }}</span>
         </StudioTooltip>
       </div>
 
@@ -141,7 +141,7 @@ import SceneArtworkViewer from '@/components/scene/SceneArtworkViewer.vue'
 import { buildMasonryGroups, useMasonryColumns, type MasonryGroup } from '@/composables/gallery/useMasonryWall'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, computed, onMounted, onUnmounted, onActivated, watch } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted, onActivated, onDeactivated, watch } from 'vue'
 import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
@@ -312,9 +312,11 @@ function displayDescription(blueprint: SceneBlueprint): string {
   return blueprint.description.startsWith(prefix) ? blueprint.description.slice(prefix.length).trim() : blueprint.description
 }
 function resetFilters() {
+  const previousFocus = document.activeElement
   query.value = ''
   category.value = 'all'
   ratingFilter.value = 'all'
+  void nextTick(() => { if (previousFocus && !previousFocus.isConnected) document.getElementById('popularSceneSearch')?.focus() })
 }
 
 /** The manifest retains real paths for both current and older saved blueprints. */
@@ -323,26 +325,27 @@ function showcaseId(blueprint: SceneBlueprint): string {
 }
 const thumbSrc = (blueprint: SceneBlueprint) => thumbUrl(showcaseId(blueprint))
 
+let loadRevision = 0
 async function init() {
+  const revision = ++loadRevision
   loading.value = true
   loadError.value = ''
   try {
     await sceneStore.loadBlueprintCatalog()
+    if (revision !== loadRevision) return
     if (selectedId.value) await sceneStore.loadBlueprintCharacter(selectedId.value)
   } catch (error) {
-    loadError.value = error instanceof Error ? error.message : String(error)
+    if (revision === loadRevision) loadError.value = error instanceof Error ? error.message : String(error)
   } finally {
-    loading.value = false
+    if (revision === loadRevision) loading.value = false
   }
 }
 
 onMounted(() => { void init() })
 onActivated(() => { if (!loading.value) void init() })
-watch(selectedId, async id => {
-  if (!id) return
-  try { await sceneStore.loadBlueprintCharacter(id) }
-  catch (error) { loadError.value = error instanceof Error ? error.message : String(error) }
-})
+watch(selectedId, () => { void init() })
+onDeactivated(() => { loadRevision++; loading.value = false })
+onUnmounted(() => { loadRevision++ })
 </script>
 
 <style scoped src="@/assets/css/popular-scene-explorer.css"></style>

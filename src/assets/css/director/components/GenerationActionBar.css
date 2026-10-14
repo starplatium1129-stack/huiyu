@@ -51,7 +51,7 @@
 .pb .gen-bar[data-docked] { flex-direction:column; align-items:stretch; border:0; border-radius:0; }
 .pb .gen-bar[data-docked] :is(.gen-bar-meta,.gen-bar-blocked,.gen-bar-actions) { flex:0 0 auto; width:100%; margin:0; }
 @keyframes generation-traverse { from { transform:translateX(-110%); } to { transform:translateX(370%); } }
-@media (prefers-reduced-motion:reduce) { .pb .generation-track i { animation:none; transition:none; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .pb .generation-track i { animation:none; transition:none; } }
 :root:is([data-motion="reduce"],[data-motion="reduced"]) .pb .generation-track i { animation:none; transition:none; }
 @media (max-width:600px) {
   .pb .gen-bar { padding:var(--s-3); }

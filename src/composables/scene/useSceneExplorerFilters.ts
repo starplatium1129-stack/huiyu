@@ -1,5 +1,5 @@
 import { watchDebounced } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import { THEME_DEFS, sceneTimeLabel, themeDefinition } from './sceneExplorerPresentation'
 
@@ -90,7 +90,11 @@ export function useSceneExplorerFilters(defaultTier: string) {
     { key: 'rating', value: fRating, label: (value: string) => SCENE_FILTER_OPTIONS.rating.find(option => option.value === value)?.label || value },
   ]
   const activeFilters = computed(() => facets.filter(facet => facet.value.value !== 'all').map(facet => ({
-    key: facet.key, label: facet.label(facet.value.value), clear: () => { facet.value.value = 'all' },
+    key: facet.key, label: facet.label(facet.value.value), clear: () => {
+      const previousFocus = document.activeElement
+      facet.value.value = 'all'
+      void nextTick(() => { if (previousFocus && !previousFocus.isConnected && document.activeElement === document.body) document.getElementById('sceneSearch')?.focus() })
+    },
   })))
   const activeFacetCount = computed(() => activeFilters.value.length + Number(fTier.value !== defaultTier)
     + Number(sortBy.value !== 'smart') + Number(showHidden.value))
@@ -102,9 +106,11 @@ export function useSceneExplorerFilters(defaultTier: string) {
     filtersOpen.value = false
   }
   function resetFilters() {
+    const previousFocus = document.activeElement
     searchQuery.value = ''; activeTheme.value = 'all'; fChar.value = 'all'; fSeason.value = 'all'
     fTime.value = 'all'; fSeries.value = 'all'; fRating.value = 'all'; fTier.value = 'all'
     sortBy.value = 'smart'; showHidden.value = false
+    void nextTick(() => { if (previousFocus && !previousFocus.isConnected) document.getElementById('sceneSearch')?.focus() })
   }
   return {
     searchQuery, debouncedQuery, activeTheme, activeThemeLabel, fChar, fSeason, fTime, fSeries, fRating, fTier,

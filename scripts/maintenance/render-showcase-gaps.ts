@@ -56,7 +56,7 @@ function collectTasks(opts: any, input: any) {
   const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
   const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
   const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
-  const { parsePresetCatalog }: typeof import('../../src/utils/promptBuilderPersistence.ts') = require('../../src/utils/promptBuilderPersistence.ts');
+  const { parsePresetCatalog }: typeof import('../../src/utils/modelProfileDefaults.ts') = require('../../src/utils/modelProfileDefaults.ts');
   const { KREA_STYLE_RECIPES, resolveStyleRecipe }: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
   const characters = popular.parsePopularCharacters(input.data['data/popular-characters.json']);
   const blueprints = popular.parseSceneBlueprints(input.data['data/scene-blueprints.json']);

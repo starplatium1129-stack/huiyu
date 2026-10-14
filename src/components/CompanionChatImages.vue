@@ -26,6 +26,7 @@ import { artworkRepository } from '@/storage/artworkRepository'
 import { fetchRuntimeResult, isRuntimeResultPath } from '@/api/runtimeTasks'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
+import { prepareNativeModal } from '@/composables/useFocusTrap'
 
 const props = defineProps<{ images?: CompanionChatImage[] }>()
 const root = ref<HTMLElement>(), dialog = ref<HTMLDialogElement>()
@@ -64,7 +65,10 @@ async function loadImages() {
 async function openImage(image: CompanionChatImage) {
   opened.value = image
   await nextTick()
-  if (opened.value === image && dialog.value && !dialog.value.open) dialog.value.showModal()
+  if (opened.value === image && dialog.value && !dialog.value.open) {
+    prepareNativeModal(dialog.value)
+    dialog.value.showModal()
+  }
 }
 function onBackdropClick(event: MouseEvent) {
   if (event.target !== dialog.value) return

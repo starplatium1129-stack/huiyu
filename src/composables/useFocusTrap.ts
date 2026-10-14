@@ -24,6 +24,7 @@ const FOCUSABLE = [
 
 interface ActiveTrap {
   owner: symbol
+  root: () => HTMLElement | null
   returnFocus: Ref<HTMLElement | null>
   focus: () => void
 }
@@ -31,6 +32,48 @@ interface ActiveTrap {
 const trapStack: ActiveTrap[] = []
 const scrollLocks = new Set<symbol>()
 let previouslyLocked = false
+const inertBackground = new Set<HTMLElement>()
+let backgroundObserver: MutationObserver | null = null
+
+/** Hide the background from pointers and reading order as well as Tab.
+ * Recompute the top trap's ancestor path when nested layers or portals mount. */
+function syncModalBackground() {
+  const blocked = new Set<HTMLElement>()
+  let branch = trapStack.at(-1)?.root() ?? null
+  while (branch && branch !== document.body) {
+    const parent = branch.parentElement
+    if (!parent) break
+    for (const sibling of parent.children) {
+      if (sibling === branch || !(sibling instanceof HTMLElement)
+        || sibling.matches('dialog:modal') || sibling.querySelector('dialog:modal')) continue
+      blocked.add(sibling)
+    }
+    branch = parent
+  }
+  for (const element of inertBackground) {
+    if (!blocked.has(element)) {
+      if (!element.hasAttribute('data-fluid-leaving')) element.inert = false
+      inertBackground.delete(element)
+    }
+  }
+  for (const element of blocked) {
+    // Preserve inert states owned by callers, including leaving surfaces.
+    if (!element.inert) { element.inert = true; inertBackground.add(element) }
+  }
+  if (trapStack.length && !backgroundObserver) {
+    backgroundObserver = new MutationObserver(syncModalBackground)
+    backgroundObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['open'] })
+  } else if (!trapStack.length) {
+    backgroundObserver?.disconnect(); backgroundObserver = null
+  }
+}
+
+/** Native focus runs inside showModal(), before the open-attribute observer. */
+export function prepareNativeModal(dialog: HTMLDialogElement) {
+  for (const element of inertBackground) {
+    if (element === dialog || element.contains(dialog)) { element.inert = false; inertBackground.delete(element) }
+  }
+}
 
 export interface FocusTrapOptions {
   /** Escape 键回调；不传则不处理 Escape */
@@ -53,7 +96,7 @@ export function useFocusTrap(
   const owner = Symbol('focus-trap')
   let fallbackRoot: HTMLElement | null = null
   let activeRoot: HTMLElement | null = null
-  const trap: ActiveTrap = { owner, returnFocus, focus: focusInitial }
+  const trap: ActiveTrap = { owner, root: () => root.value ?? activeRoot, returnFocus, focus: focusInitial }
 
   function isActive() {
     if (!attached.value || !isOpen() || trapStack.at(-1)?.owner !== owner) return false
@@ -140,6 +183,7 @@ export function useFocusTrap(
       }
       trapStack.splice(index, 1)
     }
+    syncModalBackground()
     if (scrollLocks.delete(owner) && !scrollLocks.size && !previouslyLocked) {
       document.body.classList.remove('overlay-open')
       document.body.style.removeProperty('--overlay-scrollbar-gap')
@@ -159,6 +203,7 @@ export function useFocusTrap(
     if (open) {
       returnFocus.value = document.activeElement as HTMLElement | null
       trapStack.push(trap)
+      syncModalBackground()
       if (lockScroll) {
         if (!scrollLocks.size) {
           previouslyLocked = document.body.classList.contains('overlay-open')
@@ -172,7 +217,7 @@ export function useFocusTrap(
         scrollLocks.add(owner)
         document.body.classList.add('overlay-open')
       }
-      nextTick(focusInitial)
+      nextTick(() => { syncModalBackground(); focusInitial() })
     } else {
       release(attached.value)
     }

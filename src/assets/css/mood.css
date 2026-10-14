@@ -22,7 +22,7 @@
   /* 情绪色由色条展示，正文保留共享文字色。 */
   font: inherit;
   @apply tw:text-left tw:cursor-pointer;
-  transition: border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out), box-shadow var(--motion-surface);
+  transition: border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out);
 }
 .mood-card:hover { @apply tw:border-strong; }
 .mood-card:is(.active,.selected) { @apply tw:border-strong; box-shadow:var(--shadow-sm); }

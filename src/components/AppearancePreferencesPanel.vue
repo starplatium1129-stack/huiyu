@@ -63,7 +63,7 @@ import ArchiveIcon from './visual/ArchiveIcon.vue'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
 import ToggleSwitch from './visual/ToggleSwitch.vue'
 const GlassMaterialChoice = defineAsyncComponent(() => import('./GlassMaterialChoice.vue'))
-import { desktopShortcutAllowed, usableFocus, useDesktopPreferences } from '@/composables/useDesktopInteraction'
+import { appearanceFocusOrigin, desktopShortcutAllowed, useDesktopPreferences } from '@/composables/useDesktopInteraction'
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useFluidSurface } from '@/composables/useFluidSurface'
 import { useDesktopZoom } from '@/composables/useDesktopZoom'
@@ -84,16 +84,14 @@ function finishPhase(element: Element) {
   const done = phaseDone; phaseDone = null
   surface.dispose(element); done?.()
 }
-function runPhase(element: Element, done: () => void, entering: boolean) {
+function runPhase(element: Element, done: () => void) {
   phaseDone = done
   const finish = () => { if (phaseDone === done) phaseDone = null; done() }
   if (keyboardInput) finishPhase(element)
-  else if (entering) surface.enter(element, finish)
-  else surface.leave(element, finish)
+  else surface.enter(element, finish)
 }
 const fluidDialog = useFluidDialog(dialog, {
-  enter(element, done) { runPhase(element, done, true) },
-  leave(element, done) { runPhase(element, done, false) },
+  enter(element, done) { runPhase(element, done) },
   dispose(element) { phaseDone = null; surface.dispose(element) },
 })
 const { available: zoomAvailable, zoom, error: zoomError, setZoom } = useDesktopZoom()
@@ -123,9 +121,7 @@ async function open(value: 'appearance' | 'keyboard', origin?: HTMLElement | nul
   if (value === 'appearance') materialControlsReady.value = true
   await nextTick()
   if (version !== opening) return
-  const summary = document.querySelector<HTMLElement>('.nav-more-trigger')
-  const focusOrigin = usableFocus(trigger) ? trigger : usableFocus(summary) ? summary : document.querySelector<HTMLElement>('.nav-menu-toggle')
-  fluidDialog.open(focusOrigin)
+  fluidDialog.open(appearanceFocusOrigin(trigger))
   if (wasOpen && focusInside && document.activeElement === document.body) {
     dialog.value?.querySelector<HTMLButtonElement>('.appearance-close')?.focus({ preventScroll: true })
   }
@@ -133,8 +129,7 @@ async function open(value: 'appearance' | 'keyboard', origin?: HTMLElement | nul
 function restoreFocus() {
   // A queued close event must not redirect focus after the dialog reopens.
   if (dialog.value?.open) return
-  const fallback = document.querySelector<HTMLElement>('.nav-more-trigger')
-  ;(usableFocus(trigger) ? trigger : usableFocus(fallback) ? fallback : document.querySelector<HTMLElement>('.nav-menu-toggle'))?.focus({ preventScroll: true })
+  appearanceFocusOrigin(trigger)?.focus({ preventScroll: true })
 }
 function backdropClose(event: MouseEvent) {
   if (event.target !== dialog.value || !dialog.value) return
@@ -150,8 +145,7 @@ function keyboard(event: KeyboardEvent) {
   keyboardInput = true
   const current = dialog.value
   if (!current?.open) return
-  // Global shortcuts defer to an open modal. This one owns its help request,
-  // including a keyboard reversal while a pointer close is still settling.
+  // This modal owns F1, including while its opening motion is settling.
   if (event.key === 'F1' && !event.ctrlKey && !event.shiftKey && desktopShortcutAllowed(event)
     && event.target instanceof Node && current.contains(event.target)) {
     event.preventDefault(); void open('keyboard')

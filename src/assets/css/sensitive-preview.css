@@ -9,7 +9,7 @@
   border-radius:inherit;
   background:var(--art-mat);
   opacity:1;
-  transition:opacity 340ms var(--ease-out);
+  transition:opacity var(--motion-hover) var(--ease-out);
 }
 .sensitive-preview-veil > img.sensitive-preview-image {
   display:block;
@@ -40,3 +40,4 @@
   :root:not([data-motion='full']) .sensitive-preview-veil { transition-duration:120ms; }
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .sensitive-preview-veil { transition-duration:120ms; }
+@media (hover:none), (pointer:coarse), (pointer:none) { .sensitive-preview-veil { transition:none; } }

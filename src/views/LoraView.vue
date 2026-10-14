@@ -204,5 +204,5 @@ onMounted(() => { void loadCatalog() })
 .evaluation-panel code { @apply tw:whitespace-normal; }
 
 .model-details summary:focus-visible, .evaluation-panel summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-@media (prefers-reduced-motion:reduce) { .model-details summary .archive-icon, .evaluation-panel summary .archive-icon { transition:none; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .model-details summary .archive-icon, :root:not([data-motion='full']) .evaluation-panel summary .archive-icon { transition:none; } }
 </style>

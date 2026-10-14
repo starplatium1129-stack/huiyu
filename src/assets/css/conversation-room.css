@@ -116,6 +116,7 @@
 .room-surface .message-note,.room-message-waiting { color:var(--text-secondary); font:400 11px/1.6 var(--font-sans); }
 .room-surface .message-actions-trigger { align-self:flex-start; margin-top:4px; opacity:0; transition:opacity var(--motion-hover); }
 .room-surface .message:is(:hover,:focus-within) .message-actions-trigger { opacity:1; }
+@media (hover:none), (pointer:coarse), (pointer:none) { .room-surface .message-actions-trigger { transition:none; } }
 .room-surface .message-bubble .companion-chat-images figure { min-width:0; max-width:100%; padding:0; border:0; background:transparent; }
 .room-surface .message-bubble .companion-drawing-draft { margin:8px 0 0; }
 .room-chat-activity { display:flex; align-items:center; justify-content:space-between; flex:none; min-height:28px; padding:4px 16px; color:var(--text-secondary); font:400 12px/1.5 var(--font-sans); }
@@ -151,4 +152,4 @@
   .room-surface.room-immersive .character-info { top:0; bottom:auto; }
   .room-surface.room-immersive .character-controls-panel { top:100%; bottom:auto; }
 }
-@media (prefers-reduced-motion:reduce) { .room-surface .message-actions-trigger { transition:none; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .room-surface .message-actions-trigger { transition:none; } }

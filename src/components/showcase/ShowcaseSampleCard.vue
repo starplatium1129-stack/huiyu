@@ -94,12 +94,12 @@ const emit = defineEmits<{ open: [id: string] }>()
 }
 .sample-r18:focus-within .sample-sensitive { opacity:0; }
 @media (max-width: 480px) { .sample-caption { @apply tw:p-s-3; } .sample-open-hint { @apply tw:hidden; } .sample-title { @apply tw:text-body-sm; } }
-@media (prefers-reduced-motion:reduce) { .sample-image,.sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .sample-image, :root:not([data-motion='full']) .sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .sample-image,
 :root:is([data-motion='reduce'],[data-motion='reduced']) .sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); }
 @media (prefers-reduced-motion:reduce) {
-  :root body .showcase-page .sample { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
-  .sample-visual::after { transition:none; }
+  :root:not([data-motion='full']) body .showcase-page .sample { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
+  :root:not([data-motion='full']) .sample-visual::after { transition:none; }
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) body .showcase-page .sample { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .sample-visual::after { transition:none; }

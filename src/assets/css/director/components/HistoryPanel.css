@@ -20,11 +20,11 @@
     @apply tw:text-muted tw:text-body-sm tw:leading-loose;
   }
   .pb .history-list { @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr)); @apply tw:gap-s-3 tw:mt-s-3; }
-  .pb .history-item { @apply tw:min-w-0 tw:overflow-hidden tw:flex tw:flex-col; background:var(--bg-surface); border:1px solid var(--border-soft); @apply tw:rounded-lg; transition:border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover),box-shadow var(--motion-hover); }
+  .pb .history-item { @apply tw:min-w-0 tw:overflow-hidden tw:flex tw:flex-col; background:var(--bg-surface); border:1px solid var(--border-soft); @apply tw:rounded-lg; transition:border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover); }
   .pb .history-item:hover { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--bg-elevated); transform:translateY(-2px); box-shadow:var(--shadow-md); }
   .pb.atelier-workspace .history-item[data-selected="true"] { border-color:var(--border-strong); outline:none; box-shadow:var(--selection-shadow); }
   .pb .history-thumb { @apply tw:relative; aspect-ratio:16/10; @apply tw:overflow-hidden; background:radial-gradient(circle at 30% 25%,var(--accent-soft),transparent 42%),var(--bg-deep); }
-  .pb .history-thumb img { @apply tw:w-full tw:h-full tw:block tw:object-cover; object-position:center 20%; transition:transform var(--motion-surface) var(--ease-out),filter var(--motion-surface) var(--ease-out); }
+  .pb .history-thumb img { @apply tw:w-full tw:h-full tw:block tw:object-cover; object-position:center 20%; transition:transform var(--motion-surface) var(--ease-out); }
   .pb .history-item:hover .history-thumb img { transform:scale(1.025); }
   .pb .history-thumb img.history-placeholder { @apply tw:object-contain; object-position:right bottom; opacity:.38; filter:saturate(.72); }
   .pb .history-thumb-badge { @apply tw:absolute tw:left-[10px] tw:bottom-[10px]; padding:4px 8px; border:1px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-mono-xs) var(--font-sans); backdrop-filter:blur(12px); }

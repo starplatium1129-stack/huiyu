@@ -136,7 +136,7 @@ const categoryChips = computed(() => {
 .blueprint-card[data-adult="true"].active { border-left-color: var(--danger-text); }
 .blueprint-card:active { transform: translateY(0) scale(.99); }
 .blueprint-check { @apply tw:text-accent; }
-@media (prefers-reduced-motion:reduce) { .blueprint-card { transition:none; transform:none; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .blueprint-card { transition:none; transform:none; } }
 .blueprint-desc {
   display: -webkit-box;
   -webkit-box-orient: vertical;

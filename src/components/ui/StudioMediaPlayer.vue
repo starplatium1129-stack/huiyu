@@ -206,7 +206,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       v-else
       ref="media"
       class="studio-media-audio"
-      :src="src"
+      :src="mediaSource || undefined"
       :aria-label="label"
       preload="metadata"
       @loadedmetadata="onLoadedMetadata"

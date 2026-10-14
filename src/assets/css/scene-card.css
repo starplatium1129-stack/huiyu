@@ -42,8 +42,7 @@
   .sc:hover::after { opacity:1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion="full"]) .sc:hover,
-  :root:not([data-motion="full"]) .sc[role="button"]:active { transform: none; }
+  :root:not([data-motion="full"]) .sc:hover, :root:not([data-motion="full"]) .sc[role="button"]:active { transform: none; }
 }
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .sc:hover,
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .sc[role="button"]:active { transform: none; }
@@ -83,10 +82,11 @@
   background:var(--art-scrim); color:var(--on-art-primary);
   font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em;
   box-shadow:var(--shadow-sm);
-  @apply tw:pointer-events-none; opacity:1; transition:opacity 340ms var(--ease-out);
+  @apply tw:pointer-events-none; opacity:1; transition:opacity var(--motion-hover) var(--ease-out);
 }
 .sc[data-rating="R18"]:hover .sc-band::before,
 .sc[data-rating="R18"]:focus-within .sc-band::before { opacity:0; }
+@media (hover:none), (pointer:coarse), (pointer:none) { .sc[data-rating='R18'] .sc-band::before { transition:none; } }
 .sc-cat {
   @apply tw:relative; z-index: var(--z-raised);
   @apply tw:ml-auto tw:text-mono-sm tw:font-bold; letter-spacing: 0.05em;
