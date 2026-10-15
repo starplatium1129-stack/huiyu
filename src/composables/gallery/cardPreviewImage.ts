@@ -1,4 +1,10 @@
-import { withinImageDecodeBudget } from '@/utils/imageDecodeBudget'
+import { imageSizeWithinDecodeBudget } from '@/utils/imageDecodeBudget'
+
+interface CardPreviewImage {
+  blob: Blob
+  width: number
+  height: number
+}
 
 let decoding = 0
 const waiting = new Set<() => void>()
@@ -13,39 +19,59 @@ function acquire(signal: AbortSignal): Promise<void> {
   })
 }
 
-function encode(source: CanvasImageSource, width: number, height: number, target: number) {
+async function encode(source: CanvasImageSource, width: number, height: number, target: number, signal: AbortSignal): Promise<CardPreviewImage | null> {
+  signal.throwIfAborted()
   const scale = Math.min(1, target / width), canvas = document.createElement('canvas')
   canvas.width = Math.max(1, Math.round(width * scale)); canvas.height = Math.max(1, Math.round(height * scale))
-  const context = canvas.getContext('2d')
-  if (!context) return ''
-  context.imageSmoothingEnabled = true; context.imageSmoothingQuality = 'high'
-  context.drawImage(source, 0, 0, canvas.width, canvas.height)
-  try { return canvas.toDataURL('image/webp', .95) }
+  try {
+    const context = canvas.getContext('2d')
+    if (!context) return null
+    context.imageSmoothingEnabled = true; context.imageSmoothingQuality = 'high'
+    context.drawImage(source, 0, 0, canvas.width, canvas.height)
+    const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/webp', .95))
+    signal.throwIfAborted()
+    return blob ? { blob, width: canvas.width, height: canvas.height } : null
+  }
   finally { canvas.width = canvas.height = 0 }
 }
 
 /** Alpha and full display resolution stay intact; only wall-sized pixels are retained. */
-export async function cardPreviewImage(blob: Blob, width: number, signal: AbortSignal): Promise<string> {
+export async function cardPreviewImage(blob: Blob, width: number, signal: AbortSignal): Promise<CardPreviewImage | null> {
   await acquire(signal)
   try {
-    if (!await withinImageDecodeBudget(blob)) return ''
+    const size = await imageSizeWithinDecodeBudget(blob)
     signal.throwIfAborted()
+    if (!size) return null
     try {
-      const bitmap = await createImageBitmap(blob)
-      try { signal.throwIfAborted(); return encode(bitmap, bitmap.width, bitmap.height, width) }
-      finally { bitmap.close() }
-    } catch { signal.throwIfAborted() }
-    return await new Promise<string>((resolve, reject) => {
-      const url = URL.createObjectURL(blob), image = new Image()
-      const cleanup = () => { signal.removeEventListener('abort', abort); image.onload = image.onerror = null; URL.revokeObjectURL(url) }
-      const abort = () => { cleanup(); image.src = ''; reject(signal.reason) }
-      image.onload = () => {
-        try { signal.throwIfAborted(); resolve(encode(image, image.naturalWidth, image.naturalHeight, width)) }
-        catch (error) { reject(error) }
-        finally { cleanup() }
+      let bitmap: ImageBitmap | undefined
+      // Either header edge can become the displayed width after EXIF rotation.
+      // Resize only when both exceed the target, so small originals never upscale.
+      if (Math.min(size.width, size.height) > width) {
+        try { bitmap = await createImageBitmap(blob, { resizeWidth: width, resizeQuality: 'high', imageOrientation: 'from-image' }) }
+        catch { signal.throwIfAborted() }
+        // A codec that resizes before rotating must not leave the card undersized.
+        if (bitmap && bitmap.width < width) { bitmap.close(); bitmap = undefined }
       }
-      image.onerror = () => { cleanup(); resolve('') }
-      signal.addEventListener('abort', abort, { once: true }); image.src = url
-    })
-  } finally { decoding--; for (const ready of waiting) ready() }
+      bitmap ??= await createImageBitmap(blob)
+      let encoding: Promise<CardPreviewImage | null>
+      // encode draws before its first await; no source pixels are needed during serialization.
+      try { encoding = encode(bitmap, bitmap.width, bitmap.height, width, signal) }
+      finally { bitmap.close() }
+      return await encoding
+    } catch { signal.throwIfAborted() }
+    const url = URL.createObjectURL(blob), image = new Image()
+    const abort = () => image.removeAttribute('src')
+    try {
+      signal.addEventListener('abort', abort, { once: true }); image.decoding = 'async'; image.src = url
+      await image.decode()
+      return await encode(image, image.naturalWidth, image.naturalHeight, width, signal)
+    } catch { signal.throwIfAborted(); return null }
+    finally {
+      signal.removeEventListener('abort', abort); image.removeAttribute('src'); URL.revokeObjectURL(url)
+    }
+  } finally {
+    // Native encoding cannot be interrupted. Keep the slot until its callback
+    // settles even after cancellation; the caller discards any late result.
+    decoding--; for (const ready of waiting) ready()
+  }
 }

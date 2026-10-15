@@ -114,10 +114,9 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
         const preview = await abortable(cardPreviewImage(blob, width, signal), signal)
         if (!current()) return
         if (preview) {
-          const size = await abortable(dimensions(preview), signal)
-          if (!current()) return
-          url = preview; bytes = preview.length * 2; pixels = size.width * size.height
-          resolvedWidth = size.width < width ? Infinity : size.width
+          // Only accepted previews get URLs; late/cancelled encodes own no URL.
+          url = URL.createObjectURL(preview.blob); bytes = preview.blob.size; pixels = preview.width * preview.height
+          resolvedWidth = preview.width < width ? Infinity : preview.width
         } else {
           // Unsupported originals retain their existing display fallback.
           url = URL.createObjectURL(blob); bytes = blob.size; pixels = 32 * 1024 * 1024
