@@ -6,10 +6,10 @@ import { createPromptTagDictionary, type PromptTagSource } from '@/utils/promptT
 export function usePromptTags(catalog: () => readonly PromptTagSource[], flash: (message: string) => void) {
   const manualTags = ref(new Set<string>())
   const tagDictionary = computed(() => createPromptTagDictionary(catalog()))
-  watch([manualTags, tagDictionary], () => {
+  watch([() => [...manualTags.value], tagDictionary], () => {
     const next = new Set([...manualTags.value].map(tagDictionary.value.canonicalize).filter(Boolean))
     if (next.size !== manualTags.value.size || [...next].some(tag => !manualTags.value.has(tag))) manualTags.value = next
-  }, { deep: true, flush: 'sync' })
+  }, { flush: 'sync' })
 
   function addManualTag(input: string): 'added' | 'replaced' | 'duplicate' {
     const tag = tagDictionary.value.canonicalize(input)
