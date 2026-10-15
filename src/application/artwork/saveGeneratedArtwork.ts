@@ -29,6 +29,7 @@ function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDef
     story: entry.story ?? defaults.story,
     visualDescription: entry.visualDescription ?? defaults.visualDescription,
     prompt: entry.prompt, negative: entry.negative ?? '', seed: entry.seed ?? defaults.seed,
+    negativeCustom: entry.negativeCustom,
     emotion: [...(entry.emotion ?? defaults.emotion)],
     shot: entry.shot !== undefined ? entry.shot : defaults.shot,
     lighting: entry.lighting !== undefined ? entry.lighting : defaults.lighting,

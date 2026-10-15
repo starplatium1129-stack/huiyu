@@ -65,9 +65,9 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
       // ownership alone would turn old reference tags into protected user edits.
       if (entry.manual_tags !== undefined) pb.referenceInput = null
       if (entry.manual_tags !== undefined || (popular ? entry.blueprintId !== undefined : entry.scene !== undefined)) pb.randomVariation = null
-      // A stored negative is a compiled result, not a reusable custom layer.
-      if (engine === 'sd') pb.sdParams.negativeCustom = ''
-      notes.push('提示词按当前角色与编译规则重建；原作负向快照未写入自定义负面词')
+      if (pb.isUnbound) apply(entry.negativeCustom ?? entry.negative, value => { pb.sdParams.negativeCustom = value })
+      else if (engine === 'sd') pb.sdParams.negativeCustom = ''
+      notes.push('提示词按当前模型与编译规则重建；底模默认负面不写入自定义词')
     } else notes.push('原作未记录可重建的提示词输入，当前输入已保留')
   }
   if (parts.parameters) {

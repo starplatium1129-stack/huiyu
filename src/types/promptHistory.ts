@@ -9,6 +9,8 @@ export type HistoryEntry = {
   id: string | number; timestamp: number; character: string
   scene: string | null; sceneTitle: string | null
   story: string; visualDescription?: string; prompt: string; negative: string; seed: number
+  /** 原始负面输入；与包含模型默认词的 negative 快照分开保存。 */
+  negativeCustom?: string
   emotion: string[]; shot: string | null; lighting: string | null
   composition: string | null; colorMood: string | null
   manual_tags: string[]; lora: string | null

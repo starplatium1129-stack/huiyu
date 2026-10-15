@@ -100,8 +100,8 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     }
     pb.randomVariation = null
     if (!entry.engine) restoreNotes.push(popularEntry ? '旧作品未记录引擎，按当前角色支持的 Anima 配方读取；不是原引擎确认' : '旧作品未记录引擎，按 SD 配方读取')
-    if (!entry.model && !entry.checkpoint) restoreNotes.push('未记录底模，使用当前底模')
-    restoreNotes.push('提示词按当前角色与编译规则重建，请核对后生成')
+    if (!entry.model && !entry.checkpoint) restoreNotes.push('沿用当前底模')
+    restoreNotes.push('提示词已重建，请核对')
     // 合法零值保留：Number(x)||fallback 会把 0 误判为缺失，必须显式判有限数。
     const finiteOr = (value: unknown, fallback: number) => {
       if (value === null || value === undefined || value === '') return fallback
@@ -233,10 +233,9 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     pb.setColorMood(entry.colorMood ?? null)
     pb.projectId = entry.project || ''
     pb.setArtistStyleIds(entry.artistStyleIds || [])
-    pb.sdParams.negativeCustom = pb.isUnbound ? entry.negative || '' : ''
-    // 角色历史的负面包含场景与 profile，不写回 negativeCustom；无角色负面只有用户输入。
-    // 否则会作为自定义负面跨场景/跨 profile 泄漏。恢复时由当前场景+profile
-    // 重新生成模型原生负面。
+    // New unbound recipes store the custom layer separately; legacy unbound
+    // negatives contain only user input. Never restore model defaults as custom.
+    pb.sdParams.negativeCustom = pb.isUnbound ? entry.negativeCustom ?? entry.negative ?? '' : ''
     if (!popularEntry || pb.isPopular) {
       const before = { ...animaState.value }
       const checked = await refreshAnimaBackend()

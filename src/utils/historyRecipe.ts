@@ -47,6 +47,7 @@ export function parseHistoryRecipe(record: ArtworkRecord) {
     loraId: text('loraId'), loraStrength: number('loraStrength'),
     size: text('size'), seed: number('seed'), steps: number('steps'), cfg: number('cfg'),
     sampler: text('sampler'), scheduler: text('scheduler'), negative: text('negative'),
+    negativeCustom: text('negativeCustom'),
     hiresFix: boolean('hiresFix'), hiresScale: number('hiresScale'), hiresDenoise: number('hiresDenoise'),
     hiresUpscaler: text('hiresUpscaler'), hiresSteps: number('hiresSteps'), faceDetailer: boolean('faceDetailer'),
     scene: nullableText('scene'), sceneTitle: text('sceneTitle'), story: text('story'), visualDescription: text('visualDescription'),

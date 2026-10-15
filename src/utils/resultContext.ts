@@ -18,6 +18,7 @@ export interface ResultContextInput {
   readonly manualTags: ReadonlySet<string> | readonly string[]
   readonly artistStyleIds: readonly string[]
   readonly directorMode: 'basic' | 'pro'
+  readonly sdParams: Readonly<{ negativeCustom: string }>
   readonly projectId: string
   readonly activeScene?: { readonly title: string } | null
   readonly popularCharacters?: readonly { readonly id: string; readonly displayName: string }[]
@@ -48,6 +49,7 @@ export function captureResultContext(pb: ResultContextInput): AnimaResultContext
       colorMood: pb.colorMood, manual_tags: [...pb.manualTags],
       artistStyleIds: pb.directorMode === 'pro' ? [...pb.artistStyleIds] : [],
       project: pb.projectId,
+      negativeCustom: pb.sdParams.negativeCustom,
     },
   }
 }

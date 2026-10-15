@@ -97,7 +97,7 @@
         </div>
       </details>
 
-      <section v-if="recommendations.length" class="recommend-section" data-reveal data-reveal-delay="2">
+      <section v-if="current" class="recommend-section" data-reveal data-reveal-delay="2">
         <div class="recommend-head">
           <div>
             <div class="page-kicker">Persona core</div>
@@ -105,7 +105,12 @@
           </div>
           <a v-if="officialProfileUrl" class="official-link" :href="officialProfileUrl" target="_blank" rel="noreferrer">查看官方人设依据 ↗</a>
         </div>
-        <div class="recommend-grid">
+        <ArchiveStatePanel v-if="recommendationsLoading" kind="loading" title="正在读取核心场景" compact />
+        <ArchiveStatePanel v-else-if="recommendationsError" kind="error" title="核心场景读取失败" message="请重新读取该角色的场景。" compact>
+          <button class="btn btn-ghost btn-sm" type="button" @click="recommendationReload += 1">重新读取</button>
+        </ArchiveStatePanel>
+        <ArchiveStatePanel v-else-if="!recommendations.length" kind="empty" title="暂未收录核心场景" compact />
+        <div v-else class="recommend-grid">
           <article v-for="s in recommendations" :key="s.id" class="recommend-card card-info">
             <h3 class="cg-title">{{ s.title }}</h3>
             <div v-if="recommendationReason(s.id)" class="cg-reason">{{ recommendationReason(s.id) }}</div>
@@ -234,6 +239,9 @@ const hasIdentity = computed(() => {
   return id.role || id.age || id.occupation || id.faction
 })
 const isPopular = computed(() => current.value?.type === 'popular')
+const recommendationsLoading = ref(false)
+const recommendationsError = ref(false)
+const recommendationReload = ref(0)
 const recommendations = computed(() => {
   if (!current.value) return []
   if (current.value.type === 'popular') {
@@ -302,14 +310,29 @@ async function loadProfiles() {
   loading.value = false
 }
 
-watch(() => current.value?.id, id => {
+watch(() => current.value?.id, () => {
   bgExpanded.value = false
   recommendationStoryDialog.close()
-  if (!id) return
-  // The bookshelf needs only the character shell; load scene details on entry.
-  void Promise.all([sceneStore.loadBrowserScenes('all'), sceneStore.loadBlueprintCatalog()]).then(([catalog]) => {
-    scenes.value = parseCharacterScenes(catalog.scenes)
-  }).catch(e => console.warn('character scene data load failed', e))
+})
+watch([current, recommendationReload], async ([profile], _previous, onCleanup) => {
+  let active = true
+  onCleanup(() => { active = false })
+  recommendationsLoading.value = Boolean(profile)
+  recommendationsError.value = false
+  if (!profile) return
+  try {
+    // Metadata alone does not load blueprints; each profile owns its scene request.
+    if (profile.type === 'popular') await sceneStore.loadBlueprintCharacter(profile.id)
+    else {
+      const catalog = await sceneStore.loadBrowserScenes('all')
+      if (active) scenes.value = parseCharacterScenes(catalog.scenes)
+    }
+  } catch (error) {
+    if (active) recommendationsError.value = true
+    console.warn('character scene data load failed', error)
+  } finally {
+    if (active) recommendationsLoading.value = false
+  }
 })
 onMounted(() => {
   void loadProfiles()

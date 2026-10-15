@@ -21,7 +21,7 @@
     </div>
 
     <div v-if="pb.isUnbound" class="character-source-content">
-      <p class="tw:text-secondary tw:text-body-sm">不绑定角色设定。图片反推保留原图的人物、服装、人数与背景，去除马赛克、遮挡和噪点词；不自动加入角色、画风或负面词。</p>
+      <p class="tw:text-secondary tw:text-body-sm">自由创作，自动追加底模推荐词。</p>
     </div>
     <div v-else-if="!pb.isPopular" v-content-motion:right="!pb.isPopular" class="character-source-content">
       <div class="char-row studio-character-gallery" role="group" aria-label="工作室角色">
