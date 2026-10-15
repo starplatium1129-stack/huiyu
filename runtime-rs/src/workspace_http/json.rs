@@ -20,7 +20,7 @@ pub(super) async fn prepare(
 ) -> Result<Request> {
     let size = body.len();
     let build = move || {
-        let input: Value = if body.is_empty() {
+        let mut input: Value = if body.is_empty() {
             json!({})
         } else {
             serde_json::from_slice(&body)?
@@ -47,7 +47,7 @@ pub(super) async fn prepare(
         }
         // The actor owns only the validated command. Neither the raw HTTP body
         // nor the second decoded input tree survives its potentially long wait.
-        command(&method, &path, &query, &input).map(Request::Command)
+        command(&method, &path, &query, &mut input).map(Request::Command)
     };
     if size < BLOCKING_THRESHOLD {
         build()

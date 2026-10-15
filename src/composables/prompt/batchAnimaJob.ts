@@ -30,7 +30,7 @@ export function createBatchAnimaTransport(family: () => string) {
   let observer: AbortController | null = null, disposed = false
   const accepted = new Map<string, string>()
   async function run(request: AnimaRequest, context: Record<string, unknown>, cancelled: () => boolean,
-    report?: (message: string) => void, options: BatchAnimaOptions = {}): Promise<{ blob: Blob; seed?: number; taskId?: string; metadata?: AnimaJobMetadata }> {
+    report?: (message: string) => void, options: BatchAnimaOptions = {}): Promise<{ taskId: string } | { blob: Blob; seed?: number; metadata: AnimaJobMetadata }> {
     if (disposed) throw new DOMException('工作台已关闭', 'AbortError')
     observer = new AbortController()
     const signal = AbortSignal.any([observer.signal, ...(options.signal ? [options.signal] : [])])
@@ -40,7 +40,7 @@ export function createBatchAnimaTransport(family: () => string) {
       signal.throwIfAborted()
       if (hasRuntimeTasks()) {
         const kind = selected === 'krea2' ? 'creative' : 'anima'
-        const { submitRuntimeTask, getRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, taskMessage } = await import('../../api/runtimeTasks')
+        const { submitRuntimeTask, getRuntimeTask, waitForRuntimeTask, taskMessage } = await import('../../api/runtimeTasks')
         signal.throwIfAborted()
         const previous = accepted.get(signature)
         if (options.reconnect && !previous && !options.resumeId) throw new Error('原接收状态尚未确认，不能重新提交。')
@@ -50,11 +50,9 @@ export function createBatchAnimaTransport(family: () => string) {
         await options.onAccepted?.(task.taskId)
         signal.throwIfAborted()
         const done = await waitForRuntimeTask(task.taskId, signal, value => report?.(taskMessage(value)))
-        const blob = await fetchRuntimeResult(runtimeResultPath(done), signal)
         signal.throwIfAborted()
         accepted.delete(signature)
-        const seed = Number(done.metadata.seed ?? done.input.seed)
-        return { blob, seed: Number.isFinite(seed) ? seed : undefined, taskId: done.taskId }
+        return { taskId: done.taskId }
       }
       const route = selected === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs'
       let data: { ok?: boolean; job?: AnimaPublicJob; error?: string } | undefined

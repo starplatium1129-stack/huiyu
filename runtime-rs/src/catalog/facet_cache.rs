@@ -13,7 +13,7 @@ pub(super) struct Generation {
 #[derive(Default)]
 struct Entries {
     generation: Option<Generation>,
-    kinds: HashMap<String, Value>,
+    kinds: HashMap<String, (Value, i64)>,
     bytes: usize,
 }
 
@@ -27,7 +27,7 @@ impl FacetCache {
         &self,
         catalog: &Catalog,
         kind: &str,
-    ) -> Result<(Generation, Option<Value>)> {
+    ) -> Result<(Generation, Option<(Value, i64)>)> {
         let mut entries = self.0.lock().unwrap();
         // The first SELECT of the deferred transaction pins the same revision
         // used by count, page and facets. Serialize generation selection so a
@@ -45,8 +45,14 @@ impl FacetCache {
         Ok((generation, entries.kinds.get(kind).cloned()))
     }
 
-    pub(super) fn publish(&self, generation: Generation, kind: &str, value: &Value) -> Result<()> {
-        let bytes = serde_json::to_vec(value)?.len();
+    pub(super) fn publish(
+        &self,
+        generation: Generation,
+        kind: &str,
+        value: &Value,
+        total: i64,
+    ) -> Result<()> {
+        let bytes = serde_json::to_vec(&(value, total))?.len();
         let mut entries = self.0.lock().unwrap();
         // Misses are computed outside the mutex. Never publish a late result
         // into another revision, or keep an unbounded facet set.
@@ -61,7 +67,9 @@ impl FacetCache {
             entries.bytes = 0;
         }
         entries.bytes += bytes;
-        entries.kinds.insert(kind.to_owned(), value.clone());
+        entries
+            .kinds
+            .insert(kind.to_owned(), (value.clone(), total));
         Ok(())
     }
 }

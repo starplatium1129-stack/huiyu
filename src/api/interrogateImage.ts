@@ -2,6 +2,7 @@ import { apiClient } from './client'
 import { runtimeFetch } from '@/platform/runtimeUrl'
 import { decodeInterrogateReadiness } from '@/composables/useInterrogateReadiness'
 import { decodeInterrogateResult, type InterrogateMode, type InterrogateResult } from './interrogateResult'
+import { assertWorkspaceMediaAuthority, type MediaSource } from '@/platform/desktop/workspaceMediaSource'
 
 function interrogateFailure(status: number): string {
   return status === 413 ? '图片过大，请换一张较小的图片'
@@ -19,19 +20,13 @@ export async function interrogateImageFile(file: Blob, signal: AbortSignal,
   if (!file.size) throw new Error('请选择图片')
   if (file.size > 20 * 1024 * 1024) throw new Error('图片超过 20MB 限制')
   if (!file.type.startsWith('image/')) throw new Error('仅支持图片文件')
-  const image = await new Promise<string>((resolve, reject) => {
-    const reader = new FileReader()
-    const cleanup = () => signal.removeEventListener('abort', abort)
-    const abort = () => { cleanup(); reader.abort(); reject(new DOMException('Aborted', 'AbortError')) }
-    reader.onload = () => { cleanup(); resolve(String(reader.result || '')) }
-    reader.onerror = () => { cleanup(); reject(new Error('读取图片失败')) }
-    if (signal.aborted) { abort(); return }
-    signal.addEventListener('abort', abort, { once: true })
-    reader.readAsDataURL(file)
-  })
-  signal.throwIfAborted()
-  const response = await runtimeFetch('/api/interrogate', { method: 'POST', signal,
-    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image, mode, threshold }) })
+  const query = new URLSearchParams({ mode, threshold: String(threshold) })
+  const response = await runtimeFetch(`/api/interrogate/raw?${query}`, { method: 'POST', signal,
+    headers: { 'Content-Type': 'application/octet-stream' }, body: file })
+  return readResult(response, signal, mode)
+}
+
+async function readResult(response: Response, signal: AbortSignal, mode: InterrogateMode): Promise<InterrogateResult> {
   const json: unknown = await response.json().catch(() => null)
   signal.throwIfAborted()
   const envelope = json && typeof json === 'object' && !Array.isArray(json) ? json as Record<string, unknown> : null
@@ -45,13 +40,23 @@ export async function interrogateImageFile(file: Blob, signal: AbortSignal,
 }
 
 /** Companion uses the same local PixAI readiness and response contracts as the workbench. */
-export async function interrogateImage(source: string, signal: AbortSignal): Promise<InterrogateResult> {
+export async function interrogateImage(source: string | Readonly<MediaSource>, signal: AbortSignal): Promise<InterrogateResult> {
+  if (typeof source !== 'string') assertWorkspaceMediaAuthority(source.authority)
   const ready = decodeInterrogateReadiness(await apiClient.request('/api/interrogate/status', {
     cache: 'no-store', cachePolicy: 'bypass', timeoutMs: 8000, signal,
   }))
   if (ready.state !== 'ready') throw new Error(ready.message)
   const active = AbortSignal.any([signal, AbortSignal.timeout(120_000)])
   try {
+    if (typeof source !== 'string') {
+      assertWorkspaceMediaAuthority(source.authority)
+      const { alias, sha256, bytes, mime } = source
+      const response = await runtimeFetch('/api/workspace/interrogate', { method: 'POST', signal: active,
+        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: 'workspace', alias, sha256, bytes, mime }) })
+      const result = await readResult(response, active, 'tag')
+      assertWorkspaceMediaAuthority(source.authority)
+      return result
+    }
     const response = await runtimeFetch(source, { signal: active })
     if (!response.ok) throw new Error('参考图片无法读取，请重新发送')
     const blob = await response.blob()

@@ -20,6 +20,7 @@ use crate::{
     upstream::LocalUpstream,
 };
 pub use batch::BatchPrepared;
+pub(crate) use batch::BatchRecovery;
 pub use generation::Config;
 use serde_json::{Value, json};
 pub(crate) use service::MediaImport;

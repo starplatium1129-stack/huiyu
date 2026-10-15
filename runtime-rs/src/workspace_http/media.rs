@@ -8,7 +8,7 @@ use crate::{
 };
 use axum::{
     Json,
-    body::Body,
+    body::{Body, Bytes},
     http::{HeaderMap, HeaderValue, Method, StatusCode},
     response::{IntoResponse, Response},
 };
@@ -156,19 +156,24 @@ pub(super) async fn chunk(
         .unwrap()
         .min(media.total_bytes - offset);
     let mut response = stream(state, method, &media, offset, length).await?;
+    metadata_headers(&mut response, &media, offset)?;
+    Ok(response)
+}
+
+fn metadata_headers(response: &mut Response, media: &Media, offset: u64) -> Result<()> {
     let output = response.headers_mut();
     output.insert(
         "content-type",
         HeaderValue::from_static("application/octet-stream"),
     );
     for (name, value) in [
-        ("x-workspace-media-mime", media.mime),
+        ("x-workspace-media-mime", media.mime.clone()),
         ("x-workspace-media-offset", offset.to_string()),
         (
             "x-workspace-media-total-bytes",
             media.total_bytes.to_string(),
         ),
-        ("x-workspace-media-sha256", media.sha256),
+        ("x-workspace-media-sha256", media.sha256.clone()),
     ] {
         output.insert(
             name,
@@ -177,6 +182,86 @@ pub(super) async fn chunk(
         );
     }
     output.insert("access-control-expose-headers", HeaderValue::from_static("X-Workspace-Media-Mime, X-Workspace-Media-Offset, X-Workspace-Media-Total-Bytes, X-Workspace-Media-Sha256"));
+    Ok(())
+}
+
+pub(super) async fn download(
+    state: &AppState,
+    storage: &Storage,
+    method: &Method,
+    alias: &str,
+) -> Result<Response> {
+    let source = tokio::time::timeout(Duration::from_secs(30), storage.open_media(alias))
+        .await
+        .map_err(|_| ApiError::new(504, "WORKSPACE_TIMEOUT", "Media verification timed out"))??;
+    download_opened(state, storage, method, alias, source)
+}
+
+pub(crate) fn download_opened(
+    state: &AppState,
+    storage: &Storage,
+    method: &Method,
+    alias: &str,
+    source: crate::storage::OpenedMedia,
+) -> Result<Response> {
+    let length = source.media.total_bytes;
+    if length == 0 {
+        return Err(ApiError::new(409, "MEDIA_INVALID", "Media is empty"));
+    }
+    let mut response = Body::empty().into_response();
+    metadata_headers(&mut response, &source.media, 0)?;
+    response
+        .headers_mut()
+        .insert("content-length", length.to_string().parse().unwrap());
+    if method == Method::HEAD {
+        return Ok(response);
+    }
+    let closed = source.closed.clone();
+    let stop = closed.clone();
+    let stream = futures_util::stream::try_unfold(
+        Some((source, storage.clone(), alias.to_owned(), length)),
+        move |pending| {
+            let closed = closed.clone();
+            async move {
+                let Some((mut source, storage, alias, remaining)) = pending else {
+                    return Ok::<_, ApiError>(None);
+                };
+                let mut bytes = vec![0; remaining.min(64 * 1024) as usize];
+                source.file.read_exact(&mut bytes).await?;
+                let remaining = remaining - bytes.len() as u64;
+                let pending = if remaining == 0 {
+                    // Withhold the last block: a failed final proof must never
+                    // deliver Content-Length bytes and complete response.blob().
+                    tokio::time::timeout(
+                        Duration::from_secs(30),
+                        storage.finish_media(&alias, source),
+                    )
+                    .await
+                    .map_err(|_| {
+                        ApiError::new(504, "WORKSPACE_TIMEOUT", "Media verification timed out")
+                    })??;
+                    if closed.is_cancelled() {
+                        return Err(ApiError::new(
+                            503,
+                            "WORKSPACE_UNAVAILABLE",
+                            "Workspace closed during download",
+                        ));
+                    }
+                    None
+                } else {
+                    Some((source, storage, alias, remaining))
+                };
+                Ok(Some((Bytes::from(bytes), pending)))
+            }
+        },
+    );
+    // Read only on demand; disconnect/epoch shutdown drops the owned file and
+    // final-check waiter. No producer queue or path/checker lock spans the stream.
+    *response.body_mut() = Body::from_stream(
+        stream
+            .take_until(stop.cancelled_owned())
+            .take_until(state.shutdown.clone().cancelled_owned()),
+    );
     Ok(response)
 }
 

@@ -1,4 +1,5 @@
 use super::*;
+use std::collections::HashSet;
 impl Service {
     pub(crate) async fn resume_prepared(
         &self,
@@ -19,8 +20,15 @@ impl Service {
             .as_array()
             .filter(|a| !a.is_empty() && a.len() <= 30)
             .ok_or_else(|| error(409, "TASK_RESUME_UNSAFE", "已保存的分镜参数无效"))?;
+        // Shared references need one restore in this preparation. Capture and
+        // each shot's later execution still validate their current input bytes.
+        let mut restored = HashSet::new();
         for shot in shots {
-            restore(&self.config, &shot["input"], hooks, &cancel).await?;
+            for name in inputs::names(&shot["input"]) {
+                if restored.insert(name) {
+                    restore_one(&self.config, name, hooks, &cancel).await?;
+                }
+            }
         }
         self.prepare_batch_normalized(input, cancel).await
     }
@@ -32,15 +40,24 @@ pub(super) async fn restore(
     cancel: &CancellationToken,
 ) -> Result<()> {
     for name in inputs::names(input) {
-        if cancel.is_cancelled() {
-            return Err(error(499, "VIDEO_CANCELLED", "视频恢复已取消"));
-        }
-        let target = inputs::path(config, name)?;
-        if !hooks.restore_input(name.into(), target.clone()).await?
-            && !tokio::fs::try_exists(&target).await?
-        {
-            return Err(error(409, "TASK_INPUT_MISSING", "受保护的视频输入不可用"));
-        }
+        restore_one(config, name, hooks, cancel).await?;
+    }
+    Ok(())
+}
+async fn restore_one(
+    config: &Config,
+    name: &str,
+    hooks: &dyn ExecutionHooks,
+    cancel: &CancellationToken,
+) -> Result<()> {
+    if cancel.is_cancelled() {
+        return Err(error(499, "VIDEO_CANCELLED", "视频恢复已取消"));
+    }
+    let target = inputs::path(config, name)?;
+    if !hooks.restore_input(name.into(), target.clone()).await?
+        && !tokio::fs::try_exists(&target).await?
+    {
+        return Err(error(409, "TASK_INPUT_MISSING", "受保护的视频输入不可用"));
     }
     Ok(())
 }

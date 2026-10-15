@@ -1,7 +1,30 @@
-import type { TaskRecord } from '../../types/tasks'
+import type { TaskRecord, TaskSummary } from '../../types/tasks'
 import type { VideoJob, VideoBatch, VideoBatchShot, CreateVideoBatchInput, VideoDefaults, VideoQuality } from './videoApi'
 import { runtimeRequestKey } from '../stores/runtimeTaskState'
-import { getRuntimeTask, runtimeResultPath, submitRuntimeTask, taskMessage } from './runtimeTasks'
+import { getRuntimeTask, getRuntimeTaskSummary, runtimeResultPath, submitRuntimeTask, taskMessage } from './runtimeTasks'
+
+let lastBatch: { id: string; stamp: string; batch: VideoBatch } | undefined
+function batchStamp(task: TaskSummary): string {
+  // Ownership can change the read-only recovery projection without a durable
+  // revision. All other batch fields belong to the persisted revision.
+  return JSON.stringify([task.taskId, task.workspaceId, task.principalId, task.runtimeEpoch,
+    task.revision, task.recoveryState, task.errorCode])
+}
+export async function readRuntimeVideoBatch(id: string, signal?: AbortSignal): Promise<VideoBatch> {
+  const previous = lastBatch
+  if (previous?.id === id) {
+    const summary = await getRuntimeTaskSummary(id, signal)
+    signal?.throwIfAborted()
+    if (batchStamp(summary) === previous.stamp) return structuredClone(previous.batch)
+  }
+  const task = await getRuntimeTask(id, signal)
+  signal?.throwIfAborted()
+  const batch = taskVideoBatch(task)
+  // Retain only one small display projection, never the input/checkpoint tree.
+  // An overlapping read must not replace a cache another read has published.
+  if (lastBatch === previous) lastBatch = { id, stamp: batchStamp(task), batch }
+  return structuredClone(batch)
+}
 
 const text = (value: unknown) => typeof value === 'string' ? value : ''
 const number = (value: unknown, fallback = 0) => typeof value === 'number' && Number.isFinite(value) ? value : fallback

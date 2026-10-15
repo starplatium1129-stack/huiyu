@@ -25,7 +25,10 @@ fn invalid() -> ApiError {
 fn cancelled() -> ApiError {
     ApiError::new(499, "CANCELLED", "图像操作已取消")
 }
-pub(crate) async fn validate(bytes: Arc<Vec<u8>>, cancel: &CancellationToken) -> Result<()> {
+pub(crate) async fn validate<B: AsRef<[u8]> + Send + Sync + 'static>(
+    bytes: Arc<B>,
+    cancel: &CancellationToken,
+) -> Result<()> {
     let permit = DECODERS
         .clone()
         .try_acquire_owned()
@@ -36,7 +39,8 @@ pub(crate) async fn validate(bytes: Arc<Vec<u8>>, cancel: &CancellationToken) ->
         if worker_cancel.is_cancelled() {
             return Err(cancelled());
         }
-        let format = sniff(&bytes).ok_or_else(invalid)?.1;
+        let bytes: &[u8] = bytes.as_ref().as_ref();
+        let format = sniff(bytes).ok_or_else(invalid)?.1;
         if format == "png" {
             let mut at = 8usize;
             while at + 12 <= bytes.len() {
@@ -52,13 +56,13 @@ pub(crate) async fn validate(bytes: Arc<Vec<u8>>, cancel: &CancellationToken) ->
             }
         }
         if format == "webp"
-            && image::codecs::webp::WebPDecoder::new(Cursor::new(bytes.as_slice()))
+            && image::codecs::webp::WebPDecoder::new(Cursor::new(bytes))
                 .map_err(|_| invalid())?
                 .has_animation()
         {
             return Err(invalid());
         }
-        let mut reader = ImageReader::new(Cursor::new(bytes.as_slice()))
+        let mut reader = ImageReader::new(Cursor::new(bytes))
             .with_guessed_format()
             .map_err(|_| invalid())?;
         let mut limits = image::Limits::default();

@@ -8,7 +8,8 @@ use crate::resources::{
     lifecycle::{Operation, copy},
     manifest::{self, Entry, Manifest},
 };
-use std::{collections::HashMap, path::Path};
+use sha2::{Digest, Sha256};
+use std::{collections::HashMap, io::Read, path::Path};
 use tokio_util::sync::CancellationToken;
 
 /// Installed showcases are editable. Check their current references, rather
@@ -161,13 +162,31 @@ pub(super) fn baseline(paths: &Paths, release: &Release) -> Result<()> {
     }
     Ok(())
 }
-fn bytes_entry(root: &Path, name: &str) -> Result<Entry> {
+fn bytes_entry(op: &Operation, root: &Path, name: &str) -> Result<Entry> {
+    super::config::cancelled(&op.cancel)?;
     fs::relative(name)?;
-    let bytes = fs::bytes(&fs::child(root, name)?, 32 * 1024 * 1024, false)?;
+    const LIMIT: u64 = 32 * 1024 * 1024;
+    let mut input = fs::open(&fs::child(root, name)?, LIMIT, false)?.take(LIMIT + 1);
+    let mut buffer = vec![0; 512 * 1024];
+    let mut hash = Sha256::new();
+    let mut bytes = 0;
+    loop {
+        super::config::cancelled(&op.cancel)?;
+        let count = input.read(&mut buffer)?;
+        if count == 0 {
+            break;
+        }
+        bytes += count as u64;
+        if bytes > LIMIT {
+            return Err(Error::new("METADATA_INVALID", "File exceeds limit"));
+        }
+        hash.update(&buffer[..count]);
+    }
+    super::config::cancelled(&op.cancel)?;
     Ok(Entry {
         path: name.into(),
-        bytes: bytes.len() as u64,
-        sha256: digest(bytes),
+        bytes,
+        sha256: hex::encode(hash.finalize()),
     })
 }
 fn preserve_home(op: &Operation, old: &Path, target: &Path, parts: &Path) -> Result<usize> {
@@ -193,7 +212,7 @@ fn preserve_home(op: &Operation, old: &Path, target: &Path, parts: &Path) -> Res
                 "Invalid local home artwork path",
             ));
         }
-        copy::entry(op, old, target, parts, &bytes_entry(old, &name)?)?;
+        copy::entry(op, old, target, parts, &bytes_entry(op, old, &name)?)?;
         count += 1;
     }
     fs::write_json(&target.join("home-hero.json"), &value)?;
@@ -259,7 +278,7 @@ fn merge(
                     old,
                     target,
                     parts,
-                    &bytes_entry(old, item[field].as_str().unwrap())?,
+                    &bytes_entry(op, old, item[field].as_str().unwrap())?,
                 )?;
             }
             if let Some(index) = index {
@@ -302,10 +321,12 @@ fn merge(
     preserved += preserve_home(op, old, target, parts)?;
     Ok(preserved)
 }
-fn inventory(root: &Path) -> Result<Manifest> {
-    fn visit(root: &Path, folder: &Path, entries: &mut Vec<Entry>) -> Result<()> {
+fn inventory(op: &Operation, root: &Path) -> Result<Manifest> {
+    fn visit(op: &Operation, root: &Path, folder: &Path, entries: &mut Vec<Entry>) -> Result<()> {
+        super::config::cancelled(&op.cancel)?;
         fs::safe(folder, false, false)?;
         for item in std::fs::read_dir(folder)? {
+            super::config::cancelled(&op.cancel)?;
             let path = item?.path();
             let relative = path
                 .strip_prefix(root)
@@ -317,21 +338,21 @@ fn inventory(root: &Path) -> Result<Manifest> {
             }
             let stat = fs::safe(&path, false, false)?.unwrap();
             if stat.is_dir() {
-                visit(root, &path, entries)?;
+                visit(op, root, &path, entries)?;
             } else if relative == "manifest.json"
                 || release::media(&relative)
                 || relative == "home-hero.json"
                 || ["home/nene.jpg", "home/natsume.jpg"].contains(&relative.as_str())
             {
-                entries.push(bytes_entry(root, &relative)?);
+                entries.push(bytes_entry(op, root, &relative)?);
             } else {
                 return Err(Error::new("UNLISTED_FILE", "Unknown local showcase file"));
             }
         }
-        Ok(())
+        super::config::cancelled(&op.cancel)
     }
     let mut entries = Vec::new();
-    visit(root, root, &mut entries)?;
+    visit(op, root, root, &mut entries)?;
     Ok(Manifest { entries })
 }
 pub(super) fn verify_ready(op: &Operation, root: &Path, release: &Release) -> Result<Value> {
@@ -399,7 +420,7 @@ pub(super) fn prepare(
                         source,
                         &staging,
                         &parts,
-                        &bytes_entry(source, &entry.path)?,
+                        &bytes_entry(op, source, &entry.path)?,
                     )?;
                 }
             }
@@ -427,7 +448,7 @@ pub(super) fn prepare(
             &staging.join(".offline-seed.json"),
             &json!({"schemaVersion":1,"kind":"huiyu-showcase-seed","releaseSha256":release.approved["releaseSha256"],"contentIdentity":release.showcase.identity(),"entries":release.showcase.entries,"manifest":release.display,"manifestRaw":manifest_raw}),
         )?;
-        let installed = inventory(&staging)?;
+        let installed = inventory(op, &staging)?;
         let ready = json!({"schemaVersion":1,"releaseSha256":release.approved["releaseSha256"],"identity":installed.identity(),"entries":installed.entries,"preservedLocalEntries":preserved});
         fs::write_json(&staging.join(".offline-ready.json"), &ready)?;
         verify_ready(op, &staging, release)?;

@@ -167,7 +167,7 @@ fn tool_message(raw: &Value) -> Result<Value> {
     Ok(result)
 }
 
-fn multimodal(parts: &[Value]) -> Result<Value> {
+fn multimodal(parts: &mut [Value]) -> Result<Value> {
     if parts.is_empty() || parts.len() > 8 {
         return Err(Error::invalid("多模态消息格式错误"));
     }
@@ -183,7 +183,14 @@ fn multimodal(parts: &[Value]) -> Result<Value> {
                 output.push(json!({"type":"text","text":text}));
             }
             Some("image_url") => {
-                let url = string(&part["image_url"]["url"]);
+                let url = if let Some(Value::String(url)) = part
+                    .get_mut("image_url")
+                    .and_then(|image| image.get_mut("url"))
+                {
+                    std::mem::take(url)
+                } else {
+                    string(&part["image_url"]["url"])
+                };
                 if length(&url) > 12 * 1024 * 1024
                     || !["png", "jpeg", "webp", "gif"]
                         .iter()
@@ -195,7 +202,9 @@ fn multimodal(parts: &[Value]) -> Result<Value> {
                 if images > 4 {
                     return Err(Error::invalid("图片消息过多（单条最多 4 张）"));
                 }
-                output.push(json!({"type":"image_url","image_url":{"url":url}}));
+                let mut image = json!({"type":"image_url","image_url":{"url":null}});
+                image["image_url"]["url"] = url.into();
+                output.push(image);
             }
             _ => return Err(Error::invalid("多模态消息包含未知内容类型")),
         }
@@ -203,7 +212,7 @@ fn multimodal(parts: &[Value]) -> Result<Value> {
     Ok(output.into())
 }
 
-pub(super) fn chat(body: &Value, local: Option<&str>) -> Result<Input> {
+pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
     let session_id = match body.get("sessionId") {
         None => uuid::Uuid::new_v4().to_string(),
         Some(Value::String(id))
@@ -225,13 +234,14 @@ pub(super) fn chat(body: &Value, local: Option<&str>) -> Result<Input> {
         return Err(Error::invalid("不支持的聊天角色"));
     }
     let system = persona::build(character, body, local)?;
-    let raw = body["messages"]
-        .as_array()
+    let raw = body
+        .get_mut("messages")
+        .and_then(Value::as_array_mut)
         .filter(|v| !v.is_empty())
         .ok_or_else(|| Error::invalid("对话记录必须包含 1—24 条消息"))?;
     let mut tools = Vec::new();
     let mut texts = Vec::new();
-    for item in raw {
+    for item in raw.iter_mut() {
         let role = string(&item["role"]);
         if role == "tool"
             || (role == "assistant" && item["tool_calls"].as_array().is_some_and(|v| !v.is_empty()))
@@ -246,9 +256,11 @@ pub(super) fn chat(body: &Value, local: Option<&str>) -> Result<Input> {
     for item in texts.into_iter().rev().take(24) {
         let role = string(&item["role"]);
         if role == "user"
-            && let Some(parts) = item["content"].as_array()
+            && let Some(parts) = item.get_mut("content").and_then(Value::as_array_mut)
         {
-            kept.push(json!({"role":"user","content":multimodal(parts)?}));
+            let mut message = json!({"role":"user","content":null});
+            message["content"] = multimodal(parts)?;
+            kept.push(message);
             continue;
         }
         let text = string(&item["content"]).trim().to_owned();

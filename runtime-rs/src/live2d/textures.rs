@@ -216,7 +216,7 @@ impl Textures {
                         crate::native_images::atlas(&path, &library, scale, &cancel)
                             .map(|bytes| Entry {
                                 etag: format!("\"{:x}\"", Sha256::digest(&bytes)),
-                                bytes: Bytes::from(bytes),
+                                bytes,
                             })
                     })
                     .await

@@ -29,7 +29,7 @@ pub(super) fn merge(value: &mut Value, patch: &Value) -> Result<()> {
     }
     Ok(())
 }
-fn fields(record: &Record) -> (String, String, String, String, String) {
+fn fields(record: &Record, payload: &str) -> (String, String, String, String, String) {
     let value = &record.data;
     let text = |v: &Value| v.as_str().unwrap_or("").to_owned();
     let title = match record.kind.as_str() {
@@ -68,18 +68,13 @@ fn fields(record: &Record) -> (String, String, String, String, String) {
                 .unwrap_or("All")
                 .into()
         };
-    let search = format!(
-        "{} {} {}",
-        record.id,
-        title,
-        serde_json::to_string(value).unwrap()
-    )
-    .to_lowercase();
+    let search = format!("{} {} {}", record.id, title, payload).to_lowercase();
     (title, character, category, rating, search)
 }
 pub(super) fn put(connection: &Connection, record: &Record, removed: bool) -> Result<()> {
-    let (title, character, category, rating, search) = fields(record);
-    connection.prepare_cached("INSERT INTO content_records(kind,id,revision,sort_order,created_at,updated_at,payload,title,character_id,category,rating,search_text,deleted) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13) ON CONFLICT(kind,id) DO UPDATE SET revision=excluded.revision,sort_order=excluded.sort_order,created_at=excluded.created_at,updated_at=excluded.updated_at,payload=excluded.payload,title=excluded.title,character_id=excluded.character_id,category=excluded.category,rating=excluded.rating,search_text=excluded.search_text,deleted=excluded.deleted")?.execute(params![record.kind,record.id,record.revision,record.sort_order,record.created_at,record.updated_at,serde_json::to_string(&record.data)?,title,character,category,rating,search,removed])?;
+    let payload = serde_json::to_string(&record.data)?;
+    let (title, character, category, rating, search) = fields(record, &payload);
+    connection.prepare_cached("INSERT INTO content_records(kind,id,revision,sort_order,created_at,updated_at,payload,title,character_id,category,rating,search_text,deleted) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13) ON CONFLICT(kind,id) DO UPDATE SET revision=excluded.revision,sort_order=excluded.sort_order,created_at=excluded.created_at,updated_at=excluded.updated_at,payload=excluded.payload,title=excluded.title,character_id=excluded.character_id,category=excluded.category,rating=excluded.rating,search_text=excluded.search_text,deleted=excluded.deleted")?.execute(params![record.kind,record.id,record.revision,record.sort_order,record.created_at,record.updated_at,payload,title,character,category,rating,search,removed])?;
     Ok(())
 }
 pub(super) fn history(
@@ -182,7 +177,7 @@ impl Catalog {
                 ));
             }
         }
-        for change in &changes {
+        for change in changes.iter() {
             validation::key(&change.kind, &change.id)?;
             if !seen.insert((&change.kind, &change.id)) {
                 return Err(ApiError::invalid("变更集中有重复记录"));
@@ -289,11 +284,17 @@ impl Catalog {
                 Some(order) => order,
                 None => match &current {
                     Some((r, _)) => r.sort_order,
-                    None => transaction.query_row(
-                        "SELECT COALESCE(MAX(sort_order),-1)+1 FROM content_records WHERE kind=?1",
-                        [&change.kind],
-                        |r| r.get(0),
-                    )?,
+                    // Both deleted states participate, with one catalog_order
+                    // index endpoint per state instead of scanning the kind.
+                    None => transaction
+                        .prepare_cached(
+                            "SELECT COALESCE(MAX(sort_order),-1)+1 FROM (
+                                SELECT MAX(sort_order) AS sort_order FROM content_records WHERE kind=?1 AND deleted=0
+                                UNION ALL
+                                SELECT MAX(sort_order) AS sort_order FROM content_records WHERE kind=?1 AND deleted=1
+                            )",
+                        )?
+                        .query_row([&change.kind], |r| r.get(0))?,
                 },
             };
             let imported = seed_index.get(&(change.kind.as_str(), change.id.as_str()));

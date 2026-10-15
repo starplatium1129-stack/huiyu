@@ -1,5 +1,8 @@
 use super::*;
-use std::collections::{HashMap, HashSet};
+use std::{
+    borrow::Cow,
+    collections::{HashMap, HashSet},
+};
 type ChangeIndex = HashMap<String, HashMap<String, usize>>;
 pub(super) fn rows(connection: &Connection, kind: &str) -> Result<Vec<Record>> {
     let mut statement = connection.prepare(&format!(
@@ -66,7 +69,18 @@ fn retain_ids(ids: &mut Vec<Value>, retired: &HashSet<&str>) -> bool {
     ids.retain(|id| !id.as_str().is_some_and(|id| retired.contains(id)));
     count != ids.len()
 }
-pub(super) fn expand(connection: &Connection, input: &[Change]) -> Result<Vec<Change>> {
+pub(super) fn expand<'a>(
+    connection: &Connection,
+    input: &'a [Change],
+) -> Result<Cow<'a, [Change]>> {
+    // Ordinary edits cannot expand dependencies. Borrow their payloads instead
+    // of cloning the entire change set before the normal write validation.
+    if !input.iter().any(|change| {
+        (change.kind == "document" && change.id == "tags")
+            || (change.kind == "scene" && change.remove)
+    }) {
+        return Ok(Cow::Borrowed(input));
+    }
     let mut changes = input.to_vec();
     let mut index = ChangeIndex::new();
     for (at, change) in changes.iter().enumerate() {
@@ -190,5 +204,5 @@ pub(super) fn expand(connection: &Connection, input: &[Change]) -> Result<Vec<Ch
             }
         }
     }
-    Ok(changes)
+    Ok(Cow::Owned(changes))
 }

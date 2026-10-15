@@ -8,11 +8,28 @@ pub struct Prepared {
     pub(super) originals: inputs::Captured,
 }
 #[derive(serde::Deserialize)]
+#[serde(untagged)]
+pub(crate) enum MediaImport {
+    Task(TaskMediaImport),
+    Workspace(WorkspaceMediaImport),
+}
+#[derive(serde::Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub(crate) struct MediaImport {
+pub(crate) struct TaskMediaImport {
     pub task_id: String,
     pub index: u64,
     pub alias: String,
+}
+#[derive(serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct WorkspaceMediaImport {
+    source: WorkspaceSource,
+    alias: String,
+}
+#[derive(serde::Deserialize)]
+enum WorkspaceSource {
+    #[serde(rename = "workspace")]
+    Workspace,
 }
 pub struct Service {
     pub(super) backend: Arc<generation::Service>,
@@ -201,18 +218,20 @@ impl Service {
         self.backend.cancel(id, owner).await?;
         self.get_job(id, owner).await
     }
-    pub async fn upload(
+    pub(crate) async fn upload(
         &self,
-        data: String,
+        data: crate::images::Upload,
         owner: String,
         reference: bool,
         cancel: CancellationToken,
+        admission: tokio::sync::OwnedSemaphorePermit,
     ) -> Result<String> {
         let scope = self.shutdown.child_token();
         let _guard = scope.clone().drop_guard();
         let root = self.config.ai_workspace_root.join("ComfyUI/input");
         let (reply, result) = tokio::sync::oneshot::channel();
         self.tasks.spawn(async move {
+            let _admission = admission;
             let value = crate::images::store_for(
                 root,
                 data,
@@ -245,66 +264,40 @@ impl Service {
         self.tasks.spawn(async move {
             let _admission = admission;
             let lease = uuid::Uuid::new_v4().to_string();
-            let imported = async {
-                let result = storage
-                    .begin_task_result_import(
-                        &source.task_id,
-                        source.index,
-                        &source.alias,
-                        &lease,
-                        &principal,
-                    )
-                    .await?;
-                if scope.is_cancelled() {
-                    return Err(error(499, "CANCELLED", "图片导入已取消"));
-                }
-                let reference = result
-                    .reference
-                    .ok_or_else(|| error(404, "TASK_RESULT_MISSING", "任务图片不存在"))?;
-                if !matches!(
-                    reference.mime.as_str(),
-                    "image/png" | "image/jpeg" | "image/webp"
-                ) || reference.bytes == 0
-                    || reference.bytes > 20 * 1024 * 1024
-                {
-                    return Err(error(400, "INVALID_IMAGE", "任务结果不是支持的首帧图片"));
-                }
-                let media = storage.media(&reference.alias).await?;
-                if reference.sha256 != media.sha256
-                    || reference.bytes != media.total_bytes
-                    || reference.mime != media.mime
-                {
-                    return Err(error(409, "MEDIA_INVALID", "任务图片元数据已改变"));
-                }
-                if scope.is_cancelled() {
-                    return Err(error(499, "CANCELLED", "图片导入已取消"));
-                }
-                let bytes = media.total_bytes;
-                let name = crate::images::store_media_for(
-                    root,
-                    media,
-                    owner,
-                    crate::images::Limits::from_environment(),
-                    scope,
-                    crate::images::ImageKind::VideoInput,
-                )
-                .await?;
-                Ok(json!({"ok":true,"name":name,"bytes":bytes}))
+            let reference = async {
+                Ok(match source {
+                    MediaImport::Task(source) => storage
+                        .begin_task_result_import(
+                            &source.task_id,
+                            source.index,
+                            &source.alias,
+                            &lease,
+                            &principal,
+                        )
+                        .await?
+                        .reference
+                        .ok_or_else(|| error(404, "TASK_RESULT_MISSING", "任务图片不存在"))?,
+                    MediaImport::Workspace(WorkspaceMediaImport {
+                        source: WorkspaceSource::Workspace,
+                        alias,
+                    }) => {
+                        storage
+                            .begin_workspace_media_import(&alias, &lease, &principal, None)
+                            .await?
+                    }
+                })
             }
             .await;
-            // The tracked worker always closes only its own lease, even after
-            // caller cancellation or an uncertain begin reply. Task refs remain.
-            let cleanup = storage.end_task_result_import(&lease, &principal).await;
-            let value = match (imported, cleanup) {
-                (Ok(value), Ok(())) => Ok(value),
-                (Ok(_), Err(error)) => Err(error),
-                (Err(error), cleanup) => {
-                    if let Err(cleanup) = cleanup {
-                        eprintln!("video import lease cleanup: {cleanup}");
-                    }
-                    Err(error)
-                }
+            let target = crate::images::media_import::Destination {
+                root,
+                owner,
+                limits: crate::images::Limits::from_environment(),
+                kind: crate::images::ImageKind::VideoInput,
             };
+            let value = crate::images::media_import::finish(
+                storage, principal, lease, reference, target, scope,
+            )
+            .await;
             let _ = reply.send(value);
         });
         result

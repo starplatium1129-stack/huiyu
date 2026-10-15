@@ -1,5 +1,6 @@
 import { blobThumbDataUrl } from '../../utils/imageThumb.ts'
 import { desktopRuntimeFetch, getDesktopRuntime } from './runtime.ts'
+import { rememberWorkspaceMedia, workspaceMediaAuthority } from './workspaceMediaSource.ts'
 
 // Count keys and strings conservatively as UTF-16, retaining only recent pages.
 const THUMBNAIL_CACHE_LIMIT = 96
@@ -39,30 +40,28 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
     renderingThumbnails.delete(identity)
   }
   async function fetchImage(id: string, signal: AbortSignal): Promise<Blob | null> {
-    const parts: Blob[] = []
-    const length = 1024 * 1024
-    let offset = 0
-    let identity: string | undefined
-    for (;;) {
-      signal.throwIfAborted()
-      const response = await desktopRuntimeFetch(`/api/workspace/media/${encodeURIComponent(id)}/chunks?offset=${offset}&length=${length}`, { signal })
-      if (response.status === 404 && offset === 0) return null
+    signal.throwIfAborted()
+    const authority = workspaceMediaAuthority()
+    const response = await desktopRuntimeFetch(`/api/workspace/media/${encodeURIComponent(id)}/content`, { signal })
+    try {
+      if (response.status === 404) return null
       if (!response.ok) throw new Error('作品原图读取未完成')
       const totalHeader = response.headers.get('X-Workspace-Media-Total-Bytes')
       const total = Number(totalHeader)
       const mime = response.headers.get('X-Workspace-Media-Mime')
       const hash = response.headers.get('X-Workspace-Media-Sha256')
-      if (!totalHeader || !Number.isSafeInteger(total) || total < offset || !mime || !hash
-        || response.headers.get('X-Workspace-Media-Offset') !== String(offset)) throw new Error('作品原图信息不完整')
-      const nextIdentity = JSON.stringify([total, mime, hash])
-      if (identity !== undefined && identity !== nextIdentity) throw new Error('作品原图已变化，请重新读取')
-      identity = nextIdentity
-      const part = await response.blob()
+      if (!totalHeader || !Number.isSafeInteger(total) || total < 0 || !mime || !hash
+        || response.headers.get('X-Workspace-Media-Offset') !== '0') throw new Error('作品原图信息不完整')
+      const blob = await response.blob()
       signal.throwIfAborted()
-      if (part.size !== Math.min(length, total - offset)) throw new Error('作品原图读取未完成')
-      parts.push(part)
-      offset += part.size
-      if (offset === total) return new Blob(parts, { type: mime })
+      if (blob.size !== total) throw new Error('作品原图读取未完成')
+      const original = new Blob([blob], { type: mime })
+      rememberWorkspaceMedia(original, { alias: id, sha256: hash, bytes: total, mime }, authority)
+      return original
+    } finally {
+      // An early rejection must release the full stream before its timer and
+      // shared-reader entry retire, even when no caller reads the response body.
+      if (!response.bodyUsed) await response.body?.cancel().catch(() => {})
     }
   }
 

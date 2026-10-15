@@ -452,24 +452,9 @@ impl TaskRuntime {
             principal: principal.into(),
             id: id.into(),
         });
-        let (observation, checkpoint) = self
-            .video
+        self.video
             .recover_batch(&serde_json::to_value(task)?, hooks, &mut cancellation.batch)
-            .await?;
-        patch(
-            storage,
-            principal,
-            id,
-            TaskPatch {
-                checkpoint: Some(Some(checkpoint.clone())),
-                ..Default::default()
-            },
-        )
-        .await?;
-        if let Some(job) = checkpoint["gatewayJobId"].as_str() {
-            self.register_job(storage, id, job.into());
-        }
-        Ok(observation)
+            .await
     }
 }
 fn recovery_closed() -> ApiError {

@@ -14,6 +14,7 @@ pub(super) async fn prepare(
     mut input: Input,
     remote: bool,
     managed_auth: Option<&(String, String)>,
+    admission: Option<&request_body::Admission>,
     cancel: &CancellationToken,
 ) -> Result<Prepared> {
     let source = input.api.take().unwrap();
@@ -68,7 +69,7 @@ pub(super) async fn prepare(
         ));
     }
     let session_id = std::mem::take(&mut input.session_id);
-    let body = request_body::encode(payload(input, &api), cancel).await?;
+    let body = request_body::encode(payload(input, &api), admission, cancel).await?;
     let response = client
         .send(
             target(&api, &api.pathname)?,

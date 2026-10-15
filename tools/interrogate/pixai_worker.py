@@ -81,7 +81,12 @@ def read_image(image_path):
                 source_format = image.format
                 image.seek(0)
                 image.load()
-                loaded = ImageOps.exif_transpose(image).copy()
+                orientation = image.getexif().get(274, 1)
+                loaded = ImageOps.exif_transpose(image)
+                # Without a transform, exif_transpose already returns an owned copy.
+                # Keep the second copy after a transform to reload rewritten EXIF.
+                if orientation in range(2, 9):
+                    loaded = loaded.copy()
         return loaded, {'width': loaded.width, 'height': loaded.height,
                         'imageBytes': path.stat().st_size, 'sourceFormat': source_format}
     except (OSError, UnidentifiedImageError, Image.DecompressionBombError,
@@ -194,11 +199,22 @@ class PixaiModel:
         threshold = threshold_value(threshold)
         image, image_meta = read_image(image_path)
         torch = self.torch
-        inputs = logits = probabilities = None
+        inputs = logits = probabilities = pixels = None
         started = time.perf_counter()
         try:
             with contextlib.redirect_stdout(sys.stderr), torch.inference_mode():
-                inputs = self.processor(image)['pixel_values'].to(device='cuda:0', dtype=torch.bfloat16)
+                if image.mode == 'RGB':
+                    import numpy as np
+                    default_dtype = torch.get_default_dtype()
+                    # Match torchvision's RGB conversion, but divide our private
+                    # float buffer in place instead of allocating another full image.
+                    pixels = (torch.from_numpy(np.array(image, dtype=np.uint8, copy=True))
+                              .permute(2, 0, 1).contiguous().to(dtype=default_dtype))
+                    pixels.div_(255)
+                # Non-RGB inputs retain the processor's white alpha composition.
+                inputs = self.processor(pixels if pixels is not None else image)['pixel_values']
+                pixels = None
+                inputs = inputs.to(device='cuda:0', dtype=torch.bfloat16)
                 if tuple(inputs.shape) != (1, 3, 1008, 1008):
                     raise PixaiError('PIXAI_INFERENCE_FAILED', 'PixAI 图片预处理尺寸不匹配')
                 torch.cuda.reset_peak_memory_stats()
@@ -212,7 +228,7 @@ class PixaiModel:
             self.raise_runtime_error(error)
         finally:
             image.close()
-            del inputs, logits, probabilities
+            del inputs, logits, probabilities, pixels
 
     def close(self):
         self.processor = None

@@ -1,6 +1,6 @@
 import { recordGalleryMutation } from './galleryStorage';
 import { confirmAction } from '@/composables/useConfirm';
-import { ARTWORK_DELETE_BATCH_SIZE } from '@/application/artwork/artworkRepository';
+import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE } from '@/application/artwork/artworkRepository';
 import { artworkRepository } from '@/storage/artworkRepository';
 import { type ArtworkRecord } from '@/types/artwork';
 import { storageWriteMessage } from '@/utils/storageWriteError';
@@ -178,17 +178,23 @@ export async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[
     let missingImages = 0;
     let missingEntries = 0;
     let unconfirmed = 0;
-    for (const id of ids) {
+    const requested = ids.slice();
+    for (let offset = 0; offset < requested.length; offset += ARTWORK_RESTORE_BATCH_SIZE) {
+        const batch = requested.slice(offset, offset + ARTWORK_RESTORE_BATCH_SIZE);
         try {
-            const result = await artworkRepository.restoreArtwork(id);
-            if (result.restored)
-                restored += 1;
-            else if (result.missingImageIds?.length)
-                missingImages += 1;
-            else
-                missingEntries += 1;
+            const results = await artworkRepository.restoreArtworks(batch);
+            for (const result of results) {
+                if (result.restored)
+                    restored += 1;
+                else if (result.missingImageIds?.length)
+                    missingImages += 1;
+                else if (result.code && result.code !== 'NOT_FOUND')
+                    unconfirmed += 1;
+                else
+                    missingEntries += 1;
+            }
         }
-        catch { unconfirmed += 1; }
+        catch { unconfirmed += batch.length; }
     }
     await loadGalleryStorage();
     const outcomes: string[] = [];
@@ -196,7 +202,7 @@ export async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[
     if (missingImages) outcomes.push(`${missingImages} 幅原图已缺失，无法完整恢复；回收站快照仍保留`);
     if (missingEntries) outcomes.push(`${missingEntries} 幅已不在回收站`);
     if (unconfirmed) outcomes.push(`${unconfirmed} 幅恢复尚未确认，请重新查看回收站后重试`);
-    showToast(outcomes.join('；'), restored === ids.length ? 'success' : 'warning');
+    showToast(outcomes.join('；'), restored === requested.length ? 'success' : 'warning');
 }
 export async function undoDeleteAction(ctx: Context, item: ArtworkRecord): Promise<void> {
     const { showToast, loadGalleryStorage } = ctx;

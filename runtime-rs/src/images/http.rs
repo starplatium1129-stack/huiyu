@@ -1,4 +1,4 @@
-use super::upload_body::UploadBody;
+use super::upload_body::{RawUploadBody, UploadBody};
 use super::*;
 use crate::{AppState, security};
 use axum::{
@@ -23,6 +23,10 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
             .route(
                 &format!("/api/{family}/images"),
                 post(upload).layer(DefaultBodyLimit::max(28 * 1024 * 1024)),
+            )
+            .route(
+                &format!("/api/{family}/images/raw"),
+                post(upload_raw).layer(DefaultBodyLimit::max(16 * 1024 * 1024)),
             )
             .route(
                 &format!("/api/{family}/jobs"),
@@ -81,7 +85,7 @@ async fn upload(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
-    UploadBody(mut body): UploadBody,
+    UploadBody(mut body, admission): UploadBody,
 ) -> Response {
     if let Err(error) = state.host.check_running() {
         return error.into_response();
@@ -92,8 +96,42 @@ async fn upload(
             return Err(error("INVALID_BODY", "请求体必须包含 image base64 字符串"));
         };
         drop(body);
-        Ok(json!({"name":http.service.upload(image,owner,http.service.shutdown.child_token()).await?}))
-    }.await;
+        let name = http
+            .service
+            .upload(
+                Upload::Encoded(image),
+                owner,
+                http.service.shutdown.child_token(),
+                admission,
+            )
+            .await?;
+        Ok(json!({"name":name}))
+    }
+    .await;
+    response(result, StatusCode::OK)
+}
+async fn upload_raw(
+    State(state): State<AppState>,
+    Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    Query(query): Query<HashMap<String, String>>,
+    headers: HeaderMap,
+    RawUploadBody(bytes, admission): RawUploadBody,
+) -> Response {
+    if let Err(error) = state.host.check_running() {
+        return error.into_response();
+    }
+    let owner = generation::request_owner(&headers, peer, &query);
+    let result = http
+        .service
+        .upload(
+            Upload::Raw(bytes),
+            owner,
+            http.service.shutdown.child_token(),
+            admission,
+        )
+        .await
+        .map(|name| json!({"name":name}));
     response(result, StatusCode::OK)
 }
 struct SubmissionGuard {

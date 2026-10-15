@@ -1,4 +1,5 @@
 use super::*;
+use axum::body::Bytes;
 use base64::{Engine, engine::general_purpose::STANDARD};
 use hmac::{Hmac, Mac};
 use regex::Regex;
@@ -60,17 +61,17 @@ impl Kind {
             Self::VideoReference => "aics_video_ref",
         }
     }
-    fn maximum(self) -> usize {
+    pub(super) fn maximum(self) -> usize {
         match self {
             Self::Anima => 16 * 1024 * 1024,
             _ => 20 * 1024 * 1024,
         }
     }
 }
-async fn name(
+async fn name<B: AsRef<[u8]> + Send + Sync + 'static>(
     salt: Vec<u8>,
     owner: String,
-    bytes: Arc<Vec<u8>>,
+    bytes: Arc<B>,
     extension: &'static str,
     kind: Kind,
     cancel: &CancellationToken,
@@ -90,7 +91,7 @@ async fn name(
         let mut hmac = Hmac::<Sha256>::new_from_slice(&salt).expect("HMAC accepts owner salt");
         hmac.update(owner.as_bytes());
         hmac.update(&[0]);
-        for chunk in bytes.chunks(1024 * 1024) {
+        for chunk in bytes.as_ref().as_ref().chunks(1024 * 1024) {
             if scope.is_cancelled() {
                 return Err(inputs::cancelled());
             }
@@ -175,9 +176,14 @@ async fn owner_salt(root: &Path, cancel: &CancellationToken) -> Result<Vec<u8>> 
     }
 }
 
+pub(crate) enum Upload {
+    Encoded(String),
+    Raw(Bytes),
+}
+
 pub(super) async fn store(
     root: PathBuf,
-    image: String,
+    image: Upload,
     owner: String,
     limits: Limits,
     cancel: CancellationToken,
@@ -186,13 +192,17 @@ pub(super) async fn store(
 }
 pub(crate) async fn store_for(
     root: PathBuf,
-    image: String,
+    image: Upload,
     owner: String,
     limits: Limits,
     cancel: CancellationToken,
     kind: Kind,
 ) -> Result<String> {
-    store_source_for(root, Source::Encoded(image), owner, limits, cancel, kind).await
+    let source = match image {
+        Upload::Encoded(image) => Source::Encoded(image),
+        Upload::Raw(bytes) => Source::Raw(bytes),
+    };
+    store_source_for(root, source, owner, limits, cancel, kind).await
 }
 
 pub(crate) async fn store_media_for(
@@ -208,6 +218,7 @@ pub(crate) async fn store_media_for(
 
 enum Source {
     Encoded(String),
+    Raw(Bytes),
     Stored(crate::storage::Media),
 }
 
@@ -225,6 +236,7 @@ async fn store_source_for(
         .map_err(|_| ApiError::new(503, "QUEUE_FULL", "素材写入队列已满，请稍后再试"))?;
     let _serial = tokio::select! {guard=SERIAL.lock()=>guard,_=cancel.cancelled()=>return Err(inputs::cancelled())};
     let bytes = match source {
+        Source::Raw(bytes) => bytes,
         Source::Encoded(image) => {
             if image.len() > 28 * 1024 * 1024 {
                 return Err(error("INVALID_IMAGE", "图片数据超出大小限制"));
@@ -240,12 +252,13 @@ async fn store_source_for(
                 };
                 STANDARD
                     .decode(data)
+                    .map(Bytes::from)
                     .map_err(|_| error("INVALID_IMAGE", "图片编码无效"))
             })
             .await
             .map_err(|_| error("INVALID_IMAGE", "图片解码失败"))??
         }
-        Source::Stored(media) => read_media(media, kind.maximum(), &cancel).await?,
+        Source::Stored(media) => Bytes::from(read_media(media, kind.maximum(), &cancel).await?),
     };
     if bytes.is_empty() || bytes.len() > kind.maximum() {
         return Err(error("INVALID_IMAGE", "图片数据超出大小限制"));
@@ -287,14 +300,14 @@ async fn store_source_for(
     let result=async{
         let salt = owner_salt(&root, &cancel).await?;
         if salt.len()!=32{return Err(ApiError::new(409,"IMAGE_STORAGE_INVALID","素材身份文件损坏，请检查后重试。"))}let filename=name(salt,owner,bytes.clone(),extension,kind,&cancel).await?;let target=root.join(&filename);
-        match tokio::fs::read(&target).await{Ok(existing)if existing.as_slice()==bytes.as_slice()=>return Ok(filename),Ok(_)=>{},Err(error)if error.kind()==std::io::ErrorKind::NotFound=>{},Err(error)=>return Err(error.into())}
+        if stored_matches(&target, &bytes, &cancel).await? { return Ok(filename); }
         let (used_bytes, files) = usage(root.clone(), cancel.clone()).await?;
         if used_bytes.saturating_add(bytes.len()as u64)>limits.bytes||files+1>limits.files{return Err(ApiError::new(413,"IMAGE_QUOTA",format!("素材额度不足（{files}/{} 文件，{used_bytes}/{} 字节）；请先检查并整理未引用素材。",limits.files,limits.bytes)))}
         decode::validate(bytes.clone(),&cancel).await?;if cancel.is_cancelled(){return Err(inputs::cancelled())}
         let file=tokio::fs::OpenOptions::new().write(true).create_new(true).open(&pending).await?;
 
         let mut file=file;
-        file.write_all(bytes.as_slice()).await?;
+        file.write_all(&bytes).await?;
         // Tokio may still be writing in the background; finish and surface errors before publishing.
         // This is a visibility barrier, not a new crash-durability guarantee for uploaded images.
         file.flush().await?;
@@ -310,7 +323,37 @@ async fn store_source_for(
     result
 }
 
-async fn read_media(
+async fn stored_matches(path: &Path, bytes: &[u8], cancel: &CancellationToken) -> Result<bool> {
+    let opened = tokio::select! { biased;
+        _ = cancel.cancelled() => return Err(inputs::cancelled()),
+        file = tokio::fs::File::open(path) => file,
+    };
+    let file = match opened {
+        Ok(file) => file,
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(false),
+        Err(error) => return Err(error.into()),
+    };
+    // Content-addressed retries compare bytes without allocating another full
+    // image. One extra byte distinguishes a longer/corrupt existing file.
+    let mut file = file.take(bytes.len() as u64 + 1);
+    let mut buffer = vec![0; 256 * 1024];
+    let mut offset = 0;
+    let mut equal = true;
+    loop {
+        let count = tokio::select! { biased;
+            _ = cancel.cancelled() => return Err(inputs::cancelled()),
+            count = file.read(&mut buffer) => count?,
+        };
+        if count == 0 {
+            break;
+        }
+        equal &= bytes.get(offset..offset + count) == Some(&buffer[..count]);
+        offset += count;
+    }
+    Ok(equal && offset == bytes.len())
+}
+
+pub(crate) async fn read_media(
     media: crate::storage::Media,
     maximum: usize,
     cancel: &CancellationToken,

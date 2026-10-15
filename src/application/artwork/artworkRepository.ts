@@ -23,7 +23,9 @@ export interface ArtworkDeleteResult {
 }
 
 export const ARTWORK_DELETE_BATCH_SIZE = 200
+export const ARTWORK_RESTORE_BATCH_SIZE = 200
 export interface ArtworkSoftDeleteResult { id: string | number; deleted: boolean }
+export interface ArtworkRestoreResult { id: string | number; restored: boolean; missingImageIds?: string[]; code?: string }
 
 export interface TrashEntry {
   id: string
@@ -50,6 +52,9 @@ export interface ArtworkRepository {
   /** Detached id/scene/character/favorite/timestamp only; legacy rows may predate artwork IDs. */
   readPreferenceHistory(): Promise<unknown[]>
   getImage(id: string, signal?: AbortSignal): Promise<Blob | null>
+  /** Only workspace-backed repositories can reference bytes without downloading.
+   * Re-reading the opaque authority detects workspace/session changes during use. */
+  getWorkspaceMediaReference?(id: string): { alias: string; authority: string }
   putImage(blob: Blob): Promise<string>
   deleteImage(id: string): Promise<void>
   countImages(): Promise<number>
@@ -68,6 +73,8 @@ export interface ArtworkRepository {
   /** One bounded batch; missing records are reported without discarding successful deletions. */
   softDeleteArtworks(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]>
   restoreArtwork(id: string | number): Promise<{ restored: boolean; missingImageIds?: string[] }>
+  /** Ordered bounded batch; per-item conflicts retain successful restores. */
+  restoreArtworks(ids: Array<string | number>): Promise<ArtworkRestoreResult[]>
   purgeExpiredTrash(): Promise<{ purged: number }>
   /** Permanently remove only the confirmed tombstones; newer deletions stay recoverable. */
   purgeTrash(entries: ArtworkTrashSelection[]): Promise<{ purged: number }>

@@ -120,7 +120,18 @@ pub(super) fn build(
     } else if let Some(rgba) = image.as_rgba8() {
         rgba.pixels().any(|p| p[3] < 255)
     } else {
-        image.to_rgba8().pixels().any(|p| p[3] < 255)
+        // Preserve the original conversion's 16-bit alpha rounding without
+        // allocating a full RGBA8 copy just to inspect its alpha channel.
+        let mut transparent = false;
+        for top in (0..height).step_by(128) {
+            check(cancel, started)?;
+            let rows = image.crop_imm(0, top, width, (height - top).min(128));
+            if rows.to_rgba8().pixels().any(|p| p[3] < 255) {
+                transparent = true;
+                break;
+            }
+        }
+        transparent
     };
     check(cancel, started)?;
     let portrait = png(&image)?;

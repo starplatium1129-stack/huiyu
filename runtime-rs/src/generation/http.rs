@@ -85,12 +85,10 @@ pub(crate) async fn limit_request(
     // Admission runs before Json allocates an upload body. Sharing clients use
     // one bucket even when they change forwarded IP headers.
     if request.method() == Method::POST
-        && request
-            .uri()
-            .path()
-            .rsplit('/')
-            .next()
-            .is_some_and(|part| ["images", "jobs", "batches", "retry"].contains(&part))
+        && request.uri().path().rsplit('/').next().is_some_and(|part| {
+            ["images", "jobs", "batches", "retry"].contains(&part)
+                || (part == "raw" && request.uri().path().ends_with("/images/raw"))
+        })
         && let Some(response) = limit.check(security::is_direct_local(request.headers(), peer.ip()))
     {
         return response;

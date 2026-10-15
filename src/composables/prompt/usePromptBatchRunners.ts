@@ -2,6 +2,7 @@ import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { hasRuntimeTasks } from '../../api/runtimeTaskAuthority'
 import { createBatchDrawPlanStorage } from '../generation/batchDrawPlan'
 import { readPreparedBatch, recoverBatchTask, batchFailure, batchHistoryFromMetadata, type PreparedBatchImage } from './batchGenerationPlan'
+import { pendingBatchSaves, pendingBatchImage, persistBatchArtwork, batchSaveAuthority, ownsPendingSave, updateArtworkSource, type BatchArtworkSource } from './batchArtworkSave'
 import { useTrackedTask } from '../useTaskCenter.ts'
 import { ref, shallowRef, type Ref } from 'vue'
 import { endfieldAnimaBinding } from '../../utils/loraCatalog.ts'
@@ -30,31 +31,13 @@ import {
 } from '../generation/useAnimaSession.ts'
 import type { useLegacySdTasks, LegacySdObserveOptions } from '../generation/useLegacySdTasks.ts'
 import type { usePromptAssembly } from './usePromptAssembly.ts'
-import { useBatchDraw, type BatchDrawRunnerInput, type BatchDrawRunnerResult, type BatchEngine, type BatchTargetItem } from '../generation/useBatchDraw.ts'
+import { useBatchDraw, type BatchDrawRunnerInput, type BatchEngine, type BatchTargetItem } from '../generation/useBatchDraw.ts'
 import type { SDQueueJob } from '../generation/useSDQueue.ts'
-import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
-import { getDesktopRuntime } from '@/platform/desktop/runtime'
-import { registerMigrationArtworkSource } from '@/platform/web/migrationBarrier'
+import { artworkRepository } from '@/storage/artworkRepository'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
 type PromptAssembly = ReturnType<typeof usePromptAssembly>
-type HistoryInput = Parameters<PromptBuilderStore['commitHistoryEntry']>[0]
-// Route disposal stops observation. Unarchived bytes keep their original
-// request identity until this application session can finish saving them.
-type PendingBatchSave = { entry: HistoryInput; repository: ArtworkRepository; authority: string; runtimeOwned: boolean; saved?: HistoryEntry }
-const pendingBatchSaves = new Map<string, PendingBatchSave>()
-let releaseArtworkSource: (() => void) | undefined
-const hasUndurableBatchSource = () => [...pendingBatchSaves.values()].some(pending => !pending.saved && !(pending.runtimeOwned && pending.entry.taskId))
-function updateArtworkSource() {
-  if (hasUndurableBatchSource()) releaseArtworkSource ??= registerMigrationArtworkSource(hasUndurableBatchSource)
-  else { releaseArtworkSource?.(); releaseArtworkSource = undefined }
-}
-function batchSaveAuthority() {
-  const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
-  return JSON.stringify([workspace?.workspaceId, workspace?.principalId])
-}
-const ownsPendingSave = (pending: Pick<PendingBatchSave, 'repository' | 'authority'>) => pending.repository === artworkRepository && pending.authority === batchSaveAuthority()
 
 export interface PromptBatchRunnersDeps {
   pb: PromptBuilderStore
@@ -361,26 +344,6 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   }
 
   const pendingSaves = pendingBatchSaves
-  async function persist(input: BatchDrawRunnerInput, pending: PendingBatchSave): Promise<BatchDrawRunnerResult> {
-    const key = input.requestKey
-    pendingSaves.set(key, pending)
-    updateArtworkSource()
-    const changed = () => ({ ok: false, unresolved: true, pendingImage: true,
-      error: '作品库身份已变化，原图和请求编号已保留；请回到原工作区继续入册' })
-    if (!ownsPendingSave(pending)) return changed()
-    let saved: HistoryEntry | null = pending.saved ?? null
-    if (!saved) {
-      try { saved = await pb.commitHistoryEntry(pending.entry, pending.repository) }
-      catch { /* Keep the original bytes and request identity for save-only recovery. */ }
-      if (saved) { pending.saved = saved; updateArtworkSource() }
-    }
-    if (!ownsPendingSave(pending)) return changed()
-    if (!saved) return { ok: false, unresolved: true, pendingImage: true, error: '图片已生成，入册失败；继续会重新保存，不重复出图' }
-    pendingSaves.delete(key)
-    updateArtworkSource()
-    return { ok: true, historyId: saved.id, imageId: saved.image_id }
-  }
-
   let planOwner = { repository: artworkRepository, authority: batchSaveAuthority() }
   const checkPlanOwner = () => { if (!ownsPendingSave(planOwner)) throw new Error('批次所属作品库已变化，请回到原工作区继续；原计划未写入其他资料库') }
   const batchStorage = createBatchDrawPlanStorage()
@@ -399,13 +362,13 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       if (!plan) return { ok: false, unresolved: input.reconnect, error: '原批次参数快照不可用；请核对任务中心中的原任务。' }
       if (hasRuntimeTasks() !== batchDraw.runtimeOwned()) return { ok: false, unresolved: true, error: '原批次生成环境已改变，请恢复原工作区后核对任务。' }
       const saved = pendingSaves.get(input.requestKey)
-      if (saved) return persist(input, saved)
+      if (saved) return persistBatchArtwork(input, saved, pb.commitHistoryEntry)
       const owner = { repository: artworkRepository, authority: batchSaveAuthority(), runtimeOwned: batchDraw.runtimeOwned() }
-      const save = (entry: HistoryInput) => persist(input, { ...owner, entry })
+      const save = (source: BatchArtworkSource) => persistBatchArtwork(input, { ...owner, source }, pb.commitHistoryEntry)
       try {
         if (input.reconnect && batchDraw.runtimeOwned()) {
           const result = await recoverBatchTask(input)
-          return save({ ...plan.history, ...result })
+          return save({ kind: 'task', taskId: result.taskId })
         }
         if (plan.engine === 'sd') {
           if (!input.reconnect) return { ok: false, error: 'SD 新生成已退役；仅核对原批次中已接收的任务。' }
@@ -420,8 +383,8 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
           const response = await runtimeFetch(url, { cache: 'no-store', signal: input.signal })
           if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error('成片响应不是图片')
           const blob = await response.blob()
-          return save({ ...plan.history, blob, seed: input.seed >= 0 ? input.seed : sd.resultSeed.value ?? undefined,
-            ...(input.taskId && batchDraw.runtimeOwned() ? { taskId: input.taskId } : sd.resultTaskId?.value ? { taskId: sd.resultTaskId.value } : {}) })
+          return save({ kind: 'image', entry: { ...plan.history, blob, seed: input.seed >= 0 ? input.seed : sd.resultSeed.value ?? undefined,
+            ...(input.taskId && batchDraw.runtimeOwned() ? { taskId: input.taskId } : sd.resultTaskId?.value ? { taskId: sd.resultTaskId.value } : {}) } })
         }
         const nativeBlocker = !input.reconnect && deps.animaState.value.provider === 'native' && nativeAnimaRequestBlocker(deps.animaState.value.models, plan.request)
         if (nativeBlocker) return { ok: false, error: nativeBlocker }
@@ -429,8 +392,8 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
           { requestKey: input.requestKey, onAccepted: input.accepted, signal: input.signal, resumeId: input.reconnect ? input.taskId : undefined,
             onSubmitting: input.submitting,
             reconnect: input.reconnect, family: plan.engine })
-        return save({ ...(result.metadata ? batchHistoryFromMetadata(plan, result.metadata) : plan.history),
-          blob: result.blob, seed: result.seed, taskId: result.taskId })
+        if ('taskId' in result) return save({ kind: 'task', taskId: result.taskId })
+        return save({ kind: 'image', entry: { ...batchHistoryFromMetadata(plan, result.metadata), blob: result.blob, seed: result.seed } })
       } catch (error) {
         if (!input.taskId && !input.reconnect && batchDraw.cancelRequested.value && error instanceof Error && error.name === 'AbortError') return { ok: false, cancelled: true }
         return batchFailure(input, error, batchDraw.runtimeOwned())
@@ -530,9 +493,5 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   }
 
   useTrackedTask(() => ({ kind: 'batch', title: `批量出图 · ${batchDraw.progress.value.total} 张`, route: '/prompt-builder?taskCenter=batch', resultRoute: batchDraw.progress.value.succeeded ? '/gallery?batch=' + encodeURIComponent(String(batchDraw.jobs.value.filter(job => job.historyId != null).at(-1)?.historyId || '')) : undefined, status: batchDraw.running.value ? 'running' : !batchDraw.jobs.value.length ? 'idle' : batchDraw.progress.value.unresolved || batchDraw.progress.value.remaining ? 'interrupted' : batchDraw.progress.value.failed ? 'failed' : batchDraw.progress.value.cancelled ? 'cancelled' : 'succeeded', progress: batchDraw.progress.value.total ? batchDraw.progress.value.done / batchDraw.progress.value.total * 100 : null, message: `${batchDraw.jobs.value.find(job => job.status === 'running' || job.status === 'accepted')?.message || ''} ${batchDraw.progress.value.succeeded} 张成功 · ${batchDraw.progress.value.failed} 张失败 · ${batchDraw.progress.value.remaining} 张未执行 · ${batchDraw.progress.value.unresolved} 张待核对` }), { cancel: batchDraw.cancel, retry: () => batchDraw.progress.value.unresolved || batchDraw.progress.value.remaining ? batchDraw.resume() : onRetryFailed() })
-  return { batchEngine, batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed,
-    pendingImage: (requestKey: string) => {
-      const pending = pendingSaves.get(requestKey)
-      return pending && ownsPendingSave(pending) ? pending.entry.blob : null
-    } }
+  return { batchEngine, batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed, pendingImage: pendingBatchImage }
 }

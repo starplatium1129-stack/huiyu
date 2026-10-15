@@ -15,11 +15,14 @@ MAX_CPU_CACHE_BYTES = 128 * 1024 * 1024
 
 class CpuCache:
     """One validated CPU weight set; pass-local modules alone own CUDA weights."""
-    def __init__(self):
+    def __init__(self, *, lease=None):
+        self.lease = lease
         self.clear()
 
-    def clear(self):
+    def clear(self, *, keep_identity=False):
         self.identity, self.weights = None, None
+        if not keep_identity and self.lease is not None:
+            self.lease.close()
 
 
 def _file_identity(path):
@@ -47,7 +50,13 @@ def _network():
             features = [value, self.activation(self.conv1(value))]
             for index in range(2, 5):
                 features.append(self.activation(getattr(self, f"conv{index}")(torch.cat(features, dim=1))))
-            return value + self.conv5(torch.cat(features, dim=1)) * .2
+            # The packed tensor owns its data. Release the four dense features
+            # before conv5, then its input before the unchanged residual math.
+            packed = torch.cat(features, dim=1)
+            del features
+            residual = self.conv5(packed)
+            del packed
+            return value + residual * .2
 
     class ResidualBlock(nn.Module):
         def __init__(self):
@@ -72,9 +81,14 @@ def _network():
         def forward(self, image):
             feature = self.conv_first(image)
             feature = feature + self.conv_body(self.body(feature))
-            feature = self.activation(self.conv_up1(functional.interpolate(feature, scale_factor=2, mode="nearest")))
-            feature = self.activation(self.conv_up2(functional.interpolate(feature, scale_factor=2, mode="nearest")))
-            return self.conv_last(self.activation(self.conv_hr(feature)))
+            # Release each old feature before the next convolution allocates its
+            # output. Keep the exact FP32 operator order and tensor layouts.
+            feature = functional.interpolate(feature, scale_factor=2, mode="nearest")
+            feature = self.activation(self.conv_up1(feature))
+            feature = functional.interpolate(feature, scale_factor=2, mode="nearest")
+            feature = self.activation(self.conv_up2(feature))
+            feature = self.activation(self.conv_hr(feature))
+            return self.conv_last(feature)
 
     return Remacri()
 
@@ -108,7 +122,7 @@ def load_remacri(path, device="cpu", *, upload, report, cache=None, identity=Non
         state = cache.weights
     else:
         if cache is not None:
-            cache.clear()
+            cache.clear(keep_identity=True)
         expected, mapping = model.state_dict(), _key_mapping()
         # Checkpoint tensors are strictly F32, regardless of the default meta dtype.
         weight_bytes = sum(value.numel() for value in expected.values()) * 4
@@ -159,7 +173,9 @@ def run(images, path, device, *, tools, expected, error, cache=None, check=None)
         started = time.perf_counter()
         before = _file_identity(path)
         fingerprint = tools("native_hash").file_sha256 if cache is not None or expected is not None else None
-        digest = fingerprint(path) if fingerprint is not None else None
+        lease = cache.lease if cache is not None else None
+        digest = lease.acquire(path, fingerprint) if lease is not None else (fingerprint(path) if fingerprint is not None else None)
+        protected = lease is not None and lease.cached
         if before != _file_identity(path) or (expected is not None and digest != expected):
             raise error("MODEL_CHANGED", "Upscaler bytes changed after profile validation")
         report = {"executionRevision": EXECUTION_REVISION,
@@ -167,8 +183,8 @@ def run(images, path, device, *, tools, expected, error, cache=None, check=None)
         model = load_remacri(path, device=device, upload=tools("native_upload").try_packed_upload,
                             report=report["loading"], cache=cache, identity=(*before, digest), check=check)
         started = time.perf_counter()
-        after = fingerprint(path) if fingerprint is not None else None
-        if before != _file_identity(path) or after != digest:
+        after = digest if protected else (fingerprint(path) if fingerprint is not None else None)
+        if before != _file_identity(path) or after != digest or (protected and not lease.valid()):
             raise error("MODEL_CHANGED", "Upscaler bytes changed while loading")
         report["loading"]["fingerprintWallSeconds"] += time.perf_counter() - started
         if check is not None:
@@ -176,6 +192,8 @@ def run(images, path, device, *, tools, expected, error, cache=None, check=None)
         result = upscale_4x(model, images, tiling=tools("anima_tiling"), report=report, check=check)
         if check is not None:
             check()
+        if protected and not lease.valid():
+            raise error("MODEL_CHANGED", "Upscaler protection changed during the pass")
         return result, report
     except BaseException:
         if cache is not None:

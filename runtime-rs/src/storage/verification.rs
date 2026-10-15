@@ -5,6 +5,7 @@ use serde_json::{Value, json};
 use std::{
     collections::HashMap,
     fs::File,
+    io::Seek,
     path::PathBuf,
     sync::{Arc, Mutex, Weak},
 };
@@ -13,13 +14,19 @@ use tokio_util::sync::CancellationToken;
 
 const WORKERS: u32 = 2;
 const CHECKERS: u32 = 4;
+pub(crate) struct OpenedMedia {
+    pub media: Media,
+    pub file: tokio::fs::File,
+    pub closed: CancellationToken,
+    version: media::FileIdentity,
+    native: crate::file_identity::Identity,
+}
 pub(super) struct Verifier {
     workers: Arc<Semaphore>,
     checks: Arc<Semaphore>,
     paths: Mutex<HashMap<PathBuf, Weak<AsyncMutex<()>>>>,
     cache: Mutex<HashMap<PathBuf, media::FileIdentity>>,
     closed: CancellationToken,
-
 }
 impl Verifier {
     pub fn new() -> Self {
@@ -29,7 +36,6 @@ impl Verifier {
             paths: Mutex::new(HashMap::new()),
             cache: Mutex::new(HashMap::new()),
             closed: CancellationToken::new(),
-
         }
     }
     pub async fn verify(
@@ -37,7 +43,7 @@ impl Verifier {
         root: Arc<PathBuf>,
         source: Media,
         owner: tokio::sync::mpsc::Sender<super::Work>,
-    ) -> Result<Media> {
+    ) -> Result<OpenedMedia> {
         let lock = {
             let mut paths = self.paths.lock().unwrap();
             paths.retain(|_, value| value.strong_count() > 0);
@@ -82,15 +88,27 @@ impl Verifier {
                 check(&checking_cancel)?;
                 // Do not retain an opened file while awaiting a hash slot when
                 // identity changed; cold read handles remain bounded by WORKERS.
+                let cached = if cached {
+                    let native = crate::file_identity::opened(&file)?;
+                    Some((file, before, native))
+                } else {
+                    None
+                };
                 Ok::<_, ApiError>((source, guard, owner, cached))
             })
             .await
             .map_err(|_| unavailable())??
         } else {
-            (source, guard, owner, false)
+            (source, guard, owner, None)
         };
-        if cached {
-            return Ok(source);
+        if let Some((file, version, native)) = cached {
+            return Ok(OpenedMedia {
+                media: source,
+                file: tokio::fs::File::from_std(file),
+                closed: self.closed.clone(),
+                version,
+                native,
+            });
         }
         let permit = tokio::select! { biased;
             _ = self.closed.cancelled() => return Err(unavailable()),
@@ -111,13 +129,17 @@ impl Verifier {
             )?;
             let mut file = File::open(&source.path)?;
             let before = media::FileIdentity::of(&file)?;
+            let native = crate::file_identity::opened(&file)?;
 
             let (bytes, hash, mime) = media::hash_opened(&mut file, || check(&cancelled))?;
+            let current = File::open(&source.path)?;
             if bytes != source.total_bytes
                 || hash != source.sha256
                 || mime.as_deref() != Some(&source.mime)
                 || media::FileIdentity::of(&file)? != before
-                || media::FileIdentity::of(&File::open(&source.path)?)? != before
+                || media::FileIdentity::of(&current)? != before
+                || crate::file_identity::opened(&file)? != native
+                || crate::file_identity::opened(&current)? != native
             {
                 return Err(ApiError::new(
                     409,
@@ -132,8 +154,62 @@ impl Verifier {
             {
                 cache.remove(&key);
             }
-            cache.insert(source.path.clone(), before);
-            Ok(source)
+            cache.insert(source.path.clone(), before.clone());
+            file.rewind()?;
+            Ok(OpenedMedia {
+                media: source,
+                file: tokio::fs::File::from_std(file),
+                closed: verifier.closed.clone(),
+                version: before,
+                native,
+            })
+        })
+        .await
+        .map_err(|_| unavailable())?
+    }
+    pub async fn finish(
+        &self,
+        root: Arc<PathBuf>,
+        source: OpenedMedia,
+        current: Media,
+        owner: tokio::sync::mpsc::Sender<super::Work>,
+    ) -> Result<()> {
+        let changed = || ApiError::new(409, "MEDIA_INVALID", "Media changed during download");
+        if source.media.path != current.path
+            || source.media.sha256 != current.sha256
+            || source.media.total_bytes != current.total_bytes
+            || source.media.mime != current.mime
+        {
+            return Err(changed());
+        }
+        let cancelled = self.closed.child_token();
+        let _cancel = cancelled.clone().drop_guard();
+        let permit = tokio::select! { biased;
+            _ = self.closed.cancelled() => return Err(unavailable()),
+            permit = self.checks.clone().acquire_owned() => permit.map_err(|_| unavailable())?,
+        };
+        let file = source.file.into_std().await;
+        tokio::task::spawn_blocking(move || {
+            // A slow consumer holds no checker slot. Only this final metadata
+            // worker owns the permit, even if its HTTP waiter disconnects.
+            let (_permit, _owner) = (permit, owner);
+            check(&cancelled)?;
+            schema::safe(
+                &root,
+                current
+                    .path
+                    .strip_prefix(root.as_path())
+                    .map_err(|_| invalid("Media path escapes workspace"))?,
+            )?;
+            let current = File::open(&current.path)?;
+            if media::FileIdentity::of(&file)? != source.version
+                || media::FileIdentity::of(&current)? != source.version
+                || crate::file_identity::opened(&file)? != source.native
+                || crate::file_identity::opened(&current)? != source.native
+            {
+                return Err(changed());
+            }
+            check(&cancelled)
         })
         .await
         .map_err(|_| unavailable())?
@@ -147,7 +223,6 @@ impl Verifier {
             self.workers.acquire_many(WORKERS),
         );
     }
-
 }
 
 fn check(cancelled: &CancellationToken) -> Result<()> {

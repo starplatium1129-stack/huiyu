@@ -2,6 +2,7 @@ mod admission;
 mod catalog;
 mod http;
 mod inputs;
+pub(crate) mod media_import;
 mod native;
 mod resources;
 mod resume;
@@ -17,6 +18,8 @@ use crate::{
     upstream::LocalUpstream,
 };
 pub use admission::Limits;
+pub(crate) use admission::Upload;
+pub(crate) use admission::read_media;
 pub(crate) use admission::{Kind as ImageKind, owner_matches_for, store_for, store_media_for};
 pub use catalog::catalog;
 pub(crate) use decode::sniff;
@@ -126,10 +129,13 @@ impl Service {
         }
         let (prepared, originals) = if self.native {
             let input = native::normalize(&raw, input)?;
+            // Admission covers original-image buffers and model preparation,
+            // not only jobs already queued for the resident worker.
+            let permit = self.backend.reserve_native(&cancel)?;
             let originals =
                 inputs::capture(&self.config, &input, direct_local, owner, &cancel).await?;
             let plan = native::plan(&self.backend.native_settings()?, input, &originals).await?;
-            let prepared = self.backend.prepare_native(plan, cancel.clone()).await?;
+            let prepared = self.backend.prepare_native(plan, permit, &cancel)?;
             (prepared, originals)
         } else {
             let plan = resources::plan(&self.config, input).await?;
@@ -198,11 +204,12 @@ impl Service {
         self.backend.family_allowed(id, owner, family).await?;
         self.backend.cancel(id, owner).await
     }
-    pub async fn upload(
+    pub(crate) async fn upload(
         &self,
-        image: String,
+        image: Upload,
         owner: String,
         cancel: CancellationToken,
+        admission: tokio::sync::OwnedSemaphorePermit,
     ) -> Result<String> {
         if self.shutdown.is_cancelled() {
             return Err(closed());
@@ -212,6 +219,7 @@ impl Service {
         let (root, limits) = (inputs::root(&self.config, self.native), self.limits);
         let (reply, result) = tokio::sync::oneshot::channel();
         self.uploads.spawn(async move {
+            let _admission = admission;
             let value = admission::store(root, image, owner, limits, scope).await;
             let _ = reply.send(value);
         });

@@ -177,7 +177,7 @@ async fn perform(
                     .await?
             }
             ("DELETE", [id]) => {
-                let task = get(state, &storage, &session, id).await?;
+                let task = get(state, &storage, &session, id, false).await?;
                 runtime
                     .cancel(
                         storage.clone(),
@@ -312,7 +312,19 @@ async fn perform(
             )
             .await?
         }
-        [id] => get(state, &storage, &session, id).await?,
+        [id] => {
+            let mut summary = false;
+            for (key, value) in url::form_urlencoded::parse(uri.query().unwrap_or("").as_bytes()) {
+                if key == "summary" {
+                    summary = match value.as_ref() {
+                        "true" => true,
+                        "false" => false,
+                        _ => return Err(ApiError::invalid("Invalid task summary parameter")),
+                    };
+                }
+            }
+            get(state, &storage, &session, id, summary).await?
+        }
         _ => {
             return Err(ApiError::new(
                 404,
@@ -375,12 +387,18 @@ fn project_task(
     Ok(())
 }
 
-async fn get(state: &AppState, storage: &Storage, session: &Session, id: &str) -> Result<Value> {
+async fn get(
+    state: &AppState,
+    storage: &Storage,
+    session: &Session,
+    id: &str,
+    summary: bool,
+) -> Result<Value> {
     let task = request(
         state,
         storage,
         session,
-        json!({"kind":"task.get","taskId":id}),
+        json!({"kind":"task.get","taskId":id,"summary":summary}),
     )
     .await?;
     if task.is_null() {

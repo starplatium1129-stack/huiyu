@@ -3,7 +3,7 @@ import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
 import { useVideoStore, type VideoCtxPayload } from '@/stores/videoStore'
 import { artworkRepository } from '@/storage/artworkRepository'
-import { uploadVideoImage } from '@/api/videoApi'
+import { importWorkspaceVideoImage, uploadVideoImage } from '@/api/videoApi'
 
 /**
  * 分镜编辑器·绘图页镜头导入（2026-09-06 自 ShotListEditor 下沉，体验报告 F4）。
@@ -61,15 +61,6 @@ export function inferShotParams(prompt: string): {
   return { shotSize, camera, motion }
 }
 
-function readBlobAsDataURL(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '')
-    reader.onerror = () => reject(reader.error ?? new Error('图片读取失败'))
-    reader.readAsDataURL(blob)
-  })
-}
-
 export function useShotImport(deps: ShotImportDeps) {
   const { shots, referenceCards, frameRequests } = deps
   const videoStore = useVideoStore()
@@ -87,22 +78,29 @@ export function useShotImport(deps: ShotImportDeps) {
     frameRequests.set(shot, controller)
     const version = viewVersion
     const previous = [shot.imageId, shot.imageName, shot.imageUrl]
-    const current = () => !disposed && active && version === viewVersion && !controller.signal.aborted && frameRequests.get(shot) === controller
-      && (unpublished || shots.value.includes(shot))
-      && [shot.imageId, shot.imageName, shot.imageUrl].every((value, index) => value === previous[index])
+    const repository = artworkRepository
+    let authority: string | undefined
+    const current = () => {
+      if (disposed || !active || version !== viewVersion || controller.signal.aborted || frameRequests.get(shot) !== controller
+        || repository !== artworkRepository || (!unpublished && !shots.value.includes(shot))
+        || ![shot.imageId, shot.imageName, shot.imageUrl].every((value, index) => value === previous[index])) return false
+      try { return authority === undefined || repository.getWorkspaceMediaReference?.(imageId).authority === authority }
+      catch { return false }
+    }
     try {
-      const blob = await artworkRepository.getImage(imageId, controller.signal)
+      const reference = repository.getWorkspaceMediaReference?.(imageId)
+      authority = reference?.authority
+      // The preview still needs a Blob; workspace imports reuse the durable bytes.
+      const blob = await repository.getImage(imageId, controller.signal)
       if (!current()) return
       if (!blob || !blob.size) return false
-      const dataUrl = await readBlobAsDataURL(blob)
-      if (!current()) return
-      const comma = dataUrl.indexOf(',')
-      if (comma < 0) return false
-      const upload = await uploadVideoImage(dataUrl.slice(comma + 1), undefined, controller.signal)
+      let name: string
+      if (reference) name = (await importWorkspaceVideoImage(reference.alias, controller.signal)).name
+      else name = (await uploadVideoImage(blob, undefined, controller.signal)).name
       if (!current()) return
       const imageUrl = URL.createObjectURL(blob)
       if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
-      shot.imageName = upload.name
+      shot.imageName = name
       shot.imageUrl = imageUrl
       return true
     } catch {

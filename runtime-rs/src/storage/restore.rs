@@ -1,7 +1,11 @@
 use super::*;
+mod apply;
+mod artwork;
+mod batch;
+use artwork::Artwork;
 use canonical::entity_key;
 use rusqlite::OptionalExtension;
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use verified_media::{Identity, Verified};
 
 #[derive(Clone, PartialEq, Eq)]
@@ -19,10 +23,12 @@ impl Reference {
 struct Publication {
     command: Value,
     principal: String,
-    artwork_key: String,
-    revision: i64,
-    deleted_at: Option<i64>,
-    references: Vec<Reference>,
+    items: Vec<batch::Selection>,
+}
+#[derive(Default)]
+pub(super) struct Verification {
+    files: BTreeMap<String, Verified>,
+    failed: BTreeMap<String, String>,
 }
 enum Prepared {
     Complete(Value),
@@ -41,8 +47,10 @@ pub(super) struct Pending {
 impl Pending {
     pub(super) fn protects(&self, hash: &str) -> bool {
         self.publication
-            .references
+            .items
             .iter()
+            .filter_map(|item| item.artwork.as_ref())
+            .flat_map(|artwork| &artwork.references)
             .any(|reference| reference.hash == hash)
     }
     pub(super) fn cancel(&self) {
@@ -86,7 +94,8 @@ fn prepare(c: &Context, principal: &str, command: &Value) -> Result<Prepared> {
             "Desktop principal is required",
         ));
     }
-    if command["kind"] != "restoreArtwork" {
+    let kind = string(command, "kind")?;
+    if !matches!(kind, "restoreArtwork" | "restoreArtworks") {
         return Err(invalid("Invalid artwork restore command"));
     }
     let operation_id = string(command, "operationId")?;
@@ -96,26 +105,24 @@ fn prepare(c: &Context, principal: &str, command: &Value) -> Result<Prepared> {
     c.writer()?;
     c.owner.check()?;
     if let Some(operation) = c.operation(principal, operation_id)? {
-        operation.check("restoreArtwork", command)?;
+        operation.check(kind, command)?;
         if let Some(receipt) = operation.receipt {
             return Ok(Prepared::Complete(receipt));
         }
     }
-    let artwork_key = entity_key(&command["id"])?;
-    let (revision, deleted_at) = artwork_state(c, &artwork_key)?;
-    if command["expectedRevision"] != revision {
-        return Err(conflict(
-            "REVISION_CONFLICT",
-            "Artwork has a newer revision",
-        ));
-    }
+    let items = if kind == "restoreArtworks" {
+        batch::prepare(c, command)?
+    } else {
+        vec![batch::Selection {
+            id: command["id"].clone(),
+            artwork: Some(Artwork::capture(c, command)?),
+            code: None,
+        }]
+    };
     Ok(Prepared::Verify(Publication {
-        references: references(c, &artwork_key)?,
         command: command.clone(),
         principal: principal.into(),
-        artwork_key,
-        revision,
-        deleted_at,
+        items,
     }))
 }
 
@@ -166,11 +173,14 @@ fn spawn(pending: &Pending, sender: &mpsc::WeakSender<Work>) -> Result<()> {
     let sender = sender.upgrade().ok_or_else(unavailable)?;
     let id = pending.id.clone();
     let identity = pending.identity.clone();
+    let batch = pending.publication.command["kind"] == "restoreArtworks";
     let mut seen = BTreeSet::new();
     let sources = pending
         .publication
-        .references
+        .items
         .iter()
+        .filter_map(|item| item.artwork.as_ref())
+        .flat_map(|artwork| &artwork.references)
         .filter(|reference| seen.insert(reference.hash.as_str()))
         .map(|reference| {
             Ok((
@@ -184,10 +194,25 @@ fn spawn(pending: &Pending, sender: &mpsc::WeakSender<Work>) -> Result<()> {
         .spawn(move || {
             let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                 identity.check_paths()?;
-                let verified = sources
-                    .into_iter()
-                    .map(|(path, metadata)| verified_media::verify(&identity, &path, &metadata))
-                    .collect::<Result<Vec<_>>>()?;
+                let mut verified = Verification::default();
+                for (path, metadata) in sources {
+                    identity.check_paths()?;
+                    let result = verified_media::verify(&identity, &path, &metadata);
+                    // Identity/cancellation failures remain global even when a
+                    // particular file failed. SQL failures never enter this path.
+                    identity.check_paths()?;
+                    match result {
+                        Ok(proof) => {
+                            verified.files.insert(proof.hash().into(), proof);
+                        }
+                        Err(error) if batch && error.code != "CANCELLED" => {
+                            verified
+                                .failed
+                                .insert(string(&metadata, "sha256")?.into(), error.code);
+                        }
+                        Err(error) => return Err(error),
+                    }
+                }
                 identity.check_paths()?;
                 Ok(verified)
             }))
@@ -199,73 +224,48 @@ fn spawn(pending: &Pending, sender: &mpsc::WeakSender<Work>) -> Result<()> {
 }
 
 impl Publication {
-    fn check_files(&self, c: &Context, verified: &[Verified]) -> Result<()> {
-        let hashes = self
-            .references
-            .iter()
-            .map(|reference| reference.hash.as_str())
-            .collect::<BTreeSet<_>>();
-        if hashes.len() != verified.len() {
-            return Err(conflict(
-                "MEDIA_INVALID",
-                "Artwork media verification is incomplete",
-            ));
+    fn commit(
+        &self,
+        c: &mut Context,
+        identity: &Identity,
+        verified: &Verification,
+    ) -> Result<Value> {
+        if self.command["kind"] == "restoreArtworks" {
+            return batch::commit(self, c, identity, verified);
         }
-        for reference in &self.references {
-            c.check_cancel()?;
-            let path = media::object_path(&c.root, &reference.hash)?;
-            let proof = verified
-                .iter()
-                .find(|proof| proof.matches(&path, &reference.metadata()))
-                .ok_or_else(|| conflict("MEDIA_INVALID", "Artwork media metadata changed"))?;
-            proof.check(&c.root)?;
-        }
-        Ok(())
-    }
-    fn commit(&self, c: &mut Context, identity: &Identity, verified: &[Verified]) -> Result<Value> {
+        let artwork = self.items[0].artwork.as_ref().unwrap();
         c.transaction(|c| {
             identity.check(c)?;
             let (operation, previous) = c.start_operation(&self.principal, &self.command)?;
             if let Some(receipt) = previous { return Ok(receipt); }
-            if artwork_state(c, &self.artwork_key)? != (self.revision, self.deleted_at) {
-                return Err(conflict("REVISION_CONFLICT", "Artwork has a newer revision"));
+            artwork.check_before(c)?;
+            if artwork.references.iter().map(|reference| &reference.hash).collect::<BTreeSet<_>>().len() != verified.files.len() {
+                return Err(conflict("MEDIA_INVALID", "Artwork media verification is incomplete"));
             }
-            if references(c, &self.artwork_key)? != self.references {
-                return Err(conflict("MEDIA_INVALID", "Artwork media references changed"));
-            }
-            self.check_files(c, verified)?;
+            artwork.check_files(c, verified)?;
             let revision = c.next_revision()?;
-            if self.deleted_at.is_some() {
-                records::restore(c, &self.artwork_key, revision)?;
+            if artwork.deleted_at.is_some() {
+                let mut memberships = apply::Memberships::default();
+                apply::restore(c, &artwork.key, revision, &mut memberships)?;
+                memberships.flush(c, revision)?;
             }
             let mut receipt = json!({"operationId":self.command["operationId"],"kind":"restoreArtwork","revision":revision});
-            if let Some(artwork) = records::artwork(c, &self.artwork_key)? {
-                receipt["changed"] = json!(artwork["revision"] == revision);
-                receipt["artwork"] = artwork;
+            if let Some(row) = records::artwork(c, &artwork.key)? {
+                receipt["changed"] = json!(row["revision"] == revision);
+                receipt["artwork"] = row;
             }
             c.commit_operation(&operation, &receipt)?;
             // Verify the expected post-restore state before COMMIT too. Restore
             // intentionally transfers trash references into the artwork namespace.
-            let expected_revision = if self.deleted_at.is_some() { revision } else { self.revision };
-            if artwork_state(c, &self.artwork_key)? != (expected_revision, None) {
-                return Err(conflict("REVISION_CONFLICT", "Artwork changed during restoration"));
-            }
-            let mut expected_refs = self.references.clone();
-            if self.deleted_at.is_some() {
-                for reference in &mut expected_refs { reference.owner_kind = "artwork".into(); }
-                expected_refs.sort_by(|left, right| left.hash.cmp(&right.hash));
-            }
-            if references(c, &self.artwork_key)? != expected_refs {
-                return Err(conflict("MEDIA_INVALID", "Artwork media references changed during restoration"));
-            }
+            artwork.check_after(c, revision)?;
             identity.check(c)?;
-            self.check_files(c, verified)?;
+            artwork.check_files(c, verified)?;
             Ok(receipt)
         })
     }
 }
 
-pub(super) fn finish(c: &mut Context, id: String, verified: Result<Vec<Verified>>) {
+pub(super) fn finish(c: &mut Context, id: String, verified: Result<Verification>) {
     if c.restore_commit
         .as_ref()
         .is_none_or(|pending| pending.id != id)

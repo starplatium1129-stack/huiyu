@@ -26,6 +26,7 @@ function resource(command: Record<string, unknown>): [string, string] {
     case 'softDeleteArtworks': return ['POST', '/artworks/trash-batch']
     case 'hardDeleteArtwork': return ['DELETE', `/artworks/${id}/permanent?idType=${typeof command.id}`]
     case 'restoreArtwork': return ['POST', `/artworks/${id}/restore?idType=${typeof command.id}`]
+    case 'restoreArtworks': return ['POST', '/artworks/restore-batch']
     case 'saveProject': return ['POST', '/projects']
     case 'deleteSmartAlbum': return ['DELETE', `/projects/${id}/smart?idType=${typeof command.id}`]
     case 'purgeExpiredTrash': return ['POST', '/trash/purge']
@@ -45,12 +46,18 @@ function resource(command: Record<string, unknown>): [string, string] {
     case 'migration.record': return ['POST', `${migration}/records/${encode(command.itemId)}`]
     case 'migration.recordChunk': return ['PUT', `${migration}/records/${encode(command.itemId)}/chunks`]
     case 'migration.media': return ['PUT', `${migration}/media/${encode(command.alias)}/chunks`]
-    case 'profile.readSettings': return ['GET', '/profile/settings']
+    case 'profile.readSettings': return ['GET', '/profile/settings' + (command.ifVersion === undefined ? '' : `?ifVersion=${encode(command.ifVersion)}`)]
     case 'profile.saveSetting': return ['PUT', '/profile/settings']
-    case 'profile.readChat': return ['GET', '/profile/chat']
+    case 'profile.readChat': {
+      const query = new URLSearchParams()
+      if (command.ifVersion !== undefined) query.set('ifVersion', String(command.ifVersion))
+      if (command.ifArchiveVersion !== undefined) query.set('ifArchiveVersion', String(command.ifArchiveVersion))
+      return ['GET', '/profile/chat' + (query.size ? `?${query}` : '')]
+    }
+    case 'profile.readChatArchive': return ['GET', '/profile/chat/archive' + (command.ifVersion === undefined ? '' : `?ifVersion=${encode(command.ifVersion)}`)]
     case 'profile.saveChatRecord': return ['PUT', '/profile/chat']
     case 'profile.resetChat': return ['POST', '/profile/chat/reset']
-    case 'profile.readDrafts': return ['GET', `/profile/drafts?windowId=${encode(command.windowId)}`]
+    case 'profile.readDrafts': return ['GET', `/profile/drafts?windowId=${encode(command.windowId)}` + (command.ifVersion === undefined ? '' : `&ifVersion=${encode(command.ifVersion)}`)]
     case 'profile.saveDraft': return ['PUT', '/profile/drafts']
     default: throw new Error('不支持的工作区操作')
   }
@@ -64,7 +71,7 @@ export async function workspaceRequest<T>(command: Record<string, unknown>, sign
   const session = getDesktopRuntime().bootstrap?.runtime?.workspace
   if (!session) throw new Error('私人工作区尚未连接')
   const [method, path] = resource(command)
-  const deadline = AbortSignal.timeout(command.kind === 'backup' || command.kind === 'restoreBackup' ? 120_000 : 35_000)
+  const deadline = AbortSignal.timeout(command.kind === 'restoreArtworks' ? 125_000 : command.kind === 'backup' || command.kind === 'restoreBackup' ? 120_000 : 35_000)
   const response = await desktopRuntimeFetch('/api/workspace' + path, { method, signal: signal ? AbortSignal.any([signal, deadline]) : deadline,
     headers: { 'Content-Type': 'application/json' }, ...(method === 'GET' ? {} : { body: JSON.stringify({ ...command,
       ...(command.data instanceof Uint8Array ? { data: base64(command.data) } : {}), protocolVersion: 1, workspaceId: session.workspaceId }) }) })

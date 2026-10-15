@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, taskMessage, type TaskRecord } from '@/api/runtimeTasks'
+import { submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, taskMessage, type TaskRecord, type TaskSummary } from '@/api/runtimeTasks'
 import type { AnimaGenerationState, AnimaResult, AnimaResultContext } from '@/types/anima'
 import { ApiClientError } from '@/api/client'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
@@ -22,14 +22,14 @@ export function runtimeAnimaFailure(error: unknown, stopped: boolean, accepted: 
 }
 
 async function image(kind: 'anima' | 'creative', input: Record<string, unknown>, key: string,
-  signal: AbortSignal, update: (task: TaskRecord) => void, context?: Record<string, unknown>,
+  signal: AbortSignal, update: (task: TaskSummary) => void, context?: Record<string, unknown>,
   onAccepted?: (task: TaskRecord) => void | Promise<void>, onSubmitting?: () => void) {
   signal.throwIfAborted()
   const accepted = await submitRuntimeTask(kind, input, key, context, { signal, onSubmitting })
   await onAccepted?.(accepted)
   signal.throwIfAborted()
   const task = await waitForRuntimeTask(accepted.taskId, signal, update)
-  const blob = await fetchRuntimeResult(runtimeResultPath(task), signal)
+  const blob = await fetchRuntimeResult(runtimeResultPath(task), signal, task)
   signal.throwIfAborted()
   return { task, blob }
 }

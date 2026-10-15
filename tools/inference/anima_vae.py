@@ -8,6 +8,7 @@ Model integration adapted from Diffusers 0.41 (Apache-2.0), Copyright 2026
 The HuggingFace Team; license text is retained in ANIMA_CONVERSION_LICENSE.txt.
 """
 from contextlib import contextmanager
+from math import prod
 
 
 def _decode_tile(vae, latents):
@@ -81,6 +82,20 @@ def _single_frame(vae, kind, tiling):
         elif type(module) is QwenImageRMS_norm:
             def frame_norm(values, *, layer=module):
                 normalized = torch.nn.functional.normalize(values, dim=1 if layer.channel_first else -1)
+                if (type(values) is torch.Tensor and type(normalized) is torch.Tensor
+                        and normalized.layout == torch.strided and normalized.is_contiguous()
+                        and normalized.device.type in ("cpu", "cuda")
+                        and normalized.dtype in (torch.float16, torch.bfloat16, torch.float32)
+                        and not torch.is_grad_enabled() and not torch.is_autocast_enabled(normalized.device.type)
+                        and layer.channel_first and normalized.ndim in (4, 5)
+                        and normalized.stride() == tuple(prod(normalized.shape[i + 1:]) for i in range(normalized.ndim))
+                        and type(layer.gamma) is torch.nn.Parameter
+                        and layer.gamma.dtype == normalized.dtype and layer.gamma.device == normalized.device
+                        and layer.gamma.shape == (normalized.shape[1],) + (1,) * (normalized.ndim - 2)
+                        and type(layer.scale) is float and type(layer.bias) is float and layer.bias == 0.0):
+                    # normalize allocated this private buffer. Preserve each
+                    # multiply/add and its dtype rounding without full-size outputs.
+                    return normalized.mul_(layer.scale).mul_(layer.gamma).add_(layer.bias)
                 return normalized * layer.scale * layer.gamma + layer.bias
             replacement_forward = frame_norm
         else:
@@ -118,9 +133,31 @@ def _statistics(vae, values):
             for name in ("latents_mean", "latents_std")]
 
 
+def _preprocess(processor, image, *, height, width):
+    import torch
+    from diffusers.image_processor import VaeImageProcessor
+    if (type(processor) is VaeImageProcessor and type(image) is torch.Tensor
+            and image.layout == torch.strided and image.dtype == torch.float32
+            and image.device.type in ("cpu", "cuda") and not image.requires_grad
+            and image.ndim == 4 and image.shape[:2] == (1, 3)
+            and image.shape[-2] > 0 and image.shape[-1] > 0
+            and (image.is_contiguous() or image.is_contiguous(memory_format=torch.channels_last))
+            and processor.config.vae_latent_channels != 3
+            and processor.config.do_normalize and not processor.config.do_binarize):
+        size = processor.get_default_height_width(image, height=height, width=width)
+        if (not processor.config.do_resize or size == tuple(image.shape[-2:])) and not bool(image.min() < 0):
+            # Keep cat: it canonicalizes some singleton-batch tensor layouts.
+            # The same-size nearest resize preserves its values/layout. Reuse
+            # this private buffer for the pinned FP32 multiply/subtract order.
+            pixels = torch.cat([image], dim=0)
+            return pixels.mul_(2.0).sub_(1.0)
+    # Preserve resizing, negative-input warnings and all nonstandard processors.
+    return processor.preprocess(image, height=height, width=width)
+
+
 def encode(pipeline, image, tiling, *, height, width):
     import torch
-    pixels = pipeline.image_processor.preprocess(image, height=height, width=width)
+    pixels = _preprocess(pipeline.image_processor, image, height=height, width=width)
     pixels = pixels.unsqueeze(2).to(device=pipeline._execution_device, dtype=pipeline.vae.dtype)
     with torch.no_grad(), _single_frame(pipeline.vae, "encode", tiling):
         raw = pipeline.vae.encode(pixels).latent_dist.mode().float()
@@ -143,9 +180,10 @@ def upscale_latents(vae, latents, size):
 
 def apply_blocks(blocks, tiling):
     import torch
+    from diffusers.image_processor import VaeImageProcessor
     from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
     from diffusers.modular_pipelines.anima.encoders import AnimaImg2ImgVaeEncoderStep
-    from diffusers.modular_pipelines.anima.decoders import AnimaVaeDecoderStep
+    from diffusers.modular_pipelines.anima.decoders import AnimaVaeDecoderStep, AnimaProcessImagesOutputStep
     class Encoder(AnimaImg2ImgVaeEncoderStep):
         @torch.no_grad()
         def __call__(self, components, state):
@@ -165,7 +203,24 @@ def apply_blocks(blocks, tiling):
                 block.images = components.vae.decode(raw, return_dict=False)[0][:, :, 0].float()
             self.set_block_state(state, block)
             return components, state
+    class Postprocess(AnimaProcessImagesOutputStep):
+        @torch.no_grad()
+        def __call__(self, components, state):
+            block = self.get_block_state(state)
+            processor = components.image_processor
+            if (block.output_type != "pt" or type(processor) is not VaeImageProcessor
+                    or not processor.config.do_normalize or type(block.images) is not torch.Tensor
+                    or block.images.dtype != torch.float32):
+                return super().__call__(components, state)
+            # Preserve the pinned multiply/add/clamp order and the raw decoder
+            # tensor; only reuse the private result instead of two full images.
+            pixels = block.images * 0.5
+            pixels.add_(0.5).clamp_(0, 1)
+            block.images = pixels
+            self.set_block_state(state, block)
+            return components, state
     blocks = AnimaAutoBlocks() if blocks is None else blocks
     blocks.sub_blocks["vae_encoder"].sub_blocks["vae_encoder"] = Encoder()
     blocks.sub_blocks["decode"].sub_blocks["decode"] = Decoder()
+    blocks.sub_blocks["decode"].sub_blocks["postprocess"] = Postprocess()
     return blocks

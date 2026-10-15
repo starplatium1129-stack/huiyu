@@ -1,5 +1,7 @@
 use std::io::Result;
 use std::{fs::File, path::Path};
+mod version;
+pub(crate) use version::Version;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) struct Identity {

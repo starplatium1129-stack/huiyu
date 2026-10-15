@@ -2,6 +2,7 @@ use super::*;
 use regex::Regex;
 use std::sync::LazyLock;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
+const MAX_BYTES: usize = 16 * 1024 * 1024;
 static NAME: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^aics_anima_input_[a-f0-9]{16,40}\.(?:png|jpg|jpeg|webp)$").unwrap()
 });
@@ -30,7 +31,7 @@ pub(super) fn path_for(config: &Config, name: &str, native: bool) -> Result<Path
     }
     Ok(root(config, native).join(name))
 }
-async fn read(config: &Config, name: &str, native: bool) -> Result<Vec<u8>> {
+async fn open(config: &Config, name: &str, native: bool) -> Result<tokio::fs::File> {
     let file = path_for(config, name, native)?;
     let root = tokio::fs::canonicalize(root(config, native)).await?;
     let target = tokio::fs::canonicalize(&file).await?;
@@ -41,14 +42,49 @@ async fn read(config: &Config, name: &str, native: bool) -> Result<Vec<u8>> {
     if !file.metadata().await?.is_file() {
         return Err(error("TASK_INPUT_INVALID", "输入图像不是普通文件"));
     }
+    Ok(file)
+}
+async fn read(config: &Config, name: &str, native: bool) -> Result<Vec<u8>> {
+    let file = open(config, name, native).await?;
     let mut bytes = Vec::new();
-    file.take(16 * 1024 * 1024 + 1)
+    file.take(MAX_BYTES as u64 + 1)
         .read_to_end(&mut bytes)
         .await?;
-    if bytes.is_empty() || bytes.len() > 16 * 1024 * 1024 {
+    if bytes.is_empty() || bytes.len() > MAX_BYTES {
         return Err(error("TASK_INPUT_INVALID", "输入图像超过 16 MiB"));
     }
     Ok(bytes)
+}
+async fn matches_original(
+    config: &Config,
+    original: &Original,
+    cancel: &CancellationToken,
+) -> Result<bool> {
+    let file = tokio::select! { biased;
+        _ = cancel.cancelled() => return Err(cancelled()),
+        file = open(config, &original.name, original.native) => file?,
+    };
+    let mut file = file.take(MAX_BYTES as u64 + 1);
+    let mut buffer = vec![0; 256 * 1024];
+    let mut length = 0;
+    let mut equal = true;
+    loop {
+        let count = tokio::select! { biased;
+            _ = cancel.cancelled() => return Err(cancelled()),
+            count = file.read(&mut buffer) => count?,
+        };
+        if count == 0 {
+            break;
+        }
+        equal &= original.bytes.get(length..length + count) == Some(&buffer[..count]);
+        length += count;
+    }
+    // Read even after a mismatch so I/O and size errors retain priority over
+    // TASK_INPUT_CHANGED, without allocating a second full-size image.
+    if length == 0 || length > MAX_BYTES {
+        return Err(error("TASK_INPUT_INVALID", "输入图像超过 16 MiB"));
+    }
+    Ok(equal && length == original.bytes.len())
 }
 pub(super) async fn capture(
     config: &Config,
@@ -148,11 +184,7 @@ pub(super) async fn protect_and_restore(
                 }
             }
         }
-        if read(config, &original.name, original.native)
-            .await?
-            .as_slice()
-            != original.bytes.as_slice()
-        {
+        if !matches_original(config, original, cancel).await? {
             return Err(ApiError::new(
                 409,
                 "TASK_INPUT_CHANGED",

@@ -363,7 +363,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                 image = mask_tools.resize_image(image, size)
                 auto_tools = load_mask_tools("clipseg_mask")
                 if resident is not None and cache_mask and resident.mask_cache is None:
-                    resident.mask_cache = auto_tools.MaskCache()
+                    resident.mask_cache = auto_tools.MaskCache(lease=load_mask_tools("locked_identity").AssetIdentityLease(tree=True))
                 mask = auto_tools.generate_mask(Path(job["maskModelDir"]).resolve(), image, data["maskPrompt"], data["maskThreshold"],
                     grow=data["growMaskBy"], check=control.check if control is not None else None,
                     **({"cache": resident.mask_cache} if resident is not None and cache_mask else {}),
@@ -428,7 +428,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         stage("upscaling")
         helper = load_mask_tools("anima_upscale")
         if resident is not None and resident.upscale_cache is None:
-            resident.upscale_cache = helper.CpuCache()
+            resident.upscale_cache = helper.CpuCache(lease=load_mask_tools("locked_identity").AssetIdentityLease(tree=False))
         pipeline._huiyu_memory.offload_all()
         expected = (tea_report.get("compatibility") or {}).get("upscaleModelSha256") if tea_report else None
         result, pipeline._huiyu_upscale_report = helper.run(images, job["upscaleModelPath"], pipeline._execution_device,

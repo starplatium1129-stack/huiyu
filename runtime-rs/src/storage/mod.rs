@@ -39,6 +39,7 @@ use tokio::sync::{OwnedSemaphorePermit, mpsc, oneshot};
 pub use canonical::fingerprint;
 pub(crate) use canonical::stringify;
 pub use media::Media;
+pub(crate) use verification::OpenedMedia;
 
 pub(crate) enum TaskMediaSource {
     File(std::fs::File),
@@ -59,7 +60,7 @@ pub struct Storage {
 }
 enum Work {
     ResultVerified(String, Result<result_commit::Verified>),
-    RestoreVerified(String, Result<Vec<verified_media::Verified>>),
+    RestoreVerified(String, Result<restore::Verification>),
     UploadFinished(String, Result<upload::file::Written>),
     MigrationVerified(String, Result<migration::verification::Outcome>),
     TaskMediaCopy(
@@ -210,6 +211,7 @@ impl Context {
                 | "restoreBackup"
                 | "profile.readSettings"
                 | "profile.readChat"
+                | "profile.readChatArchive"
                 | "profile.readDrafts"
                 | "profile.saveSetting"
                 | "profile.saveChatRecord"
@@ -350,6 +352,7 @@ fn is_read(kind: &str) -> bool {
             | "countMedia"
             | "profile.readSettings"
             | "profile.readChat"
+            | "profile.readChatArchive"
             | "profile.readDrafts"
             | "task.list"
             | "task.get"

@@ -1,6 +1,7 @@
 mod commands;
 mod files;
 mod paths;
+mod workers;
 
 use crate::{AppState, config::Config, processes::Processes, security};
 use axum::{
@@ -61,7 +62,7 @@ pub struct DesktopToolsService {
     root: PathBuf,
     trusted: bool,
     processes: Arc<Processes>,
-    listings: files::Listings,
+    workers: workers::Workers,
     shutdown: CancellationToken,
 }
 impl DesktopToolsService {
@@ -70,23 +71,38 @@ impl DesktopToolsService {
             root: config.ai_workspace_root.clone(),
             trusted: std::env::var("AICS_DESKTOP_COMMANDS").as_deref() == Ok("trusted"),
             processes: Arc::new(Processes::default()),
-            listings: files::Listings::new(),
+            workers: workers::Workers::new(),
             shutdown,
         }
     }
     pub async fn close(&self) {
         self.shutdown.cancel();
-        tokio::join!(self.processes.close(), self.listings.close());
+        tokio::join!(self.processes.close(), self.workers.close());
     }
-    async fn run(&self, name: &str, args: &Value) -> Result<Value> {
+    async fn run(&self, name: &str, args: &Value) -> Result<Response> {
         if self.shutdown.is_cancelled() {
             return Err(Error::cancelled());
         }
+        if matches!(name, "read_image" | "capture_screen") {
+            let cancel = self.shutdown.child_token();
+            let _cancel = cancel.clone().drop_guard();
+            let permit = self.workers.image_permit(&cancel)?;
+            let input = if name == "read_image" {
+                tokio::select! { biased;
+                    _ = cancel.cancelled() => return Err(Error::cancelled()),
+                    input = files::image(&self.root, args) => input?,
+                }
+            } else {
+                workers::Image::Screen(
+                    commands::screen(&self.processes, &cancel, permit.clone()).await?,
+                )
+            };
+            return self.workers.encode(input, permit, &cancel).await;
+        }
         let result = match name {
-            "list_files" => self.listings.list(&self.root, args, &self.shutdown).await,
+            "list_files" => self.workers.list(&self.root, args, &self.shutdown).await,
             "read_file" => files::read(&self.root, args).await,
             "write_file" => files::write(&self.root, args, &self.shutdown).await,
-            "read_image" => files::image(&self.root, args).await,
             "run_command" => {
                 commands::run(
                     &self.root,
@@ -97,7 +113,6 @@ impl DesktopToolsService {
                 )
                 .await
             }
-            "capture_screen" => commands::screen(&self.processes, &self.shutdown).await,
             "get_workspace_info" => Ok(
                 json!({"ok":true,"output":crate::storage::stringify(&json!({"workspaceRoot":paths::display(&self.root),"exists":self.root.exists(),"os":if cfg!(windows){"win32"}else{std::env::consts::OS},"commandMode":if self.trusted{"trusted-system-account"}else{"disabled"}}))}),
             ),
@@ -106,7 +121,7 @@ impl DesktopToolsService {
         if self.shutdown.is_cancelled() {
             return Err(Error::cancelled());
         }
-        result
+        result.map(|value| Json(value).into_response())
     }
 }
 pub fn router(service: Arc<DesktopToolsService>) -> Router<AppState> {
@@ -176,7 +191,7 @@ async fn execute(
     // File I/O and commands stay owned by the request future. A disconnected
     // caller drops that future, invoking temporary-file/process cleanup guards.
     let result = service.run(name, args).await;
-    Json(result.unwrap_or_else(Error::value)).into_response()
+    result.unwrap_or_else(|error| Json(error.value()).into_response())
 }
 fn text(value: &Value) -> String {
     match value {

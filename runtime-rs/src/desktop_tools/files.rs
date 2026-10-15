@@ -1,71 +1,12 @@
-use super::{Error, Result, paths, text};
-use base64::{Engine, engine::general_purpose::STANDARD};
+use super::{Error, Result, paths, text, workers::Image};
 use icu_collator::{Collator, options::CollatorOptions};
 use icu_locale::Locale;
 use serde_json::{Value, json};
-use std::{
-    path::Path,
-    sync::{Arc, Mutex},
-};
-use tokio::{
-    io::{AsyncReadExt, AsyncWriteExt},
-    sync::Semaphore,
-};
-use tokio_util::{sync::CancellationToken, task::TaskTracker};
+use std::path::Path;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio_util::sync::CancellationToken;
 
-pub(super) struct Listings {
-    workers: Arc<Semaphore>,
-    active: TaskTracker,
-    closed: Mutex<bool>,
-}
-impl Listings {
-    pub fn new() -> Self {
-        Self {
-            workers: Arc::new(Semaphore::new(4)),
-            active: TaskTracker::new(),
-            closed: Mutex::new(false),
-        }
-    }
-    pub async fn list(
-        &self,
-        root: &Path,
-        input: &Value,
-        shutdown: &CancellationToken,
-    ) -> Result<Value> {
-        let cancel = shutdown.child_token();
-        let _cancel = cancel.clone().drop_guard();
-        let directory = paths::resolve(root, &text(&input["path"])).await?;
-        let permit = tokio::select! { biased;
-            _ = cancel.cancelled() => return Err(Error::cancelled()),
-            permit = self.workers.clone().acquire_owned() => permit.map_err(|_| Error::cancelled())?,
-        };
-        let tracked = {
-            let closed = self.closed.lock().unwrap();
-            if *closed || cancel.is_cancelled() {
-                return Err(Error::cancelled());
-            }
-            // Register under the same lock as close so a shutdown cannot miss
-            // blocking work. The worker owns this token even if HTTP is dropped.
-            self.active.token()
-        };
-        tokio::task::spawn_blocking(move || {
-            let (_tracked, _permit) = (tracked, permit);
-            list_directory(&directory, &cancel)
-        })
-        .await
-        .map_err(|_| Error::plain("目录读取未完成"))?
-    }
-    pub async fn close(&self) {
-        {
-            let mut closed = self.closed.lock().unwrap();
-            *closed = true;
-            self.workers.close();
-            self.active.close();
-        }
-        self.active.wait().await;
-    }
-}
-fn list_directory(directory: &Path, cancel: &CancellationToken) -> Result<Value> {
+pub(super) fn list_directory(directory: &Path, cancel: &CancellationToken) -> Result<Value> {
     if cancel.is_cancelled() {
         return Err(Error::cancelled());
     }
@@ -216,7 +157,7 @@ pub(super) async fn atomic(
         .map_err(|error| Error::from(error.error))?;
     Ok(())
 }
-pub(super) async fn image(root: &Path, input: &Value) -> Result<Value> {
+pub(super) async fn image(root: &Path, input: &Value) -> Result<Image> {
     let file = paths::resolve(root, &text(&input["path"])).await?;
     let bytes = read_bounded(&file, 8 * 1024 * 1024, "图片超过 8MB 上限").await?;
     let mime = if bytes.starts_with(&[0x89, 0x50, 0x4e, 0x47]) {
@@ -232,9 +173,11 @@ pub(super) async fn image(root: &Path, input: &Value) -> Result<Value> {
             "不支持的文件格式（仅 PNG / JPEG / WebP / GIF）",
         ));
     };
-    Ok(
-        json!({"ok":true,"output":format!("已读取图片 {}（{} B，{}）",paths::relative(root,&file).await,bytes.len(),mime.trim_start_matches("image/")),"imageDataUrl":format!("data:{mime};base64,{}",STANDARD.encode(&bytes))}),
-    )
+    Ok(Image::File {
+        bytes,
+        mime,
+        relative: paths::relative(root, &file).await,
+    })
 }
 pub(super) fn truncate(text: &str, max: usize) -> String {
     String::from_utf16_lossy(&text.encode_utf16().take(max).collect::<Vec<_>>())

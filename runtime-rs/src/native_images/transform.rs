@@ -1,13 +1,38 @@
 use super::api::{self, Api, Image};
+use axum::body::Bytes;
 use std::{
     ffi::{CStr, CString, c_int, c_void},
     path::Path,
-    ptr,
+    ptr::{self, NonNull},
+    sync::Arc,
     time::{Duration, Instant},
 };
 use tokio_util::sync::CancellationToken;
 
 type Result<T> = std::result::Result<T, String>;
+struct EncodedBuffer {
+    memory: NonNull<u8>,
+    length: usize,
+    api: Arc<Api>,
+}
+// SAFETY: save_buffer transfers an independent allocation to its caller. After
+// encoding it is read-only, and GLib's g_free can release it on any thread. The
+// API owner keeps the allocating library mapped until after that release.
+unsafe impl Send for EncodedBuffer {}
+impl AsRef<[u8]> for EncodedBuffer {
+    fn as_ref(&self) -> &[u8] {
+        // SAFETY: the successful encoder supplies this initialized allocation
+        // and length; Bytes keeps its sole owner alive for all shared slices.
+        unsafe { std::slice::from_raw_parts(self.memory.as_ptr(), self.length) }
+    }
+}
+impl Drop for EncodedBuffer {
+    fn drop(&mut self) {
+        unsafe {
+            (self.api.free)(self.memory.as_ptr().cast());
+        }
+    }
+}
 struct Evaluation<'a> {
     api: &'a Api,
     cancel: &'a CancellationToken,
@@ -161,7 +186,12 @@ fn shrink_load<'a>(api: &'a Api, file: &CStr, image: Image<'a>, shrink: f64) -> 
     }
     Ok(image)
 }
-fn encode(api: &Api, image: &Image<'_>, webp: bool, cancel: &CancellationToken) -> Result<Vec<u8>> {
+fn encode(
+    api: &Arc<Api>,
+    image: &Image<'_>,
+    webp: bool,
+    cancel: &CancellationToken,
+) -> Result<Bytes> {
     if cancel.is_cancelled() {
         return Err("Image operation cancelled".into());
     }
@@ -228,19 +258,29 @@ fn encode(api: &Api, image: &Image<'_>, webp: bool, cancel: &CancellationToken) 
     unsafe {
         (api.disconnect)(image.pointer, signal);
     }
-    let result = if status != 0 || memory.is_null() {
+    let Some(memory) = NonNull::new(memory.cast::<u8>()) else {
+        return Err(api.failure());
+    };
+    let mut buffer = EncodedBuffer {
+        memory,
+        length,
+        api: api.clone(),
+    };
+    if status != 0 {
         Err(api.failure())
     } else if cancel.is_cancelled() {
         Err("Image operation cancelled".into())
+    } else if length == 0 {
+        Ok(Bytes::new())
     } else {
-        Ok(unsafe { std::slice::from_raw_parts(memory.cast::<u8>(), length) }.to_vec())
-    };
-    if !memory.is_null() {
-        unsafe {
-            (api.free)(memory);
-        }
+        // libvips transfers a growable GString allocation. Trim its spare
+        // capacity before a cache accounts for this buffer by encoded length.
+        // The native allocator can reuse it; no unconditional Rust copy remains.
+        let memory = unsafe { (api.realloc)(buffer.memory.as_ptr().cast(), length) };
+        buffer.memory = NonNull::new(memory.cast())
+            .expect("g_realloc aborts on allocation failure for nonzero sizes");
+        Ok(Bytes::from_owner(buffer))
     }
-    result
 }
 
 /// Exact sharp geometry and encoder options used by live2d-textures.ts.
@@ -249,7 +289,7 @@ pub(crate) fn atlas(
     library: &Path,
     scale: i32,
     cancel: &CancellationToken,
-) -> Result<Vec<u8>> {
+) -> Result<Bytes> {
     if ![2, 4].contains(&scale) {
         return Err("Invalid texture scale".into());
     }
@@ -260,7 +300,7 @@ pub(crate) fn thumbnail(
     path: &Path,
     library: &Path,
     cancel: &CancellationToken,
-) -> Result<Option<Vec<u8>>> {
+) -> Result<Option<Bytes>> {
     transform(path, library, None, cancel)
 }
 fn transform(
@@ -268,7 +308,7 @@ fn transform(
     library: &Path,
     scale: Option<i32>,
     cancel: &CancellationToken,
-) -> Result<Option<Vec<u8>>> {
+) -> Result<Option<Bytes>> {
     if cancel.is_cancelled() {
         return Err("Image operation cancelled".into());
     }

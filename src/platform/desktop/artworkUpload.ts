@@ -1,6 +1,7 @@
 import { PendingMediaUploadError } from '../../application/artwork/mediaUpload.ts'
 import { WORKSPACE_MEDIA_PENDING_PREFIX } from '../../utils/storageKeys.ts'
 import { getDesktopRuntime } from './runtime.ts'
+import { assertWorkspaceMediaAuthority, rememberWorkspaceMedia, workspaceMediaAuthority } from './workspaceMediaSource.ts'
 
 type Request = <T>(command: Record<string, unknown>) => Promise<T>
 interface Pending { operationId: string; imageId: string }
@@ -16,10 +17,12 @@ interface Operation {
  * separate aliases/temporary ownership. Web Locks serialize that handoff across windows.
  */
 export async function putDesktopArtworkImage(blob: Blob, request: Request): Promise<string> {
+  const authority = workspaceMediaAuthority()
   const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
   if (!workspace?.workspaceId || !workspace.principalId) throw new Error('本机工作区尚未连接。')
   const { workspaceId, principalId } = workspace
   const assertCurrent = () => {
+    assertWorkspaceMediaAuthority(authority)
     const current = getDesktopRuntime().bootstrap?.runtime?.workspace
     if (current?.workspaceId !== workspaceId || current.principalId !== principalId) throw new Error('工作区连接已变化，请回到原工作区重试图片上传。')
   }
@@ -50,6 +53,7 @@ export async function putDesktopArtworkImage(blob: Blob, request: Request): Prom
       assertCurrent()
       if (localStorage.getItem(key) !== (stored ?? marker)) throw new Error('图片上传恢复标记已变化，请重新读取。')
       localStorage.removeItem(key)
+      rememberWorkspaceMedia(blob, media, authority)
       return imageId
     }
     let prepared = false

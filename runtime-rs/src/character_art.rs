@@ -9,7 +9,7 @@ use crate::{
 use axum::{
     Extension, Json, Router,
     body::Bytes,
-    extract::{ConnectInfo, DefaultBodyLimit, Path, State},
+    extract::{ConnectInfo, DefaultBodyLimit, FromRequest, Path, Request, State},
     http::HeaderMap,
     response::{IntoResponse, Response},
     routing::get,
@@ -20,10 +20,12 @@ use std::{
     sync::Arc,
     time::{Duration, Instant},
 };
+use tokio::sync::{OwnedSemaphorePermit, Semaphore};
 use tokio_util::sync::CancellationToken;
 
 struct Service {
-    writes: Arc<tokio::sync::Semaphore>,
+    writes: Arc<Semaphore>,
+    reads: Arc<Semaphore>,
 }
 pub fn router() -> Router<AppState> {
     Router::new()
@@ -31,7 +33,8 @@ pub fn router() -> Router<AppState> {
         .route("/api/character-art/{id}/{revision}/{file}", get(asset))
         .layer(DefaultBodyLimit::max(21 * 1024 * 1024))
         .layer(Extension(Arc::new(Service {
-            writes: Arc::new(tokio::sync::Semaphore::new(1)),
+            writes: Arc::new(Semaphore::new(1)),
+            reads: Arc::new(Semaphore::new(2)),
         })))
 }
 fn authorize(app: &AppState, headers: &HeaderMap, peer: SocketAddr) -> Result<()> {
@@ -77,17 +80,29 @@ async fn save(
     Extension(service): Extension<Arc<Service>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     headers: HeaderMap,
-    upload_bytes: Bytes,
+    request: Request,
 ) -> Result<Response> {
     authorize(&app, &headers, peer)?;
+    // Retain at most one upload body through parsing and image processing.
+    // Busy requests must not collect another 21 MiB before being rejected.
     let permit = service
         .writes
         .clone()
         .try_acquire_owned()
         .map_err(|_| ApiError::new(409, "CHARACTER_ART_BUSY", "另一项头像保存正在执行"))?;
-    let admission = app.host.admit_owned()?;
     let cancel = app.shutdown.child_token();
     let _drop = cancel.clone().drop_guard();
+    let upload_bytes = tokio::select! { biased;
+        _ = cancel.cancelled() => return Err(ApiError::new(499, "ABORT_ERR", "头像保存已取消")),
+        body = tokio::time::timeout(Duration::from_secs(60), Bytes::from_request(request, &app)) => {
+            match body {
+                Ok(Ok(bytes)) => bytes,
+                Ok(Err(error)) => return Ok(error.into_response()),
+                Err(_) => return Err(ApiError::new(408, "CHARACTER_ART_TIMEOUT", "头像上传超时，请重试")),
+            }
+        }
+    };
+    let admission = app.host.admit_owned()?;
     let value = blocking(move || {
         let _guards = (permit, admission);
         // Upload bodies can reach 21 MiB; parsing belongs with the image work.
@@ -101,18 +116,48 @@ async fn save(
 }
 async fn asset(
     State(app): State<AppState>,
+    Extension(service): Extension<Arc<Service>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     headers: HeaderMap,
     Path((id, revision, file)): Path<(String, String, String)>,
 ) -> Result<Response> {
     authorize(&app, &headers, peer)?;
+    let unavailable = || {
+        ApiError::new(
+            503,
+            "CHARACTER_ART_BUSY",
+            "头像读取繁忙或已停止，请稍后重试",
+        )
+    };
+    let permit = tokio::select! { biased;
+        _ = app.shutdown.cancelled() => return Err(unavailable()),
+        slot = tokio::time::timeout(Duration::from_secs(60), service.reads.clone().acquire_owned()) => {
+            slot.map_err(|_| unavailable())?.map_err(|_| unavailable())?
+        }
+    };
+    app.host.check_available()?;
+    let cancel = app.shutdown.child_token();
+    let _drop = cancel.clone().drop_guard();
     let (bytes, mime) = blocking(move || {
-        store::asset(
+        if cancel.is_cancelled() {
+            return Err(unavailable());
+        }
+        let (bytes, mime) = store::asset(
             &app.config.runtime_root.join("character-art"),
             &id,
             &revision,
             &file,
-        )
+        )?;
+        if cancel.is_cancelled() {
+            return Err(unavailable());
+        }
+        Ok((
+            Bytes::from_owner(AssetBody {
+                bytes,
+                _permit: permit,
+            }),
+            mime,
+        ))
     })
     .await?;
     Ok((
@@ -124,4 +169,16 @@ async fn asset(
         bytes,
     )
         .into_response())
+}
+
+// The worker owns the slot after a disconnect; the returned bytes then retain
+// it until the final response frame is released, including by a slow client.
+struct AssetBody {
+    bytes: Vec<u8>,
+    _permit: OwnedSemaphorePermit,
+}
+impl AsRef<[u8]> for AssetBody {
+    fn as_ref(&self) -> &[u8] {
+        &self.bytes
+    }
 }

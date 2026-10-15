@@ -1,6 +1,7 @@
 use super::*;
 use regex::Regex;
-use std::sync::LazyLock;
+use std::{io::Read, sync::LazyLock};
+const MAX_BYTES: u64 = 20 * 1024 * 1024;
 static INPUT: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^aics_video_input_[a-f0-9]{16,40}\.(?:png|jpg|jpeg|webp)$").unwrap()
 });
@@ -73,16 +74,18 @@ async fn safe(config: &Config, name: &str) -> Result<PathBuf> {
     }
     Ok(path)
 }
-async fn read(config: &Config, name: &str) -> Result<Vec<u8>> {
+async fn open(config: &Config, name: &str) -> Result<tokio::fs::File> {
     let file = tokio::fs::File::open(safe(config, name).await?).await?;
     if !file.metadata().await?.is_file() {
         return Err(error(400, "TASK_INPUT_INVALID", "输入图像不是普通文件"));
     }
+    Ok(file)
+}
+async fn read(config: &Config, name: &str) -> Result<Vec<u8>> {
+    let file = open(config, name).await?;
     let mut bytes = Vec::new();
-    file.take(20 * 1024 * 1024 + 1)
-        .read_to_end(&mut bytes)
-        .await?;
-    if bytes.len() < 16 || bytes.len() > 20 * 1024 * 1024 {
+    file.take(MAX_BYTES + 1).read_to_end(&mut bytes).await?;
+    if bytes.len() < 16 || bytes.len() as u64 > MAX_BYTES {
         return Err(error(
             400,
             "TASK_INPUT_INVALID",
@@ -90,6 +93,56 @@ async fn read(config: &Config, name: &str) -> Result<Vec<u8>> {
         ));
     }
     Ok(bytes)
+}
+async fn fingerprint_file(
+    config: &Config,
+    name: &str,
+    cancel: &CancellationToken,
+) -> Result<String> {
+    let scope = cancel.child_token();
+    let _guard = scope.clone().drop_guard();
+    let cancelled = || error(499, "CANCELLED", "输入保护已取消");
+    let file = tokio::select! { biased;
+        _ = scope.cancelled() => return Err(cancelled()),
+        file = open(config, name) => file?,
+    };
+    let permit = tokio::select! { biased;
+        _ = scope.cancelled() => return Err(cancelled()),
+        permit = HASHERS.clone().acquire_owned() => permit.map_err(|_| cancelled())?,
+    };
+    let file = file.into_std().await;
+    tokio::task::spawn_blocking(move || {
+        // Keep admission with the actual reader, including abandoned requests.
+        let _permit = permit;
+        let mut file = file.take(MAX_BYTES + 1);
+        let mut hash = Sha256::new();
+        let mut buffer = [0; 256 * 1024];
+        let mut length = 0;
+        loop {
+            if scope.is_cancelled() {
+                return Err(cancelled());
+            }
+            let count = file.read(&mut buffer)?;
+            if count == 0 {
+                break;
+            }
+            hash.update(&buffer[..count]);
+            length += count as u64;
+        }
+        if length < 16 || length > MAX_BYTES {
+            return Err(error(
+                400,
+                "TASK_INPUT_INVALID",
+                "输入图像大小超出 16B—20MB",
+            ));
+        }
+        if scope.is_cancelled() {
+            return Err(cancelled());
+        }
+        Ok(hex::encode(hash.finalize()))
+    })
+    .await
+    .map_err(|_| error(503, "TASK_INPUT_UNAVAILABLE", "输入校验未完成"))?
 }
 async fn fingerprint(
     bytes: Arc<Vec<u8>>,
@@ -208,7 +261,10 @@ pub(super) async fn capture(
         }
         let file = directory.path().join(name);
         let (bytes, hash) = fingerprint(bytes, cancel).await?;
-        tokio::fs::write(&file, bytes.as_slice()).await?;
+        let mut output = tokio::fs::File::create(&file).await?;
+        output.write_all(bytes.as_slice()).await?;
+        output.flush().await?;
+        drop(output);
         originals.push(Original {
             name: name.into(),
             file,
@@ -281,11 +337,7 @@ pub(super) async fn protect_restore(
                 }
             }
         }
-        if fingerprint(Arc::new(read(config, &original.name).await?), cancel)
-            .await?
-            .1
-            != original.hash
-        {
+        if fingerprint_file(config, &original.name, cancel).await? != original.hash {
             return Err(error(
                 409,
                 "TASK_INPUT_CHANGED",

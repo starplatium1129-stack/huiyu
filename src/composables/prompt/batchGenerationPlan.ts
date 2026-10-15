@@ -1,6 +1,6 @@
 import { ApiClientError } from '@/api/client'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
-import { getRuntimeTaskByKey, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, taskMessage } from '@/api/runtimeTasks'
+import { getRuntimeTaskByKey, waitForRuntimeTask, taskMessage } from '@/api/runtimeTasks'
 import type { AnimaRequest } from '../generation/useAnimaSession'
 import type { SDQueueJob } from '../generation/useSDQueue'
 import type { BatchDrawRunnerInput, BatchDrawRunnerResult } from '../generation/useBatchDraw'
@@ -48,15 +48,13 @@ export function readPreparedBatch(value: unknown): PreparedBatchImage | null {
 }
 
 /** A resumed plan can only look up its original identity and observe the existing task. */
-export async function recoverBatchTask(input: BatchDrawRunnerInput): Promise<{ blob: Blob; seed?: number; taskId: string }> {
+export async function recoverBatchTask(input: BatchDrawRunnerInput): Promise<{ taskId: string }> {
   const task = await getRuntimeTaskByKey(input.requestKey, input.signal)
   if (!task) throw new Error('原请求接收状态尚未确认；保留请求编号，稍后再核对，不会重新提交。')
   await input.accepted(task.taskId)
   const done = await waitForRuntimeTask(task.taskId, input.signal, value => input.report?.(taskMessage(value)))
-  const blob = await fetchRuntimeResult(runtimeResultPath(done), input.signal)
   input.signal.throwIfAborted()
-  const seed = Number(done.metadata.seed ?? done.input.seed)
-  return { blob, taskId: done.taskId, seed: Number.isFinite(seed) ? seed : undefined }
+  return { taskId: done.taskId }
 }
 
 /** Only a definite rejection or runtime-settled failure permits a later new attempt. */

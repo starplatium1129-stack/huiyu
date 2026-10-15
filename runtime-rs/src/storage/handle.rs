@@ -174,6 +174,22 @@ impl Storage {
             .await?;
         serde_json::from_value(value).map_err(Into::into)
     }
+    pub(crate) async fn begin_workspace_media_import(
+        &self,
+        alias: &str,
+        lease_id: &str,
+        principal: &str,
+        expected: Option<(&str, u64)>,
+    ) -> Result<crate::task_contract::ResultRef> {
+        let value = self
+            .request(
+                json!({"kind":"task.result.import.workspace","alias":alias,"leaseId":lease_id,
+                    "expected":expected.map(|(sha256,bytes)|json!({"sha256":sha256,"bytes":bytes}))}),
+                principal,
+            )
+            .await?;
+        serde_json::from_value(value).map_err(Into::into)
+    }
     pub(crate) async fn end_task_result_import(
         &self,
         lease_id: &str,
@@ -209,16 +225,28 @@ impl Storage {
         result.await.map_err(|_| commit_unknown())?
     }
     pub async fn media(&self, alias: &str) -> Result<Media> {
+        Ok(self.open_media(alias).await?.media)
+    }
+    pub(crate) async fn open_media(&self, alias: &str) -> Result<OpenedMedia> {
+        let media = self.lookup_media(alias).await?;
+        self.verification
+            .verify(self.root.clone(), media, self.sender.clone())
+            .await
+    }
+    pub(crate) async fn finish_media(&self, alias: &str, source: OpenedMedia) -> Result<()> {
+        let media = self.lookup_media(alias).await?;
+        self.verification
+            .finish(self.root.clone(), source, media, self.sender.clone())
+            .await
+    }
+    async fn lookup_media(&self, alias: &str) -> Result<Media> {
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();
         self.sender
             .send(Work::Media(alias.into(), cancel.0.clone(), reply))
             .await
             .map_err(|_| unavailable())?;
-        let media = result.await.map_err(|_| unavailable())??;
-        self.verification
-            .verify(self.root.clone(), media, self.sender.clone())
-            .await
+        result.await.map_err(|_| unavailable())?
     }
     pub async fn close(&self) -> Result<()> {
         // Wake input/result writers outside the actor before draining admitted work.

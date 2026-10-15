@@ -9,7 +9,7 @@ import type { ArtworkSaveSnapshot } from '@/application/artwork/artworkSaveInput
 /** Storage adapter: the use case owns saving, historyStore owns publication. */
 export function usePromptArtworkHistory(resolveLegacyArtworkDefaults: (entry: GeneratedArtworkInput) => LegacyArtworkDefaults) {
   const historyStore = usePromptHistoryStore()
-  const { history, projects } = storeToRefs(historyStore)
+  const { history } = storeToRefs(historyStore)
   const owners = new WeakMap<ArtworkSaveSnapshot, { repository: ArtworkRepository; authority: string }>()
   async function commitHistoryEntry(entry: GeneratedArtworkInput, repository: ArtworkRepository = artworkRepository): Promise<HistoryEntry | null> {
     const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
@@ -34,10 +34,5 @@ export function usePromptArtworkHistory(resolveLegacyArtworkDefaults: (entry: Ge
     await historyStore.loadHistory()
   }
 
-  async function loadProjects() {
-    await historyStore.loadProjects()
-  }
-
-
-  return { history, projects, commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry, loadHistory, loadProjects }
+  return { history, commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry, loadHistory }
 }

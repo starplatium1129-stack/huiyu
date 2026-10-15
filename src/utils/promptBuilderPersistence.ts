@@ -91,11 +91,6 @@ export interface PromptBuilderDraft {
   noLora?: boolean
 }
 
-export interface ProjectOption {
-  id: string
-  name: string
-}
-
 export interface PromptPreset {
   id: string
   name: string
@@ -135,16 +130,4 @@ export function restoreHistorySceneStory<TScene extends { id: string }>(
   const sceneId = stringValue(record.scene)
   const scene = sceneId ? (scenes.find(item => item.id === sceneId) ?? null) : null
   return { scene, story: stringValue(record.story) || '' }
-}
-
-export function parseProjectOptions(value: unknown): ProjectOption[] {
-  if (!Array.isArray(value)) return []
-  return value.flatMap((item): ProjectOption[] => {
-    if (!isRecord(item)) return []
-    if (typeof item.id !== 'string' && typeof item.id !== 'number') return []
-    const id = String(item.id).trim()
-    if (!id) return []
-    const label = stringValue(item.name) || stringValue(item.title) || id
-    return [{ id, name: label }]
-  })
 }

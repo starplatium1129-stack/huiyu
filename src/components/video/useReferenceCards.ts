@@ -36,8 +36,7 @@ export interface ReferenceCardsDeps {
   identityCard: Ref<string>
   /** 本簇的用户可见错误回写（尺寸/上传失败等）。 */
   batchError: Ref<string>
-  readBlobAsDataURL: (blob: Blob) => Promise<string>
-  uploadVideoImage: (base64: string, kind?: 'reference', signal?: AbortSignal) => Promise<VideoImageUploadResponse>
+  uploadVideoImage: (data: Blob, kind?: 'reference', signal?: AbortSignal) => Promise<VideoImageUploadResponse>
   onCardRemoved?: (index: number) => void
 }
 
@@ -251,10 +250,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     if (!file.type.startsWith('image/')) { deps.batchError.value = '请选择图片文件'; return }
     const controller = start(card)
     try {
-      const dataUrl = await deps.readBlobAsDataURL(file)
-      const comma = dataUrl.indexOf(',')
-      if (comma < 0) throw new Error('图片编码失败')
-      const upload = await deps.uploadVideoImage(dataUrl.slice(comma + 1), 'reference', controller.signal)
+      const upload = await deps.uploadVideoImage(file, 'reference', controller.signal)
       if (!current(card, controller) || card.images.length >= MAX_IMAGES_PER_CARD) return
       card.images.push({ name: upload.name, url: URL.createObjectURL(file) })
       deps.batchError.value = ''

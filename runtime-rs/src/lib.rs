@@ -163,7 +163,7 @@ pub fn router(state: AppState) -> Router {
     }
     if let Some(service) = &state.maintenance {
         router = router.layer(axum::middleware::from_fn_with_state(
-            service.clone(),
+            (service.clone(), state.shutdown.clone()),
             maintenance::read_barrier,
         ));
     }

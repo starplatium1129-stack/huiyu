@@ -5,7 +5,7 @@ import { useTrackedTask } from '../../composables/useTaskCenter.ts'
 import { apiClient } from '../../api/client.ts'
 import { importVideoImage, uploadVideoImage, type VideoImageUploadResponse } from '../../api/videoApi.ts'
 import { artworkRepository } from '../../storage/artworkRepository.ts'
-import { hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, cancelRuntimeTaskKey, type TaskRecord } from '../../api/runtimeTasks.ts'
+import { hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, cancelRuntimeTaskKey, type TaskSummary } from '../../api/runtimeTasks.ts'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import type { ShotDraft } from './shotListTypes.ts'
 
@@ -59,20 +59,6 @@ async function pollCreativeJob(id: string, timeoutMs: number, signal: AbortSigna
   }
 }
 
-function blobToBase64(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => {
-      const text = String(reader.result || '')
-      const comma = text.indexOf(',')
-      if (comma < 0) reject(new Error('图片编码失败'))
-      else resolve(text.slice(comma + 1))
-    }
-    reader.onerror = () => reject(new Error('图片编码失败'))
-    reader.readAsDataURL(blob)
-  })
-}
-
 export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequests: Map<ShotDraft, AbortController>; onError: (message: string) => void }) {
   const firstFrameBusy = ref(false)
   const firstFrameProgress = ref('')
@@ -81,7 +67,7 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
   let disposed = false
   let activeJob = ''
   let durableAttempt = false, activeRuntimeKey = ''
-  const acceptedFrames = new WeakMap<ShotDraft, TaskRecord>()
+  const acceptedFrames = new WeakMap<ShotDraft, TaskSummary>()
   async function cancelFirstFrames() {
     if (!controller) return
     controller.abort()
@@ -170,9 +156,7 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
               if (!response.ok) throw new Error('首帧图片读取失败')
               blob = await response.blob()
               if (!current()) continue
-              const base64 = await blobToBase64(blob)
-              if (!current()) continue
-              upload = await uploadVideoImage(base64, undefined, frameSignal)
+              upload = await uploadVideoImage(blob, undefined, frameSignal)
             }
             if (!current()) continue
             // Runtime aliases belong to the task; only a new fallback upload is ours.

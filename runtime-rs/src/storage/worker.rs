@@ -220,7 +220,10 @@ pub(super) fn run(
                     }
                     continue;
                 }
-                if command["kind"] == "restoreArtwork" {
+                if matches!(
+                    command["kind"].as_str(),
+                    Some("restoreArtwork" | "restoreArtworks")
+                ) {
                     if let Some(permit) = permit {
                         restore::start(&mut context, &command, &principal, reply, permit, &sender);
                     } else {

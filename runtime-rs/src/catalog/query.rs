@@ -86,6 +86,7 @@ impl Catalog {
                 )
             };
         let search = query.search.trim().to_lowercase();
+        let mut narrowed = false;
         for (predicate, value) in [
             ("instr(search_text,lower(?))>0", search.as_str()),
             ("character_id=?", query.character.as_str()),
@@ -101,16 +102,28 @@ impl Catalog {
             ),
         ] {
             if !value.is_empty() {
+                narrowed = true;
                 filter.push_str(" AND ");
                 filter.push_str(predicate);
                 values.push(value.to_owned().into());
             }
         }
-        let total: i64 = self.connection.query_row(
-            &format!("SELECT count(*) FROM content_records WHERE {filter}"),
-            rusqlite::params_from_iter(&values),
-            |r| r.get(0),
-        )?;
+        // Facets and the unfiltered total share one scan and one revision.
+        // Warm unfiltered pagination needs neither another count nor a full scan.
+        let (publish_generation, (facets, unfiltered_total)) = match cached {
+            Some((_, Some(value))) => (None, value),
+            Some((generation, None)) => (Some(generation), self.facets(first_kind, second_kind)?),
+            None => (None, self.facets(first_kind, second_kind)?),
+        };
+        let total: i64 = if narrowed {
+            self.connection.query_row(
+                &format!("SELECT count(*) FROM content_records WHERE {filter}"),
+                rusqlite::params_from_iter(&values),
+                |r| r.get(0),
+            )?
+        } else {
+            unfiltered_total
+        };
         let selected_page = page.min(((total + size - 1) / size).max(1));
         let mut statement = self.connection.prepare(&format!("SELECT kind,id,revision,sort_order,created_at,updated_at,title,character_id,category,rating FROM content_records WHERE {filter} ORDER BY {order} LIMIT ? OFFSET ?"))?;
         values.extend([size.into(), ((selected_page - 1) * size).into()]);
@@ -118,31 +131,31 @@ impl Catalog {
             Ok(json!({"kind":r.get::<_,String>(0)?,"id":r.get::<_,String>(1)?,"revision":r.get::<_,i64>(2)?,"sortOrder":r.get::<_,i64>(3)?,"createdAt":r.get::<_,Option<String>>(4)?,"updatedAt":r.get::<_,Option<String>>(5)?,
                 "title":r.get::<_,String>(6)?,"characterId":r.get::<_,String>(7)?,"category":r.get::<_,String>(8)?,"rating":r.get::<_,String>(9)?}))
         })?.collect::<rusqlite::Result<Vec<_>>>()?;
-        let (publish_generation, facets) = match cached {
-            Some((_, Some(value))) => (None, value),
-            Some((generation, None)) => (Some(generation), self.facets(first_kind, second_kind)?),
-            None => (None, self.facets(first_kind, second_kind)?),
-        };
-        let value = json!({"ok":true,"version":version,"items":items,"total":total,"page":selected_page,"pageSize":size,"facets":facets});
+        let mut value = json!({"ok":true,"version":version,"items":null,"total":total,"page":selected_page,"pageSize":size,"facets":null});
+        value["items"] = Value::Array(items);
+        value["facets"] = facets;
         transaction.commit()?;
         if let (Some(cache), Some(generation)) = (cache, publish_generation) {
-            cache.publish(generation, &query.kind, &value["facets"])?;
+            cache.publish(generation, &query.kind, &value["facets"], unfiltered_total)?;
         }
         Ok(value)
     }
-    fn facets(&self, first_kind: &str, second_kind: &str) -> Result<Value> {
-        let mut facets = self.connection.prepare("SELECT DISTINCT character_id,category,rating FROM content_records WHERE kind IN (?1,?2) AND deleted=0")?;
+    fn facets(&self, first_kind: &str, second_kind: &str) -> Result<(Value, i64)> {
+        let mut facets = self.connection.prepare("SELECT character_id,category,rating,count(*) FROM content_records WHERE kind IN (?1,?2) AND deleted=0 GROUP BY character_id,category,rating")?;
         let mut characters = std::collections::BTreeSet::new();
         let mut categories = std::collections::BTreeSet::new();
         let mut ratings = std::collections::BTreeSet::new();
+        let mut total = 0;
         for result in facets.query_map([first_kind, second_kind], |r| {
             Ok((
                 r.get::<_, String>(0)?,
                 r.get::<_, String>(1)?,
                 r.get::<_, String>(2)?,
+                r.get::<_, i64>(3)?,
             ))
         })? {
-            let (character, category, rating) = result?;
+            let (character, category, rating, count) = result?;
+            total += count;
             if !character.is_empty() {
                 characters.insert(character);
             }
@@ -153,7 +166,10 @@ impl Catalog {
                 ratings.insert(rating);
             }
         }
-        Ok(json!({"characters":characters,"categories":categories,"ratings":ratings}))
+        Ok((
+            json!({"characters":characters,"categories":categories,"ratings":ratings}),
+            total,
+        ))
     }
     pub fn history(&self, kind: &str, id: &str) -> Result<Value> {
         validation::key(kind, id)?;

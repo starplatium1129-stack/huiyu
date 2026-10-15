@@ -1,6 +1,6 @@
 import { apiClient } from './client'
 import { hasRuntimeTasks, isRuntimeTaskId, submitRuntimeTask, getRuntimeTask, cancelRuntimeTask, actOnRuntimeTask } from './runtimeTasks'
-import { taskVideoJob, taskVideoBatch, retryRuntimeVideoShot } from './runtimeVideo'
+import { taskVideoJob, taskVideoBatch, readRuntimeVideoBatch, retryRuntimeVideoShot } from './runtimeVideo'
 import {
   isVideoBatchResponse,
   isVideoJobResponse,
@@ -138,13 +138,14 @@ export function createVideoJob(input: CreateVideoJobInput, signal?: AbortSignal)
   })
 }
 
-/** 首帧图/尾帧图/参考图上传：base64 图片数据 → 网关校验后写入 ComfyUI/input，返回受控文件名。
+/** 首帧图/尾帧图/参考图上传：原始 Blob → 网关校验后写入 ComfyUI/input，返回受控文件名。
  *  kind:'reference' 用独立前缀（跨任务资产，网关重启不清理）；首帧/尾帧走缺省前缀（任务级清理）。
  *  同一端点即覆盖 FL2VA 尾帧通道（后端按 IMAGE_INPUT_PATTERN 白名单校验）。 */
-export function uploadVideoImage(data: string, kind?: 'reference', signal?: AbortSignal): Promise<VideoImageUploadResponse> {
-  return apiClient.request<VideoImageUploadResponse>('/api/video/images', {
+export function uploadVideoImage(data: Blob, kind?: 'reference', signal?: AbortSignal): Promise<VideoImageUploadResponse> {
+  return apiClient.request<VideoImageUploadResponse>(`/api/video/images/raw${kind ? '?kind=reference' : ''}`, {
     method: 'POST',
-    body: kind ? { data, kind } : { data },
+    headers: { 'Content-Type': 'application/octet-stream' },
+    body: data,
     signal,
     timeoutMs: 60_000,
     validate: (value: Record<string, unknown>) =>
@@ -154,9 +155,18 @@ export function uploadVideoImage(data: string, kind?: 'reference', signal?: Abor
 
 /** Reuse an owned durable task result without sending its image bytes back. */
 export function importVideoImage(taskId: string, alias: string, index = 0, signal?: AbortSignal): Promise<VideoImageUploadResponse> {
+  return importVideoMedia({ taskId, alias, index }, signal)
+}
+
+/** Import an already-authorized workspace alias; failures must not fall back to uploading. */
+export function importWorkspaceVideoImage(alias: string, signal?: AbortSignal): Promise<VideoImageUploadResponse> {
+  return importVideoMedia({ source: 'workspace', alias }, signal)
+}
+
+function importVideoMedia(body: { taskId: string; alias: string; index: number } | { source: 'workspace'; alias: string }, signal?: AbortSignal): Promise<VideoImageUploadResponse> {
   return apiClient.request<VideoImageUploadResponse>('/api/workspace/video-images', {
     method: 'POST',
-    body: { taskId, alias, index },
+    body,
     signal,
     timeoutMs: 60_000,
     validate: (value: Record<string, unknown>) =>
@@ -302,7 +312,7 @@ export function createVideoBatch(input: CreateVideoBatchInput, signal?: AbortSig
 }
 
 export function fetchVideoBatch(id: string, signal?: AbortSignal): Promise<VideoBatchResponse> {
-  if (isRuntimeTaskId(id)) return getRuntimeTask(id, signal).then(task => ({ ok: true, batch: taskVideoBatch(task) }))
+  if (isRuntimeTaskId(id)) return readRuntimeVideoBatch(id, signal).then(batch => ({ ok: true, batch }))
   return apiClient.request<VideoBatchResponse>(`/api/video/batches/${encodeURIComponent(id)}`, {
     cache: 'no-store',
     signal,

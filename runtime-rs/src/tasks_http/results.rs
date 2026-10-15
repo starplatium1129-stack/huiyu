@@ -26,22 +26,24 @@ pub(super) async fn read(
         .ok_or_else(|| ApiError::new(404, "TASK_RESULT_MISSING", "Result is unavailable"))?;
     // The alias is obtained exclusively from this principal's task, never from
     // an HTTP media parameter. Storage verifies the immutable object's bytes.
-    let media = tokio::select! {
-        result = tokio::time::timeout(Duration::from_secs(30), storage.media(&reference.alias)) =>
+    let source = tokio::select! {
+        result = tokio::time::timeout(Duration::from_secs(30), storage.open_media(&reference.alias)) =>
             result.map_err(|_| ApiError::new(504, "TASK_TIMEOUT", "Task media verification timed out"))??,
         _ = state.shutdown.cancelled() => return Err(ApiError::new(503, "DESKTOP_DRAINING", "Desktop is draining")),
     };
+    let media = &source.media;
     if reference.sha256 != media.sha256
         || reference.bytes != media.total_bytes
         || reference.mime != media.mime
     {
         return Err(invalid_record());
     }
+    let mime = media.mime.clone();
     let mut response =
-        crate::workspace_http::stream_media(state, method, &media, 0, media.total_bytes).await?;
+        crate::workspace_http::download_opened(state, storage, method, &reference.alias, source)?;
     response.headers_mut().insert(
         "content-type",
-        HeaderValue::from_str(&media.mime).map_err(|_| invalid_record())?,
+        HeaderValue::from_str(&mime).map_err(|_| invalid_record())?,
     );
     Ok(response)
 }

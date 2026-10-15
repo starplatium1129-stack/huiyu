@@ -27,7 +27,7 @@ use crate::{AppState, config::Config, security};
 use axum::{
     Extension, Json, Router,
     body::{Body, Bytes, to_bytes},
-    extract::{ConnectInfo, DefaultBodyLimit, OriginalUri, Request, State},
+    extract::{ConnectInfo, DefaultBodyLimit, FromRequest, OriginalUri, Request, State},
     http::{HeaderMap, Method, StatusCode},
     middleware::Next,
     response::{IntoResponse, Response},
@@ -35,7 +35,12 @@ use axum::{
 };
 pub use context::Options;
 use serde_json::{Value, json};
-use std::sync::{Arc, Mutex};
+use std::{
+    sync::{Arc, Mutex},
+    time::Duration,
+};
+use tokio::sync::{OwnedSemaphorePermit, Semaphore};
+use tokio_util::sync::CancellationToken;
 
 pub type Result<T> = std::result::Result<T, Error>;
 #[derive(Debug)]
@@ -92,6 +97,7 @@ pub struct MaintenanceService {
     hero: Mutex<Option<(std::time::Instant, Value)>>,
     write_slots: Arc<tokio::sync::Semaphore>,
     write_lock: Arc<tokio::sync::Mutex<()>>,
+    read_slots: Arc<Semaphore>,
 }
 impl MaintenanceService {
     pub(crate) fn showcase_root(&self) -> Option<std::path::PathBuf> {
@@ -109,6 +115,7 @@ impl MaintenanceService {
             hero: Mutex::new(None),
             write_slots: Arc::new(tokio::sync::Semaphore::new(8)),
             write_lock: Arc::new(tokio::sync::Mutex::new(())),
+            read_slots: Arc::new(Semaphore::new(2)),
         }
     }
     fn home_hero(&self) -> Value {
@@ -188,17 +195,11 @@ async fn save_content(
     ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
     OriginalUri(uri): OriginalUri,
     headers: HeaderMap,
-    body: std::result::Result<Bytes, axum::extract::rejection::BytesRejection>,
+    request: Request,
 ) -> Result<Response> {
     authorize(&app, &service, &headers, peer)?;
-
-    let body = body.map_err(|error| {
-        Error::new(
-            error.status().as_u16(),
-            "MAINTENANCE_ARGUMENT",
-            "请求体无效或超过上限",
-        )
-    })?;
+    // Admission precedes collection of the 26 MiB upload; rejected requests
+    // retain only their streaming body instead of another full image payload.
     let slot = service
         .write_slots
         .clone()
@@ -206,6 +207,13 @@ async fn save_content(
         .map_err(|_| Error::new(429, "MAINTENANCE_QUEUE_FULL", "维护保存队列已满"))?;
     let cancel = app.shutdown.child_token();
     let _cancel_on_drop = cancel.clone().drop_guard();
+    let body = tokio::select! { biased;
+        _ = cancel.cancelled() => return Err(Error::new(499, "ABORT_ERR", "维护保存已取消")),
+        body = tokio::time::timeout(Duration::from_secs(60), Bytes::from_request(request, &app)) => {
+            body.map_err(|_| Error::new(408, "MAINTENANCE_ARGUMENT", "维护上传超时，请重试"))?
+                .map_err(|error| Error::new(error.status().as_u16(), "MAINTENANCE_ARGUMENT", "请求体无效或超过上限"))?
+        }
+    };
     let prepared = request_body::parse(body, slot, &cancel).await?;
     let lock = tokio::select! {_ = cancel.cancelled()=>return Err(Error::new(499,"ABORT_ERR","维护保存已取消")),lock=service.write_lock.clone().lock_owned()=>lock};
     // The blocking transaction owns admission until it commits or completes
@@ -238,7 +246,7 @@ async fn home_hero(Extension(service): Extension<Arc<MaintenanceService>>) -> Re
 /// Attach after authorization and before static/precompressed/reference serving.
 /// Mutable content shares the transaction fence in source and packaged modes.
 pub async fn read_barrier(
-    State(service): State<Arc<MaintenanceService>>,
+    State((service, shutdown)): State<(Arc<MaintenanceService>, CancellationToken)>,
     request: Request,
     next: Next,
 ) -> Response {
@@ -258,6 +266,15 @@ pub async fn read_barrier(
     {
         return next.run(request).await;
     }
+    let permit = tokio::select! { biased;
+        _ = shutdown.cancelled() => return read_blocked("受保护文件读取已停止"),
+        slot = tokio::time::timeout(Duration::from_secs(60), service.read_slots.clone().acquire_owned()) => {
+            match slot {
+                Ok(Ok(slot)) => slot,
+                _ => return read_blocked("受保护文件读取繁忙，请稍后重试"),
+            }
+        }
+    };
     let options = service.options.clone();
     let token = match blocking(move || journal::read_token(&options)).await {
         Ok(token) => token,
@@ -265,20 +282,42 @@ pub async fn read_barrier(
     };
     let response = next.run(request).await;
     let (parts, body) = response.into_parts();
-    let bytes = match to_bytes(body, 64 * 1024 * 1024).await {
-        Ok(bytes) => bytes,
-        Err(_) => {
-            return Error::new(
-                503,
-                "MAINTENANCE_READ_BLOCKED",
-                "受保护文件超过维护读取缓冲上限或读取中断",
-            )
-            .into_response();
+    let bytes = tokio::select! { biased;
+        _ = shutdown.cancelled() => return read_blocked("受保护文件读取已停止"),
+        collected = tokio::time::timeout(Duration::from_secs(60), to_bytes(body, 64 * 1024 * 1024)) => {
+            match collected {
+                Ok(Ok(bytes)) => bytes,
+                _ => return read_blocked("受保护文件超过维护读取缓冲上限、读取超时或中断"),
+            }
         }
     };
     let options = service.options.clone();
     if let Err(error) = blocking(move || journal::assert_token(&options, &token)).await {
         return error.into_response();
     }
-    Response::from_parts(parts, Body::from(bytes))
+    let body = if bytes.is_empty() {
+        Body::empty()
+    } else {
+        // Keep the slot through the last response frame, including slow clients.
+        // Two retained bodies are bounded to 128 MiB; collection may also need
+        // a temporary copy when joining multiple frames.
+        Body::from(Bytes::from_owner(ProtectedBody {
+            bytes,
+            _permit: permit,
+        }))
+    };
+    Response::from_parts(parts, body)
+}
+
+struct ProtectedBody {
+    bytes: Bytes,
+    _permit: OwnedSemaphorePermit,
+}
+impl AsRef<[u8]> for ProtectedBody {
+    fn as_ref(&self) -> &[u8] {
+        &self.bytes
+    }
+}
+fn read_blocked(message: &str) -> Response {
+    Error::new(503, "MAINTENANCE_READ_BLOCKED", message).into_response()
 }

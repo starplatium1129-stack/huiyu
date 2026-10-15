@@ -4,6 +4,7 @@ use crate::{
     error::{ApiError, Result},
     processes::{OwnedProcess, Processes},
 };
+use axum::body::Bytes;
 use serde_json::{Value, json};
 use std::{
     path::{Path, PathBuf},
@@ -88,9 +89,10 @@ impl Client {
 
     pub async fn run(
         &self,
-        image: Arc<Vec<u8>>,
+        image: Bytes,
         threshold: f64,
         cancel: CancellationToken,
+        upload_admission: OwnedSemaphorePermit,
     ) -> Result<Value> {
         if !threshold.is_finite() || !(0.0..=1.0).contains(&threshold) {
             return Err(ApiError::new(400, "INVALID_PARAMETER", "反推阈值无效"));
@@ -119,9 +121,16 @@ impl Client {
                 let result = async {
                     check(&cancel, &shutdown)?;
                     tokio::fs::create_dir_all(&settings.temp_root).await?;
-                    let input =
-                        tempfile::NamedTempFile::new_in(&settings.temp_root)?.into_temp_path();
-                    tokio::fs::write(&input, image.as_slice()).await?;
+                    let (file, input) =
+                        tempfile::NamedTempFile::new_in(&settings.temp_root)?.into_parts();
+                    let mut file = tokio::fs::File::from_std(file);
+                    file.write_all(&image).await?;
+                    file.flush().await?;
+                    drop(file);
+                    // The tracked job owns upload capacity until no full image
+                    // buffer remains; inference keeps only the private file.
+                    drop(image);
+                    drop(upload_admission);
                     let mut worker = worker.lock().await;
                     let result = tokio::select! {
                         biased;
@@ -161,7 +170,6 @@ impl Client {
                 }
                 .await;
                 drop(admission);
-                drop(image);
                 let _ = send.send(result);
                 let Some(idle) = idle else { return };
                 tokio::select! {

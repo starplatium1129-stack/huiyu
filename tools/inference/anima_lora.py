@@ -230,6 +230,17 @@ def try_hotswap(pipeline, adapters, *, upload):
     if not adapters:
         return False
     started = time.perf_counter()
+    for adapter in adapters:
+        strength = adapter["strength"]
+        if isinstance(strength, bool) or not isinstance(strength, (int, float)) or not math.isfinite(strength):
+            raise UnsupportedLora("LoRA strength must be finite")
+    components = {name: getattr(pipeline, name) for name in ("transformer", "text_conditioner")}
+    loaded_names = set().union(*(getattr(model, "peft_config", {}) for model in components.values()))
+    # Every supported adapter has at least one target in these two components.
+    # Adding/removing a name cannot hotswap; avoid loading/converting all of its
+    # weights here only to repeat that work in the checked ordinary load path.
+    if loaded_names != {f"huiyu_{index}" for index in range(len(adapters))}:
+        return False
     import torch
     from peft import get_peft_model_state_dict
     from peft.tuners.lora.layer import Linear
@@ -238,12 +249,8 @@ def try_hotswap(pipeline, adapters, *, upload):
 
     prepared = []
     for index, adapter in enumerate(adapters):
-        strength = adapter["strength"]
-        if isinstance(strength, bool) or not isinstance(strength, (int, float)) or not math.isfinite(strength):
-            raise UnsupportedLora("LoRA strength must be finite")
         state, targets, metadata_override = _inspect(pipeline, Path(adapter["path"]), tensors=True)
         prepared.append((f"huiyu_{index}", state, targets, metadata_override, {}))
-    components = {name: getattr(pipeline, name) for name in ("transformer", "text_conditioner")}
     for component, model in components.items():
         expected_names = {name for name, _, targets, _, _ in prepared if component in targets}
         if set(getattr(model, "peft_config", {})) != expected_names:
@@ -258,9 +265,11 @@ def try_hotswap(pipeline, adapters, *, upload):
             current = get_peft_model_state_dict(model, adapter_name=name, save_embedding_layers=False)
             if set(current) != expected:
                 return False
-            incoming = {key: state[f"{component}.{key}"] for key in sorted(expected)}
             ranks = {}
-            for key, tensor in incoming.items():
+            # Read from the owning state so replaced FP32 tensors can retire
+            # individually, without a second dictionary retaining the group.
+            for key in sorted(expected):
+                tensor = state[f"{component}.{key}"]
                 if (tensor.dtype not in (torch.float16, torch.bfloat16, torch.float32)
                         or tensor.device.type != "cpu" or not bool(torch.isfinite(tensor).all())):
                     raise UnsupportedLora(f"Hotswap requires finite CPU floating LoRA weights: {component}.{key}")
@@ -276,12 +285,14 @@ def try_hotswap(pipeline, adapters, *, upload):
                 # dtype. In particular Kohya's alpha-folded FP32 B must not
                 # turn an existing BF16 adapter into a mixed-dtype projection.
                 normalized = tensor.to(dtype=parameter.dtype)
-                if not bool(torch.isfinite(normalized).all()):
+                if normalized is not tensor and not bool(torch.isfinite(normalized).all()):
                     raise UnsupportedLora(f"Hotswap dtype conversion overflowed: {component}.{key}")
                 state[f"{component}.{key}"] = normalized
                 if side == "B.weight":
                     ranks[f"^{key}"] = tensor.shape[1]
-            candidate = _create_lora_config(incoming, None, None, ranks, adapter_name=name)
+            candidate = _create_lora_config(
+                {key: state[f"{component}.{key}"] for key in sorted(expected)},
+                None, None, ranks, adapter_name=name)
             current_config = model.peft_config[name]
             current_options, candidate_options = current_config.to_dict(), candidate.to_dict()
             # PEFT 0.19 condenses >=20 target paths into equivalent suffixes at
@@ -298,7 +309,7 @@ def try_hotswap(pipeline, adapters, *, upload):
             check_hotswap_configs_compatible(current_config, candidate)
     # Drop preflight tensor aliases before PEFT swaps old storage back into the
     # incoming tensors. Retire each consumed dictionary before staging the next.
-    del current, incoming, tensor, normalized, parameter
+    del current, tensor, normalized, parameter
     uploads = []
     for index, (name, state, targets, _, destinations) in enumerate(prepared):
         for observation in _upload_adapter(state, destinations, upload):

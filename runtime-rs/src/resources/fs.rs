@@ -2,7 +2,7 @@ mod platform;
 use super::{Error, Result};
 use crate::file_identity;
 use crate::file_paths::{absolute, key};
-pub(super) use platform::{hostname, space, available_space};
+pub(super) use platform::{available_space, hostname, space};
 use serde_json::Value;
 use std::{
     fs::{self, File, Metadata, OpenOptions},
@@ -130,6 +130,9 @@ pub(super) fn ensure(path: &Path) -> Result<()> {
 }
 pub(super) fn open(path: &Path, max: u64, hardlinks: bool) -> Result<File> {
     let before = safe(path, false, hardlinks)?.unwrap();
+    open_checked(path, max, hardlinks, &before)
+}
+fn open_checked(path: &Path, max: u64, hardlinks: bool, before: &Metadata) -> Result<File> {
     if !before.is_file() || before.len() > max {
         return Err(Error::new(
             "METADATA_INVALID",
@@ -267,7 +270,7 @@ fn read_verified(
     if stat.len() != entry.bytes {
         return Ok(false);
     }
-    let mut file = open(path, entry.bytes, false)?;
+    let mut file = open_checked(path, entry.bytes, false, &stat)?;
     if let Some(bytes) = &mut output {
         let size = usize::try_from(entry.bytes)
             .map_err(|_| Error::new("RESOURCE_BUSY", "Resource does not fit in memory"))?;
@@ -277,7 +280,7 @@ fn read_verified(
     }
     let mut hash = sha2::Sha256::new();
     use sha2::Digest;
-    let mut buffer = vec![0; 512 * 1024];
+    let mut buffer = vec![0; entry.bytes.saturating_add(1).min(512 * 1024) as usize];
     let mut total = 0;
     loop {
         super::config::cancelled(cancel)?;
@@ -293,7 +296,6 @@ fn read_verified(
         if let Some(bytes) = &mut output {
             bytes.extend_from_slice(&buffer[..count]);
         }
-
     }
     super::config::cancelled(cancel)?;
 

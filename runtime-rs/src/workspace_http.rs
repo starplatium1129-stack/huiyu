@@ -1,6 +1,7 @@
 mod commands;
 mod json;
 mod media;
+pub(crate) use media::download_opened;
 pub(crate) use media::range as media_range;
 pub(crate) use media::stream as stream_media;
 
@@ -131,6 +132,14 @@ async fn perform(
             "Workspace session no longer matches this workspace",
         ));
     }
+    if path.len() == 3
+        && path[0] == "media"
+        && path[2] == "content"
+        && matches!(*method, Method::GET | Method::HEAD)
+    {
+        commands::text(&json!(&path[1]))?;
+        return media::download(state, &storage, method, &path[1]).await;
+    }
     if path == ["video-images"] && method == Method::POST {
         if body.len() > 4096 {
             return Err(ApiError::new(413, "INVALID_IMAGE", "图片导入请求过大"));
@@ -144,6 +153,38 @@ async fn perform(
         let admission = state.host.admit_owned()?;
         return service
             .import_result(storage, session.principal_id, input, owner, admission)
+            .await
+            .map(|value| Json(value).into_response());
+    }
+    if path == ["anima-images"] && method == Method::POST {
+        if body.len() > 4096 {
+            return Err(ApiError::new(413, "INVALID_IMAGE", "图片导入请求过大"));
+        }
+        let input: crate::images::media_import::WorkspaceImage = serde_json::from_slice(&body)?;
+        let service = state
+            .images
+            .as_ref()
+            .ok_or_else(|| ApiError::new(503, "ANIMA_UNAVAILABLE", "图片服务暂不可用"))?;
+        let owner = crate::generation::request_owner(headers, peer, &query);
+        let admission = state.host.admit_owned()?;
+        return service
+            .import_workspace(storage, session.principal_id, input, owner, admission)
+            .await
+            .map(|value| Json(value).into_response());
+    }
+    if path == ["interrogate"] && method == Method::POST {
+        crate::interrogate::local(headers, peer)?;
+        if body.len() > 4096 {
+            return Err(ApiError::new(413, "INVALID_IMAGE", "图片反推请求过大"));
+        }
+        let input: crate::interrogate::WorkspaceInput = serde_json::from_slice(&body)?;
+        let service = state
+            .interrogate
+            .as_ref()
+            .ok_or_else(|| ApiError::new(503, "INTERROGATE_UNAVAILABLE", "图片反推服务暂不可用"))?;
+        let admission = state.host.admit_owned()?;
+        return service
+            .interrogate_workspace(storage, session.principal_id, input, admission)
             .await
             .map(|value| Json(value).into_response());
     }
@@ -171,10 +212,13 @@ async fn perform(
     if command["kind"] == "readMedia" {
         return media::chunk(state, &storage, method, &command).await;
     }
-    let backup = matches!(command["kind"].as_str(), Some("backup" | "restoreBackup"));
+    let long_request = matches!(
+        command["kind"].as_str(),
+        Some("backup" | "restoreBackup" | "restoreArtworks")
+    );
     let operation_id = command.get("operationId").cloned();
     let result = tokio::time::timeout(
-        Duration::from_secs(if backup { 120 } else { 30 }),
+        Duration::from_secs(if long_request { 120 } else { 30 }),
         storage.request(command, &session.principal_id),
     )
     .await;

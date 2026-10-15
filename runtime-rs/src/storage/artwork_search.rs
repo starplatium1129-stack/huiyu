@@ -33,17 +33,37 @@ fn anchor(terms: &[&str]) -> (&'static str, String) {
         .filter(|term| !term.contains('\0') && term.chars().nth(2).is_some())
         .max_by_key(|term| term.len())
     {
-        // One literal trigram is a candidate filter, never the final match.
-        // No stemming, folding, wildcard syntax or removal of diacritics.
+        // Keep the old anchor, then intersect literal prefixes/suffixes from
+        // other terms. A common prefix alone can overflow the 128-row probe
+        // and force a full scan even when the complete query is selective.
+        // Each token stays exactly three Unicode characters for detail=none;
+        // all are necessary conditions, with contains still the final match.
+        let mut trigrams = BTreeSet::from([term.chars().take(3).collect::<String>()]);
+        for term in terms
+            .iter()
+            .filter(|term| !term.contains('\0') && term.chars().nth(2).is_some())
+        {
+            let suffix = term.chars().rev().take(3).collect::<Vec<_>>();
+            for trigram in [
+                term.chars().take(3).collect::<String>(),
+                suffix.into_iter().rev().collect(),
+            ] {
+                trigrams.insert(trigram);
+                if trigrams.len() == 16 {
+                    break;
+                }
+            }
+            if trigrams.len() == 16 {
+                break;
+            }
+        }
         return (
             "artwork_search_fts",
-            format!(
-                "\"{}\"",
-                term.chars()
-                    .take(3)
-                    .collect::<String>()
-                    .replace('"', "\"\"")
-            ),
+            trigrams
+                .into_iter()
+                .map(|trigram| format!("\"{}\"", trigram.replace('"', "\"\"")))
+                .collect::<Vec<_>>()
+                .join(" AND "),
         );
     }
     // Character presence covers short CJK queries without changing substring

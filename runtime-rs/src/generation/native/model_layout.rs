@@ -1,5 +1,5 @@
 use serde_json::Value;
-use std::{fs, io::Read, path::Path};
+use std::{collections::HashSet, fs, io::Read, path::Path};
 
 const COMPONENTS: [(&str, &str, &[&str]); 7] = [
     ("text_encoder", "transformers", &["Qwen3Model"]),
@@ -127,13 +127,16 @@ fn inspect(root: &Path) -> Result<(), String> {
                         .as_object()
                         .filter(|map| !map.is_empty())
                         .ok_or_else(|| format!("无效的分片索引：{name}"))?;
+                    // Many tensors share one shard. Validate each name, but
+                    // inspect each file only once within this index read.
+                    let mut checked = HashSet::new();
                     for shard in mapping.values() {
                         let shard = shard
                             .as_str()
                             .ok_or_else(|| format!("无效的分片名称：{name}"))?;
                         if shard.contains(['/', '\\', ':', '\0'])
                             || !shard.ends_with(".safetensors")
-                            || !file(&root, &folder.join(shard))
+                            || (checked.insert(shard) && !file(&root, &folder.join(shard)))
                         {
                             return Err(format!("缺少或无效的模型分片：{name}/{shard}"));
                         }

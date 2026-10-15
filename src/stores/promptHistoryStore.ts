@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { artworkRepository } from '@/storage/artworkRepository'
-import { parseProjectOptions, type ProjectOption } from '@/utils/promptBuilderPersistence'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
 
 let lastHistoryId = 0
@@ -30,9 +29,7 @@ async function measureBlob(blob: Blob): Promise<{ width: number | null; height: 
 
 export const usePromptHistoryStore = defineStore('promptHistory', () => {
   const history = ref<ArtworkRecord[]>([])
-  const projects = ref<ProjectOption[]>([])
   let historyLoad = 0
-  let projectLoad = 0
 
   function rememberArtwork(entry: ArtworkRecord) {
     // A pre-save load cannot overwrite a newly confirmed entry with an older snapshot.
@@ -46,15 +43,6 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
     try {
       const raw = await artworkRepository.readHistory()
       if (request === historyLoad) history.value = parseArtworkRecords(raw)
-    } catch {}
-    await loadProjects()
-  }
-
-  async function loadProjects() {
-    const request = ++projectLoad
-    try {
-      const parsed = parseProjectOptions((await artworkRepository.readProjects()).filter(project => !Object.hasOwn(project, 'smartRule')))
-      if (request === projectLoad) projects.value = parsed
     } catch {}
   }
 
@@ -70,7 +58,6 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
     if (result.deleted) {
       historyLoad += 1
       history.value = parseArtworkRecords(history.value).filter(entry => String(entry.id).trim() !== String(id).trim())
-      await loadProjects()
     }
   }
 
@@ -84,12 +71,10 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
 
   return {
     history,
-    projects,
     historyIdSeq,
     measureBlob,
     loadHistory,
     rememberArtwork,
-    loadProjects,
     removeHistoryEntry,
     restoreHistoryEntry,
   }

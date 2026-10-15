@@ -16,6 +16,7 @@ import { nativeAnimaRequestBlocker } from '@/composables/generation/nativeAnimaC
 import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
 import { interrogateImage } from '@/api/interrogateImage'
+import { assertWorkspaceMediaAuthority, type MediaSource } from '@/platform/desktop/workspaceMediaSource'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { captureResultContext } from '@/utils/resultContext'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
@@ -34,7 +35,7 @@ let busy = false
 // Unknown admission retains the original prepared recipe and identity, even when settings change later.
 const pending = new Map<string, Attempt>()
 
-async function prepare(args: CompanionImageArgs, options: { referenceImageUrl?: string; signal: AbortSignal; report?: (message: string) => void }): Promise<Attempt> {
+async function prepare(args: CompanionImageArgs, options: { referenceImage?: string | Readonly<MediaSource>; signal: AbortSignal; report?: (message: string) => void }): Promise<Attempt> {
   const { signal, report } = options
   const pb = usePromptBuilderStore()
   report?.('正在读取工作台的绘图设置…')
@@ -75,7 +76,7 @@ async function prepare(args: CompanionImageArgs, options: { referenceImageUrl?: 
     if (!pb.loraMeta.some(meta => meta.id === state.loraId || meta.name === state.loraId)) throw new Error('角色 LoRA 的提示词资料尚未准备好，请先在绘图页重新读取模型资料')
   }
   if (state.styleLoraId && !state.styleLoras.some(style => style.id === state.styleLoraId && style.available !== false)) throw new Error('工作台选择的风格 LoRA 尚未准备好，请先在绘图页重新选择')
-  const inferred = options.referenceImageUrl ? (report?.('正在反推参考图片的服装、姿势与背景…'), await interrogateImage(options.referenceImageUrl, signal)) : undefined
+  const inferred = options.referenceImage ? (report?.('正在反推参考图片的服装、姿势与背景…'), await interrogateImage(options.referenceImage, signal)) : undefined
   signal.throwIfAborted()
   const draft = companionPromptDraft(pb, args, state, inferred, report)
   const engine = ref(family), modelId = ref(state.modelId), loraId = ref(state.loraId)
@@ -94,12 +95,12 @@ async function prepare(args: CompanionImageArgs, options: { referenceImageUrl?: 
 
 /** Direct image creation and reference recreation share the same compiler and durable task/archive path. */
 export async function generateCompanionImage(args: CompanionImageArgs, options: {
-  referenceImageUrl?: string; signal: AbortSignal; report?: (message: string) => void
+  referenceImage?: string | Readonly<MediaSource>; signal: AbortSignal; report?: (message: string) => void
 }): Promise<CompanionImageResult> {
-  validateCompanionImageArgs(args, Boolean(options.referenceImageUrl))
+  validateCompanionImageArgs(args, Boolean(options.referenceImage))
   if (!isLocalStudioHost()) throw new Error('桌宠绘图工具仅限本机直连使用')
   if (!hasRuntimeTasks()) throw new Error('请在桌面客户端启用私人任务工作区后使用桌宠绘图')
-  if (options.referenceImageUrl && !/^data:image\/(png|jpeg|webp);base64,/.test(options.referenceImageUrl)) throw new Error('参考图片引用无效，请重新发送图片')
+  if (typeof options.referenceImage === 'string' && options.referenceImage && !/^data:image\/(png|jpeg|webp);base64,/.test(options.referenceImage)) throw new Error('参考图片引用无效，请重新发送图片')
   if (busy) throw new Error('桌宠正在处理上一张图片，请等待完成或先停止')
   options.signal.throwIfAborted()
   busy = true
@@ -107,6 +108,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
   const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId || ''
   const checkWorkspace = () => {
     if (getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId !== workspace) throw new Error('工作区已改变，请重新发起绘图；原任务仍保留在原工作区')
+    if (options.referenceImage && typeof options.referenceImage !== 'string') assertWorkspaceMediaAuthority(options.referenceImage.authority)
   }
   let signature = '', attempt: Attempt | undefined, cancel: Promise<unknown> | null = null
   const requestCancel = () => {
@@ -117,9 +119,11 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
   }
   signal.addEventListener('abort', requestCancel, { once: true })
   try {
-    const source = options.referenceImageUrl || ''
-    const digest = source ? await crypto.subtle.digest('SHA-256', new TextEncoder().encode(source)) : null
-    const referenceKey = digest ? Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('') : ''
+    const source = options.referenceImage || ''
+    checkWorkspace()
+    const digest = typeof source === 'string' && source ? await crypto.subtle.digest('SHA-256', new TextEncoder().encode(source)) : null
+    const referenceKey = typeof source !== 'string' ? JSON.stringify(['workspace-media-v1', source.sha256, source.mime, source.bytes])
+      : digest ? Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('') : ''
     signature = JSON.stringify([workspace, args.character.trim(), args.description.trim(), args.visualDescription?.trim() || '',
       args.outfit?.trim() || 'default', args.mature === true, referenceKey])
     attempt = pending.get(signature)
@@ -160,7 +164,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
     checkWorkspace()
     return { taskId: done.taskId, resultPath: runtimeResultPath(done), imageId, artworkId,
       character: args.character, description: args.description,
-      output: artworkId ? options.referenceImageUrl ? '已按参考图的服装、姿势与背景生成新图，并保存到作品册。' : '图片已生成，并保存到作品册。'
+      output: artworkId ? options.referenceImage ? '已按参考图的服装、姿势与背景生成新图，并保存到作品册。' : '图片已生成，并保存到作品册。'
         : '图片已生成，原图已送回对话；作品册保存尚未确认，可在任务中心重试入册。' }
   } catch (error) {
     if (signal.aborted) {

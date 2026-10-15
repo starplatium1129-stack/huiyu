@@ -10,3 +10,10 @@ export function assertChatVersion(value: unknown, current: number): void {
   }
   if (version > current) throw new Error('聊天数据来自更新版本，原件已保留，请升级后再发送或修改。')
 }
+
+export function assertChatJsonVersion(raw: string | null, current: number): void {
+  if (raw === null) return
+  const value: unknown = JSON.parse(raw)
+  if (value === null) throw new Error('聊天数据格式损坏，原件已保留。')
+  assertChatVersion(value, current)
+}

@@ -20,10 +20,7 @@ fn revision_ok(value: &str) -> bool {
 }
 pub(super) fn read(root: &Path) -> Result<Value> {
     let file = root.join("manifest.json");
-    if disk(fs::safe(&file, false, true))?.is_some_and(|m| m.len() > 1024 * 1024) {
-        return Err(corrupt());
-    }
-    let Some(bytes) = disk(fs::read(&file, true))? else {
+    let Some(bytes) = disk(fs::read_limited(&file, true, Some(1024 * 1024)))? else {
         return Ok(json!({"ok":true,"version":"0","entries":{}}));
     };
     let value: Value = serde_json::from_slice(&bytes).map_err(|_| corrupt())?;
@@ -206,11 +203,8 @@ pub(super) fn asset(
         return Err(ApiError::new(404, "NOT_FOUND", "头像资源已更新"));
     }
     let path = root.join(id).join(revision).join(file);
-    let metadata = disk(fs::safe(&path, false, false))?.ok_or_else(corrupt)?;
-    if metadata.len() > 140 * 1024 * 1024 {
-        return Err(corrupt());
-    }
-    let bytes = disk(fs::read(&path, false))?.ok_or_else(corrupt)?;
+    let bytes =
+        disk(fs::read_limited(&path, false, Some(140 * 1024 * 1024)))?.ok_or_else(corrupt)?;
     if entry["hashes"][file] != derive::hash(&bytes) {
         return Err(corrupt());
     }

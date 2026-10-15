@@ -4,7 +4,7 @@ use rusqlite::{OptionalExtension, Row, params};
 use std::collections::{BTreeSet, HashSet};
 pub(super) const RETENTION: i64 = 30 * 24 * 60 * 60 * 1000;
 
-fn json_column(row: &Row<'_>, column: usize) -> rusqlite::Result<Value> {
+pub(super) fn json_column(row: &Row<'_>, column: usize) -> rusqlite::Result<Value> {
     serde_json::from_str(text_column(row, column)?).map_err(|e| {
         rusqlite::Error::FromSqlConversionFailure(column, rusqlite::types::Type::Text, Box::new(e))
     })
@@ -45,8 +45,17 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 .filter(|v| !v.is_empty() && v.len() <= 200)
                 .ok_or_else(|| invalid("Artwork lookup must contain 1–200 IDs"))?;
             let keys = ids.iter().map(entity_key).collect::<Result<Vec<_>>>()?;
+            let body = match command.get("projection") {
+                None | Some(Value::Null) => "body",
+                // Keep the stored body ID (including its JSON type) so batch
+                // callers can still reject inconsistent record identities.
+                Some(Value::String(value)) if value == "revision" => {
+                    "json_object('id',body -> '$.id')"
+                }
+                _ => return Err(invalid("Unknown artwork projection")),
+            };
             let sql = format!(
-                "SELECT id_json,body,revision,deleted_at,id_key FROM artworks WHERE id_key IN ({})",
+                "SELECT id_json,{body},revision,deleted_at,id_key FROM artworks WHERE id_key IN ({})",
                 vec!["?"; keys.len()].join(",")
             );
             let mut statement = c.db.prepare(&sql)?;
@@ -283,14 +292,18 @@ pub(super) fn mutate(c: &mut Context, principal: &str, command: &Value) -> Resul
             "deleteSmartAlbum" => project_commands::delete_smart(c,command,&mut receipt)?,
             "purgeExpiredTrash" => {
                 let keys=c.db.prepare("SELECT artwork_key FROM trash WHERE deleted_at<=?")?.query_map([now()-RETENTION],|r|r.get::<_,String>(0))?.collect::<rusqlite::Result<Vec<_>>>()?;
-                for key in &keys { c.check_cancel()?; c.db.execute("DELETE FROM media_refs WHERE owner_kind='trash' AND owner_id=?",[key])?; c.db.execute("DELETE FROM artworks WHERE id_key=?",[key])?; }
+                if !keys.is_empty() {
+                    let mut remove_refs=c.db.prepare_cached("DELETE FROM media_refs WHERE owner_kind='trash' AND owner_id=?")?;
+                    let mut remove_artwork=c.db.prepare_cached("DELETE FROM artworks WHERE id_key=?")?;
+                    for key in &keys { c.check_cancel()?; remove_refs.execute([key])?; remove_artwork.execute([key])?; }
+                }
                 receipt["purged"]=json!(keys.len());
             }
             "purgeTrash" => purge_selected(c,command,&mut receipt)?,
             "softDeleteArtworks" => batch_delete(c,command,revision,&mut receipt)?,
             _ => {
                 let key=entity_key(&command["id"])?;
-                let art=artwork(c,&key)?.ok_or_else(||ApiError::new(404,"NOT_FOUND","Artwork does not exist"))?;
+                let mut art=artwork(c,&key)?.ok_or_else(||ApiError::new(404,"NOT_FOUND","Artwork does not exist"))?;
                 if art["revision"]!=command["expectedRevision"] {return Err(conflict("REVISION_CONFLICT","Artwork has a newer revision"))}
                 match kind {
                     "hardDeleteArtwork" => {
@@ -304,7 +317,7 @@ pub(super) fn mutate(c: &mut Context, principal: &str, command: &Value) -> Resul
                         let patch=command["patch"].as_object().ok_or_else(||invalid("Artwork patch must be an object"))?;
                         if patch.contains_key("id") || patch.contains_key("image_id") {return Err(invalid("Artwork identity and media cannot be patched"))}
                         if !art["deletedAt"].is_null() {return Err(conflict("OPERATION_CONFLICT","Restore the artwork before editing"))}
-                        let mut body=art["body"].clone(); body.as_object_mut().ok_or_else(||invalid("Invalid artwork body"))?.extend(patch.clone());
+                        let mut body=art["body"].take(); body.as_object_mut().ok_or_else(||invalid("Invalid artwork body"))?.extend(patch.clone());
                         c.db.execute("UPDATE artworks SET body=?,revision=? WHERE id_key=?",params![stringify(&body),revision,key])?;
                     }
                     "softDeleteArtwork" if art["deletedAt"].is_null() => {
@@ -350,43 +363,6 @@ fn purge_selected(c: &Context, command: &Value, receipt: &mut Value) -> Result<(
         purged += 1;
     }
     receipt["purged"] = json!(purged);
-    Ok(())
-}
-pub(super) fn restore(c: &Context, key: &str, revision: i64) -> Result<()> {
-    let (snapshot, refs) =
-        c.db.query_row(
-            "SELECT snapshot,project_refs FROM trash WHERE artwork_key=?",
-            [key],
-            |r| Ok((r.get::<_, String>(0)?, json_column(r, 1)?)),
-        )
-        .optional()?
-        .ok_or_else(|| conflict("WORKSPACE_IDENTITY", "Artwork trash snapshot is missing"))?;
-    c.db.execute(
-        "UPDATE artworks SET body=?,deleted_at=NULL,revision=? WHERE id_key=?",
-        params![snapshot, revision, key],
-    )?;
-    c.db.execute(
-        "UPDATE media_refs SET owner_kind='artwork' WHERE owner_kind='trash' AND owner_id=?",
-        [key],
-    )?;
-    for r in refs
-        .as_array()
-        .ok_or_else(|| invalid("Invalid trash project references"))?
-    {
-        let p = string(r, "project_key")?;
-        if project(c, p)?.is_none_or(|row| row["body"].get("smartRule").is_some()) {
-            continue;
-        }
-        let mut keys = membership(c, p)?;
-        if !keys.iter().any(|k| k == key) {
-            keys.insert(
-                (r["position"].as_u64().unwrap_or(0) as usize).min(keys.len()),
-                key.into(),
-            );
-        }
-        update_membership(c, p, &keys, revision)?;
-    }
-    c.db.execute("DELETE FROM trash WHERE artwork_key=?", [key])?;
     Ok(())
 }
 fn batch_delete(c: &Context, command: &Value, revision: i64, receipt: &mut Value) -> Result<()> {

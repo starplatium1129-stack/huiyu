@@ -1,6 +1,28 @@
 use super::*;
 use crate::task_contract::{TaskListQuery, TaskListScope, TaskSummary};
 
+// Project in SQLite: large recipes and checkpoints never cross the worker boundary.
+const SUMMARY_BODY: &str = "json_set(json_remove(record_json,'$.input','$.inputMediaRefs','$.metadata','$.checkpoint','$.requestFingerprint','$.requestFingerprintLocale','$.providerFingerprint'),
+         '$.sourceBatchId', CASE WHEN json_type(record_json,'$.metadata.context.retriedTaskId')='text' AND json_type(record_json,'$.metadata.context.stepIndex')='integer' AND json_extract(record_json,'$.metadata.context.stepIndex')>=0 THEN json_extract(record_json,'$.metadata.context.retriedTaskId') ELSE NULL END,
+         '$.canConcat', json(CASE WHEN json_extract(record_json,'$.kind')='batch' AND json_extract(record_json,'$.status')='succeeded' AND json_array_length(record_json,'$.resultRefs')>1 AND json_type(record_json,'$.checkpoint.shots')='array' AND NOT EXISTS (SELECT 1 FROM json_each(record_json,'$.resultRefs') WHERE json_extract(value,'$.index')=json_array_length(record_json,'$.checkpoint.shots')) THEN 'true' ELSE 'false' END))";
+
+pub(super) fn read_summary(c: &Context, principal: &str, id: &str) -> Result<Value> {
+    let mut statement = c.db.prepare_cached(&format!(
+        "SELECT {SUMMARY_BODY} FROM tasks WHERE principal_id=? AND task_id=?"
+    ))?;
+    let decoded = statement
+        .query_row(params![principal, id], |row| {
+            Ok(serde_json::from_str::<TaskSummary>(text_column(row, 0)?))
+        })
+        .optional()?;
+    let Some(task) = decoded else {
+        return Ok(Value::Null);
+    };
+    let mut task = task?;
+    task.runtime_epoch = c.epoch.clone();
+    Ok(serde_json::to_value(task)?)
+}
+
 // Revisions are unique and monotonic across durable writes. A fixed upper bound
 // prevents new writes moving the page boundary; updates above it are returned
 // by the next incremental refresh, including updates to not-yet-read records.
@@ -28,11 +50,8 @@ pub(super) fn read(c: &Context, principal: &str, query: TaskListQuery) -> Result
     } else {
         ""
     };
-    // Project in SQLite: large recipes and checkpoints never cross the worker boundary.
     let body = if query.summary {
-        "json_set(json_remove(record_json,'$.input','$.inputMediaRefs','$.metadata','$.checkpoint','$.requestFingerprint','$.requestFingerprintLocale','$.providerFingerprint'),
-         '$.sourceBatchId', CASE WHEN json_type(record_json,'$.metadata.context.retriedTaskId')='text' AND json_type(record_json,'$.metadata.context.stepIndex')='integer' AND json_extract(record_json,'$.metadata.context.stepIndex')>=0 THEN json_extract(record_json,'$.metadata.context.retriedTaskId') ELSE NULL END,
-         '$.canConcat', json(CASE WHEN json_extract(record_json,'$.kind')='batch' AND json_extract(record_json,'$.status')='succeeded' AND json_array_length(record_json,'$.resultRefs')>1 AND json_type(record_json,'$.checkpoint.shots')='array' AND NOT EXISTS (SELECT 1 FROM json_each(record_json,'$.resultRefs') WHERE json_extract(value,'$.index')=json_array_length(record_json,'$.checkpoint.shots')) THEN 'true' ELSE 'false' END))"
+        SUMMARY_BODY
     } else {
         "record_json"
     };

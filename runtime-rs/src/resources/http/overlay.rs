@@ -1,7 +1,6 @@
 use super::*;
-use crate::resources::fs;
 use axum::{
-    body::{Body, Bytes},
+    body::Body,
     extract::Request,
     http::Method,
     middleware::Next,
@@ -141,23 +140,10 @@ pub async fn overlay(
                 return Ok(collect.then_some(bytes));
             }
         }
-        let cancel = service.read_cancel.child_token();
-        // Keep cancellation with this waiter, not the blocking read or shared group.
-        let _cancel_on_drop = cancel.clone().drop_guard();
-        let snapshot = snapshot.clone();
-        let entry = entry.clone();
-        crate::resources::blocking(move || {
-            let file = fs::child(&snapshot.root, &entry.path)?;
-            if collect {
-                fs::verified_bytes(&file, &entry, &cancel)
-                    .map(|bytes| Some(Bytes::from(bytes)))
-            } else if fs::file_matches(&file, &entry, &cancel)? {
-                Ok(None)
-            } else {
-                Err(Error::new("CONTENT_INVALID", "Installed bytes changed"))
-            }
-        })
-        .await
+        service
+            .group_reads
+            .file(&service, snapshot.clone(), entry.clone(), collect)
+            .await
     }
     .await;
     let bytes = match result {

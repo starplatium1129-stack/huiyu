@@ -27,7 +27,7 @@ export interface AnimaInpaintDeps {
 /**
  * 绘图页「Anima 智能局部换装」编排（2026-08-22 自 PromptBuilderView 下沉）。
  *
- * 原图/遮罩 FileReader → base64 → /api/anima/images 落盘，按目标尺寸与
+ * 原图/遮罩 Blob → /api/anima/images/raw 落盘，按目标尺寸与
  * 角色 LoRA 形态解析无 LoRA 绑定（resolveInpaintRequestBinding），组装
  * 换装提示词后走 generateAnima 覆盖式提交。同时持有弹窗开关与
  * 「换装前后对比」的原图 URL / 对比开关状态。

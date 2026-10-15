@@ -2,8 +2,9 @@ use super::{Error, Result, paths, text};
 use crate::processes::Processes;
 use serde_json::{Value, json};
 use std::{
+    borrow::Cow,
     path::{Path, PathBuf},
-    process::Stdio,
+    process::{ExitStatus, Stdio},
     sync::{
         Arc,
         atomic::{AtomicUsize, Ordering},
@@ -13,6 +14,7 @@ use std::{
 use tokio::{
     io::{AsyncRead, AsyncReadExt},
     process::Command,
+    sync::OwnedSemaphorePermit,
 };
 use tokio_util::sync::CancellationToken;
 
@@ -138,7 +140,7 @@ pub(super) async fn run(
         return Err(Error::plain("参数过长"));
     }
     let (command, args) = resolve(root, &raw, args).await?;
-    let (stdout, stderr) = execute(
+    let result = execute(
         pool,
         &command,
         &args,
@@ -146,8 +148,10 @@ pub(super) async fn run(
         Duration::from_secs(120),
         64 * 1024,
         cancel,
+        None,
     )
     .await?;
+    let (stdout, stderr) = result.text()?;
     let output = format!("{stdout}{stderr}");
     let output = output.trim();
     Ok(json!({"ok":true,"output":if output.is_empty(){"（命令已执行，无输出）"}else{output}}))
@@ -190,7 +194,44 @@ async fn collect<T: AsyncRead + Unpin>(
     }
     Ok(output)
 }
-pub(super) async fn execute(
+pub(super) struct Output {
+    stdout: Vec<u8>,
+    stderr: Vec<u8>,
+    status: ExitStatus,
+}
+impl Output {
+    pub fn text(&self) -> Result<(Cow<'_, str>, Cow<'_, str>)> {
+        let stdout = String::from_utf8_lossy(&self.stdout);
+        let stderr = String::from_utf8_lossy(&self.stderr);
+        if !self.status.success() {
+            let detail = super::files::truncate(
+                if stderr.is_empty() {
+                    stdout.trim()
+                } else {
+                    stderr.trim()
+                },
+                1500,
+            );
+            return Err(Error::coded(
+                "COMMAND_FAILED",
+                format!(
+                    "命令执行失败（{}）{}",
+                    self.status
+                        .code()
+                        .map(|v| v.to_string())
+                        .unwrap_or_else(|| "signal".into()),
+                    if detail.is_empty() {
+                        String::new()
+                    } else {
+                        format!("：{detail}")
+                    }
+                ),
+            ));
+        }
+        Ok((stdout, stderr))
+    }
+}
+async fn execute(
     pool: &Arc<Processes>,
     program: &Path,
     args: &[String],
@@ -198,7 +239,8 @@ pub(super) async fn execute(
     timeout: Duration,
     limit: usize,
     cancel: &CancellationToken,
-) -> Result<(String, String)> {
+    permit: Option<Arc<OwnedSemaphorePermit>>,
+) -> Result<Output> {
     if cancel.is_cancelled() {
         return Err(Error::cancelled());
     }
@@ -212,7 +254,11 @@ pub(super) async fn execute(
     if let Some(cwd) = cwd {
         command.current_dir(cwd);
     }
-    let child = pool.spawn(&mut command).map_err(Error::from)?;
+    let child = match permit {
+        Some(permit) => pool.spawn_with_permit(&mut command, permit),
+        None => pool.spawn(&mut command),
+    }
+    .map_err(Error::from)?;
     let (stdout, stderr) = child.take_output();
     let count = Arc::new(AtomicUsize::new(0));
     let work = async {
@@ -229,34 +275,11 @@ pub(super) async fn execute(
             collect(stderr, count, limit),
             wait
         )?;
-        let stdout = String::from_utf8_lossy(&stdout).into_owned();
-        let stderr = String::from_utf8_lossy(&stderr).into_owned();
-        if !status.success() {
-            let detail = super::files::truncate(
-                if stderr.is_empty() {
-                    stdout.trim()
-                } else {
-                    stderr.trim()
-                },
-                1500,
-            );
-            return Err(Error::coded(
-                "COMMAND_FAILED",
-                format!(
-                    "命令执行失败（{}）{}",
-                    status
-                        .code()
-                        .map(|v| v.to_string())
-                        .unwrap_or_else(|| "signal".into()),
-                    if detail.is_empty() {
-                        String::new()
-                    } else {
-                        format!("：{detail}")
-                    }
-                ),
-            ));
-        }
-        Ok((stdout, stderr))
+        Ok(Output {
+            stdout,
+            stderr,
+            status,
+        })
     };
     let result = tokio::select! {result=work=>result,_=cancel.cancelled()=>Err(Error::cancelled()),_=tokio::time::sleep(timeout)=>Err(Error::coded("COMMAND_TIMEOUT","命令执行超时，已停止执行"))};
     // Explicit cancellation paths confirm the owned process has exited before
@@ -267,7 +290,11 @@ pub(super) async fn execute(
     result
 }
 
-pub(super) async fn screen(pool: &Arc<Processes>, cancel: &CancellationToken) -> Result<Value> {
+pub(super) async fn screen(
+    pool: &Arc<Processes>,
+    cancel: &CancellationToken,
+    permit: Arc<OwnedSemaphorePermit>,
+) -> Result<Output> {
     if !cfg!(windows) {
         return Err(Error::plain("当前系统暂不支持原生屏幕截取"));
     }
@@ -278,7 +305,7 @@ pub(super) async fn screen(pool: &Arc<Processes>, cancel: &CancellationToken) ->
         "-Command".into(),
         script,
     ];
-    let (stdout, _) = execute(
+    execute(
         pool,
         Path::new("powershell"),
         &args,
@@ -286,13 +313,7 @@ pub(super) async fn screen(pool: &Arc<Processes>, cancel: &CancellationToken) ->
         Duration::from_secs(10),
         20 * 1024 * 1024,
         cancel,
+        Some(permit),
     )
-    .await?;
-    let base64 = stdout.trim();
-    if base64.is_empty() {
-        return Err(Error::plain("未捕获到屏幕数据"));
-    }
-    Ok(
-        json!({"ok":true,"output":format!("已成功捕获当前桌面屏幕画面（{} KB JPEG）",(base64.len() as f64*0.75/1024.0).round() as u64),"imageDataUrl":format!("data:image/jpeg;base64,{base64}")}),
-    )
+    .await
 }

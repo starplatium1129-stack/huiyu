@@ -46,6 +46,7 @@ pub(crate) struct Api {
     pub icc: unsafe extern "C" fn(ImagePtr, *mut ImagePtr, *const c_char, ...) -> c_int,
     pub unref: unsafe extern "C" fn(*mut c_void),
     pub free: unsafe extern "C" fn(*mut c_void),
+    pub realloc: unsafe extern "C" fn(*mut c_void, usize) -> *mut c_void,
     pub progress: unsafe extern "C" fn(ImagePtr, c_int),
     pub kill: unsafe extern "C" fn(ImagePtr, c_int),
     pub signal: unsafe extern "C" fn(
@@ -192,6 +193,10 @@ impl Api {
             ),
             unref: symbol!("g_object_unref", unsafe extern "C" fn(*mut c_void)),
             free: symbol!("g_free", unsafe extern "C" fn(*mut c_void)),
+            realloc: symbol!(
+                "g_realloc",
+                unsafe extern "C" fn(*mut c_void, usize) -> *mut c_void
+            ),
             progress: symbol!(
                 "vips_image_set_progress",
                 unsafe extern "C" fn(ImagePtr, c_int)

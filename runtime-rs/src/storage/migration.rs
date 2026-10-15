@@ -131,9 +131,9 @@ pub(super) fn prepare_chunk(
     command: &Value,
 ) -> Result<upload::Prepared> {
     let id = string(command, "migrationId")?;
-    let session = session(c, id, principal)?;
     let record = command["kind"] == "migration.recordChunk";
     let (name, media, receipt) = if record {
+        let session = session(c, id, principal)?;
         let item = string(command, "itemId")?;
         let expected = session.envelope["records"]
             .as_array()
@@ -154,20 +154,38 @@ pub(super) fn prepare_chunk(
             json!({"itemId":item}),
         )
     } else {
-        if session.state != "importing" {
+        let state =
+            c.db.prepare_cached(
+                "SELECT state FROM migration_sessions WHERE migration_id=? AND principal_id=?",
+            )?
+            .query_row(params![id, principal], |row| row.get::<_, String>(0))
+            .optional()?
+            .ok_or_else(|| ApiError::new(404, "NOT_FOUND", "Migration session does not exist"))?;
+        if state != "importing" {
             return Err(conflict(
                 "MIGRATION_CONFLICT",
                 "Verified migration is immutable",
             ));
         }
         let alias = string(command, "alias")?;
-        let media = session.envelope["media"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .find(|media| media["alias"] == alias)
+        // begin stores these immutable fields with the envelope in one
+        // transaction. Each chunk still rechecks ownership and state before
+        // and after writing, without decoding/scanning the entire manifest.
+        let media =
+            c.db.prepare_cached(
+                "SELECT sha256,bytes,mime FROM migration_media WHERE migration_id=? AND alias=?",
+            )?
+            .query_row(params![id, alias], |row| {
+                Ok(json!({
+                    "alias": alias,
+                    "sha256": row.get::<_, String>(0)?,
+                    "bytes": row.get::<_, i64>(1)?,
+                    "mime": row.get::<_, String>(2)?,
+                }))
+            })
+            .optional()?
             .ok_or_else(|| format_error("Media is not in the manifest"))?;
-        (alias.to_owned(), media.clone(), json!({"alias":alias}))
+        (alias.to_owned(), media, json!({"alias":alias}))
     };
     Ok(upload::Prepared::Write(upload::Chunk {
         key: key(id, &name),

@@ -116,6 +116,7 @@ def logits_mask(logits, size, threshold, grow=8):
             values = functional.conv2d(functional.pad(values, (0, 0, radius, radius), mode="reflect"), vertical)
         return values
     mask = (blur(resized, 2).sigmoid() >= threshold).float()
+    del resized
     if grow:
         # This private CPU mask contains only 0/1. Prefix presence selects the
         # same clipped square maximum without per-pixel window scans.
@@ -132,9 +133,9 @@ def logits_mask(logits, size, threshold, grow=8):
         prefix = np.zeros((height + 1, width), dtype=dtype, order="F")
         np.cumsum(horizontal, axis=0, dtype=dtype, out=prefix[1:])
         expanded = prefix[np.minimum(rows + grow + 1, height)] > prefix[np.maximum(rows - grow, 0)]
-        # Own FP32 storage with the threshold mask's canonical layout before
-        # the unchanged feather convolution; do not expose NumPy storage.
-        mask = torch.empty_like(mask).copy_(torch.from_numpy(expanded)[None, None])
+        # Reuse the private FP32 threshold mask; its NumPy view is retired.
+        # Preserve the canonical layout for the unchanged feather convolution.
+        mask.copy_(torch.from_numpy(expanded)[None, None])
         del prefix, horizontal, expanded
     mask = blur(mask, 12).clamp(0, 1)[0, 0].numpy()
     if not np.any(mask > 0):
@@ -144,13 +145,16 @@ def logits_mask(logits, size, threshold, grow=8):
 
 class MaskCache:
     """One CPU checkpoint/logit map, 16 MiB vision and 64 KiB conditioning."""
-    def __init__(self):
+    def __init__(self, *, lease=None):
+        self.lease = lease
         self.clear()
 
-    def clear(self):
+    def clear(self, *, keep_identity=False):
         self.identity = self.components = self.result_key = self.logits = None
         self.conditioning_key = self.conditioning = None
         self.vision_key = self.vision = None
+        if not keep_identity and self.lease is not None:
+            self.lease.close()
         self.begin_job()
 
     def begin_job(self):
@@ -176,7 +180,7 @@ def _file_hasher():
 
 
 def model_identity(root):
-    """Re-read exact bytes every job; metadata is never an invalidation proof."""
+    """Read exact bytes; only a continuously held lease may reuse this result."""
     root = Path(root).resolve()
     # Tokenizers may load optional tokenizer.json/added_tokens.json or a locally
     # selected versioned asset, so the required-file list is not a complete key.
@@ -212,7 +216,10 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
     from transformers import CLIPSegForImageSegmentation, CLIPTokenizer, ViTImageProcessorPil
     texts = phrases(prompt)
     fingerprint_started = time.perf_counter()
-    identity = model_identity(root) if cache is not None or expected_mask_sha256 is not None else None
+    lease = cache.lease if cache is not None else None
+    identity = lease.acquire(root, model_identity) if lease is not None else (
+        model_identity(root) if cache is not None or expected_mask_sha256 is not None else None)
+    protected = lease is not None and lease.cached
     fingerprint_seconds = time.perf_counter() - fingerprint_started
     if check is not None:
         check()
@@ -223,7 +230,7 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
     image_key = result_key = None
     if cache is not None:
         if cache.identity != identity:
-            cache.clear()
+            cache.clear(keep_identity=True)
         cache.fingerprint_seconds = fingerprint_seconds
         cache.model_reused = cache.components is not None
         # The image already has the final oriented, resized RGB pixels. Its
@@ -237,6 +244,8 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
             mask = logits_mask(cache.logits, image.size, threshold, grow)
             if check is not None:
                 check()
+            if protected and not lease.valid():
+                raise ValueError("CLIPSeg model protection changed during mask generation")
             return mask
     components = cache.components if cache is not None else None
     if components is None:
@@ -263,10 +272,10 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
             check()
         if identity is not None:
             fingerprint_started = time.perf_counter()
-            loaded_identity = model_identity(root)
+            loaded_identity = identity if protected else model_identity(root)
             if cache is not None:
                 cache.fingerprint_seconds += time.perf_counter() - fingerprint_started
-            if loaded_identity != identity:
+            if loaded_identity != identity or (protected and not lease.valid()):
                 raise ValueError("CLIPSeg model bytes changed while loading; retry after preparation completes")
         if check is not None:
             check()
@@ -326,6 +335,8 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
     mask = logits_mask(combined, image.size, threshold, grow)
     if check is not None:
         check()
+    if protected and not lease.valid():
+        raise ValueError("CLIPSeg model protection changed during mask generation")
     if cache is not None:
         cache.result_key, cache.logits = result_key, combined.copy()
         if not cache.vision_reused:

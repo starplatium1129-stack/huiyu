@@ -21,6 +21,7 @@ pub(super) fn is_write(command: &Value) -> bool {
                 | "commitMedia"
                 | "appendArtwork"
                 | "restoreArtwork"
+                | "restoreArtworks"
                 | "migration.media"
                 | "migration.recordChunk"
                 | "migration.verify"

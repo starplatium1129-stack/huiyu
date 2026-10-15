@@ -3,6 +3,7 @@ pub(super) use queue::Readers;
 
 use super::{Storage, schema, string};
 use crate::error::{ApiError, Result};
+use axum::body::Bytes;
 use base64::{Engine, engine::general_purpose::STANDARD};
 use image::{
     DynamicImage, ImageDecoder, ImageReader, Rgb, RgbImage, codecs::jpeg::JpegEncoder,
@@ -98,7 +99,7 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
             crate::native_images::thumbnail(&source.path, &library, &cancelled)
                 .map_err(|error| ApiError::new(422, "THUMBNAIL_FAILED", error))?
         } else {
-            encode(&source.path)?
+            encode(&source.path)?.map(Bytes::from)
         };
         let Some(bytes) = encoded else {
             return Ok(Value::Null);

@@ -2,6 +2,8 @@ mod actions;
 mod hooks;
 mod recovery;
 mod run;
+mod saved_output;
+pub(crate) use recovery::BatchRecovery;
 use super::*;
 use std::collections::HashMap;
 use tokio::sync::Mutex;
@@ -21,6 +23,7 @@ pub(super) struct Batch {
     serial: Mutex<()>,
     checkpoint_serial: Mutex<()>,
     concat_serial: Mutex<()>,
+    recovered_outputs: Arc<saved_output::Proofs>,
 }
 pub(super) struct State {
     status: String,
@@ -203,6 +206,7 @@ impl Service {
             serial: Mutex::new(()),
             checkpoint_serial: Mutex::new(()),
             concat_serial: Mutex::new(()),
+            recovered_outputs: Arc::new(saved_output::Proofs::default()),
         });
         batch.save().await?;
         self.save_batch_identity(&batch).await?;

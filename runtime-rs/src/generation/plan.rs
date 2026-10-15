@@ -118,7 +118,8 @@ impl Service {
                 return Err(ApiError::new(503, "COMFY_UNAVAILABLE", "ComfyUI 不可用"));
             }
             if optional_nodes::requested(&plan.workflow) {
-                let nodes = self.comfy_optional_status_for(&cancel).await;
+                let nodes =
+                    optional_nodes::status(&self.inner, &cancel, Some(&plan.workflow)).await;
                 optional_nodes::validate(&plan.workflow, &nodes)?;
             }
             Ok(Prepared {
@@ -132,10 +133,7 @@ impl Service {
         tokio::select! {result=work=>result,_=cancel.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","生成请求已取消")),_=self.inner.cancel.cancelled()=>Err(closed())}
     }
     pub(crate) async fn comfy_optional_status(&self) -> Value {
-        self.comfy_optional_status_for(&self.inner.cancel).await
-    }
-    async fn comfy_optional_status_for(&self, cancel: &CancellationToken) -> Value {
-        optional_nodes::status(&self.inner, cancel).await
+        optional_nodes::status(&self.inner, &self.inner.cancel, None).await
     }
     pub(crate) async fn comfy_online(&self) -> bool {
         probe::comfy_status(&self.inner, &self.inner.cancel).await

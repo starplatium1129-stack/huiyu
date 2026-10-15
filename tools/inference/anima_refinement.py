@@ -44,7 +44,7 @@ def _rgb(images):
 def _pil_tensor(image, device):
     import numpy as np
     import torch
-    values = np.array(image.convert("RGB"), dtype=np.float32)
+    values = np.array(image if image.mode == "RGB" else image.convert("RGB"), dtype=np.float32)
     values /= 255
     return torch.from_numpy(values).permute(2, 0, 1).unsqueeze(0).to(device)
 
@@ -63,16 +63,40 @@ def _pil(images):
         scaled = band * 255
         np.clip(scaled, 0, 255, out=scaled)
         pixels[top:top + 128] = scaled
-        del scaled
+        del band, scaled
+    del values
     return Image.fromarray(pixels)
 
 
-def _lanczos(images, size, *, cpu_output=False):
+def _rgb8_roundtrip(image):
+    """Keep the final CPU normalization/quantization without a float canvas."""
+    import numpy as np
+    from PIL import Image
+    pixels = np.empty((image.height, image.width, 3), dtype=np.uint8)
+    for top in range(0, image.height, 128):
+        bottom = min(top + 128, image.height)
+        values = np.array(image.crop((0, top, image.width, bottom)), dtype=np.float32)
+        values /= 255
+        if not np.isfinite(values).all():
+            raise ValueError("Decoded image contains nonfinite pixels; refusing to publish a black/corrupted result")
+        scaled = values * 255
+        np.clip(scaled, 0, 255, out=scaled)
+        pixels[top:bottom] = scaled
+        del values, scaled
+    return Image.fromarray(pixels)
+
+
+def _lanczos(images, size, *, cpu_output=False, final_pil=False):
     """Workflow Lanczos: truncate display RGB to uint8 before Pillow resize."""
     from PIL import Image
     images = _rgb(images)
-    source = _pil(images).resize(size, Image.Resampling.LANCZOS)
-    return _pil_tensor(source, "cpu" if cpu_output else images.device)
+    device = images.device
+    source = _pil(images)
+    # The PIL pixels own their uint8 allocation; a temporary 4x float tensor
+    # need not overlap the resize or the final normalization/quantization.
+    del images
+    source = source.resize(size, Image.Resampling.LANCZOS)
+    return _rgb8_roundtrip(source) if final_pil else _pil_tensor(source, "cpu" if cpu_output else device)
 
 
 def _composite(images, original, mask):
@@ -110,7 +134,7 @@ def _encode(pipeline, pixels, vae_tools, tiling):
 
 
 @contextmanager
-def _finite_decode(vae, before_decode=None):
+def _finite_decode(vae, tiling, before_decode=None):
     """Check before display clamping while retaining upstream PIL conversion."""
     import torch
     original, owned = vae.decode, "decode" in vae.__dict__
@@ -135,7 +159,8 @@ def _finite_decode(vae, before_decode=None):
         result = original(latents, *args, **kwargs)
         pixels = result[0] if isinstance(result, tuple) else result.sample
         # One scalar readback per decode boundary, not per denoising step.
-        finite = latent_finite & torch.isfinite(pixels).all().to(latent_finite.device)
+        pixel_finite = tiling.finite_rows(pixels) if pixels.device.type == "cpu" else torch.isfinite(pixels).all()
+        finite = latent_finite & pixel_finite.to(latent_finite.device)
         if raw_finite is not None:
             finite &= raw_finite
         if not bool(finite):
@@ -158,11 +183,14 @@ def _without_decode(pipeline, enabled):
     if not enabled:
         yield
         return
-    decoder = pipeline.blocks.sub_blocks.pop("decode")
+    # Pinned Diffusers 0.41 exposes blocks as a deepcopy. Modify the execution
+    # graph itself: selecting output="latents" does not skip the decode block.
+    blocks = pipeline._blocks.sub_blocks
+    decoder = blocks.pop("decode")
     try:
         yield
     finally:
-        pipeline.blocks.sub_blocks["decode"] = decoder
+        blocks["decode"] = decoder
 
 
 @contextmanager
@@ -286,7 +314,7 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
 
         current.scheduler.step = step
         try:
-            with _finite_decode(current.vae, before_decode):
+            with _finite_decode(current.vae, tiling, before_decode):
                 result = timed("pipelineWallSeconds", lambda: current(**kwargs))
             if observe_schedule is not None:
                 name = "first" if phase == "firstPassSteps" else "second"
@@ -324,9 +352,11 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
     if mask is not None:
         pixels = timed("compositeWallSeconds", lambda: _composite(pixels, image, mask))
     size = (spec["width"], spec["height"])
+    final_pil = (spec["enabled"] and spec["kind"] == "Remacri" and mask is None
+                 and not spec["second"] and not spec["rcasStrength"])
     if spec["enabled"] and spec["kind"] == "Remacri":
         pixels = timed("postprocessWallSeconds", lambda: _lanczos(upscale(pixels), size,
-            cpu_output=not spec["second"] and not spec["rcasStrength"]))
+            cpu_output=not spec["second"] and not spec["rcasStrength"], final_pil=final_pil))
     if spec["second"]:
         latents = (first_latents if spec["firstLatents"] else
                    timed("pipelineWallSeconds", lambda: _encode(pipeline, pixels, vae_tools, tiling)))
@@ -353,6 +383,6 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
         report["rcasExecutionRevision"] = postprocess.EXECUTION_REVISION
     if mask is not None and spec["enabled"]:
         pixels = timed("compositeWallSeconds", lambda: _composite(pixels, image, mask))
-    result = timed("postprocessWallSeconds", lambda: _pil(pixels))
+    result = pixels if final_pil else timed("postprocessWallSeconds", lambda: _pil(pixels))
     report["wallSeconds"] = time.perf_counter() - started
     return result, report["firstPassSteps"] + report["secondPassSteps"], report

@@ -96,6 +96,7 @@ impl Ollama {
         client: &Transport,
         settings: &Settings,
         input: Input,
+        admission: Option<&request_body::Admission>,
         cancel: &CancellationToken,
     ) -> Result<Prepared> {
         let started = Instant::now();
@@ -137,6 +138,7 @@ impl Ollama {
         if !previous.is_empty() && previous != selected {
             let unload = request_body::encode(
                 json!({"model":previous,"keep_alive":0,"stream":false}),
+                None,
                 cancel,
             )
             .await?;
@@ -162,7 +164,7 @@ impl Ollama {
         let mut body = json!({"model":selected,"stream":true,"think":false,"keep_alive":settings.keep_alive,
             "options":{"temperature":0.72,"top_p":0.88,"repeat_penalty":1.1,"num_predict":settings.num_predict,"num_ctx":settings.num_context}});
         body["messages"] = Value::Array(input.messages);
-        let body = request_body::encode(body, cancel).await?;
+        let body = request_body::encode(body, admission, cancel).await?;
         let response = client
             .send(
                 target(settings, "/api/chat")?,

@@ -191,14 +191,25 @@ def apply_prompt_weights(blocks, *, cache=None):
                    (WEIGHTS_SCOPE, plans[branches[1]]["key"]) if len(branches) > 1 else None,
                    limit, len(branches) > 1, str(components.text_encoder.dtype), str(device))
             values = cache.get(key, device) if cache is not None else None
+            missed = values is None
             if values is None:
-                components, state = AnimaTextEncoderStep.__call__(self, components, state)
-                if cache is not None:
-                    cache.put(key, {output.name: state.get(output.name) for output in self.intermediate_outputs})
-            else:
-                for name, value in values.items():
-                    setattr(block, name, value)
-                self.set_block_state(state, block)
+                negative = cache.get_negative(key, device) if cache is not None and key[3] else None
+                if negative is None:
+                    components, state = AnimaTextEncoderStep.__call__(self, components, state)
+                    if cache is not None:
+                        cache.put(key, {output.name: state.get(output.name) for output in self.intermediate_outputs})
+                    return components, state
+                # Keep classmethod dispatch on this encoder so positive token
+                # overrides remain active while reusing only raw negative states.
+                values = self.encode_prompt(
+                    components=components, prompt=block.prompt, prepare_unconditional_embeds=False,
+                    max_sequence_length=block.max_sequence_length, device=device, dtype=components.text_encoder.dtype)
+                values.update(negative)
+            for name, value in values.items():
+                setattr(block, name, value)
+            self.set_block_state(state, block)
+            if missed:
+                cache.put(key, values, reuse_negative=True)
             return components, state
 
     def wrap_conditioner(original):

@@ -81,7 +81,8 @@ def prepare_images(image, mask_path, size, grow):
             ImageOps.exif_transpose(source, in_place=True)
             if source.size != image.size:
                 raise ValueError("Mask dimensions must match the oriented input image")
-            red = np.array(resize_image(source, size, red_only=True), dtype=np.float32) / 255
+            red = np.array(resize_image(source, size, red_only=True), dtype=np.float32)
+            red /= 255
     except (OSError, Image.DecompressionBombError) as exc:
         raise ValueError(f"Cannot decode mask image: {exc}") from exc
     del source  # Retire decoded pixels and any ImageFile decoder before Torch/growth.

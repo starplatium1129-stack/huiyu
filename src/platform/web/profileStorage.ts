@@ -1,5 +1,6 @@
 import type { ProfileDomain, ProfileRecord, ProfileSnapshot } from '../../../types/profile'
 import { CHAT_DRAFT_PREFIX, SD_PENDING_QUEUE_KEY } from '../../utils/storageKeys.ts'
+import { assertChatJsonVersion } from '../../utils/chatVersion.ts'
 import { classifyMigrationKey } from './migrationClassification.ts'
 const profileDomainForKey = (key: string): ProfileDomain | null => {
   const domain = classifyMigrationKey('local', key)
@@ -9,12 +10,13 @@ import { assertMigrationWritable } from './migrationBarrier.ts'
 import { assertMaintenanceWritable } from '../maintenanceParticipants.ts'
 
 export interface ProfilePort {
-  readSettings(): Promise<ProfileSnapshot>
+  readSettings(ifVersion?: string): Promise<ProfileSnapshot>
   saveSetting(input: { operationId: string; key: string; value: string | null; expectedRevision: number | null }): Promise<ProfileRecord>
-  readChat(): Promise<ProfileSnapshot>
+  readChat(ifVersion?: string, ifArchiveVersion?: string): Promise<ProfileSnapshot>
+  readChatArchive(ifVersion?: string): Promise<ProfileSnapshot>
   saveChatRecord(input: { operationId: string; key: string; value: unknown; expectedRevision: number | null; expectedReset: string }): Promise<ProfileRecord>
   resetChat(input: { operationId: string; expectedReset: string }): Promise<ProfileSnapshot>
-  readDrafts(windowId: string): Promise<ProfileSnapshot>
+  readDrafts(windowId: string, ifVersion?: string): Promise<ProfileSnapshot>
   saveDraft(input: { operationId: string; key: string; value: string | null; windowId?: string; expectedRevision: number | null; expectedReset: string }): Promise<ProfileRecord>
 }
 let port: ProfilePort | null = null
@@ -23,7 +25,12 @@ let generation = 0
 let writeVersion = 0
 let refreshVersion = 0
 let resetRevision = ''
+// Replace this object on every invalidation, even if the token was already
+// absent: a partial archive read must supersede an in-flight full refresh.
+let snapshotVersions: Partial<Record<ProfileDomain, string>> = {}
 const values = new Map<string, ProfileRecord>()
+const optimisticRecords = new WeakSet<ProfileRecord>()
+const checkedChatVersions = new WeakMap<ProfileRecord, number>()
 let pending = Promise.resolve()
 let failure: unknown = null
 const outbox: Array<() => Promise<void>> = []
@@ -43,12 +50,25 @@ export async function installProfilePort(next: ProfilePort, id: string): Promise
   const current = ++generation
   const [settings, chat, drafts] = await Promise.all([next.readSettings(), next.readChat(), next.readDrafts(id)])
   if (current !== generation) throw new Error('Profile bootstrap was superseded')
+  if (settings.resetRevision !== chat.resetRevision || drafts.resetRevision !== chat.resetRevision) throw new Error('聊天资料在同步期间被清空，请重新读取。')
   values.clear(); take(settings); take(chat)
   for (const record of drafts.records) values.set(cacheKey(record.key, !record.key.startsWith('aics_chat_draft_v1:') && !record.key.startsWith('aics-model-draft-') && record.key !== 'aics_pb_last_draft'), structuredClone(record))
   resetRevision = chat.resetRevision
+  snapshotVersions = { settings: settings.version, chat: chat.version, draft: drafts.version }
   port = next; windowId = id; failure = null
 }
 export function profileRuntimeActive(): boolean { return port !== null }
+/** Confirmed chat records are private clones. Cache only a successful check,
+ * never serialized archives or checks of caller-owned optimistic values. */
+export function assertProfileChatVersion(key: string, current: number): boolean {
+  if (!port || profileDomainForKey(key) !== 'chat') return false
+  const record = values.get(cacheKey(key, false))
+  if (!record || checkedChatVersions.get(record) === current) return true
+  const value = record.value
+  assertChatJsonVersion(value === undefined || value === null ? null : typeof value === 'string' ? value : JSON.stringify(value), current)
+  if (!optimisticRecords.has(record)) checkedChatVersions.set(record, current)
+  return true
+}
 export function setProfileConnectionBlocked(blocked: boolean): void { connectionBlocked = blocked }
 export function hasPendingProfileWrites(): boolean { return outbox.length > 0 || draining }
 export function profileWriteStatus(): { blocked: boolean; pending: boolean; error: string } {
@@ -81,11 +101,16 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   const previous = values.get(identity)
   const sceneIdSet = domain === 'settings' && (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes')
   const optimistic = { key, value, revision: previous?.revision ?? 0 }
+  optimisticRecords.add(optimistic)
   writeVersion++
+  snapshotVersions = { ...snapshotVersions, [domain]: undefined }
   values.set(identity, optimistic)
   let expectedRevision: number | null | undefined
   let expectedReset = resetRevision
-  let baseValue: unknown = structuredClone(previous?.value ?? null)
+  // Confirmed chat records are private snapshots; conflict merges only read
+  // their baseline. Optimistic values can still be edited by their caller.
+  let baseValue: unknown = domain === 'chat' && previous && !optimisticRecords.has(previous)
+    ? previous.value ?? null : structuredClone(previous?.value ?? null)
   // Strings/null already have JSON value semantics and cannot share mutable state.
   let sendValue: unknown = typeof value === 'string' || value === null ? value : JSON.parse(JSON.stringify(value))
   outbox.push(async () => {
@@ -135,6 +160,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
             values.delete(entryId); revisions.delete(entryId)
           }
           take(chat)
+          snapshotVersions = { ...snapshotVersions, chat: undefined, draft: undefined }
           for (const record of chat.records) revisions.set(cacheKey(record.key, false), record.revision)
           window.dispatchEvent(new StorageEvent('storage', { key: 'aics_chat_v1' }))
           window.dispatchEvent(new CustomEvent('huiyu:profile-write-error', { detail: '另一窗口已清空聊天，旧内容未重新写入；可导出本页未保存草稿。' }))
@@ -175,26 +201,53 @@ export async function refreshProfileStorage(): Promise<void> {
   const refresh = ++refreshVersion
   await flushProfileWrites()
   if (refresh !== refreshVersion) return
-  const current = generation, writes = writeVersion
-  const [settings, chat, drafts] = await Promise.all([port.readSettings(), port.readChat(), port.readDrafts(windowId)])
+  const current = generation, writes = writeVersion, known = snapshotVersions
+  const archiveIdentity = cacheKey('aics_chat_archive_v1', false), archive = values.get(archiveIdentity)
+  const archiveVersion = archive && !optimisticRecords.has(archive) ? archive.version : undefined
+  const [settings, chat, drafts] = await Promise.all([port.readSettings(known.settings), port.readChat(known.chat, archiveVersion), port.readDrafts(windowId, known.draft)])
   // A save may have started AND drained while these snapshots were in flight.
   // A later refresh captures the new write version and can publish normally.
-  if (current !== generation || refresh !== refreshVersion || writes !== writeVersion || outbox.length) return
+  if (current !== generation || refresh !== refreshVersion || writes !== writeVersion || known !== snapshotVersions || outbox.length) return
+  // Never pair pre-reset chat drafts with a newer chat reset fence. The next
+  // health sync retries the whole snapshot without publishing partial data.
+  if (settings.resetRevision !== chat.resetRevision || drafts.resetRevision !== chat.resetRevision) throw new Error('聊天资料在同步期间被清空，请重新读取。')
+  if (chat.unchangedArchive !== undefined && (!archiveVersion || chat.unchangedArchive !== archiveVersion
+    || values.get(archiveIdentity) !== archive || chat.resetRevision !== resetRevision)) throw new Error('聊天归档在同步期间已变化，请重新读取。')
+  if (settings.unchanged && chat.unchanged && drafts.unchanged) return
+  const retainedArchive = chat.unchangedArchive === undefined ? undefined : archive
+  const snapshots = { settings, chat, draft: drafts }
+  const changedDomain = (record: ProfileRecord) => {
+    const domain = profileDomainForKey(record.key)
+    // Retain both the confirmed record and its CAS revision. This also skips
+    // serializing the large archive again in the change-notification pass.
+    return record !== retainedArchive && domain !== null && !snapshots[domain].unchanged
+  }
   const before = new Map([...values].map(([identity, record]) => [identity, record.value]))
-  values.clear(); revisions.clear(); take(settings); take(chat)
-  for (const record of drafts.records) {
+  for (const [identity, record] of values) if (changedDomain(record)) { values.delete(identity); revisions.delete(identity) }
+  if (!settings.unchanged) take(settings)
+  if (!chat.unchanged) take(chat)
+  for (const record of drafts.unchanged ? [] : drafts.records) {
     const session = !record.key.startsWith('aics_chat_draft_v1:') && !record.key.startsWith('aics-model-draft-') && record.key !== 'aics_pb_last_draft'
     values.set(cacheKey(record.key, session), record)
   }
+  // A reset between these three reads must not give old chat data a newer
+  // reset fence. As before, the chat snapshot alone owns this token.
+  resetRevision = chat.resetRevision
+  const changedKeys: string[] = []
   for (const [identity, record] of values) {
+    if (!changedDomain(record)) continue
     revisions.set(identity, record.revision)
     const previous = before.get(identity)
     // Most profiles already contain JSON text. Re-encoding both strings makes
     // two escaped copies of large chat archives just to detect a change.
     const changed = typeof previous === 'string' && typeof record.value === 'string'
       ? previous !== record.value : JSON.stringify(previous) !== JSON.stringify(record.value)
-    if (changed) window.dispatchEvent(new StorageEvent('storage', { key: record.key }))
+    if (changed) changedKeys.push(record.key)
   }
+  // Listeners can synchronously queue writes; publish all CAS revisions and
+  // versions first so their new invalidations are never overwritten.
+  snapshotVersions = { settings: settings.version, chat: chat.version, draft: drafts.version }
+  for (const key of changedKeys) window.dispatchEvent(new StorageEvent('storage', { key }))
 }
 function createStorage(session: boolean): Storage {
   const native = () => session ? globalThis.sessionStorage : globalThis.localStorage
@@ -228,16 +281,24 @@ export async function readProfileChatArchive(): Promise<unknown> {
   if (!port) throw new Error('Profile runtime is not active')
   await flushProfileWrites()
   const current = generation, writes = writeVersion, refresh = refreshVersion
-  const snapshot = await port.readChat()
   const identity = cacheKey('aics_chat_archive_v1', false)
-  const record = snapshot.records.find(record => record.key === 'aics_chat_archive_v1')
+  const cached = values.get(identity)
+  const known = cached && !optimisticRecords.has(cached) ? cached.version : undefined
+  const snapshot = await port.readChatArchive(known)
+  const record = snapshot.unchanged ? cached : snapshot.records.find(record => record.key === 'aics_chat_archive_v1')
   if (current !== generation || writes !== writeVersion || refresh !== refreshVersion || outbox.length
+    || (snapshot.unchanged && values.get(identity) !== cached)
     || snapshot.resetRevision !== resetRevision || (record?.revision ?? 0) < (revisions.get(identity) ?? 0)) {
     throw new Error('聊天资料已变化，请重新读取归档。')
   }
-  if (record) { values.set(identity, structuredClone(record)); revisions.set(identity, record.revision) }
-  else { values.delete(identity); revisions.delete(identity) }
-  return typeof record?.value === 'string' ? JSON.parse(record.value) as unknown : record?.value ?? null
+  if (!snapshot.unchanged) {
+    if (record) { values.set(identity, structuredClone(record)); revisions.set(identity, record.revision) }
+    else { values.delete(identity); revisions.delete(identity) }
+    snapshotVersions = { ...snapshotVersions, chat: undefined }
+  }
+  // A cache hit must not expose the private confirmed object to archive edits.
+  const value = record?.value ?? null
+  return typeof value === 'string' ? JSON.parse(value) as unknown : snapshot.unchanged ? structuredClone(value) : value
 }
 export async function writeProfileChatArchive(value: unknown): Promise<void> {
   if (!port) throw new Error('Profile runtime is not active')
@@ -251,6 +312,7 @@ export async function resetProfileChat(): Promise<void> {
   await flushProfileWrites()
   const snapshot = await port.resetChat({ operationId: crypto.randomUUID(), expectedReset: resetRevision })
   writeVersion++
+  snapshotVersions = { ...snapshotVersions, chat: undefined, draft: undefined }
   for (const [identity, record] of values) if (profileDomainForKey(record.key) === 'chat' || record.key.startsWith('aics_chat_draft_v1:')) {
     values.delete(identity); revisions.delete(identity)
   }

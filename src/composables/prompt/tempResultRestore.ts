@@ -49,7 +49,7 @@ export async function restoreUnarchivedResult(deps: TempResultDeps, storedResult
     if (summary) {
       const task = await getRuntimeTask(summary.taskId).catch(() => null)
       if (!task || !current()) return false
-      const blob = await fetchRuntimeResult(runtimeResultPath(task)).catch(() => null)
+      const blob = await fetchRuntimeResult(runtimeResultPath(task), undefined, task).catch(() => null)
       if (!blob || !current()) return false
       const { runtimeImageMetadata, runtimeTaskRecipe, runtimeTaskResultContext } = await import('@/utils/runtimeTaskResult')
       if (!current()) return false

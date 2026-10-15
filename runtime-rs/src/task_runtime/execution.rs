@@ -125,26 +125,44 @@ impl TaskRuntime {
     ) -> Result<TaskRecord> {
         self.check_running()?;
         let observe_after = mode != ReconcileMode::Follow;
-        // A rejected task identity must not allocate a persistent operation
-        // binding, or wait on another principal's in-flight task operation.
-        let task = Self::get(storage, principal, id).await?;
-        let operation = {
-            let mut jobs = self.jobs.lock().unwrap();
-            // Follow owns this exact binding. An awaited identity read must not
-            // let an old watcher allocate or observe a replacement binding.
-            if let Some(notification) = notification
-                && !jobs
+        // Only the internal watcher carries this already-authorized binding.
+        // Reuse its lock without decoding the full task twice on every poll.
+        let operation = if mode == ReconcileMode::Follow {
+            notification.and_then(|notification| {
+                self.jobs
+                    .lock()
+                    .unwrap()
                     .get(&identity(storage, id))
-                    .is_some_and(|job| Arc::ptr_eq(&job.changed, notification))
-            {
-                return Ok(task);
-            }
-            jobs.entry(identity(storage, id))
-                .or_insert_with(|| JobBinding::new(String::new()))
-                .operation
-                .clone()
+                    .filter(|job| Arc::ptr_eq(&job.changed, notification))
+                    .map(|job| job.operation.clone())
+            })
+        } else {
+            None
         };
-        drop(task);
+        let operation = if let Some(operation) = operation {
+            operation
+        } else {
+            // External/startup probes must authorize before creating a binding
+            // or waiting on another principal's in-flight task operation.
+            let task = Self::get(storage, principal, id).await?;
+            let operation = {
+                let mut jobs = self.jobs.lock().unwrap();
+                // An old watcher must not allocate or observe a replacement.
+                if let Some(notification) = notification
+                    && !jobs
+                        .get(&identity(storage, id))
+                        .is_some_and(|job| Arc::ptr_eq(&job.changed, notification))
+                {
+                    return Ok(task);
+                }
+                jobs.entry(identity(storage, id))
+                    .or_insert_with(|| JobBinding::new(String::new()))
+                    .operation
+                    .clone()
+            };
+            drop(task);
+            operation
+        };
         let mut cancellation = if mode == ReconcileMode::Explicit {
             match operation.try_lock_owned() {
                 Ok(guard) => guard,

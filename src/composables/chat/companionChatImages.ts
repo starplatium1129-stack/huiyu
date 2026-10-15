@@ -1,12 +1,17 @@
 import { artworkRepository } from '@/storage/artworkRepository'
 import { fetchRuntimeResult } from '@/api/runtimeTasks'
 import { parseCompanionChatImage, type CompanionChatImage } from '@/types/companionDrawing'
+import { readWorkspaceMediaSource, type MediaSource } from '@/platform/desktop/workspaceMediaSource'
 
 /** Resolve a durable reference only when sending it to a model or tagger. */
-export async function companionImageDataUrl(raw: CompanionChatImage, signal: AbortSignal): Promise<string> {
+export async function companionImageSource(raw: CompanionChatImage, signal: AbortSignal): Promise<string | Readonly<MediaSource>> {
   signal.throwIfAborted()
   const image = parseCompanionChatImage(raw)
   if (!image) throw new Error('图片引用无效，请重新选择图片。')
+  if (image.imageId && artworkRepository.getWorkspaceMediaReference) {
+    const { alias, authority } = artworkRepository.getWorkspaceMediaReference(image.imageId)
+    return readWorkspaceMediaSource(alias, authority, signal)
+  }
   const blob = image.imageId || !image.path.startsWith('/')
     ? await artworkRepository.getImage(image.imageId || image.path, signal)
     : await fetchRuntimeResult(image.path, signal)

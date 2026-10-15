@@ -5,6 +5,7 @@ import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, markTaskReque
 import { hasRuntimeTasks } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
+import { rememberWorkspaceMedia, workspaceMediaAuthority } from '../platform/desktop/workspaceMediaSource'
 export { hasRuntimeTasks, isRuntimeTaskId } from './runtimeTaskAuthority'
 export type { TaskRecord, TaskSummary } from '../../types/tasks'
 
@@ -95,6 +96,11 @@ export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<
   }
 }
 export async function getRuntimeTask(id: string, signal?: AbortSignal) { return remember(await request<TaskRecord>('/' + encodeURIComponent(id), 'GET', undefined, signal)) }
+export async function getRuntimeTaskSummary(id: string, signal?: AbortSignal): Promise<TaskSummary> {
+  const task = await request<TaskSummary>('/' + encodeURIComponent(id) + '?summary=true', 'GET', undefined, signal)
+  mergeTasks([task], epoch())
+  return task
+}
 export async function getRuntimeTaskByKey(key: string, signal?: AbortSignal): Promise<TaskRecord | null> {
   const task = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key), 'GET', undefined, signal)
   return task ? remember(task) : null
@@ -147,15 +153,24 @@ export function taskMessage(task: TaskSummary): string {
   if (task.status === 'failed') return '任务未完成，请检查生成环境后重新发起。'
   return ({ queued: '任务已接收。', submitting: '正在提交生成。', running: '正在生成，可切换页面。', succeeded: '正在收取结果。', cancelled: '任务已取消。' } as Record<string, string>)[task.status] || ''
 }
-export async function waitForRuntimeTask(id: string, signal: AbortSignal, update: (task: TaskRecord) => void): Promise<TaskRecord> {
+export async function waitForRuntimeTask(id: string, signal: AbortSignal, update: (task: TaskSummary) => void): Promise<TaskRecord> {
   for (;;) {
     signal.throwIfAborted()
-    const task = await getRuntimeTask(id, signal)
+    let task = await getRuntimeTaskSummary(id, signal)
+    let detail: TaskRecord | undefined
+    if (task.upstreamSettled && task.status === 'succeeded' && task.resultState === 'available'
+      && task.recoveryState !== 'unknown' && task.recoveryState !== 'interrupted') {
+      // Only successful delivery needs the full recipe/checkpoint. Recheck the
+      // newer detail below so a concurrent discard cannot return stale success.
+      detail = await getRuntimeTask(id, signal)
+      if (detail.runtimeEpoch !== task.runtimeEpoch) throw new ApiClientError('运行时连接已更换', { kind: 'aborted', code: 'RUNTIME_EPOCH_CHANGED' })
+      task = detail
+    }
     signal.throwIfAborted(); update(task)
     if (task.upstreamSettled && (task.status === 'failed' || task.status === 'cancelled')) throw new AcceptedTaskTerminalError(task.taskId, task.status, taskMessage(task))
     if (task.recoveryState === 'unknown' || task.recoveryState === 'interrupted') throw new Error(taskMessage(task))
     if (task.upstreamSettled) {
-      if (task.status === 'succeeded' && task.resultState === 'available') return task
+      if (task.status === 'succeeded' && task.resultState === 'available' && detail) return detail
       throw new Error(taskMessage(task))
     }
     await new Promise<void>((resolve, reject) => {
@@ -165,14 +180,30 @@ export async function waitForRuntimeTask(id: string, signal: AbortSignal, update
     })
   }
 }
-export async function fetchRuntimeResult(url: string, signal?: AbortSignal): Promise<Blob> {
+export async function fetchRuntimeResult(url: string, signal?: AbortSignal, task?: TaskRecord): Promise<Blob> {
   ensureAuthority()
   if (!isRuntimeResultPath(url)) throw new Error('结果地址无效')
+  const authority = task ? workspaceMediaAuthority() : undefined
+  const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
+  const reference = task?.resultRefs.find(value => url === runtimeResultPath(task, value.index))
+  if (task && (!reference || task.workspaceId !== workspace?.workspaceId || task.principalId !== workspace.principalId
+    || task.runtimeEpoch !== workspace.runtimeEpoch)) throw new Error('任务结果来源已变化，请重新读取')
+  const source = reference ? { ...reference } : undefined
   const response = await desktopRuntimeFetch(url, { cache: 'no-store', signal: AbortSignal.any([AbortSignal.timeout(120_000), ...(signal ? [signal] : [])]) })
-  if (!response.ok) throw new Error('任务结果暂时无法读取')
-  const blob = await response.blob()
-  if (!blob.size || !/^(image|video)\//.test(blob.type)) throw new Error('任务结果格式无效')
-  return blob
+  try {
+    if (!response.ok) throw new Error('任务结果暂时无法读取')
+    if (source && (response.headers.get('X-Workspace-Media-Sha256') !== source.sha256
+      || Number(response.headers.get('X-Workspace-Media-Total-Bytes')) !== source.bytes
+      || response.headers.get('X-Workspace-Media-Mime') !== source.mime
+      || response.headers.get('X-Workspace-Media-Offset') !== '0')) throw new Error('任务结果来源信息不一致，请重新读取')
+    const blob = await response.blob()
+    signal?.throwIfAborted()
+    if (!blob.size || !/^(image|video)\//.test(blob.type)) throw new Error('任务结果格式无效')
+    if (source && authority) rememberWorkspaceMedia(blob, source, authority)
+    return blob
+  } finally {
+    if (!response.bodyUsed) await response.body?.cancel().catch(() => {})
+  }
 }
 export async function downloadTaskMedia(url: string, filename = '绘遇结果') {
   const blob = await fetchRuntimeResult(url)

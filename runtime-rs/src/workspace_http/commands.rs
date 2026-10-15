@@ -122,7 +122,7 @@ pub(super) fn command(
     method: &Method,
     path: &[String],
     query: &Query,
-    input: &Value,
+    input: &mut Value,
 ) -> Result<Value> {
     let parts: Vec<&str> = path.iter().map(String::as_str).collect();
     let p = parts.as_slice();
@@ -150,7 +150,9 @@ pub(super) fn command(
             json!({"kind": "prepareMedia", "operationId": route_op(id)?, "media": media(&input["media"])?})
         }
         ("POST", ["artwork-saves", id]) => {
-            json!({"kind": "prepareSave", "operationId": route_op(id)?, "media": media(&input["media"])?, "artwork": body(&input["artwork"])?})
+            let mut command = json!({"kind": "prepareSave", "operationId": route_op(id)?, "media": media(&input["media"])?, "artwork": body(&input["artwork"]).map(|_| Value::Null)?});
+            command["artwork"] = input["artwork"].take();
+            command
         }
         (
             "PUT",
@@ -160,7 +162,9 @@ pub(super) fn command(
                 "chunks",
             ],
         ) => {
-            json!({"kind": if *collection == "media-uploads" { "uploadMediaChunk" } else { "uploadChunk" }, "operationId": route_op(id)?, "offset": integer(&input["offset"], 0)?, "data": chunk(&input["data"])?})
+            let mut command = json!({"kind": if *collection == "media-uploads" { "uploadMediaChunk" } else { "uploadChunk" }, "operationId": route_op(id)?, "offset": integer(&input["offset"], 0)?, "data": chunk(&input["data"]).map(|_| Value::Null)?});
+            command["data"] = input["data"].take();
+            command
         }
         (
             "POST",
@@ -179,7 +183,9 @@ pub(super) fn command(
             json!({"kind": "releaseMedia", "operationId": operation()?, "alias": route_op(alias)?})
         }
         ("POST", ["artworks"]) => {
-            json!({"kind": "appendArtwork", "operationId": operation()?, "artwork": body(&input["artwork"])?})
+            let mut command = json!({"kind": "appendArtwork", "operationId": operation()?, "artwork": body(&input["artwork"]).map(|_| Value::Null)?});
+            command["artwork"] = input["artwork"].take();
+            command
         }
         ("GET", ["artworks"]) => {
             let mut command = json!({"kind": "listArtworks"});
@@ -222,11 +228,23 @@ pub(super) fn command(
         }
         ("GET", ["artworks", id]) => json!({"kind": "getArtwork", "id": route_id(id, query)?}),
         ("POST", ["artworks", "lookup"]) => {
-            json!({"kind": "getArtworks", "ids": array(&input["ids"], true)?.iter().map(entity_id).collect::<Result<Vec<_>>>()?})
+            let mut command = json!({"kind": "getArtworks", "ids": array(&input["ids"], true)?.iter().map(entity_id).collect::<Result<Vec<_>>>()?});
+            match input.get("projection") {
+                None | Some(Value::Null) => {}
+                Some(Value::String(value)) if value == "revision" => {
+                    command["projection"] = json!(value);
+                }
+                _ => return Err(ApiError::invalid("Unknown artwork projection")),
+            }
+            command
         }
         ("POST", ["artworks", "trash-batch"]) => {
             let items = array(&input["items"], true)?.iter().map(|item| Ok(json!({"id": entity_id(&item["id"])?, "expectedRevision": integer(&item["expectedRevision"], 0)?}))).collect::<Result<Vec<_>>>()?;
             json!({"kind": "softDeleteArtworks", "operationId": operation()?, "items": items})
+        }
+        ("POST", ["artworks", "restore-batch"]) => {
+            let items = array(&input["items"], true)?.iter().map(|item| Ok(json!({"id": entity_id(&item["id"])?, "expectedRevision": integer(&item["expectedRevision"], 0)?}))).collect::<Result<Vec<_>>>()?;
+            json!({"kind": "restoreArtworks", "operationId": operation()?, "items": items})
         }
         ("POST", ["artworks", "organize"]) => {
             let ids = array(&input["ids"], true)?
@@ -251,7 +269,9 @@ pub(super) fn command(
             json!({"kind":"undoArtworkOrganization","operationId":operation()?,"sourceOperationId":route_op(text(&input["sourceOperationId"])?)?})
         }
         ("PATCH", ["artworks", id]) => {
-            json!({"kind": "patchArtwork", "operationId": operation()?, "id": route_id(id, query)?, "expectedRevision": revision()?, "patch": record(&input["patch"])?})
+            let mut command = json!({"kind": "patchArtwork", "operationId": operation()?, "id": route_id(id, query)?, "expectedRevision": revision()?, "patch": record(&input["patch"]).map(|_| Value::Null)?});
+            command["patch"] = input["patch"].take();
+            command
         }
         ("DELETE", ["artworks", id]) => {
             json!({"kind": "softDeleteArtwork", "operationId": operation()?, "id": route_id(id, query)?, "expectedRevision": revision()?})
@@ -264,7 +284,9 @@ pub(super) fn command(
         }
         ("GET", ["projects"]) => json!({"kind": "listProjects"}),
         ("POST", ["projects"]) => {
-            json!({"kind": "saveProject", "operationId": operation()?, "project": body(&input["project"])?, "artworkIds": array(&input["artworkIds"], false)?.iter().map(entity_id).collect::<Result<Vec<_>>>()?, "expectedRevision": if input.get("expectedRevision") == Some(&Value::Null) { Value::Null } else { revision()? }})
+            let mut command = json!({"kind": "saveProject", "operationId": operation()?, "project": body(&input["project"]).map(|_| Value::Null)?, "artworkIds": array(&input["artworkIds"], false)?.iter().map(entity_id).collect::<Result<Vec<_>>>()?, "expectedRevision": if input.get("expectedRevision") == Some(&Value::Null) { Value::Null } else { revision()? }});
+            command["project"] = input["project"].take();
+            command
         }
         ("DELETE", ["projects", id, "smart"]) => {
             json!({"kind":"deleteSmartAlbum","operationId":operation()?,"id":route_id(id,query)?,"expectedRevision":revision()?})
@@ -286,8 +308,20 @@ pub(super) fn command(
         ("POST", ["backups", id, "restore"]) => {
             json!({"kind": "restoreBackup", "operationId": operation()?, "backupId": route_op(id)?})
         }
-        ("GET", ["profile", domain @ ("settings" | "chat" | "drafts")]) => {
-            let mut command = json!({"kind": match *domain { "settings" => "profile.readSettings", "chat" => "profile.readChat", _ => "profile.readDrafts" }});
+        ("GET", ["profile", domain @ ("settings" | "chat" | "drafts")])
+        | ("GET", ["profile", domain @ "chat", "archive"]) => {
+            let kind = if path.len() == 3 { "profile.readChatArchive" }
+                else { match *domain { "settings" => "profile.readSettings", "chat" => "profile.readChat", _ => "profile.readDrafts" } };
+            let mut command = json!({"kind":kind});
+            for field in ["ifVersion", "ifArchiveVersion"] {
+                if let Some(version) = query.get(field) {
+                    if (field == "ifArchiveVersion" && kind != "profile.readChat")
+                        || version.len() != 64 || !version.bytes().all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte)) {
+                        return Err(ApiError::invalid("Invalid profile snapshot version"));
+                    }
+                    command[field] = json!(version);
+                }
+            }
             if *domain == "drafts" {
                 command["windowId"] =
                     json!(query.get("windowId").map(String::as_str).unwrap_or(""));
@@ -295,7 +329,10 @@ pub(super) fn command(
             command
         }
         ("PUT", ["profile", domain @ ("settings" | "chat" | "drafts")]) => {
-            let mut command = json!({"kind": match *domain { "settings" => "profile.saveSetting", "chat" => "profile.saveChatRecord", _ => "profile.saveDraft" }, "operationId": operation()?, "key": text(&input["key"])?, "value": input.get("value").ok_or_else(|| ApiError::invalid("Missing profile value"))?, "expectedRevision": if input.get("expectedRevision") == Some(&Value::Null) { Value::Null } else { revision()? }});
+            let mut command = json!({"kind": match *domain { "settings" => "profile.saveSetting", "chat" => "profile.saveChatRecord", _ => "profile.saveDraft" }, "operationId": operation()?, "key": text(&input["key"])?, "value": input.get("value").map(|_| Value::Null).ok_or_else(|| ApiError::invalid("Missing profile value"))?, "expectedRevision": if input.get("expectedRevision") == Some(&Value::Null) { Value::Null } else { revision()? }});
+            if let Some(mode) = input.get("ackOnly") {
+                command["ackOnly"] = json!(mode.as_bool().ok_or_else(|| ApiError::invalid("Invalid profile acknowledgement mode"))?);
+            }
             if *domain != "settings" {
                 command["expectedReset"] = json!(input["expectedReset"].as_str().unwrap_or(""));
             }
@@ -304,13 +341,16 @@ pub(super) fn command(
             {
                 command["windowId"] = json!(text(window)?);
             }
+            command["value"] = input["value"].take();
             command
         }
         ("POST", ["profile", "chat", "reset"]) => {
             json!({"kind": "profile.resetChat", "operationId": operation()?, "expectedReset": input["expectedReset"].as_str().unwrap_or("")})
         }
         ("POST", ["migrations"]) => {
-            json!({"kind": "migration.begin", "operationId": operation()?, "envelope": record(&input["envelope"])?})
+            let mut command = json!({"kind": "migration.begin", "operationId": operation()?, "envelope": record(&input["envelope"]).map(|_| Value::Null)?});
+            command["envelope"] = input["envelope"].take();
+            command
         }
         ("GET", ["migrations", id]) => {
             json!({"kind": "migration.status", "migrationId": route_op(id)?})
@@ -319,7 +359,9 @@ pub(super) fn command(
             json!({"kind": "migration.verify", "operationId": operation()?, "migrationId": route_op(id)?})
         }
         ("POST", ["migrations", id, "records", item]) => {
-            json!({"kind": "migration.record", "operationId": operation()?, "migrationId": route_op(id)?, "itemId": route_op(item)?, "record": record(&input["record"])?})
+            let mut command = json!({"kind": "migration.record", "operationId": operation()?, "migrationId": route_op(id)?, "itemId": route_op(item)?, "record": record(&input["record"]).map(|_| Value::Null)?});
+            command["record"] = input["record"].take();
+            command
         }
         (
             "PUT",
@@ -331,12 +373,13 @@ pub(super) fn command(
                 "chunks",
             ],
         ) => {
-            let mut command = json!({"kind": if *collection == "records" { "migration.recordChunk" } else { "migration.media" }, "operationId": operation()?, "migrationId": route_op(id)?, "offset": integer(&input["offset"], 0)?, "data": chunk(&input["data"])?});
+            let mut command = json!({"kind": if *collection == "records" { "migration.recordChunk" } else { "migration.media" }, "operationId": operation()?, "migrationId": route_op(id)?, "offset": integer(&input["offset"], 0)?, "data": chunk(&input["data"]).map(|_| Value::Null)?});
             command[if *collection == "records" {
                 "itemId"
             } else {
                 "alias"
             }] = route_op(item)?;
+            command["data"] = input["data"].take();
             command
         }
         _ => {

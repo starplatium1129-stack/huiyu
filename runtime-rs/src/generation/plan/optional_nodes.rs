@@ -36,18 +36,46 @@ fn readiness(required: &[&str], states: &[Option<bool>]) -> Value {
     json!({"state":if !known{"unknown"}else if missing.is_empty(){"ready"}else{"missing"},"required":required,"missing":missing})
 }
 
-pub(super) async fn status(inner: &Inner, cancel: &CancellationToken) -> Value {
-    // Only these three classes affect image admission. Query them fresh without
-    // making Comfy enumerate every installed node and its model dropdowns.
+pub(super) async fn status(
+    inner: &Inner,
+    cancel: &CancellationToken,
+    workflow: Option<&Value>,
+) -> Value {
+    // Admission queries only the selected groups; the control panel queries all.
+    // Required classes stay fresh without enumerating all installed nodes.
+    let mask_selected = workflow.is_none_or(|workflow| selected(workflow, AUTOMATIC_MASK));
+    let krea_selected = workflow.is_none_or(|workflow| selected(workflow, KREA));
     let (mask, rebalance, enhancer) = tokio::join!(
-        available(inner, AUTOMATIC_MASK[0], cancel),
-        available(inner, KREA[0], cancel),
-        available(inner, KREA[1], cancel),
+        async {
+            if mask_selected {
+                available(inner, AUTOMATIC_MASK[0], cancel).await
+            } else {
+                None
+            }
+        },
+        async {
+            if krea_selected {
+                available(inner, KREA[0], cancel).await
+            } else {
+                None
+            }
+        },
+        async {
+            if krea_selected {
+                available(inner, KREA[1], cancel).await
+            } else {
+                None
+            }
+        },
     );
     json!({"automaticMask":readiness(AUTOMATIC_MASK,&[mask]),"krea2":readiness(KREA,&[rebalance,enhancer])})
 }
 
 pub(super) fn requested(workflow: &Value) -> bool {
+    selected(workflow, AUTOMATIC_MASK) || selected(workflow, KREA)
+}
+
+fn selected(workflow: &Value, names: &[&str]) -> bool {
     workflow
         .as_object()
         .into_iter()
@@ -55,7 +83,7 @@ pub(super) fn requested(workflow: &Value) -> bool {
         .any(|node| {
             node["class_type"]
                 .as_str()
-                .is_some_and(|name| AUTOMATIC_MASK.contains(&name) || KREA.contains(&name))
+                .is_some_and(|name| names.contains(&name))
         })
 }
 
@@ -64,16 +92,7 @@ pub(super) fn validate(workflow: &Value, status: &Value) -> Result<()> {
         ("automaticMask", AUTOMATIC_MASK, "文字自动蒙版"),
         ("krea2", KREA, "Krea 2"),
     ] {
-        let selected = workflow
-            .as_object()
-            .into_iter()
-            .flat_map(|graph| graph.values())
-            .any(|node| {
-                node["class_type"]
-                    .as_str()
-                    .is_some_and(|name| names.contains(&name))
-            });
-        if !selected || status[key]["state"] == "ready" {
+        if !selected(workflow, names) || status[key]["state"] == "ready" {
             continue;
         }
         let message = if status[key]["state"] == "missing" {

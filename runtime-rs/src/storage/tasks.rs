@@ -142,12 +142,24 @@ pub(super) fn execute_command(
         TaskCommand::Get {
             task_id,
             request_key,
-        } => Ok(
-            read(c, principal, task_id.as_deref(), request_key.as_deref())?
-                .map(TaskRecord::into_value)
-                .transpose()?
-                .unwrap_or(Value::Null),
-        ),
+            summary,
+        } => {
+            if summary {
+                listing::read_summary(
+                    c,
+                    principal,
+                    task_id.as_deref()
+                        .ok_or_else(|| invalid("Task summary requires taskId"))?,
+                )
+            } else {
+                Ok(
+                    read(c, principal, task_id.as_deref(), request_key.as_deref())?
+                        .map(TaskRecord::into_value)
+                        .transpose()?
+                        .unwrap_or(Value::Null),
+                )
+            }
+        }
         TaskCommand::List { query } => listing::read(c, principal, query),
         TaskCommand::Accept { record } => accept(c, principal, *record),
         TaskCommand::Patch {
@@ -199,14 +211,26 @@ fn accept(c: &mut Context, principal: &str, incoming: TaskRecord) -> Result<Valu
             task.status = TaskStatus::Cancelled;
             task.upstream_settled = true;
         }
-        c.db.execute("INSERT INTO tasks VALUES(?,?,?,?,?,?)", params![task.task_id, principal, task.request_key, task.provider, task.upstream_settled, serde_json::to_string(&task)?])?;
-        for alias in &task.input_media_refs {
+        // Publish the final record once. The previous provisional INSERT and
+        // immediate UPDATE both encoded the full input and maintained indexes.
+        task.revision = c.next_revision()?;
+        task.updated_at = now() as u64;
+        task.runtime_epoch = c.epoch.clone();
+        let (id, request_key, provider, settled) = (
+            task.task_id.clone(), task.request_key.clone(), task.provider.clone(), task.upstream_settled,
+        );
+        let value = task.into_value()?;
+        c.db.execute("INSERT INTO tasks VALUES(?,?,?,?,?,?)", params![id, principal, request_key, provider, settled, stringify(&value)])?;
+        // INSERT still precedes alias lookup so identity conflicts keep their
+        // original priority; missing inputs roll back this entire transaction.
+        for alias in value["inputMediaRefs"].as_array().unwrap() {
+            let alias = alias.as_str().unwrap();
             let hash: Option<String> = c.db.query_row("SELECT hash FROM media_aliases WHERE alias=?", [alias], |r| r.get(0)).optional()?;
             let hash = hash.ok_or_else(|| conflict("TASK_INPUT_MISSING", "Frozen task input media is missing"))?;
-            c.db.execute("INSERT OR IGNORE INTO media_refs VALUES('task-input',?,?)", params![task.task_id, hash])?;
+            c.db.execute("INSERT OR IGNORE INTO media_refs VALUES('task-input',?,?)", params![id, hash])?;
         }
         let mut result = json!({"task": null, "created": true});
-        result["task"] = write(c, task)?;
+        result["task"] = value;
         Ok(result)
     })
 }

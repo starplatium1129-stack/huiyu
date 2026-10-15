@@ -14,14 +14,14 @@
       "location": "CPU only",
       "maxEntries": 4,
       "maxBytes": 16777216,
-      "scope": "Qwen embeddings and T5 ids/masks; conditioned embeddings always recomputed",
+      "scope": "Qwen embeddings and T5 ids/masks; plain and weighted requests reuse matching raw negative snapshots on pair misses within the same bounded cache. Weighted positive encoding keeps its token overrides; conditioned embeddings and prompt weight application always recomputed",
       "invalidation": "release/failure or changed encoder/tokenizer bytes; raw text cache may survive base change only when Qwen and both tokenizers are actually reused",
       "benchmark": "disabled on both sides of TeaCache comparison"
     },
     "idleReleaseSeconds": 600,
     "cancelErrorTimeout": "Cooperative cancellation at stage/step boundaries; cleanup and ready before reuse. Complete jobs also release unused allocator reserves while retaining live weights. Cancellation checks only initialized CUDA; unacknowledged cancellation after 10 seconds, errors and timeouts terminate the owned worker.",
     "realDeviceValidation": "2026-10-11: RTX 4070 Ti SUPER, converted MiaoMiao 1.6, real text/image/manual-mask and two Kohya character adapters; bounded sample only",
-    "loraGroupChanges": "independent base/adapter leases; same exact topology/config uses preflighted PEFT hotswap after base restoration. Other safe groups unload/load; unknown or base-mutating initialization reloads the base",
+    "loraGroupChanges": "independent base/adapter leases; reject changed adapter-name unions before hotswap tensor loading/conversion, retaining finite strength validation and checked ordinary reload. Matching unions still require the full exact component topology/config preflight after base restoration. Other safe groups unload/load; unknown or base-mutating initialization reloads the base",
     "maskCache": {
       "location": "CPU only; complete model overlaps Anima residency",
       "maxModels": 1,
@@ -30,7 +30,7 @@
       "maxVisionMaps": 1,
       "maxVisionBytes": 16777216,
       "maxConditioningBytes": 65536,
-      "identity": "all local model asset bytes plus clipseg-single-image-vision-v1; vision layers keyed by image mode/size/pixel SHA-256, logits also by ordered stripped phrases including repeats; threshold/growth applied each job",
+      "identity": "all local model asset bytes plus clipseg-single-image-vision-v1; exact hashes reused only under continuous local NTFS file/ancestor protection with latched whole-tree membership watches; unsupported paths retain complete byte hashing, and post-load checks use the original protection interval. Vision layers keyed by image mode/size/pixel SHA-256, logits also by ordered stripped phrases including repeats; threshold/growth applied each job",
       "invalidation": "model bytes change, failure or worker retirement",
       "benchmark": "disabled on both sides of TeaCache comparison"
     }
@@ -126,13 +126,13 @@
     "scheduleMeaning": "Euler/simple and RES/simple sample the 1000-entry training grid; normal/sgm_uniform use explicit Anima shift-3 grids. Img2img and hires take N updates from the tail of a full int(N/denoise) schedule. CPU FP32 job generators replace CUDA generators in both passes. Independent deterministic RES uses FP32 history, eta=0, no CFG++",
     "rcas": "independent FP32 workflow cross filter: reflect, five-point extrema, RGB minimum lobe, epsilon 1e-6, strength before lobe limiting and reciprocal normalization; 128-row scratch with real interior halo and reflected image borders, full input/output retained; functional specification matches fixed KJ d3cfe216 rcas; current device output/latency/peak memory unverified",
     "rcasExecutionRevision": "rcas-fp32-rows128-v1",
-    "rgbCompositing": "PIL-to-FP32 normalization divides its private NumPy array in place; masked composite overwrites only the private reference and new result, preserving separate multiply/subtract/multiply/add and existing Lanczos/uint8 boundaries",
+    "rgbCompositing": "PIL-to-FP32 normalization borrows already-RGB input and divides its private NumPy array in place; masked composite overwrites only the private reference and new result, preserving separate multiply/subtract/multiply/add and existing Lanczos/uint8 boundaries",
     "hiresFix": "Latent bicubic plus a fresh tail-schedule pass, or fixed FP32 Remacri 4x then target resize; masked paths preserve the resized reference outside the effective mask",
     "vae": "single-frame exact Qwen modules with no temporal feature cache; eligible CausalConv uses last time slice and implicit spatial padding; RMS normalizes in original dtype; FP32 latent statistics, raw-latent bicubic and display boundaries; whole frame first, CUDA OOM only encode256/64 or budgeted decode tile with quarter overlap, CPU FP32 feather; no precision/device fallback",
-    "remacriTiling": "512 input pixels/32 overlap, CPU FP32 symmetric-ramp numerator/divisor, clamp after normalization; real CUDA OOM retries entire 256 then128; only each source tile transfers to model execution device",
+    "remacriTiling": "512 input pixels/32 overlap, CPU FP32 symmetric-ramp numerator/divisor, clamp after normalization; shared VAE/Remacri assembly keeps full-tile ramps and separate multiply/add with 128 output rows of weight/product scratch. Final CPU image finiteness checks use 128-row scratch, including the outer VAE boundary. Real CUDA OOM retries entire 256 then128; only each source tile transfers to model execution device",
     "remacriExecutionRevision": "remacri-no-single-cat-packed-v1",
-    "remacriLoading": "Complete key/shape/F32/finite checks precede existing packed CUDA upload with at most 64 MiB active pinned staging; unsupported layouts retain module.to and CUDA failures propagate. One CPU weight set is cached within 128 MiB, keyed by complete SHA256 and file identity; CUDA modules remain pass-local. Changed bytes, cancellation, failure and resident retirement clear the cache; existing profile SHA checks before/after load remain. refinement.upscale records execution revision, loading cacheHit, fingerprint/read/upload CPU wall and actual upload counters. Current cache performance and image effects need device acceptance",
-    "imageQuantization": "Lanczos and final PNG convert display RGB with FP32 multiply, clip and uint8 truncation using 128-row scratch instead of full-size float temporaries; soft masks never quantized",
+    "remacriLoading": "Complete key/shape/F32/finite checks precede existing packed CUDA upload with at most 64 MiB active pinned staging; unsupported layouts retain module.to and CUDA failures propagate. One CPU weight set is cached within 128 MiB, keyed by complete SHA256 and file identity; exact hashes reused only under continuous local NTFS file/ancestor protection, with the original interval checked after load/pass. Unsupported paths retain complete before/after byte hashing; profile SHA equality remains required. CUDA modules remain pass-local. Changed bytes, cancellation, failure and resident retirement clear the cache and protection. refinement.upscale records execution revision, loading cacheHit, fingerprint/read/upload CPU wall and actual upload counters. Current cache performance and image effects need device acceptance",
+    "imageQuantization": "Lanczos and final PNG convert display RGB with FP32 multiply, clip and uint8 truncation using 128-row scratch instead of full-size float temporaries; release private CPU FP32 transfer storage before Pillow output allocation and the temporary 4x float canvas after its independent RGB8 conversion. Final unmasked Remacri without second sampling or RCAS retains RGB8-to-FP32 /255 then *255/clip/truncation in 128-row bands instead of a full float canvas; soft masks never quantized",
     "hiresTeaCache": "Built-in Anima policy on both denoising passes; clear residuals between passes and before VAE; no per-resolution calibration. Explicit maintenance profiles retain exact scope validation.",
     "weightSyntax": "Anima round-bracket and explicit nested weights; Qwen fragments unweighted, T5 conditioner output weighted once. Square brackets and BREAK remain literal. Both tokenizer streams are bounded to 512 tokens with explicit rejection before truncation",
     "upscaler": "models_root/upscale_models/4x_foolhardy_Remacri.safetensors, strict 23-block RRDB only",
@@ -154,7 +154,7 @@
     "maxLoras": 16,
     "maskMode": "manual-or-clipseg-denoised-mask",
     "autoMasks": true,
-    "maskGrowth": "manual equivalent RGB red-channel contain/pad (straight RGBA red-only takes R directly; other modes preserve RGB conversion), ordered five-neighbour max writes into the independent FP32 resized output from per-round edge padding without a five-image stack; same tapered diamond and manual v3 identity. Automatic masks separately use square dilation then float feather; growth-loop allocation benefit is source-derived; complete CPU preparation timing and fresh-process high-water RSS are separately measured, not model/VRAM/production peaks",
+    "maskGrowth": "manual equivalent RGB red-channel contain/pad (straight RGBA red-only takes R directly; other modes preserve RGB conversion), in-place /255 of private FP32 pixels, ordered five-neighbour max writes into the independent FP32 resized output from per-round edge padding without a five-image stack; same tapered diamond and manual v3 identity. Automatic masks separately use square dilation then float feather; current allocation benefits are source-derived, with syntax/source review only; device timing and peak memory remain unverified",
     "automaticMask": {
       "postprocessSource": "AP ClipSEG Light af83f91335822be272b23e29040e34d82622601c, MIT; retained MASK_PROCESSING_LICENSE.txt; local loading remains native, no upstream automatic download or TensorFlow stub",
       "model": "local clipseg-rd64-refined",
@@ -172,7 +172,7 @@
         0.95
       ],
       "thresholdDefault": 0.45,
-      "postprocess": "ordered mean phrase logits with repeats; Torch bilinear; 3x 5x5 reflect box smooth; sigmoid threshold to FP32 0/1; exact binary square growth by bounded integer row/column prefix presence with clipped coordinates and owned FP32 canonical output; 3x 25x25 reflect box feather; float masks preserved through latent trilinear and hires nearest-exact/composite",
+      "postprocess": "ordered mean phrase logits with repeats; Torch bilinear; 3x 5x5 reflect box smooth; sigmoid threshold to FP32 0/1, releasing resized logits before growth; exact binary square growth by bounded integer row/column prefix presence with clipped coordinates, reusing private FP32 threshold storage with the same canonical layout; 3x 25x25 reflect box feather; float masks preserved through latent trilinear and hires nearest-exact/composite",
       "files": [
         "config.json",
         "preprocessor_config.json",

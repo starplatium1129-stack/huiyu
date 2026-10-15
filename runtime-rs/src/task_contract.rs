@@ -285,6 +285,8 @@ pub enum TaskCommand {
     Get {
         task_id: Option<String>,
         request_key: Option<String>,
+        #[serde(default)]
+        summary: bool,
     },
     #[serde(rename = "task.list")]
     List {

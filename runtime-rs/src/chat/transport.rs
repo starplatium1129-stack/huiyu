@@ -1,4 +1,5 @@
 use super::{Duration, Error, Result};
+use axum::body::Bytes;
 use futures_util::StreamExt;
 use std::{
     env,
@@ -10,7 +11,7 @@ pub(super) struct Transport {
     trusted: reqwest::Client,
 }
 pub(super) struct Request<'a> {
-    pub body: Option<Vec<u8>>,
+    pub body: Option<Bytes>,
     pub key: &'a str,
     pub session_id: Option<&'a str>,
     pub public_only: bool,

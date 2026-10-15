@@ -3,8 +3,8 @@ import { withArtworkMutation } from '../../storage/artworkMutation.ts'
 import { withArtworkCleanup, withArtworkStaging } from '../../storage/artworkSession.ts'
 import { readLocalImageReferences, readSessionImageReferences } from '../../utils/storageReferences.ts'
 import { imgDeleteMany, imgGetRecord, imgPutRecord } from '../../composables/useImageStore.ts'
-import { type ArtworkRecord } from '../../types/artwork.ts'
-import { ARTWORK_DELETE_BATCH_SIZE, type ArtworkRepository, type ArtworkDeleteResult, type ArtworkSoftDeleteResult, type TrashEntry, type ArtworkTrashSelection } from '../../application/artwork/artworkRepository.ts'
+import { parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'
+import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE, type ArtworkRepository, type ArtworkDeleteResult, type ArtworkSoftDeleteResult, type ArtworkRestoreResult, type TrashEntry, type ArtworkTrashSelection } from '../../application/artwork/artworkRepository.ts'
 import { type ArtworkKvAdapter, type ArtworkImageAdapter, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, record, comparableId, recordId, imageId, unique, arrayValue, callSafely } from './artworkStorage.ts'
 import { createArtworkHardDelete } from './artworkHardDelete.ts'
 import { createArtworkReads } from './artworkReads.ts'
@@ -196,6 +196,27 @@ export function createWebArtworkRepository(): ArtworkRepository {
     return enqueue(() => restoreArtworkNow(id))
   }
 
+  function restoreArtworks(ids: Array<string | number>): Promise<ArtworkRestoreResult[]> {
+    if (!Array.isArray(ids) || !ids.length || ids.length > ARTWORK_RESTORE_BATCH_SIZE
+      || parseArtworkRecords(ids.map(id => ({ id }))).length !== ids.length) throw new Error('作品恢复批次无效')
+    const snapshot = ids.slice()
+    return enqueue(async () => {
+      const results: ArtworkRestoreResult[] = []
+      const outcomes = new Map<string, Omit<ArtworkRestoreResult, 'id'>>()
+      for (const id of snapshot) {
+        const key = String(id).trim()
+        let result = outcomes.get(key)
+        if (!result) {
+          try { result = await restoreArtworkNow(id) }
+          catch { result = { restored: false, code: 'RESTORE_UNCONFIRMED' } }
+          outcomes.set(key, result)
+        }
+        results.push(structuredClone({ id, ...result }))
+      }
+      return results
+    })
+  }
+
   function purgeExpiredTrash(): Promise<{ purged: number }> {
     return enqueue(() => purgeExpiredTrashNow(), true)
   }
@@ -273,5 +294,5 @@ export function createWebArtworkRepository(): ArtworkRepository {
   const media = createArtworkMedia(kv, images)
   const organization = createArtworkOrganization({ kv, enqueue })
   const projects = createArtworkProjects(kv, enqueue)
-  return { ...reads, ...media, ...organization, ...projects, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, purgeExpiredTrash, purgeTrash, listTrash: listTrashNow }
+  return { ...reads, ...media, ...organization, ...projects, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, restoreArtworks, purgeExpiredTrash, purgeTrash, listTrash: listTrashNow }
 }

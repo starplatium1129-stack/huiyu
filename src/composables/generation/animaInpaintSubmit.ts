@@ -3,12 +3,12 @@ import type { AnimaSubmission } from './animaSessionContract'
 import { apiClient } from '@/api/client'
 import { escapeKnownLiteralTags } from '@/utils/promptLiteralTags.ts'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
-import { readImageDataUrl } from '@/utils/backupExport'
 import type { AnimaInpaintDeps } from './useAnimaInpaint'
 import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
 import { automaticMaskBlocker } from './animaBackendReadiness'
 import type { ComfyNodeReadiness } from '@/types/anima'
 import { nativeAnimaRequestBlocker } from './nativeAnimaCapabilities'
+import { assertWorkspaceMediaAuthority, workspaceMediaSource } from '@/platform/desktop/workspaceMediaSource'
 
 export type InpaintSubmissionSnapshot = {
   provider?: 'comfy' | 'native'
@@ -44,17 +44,17 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
   if (wholeImage && snapshot.payload.maskBlob) throw new Error('整图重绘不能同时提交遮罩，请重新确认重绘区域')
   const maskBlocker = !wholeImage && !snapshot.payload.maskBlob && automaticMaskBlocker(snapshot)
   if (maskBlocker) throw new Error(maskBlocker)
-  flash(wholeImage ? '正在上传原图并准备整图重绘…' : '正在上传原图并准备智能换装…')
-  const base64Data = await readImageDataUrl(snapshot.payload.imageBlob, signal)
-  signal.throwIfAborted()
-
-  const uploadJson = await apiClient.request<{ ok: boolean; name: string; error?: string }>('/api/anima/images', {
+  const source = workspaceMediaSource(snapshot.payload.imageBlob)
+  flash(wholeImage ? '正在准备原图与整图重绘…' : '正在准备原图与智能换装…')
+  const uploadJson = await apiClient.request<{ ok: boolean; name: string; error?: string }>(source ? '/api/workspace/anima-images' : '/api/anima/images/raw', {
     method: 'POST',
-    body: { image: base64Data },
+    ...(source ? { body: { source: 'workspace', alias: source.alias, sha256: source.sha256, bytes: source.bytes } }
+      : { headers: { 'Content-Type': 'application/octet-stream' }, body: snapshot.payload.imageBlob }),
     signal,
     timeoutMs: 30_000,
   })
   signal.throwIfAborted()
+  if (source) assertWorkspaceMediaAuthority(source.authority)
   if (!uploadJson.ok || !uploadJson.name) {
     throw new Error((uploadJson as { error?: string }).error || '原图上传失败')
   }
@@ -62,11 +62,10 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
   const initImage = uploadJson.name
   let maskImage: string | undefined
   if (snapshot.payload.maskBlob) {
-    const maskData = await readImageDataUrl(snapshot.payload.maskBlob, signal)
-    signal.throwIfAborted()
-    const maskJson = await apiClient.request<{ ok: boolean; name: string; error?: string }>('/api/anima/images', {
+    const maskJson = await apiClient.request<{ ok: boolean; name: string; error?: string }>('/api/anima/images/raw', {
       method: 'POST',
-      body: { image: maskData },
+      headers: { 'Content-Type': 'application/octet-stream' },
+      body: snapshot.payload.maskBlob,
       signal,
       timeoutMs: 30_000,
     })
@@ -119,6 +118,7 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
   if (nativeBlocker) { flash(nativeBlocker); return }
 
   signal.throwIfAborted()
+  if (source) assertWorkspaceMediaAuthority(source.authority)
   if (!context.current()) return
   context.begin(URL.createObjectURL(snapshot.payload.imageBlob))
   flash(wholeImage ? '正在执行整图重绘，人物与背景均可能变化…' : snapshot.provider === 'native' ? (maskImage ? '正在执行手绘局部重绘（实验性）…' : '正在执行本地自动识别与局部重绘（实验性）…') : maskImage ? '正在执行手绘局部换装…' : '正在执行自动识别与局部换装，节点的模型加载仍需验证…')

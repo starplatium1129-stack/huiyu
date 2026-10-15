@@ -17,6 +17,13 @@ impl Service {
                 "任务推理引擎已改变",
             ));
         }
+        // Restore/capture can copy two full images. Reserve the same queue slot
+        // before either operation, then transfer it into the prepared job.
+        let permit = if self.native {
+            Some(self.backend.reserve_native(&cancel)?)
+        } else {
+            None
+        };
         for key in ["initImage", "maskImage"] {
             if let Some(name) = input[key].as_str() {
                 // Restore the accepted bytes before the resource probe. A stale
@@ -37,9 +44,9 @@ impl Service {
             }
         }
         let originals = inputs::capture(&self.config, &input, true, None, &cancel).await?;
-        let prepared = if self.native {
+        let prepared = if let Some(permit) = permit {
             let plan = native::plan(&self.backend.native_settings()?, input, &originals).await?;
-            self.backend.prepare_native(plan, cancel.clone()).await?
+            self.backend.prepare_native(plan, permit, &cancel)?
         } else {
             let plan = resources::frozen_plan(&self.config, input).await?;
             self.backend.prepare_comfy(plan, cancel.clone()).await?

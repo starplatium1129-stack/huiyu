@@ -7,9 +7,7 @@ import type { usePromptHistoryStore } from '@/stores/promptHistoryStore'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
 import { taskResultHistory } from '@/application/artwork/taskResultHistory'
 
-/** Save-only adapters load on first save; the submitted snapshot already exists. */
-export async function persistPromptArtwork(snapshot: ArtworkSaveSnapshot, historyStore: ReturnType<typeof usePromptHistoryStore>,
-  repository: ArtworkRepository = artworkRepository, expectedAuthority?: string) {
+function artworkOwner(repository: ArtworkRepository, expectedAuthority?: string) {
   const authority = () => {
     const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
     return JSON.stringify([workspace?.workspaceId, workspace?.principalId])
@@ -17,12 +15,27 @@ export async function persistPromptArtwork(snapshot: ArtworkSaveSnapshot, histor
   const expected = expectedAuthority ?? authority()
   const current = () => repository === artworkRepository && authority() === expected
   const check = () => { if (!current()) throw new Error('作品库身份已变化，请回到原工作区保存这张图片') }
+  return { current, check }
+}
+
+/** Runtime outputs already own their bytes and frozen generation metadata. */
+export async function persistTaskArtwork(taskId: string, index: number, historyStore: ReturnType<typeof usePromptHistoryStore>,
+  repository: ArtworkRepository, expectedAuthority?: string) {
+  const { current, check } = artworkOwner(repository, expectedAuthority)
   check()
+  const entry = await archiveTaskResult(taskId, index, repository)
+  if (current()) historyStore.rememberArtwork(entry)
+  return taskResultHistory(entry)
+}
+
+/** Save-only adapters load on first save; the submitted snapshot already exists. */
+export async function persistPromptArtwork(snapshot: ArtworkSaveSnapshot, historyStore: ReturnType<typeof usePromptHistoryStore>,
+  repository: ArtworkRepository = artworkRepository, expectedAuthority?: string) {
   if (snapshot.entry.taskId) {
-    const entry = await archiveTaskResult(snapshot.entry.taskId, snapshot.entry.resultIndex ?? 0, repository)
-    if (current()) historyStore.rememberArtwork(entry)
-    return taskResultHistory(entry)
+    return persistTaskArtwork(snapshot.entry.taskId, snapshot.entry.resultIndex ?? 0, historyStore, repository, expectedAuthority)
   }
+  const { current, check } = artworkOwner(repository, expectedAuthority)
+  check()
   const result = await saveArtworkSnapshot(snapshot, {
     withStaging: work => repository.withStaging(async () => {
       check()

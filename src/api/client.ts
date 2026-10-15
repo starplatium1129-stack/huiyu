@@ -343,17 +343,17 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
         }
       }
 
-      let serializedBody: string | undefined
+      let serializedBody: string | Blob | undefined
       if (hasBody) {
         try {
-          serializedBody = JSON.stringify(options.body)
+          serializedBody = options.body instanceof Blob ? options.body : JSON.stringify(options.body)
         } catch (error) {
           throw new ApiClientError('请求数据无法序列化', {
             kind: 'network',
             detail: errorDetail(error),
           })
         }
-        if (!headers.has('Content-Type')) headers.set('Content-Type', 'application/json')
+        if (!(serializedBody instanceof Blob) && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json')
       }
 
       const controller = new AbortController()

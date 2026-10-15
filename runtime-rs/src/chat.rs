@@ -15,7 +15,7 @@ use crate::{AppState, security};
 use axum::{
     Extension, Json, Router,
     body::Bytes,
-    extract::{ConnectInfo, DefaultBodyLimit, State},
+    extract::{ConnectInfo, DefaultBodyLimit, FromRequest, Request, State},
     http::{HeaderMap, StatusCode},
     response::{IntoResponse, Response},
     routing::{get, post},
@@ -130,14 +130,16 @@ async fn chat(
     Extension(chat): Extension<Arc<ChatService>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     headers: HeaderMap,
-    body: std::result::Result<Bytes, axum::extract::rejection::BytesRejection>,
+    request: Request,
 ) -> Response {
     let scope = app.shutdown.child_token();
     let _guard = scope.clone().drop_guard();
     let result = async {
         running(&app)?;
-        let body = body.map_err(body_error)?;
-        let body = request_body::parse(body, &scope).await?;
+        let admission = request_body::admit(&scope).await?;
+        running(&app)?;
+        let body = Bytes::from_request(request, &app).await.map_err(body_error)?;
+        let body = request_body::parse(body, &admission, &scope).await?;
         let direct = security::is_direct_local(&headers, peer.ip());
         let settings = chat.settings(&app).await;
         let persona = if direct {
@@ -150,7 +152,7 @@ async fn chat(
         } else {
             None
         };
-        let input = request_body::validate(body, persona, direct, &scope).await?;
+        let input = request_body::validate(body, persona, direct, &admission, &scope).await?;
         let managed_auth = app.control.as_ref().map(|control| control.llama_auth());
         let prepared = if input.api.is_some() {
             compatible::prepare(
@@ -159,18 +161,20 @@ async fn chat(
                 input,
                 !direct,
                 managed_auth.as_ref(),
+                Some(&admission),
                 &scope,
             )
             .await?
         } else {
             chat.ollama
-                .prepare(&chat.transport, settings, input, &scope)
+                .prepare(&chat.transport, settings, input, Some(&admission), &scope)
                 .await?
         };
         Ok(stream::response(prepared, app.shutdown.clone()))
     };
-    // Match the client's first-event budget across CPU admission, persona I/O,
-    // queueing, DNS and upstream headers; streaming has its own existing budget.
+    // Match the client's first-event budget across body admission/read, CPU
+    // work, persona I/O, queueing, DNS and upstream headers. Streaming keeps
+    // its own existing budget and no longer retains the upload admission.
     let result = tokio::select! {
         biased;
         _ = app.shutdown.cancelled() => Err(Error::new(503,"DESKTOP_DRAINING","桌面正在维护")),

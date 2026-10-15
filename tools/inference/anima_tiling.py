@@ -6,6 +6,16 @@ The product uses CPU FP32 intermediates, never a complete upscaled GPU canvas.
 """
 
 
+def finite_rows(values):
+    """Reduce CPU image finiteness with only 128 rows of boolean scratch."""
+    import torch
+    finite = torch.ones((), dtype=torch.bool, device=values.device)
+    for batch in values:
+        for top in range(0, batch.shape[-2], 128):
+            finite &= torch.isfinite(batch[..., top:top + 128, :]).all()
+    return finite
+
+
 def stitch(samples, operation, *, tile, overlap, scale, channels, report):
     import torch
     height, width = samples.shape[-2:]
@@ -42,13 +52,19 @@ def stitch(samples, operation, *, tile, overlap, scale, channels, report):
                         axes.append((coordinate / feather).clamp_max(1) *
                                     (coordinate.flip(0) / feather).clamp_max(1)
                                     if 0 < feather < length else torch.ones(length))
-                    weight = (axes[0][:, None] * axes[1][None, :])[None, None]
-                    destination.add_(pixels * weight)
-                    divisor[:, :, y:bottom, x:right].add_(weight)
+                    # Keep each full-tile ramp and the original separate FP32
+                    # multiply/add order. CPU pixels may alias the operation's
+                    # output, so bound scratch without modifying those pixels.
+                    for row in range(0, pixels.shape[-2], 128):
+                        end = min(row + 128, pixels.shape[-2])
+                        weight = (axes[0][row:end, None] * axes[1][None, :])[None, None]
+                        destination[:, :, row:end].add_(pixels[:, :, row:end] * weight)
+                        divisor[:, :, y + row:y + end, x:right].add_(weight)
+                        del weight
                 del pixels, destination
         if divisor is not None:
             result[batch:batch + 1].div_(divisor)
-    if not bool(finite) or not bool(torch.isfinite(result).all()):
+    if not bool(finite) or not bool(finite_rows(result)):
         raise ValueError("Spatial tile input/output contains nonfinite values; refusing corrupted output")
     report.update(tileSize=tile, overlap=overlap, tileCount=calls, outputDevice="cpu")
     return result

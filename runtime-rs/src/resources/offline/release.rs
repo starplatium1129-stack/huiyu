@@ -313,18 +313,10 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
             "Release files differ from asset/showcase inventories",
         ));
     }
+    // The exact union above covers both payloads and their metadata. This
+    // traversal checks every path, size and hash; verifying each subtree again
+    // would immediately read and hash all payload bytes a second time.
     manifest::verify(&options.package, &inventory, &["release.json"], cancel)?;
-    manifest::verify(
-        &options.package.join("pack"),
-        &pack.manifest,
-        if incremental {
-            &["manifest.json", "delta.json"]
-        } else {
-            &["manifest.json"]
-        },
-        cancel,
-    )?;
-    manifest::verify(&showcase_root, &showcase_payload, &[], cancel)?;
     let catalog = if value["catalog"].is_null() {
         None
     } else {

@@ -1,6 +1,6 @@
 import { executeCompanionTool, type CompanionToolResult } from '@/api/companionToolsApi'
 import type { CompanionChatImage } from '@/types/companionDrawing'
-import { companionImageDataUrl } from './companionChatImages'
+import { companionImageSource } from './companionChatImages'
 
 export interface CompanionToolContext {
   character: string
@@ -37,12 +37,12 @@ export async function executeCompanionChatTool(name: string, args: Record<string
   if (completed) return completed
   if (reference && !context.image && !context.imageUrl) throw new Error('请先发送一张图片，再让我反推并生成。')
   if (reference) context.report('正在读取参考图…')
-  const referenceImageUrl = reference
-    ? context.image ? await companionImageDataUrl(context.image, context.signal) : context.imageUrl
+  const referenceImage = reference
+    ? context.image ? await companionImageSource(context.image, context.signal) : context.imageUrl
     : undefined
   const { generateCompanionImage } = await import('./companionImageGeneration')
   context.signal.throwIfAborted()
-  const result = await generateCompanionImage(input, { signal: context.signal, report: context.report, referenceImageUrl })
+  const result = await generateCompanionImage(input, { signal: context.signal, report: context.report, referenceImage })
   context.signal.throwIfAborted()
   const receipt: CompanionToolResult = { ok: true, output: result.output, image: {
     path: result.resultPath, name: result.description.slice(0, 240) || '生成图片', taskId: result.taskId,

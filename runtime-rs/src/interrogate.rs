@@ -1,16 +1,20 @@
 mod pixai;
 mod results;
 mod settings;
+mod workspace;
+pub(crate) use workspace::WorkspaceInput;
 
 use crate::{
     AppState,
     config::Config,
     error::{ApiError, Result},
+    images::upload_body::{RawUploadBody, UploadBody},
     security,
 };
 use axum::{
     Extension, Json, Router,
-    extract::{ConnectInfo, DefaultBodyLimit, Request},
+    body::Bytes,
+    extract::{ConnectInfo, DefaultBodyLimit, Query, Request},
     http::HeaderMap,
     middleware::Next,
     response::{IntoResponse, Response},
@@ -18,7 +22,7 @@ use axum::{
 };
 use base64::{Engine, engine::general_purpose::STANDARD};
 use serde_json::{Value, json};
-use std::{net::SocketAddr, sync::Arc};
+use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use tokio_util::sync::CancellationToken;
 
 const MAX_BYTES: usize = 20 * 1024 * 1024;
@@ -29,6 +33,8 @@ pub struct InterrogateService {
     client: tokio::sync::RwLock<pixai::Client>,
     shutdown: CancellationToken,
     validation: Arc<tokio::sync::Semaphore>,
+    media_jobs: tokio_util::task::TaskTracker,
+    media_closed: std::sync::Mutex<bool>,
 }
 impl InterrogateService {
     pub fn new(config: &Config, shutdown: CancellationToken) -> Self {
@@ -39,10 +45,18 @@ impl InterrogateService {
             client: tokio::sync::RwLock::new(pixai::Client::new(settings)),
             shutdown,
             validation: Arc::new(tokio::sync::Semaphore::new(1)),
+            media_jobs: tokio_util::task::TaskTracker::new(),
+            media_closed: std::sync::Mutex::new(false),
         }
     }
     pub async fn close(&self) {
         self.shutdown.cancel();
+        {
+            let mut closed = self.media_closed.lock().unwrap();
+            *closed = true;
+            self.media_jobs.close();
+        }
+        self.media_jobs.wait().await;
         // Detached validation retains its slot until its bounded CPU work ends.
         let client = self.client.write().await;
         let _drained = tokio::join!(client.close(), self.validation.acquire());
@@ -60,7 +74,12 @@ impl InterrogateService {
         *client = pixai::Client::new(settings::load(config));
         Ok(client.probe().await)
     }
-    async fn interrogate(&self, input: Value) -> Result<Value> {
+    async fn interrogate(
+        &self,
+        input: Value,
+        image: Option<Bytes>,
+        upload_admission: tokio::sync::OwnedSemaphorePermit,
+    ) -> Result<Value> {
         if self.shutdown.is_cancelled() {
             return Err(closed());
         }
@@ -71,12 +90,12 @@ impl InterrogateService {
             permit = self.validation.clone().acquire_owned() => permit.map_err(|_| closed())?,
         };
         let validation_cancel = cancel.clone();
-        let input = tokio::task::spawn_blocking(move || {
+        let (input, upload_admission) = tokio::task::spawn_blocking(move || {
             let _permit = permit;
             if validation_cancel.is_cancelled() {
                 return Err(closed());
             }
-            validate(input)
+            validate(input, image).map(|input| (input, upload_admission))
         })
         .await
         .map_err(|_| ApiError::new(503, "INTERROGATE_UNAVAILABLE", "图片校验未完成"))??;
@@ -84,7 +103,7 @@ impl InterrogateService {
             .client
             .read()
             .await
-            .run(input.image, input.threshold, cancel)
+            .run(input.image, input.threshold, cancel, upload_admission)
             .await?;
         Ok(results::finish(
             result,
@@ -100,9 +119,9 @@ fn closed() -> ApiError {
 struct Input {
     mode: String,
     threshold: f64,
-    image: Arc<Vec<u8>>,
+    image: Bytes,
 }
-fn validate(mut input: Value) -> Result<Input> {
+fn validate(mut input: Value, image: Option<Bytes>) -> Result<Input> {
     if !input.is_object() {
         return Err(ApiError::new(400, "INVALID_BODY", "请求体必须是 JSON"));
     }
@@ -126,22 +145,10 @@ fn validate(mut input: Value) -> Result<Input> {
     }
     .filter(|n| n.is_finite() && (0.05..=0.95).contains(n))
     .ok_or_else(|| ApiError::new(400, "INVALID_PARAMETER", "threshold 需在 0.05-0.95"))?;
-    let object = input.as_object_mut().unwrap();
-    let image = object
-        .remove("image")
-        .filter(|value| value.as_str().is_some_and(|value| !value.is_empty()))
-        .or_else(|| object.remove("imageBase64"));
-    let Some(Value::String(mut base64)) = image else {
-        return Err(ApiError::new(400, "INVALID_IMAGE", "请上传图片"));
+    let bytes = match image {
+        Some(bytes) => bytes,
+        None => decode_image(&mut input)?,
     };
-    base64 = base64.trim().to_owned();
-    if let Some(offset) = base64.find("base64,") {
-        base64.drain(..offset + 7);
-    }
-    base64.retain(|ch| ch != '\r' && ch != '\n');
-    let bytes = STANDARD
-        .decode(&base64)
-        .map_err(|_| ApiError::new(400, "INVALID_IMAGE", "图片 base64 非法"))?;
     if bytes.len() < 1024 {
         return Err(ApiError::new(400, "INVALID_IMAGE", "图片过小"));
     }
@@ -151,10 +158,32 @@ fn validate(mut input: Value) -> Result<Input> {
     Ok(Input {
         mode,
         threshold,
-        image: Arc::new(bytes),
+        image: bytes,
     })
 }
-fn local(headers: &HeaderMap, peer: SocketAddr) -> Result<()> {
+fn decode_image(input: &mut Value) -> Result<Bytes> {
+    let object = input.as_object_mut().unwrap();
+    let image = object
+        .remove("image")
+        .filter(|value| value.as_str().is_some_and(|value| !value.is_empty()))
+        .or_else(|| object.remove("imageBase64"));
+    let Some(Value::String(mut base64)) = image else {
+        return Err(ApiError::new(400, "INVALID_IMAGE", "请上传图片"));
+    };
+    // Normalize the owned upload in place instead of copying up to 27 MiB.
+    base64.truncate(base64.trim_end().len());
+    let start = base64.len() - base64.trim_start().len();
+    let start = base64[start..]
+        .find("base64,")
+        .map_or(start, |offset| start + offset + 7);
+    base64.drain(..start);
+    base64.retain(|ch| ch != '\r' && ch != '\n');
+    STANDARD
+        .decode(base64)
+        .map(Bytes::from)
+        .map_err(|_| ApiError::new(400, "INVALID_IMAGE", "图片 base64 非法"))
+}
+pub(crate) fn local(headers: &HeaderMap, peer: SocketAddr) -> Result<()> {
     if security::is_direct_local(headers, peer.ip())
         && headers
             .get("host")
@@ -172,6 +201,10 @@ pub fn router(service: Arc<InterrogateService>) -> Router<AppState> {
             "/api/interrogate",
             post(interrogate).layer(DefaultBodyLimit::max(MAX_BODY_BYTES)),
         )
+        .route(
+            "/api/interrogate/raw",
+            post(interrogate_raw).layer(DefaultBodyLimit::max(MAX_BYTES)),
+        )
         .route("/api/interrogate/status", get(status))
         .layer(Extension(service))
         .layer(axum::middleware::from_fn(local_only))
@@ -188,9 +221,19 @@ async fn local_only(
 }
 async fn interrogate(
     Extension(service): Extension<Arc<InterrogateService>>,
-    Json(input): Json<Value>,
+    UploadBody(input, admission): UploadBody,
 ) -> Result<Json<Value>> {
-    service.interrogate(input).await.map(Json)
+    service.interrogate(input, None, admission).await.map(Json)
+}
+async fn interrogate_raw(
+    Extension(service): Extension<Arc<InterrogateService>>,
+    Query(parameters): Query<HashMap<String, String>>,
+    RawUploadBody(image, admission): RawUploadBody,
+) -> Result<Json<Value>> {
+    service
+        .interrogate(json!(parameters), Some(image), admission)
+        .await
+        .map(Json)
 }
 async fn status(Extension(service): Extension<Arc<InterrogateService>>) -> Result<Json<Value>> {
     Ok(Json(

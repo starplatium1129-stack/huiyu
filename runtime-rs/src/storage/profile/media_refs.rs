@@ -43,24 +43,69 @@ pub(in crate::storage) fn replace(
     key: &str,
     value: &Value,
 ) -> Result<()> {
-    let owner = owner(domain, key);
-    let mut aliases = BTreeSet::new();
     // Profile snapshots also retain legacy localStorage JSON strings. Match
     // migration's reference validation without changing their persisted value.
     let parsed = value
         .as_str()
         .and_then(|value| serde_json::from_str::<Value>(value).ok());
-    collect(parsed.as_ref().unwrap_or(value), &mut aliases);
-    c.db.execute(
-        "DELETE FROM media_refs WHERE owner_kind='profile' AND owner_id=?",
-        [&owner],
-    )?;
-    let mut insert = c.db.prepare_cached(
-        "INSERT OR IGNORE INTO media_refs SELECT 'profile',?1,hash FROM media_aliases WHERE alias=?2",
-    )?;
+    replace_decoded(c, domain, key, parsed.as_ref().unwrap_or(value))
+}
+
+// The save path shares this one-level decoding with credential validation.
+// Do not parse another String layer: media reference discovery only owns one.
+pub(super) fn replace_decoded(c: &Context, domain: &str, key: &str, value: &Value) -> Result<()> {
+    let owner = owner(domain, key);
+    let mut aliases = BTreeSet::new();
+    collect(value, &mut aliases);
+    let mut previous = BTreeSet::new();
+    {
+        let mut statement = c.db.prepare_cached(
+            "SELECT hash FROM media_refs WHERE owner_kind='profile' AND owner_id=?",
+        )?;
+        let mut rows = statement.query([&owner])?;
+        while let Some(row) = rows.next()? {
+            c.check_cancel()?;
+            previous.insert(row.get::<_, String>(0)?);
+        }
+    }
+    // Always resolve current aliases, including aliases imported since the last
+    // save. Compare hashes: different aliases may retain the same media object.
+    let mut hashes = BTreeSet::new();
+    let mut lookup =
+        c.db.prepare_cached("SELECT hash FROM media_aliases WHERE alias=?")?;
     for alias in aliases {
         c.check_cancel()?;
-        insert.execute(params![owner, alias])?;
+        if let Some(hash) = lookup
+            .query_row([alias], |row| row.get::<_, String>(0))
+            .optional()?
+        {
+            hashes.insert(hash);
+        }
+    }
+    if previous == hashes {
+        return Ok(());
+    }
+    // Clearing a document still uses one DELETE, even for a large old archive.
+    if hashes.is_empty() {
+        c.check_cancel()?;
+        c.db.execute(
+            "DELETE FROM media_refs WHERE owner_kind='profile' AND owner_id=?",
+            [&owner],
+        )?;
+        return Ok(());
+    }
+    let mut remove = c.db.prepare_cached(
+        "DELETE FROM media_refs WHERE owner_kind='profile' AND owner_id=?1 AND hash=?2",
+    )?;
+    for hash in previous.difference(&hashes) {
+        c.check_cancel()?;
+        remove.execute(params![owner, hash])?;
+    }
+    let mut insert =
+        c.db.prepare_cached("INSERT OR IGNORE INTO media_refs VALUES('profile',?1,?2)")?;
+    for hash in hashes.difference(&previous) {
+        c.check_cancel()?;
+        insert.execute(params![owner, hash])?;
     }
     Ok(())
 }

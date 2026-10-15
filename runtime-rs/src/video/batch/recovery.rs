@@ -1,63 +1,17 @@
+use super::saved_output::{Proofs, saved_output};
 use super::*;
-use sha2::{Digest, Sha256};
-use tokio::io::AsyncReadExt;
-async fn saved_output(
-    service: &Service,
-    value: &Value,
-    reference: Option<&Value>,
-) -> Result<Option<Output>> {
-    let Some(reference) = reference else {
-        return Ok(None);
-    };
-    let Some(raw) = value["path"].as_str() else {
-        return Ok(None);
-    };
-    let path = PathBuf::from(raw);
-    let root = service.config.runtime_root.join("outputs/video");
-    let Ok(canonical) = tokio::fs::canonicalize(&path).await else {
-        return Ok(None);
-    };
-    let Ok(root) = tokio::fs::canonicalize(root).await else {
-        return Ok(None);
-    };
-    if !canonical.starts_with(root)
-        || !matches!(
-            path.extension().and_then(|s| s.to_str()),
-            Some("mp4" | "webm" | "mov")
-        )
-    {
-        return Ok(None);
-    }
-    let mut file = tokio::fs::File::open(&path).await?;
-    let bytes = file.metadata().await?.len();
-    if bytes == 0 || reference["bytes"].as_u64() != Some(bytes) {
-        return Ok(None);
-    }
-    let mut hash = Sha256::new();
-    let mut buffer = vec![0; 1024 * 1024];
-    loop {
-        let n = file.read(&mut buffer).await?;
-        if n == 0 {
-            break;
-        }
-        hash.update(&buffer[..n]);
-    }
-    if reference["sha256"] != hex::encode(hash.finalize()) {
-        return Ok(None);
-    }
-    Ok(Some(Output::File {
-        path,
-        mime: reference["mime"].as_str().unwrap_or("video/mp4").into(),
-        bytes,
-    }))
+#[derive(Default)]
+pub(crate) struct BatchRecovery {
+    cancellations: HashMap<usize, Option<u8>>,
+    outputs: Option<Arc<Proofs>>,
 }
 impl Service {
-    pub async fn recover_batch(
+    pub(crate) async fn recover_batch(
         &self,
         task: &Value,
         hooks: Arc<dyn ExecutionHooks>,
-        cancellations: &mut HashMap<usize, Option<u8>>,
-    ) -> Result<(Observation, Value)> {
+        recovery: &mut BatchRecovery,
+    ) -> Result<Observation> {
         let owner = task["principalId"]
             .as_str()
             .ok_or_else(|| error(409, "BATCH_RECOVERY_REVIEW", "持久分镜缺少所有者"))?;
@@ -80,17 +34,16 @@ impl Service {
         if let Some(batch) = &existing
             && batch.serial.try_lock().is_err()
         {
-            return Ok((
-                Observation {
-                    status: "running".into(),
-                    settled: false,
-                    unknown: false,
-                    error_code: None,
-                    metadata: json!({"gatewayJobId":id,"family":"video-batch"}),
-                    outputs: Vec::new(),
-                },
-                batch.checkpoint().await,
-            ));
+            let _gate = batch.checkpoint_serial.lock().await;
+            hooks.checkpoint(batch.checkpoint().await).await?;
+            return Ok(Observation {
+                status: "running".into(),
+                settled: false,
+                unknown: false,
+                error_code: None,
+                metadata: json!({"gatewayJobId":id,"family":"video-batch"}),
+                outputs: Vec::new(),
+            });
         }
         let checkpoint = if let Some(batch) = &existing {
             batch.checkpoint().await
@@ -102,6 +55,14 @@ impl Service {
             .filter(|a| !a.is_empty() && a.len() <= 30)
             .ok_or_else(|| error(409, "BATCH_CHECKPOINT_PENDING", "持久分镜检查点未就绪"))?;
         let references = task["resultRefs"].as_array();
+        // The task's operation state survives a failed/abandoned first recovery,
+        // before a complete Batch is available to retain these per-file proofs.
+        let proofs = recovery.outputs.get_or_insert_with(|| {
+            existing
+                .as_ref()
+                .map(|batch| batch.recovered_outputs.clone())
+                .unwrap_or_else(|| Arc::new(Proofs::default()))
+        }).clone();
         let reference = |index: usize| {
             references.and_then(|a| a.iter().find(|r| r["index"].as_u64() == Some(index as u64)))
         };
@@ -133,7 +94,9 @@ impl Service {
                 shots.push(shot);
                 continue;
             }
-            if let Some(output) = saved_output(self, &row["result"], reference(index)).await? {
+            if let Some(output) =
+                saved_output(self, &row["result"], reference(index), &proofs, index).await?
+            {
                 shot.result = Some(output);
                 shot.status = "succeeded".into();
                 shots.push(shot);
@@ -152,7 +115,7 @@ impl Service {
             });
             let observation = self
                 .backend
-                .recover_task(&single, cancellations.entry(index).or_default())
+                .recover_task(&single, recovery.cancellations.entry(index).or_default())
                 .await?;
             if let Some(output) = observation.outputs.first() {
                 hooks.collect_indexed(vec![(index, output.clone())]).await?;
@@ -179,7 +142,14 @@ impl Service {
             }
             shots.push(shot);
         }
-        let concat = saved_output(self, &checkpoint["concat"], reference(shots.len())).await?;
+        let concat = saved_output(
+            self,
+            &checkpoint["concat"],
+            reference(shots.len()),
+            &proofs,
+            shots.len(),
+        )
+        .await?;
         let all_success = shots.iter().all(|s| s.status == "succeeded");
         let cancelled = task["cancelRequestedAt"].is_number() && !active && !unknown && !pending;
         let code = if unknown {
@@ -232,7 +202,7 @@ impl Service {
                 owner: owner.into(),
                 input,
                 created: task["createdAt"].as_i64().unwrap_or_else(now),
-                hooks: Some(hooks),
+                hooks: Some(hooks.clone()),
                 state: Mutex::new(State {
                     cancel_generation: 0,
                     status: status.into(),
@@ -250,30 +220,34 @@ impl Service {
                 serial: Mutex::new(()),
                 checkpoint_serial: Mutex::new(()),
                 concat_serial: Mutex::new(()),
+                recovered_outputs: proofs,
             })
         };
-        batch.save().await?;
-        let checkpoint = batch.checkpoint().await;
+        {
+            // Save once through this recovery's task hook, which also registers
+            // its gateway identity. Existing batches may have no/older hooks.
+            // Take the snapshot under the save gate so it cannot overtake a
+            // newer checkpoint while waiting for another writer.
+            let _gate = batch.checkpoint_serial.lock().await;
+            hooks.checkpoint(batch.checkpoint().await).await?;
+        }
         self.batches.lock().await.insert(batch.id.clone(), batch);
-        Ok((
-            Observation {
-                status: if all_success {
-                    "succeeded"
-                } else if cancelled {
-                    "cancelled"
-                } else if !active && !pending && failed {
-                    "failed"
-                } else {
-                    "running"
-                }
-                .into(),
-                settled: !active && !pending && !unknown,
-                unknown: unknown || (pending && !active),
-                error_code: code,
-                metadata: json!({"gatewayJobId":id,"family":"video-batch"}),
-                outputs: Vec::new(),
-            },
-            checkpoint,
-        ))
+        Ok(Observation {
+            status: if all_success {
+                "succeeded"
+            } else if cancelled {
+                "cancelled"
+            } else if !active && !pending && failed {
+                "failed"
+            } else {
+                "running"
+            }
+            .into(),
+            settled: !active && !pending && !unknown,
+            unknown: unknown || (pending && !active),
+            error_code: code,
+            metadata: json!({"gatewayJobId":id,"family":"video-batch"}),
+            outputs: Vec::new(),
+        })
     }
 }

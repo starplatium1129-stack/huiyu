@@ -56,7 +56,7 @@ impl ChatService {
             };
             let prepared = self
                 .ollama
-                .prepare(&self.transport, settings, input, &cancel)
+                .prepare(&self.transport, settings, input, None, &cancel)
                 .await?;
             stream::collect_text(prepared, cancel.clone()).await
         };
@@ -92,7 +92,7 @@ pub(super) async fn complete_api(
     };
     let mut body = compatible::payload(input, api);
     body["stream"] = json!(false);
-    let body = request_body::encode(body, cancel).await?;
+    let body = request_body::encode(body, None, cancel).await?;
     let response = client
         .send(
             target,

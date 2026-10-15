@@ -81,6 +81,38 @@ pub(super) fn import(c: &mut Context, principal: &str, command: &Value) -> Resul
         )?;
         return Ok(Value::Null);
     }
+    if command["kind"] == "task.result.import.workspace" {
+        // The caller already has workspace media authority. Resolve and lease
+        // together so garbage collection cannot remove the source before copying.
+        return c.transaction(|c| {
+            let alias = string(command, "alias")?;
+            if alias.is_empty() || alias.len() > 256 || alias.contains('\0') {
+                return Err(invalid("Invalid workspace media alias"));
+            }
+            let media = c.lookup_media(alias)?;
+            if !command["expected"].is_null()
+                && (command["expected"]["sha256"].as_str() != Some(media.sha256.as_str())
+                    || command["expected"]["bytes"].as_u64() != Some(media.total_bytes))
+            {
+                return Err(ApiError::new(
+                    409,
+                    "MEDIA_INVALID",
+                    "图片来源已改变，请重新读取原图",
+                ));
+            }
+            c.db.execute(
+                "INSERT INTO leases(id,kind,hash,created_at) VALUES(?,'video-import',?,?)",
+                params![lease, media.sha256, now()],
+            )?;
+            Ok(serde_json::to_value(ResultRef {
+                alias: alias.into(),
+                sha256: media.sha256,
+                bytes: media.total_bytes,
+                mime: media.mime,
+                index: 0,
+            })?)
+        });
+    }
     if command["kind"] != "task.result.import.begin" {
         return Err(invalid("Unknown task media import command"));
     }

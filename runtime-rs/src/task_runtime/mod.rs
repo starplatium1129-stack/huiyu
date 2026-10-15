@@ -52,7 +52,7 @@ struct JobBinding {
 #[derive(Default)]
 struct RecoveryState {
     single: Option<u8>,
-    batch: HashMap<usize, Option<u8>>,
+    batch: crate::video::BatchRecovery,
 }
 impl JobBinding {
     fn new(id: String) -> Self {
@@ -144,6 +144,7 @@ impl TaskRuntime {
                 TaskCommand::Get {
                     task_id: None,
                     request_key: Some(key.clone()),
+                    summary: false,
                 },
                 &principal,
             )

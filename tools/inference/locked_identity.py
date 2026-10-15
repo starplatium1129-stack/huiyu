@@ -145,7 +145,7 @@ def _unique_paths(paths):
     return tuple(sorted(spellings))
 
 
-def _inventory(root):
+def _inventory(root, *, whole_tree=False):
     files, directories = [], [root]
 
     def visit(folder):
@@ -161,9 +161,12 @@ def _inventory(root):
                 elif stat.S_ISREG(info.st_mode):
                     files.append(path)
 
-    for name in COMPONENTS:
-        visit(root / name)
-    files.extend(root / name for name in ("modular_model_index.json", "model_index.json") if (root / name).is_file())
+    if whole_tree:
+        visit(root)
+    else:
+        for name in COMPONENTS:
+            visit(root / name)
+        files.extend(root / name for name in ("modular_model_index.json", "model_index.json") if (root / name).is_file())
     # Hold ancestors too: renaming a parent must not redirect loader/hash paths
     # while a child file handle still refers to the old, now detached subtree.
     for path in [*directories, *files]:
@@ -218,6 +221,79 @@ class _ProtectedFiles:
         self.windows.close_watches(self.watches)
         self.windows.close(self.handles)
         self.handles, self.watches = [], []
+
+
+class AssetIdentityLease:
+    """One auxiliary file/tree, using the same continuous protection as Anima."""
+    def __init__(self, *, tree):
+        self._windows = _Windows() if os.name == "nt" else None
+        self._owner = threading.current_thread()
+        self._tree, self._acquiring = tree, False
+        self._protected = self._path = self._identity = None
+        self.cached = False
+
+    def _require_owner(self):
+        if threading.current_thread() is not self._owner:
+            raise RuntimeError("Identity leases must stay on their creating thread")
+
+    def close(self):
+        self._require_owner()
+        if self._protected is not None:
+            self._protected.close()
+        self._protected = self._path = self._identity = None
+        self.cached = False
+
+    def valid(self):
+        """Check only the original interval; never reacquire/rearm after loading."""
+        try:
+            return (threading.current_thread() is self._owner
+                    and self._protected is not None and self._protected.valid())
+        except OSError:
+            return False
+
+    def acquire(self, path, compute_identity):
+        self._require_owner()
+        if self._acquiring:
+            raise RuntimeError("Identity lease acquisition cannot be reentered")
+        self._acquiring = True
+        try:
+            return self._acquire(_absolute(path), compute_identity)
+        finally:
+            self._acquiring = False
+
+    def _acquire(self, path, compute_identity):
+        if self.cached and str(path) == self._path and self.valid():
+            result = copy.deepcopy(self._identity)
+            if self.valid():
+                return result
+        self.close()
+        if self._windows is None:
+            return compute_identity(path)
+        inventory_for = (lambda: _inventory(path, whole_tree=True)) if self._tree else (
+            lambda: _adapter_inventory([{"path": path}]))
+        protected = None
+        try:
+            inventory = inventory_for()
+            protected = _ProtectedFiles(self._windows, inventory, [path if self._tree else path.parent])
+            if inventory_for() != inventory:
+                raise _Unsupported("Auxiliary model membership changed while acquiring its lease")
+        except BaseException as error:
+            if protected is not None:
+                protected.close()
+            if isinstance(error, OSError):
+                return compute_identity(path)
+            raise
+        try:
+            result = compute_identity(path)
+            if inventory_for() != inventory or not protected.valid():
+                raise OSError("Auxiliary model changed while fingerprinting; retry after preparation completes")
+            identity = copy.deepcopy(result)
+        except BaseException:
+            protected.close()
+            raise
+        self._protected, self._path, self._identity = protected, str(path), identity
+        self.cached = True
+        return result
 
 
 class IdentityLease:

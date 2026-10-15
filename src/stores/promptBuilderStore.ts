@@ -70,7 +70,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   // ── Loaded data (proxy to sceneStore, single source, no drift) ───────
   const sceneStore = useSceneStore()
-  const { history, projects, commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry, loadHistory, loadProjects } = usePromptArtworkHistory(resolveLegacyArtworkDefaults)
+  const { history, commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry, loadHistory } = usePromptArtworkHistory(resolveLegacyArtworkDefaults)
   const scenes = computed(() => parsePromptScenes(sceneStore.scenes))
   const curation = computed(() => sceneStore.curation)
   const loraMeta = computed(() => parsePromptLoras(sceneStore.loras))
@@ -402,7 +402,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     subject, isPopular, isUnbound, outfitOverride, referenceInput, randomVariation,
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady, loadPopularCharacter,
-    history, projects,
+    history,
     sdModelName, lastSeed, sdParams,
     focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode,
     currentStep, activeTab, lastRecommendedSize,
@@ -412,7 +412,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     setOutfitOverride, clearOutfitOverride, clearReferenceInput, clearRandomVariation,
     snapshotStyleLayers, restoreStyleLayers,
     setStudioSubject, setUnboundSubject, setPopularSubject, setPopularBlueprint,
-    loadData, loadHistory, loadProjects,
+    loadData, loadHistory,
     saveDraft, restoreDraft, snapshotDraft, draftSaveState, draftSaveError, retryDraftSave,
     commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry,
     sdParamsTouched, markParamTouched, applyModelProfile, resetParamsToProfile,

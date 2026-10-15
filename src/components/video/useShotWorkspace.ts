@@ -115,7 +115,6 @@ export function useShotWorkspace(props: {
     const { referenceCards, loadingRefAssets, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, selectCardCharacter, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, shotReferences } = useReferenceCards({
         identityCard,
         batchError,
-        readBlobAsDataURL,
         uploadVideoImage,
         onCardRemoved: index => { shots.value.forEach(shot => { shot.cast = removeCastSlot(shot.cast, index); }); },
     });
@@ -350,11 +349,7 @@ export function useShotWorkspace(props: {
         try {
             await withArtworkStaging(async () => {
                 if (!current()) return;
-                const dataUrl = await readBlobAsDataURL(file);
-                if (!current()) return;
-                const comma = dataUrl.indexOf(',');
-                if (comma < 0) throw new Error('图片编码失败');
-                const upload = await uploadVideoImage(dataUrl.slice(comma + 1), undefined, controller.signal);
+                const upload = await uploadVideoImage(file, undefined, controller.signal);
                 if (!current()) return;
                 const repository = artworkRepository;
                 const imageId = await repository.putImage(file);
@@ -389,14 +384,6 @@ export function useShotWorkspace(props: {
             shot.imageName = '';
             shot.imageId = '';
         }
-    }
-    function readBlobAsDataURL(blob: Blob): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
-            reader.onerror = () => reject(reader.error ?? new Error('图片读取失败'));
-            reader.readAsDataURL(blob);
-        });
     }
     // ── 绘图页「加入分镜」批量带入（F4：逐镜确认 + 如实汇报；实现已下沉 useShotImport）──
     async function runImportFromDrawing() {

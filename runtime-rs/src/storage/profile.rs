@@ -2,6 +2,7 @@ use super::*;
 use canonical::stringify;
 use rusqlite::{OptionalExtension, params};
 pub(super) mod media_refs;
+const CHAT_ARCHIVE: &str = "aics_chat_archive_v1";
 const CHAT: &[&str] = &[
     "aics_chat_v1",
     "aics_chat_archive_v1",
@@ -104,6 +105,37 @@ fn reset(c: &Context) -> Result<String> {
         .transpose()
         .map(|v| v.unwrap_or_default())
 }
+fn archive_version(c: &Context, revision: Option<i64>, reset: &str) -> Result<String> {
+    Ok(canonical::digest(serde_json::to_vec(&(
+        &c.workspace_id, &c.epoch, "chat", CHAT_ARCHIVE, reset, revision,
+    ))?))
+}
+fn archive_snapshot(c: &Context, known: Option<&str>) -> Result<Value> {
+    c.check_cancel()?;
+    let reset_revision = reset(c)?;
+    let revision: Option<i64> = c.db.query_row(
+        "SELECT revision FROM profile_records WHERE domain='chat' AND record_key=?",
+        [CHAT_ARCHIVE], |row| row.get(0),
+    ).optional()?;
+    let version = archive_version(c, revision, &reset_revision)?;
+    let mut snapshot = json!({"records":[],"revision":c.revision()?,"resetRevision":reset_revision,"version":version});
+    if known == Some(version.as_str()) {
+        snapshot["unchanged"] = json!(true);
+        return Ok(snapshot);
+    }
+    // The actor does not yield between metadata and body. A match never copies
+    // or parses the archive; a miss reads only this row, not the whole chat domain.
+    if let Some(revision) = revision {
+        c.check_cancel()?;
+        let mut statement = c.db.prepare_cached("SELECT body FROM profile_records WHERE domain='chat' AND record_key=?")?;
+        let mut rows = statement.query([CHAT_ARCHIVE])?;
+        let row = rows.next()?.ok_or_else(|| invalid("Chat archive disappeared during read"))?;
+        let mut record = json!({"key":CHAT_ARCHIVE,"value":null,"revision":revision,"version":version});
+        record["value"] = serde_json::from_str(text_column(row, 0)?)?;
+        snapshot["records"] = Value::Array(vec![record]);
+    }
+    Ok(snapshot)
+}
 fn draft_record_key(key: &str) -> Option<&str> {
     if domain(key) == Some("draft") {
         return Some(key);
@@ -133,27 +165,61 @@ fn clear_chat(c: &Context) -> Result<()> {
     c.db.execute("DELETE FROM profile_records WHERE domain='chat'", [])?;
     Ok(())
 }
-fn snapshot(c: &Context, domain: &str, window: Option<&str>) -> Result<Value> {
+fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>, known_archive: Option<&str>) -> Result<Value> {
+    c.check_cancel()?;
     let prefix = format!("{}:", window.unwrap_or("undefined"));
     // Filter window-owned drafts before copying their bodies out of SQLite.
     // Match registered global keys, including the hyphenated model namespace.
     // substr preserves literal window IDs, including Unicode and SQL wildcards.
-    let sql = format!(
-        "SELECT record_key,body,revision FROM profile_records WHERE domain=?1
+    let scope = format!(
+        "FROM profile_records WHERE domain=?1
          AND (?1!='draft' OR record_key GLOB 'aics_chat_draft_v1:*'
          OR record_key GLOB 'aics-model-draft-*' OR record_key IN ({})
-         OR substr(record_key,1,length(?2))=?2)
-         ORDER BY record_key",
+         OR substr(record_key,1,length(?2))=?2)",
         (3..DRAFT.len() + 3)
             .map(|index| format!("?{index}"))
             .collect::<Vec<_>>()
             .join(",")
     );
-    let mut statement = c.db.prepare_cached(&sql)?;
     let parameters = std::iter::once(domain)
         .chain(std::iter::once(prefix.as_str()))
         .chain(DRAFT.iter().copied());
-    let mut rows = statement.query(rusqlite::params_from_iter(parameters))?;
+    let reset_revision = reset(c)?;
+    let mut archive_revision = None;
+    // This actor does not yield between metadata and bodies. Raw keys preserve
+    // window/global draft precedence; the key set also detects deletions.
+    // Task/artwork writes must not invalidate unchanged profile snapshots.
+    let version = {
+        let mut statement = c.db.prepare_cached(&format!("SELECT record_key,revision {scope} ORDER BY record_key"))?;
+        let mut rows = statement.query(rusqlite::params_from_iter(parameters.clone()))?;
+        let mut entries = Vec::new();
+        while let Some(row) = rows.next()? {
+            c.check_cancel()?;
+            let key = row.get::<_, String>(0)?;
+            let revision = row.get::<_, i64>(1)?;
+            if domain == "chat" && key == CHAT_ARCHIVE { archive_revision = Some(revision); }
+            entries.push((key, revision));
+        }
+        canonical::digest(serde_json::to_vec(&(
+            &c.workspace_id, &c.epoch, domain, window, &reset_revision, entries,
+        ))?)
+    };
+    if known == Some(version.as_str()) {
+        return Ok(json!({"records":[],"revision":c.revision()?,"resetRevision":reset_revision,"version":version,"unchanged":true}));
+    }
+    let unchanged_archive = match (domain, known_archive, archive_revision) {
+        ("chat", Some(known), Some(revision)) => {
+            let version = archive_version(c, Some(revision), &reset_revision)?;
+            (known == version.as_str()).then_some(version)
+        }
+        _ => None,
+    };
+    // The domain token above still covers every row. Omit only the archive body
+    // whose exact record token the caller already holds, within this same read.
+    let skip_archive = if unchanged_archive.is_some() { CHAT_ARCHIVE } else { "" };
+    let parameter = DRAFT.len() + 3;
+    let mut statement = c.db.prepare_cached(&format!("SELECT record_key,body,revision {scope} AND (?{parameter}='' OR record_key!=?{parameter}) ORDER BY record_key"))?;
+    let mut rows = statement.query(rusqlite::params_from_iter(parameters.chain(std::iter::once(skip_archive))))?;
     let mut records = Vec::new();
     while let Some(row) = rows.next().transpose() {
         c.check_cancel()?;
@@ -168,27 +234,49 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>) -> Result<Value> {
         };
         let mut record = json!({"key":key,"value":null,"revision":revision});
         record["value"] = serde_json::from_str(body)?;
+        if domain == "chat" && key == CHAT_ARCHIVE {
+            record["version"] = json!(archive_version(c, Some(revision), &reset_revision)?);
+        }
         records.push(record);
     }
-    let mut snapshot = json!({"records":null,"revision":c.revision()?,"resetRevision":reset(c)?});
+    let mut snapshot = json!({"records":null,"revision":c.revision()?,"resetRevision":reset_revision,"version":version});
     snapshot["records"] = Value::Array(records);
+    if let Some(version) = unchanged_archive { snapshot["unchangedArchive"] = json!(version); }
     Ok(snapshot)
 }
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let kind = string(command, "kind")?;
+    if kind == "profile.readChatArchive" {
+        let known = command.get("ifVersion").map(|_| string(command, "ifVersion")).transpose()?;
+        return archive_snapshot(c, known);
+    }
+    let read_domain = match kind {
+        "profile.readSettings" => Some("settings"),
+        "profile.readChat" => Some("chat"),
+        "profile.readDrafts" => Some("draft"),
+        _ => None,
+    };
+    if let Some(domain) = read_domain {
+        let window = if domain == "draft" { Some(string(command, "windowId")?) } else { None };
+        let known = command.get("ifVersion").map(|_| string(command, "ifVersion")).transpose()?;
+        let archive = if domain == "chat" { command.get("ifArchiveVersion").map(|_| string(command, "ifArchiveVersion")).transpose()? } else { None };
+        return snapshot(c, domain, window, known, archive);
+    }
     match kind {
-        "profile.readSettings" => return snapshot(c, "settings", None),
-        "profile.readChat" => return snapshot(c, "chat", None),
-        "profile.readDrafts" => return snapshot(c, "draft", Some(string(command, "windowId")?)),
         "profile.saveSetting"
         | "profile.saveChatRecord"
         | "profile.saveDraft"
         | "profile.resetChat" => {}
         _ => return Err(invalid("Unknown profile command")),
     }
+    let ack_only = command
+        .get("ackOnly")
+        .map(|value| value.as_bool().ok_or_else(|| invalid("Invalid profile acknowledgement mode")))
+        .transpose()?
+        .unwrap_or(false);
     c.transaction(|c| {
         let (op,previous)=c.start_operation(principal,command)?;
-        if let Some(receipt)=previous {return Ok(receipt["profile"].clone())}
+        if let Some(mut receipt)=previous {return Ok(receipt.get_mut("profile").map(Value::take).unwrap_or(Value::Null))}
         let current_reset=reset(c)?;
         if command.get("expectedReset").is_some_and(|expected|expected!=&json!(current_reset)) {
             return Err(conflict("PROFILE_RESET_CONFLICT","Chat was reset in another window; reload before writing"));
@@ -210,18 +298,42 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
                 media_refs::replace(c,"chat","aics_chat_v1",&serde_json::from_str(&retained)?)?;
             }
             c.db.execute("INSERT INTO profile_records VALUES('chat','aics_chat_reset_v1',?,?)",params![stringify(&command["operationId"]),revision])?;
-            snapshot(c,"chat",None)?
+            snapshot(c,"chat",None,None,None)?
         } else {
             let selected=match kind {"profile.saveSetting"=>"settings","profile.saveChatRecord"=>"chat",_=>"draft"};
             let key=string(command,"key")?;
-            if domain(key)!=Some(selected)||key=="aics_chat_reset_v1"||credential(&command["value"]) {return Err(invalid("Profile field is outside the domain contract or contains a credential"))}
+            let invalid_field=|| invalid("Profile field is outside the domain contract or contains a credential");
+            if domain(key)!=Some(selected)||key=="aics_chat_reset_v1" {return Err(invalid_field())}
+            // Chat/draft values often hold a full JSON document as a String.
+            // Decode it once for both scans; persist and fingerprint the original.
+            let value=&command["value"];
+            let parsed=value.as_str().and_then(|text|serde_json::from_str::<Value>(text).ok());
+            let decoded=parsed.as_ref().unwrap_or(value);
+            if credential(decoded) {return Err(invalid_field())}
             let record_key=if kind=="profile.saveDraft" {command["windowId"].as_str().filter(|w|!w.is_empty()).map(|w|format!("{w}:{key}")).unwrap_or_else(||key.into())} else {key.into()};
             let existing:Option<i64>=c.db.query_row("SELECT revision FROM profile_records WHERE domain=? AND record_key=?",params![selected,record_key],|r|r.get(0)).optional()?;
             if json!(existing)!=command["expectedRevision"] {return Err(conflict("REVISION_CONFLICT","Profile record has a newer revision"))}
+            media_refs::replace_decoded(c,selected,&record_key,decoded)?;
+            // Both writes share this transaction. Release the decoded tree
+            // before encoding the original value and constructing its receipt.
+            drop(parsed);
             c.db.execute("INSERT INTO profile_records VALUES(?,?,?,?) ON CONFLICT(domain,record_key) DO UPDATE SET body=excluded.body,revision=excluded.revision",params![selected,record_key,stringify(&command["value"]),revision])?;
-            media_refs::replace(c,selected,&record_key,&command["value"])?;
-            json!({"key":key,"value":command["value"],"revision":revision})
+            // Callers already retain the exact submitted value. Opt-in writes
+            // persist/replay only the acknowledgement, not another full archive.
+            if ack_only {
+                let mut result=json!({"key":key,"revision":revision});
+                // Persist the token with the acknowledgement. Replay must keep
+                // this historical revision/reset/epoch, never consult newer data.
+                if key==CHAT_ARCHIVE {result["version"]=json!(archive_version(c,Some(revision),&current_reset)?);}
+                result
+            }
+            else {json!({"key":key,"value":command["value"],"revision":revision})}
         };
-        c.commit_operation(&op,&json!({"operationId":command["operationId"],"kind":kind,"revision":revision,"profile":result}))?;Ok(result)
+        // Move the potentially large history into its receipt, then return the
+        // same allocation after persistence rather than cloning it for each side.
+        let mut receipt=json!({"operationId":command["operationId"],"kind":kind,"revision":revision,"profile":null});
+        receipt["profile"]=result;
+        c.commit_operation(&op,&receipt)?;
+        Ok(receipt["profile"].take())
     })
 }

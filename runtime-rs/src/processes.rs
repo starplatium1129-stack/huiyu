@@ -10,11 +10,12 @@ use std::{
     time::Duration,
 };
 use tokio::process::{Child, ChildStderr, ChildStdout, Command};
+use tokio::sync::OwnedSemaphorePermit;
 use tokio_util::task::TaskTracker;
 
 #[derive(Default)]
 pub(crate) struct Processes {
-    children: Mutex<HashMap<u64, Child>>,
+    children: Mutex<HashMap<u64, ChildEntry>>,
     next: AtomicU64,
     cleanup: TaskTracker,
     closed: AtomicBool,
@@ -23,8 +24,26 @@ pub(crate) struct OwnedProcess {
     pool: Arc<Processes>,
     id: u64,
 }
+struct ChildEntry {
+    child: Child,
+    permit: Option<Arc<OwnedSemaphorePermit>>,
+}
 impl Processes {
     pub fn spawn(self: &Arc<Self>, command: &mut Command) -> Result<OwnedProcess> {
+        self.spawn_inner(command, None)
+    }
+    pub fn spawn_with_permit(
+        self: &Arc<Self>,
+        command: &mut Command,
+        permit: Arc<OwnedSemaphorePermit>,
+    ) -> Result<OwnedProcess> {
+        self.spawn_inner(command, Some(permit))
+    }
+    fn spawn_inner(
+        self: &Arc<Self>,
+        command: &mut Command,
+        permit: Option<Arc<OwnedSemaphorePermit>>,
+    ) -> Result<OwnedProcess> {
         let mut children = self.children.lock().unwrap();
         if self.closed.load(Ordering::Acquire) {
             return Err(ApiError::new(499, "ABORT_ERR", "进程操作已取消"));
@@ -43,7 +62,7 @@ impl Processes {
         // The OS can reuse a PID after try_wait reaps a child. A handle still
         // held by a caller must never refer to a newer process with that PID.
         let id = self.next.fetch_add(1, Ordering::Relaxed);
-        children.insert(id, child);
+        children.insert(id, ChildEntry { child, permit });
         Ok(OwnedProcess {
             pool: self.clone(),
             id,
@@ -68,7 +87,7 @@ impl OwnedProcess {
         let Some(child) = children.get_mut(&self.id) else {
             return Err(ApiError::new(499, "ABORT_ERR", "进程操作已取消"));
         };
-        Ok(child.try_wait()?)
+        Ok(child.child.try_wait()?)
     }
     pub async fn stop(&self) -> Result<()> {
         let cleanup = {
@@ -96,7 +115,7 @@ impl OwnedProcess {
         let Some(child) = children.get_mut(&self.id) else {
             return (None, None);
         };
-        (child.stdout.take(), child.stderr.take())
+        (child.child.stdout.take(), child.child.stderr.take())
     }
     pub fn take_input(&self) -> Option<tokio::process::ChildStdin> {
         self.pool
@@ -104,7 +123,7 @@ impl OwnedProcess {
             .lock()
             .unwrap()
             .get_mut(&self.id)
-            .and_then(|child| child.stdin.take())
+            .and_then(|entry| entry.child.stdin.take())
     }
 }
 impl Drop for OwnedProcess {
@@ -114,7 +133,18 @@ impl Drop for OwnedProcess {
         }
     }
 }
-async fn terminate(mut child: Child) -> Result<()> {
+async fn terminate(mut entry: ChildEntry) -> Result<()> {
+    // Keep admission attached to the process through stop, disconnect and
+    // service close. An unconfirmed exit cannot release capacity for more work.
+    let result = terminate_child(&mut entry.child).await;
+    if result.is_err() {
+        if let Some(permit) = &entry.permit {
+            permit.semaphore().close();
+        }
+    }
+    result
+}
+async fn terminate_child(child: &mut Child) -> Result<()> {
     if child.try_wait().ok().flatten().is_some() {
         return Ok(());
     }

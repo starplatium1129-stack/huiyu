@@ -145,6 +145,7 @@ fn provider_path(path: &str, method: &Method) -> bool {
         ("GET" | "HEAD", ["status"]) => true,
         ("POST", ["jobs"]) => true,
         ("POST", ["images"]) => parts[1] != "generation",
+        ("POST", ["images", "raw"]) => matches!(parts[1], "anima" | "creative" | "video"),
         ("GET" | "HEAD" | "DELETE", ["jobs", id]) => !id.is_empty(),
         ("GET" | "HEAD", ["jobs", id, "result"]) => !id.is_empty(),
         ("POST", ["batches"]) => parts[1] == "video",

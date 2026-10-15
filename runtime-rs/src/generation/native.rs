@@ -48,19 +48,14 @@ impl Engine {
     }
 }
 impl Service {
-    pub(crate) async fn prepare_native(
-        &self,
-        plan: Plan,
-        cancel: CancellationToken,
-    ) -> Result<Prepared> {
+    pub(crate) fn reserve_native(&self, cancel: &CancellationToken) -> Result<OwnedSemaphorePermit> {
         if self.inner.closed.load(Ordering::Relaxed)
             || self.inner.cancel.is_cancelled()
             || cancel.is_cancelled()
         {
             return Err(closed());
         }
-        let permit = self
-            .inner
+        self.inner
             .admission
             .clone()
             .try_acquire_owned()
@@ -74,7 +69,24 @@ impl Service {
                         "图像生成队列已满或正在交接显存，请稍后重试",
                     )
                 }
-            })?;
+            })
+    }
+    pub(crate) fn prepare_native(
+        &self,
+        plan: Plan,
+        permit: OwnedSemaphorePermit,
+        cancel: &CancellationToken,
+    ) -> Result<Prepared> {
+        if self.inner.closed.load(Ordering::Relaxed)
+            || self.inner.cancel.is_cancelled()
+            || cancel.is_cancelled()
+        {
+            return Err(closed());
+        }
+        // Worker cleanup can close admission while inputs are being prepared.
+        if self.inner.admission.is_closed() {
+            return Err(worker::release_error());
+        }
         Ok(Prepared {
             input: plan.input.clone(),
             provider: "native".into(),
@@ -255,7 +267,9 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     let input_image_path = if let Some(bytes) = init_image {
         input["denoisingStrength"] = plan.input["denoisingStrength"].clone();
         let path = temp.path().join("input-image");
-        tokio::fs::write(&path, bytes.as_slice()).await?;
+        let mut file = tokio::fs::File::create(&path).await?;
+        file.write_all(bytes.as_slice()).await?;
+        file.flush().await?;
         Some(path)
     } else {
         None
@@ -269,7 +283,9 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     let mask_image_path = if let Some(bytes) = mask_image {
         input["growMaskBy"] = plan.input["growMaskBy"].clone();
         let path = temp.path().join("mask-image");
-        tokio::fs::write(&path, bytes.as_slice()).await?;
+        let mut file = tokio::fs::File::create(&path).await?;
+        file.write_all(bytes.as_slice()).await?;
+        file.flush().await?;
         Some(path)
     } else {
         None

@@ -1,5 +1,8 @@
 use super::*;
-use crate::images::upload_body::UploadBody;
+use crate::images::{
+    Upload,
+    upload_body::{RawUploadBody, UploadBody},
+};
 use crate::{AppState, security};
 use axum::{
     Extension, Json, Router,
@@ -19,6 +22,10 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
         .route(
             "/api/video/images",
             post(upload).layer(DefaultBodyLimit::max(28 * 1024 * 1024)),
+        )
+        .route(
+            "/api/video/images/raw",
+            post(upload_raw).layer(DefaultBodyLimit::max(20 * 1024 * 1024)),
         )
         .route(
             "/api/video/jobs",
@@ -76,7 +83,7 @@ async fn upload(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
-    UploadBody(mut body): UploadBody,
+    UploadBody(mut body, admission): UploadBody,
 ) -> Response {
     if let Err(e) = state.host.check_running() {
         return e.into_response();
@@ -90,18 +97,51 @@ async fn upload(
             };
             let reference = body["kind"] == "reference";
             drop(body);
-            let name = http
-                .service
-                .upload(data, owner, reference, http.service.shutdown.child_token())
-                .await?;
-            let bytes = tokio::fs::metadata(inputs::path(&http.service.config, &name)?)
-                .await?
-                .len();
-            Ok(json!({"name":name,"bytes":bytes}))
+            store_image(&http, Upload::Encoded(data), owner, reference, admission).await
         }
         .await,
         StatusCode::OK,
     )
+}
+async fn upload_raw(
+    State(state): State<AppState>,
+    Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    Query(query): Query<HashMap<String, String>>,
+    headers: HeaderMap,
+    RawUploadBody(data, admission): RawUploadBody,
+) -> Response {
+    if let Err(e) = state.host.check_running() {
+        return e.into_response();
+    }
+    let owner = generation::request_owner(&headers, peer, &query);
+    let reference = query.get("kind").is_some_and(|kind| kind == "reference");
+    response(
+        store_image(&http, Upload::Raw(data), owner, reference, admission).await,
+        StatusCode::OK,
+    )
+}
+async fn store_image(
+    http: &Http,
+    data: Upload,
+    owner: String,
+    reference: bool,
+    admission: tokio::sync::OwnedSemaphorePermit,
+) -> Result<Value> {
+    let name = http
+        .service
+        .upload(
+            data,
+            owner,
+            reference,
+            http.service.shutdown.child_token(),
+            admission,
+        )
+        .await?;
+    let bytes = tokio::fs::metadata(inputs::path(&http.service.config, &name)?)
+        .await?
+        .len();
+    Ok(json!({"name":name,"bytes":bytes}))
 }
 struct Guard {
     service: Arc<Service>,
