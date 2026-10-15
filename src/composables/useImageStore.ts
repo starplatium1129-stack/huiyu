@@ -112,8 +112,6 @@ export async function imgGet(id: string): Promise<Blob | null> {
   return (await imgGetRecord(id))?.blob ?? null
 }
 
-export async function imgDelete(id: string): Promise<void> { await imgDeleteMany([id]) }
-
 export async function imgDeleteMany(ids: string[]): Promise<void> {
   const unique = [...new Set(ids.filter(id => typeof id === 'string' && id.trim()).map(id => id.trim()))]
   if (!unique.length) return

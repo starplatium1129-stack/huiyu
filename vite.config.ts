@@ -191,11 +191,11 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
         codeSplitting: {
           // Split feature groups by their actual consumers, retaining lazy
           // boundaries when shared helpers also appear in another route.
-          // Initial modules always travel together. Shared visual primitives also
-          // share one stylesheet instead of one request per consumer subset.
+          // Initial modules always travel together. Visual primitives retain their
+          // consumer boundaries so a static icon cannot pull in async popovers.
           groups: [
             { name: 'bootstrap', tags: ['$initial'], priority: 100 },
-            { name: 'ui-base', priority: 95,
+            { name: 'ui-base', priority: 95, entriesAware: true,
               test: /[\\/]src[\\/]components[\\/](visual[\\/](ArchiveIcon|FluidTransition|AnimatedSelection|ToggleSwitch|ArchiveStatePanel)|ui[\\/](StudioTooltip|StudioPopover|StudioDisclosureSummary|StudioSearch))\.vue/ },
             ...['vendor', 'shared', 'motion', 'prompt', 'live2d'].map((name, index) => ({
               name, test: (id: string) => featureChunk(id) === name,

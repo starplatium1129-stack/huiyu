@@ -1,16 +1,7 @@
 import type { Live2DCtx } from '@/composables/live2d/context'
 import { prefersReducedMotion } from '@/composables/live2d/context'
-import { resolveCompanionAvatar } from '@/utils/companionRegistry'
 
 const normalizedLevel = (value: number): number => Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0
-
-export function selectMouthParams(character: string): { id: string; scale: number } | undefined {
-  return resolveCompanionAvatar(character)?.profile.parameterBindings.mouth
-}
-
-export function selectBlinkParams(character: string): readonly string[] | undefined {
-  return resolveCompanionAvatar(character)?.profile.parameterBindings.blink
-}
 
 /**
  * 每帧参数写入热路径（拆分 Step 6 自 useLive2D.ts 逐行对照迁移）：

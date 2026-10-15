@@ -3,7 +3,6 @@
  * IndexedDB 落盘在 desktopImport.ts 集成层。
  */
 
-export const HISTORY_STORAGE_KEY = 'aics_pb_history'
 export const MAX_IMPORT_BATCH = 8
 export const MAX_IMPORT_BYTES = 24 * 1024 * 1024
 

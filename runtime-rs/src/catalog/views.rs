@@ -228,42 +228,6 @@ impl Catalog {
         }
         Ok(None)
     }
-    pub fn scene_state(&self) -> Result<Value> {
-        let mut occupied = self
-            .connection
-            .prepare("SELECT id FROM content_records WHERE kind='scene'")?;
-        let highest = occupied
-            .query_map([], |r| r.get::<_, String>(0))?
-            .collect::<rusqlite::Result<Vec<_>>>()?
-            .iter()
-            .filter_map(|id| crate::maintenance::state::scene_number(id))
-            .chain(
-                self.document("retired-scenes")?["records"]
-                    .as_array()
-                    .into_iter()
-                    .flatten()
-                    .filter_map(|v| {
-                        v["id"]
-                            .as_str()
-                            .and_then(crate::maintenance::state::scene_number)
-                    }),
-            )
-            .max()
-            .unwrap_or(0);
-        let scenes = self
-            .records("scene")?
-            .into_iter()
-            .map(|r| r.data)
-            .collect::<Vec<_>>();
-        let blueprints = self
-            .records("blueprint")?
-            .into_iter()
-            .map(|r| r.data)
-            .collect::<Vec<_>>();
-        Ok(
-            json!({"ok":true,"writesEnabled":true,"version":self.version()?,"snapshot":{"scenes":scenes,"blueprints":blueprints,"tags":self.document("tags")?,"curation":self.document("curation")?},"nextSceneId":format!("sc{:03}",highest+1),"sceneCount":scenes.len()}),
-        )
-    }
 }
 pub(super) fn projected_file(name: &str) -> bool {
     [

@@ -226,11 +226,3 @@ export function normalizeCompanionOutfit(characterId: string, value: unknown): s
     ? candidate
     : getCompanionDefaultOutfit(characterId)
 }
-
-/** Reset helper for test isolation */
-export function resetCompanionRegistryForTesting(): void {
-  characters.clear()
-  avatars.clear()
-  profiles.clear()
-  initBuiltins()
-}

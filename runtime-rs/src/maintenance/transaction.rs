@@ -107,40 +107,6 @@ impl Transaction {
         ));
         Ok(backup.id)
     }
-    pub fn add_participant(&self, pid: u32) -> Result<()> {
-        if identity::process(pid as u64) != "alive" {
-            return Err(Error::conflict("子进程尚未可确认运行"));
-        }
-        let value = self.owned()?;
-        if value["phase"] != "writing" {
-            return Err(Error::conflict("必须先建立备份再启动写入子进程"));
-        }
-        let mut entries = value["participants"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .filter(|entry| entry["pid"] != pid)
-            .cloned()
-            .collect::<Vec<_>>();
-        entries.push(json!({"pid":pid,"state":"running"}));
-        self.update(json!({"participants":entries}))
-    }
-    pub fn participant_exited(&self, pid: u32) -> Result<()> {
-        let value = self.owned()?;
-        let entries = value["participants"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .map(|entry| {
-                if entry["pid"] == pid {
-                    json!({"pid":pid,"state":"exited"})
-                } else {
-                    entry.clone()
-                }
-            })
-            .collect::<Vec<_>>();
-        self.update(json!({"participants":entries}))
-    }
     fn backup(&self) -> Result<backup::Backup> {
         let journal = self.owned()?;
         backup::read(

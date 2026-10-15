@@ -97,25 +97,3 @@ export function clampToMonitors(rect: OverlayRect, monitors?: readonly OverlayMo
   }
   return { x: Math.round(x), y: Math.round(y), width: Math.max(1, Math.round(width)), height: Math.max(1, Math.round(height)) }
 }
-
-/**
- * 归一化坐标 → overlay 本地坐标（Cubism HitArea 查询用）。
- * 归一化以舞台为参考（0..1）；overlay 尺寸变化后坐标随之缩放。
- */
-export function normalizeToOverlay(clientX: number, clientY: number, stageRect: OverlayRectCss): { x: number; y: number } {
-  if (stageRect.width <= 0 || stageRect.height <= 0) return { x: 0, y: 0 }
-  return {
-    x: Math.max(0, Math.min(1, (clientX - stageRect.left) / stageRect.width)),
-    y: Math.max(0, Math.min(1, (clientY - stageRect.top) / stageRect.height)),
-  }
-}
-
-/**
- * 从归一化坐标回推屏幕物理坐标（原生 hit-test 回传渲染时用）。
- */
-export function overlayPointToScreen(normalized: { x: number; y: number }, rect: OverlayRect): { x: number; y: number } {
-  return {
-    x: Math.round(rect.x + normalized.x * rect.width),
-    y: Math.round(rect.y + normalized.y * rect.height),
-  }
-}

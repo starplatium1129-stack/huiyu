@@ -14,16 +14,6 @@ export function errorCode(error: any): string | number | undefined {
   return typeof code === 'string' || typeof code === 'number' ? code : undefined;
 }
 
-export function errorStatus(error: any, key: 'status' | 'statusCode' = 'status'): number | undefined {
-  const status = errorField(error, key);
-  return typeof status === 'number' && Number.isFinite(status) ? status : undefined;
-}
-
-export function errorStack(error: any): string | undefined {
-  const stack = errorField(error, 'stack');
-  return typeof stack === 'string' ? stack : undefined;
-}
-
 export function errorOutput(error: any, key: 'stdout' | 'stderr'): string | Buffer | undefined {
   const output = errorField(error, key);
   return typeof output === 'string' || Buffer.isBuffer(output) ? output : undefined;

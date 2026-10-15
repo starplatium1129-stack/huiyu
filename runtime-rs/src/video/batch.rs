@@ -268,9 +268,6 @@ impl Service {
     pub async fn get_batch(&self, id: &str, owner: &str) -> Result<Value> {
         Ok(self.batch(id, owner).await?.public().await)
     }
-    pub async fn batch_checkpoint(&self, id: &str, owner: &str) -> Result<Value> {
-        Ok(self.batch(id, owner).await?.checkpoint().await)
-    }
     pub async fn query_batch(&self, id: &str, owner: &str) -> Result<Observation> {
         let batch = self.batch(id, owner).await?;
         let s = batch.state.lock().await;
