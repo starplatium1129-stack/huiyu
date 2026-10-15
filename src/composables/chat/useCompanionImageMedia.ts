@@ -39,7 +39,7 @@ export function useCompanionImageMedia(isActive: () => boolean, onSessionChange:
     thumbnails?.abort(); thumbnails = null
     sources.value = {}; failures.value = {}; thumbnailsLoading.value = false
   }
-  async function loadThumbnails(images: readonly CompanionChatImage[]) {
+  async function loadThumbnails(images: readonly CompanionChatImage[]): Promise<void> {
     releaseThumbnails()
     if (disposed || !isActive()) return
     const request = new AbortController(), repository = artworkRepository, session = mediaSession()
@@ -67,7 +67,13 @@ export function useCompanionImageMedia(isActive: () => boolean, onSessionChange:
         }
       }
     } finally {
-      if (thumbnails === request) { thumbnails = null; thumbnailsLoading.value = false }
+      if (thumbnails === request) {
+        thumbnails = null; thumbnailsLoading.value = false
+        // The first ready publication can precede platform adapter activation.
+        // Discard its old response, then read through the newly selected authority.
+        if (!disposed && isActive() && !request.signal.aborted
+          && repository !== artworkRepository && session === mediaSession()) await loadThumbnails(images)
+      }
     }
   }
 

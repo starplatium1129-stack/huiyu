@@ -36,17 +36,18 @@ impl Default for ScanProgress {
         }
     }
 }
-struct Probe<'a> {
-    progress: &'a Mutex<ScanProgress>,
+struct Probe {
+    progress: Arc<Initialization>,
     id: String,
     complete: bool,
 }
-impl Drop for Probe<'_> {
+impl Drop for Probe {
     fn drop(&mut self) {
         if !self.complete {
             // Cancellation can drop a buffered probe before it is polled.
             // Preserve it behind unvisited candidates, including later pages.
             self.progress
+                .scan
                 .lock()
                 .unwrap()
                 .retry
@@ -134,7 +135,7 @@ impl TaskRuntime {
                     let probes = std::iter::from_fn(|| {
                         let id = once.scan.lock().unwrap().pending.pop_front()?;
                         Some(Probe {
-                            progress: &once.scan,
+                            progress: once.clone(),
                             id,
                             complete: false,
                         })
