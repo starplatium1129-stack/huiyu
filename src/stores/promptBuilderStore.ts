@@ -80,7 +80,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function releaseReferenceTag(input: string) {
     if (!referenceInput.value) return
     const key = normalizeKey(tagDictionary.value.canonicalize(input))
-    const tags = referenceInput.value.tags.filter(tag => normalizeKey(tag) !== key)
+    const tags = referenceInput.value.tags.filter(tag => normalizeKey(tagDictionary.value.canonicalize(tag)) !== key)
     referenceInput.value = cloneReferenceInput(referenceInput.value, tags)
   }
   function addManualTag(input: string) {
@@ -89,11 +89,15 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return outcome
   }
   function toggleManualTag(input: string) { releaseReferenceTag(input); toggleTag(input) }
-  watch(manualTags, () => {
+  watch([manualTags, tagDictionary], () => {
     if (!referenceInput.value) return
+    const canonicalize = tagDictionary.value.canonicalize
     const current = new Set([...manualTags.value].map(normalizeKey))
-    const tags = referenceInput.value.tags.filter(tag => current.has(normalizeKey(tag)))
-    if (tags.length !== referenceInput.value.tags.length) referenceInput.value = cloneReferenceInput(referenceInput.value, tags)
+    referenceInput.value = cloneReferenceInput({
+      tags: referenceInput.value.tags.map(canonicalize).filter(tag => current.has(normalizeKey(tag))),
+      characterTokens: referenceInput.value.characterTokens?.map(canonicalize),
+      copyrightTokens: referenceInput.value.copyrightTokens?.map(canonicalize),
+    })
   }, { deep: true, flush: 'sync' })
   const characters = computed(() => parsePromptCharacters(sceneStore.characters))
   const popularCharacters = computed(() => sceneStore.popularCharacters)
@@ -247,7 +251,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   /** 反推出跨族服装：顶替角色默认服装（replaced 为被顶替的服装族名，用于提示）。 */
   function setOutfitOverride(tokens: string[], replaced: string | null) {
-    outfitOverride.value = tokens.length ? { tokens: [...tokens], replaced } : null
+    outfitOverride.value = tokens.length ? { tokens: [...new Set(tokens.map(tagDictionary.value.canonicalize))], replaced } : null
   }
   /** 一键恢复角色默认服装。 */
   function clearOutfitOverride() { outfitOverride.value = null }
@@ -255,7 +259,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   /** A new scene owns its environment; retain tags explicitly adopted or entered by the user. */
   function clearReferenceInput() {
     if (!referenceInput.value) return
-    const owned = new Set(referenceInput.value.tags.map(normalizeKey))
+    const owned = new Set(referenceInput.value.tags.map(tagDictionary.value.canonicalize).map(normalizeKey))
     referenceInput.value = null
     manualTags.value = new Set([...manualTags.value].filter(tag => !owned.has(normalizeKey(tag))))
   }

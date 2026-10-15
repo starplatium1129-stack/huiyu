@@ -3,6 +3,7 @@
     <template v-if="record.id === 'tags' && Array.isArray(record.data)">
       <StudioSearch v-model="query" label="搜索标签" placeholder="搜索标签…" />
       <p class="hint-sm">修改名称或删除用词时，相关故事也会一起更新。保存前可以核对这些变化。</p>
+      <p v-if="retiredCount" class="hint-sm">{{ retiredCount }} 条旧词已归档，保留原有故事引用；当前列表仅展示正在使用的词条。</p>
       <div v-content-motion:right="page" class="catalog-tag-page"><div v-for="tag in pagedTags" :key="String(tag.id)" class="form-grid catalog-tag-row">
         <label v-for="field in tagFields" :key="field[0]" class="form-group"><span class="field-label">{{ field[1] }}</span><input v-model="tag[field[0]]" class="input" :disabled="disabled" /></label>
         <label class="form-group"><span class="field-label">权重</span><input v-model.number="tag.weight" class="input" type="number" min="0.01" max="2" step="0.1" :disabled="disabled" /></label>
@@ -26,7 +27,8 @@ defineProps<{ disabled: boolean }>()
 const record = defineModel<CatalogRecord>('record', { required: true })
 const tagRows = computed(() => Array.isArray(record.value.data) ? record.value.data as Array<Record<string, string | number>> : [])
 const query = ref(''), page = ref(1)
-const filtered = computed(() => tagRows.value.filter(t => [t.id, t.en, t.cn, t.cat].join(' ').toLowerCase().includes(query.value.trim().toLowerCase())))
+const retiredCount = computed(() => tagRows.value.filter(tag => tag.status === 'retired').length)
+const filtered = computed(() => tagRows.value.filter(t => t.status !== 'retired' && [t.id, t.en, t.cn, t.cat].join(' ').toLowerCase().includes(query.value.trim().toLowerCase())))
 const pages = computed(() => Math.max(1, Math.ceil(filtered.value.length / 24)))
 const pagedTags = computed(() => filtered.value.slice((page.value - 1) * 24, page.value * 24))
 watch(query, () => { page.value = 1 })

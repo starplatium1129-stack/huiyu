@@ -11,7 +11,6 @@
     aria-label="图像对比滑块"
     aria-orientation="horizontal"
     tabindex="0"
-    :style="sliderStyle"
     @keydown="onKeydown"
     @pointerdown="startDrag"
     @pointermove="onDrag"
@@ -24,13 +23,15 @@
     <span class="compare-badge badge-after tw:absolute tw:bottom-s-3 tw:[padding:2px_var(--s-2)] tw:rounded-pill tw:[background:color-mix(in_srgb,_var(--bg-deep)_85%,_transparent)] tw:text-secondary tw:[font:700_var(--fs-label-xs)_var(--font-mono)] tw:[letter-spacing:.05em] tw:pointer-events-none tw:[z-index:var(--z-raised)] tw:right-s-3">{{ afterLabel }}</span>
 
     <!-- 顶层 (Before: 原图，根据 splitRatio 裁剪) -->
-    <div class="compare-overlay tw:absolute tw:inset-0 tw:w-full tw:h-full tw:pointer-events-none">
+    <div ref="clippedLayer" class="compare-overlay tw:absolute tw:inset-0 tw:w-full tw:h-full tw:pointer-events-none">
+      <div ref="clippedContent" class="compare-content tw:absolute tw:inset-0">
       <img :crossorigin="runtimeResourceCors()" class="compare-img before-img tw:absolute tw:inset-0 tw:w-full tw:h-full tw:object-contain tw:pointer-events-none" :src="resolveRuntimeUrl(beforeSrc)" :alt="beforeLabel" decoding="async" />
       <span class="compare-badge badge-before tw:absolute tw:bottom-s-3 tw:[padding:2px_var(--s-2)] tw:rounded-pill tw:[background:color-mix(in_srgb,_var(--bg-deep)_85%,_transparent)] tw:text-secondary tw:[font:700_var(--fs-label-xs)_var(--font-mono)] tw:[letter-spacing:.05em] tw:pointer-events-none tw:[z-index:var(--z-raised)] tw:left-s-3">{{ beforeLabel }}</span>
+      </div>
     </div>
 
     <!-- 分割线与拖拽手柄 -->
-    <div class="compare-divider tw:absolute tw:top-0 tw:bottom-0 tw:left-0 tw:w-[2px] tw:[background:color-mix(in_srgb,_var(--accent)_80%,_var(--text-primary))] tw:shadow-(--shadow-md) tw:pointer-events-none tw:[z-index:var(--z-overlay)]">
+    <div ref="divider" class="compare-divider tw:absolute tw:top-0 tw:bottom-0 tw:left-0 tw:w-[2px] tw:[background:color-mix(in_srgb,_var(--accent)_80%,_var(--text-primary))] tw:shadow-(--shadow-md) tw:pointer-events-none tw:[z-index:var(--z-overlay)]">
       <div class="compare-handle tw:absolute tw:top-1/2 tw:left-1/2 tw:flex tw:items-center tw:justify-center tw:gap-[2px] tw:w-[28px] tw:h-[28px] tw:rounded-full tw:bg-elevated tw:[border:1px_solid_var(--accent)] tw:text-accent tw:shadow-(--shadow-md) tw:text-body-sm tw:font-bold" aria-hidden="true">
         <ArchiveIcon name="compare" />
       </div>
@@ -40,7 +41,6 @@
 
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
-import { computed } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useImageComparison } from '@/composables/useImageComparison'
 
@@ -56,12 +56,9 @@ const props = withDefaults(defineProps<{
   initialRatio: 0.5,
 })
 
-const { position: splitPos, container: containerRef, isDragging, startDrag, onDrag, stopDrag, onKeydown } = useImageComparison(props.initialRatio * 100)
-const sliderStyle = computed(() => ({
-  '--split-pos': `${splitPos.value}%`,
-  '--split-x': `${splitPos.value}cqw`,
-  '--clip-pos': `${100 - splitPos.value}%`,
-}))
+const { position: splitPos, container: containerRef, clippedLayer, clippedContent, divider, isDragging, startDrag, onDrag, stopDrag, onKeydown } = useImageComparison(
+  props.initialRatio * 100, 'left', value => `对比位置 ${value}%：${props.beforeLabel}与${props.afterLabel}`,
+)
 </script>
 
 <style scoped>
@@ -80,15 +77,17 @@ const sliderStyle = computed(() => ({
 }
 
 .compare-overlay {
-  clip-path: inset(0 var(--clip-pos, 50%) 0 0);
+  overflow: hidden;
+  transform: translateX(-50%);
 }
+.compare-content { transform: translateX(50%); }
 
 .compare-badge {
   backdrop-filter: blur(8px);
 }
 
 .compare-divider {
-  transform: translateX(calc(var(--split-x, 50cqw) - 50%));
+  transform: translateX(calc(50cqw - 50%));
 }
 
 .compare-handle {

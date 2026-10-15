@@ -1,7 +1,7 @@
 <template>
   <div class="panel step-panel advanced-decision expert-tag-panel" id="stepTags">
     <div class="panel-title expert-tags-header">
-      <span>词条工作台 · Tags <small class="expert-tag-count" v-if="pb.manualTags.size">已激活 {{ pb.manualTags.size }} 个</small></span>
+      <span>自选词条 <small class="expert-tag-count" v-if="pb.manualTags.size">已选 {{ pb.manualTags.size }} 个</small></span>
       <div class="expert-tags-actions">
         <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="clearTags">清空词条</button>
       </div>
@@ -10,20 +10,23 @@
       <StudioTooltip v-for="tag in pb.manualTags" :key="tag" :content="tagMeaning(tag)">
         <span class="manual-tag" :data-weight-tier="tagWeightTier(tag)">
           <span class="manual-tag-text">
-            <span class="manual-tag-en">{{ tag }}</span>
+            <span class="manual-tag-en">{{ displayTag(tag) }}</span>
             <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
           </span>
           <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
         </span>
       </StudioTooltip>
       <p v-if="!pb.manualTags.size" class="manual-tags-empty-hint">
-        暂未激活自选词条。可在下方点选预设战袍、装配专属服装包，或搜索与批量输入标签添加。
+        搜索或批量输入标签，也可展开衣橱与服装词包一键装配。
       </p>
     </div>
     <!-- 全角色通用·特典衣橱预设（无论工作室角色还是热门角色均可一键套用） -->
     <details class="outfit-presets universal-wardrobe-section" aria-label="全角色通用·特典衣橱">
       <summary class="outfit-presets-head wardrobe-summary">
-        <strong><ArchiveIcon name="wardrobe" /> 全角色通用 · 特典战袍衣橱</strong>
+        <span class="wardrobe-summary-copy">
+          <strong><ArchiveIcon name="wardrobe" /> 通用衣橱</strong>
+          <span class="wardrobe-selection" :class="{ 'has-selection': selectedUniversalLabels.length }">{{ universalWardrobePresets.length }} 套 · {{ selectedUniversalLabels.length ? '已选：' + selectedUniversalLabels.join('、') : '跨角色换装' }}</span>
+        </span>
         <span class="wardrobe-toggle">
           <span class="wardrobe-expand">展开</span><span class="wardrobe-collapse">收起</span>
           <ArchiveIcon name="chevron-down" class="wardrobe-chevron" />
@@ -46,19 +49,26 @@
       </div>
     </details>
 
-    <div v-if="!pb.isPopular" class="outfit-presets" aria-label="专属角色服装词包">
-      <div class="outfit-presets-head">
-        <strong>专属角色服装词包</strong>
-        <span>宁宁 / 夏目官方训练词条，一键装配</span>
-      </div>
+    <details v-if="!pb.isPopular && visibleOutfitBundles.length" class="outfit-presets character-outfit-section" aria-label="专属角色服装词包">
+      <summary class="outfit-presets-head wardrobe-summary">
+        <span class="wardrobe-summary-copy">
+          <strong><ArchiveIcon name="wardrobe" /> {{ outfitCharacters }} · 服装词包</strong>
+          <span class="wardrobe-selection" :class="{ 'has-selection': selectedOutfitLabels.length }">{{ visibleOutfitBundles.length }} 套 · {{ selectedOutfitLabels.length ? '已选：' + selectedOutfitLabels.join('、') : '角色专属，一键装配' }}</span>
+        </span>
+        <span class="wardrobe-toggle">
+          <span class="wardrobe-expand">展开</span><span class="wardrobe-collapse">收起</span>
+          <ArchiveIcon name="chevron-down" class="wardrobe-chevron" />
+        </span>
+      </summary>
+      <div data-disclosure-content>
       <div class="outfit-preset-list">
         <button v-for="bundle in visibleOutfitBundles" :key="bundle.id"
           type="button" class="outfit-preset"
-          :class="{ selected: bundle.tags.every(tag => pb.manualTags.has(tag)) }"
-          :aria-pressed="bundle.tags.every(tag => pb.manualTags.has(tag))"
+          :class="{ selected: isPresetActive(bundle.tags) }"
+          :aria-pressed="isPresetActive(bundle.tags)"
           @click="toggleOutfitBundle(bundle.tags)">
           <strong>{{ bundle.label }}</strong>
-          <small>{{ bundle.tags.slice(0, 4).join(', ') }}{{ bundle.tags.length > 4 ? ' …' : '' }}</small>
+          <small>{{ bundle.tags.slice(0, 4).map(displayTag).join(', ') }}{{ bundle.tags.length > 4 ? ' …' : '' }}</small>
         </button>
       </div>
       <div class="r18-controls" aria-label="R18 角色门控词">
@@ -77,10 +87,17 @@
         </button>
         </div>
       </div>
-    </div>
-    <p v-else class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；下方词条可直接用于专家模式微调，成人蓝图仅对成年角色可见。</p>
+      </div>
+    </details>
+    <p v-if="pb.isPopular" class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；下方词条可直接用于专家模式微调，成人蓝图仅对成年角色可见。</p>
     <div class="tag-browser">
-      <StudioSearch v-model="tagSearch" class="tag-search tw:mb-s-2" label="搜索词条" placeholder="搜索中文含义或 Danbooru 英文标签…" />
+      <div class="tag-dictionary-heading">
+        <strong>{{ gelbooruDictionary ? 'Gelbooru 词库' : '本地词条' }}<small v-if="gelbooruDictionary" class="expert-tag-count">已核验 {{ verifiedTagCount }} 条</small></strong>
+        <a v-if="isAnima" class="tag-dictionary-link" href="https://gelbooru.com/index.php?page=tags&amp;s=list" target="_blank" rel="noopener noreferrer" aria-label="打开 Gelbooru 词典，在新窗口打开"><ArchiveIcon name="search" />Gelbooru 查词</a>
+      </div>
+      <p v-if="isAnima" class="tag-dictionary-note">普通词条优先 Gelbooru；画师名沿用 Danbooru。</p>
+      <p v-else-if="promptFormat === 'natural-language'" class="tag-dictionary-note">词条用于组织画面，最终以自然语言发送。</p>
+      <StudioSearch v-model="tagSearch" class="tag-search tw:mb-s-2" label="搜索词条" placeholder="搜索中文含义、英文词条或别名…" />
       <div class="tag-categories studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="词条分类">
         <AnimatedSelection />
         <button v-for="cat in tagCategories" :key="cat.id" type="button"
@@ -89,13 +106,13 @@
           @click="tagCategory = cat.id">{{ cat.label }}</button>
       </div>
       <div v-content-motion:right="tagCategory" class="tag-results">
-        <StudioTooltip v-for="tag in visibleTags" :key="tag.en" :content="tagMeaning(tag.en, tag.cn)">
+        <StudioTooltip v-for="tag in visibleTags" :key="tag.en" :content="tagDescription(tag)">
           <button
             type="button"
             :class="{ selected: pb.manualTags.has(tag.en) }"
             :aria-pressed="pb.manualTags.has(tag.en)"
             @click="pb.toggleManualTag(tag.en)">
-            <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ tag.en }}</small>
+            <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ displayTag(tag.en) }}</small>
           </button>
         </StudioTooltip>
       </div>
@@ -111,15 +128,16 @@
     <input v-model="tagInputText" class="tag-input" type="text" aria-label="添加词条" list="prompt-tag-suggestions" placeholder="支持直接输入或批量粘贴标签（逗号/顿号/换行分隔），按回车添加…"
       @keydown.enter="onTagEnter" />
     <datalist id="prompt-tag-suggestions">
-      <option v-for="tag in inputSuggestions" :key="tag.canonicalTag" :value="tag.canonicalTag" :label="[tag.zhLabel, ...tag.aliases].filter(Boolean).join(' · ')" />
+      <option v-for="tag in inputSuggestions" :key="tag.canonicalTag" :value="displayTag(tag.canonicalTag)" :label="[tag.zhLabel, ...tag.aliases].filter(Boolean).join(' · ')" />
     </datalist>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { matchesPromptTag } from '@/utils/promptTagDictionary'
-import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
+import { matchesPromptTag, type PromptTagSource } from '@/utils/promptTagDictionary'
+import { formatPromptForEngine, type DrawCapabilities, type ModelProfile } from '@/utils/promptPolicy'
+import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -128,7 +146,6 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { confirmAction } from '@/composables/useConfirm'
 import {
   OUTFIT_BUNDLES,
-  OUTFIT_TAG_LABELS,
   R18_CONTROLS,
   TAG_CATEGORY_LABELS,
   NON_MANUAL_TAGS,
@@ -137,16 +154,26 @@ import {
 import { UNIVERSAL_WARDROBE_PRESETS } from '@/config/universalWardrobe'
 import '@/assets/css/director/components/DirectorTagWorkbench.css'
 
-interface TagEntry {
-  en: string
-  cn: string
-  cat: string
-  aliases?: string[]
-  desc?: string
-}
+type TagEntry = PromptTagSource
 
 const pb = usePromptBuilderStore()
+const props = defineProps<{ promptFormat: DrawCapabilities['promptFormat']; modelProfile: ModelProfile | null }>()
+const isAnima = computed(() => props.promptFormat === 'anima-tags')
+// Format only the visible label. Selection keeps the catalogue key; site-specific
+// synonym changes require evidence and never rewrite exact LoRA control tokens.
+function displayTag(tag: string): string {
+  return isAnima.value ? formatPromptForEngine(tag, 'anima', props.modelProfile?.exact_tokens || [], props.modelProfile?.exact_prefixes || []) : tag
+}
 const { tagMeaning, tagLabel, tagWeightTier, toggleOutfitBundle, addTag } = usePromptTagTools(pb)
+const verifiedTagCount = computed(() => pb.tags.filter(tag => tag.source === 'gelbooru' && tag.verification?.canonicalTag === tag.en).length)
+const gelbooruDictionary = computed(() => verifiedTagCount.value > 0 && pb.tags.every(tag =>
+  tag.source === 'huiyu/lora' || tag.source === 'gelbooru' && tag.verification?.canonicalTag === tag.en))
+function tagDescription(tag: TagEntry): string {
+  const meaning = tagMeaning(tag.en, tag.cn)
+  return tag.source === 'gelbooru' && tag.verification?.canonicalTag === tag.en
+    ? `${meaning}\nGelbooru · ${tag.verification.canonicalTag} · ${tag.verification.checkedAt.slice(0, 10)}`
+    : tag.source === 'huiyu/lora' ? `${meaning}\n项目 LoRA 控制词` : meaning
+}
 
 const tagSearch = ref('')
 const tagInputText = ref('')
@@ -181,38 +208,11 @@ async function clearTags() {
   pb.flash('已清空词条')
 }
 
-const tagCatalog = computed<TagEntry[]>(() => {
-  const merged = new Map<string, TagEntry>(
-    pb.tags
-      .filter((tag): tag is TagEntry => typeof tag.en === 'string' && tag.cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey(tag.en)))
-      .map(tag => [tag.en, tag]),
-  )
-  const addSceneTag = (raw: unknown) => {
-    const source = String(raw || '').trim()
-    if (!source || /^<lora:/i.test(source) || /^break$/i.test(source)) return
-    const en = normalizeCatalogKey(source)
-    if (!en || en.length > 64 || NON_MANUAL_TAGS.has(en) || merged.has(en)) return
-    const mature = /(?:^|_)(?:r18|adult|nsfw|nude|topless|nipples|explicit|pussy|penis|sex|lingerie)(?:_|$)/i.test(en)
-    const official = Boolean(OUTFIT_TAG_LABELS[en])
-    merged.set(en, {
-      en,
-      cn: OUTFIT_TAG_LABELS[en] || (mature ? '场景成人词' : '场景词条'),
-      cat: official ? 'Official Outfit' : (mature ? 'Mature' : 'Scene'),
-    })
-  }
-  pb.scenes.forEach((scene: Scene) => {
-    ;(scene.tags || []).forEach(addSceneTag)
-    String(scene.prompt || '').split(',').forEach(addSceneTag)
-  })
-  OUTFIT_BUNDLES.forEach(bundle => bundle.tags.forEach(en => {
-    if (!merged.has(en)) merged.set(en, {
-      en,
-      cn: OUTFIT_TAG_LABELS[en] || 'v18 训练服装词',
-      cat: 'Official Outfit',
-    })
-  }))
-  return [...merged.values()]
-})
+// The catalog is the only vocabulary authority, including registered LoRA
+// controls. Preset contents and scene prose cannot silently expand the dictionary.
+const tagCatalog = computed<TagEntry[]>(() => [...new Map(pb.tags
+  .filter(tag => tag.cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey(tag.en)))
+  .map(tag => [tag.en, tag])).values()])
 
 const tagCategories = computed(() => {
   const found = new Set(tagCatalog.value.map(tag => tag.cat).filter(Boolean))
@@ -246,14 +246,18 @@ const visibleOutfitBundles = computed(() =>
 )
 
 const universalWardrobePresets = computed(() => UNIVERSAL_WARDROBE_PRESETS)
+const outfitCharacters = computed(() => [...new Set(visibleOutfitBundles.value.map(bundle => bundle.label.split(' · ')[0]))].join(' / '))
+const selectedOutfitLabels = computed(() => visibleOutfitBundles.value.filter(bundle => isPresetActive(bundle.tags)).map(bundle => bundle.label))
+const selectedUniversalLabels = computed(() => universalWardrobePresets.value.filter(preset => isPresetActive(preset.tags)).map(preset => preset.label))
 
 function isPresetActive(tags: string[]): boolean {
   if (!tags.length) return false
+  const canonical = tags.map(pb.tagDictionary.canonicalize)
   if (pb.isPopular && pb.outfitOverride) {
-    const set = new Set(pb.outfitOverride.tokens)
-    return tags.every(t => set.has(t))
+    const set = new Set(pb.outfitOverride.tokens.map(pb.tagDictionary.canonicalize))
+    return canonical.every(t => set.has(t))
   }
-  return tags.every(t => pb.manualTags.has(t))
+  return canonical.every(t => pb.manualTags.has(t))
 }
 
 function toggleUniversalPreset(tags: string[], label: string) {

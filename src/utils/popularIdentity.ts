@@ -7,7 +7,8 @@ const GARMENT_TOKEN_RE =
   /^(?:[a-z0-9]+_)*(?:clothes|clothing|outfit|costume|coat|overcoat|trench_coat|jacket|dress|sundress|skirt|miniskirt|shirt|blouse|pants|trousers|jeans|shorts|hotpants|crop_top|tank_top|bodysuit|leotard|corset|bra|panties|underwear|boots|shoes|heels|sneakers|sandals|socks|tights|pantyhose|stockings|leggings|thighhighs|thigh_highs|over_knee_socks|knee_socks|uniform|serafuku|suit|robe|cloak|cape|capelet|hoodie|sweater|cardigan|vest|apron|kimono|yukata|qipao|cheongsam|swimsuit|swimwear|bikini|pajamas|sleepwear|nightgown|lingerie|gloves|scarf|necktie|belt|hat|helmet|armor|footwear|headdress)$/
 
 export function isGarmentToken(token: string): boolean {
-  return GARMENT_TOKEN_RE.test(String(token || '').trim().toLowerCase())
+  const key = String(token || '').trim().toLowerCase().replace(/-/g, '_')
+  return ['playboy_bunny', 'kneehighs', 'casual', 'bikini_top'].includes(key) || key.endsWith('_bikini_top') || GARMENT_TOKEN_RE.test(key)
 }
 
 const EXPRESSION_RE = /(?:^|_)(?:smile|smiling|blush|blushing|expressionless|expression|crying|tears|teary|sad|happy|angry|shy|pout|pouting)(?:_|$)/

@@ -52,6 +52,10 @@ function tag(value: unknown): value is PromptTagSource {
   return record(value) && text(value.en) && text(value.cat)
     && ['cn', 'desc', 'source', 'version'].every(key => optional(value[key], text))
     && optional(value.aliases, strings)
+    && optional(value.status, status => status === 'active' || status === 'retired')
+    && optional(value.verification, proof => record(proof)
+      && ['canonicalTag', 'category', 'url', 'checkedAt'].every(key => text(proof[key]))
+      && finite(proof.postCount) && proof.postCount >= 0)
 }
 
 /** Preserve valid records and extensions. Invalid catalogs must never look successfully empty. */
@@ -75,4 +79,4 @@ export function parsePromptCharacters(value: unknown): PromptCharacter[] {
   return catalog(projected, '工作台角色', character)
 }
 export const parsePromptLoras = (value: unknown) => catalog(value, '工作台 LoRA', lora)
-export const parsePromptTags = (value: unknown) => catalog(value, '工作台词条', tag)
+export const parsePromptTags = (value: unknown) => catalog(value, '工作台词条', tag).filter(tag => tag.status !== 'retired')

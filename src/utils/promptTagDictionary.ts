@@ -1,4 +1,11 @@
-/** Local catalog adapter. No third-party tag data or translations are bundled. */
+/** The runtime catalog owns tag names, aliases and their source evidence. */
+export interface PromptTagVerification {
+  canonicalTag: string
+  category: string
+  url: string
+  checkedAt: string
+  postCount: number
+}
 export interface PromptTagSource {
   en: string
   cn?: string
@@ -7,6 +14,8 @@ export interface PromptTagSource {
   desc?: string
   source?: string
   version?: string
+  status?: 'active' | 'retired'
+  verification?: PromptTagVerification
 }
 
 export interface PromptTagEntry {
@@ -24,6 +33,7 @@ const lookupKey = (value: string) => value.trim().toLowerCase().replace(/[\s_]+/
 export function createPromptTagDictionary(catalog: readonly PromptTagSource[]) {
   const entries = new Map<string, PromptTagEntry>()
   for (const tag of catalog) {
+    if (tag.status === 'retired') continue
     const canonicalTag = tag.en.trim()
     if (!canonicalTag) continue
     const key = lookupKey(canonicalTag)

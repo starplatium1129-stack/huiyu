@@ -69,8 +69,5 @@
 .pb .director-inspector .decision-summary > span:first-child { grid-column: 1; }
 .pb .director-inspector .decision-current { grid-row: 1; grid-column: 2; @apply tw:m-0; max-width: none; @apply tw:text-right tw:whitespace-normal; overflow-wrap: anywhere; @apply tw:leading-body; }
 .pb .director-inspector .decision-summary::after { grid-row: 1; grid-column: 3; }
-.pb .director-inspector .prompt-health-summary { @apply tw:flex-wrap tw:gap-s-2 tw:p-s-3 tw:leading-body; }
-.pb .director-inspector .monitor-profile { @apply tw:ml-0; overflow-wrap: anywhere; }
-.pb .director-inspector .prompt-health-body { padding-inline: var(--s-3); }
-.pb .director-inspector .manual-tag, .pb .director-inspector .token-chip { @apply tw:max-w-full; overflow-wrap: anywhere; }
+.pb .director-inspector .manual-tag { @apply tw:max-w-full; overflow-wrap: anywhere; }
 .pb .director-inspector .tag-categories { @apply tw:flex-wrap; }

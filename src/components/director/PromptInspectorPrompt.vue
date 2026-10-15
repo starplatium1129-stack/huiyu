@@ -1,30 +1,42 @@
 <template>
-        <PromptHealthPanel
-          class="advanced-decision basic-visible"
-          :prompt="previewPromptView"
-          :model-name="modelProfileView?.name"
-          :report="reportView"
-          :art-violations="artViolationsView"
-          :lora-text="pb.isPopular ? '' : loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
-          :open="true"
-          :compact="pb.directorMode === 'basic'"
-          @copy="copyPrompt"
-          @save="saveCurrentResult"
-        />
-<details v-show="pb.directorMode === 'pro'" class="inspector-route inspector-tags">
-  <summary><span>词条编辑</span><ArchiveIcon name="chevron-down" /></summary>
-  <DeferredPanel :active="pb.directorMode === 'pro'"><div data-disclosure-content><DirectorTagWorkbench /></div></DeferredPanel>
-</details>
+  <button class="prompt-workbench-entry" type="button" @click="openWorkbench">
+    <span class="prompt-workbench-mark"><ArchiveIcon name="palette" /></span>
+    <span class="prompt-workbench-copy"><strong>词条工作台</strong><small>{{ pb.directorMode === 'pro' ? (pb.manualTags.size ? '已选 ' + pb.manualTags.size + ' 个词条 · 搜索与编辑' : '搜索词条 · 服装预设 · 批量添加') : '进入专家模式，搜索与编辑词条' }}</small></span>
+    <ArchiveIcon class="prompt-workbench-arrow" name="chevron-down" />
+  </button>
+  <PromptHealthPanel class="advanced-decision basic-visible"
+    :prompt="previewPromptView" :context="previewContext" :model-name="modelProfileView?.name"
+    :report="reportView" :art-violations="artViolationsView"
+    :lora-text="pb.isPopular ? '' : loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
+    @copy="copyPrompt" @save="saveCurrentResult" />
+  <dialog ref="workbenchDialog" class="prompt-workbench-dialog" aria-labelledby="prompt-workbench-heading"
+    @cancel.prevent="workbenchMotion.close()" @click="onWorkbenchClick">
+    <header class="prompt-reader-heading"><h2 id="prompt-workbench-heading">词条工作台</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="关闭词条工作台" @click="workbenchMotion.close()"><ArchiveIcon name="close" /></button></header>
+    <div class="prompt-workbench-body"><DeferredPanel :active="workbenchLoaded"><DirectorTagWorkbench :prompt-format="previewContext.format" :model-profile="modelProfileView" /></DeferredPanel></div>
+  </dialog>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, nextTick, ref } from 'vue'
 import type { PromptHealthBindings } from '@/composables/prompt/promptPanelBindings'
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
+import '@/assets/css/director/components/PromptHealthPanel.css'
 const DirectorTagWorkbench = defineAsyncComponent(() => import('@/components/director/DirectorTagWorkbench.vue'))
 const PromptHealthPanel = defineAsyncComponent(() => import('@/components/PromptHealthPanel.vue'))
 
 const props = defineProps<{ bindings: PromptHealthBindings }>()
-const { pb, previewPromptView, modelProfileView, reportView, artViolationsView, loraSpecs, copyPrompt, saveCurrentResult } = props.bindings
+const { pb, previewPromptView, previewContext, modelProfileView, reportView, artViolationsView, loraSpecs, copyPrompt, saveCurrentResult } = props.bindings
+const workbenchDialog = ref<HTMLDialogElement | null>(null)
+const workbenchMotion = useFluidDialog(workbenchDialog)
+const workbenchLoaded = ref(false)
+async function openWorkbench(event: MouseEvent) {
+  const source = event.currentTarget as HTMLElement
+  pb.directorMode = 'pro'
+  workbenchLoaded.value = true
+  await nextTick()
+  workbenchMotion.open(source)
+}
+function onWorkbenchClick(event: MouseEvent) { if (isBackdropClick(event, workbenchDialog.value)) workbenchMotion.close() }
 </script>

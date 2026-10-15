@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerEl"
-    class="image-split-compare tw:relative tw:w-full tw:h-full tw:overflow-hidden tw:select-none tw:touch-none tw:cursor-ew-resize tw:rounded-sm tw:bg-deep"
+    class="image-split-compare tw:[container-type:inline-size] tw:relative tw:w-full tw:h-full tw:overflow-hidden tw:select-none tw:touch-none tw:cursor-ew-resize tw:rounded-sm tw:bg-deep"
     :class="{ 'is-dragging': isDragging }"
     role="slider"
     tabindex="0"
@@ -26,17 +26,19 @@
 
     <!-- After Image (Clipped overlay) -->
     <div
+      ref="clippedLayer"
       class="split-layer layer-after tw:absolute tw:inset-0 tw:w-full tw:h-full tw:pointer-events-none"
-      :style="splitLayerStyle"
     >
+      <div ref="clippedContent" class="split-after-content tw:absolute tw:inset-0">
       <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(afterSrc)" :alt="afterLabel || '换装后'" class="split-img tw:w-full tw:h-full tw:object-contain tw:block" draggable="false" />
       <span class="split-badge badge-after tw:absolute tw:top-[10px] tw:text-label-xs tw:[padding:3px_8px] tw:rounded-xs tw:[z-index:var(--z-canvas)] tw:font-medium tw:right-[10px] tw:[background:var(--compare-badge-fill)] tw:[color:var(--archive-blue)] tw:[border:1px_solid_var(--compare-badge-edge)]">{{ afterLabel || '换装后' }}</span>
+      </div>
     </div>
 
     <!-- Split Divider Handle -->
     <div
-      class="split-divider tw:absolute tw:top-0 tw:bottom-0 tw:[left:var(--split-pos,_50%)] tw:w-[2px] tw:[z-index:5] tw:pointer-events-none"
-      :style="dividerStyle"
+      ref="divider"
+      class="split-divider tw:absolute tw:top-0 tw:bottom-0 tw:left-0 tw:w-[2px] tw:[z-index:5] tw:pointer-events-none"
       aria-hidden="true"
     >
       <div class="divider-line tw:absolute tw:inset-0 tw:[background:var(--archive-blue)] tw:[box-shadow:0_0_8px_var(--compare-divider-glow)]"></div>
@@ -62,20 +64,13 @@ const props = defineProps<{
   initialPos?: number
 }>()
 
-const { position: splitPos, container: containerEl, isDragging, startDrag, onDrag, stopDrag, onKeydown } = useImageComparison(props.initialPos ?? 50)
 const beforeName = computed(() => props.beforeLabel || '原图')
 const afterName = computed(() => props.afterLabel || '换装后')
+const { position: splitPos, container: containerEl, clippedLayer, clippedContent, divider, isDragging, startDrag, onDrag, stopDrag, onKeydown } = useImageComparison(
+  props.initialPos ?? 50, 'right', value => `对比位置 ${value}%：${beforeName.value}与${afterName.value}`,
+)
 const comparisonLabel = computed(() => `左右对比滑动条：${beforeName.value}与${afterName.value}`)
 const splitValueText = computed(() => `对比位置 ${Math.round(splitPos.value)}%：${beforeName.value}与${afterName.value}`)
-
-// 自定义属性载体：样式规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
-const splitLayerStyle = computed(() => ({
-  '--split-clip': `polygon(${splitPos.value}% 0, 100% 0, 100% 100%, ${splitPos.value}% 100%)`,
-}))
-const dividerStyle = computed(() => ({
-  '--split-pos': `${splitPos.value}%`,
-}))
-
 </script>
 
 <style scoped>
@@ -90,15 +85,17 @@ const dividerStyle = computed(() => ({
 }
 
 .layer-after {
-  clip-path: var(--split-clip, polygon(50% 0, 100% 0, 100% 100%, 50% 100%));
+  overflow: hidden;
+  transform: translateX(50%);
 }
+.split-after-content { transform: translateX(-50%); }
 
 .split-badge {
   backdrop-filter: blur(6px);
 }
 
 .split-divider {
-  transform: translateX(-50%);
+  transform: translateX(calc(50cqw - 50%));
 }
 
 .divider-handle {

@@ -95,5 +95,7 @@ onUnmounted(() => {
 .route-loader i { @apply tw:block tw:w-[35%] tw:h-full; background: var(--accent); transform: translateX(-110%); }
 .route-loader.active i { animation: route-progress 1.2s ease-in-out infinite; }
 @keyframes route-progress { to { transform: translateX(390%); } }
-@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .route-loader { @apply tw:hidden; } }
+/* Keep the pending-route signal visible when motion is reduced. */
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .route-loader i { animation:none; width:100%; transform:none; }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .route-loader i { animation:none; width:100%; transform:none; } }
 </style>
