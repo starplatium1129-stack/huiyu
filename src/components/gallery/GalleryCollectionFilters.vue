@@ -1,9 +1,8 @@
 <template>
   <div class="collection-filters" role="group" aria-label="作品角色与标签筛选">
-    <StudioSelect v-model="character" label="按角色筛选" :options="characterOptions" />
-    <StudioSelect v-if="tags.length" v-model="tag" label="按标签筛选" :options="[{value:'',label:'全部标签'}, ...tags]" />
-    <button v-if="tag" class="btn btn-ghost btn-sm" type="button" @click="tag = ''">清除标签：{{ tag }}<ArchiveIcon name="close" /></button>
-    <button class="btn btn-ghost btn-sm collection-save" type="button" :disabled="disabled" @click="smartRule ? emit('edit') : emit('save')"><ArchiveIcon :name="smartRule ? 'book' : 'pin'" />{{ smartRule ? '编辑智能画册' : '保存为智能画册' }}</button>
+    <label class="collection-field"><span>角色</span><StudioSelect v-model="character" label="按角色筛选" :options="characterOptions" /></label>
+    <label v-if="tags.length" class="collection-field"><span>标签</span><StudioSelect v-model="tag" label="按标签筛选" :options="[{value:'',label:'全部标签'}, ...tags]" /></label>
+    <button class="btn btn-quiet btn-sm collection-save" type="button" :disabled="disabled" @click="smartRule ? emit('edit') : emit('save')"><ArchiveIcon :name="smartRule ? 'book' : 'pin'" />{{ smartRule ? '编辑智能画册' : '保存为智能画册' }}</button>
     <p v-if="smartRule" class="collection-rule"><ArchiveIcon name="refresh" /><span>{{ smartAlbumSummary(smartRule, characterName) }} · 自动更新</span></p>
   </div>
 </template>
@@ -22,9 +21,9 @@ const characterOptions = computed(() => [{value:'',label:'全部角色'}, ...pro
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.collection-filters { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2; }
-.collection-filters :deep(.studio-select-wrapper) { width:200px; max-width:100%; }
-.collection-save { margin-left:auto; }
+.collection-filters { @apply tw:flex tw:items-end tw:flex-wrap tw:gap-s-3; }
+.collection-field { display:grid; gap:var(--s-1); flex:1 1 180px; min-width:0; color:var(--text-secondary); font-size:var(--fs-label-sm); }
+.collection-save { margin-left:auto; min-height:var(--control-height); }
 .collection-rule { @apply tw:flex tw:items-center tw:gap-s-2 tw:m-0 tw:text-secondary tw:text-label-sm tw:leading-body; width:100%; overflow-wrap:anywhere; }
 .collection-rule .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }
 .collection-filters button { max-width:100%; white-space:normal; overflow-wrap:anywhere; }

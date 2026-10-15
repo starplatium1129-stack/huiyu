@@ -365,7 +365,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                 if resident is not None and cache_mask and resident.mask_cache is None:
                     resident.mask_cache = auto_tools.MaskCache()
                 mask = auto_tools.generate_mask(Path(job["maskModelDir"]).resolve(), image, data["maskPrompt"], data["maskThreshold"],
-                    grow=data["growMaskBy"],
+                    grow=data["growMaskBy"], check=control.check if control is not None else None,
                     **({"cache": resident.mask_cache} if resident is not None and cache_mask else {}),
                     **({"expected_mask_sha256": tea_report["compatibility"]["maskModelSha256"]}
                        if tea_report is not None and tea_report["compatibility"] is not None else {}))

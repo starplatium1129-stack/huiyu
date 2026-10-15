@@ -28,24 +28,12 @@
         <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}
       </button>
       </div>
-      <!--
-        展墙搜索（2026-08-30 UX 审计 P1）：攒到几百张之后，「找某一张旧作」是
-        最高频也最痛苦的动作，此前只能靠翻。检索范围含场景名、角色、当时写的
-        故事与完整 prompt——很多旧作只记得里面出现过某个词。
-      -->
-      <StudioSearch v-show="!albumsOpen" v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜场景、角色或关键词…" />
-      <!--
-        多选（2026-08-30 UX 审计 P1）：清 500 张废稿原本要点约 1500 次（每张进大图
-        → 点删除 → 再确认）。删除已改软删可撤销，批量删的风险随之降到可接受。
-      -->
-      <details v-if="!trashMode" v-show="!albumsOpen" class="gallery-refine-disclosure" :open="!!projectFilter || !!characterFilter || !!tagFilter || !!generationFilterCount" @toggle="refineOpen = ($event.target as HTMLDetailsElement).open">
-        <summary><ArchiveIcon name="pin" /><span>细选作品</span><span v-if="hasActiveFilters">已筛选</span><ArchiveIcon name="chevron-down" /></summary>
-      <div v-if="refineOpen || projectFilter || characterFilter || tagFilter || generationFilterCount" class="gallery-refine-controls" data-disclosure-content>
-        <StudioSelect v-model="projectFilter" class="gallery-project" label="按画册筛选" :options="projectOptions" />
-        <div v-if="history.length" ref="tagControls" class="gallery-collection-controls"><GalleryCollectionFilters v-model:character="characterFilter" v-model:tag="tagFilter" :characters="characterOptions" :tags="tagOptions" :smart-rule="currentSmartRule" :character-name="characterName" :disabled="galleryLoading || !!galleryError || saving" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" /></div>
-        <GalleryGenerationFilters v-model:conditions="generationConditions" :options="generationOptions" :filter-count="generationFilterCount" :snapshot="filterSnapshot" :has-active="hasActiveFilters" :project-unavailable="projectUnavailable" @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @clear="clearGenerationConditions" />
-      </div>
-      </details>
+      <StudioSearch v-show="!albumsOpen && !trashMode" v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜场景、角色或关键词…" />
+      <GalleryRefinement v-if="!trashMode" v-show="!albumsOpen" ref="refinement"
+        :filters="filterSnapshot" :projects="projectOptions" :characters="characterOptions" :tags="tagOptions"
+        :generation-options="generationOptions" :smart-rule="currentSmartRule" :character-name="characterName"
+        :disabled="galleryLoading || !!galleryError || saving" :project-unavailable="projectUnavailable"
+        @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" />
     </div>
     <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen && albumSection" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
       <GalleryAlbumOverview v-if="visitedPanels.albums" :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
@@ -288,7 +276,7 @@ import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import FluidTransition from "@/components/visual/FluidTransition.vue"
-import StudioSelect from '@/components/ui/StudioSelect.vue'
+import GalleryRefinement from '@/components/gallery/GalleryRefinement.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
@@ -304,9 +292,7 @@ const originalViewer = ref(false)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 const GalleryOrganization = defineAsyncComponent(() => import('@/components/gallery/GalleryOrganization.vue'))
 const GalleryTrashWall = defineAsyncComponent(() => import('@/components/gallery/GalleryTrashWall.vue'))
-const GalleryGenerationFilters = defineAsyncComponent(() => import('@/components/gallery/GalleryGenerationFilters.vue'))
 import GalleryAlbumOverview from '@/components/gallery/GalleryAlbumOverview.vue'
-const GalleryCollectionFilters = defineAsyncComponent(() => import('@/components/gallery/GalleryCollectionFilters.vue'))
 import GallerySmartAlbumEditor from '@/components/gallery/GallerySmartAlbumEditor.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import galleryEmptyOriginal from '@/assets/illustrations/atelier-gallery.png'
@@ -318,10 +304,9 @@ import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
 import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrigin'
 const workspace = useGalleryWorkspace()
-const refineOpen = ref(false)
 const {
 tagFilter, tagOptions, characterFilter, collectionPreviewItems,
-generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
+generationOptions, filterSnapshot, applyFilterSnapshot, projectOptions, projectUnavailable,
 closeBtn,viewerEl,infoEl,infoToggleBtn,infoCloseBtn,sentinelEl,shellEl,countLabel,
 searchQuery,
 favoriteOnly, favoriteCount, projectFilter, projects,
@@ -422,7 +407,7 @@ function startAlbumSelection() {
   if (!selectMode.value) toggleSelectMode()
   void showImages()
 }
-const tagControls = ref<HTMLElement | null>(null)
+const refinement = ref<InstanceType<typeof GalleryRefinement> | null>(null)
 const selectionToggle = ref<HTMLButtonElement | null>(null)
 async function finishSelection() {
   toggleSelectMode()
@@ -431,7 +416,7 @@ async function finishSelection() {
 }
 async function filterByTag(tag: string) {
   closeViewer(); tagFilter.value = tag
-  await nextTick(); tagControls.value?.querySelector<HTMLElement>('[aria-label="按标签筛选"]')?.focus()
+  await nextTick(); refinement.value?.focusTag()
 }
 
 const displayedCurrent = ref(current.value)

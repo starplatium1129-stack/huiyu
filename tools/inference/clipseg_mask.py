@@ -192,19 +192,21 @@ def model_identity(root):
     return str(root), tuple(rows)
 
 
-def generate_mask(root, image, prompt, threshold, *, grow=8, cache=None, expected_mask_sha256=None):
+def generate_mask(root, image, prompt, threshold, *, grow=8, cache=None, expected_mask_sha256=None, check=None):
     """Segment on CPU; bind a supplied profile scope before cache reuse or loading."""
     try:
+        if check is not None:
+            check()
         if cache is not None:
             cache.begin_job()
-        return _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sha256)
+        return _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sha256, check)
     except BaseException:
         if cache is not None:
             cache.clear()
         raise
 
 
-def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sha256):
+def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sha256, check):
     import numpy as np
     import torch
     from transformers import CLIPSegForImageSegmentation, CLIPTokenizer, ViTImageProcessorPil
@@ -212,6 +214,8 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
     fingerprint_started = time.perf_counter()
     identity = model_identity(root) if cache is not None or expected_mask_sha256 is not None else None
     fingerprint_seconds = time.perf_counter() - fingerprint_started
+    if check is not None:
+        check()
     if expected_mask_sha256 is not None:
         digest = hashlib.sha256(json.dumps(identity[1], sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
         if digest != expected_mask_sha256:
@@ -226,9 +230,14 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
         # exact digest scopes both selected vision layers and phrase logits.
         image_key = (EXECUTION_REVISION, image.mode, image.size, hashlib.sha256(image.tobytes()).digest())
         result_key = (image_key, tuple(texts))
+        if check is not None:
+            check()
         if cache.result_key == result_key and cache.logits is not None:
             cache.result_reused = True
-            return logits_mask(cache.logits, image.size, threshold, grow)
+            mask = logits_mask(cache.logits, image.size, threshold, grow)
+            if check is not None:
+                check()
+            return mask
     components = cache.components if cache is not None else None
     if components is None:
         root = validate_model(str(root))
@@ -237,15 +246,21 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
             do_center_crop=False, do_pad=False)
     else:
         tokenizer, processor, model = components
+    if check is not None:
+        check()
     tokens = tokenizer(texts, padding=True, truncation=False, return_tensors="pt")
     if tokens["input_ids"].shape[-1] > 77:
         raise ValueError("Each maskPrompt phrase must fit CLIPSeg's 77-token context; shorten the phrase")
+    if check is not None:
+        check()
     if components is None:
         model, info = CLIPSegForImageSegmentation.from_pretrained(str(root), local_files_only=True,
             trust_remote_code=False, use_safetensors=True, dtype=torch.float32, output_loading_info=True)
         if any(info.get(key) for key in ("missing_keys", "unexpected_keys", "mismatched_keys", "error_msgs")):
             raise ValueError("CLIPSeg checkpoint did not load completely; prepare a matching rd64-refined export")
         model = model.to("cpu").eval()
+        if check is not None:
+            check()
         if identity is not None:
             fingerprint_started = time.perf_counter()
             loaded_identity = model_identity(root)
@@ -253,6 +268,8 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
                 cache.fingerprint_seconds += time.perf_counter() - fingerprint_started
             if loaded_identity != identity:
                 raise ValueError("CLIPSeg model bytes changed while loading; retry after preparation completes")
+        if check is not None:
+            check()
         if cache is not None:
             cache.identity, cache.components = identity, (tokenizer, processor, model)
     conditioning = cache.conditioning if cache is not None and cache.conditioning_key == tuple(texts) else None
@@ -263,6 +280,8 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
         activations = cache.vision if cache is not None and cache.vision_key == image_key else None
         if activations is None:
             pixels = processor(images=image, return_tensors="pt")["pixel_values"].to(device="cpu", dtype=torch.float32)
+            if check is not None:
+                check()
             # Match the pinned forward's layer selection, but encode the query
             # image once. The decoder never uses the projected pooled output.
             vision = model.clip.get_image_features(pixel_values=pixels, output_hidden_states=True,
@@ -274,6 +293,9 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
         elif cache is not None:
             cache.vision_reused = True
         for start in range(0, len(texts), 4):
+            # A forward is indivisible; do not start another batch after cancel.
+            if check is not None:
+                check()
             count = min(4, len(texts) - start)
             inputs = {name: value[start:start + count].to("cpu") for name, value in tokens.items()
                       if name in ("input_ids", "attention_mask")}
@@ -281,6 +303,8 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
                 embedding = conditioning[start // 4].to(device="cpu", copy=True)
             else:
                 embedding = model.get_conditional_embeddings(batch_size=count, **inputs)
+            if check is not None:
+                check()
             output = model.decoder(tuple(value.expand(count, -1, -1) for value in activations),
                 embedding, return_dict=True)
             logits = output.logits.detach().to(device="cpu", dtype=torch.float32).numpy()
@@ -297,7 +321,11 @@ def _generate_mask(root, image, prompt, threshold, grow, cache, expected_mask_sh
             for phrase_logits in logits:
                 combined = phrase_logits.copy() if combined is None else combined + phrase_logits
     combined /= len(texts)
+    if check is not None:
+        check()
     mask = logits_mask(combined, image.size, threshold, grow)
+    if check is not None:
+        check()
     if cache is not None:
         cache.result_key, cache.logits = result_key, combined.copy()
         if not cache.vision_reused:

@@ -80,8 +80,11 @@ impl CopyJob {
                 manifest,
                 ..
             },
-        ) = (source, &self.kind)
+        ) = (source, &mut self.kind)
         {
+            // Read the same pinned revision as the database copy. The writer
+            // already leased this snapshot's objects before yielding its queue.
+            manifest["media"] = Value::Array(media_rows(&self.files, &source)?);
             copy_database(
                 &self.files,
                 source,
@@ -108,8 +111,19 @@ fn object_relative(hash: &str) -> Result<String> {
     }
     Ok(format!("media/objects/{}/{}", &hash[..2], hash))
 }
-fn media_rows(db: &Connection) -> Result<Vec<Value>> {
-    Ok(db.prepare("SELECT hash,bytes,mime FROM media_objects ORDER BY hash")?.query_map([],|r|Ok(json!({"hash":r.get::<_,String>(0)?,"bytes":r.get::<_,i64>(1)?,"mime":r.get::<_,String>(2)?})))?.collect::<rusqlite::Result<_>>()?)
+fn media_rows(files: &Files, db: &Connection) -> Result<Vec<Value>> {
+    let mut statement = db.prepare("SELECT hash,bytes,mime FROM media_objects ORDER BY hash")?;
+    let mut rows = statement.query([])?;
+    let mut media = Vec::new();
+    while let Some(row) = rows.next()? {
+        files.check_cancel()?;
+        media.push(json!({
+            "hash": row.get::<_, String>(0)?,
+            "bytes": row.get::<_, i64>(1)?,
+            "mime": row.get::<_, String>(2)?,
+        }));
+    }
+    Ok(media)
 }
 
 pub(super) fn prepare(c: &mut Context, principal: &str, command: &Value) -> Result<Prepared> {
@@ -178,18 +192,12 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
         });
     }
     let directory = prepare_directory(files, &format!("backups/{id}"), id)?;
-    let media = media_rows(&c.db)?;
     let revision = c.transaction(|c| {
-        for item in &media {
-            c.db.execute(
-                "INSERT OR IGNORE INTO leases VALUES(?,'backup',?,NULL,?)",
-                params![
-                    format!("{id}:{}", string(item, "hash")?),
-                    string(item, "hash")?,
-                    now()
-                ],
-            )?;
-        }
+        c.db.execute(
+            "INSERT OR IGNORE INTO leases
+             SELECT ?1 || ':' || hash,'backup',hash,NULL,?2 FROM media_objects",
+            params![id, now()],
+        )?;
         c.revision()
     })?;
     let source = Connection::open_with_flags(
@@ -213,7 +221,7 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
             "Backup source no longer matches the workspace",
         ));
     }
-    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":3,"revision":revision,"media":media});
+    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":3,"revision":revision});
     Ok(CopyKind::Backup {
         directory,
         manifest,
