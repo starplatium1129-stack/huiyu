@@ -61,8 +61,9 @@ export interface PromptStyleBindings {
 }
 
 export interface PromptHealthBindings {
-  pb: Pick<Store, 'directorMode' | 'isPopular'>
+  pb: Pick<Store, 'directorMode' | 'isPopular' | 'manualTags'>
   previewPromptView: Assembly['previewPrompt']
+  previewContext: Assembly['previewContext']
   modelProfileView: Assembly['modelProfile']
   reportView: Assembly['promptReport']
   artViolationsView: Assembly['artViolations']

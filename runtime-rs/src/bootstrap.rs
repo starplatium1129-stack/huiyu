@@ -238,7 +238,7 @@ fn run(config: &Config, cancel: &CancellationToken, packaged: bool) -> Result<Va
     }
     for name in ["scenes", "popular", "blueprints", "tags", "references"] {
         if options.root.join("data/catalog/manifest.json").is_file()
-            && ["scenes", "popular", "blueprints"].contains(&name)
+            && ["scenes", "popular", "blueprints", "tags"].contains(&name)
         {
             result[name] = json!({"rebuilt":false,"source":"catalog-snapshot"});
             continue;

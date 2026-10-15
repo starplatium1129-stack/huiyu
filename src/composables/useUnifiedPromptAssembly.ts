@@ -3,6 +3,10 @@ import { usePromptAssembly, type PromptAssemblyState } from '@/composables/promp
 import { usePopularPromptAssembly, type PopularPromptAssemblyState } from '@/composables/prompt/usePopularPromptAssembly'
 import { useUnboundPromptAssembly } from '@/composables/prompt/useUnboundPromptAssembly'
 import type { PromptEngine } from '@/utils/promptPolicy'
+import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
+import { STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
+import { tokenize } from '@/utils/promptPrimitives'
+import type { PromptPreviewContext } from '@/utils/promptPreview'
 export type UnifiedPromptAssemblyState = PromptAssemblyState & PopularPromptAssemblyState & { readonly isPopular: boolean }
 
 /**
@@ -28,11 +32,25 @@ export function useUnifiedPromptAssembly(
   const promptReport = computed(() => active.value.promptReport.value)
   const artViolations = computed(() => active.value.artViolations.value)
   const modelProfile = computed(() => pb.isPopular ? popular.profile.value : studio.modelProfile.value)
+  const previewContext = computed<PromptPreviewContext>(() => {
+    const plan = pb.isPopular ? popular.structuredPlan.value : pb.char === 'none' ? null : studio.structuredPlan.value
+    const subjects = pb.char === 'none' ? [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters] : []
+    return {
+      format:resolveDrawCapabilities(engine.value, modelProfile.value).promptFormat,
+      qualityTokens:tokenize(modelProfile.value?.quality_prefix || ''),
+      characterTokens:[...(plan?.characterTokens ?? subjects.flatMap(subject => subject.characterTokens || [])),
+        ...(pb.char === 'none' ? pb.referenceInput?.characterTokens || [] : [])],
+      copyrightTokens:[...(plan?.copyrightTokens ?? subjects.flatMap(subject => subject.copyrightTokens || [])),
+        ...(pb.char === 'none' ? pb.referenceInput?.copyrightTokens || [] : [])],
+      artists:[...(plan?.artists || [])],
+    }
+  })
 
   return {
     positivePrompt,
     negativePrompt,
     previewPrompt,
+    previewContext,
     promptReport,
     artViolations,
     modelProfile,

@@ -149,6 +149,11 @@ pub(crate) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
         if tag.get("desc").is_some_and(|value| !value.is_string()) {
             return Err(invalid(format!("Invalid tag description: {id}")));
         }
+        if tag.get("status").is_some_and(|value| {
+            !matches!(value.as_str(), Some("active" | "retired"))
+        }) {
+            return Err(invalid(format!("Invalid tag status: {id}")));
+        }
         for field in ["aliases", "related"] {
             if let Some(value) = tag.get(field) {
                 let values = value
@@ -158,6 +163,9 @@ pub(crate) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
                     text(value, &format!("Tag {id} {field}"))?;
                 }
             }
+        }
+        if tag["status"] == "retired" {
+            continue;
         }
         let key = key(tag["en"].as_str().unwrap())?;
         if !groups.contains_key(&key) {
@@ -220,6 +228,9 @@ pub(crate) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
     let mut owners: HashMap<String, String> = HashMap::new();
     let mut used_overrides = HashSet::new();
     for tag in tags {
+        if tag["status"] == "retired" {
+            continue;
+        }
         let id = tag["id"].as_str().unwrap();
         if let Some(related) = tag["related"].as_array() {
             for related in related {

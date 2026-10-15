@@ -259,8 +259,11 @@ uses `--text-*`. Reserve fixed `--art-stage` and `--on-art-*` for image mats
 and image overlays that need them, never the whole empty canvas. Display real SFW images at their original proportions;
 the main canvas always contains the complete work. Character colors remain
 available for context. Normal controls respond in 120–200ms. A newly decoded
-result may reveal once in 450–700ms using the same image; waiting states must
-describe actual generation progress. Preserve the existing dissolve effect,
+result may reveal once using the same image. Simple reveals normally take
+450–700ms; particle formation and other deliberate artwork presentations may
+take longer when the complete motion improves visual continuity and comfort.
+Duration follows the effect's meaningful phases, rather than a universal cap.
+Waiting states must describe actual generation progress. Preserve the existing dissolve effect,
 reduced motion, visibility cleanup and anchored-viewer fallbacks.
 
 Shared page chrome uses `1000 / 768 / 480px` as its default responsive scale.
@@ -352,8 +355,14 @@ do not replay a whole-page entrance on every filter or add motion to every node.
 Keep existing character and artwork signatures within their own scope.
 
 Use the shared semantic durations: press, hover, control and surface feedback
-normally finish below 300ms. Existing route, character and atmosphere tokens
-may be longer for their specific purpose; they never gate an action. Entering,
+normally finish below 300ms. Frequent operations stay crisp. Low-frequency
+artwork reveals, character performances and other purposeful presentations may
+have enough time to complete their visual story; fewer or shorter animations
+are not inherently better. Judge these effects by continuity, comfort and
+purpose, while keeping reading and controls stable. Existing route, character
+and atmosphere tokens may be longer for their specific purpose. Presentation
+never gates an action, delays cancellation or proves request success, and must
+remain interruptible with reduced-motion and lifecycle fallbacks. Entering,
 exiting and immediate feedback prefer --ease-out; on-screen movement uses
 --ease-in-out, drawers use --ease-drawer, and genuinely constant progress uses
 linear. Avoid slow-starting ease-in for immediate UI responses. Reuse current
@@ -634,6 +643,8 @@ belong inside installation details, not in the default creative composition.
 绘制区以作品为中心：左侧创作素材按角色、场景、描述分类，专家模式额外提供历史。一级分类使用可键盘切换的下划线标签，首次加载后通过 v-show 保留组件实例。宽桌面默认素材栏 336px、参数栏 368px、栏间距 24px，仍可拖动或用方向键调整；宽度由 useDirectorLayout 按实际内容区收敛，几何规则集中在 director/layout.css，表面与文字分别由 workspace.css、atelier.css 及组件样式负责。
 
 参数区先选择引擎、模型和画幅，再选择风格；高级调整收起时保留当前配方摘要。真实生成与停止共用原状态机，动作条固定在参数栏底部；隐藏参数或专注时回到画布上方，画幅仍可操作。图片入册、存为场景、对比和清除在画布下方常驻，无可用结果时禁用。画面描述只在素材区编辑，“这一幕”提供定位入口，专注模式在顶栏提供入口。
+
+提示词栏优先保证视觉美感与阅读舒适度，保留轻盈词条、语义配色和清晰层次，用分组、留白与渐进展开缓解密度。Anima 按五层展示：质量/分级（暖金）、角色与作品（角色强调色，组内分开标识）、画师（紫）、画面标签（蓝）、自然语言（青绿）；对应 studio-prompt-craft 的六段发送顺序，展示合组不改变编译。Krea 保留自然语言阅读，不套标签分层。避免在固定侧栏里重复嵌套面板、计数与滚动区；负向词、模型和 LoRA 信息按需展开，复制、保存和词条工作台入口保持可达。长提示词提供宽幅阅读入口，按实际栏宽换行与排列操作，不靠缩小字号容纳内容。
 
 1024–1440 CSS px 默认显示画布与 320px 参数栏；“素材”切换同一主区域，Escape 返回画布并返焦入口，不改写宽屏栏宽和隐藏偏好。低于 1024px 将参数放在画布下方，900px 以下单列并提供锚点导航。专注模式保留单画布与动作条。画布使用跟随主题的 --bg-surface / --bg-base，提示文字用 --text-*；图片上的分级遮罩继续使用 --art-scrim / --on-art-*。角色强调色、实际样张来源及动效清理沿用现有实现，支持减少动态效果。
 

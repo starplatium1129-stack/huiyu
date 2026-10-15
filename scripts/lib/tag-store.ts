@@ -10,6 +10,7 @@ export interface TagEntry {
   aliases?: string[];
   desc?: string;
   related?: string[];
+  status?: 'active' | 'retired';
   [key: string]: unknown;
 }
 

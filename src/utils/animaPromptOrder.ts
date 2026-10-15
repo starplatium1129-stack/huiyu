@@ -3,7 +3,7 @@ import { QUALITY_OR_SCORE_RE } from './promptDiagnostics.ts'
 import { splitBreaks, tokenize } from './promptPrimitives.ts'
 
 /** Classification only: preserve original spelling, literal parentheses and weights in output. */
-function tagKey(token: string): string {
+export function tagKey(token: string): string {
   let value = token.trim()
   const weighted = /^\((.*):\s*-?\d+(?:\.\d+)?\s*\)$/.exec(value)
   if (weighted) value = weighted[1]

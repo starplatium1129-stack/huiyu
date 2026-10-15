@@ -68,13 +68,15 @@ export function buildValidatedTagDictionary(value: unknown, policy: TagDictionar
     if (byId.has(tag.id)) throw new Error(`Duplicate tag ID: ${tag.id}`);
     if (tag.weight !== undefined && (typeof tag.weight !== 'number' || !Number.isFinite(tag.weight) || tag.weight < 0)) throw new Error(`Invalid tag weight: ${tag.id}`);
     if (tag.desc !== undefined && typeof tag.desc !== 'string') throw new Error(`Invalid tag description: ${tag.id}`);
+    if (tag.status !== undefined && !['active', 'retired'].includes(tag.status)) throw new Error(`Invalid tag status: ${tag.id}`);
     for (const field of ['aliases', 'related'] as const) {
       if (tag[field] === undefined) continue;
       if (!Array.isArray(tag[field])) throw new Error(`Tag ${tag.id} ${field} must be an array`);
       for (const item of tag[field]!) text(item, `Tag ${tag.id} ${field}`);
     }
-    const key = safeKey(tag.en);
     byId.set(tag.id, tag);
+    if (tag.status === 'retired') continue;
+    const key = safeKey(tag.en);
     const group = groups.get(key) ?? [];
     group.push(tag);
     groups.set(key, group);
@@ -101,6 +103,7 @@ export function buildValidatedTagDictionary(value: unknown, policy: TagDictionar
   const aliasOwners = new Map<string, string>();
   const usedOverrides = new Set<string>();
   for (const tag of tags) {
+    if (tag.status === 'retired') continue;
     for (const related of tag.related ?? []) if (!byId.has(related)) throw new Error(`Tag ${tag.id} references unknown related ID: ${related}`);
     const owner = tagKey(tag.en);
     for (const alias of tag.aliases ?? []) {

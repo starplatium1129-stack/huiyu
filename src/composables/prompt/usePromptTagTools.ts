@@ -7,7 +7,7 @@ type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 /**
  * 绘图页「词条工作台」工具簇（2026-08-22 自 PromptBuilderView 下沉）。
  *
- * 手输 Danbooru 标签回车添加、chip 中文释义（tagMeaning 字典懒加载，
+ * 手输模型标签回车添加、chip 中文释义（tagMeaning 字典懒加载，
  * 避免把 ~20KB 纯数据钉进路由主块）、权重色彩热力分级与服装词包整包切换。
  * 词条的增删本体走 pb.toggleManualTag / pb.manualTags，这里只做输入归一
  * 与展示辅助。
@@ -62,11 +62,11 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
   /**
    * 输入框回车加词（2026-08-30 UX 审计 P0-3 重写）。
    *
-   * ① 支持逗号 / 中文逗号 / 顿号 / 换行分隔。从 Danbooru 复制
+   * ① 支持逗号 / 中文逗号 / 顿号 / 换行分隔。从词典复制
    *    `blue_hair, smile, twintails` 一次回车应得到 3 个词条，
    *    而不是 1 个垃圾词条 `blue_hair,_smile,_twintails`——批量粘贴
    *    是「提示词自主权」最高频的动作，这条不通等于自主权打折。
-   * ② 支持别名自动解析（dof、jk、qipao 自动转为标准 Danbooru 英文）。
+   * ② 支持已登记别名解析（dof、jk、qipao），不推断站点间的同义词。
    * ③ 用幂等 add 而非 toggle：输入已有词条不再把它删掉。
    */
   function addTag(e: Event) {
@@ -98,6 +98,7 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
   }
 
   function toggleOutfitBundle(tags: string[]) {
+    tags = [...new Set(tags.map(pb.tagDictionary.canonicalize))]
     const next = new Set(pb.manualTags)
     const selected = tags.every(tag => next.has(tag))
     const incomingOutfitGroups = new Set(tags.flatMap(tag => {
