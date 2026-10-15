@@ -6,6 +6,8 @@ import { DIRECTOR_LAYOUT_KEY } from '@/utils/storageKeys'
 type Side = 'materials' | 'inspector'
 interface LayoutPreference { materials: number | null; inspector: number | null; hideMaterials: boolean; hideInspector: boolean }
 const defaults = (): LayoutPreference => ({ materials: null, inspector: null, hideMaterials: false, hideInspector: false })
+// Match the gallery's horizontal intent tolerance, within the 16 CSS px resize hit area.
+const RESIZE_INTENT_PX = 6
 export function parseDirectorLayout(raw: string | null): LayoutPreference {
   try {
     const value: unknown = JSON.parse(raw || 'null')
@@ -39,7 +41,8 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
       scrollPositions.set(surface, { left: surface.scrollLeft, top: surface.scrollTop })
     }
   }, { capture: true })
-  let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number } | null = null
+  let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number; before: LayoutPreference; materialsOpen: boolean } | null = null
+  let suppressClick = false, previousClickSuppressed = false, suppressDoubleClick = false
   const baseMaterials = computed(() => viewport.value <= 1440 ? 300 : 336)
   const baseInspector = computed(() => viewport.value <= 1440 ? 320 : 368)
   // Resizing may use spare canvas width, including a compact portrait workspace.
@@ -64,27 +67,65 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     const other = collapsed.value[otherSide] ? 0 : currentWidth(otherSide)
     preferences.value[side] = Math.round(Math.max(side === 'materials' ? 240 : 280, Math.min(value, 560, available.value - other)))
   }
-  function finish() {
+  function endPointer(commit: boolean) {
     const active = activePointer
+    if (!active) return
+    const resized = dragging.value !== null
     activePointer = null; dragging.value = null
-    if (active?.element.hasPointerCapture?.(active.id)) active.element.releasePointerCapture(active.id)
-    if (active) save()
+    suppressClick = resized || !commit
+    window.removeEventListener('keydown', escapeResize, true)
+    window.removeEventListener('blur', cancelOnBlur)
+    if (!commit) {
+      preferences.value = active.before
+      compactMaterialsOpen.value = active.materialsOpen
+    }
+    if (active.element.hasPointerCapture(active.id)) active.element.releasePointerCapture(active.id)
+    if (commit && resized) save()
+  }
+  function finish(event: PointerEvent) {
+    if (activePointer?.id === event.pointerId) endPointer(true)
+  }
+  function cancel(event?: PointerEvent) {
+    if (!event || activePointer?.id === event.pointerId) endPointer(false)
+  }
+  function cancelOnBlur() { cancel() }
+  function escapeResize(event: KeyboardEvent) {
+    if (!activePointer || event.key !== 'Escape' || event.isComposing || event.keyCode === 229) return
+    event.preventDefault(); event.stopImmediatePropagation()
+    cancel()
+  }
+  function click(event: MouseEvent) {
+    if (event.detail === 0) return
+    // A drag can be either click in a native double-click sequence.
+    suppressDoubleClick = event.detail > 1 && (suppressClick || previousClickSuppressed)
+    previousClickSuppressed = suppressClick
+    if (suppressClick) { event.preventDefault(); event.stopPropagation() }
   }
   function currentWidth(side: Side) { return side === 'materials' ? materialsWidth.value : inspectorWidth.value }
   function start(side: Side, event: PointerEvent) {
-    if (!observing || event.button !== 0 || !event.isPrimary) return
-    finish(); measure()
+    if (!observing || activePointer || event.button !== 0 || !event.isPrimary) return
+    measure()
     const element = event.currentTarget as HTMLElement
-    activePointer = { element, id: event.pointerId, side, x: event.clientX, width: currentWidth(side) }
-    element.setPointerCapture(event.pointerId); dragging.value = side; event.preventDefault()
+    activePointer = { element, id: event.pointerId, side, x: event.clientX, width: currentWidth(side), before: { ...preferences.value }, materialsOpen: compactMaterialsOpen.value }
+    suppressClick = false
+    element.setPointerCapture(event.pointerId)
+    element.focus({ preventScroll: true })
+    window.addEventListener('keydown', escapeResize, true)
+    window.addEventListener('blur', cancelOnBlur)
+    event.preventDefault()
   }
   function move(event: PointerEvent) {
     const active = activePointer
     if (!active || active.id !== event.pointerId) return
-    setWidth(active.side, active.width + (event.clientX - active.x) * (active.side === 'materials' ? 1 : -1))
+    const distance = event.clientX - active.x
+    if (!dragging.value && Math.abs(distance) < RESIZE_INTENT_PX) return
+    dragging.value = active.side
+    setWidth(active.side, active.width + distance * (active.side === 'materials' ? 1 : -1))
   }
   function key(side: Side, event: KeyboardEvent) {
     if (event.altKey || event.ctrlKey || event.metaKey) return
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+    cancel()
     const step = event.shiftKey ? 40 : 10
     const current = currentWidth(side)
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
@@ -96,13 +137,16 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     event.preventDefault(); save()
   }
   function toggle(side: Side) {
-    finish()
+    cancel()
     if (compact.value && side === 'materials') { compactMaterialsOpen.value = !compactMaterialsOpen.value; return }
     const key = side === 'materials' ? 'hideMaterials' : 'hideInspector'
     preferences.value[key] = !preferences.value[key]; save()
   }
   function show(side: Side) { if (collapsed.value[side]) toggle(side) }
-  function reset() { finish(); compactMaterialsOpen.value = false; preferences.value = defaults(); save() }
+  function reset(event?: MouseEvent) {
+    if (event && (suppressClick || suppressDoubleClick)) { event.preventDefault(); event.stopPropagation(); return }
+    cancel(); compactMaterialsOpen.value = false; preferences.value = defaults(); save()
+  }
   function changed(event: StorageEvent) { if (event.key === DIRECTOR_LAYOUT_KEY && !activePointer) preferences.value = readPreferences() }
   function observe() {
     if (observing) return
@@ -116,7 +160,8 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   }
   function stopObserving() {
     observing = false
-    finish()
+    cancel()
+    suppressClick = previousClickSuppressed = suppressDoubleClick = false
     observer?.disconnect()
     window.removeEventListener('resize', measure)
     window.removeEventListener('storage', changed)
@@ -138,5 +183,5 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   })
   onDeactivated(stopObserving)
   onBeforeUnmount(() => { stopObserving(); scrollPositions.clear() })
-  return { style, collapsed, compact, dragging, desktop: computed(() => viewport.value >= 1024), materialsWidth, inspectorWidth, start, move, finish, key, toggle, show, reset }
+  return { style, collapsed, compact, dragging, desktop: computed(() => viewport.value >= 1024), materialsWidth, inspectorWidth, start, move, finish, cancel, click, key, toggle, show, reset }
 }

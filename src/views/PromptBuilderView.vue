@@ -88,9 +88,9 @@
         />
       </Teleport>
       <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.compact.value && !directorLayout.collapsed.value.materials" side="materials" :width="directorLayout.materialsWidth.value"
-        @start="directorLayout.start('materials', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @key="directorLayout.key('materials', $event)" @reset="directorLayout.reset" />
+        @start="directorLayout.start('materials', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @cancel="directorLayout.cancel" @click="directorLayout.click" @key="directorLayout.key('materials', $event)" @reset="directorLayout.reset" />
       <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.compact.value && !directorLayout.collapsed.value.inspector" side="inspector" :width="directorLayout.inspectorWidth.value"
-        @start="directorLayout.start('inspector', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @key="directorLayout.key('inspector', $event)" @reset="directorLayout.reset" />
+        @start="directorLayout.start('inspector', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @cancel="directorLayout.cancel" @click="directorLayout.click" @key="directorLayout.key('inspector', $event)" @reset="directorLayout.reset" />
 
       <!-- ─── 中栏：监视器 ────────────────────────────────── -->
       <div class="director-col col-center" id="drawing-canvas">
