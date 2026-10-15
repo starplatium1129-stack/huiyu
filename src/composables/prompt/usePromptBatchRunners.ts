@@ -21,7 +21,7 @@ import {
   type PopularCharacter,
 } from '../../utils/popularContent.ts'
 import { COLOR_MOODS } from '../../config/promptConstants.ts'
-import { mutualGroupWithCategory, normalizeKey, tokenize } from '../../utils/promptPolicy.ts'
+import { formatPromptForProfile, mutualGroupWithCategory, normalizeKey, tokenize } from '../../utils/promptPolicy.ts'
 import {
   ANIMA_CHARACTER_BY_CHARACTER,
   type useAnimaSession,
@@ -244,7 +244,14 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       plans.set(target.id, { style: target.kind === 'character'
         ? { ...pb.selections, emotion: [...pb.selections.emotion], colorMood: pb.colorMood }
         : { emotion: [], shot: null, lighting: null, composition: null, colorMood: null } })
-      return [CHAR_PROMPT[charInfo.charKey], detectOutfitOverrideFromContext()?.join(', '), baseText].filter(Boolean).join(', ')
+      const prompt = [CHAR_PROMPT[charInfo.charKey], detectOutfitOverrideFromContext()?.join(', '), baseText].filter(Boolean).join(', ')
+      const profile = modelProfile.value
+      if (animaState.value.family !== 'anima' || profile?.strip_quality_tokens === true) return prompt
+      // Compare normalized tokens without rewriting inherited captions or explicit weights.
+      const existingKeys = new Set(prompt.split(/\r?\n/).flatMap(tokenize).map(normalizeKey))
+      const quality = tokenize(profile?.quality_prefix || '')
+        .filter(token => !existingKeys.has(normalizeKey(token))).join(', ')
+      return [formatPromptForProfile(quality, profile, 'anima'), prompt].filter(Boolean).join(', ')
     }
     if (target.kind === 'character') throw new Error('目标角色已不可用')
     throw new Error('场景蓝图缺少有效的角色绑定')
